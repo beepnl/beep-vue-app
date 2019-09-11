@@ -18,3 +18,6 @@ This repository is for the web app of Beep. In order to create a consistent deve
 
 As a development IDE we recommend WebStorm. Before jumping in, make sure to [configure your IDE](https://github.com/beepnl/beep-ui/wiki/Webstorm-Settings).
 
+## Deployment
+
+The production build of this UI is deployed to an AWS CloudFront CDN. Upon committing to master, this UI is automatically queued for deployment.
