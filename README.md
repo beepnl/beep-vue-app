@@ -4,6 +4,8 @@
 
 ### Prerequisites
 
+* Install and configure the AWS CLI
+* Install the AWS ECR [credential helper](https://github.com/awslabs/amazon-ecr-credential-helper)
 * Install docker
 * Install npm
 
