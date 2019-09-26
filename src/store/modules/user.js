@@ -43,6 +43,18 @@ export default {
       await Auth.signOut()
       commit('clearUserAndSession')
     },
+    forgotPassword: async ({ commit }, username) => {
+      await Auth.forgotPassword(username)
+      commit('clearUserAndSession')
+    },
+    forgotPasswordSubmit: async ({ commit }, forgotPasswordRequest) => {
+      await Auth.forgotPasswordSubmit(
+        forgotPasswordRequest.email,
+        forgotPasswordRequest.verificationCode,
+        forgotPasswordRequest.newPassword
+      )
+      commit('clearUserAndSession')
+    },
   },
 
   mutations: {

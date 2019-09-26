@@ -13,7 +13,11 @@
           type="password"
           v-model="credentials.password"
         ></v-text-field>
+        <router-link :to="{ name: 'forgotPassword' }">
+          I forgot my password
+        </router-link>
       </v-card-text>
+
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn text type="submit">Sign In</v-btn>
@@ -38,7 +42,10 @@ export default {
   },
   data() {
     return {
-      credentials: {},
+      credentials: {
+        username: 'george@georgevanvliet.nl',
+        password: 'Perfect1!',
+      },
     }
   },
 }

@@ -5,6 +5,9 @@ import NotFound from '@/views/NotFound'
 import SignIn from '@/views/SignIn'
 import SignOut from '@/views/SignOut'
 import Store from '@/store/store'
+import Dashboard from '@/views/Dashboard'
+import ForgotPassword from '@/views/ForgotPassword'
+import ResetPassword from '@/views/ResetPassword'
 
 Vue.use(Router)
 
@@ -27,9 +30,25 @@ const router = new Router({
       component: SignUp,
     },
     {
+      path: '/forgot-password',
+      name: 'forgotPassword',
+      component: ForgotPassword,
+    },
+    {
+      path: '/reset-password',
+      name: 'resetPassword',
+      component: ResetPassword,
+    },
+    {
+      path: '/',
+      name: 'home',
+      component: Dashboard,
+      meta: { requiresAuth: true },
+    },
+    {
       path: '/dashboard',
       name: 'dashboard',
-      component: SignUp,
+      component: Dashboard,
       meta: { requiresAuth: true },
     },
     {
