@@ -10,16 +10,16 @@ export default {
 
   getters: {
     isLoggedIn: (store = {}) => {
-      const session = store.session
-      if (!session) return false
+      const hasSession = 'session' in store
+      if (!hasSession) return false
 
-      const accessToken = 'accessToken' in session
-      if (!accessToken) return false
+      const hasAccessToken = 'accessToken' in store.session
+      if (!hasAccessToken) return false
 
-      const hasToken = 'jwtToken' in accessToken
+      const hasToken = 'jwtToken' in store.session.accessToken
       if (!hasToken) return false
 
-      return new Date(accessToken.payload.exp * 1000) > new Date()
+      return new Date(store.session.accessToken.payload.exp * 1000) > new Date()
     },
     session: (store = {}) => {
       return 'session' in store && Object.keys(store.session).length > 0
