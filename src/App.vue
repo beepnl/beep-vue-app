@@ -5,7 +5,7 @@
         Beep
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn v-if="user" text @click="signOut">Sign out</v-btn>
+      <v-btn v-if="userIsLoggedIn" text @click="signOut">Sign out</v-btn>
     </v-app-bar>
 
     <v-content>
@@ -13,5 +13,20 @@
     </v-content>
   </v-app>
 </template>
+
+<script>
+export default {
+  methods: {
+    signOut() {
+      this.$router.push({ name: 'signOut' })
+    },
+  },
+  computed: {
+    userIsLoggedIn() {
+      return this.$store.getters['user/isLoggedIn']
+    },
+  },
+}
+</script>
 
 <style lang="scss"></style>

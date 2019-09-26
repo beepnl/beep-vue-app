@@ -1,5 +1,5 @@
 <template>
-  <div>No route found for path {{ requestedRoute }}ss</div>
+  <div>No route found for path {{ requestedRoute }}</div>
 </template>
 
 <script>
