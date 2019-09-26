@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-form ref="form" v-model="valid">
+    <v-form @submit.prevent="resetPassword" ref="form" v-model="valid">
       <v-card-title>Reset password</v-card-title>
       <v-card-text>
         <v-alert
@@ -39,8 +39,8 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn @click="resetPassword" :disabled="!valid" text>
-          Send email
+        <v-btn :disabled="!valid" text type="submit">
+          Reset password
         </v-btn>
       </v-card-actions>
     </v-form>
@@ -52,35 +52,35 @@ export default {
   methods: {
     async resetPassword() {
       if (this.$refs.form.validate()) {
-      }
-      this.clearErrors()
-      try {
-        await this.$store.dispatch(
-          'user/forgotPasswordSubmit',
-          this.resetPasswordRequest
-        )
-        await this.$router.push({ name: 'signIn' })
-      } catch (error) {
-        switch (error.code) {
-          case 'UserNotFoundException':
-            this.errors.push({
-              type: 'error.user_not_found',
-            })
-            break
-          case 'LimitExceededException':
-            this.errors.push({
-              type: 'error.limit_exceeded_try_again_later',
-            })
-            break
-          case 'CodeMismatchException':
-            this.errors.push({
-              type: 'error.invalid_verification_code',
-            })
-            break
-          default:
-            this.errors.push({
-              type: 'error.unknown_error',
-            })
+        this.clearErrors()
+        try {
+          await this.$store.dispatch(
+            'user/forgotPasswordSubmit',
+            this.resetPasswordRequest
+          )
+          await this.$router.push({ name: 'signIn' })
+        } catch (error) {
+          switch (error.code) {
+            case 'UserNotFoundException':
+              this.errors.push({
+                type: 'error.user_not_found',
+              })
+              break
+            case 'LimitExceededException':
+              this.errors.push({
+                type: 'error.limit_exceeded_try_again_later',
+              })
+              break
+            case 'CodeMismatchException':
+              this.errors.push({
+                type: 'error.invalid_verification_code',
+              })
+              break
+            default:
+              this.errors.push({
+                type: 'error.unknown_error',
+              })
+          }
         }
       }
     },
