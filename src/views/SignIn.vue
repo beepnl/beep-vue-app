@@ -32,6 +32,7 @@
 
 <script>
 export default {
+  props: ['email'],
   methods: {
     async signIn() {
       try {
@@ -47,8 +48,8 @@ export default {
   data() {
     return {
       credentials: {
-        username: 'george@georgevanvliet.nl',
-        password: 'Perfect1!',
+        username: this.email || '',
+        password: '',
       },
     }
   },

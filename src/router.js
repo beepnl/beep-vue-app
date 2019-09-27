@@ -20,6 +20,7 @@ const router = new Router({
       path: '/sign-in',
       name: 'signIn',
       component: SignIn,
+      props: route => ({ email: route.query.email }),
     },
     {
       path: '/sign-out',
