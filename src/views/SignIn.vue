@@ -16,6 +16,10 @@
         <router-link :to="{ name: 'forgotPassword' }">
           I forgot my password
         </router-link>
+        <v-spacer></v-spacer>
+        <router-link :to="{ name: 'createAccount' }">
+          Create an account
+        </router-link>
       </v-card-text>
 
       <v-card-actions>

@@ -8,6 +8,8 @@ import Store from '@/store/store'
 import Dashboard from '@/views/Dashboard'
 import ForgotPassword from '@/views/ForgotPassword'
 import ResetPassword from '@/views/ResetPassword'
+import CreateAccount from '@/views/CreateAccount'
+import ConfirmSignUp from '@/views/ConfirmSignUp'
 
 Vue.use(Router)
 
@@ -38,6 +40,17 @@ const router = new Router({
       path: '/reset-password',
       name: 'resetPassword',
       component: ResetPassword,
+    },
+    {
+      path: '/create-account',
+      name: 'createAccount',
+      component: CreateAccount,
+    },
+    {
+      path: '/confirm-sign-up',
+      name: 'confirmSignUp',
+      component: ConfirmSignUp,
+      props: route => ({ email: route.query.email }),
     },
     {
       path: '/',

@@ -43,6 +43,14 @@ export default {
       await Auth.signOut()
       commit('clearUserAndSession')
     },
+    signUp: async ({ commit }, credentials) => {
+      await Auth.signUp(credentials)
+      commit('clearUserAndSession')
+    },
+    confirmSignup: async ({ commit }, signup) => {
+      await Auth.confirmSignUp(signup.username, signup.code)
+      commit('clearUserAndSession')
+    },
     forgotPassword: async ({ commit }, username) => {
       await Auth.forgotPassword(username)
       commit('clearUserAndSession')

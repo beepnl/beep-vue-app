@@ -1,7 +1,7 @@
 <template>
   <v-card>
-    <v-form @submit.prevent="resetPassword" ref="form" v-model="valid">
-      <v-card-title>Reset password</v-card-title>
+    <v-form @submit.prevent="createAccount" ref="form" v-model="valid">
+      <v-card-title>Create account</v-card-title>
       <v-card-text>
         <v-alert
           v-for="error in errors"
@@ -13,35 +13,27 @@
         </v-alert>
         <v-text-field
           label="email"
-          v-model="resetPasswordRequest.email"
+          v-model="credentials.username"
+          autocomplete="off"
           :rules="emailRules"
-          autocomplete="off"
         ></v-text-field>
         <v-text-field
-          label="verification code"
-          v-model="resetPasswordRequest.verificationCode"
-          :rules="verificationCodeRules"
-          autocomplete="off"
-        ></v-text-field>
-        <v-text-field
-          label="new password"
-          v-model="resetPasswordRequest.newPassword"
+          label="password"
+          type="password"
+          v-model="credentials.password"
           :rules="passwordRules"
-          autocomplete="off"
         ></v-text-field>
         <v-text-field
-          label="repeat new password"
-          v-model="newPasswordRepeated"
+          label="repeat password"
+          type="password"
+          v-model="repeatedPassword"
           :rules="repeatPasswordRules"
-          autocomplete="off"
         ></v-text-field>
       </v-card-text>
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn :disabled="!valid" text type="submit">
-          Reset password
-        </v-btn>
+        <v-btn text type="submit" :disabled="!valid">Create account</v-btn>
       </v-card-actions>
     </v-form>
   </v-card>
@@ -50,30 +42,26 @@
 <script>
 export default {
   methods: {
-    async resetPassword() {
+    async createAccount() {
       if (this.$refs.form.validate()) {
         this.clearErrors()
         try {
-          await this.$store.dispatch(
-            'user/forgotPasswordSubmit',
-            this.resetPasswordRequest
-          )
-          await this.$router.push({ name: 'signIn' })
+          await this.$store.dispatch('user/signUp', this.credentials)
+          await this.$router.push({
+            name: 'confirmSignUp',
+            query: { email: this.credentials.username },
+          })
         } catch (error) {
+          debugger
           switch (error.code) {
-            case 'UserNotFoundException':
+            case 'UsernameExistsException':
               this.errors.push({
-                type: 'error.user_not_found',
+                type: 'error.user_already_exists',
               })
               break
             case 'LimitExceededException':
               this.errors.push({
                 type: 'error.limit_exceeded_try_again_later',
-              })
-              break
-            case 'CodeMismatchException':
-              this.errors.push({
-                type: 'error.invalid_verification_code',
               })
               break
             default:
@@ -88,15 +76,16 @@ export default {
       this.errors = []
     },
   },
+  computed: {
+    hasErrors() {
+      return this.errors.length > 0
+    },
+  },
   data() {
     return {
-      resetPasswordRequest: {
-        email: '',
-        verificationCode: '',
-        newPassword: '',
-      },
-      newPasswordRepeated: '',
+      credentials: {},
       valid: false,
+      repeatedPassword: '',
       errors: [],
       emailRules: [
         v => !!v || 'error.email_required',
@@ -112,9 +101,7 @@ export default {
       ],
       repeatPasswordRules: [
         v => !!v || 'error.field_required',
-        v =>
-          v === this.resetPasswordRequest.newPassword ||
-          'error.passwords_do_not_match',
+        v => v === this.credentials.password || 'error.passwords_do_not_match',
       ],
     }
   },
