@@ -44,7 +44,7 @@ export default {
     async confirmSignup() {
       this.clearErrors()
       try {
-        await this.$store.dispatch('user/confirmSignup', {
+        await this.$store.dispatch('Auth/confirmSignup', {
           username: this.email,
           code: this.code,
         })

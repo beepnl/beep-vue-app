@@ -8,10 +8,9 @@ export default {
     this.signOut()
   },
   methods: {
-    signOut() {
-      this.$store.dispatch('user/signOut').then(() => {
-        this.$router.push({ name: 'signIn' })
-      })
+    async signOut() {
+      await this.$store.dispatch('Auth/signOut')
+      await this.$router.push({ name: 'signIn' })
     },
   },
 }

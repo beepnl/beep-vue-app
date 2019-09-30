@@ -23,7 +23,7 @@ export default {
   },
   computed: {
     userIsLoggedIn() {
-      return this.$store.getters['user/isLoggedIn']
+      return this.$store.state.Auth.currentUser !== null
     },
   },
 }

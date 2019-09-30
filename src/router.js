@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import SignUp from '@/views/SignUp'
 import NotFound from '@/views/NotFound'
 import SignIn from '@/views/SignIn'
 import SignOut from '@/views/SignOut'
@@ -28,11 +27,6 @@ const router = new Router({
       component: SignOut,
     },
     {
-      path: '/sign-up',
-      name: 'signUp',
-      component: SignUp,
-    },
-    {
       path: '/forgot-password',
       name: 'forgotPassword',
       component: ForgotPassword,
@@ -41,6 +35,7 @@ const router = new Router({
       path: '/reset-password',
       name: 'resetPassword',
       component: ResetPassword,
+      props: route => ({ email: route.query.email, code: route.query.code }),
     },
     {
       path: '/create-account',
@@ -74,7 +69,8 @@ const router = new Router({
 
 router.beforeEach(async (to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!Store.getters['user/isLoggedIn']) {
+    const user = await Store.dispatch('Auth/currentUser')
+    if (!user) {
       return next({ name: 'signIn', query: { redirect: to.fullPath } })
     }
     return next()

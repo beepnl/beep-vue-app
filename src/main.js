@@ -4,6 +4,7 @@ import router from './router'
 import store from './store/store'
 import vuetify from './plugins/vuetify'
 import Auth from '@aws-amplify/auth'
+import AsyncComputed from 'vue-async-computed'
 
 Auth.configure({
   userPoolId: process.env.VUE_APP_USER_POOL_ID,
@@ -12,6 +13,7 @@ Auth.configure({
 })
 
 Vue.use(Auth)
+Vue.use(AsyncComputed)
 
 Vue.config.productionTip = false
 

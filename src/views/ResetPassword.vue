@@ -16,6 +16,7 @@
           v-model="resetPasswordRequest.email"
           :rules="emailRules"
           autocomplete="off"
+          disabled
         ></v-text-field>
         <v-text-field
           label="verification code"
@@ -28,12 +29,14 @@
           v-model="resetPasswordRequest.newPassword"
           :rules="passwordRules"
           autocomplete="off"
+          type="password"
         ></v-text-field>
         <v-text-field
           label="repeat new password"
           v-model="newPasswordRepeated"
           :rules="repeatPasswordRules"
           autocomplete="off"
+          type="password"
         ></v-text-field>
       </v-card-text>
 
@@ -49,13 +52,14 @@
 
 <script>
 export default {
+  props: ['email', 'code'],
   methods: {
     async resetPassword() {
       if (this.$refs.form.validate()) {
         this.clearErrors()
         try {
           await this.$store.dispatch(
-            'user/forgotPasswordSubmit',
+            'Auth/forgotPasswordSubmit',
             this.resetPasswordRequest
           )
           await this.$router.push({ name: 'signIn' })
@@ -91,8 +95,8 @@ export default {
   data() {
     return {
       resetPasswordRequest: {
-        email: '',
-        verificationCode: '',
+        email: this.email,
+        verificationCode: this.code,
         newPassword: '',
       },
       newPasswordRepeated: '',
