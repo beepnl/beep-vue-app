@@ -12,3 +12,9 @@ COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 CMD ["vue", "ui", "--host",  "0.0.0.0", "--headless"]
+
+FROM node:12 as ui-builder
+
+COPY . /app
+WORKDIR /app
+RUN npm install && npm run build

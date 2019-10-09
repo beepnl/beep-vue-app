@@ -1,0 +1,23 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      docker: 18
+  pre_build:
+    commands:
+      - aws --version
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - docker build --target ui-builder -t beep-ui:$COMMIT_HASH .
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Extracting distribution...
+      - id=$(docker create beep-ui:$COMMIT_HASH)
+      - docker cp $id:/app/dist .
+artifacts:
+  files: 'dist/**/*'
