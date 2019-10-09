@@ -12,13 +12,13 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build --target ui-builder -t beep-ui:$COMMIT_HASH .
+      - docker build --target ui-builder -t beep-ui:$COMMIT_HASH -f  Dockerfile.builder .
   post_build:
     commands:
       - ls -lha
       - echo Build completed on `date`
       - echo Extracting distribution...
-      - id=$(docker create ui-builder:$COMMIT_HASH)
+      - id=$(docker create beep-ui:$COMMIT_HASH)
       - docker cp $id:/app/dist .
 artifacts:
   files: 'dist/**/*'
