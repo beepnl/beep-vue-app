@@ -2,7 +2,7 @@
   <v-app>
     <v-app-bar app>
       <v-toolbar-title class="headline text-uppercase">
-        Beep
+        Beep App
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn v-if="userIsLoggedIn" text @click="signOut">Sign out</v-btn>
@@ -18,6 +18,7 @@
 export default {
   methods: {
     signOut() {
+      console.log('test')
       this.$router.push({ name: 'signOut' })
     },
   },
