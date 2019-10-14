@@ -1,0 +1,14 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - aws --version
+  build:
+    commands:
+      - echo Deployment started on `date`
+      - ls
+
+  post_build:
+    commands:
+      - echo Deployment completed on `date`
