@@ -5,11 +5,15 @@ export default {
 
   state: {
     currentUser: null,
+    currentSession: null,
   },
 
   mutations: {
     setCurrentUser(state, user) {
       state.currentUser = user
+    },
+    setCurrentSession(state, session) {
+      state.currentSession = session
     },
   },
 
@@ -49,6 +53,16 @@ export default {
         return user
       } catch (error) {
         commit('setCurrentUser', null)
+        return null
+      }
+    },
+    currentSession: async ({ commit }) => {
+      try {
+        const session = await Auth.currentSession()
+        commit('setCurrentSession', session)
+        return session
+      } catch (error) {
+        commit('setCurrentSession', null)
         return null
       }
     },

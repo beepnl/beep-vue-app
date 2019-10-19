@@ -70,7 +70,8 @@ const router = new Router({
 router.beforeEach(async (to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     const user = await Store.dispatch('Auth/currentUser')
-    if (!user) {
+    const session = await Store.dispatch('Auth/currentSession')
+    if (!user || !session) {
       return next({ name: 'signIn', query: { redirect: to.fullPath } })
     }
     return next()

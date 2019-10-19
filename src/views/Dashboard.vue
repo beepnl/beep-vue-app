@@ -9,7 +9,7 @@
 export default {
   computed: {
     accessToken() {
-      return this.$store.state.Auth.currentUser.signInUserSession.accessToken
+      return this.$store.state.Auth.currentSession.accessToken.jwtToken
     },
   },
 }
