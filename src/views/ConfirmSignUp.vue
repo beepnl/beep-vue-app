@@ -31,7 +31,7 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn text type="submit">Send email</v-btn>
+        <v-btn text type="submit">Confirm</v-btn>
       </v-card-actions>
     </v-form>
   </v-card>
