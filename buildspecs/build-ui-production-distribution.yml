@@ -12,7 +12,7 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build --target ui-builder -t beep-ui:$COMMIT_HASH -f  Dockerfile.builder .
+      - docker build --target ui-builder -t beep-ui:$COMMIT_HASH -f prod.Dockerfile --build-arg VUE_APP_USER_POOL_ID --build-arg VUE_APP_CLIENT_ID --build-arg VUE_APP_REGION  .
   post_build:
     commands:
       - echo Build completed on `date`
