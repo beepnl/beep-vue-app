@@ -52,7 +52,6 @@ export default {
             query: { email: this.credentials.username },
           })
         } catch (error) {
-          debugger
           switch (error.code) {
             case 'UsernameExistsException':
               this.errors.push({
@@ -62,6 +61,11 @@ export default {
             case 'LimitExceededException':
               this.errors.push({
                 type: 'error.limit_exceeded_try_again_later',
+              })
+              break
+            case 'ResourceNotFoundException':
+              this.errors.push({
+                type: 'error.user_pool_client_not_found',
               })
               break
             default:
