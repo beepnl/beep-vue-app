@@ -16,6 +16,20 @@ export default {
       state.currentSession = session
     },
   },
+  getters: {
+    jwt: state =>
+      (state.currentSession &&
+        state.currentSession.accessToken &&
+        state.currentSession.accessToken.jwtToken) ||
+      '',
+    jwtData: (state, getters) =>
+      getters.jwt ? JSON.parse(atob(getters.jwt.split('.')[1])) : null,
+    jwtSubject: (state, getters) =>
+      getters.jwtData ? getters.jwtData.sub : null,
+    jwtIssuer: (state, getters) =>
+      getters.jwtData ? getters.jwtData.iss : null,
+    userIsLoggedIn: state => state.currentUser !== null,
+  },
 
   actions: {
     signIn: async ({ commit }, credentials) => {

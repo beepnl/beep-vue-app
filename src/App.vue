@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   methods: {
     signOut() {
@@ -23,9 +24,7 @@ export default {
     },
   },
   computed: {
-    userIsLoggedIn() {
-      return this.$store.state.Auth.currentUser !== null
-    },
+    ...mapGetters(['userIsLoggedIn']),
   },
 }
 </script>

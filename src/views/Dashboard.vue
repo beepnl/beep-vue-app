@@ -1,16 +1,16 @@
 <template>
   <v-card>
     Dashboard
-    {{ accessToken }}
+    {{ jwt }}
   </v-card>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   computed: {
-    accessToken() {
-      return this.$store.state.Auth.currentSession.accessToken.jwtToken
-    },
+    ...mapGetters({ jwt: 'Auth/jwt' }),
   },
 }
 </script>
