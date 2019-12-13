@@ -7,6 +7,27 @@ import auth from './auth'
 
 Vue.use(Router)
 
+// https://router.vuejs.org/guide/advanced/scroll-behavior.html
+const scrollBehavior = (to, from, savedPosition) => {
+  if (savedPosition) {
+    // savedPosition is only available for popstate navigations.
+    return savedPosition
+  } else if (to.hash) {
+    return {
+      selector: to.hash,
+      offset: {
+        x: 0,
+        y: 10,
+      },
+    }
+  } else {
+    return {
+      x: 0,
+      y: 0,
+    }
+  }
+}
+
 const router = new Router({
   mode: 'history',
   routes: [
@@ -16,6 +37,7 @@ const router = new Router({
       component: NotFound,
     },
   ],
+  scrollBehavior,
 })
 
 router.beforeEach(async (to, from, next) => {
