@@ -109,6 +109,7 @@ export default {
       verificationCodeRules: [v => !!v || 'error.verification_code_required'],
       passwordRules: [
         v => !!v || 'error.password_required',
+        // FIXME: don't impose and expose password requirements besides minimum length
         v =>
           /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.[\]{}()?\-"!@#%&/\\,><':;|_~`])(?=.{6,98})/.test(
             v
