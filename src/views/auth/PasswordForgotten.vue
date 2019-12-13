@@ -35,7 +35,7 @@ export default {
         this.clearErrors()
 
         try {
-          await this.$store.dispatch('Auth/forgotPassword', this.email)
+          await this.$store.dispatch('auth/forgotPassword', this.email)
           await this.$router.push({
             name: 'resetPassword',
             query: { email: this.email },

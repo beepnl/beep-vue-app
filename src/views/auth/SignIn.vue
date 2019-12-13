@@ -47,7 +47,7 @@ export default {
     async signIn() {
       this.clearErrors()
       try {
-        await this.$store.dispatch('Auth/signIn', this.credentials)
+        await this.$store.dispatch('auth/signIn', this.credentials)
         await this.$router.push({ name: 'dashboard' })
         this.clearCredentials()
       } catch (error) {

@@ -59,7 +59,7 @@ export default {
         this.clearErrors()
         try {
           await this.$store.dispatch(
-            'Auth/forgotPasswordSubmit',
+            'auth/forgotPasswordSubmit',
             this.resetPasswordRequest
           )
           await this.$router.push({ name: 'signIn' })

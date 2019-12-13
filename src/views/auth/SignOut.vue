@@ -9,7 +9,7 @@ export default {
   },
   methods: {
     async signOut() {
-      await this.$store.dispatch('Auth/signOut')
+      await this.$store.dispatch('auth/signOut')
       await this.$router.push({ name: 'signIn' })
     },
   },

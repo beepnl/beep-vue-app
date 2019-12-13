@@ -1,13 +1,14 @@
-let SignIn = () => import(/* webpackChunkName: Auth */ '@/views/auth/SignIn')
-let SignOut = () => import(/* webpackChunkName: Auth */ '@/views/auth/SignOut')
-let ForgotPassword = () =>
-  import(/* webpackChunkName: Password */ '@/views/auth/ForgotPassword')
-let ResetPassword = () =>
-  import(/* webpackChunkName: Password */ '@/views/auth/ResetPassword')
-let CreateAccount = () =>
-  import(/* webpackChunkName: Signup */ '@/views/auth/CreateAccount')
-let ConfirmSignUp = () =>
-  import(/* webpackChunkName: Signup */ '@/views/auth/ConfirmSignUp')
+let SignIn = () => import(/* webpackChunkName: "Auth" */ '@/views/auth/SignIn')
+let SignOut = () =>
+  import(/* webpackChunkName: "Auth" */ '@/views/auth/SignOut')
+let PasswordForgotten = () =>
+  import(/* webpackChunkName: "Password" */ '@/views/auth/PasswordForgotten')
+let PasswordReset = () =>
+  import(/* webpackChunkName: "Password" */ '@/views/auth/PasswordReset')
+let SignUp = () =>
+  import(/* webpackChunkName: "Signup" */ '@/views/auth/SignUp')
+let SignUpConfirmation = () =>
+  import(/* webpackChunkName: "Signup" */ '@/views/auth/SignUpConfirmation')
 
 export default [
   {
@@ -24,28 +25,28 @@ export default [
     component: SignOut,
   },
   {
-    path: '/forgot-password',
-    name: 'forgotPassword',
-    component: ForgotPassword,
+    path: '/password-forgotten',
+    name: 'passwordForgotten',
+    component: PasswordForgotten,
   },
   {
-    path: '/reset-password',
-    name: 'resetPassword',
-    component: ResetPassword,
+    path: '/password-reset',
+    name: 'passwordReset',
+    component: PasswordReset,
     props: route => ({
       email: route.query.email,
       code: route.query.code,
     }),
   },
   {
-    path: '/create-account',
-    name: 'createAccount',
-    component: CreateAccount,
+    path: '/sign-up',
+    name: 'signUp',
+    component: SignUp,
   },
   {
-    path: '/confirm-sign-up',
-    name: 'confirmSignUp',
-    component: ConfirmSignUp,
+    path: '/sign-up-confirm',
+    name: 'signUpConfirmation',
+    component: SignUpConfirmation,
     props: route => ({
       email: route.query.email,
     }),

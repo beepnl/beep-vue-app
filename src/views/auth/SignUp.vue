@@ -46,7 +46,7 @@ export default {
       if (this.$refs.form.validate()) {
         this.clearErrors()
         try {
-          await this.$store.dispatch('Auth/signUp', this.credentials)
+          await this.$store.dispatch('auth/signUp', this.credentials)
           await this.$router.push({
             name: 'confirmSignUp',
             query: { email: this.credentials.username },
