@@ -19,12 +19,15 @@ import { mapGetters } from 'vuex'
 export default {
   methods: {
     signOut() {
-      console.log('test')
+      console.log('signOut')
       this.$router.push({ name: 'signOut' })
     },
   },
   computed: {
-    ...mapGetters(['userIsLoggedIn']),
+    ...mapGetters({
+      userIsLoggedIn: 'auth/userIsLoggedIn',
+      jwt: 'auth/jwt',
+    }),
   },
 }
 </script>
