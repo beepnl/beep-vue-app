@@ -1,35 +1,7 @@
 <template>
   <v-app>
-    <v-app-bar app>
-      <v-toolbar-title class="headline text-uppercase">
-        Beep App
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn v-if="userIsLoggedIn" text @click="signOut">Sign out</v-btn>
-    </v-app-bar>
-
-    <v-content>
-      <router-view />
-    </v-content>
+    <router-view />
   </v-app>
 </template>
 
-<script>
-import { mapGetters } from 'vuex'
-export default {
-  methods: {
-    signOut() {
-      console.log('signOut')
-      this.$router.push({ name: 'signOut' })
-    },
-  },
-  computed: {
-    ...mapGetters({
-      userIsLoggedIn: 'auth/userIsLoggedIn',
-      jwt: 'auth/jwt',
-    }),
-  },
-}
-</script>
-
-<style lang="scss"></style>
+<script></script>

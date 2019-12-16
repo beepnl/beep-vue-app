@@ -2,8 +2,10 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import store from '@/store'
 
-let NotFound = () => import('@/views/NotFound')
 import auth from './auth'
+import settings from './settings'
+import tabs from './tabs'
+import account from './account'
 
 Vue.use(Router)
 
@@ -31,11 +33,20 @@ const scrollBehavior = (to, from, savedPosition) => {
 const router = new Router({
   mode: 'history',
   routes: [
-    ...auth,
+    {
+      path: '/',
+      name: 'home',
+      component: require('@/pages/Dashboard').default,
+      children: [...tabs],
+    },
     {
       path: '*',
-      component: NotFound,
+      name: 'notfound',
+      component: require('@/pages/NotFound').default,
     },
+    ...auth,
+    ...settings,
+    ...account,
   ],
   scrollBehavior,
 })

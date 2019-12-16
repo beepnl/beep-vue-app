@@ -48,7 +48,7 @@ export default {
       this.clearErrors()
       try {
         await this.$store.dispatch('auth/signIn', this.credentials)
-        await this.$router.push({ name: 'dashboard' })
+        await this.$router.push({ name: 'home' })
         this.clearCredentials()
       } catch (error) {
         switch (error.code) {

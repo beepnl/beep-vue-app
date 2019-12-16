@@ -6,6 +6,9 @@ import vuetify from './plugins/vuetify'
 import Auth from '@aws-amplify/auth'
 import AsyncComputed from 'vue-async-computed'
 
+import BackBar from '@/components/header/BackBar'
+Vue.component('BackBar', BackBar)
+
 Auth.configure({
   userPoolId: process.env.VUE_APP_USER_POOL_ID,
   userPoolWebClientId: process.env.VUE_APP_CLIENT_ID,

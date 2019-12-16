@@ -1,20 +1,9 @@
-let SignIn = () => import(/* webpackChunkName: "Auth" */ '@/views/auth/SignIn')
-let SignOut = () =>
-  import(/* webpackChunkName: "Auth" */ '@/views/auth/SignOut')
-let PasswordForgotten = () =>
-  import(/* webpackChunkName: "Password" */ '@/views/auth/PasswordForgotten')
-let PasswordReset = () =>
-  import(/* webpackChunkName: "Password" */ '@/views/auth/PasswordReset')
-let SignUp = () =>
-  import(/* webpackChunkName: "Signup" */ '@/views/auth/SignUp')
-let SignUpConfirmation = () =>
-  import(/* webpackChunkName: "Signup" */ '@/views/auth/SignUpConfirmation')
-
 export default [
   {
     path: '/sign-in',
     name: 'signIn',
-    component: SignIn,
+    component: () =>
+      import(/* webpackChunkName: "Auth" */ '@/pages/auth/SignIn'),
     props: route => ({
       email: route.query.email,
     }),
@@ -22,17 +11,23 @@ export default [
   {
     path: '/sign-out',
     name: 'signOut',
-    component: SignOut,
+    component: () =>
+      import(/* webpackChunkName: "Auth" */ '@/pages/auth/SignOut'),
   },
   {
     path: '/password-forgotten',
     name: 'passwordForgotten',
-    component: PasswordForgotten,
+    component: () =>
+      import(
+        /* webpackChunkName: "Password" */
+        '@/pages/auth/PasswordForgotten'
+      ),
   },
   {
     path: '/password-reset',
     name: 'passwordReset',
-    component: PasswordReset,
+    component: () =>
+      import(/* webpackChunkName: "Password" */ '@/pages/auth/PasswordReset'),
     props: route => ({
       email: route.query.email,
       code: route.query.code,
@@ -41,12 +36,17 @@ export default [
   {
     path: '/sign-up',
     name: 'signUp',
-    component: SignUp,
+    component: () =>
+      import(/* webpackChunkName: "Signup" */ '@/pages/auth/SignUp'),
   },
   {
     path: '/sign-up-confirm',
     name: 'signUpConfirmation',
-    component: SignUpConfirmation,
+    component: () =>
+      import(
+        /* webpackChunkName: "Signup" */
+        '@/pages/auth/SignUpConfirmation'
+      ),
     props: route => ({
       email: route.query.email,
     }),
