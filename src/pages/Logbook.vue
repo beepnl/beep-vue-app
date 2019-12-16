@@ -4,38 +4,53 @@
       <v-treeview
         v-model="selection"
         :items="items"
+        :search="search"
+        :filter="filter"
+        :open.sync="open"
         selectable
-        selected-color="primary"
         return-object
-        open-all
-      ></v-treeview>
+        activatable
+        shaped
+        selected-color="primary"
+      >
+        <template v-slot:append="{ item }">
+          {{ item.category_input_id }}
+        </template>
+      </v-treeview>
     </v-container>
   </v-card>
 </template>
 
 <script>
+import jsondata from '@/database/taxonomy.json'
+import flat2nested from 'flat-to-nested'
 export default {
+  mounted() {
+    const f2n = new flat2nested({
+      id: 'id',
+      parent: 'parent_id',
+      children: 'children',
+    })
+    this.nested = f2n.convert(jsondata.items)
+    console.log(this.nested)
+  },
   data: () => ({
     selection: [],
-    items: [
-      {
-        id: 1,
-        name: 'Root',
-        children: [
-          { id: 2, name: 'Child #1' },
-          { id: 3, name: 'Child #2' },
-          {
-            id: 4,
-            name: 'Child #3',
-            children: [
-              { id: 5, name: 'Grandchild #1' },
-              { id: 6, name: 'Grandchild #2' },
-            ],
-          },
-        ],
-      },
-    ],
+    nested: [],
+    open: [1, 2],
+    search: null,
+    caseSensitive: false,
   }),
+  computed: {
+    items() {
+      return this.nested.children
+    },
+    filter() {
+      return this.caseSensitive
+        ? (item, search, textKey) => item[textKey].indexOf(search) > -1
+        : undefined
+    },
+  },
   watch: {
     selection: function(cur) {
       console.log(JSON.stringify(cur))
