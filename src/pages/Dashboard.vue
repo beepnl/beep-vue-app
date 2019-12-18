@@ -30,27 +30,36 @@
       <AppMenu></AppMenu>
 
       <template v-slot:extension>
-        <TabBar :tabs="tabs"></TabBar>
+        <v-tabs v-model="activeTab" grow dark background-color="transparent">
+          <v-tab v-for="(tab, i) in tabs" :key="i" :to="tab.route">
+            <span v-if="tab.title">{{ tab.title }}</span>
+            <v-icon v-if="tab.icon">{{ tab.icon }}</v-icon>
+          </v-tab>
+        </v-tabs>
       </template>
     </v-app-bar>
+
     <v-content>
-      <router-view />
+      <v-tabs-items v-model="activeTab" @change="updateRoute">
+        <v-tab-item v-for="(tab, i) in tabs" :key="i" :value="tab.route">
+          <router-view v-if="tab.route === $route.name" />
+        </v-tab-item>
+      </v-tabs-items>
     </v-content>
   </div>
 </template>
 
 <script>
 import AppMenu from '@/components/header/AppMenu'
-import TabBar from '@/components/header/TabBar'
 
 export default {
   components: {
     AppMenu,
-    TabBar,
   },
 
   data: () => ({
     loading: false,
+    activeTab: null,
     tabs: [
       {
         title: 'Apiaries',
@@ -64,6 +73,9 @@ export default {
     searchShown: false,
   }),
   methods: {
+    updateRoute(val) {
+      this.$router.push(val) // respond to tab swipes
+    },
     showSearch() {
       this.searchShown = !this.searchShown
     },
