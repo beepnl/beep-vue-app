@@ -1,61 +1,86 @@
 <template>
-  <v-card>
-    <v-container fluid>
-      <v-treeview
-        v-model="selection"
-        :items="items"
-        :search="search"
-        :filter="filter"
-        :open.sync="open"
-        selectable
-        return-object
-        activatable
-        shaped
-        selected-color="primary"
-      >
-        <template v-slot:append="{ item }">
-          {{ item.category_input_id }}
-        </template>
-      </v-treeview>
+  <div>
+    <v-list two-line subheader>
+      <v-subheader>Interventions</v-subheader>
+
+      <v-list-item v-for="item in interventions" :key="item.title" @click="">
+        <v-list-item-avatar>
+          <v-icon :class="[item.iconClass]" v-text="item.icon"></v-icon>
+        </v-list-item-avatar>
+
+        <v-list-item-content>
+          <v-list-item-title v-text="item.title"></v-list-item-title>
+          <v-list-item-subtitle v-text="item.subtitle"></v-list-item-subtitle>
+        </v-list-item-content>
+
+        <v-list-item-action>
+          <v-btn icon @click="">
+            <v-icon color="grey lighten-1">mdi-information</v-icon>
+          </v-btn>
+        </v-list-item-action>
+      </v-list-item>
+
+      <v-divider></v-divider>
+
+      <v-subheader>Checklists</v-subheader>
+
+      <v-list-item v-for="item in checklists" :key="item.title" @click="">
+        <v-list-item-avatar>
+          <v-icon :class="[item.iconClass]" v-text="item.icon"></v-icon>
+        </v-list-item-avatar>
+
+        <v-list-item-content>
+          <v-list-item-title v-text="item.title"></v-list-item-title>
+          <v-list-item-subtitle v-text="item.subtitle"></v-list-item-subtitle>
+        </v-list-item-content>
+
+        <v-list-item-action>
+          <v-btn icon>
+            <v-icon color="grey lighten-1">mdi-information</v-icon>
+          </v-btn>
+        </v-list-item-action>
+      </v-list-item>
+    </v-list>
+    <v-container>
+      <v-row>
+        <v-col></v-col>
+        <v-col>
+          <ComposeChecklist></ComposeChecklist>
+        </v-col>
+      </v-row>
     </v-container>
-  </v-card>
+  </div>
 </template>
 
 <script>
-import jsondata from '@/database/taxonomy.json'
-import flat2nested from 'flat-to-nested'
+import ComposeChecklist from '@/components/ComposeChecklist'
 export default {
-  mounted() {
-    const f2n = new flat2nested({
-      id: 'id',
-      parent: 'parent_id',
-      children: 'children',
-    })
-    this.nested = f2n.convert(jsondata.items)
-    console.log(this.nested)
+  components: {
+    ComposeChecklist,
   },
   data: () => ({
-    selection: [],
-    nested: [],
-    open: [1, 2],
-    search: null,
-    caseSensitive: false,
+    interventions: [
+      {
+        title: 'Winter',
+        created: '2019-12-17',
+        subtitle: 'feeding',
+        open: [],
+        selection: [],
+        icon: 'mdi-beehive-outline',
+      },
+    ],
+    checklists: [
+      {
+        title: 'Spring',
+        created: '2019-05-17',
+        subtitle: 'colony check',
+        open: [],
+        selection: [],
+        icon: 'mdi-beehive-outline',
+      },
+    ],
   }),
-  computed: {
-    items() {
-      return this.nested.children
-    },
-    filter() {
-      return this.caseSensitive
-        ? (item, search, textKey) => item[textKey].indexOf(search) > -1
-        : undefined
-    },
-  },
-  watch: {
-    selection: function(cur) {
-      console.log(JSON.stringify(cur))
-    },
-  },
+  computed: {},
 }
 </script>
 
