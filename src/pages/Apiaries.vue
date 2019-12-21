@@ -1,60 +1,68 @@
 <template>
-  <v-list nav>
-    <v-list-item v-for="(item, i) in apiaries" :key="i">
-      <v-list-item-avatar class="rounded">
-        <v-img
-          v-if="item.photo"
-          :src="`https://picsum.photos/500/300?image=${i * 5 + 10}`"
-          :lazy-src="`https://picsum.photos/10/6?image=${i * 5 + 10}`"
-        >
-          <template v-slot:placeholder>
-            <v-row class="fill-height ma-0" align="center" justify="center">
-              <v-progress-circular
-                indeterminate
-                color="grey lighten-5"
-              ></v-progress-circular>
-            </v-row>
-          </template>
-        </v-img>
-        <v-sheet v-else width="100%" height="100%" class="rounded secondary">
-          <h1 class="white--text">{{ item.title | firstletter }}</h1>
-        </v-sheet>
-
-        <template name="notifications">
-          <v-sheet class="absolute">
-            <slot name="warning">
-              <v-icon class="notification --warning" v-if="item.warning">
-                mdi-alert-circle
-              </v-icon>
-            </slot>
-            <slot name="shared">
-              <v-icon class="notification --shared" v-if="item.shared">
-                mdi-account-multiple
-              </v-icon>
-            </slot>
-          </v-sheet>
-        </template>
-      </v-list-item-avatar>
-      <v-container class="pa-0">
-        <v-list-item-title>
-          {{ item.title }}
-        </v-list-item-title>
-        <div class="d-flex align-end pa-0 apiary-line">
-          <v-sheet
-            v-for="(hive, j) in item.hives"
-            class="apiary-icon d-flex justify-center align-end white--text text--small mr-1"
-            :key="j"
-            :height="`${getHeight(hive)}%`"
-            :width="`${getWidth(hive)}%`"
-            :color="hive.color"
+  <v-list two-line>
+    <v-list-item-group v-model="apiary">
+      <v-list-item v-for="(item, i) in apiaries" :key="i" @click="showApiary">
+        <v-list-item-avatar class="rounded">
+          <v-img
+            v-if="item.photo"
+            :src="`https://picsum.photos/500/300?image=${i * 5 + 10}`"
+            :lazy-src="`https://picsum.photos/10/6?image=${i * 5 + 10}`"
           >
-            <span class="caption">
-              {{ j + 1 }}
-            </span>
+            <template v-slot:placeholder>
+              <v-row class="fill-height ma-0" align="center" justify="center">
+                <v-progress-circular
+                  indeterminate
+                  color="grey lighten-5"
+                ></v-progress-circular>
+              </v-row>
+            </template>
+          </v-img>
+          <v-sheet v-else width="100%" height="100%" class="rounded secondary">
+            <h1 class="white--text">{{ item.title | firstletter }}</h1>
           </v-sheet>
-        </div>
-      </v-container>
-    </v-list-item>
+
+          <template name="notifications">
+            <v-sheet class="absolute">
+              <slot name="warning">
+                <v-icon class="notification --warning" v-if="item.warning">
+                  mdi-alert-circle
+                </v-icon>
+              </slot>
+              <slot name="shared">
+                <v-icon class="notification --shared" v-if="item.shared">
+                  mdi-account-multiple
+                </v-icon>
+              </slot>
+            </v-sheet>
+          </template>
+        </v-list-item-avatar>
+        <v-container class="pa-0">
+          <v-list-item-title>
+            {{ item.title }}
+          </v-list-item-title>
+          <v-list-item-subtitle class="d-flex align-end pa-0 apiary-line">
+            <v-sheet
+              v-for="(hive, j) in item.hives"
+              class="apiary-icon d-flex justify-center align-end white--text text--small mr-1"
+              :key="j"
+              :height="`${getHeight(hive)}%`"
+              :width="`${getWidth(hive)}%`"
+              :color="hive.color"
+            >
+              <v-sheet
+                class="honey-layer"
+                tile
+                width="100%"
+                :height="`${(hive.honey / (hive.brood + hive.honey)) * 100}%`"
+              ></v-sheet>
+              <span class="hive-number overline font-weight-black">
+                {{ j + 1 }}
+              </span>
+            </v-sheet>
+          </v-list-item-subtitle>
+        </v-container>
+      </v-list-item>
+    </v-list-item-group>
   </v-list>
 </template>
 
@@ -62,6 +70,7 @@
 export default {
   data: () => ({
     settings: [],
+    apiary: null,
     apiaries: [
       {
         title: 'Backyard',
@@ -93,8 +102,12 @@ export default {
       {
         title: 'Mountain',
         hives: [
-          { honey: 2, brood: 2, frames: 25, color: 'orange' },
+          { honey: 2, brood: 2, frames: 10, color: 'orange' },
           { honey: 1, brood: 3, frames: 15, color: 'yellow' },
+          { honey: 2, brood: 2, frames: 15, color: 'yellow' },
+          { honey: 5, brood: 3, frames: 10, color: 'red' },
+          { honey: 2, brood: 2, frames: 15, color: 'deep-purple' },
+          { honey: 5, brood: 3, frames: 10, color: 'red' },
         ],
         shared: true,
       },
@@ -102,11 +115,18 @@ export default {
   }),
   computed: {
     maxHeight() {
-      // - reduce apiaries to max height of hives
-      // - math.max(apiaries)
+      // returns the highest hive across all apiaries
       return Math.max(
         ...this.apiaries.map(apiary =>
           Math.max(...apiary.hives.map(hive => hive.honey + hive.brood))
+        )
+      )
+    },
+    maxWidth() {
+      // returns the widest apiary (most total frames)
+      return Math.max(
+        ...this.apiaries.map(apiary =>
+          apiary.hives.reduce((frames, hive) => frames + hive.frames, 0)
         )
       )
     },
@@ -116,7 +136,11 @@ export default {
       return ((hive.honey + hive.brood) / this.maxHeight) * 100
     },
     getWidth: function(hive) {
-      return hive.frames
+      return (hive.frames / this.maxWidth) * 100
+    },
+    showApiary: function() {
+      console.log(this.apiary)
+      //this.$router.push('/apiary/:' + this.apiary)
     },
   },
   filters: {
@@ -154,5 +178,18 @@ export default {
 .apiary-line {
   height: 30px;
   border-bottom: 1px solid green;
+  .apiary-icon {
+    position: relative;
+    .honey-layer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+  }
+  .hive-number {
+    z-index: 1;
+  }
 }
 </style>
