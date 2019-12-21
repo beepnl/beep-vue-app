@@ -1,8 +1,9 @@
 <template>
-  <v-list two-line>
+  <v-list nav>
     <v-list-item v-for="(item, i) in apiaries" :key="i">
-      <v-list-item-avatar :style="{ 'border-radius': '5px' }">
+      <v-list-item-avatar class="rounded">
         <v-img
+          v-if="item.photo"
           :src="`https://picsum.photos/500/300?image=${i * 5 + 10}`"
           :lazy-src="`https://picsum.photos/10/6?image=${i * 5 + 10}`"
         >
@@ -15,6 +16,9 @@
             </v-row>
           </template>
         </v-img>
+        <v-sheet v-else width="100%" height="100%" class="rounded secondary">
+          <h1 class="white--text">{{ item.title | firstletter }}</h1>
+        </v-sheet>
 
         <template name="notifications">
           <v-sheet class="absolute">
@@ -31,14 +35,25 @@
           </v-sheet>
         </template>
       </v-list-item-avatar>
-      <v-list-item-content>
-        <v-list-item-title>{{ item.title }}</v-list-item-title>
-        <v-list-item-subtitle>{{ item.hives }}</v-list-item-subtitle>
-      </v-list-item-content>
-
-      <v-list-item-icon>
-        <v-icon>mdi-message-text</v-icon>
-      </v-list-item-icon>
+      <v-container class="pa-0">
+        <v-list-item-title>
+          {{ item.title }}
+        </v-list-item-title>
+        <div class="d-flex align-end pa-0 apiary-line">
+          <v-sheet
+            v-for="(hive, j) in item.hives"
+            class="apiary-icon d-flex justify-center align-end white--text text--small mr-1"
+            :key="j"
+            :height="`${getHeight(hive)}%`"
+            :width="`${getWidth(hive)}%`"
+            :color="hive.color"
+          >
+            <span class="caption">
+              {{ j + 1 }}
+            </span>
+          </v-sheet>
+        </div>
+      </v-container>
     </v-list-item>
   </v-list>
 </template>
@@ -48,13 +63,69 @@ export default {
   data: () => ({
     settings: [],
     apiaries: [
-      { title: 'Backyard', hives: 9, warning: true },
-      { title: 'Garden', hives: 5 },
-      { title: 'Mountain', hives: 6, shared: true },
-      { title: 'Lakeside', hives: 1, warning: true, shared: true },
+      {
+        title: 'Backyard',
+        hives: [
+          { honey: 4, brood: 2, frames: 10, color: 'red' },
+          { honey: 1, brood: 3, frames: 15, color: 'purple' },
+        ],
+        photo: true,
+        warning: true,
+      },
+      {
+        title: 'Garden',
+        hives: [
+          { honey: 2, brood: 2, frames: 5, color: 'green' },
+          { honey: 1, brood: 5, frames: 15, color: 'brown' },
+        ],
+        photo: true,
+      },
+      {
+        title: 'Lakeside',
+        hives: [
+          { honey: 2, brood: 2, frames: 10, color: 'cyan' },
+          { honey: 1, brood: 3, frames: 15, color: 'blue' },
+        ],
+        photo: true,
+        warning: true,
+        shared: true,
+      },
+      {
+        title: 'Mountain',
+        hives: [
+          { honey: 2, brood: 2, frames: 25, color: 'orange' },
+          { honey: 1, brood: 3, frames: 15, color: 'yellow' },
+        ],
+        shared: true,
+      },
     ],
   }),
-  methods: {},
+  computed: {
+    maxHeight() {
+      // - reduce apiaries to max height of hives
+      // - math.max(apiaries)
+      return Math.max(
+        ...this.apiaries.map(apiary =>
+          Math.max(...apiary.hives.map(hive => hive.honey + hive.brood))
+        )
+      )
+    },
+  },
+  methods: {
+    getHeight: function(hive) {
+      return ((hive.honey + hive.brood) / this.maxHeight) * 100
+    },
+    getWidth: function(hive) {
+      return hive.frames
+    },
+  },
+  filters: {
+    firstletter: function(value) {
+      if (!value) return '?'
+      value = value.toString()
+      return value.charAt(0).toUpperCase()
+    },
+  },
 }
 </script>
 
@@ -64,17 +135,24 @@ export default {
   top: -10px;
   border-radius: 100%;
 }
+.rounded {
+  border-radius: 5px;
+}
 .notification {
   position: absolute;
   background: white;
   padding: 2px;
+  &.--warning {
+    right: 4px;
+    color: red;
+  }
+  &.--shared {
+    left: 4px;
+    color: gray;
+  }
 }
-.--warning {
-  right: 4px;
-  color: red;
-}
-.--shared {
-  left: 4px;
-  color: gray;
+.apiary-line {
+  height: 30px;
+  border-bottom: 1px solid green;
 }
 </style>
