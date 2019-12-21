@@ -2,9 +2,6 @@
   <v-list two-line>
     <v-list-item v-for="(item, i) in apiaries" :key="i">
       <v-list-item-avatar :style="{ 'border-radius': '5px' }">
-        <v-icon small color="error">
-          mdi-alert-circle
-        </v-icon>
         <v-img
           :src="`https://picsum.photos/500/300?image=${i * 5 + 10}`"
           :lazy-src="`https://picsum.photos/10/6?image=${i * 5 + 10}`"
@@ -18,8 +15,22 @@
             </v-row>
           </template>
         </v-img>
-      </v-list-item-avatar>
 
+        <template name="notifications">
+          <v-sheet class="absolute">
+            <slot name="warning">
+              <v-icon class="notification --warning" v-if="item.warning">
+                mdi-alert-circle
+              </v-icon>
+            </slot>
+            <slot name="shared">
+              <v-icon class="notification --shared" v-if="item.shared">
+                mdi-account-multiple
+              </v-icon>
+            </slot>
+          </v-sheet>
+        </template>
+      </v-list-item-avatar>
       <v-list-item-content>
         <v-list-item-title>{{ item.title }}</v-list-item-title>
         <v-list-item-subtitle>{{ item.hives }}</v-list-item-subtitle>
@@ -37,14 +48,33 @@ export default {
   data: () => ({
     settings: [],
     apiaries: [
-      { title: 'Backyard', hives: 9 },
+      { title: 'Backyard', hives: 9, warning: true },
       { title: 'Garden', hives: 5 },
-      { title: 'Mountain', hives: 6 },
-      { title: 'Lakeside', hives: 1 },
+      { title: 'Mountain', hives: 6, shared: true },
+      { title: 'Lakeside', hives: 1, warning: true, shared: true },
     ],
   }),
   methods: {},
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.absolute {
+  position: absolute;
+  top: -10px;
+  border-radius: 100%;
+}
+.notification {
+  position: absolute;
+  background: white;
+  padding: 2px;
+}
+.--warning {
+  right: 4px;
+  color: red;
+}
+.--shared {
+  left: 4px;
+  color: gray;
+}
+</style>
