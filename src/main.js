@@ -5,6 +5,8 @@ import store from './store'
 import vuetify from './plugins/vuetify'
 import Auth from '@aws-amplify/auth'
 import AsyncComputed from 'vue-async-computed'
+import VueChartist from 'vue-chartist'
+import './../node_modules/chartist/dist/chartist.min.css'
 
 import BackBar from '@/components/header/BackBar'
 Vue.component('BackBar', BackBar)
@@ -17,6 +19,7 @@ Auth.configure({
 
 Vue.use(Auth)
 Vue.use(AsyncComputed)
+Vue.use(VueChartist)
 
 Vue.config.productionTip = false
 
