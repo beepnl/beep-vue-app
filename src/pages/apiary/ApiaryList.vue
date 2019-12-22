@@ -1,7 +1,14 @@
 <template>
   <v-list two-line>
     <v-list-item-group v-model="apiary">
-      <v-list-item v-for="(item, i) in apiaries" :key="i" @click="showApiary">
+      <v-list-item
+        v-for="(item, i) in apiaries"
+        :key="i"
+        :to="{
+          name: `apiary`,
+          params: { id: item.title, apiary: { ...item, idx: i } },
+        }"
+      >
         <v-list-item-avatar class="rounded">
           <v-img
             v-if="item.photo"

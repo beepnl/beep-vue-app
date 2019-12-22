@@ -32,12 +32,21 @@ const scrollBehavior = (to, from, savedPosition) => {
 
 const router = new Router({
   mode: 'history',
-  routes: [
-    {
+  routes: [{
       path: '/',
       name: 'home',
       component: require('@/pages/Dashboard').default,
       children: [...tabs],
+    },
+    {
+      path: '/apiaries/:id',
+      props: true,
+      name: 'apiary',
+      component: () =>
+        import(
+          /* webpackChunkName: "Apiaries" */
+          '@/pages/apiary/ApiaryDetails'
+        ),
     },
     {
       path: '*',
