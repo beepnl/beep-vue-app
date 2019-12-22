@@ -1,6 +1,6 @@
 <template>
   <v-list two-line>
-    <v-list-item-group v-model="apiary">
+    <v-list-item-group>
       <v-list-item
         v-for="(item, i) in apiaries"
         :key="i"
@@ -74,51 +74,10 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   data: () => ({
     settings: [],
-    apiary: null,
-    apiaries: [
-      {
-        title: 'Backyard',
-        hives: [
-          { honey: 4, brood: 2, frames: 10, color: 'red' },
-          { honey: 1, brood: 3, frames: 15, color: 'purple' },
-        ],
-        photo: true,
-        warning: true,
-      },
-      {
-        title: 'Garden',
-        hives: [
-          { honey: 2, brood: 2, frames: 5, color: 'green' },
-          { honey: 1, brood: 5, frames: 15, color: 'brown' },
-        ],
-        photo: true,
-      },
-      {
-        title: 'Lakeside',
-        hives: [
-          { honey: 2, brood: 2, frames: 10, color: 'cyan' },
-          { honey: 1, brood: 3, frames: 15, color: 'blue' },
-        ],
-        photo: true,
-        warning: true,
-        shared: true,
-      },
-      {
-        title: 'Mountain',
-        hives: [
-          { honey: 2, brood: 2, frames: 10, color: 'orange' },
-          { honey: 1, brood: 3, frames: 15, color: 'yellow' },
-          { honey: 2, brood: 2, frames: 15, color: 'yellow' },
-          { honey: 5, brood: 3, frames: 10, color: 'red' },
-          { honey: 2, brood: 2, frames: 15, color: 'deep-purple' },
-          { honey: 5, brood: 3, frames: 10, color: 'red' },
-        ],
-        shared: true,
-      },
-    ],
   }),
   computed: {
     maxHeight() {
@@ -137,6 +96,9 @@ export default {
         )
       )
     },
+    ...mapState('apiary', {
+      apiaries: state => state.apiaries,
+    }),
   },
   methods: {
     getHeight: function(hive) {
