@@ -1,14 +1,14 @@
 <template>
   <div>
-    <BackBar :title="`${apiary.title} Apiary`"></BackBar>
+    <BackBar title="Apiary overview"></BackBar>
     <v-content>
       <v-card>
         <v-img
           class="white--text align-end"
-          height="50px"
+          height="150px"
           gradient="to bottom, rgba(255,255,255,.5), rgba(255,255,255,.9), rgba(255,255,255,.95)"
-          :src="`https://picsum.photos/500/300?image=${apiary.idx * 5 + 10}`"
-          :lazy-src="`https://picsum.photos/10/6?image=${apiary.idx * 5 + 10}`"
+          :src="`https://picsum.photos/500/300?image=${apiary.id * 5 + 10}`"
+          :lazy-src="`https://picsum.photos/10/6?image=${apiary.id * 5 + 10}`"
         >
           <template v-slot:placeholder>
             <v-row class="fill-height ma-0" align="center" justify="center">
@@ -18,34 +18,81 @@
               ></v-progress-circular>
             </v-row>
           </template>
-          <draggable class="d-flex align-end apiary-line">
-            <v-sheet
-              v-for="(hive, j) in apiary.hives"
-              class="apiary-icon d-flex justify-center align-end white--text text--small mr-1"
-              :key="j"
-              :height="`${getHeight(hive)}%`"
-              :width="`${getWidth(hive)}%`"
-              :color="hive.color"
-            >
-              <v-sheet
-                class="honey-layer"
-                tile
-                width="100%"
-                :height="`${(hive.honey / (hive.brood + hive.honey)) * 100}%`"
-              ></v-sheet>
-              <span class="hive-number overline font-weight-black">
-                {{ j + 1 }}
-              </span>
-            </v-sheet>
-          </draggable>
+          <v-container>
+            <v-row justify="start" align="start" align-content="start">
+              <v-col>
+                <span v-text="apiary.title" class="display-2 grey--text" />
+              </v-col>
+              <v-col />
+              <v-col>
+                <v-tooltip left v-if="apiary.warning">
+                  <template v-slot:activator="{ on }">
+                    <v-icon large v-on="on" class="notification --warning">
+                      mdi-alert-circle
+                    </v-icon>
+                  </template>
+                  <span v-text="`This apiary has issues`" />
+                </v-tooltip>
+              </v-col>
+              <v-col>
+                <v-tooltip left v-if="apiary.shared">
+                  <template v-slot:activator="{ on }">
+                    <v-icon large v-on="on" class="notification --shared">
+                      mdi-account-multiple
+                    </v-icon>
+                  </template>
+                  <span v-text="`This apiary is shared with you`" />
+                </v-tooltip>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <draggable v-model="hives" class="d-flex align-end apiary-line">
+                  <v-sheet
+                    v-for="(hive, j) in hives"
+                    class="apiary-icon d-flex justify-center align-end white--text text--small mr-1"
+                    :key="j"
+                    :height="`${getHeight(hive)}%`"
+                    :width="`${getWidth(hive)}%`"
+                    :color="hive.color"
+                    @click="editHive(j)"
+                  >
+                    <v-sheet
+                      class="honey-layer"
+                      tile
+                      width="100%"
+                      :height="
+                        `${(hive.honey / (hive.brood + hive.honey)) * 100}%`
+                      "
+                    ></v-sheet>
+                    <span class="hive-number overline font-weight-black">
+                      {{ j + 1 }}
+                    </span>
+                  </v-sheet>
+                  <v-btn icon @click="addHive">
+                    <v-icon color="black">
+                      mdi-plus-circle
+                    </v-icon>
+                  </v-btn>
+                </draggable>
+              </v-col>
+            </v-row>
+          </v-container>
         </v-img>
       </v-card>
     </v-content>
+    <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
+      {{ snackbar.text }}
+      <v-btn color="blue" text @click="snackbar.show = false">
+        Close
+      </v-btn>
+    </v-snackbar>
   </div>
 </template>
 
 <script>
 import draggable from 'vuedraggable'
+import { mapState } from 'vuex'
 export default {
   components: {
     draggable,
@@ -76,6 +123,16 @@ export default {
       },
     },
   },
+  data() {
+    return {
+      hives: this.apiary.hives.slice(),
+      snackbar: {
+        show: false,
+        timeout: 2000,
+        text: 'notification',
+      },
+    }
+  },
   computed: {
     maxHeight() {
       return Math.max(...this.apiary.hives.map(hive => hive.honey + hive.brood))
@@ -83,13 +140,31 @@ export default {
     maxWidth() {
       return this.apiary.hives.reduce((frames, hive) => frames + hive.frames, 0)
     },
+    ...mapState('apiary', {
+      apiaries: state => state.apiaries,
+    }),
+  },
+  watch: {
+    hives: function(n, o) {
+      console.log(JSON.stringify(n))
+    },
   },
   methods: {
+    notify: function(text) {
+      this.snackbar.text = text
+      this.snackbar.show = true
+    },
     getHeight: function(hive) {
       return ((hive.honey + hive.brood) / this.maxHeight) * 100
     },
     getWidth: function(hive) {
       return (hive.frames / this.maxWidth) * 90
+    },
+    addHive: function() {
+      this.notify(`add new hive...`)
+    },
+    editHive: function(idx) {
+      this.notify(`edit hive ${idx + 1}...`)
     },
   },
   filters: {
@@ -103,6 +178,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.notification {
+  position: absolute;
+  &.--warning {
+    color: red;
+  }
+  &.--shared {
+    color: gray;
+  }
+}
 .apiary-line {
   height: 30px;
   border-bottom: 1px solid green;
