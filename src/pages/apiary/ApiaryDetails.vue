@@ -80,17 +80,35 @@
           </v-container>
         </v-img>
       </v-card>
-      <v-card>
-        <v-card-title>chart</v-card-title>
-        <v-card-text>
+      <v-container>
+        <v-card class="">
+          <v-card-title>Weight (kg)</v-card-title>
           <chartist
-            ratio="ct-major-second"
+            ratio="ct-perfect-fourth"
             type="Line"
-            :data="chartData"
-            :options="chartOptions"
+            :data="weightData"
+            :options="weightOptions"
           ></chartist>
-        </v-card-text>
-      </v-card>
+        </v-card>
+        <v-card class="mt-1">
+          <v-card-title>Humidity (%)</v-card-title>
+          <chartist
+            ratio="ct-perfect-fourth"
+            type="Line"
+            :data="humidityData"
+            :options="humidityOptions"
+          ></chartist>
+        </v-card>
+        <v-card class="mt-1">
+          <v-card-title>Log entries</v-card-title>
+          <chartist
+            ratio="ct-double-octave"
+            type="Line"
+            :data="logbookData"
+            :options="logbookOptions"
+          ></chartist>
+        </v-card>
+      </v-container>
     </v-content>
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
@@ -142,12 +160,8 @@ export default {
         timeout: 2000,
         text: 'notification',
       },
-      chartData: {
-        labels: ['A', 'B', 'C'],
-        series: [[1, 3, 2], [4, 6, 5]],
-      },
       chartOptions: {
-        lineSmooth: false,
+        lineSmooth: true,
       },
     }
   },
@@ -157,6 +171,57 @@ export default {
     },
     maxWidth() {
       return this.apiary.hives.reduce((frames, hive) => frames + hive.frames, 0)
+    },
+    xLabels() {
+      return ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
+    },
+    crosshair() {
+      return 'Mo'
+    },
+    weightOptions() {
+      return this.chartOptions
+    },
+    weightData() {
+      return {
+        labels: this.xLabels,
+        series: [
+          [3.5, NaN, 3.4, 3.2, 3.6, 3.5, 3.8],
+          [3.0, 2.9, 3.1, NaN, 3.2, 3.3, 3.4],
+        ],
+      }
+    },
+    humidityOptions() {
+      return {
+        lineSmooth: true,
+        series: {
+          filled: {
+            lineSmooth: false,
+            showArea: true,
+          },
+        },
+      }
+    },
+    humidityData() {
+      return {
+        labels: this.xLabels,
+        series: [
+          {
+            name: 'filled',
+            data: [87, 88, 91, 72, 82, 77, 90],
+          },
+          [86, 87, 90, 89, 89, 88, 91],
+          [89, 87, 86, 89, 84, 83, 89],
+        ],
+      }
+    },
+    logbookOptions() {
+      return this.chartOptions
+    },
+    logbookData() {
+      return {
+        labels: this.xLabels,
+        series: [[0, 0, 0, 1, 0, 0, 2], [0, 1, 0, 1, 0, 1, 3]],
+      }
     },
     ...mapState('apiary', {
       apiaries: state => state.apiaries,
@@ -220,6 +285,10 @@ export default {
   }
   .hive-number {
     z-index: 1;
+  }
+  .ct-series-a .ct-line {
+    stroke-dasharray: 5px;
+    stroke: blue;
   }
 }
 </style>
