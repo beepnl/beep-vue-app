@@ -18,7 +18,7 @@
               ></v-progress-circular>
             </v-row>
           </template>
-          <v-row class="d-flex align-end apiary-line">
+          <draggable class="d-flex align-end apiary-line">
             <v-sheet
               v-for="(hive, j) in apiary.hives"
               class="apiary-icon d-flex justify-center align-end white--text text--small mr-1"
@@ -37,7 +37,7 @@
                 {{ j + 1 }}
               </span>
             </v-sheet>
-          </v-row>
+          </draggable>
         </v-img>
       </v-card>
     </v-content>
@@ -45,7 +45,11 @@
 </template>
 
 <script>
+import draggable from 'vuedraggable'
 export default {
+  components: {
+    draggable,
+  },
   props: {
     id: { type: String },
     apiary: {
