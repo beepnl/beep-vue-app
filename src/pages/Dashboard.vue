@@ -30,7 +30,12 @@
       <AppMenu></AppMenu>
 
       <template v-slot:extension>
-        <v-tabs v-model="activeTab" grow dark background-color="transparent">
+        <v-tabs
+          v-model="activeTab"
+          icons-and-text
+          dark
+          background-color="transparent"
+        >
           <v-tab v-for="(tab, i) in tabs" :key="i" :to="tab.route">
             <span v-if="tab.title">{{ tab.title }}</span>
             <v-icon v-if="tab.icon">{{ tab.icon }}</v-icon>
@@ -63,11 +68,12 @@ export default {
     tabs: [
       {
         title: 'Apiaries',
+        icon: 'mdi-beehive-outline',
         route: 'apiaries',
       },
-      { title: 'Logbook', route: 'logbook' },
-      { title: 'Sensors', route: 'sensors' },
-      { icon: 'mdi-image-multiple', route: 'photos' },
+      { title: 'Plan', icon: 'mdi-calendar-edit', route: 'plan' },
+      { title: 'Log', icon: 'mdi-chart-line', route: 'log' },
+      { title: 'Photos', icon: 'mdi-image-multiple', route: 'photos' },
     ],
 
     searchShown: false,

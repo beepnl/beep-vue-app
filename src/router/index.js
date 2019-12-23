@@ -45,7 +45,7 @@ const router = new Router({
       component: () =>
         import(
           /* webpackChunkName: "Apiaries" */
-          '@/pages/apiary/ApiaryDetails'
+          '@/pages/apiaries/ApiaryDetails'
         ),
     },
     {
