@@ -5,29 +5,11 @@
         <v-icon>mdi-nfc</v-icon>
       </v-btn>
 
-      <template v-if="!searchShown">
-        <v-toolbar-title>BEEP</v-toolbar-title>
+      <v-toolbar-title>BEEP</v-toolbar-title>
 
-        <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
 
-        <v-btn icon @click="showSearch">
-          <v-icon>mdi-magnify</v-icon>
-        </v-btn>
-      </template>
-
-      <v-text-field
-        v-else
-        autofocus
-        clearable
-        light
-        solo
-        flat
-        hide-details
-        placeholder="Search for hives, actions..."
-        @blur="searchShown = false"
-      ></v-text-field>
-
-      <AppMenu></AppMenu>
+      <HeaderMenu :menu-items="menuItems"></HeaderMenu>
 
       <template v-slot:extension>
         <v-tabs
@@ -55,29 +37,46 @@
 </template>
 
 <script>
-import AppMenu from '@/components/header/AppMenu'
+import HeaderMenu from '@/components/header/HeaderMenu'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
-    AppMenu,
+    HeaderMenu,
   },
 
-  data: () => ({
-    loading: false,
-    activeTab: null,
-    tabs: [
-      {
-        title: 'Apiaries',
-        icon: 'mdi-beehive-outline',
-        route: 'apiaries',
-      },
-      { title: 'Plan', icon: 'mdi-calendar-edit', route: 'plan' },
-      { title: 'Log', icon: 'mdi-chart-line', route: 'log' },
-      { title: 'Photos', icon: 'mdi-image-multiple', route: 'photos' },
-    ],
-
-    searchShown: false,
-  }),
+  data: function() {
+    return {
+      loading: false,
+      activeTab: null,
+      tabs: [
+        {
+          title: 'Apiaries',
+          icon: 'mdi-beehive-outline',
+          route: 'apiaries',
+        },
+        { title: 'Plan', icon: 'mdi-calendar-edit', route: 'plan' },
+        { title: 'Log', icon: 'mdi-chart-line', route: 'log' },
+        { title: 'Photos', icon: 'mdi-image-multiple', route: 'photos' },
+      ],
+      menuItems: [
+        { title: 'Add apiary', route: false },
+        { divider: true },
+        { title: 'Settings', route: 'settings' },
+        {
+          title: 'Sign out',
+          route: 'signOut',
+          disabled: !this.userIsLoggedIn,
+        },
+      ],
+      searchShown: false,
+    }
+  },
+  computed: {
+    ...mapGetters({
+      userIsLoggedIn: 'auth/userIsLoggedIn',
+    }),
+  },
   methods: {
     updateRoute(val) {
       this.$router.push(val) // respond to tab swipes

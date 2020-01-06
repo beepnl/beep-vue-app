@@ -32,7 +32,8 @@ const scrollBehavior = (to, from, savedPosition) => {
 
 const router = new Router({
   mode: 'history',
-  routes: [{
+  routes: [
+    {
       path: '/',
       name: 'home',
       component: require('@/pages/Dashboard').default,

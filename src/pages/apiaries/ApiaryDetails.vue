@@ -1,6 +1,6 @@
 <template>
   <div>
-    <BackBar title="Apiary overview"></BackBar>
+    <BackBar :menu-items="menuItems" title="Apiary details"></BackBar>
     <v-content>
       <v-card>
         <v-img
@@ -155,6 +155,23 @@ export default {
   data() {
     return {
       hives: this.apiary.hives.slice(),
+      menuItems: [
+        {
+          title: 'Settings',
+          route: 'settings',
+        },
+        {
+          divider: true,
+        },
+        {
+          title: 'Share Apiary&hellip;',
+          route: '',
+        },
+        {
+          title: 'Delete Apiary',
+          route: '',
+        },
+      ],
       snackbar: {
         show: false,
         timeout: 2000,
