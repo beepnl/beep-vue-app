@@ -62,6 +62,7 @@ const router = new Router({
 })
 
 router.beforeEach(async (to, from, next) => {
+  store.dispatch('startLoading')
   if (to.matched.some(record => record.meta.requiresAuth)) {
     const user = await store.dispatch('auth/currentUser')
     const session = await store.dispatch('auth/currentSession')
@@ -76,6 +77,10 @@ router.beforeEach(async (to, from, next) => {
     return next()
   }
   return next()
+})
+
+router.afterEach(() => {
+  store.dispatch('doneLoading')
 })
 
 export default router

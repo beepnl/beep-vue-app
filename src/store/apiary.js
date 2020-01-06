@@ -2,10 +2,12 @@ export default {
   namespaced: true,
   state() {
     return {
-      apiaries: [{
+      apiaries: [
+        {
           id: 1,
           title: 'Backyard',
-          hives: [{
+          hives: [
+            {
               honey: 4,
               brood: 2,
               frames: 10,
@@ -24,7 +26,8 @@ export default {
         {
           id: 2,
           title: 'Garden',
-          hives: [{
+          hives: [
+            {
               honey: 2,
               brood: 2,
               frames: 5,
@@ -90,7 +93,8 @@ export default {
         {
           id: 3,
           title: 'Lakeside',
-          hives: [{
+          hives: [
+            {
               honey: 2,
               brood: 2,
               frames: 10,
@@ -110,7 +114,8 @@ export default {
         {
           id: 4,
           title: 'Mountain',
-          hives: [{
+          hives: [
+            {
               honey: 2,
               brood: 2,
               frames: 10,
@@ -161,9 +166,7 @@ export default {
   },
 
   actions: {
-    updateApiaries({
-      commit
-    }, payload) {
+    updateApiaries({ commit }, payload) {
       return commit('updateApiaries', payload)
     },
   },

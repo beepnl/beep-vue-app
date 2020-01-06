@@ -1,5 +1,12 @@
 <template>
   <v-app-bar app color="primary" dark>
+    <v-progress-linear
+      :indeterminate="$store.state.isLoading"
+      :active="$store.state.isLoading"
+      absolute
+      top
+      color="white"
+    ></v-progress-linear>
     <slot name="icon">
       <v-btn icon @click="back">
         <v-icon>mdi-arrow-left</v-icon>
@@ -8,14 +15,6 @@
     <slot name="title">
       <v-toolbar-title>{{ title }}</v-toolbar-title>
     </slot>
-
-    <v-progress-linear
-      :active="loading"
-      :indeterminate="loading"
-      absolute
-      bottom
-      color="orange darken-2 accent-4"
-    ></v-progress-linear>
 
     <v-spacer></v-spacer>
 
@@ -29,12 +28,6 @@ export default {
   components: {
     HeaderMenu,
   },
-  data: function() {
-    return {
-      // TODO: move to prop and activate via global router hooks
-      loading: true,
-    }
-  },
   props: {
     title: {
       type: String,
@@ -44,9 +37,6 @@ export default {
       type: Array,
       default: () => [],
     },
-  },
-  mounted() {
-    this.loading = false
   },
   methods: {
     back: function() {

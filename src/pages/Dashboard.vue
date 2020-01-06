@@ -1,12 +1,18 @@
 <template>
   <div>
     <v-app-bar app color="primary" dark>
+      <v-progress-linear
+        :indeterminate="$store.state.isLoading"
+        :active="$store.state.isLoading"
+        absolute
+        top
+        color="white"
+      ></v-progress-linear>
       <v-btn icon :loading="loading">
         <v-icon>mdi-nfc</v-icon>
       </v-btn>
 
       <v-toolbar-title>BEEP</v-toolbar-title>
-
       <v-spacer></v-spacer>
 
       <HeaderMenu :menu-items="menuItems"></HeaderMenu>
