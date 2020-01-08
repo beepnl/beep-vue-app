@@ -97,4 +97,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.ct-series-a .ct-line {
+  stroke-dasharray: 5px;
+  stroke: blue;
+}
+</style>
