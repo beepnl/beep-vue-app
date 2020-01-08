@@ -33,7 +33,7 @@
             v-else
             :disabled="item.disabled"
             :key="`i-${index}`"
-            @click="showDialog(item.title)"
+            @click="showDialog(item)"
           >
             <v-list-item-title v-html="item.title" />
           </v-list-item>
@@ -78,9 +78,12 @@ export default {
     },
   },
   methods: {
-    showDialog: function(title) {
-      this.dialog.title = title
+    showDialog: function(item) {
+      this.dialog.title = item.title
       this.dialog.show = true
+      if (item.event) {
+        this.$emit(item.event)
+      }
     },
   },
 }

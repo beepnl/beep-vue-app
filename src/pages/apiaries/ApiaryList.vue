@@ -2,18 +2,18 @@
   <v-list two-line>
     <v-list-item-group>
       <v-list-item
-        v-for="(item, i) in apiaries"
+        v-for="(apiary, i) in apiaries"
         :key="i"
         :to="{
-          name: `apiary`,
-          params: { id: item.title, apiary: { ...item, idx: i } },
+          name: `apiary-details`,
+          params: { id: apiary.id },
         }"
       >
         <v-list-item-avatar class="rounded">
           <v-img
-            v-if="item.photo"
-            :src="`https://picsum.photos/500/300?image=${i * 5 + 10}`"
-            :lazy-src="`https://picsum.photos/10/6?image=${i * 5 + 10}`"
+            v-if="apiary.photo"
+            :src="`https://picsum.photos/500/300?image=${apiary.id * 5 + 10}`"
+            :lazy-src="`https://picsum.photos/10/6?image=${apiary.id * 5 + 10}`"
           >
             <template v-slot:placeholder>
               <v-row class="fill-height ma-0" align="center" justify="center">
@@ -25,18 +25,18 @@
             </template>
           </v-img>
           <v-sheet v-else width="100%" height="100%" class="rounded secondary">
-            <h1 class="white--text">{{ item.title | firstletter }}</h1>
+            <h1 class="white--text">{{ apiary.title | firstletter }}</h1>
           </v-sheet>
 
           <template name="notifications">
             <v-sheet class="absolute">
               <slot name="warning">
-                <v-icon class="notification --warning" v-if="item.warning">
+                <v-icon class="notification --warning" v-if="apiary.warning">
                   mdi-alert-circle
                 </v-icon>
               </slot>
               <slot name="shared">
-                <v-icon class="notification --shared" v-if="item.shared">
+                <v-icon class="notification --shared" v-if="apiary.shared">
                   mdi-account-multiple
                 </v-icon>
               </slot>
@@ -45,11 +45,11 @@
         </v-list-item-avatar>
         <v-container class="pa-0">
           <v-list-item-title>
-            {{ item.title }}
+            {{ apiary.title }}
           </v-list-item-title>
           <v-list-item-subtitle class="d-flex align-end pa-0 apiary-line">
             <v-sheet
-              v-for="(hive, j) in item.hives"
+              v-for="(hive, j) in apiary.hives"
               class="apiary-icon d-flex justify-center align-end white--text text--small mr-1"
               :key="j"
               :height="`${getHeight(hive)}%`"
@@ -96,9 +96,7 @@ export default {
         )
       )
     },
-    ...mapState('apiary', {
-      apiaries: state => state.apiaries,
-    }),
+    ...mapState('apiaries', ['apiaries']),
   },
   methods: {
     getHeight: function(hive) {

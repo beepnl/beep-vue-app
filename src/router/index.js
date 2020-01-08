@@ -42,7 +42,7 @@ const router = new Router({
     {
       path: '/apiaries/:id',
       props: true,
-      name: 'apiary',
+      name: 'apiary-details',
       component: () =>
         import(
           /* webpackChunkName: "Apiaries" */

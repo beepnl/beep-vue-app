@@ -1,8 +1,9 @@
-export default [{
+export default [
+  {
     path: '/apiaries',
     name: 'apiaries',
     component: () =>
-      import( /* webpackChunkName: "Apiaries" */ '@/pages/apiaries/ApiaryList'),
+      import(/* webpackChunkName: "Apiaries" */ '@/pages/apiaries/ApiaryList'),
   },
   {
     path: '/plan',
@@ -16,12 +17,12 @@ export default [{
   {
     path: '/log',
     name: 'log',
-    component: () => import( /* webpackChunkName: "" */ '@/pages/log/Outline'),
+    component: () => import(/* webpackChunkName: "" */ '@/pages/log/Outline'),
   },
   {
     path: '/photos',
     name: 'photos',
     component: () =>
-      import( /* webpackChunkName: "Photos" */ '@/pages/photos/PhotoGallery'),
+      import(/* webpackChunkName: "Photos" */ '@/pages/photos/PhotoGallery'),
   },
 ]

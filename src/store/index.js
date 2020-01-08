@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import auth from './auth'
-import apiary from './apiary'
+import apiaries from './apiaries'
 
 const debug = process.env.NODE_ENV !== 'production'
 
@@ -37,7 +37,7 @@ export default new Vuex.Store({
   },
   modules: {
     auth,
-    apiary,
+    apiaries,
   },
   strict: debug,
 })

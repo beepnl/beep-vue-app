@@ -4,6 +4,7 @@
     <v-content>
       <v-card>
         <v-img
+          v-if="apiary"
           class="white--text align-end"
           height="150px"
           gradient="to bottom, rgba(255,255,255,.5), rgba(255,255,255,.9), rgba(255,255,255,.95)"
@@ -46,16 +47,20 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col>
-                <draggable v-model="hives" class="d-flex align-end apiary-line">
+              <v-col v-if="apiary.hives">
+                <draggable
+                  v-model="apiary.hives"
+                  class="d-flex align-end apiary-line"
+                >
                   <v-sheet
-                    v-for="(hive, j) in hives"
-                    class="apiary-icon d-flex justify-center align-end white--text text--small mr-1"
+                    v-for="(hive, j) in apiary.hives"
+                    class="hive-mini d-flex justify-center align-end white--text text--small mr-1"
+                    :class="hive.selected ? '--selected' : ''"
                     :key="j"
                     :height="`${getHeight(hive)}%`"
                     :width="`${getWidth(hive)}%`"
                     :color="hive.color"
-                    @click="editHive(j)"
+                    @click="selectHive(hive)"
                   >
                     <v-sheet
                       class="honey-layer"
@@ -69,46 +74,26 @@
                       {{ j + 1 }}
                     </span>
                   </v-sheet>
-                  <v-btn icon @click="addHive">
-                    <v-icon color="black">
-                      mdi-plus-circle
-                    </v-icon>
-                  </v-btn>
                 </draggable>
+              </v-col>
+              <v-col v-else>
+                <v-card>
+                  <v-card-text class="title text-center primary--text">
+                    Your apiary needs a hive
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn @click="addHive">
+                      Add hive
+                    </v-btn>
+                    <v-spacer></v-spacer>
+                  </v-card-actions>
+                </v-card>
               </v-col>
             </v-row>
           </v-container>
         </v-img>
       </v-card>
-      <v-container>
-        <v-card class="">
-          <v-card-title>Weight (kg)</v-card-title>
-          <chartist
-            ratio="ct-perfect-fourth"
-            type="Line"
-            :data="weightData"
-            :options="weightOptions"
-          ></chartist>
-        </v-card>
-        <v-card class="mt-1">
-          <v-card-title>Humidity (%)</v-card-title>
-          <chartist
-            ratio="ct-perfect-fourth"
-            type="Line"
-            :data="humidityData"
-            :options="humidityOptions"
-          ></chartist>
-        </v-card>
-        <v-card class="mt-1">
-          <v-card-title>Log entries</v-card-title>
-          <chartist
-            ratio="ct-double-octave"
-            type="Line"
-            :data="logbookData"
-            :options="logbookOptions"
-          ></chartist>
-        </v-card>
-      </v-container>
     </v-content>
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
@@ -121,47 +106,25 @@
 
 <script>
 import draggable from 'vuedraggable'
-import { mapState } from 'vuex'
+import { mapActions } from 'vuex'
+
 export default {
   components: {
     draggable,
   },
   props: {
-    id: { type: String },
-    apiary: {
-      type: Object,
-      // Object or array defaults must be returned from
-      // a factory function
-      default: function() {
-        return {
-          idx: 0,
-          title: 'Backyard',
-          hives: [
-            { honey: 4, brood: 2, frames: 10, color: 'red' },
-            { honey: 4, brood: 2, frames: 10, color: 'red' },
-            { honey: 4, brood: 5, frames: 10, color: 'red' },
-            { honey: 4, brood: 2, frames: 10, color: 'red' },
-            { honey: 1, brood: 3, frames: 15, color: 'purple' },
-            { honey: 1, brood: 3, frames: 15, color: 'purple' },
-            { honey: 1, brood: 3, frames: 15, color: 'purple' },
-            { honey: 1, brood: 3, frames: 15, color: 'purple' },
-          ],
-          photo: true,
-          warning: true,
-        }
-      },
+    id: {
+      type: [String, Number],
     },
   },
-  data() {
+  data: function() {
     return {
-      hives: this.apiary.hives.slice(),
+      apiary: null,
       menuItems: [
         {
-          title: 'Settings',
-          route: 'settings',
-        },
-        {
-          divider: true,
+          title: 'Add hive',
+          event: 'add:hive',
+          callback: 'addHive',
         },
         {
           title: 'Share Apiary&hellip;',
@@ -171,14 +134,18 @@ export default {
           title: 'Delete Apiary',
           route: '',
         },
+        {
+          divider: true,
+        },
+        {
+          title: 'Settings',
+          route: 'settings',
+        },
       ],
       snackbar: {
         show: false,
         timeout: 2000,
         text: 'notification',
-      },
-      chartOptions: {
-        lineSmooth: true,
       },
     }
   },
@@ -189,82 +156,44 @@ export default {
     maxWidth() {
       return this.apiary.hives.reduce((frames, hive) => frames + hive.frames, 0)
     },
-    xLabels() {
-      return ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
-    },
-    crosshair() {
-      return 'Mo'
-    },
-    weightOptions() {
-      return this.chartOptions
-    },
-    weightData() {
-      return {
-        labels: this.xLabels,
-        series: [
-          [3.5, NaN, 3.4, 3.2, 3.6, 3.5, 3.8],
-          [3.0, 2.9, 3.1, NaN, 3.2, 3.3, 3.4],
-        ],
-      }
-    },
-    humidityOptions() {
-      return {
-        lineSmooth: true,
-        series: {
-          filled: {
-            lineSmooth: false,
-            showArea: true,
-          },
-        },
-      }
-    },
-    humidityData() {
-      return {
-        labels: this.xLabels,
-        series: [
-          {
-            name: 'filled',
-            data: [87, 88, 91, 72, 82, 77, 90],
-          },
-          [86, 87, 90, 89, 89, 88, 91],
-          [89, 87, 86, 89, 84, 83, 89],
-        ],
-      }
-    },
-    logbookOptions() {
-      return this.chartOptions
-    },
-    logbookData() {
-      return {
-        labels: this.xLabels,
-        series: [[0, 0, 0, 1, 0, 0, 2], [0, 1, 0, 1, 0, 1, 3]],
-      }
-    },
-    ...mapState('apiary', {
-      apiaries: state => state.apiaries,
-    }),
   },
-  watch: {
-    hives: function(n, o) {
-      console.log(JSON.stringify(n))
-    },
+  async created() {
+    this.apiary = await this.getApiary(this.id)
+    this.addMenuEventListeners()
+    console.log(this.apiary)
   },
   methods: {
+    ...mapActions('apiaries', ['getApiary']),
+    addMenuEventListeners: function() {
+      for (let item in this.menuItems) {
+        if (item.event && item.callback && this[item.callback]) {
+          this.$on[item.event] = item.callback
+        }
+      }
+    },
     notify: function(text) {
       this.snackbar.text = text
       this.snackbar.show = true
+    },
+    selectHive: function(hive) {
+      hive.selected = !hive.selected
+      console.log(hive)
+    },
+    addHive: function(text) {
+      const defaultHive = {
+        brood: 1,
+        honey: 1,
+        frames: 10,
+        color: 'orange',
+      }
+      this.apiary.hives.push(defaultHive)
+      this.notify(text)
     },
     getHeight: function(hive) {
       return ((hive.honey + hive.brood) / this.maxHeight) * 100
     },
     getWidth: function(hive) {
       return (hive.frames / this.maxWidth) * 90
-    },
-    addHive: function() {
-      this.notify(`add new hive...`)
-    },
-    editHive: function(idx) {
-      this.notify(`edit hive ${idx + 1}...`)
     },
   },
   filters: {
@@ -290,7 +219,7 @@ export default {
 .apiary-line {
   height: 30px;
   border-bottom: 1px solid green;
-  .apiary-icon {
+  .hive-mini {
     position: relative;
     .honey-layer {
       position: absolute;
@@ -298,6 +227,9 @@ export default {
       left: 0;
       width: 100%;
       background-color: rgba(0, 0, 0, 0.2);
+    }
+    &.--selected {
+      box-shadow: 0 0 0 2px yellow;
     }
   }
   .hive-number {

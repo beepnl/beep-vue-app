@@ -1,3 +1,5 @@
+const uuidv5 = require('uuid/v5')
+
 export default {
   namespaced: true,
   state() {
@@ -157,15 +159,47 @@ export default {
       ],
     }
   },
-  getters: {},
 
   mutations: {
+    createApiary(state, apiary) {
+      state.apiaries.push(apiary)
+    },
+    updateApiary(state, apiary) {
+      state.apiaries.splice(state.apiaries.indexOf(apiary), 1, apiary)
+    },
+    deleteApiary(state, apiary) {
+      state.apiaries.splice(state.apiaries.indexOf(apiary), 1)
+    },
     updateApiaries(state, payload) {
       state.apiaries = payload
     },
   },
 
   actions: {
+    getApiary({ state }, id) {
+      let apiary = Object.assign(
+        {},
+        state.apiaries.find(apiary => apiary.id == id)
+      )
+      if (!apiary.id) {
+        apiary = {
+          id: uuidv5('https://app.beep.nl/apiaries', uuidv5.URL),
+          photo: false,
+          title: 'My Apiary',
+          hives: [],
+        }
+      }
+      return apiary
+    },
+    createApiary({ commit }, apiary) {
+      return commit('createApiary', apiary)
+    },
+    updateApiary({ commit }, apiary) {
+      return commit('updateApiary', apiary)
+    },
+    deleteApiary({ commit }, apiary) {
+      return commit('deleteApiary', apiary)
+    },
     updateApiaries({ commit }, payload) {
       return commit('updateApiaries', payload)
     },
