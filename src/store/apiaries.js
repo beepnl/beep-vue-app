@@ -1,5 +1,6 @@
-const uuidv5 = require('uuid/v5')
+var Vue = require('vue').default
 
+const uuidv5 = require('uuid/v5')
 export default {
   namespaced: true,
   state() {
@@ -161,6 +162,9 @@ export default {
   },
 
   mutations: {
+    selectHive(state, payload) {
+      Vue.set(payload.hive, 'selected', !payload.hive.selected)
+    },
     createApiary(state, apiary) {
       state.apiaries.push(apiary)
     },
@@ -177,10 +181,7 @@ export default {
 
   actions: {
     getApiary({ state }, id) {
-      let apiary = Object.assign(
-        {},
-        state.apiaries.find(apiary => apiary.id == id)
-      )
+      let apiary = state.apiaries.find(apiary => apiary.id == id)
       if (!apiary.id) {
         apiary = {
           id: uuidv5('https://app.beep.nl/apiaries', uuidv5.URL),
@@ -190,6 +191,9 @@ export default {
         }
       }
       return apiary
+    },
+    selectHive({ commit }, payload) {
+      return commit('selectHive', payload)
     },
     createApiary({ commit }, apiary) {
       return commit('createApiary', apiary)

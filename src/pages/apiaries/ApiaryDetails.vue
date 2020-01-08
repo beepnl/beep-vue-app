@@ -54,13 +54,16 @@
                 >
                   <v-sheet
                     v-for="(hive, j) in apiary.hives"
-                    class="hive-mini d-flex justify-center align-end white--text text--small mr-1"
-                    :class="hive.selected ? '--selected' : ''"
-                    :key="j"
+                    :class="
+                      `hive-mini d-flex justify-center align-end white--text text--small mr-1 ${
+                        hive.selected ? '--selected' : ''
+                      }`
+                    "
+                    :key="`${j}`"
                     :height="`${getHeight(hive)}%`"
                     :width="`${getWidth(hive)}%`"
                     :color="hive.color"
-                    @click="selectHive(hive)"
+                    @click="selectHive({ apiary, hive, hiveIndex: j })"
                   >
                     <v-sheet
                       class="honey-layer"
@@ -163,7 +166,7 @@ export default {
     console.log(this.apiary)
   },
   methods: {
-    ...mapActions('apiaries', ['getApiary']),
+    ...mapActions('apiaries', ['getApiary', 'selectHive']),
     addMenuEventListeners: function() {
       for (let item in this.menuItems) {
         if (item.event && item.callback && this[item.callback]) {
@@ -175,10 +178,6 @@ export default {
       this.snackbar.text = text
       this.snackbar.show = true
     },
-    selectHive: function(hive) {
-      hive.selected = !hive.selected
-      console.log(hive)
-    },
     addHive: function(text) {
       const defaultHive = {
         brood: 1,
@@ -186,7 +185,9 @@ export default {
         frames: 10,
         color: 'orange',
       }
+      console.log(this.apiary.hives.length)
       this.apiary.hives.push(defaultHive)
+      console.log(this.apiary.hives.length)
       this.notify(text)
     },
     getHeight: function(hive) {
@@ -216,6 +217,8 @@ export default {
     color: gray;
   }
 }
+</style>
+<style lang="scss">
 .apiary-line {
   height: 30px;
   border-bottom: 1px solid green;

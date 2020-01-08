@@ -50,7 +50,11 @@
           <v-list-item-subtitle class="d-flex align-end pa-0 apiary-line">
             <v-sheet
               v-for="(hive, j) in apiary.hives"
-              class="apiary-icon d-flex justify-center align-end white--text text--small mr-1"
+              :class="
+                `hive-mini d-flex justify-center align-end white--text text--small mr-1 ${
+                  hive.selected ? '--selected' : ''
+                }`
+              "
               :key="j"
               :height="`${getHeight(hive)}%`"
               :width="`${getWidth(hive)}%`"
@@ -140,23 +144,6 @@ export default {
   &.--shared {
     left: 4px;
     color: gray;
-  }
-}
-.apiary-line {
-  height: 30px;
-  border-bottom: 1px solid green;
-  .apiary-icon {
-    position: relative;
-    .honey-layer {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background-color: rgba(0, 0, 0, 0.2);
-    }
-  }
-  .hive-number {
-    z-index: 1;
   }
 }
 </style>
