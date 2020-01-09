@@ -206,7 +206,7 @@ export default {
         console.log('setHives: apiary or hives not given')
         return
       }
-      Vue.set(apiary.hives, 'hives', hives)
+      Vue.set(apiary, 'hives', hives)
     },
     createApiary(state, { apiary = null }) {
       const defaultApiary = {
