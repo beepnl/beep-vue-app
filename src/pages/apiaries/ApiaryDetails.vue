@@ -214,6 +214,7 @@ export default {
   }
   .hive-number {
     z-index: 1;
+    text-shadow: 1px 1px black;
   }
 }
 </style>
