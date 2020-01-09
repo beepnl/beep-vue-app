@@ -109,7 +109,7 @@
 
 <script>
 import draggable from 'vuedraggable'
-import { mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   components: {
@@ -122,12 +122,10 @@ export default {
   },
   data: function() {
     return {
-      apiary: null,
       menuItems: [
         {
           title: 'Add hive',
-          event: 'add:hive',
-          callback: 'addHive',
+          action: 'addHive',
         },
         {
           title: 'Share Apiary&hellip;',
@@ -153,6 +151,7 @@ export default {
     }
   },
   computed: {
+    ...mapState('apiaries', { apiary: 'selectedApiary' }),
     maxHeight() {
       return Math.max(...this.apiary.hives.map(hive => hive.honey + hive.brood))
     },
@@ -160,19 +159,10 @@ export default {
       return this.apiary.hives.reduce((frames, hive) => frames + hive.frames, 0)
     },
   },
-  async created() {
-    this.apiary = await this.getApiary(this.id)
-    this.addMenuEventListeners()
-  },
   methods: {
-    ...mapActions('apiaries', ['getApiary', 'selectHive', 'addHive']),
-    addMenuEventListeners: function() {
-      for (let item in this.menuItems) {
-        if (item.event && item.callback && this[item.callback]) {
-          this.$on[item.event] = item.callback
-        }
-      }
-    },
+    ...mapActions('apiaries', {
+      selectHive: 'selectHive',
+    }),
     notify: function(text) {
       this.snackbar.text = text
       this.snackbar.show = true

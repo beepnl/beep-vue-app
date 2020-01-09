@@ -43,6 +43,17 @@ const router = new Router({
       path: '/apiaries/:id',
       props: true,
       name: 'apiary-details',
+      beforeEnter: async (to, from, next) => {
+        const success = await store.dispatch(
+          'apiaries/selectApiary',
+          to.params.id
+        )
+        if (success) {
+          return next()
+        } else {
+          return next({ name: 'apiaries' })
+        }
+      },
       component: () =>
         import(
           /* webpackChunkName: "Apiaries" */

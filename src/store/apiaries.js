@@ -5,6 +5,7 @@ export default {
   namespaced: true,
   state() {
     return {
+      selectedApiary: null,
       apiaries: [
         {
           id: 1,
@@ -162,6 +163,9 @@ export default {
   },
 
   mutations: {
+    setSelectedApiary(state, apiary) {
+      state.selectedApiary = apiary
+    },
     selectHive(state, hive) {
       Vue.set(hive, 'selected', !hive.selected)
     },
@@ -189,17 +193,13 @@ export default {
   },
 
   actions: {
-    getApiary({ state }, id) {
+    selectApiary({ state, commit }, id) {
       let apiary = state.apiaries.find(apiary => apiary.id == id)
-      if (!apiary.id) {
-        apiary = {
-          id: uuidv5('https://app.beep.nl/apiaries', uuidv5.URL),
-          photo: false,
-          title: 'My Apiary',
-          hives: [],
-        }
+      if (apiary) {
+        commit('setSelectedApiary', apiary)
+        return apiary
       }
-      return apiary
+      return false
     },
     selectHive({ commit }, hive) {
       return commit('selectHive', hive)
