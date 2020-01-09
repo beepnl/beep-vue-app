@@ -2,13 +2,13 @@
   <div>
     <v-app-bar app color="primary" dark>
       <v-progress-linear
-        :indeterminate="$store.state.isLoading"
-        :active="$store.state.isLoading"
+        :indeterminate="isLoading"
+        :active="isLoading"
         absolute
         top
         color="white"
       ></v-progress-linear>
-      <v-btn icon :loading="loading">
+      <v-btn icon :loading="isLoading">
         <v-icon>mdi-nfc</v-icon>
       </v-btn>
 
@@ -44,18 +44,20 @@
 
 <script>
 import HeaderMenu from '@/components/header/HeaderMenu'
-import { mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   components: {
     HeaderMenu,
   },
-
-  data: function() {
-    return {
-      loading: false,
-      activeTab: null,
-      tabs: [
+  props: {
+    menuItems: {
+      type: Array,
+      default: () => [],
+    },
+    tabs: {
+      type: Array,
+      default: () => [
         {
           title: 'Apiaries',
           icon: 'mdi-beehive-outline',
@@ -65,30 +67,20 @@ export default {
         { title: 'Log', icon: 'mdi-chart-line', route: 'log' },
         { title: 'Photos', icon: 'mdi-image-multiple', route: 'photos' },
       ],
-      menuItems: [
-        { title: 'Add apiary', route: false },
-        { divider: true },
-        { title: 'Settings', route: 'settings' },
-        {
-          title: 'Sign out',
-          route: 'signOut',
-          disabled: !this.userIsLoggedIn,
-        },
-      ],
-      searchShown: false,
+    },
+  },
+  data: function() {
+    return {
+      loading: false,
+      activeTab: null,
     }
   },
   computed: {
-    ...mapGetters({
-      userIsLoggedIn: 'auth/userIsLoggedIn',
-    }),
+    ...mapState(['isLoading']),
   },
   methods: {
     updateRoute(val) {
       this.$router.push(val) // respond to tab swipes
-    },
-    showSearch() {
-      this.searchShown = !this.searchShown
     },
   },
 }
