@@ -36,7 +36,8 @@ const router = new Router({
     {
       path: '/',
       name: 'home',
-      component: require('@/pages/Dashboard').default,
+      component: () => import('@/pages/Dashboard'),
+      redirect: '/apiaries',
       children: [...tabs],
     },
     {
@@ -63,7 +64,7 @@ const router = new Router({
     {
       path: '*',
       name: 'notfound',
-      component: require('@/pages/NotFound').default,
+      component: () => import('@/pages/NotFound'),
     },
     ...auth,
     ...settings,
