@@ -25,7 +25,7 @@
         width="100%"
         :height="`${(hive.honey / (hive.brood + hive.honey)) * 100}%`"
       ></v-sheet>
-      <span class="hive-number overline font-weight-black">
+      <span class="hive-caption caption">
         {{ j + 1 }}
       </span>
     </v-sheet>
@@ -110,9 +110,11 @@ export default {
       box-shadow: 0 0 0 2px yellow;
     }
   }
-  .hive-number {
+  .hive-caption {
     z-index: 1;
+    color: white;
     text-shadow: 1px 1px black;
+    line-height: 0.9rem;
   }
 }
 </style>
