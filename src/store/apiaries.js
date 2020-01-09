@@ -1,6 +1,5 @@
 var Vue = require('vue').default
 
-const uuidv5 = require('uuid/v5')
 export default {
   namespaced: true,
   state() {
@@ -161,6 +160,24 @@ export default {
       ],
     }
   },
+  getters: {
+    highestHive: state => {
+      // returns the highest hive across all apiaries
+      return Math.max(
+        ...state.apiaries.map(apiary =>
+          Math.max(...apiary.hives.map(hive => hive.honey + hive.brood))
+        )
+      )
+    },
+    widestApiary: state => {
+      // returns the widest apiary (most total frames)
+      return Math.max(
+        ...state.apiaries.map(apiary =>
+          apiary.hives.reduce((frames, hive) => frames + hive.frames, 0)
+        )
+      )
+    },
+  },
 
   mutations: {
     setSelectedApiary(state, apiary) {
@@ -169,26 +186,53 @@ export default {
     selectHive(state, hive) {
       Vue.set(hive, 'selected', !hive.selected)
     },
-    addHive(state) {
+    addHive(state, { apiary = null, hive = null }) {
+      if (!apiary) {
+        apiary = state.selectedApiary
+      }
       const defaultHive = {
         brood: 1,
         honey: 1,
         frames: 10,
         color: 'orange',
       }
-      state.selectedApiary.hives.push(defaultHive)
+      if (!hive) {
+        hive = { ...defaultHive }
+      }
+      apiary.hives.push(hive)
     },
-    createApiary(state, apiary) {
+    setHives(state, { apiary = null, hives = null }) {
+      if (!apiary || !hives) {
+        console.log('setHives: apiary or hives not given')
+        return
+      }
+      Vue.set(apiary.hives, 'hives', hives)
+    },
+    createApiary(state, { apiary = null }) {
+      const defaultApiary = {
+        id: Math.max(state.apiaries.map(apiary => apiary.id) + 1),
+        title: 'New Apiary',
+        hives: [].splice(),
+      }
+      if (!apiary) {
+        apiary = defaultApiary
+      }
       state.apiaries.push(apiary)
     },
-    updateApiary(state, apiary) {
-      state.apiaries.splice(state.apiaries.indexOf(apiary), 1, apiary)
-    },
-    deleteApiary(state, apiary) {
-      state.apiaries.splice(state.apiaries.indexOf(apiary), 1)
-    },
-    updateApiaries(state, payload) {
-      state.apiaries = payload
+    updateApiary(state, { apiary = null, id = null, update = null }) {
+      id = id || apiary.id
+      if (!id) {
+        console.log('updateApiary: apiary or id not given')
+        return
+      }
+      let index = state.apiaries.map(apiary => apiary.id).indexOf(id)
+      if (index > -1) {
+        if (update) {
+          state.apiaries.splice(index, 1, update)
+        } else {
+          state.apiaries.splice(index, 1)
+        }
+      }
     },
   },
 
@@ -201,23 +245,20 @@ export default {
       }
       return false
     },
-    selectHive({ commit }, hive) {
-      return commit('selectHive', hive)
+    selectHive({ commit }, payload) {
+      return commit('selectHive', payload)
     },
-    addHive({ commit }, apiary) {
-      return commit('addHive', apiary)
+    addHive({ commit }, payload) {
+      return commit('addHive', payload)
     },
-    createApiary({ commit }, apiary) {
-      return commit('createApiary', apiary)
+    createApiary({ commit }) {
+      return commit('createApiary')
     },
-    updateApiary({ commit }, apiary) {
-      return commit('updateApiary', apiary)
+    updateApiary({ commit }, payload) {
+      return commit('updateApiary', payload)
     },
-    deleteApiary({ commit }, apiary) {
-      return commit('deleteApiary', apiary)
-    },
-    updateApiaries({ commit }, payload) {
-      return commit('updateApiaries', payload)
+    deleteApiary({ commit }, payload) {
+      return commit('deleteApiary', payload)
     },
   },
 }

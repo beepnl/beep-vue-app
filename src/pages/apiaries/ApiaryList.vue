@@ -47,30 +47,7 @@
           <v-list-item-title>
             {{ apiary.title }}
           </v-list-item-title>
-          <v-list-item-subtitle class="d-flex align-end pa-0 apiary-line">
-            <v-sheet
-              v-for="(hive, j) in apiary.hives"
-              :class="
-                `hive-mini d-flex justify-center align-end white--text text--small ml-1 ${
-                  hive.selected ? '--selected' : ''
-                }`
-              "
-              :key="j"
-              :height="`${getHeight(hive)}%`"
-              :width="`${getWidth(hive)}%`"
-              :color="hive.color"
-            >
-              <v-sheet
-                class="honey-layer"
-                tile
-                width="100%"
-                :height="`${(hive.honey / (hive.brood + hive.honey)) * 100}%`"
-              ></v-sheet>
-              <span class="hive-number overline font-weight-black">
-                {{ j + 1 }}
-              </span>
-            </v-sheet>
-          </v-list-item-subtitle>
+          <HiveIcons :apiary="apiary"></HiveIcons>
         </v-container>
       </v-list-item>
     </v-list-item-group>
@@ -79,40 +56,22 @@
 
 <script>
 import { mapState } from 'vuex'
+import HiveIcons from '@/components/HiveIcons'
+
 export default {
+  components: {
+    HiveIcons,
+  },
   data: () => ({
     settings: [],
+    menuItems: [
+      { title: 'Add apiary', route: false },
+      { divider: true },
+      { title: 'Settings', route: 'settings' },
+    ],
   }),
   computed: {
-    maxHeight() {
-      // returns the highest hive across all apiaries
-      return Math.max(
-        ...this.apiaries.map(apiary =>
-          Math.max(...apiary.hives.map(hive => hive.honey + hive.brood))
-        )
-      )
-    },
-    maxWidth() {
-      // returns the widest apiary (most total frames)
-      return Math.max(
-        ...this.apiaries.map(apiary =>
-          apiary.hives.reduce((frames, hive) => frames + hive.frames, 0)
-        )
-      )
-    },
     ...mapState('apiaries', ['apiaries']),
-  },
-  methods: {
-    getHeight: function(hive) {
-      return ((hive.honey + hive.brood) / this.maxHeight) * 100
-    },
-    getWidth: function(hive) {
-      return (hive.frames / this.maxWidth) * 100
-    },
-    showApiary: function() {
-      console.log(this.apiary)
-      //this.$router.push('/apiary/:' + this.apiary)
-    },
   },
   filters: {
     firstletter: function(value) {

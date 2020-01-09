@@ -8,10 +8,18 @@
           class="white--text align-end"
           height="150px"
           gradient="to bottom, rgba(255,255,255,.5), rgba(255,255,255,.9), rgba(255,255,255,.95)"
-          :src="`https://picsum.photos/500/300?image=${apiary.id * 5 + 10}`"
-          :lazy-src="`https://picsum.photos/10/6?image=${apiary.id * 5 + 10}`"
+          :src="
+            apiary.photo
+              ? `https://picsum.photos/500/300?image=${apiary.id * 5 + 10}`
+              : ''
+          "
+          :lazy-src="
+            apiary.photo
+              ? `https://picsum.photos/10/6?image=${apiary.id * 5 + 10}`
+              : ''
+          "
         >
-          <template v-slot:placeholder>
+          <template v-if="apiary.photo" v-slot:placeholder>
             <v-row class="fill-height ma-0" align="center" justify="center">
               <v-progress-circular
                 indeterminate
@@ -24,19 +32,19 @@
               <v-col>
                 <span v-text="apiary.title" class="display-2 grey--text" />
               </v-col>
-              <v-col />
-              <v-col>
-                <v-tooltip left v-if="apiary.warning">
+              <v-col grow />
+              <v-col v-if="apiary.warning">
+                <v-tooltip left>
                   <template v-slot:activator="{ on }">
                     <v-icon large v-on="on" class="notification --warning">
                       mdi-alert-circle
                     </v-icon>
                   </template>
-                  <span v-text="`This apiary has issues`" />
+                  <span>This apiary has issues</span>
                 </v-tooltip>
               </v-col>
-              <v-col>
-                <v-tooltip left v-if="apiary.shared">
+              <v-col v-if="apiary.shared">
+                <v-tooltip left>
                   <template v-slot:activator="{ on }">
                     <v-icon large v-on="on" class="notification --shared">
                       mdi-account-multiple
@@ -47,51 +55,8 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col v-if="apiary.hives">
-                <draggable
-                  v-model="apiary.hives"
-                  class="d-flex align-end apiary-line"
-                >
-                  <v-sheet
-                    v-for="(hive, j) in apiary.hives"
-                    :class="
-                      `hive-mini d-flex justify-center align-end white--text text--small mr-1 ${
-                        hive.selected ? '--selected' : ''
-                      }`
-                    "
-                    :key="`${j}`"
-                    :height="`${getHeight(hive)}%`"
-                    :width="`${getWidth(hive)}%`"
-                    :color="hive.color"
-                    @click="selectHive(hive)"
-                  >
-                    <v-sheet
-                      class="honey-layer"
-                      tile
-                      width="100%"
-                      :height="
-                        `${(hive.honey / (hive.brood + hive.honey)) * 100}%`
-                      "
-                    ></v-sheet>
-                    <span class="hive-number overline font-weight-black">
-                      {{ j + 1 }}
-                    </span>
-                  </v-sheet>
-                </draggable>
-              </v-col>
-              <v-col v-else>
-                <v-card>
-                  <v-card-text class="title text-center primary--text">
-                    Your apiary needs a hive
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn @click="addHive">
-                      Add hive
-                    </v-btn>
-                    <v-spacer></v-spacer>
-                  </v-card-actions>
-                </v-card>
+              <v-col>
+                <HiveIcons editable :apiary="apiary"></HiveIcons>
               </v-col>
             </v-row>
           </v-container>
@@ -108,12 +73,12 @@
 </template>
 
 <script>
-import draggable from 'vuedraggable'
 import { mapState, mapActions } from 'vuex'
+import HiveIcons from '@/components/HiveIcons'
 
 export default {
   components: {
-    draggable,
+    HiveIcons,
   },
   props: {
     id: {
@@ -122,10 +87,24 @@ export default {
   },
   data: function() {
     return {
-      menuItems: [
+      snackbar: {
+        show: false,
+        timeout: 2000,
+        text: 'notification',
+      },
+    }
+  },
+  computed: {
+    ...mapState('apiaries', { apiary: 'selectedApiary' }),
+    menuItems: function() {
+      let items = [
         {
           title: 'Add hive',
           action: 'apiaries/addHive',
+        },
+        {
+          title: 'Delete selected hive',
+          action: 'apiaries/deleteHive',
         },
         {
           title: 'Share Apiary&hellip;',
@@ -142,27 +121,12 @@ export default {
           title: 'Settings',
           route: 'settings',
         },
-      ],
-      snackbar: {
-        show: false,
-        timeout: 2000,
-        text: 'notification',
-      },
-    }
-  },
-  computed: {
-    ...mapState('apiaries', { apiary: 'selectedApiary' }),
-    maxHeight() {
-      return Math.max(...this.apiary.hives.map(hive => hive.honey + hive.brood))
-    },
-    maxWidth() {
-      return this.apiary.hives.reduce((frames, hive) => frames + hive.frames, 0)
+      ]
+      return items
     },
   },
   methods: {
-    ...mapActions('apiaries', {
-      selectHive: 'selectHive',
-    }),
+    ...mapActions('apiaries', ['addHive', 'selectHive']),
     notify: function(text) {
       this.snackbar.text = text
       this.snackbar.show = true
@@ -192,29 +156,6 @@ export default {
   }
   &.--shared {
     color: gray;
-  }
-}
-</style>
-<style lang="scss">
-.apiary-line {
-  height: 30px;
-  border-bottom: 1px solid green;
-  .hive-mini {
-    position: relative;
-    .honey-layer {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background-color: rgba(0, 0, 0, 0.2);
-    }
-    &.--selected {
-      box-shadow: 0 0 0 2px yellow;
-    }
-  }
-  .hive-number {
-    z-index: 1;
-    text-shadow: 1px 1px black;
   }
 }
 </style>
