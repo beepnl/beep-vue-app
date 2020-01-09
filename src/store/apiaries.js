@@ -169,14 +169,14 @@ export default {
     selectHive(state, hive) {
       Vue.set(hive, 'selected', !hive.selected)
     },
-    addHive(state, apiary) {
+    addHive(state) {
       const defaultHive = {
         brood: 1,
         honey: 1,
         frames: 10,
         color: 'orange',
       }
-      apiary.hives.push(defaultHive)
+      state.selectedApiary.hives.push(defaultHive)
     },
     createApiary(state, apiary) {
       state.apiaries.push(apiary)

@@ -22,18 +22,11 @@
           ></v-divider>
 
           <v-list-item
-            v-else-if="item.route"
-            :disabled="item.disabled"
-            :key="`i-${index}`"
-            :to="{ name: item.route }"
-          >
-            <v-list-item-title v-html="item.title" />
-          </v-list-item>
-          <v-list-item
             v-else
             :disabled="item.disabled"
             :key="`i-${index}`"
-            @click="showDialog(item)"
+            :to="item.route ? { name: item.route } : null"
+            @click="item.action ? wrapAction(item.action) : showDialog(item)"
           >
             <v-list-item-title v-html="item.title" />
           </v-list-item>
@@ -60,7 +53,7 @@ export default {
     return {
       dialog: {
         show: false,
-        title: 'Title',
+        title: 'notification',
       },
     }
   },
@@ -78,12 +71,16 @@ export default {
     },
   },
   methods: {
+    wrapAction(cb) {
+      if (!cb) {
+        return
+      } else {
+        this.$store.dispatch(cb)
+      }
+    },
     showDialog: function(item) {
       this.dialog.title = item.title
       this.dialog.show = true
-      if (item.event) {
-        this.$emit(item.event)
-      }
     },
   },
 }

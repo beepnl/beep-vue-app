@@ -125,7 +125,7 @@ export default {
       menuItems: [
         {
           title: 'Add hive',
-          action: 'addHive',
+          action: 'apiaries/addHive',
         },
         {
           title: 'Share Apiary&hellip;',
