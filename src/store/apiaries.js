@@ -162,8 +162,17 @@ export default {
   },
 
   mutations: {
-    selectHive(state, payload) {
-      Vue.set(payload.hive, 'selected', !payload.hive.selected)
+    selectHive(state, hive) {
+      Vue.set(hive, 'selected', !hive.selected)
+    },
+    addHive(state, apiary) {
+      const defaultHive = {
+        brood: 1,
+        honey: 1,
+        frames: 10,
+        color: 'orange',
+      }
+      apiary.hives.push(defaultHive)
     },
     createApiary(state, apiary) {
       state.apiaries.push(apiary)
@@ -192,8 +201,11 @@ export default {
       }
       return apiary
     },
-    selectHive({ commit }, payload) {
-      return commit('selectHive', payload)
+    selectHive({ commit }, hive) {
+      return commit('selectHive', hive)
+    },
+    addHive({ commit }, apiary) {
+      return commit('addHive', apiary)
     },
     createApiary({ commit }, apiary) {
       return commit('createApiary', apiary)

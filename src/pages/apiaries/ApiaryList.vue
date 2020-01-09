@@ -51,7 +51,7 @@
             <v-sheet
               v-for="(hive, j) in apiary.hives"
               :class="
-                `hive-mini d-flex justify-center align-end white--text text--small mr-1 ${
+                `hive-mini d-flex justify-center align-end white--text text--small ml-1 ${
                   hive.selected ? '--selected' : ''
                 }`
               "

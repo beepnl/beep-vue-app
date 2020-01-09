@@ -63,7 +63,7 @@
                     :height="`${getHeight(hive)}%`"
                     :width="`${getWidth(hive)}%`"
                     :color="hive.color"
-                    @click="selectHive({ apiary, hive, hiveIndex: j })"
+                    @click="selectHive(hive)"
                   >
                     <v-sheet
                       class="honey-layer"
@@ -163,10 +163,9 @@ export default {
   async created() {
     this.apiary = await this.getApiary(this.id)
     this.addMenuEventListeners()
-    console.log(this.apiary)
   },
   methods: {
-    ...mapActions('apiaries', ['getApiary', 'selectHive']),
+    ...mapActions('apiaries', ['getApiary', 'selectHive', 'addHive']),
     addMenuEventListeners: function() {
       for (let item in this.menuItems) {
         if (item.event && item.callback && this[item.callback]) {
@@ -177,18 +176,6 @@ export default {
     notify: function(text) {
       this.snackbar.text = text
       this.snackbar.show = true
-    },
-    addHive: function(text) {
-      const defaultHive = {
-        brood: 1,
-        honey: 1,
-        frames: 10,
-        color: 'orange',
-      }
-      console.log(this.apiary.hives.length)
-      this.apiary.hives.push(defaultHive)
-      console.log(this.apiary.hives.length)
-      this.notify(text)
     },
     getHeight: function(hive) {
       return ((hive.honey + hive.brood) / this.maxHeight) * 100
