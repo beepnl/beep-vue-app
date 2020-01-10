@@ -5,6 +5,7 @@ export default {
   state() {
     return {
       selectedApiary: null,
+      editing: false,
       apiaries: [
         {
           id: 1,
@@ -191,6 +192,9 @@ export default {
     setSelectedApiary(state, apiary) {
       state.selectedApiary = apiary
     },
+    setEditable(state, editable) {
+      state.editing = editable
+    },
     selectHive(state, hive) {
       Vue.set(hive, 'selected', !hive.selected)
     },
@@ -252,6 +256,12 @@ export default {
         return apiary
       }
       return false
+    },
+    editOn({ commit }) {
+      return commit('setEditable', true)
+    },
+    editOff({ commit }) {
+      return commit('setEditable', false)
     },
     selectHive({ commit }, payload) {
       return commit('selectHive', payload || {})

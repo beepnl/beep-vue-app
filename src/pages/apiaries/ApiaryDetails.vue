@@ -1,12 +1,12 @@
 <template>
   <div>
-    <BackBar :menu-items="menuItems" title="Apiary details"></BackBar>
+    <BackBar :menu-items="menuItems" title="Apiary details" />
     <v-content>
-      <v-card>
+      <v-card tile>
         <v-img
-          v-if="apiary"
-          class="white--text align-end"
+          class="align-end"
           height="150px"
+          v-if="apiary"
           gradient="to bottom, rgba(255,255,255,.5), rgba(255,255,255,.9), rgba(255,255,255,.95)"
           :src="
             apiary.photo
@@ -20,48 +20,50 @@
           "
         >
           <template v-if="apiary.photo" v-slot:placeholder>
-            <v-row class="fill-height ma-0" align="center" justify="center">
+            <v-row class="ma-0" align="center" justify="center">
               <v-progress-circular
                 indeterminate
                 color="grey lighten-5"
               ></v-progress-circular>
             </v-row>
           </template>
-          <v-container>
-            <v-row justify="start" align="start" align-content="start">
-              <v-col>
-                <span v-text="apiary.title" class="display-2 grey--text" />
-              </v-col>
-              <v-col grow />
-              <v-col v-if="apiary.warning">
-                <v-tooltip left>
-                  <template v-slot:activator="{ on }">
-                    <v-icon large v-on="on" class="notification --warning">
-                      mdi-alert-circle
-                    </v-icon>
-                  </template>
-                  <span>This apiary has issues</span>
-                </v-tooltip>
-              </v-col>
-              <v-col v-if="apiary.shared">
-                <v-tooltip left>
-                  <template v-slot:activator="{ on }">
-                    <v-icon large v-on="on" class="notification --shared">
-                      mdi-account-multiple
-                    </v-icon>
-                  </template>
-                  <span v-text="`This apiary is shared with you`" />
-                </v-tooltip>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col>
-                <HiveIcons editable :apiary="apiary"></HiveIcons>
-              </v-col>
-            </v-row>
+          <v-container class="apiary-info">
+            <div class="d-flex">
+              <span class="display-1" v-text="apiary.title" />
+              <v-spacer></v-spacer>
+              <v-tooltip left v-if="apiary.warning">
+                <template v-slot:activator="{ on }">
+                  <v-icon v-on="on" class="notification --warning">
+                    mdi-alert-circle
+                  </v-icon>
+                </template>
+                <span>This apiary has issues</span>
+              </v-tooltip>
+              <v-tooltip left v-if="apiary.shared">
+                <template v-slot:activator="{ on }">
+                  <v-icon v-on="on" class="notification --shared">
+                    mdi-account-multiple
+                  </v-icon>
+                </template>
+                <span v-text="`This apiary is shared with you`" />
+              </v-tooltip>
+            </div>
+            <div class="subtitle-1 d-flex">
+              {{ apiary.city }}
+              <v-spacer></v-spacer>
+              <span class="float-right caption grey--text">
+                last visit: {{ apiary.lastvisit }}
+              </span>
+            </div>
+            <div class="hives">
+              <HiveIcons :disabled="!editing" :apiary="apiary"></HiveIcons>
+            </div>
           </v-container>
         </v-img>
       </v-card>
+      <v-sheet height="2000">
+        lots of content
+      </v-sheet>
     </v-content>
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
@@ -73,7 +75,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 import HiveIcons from '@/components/HiveIcons'
 
 export default {
@@ -95,47 +97,44 @@ export default {
     }
   },
   computed: {
-    ...mapState('apiaries', { apiary: 'selectedApiary' }),
+    ...mapState('apiaries', { apiary: 'selectedApiary', editing: 'editing' }),
+    logbook: function() {
+      return []
+    },
     menuItems: function() {
       let items = [
         {
-          title: 'Add hive',
-          action: 'apiaries/addHive',
-        },
-        {
-          title: 'Delete selected hive',
-          action: 'apiaries/deleteHive',
-        },
-        {
           title: 'Share Apiary&hellip;',
-          route: '',
         },
         {
           title: 'Delete Apiary',
-          route: '',
-        },
-        {
-          divider: true,
-        },
-        {
-          title: 'Settings',
-          route: 'settings',
         },
       ]
+      if (this.editing) {
+        items.unshift({
+          title: 'Add hive',
+          action: 'apiaries/addHive',
+        })
+      } else {
+        items.unshift({
+          title: 'Edit apiary',
+          action: 'apiaries/editOn',
+        })
+      }
       return items
     },
   },
+  mounted() {
+    this.$store.dispatch('setMenu', this.menuItems)
+  },
+  async beforeRouteLeave(to, from, next) {
+    await this.$store.dispatch('apiaries/editOff')
+    next()
+  },
   methods: {
-    ...mapActions('apiaries', ['addHive', 'selectHive']),
     notify: function(text) {
       this.snackbar.text = text
       this.snackbar.show = true
-    },
-    getHeight: function(hive) {
-      return ((hive.honey + hive.brood) / this.maxHeight) * 100
-    },
-    getWidth: function(hive) {
-      return (hive.frames / this.maxWidth) * 90
     },
   },
   filters: {
@@ -150,7 +149,6 @@ export default {
 
 <style lang="scss" scoped>
 .notification {
-  position: absolute;
   &.--warning {
     color: red;
   }
