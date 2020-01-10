@@ -18,7 +18,7 @@
       :height="`${hiveHeight(hive)}%`"
       :width="`${hiveWidth(hive)}%`"
       :color="hive.color"
-      @click="editable ? selectHive(hive) : null"
+      @click="selectHive(hive)"
     >
       <v-sheet
         class="honey-layer"
@@ -29,9 +29,14 @@
         {{ j + 1 }}
       </span>
     </v-sheet>
-    <v-btn v-if="editable" icon slot="footer" @click="addHive">
-      <v-icon>mdi-plus</v-icon>
-    </v-btn>
+    <div slot="footer">
+      <div v-if="!hives.length">
+        No hives in this apiary
+      </div>
+      <v-btn v-if="!disabled || !hives.length" icon @click="addHive">
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
+    </div>
   </draggable>
 </template>
 
@@ -46,9 +51,9 @@ export default {
     draggable,
   },
   props: {
-    editable: {
+    disabled: {
       type: Boolean,
-      default: false,
+      default: true,
     },
     apiary: {
       type: Object,
@@ -66,7 +71,7 @@ export default {
     dragOptions() {
       return {
         animation: 200,
-        disabled: !this.editable,
+        disabled: this.disabled,
       }
     },
     hives: {
