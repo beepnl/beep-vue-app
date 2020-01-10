@@ -12,6 +12,17 @@ export default new Vuex.Store({
   state() {
     return {
       isLoading: false,
+      menuItems: [],
+      tabs: [
+        {
+          title: 'Apiaries',
+          icon: 'mdi-beehive-outline',
+          route: 'apiaries',
+        },
+        { title: 'Plan', icon: 'mdi-calendar-edit', route: 'plan' },
+        { title: 'Log', icon: 'mdi-chart-line', route: 'log' },
+        { title: 'Photos', icon: 'mdi-image-multiple', route: 'photos' },
+      ],
     }
   },
 
@@ -21,6 +32,9 @@ export default new Vuex.Store({
     },
     doneLoading(state) {
       state.isLoading = false
+    },
+    setMenu(state, menuItems) {
+      state.menuItems = menuItems
     },
   },
 
@@ -33,6 +47,9 @@ export default new Vuex.Store({
         // FIXME: remove timeout (visual indicator only)
         commit('doneLoading')
       }, 1000)
+    },
+    setMenu({ commit }, menuItems) {
+      return commit('setMenu', menuItems)
     },
   },
   modules: {

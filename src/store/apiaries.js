@@ -9,6 +9,8 @@ export default {
         {
           id: 1,
           title: 'Backyard',
+          city: 'Driebergen',
+          lastvisit: 'today',
           hives: [
             {
               honey: 4,
@@ -29,6 +31,8 @@ export default {
         {
           id: 2,
           title: 'Garden',
+          city: 'Utrecht',
+          lastvisit: 'yesterday',
           hives: [
             {
               honey: 2,
@@ -96,6 +100,8 @@ export default {
         {
           id: 3,
           title: 'Lakeside',
+          city: 'Madison',
+          lastvisit: 'last week',
           hives: [
             {
               honey: 2,
@@ -117,6 +123,8 @@ export default {
         {
           id: 4,
           title: 'Mountain',
+          city: 'Geneva',
+          lastvisit: '3 months ago',
           hives: [
             {
               honey: 2,

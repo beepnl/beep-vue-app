@@ -50,25 +50,6 @@ export default {
   components: {
     HeaderMenu,
   },
-  props: {
-    menuItems: {
-      type: Array,
-      default: () => [],
-    },
-    tabs: {
-      type: Array,
-      default: () => [
-        {
-          title: 'Apiaries',
-          icon: 'mdi-beehive-outline',
-          route: 'apiaries',
-        },
-        { title: 'Plan', icon: 'mdi-calendar-edit', route: 'plan' },
-        { title: 'Log', icon: 'mdi-chart-line', route: 'log' },
-        { title: 'Photos', icon: 'mdi-image-multiple', route: 'photos' },
-      ],
-    },
-  },
   data: function() {
     return {
       loading: false,
@@ -76,7 +57,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['isLoading']),
+    ...mapState(['isLoading', 'menuItems', 'tabs']),
   },
   methods: {
     updateRoute(val) {

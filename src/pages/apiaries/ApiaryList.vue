@@ -46,6 +46,10 @@
         <v-container class="pa-0">
           <v-list-item-title>
             {{ apiary.title }}
+            <span class="location caption grey--text">({{ apiary.city }})</span>
+            <span class="lastvisit caption grey--text float-right text-right">
+              {{ apiary.lastvisit }}
+            </span>
           </v-list-item-title>
           <HiveIcons :apiary="apiary"></HiveIcons>
         </v-container>
@@ -62,13 +66,12 @@ export default {
   components: {
     HiveIcons,
   },
+  mounted() {
+    this.$store.dispatch('setMenu', this.menuItems)
+  },
   data: () => ({
     settings: [],
-    menuItems: [
-      { title: 'Add apiary', route: false },
-      { divider: true },
-      { title: 'Settings', route: 'settings' },
-    ],
+    menuItems: [{ title: 'Add apiary' }],
   }),
   computed: {
     ...mapState('apiaries', ['apiaries']),
@@ -88,6 +91,10 @@ export default {
   position: absolute;
   top: -10px;
   border-radius: 100%;
+}
+.location {
+}
+.date {
 }
 .rounded {
   border-radius: 5px;
