@@ -20,6 +20,7 @@ Auth.configure({
 Vue.use(Auth)
 Vue.use(AsyncComputed)
 Vue.use(VueChartist)
+Vue.use(require('vue-faker'))
 
 Vue.config.productionTip = false
 
