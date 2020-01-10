@@ -17,6 +17,7 @@
     "vue-chartist": "^2.2.1",
     "vue-faker": "^1.0.1",
     "vue-router": "^3.0.3",
+    "vue-virtual-scroller": "^1.0.0-rc.2",
     "vue2-transitions": "^0.3.0",
     "vuedraggable": "^2.23.2",
     "vuex": "^3.0.1"

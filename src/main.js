@@ -6,7 +6,9 @@ import vuetify from './plugins/vuetify'
 import Auth from '@aws-amplify/auth'
 import AsyncComputed from 'vue-async-computed'
 import VueChartist from 'vue-chartist'
-import './../node_modules/chartist/dist/chartist.min.css'
+import 'chartist/dist/chartist.min.css'
+import VueVirtualScroller from 'vue-virtual-scroller'
+import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 
 import BackBar from '@/components/header/BackBar'
 Vue.component('BackBar', BackBar)
@@ -20,7 +22,8 @@ Auth.configure({
 Vue.use(Auth)
 Vue.use(AsyncComputed)
 Vue.use(VueChartist)
-Vue.use(require('vue-faker'))
+Vue.use(VueVirtualScroller)
+// Vue.use(require('vue-faker'))
 
 Vue.config.productionTip = false
 
