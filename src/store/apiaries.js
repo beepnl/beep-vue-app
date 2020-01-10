@@ -254,19 +254,19 @@ export default {
       return false
     },
     selectHive({ commit }, payload) {
-      return commit('selectHive', payload)
+      return commit('selectHive', payload || {})
     },
     addHive({ commit }, payload) {
-      return commit('addHive', payload)
+      return commit('addHive', payload || {})
     },
     createApiary({ commit }) {
       return commit('createApiary')
     },
     updateApiary({ commit }, payload) {
-      return commit('updateApiary', payload)
+      return commit('updateApiary', payload || {})
     },
     deleteApiary({ commit }, payload) {
-      return commit('deleteApiary', payload)
+      return commit('deleteApiary', payload || {})
     },
   },
 }
