@@ -1,39 +1,41 @@
 <template>
-  <v-menu bottom left>
-    <template v-slot:activator="{ on }">
-      <v-btn icon v-on="on">
-        <v-icon>mdi-dots-vertical</v-icon>
-      </v-btn>
-    </template>
-
-    <v-list>
-      <template v-for="(item, index) in menuItems">
-        <v-subheader
-          v-if="item.header"
-          :key="`h-${index}`"
-          v-text="item.header"
-        ></v-subheader>
-
-        <v-divider
-          v-else-if="item.divider"
-          :key="`d-${index}`"
-          :inset="item.inset"
-        ></v-divider>
-
-        <v-list-item
-          v-else
-          :disabled="item.disabled"
-          :key="`i-${index}`"
-          :to="item.route ? { name: item.route } : null"
-          @click="item.action ? wrapAction(item.action) : showDialog(item)"
-        >
-          <v-list-item-title v-html="item.title" />
-        </v-list-item>
+  <span>
+    <v-menu bottom left>
+      <template v-slot:activator="{ on }">
+        <v-btn icon v-on="on">
+          <v-icon>mdi-dots-vertical</v-icon>
+        </v-btn>
       </template>
-      <v-divider v-if="menuItems.length"></v-divider>
-      <v-list-item :to="{ name: 'settings' }">Settings</v-list-item>
-      <v-list-item :disabled="!userIsLoggedIn">Log out</v-list-item>
-    </v-list>
+
+      <v-list>
+        <template v-for="(item, index) in menuItems">
+          <v-subheader
+            v-if="item.header"
+            :key="`h-${index}`"
+            v-text="item.header"
+          ></v-subheader>
+
+          <v-divider
+            v-else-if="item.divider"
+            :key="`d-${index}`"
+            :inset="item.inset"
+          ></v-divider>
+
+          <v-list-item
+            v-else
+            :disabled="item.disabled"
+            :key="`i-${index}`"
+            :to="item.route ? { name: item.route } : null"
+            @click="wrapAction(item)"
+          >
+            <v-list-item-title v-html="item.title" />
+          </v-list-item>
+        </template>
+        <v-divider v-if="menuItems.length"></v-divider>
+        <v-list-item :to="{ name: 'settings' }">Settings</v-list-item>
+        <v-list-item :disabled="!userIsLoggedIn">Log out</v-list-item>
+      </v-list>
+    </v-menu>
     <v-dialog v-model="dialog.show">
       <v-card>
         <v-card-title class="headline" v-html="dialog.title" />
@@ -45,7 +47,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </v-menu>
+  </span>
 </template>
 
 <script>
@@ -70,11 +72,11 @@ export default {
     ...mapGetters({ userIsLoggedIn: 'auth/userIsLoggedIn' }),
   },
   methods: {
-    wrapAction(cb) {
-      if (!cb) {
-        return
+    wrapAction(item) {
+      if (!item.action) {
+        this.showDialog(item)
       } else {
-        this.$store.dispatch(cb)
+        this.$store.dispatch(item.action)
       }
     },
     showDialog: function(item) {
