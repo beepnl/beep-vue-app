@@ -6,18 +6,19 @@ export default [
       import(/* webpackChunkName: "Apiaries" */ '@/pages/apiaries/ApiaryList'),
   },
   {
-    path: '/plan',
-    name: 'plan',
+    path: '/diary',
+    name: 'diary',
     component: () =>
       import(
-        /* webpackChunkName: "Planning" */
-        '@/pages/plan/EventList'
+        /* webpackChunkName: "Diary" */
+        '@/pages/diary/EventList'
       ),
   },
   {
-    path: '/log',
-    name: 'log',
-    component: () => import(/* webpackChunkName: "" */ '@/pages/log/Outline'),
+    path: '/data',
+    name: 'data',
+    component: () =>
+      import(/* webpackChunkName: "Data" */ '@/pages/data/Outline'),
   },
   {
     path: '/photos',

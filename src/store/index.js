@@ -19,8 +19,8 @@ export default new Vuex.Store({
           icon: 'mdi-beehive-outline',
           route: 'apiaries',
         },
-        { title: 'Plan', icon: 'mdi-calendar-edit', route: 'plan' },
-        { title: 'Log', icon: 'mdi-chart-line', route: 'log' },
+        { title: 'Diary', icon: 'mdi-calendar-edit', route: 'diary' },
+        { title: 'Data', icon: 'mdi-chart-line', route: 'data' },
         { title: 'Photos', icon: 'mdi-image-multiple', route: 'photos' },
       ],
     }
