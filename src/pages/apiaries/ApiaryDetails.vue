@@ -61,9 +61,46 @@
           </v-container>
         </v-img>
       </v-card>
-      <v-sheet height="2000">
-        lots of content
-      </v-sheet>
+
+      <v-list max-height="100%" class="overflow-y-auto">
+        <template v-for="item in filteredInspections">
+          <v-list-item two-line :key="`i-${item.id}`" class="inspection">
+            <v-row ma-0>
+              <v-col>
+                <v-list-item-title>
+                  {{ item.apiary }}
+                  <span class="caption grey--text" v-if="item.hive">
+                    hive {{ item.hive }}
+                  </span>
+                </v-list-item-title>
+                <v-list-item-subtitle>
+                  {{ item.date }}
+                </v-list-item-subtitle>
+              </v-col>
+              <v-col>
+                {{ item.note }}
+              </v-col>
+              <v-col cols="1">
+                <v-icon v-if="item.impression < 0" class="red--text">
+                  mdi-emoticon-sad-outline
+                </v-icon>
+                <v-icon v-if="item.impression > 0" class="green--text">
+                  mdi-emoticon-happy-outline
+                </v-icon>
+                <v-icon v-if="item.impression === 0" class="grey--text">
+                  mdi-emoticon-neutral-outline
+                </v-icon>
+              </v-col>
+              <v-col cols="1" class="mr-2">
+                <v-icon v-if="item.attention" class="red--text">
+                  mdi-alert
+                </v-icon>
+              </v-col>
+            </v-row>
+          </v-list-item>
+          <v-divider :key="`div-${item.id}`"></v-divider>
+        </template>
+      </v-list>
     </v-content>
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
@@ -75,7 +112,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import HiveIcons from '@/components/HiveIcons'
 
 export default {
@@ -97,10 +134,8 @@ export default {
     }
   },
   computed: {
-    ...mapState('apiaries', { apiary: 'selectedApiary', editing: 'editing' }),
-    logbook: function() {
-      return []
-    },
+    ...mapState('apiaries', ['apiary', 'editing']),
+    ...mapGetters('apiaries', ['filteredInspections']),
     menuItems: function() {
       let items = [
         {
@@ -148,6 +183,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.scroller {
+  height: 100%;
+}
+
 .notification {
   &.--warning {
     color: red;

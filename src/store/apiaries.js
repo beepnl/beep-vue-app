@@ -1,10 +1,14 @@
 var Vue = require('vue').default
+import inspections from './inspections'
 
 export default {
   namespaced: true,
+  modules: {
+    inspections,
+  },
   state() {
     return {
-      selectedApiary: null,
+      apiary: null,
       editing: false,
       apiaries: [
         {
@@ -169,6 +173,7 @@ export default {
       ],
     }
   },
+
   getters: {
     highestHive: state => {
       // returns the highest hive across all apiaries
@@ -186,11 +191,34 @@ export default {
         )
       )
     },
+    selectedHiveIndexes: state => {
+      // returns a map of currently selected hive indexes
+      let hiveIndexes = state.apiary.hives.reduce((hiveIndexes, hive, i) => {
+        if (hive.selected) {
+          hiveIndexes[i + 1] = true
+        }
+        return hiveIndexes
+      }, {})
+      return hiveIndexes
+    },
+    filteredInspections: (state, getters) => {
+      let inspections = state.inspections.inspections.filter(
+        i => i.apiary == state.apiary.title
+      )
+
+      if (!Object.keys(getters.selectedHiveIndexes).length) {
+        // show every hive in apiary
+        return inspections
+      }
+      return inspections.filter(
+        inspection => inspection.hive in getters.selectedHiveIndexes
+      )
+    },
   },
 
   mutations: {
     setSelectedApiary(state, apiary) {
-      state.selectedApiary = apiary
+      state.apiary = apiary
     },
     setEditable(state, editable) {
       state.editing = editable
@@ -200,7 +228,7 @@ export default {
     },
     addHive(state, { apiary = null, hive = null }) {
       if (!apiary) {
-        apiary = state.selectedApiary
+        apiary = state.apiary
       }
       const defaultHive = {
         brood: 1,
