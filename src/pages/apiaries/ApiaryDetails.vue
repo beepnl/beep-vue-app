@@ -2,7 +2,7 @@
   <div>
     <BackBar :menu-items="menuItems" title="Apiary details" />
     <v-content>
-      <v-card tile>
+      <v-card tile class="sticky">
         <v-img
           class="align-end"
           height="150px"
@@ -61,8 +61,7 @@
           </v-container>
         </v-img>
       </v-card>
-
-      <v-list max-height="100%" class="overflow-y-auto">
+      <v-list>
         <template v-for="item in filteredInspections">
           <v-list-item two-line :key="`i-${item.id}`" class="inspection">
             <v-row ma-0>
@@ -183,8 +182,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.scroller {
-  height: 100%;
+.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: -45px;
+  z-index: 1;
 }
 
 .notification {
