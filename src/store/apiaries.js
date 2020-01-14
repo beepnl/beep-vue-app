@@ -18,12 +18,14 @@ export default {
           lastvisit: 'today',
           hives: [
             {
+              id: 1,
               honey: 4,
               brood: 2,
               frames: 10,
               color: 'red',
             },
             {
+              id: 2,
               honey: 1,
               brood: 3,
               frames: 15,
@@ -40,60 +42,70 @@ export default {
           lastvisit: 'yesterday',
           hives: [
             {
+              id: 3,
               honey: 2,
               brood: 2,
               frames: 5,
               color: 'green',
             },
             {
+              id: 4,
               honey: 1,
               brood: 5,
               frames: 15,
               color: 'brown',
             },
             {
+              id: 5,
               honey: 1,
               brood: 5,
               frames: 15,
               color: 'brown',
             },
             {
+              id: 6,
               honey: 1,
               brood: 5,
               frames: 15,
               color: 'brown',
             },
             {
+              id: 7,
               honey: 1,
               brood: 5,
               frames: 15,
               color: 'brown',
             },
             {
+              id: 8,
               honey: 1,
               brood: 5,
               frames: 15,
               color: 'brown',
             },
             {
+              id: 9,
               honey: 1,
               brood: 5,
               frames: 15,
               color: 'brown',
             },
             {
+              id: 10,
               honey: 1,
               brood: 5,
               frames: 15,
               color: 'brown',
             },
             {
+              id: 11,
               honey: 1,
               brood: 5,
               frames: 15,
               color: 'brown',
             },
             {
+              id: 12,
               honey: 1,
               brood: 5,
               frames: 15,
@@ -109,12 +121,14 @@ export default {
           lastvisit: 'last week',
           hives: [
             {
+              id: 13,
               honey: 2,
               brood: 2,
               frames: 10,
               color: 'cyan',
             },
             {
+              id: 14,
               honey: 1,
               brood: 3,
               frames: 15,
@@ -132,36 +146,42 @@ export default {
           lastvisit: '3 months ago',
           hives: [
             {
+              id: 15,
               honey: 2,
               brood: 2,
               frames: 10,
               color: 'orange',
             },
             {
+              id: 16,
               honey: 1,
               brood: 3,
               frames: 15,
               color: 'yellow',
             },
             {
+              id: 17,
               honey: 2,
               brood: 2,
               frames: 15,
               color: 'yellow',
             },
             {
+              id: 18,
               honey: 5,
               brood: 3,
               frames: 10,
               color: 'red',
             },
             {
+              id: 19,
               honey: 2,
               brood: 2,
               frames: 15,
               color: 'deep-purple',
             },
             {
+              id: 20,
               honey: 5,
               brood: 3,
               frames: 10,
@@ -192,27 +212,31 @@ export default {
       )
     },
     selectedHives: state => {
-      // returns a map of currently selected hive indexes
+      // returns an Array of currently selected hives
       let hiveIndexes = state.apiary.hives.reduce((hiveIndexes, hive, i) => {
         if (hive.selected) {
-          hiveIndexes[i + 1] = true
+          hiveIndexes.push(i + 1)
         }
         return hiveIndexes
-      }, {})
+      }, [])
       return hiveIndexes
     },
-    filteredInspections: (state, getters) => {
-      let inspections = state.inspections.inspections.filter(
+    inspectionsForApiary: state => {
+      return state.inspections.inspections.filter(
         i => i.apiary == state.apiary.title
       )
-
-      if (!Object.keys(getters.selectedHives).length) {
+    },
+    filteredInspections: (state, getters) => {
+      if (!getters.selectedHives.length) {
         // show every hive in apiary
-        return inspections
+        return getters.inspectionsForApiary
       }
-      return inspections.filter(
-        inspection => inspection.hive in getters.selectedHives
-      )
+      return getters.inspectionsForApiary.filter(inspection => {
+        return (
+          !inspection.hive ||
+          getters.selectedHives.indexOf(inspection.hive) != -1
+        )
+      })
     },
   },
 
@@ -227,6 +251,7 @@ export default {
       Vue.set(hive, 'selected', !hive.selected)
     },
     unselectHives(state) {
+      console.log('unselectHives')
       state.apiary.hives.forEach(hive => Vue.set(hive, 'selected', false))
     },
     addHive(state, { apiary = null, hive = null }) {

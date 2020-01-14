@@ -62,56 +62,64 @@
         </v-img>
       </v-card>
 
-      <v-sheet class="inspectionFilters " v-if="hasFilters">
-        Filters:
-        <v-chip
-          v-if="selectedHiveCount"
-          class="ma-2"
-          close
-          @click:close="unselectHives"
-        >
-          {{ selectedHiveCount }} hives
-        </v-chip>
-      </v-sheet>
+      <v-list class="inspection-list">
+        <v-subheader v-if="selectedHives.length">
+          {{ filteredInspections.length }} inspections for
+          <scale-transition appear>
+            <v-chip outlined close @click:close="unselectHives" class="mx-2">
+              {{ selectedHives.length }} hive{{
+                selectedHives.length != 1 ? 's' : ''
+              }}
+            </v-chip>
+          </scale-transition>
+        </v-subheader>
+        <v-subheader v-else>
+          {{ inspectionsForApiary.length }} inspections. Click hives to filter.
+        </v-subheader>
 
-      <v-list>
-        <template v-for="item in filteredInspections">
-          <v-list-item two-line :key="`i-${item.id}`" class="inspection-entry">
-            <v-row ma-0>
-              <v-col>
-                <v-list-item-title>
-                  {{ item.apiary }}
-                  <span class="caption grey--text" v-if="item.hive">
-                    hive {{ item.hive }}
-                  </span>
-                </v-list-item-title>
-                <v-list-item-subtitle>
-                  {{ item.date }}
-                </v-list-item-subtitle>
-              </v-col>
-              <v-col>
-                {{ item.note }}
-              </v-col>
-              <v-col cols="1">
-                <v-icon v-if="item.impression < 0" class="red--text">
-                  mdi-emoticon-sad-outline
-                </v-icon>
-                <v-icon v-if="item.impression > 0" class="green--text">
-                  mdi-emoticon-happy-outline
-                </v-icon>
-                <v-icon v-if="item.impression === 0" class="grey--text">
-                  mdi-emoticon-neutral-outline
-                </v-icon>
-              </v-col>
-              <v-col cols="1" class="mr-2">
-                <v-icon v-if="item.attention" class="red--text">
-                  mdi-alert
-                </v-icon>
-              </v-col>
-            </v-row>
-          </v-list-item>
-          <v-divider :key="`div-${item.id}`"></v-divider>
-        </template>
+        <scale-transition group>
+          <template v-for="item in filteredInspections">
+            <v-list-item
+              two-line
+              :key="`i-${item.id}`"
+              class="inspection-entry"
+            >
+              <v-row ma-0>
+                <v-col>
+                  <v-list-item-title>
+                    {{ item.apiary }}
+                    <span class="caption grey--text" v-if="item.hive">
+                      hive {{ item.hive }}
+                    </span>
+                  </v-list-item-title>
+                  <v-list-item-subtitle>
+                    {{ item.date }}
+                  </v-list-item-subtitle>
+                </v-col>
+                <v-col>
+                  {{ item.note }}
+                </v-col>
+                <v-col cols="1">
+                  <v-icon v-if="item.impression < 0" class="red--text">
+                    mdi-emoticon-sad-outline
+                  </v-icon>
+                  <v-icon v-if="item.impression > 0" class="green--text">
+                    mdi-emoticon-happy-outline
+                  </v-icon>
+                  <v-icon v-if="item.impression === 0" class="grey--text">
+                    mdi-emoticon-neutral-outline
+                  </v-icon>
+                </v-col>
+                <v-col cols="1" class="mr-2">
+                  <v-icon v-if="item.attention" class="red--text">
+                    mdi-alert
+                  </v-icon>
+                </v-col>
+              </v-row>
+            </v-list-item>
+            <v-divider :key="`div-${item.id}`"></v-divider>
+          </template>
+        </scale-transition>
       </v-list>
     </v-content>
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
@@ -126,10 +134,12 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
 import HiveIcons from '@/components/HiveIcons'
+import { ScaleTransition } from 'vue2-transitions'
 
 export default {
   components: {
     HiveIcons,
+    ScaleTransition,
   },
   props: {
     id: {
@@ -147,13 +157,11 @@ export default {
   },
   computed: {
     ...mapState('apiaries', ['apiary', 'editing']),
-    ...mapGetters('apiaries', ['filteredInspections', 'selectedHives']),
-    selectedHiveCount: function() {
-      return Object.keys(this.selectedHives).length
-    },
-    hasFilters: function() {
-      return this.selectedHiveCount
-    },
+    ...mapGetters('apiaries', [
+      'filteredInspections',
+      'inspectionsForApiary',
+      'selectedHives',
+    ]),
     menuItems: function() {
       let items = [
         {
@@ -207,6 +215,9 @@ export default {
   position: sticky;
   top: -45px;
   z-index: 1;
+}
+.scale-move {
+  transition: transform 0.3s ease-out;
 }
 
 .notification {
