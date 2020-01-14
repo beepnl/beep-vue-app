@@ -191,7 +191,7 @@ export default {
         )
       )
     },
-    selectedHiveIndexes: state => {
+    selectedHives: state => {
       // returns a map of currently selected hive indexes
       let hiveIndexes = state.apiary.hives.reduce((hiveIndexes, hive, i) => {
         if (hive.selected) {
@@ -206,12 +206,12 @@ export default {
         i => i.apiary == state.apiary.title
       )
 
-      if (!Object.keys(getters.selectedHiveIndexes).length) {
+      if (!Object.keys(getters.selectedHives).length) {
         // show every hive in apiary
         return inspections
       }
       return inspections.filter(
-        inspection => inspection.hive in getters.selectedHiveIndexes
+        inspection => inspection.hive in getters.selectedHives
       )
     },
   },
@@ -225,6 +225,9 @@ export default {
     },
     selectHive(state, hive) {
       Vue.set(hive, 'selected', !hive.selected)
+    },
+    unselectHives(state) {
+      state.apiary.hives.forEach(hive => Vue.set(hive, 'selected', false))
     },
     addHive(state, { apiary = null, hive = null }) {
       if (!apiary) {
@@ -293,6 +296,9 @@ export default {
     },
     selectHive({ commit }, payload) {
       return commit('selectHive', payload || {})
+    },
+    unselectHives({ commit }) {
+      return commit('unselectHives')
     },
     addHive({ commit }, payload) {
       return commit('addHive', payload || {})

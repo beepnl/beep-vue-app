@@ -61,9 +61,22 @@
           </v-container>
         </v-img>
       </v-card>
+
+      <v-sheet class="inspectionFilters " v-if="hasFilters">
+        Filters:
+        <v-chip
+          v-if="selectedHiveCount"
+          class="ma-2"
+          close
+          @click:close="unselectHives"
+        >
+          {{ selectedHiveCount }} hives
+        </v-chip>
+      </v-sheet>
+
       <v-list>
         <template v-for="item in filteredInspections">
-          <v-list-item two-line :key="`i-${item.id}`" class="inspection">
+          <v-list-item two-line :key="`i-${item.id}`" class="inspection-entry">
             <v-row ma-0>
               <v-col>
                 <v-list-item-title>
@@ -111,7 +124,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 import HiveIcons from '@/components/HiveIcons'
 
 export default {
@@ -134,7 +147,13 @@ export default {
   },
   computed: {
     ...mapState('apiaries', ['apiary', 'editing']),
-    ...mapGetters('apiaries', ['filteredInspections']),
+    ...mapGetters('apiaries', ['filteredInspections', 'selectedHives']),
+    selectedHiveCount: function() {
+      return Object.keys(this.selectedHives).length
+    },
+    hasFilters: function() {
+      return this.selectedHiveCount
+    },
     menuItems: function() {
       let items = [
         {
@@ -166,6 +185,7 @@ export default {
     next()
   },
   methods: {
+    ...mapActions('apiaries', ['unselectHives']),
     notify: function(text) {
       this.snackbar.text = text
       this.snackbar.show = true
