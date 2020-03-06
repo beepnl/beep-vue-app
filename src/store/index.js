@@ -43,10 +43,7 @@ export default new Vuex.Store({
       return commit('startLoading')
     },
     doneLoading({ commit }) {
-      return setTimeout(() => {
-        // FIXME: remove timeout (visual indicator only)
-        commit('doneLoading')
-      }, 1000)
+      commit('doneLoading')
     },
     setMenu({ commit }, menuItems) {
       return commit('setMenu', menuItems)
