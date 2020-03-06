@@ -27,22 +27,13 @@
           <v-sheet v-else width="100%" height="100%" class="rounded secondary">
             <h1 class="white--text">{{ apiary.title | firstletter }}</h1>
           </v-sheet>
-
-          <template name="notifications">
-            <v-sheet class="absolute">
-              <slot name="warning">
-                <v-icon class="notification --warning" v-if="apiary.warning">
-                  mdi-alert-circle
-                </v-icon>
-              </slot>
-              <slot name="shared">
-                <v-icon class="notification --shared" v-if="apiary.shared">
-                  mdi-account-multiple
-                </v-icon>
-              </slot>
-            </v-sheet>
-          </template>
         </v-list-item-avatar>
+        <v-icon class="notification --warning" v-if="apiary.warning">
+          mdi-alert-circle
+        </v-icon>
+        <v-icon class="notification --shared" v-if="apiary.shared">
+          mdi-account-multiple
+        </v-icon>
         <v-container class="pa-0">
           <v-list-item-title>
             {{ apiary.title }}
@@ -86,30 +77,22 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.absolute {
-  position: absolute;
-  top: -10px;
-  border-radius: 100%;
-}
-.location {
-}
-.date {
-}
-.rounded {
-  border-radius: 5px;
-}
-.notification {
-  position: absolute;
-  background: white;
-  padding: 2px;
-  &.--warning {
-    right: 4px;
-    color: red;
-  }
-  &.--shared {
-    left: 4px;
-    color: gray;
-  }
-}
+<style lang="sass" scoped>
+.rounded
+  border-radius: 5px
+
+.notification
+  position: absolute
+  background: white
+  border-radius: 100%
+  padding: 1px
+  &.--warning
+    top: 5px
+    left: 5px
+    color: red
+
+  &.--shared
+    top: 5px
+    left: 40px
+    color: gray
 </style>
