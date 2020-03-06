@@ -30,7 +30,7 @@
             selected-color="primary"
           >
             <template v-slot:append="{ item }">
-              <!-- {{ item.category_input_id }} -->
+              {{ item.category_input_id }}
             </template>
           </v-treeview>
         </v-container>

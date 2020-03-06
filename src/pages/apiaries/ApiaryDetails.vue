@@ -86,15 +86,11 @@
             >
               <v-row ma-0>
                 <v-col>
-                  <v-list-item-title>
-                    {{ item.apiary }}
-                    <span class="caption grey--text" v-if="item.hive">
-                      hive {{ item.hive }}
-                    </span>
-                  </v-list-item-title>
-                  <v-list-item-subtitle>
-                    {{ item.date }}
-                  </v-list-item-subtitle>
+                  <v-list-item-title v-text="item.date" />
+                  <v-list-item-subtitle
+                    v-if="item.hive"
+                    v-text="`hive ${item.hive}`"
+                  />
                 </v-col>
                 <v-col>
                   {{ item.note }}
