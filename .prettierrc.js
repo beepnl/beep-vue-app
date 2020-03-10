@@ -6,7 +6,7 @@ module.exports = {
   jsxBracketSameLine: false,
   jsxSingleQuote: true,
   printWidth: 80,
-  proseWrap: 'never',
+  proseWrap: 'preserve',
   quoteProps: 'as-needed',
   semi: false,
   singleQuote: true,
