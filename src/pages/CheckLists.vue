@@ -3,7 +3,7 @@
     <v-list two-line subheader>
       <v-subheader>Interventions</v-subheader>
 
-      <v-list-item v-for="item in interventions" :key="item.title" @click="">
+      <v-list-item v-for="item in interventions" :key="item.title">
         <v-list-item-avatar>
           <v-icon :class="[item.iconClass]" v-text="item.icon"></v-icon>
         </v-list-item-avatar>
@@ -14,7 +14,7 @@
         </v-list-item-content>
 
         <v-list-item-action>
-          <v-btn icon @click="">
+          <v-btn icon>
             <v-icon color="grey lighten-1">mdi-information</v-icon>
           </v-btn>
         </v-list-item-action>
@@ -24,7 +24,7 @@
 
       <v-subheader>Checklists</v-subheader>
 
-      <v-list-item v-for="item in checklists" :key="item.title" @click="">
+      <v-list-item v-for="item in checklists" :key="item.title">
         <v-list-item-avatar>
           <v-icon :class="[item.iconClass]" v-text="item.icon"></v-icon>
         </v-list-item-avatar>
@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import ComposeChecklist from '@/components/ComposeChecklist'
+import ComposeChecklist from '@components/ComposeChecklist'
 export default {
   components: {
     ComposeChecklist,
@@ -83,5 +83,3 @@ export default {
   computed: {},
 }
 </script>
-
-<style lang="scss" scoped></style>

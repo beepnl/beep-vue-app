@@ -3,8 +3,8 @@ export default [
     path: '/sign-in',
     name: 'signIn',
     component: () =>
-      import(/* webpackChunkName: "Auth" */ '@/pages/auth/SignIn'),
-    props: route => ({
+      import(/* webpackChunkName: "Auth" */ '@pages/auth/SignIn'),
+    props: (route) => ({
       email: route.query.email,
     }),
   },
@@ -12,7 +12,7 @@ export default [
     path: '/sign-out',
     name: 'signOut',
     component: () =>
-      import(/* webpackChunkName: "Auth" */ '@/pages/auth/SignOut'),
+      import(/* webpackChunkName: "Auth" */ '@pages/auth/SignOut'),
   },
   {
     path: '/password-forgotten',
@@ -20,15 +20,15 @@ export default [
     component: () =>
       import(
         /* webpackChunkName: "Password" */
-        '@/pages/auth/PasswordForgotten'
+        '@pages/auth/PasswordForgotten'
       ),
   },
   {
     path: '/password-reset',
     name: 'passwordReset',
     component: () =>
-      import(/* webpackChunkName: "Password" */ '@/pages/auth/PasswordReset'),
-    props: route => ({
+      import(/* webpackChunkName: "Password" */ '@pages/auth/PasswordReset'),
+    props: (route) => ({
       email: route.query.email,
       code: route.query.code,
     }),
@@ -37,7 +37,7 @@ export default [
     path: '/sign-up',
     name: 'signUp',
     component: () =>
-      import(/* webpackChunkName: "Signup" */ '@/pages/auth/SignUp'),
+      import(/* webpackChunkName: "Signup" */ '@pages/auth/SignUp'),
   },
   {
     path: '/sign-up-confirm',
@@ -45,9 +45,9 @@ export default [
     component: () =>
       import(
         /* webpackChunkName: "Signup" */
-        '@/pages/auth/SignUpConfirmation'
+        '@pages/auth/SignUpConfirmation'
       ),
-    props: route => ({
+    props: (route) => ({
       email: route.query.email,
     }),
   },

@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-form @submit.prevent="signIn" ref="form" v-model="valid">
+    <v-form ref="form" v-model="valid" @submit.prevent="signIn">
       <v-card-title>Sign In</v-card-title>
       <v-card-text>
         <v-alert
@@ -12,16 +12,16 @@
           {{ error.type }}
         </v-alert>
         <v-text-field
-          label="email"
           v-model="credentials.username"
+          label="email"
           autocomplete="off"
-          :rules="[v => !!v || 'error.email_required']"
+          :rules="[(v) => !!v || 'error.email_required']"
         ></v-text-field>
         <v-text-field
+          v-model="credentials.password"
           label="password"
           type="password"
-          v-model="credentials.password"
-          :rules="[v => !!v || 'error.password_required']"
+          :rules="[(v) => !!v || 'error.password_required']"
         ></v-text-field>
         <router-link :to="{ name: 'forgotPassword' }">
           I forgot my password
@@ -42,7 +42,22 @@
 
 <script>
 export default {
-  props: ['email'],
+  props: {
+    email: {
+      type: String,
+      default: '',
+    },
+  },
+  data() {
+    return {
+      credentials: {
+        username: this.email || '',
+        password: '',
+      },
+      errors: [],
+      valid: false,
+    }
+  },
   methods: {
     async signIn() {
       this.clearErrors()
@@ -81,17 +96,5 @@ export default {
       this.credentials = {}
     },
   },
-  data() {
-    return {
-      credentials: {
-        username: this.email || '',
-        password: '',
-      },
-      errors: [],
-      valid: false,
-    }
-  },
 }
 </script>
-
-<style scoped></style>

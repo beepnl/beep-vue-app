@@ -28,10 +28,10 @@
             <h1 class="white--text">{{ apiary.title | firstletter }}</h1>
           </v-sheet>
         </v-list-item-avatar>
-        <v-icon class="notification --warning" v-if="apiary.warning">
+        <v-icon v-if="apiary.warning" class="notification warning">
           mdi-alert-circle
         </v-icon>
-        <v-icon class="notification --shared" v-if="apiary.shared">
+        <v-icon v-if="apiary.shared" class="notification shared">
           mdi-account-multiple
         </v-icon>
         <v-container class="pa-0">
@@ -51,14 +51,18 @@
 
 <script>
 import { mapState } from 'vuex'
-import HiveIcons from '@/components/HiveIcons'
+import HiveIcons from '@components/HiveIcons'
 
 export default {
   components: {
     HiveIcons,
   },
-  mounted() {
-    this.$store.dispatch('setMenu', this.menuItems)
+  filters: {
+    firstletter: function(value) {
+      if (!value) return '?'
+      value = value.toString()
+      return value.charAt(0).toUpperCase()
+    },
   },
   data: () => ({
     settings: [],
@@ -67,12 +71,8 @@ export default {
   computed: {
     ...mapState('apiaries', ['apiaries']),
   },
-  filters: {
-    firstletter: function(value) {
-      if (!value) return '?'
-      value = value.toString()
-      return value.charAt(0).toUpperCase()
-    },
+  mounted() {
+    this.$store.dispatch('setMenu', this.menuItems)
   },
 }
 </script>
@@ -83,15 +83,15 @@ export default {
 
 .notification
   position: absolute
+  padding: 1px
   background: white
   border-radius: 100%
-  padding: 1px
-  &.--warning
+  &.warning
     top: 5px
     left: 5px
     color: red
 
-  &.--shared
+  &.shared
     top: 5px
     left: 40px
     color: gray

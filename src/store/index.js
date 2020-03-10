@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import auth from './auth'
-import apiaries from './apiaries'
+import auth from '@state/modules/AWSauth'
+import apiaries from '@state/modules/apiaries'
 
 const debug = process.env.NODE_ENV !== 'production'
 

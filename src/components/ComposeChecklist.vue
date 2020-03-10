@@ -48,17 +48,9 @@
 </template>
 
 <script>
-import jsondata from '@/database/db.json'
-import flat2nested from 'flat-to-nested'
+import jsondata from '@database/db.json'
+import Flat2Nested from 'flat-to-nested'
 export default {
-  mounted() {
-    const f2n = new flat2nested({
-      id: 'id',
-      parent: 'parent_id',
-      children: 'children',
-    })
-    this.nested = f2n.convert(jsondata.taxonomy)
-  },
   data: () => ({
     dialog: false,
     selection: [],
@@ -77,12 +69,13 @@ export default {
         : undefined
     },
   },
-  watch: {
-    selection: function(cur) {
-      console.log(JSON.stringify(cur))
-    },
+  mounted() {
+    const f2n = new Flat2Nested({
+      id: 'id',
+      parent: 'parent_id',
+      children: 'children',
+    })
+    this.nested = f2n.convert(jsondata.taxonomy)
   },
 }
 </script>
-
-<style lang="scss" scoped></style>

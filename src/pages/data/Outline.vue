@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import ComposeChecklist from '@/components/ComposeChecklist'
+import ComposeChecklist from '@components/ComposeChecklist'
 export default {
   components: {
     ComposeChecklist,
@@ -83,5 +83,3 @@ export default {
   computed: {},
 }
 </script>
-
-<style lang="scss" scoped></style>

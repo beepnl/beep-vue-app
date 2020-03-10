@@ -2,6 +2,6 @@ export default [
   {
     path: '/settings',
     name: 'settings',
-    component: () => import('@/pages/Settings'),
+    component: () => import('@pages/Settings'),
   },
 ]

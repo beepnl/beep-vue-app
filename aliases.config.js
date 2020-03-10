@@ -58,11 +58,11 @@ fs.writeFile(
       },
     }),
     {
-      ...require('./.prettierrc'),
+      ...require('./.prettierrc.js'),
       parser: 'json',
     }
   ),
-  error => {
+  (error) => {
     if (error) {
       console.error(
         'Error while creating jsconfig.json from aliases.config.js.'

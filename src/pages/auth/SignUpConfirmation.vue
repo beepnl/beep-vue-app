@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-form @submit.prevent="confirmSignup" ref="form" v-model="valid">
+    <v-form ref="form" v-model="valid" @submit.prevent="confirmSignup">
       <v-card-title>Confirm your email</v-card-title>
       <v-card-text>
         You've received a verification code in your email. Enter it below to
@@ -16,16 +16,16 @@
           {{ error.type }}
         </v-alert>
         <v-text-field
-          label="email"
           v-model.trim="email"
+          label="email"
           autocomplete="off"
           disabled
         ></v-text-field>
         <v-text-field
-          label="verification code"
           v-model.trim="code"
+          label="verification code"
           autocomplete="off"
-          :rules="[v => !!v || 'error.verification_code_required']"
+          :rules="[(v) => !!v || 'error.verification_code_required']"
         ></v-text-field>
       </v-card-text>
 
@@ -39,7 +39,19 @@
 
 <script>
 export default {
-  props: ['email'],
+  props: {
+    email: {
+      type: String,
+      default: '',
+    },
+  },
+  data() {
+    return {
+      code: '',
+      errors: [],
+      valid: false,
+    }
+  },
   methods: {
     async confirmSignup() {
       this.clearErrors()
@@ -75,14 +87,5 @@ export default {
       this.errors = []
     },
   },
-  data() {
-    return {
-      code: '',
-      errors: [],
-      valid: false,
-    }
-  },
 }
 </script>
-
-<style scoped></style>

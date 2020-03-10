@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-form @submit.prevent="forgotPassword" ref="form" v-model="valid">
+    <v-form ref="form" v-model="valid" @submit.prevent="forgotPassword">
       <v-card-title>Forgot password</v-card-title>
       <v-card-text>
         <v-alert
@@ -12,8 +12,8 @@
           {{ error.type }}
         </v-alert>
         <v-text-field
-          label="email"
           v-model.trim="email"
+          label="email"
           :rules="emailRules"
           autocomplete="off"
         ></v-text-field>
@@ -29,6 +29,22 @@
 
 <script>
 export default {
+  data() {
+    return {
+      valid: false,
+      errors: [],
+      emailRules: [
+        (v) => !!v || 'error.email_required',
+        (v) => /.+@.+\..+/.test(v) || 'error.invalid_email',
+      ],
+      email: '',
+    }
+  },
+  computed: {
+    hasErrors() {
+      return this.errors.length > 0
+    },
+  },
   methods: {
     async forgotPassword() {
       if (this.$refs.form.validate()) {
@@ -64,23 +80,5 @@ export default {
       this.errors = []
     },
   },
-  computed: {
-    hasErrors() {
-      return this.errors.length > 0
-    },
-  },
-  data() {
-    return {
-      valid: false,
-      errors: [],
-      emailRules: [
-        v => !!v || 'error.email_required',
-        v => /.+@.+\..+/.test(v) || 'error.invalid_email',
-      ],
-      email: '',
-    }
-  },
 }
 </script>
-
-<style scoped></style>

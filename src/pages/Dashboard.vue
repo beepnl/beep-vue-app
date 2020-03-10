@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import HeaderMenu from '@/components/header/HeaderMenu'
+import HeaderMenu from '@components/header/HeaderMenu'
 import { mapState } from 'vuex'
 
 export default {
@@ -66,5 +66,3 @@ export default {
   },
 }
 </script>
-
-<style scoped lang="scss"></style>

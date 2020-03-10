@@ -4,9 +4,9 @@
     <v-content>
       <v-card tile class="sticky">
         <v-img
+          v-if="apiary"
           class="align-end"
           height="150px"
-          v-if="apiary"
           gradient="to bottom, rgba(255,255,255,.5), rgba(255,255,255,.9), rgba(255,255,255,.95)"
           :src="
             apiary.photo
@@ -31,17 +31,17 @@
             <div class="d-flex">
               <span class="display-1" v-text="apiary.title" />
               <v-spacer></v-spacer>
-              <v-tooltip left v-if="apiary.warning">
+              <v-tooltip v-if="apiary.warning" left>
                 <template v-slot:activator="{ on }">
-                  <v-icon v-on="on" class="notification --warning">
+                  <v-icon class="notification warning" v-on="on">
                     mdi-alert-circle
                   </v-icon>
                 </template>
                 <span>This apiary has issues</span>
               </v-tooltip>
-              <v-tooltip left v-if="apiary.shared">
+              <v-tooltip v-if="apiary.shared" left>
                 <template v-slot:activator="{ on }">
-                  <v-icon v-on="on" class="notification --shared">
+                  <v-icon class="notification shared" v-on="on">
                     mdi-account-multiple
                   </v-icon>
                 </template>
@@ -65,23 +65,23 @@
       <v-list class="inspection-list">
         <v-subheader v-if="selectedHives.length">
           {{ filteredInspections.length }} inspections for
-          <scale-transition appear>
-            <v-chip outlined close @click:close="unselectHives" class="mx-2">
+          <ScaleTransition appear>
+            <v-chip outlined close class="mx-2" @click:close="unselectHives">
               {{ selectedHives.length }} hive{{
-                selectedHives.length != 1 ? 's' : ''
+                selectedHives.length !== 1 ? 's' : ''
               }}
             </v-chip>
-          </scale-transition>
+          </ScaleTransition>
         </v-subheader>
         <v-subheader v-else>
           {{ inspectionsForApiary.length }} inspections. Click hives to filter.
         </v-subheader>
 
-        <scale-transition group>
+        <ScaleTransition group>
           <template v-for="item in filteredInspections">
             <v-list-item
-              two-line
               :key="`i-${item.id}`"
+              two-line
               class="inspection-entry"
             >
               <v-row ma-0>
@@ -115,7 +115,7 @@
             </v-list-item>
             <v-divider :key="`div-${item.id}`"></v-divider>
           </template>
-        </scale-transition>
+        </ScaleTransition>
       </v-list>
     </v-content>
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
@@ -129,7 +129,7 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
-import HiveIcons from '@/components/HiveIcons'
+import HiveIcons from '@components/HiveIcons'
 import { ScaleTransition } from 'vue2-transitions'
 
 export default {
@@ -137,9 +137,17 @@ export default {
     HiveIcons,
     ScaleTransition,
   },
+  filters: {
+    firstletter: function(value) {
+      if (!value) return '?'
+      value = value.toString()
+      return value.charAt(0).toUpperCase()
+    },
+  },
   props: {
     id: {
       type: [String, Number],
+      default: null,
     },
   },
   data: function() {
@@ -159,7 +167,7 @@ export default {
       'selectedHives',
     ]),
     menuItems: function() {
-      let items = [
+      const items = [
         {
           title: 'Share Apiary&hellip;',
         },
@@ -195,13 +203,6 @@ export default {
       this.snackbar.show = true
     },
   },
-  filters: {
-    firstletter: function(value) {
-      if (!value) return '?'
-      value = value.toString()
-      return value.charAt(0).toUpperCase()
-    },
-  },
 }
 </script>
 
@@ -212,15 +213,12 @@ export default {
   top: -45px;
   z-index: 1;
 }
-.scale-move {
-  transition: transform 0.3s ease-out;
-}
 
 .notification {
-  &.--warning {
+  &.warning {
     color: red;
   }
-  &.--shared {
+  &.shared {
     color: gray;
   }
 }

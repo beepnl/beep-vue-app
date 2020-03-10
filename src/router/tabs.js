@@ -3,7 +3,7 @@ export default [
     path: '/apiaries',
     name: 'apiaries',
     component: () =>
-      import(/* webpackChunkName: "Apiaries" */ '@/pages/apiaries/ApiaryList'),
+      import(/* webpackChunkName: "Apiaries" */ '@pages/apiaries/ApiaryList'),
   },
   {
     path: '/diary',
@@ -11,19 +11,19 @@ export default [
     component: () =>
       import(
         /* webpackChunkName: "Diary" */
-        '@/pages/diary/EventList'
+        '@pages/diary/EventList'
       ),
   },
   {
     path: '/data',
     name: 'data',
     component: () =>
-      import(/* webpackChunkName: "Data" */ '@/pages/data/Outline'),
+      import(/* webpackChunkName: "Data" */ '@pages/data/Outline'),
   },
   {
     path: '/photos',
     name: 'photos',
     component: () =>
-      import(/* webpackChunkName: "Photos" */ '@/pages/photos/PhotoGallery'),
+      import(/* webpackChunkName: "Photos" */ '@pages/photos/PhotoGallery'),
   },
 ]
