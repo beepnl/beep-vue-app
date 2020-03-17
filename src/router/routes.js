@@ -13,7 +13,7 @@ export default [
     meta: {
       beforeResolve(routeTo, routeFrom, next) {
         // If the user is already logged in
-        if (store.getters['auth/loggedIn']) {
+        if (store.getters['auth/isLoggedIn']) {
           // Redirect to the home page instead
           next({ name: 'home' })
         } else {

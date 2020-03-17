@@ -32,7 +32,7 @@ export const actions = {
     if (getters.loggedIn) return dispatch('validate')
 
     return axios
-      .post('/api/session', { username, password })
+      .post('/login', { email: username, password })
       .then((response) => {
         const user = response.data
         commit('SET_CURRENT_USER', user)
@@ -51,7 +51,7 @@ export const actions = {
     if (!state.currentUser) return Promise.resolve(null)
 
     return axios
-      .get('/api/session')
+      .post('/authenticate')
       .then((response) => {
         const user = response.data
         commit('SET_CURRENT_USER', user)
@@ -60,8 +60,6 @@ export const actions = {
       .catch((error) => {
         if (error.response && error.response.status === 401) {
           commit('SET_CURRENT_USER', null)
-        } else {
-          console.warn(error)
         }
         return null
       })
@@ -81,7 +79,9 @@ function saveState(key, state) {
 }
 
 function setDefaultAuthHeaders(state) {
+  axios.defaults.headers.common['Content-Type'] = 'application/json'
+
   axios.defaults.headers.common.Authorization = state.currentUser
-    ? state.currentUser.token
+    ? `Bearer ${state.currentUser.api_token}`
     : ''
 }
