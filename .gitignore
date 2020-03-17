@@ -15,6 +15,7 @@ jsconfig.json
 # Local Env Files
 .env.local
 .env.*.local
+localhost.*
 
 # Log Files
 *.log

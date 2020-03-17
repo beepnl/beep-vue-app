@@ -1,3 +1,4 @@
+const fs = require('fs')
 const appConfig = require('./src/app.config')
 
 /** @type import('@vue/cli-service').ProjectOptions */
@@ -30,6 +31,11 @@ module.exports = {
   // Configure Webpack's dev server.
   // https://cli.vuejs.org/guide/cli-service.html
   devServer: {
+    https: {
+      key: fs.readFileSync('./localhost.key'),
+      cert: fs.readFileSync('./localhost.crt'),
+    },
+    public: 'https://localhost:8080/',
     ...(process.env.API_BASE_URL
       ? // Proxy API endpoints to the production base URL.
         { proxy: { '/api': { target: process.env.API_BASE_URL } } }
