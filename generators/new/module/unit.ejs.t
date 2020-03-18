@@ -1,8 +1,8 @@
 ---
-to: src/state/modules/<%= h.changeCase.kebab(name) %>.unit.js
+to: src/state/modules/<%= h.changeCase.pascal(name) %>.unit.js
 ---
 <%
-  const fileName = h.changeCase.kebab(name)
+  const fileName = h.changeCase.pascal(name)
   const importName = h.changeCase.camel(fileName) + 'Module'
 %>import * as <%= importName %> from './<%= fileName %>'
 

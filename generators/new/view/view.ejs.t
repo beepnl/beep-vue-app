@@ -1,8 +1,8 @@
 ---
-to: "src/router/views/<%= h.changeCase.kebab(name) %>.vue"
+to: "src/router/views/<%= h.changeCase.pascal(name) %>.vue"
 ---
 <%
-  const fileName = h.changeCase.kebab(name)
+  const fileName = h.changeCase.pascal(name)
   const importName = h.changeCase.pascal(fileName)
   const titleName = h.changeCase.title(name)
 %><script>
@@ -24,8 +24,6 @@ export default {
 </template>
 <%
 
-if (useStyles) { %>
 <style lang="scss" module>
 @import '@design';
 </style>
-<% } %>

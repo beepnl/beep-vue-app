@@ -10,9 +10,4 @@ module.exports = [
       return true
     },
   },
-  {
-    type: 'confirm',
-    name: 'useStyles',
-    message: 'Add <style> block?',
-  },
 ]

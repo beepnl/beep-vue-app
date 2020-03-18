@@ -1,5 +1,5 @@
 ---
-to: src/state/modules/<%= h.changeCase.kebab(name) %>.js
+to: src/state/modules/<%= h.changeCase.pascal(name) %>.js
 ---
 export const state = {}
 

@@ -1,8 +1,8 @@
 ---
-to: "src/components/<%= h.changeCase.kebab(name).toLowerCase().slice(0, 5) === 'base-' ? '_' : '' %><%= h.changeCase.kebab(name) %>.unit.js"
+to: "src/components/<%= h.changeCase.pascal(name).toLowerCase().slice(0, 5) === 'base-' ? '_' : '' %><%= h.changeCase.pascal(name) %>.unit.js"
 ---
 <%
-  let fileName = h.changeCase.kebab(name).toLowerCase()
+  let fileName = h.changeCase.pascal(name).toLowerCase()
   const importName = h.changeCase.pascal(fileName)
   if (fileName.slice(0, 5) === 'base-') {
     fileName = '_' + fileName
