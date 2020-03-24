@@ -2,8 +2,6 @@ import Vue from 'vue'
 import router from '@router'
 import store from '@state/store'
 import vuetify from './plugins/vuetify'
-// Globally register all `_base`-prefixed components
-import '@components/_globals'
 
 import App from './App.vue'
 
