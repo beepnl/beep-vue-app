@@ -2,8 +2,7 @@
 set -e
 
 if [ "$1" = 'vue' ]; then
-  npm install
+  yarn
 fi
 
 exec "$@"
-
