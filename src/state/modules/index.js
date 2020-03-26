@@ -11,12 +11,12 @@ const storeData = { modules: {} }
   // Allow us to dynamically require all Vuex module files.
   // https://webpack.js.org/guides/dependency-management/#require-context
   const requireModule = require.context(
-    // Search for files in the current directory.
+    // Search for files in the modules directory.
     '.',
     // Search for files in subdirectories.
     true,
-    // Include any .js files that are not this file or a unit test.
-    /^((?!index|\.unit\.).)*\.js$/
+    // Include index.js files: make sure these contain or load correct module definitions.
+    /.*\/index.js/
   )
 
   // For every Vuex module...

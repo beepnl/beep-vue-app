@@ -1,19 +1,14 @@
 import store from '@state/store'
 
-export default [
+const accountRoutes = [
   {
-    path: '/',
-    name: 'home',
-    component: () => lazyLoadView(import('@views/home.vue')),
-  },
-  {
-    path: '/login',
-    name: 'login',
-    component: () => lazyLoadView(import('@views/login.vue')),
+    path: '/sign-in',
+    name: 'SignIn',
+    component: () => lazyLoadView(import('@views/account/SignIn.vue')),
     meta: {
       beforeResolve(routeTo, routeFrom, next) {
         // If the user is already logged in
-        if (store.getters['auth/isLoggedIn']) {
+        if (store.getters['auth/loggedIn']) {
           // Redirect to the home page instead
           next({ name: 'home' })
         } else {
@@ -24,9 +19,98 @@ export default [
     },
   },
   {
+    path: '/sign-out',
+    name: 'signOut',
+    meta: {
+      authRequired: true,
+      beforeResolve(routeTo, routeFrom, next) {
+        store.dispatch('auth/signOut')
+        const authRequiredOnPreviousRoute = routeFrom.matched.some(
+          (route) => route.meta.authRequired
+        )
+        // Navigate back to previous page, or home as a fallback
+        next(authRequiredOnPreviousRoute ? { name: 'home' } : { ...routeFrom })
+      },
+    },
+  },
+  {
+    path: '/password-forgotten',
+    name: 'passwordForgotten',
+    component: () => import('@views/account/PasswordForgotten.vue'),
+  },
+  {
+    path: '/password-reset',
+    name: 'passwordReset',
+    component: () => import('@views/account/PasswordReset.vue'),
+    props: (route) => ({
+      email: route.query.email,
+      code: route.query.code,
+    }),
+  },
+  {
+    path: '/sign-up',
+    name: 'signUp',
+    component: () => import('@views/account/SignUp.vue'),
+  },
+  {
+    path: '/sign-up-confirm',
+    name: 'signUpConfirmation',
+    component: () => import('@views/account/SignUpConfirmation.vue'),
+    props: (route) => ({
+      email: route.query.email,
+    }),
+  },
+  {
+    path: '/404',
+    name: '404',
+    component: require('@views/_404.vue').default,
+    // Allows props to be passed to the 404 page through route
+    // params, such as `resource` to define what wasn't found.
+    props: true,
+  },
+  // Redirect any unmatched routes to the 404 page. This may
+  // require some server configuration to work in production:
+  // https://router.vuejs.org/en/essentials/history-mode.html#example-server-configurations
+  {
+    path: '*',
+    redirect: '404',
+  },
+]
+const apiaryRoutes = [
+  {
+    path: '/',
+    alias: '/apiaries',
+    name: 'home',
+    component: () => lazyLoadView(import('@views/apiaries/ApiaryList.vue')),
+  },
+]
+const diaryRoutes = [
+  {
+    path: '/diary',
+    name: 'diary',
+    component: () => import('@views/diary/EventList.vue'),
+  },
+]
+const measurementsRoutes = [
+  {
+    path: '/data',
+    name: 'data',
+    component: () => import('@views/data/Outline.vue'),
+  },
+]
+const photoRoutes = [
+  {
+    path: '/photos',
+    name: 'photos',
+    component: () => import('@views/photos/PhotoGallery.vue'),
+  },
+]
+
+const profileRoutes = [
+  {
     path: '/profile',
     name: 'profile',
-    component: () => lazyLoadView(import('@views/profile.vue')),
+    component: () => lazyLoadView(import('@views/account/Profile.vue')),
     meta: {
       authRequired: true,
     },
@@ -35,7 +119,7 @@ export default [
   {
     path: '/profile/:username',
     name: 'username-profile',
-    component: () => lazyLoadView(import('@views/profile.vue')),
+    component: () => lazyLoadView(import('@views/account/Profile.vue')),
     meta: {
       authRequired: true,
       // HACK: In order to share data between the `beforeResolve` hook
@@ -44,7 +128,7 @@ export default [
       tmp: {},
       beforeResolve(routeTo, routeFrom, next) {
         store
-          // Try to fetch the user's information by their username
+          // FIXME: get the user's info from the api/login endpoint
           .dispatch('users/fetchUser', { username: routeTo.params.username })
           .then((user) => {
             // Add the user to `meta.tmp`, so that it can
@@ -64,36 +148,14 @@ export default [
     // beforeResolve route guard.
     props: (route) => ({ user: route.meta.tmp.user }),
   },
-  {
-    path: '/logout',
-    name: 'logout',
-    meta: {
-      authRequired: true,
-      beforeResolve(routeTo, routeFrom, next) {
-        store.dispatch('auth/logOut')
-        const authRequiredOnPreviousRoute = routeFrom.matched.some(
-          (route) => route.meta.authRequired
-        )
-        // Navigate back to previous page, or home as a fallback
-        next(authRequiredOnPreviousRoute ? { name: 'home' } : { ...routeFrom })
-      },
-    },
-  },
-  {
-    path: '/404',
-    name: '404',
-    component: require('@views/_404.vue').default,
-    // Allows props to be passed to the 404 page through route
-    // params, such as `resource` to define what wasn't found.
-    props: true,
-  },
-  // Redirect any unmatched routes to the 404 page. This may
-  // require some server configuration to work in production:
-  // https://router.vuejs.org/en/essentials/history-mode.html#example-server-configurations
-  {
-    path: '*',
-    redirect: '404',
-  },
+]
+export default [
+  ...accountRoutes,
+  ...profileRoutes,
+  ...apiaryRoutes,
+  ...diaryRoutes,
+  ...measurementsRoutes,
+  ...photoRoutes,
 ]
 
 // Lazy-loads view components, but with better UX. A loading view

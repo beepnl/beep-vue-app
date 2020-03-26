@@ -36,10 +36,5 @@ module.exports = {
       cert: fs.readFileSync('./localhost.crt'),
     },
     public: 'https://localhost:8080/',
-    ...(process.env.API_BASE_URL
-      ? // Proxy API endpoints to the production base URL.
-        { proxy: { '/api': { target: process.env.API_BASE_URL } } }
-      : // Proxy API endpoints a local mock API.
-        { before: require('./tests/mock-api') }),
   },
 }

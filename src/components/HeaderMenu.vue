@@ -33,7 +33,7 @@
         </template>
         <v-divider v-if="menuItems.length"></v-divider>
         <v-list-item :to="{ name: 'settings' }">Settings</v-list-item>
-        <v-list-item :disabled="!userIsLoggedIn">Log out</v-list-item>
+        <v-list-item :disabled="!loggedIn">Log out</v-list-item>
       </v-list>
     </v-menu>
     <v-dialog v-model="dialog.show">
@@ -51,8 +51,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
   props: {
     menuItems: {
@@ -69,7 +67,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({ userIsLoggedIn: 'auth/userIsLoggedIn' }),
+    loggedIn() {
+      return this.$store.getters['auth/loggedIn']
+    },
   },
   methods: {
     wrapAction(item) {

@@ -1,11 +1,11 @@
 <template>
-  <div id="app">
+  <v-app id="app">
     <!--
     Even when routes use the same component, treat them
     as distinct and create the component again.
     -->
     <RouterView :key="$route.fullPath" />
-  </div>
+  </v-app>
 </template>
 
 <script>
@@ -27,10 +27,7 @@ export default {
 // https://github.com/rstacruz/nprogress
 @import '~nprogress/nprogress.css';
 
-// Design variables and utilities from src/design.
-@import '@design';
-
 #nprogress .bar {
-  background: $color-link-text;
+  background: orange;
 }
 </style>

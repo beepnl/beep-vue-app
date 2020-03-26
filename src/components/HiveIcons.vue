@@ -9,12 +9,12 @@
   >
     <v-sheet
       v-for="(hive, j) in hives"
+      :key="j"
       :class="
         `hive-icon d-flex justify-center align-end white--text text--small mr-1 ${
           hive.selected ? '--selected' : ''
         }`
       "
-      :key="j"
       :height="`${hiveHeight(hive)}%`"
       :width="`${hiveWidth(hive)}%`"
       :color="hive.color"
@@ -51,9 +51,9 @@ export default {
     draggable,
   },
   props: {
-    disabled: {
+    diveggsabled: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     apiary: {
       type: Object,
@@ -117,9 +117,9 @@ export default {
   }
   .hive-caption {
     z-index: 1;
+    line-height: 0.9rem;
     color: white;
     text-shadow: 1px 1px black;
-    line-height: 0.9rem;
   }
 }
 </style>

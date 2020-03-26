@@ -1,3 +1,11 @@
+<template>
+  <Layout>
+    <Transition appear>
+      <v-progress-circular size="50" color="primary" indeterminate />
+    </Transition>
+  </Layout>
+</template>
+
 <script>
 import Layout from '@layouts/main.vue'
 
@@ -9,31 +17,3 @@ export default {
   components: { Layout },
 }
 </script>
-
-<template>
-  <Layout>
-    <Transition appear>
-      <BaseIcon :class="$style.loadingIcon" name="sync" spin />
-    </Transition>
-  </Layout>
-</template>
-
-<style lang="scss" module>
-@import '@design';
-
-.loadingIcon {
-  @extend %typography-xxlarge;
-
-  display: block;
-  margin: 0 auto;
-
-  // stylelint-disable-next-line selector-class-pattern
-  &:global(.v-enter-active) {
-    transition: opacity 1s;
-  }
-  // stylelint-disable-next-line selector-class-pattern
-  &:global(.v-enter) {
-    opacity: 0;
-  }
-}
-</style>

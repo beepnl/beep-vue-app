@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import jsondata from '@database/db.json'
+import jsondata from '@src/database/db.json'
 import Flat2Nested from 'flat-to-nested'
 export default {
   data: () => ({
