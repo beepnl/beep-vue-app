@@ -1,13 +1,18 @@
 import AWSAuth from '@aws-amplify/auth'
 import * as BEEPAuth from './BEEPAuth'
 
-// legacy BEEP API or AWS API?
-const Auth =
-  process.env.API_URL && process.env.API_URL.indexOf('test.beep.nl/api' >= 0)
-    ? BEEPAuth
-    : AWSAuth
-
+let Auth
 export function init({ dispatch }) {
+  // legacy BEEP API or AWS API?
+  const BEEPApi =
+    process.env.VUE_APP_API_URL &&
+    process.env.VUE_APP_API_URL.indexOf('test.beep.nl/api' >= 0)
+
+  Auth = BEEPApi ? BEEPAuth : AWSAuth
+  if (BEEPApi) {
+    BEEPAuth.init(this)
+  }
+
   dispatch('validateUser')
   dispatch('validateSession')
 }
@@ -34,12 +39,13 @@ export function signOut({ _, commit, getters }) {
 
   Auth.signOut().then(() => {
     commit('SET_CURRENT_USER', null)
+    return null
   })
 }
 
 // Validates the current user's token and refreshes it
 // with new data from the API.
-export function validateUser({ commit, state }) {
+export function validateUser({ commit, dispatch }) {
   return Auth.currentAuthenticatedUser()
     .then((response) => {
       const user = response.data
@@ -47,14 +53,10 @@ export function validateUser({ commit, state }) {
       return user
     })
     .catch((error) => {
-      if (error.response && error.response.status === 401) {
-        commit('SET_CURRENT_USER', null)
-      }
-      return null
+      if (error.response && error.response.status === 401)
+        return dispatch('signOut')
     })
 }
-// Validates the current user's token and refreshes it
-// with new data from the API.
 export function validateSession({ _, commit }) {
   return Auth.currentSession()
     .then((response) => {
@@ -62,11 +64,8 @@ export function validateSession({ _, commit }) {
       commit('SET_CURRENT_SESSION', session)
       return session
     })
-    .catch((error) => {
-      if (error.response && error.response.status === 401) {
-        commit('SET_CURRENT_SESSION', null)
-      }
-      return null
+    .catch((_) => {
+      return commit('SET_CURRENT_SESSION', null)
     })
 }
 

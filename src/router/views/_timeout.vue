@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import Layout from '@layouts/main.vue'
 import LoadingView from './_loading.vue'
 
@@ -27,8 +26,8 @@ export default {
     }
   },
   beforeCreate() {
-    axios
-      .head('/api/ping') // FIXME: create endpoint in backend
+    this.$store
+      .dispatch('auth/checkConnection')
       .then(() => {
         window.location.reload()
       })
