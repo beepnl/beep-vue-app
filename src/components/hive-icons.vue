@@ -51,7 +51,7 @@ export default {
     draggable,
   },
   props: {
-    diveggsabled: {
+    disabled: {
       type: Boolean,
       default: false,
     },

@@ -82,6 +82,14 @@ export default [
     meta: {
       authRequired: true,
     },
+    path: '/apiaries/:id',
+    name: 'apiary-details',
+    component: () => lazyLoadView(import('@views/apiary-details.vue')),
+  },
+  {
+    meta: {
+      authRequired: true,
+    },
     path: '/diary',
     name: 'diary',
     component: () => import('@views/event-list.vue'),
@@ -103,12 +111,12 @@ export default [
     component: () => import('@views/photo-gallery.vue'),
   },
   {
-    path: '/profile',
-    name: 'profile',
-    component: () => lazyLoadView(import('@views/user-profile.vue')),
     meta: {
       authRequired: true,
     },
+    path: '/profile',
+    name: 'profile',
+    component: () => lazyLoadView(import('@views/user-profile.vue')),
     props: (route) => ({ user: store.state.auth.currentUser || {} }),
   },
   {

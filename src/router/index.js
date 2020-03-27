@@ -50,14 +50,13 @@ router.beforeEach((routeTo, routeFrom, next) => {
   // If auth is required and the user is logged in...
   if (store.getters['auth/loggedIn']) {
     // Validate the local user token...
-    return Promise.all(
-      store.dispatch('auth/validateUser'),
-      store.dispatch('auth/validateSession')
-    ).then((validUser, validSession) => {
-      // Then continue if the token still represents a valid user,
-      // otherwise redirect to login.
-      validUser && validSession ? next() : redirectToLogin()
-    })
+    return store.dispatch('auth/validateUser').then((validUser) =>
+      store.dispatch('auth/validateSession').then((validSession) => {
+        // Then continue if the token still represents a valid user,
+        // otherwise redirect to login.
+        validUser && validSession ? next() : redirectToLogin()
+      })
+    )
   }
 
   // If auth is required and the user is NOT currently logged in,

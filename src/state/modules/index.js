@@ -35,8 +35,8 @@ const storeData = { modules: {} }
     const modulePath = fileName
       // Remove the "./" from the beginning.
       .replace(/^\.\//, '')
-      // Remove the file extension from the end.
-      .replace(/\.\w+$/, '')
+      // Remove index.js.
+      .replace(/\/index\.js$/, '')
       // Split nested modules into an array path.
       .split(/\//)
       // camelCase all module namespaces and names.
