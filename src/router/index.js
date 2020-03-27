@@ -66,7 +66,7 @@ router.beforeEach((routeTo, routeFrom, next) => {
 
   function redirectToLogin() {
     // Pass the original route to the login component
-    next({ name: 'login', query: { redirectFrom: routeTo.fullPath } })
+    next({ path: 'sign-in', query: { redirectFrom: routeTo.fullPath } })
   }
 })
 

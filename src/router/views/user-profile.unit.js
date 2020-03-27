@@ -1,6 +1,6 @@
-import Profile from './profile.vue'
+import Profile from './user-profile.vue'
 
-describe('@views/profile', () => {
+describe('@views/user-profile', () => {
   it('is a valid view', () => {
     expect(Profile).toBeAViewComponentUsing({ user: { name: '' } })
   })

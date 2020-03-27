@@ -129,7 +129,7 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
-import HiveIcons from '@components/HiveIcons.vue'
+import HiveIcons from '@components/hive-icons.vue'
 import { ScaleTransition } from 'vue2-transitions'
 
 export default {

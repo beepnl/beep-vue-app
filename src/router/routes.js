@@ -1,16 +1,15 @@
 import store from '@state/store'
 
-const accountRoutes = [
+export default [
   {
     path: '/sign-in',
-    name: 'SignIn',
-    component: () => lazyLoadView(import('@views/account/SignIn.vue')),
+    component: () => lazyLoadView(import('@views/sign-in.vue')),
     meta: {
       beforeResolve(routeTo, routeFrom, next) {
         // If the user is already logged in
         if (store.getters['auth/loggedIn']) {
           // Redirect to the home page instead
-          next({ name: 'home' })
+          next({ path: '/' })
         } else {
           // Continue to the login page
           next()
@@ -20,28 +19,25 @@ const accountRoutes = [
   },
   {
     path: '/sign-out',
-    name: 'signOut',
     meta: {
       authRequired: true,
       beforeResolve(routeTo, routeFrom, next) {
-        store.dispatch('auth/signOut')
+        store.dispatch('auth/logout')
         const authRequiredOnPreviousRoute = routeFrom.matched.some(
           (route) => route.meta.authRequired
         )
         // Navigate back to previous page, or home as a fallback
-        next(authRequiredOnPreviousRoute ? { name: 'home' } : { ...routeFrom })
+        next(authRequiredOnPreviousRoute ? { path: '/' } : { ...routeFrom })
       },
     },
   },
   {
-    path: '/password-forgotten',
-    name: 'passwordForgotten',
-    component: () => import('@views/account/PasswordForgotten.vue'),
+    path: '/password-forgot',
+    component: () => import('@views/password-forgot.vue'),
   },
   {
     path: '/password-reset',
-    name: 'passwordReset',
-    component: () => import('@views/account/PasswordReset.vue'),
+    component: () => import('@views/password-reset.vue'),
     props: (route) => ({
       email: route.query.email,
       code: route.query.code,
@@ -49,13 +45,11 @@ const accountRoutes = [
   },
   {
     path: '/sign-up',
-    name: 'signUp',
-    component: () => import('@views/account/SignUp.vue'),
+    component: () => import('@views/sign-up.vue'),
   },
   {
     path: '/sign-up-confirm',
-    name: 'signUpConfirmation',
-    component: () => import('@views/account/SignUpConfirmation.vue'),
+    component: () => import('@views/sign-up-confirm.vue'),
     props: (route) => ({
       email: route.query.email,
     }),
@@ -75,42 +69,43 @@ const accountRoutes = [
     path: '*',
     redirect: '404',
   },
-]
-const apiaryRoutes = [
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/',
     alias: '/apiaries',
     name: 'home',
-    component: () => lazyLoadView(import('@views/apiaries/ApiaryList.vue')),
+    component: () => lazyLoadView(import('@views/apiary-list.vue')),
   },
-]
-const diaryRoutes = [
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/diary',
     name: 'diary',
-    component: () => import('@views/diary/EventList.vue'),
+    component: () => import('@views/event-list.vue'),
   },
-]
-const measurementsRoutes = [
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/data',
     name: 'data',
-    component: () => import('@views/data/Outline.vue'),
+    component: () => import('@views/data-outline.vue'),
   },
-]
-const photoRoutes = [
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/photos',
     name: 'photos',
-    component: () => import('@views/photos/PhotoGallery.vue'),
+    component: () => import('@views/photo-gallery.vue'),
   },
-]
-
-const profileRoutes = [
   {
     path: '/profile',
     name: 'profile',
-    component: () => lazyLoadView(import('@views/account/Profile.vue')),
+    component: () => lazyLoadView(import('@views/user-profile.vue')),
     meta: {
       authRequired: true,
     },
@@ -118,8 +113,7 @@ const profileRoutes = [
   },
   {
     path: '/profile/:username',
-    name: 'username-profile',
-    component: () => lazyLoadView(import('@views/account/Profile.vue')),
+    component: () => lazyLoadView(import('@views/user-profile.vue')),
     meta: {
       authRequired: true,
       // HACK: In order to share data between the `beforeResolve` hook
@@ -129,7 +123,7 @@ const profileRoutes = [
       beforeResolve(routeTo, routeFrom, next) {
         store
           // FIXME: get the user's info from the api/login endpoint
-          .dispatch('users/fetchUser', { username: routeTo.params.username })
+          .dispatch('auth/authenticate', { username: routeTo.params.username })
           .then((user) => {
             // Add the user to `meta.tmp`, so that it can
             // be provided as a prop.
@@ -148,14 +142,6 @@ const profileRoutes = [
     // beforeResolve route guard.
     props: (route) => ({ user: route.meta.tmp.user }),
   },
-]
-export default [
-  ...accountRoutes,
-  ...profileRoutes,
-  ...apiaryRoutes,
-  ...diaryRoutes,
-  ...measurementsRoutes,
-  ...photoRoutes,
 ]
 
 // Lazy-loads view components, but with better UX. A loading view

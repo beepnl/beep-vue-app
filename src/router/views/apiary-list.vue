@@ -51,7 +51,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import HiveIcons from '@components/HiveIcons.vue'
+import HiveIcons from '@components/hive-icons.vue'
 
 export default {
   components: {

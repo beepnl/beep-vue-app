@@ -1,7 +1,9 @@
 import axios from 'axios'
-export function init({ store }) {
+import store from '@state/store'
+export function init() {
   axios.defaults.baseURL = process.env.VUE_APP_API_URL
   axios.defaults.headers.common['Content-Type'] = 'application/json'
+
   axios.interceptors.response.use(undefined, function(err) {
     return new Promise((resolve, reject) => {
       if (err.status === 401 && err.config && !err.config.__isRetryRequest) {

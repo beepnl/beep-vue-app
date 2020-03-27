@@ -13,7 +13,7 @@ Cypress.Commands.add(
       }
     })
     getStore().then((store) =>
-      store.dispatch('auth/logIn', { username, password })
+      store.dispatch('auth/signIn', { username, password })
     )
   }
 )

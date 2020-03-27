@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import ComposeChecklist from '@components/ComposeChecklist.vue'
+import ComposeChecklist from '@components/checklist-compose.vue'
 export default {
   components: {
     ComposeChecklist,

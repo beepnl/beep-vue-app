@@ -1,7 +1,7 @@
 <template>
   <v-card>
-    <v-form ref="form" v-model="valid" @submit.prevent="signIn">
-      <v-card-title>Sign In</v-card-title>
+    <v-form ref="form" v-model="valid" @submit.prevent="login">
+      <v-card-title>Login</v-card-title>
       <v-card-text>
         <v-alert
           v-for="error in errors"
@@ -23,11 +23,11 @@
           type="password"
           :rules="[(v) => !!v || 'error.password_required']"
         ></v-text-field>
-        <router-link :to="{ name: 'forgotPassword' }">
+        <router-link to="/forgot-password">
           I forgot my password
         </router-link>
         <v-spacer></v-spacer>
-        <router-link :to="{ name: 'createAccount' }">
+        <router-link to="/sign-up">
           Create an account
         </router-link>
       </v-card-text>
@@ -62,7 +62,7 @@ export default {
     }
   },
   methods: {
-    signIn() {
+    login() {
       this.tryingToLogIn = true
       this.clearErrors()
       this.$store

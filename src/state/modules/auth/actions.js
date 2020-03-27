@@ -1,5 +1,5 @@
 import AWSAuth from '@aws-amplify/auth'
-import * as BEEPAuth from './BEEPAuth'
+import * as BEEPAuth from '@/src/state/api/auth.js'
 
 let Auth
 export function init({ dispatch }) {
@@ -10,19 +10,19 @@ export function init({ dispatch }) {
 
   Auth = BEEPApi ? BEEPAuth : AWSAuth
   if (BEEPApi) {
-    BEEPAuth.init(this)
+    BEEPAuth.init()
   }
 
   dispatch('validateUser')
-  dispatch('validateSession')
+  //  dispatch('validateSession')
 }
 
 export function signIn(
   { commit, dispatch, getters },
   { username, password } = {}
 ) {
-  if (getters.loggedIn)
-    return dispatch('validateUser').then(dispatch('validateSession'))
+  if (getters.loggedIn) return dispatch('validateUser')
+  // .then(dispatch('validateSession'))
 
   return Auth.signIn(username, password).then((response) => {
     const user = response.data
@@ -31,8 +31,11 @@ export function signIn(
     return user
   })
 }
+export function checkConnection() {
+  return Auth.checkConnection()
+}
 
-export function signOut({ _, commit, getters }) {
+export function logout({ _, commit, getters }) {
   if (!getters.loggedIn) {
     throw new Error('User is already logged out.')
   }
@@ -54,7 +57,7 @@ export function validateUser({ commit, dispatch }) {
     })
     .catch((error) => {
       if (error.response && error.response.status === 401)
-        return dispatch('signOut')
+        return dispatch('auth/signOut')
     })
 }
 export function validateSession({ _, commit }) {
