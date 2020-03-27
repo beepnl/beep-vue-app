@@ -37,4 +37,5 @@ module.exports = {
     },
     public: 'https://localhost:8080/',
   },
+  publicPath: '/',
 }

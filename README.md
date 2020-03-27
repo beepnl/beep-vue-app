@@ -32,6 +32,9 @@ machine **. Instead run it inside the container:
 As a rule, any call you would normally make to npm, you should prepend with
 `docker-compose exec ui`. This way the command is run inside the container.
 
+To fix hot reload when running in a Docker container:
+[Hot reload in docker](https://daten-und-bass.io/blog/enabling-hot-reloading-with-vuejs-and-vue-cli-in-docker/)
+
 ## Deployment
 
 The production build of this UI is deployed to an AWS CloudFront CDN. Upon

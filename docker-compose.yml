@@ -6,7 +6,9 @@ services:
       context: .
       target: ui-dev
     volumes:
-      - .:/app:delegated
+      - .:/app:cached
     ports:
       - 8000:8000
       - 0.0.0.0:8080:8080
+    environment:
+      - CHOKIDAR_USEPOLLING=true
