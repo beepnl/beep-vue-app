@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <BackBar :menu-items="menuItems" title="Apiary details" />
+  <Layout>
     <v-content>
       <v-card tile class="sticky">
         <v-img
@@ -124,18 +123,20 @@
         Close
       </v-btn>
     </v-snackbar>
-  </div>
+  </Layout>
 </template>
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
 import HiveIcons from '@components/hive-icons.vue'
 import { ScaleTransition } from 'vue2-transitions'
+import Layout from '@layouts/back.vue'
 
 export default {
   components: {
     HiveIcons,
     ScaleTransition,
+    Layout,
   },
   filters: {
     firstletter: function(value) {

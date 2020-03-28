@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <Layout>
     <v-list two-line subheader>
       <v-subheader>Interventions</v-subheader>
 
@@ -49,13 +49,15 @@
         </v-col>
       </v-row>
     </v-container>
-  </div>
+  </Layout>
 </template>
 
 <script>
 import ComposeChecklist from '@components/checklist-compose.vue'
+import Layout from '@layouts/main.vue'
 export default {
   components: {
+    Layout,
     ComposeChecklist,
   },
   data: () => ({

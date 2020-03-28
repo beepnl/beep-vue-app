@@ -33,7 +33,9 @@
         </template>
         <v-divider v-if="menuItems.length"></v-divider>
         <v-list-item :to="{ name: 'settings' }">Settings</v-list-item>
-        <v-list-item :disabled="!loggedIn">Log out</v-list-item>
+        <v-list-item :disabled="!loggedIn" :to="{ name: 'sign-out' }"
+          >Log out</v-list-item
+        >
       </v-list>
     </v-menu>
     <v-dialog v-model="dialog.show">

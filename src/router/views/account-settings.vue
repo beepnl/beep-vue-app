@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <Layout>
     <BackBar title="Settings"></BackBar>
 
     <v-content>
@@ -35,11 +35,13 @@
       </v-list>
     </v-content>
     <router-view />
-  </div>
+  </Layout>
 </template>
 
 <script>
+import Layout from '@layouts/back.vue'
 export default {
+  components: { Layout },
   data: () => ({
     settings: [],
     items: [

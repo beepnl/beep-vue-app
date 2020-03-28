@@ -17,18 +17,19 @@ export function widestApiary(state) {
 }
 export function selectedHives(state) {
   // returns an Array of currently selected hives
-  const hiveIndexes = state.apiary.hives.reduce((hiveIndexes, hive, i) => {
-    if (hive.selected) {
-      hiveIndexes.push(i + 1)
-    }
-    return hiveIndexes
-  }, [])
+  const hiveIndexes =
+    (state.apiary.hives &&
+      state.apiary.hives.reduce((hiveIndexes, hive, i) => {
+        if (hive.selected) {
+          hiveIndexes.push(i + 1)
+        }
+        return hiveIndexes
+      }, [])) ||
+    []
   return hiveIndexes
 }
 export function inspectionsForApiary(state) {
-  return state.inspections.inspections.filter(
-    (i) => i.apiary === state.apiary.title
-  )
+  return state.inspections.filter((i) => i.apiary === state.apiary.title)
 }
 export function filteredInspections(_, getters) {
   if (!getters.selectedHives.length) {

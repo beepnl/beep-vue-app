@@ -7,7 +7,6 @@
       <v-spacer></v-spacer>
 
       <HeaderMenu :menu-items="menuItems"></HeaderMenu>
-
       <template v-slot:extension>
         <v-tabs
           v-model="activeTab"
@@ -15,7 +14,7 @@
           dark
           background-color="transparent"
         >
-          <v-tab v-for="(tab, i) in tabs" :key="i" :to="tab.route">
+          <v-tab v-for="(tab, i) in tabs" :key="i" :to="tab.to">
             <span v-if="tab.title">{{ tab.title }}</span>
             <v-icon v-if="tab.icon">{{ tab.icon }}</v-icon>
           </v-tab>
@@ -24,13 +23,7 @@
     </v-app-bar>
 
     <v-content>
-      <v-tabs-items v-model="activeTab" @change="updateRoute">
-        <v-tab-item v-for="(tab, i) in tabs" :key="i" :value="tab.route">
-          <slot>
-            <router-view v-if="tab.route === $route.name" />
-          </slot>
-        </v-tab-item>
-      </v-tabs-items>
+      <slot></slot>
     </v-content>
   </div>
 </template>
@@ -45,12 +38,7 @@ export default {
   props: {
     menuItems: {
       type: Array,
-      default: () => [
-        {
-          title: 'settings',
-          to: '/settings',
-        },
-      ],
+      default: () => [],
     },
   },
   data: function() {

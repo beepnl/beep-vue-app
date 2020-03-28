@@ -3,7 +3,8 @@ import store from '@state/store'
 export default [
   {
     path: '/sign-in',
-    component: () => lazyLoadView(import('@views/sign-in.vue')),
+    name: 'sign-in',
+    component: () => lazyLoadView(import('@views/account-sign-in.vue')),
     meta: {
       beforeResolve(routeTo, routeFrom, next) {
         // If the user is already logged in
@@ -19,6 +20,7 @@ export default [
   },
   {
     path: '/sign-out',
+    name: 'sign-out',
     meta: {
       authRequired: true,
       beforeResolve(routeTo, routeFrom, next) {
@@ -33,11 +35,13 @@ export default [
   },
   {
     path: '/password-forgot',
-    component: () => import('@views/password-forgot.vue'),
+    name: 'password-forgot',
+    component: () => import('@views/account-password-forgot.vue'),
   },
   {
     path: '/password-reset',
-    component: () => import('@views/password-reset.vue'),
+    name: 'password-reset',
+    component: () => import('@views/account-password-reset.vue'),
     props: (route) => ({
       email: route.query.email,
       code: route.query.code,
@@ -45,14 +49,24 @@ export default [
   },
   {
     path: '/sign-up',
-    component: () => import('@views/sign-up.vue'),
+    name: 'sign-up',
+    component: () => import('@views/account-sign-up.vue'),
   },
   {
     path: '/sign-up-confirm',
-    component: () => import('@views/sign-up-confirm.vue'),
+    name: 'sign-up-confirm',
+    component: () => import('@views/account-sign-up-confirm.vue'),
     props: (route) => ({
       email: route.query.email,
     }),
+  },
+  {
+    meta: {
+      authRequired: true,
+    },
+    path: '/settings',
+    name: 'settings',
+    component: () => import('@views/account-settings.vue'),
   },
   {
     path: '/404',
@@ -92,15 +106,15 @@ export default [
     },
     path: '/diary',
     name: 'diary',
-    component: () => import('@views/event-list.vue'),
+    component: () => import('@views/diary-list.vue'),
   },
   {
     meta: {
       authRequired: true,
     },
-    path: '/data',
-    name: 'data',
-    component: () => import('@views/data-outline.vue'),
+    path: '/measurements',
+    name: 'measurements',
+    component: () => import('@views/measurements-list.vue'),
   },
   {
     meta: {
@@ -118,37 +132,6 @@ export default [
     name: 'profile',
     component: () => lazyLoadView(import('@views/user-profile.vue')),
     props: (route) => ({ user: store.state.auth.currentUser || {} }),
-  },
-  {
-    path: '/profile/:username',
-    component: () => lazyLoadView(import('@views/user-profile.vue')),
-    meta: {
-      authRequired: true,
-      // HACK: In order to share data between the `beforeResolve` hook
-      // and the `props` function, we must create an object for temporary
-      // data only used during route resolution.
-      tmp: {},
-      beforeResolve(routeTo, routeFrom, next) {
-        store
-          // FIXME: get the user's info from the api/login endpoint
-          .dispatch('auth/authenticate', { username: routeTo.params.username })
-          .then((user) => {
-            // Add the user to `meta.tmp`, so that it can
-            // be provided as a prop.
-            routeTo.meta.tmp.user = user
-            // Continue to the route.
-            next()
-          })
-          .catch(() => {
-            // If a user with the provided username could not be
-            // found, redirect to the 404 page.
-            next({ name: '404', params: { resource: 'User' } })
-          })
-      },
-    },
-    // Set the user from the route params, once it's set in the
-    // beforeResolve route guard.
-    props: (route) => ({ user: route.meta.tmp.user }),
   },
 ]
 
