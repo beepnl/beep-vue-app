@@ -14,7 +14,7 @@ export function init({ dispatch }) {
   }
 
   dispatch('validateUser')
-  //  dispatch('validateSession')
+  dispatch('validateSession')
 }
 
 export function signIn(
@@ -22,7 +22,6 @@ export function signIn(
   { username, password } = {}
 ) {
   if (getters.loggedIn) return dispatch('validateUser')
-  // .then(dispatch('validateSession'))
 
   return Auth.signIn(username, password).then((response) => {
     const user = response.data
@@ -48,17 +47,20 @@ export function logout({ _, commit, getters }) {
 
 // Validates the current user's token and refreshes it
 // with new data from the API.
-export function validateUser({ commit, dispatch }) {
-  return Auth.currentAuthenticatedUser()
-    .then((response) => {
-      const user = response.data
-      commit('SET_CURRENT_USER', user)
-      return user
-    })
-    .catch((error) => {
-      if (error.response && error.response.status === 401)
-        return dispatch('auth/signOut')
-    })
+export function validateUser({ state, commit, dispatch }) {
+  return (
+    state.currentUser ||
+    Auth.currentAuthenticatedUser()
+      .then((response) => {
+        const user = response.data
+        commit('SET_CURRENT_USER', user)
+        return user
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 401)
+          return dispatch('auth/signOut')
+      })
+  )
 }
 export function validateSession({ _, commit }) {
   return Auth.currentSession()
