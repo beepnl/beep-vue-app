@@ -23,11 +23,11 @@
           type="password"
           :rules="[(v) => !!v || 'error.password_required']"
         ></v-text-field>
-        <router-link to="/forgot-password">
+        <router-link :to="{ name: 'password-forgot' }">
           I forgot my password
         </router-link>
         <v-spacer></v-spacer>
-        <router-link to="/sign-up">
+        <router-link :to="{ name: 'sign-up' }">
           Create an account
         </router-link>
       </v-card-text>

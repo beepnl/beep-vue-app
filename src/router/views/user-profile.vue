@@ -1,16 +1,15 @@
 <template>
-  <Layout>
+  <Layout title="User profile">
+    <v-icon>mdi-account</v-icon>
     <h1>
-      <v-icon name="mdi-account" />
       {{ user.name }}
-      Profile
     </h1>
     <pre>{{ user }}</pre>
   </Layout>
 </template>
 
 <script>
-import Layout from '@layouts/main.vue'
+import Layout from '@layouts/back.vue'
 
 export default {
   page() {

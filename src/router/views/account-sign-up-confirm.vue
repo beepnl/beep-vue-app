@@ -53,35 +53,37 @@ export default {
     }
   },
   methods: {
-    async confirmSignup() {
+    confirmSignup() {
       this.clearErrors()
-      try {
-        await this.$store.dispatch('auth/confirmSignup', {
+      this.$store
+        .dispatch('auth/confirmSignup', {
           username: this.email,
           code: this.code,
         })
-        await this.$router.push({
-          name: 'signIn',
-          query: { email: this.email },
+        .then(() =>
+          this.$router.push({
+            name: 'signIn',
+            query: { email: this.email },
+          })
+        )
+        .catch((error) => {
+          switch (error.code) {
+            case 'CodeMismatchException':
+              this.errors.push({
+                type: 'error.invalid_verification_code',
+              })
+              break
+            case 'LimitExceededException':
+              this.errors.push({
+                type: 'error.limit_exceeded_try_again_later',
+              })
+              break
+            default:
+              this.errors.push({
+                type: 'error.unknown_error',
+              })
+          }
         })
-      } catch (error) {
-        switch (error.code) {
-          case 'CodeMismatchException':
-            this.errors.push({
-              type: 'error.invalid_verification_code',
-            })
-            break
-          case 'LimitExceededException':
-            this.errors.push({
-              type: 'error.limit_exceeded_try_again_later',
-            })
-            break
-          default:
-            this.errors.push({
-              type: 'error.unknown_error',
-            })
-        }
-      }
     },
     clearErrors() {
       this.errors = []

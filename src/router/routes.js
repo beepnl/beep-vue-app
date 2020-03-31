@@ -4,7 +4,7 @@ export default [
   {
     path: '/sign-in',
     name: 'sign-in',
-    component: () => lazyLoadView(import('@views/account-sign-in.vue')),
+    component: () => import('@views/account-sign-in.vue'),
     meta: {
       beforeResolve(routeTo, routeFrom, next) {
         // If the user is already logged in
@@ -36,12 +36,12 @@ export default [
   {
     path: '/password-forgot',
     name: 'password-forgot',
-    component: () => import('@views/account-password-forgot.vue'),
+    component: () => lazyLoadView(import('@views/account-password-forgot.vue')),
   },
   {
     path: '/password-reset',
     name: 'password-reset',
-    component: () => import('@views/account-password-reset.vue'),
+    component: () => lazyLoadView(import('@views/account-password-reset.vue')),
     props: (route) => ({
       email: route.query.email,
       code: route.query.code,
@@ -50,12 +50,12 @@ export default [
   {
     path: '/sign-up',
     name: 'sign-up',
-    component: () => import('@views/account-sign-up.vue'),
+    component: () => lazyLoadView(import('@views/account-sign-up.vue')),
   },
   {
     path: '/sign-up-confirm',
     name: 'sign-up-confirm',
-    component: () => import('@views/account-sign-up-confirm.vue'),
+    component: () => lazyLoadView(import('@views/account-sign-up-confirm.vue')),
     props: (route) => ({
       email: route.query.email,
     }),
@@ -66,7 +66,7 @@ export default [
     },
     path: '/settings',
     name: 'settings',
-    component: () => import('@views/account-settings.vue'),
+    component: () => lazyLoadView(import('@views/settings.vue')),
   },
   {
     path: '/404',
@@ -106,7 +106,7 @@ export default [
     },
     path: '/diary',
     name: 'diary',
-    component: () => import('@views/diary-list.vue'),
+    component: () => lazyLoadView(import('@views/diary-list.vue')),
   },
   {
     meta: {
@@ -114,7 +114,7 @@ export default [
     },
     path: '/measurements',
     name: 'measurements',
-    component: () => import('@views/measurements-list.vue'),
+    component: () => lazyLoadView(import('@views/measurements-list.vue')),
   },
   {
     meta: {
@@ -122,7 +122,7 @@ export default [
     },
     path: '/photos',
     name: 'photos',
-    component: () => import('@views/photo-gallery.vue'),
+    component: () => lazyLoadView(import('@views/photo-gallery.vue')),
   },
   {
     meta: {
@@ -131,7 +131,7 @@ export default [
     path: '/profile',
     name: 'profile',
     component: () => lazyLoadView(import('@views/user-profile.vue')),
-    props: (route) => ({ user: store.state.auth.currentUser || {} }),
+    props: () => ({ user: store.state.auth.currentUser || {} }),
   },
 ]
 
@@ -162,7 +162,7 @@ function lazyLoadView(AsyncView) {
     error: require('@views/_timeout.vue').default,
     // Time before giving up trying to load the component.
     // Default: Infinity (milliseconds).
-    timeout: 10000,
+    timeout: 5000,
   })
 
   return Promise.resolve({

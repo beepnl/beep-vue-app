@@ -16,19 +16,26 @@
           label="email"
           autocomplete="off"
           :rules="emailRules"
-        ></v-text-field>
+        />
         <v-text-field
           v-model="credentials.password"
           label="password"
           type="password"
           :rules="passwordRules"
-        ></v-text-field>
+        />
         <v-text-field
           v-model="repeatedPassword"
           label="repeat password"
           type="password"
           :rules="repeatPasswordRules"
-        ></v-text-field>
+        />
+        <v-checkbox
+          v-model="credentials.policyAccepted"
+          :rules="termsRules"
+          label="I accept the BEEP terms of service, that are compatible with the new European privacy law"
+          required
+        ></v-checkbox>
+        <a href="https://test.beep.nl/terms-of-service">Terms of service</a>
       </v-card-text>
 
       <v-card-actions>
@@ -46,12 +53,12 @@ export default {
       credentials: {},
       valid: false,
       repeatedPassword: '',
+      agreeToTerms: false,
       errors: [],
       emailRules: [
         (v) => !!v || 'error.email_required',
         (v) => /.+@.+\..+/.test(v) || 'error.invalid_email',
       ],
-      verificationCodeRules: [(v) => !!v || 'error.verification_code_required'],
       passwordRules: [
         (v) => !!v || 'error.password_required',
         (v) =>
@@ -64,6 +71,7 @@ export default {
         (v) =>
           v === this.credentials.password || 'error.passwords_do_not_match',
       ],
+      termsRules: [(v) => !!v || 'error.field_required'],
     }
   },
   computed: {
@@ -72,38 +80,42 @@ export default {
     },
   },
   methods: {
-    async createAccount() {
+    createAccount() {
       if (this.$refs.form.validate()) {
         this.clearErrors()
-        try {
-          await this.$store.dispatch('auth/signUp', this.credentials)
-          await this.$router.push({
-            name: 'confirmSignUp',
-            query: { email: this.credentials.username },
+        this.$store
+          .dispatch('auth/signUp', this.credentials)
+          .then(() =>
+            // FIXME: the backend returns a 400 Bad Request that should be 200 Accepted,
+            // so this block never gets executed
+            this.$router.push({
+              name: 'sign-up-confirm',
+              query: { email: this.credentials.username },
+            })
+          )
+          .catch((error) => {
+            switch (error.code) {
+              case 'UsernameExistsException':
+                this.errors.push({
+                  type: 'error.user_already_exists',
+                })
+                break
+              case 'LimitExceededException':
+                this.errors.push({
+                  type: 'error.limit_exceeded_try_again_later',
+                })
+                break
+              case 'ResourceNotFoundException':
+                this.errors.push({
+                  type: 'error.user_pool_client_not_found',
+                })
+                break
+              default:
+                this.errors.push({
+                  type: 'error.unknown_error',
+                })
+            }
           })
-        } catch (error) {
-          switch (error.code) {
-            case 'UsernameExistsException':
-              this.errors.push({
-                type: 'error.user_already_exists',
-              })
-              break
-            case 'LimitExceededException':
-              this.errors.push({
-                type: 'error.limit_exceeded_try_again_later',
-              })
-              break
-            case 'ResourceNotFoundException':
-              this.errors.push({
-                type: 'error.user_pool_client_not_found',
-              })
-              break
-            default:
-              this.errors.push({
-                type: 'error.unknown_error',
-              })
-          }
-        }
       }
     },
     clearErrors() {

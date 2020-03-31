@@ -1,5 +1,5 @@
 <template>
-  <Layout>
+  <Layout title="Apiary details">
     <v-content>
       <v-card tile class="sticky">
         <v-img
@@ -190,9 +190,8 @@ export default {
       return items
     },
   },
-  async beforeRouteLeave(to, from, next) {
-    await this.$store.dispatch('apiaries/editOff')
-    next()
+  beforeRouteLeave(to, from, next) {
+    this.$store.dispatch('apiaries/editOff').then(() => next())
   },
   methods: {
     ...mapActions('apiaries', ['unselectHives']),

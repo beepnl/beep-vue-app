@@ -21,7 +21,9 @@ export function init() {
   })
 }
 export function checkConnection() {
-  return axios.head('/')
+  // FIXME: do a lightweight unauthed ping/HEAD request to check if API is up
+  // return axios.head('/')
+  return Promise.resolve(true)
 }
 // provide the same interface as '@aws-amplify/auth' to the TEST beep backend
 export function signIn(username, password) {

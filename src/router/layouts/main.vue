@@ -8,13 +8,13 @@
 
       <HeaderMenu :menu-items="menuItems"></HeaderMenu>
       <template v-slot:extension>
-        <v-tabs
-          v-model="activeTab"
-          icons-and-text
-          dark
-          background-color="transparent"
-        >
-          <v-tab v-for="(tab, i) in tabs" :key="i" :to="tab.to">
+        <v-tabs icons-and-text dark background-color="transparent">
+          <v-tab
+            v-for="(tab, i) in tabs"
+            :key="i"
+            :to="{ name: tab.route }"
+            exact
+          >
             <span v-if="tab.title">{{ tab.title }}</span>
             <v-icon v-if="tab.icon">{{ tab.icon }}</v-icon>
           </v-tab>
@@ -43,16 +43,15 @@ export default {
   },
   data: function() {
     return {
-      activeTab: null,
       tabs: [
         {
           title: 'Apiaries',
           icon: 'mdi-beehive-outline',
-          to: '/apiaries',
+          route: 'home',
         },
-        { title: 'Diary', icon: 'mdi-calendar-edit', to: '/diary' },
-        { title: 'Data', icon: 'mdi-chart-line', to: '/measurements' },
-        { title: 'Photos', icon: 'mdi-image-multiple', to: '/photos' },
+        { title: 'Diary', icon: 'mdi-calendar-edit', route: 'diary' },
+        { title: 'Data', icon: 'mdi-chart-line', route: 'measurements' },
+        { title: 'Photos', icon: 'mdi-image-multiple', route: 'photos' },
       ],
     }
   },

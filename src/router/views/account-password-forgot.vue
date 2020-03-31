@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-form ref="form" v-model="valid" @submit.prevent="forgotPassword">
-      <v-card-title>Forgot password</v-card-title>
+      <v-card-title>Send me a password reset link</v-card-title>
       <v-card-text>
         <v-alert
           v-for="error in errors"
@@ -46,34 +46,36 @@ export default {
     },
   },
   methods: {
-    async forgotPassword() {
+    forgotPassword() {
       if (this.$refs.form.validate()) {
         this.clearErrors()
 
-        try {
-          await this.$store.dispatch('auth/forgotPassword', this.email)
-          await this.$router.push({
-            name: 'resetPassword',
-            query: { email: this.email },
+        this.$store
+          .dispatch('auth/forgotPassword', this.email)
+          .then(() =>
+            this.$router.push({
+              name: 'password-reset',
+              query: { email: this.email },
+            })
+          )
+          .catch((error) => {
+            switch (error.code) {
+              case 'UserNotFoundException':
+                this.errors.push({
+                  type: 'error.user_not_found',
+                })
+                break
+              case 'LimitExceededException':
+                this.errors.push({
+                  type: 'error.limit_exceeded_try_again_later',
+                })
+                break
+              default:
+                this.errors.push({
+                  type: 'error.email_cannot_be_empty',
+                })
+            }
           })
-        } catch (error) {
-          switch (error.code) {
-            case 'UserNotFoundException':
-              this.errors.push({
-                type: 'error.user_not_found',
-              })
-              break
-            case 'LimitExceededException':
-              this.errors.push({
-                type: 'error.limit_exceeded_try_again_later',
-              })
-              break
-            default:
-              this.errors.push({
-                type: 'error.email_cannot_be_empty',
-              })
-          }
-        }
       }
     },
     clearErrors() {

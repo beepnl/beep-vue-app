@@ -1,18 +1,23 @@
 <template>
-  <v-app-bar app color="primary" dark>
-    <slot name="icon">
-      <v-btn icon @click="back">
-        <v-icon>mdi-arrow-left</v-icon>
-      </v-btn>
-    </slot>
-    <slot name="title">
-      <v-toolbar-title>{{ title }}</v-toolbar-title>
-    </slot>
+  <div>
+    <v-app-bar app color="primary" dark>
+      <slot name="icon">
+        <v-btn icon @click="back">
+          <v-icon>mdi-arrow-left</v-icon>
+        </v-btn>
+      </slot>
+      <slot name="title">
+        <v-toolbar-title>{{ title }}</v-toolbar-title>
+      </slot>
 
-    <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
 
-    <HeaderMenu v-if="menuItems.length" :menu-items="menuItems"></HeaderMenu>
-  </v-app-bar>
+      <HeaderMenu v-if="menuItems.length" :menu-items="menuItems"></HeaderMenu>
+    </v-app-bar>
+    <v-content>
+      <slot></slot>
+    </v-content>
+  </div>
 </template>
 
 <script>
