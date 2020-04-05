@@ -1,5 +1,5 @@
 import AWSAuth from '@aws-amplify/auth'
-import * as BEEPAuth from '@/src/state/api/auth.js'
+import * as BEEPAuth from '@api/auth.js'
 
 let Auth
 export function init({ dispatch }) {
@@ -9,9 +9,6 @@ export function init({ dispatch }) {
     process.env.VUE_APP_API_URL.indexOf('test.beep.nl/api' >= 0)
 
   Auth = BEEPApi ? BEEPAuth : AWSAuth
-  if (BEEPApi) {
-    BEEPAuth.init()
-  }
 
   dispatch('validateUser')
   dispatch('validateSession')

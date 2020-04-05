@@ -1,25 +1,4 @@
-import axios from 'axios'
-import store from '@state/store'
-export function init() {
-  axios.defaults.baseURL = process.env.VUE_APP_API_URL
-  axios.defaults.headers.common['Content-Type'] = 'application/json'
-
-  axios.interceptors.response.use(undefined, function(err) {
-    return new Promise((resolve, reject) => {
-      if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
-        store.dispatch('auth/signOut')
-      }
-      throw err
-    })
-  })
-
-  // Add API token dynamically
-  axios.interceptors.request.use(function(config) {
-    const apiToken = store.getters['auth/apiToken']
-    config.headers.common.Authorization = 'Bearer ' + apiToken
-    return config
-  })
-}
+import axios from './axios'
 export function checkConnection() {
   // FIXME: do a lightweight unauthed ping/HEAD request to check if API is up
   // return axios.head('/')
