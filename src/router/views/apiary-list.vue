@@ -1,5 +1,5 @@
 <template>
-  <MainLayout>
+  <Layout>
     <v-list two-line>
       <v-list-item-group>
         <v-list-item
@@ -57,18 +57,18 @@
         </v-list-item>
       </v-list-item-group>
     </v-list>
-  </MainLayout>
+  </Layout>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import HiveIcons from '@components/hive-icons.vue'
-import MainLayout from '@layouts/main.vue'
+import Layout from '@layouts/main.vue'
 
 export default {
   components: {
     HiveIcons,
-    MainLayout,
+    Layout,
   },
   filters: {
     firstletter: function(value) {
