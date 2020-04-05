@@ -148,7 +148,7 @@ export default {
   props: {
     id: {
       type: [String, Number],
-      default: null,
+      required: true,
     },
   },
   data: function() {
@@ -190,8 +190,8 @@ export default {
       return items
     },
   },
-  beforeRouteLeave(to, from, next) {
-    this.$store.dispatch('apiaries/editOff').then(() => next())
+  created() {
+    this.$store.dispatch('apiaries/selectApiary', this.id)
   },
   methods: {
     ...mapActions('apiaries', ['unselectHives']),
