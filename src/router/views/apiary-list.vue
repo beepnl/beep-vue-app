@@ -64,7 +64,6 @@
 import { mapState } from 'vuex'
 import HiveIcons from '@components/hive-icons.vue'
 import Layout from '@layouts/main.vue'
-// import hives from '@api/hives'
 
 export default {
   components: {
@@ -84,9 +83,6 @@ export default {
   }),
   computed: {
     ...mapState('apiaries', ['apiaries']),
-  },
-  mounted() {
-    // console.log(hives.index())
   },
 }
 </script>
