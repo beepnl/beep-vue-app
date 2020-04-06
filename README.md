@@ -24,8 +24,7 @@ This repository is for the web app of Beep. In order to create a consistent
 development experience we use
 [Docker](https://github.com/beepnl/beep-ui/wiki/Docker).
 
-As a development IDE we recommend Visual Studio Code. Settings for this project
-are defined in the .vscode folder.
+As a development IDE we recommend Visual Studio Code. Settings for this project are defined in the .vscode folder.
 If you need to install dependencies, **do not run npm install from your local machine**.
 Instead run it inside the container:
 
@@ -33,8 +32,7 @@ Instead run it inside the container:
 docker-compose exec npm install
 ```
 
-As a rule, any call you would normally make to npm, you should prepend with
-`docker-compose exec ui`. This way the command is run inside the container.
+As a rule, any call you would normally make to npm, you should prepend with `docker-compose exec ui`. This way the command is run inside the container.
 
 ### Running the app locally
 
