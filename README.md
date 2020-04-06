@@ -14,7 +14,9 @@ first run.
 
 ### Running the container
 
-`docker-compose up`
+```sh
+docker-compose up
+```
 
 ## Development
 
@@ -24,13 +26,25 @@ development experience we use
 
 As a development IDE we recommend Visual Studio Code. Settings for this project
 are defined in the .vscode folder.
-If you need to install dependencies, **do not run npm install from your local
-machine **. Instead run it inside the container:
+If you need to install dependencies, **do not run npm install from your local machine**.
+Instead run it inside the container:
 
-`docker-compose exec yarn`
+```sh
+docker-compose exec npm install
+```
 
 As a rule, any call you would normally make to npm, you should prepend with
 `docker-compose exec ui`. This way the command is run inside the container.
+
+### Running the app locally
+
+To compile and run the server, run
+
+```sh
+docker-compose exec npm run dev
+```
+
+### Hot reload
 
 To fix hot reload when running in a Docker container:
 [Hot reload in docker](https://daten-und-bass.io/blog/enabling-hot-reloading-with-vuejs-and-vue-cli-in-docker/)
