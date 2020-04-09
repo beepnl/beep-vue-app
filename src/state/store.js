@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import dispatchActionForAllModules from '@utils/dispatch-action-for-all-modules'
+import dispatchActionForAllModules from '@utils/store/dispatch-action-for-all-modules'
 
 import modules from './modules'
 
