@@ -20,12 +20,12 @@ const endpoint = new ApiEndpoint(axios, apiConfig)
   .use('data')
 
 export const state = {
-  data: [],
+  data: {},
 }
 
 export const getters = {
   apiaries: function(state) {
-    return state.data.locations
+    return state.data.locations || []
   },
   highestHive: function(state, getters, rootState, rootGetters) {
     // returns the highest hive across all apiaries
@@ -51,10 +51,12 @@ export const getters = {
       )
     )
   },
-  selectedHives: function(state) {
+  selectedHives: function(state, getters, rootState, rootGetters) {
+    // FIXME: move these rootGetters to helper functions or make them global
     // returns an Array of currently selected hives
     const hiveIndexes =
-      (state.apiary.hives &&
+      (state.apiary &&
+        state.apiary.hives &&
         state.apiary.hives.reduce((hiveIndexes, hive, i) => {
           if (hive.selected) {
             hiveIndexes.push(i + 1)
@@ -65,7 +67,8 @@ export const getters = {
     return hiveIndexes
   },
   inspectionsForApiary: function(state) {
-    return state.inspections.filter((i) => i.apiary === state.apiary.title)
+    // FIXME: get from to be created inspections module
+    return [] // state.inspections.filter((i) => i.apiary === state.apiary.title)
   },
   filteredInspections: function(_, getters) {
     if (!getters.selectedHives.length) {
