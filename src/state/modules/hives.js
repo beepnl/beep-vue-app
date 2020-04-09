@@ -12,47 +12,47 @@ const apiConfig = {
   delete: 'DELETE hives/:id',
 }
 
-const api = new ApiEndpoint(axios, apiConfig)
+const endpoint = new ApiEndpoint(axios, apiConfig)
   .when('create update delete', () => this.index())
-  .when('index', (data) => store.commit('hives/SET_DATA', data))
+  .when('index', (data) => store.commit(`hives/SET_DATA`, data))
   .use('data')
 
 export const state = {
-  hives: {},
+  data: [],
 }
 
 export const getters = {}
 
 export const mutations = {
   SET_DATA: function(state, data) {
-    // TODO: is this a fresh object? lodash.cloneDeep otherwise
-    state.hives = data.hives
+    // axios provides a fresh object, otherwise use lodash.cloneDeep
+    state.data = data
   },
 }
 
 export const actions = {
-  init({ state, dispatch }) {
+  init() {
     // fetch the models
-    api.index()
+    endpoint.index()
     // console.log('initialized hives', state)
   },
 
   // proxy api actions, flesh out where needed
   index() {
-    return api.index()
+    return endpoint.index()
   },
   read() {
-    return api.read()
+    return endpoint.read()
   },
   create(payload) {
-    return api.create(payload)
+    return endpoint.create(payload)
   },
   update(payload) {
-    return api.update(payload)
+    return endpoint.update(payload)
   },
   delete(payload) {
-    return api.delete(payload)
+    return endpoint.delete(payload)
   },
 
-  // add more actions if desired
+  // add actions as needed
 }
