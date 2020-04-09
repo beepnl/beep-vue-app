@@ -11,12 +11,12 @@ const storeData = { modules: {} }
   // Allow us to dynamically require all Vuex module files.
   // https://webpack.js.org/guides/dependency-management/#require-context
   const requireModule = require.context(
-    // Search for files in the modules directory.
+    // Search for files in the current directory.
     '.',
     // Search for files in subdirectories.
     true,
-    // Include index.js files: make sure these contain or load correct module definitions.
-    /.*\/index.js/
+    // Include any .js files that are not this file or a unit test.
+    /^((?!index|\.unit\.).)*\.js$/
   )
 
   // For every Vuex module...
@@ -35,8 +35,8 @@ const storeData = { modules: {} }
     const modulePath = fileName
       // Remove the "./" from the beginning.
       .replace(/^\.\//, '')
-      // Remove index.js.
-      .replace(/\/index\.js$/, '')
+      // Remove the file extension from the end.
+      .replace(/\.\w+$/, '')
       // Split nested modules into an array path.
       .split(/\//)
       // camelCase all module namespaces and names.
