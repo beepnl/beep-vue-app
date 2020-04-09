@@ -24,20 +24,30 @@ export const state = {
 }
 
 export const getters = {
-  highestHive: function(state) {
+  apiaries: function(state) {
+    return state.data.locations
+  },
+  highestHive: function(state, getters, rootState, rootGetters) {
     // returns the highest hive across all apiaries
     return Math.max(
-      ...state.apiaries.map((apiary) =>
-        Math.max(...apiary.hives.map((hive) => hive.honey + hive.brood))
+      ...getters.apiaries.map((apiary) =>
+        Math.max(
+          rootGetters['hives/getHivesForApiary'](apiary.id).map(
+            (hive) => hive.honey + hive.brood
+          )
+        )
       )
     )
   },
 
-  widestApiary: function(state) {
+  widestApiary: function(state, getters, rootState, rootGetters) {
     // returns the widest apiary (most total frames)
     return Math.max(
-      ...state.apiaries.map((apiary) =>
-        apiary.hives.reduce((frames, hive) => frames + hive.frames, 0)
+      ...getters.apiaries.map((apiary) =>
+        rootGetters['hives/getHivesForApiary'](apiary.id).reduce(
+          (frames, hive) => frames + hive.frames,
+          0
+        )
       )
     )
   },
@@ -110,28 +120,32 @@ export const mutations = {
     }
     Vue.set(apiary, 'hives', hives)
   },
-  createApiary: function(state, { apiary = null }) {
+  createApiary: function(_, getters, { apiary = null }) {
     const defaultApiary = {
-      id: Math.max(state.apiaries.map((apiary) => apiary.id) + 1),
+      id: Math.max(getters.apiaries.map((apiary) => apiary.id) + 1),
       title: 'New Apiary',
       hives: [].splice(),
     }
     if (!apiary) {
       apiary = defaultApiary
     }
-    state.apiaries.push(apiary)
+    getters.apiaries.push(apiary)
   },
-  updateApiary: function(state, { apiary = null, id = null, update = null }) {
+  updateApiary: function(
+    _,
+    getters,
+    { apiary = null, id = null, update = null }
+  ) {
     id = id || apiary.id
     if (!id) {
       return
     }
-    const index = state.apiaries.map((apiary) => apiary.id).indexOf(id)
+    const index = getters.apiaries.map((apiary) => apiary.id).indexOf(id)
     if (index > -1) {
       if (update) {
-        state.apiaries.splice(index, 1, update)
+        getters.apiaries.splice(index, 1, update)
       } else {
-        state.apiaries.splice(index, 1)
+        getters.apiaries.splice(index, 1)
       }
     }
   },
@@ -140,7 +154,6 @@ export const actions = {
   init() {
     // fetch the models
     endpoint.index()
-    // console.log('initialized locations', state)
   },
 
   // proxy api actions, flesh out where needed
@@ -165,8 +178,8 @@ export const actions = {
   // FIXME: most of the following should be either moved to local view state
   // or be replaced by endpoint actions
 
-  selectApiary: function({ state, commit }, id) {
-    const apiary = state.apiaries.find((apiary) => apiary.id === id)
+  selectApiary: function({ getters, commit }, id) {
+    const apiary = getters.apiaries.find((apiary) => apiary.id === id)
     if (apiary) {
       commit('setSelectedApiary', apiary)
       return apiary

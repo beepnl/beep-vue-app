@@ -18,10 +18,18 @@ const endpoint = new ApiEndpoint(axios, apiConfig)
   .use('data')
 
 export const state = {
-  data: [],
+  data: {},
 }
 
-export const getters = {}
+export const getters = {
+  getHivesForApiary: (state) => (locationId) => {
+    return (
+      (state.data.hives &&
+        state.data.hives.filter((hive) => hive.location_id === locationId)) ||
+      []
+    )
+  },
+}
 
 export const mutations = {
   SET_DATA: function(state, data) {
@@ -34,7 +42,6 @@ export const actions = {
   init() {
     // fetch the models
     endpoint.index()
-    // console.log('initialized hives', state)
   },
 
   // proxy api actions, flesh out where needed

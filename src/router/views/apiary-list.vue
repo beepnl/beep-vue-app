@@ -33,7 +33,7 @@
               height="100%"
               class="rounded secondary"
             >
-              <h1 class="white--text">{{ apiary.title | firstletter }}</h1>
+              <h1 class="white--text">{{ apiary.name | firstletter }}</h1>
             </v-sheet>
           </v-list-item-avatar>
           <v-icon v-if="apiary.warning" class="notification warning">
@@ -44,7 +44,7 @@
           </v-icon>
           <v-container class="pa-0">
             <v-list-item-title>
-              {{ apiary.title }}
+              {{ apiary.name }}
               <span class="location caption grey--text"
                 >({{ apiary.city }})</span
               >
@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 import HiveIcons from '@components/hive-icons.vue'
 import Layout from '@layouts/main.vue'
 
@@ -82,7 +82,7 @@ export default {
     menuItems: [{ title: 'Add apiary' }],
   }),
   computed: {
-    ...mapState('apiaries', ['apiaries']),
+    ...mapGetters('apiaries', ['apiaries']),
   },
 }
 </script>

@@ -64,11 +64,13 @@ export default {
   data: function() {
     return {
       drag: false,
-      hives: [], // FIXME: use computed setter proxy to store
     }
   },
   computed: {
     ...mapGetters('apiaries', ['highestHive', 'widestApiary']),
+    hives() {
+      return this.$store.getters['hives/getHivesForApiary'](this.apiary.id)
+    },
     dragOptions() {
       return {
         animation: 200,
