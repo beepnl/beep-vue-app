@@ -24,7 +24,7 @@ export default [
     meta: {
       authRequired: true,
       beforeResolve(routeTo, routeFrom, next) {
-        store.dispatch('auth/logout')
+        store.dispatch('auth/signOut')
         const authRequiredOnPreviousRoute = routeFrom.matched.some(
           (route) => route.meta.authRequired
         )

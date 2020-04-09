@@ -1,18 +1,12 @@
 import AWSAuth from '@aws-amplify/auth'
 import * as BEEPAuth from '@api/auth.js'
 
-let Auth
-export function init({ dispatch }) {
-  // legacy BEEP API or AWS API?
-  const BEEPApi =
-    process.env.VUE_APP_API_URL &&
-    process.env.VUE_APP_API_URL.indexOf('test.beep.nl/api' >= 0)
+// legacy BEEP API or AWS API?
+const BEEPApi =
+  process.env.VUE_APP_API_URL &&
+  process.env.VUE_APP_API_URL.indexOf('test.beep.nl/api' >= 0)
 
-  Auth = BEEPApi ? BEEPAuth : AWSAuth
-
-  dispatch('validateUser')
-  dispatch('validateSession')
-}
+const Auth = BEEPApi ? BEEPAuth : AWSAuth
 
 export function signIn(
   { commit, dispatch, getters },
@@ -31,7 +25,7 @@ export function checkConnection() {
   return Auth.checkConnection()
 }
 
-export function logout({ _, commit, getters }) {
+export function signOut({ _, commit, getters }) {
   if (!getters.loggedIn) {
     throw new Error('User is already logged out.')
   }
