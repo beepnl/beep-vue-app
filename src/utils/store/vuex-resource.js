@@ -1,31 +1,6 @@
-import axios from 'axios'
+import axios from '@api/axios'
 import store from '@state/store'
 import { ApiEndpoint } from 'axios-actions'
-
-const axiosInstance = axios.create({
-  baseURL: process.env.VUE_APP_API_URL,
-})
-
-// Global axios settings
-axiosInstance.interceptors.response.use(undefined, function(err) {
-  return new Promise((resolve, reject) => {
-    // On error, dispatch 'signOut', which redirects to login
-    if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
-      store.dispatch('auth/signOut')
-    }
-    throw err
-  })
-})
-
-axiosInstance.interceptors.request.use(function(config) {
-  config.headers.common['Content-Type'] = 'application/json'
-  const apiToken = store.getters['auth/apiToken']
-  if (apiToken) {
-    // Dynamically add API token to requests
-    config.headers.common.Authorization = 'Bearer ' + apiToken
-  }
-  return config
-})
 
 /**
  * Extends ApiEndpoint with auto-refresh and auto-commit
@@ -36,7 +11,7 @@ axiosInstance.interceptors.request.use(function(config) {
  */
 class VuexResource extends ApiEndpoint {
   constructor(config, mutation) {
-    super(axiosInstance, config)
+    super(axios, config)
     this
       // auto refresh index after CUD operation
       .when('create update delete', () => this.index())
