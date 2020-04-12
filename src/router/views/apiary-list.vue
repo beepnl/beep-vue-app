@@ -82,7 +82,7 @@ export default {
     menuItems: [{ title: 'Add apiary' }],
   }),
   computed: {
-    ...mapGetters('apiaries', ['apiaries']),
+    ...mapGetters('locations', ['apiaries']),
   },
 }
 </script>

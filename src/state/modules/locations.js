@@ -1,29 +1,13 @@
-import axios from '@api/axios'
-import store from '@state/store'
-import { ApiEndpoint } from 'axios-actions'
-
 import Vue from 'vue'
+import createEndpoint from '@utils/store/vuex-resource'
 
-// Override default simple string config because CORS preflight fails
-// due to redirect for trailing slash
-const apiConfig = {
-  index: 'locations', // GET
-  create: 'locations', // POST
-  read: 'locations/:id', // GET
-  update: 'PUT hives/:id',
-  delete: 'DELETE hives/:id',
-}
-
-const endpoint = new ApiEndpoint(axios, apiConfig)
-  .when('create update delete', () => this.index())
-  .when('index', (data) => store.commit('apiaries/SET_DATA', data))
-  .use('data')
+const locationResource = createEndpoint({ path: 'locations' })
 
 export const state = {
-  data: {},
+  ...locationResource.state,
 }
-
 export const getters = {
+  ...locationResource.getters,
   apiaries: function(state) {
     return state.data.locations || []
   },
@@ -84,10 +68,7 @@ export const getters = {
   },
 }
 export const mutations = {
-  SET_DATA: function(state, data) {
-    // axios provides a fresh object, otherwise use lodash.cloneDeep
-    state.data = data
-  },
+  ...locationResource.mutations,
   // FIXME: most of the following should be either moved to local view state
   // or be replaced by endpoint actions
   setSelectedApiary: function(state, apiary) {
@@ -154,28 +135,7 @@ export const mutations = {
   },
 }
 export const actions = {
-  init() {
-    // fetch the models
-    endpoint.index()
-  },
-
-  // proxy api actions, flesh out where needed
-  index() {
-    return endpoint.index()
-  },
-  read() {
-    return endpoint.read()
-  },
-  create(payload) {
-    return endpoint.create(payload)
-  },
-  update(payload) {
-    return endpoint.update(payload)
-  },
-  delete(payload) {
-    return endpoint.delete(payload)
-  },
-
+  ...locationResource.actions,
   // add actions as needed
 
   // FIXME: most of the following should be either moved to local view state

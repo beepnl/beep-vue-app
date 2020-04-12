@@ -155,8 +155,8 @@ export default {
     }
   },
   computed: {
-    ...mapState('apiaries', ['apiary', 'editing']),
-    ...mapGetters('apiaries', [
+    ...mapState('locations', ['apiary', 'editing']),
+    ...mapGetters('locations', [
       'filteredInspections',
       'inspectionsForApiary',
       'selectedHives',
@@ -173,22 +173,22 @@ export default {
       if (this.editing) {
         items.unshift({
           title: 'Add hive',
-          action: 'apiaries/addHive',
+          action: 'locations/addHive',
         })
       } else {
         items.unshift({
           title: 'Edit apiary',
-          action: 'apiaries/editOn',
+          action: 'locations/editOn',
         })
       }
       return items
     },
   },
   created() {
-    this.$store.dispatch('apiaries/selectApiary', this.id)
+    this.$store.dispatch('locations/selectApiary', this.id)
   },
   methods: {
-    ...mapActions('apiaries', ['unselectHives']),
+    ...mapActions('locations', ['unselectHives']),
     notify: function(text) {
       this.snackbar.text = text
       this.snackbar.show = true

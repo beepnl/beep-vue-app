@@ -67,7 +67,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('apiaries', ['highestHive', 'widestApiary']),
+    ...mapGetters('locations', ['highestHive', 'widestApiary']),
     hives() {
       return this.$store.getters['hives/getHivesForApiary'](this.apiary.id)
     },
