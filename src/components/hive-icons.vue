@@ -79,6 +79,10 @@ export default {
     },
   },
   methods: {
+    selectHive: function(hive) {
+      this.$store.dispatch('locations/selectHive', hive)
+    },
+
     hiveHeight: function(hive) {
       return ((hive.honey + hive.brood) / this.highestHive) * 100
     },

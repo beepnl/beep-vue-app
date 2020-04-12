@@ -37,7 +37,8 @@ export const getters = {
     )
   },
   selectedHives: function(state, getters, rootState, rootGetters) {
-    // FIXME: move these rootGetters to helper functions or make them global
+    // FIXME: this does not need to be in the store: put in the view's
+    // `data` and pass as argument where needed
     // returns an Array of currently selected hives
     const hiveIndexes =
       (state.apiary &&
@@ -50,22 +51,6 @@ export const getters = {
         }, [])) ||
       []
     return hiveIndexes
-  },
-  inspectionsForApiary: function(state) {
-    // FIXME: get from to be created inspections module
-    return [] // state.inspections.filter((i) => i.apiary === state.apiary.title)
-  },
-  filteredInspections: function(_, getters) {
-    if (!getters.selectedHives.length) {
-      // show every hive in apiary
-      return getters.inspectionsForApiary
-    }
-    return getters.inspectionsForApiary.filter((inspection) => {
-      return (
-        !inspection.hive ||
-        getters.selectedHives.indexOf(inspection.hive) !== -1
-      )
-    })
   },
 }
 export const mutations = {

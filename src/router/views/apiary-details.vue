@@ -80,14 +80,14 @@
           <v-list-item :key="`i-${item.id}`" two-line class="inspection-entry">
             <v-row ma-0>
               <v-col>
-                <v-list-item-title v-text="item.date" />
+                <v-list-item-title v-text="item.created_at" />
                 <v-list-item-subtitle
                   v-if="item.hive"
                   v-text="`hive ${item.hive}`"
                 />
               </v-col>
               <v-col>
-                {{ item.note }}
+                {{ item.notes }}
               </v-col>
               <v-col cols="1">
                 <v-icon v-if="item.impression < 0" class="red--text">
@@ -121,7 +121,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import HiveIcons from '@components/hive-icons.vue'
 import { ScaleTransition } from 'vue2-transitions'
 import Layout from '@layouts/back.vue'
@@ -152,15 +152,16 @@ export default {
         timeout: 2000,
         text: 'notification',
       },
+      selectedHives: [],
+      inspectionsForApiary: [],
     }
   },
   computed: {
     ...mapState('locations', ['apiary', 'editing']),
-    ...mapGetters('locations', [
-      'filteredInspections',
-      'inspectionsForApiary',
-      'selectedHives',
-    ]),
+    filteredInspections() {
+      return this.inspectionsForApiary
+      // .filter(...)
+    },
     menuItems: function() {
       const items = [
         {
@@ -186,6 +187,11 @@ export default {
   },
   created() {
     this.$store.dispatch('locations/selectApiary', this.id)
+    this.$store
+      .dispatch('inspections/getInspectionsForApiary', this.id)
+      .then((data) => {
+        this.inspectionsForApiary = data
+      })
   },
   methods: {
     ...mapActions('locations', ['unselectHives']),
