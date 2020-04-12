@@ -4,9 +4,7 @@
     Even when routes use the same component, treat them
     as distinct and create the component again.
     -->
-    <keep-alive>
-      <RouterView :key="$route.fullPath" />
-    </keep-alive>
+    <RouterView :key="$route.fullPath" />
   </v-app>
 </template>
 
