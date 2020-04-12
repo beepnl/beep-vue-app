@@ -2,6 +2,8 @@ import axios from '@api/axios'
 import store from '@state/store'
 import { ApiEndpoint } from 'axios-actions'
 
+// TODO: proxy loading and error states
+
 /**
  * Extends ApiEndpoint with auto-refresh and auto-commit
  *
@@ -16,9 +18,7 @@ class VuexResource extends ApiEndpoint {
       // auto refresh index after CUD operation
       .when('create update delete', () => this.index())
       // commit data to store
-      .when('index', (data) => {
-        store.commit(mutation, data)
-      })
+      .when('index', (data) => store.commit(mutation, data))
       // return data from the response
       .use('data')
   }
@@ -31,11 +31,7 @@ class VuexResource extends ApiEndpoint {
  * @return
  *   An extensible vuex store object with {state, mutations, getters, actions}
  */
-export default function createResource({
-  config = {},
-  path = config.path,
-  mutation = 'SET_DATA',
-}) {
+export default function createResource({ path, other = {} }) {
   // Merge parameters into axios config record
   const apiConfig = {
     ...{
@@ -48,16 +44,17 @@ export default function createResource({
       update: `PUT ${path}/:id`,
       delete: `DELETE ${path}/:id`,
     },
-    ...config,
+    ...other,
   }
-  const endpoint = new VuexResource(apiConfig, path + '/' + mutation)
+  const endpoint = new VuexResource(apiConfig, path + '/SET_DATA')
 
   return {
+    endpoint,
     state: {
       data: {},
     },
     mutations: {
-      [mutation]: function(state, data) {
+      SET_DATA: function(state, data) {
         // axios provides a fresh object.
         state.data = data
       },
@@ -65,15 +62,15 @@ export default function createResource({
     getters: {},
     actions: {
       init() {
-        // fetch the models
-        endpoint.index()
+        // auto-run when loading module
+        return endpoint.index()
       },
 
       index() {
         return endpoint.index()
       },
-      read() {
-        return endpoint.read()
+      read(id) {
+        return endpoint.read(id)
       },
       create(payload) {
         return endpoint.create(payload)
