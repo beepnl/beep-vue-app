@@ -1,9 +1,9 @@
-import createEndpoint from '@utils/store/vuex-resource'
+import createResource from '@utils/store/vuex-resource'
 
-const module = createEndpoint({ path: 'hives' })
+const resource = createResource({ path: 'hives' })
 
 // add some custom methods before exporting the store module
-module.getters.getHivesForApiary = (state) => (locationId) => {
+resource.getters.getHivesForApiary = (state) => (locationId) => {
   return (
     (state.data.hives &&
       state.data.hives.filter((hive) => hive.location_id === locationId)) ||
@@ -11,4 +11,4 @@ module.getters.getHivesForApiary = (state) => (locationId) => {
   )
 }
 
-export default module
+export default resource

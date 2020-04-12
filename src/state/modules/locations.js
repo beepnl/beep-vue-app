@@ -1,13 +1,14 @@
 import Vue from 'vue'
-import createEndpoint from '@utils/store/vuex-resource'
+import createResource from '@utils/store/vuex-resource'
 
-const locationResource = createEndpoint({ path: 'locations' })
+const resource = createResource({ path: 'locations' })
 
+// Add some custom functionality to the resource module
 export const state = {
-  ...locationResource.state,
+  ...resource.state,
 }
 export const getters = {
-  ...locationResource.getters,
+  ...resource.getters,
   apiaries: function(state) {
     return state.data.locations || []
   },
@@ -68,7 +69,7 @@ export const getters = {
   },
 }
 export const mutations = {
-  ...locationResource.mutations,
+  ...resource.mutations,
   // FIXME: most of the following should be either moved to local view state
   // or be replaced by endpoint actions
   setSelectedApiary: function(state, apiary) {
@@ -135,7 +136,7 @@ export const mutations = {
   },
 }
 export const actions = {
-  ...locationResource.actions,
+  ...resource.actions,
   // add actions as needed
 
   // FIXME: most of the following should be either moved to local view state

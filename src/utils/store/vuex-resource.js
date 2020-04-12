@@ -56,7 +56,7 @@ class VuexResource extends ApiEndpoint {
  * @return
  *   An extensible vuex store object with {state, mutations, getters, actions}
  */
-export default function createEndpoint({
+export default function createResource({
   config = {},
   path = config.path,
   mutation = 'SET_DATA',
