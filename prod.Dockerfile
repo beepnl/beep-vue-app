@@ -6,4 +6,4 @@ ARG VUE_APP_REGION
 
 COPY . /app
 WORKDIR /app
-RUN npm install && npm run build
+RUN yarn && yarn build

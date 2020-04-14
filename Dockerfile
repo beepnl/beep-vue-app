@@ -2,7 +2,7 @@ FROM node:latest as ui-dev
 
 WORKDIR /app
 
-RUN npm install -g @vue/cli
+RUN yarn global add @vue/cli
 ENV PATH /app/node_modules/.bin:$PATH
 
 EXPOSE 8000
@@ -17,4 +17,4 @@ FROM node:12 as ui-builder
 
 COPY . /app
 WORKDIR /app
-RUN npm install && npm run build
+RUN yarn && yarn build
