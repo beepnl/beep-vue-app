@@ -33,7 +33,7 @@
       <div v-if="!hives.length">
         No hives in this apiary
       </div>
-      <v-btn v-if="!disabled || !hives.length" icon @click="addHive">
+      <v-btn v-if="!disabled || !hives.length" icon>
         <v-icon>mdi-plus</v-icon>
       </v-btn>
     </div>
@@ -44,7 +44,7 @@
 // FIXME: change the hive :key to a unique hive id instead of array index,
 // see https://github.com/SortableJS/Vue.Draggable#gotchas
 import draggable from 'vuedraggable'
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -67,27 +67,22 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('apiaries', ['highestHive', 'widestApiary']),
+    ...mapGetters('locations', ['highestHive', 'widestApiary']),
+    hives() {
+      return this.$store.getters['hives/getHivesForApiary'](this.apiary.id)
+    },
     dragOptions() {
       return {
         animation: 200,
         disabled: this.disabled,
       }
     },
-    hives: {
-      get() {
-        return this.apiary.hives
-      },
-      set(hives) {
-        this.$store.commit('apiaries/setHives', {
-          apiary: this.apiary,
-          hives: hives,
-        })
-      },
-    },
   },
   methods: {
-    ...mapActions('apiaries', ['addHive', 'selectHive']),
+    selectHive: function(hive) {
+      this.$store.dispatch('locations/selectHive', hive)
+    },
+
     hiveHeight: function(hive) {
       return ((hive.honey + hive.brood) / this.highestHive) * 100
     },

@@ -33,7 +33,7 @@
         </template>
         <v-divider v-if="menuItems.length"></v-divider>
         <v-list-item :to="{ name: 'settings' }">Settings</v-list-item>
-        <v-list-item :disabled="!loggedIn" :to="{ name: 'sign-out' }"
+        <v-list-item :disabled="!loggedIn" @click="signOut"
           >Log out</v-list-item
         >
       </v-list>
@@ -84,6 +84,11 @@ export default {
     showDialog: function(item) {
       this.dialog.title = item.title
       this.dialog.show = true
+    },
+    signOut() {
+      this.$store
+        .dispatch('auth/signOut')
+        .then(() => this.$router.push({ name: 'sign-in' }))
     },
   },
 }

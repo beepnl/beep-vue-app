@@ -19,21 +19,6 @@ export default [
     },
   },
   {
-    path: '/sign-out',
-    name: 'sign-out',
-    meta: {
-      authRequired: true,
-      beforeResolve(routeTo, routeFrom, next) {
-        store.dispatch('auth/logout')
-        const authRequiredOnPreviousRoute = routeFrom.matched.some(
-          (route) => route.meta.authRequired
-        )
-        // Navigate back to previous page, or home as a fallback
-        next(authRequiredOnPreviousRoute ? { path: '/' } : { ...routeFrom })
-      },
-    },
-  },
-  {
     path: '/password-forgot',
     name: 'password-forgot',
     component: () => lazyLoadView(import('@views/account-password-forgot.vue')),

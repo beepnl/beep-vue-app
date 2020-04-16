@@ -17,9 +17,11 @@ instance.interceptors.response.use(undefined, function(err) {
 
 // Dynamically add API token to requests
 instance.interceptors.request.use(function(config) {
-  const apiToken = store.getters['auth/apiToken']
   config.headers.common['Content-Type'] = 'application/json'
-  config.headers.common.Authorization = 'Bearer ' + apiToken
+  const apiToken = store.getters['auth/apiToken']
+  if (apiToken) {
+    config.headers.common.Authorization = 'Bearer ' + apiToken
+  }
   return config
 })
 
