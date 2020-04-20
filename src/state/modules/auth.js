@@ -32,7 +32,7 @@ export const actions = {
     // legacy BEEP API or AWS API?
     const BEEPApi =
       process.env.VUE_APP_API_URL &&
-      process.env.VUE_APP_API_URL.indexOf('test.beep.nl/api' >= 0)
+      process.env.VUE_APP_API_URL.indexOf('test' >= 0)
 
     Auth = BEEPApi ? BEEPAuth : AWSAuth
   },
