@@ -84,7 +84,6 @@ export default [
     path: '/apiaries/:id',
     name: 'apiary-details',
     component: () => lazyLoadView(import('@views/apiary-details.vue')),
-    props: true,
   },
   {
     meta: {

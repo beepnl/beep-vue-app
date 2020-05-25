@@ -1,20 +1,20 @@
 <template>
-  <Layout title="Apiary details">
+  <Layout title="Apiary details" :menu-items="menuItems">
     <v-card tile class="sticky">
       <v-img
         v-if="apiary"
         class="align-end"
-        height="150px"
+        height="180px"
         gradient="to bottom, rgba(255,255,255,.5), rgba(255,255,255,.9), rgba(255,255,255,.95)"
         :src="
           apiary.photo
-            ? `https://picsum.photos/500/300?image=${apiary.id * 5 + 10}`
-            : ''
+            ? '' // TODO: insert actual photo (reversed this for demo purpose)
+            : `https://picsum.photos/500/300?image=${apiary.id * 5 + 10}`
         "
         :lazy-src="
           apiary.photo
-            ? `https://picsum.photos/10/6?image=${apiary.id * 5 + 10}`
-            : ''
+            ? '' // TODO: insert actual photo (reversed this for demo purpose)
+            : `https://picsum.photos/10/6?image=${apiary.id * 5 + 10}`
         "
       >
         <template v-if="apiary.photo" v-slot:placeholder>
@@ -27,7 +27,7 @@
         </template>
         <v-container class="apiary-info">
           <div class="d-flex">
-            <span class="display-1" v-text="apiary.title" />
+            <span class="display-1" v-text="apiary.name" />
             <v-spacer></v-spacer>
             <v-tooltip v-if="apiary.warning" left>
               <template v-slot:activator="{ on }">
@@ -54,7 +54,7 @@
             </span>
           </div>
           <div class="hives">
-            <HiveIcons :disabled="!editing" :apiary="apiary"></HiveIcons>
+            <HiveIcons v-if="apiary.id" :apiary="apiary"></HiveIcons>
           </div>
         </v-container>
       </v-img>
@@ -121,7 +121,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import HiveIcons from '@components/hive-icons.vue'
 import { ScaleTransition } from 'vue2-transitions'
 import Layout from '@layouts/back.vue'
@@ -139,12 +139,6 @@ export default {
       return value.charAt(0).toUpperCase()
     },
   },
-  props: {
-    id: {
-      type: [String, Number],
-      required: true,
-    },
-  },
   data: function() {
     return {
       snackbar: {
@@ -152,21 +146,40 @@ export default {
         timeout: 2000,
         text: 'notification',
       },
-      selectedHives: [],
       inspectionsForApiary: [],
     }
   },
   computed: {
-    ...mapState('locations', ['apiary', 'editing']),
+    ...mapGetters('locations', ['apiaries']),
+    id() {
+      return parseInt(this.$route.params.id)
+    },
+    apiary() {
+      return this.apiaries.find((apiary) => apiary.id === this.id)
+    },
+    selectedHives() {
+      const hiveIds =
+        (this.apiary &&
+          this.apiary.hives.reduce((hiveIds, hive) => {
+            if (hive.selected) {
+              hiveIds.push(hive.id)
+            }
+            return hiveIds
+          }, [])) ||
+        []
+      return hiveIds
+    },
     filteredInspections() {
-      return this.inspectionsForApiary
-      // .filter(...)
+      if (this.selectedHives.length) {
+        return this.inspectionsForApiary.filter((inspection) => {
+          return this.selectedHives.includes(inspection.hive_id)
+        })
+      } else {
+        return this.inspectionsForApiary
+      }
     },
     menuItems: function() {
       const items = [
-        {
-          title: 'Share Apiary&hellip;',
-        },
         {
           title: 'Delete Apiary',
         },
@@ -186,15 +199,29 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch('locations/selectApiary', this.id)
+    this.$store.dispatch('locations/findAll') // in case of direct link / page reload
+    // .then(() => {
+    //   this.$store.dispatch('locations/findApiary', this.id)
+    // })
     this.$store
-      .dispatch('inspections/getInspectionsForApiary', this.id)
+      .dispatch('hives/findAll') // find hives via apiary (locations.js) is quicker but not applicable to new API structure
       .then((data) => {
-        this.inspectionsForApiary = data
+        return data.hives.filter((hive) => hive.location_id === this.id)
+      })
+      .then((data) => {
+        this.$store
+          .dispatch('inspections/getInspectionsForHives', data)
+          .then((data) => {
+            this.inspectionsForApiary = data
+          })
       })
   },
   methods: {
-    ...mapActions('locations', ['unselectHives']),
+    unselectHives: function() {
+      this.apiary.hives.forEach((hive) =>
+        this.$store.commit('locations/unselectHive', hive)
+      )
+    },
     notify: function(text) {
       this.snackbar.text = text
       this.snackbar.show = true

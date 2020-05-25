@@ -1,4 +1,4 @@
-# Beep UI
+# Beep Vue app + Legacy API
 
 ## Installation
 

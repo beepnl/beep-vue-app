@@ -10,12 +10,7 @@ const other = {
 
 const resource = createResource({ path: 'inspections', other })
 
-resource.actions.getInspectionsForApiary = function(
-  { rootGetters },
-  locationId
-) {
-  const hives = rootGetters['hives/getHivesForApiary'](locationId)
-
+resource.actions.getInspectionsForHives = function({ _ }, hives) {
   return Promise.all(
     hives.map((hive) => resource.endpoint.read(hive.id))
   ).then((data) => data.reduce((all, item) => all.concat(item.inspections), []))

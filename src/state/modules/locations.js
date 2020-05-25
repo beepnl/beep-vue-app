@@ -9,65 +9,22 @@ export const state = {
 }
 export const getters = {
   ...resource.getters,
-  apiaries: function(state) {
+  apiaries: (state) => {
     return state.data.locations || []
-  },
-  highestHive: function(state, getters, rootState, rootGetters) {
-    // returns the highest hive across all apiaries
-    return Math.max(
-      ...getters.apiaries.map((apiary) =>
-        Math.max(
-          rootGetters['hives/getHivesForApiary'](apiary.id).map(
-            (hive) => hive.honey + hive.brood
-          )
-        )
-      )
-    )
-  },
-
-  widestApiary: function(state, getters, rootState, rootGetters) {
-    // returns the widest apiary (most total frames)
-    return Math.max(
-      ...getters.apiaries.map((apiary) =>
-        rootGetters['hives/getHivesForApiary'](apiary.id).reduce(
-          (frames, hive) => frames + hive.frames,
-          0
-        )
-      )
-    )
-  },
-  selectedHives: function(state, getters, rootState, rootGetters) {
-    // FIXME: this does not need to be in the store: put in the view's
-    // `data` and pass as argument where needed
-    // returns an Array of currently selected hives
-    const hiveIndexes =
-      (state.apiary &&
-        state.apiary.hives &&
-        state.apiary.hives.reduce((hiveIndexes, hive, i) => {
-          if (hive.selected) {
-            hiveIndexes.push(i + 1)
-          }
-          return hiveIndexes
-        }, [])) ||
-      []
-    return hiveIndexes
   },
 }
 export const mutations = {
   ...resource.mutations,
   // FIXME: most of the following should be either moved to local view state
   // or be replaced by endpoint actions
-  setSelectedApiary: function(state, apiary) {
-    state.apiary = apiary
-  },
   setEditable: function(state, editable) {
     state.editing = editable
   },
   selectHive: function(_, hive) {
     Vue.set(hive, 'selected', !hive.selected)
   },
-  unselectHives: function(state) {
-    state.apiary.hives.forEach((hive) => Vue.set(hive, 'selected', false))
+  unselectHive: function(_, hive) {
+    Vue.set(hive, 'selected', false)
   },
   addHive: function(state, { apiary = null, hive = null }) {
     if (!apiary) {
@@ -123,18 +80,23 @@ export const mutations = {
 export const actions = {
   ...resource.actions,
   // add actions as needed
-
   // FIXME: most of the following should be either moved to local view state
   // or be replaced by endpoint actions
-
-  selectApiary: function({ getters, commit }, id) {
-    const apiary = getters.apiaries.find((apiary) => apiary.id === id)
-    if (apiary) {
-      commit('setSelectedApiary', apiary)
-      return apiary
+  findAll: function({ _ }) {
+    const apiaries = resource.endpoint.index()
+    if (apiaries) {
+      return apiaries // automatically committed by SET_DATA after index()
     }
     return false
   },
+  // findApiary: function({ getters, commit }, id) {
+  //   const apiary = getters.apiaries.find((apiary) => apiary.id === id) // const apiary = resource.endpoint.read(id);
+  //   if (apiary) {
+  //     commit('setSelectedApiary', apiary)
+  //     return apiary
+  //   }
+  //   return false
+  // },
   editOn: function({ commit }) {
     return commit('setEditable', true)
   },

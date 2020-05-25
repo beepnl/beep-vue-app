@@ -22,7 +22,7 @@
       </template>
     </v-app-bar>
 
-    <v-content>
+    <v-content class="overflow-y-auto overflow-x-hidden">
       <slot></slot>
     </v-content>
   </div>
@@ -62,3 +62,10 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+.v-tabs-bar.v-slide-group--is-overflowing.v-tabs-bar--is-mobile:not(.v-tabs-bar--show-arrows):not(.v-slide-group--has-affixes)
+  .v-slide-group__prev {
+  display: none !important;
+}
+</style>

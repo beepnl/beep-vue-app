@@ -1,5 +1,5 @@
 <template>
-  <Layout>
+  <Layout :menu-items="menuItems">
     <v-list two-line>
       <v-list-item-group>
         <v-list-item
@@ -9,6 +9,7 @@
             name: `apiary-details`,
             params: { id: apiary.id },
           }"
+          class="apiary-item"
         >
           <v-list-item-avatar class="rounded">
             <v-img
@@ -45,14 +46,14 @@
           <v-container class="pa-0">
             <v-list-item-title>
               {{ apiary.name }}
-              <span class="location caption grey--text"
+              <span v-if="apiary.city" class="location caption grey--text"
                 >({{ apiary.city }})</span
               >
               <span class="lastvisit caption grey--text float-right text-right">
                 {{ apiary.lastvisit }}
               </span>
             </v-list-item-title>
-            <HiveIcons :apiary="apiary"></HiveIcons>
+            <HiveIcons :disabled="true" :apiary="apiary"></HiveIcons>
           </v-container>
         </v-list-item>
       </v-list-item-group>
@@ -79,30 +80,40 @@ export default {
   },
   data: () => ({
     settings: [],
-    menuItems: [{ title: 'Add apiary' }],
+    menuItems: [{ title: 'New apiary' }, { title: 'New group' }],
   }),
   computed: {
     ...mapGetters('locations', ['apiaries']),
   },
+  created() {
+    this.$store.dispatch('locations/findAll')
+  },
 }
 </script>
 
-<style lang="sass" scoped>
-.rounded
-  border-radius: 5px
+<style lang="scss" scoped>
+.apiary-item {
+  margin-top: 24px;
+}
 
-.notification
-  position: absolute
-  padding: 1px
-  background: white !important
-  border-radius: 100%
-  &.warning
-    top: 5px
-    left: 5px
-    color: red
+.rounded {
+  border-radius: 5px;
+}
 
-  &.shared
-    top: 5px
-    left: 40px
-    color: gray
+.notification {
+  position: absolute;
+  padding: 1px;
+  background: white !important;
+  border-radius: 100%;
+  &.warning {
+    top: 5px;
+    left: 5px;
+    color: red;
+  }
+  &.shared {
+    top: 5px;
+    left: 40px;
+    color: gray;
+  }
+}
 </style>

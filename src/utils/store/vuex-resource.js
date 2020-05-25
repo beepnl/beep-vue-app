@@ -61,11 +61,6 @@ export default function createResource({ path, other = {} }) {
     },
     getters: {},
     actions: {
-      init() {
-        // auto-run when loading module
-        return endpoint.index()
-      },
-
       index() {
         return endpoint.index()
       },
