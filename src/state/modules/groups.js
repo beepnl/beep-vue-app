@@ -8,7 +8,33 @@ const other = {
 // or provide an explicit mutation otherwise.
 const resource = createResource({ path: 'groups', other })
 
-// proxy actions for other methods
-resource.actions.checktoken = () => resource.endpoint.checktoken()
-resource.actions.detach = (id) => resource.endpoint.detach(id)
-export default resource
+export const state = {
+  ...resource.state,
+}
+export const getters = {
+  ...resource.getters,
+  groups: (state) => {
+    return state.data.groups || []
+  },
+}
+export const mutations = {
+  ...resource.mutations,
+}
+export const actions = {
+  ...resource.actions,
+  findAll: function({ _ }) {
+    const groups = resource.endpoint.index()
+    if (groups) {
+      // commit('SET_GROUPS', groups);
+      return groups
+    }
+    return false
+  },
+  // proxy actions for other methods
+  checktoken: function() {
+    resource.endpoint.checktoken()
+  },
+  detach: function(id) {
+    resource.endpoint.detach(id)
+  },
+}

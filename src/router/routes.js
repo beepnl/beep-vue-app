@@ -97,6 +97,14 @@ export default [
     meta: {
       authRequired: true,
     },
+    path: '/groups/:id',
+    name: 'group-details',
+    component: () => lazyLoadView(import('@views/group-details.vue')),
+  },
+  {
+    meta: {
+      authRequired: true,
+    },
     path: '/measurements',
     name: 'measurements',
     component: () => lazyLoadView(import('@views/measurements-list.vue')),
