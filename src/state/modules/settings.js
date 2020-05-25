@@ -24,10 +24,6 @@ export const mutations = {
   },
 }
 export const actions = {
-  init() {
-    // fetch the models
-    endpoint.index()
-  },
   index() {
     return endpoint.index()
   },

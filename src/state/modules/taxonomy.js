@@ -32,10 +32,6 @@ export const mutations = {
   },
 }
 export const actions = {
-  init() {
-    // fetch the models
-    return endpoint.lists().then(() => endpoint.taxonomy)
-  },
   index() {
     return endpoint.lists().then(() => endpoint.taxonomy)
   },
