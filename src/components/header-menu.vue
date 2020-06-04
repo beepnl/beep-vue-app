@@ -32,10 +32,12 @@
           </v-list-item>
         </template>
         <v-divider v-if="menuItems.length"></v-divider>
-        <v-list-item :to="{ name: 'settings' }">Settings</v-list-item>
-        <v-list-item :disabled="!loggedIn" @click="signOut"
-          >Log out</v-list-item
-        >
+        <v-list-item :to="{ name: 'settings' }">{{
+          $t('settings')
+        }}</v-list-item>
+        <v-list-item :disabled="!loggedIn" @click="signOut">{{
+          $t('logout')
+        }}</v-list-item>
       </v-list>
     </v-menu>
     <v-dialog v-model="dialog.show">
@@ -44,7 +46,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="green darken-1" text @click="dialog.show = false">
-            close
+            {{ $t('Close') }}
           </v-btn>
         </v-card-actions>
       </v-card>

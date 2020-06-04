@@ -105,7 +105,8 @@
               <span
                 v-if="group.users.length"
                 class="location caption grey--text"
-                >({{ group.users.length }} members)</span
+                >({{ group.users.length }}
+                {{ $tc('member', group.users.length) }})</span
               >
               <span class="lastvisit caption grey--text float-right text-right">
                 {{ group.lastvisit }}
@@ -138,11 +139,17 @@ export default {
   },
   data: () => ({
     settings: [],
-    menuItems: [{ title: 'New apiary' }, { title: 'New group' }],
   }),
   computed: {
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
+    menuItems: function() {
+      const items = [
+        { title: this.$i18n.t('new_apiary') },
+        { title: this.$i18n.t('new_group') },
+      ]
+      return items
+    },
   },
   created() {
     this.$store.dispatch('locations/findAll')

@@ -1,5 +1,5 @@
 <template>
-  <Layout title="Group details" :menu-items="menuItems">
+  <Layout :title="`${$t('group_details')}`" :menu-items="menuItems">
     <v-card tile class="sticky">
       <v-img
         v-if="group"
@@ -53,7 +53,7 @@
             {{ group.users.length }}
             <v-spacer></v-spacer>
             <span class="float-right caption grey--text">
-              last visit: {{ group.lastvisit }}
+              {{ $t('last_visit') }}: {{ lastVisit }}
             </span>
           </div>
           <div class="hives">
@@ -65,17 +65,18 @@
 
     <v-list class="inspection-list">
       <v-subheader v-if="selectedHives.length">
-        {{ filteredInspections.length }} inspections for
+        {{ filteredInspections.length }}
+        {{ $tc('inspection', filteredInspections.length) }} {{ $t('for') }}
         <ScaleTransition appear>
           <v-chip outlined close class="mx-2" @click:close="unselectHives">
-            {{ selectedHives.length }} hive{{
-              selectedHives.length !== 1 ? 's' : ''
-            }}
+            {{ selectedHives.length }} {{ $tc('hive', selectedHives.length) }}
           </v-chip>
         </ScaleTransition>
       </v-subheader>
       <v-subheader v-else>
-        {{ inspectionsForApiary.length }} inspections. Click hives to filter.
+        {{ inspectionsForApiary.length }}
+        {{ $tc('inspection', filteredInspections.length) }}.
+        {{ $t('click_hives_to_filter') }}.
       </v-subheader>
 
       <ScaleTransition group>
@@ -83,7 +84,7 @@
           <v-list-item :key="`i-${item.id}`" two-line class="inspection-entry">
             <v-row ma-0>
               <v-col>
-                <v-list-item-title v-text="item.created_at" />
+                <v-list-item-title v-text="momentify(item.created_at)" />
                 <v-list-item-subtitle
                   v-if="item.hive"
                   v-text="`hive ${item.hive}`"
@@ -117,7 +118,7 @@
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
       <v-btn color="blue" text @click="snackbar.show = false">
-        Close
+        {{ $t('Close') }}
       </v-btn>
     </v-snackbar>
   </Layout>
@@ -128,6 +129,7 @@ import { mapGetters } from 'vuex'
 import HiveIcons from '@components/hive-icons.vue'
 import { ScaleTransition } from 'vue2-transitions'
 import Layout from '@layouts/back.vue'
+import { momentMixin } from '@mixins/momentMixin'
 
 export default {
   components: {
@@ -135,13 +137,7 @@ export default {
     ScaleTransition,
     Layout,
   },
-  filters: {
-    firstletter: function(value) {
-      if (!value) return '?'
-      value = value.toString()
-      return value.charAt(0).toUpperCase()
-    },
-  },
+  mixins: [momentMixin],
   data: function() {
     return {
       snackbar: {
@@ -181,20 +177,32 @@ export default {
         return this.inspectionsForApiary
       }
     },
+    lastVisit() {
+      if (this.inspectionsForApiary.length) {
+        const sortedInspectionsByDate = this.inspectionsForApiary
+          .slice()
+          .sort(function(a, b) {
+            return new Date(b.created_at) - new Date(a.created_at)
+          })
+        return this.momentify(sortedInspectionsByDate[0].created_at)
+      } else {
+        return ''
+      }
+    },
     menuItems: function() {
       const items = [
         {
-          title: 'Delete Group',
+          title: this.$i18n.t('delete_group'),
         },
       ]
       if (this.editing) {
         items.unshift({
-          title: 'Add hive',
+          title: this.$i18n.t('add_hive'),
           action: 'locations/addHive',
         })
       } else {
         items.unshift({
-          title: 'Edit Group',
+          title: this.$i18n.t('edit_group'),
           action: 'locations/editOn',
         })
       }
@@ -212,11 +220,8 @@ export default {
       //   })
       .then((data) => {
         const group = data.groups.find((group) => group.id === this.id)
-        return group.hives
-      })
-      .then((data) => {
         this.$store
-          .dispatch('inspections/getInspectionsForHives', data)
+          .dispatch('inspections/getInspectionsForHives', group.hives)
           .then((data) => {
             this.inspectionsForApiary = data
           })

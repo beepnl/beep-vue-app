@@ -2,9 +2,11 @@
   <div>
     <v-app-bar app color="primary" dark>
       <v-toolbar-title
-        ><img src="@assets/images/beep-logo-black.svg"
+        ><img src="@assets/img/beep-logo-black.svg"
       /></v-toolbar-title>
       <v-spacer></v-spacer>
+
+      <LocaleChanger></LocaleChanger>
 
       <HeaderMenu :menu-items="menuItems"></HeaderMenu>
       <template v-slot:extension>
@@ -30,10 +32,12 @@
 
 <script>
 import HeaderMenu from '@components/header-menu.vue'
+import LocaleChanger from '@components/locale-changer.vue'
 
 export default {
   components: {
     HeaderMenu,
+    LocaleChanger,
   },
   props: {
     menuItems: {
@@ -45,13 +49,25 @@ export default {
     return {
       tabs: [
         {
-          title: 'Apiaries',
+          title: this.$i18n.tc('Location', 2),
           icon: 'mdi-beehive-outline',
           route: 'home',
         },
-        { title: 'Diary', icon: 'mdi-calendar-edit', route: 'diary' },
-        { title: 'Data', icon: 'mdi-chart-line', route: 'measurements' },
-        { title: 'Photos', icon: 'mdi-image-multiple', route: 'photos' },
+        {
+          title: this.$i18n.t('diary'),
+          icon: 'mdi-calendar-edit',
+          route: 'diary',
+        },
+        {
+          title: this.$i18n.t('data'),
+          icon: 'mdi-chart-line',
+          route: 'measurements',
+        },
+        {
+          title: this.$i18n.tc('photo', 2),
+          icon: 'mdi-image-multiple',
+          route: 'photos',
+        },
       ],
     }
   },

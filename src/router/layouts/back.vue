@@ -12,6 +12,7 @@
 
       <v-spacer></v-spacer>
 
+      <LocaleChanger></LocaleChanger>
       <HeaderMenu v-if="menuItems.length" :menu-items="menuItems"></HeaderMenu>
     </v-app-bar>
     <v-content>
@@ -22,14 +23,17 @@
 
 <script>
 import HeaderMenu from '@components/header-menu.vue'
+import LocaleChanger from '@components/locale-changer.vue'
+
 export default {
   components: {
     HeaderMenu,
+    LocaleChanger,
   },
   props: {
     title: {
       type: String,
-      default: 'Back',
+      default: 'Back', // () => this.$i18n.t('back') werkt niet, ook niet via created hook,
     },
     menuItems: {
       type: Array,
