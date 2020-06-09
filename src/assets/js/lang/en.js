@@ -84,7 +84,7 @@ const translations = {
   password_is_required: 'Please enter a password',
   email_is_required: 'Please enter a e-mailadres',
   email_already_exists: 'The e-mailaddress is already in use',
-  'policy accepted_is_required':
+  policy_accepted_is_required:
     'You need to accept the terms of service to register',
 
   already_registered: 'I am already registered',
@@ -172,7 +172,7 @@ const translations = {
   password_recovery_reset_summary:
     'Use the code that you received to set a new password for your account',
   password_recovery_reset_success:
-    'You passowrd is successfully changed, and you are logged in.',
+    'You password is successfully changed, and you are logged in.',
 
   new_password: 'New password',
   confirm_new_password: 'Confirm new password',
@@ -579,6 +579,18 @@ const translations = {
   delete_group: 'Delete group',
   edit_group: 'Edit group',
   new_group: 'New group',
+  verification_code: 'verification code',
+  limit_exceeded: 'Limit has been reached, try again later',
+  confirm_email_title: 'Confirm your email',
+  confirm_email_summary:
+    "You've received a verification code in your email. Enter it below to verify your email adress",
+  confirm: 'Confirm',
+  Profile: 'Profile',
+  Checklist_template: 'Checklist template | Checklist templates',
+  Help: 'Help',
+  Privacy: 'Privacy',
+  FAQ: 'FAQ',
+  Support: 'Support',
 }
 
 export default translations

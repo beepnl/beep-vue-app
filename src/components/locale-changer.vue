@@ -13,17 +13,17 @@
 
       <v-list>
         <v-list-item
-          v-for="lang in langs"
-          :key="lang.title"
-          :value="lang"
-          @click="switchLocale(lang.lang)"
+          v-for="language in languages"
+          :key="language.title"
+          :value="language"
+          @click="switchLocale(language.lang)"
         >
           <v-list-item-avatar>
-            <img :src="`/img/flags/${lang.lang}.svg`" />
+            <img :src="`/img/flags/${language.lang}.svg`" />
           </v-list-item-avatar>
 
           <v-list-item-content>
-            <v-list-item-title v-text="lang.title"></v-list-item-title>
+            <v-list-item-title v-text="language.title"></v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -32,20 +32,13 @@
 </template>
 
 <script>
+import languages from '@assets/js/lang/languages'
+
 export default {
   name: 'LocaleChanger',
   data() {
     return {
-      // langs: ['de', 'en', 'es', 'fr', 'nl', 'pt', 'ro'],
-      langs: [
-        { lang: 'nl', title: 'Nederlands' },
-        { lang: 'de', title: 'Deutsch' },
-        { lang: 'en', title: 'English' },
-        { lang: 'fr', title: 'Français' },
-        { lang: 'pt', title: 'Português' },
-        { lang: 'ro', title: 'Română' },
-        { lang: 'es', title: 'Spanish' },
-      ],
+      languages: languages.languageArray,
     }
   },
   computed: {
@@ -53,10 +46,21 @@ export default {
       return this.$i18n.locale
     },
   },
+  created() {
+    // if locale is saved in database, use it
+    if (this.$store.getters['auth/userLocale'] !== null) {
+      this.$i18n.locale = this.$store.getters['auth/userLocale']
+    } else {
+      this.$i18n.locale = languages.checkBrowserLanguage()
+    }
+  },
   methods: {
-    switchLocale(lang) {
-      this.$i18n.locale = lang
-      this.$moment.locale(lang)
+    switchLocale(language) {
+      this.$i18n.locale = language
+      this.$moment.locale(language)
+      this.$store.dispatch('auth/setLocale', language).catch((error) => {
+        console.log(error)
+      })
     },
   },
 }

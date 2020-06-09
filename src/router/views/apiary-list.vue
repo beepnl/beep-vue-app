@@ -144,11 +144,10 @@ export default {
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
     menuItems: function() {
-      const items = [
+      return [
         { title: this.$i18n.t('new_apiary') },
         { title: this.$i18n.t('new_group') },
       ]
-      return items
     },
   },
   created() {

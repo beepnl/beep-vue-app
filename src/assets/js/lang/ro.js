@@ -84,7 +84,7 @@ const translations = {
   password_is_required: 'Vă rugăm intorduceți parola',
   email_is_required: 'Vă rugăm introduceți adresa de e-mail',
   email_already_exists: 'Această adresă de  e-mail este deja folosită',
-  'policy accepted_is_required':
+  policy_accepted_is_required:
     'Trebuie să acceptați termenii și condițiile de înregistrare',
 
   already_registered: 'Sunt deja înregistrat',
@@ -581,6 +581,20 @@ const translations = {
   delete_group: 'Ștergeți grupul',
   edit_group: 'Editează grupul',
   new_group: 'Nou grup',
+  verification_code: 'cod de verificare',
+
+  /* TO BE TRANSLATED */
+  limit_exceeded: 'Limit has been reached, try again later',
+  confirm_email_title: 'Confirm your email',
+  confirm_email_summary:
+    "You've received a verification code in your email. Enter it below to verify your email adress",
+  confirm: 'Confirm',
+  Profile: 'Profile',
+  Checklist_template: 'Checklist template | Checklist templates',
+  Help: 'Help',
+  Privacy: 'Privacy',
+  FAQ: 'FAQ',
+  Support: 'Support',
 }
 
 export default translations

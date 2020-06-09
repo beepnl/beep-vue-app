@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-form ref="form" v-model="valid" @submit.prevent="login">
-      <v-card-title>Login</v-card-title>
+      <v-card-title>{{ $t('login_title') }}</v-card-title>
       <v-card-text>
         <v-alert
           v-for="error in errors"
@@ -13,30 +13,30 @@
         </v-alert>
         <v-text-field
           v-model="credentials.username"
-          label="email"
+          :label="`${$t('email')}`"
           autocomplete="off"
-          :rules="[(v) => !!v || 'error.email_required']"
+          :rules="[(v) => !!v || signinRules.email_required]"
         ></v-text-field>
         <v-text-field
           v-model="credentials.password"
-          label="password"
+          :label="`${$t('password')}`"
           type="password"
-          :rules="[(v) => !!v || 'error.password_required']"
+          :rules="[(v) => !!v || signinRules.password_required]"
         ></v-text-field>
         <router-link :to="{ name: 'password-forgot' }">
-          I forgot my password
+          {{ $t('forgot_password') }}
         </router-link>
         <v-spacer></v-spacer>
         <router-link :to="{ name: 'sign-up' }">
-          Create an account
+          {{ $t('create_login_question') }}
         </router-link>
       </v-card-text>
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn text type="submit" :disabled="!valid || tryingToLogIn"
-          >Sign In</v-btn
-        >
+        <v-btn text type="submit" :disabled="!valid || tryingToLogIn">{{
+          $t('login')
+        }}</v-btn>
       </v-card-actions>
     </v-form>
   </v-card>
@@ -61,6 +61,14 @@ export default {
       valid: false,
     }
   },
+  computed: {
+    signinRules: function() {
+      return {
+        email_required: this.$i18n.t('email_is_required'),
+        password_required: this.$i18n.t('password_is_required'),
+      }
+    },
+  },
   methods: {
     login() {
       this.tryingToLogIn = true
@@ -77,22 +85,22 @@ export default {
           switch (error.code) {
             case 'UserNotFoundException':
               this.errors.push({
-                type: 'error.incorrect_username_or_password',
+                type: this.$i18n.t('invalid_user'),
               })
               break
             case 'NotAuthorizedException':
               this.errors.push({
-                type: 'error.incorrect_username_or_password',
+                type: this.$i18n.t('authentication_failed'),
               })
               break
             case 'LimitExceededException':
               this.errors.push({
-                type: 'error.limit_exceeded_try_again_later',
+                type: this.$i18n.t('limit_exceeded'),
               })
               break
             default:
               this.errors.push({
-                type: 'error.unknown_error',
+                type: this.$i18n.t('authentication_failed'),
               })
           }
         })

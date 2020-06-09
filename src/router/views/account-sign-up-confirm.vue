@@ -1,10 +1,9 @@
 <template>
   <v-card>
     <v-form ref="form" v-model="valid" @submit.prevent="confirmSignup">
-      <v-card-title>Confirm your email</v-card-title>
+      <v-card-title>{{ $t('confirm_email_title') }}</v-card-title>
       <v-card-text>
-        You've received a verification code in your email. Enter it below to
-        verify your email adress
+        {{ $t('confirm_email_summary') }}
       </v-card-text>
       <v-card-text>
         <v-alert
@@ -17,21 +16,21 @@
         </v-alert>
         <v-text-field
           v-model.trim="email"
-          label="email"
+          :label="`${$t('email')}`"
           autocomplete="off"
           disabled
         ></v-text-field>
         <v-text-field
           v-model.trim="code"
-          label="verification code"
+          :label="`${$t('verification_code')}`"
           autocomplete="off"
-          :rules="[(v) => !!v || 'error.verification_code_required']"
+          :rules="verificationCodeRules"
         ></v-text-field>
       </v-card-text>
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn text type="submit">Confirm</v-btn>
+        <v-btn text type="submit">{{ $t('confirm') }}</v-btn>
       </v-card-actions>
     </v-form>
   </v-card>
@@ -52,6 +51,17 @@ export default {
       valid: false,
     }
   },
+  computed: {
+    verificationCodeRules: function() {
+      return [
+        (v) =>
+          !!v ||
+          (this.$i18n.t('the_field'),
+          this.$i18n.t('verification_code'),
+          this.$i18n.t('is_required')),
+      ]
+    },
+  },
   methods: {
     confirmSignup() {
       this.clearErrors()
@@ -70,17 +80,17 @@ export default {
           switch (error.code) {
             case 'CodeMismatchException':
               this.errors.push({
-                type: 'error.invalid_verification_code',
+                type: this.$i18n.t('invalid_token'),
               })
               break
             case 'LimitExceededException':
               this.errors.push({
-                type: 'error.limit_exceeded_try_again_later',
+                type: this.$i18n.t('limit_exceeded'),
               })
               break
             default:
               this.errors.push({
-                type: 'error.unknown_error',
+                type: this.$i18n.t('error'),
               })
           }
         })

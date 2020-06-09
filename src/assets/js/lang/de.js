@@ -84,7 +84,7 @@ const translations = {
   password_is_required: 'Bitte gib ein Passwort ein',
   email_is_required: 'Bitte gib eine Email-Adresse an',
   email_already_exists: 'Die Email-Adresse ist bereits in Verwendung',
-  'policy accepted_is_required':
+  policy_accepted_is_required:
     'Um Dich zu registrieren, musst Du die Benutzungsbedingungen akzeptieren',
 
   already_registered: 'Ich bin bereits registriert',
@@ -581,6 +581,19 @@ const translations = {
   delete_group: 'Gruppe löschen',
   edit_group: 'Gruppe bearbeiten',
   new_group: 'Neue Gruppe',
+  verification_code: 'verifikationscode',
+  /* TO BE TRANSLATED */
+  limit_exceeded: 'Limit has been reached, try again later',
+  confirm_email_title: 'Confirm your email',
+  confirm_email_summary:
+    "You've received a verification code in your email. Enter it below to verify your email adress",
+  confirm: 'Confirm',
+  Profile: 'Profile',
+  Checklist_template: 'Checklist template | Checklist templates',
+  Help: 'Help',
+  Privacy: 'Privacy',
+  FAQ: 'FAQ',
+  Support: 'Support',
 }
 
 export default translations

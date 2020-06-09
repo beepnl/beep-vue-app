@@ -45,9 +45,9 @@ export default {
       default: () => [],
     },
   },
-  data: function() {
-    return {
-      tabs: [
+  computed: {
+    tabs: function() {
+      return [
         {
           title: this.$i18n.tc('Location', 2),
           icon: 'mdi-beehive-outline',
@@ -68,8 +68,8 @@ export default {
           icon: 'mdi-image-multiple',
           route: 'photos',
         },
-      ],
-    }
+      ]
+    },
   },
   methods: {
     updateRoute(val) {

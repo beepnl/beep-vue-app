@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-form ref="form" v-model="valid" @submit.prevent="forgotPassword">
-      <v-card-title>Send me a password reset link</v-card-title>
+      <v-card-title>{{ $t('password_recovery_title') }}</v-card-title>
       <v-card-text>
         <v-alert
           v-for="error in errors"
@@ -13,7 +13,7 @@
         </v-alert>
         <v-text-field
           v-model.trim="email"
-          label="email"
+          :label="`${$t('email')}`"
           :rules="emailRules"
           autocomplete="off"
         ></v-text-field>
@@ -21,7 +21,9 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn text type="submit" :disabled="!valid">Send email</v-btn>
+        <v-btn text type="submit" :disabled="!valid">{{
+          $t('password_recovery_send_mail')
+        }}</v-btn>
       </v-card-actions>
     </v-form>
   </v-card>
@@ -33,16 +35,18 @@ export default {
     return {
       valid: false,
       errors: [],
-      emailRules: [
-        (v) => !!v || 'error.email_required',
-        (v) => /.+@.+\..+/.test(v) || 'error.invalid_email',
-      ],
       email: '',
     }
   },
   computed: {
     hasErrors() {
       return this.errors.length > 0
+    },
+    emailRules: function() {
+      return [
+        (v) => !!v || this.$i18n.t('email_is_required'),
+        (v) => /.+@.+\..+/.test(v) || this.$i18n.t('no_valid_email'),
+      ]
     },
   },
   methods: {
@@ -62,17 +66,17 @@ export default {
             switch (error.code) {
               case 'UserNotFoundException':
                 this.errors.push({
-                  type: 'error.user_not_found',
+                  type: this.$i18n.t('invalid_user'),
                 })
                 break
               case 'LimitExceededException':
                 this.errors.push({
-                  type: 'error.limit_exceeded_try_again_later',
+                  type: this.$i18n.t('limit_exceeded'),
                 })
                 break
               default:
                 this.errors.push({
-                  type: 'error.email_cannot_be_empty',
+                  type: this.$i18n.t('email_is_required'),
                 })
             }
           })

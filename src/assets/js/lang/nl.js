@@ -85,7 +85,7 @@ const translations = {
   password_is_required: 'Vul een wachtwoord in.',
   email_is_required: 'Vul een e-mailadres in',
   email_already_exists: 'Het e-mailadres is al in gebruik',
-  'policy accepted_is_required':
+  policy_accepted_is_required:
     'Om te registreren, dien je de Servicevoorwaarden te accepteren',
 
   already_registered: 'Ik heb al een account',
@@ -581,6 +581,18 @@ const translations = {
   delete_group: 'Wis groep',
   edit_group: 'Bewerk groep',
   new_group: 'Nieuwe groep',
+  verification_code: 'verificatiecode',
+  limit_exceeded: 'Limiet is bereikt, probeer later opnieuw',
+  confirm_email_title: 'Bevestig e-mailadres',
+  confirm_email_summary:
+    'U heeft een e-mail met een verificatiecode ontvangen. Vul deze hieronder in om uw e-mailadres te verifiëren',
+  confirm: 'Bevestig',
+  Profile: 'Profiel',
+  Checklist_template: 'Kastkaart template | Kastkaart templates',
+  Help: 'Help',
+  Privacy: 'Privacy',
+  FAQ: 'Veelgestelde vragen',
+  Support: 'Support',
 }
 
 export default translations

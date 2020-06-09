@@ -1,5 +1,5 @@
 <template>
-  <Layout title="Settings">
+  <Layout :title="`${$t('settings_title')}`">
     <v-list two-line>
       <v-list-item>
         <v-list-item-avatar>
@@ -39,34 +39,38 @@ export default {
   components: { Layout },
   data: () => ({
     settings: [],
-    items: [
-      {
-        icon: 'mdi-key',
-        title: 'Profile',
-        route: 'profile',
-        subtitle: 'email, research consent, privacy',
-      },
-      {
-        icon: 'mdi-account-multiple',
-        title: 'Collaboration Groups',
-        subtitle: 'members and sharing',
-      },
-      {
-        icon: 'mdi-format-list-checks',
-        title: 'Checklist templates',
-        subtitle: 'personal, shared, research',
-      },
-      {
-        icon: 'mdi-cloud-download',
-        title: 'Data export',
-        subtitle: 'JSON, CSV',
-      },
-      {
-        icon: 'mdi-help-circle-outline',
-        title: 'Help',
-        subtitle: 'FAQ, BEEP website, support ',
-      },
-    ],
   }),
+  computed: {
+    items: function() {
+      return [
+        {
+          icon: 'mdi-key',
+          title: this.$i18n.t('Profile'),
+          route: 'profile',
+          subtitle: 'email, research consent, privacy',
+        },
+        {
+          icon: 'mdi-account-multiple',
+          title: this.$i18n.tc('Group', 2),
+          subtitle: 'members and sharing',
+        },
+        {
+          icon: 'mdi-format-list-checks',
+          title: this.$i18n.tc('Checklist_template', 2),
+          subtitle: 'personal, shared, research',
+        },
+        {
+          icon: 'mdi-cloud-download',
+          title: this.$i18n.t('Data_export'),
+          subtitle: 'JSON, CSV',
+        },
+        {
+          icon: 'mdi-help-circle-outline',
+          title: this.$i18n.t('Help'),
+          subtitle: 'FAQ, BEEP website, support ',
+        },
+      ]
+    },
+  },
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-form ref="form" v-model="valid" @submit.prevent="createAccount">
-      <v-card-title>Create account</v-card-title>
+      <v-card-title>{{ $t('create_login') }}</v-card-title>
       <v-card-text>
         <v-alert
           v-for="error in errors"
@@ -13,34 +13,38 @@
         </v-alert>
         <v-text-field
           v-model="credentials.username"
-          label="email"
+          :label="`${$t('email')}`"
           autocomplete="off"
           :rules="emailRules"
         />
         <v-text-field
           v-model="credentials.password"
-          label="password"
+          :label="`${$t('password')}`"
           type="password"
           :rules="passwordRules"
         />
         <v-text-field
           v-model="repeatedPassword"
-          label="repeat password"
+          :label="`${$t('confirm_password')}`"
           type="password"
           :rules="repeatPasswordRules"
         />
         <v-checkbox
           v-model="credentials.policyAccepted"
           :rules="termsRules"
-          label="I accept the BEEP terms of service, that are compatible with the new European privacy law"
+          :label="`${$t('accept_policy')}`"
           required
         ></v-checkbox>
-        <a href="https://test.beep.nl/terms-of-service">Terms of service</a>
+        <a href="https://test.beep.nl/terms-of-service">{{
+          $t('Terms_of_use')
+        }}</a>
       </v-card-text>
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn text type="submit" :disabled="!valid">Create account</v-btn>
+        <v-btn text type="submit" :disabled="!valid">{{
+          $t('create_login_summary')
+        }}</v-btn>
       </v-card-actions>
     </v-form>
   </v-card>
@@ -55,28 +59,38 @@ export default {
       repeatedPassword: '',
       agreeToTerms: false,
       errors: [],
-      emailRules: [
-        (v) => !!v || 'error.email_required',
-        (v) => /.+@.+\..+/.test(v) || 'error.invalid_email',
-      ],
-      passwordRules: [
-        (v) => !!v || 'error.password_required',
-        (v) =>
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.[\]{}()?\-"!@#%&/\\,><':;|_~`])(?=.{6,98})/.test(
-            v
-          ) || 'error.password_does_not_match_policy',
-      ],
-      repeatPasswordRules: [
-        (v) => !!v || 'error.field_required',
-        (v) =>
-          v === this.credentials.password || 'error.passwords_do_not_match',
-      ],
-      termsRules: [(v) => !!v || 'error.field_required'],
     }
   },
   computed: {
     hasErrors() {
       return this.errors.length > 0
+    },
+    emailRules: function() {
+      return [
+        (v) => !!v || this.$i18n.t('email_is_required'),
+        (v) => /.+@.+\..+/.test(v) || this.$i18n.t('no_valid_email'),
+      ]
+    },
+    passwordRules: function() {
+      return [
+        (v) => !!v || this.$i18n.t('password_is_required'),
+        // FIXME: don't impose and expose password requirements besides minimum length
+        (v) =>
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.[\]{}()?\-"!@#%&/\\,><':;|_~`])(?=.{6,98})/.test(
+            v
+          ) || this.$i18n.t('invalid_password'),
+      ]
+    },
+    repeatPasswordRules: function() {
+      return [
+        (v) => !!v || this.$i18n.t('is_required'),
+        (v) =>
+          v === this.resetPasswordRequest.newPassword ||
+          this.$i18n.t('no_password_match'),
+      ]
+    },
+    termsRules: function() {
+      return [(v) => !!v || this.$i18n.t('policy_accepted_is_required')]
     },
   },
   methods: {
@@ -97,22 +111,22 @@ export default {
             switch (error.code) {
               case 'UsernameExistsException':
                 this.errors.push({
-                  type: 'error.user_already_exists',
+                  type: this.$i18n.t('username_already_exists'),
                 })
                 break
               case 'LimitExceededException':
                 this.errors.push({
-                  type: 'error.limit_exceeded_try_again_later',
+                  type: this.$i18n.t('limit_exceeded'),
                 })
                 break
               case 'ResourceNotFoundException':
                 this.errors.push({
-                  type: 'error.user_pool_client_not_found',
+                  type: this.$i18n.t('error'),
                 })
                 break
               default:
                 this.errors.push({
-                  type: 'error.unknown_error',
+                  type: this.$i18n.t('error'),
                 })
             }
           })

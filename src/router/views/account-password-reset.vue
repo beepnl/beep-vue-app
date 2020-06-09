@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-form ref="form" v-model="valid" @submit.prevent="resetPassword">
-      <v-card-title>Reset password</v-card-title>
+      <v-card-title>{{ $t('password_recovery_reset_password') }}</v-card-title>
       <v-card-text>
         <v-alert
           v-for="error in errors"
@@ -13,27 +13,27 @@
         </v-alert>
         <v-text-field
           v-model="resetPasswordRequest.email"
-          label="email"
+          :label="`${$t('email')}`"
           :rules="emailRules"
           autocomplete="off"
           disabled
         ></v-text-field>
         <v-text-field
           v-model="resetPasswordRequest.verificationCode"
-          label="verification code"
+          :label="`${$t('verification_code')}`"
           :rules="verificationCodeRules"
           autocomplete="off"
         ></v-text-field>
         <v-text-field
           v-model="resetPasswordRequest.newPassword"
-          label="new password"
+          :label="`${$t('new_password')}`"
           :rules="passwordRules"
           autocomplete="off"
           type="password"
         ></v-text-field>
         <v-text-field
           v-model="newPasswordRepeated"
-          label="repeat new password"
+          :label="`${$t('confirm_new_password')}`"
           :rules="repeatPasswordRules"
           autocomplete="off"
           type="password"
@@ -43,7 +43,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn :disabled="!valid" text type="submit">
-          Reset password
+          {{ $t('password_recovery_reset_password') }}
         </v-btn>
       </v-card-actions>
     </v-form>
@@ -72,26 +72,42 @@ export default {
       newPasswordRepeated: '',
       valid: false,
       errors: [],
-      emailRules: [
-        (v) => !!v || 'error.email_required',
-        (v) => /.+@.+\..+/.test(v) || 'error.invalid_email',
-      ],
-      verificationCodeRules: [(v) => !!v || 'error.verification_code_required'],
-      passwordRules: [
-        (v) => !!v || 'error.password_required',
+    }
+  },
+  computed: {
+    emailRules: function() {
+      return [
+        (v) => !!v || this.$i18n.t('email_is_required'),
+        (v) => /.+@.+\..+/.test(v) || this.$i18n.t('no_valid_email'),
+      ]
+    },
+    verificationCodeRules: function() {
+      return [
+        (v) =>
+          !!v ||
+          (this.$i18n.t('the_field'),
+          this.$i18n.t('verification_code'),
+          this.$i18n.t('is_required')),
+      ]
+    },
+    passwordRules: function() {
+      return [
+        (v) => !!v || this.$i18n.t('password_is_required'),
         // FIXME: don't impose and expose password requirements besides minimum length
         (v) =>
           /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.[\]{}()?\-"!@#%&/\\,><':;|_~`])(?=.{6,98})/.test(
             v
-          ) || 'error.password_does_not_match_policy',
-      ],
-      repeatPasswordRules: [
-        (v) => !!v || 'error.field_required',
+          ) || this.$i18n.t('invalid_password'),
+      ]
+    },
+    repeatPasswordRules: function() {
+      return [
+        (v) => !!v || this.$i18n.t('is_required'),
         (v) =>
           v === this.resetPasswordRequest.newPassword ||
-          'error.passwords_do_not_match',
-      ],
-    }
+          this.$i18n.t('no_password_match'),
+      ]
+    },
   },
   methods: {
     resetPassword() {
@@ -104,22 +120,22 @@ export default {
             switch (error.code) {
               case 'UserNotFoundException':
                 this.errors.push({
-                  type: 'error.user_not_found',
+                  type: this.$i18n.t('invalid_user'),
                 })
                 break
               case 'LimitExceededException':
                 this.errors.push({
-                  type: 'error.limit_exceeded_try_again_later',
+                  type: this.$i18n.t('limit_exceeded'),
                 })
                 break
               case 'CodeMismatchException':
                 this.errors.push({
-                  type: 'error.invalid_verification_code',
+                  type: this.$i18n.t('invalid_token'),
                 })
                 break
               default:
                 this.errors.push({
-                  type: 'error.unknown_error',
+                  type: this.$i18n.t('error'),
                 })
             }
           })

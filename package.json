@@ -27,9 +27,6 @@
     "new": "cross-env HYGEN_TMPLS=generators hygen new",
     "docs": "vuepress dev"
   },
-  "gitHooks": {
-    "pre-commit": "cross-env PRE_COMMIT=true lint-staged"
-  },
   "dependencies": {
     "@aws-amplify/auth": "^2.1.6",
     "@fortawesome/fontawesome-svg-core": "1.2.27",

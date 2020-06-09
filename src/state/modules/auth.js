@@ -11,17 +11,22 @@ export const getters = {
   loggedIn: function(state) {
     return !!state.currentUser
   },
-
+  userLocale: function(state) {
+    return state.currentUser.locale
+  },
   apiToken: function(state) {
     return (state.currentUser && state.currentUser.api_token) || null
   },
 }
 export const mutations = {
+  SET_USER_LOCALE: function(state, newValue) {
+    state.currentUser.locale = newValue
+    saveState('auth.currentUser.locale', newValue) // why need localStorage?
+  },
   SET_CURRENT_USER: function(state, newValue) {
     state.currentUser = newValue
     saveState('auth.currentUser', newValue)
   },
-
   SET_CURRENT_SESSION: function(state, newValue) {
     state.currentSession = newValue
     saveState('auth.currentSession', newValue)
@@ -46,7 +51,6 @@ export const actions = {
 
     return Auth.signIn(username, password).then((response) => {
       const user = response.data
-
       commit('SET_CURRENT_USER', user)
       return user
     })
@@ -59,6 +63,7 @@ export const actions = {
 
     Auth.signOut().then(() => {
       commit('SET_CURRENT_USER', null)
+      window.localStorage.removeItem('auth')
       return null
     })
   },
@@ -107,6 +112,15 @@ export const actions = {
       forgotPasswordRequest.verificationCode,
       forgotPasswordRequest.newPassword
     )
+  },
+  setLocale: function({ commit, dispatch, getters }, locale) {
+    if (getters.loggedIn) {
+      commit('SET_USER_LOCALE', locale)
+      const email = state.currentUser.email
+      return Auth.setLocale(email, locale)
+    } else {
+      return false
+    }
   },
 }
 

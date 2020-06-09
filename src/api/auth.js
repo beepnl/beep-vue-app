@@ -52,6 +52,13 @@ export function forgotPasswordSubmit(email, verificationCode, newPassword) {
   })
 }
 
+export function setLocale(email, locale) {
+  return axios.patch('/user', {
+    email,
+    locale,
+  })
+}
+
 export function currentAuthenticatedUser() {
   return axios.post('/authenticate')
 }

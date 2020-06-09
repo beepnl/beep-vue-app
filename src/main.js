@@ -10,6 +10,8 @@ import fr from '@assets/js/lang/fr'
 import nl from '@assets/js/lang/nl'
 import pt from '@assets/js/lang/pt'
 import ro from '@assets/js/lang/ro'
+// import enUS from '@assets/js/lang/en-US'
+import languages from '@assets/js/lang/languages'
 import moment from 'moment'
 
 import App from './app.vue'
@@ -28,7 +30,7 @@ if (process.env.VUE_APP_TEST === 'e2e') {
 
 const i18n = new VueI18n({
   // legacy: true,
-  locale: navigator.language.split('-')[0] || 'en',
+  locale: languages.checkBrowserLanguage() || 'en',
   messages: {
     de,
     en,
@@ -37,6 +39,7 @@ const i18n = new VueI18n({
     nl,
     pt,
     ro,
+    // add 4-letter code like: 'en-US': enUS, (can only be imported without dash, as enUS)
   },
 })
 

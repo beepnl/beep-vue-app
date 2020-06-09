@@ -3,7 +3,7 @@ export const momentMixin = {
     momentify(date) {
       return this.$moment(date)
         .locale(this.$i18n.locale)
-        .format('DD MMM H:mm')
+        .format('lll')
     },
   },
 }
