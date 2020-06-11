@@ -94,13 +94,13 @@
                 {{ item.notes }}
               </v-col>
               <v-col cols="1">
-                <v-icon v-if="item.impression < 0" class="red--text">
+                <v-icon v-if="item.impression === 1" class="red--text">
                   mdi-emoticon-sad-outline
                 </v-icon>
-                <v-icon v-if="item.impression > 0" class="green--text">
+                <v-icon v-if="item.impression === 3" class="green--text">
                   mdi-emoticon-happy-outline
                 </v-icon>
-                <v-icon v-if="item.impression === 0" class="grey--text">
+                <v-icon v-if="item.impression === 2" class="orange--text">
                   mdi-emoticon-neutral-outline
                 </v-icon>
               </v-col>
