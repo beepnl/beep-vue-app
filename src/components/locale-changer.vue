@@ -33,6 +33,7 @@
 
 <script>
 import languages from '@assets/js/lang/languages'
+import { mapGetters, mapActions } from 'vuex' // FIXME: this does not fix vuex strict mode warnings
 
 export default {
   name: 'LocaleChanger',
@@ -42,25 +43,24 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('auth', ['userLocale']),
     selectedLanguage() {
       return this.$i18n.locale
     },
   },
   created() {
     // if locale is saved in database, use it
-    if (this.$store.getters['auth/userLocale'] !== null) {
-      this.$i18n.locale = this.$store.getters['auth/userLocale']
+    if (this.userLocale !== null) {
+      this.$i18n.locale = this.userLocale
     } else {
       this.$i18n.locale = languages.checkBrowserLanguage()
     }
   },
   methods: {
+    ...mapActions({ setLocale: 'auth/setLocale' }),
     switchLocale(language) {
+      this.setLocale(language)
       this.$i18n.locale = language
-      this.$moment.locale(language)
-      this.$store.dispatch('auth/setLocale', language).catch((error) => {
-        console.log(error)
-      })
     },
   },
 }
