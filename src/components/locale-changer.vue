@@ -33,7 +33,7 @@
 
 <script>
 import languages from '@assets/js/lang/languages'
-import { mapGetters, mapActions } from 'vuex' // FIXME: this does not fix vuex strict mode warnings
+import { mapGetters } from 'vuex' // FIXME: this does not fix vuex strict mode warnings
 
 export default {
   name: 'LocaleChanger',
@@ -57,10 +57,10 @@ export default {
     }
   },
   methods: {
-    ...mapActions({ setLocale: 'auth/setLocale' }),
     switchLocale(language) {
-      this.setLocale(language)
-      this.$i18n.locale = language
+      this.$store.dispatch('auth/setLocale', language).then(() => {
+        this.$i18n.locale = language
+      })
     },
   },
 }
