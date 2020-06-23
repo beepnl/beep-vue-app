@@ -1,0 +1,59 @@
+.v-icon {
+  color: $color-grey;
+  &.color-primary {
+    color: $color-primary;
+  }
+}
+
+.beep-icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin: 2px;
+  color: $color-white;
+  vertical-align: top;
+  background-color: $color-grey;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: 2px solid $color-grey;
+  border-radius: 50%;
+
+  &-queen {
+    background-image: url(/img/icn_bee.svg);
+    background-size: 10px;
+    &--color {
+      border: none;
+    }
+  }
+
+  &-sensors {
+    font-size: 13px;
+    &::before {
+      margin-left: 2px;
+      font-family: 'Material Design Icons';
+      content: '\F060A';
+    }
+  }
+
+  &-sound {
+    background-image: url(/img/icn_sound.svg);
+    background-size: 20px;
+    border: none;
+    border-radius: 0;
+  }
+}
+
+.icon-apiary-shared,
+.icon-apiary-owned {
+  width: 20px;
+  height: 20px;
+  font-size: 14px;
+  color: $color-white;
+  background-color: $color-grey;
+  border: 2px solid $color-grey;
+  border-radius: 100%;
+}
+
+.icon-side-arrow {
+  font-size: 18px;
+}

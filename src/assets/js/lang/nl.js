@@ -593,6 +593,7 @@ const translations = {
   Privacy: 'Privacy',
   FAQ: 'Veelgestelde vragen',
   Support: 'Support',
+  no_inspections: 'Voer eerste inspectie in',
 }
 
 export default translations

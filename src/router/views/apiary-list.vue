@@ -1,148 +1,118 @@
 <template>
   <Layout :menu-items="menuItems">
-    <v-list two-line>
-      <v-list-item-group>
-        <v-list-item
-          v-for="(apiary, i) in apiaries"
-          :key="i"
-          :to="{
-            name: `apiary-details`,
-            params: { id: apiary.id },
-          }"
-          class="apiary-item"
-        >
-          <v-list-item-avatar class="rounded">
-            <v-img
-              v-if="apiary.photo"
-              :src="`https://picsum.photos/500/300?image=${apiary.id * 5 + 10}`"
-              :lazy-src="
-                `https://picsum.photos/10/6?image=${apiary.id * 5 + 10}`
-              "
-            >
-              <template v-slot:placeholder>
-                <v-row class="fill-height ma-0" align="center" justify="center">
-                  <v-progress-circular
-                    indeterminate
-                    color="grey lighten-5"
-                  ></v-progress-circular>
-                </v-row>
-              </template>
-            </v-img>
-            <v-sheet
-              v-else
-              width="100%"
-              height="100%"
-              class="rounded secondary"
-            >
-              <h1 class="white--text">{{ apiary.name | firstletter }}</h1>
-            </v-sheet>
-          </v-list-item-avatar>
-          <v-icon v-if="apiary.warning" class="notification warning">
-            mdi-alert-circle
+    <v-container>
+      <v-card class="d-flex flex-row-reverse" flat>
+        <v-card-actions>
+          <v-icon
+            :class="`${gridView ? '' : 'color-primary'} mr-2`"
+            @click="toggleGrid"
+          >
+            mdi-view-headline
           </v-icon>
-          <v-container class="pa-0">
-            <v-list-item-title>
-              {{ apiary.name }}
-              <span v-if="apiary.city" class="location caption grey--text"
-                >({{ apiary.city }})</span
-              >
-              <span class="lastvisit caption grey--text float-right text-right">
-                {{ apiary.lastvisit }}
-              </span>
-            </v-list-item-title>
-            <HiveIcons :disabled="true" :apiary="apiary"></HiveIcons>
-          </v-container>
-        </v-list-item>
-      </v-list-item-group>
-    </v-list>
+          <v-icon
+            :class="`${gridView ? 'color-primary' : ''}`"
+            @click="toggleGrid"
+          >
+            mdi-view-grid-outline
+          </v-icon>
+        </v-card-actions>
+      </v-card>
 
-    <v-list two-line>
-      <v-list-item-group>
-        <v-list-item
-          v-for="(group, i) in groups"
+      <v-row
+        v-for="(hiveSet, j) in sortedHiveSets"
+        :key="j"
+        class="hive-set"
+        dense
+      >
+        <v-col
+          v-for="(hive, i) in sortedHives(hiveSet.hives)"
           :key="i"
-          :to="{
-            name: `group-details`,
-            params: { id: group.id },
-          }"
-          class="apiary-item"
+          sm="auto"
+          :class="`hive-item ${gridView ? 'grid-view' : 'list-view'}`"
+          :cols="12"
         >
-          <v-list-item-avatar class="rounded">
-            <v-img
-              v-if="group.photo"
-              :src="`https://picsum.photos/500/300?image=${group.id * 5 + 10}`"
-              :lazy-src="
-                `https://picsum.photos/10/6?image=${group.id * 5 + 10}`
-              "
-            >
-              <template v-slot:placeholder>
-                <v-row class="fill-height ma-0" align="center" justify="center">
-                  <v-progress-circular
-                    indeterminate
-                    color="grey lighten-5"
-                  ></v-progress-circular>
-                </v-row>
-              </template>
-            </v-img>
-            <v-sheet
-              v-else
-              width="100%"
-              height="100%"
-              class="rounded secondary"
-            >
-              <h1 class="white--text">{{ group.name | firstletter }}</h1>
-            </v-sheet>
-          </v-list-item-avatar>
-          <v-icon v-if="group.warning" class="notification warning">
-            mdi-alert-circle
-          </v-icon>
-          <v-icon class="notification shared">
-            mdi-account-multiple
-          </v-icon>
-          <v-container class="pa-0">
-            <v-list-item-title>
-              {{ group.name }}
-              <span
-                v-if="group.users.length"
-                class="location caption grey--text"
-                >({{ group.users.length }}
-                {{ $tc('member', group.users.length) }})</span
-              >
-              <span class="lastvisit caption grey--text float-right text-right">
-                {{ group.lastvisit }}
-              </span>
-            </v-list-item-title>
-            <HiveIcons :disabled="true" :apiary="group"></HiveIcons>
-          </v-container>
-        </v-list-item>
-      </v-list-item-group>
-    </v-list>
+          <ScaleTransition :duration="400" group>
+            <HiveCard
+              :key="`${hive.id}`"
+              :hive="hive"
+              :hive-set="hiveSet"
+              :grid-view="gridView"
+            ></HiveCard>
+          </ScaleTransition>
+        </v-col>
+      </v-row>
+    </v-container>
   </Layout>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import HiveIcons from '@components/hive-icons.vue'
+import HiveCard from '@components/hive-card.vue'
 import Layout from '@layouts/main.vue'
+import { mapGetters } from 'vuex'
+import { momentMixin } from '@mixins/momentMixin'
+import { ScaleTransition } from 'vue2-transitions'
 
 export default {
   components: {
-    HiveIcons,
+    HiveCard,
     Layout,
+    ScaleTransition,
   },
-  filters: {
-    firstletter: function(value) {
-      if (!value) return '?'
-      value = value.toString()
-      return value.charAt(0).toUpperCase()
-    },
-  },
+  mixins: [momentMixin],
   data: () => ({
+    gridView: false,
     settings: [],
   }),
   computed: {
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
+    hiveSets() {
+      return this.apiaries.concat(this.groups)
+    },
+    sortedHiveSets() {
+      const sortedHiveSets = this.hiveSets
+        .slice()
+        .sort(function(a, b) {
+          if (a.name > b.name) {
+            return 1
+          }
+          if (b.name > a.name) {
+            return -1
+          }
+          return 0
+        })
+        .sort(function(a, b) {
+          if ('type' in b) {
+            return 1
+          }
+          if ('type' in a) {
+            return -1
+          }
+          return 0
+        })
+      return sortedHiveSets
+    },
+    filteredHiveSets() {
+      // Returns 1 hiveSet!
+      // return this.hiveSets.filter((hiveSet) => {
+      //   return hiveSet.name.includes('Apiary 8')
+      // })
+
+      return this.hiveSets.filter((hiveSet) => {
+        return hiveSet.hives.filter((hive) => {
+          return hive.location.includes('Apiary 8')
+        })
+      })
+
+      // FIXME: returns only hives, but we need to keep the same hiveSet structure
+      // return this.hiveSets
+      //   .map((hiveSet) => {
+      //     return hiveSet.hives.filter((hive) => {
+      //       return hive.location.includes('Apiary')
+      //     })
+      //   })
+      //   .filter((x) => x.length > 0)
+    },
     menuItems: function() {
       return [
         { title: this.$i18n.t('new_apiary') },
@@ -150,36 +120,62 @@ export default {
       ]
     },
   },
+  mounted() {
+    if (localStorage.gridView) {
+      this.gridView = localStorage.gridView === 'true'
+    }
+  },
   created() {
     this.$store.dispatch('locations/findAll')
     this.$store.dispatch('groups/findAll')
+  },
+  methods: {
+    inspectionsForHive(hive) {
+      if (this.inspectionsForHives.length && hive.inspection_count > 0) {
+        return this.inspectionsForHives.filter(
+          (inspection) => inspection.hive_id === hive.id
+        )
+      } else {
+        return []
+      }
+    },
+    sortedHives(hives) {
+      return hives.slice().sort((a, b) => a.order - b.order)
+    },
+    toggleGrid() {
+      if (this.gridView) {
+        localStorage.gridView = 'false'
+        this.gridView = false
+      } else {
+        localStorage.gridView = 'true'
+        this.gridView = true
+      }
+      console.log(this.gridView)
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.apiary-item {
-  margin-top: 24px;
+.hive-set {
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid $color-primary;
+  &:last-child {
+    border-bottom: 0;
+  }
 }
 
-.rounded {
-  border-radius: 5px;
+.hive-item.list-view {
+  min-width: 100%;
 }
 
-.notification {
-  position: absolute;
-  padding: 1px;
-  background: white !important;
-  border-radius: 100%;
-  &.warning {
-    top: 20px;
-    left: 5px;
-    color: red;
-  }
-  &.shared {
-    top: 20px;
-    left: 40px;
-    color: gray;
-  }
+.grid-fade-enter-active,
+.grid-fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+.grid-fade-enter,
+.grid-fade-leave-to {
+  opacity: 0;
 }
 </style>

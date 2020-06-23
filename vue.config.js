@@ -27,6 +27,11 @@ module.exports = {
   css: {
     // Enable CSS source maps.
     sourceMap: true,
+    loaderOptions: {
+      scss: {
+        prependData: `@import "~@assets/css/variables.scss"; @import "~@assets/css/icons.scss"; @import "~@assets/css/typography.scss"; @import "~@assets/css/mixins.scss";`,
+      },
+    },
   },
   // Configure Webpack's dev server.
   // https://cli.vuejs.org/guide/cli-service.html

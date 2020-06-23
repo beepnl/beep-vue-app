@@ -595,6 +595,7 @@ const translations = {
   Privacy: 'Privacy',
   FAQ: 'FAQ',
   Support: 'Support',
+  no_inspections: 'No inspections yet',
 }
 
 export default translations

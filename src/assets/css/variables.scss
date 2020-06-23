@@ -3,6 +3,20 @@
 // colors
 $color-white: #fff;
 $color-black: #000;
+$color-grey: #606060;
+$color-primary: #ffa000;
+
+.color-primary {
+  color: $color-primary;
+}
+
+.color-grey {
+  color: $color-grey;
+}
+
+.color-black {
+  color: $color-black;
+}
 
 // spacing
 $gutter-x-small: 0.8rem;
