@@ -27,7 +27,9 @@
         <div
           class="hive-set-title d-flex flex-row justify-flex-start align-center"
           :style="
-            `color: ${hiveSet.hex_color}; border-color: ${hiveSet.hex_color};`
+            `color: ${
+              hiveSet.hex_color ? hiveSet.hex_color : ''
+            }; border-color: ${hiveSet.hex_color ? hiveSet.hex_color : ''};`
           "
         >
           <v-icon
