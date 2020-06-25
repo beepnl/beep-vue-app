@@ -1,8 +1,29 @@
 <template>
   <Layout :menu-items="menuItems">
     <v-container>
-      <v-card class="d-flex flex-row-reverse" flat>
-        <v-card-actions>
+      <v-card class="d-flex flex-row justify-space-between align-center" flat>
+        <div class="d-flex flex-row justify-flex-start align-center">
+          <v-col cols="8" class="pl-0">
+            <v-text-field
+              v-model="search"
+              label="Search"
+              clearable
+              outlined
+              dense
+            ></v-text-field>
+          </v-col>
+          <v-card-actions>
+            <v-icon
+              :class="
+                `${filterByReminder ? 'color-primary' : 'color-grey'} mr-2`
+              "
+              @click="filterByReminder = !filterByReminder"
+            >
+              mdi-alert-circle
+            </v-icon>
+          </v-card-actions>
+        </div>
+        <v-card-actions class="pr-0">
           <v-icon
             :class="`${gridView ? '' : 'color-primary'} mr-2`"
             @click="toggleGrid"
@@ -19,7 +40,7 @@
       </v-card>
 
       <v-row
-        v-for="(hiveSet, j) in sortedHiveSets"
+        v-for="(hiveSet, j) in filteredHiveSets"
         :key="j"
         class="hive-set"
         dense
@@ -60,6 +81,9 @@ export default {
   },
   mixins: [momentMixin],
   data: () => ({
+    search: null,
+    filterByReminder: false,
+    // filterKeys: ['city', 'country_code', 'name', 'postal_code', 'street'],
     gridView: false,
     settings: [],
   }),
@@ -93,25 +117,81 @@ export default {
       return sortedHiveSets
     },
     filteredHiveSets() {
+      if (this.search === null && !this.filterByReminder) {
+        return this.sortedHiveSets
+      } else if (this.filterByReminder) {
+        return this.sortedHiveSets
+          .map((hiveSet) => {
+            return {
+              ...hiveSet,
+              hives: hiveSet.hives.filter(
+                (hive) => hive.attention === 1 || hive.reminder !== null
+              ),
+            }
+          })
+          .filter((x) => x.hives.length > 0)
+      } else {
+        return this.sortedHiveSets
+          .map((hiveSet) => {
+            const hiveSetMatch = Object.entries(hiveSet).some(
+              ([key, value]) => {
+                if (
+                  value !== null &&
+                  typeof value === 'string' &&
+                  key !==
+                    ('description' || 'type' || 'hex_color' || 'created_at')
+                ) {
+                  return value.toLowerCase().includes(this.search.toLowerCase())
+                }
+              }
+            )
+            if (hiveSetMatch) {
+              return hiveSet
+            } else {
+              return {
+                ...hiveSet,
+                hives: hiveSet.hives.filter((hive) => {
+                  return Object.entries(hive).some(([key, value]) => {
+                    if (value !== null && typeof value === 'string') {
+                      return value
+                        .toLowerCase()
+                        .includes(this.search.toLowerCase())
+                    } else if (key === 'queen' && value !== null) {
+                      return Object.entries(value).some(([key, value]) => {
+                        if (
+                          value !== null &&
+                          typeof value === 'string' &&
+                          key !== ('color' || 'created_at')
+                        ) {
+                          return value
+                            .toLowerCase()
+                            .includes(this.search.toLowerCase())
+                        }
+                      })
+                    }
+                  })
+                }),
+              }
+            }
+          })
+          .filter((x) => x.hives.length > 0)
+      }
+
+      // WORKING ATTENTION FILTER
+      // const filtered = this.hiveSets
+      // return filtered
+      //   .map((hiveSet) => {
+      //     return {
+      //       ...hiveSet,
+      //       hives: hiveSet.hives.filter((hive) => hive.attention === 1),
+      //     }
+      //   })
+      //   .filter((x) => x.hives.length > 0)
+
       // Returns 1 hiveSet!
       // return this.hiveSets.filter((hiveSet) => {
-      //   return hiveSet.name.includes('Apiary 8')
+      // return hiveSet.city.toLowerCase().includes(this.search.toLowerCase())
       // })
-
-      return this.hiveSets.filter((hiveSet) => {
-        return hiveSet.hives.filter((hive) => {
-          return hive.location.includes('Apiary 8')
-        })
-      })
-
-      // FIXME: returns only hives, but we need to keep the same hiveSet structure
-      // return this.hiveSets
-      //   .map((hiveSet) => {
-      //     return hiveSet.hives.filter((hive) => {
-      //       return hive.location.includes('Apiary')
-      //     })
-      //   })
-      //   .filter((x) => x.length > 0)
     },
     menuItems: function() {
       return [
@@ -157,6 +237,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.v-input {
+  height: 40px !important;
+}
 .hive-set {
   padding-bottom: 12px;
   margin-bottom: 12px;
