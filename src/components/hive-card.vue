@@ -1,58 +1,32 @@
 <template>
   <v-card class="hive-card d-flex flex-column justify-end align-start" outlined>
-    <v-row class="ml-0 mb-2">
+    <v-row class="ml-0 mb-2 mr-2">
       <div
-        class="apiary-details d-flex flex-row flex-no-wrap justify-flex-start align-start"
+        v-if="gridView"
+        class="hive-name"
+        v-text="
+          `
+      ${hive.name.length < 25 ? hive.name : hive.name.substring(0, 25) + '...'}
+      `
+        "
       >
-        <div v-if="hiveSet.users && hiveSet.users.length" class="mr-2 my-0">
-          <v-icon
-            class="icon-apiary-shared"
-            :style="
-              `background-color: ${hiveSet.hex_color}; border-color: ${hiveSet.hex_color};`
-            "
-          >
-            mdi-account-multiple
-          </v-icon>
-        </div>
-        <div v-else class="mr-2 my-0">
-          <v-icon
-            class="icon-apiary-owned"
-            :style="
-              `background-color: ${hiveSet.hex_color}; border-color: ${hiveSet.hex_color};`
-            "
-          >
-            mdi-home-analytics
-          </v-icon>
-        </div>
-
-        <div v-if="hiveSet.users && hiveSet.users.length" class="apiary-name">
-          <div
-            v-text="`${hiveSet.name}${gridView ? '' : ', ' + hive.location}`"
-          >
-          </div>
-          <div
-            v-if="!gridView"
-            class="apiary-caption caption"
-            v-text="
-              `${hiveSet.users.length} ${$tc(
-                'member',
-                // eslint-disable-next-line vue/comma-dangle
-                hiveSet.users.length
-              )}`
-            "
-          >
-          </div>
-        </div>
-        <div v-else class="apiary-name">
-          <div v-text="hive.location"> </div>
-          <div
-            v-if="hiveSet.city && !gridView"
-            class="apiary-caption caption"
-            v-text="hiveSet.city"
-          >
-          </div>
-        </div>
       </div>
+      <div
+        v-else
+        class="hive-name"
+        v-text="
+          `
+      ${hive.name.length < 50 ? hive.name : hive.name.substring(0, 50) + '...'}
+      `
+        "
+      >
+      </div>
+      <pre
+        v-if="!gridView && hiveSet.users && hiveSet.users.length"
+        class="hive-name-caption caption"
+        v-text="` (${hive.location})`"
+      >
+      </pre>
     </v-row>
 
     <div class="hive-details d-flex flex-no-wrap justify-flex-start align-end">
@@ -296,12 +270,13 @@ export default {
   a {
     text-decoration: none;
   }
-  .apiary-details {
-    margin-right: 12px;
-    .apiary-name {
-      margin-bottom: 12px;
-      line-height: 1rem;
-    }
+
+  .hive-name {
+    line-height: 1rem;
+  }
+
+  .hive-name-caption {
+    line-height: 1rem;
   }
 
   .hive-details {

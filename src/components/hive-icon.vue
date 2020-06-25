@@ -17,9 +17,6 @@
       >
       </v-sheet>
     </div>
-    <span class="hive-caption caption">
-      {{ hive.name }}
-    </span>
   </v-sheet>
 </template>
 
@@ -68,7 +65,7 @@ export default {
   position: relative;
   flex-direction: column;
   min-width: 40px;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
   border-radius: 2px 2px 0 0;
   .layer-wrapper {
     width: 100%;
@@ -125,15 +122,5 @@ export default {
   &.--has-queen-excluder {
     margin-left: 12px;
   }
-}
-.hive-caption {
-  width: 110%;
-  max-height: 1.125rem;
-  padding-top: 4px;
-  overflow: hidden;
-  line-height: 0.9rem;
-  color: black;
-  text-align: center;
-  background-color: white;
 }
 </style>

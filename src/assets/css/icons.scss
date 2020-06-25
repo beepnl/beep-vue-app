@@ -9,7 +9,6 @@
   display: inline-block;
   width: 20px;
   height: 20px;
-  margin: 2px;
   color: $color-white;
   vertical-align: top;
   background-color: $color-grey;
@@ -47,10 +46,11 @@
 .icon-apiary-owned {
   width: 20px;
   height: 20px;
+  padding-left: 1px;
   font-size: 14px;
   color: $color-white;
-  background-color: $color-grey;
-  border: 2px solid $color-grey;
+  background-color: $color-primary;
+  border: 2px solid $color-primary;
   border-radius: 100%;
 }
 
