@@ -45,6 +45,41 @@
         class="hive-set"
         dense
       >
+        <div
+          class="hive-set-title d-flex flex-row justify-flex-start align-center"
+          :style="
+            `color: ${
+              hiveSet.hex_color ? hiveSet.hex_color : ''
+            }; border-color: ${hiveSet.hex_color ? hiveSet.hex_color : ''};`
+          "
+        >
+          <v-icon
+            v-if="hiveSet.users && hiveSet.users.length"
+            class="icon-apiary-shared ml-1 mr-2 my-0"
+            :style="
+              `background-color: ${hiveSet.hex_color}; border-color: ${hiveSet.hex_color};`
+            "
+          >
+            mdi-account-multiple
+          </v-icon>
+          <v-icon v-else class="icon-apiary-owned ml-1 mr-2 my-0">
+            mdi-home-analytics
+          </v-icon>
+
+          <div v-text="hiveSet.name"></div>
+          <pre
+            v-if="!gridView && hiveSet.users && hiveSet.users.length"
+            class="caption"
+            v-text="
+              ` (${hiveSet.users.length} ${$tc(
+                'member',
+                // eslint-disable-next-line vue/comma-dangle
+                hiveSet.users.length
+              )})`
+            "
+          >
+          </pre>
+        </div>
         <v-col
           v-for="(hive, i) in sortedHives(hiveSet.hives)"
           :key="i"
@@ -241,11 +276,13 @@ export default {
   height: 40px !important;
 }
 .hive-set {
-  padding-bottom: 12px;
-  margin-bottom: 12px;
-  border-bottom: 1px solid $color-primary;
-  &:last-child {
-    border-bottom: 0;
+  margin-bottom: 24px;
+  .hive-set-title {
+    width: 100%;
+    padding-bottom: 8px;
+    margin: 12px 0;
+    color: $color-primary;
+    border-bottom: 1px solid $color-primary;
   }
 }
 
