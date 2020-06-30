@@ -28,7 +28,7 @@
         </pre>
       </div>
       <div
-        v-else
+        v-if="!gridView && !hiveSet.users"
         class="hive-name"
         v-text="
           `
@@ -96,11 +96,7 @@
         >
           <div class="mr-2 my-0">
             <v-sheet
-              :class="
-                `beep-icon beep-icon-queen ${
-                  hive.queen.color ? 'beep-icon-queen--color' : ''
-                }`
-              "
+              class="beep-icon beep-icon-queen"
               :color="hive.queen.color"
             >
             </v-sheet>
