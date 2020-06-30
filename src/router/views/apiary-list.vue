@@ -5,9 +5,9 @@
         class="view-bar d-flex flex-row justify-space-between align-center"
       >
         <div
-          class="filter-options d-flex flex-row justify-flex-start align-center"
+          class="filter-buttons d-flex flex-row justify-flex-start align-center"
         >
-          <v-col cols="5" class="pr-1">
+          <v-col cols="5" class="pr-1 pb-3">
             <v-text-field
               v-model="search"
               :label="`${$t('Search')}`"
@@ -63,9 +63,9 @@
             </v-icon>
           </v-card-actions>
         </div>
-        <v-card-actions>
+        <v-card-actions class="view-buttons">
           <v-icon
-            :class="`${gridView ? '' : 'color-primary'} mr-2`"
+            :class="`${gridView ? '' : 'color-primary'} mr-1`"
             @click="toggleGrid"
           >
             mdi-view-headline
@@ -79,7 +79,12 @@
         </v-card-actions>
       </v-row>
 
-      <v-row v-for="(hiveSet, j) in filteredHiveSets" :key="j" class="hive-set">
+      <v-row
+        v-for="(hiveSet, j) in filteredHiveSets"
+        :key="j"
+        class="hive-set"
+        dense
+      >
         <div
           class="hive-set-title d-flex flex-row justify-flex-start align-center"
           :style="
@@ -120,7 +125,6 @@
           :key="i"
           sm="auto"
           :class="`hive-item ${gridView ? 'grid-view' : 'list-view'}`"
-          :cols="12"
         >
           <ScaleTransition :duration="400" group>
             <HiveCard
@@ -317,7 +321,6 @@ export default {
         localStorage.gridView = 'true'
         this.gridView = true
       }
-      console.log(this.gridView)
     },
     updateFilterByImpression(number) {
       if (this.filterByImpression.includes(number)) {
@@ -342,15 +345,17 @@ export default {
   padding-top: 6px;
   margin-top: -6px;
   background-color: white;
-  border-bottom: 1px solid grey;
+  // border-bottom: 1px solid $color-grey;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.12),
+    0 4px 8px 0 rgba(0, 0, 0, 0.04), 0 1px 10px 0 rgba(0, 0, 0, 0.08);
   @include for-tablet-landscape-up {
     top: 116px;
     padding-top: 4px;
-    padding-right: 16px;
-    padding-left: 16px;
+    padding-right: 25px;
+    padding-left: 24px;
     margin-top: -4px;
-    margin-right: -28px;
-    margin-left: -28px;
+    margin-right: -36px;
+    margin-left: -36px;
   }
   .v-input {
     @include for-phone-only {
@@ -358,15 +363,15 @@ export default {
       padding-right: 0 !important;
     }
   }
+  .view-buttons {
+    padding: 9px;
+  }
 }
 
 .hive-set {
   margin-bottom: 24px;
   &:nth-child(2) {
     margin-top: 80px;
-    @include for-tablet-landscape-up {
-      margin-top: 100px;
-    }
   }
   .hive-set-title {
     width: 100%;
@@ -377,6 +382,9 @@ export default {
     .hive-set-caption {
       font-weight: 600;
     }
+  }
+  .hive-item {
+    flex-grow: 0 !important;
   }
 }
 

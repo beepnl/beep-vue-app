@@ -101,8 +101,9 @@ export default {
     border-color: rgba(0, 0, 0, 0.3) !important;
   }
   .queen_excluder-layer {
+    justify-content: flex-end;
     &::after {
-      justify-content: flex-end;
+      margin-right: -16px;
       font-family: 'Material Design Icons';
       font-size: 18px;
       color: $color-grey;
@@ -120,7 +121,7 @@ export default {
     }
   }
   &.--has-queen-excluder {
-    margin-right: 12px;
+    margin-right: 10px !important;
   }
 }
 </style>
