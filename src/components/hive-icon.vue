@@ -96,31 +96,31 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: flex-start;
     height: 2px;
     border: 1px solid rgba(0, 0, 0, 0.3);
     border-color: rgba(0, 0, 0, 0.3) !important;
-    &::before {
+  }
+  .queen_excluder-layer {
+    &::after {
+      justify-content: flex-end;
       font-family: 'Material Design Icons';
       font-size: 18px;
       color: $color-grey;
-    }
-  }
-  .queen_excluder-layer {
-    &::before {
-      margin-left: -16px;
-      content: '\F0055';
+      content: '\F004E';
     }
   }
   .feeding_box-layer {
     justify-content: center;
     &::before {
       margin-top: -16px;
+      font-family: 'Material Design Icons';
+      font-size: 18px;
+      color: $color-grey;
       content: '\F0046';
     }
   }
   &.--has-queen-excluder {
-    margin-left: 12px;
+    margin-right: 12px;
   }
 }
 </style>

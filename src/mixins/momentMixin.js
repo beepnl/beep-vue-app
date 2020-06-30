@@ -9,9 +9,11 @@ export const momentMixin = {
       const currentYear = new Date().getFullYear()
       const currentYearEn = ', ' + currentYear
       const currentYearEsPt = ' de ' + currentYear
+      const currentYearNl = '. ' + currentYear
       return this.$moment(date)
         .locale(this.$i18n.locale)
         .format('ll')
+        .replace(currentYearNl, '')
         .replace(currentYearEn, '')
         .replace(currentYearEsPt, '')
         .replace(' ' + currentYear, '') // Remove year hardcoded per language, currently no other way to get rid of year whilst keeping localized time

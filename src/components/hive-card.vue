@@ -1,7 +1,17 @@
 <template>
-  <v-card class="hive-card d-flex flex-column justify-end align-start" outlined>
+  <v-card
+    class="hive-card d-flex flex-column justify-end align-start"
+    :style="
+      `border-color: ${
+        hiveSet.hex_color
+          ? hiveSet.hex_color + ' !important'
+          : '#ffa000 !important'
+      };`
+    "
+    outlined
+  >
     <v-row class="ml-0 mb-3 mr-2">
-      <div
+      <h4
         v-if="gridView"
         class="hive-name"
         v-text="
@@ -10,12 +20,12 @@
       `
         "
       >
-      </div>
+      </h4>
       <div
         v-if="!gridView && hiveSet.users && hiveSet.users.length"
         class="d-flex flex-row"
       >
-        <div
+        <h4
           class="hive-name"
           v-text="
             `${
@@ -25,11 +35,11 @@
             }`
           "
         >
-        </div>
-        <pre class="hive-name-caption caption" v-text="` (${hive.location})`">
+        </h4>
+        <pre class="caption hive-name-caption" v-text="` (${hive.location})`">
         </pre>
       </div>
-      <div
+      <h4
         v-if="!gridView && !hiveSet.users"
         class="hive-name"
         v-text="
@@ -38,7 +48,7 @@
       `
         "
       >
-      </div>
+      </h4>
     </v-row>
 
     <div class="hive-details d-flex flex-no-wrap justify-flex-start align-end">
@@ -64,14 +74,14 @@
               </v-icon>
             </a>
           </div>
-          <div
+          <span
             v-if="!gridView"
             :class="
               `${hive.last_inspection_date !== null ? '' : 'color-grey'} mr-2`
             "
             v-text="lastVisit(hive)"
           >
-          </div>
+          </span>
         </div>
 
         <div
@@ -83,13 +93,14 @@
               mdi-alert-circle
             </v-icon>
           </div>
-          <div
+          <span
             v-if="hive.reminder_date"
             class="to-do-date mr-2"
             v-text="momentifyDayMonth(hive.reminder_date)"
           >
-          </div>
-          <div v-if="hive.reminder && !gridView" v-text="hive.reminder"> </div>
+          </span>
+          <span v-if="hive.reminder && !gridView" v-text="hive.reminder">
+          </span>
         </div>
 
         <div
@@ -113,8 +124,10 @@
               mdi-duck
             </v-icon>
           </div>
-          <div v-if="hive.queen.name && !gridView" v-text="hive.queen.name">
-          </div>
+          <span
+            v-if="hive.queen.name && !gridView"
+            v-text="hive.queen.name"
+          ></span>
         </div>
 
         <div
@@ -284,6 +297,7 @@ export default {
   }
 
   .hive-name-caption {
+    font-weight: 600;
     line-height: 1rem;
   }
 
@@ -309,6 +323,10 @@ export default {
       white-space: nowrap;
       border: 1px solid red;
       border-radius: 5px;
+    }
+    .beep-icon-sensors {
+      background-color: green;
+      border-color: green;
     }
     .temp {
       font-weight: 600;

@@ -1,14 +1,13 @@
 <template>
   <Layout :menu-items="menuItems">
     <v-container>
-      <v-card
+      <v-row
         class="view-bar d-flex flex-row justify-space-between align-center"
-        flat
       >
         <div
           class="filter-options d-flex flex-row justify-flex-start align-center"
         >
-          <v-col cols="6" class="pl-0 pr-1">
+          <v-col cols="5" class="pr-1">
             <v-text-field
               v-model="search"
               :label="`${$t('Search')}`"
@@ -64,7 +63,7 @@
             </v-icon>
           </v-card-actions>
         </div>
-        <v-card-actions class="pr-0">
+        <v-card-actions>
           <v-icon
             :class="`${gridView ? '' : 'color-primary'} mr-2`"
             @click="toggleGrid"
@@ -78,14 +77,9 @@
             mdi-view-grid-outline
           </v-icon>
         </v-card-actions>
-      </v-card>
+      </v-row>
 
-      <v-row
-        v-for="(hiveSet, j) in filteredHiveSets"
-        :key="j"
-        class="hive-set"
-        dense
-      >
+      <v-row v-for="(hiveSet, j) in filteredHiveSets" :key="j" class="hive-set">
         <div
           class="hive-set-title d-flex flex-row justify-flex-start align-center"
           :style="
@@ -107,10 +101,10 @@
             mdi-home-analytics
           </v-icon>
 
-          <div v-text="hiveSet.name"></div>
+          <h4 v-text="hiveSet.name"></h4>
           <pre
             v-if="!gridView && hiveSet.users && hiveSet.users.length"
-            class="caption"
+            class="caption hive-set-caption"
             v-text="
               ` (${hiveSet.users.length} ${$tc(
                 'member',
@@ -138,7 +132,10 @@
           </ScaleTransition>
         </v-col>
       </v-row>
-      <v-row v-if="hiveSets && !filteredHiveSets.length">
+      <v-row
+        v-if="sortedHiveSets.length && !filteredHiveSets.length"
+        class="hive-set"
+      >
         <v-col sm="auto" :cols="12">
           {{ $t('no_results') }}
         </v-col>
@@ -338,31 +335,49 @@ export default {
 
 <style lang="scss" scoped>
 .view-bar {
-  @include for-phone-only {
-    flex-direction: column-reverse !important;
-    align-items: flex-end !important;
-    .filter-options {
-      width: 100%;
-    }
+  position: fixed;
+  top: 110px;
+  z-index: 1;
+  width: inherit;
+  padding-top: 6px;
+  margin-top: -6px;
+  background-color: white;
+  border-bottom: 1px solid grey;
+  @include for-tablet-landscape-up {
+    top: 116px;
+    padding-top: 4px;
+    padding-right: 16px;
+    padding-left: 16px;
+    margin-top: -4px;
+    margin-right: -28px;
+    margin-left: -28px;
   }
   .v-input {
-    height: 40px !important;
+    @include for-phone-only {
+      max-width: 106px;
+      padding-right: 0 !important;
+    }
   }
 }
 
 .hive-set {
   margin-bottom: 24px;
+  &:nth-child(2) {
+    margin-top: 80px;
+    @include for-tablet-landscape-up {
+      margin-top: 100px;
+    }
+  }
   .hive-set-title {
     width: 100%;
     padding-bottom: 8px;
     margin: 12px 0;
     color: $color-primary;
     border-bottom: 1px solid $color-primary;
+    .hive-set-caption {
+      font-weight: 600;
+    }
   }
-}
-
-.hive-item.list-view {
-  min-width: 100%;
 }
 
 .grid-fade-enter-active,

@@ -29,7 +29,7 @@ module.exports = {
     sourceMap: true,
     loaderOptions: {
       scss: {
-        prependData: `@import "~@assets/css/variables.scss"; @import "~@assets/css/icons.scss"; @import "~@assets/css/typography.scss"; @import "~@assets/css/mixins.scss";`,
+        prependData: `@import "~@assets/css/mixins.scss"; @import "~@assets/css/variables.scss"; @import "~@assets/css/icons.scss"; @import "~@assets/css/typography.scss"; @import "~@assets/css/grid.scss";`,
       },
     },
   },
