@@ -592,6 +592,7 @@ const translations = {
   FAQ: 'FAQ',
   Support: 'Support',
   no_inspections: 'Add first inspection',
+  no_results: 'No results',
 }
 
 export default translations

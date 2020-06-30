@@ -1,25 +1,64 @@
 <template>
   <Layout :menu-items="menuItems">
     <v-container>
-      <v-card class="d-flex flex-row justify-space-between align-center" flat>
+      <v-card
+        class="filter-bar d-flex flex-row justify-space-between align-center"
+        flat
+      >
         <div class="d-flex flex-row justify-flex-start align-center">
-          <v-col cols="8" class="pl-0">
+          <v-col cols="6" class="pl-0 pr-1">
             <v-text-field
               v-model="search"
-              label="Search"
+              :label="`${$t('Search')}`"
               clearable
               outlined
               dense
+              hide-details
             ></v-text-field>
           </v-col>
           <v-card-actions>
             <v-icon
-              :class="
-                `${filterByReminder ? 'color-primary' : 'color-grey'} mr-2`
-              "
+              :class="`${filterByReminder ? 'red--text' : 'color-grey'} mr-2`"
               @click="filterByReminder = !filterByReminder"
             >
               mdi-alert-circle
+            </v-icon>
+            <div class="mr-2 my-0" @click="filterByBase = !filterByBase">
+              <v-sheet
+                class="beep-icon beep-icon-sensors"
+                :color="`${filterByBase ? 'green' : ''}`"
+              >
+              </v-sheet>
+            </div>
+            <v-icon
+              :class="
+                `${
+                  filterByImpression.includes(3) ? 'green--text' : 'color-grey'
+                } mr-2`
+              "
+              @click="updateFilterByImpression(3)"
+            >
+              mdi-emoticon-happy
+            </v-icon>
+            <v-icon
+              :class="
+                `${
+                  filterByImpression.includes(2) ? 'orange--text' : 'color-grey'
+                } mr-2`
+              "
+              @click="updateFilterByImpression(2)"
+            >
+              mdi-emoticon-neutral
+            </v-icon>
+            <v-icon
+              :class="
+                `${
+                  filterByImpression.includes(1) ? 'red--text' : 'color-grey'
+                } mr-2`
+              "
+              @click="updateFilterByImpression(1)"
+            >
+              mdi-emoticon-sad
             </v-icon>
           </v-card-actions>
         </div>
@@ -97,6 +136,11 @@
           </ScaleTransition>
         </v-col>
       </v-row>
+      <v-row v-if="filteredHiveSets && !filteredHiveSets.length">
+        <v-col sm="auto" :cols="12">
+          {{ $t('no_results') }}
+        </v-col>
+      </v-row>
     </v-container>
   </Layout>
 </template>
@@ -118,7 +162,8 @@ export default {
   data: () => ({
     search: null,
     filterByReminder: false,
-    // filterKeys: ['city', 'country_code', 'name', 'postal_code', 'street'],
+    filterByBase: false,
+    filterByImpression: [],
     gridView: false,
     settings: [],
   }),
@@ -152,81 +197,89 @@ export default {
       return sortedHiveSets
     },
     filteredHiveSets() {
-      if (this.search === null && !this.filterByReminder) {
-        return this.sortedHiveSets
-      } else if (this.filterByReminder) {
-        return this.sortedHiveSets
-          .map((hiveSet) => {
+      var textFilteredHiveSets = []
+      if (this.search === null) {
+        textFilteredHiveSets = this.sortedHiveSets
+      } else {
+        textFilteredHiveSets = this.sortedHiveSets.map((hiveSet) => {
+          const hiveSetMatch = Object.entries(hiveSet).some(([key, value]) => {
+            if (
+              value !== null &&
+              typeof value === 'string' &&
+              key !== ('description' || 'type' || 'hex_color' || 'created_at')
+            ) {
+              return value.toLowerCase().includes(this.search.toLowerCase())
+            }
+          })
+          if (hiveSetMatch) {
+            return hiveSet
+          } else {
+            return {
+              ...hiveSet,
+              hives: hiveSet.hives.filter((hive) => {
+                return Object.entries(hive).some(([key, value]) => {
+                  if (value !== null && typeof value === 'string') {
+                    return value
+                      .toLowerCase()
+                      .includes(this.search.toLowerCase())
+                  } else if (key === 'queen' && value !== null) {
+                    return Object.entries(value).some(([key, value]) => {
+                      if (
+                        value !== null &&
+                        typeof value === 'string' &&
+                        key !== ('color' || 'created_at')
+                      ) {
+                        return value
+                          .toLowerCase()
+                          .includes(this.search.toLowerCase())
+                      }
+                    })
+                  }
+                })
+              }),
+            }
+          }
+        })
+      }
+
+      var propertyFilteredHiveSets = textFilteredHiveSets
+        .map((hiveSet) => {
+          if (this.filterByReminder) {
             return {
               ...hiveSet,
               hives: hiveSet.hives.filter(
                 (hive) => hive.attention === 1 || hive.reminder !== null
               ),
             }
-          })
-          .filter((x) => x.hives.length > 0)
-      } else {
-        return this.sortedHiveSets
-          .map((hiveSet) => {
-            const hiveSetMatch = Object.entries(hiveSet).some(
-              ([key, value]) => {
-                if (
-                  value !== null &&
-                  typeof value === 'string' &&
-                  key !==
-                    ('description' || 'type' || 'hex_color' || 'created_at')
-                ) {
-                  return value.toLowerCase().includes(this.search.toLowerCase())
-                }
-              }
-            )
-            if (hiveSetMatch) {
-              return hiveSet
-            } else {
-              return {
-                ...hiveSet,
-                hives: hiveSet.hives.filter((hive) => {
-                  return Object.entries(hive).some(([key, value]) => {
-                    if (value !== null && typeof value === 'string') {
-                      return value
-                        .toLowerCase()
-                        .includes(this.search.toLowerCase())
-                    } else if (key === 'queen' && value !== null) {
-                      return Object.entries(value).some(([key, value]) => {
-                        if (
-                          value !== null &&
-                          typeof value === 'string' &&
-                          key !== ('color' || 'created_at')
-                        ) {
-                          return value
-                            .toLowerCase()
-                            .includes(this.search.toLowerCase())
-                        }
-                      })
-                    }
-                  })
-                }),
-              }
+          } else {
+            return hiveSet
+          }
+        })
+        .map((hiveSet) => {
+          if (this.filterByBase) {
+            return {
+              ...hiveSet,
+              hives: hiveSet.hives.filter((hive) => hive.sensors.length > 0),
             }
-          })
-          .filter((x) => x.hives.length > 0)
-      }
+          } else {
+            return hiveSet
+          }
+        })
+        .map((hiveSet) => {
+          if (this.filterByImpression.length > 0) {
+            return {
+              ...hiveSet,
+              hives: hiveSet.hives.filter((hive) =>
+                this.filterByImpression.includes(hive.impression)
+              ),
+            }
+          } else {
+            return hiveSet
+          }
+        })
+        .filter((x) => x.hives.length > 0)
 
-      // WORKING ATTENTION FILTER
-      // const filtered = this.hiveSets
-      // return filtered
-      //   .map((hiveSet) => {
-      //     return {
-      //       ...hiveSet,
-      //       hives: hiveSet.hives.filter((hive) => hive.attention === 1),
-      //     }
-      //   })
-      //   .filter((x) => x.hives.length > 0)
-
-      // Returns 1 hiveSet!
-      // return this.hiveSets.filter((hiveSet) => {
-      // return hiveSet.city.toLowerCase().includes(this.search.toLowerCase())
-      // })
+      return propertyFilteredHiveSets
     },
     menuItems: function() {
       return [
@@ -267,14 +320,31 @@ export default {
       }
       console.log(this.gridView)
     },
+    updateFilterByImpression(number) {
+      if (this.filterByImpression.includes(number)) {
+        this.filterByImpression.splice(
+          this.filterByImpression.indexOf(number),
+          1
+        )
+      } else {
+        this.filterByImpression.push(number)
+      }
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.v-input {
-  height: 40px !important;
+.filter-bar {
+  @include for-phone-only {
+    flex-direction: column-reverse !important;
+    align-items: flex-end !important;
+  }
+  .v-input {
+    height: 40px !important;
+  }
 }
+
 .hive-set {
   margin-bottom: 24px;
   .hive-set-title {

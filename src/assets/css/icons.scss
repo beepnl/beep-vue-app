@@ -10,6 +10,7 @@
   width: 20px;
   height: 20px;
   margin: 2px;
+  line-height: 1rem;
   color: $color-white;
   vertical-align: top;
   background-color: $color-grey;
@@ -21,9 +22,6 @@
   &-queen {
     background-image: url('~@assets/img/icn_bee.svg');
     background-size: 10px;
-    &--color {
-      border: none;
-    }
   }
 
   &-sensors {

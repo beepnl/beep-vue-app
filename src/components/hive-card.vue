@@ -18,9 +18,11 @@
         <div
           class="hive-name"
           v-text="
-            `
-      ${hive.name.length < 35 ? hive.name : hive.name.substring(0, 35) + '...'}
-      `
+            `${
+              hive.name.length < 35
+                ? hive.name
+                : hive.name.substring(0, 35) + '...'
+            }`
           "
         >
         </div>
@@ -28,7 +30,7 @@
         </pre>
       </div>
       <div
-        v-else
+        v-if="!gridView && !hiveSet.users"
         class="hive-name"
         v-text="
           `
@@ -96,11 +98,7 @@
         >
           <div class="mr-2 my-0">
             <v-sheet
-              :class="
-                `beep-icon beep-icon-queen ${
-                  hive.queen.color ? 'beep-icon-queen--color' : ''
-                }`
-              "
+              class="beep-icon beep-icon-queen"
               :color="hive.queen.color"
             >
             </v-sheet>
