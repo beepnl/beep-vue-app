@@ -16,4 +16,10 @@ resource.actions.getInspectionsForHives = function({ _ }, hives) {
   ).then((data) => data.reduce((all, item) => all.concat(item.inspections), []))
 }
 
+resource.actions.getInspectionsForHiveIds = function({ _ }, hiveIds) {
+  return Promise.all(
+    hiveIds.map((hiveId) => resource.endpoint.read(hiveId))
+  ).then((data) => data.reduce((all, item) => all.concat(item.inspections), []))
+}
+
 export default resource

@@ -598,6 +598,7 @@ const translations = {
   FAQ: 'FAQ',
   Support: 'Support',
   no_inspections: 'No inspections yet',
+  no_results: 'No results',
 }
 
 export default translations
