@@ -2,10 +2,12 @@
   <Layout :menu-items="menuItems">
     <v-container>
       <v-card
-        class="filter-bar d-flex flex-row justify-space-between align-center"
+        class="view-bar d-flex flex-row justify-space-between align-center"
         flat
       >
-        <div class="d-flex flex-row justify-flex-start align-center">
+        <div
+          class="filter-options d-flex flex-row justify-flex-start align-center"
+        >
           <v-col cols="6" class="pl-0 pr-1">
             <v-text-field
               v-model="search"
@@ -136,7 +138,7 @@
           </ScaleTransition>
         </v-col>
       </v-row>
-      <v-row v-if="filteredHiveSets && !filteredHiveSets.length">
+      <v-row v-if="hiveSets && !filteredHiveSets.length">
         <v-col sm="auto" :cols="12">
           {{ $t('no_results') }}
         </v-col>
@@ -335,10 +337,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.filter-bar {
+.view-bar {
   @include for-phone-only {
     flex-direction: column-reverse !important;
     align-items: flex-end !important;
+    .filter-options {
+      width: 100%;
+    }
   }
   .v-input {
     height: 40px !important;
