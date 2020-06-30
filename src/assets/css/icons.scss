@@ -9,6 +9,7 @@
   display: inline-block;
   width: 20px;
   height: 20px;
+  margin: 2px;
   color: $color-white;
   vertical-align: top;
   background-color: $color-grey;
@@ -18,7 +19,7 @@
   border-radius: 50%;
 
   &-queen {
-    background-image: url(/img/icn_bee.svg);
+    background-image: url('~@assets/img/icn_bee.svg');
     background-size: 10px;
     &--color {
       border: none;
@@ -35,7 +36,7 @@
   }
 
   &-sound {
-    background-image: url(/img/icn_sound.svg);
+    background-image: url('~@assets/img/icn_bee.svg');
     background-size: 20px;
     border: none;
     border-radius: 0;

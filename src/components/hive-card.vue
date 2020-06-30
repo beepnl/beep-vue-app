@@ -1,6 +1,6 @@
 <template>
   <v-card class="hive-card d-flex flex-column justify-end align-start" outlined>
-    <v-row class="ml-0 mb-2 mr-2">
+    <v-row class="ml-0 mb-3 mr-2">
       <div
         v-if="gridView"
         class="hive-name"
@@ -12,6 +12,22 @@
       >
       </div>
       <div
+        v-if="!gridView && hiveSet.users && hiveSet.users.length"
+        class="d-flex flex-row"
+      >
+        <div
+          class="hive-name"
+          v-text="
+            `
+      ${hive.name.length < 35 ? hive.name : hive.name.substring(0, 35) + '...'}
+      `
+          "
+        >
+        </div>
+        <pre class="hive-name-caption caption" v-text="` (${hive.location})`">
+        </pre>
+      </div>
+      <div
         v-else
         class="hive-name"
         v-text="
@@ -21,12 +37,6 @@
         "
       >
       </div>
-      <pre
-        v-if="!gridView && hiveSet.users && hiveSet.users.length"
-        class="hive-name-caption caption"
-        v-text="` (${hive.location})`"
-      >
-      </pre>
     </v-row>
 
     <div class="hive-details d-flex flex-no-wrap justify-flex-start align-end">
