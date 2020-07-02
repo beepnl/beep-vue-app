@@ -1,84 +1,91 @@
 <template>
   <Layout :menu-items="menuItems">
-    <v-container>
-      <v-row
-        class="view-bar d-flex flex-row justify-space-between align-center"
-      >
-        <div
-          class="filter-buttons d-flex flex-row justify-flex-start align-center"
+    <div class="filter-bar-wrapper">
+      <v-container>
+        <v-row
+          class="filter-bar d-flex flex-row justify-space-between align-center"
         >
-          <v-col cols="5" class="pr-1 pb-3">
-            <v-text-field
-              v-model="search"
-              :label="`${$t('Search')}`"
-              clearable
-              outlined
-              dense
-              hide-details
-            ></v-text-field>
-          </v-col>
-          <v-card-actions>
-            <v-icon
-              :class="`${filterByReminder ? 'red--text' : 'color-grey'} mr-2`"
-              @click="filterByReminder = !filterByReminder"
-            >
-              mdi-alert-circle
-            </v-icon>
-            <div class="mr-2 my-0" @click="filterByBase = !filterByBase">
-              <v-sheet
-                class="beep-icon beep-icon-sensors"
-                :color="`${filterByBase ? 'green' : ''}`"
+          <div
+            class="filter-buttons d-flex flex-row justify-flex-start align-center"
+          >
+            <v-col cols="5" class="pr-1">
+              <v-text-field
+                v-model="search"
+                :label="`${$t('Search')}`"
+                clearable
+                outlined
+                dense
+                hide-details
+              ></v-text-field>
+            </v-col>
+            <v-card-actions>
+              <v-icon
+                :class="`${filterByReminder ? 'red--text' : 'color-grey'} mr-2`"
+                @click="filterByReminder = !filterByReminder"
               >
-              </v-sheet>
-            </div>
+                mdi-alert-circle
+              </v-icon>
+              <div class="mr-2 my-0" @click="filterByBase = !filterByBase">
+                <v-sheet
+                  class="beep-icon beep-icon-sensors"
+                  :color="`${filterByBase ? 'green' : ''}`"
+                >
+                </v-sheet>
+              </div>
+              <v-icon
+                :class="
+                  `${
+                    filterByImpression.includes(3)
+                      ? 'green--text'
+                      : 'color-grey'
+                  } mr-2`
+                "
+                @click="updateFilterByImpression(3)"
+              >
+                mdi-emoticon-happy
+              </v-icon>
+              <v-icon
+                :class="
+                  `${
+                    filterByImpression.includes(2)
+                      ? 'orange--text'
+                      : 'color-grey'
+                  } mr-2`
+                "
+                @click="updateFilterByImpression(2)"
+              >
+                mdi-emoticon-neutral
+              </v-icon>
+              <v-icon
+                :class="
+                  `${
+                    filterByImpression.includes(1) ? 'red--text' : 'color-grey'
+                  } mr-2`
+                "
+                @click="updateFilterByImpression(1)"
+              >
+                mdi-emoticon-sad
+              </v-icon>
+            </v-card-actions>
+          </div>
+          <v-card-actions class="view-buttons">
             <v-icon
-              :class="
-                `${
-                  filterByImpression.includes(3) ? 'green--text' : 'color-grey'
-                } mr-2`
-              "
-              @click="updateFilterByImpression(3)"
+              :class="`${gridView ? '' : 'color-primary'} mr-1`"
+              @click="toggleGrid"
             >
-              mdi-emoticon-happy
+              mdi-view-headline
             </v-icon>
             <v-icon
-              :class="
-                `${
-                  filterByImpression.includes(2) ? 'orange--text' : 'color-grey'
-                } mr-2`
-              "
-              @click="updateFilterByImpression(2)"
+              :class="`${gridView ? 'color-primary' : ''}`"
+              @click="toggleGrid"
             >
-              mdi-emoticon-neutral
-            </v-icon>
-            <v-icon
-              :class="
-                `${
-                  filterByImpression.includes(1) ? 'red--text' : 'color-grey'
-                } mr-2`
-              "
-              @click="updateFilterByImpression(1)"
-            >
-              mdi-emoticon-sad
+              mdi-view-grid-outline
             </v-icon>
           </v-card-actions>
-        </div>
-        <v-card-actions class="view-buttons">
-          <v-icon
-            :class="`${gridView ? '' : 'color-primary'} mr-1`"
-            @click="toggleGrid"
-          >
-            mdi-view-headline
-          </v-icon>
-          <v-icon
-            :class="`${gridView ? 'color-primary' : ''}`"
-            @click="toggleGrid"
-          >
-            mdi-view-grid-outline
-          </v-icon>
-        </v-card-actions>
-      </v-row>
-
+        </v-row>
+      </v-container>
+    </div>
+    <v-container>
       <v-row
         v-for="(hiveSet, j) in filteredHiveSets"
         :key="j"
@@ -337,40 +344,41 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.view-bar {
+.filter-bar-wrapper {
   position: fixed;
-  top: 110px;
+  top: 108px;
   z-index: 1;
-  width: inherit;
-  padding-top: 6px;
-  margin-top: -6px;
+  width: 100%;
+  margin-top: -4px;
   background-color: white;
   // border-bottom: 1px solid $color-grey;
   box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.12),
     0 4px 8px 0 rgba(0, 0, 0, 0.04), 0 1px 10px 0 rgba(0, 0, 0, 0.08);
   @include for-tablet-landscape-up {
     top: 116px;
-    padding-top: 4px;
-    padding-right: 25px;
-    padding-left: 24px;
-    margin-top: -4px;
-    margin-right: -36px;
-    margin-left: -36px;
   }
-  .v-input {
-    @include for-phone-only {
-      max-width: 106px;
-      padding-right: 0 !important;
+  .filter-bar {
+    margin-top: -8px;
+    margin-bottom: -8px;
+    @include for-tablet-landscape-up {
+      margin-top: -6px;
     }
-  }
-  .view-buttons {
-    padding: 9px;
+
+    .v-input {
+      @include for-phone-only {
+        max-width: 106px;
+        padding-right: 0 !important;
+      }
+    }
+    .view-buttons {
+      padding: 9px;
+    }
   }
 }
 
 .hive-set {
   margin-bottom: 24px;
-  &:nth-child(2) {
+  &:first-child {
     margin-top: 80px;
   }
   .hive-set-title {
@@ -385,6 +393,12 @@ export default {
   }
   .hive-item {
     flex-grow: 0 !important;
+    &.list-view {
+      @include xs-only {
+        flex-grow: 1 !important;
+        min-width: 100%;
+      }
+    }
   }
 }
 

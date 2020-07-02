@@ -77,7 +77,9 @@
           <span
             v-if="!gridView"
             :class="
-              `${hive.last_inspection_date !== null ? '' : 'color-grey'} mr-2`
+              `${
+                hive.last_inspection_date !== null ? '' : 'color-grey'
+              } mr-2 last-visit`
             "
             v-text="lastVisit(hive)"
           >
@@ -311,6 +313,9 @@ export default {
     }
     .icon-wrapper {
       display: inline-block;
+      white-space: nowrap;
+    }
+    .last-visit {
       white-space: nowrap;
     }
     .to-do-date {
