@@ -52,7 +52,14 @@
     </v-row>
 
     <div class="hive-details d-flex flex-no-wrap justify-flex-start align-end">
-      <HiveIcon :hive="hive"></HiveIcon>
+      <router-link
+        :to="{
+          name: `hive-edit`,
+          params: { id: hive.id },
+        }"
+      >
+        <HiveIcon :hive="hive"></HiveIcon>
+      </router-link>
 
       <div class="pl-2 pr-0 py-0">
         <div

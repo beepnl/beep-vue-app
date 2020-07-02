@@ -49,7 +49,7 @@ export default {
     tabs: function() {
       return [
         {
-          title: this.$i18n.tc('Location', 2),
+          title: this.$i18n.tc('Hive', 2),
           icon: 'mdi-beehive-outline',
           route: 'home',
         },
