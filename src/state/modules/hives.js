@@ -5,6 +5,7 @@ const resource = createResource({ path: 'hives' })
 
 export const state = {
   ...resource.state,
+  hive: {},
 }
 export const getters = {
   ...resource.getters,
@@ -27,8 +28,19 @@ export const mutations = {
   setActiveHive: function(state, hive) {
     state.hive = hive
   },
+  updateHiveColor: function(state, color) {
+    state.hive.color = color
+  },
+  updateHiveFrames: function(state, frames) {
+    state.hive.layers.forEach((layer) => {
+      layer.framecount = frames
+    })
+  },
   updateHiveName: function(state, name) {
     state.hive.name = name
+  },
+  updateHiveType: function(state, type) {
+    state.hive.type = type
   },
   updateHiveLocation: function(state, location) {
     state.hive.location = location

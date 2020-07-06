@@ -21,6 +21,11 @@ export const state = {
     taxonomy: [],
   },
 }
+export const getters = {
+  hiveTypes: (state) => {
+    return state.data.lists.hivetypes || []
+  },
+}
 export const mutations = {
   SET_LISTS: function(state, data) {
     // axios provides a fresh object.

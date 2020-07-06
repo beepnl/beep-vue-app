@@ -1,23 +1,55 @@
 <template>
-  <v-sheet
-    :class="
-      `hive-icon d-flex justify-center align-center white--text text--small mr-1 ${
-        hasQueenExcluder ? '--has-queen-excluder' : ''
-      }`
-    "
-    height="auto"
-    :width="`${hiveWidth(hive)}px`"
-  >
-    <div class="layer-wrapper">
-      <v-sheet
-        v-for="(layer, l) in orderedLayers(hive)"
-        :key="l"
-        :color="`${hive.color ? hive.color : '#d6cdc0'}`"
-        :class="[`layer ${layer.type}-layer`]"
-      >
-      </v-sheet>
-    </div>
-  </v-sheet>
+  <div class="d-flex flex-column align-center">
+    <v-row class="draggable-layers">
+      <v-col cols="3">
+        <v-sheet
+          :color="`${hive.color ? hive.color : '#d6cdc0'}`"
+          class="draggable-layer honey-layer"
+        >
+        </v-sheet>
+      </v-col>
+      <v-col cols="3">
+        <v-sheet
+          :color="`${hive.color ? hive.color : '#d6cdc0'}`"
+          class="draggable-layer brood-layer"
+        >
+        </v-sheet>
+      </v-col>
+      <v-col cols="3">
+        <v-sheet
+          :color="`${hive.color ? hive.color : '#d6cdc0'}`"
+          class="draggable-layer queen_excluder-layer"
+        >
+        </v-sheet>
+      </v-col>
+      <v-col cols="3">
+        <v-sheet
+          :color="`${hive.color ? hive.color : '#d6cdc0'}`"
+          class="draggable-layer feeding_box-layer"
+        >
+        </v-sheet>
+      </v-col>
+    </v-row>
+    <v-sheet
+      :class="
+        `hive-icon d-flex justify-center align-center white--text text--small mr-1 ${
+          hasQueenExcluder ? '--has-queen-excluder' : ''
+        }`
+      "
+      height="auto"
+      :width="`${hiveWidth(hive)}px`"
+    >
+      <div class="layer-wrapper">
+        <v-sheet
+          v-for="(layer, l) in orderedLayers(hive)"
+          :key="l"
+          :color="`${hive.color ? hive.color : '#d6cdc0'}`"
+          :class="[`layer ${layer.type}-layer`]"
+        >
+        </v-sheet>
+      </div>
+    </v-sheet>
+  </div>
 </template>
 
 <script>
@@ -61,6 +93,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.draggable-layers {
+  width: 100%;
+  margin-bottom: 24px;
+  .draggable-layer {
+    border-radius: 0;
+    &.honey-layer {
+      height: 18px;
+    }
+    &.brood-layer {
+      height: 27px;
+    }
+    &.queen_excluder-layer,
+    &.feeding_box-layer {
+      height: 2px;
+      border: 1px solid rgba(0, 0, 0, 0.3);
+      border-color: rgba(0, 0, 0, 0.3) !important;
+    }
+  }
+}
+
 .hive-icon {
   position: relative;
   flex-direction: column;
