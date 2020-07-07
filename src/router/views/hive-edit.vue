@@ -1,33 +1,19 @@
 <template>
   <Layout :title="`${$t('edit')} ${$tc('hive', 1)}`">
     <v-container v-if="activeHive">
-      <v-row>
-        <v-col class="d-flex justify-end">
-          <v-btn color="red" dark type="submit" @click="deleteHive">{{
-            $t('Delete')
-          }}</v-btn>
-        </v-col>
-      </v-row>
-
       <v-form ref="form">
-        <!-- <div class="header d-flex justify-space-between">
-        <div>
-          <h2 v-text="activeHive.name"></h2>
-        </div>
-      </div> -->
-
         <v-card outlined>
           <v-card-text>
             <v-row>
               <v-col cols="12" sm="6" md="3">
-                <v-text-field v-model="hiveName" :label="`${$t('Name')}*`">
+                <v-text-field v-model="hiveName" class="hive-name">
                 </v-text-field>
               </v-col>
 
               <v-col cols="12" sm="6" md="3">
                 <v-btn
-                  class="color-button"
-                  :color="hiveColor"
+                  dark
+                  :color="activeHive.color"
                   @click="overlay = !overlay"
                   >{{ $t('color') }}</v-btn
                 >
@@ -43,7 +29,7 @@
 
               <!-- <v-col class="d-flex" cols="12" sm="6" md="4">
                 <v-select
-                  v-model="hiveLocation"
+                  v-model="activeHiveLocation"
                   :items="apiaryNames"
                   :label="`${$tc('Location', 1)}*`"
                 ></v-select>
@@ -51,11 +37,11 @@
 
               <v-col cols="12" sm="6" md="3">
                 <v-select
-                  v-if="activeHive && hiveType"
+                  v-if="activeHive && activeHive.type"
                   v-model="hiveType"
                   :items="hiveTypes"
-                  item-text="name"
-                  item-value="name"
+                  :item-text="`trans.${locale}`"
+                  item-value="id"
                   :label="`${$t('Type', 1)}*`"
                 >
                 </v-select>
@@ -74,16 +60,13 @@
               :hive="activeHive"
             ></HiveFactory>
           </v-card-text>
-          <v-card-actions>
-            <v-col class="mt-2 d-flex justify-end">
-              <v-btn
-                color="primary"
-                dark
-                type="submit"
-                @click="saveHiveSettings"
-                >{{ $t('save_and_return') }}</v-btn
-              >
-            </v-col>
+          <v-card-actions class="d-flex justify-space-between">
+            <v-btn icon dark color="red" @click="deleteHive">
+              <v-icon dark>mdi-delete</v-icon>
+            </v-btn>
+            <v-btn icon dark color="primary" @click="saveHiveSettings">
+              <v-icon dark>mdi-check</v-icon>
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-form>
@@ -175,7 +158,7 @@ export default {
     hiveType: {
       get() {
         if (this.activeHive) {
-          return this.activeHive.type // $store.state.hives.hive.name
+          return this.activeHive.hive_type_id // $store.state.hives.hive.name
         } else {
           return ''
         }
@@ -270,7 +253,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.color-button {
-  color: $color-white;
+.hive-name {
+  font-size: 2rem;
+  @include for-phone-only {
+    padding-top: 0;
+  }
+
+  &.v-text-field
+    > .v-input__control
+    > .v-input__slot
+    > .v-text-field__slot
+    > input {
+    margin-bottom: 4px !important;
+  }
 }
 </style>
