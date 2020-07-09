@@ -12,7 +12,7 @@
       <v-sheet
         v-for="(layer, l) in orderedLayers(hive)"
         :key="l"
-        :color="`${hive.color ? hive.color : '#d6cdc0'}`"
+        :color="`${layer.color !== hive.color ? layer.color : hive.color}`"
         :class="[`layer ${layer.type}-layer`]"
       >
       </v-sheet>

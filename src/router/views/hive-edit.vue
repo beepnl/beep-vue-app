@@ -1,29 +1,48 @@
 <template>
   <Layout :title="`${$t('edit')} ${$tc('hive', 1)}`">
+    <v-toolbar dense light>
+      <v-spacer></v-spacer>
+      <v-btn icon dark color="red" @click="deleteHive">
+        <v-icon dark>mdi-delete</v-icon>
+      </v-btn>
+      <v-btn icon dark color="primary" @click="saveHiveSettings">
+        <v-icon dark>mdi-check</v-icon>
+      </v-btn>
+    </v-toolbar>
+
     <v-container v-if="activeHive">
       <v-form ref="form">
         <v-card outlined>
           <v-card-text>
             <v-row>
               <v-col cols="12" sm="6" md="3">
-                <v-text-field v-model="hiveName" class="hive-name">
+                <v-text-field
+                  v-model="hiveName"
+                  hide-details
+                  class="hive-edit-name"
+                >
                 </v-text-field>
               </v-col>
 
-              <v-col cols="12" sm="6" md="3">
-                <v-btn
-                  dark
-                  :color="activeHive.color"
-                  @click="overlay = !overlay"
-                  >{{ $t('color') }}</v-btn
-                >
-              </v-col>
-
               <v-overlay :value="overlay">
-                <v-btn icon class="align-right" @click="overlay = false">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-                <v-color-picker v-model="hiveColor" hide-canvas light>
+                <v-toolbar class="hive-color-picker-toolbar" dense light>
+                  <v-btn icon @click="cancelColorPicker">
+                    <v-icon>mdi-close</v-icon>
+                  </v-btn>
+                  <v-spacer></v-spacer>
+                  <v-btn icon dark color="primary" @click="updateHiveColor">
+                    <v-icon>mdi-check</v-icon>
+                  </v-btn>
+                </v-toolbar>
+
+                <v-color-picker
+                  v-model="colorPicker"
+                  class="hive-color-picker"
+                  :swatches="swatches"
+                  show-swatches
+                  hide-canvas
+                  light
+                >
                 </v-color-picker>
               </v-overlay>
 
@@ -46,28 +65,39 @@
                 >
                 </v-select>
               </v-col>
-              <v-col cols="12" sm="6" md="3">
-                <v-text-field
+
+              <v-col cols="6" md="3">
+                <div class="caption" v-text="`${$t('Hive_frames')}*`"></div>
+                <VueNumberInput
+                  v-if="activeHive && activeHive.layers"
                   v-model="hiveFrames"
-                  :label="`${$t('Hive_frames')}*`"
-                >
-                </v-text-field>
+                  class="hive-number-frame-input"
+                  :min="1"
+                  :max="20"
+                  inline
+                  controls
+                  rounded
+                ></VueNumberInput>
+              </v-col>
+              <v-col cols="6" md="3">
+                <div class="caption" v-text="`${$t('Hive_color')}`"></div>
+                <v-sheet
+                  width="36px"
+                  height="36px"
+                  dark
+                  :color="activeHive.color"
+                  @click="overlay = !overlay"
+                ></v-sheet>
               </v-col>
             </v-row>
 
             <HiveFactory
               v-if="activeHive && activeHive.layers"
               :hive="activeHive"
+              :color-preview="colorPreview"
+              :color-picker-value="colorPickerValue"
             ></HiveFactory>
           </v-card-text>
-          <v-card-actions class="d-flex justify-space-between">
-            <v-btn icon dark color="red" @click="deleteHive">
-              <v-icon dark>mdi-delete</v-icon>
-            </v-btn>
-            <v-btn icon dark color="primary" @click="saveHiveSettings">
-              <v-icon dark>mdi-check</v-icon>
-            </v-btn>
-          </v-card-actions>
         </v-card>
       </v-form>
     </v-container>
@@ -78,18 +108,24 @@
         {{ $t('Close') }}
       </v-btn>
     </v-snackbar>
+
+    <Confirm ref="confirm"></Confirm>
   </Layout>
 </template>
 
 <script>
+import Confirm from '@components/confirm.vue'
 import HiveFactory from '@components/hive-factory.vue'
 import { mapGetters } from 'vuex'
 import Layout from '@layouts/back.vue'
+import VueNumberInput from '@chenfengyuan/vue-number-input'
 
 export default {
   components: {
+    Confirm,
     HiveFactory,
     Layout,
+    VueNumberInput,
   },
   data: function() {
     return {
@@ -98,7 +134,14 @@ export default {
         timeout: 2000,
         text: 'notification',
       },
+      swatches: [
+        ['#b5c4b2', '#F7BE02', '#FFA000'],
+        ['#049717', '#1b6308', '#00466b'],
+        ['#bca55e', '#754B1F', '#3F3104'],
+      ],
       overlay: false,
+      colorPreview: false,
+      colorPickerValue: '',
       //   normalizer(node) {
       //   return {
       //     id: node.key,
@@ -109,13 +152,8 @@ export default {
     }
   },
   computed: {
-    // ...mapGetters('hives', ['hives']),
-    // ...mapGetters('locations', ['apiaries']),
     ...mapGetters('hives', ['activeHive']),
     ...mapGetters('taxonomy', ['hiveTypes']),
-    // hive() {
-    //   return this.activeHive
-    // },
     locale() {
       return this.$i18n.locale
     },
@@ -131,16 +169,29 @@ export default {
         this.$store.commit('hives/updateHiveName', value)
       },
     },
-    hiveColor: {
+    // hiveColor: {
+    //   get() {
+    //     if (this.activeHive) {
+    //       return this.activeHive.color // $store.state.hives.hive.name
+    //     } else {
+    //       return ''
+    //     }
+    //   },
+    //   set(value) {
+    //     this.$store.commit('hives/updateHiveColor', value)
+    //   },
+    // },
+    colorPicker: {
       get() {
         if (this.activeHive) {
-          return this.activeHive.color // $store.state.hives.hive.name
+          return this.activeHive.color
         } else {
           return ''
         }
       },
       set(value) {
-        this.$store.commit('hives/updateHiveColor', value)
+        this.colorPreview = true
+        this.colorPickerValue = value
       },
     },
     hiveFrames: {
@@ -148,7 +199,7 @@ export default {
         if (this.activeHive.layers) {
           return this.activeHive.layers[0].framecount // $store.state.hives.hive.name
         } else {
-          return ''
+          return 10
         }
       },
       set(value) {
@@ -183,7 +234,6 @@ export default {
       return parseInt(this.$route.params.id)
     },
     nestedHiveTypes() {
-      // const languages = Object.keys(this.hiveTypes[0].group) // can't assume the first item has all translations
       var allLanguages = []
       this.hiveTypes.map((hiveType) =>
         allLanguages.push(...Object.keys(hiveType.group))
@@ -217,13 +267,18 @@ export default {
     // },
   },
   created() {
-    // this.$store.dispatch('hives/findAll') // in case of direct link / page reload
     this.$store.dispatch('hives/findById', this.id)
-    // .then((data) => console.log('created:' + data))
     this.$store.dispatch('taxonomy/index')
-    // this.$store.dispatch('locations/findAll') // evt via props?
   },
   methods: {
+    updateHiveColor() {
+      this.$store.commit('hives/updateHiveColor', this.colorPickerValue)
+      this.cancelColorPicker()
+    },
+    cancelColorPicker() {
+      this.colorPreview = false
+      this.overlay = false
+    },
     saveHiveSettings() {
       this.$store
         .dispatch('hives/saveHiveSettings', this.activeHive) // this.activeHive
@@ -237,34 +292,67 @@ export default {
         })
     },
     deleteHive() {
-      this.$store
-        .dispatch('hives/deleteHive', this.activeHive.id) // this.activeHive
-        .then(() =>
-          this.$router.push({
-            name: 'home',
-          })
-        )
-        .catch((error) => {
-          console.log(error)
+      this.$refs.confirm
+        .open(this.$i18n.t('Delete'), this.$i18n.t('remove_hive') + '?', {
+          color: 'red',
+        })
+        .then((confirm) => {
+          this.$store
+            .dispatch('hives/deleteHive', this.activeHive.id) // this.activeHive
+            .then(() =>
+              this.$router.push({
+                name: 'home',
+              })
+            )
+            .catch((error) => {
+              console.log(error)
+            })
+        })
+        .catch((reject) => {
+          console.log(reject)
         })
     },
   },
 }
 </script>
 
-<style lang="scss" scoped>
-.hive-name {
+<style lang="scss">
+.hive-edit-name {
   font-size: 2rem;
   @include for-phone-only {
     padding-top: 0;
   }
 
-  &.v-text-field
-    > .v-input__control
-    > .v-input__slot
-    > .v-text-field__slot
-    > input {
-    margin-bottom: 4px !important;
+  input {
+    margin-bottom: 4px;
+  }
+}
+
+.hive-color-picker-toolbar {
+  border-radius: 4px;
+}
+
+.hive-color-picker {
+  margin-top: -10px;
+}
+
+.hive-number-frame-input {
+  max-width: 130px;
+  input {
+    font-size: 14px;
+  }
+  button.number-input__button {
+    &::before,
+    &::after {
+      width: 45%;
+      // background-color: $color-grey;
+    }
+    &:hover {
+      &::before,
+      &::after {
+        background-color: $color-primary;
+      }
+    }
   }
 }
 </style>

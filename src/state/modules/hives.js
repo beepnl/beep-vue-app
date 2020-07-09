@@ -29,12 +29,16 @@ export const mutations = {
     state.hive = hive
   },
   updateHiveColor: function(state, color) {
+    state.hive.layers.forEach((layer) => {
+      layer.color = color
+    })
     state.hive.color = color
   },
   updateHiveFrames: function(state, frames) {
     state.hive.layers.forEach((layer) => {
       layer.framecount = frames
     })
+    state.hive.frames = frames
   },
   updateHiveLayers: function(state, layers) {
     state.hive.layers = layers

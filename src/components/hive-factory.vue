@@ -1,42 +1,52 @@
 <template>
   <div
     :class="
-      `hive-factory d-flex flex-column align-center ${
+      `hive-factory d-flex flex-row align-center justify-flex-start ${
         hasLayer('queen_excluder') ? 'has-queen-excluder' : ''
       } ${hasLayer('feeding_box') ? 'has-feeding-box' : ''}`
     "
   >
-    <v-sheet height="auto" width="100%">
-      <div class="draggable-layers">
-        <draggable
-          v-model="layersToAdd"
-          :group="{ name: 'layers', pull: 'clone', put: true }"
-          :clone="cloneLayer"
-          class="d-flex flex-row justify-center"
-        >
-          <v-sheet
-            v-for="layer in layersToAdd"
-            :key="layer.id"
-            :color="`${hive.color ? hive.color : '#d6cdc0'}`"
-            :class="[`layer draggable-layer ${layer.type}-layer`]"
-            :width="`${hiveWidth(hive)}px`"
-          ></v-sheet>
-        </draggable>
-      </div>
-    </v-sheet>
+    <div class="draggable-layers">
+      <draggable
+        v-model="layersToAdd"
+        :group="{ name: 'layers', pull: 'clone', put: true }"
+        :clone="cloneLayer"
+        class="d-flex flex-column justify-flex-start"
+      >
+        <v-sheet
+          v-for="layer in layersToAdd"
+          :key="layer.id"
+          :color="
+            `${
+              layer.color && layer.color !== hive.color
+                ? layer.color
+                : checkedColor
+            }`
+          "
+          :class="[`layer draggable-layer ${layer.type}-layer`]"
+          :width="`${hiveWidth(hive)}px`"
+        ></v-sheet>
+      </draggable>
+    </div>
 
     <v-sheet
       class="hive-icon d-flex justify-center align-center white--text text--small mr-1"
       height="auto"
-      :width="`${hiveWidth(hive)}px`"
     >
       <div class="layer-wrapper">
         <draggable v-model="hiveLayers" group="layers">
           <v-sheet
             v-for="layer in hiveLayers"
             :key="layer.id"
-            :color="`${hive.color ? hive.color : '#d6cdc0'}`"
+            :color="
+              `${
+                layer.color !== hive.color && !colorPreview
+                  ? layer.color
+                  : checkedColor
+              }`
+            "
             :class="[`layer ${layer.type}-layer`]"
+            :width="`${hiveWidth(hive)}px`"
           ></v-sheet>
         </draggable>
       </div>
@@ -57,6 +67,16 @@ export default {
       type: Object,
       default: null,
       required: true,
+    },
+    colorPreview: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
+    colorPickerValue: {
+      type: String,
+      default: '',
+      required: false,
     },
   },
   data: function() {
@@ -109,6 +129,15 @@ export default {
         this.$store.commit('hives/updateHiveLayers', layers)
       },
     },
+    checkedColor() {
+      if (this.colorPickerValue !== '' && this.colorPreview) {
+        return this.colorPickerValue
+      } else if (this.hive.color && !this.colorPreview) {
+        return this.hive.color
+      } else {
+        return false
+      }
+    },
   },
   methods: {
     // checkMove: function(e) {
@@ -158,27 +187,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.hive-factory {
-  margin-top: 24px;
-  &.has-queen-excluder {
-    .draggable-layer {
-      &.queen_excluder-layer {
-        display: none;
-      }
-    }
-  }
-  &.has-feeding-box {
-    .draggable-layer {
-      &.feeding_box-layer {
-        display: none;
-      }
-    }
-  }
-}
-
 .layer {
   border: 1px solid rgba(0, 0, 0, 0.3);
   border-color: rgba(0, 0, 0, 0.3) !important;
+  &.sortable-ghost {
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    &::before {
+      position: relative;
+      top: 0;
+      left: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      content: '';
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+  }
 }
 .honey-layer {
   height: 18px;
@@ -216,13 +240,31 @@ export default {
 }
 
 .draggable-layers {
-  margin-bottom: 40px;
+  width: 150px;
   .draggable-layer {
-    margin-right: 4px;
+    margin-bottom: 20px;
     border-radius: 0;
     &.queen_excluder-layer,
     &.feeding_box-layer {
-      margin-left: 2px;
+      margin-top: 16px;
+    }
+  }
+}
+
+.hive-factory {
+  margin-top: 24px;
+  &.has-queen-excluder {
+    .draggable-layer {
+      &.queen_excluder-layer {
+        display: none;
+      }
+    }
+  }
+  &.has-feeding-box {
+    .draggable-layer {
+      &.feeding_box-layer {
+        display: none;
+      }
     }
   }
 }
@@ -231,7 +273,9 @@ export default {
   position: relative;
   flex-direction: column;
   min-width: 40px;
+  padding: 0 16px;
   margin-bottom: 3px;
+  border-bottom: 1px solid green;
   border-radius: 2px 2px 0 0;
   .layer-wrapper {
     width: 100%;

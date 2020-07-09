@@ -6755,6 +6755,11 @@ hex-color-regex@^1.1.0:
   resolved "https://registry.yarnpkg.com/hex-color-regex/-/hex-color-regex-1.1.0.tgz#4c06fccb4602fe2602b3c93df82d7e7dbf1a8a8e"
   integrity sha512-l9sfDFsuqtOqKDsQdqrMRk0U85RZc0RtOR9yPI7mRVOa4FsR/BVnZ0shmQRM96Ji99kYZP/7hn1cedc1+ApsTQ==
 
+highlight.js@*:
+  version "10.1.1"
+  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-10.1.1.tgz#691a2148a8d922bf12e52a294566a0d993b94c57"
+  integrity sha512-b4L09127uVa+9vkMgPpdUQP78ickGbHEQTWeBrQFTJZ4/n2aihWOGS0ZoUqAwjVmfjhq/C76HRzkqwZhK4sBbg==
+
 highlight.js@^9.6.0:
   version "9.18.1"
   resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.18.1.tgz#ed21aa001fe6252bb10a3d76d47573c6539fe13c"
@@ -14413,6 +14418,13 @@ vue-faker@^1.0.1:
     faker "^3.0.1"
     underscore "^1.8.3"
 
+vue-highlightjs@^1.3.3:
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/vue-highlightjs/-/vue-highlightjs-1.3.3.tgz#29a0d57132fc1ce15cfa61e896918f5b718c5d52"
+  integrity sha1-KaDVcTL8HOFc+mHolpGPW3GMXVI=
+  dependencies:
+    highlight.js "*"
+
 vue-hot-reload-api@^2.3.0:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz#532955cc1eb208a3d990b3a9f9a70574657e08f2"
@@ -14456,6 +14468,13 @@ vue-meta@^2.3.3:
   integrity sha512-FmeekLkd5+BI7NFBnU4bEnTpVZqmu3q8ztW4R4U3GBQljgDM7QAuwMXs8/aJP0U1tjtxobX8T6HcyZXimGj1DQ==
   dependencies:
     deepmerge "^4.2.2"
+
+vue-number-input-spinner@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/vue-number-input-spinner/-/vue-number-input-spinner-2.2.0.tgz#b4ef53ed93124219444af4783f7cb800600ff2f7"
+  integrity sha512-q1zzpNdGMdqEefoqPCSkNE3iZFEwb9EVq+TtnRKY1gf6EGhbJC6QVV6HGD+R8rjbTWekfWVAzeexrdizHMb5Ow==
+  dependencies:
+    vue-highlightjs "^1.3.3"
 
 vue-router@^3.1.3, vue-router@^3.1.6:
   version "3.1.6"
