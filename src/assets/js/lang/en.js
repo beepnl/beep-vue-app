@@ -209,8 +209,6 @@ const translations = {
   Actions: 'Actions',
   Conditions: 'Conditions (inspected)',
   edit: 'Edit',
-  Hive_brood_layers: 'Brood layers',
-  Hive_honey_layers: 'Honey layers',
   Hive_layer_amount: 'Number of layers',
   Bee_race: 'Bee race',
   Birth_date: 'Birth date',
@@ -593,6 +591,12 @@ const translations = {
   Support: 'Support',
   no_inspections: 'Add first inspection',
   no_results: 'No results',
+  Hive_brood_layer: 'Brood layer | Brood layers',
+  Hive_honey_layer: 'Honey layer | Honey layers',
+  Hive_queen_excluder_layer: 'Queen excluder | Queen excluders',
+  Hive_feeding_box_layer: 'Feeding box | Feeding boxes',
+  overrides_layer_colors: 'overrides layer colors',
+  drag_layers: 'Drag layers to configure hive',
 }
 
 export default translations

@@ -24,28 +24,6 @@
                 </v-text-field>
               </v-col>
 
-              <v-overlay :value="overlay">
-                <v-toolbar class="hive-color-picker-toolbar" dense light>
-                  <v-btn icon @click="cancelColorPicker">
-                    <v-icon>mdi-close</v-icon>
-                  </v-btn>
-                  <v-spacer></v-spacer>
-                  <v-btn icon dark color="primary" @click="updateHiveColor">
-                    <v-icon>mdi-check</v-icon>
-                  </v-btn>
-                </v-toolbar>
-
-                <v-color-picker
-                  v-model="colorPicker"
-                  class="hive-color-picker"
-                  :swatches="swatches"
-                  show-swatches
-                  hide-canvas
-                  light
-                >
-                </v-color-picker>
-              </v-overlay>
-
               <!-- <v-col class="d-flex" cols="12" sm="6" md="4">
                 <v-select
                   v-model="activeHiveLocation"
@@ -67,7 +45,10 @@
               </v-col>
 
               <v-col cols="6" md="3">
-                <div class="caption" v-text="`${$t('Hive_frames')}*`"></div>
+                <div
+                  class="hive-edit-caption"
+                  v-text="`${$t('Hive_frames')}*`"
+                ></div>
                 <VueNumberInput
                   v-if="activeHive && activeHive.layers"
                   v-model="hiveFrames"
@@ -80,14 +61,43 @@
                 ></VueNumberInput>
               </v-col>
               <v-col cols="6" md="3">
-                <div class="caption" v-text="`${$t('Hive_color')}`"></div>
+                <div
+                  class="hive-edit-caption"
+                  v-text="
+                    `${$t('Hive_color')} (${$t('overrides_layer_colors')})`
+                  "
+                ></div>
                 <v-sheet
-                  width="36px"
-                  height="36px"
+                  class="hive-color"
                   dark
                   :color="activeHive.color"
                   @click="overlay = !overlay"
                 ></v-sheet>
+                <v-overlay :value="overlay">
+                  <v-toolbar class="hive-color-picker-toolbar" dense light>
+                    <div v-text="`${$t('Hive_color')}`"></div>
+                    <v-spacer></v-spacer>
+                    <v-toolbar-items>
+                      <v-icon
+                        class="mr-1"
+                        color="primary"
+                        @click="updateHiveColor"
+                        >mdi-check</v-icon
+                      >
+                      <v-icon @click="cancelColorPicker">mdi-close</v-icon>
+                    </v-toolbar-items>
+                  </v-toolbar>
+
+                  <v-color-picker
+                    v-model="colorPicker"
+                    class="hive-color-picker"
+                    :swatches="swatches"
+                    show-swatches
+                    hide-canvas
+                    light
+                  >
+                  </v-color-picker>
+                </v-overlay>
               </v-col>
             </v-row>
 
@@ -119,6 +129,8 @@ import HiveFactory from '@components/hive-factory.vue'
 import { mapGetters } from 'vuex'
 import Layout from '@layouts/back.vue'
 import VueNumberInput from '@chenfengyuan/vue-number-input'
+// import Treeselect from '@riophae/vue-treeselect'
+// import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 export default {
   components: {
@@ -126,6 +138,7 @@ export default {
     HiveFactory,
     Layout,
     VueNumberInput,
+    // Treeselect,
   },
   data: function() {
     return {
@@ -134,6 +147,7 @@ export default {
         timeout: 2000,
         text: 'notification',
       },
+
       swatches: [
         ['#b5c4b2', '#F7BE02', '#FFA000'],
         ['#049717', '#1b6308', '#00466b'],
@@ -142,13 +156,6 @@ export default {
       overlay: false,
       colorPreview: false,
       colorPickerValue: '',
-      //   normalizer(node) {
-      //   return {
-      //     id: node.key,
-      //     label: node.name,
-      //     children: node.subOptions,
-      //   }
-      // },
     }
   },
   computed: {
@@ -328,6 +335,20 @@ export default {
   }
 }
 
+.hive-edit-caption {
+  font-family: 'Roboto', sans-serif !important;
+  font-size: 0.75rem !important;
+  font-weight: 400;
+  line-height: 1rem;
+  letter-spacing: 0.0333333333em !important;
+}
+
+.hive-color {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(0, 0, 0, 0.3) !important;
+}
+
 .hive-color-picker-toolbar {
   border-radius: 4px;
 }
@@ -342,15 +363,30 @@ export default {
     font-size: 14px;
   }
   button.number-input__button {
-    &::before,
-    &::after {
-      width: 45%;
-      // background-color: $color-grey;
+    font-size: 24px;
+    &::before {
+      position: relative;
+      top: 0;
+      left: 0;
+      height: 0;
+      margin-left: 2px;
+      font-family: 'Material Design Icons';
+      background: none !important;
+      background-color: transparent;
+      transform: none;
+    }
+    &--plus::before {
+      content: '\F0415';
+    }
+    &--plus::after {
+      height: 0;
+    }
+    &--minus::before {
+      content: '\F0374';
     }
     &:hover {
-      &::before,
-      &::after {
-        background-color: $color-primary;
+      &::before {
+        color: $color-primary;
       }
     }
   }

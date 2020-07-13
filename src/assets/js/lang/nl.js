@@ -213,8 +213,8 @@ const translations = {
   Actions: 'Acties',
   Conditions: 'Bevindingen (geïnspecteerd)',
   edit: 'Aanpassen',
-  Hive_brood_layers: 'Broedkamers',
-  Hive_honey_layers: 'Honingkamers',
+  // Hive_brood_layers: 'Broedkamers',
+  // Hive_honey_layers: 'Honingkamers',
   Hive_layer_amount: 'Aantal kamers',
   Bee_race: 'Bijenras',
   Birth_date: 'Geboortedatum',
@@ -595,6 +595,12 @@ const translations = {
   Support: 'Support',
   no_inspections: 'Voer eerste inspectie in',
   no_results: 'Geen resultaten',
+  Hive_brood_layer: 'Broedkamer | Broedkamers',
+  Hive_honey_layer: 'Honingkamer | Honingkamers',
+  Hive_queen_excluder_layer: 'Koninginnenrooster | Koninginnenroosters',
+  Hive_feeding_box_layer: 'Voederbak | Voederbakken',
+  overrides_layer_colors: 'overschrijft kamerkleur',
+  drag_layers: 'Versleep kamers om bijenkast te configureren',
 }
 
 export default translations

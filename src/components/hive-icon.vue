@@ -12,7 +12,7 @@
       <v-sheet
         v-for="(layer, l) in orderedLayers(hive)"
         :key="l"
-        :color="`${layer.color !== hive.color ? layer.color : hive.color}`"
+        :color="layer.color"
         :class="[`layer ${layer.type}-layer`]"
       >
       </v-sheet>
@@ -36,8 +36,7 @@ export default {
   },
   methods: {
     hiveWidth: function(hive) {
-      const orderedLayers = this.orderedLayers(hive)
-      return orderedLayers[orderedLayers.length - 1].framecount * 6 // hive.layers[0].framecount * 4
+      return hive.layers[0].framecount * 6
     },
     orderedLayers: function(hive) {
       return hive.layers.slice().sort(function(a, b) {

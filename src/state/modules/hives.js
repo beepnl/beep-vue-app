@@ -34,6 +34,14 @@ export const mutations = {
     })
     state.hive.color = color
   },
+  updateLayerColor: function(state, payload) {
+    const layerIndex = state.hive.layers.findIndex(
+      (layer) => layer.id === payload.layerId || layer.key === payload.layerKey
+    )
+    state.hive.layers[layerIndex].color = payload.layerColor
+    console.log(payload.layerColor)
+    console.log(state.hive.layers[layerIndex])
+  },
   updateHiveFrames: function(state, frames) {
     state.hive.layers.forEach((layer) => {
       layer.framecount = frames
@@ -41,6 +49,11 @@ export const mutations = {
     state.hive.frames = frames
   },
   updateHiveLayers: function(state, layers) {
+    var i = layers.length
+    layers.map((layer) => {
+      layer.order = i
+      i--
+    })
     state.hive.layers = layers
   },
   updateHiveName: function(state, name) {
