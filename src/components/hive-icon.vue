@@ -12,7 +12,7 @@
       <v-sheet
         v-for="(layer, l) in orderedLayers(hive)"
         :key="l"
-        :color="layer.color"
+        :color="checkColor(layer)"
         :class="[`layer ${layer.type}-layer`]"
       >
       </v-sheet>
@@ -55,6 +55,15 @@ export default {
         return 0
       })
     },
+    checkColor(layer) {
+      if (layer.color !== null) {
+        return layer.color
+      } else if (this.hive.color !== null) {
+        return this.hive.color
+      } else {
+        return '#ffa000'
+      }
+    },
   },
 }
 </script>
@@ -72,16 +81,12 @@ export default {
     .layer:first-child {
       border-radius: 2px 2px 0 0;
     }
-    .layer:last-child {
-      border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-    }
   }
   .honey-layer,
   .brood-layer {
     width: 100%;
     border: 1px solid rgba(0, 0, 0, 0.3);
     border-color: rgba(0, 0, 0, 0.3) !important;
-    border-bottom: 0;
     border-radius: 0;
   }
   .honey-layer {
@@ -111,7 +116,7 @@ export default {
   }
   .feeding_box-layer {
     justify-content: center;
-    &::before {
+    &::after {
       margin-top: -16px;
       font-family: 'Material Design Icons';
       font-size: 18px;

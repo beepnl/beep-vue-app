@@ -53,6 +53,7 @@
 
     <div class="hive-details d-flex flex-no-wrap justify-flex-start align-end">
       <router-link
+        class="hive-edit-link"
         :to="{
           name: `hive-edit`,
           params: { id: hive.id },
@@ -311,6 +312,10 @@ export default {
   }
 
   .hive-details {
+    .hive-edit-link {
+      cursor: pointer;
+    }
+
     .hive-details-item {
       margin-bottom: 8px;
       line-height: 1rem;

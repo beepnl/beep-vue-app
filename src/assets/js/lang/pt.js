@@ -212,8 +212,6 @@ const translations = {
   Actions: 'Ações',
   Conditions: 'Condições (inspecionada)',
   edit: 'Edição',
-  Hive_brood_layers: 'Alças de criação',
-  Hive_honey_layers: 'Alças de mel',
   Hive_layer_amount: 'Quantidade de alças',
   Bee_race: 'Raça de abelha',
   Birth_date: 'Data de nascimento',
@@ -596,6 +594,12 @@ const translations = {
   Support: 'Support',
   no_inspections: 'No inspections yet',
   no_results: 'No results',
+  Hive_brood_layer: 'Alça de criação | Alças de criação',
+  Hive_honey_layer: 'Alça de mel | Alças de mel',
+  Hive_queen_excluder_layer: 'Queen excluder | Queen excluders',
+  Hive_feeding_box_layer: 'Feeding box | Feeding boxes',
+  overrides_layer_colors: 'overrides layer colors',
+  drag_layers: 'Drag layers to configure hive',
 }
 
 export default translations

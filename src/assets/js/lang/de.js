@@ -213,8 +213,6 @@ const translations = {
   Actions: 'Bearbeitungen',
   Conditions: 'Bedingungen (geprüft)',
   edit: 'Bearbeite',
-  Hive_brood_layers: 'Brutzargen',
-  Hive_honey_layers: 'Honigzargen',
   Hive_layer_amount: 'Zargenanzahl',
   Bee_race: 'Bienenrasse',
   Birth_date: 'Geburtstag',
@@ -596,6 +594,12 @@ const translations = {
   Support: 'Support',
   no_inspections: 'No inspections yet',
   no_results: 'No results',
+  Hive_brood_layer: 'Brutzarge | Brutzargen',
+  Hive_honey_layer: 'Brutzarge | Brutzargen',
+  Hive_queen_excluder_layer: 'Queen excluder | Queen excluders',
+  Hive_feeding_box_layer: 'Feeding box | Feeding boxes',
+  overrides_layer_colors: 'overrides layer colors',
+  drag_layers: 'Drag layers to configure hive',
 }
 
 export default translations

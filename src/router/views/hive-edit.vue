@@ -1,21 +1,19 @@
 <template>
   <Layout :title="`${$t('edit')} ${$tc('hive', 1)}`">
-    <v-toolbar dense light>
+    <v-toolbar class="hive-edit-bar" dense light>
       <v-spacer></v-spacer>
-      <v-btn icon dark color="red" @click="deleteHive">
-        <v-icon dark>mdi-delete</v-icon>
-      </v-btn>
-      <v-btn icon dark color="primary" @click="saveHiveSettings">
-        <v-icon dark>mdi-check</v-icon>
-      </v-btn>
+      <v-icon dark class="mr-2" color="red" @click="deleteHive"
+        >mdi-delete</v-icon
+      >
+      <v-icon dark color="primary" @click="saveHiveSettings">mdi-check</v-icon>
     </v-toolbar>
 
-    <v-container v-if="activeHive">
+    <v-container v-if="activeHive" class="hive-edit-content">
       <v-form ref="form">
         <v-card outlined>
           <v-card-text>
             <v-row>
-              <v-col cols="12" sm="6" md="3">
+              <v-col cols="12">
                 <v-text-field
                   v-model="hiveName"
                   hide-details
@@ -33,20 +31,29 @@
               </v-col> -->
 
               <v-col cols="12" sm="6" md="3">
-                <v-select
+                <!-- <v-select
                   v-if="activeHive && activeHive.type"
                   v-model="hiveType"
-                  :items="hiveTypes"
-                  :item-text="`trans.${locale}`"
+                  :items="orderedHiveTypes(hiveTypeLocale)"
+                  :item-text="`trans.${hiveTypeLocale}`"
                   item-value="id"
                   :label="`${$t('Type', 1)}*`"
                 >
-                </v-select>
+                </v-select> -->
+                <div class="hive-edit-label" v-text="`${$t('Type', 1)}*`"></div>
+                <Treeselect
+                  v-model="hiveType"
+                  :options="treeselectHiveTypes"
+                  :disable-branch-nodes="true"
+                  :no-results-text="`${$t('no_results')}`"
+                  :default-expand-level="1"
+                  search-nested
+                />
               </v-col>
 
-              <v-col cols="6" md="3">
+              <v-col cols="12" sm="4" md="2">
                 <div
-                  class="hive-edit-caption"
+                  class="hive-edit-label"
                   v-text="`${$t('Hive_frames')}*`"
                 ></div>
                 <VueNumberInput
@@ -60,9 +67,9 @@
                   rounded
                 ></VueNumberInput>
               </v-col>
-              <v-col cols="6" md="3">
+              <v-col cols="12" md="4">
                 <div
-                  class="hive-edit-caption"
+                  class="hive-edit-label"
                   v-text="
                     `${$t('Hive_color')} (${$t('overrides_layer_colors')})`
                   "
@@ -70,12 +77,17 @@
                 <v-sheet
                   class="hive-color"
                   dark
-                  :color="activeHive.color"
+                  :color="
+                    activeHive.color !== null ? activeHive.color : '#ffa000'
+                  "
                   @click="overlay = !overlay"
                 ></v-sheet>
                 <v-overlay :value="overlay">
                   <v-toolbar class="hive-color-picker-toolbar" dense light>
-                    <div v-text="`${$t('Hive_color')}`"></div>
+                    <div
+                      class="hive-color-picker-title"
+                      v-text="`${$t('Hive_color')}`"
+                    ></div>
                     <v-spacer></v-spacer>
                     <v-toolbar-items>
                       <v-icon
@@ -129,8 +141,8 @@ import HiveFactory from '@components/hive-factory.vue'
 import { mapGetters } from 'vuex'
 import Layout from '@layouts/back.vue'
 import VueNumberInput from '@chenfengyuan/vue-number-input'
-// import Treeselect from '@riophae/vue-treeselect'
-// import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+import Treeselect from '@riophae/vue-treeselect'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 export default {
   components: {
@@ -138,7 +150,7 @@ export default {
     HiveFactory,
     Layout,
     VueNumberInput,
-    // Treeselect,
+    Treeselect,
   },
   data: function() {
     return {
@@ -147,7 +159,6 @@ export default {
         timeout: 2000,
         text: 'notification',
       },
-
       swatches: [
         ['#b5c4b2', '#F7BE02', '#FFA000'],
         ['#049717', '#1b6308', '#00466b'],
@@ -163,6 +174,18 @@ export default {
     ...mapGetters('taxonomy', ['hiveTypes']),
     locale() {
       return this.$i18n.locale
+    },
+    hiveTypeLocale() {
+      if (this.hiveTypes.length) {
+        const locale = this.$i18n.locale
+        if (this.hiveTypes[0].trans[locale] === undefined) {
+          return 'en'
+        } else {
+          return locale
+        }
+      } else {
+        return 'en'
+      }
     },
     hiveName: {
       get() {
@@ -240,25 +263,52 @@ export default {
     id() {
       return parseInt(this.$route.params.id)
     },
-    nestedHiveTypes() {
-      var allLanguages = []
-      this.hiveTypes.map((hiveType) =>
-        allLanguages.push(...Object.keys(hiveType.group))
-      )
-      const languages = allLanguages.filter((v, i, a) => a.indexOf(v) === i)
-      var nestedHiveTypes = {}
-      languages.map((language) => {
+    treeselectHiveTypes() {
+      if (this.hiveTypes.length) {
+        const locale = this.hiveTypeLocale
         var result = this.hiveTypes.reduce(function(r, a) {
-          r[a.group[language]] = r[a.group[language]] || []
-          r[a.group[language]].push(a)
+          r[a.group[locale]] = r[a.group[locale]] || []
+          r[a.group[locale]].push(a)
           return r
         }, {})
-        nestedHiveTypes[language] = result
-      })
-      return nestedHiveTypes
-      // TODO: make into format suitable for vue-treeselect (id/label/children)
+        const keys = Object.keys(result)
+          .slice()
+          .sort(function(a, b) {
+            if (a < b) {
+              return -1
+            }
+            if (a > b) {
+              return 1
+            }
+            return 0
+          })
+        var hiveTypesArray = [
+          { id: -1, label: keys[0], children: result[keys[0]] },
+          { id: -2, label: keys[1], children: result[keys[1]] },
+          { id: -3, label: keys[2], children: result[keys[2]] },
+        ]
+        hiveTypesArray.map((hiveTypeObject) => {
+          hiveTypeObject.children.map((child) => {
+            child.label = child.trans[locale]
+          })
+          const sortedArray = hiveTypeObject.children
+            .slice()
+            .sort(function(a, b) {
+              if (a.label < b.label) {
+                return -1
+              }
+              if (a.label > b.label) {
+                return 1
+              }
+              return 0
+            })
+          hiveTypeObject.children = sortedArray
+        })
+        return hiveTypesArray
+      } else {
+        return []
+      }
     },
-
     // hive() {
     //   return this.hives.find((hive) => hive.id === this.id)
     // },
@@ -319,23 +369,57 @@ export default {
           console.log(reject)
         })
     },
+    orderedHiveTypes(locale) {
+      const orderedHiveTypes = this.hiveTypes.slice().sort(function(a, b) {
+        if (a.trans[locale] < b.trans[locale]) {
+          return -1
+        }
+        if (a.trans[locale] > b.trans[locale]) {
+          return 1
+        }
+        return 0
+      })
+      return orderedHiveTypes
+    },
   },
 }
 </script>
 
 <style lang="scss">
+.hive-edit-bar {
+  position: fixed;
+  top: 56px;
+  z-index: 1;
+  width: 100%;
+}
+.hive-edit-content {
+  margin-top: 56px;
+}
 .hive-edit-name {
   font-size: 2rem;
   @include for-phone-only {
     padding-top: 0;
   }
+  @include for-tablet-landscape-up {
+    max-width: 500px;
+  }
 
   input {
-    margin-bottom: 4px;
+    margin-bottom: 2px;
   }
 }
 
-.hive-edit-caption {
+.vue-treeselect--focused:not(.vue-treeselect--open) .vue-treeselect__control {
+  border-color: $color-primary;
+  box-shadow: none;
+}
+
+.vue-treeselect__control {
+  border-radius: 2px;
+}
+
+.hive-edit-label {
+  margin-bottom: 4px;
   font-family: 'Roboto', sans-serif !important;
   font-size: 0.75rem !important;
   font-weight: 400;
@@ -344,23 +428,32 @@ export default {
 }
 
 .hive-color {
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   border: 1px solid rgba(0, 0, 0, 0.3) !important;
-}
-
-.hive-color-picker-toolbar {
-  border-radius: 4px;
 }
 
 .hive-color-picker {
   margin-top: -10px;
+
+  .hive-color-picker-toolbar {
+    border-radius: 4px;
+  }
+
+  .hive-color-picker-title {
+    font-weight: 500;
+  }
 }
 
 .hive-number-frame-input {
   max-width: 130px;
-  input {
-    font-size: 14px;
+  input.number-input__input {
+    padding-top: 5px;
+    padding-right: 3.175rem;
+    padding-bottom: 5px;
+    padding-left: 3.175rem;
+    border-color: $color-grey-light;
+    border-radius: 2px;
   }
   button.number-input__button {
     font-size: 24px;

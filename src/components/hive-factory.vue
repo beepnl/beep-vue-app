@@ -1,7 +1,8 @@
 <template>
-  <v-row class="hive-factory-wrapper d-flex flex-column">
+  <v-row class="hive-factory-wrapper">
+    <v-col class="filler" cols="12" md="5"> </v-col>
     <v-col cols="12" sm="6" md="4">
-      <div class="hive-edit-caption" v-text="`${$t('drag_layers')}`"></div>
+      <div class="hive-edit-label" v-text="`${$t('drag_layers')}`"></div>
       <div
         :class="
           `hive-factory d-flex flex-row align-center justify-flex-start ${
@@ -16,14 +17,23 @@
             :clone="cloneLayer"
             class="d-flex flex-column justify-flex-start"
           >
-            <v-sheet
+            <div
               v-for="layer in layersToAdd"
               :key="layer.key"
-              :color="checkedColor(layer)"
-              :class="[`layer draggable-layer ${layer.type}-layer`]"
+              :class="[`draggable-layer-wrapper ${layer.type}-layer-wrapper`]"
               :width="`${hiveWidth(hive)}px`"
             >
-            </v-sheet>
+              <span
+                class="hive-edit-label"
+                v-text="layerTypeText(layer)"
+              ></span>
+              <v-sheet
+                :color="checkColor(layer)"
+                :class="[`layer draggable-layer ${layer.type}-layer`]"
+                :width="`${hiveWidth(hive)}px`"
+              >
+              </v-sheet>
+            </div>
           </draggable>
         </div>
 
@@ -31,12 +41,12 @@
           class="hive-icon d-flex justify-center align-center white--text text--small"
           height="auto"
         >
-          <div class="layer-wrapper">
+          <div class="hive-icon-layers">
             <draggable v-model="hiveLayers" group="layers">
               <v-sheet
                 v-for="layer in hiveLayers"
                 :key="layer.key"
-                :color="checkedColor(layer)"
+                :color="checkColor(layer)"
                 :class="[`layer ${layer.type}-layer`]"
                 :width="`${hiveWidth(hive)}px`"
                 @click="openOverlay(layer)"
@@ -48,7 +58,10 @@
 
         <v-overlay :value="overlay">
           <v-toolbar class="hive-color-picker-toolbar" dense light>
-            <div v-text="layerTypeText"></div>
+            <div
+              class="hive-color-picker-title"
+              v-text="currentLayer !== null ? layerTypeText(currentLayer) : ''"
+            ></div>
             <v-spacer></v-spacer>
             <v-toolbar-items>
               <v-icon class="mr-1" color="primary" @click="updateLayerColor"
@@ -107,7 +120,7 @@ export default {
         ['#bca55e', '#754B1F', '#3F3104'],
       ],
       overlay: false,
-      currentLayer: {},
+      currentLayer: null,
       layerColorPickerValue: '',
       layerColorPreview: false,
     }
@@ -142,13 +155,6 @@ export default {
         this.layerColorPickerValue = value
       },
     },
-    layerTypeText() {
-      if (this.currentLayer.type) {
-        return this.$i18n.tc('Hive_' + this.currentLayer.type + '_layer', 1)
-      } else {
-        return ''
-      }
-    },
   },
   methods: {
     openOverlay(layer) {
@@ -169,7 +175,7 @@ export default {
     cancelColorPicker() {
       this.overlay = false
       this.layerColorPreview = false
-      this.currentLayer = {}
+      this.currentLayer = null
     },
     hasLayer(type) {
       return this.hive.layers.some((layer) => layer.type === type)
@@ -183,7 +189,10 @@ export default {
         framecount: framecount,
       }
     },
-    checkedColor(layer) {
+    layerTypeText(layer) {
+      return this.$i18n.tc('Hive_' + layer.type + '_layer', 1)
+    },
+    checkColor(layer) {
       if (this.colorPickerValue !== '' && this.colorPreview) {
         return this.colorPickerValue
       } else if (
@@ -198,9 +207,9 @@ export default {
         layer.key === this.currentLayer.key
       ) {
         return this.layerColorPickerValue
-      } else if (layer.color && !this.colorPreview) {
+      } else if (layer.color !== null && !this.colorPreview) {
         return layer.color
-      } else if (!layer.color && !this.colorPreview) {
+      } else if (this.hive.color !== null && !this.colorPreview) {
         return this.hive.color
       } else {
         return '#ffa000'
@@ -247,26 +256,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.hive-factory-wrapper {
-  margin-top: 24px;
-}
-.layer {
-  min-width: 40px;
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  border-color: rgba(0, 0, 0, 0.3) !important;
-  &.sortable-ghost {
-    border: 2px solid rgba(0, 0, 0, 0.3);
-    &::before {
-      position: relative;
-      top: 0;
-      left: 0;
-      display: block;
-      width: 100%;
-      height: 100%;
-      content: '';
-      background-color: rgba(0, 0, 0, 0.3);
+.hive-factory {
+  padding: 12px;
+  border: 1px solid $color-grey-light;
+  border-radius: 2px;
+  &.has-queen-excluder {
+    .draggable-layer-wrapper.queen_excluder-layer-wrapper {
+      display: none;
     }
   }
+  &.has-feeding-box {
+    .draggable-layer-wrapper.feeding_box-layer-wrapper {
+      display: none;
+    }
+  }
+}
+
+.layer {
+  min-width: 40px;
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-color: rgba(0, 0, 0, 0.3) !important;
 }
 .honey-layer {
   height: 18px;
@@ -294,7 +306,7 @@ export default {
 }
 .feeding_box-layer {
   justify-content: center;
-  &::before {
+  &::after {
     margin-top: -16px;
     font-family: 'Material Design Icons';
     font-size: 18px;
@@ -305,36 +317,21 @@ export default {
 
 .draggable-layers {
   width: 150px;
-  .draggable-layer {
-    margin-bottom: 20px;
-    border-radius: 0;
-    &.queen_excluder-layer,
-    &.feeding_box-layer {
+  .draggable-layer-wrapper {
+    .layer {
+      border-radius: 0;
+    }
+    .feeding_box-layer {
       margin-top: 16px;
     }
+    .queen_excluder-layer {
+      margin-top: 8px;
+    }
+  }
+  .draggable-layer-wrapper:not(.sortable-drag) {
+    margin-bottom: 20px;
     &:last-child {
       margin-bottom: 10px;
-    }
-  }
-}
-
-.hive-factory {
-  padding: 12px;
-  margin-top: 8px;
-  border: 1px solid $color-grey;
-  border-radius: 2px;
-  &.has-queen-excluder {
-    .draggable-layer {
-      &.queen_excluder-layer {
-        display: none;
-      }
-    }
-  }
-  &.has-feeding-box {
-    .draggable-layer {
-      &.feeding_box-layer {
-        display: none;
-      }
     }
   }
 }
@@ -342,26 +339,76 @@ export default {
 .hive-icon {
   position: relative;
   flex-direction: column;
-  // min-width: 40px;
+  min-width: 40px;
   padding: 0 16px;
   margin-bottom: 3px;
   border-bottom: 1px solid green;
   border-radius: 2px 2px 0 0;
-  .layer-wrapper {
+  .hive-icon-layers {
     width: 100%;
     height: 100%;
     .layer:first-child {
       border-radius: 2px 2px 0 0;
     }
-    .layer:last-child {
-      border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    .layer:last-child:not(.queen_excluder-layer) {
+      border-bottom: 0;
     }
   }
   .honey-layer,
   .brood-layer {
-    width: 100%;
-    border-bottom: 0;
+    // border-bottom: 0;
     border-radius: 0;
   }
+}
+
+.draggable-layers {
+  .sortable-drag {
+    .hive-edit-label {
+      display: none;
+      height: 0;
+    }
+    .layer {
+      border-width: 2px;
+      border-radius: 0;
+    }
+  }
+  .layer.sortable-ghost:not(.feeding_box-layer):not(.queen_excluder-layer) {
+    border: 0;
+    border-radius: 0;
+    &::before {
+      position: relative;
+      top: 0;
+      left: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      content: '';
+      background-color: red;
+    }
+  }
+}
+.hive-icon-layers {
+  .sortable-ghost {
+    .hive-edit-label {
+      display: none;
+      height: 0;
+    }
+    .layer:not(.feeding_box-layer):not(.queen_excluder-layer),
+    &.layer {
+      &::before {
+        position: relative;
+        top: 0;
+        left: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+        content: '';
+        background-color: rgba(0, 0, 0, 0.3);
+      }
+    }
+  }
+}
+.filler {
+  padding: 0;
 }
 </style>

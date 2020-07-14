@@ -212,8 +212,8 @@ const translations = {
   Actions: 'Actiune',
   Conditions: 'Condiții(inspectate)',
   edit: 'Editare',
-  Hive_brood_layers: 'Straturi cu puiet',
-  Hive_honey_layers: 'Straturi cu miere',
+  // Hive_brood_layers: 'Straturi cu puiet',
+  // Hive_honey_layers: 'Straturi cu miere',
   Hive_layer_amount: 'Numărul de straturi',
   Bee_race: 'Rasa albinelor',
   Birth_date: 'Data nașterii',
@@ -597,6 +597,12 @@ const translations = {
   Support: 'Support',
   no_inspections: 'No inspections yet',
   no_results: 'No results',
+  Hive_brood_layer: 'Brood layer | Brood layers',
+  Hive_honey_layer: 'Honey layer | Honey layers',
+  Hive_queen_excluder_layer: 'Queen excluder | Queen excluders',
+  Hive_feeding_box_layer: 'Feeding box | Feeding boxes',
+  overrides_layer_colors: 'overrides layer colors',
+  drag_layers: 'Drag layers to configure hive',
 }
 
 export default translations

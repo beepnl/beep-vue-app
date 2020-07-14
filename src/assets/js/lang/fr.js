@@ -213,8 +213,8 @@ const translations = {
   Actions: 'Actions',
   Conditions: 'Conditions (inspectées)',
   edit: 'Modifier',
-  Hive_brood_layers: 'Cadre de couvain',
-  Hive_honey_layers: 'Cadre de miel',
+  // Hive_brood_layers: 'Cadre de couvain',
+  // Hive_honey_layers: 'Cadre de miel',
   Hive_layer_amount: "Quantité d'éléments",
   Bee_race: "Course d'abeilles",
   Birth_date: 'Date de naissance',
@@ -599,6 +599,12 @@ const translations = {
   Support: 'Support',
   no_inspections: 'No inspections yet',
   no_results: 'No results',
+  Hive_brood_layer: 'Brood layer | Brood layers',
+  Hive_honey_layer: 'Honey layer | Honey layers',
+  Hive_queen_excluder_layer: 'Queen excluder | Queen excluders',
+  Hive_feeding_box_layer: 'Feeding box | Feeding boxes',
+  overrides_layer_colors: 'overrides layer colors',
+  drag_layers: 'Drag layers to configure hive',
 }
 
 export default translations

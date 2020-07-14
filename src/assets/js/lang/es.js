@@ -211,8 +211,6 @@ const translations = {
   Actions: 'Acciones',
   Conditions: 'Condiciones (inspeccionado)',
   edit: 'Editar',
-  Hive_brood_layers: 'Capas de Cría',
-  Hive_honey_layers: 'Capas de Miel',
   Hive_layer_amount: 'Conteo de Capas',
   Bee_race: 'Raza de abeja',
   Birth_date: 'Fecha de nacimiento',
@@ -595,6 +593,12 @@ const translations = {
   Support: 'Support',
   no_inspections: 'No inspections yet',
   no_results: 'No results',
+  Hive_brood_layer: 'Capa de Cría | Capas de Cría',
+  Hive_honey_layer: 'Capa de Miel | Capas de Miel',
+  Hive_queen_excluder_layer: 'Queen excluder | Queen excluders',
+  Hive_feeding_box_layer: 'Feeding box | Feeding boxes',
+  overrides_layer_colors: 'overrides layer colors',
+  drag_layers: 'Drag layers to configure hive',
 }
 
 export default translations
