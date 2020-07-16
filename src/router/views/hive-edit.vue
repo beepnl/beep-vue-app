@@ -8,7 +8,7 @@
       <v-icon dark color="primary" @click="saveHiveSettings">mdi-check</v-icon>
     </v-toolbar>
 
-    <v-container v-if="activeHive" class="hive-edit-content">
+    <v-container v-if="activeHive.name !== undefined" class="hive-edit-content">
       <v-form ref="form">
         <v-card outlined>
           <v-card-text>
@@ -282,10 +282,54 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch('hives/findById', this.id)
-    this.$store.dispatch('taxonomy/index')
+    this.readHive()
+    this.readHiveTypes()
   },
   methods: {
+    async readHive() {
+      try {
+        const response = await this.$store.dispatch('hives/findById', this.id)
+        if (response.length === 0) {
+          this.$router.push({ name: '404', params: { resource: 'hive' } })
+        }
+        const hive = response.hives[0]
+        this.$store.commit('hives/setActiveHive', hive)
+        return true
+      } catch (e) {
+        console.log(e)
+        this.$router.push({ name: '404', params: { resource: 'hive' } })
+      }
+    },
+    async readHiveTypes() {
+      try {
+        const response = await this.$store.dispatch('taxonomy/index')
+        if (response.length === 0) {
+          this.$router.push({ name: '404' })
+        }
+        return true
+      } catch (e) {
+        console.log(e)
+        this.$router.push({ name: '404' })
+      }
+    },
+    async delete() {
+      try {
+        const response = await this.$store.dispatch(
+          'hives/deleteHive',
+          this.activeHive.id
+        )
+        if (response.length === 0) {
+          this.snackbar.text = 'something went wrong'
+          this.snackbar.show = true
+        }
+        return this.$router.push({
+          name: 'home',
+        })
+      } catch (error) {
+        this.snackbar.text = 'something went wrong'
+        this.snackbar.show = true
+      }
+    },
     cancelColorPicker() {
       this.colorPreview = false
       this.overlay = false
@@ -296,24 +340,15 @@ export default {
           color: 'red',
         })
         .then((confirm) => {
-          this.$store
-            .dispatch('hives/deleteHive', this.activeHive.id) // this.activeHive
-            .then(() =>
-              this.$router.push({
-                name: 'home',
-              })
-            )
-            .catch((error) => {
-              console.log(error)
-            })
+          this.delete()
         })
         .catch((reject) => {
-          console.log(reject)
+          return true
         })
     },
     saveHiveSettings() {
       this.$store
-        .dispatch('hives/saveHiveSettings', this.activeHive) // this.activeHive
+        .dispatch('hives/saveHiveSettings', this.activeHive)
         .then(() =>
           this.$router.push({
             name: 'home',

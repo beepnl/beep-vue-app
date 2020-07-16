@@ -77,12 +77,7 @@ export const actions = {
     return false
   },
   findById: function({ commit }, id) {
-    return resource.endpoint.read(id).then((response) => {
-      const hive = response.hives[0]
-      commit('setActiveHive', hive)
-      // console.log(hive)
-      return true
-    })
+    return resource.endpoint.read(id)
   },
   saveHiveSettings: function({ _ }, hive) {
     const id = hive.id

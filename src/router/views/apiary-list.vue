@@ -176,6 +176,7 @@ export default {
     filterByImpression: [],
     gridView: false,
     settings: [],
+    showApiaryWizard: false,
   }),
   computed: {
     ...mapGetters('locations', ['apiaries']),
@@ -304,10 +305,21 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch('locations/findAll')
-    this.$store.dispatch('groups/findAll')
+    this.readApiariesAndGroups()
   },
   methods: {
+    async readApiariesAndGroups() {
+      try {
+        const responseApiaries = await this.$store.dispatch('locations/findAll')
+        const responseGroups = await this.$store.dispatch('groups/findAll')
+        if (responseApiaries.length === 0 && responseGroups.length === 0) {
+          this.showApiaryWizard = true // TODO: make placeholder for no apiaries/groups situation
+        }
+        return true
+      } catch (e) {
+        console.log(e)
+      }
+    },
     inspectionsForHive(hive) {
       if (this.inspectionsForHives.length && hive.inspection_count > 0) {
         return this.inspectionsForHives.filter(

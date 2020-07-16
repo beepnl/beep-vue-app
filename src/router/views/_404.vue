@@ -1,11 +1,14 @@
 <template>
   <Layout>
     <h1 :class="$style.title">
-      404
-      <template v-if="resource">
-        {{ resource }}
-      </template>
-      Not Found
+      {{ $t('sorry') + ', ' }}
+      <span v-if="resource">
+        {{ $tc(resource, 1) }}
+      </span>
+      <span v-else>
+        {{ $tc('page', 1) }}
+      </span>
+      {{ $t('not_found') }}
     </h1>
   </Layout>
 </template>
@@ -30,6 +33,7 @@ export default {
 
 <style lang="scss" module>
 .title {
+  padding-top: 40px;
   text-align: center;
 }
 </style>
