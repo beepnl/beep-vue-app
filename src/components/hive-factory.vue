@@ -80,6 +80,14 @@
             light
           >
           </v-color-picker>
+
+          <v-toolbar class="hive-color-picker-footer" dense light>
+            <div v-text="'Delete layer'"></div>
+            <v-spacer></v-spacer>
+            <v-toolbar-items>
+              <v-icon @click="cancelColorPicker">mdi-delete</v-icon>
+            </v-toolbar-items>
+          </v-toolbar>
         </v-overlay>
       </div>
     </v-col>
@@ -280,39 +288,9 @@ export default {
   border: 1px solid rgba(0, 0, 0, 0.3);
   border-color: rgba(0, 0, 0, 0.3) !important;
 }
-.honey-layer {
-  height: 18px;
-}
-.brood-layer {
-  height: 27px;
-}
 
-.queen_excluder-layer,
-.feeding_box-layer {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  height: 2px;
-}
-.queen_excluder-layer {
-  justify-content: flex-end;
-  &::after {
-    margin-right: -16px;
-    font-family: 'Material Design Icons';
-    font-size: 18px;
-    color: $color-grey;
-    content: '\F004E';
-  }
-}
-.feeding_box-layer {
-  justify-content: center;
-  &::after {
-    margin-top: -16px;
-    font-family: 'Material Design Icons';
-    font-size: 18px;
-    color: $color-grey;
-    content: '\F0046';
-  }
+.hive-icon {
+  padding: 0 16px;
 }
 
 .draggable-layers {
@@ -320,6 +298,9 @@ export default {
   .draggable-layer-wrapper {
     .layer {
       border-radius: 0;
+      &:last-child {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+      }
     }
     .feeding_box-layer {
       margin-top: 16px;
@@ -333,31 +314,6 @@ export default {
     &:last-child {
       margin-bottom: 10px;
     }
-  }
-}
-
-.hive-icon {
-  position: relative;
-  flex-direction: column;
-  min-width: 40px;
-  padding: 0 16px;
-  margin-bottom: 3px;
-  border-bottom: 1px solid green;
-  border-radius: 2px 2px 0 0;
-  .hive-icon-layers {
-    width: 100%;
-    height: 100%;
-    .layer:first-child {
-      border-radius: 2px 2px 0 0;
-    }
-    .layer:last-child:not(.queen_excluder-layer) {
-      border-bottom: 0;
-    }
-  }
-  .honey-layer,
-  .brood-layer {
-    // border-bottom: 0;
-    border-radius: 0;
   }
 }
 

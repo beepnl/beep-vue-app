@@ -15,7 +15,7 @@
         @click="deleteHive"
         >mdi-delete</v-icon
       >
-      <v-icon dark color="primary" @click="saveHiveSettings">mdi-check</v-icon>
+      <v-icon dark color="primary" @click="save">mdi-check</v-icon>
     </v-toolbar>
 
     <v-container v-if="activeHive.name !== undefined" class="hive-edit-content">
@@ -340,6 +340,27 @@ export default {
         this.snackbar.show = true
       }
     },
+    async save() {
+      try {
+        const response = await this.$store.dispatch(
+          'hives/saveHiveSettings',
+          this.activeHive
+        )
+        if (response.length === 0) {
+          this.snackbar.text = 'something went wrong'
+          this.snackbar.show = true
+        }
+        return this.$router.push({
+          name: 'home',
+        })
+      } catch (error) {
+        this.snackbar.text = 'something went wrong'
+        this.snackbar.show = true
+        return this.$router.push({
+          name: 'home',
+        }) // TODO: remove when queen bug has been fixed??
+      }
+    },
     cancelColorPicker() {
       this.colorPreview = false
       this.overlay = false
@@ -356,18 +377,18 @@ export default {
           return true
         })
     },
-    saveHiveSettings() {
-      this.$store
-        .dispatch('hives/saveHiveSettings', this.activeHive)
-        .then(() =>
-          this.$router.push({
-            name: 'home',
-          })
-        )
-        .catch((error) => {
-          console.log(error)
-        })
-    },
+    // saveHiveSettings() {
+    //   this.$store
+    //     .dispatch('hives/saveHiveSettings', this.activeHive)
+    //     .then(() =>
+    //       this.$router.push({
+    //         name: 'home',
+    //       })
+    //     )
+    //     .catch((error) => {
+    //       console.log(error)
+    //     })
+    // },
     updateHiveColor() {
       this.$store.commit('hives/updateHiveColor', this.colorPickerValue)
       this.cancelColorPicker()
