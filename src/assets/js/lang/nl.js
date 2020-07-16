@@ -601,6 +601,9 @@ const translations = {
   Hive_feeding_box_layer: 'Voederbak | Voederbakken',
   overrides_layer_colors: 'overschrijft kamerkleur',
   drag_layers: 'Versleep kamers om bijenkast te configureren',
+  page: "pagina | pagina's",
+  not_found: 'niet gevonden',
+  sorry: 'Sorry',
 }
 
 export default translations

@@ -605,6 +605,9 @@ const translations = {
   Hive_feeding_box_layer: 'Feeding box | Feeding boxes',
   overrides_layer_colors: 'overrides layer colors',
   drag_layers: 'Drag layers to configure hive',
+  page: 'page | pages',
+  not_found: 'not found',
+  sorry: 'Sorry',
 }
 
 export default translations
