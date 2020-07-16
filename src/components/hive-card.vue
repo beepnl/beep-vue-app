@@ -53,6 +53,7 @@
 
     <div class="hive-details d-flex flex-no-wrap justify-flex-start align-end">
       <router-link
+        v-if="hive.editable === undefined || hive.editable"
         class="hive-edit-link"
         :to="{
           name: `hive-edit`,
@@ -61,6 +62,7 @@
       >
         <HiveIcon :hive="hive"></HiveIcon>
       </router-link>
+      <HiveIcon v-else :hive="hive"></HiveIcon>
 
       <div class="pl-2 pr-0 py-0">
         <div

@@ -1,8 +1,18 @@
 <template>
   <Layout :title="`${$t('edit')} ${$tc('hive', 1)}`">
-    <v-toolbar class="hive-edit-bar" dense light>
+    <v-toolbar
+      v-if="activeHive.name !== undefined"
+      class="hive-edit-bar"
+      dense
+      light
+    >
       <v-spacer></v-spacer>
-      <v-icon dark class="mr-2" color="red" @click="deleteHive"
+      <v-icon
+        v-if="activeHive.owner"
+        dark
+        class="mr-2"
+        color="red"
+        @click="deleteHive"
         >mdi-delete</v-icon
       >
       <v-icon dark color="primary" @click="saveHiveSettings">mdi-check</v-icon>
