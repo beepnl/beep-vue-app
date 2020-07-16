@@ -39,8 +39,8 @@ export const mutations = {
       (layer) => layer.id === payload.layerId || layer.key === payload.layerKey
     )
     state.hive.layers[layerIndex].color = payload.layerColor
-    console.log(payload.layerColor)
-    console.log(state.hive.layers[layerIndex])
+    // console.log(payload.layerColor)
+    // console.log(state.hive.layers[layerIndex])
   },
   updateHiveFrames: function(state, frames) {
     state.hive.layers.forEach((layer) => {
@@ -64,6 +64,13 @@ export const mutations = {
   },
   updateHiveLocation: function(state, location) {
     state.hive.location = location
+  },
+  deleteLayer: function(state, payload) {
+    var remainingLayers = state.hive.layers.filter(
+      (layer) =>
+        !(layer.id === payload.layerId || layer.key === payload.layerKey)
+    )
+    state.hive.layers = remainingLayers
   },
 }
 export const actions = {

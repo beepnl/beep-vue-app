@@ -600,6 +600,7 @@ const translations = {
   page: 'page | pages',
   not_found: 'not found',
   sorry: 'Sorry',
+  delete_layer: 'Delete layer',
 }
 
 export default translations

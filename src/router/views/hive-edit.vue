@@ -447,13 +447,21 @@ export default {
 
 .hive-color-picker {
   margin-top: -10px;
+}
 
-  .hive-color-picker-toolbar {
-    border-radius: 4px;
-  }
+.hive-color-picker-toolbar,
+.hive-color-picker-footer {
+  border-radius: 4px;
+}
 
-  .hive-color-picker-title {
-    font-weight: 500;
+.hive-color-picker-title {
+  font-weight: 500;
+}
+
+.hive-color-picker-footer {
+  margin-top: -5px;
+  .v-toolbar__content {
+    padding: 0 10px;
   }
 }
 

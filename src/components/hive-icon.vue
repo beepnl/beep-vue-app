@@ -1,7 +1,7 @@
 <template>
   <v-sheet
     :class="
-      `hive-icon d-flex justify-center align-center white--text text--small mr-1 ${
+      `hive-icon d-flex flex-column justify-center align-center white--text text--small mr-1 ${
         hasQueenExcluder ? '--has-queen-excluder' : ''
       }`
     "
@@ -71,7 +71,6 @@ export default {
 <style lang="scss">
 .hive-icon {
   position: relative;
-  flex-direction: column;
   min-width: 40px;
   padding: 0 8px;
   margin-bottom: 3px;

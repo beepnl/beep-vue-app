@@ -1,106 +1,113 @@
 <template>
-  <v-row class="hive-factory-wrapper">
-    <v-col class="filler" cols="12" md="5"> </v-col>
-    <v-col cols="12" sm="6" md="4">
-      <div class="hive-edit-label" v-text="`${$t('drag_layers')}`"></div>
-      <div
-        :class="
-          `hive-factory d-flex flex-row align-center justify-flex-start ${
-            hasLayer('queen_excluder') ? 'has-queen-excluder' : ''
-          } ${hasLayer('feeding_box') ? 'has-feeding-box' : ''}`
-        "
-      >
-        <div class="draggable-layers">
-          <draggable
-            v-model="layersToAdd"
-            :group="{ name: 'layers', pull: 'clone', put: true }"
-            :clone="cloneLayer"
-            class="d-flex flex-column justify-flex-start"
-          >
-            <div
-              v-for="layer in layersToAdd"
-              :key="layer.key"
-              :class="[`draggable-layer-wrapper ${layer.type}-layer-wrapper`]"
-              :width="`${hiveWidth(hive)}px`"
-            >
-              <span
-                class="hive-edit-label"
-                v-text="layerTypeText(layer)"
-              ></span>
-              <v-sheet
-                :color="checkColor(layer)"
-                :class="[`layer draggable-layer ${layer.type}-layer`]"
-                :width="`${hiveWidth(hive)}px`"
-              >
-              </v-sheet>
-            </div>
-          </draggable>
-        </div>
-
-        <v-sheet
-          class="hive-icon d-flex justify-center align-center white--text text--small"
-          height="auto"
+  <div>
+    <v-row class="hive-factory-wrapper">
+      <v-col class="filler" cols="12" md="5"> </v-col>
+      <v-col cols="12" sm="6" md="4">
+        <div class="hive-edit-label" v-text="`${$t('drag_layers')}`"></div>
+        <div
+          :class="
+            `hive-factory d-flex flex-row align-center justify-flex-start ${
+              hasLayer('queen_excluder') ? 'has-queen-excluder' : ''
+            } ${hasLayer('feeding_box') ? 'has-feeding-box' : ''}`
+          "
         >
-          <div class="hive-icon-layers">
-            <draggable v-model="hiveLayers" group="layers">
-              <v-sheet
-                v-for="layer in hiveLayers"
+          <div class="draggable-layers">
+            <draggable
+              v-model="layersToAdd"
+              :group="{ name: 'layers', pull: 'clone', put: true }"
+              :clone="cloneLayer"
+              class="d-flex flex-column justify-flex-start"
+            >
+              <div
+                v-for="layer in layersToAdd"
                 :key="layer.key"
-                :color="checkColor(layer)"
-                :class="[`layer ${layer.type}-layer`]"
+                :class="[`draggable-layer-wrapper ${layer.type}-layer-wrapper`]"
                 :width="`${hiveWidth(hive)}px`"
-                @click="openOverlay(layer)"
               >
-              </v-sheet>
+                <span
+                  class="hive-edit-label"
+                  v-text="layerTypeText(layer)"
+                ></span>
+                <v-sheet
+                  :color="checkColor(layer)"
+                  :class="[`layer draggable-layer ${layer.type}-layer`]"
+                  :width="`${hiveWidth(hive)}px`"
+                >
+                </v-sheet>
+              </div>
             </draggable>
           </div>
-        </v-sheet>
 
-        <v-overlay :value="overlay">
-          <v-toolbar class="hive-color-picker-toolbar" dense light>
-            <div
-              class="hive-color-picker-title"
-              v-text="currentLayer !== null ? layerTypeText(currentLayer) : ''"
-            ></div>
-            <v-spacer></v-spacer>
-            <v-toolbar-items>
-              <v-icon class="mr-1" color="primary" @click="updateLayerColor"
-                >mdi-check</v-icon
-              >
-              <v-icon @click="cancelColorPicker">mdi-close</v-icon>
-            </v-toolbar-items>
-          </v-toolbar>
-
-          <v-color-picker
-            v-model="colorPicker"
-            class="hive-color-picker"
-            :swatches="swatches"
-            show-swatches
-            hide-canvas
-            light
+          <v-sheet
+            class="hive-icon d-flex flex-column justify-center align-center white--text text--small"
+            height="auto"
           >
-          </v-color-picker>
+            <div class="hive-icon-layers">
+              <draggable v-model="hiveLayers" group="layers">
+                <v-sheet
+                  v-for="layer in hiveLayers"
+                  :key="layer.key"
+                  :color="checkColor(layer)"
+                  :class="[`layer ${layer.type}-layer`]"
+                  :width="`${hiveWidth(hive)}px`"
+                  @click="openOverlay(layer)"
+                >
+                </v-sheet>
+              </draggable>
+            </div>
+          </v-sheet>
 
-          <v-toolbar class="hive-color-picker-footer" dense light>
-            <div v-text="'Delete layer'"></div>
-            <v-spacer></v-spacer>
-            <v-toolbar-items>
-              <v-icon @click="cancelColorPicker">mdi-delete</v-icon>
-            </v-toolbar-items>
-          </v-toolbar>
-        </v-overlay>
-      </div>
-    </v-col>
-  </v-row>
+          <v-overlay :value="overlay">
+            <v-toolbar class="hive-color-picker-toolbar" dense light>
+              <div
+                class="hive-color-picker-title"
+                v-text="
+                  currentLayer !== null ? layerTypeText(currentLayer) : ''
+                "
+              ></div>
+              <v-spacer></v-spacer>
+              <v-toolbar-items>
+                <v-icon class="mr-1" color="primary" @click="updateLayerColor"
+                  >mdi-check</v-icon
+                >
+                <v-icon @click="cancelColorPicker">mdi-close</v-icon>
+              </v-toolbar-items>
+            </v-toolbar>
+
+            <v-color-picker
+              v-model="colorPicker"
+              class="hive-color-picker"
+              :swatches="swatches"
+              show-swatches
+              hide-canvas
+              light
+            >
+            </v-color-picker>
+
+            <v-toolbar class="hive-color-picker-footer" dense light>
+              <v-spacer></v-spacer>
+              <v-btn small tile outlined color="red" @click="deleteLayer">
+                <v-icon left>mdi-delete</v-icon>
+                {{ $t('Delete') }}
+              </v-btn>
+            </v-toolbar>
+          </v-overlay>
+        </div>
+      </v-col>
+    </v-row>
+
+    <Confirm ref="confirm"></Confirm>
+  </div>
 </template>
 
 <script>
 import draggable from 'vuedraggable'
-// const idGlobal = 8
+import Confirm from '@components/confirm.vue'
 var keyGlobal = 0
 
 export default {
   components: {
+    Confirm,
     draggable,
   },
   props: {
@@ -179,6 +186,23 @@ export default {
       }
       this.$store.commit('hives/updateLayerColor', payload)
       this.cancelColorPicker()
+    },
+    deleteLayer() {
+      this.$refs.confirm
+        .open(this.$i18n.t('Delete'), this.$i18n.t('delete_layer') + '?', {
+          color: 'red',
+        })
+        .then((confirm) => {
+          const payload = {
+            layerId: this.currentLayer.id || 0,
+            layerKey: this.currentLayer.key || 0,
+          }
+          this.$store.commit('hives/deleteLayer', payload)
+          this.cancelColorPicker()
+        })
+        .catch((reject) => {
+          return true
+        })
     },
     cancelColorPicker() {
       this.overlay = false
@@ -287,10 +311,24 @@ export default {
   cursor: -webkit-grabbing;
   border: 1px solid rgba(0, 0, 0, 0.3);
   border-color: rgba(0, 0, 0, 0.3) !important;
+  border-radius: 0;
+}
+
+.honey-layer {
+  height: 18px;
+}
+.brood-layer {
+  height: 27px;
+}
+.queen_excluder-layer,
+.feeding_box-layer {
+  height: 4px;
 }
 
 .hive-icon {
   padding: 0 16px;
+  border-bottom: 1px solid green !important;
+  border-radius: 2px 2px 0 0;
 }
 
 .draggable-layers {
