@@ -22,24 +22,7 @@
                 </v-text-field>
               </v-col>
 
-              <!-- <v-col class="d-flex" cols="12" sm="6" md="4">
-                <v-select
-                  v-model="activeHiveLocation"
-                  :items="apiaryNames"
-                  :label="`${$tc('Location', 1)}*`"
-                ></v-select>
-              </v-col> -->
-
               <v-col cols="12" sm="6" md="3">
-                <!-- <v-select
-                  v-if="activeHive && activeHive.type"
-                  v-model="hiveType"
-                  :items="orderedHiveTypes(hiveTypeLocale)"
-                  :item-text="`trans.${hiveTypeLocale}`"
-                  item-value="id"
-                  :label="`${$t('Type', 1)}*`"
-                >
-                </v-select> -->
                 <div class="hive-edit-label" v-text="`${$t('Type', 1)}*`"></div>
                 <Treeselect
                   v-model="hiveType"
@@ -172,6 +155,9 @@ export default {
   computed: {
     ...mapGetters('hives', ['activeHive']),
     ...mapGetters('taxonomy', ['hiveTypes']),
+    id() {
+      return parseInt(this.$route.params.id)
+    },
     locale() {
       return this.$i18n.locale
     },
@@ -187,30 +173,6 @@ export default {
         return 'en'
       }
     },
-    hiveName: {
-      get() {
-        if (this.activeHive) {
-          return this.activeHive.name // $store.state.hives.hive.name
-        } else {
-          return ''
-        }
-      },
-      set(value) {
-        this.$store.commit('hives/updateHiveName', value)
-      },
-    },
-    // hiveColor: {
-    //   get() {
-    //     if (this.activeHive) {
-    //       return this.activeHive.color // $store.state.hives.hive.name
-    //     } else {
-    //       return ''
-    //     }
-    //   },
-    //   set(value) {
-    //     this.$store.commit('hives/updateHiveColor', value)
-    //   },
-    // },
     colorPicker: {
       get() {
         if (this.activeHive) {
@@ -227,7 +189,7 @@ export default {
     hiveFrames: {
       get() {
         if (this.activeHive.layers) {
-          return this.activeHive.layers[0].framecount // $store.state.hives.hive.name
+          return this.activeHive.layers[0].framecount
         } else {
           return 10
         }
@@ -236,10 +198,22 @@ export default {
         this.$store.commit('hives/updateHiveFrames', parseInt(value))
       },
     },
+    hiveName: {
+      get() {
+        if (this.activeHive) {
+          return this.activeHive.name
+        } else {
+          return ''
+        }
+      },
+      set(value) {
+        this.$store.commit('hives/updateHiveName', value)
+      },
+    },
     hiveType: {
       get() {
         if (this.activeHive) {
-          return this.activeHive.hive_type_id // $store.state.hives.hive.name
+          return this.activeHive.hive_type_id
         } else {
           return ''
         }
@@ -248,30 +222,15 @@ export default {
         this.$store.commit('hives/updateHiveType', value)
       },
     },
-    // hiveLocation: {
-    //   get() {
-    //     if (this.activeHive) {
-    //       return this.activeHive.location // $store.state.hives.hive.location
-    //     } else {
-    //       return ''
-    //     }
-    //   },
-    //   set(value) {
-    //     this.$store.commit('hives/updateHiveLocation', value)
-    //   },
-    // },
-    id() {
-      return parseInt(this.$route.params.id)
-    },
     treeselectHiveTypes() {
       if (this.hiveTypes.length) {
         const locale = this.hiveTypeLocale
-        var result = this.hiveTypes.reduce(function(r, a) {
+        var hiveTypePerGroup = this.hiveTypes.reduce(function(r, a) {
           r[a.group[locale]] = r[a.group[locale]] || []
           r[a.group[locale]].push(a)
           return r
         }, {})
-        const keys = Object.keys(result)
+        const sortedGroups = Object.keys(hiveTypePerGroup)
           .slice()
           .sort(function(a, b) {
             if (a < b) {
@@ -282,16 +241,28 @@ export default {
             }
             return 0
           })
-        var hiveTypesArray = [
-          { id: -1, label: keys[0], children: result[keys[0]] },
-          { id: -2, label: keys[1], children: result[keys[1]] },
-          { id: -3, label: keys[2], children: result[keys[2]] },
+        var treeselectArray = [
+          {
+            id: -1,
+            label: sortedGroups[0],
+            children: hiveTypePerGroup[sortedGroups[0]],
+          },
+          {
+            id: -2,
+            label: sortedGroups[1],
+            children: hiveTypePerGroup[sortedGroups[1]],
+          },
+          {
+            id: -3,
+            label: sortedGroups[2],
+            children: hiveTypePerGroup[sortedGroups[2]],
+          },
         ]
-        hiveTypesArray.map((hiveTypeObject) => {
-          hiveTypeObject.children.map((child) => {
+        treeselectArray.map((groupObject) => {
+          groupObject.children.map((child) => {
             child.label = child.trans[locale]
           })
-          const sortedArray = hiveTypeObject.children
+          const sortedTreeselectArray = groupObject.children
             .slice()
             .sort(function(a, b) {
               if (a.label < b.label) {
@@ -302,51 +273,22 @@ export default {
               }
               return 0
             })
-          hiveTypeObject.children = sortedArray
+          groupObject.children = sortedTreeselectArray
         })
-        return hiveTypesArray
+        return treeselectArray
       } else {
         return []
       }
     },
-    // hive() {
-    //   return this.hives.find((hive) => hive.id === this.id)
-    // },
-    // apiaryNames() {
-    //   return (
-    //     (this.apiaries &&
-    //       this.apiaries.reduce((names, apiary) => {
-    //         names.push(apiary.name)
-    //         return names
-    //       }, [])) ||
-    //     []
-    //   )
-    // },
   },
   created() {
     this.$store.dispatch('hives/findById', this.id)
     this.$store.dispatch('taxonomy/index')
   },
   methods: {
-    updateHiveColor() {
-      this.$store.commit('hives/updateHiveColor', this.colorPickerValue)
-      this.cancelColorPicker()
-    },
     cancelColorPicker() {
       this.colorPreview = false
       this.overlay = false
-    },
-    saveHiveSettings() {
-      this.$store
-        .dispatch('hives/saveHiveSettings', this.activeHive) // this.activeHive
-        .then(() =>
-          this.$router.push({
-            name: 'home',
-          })
-        )
-        .catch((error) => {
-          console.log(error)
-        })
     },
     deleteHive() {
       this.$refs.confirm
@@ -369,17 +311,21 @@ export default {
           console.log(reject)
         })
     },
-    orderedHiveTypes(locale) {
-      const orderedHiveTypes = this.hiveTypes.slice().sort(function(a, b) {
-        if (a.trans[locale] < b.trans[locale]) {
-          return -1
-        }
-        if (a.trans[locale] > b.trans[locale]) {
-          return 1
-        }
-        return 0
-      })
-      return orderedHiveTypes
+    saveHiveSettings() {
+      this.$store
+        .dispatch('hives/saveHiveSettings', this.activeHive) // this.activeHive
+        .then(() =>
+          this.$router.push({
+            name: 'home',
+          })
+        )
+        .catch((error) => {
+          console.log(error)
+        })
+    },
+    updateHiveColor() {
+      this.$store.commit('hives/updateHiveColor', this.colorPickerValue)
+      this.cancelColorPicker()
     },
   },
 }
@@ -409,15 +355,6 @@ export default {
   }
 }
 
-.vue-treeselect--focused:not(.vue-treeselect--open) .vue-treeselect__control {
-  border-color: $color-primary;
-  box-shadow: none;
-}
-
-.vue-treeselect__control {
-  border-radius: 2px;
-}
-
 .hive-edit-label {
   margin-bottom: 4px;
   font-family: 'Roboto', sans-serif !important;
@@ -425,6 +362,15 @@ export default {
   font-weight: 400;
   line-height: 1rem;
   letter-spacing: 0.0333333333em !important;
+}
+
+.vue-treeselect__control {
+  border-radius: 2px;
+}
+
+.vue-treeselect--focused:not(.vue-treeselect--open) .vue-treeselect__control {
+  border-color: $color-primary;
+  box-shadow: none;
 }
 
 .hive-color {
