@@ -12,7 +12,7 @@ export const getters = {
     return !!state.currentUser
   },
   userLocale: function(state) {
-    return state.currentUser.locale || null
+    return (state.currentUser && state.currentUser.locale) || null
   },
   apiToken: function(state) {
     return (state.currentUser && state.currentUser.api_token) || null

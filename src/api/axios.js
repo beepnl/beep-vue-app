@@ -16,11 +16,16 @@ instance.interceptors.response.use(undefined, function(err) {
 })
 
 // Dynamically add API token to requests
+// Dynamically add Accept-Language to requests
 instance.interceptors.request.use(function(config) {
   config.headers.common['Content-Type'] = 'application/json'
   const apiToken = store.getters['auth/apiToken']
   if (apiToken) {
     config.headers.common.Authorization = 'Bearer ' + apiToken
+  }
+  const locale = store.getters['auth/userLocale']
+  if (locale) {
+    config.headers.common['Accept-Language'] = locale
   }
   return config
 })
