@@ -46,11 +46,11 @@ export default {
     },
   },
   computed: {
-    ...mapGetters('hives', ['hiveEdited']),
+    ...mapGetters('hives', ['activeHive', 'hiveEdited']),
   },
   methods: {
     back: function() {
-      if (this.hiveEdited) {
+      if (this.activeHive !== null && this.hiveEdited) {
         this.$refs.confirm
           .open(this.$i18n.t('unsaved_changes'), this.$i18n.t('save_changes'), {
             color: 'red',
