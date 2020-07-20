@@ -18,15 +18,20 @@
     <v-content>
       <slot></slot>
     </v-content>
+
+    <Confirm ref="confirm"></Confirm>
   </div>
 </template>
 
 <script>
+import Confirm from '@components/confirm.vue'
 import HeaderMenu from '@components/header-menu.vue'
 import LocaleChanger from '@components/locale-changer.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
+    Confirm,
     HeaderMenu,
     LocaleChanger,
   },
@@ -40,9 +45,25 @@ export default {
       default: () => [],
     },
   },
+  computed: {
+    ...mapGetters('hives', ['hiveEdited']),
+  },
   methods: {
     back: function() {
-      this.$router.go(-1)
+      if (this.hiveEdited) {
+        this.$refs.confirm
+          .open(this.$i18n.t('unsaved_changes'), this.$i18n.t('save_changes'), {
+            color: 'red',
+          })
+          .then((confirm) => {
+            this.$router.go(-1)
+          })
+          .catch((reject) => {
+            return true
+          })
+      } else {
+        this.$router.go(-1)
+      }
     },
   },
 }

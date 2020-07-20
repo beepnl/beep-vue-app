@@ -606,6 +606,9 @@ const translations = {
   not_saved_error: 'Os dados não puderam ser salvos',
   something_wrong: 'Something went wrong',
   not_editable: 'not editable',
+  unsaved_changes: 'Unsaved changes',
+  save_changes:
+    'Are you sure you want to leave this page? Any unsaved changes will be lost.',
 }
 
 export default translations

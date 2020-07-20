@@ -607,6 +607,9 @@ const translations = {
   not_saved_error: 'Data kon niet worden opgeslagen',
   something_wrong: 'Er is iets misgegaan',
   not_editable: 'niet aanpasbaar',
+  unsaved_changes: 'Niet opgeslagen aanpassingen',
+  save_changes:
+    'Weet je zeker dat je deze pagina wilt verlaten? Niet opgeslagen aanpassingen zullen verloren gaan.',
 }
 
 export default translations

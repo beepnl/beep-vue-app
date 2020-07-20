@@ -6,6 +6,7 @@ const resource = createResource({ path: 'hives' })
 export const state = {
   ...resource.state,
   hive: {},
+  edited: false,
 }
 export const getters = {
   ...resource.getters,
@@ -14,6 +15,9 @@ export const getters = {
   },
   hives: (state) => {
     return state.data.hives || []
+  },
+  hiveEdited: (state) => {
+    return state.edited
   },
   getHivesForApiary: (state) => (apiaryId) => {
     return (
@@ -33,20 +37,21 @@ export const mutations = {
       layer.color = color
     })
     state.hive.color = color
+    state.edited = true
   },
   updateLayerColor: function(state, payload) {
     const layerIndex = state.hive.layers.findIndex(
       (layer) => layer.id === payload.layerId || layer.key === payload.layerKey
     )
     state.hive.layers[layerIndex].color = payload.layerColor
-    // console.log(payload.layerColor)
-    // console.log(state.hive.layers[layerIndex])
+    state.edited = true
   },
   updateHiveFrames: function(state, frames) {
     state.hive.layers.forEach((layer) => {
       layer.framecount = frames
     })
     state.hive.frames = frames
+    // state.edited = true // FIXME: edited tracking has been disabled for this function as the number input calls the hiveFrames setter when hive-edit.vue is initialized, before any changes are made
   },
   updateHiveLayers: function(state, layers) {
     var i = layers.length
@@ -55,15 +60,20 @@ export const mutations = {
       i--
     })
     state.hive.layers = layers
+    state.edited = true
   },
   updateHiveName: function(state, name) {
     state.hive.name = name
+    state.edited = true
   },
   updateHiveType: function(state, typeID) {
     state.hive.hive_type_id = typeID
+    state.edited = true
   },
   updateHiveLocation: function(state, location) {
     state.hive.location = location
+    state.edited = true
+    console.log('updateHiveLocation true')
   },
   deleteLayer: function(state, payload) {
     var remainingLayers = state.hive.layers.filter(
@@ -71,6 +81,10 @@ export const mutations = {
         !(layer.id === payload.layerId || layer.key === payload.layerKey)
     )
     state.hive.layers = remainingLayers
+    state.edited = true
+  },
+  setEdited: function(state, bool) {
+    state.edited = bool
   },
 }
 export const actions = {
@@ -84,6 +98,7 @@ export const actions = {
     return false
   },
   findById: function({ commit }, id) {
+    commit('setEdited', false)
     return resource.endpoint.read(id)
   },
   saveHiveSettings: function({ _ }, hive) {
