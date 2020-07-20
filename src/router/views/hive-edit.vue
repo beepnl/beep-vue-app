@@ -25,7 +25,7 @@
       <v-icon
         v-if="activeHive.owner"
         dark
-        class="mr-2"
+        class="mr-4"
         color="red"
         @click="deleteHive"
         >mdi-delete</v-icon
@@ -78,7 +78,7 @@
                   rounded
                 ></VueNumberInput>
               </v-col>
-              <v-col cols="12" md="4">
+              <v-col cols="12">
                 <div
                   class="hive-edit-label"
                   v-text="
@@ -414,9 +414,11 @@ export default {
 
 .hive-edit-bar {
   position: fixed;
-  top: 56px;
   z-index: 1;
   width: 100%;
+  @include for-phone-only {
+    top: 56px;
+  }
 }
 .hive-edit-content {
   margin-top: 56px;
