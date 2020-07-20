@@ -49,7 +49,9 @@
                 >
                 </v-text-field>
               </v-col>
+            </v-row>
 
+            <v-row>
               <v-col cols="12" sm="6" md="3">
                 <div
                   class="hive-edit-label"
@@ -69,6 +71,23 @@
               <v-col cols="12" sm="4" md="2">
                 <div
                   class="hive-edit-label"
+                  v-text="`${$t('Brood_box_and_frame')} ${$t('dimensions')}`"
+                ></div>
+                <VueNumberInput
+                  v-if="activeHive"
+                  v-model="hiveDimensions.bb_width_cm"
+                  class="hive-number-frame-input"
+                  :min="10"
+                  :max="100"
+                  inline
+                  controls
+                  rounded
+                ></VueNumberInput>
+              </v-col>
+
+              <v-col cols="12" sm="4" md="2">
+                <div
+                  class="hive-edit-label"
                   v-text="`${$t('Hive_frames')}*`"
                 ></div>
                 <VueNumberInput
@@ -82,6 +101,7 @@
                   rounded
                 ></VueNumberInput>
               </v-col>
+
               <v-col cols="12">
                 <div
                   class="hive-edit-label"
@@ -307,7 +327,7 @@ export default {
   },
   computed: {
     ...mapGetters('hives', ['activeHive']),
-    ...mapGetters('taxonomy', ['beeRaces', 'hiveTypes']),
+    ...mapGetters('taxonomy', ['beeRaces', 'hiveDimensions', 'hiveTypes']),
     id() {
       return parseInt(this.$route.params.id)
     },
@@ -325,6 +345,30 @@ export default {
       set(value) {
         this.colorPreview = true
         this.colorPickerValue = value
+      },
+    },
+    hiveDimensions: {
+      get() {
+        if (this.activeHive) {
+          return {
+            bb_width_cm: this.activeHive.bb_width_cm,
+            bb_depth_cm: this.activeHive.bb_depth_cm,
+            bb_height_cm: this.activeHive.bb_height_cm,
+            fr_width_cm: this.activeHive.fr_width_cm,
+            fr_height_cm: this.activeHive.fr_height_cm,
+          }
+        } else {
+          return {
+            bb_width_cm: null,
+            bb_depth_cm: null,
+            bb_height_cm: null,
+            fr_width_cm: null,
+            fr_height_cm: null,
+          }
+        }
+      },
+      set(value) {
+        console.log(value) // TODO: pass to updateHiveDimensions function
       },
     },
     hiveFrames: {
@@ -369,6 +413,25 @@ export default {
           value: value,
         }
         this.$store.commit('hives/updateHive', payload)
+
+        const hiveTypeIndex = this.hiveTypes.findIndex(
+          (hiveType) => hiveType.id === value
+        )
+        const hiveTypeName = this.hiveTypes[hiveTypeIndex].name
+
+        if (
+          this.hiveDimensions &&
+          this.hiveDimensions[hiveTypeName] !== undefined
+        ) {
+          const hiveDimensions = {
+            bb_width_cm: this.hiveDimensions[hiveTypeName].bb_width_cm,
+            bb_depth_cm: this.hiveDimensions[hiveTypeName].bb_depth_cm,
+            bb_height_cm: this.hiveDimensions[hiveTypeName].bb_height_cm,
+            fr_width_cm: this.hiveDimensions[hiveTypeName].fr_width_cm,
+            fr_height_cm: this.hiveDimensions[hiveTypeName].fr_height_cm,
+          }
+          console.log(hiveDimensions) // TODO: pass to updateHiveDimensions function
+        }
       },
     },
     treeselectBeeRaces() {
@@ -596,7 +659,7 @@ export default {
   },
   created() {
     this.readHive()
-    this.readHiveTypes()
+    this.readTaxonomy()
   },
   methods: {
     async readHive() {
@@ -613,7 +676,7 @@ export default {
         this.$router.push({ name: '404', params: { resource: 'hive' } })
       }
     },
-    async readHiveTypes() {
+    async readTaxonomy() {
       try {
         const response = await this.$store.dispatch('taxonomy/index')
         if (response.length === 0) {
