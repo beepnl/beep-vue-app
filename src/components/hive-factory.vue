@@ -15,6 +15,7 @@
               v-model="layersToAdd"
               :group="{ name: 'layers', pull: 'clone', put: true }"
               :clone="cloneLayer"
+              :sort="false"
               class="d-flex flex-column justify-flex-start"
             >
               <div
@@ -42,7 +43,10 @@
             height="auto"
           >
             <div class="hive-icon-layers">
-              <draggable v-model="hiveLayers" group="layers">
+              <draggable
+                v-model="hiveLayers"
+                :group="{ name: 'layers', pull: 'sort' }"
+              >
                 <v-sheet
                   v-for="layer in hiveLayers"
                   :key="layer.key"
