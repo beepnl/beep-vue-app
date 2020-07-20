@@ -602,6 +602,8 @@ const translations = {
   page: 'page | pages',
   not_found: 'not found',
   sorry: 'Sorry',
+  not_saved_error: 'No se pudieron guardar los datos',
+  something_wrong: 'Something went wrong',
 }
 
 export default translations

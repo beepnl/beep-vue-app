@@ -328,15 +328,18 @@ export default {
           'hives/deleteHive',
           this.activeHive.id
         )
-        if (response.length === 0) {
-          this.snackbar.text = 'something went wrong'
+        if (!response) {
+          this.snackbar.text = this.$i18n.t('something_wrong')
           this.snackbar.show = true
         }
-        return this.$router.push({
-          name: 'home',
-        })
+        setTimeout(() => {
+          return this.$router.push({
+            name: 'home',
+          })
+        }, 100) // wait for API to update locations/hives
       } catch (error) {
-        this.snackbar.text = 'something went wrong'
+        console.log(error)
+        this.snackbar.text = this.$i18n.t('something_wrong')
         this.snackbar.show = true
       }
     },
@@ -346,19 +349,19 @@ export default {
           'hives/saveHiveSettings',
           this.activeHive
         )
-        if (response.length === 0) {
-          this.snackbar.text = 'something went wrong'
+        if (!response) {
+          this.snackbar.text = this.$i18n.t('not_saved_error')
           this.snackbar.show = true
         }
-        return this.$router.push({
-          name: 'home',
-        })
+        setTimeout(() => {
+          return this.$router.push({
+            name: 'home',
+          })
+        }, 300) // wait for API to update locations/hives
       } catch (error) {
-        this.snackbar.text = 'something went wrong'
+        console.log(error)
+        this.snackbar.text = this.$i18n.t('not_saved_error')
         this.snackbar.show = true
-        return this.$router.push({
-          name: 'home',
-        }) // TODO: remove when queen bug has been fixed??
       }
     },
     cancelColorPicker() {
@@ -377,18 +380,6 @@ export default {
           return true
         })
     },
-    // saveHiveSettings() {
-    //   this.$store
-    //     .dispatch('hives/saveHiveSettings', this.activeHive)
-    //     .then(() =>
-    //       this.$router.push({
-    //         name: 'home',
-    //       })
-    //     )
-    //     .catch((error) => {
-    //       console.log(error)
-    //     })
-    // },
     updateHiveColor() {
       this.$store.commit('hives/updateHiveColor', this.colorPickerValue)
       this.cancelColorPicker()

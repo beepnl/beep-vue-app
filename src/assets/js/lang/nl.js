@@ -604,6 +604,8 @@ const translations = {
   page: "pagina | pagina's",
   not_found: 'niet gevonden',
   sorry: 'Sorry',
+  not_saved_error: 'Data kon niet worden opgeslagen',
+  something_wrong: 'Er is iets misgegaan',
 }
 
 export default translations

@@ -608,6 +608,8 @@ const translations = {
   page: 'page | pages',
   not_found: 'not found',
   sorry: 'Sorry',
+  not_saved_error: "Les données n'ont pas pu être enregistrées",
+  something_wrong: 'Something went wrong',
 }
 
 export default translations
