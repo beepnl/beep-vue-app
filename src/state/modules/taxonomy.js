@@ -22,6 +22,9 @@ export const state = {
   },
 }
 export const getters = {
+  beeRaces: (state) => {
+    return state.data.lists.beeraces || []
+  },
   hiveTypes: (state) => {
     return state.data.lists.hivetypes || []
   },

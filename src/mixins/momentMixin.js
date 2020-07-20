@@ -24,5 +24,10 @@ export const momentMixin = {
         .fromNow()
       return moment.charAt(0).toUpperCase() + moment.slice(1)
     },
+    momentifyRemoveTime(date) {
+      return this.$moment(date)
+        .locale(this.$i18n.locale)
+        .format('YYYY-MM-DD')
+    },
   },
 }

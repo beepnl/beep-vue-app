@@ -604,6 +604,7 @@ const translations = {
   page: "pagina | pagina's",
   not_found: 'niet gevonden',
   sorry: 'Sorry',
+  delete_layer: 'Verwijder laag',
   not_saved_error: 'Data kon niet worden opgeslagen',
   something_wrong: 'Er is iets misgegaan',
   not_editable: 'niet aanpasbaar',

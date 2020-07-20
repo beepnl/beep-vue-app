@@ -32,6 +32,10 @@ export const mutations = {
   setActiveHive: function(state, hive) {
     state.hive = hive
   },
+  updateHive: function(state, payload) {
+    state.hive[payload.key] = payload.value
+    state.edited = true
+  },
   updateHiveColor: function(state, color) {
     state.hive.layers.forEach((layer) => {
       layer.color = color
@@ -39,16 +43,9 @@ export const mutations = {
     state.hive.color = color
     state.edited = true
   },
-  updateLayerColor: function(state, payload) {
-    const layerIndex = state.hive.layers.findIndex(
-      (layer) => layer.id === payload.layerId || layer.key === payload.layerKey
-    )
-    state.hive.layers[layerIndex].color = payload.layerColor
-    state.edited = true
-  },
   updateHiveFrames: function(state, frames) {
     state.hive.layers.forEach((layer) => {
-      layer.framecount = frames
+      layer.framecount = frames // N.B.  not needed for updating API, but for realtime-updating hive-icon view
     })
     state.hive.frames = frames
     // state.edited = true // FIXME: edited tracking has been disabled for this function as the number input calls the hiveFrames setter when hive-edit.vue is initialized, before any changes are made
@@ -62,18 +59,16 @@ export const mutations = {
     state.hive.layers = layers
     state.edited = true
   },
-  updateHiveName: function(state, name) {
-    state.hive.name = name
+  updateLayerColor: function(state, payload) {
+    const layerIndex = state.hive.layers.findIndex(
+      (layer) => layer.id === payload.layerId || layer.key === payload.layerKey
+    )
+    state.hive.layers[layerIndex].color = payload.layerColor
     state.edited = true
   },
-  updateHiveType: function(state, typeID) {
-    state.hive.hive_type_id = typeID
+  updateQueen: function(state, payload) {
+    state.hive.queen[payload.key] = payload.value
     state.edited = true
-  },
-  updateHiveLocation: function(state, location) {
-    state.hive.location = location
-    state.edited = true
-    console.log('updateHiveLocation true')
   },
   deleteLayer: function(state, payload) {
     var remainingLayers = state.hive.layers.filter(

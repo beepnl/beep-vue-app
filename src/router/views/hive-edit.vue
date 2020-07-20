@@ -51,13 +51,17 @@
               </v-col>
 
               <v-col cols="12" sm="6" md="3">
-                <div class="hive-edit-label" v-text="`${$t('Type', 1)}*`"></div>
+                <div
+                  class="hive-edit-label"
+                  v-text="`${$t('Hive_type')}*`"
+                ></div>
                 <Treeselect
                   v-model="hiveType"
                   :options="treeselectHiveTypes"
                   :disable-branch-nodes="true"
                   :no-results-text="`${$t('no_results')}`"
                   :default-expand-level="1"
+                  :label="`${$t('Select')} ${$t('Hive_type')}`"
                   search-nested
                 />
               </v-col>
@@ -130,6 +134,124 @@
               :color-preview="colorPreview"
               :color-picker-value="colorPickerValue"
             ></HiveFactory>
+
+            <v-row class="queen-details-wrapper">
+              <v-col cols="12">
+                <div
+                  class="hive-edit-label"
+                  v-text="`${$t('Queen') + ' ' + $t('details')}`"
+                ></div>
+                <div class="queen-details">
+                  <v-row>
+                    <v-col cols="12" sm="6" md="4">
+                      <div>
+                        <v-text-field
+                          v-model="queenName"
+                          :label="`${$t('Queen')} ${$t('name')}`"
+                          class="queen-name"
+                        >
+                        </v-text-field>
+                      </div>
+
+                      <div>
+                        <div
+                          class="hive-edit-label"
+                          v-text="`${$t('Bee_race')}`"
+                        ></div>
+                        <Treeselect
+                          v-model="queenRace"
+                          :options="treeselectBeeRaces"
+                          :no-results-text="`${$t('no_results')}`"
+                          :label="`${$t('Select')} ${$t('Bee_race')}`"
+                          search-nested
+                        />
+                      </div>
+
+                      <div class="mt-5">
+                        <v-dialog
+                          ref="dialog"
+                          v-model="modal"
+                          :return-value.sync="queenBirthDate"
+                          persistent
+                          width="290px"
+                        >
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-text-field
+                              v-model="queenBirthDate"
+                              :label="`${$t('Birth_date')}`"
+                              :first-day-of-week="1"
+                              :locale="locale"
+                              prepend-icon="mdi-calendar"
+                              v-bind="attrs"
+                              v-on="on"
+                            ></v-text-field>
+                          </template>
+                          <v-date-picker v-model="queenBirthDate" scrollable>
+                            <v-spacer></v-spacer>
+                            <v-btn text color="primary" @click="modal = false"
+                              >Cancel</v-btn
+                            >
+                            <v-btn
+                              text
+                              color="primary"
+                              @click="$refs.dialog.save(queenBirthDate)"
+                              >OK</v-btn
+                            >
+                          </v-date-picker>
+                        </v-dialog>
+                      </div>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <div>
+                        <v-text-field
+                          v-model="queenDescription"
+                          :label="`${$t('Queen')} ${$t('queen_description')}`"
+                        >
+                        </v-text-field>
+                      </div>
+
+                      <v-switch
+                        v-model="queenClipped"
+                        :label="`${$t('Queen_clipped')}`"
+                      ></v-switch>
+
+                      <v-switch
+                        v-model="queenFertilized"
+                        :label="`${$t('Queen_fertilized')}`"
+                      ></v-switch>
+
+                      <v-switch
+                        v-model="showQueenColorPicker"
+                        :label="`${$t('Queen_colored')}`"
+                      ></v-switch>
+                    </v-col>
+
+                    <v-col cols="12" sm="6" md="4">
+                      <div v-if="showQueenColorPicker">
+                        <div
+                          class="hive-edit-label"
+                          v-text="`${$t('Queen')} ${$t('color')}`"
+                        ></div>
+                        <div>
+                          <div>
+                            <div class="mr-2 mb-2">
+                              <v-sheet
+                                class="beep-icon beep-icon-queen--large"
+                                :color="activeHive.queen.color"
+                              >
+                              </v-sheet>
+                            </div>
+                            <v-color-picker
+                              v-model="queenColor"
+                            ></v-color-picker>
+                          </div>
+                        </div>
+                      </div>
+                    </v-col>
+                  </v-row>
+                </div>
+              </v-col>
+            </v-row>
           </v-card-text>
         </v-card>
       </v-form>
@@ -151,6 +273,7 @@ import Confirm from '@components/confirm.vue'
 import HiveFactory from '@components/hive-factory.vue'
 import { mapGetters } from 'vuex'
 import Layout from '@layouts/back.vue'
+import { momentMixin } from '@mixins/momentMixin'
 import VueNumberInput from '@chenfengyuan/vue-number-input'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
@@ -163,6 +286,7 @@ export default {
     VueNumberInput,
     Treeselect,
   },
+  mixins: [momentMixin],
   data: function() {
     return {
       snackbar: {
@@ -176,30 +300,19 @@ export default {
         ['#bca55e', '#754B1F', '#3F3104'],
       ],
       overlay: false,
+      modal: false,
       colorPreview: false,
       colorPickerValue: '',
     }
   },
   computed: {
     ...mapGetters('hives', ['activeHive']),
-    ...mapGetters('taxonomy', ['hiveTypes']),
+    ...mapGetters('taxonomy', ['beeRaces', 'hiveTypes']),
     id() {
       return parseInt(this.$route.params.id)
     },
     locale() {
       return this.$i18n.locale
-    },
-    hiveTypeLocale() {
-      if (this.hiveTypes.length) {
-        const locale = this.$i18n.locale
-        if (this.hiveTypes[0].trans[locale] === undefined) {
-          return 'en'
-        } else {
-          return locale
-        }
-      } else {
-        return 'en'
-      }
     },
     colorPicker: {
       get() {
@@ -235,7 +348,11 @@ export default {
         }
       },
       set(value) {
-        this.$store.commit('hives/updateHiveName', value)
+        const payload = {
+          key: 'name',
+          value: value,
+        }
+        this.$store.commit('hives/updateHive', payload)
       },
     },
     hiveType: {
@@ -247,12 +364,40 @@ export default {
         }
       },
       set(value) {
-        this.$store.commit('hives/updateHiveType', value)
+        const payload = {
+          key: 'hive_type_id',
+          value: value,
+        }
+        this.$store.commit('hives/updateHive', payload)
       },
+    },
+    treeselectBeeRaces() {
+      if (this.beeRaces.length) {
+        const locale = this.selectLocale(this.beeRaces)
+        var treeselectArray = this.beeRaces
+        treeselectArray.map((beeRace) => {
+          beeRace.label = beeRace.trans[locale]
+        })
+        const sortedTreeselectArray = treeselectArray
+          .slice()
+          .sort(function(a, b) {
+            if (a.label < b.label) {
+              return -1
+            }
+            if (a.label > b.label) {
+              return 1
+            }
+            return 0
+          })
+        treeselectArray = sortedTreeselectArray
+        return treeselectArray
+      } else {
+        return []
+      }
     },
     treeselectHiveTypes() {
       if (this.hiveTypes.length) {
-        const locale = this.hiveTypeLocale
+        const locale = this.selectLocale(this.hiveTypes)
         var hiveTypePerGroup = this.hiveTypes.reduce(function(r, a) {
           r[a.group[locale]] = r[a.group[locale]] || []
           r[a.group[locale]].push(a)
@@ -307,6 +452,146 @@ export default {
       } else {
         return []
       }
+    },
+    queenBirthDate: {
+      get() {
+        if (this.activeHive) {
+          return this.momentifyRemoveTime(this.activeHive.queen.created_at)
+        } else {
+          return ''
+        }
+      },
+      set(value) {
+        const payload = {
+          key: 'created_at',
+          value: value,
+        }
+        this.$store.commit('hives/updateQueen', payload)
+      },
+    },
+    queenClipped: {
+      get() {
+        if (this.activeHive) {
+          return this.activeHive.queen.clipped
+        } else {
+          return ''
+        }
+      },
+      set(value) {
+        const payload = {
+          key: 'clipped',
+          value: value,
+        }
+        this.$store.commit('hives/updateQueen', payload)
+      },
+    },
+    queenColor: {
+      get() {
+        if (this.activeHive) {
+          return this.activeHive.queen.color
+        } else {
+          return ''
+        }
+      },
+      set(value) {
+        const payload = {
+          key: 'color',
+          value: value,
+        }
+        this.$store.commit('hives/updateQueen', payload)
+      },
+    },
+    queenDescription: {
+      get() {
+        if (this.activeHive) {
+          return this.activeHive.queen.description
+        } else {
+          return ''
+        }
+      },
+      set(value) {
+        const payload = {
+          key: 'description',
+          value: value,
+        }
+        this.$store.commit('hives/updateQueen', payload)
+      },
+    },
+    queenFertilized: {
+      get() {
+        if (this.activeHive) {
+          return this.activeHive.queen.fertilized
+        } else {
+          return ''
+        }
+      },
+      set(value) {
+        const payload = {
+          key: 'fertilized',
+          value: value,
+        }
+        this.$store.commit('hives/updateQueen', payload)
+      },
+    },
+    queenName: {
+      get() {
+        if (this.activeHive) {
+          return this.activeHive.queen.name
+        } else {
+          return ''
+        }
+      },
+      set(value) {
+        const payload = {
+          key: 'name',
+          value: value,
+        }
+        this.$store.commit('hives/updateQueen', payload)
+      },
+    },
+    queenRace: {
+      get() {
+        if (this.activeHive) {
+          return this.activeHive.queen.race_id
+        } else {
+          return ''
+        }
+      },
+      set(value) {
+        const payload = {
+          key: 'race_id',
+          value: value,
+        }
+        this.$store.commit('hives/updateQueen', payload)
+      },
+    },
+    showQueenColorPicker: {
+      get() {
+        if (this.activeHive) {
+          if (this.activeHive.queen.color !== null) {
+            return true
+          } else {
+            return false
+          }
+        } else {
+          return false
+        }
+      },
+      set(value) {
+        if (value === false) {
+          const payload = {
+            key: 'color',
+            value: null,
+          }
+          this.$store.commit('hives/updateQueen', payload)
+        } else {
+          const payload = {
+            key: 'color',
+            value: '#dddddd',
+          }
+          this.$store.commit('hives/updateQueen', payload)
+        }
+      },
     },
   },
   created() {
@@ -385,6 +670,18 @@ export default {
     cancelColorPicker() {
       this.colorPreview = false
       this.overlay = false
+    },
+    selectLocale(array) {
+      if (array.length) {
+        const locale = this.$i18n.locale
+        if (array[0].trans[locale] === undefined) {
+          return 'en'
+        } else {
+          return locale
+        }
+      } else {
+        return 'en'
+      }
     },
     deleteHive() {
       this.$refs.confirm
@@ -519,5 +816,11 @@ export default {
       }
     }
   }
+}
+
+.queen-details {
+  padding: 0 12px;
+  border: 1px solid $color-grey-light;
+  border-radius: 2px;
 }
 </style>

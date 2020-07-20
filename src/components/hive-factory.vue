@@ -315,6 +315,12 @@ export default {
   border: 1px solid rgba(0, 0, 0, 0.3);
   border-color: rgba(0, 0, 0, 0.3) !important;
   border-radius: 0;
+  &:first-child {
+    border-radius: 2px 2px 0 0;
+  }
+  &:last-child:not(.queen_excluder-layer) {
+    border-bottom: 0;
+  }
 }
 
 .honey-layer {
@@ -325,7 +331,31 @@ export default {
 }
 .queen_excluder-layer,
 .feeding_box-layer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   height: 4px;
+  border-radius: 0;
+}
+.queen_excluder-layer {
+  justify-content: flex-end;
+  &::after {
+    margin-right: -16px;
+    font-family: 'Material Design Icons';
+    font-size: 18px;
+    color: $color-grey;
+    content: '\F004E';
+  }
+}
+.feeding_box-layer {
+  justify-content: center;
+  &::after {
+    margin-top: -16px;
+    font-family: 'Material Design Icons';
+    font-size: 18px;
+    color: $color-grey;
+    content: '\F0046';
+  }
 }
 
 .hive-icon {

@@ -24,6 +24,13 @@
     background-size: 10px;
   }
 
+  &-queen--large {
+    width: 40px;
+    height: 40px;
+    background-image: url('~@assets/img/icn_bee.svg');
+    background-size: 20px;
+  }
+
   &-sensors {
     font-size: 13px;
     &::before {

@@ -602,6 +602,7 @@ const translations = {
   page: 'page | pages',
   not_found: 'not found',
   sorry: 'Sorry',
+  delete_layer: 'Delete layer',
   not_saved_error: 'No se pudieron guardar los datos',
   something_wrong: 'Something went wrong',
   not_editable: 'not editable',
