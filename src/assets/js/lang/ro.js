@@ -608,6 +608,7 @@ const translations = {
   sorry: 'Sorry',
   not_saved_error: 'Datele nu au putut fi salvate',
   something_wrong: 'Something went wrong',
+  not_editable: 'not editable',
 }
 
 export default translations

@@ -605,6 +605,7 @@ const translations = {
   sorry: 'Sorry',
   not_saved_error: 'Data could not be saved',
   something_wrong: 'Something went wrong',
+  not_editable: 'not editable',
 }
 
 export default translations

@@ -1,7 +1,22 @@
 <template>
   <Layout :title="`${$t('edit')} ${$tc('hive', 1)}`">
+    <h1
+      v-if="activeHive.name !== undefined && !activeHive.editable"
+      class="unauthorized-title"
+    >
+      {{
+        $t('sorry') +
+          ', ' +
+          $tc('hive', 1) +
+          ' "' +
+          activeHive.name +
+          '" ' +
+          $t('not_editable')
+      }}
+    </h1>
+
     <v-toolbar
-      v-if="activeHive.name !== undefined"
+      v-if="activeHive.name !== undefined && activeHive.editable"
       class="hive-edit-bar"
       dense
       light
@@ -18,7 +33,10 @@
       <v-icon dark color="primary" @click="save">mdi-check</v-icon>
     </v-toolbar>
 
-    <v-container v-if="activeHive.name !== undefined" class="hive-edit-content">
+    <v-container
+      v-if="activeHive.name !== undefined && activeHive.editable"
+      class="hive-edit-content"
+    >
       <v-form ref="form">
         <v-card outlined>
           <v-card-text>
@@ -389,6 +407,11 @@ export default {
 </script>
 
 <style lang="scss">
+.unauthorized-title {
+  padding-top: 40px;
+  text-align: center;
+}
+
 .hive-edit-bar {
   position: fixed;
   top: 56px;
