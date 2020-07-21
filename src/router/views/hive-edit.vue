@@ -312,7 +312,6 @@
                         <v-dialog
                           ref="dialog"
                           v-model="modal"
-                          :return-value.sync="queenBirthDate"
                           persistent
                           width="290px"
                         >
@@ -347,7 +346,7 @@
                             <v-btn
                               text
                               color="primary"
-                              @click="$refs.dialog.save(queenBirthDate)"
+                              @click="updateBirthDate"
                               >{{ $t('ok') }}</v-btn
                             >
                           </v-date-picker>
@@ -802,8 +801,8 @@ export default {
           key: 'created_at',
           value: value,
         }
-        this.useQueenMarkColor = true
         this.$store.commit('hives/updateQueen', payload)
+        this.useQueenMarkColor = true
       },
     },
     queenClipped: {
@@ -1022,8 +1021,9 @@ export default {
       this.overlay = false
     },
     cancelDatePicker() {
-      this.modal = false
       this.useQueenMarkColor = false
+      this.modal = false
+      this.queenColor = this.activeHive.queen.color
     },
     selectLocale(array) {
       if (array.length) {
@@ -1048,6 +1048,16 @@ export default {
         .catch((reject) => {
           return true
         })
+    },
+    updateBirthDate() {
+      this.$refs.dialog.save(this.queenBirthDate)
+      if (this.activeHive.queen.color !== null) {
+        const payload = {
+          key: 'color',
+          value: this.queenMarkColor,
+        }
+        this.$store.commit('hives/updateQueen', payload)
+      }
     },
     updateHiveColor() {
       this.$store.commit('hives/updateHiveColor', this.colorPickerValue)
