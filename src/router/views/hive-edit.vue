@@ -128,7 +128,7 @@
 
                         <v-color-picker
                           v-model="colorPicker"
-                          class="hive-color-picker"
+                          class="hive-color-picker flex-color-picker"
                           :swatches="swatchesHive"
                           show-swatches
                           hide-canvas
@@ -267,10 +267,6 @@
                         </v-col>
                       </v-row>
                     </v-col>
-
-                    <!-- <v-col cols="12" md="6" md="4">
-
-                    </v-col> -->
                   </v-row>
                 </div>
               </v-col>
@@ -407,8 +403,10 @@
                             </div>
                             <v-color-picker
                               v-model="queenColor"
+                              class="flex-color-picker"
                               :swatches="swatchesQueen"
                               show-swatches
+                              canvas-height="120"
                             ></v-color-picker>
                           </div>
                         </div>
@@ -1130,6 +1128,21 @@ export default {
   border: 1px solid rgba(0, 0, 0, 0.3) !important;
 }
 
+.flex-color-picker {
+  display: flex;
+  flex-direction: column;
+  .v-color-picker__controls {
+    order: 2;
+  }
+  .v-color-picker__swatches {
+    margin-top: 10px;
+    .v-color-picker__swatch:nth-child(2) {
+      .v-color-picker__color > div {
+        border: 1px solid $color-grey-light;
+      }
+    }
+  }
+}
 .hive-color-picker {
   margin-top: -10px;
 }
