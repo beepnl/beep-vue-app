@@ -22,13 +22,13 @@ export const state = {
   },
 }
 export const getters = {
-  beeRaces: (state) => {
+  beeRacesList: (state) => {
     return state.data.lists.beeraces || []
   },
-  hiveDimensions: (state) => {
+  hiveDimensionsList: (state) => {
     return state.data.lists.hivedimensions || []
   },
-  hiveTypes: (state) => {
+  hiveTypesList: (state) => {
     return state.data.lists.hivetypes || []
   },
 }

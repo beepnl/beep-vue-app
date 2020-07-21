@@ -51,109 +51,230 @@
               </v-col>
             </v-row>
 
-            <v-row>
-              <v-col cols="12" sm="6" md="3">
-                <div
-                  class="hive-edit-label"
-                  v-text="`${$t('Hive_type')}*`"
-                ></div>
-                <Treeselect
-                  v-model="hiveType"
-                  :options="treeselectHiveTypes"
-                  :disable-branch-nodes="true"
-                  :no-results-text="`${$t('no_results')}`"
-                  :default-expand-level="1"
-                  :label="`${$t('Select')} ${$t('Hive_type')}`"
-                  search-nested
-                />
-              </v-col>
-
-              <v-col cols="12" sm="4" md="2">
-                <div
-                  class="hive-edit-label"
-                  v-text="`${$t('Brood_box_and_frame')} ${$t('dimensions')}`"
-                ></div>
-                <VueNumberInput
-                  v-if="activeHive"
-                  v-model="hiveDimensions.bb_width_cm"
-                  class="hive-number-frame-input"
-                  :min="10"
-                  :max="100"
-                  inline
-                  controls
-                  rounded
-                ></VueNumberInput>
-              </v-col>
-
-              <v-col cols="12" sm="4" md="2">
-                <div
-                  class="hive-edit-label"
-                  v-text="`${$t('Hive_frames')}*`"
-                ></div>
-                <VueNumberInput
-                  v-if="activeHive && activeHive.layers"
-                  v-model="hiveFrames"
-                  class="hive-number-frame-input"
-                  :min="1"
-                  :max="20"
-                  inline
-                  controls
-                  rounded
-                ></VueNumberInput>
-              </v-col>
-
+            <v-row class="hive-edit-details-wrapper">
               <v-col cols="12">
                 <div
                   class="hive-edit-label"
-                  v-text="
-                    `${$t('Hive_color')} (${$t('overrides_layer_colors')})`
-                  "
+                  v-text="`${$tc('Hive', 1) + ' ' + $t('details')}`"
                 ></div>
-                <v-sheet
-                  class="hive-color"
-                  dark
-                  :color="
-                    activeHive.color !== null ? activeHive.color : '#ffa000'
-                  "
-                  @click="overlay = !overlay"
-                ></v-sheet>
-                <v-overlay :value="overlay">
-                  <v-toolbar class="hive-color-picker-toolbar" dense light>
-                    <div
-                      class="hive-color-picker-title"
-                      v-text="`${$t('Hive_color')}`"
-                    ></div>
-                    <v-spacer></v-spacer>
-                    <v-toolbar-items>
-                      <v-icon
-                        class="mr-1"
-                        color="primary"
-                        @click="updateHiveColor"
-                        >mdi-check</v-icon
-                      >
-                      <v-icon @click="cancelColorPicker">mdi-close</v-icon>
-                    </v-toolbar-items>
-                  </v-toolbar>
 
-                  <v-color-picker
-                    v-model="colorPicker"
-                    class="hive-color-picker"
-                    :swatches="swatches"
-                    show-swatches
-                    hide-canvas
-                    light
-                  >
-                  </v-color-picker>
-                </v-overlay>
+                <div class="hive-edit-details">
+                  <v-row>
+                    <v-col cols="12" md="6" lg="4">
+                      <v-row>
+                        <v-col cols="12" md="7">
+                          <div
+                            class="hive-edit-label"
+                            v-text="
+                              `${$t('Hive_color')} (${$t(
+                                // eslint-disable-next-line vue/comma-dangle
+                                'overrides_layer_colors'
+                              )})`
+                            "
+                          ></div>
+                          <v-sheet
+                            class="hive-color"
+                            dark
+                            :color="
+                              activeHive.color !== null
+                                ? activeHive.color
+                                : '#ffa000'
+                            "
+                            @click="overlay = !overlay"
+                          ></v-sheet>
+                        </v-col>
+
+                        <v-col cols="12" md="5">
+                          <div
+                            class="hive-edit-label"
+                            v-text="`${$t('Hive_frames')}*`"
+                          ></div>
+                          <VueNumberInput
+                            v-if="activeHive && activeHive.layers"
+                            v-model="hiveFrames"
+                            class="hive-number-frame-input"
+                            :min="1"
+                            :max="20"
+                            inline
+                            controls
+                            rounded
+                          ></VueNumberInput>
+                        </v-col>
+                      </v-row>
+
+                      <v-overlay :value="overlay">
+                        <v-toolbar
+                          class="hive-color-picker-toolbar"
+                          dense
+                          light
+                        >
+                          <div
+                            class="hive-color-picker-title"
+                            v-text="`${$t('Hive_color')}`"
+                          ></div>
+                          <v-spacer></v-spacer>
+                          <v-toolbar-items>
+                            <v-icon
+                              class="mr-1"
+                              color="primary"
+                              @click="updateHiveColor"
+                              >mdi-check</v-icon
+                            >
+                            <v-icon @click="cancelColorPicker"
+                              >mdi-close</v-icon
+                            >
+                          </v-toolbar-items>
+                        </v-toolbar>
+
+                        <v-color-picker
+                          v-model="colorPicker"
+                          class="hive-color-picker"
+                          :swatches="swatchesHive"
+                          show-swatches
+                          hide-canvas
+                          light
+                        >
+                        </v-color-picker>
+                      </v-overlay>
+
+                      <HiveFactory
+                        v-if="activeHive && activeHive.layers"
+                        :hive="activeHive"
+                        :color-preview="colorPreview"
+                        :color-picker-value="colorPickerValue"
+                      ></HiveFactory>
+                    </v-col>
+
+                    <v-col cols="12" md="6" lg="4">
+                      <v-row>
+                        <v-col cols="12" sm="7" md="12">
+                          <div
+                            class="hive-edit-label"
+                            v-text="`${$t('Hive_type')}*`"
+                          ></div>
+                          <Treeselect
+                            v-model="hiveType"
+                            :options="treeselectHiveTypes"
+                            :disable-branch-nodes="true"
+                            :no-results-text="`${$t('no_results')}`"
+                            :default-expand-level="1"
+                            :label="`${$t('Select')} ${$t('Hive_type')}`"
+                            search-nested
+                          />
+                        </v-col>
+                      </v-row>
+
+                      <v-row class="hive-dimensions-wrapper">
+                        <v-col cols="12" sm="7" md="12">
+                          <div
+                            class="hive-edit-label"
+                            v-text="
+                              `${$t('Brood_box_and_frame')} ${$t('dimensions')}`
+                            "
+                          ></div>
+                          <div class="hive-dimensions-details">
+                            <v-row>
+                              <v-col cols="12" md="6">
+                                <div>
+                                  <div
+                                    class="hive-edit-label"
+                                    v-text="`${$t('bb_width_cm')}`"
+                                  ></div>
+                                  <VueNumberInput
+                                    v-if="activeHive"
+                                    v-model="hiveDimensionsBBWidth"
+                                    class="hive-number-frame-input"
+                                    :min="0"
+                                    :max="100"
+                                    :step="0.1"
+                                    inline
+                                    controls
+                                  ></VueNumberInput>
+                                </div>
+
+                                <div class="mt-3">
+                                  <div
+                                    class="hive-edit-label"
+                                    v-text="`${$t('bb_height_cm')}`"
+                                  ></div>
+                                  <VueNumberInput
+                                    v-if="activeHive"
+                                    v-model="hiveDimensionsBBHeight"
+                                    class="hive-number-frame-input"
+                                    :min="0"
+                                    :max="100"
+                                    :step="0.1"
+                                    inline
+                                    controls
+                                  ></VueNumberInput>
+                                </div>
+
+                                <div class="mt-3">
+                                  <div
+                                    class="hive-edit-label"
+                                    v-text="`${$t('bb_depth_cm')}`"
+                                  ></div>
+                                  <VueNumberInput
+                                    v-if="activeHive"
+                                    v-model="hiveDimensionsBBDepth"
+                                    class="hive-number-frame-input"
+                                    :min="0"
+                                    :max="100"
+                                    :step="0.1"
+                                    inline
+                                    controls
+                                  ></VueNumberInput>
+                                </div>
+                              </v-col>
+
+                              <v-col cols="12" md="6">
+                                <div>
+                                  <div
+                                    class="hive-edit-label"
+                                    v-text="`${$t('fr_width_cm')}`"
+                                  ></div>
+                                  <VueNumberInput
+                                    v-if="activeHive"
+                                    v-model="hiveDimensionsFrWidth"
+                                    class="hive-number-frame-input"
+                                    :min="0"
+                                    :max="100"
+                                    :step="0.1"
+                                    inline
+                                    controls
+                                  ></VueNumberInput>
+                                </div>
+
+                                <div class="mt-3">
+                                  <div
+                                    class="hive-edit-label"
+                                    v-text="`${$t('fr_height_cm')}`"
+                                  ></div>
+                                  <VueNumberInput
+                                    v-if="activeHive"
+                                    v-model="hiveDimensionsFrHeight"
+                                    class="hive-number-frame-input"
+                                    :min="0"
+                                    :max="100"
+                                    :step="0.1"
+                                    inline
+                                    controls
+                                  ></VueNumberInput>
+                                </div>
+                              </v-col>
+                            </v-row>
+                          </div>
+                        </v-col>
+                      </v-row>
+                    </v-col>
+
+                    <!-- <v-col cols="12" md="6" md="4">
+
+                    </v-col> -->
+                  </v-row>
+                </div>
               </v-col>
             </v-row>
-
-            <HiveFactory
-              v-if="activeHive && activeHive.layers"
-              :hive="activeHive"
-              :color-preview="colorPreview"
-              :color-picker-value="colorPickerValue"
-            ></HiveFactory>
 
             <v-row class="queen-details-wrapper">
               <v-col cols="12">
@@ -163,7 +284,7 @@
                 ></div>
                 <div class="queen-details">
                   <v-row>
-                    <v-col cols="12" sm="6" md="4">
+                    <v-col cols="12" sm="7" md="6" lg="4">
                       <div>
                         <v-text-field
                           v-model="queenName"
@@ -199,29 +320,35 @@
                             <v-text-field
                               v-model="queenBirthDate"
                               :label="`${$t('Birth_date')}`"
-                              :first-day-of-week="1"
-                              :locale="locale"
                               prepend-icon="mdi-calendar"
                               v-bind="attrs"
                               v-on="on"
                             ></v-text-field>
                           </template>
-                          <v-date-picker v-model="queenBirthDate" scrollable>
+                          <v-date-picker
+                            v-model="queenBirthDate"
+                            :first-day-of-week="1"
+                            :locale="locale"
+                            scrollable
+                          >
                             <v-spacer></v-spacer>
-                            <v-btn text color="primary" @click="modal = false"
-                              >Cancel</v-btn
+                            <v-btn
+                              text
+                              color="primary"
+                              @click="modal = false"
+                              >{{ $t('Cancel') }}</v-btn
                             >
                             <v-btn
                               text
                               color="primary"
                               @click="$refs.dialog.save(queenBirthDate)"
-                              >OK</v-btn
+                              >{{ $t('ok') }}</v-btn
                             >
                           </v-date-picker>
                         </v-dialog>
                       </div>
                     </v-col>
-                    <v-col cols="12" sm="6" md="4">
+                    <v-col cols="12" sm="7" md="6" lg="4">
                       <div>
                         <v-text-field
                           v-model="queenDescription"
@@ -246,7 +373,7 @@
                       ></v-switch>
                     </v-col>
 
-                    <v-col cols="12" sm="6" md="4">
+                    <v-col cols="12" md="6" lg="4">
                       <div v-if="showQueenColorPicker">
                         <div
                           class="hive-edit-label"
@@ -314,7 +441,7 @@ export default {
         timeout: 2000,
         text: 'notification',
       },
-      swatches: [
+      swatchesHive: [
         ['#b5c4b2', '#F7BE02', '#FFA000'],
         ['#049717', '#1b6308', '#00466b'],
         ['#bca55e', '#754B1F', '#3F3104'],
@@ -327,7 +454,11 @@ export default {
   },
   computed: {
     ...mapGetters('hives', ['activeHive']),
-    ...mapGetters('taxonomy', ['beeRaces', 'hiveDimensions', 'hiveTypes']),
+    ...mapGetters('taxonomy', [
+      'beeRacesList',
+      'hiveDimensionsList',
+      'hiveTypesList',
+    ]),
     id() {
       return parseInt(this.$route.params.id)
     },
@@ -351,11 +482,11 @@ export default {
       get() {
         if (this.activeHive) {
           return {
-            bb_width_cm: this.activeHive.bb_width_cm,
-            bb_depth_cm: this.activeHive.bb_depth_cm,
-            bb_height_cm: this.activeHive.bb_height_cm,
-            fr_width_cm: this.activeHive.fr_width_cm,
-            fr_height_cm: this.activeHive.fr_height_cm,
+            bb_width_cm: parseFloat(this.activeHive.bb_width_cm),
+            bb_depth_cm: parseFloat(this.activeHive.bb_depth_cm),
+            bb_height_cm: parseFloat(this.activeHive.bb_height_cm),
+            fr_width_cm: parseFloat(this.activeHive.fr_width_cm),
+            fr_height_cm: parseFloat(this.activeHive.fr_height_cm),
           }
         } else {
           return {
@@ -369,6 +500,86 @@ export default {
       },
       set(value) {
         console.log(value) // TODO: pass to updateHiveDimensions function
+      },
+    },
+    hiveDimensionsBBWidth: {
+      get() {
+        if (this.activeHive) {
+          return parseFloat(this.activeHive.bb_width_cm)
+        } else {
+          return null
+        }
+      },
+      set(value) {
+        const payload = {
+          key: 'bb_width_cm',
+          value: value.toString(),
+        }
+        this.$store.commit('hives/updateHive', payload)
+      },
+    },
+    hiveDimensionsBBHeight: {
+      get() {
+        if (this.activeHive) {
+          return parseFloat(this.activeHive.bb_height_cm)
+        } else {
+          return null
+        }
+      },
+      set(value) {
+        const payload = {
+          key: 'bb_height_cm',
+          value: value.toString(),
+        }
+        this.$store.commit('hives/updateHive', payload)
+      },
+    },
+    hiveDimensionsBBDepth: {
+      get() {
+        if (this.activeHive) {
+          return parseFloat(this.activeHive.bb_depth_cm)
+        } else {
+          return null
+        }
+      },
+      set(value) {
+        const payload = {
+          key: 'bb_depth_cm',
+          value: value.toString(),
+        }
+        this.$store.commit('hives/updateHive', payload)
+      },
+    },
+    hiveDimensionsFrWidth: {
+      get() {
+        if (this.activeHive) {
+          return parseFloat(this.activeHive.fr_width_cm)
+        } else {
+          return null
+        }
+      },
+      set(value) {
+        const payload = {
+          key: 'fr_width_cm',
+          value: value.toString(),
+        }
+        this.$store.commit('hives/updateHive', payload)
+      },
+    },
+    hiveDimensionsFrHeight: {
+      get() {
+        if (this.activeHive) {
+          return parseFloat(this.activeHive.fr_height_cm)
+        } else {
+          return null
+        }
+      },
+      set(value) {
+        const payload = {
+          key: 'fr_height_cm',
+          value: value.toString(),
+        }
+        this.$store.commit('hives/updateHive', payload)
       },
     },
     hiveFrames: {
@@ -414,30 +625,49 @@ export default {
         }
         this.$store.commit('hives/updateHive', payload)
 
-        const hiveTypeIndex = this.hiveTypes.findIndex(
+        const hiveTypeIndex = this.hiveTypesList.findIndex(
           (hiveType) => hiveType.id === value
         )
-        const hiveTypeName = this.hiveTypes[hiveTypeIndex].name
+        const hiveTypeName = this.hiveTypesList[hiveTypeIndex].name
 
         if (
-          this.hiveDimensions &&
-          this.hiveDimensions[hiveTypeName] !== undefined
+          this.hiveDimensionsList &&
+          this.hiveDimensionsList[hiveTypeName] !== undefined
         ) {
           const hiveDimensions = {
-            bb_width_cm: this.hiveDimensions[hiveTypeName].bb_width_cm,
-            bb_depth_cm: this.hiveDimensions[hiveTypeName].bb_depth_cm,
-            bb_height_cm: this.hiveDimensions[hiveTypeName].bb_height_cm,
-            fr_width_cm: this.hiveDimensions[hiveTypeName].fr_width_cm,
-            fr_height_cm: this.hiveDimensions[hiveTypeName].fr_height_cm,
+            bb_width_cm: parseFloat(
+              this.hiveDimensionsList[hiveTypeName].bb_width_cm
+            ),
+            bb_depth_cm: parseFloat(
+              this.hiveDimensionsList[hiveTypeName].bb_depth_cm
+            ),
+            bb_height_cm: parseFloat(
+              this.hiveDimensionsList[hiveTypeName].bb_height_cm
+            ),
+            fr_width_cm: parseFloat(
+              this.hiveDimensionsList[hiveTypeName].fr_width_cm
+            ),
+            fr_height_cm: parseFloat(
+              this.hiveDimensionsList[hiveTypeName].fr_height_cm
+            ),
           }
-          console.log(hiveDimensions) // TODO: pass to updateHiveDimensions function
+
+          var i = 0
+          for (i in hiveDimensions) {
+            const payload = {
+              key: i,
+              value: hiveDimensions[i],
+            }
+            this.$store.commit('hives/updateHive', payload)
+            i++
+          }
         }
       },
     },
     treeselectBeeRaces() {
-      if (this.beeRaces.length) {
-        const locale = this.selectLocale(this.beeRaces)
-        var treeselectArray = this.beeRaces
+      if (this.beeRacesList.length) {
+        const locale = this.selectLocale(this.beeRacesList)
+        var treeselectArray = this.beeRacesList
         treeselectArray.map((beeRace) => {
           beeRace.label = beeRace.trans[locale]
         })
@@ -459,9 +689,9 @@ export default {
       }
     },
     treeselectHiveTypes() {
-      if (this.hiveTypes.length) {
-        const locale = this.selectLocale(this.hiveTypes)
-        var hiveTypePerGroup = this.hiveTypes.reduce(function(r, a) {
+      if (this.hiveTypesList.length) {
+        const locale = this.selectLocale(this.hiveTypesList)
+        var hiveTypePerGroup = this.hiveTypesList.reduce(function(r, a) {
           r[a.group[locale]] = r[a.group[locale]] || []
           r[a.group[locale]].push(a)
           return r
@@ -774,7 +1004,7 @@ export default {
 
 .hive-edit-bar {
   position: fixed;
-  z-index: 1;
+  z-index: 100;
   width: 100%;
   @include for-phone-only {
     top: 56px;
@@ -881,6 +1111,11 @@ export default {
   }
 }
 
+.hive-dimensions-wrapper {
+  margin-top: 6px;
+}
+.hive-edit-details,
+.hive-dimensions-details,
 .queen-details {
   padding: 0 12px;
   border: 1px solid $color-grey-light;

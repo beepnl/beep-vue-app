@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row class="hive-factory-wrapper">
-      <v-col cols="12" sm="6" md="4">
+      <v-col cols="12" sm="7" md="12">
         <div class="hive-edit-label" v-text="`${$t('drag_layers')}`"></div>
         <div
           :class="
