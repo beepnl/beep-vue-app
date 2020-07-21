@@ -29,5 +29,17 @@ export const momentMixin = {
         .locale(this.$i18n.locale)
         .format('YYYY-MM-DD')
     },
+    momentLastDigitOfYear(date) {
+      return this.$moment(date)
+        .format('YY')
+        .substr(1, 1)
+    },
+    momentAge(date) {
+      const dateNow = this.$moment()
+      const dateBirth = this.$moment(date)
+      const yearsOld = dateNow.diff(dateBirth, 'years', true)
+      const age = isNaN(yearsOld) ? 0 : Math.round(yearsOld * 10) / 10
+      return age
+    },
   },
 }

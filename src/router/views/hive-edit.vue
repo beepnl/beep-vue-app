@@ -319,7 +319,13 @@
                           <template v-slot:activator="{ on, attrs }">
                             <v-text-field
                               v-model="queenBirthDate"
-                              :label="`${$t('Birth_date')}`"
+                              :label="
+                                `${$t('Birth_date')} ${
+                                  showQueenColorPicker
+                                    ? '(' + $t('changes_queen_color') + ')'
+                                    : ''
+                                }`
+                              "
                               prepend-icon="mdi-calendar"
                               v-bind="attrs"
                               v-on="on"
@@ -335,7 +341,7 @@
                             <v-btn
                               text
                               color="primary"
-                              @click="modal = false"
+                              @click="cancelDatePicker"
                               >{{ $t('Cancel') }}</v-btn
                             >
                             <v-btn
@@ -346,6 +352,14 @@
                             >
                           </v-date-picker>
                         </v-dialog>
+                      </div>
+
+                      <div>
+                        <div
+                          class="hive-edit-label"
+                          v-text="`${$t('Age')}`"
+                        ></div>
+                        <p v-text="queenAge + ` ${$t('years_old')}`"> </p>
                       </div>
                     </v-col>
                     <v-col cols="12" sm="7" md="6" lg="4">
@@ -384,7 +398,7 @@
                             <div class="mr-2 mb-2">
                               <v-sheet
                                 class="beep-icon beep-icon-queen--large"
-                                :color="activeHive.queen.color"
+                                :color="queenColor"
                               >
                               </v-sheet>
                             </div>
@@ -446,10 +460,23 @@ export default {
         ['#049717', '#1b6308', '#00466b'],
         ['#bca55e', '#754B1F', '#3F3104'],
       ],
+      queen_colors: [
+        '#4A90E2',
+        '#F4F4F4',
+        '#F8DB31',
+        '#D0021B',
+        '#7ED321',
+        '#4A90E2',
+        '#F4F4F4',
+        '#F8DB31',
+        '#D0021B',
+        '#7ED321',
+      ], // year ending of birth year is index
       overlay: false,
       modal: false,
       colorPreview: false,
       colorPickerValue: '',
+      useQueenMarkColor: false,
     }
   },
   computed: {
@@ -478,34 +505,14 @@ export default {
         this.colorPickerValue = value
       },
     },
-    hiveDimensions: {
-      get() {
-        if (this.activeHive) {
-          return {
-            bb_width_cm: parseFloat(this.activeHive.bb_width_cm),
-            bb_depth_cm: parseFloat(this.activeHive.bb_depth_cm),
-            bb_height_cm: parseFloat(this.activeHive.bb_height_cm),
-            fr_width_cm: parseFloat(this.activeHive.fr_width_cm),
-            fr_height_cm: parseFloat(this.activeHive.fr_height_cm),
-          }
-        } else {
-          return {
-            bb_width_cm: null,
-            bb_depth_cm: null,
-            bb_height_cm: null,
-            fr_width_cm: null,
-            fr_height_cm: null,
-          }
-        }
-      },
-      set(value) {
-        console.log(value) // TODO: pass to updateHiveDimensions function
-      },
-    },
     hiveDimensionsBBWidth: {
       get() {
         if (this.activeHive) {
-          return parseFloat(this.activeHive.bb_width_cm)
+          if (this.activeHive.bb_width_cm !== null) {
+            return parseFloat(this.activeHive.bb_width_cm)
+          } else {
+            return null
+          }
         } else {
           return null
         }
@@ -521,7 +528,11 @@ export default {
     hiveDimensionsBBHeight: {
       get() {
         if (this.activeHive) {
-          return parseFloat(this.activeHive.bb_height_cm)
+          if (this.activeHive.bb_height_cm !== null) {
+            return parseFloat(this.activeHive.bb_height_cm)
+          } else {
+            return null
+          }
         } else {
           return null
         }
@@ -537,7 +548,11 @@ export default {
     hiveDimensionsBBDepth: {
       get() {
         if (this.activeHive) {
-          return parseFloat(this.activeHive.bb_depth_cm)
+          if (this.activeHive.bb_depth_cm !== null) {
+            return parseFloat(this.activeHive.bb_depth_cm)
+          } else {
+            return null
+          }
         } else {
           return null
         }
@@ -553,7 +568,11 @@ export default {
     hiveDimensionsFrWidth: {
       get() {
         if (this.activeHive) {
-          return parseFloat(this.activeHive.fr_width_cm)
+          if (this.activeHive.fr_width_cm !== null) {
+            return parseFloat(this.activeHive.fr_width_cm)
+          } else {
+            return null
+          }
         } else {
           return null
         }
@@ -569,7 +588,11 @@ export default {
     hiveDimensionsFrHeight: {
       get() {
         if (this.activeHive) {
-          return parseFloat(this.activeHive.fr_height_cm)
+          if (this.activeHive.fr_height_cm !== null) {
+            return parseFloat(this.activeHive.fr_height_cm)
+          } else {
+            return null
+          }
         } else {
           return null
         }
@@ -746,6 +769,13 @@ export default {
         return []
       }
     },
+    queenAge() {
+      if (this.activeHive) {
+        return this.momentAge(this.activeHive.queen.created_at)
+      } else {
+        return 0
+      }
+    },
     queenBirthDate: {
       get() {
         if (this.activeHive) {
@@ -759,6 +789,7 @@ export default {
           key: 'created_at',
           value: value,
         }
+        this.useQueenMarkColor = true
         this.$store.commit('hives/updateQueen', payload)
       },
     },
@@ -778,10 +809,22 @@ export default {
         this.$store.commit('hives/updateQueen', payload)
       },
     },
+    queenMarkColor() {
+      if (this.activeHive) {
+        const lastDigit = this.momentLastDigitOfYear(
+          this.activeHive.queen.created_at
+        )
+        return this.queen_colors[lastDigit]
+      } else {
+        return null
+      }
+    },
     queenColor: {
       get() {
-        if (this.activeHive) {
+        if (this.activeHive && !this.useQueenMarkColor) {
           return this.activeHive.queen.color
+        } else if (this.activeHive && this.useQueenMarkColor) {
+          return this.queenMarkColor
         } else {
           return ''
         }
@@ -791,6 +834,7 @@ export default {
           key: 'color',
           value: value,
         }
+        this.useQueenMarkColor = false
         this.$store.commit('hives/updateQueen', payload)
       },
     },
@@ -880,7 +924,7 @@ export default {
         } else {
           const payload = {
             key: 'color',
-            value: '#dddddd',
+            value: this.queenMarkColor,
           }
           this.$store.commit('hives/updateQueen', payload)
         }
@@ -963,6 +1007,10 @@ export default {
     cancelColorPicker() {
       this.colorPreview = false
       this.overlay = false
+    },
+    cancelDatePicker() {
+      this.modal = false
+      this.useQueenMarkColor = false
     },
     selectLocale(array) {
       if (array.length) {
