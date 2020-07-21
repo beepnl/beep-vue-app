@@ -1,7 +1,7 @@
 <template>
   <Layout :title="`${$t('edit')} ${$tc('hive', 1)}`">
     <h1
-      v-if="activeHive.name !== undefined && !activeHive.editable"
+      v-if="localHive.name !== undefined && !localHive.editable"
       class="unauthorized-title"
     >
       {{
@@ -9,21 +9,21 @@
           ', ' +
           $tc('hive', 1) +
           ' "' +
-          activeHive.name +
+          localHive.name +
           '" ' +
           $t('not_editable')
       }}
     </h1>
 
     <v-toolbar
-      v-if="activeHive.name !== undefined && activeHive.editable"
+      v-if="localHive.name !== undefined && localHive.editable"
       class="hive-edit-bar"
       dense
       light
     >
       <v-spacer></v-spacer>
       <v-icon
-        v-if="activeHive.owner"
+        v-if="localHive.owner"
         dark
         class="mr-4"
         color="red"
@@ -34,7 +34,7 @@
     </v-toolbar>
 
     <v-container
-      v-if="activeHive.name !== undefined && activeHive.editable"
+      v-if="localHive.name !== undefined && localHive.editable"
       class="hive-edit-content"
     >
       <v-form ref="form">
@@ -76,8 +76,8 @@
                             class="hive-color"
                             dark
                             :color="
-                              activeHive.color !== null
-                                ? activeHive.color
+                              localHive.color !== null
+                                ? localHive.color
                                 : '#ffa000'
                             "
                             @click="overlay = !overlay"
@@ -90,7 +90,7 @@
                             v-text="`${$t('Hive_frames')}*`"
                           ></div>
                           <VueNumberInput
-                            v-if="activeHive && activeHive.layers"
+                            v-if="localHive && localHive.layers"
                             v-model="hiveFrames"
                             class="hive-number-frame-input"
                             :min="1"
@@ -138,8 +138,8 @@
                       </v-overlay>
 
                       <HiveFactory
-                        v-if="activeHive && activeHive.layers"
-                        :hive="activeHive"
+                        v-if="localHive && localHive.layers"
+                        :hive="localHive"
                         :color-preview="colorPreview"
                         :color-picker-value="colorPickerValue"
                       ></HiveFactory>
@@ -181,7 +181,7 @@
                                     v-text="`${$t('bb_width_cm')}`"
                                   ></div>
                                   <VueNumberInput
-                                    v-if="activeHive"
+                                    v-if="localHive"
                                     v-model="hiveDimensionsBBWidth"
                                     class="hive-number-frame-input"
                                     :min="0"
@@ -198,7 +198,7 @@
                                     v-text="`${$t('bb_height_cm')}`"
                                   ></div>
                                   <VueNumberInput
-                                    v-if="activeHive"
+                                    v-if="localHive"
                                     v-model="hiveDimensionsBBHeight"
                                     class="hive-number-frame-input"
                                     :min="0"
@@ -215,7 +215,7 @@
                                     v-text="`${$t('bb_depth_cm')}`"
                                   ></div>
                                   <VueNumberInput
-                                    v-if="activeHive"
+                                    v-if="localHive"
                                     v-model="hiveDimensionsBBDepth"
                                     class="hive-number-frame-input"
                                     :min="0"
@@ -234,7 +234,7 @@
                                     v-text="`${$t('fr_width_cm')}`"
                                   ></div>
                                   <VueNumberInput
-                                    v-if="activeHive"
+                                    v-if="localHive"
                                     v-model="hiveDimensionsFrWidth"
                                     class="hive-number-frame-input"
                                     :min="0"
@@ -251,7 +251,7 @@
                                     v-text="`${$t('fr_height_cm')}`"
                                   ></div>
                                   <VueNumberInput
-                                    v-if="activeHive"
+                                    v-if="localHive"
                                     v-model="hiveDimensionsFrHeight"
                                     class="hive-number-frame-input"
                                     :min="0"
@@ -497,6 +497,9 @@ export default {
       'hiveDimensionsList',
       'hiveTypesList',
     ]),
+    localHive() {
+      return this.activeHive
+    },
     id() {
       return parseInt(this.$route.params.id)
     },
@@ -505,8 +508,8 @@ export default {
     },
     colorPicker: {
       get() {
-        if (this.activeHive) {
-          return this.activeHive.color
+        if (this.localHive) {
+          return this.localHive.color
         } else {
           return ''
         }
@@ -518,9 +521,9 @@ export default {
     },
     hiveDimensionsBBWidth: {
       get() {
-        if (this.activeHive) {
-          if (this.activeHive.bb_width_cm !== null) {
-            return parseFloat(this.activeHive.bb_width_cm)
+        if (this.localHive) {
+          if (this.localHive.bb_width_cm !== null) {
+            return parseFloat(this.localHive.bb_width_cm)
           } else {
             return null
           }
@@ -538,9 +541,9 @@ export default {
     },
     hiveDimensionsBBHeight: {
       get() {
-        if (this.activeHive) {
-          if (this.activeHive.bb_height_cm !== null) {
-            return parseFloat(this.activeHive.bb_height_cm)
+        if (this.localHive) {
+          if (this.localHive.bb_height_cm !== null) {
+            return parseFloat(this.localHive.bb_height_cm)
           } else {
             return null
           }
@@ -558,9 +561,9 @@ export default {
     },
     hiveDimensionsBBDepth: {
       get() {
-        if (this.activeHive) {
-          if (this.activeHive.bb_depth_cm !== null) {
-            return parseFloat(this.activeHive.bb_depth_cm)
+        if (this.localHive) {
+          if (this.localHive.bb_depth_cm !== null) {
+            return parseFloat(this.localHive.bb_depth_cm)
           } else {
             return null
           }
@@ -578,9 +581,9 @@ export default {
     },
     hiveDimensionsFrWidth: {
       get() {
-        if (this.activeHive) {
-          if (this.activeHive.fr_width_cm !== null) {
-            return parseFloat(this.activeHive.fr_width_cm)
+        if (this.localHive) {
+          if (this.localHive.fr_width_cm !== null) {
+            return parseFloat(this.localHive.fr_width_cm)
           } else {
             return null
           }
@@ -598,9 +601,9 @@ export default {
     },
     hiveDimensionsFrHeight: {
       get() {
-        if (this.activeHive) {
-          if (this.activeHive.fr_height_cm !== null) {
-            return parseFloat(this.activeHive.fr_height_cm)
+        if (this.localHive) {
+          if (this.localHive.fr_height_cm !== null) {
+            return parseFloat(this.localHive.fr_height_cm)
           } else {
             return null
           }
@@ -618,8 +621,8 @@ export default {
     },
     hiveFrames: {
       get() {
-        if (this.activeHive.layers) {
-          return this.activeHive.layers[0].framecount
+        if (this.localHive.layers) {
+          return this.localHive.layers[0].framecount
         } else {
           return 10
         }
@@ -630,8 +633,8 @@ export default {
     },
     hiveName: {
       get() {
-        if (this.activeHive) {
-          return this.activeHive.name
+        if (this.localHive) {
+          return this.localHive.name
         } else {
           return ''
         }
@@ -646,8 +649,8 @@ export default {
     },
     hiveType: {
       get() {
-        if (this.activeHive) {
-          return this.activeHive.hive_type_id
+        if (this.localHive) {
+          return this.localHive.hive_type_id
         } else {
           return ''
         }
@@ -781,16 +784,16 @@ export default {
       }
     },
     queenAge() {
-      if (this.activeHive) {
-        return this.momentAge(this.activeHive.queen.created_at)
+      if (this.localHive) {
+        return this.momentAge(this.localHive.queen.created_at)
       } else {
         return 0
       }
     },
     queenBirthDate: {
       get() {
-        if (this.activeHive) {
-          return this.momentifyRemoveTime(this.activeHive.queen.created_at)
+        if (this.localHive) {
+          return this.momentifyRemoveTime(this.localHive.queen.created_at)
         } else {
           return ''
         }
@@ -806,8 +809,8 @@ export default {
     },
     queenClipped: {
       get() {
-        if (this.activeHive) {
-          return this.activeHive.queen.clipped
+        if (this.localHive) {
+          return this.localHive.queen.clipped
         } else {
           return ''
         }
@@ -821,9 +824,9 @@ export default {
       },
     },
     queenMarkColor() {
-      if (this.activeHive) {
+      if (this.localHive) {
         const lastDigit = this.momentLastDigitOfYear(
-          this.activeHive.queen.created_at
+          this.localHive.queen.created_at
         )
         return this.queen_colors[lastDigit]
       } else {
@@ -832,9 +835,9 @@ export default {
     },
     queenColor: {
       get() {
-        if (this.activeHive && !this.useQueenMarkColor) {
-          return this.activeHive.queen.color
-        } else if (this.activeHive && this.useQueenMarkColor) {
+        if (this.localHive && !this.useQueenMarkColor) {
+          return this.localHive.queen.color
+        } else if (this.localHive && this.useQueenMarkColor) {
           return this.queenMarkColor
         } else {
           return ''
@@ -851,8 +854,8 @@ export default {
     },
     queenDescription: {
       get() {
-        if (this.activeHive) {
-          return this.activeHive.queen.description
+        if (this.localHive) {
+          return this.localHive.queen.description
         } else {
           return ''
         }
@@ -867,8 +870,8 @@ export default {
     },
     queenFertilized: {
       get() {
-        if (this.activeHive) {
-          return this.activeHive.queen.fertilized
+        if (this.localHive) {
+          return this.localHive.queen.fertilized
         } else {
           return ''
         }
@@ -883,8 +886,8 @@ export default {
     },
     queenName: {
       get() {
-        if (this.activeHive) {
-          return this.activeHive.queen.name
+        if (this.localHive) {
+          return this.localHive.queen.name
         } else {
           return ''
         }
@@ -899,8 +902,8 @@ export default {
     },
     queenRace: {
       get() {
-        if (this.activeHive) {
-          return this.activeHive.queen.race_id
+        if (this.localHive) {
+          return this.localHive.queen.race_id
         } else {
           return ''
         }
@@ -915,8 +918,8 @@ export default {
     },
     showQueenColorPicker: {
       get() {
-        if (this.activeHive) {
-          if (this.activeHive.queen.color !== null) {
+        if (this.localHive) {
+          if (this.localHive.queen.color !== null) {
             return true
           } else {
             return false
@@ -977,7 +980,7 @@ export default {
       try {
         const response = await this.$store.dispatch(
           'hives/deleteHive',
-          this.activeHive.id
+          this.localHive.id
         )
         if (!response) {
           this.snackbar.text = this.$i18n.t('something_wrong')
@@ -998,7 +1001,7 @@ export default {
       try {
         const response = await this.$store.dispatch(
           'hives/saveHiveSettings',
-          this.activeHive
+          this.localHive
         )
         if (!response) {
           this.snackbar.text = this.$i18n.t('not_saved_error')
@@ -1022,7 +1025,7 @@ export default {
     cancelDatePicker() {
       this.useQueenMarkColor = false
       this.modal = false
-      this.queenColor = this.activeHive.queen.color
+      this.queenColor = this.localHive.queen.color
     },
     selectLocale(array) {
       if (array.length) {
@@ -1050,7 +1053,7 @@ export default {
     },
     updateBirthDate() {
       this.$refs.dialog.save(this.queenBirthDate)
-      if (this.activeHive.queen.color !== null) {
+      if (this.localHive.queen.color !== null) {
         const payload = {
           key: 'color',
           value: this.queenMarkColor,
