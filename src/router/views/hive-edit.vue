@@ -397,13 +397,19 @@
                           <div>
                             <div class="mr-2 mb-2">
                               <v-sheet
-                                class="beep-icon beep-icon-queen--large"
+                                :class="
+                                  `beep-icon beep-icon-queen beep-icon-queen--large ${
+                                    darkIconColor(queenColor) ? 'dark' : ''
+                                  }`
+                                "
                                 :color="queenColor"
                               >
                               </v-sheet>
                             </div>
                             <v-color-picker
                               v-model="queenColor"
+                              :swatches="swatchesQueen"
+                              show-swatches
                             ></v-color-picker>
                           </div>
                         </div>
@@ -472,6 +478,13 @@ export default {
         '#D0021B',
         '#7ED321',
       ], // year ending of birth year is index
+      swatchesQueen: [
+        ['#4A90E2'],
+        ['#F4F4F4'],
+        ['#F8DB31'],
+        ['#D0021B'],
+        ['#7ED321'],
+      ],
       overlay: false,
       modal: false,
       colorPreview: false,
@@ -1039,6 +1052,14 @@ export default {
     updateHiveColor() {
       this.$store.commit('hives/updateHiveColor', this.colorPickerValue)
       this.cancelColorPicker()
+    },
+    darkIconColor(queenColor) {
+      var color =
+        queenColor.charAt(0) === '#' ? queenColor.substring(1, 7) : queenColor
+      var r = parseInt(color.substring(0, 2), 16) // hexToR
+      var g = parseInt(color.substring(2, 4), 16) // hexToG
+      var b = parseInt(color.substring(4, 6), 16) // hexToB
+      return r * 0.299 + g * 0.587 + b * 0.114 > 186
     },
   },
 }

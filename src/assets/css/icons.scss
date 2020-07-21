@@ -22,12 +22,16 @@
   &-queen {
     background-image: url('~@assets/img/icn_bee.svg');
     background-size: 10px;
+
+    &.dark {
+      background-image: url('~@assets/img/icn_bee_dark.svg');
+      border: 1px solid $color-grey-dark !important;
+    }
   }
 
   &-queen--large {
     width: 40px;
     height: 40px;
-    background-image: url('~@assets/img/icn_bee.svg');
     background-size: 20px;
   }
 
