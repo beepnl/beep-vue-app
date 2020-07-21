@@ -1074,7 +1074,7 @@ export default {
 
 .hive-edit-bar {
   position: fixed;
-  z-index: 100;
+  z-index: 2;
   width: 100%;
   @include for-phone-only {
     top: 56px;
