@@ -43,6 +43,10 @@ export const mutations = {
     state.hive.color = color
     state.edited = true
   },
+  updateHiveDimensions: function(state, payload) {
+    state.hive[payload.key] = payload.value
+    // state.edited = true // FIXME: edited tracking has been disabled for this function as the number input calls the hiveFrames setter when hive-edit.vue is initialized, before any changes are made (hence this function separate from updateHive, otherwise identical)
+  },
   updateHiveFrames: function(state, frames) {
     state.hive.layers.forEach((layer) => {
       layer.framecount = frames // N.B.  not needed for updating API, but for realtime-updating hive-icon view

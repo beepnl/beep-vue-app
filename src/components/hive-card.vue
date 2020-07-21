@@ -121,7 +121,11 @@
         >
           <div class="mr-2 my-0">
             <v-sheet
-              class="beep-icon beep-icon-queen"
+              :class="
+                `beep-icon beep-icon-queen  ${
+                  darkIconColor(hive.queen.color) ? 'dark' : ''
+                }`
+              "
               :color="hive.queen.color"
             >
             </v-sheet>
@@ -208,6 +212,7 @@
 </template>
 
 <script>
+import { darkIconMixin } from '@mixins/darkIconMixin'
 import HiveIcon from '@components/hive-icon.vue'
 import { momentMixin } from '@mixins/momentMixin'
 
@@ -215,7 +220,7 @@ export default {
   components: {
     HiveIcon,
   },
-  mixins: [momentMixin],
+  mixins: [darkIconMixin, momentMixin],
   props: {
     hive: {
       type: Object,

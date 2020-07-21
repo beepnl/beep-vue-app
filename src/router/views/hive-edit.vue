@@ -434,6 +434,7 @@
 
 <script>
 import Confirm from '@components/confirm.vue'
+import { darkIconMixin } from '@mixins/darkIconMixin'
 import HiveFactory from '@components/hive-factory.vue'
 import { mapGetters } from 'vuex'
 import Layout from '@layouts/back.vue'
@@ -450,7 +451,7 @@ export default {
     VueNumberInput,
     Treeselect,
   },
-  mixins: [momentMixin],
+  mixins: [darkIconMixin, momentMixin],
   data: function() {
     return {
       snackbar: {
@@ -532,7 +533,7 @@ export default {
           key: 'bb_width_cm',
           value: value.toString(),
         }
-        this.$store.commit('hives/updateHive', payload)
+        this.$store.commit('hives/updateHiveDimensions', payload)
       },
     },
     hiveDimensionsBBHeight: {
@@ -552,7 +553,7 @@ export default {
           key: 'bb_height_cm',
           value: value.toString(),
         }
-        this.$store.commit('hives/updateHive', payload)
+        this.$store.commit('hives/updateHiveDimensions', payload)
       },
     },
     hiveDimensionsBBDepth: {
@@ -572,7 +573,7 @@ export default {
           key: 'bb_depth_cm',
           value: value.toString(),
         }
-        this.$store.commit('hives/updateHive', payload)
+        this.$store.commit('hives/updateHiveDimensions', payload)
       },
     },
     hiveDimensionsFrWidth: {
@@ -592,7 +593,7 @@ export default {
           key: 'fr_width_cm',
           value: value.toString(),
         }
-        this.$store.commit('hives/updateHive', payload)
+        this.$store.commit('hives/updateHiveDimensions', payload)
       },
     },
     hiveDimensionsFrHeight: {
@@ -612,7 +613,7 @@ export default {
           key: 'fr_height_cm',
           value: value.toString(),
         }
-        this.$store.commit('hives/updateHive', payload)
+        this.$store.commit('hives/updateHiveDimensions', payload)
       },
     },
     hiveFrames: {
@@ -1060,14 +1061,6 @@ export default {
     updateHiveColor() {
       this.$store.commit('hives/updateHiveColor', this.colorPickerValue)
       this.cancelColorPicker()
-    },
-    darkIconColor(queenColor) {
-      var color =
-        queenColor.charAt(0) === '#' ? queenColor.substring(1, 7) : queenColor
-      var r = parseInt(color.substring(0, 2), 16) // hexToR
-      var g = parseInt(color.substring(2, 4), 16) // hexToG
-      var b = parseInt(color.substring(4, 6), 16) // hexToB
-      return r * 0.299 + g * 0.587 + b * 0.114 > 186
     },
   },
 }
