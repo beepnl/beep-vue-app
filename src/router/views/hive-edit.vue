@@ -893,11 +893,12 @@ export default {
         }
       },
       set(value) {
-        const payload = {
-          key: 'name',
-          value: value,
-        }
-        this.$store.commit('hives/updateQueen', payload)
+        // const payload = {
+        //   key: 'name',
+        //   value: value,
+        // }
+        // this.$store.commit('hives/updateQueen', payload)
+        this.localHive.queen.name = value
       },
     },
     queenRace: {
@@ -1062,7 +1063,11 @@ export default {
       }
     },
     updateHiveColor() {
-      this.$store.commit('hives/updateHiveColor', this.colorPickerValue)
+      // this.$store.commit('hives/updateHiveColor', this.colorPickerValue)
+      this.localHive.layers.forEach((layer) => {
+        layer.color = this.colorPickerValue
+      })
+      this.localHive.color = this.colorPickerValue
       this.cancelColorPicker()
     },
   },
@@ -1077,7 +1082,7 @@ export default {
 
 .hive-edit-bar {
   position: fixed;
-  z-index: 100;
+  z-index: 2;
   width: 100%;
   @include for-phone-only {
     top: 56px;
