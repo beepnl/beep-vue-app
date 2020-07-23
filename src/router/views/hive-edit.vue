@@ -844,7 +844,15 @@ export default {
         if (hive.queen && hive.queen.color && hive.queen.color !== null) {
           this.queenHasColor = true
         } else if (hive.queen === null) {
-          hive.queen = {}
+          hive.queen = {
+            clipped: null,
+            color: null,
+            created_at: null,
+            description: null,
+            fertilized: null,
+            name: null,
+            race_id: null,
+          }
         }
         this.$store.commit('hives/setActiveHive', hive)
         return true
