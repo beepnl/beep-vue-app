@@ -39,7 +39,7 @@
           </div>
 
           <v-sheet
-            class="hive-icon d-flex flex-column justify-center align-center white--text text--small"
+            class="hive-icon d-flex flex-column justify-center align-center white--text text--small my-3"
             height="auto"
           >
             <div class="hive-icon-layers">
@@ -302,6 +302,9 @@ export default {
   &.has-feeding-box {
     .draggable-layer-wrapper.feeding_box-layer-wrapper {
       display: none;
+    }
+    .hive-icon {
+      margin-top: 20px !important;
     }
   }
 }

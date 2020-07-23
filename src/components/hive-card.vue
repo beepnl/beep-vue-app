@@ -13,7 +13,7 @@
     <v-row class="ml-0 mb-3 mr-2">
       <h4
         v-if="gridView"
-        class="hive-name"
+        class="hive-name mb-3"
         v-text="
           `
       ${hive.name.length < 25 ? hive.name : hive.name.substring(0, 25) + '...'}
@@ -26,7 +26,7 @@
         class="d-flex flex-row"
       >
         <h4
-          class="hive-name"
+          class="hive-name mb-3"
           v-text="
             `${
               hive.name.length < 35
@@ -41,7 +41,7 @@
       </div>
       <h4
         v-if="!gridView && !hiveSet.users"
-        class="hive-name"
+        class="hive-name mb-3"
         v-text="
           `
       ${hive.name.length < 50 ? hive.name : hive.name.substring(0, 50) + '...'}
