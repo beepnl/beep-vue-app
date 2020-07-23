@@ -70,7 +70,10 @@
               ></div>
               <v-spacer></v-spacer>
               <v-toolbar-items>
-                <v-icon class="mr-1" color="primary" @click="updateLayerColor"
+                <v-icon
+                  class="mr-1"
+                  color="primary"
+                  @click="updateHiveLayerColor"
                   >mdi-check</v-icon
                 >
                 <v-icon @click="cancelColorPicker">mdi-close</v-icon>
@@ -114,11 +117,6 @@ export default {
     draggable,
   },
   props: {
-    hive: {
-      type: Object,
-      default: null,
-      required: true,
-    },
     colorPreview: {
       type: Boolean,
       default: false,
@@ -128,6 +126,11 @@ export default {
       type: String,
       default: '',
       required: false,
+    },
+    hive: {
+      type: Object,
+      default: null,
+      required: true,
     },
   },
   data: function() {
@@ -144,23 +147,6 @@ export default {
     }
   },
   computed: {
-    layersToAdd: {
-      get() {
-        return this.generateLayersToAdd()
-      },
-      set(value) {
-        return value
-      },
-    },
-    hiveLayers: {
-      get() {
-        return this.orderedLayers(this.hive)
-        // return this.hive.layers
-      },
-      set(layers) {
-        this.$store.commit('hives/updateHiveLayers', layers)
-      },
-    },
     colorPicker: {
       get() {
         if (this.currentLayer) {
@@ -173,22 +159,54 @@ export default {
         this.layerColorPickerValue = value
       },
     },
+    hiveLayers: {
+      get() {
+        return this.orderedLayers(this.hive)
+      },
+      set(layers) {
+        this.updateHiveLayerOrder(layers)
+      },
+    },
+    layersToAdd: {
+      get() {
+        return this.generateLayersToAdd()
+      },
+      set(value) {
+        return value
+      },
+    },
   },
   methods: {
-    openOverlay(layer) {
-      this.overlay = true
-      this.currentLayer = layer
-      this.layerColorPreview = true
-      this.layerColorPickerValue = layer.color
+    cancelColorPicker() {
+      this.overlay = false
+      this.layerColorPreview = false
+      this.currentLayer = null
     },
-    updateLayerColor() {
-      const payload = {
-        layerId: this.currentLayer.id || 0,
-        layerKey: this.currentLayer.key || 0,
-        layerColor: this.layerColorPickerValue,
+    checkColor(layer) {
+      if (this.colorPickerValue !== '' && this.colorPreview) {
+        return this.colorPickerValue
+      } else if (
+        this.layerColorPreview &&
+        ((layer.id && layer.id === this.currentLayer.id) ||
+          (layer.key && layer.key === this.currentLayer.key))
+      ) {
+        return this.layerColorPickerValue
+      } else if (layer.color !== null && !this.colorPreview) {
+        return layer.color
+      } else if (this.hive.color !== null && !this.colorPreview) {
+        return this.hive.color
+      } else {
+        return '#ffa000'
       }
-      this.$store.commit('hives/updateLayerColor', payload)
-      this.cancelColorPicker()
+    },
+    cloneLayer({ key, order, color, type, framecount, newLayer }) {
+      return {
+        key: keyGlobal--,
+        order: order,
+        type: type,
+        color: color,
+        framecount: framecount,
+      }
     },
     deleteLayer() {
       this.$refs.confirm
@@ -207,49 +225,6 @@ export default {
           return true
         })
     },
-    cancelColorPicker() {
-      this.overlay = false
-      this.layerColorPreview = false
-      this.currentLayer = null
-    },
-    hasLayer(type) {
-      return this.hive.layers.some((layer) => layer.type === type)
-    },
-    cloneLayer({ key, order, color, type, framecount, newLayer }) {
-      return {
-        key: keyGlobal--,
-        order: order,
-        type: type,
-        color: color,
-        framecount: framecount,
-      }
-    },
-    layerTypeText(layer) {
-      return this.$i18n.tc('Hive_' + layer.type + '_layer', 1)
-    },
-    checkColor(layer) {
-      if (this.colorPickerValue !== '' && this.colorPreview) {
-        return this.colorPickerValue
-      } else if (
-        this.layerColorPreview &&
-        layer.id &&
-        layer.id === this.currentLayer.id
-      ) {
-        return this.layerColorPickerValue
-      } else if (
-        this.layerColorPreview &&
-        layer.key &&
-        layer.key === this.currentLayer.key
-      ) {
-        return this.layerColorPickerValue
-      } else if (layer.color !== null && !this.colorPreview) {
-        return layer.color
-      } else if (this.hive.color !== null && !this.colorPreview) {
-        return this.hive.color
-      } else {
-        return '#ffa000'
-      }
-    },
     generateLayersToAdd: function() {
       var arr = []
       const layerType = ['honey', 'brood', 'feeding_box', 'queen_excluder']
@@ -265,8 +240,20 @@ export default {
       }
       return arr
     },
+    hasLayer(type) {
+      return this.hive.layers.some((layer) => layer.type === type)
+    },
     hiveWidth: function(hive) {
       return hive.layers[0].framecount * 6
+    },
+    layerTypeText(layer) {
+      return this.$i18n.tc('Hive_' + layer.type + '_layer', 1)
+    },
+    openOverlay(layer) {
+      this.overlay = true
+      this.currentLayer = layer
+      this.layerColorPreview = true
+      this.layerColorPickerValue = layer.color
     },
     orderedLayers: function(hive) {
       const orderedLayers = hive.layers.slice().sort(function(a, b) {
@@ -285,6 +272,18 @@ export default {
         return 0
       })
       return orderedLayers
+    },
+    updateHiveLayerColor() {
+      const payload = {
+        layerId: this.currentLayer.id || 0,
+        layerKey: this.currentLayer.key || 0,
+        layerColor: this.layerColorPickerValue,
+      }
+      this.$store.commit('hives/updateHiveLayerColor', payload)
+      this.cancelColorPicker()
+    },
+    updateHiveLayerOrder(layers) {
+      this.$store.commit('hives/updateHiveLayerOrder', layers)
     },
   },
 }
