@@ -344,8 +344,11 @@
                     <v-col cols="12" sm="7" md="6" lg="4">
                       <div>
                         <v-text-field
-                          :value="activeHive.queen.name"
+                          :value="
+                            activeHive.queen ? activeHive.queen.name : null
+                          "
                           :label="`${$t('Queen')} ${$t('name')}`"
+                          :placeholder="`${$t('Queen')} ${$t('name')}`"
                           class="queen-name"
                           @input="updateQueen($event, 'name')"
                         >
@@ -358,10 +361,13 @@
                           v-text="`${$t('Bee_race')}`"
                         ></div>
                         <Treeselect
-                          :value="activeHive.queen.race_id"
+                          :value="
+                            activeHive.queen ? activeHive.queen.race_id : null
+                          "
                           :options="treeselectBeeRaces"
                           :no-results-text="`${$t('no_results')}`"
                           :label="`${$t('Select')} ${$t('Bee_race')}`"
+                          :placeholder="`${$t('Select')} ${$t('Bee_race')}`"
                           search-nested
                           @input="updateQueen($event, 'race_id')"
                         />
@@ -376,9 +382,7 @@
                         >
                           <template v-slot:activator="{ on, attrs }">
                             <v-text-field
-                              :value="
-                                momentifyRemoveTime(activeHive.queen.created_at)
-                              "
+                              v-model="queenBirthDate"
                               :label="
                                 `${$t('Birth_date')} ${
                                   showQueenColorPicker
@@ -392,13 +396,10 @@
                             ></v-text-field>
                           </template>
                           <v-date-picker
-                            :value="
-                              momentifyRemoveTime(activeHive.queen.created_at)
-                            "
+                            v-model="queenBirthDate"
                             :first-day-of-week="1"
                             :locale="locale"
                             scrollable
-                            @input="updateQueen($event, 'created_at')"
                           >
                             <v-spacer></v-spacer>
                             <v-btn
@@ -424,8 +425,9 @@
                         ></div>
                         <p
                           v-text="
-                            momentAge(activeHive.queen.created_at) +
-                              ` ${$t('years_old')}`
+                            activeHive.queen
+                              ? momentAge(activeHive.queen.created_at)
+                              : `0` + ` ${$t('years_old')}`
                           "
                         >
                         </p>
@@ -434,7 +436,11 @@
                     <v-col cols="12" sm="7" md="6" lg="4">
                       <div>
                         <v-text-field
-                          :value="activeHive.queen.description"
+                          :value="
+                            activeHive.queen
+                              ? activeHive.queen.description
+                              : null
+                          "
                           :label="`${$t('Queen')} ${$t('queen_description')}`"
                           @input="updateQueen($event, 'description')"
                         >
@@ -442,13 +448,17 @@
                       </div>
 
                       <v-switch
-                        :value="activeHive.queen.clipped"
+                        :value="
+                          activeHive.queen ? activeHive.queen.clipped : false
+                        "
                         :label="`${$t('Queen_clipped')}`"
                         @change="updateQueen($event, 'clipped')"
                       ></v-switch>
 
                       <v-switch
-                        :value="activeHive.queen.fertilized"
+                        :value="
+                          activeHive.queen ? activeHive.queen.fertilized : false
+                        "
                         :label="`${$t('Queen_fertilized')}`"
                         @change="updateQueen($event, 'fertilized')"
                       ></v-switch>
@@ -471,19 +481,35 @@
                               <v-sheet
                                 :class="
                                   `beep-icon beep-icon-queen beep-icon-queen--large ${
-                                    darkIconColor(queenColor) ? 'dark' : ''
+                                    darkIconColor(
+                                      queenHasColor && !useQueenMarkColor
+                                        ? activeHive.queen.color
+                                        : // eslint-disable-next-line vue/comma-dangle
+                                          queenMarkColor
+                                    )
+                                      ? 'dark'
+                                      : ''
                                   }`
                                 "
-                                :color="queenColor"
+                                :color="
+                                  queenHasColor && !useQueenMarkColor
+                                    ? activeHive.queen.color
+                                    : queenMarkColor
+                                "
                               >
                               </v-sheet>
                             </div>
                             <v-color-picker
-                              v-model="queenColor"
+                              :value="
+                                queenHasColor && !useQueenMarkColor
+                                  ? activeHive.queen.color
+                                  : queenMarkColor
+                              "
                               class="flex-color-picker"
                               :swatches="swatchesQueen"
                               show-swatches
                               canvas-height="120"
+                              @input="updateQueen($event, 'color')"
                             ></v-color-picker>
                           </div>
                         </div>
@@ -574,6 +600,9 @@ export default {
       'hiveDimensionsList',
       'hiveTypesList',
     ]),
+    queen() {
+      return this.activeHive.queen
+    },
     id() {
       return parseInt(this.$route.params.id)
     },
@@ -676,50 +705,139 @@ export default {
       }
     },
     queenMarkColor() {
-      if (this.activeHive) {
+      if (
+        this.activeHive &&
+        this.activeHive.queen &&
+        this.activeHive.queen.created_at
+      ) {
         const lastDigit = this.momentLastDigitOfYear(
           this.activeHive.queen.created_at
         )
         return this.queen_colors[lastDigit]
+        // } else if (
+        //   this.activeHive &&
+        //   this.activeHive.queen &&
+        //   !this.activeHive.queen.created_at
+        // ) {
+        //   const lastDigit = this.momentLastDigitOfYear(new Date())
+        //   return this.queen_colors[lastDigit]
       } else {
-        return null
+        const lastDigit = this.momentLastDigitOfYear(new Date())
+        return this.queen_colors[lastDigit]
       }
     },
-    queenColor: {
+    queenBirthDate: {
       get() {
-        if (this.activeHive && !this.useQueenMarkColor) {
-          return this.activeHive.queen.color
-        } else if (this.activeHive && this.useQueenMarkColor) {
-          return this.queenMarkColor
+        if (
+          this.activeHive &&
+          this.activeHive.queen &&
+          this.activeHive.queen.created_at
+        ) {
+          return this.momentifyRemoveTime(this.activeHive.queen.created_at)
+        } else if (this.activeHive) {
+          return this.momentifyRemoveTime(new Date())
         } else {
           return ''
         }
       },
       set(value) {
-        this.updateQueen(value, 'color')
+        this.updateQueen(value, 'created_at')
+        this.useQueenMarkColor = true
       },
     },
+    queenHasColor() {
+      if (
+        this.activeHive &&
+        this.activeHive.queen &&
+        this.activeHive.queen.color
+      ) {
+        // if (this.activeHive.queen.color !== null) {
+        return true
+        // } else {
+        //   return false
+        // }
+      } else {
+        return false
+      }
+    },
+    // queenColor: {
+    //   get() {
+    //     if (this.queenHasColor && !this.useQueenMarkColor) {
+    //       return this.activeHive.queen.color
+    //     } else if (this.useQueenMarkColor) {
+    //       return this.queenMarkColor
+    //     } else {
+    //       return ''
+    //     }
+    //     // if (this.activeHive) {
+    //     //   if (this.activeHive.queen !== null && !this.useQueenMarkColor) {
+    //     //     if (this.activeHive.queen.color !== undefined) {
+    //     //       return this.activeHive.queen.color
+    //     //     } else {
+    //     //       return null // 'no queen color'
+    //     //     }
+    //     //   } else if (this.useQueenMarkColor) {
+    //     //     return this.queenMarkColor
+    //     //   } else {
+    //     //     return null // 'whatever'
+    //     //   }
+    //     // } else {
+    //     //   return null // 'no active Hive'
+    //     // }
+    //   },
+    //   set(value) {
+    //     // this.updateQueen(value, 'color')
+    //     console.log(value)
+    //   },
+    // },
     showQueenColorPicker: {
       get() {
-        if (this.activeHive) {
-          if (this.activeHive.queen.color !== null) {
-            return true
-          } else {
-            return false
-          }
-        } else {
-          return false
-        }
+        return this.queenHasColor
+        // if (
+        //   this.activeHive &&
+        //   this.activeHive.queen &&
+        //   this.activeHive.queen.color !== null &&
+        //   this.activeHive.queen.color !== undefined
+        // ) {
+        //   console.log(this.activeHive.queen.color)
+        //   return true
+        // } else {
+        //   return false
+        // }
+        // if (this.activeHive && this.activeHive.queen !== null) {
+        //   if (this.activeHive.queen.color) {
+        //     console.log(this.activeHive.queen.color)
+        //     return true
+        //   } else {
+        //     return false
+        //   }
+        // } else {
+        //   return false
+        // }
       },
       set(value) {
         if (value === false) {
           this.updateQueen(null, 'color')
+          this.queenHasColor = false
         } else {
           this.updateQueen(this.queenMarkColor, 'color')
+          this.queenHasColor = true
         }
       },
     },
   },
+  // watch: {
+  //   // whenever showQueenColorPicker changes, this function will run
+  //   showQueenColorPicker: function() {
+  //     if (
+  //       this.activeHive.queen &&
+  //       this.activeHive.queen.color &&
+  //       this.activeHive.queen.color !== null
+  //     ) {
+  //       this.queenHasColor = true
+  //     }
+  //   },
+  // },
   created() {
     this.readHive()
     this.readTaxonomy()
@@ -800,7 +918,7 @@ export default {
     cancelDatePicker() {
       this.useQueenMarkColor = false
       this.modal = false
-      this.queenColor = this.activeHive.queen.color
+      // this.queenColor = this.activeHive.queen.color
     },
     deleteHive() {
       this.$refs.confirm
@@ -816,7 +934,8 @@ export default {
     },
     updateQueenBirthDate() {
       this.$refs.dialog.save(this.queenBirthDate)
-      if (this.activeHive.queen.color !== null) {
+      // this.updateQueen(this.queenBirthDate, 'created_at')
+      if (this.activeHive.queen && this.activeHive.queen.color) {
         this.updateQueen(this.queenMarkColor, 'color')
       }
     },
@@ -883,6 +1002,7 @@ export default {
       }
     },
     updateQueen(event, property) {
+      console.log(event, property)
       var value = null
       if (event === null) {
         value = null

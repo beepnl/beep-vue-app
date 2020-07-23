@@ -81,7 +81,11 @@ export const mutations = {
     state.edited = true
   },
   updateQueen: function(state, payload) {
+    if (state.hive.queen === null) {
+      state.hive.queen = {}
+    }
     state.hive.queen[payload.key] = payload.value
+    console.log(payload)
     state.edited = true
   },
   setActiveHive: function(state, hive) {
