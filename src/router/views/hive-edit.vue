@@ -377,6 +377,7 @@
                         <v-dialog
                           ref="dialog"
                           v-model="modal"
+                          :return-value.sync="queenBirthDate"
                           persistent
                           width="290px"
                         >
@@ -463,6 +464,12 @@
                         @change="updateQueen($event, 'fertilized')"
                       ></v-switch>
 
+                      <!-- <v-sheet
+                        class="hive-color"
+                        dark
+                        :color="queen.color"
+                      ></v-sheet> -->
+
                       <v-switch
                         v-model="showQueenColorPicker"
                         :label="`${$t('Queen_colored')}`"
@@ -481,35 +488,19 @@
                               <v-sheet
                                 :class="
                                   `beep-icon beep-icon-queen beep-icon-queen--large ${
-                                    darkIconColor(
-                                      queenHasColor && !useQueenMarkColor
-                                        ? activeHive.queen.color
-                                        : // eslint-disable-next-line vue/comma-dangle
-                                          queenMarkColor
-                                    )
-                                      ? 'dark'
-                                      : ''
+                                    darkIconColor(queenColor) ? 'dark' : ''
                                   }`
                                 "
-                                :color="
-                                  queenHasColor && !useQueenMarkColor
-                                    ? activeHive.queen.color
-                                    : queenMarkColor
-                                "
+                                :color="queenColor"
                               >
                               </v-sheet>
                             </div>
                             <v-color-picker
-                              :value="
-                                queenHasColor && !useQueenMarkColor
-                                  ? activeHive.queen.color
-                                  : queenMarkColor
-                              "
+                              v-model="queenColor"
                               class="flex-color-picker"
                               :swatches="swatchesQueen"
                               show-swatches
                               canvas-height="120"
-                              @input="updateQueen($event, 'color')"
                             ></v-color-picker>
                           </div>
                         </div>
@@ -591,6 +582,7 @@ export default {
       colorPreview: false,
       colorPickerValue: '',
       useQueenMarkColor: false,
+      queenHasColor: false,
     }
   },
   computed: {
@@ -742,23 +734,33 @@ export default {
       },
       set(value) {
         this.updateQueen(value, 'created_at')
-        this.useQueenMarkColor = true
+        // this.useQueenMarkColor = true
       },
     },
-    queenHasColor() {
-      if (
-        this.activeHive &&
-        this.activeHive.queen &&
-        this.activeHive.queen.color
-      ) {
-        // if (this.activeHive.queen.color !== null) {
-        return true
-        // } else {
-        //   return false
-        // }
-      } else {
-        return false
-      }
+    queenColor: {
+      get() {
+        if (
+          // this.activeHive &&
+          // this.activeHive.queen &&
+          // this.activeHive.queen.color &&
+          this.queenHasColor &&
+          !this.useQueenMarkColor
+        ) {
+          // if (this.queenColorTest && !this.useQueenMarkColor) {
+          console.log('if')
+          return this.activeHive.queen.color
+          // } else {
+          //   console.log('first else')
+          //   return this.queenMarkColor
+          // }
+        } else {
+          console.log(' else')
+          return this.queenMarkColor
+        }
+      },
+      set(value) {
+        this.updateQueen(value, 'color')
+      },
     },
     // queenColor: {
     //   get() {
@@ -793,6 +795,7 @@ export default {
     showQueenColorPicker: {
       get() {
         return this.queenHasColor
+        // return this.queenColorTest
         // if (
         //   this.activeHive &&
         //   this.activeHive.queen &&
@@ -826,18 +829,6 @@ export default {
       },
     },
   },
-  // watch: {
-  //   // whenever showQueenColorPicker changes, this function will run
-  //   showQueenColorPicker: function() {
-  //     if (
-  //       this.activeHive.queen &&
-  //       this.activeHive.queen.color &&
-  //       this.activeHive.queen.color !== null
-  //     ) {
-  //       this.queenHasColor = true
-  //     }
-  //   },
-  // },
   created() {
     this.readHive()
     this.readTaxonomy()
@@ -850,6 +841,11 @@ export default {
           this.$router.push({ name: '404', params: { resource: 'hive' } })
         }
         const hive = response.hives[0]
+        if (hive.queen && hive.queen.color && hive.queen.color !== null) {
+          this.queenHasColor = true
+        } else if (hive.queen === null) {
+          hive.queen = {}
+        }
         this.$store.commit('hives/setActiveHive', hive)
         return true
       } catch (e) {
@@ -918,7 +914,7 @@ export default {
     cancelDatePicker() {
       this.useQueenMarkColor = false
       this.modal = false
-      // this.queenColor = this.activeHive.queen.color
+      this.queenColor = this.activeHive.queen.color
     },
     deleteHive() {
       this.$refs.confirm
@@ -935,7 +931,7 @@ export default {
     updateQueenBirthDate() {
       this.$refs.dialog.save(this.queenBirthDate)
       // this.updateQueen(this.queenBirthDate, 'created_at')
-      if (this.activeHive.queen && this.activeHive.queen.color) {
+      if (this.activeHive.queen.color) {
         this.updateQueen(this.queenMarkColor, 'color')
       }
     },
@@ -1020,6 +1016,8 @@ export default {
         key: property,
         value: value,
       }
+      console.log(payload)
+      console.log(this.useQueenMarkColor)
       this.$store.commit('hives/updateQueen', payload)
     },
     selectLocale(array) {
