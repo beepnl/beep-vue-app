@@ -43,9 +43,10 @@
             <v-row>
               <v-col cols="12">
                 <v-text-field
-                  v-model="hiveName"
+                  :value="activeHive.name"
                   hide-details
                   class="hive-edit-name"
+                  @input="updateHive($event, 'name')"
                 >
                 </v-text-field>
               </v-col>
@@ -91,13 +92,20 @@
                           ></div>
                           <VueNumberInput
                             v-if="activeHive && activeHive.layers"
-                            v-model="hiveFrames"
+                            :value="activeHive.layers[0].framecount"
                             class="hive-number-frame-input"
                             :min="1"
                             :max="20"
                             inline
                             controls
                             rounded
+                            @change="
+                              updateHiveLayers(
+                                parseInt($event),
+                                // eslint-disable-next-line vue/comma-dangle
+                                'framecount'
+                              )
+                            "
                           ></VueNumberInput>
                         </v-col>
                       </v-row>
@@ -117,7 +125,9 @@
                             <v-icon
                               class="mr-1"
                               color="primary"
-                              @click="updateHiveColor"
+                              @click="
+                                updateHiveLayers(colorPickerValue, 'color')
+                              "
                               >mdi-check</v-icon
                             >
                             <v-icon @click="cancelColorPicker"
@@ -153,13 +163,14 @@
                             v-text="`${$t('Hive_type')}*`"
                           ></div>
                           <Treeselect
-                            v-model="hiveType"
+                            :value="activeHive.hive_type_id"
                             :options="treeselectHiveTypes"
                             :disable-branch-nodes="true"
                             :no-results-text="`${$t('no_results')}`"
                             :default-expand-level="1"
                             :label="`${$t('Select')} ${$t('Hive_type')}`"
                             search-nested
+                            @input="updateHiveType($event)"
                           />
                         </v-col>
                       </v-row>
@@ -181,14 +192,24 @@
                                     v-text="`${$t('bb_width_cm')}`"
                                   ></div>
                                   <VueNumberInput
-                                    v-if="activeHive"
-                                    v-model="hiveDimensionsBBWidth"
+                                    :value="
+                                      activeHive.bb_width_cm
+                                        ? parseFloat(activeHive.bb_width_cm)
+                                        : 0
+                                    "
                                     class="hive-number-frame-input"
                                     :min="0"
                                     :max="100"
                                     :step="0.1"
                                     inline
                                     controls
+                                    @change="
+                                      updateHive(
+                                        $event.toString(),
+                                        // eslint-disable-next-line vue/comma-dangle
+                                        'bb_width_cm'
+                                      )
+                                    "
                                   ></VueNumberInput>
                                 </div>
 
@@ -198,14 +219,24 @@
                                     v-text="`${$t('bb_height_cm')}`"
                                   ></div>
                                   <VueNumberInput
-                                    v-if="activeHive"
-                                    v-model="hiveDimensionsBBHeight"
+                                    :value="
+                                      activeHive.bb_height_cm
+                                        ? parseFloat(activeHive.bb_height_cm)
+                                        : 0
+                                    "
                                     class="hive-number-frame-input"
                                     :min="0"
                                     :max="100"
                                     :step="0.1"
                                     inline
                                     controls
+                                    @change="
+                                      updateHive(
+                                        $event.toString(),
+                                        // eslint-disable-next-line vue/comma-dangle
+                                        'bb_height_cm'
+                                      )
+                                    "
                                   ></VueNumberInput>
                                 </div>
 
@@ -215,14 +246,24 @@
                                     v-text="`${$t('bb_depth_cm')}`"
                                   ></div>
                                   <VueNumberInput
-                                    v-if="activeHive"
-                                    v-model="hiveDimensionsBBDepth"
+                                    :value="
+                                      activeHive.bb_depth_cm
+                                        ? parseFloat(activeHive.bb_depth_cm)
+                                        : 0
+                                    "
                                     class="hive-number-frame-input"
                                     :min="0"
                                     :max="100"
                                     :step="0.1"
                                     inline
                                     controls
+                                    @change="
+                                      updateHive(
+                                        $event.toString(),
+                                        // eslint-disable-next-line vue/comma-dangle
+                                        'bb_depth_cm'
+                                      )
+                                    "
                                   ></VueNumberInput>
                                 </div>
                               </v-col>
@@ -234,14 +275,24 @@
                                     v-text="`${$t('fr_width_cm')}`"
                                   ></div>
                                   <VueNumberInput
-                                    v-if="activeHive"
-                                    v-model="hiveDimensionsFrWidth"
+                                    :value="
+                                      activeHive.fr_width_cm
+                                        ? parseFloat(activeHive.fr_width_cm)
+                                        : 0
+                                    "
                                     class="hive-number-frame-input"
                                     :min="0"
                                     :max="100"
                                     :step="0.1"
                                     inline
                                     controls
+                                    @change="
+                                      updateHive(
+                                        $event.toString(),
+                                        // eslint-disable-next-line vue/comma-dangle
+                                        'fr_width_cm'
+                                      )
+                                    "
                                   ></VueNumberInput>
                                 </div>
 
@@ -251,14 +302,24 @@
                                     v-text="`${$t('fr_height_cm')}`"
                                   ></div>
                                   <VueNumberInput
-                                    v-if="activeHive"
-                                    v-model="hiveDimensionsFrHeight"
+                                    :value="
+                                      activeHive.fr_height_cm
+                                        ? parseFloat(activeHive.fr_height_cm)
+                                        : 0
+                                    "
                                     class="hive-number-frame-input"
                                     :min="0"
                                     :max="100"
                                     :step="0.1"
                                     inline
                                     controls
+                                    @change="
+                                      updateHive(
+                                        $event.toString(),
+                                        // eslint-disable-next-line vue/comma-dangle
+                                        'fr_height_cm'
+                                      )
+                                    "
                                   ></VueNumberInput>
                                 </div>
                               </v-col>
@@ -283,9 +344,10 @@
                     <v-col cols="12" sm="7" md="6" lg="4">
                       <div>
                         <v-text-field
-                          v-model="queenName"
+                          :value="activeHive.queen.name"
                           :label="`${$t('Queen')} ${$t('name')}`"
                           class="queen-name"
+                          @input="updateQueen($event, 'name')"
                         >
                         </v-text-field>
                       </div>
@@ -296,11 +358,12 @@
                           v-text="`${$t('Bee_race')}`"
                         ></div>
                         <Treeselect
-                          v-model="queenRace"
+                          :value="activeHive.queen.race_id"
                           :options="treeselectBeeRaces"
                           :no-results-text="`${$t('no_results')}`"
                           :label="`${$t('Select')} ${$t('Bee_race')}`"
                           search-nested
+                          @input="updateQueen($event, 'race_id')"
                         />
                       </div>
 
@@ -313,7 +376,9 @@
                         >
                           <template v-slot:activator="{ on, attrs }">
                             <v-text-field
-                              v-model="queenBirthDate"
+                              :value="
+                                momentifyRemoveTime(activeHive.queen.created_at)
+                              "
                               :label="
                                 `${$t('Birth_date')} ${
                                   showQueenColorPicker
@@ -327,10 +392,13 @@
                             ></v-text-field>
                           </template>
                           <v-date-picker
-                            v-model="queenBirthDate"
+                            :value="
+                              momentifyRemoveTime(activeHive.queen.created_at)
+                            "
                             :first-day-of-week="1"
                             :locale="locale"
                             scrollable
+                            @input="updateQueen($event, 'created_at')"
                           >
                             <v-spacer></v-spacer>
                             <v-btn
@@ -342,7 +410,7 @@
                             <v-btn
                               text
                               color="primary"
-                              @click="updateBirthDate"
+                              @click="updateQueenBirthDate"
                               >{{ $t('ok') }}</v-btn
                             >
                           </v-date-picker>
@@ -354,26 +422,35 @@
                           class="hive-edit-label"
                           v-text="`${$t('Age')}`"
                         ></div>
-                        <p v-text="queenAge + ` ${$t('years_old')}`"> </p>
+                        <p
+                          v-text="
+                            momentAge(activeHive.queen.created_at) +
+                              ` ${$t('years_old')}`
+                          "
+                        >
+                        </p>
                       </div>
                     </v-col>
                     <v-col cols="12" sm="7" md="6" lg="4">
                       <div>
                         <v-text-field
-                          v-model="queenDescription"
+                          :value="activeHive.queen.description"
                           :label="`${$t('Queen')} ${$t('queen_description')}`"
+                          @input="updateQueen($event, 'description')"
                         >
                         </v-text-field>
                       </div>
 
                       <v-switch
-                        v-model="queenClipped"
+                        :value="activeHive.queen.clipped"
                         :label="`${$t('Queen_clipped')}`"
+                        @change="updateQueen($event, 'clipped')"
                       ></v-switch>
 
                       <v-switch
-                        v-model="queenFertilized"
+                        :value="activeHive.queen.fertilized"
                         :label="`${$t('Queen_fertilized')}`"
+                        @change="updateQueen($event, 'fertilized')"
                       ></v-switch>
 
                       <v-switch
@@ -516,188 +593,6 @@ export default {
         this.colorPickerValue = value
       },
     },
-    hiveDimensionsBBWidth: {
-      get() {
-        if (this.activeHive) {
-          if (this.activeHive.bb_width_cm !== null) {
-            return parseFloat(this.activeHive.bb_width_cm)
-          } else {
-            return null
-          }
-        } else {
-          return null
-        }
-      },
-      set(value) {
-        const payload = {
-          key: 'bb_width_cm',
-          value: value.toString(),
-        }
-        this.$store.commit('hives/updateHiveDimensions', payload)
-      },
-    },
-    hiveDimensionsBBHeight: {
-      get() {
-        if (this.activeHive) {
-          if (this.activeHive.bb_height_cm !== null) {
-            return parseFloat(this.activeHive.bb_height_cm)
-          } else {
-            return null
-          }
-        } else {
-          return null
-        }
-      },
-      set(value) {
-        const payload = {
-          key: 'bb_height_cm',
-          value: value.toString(),
-        }
-        this.$store.commit('hives/updateHiveDimensions', payload)
-      },
-    },
-    hiveDimensionsBBDepth: {
-      get() {
-        if (this.activeHive) {
-          if (this.activeHive.bb_depth_cm !== null) {
-            return parseFloat(this.activeHive.bb_depth_cm)
-          } else {
-            return null
-          }
-        } else {
-          return null
-        }
-      },
-      set(value) {
-        const payload = {
-          key: 'bb_depth_cm',
-          value: value.toString(),
-        }
-        this.$store.commit('hives/updateHiveDimensions', payload)
-      },
-    },
-    hiveDimensionsFrWidth: {
-      get() {
-        if (this.activeHive) {
-          if (this.activeHive.fr_width_cm !== null) {
-            return parseFloat(this.activeHive.fr_width_cm)
-          } else {
-            return null
-          }
-        } else {
-          return null
-        }
-      },
-      set(value) {
-        const payload = {
-          key: 'fr_width_cm',
-          value: value.toString(),
-        }
-        this.$store.commit('hives/updateHiveDimensions', payload)
-      },
-    },
-    hiveDimensionsFrHeight: {
-      get() {
-        if (this.activeHive) {
-          if (this.activeHive.fr_height_cm !== null) {
-            return parseFloat(this.activeHive.fr_height_cm)
-          } else {
-            return null
-          }
-        } else {
-          return null
-        }
-      },
-      set(value) {
-        const payload = {
-          key: 'fr_height_cm',
-          value: value.toString(),
-        }
-        this.$store.commit('hives/updateHiveDimensions', payload)
-      },
-    },
-    hiveFrames: {
-      get() {
-        if (this.activeHive.layers) {
-          return this.activeHive.layers[0].framecount
-        } else {
-          return 10
-        }
-      },
-      set(value) {
-        this.$store.commit('hives/updateHiveFrames', parseInt(value))
-      },
-    },
-    hiveName: {
-      get() {
-        if (this.activeHive) {
-          return this.activeHive.name
-        } else {
-          return ''
-        }
-      },
-      set(value) {
-        const payload = {
-          key: 'name',
-          value: value,
-        }
-        this.$store.commit('hives/updateHive', payload)
-      },
-    },
-    hiveType: {
-      get() {
-        if (this.activeHive) {
-          return this.activeHive.hive_type_id
-        } else {
-          return ''
-        }
-      },
-      set(value) {
-        const payload = {
-          key: 'hive_type_id',
-          value: value,
-        }
-        this.$store.commit('hives/updateHive', payload)
-
-        const hiveTypeIndex = this.hiveTypesList.findIndex(
-          (hiveType) => hiveType.id === value
-        )
-        const hiveTypeName = this.hiveTypesList[hiveTypeIndex].name
-
-        if (
-          this.hiveDimensionsList &&
-          this.hiveDimensionsList[hiveTypeName] !== undefined
-        ) {
-          const hiveDimensions = {
-            bb_width_cm: parseFloat(
-              this.hiveDimensionsList[hiveTypeName].bb_width_cm
-            ),
-            bb_depth_cm: parseFloat(
-              this.hiveDimensionsList[hiveTypeName].bb_depth_cm
-            ),
-            bb_height_cm: parseFloat(
-              this.hiveDimensionsList[hiveTypeName].bb_height_cm
-            ),
-            fr_width_cm: parseFloat(
-              this.hiveDimensionsList[hiveTypeName].fr_width_cm
-            ),
-            fr_height_cm: parseFloat(
-              this.hiveDimensionsList[hiveTypeName].fr_height_cm
-            ),
-          }
-
-          var i = 0
-          for (i in hiveDimensions) {
-            const payload = {
-              key: i,
-              value: hiveDimensions[i],
-            }
-            this.$store.commit('hives/updateHive', payload)
-            i++
-          }
-        }
-      },
-    },
     treeselectBeeRaces() {
       if (this.beeRacesList.length) {
         const locale = this.selectLocale(this.beeRacesList)
@@ -780,46 +675,6 @@ export default {
         return []
       }
     },
-    queenAge() {
-      if (this.activeHive) {
-        return this.momentAge(this.activeHive.queen.created_at)
-      } else {
-        return 0
-      }
-    },
-    queenBirthDate: {
-      get() {
-        if (this.activeHive) {
-          return this.momentifyRemoveTime(this.activeHive.queen.created_at)
-        } else {
-          return ''
-        }
-      },
-      set(value) {
-        const payload = {
-          key: 'created_at',
-          value: value,
-        }
-        this.$store.commit('hives/updateQueen', payload)
-        this.useQueenMarkColor = true
-      },
-    },
-    queenClipped: {
-      get() {
-        if (this.activeHive) {
-          return this.activeHive.queen.clipped
-        } else {
-          return ''
-        }
-      },
-      set(value) {
-        const payload = {
-          key: 'clipped',
-          value: value,
-        }
-        this.$store.commit('hives/updateQueen', payload)
-      },
-    },
     queenMarkColor() {
       if (this.activeHive) {
         const lastDigit = this.momentLastDigitOfYear(
@@ -841,76 +696,7 @@ export default {
         }
       },
       set(value) {
-        const payload = {
-          key: 'color',
-          value: value,
-        }
-        this.useQueenMarkColor = false
-        this.$store.commit('hives/updateQueen', payload)
-      },
-    },
-    queenDescription: {
-      get() {
-        if (this.activeHive) {
-          return this.activeHive.queen.description
-        } else {
-          return ''
-        }
-      },
-      set(value) {
-        const payload = {
-          key: 'description',
-          value: value,
-        }
-        this.$store.commit('hives/updateQueen', payload)
-      },
-    },
-    queenFertilized: {
-      get() {
-        if (this.activeHive) {
-          return this.activeHive.queen.fertilized
-        } else {
-          return ''
-        }
-      },
-      set(value) {
-        const payload = {
-          key: 'fertilized',
-          value: value,
-        }
-        this.$store.commit('hives/updateQueen', payload)
-      },
-    },
-    queenName: {
-      get() {
-        if (this.activeHive) {
-          return this.activeHive.queen.name
-        } else {
-          return ''
-        }
-      },
-      set(value) {
-        const payload = {
-          key: 'name',
-          value: value,
-        }
-        this.$store.commit('hives/updateQueen', payload)
-      },
-    },
-    queenRace: {
-      get() {
-        if (this.activeHive) {
-          return this.activeHive.queen.race_id
-        } else {
-          return ''
-        }
-      },
-      set(value) {
-        const payload = {
-          key: 'race_id',
-          value: value,
-        }
-        this.$store.commit('hives/updateQueen', payload)
+        this.updateQueen(value, 'color')
       },
     },
     showQueenColorPicker: {
@@ -927,17 +713,9 @@ export default {
       },
       set(value) {
         if (value === false) {
-          const payload = {
-            key: 'color',
-            value: null,
-          }
-          this.$store.commit('hives/updateQueen', payload)
+          this.updateQueen(null, 'color')
         } else {
-          const payload = {
-            key: 'color',
-            value: this.queenMarkColor,
-          }
-          this.$store.commit('hives/updateQueen', payload)
+          this.updateQueen(this.queenMarkColor, 'color')
         }
       },
     },
@@ -1024,18 +802,6 @@ export default {
       this.modal = false
       this.queenColor = this.activeHive.queen.color
     },
-    selectLocale(array) {
-      if (array.length) {
-        const locale = this.$i18n.locale
-        if (array[0].trans[locale] === undefined) {
-          return 'en'
-        } else {
-          return locale
-        }
-      } else {
-        return 'en'
-      }
-    },
     deleteHive() {
       this.$refs.confirm
         .open(this.$i18n.t('Delete'), this.$i18n.t('remove_hive') + '?', {
@@ -1048,19 +814,105 @@ export default {
           return true
         })
     },
-    updateBirthDate() {
+    updateQueenBirthDate() {
       this.$refs.dialog.save(this.queenBirthDate)
       if (this.activeHive.queen.color !== null) {
-        const payload = {
-          key: 'color',
-          value: this.queenMarkColor,
-        }
-        this.$store.commit('hives/updateQueen', payload)
+        this.updateQueen(this.queenMarkColor, 'color')
       }
     },
-    updateHiveColor() {
-      this.$store.commit('hives/updateHiveColor', this.colorPickerValue)
-      this.cancelColorPicker()
+    updateHive(event, property) {
+      var value = null
+      if (event === null) {
+        value = null
+      } else if (event.target !== undefined) {
+        value = event.target.value
+      } else {
+        value = event
+      }
+      const payload = {
+        key: property,
+        value: value,
+      }
+      this.$store.commit('hives/updateHive', payload)
+    },
+    updateHiveLayers(event, property) {
+      const payload = {
+        key: property,
+        value: event,
+      }
+      this.$store.commit('hives/updateHiveLayers', payload)
+      if (property === 'color') {
+        this.cancelColorPicker()
+      }
+    },
+    updateHiveType(event) {
+      this.updateHive(event, 'hive_type_id')
+
+      const hiveTypeIndex = this.hiveTypesList.findIndex(
+        (hiveType) => hiveType.id === event
+      )
+      const hiveTypeName = this.hiveTypesList[hiveTypeIndex].name
+
+      if (
+        this.hiveDimensionsList &&
+        this.hiveDimensionsList[hiveTypeName] !== undefined
+      ) {
+        const hiveDimensions = {
+          bb_width_cm: parseFloat(
+            this.hiveDimensionsList[hiveTypeName].bb_width_cm
+          ),
+          bb_depth_cm: parseFloat(
+            this.hiveDimensionsList[hiveTypeName].bb_depth_cm
+          ),
+          bb_height_cm: parseFloat(
+            this.hiveDimensionsList[hiveTypeName].bb_height_cm
+          ),
+          fr_width_cm: parseFloat(
+            this.hiveDimensionsList[hiveTypeName].fr_width_cm
+          ),
+          fr_height_cm: parseFloat(
+            this.hiveDimensionsList[hiveTypeName].fr_height_cm
+          ),
+        }
+
+        var i = 0
+        for (i in hiveDimensions) {
+          this.updateHive(hiveDimensions[i], i)
+          i++
+        }
+      }
+    },
+    updateQueen(event, property) {
+      var value = null
+      if (event === null) {
+        value = null
+      } else if (event.target !== undefined) {
+        value = event.target.value
+      } else {
+        value = event
+      }
+      if (property === 'created_at') {
+        this.useQueenMarkColor = true
+      } else if (property === 'color') {
+        this.useQueenMarkColor = false
+      }
+      const payload = {
+        key: property,
+        value: value,
+      }
+      this.$store.commit('hives/updateQueen', payload)
+    },
+    selectLocale(array) {
+      if (array.length) {
+        const locale = this.$i18n.locale
+        if (array[0].trans[locale] === undefined) {
+          return 'en'
+        } else {
+          return locale
+        }
+      } else {
+        return 'en'
+      }
     },
   },
 }
