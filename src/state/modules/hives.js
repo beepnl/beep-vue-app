@@ -40,6 +40,7 @@ export const mutations = {
   },
   updateHive: function(state, payload) {
     state.hive[payload.key] = payload.value
+    state.hive.frames = state.hive.layers[0].framecount
     if (
       payload.key !== 'bb_width_cm' &&
       payload.key !== 'bb_height_cm' &&
@@ -81,11 +82,7 @@ export const mutations = {
     state.edited = true
   },
   updateQueen: function(state, payload) {
-    // if (state.hive.queen === null) {
-    //   state.hive.queen = {}
-    // }
     state.hive.queen[payload.key] = payload.value
-    console.log(payload)
     state.edited = true
   },
   setActiveHive: function(state, hive) {

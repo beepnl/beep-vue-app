@@ -186,15 +186,19 @@
                           <div class="hive-dimensions-details">
                             <v-row>
                               <v-col cols="12" md="6">
-                                <div>
+                                <div
+                                  v-for="(bbDimension, b) in bbDimensions"
+                                  :key="b"
+                                  class="mt-1 mb-2"
+                                >
                                   <div
                                     class="hive-edit-label"
-                                    v-text="`${$t('bb_width_cm')}`"
+                                    v-text="`${$t(bbDimension)}`"
                                   ></div>
                                   <VueNumberInput
                                     :value="
-                                      activeHive.bb_width_cm
-                                        ? parseFloat(activeHive.bb_width_cm)
+                                      activeHive[bbDimension]
+                                        ? parseFloat(activeHive[bbDimension])
                                         : 0
                                     "
                                     class="hive-number-frame-input"
@@ -207,61 +211,7 @@
                                       updateHive(
                                         $event.toString(),
                                         // eslint-disable-next-line vue/comma-dangle
-                                        'bb_width_cm'
-                                      )
-                                    "
-                                  ></VueNumberInput>
-                                </div>
-
-                                <div class="mt-3">
-                                  <div
-                                    class="hive-edit-label"
-                                    v-text="`${$t('bb_height_cm')}`"
-                                  ></div>
-                                  <VueNumberInput
-                                    :value="
-                                      activeHive.bb_height_cm
-                                        ? parseFloat(activeHive.bb_height_cm)
-                                        : 0
-                                    "
-                                    class="hive-number-frame-input"
-                                    :min="0"
-                                    :max="100"
-                                    :step="0.1"
-                                    inline
-                                    controls
-                                    @change="
-                                      updateHive(
-                                        $event.toString(),
-                                        // eslint-disable-next-line vue/comma-dangle
-                                        'bb_height_cm'
-                                      )
-                                    "
-                                  ></VueNumberInput>
-                                </div>
-
-                                <div class="mt-3">
-                                  <div
-                                    class="hive-edit-label"
-                                    v-text="`${$t('bb_depth_cm')}`"
-                                  ></div>
-                                  <VueNumberInput
-                                    :value="
-                                      activeHive.bb_depth_cm
-                                        ? parseFloat(activeHive.bb_depth_cm)
-                                        : 0
-                                    "
-                                    class="hive-number-frame-input"
-                                    :min="0"
-                                    :max="100"
-                                    :step="0.1"
-                                    inline
-                                    controls
-                                    @change="
-                                      updateHive(
-                                        $event.toString(),
-                                        // eslint-disable-next-line vue/comma-dangle
-                                        'bb_depth_cm'
+                                        bbDimension
                                       )
                                     "
                                   ></VueNumberInput>
@@ -269,15 +219,19 @@
                               </v-col>
 
                               <v-col cols="12" md="6">
-                                <div>
+                                <div
+                                  v-for="(frDimension, f) in frDimensions"
+                                  :key="f"
+                                  class="mt-1 mb-2"
+                                >
                                   <div
                                     class="hive-edit-label"
-                                    v-text="`${$t('fr_width_cm')}`"
+                                    v-text="`${$t(frDimension)}`"
                                   ></div>
                                   <VueNumberInput
                                     :value="
-                                      activeHive.fr_width_cm
-                                        ? parseFloat(activeHive.fr_width_cm)
+                                      activeHive[frDimension]
+                                        ? parseFloat(activeHive[frDimension])
                                         : 0
                                     "
                                     class="hive-number-frame-input"
@@ -290,34 +244,7 @@
                                       updateHive(
                                         $event.toString(),
                                         // eslint-disable-next-line vue/comma-dangle
-                                        'fr_width_cm'
-                                      )
-                                    "
-                                  ></VueNumberInput>
-                                </div>
-
-                                <div class="mt-3">
-                                  <div
-                                    class="hive-edit-label"
-                                    v-text="`${$t('fr_height_cm')}`"
-                                  ></div>
-                                  <VueNumberInput
-                                    :value="
-                                      activeHive.fr_height_cm
-                                        ? parseFloat(activeHive.fr_height_cm)
-                                        : 0
-                                    "
-                                    class="hive-number-frame-input"
-                                    :min="0"
-                                    :max="100"
-                                    :step="0.1"
-                                    inline
-                                    controls
-                                    @change="
-                                      updateHive(
-                                        $event.toString(),
-                                        // eslint-disable-next-line vue/comma-dangle
-                                        'fr_height_cm'
+                                        frDimension
                                       )
                                     "
                                   ></VueNumberInput>
@@ -464,12 +391,6 @@
                         @change="updateQueen($event, 'fertilized')"
                       ></v-switch>
 
-                      <!-- <v-sheet
-                        class="hive-color"
-                        dark
-                        :color="queen.color"
-                      ></v-sheet> -->
-
                       <v-switch
                         v-model="showQueenColorPicker"
                         :label="`${$t('Queen_colored')}`"
@@ -577,6 +498,8 @@ export default {
         ['#D0021B'],
         ['#7ED321'],
       ],
+      bbDimensions: ['bb_width_cm', 'bb_height_cm', 'bb_depth_cm'],
+      frDimensions: ['fr_width_cm', 'fr_height_cm'],
       overlay: false,
       modal: false,
       colorPreview: false,
@@ -706,13 +629,6 @@ export default {
           this.activeHive.queen.created_at
         )
         return this.queen_colors[lastDigit]
-        // } else if (
-        //   this.activeHive &&
-        //   this.activeHive.queen &&
-        //   !this.activeHive.queen.created_at
-        // ) {
-        //   const lastDigit = this.momentLastDigitOfYear(new Date())
-        //   return this.queen_colors[lastDigit]
       } else {
         const lastDigit = this.momentLastDigitOfYear(new Date())
         return this.queen_colors[lastDigit]
@@ -734,27 +650,13 @@ export default {
       },
       set(value) {
         this.updateQueen(value, 'created_at')
-        // this.useQueenMarkColor = true
       },
     },
     queenColor: {
       get() {
-        if (
-          // this.activeHive &&
-          // this.activeHive.queen &&
-          // this.activeHive.queen.color &&
-          this.queenHasColor &&
-          !this.useQueenMarkColor
-        ) {
-          // if (this.queenColorTest && !this.useQueenMarkColor) {
-          console.log('if')
+        if (this.queenHasColor && !this.useQueenMarkColor) {
           return this.activeHive.queen.color
-          // } else {
-          //   console.log('first else')
-          //   return this.queenMarkColor
-          // }
         } else {
-          console.log(' else')
           return this.queenMarkColor
         }
       },
@@ -762,61 +664,9 @@ export default {
         this.updateQueen(value, 'color')
       },
     },
-    // queenColor: {
-    //   get() {
-    //     if (this.queenHasColor && !this.useQueenMarkColor) {
-    //       return this.activeHive.queen.color
-    //     } else if (this.useQueenMarkColor) {
-    //       return this.queenMarkColor
-    //     } else {
-    //       return ''
-    //     }
-    //     // if (this.activeHive) {
-    //     //   if (this.activeHive.queen !== null && !this.useQueenMarkColor) {
-    //     //     if (this.activeHive.queen.color !== undefined) {
-    //     //       return this.activeHive.queen.color
-    //     //     } else {
-    //     //       return null // 'no queen color'
-    //     //     }
-    //     //   } else if (this.useQueenMarkColor) {
-    //     //     return this.queenMarkColor
-    //     //   } else {
-    //     //     return null // 'whatever'
-    //     //   }
-    //     // } else {
-    //     //   return null // 'no active Hive'
-    //     // }
-    //   },
-    //   set(value) {
-    //     // this.updateQueen(value, 'color')
-    //     console.log(value)
-    //   },
-    // },
     showQueenColorPicker: {
       get() {
         return this.queenHasColor
-        // return this.queenColorTest
-        // if (
-        //   this.activeHive &&
-        //   this.activeHive.queen &&
-        //   this.activeHive.queen.color !== null &&
-        //   this.activeHive.queen.color !== undefined
-        // ) {
-        //   console.log(this.activeHive.queen.color)
-        //   return true
-        // } else {
-        //   return false
-        // }
-        // if (this.activeHive && this.activeHive.queen !== null) {
-        //   if (this.activeHive.queen.color) {
-        //     console.log(this.activeHive.queen.color)
-        //     return true
-        //   } else {
-        //     return false
-        //   }
-        // } else {
-        //   return false
-        // }
       },
       set(value) {
         if (value === false) {
@@ -851,7 +701,6 @@ export default {
             description: null,
             fertilized: null,
             name: null,
-            race_id: null,
           }
         }
         this.$store.commit('hives/setActiveHive', hive)
@@ -1006,7 +855,6 @@ export default {
       }
     },
     updateQueen(event, property) {
-      console.log(event, property)
       var value = null
       if (event === null) {
         value = null
@@ -1024,8 +872,6 @@ export default {
         key: property,
         value: value,
       }
-      console.log(payload)
-      console.log(this.useQueenMarkColor)
       this.$store.commit('hives/updateQueen', payload)
     },
     selectLocale(array) {
