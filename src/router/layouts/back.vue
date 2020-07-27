@@ -1,6 +1,12 @@
 <template>
   <div>
-    <v-app-bar app color="primary" dark>
+    <v-app-bar
+      :no-box-shadow="noBoxShadow"
+      :class="noBoxShadow ? 'v-app-bar--no-box-shadow' : ''"
+      app
+      color="primary"
+      dark
+    >
       <slot name="icon">
         <v-btn icon @click="back">
           <v-icon>mdi-arrow-left</v-icon>
@@ -44,6 +50,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    noBoxShadow: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     ...mapGetters('hives', ['activeHive', 'hiveEdited']),
@@ -68,3 +78,10 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+header.v-app-bar--no-box-shadow {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+</style>

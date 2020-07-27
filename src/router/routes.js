@@ -81,6 +81,14 @@ export default [
     meta: {
       authRequired: true,
     },
+    path: '/apiaries/create',
+    name: 'apiary-create',
+    component: () => lazyLoadView(import('@views/apiary-create.vue')),
+  },
+  {
+    meta: {
+      authRequired: true,
+    },
     path: '/apiaries/:id',
     name: 'apiary-details',
     component: () => lazyLoadView(import('@views/apiary-details.vue')),
