@@ -276,7 +276,8 @@ const translations = {
 
   settings_title: 'Instellingen overzicht',
   settings_description: 'Overzicht van de account instellingen',
-  settings: 'Instellingen',
+  Settings: 'Instellingen',
+  settings: 'instellingen',
 
   sensors_title: 'Meetsysteem instellingen',
   sensors_description: 'Meetsysteem status en registratie',

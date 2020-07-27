@@ -22,92 +22,164 @@
         >
       </v-tab>
 
-      <!-- <v-tab-item v-for="(tab, i) in tabs" :key="i" :value="'tab-' + i">
-        <v-card flat tile>
-          <v-card-text>{{ i }}</v-card-text>
-        </v-card>
-      </v-tab-item> -->
-
       <v-tab-item value="tab-0">
-        <v-card flat tile>
-          <v-card-text>{{ $t('new_apiary_explanation') }}</v-card-text>
-        </v-card>
-        <a ng-click="setActiveTab(1)" class="btn btn-primary pull-right"
-          ><i class="fa fa-2x fa-chevron-right"></i
-        ></a>
-        <div class="d-flex justify-space-between">
-          <v-spacer></v-spacer>
-          <v-icon x-large dark color="primary" @click="setActiveTab(1)"
-            >mdi-chevron-right-box</v-icon
-          >
-        </div>
+        <v-container>
+          <v-row>
+            <v-col cols="12">
+              <div class="overline mb-4">{{
+                $t('new_apiary_explanation')
+              }}</div>
+              <v-img
+                class="align-center"
+                max-height="70vh"
+                width="100%"
+                src="~@assets/img/apiary-in-field.jpg"
+              >
+              </v-img>
+            </v-col>
+          </v-row>
+          <div class="d-flex justify-space-between">
+            <v-spacer></v-spacer>
+            <div class="d-flex align-center">
+              <span class="overline mr-3"
+                >{{ $t('start_here') + ' '
+                }}<v-icon>mdi-arrow-right</v-icon></span
+              >
+              <v-icon
+                x-large
+                dark
+                color="primary"
+                class="next"
+                @click="setActiveTab(1)"
+                >mdi-chevron-right-box</v-icon
+              >
+            </div>
+          </div>
+        </v-container>
       </v-tab-item>
 
       <v-tab-item value="tab-1">
-        <v-card flat tile>
-          <v-card-text>{{
-            $tc('Location', 1) + ' ' + $t('settings')
-          }}</v-card-text>
-        </v-card>
-        <div class="d-flex justify-space-between">
-          <v-icon x-large dark color="primary" @click="setActiveTab(0)"
-            >mdi-chevron-left-box</v-icon
-          >
-          <v-icon x-large dark color="primary" @click="setActiveTab(2)"
-            >mdi-chevron-right-box</v-icon
-          >
-        </div>
+        <v-container>
+          <v-row>
+            <v-col cols="12">
+              <div class="overline mb-4">{{
+                $tc('Location', 1) + ' ' + $t('settings')
+              }}</div>
+              <v-row>
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field
+                    v-if="newHive"
+                    v-model="newHive.name"
+                    :label="`${$t('Name')}*`"
+                    :placeholder="`${$t('Name')}`"
+                  >
+                  </v-text-field>
+
+                  <v-switch
+                    v-if="newHive"
+                    v-model="newHive.roofed"
+                    :label="`${$t('roofed')}`"
+                  ></v-switch>
+                </v-col>
+              </v-row>
+            </v-col>
+          </v-row>
+          <div class="d-flex justify-space-between">
+            <v-icon
+              x-large
+              dark
+              color="primary"
+              class="prev"
+              @click="setActiveTab(0)"
+              >mdi-chevron-left-box</v-icon
+            >
+            <v-icon
+              x-large
+              dark
+              color="primary"
+              class="next"
+              @click="setActiveTab(2)"
+              >mdi-chevron-right-box</v-icon
+            >
+          </div>
+        </v-container>
       </v-tab-item>
 
       <v-tab-item value="tab-2">
-        <v-card flat tile>
-          <v-card-text>{{ $t('Place') + ' ' + $t('details') }}</v-card-text>
-        </v-card>
-        <div class="d-flex justify-space-between">
-          <v-icon x-large dark color="primary" @click="setActiveTab(1)"
-            >mdi-chevron-left-box</v-icon
-          >
-          <v-icon x-large dark color="primary" @click="setActiveTab(3)"
-            >mdi-chevron-right-box</v-icon
-          >
-        </div>
+        <v-container>
+          <v-card flat tile>
+            <v-card-text>{{ $t('Place') + ' ' + $t('details') }}</v-card-text>
+          </v-card>
+          <div class="d-flex justify-space-between">
+            <v-icon
+              x-large
+              dark
+              color="primary"
+              class="prev"
+              @click="setActiveTab(1)"
+              >mdi-chevron-left-box</v-icon
+            >
+            <v-icon
+              x-large
+              dark
+              color="primary"
+              class="next"
+              @click="setActiveTab(3)"
+              >mdi-chevron-right-box</v-icon
+            >
+          </div>
+        </v-container>
       </v-tab-item>
 
       <v-tab-item value="tab-3">
-        <v-card flat tile>
-          <v-card-text>{{
-            $tc('Hive', 1) + ' ' + $t('configuration')
-          }}</v-card-text>
-        </v-card>
-        <div class="d-flex justify-space-between">
-          <v-icon x-large dark color="primary" @click="setActiveTab(2)"
-            >mdi-chevron-left-box</v-icon
-          >
-          <v-icon x-large dark color="primary" @click="setActiveTab(4)"
-            >mdi-chevron-right-box</v-icon
-          >
-        </div>
+        <v-container>
+          <v-card flat tile>
+            <v-card-text>{{
+              $tc('Hive', 1) + ' ' + $t('configuration')
+            }}</v-card-text>
+          </v-card>
+          <div class="d-flex justify-space-between">
+            <v-icon
+              x-large
+              dark
+              color="primary"
+              class="prev"
+              @click="setActiveTab(2)"
+              >mdi-chevron-left-box</v-icon
+            >
+            <v-icon
+              x-large
+              dark
+              color="primary"
+              class="next"
+              @click="setActiveTab(4)"
+              >mdi-chevron-right-box</v-icon
+            >
+          </div>
+        </v-container>
       </v-tab-item>
 
       <v-tab-item value="tab-4">
-        <v-card flat tile>
-          <v-card-text>{{ $t('Hive_amount') }}</v-card-text>
-        </v-card>
-        <div class="d-flex justify-space-between">
-          <v-icon x-large dark color="primary" @click="setActiveTab(3)"
-            >mdi-chevron-left-box</v-icon
-          >
-          <v-btn
-            tile
-            outlined
-            color="primary"
-            class="mr-1"
-            @click="createLocation"
-          >
-            <v-icon left>mdi-check</v-icon>
-            {{ $t('save') }}
-          </v-btn>
-        </div>
+        <v-container>
+          <v-card flat tile>
+            <v-card-text>{{ $t('Hive_amount') }}</v-card-text>
+          </v-card>
+          <div class="d-flex justify-space-between">
+            <v-icon x-large dark color="primary" @click="setActiveTab(3)"
+              >mdi-chevron-left-box</v-icon
+            >
+            <v-btn
+              tile
+              outlined
+              color="primary"
+              class="mr-1"
+              @click="createLocation"
+            >
+              <v-icon left>mdi-check</v-icon>
+              {{ $t('save') }}
+            </v-btn>
+          </div>
+        </v-container>
       </v-tab-item>
     </v-tabs>
 
@@ -146,8 +218,7 @@ export default {
         text: 'notification',
       },
       activeTab: 'tab-0',
-      text:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+      newHive: null,
     }
   },
   computed: {
@@ -185,11 +256,48 @@ export default {
       ]
     },
   },
+  created() {
+    this.readApiaries().then((data) => {
+      this.newHive = {
+        name: this.$i18n.tc('Location', 1) + ' ' + (data + 1),
+        color: '#F29100',
+        hive_type_id: '',
+        hive_amount: '1',
+        brood_layers: '2',
+        honey_layers: '1',
+        frames: '10',
+        offset: '1',
+        prefix: this.$i18n.t('Hive_short'),
+        country_code: 'nl',
+        city: '',
+        postal_code: '',
+        street: '',
+        street_no: '',
+        lat: 52,
+        lon: 5,
+        bb_width_cm: null,
+        bb_depth_cm: null,
+        bb_height_cm: null,
+        fr_width_cm: null,
+        fr_height_cm: null,
+        roofed: 0,
+      }
+    })
+  },
   methods: {
+    async readApiaries() {
+      try {
+        const response = await this.$store.dispatch('locations/findAll')
+        return response.locations.length
+      } catch (e) {
+        console.log(e)
+      }
+    },
     createLocation() {
       // console.log(this.hiveLocation.id)
       // console.log(this.hiveLocation)
       console.log('creating new apiary')
+      console.log(this.newHive)
     },
     setActiveTab(int) {
       this.activeTab = 'tab-' + int
@@ -199,12 +307,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.next {
+  margin-right: -6px;
+}
+
+.prev {
+  margin-left: -6px;
+}
 .v-tabs--icons-and-text > .v-tabs-bar {
   height: 48px;
 }
 
 .v-tabs--icons-and-text > .v-tabs-bar .v-tab {
-  font-size: 12px !important;
   text-transform: none !important;
   letter-spacing: 0.075;
 
@@ -220,19 +334,23 @@ export default {
     display: none;
   }
 
-  @media (max-width: 800px) {
+  @media (max-width: 900px) {
     padding: 0 4px;
+    font-size: 12px !important;
     .v-icon {
-      display: block;
-      &::before {
-        margin-top: 2px;
-      }
+      font-size: 16px;
     }
+    // .v-icon {
+    //   display: block;
+    //   &::before {
+    //     margin-top: 2px;
+    //   }
+    // }
   }
 
-  @include for-phone-only {
+  @media (max-width: 725px) {
     min-width: 70px !important;
-    font-size: 14px !important;
+    font-size: 16px !important;
     .hide-on-mobile {
       display: none;
     }
@@ -241,6 +359,7 @@ export default {
     }
     .v-icon {
       display: inline;
+      font-size: 24px;
     }
   }
 }

@@ -1,6 +1,12 @@
 <template>
   <div>
-    <v-app-bar app color="primary" dark>
+    <v-app-bar
+      :no-box-shadow="noBoxShadow"
+      :class="noBoxShadow ? 'v-app-bar--no-box-shadow' : ''"
+      app
+      color="primary"
+      dark
+    >
       <v-toolbar-title
         ><img src="@assets/img/beep-logo-black.svg"
       /></v-toolbar-title>
@@ -44,6 +50,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    noBoxShadow: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     tabs: function() {
@@ -80,6 +90,11 @@ export default {
 </script>
 
 <style lang="scss">
+header.v-app-bar--no-box-shadow {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
 .v-tabs-bar.v-slide-group--is-overflowing.v-tabs-bar--is-mobile:not(.v-tabs-bar--show-arrows):not(.v-slide-group--has-affixes)
   .v-slide-group__prev {
   display: none !important;

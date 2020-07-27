@@ -275,6 +275,7 @@ const translations = {
 
   settings_title: 'Einstellungen',
   settings_description: 'Einstellungen der Sensoren',
+  Settings: 'Einstellungen',
   settings: 'Einstellungen',
 
   sensors_title: 'Sensoreinstellungen',

@@ -274,7 +274,8 @@ const translations = {
 
   settings_title: 'Definições',
   settings_description: 'Definições dos sensores',
-  settings: 'Definições',
+  Settings: 'Definições',
+  settings: 'definições',
 
   sensors_title: 'Definições do sensor',
   sensors_description: 'Estado dos sensores e registo',

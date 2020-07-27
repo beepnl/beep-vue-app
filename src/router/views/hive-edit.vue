@@ -1,5 +1,5 @@
 <template>
-  <Layout :title="`${$t('edit')} ${$tc('hive', 1)}`">
+  <Layout :title="`${$t('edit')} ${$tc('hive', 1)}`" :no-box-shadow="true">
     <h1
       v-if="activeHive.name !== undefined && !activeHive.editable"
       class="unauthorized-title"
@@ -88,7 +88,7 @@
                         <v-col cols="12" md="5">
                           <div
                             class="hive-edit-label"
-                            v-text="`${$t('Hive_frames')}*`"
+                            v-text="`${$t('Hive_frames')}`"
                           ></div>
                           <VueNumberInput
                             v-if="activeHive && activeHive.layers"
@@ -927,6 +927,7 @@ export default {
   font-size: 0.75rem !important;
   font-weight: 400;
   line-height: 1rem;
+  color: $color-grey-dark;
   letter-spacing: 0.0333333333em !important;
 }
 

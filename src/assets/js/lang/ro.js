@@ -276,7 +276,8 @@ const translations = {
 
   settings_title: 'Setări',
   settings_description: 'Setări ale senzorilor',
-  settings: 'Setări',
+  Settings: 'Setări',
+  settings: 'setări',
 
   sensors_title: 'Setările senzorului',
   sensors_description: 'Statusul senzorilor și înregisrtarea',

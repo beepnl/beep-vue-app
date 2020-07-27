@@ -270,7 +270,8 @@ const translations = {
 
   settings_title: 'Settings',
   settings_description: 'Settings of the sensors',
-  settings: 'Settings',
+  Settings: 'Settings',
+  settings: 'settings',
 
   sensors_title: 'Device settings',
   sensors_description: 'Devices status and registration',

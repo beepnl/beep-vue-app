@@ -278,7 +278,8 @@ const translations = {
 
   settings_title: 'Paramètres',
   settings_description: 'Réglages des capteurs',
-  settings: 'Paramètres',
+  Settings: 'Paramètres',
+  settings: 'paramètres',
 
   sensors_title: 'Réglages du capteur',
   sensors_description: 'État et enregistrement des capteurs',

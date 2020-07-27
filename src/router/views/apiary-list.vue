@@ -1,5 +1,5 @@
 <template>
-  <Layout :menu-items="menuItems">
+  <Layout :menu-items="menuItems" :no-box-shadow="true">
     <div class="filter-bar-wrapper">
       <v-container>
         <v-row
@@ -312,7 +312,10 @@ export default {
       try {
         const responseApiaries = await this.$store.dispatch('locations/findAll')
         const responseGroups = await this.$store.dispatch('groups/findAll')
-        if (responseApiaries.length === 0 && responseGroups.length === 0) {
+        if (
+          responseApiaries.locations.length === 0 &&
+          responseGroups.groups.length === 0
+        ) {
           this.showApiaryWizard = true // TODO: make placeholder for no apiaries/groups situation
         }
         return true
