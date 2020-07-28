@@ -246,11 +246,8 @@
 
       <v-tab-item value="tab-3">
         <v-container>
-          <v-card flat tile>
-            <v-card-text>{{
-              $tc('Hive', 1) + ' ' + $t('configuration')
-            }}</v-card-text>
-          </v-card>
+          <HiveEditDetails :hive="newHive"></HiveEditDetails>
+
           <div class="d-flex justify-space-between">
             <v-icon
               x-large
@@ -309,6 +306,7 @@
 
 <script>
 import Confirm from '@components/confirm.vue'
+import HiveEditDetails from '@components/hive-edit-details.vue'
 // import HiveFactory from '@components/hive-factory.vue'
 import Layout from '@layouts/back.vue'
 // import VueGoogleAutocomplete from 'vue-google-autocomplete'
@@ -319,6 +317,7 @@ import VueNumberInput from '@chenfengyuan/vue-number-input'
 export default {
   components: {
     Confirm,
+    HiveEditDetails,
     // HiveFactory,
     Layout,
     // VueGoogleAutocomplete,
@@ -380,11 +379,11 @@ export default {
       this.newHive = {
         name: this.$i18n.tc('Location', 1) + ' ' + (data + 1),
         color: '#F29100',
-        hive_type_id: '',
+        hive_type_id: null,
         hive_amount: '1',
         brood_layers: '2',
         honey_layers: '1',
-        frames: '10',
+        frames: 10,
         offset: '1',
         prefix: this.$i18n.t('Hive_short'),
         country_code: 'nl',
@@ -400,6 +399,29 @@ export default {
         fr_width_cm: null,
         fr_height_cm: null,
         roofed: 0,
+        layers: [
+          {
+            color: '#ffa000',
+            type: 'honey',
+            order: 3,
+            framecount: 10,
+            key: 3,
+          },
+          {
+            color: '#ffa000',
+            type: 'brood',
+            order: 2,
+            framecount: 10,
+            key: 2,
+          },
+          {
+            color: '#ffa000',
+            type: 'brood',
+            order: 1,
+            framecount: 10,
+            key: 1,
+          },
+        ],
       }
     })
   },

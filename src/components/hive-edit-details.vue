@@ -2,8 +2,8 @@
   <v-row class="hive-edit-details-wrapper">
     <v-col cols="12">
       <div
-        class="beep-label"
-        v-text="`${$tc('Hive', 1) + ' ' + $t('details')}`"
+        class="overline mb-3"
+        v-text="`${$tc('Hive', 1) + ' ' + $t('configuration')}`"
       ></div>
 
       <div class="hive-edit-details rounded-border">
@@ -99,6 +99,7 @@
                   :no-results-text="`${$t('no_results')}`"
                   :default-expand-level="1"
                   :label="`${$t('Select')} ${$t('Hive_type')}`"
+                  :placeholder="`${$t('Select')} ${$t('Hive_type')}`"
                   search-nested
                   @input="updateHiveType($event)"
                 />

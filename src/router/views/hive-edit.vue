@@ -46,7 +46,7 @@
                   v-if="activeHive"
                   :value="activeHive.name"
                   hide-details
-                  class="hive-edit-name"
+                  class="hive-edit-name mb-3"
                   @input="updateHive($event, 'name')"
                 >
                 </v-text-field>
@@ -58,7 +58,7 @@
             <v-row class="queen-details-wrapper">
               <v-col cols="12">
                 <div
-                  class="beep-label"
+                  class="overline mb-3"
                   v-text="`${$t('Queen') + ' ' + $t('details')}`"
                 ></div>
                 <div class="queen-details rounded-border">
@@ -290,9 +290,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('taxonomy', [
-      'beeRacesList',
-    ]),
+    ...mapGetters('taxonomy', ['beeRacesList']),
     queen() {
       return this.activeHive.queen
     },
@@ -559,10 +557,8 @@ export default {
   margin-top: 56px;
 }
 .hive-edit-name {
+  padding-top: 0;
   font-size: 2rem;
-  @include for-phone-only {
-    padding-top: 0;
-  }
   @include for-tablet-landscape-up {
     max-width: 500px;
   }
