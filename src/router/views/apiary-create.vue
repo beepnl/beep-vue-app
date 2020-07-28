@@ -72,6 +72,7 @@
                     v-model="newHive.name"
                     :label="`${$t('Name')}*`"
                     :placeholder="`${$t('Name')}`"
+                    outlined
                   >
                   </v-text-field>
 
@@ -120,7 +121,7 @@
                 }}</div
               >
               <v-row>
-                <v-col cols="12" sm="6" md="4">
+                <v-col cols="12">
                   <!-- <VueGoogleAutocomplete
                 id="map"
                 ref="address"
@@ -130,6 +131,94 @@
                 @placechanged="getAddressData"
               >
               </VueGoogleAutocomplete> -->
+                  <v-text-field
+                    v-model="address"
+                    color="#ddd"
+                    :label="`${$t('Address')}*`"
+                    outlined
+                    dense
+                  >
+                  </v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12" sm="4">
+                  <div class="beep-label" v-text="`${$t('Country')}`"></div>
+                  <country-select
+                    v-if="newHive"
+                    v-model="newHive.country_code"
+                    :country="newHive.country_code"
+                    :usei18n="false"
+                    class="country-select"
+                  />
+                </v-col>
+                <v-col cols="6" sm="4">
+                  <div class="beep-label" v-text="`${$t('Lattitude')}`"></div>
+                  <VueNumberInput
+                    v-if="newHive"
+                    :value="parseFloat(newHive.lat)"
+                    :step="0.001"
+                    :min="-90"
+                    :max="90"
+                    inline
+                    controls
+                    @change="updateHive($event)"
+                  ></VueNumberInput>
+                </v-col>
+                <v-col cols="6" sm="4">
+                  <div class="beep-label" v-text="`${$t('Longitude')}`"></div>
+                  <VueNumberInput
+                    v-if="newHive"
+                    :value="parseFloat(newHive.lon)"
+                    :step="0.001"
+                    :min="-180"
+                    :max="180"
+                    inline
+                    controls
+                    @change="updateHive($event)"
+                  ></VueNumberInput>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12" sm="8">
+                  <v-text-field
+                    v-if="newHive"
+                    v-model="newHive.city"
+                    :label="`${$t('City')}*`"
+                    outlined
+                    dense
+                  >
+                  </v-text-field>
+                </v-col>
+                <v-col cols="12" sm="4">
+                  <v-text-field
+                    v-if="newHive"
+                    v-model="newHive.postal_code"
+                    :label="`${$t('Postal_code')}*`"
+                    outlined
+                    dense
+                  >
+                  </v-text-field>
+                </v-col>
+                <v-col cols="8">
+                  <v-text-field
+                    v-if="newHive"
+                    v-model="newHive.street"
+                    :label="`${$t('Street')}*`"
+                    outlined
+                    dense
+                  >
+                  </v-text-field>
+                </v-col>
+                <v-col cols="4">
+                  <v-text-field
+                    v-if="newHive"
+                    v-model="newHive.street_no"
+                    :label="`${$t('Number')}*`"
+                    outlined
+                    dense
+                  >
+                  </v-text-field>
                 </v-col>
               </v-row>
             </v-col>
@@ -223,7 +312,7 @@ import Confirm from '@components/confirm.vue'
 // import HiveFactory from '@components/hive-factory.vue'
 import Layout from '@layouts/back.vue'
 // import VueGoogleAutocomplete from 'vue-google-autocomplete'
-// import VueNumberInput from '@chenfengyuan/vue-number-input'
+import VueNumberInput from '@chenfengyuan/vue-number-input'
 // import Treeselect from '@riophae/vue-treeselect'
 // import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
@@ -233,7 +322,7 @@ export default {
     // HiveFactory,
     Layout,
     // VueGoogleAutocomplete,
-    // VueNumberInput,
+    VueNumberInput,
     // Treeselect,
   },
   data: function() {
@@ -249,6 +338,9 @@ export default {
     }
   },
   computed: {
+    // locale() {
+    //   return this.$i18n.locale
+    // },
     tabs: function() {
       return [
         {
@@ -338,68 +430,77 @@ export default {
     setActiveTab(int) {
       this.activeTab = 'tab-' + int
     },
+    updateHive(event) {
+      console.log(event) // TODO: update newHive, integrate with autocomplete
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
+.v-tabs--icons-and-text > .v-tabs-bar {
+  height: 48px;
+  .v-tab {
+    text-transform: none !important;
+    letter-spacing: 0.075;
+
+    .v-icon {
+      font-size: 20px;
+      color: $color-white;
+      &::before {
+        margin-top: -2px;
+      }
+    }
+
+    .show-on-mobile {
+      display: none;
+    }
+
+    @media (max-width: 900px) {
+      padding: 0 4px;
+      font-size: 12px !important;
+      .v-icon {
+        font-size: 16px;
+      }
+      // .v-icon {
+      //   display: block;
+      //   &::before {
+      //     margin-top: 2px;
+      //   }
+      // }
+    }
+
+    @media (max-width: 725px) {
+      min-width: 70px !important;
+      font-size: 16px !important;
+      .hide-on-mobile {
+        display: none;
+      }
+      .show-on-mobile {
+        display: inline;
+      }
+      .v-icon {
+        display: inline;
+        font-size: 24px;
+      }
+    }
+  }
+}
+
+.country-select {
+  max-width: 100%;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid $color-grey-light;
+  border-radius: 4px;
+}
+
 .next {
   margin-right: -6px;
 }
-
 .prev {
   margin-left: -6px;
 }
-.v-tabs--icons-and-text > .v-tabs-bar {
-  height: 48px;
-}
-
-.v-tabs--icons-and-text > .v-tabs-bar .v-tab {
-  text-transform: none !important;
-  letter-spacing: 0.075;
-
-  .v-icon {
-    font-size: 20px;
-    color: $color-white;
-    &::before {
-      margin-top: -2px;
-    }
-  }
-
-  .show-on-mobile {
-    display: none;
-  }
-
-  @media (max-width: 900px) {
-    padding: 0 4px;
-    font-size: 12px !important;
-    .v-icon {
-      font-size: 16px;
-    }
-    // .v-icon {
-    //   display: block;
-    //   &::before {
-    //     margin-top: 2px;
-    //   }
-    // }
-  }
-
-  @media (max-width: 725px) {
-    min-width: 70px !important;
-    font-size: 16px !important;
-    .hide-on-mobile {
-      display: none;
-    }
-    .show-on-mobile {
-      display: inline;
-    }
-    .v-icon {
-      display: inline;
-      font-size: 24px;
-    }
-  }
-}
-
 .bounce {
   animation: bounce 2s infinite;
 }

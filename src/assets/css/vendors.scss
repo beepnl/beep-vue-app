@@ -1,0 +1,66 @@
+/* Vuetify */
+.theme--light.v-label {
+  color: $color-grey-dark;
+}
+
+.theme--light.v-card.v-card--outlined {
+  border: thin solid $color-grey-light;
+}
+
+.v-text-field--outlined fieldset {
+  border-color: $color-grey-light;
+}
+
+/* VueNumberInput */
+.number-input {
+  input.number-input__input {
+    padding-top: 5px;
+    padding-right: 3.175rem;
+    padding-bottom: 5px;
+    padding-left: 3.175rem;
+    border-color: $color-grey-light;
+    border-radius: 4px;
+  }
+  button.number-input__button {
+    font-size: 24px;
+    color: $color-grey-dark;
+    &::before {
+      position: relative;
+      top: 0;
+      left: 0;
+      height: 0;
+      margin-left: 2px;
+      font-family: 'Material Design Icons';
+      background: none !important;
+      background-color: transparent;
+      transform: none;
+    }
+    &--plus::before {
+      content: '\F0415';
+    }
+    &--plus::after {
+      height: 0;
+    }
+    &--minus::before {
+      content: '\F0374';
+    }
+    &:hover {
+      &::before {
+        color: $color-primary;
+      }
+    }
+  }
+}
+
+/* Treeselect */
+.vue-treeselect__control {
+  border-radius: 4px;
+}
+.vue-treeselect .vue-treeselect__control {
+  border-color: $color-grey-light;
+}
+
+.vue-treeselect--focused:not(.vue-treeselect--open) .vue-treeselect__control {
+  border-color: $color-primary;
+  box-shadow: none;
+}

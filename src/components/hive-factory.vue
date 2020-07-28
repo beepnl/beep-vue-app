@@ -2,10 +2,10 @@
   <div>
     <v-row class="hive-factory-wrapper">
       <v-col cols="12" sm="7" md="12">
-        <div class="hive-edit-label" v-text="`${$t('drag_layers')}`"></div>
+        <div class="beep-label" v-text="`${$t('drag_layers')}`"></div>
         <div
           :class="
-            `hive-factory d-flex flex-row align-center justify-flex-start ${
+            `hive-factory rounded-border d-flex flex-row align-center justify-flex-start ${
               hasLayer('queen_excluder') ? 'has-queen-excluder' : ''
             } ${hasLayer('feeding_box') ? 'has-feeding-box' : ''}`
           "
@@ -24,10 +24,7 @@
                 :class="[`draggable-layer-wrapper ${layer.type}-layer-wrapper`]"
                 :width="`${hiveWidth(hive)}px`"
               >
-                <span
-                  class="hive-edit-label"
-                  v-text="layerTypeText(layer)"
-                ></span>
+                <span class="beep-label" v-text="layerTypeText(layer)"></span>
                 <v-sheet
                   :color="checkColor(layer)"
                   :class="[`layer draggable-layer ${layer.type}-layer`]"
@@ -291,9 +288,6 @@ export default {
 
 <style lang="scss" scoped>
 .hive-factory {
-  padding: 12px;
-  border: 1px solid $color-grey-light;
-  border-radius: 2px;
   &.has-queen-excluder {
     .draggable-layer-wrapper.queen_excluder-layer-wrapper {
       display: none;
@@ -392,7 +386,7 @@ export default {
 
 .draggable-layers {
   .sortable-drag {
-    .hive-edit-label {
+    .beep-label {
       display: none;
       height: 0;
     }
@@ -418,7 +412,7 @@ export default {
 }
 .hive-icon-layers {
   .sortable-ghost {
-    .hive-edit-label {
+    .beep-label {
       display: none;
       height: 0;
     }

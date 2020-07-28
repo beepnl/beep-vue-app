@@ -55,17 +55,17 @@
             <v-row class="hive-edit-details-wrapper">
               <v-col cols="12">
                 <div
-                  class="hive-edit-label"
+                  class="beep-label"
                   v-text="`${$tc('Hive', 1) + ' ' + $t('details')}`"
                 ></div>
 
-                <div class="hive-edit-details">
+                <div class="hive-edit-details rounded-border">
                   <v-row>
                     <v-col cols="12" md="6" lg="4">
                       <v-row>
                         <v-col cols="12" md="7">
                           <div
-                            class="hive-edit-label"
+                            class="beep-label"
                             v-text="
                               `${$t('Hive_color')} (${$t(
                                 // eslint-disable-next-line vue/comma-dangle
@@ -87,7 +87,7 @@
 
                         <v-col cols="12" md="5">
                           <div
-                            class="hive-edit-label"
+                            class="beep-label"
                             v-text="`${$t('Hive_frames')}`"
                           ></div>
                           <VueNumberInput
@@ -159,7 +159,7 @@
                       <v-row>
                         <v-col cols="12" sm="7" md="12">
                           <div
-                            class="hive-edit-label"
+                            class="beep-label"
                             v-text="`${$t('Hive_type')}*`"
                           ></div>
                           <Treeselect
@@ -178,12 +178,12 @@
                       <v-row class="hive-dimensions-wrapper">
                         <v-col cols="12" sm="7" md="12">
                           <div
-                            class="hive-edit-label"
+                            class="beep-label"
                             v-text="
                               `${$t('Brood_box_and_frame')} ${$t('dimensions')}`
                             "
                           ></div>
-                          <div class="hive-dimensions-details">
+                          <div class="hive-dimensions-details rounded-border">
                             <v-row>
                               <v-col cols="12" md="6">
                                 <div
@@ -192,7 +192,7 @@
                                   class="mt-1 mb-2"
                                 >
                                   <div
-                                    class="hive-edit-label"
+                                    class="beep-label"
                                     v-text="`${$t(bbDimension)}`"
                                   ></div>
                                   <VueNumberInput
@@ -225,7 +225,7 @@
                                   class="mt-1 mb-2"
                                 >
                                   <div
-                                    class="hive-edit-label"
+                                    class="beep-label"
                                     v-text="`${$t(frDimension)}`"
                                   ></div>
                                   <VueNumberInput
@@ -263,10 +263,10 @@
             <v-row class="queen-details-wrapper">
               <v-col cols="12">
                 <div
-                  class="hive-edit-label"
+                  class="beep-label"
                   v-text="`${$t('Queen') + ' ' + $t('details')}`"
                 ></div>
-                <div class="queen-details">
+                <div class="queen-details rounded-border">
                   <v-row>
                     <v-col cols="12" sm="7" md="6" lg="4">
                       <div>
@@ -284,7 +284,7 @@
 
                       <div>
                         <div
-                          class="hive-edit-label"
+                          class="beep-label"
                           v-text="`${$t('Bee_race')}`"
                         ></div>
                         <Treeselect
@@ -347,10 +347,7 @@
                       </div>
 
                       <div>
-                        <div
-                          class="hive-edit-label"
-                          v-text="`${$t('Age')}`"
-                        ></div>
+                        <div class="beep-label" v-text="`${$t('Age')}`"></div>
                         <p
                           v-text="
                             activeHive.queen
@@ -400,7 +397,7 @@
                     <v-col cols="12" md="6" lg="4">
                       <div v-if="showQueenColorPicker">
                         <div
-                          class="hive-edit-label"
+                          class="beep-label"
                           v-text="`${$t('Queen')} ${$t('color')}`"
                         ></div>
                         <div>
@@ -921,25 +918,6 @@ export default {
   }
 }
 
-.hive-edit-label {
-  margin-bottom: 4px;
-  font-family: 'Roboto', sans-serif !important;
-  font-size: 0.75rem !important;
-  font-weight: 400;
-  line-height: 1rem;
-  color: $color-grey-dark;
-  letter-spacing: 0.0333333333em !important;
-}
-
-.vue-treeselect__control {
-  border-radius: 2px;
-}
-
-.vue-treeselect--focused:not(.vue-treeselect--open) .vue-treeselect__control {
-  border-color: $color-primary;
-  box-shadow: none;
-}
-
 .hive-color {
   width: 35px;
   height: 35px;
@@ -983,42 +961,6 @@ export default {
 
 .hive-number-frame-input {
   max-width: 130px;
-  input.number-input__input {
-    padding-top: 5px;
-    padding-right: 3.175rem;
-    padding-bottom: 5px;
-    padding-left: 3.175rem;
-    border-color: $color-grey-light;
-    border-radius: 2px;
-  }
-  button.number-input__button {
-    font-size: 24px;
-    &::before {
-      position: relative;
-      top: 0;
-      left: 0;
-      height: 0;
-      margin-left: 2px;
-      font-family: 'Material Design Icons';
-      background: none !important;
-      background-color: transparent;
-      transform: none;
-    }
-    &--plus::before {
-      content: '\F0415';
-    }
-    &--plus::after {
-      height: 0;
-    }
-    &--minus::before {
-      content: '\F0374';
-    }
-    &:hover {
-      &::before {
-        color: $color-primary;
-      }
-    }
-  }
 }
 
 .hive-dimensions-wrapper {
@@ -1028,7 +970,5 @@ export default {
 .hive-dimensions-details,
 .queen-details {
   padding: 0 12px;
-  border: 1px solid $color-grey-light;
-  border-radius: 2px;
 }
 </style>

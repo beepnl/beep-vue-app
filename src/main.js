@@ -13,10 +13,12 @@ import ro from '@assets/js/lang/ro'
 // import enUS from '@assets/js/lang/en-US'
 import languages from '@assets/js/lang/languages'
 import moment from 'moment'
+import vueCountryRegionSelect from 'vue-country-region-select'
 
 import App from './app.vue'
 
 Vue.use(VueI18n)
+Vue.use(vueCountryRegionSelect)
 Vue.prototype.$moment = moment
 
 // Don't warn about using the dev version of Vue in development.
