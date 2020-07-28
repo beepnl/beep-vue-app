@@ -466,6 +466,6 @@ export default {
 }
 .hive-edit-details,
 .hive-dimensions-details {
-  padding: 0 12px;
+  padding: 0 12px !important;
 }
 </style>

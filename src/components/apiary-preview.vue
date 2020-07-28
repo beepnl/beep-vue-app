@@ -1,10 +1,12 @@
 <template>
-  <div class="d-flex align-end apiary-line">
+  <div class="d-flex align-end apiary-preview">
     <v-sheet
       v-for="(hive, j) in hives"
       :key="j"
       :class="
-        `hive-icon d-flex flex-column justify-center align-center white--text text--small mr-1`
+        `hive-icon d-flex flex-column justify-center align-center white--text text--small mr-1 ${
+          hasQueenExcluder ? '--has-queen-excluder' : ''
+        }`
       "
       height="auto"
     >
@@ -19,7 +21,7 @@
         </v-sheet>
       </div>
       <span class="hive-caption caption">
-        {{ hive.prefix }}
+        {{ hive.prefix }} {{ j + hive.offset }}
       </span>
     </v-sheet>
   </div>
@@ -40,49 +42,31 @@ export default {
     },
   },
   computed: {
-    // hasQueenExcluder(hive) {
-    //   return hive.layers.some((layer) => layer.type === 'queen_excluder')
-    // },
+    hasQueenExcluder(hive) {
+      return this.newHive.layers.some(
+        (layer) => layer.type === 'queen_excluder'
+      )
+    },
     hives() {
       var array = []
       for (var n = 0; n < this.numberOfHives; n++) {
         array.push(this.newHive)
       }
-      return array // TODO: get hives from hives endpoint? return this.$store.getters['hives/getHivesForApiary'](this.apiary.id)
+      return array
     },
-    // highestHive() {
-    //   return Math.max(
-    //     ...this.apiaries.map((apiary) =>
-    //       Math.max(...apiary.hives.map((hive) => hive.layers.length))
-    //     )
-    //   )
-    // },
-    // widestApiary() {
-    //   return Math.max(
-    //     ...this.apiaries.map((apiary) =>
-    //       apiary.hives.reduce(
-    //         (framecount, hive) => framecount + hive.layers[0].framecount,
-    //         0
-    //       )
-    //     )
-    //   )
-    // },
   },
   methods: {
-    // hiveHeight: function(hive) {
-    //   return ((this.totalLayers(hive)) / this.highestHive) * 100
-    // },
-    // TODO: reconsider height and width calculation
-    // Now hiveWidth is static value + overflow-x auto if too many hives in apiary
-    // What to do with differing bb width & height?
-    // Now apiary height is set to 78px. If hive is too high it just pokes out except with overflow-x auto it is cut off anyway
-    // Maybe calculate max hiveHeight in px and when it's higher than 78, set this value as apiary height?
     hiveWidth: function(hive) {
-      const orderedLayers = this.orderedLayers(hive)
-      return orderedLayers[orderedLayers.length - 1].framecount * 4 // hive.layers[0].framecount * 4
+      return hive.layers[0].framecount * 6
     },
     orderedLayers: function(hive) {
       return hive.layers.slice().sort(function(a, b) {
+        if (a.type === 'feeding_box') {
+          return -1
+        }
+        if (b.type === 'feeding_box') {
+          return 1
+        }
         if (a.order > b.order) {
           return -1
         }
@@ -97,13 +81,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// .apiary-line {
-//   height: 78px;
-//   overflow-x: auto;
-//   border-bottom: 1px solid green;
+.apiary-preview {
+  overflow-x: auto;
+}
+
 .hive-icon {
   position: relative;
-  min-width: 40px;
   margin-right: 0 !important;
   border-radius: 2px 2px 0 0;
   .hive-icon-layers {
@@ -114,7 +97,9 @@ export default {
     border-bottom: 1px solid green !important;
   }
   &.--has-queen-excluder {
-    margin-right: 10px !important;
+    .hive-icon-layers {
+      padding: 0 14px;
+    }
   }
 }
 
@@ -168,8 +153,6 @@ export default {
 .hive-caption {
   z-index: 1;
   line-height: 0.9rem;
-  color: white;
-  text-shadow: 1px 1px black;
+  color: $color-grey-dark;
 }
-// }
 </style>

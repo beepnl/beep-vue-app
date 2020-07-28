@@ -277,25 +277,54 @@
                 $tc('Location', 1) + ' ' + $tc('hive', 2)
               }}</div>
               <v-row>
-                <v-col cols="12">
+                <v-col cols="12" md="3">
+                  <div class="beep-label" v-text="`${$t('Hive_amount')}`"></div>
+                  <VueNumberInput
+                    v-if="newHive"
+                    v-model="newHive.hive_amount"
+                    :min="1"
+                    :max="50"
+                    inline
+                    controls
+                  ></VueNumberInput>
+                </v-col>
+
+                <v-col cols="6" md="4">
+                  <div class="beep-label" v-text="`${$t('Hive_prefix')}`"></div>
+                  <v-text-field
+                    v-if="newHive"
+                    v-model="newHive.prefix"
+                    class="prefix-input"
+                    outlined
+                    dense
+                  >
+                  </v-text-field>
+                </v-col>
+
+                <v-col cols="12" sm="4" md="3">
                   <div>
                     <div
                       class="beep-label"
-                      v-text="`${$t('Hive_amount')}`"
+                      v-text="`${$t('Hive_number_offset')}`"
                     ></div>
                     <VueNumberInput
                       v-if="newHive"
-                      v-model="newHive.hive_amount"
-                      :min="1"
-                      :max="50"
+                      v-model="newHive.offset"
+                      :step="1"
                       inline
                       controls
                     ></VueNumberInput>
                   </div>
+                </v-col>
 
+                <v-col cols="12">
+                  <div
+                    class="beep-label"
+                    v-text="`${$tc('Location', 1)} ${$t('preview')}`"
+                  ></div>
                   <ApiaryPreview
                     v-if="newHive"
-                    class="mt-5"
+                    class="mt-10 mb-5"
                     :new-hive="newHive"
                     :number-of-hives="newHive.hive_amount"
                   ></ApiaryPreview>
@@ -337,23 +366,18 @@
 import ApiaryPreview from '@components/apiary-preview.vue'
 import Confirm from '@components/confirm.vue'
 import HiveEditDetails from '@components/hive-edit-details.vue'
-// import HiveFactory from '@components/hive-factory.vue'
 import Layout from '@layouts/back.vue'
 // import VueGoogleAutocomplete from 'vue-google-autocomplete'
 import VueNumberInput from '@chenfengyuan/vue-number-input'
-// import Treeselect from '@riophae/vue-treeselect'
-// import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 export default {
   components: {
     ApiaryPreview,
     Confirm,
     HiveEditDetails,
-    // HiveFactory,
     Layout,
     // VueGoogleAutocomplete,
     VueNumberInput,
-    // Treeselect,
   },
   data: function() {
     return {
@@ -412,8 +436,8 @@ export default {
         color: '#F29100',
         hive_type_id: null,
         hive_amount: 1,
-        brood_layers: 2,
-        honey_layers: 1,
+        // brood_layers: 2,
+        // honey_layers: 1,
         frames: 10,
         offset: 1,
         prefix: this.$i18n.t('Hive_short'),
@@ -546,6 +570,12 @@ export default {
   padding: 0 12px;
   border: 1px solid $color-grey-light;
   border-radius: 4px;
+}
+
+.prefix-input.v-text-field--outlined.v-input--dense.v-text-field--outlined
+  > .v-input__control
+  > .v-input__slot {
+  min-height: 36px !important; // FIXME: overridden somewhere?
 }
 
 .next {
