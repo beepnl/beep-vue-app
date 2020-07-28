@@ -608,6 +608,8 @@ const translations = {
   unsaved_changes: 'Unsaved changes',
   save_changes:
     'Are you sure you want to leave this page? Any unsaved changes will be lost.',
+  no_apiaries_yet: "You don't have any apiaries yet",
+  need_help: 'Need help?',
 }
 
 export default translations

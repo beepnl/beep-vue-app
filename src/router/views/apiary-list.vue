@@ -1,157 +1,201 @@
 <template>
   <Layout :menu-items="menuItems" :no-box-shadow="true">
-    <div class="filter-bar-wrapper">
-      <v-container>
-        <v-row
-          class="filter-bar d-flex flex-row justify-space-between align-center"
+    <div v-if="showApiaryPlaceholder">
+      <v-container class="d-flex flex-column align-center">
+        <v-img
+          class="mt-10"
+          width="60%"
+          max-width="350px"
+          height="auto"
+          src="~@assets/img/apiary-illustration.png"
         >
-          <div
-            class="filter-buttons d-flex flex-row justify-flex-start align-center"
+        </v-img>
+        <h4 class="mt-5">{{ $t('no_apiaries_yet') }}</h4>
+
+        <router-link
+          class="mt-10"
+          :to="{
+            name: `apiary-create`,
+          }"
+        >
+          <div class="color-primary"
+            ><v-icon class="color-primary" large left>mdi-plus-circle</v-icon
+            >{{ $t('add') + ' ' + $tc('location', 1) }}</div
           >
-            <v-col cols="5" class="pr-1">
-              <v-text-field
-                v-model="search"
-                :label="`${$t('Search')}`"
-                clearable
-                outlined
-                dense
-                hide-details
-              ></v-text-field>
-            </v-col>
-            <v-card-actions>
-              <v-icon
-                :class="`${filterByReminder ? 'red--text' : 'color-grey'} mr-2`"
-                @click="filterByReminder = !filterByReminder"
-              >
-                mdi-alert-circle
-              </v-icon>
-              <div class="mr-2 my-0" @click="filterByBase = !filterByBase">
-                <v-sheet
-                  class="beep-icon beep-icon-sensors"
-                  :color="`${filterByBase ? 'green' : ''}`"
+        </router-link>
+
+        <router-link
+          class="mt-5"
+          :to="{
+            name: `support`,
+          }"
+        >
+          <div class="color-grey-medium"
+            ><v-icon class="color-grey-medium" large left
+              >mdi-comment-question</v-icon
+            >{{ $t('need_help') }}</div
+          >
+        </router-link>
+      </v-container>
+    </div>
+    <div v-else-if="ready">
+      <div class="filter-bar-wrapper">
+        <v-container>
+          <v-row
+            class="filter-bar d-flex flex-row justify-space-between align-center"
+          >
+            <div
+              class="filter-buttons d-flex flex-row justify-flex-start align-center"
+            >
+              <v-col cols="5" class="pr-1">
+                <v-text-field
+                  v-model="search"
+                  :label="`${$t('Search')}`"
+                  clearable
+                  outlined
+                  dense
+                  hide-details
+                ></v-text-field>
+              </v-col>
+              <v-card-actions>
+                <v-icon
+                  :class="
+                    `${filterByReminder ? 'red--text' : 'color-grey'} mr-2`
+                  "
+                  @click="filterByReminder = !filterByReminder"
                 >
-                </v-sheet>
-              </div>
+                  mdi-alert-circle
+                </v-icon>
+                <div class="mr-2 my-0" @click="filterByBase = !filterByBase">
+                  <v-sheet
+                    class="beep-icon beep-icon-sensors"
+                    :color="`${filterByBase ? 'green' : ''}`"
+                  >
+                  </v-sheet>
+                </div>
+                <v-icon
+                  :class="
+                    `${
+                      filterByImpression.includes(3)
+                        ? 'green--text'
+                        : 'color-grey'
+                    } mr-2`
+                  "
+                  @click="updateFilterByImpression(3)"
+                >
+                  mdi-emoticon-happy
+                </v-icon>
+                <v-icon
+                  :class="
+                    `${
+                      filterByImpression.includes(2)
+                        ? 'orange--text'
+                        : 'color-grey'
+                    } mr-2`
+                  "
+                  @click="updateFilterByImpression(2)"
+                >
+                  mdi-emoticon-neutral
+                </v-icon>
+                <v-icon
+                  :class="
+                    `${
+                      filterByImpression.includes(1)
+                        ? 'red--text'
+                        : 'color-grey'
+                    } mr-2`
+                  "
+                  @click="updateFilterByImpression(1)"
+                >
+                  mdi-emoticon-sad
+                </v-icon>
+              </v-card-actions>
+            </div>
+            <v-card-actions class="view-buttons">
               <v-icon
-                :class="
-                  `${
-                    filterByImpression.includes(3)
-                      ? 'green--text'
-                      : 'color-grey'
-                  } mr-2`
-                "
-                @click="updateFilterByImpression(3)"
+                :class="`${gridView ? '' : 'color-primary'} mr-1`"
+                @click="toggleGrid"
               >
-                mdi-emoticon-happy
+                mdi-view-headline
               </v-icon>
               <v-icon
-                :class="
-                  `${
-                    filterByImpression.includes(2)
-                      ? 'orange--text'
-                      : 'color-grey'
-                  } mr-2`
-                "
-                @click="updateFilterByImpression(2)"
+                :class="`${gridView ? 'color-primary' : ''}`"
+                @click="toggleGrid"
               >
-                mdi-emoticon-neutral
-              </v-icon>
-              <v-icon
-                :class="
-                  `${
-                    filterByImpression.includes(1) ? 'red--text' : 'color-grey'
-                  } mr-2`
-                "
-                @click="updateFilterByImpression(1)"
-              >
-                mdi-emoticon-sad
+                mdi-view-grid-outline
               </v-icon>
             </v-card-actions>
+          </v-row>
+        </v-container>
+      </div>
+      <v-container>
+        <v-row
+          v-for="(hiveSet, j) in filteredHiveSets"
+          :key="j"
+          class="hive-set"
+          dense
+        >
+          <div
+            class="hive-set-title d-flex flex-row justify-flex-start align-center"
+            :style="
+              `color: ${
+                hiveSet.hex_color ? hiveSet.hex_color : ''
+              }; border-color: ${hiveSet.hex_color ? hiveSet.hex_color : ''};`
+            "
+          >
+            <v-icon
+              v-if="hiveSet.users && hiveSet.users.length"
+              class="icon-apiary-shared ml-1 mr-2 my-0"
+              :style="
+                `background-color: ${hiveSet.hex_color}; border-color: ${hiveSet.hex_color};`
+              "
+            >
+              mdi-account-multiple
+            </v-icon>
+            <v-icon v-else class="icon-apiary-owned ml-1 mr-2 my-0">
+              mdi-home-analytics
+            </v-icon>
+
+            <h4 v-text="hiveSet.name"></h4>
+            <pre
+              v-if="!gridView && hiveSet.users && hiveSet.users.length"
+              class="caption hive-set-caption"
+              v-text="
+                ` (${hiveSet.users.length} ${$tc(
+                  'member',
+                  // eslint-disable-next-line vue/comma-dangle
+                  hiveSet.users.length
+                )})`
+              "
+            >
+            </pre>
           </div>
-          <v-card-actions class="view-buttons">
-            <v-icon
-              :class="`${gridView ? '' : 'color-primary'} mr-1`"
-              @click="toggleGrid"
-            >
-              mdi-view-headline
-            </v-icon>
-            <v-icon
-              :class="`${gridView ? 'color-primary' : ''}`"
-              @click="toggleGrid"
-            >
-              mdi-view-grid-outline
-            </v-icon>
-          </v-card-actions>
+          <v-col
+            v-for="(hive, i) in sortedHives(hiveSet.hives)"
+            :key="i"
+            sm="auto"
+            :class="`hive-item ${gridView ? 'grid-view' : 'list-view'}`"
+          >
+            <ScaleTransition :duration="400" group>
+              <HiveCard
+                :key="`${hive.id}`"
+                :hive="hive"
+                :hive-set="hiveSet"
+                :grid-view="gridView"
+              ></HiveCard>
+            </ScaleTransition>
+          </v-col>
+        </v-row>
+        <v-row
+          v-if="sortedHiveSets.length && !filteredHiveSets.length"
+          class="hive-set"
+        >
+          <v-col sm="auto" :cols="12">
+            {{ $t('no_results') }}
+          </v-col>
         </v-row>
       </v-container>
     </div>
-    <v-container>
-      <v-row
-        v-for="(hiveSet, j) in filteredHiveSets"
-        :key="j"
-        class="hive-set"
-        dense
-      >
-        <div
-          class="hive-set-title d-flex flex-row justify-flex-start align-center"
-          :style="
-            `color: ${
-              hiveSet.hex_color ? hiveSet.hex_color : ''
-            }; border-color: ${hiveSet.hex_color ? hiveSet.hex_color : ''};`
-          "
-        >
-          <v-icon
-            v-if="hiveSet.users && hiveSet.users.length"
-            class="icon-apiary-shared ml-1 mr-2 my-0"
-            :style="
-              `background-color: ${hiveSet.hex_color}; border-color: ${hiveSet.hex_color};`
-            "
-          >
-            mdi-account-multiple
-          </v-icon>
-          <v-icon v-else class="icon-apiary-owned ml-1 mr-2 my-0">
-            mdi-home-analytics
-          </v-icon>
-
-          <h4 v-text="hiveSet.name"></h4>
-          <pre
-            v-if="!gridView && hiveSet.users && hiveSet.users.length"
-            class="caption hive-set-caption"
-            v-text="
-              ` (${hiveSet.users.length} ${$tc(
-                'member',
-                // eslint-disable-next-line vue/comma-dangle
-                hiveSet.users.length
-              )})`
-            "
-          >
-          </pre>
-        </div>
-        <v-col
-          v-for="(hive, i) in sortedHives(hiveSet.hives)"
-          :key="i"
-          sm="auto"
-          :class="`hive-item ${gridView ? 'grid-view' : 'list-view'}`"
-        >
-          <ScaleTransition :duration="400" group>
-            <HiveCard
-              :key="`${hive.id}`"
-              :hive="hive"
-              :hive-set="hiveSet"
-              :grid-view="gridView"
-            ></HiveCard>
-          </ScaleTransition>
-        </v-col>
-      </v-row>
-      <v-row
-        v-if="sortedHiveSets.length && !filteredHiveSets.length"
-        class="hive-set"
-      >
-        <v-col sm="auto" :cols="12">
-          {{ $t('no_results') }}
-        </v-col>
-      </v-row>
-    </v-container>
   </Layout>
 </template>
 
@@ -176,7 +220,8 @@ export default {
     filterByImpression: [],
     gridView: false,
     settings: [],
-    showApiaryWizard: false,
+    showApiaryPlaceholder: false,
+    ready: false,
   }),
   computed: {
     ...mapGetters('locations', ['apiaries']),
@@ -305,7 +350,9 @@ export default {
     }
   },
   created() {
-    this.readApiariesAndGroups()
+    this.readApiariesAndGroups().then(() => {
+      this.ready = true
+    })
   },
   methods: {
     async readApiariesAndGroups() {
@@ -313,10 +360,10 @@ export default {
         const responseApiaries = await this.$store.dispatch('locations/findAll')
         const responseGroups = await this.$store.dispatch('groups/findAll')
         if (
-          responseApiaries.locations.length === 0 &&
-          responseGroups.groups.length === 0
+          responseApiaries.locations.length === 2 && // TODO: set back to 0, this is just for testing!!!
+          responseGroups.groups.length === 1 // TODO: set back to 0, this is just for testing!!!
         ) {
-          this.showApiaryWizard = true // TODO: make placeholder for no apiaries/groups situation
+          this.showApiaryPlaceholder = true // TODO: make placeholder for no apiaries/groups situation
         }
         return true
       } catch (e) {
