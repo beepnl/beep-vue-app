@@ -403,11 +403,9 @@ export default {
 .draggable-layers {
   .sortable-drag {
     .beep-label {
-      display: none;
-      height: 0;
+      color: transparent;
     }
     .layer {
-      border-width: 2px;
       border-radius: 0;
     }
   }
