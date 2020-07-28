@@ -211,11 +211,15 @@ export default {
           color: 'red',
         })
         .then((confirm) => {
-          const payload = {
-            layerId: this.currentLayer.id || 0,
-            layerKey: this.currentLayer.key || 0,
-          }
-          this.$store.commit('hives/deleteLayer', payload)
+          const layerId = this.currentLayer.id || 0
+          const layerKey = this.currentLayer.key || 0
+          var remainingLayers = this.hive.layers.filter(
+            (layer) => !(layer.id === layerId || layer.key === layerKey)
+          )
+          this.hive.layers = remainingLayers
+          this.hive.frames = this.hive.layers[0].framecount
+          this.$store.commit('hives/setEdited', true)
+
           this.cancelColorPicker()
         })
         .catch((reject) => {
@@ -271,16 +275,27 @@ export default {
       return orderedLayers
     },
     updateHiveLayerColor() {
-      const payload = {
-        layerId: this.currentLayer.id || 0,
-        layerKey: this.currentLayer.key || 0,
-        layerColor: this.layerColorPickerValue,
-      }
-      this.$store.commit('hives/updateHiveLayerColor', payload)
+      const layerId = this.currentLayer.id || 0
+      const layerKey = this.currentLayer.key || 0
+
+      const layerIndex = this.hive.layers.findIndex(
+        (layer) => layer.id === layerId || layer.key === layerKey
+      )
+      this.hive.layers[layerIndex].color = this.layerColorPickerValue
+      this.hive.frames = this.hive.layers[0].framecount
+      this.$store.commit('hives/setEdited', true)
+
       this.cancelColorPicker()
     },
     updateHiveLayerOrder(layers) {
-      this.$store.commit('hives/updateHiveLayerOrder', layers)
+      var i = layers.length
+      layers.map((layer) => {
+        layer.order = i
+        i--
+      })
+      this.hive.layers = layers
+      this.hive.frames = this.hive.layers[0].framecount
+      this.$store.commit('hives/setEdited', true)
     },
   },
 }

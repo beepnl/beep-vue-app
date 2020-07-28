@@ -5,14 +5,10 @@ const resource = createResource({ path: 'hives' })
 
 export const state = {
   ...resource.state,
-  hive: {},
   edited: false,
 }
 export const getters = {
   ...resource.getters,
-  activeHive: (state) => {
-    return state.hive
-  },
   hives: (state) => {
     return state.data.hives || []
   },
@@ -29,65 +25,6 @@ export const getters = {
 }
 export const mutations = {
   ...resource.mutations,
-  deleteLayer: function(state, payload) {
-    var remainingLayers = state.hive.layers.filter(
-      (layer) =>
-        !(layer.id === payload.layerId || layer.key === payload.layerKey)
-    )
-    state.hive.layers = remainingLayers
-    state.hive.frames = state.hive.layers[0].framecount
-    state.edited = true
-  },
-  updateHive: function(state, payload) {
-    state.hive[payload.key] = payload.value
-    state.hive.frames = state.hive.layers[0].framecount
-    if (
-      payload.key !== 'bb_width_cm' &&
-      payload.key !== 'bb_height_cm' &&
-      payload.key !== 'bb_depth_cm' &&
-      payload.key !== 'fr_width_cm' &&
-      payload.key !== 'fr_height_cm'
-    ) {
-      state.edited = true // NB edited tracking has been disabled for vue-number-input component inputs as it calls @input when hive-edit.vue is initialized, before any changes are made
-    }
-  },
-  updateHiveLayers: function(state, payload) {
-    state.hive.layers.forEach((layer) => {
-      layer[payload.key] = payload.value
-    })
-    if (payload.key === 'framecount') {
-      state.hive.frames = payload.value // NB edited tracking has been disabled vue-number-input component inputs as it calls @input when hive-edit.vue is initialized, before any changes are made
-    } else {
-      state.hive[payload.key] = payload.value
-      state.hive.frames = state.hive.layers[0].framecount
-      state.edited = true
-    }
-  },
-  updateHiveLayerColor: function(state, payload) {
-    const layerIndex = state.hive.layers.findIndex(
-      (layer) => layer.id === payload.layerId || layer.key === payload.layerKey
-    )
-    state.hive.layers[layerIndex].color = payload.layerColor
-    state.hive.frames = state.hive.layers[0].framecount
-    state.edited = true
-  },
-  updateHiveLayerOrder: function(state, layers) {
-    var i = layers.length
-    layers.map((layer) => {
-      layer.order = i
-      i--
-    })
-    state.hive.layers = layers
-    state.hive.frames = state.hive.layers[0].framecount
-    state.edited = true
-  },
-  updateQueen: function(state, payload) {
-    state.hive.queen[payload.key] = payload.value
-    state.edited = true
-  },
-  setActiveHive: function(state, hive) {
-    state.hive = hive
-  },
   setEdited: function(state, bool) {
     state.edited = bool
   },

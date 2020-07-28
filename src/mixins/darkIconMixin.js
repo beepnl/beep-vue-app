@@ -1,7 +1,6 @@
 export const darkIconMixin = {
   methods: {
     darkIconColor(bgColor) {
-      console.log(bgColor)
       if (bgColor !== null && bgColor !== undefined) {
         var color =
           bgColor.charAt(0) === '#' ? bgColor.substring(1, 7) : bgColor

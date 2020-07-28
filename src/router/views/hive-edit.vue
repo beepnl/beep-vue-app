@@ -1,7 +1,7 @@
 <template>
   <Layout :title="`${$t('edit')} ${$tc('hive', 1)}`" :no-box-shadow="true">
     <h1
-      v-if="activeHive.name !== undefined && !activeHive.editable"
+      v-if="activeHive && activeHive.name !== undefined && !activeHive.editable"
       class="unauthorized-title"
     >
       {{
@@ -16,7 +16,7 @@
     </h1>
 
     <v-toolbar
-      v-if="activeHive.name !== undefined && activeHive.editable"
+      v-if="activeHive && activeHive.name !== undefined && activeHive.editable"
       class="hive-edit-bar"
       dense
       light
@@ -34,7 +34,7 @@
     </v-toolbar>
 
     <v-container
-      v-if="activeHive.name !== undefined && activeHive.editable"
+      v-if="activeHive && activeHive.name !== undefined && activeHive.editable"
       class="hive-edit-content"
     >
       <v-form ref="form">
@@ -43,6 +43,7 @@
             <v-row>
               <v-col cols="12">
                 <v-text-field
+                  v-if="activeHive"
                   :value="activeHive.name"
                   hide-details
                   class="hive-edit-name"
@@ -503,10 +504,11 @@ export default {
       colorPickerValue: '',
       useQueenMarkColor: false,
       queenHasColor: false,
+      activeHive: null,
     }
   },
   computed: {
-    ...mapGetters('hives', ['activeHive']),
+    // ...mapGetters('hives', ['activeHive']),
     ...mapGetters('taxonomy', [
       'beeRacesList',
       'hiveDimensionsList',
@@ -700,7 +702,8 @@ export default {
             name: null,
           }
         }
-        this.$store.commit('hives/setActiveHive', hive)
+        // this.$store.commit('hives/setActiveHive', hive)
+        this.activeHive = hive
         return true
       } catch (e) {
         console.log(e)
@@ -798,18 +801,28 @@ export default {
       } else {
         value = event
       }
-      const payload = {
-        key: property,
-        value: value,
+      this.activeHive[property] = value
+      this.activeHive.frames = this.activeHive.layers[0].framecount
+      if (
+        property !== 'bb_width_cm' &&
+        property !== 'bb_height_cm' &&
+        property !== 'bb_depth_cm' &&
+        property !== 'fr_width_cm' &&
+        property !== 'fr_height_cm'
+      ) {
+        this.$store.commit('hives/setEdited', true) // NB edited tracking has been disabled for vue-number-input component inputs as it calls @input when hive-edit.vue is initialized, before any changes are made
       }
-      this.$store.commit('hives/updateHive', payload)
     },
-    updateHiveLayers(event, property) {
-      const payload = {
-        key: property,
-        value: event,
+    updateHiveLayers(value, property) {
+      this.activeHive.layers.forEach((layer) => {
+        layer[property] = value
+      })
+      if (property === 'framecount') {
+        this.activeHive.frames = value // NB edited tracking has been disabled vue-number-input component inputs as it calls @input when hive-edit.vue is initialized, before any changes are made
+      } else {
+        this.activeHive.frames = this.activeHive.layers[0].framecount
+        this.$store.commit('hives/setEdited', true)
       }
-      this.$store.commit('hives/updateHiveLayers', payload)
       if (property === 'color') {
         this.cancelColorPicker()
       }
@@ -865,11 +878,8 @@ export default {
       } else if (property === 'color') {
         this.useQueenMarkColor = false
       }
-      const payload = {
-        key: property,
-        value: value,
-      }
-      this.$store.commit('hives/updateQueen', payload)
+      this.activeHive.queen[property] = value
+      this.$store.commit('hives/setEdited', true)
     },
     selectLocale(array) {
       if (array.length) {
