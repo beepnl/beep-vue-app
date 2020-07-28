@@ -358,6 +358,7 @@ export default {
         this.$store.commit('hives/setEdited', true)
       }
       if (property === 'color') {
+        this.hive[property] = value
         this.cancelColorPicker()
       }
     },

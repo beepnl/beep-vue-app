@@ -147,7 +147,7 @@
                   <country-select
                     v-if="newHive"
                     v-model="newHive.country_code"
-                    :country="newHive.country_code"
+                    :country="newHive.country_code.toUpperCase()"
                     :usei18n="false"
                     class="country-select"
                   />
@@ -271,9 +271,38 @@
 
       <v-tab-item value="tab-4">
         <v-container>
-          <v-card flat tile>
-            <v-card-text>{{ $t('Hive_amount') }}</v-card-text>
-          </v-card>
+          <v-row>
+            <v-col cols="12">
+              <div class="overline mb-4">{{
+                $tc('Location', 1) + ' ' + $tc('hive', 2)
+              }}</div>
+              <v-row>
+                <v-col cols="12">
+                  <div>
+                    <div
+                      class="beep-label"
+                      v-text="`${$t('Hive_amount')}`"
+                    ></div>
+                    <VueNumberInput
+                      v-if="newHive"
+                      v-model="newHive.hive_amount"
+                      :min="1"
+                      :max="50"
+                      inline
+                      controls
+                    ></VueNumberInput>
+                  </div>
+
+                  <ApiaryPreview
+                    v-if="newHive"
+                    class="mt-5"
+                    :new-hive="newHive"
+                    :number-of-hives="newHive.hive_amount"
+                  ></ApiaryPreview>
+                </v-col>
+              </v-row>
+            </v-col>
+          </v-row>
           <div class="d-flex justify-space-between">
             <v-icon x-large dark color="primary" @click="setActiveTab(3)"
               >mdi-chevron-left-box</v-icon
@@ -305,6 +334,7 @@
 </template>
 
 <script>
+import ApiaryPreview from '@components/apiary-preview.vue'
 import Confirm from '@components/confirm.vue'
 import HiveEditDetails from '@components/hive-edit-details.vue'
 // import HiveFactory from '@components/hive-factory.vue'
@@ -316,6 +346,7 @@ import VueNumberInput from '@chenfengyuan/vue-number-input'
 
 export default {
   components: {
+    ApiaryPreview,
     Confirm,
     HiveEditDetails,
     // HiveFactory,
@@ -337,9 +368,9 @@ export default {
     }
   },
   computed: {
-    // locale() {
-    //   return this.$i18n.locale
-    // },
+    locale() {
+      return this.$i18n.locale
+    },
     tabs: function() {
       return [
         {
@@ -380,13 +411,13 @@ export default {
         name: this.$i18n.tc('Location', 1) + ' ' + (data + 1),
         color: '#F29100',
         hive_type_id: null,
-        hive_amount: '1',
-        brood_layers: '2',
-        honey_layers: '1',
+        hive_amount: 1,
+        brood_layers: 2,
+        honey_layers: 1,
         frames: 10,
-        offset: '1',
+        offset: 1,
         prefix: this.$i18n.t('Hive_short'),
-        country_code: 'nl',
+        country_code: this.locale,
         city: '',
         postal_code: '',
         street: '',
