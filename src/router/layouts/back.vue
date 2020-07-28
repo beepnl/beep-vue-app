@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     back: function() {
-      if (this.hiveEdited) {
+      if (this.$route.name === 'hive-edit' && this.hiveEdited) {
         this.$refs.confirm
           .open(this.$i18n.t('unsaved_changes'), this.$i18n.t('save_changes'), {
             color: 'red',
