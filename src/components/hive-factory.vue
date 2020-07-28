@@ -79,15 +79,16 @@
 
             <v-color-picker
               v-model="colorPicker"
-              class="hive-color-picker"
+              class="hive-color-picker flex-color-picker"
               :swatches="swatches"
               show-swatches
               hide-canvas
               light
+              flat
             >
             </v-color-picker>
 
-            <v-toolbar class="hive-color-picker-footer" dense light>
+            <v-toolbar class="hive-color-picker-footer" dense light flat>
               <v-spacer></v-spacer>
               <v-btn small tile outlined color="red" @click="deleteLayer">
                 <v-icon left>mdi-delete</v-icon>
