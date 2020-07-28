@@ -43,7 +43,7 @@
             <div class="d-flex align-center">
               <span class="overline mr-3"
                 >{{ $t('start_here') + ' '
-                }}<v-icon>mdi-arrow-right</v-icon></span
+                }}<v-icon class="bounce">mdi-arrow-right</v-icon></span
               >
               <v-icon
                 x-large
@@ -107,9 +107,33 @@
 
       <v-tab-item value="tab-2">
         <v-container>
-          <v-card flat tile>
-            <v-card-text>{{ $t('Place') + ' ' + $t('details') }}</v-card-text>
-          </v-card>
+          <v-row>
+            <v-col cols="12">
+              <div class="overline mb-4">
+                {{
+                  $t('Place') +
+                    ' ' +
+                    $t('details') +
+                    ' (' +
+                    $t('optional') +
+                    ')'
+                }}</div
+              >
+              <v-row>
+                <v-col cols="12" sm="6" md="4">
+                  <!-- <VueGoogleAutocomplete
+                id="map"
+                ref="address"
+                classname="form-control"
+                placeholder="Please type your address"
+                country="sg"
+                @placechanged="getAddressData"
+              >
+              </VueGoogleAutocomplete> -->
+                </v-col>
+              </v-row>
+            </v-col>
+          </v-row>
           <div class="d-flex justify-space-between">
             <v-icon
               x-large
@@ -198,6 +222,7 @@
 import Confirm from '@components/confirm.vue'
 // import HiveFactory from '@components/hive-factory.vue'
 import Layout from '@layouts/back.vue'
+// import VueGoogleAutocomplete from 'vue-google-autocomplete'
 // import VueNumberInput from '@chenfengyuan/vue-number-input'
 // import Treeselect from '@riophae/vue-treeselect'
 // import '@riophae/vue-treeselect/dist/vue-treeselect.css'
@@ -207,6 +232,7 @@ export default {
     Confirm,
     // HiveFactory,
     Layout,
+    // VueGoogleAutocomplete,
     // VueNumberInput,
     // Treeselect,
   },
@@ -218,6 +244,7 @@ export default {
         text: 'notification',
       },
       activeTab: 'tab-0',
+      address: '',
       newHive: null,
     }
   },
@@ -299,6 +326,15 @@ export default {
       console.log('creating new apiary')
       console.log(this.newHive)
     },
+    /**
+     * When the location found
+     * @param {Object} addressData Data of the found location
+     * @param {Object} placeResultData PlaceResult object
+     * @param {String} id Input container ID
+     */
+    getAddressData: function(addressData, placeResultData, id) {
+      this.address = addressData
+    },
     setActiveTab(int) {
       this.activeTab = 'tab-' + int
     },
@@ -361,6 +397,26 @@ export default {
       display: inline;
       font-size: 24px;
     }
+  }
+}
+
+.bounce {
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateX(0);
+  }
+  40% {
+    transform: translateX(18px);
+  }
+  60% {
+    transform: translateX(9px);
   }
 }
 </style>
