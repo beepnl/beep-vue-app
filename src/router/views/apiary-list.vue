@@ -354,6 +354,7 @@ export default {
     this.readApiariesAndGroups().then(() => {
       this.ready = true
     })
+    this.search = this.getURLParameter('search')
   },
   methods: {
     async readApiariesAndGroups() {
@@ -370,6 +371,21 @@ export default {
       } catch (e) {
         console.log(e)
       }
+    },
+    getURLParameter(param) {
+      const urlQuery = window.location.search.substring(1)
+      const queryVariables = urlQuery.split('&')
+
+      for (var i = 0; i < queryVariables.length; i++) {
+        const parameterName = queryVariables[i].split('=')
+
+        if (parameterName[0] === param) {
+          return parameterName[1] === undefined
+            ? null
+            : decodeURIComponent(parameterName[1])
+        }
+      }
+      return null
     },
     inspectionsForHive(hive) {
       if (this.inspectionsForHives.length && hive.inspection_count > 0) {

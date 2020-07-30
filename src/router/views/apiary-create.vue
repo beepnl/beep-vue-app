@@ -498,6 +498,7 @@ export default {
         setTimeout(() => {
           return this.$router.push({
             name: 'home',
+            query: { search: this.newHive.name },
           })
         }, 300) // wait for API to update locations/hives
       } catch (error) {
