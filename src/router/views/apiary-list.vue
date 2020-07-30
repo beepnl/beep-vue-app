@@ -244,13 +244,10 @@ export default {
     ready: false,
   }),
   computed: {
-    ...mapGetters('locations', ['apiaries', 'apiaryListView']),
+    ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
     hiveSets() {
       return this.apiaries.concat(this.groups)
-    },
-    isMobile() {
-      return window.matchMedia('only screen and (max-width: 599px)').matches
     },
     sortedHiveSets() {
       const sortedHiveSets = this.hiveSets
@@ -370,15 +367,21 @@ export default {
   mounted() {
     if (localStorage.listView) {
       this.listView = localStorage.listView === 'true'
-      this.$store.commit('locations/setApiaryListView', 'listView')
+      if (this.listView) {
+        this.$store.commit('locations/setApiaryListView', 'listView')
+      }
     }
     if (localStorage.gridView) {
       this.gridView = localStorage.gridView === 'true'
-      this.$store.commit('locations/setApiaryListView', 'gridView')
+      if (this.gridView) {
+        this.$store.commit('locations/setApiaryListView', 'gridView')
+      }
     }
     if (localStorage.apiaryView) {
       this.apiaryView = localStorage.apiaryView === 'true'
-      this.$store.commit('locations/setApiaryListView', 'apiaryView')
+      if (this.apiaryView) {
+        this.$store.commit('locations/setApiaryListView', 'apiaryView')
+      }
     }
   },
   created() {
@@ -549,8 +552,12 @@ export default {
   }
   &.apiary-view {
     .hive-set-title {
-      padding-bottom: 2px;
+      padding-bottom: 4px;
       margin: 10px 0 18px;
+      @include for-phone-only {
+        padding-bottom: 2px;
+        margin: 8px 0 16px;
+      }
     }
   }
 }

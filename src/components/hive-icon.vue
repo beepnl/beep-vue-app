@@ -48,7 +48,7 @@ export default {
       if (!this.apiaryView) {
         return hive.layers[0].framecount * 6
       } else {
-        return hive.layers[0].framecount * 4
+        return hive.layers[0].framecount * 3.5
       }
     },
     orderedLayers: function(hive) {
