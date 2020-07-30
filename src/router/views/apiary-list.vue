@@ -52,6 +52,9 @@
                 <v-text-field
                   v-model="search"
                   :label="`${$t('Search')}`"
+                  :class="
+                    search !== null ? 'v-input--is-focused primary--text' : ''
+                  "
                   clearable
                   outlined
                   dense
