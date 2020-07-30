@@ -4,9 +4,9 @@
       v-for="(hive, j) in hives"
       :key="j"
       :class="
-        `hive-icon d-flex flex-column justify-center align-center white--text text--small mr-1 ${
-          hasQueenExcluder ? '--has-queen-excluder' : ''
-        }`
+        `hive-icon hive-icon-preview d-flex flex-column justify-center align-center white--text text--small mr-1 ${
+          hasLayer(hive, 'queen_excluder') ? 'has-queen-excluder' : ''
+        } ${hasLayer(hive, 'feeding_box') ? 'has-feeding-box' : ''}`
       "
       height="auto"
     >
@@ -56,6 +56,9 @@ export default {
     },
   },
   methods: {
+    hasLayer(hive, type) {
+      return hive.layers.some((layer) => layer.type === type)
+    },
     hiveWidth: function(hive) {
       return hive.layers[0].framecount * 6
     },
@@ -85,9 +88,12 @@ export default {
   overflow-x: auto;
 }
 
-.hive-icon {
+.hive-icon-preview {
   position: relative;
+  padding: 0 !important;
   margin-right: 0 !important;
+  margin-bottom: 0 !important;
+  border-bottom: 0 !important;
   border-radius: 2px 2px 0 0;
   .hive-icon-layers {
     width: 100%;
@@ -96,10 +102,13 @@ export default {
     margin-bottom: 3px;
     border-bottom: 1px solid green !important;
   }
-  &.--has-queen-excluder {
+  &.has-queen-excluder {
     .hive-icon-layers {
-      padding: 0 14px;
+      padding: 0 14px !important;
     }
+  }
+  &.has-feeding-box {
+    margin-top: 20px !important;
   }
 }
 

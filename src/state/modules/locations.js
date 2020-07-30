@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import createResource from '@utils/store/vuex-resource'
+import * as Api from '@api/locations.js'
 
 const resource = createResource({ path: 'locations' })
 
@@ -97,28 +98,33 @@ export const actions = {
   //   }
   //   return false
   // },
-  editOn: function({ commit }) {
-    return commit('setEditable', true)
-  },
-  editOff: function({ commit }) {
-    return commit('setEditable', false)
-  },
-  selectHive: function({ commit }, payload) {
-    return commit('selectHive', payload || {})
-  },
-  unselectHives: function({ commit }) {
-    return commit('unselectHives')
-  },
-  addHive: function({ commit }, payload) {
-    return commit('addHive', payload || {})
-  },
-  createApiary: function({ commit }) {
-    return commit('createApiary')
-  },
-  updateApiary: function({ commit }, payload) {
-    return commit('updateApiary', payload || {})
-  },
-  deleteApiary: function({ commit }, payload) {
-    return commit('deleteApiary', payload || {})
+  createApiary: function({ _ }, apiary) {
+    return Api.createApiary(apiary)
+      .then(() => {
+        return true
+      })
+      .catch((error) => {
+        // Error 😨
+        if (error.response) {
+          /*
+           * The request was made and the server responded with a
+           * status code that falls out of the range of 2xx
+           */
+          console.log(error.response.data)
+          console.log(error.response.status)
+          console.log(error.response.headers)
+        } else if (error.request) {
+          /*
+           * The request was made but no response was received, `error.request`
+           * is an instance of XMLHttpRequest in the browser and an instance
+           * of http.ClientRequest in Node.js
+           */
+          console.log(error.request)
+        } else {
+          // Something happened in setting up the request and triggered an Error
+          console.log('Error', error.message)
+        }
+        console.log(error)
+      })
   },
 }

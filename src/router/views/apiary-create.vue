@@ -134,7 +134,7 @@
                   <v-text-field
                     v-model="address"
                     color="#ddd"
-                    :label="`${$t('Address')}*`"
+                    :label="`${$t('Address')}`"
                     outlined
                     dense
                   >
@@ -184,7 +184,7 @@
                   <v-text-field
                     v-if="newHive"
                     v-model="newHive.city"
-                    :label="`${$t('City')}*`"
+                    :label="`${$t('City')}`"
                     outlined
                     dense
                   >
@@ -194,7 +194,7 @@
                   <v-text-field
                     v-if="newHive"
                     v-model="newHive.postal_code"
-                    :label="`${$t('Postal_code')}*`"
+                    :label="`${$t('Postal_code')}`"
                     outlined
                     dense
                   >
@@ -204,7 +204,7 @@
                   <v-text-field
                     v-if="newHive"
                     v-model="newHive.street"
-                    :label="`${$t('Street')}*`"
+                    :label="`${$t('Street')}`"
                     outlined
                     dense
                   >
@@ -214,7 +214,7 @@
                   <v-text-field
                     v-if="newHive"
                     v-model="newHive.street_no"
-                    :label="`${$t('Number')}*`"
+                    :label="`${$t('Number')}`"
                     outlined
                     dense
                   >
@@ -294,6 +294,7 @@
                   <v-text-field
                     v-if="newHive"
                     v-model="newHive.prefix"
+                    :height="36"
                     class="prefix-input"
                     outlined
                     dense
@@ -341,7 +342,7 @@
               outlined
               color="primary"
               class="mr-1"
-              @click="createLocation"
+              @click="createApiary"
             >
               <v-icon left>mdi-check</v-icon>
               {{ $t('save') }}
@@ -436,8 +437,8 @@ export default {
         color: '#F29100',
         hive_type_id: null,
         hive_amount: 1,
-        // brood_layers: 2,
-        // honey_layers: 1,
+        brood_layers: 2, // Needed?
+        honey_layers: 1, // Needed?
         frames: 10,
         offset: 1,
         prefix: this.$i18n.t('Hive_short'),
@@ -481,6 +482,30 @@ export default {
     })
   },
   methods: {
+    async createApiary() {
+      this.newHive.hive_layers = this.newHive.layers // FIXME: rename layers array here now because otherwise hive-factory in hive-edit-details wont work
+      console.log('creating new apiary')
+      console.log(this.newHive)
+      try {
+        const response = await this.$store.dispatch(
+          'locations/createApiary',
+          this.newHive
+        )
+        if (!response) {
+          this.snackbar.text = this.$i18n.t('not_saved_error')
+          this.snackbar.show = true
+        }
+        setTimeout(() => {
+          return this.$router.push({
+            name: 'home',
+          })
+        }, 300) // wait for API to update locations/hives
+      } catch (error) {
+        console.log(error)
+        this.snackbar.text = this.$i18n.t('not_saved_error')
+        this.snackbar.show = true
+      }
+    },
     async readApiaries() {
       try {
         const response = await this.$store.dispatch('locations/findAll')
@@ -488,12 +513,6 @@ export default {
       } catch (e) {
         console.log(e)
       }
-    },
-    createLocation() {
-      // console.log(this.hiveLocation.id)
-      // console.log(this.hiveLocation)
-      console.log('creating new apiary')
-      console.log(this.newHive)
     },
     /**
      * When the location found
@@ -572,7 +591,7 @@ export default {
   border-radius: 4px;
 }
 
-.prefix-input.v-text-field--outlined.v-input--dense.v-text-field--outlined
+.prefix-input.v-text-field.v-input--dense.v-text-field--outlined
   > .v-input__control
   > .v-input__slot {
   min-height: 36px !important; // FIXME: overridden somewhere?
