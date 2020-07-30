@@ -1,19 +1,20 @@
 <template>
   <Layout :menu-items="menuItems" :no-box-shadow="true">
-    <div v-if="showApiaryPlaceholder">
+    <div
+      v-if="showApiaryPlaceholder"
+      class="apiary-placeholder d-flex align-center"
+    >
       <v-container class="d-flex flex-column align-center">
         <v-img
-          class="mt-10"
-          width="60%"
-          max-width="350px"
+          class="apiary-placeholder-item"
           height="auto"
           src="~@assets/img/apiary-illustration.png"
         >
         </v-img>
-        <h4 class="mt-5">{{ $t('no_apiaries_yet') }}</h4>
+        <h4 class="mt-5 mb-8">{{ $t('no_apiaries_yet') }}</h4>
 
         <router-link
-          class="mt-10"
+          class="apiary-placeholder-item mt-10"
           :to="{
             name: `apiary-create`,
           }"
@@ -25,7 +26,7 @@
         </router-link>
 
         <router-link
-          class="mt-5"
+          class="apiary-placeholder-item mt-5"
           :to="{
             name: `support`,
           }"
@@ -360,10 +361,10 @@ export default {
         const responseApiaries = await this.$store.dispatch('locations/findAll')
         const responseGroups = await this.$store.dispatch('groups/findAll')
         if (
-          responseApiaries.locations.length === 2 && // TODO: set back to 0, this is just for testing!!!
-          responseGroups.groups.length === 1 // TODO: set back to 0, this is just for testing!!!
+          responseApiaries.locations.length === 0 &&
+          responseGroups.groups.length === 0
         ) {
-          this.showApiaryPlaceholder = true // TODO: make placeholder for no apiaries/groups situation
+          this.showApiaryPlaceholder = true
         }
         return true
       } catch (e) {
@@ -406,6 +407,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.apiary-placeholder {
+  height: calc(100vh - 104px);
+
+  .apiary-placeholder-item {
+    width: 60%;
+    max-width: 250px;
+    font-weight: 600;
+    text-align: center;
+  }
+}
+
 .filter-bar-wrapper {
   position: fixed;
   top: 108px;
@@ -413,7 +425,6 @@ export default {
   width: 100%;
   margin-top: -4px;
   background-color: white;
-  // border-bottom: 1px solid $color-grey;
   box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.12),
     0 4px 8px 0 rgba(0, 0, 0, 0.04), 0 1px 10px 0 rgba(0, 0, 0, 0.08);
   @include for-tablet-landscape-up {

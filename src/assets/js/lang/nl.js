@@ -612,6 +612,8 @@ const translations = {
   unsaved_changes: 'Niet opgeslagen aanpassingen',
   save_changes:
     'Weet je zeker dat je deze pagina wilt verlaten? Niet opgeslagen aanpassingen zullen verloren gaan.',
+  no_apiaries_yet: 'Je hebt nog geen bijenstanden',
+  need_help: 'Hulp nodig?',
 }
 
 export default translations

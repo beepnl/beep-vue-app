@@ -142,6 +142,11 @@ export default [
     component: () => lazyLoadView(import('@views/user-profile.vue')),
     props: () => ({ user: store.state.auth.currentUser || {} }),
   },
+  {
+    path: '/support',
+    name: 'support',
+    component: () => lazyLoadView(import('@views/support.vue')),
+  },
 ]
 
 // Lazy-loads view components, but with better UX. A loading view
