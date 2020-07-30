@@ -123,10 +123,18 @@
                 mdi-view-headline
               </v-icon>
               <v-icon
+                v-if="!isMobile"
                 :class="`${gridView ? 'color-primary' : ''}`"
                 @click="toggleGrid"
               >
                 mdi-view-grid-outline
+              </v-icon>
+              <v-icon
+                v-if="isMobile"
+                :class="`${mobileView ? 'color-primary' : ''}`"
+                @click="toggleGrid"
+              >
+                mdi-view-agenda-outline
               </v-icon>
             </v-card-actions>
           </v-row>
@@ -223,6 +231,7 @@ export default {
     filterByBase: false,
     filterByImpression: [],
     gridView: false,
+    mobileView: false,
     settings: [],
     showApiaryPlaceholder: false,
     ready: false,
@@ -232,6 +241,9 @@ export default {
     ...mapGetters('groups', ['groups']),
     hiveSets() {
       return this.apiaries.concat(this.groups)
+    },
+    isMobile() {
+      return window.matchMedia('only screen and (max-width: 599px)').matches
     },
     sortedHiveSets() {
       const sortedHiveSets = this.hiveSets
@@ -406,9 +418,15 @@ export default {
       if (this.gridView) {
         localStorage.gridView = 'false'
         this.gridView = false
+        if (this.isMobile) {
+          this.mobileView = true
+        }
       } else {
         localStorage.gridView = 'true'
         this.gridView = true
+        if (this.isMobile) {
+          this.mobileView = false
+        }
       }
     },
     updateFilterByImpression(number) {
@@ -465,6 +483,17 @@ export default {
     .view-buttons {
       padding: 9px;
     }
+    // .hide-on-mobile {
+    //   @include for-phone-only {
+    //     display: none;
+    //   }
+    // }
+    // .show-on-mobile {
+    //   display: none;
+    //   @include for-phone-only {
+    //     display: flex;
+    //   }
+    // }
   }
 }
 
