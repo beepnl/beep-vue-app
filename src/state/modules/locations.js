@@ -7,11 +7,15 @@ const resource = createResource({ path: 'locations' })
 // Add some custom functionality to the resource module
 export const state = {
   ...resource.state,
+  apiaryListView: 'listView',
 }
 export const getters = {
   ...resource.getters,
   apiaries: (state) => {
     return state.data.locations || []
+  },
+  apiaryListView: (state) => {
+    return state.apiaryListView
   },
 }
 export const mutations = {
@@ -76,6 +80,9 @@ export const mutations = {
         getters.apiaries.splice(index, 1)
       }
     }
+  },
+  setApiaryListView: function(state, string) {
+    state.apiaryListView = string
   },
 }
 export const actions = {

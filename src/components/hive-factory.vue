@@ -339,7 +339,7 @@ export default {
   height: 18px;
 }
 .brood-layer {
-  height: 27px;
+  height: 30px;
 }
 .queen_excluder-layer,
 .feeding_box-layer {

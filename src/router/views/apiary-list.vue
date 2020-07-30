@@ -117,24 +117,24 @@
             </div>
             <v-card-actions class="view-buttons">
               <v-icon
-                :class="`${gridView ? '' : 'color-primary'} mr-1`"
-                @click="toggleGrid"
+                :class="`${listView ? 'color-primary' : ''} mr-1`"
+                @click="toggleGrid('listView')"
               >
-                mdi-view-headline
+                mdi-view-agenda-outline
               </v-icon>
               <v-icon
-                v-if="!isMobile"
-                :class="`${gridView ? 'color-primary' : ''}`"
-                @click="toggleGrid"
+                :class="
+                  `${gridView ? 'color-primary' : ''} hide-on-mobile mr-1`
+                "
+                @click="toggleGrid('gridView')"
               >
                 mdi-view-grid-outline
               </v-icon>
               <v-icon
-                v-if="isMobile"
-                :class="`${mobileView ? 'color-primary' : ''}`"
-                @click="toggleGrid"
+                :class="`${apiaryView ? 'color-primary' : ''}`"
+                @click="toggleGrid('apiaryView')"
               >
-                mdi-view-agenda-outline
+                mdi-home-analytics
               </v-icon>
             </v-card-actions>
           </v-row>
@@ -144,7 +144,7 @@
         <v-row
           v-for="(hiveSet, j) in filteredHiveSets"
           :key="j"
-          class="hive-set"
+          :class="`hive-set ${apiaryView ? 'apiary-view' : ''}`"
           dense
         >
           <div
@@ -170,7 +170,7 @@
 
             <h4 v-text="hiveSet.name"></h4>
             <pre
-              v-if="!gridView && hiveSet.users && hiveSet.users.length"
+              v-if="listView && hiveSet.users && hiveSet.users.length"
               class="caption hive-set-caption"
               v-text="
                 ` (${hiveSet.users.length} ${$tc(
@@ -186,14 +186,20 @@
             v-for="(hive, i) in sortedHives(hiveSet.hives)"
             :key="i"
             sm="auto"
-            :class="`hive-item ${gridView ? 'grid-view' : 'list-view'}`"
+            :class="
+              `hive-item ${listView ? 'list-view' : ''} ${
+                apiaryView ? 'apiary-view' : ''
+              }`
+            "
           >
             <ScaleTransition :duration="400" group>
               <HiveCard
                 :key="`${hive.id}`"
                 :hive="hive"
                 :hive-set="hiveSet"
+                :list-view="listView"
                 :grid-view="gridView"
+                :apiary-view="apiaryView"
               ></HiveCard>
             </ScaleTransition>
           </v-col>
@@ -230,14 +236,15 @@ export default {
     filterByReminder: false,
     filterByBase: false,
     filterByImpression: [],
+    listView: true,
     gridView: false,
-    mobileView: false,
+    apiaryView: false,
     settings: [],
     showApiaryPlaceholder: false,
     ready: false,
   }),
   computed: {
-    ...mapGetters('locations', ['apiaries']),
+    ...mapGetters('locations', ['apiaries', 'apiaryListView']),
     ...mapGetters('groups', ['groups']),
     hiveSets() {
       return this.apiaries.concat(this.groups)
@@ -361,8 +368,17 @@ export default {
     },
   },
   mounted() {
+    if (localStorage.listView) {
+      this.listView = localStorage.listView === 'true'
+      this.$store.commit('locations/setApiaryListView', 'listView')
+    }
     if (localStorage.gridView) {
       this.gridView = localStorage.gridView === 'true'
+      this.$store.commit('locations/setApiaryListView', 'gridView')
+    }
+    if (localStorage.apiaryView) {
+      this.apiaryView = localStorage.apiaryView === 'true'
+      this.$store.commit('locations/setApiaryListView', 'apiaryView')
     }
   },
   created() {
@@ -414,20 +430,30 @@ export default {
     sortedHives(hives) {
       return hives.slice().sort((a, b) => a.order - b.order)
     },
-    toggleGrid() {
-      if (this.gridView) {
+    toggleGrid(view) {
+      if (view === 'listView') {
+        localStorage.listView = 'true'
+        this.listView = true
         localStorage.gridView = 'false'
         this.gridView = false
-        if (this.isMobile) {
-          this.mobileView = true
-        }
-      } else {
+        localStorage.apiaryView = 'false'
+        this.apiaryView = false
+      } else if (view === 'gridView') {
         localStorage.gridView = 'true'
         this.gridView = true
-        if (this.isMobile) {
-          this.mobileView = false
-        }
+        localStorage.listView = 'false'
+        this.listView = false
+        localStorage.apiaryView = 'false'
+        this.apiaryView = false
+      } else if (view === 'apiaryView') {
+        localStorage.apiaryView = 'true'
+        this.apiaryView = true
+        localStorage.listView = 'false'
+        this.listView = false
+        localStorage.gridView = 'false'
+        this.gridView = false
       }
+      this.$store.commit('locations/setApiaryListView', view)
     },
     updateFilterByImpression(number) {
       if (this.filterByImpression.includes(number)) {
@@ -483,17 +509,11 @@ export default {
     .view-buttons {
       padding: 9px;
     }
-    // .hide-on-mobile {
-    //   @include for-phone-only {
-    //     display: none;
-    //   }
-    // }
-    // .show-on-mobile {
-    //   display: none;
-    //   @include for-phone-only {
-    //     display: flex;
-    //   }
-    // }
+    .hide-on-mobile {
+      @include for-phone-only {
+        display: none;
+      }
+    }
   }
 }
 
@@ -501,6 +521,9 @@ export default {
   margin-bottom: 24px;
   &:first-child {
     margin-top: 80px;
+    @include for-phone-only {
+      margin-top: 70px;
+    }
   }
   .hive-set-title {
     width: 100%;
@@ -514,11 +537,20 @@ export default {
   }
   .hive-item {
     flex-grow: 0 !important;
+    &.apiary-view {
+      padding: 0 !important;
+    }
     &.list-view {
       @include xs-only {
         flex-grow: 1 !important;
         min-width: 100%;
       }
+    }
+  }
+  &.apiary-view {
+    .hive-set-title {
+      padding-bottom: 2px;
+      margin: 10px 0 18px;
     }
   }
 }

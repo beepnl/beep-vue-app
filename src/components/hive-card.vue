@@ -1,6 +1,10 @@
 <template>
   <v-card
-    class="hive-card d-flex flex-column justify-end align-start"
+    :class="
+      `hive-card d-flex flex-column justify-end align-start ${
+        apiaryView ? 'apiary-view' : ''
+      }`
+    "
     :style="
       `border-color: ${
         hiveSet.hex_color
@@ -22,7 +26,7 @@
       >
       </h4>
       <div
-        v-if="!gridView && hiveSet.users && hiveSet.users.length"
+        v-if="listView && hiveSet.users && hiveSet.users.length"
         class="d-flex flex-row"
       >
         <h4
@@ -40,7 +44,7 @@
         </pre>
       </div>
       <h4
-        v-if="!gridView && !hiveSet.users"
+        v-if="listView && !hiveSet.users"
         class="hive-name mb-3"
         v-text="
           `
@@ -64,7 +68,7 @@
       </router-link>
       <HiveIcon v-else :hive="hive"></HiveIcon>
 
-      <div class="pl-2 pr-0 py-0">
+      <div v-if="!apiaryView" class="hive-details-icons-text pl-2 pr-0 py-0">
         <div
           class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
         >
@@ -85,7 +89,7 @@
             </a>
           </div>
           <span
-            v-if="!gridView"
+            v-if="listView"
             :class="
               `${
                 hive.last_inspection_date !== null ? '' : 'color-grey'
@@ -111,8 +115,7 @@
             v-text="momentifyDayMonth(hive.reminder_date)"
           >
           </span>
-          <span v-if="hive.reminder && !gridView" v-text="hive.reminder">
-          </span>
+          <span v-if="hive.reminder && listView" v-text="hive.reminder"> </span>
         </div>
 
         <div
@@ -141,7 +144,7 @@
             </v-icon>
           </div>
           <span
-            v-if="hive.queen.name && !gridView"
+            v-if="hive.queen.name && listView"
             v-text="hive.queen.name"
           ></span>
         </div>
@@ -227,7 +230,15 @@ export default {
       default: null,
       required: true,
     },
+    listView: {
+      type: Boolean,
+      default: false,
+    },
     gridView: {
+      type: Boolean,
+      default: false,
+    },
+    apiaryView: {
       type: Boolean,
       default: false,
     },
@@ -304,6 +315,13 @@ export default {
   }
   @include for-phone-only {
     padding: 10px;
+  }
+  &.apiary-view {
+    padding: 0 !important;
+    border: none !important;
+    .hive-icon {
+      margin-right: 0 !important;
+    }
   }
   a {
     text-decoration: none;

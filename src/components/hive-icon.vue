@@ -3,7 +3,7 @@
     :class="
       `hive-icon d-flex flex-column justify-center align-center white--text text--small mr-1 ${
         hasQueenExcluder ? '--has-queen-excluder' : ''
-      }`
+      } ${apiaryView ? 'apiary-view' : ''}`
     "
     height="auto"
   >
@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   props: {
     hive: {
@@ -30,13 +32,24 @@ export default {
     },
   },
   computed: {
+    ...mapGetters('locations', ['apiaryListView']),
     hasQueenExcluder() {
       return this.hive.layers.some((layer) => layer.type === 'queen_excluder')
+    },
+    apiaryView() {
+      if (this.apiaryListView === 'apiaryView') {
+        return true
+      }
+      return false
     },
   },
   methods: {
     hiveWidth: function(hive) {
-      return hive.layers[0].framecount * 6
+      if (!this.apiaryView) {
+        return hive.layers[0].framecount * 6
+      } else {
+        return hive.layers[0].framecount * 4
+      }
     },
     orderedLayers: function(hive) {
       return hive.layers.slice().sort(function(a, b) {
@@ -98,12 +111,23 @@ export default {
   }
 }
 
-.honey-layer {
-  height: 18px;
+.hive-icon {
+  .honey-layer {
+    height: 18px;
+  }
+  .brood-layer {
+    height: 30px;
+  }
+  &.apiary-view {
+    .honey-layer {
+      height: 9px;
+    }
+    .brood-layer {
+      height: 16px;
+    }
+  }
 }
-.brood-layer {
-  height: 27px;
-}
+
 .queen_excluder-layer,
 .feeding_box-layer {
   display: flex;
