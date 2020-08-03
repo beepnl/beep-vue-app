@@ -11,6 +11,24 @@
   border-color: $color-grey-light;
 }
 
+.v-text-field {
+  .v-input__control .v-input__slot {
+    display: flex !important;
+    align-items: center !important;
+    min-height: auto !important;
+  }
+
+  &:not(.v-text-field--outlined)input {
+    padding: 8px 0 0;
+  }
+
+  &.v-text-field--outlined {
+    .v-input input {
+      max-height: none;
+    }
+  }
+}
+
 /* VueNumberInput */
 .number-input {
   input.number-input__input {

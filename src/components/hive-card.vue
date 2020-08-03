@@ -319,9 +319,6 @@ export default {
   &.apiary-view {
     padding: 0 !important;
     border: none !important;
-    .hive-icon {
-      margin-right: 0 !important;
-    }
   }
   a {
     text-decoration: none;

@@ -55,6 +55,7 @@
                   :class="
                     search !== null ? 'v-input--is-focused primary--text' : ''
                   "
+                  height="36px"
                   clearable
                   outlined
                   dense
@@ -117,14 +118,14 @@
             </div>
             <v-card-actions class="view-buttons">
               <v-icon
-                :class="`${listView ? 'color-primary' : ''} mr-1`"
+                :class="`${listView ? 'color-primary' : ''} mr-2`"
                 @click="toggleGrid('listView')"
               >
-                mdi-view-agenda-outline
+                mdi-view-headline
               </v-icon>
               <v-icon
                 :class="
-                  `${gridView ? 'color-primary' : ''} hide-on-mobile mr-1`
+                  `${gridView ? 'color-primary' : ''} hide-on-mobile mr-2`
                 "
                 @click="toggleGrid('gridView')"
               >
@@ -182,17 +183,21 @@
             >
             </pre>
           </div>
-          <v-col
-            v-for="(hive, i) in sortedHives(hiveSet.hives)"
-            :key="i"
-            sm="auto"
-            :class="
-              `hive-item ${listView ? 'list-view' : ''} ${
-                apiaryView ? 'apiary-view' : ''
-              }`
-            "
+          <ScaleTransition
+            :duration="300"
+            group
+            class="hive-item-transition-wrapper"
           >
-            <ScaleTransition :duration="400" group>
+            <v-col
+              v-for="(hive, i) in sortedHives(hiveSet.hives)"
+              :key="i"
+              sm="auto"
+              :class="
+                `hive-item ${listView ? 'list-view' : ''} ${
+                  apiaryView ? 'apiary-view' : ''
+                }`
+              "
+            >
               <HiveCard
                 :key="`${hive.id}`"
                 :hive="hive"
@@ -201,8 +206,8 @@
                 :grid-view="gridView"
                 :apiary-view="apiaryView"
               ></HiveCard>
-            </ScaleTransition>
-          </v-col>
+            </v-col>
+          </ScaleTransition>
         </v-row>
         <v-row
           v-if="sortedHiveSets.length && !filteredHiveSets.length"
@@ -223,12 +228,14 @@ import Layout from '@layouts/main.vue'
 import { mapGetters } from 'vuex'
 import { momentMixin } from '@mixins/momentMixin'
 import { ScaleTransition } from 'vue2-transitions'
+// import { SlideYDownTransition } from 'vue2-transitions'
 
 export default {
   components: {
     HiveCard,
     Layout,
     ScaleTransition,
+    // SlideYDownTransition,
   },
   mixins: [momentMixin],
   data: () => ({
@@ -538,8 +545,13 @@ export default {
       font-weight: 600;
     }
   }
+  .hive-item-transition-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+  }
   .hive-item {
     flex-grow: 0 !important;
+    padding: 4px;
     &.apiary-view {
       padding: 0 !important;
     }
@@ -560,14 +572,5 @@ export default {
       }
     }
   }
-}
-
-.grid-fade-enter-active,
-.grid-fade-leave-active {
-  transition: opacity 0.2s ease;
-}
-.grid-fade-enter,
-.grid-fade-leave-to {
-  opacity: 0;
 }
 </style>

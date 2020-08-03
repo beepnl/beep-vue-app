@@ -71,6 +71,7 @@
                           "
                           :label="`${$t('Queen')} ${$t('name')}`"
                           :placeholder="`${$t('Queen')} ${$t('name')}`"
+                          height="36px"
                           class="queen-name"
                           @input="updateQueen($event, 'name')"
                         >
@@ -113,6 +114,7 @@
                                     : ''
                                 }`
                               "
+                              height="36px"
                               prepend-icon="mdi-calendar"
                               v-bind="attrs"
                               v-on="on"
@@ -162,6 +164,7 @@
                               : null
                           "
                           :label="`${$t('Queen')} ${$t('queen_description')}`"
+                          height="36px"
                           @input="updateQueen($event, 'description')"
                         >
                         </v-text-field>
@@ -564,7 +567,7 @@ export default {
   }
 
   input {
-    margin-bottom: 2px;
+    margin-bottom: 4px;
   }
 }
 

@@ -93,8 +93,11 @@ export default {
     width: 100%;
     height: 100%;
   }
+  &.apiary-view {
+    margin-right: 0 !important;
+  }
   &.--has-queen-excluder {
-    margin-right: 10px !important;
+    padding-right: 12px;
   }
 }
 
