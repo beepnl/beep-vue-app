@@ -513,9 +513,11 @@ export default {
   z-index: 1;
   width: 100%;
   margin-top: -4px;
-  background-color: white;
-  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.12),
-    0 4px 8px 0 rgba(0, 0, 0, 0.04), 0 1px 10px 0 rgba(0, 0, 0, 0.08);
+  background-color: $color-orange-light;
+  border-bottom: 1px solid #fff5e2;
+  // background-color: white;
+  // box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.12),
+  //   0 4px 8px 0 rgba(0, 0, 0, 0.04), 0 1px 10px 0 rgba(0, 0, 0, 0.08);
   @include for-tablet-landscape-up {
     top: 116px;
   }
@@ -527,10 +529,12 @@ export default {
   .filter-bar {
     margin-top: -10px;
     margin-bottom: -10px;
-    @include for-tablet-landscape-up {
-      margin-top: -6px;
+    @include for-tablet-portrait-up {
+      margin-top: -12px;
+      margin-bottom: -12px;
     }
     .v-input {
+      background-color: $color-white;
       @include for-phone-only {
         max-width: 106px;
       }
@@ -560,7 +564,7 @@ export default {
   &:first-child {
     margin-top: 80px;
     @include for-phone-only {
-      margin-top: 60px;
+      margin-top: 56px;
     }
   }
   .hive-set-title {
