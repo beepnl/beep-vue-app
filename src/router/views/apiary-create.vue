@@ -122,23 +122,15 @@
               >
               <v-row>
                 <v-col cols="12">
-                  <!-- <VueGoogleAutocomplete
-                id="map"
-                ref="address"
-                classname="form-control"
-                placeholder="Please type your address"
-                country="sg"
-                @placechanged="getAddressData"
-              >
-              </VueGoogleAutocomplete> -->
-                  <v-text-field
-                    v-model="address"
-                    color="#ddd"
-                    :label="`${$t('Address')}`"
-                    outlined
-                    dense
+                  <div class="beep-label" v-text="`${$t('Address')}`"></div>
+                  <VueGoogleAutocomplete
+                    id="map"
+                    ref="address"
+                    classname="autocomplete-field v-input v-input--dense v-text-field v-text-field--outlined"
+                    :placeholder="`${$t('Address')}`"
+                    @placechanged="getAddressData"
                   >
-                  </v-text-field>
+                  </VueGoogleAutocomplete>
                 </v-col>
               </v-row>
               <v-row>
@@ -162,7 +154,7 @@
                     :max="90"
                     inline
                     controls
-                    @change="updateHive($event)"
+                    @change="updateHive($event, 'lat')"
                   ></VueNumberInput>
                 </v-col>
                 <v-col cols="6" sm="4">
@@ -175,7 +167,7 @@
                     :max="180"
                     inline
                     controls
-                    @change="updateHive($event)"
+                    @change="updateHive($event, 'lon')"
                   ></VueNumberInput>
                 </v-col>
               </v-row>
@@ -368,7 +360,7 @@ import ApiaryPreview from '@components/apiary-preview.vue'
 import Confirm from '@components/confirm.vue'
 import HiveEditDetails from '@components/hive-edit-details.vue'
 import Layout from '@layouts/back.vue'
-// import VueGoogleAutocomplete from 'vue-google-autocomplete'
+import VueGoogleAutocomplete from 'vue-google-autocomplete'
 import VueNumberInput from '@chenfengyuan/vue-number-input'
 
 export default {
@@ -377,7 +369,7 @@ export default {
     Confirm,
     HiveEditDetails,
     Layout,
-    // VueGoogleAutocomplete,
+    VueGoogleAutocomplete,
     VueNumberInput,
   },
   data: function() {
@@ -388,7 +380,7 @@ export default {
         text: 'notification',
       },
       activeTab: 'tab-0',
-      address: '',
+      // address: '',
       newHive: null,
     }
   },
@@ -522,13 +514,20 @@ export default {
      * @param {String} id Input container ID
      */
     getAddressData: function(addressData, placeResultData, id) {
-      this.address = addressData
+      this.newHive.country_code =
+        placeResultData.address_components[5].short_name
+      this.newHive.lat = addressData.latitude
+      this.newHive.lon = addressData.longitude
+      this.newHive.city = addressData.locality
+      this.newHive.postal_code = addressData.postal_code
+      this.newHive.street = addressData.route
+      this.newHive.street_no = addressData.street_number
     },
     setActiveTab(int) {
       this.activeTab = 'tab-' + int
     },
-    updateHive(event) {
-      console.log(event) // TODO: update newHive, integrate with autocomplete
+    updateHive(value, property) {
+      this.newHive[property] = value
     },
   },
 }
@@ -584,18 +583,18 @@ export default {
   }
 }
 
-.country-select {
+.country-select,
+.autocomplete-field {
+  width: 100%;
   max-width: 100%;
   min-height: 36px;
   padding: 0 12px;
   border: 1px solid $color-grey-light;
   border-radius: 4px;
-}
 
-.prefix-input.v-text-field.v-input--dense.v-text-field--outlined
-  > .v-input__control
-  > .v-input__slot {
-  min-height: 36px !important; // FIXME: overridden somewhere?
+  &:focus {
+    outline-color: $color-primary;
+  }
 }
 
 .next {
