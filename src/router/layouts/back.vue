@@ -6,6 +6,7 @@
       app
       color="primary"
       dark
+      dense
     >
       <slot name="icon">
         <v-btn icon @click="back">

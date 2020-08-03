@@ -6,6 +6,7 @@
       app
       color="primary"
       dark
+      dense
     >
       <v-toolbar-title class="d-flex align-self-center"
         ><img src="@assets/img/beep-logo-black.svg"

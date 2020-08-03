@@ -509,18 +509,12 @@ export default {
 
 .filter-bar-wrapper {
   position: fixed;
-  top: 108px;
+  top: 100px;
   z-index: 1;
   width: 100%;
   margin-top: -4px;
   background-color: $color-orange-light;
   border-bottom: 1px solid #fff5e2;
-  // background-color: white;
-  // box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.12),
-  //   0 4px 8px 0 rgba(0, 0, 0, 0.04), 0 1px 10px 0 rgba(0, 0, 0, 0.08);
-  @include for-tablet-landscape-up {
-    top: 116px;
-  }
   .filter-container {
     @include for-phone-only {
       padding: 10px 12px;
@@ -562,17 +556,21 @@ export default {
     margin-bottom: 18px;
   }
   &:first-child {
-    margin-top: 80px;
+    margin-top: 70px;
     @include for-phone-only {
-      margin-top: 56px;
+      margin-top: 48px;
     }
   }
   .hive-set-title {
     width: 100%;
-    padding-bottom: 8px;
-    margin: 12px 0;
+    padding-bottom: 4px;
+    margin: 10px 0 12px;
     color: $color-primary;
     border-bottom: 1px solid $color-primary;
+    @include for-phone-only {
+      padding-bottom: 2px;
+      margin: 8px 0 10px;
+    }
     .hive-set-caption {
       font-weight: 600;
     }
@@ -591,16 +589,6 @@ export default {
       @include xs-only {
         flex-grow: 1 !important;
         min-width: 100%;
-      }
-    }
-  }
-  &.apiary-view {
-    .hive-set-title {
-      padding-bottom: 4px;
-      margin: 10px 0 18px;
-      @include for-phone-only {
-        padding-bottom: 2px;
-        margin: 8px 0 16px;
       }
     }
   }

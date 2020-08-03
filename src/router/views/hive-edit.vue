@@ -555,9 +555,6 @@ export default {
   background-color: $color-orange-light !important;
   border-bottom: 1px solid #fff5e2 !important;
   box-shadow: none !important;
-  @include for-phone-only {
-    top: 56px;
-  }
 }
 .hive-edit-content {
   margin-top: 56px;
