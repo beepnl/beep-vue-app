@@ -6,7 +6,7 @@
     <v-tabs
       v-model="activeTab"
       background-color="primary"
-      class="elevation-2"
+      class="elevation-2 apiary-create"
       dense
       dark
       grow
@@ -72,7 +72,7 @@
                     v-model="newHive.name"
                     :label="`${$t('Name')}*`"
                     :placeholder="`${$t('Name')}`"
-                    outlined
+                    class="apiary-create-name"
                   >
                   </v-text-field>
 
@@ -433,7 +433,7 @@ export default {
         honey_layers: 1, // Needed?
         frames: 10,
         offset: 1,
-        prefix: this.$i18n.t('Hive_short'),
+        prefix: this.$i18n.tc('Hive_short', 1),
         country_code: this.locale,
         city: '',
         postal_code: '',
@@ -533,95 +533,107 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.v-tabs--icons-and-text > .v-tabs-bar {
-  .v-tab {
-    .v-icon {
-      font-size: 20px;
-      color: rgba(255, 255, 255, 0.6);
-      &::before {
-        margin-top: -2px;
-      }
-    }
-
-    &.v-tab--active {
+<style lang="scss">
+.apiary-create {
+  &.v-tabs--icons-and-text > .v-tabs-bar {
+    .v-tab {
       .v-icon {
-        color: $color-white;
+        font-size: 20px;
+        color: rgba(255, 255, 255, 0.6);
+        &::before {
+          margin-top: -2px;
+        }
       }
-    }
 
-    .show-on-mobile {
-      display: none;
-    }
-
-    @media (max-width: 900px) {
-      padding: 0 4px;
-      font-size: 12px !important;
-      .v-icon {
-        font-size: 16px;
+      &.v-tab--active {
+        .v-icon {
+          color: $color-white;
+        }
       }
-      // .v-icon {
-      //   display: block;
-      //   &::before {
-      //     margin-top: 2px;
-      //   }
-      // }
-    }
 
-    @media (max-width: 725px) {
-      min-width: 70px !important;
-      font-size: 16px !important;
-      .hide-on-mobile {
+      .show-on-mobile {
         display: none;
       }
-      .show-on-mobile {
-        display: inline;
+
+      @media (max-width: 900px) {
+        padding: 0 4px;
+        font-size: 12px !important;
+        .v-icon {
+          font-size: 16px;
+        }
+        // .v-icon {
+        //   display: block;
+        //   &::before {
+        //     margin-top: 2px;
+        //   }
+        // }
       }
-      .v-icon {
-        display: inline;
-        font-size: 24px;
+
+      @media (max-width: 725px) {
+        min-width: 70px !important;
+        font-size: 16px !important;
+        .hide-on-mobile {
+          display: none;
+        }
+        .show-on-mobile {
+          display: inline;
+        }
+        .v-icon {
+          display: inline;
+          font-size: 24px;
+        }
       }
     }
   }
-}
 
-.country-select,
-.autocomplete-field {
-  width: 100%;
-  max-width: 100%;
-  min-height: 36px;
-  padding: 0 12px;
-  border: 1px solid $color-grey-light;
-  border-radius: 4px;
+  .apiary-create-name {
+    padding-top: 0;
+    font-size: 2rem;
 
-  &:focus {
-    outline-color: $color-primary;
+    &.v-input input {
+      min-height: 45px !important;
+      max-height: 45px !important;
+    }
   }
-}
 
-.next {
-  margin-right: -6px;
-}
-.prev {
-  margin-left: -6px;
-}
-.bounce {
-  animation: bounce 2s infinite;
-}
+  .country-select,
+  .autocomplete-field {
+    width: 100%;
+    max-width: 100%;
+    min-height: 36px;
+    padding: 0 12px;
+    border: 1px solid $color-grey-light;
+    border-radius: 4px;
 
-@keyframes bounce {
-  0%,
-  20%,
-  50%,
-  80%,
-  100% {
-    transform: translateX(0);
+    &:focus {
+      outline-color: $color-primary;
+    }
   }
-  40% {
-    transform: translateX(18px);
+
+  .next {
+    margin-right: -6px;
   }
-  60% {
-    transform: translateX(9px);
+  .prev {
+    margin-left: -6px;
+  }
+  .bounce {
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce {
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+      transform: translateX(0);
+    }
+    40% {
+      transform: translateX(18px);
+    }
+    60% {
+      transform: translateX(9px);
+    }
   }
 }
 </style>

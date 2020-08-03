@@ -41,7 +41,7 @@
         <v-card outlined>
           <v-card-text>
             <v-row>
-              <v-col cols="12">
+              <v-col cols="12" sm="6" md="4">
                 <v-text-field
                   v-if="activeHive"
                   :value="activeHive.name"
@@ -552,6 +552,9 @@ export default {
   position: fixed;
   z-index: 2;
   width: 100%;
+  background-color: $color-orange-light !important;
+  border-bottom: 1px solid #fff5e2 !important;
+  box-shadow: none !important;
   @include for-phone-only {
     top: 56px;
   }
@@ -560,14 +563,12 @@ export default {
   margin-top: 56px;
 }
 .hive-edit-name {
-  padding-top: 0;
+  padding-top: 0 !important;
   font-size: 2rem;
-  @include for-tablet-landscape-up {
-    max-width: 500px;
-  }
 
   input {
-    margin-bottom: 4px;
+    min-height: 36px;
+    padding-top: 0 !important;
   }
 }
 
