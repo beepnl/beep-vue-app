@@ -540,7 +540,7 @@ const translations = {
   queen_line: 'lijn',
   queen_tree: 'stamboom',
   queen_description: 'notitie',
-  Hive_short: 'Kast',
+  Hive_short: 'Kast | Kasten',
 
   Images: 'Afbeeldingen',
   Size: 'Grootte',

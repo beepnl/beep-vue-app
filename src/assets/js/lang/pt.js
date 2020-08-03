@@ -537,7 +537,7 @@ const translations = {
   queen_line: 'line',
   queen_tree: 'tree',
   queen_description: 'notes',
-  Hive_short: 'Hive',
+  Hive_short: 'Hive | Hives',
 
   Images: 'Images',
   Size: 'Size',

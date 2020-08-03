@@ -2,7 +2,12 @@
   <span class="locale-changer">
     <v-menu>
       <template v-slot:activator="{ on }">
-        <v-btn depressed color="transparent" v-on="on">
+        <v-btn
+          class="locale-changer-button"
+          depressed
+          color="transparent"
+          v-on="on"
+        >
           <img
             style="width:20px;"
             :src="`/img/flags/${selectedLanguage}.svg`"
@@ -67,6 +72,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.locale-changer-button {
+  min-width: 48px !important;
+  padding: 0 0 0 4px !important;
+}
 .v-avatar {
   width: 30px !important;
   min-width: 30px !important;

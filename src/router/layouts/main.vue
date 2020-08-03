@@ -2,27 +2,23 @@
   <div>
     <v-app-bar
       :no-box-shadow="noBoxShadow"
-      :class="noBoxShadow ? 'v-app-bar--no-box-shadow' : ''"
+      :class="`${noBoxShadow ? 'v-app-bar--no-box-shadow' : ''}`"
       app
       color="primary"
       dark
     >
-      <v-toolbar-title
+      <v-toolbar-title class="d-flex align-self-center"
         ><img src="@assets/img/beep-logo-black.svg"
       /></v-toolbar-title>
       <v-spacer></v-spacer>
 
-      <LocaleChanger></LocaleChanger>
+      <LocaleChanger class="mr-1"></LocaleChanger>
 
       <HeaderMenu :menu-items="menuItems"></HeaderMenu>
+
       <template v-slot:extension>
-        <v-tabs icons-and-text dark background-color="transparent">
-          <v-tab
-            v-for="(tab, i) in tabs"
-            :key="i"
-            :to="{ name: tab.route }"
-            exact
-          >
+        <v-tabs icons-and-text dense dark grow background-color="primary">
+          <v-tab v-for="(tab, i) in tabs" :key="i" :to="{ name: tab.route }">
             <span v-if="tab.title">{{ tab.title }}</span>
             <v-icon v-if="tab.icon">{{ tab.icon }}</v-icon>
           </v-tab>
@@ -59,8 +55,8 @@ export default {
     tabs: function() {
       return [
         {
-          title: this.$i18n.tc('Hive', 2),
-          icon: 'mdi-beehive-outline',
+          title: this.$i18n.tc('Hive_short', 2),
+          icon: 'mdi-home-analytics',
           route: 'home',
         },
         {
@@ -93,6 +89,10 @@ export default {
 header.v-app-bar--no-box-shadow {
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
+}
+
+.v-toolbar__content {
+  padding: 4px 10px !important;
 }
 
 .v-tabs-bar.v-slide-group--is-overflowing.v-tabs-bar--is-mobile:not(.v-tabs-bar--show-arrows):not(.v-slide-group--has-affixes)

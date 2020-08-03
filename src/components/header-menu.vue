@@ -2,7 +2,12 @@
   <span>
     <v-menu bottom left>
       <template v-slot:activator="{ on }">
-        <v-btn icon v-on="on">
+        <v-btn
+          class="header-menu-button"
+          depressed
+          color="transparent"
+          v-on="on"
+        >
           <v-icon>mdi-dots-vertical</v-icon>
         </v-btn>
       </template>
@@ -100,3 +105,10 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.header-menu-button {
+  min-width: 12px !important;
+  padding: 0 4px !important;
+}
+</style>

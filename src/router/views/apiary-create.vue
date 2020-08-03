@@ -133,7 +133,6 @@
               </VueGoogleAutocomplete> -->
                   <v-text-field
                     v-model="address"
-                    color="#ddd"
                     :label="`${$t('Address')}`"
                     outlined
                     dense
@@ -536,16 +535,18 @@ export default {
 
 <style lang="scss" scoped>
 .v-tabs--icons-and-text > .v-tabs-bar {
-  height: 48px;
   .v-tab {
-    text-transform: none !important;
-    letter-spacing: 0.075;
-
     .v-icon {
       font-size: 20px;
-      color: $color-white;
+      color: rgba(255, 255, 255, 0.6);
       &::before {
         margin-top: -2px;
+      }
+    }
+
+    &.v-tab--active {
+      .v-icon {
+        color: $color-white;
       }
     }
 

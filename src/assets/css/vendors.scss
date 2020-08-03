@@ -11,6 +11,21 @@
   border-color: $color-grey-light;
 }
 
+.v-tabs--icons-and-text > .v-tabs-bar {
+  height: 48px !important;
+  .v-tab {
+    text-transform: none !important;
+    letter-spacing: 0.075;
+  }
+}
+
+.v-toolbar__content {
+  // height: 48px !important;
+  .v-toolbar__title {
+    padding-left: 0 !important;
+  }
+}
+
 .v-text-field {
   .v-input__control .v-input__slot {
     display: flex !important;
@@ -23,8 +38,20 @@
   }
 
   &.v-text-field--outlined {
-    .v-input input {
-      max-height: none;
+    input {
+      max-height: none !important;
+    }
+  }
+
+  &.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo).v-text-field--outlined {
+    .v-input__slot {
+      padding-right: 4px !important;
+    }
+    .v-input__append-inner {
+      margin-top: 6px !important;
+      @include for-phone-only {
+        margin-top: 3px !important;
+      }
     }
   }
 }

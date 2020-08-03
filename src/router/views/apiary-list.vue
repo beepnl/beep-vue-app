@@ -41,21 +41,39 @@
     </div>
     <div v-else-if="ready">
       <div class="filter-bar-wrapper">
-        <v-container>
+        <v-container class="filter-container">
           <v-row
             class="filter-bar d-flex flex-row justify-space-between align-center"
           >
             <div
               class="filter-buttons d-flex flex-row justify-flex-start align-center"
             >
-              <v-col cols="5" class="pr-1">
+              <v-col cols="5" class="hide-on-mobile pr-1">
                 <v-text-field
                   v-model="search"
                   :label="`${$t('Search')}`"
                   :class="
-                    search !== null ? 'v-input--is-focused primary--text' : ''
+                    `${
+                      search !== null ? 'v-input--is-focused primary--text' : ''
+                    } filter-text-field`
                   "
                   height="36px"
+                  clearable
+                  outlined
+                  dense
+                  hide-details
+                ></v-text-field>
+              </v-col>
+              <v-col cols="5" class="show-on-mobile pr-0">
+                <v-text-field
+                  v-model="search"
+                  :label="`${$t('Search')}`"
+                  :class="
+                    `${
+                      search !== null ? 'v-input--is-focused primary--text' : ''
+                    } filter-text-field`
+                  "
+                  height="30px"
                   clearable
                   outlined
                   dense
@@ -228,14 +246,12 @@ import Layout from '@layouts/main.vue'
 import { mapGetters } from 'vuex'
 import { momentMixin } from '@mixins/momentMixin'
 import { ScaleTransition } from 'vue2-transitions'
-// import { SlideYDownTransition } from 'vue2-transitions'
 
 export default {
   components: {
     HiveCard,
     Layout,
     ScaleTransition,
-    // SlideYDownTransition,
   },
   mixins: [momentMixin],
   data: () => ({
@@ -503,17 +519,20 @@ export default {
   @include for-tablet-landscape-up {
     top: 116px;
   }
+  .filter-container {
+    @include for-phone-only {
+      padding: 10px 12px;
+    }
+  }
   .filter-bar {
-    margin-top: -8px;
-    margin-bottom: -8px;
+    margin-top: -10px;
+    margin-bottom: -10px;
     @include for-tablet-landscape-up {
       margin-top: -6px;
     }
-
     .v-input {
       @include for-phone-only {
         max-width: 106px;
-        padding-right: 0 !important;
       }
     }
     .view-buttons {
@@ -524,15 +543,24 @@ export default {
         display: none;
       }
     }
+    .show-on-mobile {
+      display: none;
+      @include for-phone-only {
+        display: flex;
+      }
+    }
   }
 }
 
 .hive-set {
   margin-bottom: 24px;
+  @include for-phone-only {
+    margin-bottom: 18px;
+  }
   &:first-child {
     margin-top: 80px;
     @include for-phone-only {
-      margin-top: 70px;
+      margin-top: 60px;
     }
   }
   .hive-set-title {
