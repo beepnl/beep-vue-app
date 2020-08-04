@@ -561,6 +561,9 @@ export default {
       margin-top: 48px;
     }
   }
+  &:last-child {
+    margin-bottom: 10px;
+  }
   .hive-set-title {
     width: 100%;
     padding-bottom: 4px;
