@@ -2,8 +2,10 @@
   <v-sheet
     :class="
       `hive-icon d-flex flex-column justify-center align-center white--text text--small mr-1 ${
-        hasQueenExcluder ? '--has-queen-excluder' : ''
-      } ${apiaryView ? 'apiary-view' : ''}`
+        hasLayer('queen_excluder') ? 'has-queen-excluder' : ''
+      } ${hasLayer('feeding_box') ? 'has-feeding-box' : ''} ${
+        apiaryView ? 'apiary-view' : ''
+      }`
     "
     height="auto"
   >
@@ -33,9 +35,6 @@ export default {
   },
   computed: {
     ...mapGetters('locations', ['apiaryListView']),
-    hasQueenExcluder() {
-      return this.hive.layers.some((layer) => layer.type === 'queen_excluder')
-    },
     apiaryView() {
       if (this.apiaryListView === 'apiaryView') {
         return true
@@ -44,6 +43,18 @@ export default {
     },
   },
   methods: {
+    checkColor(layer) {
+      if (layer.color !== null) {
+        return layer.color
+      } else if (this.hive.color !== null) {
+        return this.hive.color
+      } else {
+        return '#ffa000'
+      }
+    },
+    hasLayer(type) {
+      return this.hive.layers.some((layer) => layer.type === type)
+    },
     hiveWidth: function(hive) {
       if (!this.apiaryView) {
         return hive.layers[0].framecount * 6
@@ -68,15 +79,6 @@ export default {
         return 0
       })
     },
-    checkColor(layer) {
-      if (layer.color !== null) {
-        return layer.color
-      } else if (this.hive.color !== null) {
-        return this.hive.color
-      } else {
-        return '#ffa000'
-      }
-    },
   },
 }
 </script>
@@ -95,8 +97,11 @@ export default {
   }
   &.apiary-view {
     margin-right: 0 !important;
+    &.has-feeding-box {
+      margin-top: 12px;
+    }
   }
-  &.--has-queen-excluder {
+  &.has-queen-excluder {
     padding-right: 12px;
   }
 }

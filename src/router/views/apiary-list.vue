@@ -530,7 +530,7 @@ export default {
     .v-input {
       background-color: $color-white;
       @include for-phone-only {
-        max-width: 106px;
+        max-width: 110px;
       }
     }
     .view-buttons {
