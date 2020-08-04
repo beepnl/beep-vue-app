@@ -517,7 +517,7 @@ export default {
   border-bottom: 1px solid #fff5e2;
   .filter-container {
     @include for-phone-only {
-      padding: 10px 12px;
+      padding: 10px;
     }
   }
   .filter-bar {
@@ -530,7 +530,7 @@ export default {
     .v-input {
       background-color: $color-white;
       @include for-phone-only {
-        max-width: 110px;
+        max-width: 115px;
       }
     }
     .view-buttons {
