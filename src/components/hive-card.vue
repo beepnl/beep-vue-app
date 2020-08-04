@@ -14,7 +14,7 @@
     "
     outlined
   >
-    <v-row class="ml-0 mb-3 mr-2">
+    <v-row v-if="!apiaryView" class="ml-0 mb-3 mr-2">
       <h4
         v-if="gridView"
         class="hive-name mb-3"
@@ -58,12 +58,17 @@
     <div class="hive-details d-flex flex-no-wrap justify-flex-start align-end">
       <router-link
         v-if="hive.editable === undefined || hive.editable"
-        class="hive-edit-link"
+        class="hive-edit-link d-flex flex-column align-center"
         :to="{
           name: `hive-edit`,
           params: { id: hive.id },
         }"
       >
+        <div v-if="apiaryView" class="red--text apiary-view-alert">
+          <v-icon v-if="hive.attention || hive.reminder" class="red--text">
+            mdi-alert-circle
+          </v-icon>
+        </div>
         <HiveIcon :hive="hive"></HiveIcon>
       </router-link>
       <HiveIcon v-else :hive="hive"></HiveIcon>
@@ -334,6 +339,10 @@ export default {
   }
 
   .hive-details {
+    .apiary-view-alert {
+      margin-bottom: 2px;
+    }
+
     .hive-edit-link {
       cursor: pointer;
     }
