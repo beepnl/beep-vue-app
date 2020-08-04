@@ -50,6 +50,7 @@
             >
               <v-col cols="5" class="hide-on-mobile pr-1">
                 <v-text-field
+                  ref="filter"
                   v-model="search"
                   :label="`${$t('Search')}`"
                   :class="
@@ -183,7 +184,15 @@
             >
               mdi-account-multiple
             </v-icon>
-            <v-icon v-else class="icon-apiary-owned ml-1 mr-2 my-0">
+            <v-icon
+              v-else
+              class="icon-apiary-owned ml-1 mr-2 my-0"
+              :style="
+                `background-color: ${
+                  hiveSet.hex_color ? hiveSet.hex_color : ''
+                }; border-color: ${hiveSet.hex_color ? hiveSet.hex_color : ''};`
+              "
+            >
               mdi-home-analytics
             </v-icon>
 
@@ -408,10 +417,13 @@ export default {
     }
   },
   created() {
+    this.search = this.getURLParameter('search')
     this.readApiariesAndGroups().then(() => {
       this.ready = true
+      // if (this.search !== null) { // FIXME: cannot read property focus of undefined
+      //   this.$refs.filter.focus()
+      // }
     })
-    this.search = this.getURLParameter('search')
   },
   methods: {
     async readApiariesAndGroups() {

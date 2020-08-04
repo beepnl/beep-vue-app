@@ -614,6 +614,7 @@ const translations = {
     'Weet je zeker dat je deze pagina wilt verlaten? Niet opgeslagen aanpassingen zullen verloren gaan.',
   no_apiaries_yet: 'Je hebt nog geen bijenstanden',
   need_help: 'Hulp nodig?',
+  Apiary_color: 'Bijenstand kleur',
 }
 
 export default translations

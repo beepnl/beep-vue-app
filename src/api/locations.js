@@ -1,7 +1,6 @@
 import axios from './axios'
 
 export function createApiary(apiary) {
-  console.log('creating apiary...' + { apiary })
   return axios.post('/locations', apiary)
 }
 

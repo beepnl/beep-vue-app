@@ -613,6 +613,7 @@ const translations = {
     'Are you sure you want to leave this page? Any unsaved changes will be lost.',
   no_apiaries_yet: "You don't have any apiaries yet",
   need_help: 'Need help?',
+  Apiary_color: 'Apiary color',
 }
 
 export default translations

@@ -76,6 +76,50 @@
                   >
                   </v-text-field>
 
+                  <div>
+                    <div
+                      class="beep-label"
+                      v-text="`${$t('Apiary_color')}`"
+                    ></div>
+                    <v-sheet
+                      v-if="newHive"
+                      class="apiary-color"
+                      dark
+                      :color="newHive.hex_color"
+                      @click="overlay = !overlay"
+                    ></v-sheet>
+                  </div>
+
+                  <v-overlay :value="overlay">
+                    <v-toolbar class="hive-color-picker-toolbar" dense light>
+                      <div
+                        class="hive-color-picker-title"
+                        v-text="`${$t('Apiary_color')}`"
+                      ></div>
+                      <v-spacer></v-spacer>
+                      <v-toolbar-items>
+                        <v-icon
+                          class="mr-1"
+                          color="primary"
+                          @click="updateLocation(colorPickerValue, 'hex_color')"
+                          >mdi-check</v-icon
+                        >
+                        <v-icon @click="cancelColorPicker">mdi-close</v-icon>
+                      </v-toolbar-items>
+                    </v-toolbar>
+
+                    <v-color-picker
+                      v-model="colorPicker"
+                      class="hive-color-picker flex-color-picker"
+                      :swatches="swatchesApiary"
+                      show-swatches
+                      hide-canvas
+                      light
+                      flat
+                    >
+                    </v-color-picker>
+                  </v-overlay>
+
                   <v-switch
                     v-if="newHive"
                     v-model="newHive.roofed"
@@ -154,7 +198,7 @@
                     :max="90"
                     inline
                     controls
-                    @change="updateHive($event, 'lat')"
+                    @change="updateLocation($event, 'lat')"
                   ></VueNumberInput>
                 </v-col>
                 <v-col cols="6" sm="4">
@@ -167,7 +211,7 @@
                     :max="180"
                     inline
                     controls
-                    @change="updateHive($event, 'lon')"
+                    @change="updateLocation($event, 'lon')"
                   ></VueNumberInput>
                 </v-col>
               </v-row>
@@ -379,12 +423,30 @@ export default {
         timeout: 2000,
         text: 'notification',
       },
+      swatchesApiary: [
+        ['#b5c4b2', '#F7BE02', '#FFA000'],
+        ['#049717', '#1b6308', '#00466b'],
+        ['#bca55e', '#754B1F', '#3F3104'],
+      ],
       activeTab: 'tab-0',
-      // address: '',
+      overlay: false,
+      colorPickerValue: '',
       newHive: null,
     }
   },
   computed: {
+    colorPicker: {
+      get() {
+        if (this.newHive) {
+          return this.newHive.hex_color
+        } else {
+          return '#ffa000'
+        }
+      },
+      set(value) {
+        this.colorPickerValue = value
+      },
+    },
     locale() {
       return this.$i18n.locale
     },
@@ -427,10 +489,9 @@ export default {
       this.newHive = {
         name: this.$i18n.tc('Location', 1) + ' ' + (data + 1),
         color: '#F29100',
+        hex_color: '#ffa000',
         hive_type_id: null,
         hive_amount: 1,
-        brood_layers: 2, // Needed?
-        honey_layers: 1, // Needed?
         frames: 10,
         offset: 1,
         prefix: this.$i18n.tc('Hive_short', 1),
@@ -475,9 +536,6 @@ export default {
   },
   methods: {
     async createApiary() {
-      this.newHive.hive_layers = this.newHive.layers // FIXME: rename layers array here now because otherwise hive-factory in hive-edit-details wont work
-      console.log('creating new apiary')
-      console.log(this.newHive)
       try {
         const response = await this.$store.dispatch(
           'locations/createApiary',
@@ -507,6 +565,9 @@ export default {
         console.log(e)
       }
     },
+    cancelColorPicker() {
+      this.overlay = false
+    },
     /**
      * When the location found
      * @param {Object} addressData Data of the found location
@@ -526,8 +587,11 @@ export default {
     setActiveTab(int) {
       this.activeTab = 'tab-' + int
     },
-    updateHive(value, property) {
+    updateLocation(value, property) {
       this.newHive[property] = value
+      if (property === 'hex_color') {
+        this.cancelColorPicker()
+      }
     },
   },
 }
@@ -594,6 +658,12 @@ export default {
       min-height: 45px !important;
       max-height: 45px !important;
     }
+  }
+
+  .apiary-color {
+    width: 35px;
+    height: 35px;
+    border: 1px solid rgba(0, 0, 0, 0.3) !important;
   }
 
   .country-select,
