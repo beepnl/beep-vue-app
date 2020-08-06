@@ -579,7 +579,7 @@ export default {
   .hive-set-title {
     width: 100%;
     padding-bottom: 4px;
-    margin: 10px 0 12px;
+    margin: 10px 0 16px;
     color: $color-primary;
     border-bottom: 1px solid $color-primary;
     @include for-phone-only {
