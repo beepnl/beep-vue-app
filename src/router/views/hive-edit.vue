@@ -491,7 +491,6 @@ export default {
     },
     updateQueenBirthDate() {
       this.$refs.dialog.save(this.queenBirthDate)
-      // this.updateQueen(this.queenBirthDate, 'created_at')
       if (this.activeHive.queen.color) {
         this.updateQueen(this.queenMarkColor, 'color')
       }
