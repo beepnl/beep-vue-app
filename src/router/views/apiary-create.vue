@@ -432,9 +432,59 @@ export default {
       overlay: false,
       colorPickerValue: '',
       newHive: null,
+      newApiaryNumber: 0,
+      changeCounter: 0,
     }
   },
   computed: {
+    apiaryTemplate() {
+      return {
+        name: this.$i18n.tc('Location', 1) + ' ' + this.newApiaryNumber,
+        color: '#F29100',
+        hex_color: '#ffa000',
+        hive_type_id: null,
+        hive_amount: 1,
+        frames: 10,
+        offset: 1,
+        prefix: this.$i18n.tc('Hive_short', 1),
+        country_code: this.locale,
+        city: '',
+        postal_code: '',
+        street: '',
+        street_no: '',
+        lat: 52,
+        lon: 5,
+        bb_width_cm: null,
+        bb_depth_cm: null,
+        bb_height_cm: null,
+        fr_width_cm: null,
+        fr_height_cm: null,
+        roofed: 0,
+        layers: [
+          {
+            color: '#ffa000',
+            type: 'honey',
+            order: 3,
+            framecount: 10,
+            key: 3,
+          },
+          {
+            color: '#ffa000',
+            type: 'brood',
+            order: 2,
+            framecount: 10,
+            key: 2,
+          },
+          {
+            color: '#ffa000',
+            type: 'brood',
+            order: 1,
+            framecount: 10,
+            key: 1,
+          },
+        ],
+      }
+    },
     colorPicker: {
       get() {
         if (this.newHive) {
@@ -484,10 +534,26 @@ export default {
       ]
     },
   },
+  watch: {
+    newHive: {
+      handler: function() {
+        if (this.newHive !== this.apiaryTemplate) {
+          if (this.changeCounter > 0) {
+            // changeCounter is needed because this watcher detects a change upon instantiation of newHive which we want to disregard
+            this.$store.commit('locations/setEdited', true)
+          }
+          this.changeCounter++
+        }
+      },
+      deep: true,
+    },
+  },
   created() {
     this.readApiaries().then((data) => {
+      this.$store.commit('locations/setEdited', false)
+      this.newApiaryNumber = data + 1
       this.newHive = {
-        name: this.$i18n.tc('Location', 1) + ' ' + (data + 1),
+        name: this.$i18n.tc('Location', 1) + ' ' + this.newApiaryNumber,
         color: '#F29100',
         hex_color: '#ffa000',
         hive_type_id: null,
