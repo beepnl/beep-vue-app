@@ -10,6 +10,22 @@ const other = {
 
 const resource = createResource({ path: 'inspections', other })
 
+resource.actions.getChecklists = function({ _ }) {
+  const checklists = resource.endpoint.index()
+  if (checklists) {
+    return checklists
+  }
+  return false
+}
+
+resource.actions.getAllInspectionsForHiveId = function({ _ }, hiveId) {
+  const response = resource.endpoint.read(hiveId)
+  if (response) {
+    return response
+  }
+  return false
+}
+
 resource.actions.getInspectionsForHives = function({ _ }, hives) {
   return Promise.all(
     hives.map((hive) => resource.endpoint.read(hive.id))

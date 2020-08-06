@@ -113,6 +113,14 @@ export default [
     meta: {
       authRequired: true,
     },
+    path: '/hives/:id/inspections',
+    name: 'hive-inspections',
+    component: () => lazyLoadView(import('@views/hive-inspections.vue')),
+  },
+  {
+    meta: {
+      authRequired: true,
+    },
     path: '/groups/:id',
     name: 'group-details',
     component: () => lazyLoadView(import('@views/group-details.vue')),
