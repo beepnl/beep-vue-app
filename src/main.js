@@ -14,11 +14,14 @@ import ro from '@assets/js/lang/ro'
 import languages from '@assets/js/lang/languages'
 import moment from 'moment'
 import vueCountryRegionSelect from 'vue-country-region-select'
+import AddToCalendar from 'vue-add-to-calendar'
 
 import App from './app.vue'
 
 Vue.use(VueI18n)
 Vue.use(vueCountryRegionSelect)
+// var AddToCalendar = require('vue-add-to-calendar')
+Vue.use(AddToCalendar)
 Vue.prototype.$moment = moment
 
 // Don't warn about using the dev version of Vue in development.
@@ -50,6 +53,7 @@ new Vue({
   store,
   vuetify,
   i18n,
+  // AddToCalendar,
   render: (h) => h(App),
 }).$mount('#app')
 

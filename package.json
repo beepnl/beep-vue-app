@@ -45,6 +45,7 @@
     "optipng": "^2.1.0",
     "sortablejs": "^1.10.2",
     "vue": "^2.6.11",
+    "vue-add-to-calendar": "^1.0.6",
     "vue-async-computed": "^3.8.2",
     "vue-chartist": "^2.2.1",
     "vue-country-region-select": "^2.0.14",
