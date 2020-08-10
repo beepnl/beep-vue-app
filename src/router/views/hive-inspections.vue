@@ -85,9 +85,13 @@
                 <v-icon v-if="inspection.attention === 1" class="red--text"
                   >mdi-alert-circle</v-icon
                 >
-                <v-icon v-if="inspection.attention === 0" class="green--text"
-                  >mdi-check-circle</v-icon
+
+                <v-sheet
+                  v-if="inspection.attention === 0"
+                  class="beep-icon beep-icon-text color-green"
                 >
+                  {{ $t('no') }}
+                </v-sheet>
               </div>
             </td>
             <!-- <td class="filler"></td> -->
@@ -267,7 +271,7 @@
                 </div>
               </span>
               <span v-if="item.type === 'score'">
-                <div class="d-flex flex-row justify-center"
+                <div class="d-flex flex-row justify-center flex-wrap"
                   ><v-icon
                     v-for="star in [0, 1, 2, 3, 4]"
                     :key="star + 1"
@@ -501,6 +505,9 @@ export default {
     text-overflow: ellipsis;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
+    @include for-phone-only {
+      font-size: 10px;
+    }
   }
   .reminder-date {
     width: auto;
@@ -566,9 +573,6 @@ export default {
   display: block;
   font-size: 10px;
 }
-span.notes.mobile {
-  font-size: 10px;
-}
 td.header,
 span.header {
   height: 12px;
@@ -592,10 +596,10 @@ span.header {
 .table.inspections .tdr {
   min-width: 200px;
   max-width: 200px;
-}
-.table.inspections.mobile .tdr {
-  min-width: 150px;
-  max-width: 150px;
+  @include for-phone-only {
+    min-width: 150px;
+    max-width: 150px;
+  }
 }
 .table.inspections tbody {
   display: block;
@@ -606,10 +610,10 @@ span.header {
 .table.inspections .tdc {
   min-width: 200px;
   max-width: 200px;
-}
-.table.inspections.mobile .tdc {
-  min-width: 100px;
-  max-width: 100px;
+  @include for-phone-only {
+    min-width: 100px;
+    max-width: 100px;
+  }
 }
 table.inspections th.tdc {
   vertical-align: bottom;
