@@ -6,7 +6,13 @@
   >
     <v-toolbar class="hive-inspections-bar" dense light>
       <v-spacer class="hide-on-mobile"></v-spacer>
-      <v-btn medium tile outlined color="primary">
+      <v-btn
+        :href="`/hives/${id}/inspect`"
+        medium
+        tile
+        outlined
+        color="primary"
+      >
         <v-icon left>mdi-plus</v-icon>
         {{ $t('New_inspection') }}
       </v-btn>
@@ -35,7 +41,7 @@
                   class="inspection-actions d-flex justify-center"
                 >
                   <a
-                    :href="`/hive/${id}/inspections/${inspection.id}`"
+                    :href="`/hives/${id}/inspections/${inspection.id}`"
                     class="icon-button"
                   >
                     <v-icon small class="color-grey-medium">mdi-pencil</v-icon>
