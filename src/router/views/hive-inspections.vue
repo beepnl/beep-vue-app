@@ -13,145 +13,136 @@
     </v-toolbar>
 
     <v-container class="hive-inspections-content">
-      <v-row class="hive-inspections-wrapper">
-        <v-simple-table
-          v-if="inspections.inspections !== undefined"
-          fixed-header
-          light
-          height="100vh"
-          class="table-responsive"
-        >
-          <template v-slot>
-            <thead>
-              <tr class="trh">
-                <th class="tdr"
-                  ><strong>{{ $tc('Inspection', 2) }}</strong></th
+      <div class="filler"></div>
+      <v-simple-table
+        v-if="inspections.inspections !== undefined"
+        light
+        class="table-responsive"
+      >
+        <template v-slot>
+          <thead class="thead">
+            <tr class="trh">
+              <th class="tdr"
+                ><strong>{{ $tc('Inspection', 2) }}</strong></th
+              >
+              <th
+                v-for="(inspection, a) in inspections.inspections"
+                :key="a"
+                class="tdc"
+              >
+                <div
+                  v-if="inspection.owner || activeHive.owner"
+                  class="inspection-actions d-flex justify-center"
                 >
-                <th
-                  v-for="(inspection, a) in inspections.inspections"
-                  :key="a"
-                  class="tdc"
-                >
-                  <div
-                    v-if="inspection.owner || activeHive.owner"
-                    class="inspection-actions d-flex justify-center"
+                  <a
+                    :href="`/hive/${id}/inspections/${inspection.id}`"
+                    class="icon-button"
                   >
-                    <a
-                      :href="`/hive/${id}/inspections/${inspection.id}`"
-                      class="icon-button"
-                    >
-                      <v-icon small class="color-grey-medium"
-                        >mdi-pencil</v-icon
-                      >
-                    </a>
-                    <a
-                      class="icon-button delete"
-                      @click="deleteInspection(inspection.id)"
-                    >
-                      <v-icon small class="color-grey-medium"
-                        >mdi-delete</v-icon
-                      >
-                    </a>
-                  </div>
-                  <strong class="d-flex justify-center hide-on-mobile">{{
-                    momentify(inspection.created_at)
-                  }}</strong>
-                  <strong class="d-flex justify-center show-on-mobile ">{{
-                    momentifyDayMonth(inspection.created_at)
-                  }}</strong>
-                </th>
-                <!-- <th class="filler"></th> -->
-              </tr>
-            </thead>
+                    <v-icon small class="color-grey-medium">mdi-pencil</v-icon>
+                  </a>
+                  <a
+                    class="icon-button delete"
+                    @click="deleteInspection(inspection.id)"
+                  >
+                    <v-icon small class="color-grey-medium">mdi-delete</v-icon>
+                  </a>
+                </div>
+                <strong class="d-flex justify-center hide-on-mobile">{{
+                  momentify(inspection.created_at)
+                }}</strong>
+                <strong class="d-flex justify-center show-on-mobile ">{{
+                  momentifyDayMonth(inspection.created_at)
+                }}</strong>
+              </th>
+              <!-- <th class="filler"></th> -->
+            </tr>
+          </thead>
 
-            <tbody>
-              <tr>
-                <td class="tdr">{{ $t('positive_impression') }}</td>
-                <td
-                  v-for="(inspection, b) in inspections.inspections"
-                  :key="b"
-                  class="tdc"
+          <tbody class="tbody">
+            <tr>
+              <td class="tdr">{{ $t('positive_impression') }}</td>
+              <td
+                v-for="(inspection, b) in inspections.inspections"
+                :key="b"
+                class="tdc"
+              >
+                <div
+                  v-if="
+                    inspection.impression !== null && inspection.impression > -1
+                  "
                 >
-                  <div
-                    v-if="
-                      inspection.impression !== null &&
-                        inspection.impression > -1
-                    "
+                  <v-icon v-if="inspection.impression === 3" class="green--text"
+                    >mdi-emoticon-happy</v-icon
                   >
-                    <v-icon
-                      v-if="inspection.impression === 3"
-                      class="green--text"
-                      >mdi-emoticon-happy</v-icon
-                    >
-                    <v-icon
-                      v-if="inspection.impression === 2"
-                      class="orange--text"
-                      >mdi-emoticon-neutral</v-icon
-                    >
-                    <v-icon v-if="inspection.impression === 1" class="red--text"
-                      >mdi-emoticon-sad</v-icon
-                    >
-                  </div>
-                </td>
-                <!-- <td class="filler"></td> -->
-              </tr>
-              <tr>
-                <td class="tdr">{{ $t('needs_attention') }}</td>
-                <td
-                  v-for="(inspection, c) in inspections.inspections"
-                  :key="c"
-                  class="tdc"
+                  <v-icon
+                    v-if="inspection.impression === 2"
+                    class="orange--text"
+                    >mdi-emoticon-neutral</v-icon
+                  >
+                  <v-icon v-if="inspection.impression === 1" class="red--text"
+                    >mdi-emoticon-sad</v-icon
+                  >
+                </div>
+              </td>
+              <!-- <td class="filler"></td> -->
+            </tr>
+            <tr>
+              <td class="tdr">{{ $t('needs_attention') }}</td>
+              <td
+                v-for="(inspection, c) in inspections.inspections"
+                :key="c"
+                class="tdc"
+              >
+                <div
+                  v-if="
+                    inspection.attention !== null && inspection.attention > -1
+                  "
                 >
-                  <div
-                    v-if="
-                      inspection.attention !== null && inspection.attention > -1
-                    "
+                  <v-icon v-if="inspection.attention === 1" class="red--text"
+                    >mdi-alert-circle</v-icon
                   >
-                    <v-icon v-if="inspection.attention === 1" class="red--text"
-                      >mdi-alert-circle</v-icon
-                    >
 
-                    <v-sheet
-                      v-if="inspection.attention === 0"
-                      class="beep-icon beep-icon-text color-green"
-                    >
-                      {{ $t('no') }}
-                    </v-sheet>
-                  </div>
-                </td>
-                <!-- <td class="filler"></td> -->
-              </tr>
-              <tr>
-                <td class="tdr">{{ $t('notes') }}</td>
-                <td
-                  v-for="(inspection, d) in inspections.inspections"
-                  :key="d"
-                  class="tdc"
-                >
-                  <span
-                    v-if="inspection.notes !== null"
-                    :title="inspection.notes"
-                    class="notes"
-                    >{{ inspection.notes }}</span
+                  <v-sheet
+                    v-if="inspection.attention === 0"
+                    class="beep-icon beep-icon-text color-green"
                   >
-                </td>
-                <!-- <td class="filler"></td> -->
-              </tr>
+                    {{ $t('no') }}
+                  </v-sheet>
+                </div>
+              </td>
+              <!-- <td class="filler"></td> -->
+            </tr>
+            <tr>
+              <td class="tdr">{{ $t('notes') }}</td>
+              <td
+                v-for="(inspection, d) in inspections.inspections"
+                :key="d"
+                class="tdc"
+              >
+                <span
+                  v-if="inspection.notes !== null"
+                  :title="inspection.notes"
+                  class="notes"
+                  >{{ inspection.notes }}</span
+                >
+              </td>
+              <!-- <td class="filler"></td> -->
+            </tr>
 
-              <tr>
-                <td class="tdr">{{ $t('reminder') }}</td>
-                <td
-                  v-for="(inspection, e) in inspections.inspections"
-                  :key="e"
-                  class="tdc"
+            <tr>
+              <td class="tdr">{{ $t('reminder') }}</td>
+              <td
+                v-for="(inspection, e) in inspections.inspections"
+                :key="e"
+                class="tdc"
+              >
+                <span
+                  v-if="inspection.reminder !== null"
+                  :title="inspection.reminder"
+                  class="notes reminder"
+                  >{{ inspection.reminder }}</span
                 >
-                  <span
-                    v-if="inspection.reminder !== null"
-                    :title="inspection.reminder"
-                    class="notes reminder"
-                    >{{ inspection.reminder }}</span
-                  >
-                  <!-- <span v-if="inspection.reminder_date">
+                <!-- <span v-if="inspection.reminder_date">
                 <add-to-calendar
                   :title="`Beep ${$t('reminder')}: ${inspection.reminder}`"
                   :location="`${activeHive.location} - ${activeHive.name}`"
@@ -182,218 +173,210 @@
                   </div>
                 </add-to-calendar>
               </span> -->
-                </td>
-                <!-- <td class="filler"></td> -->
-              </tr>
+              </td>
+              <!-- <td class="filler"></td> -->
+            </tr>
 
-              <tr>
-                <td class="tdr">{{ $t('remind_date') }}</td>
-                <td
-                  v-for="(inspection, f) in inspections.inspections"
-                  :key="f"
-                  class="tdc"
+            <tr>
+              <td class="tdr">{{ $t('remind_date') }}</td>
+              <td
+                v-for="(inspection, f) in inspections.inspections"
+                :key="f"
+                class="tdc"
+              >
+                <span
+                  v-if="inspection.reminder_date !== null"
+                  :title="inspection.reminder_date"
+                  class="reminder-date"
+                  >{{ momentify(inspection.reminder_date) }}</span
                 >
-                  <span
-                    v-if="inspection.reminder_date !== null"
-                    :title="inspection.reminder_date"
-                    class="reminder-date"
-                    >{{ momentify(inspection.reminder_date) }}</span
+              </td>
+              <!-- <td class="filler"></td> -->
+            </tr>
+
+            <tr v-for="(items, i) in inspections.items_by_date" :key="i">
+              <td class="tdr" :class="items.items === null ? 'header' : ''">
+                <span v-if="items.items !== null" class="ancestors">{{
+                  items.anc
+                }}</span>
+                <span :class="items.items === null ? 'header' : ''">{{
+                  items.name
+                }}</span>
+              </td>
+
+              <td
+                v-if="items.items === null"
+                :colspan="inspections.inspections.length + 1"
+                class="header"
+              ></td>
+
+              <td v-for="(item, j) in items.items" :key="j" class="tdc">
+                <span v-if="item.type === 'slider'">{{ item.val }}</span>
+
+                <span v-if="item.type === 'list'">
+                  <div
+                    v-for="(opt, o) in item.val.split(',')"
+                    :key="o"
+                    style="margin-bottom: 3px;"
+                    class="label-inspection"
+                    >{{ opt }}</div
                   >
-                </td>
-                <!-- <td class="filler"></td> -->
-              </tr>
+                </span>
 
-              <tr v-for="(items, i) in inspections.items_by_date" :key="i">
-                <td class="tdr" :class="items.items === null ? 'header' : ''">
-                  <span v-if="items.items !== null" class="ancestors">{{
-                    items.anc
-                  }}</span>
-                  <span :class="items.items === null ? 'header' : ''">{{
-                    items.name
-                  }}</span>
-                </td>
+                <span v-if="item.type === 'options'">{{ item.val }}</span>
+                <span v-if="item.type === 'select'">{{ item.val }}</span>
+                <span v-if="item.type === 'text'">{{ item.val }}</span>
 
-                <td
-                  v-if="items.items === null"
-                  :colspan="inspections.inspections.length + 1"
-                  class="header"
-                ></td>
+                <span
+                  v-if="item.type === 'sample_code'"
+                  style=" font-weight: bold;letter-spacing: 2px;"
+                  >{{ item.val }}</span
+                >
+                <span v-if="item.type === 'date'">{{
+                  momentify(item.val)
+                }}</span>
+                <span
+                  v-if="
+                    item.type !== undefined && item.type.indexOf('number') > -1
+                  "
+                  >{{ item.val }}</span
+                >
 
-                <td v-for="(item, j) in items.items" :key="j" class="tdc">
-                  <span v-if="item.type === 'slider'">{{ item.val }}</span>
-
-                  <span v-if="item.type === 'list'">
-                    <div
-                      v-for="(opt, o) in item.val.split(',')"
-                      :key="o"
-                      style="margin-bottom: 3px;"
-                      class="label-inspection"
-                      >{{ opt }}</div
+                <span
+                  v-if="item.type === 'boolean' || item.type === 'list_item'"
+                >
+                  <div>
+                    <v-sheet
+                      v-if="parseInt(item.value) === 1"
+                      class="beep-icon beep-icon-text color-green"
                     >
-                  </span>
+                      {{ $t('yes') }}
+                    </v-sheet>
+                    <v-sheet
+                      v-if="parseInt(item.value) === 0"
+                      class="beep-icon beep-icon-text color-red"
+                    >
+                      {{ $t('no') }}
+                    </v-sheet>
+                  </div>
+                </span>
+                <span v-if="item.type === 'boolean_yes_red'">
+                  <div>
+                    <v-sheet
+                      v-if="parseInt(item.value) === 1"
+                      class="beep-icon beep-icon-text color-red"
+                    >
+                      {{ $t('yes') }}
+                    </v-sheet>
+                    <v-sheet
+                      v-if="parseInt(item.value) === 0"
+                      class="beep-icon beep-icon-text color-green"
+                    >
+                      {{ $t('no') }}
+                    </v-sheet>
+                  </div>
+                </span>
 
-                  <span v-if="item.type === 'options'">{{ item.val }}</span>
-                  <span v-if="item.type === 'select'">{{ item.val }}</span>
-                  <span v-if="item.type === 'text'">{{ item.val }}</span>
+                <span v-if="item.type === 'smileys_3' && item.value !== null">
+                  <div>
+                    <v-icon
+                      v-if="parseInt(item.value) === 3"
+                      class="green--text"
+                      >mdi-emoticon-happy</v-icon
+                    >
+                    <v-icon
+                      v-if="parseInt(item.value) === 2"
+                      class="orange--text"
+                      >mdi-emoticon-neutral</v-icon
+                    >
+                    <v-icon v-if="parseInt(item.value) === 1" class="red--text"
+                      >mdi-emoticon-sad</v-icon
+                    >
+                  </div>
+                </span>
+                <span v-if="item.type === 'score'">
+                  <div
+                    class="d-flex flex-row justify-center flex-wrap hide-on-mobile"
+                    ><v-icon
+                      v-for="star in [0, 1, 2, 3, 4]"
+                      :key="star + 1"
+                      :class="
+                        star < item.val ? 'primary--text' : 'color-grey-medium'
+                      "
+                      >mdi-star</v-icon
+                    >
+                  </div>
+                  <div
+                    class="d-flex flex-row justify-center flex-wrap show-on-mobile"
+                    ><v-icon
+                      v-for="star in [0, 1, 2, 3, 4]"
+                      :key="star + 1"
+                      x-small
+                      :class="
+                        star < item.val ? 'primary--text' : 'hide-on-mobile'
+                      "
+                      >mdi-star</v-icon
+                    >
+                  </div>
+                </span>
 
-                  <span
-                    v-if="item.type === 'sample_code'"
-                    style=" font-weight: bold;letter-spacing: 2px;"
-                    >{{ item.val }}</span
-                  >
-                  <span v-if="item.type === 'date'">{{
-                    momentify(item.val)
-                  }}</span>
-                  <span
-                    v-if="
-                      item.type !== undefined &&
-                        item.type.indexOf('number') > -1
-                    "
-                    >{{ item.val }}</span
-                  >
-
-                  <span
-                    v-if="item.type === 'boolean' || item.type === 'list_item'"
-                  >
-                    <div>
-                      <v-sheet
-                        v-if="parseInt(item.value) === 1"
-                        class="beep-icon beep-icon-text color-green"
-                      >
-                        {{ $t('yes') }}
-                      </v-sheet>
-                      <v-sheet
-                        v-if="parseInt(item.value) === 0"
-                        class="beep-icon beep-icon-text color-red"
-                      >
-                        {{ $t('no') }}
-                      </v-sheet>
-                    </div>
-                  </span>
-                  <span v-if="item.type === 'boolean_yes_red'">
-                    <div>
-                      <v-sheet
-                        v-if="parseInt(item.value) === 1"
-                        class="beep-icon beep-icon-text color-red"
-                      >
-                        {{ $t('yes') }}
-                      </v-sheet>
-                      <v-sheet
-                        v-if="parseInt(item.value) === 0"
-                        class="beep-icon beep-icon-text color-green"
-                      >
-                        {{ $t('no') }}
-                      </v-sheet>
-                    </div>
-                  </span>
-
-                  <span v-if="item.type === 'smileys_3' && item.value !== null">
-                    <div>
-                      <v-icon
-                        v-if="parseInt(item.value) === 3"
-                        class="green--text"
-                        >mdi-emoticon-happy</v-icon
-                      >
-                      <v-icon
-                        v-if="parseInt(item.value) === 2"
-                        class="orange--text"
-                        >mdi-emoticon-neutral</v-icon
-                      >
-                      <v-icon
-                        v-if="parseInt(item.value) === 1"
-                        class="red--text"
-                        >mdi-emoticon-sad</v-icon
-                      >
-                    </div>
-                  </span>
-                  <span v-if="item.type === 'score'">
-                    <div
-                      class="d-flex flex-row justify-center flex-wrap hide-on-mobile"
-                      ><v-icon
-                        v-for="star in [0, 1, 2, 3, 4]"
-                        :key="star + 1"
-                        :class="
-                          star < item.val
-                            ? 'primary--text'
-                            : 'color-grey-medium'
-                        "
-                        >mdi-star</v-icon
-                      >
-                    </div>
-                    <div
-                      class="d-flex flex-row justify-center flex-wrap show-on-mobile"
-                      ><v-icon
-                        v-for="star in [0, 1, 2, 3, 4]"
-                        :key="star + 1"
-                        x-small
-                        :class="
-                          star < item.val ? 'primary--text' : 'hide-on-mobile'
-                        "
-                        >mdi-star</v-icon
-                      >
-                    </div>
-                  </span>
-
-                  <span
-                    v-if="item.type === 'grade'"
-                    :style="
-                      `color: ${gradeColor(item.value)}; font-weight: bold;`
-                    "
-                    >{{ item.val }}</span
-                  >
-                  <span
-                    v-if="item.type === 'score_quality'"
-                    :style="`color: ${scoreQualityColor(item.value)};`"
-                    >{{ scoreQualityOptions[item.value] }}</span
-                  >
-                  <span
-                    v-if="item.type === 'score_amount'"
-                    :style="
-                      `color: ${scoreAmountColor(
-                        // eslint-disable-next-line vue/comma-dangle
-                        item.value
-                      )}; font-weight: bold;`
-                    "
-                    >{{ scoreAmountOptions[item.value] }}</span
-                  >
-                  <span v-if="item.type === 'square_25cm2'"
-                    >{{ (item.val * 25).toFixed(1) }} cm<sup>2</sup> ({{
-                      item.val
-                    }}
-                    sq)</span
-                  >
-                  <span v-if="item.type === 'select_apiary'">{{
+                <span
+                  v-if="item.type === 'grade'"
+                  :style="
+                    `color: ${gradeColor(item.value)}; font-weight: bold;`
+                  "
+                  >{{ item.val }}</span
+                >
+                <span
+                  v-if="item.type === 'score_quality'"
+                  :style="`color: ${scoreQualityColor(item.value)};`"
+                  >{{ scoreQualityOptions[item.value] }}</span
+                >
+                <span
+                  v-if="item.type === 'score_amount'"
+                  :style="
+                    `color: ${scoreAmountColor(
+                      // eslint-disable-next-line vue/comma-dangle
+                      item.value
+                    )}; font-weight: bold;`
+                  "
+                  >{{ scoreAmountOptions[item.value] }}</span
+                >
+                <span v-if="item.type === 'square_25cm2'"
+                  >{{ (item.val * 25).toFixed(1) }} cm<sup>2</sup> ({{
                     item.val
-                  }}</span>
-                  <span v-if="item.type === 'select_hive'">{{ item.val }}</span>
-                  <span v-if="item.type === 'select_country'">{{
-                    item.val.toUpperCase()
-                  }}</span>
-                  <span v-if="item.type === 'bee_subspecies'">{{
-                    item.val
-                  }}</span>
-                  <span v-if="item.type === 'select_hive_type'">{{
-                    item.val
-                  }}</span>
-                  <span v-if="item.type === 'image'">
-                    <img
-                      :src="item.val"
-                      class="image-thumb"
-                      style=" max-width: 80px;max-height: 60px"
-                    />
-                  </span>
+                  }}
+                  sq)</span
+                >
+                <span v-if="item.type === 'select_apiary'">{{ item.val }}</span>
+                <span v-if="item.type === 'select_hive'">{{ item.val }}</span>
+                <span v-if="item.type === 'select_country'">{{
+                  item.val.toUpperCase()
+                }}</span>
+                <span v-if="item.type === 'bee_subspecies'">{{
+                  item.val
+                }}</span>
+                <span v-if="item.type === 'select_hive_type'">{{
+                  item.val
+                }}</span>
+                <span v-if="item.type === 'image'">
+                  <img
+                    :src="item.val"
+                    class="image-thumb"
+                    style=" max-width: 80px;max-height: 60px"
+                  />
+                </span>
 
-                  <span
-                    v-if="item.unit !== null && item.type !== 'square_25cm2'"
-                    >{{ item.unit }}</span
-                  >
-                </td>
-                <!-- <td v-if="items.items !== null" class="filler"></td> -->
-              </tr>
-            </tbody>
-          </template>
-        </v-simple-table>
-      </v-row>
+                <span
+                  v-if="item.unit !== null && item.type !== 'square_25cm2'"
+                  >{{ item.unit }}</span
+                >
+              </td>
+              <!-- <td v-if="items.items !== null" class="filler"></td> -->
+            </tr>
+          </tbody>
+        </template>
+      </v-simple-table>
     </v-container>
   </Layout>
 </template>
@@ -540,6 +523,15 @@ export default {
   margin-top: 56px;
 }
 
+.filler {
+  position: fixed;
+  z-index: 2;
+  width: 100vw;
+  height: 20px;
+  margin-top: -20px;
+  background-color: $color-white;
+}
+
 .table-responsive {
   margin-bottom: 24px;
   font-size: 14px;
@@ -553,6 +545,15 @@ export default {
     border-bottom: 1px solid $color-grey-light !important;
   }
 
+  .thead {
+    position: fixed;
+    z-index: 2;
+  }
+
+  .tbody {
+    position: absolute;
+    margin-top: 48px;
+  }
   .ancestors {
     display: block;
     font-size: 10px;
