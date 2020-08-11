@@ -5,7 +5,7 @@
     :no-box-shadow="true"
   >
     <v-toolbar class="hive-inspections-bar" dense light>
-      <v-spacer></v-spacer>
+      <v-spacer class="hide-on-mobile"></v-spacer>
       <v-btn medium tile outlined color="primary">
         <v-icon left>mdi-plus</v-icon>
         {{ $t('New_inspection') }}
@@ -518,6 +518,17 @@ export default {
   border-bottom: 1px solid #fff5e2 !important;
   box-shadow: none !important;
 }
+.hide-on-mobile {
+  @include for-phone-only {
+    display: none !important;
+  }
+}
+.show-on-mobile {
+  display: none !important;
+  @include for-phone-only {
+    display: flex !important;
+  }
+}
 
 .hive-inspections-content {
   margin-top: 56px;
@@ -541,10 +552,6 @@ export default {
     font-size: 12px;
   }
 
-  .v-data-table__wrapper table {
-    border-bottom: 1px solid $color-grey-light !important;
-  }
-
   .thead {
     position: fixed;
     z-index: 2;
@@ -553,6 +560,8 @@ export default {
   .tbody {
     position: absolute;
     margin-top: 48px;
+    margin-bottom: 48px;
+    border-bottom: 1px solid $color-grey-light;
   }
   .ancestors {
     display: block;
@@ -567,18 +576,6 @@ export default {
       @include for-phone-only {
         min-width: 25px;
       }
-    }
-  }
-
-  .hide-on-mobile {
-    @include for-phone-only {
-      display: none !important;
-    }
-  }
-  .show-on-mobile {
-    display: none !important;
-    @include for-phone-only {
-      display: flex !important;
     }
   }
   .notes {
