@@ -5,17 +5,88 @@
     :no-box-shadow="true"
   >
     <v-toolbar class="hive-inspections-bar" dense light>
+      <!-- <div class="d-flex justify-space-between"> -->
+      <div class="d-flex flex-row justify-flex-start align-center">
+        <div class="pr-1">
+          <v-text-field
+            ref="filter"
+            v-model="search"
+            :label="`${$t('Search')}`"
+            :class="
+              `${
+                search !== null ? 'v-input--is-focused primary--text' : ''
+              } filter-text-field`
+            "
+            height="30px"
+            clearable
+            outlined
+            dense
+            hide-details
+          ></v-text-field>
+        </div>
+        <div>
+          <v-icon
+            :class="`${filterByReminder ? 'red--text' : 'color-grey'} mr-2`"
+            @click="filterByReminder = !filterByReminder"
+          >
+            mdi-alert-circle
+          </v-icon>
+          <v-icon
+            :class="
+              `${
+                filterByImpression.includes(3) ? 'green--text' : 'color-grey'
+              } mr-2`
+            "
+            @click="updateFilterByImpression(3)"
+          >
+            mdi-emoticon-happy
+          </v-icon>
+          <v-icon
+            :class="
+              `${
+                filterByImpression.includes(2) ? 'orange--text' : 'color-grey'
+              } mr-2`
+            "
+            @click="updateFilterByImpression(2)"
+          >
+            mdi-emoticon-neutral
+          </v-icon>
+          <v-icon
+            :class="
+              `${
+                filterByImpression.includes(1) ? 'red--text' : 'color-grey'
+              } mr-2`
+            "
+            @click="updateFilterByImpression(1)"
+          >
+            mdi-emoticon-sad
+          </v-icon>
+        </div>
+      </div>
+
       <v-spacer class="hide-on-mobile"></v-spacer>
-      <v-btn
-        :href="`/hives/${id}/inspect`"
-        medium
-        tile
-        outlined
-        color="primary"
-      >
-        <v-icon left>mdi-plus</v-icon>
-        {{ $t('New_inspection') }}
-      </v-btn>
+
+      <v-card-actions>
+        <v-btn
+          class="hide-on-mobile"
+          :href="`/hives/${id}/inspect`"
+          medium
+          tile
+          outlined
+          color="primary"
+        >
+          <v-icon left>mdi-plus</v-icon>
+          {{ $t('New_inspection') }}
+        </v-btn>
+        <v-icon
+          class="show-on-mobile"
+          :href="`/hives/${id}/inspect`"
+          dark
+          color="primary"
+          >mdi-plus-circle</v-icon
+        >
+      </v-card-actions>
+      <!--  </div> -->
     </v-toolbar>
 
     <v-container class="hive-inspections-content">
@@ -32,7 +103,7 @@
                 ><strong>{{ $tc('Inspection', 2) }}</strong></th
               >
               <th
-                v-for="(inspection, a) in inspections.inspections"
+                v-for="(inspection, a) in filteredInspections"
                 :key="a"
                 class="tdc"
               >
@@ -68,7 +139,7 @@
             <tr>
               <td class="tdr">{{ $t('positive_impression') }}</td>
               <td
-                v-for="(inspection, b) in inspections.inspections"
+                v-for="(inspection, b) in filteredInspections"
                 :key="b"
                 class="tdc"
               >
@@ -95,7 +166,7 @@
             <tr>
               <td class="tdr">{{ $t('needs_attention') }}</td>
               <td
-                v-for="(inspection, c) in inspections.inspections"
+                v-for="(inspection, c) in filteredInspections"
                 :key="c"
                 class="tdc"
               >
@@ -121,7 +192,7 @@
             <tr>
               <td class="tdr">{{ $t('notes') }}</td>
               <td
-                v-for="(inspection, d) in inspections.inspections"
+                v-for="(inspection, d) in filteredInspections"
                 :key="d"
                 class="tdc"
               >
@@ -138,7 +209,7 @@
             <tr>
               <td class="tdr">{{ $t('reminder') }}</td>
               <td
-                v-for="(inspection, e) in inspections.inspections"
+                v-for="(inspection, e) in filteredInspections"
                 :key="e"
                 class="tdc"
               >
@@ -186,7 +257,7 @@
             <tr>
               <td class="tdr">{{ $t('remind_date') }}</td>
               <td
-                v-for="(inspection, f) in inspections.inspections"
+                v-for="(inspection, f) in filteredInspections"
                 :key="f"
                 class="tdc"
               >
@@ -200,23 +271,26 @@
               <!-- <td class="filler"></td> -->
             </tr>
 
-            <tr v-for="(items, i) in inspections.items_by_date" :key="i">
-              <td class="tdr" :class="items.items === null ? 'header' : ''">
-                <span v-if="items.items !== null" class="ancestors">{{
-                  items.anc
+            <tr v-for="(itemByDate, i) in matchedItemsByDate" :key="i">
+              <td
+                class="tdr"
+                :class="itemByDate.items === null ? 'header' : ''"
+              >
+                <span v-if="itemByDate.items !== null" class="ancestors">{{
+                  itemByDate.anc
                 }}</span>
-                <span :class="items.items === null ? 'header' : ''">{{
-                  items.name
+                <span :class="itemByDate.items === null ? 'header' : ''">{{
+                  itemByDate.name
                 }}</span>
               </td>
 
               <td
-                v-if="items.items === null"
-                :colspan="inspections.inspections.length + 1"
+                v-if="itemByDate.items === null"
+                :colspan="filteredInspections.length + 1"
                 class="header"
               ></td>
 
-              <td v-for="(item, j) in items.items" :key="j" class="tdc">
+              <td v-for="(item, j) in itemByDate.items" :key="j" class="tdc">
                 <span v-if="item.type === 'slider'">{{ item.val }}</span>
 
                 <span v-if="item.type === 'list'">
@@ -407,13 +481,145 @@ export default {
     return {
       checklists: [],
       inspections: [],
+      filterByReminder: false,
+      filterByImpression: [],
       activeHive: null,
+      search: null,
     }
   },
   computed: {
     id() {
       return parseInt(this.$route.params.id)
     },
+    filteredInspectionsWithUndefined() {
+      var textFilteredInspections = []
+      if (this.search === null) {
+        textFilteredInspections = this.inspections.inspections
+      } else {
+        textFilteredInspections = this.inspections.inspections.map(
+          (inspection) => {
+            const inspectionMatch = Object.entries(inspection).some(
+              ([key, value]) => {
+                if (
+                  value !== null &&
+                  typeof value === 'string'
+                  // && key !== ('description' || 'type' || 'hex_color' || 'created_at')
+                ) {
+                  return value.toLowerCase().includes(this.search.toLowerCase())
+                }
+              }
+            )
+            if (inspectionMatch) {
+              return inspection
+            }
+          }
+        )
+      }
+
+      var propertyFilteredInspections = textFilteredInspections
+        .map((inspection) => {
+          if (this.filterByReminder) {
+            if (inspection.attention === 1 || inspection.reminder !== null) {
+              return inspection
+            }
+          } else {
+            return inspection
+          }
+        })
+        .map((inspection) => {
+          if (this.filterByImpression.length > 0) {
+            if (this.filterByImpression.includes(inspection.impression)) {
+              return inspection
+            }
+          } else {
+            return inspection
+          }
+        })
+
+      return propertyFilteredInspections
+    },
+    filteredInspections() {
+      return this.filteredInspectionsWithUndefined.filter(
+        (x) => x !== undefined
+      )
+    },
+    inspectionIndexes() {
+      var inspectionIndexes = []
+      this.filteredInspectionsWithUndefined.map((inspection, i) => {
+        if (inspection !== undefined) {
+          inspectionIndexes.push(i)
+        }
+      })
+      return inspectionIndexes
+    },
+    matchedItemsByDate() {
+      var matchedItemsByDate = []
+      matchedItemsByDate = this.inspections.items_by_date.map((itemByDate) => {
+        if (itemByDate.items !== null) {
+          return {
+            ...itemByDate,
+            items: itemByDate.items.reduce((acc, item, index, array) => {
+              if (this.inspectionIndexes.includes(index)) {
+                if (typeof item === 'object') {
+                  acc.push(item)
+                } else {
+                  acc.push('')
+                }
+              }
+              return acc
+            }, []),
+          }
+        } else {
+          return itemByDate
+        }
+      })
+      return matchedItemsByDate
+    },
+    // filteredItemsByDate() {
+    //   var textFilteredItemsByDate = []
+    //   if (this.search === null) {
+    //     textFilteredItemsByDate = this.inspections.items_by_date
+    //   } else {
+    //     textFilteredItemsByDate = this.inspections.items_by_date.map(
+    //       (itemByDate) => {
+    //         const itemByDateMatch = Object.entries(itemByDate).some(
+    //           ([key, value]) => {
+    //             if (
+    //               value !== null &&
+    //               typeof value === 'string'
+    //               // && key !== ('description' || 'type' || 'hex_color' || 'created_at')
+    //             ) {
+    //               return value.toLowerCase().includes(this.search.toLowerCase())
+    //             }
+    //           }
+    //         )
+    //         if (itemByDateMatch) {
+    //           return itemByDate
+    //           // FIXME: make sure non-results are removed / filled with filler
+    //           // } else {
+    //           //   if (itemByDate.items !== null) {
+    //           //     return {
+    //           //       ...itemByDate,
+    //           //       items: itemByDate.items.filter((item) => {
+    //           //         if (item !== null) {
+    //           //           return Object.entries(item).some(([key, value]) => {
+    //           //             if (value !== null && typeof value === 'string') {
+    //           //               return value
+    //           //                 .toLowerCase()
+    //           //                 .includes(this.search.toLowerCase())
+    //           //             }
+    //           //           })
+    //           //         }
+    //           //       }),
+    //           //     }
+    //           //   }
+    //         }
+    //       }
+    //     )
+    //   }
+
+    //   return textFilteredItemsByDate.filter((x) => x !== undefined)
+    // },
     scoreAmountOptions() {
       return {
         1: this.$i18n.t('Low'),
@@ -511,6 +717,16 @@ export default {
       if (value === '4') return '#069518'
       return '#F29100'
     },
+    updateFilterByImpression(number) {
+      if (this.filterByImpression.includes(number)) {
+        this.filterByImpression.splice(
+          this.filterByImpression.indexOf(number),
+          1
+        )
+      } else {
+        this.filterByImpression.push(number)
+      }
+    },
   },
 }
 </script>
@@ -523,6 +739,13 @@ export default {
   background-color: $color-orange-light !important;
   border-bottom: 1px solid #fff5e2 !important;
   box-shadow: none !important;
+
+  .v-input {
+    background-color: $color-white;
+    @include for-phone-only {
+      max-width: 115px;
+    }
+  }
 }
 .hide-on-mobile {
   @include for-phone-only {
@@ -642,6 +865,7 @@ export default {
   @include for-phone-only {
     min-width: 150px;
     max-width: 150px;
+    font-size: 12px;
   }
 }
 .tdc {
