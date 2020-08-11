@@ -275,6 +275,7 @@
               <td
                 class="tdr"
                 :class="itemByDate.items === null ? 'header' : ''"
+                @click="hideCategory"
               >
                 <span v-if="itemByDate.items !== null" class="ancestors">{{
                   itemByDate.anc
@@ -485,6 +486,7 @@ export default {
       filterByImpression: [],
       activeHive: null,
       search: null,
+      hiddenCategories: [],
     }
   },
   computed: {
@@ -555,7 +557,12 @@ export default {
     matchedItemsByDate() {
       var matchedItemsByDate = []
       matchedItemsByDate = this.inspections.items_by_date.map((itemByDate) => {
-        if (itemByDate.items !== null) {
+        if (
+          itemByDate.items !== null &&
+          this.hiddenCategories.includes(itemByDate.anc.substring(0, 4)) // FIXME: change into reduce before map
+        ) {
+          return null
+        } else if (itemByDate.items !== null) {
           return {
             ...itemByDate,
             items: itemByDate.items.reduce((acc, item, index, array) => {
@@ -700,6 +707,11 @@ export default {
       if (value < 8) return '#243D80'
       if (value < 11) return '#069518'
       return '#F29100'
+    },
+    hideCategory(event) {
+      // console.log(event)
+      console.log(event.target.innerText)
+      this.hiddenCategories.push(event.target.innerText)
     },
     scoreAmountColor(value) {
       if (value === '0') return '#CCC'
