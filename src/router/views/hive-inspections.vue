@@ -4,14 +4,16 @@
     :title="`${$tc('Inspection', 2)} ${activeHive.name}`"
     :no-box-shadow="true"
   >
-    <v-container>
+    <v-toolbar class="hive-inspections-bar" dense light>
+      <v-spacer></v-spacer>
+      <v-btn medium tile outlined color="primary">
+        <v-icon left>mdi-plus</v-icon>
+        {{ $t('New_inspection') }}
+      </v-btn>
+    </v-toolbar>
+
+    <v-container class="hive-inspections-content">
       <v-row class="hive-inspections-wrapper">
-        <!-- <v-col cols="12"> -->
-        <!-- <div
-          v-if="inspections.inspections !== undefined"
-          class="table-responsive"
-        >
-          <table class="table table-striped inspections"> -->
         <v-simple-table
           v-if="inspections.inspections !== undefined"
           fixed-header
@@ -391,9 +393,6 @@
             </tbody>
           </template>
         </v-simple-table>
-        <!-- </table>
-        </div> -->
-        <!-- </v-col> -->
       </v-row>
     </v-container>
   </Layout>
@@ -528,6 +527,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.hive-inspections-bar {
+  position: fixed;
+  z-index: 2;
+  width: 100%;
+  background-color: $color-orange-light !important;
+  border-bottom: 1px solid #fff5e2 !important;
+  box-shadow: none !important;
+}
+
+.hive-inspections-content {
+  margin-top: 56px;
+}
+
 .table-responsive {
   margin-bottom: 24px;
   font-size: 14px;
