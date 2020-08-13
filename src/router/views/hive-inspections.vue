@@ -886,7 +886,7 @@ export default {
 
 .trh {
   height: 56px;
-  background-color: #ffedc7 !important;
+  background-color: $color-orange-medium !important;
   @include for-phone-only {
     height: 50px;
   }
@@ -932,6 +932,6 @@ span.header {
   height: 12px;
   font-weight: bold;
   line-height: 24px;
-  background-color: #ffedc7;
+  background-color: $color-orange-medium;
 }
 </style>
