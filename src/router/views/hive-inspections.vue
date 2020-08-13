@@ -5,9 +5,8 @@
     :no-box-shadow="true"
   >
     <v-toolbar class="hive-inspections-bar" dense light>
-      <!-- <div class="d-flex justify-space-between"> -->
       <div class="d-flex flex-row justify-flex-start align-center">
-        <div class="pr-1">
+        <div class="pr-2">
           <v-text-field
             ref="filter"
             v-model="search"
@@ -64,7 +63,7 @@
         </div>
       </div>
 
-      <v-spacer class="hide-on-mobile"></v-spacer>
+      <v-spacer></v-spacer>
 
       <v-card-actions>
         <v-btn
@@ -86,18 +85,16 @@
           >mdi-plus-circle</v-icon
         >
       </v-card-actions>
-      <!--  </div> -->
     </v-toolbar>
 
-    <v-container class="hive-inspections-content">
-      <div class="filler"></div>
+    <div class="hive-inspections-content">
       <v-simple-table
         v-if="inspections.inspections !== undefined"
         light
         class="table-responsive"
       >
         <template v-slot>
-          <thead class="thead">
+          <thead>
             <tr class="trh">
               <th class="tdr"
                 ><strong>{{ $tc('Inspection', 2) }}</strong></th
@@ -131,11 +128,11 @@
                   momentifyDayMonth(inspection.created_at)
                 }}</strong>
               </th>
-              <!-- <th class="filler"></th> -->
+              <th class="filler"></th>
             </tr>
           </thead>
 
-          <tbody class="tbody">
+          <tbody>
             <tr>
               <td class="tdr">{{ $t('positive_impression') }}</td>
               <td
@@ -161,7 +158,7 @@
                   >
                 </div>
               </td>
-              <!-- <td class="filler"></td> -->
+              <td class="filler"></td>
             </tr>
             <tr>
               <td class="tdr">{{ $t('needs_attention') }}</td>
@@ -187,7 +184,7 @@
                   </v-sheet>
                 </div>
               </td>
-              <!-- <td class="filler"></td> -->
+              <td class="filler"></td>
             </tr>
             <tr>
               <td class="tdr">{{ $t('notes') }}</td>
@@ -203,7 +200,7 @@
                   >{{ inspection.notes }}</span
                 >
               </td>
-              <!-- <td class="filler"></td> -->
+              <td class="filler"></td>
             </tr>
 
             <tr>
@@ -251,7 +248,7 @@
                 </add-to-calendar>
               </span> -->
               </td>
-              <!-- <td class="filler"></td> -->
+              <td class="filler"></td>
             </tr>
 
             <tr>
@@ -268,7 +265,7 @@
                   >{{ momentify(inspection.reminder_date) }}</span
                 >
               </td>
-              <!-- <td class="filler"></td> -->
+              <td class="filler"></td>
             </tr>
 
             <tr v-for="(itemByDate, i) in matchedItemsByDate" :key="i">
@@ -454,12 +451,12 @@
                   >{{ item.unit }}</span
                 >
               </td>
-              <!-- <td v-if="items.items !== null" class="filler"></td> -->
+              <td v-if="itemByDate.items !== null" class="filler"></td>
             </tr>
           </tbody>
         </template>
       </v-simple-table>
-    </v-container>
+    </div>
   </Layout>
 </template>
 
@@ -712,6 +709,9 @@ export default {
   position: fixed;
   z-index: 2;
   width: 100%;
+  max-width: 100vw;
+  height: 58px !important;
+  padding-top: 4px;
   background-color: $color-orange-light !important;
   border-bottom: 1px solid #fff5e2 !important;
   box-shadow: none !important;
@@ -736,38 +736,21 @@ export default {
 }
 
 .hive-inspections-content {
-  margin-top: 56px;
-}
-
-.filler {
-  position: fixed;
-  z-index: 2;
-  width: 100vw;
-  height: 20px;
-  margin-top: -20px;
-  background-color: $color-white;
+  max-width: 100vw;
+  margin-top: 58px;
+  overflow: hidden;
 }
 
 .table-responsive {
-  margin-bottom: 24px;
+  overflow: visible;
   font-size: 14px;
   border: none;
+  border-bottom: 1px solid $color-grey-light;
 
   @include for-phone-only {
     font-size: 12px;
   }
 
-  .thead {
-    position: fixed;
-    z-index: 2;
-  }
-
-  .tbody {
-    position: absolute;
-    margin-top: 48px;
-    margin-bottom: 48px;
-    border-bottom: 1px solid $color-grey-light;
-  }
   .ancestors {
     display: block;
     font-size: 10px;
@@ -829,9 +812,9 @@ export default {
 }
 
 .trh {
-  width: 200px;
   background-color: #ffedc7 !important;
 }
+
 .tdr {
   width: 200px;
   min-width: 200px;
