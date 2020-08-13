@@ -59,10 +59,15 @@ export default {
   computed: {
     ...mapGetters('hives', ['hiveEdited']),
     ...mapGetters('locations', ['apiaryEdited']),
+    ...mapGetters('inspections', ['inspectionEdited']),
   },
   methods: {
     back: function() {
-      if (this.$route.name === 'hive-edit' && this.hiveEdited) {
+      if (
+        (this.$route.name === 'apiary-create' && this.apiaryEdited) ||
+        (this.$route.name === 'hive-edit' && this.hiveEdited) ||
+        (this.$route.name === 'hive-inspect' && this.inspectionEdited)
+      ) {
         this.$refs.confirm
           .open(this.$i18n.t('unsaved_changes'), this.$i18n.t('save_changes'), {
             color: 'red',
@@ -73,17 +78,18 @@ export default {
           .catch((reject) => {
             return true
           })
-      } else if (this.$route.name === 'apiary-create' && this.apiaryEdited) {
-        this.$refs.confirm
-          .open(this.$i18n.t('unsaved_changes'), this.$i18n.t('save_changes'), {
-            color: 'red',
-          })
-          .then((confirm) => {
-            this.$router.go(-1)
-          })
-          .catch((reject) => {
-            return true
-          })
+        // } else if (this.$route.name === 'apiary-create' && this.apiaryEdited) {
+        //   this.$refs.confirm
+        //     .open(this.$i18n.t('unsaved_changes'), this.$i18n.t('save_changes'), {
+        //       color: 'red',
+        //     })
+        //     .then((confirm) => {
+        //       this.$router.go(-1)
+        //     })
+        //     .catch((reject) => {
+        //       return true
+        //     })
+        // }
       } else {
         this.$router.go(-1)
       }

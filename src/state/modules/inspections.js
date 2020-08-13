@@ -10,32 +10,51 @@ const other = {
 
 const resource = createResource({ path: 'inspections', other })
 
-resource.actions.getChecklists = function({ _ }) {
-  const checklists = resource.endpoint.index()
-  if (checklists) {
-    return checklists
-  }
-  return false
+// Add some custom functionality to the resource module
+export const state = {
+  ...resource.state,
+  edited: false,
 }
-
-resource.actions.getAllInspectionsForHiveId = function({ _ }, hiveId) {
-  const response = resource.endpoint.read(hiveId)
-  if (response) {
-    return response
-  }
-  return false
+export const getters = {
+  ...resource.getters,
+  inspectionEdited: (state) => {
+    return state.edited
+  },
 }
-
-resource.actions.getInspectionsForHives = function({ _ }, hives) {
-  return Promise.all(
-    hives.map((hive) => resource.endpoint.read(hive.id))
-  ).then((data) => data.reduce((all, item) => all.concat(item.inspections), []))
+export const mutations = {
+  ...resource.mutations,
+  setEdited: function(state, bool) {
+    state.edited = bool
+  },
 }
-
-resource.actions.getInspectionsForHiveIds = function({ _ }, hiveIds) {
-  return Promise.all(
-    hiveIds.map((hiveId) => resource.endpoint.read(hiveId))
-  ).then((data) => data.reduce((all, item) => all.concat(item.inspections), []))
+export const actions = {
+  ...resource.actions,
+  getInspectionsForHiveIds: function({ _ }, hiveIds) {
+    return Promise.all(
+      hiveIds.map((hiveId) => resource.endpoint.read(hiveId))
+    ).then((data) =>
+      data.reduce((all, item) => all.concat(item.inspections), [])
+    )
+  },
+  getInspectionsForHives: function({ _ }, hives) {
+    return Promise.all(
+      hives.map((hive) => resource.endpoint.read(hive.id))
+    ).then((data) =>
+      data.reduce((all, item) => all.concat(item.inspections), [])
+    )
+  },
+  getAllInspectionsForHiveId: function({ _ }, hiveId) {
+    const response = resource.endpoint.read(hiveId)
+    if (response) {
+      return response
+    }
+    return false
+  },
+  getChecklists: function({ _ }) {
+    const checklists = resource.endpoint.index()
+    if (checklists) {
+      return checklists
+    }
+    return false
+  },
 }
-
-export default resource
