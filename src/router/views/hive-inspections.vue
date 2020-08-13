@@ -4,7 +4,116 @@
     :title="`${$tc('Inspection', 2)} ${activeHive.name}`"
     :no-box-shadow="true"
   >
-    <v-toolbar class="hive-inspections-bar" dense light>
+    <div class="filter-bar-wrapper">
+      <v-container class="filter-container">
+        <v-row
+          class="filter-bar d-flex flex-row justify-space-between align-center"
+        >
+          <div
+            class="filter-buttons d-flex flex-row justify-flex-start align-center"
+          >
+            <v-col cols="5" class="hide-on-mobile pr-1">
+              <v-text-field
+                ref="filter"
+                v-model="search"
+                :label="`${$t('Search')}`"
+                :class="
+                  `${
+                    search !== null ? 'v-input--is-focused primary--text' : ''
+                  } filter-text-field`
+                "
+                height="36px"
+                clearable
+                outlined
+                dense
+                hide-details
+              ></v-text-field>
+            </v-col>
+            <v-col cols="5" class="show-on-mobile pr-0">
+              <v-text-field
+                v-model="search"
+                :label="`${$t('Search')}`"
+                :class="
+                  `${
+                    search !== null ? 'v-input--is-focused primary--text' : ''
+                  } filter-text-field`
+                "
+                height="30px"
+                clearable
+                outlined
+                dense
+                hide-details
+              ></v-text-field>
+            </v-col>
+            <v-card-actions>
+              <v-icon
+                :class="`${filterByReminder ? 'red--text' : 'color-grey'} mr-2`"
+                @click="filterByReminder = !filterByReminder"
+              >
+                mdi-alert-circle
+              </v-icon>
+              <v-icon
+                :class="
+                  `${
+                    filterByImpression.includes(3)
+                      ? 'green--text'
+                      : 'color-grey'
+                  } mr-2`
+                "
+                @click="updateFilterByImpression(3)"
+              >
+                mdi-emoticon-happy
+              </v-icon>
+              <v-icon
+                :class="
+                  `${
+                    filterByImpression.includes(2)
+                      ? 'orange--text'
+                      : 'color-grey'
+                  } mr-2`
+                "
+                @click="updateFilterByImpression(2)"
+              >
+                mdi-emoticon-neutral
+              </v-icon>
+              <v-icon
+                :class="
+                  `${
+                    filterByImpression.includes(1) ? 'red--text' : 'color-grey'
+                  } mr-2`
+                "
+                @click="updateFilterByImpression(1)"
+              >
+                mdi-emoticon-sad
+              </v-icon>
+            </v-card-actions>
+          </div>
+
+          <v-card-actions>
+            <v-btn
+              class="hide-on-mobile"
+              :href="`/hives/${id}/inspect`"
+              medium
+              tile
+              outlined
+              color="primary"
+            >
+              <v-icon left>mdi-plus</v-icon>
+              {{ $t('New_inspection') }}
+            </v-btn>
+            <v-icon
+              class="show-on-mobile"
+              :href="`/hives/${id}/inspect`"
+              dark
+              color="primary"
+              >mdi-plus-circle</v-icon
+            >
+          </v-card-actions>
+        </v-row>
+      </v-container>
+    </div>
+
+    <!-- <v-toolbar class="hive-inspections-bar" dense light>
       <div class="d-flex flex-row justify-flex-start align-center">
         <div class="pr-2">
           <v-text-field
@@ -85,11 +194,13 @@
           >mdi-plus-circle</v-icon
         >
       </v-card-actions>
-    </v-toolbar>
+    </v-toolbar> -->
 
     <div class="hive-inspections-content">
       <v-simple-table
-        v-if="inspections.inspections !== undefined"
+        v-if="
+          inspections.inspections !== undefined && filteredInspections.length
+        "
         light
         class="table-responsive"
       >
@@ -469,6 +580,17 @@
           </tbody>
         </template>
       </v-simple-table>
+      <v-container
+        v-if="
+          inspections.inspections !== undefined && !filteredInspections.length
+        "
+      >
+        <v-row>
+          <v-col sm="auto" :cols="12">
+            {{ $t('no_results') }}
+          </v-col>
+        </v-row>
+      </v-container>
     </div>
   </Layout>
 </template>
@@ -723,24 +845,36 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.hive-inspections-bar {
+.filter-bar-wrapper {
   position: fixed;
-  z-index: 2;
+  top: 52px;
+  z-index: 1;
   width: 100%;
   max-width: 100vw;
-  height: 58px !important;
-  padding-top: 4px;
-  background-color: $color-orange-light !important;
-  border-bottom: 1px solid #fff5e2 !important;
-  box-shadow: none !important;
-
-  .v-input {
-    background-color: $color-white;
+  margin-top: -4px;
+  background-color: $color-orange-light;
+  border-bottom: 1px solid #fff5e2;
+  .filter-container {
     @include for-phone-only {
-      max-width: 115px;
+      padding: 10px;
+    }
+  }
+  .filter-bar {
+    margin-top: -10px;
+    margin-bottom: -10px;
+    @include for-tablet-portrait-up {
+      margin-top: -12px;
+      margin-bottom: -12px;
+    }
+    .v-input {
+      background-color: $color-white;
+      @include for-phone-only {
+        max-width: 115px;
+      }
     }
   }
 }
+
 .hide-on-mobile {
   @include for-phone-only {
     display: none !important;
@@ -755,15 +889,19 @@ export default {
 
 .hive-inspections-content {
   max-width: 100vw;
-  margin-top: 58px;
+  margin-top: 61px;
   overflow: hidden;
+  @include for-phone-only {
+    margin-top: 55px;
+  }
 }
 
 .table-responsive {
   overflow: visible;
   font-size: 14px;
-  border: none;
+  border-top: 1px solid $color-grey-light;
   border-bottom: 1px solid $color-grey-light;
+  border-radius: 0;
 
   @include for-phone-only {
     font-size: 12px;
@@ -830,7 +968,17 @@ export default {
 }
 
 .trh {
+  height: 56px;
   background-color: #ffedc7 !important;
+  @include for-phone-only {
+    height: 50px;
+  }
+  .tdr {
+    font-size: 14px;
+    @include for-phone-only {
+      font-size: 12px;
+    }
+  }
 }
 
 .tdr {
@@ -843,6 +991,9 @@ export default {
     min-width: 150px;
     max-width: 150px;
     font-size: 12px;
+  }
+  &.header {
+    padding: 8px 16px;
   }
   .toggle-icon {
     float: left;
