@@ -274,7 +274,20 @@
                 :class="itemByDate.items === null ? 'header' : ''"
                 @click="toggleCategory($event.target.textContent)"
               >
-                <v-icon v-if="itemByDate.items === null" left>mdi-minus</v-icon>
+                <v-icon
+                  v-if="itemByDate.items === null"
+                  :id="`toggle-icon-${i}`"
+                  left
+                  class="toggle-icon mdi mdi-minus"
+                  @click="
+                    toggleCategory(
+                      // eslint-disable vue/comma-dangle
+                      $event.toElement.nextSibling.nextElementSibling
+                        .textContent,
+                      $event.target.id
+                    )
+                  "
+                ></v-icon>
                 <span v-if="itemByDate.items !== null" class="ancestors">{{
                   itemByDate.anc
                 }}</span>
@@ -667,11 +680,16 @@ export default {
       if (value < 11) return '#069518'
       return '#F29100'
     },
-    toggleCategory(string) {
+    toggleCategory(string, toggleElement = false) {
       if (this.hiddenCategories.includes(string)) {
         this.hiddenCategories.splice(this.hiddenCategories.indexOf(string), 1)
       } else {
         this.hiddenCategories.push(string)
+      }
+
+      if (toggleElement) {
+        var element = document.getElementById(toggleElement)
+        element.classList.toggle('mdi-plus')
       }
     },
     scoreAmountColor(value) {
@@ -825,6 +843,9 @@ export default {
     min-width: 150px;
     max-width: 150px;
     font-size: 12px;
+  }
+  .toggle-icon {
+    float: left;
   }
 }
 .tdc {

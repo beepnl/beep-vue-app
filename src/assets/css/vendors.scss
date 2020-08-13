@@ -7,6 +7,10 @@
   border: thin solid $color-grey-light;
 }
 
+.v-icon.v-icon::after {
+  display: none !important;
+}
+
 .v-text-field--outlined fieldset {
   border-color: $color-grey-light;
 }
