@@ -275,8 +275,9 @@
               <td
                 class="tdr"
                 :class="itemByDate.items === null ? 'header' : ''"
-                @click="hideCategory"
+                @click="toggleCategory($event.target.textContent)"
               >
+                <v-icon v-if="itemByDate.items === null" left>mdi-minus</v-icon>
                 <span v-if="itemByDate.items !== null" class="ancestors">{{
                   itemByDate.anc
                 }}</span>
@@ -556,77 +557,38 @@ export default {
     },
     matchedItemsByDate() {
       var matchedItemsByDate = []
-      matchedItemsByDate = this.inspections.items_by_date.map((itemByDate) => {
-        if (
-          itemByDate.items !== null &&
-          this.hiddenCategories.includes(itemByDate.anc.substring(0, 4)) // FIXME: change into reduce before map
-        ) {
-          return null
-        } else if (itemByDate.items !== null) {
-          return {
-            ...itemByDate,
-            items: itemByDate.items.reduce((acc, item, index, array) => {
-              if (this.inspectionIndexes.includes(index)) {
-                if (typeof item === 'object') {
-                  acc.push(item)
-                } else {
-                  acc.push('')
-                }
-              }
-              return acc
-            }, []),
+      matchedItemsByDate = this.inspections.items_by_date
+        .reduce((acc, itemByDate) => {
+          if (
+            itemByDate.anc === null ||
+            this.hiddenCategories.length === 0 ||
+            !this.hiddenCategories.includes(itemByDate.anc.split(' ')[0])
+          ) {
+            acc.push(itemByDate)
           }
-        } else {
-          return itemByDate
-        }
-      })
+          return acc
+        }, [])
+        .map((itemByDate) => {
+          if (itemByDate.items !== null) {
+            return {
+              ...itemByDate,
+              items: itemByDate.items.reduce((acc, item, index) => {
+                if (this.inspectionIndexes.includes(index)) {
+                  if (typeof item === 'object') {
+                    acc.push(item)
+                  } else {
+                    acc.push('')
+                  }
+                }
+                return acc
+              }, []),
+            }
+          } else {
+            return itemByDate
+          }
+        })
       return matchedItemsByDate
     },
-    // filteredItemsByDate() {
-    //   var textFilteredItemsByDate = []
-    //   if (this.search === null) {
-    //     textFilteredItemsByDate = this.inspections.items_by_date
-    //   } else {
-    //     textFilteredItemsByDate = this.inspections.items_by_date.map(
-    //       (itemByDate) => {
-    //         const itemByDateMatch = Object.entries(itemByDate).some(
-    //           ([key, value]) => {
-    //             if (
-    //               value !== null &&
-    //               typeof value === 'string'
-    //               // && key !== ('description' || 'type' || 'hex_color' || 'created_at')
-    //             ) {
-    //               return value.toLowerCase().includes(this.search.toLowerCase())
-    //             }
-    //           }
-    //         )
-    //         if (itemByDateMatch) {
-    //           return itemByDate
-    //           // FIXME: make sure non-results are removed / filled with filler
-    //           // } else {
-    //           //   if (itemByDate.items !== null) {
-    //           //     return {
-    //           //       ...itemByDate,
-    //           //       items: itemByDate.items.filter((item) => {
-    //           //         if (item !== null) {
-    //           //           return Object.entries(item).some(([key, value]) => {
-    //           //             if (value !== null && typeof value === 'string') {
-    //           //               return value
-    //           //                 .toLowerCase()
-    //           //                 .includes(this.search.toLowerCase())
-    //           //             }
-    //           //           })
-    //           //         }
-    //           //       }),
-    //           //     }
-    //           //   }
-    //         }
-    //       }
-    //     )
-    //   }
-
-    //   return textFilteredItemsByDate.filter((x) => x !== undefined)
-    // },
     scoreAmountOptions() {
       return {
         1: this.$i18n.t('Low'),
@@ -708,10 +670,12 @@ export default {
       if (value < 11) return '#069518'
       return '#F29100'
     },
-    hideCategory(event) {
-      // console.log(event)
-      console.log(event.target.innerText)
-      this.hiddenCategories.push(event.target.innerText)
+    toggleCategory(string) {
+      if (this.hiddenCategories.includes(string)) {
+        this.hiddenCategories.splice(this.hiddenCategories.indexOf(string), 1)
+      } else {
+        this.hiddenCategories.push(string)
+      }
     },
     scoreAmountColor(value) {
       if (value === '0') return '#CCC'
