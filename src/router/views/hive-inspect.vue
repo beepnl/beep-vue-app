@@ -295,7 +295,8 @@ export default {
         this.newInspection.attention !== null ||
         this.newInspection.reminder !== null ||
         this.newInspection.reminder_date !== null ||
-        this.newInspection.reminder !== null
+        this.newInspection.reminder !== null ||
+        this.newInspection.notes !== null
       )
     },
     inspectionTemplate() {
