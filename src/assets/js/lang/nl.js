@@ -615,6 +615,7 @@ const translations = {
   no_apiaries_yet: 'Je hebt nog geen bijenstanden',
   need_help: 'Hulp nodig?',
   Apiary_color: 'Bijenstand kleur',
+  Set_notification_date: 'Stel herinneringsdatum in',
 }
 
 export default translations

@@ -1,5 +1,15 @@
 export const momentMixin = {
   methods: {
+    momentCreatedAt(date) {
+      return this.$moment(date)
+        .locale(this.$i18n.locale)
+        .format('YYYY-MM-DD HH:mm:ss')
+    },
+    momentISO8601(date) {
+      return this.$moment(date)
+        .locale(this.$i18n.locale)
+        .format()
+    },
     momentify(date) {
       return this.$moment(date)
         .locale(this.$i18n.locale)

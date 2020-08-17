@@ -38,6 +38,7 @@
 
 <script>
 import languages from '@assets/js/lang/languages'
+import { Settings } from 'luxon' // for hive-inspect vue-datetime picker
 import { mapGetters } from 'vuex' // FIXME: this does not fix vuex strict mode warnings
 
 export default {
@@ -60,11 +61,14 @@ export default {
     } else {
       this.$i18n.locale = languages.checkBrowserLanguage()
     }
+    Settings.defaultLocale = this.$i18n.locale
   },
   methods: {
     switchLocale(language) {
       this.$store.dispatch('auth/setLocale', language).then(() => {
         this.$i18n.locale = language
+        console.log(language)
+        Settings.defaultLocale = language
       })
     },
   },

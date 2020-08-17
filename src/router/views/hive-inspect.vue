@@ -1,61 +1,220 @@
 <template>
-  <Layout :title="`${$t('New_inspection')}`" :no-box-shadow="true">
+  <Layout
+    :title="`${$t('New_inspection')}`"
+    :no-box-shadow="true"
+    :edited="inspectionEdited"
+  >
+    <v-toolbar class="hive-inspect-bar" dense light>
+      <v-spacer></v-spacer>
+      <v-btn tile outlined color="primary" class="mr-1" @click="saveInspection">
+        <v-icon left>mdi-check</v-icon>
+        {{ $t('save') + ' ' + $tc('inspection', 1) }}
+      </v-btn>
+    </v-toolbar>
+
     <v-container v-if="newInspection" class="hive-inspect-content">
+      <v-row>
+        <v-col cols="12" sm="6" md="4">
+          <div class="d-flex justify-flex-start align-center">
+            <v-icon dark color="primary" class="mr-2">mdi-calendar-edit</v-icon>
+            <div>
+              <div
+                class="beep-label"
+                v-text="`${$t('Date_of_inspection')}`"
+              ></div>
+              <Datetime
+                v-if="newInspection"
+                v-model="inspectionDate"
+                type="datetime"
+              >
+                <template slot="button-cancel">
+                  <v-btn text color="primary">{{ $t('Cancel') }}</v-btn>
+                </template>
+                <template slot="button-confirm">
+                  <v-btn text color="primary">{{ $t('ok') }}</v-btn>
+                </template>
+              </Datetime>
+            </div>
+          </div>
+        </v-col>
+      </v-row>
+
       <v-form ref="form">
-        <v-card outlined>
-          <v-card-text>
+        <v-card outlined class="mt-3">
+          <v-card-title>
             <v-row>
-              <v-col cols="12" sm="6" md="4">
-                <div>
-                  <v-dialog
-                    ref="dialog"
-                    v-model="modal"
-                    :return-value.sync="inspectionDate"
-                    persistent
-                    width="290px"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                        v-model="inspectionDate"
-                        :label="`${$t('Date_of_inspection')}`"
-                        height="36px"
-                        prepend-icon="mdi-calendar"
-                        v-bind="attrs"
-                        v-on="on"
-                      ></v-text-field>
-                    </template>
-                    <v-date-picker
-                      v-model="inspectionDate"
-                      :first-day-of-week="1"
-                      :locale="locale"
-                      scrollable
-                    >
-                      <v-spacer></v-spacer>
-                      <v-btn text color="primary" @click="modal = !modal">{{
-                        $t('Cancel')
-                      }}</v-btn>
-                      <v-btn
-                        text
-                        color="primary"
-                        @click="updateInspectionDate"
-                        >{{ $t('ok') }}</v-btn
-                      >
-                    </v-date-picker>
-                  </v-dialog>
+              <v-col cols="12" class="py-0">
+                <span>{{ $t('overall') }}</span>
+                <div class="float-right">
+                  <v-icon
+                    id="toggle-icon-overall"
+                    class="toggle-icon mdi mdi-minus"
+                    @click="toggleContent('overall', $event.target.id)"
+                  ></v-icon>
+                </div>
+              </v-col>
+            </v-row>
+          </v-card-title>
+          <v-card-text id="overall">
+            <v-row class="sub-inspection-wrapper">
+              <v-col cols="12">
+                <div
+                  class="overline mb-3"
+                  v-text="`${$t('positive_impression')}`"
+                ></div>
+                <div class="sub-inspection-details rounded-border">
+                  <v-row>
+                    <v-col cols="12" sm="4">
+                      <div
+                        class="beep-label"
+                        v-text="`${$t('positive_impression')}`"
+                      ></div>
+                      <div class="impression-wrapper d-flex align-center">
+                        <v-icon
+                          :class="
+                            `${
+                              newInspection.impression === 1
+                                ? 'red--text'
+                                : 'color-grey'
+                            } mr-2`
+                          "
+                          @click="updateInspection(1, 'impression')"
+                        >
+                          mdi-emoticon-sad
+                        </v-icon>
+                        <v-icon
+                          :class="
+                            `${
+                              newInspection.impression === 2
+                                ? 'orange--text'
+                                : 'color-grey'
+                            } mr-2`
+                          "
+                          @click="updateInspection(2, 'impression')"
+                        >
+                          mdi-emoticon-neutral
+                        </v-icon>
+                        <v-icon
+                          :class="
+                            `${
+                              newInspection.impression === 3
+                                ? 'green--text'
+                                : 'color-grey'
+                            } mr-2`
+                          "
+                          @click="updateInspection(3, 'impression')"
+                        >
+                          mdi-emoticon-happy
+                        </v-icon>
+                      </div>
+                    </v-col>
+                    <v-col cols="12" sm="4">
+                      <div
+                        class="beep-label"
+                        v-text="`${$t('needs_attention')}`"
+                      ></div>
+                      <div>
+                        <v-btn
+                          class="yes-no-button px-2"
+                          text
+                          @click="updateInspection(1, 'attention')"
+                        >
+                          <v-icon
+                            left
+                            :class="
+                              newInspection.attention === 1
+                                ? 'green--text'
+                                : 'color-grey'
+                            "
+                            >mdi-check-circle</v-icon
+                          >
+                          {{ $t('yes') }}
+                        </v-btn>
+                        <v-btn
+                          class="yes-no-button px-2"
+                          text
+                          @click="updateInspection(0, 'attention')"
+                        >
+                          <v-icon
+                            left
+                            :class="
+                              newInspection.attention === 0
+                                ? 'red--text'
+                                : 'color-grey'
+                            "
+                            >mdi-close-circle</v-icon
+                          >
+                          {{ $t('no') }}
+                        </v-btn>
+                      </div>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-textarea
+                        v-if="newInspection"
+                        v-model="newInspection.notes"
+                        :label="`${$t('notes')}`"
+                        rows="1"
+                        auto-grow
+                        clearable
+                      ></v-textarea>
+                    </v-col>
+                  </v-row>
                 </div>
               </v-col>
             </v-row>
 
-            <v-row>
-              <v-col cols="12" sm="6" md="4">
-                <v-switch
-                  v-if="newInspection"
-                  v-model="newInspection.attention"
-                  :label="`${$t('needs_attention')}`"
-                ></v-switch>
+            <v-row class="sub-inspection-wrapper">
+              <v-col cols="12">
+                <div class="overline mb-3" v-text="`${$t('reminder')}`"></div>
+                <div class="sub-inspection-details rounded-border">
+                  <v-row>
+                    <v-col cols="12" sm="4">
+                      <div class="d-flex justify-flex-start align-center">
+                        <v-icon
+                          class="mr-2"
+                          :color="reminderDate !== null ? 'primary' : ''"
+                          >mdi-calendar-edit</v-icon
+                        >
+                        <div>
+                          <div
+                            class="beep-label"
+                            v-text="`${$t('remind_date')}`"
+                          ></div>
+                          <Datetime
+                            v-if="newInspection"
+                            v-model="reminderDate"
+                            :placeholder="`${$t('Set_notification_date')}`"
+                            type="datetime"
+                          >
+                            <template slot="button-cancel">
+                              <v-btn text color="primary">{{
+                                $t('Cancel')
+                              }}</v-btn>
+                            </template>
+                            <template slot="button-confirm">
+                              <v-btn text color="primary">{{ $t('ok') }}</v-btn>
+                            </template>
+                          </Datetime>
+                        </div>
+                      </div>
+                    </v-col>
+                    <v-col cols="12" sm="8">
+                      <v-textarea
+                        v-if="newInspection"
+                        v-model="newInspection.reminder"
+                        :label="`${$t('reminder')}`"
+                        :placeholder="`${$t('notes_for_next_inspection')}`"
+                        rows="1"
+                        auto-grow
+                        clearable
+                      ></v-textarea>
+                    </v-col>
+                  </v-row>
+                </div>
               </v-col>
             </v-row>
 
+            <!--
             <v-row>
               <v-col cols="12">
                 <div class="d-flex justify-flex-end">
@@ -71,7 +230,7 @@
                   </v-btn>
                 </div>
               </v-col>
-            </v-row>
+            </v-row> -->
           </v-card-text>
         </v-card>
       </v-form>
@@ -90,13 +249,16 @@
 
 <script>
 import Confirm from '@components/confirm.vue'
+import { Datetime } from 'vue-datetime'
+import 'vue-datetime/dist/vue-datetime.min.css'
 import Layout from '@layouts/back.vue'
-// import VueNumberInput from '@chenfengyuan/vue-number-input'
 import { momentMixin } from '@mixins/momentMixin'
+// import VueNumberInput from '@chenfengyuan/vue-number-input'
 
 export default {
   components: {
     Confirm,
+    Datetime,
     Layout,
     // VueNumberInput,
   },
@@ -109,8 +271,6 @@ export default {
         text: 'notification',
       },
       newInspection: null,
-      changeCounter: 0,
-      modal: false,
     }
   },
   computed: {
@@ -120,18 +280,27 @@ export default {
     inspectionDate: {
       get() {
         if (this.newInspection) {
-          return this.momentifyRemoveTime(this.newInspection.date)
+          return this.momentISO8601(this.newInspection.date)
         } else {
-          return this.momentifyRemoveTime(new Date())
+          return ''
         }
       },
       set(value) {
-        this.newInspection.date = value
+        this.newInspection.date = this.momentCreatedAt(value)
       },
+    },
+    inspectionEdited() {
+      return (
+        this.newInspection.impression !== null ||
+        this.newInspection.attention !== null ||
+        this.newInspection.reminder !== null ||
+        this.newInspection.reminder_date !== null ||
+        this.newInspection.reminder !== null
+      )
     },
     inspectionTemplate() {
       return {
-        date: new Date(),
+        date: this.momentISO8601(new Date()),
         impression: null,
         attention: null,
         notes: null,
@@ -144,25 +313,26 @@ export default {
     locale() {
       return this.$i18n.locale
     },
-  },
-  watch: {
-    newInspection: {
-      handler: function() {
-        if (this.newInspection !== this.inspectionTemplate) {
-          if (this.changeCounter > 0) {
-            // changeCounter is needed because this watcher detects a change upon instantiation of newInspection which we want to disregard
-            this.$store.commit('inspections/setEdited', true)
-          }
-          this.changeCounter++
+    reminderDate: {
+      get() {
+        if (this.newInspection && this.newInspection.reminder_date !== null) {
+          return this.momentISO8601(this.newInspection.reminder_date)
+        } else {
+          return null
         }
       },
-      deep: true,
+      set(value) {
+        if (value !== '' && value !== null) {
+          this.newInspection.reminder_date = this.momentCreatedAt(value)
+        } else {
+          this.newInspection.reminder_date = null
+        }
+      },
     },
   },
   created() {
-    this.$store.commit('inspections/setEdited', false)
     this.newInspection = {
-      date: this.momentify(new Date()),
+      date: this.momentISO8601(new Date()),
       impression: null,
       attention: null,
       notes: null,
@@ -196,11 +366,43 @@ export default {
       //   this.snackbar.show = true
       // }
     },
-    updateInspectionDate() {
-      this.$refs.dialog.save(this.inspectionDate)
+    toggleContent(idname, toggleElement = false) {
+      var elementToHide = document.getElementById(idname)
+      elementToHide.classList.toggle('hide-content')
+
+      if (toggleElement) {
+        var elementToToggle = document.getElementById(toggleElement)
+        elementToToggle.classList.toggle('mdi-plus')
+      }
+    },
+    updateInspection(value, property) {
+      if (this.newInspection[property] === value) {
+        this.newInspection[property] = null // allow to toggle if value has been set already
+      } else {
+        this.newInspection[property] = value
+      }
     },
   },
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.hive-inspect-bar {
+  position: fixed;
+  z-index: 2;
+  width: 100%;
+  background-color: $color-orange-light !important;
+  border-bottom: 1px solid #fff5e2 !important;
+  box-shadow: none !important;
+}
+.hive-inspect-content {
+  margin-top: 56px;
+}
+.hide-content {
+  display: none;
+}
+.yes-no-button,
+.impression-wrapper {
+  height: 30px !important;
+}
+</style>

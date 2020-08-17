@@ -619,6 +619,7 @@ const translations = {
   no_apiaries_yet: "You don't have any apiaries yet",
   need_help: 'Need help?',
   Apiary_color: 'Apiary color',
+  Set_notification_date: 'Set notification date',
 }
 
 export default translations

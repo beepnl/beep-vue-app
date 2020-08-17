@@ -1,10 +1,24 @@
 /* Vuetify */
+.v-application .accent {
+  background-color: $color-primary !important;
+  border-color: $color-primary !important;
+}
+
+.v-application .accent--text {
+  color: $color-primary !important;
+  caret-color: $color-primary !important;
+}
+
 .theme--light.v-label {
   color: $color-grey-dark;
 }
 
 .theme--light.v-card.v-card--outlined {
   border: thin solid $color-grey-light;
+}
+
+.theme--light.v-btn {
+  color: inherit;
 }
 
 .v-icon.v-icon::after {
@@ -113,4 +127,35 @@
 .vue-treeselect--focused:not(.vue-treeselect--open) .vue-treeselect__control {
   border-color: $color-primary;
   box-shadow: none;
+}
+
+/* Vue Datetime */
+.vdatetime-input {
+  color: $color-primary;
+  cursor: pointer;
+}
+
+.vdatetime-popup {
+  border-radius: 4px;
+
+  .vdatetime-popup__header,
+  .vdatetime-calendar__month__day--selected > span > span,
+  .vdatetime-calendar__month__day--selected:hover > span > span {
+    background: $color-primary !important;
+  }
+
+  .vdatetime-year-picker__item--selected,
+  .vdatetime-time-picker__item--selected,
+  .vdatetime-popup__actions__button {
+    color: $color-primary !important;
+  }
+
+  .vdatetime-popup__header {
+    border-top-left-radius: inherit;
+    border-top-right-radius: inherit;
+  }
+
+  .vdatetime-popup__actions__button {
+    padding: 0 !important;
+  }
 }
