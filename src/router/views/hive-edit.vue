@@ -33,7 +33,7 @@
           @click="deleteHive"
           >mdi-delete</v-icon
         >
-        <v-btn icon type="submit" :disabled="!valid">
+        <v-btn class="mr-n2" icon type="submit" :disabled="!valid">
           <v-icon dark color="primary">mdi-check</v-icon>
         </v-btn>
       </v-toolbar>
