@@ -372,11 +372,9 @@ export default {
       // }
     },
     validateText(value, property, maxLength) {
-      if (value.length > 5) {
-        this.newInspection[property] = this.newInspection[property].substring(
-          0,
-          maxLength
-        )
+      if (value !== null && value.length > maxLength + 1) {
+        value = value.substring(0, maxLength)
+        this.newInspection[property] = value
       }
     },
     toggleContent(idname, toggleElement = false) {
