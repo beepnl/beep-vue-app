@@ -101,6 +101,7 @@
                   :label="`${$t('Select')} ${$t('Hive_type')}`"
                   :placeholder="`${$t('Select')} ${$t('Hive_type')}`"
                   search-nested
+                  required
                   @input="updateHiveType($event)"
                 />
               </v-col>
@@ -363,6 +364,9 @@ export default {
       }
     },
     updateHiveType(event) {
+      if (event === undefined) {
+        event = 63 // Default to custom hive
+      }
       this.updateHive(event, 'hive_type_id')
 
       const hiveTypeIndex = this.hiveTypesList.findIndex(

@@ -7,7 +7,9 @@
   border: thin solid $color-grey-light;
 }
 
-.v-icon.v-icon::after {
+.v-icon.v-icon::after,
+.v-btn--icon.v-btn--round::before,
+.v-btn--icon.v-btn--round .v-ripple__container {
   display: none !important;
 }
 

@@ -15,29 +15,35 @@
       }}
     </h1>
 
-    <v-toolbar
-      v-if="activeHive && activeHive.name !== undefined && activeHive.editable"
-      class="hive-edit-bar"
-      dense
-      light
-    >
-      <v-spacer></v-spacer>
-      <v-icon
-        v-if="activeHive.owner"
-        dark
-        class="mr-4"
-        color="red"
-        @click="deleteHive"
-        >mdi-delete</v-icon
+    <v-form ref="form" v-model="valid" @submit.prevent="saveHive">
+      <v-toolbar
+        v-if="
+          activeHive && activeHive.name !== undefined && activeHive.editable
+        "
+        class="hive-edit-bar"
+        dense
+        light
       >
-      <v-icon dark color="primary" @click="save">mdi-check</v-icon>
-    </v-toolbar>
+        <v-spacer></v-spacer>
+        <v-icon
+          v-if="activeHive.owner"
+          dark
+          class="mr-4"
+          color="red"
+          @click="deleteHive"
+          >mdi-delete</v-icon
+        >
+        <v-btn icon type="submit" :disabled="!valid">
+          <v-icon dark color="primary">mdi-check</v-icon>
+        </v-btn>
+      </v-toolbar>
 
-    <v-container
-      v-if="activeHive && activeHive.name !== undefined && activeHive.editable"
-      class="hive-edit-content"
-    >
-      <v-form ref="form">
+      <v-container
+        v-if="
+          activeHive && activeHive.name !== undefined && activeHive.editable
+        "
+        class="hive-edit-content"
+      >
         <v-card outlined>
           <v-card-text>
             <v-row>
@@ -45,9 +51,10 @@
                 <v-text-field
                   v-if="activeHive"
                   :value="activeHive.name"
-                  hide-details
                   class="hive-edit-name mb-3"
                   counter="30"
+                  :rules="requiredRule"
+                  required
                   @input="updateHive($event, 'name')"
                 >
                 </v-text-field>
@@ -75,6 +82,7 @@
                           height="36px"
                           class="queen-name"
                           counter="30"
+                          clearable
                           @input="updateQueen($event, 'name')"
                         >
                         </v-text-field>
@@ -168,6 +176,7 @@
                           :label="`${$t('Queen')} ${$t('queen_description')}`"
                           height="36px"
                           counter="100"
+                          clearable
                           @input="updateQueen($event, 'description')"
                         >
                         </v-text-field>
@@ -231,8 +240,8 @@
             </v-row>
           </v-card-text>
         </v-card>
-      </v-form>
-    </v-container>
+      </v-container>
+    </v-form>
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
@@ -293,6 +302,7 @@ export default {
       useQueenMarkColor: false,
       queenHasColor: false,
       activeHive: null,
+      valid: false,
     }
   },
   computed: {
@@ -305,6 +315,11 @@ export default {
     },
     locale() {
       return this.$i18n.locale
+    },
+    requiredRule: function() {
+      return [
+        (v) => !!v || this.$i18n.t('Name') + ' ' + this.$i18n.t('is_required'),
+      ]
     },
     treeselectBeeRaces() {
       if (this.beeRacesList.length) {
@@ -454,25 +469,27 @@ export default {
         this.snackbar.show = true
       }
     },
-    async save() {
-      try {
-        const response = await this.$store.dispatch(
-          'hives/saveHiveSettings',
-          this.activeHive
-        )
-        if (!response) {
+    async saveHive() {
+      if (this.$refs.form.validate()) {
+        try {
+          const response = await this.$store.dispatch(
+            'hives/saveHiveSettings',
+            this.activeHive
+          )
+          if (!response) {
+            this.snackbar.text = this.$i18n.t('not_saved_error')
+            this.snackbar.show = true
+          }
+          setTimeout(() => {
+            return this.$router.push({
+              name: 'home',
+            })
+          }, 300) // wait for API to update locations/hives
+        } catch (error) {
+          console.log(error)
           this.snackbar.text = this.$i18n.t('not_saved_error')
           this.snackbar.show = true
         }
-        setTimeout(() => {
-          return this.$router.push({
-            name: 'home',
-          })
-        }, 300) // wait for API to update locations/hives
-      } catch (error) {
-        console.log(error)
-        this.snackbar.text = this.$i18n.t('not_saved_error')
-        this.snackbar.show = true
       }
     },
     cancelDatePicker() {
@@ -507,7 +524,7 @@ export default {
       } else {
         value = event
       }
-      if (property === 'name' && value.length > 31) {
+      if (property === 'name' && value !== null && value.length > 31) {
         value = value.substring(0, 30)
       }
       this.activeHive[property] = value
@@ -523,10 +540,10 @@ export default {
       } else {
         value = event
       }
-      if (property === 'description' && value.length > 101) {
+      if (property === 'description' && value !== null && value.length > 101) {
         value = value.substring(0, 100)
       }
-      if (property === 'name' && value.length > 31) {
+      if (property === 'name' && value !== null && value.length > 31) {
         value = value.substring(0, 30)
       }
       if (property === 'created_at') {
@@ -563,6 +580,7 @@ export default {
   position: fixed;
   z-index: 2;
   width: 100%;
+  margin-top: -56px;
   background-color: $color-orange-light !important;
   border-bottom: 1px solid #fff5e2 !important;
   box-shadow: none !important;
