@@ -46,3 +46,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.yes-no-button {
+  height: 30px !important;
+}
+</style>

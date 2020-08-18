@@ -65,48 +65,12 @@
                 <div class="sub-inspection-details rounded-border">
                   <v-row>
                     <v-col cols="12" sm="4">
-                      <div
-                        class="beep-label"
-                        v-text="`${$t('positive_impression')}`"
-                      ></div>
-                      <div class="impression-wrapper d-flex align-center">
-                        <v-icon
-                          :class="
-                            `${
-                              newInspection.impression === 1
-                                ? 'red--text'
-                                : 'color-grey'
-                            } mr-2`
-                          "
-                          @click="updateInspection(1, 'impression')"
-                        >
-                          mdi-emoticon-sad
-                        </v-icon>
-                        <v-icon
-                          :class="
-                            `${
-                              newInspection.impression === 2
-                                ? 'orange--text'
-                                : 'color-grey'
-                            } mr-2`
-                          "
-                          @click="updateInspection(2, 'impression')"
-                        >
-                          mdi-emoticon-neutral
-                        </v-icon>
-                        <v-icon
-                          :class="
-                            `${
-                              newInspection.impression === 3
-                                ? 'green--text'
-                                : 'color-grey'
-                            } mr-2`
-                          "
-                          @click="updateInspection(3, 'impression')"
-                        >
-                          mdi-emoticon-happy
-                        </v-icon>
-                      </div>
+                      <smileRating
+                        label="positive_impression"
+                        :object-name="newInspection"
+                        property="impression"
+                        @update-object="updateInspection($event, 'impression')"
+                      ></smileRating>
                     </v-col>
                     <v-col cols="12" sm="4">
                       <yesNoRating
@@ -225,6 +189,7 @@ import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
 import Layout from '@layouts/back.vue'
 import { momentMixin } from '@mixins/momentMixin'
+import smileRating from '@components/input-fields/smile-rating.vue'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 // import VueNumberInput from '@chenfengyuan/vue-number-input'
 
@@ -233,6 +198,7 @@ export default {
     Confirm,
     Datetime,
     Layout,
+    smileRating,
     yesNoRating,
     // VueNumberInput,
   },
@@ -381,9 +347,5 @@ export default {
 }
 .hide-content {
   display: none;
-}
-.yes-no-button,
-.impression-wrapper {
-  height: 30px !important;
 }
 </style>

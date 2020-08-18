@@ -22,8 +22,8 @@
 }
 
 .v-icon.v-icon::after,
-.v-btn--icon.v-btn--round::before,
-.v-btn--icon.v-btn--round .v-ripple__container {
+.v-btn::before,
+.v-btn .v-ripple__container {
   display: none !important;
 }
 
