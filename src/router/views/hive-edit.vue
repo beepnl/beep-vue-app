@@ -44,202 +44,186 @@
         "
         class="hive-edit-content"
       >
-        <v-card outlined>
-          <v-card-text>
-            <v-row>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field
-                  v-if="activeHive"
-                  :value="activeHive.name"
-                  class="hive-edit-name mb-3"
-                  counter="30"
-                  :rules="requiredRule"
-                  required
-                  @input="updateHive($event, 'name')"
-                >
-                </v-text-field>
-              </v-col>
-            </v-row>
+        <v-row>
+          <v-col cols="12" sm="6" md="4">
+            <v-text-field
+              v-if="activeHive"
+              :value="activeHive.name"
+              class="hive-edit-name mb-3"
+              counter="30"
+              :rules="requiredRule"
+              required
+              @input="updateHive($event, 'name')"
+            >
+            </v-text-field>
+          </v-col>
+        </v-row>
 
-            <HiveEditDetails :hive="activeHive"></HiveEditDetails>
+        <HiveEditDetails :hive="activeHive"></HiveEditDetails>
 
-            <v-row class="queen-details-wrapper">
-              <v-col cols="12">
-                <div
-                  class="overline mb-3"
-                  v-text="`${$t('Queen') + ' ' + $t('details')}`"
-                ></div>
-                <div class="queen-details rounded-border">
-                  <v-row>
-                    <v-col cols="12" sm="7" md="6" lg="4">
-                      <div>
+        <v-row class="queen-details-wrapper">
+          <v-col cols="12">
+            <div
+              class="overline mb-3"
+              v-text="`${$t('Queen') + ' ' + $t('details')}`"
+            ></div>
+            <div class="queen-details rounded-border">
+              <v-row>
+                <v-col cols="12" sm="7" md="6" lg="4">
+                  <div>
+                    <v-text-field
+                      :value="activeHive.queen ? activeHive.queen.name : null"
+                      :label="`${$t('Queen')} ${$t('name')}`"
+                      :placeholder="`${$t('Queen')} ${$t('name')}`"
+                      height="36px"
+                      class="queen-name"
+                      counter="30"
+                      clearable
+                      @input="updateQueen($event, 'name')"
+                    >
+                    </v-text-field>
+                  </div>
+
+                  <div>
+                    <div class="beep-label" v-text="`${$t('Bee_race')}`"></div>
+                    <Treeselect
+                      :value="
+                        activeHive.queen ? activeHive.queen.race_id : null
+                      "
+                      :options="treeselectBeeRaces"
+                      :no-results-text="`${$t('no_results')}`"
+                      :label="`${$t('Select')} ${$t('Bee_race')}`"
+                      :placeholder="`${$t('Select')} ${$t('Bee_race')}`"
+                      search-nested
+                      @input="updateQueen($event, 'race_id')"
+                    />
+                  </div>
+
+                  <div class="mt-5">
+                    <v-dialog
+                      ref="dialog"
+                      v-model="modal"
+                      :return-value.sync="queenBirthDate"
+                      persistent
+                      width="290px"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
                         <v-text-field
-                          :value="
-                            activeHive.queen ? activeHive.queen.name : null
+                          v-model="queenBirthDate"
+                          :label="
+                            `${$t('Birth_date')} ${
+                              showQueenColorPicker
+                                ? '(' + $t('changes_queen_color') + ')'
+                                : ''
+                            }`
                           "
-                          :label="`${$t('Queen')} ${$t('name')}`"
-                          :placeholder="`${$t('Queen')} ${$t('name')}`"
                           height="36px"
-                          class="queen-name"
-                          counter="30"
-                          clearable
-                          @input="updateQueen($event, 'name')"
+                          prepend-icon="mdi-calendar"
+                          v-bind="attrs"
+                          v-on="on"
+                        ></v-text-field>
+                      </template>
+                      <v-date-picker
+                        v-model="queenBirthDate"
+                        :first-day-of-week="1"
+                        :locale="locale"
+                        scrollable
+                      >
+                        <v-spacer></v-spacer>
+                        <v-btn text color="primary" @click="cancelDatePicker">{{
+                          $t('Cancel')
+                        }}</v-btn>
+                        <v-btn
+                          text
+                          color="primary"
+                          @click="updateQueenBirthDate"
+                          >{{ $t('ok') }}</v-btn
                         >
-                        </v-text-field>
-                      </div>
+                      </v-date-picker>
+                    </v-dialog>
+                  </div>
 
+                  <div>
+                    <div class="beep-label" v-text="`${$t('Age')}`"></div>
+                    <p
+                      v-text="
+                        activeHive.queen
+                          ? momentAge(activeHive.queen.created_at)
+                          : `0` + ` ${$t('years_old')}`
+                      "
+                    >
+                    </p>
+                  </div>
+                </v-col>
+                <v-col cols="12" sm="7" md="6" lg="4">
+                  <div>
+                    <v-text-field
+                      :value="
+                        activeHive.queen ? activeHive.queen.description : null
+                      "
+                      :label="`${$t('Queen')} ${$t('queen_description')}`"
+                      height="36px"
+                      counter="100"
+                      clearable
+                      @input="updateQueen($event, 'description')"
+                    >
+                    </v-text-field>
+                  </div>
+
+                  <v-switch
+                    :value="activeHive.queen ? activeHive.queen.clipped : false"
+                    :label="`${$t('Queen_clipped')}`"
+                    @change="updateQueen($event, 'clipped')"
+                  ></v-switch>
+
+                  <v-switch
+                    :value="
+                      activeHive.queen ? activeHive.queen.fertilized : false
+                    "
+                    :label="`${$t('Queen_fertilized')}`"
+                    @change="updateQueen($event, 'fertilized')"
+                  ></v-switch>
+
+                  <v-switch
+                    v-model="showQueenColorPicker"
+                    :label="`${$t('Queen_colored')}`"
+                  ></v-switch>
+                </v-col>
+
+                <v-col cols="12" md="6" lg="4">
+                  <div v-if="showQueenColorPicker">
+                    <div
+                      class="beep-label"
+                      v-text="`${$t('Queen')} ${$t('color')}`"
+                    ></div>
+                    <div>
                       <div>
-                        <div
-                          class="beep-label"
-                          v-text="`${$t('Bee_race')}`"
-                        ></div>
-                        <Treeselect
-                          :value="
-                            activeHive.queen ? activeHive.queen.race_id : null
-                          "
-                          :options="treeselectBeeRaces"
-                          :no-results-text="`${$t('no_results')}`"
-                          :label="`${$t('Select')} ${$t('Bee_race')}`"
-                          :placeholder="`${$t('Select')} ${$t('Bee_race')}`"
-                          search-nested
-                          @input="updateQueen($event, 'race_id')"
-                        />
-                      </div>
-
-                      <div class="mt-5">
-                        <v-dialog
-                          ref="dialog"
-                          v-model="modal"
-                          :return-value.sync="queenBirthDate"
-                          persistent
-                          width="290px"
-                        >
-                          <template v-slot:activator="{ on, attrs }">
-                            <v-text-field
-                              v-model="queenBirthDate"
-                              :label="
-                                `${$t('Birth_date')} ${
-                                  showQueenColorPicker
-                                    ? '(' + $t('changes_queen_color') + ')'
-                                    : ''
-                                }`
-                              "
-                              height="36px"
-                              prepend-icon="mdi-calendar"
-                              v-bind="attrs"
-                              v-on="on"
-                            ></v-text-field>
-                          </template>
-                          <v-date-picker
-                            v-model="queenBirthDate"
-                            :first-day-of-week="1"
-                            :locale="locale"
-                            scrollable
+                        <div class="mr-2 mb-2">
+                          <v-sheet
+                            :class="
+                              `beep-icon beep-icon-queen beep-icon-queen--large ${
+                                darkIconColor(queenColor) ? 'dark' : ''
+                              }`
+                            "
+                            :color="queenColor"
                           >
-                            <v-spacer></v-spacer>
-                            <v-btn
-                              text
-                              color="primary"
-                              @click="cancelDatePicker"
-                              >{{ $t('Cancel') }}</v-btn
-                            >
-                            <v-btn
-                              text
-                              color="primary"
-                              @click="updateQueenBirthDate"
-                              >{{ $t('ok') }}</v-btn
-                            >
-                          </v-date-picker>
-                        </v-dialog>
-                      </div>
-
-                      <div>
-                        <div class="beep-label" v-text="`${$t('Age')}`"></div>
-                        <p
-                          v-text="
-                            activeHive.queen
-                              ? momentAge(activeHive.queen.created_at)
-                              : `0` + ` ${$t('years_old')}`
-                          "
-                        >
-                        </p>
-                      </div>
-                    </v-col>
-                    <v-col cols="12" sm="7" md="6" lg="4">
-                      <div>
-                        <v-text-field
-                          :value="
-                            activeHive.queen
-                              ? activeHive.queen.description
-                              : null
-                          "
-                          :label="`${$t('Queen')} ${$t('queen_description')}`"
-                          height="36px"
-                          counter="100"
-                          clearable
-                          @input="updateQueen($event, 'description')"
-                        >
-                        </v-text-field>
-                      </div>
-
-                      <v-switch
-                        :value="
-                          activeHive.queen ? activeHive.queen.clipped : false
-                        "
-                        :label="`${$t('Queen_clipped')}`"
-                        @change="updateQueen($event, 'clipped')"
-                      ></v-switch>
-
-                      <v-switch
-                        :value="
-                          activeHive.queen ? activeHive.queen.fertilized : false
-                        "
-                        :label="`${$t('Queen_fertilized')}`"
-                        @change="updateQueen($event, 'fertilized')"
-                      ></v-switch>
-
-                      <v-switch
-                        v-model="showQueenColorPicker"
-                        :label="`${$t('Queen_colored')}`"
-                      ></v-switch>
-                    </v-col>
-
-                    <v-col cols="12" md="6" lg="4">
-                      <div v-if="showQueenColorPicker">
-                        <div
-                          class="beep-label"
-                          v-text="`${$t('Queen')} ${$t('color')}`"
-                        ></div>
-                        <div>
-                          <div>
-                            <div class="mr-2 mb-2">
-                              <v-sheet
-                                :class="
-                                  `beep-icon beep-icon-queen beep-icon-queen--large ${
-                                    darkIconColor(queenColor) ? 'dark' : ''
-                                  }`
-                                "
-                                :color="queenColor"
-                              >
-                              </v-sheet>
-                            </div>
-                            <v-color-picker
-                              v-model="queenColor"
-                              class="flex-color-picker"
-                              :swatches="swatchesQueen"
-                              show-swatches
-                              canvas-height="120"
-                            ></v-color-picker>
-                          </div>
+                          </v-sheet>
                         </div>
+                        <v-color-picker
+                          v-model="queenColor"
+                          class="flex-color-picker"
+                          :swatches="swatchesQueen"
+                          show-swatches
+                          canvas-height="120"
+                        ></v-color-picker>
                       </div>
-                    </v-col>
-                  </v-row>
-                </div>
-              </v-col>
-            </v-row>
-          </v-card-text>
-        </v-card>
+                    </div>
+                  </div>
+                </v-col>
+              </v-row>
+            </div>
+          </v-col>
+        </v-row>
       </v-container>
     </v-form>
 

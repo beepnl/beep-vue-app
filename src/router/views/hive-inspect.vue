@@ -4,42 +4,51 @@
     :no-box-shadow="true"
     :edited="inspectionEdited"
   >
-    <v-toolbar class="hive-inspect-bar" dense light>
-      <v-spacer></v-spacer>
-      <v-btn tile outlined color="primary" class="mr-1" @click="saveInspection">
-        <v-icon left>mdi-check</v-icon>
-        {{ $t('save') + ' ' + $tc('inspection', 1) }}
-      </v-btn>
-    </v-toolbar>
+    <v-form ref="form" v-model="valid" @submit.prevent="saveInspection">
+      <v-toolbar class="hive-inspect-bar" dense light>
+        <v-spacer></v-spacer>
+        <v-btn
+          tile
+          outlined
+          color="primary"
+          class="mr-1"
+          type="submit"
+          :disabled="!valid"
+        >
+          <v-icon left>mdi-check</v-icon>
+          {{ $t('save') + ' ' + $tc('inspection', 1) }}
+        </v-btn>
+      </v-toolbar>
 
-    <v-container v-if="newInspection" class="hive-inspect-content">
-      <v-row>
-        <v-col cols="12" sm="6" md="4">
-          <div class="d-flex justify-flex-start align-center">
-            <v-icon dark color="primary" class="mr-2">mdi-calendar-edit</v-icon>
-            <div>
-              <div
-                class="beep-label"
-                v-text="`${$t('Date_of_inspection')}`"
-              ></div>
-              <Datetime
-                v-if="newInspection"
-                v-model="inspectionDate"
-                type="datetime"
+      <v-container v-if="newInspection" class="hive-inspect-content">
+        <v-row>
+          <v-col cols="12" sm="6" md="4">
+            <div class="d-flex justify-flex-start align-center">
+              <v-icon dark color="primary" class="mr-2"
+                >mdi-calendar-edit</v-icon
               >
-                <template slot="button-cancel">
-                  <v-btn text color="primary">{{ $t('Cancel') }}</v-btn>
-                </template>
-                <template slot="button-confirm">
-                  <v-btn text color="primary">{{ $t('ok') }}</v-btn>
-                </template>
-              </Datetime>
+              <div>
+                <div
+                  class="beep-label"
+                  v-text="`${$t('Date_of_inspection')}`"
+                ></div>
+                <Datetime
+                  v-if="newInspection"
+                  v-model="inspectionDate"
+                  type="datetime"
+                >
+                  <template slot="button-cancel">
+                    <v-btn text color="primary">{{ $t('Cancel') }}</v-btn>
+                  </template>
+                  <template slot="button-confirm">
+                    <v-btn text color="primary">{{ $t('ok') }}</v-btn>
+                  </template>
+                </Datetime>
+              </div>
             </div>
-          </div>
-        </v-col>
-      </v-row>
+          </v-col>
+        </v-row>
 
-      <v-form ref="form">
         <v-card outlined class="mt-3">
           <v-card-title>
             <v-row>
@@ -178,8 +187,8 @@
             </v-card-text>
           </SlideYUpTransition>
         </v-card>
-      </v-form>
-    </v-container>
+      </v-container>
+    </v-form>
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
@@ -200,7 +209,6 @@ import Layout from '@layouts/back.vue'
 import { momentMixin } from '@mixins/momentMixin'
 import smileRating from '@components/input-fields/smile-rating.vue'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
-// import { ZoomYTransition } from 'vue2-transitions'
 import { SlideYUpTransition } from 'vue2-transitions'
 // import VueNumberInput from '@chenfengyuan/vue-number-input'
 
@@ -211,7 +219,6 @@ export default {
     Layout,
     smileRating,
     yesNoRating,
-    // ZoomYTransition,
     SlideYUpTransition,
     // VueNumberInput,
   },
@@ -225,6 +232,7 @@ export default {
       },
       newInspection: null,
       showOverall: true,
+      valid: false,
     }
   },
   computed: {
@@ -299,27 +307,29 @@ export default {
   },
   methods: {
     async saveInspection() {
-      console.log('saving Inspection...')
-      console.log(this.newInspection)
-      // try {
-      //   const response = await this.$store.dispatch(
-      //     'inspections/saveInspection',
-      //     this.newInspection
-      //   )
-      //   if (!response) {
-      //     this.snackbar.text = this.$i18n.t('not_saved_error')
-      //     this.snackbar.show = true
-      //   }
-      //   setTimeout(() => {
-      //     return this.$router.push({
-      //       name: 'hive-inspections',
-      //     })
-      //   }, 300) // wait for API to update locations/hives
-      // } catch (error) {
-      //   console.log(error)
-      //   this.snackbar.text = this.$i18n.t('not_saved_error')
-      //   this.snackbar.show = true
-      // }
+      if (this.$refs.form.validate()) {
+        console.log('saving Inspection...')
+        console.log(this.newInspection)
+        // try {
+        //   const response = await this.$store.dispatch(
+        //     'inspections/saveInspection',
+        //     this.newInspection
+        //   )
+        //   if (!response) {
+        //     this.snackbar.text = this.$i18n.t('not_saved_error')
+        //     this.snackbar.show = true
+        //   }
+        //   setTimeout(() => {
+        //     return this.$router.push({
+        //       name: 'hive-inspections',
+        //     })
+        //   }, 300) // wait for API to update locations/hives
+        // } catch (error) {
+        //   console.log(error)
+        //   this.snackbar.text = this.$i18n.t('not_saved_error')
+        //   this.snackbar.show = true
+        // }
+      }
     },
     validateText(value, property, maxLength) {
       if (value !== null && value.length > maxLength + 1) {
@@ -343,14 +353,12 @@ export default {
   position: fixed;
   z-index: 2;
   width: 100%;
+  margin-top: -56px;
   background-color: $color-orange-light !important;
   border-bottom: 1px solid #fff5e2 !important;
   box-shadow: none !important;
 }
 .hive-inspect-content {
   margin-top: 56px;
-}
-.hide-content {
-  display: none;
 }
 </style>
