@@ -47,110 +47,118 @@
                 <span>{{ $t('overall') }}</span>
                 <div class="float-right">
                   <v-icon
-                    id="toggle-icon-overall"
-                    class="toggle-icon mdi mdi-minus"
-                    @click="toggleContent('overall', $event.target.id)"
+                    :class="
+                      `toggle-icon mdi ${
+                        showOverall ? 'mdi-minus' : 'mdi-plus'
+                      }`
+                    "
+                    @click="showOverall = !showOverall"
                   ></v-icon>
                 </div>
               </v-col>
             </v-row>
           </v-card-title>
-          <v-card-text id="overall">
-            <v-row class="sub-inspection-wrapper">
-              <v-col cols="12">
-                <div
-                  class="overline mb-3"
-                  v-text="`${$t('positive_impression')}`"
-                ></div>
-                <div class="sub-inspection-details rounded-border">
-                  <v-row>
-                    <v-col cols="12" sm="4">
-                      <smileRating
-                        label="positive_impression"
-                        :object-name="newInspection"
-                        property="impression"
-                        @update-object="updateInspection($event, 'impression')"
-                      ></smileRating>
-                    </v-col>
-                    <v-col cols="12" sm="4">
-                      <yesNoRating
-                        label="needs_attention"
-                        :object-name="newInspection"
-                        property="attention"
-                        @update-object="updateInspection($event, 'attention')"
-                      ></yesNoRating>
-                    </v-col>
-                    <v-col cols="12">
-                      <v-textarea
-                        v-if="newInspection"
-                        v-model="newInspection.notes"
-                        :label="`${$t('notes')}`"
-                        counter="250"
-                        rows="1"
-                        auto-grow
-                        clearable
-                        @input="validateText($event, 'notes', 250)"
-                      ></v-textarea>
-                    </v-col>
-                  </v-row>
-                </div>
-              </v-col>
-            </v-row>
+          <SlideYUpTransition :duration="100">
+            <v-card-text v-if="showOverall">
+              <v-row class="sub-inspection-wrapper">
+                <v-col cols="12">
+                  <div
+                    class="overline mb-3"
+                    v-text="`${$t('positive_impression')}`"
+                  ></div>
+                  <div class="sub-inspection-details rounded-border">
+                    <v-row>
+                      <v-col cols="12" sm="4">
+                        <smileRating
+                          label="positive_impression"
+                          :object-name="newInspection"
+                          property="impression"
+                          @update-object="
+                            updateInspection($event, 'impression')
+                          "
+                        ></smileRating>
+                      </v-col>
+                      <v-col cols="12" sm="4">
+                        <yesNoRating
+                          label="needs_attention"
+                          :object-name="newInspection"
+                          property="attention"
+                          @update-object="updateInspection($event, 'attention')"
+                        ></yesNoRating>
+                      </v-col>
+                      <v-col cols="12">
+                        <v-textarea
+                          v-if="newInspection"
+                          v-model="newInspection.notes"
+                          :label="`${$t('notes')}`"
+                          counter="250"
+                          rows="1"
+                          auto-grow
+                          clearable
+                          @input="validateText($event, 'notes', 250)"
+                        ></v-textarea>
+                      </v-col>
+                    </v-row>
+                  </div>
+                </v-col>
+              </v-row>
 
-            <v-row class="sub-inspection-wrapper">
-              <v-col cols="12">
-                <div class="overline mb-3" v-text="`${$t('reminder')}`"></div>
-                <div class="sub-inspection-details rounded-border">
-                  <v-row>
-                    <v-col cols="12" sm="4">
-                      <div class="d-flex justify-flex-start align-center">
-                        <v-icon
-                          class="mr-2"
-                          :color="reminderDate !== null ? 'primary' : ''"
-                          >mdi-calendar-edit</v-icon
-                        >
-                        <div>
-                          <div
-                            class="beep-label"
-                            v-text="`${$t('remind_date')}`"
-                          ></div>
-                          <Datetime
-                            v-if="newInspection"
-                            v-model="reminderDate"
-                            :placeholder="`${$t('Set_notification_date')}`"
-                            type="datetime"
+              <v-row class="sub-inspection-wrapper">
+                <v-col cols="12">
+                  <div class="overline mb-3" v-text="`${$t('reminder')}`"></div>
+                  <div class="sub-inspection-details rounded-border">
+                    <v-row>
+                      <v-col cols="12" sm="4">
+                        <div class="d-flex justify-flex-start align-center">
+                          <v-icon
+                            class="mr-2"
+                            :color="reminderDate !== null ? 'primary' : ''"
+                            >mdi-calendar</v-icon
                           >
-                            <template slot="button-cancel">
-                              <v-btn text color="primary">{{
-                                $t('Cancel')
-                              }}</v-btn>
-                            </template>
-                            <template slot="button-confirm">
-                              <v-btn text color="primary">{{ $t('ok') }}</v-btn>
-                            </template>
-                          </Datetime>
+                          <div>
+                            <div
+                              class="beep-label"
+                              v-text="`${$t('remind_date')}`"
+                            ></div>
+                            <Datetime
+                              v-if="newInspection"
+                              v-model="reminderDate"
+                              :placeholder="`${$t('Set_notification_date')}`"
+                              type="datetime"
+                            >
+                              <template slot="button-cancel">
+                                <v-btn text color="primary">{{
+                                  $t('Cancel')
+                                }}</v-btn>
+                              </template>
+                              <template slot="button-confirm">
+                                <v-btn text color="primary">{{
+                                  $t('ok')
+                                }}</v-btn>
+                              </template>
+                            </Datetime>
+                          </div>
                         </div>
-                      </div>
-                    </v-col>
-                    <v-col cols="12" sm="8">
-                      <v-textarea
-                        v-if="newInspection"
-                        v-model="newInspection.reminder"
-                        :label="`${$t('reminder')}`"
-                        :placeholder="`${$t('notes_for_next_inspection')}`"
-                        rows="1"
-                        auto-grow
-                        clearable
-                        counter="100"
-                        @input="validateText($event, 'reminder', 100)"
-                      ></v-textarea>
-                    </v-col>
-                  </v-row>
-                </div>
-              </v-col>
-            </v-row>
+                      </v-col>
+                      <v-col cols="12" sm="8">
+                        <v-textarea
+                          v-if="newInspection"
+                          v-model="newInspection.reminder"
+                          :label="`${$t('reminder')}`"
+                          :placeholder="`${$t('notes_for_next_inspection')}`"
+                          rows="1"
+                          auto-grow
+                          clearable
+                          counter="100"
+                          @input="validateText($event, 'reminder', 100)"
+                        ></v-textarea>
+                      </v-col>
+                    </v-row>
+                  </div>
+                </v-col>
+              </v-row>
 
-            <!--
+              <!--
             <v-row>
               <v-col cols="12">
                 <div class="d-flex justify-flex-end">
@@ -167,7 +175,8 @@
                 </div>
               </v-col>
             </v-row> -->
-          </v-card-text>
+            </v-card-text>
+          </SlideYUpTransition>
         </v-card>
       </v-form>
     </v-container>
@@ -191,6 +200,8 @@ import Layout from '@layouts/back.vue'
 import { momentMixin } from '@mixins/momentMixin'
 import smileRating from '@components/input-fields/smile-rating.vue'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
+// import { ZoomYTransition } from 'vue2-transitions'
+import { SlideYUpTransition } from 'vue2-transitions'
 // import VueNumberInput from '@chenfengyuan/vue-number-input'
 
 export default {
@@ -200,6 +211,8 @@ export default {
     Layout,
     smileRating,
     yesNoRating,
+    // ZoomYTransition,
+    SlideYUpTransition,
     // VueNumberInput,
   },
   mixins: [momentMixin],
@@ -211,6 +224,7 @@ export default {
         text: 'notification',
       },
       newInspection: null,
+      showOverall: true,
     }
   },
   computed: {
@@ -311,15 +325,6 @@ export default {
       if (value !== null && value.length > maxLength + 1) {
         value = value.substring(0, maxLength)
         this.newInspection[property] = value
-      }
-    },
-    toggleContent(idname, toggleElement = false) {
-      var elementToHide = document.getElementById(idname)
-      elementToHide.classList.toggle('hide-content')
-
-      if (toggleElement) {
-        var elementToToggle = document.getElementById(toggleElement)
-        elementToToggle.classList.toggle('mdi-plus')
       }
     },
     updateInspection(value, property) {
