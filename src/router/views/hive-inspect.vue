@@ -52,7 +52,7 @@
         <v-card outlined class="mt-3">
           <v-card-title>
             <v-row>
-              <v-col cols="12" class="py-0">
+              <v-col cols="12" class="py-0 mt-n1">
                 <span>{{ $t('overall') }}</span>
                 <div class="float-right">
                   <v-icon
@@ -135,6 +135,16 @@
                               :placeholder="`${$t('Set_notification_date')}`"
                               type="datetime"
                             >
+                              <span
+                                v-if="reminderDate !== null"
+                                slot="after"
+                                class="description clear-icon"
+                                @click="clearDate"
+                              >
+                                <v-icon class="mt-n1" color="primary"
+                                  >mdi-close</v-icon
+                                ></span
+                              >
                               <template slot="button-cancel">
                                 <v-btn text color="primary">{{
                                   $t('Cancel')
@@ -331,6 +341,9 @@ export default {
         // }
       }
     },
+    clearDate() {
+      this.newInspection.reminder_date = null
+    },
     validateText(value, property, maxLength) {
       if (value !== null && value.length > maxLength + 1) {
         value = value.substring(0, maxLength)
@@ -360,5 +373,8 @@ export default {
 }
 .hive-inspect-content {
   margin-top: 56px;
+}
+.clear-icon {
+  cursor: pointer;
 }
 </style>
