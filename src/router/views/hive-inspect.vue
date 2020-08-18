@@ -153,9 +153,11 @@
                         v-if="newInspection"
                         v-model="newInspection.notes"
                         :label="`${$t('notes')}`"
+                        counter="250"
                         rows="1"
                         auto-grow
                         clearable
+                        @input="validateText($event, 'notes', 250)"
                       ></v-textarea>
                     </v-col>
                   </v-row>
@@ -207,6 +209,8 @@
                         rows="1"
                         auto-grow
                         clearable
+                        counter="100"
+                        @input="validateText($event, 'reminder', 100)"
                       ></v-textarea>
                     </v-col>
                   </v-row>
@@ -366,6 +370,14 @@ export default {
       //   this.snackbar.text = this.$i18n.t('not_saved_error')
       //   this.snackbar.show = true
       // }
+    },
+    validateText(value, property, maxLength) {
+      if (value.length > 5) {
+        this.newInspection[property] = this.newInspection[property].substring(
+          0,
+          maxLength
+        )
+      }
     },
     toggleContent(idname, toggleElement = false) {
       var elementToHide = document.getElementById(idname)
