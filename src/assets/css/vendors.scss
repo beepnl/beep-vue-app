@@ -21,7 +21,9 @@
   color: inherit;
 }
 
-.v-icon.v-icon::after {
+.v-icon.v-icon::after,
+.v-btn--icon.v-btn--round::before,
+.v-btn--icon.v-btn--round .v-ripple__container {
   display: none !important;
 }
 
