@@ -400,6 +400,7 @@ const translations = {
   beep_foundation: 'la fundación BEEP',
 
   Checklist: 'Lista de verificación | Listas de verificación',
+  checklist: 'lista de verificación | listas de verificación',
   Checklist_items: 'Artículos de la lista de verificación',
   edit_hive_checklist:
     'Marque/desmarque las casillas de la lista anterior para agregar/eliminar elementos de su lista de comprobación de la colmena. También puede desplegar/doblar y arrastrar/soltar los elementos para reordenarlos a su propio estilo. Consejo: si introduce un término en el campo de búsqueda, todos los elementos que contengan ese término se retirarán y colorearán de rojo.',

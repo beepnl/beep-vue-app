@@ -22,7 +22,7 @@
 
       <v-container v-if="newInspection" class="hive-inspect-content">
         <v-row>
-          <v-col cols="12" sm="6" md="4">
+          <v-col cols="12" sm="4">
             <div class="d-flex justify-flex-start align-center">
               <v-icon dark color="primary" class="mr-2"
                 >mdi-calendar-edit</v-icon
@@ -46,6 +46,19 @@
                 </Datetime>
               </div>
             </div>
+          </v-col>
+
+          <v-col class="d-flex" cols="12" sm="4">
+            <v-select
+              v-if="checklists !== null"
+              v-model="selectedChecklistId"
+              class="select-checklist"
+              :items="checklists"
+              item-text="name"
+              item-value="id"
+              :label="`${$t('Select') + ' ' + $tc('checklist', 1)}`"
+              @input="getChecklistById(820)"
+            ></v-select>
           </v-col>
         </v-row>
 
@@ -240,7 +253,10 @@ export default {
         timeout: 2000,
         text: 'notification',
       },
+      selectedChecklist: null,
+      checklists: null,
       newInspection: null,
+      selectedChecklistId: null,
       showOverall: true,
       valid: false,
     }
@@ -304,6 +320,7 @@ export default {
     },
   },
   created() {
+    this.getChecklists()
     this.newInspection = {
       date: this.momentISO8601(new Date()),
       impression: null,
@@ -316,6 +333,35 @@ export default {
     }
   },
   methods: {
+    async getChecklistById(id) {
+      try {
+        const response = await this.$store.dispatch(
+          'inspections/getChecklistById',
+          id
+        )
+        console.log(response)
+        this.selectedChecklist = response.checklist
+        return response.checklist
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    async getChecklists() {
+      try {
+        const response = await this.$store.dispatch('inspections/getChecklists')
+        this.checklists = response.checklists
+        this.selectedChecklist = response.checklist
+        if (
+          this.selectedChecklist !== null &&
+          this.selectedChecklist !== undefined
+        ) {
+          this.selectedChecklistId = this.selectedChecklist.id
+        }
+        return true
+      } catch (e) {
+        console.log(e)
+      }
+    },
     async saveInspection() {
       if (this.$refs.form.validate()) {
         console.log('saving Inspection...')
@@ -373,6 +419,9 @@ export default {
 }
 .hive-inspect-content {
   margin-top: 56px;
+}
+.select-checklist {
+  margin-top: 1px !important;
 }
 .clear-icon {
   cursor: pointer;

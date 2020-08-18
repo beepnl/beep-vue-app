@@ -530,7 +530,6 @@ export default {
   mixins: [momentMixin],
   data: function() {
     return {
-      checklists: [],
       inspections: [],
       filterByReminder: false,
       filterByImpression: [],
@@ -657,7 +656,6 @@ export default {
   },
   created() {
     this.readHive()
-    this.getChecklists()
     this.getAllInspectionsForHiveId()
   },
   methods: {
@@ -694,15 +692,6 @@ export default {
           this.id
         )
         this.inspections = response
-        return true
-      } catch (e) {
-        console.log(e)
-      }
-    },
-    async getChecklists() {
-      try {
-        const response = await this.$store.dispatch('inspections/getChecklists')
-        this.checklists = response
         return true
       } catch (e) {
         console.log(e)

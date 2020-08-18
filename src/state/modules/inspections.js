@@ -50,4 +50,11 @@ export const actions = {
     }
     return false
   },
+  getChecklistById: function({ _ }, id) {
+    const checklist = resource.endpoint.index(id)
+    if (checklist) {
+      return checklist
+    }
+    return false
+  },
 }

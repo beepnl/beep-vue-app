@@ -396,6 +396,7 @@ const translations = {
   beep_foundation: 'the BEEP foundation',
 
   Checklist: 'Checklist | Checklists',
+  checklist: 'checklist | checklists',
   Checklist_items: 'Checklist items',
   edit_hive_checklist:
     'Check/unckeck the boxes in the list below to add/remove items from your hive checklist. You can also unfold/fold and drag/drop the items to re-order them to your own style. Tip: if you enter a term in the search field, all items containing that term will fold out and color red.',

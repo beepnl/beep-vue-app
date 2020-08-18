@@ -402,6 +402,7 @@ const translations = {
   beep_foundation: 'la fondation BEEP',
 
   Checklist: 'Liste de contrôle | Listes de contrôle',
+  checklist: 'liste de contrôle | listes de contrôle',
   Checklist_items: 'Éléments de la liste de contrôle',
   edit_hive_checklist:
     'Cochez ou décochez les cases de la liste ci-dessous pour ajouter/supprimer des éléments de votre liste de vérification de la ruche. Vous pouvez également déplier/plier et glisser/déposer les éléments pour les réorganiser à votre propre style. Astuce : si vous entrez un terme dans le champ de recherche, tous les éléments contenant ce terme seront pliés et colorés en rouge',
