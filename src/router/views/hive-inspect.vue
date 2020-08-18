@@ -281,6 +281,7 @@ export default {
         reminder: null,
         checklist_id: null, // TODO: get checklist id
         hive_id: this.id,
+        items: {},
       }
     },
     locale() {
@@ -313,6 +314,7 @@ export default {
       reminder: null,
       checklist_id: null, // TODO: get checklist id
       hive_id: this.id,
+      items: {},
     }
   },
   methods: {
@@ -320,25 +322,25 @@ export default {
       if (this.$refs.form.validate()) {
         console.log('saving Inspection...')
         console.log(this.newInspection)
-        // try {
-        //   const response = await this.$store.dispatch(
-        //     'inspections/saveInspection',
-        //     this.newInspection
-        //   )
-        //   if (!response) {
-        //     this.snackbar.text = this.$i18n.t('not_saved_error')
-        //     this.snackbar.show = true
-        //   }
-        //   setTimeout(() => {
-        //     return this.$router.push({
-        //       name: 'hive-inspections',
-        //     })
-        //   }, 300) // wait for API to update locations/hives
-        // } catch (error) {
-        //   console.log(error)
-        //   this.snackbar.text = this.$i18n.t('not_saved_error')
-        //   this.snackbar.show = true
-        // }
+        try {
+          const response = await this.$store.dispatch(
+            'inspections/saveInspection',
+            this.newInspection
+          )
+          if (!response) {
+            this.snackbar.text = this.$i18n.t('not_saved_error')
+            this.snackbar.show = true
+          }
+          setTimeout(() => {
+            return this.$router.push({
+              name: 'hive-inspections',
+            })
+          }, 300)
+        } catch (error) {
+          console.log(error)
+          this.snackbar.text = this.$i18n.t('not_saved_error')
+          this.snackbar.show = true
+        }
       }
     },
     clearDate() {
