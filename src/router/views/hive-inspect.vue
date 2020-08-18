@@ -109,44 +109,12 @@
                       </div>
                     </v-col>
                     <v-col cols="12" sm="4">
-                      <div
-                        class="beep-label"
-                        v-text="`${$t('needs_attention')}`"
-                      ></div>
-                      <div>
-                        <v-btn
-                          class="yes-no-button px-2"
-                          text
-                          @click="updateInspection(1, 'attention')"
-                        >
-                          <v-icon
-                            left
-                            :class="
-                              newInspection.attention === 1
-                                ? 'green--text'
-                                : 'color-grey'
-                            "
-                            >mdi-check-circle</v-icon
-                          >
-                          {{ $t('yes') }}
-                        </v-btn>
-                        <v-btn
-                          class="yes-no-button px-2"
-                          text
-                          @click="updateInspection(0, 'attention')"
-                        >
-                          <v-icon
-                            left
-                            :class="
-                              newInspection.attention === 0
-                                ? 'red--text'
-                                : 'color-grey'
-                            "
-                            >mdi-close-circle</v-icon
-                          >
-                          {{ $t('no') }}
-                        </v-btn>
-                      </div>
+                      <yesNoRating
+                        label="needs_attention"
+                        :object-name="newInspection"
+                        property="attention"
+                        @update-object="updateInspection($event, 'attention')"
+                      ></yesNoRating>
                     </v-col>
                     <v-col cols="12">
                       <v-textarea
@@ -257,6 +225,7 @@ import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
 import Layout from '@layouts/back.vue'
 import { momentMixin } from '@mixins/momentMixin'
+import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 // import VueNumberInput from '@chenfengyuan/vue-number-input'
 
 export default {
@@ -264,6 +233,7 @@ export default {
     Confirm,
     Datetime,
     Layout,
+    yesNoRating,
     // VueNumberInput,
   },
   mixins: [momentMixin],
