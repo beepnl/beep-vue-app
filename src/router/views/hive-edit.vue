@@ -47,6 +47,7 @@
                   :value="activeHive.name"
                   hide-details
                   class="hive-edit-name mb-3"
+                  counter="30"
                   @input="updateHive($event, 'name')"
                 >
                 </v-text-field>
@@ -73,6 +74,7 @@
                           :placeholder="`${$t('Queen')} ${$t('name')}`"
                           height="36px"
                           class="queen-name"
+                          counter="30"
                           @input="updateQueen($event, 'name')"
                         >
                         </v-text-field>
@@ -165,6 +167,7 @@
                           "
                           :label="`${$t('Queen')} ${$t('queen_description')}`"
                           height="36px"
+                          counter="100"
                           @input="updateQueen($event, 'description')"
                         >
                         </v-text-field>
@@ -504,6 +507,9 @@ export default {
       } else {
         value = event
       }
+      if (property === 'name' && value.length > 31) {
+        value = value.substring(0, 30)
+      }
       this.activeHive[property] = value
       this.activeHive.frames = this.activeHive.layers[0].framecount
       this.$store.commit('hives/setEdited', true)
@@ -516,6 +522,12 @@ export default {
         value = event.target.value
       } else {
         value = event
+      }
+      if (property === 'description' && value.length > 101) {
+        value = value.substring(0, 100)
+      }
+      if (property === 'name' && value.length > 31) {
+        value = value.substring(0, 30)
       }
       if (property === 'created_at') {
         this.useQueenMarkColor = true
