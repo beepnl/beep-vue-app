@@ -3,390 +3,405 @@
     :title="`${$t('create_new')} ${$tc('location', 1)}`"
     :no-box-shadow="true"
   >
-    <v-tabs
-      v-model="activeTab"
-      background-color="primary"
-      class="elevation-2 apiary-create"
-      dense
-      dark
-      grow
-      icons-and-text
-    >
-      <v-tabs-slider></v-tabs-slider>
+    <v-form ref="form" v-model="valid" @submit.prevent="createApiary">
+      <v-tabs
+        v-model="activeTab"
+        background-color="primary"
+        class="elevation-2 apiary-create"
+        dense
+        dark
+        grow
+        icons-and-text
+      >
+        <v-tabs-slider></v-tabs-slider>
 
-      <v-tab v-for="(tab, i) in tabs" :key="i" :href="`#tab-${i}`">
-        <span v-if="tab.title"
-          ><v-icon v-if="tab.icon">{{ tab.icon }}</v-icon
-          ><span class="hide-on-mobile">{{ tab.title }}</span
-          ><span class="show-on-mobile">{{ tab.title_mobile }}</span></span
-        >
-      </v-tab>
+        <v-tab v-for="(tab, i) in tabs" :key="i" :href="`#tab-${i}`">
+          <span v-if="tab.title"
+            ><v-icon v-if="tab.icon">{{ tab.icon }}</v-icon
+            ><span class="hide-on-mobile">{{ tab.title }}</span
+            ><span class="show-on-mobile">{{ tab.title_mobile }}</span></span
+          >
+        </v-tab>
 
-      <v-tab-item value="tab-0">
-        <v-container>
-          <v-row>
-            <v-col cols="12">
-              <div class="overline mb-4">{{
-                $t('new_apiary_explanation')
-              }}</div>
-              <v-img
-                class="align-center"
-                max-height="70vh"
-                width="100%"
-                src="~@assets/img/apiary-in-field.jpg"
-              >
-              </v-img>
-            </v-col>
-          </v-row>
-          <div class="d-flex justify-space-between">
-            <v-spacer></v-spacer>
-            <div class="d-flex align-center">
-              <span class="overline mr-3"
-                >{{ $t('start_here') + ' '
-                }}<v-icon class="bounce">mdi-arrow-right</v-icon></span
+        <v-tab-item value="tab-0">
+          <v-container>
+            <v-row>
+              <v-col cols="12">
+                <div class="overline mb-4">{{
+                  $t('new_apiary_explanation')
+                }}</div>
+                <v-img
+                  class="align-center"
+                  max-height="70vh"
+                  width="100%"
+                  src="~@assets/img/apiary-in-field.jpg"
+                >
+                </v-img>
+              </v-col>
+            </v-row>
+            <div class="d-flex justify-space-between">
+              <v-spacer></v-spacer>
+              <div class="d-flex align-center">
+                <span class="overline mr-3"
+                  >{{ $t('start_here') + ' '
+                  }}<v-icon class="bounce">mdi-arrow-right</v-icon></span
+                >
+                <v-icon
+                  x-large
+                  dark
+                  color="primary"
+                  class="next"
+                  @click="setActiveTab(1)"
+                  >mdi-chevron-right-box</v-icon
+                >
+              </div>
+            </div>
+          </v-container>
+        </v-tab-item>
+
+        <v-tab-item value="tab-1">
+          <v-container>
+            <v-row>
+              <v-col cols="12">
+                <div class="overline mb-4">{{
+                  $tc('Location', 1) + ' ' + $t('settings')
+                }}</div>
+                <v-row>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      v-if="newHive"
+                      v-model="newHive.name"
+                      :label="`${$t('Name')}*`"
+                      :placeholder="`${$t('Name')}`"
+                      class="apiary-create-name"
+                      counter="30"
+                      :rules="requiredRule"
+                      required
+                      @input="validateText($event, 'name', 30)"
+                    >
+                    </v-text-field>
+
+                    <div>
+                      <div
+                        class="beep-label"
+                        v-text="`${$t('Apiary_color')}`"
+                      ></div>
+                      <v-sheet
+                        v-if="newHive"
+                        class="apiary-color"
+                        dark
+                        :color="newHive.hex_color"
+                        @click="overlay = !overlay"
+                      ></v-sheet>
+                    </div>
+
+                    <v-overlay :value="overlay">
+                      <v-toolbar class="hive-color-picker-toolbar" dense light>
+                        <div
+                          class="hive-color-picker-title"
+                          v-text="`${$t('Apiary_color')}`"
+                        ></div>
+                        <v-spacer></v-spacer>
+                        <v-toolbar-items>
+                          <v-icon
+                            class="mr-1"
+                            color="primary"
+                            @click="
+                              updateLocation(colorPickerValue, 'hex_color')
+                            "
+                            >mdi-check</v-icon
+                          >
+                          <v-icon @click="cancelColorPicker">mdi-close</v-icon>
+                        </v-toolbar-items>
+                      </v-toolbar>
+
+                      <v-color-picker
+                        v-model="colorPicker"
+                        class="hive-color-picker flex-color-picker"
+                        :swatches="swatchesApiary"
+                        show-swatches
+                        hide-canvas
+                        light
+                        flat
+                      >
+                      </v-color-picker>
+                    </v-overlay>
+
+                    <v-switch
+                      v-if="newHive"
+                      v-model="newHive.roofed"
+                      :label="`${$t('roofed')}`"
+                    ></v-switch>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+            <div class="d-flex justify-space-between">
+              <v-icon
+                x-large
+                dark
+                color="primary"
+                class="prev"
+                @click="setActiveTab(0)"
+                >mdi-chevron-left-box</v-icon
               >
               <v-icon
                 x-large
                 dark
                 color="primary"
                 class="next"
-                @click="setActiveTab(1)"
+                @click="setActiveTab(2)"
                 >mdi-chevron-right-box</v-icon
               >
             </div>
-          </div>
-        </v-container>
-      </v-tab-item>
+          </v-container>
+        </v-tab-item>
 
-      <v-tab-item value="tab-1">
-        <v-container>
-          <v-row>
-            <v-col cols="12">
-              <div class="overline mb-4">{{
-                $tc('Location', 1) + ' ' + $t('settings')
-              }}</div>
-              <v-row>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field
-                    v-if="newHive"
-                    v-model="newHive.name"
-                    :label="`${$t('Name')}*`"
-                    :placeholder="`${$t('Name')}`"
-                    class="apiary-create-name"
-                  >
-                  </v-text-field>
-
-                  <div>
-                    <div
-                      class="beep-label"
-                      v-text="`${$t('Apiary_color')}`"
-                    ></div>
-                    <v-sheet
-                      v-if="newHive"
-                      class="apiary-color"
-                      dark
-                      :color="newHive.hex_color"
-                      @click="overlay = !overlay"
-                    ></v-sheet>
-                  </div>
-
-                  <v-overlay :value="overlay">
-                    <v-toolbar class="hive-color-picker-toolbar" dense light>
-                      <div
-                        class="hive-color-picker-title"
-                        v-text="`${$t('Apiary_color')}`"
-                      ></div>
-                      <v-spacer></v-spacer>
-                      <v-toolbar-items>
-                        <v-icon
-                          class="mr-1"
-                          color="primary"
-                          @click="updateLocation(colorPickerValue, 'hex_color')"
-                          >mdi-check</v-icon
-                        >
-                        <v-icon @click="cancelColorPicker">mdi-close</v-icon>
-                      </v-toolbar-items>
-                    </v-toolbar>
-
-                    <v-color-picker
-                      v-model="colorPicker"
-                      class="hive-color-picker flex-color-picker"
-                      :swatches="swatchesApiary"
-                      show-swatches
-                      hide-canvas
-                      light
-                      flat
+        <v-tab-item value="tab-2">
+          <v-container>
+            <v-row>
+              <v-col cols="12">
+                <div class="overline mb-4">
+                  {{
+                    $t('Place') +
+                      ' ' +
+                      $t('details') +
+                      ' (' +
+                      $t('optional') +
+                      ')'
+                  }}</div
+                >
+                <v-row>
+                  <v-col cols="12">
+                    <div class="beep-label" v-text="`${$t('Address')}`"></div>
+                    <VueGoogleAutocomplete
+                      id="map"
+                      ref="address"
+                      classname="autocomplete-field v-input v-input--dense v-text-field v-text-field--outlined"
+                      :placeholder="`${$t('Address')}`"
+                      @placechanged="getAddressData"
                     >
-                    </v-color-picker>
-                  </v-overlay>
-
-                  <v-switch
-                    v-if="newHive"
-                    v-model="newHive.roofed"
-                    :label="`${$t('roofed')}`"
-                  ></v-switch>
-                </v-col>
-              </v-row>
-            </v-col>
-          </v-row>
-          <div class="d-flex justify-space-between">
-            <v-icon
-              x-large
-              dark
-              color="primary"
-              class="prev"
-              @click="setActiveTab(0)"
-              >mdi-chevron-left-box</v-icon
-            >
-            <v-icon
-              x-large
-              dark
-              color="primary"
-              class="next"
-              @click="setActiveTab(2)"
-              >mdi-chevron-right-box</v-icon
-            >
-          </div>
-        </v-container>
-      </v-tab-item>
-
-      <v-tab-item value="tab-2">
-        <v-container>
-          <v-row>
-            <v-col cols="12">
-              <div class="overline mb-4">
-                {{
-                  $t('Place') +
-                    ' ' +
-                    $t('details') +
-                    ' (' +
-                    $t('optional') +
-                    ')'
-                }}</div
+                    </VueGoogleAutocomplete>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" sm="4">
+                    <div class="beep-label" v-text="`${$t('Country')}`"></div>
+                    <country-select
+                      v-if="newHive"
+                      v-model="newHive.country_code"
+                      :country="newHive.country_code.toUpperCase()"
+                      :usei18n="false"
+                      class="country-select"
+                    />
+                  </v-col>
+                  <v-col cols="6" sm="4">
+                    <div class="beep-label" v-text="`${$t('Lattitude')}`"></div>
+                    <VueNumberInput
+                      v-if="newHive"
+                      :value="parseFloat(newHive.lat)"
+                      :step="0.001"
+                      :min="-90"
+                      :max="90"
+                      inline
+                      controls
+                      @change="updateLocation($event, 'lat')"
+                    ></VueNumberInput>
+                  </v-col>
+                  <v-col cols="6" sm="4">
+                    <div class="beep-label" v-text="`${$t('Longitude')}`"></div>
+                    <VueNumberInput
+                      v-if="newHive"
+                      :value="parseFloat(newHive.lon)"
+                      :step="0.001"
+                      :min="-180"
+                      :max="180"
+                      inline
+                      controls
+                      @change="updateLocation($event, 'lon')"
+                    ></VueNumberInput>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" sm="8">
+                    <v-text-field
+                      v-if="newHive"
+                      v-model="newHive.city"
+                      :label="`${$t('City')}`"
+                      outlined
+                      dense
+                    >
+                    </v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="4">
+                    <v-text-field
+                      v-if="newHive"
+                      v-model="newHive.postal_code"
+                      :label="`${$t('Postal_code')}`"
+                      outlined
+                      dense
+                    >
+                    </v-text-field>
+                  </v-col>
+                  <v-col cols="8">
+                    <v-text-field
+                      v-if="newHive"
+                      v-model="newHive.street"
+                      :label="`${$t('Street')}`"
+                      outlined
+                      dense
+                    >
+                    </v-text-field>
+                  </v-col>
+                  <v-col cols="4">
+                    <v-text-field
+                      v-if="newHive"
+                      v-model="newHive.street_no"
+                      :label="`${$t('Number')}`"
+                      outlined
+                      dense
+                    >
+                    </v-text-field>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+            <div class="d-flex justify-space-between">
+              <v-icon
+                x-large
+                dark
+                color="primary"
+                class="prev"
+                @click="setActiveTab(1)"
+                >mdi-chevron-left-box</v-icon
               >
-              <v-row>
-                <v-col cols="12">
-                  <div class="beep-label" v-text="`${$t('Address')}`"></div>
-                  <VueGoogleAutocomplete
-                    id="map"
-                    ref="address"
-                    classname="autocomplete-field v-input v-input--dense v-text-field v-text-field--outlined"
-                    :placeholder="`${$t('Address')}`"
-                    @placechanged="getAddressData"
-                  >
-                  </VueGoogleAutocomplete>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="12" sm="4">
-                  <div class="beep-label" v-text="`${$t('Country')}`"></div>
-                  <country-select
-                    v-if="newHive"
-                    v-model="newHive.country_code"
-                    :country="newHive.country_code.toUpperCase()"
-                    :usei18n="false"
-                    class="country-select"
-                  />
-                </v-col>
-                <v-col cols="6" sm="4">
-                  <div class="beep-label" v-text="`${$t('Lattitude')}`"></div>
-                  <VueNumberInput
-                    v-if="newHive"
-                    :value="parseFloat(newHive.lat)"
-                    :step="0.001"
-                    :min="-90"
-                    :max="90"
-                    inline
-                    controls
-                    @change="updateLocation($event, 'lat')"
-                  ></VueNumberInput>
-                </v-col>
-                <v-col cols="6" sm="4">
-                  <div class="beep-label" v-text="`${$t('Longitude')}`"></div>
-                  <VueNumberInput
-                    v-if="newHive"
-                    :value="parseFloat(newHive.lon)"
-                    :step="0.001"
-                    :min="-180"
-                    :max="180"
-                    inline
-                    controls
-                    @change="updateLocation($event, 'lon')"
-                  ></VueNumberInput>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="12" sm="8">
-                  <v-text-field
-                    v-if="newHive"
-                    v-model="newHive.city"
-                    :label="`${$t('City')}`"
-                    outlined
-                    dense
-                  >
-                  </v-text-field>
-                </v-col>
-                <v-col cols="12" sm="4">
-                  <v-text-field
-                    v-if="newHive"
-                    v-model="newHive.postal_code"
-                    :label="`${$t('Postal_code')}`"
-                    outlined
-                    dense
-                  >
-                  </v-text-field>
-                </v-col>
-                <v-col cols="8">
-                  <v-text-field
-                    v-if="newHive"
-                    v-model="newHive.street"
-                    :label="`${$t('Street')}`"
-                    outlined
-                    dense
-                  >
-                  </v-text-field>
-                </v-col>
-                <v-col cols="4">
-                  <v-text-field
-                    v-if="newHive"
-                    v-model="newHive.street_no"
-                    :label="`${$t('Number')}`"
-                    outlined
-                    dense
-                  >
-                  </v-text-field>
-                </v-col>
-              </v-row>
-            </v-col>
-          </v-row>
-          <div class="d-flex justify-space-between">
-            <v-icon
-              x-large
-              dark
-              color="primary"
-              class="prev"
-              @click="setActiveTab(1)"
-              >mdi-chevron-left-box</v-icon
-            >
-            <v-icon
-              x-large
-              dark
-              color="primary"
-              class="next"
-              @click="setActiveTab(3)"
-              >mdi-chevron-right-box</v-icon
-            >
-          </div>
-        </v-container>
-      </v-tab-item>
+              <v-icon
+                x-large
+                dark
+                color="primary"
+                class="next"
+                @click="setActiveTab(3)"
+                >mdi-chevron-right-box</v-icon
+              >
+            </div>
+          </v-container>
+        </v-tab-item>
 
-      <v-tab-item value="tab-3">
-        <v-container>
-          <HiveEditDetails :hive="newHive"></HiveEditDetails>
+        <v-tab-item value="tab-3">
+          <v-container>
+            <HiveEditDetails :hive="newHive"></HiveEditDetails>
 
-          <div class="d-flex justify-space-between">
-            <v-icon
-              x-large
-              dark
-              color="primary"
-              class="prev"
-              @click="setActiveTab(2)"
-              >mdi-chevron-left-box</v-icon
-            >
-            <v-icon
-              x-large
-              dark
-              color="primary"
-              class="next"
-              @click="setActiveTab(4)"
-              >mdi-chevron-right-box</v-icon
-            >
-          </div>
-        </v-container>
-      </v-tab-item>
+            <div class="d-flex justify-space-between">
+              <v-icon
+                x-large
+                dark
+                color="primary"
+                class="prev"
+                @click="setActiveTab(2)"
+                >mdi-chevron-left-box</v-icon
+              >
+              <v-icon
+                x-large
+                dark
+                color="primary"
+                class="next"
+                @click="setActiveTab(4)"
+                >mdi-chevron-right-box</v-icon
+              >
+            </div>
+          </v-container>
+        </v-tab-item>
 
-      <v-tab-item value="tab-4">
-        <v-container>
-          <v-row>
-            <v-col cols="12">
-              <div class="overline mb-4">{{
-                $tc('Location', 1) + ' ' + $tc('hive', 2)
-              }}</div>
-              <v-row>
-                <v-col cols="12" md="3">
-                  <div class="beep-label" v-text="`${$t('Hive_amount')}`"></div>
-                  <VueNumberInput
-                    v-if="newHive"
-                    v-model="newHive.hive_amount"
-                    :min="1"
-                    :max="50"
-                    inline
-                    controls
-                  ></VueNumberInput>
-                </v-col>
-
-                <v-col cols="6" md="4">
-                  <div class="beep-label" v-text="`${$t('Hive_prefix')}`"></div>
-                  <v-text-field
-                    v-if="newHive"
-                    v-model="newHive.prefix"
-                    :height="36"
-                    class="prefix-input"
-                    outlined
-                    dense
-                  >
-                  </v-text-field>
-                </v-col>
-
-                <v-col cols="12" sm="4" md="3">
-                  <div>
+        <v-tab-item value="tab-4">
+          <v-container>
+            <v-row>
+              <v-col cols="12">
+                <div class="overline mb-4">{{
+                  $tc('Location', 1) + ' ' + $tc('hive', 2)
+                }}</div>
+                <v-row>
+                  <v-col cols="12" md="3">
                     <div
                       class="beep-label"
-                      v-text="`${$t('Hive_number_offset')}`"
+                      v-text="`${$t('Hive_amount')}`"
                     ></div>
                     <VueNumberInput
                       v-if="newHive"
-                      v-model="newHive.offset"
-                      :step="1"
+                      v-model="newHive.hive_amount"
+                      :min="1"
+                      :max="50"
                       inline
                       controls
                     ></VueNumberInput>
-                  </div>
-                </v-col>
+                  </v-col>
 
-                <v-col cols="12">
-                  <div
-                    class="beep-label"
-                    v-text="`${$tc('Location', 1)} ${$t('preview')}`"
-                  ></div>
-                  <ApiaryPreview
-                    v-if="newHive"
-                    class="mt-10 mb-5"
-                    :new-hive="newHive"
-                    :number-of-hives="newHive.hive_amount"
-                  ></ApiaryPreview>
-                </v-col>
-              </v-row>
-            </v-col>
-          </v-row>
-          <div class="d-flex justify-space-between">
-            <v-icon x-large dark color="primary" @click="setActiveTab(3)"
-              >mdi-chevron-left-box</v-icon
-            >
-            <v-btn
-              tile
-              outlined
-              color="primary"
-              class="mr-1"
-              @click="createApiary"
-            >
-              <v-icon left>mdi-check</v-icon>
-              {{ $t('save') }}
-            </v-btn>
-          </div>
-        </v-container>
-      </v-tab-item>
-    </v-tabs>
+                  <v-col cols="6" md="4">
+                    <div
+                      class="beep-label"
+                      v-text="`${$t('Hive_prefix')}`"
+                    ></div>
+                    <v-text-field
+                      v-if="newHive"
+                      v-model="newHive.prefix"
+                      :height="36"
+                      class="prefix-input"
+                      outlined
+                      dense
+                    >
+                    </v-text-field>
+                  </v-col>
+
+                  <v-col cols="12" sm="4" md="3">
+                    <div>
+                      <div
+                        class="beep-label"
+                        v-text="`${$t('Hive_number_offset')}`"
+                      ></div>
+                      <VueNumberInput
+                        v-if="newHive"
+                        v-model="newHive.offset"
+                        :step="1"
+                        inline
+                        controls
+                      ></VueNumberInput>
+                    </div>
+                  </v-col>
+
+                  <v-col cols="12">
+                    <div
+                      class="beep-label"
+                      v-text="`${$tc('Location', 1)} ${$t('preview')}`"
+                    ></div>
+                    <ApiaryPreview
+                      v-if="newHive"
+                      class="mt-10 mb-5"
+                      :new-hive="newHive"
+                      :number-of-hives="newHive.hive_amount"
+                    ></ApiaryPreview>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+            <div class="d-flex justify-space-between">
+              <v-icon x-large dark color="primary" @click="setActiveTab(3)"
+                >mdi-chevron-left-box</v-icon
+              >
+              <v-btn
+                tile
+                outlined
+                color="primary"
+                class="mr-1"
+                type="submit"
+                :disabled="!valid"
+              >
+                <v-icon left>mdi-check</v-icon>
+                {{ $t('save') }}
+              </v-btn>
+            </div>
+          </v-container>
+        </v-tab-item>
+      </v-tabs>
+    </v-form>
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
@@ -434,6 +449,7 @@ export default {
       newHive: null,
       newApiaryNumber: 0,
       changeCounter: 0,
+      valid: false,
     }
   },
   computed: {
@@ -499,6 +515,11 @@ export default {
     },
     locale() {
       return this.$i18n.locale
+    },
+    requiredRule: function() {
+      return [
+        (v) => !!v || this.$i18n.t('Name') + ' ' + this.$i18n.t('is_required'),
+      ]
     },
     tabs: function() {
       return [
@@ -602,25 +623,27 @@ export default {
   },
   methods: {
     async createApiary() {
-      try {
-        const response = await this.$store.dispatch(
-          'locations/createApiary',
-          this.newHive
-        )
-        if (!response) {
+      if (this.$refs.form.validate()) {
+        try {
+          const response = await this.$store.dispatch(
+            'locations/createApiary',
+            this.newHive
+          )
+          if (!response) {
+            this.snackbar.text = this.$i18n.t('not_saved_error')
+            this.snackbar.show = true
+          }
+          setTimeout(() => {
+            return this.$router.push({
+              name: 'home',
+              query: { search: this.newHive.name },
+            })
+          }, 300) // wait for API to update locations/hives
+        } catch (error) {
+          console.log(error)
           this.snackbar.text = this.$i18n.t('not_saved_error')
           this.snackbar.show = true
         }
-        setTimeout(() => {
-          return this.$router.push({
-            name: 'home',
-            query: { search: this.newHive.name },
-          })
-        }, 300) // wait for API to update locations/hives
-      } catch (error) {
-        console.log(error)
-        this.snackbar.text = this.$i18n.t('not_saved_error')
-        this.snackbar.show = true
       }
     },
     async readApiaries() {
@@ -657,6 +680,12 @@ export default {
       this.newHive[property] = value
       if (property === 'hex_color') {
         this.cancelColorPicker()
+      }
+    },
+    validateText(value, property, maxLength) {
+      if (value !== null && value.length > maxLength + 1) {
+        value = value.substring(0, maxLength)
+        this.newHive[property] = value
       }
     },
   },
