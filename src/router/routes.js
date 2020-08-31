@@ -97,6 +97,14 @@ export default [
     meta: {
       authRequired: true,
     },
+    path: '/checklist/:id/edit',
+    name: 'checklist',
+    component: () => lazyLoadView(import('@views/checklist.vue')),
+  },
+  {
+    meta: {
+      authRequired: true,
+    },
     path: '/diary',
     name: 'diary',
     component: () => lazyLoadView(import('@views/diary-list.vue')),
