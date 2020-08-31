@@ -7,6 +7,7 @@ const other = {
   create: 'POST inspections/store',
   update: 'POST inspections/store',
   delete: 'DELETE inspections/:id',
+  getchecklistbyid: 'GET inspections/lists?id=:id',
 }
 
 const resource = createResource({ path: 'inspections', other })
@@ -52,7 +53,7 @@ export const actions = {
     return false
   },
   getChecklistById: function({ _ }, id) {
-    const checklist = resource.endpoint.index(id)
+    const checklist = resource.endpoint.getchecklistbyid(id)
     if (checklist) {
       return checklist
     }

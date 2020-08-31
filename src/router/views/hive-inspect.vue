@@ -57,8 +57,22 @@
               item-text="name"
               item-value="id"
               :label="`${$t('Select') + ' ' + $tc('checklist', 1)}`"
-              @input="getChecklistById(820)"
+              @input="getChecklistById($event)"
             ></v-select>
+          </v-col>
+
+          <v-col class="d-flex" cols="12" sm="4">
+            <v-spacer></v-spacer>
+            <v-btn
+              v-if="selectedChecklist && selectedChecklist.owner"
+              tile
+              outlined
+              :href="`/checklist/${selectedChecklistId}/edit?hive_id=${id}`"
+              color="primary"
+            >
+              <v-icon left>mdi-pencil</v-icon>
+              {{ $t('edit') + ' ' + $tc('checklist', 1) }}
+            </v-btn>
           </v-col>
         </v-row>
 
@@ -92,6 +106,7 @@
                     <v-row>
                       <v-col cols="12" sm="4">
                         <smileRating
+                          v-if="newInspection"
                           label="positive_impression"
                           :object-name="newInspection"
                           property="impression"
@@ -102,6 +117,7 @@
                       </v-col>
                       <v-col cols="12" sm="4">
                         <yesNoRating
+                          v-if="newInspection"
                           label="needs_attention"
                           :object-name="newInspection"
                           property="attention"
@@ -295,7 +311,7 @@ export default {
         notes: null,
         reminder_date: null,
         reminder: null,
-        checklist_id: null, // TODO: get checklist id
+        checklist_id: this.selectedChecklistId, // TODO: get checklist id
         hive_id: this.id,
         items: {},
       }
@@ -341,8 +357,9 @@ export default {
           'inspections/getChecklistById',
           id
         )
-        console.log(response)
         this.selectedChecklist = response.checklist
+        this.selectedChecklistId = response.checklist.id
+        this.newInspection.checklist_id = response.checklist.id
         return response.checklist
       } catch (e) {
         console.log(e)
@@ -358,6 +375,7 @@ export default {
           this.selectedChecklist !== undefined
         ) {
           this.selectedChecklistId = this.selectedChecklist.id
+          this.newInspection.checklist_id = this.selectedChecklist.id
         }
         return true
       } catch (e) {
