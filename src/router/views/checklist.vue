@@ -52,9 +52,9 @@
             <div class="beep-label" v-text="`${$t('Checklist_items')}`"></div>
             <p class="description">{{ $t('edit_hive_checklist') }}</p>
             <checklistTree
-              v-if="categoryIds && activeChecklistTaxonomy"
+              v-if="activeChecklist && activeChecklistTaxonomy"
               :items="activeChecklistTaxonomy"
-              :selected="categoryIds"
+              :selected="activeChecklist.category_ids"
               @update-categories="updateCategoryIds($event)"
             ></checklistTree>
           </v-col>
@@ -82,13 +82,20 @@ export default {
       activeChecklist: null,
       activeChecklistId: null,
       activeChecklistTaxonomy: null,
-      categoryIds: null,
       valid: false,
     }
   },
   computed: {
     id() {
       return parseInt(this.$route.params.id)
+    },
+    locale() {
+      return this.$i18n.locale
+    },
+  },
+  watch: {
+    locale() {
+      this.getChecklistTaxonomy(this.id)
     },
   },
   created() {
@@ -104,7 +111,6 @@ export default {
         )
         this.activeChecklist = response.checklist
         this.activeChecklistId = response.checklist.id
-        this.categoryIds = response.checklist.category_ids
         return response.checklist
       } catch (e) {
         console.log(e)
@@ -124,22 +130,29 @@ export default {
     },
     async saveChecklist() {
       if (this.$refs.form.validate()) {
-        console.log('saving Checklist with Ids...')
-        console.log(this.categoryIds)
-        //   try {
-        //     const response = await this.$store.dispatch(
-        //       'inspections/saveChecklist',
-        //       this.activeChecklist
-        //     )
-        //     // setTimeout(() => {
-        //     //   return this.$router.push({
-        //     //     name: 'hive-inspect',
-        //     //     id: // TODO: redirect with correct hive id if hive_id query is given, otherwise inspection id?
-        //     //   })
-        //     // }, 300)
-        //   } catch (error) {
-        //     console.log(error)
-        //   }
+        var categoryIds = null
+        if (this.activeChecklist.category_ids.length > 0) {
+          categoryIds = this.activeChecklist.category_ids.join(',')
+        }
+        var checklistUpdate = {
+          id: this.activeChecklist.id,
+          categories: categoryIds,
+        }
+        console.log(checklistUpdate)
+        try {
+          await this.$store.dispatch(
+            'checklists/saveChecklist',
+            checklistUpdate
+          )
+          // setTimeout(() => {
+          //   return this.$router.push({
+          //     name: 'hive-inspect',
+          //     id: // TODO: redirect with correct hive id if hive_id query is given, otherwise inspection id?
+          //   })
+          // }, 300)
+        } catch (error) {
+          console.log(error)
+        }
       }
     },
     validateText(value, property, maxLength) {
@@ -149,7 +162,8 @@ export default {
       }
     },
     updateCategoryIds(event) {
-      this.categoryIds = event
+      console.log(event)
+      this.activeChecklist.category_ids = event
     },
   },
 }

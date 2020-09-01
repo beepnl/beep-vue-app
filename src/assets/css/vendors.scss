@@ -1,3 +1,11 @@
+/* Element-UI */
+
+.el-checkbox__input.is-checked .el-checkbox__inner,
+.el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  background-color: $color-primary;
+  border-color: $color-primary;
+}
+
 /* Vuetify */
 .v-application .accent {
   background-color: $color-primary !important;
