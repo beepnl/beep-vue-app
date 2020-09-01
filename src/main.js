@@ -15,6 +15,8 @@ import languages from '@assets/js/lang/languages'
 import moment from 'moment'
 import vueCountryRegionSelect from 'vue-country-region-select'
 import AddToCalendar from 'vue-add-to-calendar'
+import './plugins/element.js'
+import { Tree } from 'element-ui'
 
 import App from './app.vue'
 
@@ -22,6 +24,7 @@ Vue.use(VueI18n)
 Vue.use(vueCountryRegionSelect)
 // var AddToCalendar = require('vue-add-to-calendar')
 Vue.use(AddToCalendar)
+Vue.use(Tree)
 Vue.prototype.$moment = moment
 
 // Don't warn about using the dev version of Vue in development.
