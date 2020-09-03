@@ -20,7 +20,10 @@
         </v-btn>
       </v-toolbar>
 
-      <v-container v-if="newInspection" class="hive-inspect-content">
+      <v-container
+        v-if="newInspection && selectedChecklist !== null"
+        class="hive-inspect-content"
+      >
         <v-row>
           <v-col cols="12" sm="4">
             <div class="d-flex justify-flex-start align-center">
@@ -80,6 +83,53 @@
           </v-col>
         </v-row>
 
+        <!-- Inspection items from checklist -->
+        <v-card
+          v-for="(mainCategory, index) in selectedChecklist.categories"
+          :key="index"
+          outlined
+          class="mt-3"
+        >
+          <v-card-title>
+            <v-row>
+              <v-col cols="12" class="py-0 mt-n1">
+                <span>{{
+                  mainCategory.trans[locale] || mainCategory.name
+                }}</span>
+                <div class="float-right">
+                  <v-icon
+                    :class="
+                      `toggle-icon mdi ${
+                        showCategoriesByIndex[index] ? 'mdi-minus' : 'mdi-plus'
+                      }`
+                    "
+                    @click="toggleCategory(index)"
+                  ></v-icon>
+                </div>
+              </v-col>
+            </v-row>
+          </v-card-title>
+
+          <SlideYUpTransition :duration="100">
+            <!-- New dynamic checklist -->
+            <div class="box-body">
+              <v-card-text v-if="showCategoriesByIndex[index] === true">
+                <v-row class="sub-inspection-wrapper">
+                  <v-col
+                    v-for="(category, catIndex) in mainCategory.children"
+                    :key="catIndex"
+                    cols="12"
+                  >
+                    <div>{{ category.trans[locale] }}</div>
+                    <div>{{ category.type }}</div>
+                  </v-col>
+                </v-row>
+              </v-card-text>
+            </div>
+          </SlideYUpTransition>
+        </v-card>
+
+        <!-- General inspection items -->
         <v-card outlined class="mt-3">
           <v-card-title>
             <v-row>
@@ -278,6 +328,7 @@ export default {
       newInspection: null,
       selectedChecklistId: null,
       showOverall: true,
+      showCategoriesByIndex: [],
       valid: false,
     }
   },
@@ -347,7 +398,6 @@ export default {
     },
   },
   created() {
-    this.getChecklists()
     this.newInspection = {
       date: this.momentISO8601(new Date()),
       impression: null,
@@ -355,10 +405,11 @@ export default {
       notes: null,
       reminder_date: null,
       reminder: null,
-      checklist_id: null, // TODO: get checklist id
+      checklist_id: null,
       hive_id: this.id,
       items: {},
     }
+    this.getChecklists()
   },
   methods: {
     async getChecklistById(id) {
@@ -369,6 +420,15 @@ export default {
         )
         this.selectedChecklist = response.checklist
         this.selectedChecklistId = response.checklist.id
+        if (
+          this.selectedChecklist !== null &&
+          this.selectedChecklist.categories.length > 0
+        ) {
+          const numberOfCategories = this.selectedChecklist.categories.length
+          for (var i = 0; i < numberOfCategories; i++) {
+            this.showCategoriesByIndex.push(false)
+          }
+        }
         this.newInspection.checklist_id = response.checklist.id
         return response.checklist
       } catch (e) {
@@ -419,6 +479,13 @@ export default {
     },
     clearDate() {
       this.newInspection.reminder_date = null
+    },
+    toggleCategory(index) {
+      this.$set(
+        this.showCategoriesByIndex,
+        index,
+        !this.showCategoriesByIndex[index]
+      )
     },
     validateText(value, property, maxLength) {
       if (value !== null && value.length > maxLength + 1) {

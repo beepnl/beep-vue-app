@@ -198,7 +198,6 @@ export default {
       }
     },
     updateCategoryIds(event) {
-      console.log(event)
       this.activeChecklist.category_ids = event
     },
   },
