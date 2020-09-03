@@ -405,7 +405,7 @@ const translations = {
   checklist: 'kastkaart | kastkaarten',
   Checklist_items: 'Kastkaartelementen',
   edit_hive_checklist:
-    'Vink items in de onderstaande lijst van beschikbare kastkaartitems aan/uit om ze aan je eigen kastkaart toe te voegen/te verwijderen. Voor meer overzicht, kun je de categorieën in- en uitklappen. Ook kun je ze naar boven/beneden slepen om de volgorde van jouw kastkaart te bepalen. Tip: Als je in het zoekveld een term invult, worden alle items die de zoekterm bevatten rood en klappen ze uit.',
+    'Vink items in de onderstaande lijst van beschikbare kastkaartitems aan/uit om ze aan je eigen kastkaart toe te voegen/te verwijderen. Voor meer overzicht, kun je de categorieën in- en uitklappen. Ook kun je ze naar boven/beneden slepen om de volgorde van jouw kastkaart te bepalen.',
 
   /* user */
   Data_export: 'Data exporteren',

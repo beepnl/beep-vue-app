@@ -403,7 +403,7 @@ const translations = {
   checklist: 'lista de verificação | listas de verificação',
   Checklist_items: 'Itens da lista de verificação',
   edit_hive_checklist:
-    'Marque/desmarque as caixas na lista abaixo para adicionar/remover itens da sua lista de verificação da colmeia. Também pode desdobrar/dobrar e arrastar/soltar os itens para reordená-los ao seu próprio estilo. Dica: se digitar um termo no campo de pesquisa, todos os itens que contenham esse termo serão dobrados e ficarão vermelhos.',
+    'Marque/desmarque as caixas na lista abaixo para adicionar/remover itens da sua lista de verificação da colmeia. Também pode desdobrar/dobrar e arrastar/soltar os itens para reordená-los ao seu próprio estilo.',
 
   /* user */
   Data_export: 'Exportação de dados',

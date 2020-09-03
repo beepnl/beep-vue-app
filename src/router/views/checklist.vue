@@ -83,6 +83,8 @@ export default {
       activeChecklistId: null,
       activeChecklistTaxonomy: null,
       valid: false,
+      hive_id: null,
+      inspection_edit: null,
     }
   },
   computed: {
@@ -101,6 +103,8 @@ export default {
   created() {
     this.getChecklistById(this.id)
     this.getChecklistTaxonomy(this.id)
+    this.hive_id = this.getURLParameter('hive_id')
+    this.inspection_edit = this.getURLParameter('inspection_edit')
   },
   methods: {
     async getChecklistById(id) {
@@ -138,22 +142,54 @@ export default {
           id: this.activeChecklist.id,
           categories: categoryIds,
         }
-        console.log(checklistUpdate)
         try {
           await this.$store.dispatch(
             'checklists/saveChecklist',
             checklistUpdate
           )
-          // setTimeout(() => {
-          //   return this.$router.push({
-          //     name: 'hive-inspect',
-          //     id: // TODO: redirect with correct hive id if hive_id query is given, otherwise inspection id?
-          //   })
-          // }, 300)
+          setTimeout(() => {
+            if (this.hive_id !== null && this.inspection_edit !== null) {
+              return this.$router.push({
+                name: 'hive-inspect-edit',
+                params: {
+                  id: this.hive_id,
+                  inspection: this.inspection_edit,
+                },
+              })
+            } else if (this.hive_id !== null) {
+              return this.$router.push({
+                name: 'hive-inspect',
+                params: {
+                  id: this.hive_id,
+                },
+              })
+            } else {
+              this.$router.push(-1).catch((error) => {
+                if (error.name === 'NavigationDuplicated') {
+                  // if previous page is identical, do nothing, or page reload? : // this.$router.go('/')
+                }
+              })
+            }
+          }, 200)
         } catch (error) {
           console.log(error)
         }
       }
+    },
+    getURLParameter(param) {
+      const urlQuery = window.location.search.substring(1)
+      const queryVariables = urlQuery.split('&')
+
+      for (var i = 0; i < queryVariables.length; i++) {
+        const parameterName = queryVariables[i].split('=')
+
+        if (parameterName[0] === param) {
+          return parameterName[1] === undefined
+            ? null
+            : decodeURIComponent(parameterName[1])
+        }
+      }
+      return null
     },
     validateText(value, property, maxLength) {
       if (value !== null && value.length > maxLength + 1) {

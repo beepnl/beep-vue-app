@@ -405,7 +405,7 @@ const translations = {
   checklist: 'listă de verificare | liste de verificare',
   Checklist_items: 'Elemente din lista de verificare',
   edit_hive_checklist:
-    'Bifați/debifați casetele din lista de mai jos pentru a adăuga/elimina elemente din lista de verificare a stupului. De asemenea, puteți desfășura/acoperi și glisa/fixa elementele pentru a le rearanja stilului dumneavoastră. Recomandare: dacă introduceți un termen în câmpul de căutare, toate elementele care conțin termenul respectiv vor apărea pe ecran și vor avea culoarea roșie.',
+    'Bifați/debifați casetele din lista de mai jos pentru a adăuga/elimina elemente din lista de verificare a stupului. De asemenea, puteți desfășura/acoperi și glisa/fixa elementele pentru a le rearanja stilului dumneavoastră.',
 
   /* user */
   Data_export: 'Exportarea datelor',

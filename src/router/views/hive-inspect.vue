@@ -67,7 +67,11 @@
               v-if="selectedChecklist && selectedChecklist.owner"
               tile
               outlined
-              :href="`/checklist/${selectedChecklistId}/edit?hive_id=${id}`"
+              :href="
+                inspectionId
+                  ? `/checklist/${selectedChecklistId}/edit?hive_id=${id}&inspection_edit=${inspectionId}`
+                  : `/checklist/${selectedChecklistId}/edit?hive_id=${id}`
+              "
               color="primary"
             >
               <v-icon left>mdi-pencil</v-icon>
@@ -280,6 +284,12 @@ export default {
   computed: {
     id() {
       return parseInt(this.$route.params.id)
+    },
+    inspectionId() {
+      if (this.$route.params.inspection) {
+        return parseInt(this.$route.params.inspection)
+      }
+      return null
     },
     inspectionDate: {
       get() {

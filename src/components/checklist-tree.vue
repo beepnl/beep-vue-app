@@ -30,15 +30,9 @@
       draggable
       :allow-drop="allowDrop"
       :filter-node-method="filterNode"
-      @node-drop="handleDrop"
       @check-change="updateCategories"
     >
     </el-tree>
-
-    <div class="buttons mt-4">
-      <v-btn class="mr-1" tile @click="getCheckedKeys">get by key</v-btn>
-      <v-btn tile @click="resetChecked">reset</v-btn>
-    </div>
   </v-card>
 </template>
 
@@ -95,18 +89,6 @@ export default {
     },
     getCheckedNodes() {
       console.log(this.$refs.tree.getCheckedNodes())
-    },
-    getCheckedKeys() {
-      console.log(this.$refs.tree.getCheckedKeys())
-    },
-    handleDrop(draggingNode, dropNode, dropType, ev) {
-      // console.log('tree drop: ', dropNode.label, dropType)
-      // this.setChecked(draggingNode.data, true, true)
-      // this.updateCategories()
-      // TODO: update taxonomy!
-    },
-    resetChecked() {
-      this.$refs.tree.setCheckedKeys([])
     },
     updateCategories(node, selected, subtree) {
       this.checkChildren(node, selected)
