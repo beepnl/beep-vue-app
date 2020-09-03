@@ -120,8 +120,10 @@
                     :key="catIndex"
                     cols="12"
                   >
-                    <div>{{ category.trans[locale] }}</div>
-                    <div>{{ category.type }}</div>
+                    <checklistFieldset
+                      :category="category"
+                      :locale="locale"
+                    ></checklistFieldset>
                   </v-col>
                 </v-row>
               </v-card-text>
@@ -259,24 +261,6 @@
                   </div>
                 </v-col>
               </v-row>
-
-              <!--
-            <v-row>
-              <v-col cols="12">
-                <div class="d-flex justify-flex-end">
-                  <v-btn
-                    tile
-                    outlined
-                    color="primary"
-                    class="mr-1"
-                    @click="saveInspection"
-                  >
-                    <v-icon left>mdi-check</v-icon>
-                    {{ $t('save') + ' ' + $tc('inspection', 1) }}
-                  </v-btn>
-                </div>
-              </v-col>
-            </v-row> -->
             </v-card-text>
           </SlideYUpTransition>
         </v-card>
@@ -295,6 +279,7 @@
 </template>
 
 <script>
+import checklistFieldset from '@components/checklist-fieldset.vue'
 import Confirm from '@components/confirm.vue'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
@@ -307,6 +292,7 @@ import { SlideYUpTransition } from 'vue2-transitions'
 
 export default {
   components: {
+    checklistFieldset,
     Confirm,
     Datetime,
     Layout,
