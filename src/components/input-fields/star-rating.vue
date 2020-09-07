@@ -19,31 +19,14 @@
       /></em>
     </p>
 
-    <div>
-      <v-btn
-        :class="`yes-no-button px-2 ${yesRed ? 'yes-red' : ''}`"
-        text
-        @click="updateObject(1, property)"
+    <div class="star-wrapper d-flex flex-row flex-wrap hide-on-mobile">
+      <v-icon
+        v-for="star in [0, 1, 2, 3, 4]"
+        :key="star + 1"
+        :class="star < object[property] ? 'primary--text' : 'color-grey-medium'"
+        @click="updateObject(star + 1, property)"
+        >mdi-star</v-icon
       >
-        <v-icon
-          left
-          :class="object[property] === 1 ? 'green--text' : 'color-grey'"
-          >mdi-check-circle</v-icon
-        >
-        {{ $t('yes') }}
-      </v-btn>
-      <v-btn
-        :class="`yes-no-button px-2 ${yesRed ? 'yes-red' : ''}`"
-        text
-        @click="updateObject(0, property)"
-      >
-        <v-icon
-          left
-          :class="object[property] === 0 ? 'red--text' : 'color-grey'"
-          >mdi-close-circle</v-icon
-        >
-        {{ $t('no') }}
-      </v-btn>
     </div>
   </div>
 </template>
@@ -68,11 +51,6 @@ export default {
       type: [String, Number],
       required: true,
     },
-    yesRed: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
   },
   data: function() {
     return {
@@ -81,6 +59,7 @@ export default {
   },
   methods: {
     updateObject(value, property) {
+      console.log(value, property)
       if (this.object[property] === value) {
         this.object[property] = null // allow to toggle if value has been set already
       } else {
@@ -91,17 +70,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.yes-no-button {
-  height: 30px !important;
-
-  &.yes-red {
-    .green--text {
-      color: $color-red !important;
-    }
-    .red--text {
-      color: $color-green !important;
-    }
-  }
-}
-</style>
+<style lang="scss" scoped></style>

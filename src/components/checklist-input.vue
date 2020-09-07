@@ -1,5 +1,13 @@
 <template>
   <div class="inspection-item">
+    <starRating
+      v-if="item.input === 'score'"
+      :description="item.description"
+      :label="item.trans[locale]"
+      :object="object"
+      :property="item.id"
+    ></starRating>
+
     <v-textarea
       v-if="item.input === 'text'"
       v-model="object[item.id]"
@@ -44,7 +52,8 @@
         item.input !== 'boolean' &&
           item.input !== 'boolean_yes_red' &&
           item.input !== 'smileys_3' &&
-          item.input !== 'text'
+          item.input !== 'text' &&
+          item.input !== 'score'
       "
     >
       {{ item.trans[locale] }}: {{ item.input }}
@@ -55,6 +64,7 @@
 <script>
 import ChecklistInput from '@components/checklist-input.vue'
 import smileRating from '@components/input-fields/smile-rating.vue'
+import starRating from '@components/input-fields/star-rating.vue'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 
 export default {
@@ -62,6 +72,7 @@ export default {
   components: {
     ChecklistInput,
     smileRating,
+    starRating,
     yesNoRating,
   },
   props: {
@@ -82,6 +93,9 @@ export default {
     },
   },
   methods: {
+    consoleLog(event) {
+      console.log(event)
+    },
     validateText(value, property, maxLength) {
       if (value !== null && value.length > maxLength + 1) {
         value = value.substring(0, maxLength)

@@ -13,7 +13,7 @@
       ></a>
     </div>
 
-    <p class="inspection-item-description">
+    <p v-if="description" class="inspection-item-description">
       <em v-if="description !== null && showDescription"
         >{{ description }}<br
       /></em>
