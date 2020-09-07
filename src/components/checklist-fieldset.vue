@@ -41,13 +41,13 @@
       "
     >
       <div v-for="(item, index) in category.children" :key="index">
-        <checklistInput
+        <ChecklistInput
           v-if="item.input !== 'label'"
           :object="object"
           :item="item"
           :locale="locale"
           cols="cols"
-        ></checklistInput>
+        ></ChecklistInput>
         <ChecklistFieldset
           v-if="item.input === 'label'"
           :object="object"
@@ -67,25 +67,25 @@
 	    <checklist-fieldset v-if="item.input === 'label'" :category="item" cols="cols"></checklist-fieldset>
     </div> -->
 
-    <checklistInput
+    <ChecklistInput
       v-if="category.children.length === 0"
       :object="object"
       :item="category"
       :locale="locale"
       cols="cols"
-    ></checklistInput>
+    ></ChecklistInput>
   </div>
 </template>
 
 <script>
 import ChecklistFieldset from '@components/checklist-fieldset.vue'
-import checklistInput from '@components/checklist-input.vue'
+import ChecklistInput from '@components/checklist-input.vue'
 
 export default {
   name: 'ChecklistFieldset',
   components: {
     ChecklistFieldset,
-    checklistInput,
+    ChecklistInput,
   },
   props: {
     category: {

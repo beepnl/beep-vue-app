@@ -1,12 +1,10 @@
 <template>
-  <div
-    :class="
-      `inspection-item ${
-        item.input === 'text'
-          ? 'col-xs-12'
-          : 'col-xs-12 col-sm-6 col-md-4 col-lg-3'
-      }`
-    "
+  <v-col
+    class="inspection-item"
+    cols="12"
+    :sm="cols || item.input === 'text' ? '12' : '6'"
+    :md="cols || item.input === 'text' ? '12' : '4'"
+    :lg="cols || item.input === 'text' ? '12' : '3'"
   >
     <yesNoRating
       v-if="item.input === 'boolean'"
@@ -14,18 +12,38 @@
       :label="item.trans[locale]"
       :property="item.id"
     ></yesNoRating>
-    <div v-else> {{ item.trans[locale] }}: {{ item.input }} </div>
-  </div>
+    <!-- of boolean_yes_red of list_item? -->
+    <ChecklistInput
+      v-if="item.children.length > 0 && item.input === 'boolean'"
+      v-show="object[item.id] === 1"
+      :object="object"
+      :item="item.children[0]"
+      :locale="locale"
+      :cols="true"
+    ></ChecklistInput>
+
+    <div v-if="item.input !== 'boolean'">
+      {{ item.trans[locale] }}: {{ item.input }}
+    </div>
+  </v-col>
 </template>
 
 <script>
+import ChecklistInput from '@components/checklist-input.vue'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 
 export default {
+  name: 'ChecklistInput',
   components: {
+    ChecklistInput,
     yesNoRating,
   },
   props: {
+    cols: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
     item: {
       type: Object,
       default: null,
