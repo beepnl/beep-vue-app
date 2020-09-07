@@ -1,10 +1,14 @@
 <template>
-  <v-col
-    class="inspection-item"
-    cols="12"
-    :sm="cols || item.input === 'text' ? '12' : '6'"
-    :md="cols || item.input === 'text' ? '12' : '4'"
-    :lg="cols || item.input === 'text' ? '12' : '3'"
+  <div
+    :class="
+      `inspection-item ${
+        (item.children.length > 0 &&
+          (item.input === 'boolean' || item.input === 'boolean_yes_red')) ||
+        item.input === 'text'
+          ? 'col-12'
+          : 'col-xs-12 col-sm-6 col-md-4 col-lg-3'
+      }`
+    "
   >
     <smileRating
       v-if="item.input === 'smileys_3'"
@@ -14,25 +18,34 @@
     ></smileRating>
 
     <yesNoRating
-      v-if="item.input === 'boolean'"
+      v-if="item.input === 'boolean' || item.input === 'boolean_yes_red'"
       :label="item.trans[locale]"
       :object="object"
       :property="item.id"
+      :yes-red="item.input === 'boolean_yes_red'"
     ></yesNoRating>
-    <!-- of boolean_yes_red of list_item? -->
+    <!-- or list_item? -->
     <ChecklistInput
-      v-if="item.children.length > 0 && item.input === 'boolean'"
+      v-if="
+        item.children.length > 0 &&
+          (item.input === 'boolean' || item.input === 'boolean_yes_red')
+      "
       v-show="object[item.id] === 1"
-      :cols="true"
       :item="item.children[0]"
       :locale="locale"
       :object="object"
     ></ChecklistInput>
 
-    <div v-if="item.input !== 'boolean' && item.input !== 'smileys_3'">
+    <div
+      v-if="
+        item.input !== 'boolean' &&
+          item.input !== 'boolean_yes_red' &&
+          item.input !== 'smileys_3'
+      "
+    >
       {{ item.trans[locale] }}: {{ item.input }}
     </div>
-  </v-col>
+  </div>
 </template>
 
 <script>
@@ -48,11 +61,6 @@ export default {
     yesNoRating,
   },
   props: {
-    cols: {
-      type: Boolean,
-      default: false,
-      required: false,
-    },
     item: {
       type: Object,
       default: null,

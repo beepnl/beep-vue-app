@@ -3,7 +3,11 @@
     <div class="beep-label" v-text="`${$t(label)}`"></div>
 
     <div>
-      <v-btn class="yes-no-button px-2" text @click="updateObject(1, property)">
+      <v-btn
+        :class="`yes-no-button px-2 ${yesRed ? 'yes-red' : ''}`"
+        text
+        @click="updateObject(1, property)"
+      >
         <v-icon
           left
           :class="object[property] === 1 ? 'green--text' : 'color-grey'"
@@ -11,7 +15,11 @@
         >
         {{ $t('yes') }}
       </v-btn>
-      <v-btn class="yes-no-button px-2" text @click="updateObject(0, property)">
+      <v-btn
+        :class="`yes-no-button px-2 ${yesRed ? 'yes-red' : ''}`"
+        text
+        @click="updateObject(0, property)"
+      >
         <v-icon
           left
           :class="object[property] === 0 ? 'red--text' : 'color-grey'"
@@ -38,6 +46,11 @@ export default {
       type: [String, Number],
       required: true,
     },
+    yesRed: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   methods: {
     updateObject(value, property) {
@@ -54,5 +67,14 @@ export default {
 <style lang="scss" scoped>
 .yes-no-button {
   height: 30px !important;
+
+  &.yes-red {
+    .green--text {
+      color: $color-red !important;
+    }
+    .red--text {
+      color: $color-green !important;
+    }
+  }
 }
 </style>
