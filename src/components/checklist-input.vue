@@ -1,5 +1,16 @@
 <template>
   <div class="inspection-item">
+    <v-textarea
+      v-if="item.input === 'text'"
+      v-model="object[item.id]"
+      :label="`${$t('notes')}`"
+      counter="250"
+      rows="1"
+      auto-grow
+      clearable
+      @input="validateText($event, 'notes', 250)"
+    ></v-textarea>
+
     <smileRating
       v-if="item.input === 'smileys_3'"
       :description="item.description"
@@ -32,7 +43,8 @@
       v-if="
         item.input !== 'boolean' &&
           item.input !== 'boolean_yes_red' &&
-          item.input !== 'smileys_3'
+          item.input !== 'smileys_3' &&
+          item.input !== 'text'
       "
     >
       {{ item.trans[locale] }}: {{ item.input }}
@@ -67,6 +79,14 @@ export default {
       type: String,
       default: 'en',
       required: false,
+    },
+  },
+  methods: {
+    validateText(value, property, maxLength) {
+      if (value !== null && value.length > maxLength + 1) {
+        value = value.substring(0, maxLength)
+        this.newInspection[property] = value
+      }
     },
   },
 }

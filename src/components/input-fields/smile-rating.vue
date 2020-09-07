@@ -72,7 +72,6 @@ export default {
   },
   methods: {
     updateObject(value, property) {
-      console.log(value, property, this.object[property])
       if (this.object[property] === value) {
         this.object[property] = null // allow to toggle if value has been set already
       } else {
