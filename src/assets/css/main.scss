@@ -2,4 +2,8 @@
   padding: 12px;
   border: 1px solid $color-grey-light;
   border-radius: 4px;
+
+  @include for-phone-only {
+    padding: 10px;
+  }
 }

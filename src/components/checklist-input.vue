@@ -1,15 +1,5 @@
 <template>
-  <div
-    :class="
-      `inspection-item ${
-        (item.children.length > 0 &&
-          (item.input === 'boolean' || item.input === 'boolean_yes_red')) ||
-        item.input === 'text'
-          ? 'col-12'
-          : 'col-xs-12 col-sm-6 col-md-4 col-lg-3'
-      }`
-    "
-  >
+  <div class="inspection-item">
     <smileRating
       v-if="item.input === 'smileys_3'"
       :label="item.trans[locale]"

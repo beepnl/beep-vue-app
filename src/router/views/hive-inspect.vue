@@ -13,7 +13,7 @@
           tile
           outlined
           color="primary"
-          class="mr-1"
+          class="save-button mr-1"
           type="submit"
           :disabled="!valid"
         >
@@ -72,6 +72,7 @@
               v-if="selectedChecklist && selectedChecklist.owner"
               tile
               outlined
+              class="save-button"
               :href="
                 inspectionId
                   ? `/checklist/${selectedChecklistId}/edit?hive_id=${id}&inspection_edit=${inspectionId}`
@@ -92,9 +93,17 @@
           outlined
           class="mt-3"
         >
-          <v-card-title>
+          <v-card-title
+            :class="
+              `hive-inspect-card-title ${
+                showCategoriesByIndex[index]
+                  ? 'hive-inspect-card-title--border-bottom'
+                  : ''
+              }`
+            "
+          >
             <v-row>
-              <v-col cols="12" class="py-0 mt-n1">
+              <v-col cols="12" class="py-0">
                 <span>{{
                   mainCategory.trans[locale] || mainCategory.name
                 }}</span>
@@ -112,26 +121,24 @@
             </v-row>
           </v-card-title>
 
-          <SlideYUpTransition :duration="100">
+          <SlideYUpTransition :duration="150">
             <!-- New dynamic checklist -->
-            <div class="box-body">
-              <v-card-text v-if="showCategoriesByIndex[index] === true">
-                <v-row class="sub-inspection-wrapper">
-                  <v-col
-                    v-for="(category, catIndex) in mainCategory.children"
-                    :key="catIndex"
-                    cols="12"
-                  >
-                    <checklistFieldset
-                      v-if="newInspection"
-                      :object="newInspection.items"
-                      :category="category"
-                      :locale="locale"
-                    ></checklistFieldset>
-                  </v-col>
-                </v-row>
-              </v-card-text>
-            </div>
+            <v-card-text v-if="showCategoriesByIndex[index] === true">
+              <v-row class="sub-inspection-wrapper">
+                <v-col
+                  v-for="(category, catIndex) in mainCategory.children"
+                  :key="catIndex"
+                  cols="12"
+                >
+                  <checklistFieldset
+                    v-if="newInspection"
+                    :object="newInspection.items"
+                    :category="category"
+                    :locale="locale"
+                  ></checklistFieldset>
+                </v-col>
+              </v-row>
+            </v-card-text>
           </SlideYUpTransition>
         </v-card>
 
@@ -154,12 +161,12 @@
               </v-col>
             </v-row>
           </v-card-title>
-          <SlideYUpTransition :duration="100">
+          <SlideYUpTransition :duration="150">
             <v-card-text v-if="showOverall">
               <v-row class="sub-inspection-wrapper">
                 <v-col cols="12">
                   <div
-                    class="overline mb-3"
+                    class="overline mb-2"
                     v-text="`${$t('positive_impression')}`"
                   ></div>
                   <div class="sub-inspection-details rounded-border">
@@ -199,7 +206,7 @@
 
               <v-row class="sub-inspection-wrapper">
                 <v-col cols="12">
-                  <div class="overline mb-3" v-text="`${$t('reminder')}`"></div>
+                  <div class="overline mb-2" v-text="`${$t('reminder')}`"></div>
                   <div class="sub-inspection-details rounded-border">
                     <v-row>
                       <v-col cols="12" sm="4">
@@ -511,5 +518,16 @@ export default {
 }
 .clear-icon {
   cursor: pointer;
+}
+.save-button {
+  @include for-phone-only {
+    width: 100%;
+  }
+}
+.hive-inspect-card-title {
+  line-height: 1.5rem !important;
+  &.hive-inspect-card-title--border-bottom {
+    border-bottom: 1px solid $color-grey-light;
+  }
 }
 </style>
