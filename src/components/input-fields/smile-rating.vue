@@ -65,7 +65,11 @@ export default {
       required: true,
     },
   },
-
+  data: function() {
+    return {
+      showDescription: false,
+    }
+  },
   methods: {
     updateObject(value, property) {
       console.log(value, property, this.object[property])
