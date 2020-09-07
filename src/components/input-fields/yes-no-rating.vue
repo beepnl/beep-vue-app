@@ -32,13 +32,11 @@ export default {
     },
     object: {
       type: Object,
-      required: false,
-      default: null,
+      required: true,
     },
     property: {
       type: [String, Number],
-      required: false,
-      default: null,
+      required: true,
     },
   },
   methods: {

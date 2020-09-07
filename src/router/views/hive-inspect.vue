@@ -170,9 +170,6 @@
                           label="positive_impression"
                           :object="newInspection"
                           property="impression"
-                          @update-object="
-                            updateInspection($event, 'impression')
-                          "
                         ></smileRating>
                       </v-col>
                       <v-col cols="12" sm="4">
@@ -489,13 +486,6 @@ export default {
     validateText(value, property, maxLength) {
       if (value !== null && value.length > maxLength + 1) {
         value = value.substring(0, maxLength)
-        this.newInspection[property] = value
-      }
-    },
-    updateInspection(value, property) {
-      if (this.newInspection[property] === value) {
-        this.newInspection[property] = null // allow to toggle if value has been set already
-      } else {
         this.newInspection[property] = value
       }
     },

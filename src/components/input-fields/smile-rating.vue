@@ -38,14 +38,19 @@ export default {
       required: true,
     },
     property: {
-      type: String,
+      type: [String, Number],
       required: true,
     },
   },
 
   methods: {
-    updateObject: function(value) {
-      this.$emit('update-object', value)
+    updateObject(value, property) {
+      console.log(value, property, this.object[property])
+      if (this.object[property] === value) {
+        this.object[property] = null // allow to toggle if value has been set already
+      } else {
+        this.object[property] = value
+      }
     },
   },
 }
