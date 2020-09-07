@@ -1,6 +1,8 @@
 <template>
   <Layout
-    :title="`${$t('New_inspection')}`"
+    :title="
+      inspectionId ? `${$t('Edit_inspection')}` : `${$t('New_inspection')}`
+    "
     :no-box-shadow="true"
     :edited="inspectionEdited"
   >
@@ -121,6 +123,8 @@
                     cols="12"
                   >
                     <checklistFieldset
+                      v-if="newInspection"
+                      :object="newInspection.items"
                       :category="category"
                       :locale="locale"
                     ></checklistFieldset>
@@ -164,7 +168,7 @@
                         <smileRating
                           v-if="newInspection"
                           label="positive_impression"
-                          :object-name="newInspection"
+                          :object="newInspection"
                           property="impression"
                           @update-object="
                             updateInspection($event, 'impression')
@@ -175,9 +179,8 @@
                         <yesNoRating
                           v-if="newInspection"
                           label="needs_attention"
-                          :object-name="newInspection"
+                          :object="newInspection"
                           property="attention"
-                          @update-object="updateInspection($event, 'attention')"
                         ></yesNoRating>
                       </v-col>
                       <v-col cols="12">
@@ -384,6 +387,9 @@ export default {
     },
   },
   created() {
+    // if (this.inspectionId !== null) {
+    //   this.getInspection(this.inspectionId) // + get checklist by id!
+    // } else {
     this.newInspection = {
       date: this.momentISO8601(new Date()),
       impression: null,
@@ -395,6 +401,7 @@ export default {
       hive_id: this.id,
       items: {},
     }
+    // }
     this.getChecklists()
   },
   methods: {
@@ -432,6 +439,12 @@ export default {
         ) {
           this.selectedChecklistId = this.selectedChecklist.id
           this.newInspection.checklist_id = this.selectedChecklist.id
+          var itemsObject = {}
+          response.checklist.category_ids.map((categoryId) => {
+            // TODO: what if category ids is empty?
+            itemsObject[categoryId] = null
+          })
+          this.newInspection.items = itemsObject
         }
         return true
       } catch (e) {

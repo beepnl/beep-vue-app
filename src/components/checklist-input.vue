@@ -10,10 +10,9 @@
   >
     <yesNoRating
       v-if="item.input === 'boolean'"
+      :object="object"
       :label="item.trans[locale]"
-      :object-name="item"
-      :property="item.name"
-      @update-object="consoleLog($event)"
+      :property="item.id"
     ></yesNoRating>
     <div v-else> {{ item.trans[locale] }}: {{ item.input }} </div>
   </div>
@@ -32,15 +31,15 @@ export default {
       default: null,
       required: true,
     },
+    object: {
+      type: Object,
+      default: null,
+      required: true,
+    },
     locale: {
       type: String,
       default: 'en',
       required: false,
-    },
-  },
-  methods: {
-    consoleLog(data) {
-      console.log(data)
     },
   },
 }

@@ -1,11 +1,12 @@
 <template>
   <div>
     <div class="beep-label" v-text="`${$t(label)}`"></div>
+
     <div>
       <v-btn class="yes-no-button px-2" text @click="updateObject(1, property)">
         <v-icon
           left
-          :class="objectName[property] === 1 ? 'green--text' : 'color-grey'"
+          :class="object[property] === 1 ? 'green--text' : 'color-grey'"
           >mdi-check-circle</v-icon
         >
         {{ $t('yes') }}
@@ -13,7 +14,7 @@
       <v-btn class="yes-no-button px-2" text @click="updateObject(0, property)">
         <v-icon
           left
-          :class="objectName[property] === 0 ? 'red--text' : 'color-grey'"
+          :class="object[property] === 0 ? 'red--text' : 'color-grey'"
           >mdi-close-circle</v-icon
         >
         {{ $t('no') }}
@@ -29,19 +30,24 @@ export default {
       type: String,
       required: true,
     },
-    objectName: {
+    object: {
       type: Object,
-      required: true,
+      required: false,
+      default: null,
     },
     property: {
-      type: String,
-      required: true,
+      type: [String, Number],
+      required: false,
+      default: null,
     },
   },
-
   methods: {
-    updateObject: function(value) {
-      this.$emit('update-object', value)
+    updateObject(value, property) {
+      if (this.object[property] === value) {
+        this.object[property] = null // allow to toggle if value has been set already
+      } else {
+        this.object[property] = value
+      }
     },
   },
 }

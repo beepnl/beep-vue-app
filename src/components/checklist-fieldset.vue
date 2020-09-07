@@ -43,12 +43,14 @@
       <div v-for="(item, index) in category.children" :key="index">
         <checklistInput
           v-if="item.input !== 'label'"
+          :object="object"
           :item="item"
           :locale="locale"
           cols="cols"
         ></checklistInput>
         <ChecklistFieldset
           v-if="item.input === 'label'"
+          :object="object"
           :category="item"
           cols="cols"
         ></ChecklistFieldset>
@@ -67,6 +69,7 @@
 
     <checklistInput
       v-if="category.children.length === 0"
+      :object="object"
       :item="category"
       :locale="locale"
       cols="cols"
@@ -86,6 +89,11 @@ export default {
   },
   props: {
     category: {
+      type: Object,
+      default: null,
+      required: true,
+    },
+    object: {
       type: Object,
       default: null,
       required: true,
