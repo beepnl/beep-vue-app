@@ -2,6 +2,7 @@
   <div class="inspection-item">
     <smileRating
       v-if="item.input === 'smileys_3'"
+      :description="item.description"
       :label="item.trans[locale]"
       :object="object"
       :property="item.id"
@@ -9,6 +10,7 @@
 
     <yesNoRating
       v-if="item.input === 'boolean' || item.input === 'boolean_yes_red'"
+      :description="item.description"
       :label="item.trans[locale]"
       :object="object"
       :property="item.id"

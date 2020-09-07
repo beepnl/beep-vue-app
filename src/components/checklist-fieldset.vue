@@ -13,19 +13,22 @@
         >{{ category.trans[locale] || category.name }}
         <a
           v-if="category.description !== null || category.source !== null"
-          @click="category.showInfo = category.showInfo ? false : true"
-          ><i
-            class="fa fa-info-circle"
-            style="margin-left: 10px; font-size: 18px;"
-          ></i></a
-      ></div>
+          @click="showDescription = !showDescription"
+          ><v-icon
+            class="mdi mdi-information ml-1 icon-info"
+            dark
+            small
+            color="primary"
+          ></v-icon
+        ></a>
+      </div>
 
-      <p v-if="category.showInfo">
-        <em v-if="category.description !== null"
+      <p class="inspection-item-description">
+        <em v-if="category.description !== null && showDescription"
           >{{ category.description }}<br
         /></em>
         <a
-          v-if="category.source !== null"
+          v-if="category.source !== null && showDescription"
           :href="category.source"
           target="_blank"
           >{{ category.source }}</a
@@ -125,6 +128,11 @@ export default {
       default: 'en',
       required: false,
     },
+  },
+  data: function() {
+    return {
+      showDescription: false,
+    }
   },
 }
 </script>

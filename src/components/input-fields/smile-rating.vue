@@ -1,6 +1,24 @@
 <template>
   <div>
-    <div class="beep-label" v-text="`${$t(label)}`"></div>
+    <div class="beep-label">
+      {{ $t(label) }}
+      <a v-if="description !== null"
+        ><v-icon
+          class="mdi mdi-information ml-1 icon-info"
+          dark
+          small
+          color="primary"
+          @click="showDescription = !showDescription"
+        ></v-icon
+      ></a>
+    </div>
+
+    <p class="inspection-item-description">
+      <em v-if="description !== null && showDescription"
+        >{{ description }}<br
+      /></em>
+    </p>
+
     <div class="smile-wrapper d-flex align-center">
       <v-icon
         :class="`${object[property] === 1 ? 'red--text' : 'color-grey'} mr-2`"
@@ -29,6 +47,11 @@
 <script>
 export default {
   props: {
+    description: {
+      type: String,
+      required: false,
+      default: null,
+    },
     label: {
       type: String,
       required: true,
