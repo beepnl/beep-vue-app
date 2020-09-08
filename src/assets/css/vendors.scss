@@ -89,6 +89,25 @@
   padding-top: 4px;
 }
 
+.v-input__slider .v-slider.v-slider--horizontal {
+  max-width: 90% !important;
+}
+
+.v-input__slider
+  .v-slider.v-slider--horizontal
+  .v-slider__tick
+  .v-slider__tick-label {
+  font-size: 0.75rem !important;
+}
+
+.v-input__slider
+  .v-slider.v-slider--horizontal
+  .v-slider__tick:last-child
+  .v-slider__tick-label {
+  -webkit-transform: translateX(-50%) !important;
+  transform: translateX(-50%) !important;
+}
+
 /* VueNumberInput */
 .number-input {
   input.number-input__input {
