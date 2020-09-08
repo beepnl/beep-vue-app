@@ -462,7 +462,7 @@ export default {
 }
 
 .hive-number-frame-input {
-  max-width: 130px;
+  max-width: 130px !important;
 }
 
 .hive-dimensions-wrapper {

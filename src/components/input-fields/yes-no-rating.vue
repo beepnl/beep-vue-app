@@ -1,24 +1,5 @@
 <template>
   <div>
-    <div class="beep-label">
-      {{ $t(label) }}
-      <a v-if="description !== null"
-        ><v-icon
-          class="mdi mdi-information ml-1 icon-info"
-          dark
-          small
-          color="primary"
-          @click="showDescription = !showDescription"
-        ></v-icon
-      ></a>
-    </div>
-
-    <p v-if="description" class="inspection-item-description">
-      <em v-if="description !== null && showDescription"
-        >{{ description }}<br
-      /></em>
-    </p>
-
     <div>
       <v-btn
         :class="`yes-no-button px-2 ${yesRed ? 'yes-red' : ''}`"
@@ -51,15 +32,6 @@
 <script>
 export default {
   props: {
-    description: {
-      type: String,
-      required: false,
-      default: null,
-    },
-    label: {
-      type: String,
-      required: true,
-    },
     object: {
       type: Object,
       required: true,
@@ -73,11 +45,6 @@ export default {
       required: false,
       default: false,
     },
-  },
-  data: function() {
-    return {
-      showDescription: false,
-    }
   },
   methods: {
     updateObject(value, property) {
