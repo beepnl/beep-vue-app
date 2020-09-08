@@ -16,11 +16,13 @@
 
     <VueNumberInput
       v-if="
-        item.input === 'number_1_decimals' || item.input === 'number_2_decimals'
+        item.input === 'number_1_decimals' ||
+          item.input === 'number_2_decimals' ||
+          item.input === 'square_25cm2'
       "
       v-model="object[item.id]"
       class="checklist-number-input"
-      :step="item.input === 'number_1_decimals' ? 0.1 : 0.01"
+      :step="item.input === 'number_2_decimals' ? 0.01 : 0.1"
       controls
     ></VueNumberInput>
 
@@ -74,16 +76,21 @@
     ></smileRating>
 
     <yesNoRating
-      v-if="item.input === 'boolean' || item.input === 'boolean_yes_red'"
+      v-if="
+        item.input === 'boolean' ||
+          item.input === 'boolean_yes_red' ||
+          item.input === 'list_item'
+      "
       :object="object"
       :property="item.id"
       :yes-red="item.input === 'boolean_yes_red'"
     ></yesNoRating>
-    <!-- or list_item? -->
     <ChecklistInput
       v-if="
         item.children.length > 0 &&
-          (item.input === 'boolean' || item.input === 'boolean_yes_red')
+          (item.input === 'boolean' ||
+            item.input === 'boolean_yes_red' ||
+            item.input === 'list_item')
       "
       v-show="object[item.id] === 1"
       :item="item.children[0]"
@@ -104,7 +111,8 @@
           item.input !== 'number_2_decimals' &&
           item.input !== 'number_3_decimals' &&
           item.input !== 'number_negative' &&
-          item.input !== 'number_positive'
+          item.input !== 'number_positive' &&
+          item.input !== 'square_25cm2'
       "
     >
       {{ item.trans[locale] }}: {{ item.input }}
