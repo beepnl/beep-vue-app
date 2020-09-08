@@ -89,23 +89,57 @@
   padding-top: 4px;
 }
 
-.v-input__slider .v-slider.v-slider--horizontal {
-  max-width: 90% !important;
-}
+.v-input__slider {
+  .v-slider.v-slider--horizontal .v-slider__tick .v-slider__tick-label {
+    width: 65px;
+    max-width: 65px;
+    margin-top: 2px;
+    font-size: 0.75rem !important;
+    line-height: 1rem;
+    text-align: center;
+    white-space: normal;
+  }
 
-.v-input__slider
   .v-slider.v-slider--horizontal
-  .v-slider__tick
-  .v-slider__tick-label {
-  font-size: 0.75rem !important;
-}
+    .v-slider__tick:last-child
+    .v-slider__tick-label,
+  .v-slider.v-slider--horizontal
+    .v-slider__tick:first-child
+    .v-slider__tick-label {
+    -webkit-transform: translateX(-50%) !important;
+    transform: translateX(-50%) !important;
+  }
 
-.v-input__slider
-  .v-slider.v-slider--horizontal
-  .v-slider__tick:last-child
-  .v-slider__tick-label {
-  -webkit-transform: translateX(-50%) !important;
-  transform: translateX(-50%) !important;
+  &:not(.slider-percentage) {
+    .v-slider {
+      max-width: 245px !important;
+      margin-top: 18px !important;
+      div[aria-valuenow='0'] {
+        .primary {
+          color: $color-grey-medium !important;
+          background-color: $color-grey-medium !important;
+        }
+        .v-slider__thumb-label {
+          display: none !important;
+        }
+      }
+    }
+  }
+
+  &.slider-percentage {
+    .v-slider {
+      margin-top: 25px !important;
+      div[aria-valuenow='-1'] {
+        .primary {
+          color: $color-grey-medium !important;
+          background-color: $color-grey-medium !important;
+        }
+        .v-slider__thumb-label {
+          display: none !important;
+        }
+      }
+    }
+  }
 }
 
 /* VueNumberInput */

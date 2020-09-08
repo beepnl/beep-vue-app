@@ -7,7 +7,11 @@
     ></labelWithDescription>
 
     <slider
-      v-if="item.input === 'score_amount'"
+      v-if="
+        item.input === 'score_amount' ||
+          item.input === 'score_quality' ||
+          item.input === 'number_percentage'
+      "
       :item="item"
       :object="object"
     ></slider>
@@ -124,7 +128,9 @@
           item.input !== 'number_negative' &&
           item.input !== 'number_positive' &&
           item.input !== 'square_25cm2' &&
-          item.input !== 'score_amount'
+          item.input !== 'score_amount' &&
+          item.input !== 'score_quality' &&
+          item.input !== 'number_percentage'
       "
     >
       {{ item.trans[locale] }}: {{ item.input }}
