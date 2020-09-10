@@ -132,19 +132,18 @@
                 :key="a"
                 class="tdc"
               >
-                <div
-                  v-if="inspection.owner || activeHive.owner"
-                  class="inspection-actions d-flex justify-center"
-                >
+                <div class="inspection-actions d-flex justify-center">
                   <a
+                    v-if="inspection.owner || activeHive.owner"
                     :href="`/hives/${id}/inspections/${inspection.id}`"
                     class="icon-button"
                   >
                     <v-icon small class="color-grey-medium">mdi-pencil</v-icon>
                   </a>
                   <a
+                    v-if="inspection.owner || activeHive.owner"
                     class="icon-button delete"
-                    @click="deleteInspection(inspection.id)"
+                    @click="confirmDeleteInspection(inspection)"
                   >
                     <v-icon small class="color-grey-medium">mdi-delete</v-icon>
                   </a>
@@ -509,12 +508,20 @@
         </v-row>
       </v-container>
     </div>
+
+    <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
+      {{ snackbar.text }}
+      <v-btn color="blue" text @click="snackbar.show = false">
+        {{ $t('Close') }}
+      </v-btn>
+    </v-snackbar>
+
+    <Confirm ref="confirm"></Confirm>
   </Layout>
 </template>
 
 <script>
-// import { mapGetters } from 'vuex'
-// import HiveIcons from '@components/hive-icons.vue'
+import Confirm from '@components/confirm.vue'
 // import { ScaleTransition } from 'vue2-transitions'
 import Layout from '@layouts/back.vue'
 import { momentMixin } from '@mixins/momentMixin'
@@ -522,7 +529,7 @@ import { momentMixin } from '@mixins/momentMixin'
 
 export default {
   components: {
-    // HiveIcons,
+    Confirm,
     // ScaleTransition,
     // AddToCalendar,
     Layout,
@@ -530,6 +537,11 @@ export default {
   mixins: [momentMixin],
   data: function() {
     return {
+      snackbar: {
+        show: false,
+        timeout: 2000,
+        text: 'notification',
+      },
       inspections: [],
       filterByReminder: false,
       filterByImpression: [],
@@ -659,6 +671,23 @@ export default {
     this.getAllInspectionsForHiveId()
   },
   methods: {
+    async deleteInspection(id) {
+      try {
+        const response = await this.$store.dispatch(
+          'inspections/deleteInspection',
+          id
+        )
+        if (!response) {
+          this.snackbar.text = this.$i18n.t('something_wrong')
+          this.snackbar.show = true
+        }
+        this.getAllInspectionsForHiveId()
+      } catch (error) {
+        console.log(error)
+        this.snackbar.text = this.$i18n.t('something_wrong')
+        this.snackbar.show = true
+      }
+    },
     async readHive() {
       try {
         const response = await this.$store.dispatch('hives/findById', this.id)
@@ -697,8 +726,26 @@ export default {
         console.log(e)
       }
     },
-    deleteInspection(id) {
-      console.log('confirm delete inspection' + id + '?')
+    confirmDeleteInspection(inspection) {
+      this.$refs.confirm
+        .open(
+          this.$i18n.t('Delete'),
+          this.$i18n.t('remove_inspection') +
+            ' (' +
+            this.$i18n.t('Date').toLocaleLowerCase() +
+            ': ' +
+            this.momentify(inspection.created_at) +
+            ')?',
+          {
+            color: 'red',
+          }
+        )
+        .then((confirm) => {
+          this.deleteInspection(inspection.id)
+        })
+        .catch((reject) => {
+          return true
+        })
     },
     gradeColor(value) {
       if (value === 0) return '#CCC'
@@ -821,6 +868,7 @@ export default {
   .inspection-actions {
     display: block;
     min-width: 67px;
+    min-height: 18px;
     a > i {
       min-width: 33px;
       @include for-phone-only {

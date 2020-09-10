@@ -1,8 +1,64 @@
 <template>
   <div>
     <v-slider
+      v-if="item.input === 'grade'"
+      class="slider--default"
+      :value="getValue(item.id, 'grade')"
+      :tick-labels="gradeText"
+      track-color="#b0b0b0"
+      min="0"
+      max="10"
+      step="1"
+      ticks="always"
+      tick-size="4"
+      @change="updateValue($event, item.id, 'grade')"
+    >
+      <template v-slot:thumb-label="props">
+        <span dark :color="gradeColors(props.value)">
+          {{ props.value }}
+        </span>
+      </template>
+    </v-slider>
+
+    <v-slider
+      v-if="item.input === 'number_degrees'"
+      :class="`slider--big-label ${inputProvided ? '' : 'slider--default'}`"
+      :value="getValue(item.id, 'number_degrees')"
+      thumb-label="always"
+      track-color="#b0b0b0"
+      track-fill-color="#b0b0b0"
+      :thumb-size="28"
+      min="-180"
+      max="180"
+      step="1"
+      @change="updateValue($event, item.id, 'number_degrees')"
+    >
+      <template v-slot:thumb-label="props">
+        {{ props.value + '°' }}
+      </template>
+    </v-slider>
+
+    <v-slider
+      v-if="item.input === 'number_percentage'"
+      class="slider--big-label slider--number-percentage"
+      :value="getValue(item.id, 'number_percentage')"
+      thumb-label="always"
+      track-color="#b0b0b0"
+      :thumb-size="28"
+      min="-1"
+      max="100"
+      step="1"
+      @change="updateValue($event, item.id, 'number_percentage')"
+    >
+      <template v-slot:thumb-label="props">
+        {{ props.value + '%' }}
+      </template>
+    </v-slider>
+
+    <v-slider
       v-if="item.input === 'score_amount'"
       v-model="object[item.id]"
+      class="slider--default"
       :tick-labels="scoreAmountLevels"
       track-color="#b0b0b0"
       :thumb-size="24"
@@ -21,6 +77,7 @@
     <v-slider
       v-if="item.input === 'score_quality'"
       v-model="object[item.id]"
+      class="slider--default"
       :tick-labels="scoreQualityLevels"
       track-color="#b0b0b0"
       :thumb-size="24"
@@ -33,23 +90,6 @@
         <v-icon dark :color="scoreQualityColors[props.value]">
           mdi-checkbox-blank-circle
         </v-icon>
-      </template>
-    </v-slider>
-
-    <v-slider
-      v-if="item.input === 'number_percentage'"
-      class="slider-percentage"
-      :value="getPercentage(item.id)"
-      thumb-label="always"
-      track-color="#b0b0b0"
-      :thumb-size="28"
-      min="-1"
-      max="100"
-      step="1"
-      @change="updatePercentage($event, item.id)"
-    >
-      <template v-slot:thumb-label="props">
-        {{ props.value + '%' }}
       </template>
     </v-slider>
   </div>
@@ -68,6 +108,7 @@ export default {
     },
   },
   data: () => ({
+    inputProvided: false,
     scoreAmountIcons: [
       'mdi-minus',
       'mdi-gauge-empty',
@@ -79,6 +120,21 @@ export default {
     scoreQualityColors: ['#b0b0b0', '#8F1619', '#5F3F90', '#243D80', '#069518'],
   }),
   computed: {
+    gradeText() {
+      return [
+        '-',
+        this.$i18n.t('Poor'),
+        '',
+        '',
+        '',
+        this.$i18n.t('Average'),
+        '',
+        '',
+        '',
+        '',
+        this.$i18n.t('Excellent'),
+      ]
+    },
     scoreAmountLevels() {
       return [
         '-',
@@ -99,17 +155,48 @@ export default {
     },
   },
   methods: {
-    getPercentage(id) {
+    getValue(id, inputtype) {
       const value = this.object[id]
-      if (value === null || value === -1) {
-        return -1
+      if (inputtype === 'number_percentage') {
+        if (value === null || value === -1) {
+          return -1
+        }
+      } else if (inputtype === 'number_degrees') {
+        if (value === null) {
+          return null
+        }
+      } else {
+        if (value === null) {
+          return 0
+        }
       }
+      return value
     },
-    updatePercentage(value, property) {
-      if (value === -1) {
-        value = null
+    gradeColors(value) {
+      if (value === 0) return '#CCC'
+      if (value < 4) return '#8F1619'
+      if (value < 6) return '#5F3F90'
+      if (value < 8) return '#243D80'
+      if (value < 11) return '#069518'
+      return '#F29100'
+    },
+    updateValue(value, id, inputtype) {
+      if (inputtype === 'number_percentage') {
+        if (value === -1) {
+          value = null
+        }
+      } else if (inputtype === 'number_degrees') {
+        if (value === null) {
+          return null
+        } else {
+          this.inputProvided = true
+        }
+      } else {
+        if (value === 0) {
+          value = null
+        }
       }
-      this.object[property] = value
+      this.object[id] = value
     },
   },
 }

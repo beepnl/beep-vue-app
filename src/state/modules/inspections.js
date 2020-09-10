@@ -88,4 +88,7 @@ export const actions = {
         console.log(error)
       })
   },
+  deleteInspection: function({ _ }, id) {
+    return Api.deleteInspection(id)
+  },
 }

@@ -110,10 +110,8 @@
     transform: translateX(-50%) !important;
   }
 
-  &:not(.slider-percentage) {
+  &.slider--default {
     .v-slider {
-      max-width: 245px !important;
-      margin-top: 18px !important;
       div[aria-valuenow='0'] {
         .primary {
           color: $color-grey-medium !important;
@@ -126,9 +124,21 @@
     }
   }
 
-  &.slider-percentage {
+  &:not(.slider--big-label) {
+    .v-slider {
+      max-width: 245px !important;
+      margin-top: 18px !important;
+    }
+  }
+
+  &.slider--big-label {
     .v-slider {
       margin-top: 25px !important;
+    }
+  }
+
+  &.slider--number-percentage {
+    .v-slider {
       div[aria-valuenow='-1'] {
         .primary {
           color: $color-grey-medium !important;

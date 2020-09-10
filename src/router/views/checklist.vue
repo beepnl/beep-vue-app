@@ -166,7 +166,8 @@ export default {
             } else {
               this.$router.push(-1).catch((error) => {
                 if (error.name === 'NavigationDuplicated') {
-                  // if previous page is identical, do nothing, or page reload? : // this.$router.go('/')
+                  this.getChecklistById(this.id)
+                  this.getChecklistTaxonomy(this.id)
                 }
               })
             }
