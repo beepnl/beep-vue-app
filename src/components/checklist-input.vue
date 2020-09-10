@@ -3,8 +3,24 @@
     <labelWithDescription
       v-if="item.input !== 'text' && item.input !== 'date'"
       :description="item.description"
-      :label="item.trans[locale]"
+      :label="item.trans[locale] || item.name"
     ></labelWithDescription>
+
+    <v-select
+      v-if="item.input === 'select'"
+      v-model="object[item.id]"
+      class="checklist-select-input"
+      :items="item.children"
+      :item-text="getText"
+      item-value="id"
+      :placeholder="`${$t('Select') + ' ' + (item.trans[locale] || item.name)}`"
+      solo
+    >
+      <template slot="item" slot-scope="data">
+        {{ data.item.trans[locale] || data.item.name }}
+      </template>
+      ></v-select
+    >
 
     <dateTimePicker
       v-if="item.input === 'date'"
@@ -144,7 +160,8 @@
           item.input !== 'grade' &&
           item.input !== 'number_degrees' &&
           item.input !== 'slider' &&
-          item.input !== 'date'
+          item.input !== 'date' &&
+          item.input !== 'select'
       "
     >
       {{ item.trans[locale] }}: {{ item.input }}
@@ -194,6 +211,9 @@ export default {
   methods: {
     consoleLog(event) {
       console.log(event)
+    },
+    getText(item) {
+      return item.trans[this.locale] || item.name
     },
     updateNumber(value, property) {
       if (value === 0) {
