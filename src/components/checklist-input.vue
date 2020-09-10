@@ -1,10 +1,17 @@
 <template>
   <div class="inspection-item">
     <labelWithDescription
-      v-if="item.input !== 'text'"
+      v-if="item.input !== 'text' && item.input !== 'date'"
       :description="item.description"
       :label="item.trans[locale]"
     ></labelWithDescription>
+
+    <dateTimePicker
+      v-if="item.input === 'date'"
+      :object="object"
+      :item="item"
+      :locale="locale"
+    ></dateTimePicker>
 
     <slider
       v-if="
@@ -136,7 +143,8 @@
           item.input !== 'number_percentage' &&
           item.input !== 'grade' &&
           item.input !== 'number_degrees' &&
-          item.input !== 'slider'
+          item.input !== 'slider' &&
+          item.input !== 'date'
       "
     >
       {{ item.trans[locale] }}: {{ item.input }}
@@ -148,6 +156,7 @@
 import ChecklistInput from '@components/checklist-input.vue'
 import VueNumberInput from '@chenfengyuan/vue-number-input'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
+import dateTimePicker from '@components/input-fields/date-time-picker.vue'
 import slider from '@components/input-fields/slider.vue'
 import smileRating from '@components/input-fields/smile-rating.vue'
 import starRating from '@components/input-fields/star-rating.vue'
@@ -157,6 +166,7 @@ export default {
   name: 'ChecklistInput',
   components: {
     ChecklistInput,
+    dateTimePicker,
     VueNumberInput,
     labelWithDescription,
     slider,
