@@ -3,7 +3,7 @@
     <v-slider
       v-if="item.input === 'grade'"
       class="slider--default"
-      :value="getValue(item.id, 'grade')"
+      :value="getValue(item.id, item.input)"
       :tick-labels="gradeTicks"
       track-color="#b0b0b0"
       min="0"
@@ -11,7 +11,7 @@
       step="1"
       ticks="always"
       tick-size="4"
-      @change="updateValue($event, item.id, 'grade')"
+      @change="updateValue($event, item.id, item.input)"
     >
       <template v-slot:thumb-label="props">
         <span dark :color="gradeColors(props.value)">
@@ -25,7 +25,7 @@
       :class="
         `slider--big-label ${inputProvided(item.id) ? '' : 'slider--default'}`
       "
-      :value="getValue(item.id, 'number_degrees')"
+      :value="getValue(item.id, item.input)"
       :tick-labels="numberDegreeTicks"
       thumb-label="always"
       :track-color="inputProvided(item.id) ? '#ffa000' : '#b0b0b0'"
@@ -35,7 +35,7 @@
       min="-180"
       max="180"
       step="1"
-      @change="updateValue($event, item.id, 'number_degrees')"
+      @change="updateValue($event, item.id, item.input)"
     >
       <template v-slot:thumb-label="props">
         {{ props.value + '°' }}
@@ -57,7 +57,7 @@
     <v-slider
       v-if="item.input === 'number_percentage'"
       class="slider--big-label slider--number-percentage"
-      :value="getValue(item.id, 'number_percentage')"
+      :value="getValue(item.id, item.input)"
       :tick-labels="numberPercentageTicks"
       thumb-label="always"
       track-color="#b0b0b0"
@@ -66,7 +66,7 @@
       min="-1"
       max="100"
       step="1"
-      @change="updateValue($event, item.id, 'number_percentage')"
+      @change="updateValue($event, item.id, item.input)"
     >
       <template v-slot:thumb-label="props">
         {{ props.value + '%' }}
@@ -113,35 +113,20 @@
 
     <v-slider
       v-if="item.input === 'slider'"
-      :class="
-        `slider--big-label ${inputProvided(item.id) ? '' : 'slider--default'}`
-      "
-      :value="getValue(item.id, 'slider')"
+      class="slider--big-label slider--number-percentage"
+      :value="getValue(item.id, item.input)"
       :tick-labels="sliderTicks"
       thumb-label="always"
-      :track-color="inputProvided(item.id) ? '#ffa000' : '#b0b0b0'"
-      :track-fill-color="inputProvided(item.id) ? '#ffa000' : '#b0b0b0'"
+      track-color="#b0b0b0"
       thumb-size="28"
       tick-size="0"
-      min="-999"
-      max="999"
+      min="-1"
+      max="100"
       step="1"
-      @change="updateValue($event, item.id, 'slider')"
+      @change="updateValue($event, item.id, item.input)"
     >
       <template v-slot:thumb-label="props">
         {{ props.value }}
-      </template>
-
-      <!-- reset value to null (this way '0' is a valid input) -->
-      <template v-slot:append>
-        <v-icon
-          v-if="inputProvided(item.id)"
-          class="mt-6 clear-icon"
-          color="primary"
-          @click="clearValue(item.id)"
-          >mdi-close</v-icon
-        >
-        <v-spacer v-else style="width: 24px;"></v-spacer>
       </template>
     </v-slider>
   </div>
@@ -240,13 +225,11 @@ export default {
     },
     sliderTicks() {
       var ticksArray = []
-      for (var i = -999; i <= 999; i++) {
+      for (var i = -1; i <= 100; i++) {
         if (i === 0) {
           ticksArray.push('0')
-        } else if (i === -999) {
-          ticksArray.push('-999')
-        } else if (i === 999) {
-          ticksArray.push('999')
+        } else if (i === 100) {
+          ticksArray.push('100')
         } else {
           ticksArray.push('')
         }
@@ -260,11 +243,11 @@ export default {
     },
     getValue(id, inputtype) {
       const value = this.object[id]
-      if (inputtype === 'number_percentage') {
+      if (inputtype === 'number_percentage' || inputtype === 'slider') {
         if (value === null || value === -1) {
           return -1
         }
-      } else if (inputtype === 'number_degrees' || inputtype === 'slider') {
+      } else if (inputtype === 'number_degrees') {
         if (value === null) {
           return null
         }
@@ -290,11 +273,11 @@ export default {
       return true
     },
     updateValue(value, id, inputtype) {
-      if (inputtype === 'number_percentage') {
+      if (inputtype === 'number_percentage' || inputtype === 'slider') {
         if (value === -1) {
           value = null
         }
-      } else if (inputtype === 'number_degrees' || inputtype === 'slider') {
+      } else if (inputtype === 'number_degrees') {
         if (value === null) {
           return null
         }
