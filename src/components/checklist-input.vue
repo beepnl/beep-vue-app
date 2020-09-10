@@ -12,7 +12,8 @@
           item.input === 'number_degrees' ||
           item.input === 'number_percentage' ||
           item.input === 'score_amount' ||
-          item.input === 'score_quality'
+          item.input === 'score_quality' ||
+          item.input === 'slider'
       "
       :item="item"
       :object="object"
@@ -134,7 +135,8 @@
           item.input !== 'score_quality' &&
           item.input !== 'number_percentage' &&
           item.input !== 'grade' &&
-          item.input !== 'number_degrees'
+          item.input !== 'number_degrees' &&
+          item.input !== 'slider'
       "
     >
       {{ item.trans[locale] }}: {{ item.input }}

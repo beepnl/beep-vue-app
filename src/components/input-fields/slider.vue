@@ -4,7 +4,7 @@
       v-if="item.input === 'grade'"
       class="slider--default"
       :value="getValue(item.id, 'grade')"
-      :tick-labels="gradeText"
+      :tick-labels="gradeTicks"
       track-color="#b0b0b0"
       min="0"
       max="10"
@@ -22,12 +22,16 @@
 
     <v-slider
       v-if="item.input === 'number_degrees'"
-      :class="`slider--big-label ${inputProvided ? '' : 'slider--default'}`"
+      :class="
+        `slider--big-label ${inputProvided(item.id) ? '' : 'slider--default'}`
+      "
       :value="getValue(item.id, 'number_degrees')"
+      :tick-labels="numberDegreeTicks"
       thumb-label="always"
-      track-color="#b0b0b0"
-      track-fill-color="#b0b0b0"
-      :thumb-size="28"
+      :track-color="inputProvided(item.id) ? '#ffa000' : '#b0b0b0'"
+      :track-fill-color="inputProvided(item.id) ? '#ffa000' : '#b0b0b0'"
+      thumb-size="28"
+      tick-size="0"
       min="-180"
       max="180"
       step="1"
@@ -36,15 +40,29 @@
       <template v-slot:thumb-label="props">
         {{ props.value + '°' }}
       </template>
+
+      <!-- reset value to null (this way '0' is a valid input) -->
+      <template v-slot:append>
+        <v-icon
+          v-if="inputProvided(item.id)"
+          class="mt-6 clear-icon"
+          color="primary"
+          @click="clearValue(item.id)"
+          >mdi-close</v-icon
+        >
+        <v-spacer v-else style="width: 24px;"></v-spacer>
+      </template>
     </v-slider>
 
     <v-slider
       v-if="item.input === 'number_percentage'"
       class="slider--big-label slider--number-percentage"
       :value="getValue(item.id, 'number_percentage')"
+      :tick-labels="numberPercentageTicks"
       thumb-label="always"
       track-color="#b0b0b0"
-      :thumb-size="28"
+      thumb-size="28"
+      tick-size="0"
       min="-1"
       max="100"
       step="1"
@@ -59,9 +77,9 @@
       v-if="item.input === 'score_amount'"
       v-model="object[item.id]"
       class="slider--default"
-      :tick-labels="scoreAmountLevels"
+      :tick-labels="scoreAmountTicks"
       track-color="#b0b0b0"
-      :thumb-size="24"
+      thumb-size="24"
       max="4"
       step="1"
       ticks="always"
@@ -78,9 +96,9 @@
       v-if="item.input === 'score_quality'"
       v-model="object[item.id]"
       class="slider--default"
-      :tick-labels="scoreQualityLevels"
+      :tick-labels="scoreQualityTicks"
       track-color="#b0b0b0"
-      :thumb-size="24"
+      thumb-size="24"
       max="4"
       step="1"
       ticks="always"
@@ -90,6 +108,40 @@
         <v-icon dark :color="scoreQualityColors[props.value]">
           mdi-checkbox-blank-circle
         </v-icon>
+      </template>
+    </v-slider>
+
+    <v-slider
+      v-if="item.input === 'slider'"
+      :class="
+        `slider--big-label ${inputProvided(item.id) ? '' : 'slider--default'}`
+      "
+      :value="getValue(item.id, 'slider')"
+      :tick-labels="sliderTicks"
+      thumb-label="always"
+      :track-color="inputProvided(item.id) ? '#ffa000' : '#b0b0b0'"
+      :track-fill-color="inputProvided(item.id) ? '#ffa000' : '#b0b0b0'"
+      thumb-size="28"
+      tick-size="0"
+      min="-999"
+      max="999"
+      step="1"
+      @change="updateValue($event, item.id, 'slider')"
+    >
+      <template v-slot:thumb-label="props">
+        {{ props.value }}
+      </template>
+
+      <!-- reset value to null (this way '0' is a valid input) -->
+      <template v-slot:append>
+        <v-icon
+          v-if="inputProvided(item.id)"
+          class="mt-6 clear-icon"
+          color="primary"
+          @click="clearValue(item.id)"
+          >mdi-close</v-icon
+        >
+        <v-spacer v-else style="width: 24px;"></v-spacer>
       </template>
     </v-slider>
   </div>
@@ -108,7 +160,6 @@ export default {
     },
   },
   data: () => ({
-    inputProvided: false,
     scoreAmountIcons: [
       'mdi-minus',
       'mdi-gauge-empty',
@@ -120,22 +171,56 @@ export default {
     scoreQualityColors: ['#b0b0b0', '#8F1619', '#5F3F90', '#243D80', '#069518'],
   }),
   computed: {
-    gradeText() {
-      return [
-        '-',
-        this.$i18n.t('Poor'),
-        '',
-        '',
-        '',
-        this.$i18n.t('Average'),
-        '',
-        '',
-        '',
-        '',
-        this.$i18n.t('Excellent'),
-      ]
+    gradeTicks() {
+      var ticksArray = []
+      for (var i = 0; i <= 10; i++) {
+        if (i === 0) {
+          ticksArray.push('-')
+        } else if (i === 1) {
+          ticksArray.push(this.$i18n.t('Poor'))
+        } else if (i === 5) {
+          ticksArray.push(this.$i18n.t('Average'))
+        } else if (i === 10) {
+          ticksArray.push(this.$i18n.t('Excellent'))
+        } else {
+          ticksArray.push('')
+        }
+      }
+      return ticksArray
     },
-    scoreAmountLevels() {
+    numberDegreeTicks() {
+      var ticksArray = []
+      for (var i = -180; i <= 180; i++) {
+        if (i === 0) {
+          ticksArray.push('0°')
+        } else if (i === -180) {
+          ticksArray.push('-180°')
+        } else if (i === 180) {
+          ticksArray.push('180°')
+        } else {
+          ticksArray.push('')
+        }
+      }
+      return ticksArray
+    },
+    numberPercentageTicks() {
+      var ticksArray = []
+      for (var i = -1; i <= 100; i++) {
+        if (i === 25) {
+          ticksArray.push('25%')
+        } else if (i === 50) {
+          ticksArray.push('50%')
+        } else if (i === 75) {
+          ticksArray.push('75%')
+        } else if (i === 100) {
+          ticksArray.push('100%')
+        } else {
+          ticksArray.push('')
+        }
+      }
+      return ticksArray
+    },
+    scoreAmountTicks() {
       return [
         '-',
         this.$i18n.t('Low'),
@@ -144,7 +229,7 @@ export default {
         this.$i18n.t('Extreme'),
       ]
     },
-    scoreQualityLevels() {
+    scoreQualityTicks() {
       return [
         '-',
         this.$i18n.t('Poor'),
@@ -153,15 +238,33 @@ export default {
         this.$i18n.t('Excellent'),
       ]
     },
+    sliderTicks() {
+      var ticksArray = []
+      for (var i = -999; i <= 999; i++) {
+        if (i === 0) {
+          ticksArray.push('0')
+        } else if (i === -999) {
+          ticksArray.push('-999')
+        } else if (i === 999) {
+          ticksArray.push('999')
+        } else {
+          ticksArray.push('')
+        }
+      }
+      return ticksArray
+    },
   },
   methods: {
+    clearValue(id) {
+      this.object[id] = null
+    },
     getValue(id, inputtype) {
       const value = this.object[id]
       if (inputtype === 'number_percentage') {
         if (value === null || value === -1) {
           return -1
         }
-      } else if (inputtype === 'number_degrees') {
+      } else if (inputtype === 'number_degrees' || inputtype === 'slider') {
         if (value === null) {
           return null
         }
@@ -180,16 +283,20 @@ export default {
       if (value < 11) return '#069518'
       return '#F29100'
     },
+    inputProvided(id) {
+      if (this.object[id] === null) {
+        return false
+      }
+      return true
+    },
     updateValue(value, id, inputtype) {
       if (inputtype === 'number_percentage') {
         if (value === -1) {
           value = null
         }
-      } else if (inputtype === 'number_degrees') {
+      } else if (inputtype === 'number_degrees' || inputtype === 'slider') {
         if (value === null) {
           return null
-        } else {
-          this.inputProvided = true
         }
       } else {
         if (value === 0) {
@@ -202,4 +309,8 @@ export default {
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss" scoped>
+.clear-icon {
+  cursor: pointer;
+}
+</style>
