@@ -61,7 +61,7 @@
     min-height: auto !important;
   }
 
-  &:not(.v-text-field--outlined):not(.v-text-field--solo)input {
+  &:not(.v-text-field--outlined):not(.v-text-field--solo):not(.v-select)input {
     padding: 8px 0 0;
   }
 

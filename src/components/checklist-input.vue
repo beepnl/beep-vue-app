@@ -6,6 +6,16 @@
       :label="item.trans[locale] || item.name"
     ></labelWithDescription>
 
+    <v-radio-group v-if="item.input === 'options'" :value="object[item.id]">
+      <v-radio
+        v-for="(listItem, index) in item.children"
+        :key="index"
+        :label="listItem.trans[locale] || listItem.name"
+        :value="listItem.id"
+        @click="toggleRadio(listItem.id, item.id)"
+      ></v-radio>
+    </v-radio-group>
+
     <v-select
       v-if="item.input === 'select'"
       v-model="object[item.id]"
@@ -14,7 +24,6 @@
       :item-text="getText"
       item-value="id"
       :placeholder="`${$t('Select') + ' ' + (item.trans[locale] || item.name)}`"
-      solo
     >
       <template slot="item" slot-scope="data">
         {{ data.item.trans[locale] || data.item.name }}
@@ -161,7 +170,8 @@
           item.input !== 'number_degrees' &&
           item.input !== 'slider' &&
           item.input !== 'date' &&
-          item.input !== 'select'
+          item.input !== 'select' &&
+          item.input !== 'options'
       "
     >
       {{ item.trans[locale] }}: {{ item.input }}
@@ -215,6 +225,13 @@ export default {
     getText(item) {
       return item.trans[this.locale] || item.name
     },
+    toggleRadio(value, id) {
+      if (this.object[id] === value) {
+        this.object[id] = null // allow to toggle if value has been set already
+      } else {
+        this.object[id] = value
+      }
+    },
     updateNumber(value, property) {
       if (value === 0) {
         value = null
@@ -234,5 +251,8 @@ export default {
 <style lang="scss" scoped>
 .checklist-number-input {
   max-width: 150px !important;
+}
+.v-text-field.checklist-select-input {
+  padding-top: 0 !important;
 }
 </style>

@@ -144,7 +144,13 @@
 
         <!-- General inspection items -->
         <v-card outlined class="mt-3">
-          <v-card-title>
+          <v-card-title
+            :class="
+              `hive-inspect-card-title ${
+                showGeneral ? 'hive-inspect-card-title--border-bottom' : ''
+              }`
+            "
+          >
             <v-row>
               <v-col cols="12" class="py-0 mt-n1">
                 <span>{{ $t('overall') }}</span>
@@ -152,17 +158,17 @@
                   <v-icon
                     :class="
                       `toggle-icon mdi ${
-                        showOverall ? 'mdi-minus' : 'mdi-plus'
+                        showGeneral ? 'mdi-minus' : 'mdi-plus'
                       }`
                     "
-                    @click="showOverall = !showOverall"
+                    @click="showGeneral = !showGeneral"
                   ></v-icon>
                 </div>
               </v-col>
             </v-row>
           </v-card-title>
           <SlideYUpTransition :duration="150">
-            <v-card-text v-if="showOverall">
+            <v-card-text v-if="showGeneral">
               <v-row class="sub-inspection-wrapper">
                 <v-col cols="12">
                   <div
@@ -320,7 +326,7 @@ export default {
       checklists: null,
       newInspection: null,
       selectedChecklistId: null,
-      showOverall: true,
+      showGeneral: true,
       showCategoriesByIndex: [],
       valid: false,
     }
