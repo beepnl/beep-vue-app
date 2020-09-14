@@ -6,6 +6,28 @@
       :label="item.trans[locale] || item.name"
     ></labelWithDescription>
 
+    <v-list v-if="item.input === 'list'">
+      <v-list-item
+        v-for="(listItem, index) in item.children"
+        :key="index"
+        class="inspection-list-item"
+        @click.capture.stop="toggleSelect(listItem, item.id)"
+      >
+        <v-list-item-action>
+          <v-checkbox
+            v-model="selectedArray"
+            multiple
+            :value="listItem.id.toString()"
+          />
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title>{{
+            listItem.trans[locale] || listItem.name
+          }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list>
+
     <v-radio-group v-if="item.input === 'options'" :value="object[item.id]">
       <v-radio
         v-for="(listItem, index) in item.children"
@@ -171,7 +193,8 @@
           item.input !== 'slider' &&
           item.input !== 'date' &&
           item.input !== 'select' &&
-          item.input !== 'options'
+          item.input !== 'options' &&
+          item.input !== 'list'
       "
     >
       {{ item.trans[locale] }}: {{ item.input }}
@@ -218,6 +241,17 @@ export default {
       required: false,
     },
   },
+  computed: {
+    // for v-model of 'list' checkbox an array of value is needed instead of a string
+    selectedArray() {
+      if (this.item.input === 'list') {
+        if (typeof this.object[this.item.id] === 'string') {
+          return this.object[this.item.id].split(',')
+        }
+      }
+      return []
+    },
+  },
   methods: {
     consoleLog(event) {
       console.log(event)
@@ -231,6 +265,19 @@ export default {
       } else {
         this.object[id] = value
       }
+    },
+    toggleSelect(listItem, listId) {
+      var selectedArray = []
+      if (typeof this.object[listId] === 'string') {
+        selectedArray = this.object[listId].split(',')
+      }
+      if (selectedArray.indexOf(listItem.id + '') > -1) {
+        selectedArray.splice(selectedArray.indexOf(listItem.id), 1)
+      } else {
+        selectedArray.push(listItem.id + '')
+      }
+      var selectedArrayToString = selectedArray.join(',')
+      this.object[listId] = selectedArrayToString
     },
     updateNumber(value, property) {
       if (value === 0) {
@@ -254,5 +301,11 @@ export default {
 }
 .v-text-field.checklist-select-input {
   padding-top: 0 !important;
+}
+.v-list-item.inspection-list-item {
+  padding: 0 !important;
+  .v-list-item__action {
+    margin-right: 12px !important;
+  }
 }
 </style>
