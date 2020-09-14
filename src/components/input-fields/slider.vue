@@ -2,7 +2,7 @@
   <div>
     <v-slider
       v-if="item.input === 'grade'"
-      class="slider--default"
+      class="slider--default slider--grade"
       :value="getValue(item.id, item.input)"
       :tick-labels="gradeTicks"
       track-color="#b0b0b0"
@@ -76,7 +76,7 @@
     <v-slider
       v-if="item.input === 'score_amount'"
       v-model="object[item.id]"
-      class="slider--default"
+      class="slider--default slider--score-amount"
       :tick-labels="scoreAmountTicks"
       track-color="#b0b0b0"
       thumb-size="24"
@@ -95,7 +95,7 @@
     <v-slider
       v-if="item.input === 'score_quality'"
       v-model="object[item.id]"
-      class="slider--default"
+      class="slider--default slider--score-quality"
       :tick-labels="scoreQualityTicks"
       track-color="#b0b0b0"
       thumb-size="24"
