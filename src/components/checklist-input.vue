@@ -6,6 +6,12 @@
       :label="item.trans[locale] || item.name"
     ></labelWithDescription>
 
+    <imageUploader
+      v-if="item.input === 'image'"
+      :object="object"
+      :item="item"
+    ></imageUploader>
+
     <v-list v-if="item.input === 'list'">
       <v-list-item
         v-for="(listItem, index) in item.children"
@@ -195,7 +201,8 @@
           item.input !== 'date' &&
           item.input !== 'select' &&
           item.input !== 'options' &&
-          item.input !== 'list'
+          item.input !== 'list' &&
+          item.input !== 'image'
       "
     >
       {{ item.trans[locale] }}: {{ item.input }}
@@ -208,6 +215,7 @@ import ChecklistInput from '@components/checklist-input.vue'
 import VueNumberInput from '@chenfengyuan/vue-number-input'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
+import imageUploader from '@components/input-fields/image-uploader.vue'
 import slider from '@components/input-fields/slider.vue'
 import smileRating from '@components/input-fields/smile-rating.vue'
 import starRating from '@components/input-fields/star-rating.vue'
@@ -218,6 +226,7 @@ export default {
   components: {
     ChecklistInput,
     dateTimePicker,
+    imageUploader,
     VueNumberInput,
     labelWithDescription,
     slider,

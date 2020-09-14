@@ -15,12 +15,19 @@ const resource = createResource({ path: 'inspections', other })
 // Add some custom functionality to the resource module
 export const state = {
   ...resource.state,
+  selectedInspectionId: null,
 }
 export const getters = {
   ...resource.getters,
+  selectedInspectionId: (state) => {
+    return state.selectedInspectionId
+  },
 }
 export const mutations = {
   ...resource.mutations,
+  setSelectedInspectionId: function(state, id) {
+    state.selectedInspectionId = id
+  },
 }
 export const actions = {
   ...resource.actions,

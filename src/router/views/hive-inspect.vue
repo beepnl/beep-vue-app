@@ -413,6 +413,8 @@ export default {
     }
     // }
     this.getChecklists()
+    this.$store.commit('hives/setActiveHiveId', this.id)
+    this.$store.commit('inspections/setSelectedInspectionId', this.inspectionId)
   },
   methods: {
     async getChecklistById(id) {

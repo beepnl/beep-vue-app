@@ -6,9 +6,13 @@ const resource = createResource({ path: 'hives' })
 export const state = {
   ...resource.state,
   edited: false,
+  activeHiveId: null,
 }
 export const getters = {
   ...resource.getters,
+  activeHiveId: (state) => {
+    return state.activeHiveId
+  },
   hives: (state) => {
     return state.data.hives || []
   },
@@ -27,6 +31,9 @@ export const mutations = {
   ...resource.mutations,
   setEdited: function(state, bool) {
     state.edited = bool
+  },
+  setActiveHiveId: function(state, id) {
+    state.activeHiveId = id
   },
 }
 export const actions = {

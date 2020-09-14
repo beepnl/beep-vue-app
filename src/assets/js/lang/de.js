@@ -541,7 +541,7 @@ const translations = {
   queen_description: 'notes',
   Hive_short: 'Hive | Hives',
 
-  Images: 'Images',
+  Image: 'Image | Images',
   Size: 'Size',
   preview: 'preview',
 

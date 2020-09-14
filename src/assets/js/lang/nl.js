@@ -543,7 +543,7 @@ const translations = {
   queen_description: 'notitie',
   Hive_short: 'Kast | Kasten',
 
-  Images: 'Afbeeldingen',
+  Image: 'Afbeelding | Afbeeldingen',
   Size: 'Grootte',
   preview: 'voorbeeld',
 

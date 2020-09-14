@@ -11,6 +11,9 @@ export const getters = {
   loggedIn: function(state) {
     return !!state.currentUser
   },
+  userId: function(state) {
+    return (state.currentUser && state.currentUser.id) || null
+  },
   userLocale: function(state) {
     return (state.currentUser && state.currentUser.locale) || null
   },
