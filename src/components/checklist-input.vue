@@ -1,7 +1,7 @@
 <template>
   <div class="inspection-item">
     <labelWithDescription
-      v-if="item.input !== 'text' && item.input !== 'date'"
+      v-if="item.input !== 'date'"
       :description="item.description"
       :label="item.trans[locale] || item.name"
     ></labelWithDescription>
@@ -133,12 +133,13 @@
     <v-textarea
       v-if="item.input === 'text'"
       v-model="object[item.id]"
-      :label="`${$t('notes')}`"
+      class="inspection-text-area"
+      :placeholder="item.trans[locale] || item.name"
       counter="250"
       rows="1"
       auto-grow
       clearable
-      @input="validateText($event, 'notes', 250)"
+      @input="validateText($event, item.id, 250)"
     ></v-textarea>
 
     <smileRating
@@ -285,10 +286,10 @@ export default {
       }
       this.object[property] = value
     },
-    validateText(value, property, maxLength) {
+    validateText(value, id, maxLength) {
       if (value !== null && value.length > maxLength + 1) {
         value = value.substring(0, maxLength)
-        this.newInspection[property] = value
+        this.object[id] = value
       }
     },
   },
@@ -299,7 +300,8 @@ export default {
 .checklist-number-input {
   max-width: 150px !important;
 }
-.v-text-field.checklist-select-input {
+.v-text-field.checklist-select-input,
+.v-text-field.inspection-text-area {
   padding-top: 0 !important;
 }
 .v-list-item.inspection-list-item {

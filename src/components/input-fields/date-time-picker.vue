@@ -6,7 +6,7 @@
     <div>
       <labelWithDescription
         :description="item.description"
-        :label="item.trans[locale]"
+        :label="item.trans[locale] || item.name"
       ></labelWithDescription>
 
       <Datetime
