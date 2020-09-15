@@ -59,11 +59,7 @@
       item-value="id"
       :placeholder="`${$t('Select') + ' ' + (item.trans[locale] || item.name)}`"
     >
-      <template slot="item" slot-scope="data">
-        {{ data.item.trans[locale] || data.item.name }}
-      </template>
-      ></v-select
-    >
+    </v-select>
 
     <dateTimePicker
       v-if="item.input === 'date'"

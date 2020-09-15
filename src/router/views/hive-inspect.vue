@@ -55,15 +55,16 @@
 
           <v-col class="d-flex" cols="12" sm="4">
             <v-select
-              v-if="checklists !== null"
+              v-if="checklists !== null && checklists.length > 1"
               v-model="selectedChecklistId"
               class="select-checklist"
               :items="checklists"
-              item-text="name"
+              :item-text="getText"
               item-value="id"
               :label="`${$t('Select') + ' ' + $tc('checklist', 1)}`"
               @input="getChecklistById($event)"
-            ></v-select>
+            >
+            </v-select>
           </v-col>
 
           <v-col class="d-flex" cols="12" sm="4">
@@ -496,6 +497,15 @@ export default {
     },
     clearDate() {
       this.newInspection.reminder_date = null
+    },
+    getText(item) {
+      const name = item.name
+      var research = ''
+      if (item.researches.length > 0) {
+        research =
+          ' (' + this.$i18n.t('research') + ': ' + item.researches[0] + ')'
+      }
+      return name + research
     },
     toggleCategory(index) {
       this.$set(
