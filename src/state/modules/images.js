@@ -10,12 +10,22 @@ export const state = {
 }
 export const getters = {
   ...resource.getters,
+  images: (state) => {
+    return state.data.images || []
+  },
 }
 export const mutations = {
   ...resource.mutations,
 }
 export const actions = {
   ...resource.actions,
+  findAll: function({ _ }) {
+    const images = resource.endpoint.index()
+    if (images) {
+      return images // automatically committed by SET_DATA after index()
+    }
+    return false
+  },
   saveImage: function({ _ }, data, headers) {
     return Api.saveImage(data, headers).then((response) => {
       return response

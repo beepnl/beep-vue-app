@@ -613,6 +613,7 @@ const translations = {
   need_help: 'Need help?',
   Apiary_color: 'Apiary color',
   Set_notification_date: 'Set notification date',
+  remove_image: 'Remove image',
 }
 
 export default translations

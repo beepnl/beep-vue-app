@@ -9,20 +9,33 @@
       prepend-icon="mdi-camera"
       @change="onUpload"
     ></v-file-input>
-    <v-icon
+    <div class="image-preview">
+      <v-icon
+        v-if="object[item.id] !== null"
+        class="mt-n1 clear-icon"
+        right
+        color="primary"
+        @click="confirmDeleteImage(item.id)"
+        >mdi-close</v-icon
+      >
+      <v-img
+        v-if="object[item.id] !== null"
+        :src="baseApiUrl + object[item.id]"
+        class="grey lighten-2 image-thumb"
+        aspect-ratio="1"
+        @click="setActiveImage(object[item.id])"
+      >
+      </v-img>
+    </div>
+    <imageOverlay
       v-if="object[item.id] !== null"
-      class="mt-n1 clear-icon"
-      right
-      color="primary"
-      @click="deleteImage(item.id)"
-      >mdi-close</v-icon
-    >
-    <v-img
-      v-if="object[item.id] !== null"
-      :src="`https://beep.test${object[item.id]}`"
-      class="grey lighten-2"
-    >
-    </v-img>
+      :date="activeImage ? activeImage.date : null"
+      :thumburl="object[item.id]"
+      :overlay="
+        activeImage !== null && activeImage.thumb_url === object[item.id]
+      "
+      @close-overlay="activeImage = null"
+    ></imageOverlay>
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
@@ -30,11 +43,20 @@
         {{ $t('Close') }}
       </v-btn>
     </v-snackbar>
+
+    <Confirm ref="confirm"></Confirm>
   </div>
 </template>
 
 <script>
+import Confirm from '@components/confirm.vue'
+import imageOverlay from '@components/image-overlay.vue'
+
 export default {
+  components: {
+    Confirm,
+    imageOverlay,
+  },
   props: {
     item: {
       type: Object,
@@ -57,7 +79,19 @@ export default {
         value.size < 2000000 ||
         'Avatar size should be less than 2 MB!',
     ],
+    images: null,
+    activeImage: null,
   }),
+  computed: {
+    baseApiUrl() {
+      var baseUrl = process.env.VUE_APP_API_URL
+      baseUrl = baseUrl.replace('/api/', '')
+      return baseUrl
+    },
+  },
+  created() {
+    this.readImages()
+  },
   methods: {
     async deleteImage(id) {
       try {
@@ -117,6 +151,8 @@ export default {
           ) {
             this.object[this.item.id] = response.data.thumb_url
             // console.log('Thumb url: ', response.data.thumb_url)
+
+            this.readImages()
           }
         } catch (error) {
           console.log('Image upload error: ', error)
@@ -130,11 +166,54 @@ export default {
         }
       }
     },
+    async readImages() {
+      try {
+        const response = await this.$store.dispatch('images/findAll')
+        this.images = response
+        return true
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    confirmDeleteImage(id) {
+      this.$refs.confirm
+        .open(this.$i18n.t('Delete'), this.$i18n.t('remove_image') + '?', {
+          color: 'red',
+        })
+        .then((confirm) => {
+          this.deleteImage(id)
+        })
+        .catch((reject) => {
+          return true
+        })
+    },
+    setActiveImage(thumburl) {
+      if (this.images !== null) {
+        this.images.forEach((image) => {
+          if (image.thumb_url === thumburl) {
+            this.activeImage = image
+          }
+        })
+      } else {
+        this.activeImage = null
+      }
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
+.image-preview {
+  max-width: 120px;
+  max-height: 100px;
+}
+.image-thumb {
+  max-width: 100px;
+  max-height: 100px;
+  cursor: zoom-in;
+  border: 1px solid $color-grey;
+  border-radius: 4px;
+}
 .clear-icon {
   float: right;
   cursor: pointer;

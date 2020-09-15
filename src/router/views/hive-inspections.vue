@@ -479,11 +479,20 @@
                   item.val
                 }}</span>
                 <span v-if="item.type === 'image'">
-                  <img
-                    :src="item.val"
-                    class="image-thumb"
-                    style=" max-width: 80px;max-height: 60px"
-                  />
+                  <v-img
+                    :src="baseApiUrl + item.val"
+                    class="grey lighten-2 image-thumb"
+                    @click="setActiveImage(item.val)"
+                  >
+                  </v-img>
+                  <imageOverlay
+                    :date="activeImage ? activeImage.date : null"
+                    :thumburl="item.val"
+                    :overlay="
+                      activeImage !== null && activeImage.thumb_url === item.val
+                    "
+                    @close-overlay="activeImage = null"
+                  ></imageOverlay>
                 </span>
 
                 <span
@@ -522,6 +531,7 @@
 
 <script>
 import Confirm from '@components/confirm.vue'
+import imageOverlay from '@components/image-overlay.vue'
 // import { ScaleTransition } from 'vue2-transitions'
 import Layout from '@layouts/back.vue'
 import { momentMixin } from '@mixins/momentMixin'
@@ -529,6 +539,7 @@ import { momentMixin } from '@mixins/momentMixin'
 
 export default {
   components: {
+    imageOverlay,
     Confirm,
     // ScaleTransition,
     // AddToCalendar,
@@ -548,9 +559,16 @@ export default {
       activeHive: null,
       search: null,
       hiddenCategories: [],
+      images: null,
+      activeImage: null,
     }
   },
   computed: {
+    baseApiUrl() {
+      var baseUrl = process.env.VUE_APP_API_URL
+      baseUrl = baseUrl.replace('/api/', '')
+      return baseUrl
+    },
     id() {
       return parseInt(this.$route.params.id)
     },
@@ -669,6 +687,7 @@ export default {
   created() {
     this.readHive()
     this.getAllInspectionsForHiveId()
+    this.readImages()
   },
   methods: {
     async deleteInspection(id) {
@@ -726,6 +745,15 @@ export default {
         console.log(e)
       }
     },
+    async readImages() {
+      try {
+        const response = await this.$store.dispatch('images/findAll')
+        this.images = response
+        return true
+      } catch (e) {
+        console.log(e)
+      }
+    },
     confirmDeleteInspection(inspection) {
       this.$refs.confirm
         .open(
@@ -746,6 +774,10 @@ export default {
         .catch((reject) => {
           return true
         })
+    },
+    getImageUrl(thumburl) {
+      var imageUrl = thumburl.replace('thumbs', 'images')
+      return imageUrl
     },
     gradeColor(value) {
       if (value === 0) return '#CCC'
@@ -782,6 +814,17 @@ export default {
       if (value === '3') return '#243D80'
       if (value === '4') return '#069518'
       return '#F29100'
+    },
+    setActiveImage(thumburl) {
+      if (this.images !== null) {
+        this.images.forEach((image) => {
+          if (image.thumb_url === thumburl) {
+            this.activeImage = image
+          }
+        })
+      } else {
+        this.activeImage = null
+      }
     },
     updateFilterByImpression(number) {
       if (this.filterByImpression.includes(number)) {
@@ -915,6 +958,14 @@ export default {
     vertical-align: baseline;
     background-color: #eee;
     border-radius: 0.25em;
+  }
+  .image-thumb {
+    width: auto;
+    max-width: 80px;
+    max-height: 60px;
+    cursor: zoom-in;
+    border: 1px solid $color-grey;
+    border-radius: 4px;
   }
   .filler {
     width: 100%;
