@@ -467,7 +467,9 @@
                   }}
                   sq)</span
                 >
-                <span v-if="item.type === 'select_apiary'">{{ item.val }}</span>
+                <span v-if="item.type === 'select_location'">{{
+                  item.val
+                }}</span>
                 <span v-if="item.type === 'select_hive'">{{ item.val }}</span>
                 <span v-if="item.type === 'select_country'">{{
                   item.val.toUpperCase()

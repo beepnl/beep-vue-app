@@ -211,10 +211,11 @@
           item.input !== 'options' &&
           item.input !== 'list' &&
           item.input !== 'image' &&
-          item.input !== 'select_hive'
+          item.input !== 'select_hive' &&
+          item.input !== 'select_location'
       "
     >
-      {{ item.trans[locale] }}: {{ item.input }}
+      {{ $t('Not_implemented_yet') }}
     </div>
   </div>
 </template>
