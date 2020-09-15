@@ -1,14 +1,23 @@
 <template>
   <div>
     <Treeselect
+      v-if="item.input === 'select_hive'"
       v-model="object[item.id]"
       :options="apiaries"
-      :normalizer="normalizer"
+      :normalizer="normalizerIncludeHives"
       :placeholder="`${$t('Select')} ${$tc('hive', 1)}`"
       :no-results-text="`${$t('no_results')}`"
       :disable-branch-nodes="true"
       :default-expand-level="1"
       search-nested
+    />
+    <Treeselect
+      v-if="item.input === 'select_location'"
+      v-model="object[item.id]"
+      :options="apiaries"
+      :normalizer="normalizerApiary"
+      :placeholder="`${$t('Select')} ${$tc('location', 1)}`"
+      :no-results-text="`${$t('no_results')}`"
     />
   </div>
 </template>
@@ -32,7 +41,13 @@ export default {
   data() {
     return {
       apiaries: null,
-      normalizer(node) {
+      normalizerApiary(node) {
+        return {
+          id: node.id,
+          label: node.name,
+        }
+      },
+      normalizerIncludeHives(node) {
         return {
           id: node.id,
           label: node.name,

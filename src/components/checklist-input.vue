@@ -6,11 +6,11 @@
       :label="item.trans[locale] || item.name"
     ></labelWithDescription>
 
-    <selectHive
-      v-if="item.input === 'select_hive'"
+    <selectHiveOrApiary
+      v-if="item.input === 'select_hive' || item.input === 'select_location'"
       :object="object"
       :item="item"
-    ></selectHive>
+    ></selectHiveOrApiary>
 
     <imageUploader
       v-if="item.input === 'image'"
@@ -224,7 +224,7 @@ import VueNumberInput from '@chenfengyuan/vue-number-input'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
 import imageUploader from '@components/input-fields/image-uploader.vue'
-import selectHive from '@components/input-fields/select-hive.vue'
+import selectHiveOrApiary from '@components/input-fields/select-hive-or-apiary.vue'
 import slider from '@components/input-fields/slider.vue'
 import smileRating from '@components/input-fields/smile-rating.vue'
 import starRating from '@components/input-fields/star-rating.vue'
@@ -238,7 +238,7 @@ export default {
     imageUploader,
     VueNumberInput,
     labelWithDescription,
-    selectHive,
+    selectHiveOrApiary,
     slider,
     smileRating,
     starRating,
