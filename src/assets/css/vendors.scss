@@ -207,9 +207,9 @@
 .number-input {
   input.number-input__input {
     padding-top: 5px;
-    padding-right: 3.175rem;
+    padding-right: 3rem !important;
     padding-bottom: 5px;
-    padding-left: 3.175rem;
+    padding-left: 3rem !important;
     border-color: $color-grey-light;
     border-radius: 4px;
   }

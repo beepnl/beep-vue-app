@@ -49,7 +49,7 @@
             v-for="(item, index) in category.children"
             :key="index"
             :class="
-              item.input === 'label' || item.input === 'text'
+              item.input === 'label' || item.input === 'text' || nested
                 ? 'col-12'
                 : 'col-xs-12 col-sm-6 col-md-4 col-lg-3'
             "
@@ -103,13 +103,12 @@
 </template>
 
 <script>
-import ChecklistFieldset from '@components/checklist-fieldset.vue'
 import ChecklistInput from '@components/checklist-input.vue'
 
 export default {
   name: 'ChecklistFieldset',
   components: {
-    ChecklistFieldset,
+    ChecklistFieldset: () => import('@components/checklist-fieldset.vue'), // needed to fix Vue recursive component error
     ChecklistInput,
   },
   props: {
@@ -127,6 +126,11 @@ export default {
       type: String,
       default: 'en',
       required: false,
+    },
+    nested: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
   },
   data: function() {

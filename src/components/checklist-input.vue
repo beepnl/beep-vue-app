@@ -164,7 +164,7 @@
       :property="item.id"
       :yes-red="item.input === 'boolean_yes_red'"
     ></yesNoRating>
-    <ChecklistInput
+    <ChecklistFieldset
       v-if="
         item.children.length > 0 &&
           (item.input === 'boolean' ||
@@ -172,10 +172,12 @@
             item.input === 'list_item')
       "
       v-show="object[item.id] === 1"
-      :item="item.children[0]"
+      class="mt-6"
+      :category="item"
       :locale="locale"
       :object="object"
-    ></ChecklistInput>
+      :nested="true"
+    ></ChecklistFieldset>
 
     <div
       v-if="
@@ -211,7 +213,6 @@
 </template>
 
 <script>
-import ChecklistInput from '@components/checklist-input.vue'
 import VueNumberInput from '@chenfengyuan/vue-number-input'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
@@ -224,7 +225,7 @@ import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 export default {
   name: 'ChecklistInput',
   components: {
-    ChecklistInput,
+    ChecklistFieldset: () => import('@components/checklist-fieldset.vue'), // needed to fix Vue recursive component error
     dateTimePicker,
     imageUploader,
     VueNumberInput,
