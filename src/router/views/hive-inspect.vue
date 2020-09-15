@@ -178,17 +178,23 @@
                   <div class="sub-inspection-details rounded-border">
                     <v-row>
                       <v-col cols="12" sm="4">
+                        <div
+                          class="beep-label"
+                          v-text="`${$t('positive_impression')}`"
+                        ></div>
                         <smileRating
                           v-if="newInspection"
-                          label="positive_impression"
                           :object="newInspection"
                           property="impression"
                         ></smileRating>
                       </v-col>
                       <v-col cols="12" sm="4">
+                        <div
+                          class="beep-label"
+                          v-text="`${$t('needs_attention')}`"
+                        ></div>
                         <yesNoRating
                           v-if="newInspection"
-                          label="needs_attention"
                           :object="newInspection"
                           property="attention"
                         ></yesNoRating>

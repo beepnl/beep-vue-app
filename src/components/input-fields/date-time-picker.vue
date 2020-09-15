@@ -5,8 +5,8 @@
     >
     <div>
       <labelWithDescription
-        :description="item.description"
-        :label="item.trans[locale] || item.name"
+        :item="item"
+        :locale="locale"
       ></labelWithDescription>
 
       <Datetime

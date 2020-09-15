@@ -2,7 +2,7 @@
   <div>
     <div>
       <v-btn
-        :class="`yes-no-button px-2 ${yesRed ? 'yes-red' : ''}`"
+        :class="`yes-no-button pr-2 pl-0 ${yesRed ? 'yes-red' : ''}`"
         text
         @click="updateObject(1, property)"
       >
