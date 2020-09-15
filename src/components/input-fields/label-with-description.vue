@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="beep-label">
-      {{ $t(label) }}
+      {{ label }}
       <a v-if="description !== null"
         ><v-icon
           class="mdi mdi-information ml-1 icon-info"

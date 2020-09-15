@@ -3,6 +3,7 @@
     <v-file-input
       v-if="object[item.id] === null"
       ref="image"
+      class="pt-0"
       :rules="rules"
       accept="image/png, image/jpeg, image/bmp"
       :placeholder="`${$t('Select')} ${$tc('Image', 1).toLocaleLowerCase()}`"
