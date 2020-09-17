@@ -1,7 +1,7 @@
 <template>
   <div>
     <Treeselect
-      v-if="item.input === 'select_hive'"
+      v-if="item.input === 'select_hive' && apiaries !== null"
       v-model="object[item.id]"
       :options="apiaries"
       :normalizer="normalizerIncludeHives"
@@ -12,13 +12,14 @@
       search-nested
     />
     <Treeselect
-      v-if="item.input === 'select_location'"
+      v-if="item.input === 'select_location' && apiaries !== null"
       v-model="object[item.id]"
       :options="apiaries"
       :normalizer="normalizerApiary"
       :placeholder="`${$t('Select')} ${$tc('location', 1)}`"
       :no-results-text="`${$t('no_results')}`"
     />
+    <p v-if="apiaries === null">{{ $t('no_apiaries_yet') }}</p>
   </div>
 </template>
 
