@@ -69,7 +69,7 @@
           </v-row>
         </v-col>
 
-        <v-col cols="6" sm="3">
+        <v-col cols="5" sm="3">
           <v-row>
             <v-col cols="12">
               <div class="beep-label" v-text="`${$t('fr_width_cm')}`"></div>
@@ -103,7 +103,7 @@
                 class="beep-label"
                 v-text="`${$t('Total_colony_size')}`"
               ></div>
-              <h1>
+              <h1 class="mt-2">
                 <span v-if="colonySize"
                   >{{ colonySize }} {{ $tc('bee', 2) }}</span
                 >
