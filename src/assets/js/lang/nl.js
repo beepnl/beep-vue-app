@@ -620,6 +620,7 @@ const translations = {
   remove_image: 'Verwijder afbeelding',
   Total_colony_size: 'Totale grootte bijenvolk',
   bee: 'bij | bijen',
+  with_bees: 'met bijen',
 }
 
 export default translations

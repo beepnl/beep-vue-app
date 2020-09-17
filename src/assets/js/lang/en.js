@@ -616,6 +616,7 @@ const translations = {
   remove_image: 'Remove image',
   Total_colony_size: 'Total colony size',
   bee: 'bee | bees',
+  with_bees: 'with bees',
 }
 
 export default translations

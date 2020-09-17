@@ -35,7 +35,7 @@
             <v-col cols="12">
               <div
                 class="beep-label"
-                v-text="`${$tc('Hive_brood_layer', 2)}`"
+                v-text="`${$tc('Hive_brood_layer', 2)} ${$t('with_bees')}`"
               ></div>
               <VueNumberInput
                 v-if="activeHive && activeHive.layers"
@@ -50,7 +50,10 @@
               ></VueNumberInput>
             </v-col>
             <v-col cols="12">
-              <div class="beep-label" v-text="`${$t('Hive_frames')}`"></div>
+              <div
+                class="beep-label"
+                v-text="`${$t('Hive_frames')} ${$t('with_bees')}`"
+              ></div>
               <VueNumberInput
                 v-if="activeHive && activeHive.layers"
                 v-model="framesForCalculation"
@@ -252,6 +255,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.hive-icon {
+  &.has-queen-excluder,
+  &.has-feeding-box {
+    margin-top: 20px;
+  }
+}
 .hive-frame-number-input {
   max-width: 150px !important;
 }
