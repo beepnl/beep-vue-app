@@ -118,14 +118,13 @@ export default {
       if (typeof file !== 'undefined' && !file.$error) {
         const userId = this.$store.getters['auth/userId']
         const hiveId =
-          this.$store.getters['hives/activeHiveId'] !== null
-            ? this.$store.getters['hives/activeHiveId']
+          this.$store.getters['hives/activeHive'] !== null
+            ? this.$store.getters['hives/activeHive'].id
             : ''
         const inspection =
           this.$store.getters['inspections/selectedInspectionId'] !== null
             ? this.$store.getters['inspections/selectedInspectionId']
             : ''
-
         const formData = new FormData()
         formData.append('file', file)
         formData.append('user_id', userId)

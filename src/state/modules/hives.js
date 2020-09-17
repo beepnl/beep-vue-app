@@ -7,15 +7,11 @@ export const state = {
   ...resource.state,
   edited: false,
   activeHive: null,
-  activeHiveId: null,
 }
 export const getters = {
   ...resource.getters,
   activeHive: (state) => {
     return state.activeHive
-  },
-  activeHiveId: (state) => {
-    return state.activeHiveId
   },
   hives: (state) => {
     return state.data.hives || []
@@ -38,9 +34,6 @@ export const mutations = {
   },
   setActiveHive: function(state, hive) {
     state.activeHive = hive
-  },
-  setActiveHiveId: function(state, id) {
-    state.activeHiveId = id
   },
 }
 export const actions = {

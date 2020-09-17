@@ -423,7 +423,6 @@ export default {
     this.getActiveHive(this.id).then((hive) => {
       this.$store.commit('hives/setActiveHive', hive)
     })
-    this.$store.commit('hives/setActiveHiveId', this.id)
     this.$store.commit('inspections/setSelectedInspectionId', this.inspectionId)
   },
   methods: {
