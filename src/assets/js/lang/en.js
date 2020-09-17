@@ -614,6 +614,8 @@ const translations = {
   Apiary_color: 'Apiary color',
   Set_notification_date: 'Set notification date',
   remove_image: 'Remove image',
+  Total_colony_size: 'Total colony size',
+  bee: 'bee | bees',
 }
 
 export default translations

@@ -75,7 +75,7 @@
 
     <v-slider
       v-if="item.input === 'score_amount'"
-      v-model="object[item.id]"
+      :value="getValue(item.id, item.input)"
       class="slider--default slider--score-amount"
       :tick-labels="scoreAmountTicks"
       track-color="#b0b0b0"
@@ -84,6 +84,7 @@
       step="1"
       ticks="always"
       tick-size="4"
+      @change="updateValue($event, item.id, item.input)"
     >
       <template v-slot:thumb-label="props">
         <v-icon dark :color="scoreAmountColors[props.value]">
@@ -94,7 +95,7 @@
 
     <v-slider
       v-if="item.input === 'score_quality'"
-      v-model="object[item.id]"
+      :value="getValue(item.id, item.input)"
       class="slider--default slider--score-quality"
       :tick-labels="scoreQualityTicks"
       track-color="#b0b0b0"
@@ -103,6 +104,7 @@
       step="1"
       ticks="always"
       tick-size="4"
+      @change="updateValue($event, item.id, item.input)"
     >
       <template v-slot:thumb-label="props">
         <v-icon dark :color="scoreQualityColors[props.value]">
@@ -279,7 +281,14 @@ export default {
         }
       } else if (inputtype === 'number_degrees') {
         if (value === null) {
-          return null
+          value = null
+        }
+      } else if (
+        inputtype === 'score_amount' ||
+        inputtype === 'score_quality'
+      ) {
+        if (value === null || value === 0) {
+          value = null
         }
       } else {
         if (value === 0) {

@@ -87,7 +87,7 @@
       class="checklist-number-input"
       :step="1"
       controls
-      @change="updateNumber($event, item.id)"
+      @change="updateNumber($event, item.id, item.name)"
     ></VueNumberInput>
 
     <VueNumberInput
@@ -100,7 +100,7 @@
       class="checklist-number-input"
       :step="item.input === 'number_2_decimals' ? 0.01 : 0.1"
       controls
-      @change="updateNumber($event, item.id)"
+      @change="updateNumber($event, item.id, item.name)"
     ></VueNumberInput>
 
     <VueNumberInput
@@ -109,7 +109,7 @@
       class="checklist-number-input"
       :step="0.001"
       controls
-      @change="updateNumber($event, item.id)"
+      @change="updateNumber($event, item.id, item.name)"
     ></VueNumberInput>
 
     <VueNumberInput
@@ -119,7 +119,7 @@
       :max="0"
       :step="1"
       controls
-      @change="updateNumber($event, item.id)"
+      @change="updateNumber($event, item.id, item.name)"
     ></VueNumberInput>
 
     <VueNumberInput
@@ -129,7 +129,8 @@
       :min="0"
       :step="1"
       controls
-      @change="updateNumber($event, item.id)"
+      :disabled="item.name === 'colony_size'"
+      @change="updateNumber($event, item.id, item.name)"
     ></VueNumberInput>
 
     <starRating
@@ -296,9 +297,12 @@ export default {
       var selectedArrayToString = selectedArray.join(',')
       this.object[listId] = selectedArrayToString
     },
-    updateNumber(value, property) {
+    updateNumber(value, property, name = null) {
       if (value === 0) {
         value = null
+      }
+      if (name === 'pixels_with_bees' || name === 'pixels_total_top') {
+        this.$emit('calculate-tpa-colony-size')
       }
       this.object[property] = value
     },

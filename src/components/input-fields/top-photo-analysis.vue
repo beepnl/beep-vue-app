@@ -23,14 +23,14 @@
 
     <div v-if="activeHive !== null" class="border-bottom">
       <v-row>
-        <v-col cols="6" sm="3" md="2" lg="1">
+        <v-col cols="5" sm="2" md="3">
           <div class="d-flex flex-column align-start">
             <h4 class="hive-name mb-3" v-text="activeHive.name"></h4>
             <HiveIcon :hive="activeHive"></HiveIcon>
           </div>
         </v-col>
 
-        <v-col cols="6" sm="3">
+        <v-col cols="6" sm="4" md="3">
           <v-row>
             <v-col cols="12">
               <div
@@ -46,6 +46,7 @@
                 inline
                 controls
                 rounded
+                @change="calculateTpaColonySize"
               ></VueNumberInput>
             </v-col>
             <v-col cols="12">
@@ -59,6 +60,7 @@
                 inline
                 controls
                 rounded
+                @change="calculateTpaColonySize"
               ></VueNumberInput>
             </v-col>
           </v-row>
@@ -90,6 +92,23 @@
             </v-col>
           </v-row>
         </v-col>
+
+        <v-col cols="6" sm="2" md="3">
+          <v-row>
+            <v-col cols="12">
+              <div
+                class="beep-label"
+                v-text="`${$t('Total_colony_size')}`"
+              ></div>
+              <h1>
+                <span v-if="colonySize"
+                  >{{ colonySize }} {{ $tc('bee', 2) }}</span
+                >
+                <span v-if="!colonySize">N/A</span>
+              </h1>
+            </v-col>
+          </v-row>
+        </v-col>
       </v-row>
     </div>
 
@@ -101,7 +120,7 @@
           :class="
             item.input === 'label' || item.input === 'text' || nested
               ? 'col-12'
-              : 'col-xs-12 col-sm-6 col-md-4 col-lg-3'
+              : 'col-xs-12 col-sm-6 col-md-3'
           "
         >
           <ChecklistInput
@@ -109,6 +128,7 @@
             :object="object"
             :item="item"
             :locale="locale"
+            @calculate-tpa-colony-size="calculateTpaColonySize"
           ></ChecklistInput>
           <ChecklistFieldset
             v-if="item.input === 'label'"
@@ -159,6 +179,7 @@ export default {
   data() {
     return {
       activeHive: null,
+      colonySize: null,
       maxBroodLayers: 2,
       broodLayersForCalculation: null,
       maxFrames: 12,
@@ -173,6 +194,55 @@ export default {
     this.framesForCalculation = this.maxFrames
   },
   methods: {
+    calculateTpaColonySize() {
+      var beesPerCm2 = 1.25
+      var colonySize = null
+      var pixelsTotal = 0
+      var pixelsBees = 0
+
+      setTimeout(() => {
+        this.category.children.map((child) => {
+          if (child.name === 'pixels_with_bees') {
+            pixelsBees = parseInt(this.object[child.id])
+          } else if (child.name === 'pixels_total_top') {
+            pixelsTotal = parseInt(this.object[child.id])
+          }
+        })
+
+        var hive = this.activeHive
+        if (
+          pixelsTotal === 0 ||
+          typeof hive === 'undefined' ||
+          hive === null ||
+          isNaN(pixelsBees) ||
+          isNaN(pixelsTotal) ||
+          hive.fr_width_cm === null ||
+          hive.fr_height_cm === null
+        ) {
+          colonySize = null
+        } else {
+          // colony_size = ratio occupied * fully occupied frames * 2 * brood layers * bees per cm2
+          var ratio = pixelsTotal > pixelsBees ? pixelsBees / pixelsTotal : 1
+          colonySize = Math.round(
+            ratio *
+              (parseFloat(hive.fr_width_cm) *
+                parseFloat(hive.fr_height_cm) *
+                this.framesForCalculation *
+                2 *
+                this.broodLayersForCalculation *
+                beesPerCm2)
+          )
+        }
+
+        // put value into input element 'colony_size'
+        this.category.children.map((child) => {
+          if (child.name === 'colony_size') {
+            this.object[child.id] = colonySize
+          }
+        })
+        this.colonySize = colonySize
+      }, 100) // wait for vue to update input pixel values
+    },
     countLayers(type) {
       return this.activeHive.layers.filter((layer) => layer.type === type)
         .length

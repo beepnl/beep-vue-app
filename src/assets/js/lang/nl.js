@@ -618,6 +618,8 @@ const translations = {
   Apiary_color: 'Bijenstand kleur',
   Set_notification_date: 'Stel herinneringsdatum in',
   remove_image: 'Verwijder afbeelding',
+  Total_colony_size: 'Totale grootte bijenvolk',
+  bee: 'bij | bijen',
 }
 
 export default translations
