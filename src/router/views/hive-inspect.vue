@@ -420,10 +420,22 @@ export default {
     }
     // }
     this.getChecklists()
+    this.getActiveHive(this.id).then((hive) => {
+      this.$store.commit('hives/setActiveHive', hive)
+    })
     this.$store.commit('hives/setActiveHiveId', this.id)
     this.$store.commit('inspections/setSelectedInspectionId', this.inspectionId)
   },
   methods: {
+    async getActiveHive(id) {
+      try {
+        const response = await this.$store.dispatch('hives/findById', id)
+        const hive = response.hives[0]
+        return hive
+      } catch (e) {
+        console.log(e)
+      }
+    },
     async getChecklistById(id) {
       try {
         const response = await this.$store.dispatch(

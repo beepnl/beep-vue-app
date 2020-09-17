@@ -34,13 +34,24 @@
           >{{ category.source }}</a
         >
       </p>
+
+      <topPhotoAnalysis
+        v-if="category.name === 'top_photo_analysis'"
+        :object="object"
+        :category="category"
+        :locale="locale"
+        :nested="nested"
+      ></topPhotoAnalysis>
+
       <!--
 	<div ng-include="'/app/views/template/template-inspection-liebefelder_method.html?v=6'" ng-show="category.name == 'liebefelder_method'"></div>
-	<div ng-include="'/app/views/template/template-inspection-top_photo_analysis.html?v=6'" ng-show="category.name == 'top_photo_analysis'"></div> -->
+  -->
 
       <div
         v-if="
-          category.children.length > 0 && category.name !== 'liebefelder_method'
+          category.children.length > 0 &&
+            category.name !== 'liebefelder_method' &&
+            category.name !== 'top_photo_analysis'
         "
         class="rounded-border"
       >
@@ -104,12 +115,14 @@
 
 <script>
 import ChecklistInput from '@components/checklist-input.vue'
+import topPhotoAnalysis from '@components/input-fields/top-photo-analysis.vue'
 
 export default {
   name: 'ChecklistFieldset',
   components: {
     ChecklistFieldset: () => import('@components/checklist-fieldset.vue'), // needed to fix Vue recursive component error
     ChecklistInput,
+    topPhotoAnalysis,
   },
   props: {
     category: {

@@ -7,3 +7,14 @@
     padding: 10px;
   }
 }
+
+.border-bottom {
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid $color-grey-light;
+
+  @include for-phone-only {
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+}
