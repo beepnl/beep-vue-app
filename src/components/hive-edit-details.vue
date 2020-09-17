@@ -267,23 +267,15 @@ export default {
             }
             return 0
           })
-        var treeselectArray = [
-          {
-            id: -1,
-            label: sortedGroups[0],
-            children: hiveTypePerGroup[sortedGroups[0]],
-          },
-          {
-            id: -2,
-            label: sortedGroups[1],
-            children: hiveTypePerGroup[sortedGroups[1]],
-          },
-          {
-            id: -3,
-            label: sortedGroups[2],
-            children: hiveTypePerGroup[sortedGroups[2]],
-          },
-        ]
+        var treeselectArray = []
+        sortedGroups.forEach((sortedGroup, index) => {
+          const sortedGroupObject = {
+            id: -(index + 1),
+            label: sortedGroup,
+            children: hiveTypePerGroup[sortedGroup],
+          }
+          treeselectArray.push(sortedGroupObject)
+        })
         treeselectArray.map((groupObject) => {
           groupObject.children.map((child) => {
             child.label = child.trans[locale]
