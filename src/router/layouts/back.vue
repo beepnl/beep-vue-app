@@ -69,7 +69,8 @@ export default {
       if (
         (this.$route.name === 'apiary-create' && this.apiaryEdited) ||
         (this.$route.name === 'hive-edit' && this.hiveEdited) ||
-        (this.$route.name === 'hive-inspect' && this.edited)
+        (this.$route.name === 'hive-inspect' && this.edited) ||
+        (this.$route.name === 'checklist' && this.edited)
       ) {
         this.$refs.confirm
           .open(this.$i18n.t('unsaved_changes'), this.$i18n.t('save_changes'), {

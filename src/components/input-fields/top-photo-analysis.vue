@@ -132,14 +132,10 @@
         <div
           v-for="(item, index) in category.children"
           :key="index"
-          :class="
-            item.input === 'label' || item.input === 'text' || nested
-              ? 'col-12'
-              : 'col-xs-12 col-sm-6 col-md-3'
-          "
+          :class="generateClassNames(item)"
         >
           <ChecklistInput
-            v-if="item.input !== 'label'"
+            v-if="item.input !== 'label' && item.name !== 'colony_size'"
             :object="object"
             :item="item"
             :locale="locale"
@@ -262,6 +258,13 @@ export default {
     countLayers(type) {
       return this.activeHive.layers.filter((layer) => layer.type === type)
         .length
+    },
+    generateClassNames(item) {
+      if (item.input === 'label' || item.input === 'text' || this.nested) {
+        return 'col-12'
+      } else if (item.name !== 'colony_size') {
+        return 'col-xs-12 col-sm-6 col-md-3'
+      }
     },
   },
 }

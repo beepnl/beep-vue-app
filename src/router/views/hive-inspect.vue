@@ -309,7 +309,6 @@ import { momentMixin } from '@mixins/momentMixin'
 import smileRating from '@components/input-fields/smile-rating.vue'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 import { SlideYUpTransition } from 'vue2-transitions'
-// import VueNumberInput from '@chenfengyuan/vue-number-input'
 
 export default {
   components: {
@@ -320,7 +319,6 @@ export default {
     smileRating,
     yesNoRating,
     SlideYUpTransition,
-    // VueNumberInput,
   },
   mixins: [momentMixin],
   data: function() {

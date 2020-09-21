@@ -115,7 +115,7 @@
                     v-if="activeHive && activeHive.layers"
                     v-model="framesForCalculation"
                     class="hive-frame-number-input"
-                    :min="1"
+                    :min="0"
                     :max="maxFrames"
                     inline
                     controls
@@ -161,14 +161,13 @@
               item.name.indexOf('super') > -1 &&
               parseInt(item.name.split('_')[1]) <= honeyLayersForCalculation) ||
             item.input === 'text' ||
-            item.name === 'colony_size' ||
-            nested
+            (nested && item.name !== 'colony_size')
               ? 'col-12'
               : ''
           "
         >
           <ChecklistInput
-            v-if="item.input !== 'label'"
+            v-if="item.input !== 'label' && item.name !== 'colony_size'"
             :object="object"
             :item="item"
             :locale="locale"
@@ -288,8 +287,10 @@ export default {
   },
   created() {
     this.activeHive = this.$store.getters['hives/activeHive']
-    this.maxBroodLayers = this.countLayers('brood')
-    this.maxHoneyLayers = this.countLayers('honey')
+    this.maxBroodLayers =
+      this.countLayers('brood') < 2 ? this.countLayers('brood') : 2
+    this.maxHoneyLayers =
+      this.countLayers('honey') < 2 ? this.countLayers('honey') : 2
     this.broodLayersForCalculation = this.maxBroodLayers
     this.honeyLayersForCalculation = this.maxHoneyLayers
     this.maxFrames =

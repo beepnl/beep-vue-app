@@ -18,7 +18,7 @@
       :item="item"
     ></imageUploader>
 
-    <v-list v-if="item.input === 'list'">
+    <v-list v-if="item.input === 'list'" class="inspection-checkbox-list">
       <v-list-item
         v-for="(listItem, index) in item.children"
         :key="index"
@@ -332,12 +332,20 @@ export default {
   padding-top: 0 !important;
 }
 .v-list-item.inspection-list-item {
+  height: 35px;
+  min-height: 35px;
   padding: 0 !important;
   .v-list-item__action {
     margin-right: 12px !important;
   }
+  .v-list-item__content {
+    padding: 0 !important;
+  }
 }
 .v-input--selection-controls.inspection-options-list {
   margin-top: 0 !important;
+}
+.v-list.inspection-checkbox-list {
+  padding: 0 !important;
 }
 </style>

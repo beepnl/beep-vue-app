@@ -1,5 +1,9 @@
 <template>
-  <Layout :title="`${$t('edit')} ${$tc('checklist', 1)}`" :no-box-shadow="true">
+  <Layout
+    :title="`${$t('edit')} ${$tc('checklist', 1)}`"
+    :no-box-shadow="true"
+    :edited="checklistEdited"
+  >
     <h1
       v-if="activeChecklist && !activeChecklist.owner"
       class="unauthorized-title"
@@ -82,6 +86,7 @@ export default {
       activeChecklist: null,
       activeChecklistId: null,
       activeChecklistTaxonomy: null,
+      checklistEdited: false,
       valid: false,
       hive_id: null,
       inspection_edit: null,
@@ -199,6 +204,7 @@ export default {
       }
     },
     updateCategoryIds(event) {
+      this.checklistEdited = true
       this.activeChecklist.category_ids = event
     },
   },
