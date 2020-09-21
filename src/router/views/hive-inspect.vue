@@ -199,6 +199,7 @@
                           v-if="newInspection"
                           :object="newInspection"
                           property="attention"
+                          :yes-red="true"
                         ></yesNoRating>
                       </v-col>
                       <v-col cols="12">
