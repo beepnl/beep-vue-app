@@ -78,9 +78,15 @@
                 style=" font-weight: bold;color:red;"
                 >{{ $t('fr_width_cm') }} N/A!</p
               >
-              <p v-if="activeHive.fr_width_cm"
-                >{{ activeHive.fr_width_cm }} cm</p
+              <p
+                v-if="
+                  activeHive.fr_width_cm &&
+                    Math.round(activeHive.fr_width_cm) === 0
+                "
+                style=" font-weight: bold;color:red;"
+                >0 cm</p
               >
+              <p v-else>{{ activeHive.fr_width_cm }} cm</p>
             </v-col>
             <v-col cols="12">
               <div class="beep-label" v-text="`${$t('fr_height_cm')}`"></div>
@@ -89,9 +95,15 @@
                 style=" font-weight: bold;color:red;"
                 >{{ $t('fr_height_cm') }} N/A!</p
               >
-              <p v-if="activeHive.fr_height_cm"
-                >{{ activeHive.fr_height_cm }} cm</p
+              <p
+                v-if="
+                  activeHive.fr_height_cm &&
+                    Math.round(activeHive.fr_height_cm) === 0
+                "
+                style=" font-weight: bold;color:red;"
+                >0 cm</p
               >
+              <p v-else>{{ activeHive.fr_height_cm }} cm</p>
             </v-col>
           </v-row>
         </v-col>
@@ -137,6 +149,7 @@
             v-if="item.input === 'label'"
             :object="object"
             :category="item"
+            :locale="locale"
           ></ChecklistFieldset>
         </div>
       </v-row>

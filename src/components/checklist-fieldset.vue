@@ -43,9 +43,13 @@
         :nested="nested"
       ></topPhotoAnalysis>
 
-      <!--
-	<div ng-include="'/app/views/template/template-inspection-liebefelder_method.html?v=6'" ng-show="category.name == 'liebefelder_method'"></div>
-  -->
+      <liebefelderMethod
+        v-if="category.name === 'liebefelder_method'"
+        :object="object"
+        :category="category"
+        :locale="locale"
+        :nested="nested"
+      ></liebefelderMethod>
 
       <div
         v-if="
@@ -75,20 +79,11 @@
               v-if="item.input === 'label'"
               :object="object"
               :category="item"
+              :locale="locale"
             ></ChecklistFieldset>
           </div>
         </v-row>
       </div>
-
-      <!-- <div v-if="category.children.length > 0 && category.name === 'liebefelder_method'" ng-repeat="(i, item) in category.children | filter: super_filter">
-    	<checklist-input v-if="item.input !== 'label'" :item="item" cols="cols"></checklist-input>
-	    <checklist-fieldset v-if="item.input === 'label'" :category="item" cols="cols"></checklist-fieldset>
-    </div>
-
-    <div v-if="category.children.length > 0 && category.name === 'liebefelder_method'" ng-repeat="(i, item) in category.children | filter: frame_filter">
-    	<checklist-input v-if="item.input !== 'label'" :item="item" cols="cols"></checklist-input>
-	    <checklist-fieldset v-if="item.input === 'label'" :category="item" cols="cols"></checklist-fieldset>
-    </div> -->
 
       <ChecklistInput
         v-if="category.children.length === 0"
@@ -116,12 +111,14 @@
 <script>
 import ChecklistInput from '@components/checklist-input.vue'
 import topPhotoAnalysis from '@components/input-fields/top-photo-analysis.vue'
+import liebefelderMethod from '@components/input-fields/liebefelder-method.vue'
 
 export default {
   name: 'ChecklistFieldset',
   components: {
     ChecklistFieldset: () => import('@components/checklist-fieldset.vue'), // needed to fix Vue recursive component error
     ChecklistInput,
+    liebefelderMethod,
     topPhotoAnalysis,
   },
   props: {

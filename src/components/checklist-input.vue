@@ -308,6 +308,9 @@ export default {
       if (name === 'pixels_with_bees' || name === 'pixels_total_top') {
         this.$emit('calculate-tpa-colony-size')
       }
+      if (name === 'bees_squares_25cm2') {
+        this.$emit('calculate-liebefeld-colony-size')
+      }
       this.object[property] = value
     },
     validateText(value, id, maxLength) {

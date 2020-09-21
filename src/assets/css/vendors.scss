@@ -206,15 +206,17 @@
 .v-card__subtitle,
 .v-card__text,
 .v-card__title {
+  padding: 12px !important;
   @include for-phone-only {
-    padding: 12px !important;
+    padding: 10px !important;
   }
 }
 
 .v-card__title + .v-card__subtitle,
 .v-card__title + .v-card__text {
+  padding: 0 12px !important;
   @include for-phone-only {
-    padding: 0 12px !important;
+    padding: 0 10px !important;
   }
 }
 
