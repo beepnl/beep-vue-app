@@ -155,7 +155,8 @@
           :class="
             (item.input === 'label' &&
               item.name.indexOf('frame') > -1 &&
-              parseInt(item.name.split('_')[1]) <= framesForCalculation) ||
+              parseInt(item.name.split('_')[1]) <=
+                broodLayersForCalculation * framesForCalculation) ||
             (item.input === 'label' &&
               item.name.indexOf('super') > -1 &&
               parseInt(item.name.split('_')[1]) <= honeyLayersForCalculation) ||
@@ -178,7 +179,8 @@
             v-if="
               (item.input === 'label' &&
                 item.name.indexOf('frame') > -1 &&
-                parseInt(item.name.split('_')[1]) <= framesForCalculation) ||
+                parseInt(item.name.split('_')[1]) <=
+                  broodLayersForCalculation * framesForCalculation) ||
                 (item.input === 'label' &&
                   item.name.indexOf('super') > -1 &&
                   parseInt(item.name.split('_')[1]) <=
@@ -279,7 +281,7 @@ export default {
       maxHoneyLayers: 1,
       broodLayersForCalculation: null,
       honeyLayersForCalculation: null,
-      maxFrames: 12,
+      maxFrames: 11,
       framesForCalculation: null,
       showDescription: false,
     }
@@ -290,7 +292,10 @@ export default {
     this.maxHoneyLayers = this.countLayers('honey')
     this.broodLayersForCalculation = this.maxBroodLayers
     this.honeyLayersForCalculation = this.maxHoneyLayers
-    this.maxFrames = this.activeHive.layers[0].framecount
+    this.maxFrames =
+      this.activeHive.layers[0].framecount < 11
+        ? this.activeHive.layers[0].framecount
+        : 11
     this.framesForCalculation = this.maxFrames
   },
   methods: {
