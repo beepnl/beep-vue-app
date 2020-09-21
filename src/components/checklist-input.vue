@@ -40,7 +40,11 @@
       </v-list-item>
     </v-list>
 
-    <v-radio-group v-if="item.input === 'options'" :value="object[item.id]">
+    <v-radio-group
+      v-if="item.input === 'options'"
+      :value="object[item.id]"
+      class="inspection-options-list"
+    >
       <v-radio
         v-for="(listItem, index) in item.children"
         :key="index"
@@ -329,5 +333,8 @@ export default {
   .v-list-item__action {
     margin-right: 12px !important;
   }
+}
+.v-input--selection-controls.inspection-options-list {
+  margin-top: 0 !important;
 }
 </style>

@@ -203,6 +203,21 @@
   }
 }
 
+.v-card__subtitle,
+.v-card__text,
+.v-card__title {
+  @include for-phone-only {
+    padding: 12px !important;
+  }
+}
+
+.v-card__title + .v-card__subtitle,
+.v-card__title + .v-card__text {
+  @include for-phone-only {
+    padding: 0 12px !important;
+  }
+}
+
 /* VueNumberInput */
 .number-input {
   input.number-input__input {

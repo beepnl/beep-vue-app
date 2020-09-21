@@ -23,7 +23,7 @@
       check-strictly
       :default-checked-keys="selected"
       node-key="id"
-      :default-expanded-keys="selected"
+      render-after-expand
       expand-on-click-node
       highlight-current
       :props="defaultProps"
@@ -86,9 +86,6 @@ export default {
     filterNode(value, data) {
       if (!value) return true
       return data.text.toLowerCase().indexOf(value.toLowerCase()) !== -1
-    },
-    getCheckedNodes() {
-      console.log(this.$refs.tree.getCheckedNodes())
     },
     updateCategories(node, selected, subtree) {
       this.checkChildren(node, selected)

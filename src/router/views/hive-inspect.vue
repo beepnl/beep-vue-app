@@ -61,6 +61,7 @@
               :items="checklists"
               :item-text="getText"
               item-value="id"
+              hide-details
               :label="`${$t('Select') + ' ' + $tc('checklist', 1)}`"
               @input="getChecklistById($event)"
             >
