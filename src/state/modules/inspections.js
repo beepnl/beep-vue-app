@@ -8,6 +8,7 @@ const other = {
   update: 'POST inspections/store',
   delete: 'DELETE inspections/:id',
   getchecklistbyid: 'GET inspections/lists?id=:id',
+  getinspectionbyid: 'GET inspections/:id',
 }
 
 const resource = createResource({ path: 'inspections', other })
@@ -31,6 +32,13 @@ export const mutations = {
 }
 export const actions = {
   ...resource.actions,
+  getInspectionById: function({ _ }, id) {
+    const inspection = resource.endpoint.getinspectionbyid(id)
+    if (inspection) {
+      return inspection
+    }
+    return false
+  },
   getInspectionsForHiveIds: function({ _ }, hiveIds) {
     return Promise.all(
       hiveIds.map((hiveId) => resource.endpoint.read(hiveId))

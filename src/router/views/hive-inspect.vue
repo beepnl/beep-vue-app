@@ -23,7 +23,7 @@
       </v-toolbar>
 
       <v-container
-        v-if="newInspection && selectedChecklist !== null"
+        v-if="activeInspection && selectedChecklist !== null"
         class="hive-inspect-content"
       >
         <v-row>
@@ -38,7 +38,7 @@
                   v-text="`${$t('Date_of_inspection')}`"
                 ></div>
                 <Datetime
-                  v-if="newInspection"
+                  v-if="activeInspection"
                   v-model="inspectionDate"
                   type="datetime"
                 >
@@ -133,8 +133,8 @@
                   cols="12"
                 >
                   <checklistFieldset
-                    v-if="newInspection"
-                    :object="newInspection.items"
+                    v-if="activeInspection"
+                    :object="activeInspection.items"
                     :category="category"
                     :locale="locale"
                   ></checklistFieldset>
@@ -185,8 +185,8 @@
                           v-text="`${$t('positive_impression')}`"
                         ></div>
                         <smileRating
-                          v-if="newInspection"
-                          :object="newInspection"
+                          v-if="activeInspection"
+                          :object="activeInspection"
                           property="impression"
                         ></smileRating>
                       </v-col>
@@ -196,16 +196,16 @@
                           v-text="`${$t('needs_attention')}`"
                         ></div>
                         <yesNoRating
-                          v-if="newInspection"
-                          :object="newInspection"
+                          v-if="activeInspection"
+                          :object="activeInspection"
                           property="attention"
                           :yes-red="true"
                         ></yesNoRating>
                       </v-col>
                       <v-col cols="12">
                         <v-textarea
-                          v-if="newInspection"
-                          v-model="newInspection.notes"
+                          v-if="activeInspection"
+                          v-model="activeInspection.notes"
                           :label="`${$t('notes')}`"
                           counter="250"
                           rows="1"
@@ -237,7 +237,7 @@
                               v-text="`${$t('remind_date')}`"
                             ></div>
                             <Datetime
-                              v-if="newInspection"
+                              v-if="activeInspection"
                               v-model="reminderDate"
                               :placeholder="`${$t('Set_notification_date')}`"
                               type="datetime"
@@ -268,8 +268,8 @@
                       </v-col>
                       <v-col cols="12" sm="8">
                         <v-textarea
-                          v-if="newInspection"
-                          v-model="newInspection.reminder"
+                          v-if="activeInspection"
+                          v-model="activeInspection.reminder"
                           :label="`${$t('reminder')}`"
                           :placeholder="`${$t('notes_for_next_inspection')}`"
                           rows="1"
@@ -331,7 +331,7 @@ export default {
       },
       selectedChecklist: null,
       checklists: null,
-      newInspection: null,
+      activeInspection: null,
       selectedChecklistId: null,
       showGeneral: true,
       showCategoriesByIndex: [],
@@ -350,25 +350,29 @@ export default {
     },
     inspectionDate: {
       get() {
-        if (this.newInspection) {
-          return this.momentISO8601(this.newInspection.date)
+        if (this.activeInspection) {
+          return this.momentISO8601(this.activeInspection.date)
         } else {
           return ''
         }
       },
       set(value) {
-        this.newInspection.date = this.momentCreatedAt(value)
+        this.activeInspection.date = this.momentCreatedAt(value)
       },
     },
     inspectionEdited() {
-      return (
-        this.newInspection.impression !== null ||
-        this.newInspection.attention !== null ||
-        this.newInspection.reminder !== null ||
-        this.newInspection.reminder_date !== null ||
-        this.newInspection.reminder !== null ||
-        this.newInspection.notes !== null
-      )
+      if (this.activeInspection !== null) {
+        return (
+          this.activeInspection.impression !== null ||
+          this.activeInspection.attention !== null ||
+          this.activeInspection.reminder !== null ||
+          this.activeInspection.reminder_date !== null ||
+          this.activeInspection.reminder !== null ||
+          this.activeInspection.notes !== null
+        )
+      } else {
+        return false
+      }
     },
     inspectionTemplate() {
       return {
@@ -388,38 +392,73 @@ export default {
     },
     reminderDate: {
       get() {
-        if (this.newInspection && this.newInspection.reminder_date !== null) {
-          return this.momentISO8601(this.newInspection.reminder_date)
+        if (
+          this.activeInspection &&
+          this.activeInspection.reminder_date !== null
+        ) {
+          return this.momentISO8601(this.activeInspection.reminder_date)
         } else {
           return null
         }
       },
       set(value) {
         if (value !== '' && value !== null) {
-          this.newInspection.reminder_date = this.momentCreatedAt(value)
+          this.activeInspection.reminder_date = this.momentCreatedAt(value)
         } else {
-          this.newInspection.reminder_date = null
+          this.activeInspection.reminder_date = null
         }
       },
     },
   },
   created() {
-    // if (this.inspectionId !== null) {
-    //   this.getInspection(this.inspectionId) // + get checklist by id!
-    // } else {
-    this.newInspection = {
-      date: this.momentISO8601(new Date()),
-      impression: null,
-      attention: null,
-      notes: null,
-      reminder_date: null,
-      reminder: null,
-      checklist_id: null,
-      hive_id: this.id,
-      items: {},
+    // If hive-inspect-edit route is used, retrieve to-be-edited inspection and change its items array into object with category_ids as keys and item values filled in if present
+    if (this.inspectionId !== null) {
+      this.getInspection(this.inspectionId).then((response) => {
+        this.activeInspection = response
+        console.log('inspection', this.inspectionId, this.activeInspection)
+        this.getChecklistById(this.activeInspection.checklist_id).then(
+          (response) => {
+            console.log('checklist', response.id, response)
+            var itemsObject = {}
+            response.category_ids.map((categoryId) => {
+              itemsObject[categoryId] = null
+            })
+            this.activeInspection.items.map((item) => {
+              // itemsObject[item.category_id] = item.value.replace('"', '')
+              itemsObject[item.category_id] = item.value
+            })
+            this.activeInspection.items = itemsObject
+            console.log('items object', itemsObject)
+          }
+        )
+        this.getChecklists()
+      })
+      // Else make an empty inspection object
+    } else {
+      this.activeInspection = {
+        date: this.momentISO8601(new Date()),
+        impression: null,
+        attention: null,
+        notes: null,
+        reminder_date: null,
+        reminder: null,
+        checklist_id: null,
+        hive_id: this.id,
+        items: {},
+      }
+      this.getChecklists().then((response) => {
+        this.selectedChecklist = response.checklist
+        this.selectedChecklistId = response.checklist.id
+        this.activeInspection.checklist_id = response.checklist.id
+        var itemsObject = {}
+        response.checklist.category_ids.map((categoryId) => {
+          // TODO: what if category ids is empty?
+          itemsObject[categoryId] = null
+        })
+        this.activeInspection.items = itemsObject
+      })
     }
-    // }
-    this.getChecklists()
+
     this.getActiveHive(this.id).then((hive) => {
       this.$store.commit('hives/setActiveHive', hive)
     })
@@ -452,7 +491,7 @@ export default {
             this.showCategoriesByIndex.push(false)
           }
         }
-        this.newInspection.checklist_id = response.checklist.id
+        this.activeInspection.checklist_id = response.checklist.id
         return response.checklist
       } catch (e) {
         console.log(e)
@@ -462,21 +501,18 @@ export default {
       try {
         const response = await this.$store.dispatch('inspections/getChecklists')
         this.checklists = response.checklists
-        this.selectedChecklist = response.checklist
-        if (
-          this.selectedChecklist !== null &&
-          this.selectedChecklist !== undefined
-        ) {
-          this.selectedChecklistId = this.selectedChecklist.id
-          this.newInspection.checklist_id = this.selectedChecklist.id
-          var itemsObject = {}
-          response.checklist.category_ids.map((categoryId) => {
-            // TODO: what if category ids is empty?
-            itemsObject[categoryId] = null
-          })
-          this.newInspection.items = itemsObject
-        }
-        return true
+        return response
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    async getInspection(id) {
+      try {
+        const response = await this.$store.dispatch(
+          'inspections/getInspectionById',
+          id
+        )
+        return response
       } catch (e) {
         console.log(e)
       }
@@ -484,11 +520,11 @@ export default {
     async saveInspection() {
       if (this.$refs.form.validate()) {
         console.log('saving Inspection...')
-        console.log(this.newInspection)
+        console.log(this.activeInspection)
         try {
           const response = await this.$store.dispatch(
             'inspections/saveInspection',
-            this.newInspection
+            this.activeInspection
           )
           if (!response) {
             this.snackbar.text = this.$i18n.t('not_saved_error')
@@ -507,7 +543,7 @@ export default {
       }
     },
     clearDate() {
-      this.newInspection.reminder_date = null
+      this.activeInspection.reminder_date = null
     },
     getText(item) {
       const name = item.name
@@ -528,7 +564,7 @@ export default {
     validateText(value, property, maxLength) {
       if (value !== null && value.length > maxLength + 1) {
         value = value.substring(0, maxLength)
-        this.newInspection[property] = value
+        this.activeInspection[property] = value
       }
     },
   },
