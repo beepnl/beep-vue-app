@@ -280,7 +280,7 @@ export default {
       maxHoneyLayers: 1,
       broodLayersForCalculation: null,
       honeyLayersForCalculation: null,
-      maxFrames: 11,
+      maxFrames: 12,
       framesForCalculation: null,
       showDescription: false,
     }
@@ -294,9 +294,9 @@ export default {
     this.broodLayersForCalculation = this.maxBroodLayers
     this.honeyLayersForCalculation = this.maxHoneyLayers
     this.maxFrames =
-      this.activeHive.layers[0].framecount < 11
+      this.activeHive.layers[0].framecount < 12
         ? this.activeHive.layers[0].framecount
-        : 11
+        : 12
     this.framesForCalculation = this.maxFrames
   },
   methods: {
