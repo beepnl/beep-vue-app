@@ -317,7 +317,6 @@ export default {
                 parseFloat(this.object[child2.id]) > 0
               ) {
                 beesSquares25cm2 += parseFloat(this.object[child2.id])
-                console.log(beesSquares25cm2)
               }
             })
           }

@@ -58,7 +58,7 @@
                 v-if="activeHive && activeHive.layers"
                 v-model="framesForCalculation"
                 class="hive-frame-number-input"
-                :min="1"
+                :min="0"
                 :max="maxFrames"
                 inline
                 controls
@@ -193,17 +193,15 @@ export default {
       activeHive: null,
       colonySize: null,
       maxBroodLayers: 2,
-      broodLayersForCalculation: null,
+      broodLayersForCalculation: 0,
       maxFrames: 12,
-      framesForCalculation: null,
+      framesForCalculation: 0,
     }
   },
   created() {
     this.activeHive = this.$store.getters['hives/activeHive']
     this.maxBroodLayers = this.countLayers('brood')
-    this.broodLayersForCalculation = this.maxBroodLayers
     this.maxFrames = this.activeHive.layers[0].framecount
-    this.framesForCalculation = this.maxFrames
   },
   methods: {
     calculateTpaColonySize() {
@@ -249,9 +247,19 @@ export default {
         // put value into input element 'colony_size'
         this.category.children.map((child) => {
           if (child.name === 'colony_size') {
+            // if colony size has been calculated already (in case of an existing inspection) but the calculation has not been
+            // re-instantiated yet, show the calculated colony size (to make sure this value won't change unintentionally)
+            if (
+              this.object[child.id] !== null &&
+              this.framesForCalculation === 0 &&
+              this.broodLayersForCalculation === 0
+            ) {
+              colonySize = this.object[child.id]
+            }
             this.object[child.id] = colonySize
           }
         })
+
         this.colonySize = colonySize
       }, 100) // wait for vue to update input pixel values
     },

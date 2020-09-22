@@ -420,10 +420,8 @@ export default {
     if (this.inspectionId !== null) {
       this.getInspection(this.inspectionId).then((response) => {
         this.activeInspection = response
-        console.log('inspection', this.inspectionId, this.activeInspection)
         this.getChecklistById(this.activeInspection.checklist_id).then(
           (response) => {
-            console.log('checklist', response.id, response)
             var itemsObject = {}
             response.category_ids.map((categoryId) => {
               itemsObject[categoryId] = null
@@ -444,7 +442,6 @@ export default {
               }
             })
             this.activeInspection.items = itemsObject
-            console.log('items object', itemsObject)
           }
         )
         this.getChecklists()
