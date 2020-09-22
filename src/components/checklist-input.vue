@@ -54,16 +54,12 @@
       ></v-radio>
     </v-radio-group>
 
-    <v-select
+    <treeselect
       v-if="item.input === 'select'"
-      v-model="object[item.id]"
-      class="checklist-select-input"
-      :items="item.children"
-      :item-text="getText"
-      item-value="id"
-      :placeholder="`${$t('Select') + ' ' + (item.trans[locale] || item.name)}`"
-    >
-    </v-select>
+      :object="object"
+      :item="item"
+      :locale="locale"
+    ></treeselect>
 
     <dateTimePicker
       v-if="item.input === 'date'"
@@ -230,6 +226,7 @@ import selectHiveOrApiary from '@components/input-fields/select-hive-or-apiary.v
 import slider from '@components/input-fields/slider.vue'
 import smileRating from '@components/input-fields/smile-rating.vue'
 import starRating from '@components/input-fields/star-rating.vue'
+import treeselect from '@components/input-fields/treeselect.vue'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 
 export default {
@@ -244,6 +241,7 @@ export default {
     slider,
     smileRating,
     starRating,
+    treeselect,
     yesNoRating,
   },
   props: {
@@ -277,9 +275,6 @@ export default {
   methods: {
     consoleLog(event) {
       console.log(event)
-    },
-    getText(item) {
-      return item.trans[this.locale] || item.name
     },
     toggleRadio(value, id) {
       if (this.object[id] === value) {
