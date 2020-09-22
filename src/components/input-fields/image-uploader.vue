@@ -19,14 +19,16 @@
         @click="confirmDeleteImage(item.id)"
         >mdi-close</v-icon
       >
-      <v-img
-        v-if="object[item.id] !== null"
-        :src="baseApiUrl + object[item.id]"
-        class="grey lighten-2 image-thumb"
-        aspect-ratio="1"
-        @click="setActiveImage(object[item.id])"
-      >
-      </v-img>
+      <span>
+        <v-img
+          v-if="object[item.id] !== null"
+          :src="baseApiUrl + object[item.id]"
+          class="grey lighten-2 image-thumb"
+          aspect-ratio="1"
+          @click="setActiveImage(object[item.id])"
+        >
+        </v-img>
+      </span>
     </div>
     <imageOverlay
       v-if="object[item.id] !== null"
@@ -203,13 +205,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.v-input.image-uploader {
+  max-width: 280px;
+}
 .image-preview {
-  max-width: 120px;
-  max-height: 100px;
+  max-width: 100px;
+  max-height: 120px;
 }
 .image-thumb {
-  max-width: 100px;
-  max-height: 100px;
+  max-width: 80px;
+  max-height: 120px;
   cursor: zoom-in;
   border: 1px solid $color-grey;
   border-radius: 4px;

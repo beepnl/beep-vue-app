@@ -61,9 +61,9 @@
 
     <div v-if="activeHive !== null" class="border-bottom">
       <v-row>
-        <v-col cols="12" sm="3" md="2">
-          <div class="d-flex flex-column align-start">
-            <h4 class="hive-name mb-3" v-text="activeHive.name"></h4>
+        <v-col cols="12" sm="3" md="2" class="d-flex flex-column justify-end">
+          <h4 class="hive-name mb-3" v-text="activeHive.name"></h4>
+          <div class="d-flex md-1 mb-sm-6">
             <HiveIcon :hive="activeHive"></HiveIcon>
           </div>
         </v-col>

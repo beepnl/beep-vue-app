@@ -480,7 +480,10 @@
                 <span v-if="item.type === 'select_hive_type'">{{
                   item.val
                 }}</span>
-                <span v-if="item.type === 'image'">
+                <span
+                  v-if="item.type === 'image'"
+                  class="d-flex justify-center py-2"
+                >
                   <v-img
                     :src="baseApiUrl + item.val"
                     class="grey lighten-2 image-thumb"
@@ -964,7 +967,8 @@ export default {
   .image-thumb {
     width: auto;
     max-width: 80px;
-    max-height: 60px;
+    height: auto;
+    max-height: 120px;
     cursor: zoom-in;
     border: 1px solid $color-grey;
     border-radius: 4px;

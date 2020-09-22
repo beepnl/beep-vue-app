@@ -322,7 +322,6 @@ export default {
 .checklist-number-input {
   max-width: 150px !important;
 }
-.v-text-field.checklist-select-input,
 .v-text-field.inspection-text-area {
   padding-top: 0 !important;
 }

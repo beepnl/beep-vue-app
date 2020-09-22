@@ -23,9 +23,9 @@
 
     <div v-if="activeHive !== null" class="border-bottom">
       <v-row>
-        <v-col cols="5" sm="2" md="3">
-          <div class="d-flex flex-column align-start">
-            <h4 class="hive-name mb-3" v-text="activeHive.name"></h4>
+        <v-col cols="5" sm="2" md="3" class="d-flex flex-column justify-end">
+          <h4 class="hive-name mb-3" v-text="activeHive.name"></h4>
+          <div class="d-flex mb-3">
             <HiveIcon :hive="activeHive"></HiveIcon>
           </div>
         </v-col>
