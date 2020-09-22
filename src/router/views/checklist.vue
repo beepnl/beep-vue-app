@@ -212,11 +212,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.unauthorized-title {
-  padding-top: 40px;
-  text-align: center;
-}
-
 .checklist-bar {
   position: fixed;
   z-index: 2;

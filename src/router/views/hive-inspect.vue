@@ -6,7 +6,24 @@
     :no-box-shadow="true"
     :edited="inspectionEdited"
   >
-    <v-form ref="form" v-model="valid" @submit.prevent="saveInspection">
+    <h1 v-if="error && inspectionId" class="unauthorized-title">
+      {{
+        $t('sorry') +
+          ', ' +
+          $tc('inspection', 1) +
+          ' ' +
+          inspectionId +
+          ' ' +
+          $t('not_found')
+      }}
+    </h1>
+
+    <v-form
+      v-if="!error"
+      ref="form"
+      v-model="valid"
+      @submit.prevent="saveInspection"
+    >
       <v-toolbar class="hive-inspect-bar" dense light>
         <v-spacer></v-spacer>
         <v-btn
@@ -324,6 +341,7 @@ export default {
   mixins: [momentMixin],
   data: function() {
     return {
+      error: false,
       snackbar: {
         show: false,
         timeout: 2000,
@@ -536,6 +554,7 @@ export default {
         )
         return response
       } catch (e) {
+        this.error = true
         console.log(e)
       }
     },
