@@ -416,34 +416,11 @@ export default {
     },
   },
   created() {
-    // If hive-inspect-edit route is used, retrieve to-be-edited inspection and change its items array into object with category_ids as keys and item values filled in if present
+    // If hive-inspect-edit route is used, retrieve to-be-edited inspection
     if (this.inspectionId !== null) {
       this.getInspection(this.inspectionId).then((response) => {
         this.activeInspection = response
-        this.getChecklistById(this.activeInspection.checklist_id).then(
-          (response) => {
-            var itemsObject = {}
-            response.category_ids.map((categoryId) => {
-              itemsObject[categoryId] = null
-            })
-            this.activeInspection.items.map((item) => {
-              if (
-                item.type.indexOf('boolean') > -1 ||
-                item.type.indexOf('smileys') > -1 ||
-                item.type.indexOf('number') > -1 ||
-                item.type.indexOf('grade') > -1 ||
-                item.type.indexOf('score') > -1 ||
-                item.type.indexOf('slider') > -1 ||
-                item.type.indexOf('square') > -1
-              ) {
-                itemsObject[item.category_id] = Number(item.value)
-              } else {
-                itemsObject[item.category_id] = item.value
-              }
-            })
-            this.activeInspection.items = itemsObject
-          }
-        )
+        this.getChecklistById(this.activeInspection.checklist_id)
         this.getChecklists()
       })
       // Else make an empty inspection object
@@ -462,16 +439,15 @@ export default {
       this.getChecklists().then((response) => {
         this.selectedChecklist = response.checklist
         this.selectedChecklistId = response.checklist.id
-        this.activeInspection.checklist_id = response.checklist.id
+        this.activeInspection.checklist_id = this.selectedChecklistId
         var itemsObject = {}
-        response.checklist.category_ids.map((categoryId) => {
+        this.selectedChecklist.category_ids.map((categoryId) => {
           // TODO: what if category ids is empty?
           itemsObject[categoryId] = null
         })
         this.activeInspection.items = itemsObject
       })
     }
-
     this.getActiveHive(this.id).then((hive) => {
       this.$store.commit('hives/setActiveHive', hive)
     })
@@ -495,6 +471,7 @@ export default {
         )
         this.selectedChecklist = response.checklist
         this.selectedChecklistId = response.checklist.id
+
         if (
           this.selectedChecklist !== null &&
           this.selectedChecklist.categories.length > 0
@@ -504,8 +481,40 @@ export default {
             this.showCategoriesByIndex.push(false)
           }
         }
-        this.activeInspection.checklist_id = response.checklist.id
-        return response.checklist
+
+        var itemsObject = {}
+        this.selectedChecklist.category_ids.map((categoryId) => {
+          itemsObject[categoryId] = null
+        })
+        // If existing inspection is being edited change its items array into object with category_ids (of the selected checklist) as keys and item values filled in if present
+        if (typeof this.activeInspection.id !== 'undefined') {
+          this.activeInspection.items.map((item) => {
+            if (
+              item.type.indexOf('boolean') > -1 ||
+              item.type.indexOf('smileys') > -1 ||
+              item.type.indexOf('number') > -1 ||
+              item.type.indexOf('grade') > -1 ||
+              item.type.indexOf('score') > -1 ||
+              item.type.indexOf('slider') > -1 ||
+              item.type.indexOf('square') > -1
+            ) {
+              itemsObject[item.category_id] = Number(item.value)
+            } else {
+              itemsObject[item.category_id] = item.value
+            }
+          })
+          // For a new inspection, transfer values that have been filled in already for the old checklist to the newly selected checklist
+        } else {
+          Object.entries(this.activeInspection.items).map(([key, value]) => {
+            if (value !== null) {
+              itemsObject[key] = value
+            }
+          })
+        }
+        this.activeInspection.items = itemsObject
+        this.activeInspection.checklist_id = this.selectedChecklistId
+
+        return true
       } catch (e) {
         console.log(e)
       }
