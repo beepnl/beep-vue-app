@@ -178,7 +178,7 @@
             item.input === 'boolean_yes_red' ||
             item.input === 'list_item')
       "
-      v-show="object[item.id] === 1 || object[item.id] === '1'"
+      v-show="object[item.id] === 1"
       class="mt-6"
       :category="item"
       :locale="locale"

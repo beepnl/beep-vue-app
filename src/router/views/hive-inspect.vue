@@ -350,7 +350,12 @@ export default {
     },
     inspectionDate: {
       get() {
-        if (this.activeInspection) {
+        if (
+          this.activeInspection &&
+          typeof this.activeInspection.created_at !== 'undefined'
+        ) {
+          return this.momentISO8601(this.activeInspection.created_at)
+        } else if (this.activeInspection) {
           return this.momentISO8601(this.activeInspection.date)
         } else {
           return ''
@@ -424,8 +429,19 @@ export default {
               itemsObject[categoryId] = null
             })
             this.activeInspection.items.map((item) => {
-              // itemsObject[item.category_id] = item.value.replace('"', '')
-              itemsObject[item.category_id] = item.value
+              if (
+                item.type.indexOf('boolean') > -1 ||
+                item.type.indexOf('smileys') > -1 ||
+                item.type.indexOf('number') > -1 ||
+                item.type.indexOf('grade') > -1 ||
+                item.type.indexOf('score') > -1 ||
+                item.type.indexOf('slider') > -1 ||
+                item.type.indexOf('square') > -1
+              ) {
+                itemsObject[item.category_id] = Number(item.value)
+              } else {
+                itemsObject[item.category_id] = item.value
+              }
             })
             this.activeInspection.items = itemsObject
             console.log('items object', itemsObject)
@@ -522,14 +538,10 @@ export default {
         console.log('saving Inspection...')
         console.log(this.activeInspection)
         try {
-          const response = await this.$store.dispatch(
+          await this.$store.dispatch(
             'inspections/saveInspection',
             this.activeInspection
           )
-          if (!response) {
-            this.snackbar.text = this.$i18n.t('not_saved_error')
-            this.snackbar.show = true
-          }
           setTimeout(() => {
             return this.$router.push({
               name: 'hive-inspections',
