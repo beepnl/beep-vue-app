@@ -160,6 +160,7 @@ export default {
                   id: this.hive_id,
                   inspection: this.inspection_edit,
                 },
+                query: { checklist_id: this.id },
               })
             } else if (this.hive_id !== null) {
               return this.$router.push({
@@ -167,6 +168,7 @@ export default {
                 params: {
                   id: this.hive_id,
                 },
+                query: { checklist_id: this.id },
               })
             } else {
               this.$router.push(-1).catch((error) => {

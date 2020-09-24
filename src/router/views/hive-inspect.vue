@@ -332,6 +332,7 @@ export default {
       selectedChecklist: null,
       checklists: null,
       activeInspection: null,
+      preSelectedChecklistId: null,
       selectedChecklistId: null,
       showGeneral: true,
       showCategoriesByIndex: [],
@@ -416,11 +417,16 @@ export default {
     },
   },
   created() {
+    this.$route.query.checklist_id
+      ? (this.preSelectedChecklistId = Number(this.$route.query.checklist_id))
+      : (this.preSelectedChecklistId = null)
     // If hive-inspect-edit route is used, retrieve to-be-edited inspection
     if (this.inspectionId !== null) {
       this.getInspection(this.inspectionId).then((response) => {
         this.activeInspection = response
-        this.getChecklistById(this.activeInspection.checklist_id)
+        this.preSelectedChecklistId
+          ? this.getChecklistById(this.preSelectedChecklistId)
+          : this.getChecklistById(this.activeInspection.checklist_id)
         this.getChecklists()
       })
       // Else make an empty inspection object
@@ -438,7 +444,9 @@ export default {
       }
       this.getChecklists().then((response) => {
         this.selectedChecklist = response.checklist
-        this.selectedChecklistId = response.checklist.id
+        this.preSelectedChecklistId
+          ? (this.selectedChecklistId = this.preSelectedChecklistId)
+          : (this.selectedChecklistId = response.checklist.id)
         this.activeInspection.checklist_id = this.selectedChecklistId
         var itemsObject = {}
         this.selectedChecklist.category_ids.map((categoryId) => {
