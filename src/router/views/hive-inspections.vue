@@ -539,6 +539,7 @@ import Confirm from '@components/confirm.vue'
 import imageOverlay from '@components/image-overlay.vue'
 // import { ScaleTransition } from 'vue2-transitions'
 import Layout from '@layouts/back.vue'
+import { mapGetters } from 'vuex'
 import { momentMixin } from '@mixins/momentMixin'
 // import AddToCalendar from 'vue-add-to-calendar'
 
@@ -561,7 +562,6 @@ export default {
       inspections: [],
       filterByReminder: false,
       filterByImpression: [],
-      activeHive: null,
       search: null,
       hiddenCategories: [],
       images: null,
@@ -569,6 +569,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('hives', ['activeHive']),
     baseApiUrl() {
       var baseUrl = process.env.VUE_APP_API_URL
       baseUrl = baseUrl.replace('/api/', '')
@@ -690,7 +691,9 @@ export default {
     },
   },
   created() {
-    this.readHive()
+    this.getActiveHive(this.id).then((hive) => {
+      this.$store.commit('hives/setActiveHive', hive)
+    })
     this.getAllInspectionsForHiveId()
     this.readImages()
   },
@@ -712,27 +715,14 @@ export default {
         this.snackbar.show = true
       }
     },
-    async readHive() {
+    async getActiveHive(id) {
       try {
-        const response = await this.$store.dispatch('hives/findById', this.id)
+        const response = await this.$store.dispatch('hives/findById', id)
         if (response.length === 0) {
           this.$router.push({ name: '404', params: { resource: 'hive' } })
         }
         const hive = response.hives[0]
-        // if (hive.queen && hive.queen.color && hive.queen.color !== null) {
-        //   this.queenHasColor = true
-        // } else if (hive.queen === null) {
-        //   hive.queen = {
-        //     clipped: null,
-        //     color: null,
-        //     created_at: null,
-        //     description: null,
-        //     fertilized: null,
-        //     name: null,
-        //   }
-        // }
-        this.activeHive = hive
-        return true
+        return hive
       } catch (e) {
         console.log(e)
         this.$router.push({ name: '404', params: { resource: 'hive' } })
