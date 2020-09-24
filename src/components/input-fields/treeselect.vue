@@ -8,6 +8,7 @@
       :no-results-text="`${$t('no_results')}`"
       :default-expand-level="1"
       search-nested
+      @input="setInspectionEdited(true)"
     />
   </div>
 </template>
@@ -44,6 +45,9 @@ export default {
     },
   },
   methods: {
+    setInspectionEdited(bool) {
+      this.$store.commit('inspections/setInspectionEdited', bool)
+    },
     updateArray(array) {
       var itemsArray = []
       array.forEach((item) => {

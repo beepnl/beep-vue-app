@@ -621,6 +621,8 @@ const translations = {
   Total_colony_size: 'Totale grootte bijenvolk',
   bee: 'bij | bijen',
   with_bees: 'met bijen',
+  change_checklist_confirm:
+    'Weet je zeker dat je een andere kastkaart wilt selecteren?',
 }
 
 export default translations

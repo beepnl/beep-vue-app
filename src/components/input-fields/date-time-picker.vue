@@ -76,6 +76,7 @@ export default {
       set(value) {
         if (value !== '' && value !== null) {
           this.object[this.item.id] = this.momentCreatedAt(value)
+          this.setInspectionEdited(true)
         } else {
           this.object[this.item.id] = null
         }
@@ -85,6 +86,9 @@ export default {
   methods: {
     clearDate(id) {
       this.object[id] = null
+    },
+    setInspectionEdited(bool) {
+      this.$store.commit('inspections/setInspectionEdited', bool)
     },
   },
 }

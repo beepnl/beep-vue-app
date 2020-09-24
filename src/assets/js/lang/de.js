@@ -620,6 +620,8 @@ const translations = {
   Total_colony_size: 'Total colony size',
   bee: 'bee | bees',
   with_bees: 'with bees',
+  change_checklist_confirm:
+    'Are you sure you want to select a different checklist?',
 }
 
 export default translations

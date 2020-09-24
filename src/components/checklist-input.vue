@@ -276,12 +276,16 @@ export default {
     consoleLog(event) {
       console.log(event)
     },
+    setInspectionEdited(bool) {
+      this.$store.commit('inspections/setInspectionEdited', bool)
+    },
     toggleRadio(value, id) {
       if (this.object[id] === value) {
         this.object[id] = null // allow to toggle if value has been set already
       } else {
         this.object[id] = value
       }
+      this.setInspectionEdited(true)
     },
     toggleSelect(listItem, listId) {
       var selectedArray = []
@@ -295,6 +299,7 @@ export default {
       }
       var selectedArrayToString = selectedArray.join(',')
       this.object[listId] = selectedArrayToString
+      this.setInspectionEdited(true)
     },
     updateNumber(value, property, name = null) {
       if (value === 0) {
@@ -307,11 +312,13 @@ export default {
         this.$emit('calculate-liebefeld-colony-size')
       }
       this.object[property] = value
+      // this.setInspectionEdited(true) // FIXME: use different stepper component because vue-number-input always triggers @change (and thus sets inspectionEdited to true) when loaded
     },
     validateText(value, id, maxLength) {
       if (value !== null && value.length > maxLength + 1) {
         value = value.substring(0, maxLength)
         this.object[id] = value
+        this.setInspectionEdited(true)
       }
     },
   },

@@ -63,7 +63,7 @@
               item-value="id"
               hide-details
               :label="`${$t('Select') + ' ' + $tc('checklist', 1)}`"
-              @input="getChecklistById($event)"
+              @input="switchChecklist($event)"
             >
             </v-select>
           </v-col>
@@ -306,6 +306,7 @@ import Confirm from '@components/confirm.vue'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
 import Layout from '@layouts/back.vue'
+import { mapGetters } from 'vuex'
 import { momentMixin } from '@mixins/momentMixin'
 import smileRating from '@components/input-fields/smile-rating.vue'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
@@ -340,6 +341,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('inspections', ['inspectionEdited']),
     id() {
       return parseInt(this.$route.params.id)
     },
@@ -366,33 +368,6 @@ export default {
         this.activeInspection.date = this.momentCreatedAt(value)
       },
     },
-    inspectionEdited() {
-      if (this.activeInspection !== null) {
-        return (
-          this.activeInspection.impression !== null ||
-          this.activeInspection.attention !== null ||
-          this.activeInspection.reminder !== null ||
-          this.activeInspection.reminder_date !== null ||
-          this.activeInspection.reminder !== null ||
-          this.activeInspection.notes !== null
-        )
-      } else {
-        return false
-      }
-    },
-    inspectionTemplate() {
-      return {
-        date: this.momentISO8601(new Date()),
-        impression: null,
-        attention: null,
-        notes: null,
-        reminder_date: null,
-        reminder: null,
-        checklist_id: this.selectedChecklistId, // TODO: get checklist id
-        hive_id: this.id,
-        items: {},
-      }
-    },
     locale() {
       return this.$i18n.locale
     },
@@ -410,6 +385,7 @@ export default {
       set(value) {
         if (value !== '' && value !== null) {
           this.activeInspection.reminder_date = this.momentCreatedAt(value)
+          this.setInspectionEdited(true)
         } else {
           this.activeInspection.reminder_date = null
         }
@@ -460,6 +436,7 @@ export default {
       this.$store.commit('hives/setActiveHive', hive)
     })
     this.$store.commit('inspections/setSelectedInspectionId', this.inspectionId)
+    this.setInspectionEdited(false)
   },
   methods: {
     async getActiveHive(id) {
@@ -495,7 +472,10 @@ export default {
           itemsObject[categoryId] = null
         })
         // If existing inspection is being edited change its items array into object with category_ids (of the selected checklist) as keys and item values filled in if present
-        if (typeof this.activeInspection.id !== 'undefined') {
+        if (
+          this.inspectionId !== null &&
+          Array.isArray(this.activeInspection.items)
+        ) {
           this.activeInspection.items.map((item) => {
             if (
               item.type.indexOf('boolean') > -1 ||
@@ -581,6 +561,29 @@ export default {
       }
       return name + research
     },
+    setInspectionEdited(bool) {
+      this.$store.commit('inspections/setInspectionEdited', bool)
+    },
+    switchChecklist(id) {
+      if (this.inspectionId !== null || this.inspectionEdited) {
+        this.$refs.confirm
+          .open(
+            this.$i18n.t('Select') + ' ' + this.$i18n.tc('checklist', 1),
+            this.$i18n.t('change_checklist_confirm'),
+            {
+              color: 'red',
+            }
+          )
+          .then((confirm) => {
+            this.getChecklistById(id)
+          })
+          .catch((reject) => {
+            return true
+          })
+      } else {
+        this.getChecklistById(id)
+      }
+    },
     toggleCategory(index) {
       this.$set(
         this.showCategoriesByIndex,
@@ -592,6 +595,7 @@ export default {
       if (value !== null && value.length > maxLength + 1) {
         value = value.substring(0, maxLength)
         this.activeInspection[property] = value
+        this.setInspectionEdited(true)
       }
     },
   },

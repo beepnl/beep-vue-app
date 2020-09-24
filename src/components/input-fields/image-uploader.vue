@@ -80,7 +80,7 @@ export default {
       (value) =>
         !value ||
         value.size < 2000000 ||
-        'Avatar size should be less than 2 MB!',
+        'Image size should be less than 2 MB!',
     ],
     images: null,
     activeImage: null,
@@ -102,12 +102,13 @@ export default {
         const data = {
           image_url: imageUrl,
         }
+        // empty input field even if deleting image gives error
+        this.object[id] = null
         const response = await this.$store.dispatch('images/deleteImage', data)
         if (!response) {
           this.snackbar.text = this.$i18n.t('something_wrong')
           this.snackbar.show = true
         }
-        this.object[id] = null
       } catch (error) {
         console.log(error)
         this.snackbar.text = this.$i18n.t('something_wrong')
@@ -149,10 +150,10 @@ export default {
           if (
             response &&
             typeof response.data !== 'undefined' &&
-            typeof response.data.thumb_url
+            response.data.thumb_url
           ) {
             this.object[this.item.id] = response.data.thumb_url
-            // console.log('Thumb url: ', response.data.thumb_url)
+            this.setInspectionEdited(true)
 
             this.readImages()
           }
@@ -199,6 +200,9 @@ export default {
       } else {
         this.activeImage = null
       }
+    },
+    setInspectionEdited(bool) {
+      this.$store.commit('inspections/setInspectionEdited', bool)
     },
   },
 }

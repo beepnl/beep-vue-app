@@ -274,6 +274,9 @@ export default {
       }
       return true
     },
+    setInspectionEdited(bool) {
+      this.$store.commit('inspections/setInspectionEdited', bool)
+    },
     updateValue(value, id, inputtype) {
       if (inputtype === 'number_percentage' || inputtype === 'slider') {
         if (value === -1) {
@@ -295,6 +298,7 @@ export default {
           value = null
         }
       }
+      this.setInspectionEdited(true)
       this.object[id] = value
     },
   },

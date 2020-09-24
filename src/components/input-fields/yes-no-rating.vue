@@ -47,12 +47,16 @@ export default {
     },
   },
   methods: {
+    setInspectionEdited(bool) {
+      this.$store.commit('inspections/setInspectionEdited', bool)
+    },
     updateObject(value, property) {
       if (this.object[property] === value) {
         this.object[property] = null // allow to toggle if value has been set already
       } else {
         this.object[property] = value
       }
+      this.setInspectionEdited(true)
     },
   },
 }
