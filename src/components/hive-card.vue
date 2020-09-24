@@ -78,7 +78,16 @@
           class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
         >
           <div class="mr-2 my-0">
-            <a :href="`/hives/${hive.id}/inspections`">
+            <router-link
+              :to="{
+                name: `${
+                  hive.last_inspection_date !== null
+                    ? 'hive-inspections'
+                    : 'hive-inspect'
+                }`,
+                params: { id: hive.id },
+              }"
+            >
               <v-icon v-if="hive.impression === 1" class="red--text">
                 mdi-emoticon-sad
               </v-icon>
@@ -91,7 +100,7 @@
               <v-icon v-if="!hive.impression" class="color-grey">
                 mdi-pencil-circle
               </v-icon>
-            </a>
+            </router-link>
           </div>
           <span
             v-if="listView"
