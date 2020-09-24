@@ -6,7 +6,28 @@
     :no-box-shadow="true"
     :edited="inspectionEdited"
   >
-    <v-form ref="form" v-model="valid" @submit.prevent="saveInspection">
+    <h1
+      v-if="
+        inspectionId &&
+          activeInspection &&
+          activeInspection.owner === false &&
+          activeHive &&
+          activeHive.editable === false
+      "
+      class="unauthorized-title"
+    >
+      {{
+        $t('sorry') +
+          ', ' +
+          $tc('inspection', 1) +
+          ' ' +
+          inspectionId +
+          ' ' +
+          $t('not_editable')
+      }}
+    </h1>
+
+    <v-form v-else ref="form" v-model="valid" @submit.prevent="saveInspection">
       <v-toolbar class="hive-inspect-bar" dense light>
         <v-spacer></v-spacer>
         <v-btn
@@ -342,6 +363,7 @@ export default {
   },
   computed: {
     ...mapGetters('inspections', ['inspectionEdited']),
+    ...mapGetters('hives', ['activeHive']),
     id() {
       return parseInt(this.$route.params.id)
     },

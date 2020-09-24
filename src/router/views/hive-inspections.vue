@@ -89,7 +89,7 @@
             </v-card-actions>
           </div>
 
-          <v-card-actions>
+          <v-card-actions v-if="activeHive.editable || activeHive.owner">
             <v-btn
               class="hide-on-mobile"
               :href="`/hives/${id}/inspect`"
