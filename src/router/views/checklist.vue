@@ -108,8 +108,12 @@ export default {
   created() {
     this.getChecklistById(this.id)
     this.getChecklistTaxonomy(this.id)
-    this.hive_id = this.getURLParameter('hive_id')
-    this.inspection_edit = this.getURLParameter('inspection_edit')
+    this.$route.query.hive_id
+      ? (this.hive_id = Number(this.$route.query.hive_id))
+      : (this.hive_id = null)
+    this.$route.query.inspection_edit
+      ? (this.inspection_edit = Number(this.$route.query.inspection_edit))
+      : (this.inspection_edit = null)
   },
   methods: {
     async getChecklistById(id) {
@@ -118,11 +122,15 @@ export default {
           'inspections/getChecklistById',
           id
         )
+        if (response.length === 0) {
+          this.$router.push({ name: '404', params: { resource: 'checklist' } })
+        }
         this.activeChecklist = response.checklist
         this.activeChecklistId = response.checklist.id
         return response.checklist
       } catch (e) {
         console.log(e)
+        this.$router.push({ name: '404', params: { resource: 'checklist' } })
       }
     },
     async getChecklistTaxonomy(id) {
@@ -131,10 +139,14 @@ export default {
           'checklists/getChecklistTaxonomy',
           id
         )
+        if (response.length === 0) {
+          this.$router.push({ name: '404', params: { resource: 'checklist' } })
+        }
         this.activeChecklistTaxonomy = response.taxonomy
         return true
       } catch (e) {
         console.log(e)
+        this.$router.push({ name: '404', params: { resource: 'checklist' } })
       }
     },
     async saveChecklist() {
@@ -183,21 +195,6 @@ export default {
           console.log(error)
         }
       }
-    },
-    getURLParameter(param) {
-      const urlQuery = window.location.search.substring(1)
-      const queryVariables = urlQuery.split('&')
-
-      for (var i = 0; i < queryVariables.length; i++) {
-        const parameterName = queryVariables[i].split('=')
-
-        if (parameterName[0] === param) {
-          return parameterName[1] === undefined
-            ? null
-            : decodeURIComponent(parameterName[1])
-        }
-      }
-      return null
     },
     validateText(value, property, maxLength) {
       if (value !== null && value.length > maxLength + 1) {

@@ -55,9 +55,10 @@
                   :label="`${$t('Search')}`"
                   :class="
                     `${
-                      search !== null ? 'v-input--is-focused primary--text' : ''
+                      search !== null ? 'primary--text' : ''
                     } filter-text-field`
                   "
+                  :autofocus="search !== null"
                   height="36px"
                   clearable
                   outlined
@@ -417,12 +418,11 @@ export default {
     }
   },
   created() {
-    this.search = this.getURLParameter('search')
+    this.$route.query.search
+      ? (this.search = this.$route.query.search)
+      : (this.search = null)
     this.readApiariesAndGroups().then(() => {
       this.ready = true
-      // if (this.search !== null) { // FIXME: cannot read property focus of undefined
-      //   this.$refs.filter.focus()
-      // }
     })
   },
   methods: {
@@ -440,21 +440,6 @@ export default {
       } catch (e) {
         console.log(e)
       }
-    },
-    getURLParameter(param) {
-      const urlQuery = window.location.search.substring(1)
-      const queryVariables = urlQuery.split('&')
-
-      for (var i = 0; i < queryVariables.length; i++) {
-        const parameterName = queryVariables[i].split('=')
-
-        if (parameterName[0] === param) {
-          return parameterName[1] === undefined
-            ? null
-            : decodeURIComponent(parameterName[1])
-        }
-      }
-      return null
     },
     inspectionsForHive(hive) {
       if (this.inspectionsForHives.length && hive.inspection_count > 0) {
