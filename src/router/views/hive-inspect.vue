@@ -462,6 +462,7 @@ export default {
           this.selectedChecklist.categories.length > 0
         ) {
           const numberOfCategories = this.selectedChecklist.categories.length
+          this.showCategoriesByIndex = []
           for (var i = 0; i < numberOfCategories; i++) {
             this.showCategoriesByIndex.push(false)
           }
