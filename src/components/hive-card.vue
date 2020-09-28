@@ -65,7 +65,10 @@
         }"
       >
         <div v-if="apiaryView" class="red--text apiary-view-alert">
-          <v-icon v-if="hive.attention || hive.reminder" class="red--text">
+          <v-icon
+            v-if="hive.attention || hive.reminder || hive.reminder_date"
+            class="red--text"
+          >
             mdi-alert-circle
           </v-icon>
         </div>
@@ -115,11 +118,14 @@
         </div>
 
         <div
-          v-if="hive.attention || hive.reminder"
+          v-if="hive.attention || hive.reminder || hive.reminder_date"
           class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
         >
           <div class="mr-2 my-0">
-            <v-icon v-if="hive.attention || hive.reminder" class="red--text">
+            <v-icon
+              v-if="hive.attention || hive.reminder || hive.reminder_date"
+              class="red--text"
+            >
               mdi-alert-circle
             </v-icon>
           </div>

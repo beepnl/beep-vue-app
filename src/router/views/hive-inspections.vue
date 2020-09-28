@@ -240,40 +240,56 @@
                 <span
                   v-if="inspection.reminder !== null"
                   :title="inspection.reminder"
-                  class="notes reminder"
+                  :class="`notes ${inspection.reminder_date ? 'pb-0' : ''}`"
                   >{{ inspection.reminder }}</span
                 >
-                <!-- <span v-if="inspection.reminder_date">
-                <add-to-calendar
-                  :title="`Beep ${$t('reminder')}: ${inspection.reminder}`"
-                  :location="`${activeHive.location} - ${activeHive.name}`"
-                  :start="new Date(inspection.reminder_date)"
-                  :end="new Date(inspection.reminder_date + 1)"
-                  :details="
-                    `Beep app ${$tc('Inspection', 1)} @ ${momentify(
-                      // eslint-disable-next-line vue/comma-dangle
-                      inspection.created_at
-                    )}`
-                  "
-                  inline-template
-                >
-                  <div>
-                    <google-calendar id="google-calendar">
-                      <i class="fa fa-google"></i> Add to Google calendar
-                    </google-calendar>
-
-                    <microsoft-calendar id="microsoft-calendar">
-                      <i class="fa fa-windows"></i> Add to Microsoft live
-                      calendar
-                    </microsoft-calendar>
-
-                    <office365-calendar id="office365-calendar">
-                      <i class="fa fa-windows"></i> Add to Office365 outlook
-                      calendar
-                    </office365-calendar>
-                  </div>
-                </add-to-calendar>
-              </span> -->
+                <span v-if="inspection.reminder_date">
+                  <v-menu>
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        text
+                        small
+                        class="primary--text"
+                        v-bind="attrs"
+                        v-on="on"
+                      >
+                        {{ $t('add_to_calendar') }}
+                      </v-btn>
+                    </template>
+                    <v-list dense>
+                      <v-list-item
+                        v-for="(calendarItem, index) in calendars"
+                        :key="index"
+                        link
+                        dense
+                      >
+                        <v-list-item-action>
+                          <AddToCalendar
+                            :title="
+                              `Beep ${$t('reminder')} ${
+                                inspection.reminder !== null
+                                  ? ': ' + inspection.reminder
+                                  : ''
+                              }`
+                            "
+                            :location="
+                              `${activeHive.location} - ${activeHive.name}`
+                            "
+                            :start="new Date(inspection.reminder_date)"
+                            :end="new Date(inspection.reminder_date + 1)"
+                            :details="
+                              `Beep app ${$tc('Inspection', 1)} @ ${momentify(
+                                // eslint-disable-next-line vue/comma-dangle
+                                inspection.created_at
+                              )}`
+                            "
+                            :calendar="calendarItem"
+                          ></AddToCalendar>
+                        </v-list-item-action>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
+                </span>
               </td>
               <td class="filler"></td>
             </tr>
@@ -541,14 +557,14 @@ import imageOverlay from '@components/image-overlay.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
 import { momentMixin } from '@mixins/momentMixin'
-// import AddToCalendar from 'vue-add-to-calendar'
+import AddToCalendar from '@components/add-to-calendar.vue'
 
 export default {
   components: {
     imageOverlay,
     Confirm,
     // ScaleTransition,
-    // AddToCalendar,
+    AddToCalendar,
     Layout,
   },
   mixins: [momentMixin],
@@ -566,6 +582,7 @@ export default {
       hiddenCategories: [],
       images: null,
       activeImage: null,
+      calendars: ['Google', 'Microsoft', 'Office365'],
     }
   },
   computed: {
@@ -606,7 +623,7 @@ export default {
       var propertyFilteredInspections = textFilteredInspections
         .map((inspection) => {
           if (this.filterByReminder) {
-            if (inspection.attention === 1 || inspection.reminder !== null) {
+            if (inspection.attention === 1 || inspection.reminder !== null || inspection.reminder_date !== null) {
               return inspection
             }
           } else {
@@ -917,7 +934,8 @@ export default {
   .notes {
     display: block;
     display: -webkit-box;
-    max-height: 24px;
+    max-height: 30px;
+    padding: 8px 0;
     margin-bottom: 5px;
     overflow: hidden;
     font-size: 80%;

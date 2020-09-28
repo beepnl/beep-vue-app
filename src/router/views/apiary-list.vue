@@ -315,7 +315,7 @@ export default {
             if (
               value !== null &&
               typeof value === 'string' &&
-              key !== ('description' || 'type' || 'hex_color' || 'created_at')
+              key !== ('description' || 'hex_color')
             ) {
               return value.toLowerCase().includes(this.search.toLowerCase())
             }
@@ -331,6 +331,8 @@ export default {
                     return value
                       .toLowerCase()
                       .includes(this.search.toLowerCase())
+                  } else if (key === 'id') {
+                    return value.toString().includes(this.search)
                   } else if (key === 'queen' && value !== null) {
                     return Object.entries(value).some(([key, value]) => {
                       if (
@@ -357,7 +359,10 @@ export default {
             return {
               ...hiveSet,
               hives: hiveSet.hives.filter(
-                (hive) => hive.attention === 1 || hive.reminder !== null
+                (hive) =>
+                  hive.attention === 1 ||
+                  hive.reminder !== null ||
+                  hive.reminder_date !== null
               ),
             }
           } else {
