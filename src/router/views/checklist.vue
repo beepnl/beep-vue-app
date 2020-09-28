@@ -30,7 +30,15 @@
           type="submit"
           :disabled="!valid"
         >
-          <v-icon left>mdi-check</v-icon>
+          <v-progress-circular
+            v-if="showLoadingIcon"
+            class="ml-n1 mr-2"
+            size="18"
+            width="2"
+            color="primary"
+            indeterminate
+          />
+          <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
           {{ $t('save') + ' ' + $tc('checklist', 1) }}
         </v-btn>
       </v-toolbar>
@@ -90,6 +98,7 @@ export default {
       valid: false,
       hive_id: null,
       inspection_edit: null,
+      showLoadingIcon: false,
     }
   },
   computed: {
@@ -151,6 +160,7 @@ export default {
     },
     async saveChecklist() {
       if (this.$refs.form.validate()) {
+        this.showLoadingIcon = true
         var categoryIds = null
         if (this.activeChecklist.category_ids.length > 0) {
           categoryIds = this.activeChecklist.category_ids.join(',')
@@ -187,6 +197,7 @@ export default {
                 if (error.name === 'NavigationDuplicated') {
                   this.getChecklistById(this.id)
                   this.getChecklistTaxonomy(this.id)
+                  this.showLoadingIcon = false
                 }
               })
             }

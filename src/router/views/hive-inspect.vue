@@ -38,7 +38,15 @@
           type="submit"
           :disabled="!valid"
         >
-          <v-icon left>mdi-check</v-icon>
+          <v-progress-circular
+            v-if="showLoadingIcon"
+            class="ml-n1 mr-2"
+            size="18"
+            width="2"
+            color="primary"
+            indeterminate
+          />
+          <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
           {{ $t('save') + ' ' + $tc('inspection', 1) }}
         </v-btn>
       </v-toolbar>
@@ -358,6 +366,7 @@ export default {
       selectedChecklistId: null,
       showGeneral: true,
       showCategoriesByIndex: [],
+      showLoadingIcon: false,
       valid: false,
     }
   },
@@ -553,6 +562,7 @@ export default {
     },
     async saveInspection() {
       if (this.$refs.form.validate()) {
+        this.showLoadingIcon = true
         console.log('saving Inspection...')
         console.log(this.activeInspection)
         try {

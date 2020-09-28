@@ -34,7 +34,17 @@
           >mdi-delete</v-icon
         >
         <v-btn class="mr-n2" icon type="submit" :disabled="!valid">
-          <v-icon dark color="primary">mdi-check</v-icon>
+          <v-progress-circular
+            v-if="showLoadingIcon"
+            class="mr-2"
+            size="18"
+            width="2"
+            color="primary"
+            indeterminate
+          />
+          <v-icon v-if="!showLoadingIcon" dark color="primary"
+            >mdi-check</v-icon
+          >
         </v-btn>
       </v-toolbar>
 
@@ -287,6 +297,7 @@ export default {
       queenHasColor: false,
       activeHive: null,
       valid: false,
+      showLoadingIcon: false,
     }
   },
   computed: {
@@ -455,6 +466,7 @@ export default {
     },
     async saveHive() {
       if (this.$refs.form.validate()) {
+        this.showLoadingIcon = true
         try {
           const response = await this.$store.dispatch(
             'hives/saveHiveSettings',

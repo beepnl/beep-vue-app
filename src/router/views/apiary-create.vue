@@ -394,7 +394,15 @@
                 type="submit"
                 :disabled="!valid"
               >
-                <v-icon left>mdi-check</v-icon>
+                <v-progress-circular
+                  v-if="showLoadingIcon"
+                  class="ml-n1 mr-2"
+                  size="18"
+                  width="2"
+                  color="primary"
+                  indeterminate
+                />
+                <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
                 {{ $t('save') }}
               </v-btn>
             </div>
@@ -450,6 +458,7 @@ export default {
       newApiaryNumber: 0,
       changeCounter: 0,
       valid: false,
+      showLoadingIcon: false,
     }
   },
   computed: {
@@ -624,6 +633,7 @@ export default {
   methods: {
     async createApiary() {
       if (this.$refs.form.validate()) {
+        this.showLoadingIcon = true
         try {
           const response = await this.$store.dispatch(
             'locations/createApiary',
