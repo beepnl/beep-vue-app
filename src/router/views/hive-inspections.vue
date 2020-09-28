@@ -623,7 +623,11 @@ export default {
       var propertyFilteredInspections = textFilteredInspections
         .map((inspection) => {
           if (this.filterByReminder) {
-            if (inspection.attention === 1 || inspection.reminder !== null || inspection.reminder_date !== null) {
+            if (
+              inspection.attention === 1 ||
+              inspection.reminder !== null ||
+              inspection.reminder_date !== null
+            ) {
               return inspection
             }
           } else {
