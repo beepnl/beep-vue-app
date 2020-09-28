@@ -1,5 +1,8 @@
 <template>
-  <v-card>
+  <v-card class="login-card d-flex flex-column align-center">
+    <div class="login-logo mt-2">
+      <a href="/"><img v-cloak src="@assets/img/beep-icon-logo.svg"/></a>
+    </div>
     <v-form ref="form" v-model="valid" @submit.prevent="login">
       <v-card-title>{{ $t('login_title') }}</v-card-title>
       <v-card-text>
@@ -115,3 +118,14 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.login-card {
+  width: 90%;
+  margin: 50px auto;
+  @include for-tablet-portrait-up {
+    width: 380px;
+    margin: 10% auto;
+  }
+}
+</style>
