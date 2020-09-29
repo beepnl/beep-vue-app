@@ -320,22 +320,23 @@
             <tr v-for="(itemByDate, i) in matchedItemsByDate" :key="i">
               <td
                 class="tdr"
-                :class="itemByDate.items === null ? 'header' : ''"
+                :class="
+                  itemByDate.items === null ? 'header expandable-header' : ''
+                "
                 @click="toggleCategory($event.target.textContent)"
               >
                 <v-icon
                   v-if="itemByDate.items === null"
-                  :id="`toggle-icon-${i}`"
+                  :id="`toggle-icon-${itemByDate.name}`"
                   left
-                  class="toggle-icon mdi mdi-minus"
-                  @click="
-                    toggleCategory(
-                      // eslint-disable vue/comma-dangle
-                      $event.toElement.nextSibling.nextElementSibling
-                        .textContent,
-                      $event.target.id
-                    )
+                  :class="
+                    `toggle-icon mdi ${
+                      hiddenCategories.includes(itemByDate.name)
+                        ? 'mdi-plus'
+                        : 'mdi-minus'
+                    }`
                   "
+                  @click="toggleCategory(itemByDate.name)"
                 ></v-icon>
                 <span v-if="itemByDate.items !== null" class="ancestors">{{
                   itemByDate.anc
@@ -812,16 +813,11 @@ export default {
       if (value < 11) return '#069518'
       return '#F29100'
     },
-    toggleCategory(string, toggleElement = false) {
+    toggleCategory(string) {
       if (this.hiddenCategories.includes(string)) {
         this.hiddenCategories.splice(this.hiddenCategories.indexOf(string), 1)
       } else {
         this.hiddenCategories.push(string)
-      }
-
-      if (toggleElement) {
-        var element = document.getElementById(toggleElement)
-        element.classList.toggle('mdi-plus')
       }
     },
     scoreAmountColor(value) {
@@ -1044,6 +1040,9 @@ export default {
   }
   &.header {
     padding: 8px 16px;
+    &.expandable-header {
+      cursor: pointer;
+    }
   }
   .toggle-icon {
     float: left;
