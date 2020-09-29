@@ -1,7 +1,12 @@
 <template>
   <Layout :title="`${$t('edit')} ${$tc('hive', 1)}`" :no-box-shadow="true">
     <h1
-      v-if="activeHive && activeHive.name !== undefined && !activeHive.editable"
+      v-if="
+        activeHive &&
+          typeof activeHive.name !== 'undefined' &&
+          !activeHive.editable &&
+          !activeHive.owner
+      "
       class="unauthorized-title"
     >
       {{
