@@ -1,127 +1,74 @@
 <template>
-  <v-card
-    :class="
-      `hive-card d-flex flex-column justify-end align-start ${
-        apiaryView ? 'apiary-view' : ''
-      }`
-    "
-    :style="
-      `border-color: ${
-        hiveSet.hex_color
-          ? hiveSet.hex_color + ' !important'
-          : '#ffa000 !important'
-      };`
-    "
-    outlined
-  >
-    <v-row v-if="!apiaryView" class="ml-0 mb-3 mr-2">
-      <h4
-        v-if="gridView"
-        class="hive-name mb-3"
-        v-text="
-          `
-      ${hive.name.length < 25 ? hive.name : hive.name.substring(0, 25) + '...'}
-      `
-        "
-      >
-      </h4>
-      <div
-        v-if="listView && hiveSet.users && hiveSet.users.length"
-        class="d-flex flex-row"
-      >
+  <div>
+    <v-card
+      :class="
+        `hive-card d-flex flex-column justify-end align-start ${
+          apiaryView ? 'apiary-view' : ''
+        }`
+      "
+      :style="
+        `border-color: ${
+          hiveSet.hex_color
+            ? hiveSet.hex_color + ' !important'
+            : '#ffa000 !important'
+        };`
+      "
+      outlined
+      @click="overlay = true"
+    >
+      <v-row v-if="!apiaryView" class="ml-0 mb-3 mr-2">
         <h4
+          v-if="gridView"
           class="hive-name mb-3"
           v-text="
-            `${
-              hive.name.length < 35
-                ? hive.name
-                : hive.name.substring(0, 35) + '...'
-            }`
+            `
+      ${hive.name.length < 25 ? hive.name : hive.name.substring(0, 25) + '...'}
+      `
           "
         >
         </h4>
-        <pre class="caption hive-name-caption" v-text="` (${hive.location})`">
-        </pre>
-      </div>
-      <h4
-        v-if="listView && !hiveSet.users"
-        class="hive-name mb-3"
-        v-text="
-          `
+        <div
+          v-if="listView && hiveSet.users && hiveSet.users.length"
+          class="d-flex flex-row"
+        >
+          <h4
+            class="hive-name mb-3"
+            v-text="
+              `${
+                hive.name.length < 35
+                  ? hive.name
+                  : hive.name.substring(0, 35) + '...'
+              }`
+            "
+          >
+          </h4>
+          <pre class="caption hive-name-caption" v-text="` (${hive.location})`">
+          </pre>
+        </div>
+        <h4
+          v-if="listView && !hiveSet.users"
+          class="hive-name mb-3"
+          v-text="
+            `
       ${hive.name.length < 50 ? hive.name : hive.name.substring(0, 50) + '...'}
       `
-        "
-      >
-      </h4>
-    </v-row>
-
-    <div class="hive-details d-flex flex-no-wrap justify-flex-start align-end">
-      <router-link
-        v-if="hive.editable === undefined || hive.editable"
-        class="hive-edit-link d-flex flex-column align-center"
-        :to="{
-          name: `hive-edit`,
-          params: { id: hive.id },
-        }"
-      >
-        <div v-if="apiaryView" class="red--text apiary-view-alert">
-          <v-icon
-            v-if="hive.attention || hive.reminder || hive.reminder_date"
-            class="red--text"
-          >
-            mdi-alert-circle
-          </v-icon>
-        </div>
-        <HiveIcon :hive="hive"></HiveIcon>
-      </router-link>
-      <HiveIcon v-else :hive="hive"></HiveIcon>
-
-      <div v-if="!apiaryView" class="hive-details-icons-text pl-2 pr-0 py-0">
-        <div
-          class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
+          "
         >
-          <div class="mr-2 my-0">
-            <router-link
-              :to="{
-                name: `${
-                  hive.last_inspection_date !== null
-                    ? 'hive-inspections'
-                    : 'hive-inspect'
-                }`,
-                params: { id: hive.id },
-              }"
-            >
-              <v-icon v-if="hive.impression === 1" class="red--text">
-                mdi-emoticon-sad
-              </v-icon>
-              <v-icon v-if="hive.impression === 3" class="green--text">
-                mdi-emoticon-happy
-              </v-icon>
-              <v-icon v-if="hive.impression === 2" class="orange--text">
-                mdi-emoticon-neutral
-              </v-icon>
-              <v-icon v-if="!hive.impression" class="color-grey">
-                mdi-pencil-circle
-              </v-icon>
-            </router-link>
-          </div>
-          <span
-            v-if="listView"
-            :class="
-              `${
-                hive.last_inspection_date !== null ? '' : 'color-grey'
-              } mr-2 last-visit`
-            "
-            v-text="lastVisit(hive)"
-          >
-          </span>
-        </div>
+        </h4>
+      </v-row>
 
-        <div
-          v-if="hive.attention || hive.reminder || hive.reminder_date"
-          class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
+      <div
+        class="hive-details d-flex flex-no-wrap justify-flex-start align-end"
+      >
+        <router-link
+          v-if="hive.editable === undefined || hive.editable"
+          class="hive-edit-link d-flex flex-column align-center"
+          :to="{
+            name: `hive-edit`,
+            params: { id: hive.id },
+          }"
         >
-          <div class="mr-2 my-0">
+          <div v-if="apiaryView" class="red--text apiary-view-alert">
             <v-icon
               v-if="hive.attention || hive.reminder || hive.reminder_date"
               class="red--text"
@@ -129,109 +76,262 @@
               mdi-alert-circle
             </v-icon>
           </div>
-          <span
-            v-if="hive.reminder_date"
-            class="to-do-date mr-2"
-            v-text="momentifyDayMonth(hive.reminder_date)"
+          <HiveIcon :hive="hive"></HiveIcon>
+        </router-link>
+        <HiveIcon v-else :hive="hive"></HiveIcon>
+
+        <div v-if="!apiaryView" class="hive-details-icons-text pl-2 pr-0 py-0">
+          <div
+            class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
           >
-          </span>
-          <span v-if="hive.reminder && listView" v-text="hive.reminder"> </span>
-        </div>
-
-        <div
-          v-if="hive.queen !== null"
-          class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
-        >
-          <div class="mr-2 my-0">
-            <v-sheet
+            <div class="mr-2 my-0">
+              <router-link
+                :to="{
+                  name: `${
+                    hive.last_inspection_date !== null
+                      ? 'hive-inspections'
+                      : 'hive-inspect'
+                  }`,
+                  params: { id: hive.id },
+                }"
+              >
+                <v-icon v-if="hive.impression === 1" class="red--text">
+                  mdi-emoticon-sad
+                </v-icon>
+                <v-icon v-if="hive.impression === 3" class="green--text">
+                  mdi-emoticon-happy
+                </v-icon>
+                <v-icon v-if="hive.impression === 2" class="orange--text">
+                  mdi-emoticon-neutral
+                </v-icon>
+                <v-icon v-if="!hive.impression" class="color-grey">
+                  mdi-pencil-circle
+                </v-icon>
+              </router-link>
+            </div>
+            <span
+              v-if="listView"
               :class="
-                `beep-icon beep-icon-queen  ${
-                  darkIconColor(hive.queen.color) ? 'dark' : ''
-                }`
+                `${
+                  hive.last_inspection_date !== null ? '' : 'color-grey'
+                } mr-2 last-visit`
               "
-              :color="hive.queen.color"
+              v-text="lastVisit(hive)"
             >
-            </v-sheet>
+            </span>
           </div>
-          <div v-if="hive.id % 7 === 0 || hive.id === 1" class="mr-2 my-0">
-            <v-icon class="red--text">
-              mdi-bugle
-            </v-icon>
-          </div>
-          <div v-if="hive.id % 4 === 0 || hive.id === 1" class="mr-2 my-0">
-            <v-icon class="red--text">
-              mdi-duck
-            </v-icon>
-          </div>
-          <span
-            v-if="hive.queen.name && listView"
-            v-text="hive.queen.name"
-          ></span>
-        </div>
 
-        <div
-          v-if="
-            hive.id % 2 === 0 ||
-              hive.id % 3 === 0 ||
-              hive.id % 5 === 0 ||
-              hive.id === 1
-          "
-          class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
-        >
-          <div class="mr-2 my-0">
-            <v-sheet class="beep-icon beep-icon-sensors"> </v-sheet>
-          </div>
-          <div class="icon-wrapper d-flex flex-row">
-            <div class="mr-1 my-0 icon-wrapper d-flex flex-row align-center">
-              <v-icon :class="`${hive.id % 6 === 0 ? 'red--text' : ''}`">
-                mdi-weight
-              </v-icon>
+          <div
+            v-if="hive.attention || hive.reminder || hive.reminder_date"
+            class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
+          >
+            <div class="mr-2 my-0">
               <v-icon
+                v-if="hive.attention || hive.reminder || hive.reminder_date"
+                class="red--text"
+              >
+                mdi-alert-circle
+              </v-icon>
+            </div>
+            <span
+              v-if="hive.reminder_date"
+              class="to-do-date mr-2"
+              v-text="momentifyDayMonth(hive.reminder_date)"
+            >
+            </span>
+            <span v-if="hive.reminder && listView" v-text="hive.reminder">
+            </span>
+          </div>
+
+          <div
+            v-if="hive.queen !== null"
+            class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
+          >
+            <div class="mr-2 my-0">
+              <v-sheet
                 :class="
-                  `ml-n1 icon-side-arrow ${
-                    hive.id % 6 === 0 ? 'red--text' : ''
+                  `beep-icon beep-icon-queen  ${
+                    darkIconColor(hive.queen.color) ? 'dark' : ''
                   }`
                 "
+                :color="hive.queen.color"
               >
-                mdi-arrow-up-thick
+              </v-sheet>
+            </div>
+            <div v-if="hive.id % 7 === 0 || hive.id === 1" class="mr-2 my-0">
+              <v-icon class="red--text">
+                mdi-bugle
               </v-icon>
             </div>
-            <div class="mr-2 my-0 icon-wrapper d-flex flex-row align-center">
-              <v-icon :class="`${hive.id === 18 ? 'red--text' : ''}`">
-                mdi-thermometer
+            <div v-if="hive.id % 4 === 0 || hive.id === 1" class="mr-2 my-0">
+              <v-icon class="red--text">
+                mdi-duck
               </v-icon>
-              <v-icon
-                v-if="hive.id === 18"
-                class="ml-n2 mr-1 icon-side-arrow red--text"
-              >
-                mdi-arrow-down-thick
-              </v-icon>
-              <div
-                :class="
-                  `ml-n1 temp ${hive.id === 18 ? 'red--text' : 'color-grey'}`
-                "
-                >{{ Math.floor(Math.random() * 6) + 16 + '°C' }}</div
-              >
             </div>
-            <div class="my-0 icon-wrapper d-flex flex-row">
-              <v-icon>
-                mdi-volume-low
-              </v-icon>
-              <div class="sound-chart d-flex justify-center align-end">
-                <v-sheet
-                  v-for="(volumeBar, i) in volumeBars"
-                  :key="i"
-                  :height="`${volumeBar.value}%`"
-                  :class="`volume-bar ${volumeBar.alarm ? 'alarm' : ''}`"
+            <span
+              v-if="hive.queen.name && listView"
+              v-text="hive.queen.name"
+            ></span>
+          </div>
+
+          <div
+            v-if="
+              hive.id % 2 === 0 ||
+                hive.id % 3 === 0 ||
+                hive.id % 5 === 0 ||
+                hive.id === 1
+            "
+            class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
+          >
+            <div class="mr-2 my-0">
+              <v-sheet class="beep-icon beep-icon-sensors"> </v-sheet>
+            </div>
+            <div class="icon-wrapper d-flex flex-row">
+              <div class="mr-1 my-0 icon-wrapper d-flex flex-row align-center">
+                <v-icon :class="`${hive.id % 6 === 0 ? 'red--text' : ''}`">
+                  mdi-weight
+                </v-icon>
+                <v-icon
+                  :class="
+                    `ml-n1 icon-side-arrow ${
+                      hive.id % 6 === 0 ? 'red--text' : ''
+                    }`
+                  "
                 >
-                </v-sheet>
+                  mdi-arrow-up-thick
+                </v-icon>
+              </div>
+              <div class="mr-2 my-0 icon-wrapper d-flex flex-row align-center">
+                <v-icon :class="`${hive.id === 18 ? 'red--text' : ''}`">
+                  mdi-thermometer
+                </v-icon>
+                <v-icon
+                  v-if="hive.id === 18"
+                  class="ml-n2 mr-1 icon-side-arrow red--text"
+                >
+                  mdi-arrow-down-thick
+                </v-icon>
+                <div
+                  :class="
+                    `ml-n1 temp ${hive.id === 18 ? 'red--text' : 'color-grey'}`
+                  "
+                  >{{ Math.floor(Math.random() * 6) + 16 + '°C' }}</div
+                >
+              </div>
+              <div class="my-0 icon-wrapper d-flex flex-row">
+                <v-icon>
+                  mdi-volume-low
+                </v-icon>
+                <div class="sound-chart d-flex justify-center align-end">
+                  <v-sheet
+                    v-for="(volumeBar, i) in volumeBars"
+                    :key="i"
+                    :height="`${volumeBar.value}%`"
+                    :class="`volume-bar ${volumeBar.alarm ? 'alarm' : ''}`"
+                  >
+                  </v-sheet>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </v-card>
+    </v-card>
+    <v-overlay :value="overlay">
+      <v-toolbar dense light flat class="overlay-toolbar">
+        <v-spacer></v-spacer>
+        <v-toolbar-items>
+          <v-icon
+            color="primary"
+            dark
+            class="close-icon"
+            @click="overlay = !overlay"
+            >mdi-close</v-icon
+          >
+        </v-toolbar-items>
+      </v-toolbar>
+      <v-card height="370px" width="280">
+        <v-navigation-drawer dark absolute permanent width="100%">
+          <v-list>
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon>mdi-pencil-circle</v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-content>
+                <v-list-item-title>{{
+                  $t('New_inspection')
+                }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon>mdi-pencil-circle</v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-content>
+                <v-list-item-title
+                  >{{ $t('view') }}
+                  {{ $tc('inspection', 2) }}</v-list-item-title
+                >
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-icon>
+                <div class="my-0">
+                  <v-sheet class="beep-icon beep-icon-sensors"></v-sheet>
+                </div>
+              </v-list-item-icon>
+
+              <v-list-item-content>
+                <v-list-item-title
+                  >{{ $t('view') }} {{ $t('measurements') }}</v-list-item-title
+                >
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+
+          <v-divider></v-divider>
+
+          <v-list>
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon>mdi-pencil-circle</v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-content>
+                <v-list-item-title
+                  >{{ $t('edit') }} {{ $tc('hive', 1) }}</v-list-item-title
+                >
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon>mdi-account-multiple-plus</v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-content>
+                <v-list-item-title
+                  >{{ $t('share') }} {{ $tc('hive', 1) }}</v-list-item-title
+                >
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon>mdi-delete</v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-content>
+                <v-list-item-title
+                  >{{ $t('Delete') }} {{ $tc('hive', 1) }}</v-list-item-title
+                >
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-navigation-drawer>
+      </v-card>
+    </v-overlay>
+  </div>
 </template>
 
 <script>
@@ -269,6 +369,7 @@ export default {
     },
   },
   data: () => ({
+    overlay: false,
     volumeBars: [
       {
         value: 25,
@@ -408,5 +509,12 @@ export default {
       }
     }
   }
+}
+.overlay-toolbar {
+  background-color: transparent !important;
+}
+.close-icon {
+  float: right;
+  cursor: pointer;
 }
 </style>

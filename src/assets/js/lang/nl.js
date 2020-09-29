@@ -623,6 +623,8 @@ const translations = {
   with_bees: 'met bijen',
   change_checklist_confirm:
     'Weet je zeker dat je een andere kastkaart wilt selecteren? Waardes van reeds ingevulde velden zullen behouden blijven.',
+  view: 'Bekijk',
+  share: 'Deel',
 }
 
 export default translations

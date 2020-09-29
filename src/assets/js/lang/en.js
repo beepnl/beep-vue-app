@@ -619,6 +619,8 @@ const translations = {
   with_bees: 'with bees',
   change_checklist_confirm:
     'Are you sure you want to select a different checklist? Values of already filled in fields will be kept.',
+  view: 'View',
+  share: 'Share',
 }
 
 export default translations
