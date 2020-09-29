@@ -959,6 +959,7 @@ export default {
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     @include for-phone-only {
+      max-height: none;
       font-size: 10px;
     }
   }
@@ -987,7 +988,7 @@ export default {
   }
   .label-inspection {
     display: block;
-    padding: 0.2em 0.6em 0.3em;
+    padding: 0.3em 0.6em 0.2em;
     font-size: 75%;
     font-weight: 700;
     line-height: 1;
@@ -1055,6 +1056,11 @@ export default {
   @include for-phone-only {
     min-width: 100px;
     max-width: 100px;
+    span {
+      display: inline-block;
+      font-size: 12px;
+      line-height: 1.2em;
+    }
   }
 }
 
