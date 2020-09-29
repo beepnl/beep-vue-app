@@ -1006,6 +1006,9 @@ export default {
     cursor: zoom-in;
     border: 1px solid $color-grey;
     border-radius: 4px;
+    @include for-phone-only {
+      max-width: 100%;
+    }
   }
   .filler {
     width: 100%;
