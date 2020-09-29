@@ -956,11 +956,12 @@ export default {
     font-style: italic;
     line-height: 1.1em;
     text-overflow: ellipsis;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     @include for-phone-only {
       max-height: none;
       font-size: 10px;
+      -webkit-line-clamp: 3;
     }
   }
   .add-to-calendar {

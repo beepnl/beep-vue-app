@@ -7,11 +7,7 @@
   >
     <h1
       v-if="
-        inspectionId &&
-          activeInspection &&
-          activeInspection.owner === false &&
-          activeHive &&
-          activeHive.editable === false
+        inspectionId && activeInspection && activeInspection.owner === false
       "
       class="unauthorized-title"
     >
@@ -22,6 +18,26 @@
           ' ' +
           inspectionId +
           ' ' +
+          $t('not_editable')
+      }}
+    </h1>
+
+    <h1
+      v-if="
+        inspectionId === null &&
+          activeHive &&
+          activeHive.editable === false &&
+          activeHive.owner === false
+      "
+      class="unauthorized-title"
+    >
+      {{
+        $t('sorry') +
+          ', ' +
+          $tc('hive', 1) +
+          ' "' +
+          activeHive.name +
+          '" ' +
           $t('not_editable')
       }}
     </h1>
