@@ -240,21 +240,19 @@
                 <span
                   v-if="inspection.reminder !== null"
                   :title="inspection.reminder"
-                  :class="`notes ${inspection.reminder_date ? 'pb-0' : ''}`"
+                  :class="`notes ${inspection.reminder_date ? 'pt-2' : ''}`"
                   >{{ inspection.reminder }}</span
                 >
-                <span v-if="inspection.reminder_date">
+                <div v-if="inspection.reminder_date">
                   <v-menu>
                     <template v-slot:activator="{ on, attrs }">
-                      <v-btn
-                        text
-                        small
-                        class="primary--text"
+                      <span
+                        class="add-to-calendar primary--text"
                         v-bind="attrs"
                         v-on="on"
                       >
-                        {{ $t('add_to_calendar') }}
-                      </v-btn>
+                        {{ $t('add_to_calendar').toUpperCase() }}
+                      </span>
                     </template>
                     <v-list dense>
                       <v-list-item
@@ -289,7 +287,7 @@
                       </v-list-item>
                     </v-list>
                   </v-menu>
-                </span>
+                </div>
               </td>
               <td class="filler"></td>
             </tr>
@@ -301,12 +299,20 @@
                 :key="f"
                 class="tdc"
               >
-                <span
-                  v-if="inspection.reminder_date !== null"
-                  :title="inspection.reminder_date"
-                  class="reminder-date"
-                  >{{ momentify(inspection.reminder_date) }}</span
-                >
+                <div class="d-flex justify-center">
+                  <span
+                    v-if="inspection.reminder_date !== null"
+                    :title="inspection.reminder_date"
+                    class="hide-on-mobile d-flex justify-center reminder-date"
+                    v-text="momentify(inspection.reminder_date)"
+                  ></span>
+                  <span
+                    v-if="inspection.reminder_date !== null"
+                    :title="inspection.reminder_date"
+                    class="show-on-mobile d-flex justify-center reminder-date"
+                    v-text="momentifyDayMonth(inspection.reminder_date)"
+                  ></span>
+                </div>
               </td>
               <td class="filler"></td>
             </tr>
@@ -935,12 +941,13 @@ export default {
       }
     }
   }
-  .notes {
+  .notes,
+  .add-to-calendar {
     display: block;
     display: -webkit-box;
-    max-height: 30px;
-    padding: 8px 0;
-    margin-bottom: 5px;
+    max-height: 22px;
+    padding: 0;
+    margin-bottom: 0;
     overflow: hidden;
     font-size: 80%;
     font-style: italic;
@@ -952,16 +959,27 @@ export default {
       font-size: 10px;
     }
   }
+  .add-to-calendar {
+    max-height: none;
+    padding: 8px 0;
+    font-style: normal;
+    font-weight: 600;
+  }
   .reminder-date {
     width: auto;
+    max-width: 150px;
     padding: 2px 4px !important;
     font-weight: 600;
     line-height: 1rem;
     color: red;
     text-align: center;
     white-space: nowrap;
+    white-space: pre-wrap;
     border: 1px solid red;
     border-radius: 5px;
+    @include for-phone-only {
+      max-width: 80px;
+    }
   }
   .label-inspection {
     display: block;
