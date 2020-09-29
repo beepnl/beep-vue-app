@@ -39,6 +39,7 @@
                   inline
                   controls
                   rounded
+                  @click="setHiveEdited(true)"
                   @change="
                     updateHiveLayers(
                       parseInt($event),
@@ -137,6 +138,7 @@
                           :step="0.1"
                           inline
                           controls
+                          @click="setHiveEdited(true)"
                           @change="
                             updateHive(
                               $event.toString(),
@@ -170,6 +172,7 @@
                           :step="0.1"
                           inline
                           controls
+                          @click="setHiveEdited(true)"
                           @change="
                             updateHive(
                               $event.toString(),
@@ -319,6 +322,9 @@ export default {
       this.colorPreview = false
       this.overlay = false
     },
+    setHiveEdited(bool) {
+      this.$store.commit('hives/setHiveEdited', bool)
+    },
     updateHive(event, property) {
       var value = null
       if (event === null) {
@@ -337,7 +343,7 @@ export default {
         property !== 'fr_width_cm' &&
         property !== 'fr_height_cm'
       ) {
-        this.$store.commit('hives/setEdited', true) // NB edited tracking has been disabled for vue-number-input component inputs as it calls @input when hive-edit.vue is initialized, before any changes are made
+        this.setHiveEdited(true) // NB edited tracking for vue-number-input component inputs happens only via @click event as it calls @change when component is initialized, before any changes are made
       }
     },
     updateHiveLayers(value, property) {
@@ -345,10 +351,10 @@ export default {
         layer[property] = value
       })
       if (property === 'framecount') {
-        this.hive.frames = value // NB edited tracking has been disabled vue-number-input component inputs as it calls @input when hive-edit.vue is initialized, before any changes are made
+        this.hive.frames = value // NB edited tracking for vue-number-input component inputs happens only via @click event as it calls @change when component is initialized, before any changes are made
       } else {
         this.hive.frames = this.hive.layers[0].framecount
-        this.$store.commit('hives/setEdited', true)
+        this.setHiveEdited(true)
       }
       if (property === 'color') {
         this.hive[property] = value

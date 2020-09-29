@@ -219,7 +219,7 @@ export default {
           )
           this.hive.layers = remainingLayers
           this.hive.frames = this.hive.layers[0].framecount
-          this.$store.commit('hives/setEdited', true)
+          this.setHiveEdited(true)
 
           this.cancelColorPicker()
         })
@@ -275,6 +275,9 @@ export default {
       })
       return orderedLayers
     },
+    setHiveEdited(bool) {
+      this.$store.commit('hives/setHiveEdited', bool)
+    },
     updateHiveLayerColor() {
       const layerId = this.currentLayer.id || 0
       const layerKey = this.currentLayer.key || 0
@@ -284,7 +287,7 @@ export default {
       )
       this.hive.layers[layerIndex].color = this.layerColorPickerValue
       this.hive.frames = this.hive.layers[0].framecount
-      this.$store.commit('hives/setEdited', true)
+      this.setHiveEdited(true)
 
       this.cancelColorPicker()
     },
@@ -296,7 +299,7 @@ export default {
       })
       this.hive.layers = layers
       this.hive.frames = this.hive.layers[0].framecount
-      this.$store.commit('hives/setEdited', true)
+      this.setHiveEdited(true)
     },
   },
 }

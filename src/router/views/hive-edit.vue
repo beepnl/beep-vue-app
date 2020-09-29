@@ -301,6 +301,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('hives', ['hiveEdited']),
     ...mapGetters('taxonomy', ['beeRacesList']),
     queen() {
       return this.activeHive.queen
@@ -425,6 +426,7 @@ export default {
           }
         }
         this.activeHive = hive
+        this.setHiveEdited(false)
         return true
       } catch (e) {
         console.log(e)
@@ -505,6 +507,21 @@ export default {
           return true
         })
     },
+    selectLocale(array) {
+      if (array.length) {
+        const locale = this.$i18n.locale
+        if (array[0].trans[locale] === undefined) {
+          return 'en'
+        } else {
+          return locale
+        }
+      } else {
+        return 'en'
+      }
+    },
+    setHiveEdited(bool) {
+      this.$store.commit('hives/setHiveEdited', bool)
+    },
     updateQueenBirthDate() {
       this.$refs.dialog.save(this.queenBirthDate)
       if (this.activeHive.queen.color) {
@@ -525,7 +542,7 @@ export default {
       }
       this.activeHive[property] = value
       this.activeHive.frames = this.activeHive.layers[0].framecount
-      this.$store.commit('hives/setEdited', true)
+      this.setHiveEdited(true)
     },
     updateQueen(event, property) {
       var value = null
@@ -548,19 +565,7 @@ export default {
         this.useQueenMarkColor = false
       }
       this.activeHive.queen[property] = value
-      this.$store.commit('hives/setEdited', true)
-    },
-    selectLocale(array) {
-      if (array.length) {
-        const locale = this.$i18n.locale
-        if (array[0].trans[locale] === undefined) {
-          return 'en'
-        } else {
-          return locale
-        }
-      } else {
-        return 'en'
-      }
+      this.setHiveEdited(true)
     },
   },
 }

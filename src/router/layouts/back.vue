@@ -62,6 +62,7 @@ export default {
   },
   computed: {
     ...mapGetters('hives', ['hiveEdited']),
+    ...mapGetters('inspections', ['inspectionEdited']),
     ...mapGetters('locations', ['apiaryEdited']),
   },
   methods: {
@@ -69,7 +70,7 @@ export default {
       if (
         (this.$route.name === 'apiary-create' && this.apiaryEdited) ||
         (this.$route.name === 'hive-edit' && this.hiveEdited) ||
-        (this.$route.name === 'hive-inspect' && this.edited) ||
+        (this.$route.name === 'hive-inspect' && this.inspectionEdited) ||
         (this.$route.name === 'checklist' && this.edited)
       ) {
         this.$refs.confirm

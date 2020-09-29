@@ -5,7 +5,7 @@ const resource = createResource({ path: 'hives' })
 
 export const state = {
   ...resource.state,
-  edited: false,
+  hiveEdited: false,
   activeHive: null,
 }
 export const getters = {
@@ -17,7 +17,7 @@ export const getters = {
     return state.data.hives || []
   },
   hiveEdited: (state) => {
-    return state.edited
+    return state.hiveEdited
   },
   getHivesForApiary: (state) => (apiaryId) => {
     return (
@@ -29,8 +29,8 @@ export const getters = {
 }
 export const mutations = {
   ...resource.mutations,
-  setEdited: function(state, bool) {
-    state.edited = bool
+  setHiveEdited: function(state, bool) {
+    state.hiveEdited = bool
   },
   setActiveHive: function(state, hive) {
     state.activeHive = hive
@@ -47,7 +47,6 @@ export const actions = {
     return false
   },
   findById: function({ commit }, id) {
-    commit('setEdited', false)
     return resource.endpoint.read(id)
   },
   saveHiveSettings: function({ _ }, hive) {

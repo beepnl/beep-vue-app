@@ -8,7 +8,7 @@ const resource = createResource({ path: 'locations' })
 export const state = {
   ...resource.state,
   apiaryListView: 'listView',
-  edited: false,
+  apiaryEdited: false,
 }
 export const getters = {
   ...resource.getters,
@@ -19,15 +19,15 @@ export const getters = {
     return state.apiaryListView
   },
   apiaryEdited: (state) => {
-    return state.edited
+    return state.apiaryEdited
   },
 }
 export const mutations = {
   ...resource.mutations,
   // FIXME: most of the following should be either moved to local view state
   // or be replaced by endpoint actions
-  setEdited: function(state, bool) {
-    state.edited = bool
+  setApiaryEdited: function(state, bool) {
+    state.apiaryEdited = bool
   },
   setEditable: function(state, editable) {
     state.editing = editable

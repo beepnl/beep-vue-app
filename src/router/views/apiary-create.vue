@@ -570,7 +570,7 @@ export default {
         if (this.newHive !== this.apiaryTemplate) {
           if (this.changeCounter > 0) {
             // changeCounter is needed because this watcher detects a change upon instantiation of newHive which we want to disregard
-            this.$store.commit('locations/setEdited', true)
+            this.$store.commit('locations/setApiaryEdited', true)
           }
           this.changeCounter++
         }
@@ -580,7 +580,7 @@ export default {
   },
   created() {
     this.readApiaries().then((data) => {
-      this.$store.commit('locations/setEdited', false)
+      this.$store.commit('locations/setApiaryEdited', false)
       this.newApiaryNumber = data + 1
       this.newHive = {
         name: this.$i18n.tc('Location', 1) + ' ' + this.newApiaryNumber,
