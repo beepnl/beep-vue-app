@@ -628,7 +628,7 @@ export default {
 
       var propertyFilteredInspections = textFilteredInspections
         .map((inspection) => {
-          if (this.filterByReminder) {
+          if (typeof inspection !== 'undefined' && this.filterByReminder) {
             if (
               inspection.attention === 1 ||
               inspection.reminder !== null ||
@@ -641,7 +641,10 @@ export default {
           }
         })
         .map((inspection) => {
-          if (this.filterByImpression.length > 0) {
+          if (
+            typeof inspection !== 'undefined' &&
+            this.filterByImpression.length > 0
+          ) {
             if (this.filterByImpression.includes(inspection.impression)) {
               return inspection
             }
@@ -964,6 +967,7 @@ export default {
     padding: 8px 0;
     font-style: normal;
     font-weight: 600;
+    cursor: pointer;
   }
   .reminder-date {
     width: auto;
