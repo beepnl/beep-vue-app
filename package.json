@@ -40,7 +40,7 @@
     "date-fns": "2.10.0",
     "element-ui": "^2.4.5",
     "kind-of": ">=6.0.3",
-    "lodash": "4.17.15",
+    "lodash": "4.17.19",
     "luxon": "^1.24.1",
     "moment": "^2.26.0",
     "nprogress": "^0.2.0",
