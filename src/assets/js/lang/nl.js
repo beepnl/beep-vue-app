@@ -622,7 +622,7 @@ const translations = {
   bee: 'bij | bijen',
   with_bees: 'met bijen',
   change_checklist_confirm:
-    'Weet je zeker dat je een andere kastkaart wilt selecteren?',
+    'Weet je zeker dat je een andere kastkaart wilt selecteren? Waardes van reeds ingevulde velden zullen behouden blijven.',
 }
 
 export default translations
