@@ -87,6 +87,7 @@
       class="checklist-number-input"
       :step="1"
       controls
+      @click="setInspectionEdited(true)"
       @change="updateNumber($event, item.id, item.name)"
     ></VueNumberInput>
 
@@ -100,6 +101,7 @@
       class="checklist-number-input"
       :step="item.input === 'number_2_decimals' ? 0.01 : 0.1"
       controls
+      @click="setInspectionEdited(true)"
       @change="updateNumber($event, item.id, item.name)"
     ></VueNumberInput>
 
@@ -109,6 +111,7 @@
       class="checklist-number-input"
       :step="0.001"
       controls
+      @click="setInspectionEdited(true)"
       @change="updateNumber($event, item.id, item.name)"
     ></VueNumberInput>
 
@@ -119,6 +122,7 @@
       :max="0"
       :step="1"
       controls
+      @click="setInspectionEdited(true)"
       @change="updateNumber($event, item.id, item.name)"
     ></VueNumberInput>
 
@@ -130,6 +134,7 @@
       :step="1"
       controls
       :disabled="item.name === 'colony_size'"
+      @click="setInspectionEdited(true)"
       @change="updateNumber($event, item.id, item.name)"
     ></VueNumberInput>
 
@@ -273,9 +278,6 @@ export default {
     },
   },
   methods: {
-    consoleLog(event) {
-      console.log(event)
-    },
     setInspectionEdited(bool) {
       this.$store.commit('inspections/setInspectionEdited', bool)
     },
