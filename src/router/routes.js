@@ -97,6 +97,14 @@ export default [
     meta: {
       authRequired: true,
     },
+    path: '/apiaries/:id/edit',
+    name: 'apiary-edit',
+    component: () => lazyLoadView(import('@views/apiary-edit.vue')),
+  },
+  {
+    meta: {
+      authRequired: true,
+    },
     path: '/checklist/:id/edit',
     name: 'checklist',
     component: () => lazyLoadView(import('@views/checklist.vue')),

@@ -43,7 +43,7 @@
     </h1>
 
     <v-form v-else ref="form" v-model="valid" @submit.prevent="saveInspection">
-      <v-toolbar class="hive-inspect-bar" dense light>
+      <v-toolbar class="save-bar" dense light>
         <v-spacer></v-spacer>
         <v-btn
           tile
@@ -68,7 +68,7 @@
 
       <v-container
         v-if="activeInspection && selectedChecklist !== null"
-        class="hive-inspect-content"
+        class="content-container"
       >
         <v-row>
           <v-col cols="12" sm="4">
@@ -651,18 +651,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.hive-inspect-bar {
-  position: fixed;
-  z-index: 2;
-  width: 100%;
-  margin-top: -56px;
-  background-color: $color-orange-light !important;
-  border-bottom: 1px solid #fff5e2 !important;
-  box-shadow: none !important;
-}
-.hive-inspect-content {
-  margin-top: 56px;
-}
 .select-checklist {
   margin-top: 1px !important;
 }

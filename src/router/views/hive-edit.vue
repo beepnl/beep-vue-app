@@ -25,7 +25,7 @@
         v-if="
           activeHive && activeHive.name !== undefined && activeHive.editable
         "
-        class="hive-edit-bar"
+        class="save-bar"
         dense
         light
       >
@@ -57,7 +57,7 @@
         v-if="
           activeHive && activeHive.name !== undefined && activeHive.editable
         "
-        class="hive-edit-content"
+        class="content-container"
       >
         <v-row>
           <v-col cols="12" sm="6" md="4">
@@ -629,23 +629,6 @@ export default {
 </script>
 
 <style lang="scss">
-.unauthorized-title {
-  padding-top: 40px;
-  text-align: center;
-}
-
-.hive-edit-bar {
-  position: fixed;
-  z-index: 2;
-  width: 100%;
-  margin-top: -56px;
-  background-color: $color-orange-light !important;
-  border-bottom: 1px solid #fff5e2 !important;
-  box-shadow: none !important;
-}
-.hive-edit-content {
-  margin-top: 56px;
-}
 .hive-edit-name {
   padding-top: 0 !important;
   font-size: 2rem;

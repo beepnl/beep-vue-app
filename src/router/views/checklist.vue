@@ -20,7 +20,7 @@
     </h1>
 
     <v-form ref="form" v-model="valid" @submit.prevent="saveChecklist">
-      <v-toolbar class="checklist-bar" dense light>
+      <v-toolbar class="save-bar" dense light>
         <v-spacer></v-spacer>
         <v-btn
           tile
@@ -45,7 +45,7 @@
 
       <v-container
         v-if="activeChecklist && activeChecklist.owner"
-        class="checklist-content"
+        class="content-container"
       >
         <v-row>
           <v-col cols="12" sm="6" md="4">
@@ -220,18 +220,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.checklist-bar {
-  position: fixed;
-  z-index: 2;
-  width: 100%;
-  margin-top: -56px;
-  background-color: $color-orange-light !important;
-  border-bottom: 1px solid #fff5e2 !important;
-  box-shadow: none !important;
-}
-.checklist-content {
-  margin-top: 56px;
-}
-</style>

@@ -1,3 +1,18 @@
+.border-bottom {
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid $color-grey-light;
+
+  @include for-phone-only {
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+}
+
+.content-container {
+  margin-top: 56px;
+}
+
 .rounded-border {
   padding: 12px;
   border: 1px solid $color-grey-light;
@@ -8,13 +23,12 @@
   }
 }
 
-.border-bottom {
-  padding-bottom: 12px;
-  margin-bottom: 12px;
-  border-bottom: 1px solid $color-grey-light;
-
-  @include for-phone-only {
-    padding: 10px;
-    margin-bottom: 10px;
-  }
+.save-bar {
+  position: fixed;
+  z-index: 2;
+  width: 100%;
+  margin-top: -56px;
+  background-color: $color-orange-light !important;
+  border-bottom: 1px solid #fff5e2 !important;
+  box-shadow: none !important;
 }

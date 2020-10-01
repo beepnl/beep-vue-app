@@ -210,6 +210,69 @@
               "
             >
             </pre>
+            <div v-if="typeof hiveSet.owner !== 'undefined' && hiveSet.owner">
+              <v-menu>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-icon
+                    small
+                    class="color-grey-light ml-2"
+                    v-bind="attrs"
+                    v-on="on"
+                    >mdi-cog</v-icon
+                  >
+                </template>
+                <v-list dense>
+                  <v-list-item-group>
+                    <v-list-item
+                      :to="{
+                        name: 'apiary-edit',
+                        params: { id: hiveSet.id },
+                      }"
+                    >
+                      <v-list-item-icon class="mr-3">
+                        <v-icon>mdi-pencil</v-icon>
+                      </v-list-item-icon>
+
+                      <v-list-item-content>
+                        <v-list-item-title
+                          v-text="$t('edit') + ' ' + $t('details')"
+                        ></v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-icon class="mr-3">
+                        <v-icon>mdi-plus</v-icon>
+                      </v-list-item-icon>
+
+                      <v-list-item-content>
+                        <v-list-item-title
+                          v-text="$t('New') + ' ' + $tc('hive', 1)"
+                        ></v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list-item-group>
+
+                  <v-divider v-if="hiveSet.owner" class="my-1"></v-divider>
+
+                  <v-list-item-group>
+                    <v-list-item
+                      v-if="hiveSet.owner"
+                      @click="confirmDeleteApiary(hiveSet.id)"
+                    >
+                      <v-list-item-icon class="mr-3">
+                        <v-icon class="red--text">mdi-delete</v-icon>
+                      </v-list-item-icon>
+
+                      <v-list-item-content>
+                        <v-list-item-title class="red--text">{{
+                          $t('remove_apiary')
+                        }}</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list-item-group>
+                </v-list>
+              </v-menu>
+            </div>
           </div>
           <ScaleTransition
             :duration="300"
@@ -436,6 +499,27 @@ export default {
     })
   },
   methods: {
+    async deleteApiaryById(id) {
+      try {
+        const response = await this.$store.dispatch(
+          'locations/deleteApiary',
+          id
+        )
+        if (!response) {
+          this.snackbar.text = this.$i18n.t('something_wrong')
+          this.snackbar.show = true
+        }
+        setTimeout(() => {
+          return this.$router.push({
+            name: 'home',
+          })
+        }, 100) // wait for API to update locations/hives
+      } catch (error) {
+        console.log(error)
+        this.snackbar.text = this.$i18n.t('something_wrong')
+        this.snackbar.show = true
+      }
+    },
     async deleteHiveById(id) {
       try {
         const response = await this.$store.dispatch('hives/deleteHive', id)
@@ -466,6 +550,18 @@ export default {
       } catch (e) {
         console.log(e)
       }
+    },
+    confirmDeleteApiary(id) {
+      this.$refs.confirm
+        .open(this.$i18n.t('Delete'), this.$i18n.t('remove_apiary') + '?', {
+          color: 'red',
+        })
+        .then((confirm) => {
+          this.deleteApiaryById(id)
+        })
+        .catch((reject) => {
+          return true
+        })
     },
     confirmDeleteHive(id) {
       this.$refs.confirm
