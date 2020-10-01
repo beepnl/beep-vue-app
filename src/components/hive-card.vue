@@ -163,7 +163,7 @@
                 </v-list-item>
               </v-list-item-group>
 
-              <v-divider v-if="hive.editable || hive.owner"></v-divider>
+              <v-divider v-if="hive.editable || hive.owner" class="my-1"></v-divider>
 
               <v-list-item-group>
                 <v-list-item
@@ -197,7 +197,7 @@
                 </v-list-item>
               </v-list-item-group>
 
-              <v-divider v-if="hive.owner"></v-divider>
+              <v-divider v-if="hive.owner" class="my-1"></v-divider>
 
               <v-list-item-group>
                 <v-list-item
@@ -209,10 +209,9 @@
                   </v-list-item-icon>
 
                   <v-list-item-content>
-                    <v-list-item-title class="red--text"
-                      >{{ $t('Delete') }}
-                      {{ $tc('hive', 1) }}</v-list-item-title
-                    >
+                    <v-list-item-title class="red--text">{{
+                      $t('remove_hive')
+                    }}</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
               </v-list-item-group>
@@ -280,7 +279,17 @@
             v-text="momentifyDayMonth(hive.reminder_date)"
           >
           </span>
-          <span v-if="hive.reminder && listView" v-text="hive.reminder"> </span>
+          <span
+            v-if="hive.reminder && listView"
+            v-text="
+              `${
+                hive.reminder < 25
+                  ? hive.reminder
+                  : hive.reminder.substring(0, 25) + '...'
+              }`
+            "
+          >
+          </span>
         </div>
 
         <div
@@ -562,19 +571,11 @@ export default {
   }
 }
 .hive-menu-list {
-  .v-list-item-group {
-    .v-list-item:first-child {
-      padding-top: 4px !important;
-    }
-    .v-list-item:last-child {
-      padding-bottom: 4px !important;
-    }
+  .v-list-item {
+    padding-right: 24px !important;
   }
   .v-list-item__title {
     line-height: 1.5rem !important;
-  }
-  .v-list-item {
-    padding-right: 24px !important;
   }
 }
 </style>
