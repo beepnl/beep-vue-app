@@ -96,7 +96,7 @@
                   }"
                 >
                   <v-list-item-icon class="mr-3">
-                    <v-icon>mdi-pencil-circle</v-icon>
+                    <v-icon>mdi-pencil</v-icon>
                   </v-list-item-icon>
 
                   <v-list-item-content>
@@ -119,18 +119,7 @@
                   }"
                 >
                   <v-list-item-icon class="mr-3">
-                    <v-icon v-if="hive.impression === 1">
-                      mdi-emoticon-sad
-                    </v-icon>
-                    <v-icon v-if="hive.impression === 3">
-                      mdi-emoticon-happy
-                    </v-icon>
-                    <v-icon v-if="hive.impression === 2">
-                      mdi-emoticon-neutral
-                    </v-icon>
-                    <v-icon v-if="!hive.impression">
-                      mdi-pencil-circle
-                    </v-icon>
+                    <v-icon>mdi-magnify</v-icon>
                   </v-list-item-icon>
 
                   <v-list-item-content>
@@ -228,18 +217,38 @@
           class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
         >
           <div class="mr-2 my-0">
-            <v-icon v-if="hive.impression === 1" class="red--text">
-              mdi-emoticon-sad
-            </v-icon>
-            <v-icon v-if="hive.impression === 3" class="green--text">
-              mdi-emoticon-happy
-            </v-icon>
-            <v-icon v-if="hive.impression === 2" class="orange--text">
-              mdi-emoticon-neutral
-            </v-icon>
-            <v-icon v-if="!hive.impression" class="color-grey">
-              mdi-pencil-circle
-            </v-icon>
+            <router-link
+              :to="{
+                name: `${
+                  hive.last_inspection_date !== null
+                    ? 'hive-inspections'
+                    : 'hive-inspect'
+                }`,
+                params: { id: hive.id },
+              }"
+            >
+              <v-icon v-if="hive.impression === 1" class="red--text">
+                mdi-emoticon-sad
+              </v-icon>
+              <v-icon v-if="hive.impression === 3" class="green--text">
+                mdi-emoticon-happy
+              </v-icon>
+              <v-icon v-if="hive.impression === 2" class="orange--text">
+                mdi-emoticon-neutral
+              </v-icon>
+              <v-icon
+                v-if="hive.last_inspection_date === null"
+                class="color-grey"
+              >
+                mdi-pencil-circle
+              </v-icon>
+              <div
+                v-if="hive.last_inspection_date !== null && !hive.impression"
+                class="my-0"
+              >
+                <v-sheet class="beep-icon beep-icon-magnify"></v-sheet>
+              </div>
+            </router-link>
           </div>
           <span
             v-if="listView"
