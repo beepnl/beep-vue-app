@@ -64,13 +64,46 @@
             <v-text-field
               v-if="activeHive"
               :value="activeHive.name"
-              class="hive-edit-name mb-3"
+              class="hive-edit-name mb-sm-3"
               counter="30"
               :rules="requiredRule"
               required
               @input="updateHive($event, 'name')"
             >
             </v-text-field>
+          </v-col>
+
+          <v-col cols="12" sm="6" md="4">
+            <div>
+              <div class="beep-label" v-text="`${$tc('Location', 1)}`"></div>
+              <Treeselect
+                v-if="apiaries !== null"
+                v-model="activeHive.location_id"
+                :options="apiaries"
+                :normalizer="normalizerApiary"
+                :placeholder="`${$t('Select')} ${$tc('location', 1)}`"
+                :no-results-text="`${$t('no_results')}`"
+                :disabled="!activeHive.owner"
+                @input="setHiveEdited(true)"
+              />
+              <p v-if="apiaries === null" class="color-grey-medium mt-3">{{
+                $t('no_apiaries_yet')
+              }}</p>
+            </div>
+          </v-col>
+
+          <v-col cols="12" sm="6" md="4">
+            <div>
+              <div class="beep-label" v-text="`${$t('Hive_order')}`"></div>
+              <VueNumberInput
+                :value="activeHive.order"
+                class="hive-number-input"
+                :step="1"
+                inline
+                controls
+                @change="updateHive($event, 'order')"
+              ></VueNumberInput>
+            </div>
           </v-col>
         </v-row>
 
@@ -262,6 +295,7 @@ import Layout from '@layouts/back.vue'
 import { momentMixin } from '@mixins/momentMixin'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+import VueNumberInput from '@chenfengyuan/vue-number-input'
 
 export default {
   components: {
@@ -269,6 +303,7 @@ export default {
     HiveEditDetails,
     Layout,
     Treeselect,
+    VueNumberInput,
   },
   mixins: [darkIconMixin, momentMixin],
   data: function() {
@@ -277,6 +312,13 @@ export default {
         show: false,
         timeout: 2000,
         text: 'notification',
+      },
+      apiaries: null,
+      normalizerApiary(node) {
+        return {
+          id: node.id,
+          label: node.name,
+        }
       },
       queen_colors: [
         '#4A90E2',
@@ -408,6 +450,7 @@ export default {
   },
   created() {
     this.readHive()
+    this.readApiaries()
     this.readTaxonomy()
   },
   methods: {
@@ -430,6 +473,15 @@ export default {
         console.log(error)
         this.snackbar.text = this.$i18n.t('something_wrong')
         this.snackbar.show = true
+      }
+    },
+    async readApiaries() {
+      try {
+        const response = await this.$store.dispatch('locations/findAll')
+        this.apiaries = response.locations
+        return true
+      } catch (e) {
+        console.log(e)
       }
     },
     async readHive() {
@@ -597,11 +649,18 @@ export default {
 .hive-edit-name {
   padding-top: 0 !important;
   font-size: 2rem;
+  @include for-tablet-portrait-up {
+    margin-top: 19px;
+  }
 
   input {
     min-height: 36px;
     padding-top: 0 !important;
   }
+}
+
+.hive-number-input {
+  max-width: 130px !important;
 }
 
 .flex-color-picker {
