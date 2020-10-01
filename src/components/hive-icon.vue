@@ -63,8 +63,8 @@ export default {
         return hive.layers[0].framecount * 3.5
       }
     },
-    showHiveMenu($event) {
-      this.$emit('show-hive-menu', $event)
+    showHiveMenu(event) {
+      this.$emit('show-hive-menu', event)
     },
     orderedLayers: function(hive) {
       return hive.layers.slice().sort(function(a, b) {

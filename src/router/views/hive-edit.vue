@@ -76,7 +76,7 @@
 
         <HiveEditDetails :hive="activeHive"></HiveEditDetails>
 
-        <v-row class="queen-details-wrapper">
+        <v-row id="queen-details" class="queen-details-wrapper">
           <v-col cols="12">
             <div
               class="overline mb-3"
@@ -411,7 +411,7 @@ export default {
     this.readTaxonomy()
   },
   methods: {
-        async deleteHive() {
+    async deleteHive() {
       try {
         const response = await this.$store.dispatch(
           'hives/deleteHive',
