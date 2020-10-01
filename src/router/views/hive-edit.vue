@@ -35,7 +35,7 @@
           dark
           class="mr-4"
           color="red"
-          @click="deleteHive"
+          @click="confirmDeleteHive"
           >mdi-delete</v-icon
         >
         <v-btn class="mr-n2" icon type="submit" :disabled="!valid">
@@ -411,6 +411,27 @@ export default {
     this.readTaxonomy()
   },
   methods: {
+        async deleteHive() {
+      try {
+        const response = await this.$store.dispatch(
+          'hives/deleteHive',
+          this.activeHive.id
+        )
+        if (!response) {
+          this.snackbar.text = this.$i18n.t('something_wrong')
+          this.snackbar.show = true
+        }
+        setTimeout(() => {
+          return this.$router.push({
+            name: 'home',
+          })
+        }, 100) // wait for API to update locations/hives
+      } catch (error) {
+        console.log(error)
+        this.snackbar.text = this.$i18n.t('something_wrong')
+        this.snackbar.show = true
+      }
+    },
     async readHive() {
       try {
         const response = await this.$store.dispatch('hives/findById', this.id)
@@ -450,27 +471,6 @@ export default {
         this.$router.push({ name: '404' })
       }
     },
-    async delete() {
-      try {
-        const response = await this.$store.dispatch(
-          'hives/deleteHive',
-          this.activeHive.id
-        )
-        if (!response) {
-          this.snackbar.text = this.$i18n.t('something_wrong')
-          this.snackbar.show = true
-        }
-        setTimeout(() => {
-          return this.$router.push({
-            name: 'home',
-          })
-        }, 100) // wait for API to update locations/hives
-      } catch (error) {
-        console.log(error)
-        this.snackbar.text = this.$i18n.t('something_wrong')
-        this.snackbar.show = true
-      }
-    },
     async saveHive() {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
@@ -500,13 +500,13 @@ export default {
       this.modal = false
       this.queenColor = this.activeHive.queen.color
     },
-    deleteHive() {
+    confirmDeleteHive() {
       this.$refs.confirm
         .open(this.$i18n.t('Delete'), this.$i18n.t('remove_hive') + '?', {
           color: 'red',
         })
         .then((confirm) => {
-          this.delete()
+          this.deleteHive()
         })
         .catch((reject) => {
           return true

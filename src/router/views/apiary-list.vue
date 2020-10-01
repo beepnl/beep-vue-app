@@ -233,6 +233,7 @@
                 :list-view="listView"
                 :grid-view="gridView"
                 :apiary-view="apiaryView"
+                @confirm-delete-hive="confirmDeleteHive($event)"
               ></HiveCard>
             </v-col>
           </ScaleTransition>
@@ -247,10 +248,13 @@
         </v-row>
       </v-container>
     </div>
+
+    <Confirm ref="confirm"></Confirm>
   </Layout>
 </template>
 
 <script>
+import Confirm from '@components/confirm.vue'
 import HiveCard from '@components/hive-card.vue'
 import Layout from '@layouts/main.vue'
 import { mapGetters } from 'vuex'
@@ -259,6 +263,7 @@ import { ScaleTransition } from 'vue2-transitions'
 
 export default {
   components: {
+    Confirm,
     HiveCard,
     Layout,
     ScaleTransition,
@@ -431,6 +436,22 @@ export default {
     })
   },
   methods: {
+    async deleteHiveById(id) {
+      try {
+        const response = await this.$store.dispatch('hives/deleteHive', id)
+        if (!response) {
+          this.snackbar.text = this.$i18n.t('something_wrong')
+          this.snackbar.show = true
+        }
+        setTimeout(() => {
+          this.readApiariesAndGroups()
+        }, 100) // wait for API to update locations/hives
+      } catch (error) {
+        console.log(error)
+        this.snackbar.text = this.$i18n.t('something_wrong')
+        this.snackbar.show = true
+      }
+    },
     async readApiariesAndGroups() {
       try {
         const responseApiaries = await this.$store.dispatch('locations/findAll')
@@ -445,6 +466,18 @@ export default {
       } catch (e) {
         console.log(e)
       }
+    },
+    confirmDeleteHive(id) {
+      this.$refs.confirm
+        .open(this.$i18n.t('Delete'), this.$i18n.t('remove_hive') + '?', {
+          color: 'red',
+        })
+        .then((confirm) => {
+          this.deleteHiveById(id)
+        })
+        .catch((reject) => {
+          return true
+        })
     },
     inspectionsForHive(hive) {
       if (this.inspectionsForHives.length && hive.inspection_count > 0) {

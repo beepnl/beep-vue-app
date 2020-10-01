@@ -87,79 +87,135 @@
                   </v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
-              <v-list-item>
-                <v-list-item-icon class="mr-3">
-                  <v-icon>mdi-pencil-circle</v-icon>
-                </v-list-item-icon>
+              <v-list-item-group>
+                <v-list-item
+                  v-if="hive.editable || hive.owner"
+                  :to="{
+                    name: 'hive-inspect',
+                    params: { id: hive.id },
+                  }"
+                >
+                  <v-list-item-icon class="mr-3">
+                    <v-icon>mdi-pencil-circle</v-icon>
+                  </v-list-item-icon>
 
-                <v-list-item-content>
-                  <v-list-item-title>{{
-                    $t('New_inspection')
-                  }}</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-              <v-list-item>
-                <v-list-item-icon>
-                  <v-icon>mdi-pencil-circle</v-icon>
-                </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title
+                      v-text="
+                        `${
+                          hive.last_inspection_date !== null
+                            ? $t('New_inspection')
+                            : $t('no_inspections')
+                        }`
+                      "
+                    ></v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item
+                  v-if="hive.last_inspection_date !== null"
+                  :to="{
+                    name: 'hive-inspections',
+                    params: { id: hive.id },
+                  }"
+                >
+                  <v-list-item-icon class="mr-3">
+                    <v-icon v-if="hive.impression === 1">
+                      mdi-emoticon-sad
+                    </v-icon>
+                    <v-icon v-if="hive.impression === 3">
+                      mdi-emoticon-happy
+                    </v-icon>
+                    <v-icon v-if="hive.impression === 2">
+                      mdi-emoticon-neutral
+                    </v-icon>
+                    <v-icon v-if="!hive.impression">
+                      mdi-pencil-circle
+                    </v-icon>
+                  </v-list-item-icon>
 
-                <v-list-item-content>
-                  <v-list-item-title
-                    >{{ $t('view') }}
-                    {{ $tc('inspection', 2) }}</v-list-item-title
-                  >
-                </v-list-item-content>
-              </v-list-item>
-              <v-list-item>
-                <v-list-item-icon>
-                  <div class="my-0">
-                    <v-sheet class="beep-icon beep-icon-sensors"></v-sheet>
-                  </div>
-                </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title
+                      >{{ $t('view') }}
+                      {{ $tc('inspection', 2) }}</v-list-item-title
+                    >
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item
+                  v-if="
+                    hive.id % 2 === 0 ||
+                      hive.id % 3 === 0 ||
+                      hive.id % 5 === 0 ||
+                      hive.id === 1
+                  "
+                >
+                  <v-list-item-icon class="mr-3">
+                    <div class="my-0">
+                      <v-sheet class="beep-icon beep-icon-sensors"></v-sheet>
+                    </div>
+                  </v-list-item-icon>
 
-                <v-list-item-content>
-                  <v-list-item-title
-                    >{{ $t('view') }}
-                    {{ $t('measurements') }}</v-list-item-title
-                  >
-                </v-list-item-content>
-              </v-list-item>
+                  <v-list-item-content>
+                    <v-list-item-title
+                      >{{ $t('view') }}
+                      {{ $t('measurements') }}</v-list-item-title
+                    >
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list-item-group>
 
-              <v-divider class="my-1"></v-divider>
+              <v-divider v-if="hive.editable || hive.owner"></v-divider>
 
-              <v-list-item>
-                <v-list-item-icon>
-                  <v-icon>mdi-pencil-circle</v-icon>
-                </v-list-item-icon>
+              <v-list-item-group>
+                <v-list-item
+                  v-if="hive.editable"
+                  :to="{
+                    name: `hive-edit`,
+                    params: { id: hive.id },
+                  }"
+                >
+                  <v-list-item-icon class="mr-3">
+                    <v-icon>mdi-square-edit-outline</v-icon>
+                  </v-list-item-icon>
 
-                <v-list-item-content>
-                  <v-list-item-title
-                    >{{ $t('edit') }} {{ $tc('hive', 1) }}</v-list-item-title
-                  >
-                </v-list-item-content>
-              </v-list-item>
-              <v-list-item>
-                <v-list-item-icon>
-                  <v-icon>mdi-account-multiple-plus</v-icon>
-                </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title
+                      >{{ $t('edit') }} {{ $tc('hive', 1) }}</v-list-item-title
+                    >
+                  </v-list-item-content>
+                </v-list-item>
 
-                <v-list-item-content>
-                  <v-list-item-title
-                    >{{ $t('share') }} {{ $tc('hive', 1) }}</v-list-item-title
-                  >
-                </v-list-item-content>
-              </v-list-item>
-              <v-list-item>
-                <v-list-item-icon>
-                  <v-icon>mdi-delete</v-icon>
-                </v-list-item-icon>
+                <v-list-item v-if="hive.owner">
+                  <v-list-item-icon class="mr-3">
+                    <v-icon>mdi-account-multiple-plus</v-icon>
+                  </v-list-item-icon>
 
-                <v-list-item-content>
-                  <v-list-item-title
-                    >{{ $t('Delete') }} {{ $tc('hive', 1) }}</v-list-item-title
-                  >
-                </v-list-item-content>
-              </v-list-item>
+                  <v-list-item-content>
+                    <v-list-item-title
+                      >{{ $t('share') }} {{ $tc('hive', 1) }}</v-list-item-title
+                    >
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list-item-group>
+
+              <v-divider v-if="hive.owner"></v-divider>
+
+              <v-list-item-group>
+                <v-list-item
+                  v-if="hive.owner"
+                  @click="confirmDeleteHive(hive.id)"
+                >
+                  <v-list-item-icon class="mr-3">
+                    <v-icon class="red--text">mdi-delete</v-icon>
+                  </v-list-item-icon>
+
+                  <v-list-item-content>
+                    <v-list-item-title class="red--text"
+                      >{{ $t('Delete') }}
+                      {{ $tc('hive', 1) }}</v-list-item-title
+                    >
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list-item-group>
             </v-list>
           </v-menu>
         </v-overlay>
@@ -268,7 +324,7 @@
           class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
         >
           <div class="mr-2 my-0">
-            <v-sheet class="beep-icon beep-icon-sensors"> </v-sheet>
+            <v-sheet class="beep-icon beep-icon-sensors color-green"> </v-sheet>
           </div>
           <div class="icon-wrapper d-flex flex-row">
             <div class="mr-1 my-0 icon-wrapper d-flex flex-row align-center">
@@ -406,6 +462,9 @@ export default {
   }),
 
   methods: {
+    confirmDeleteHive(id) {
+      this.$emit('confirm-delete-hive', id)
+    },
     lastVisit(hive) {
       if (hive.last_inspection_date !== null) {
         return this.momentFromNow(hive.last_inspection_date)
@@ -484,10 +543,6 @@ export default {
       border: 1px solid red;
       border-radius: 5px;
     }
-    .beep-icon-sensors {
-      background-color: green;
-      border-color: green;
-    }
     .temp {
       font-weight: 600;
     }
@@ -507,6 +562,17 @@ export default {
   }
 }
 .hive-menu-list {
+  .v-list-item-group {
+    .v-list-item:first-child {
+      padding-top: 4px !important;
+    }
+    .v-list-item:last-child {
+      padding-bottom: 4px !important;
+    }
+  }
+  .v-list-item__title {
+    line-height: 1.5rem !important;
+  }
   .v-list-item {
     padding-right: 24px !important;
   }
