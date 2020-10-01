@@ -8,6 +8,7 @@
       }`
     "
     height="auto"
+    @click="showHiveMenu($event)"
   >
     <div class="hive-icon-layers">
       <v-sheet
@@ -61,6 +62,9 @@ export default {
       } else {
         return hive.layers[0].framecount * 3.5
       }
+    },
+    showHiveMenu($event) {
+      this.$emit('show-hive-menu', $event)
     },
     orderedLayers: function(hive) {
       return hive.layers.slice().sort(function(a, b) {
