@@ -163,7 +163,10 @@
                 </v-list-item>
               </v-list-item-group>
 
-              <v-divider v-if="hive.editable || hive.owner" class="my-1"></v-divider>
+              <v-divider
+                v-if="hive.editable || hive.owner"
+                class="my-1"
+              ></v-divider>
 
               <v-list-item-group>
                 <v-list-item
@@ -225,29 +228,18 @@
           class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
         >
           <div class="mr-2 my-0">
-            <router-link
-              :to="{
-                name: `${
-                  hive.last_inspection_date !== null
-                    ? 'hive-inspections'
-                    : 'hive-inspect'
-                }`,
-                params: { id: hive.id },
-              }"
-            >
-              <v-icon v-if="hive.impression === 1" class="red--text">
-                mdi-emoticon-sad
-              </v-icon>
-              <v-icon v-if="hive.impression === 3" class="green--text">
-                mdi-emoticon-happy
-              </v-icon>
-              <v-icon v-if="hive.impression === 2" class="orange--text">
-                mdi-emoticon-neutral
-              </v-icon>
-              <v-icon v-if="!hive.impression" class="color-grey">
-                mdi-pencil-circle
-              </v-icon>
-            </router-link>
+            <v-icon v-if="hive.impression === 1" class="red--text">
+              mdi-emoticon-sad
+            </v-icon>
+            <v-icon v-if="hive.impression === 3" class="green--text">
+              mdi-emoticon-happy
+            </v-icon>
+            <v-icon v-if="hive.impression === 2" class="orange--text">
+              mdi-emoticon-neutral
+            </v-icon>
+            <v-icon v-if="!hive.impression" class="color-grey">
+              mdi-pencil-circle
+            </v-icon>
           </div>
           <span
             v-if="listView"
@@ -283,9 +275,9 @@
             v-if="hive.reminder && listView"
             v-text="
               `${
-                hive.reminder < 25
+                hive.reminder < 22
                   ? hive.reminder
-                  : hive.reminder.substring(0, 25) + '...'
+                  : hive.reminder.substring(0, 22) + '...'
               }`
             "
           >

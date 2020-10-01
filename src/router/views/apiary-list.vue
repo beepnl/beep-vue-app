@@ -616,6 +616,9 @@ export default {
   .hive-item-transition-wrapper {
     display: flex;
     flex-wrap: wrap;
+    @include for-phone-only {
+      min-width: 100%;
+    }
   }
   .hive-item {
     flex-grow: 0 !important;
