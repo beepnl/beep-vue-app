@@ -191,6 +191,14 @@ export default [
     props: () => ({ user: store.state.auth.currentUser || {} }),
   },
   {
+    meta: {
+      authRequired: true,
+    },
+    path: '/hives/:id/edit',
+    name: 'queen-edit',
+    component: () => lazyLoadView(import('@views/hive-edit.vue')),
+  },
+  {
     path: '/support',
     name: 'support',
     component: () => lazyLoadView(import('@views/support.vue')),

@@ -626,6 +626,7 @@ const translations = {
   view: 'Bekijk',
   share: 'Deel',
   edit_details: 'Aanpassen details',
+  remove_queen: 'Verwijder koningin',
 }
 
 export default translations

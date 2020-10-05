@@ -177,6 +177,25 @@
                   </v-list-item-content>
                 </v-list-item>
 
+                <v-list-item
+                  v-if="hive.editable && hive.queen !== null"
+                  :to="{
+                    name: `queen-edit`,
+                    params: { id: hive.id },
+                    query: { queenEdit: true },
+                  }"
+                >
+                  <v-list-item-icon class="mr-3">
+                    <v-icon>mdi-square-edit-outline</v-icon>
+                  </v-list-item-icon>
+
+                  <v-list-item-content>
+                    <v-list-item-title
+                      >{{ $t('edit') }} {{ $t('queen') }}</v-list-item-title
+                    >
+                  </v-list-item-content>
+                </v-list-item>
+
                 <v-list-item v-if="hive.owner">
                   <v-list-item-icon class="mr-3">
                     <v-icon>mdi-account-multiple-plus</v-icon>
@@ -193,10 +212,7 @@
               <v-divider v-if="hive.owner" class="my-1"></v-divider>
 
               <v-list-item-group>
-                <v-list-item
-                  v-if="hive.owner"
-                  @click="confirmDeleteHive(hive)"
-                >
+                <v-list-item v-if="hive.owner" @click="confirmDeleteHive(hive)">
                   <v-list-item-icon class="mr-3">
                     <v-icon class="red--text">mdi-delete</v-icon>
                   </v-list-item-icon>

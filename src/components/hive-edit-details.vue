@@ -216,11 +216,6 @@ export default {
   },
   data: function() {
     return {
-      snackbar: {
-        show: false,
-        timeout: 2000,
-        text: 'notification',
-      },
       swatchesHive: [
         ['#b5c4b2', '#F7BE02', '#FFA000'],
         ['#049717', '#1b6308', '#00466b'],

@@ -1,12 +1,5 @@
 <template>
-  <Layout
-    :title="
-      locationId
-        ? `${$t('create_new')} ${$tc('hive', 1)}`
-        : `${$t('edit')} ${$tc('hive', 1)}`
-    "
-    :no-box-shadow="true"
-  >
+  <Layout :title="getTitle()" :no-box-shadow="true">
     <h1
       v-if="
         locationId === null &&
@@ -16,16 +9,8 @@
           !activeHive.owner
       "
       class="unauthorized-title"
+      v-text="unauthorizedText"
     >
-      {{
-        $t('sorry') +
-          ', ' +
-          $tc('hive', 1) +
-          ' "' +
-          activeHive.name +
-          '" ' +
-          $t('not_editable')
-      }}
     </h1>
 
     <v-form ref="form" v-model="valid" @submit.prevent="saveHive">
@@ -71,7 +56,7 @@
         "
         class="content-container"
       >
-        <v-row>
+        <v-row v-if="!queenEdit">
           <v-col cols="12" sm="6" md="4">
             <v-text-field
               v-if="activeHive"
@@ -121,171 +106,9 @@
           </v-col>
         </v-row>
 
-        <HiveEditDetails :hive="activeHive"></HiveEditDetails>
+        <HiveEditDetails v-if="!queenEdit" :hive="activeHive"></HiveEditDetails>
 
-        <v-row id="queen-details" class="queen-details-wrapper">
-          <v-col cols="12">
-            <div
-              class="overline mb-3"
-              v-text="`${$t('Queen') + ' ' + $t('details')}`"
-            ></div>
-            <div class="queen-details rounded-border">
-              <v-row>
-                <v-col cols="12" sm="7" md="6" lg="4">
-                  <div>
-                    <v-text-field
-                      :value="activeHive.queen ? activeHive.queen.name : null"
-                      :label="`${$t('Queen')} ${$t('name')}`"
-                      :placeholder="`${$t('Queen')} ${$t('name')}`"
-                      height="36px"
-                      class="queen-name"
-                      counter="30"
-                      clearable
-                      @input="updateQueen($event, 'name')"
-                    >
-                    </v-text-field>
-                  </div>
-
-                  <div>
-                    <div class="beep-label" v-text="`${$t('Bee_race')}`"></div>
-                    <Treeselect
-                      :value="
-                        activeHive.queen ? activeHive.queen.race_id : null
-                      "
-                      :options="treeselectBeeRaces"
-                      :no-results-text="`${$t('no_results')}`"
-                      :label="`${$t('Select')} ${$t('Bee_race')}`"
-                      :placeholder="`${$t('Select')} ${$t('Bee_race')}`"
-                      search-nested
-                      @input="updateQueen($event, 'race_id')"
-                    />
-                  </div>
-
-                  <div class="mt-5">
-                    <v-dialog
-                      ref="dialog"
-                      v-model="modal"
-                      :return-value.sync="queenBirthDate"
-                      persistent
-                      width="290px"
-                    >
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                          v-model="queenBirthDate"
-                          :label="
-                            `${$t('Birth_date')} ${
-                              showQueenColorPicker
-                                ? '(' + $t('changes_queen_color') + ')'
-                                : ''
-                            }`
-                          "
-                          height="36px"
-                          prepend-icon="mdi-calendar"
-                          v-bind="attrs"
-                          v-on="on"
-                        ></v-text-field>
-                      </template>
-                      <v-date-picker
-                        v-model="queenBirthDate"
-                        :first-day-of-week="1"
-                        :locale="locale"
-                        scrollable
-                      >
-                        <v-spacer></v-spacer>
-                        <v-btn text color="primary" @click="cancelDatePicker">{{
-                          $t('Cancel')
-                        }}</v-btn>
-                        <v-btn
-                          text
-                          color="primary"
-                          @click="updateQueenBirthDate"
-                          >{{ $t('ok') }}</v-btn
-                        >
-                      </v-date-picker>
-                    </v-dialog>
-                  </div>
-
-                  <div>
-                    <div class="beep-label" v-text="`${$t('Age')}`"></div>
-                    <p
-                      v-text="
-                        activeHive.queen
-                          ? momentAge(activeHive.queen.created_at)
-                          : `0` + ` ${$t('years_old')}`
-                      "
-                    >
-                    </p>
-                  </div>
-                </v-col>
-                <v-col cols="12" sm="7" md="6" lg="4">
-                  <div>
-                    <v-text-field
-                      :value="
-                        activeHive.queen ? activeHive.queen.description : null
-                      "
-                      :label="`${$t('Queen')} ${$t('queen_description')}`"
-                      height="36px"
-                      counter="100"
-                      clearable
-                      @input="updateQueen($event, 'description')"
-                    >
-                    </v-text-field>
-                  </div>
-
-                  <v-switch
-                    :value="activeHive.queen ? activeHive.queen.clipped : false"
-                    :label="`${$t('Queen_clipped')}`"
-                    @change="updateQueen($event, 'clipped')"
-                  ></v-switch>
-
-                  <v-switch
-                    :value="
-                      activeHive.queen ? activeHive.queen.fertilized : false
-                    "
-                    :label="`${$t('Queen_fertilized')}`"
-                    @change="updateQueen($event, 'fertilized')"
-                  ></v-switch>
-
-                  <v-switch
-                    v-model="showQueenColorPicker"
-                    :label="`${$t('Queen_colored')}`"
-                  ></v-switch>
-                </v-col>
-
-                <v-col cols="12" md="6" lg="4">
-                  <div v-if="showQueenColorPicker">
-                    <div
-                      class="beep-label"
-                      v-text="`${$t('Queen')} ${$t('color')}`"
-                    ></div>
-                    <div>
-                      <div>
-                        <div class="mr-2 mb-2">
-                          <v-sheet
-                            :class="
-                              `beep-icon beep-icon-queen beep-icon-queen--large ${
-                                darkIconColor(queenColor) ? 'dark' : ''
-                              }`
-                            "
-                            :color="queenColor"
-                          >
-                          </v-sheet>
-                        </div>
-                        <v-color-picker
-                          v-model="queenColor"
-                          class="flex-color-picker queen-color-picker"
-                          :swatches="swatchesQueen"
-                          show-swatches
-                          canvas-height="120"
-                        ></v-color-picker>
-                      </div>
-                    </div>
-                  </div>
-                </v-col>
-              </v-row>
-            </div>
-          </v-col>
-        </v-row>
+        <QueenEditDetails :queen="activeHive.queen"></QueenEditDetails>
       </v-container>
     </v-form>
 
@@ -302,11 +125,10 @@
 
 <script>
 import Confirm from '@components/confirm.vue'
-import { darkIconMixin } from '@mixins/darkIconMixin'
 import HiveEditDetails from '@components/hive-edit-details.vue'
 import { mapGetters } from 'vuex'
 import Layout from '@layouts/back.vue'
-import { momentMixin } from '@mixins/momentMixin'
+import QueenEditDetails from '@components/queen-edit-details.vue'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import VueNumberInput from '@chenfengyuan/vue-number-input'
@@ -316,10 +138,10 @@ export default {
     Confirm,
     HiveEditDetails,
     Layout,
+    QueenEditDetails,
     Treeselect,
     VueNumberInput,
   },
-  mixins: [darkIconMixin, momentMixin],
   data: function() {
     return {
       snackbar: {
@@ -334,29 +156,15 @@ export default {
           label: node.name,
         }
       },
-      queen_colors: [
-        '#4A90E2',
-        '#F4F4F4',
-        '#F8DB31',
-        '#D0021B',
-        '#7ED321',
-        '#4A90E2',
-        '#F4F4F4',
-        '#F8DB31',
-        '#D0021B',
-        '#7ED321',
-      ], // year ending of birth year is index
-      swatchesQueen: [
-        ['#4A90E2'],
-        ['#F4F4F4'],
-        ['#F8DB31'],
-        ['#D0021B'],
-        ['#7ED321'],
-      ],
-      modal: false,
-      useQueenMarkColor: false,
-      queenHasColor: false,
       activeHive: null,
+      emptyQueen: {
+        clipped: null,
+        color: null,
+        created_at: null,
+        description: null,
+        fertilized: null,
+        name: null,
+      },
       valid: false,
       showLoadingIcon: false,
       newHiveNumber: 1,
@@ -364,110 +172,25 @@ export default {
   },
   computed: {
     ...mapGetters('hives', ['hiveEdited']),
-    ...mapGetters('taxonomy', ['beeRacesList']),
-    queen() {
-      return this.activeHive.queen
-    },
     id() {
       return parseInt(this.$route.params.id)
     },
     locationId() {
       return parseInt(this.$route.query.locationId) || null
     },
-    locale() {
-      return this.$i18n.locale
+    queenEdit() {
+      if (typeof this.$route.query.queenEdit !== 'undefined') {
+        return this.$route.name === 'queen-edit' || this.$route.query.queenEdit
+      }
+      return false
     },
     requiredRule: function() {
       return [
         (v) => !!v || this.$i18n.t('Name') + ' ' + this.$i18n.t('is_required'),
       ]
     },
-    treeselectBeeRaces() {
-      if (this.beeRacesList.length) {
-        const locale = this.selectLocale(this.beeRacesList)
-        var treeselectArray = this.beeRacesList
-        treeselectArray.map((beeRace) => {
-          beeRace.label = beeRace.trans[locale]
-        })
-        const sortedTreeselectArray = treeselectArray
-          .slice()
-          .sort(function(a, b) {
-            if (a.label < b.label) {
-              return -1
-            }
-            if (a.label > b.label) {
-              return 1
-            }
-            return 0
-          })
-        treeselectArray = sortedTreeselectArray
-        return treeselectArray
-      } else {
-        return []
-      }
-    },
-    queenMarkColor() {
-      if (
-        this.activeHive &&
-        this.activeHive.queen &&
-        this.activeHive.queen.created_at
-      ) {
-        const lastDigit = this.momentLastDigitOfYear(
-          this.activeHive.queen.created_at
-        )
-        return this.queen_colors[lastDigit]
-      } else {
-        const lastDigit = this.momentLastDigitOfYear(new Date())
-        return this.queen_colors[lastDigit]
-      }
-    },
-    queenBirthDate: {
-      get() {
-        if (
-          this.activeHive &&
-          this.activeHive.queen &&
-          this.activeHive.queen.created_at
-        ) {
-          return this.momentifyRemoveTime(this.activeHive.queen.created_at)
-        } else if (this.activeHive) {
-          return this.momentifyRemoveTime(new Date())
-        } else {
-          return ''
-        }
-      },
-      set(value) {
-        this.updateQueen(value, 'created_at')
-      },
-    },
-    queenColor: {
-      get() {
-        if (this.queenHasColor && !this.useQueenMarkColor) {
-          return this.activeHive.queen.color
-        } else {
-          return this.queenMarkColor
-        }
-      },
-      set(value) {
-        this.updateQueen(value, 'color')
-      },
-    },
-    showQueenColorPicker: {
-      get() {
-        return this.queenHasColor
-      },
-      set(value) {
-        if (value === false) {
-          this.updateQueen(null, 'color')
-          this.queenHasColor = false
-        } else {
-          this.updateQueen(this.queenMarkColor, 'color')
-          this.queenHasColor = true
-        }
-      },
-    },
   },
   created() {
-    this.readTaxonomy()
     this.readApiaries().then((response) => {
       // If hive-create route is used, make empty hive object
       if (this.locationId !== null) {
@@ -512,14 +235,7 @@ export default {
               key: 1,
             },
           ],
-          queen: {
-            clipped: null,
-            color: null,
-            created_at: null,
-            description: null,
-            fertilized: null,
-            name: null,
-          },
+          queen: this.emptyQueen,
         }
         // Else retrieve to-be-edited hive
       } else {
@@ -592,14 +308,7 @@ export default {
         if (hive.queen && hive.queen.color && hive.queen.color !== null) {
           this.queenHasColor = true
         } else if (hive.queen === null) {
-          hive.queen = {
-            clipped: null,
-            color: null,
-            created_at: null,
-            description: null,
-            fertilized: null,
-            name: null,
-          }
+          hive.queen = this.emptyQueen
         }
         this.activeHive = hive
         this.setHiveEdited(false)
@@ -607,18 +316,6 @@ export default {
       } catch (e) {
         console.log(e)
         this.$router.push({ name: '404', params: { resource: 'hive' } })
-      }
-    },
-    async readTaxonomy() {
-      try {
-        const response = await this.$store.dispatch('taxonomy/index')
-        if (response.length === 0) {
-          this.$router.push({ name: '404' })
-        }
-        return true
-      } catch (e) {
-        console.log(e)
-        this.$router.push({ name: '404' })
       }
     },
     async updateHive() {
@@ -645,26 +342,61 @@ export default {
         }
       }
     },
-    cancelDatePicker() {
-      this.useQueenMarkColor = false
-      this.modal = false
-      this.queenColor = this.activeHive.queen.color
-    },
     confirmDeleteHive() {
-      this.$refs.confirm
-        .open(
-          this.$i18n.t('remove_hive'),
-          this.$i18n.t('remove_hive') + ' "' + this.activeHive.name + '"?',
-          {
-            color: 'red',
-          }
+      if (!this.queenEdit) {
+        this.$refs.confirm
+          .open(
+            this.$i18n.t('remove_hive'),
+            this.$i18n.t('remove_hive') + ' "' + this.activeHive.name + '"?',
+            {
+              color: 'red',
+            }
+          )
+          .then((confirm) => {
+            this.deleteHive()
+          })
+          .catch((reject) => {
+            return true
+          })
+      } else {
+        this.$refs.confirm
+          .open(
+            this.$i18n.t('remove_queen'),
+            this.$i18n.t('remove_queen') +
+              ' ' +
+              this.$i18n.t('for') +
+              ' "' +
+              this.activeHive.name +
+              '"?',
+            {
+              color: 'red',
+            }
+          )
+          .then((confirm) => {
+            this.activeHive.queen = this.emptyQueen
+          })
+          .catch((reject) => {
+            return true
+          })
+      }
+    },
+    getTitle() {
+      if (this.locationId) {
+        return this.$i18n.t('create_new') + ' ' + this.$i18n.tc('hive', 1)
+      } else if (this.queenEdit && this.activeHive !== null) {
+        const queenName = this.activeHive.queen.name || ''
+        return (
+          this.$i18n.t('edit') +
+          ' ' +
+          this.$i18n.t('queen') +
+          ' ' +
+          queenName +
+          ' - ' +
+          this.activeHive.name
         )
-        .then((confirm) => {
-          this.deleteHive()
-        })
-        .catch((reject) => {
-          return true
-        })
+      } else {
+        return this.$i18n.t('edit') + ' ' + this.$i18n.tc('hive', 1)
+      }
     },
     saveHive() {
       if (this.locationId !== null) {
@@ -673,25 +405,28 @@ export default {
         this.updateHive()
       }
     },
-    selectLocale(array) {
-      if (array.length) {
-        const locale = this.$i18n.locale
-        if (array[0].trans[locale] === undefined) {
-          return 'en'
-        } else {
-          return locale
-        }
-      } else {
-        return 'en'
-      }
-    },
     setHiveEdited(bool) {
       this.$store.commit('hives/setHiveEdited', bool)
     },
-    updateQueenBirthDate() {
-      this.$refs.dialog.save(this.queenBirthDate)
-      if (this.activeHive.queen.color) {
-        this.updateQueen(this.queenMarkColor, 'color')
+    unauthorizedText() {
+      if (this.queenEdit) {
+        return (
+          this.$i18n.t('sorry') +
+          ', ' +
+          this.$i18n.t('queen') +
+          ' ' +
+          this.$i18n.t('not_editable')
+        )
+      } else {
+        return (
+          this.$i18n.t('sorry') +
+          ', ' +
+          this.$i18n.tc('hive', 1) +
+          ' "' +
+          this.activeHive.name +
+          '" ' +
+          this.$i18n.t('not_editable')
+        )
       }
     },
     updateHiveProperties(event, property) {
@@ -708,29 +443,6 @@ export default {
       if (property !== 'order') {
         this.setHiveEdited(true) // NB edited tracking for vue-number-input component inputs happens only via @click event as it calls @change when component is initialized, before any changes are made
       }
-    },
-    updateQueen(event, property) {
-      var value = null
-      if (event === null) {
-        value = null
-      } else if (event.target !== undefined) {
-        value = event.target.value
-      } else {
-        value = event
-      }
-      if (property === 'description' && value !== null && value.length > 101) {
-        value = value.substring(0, 100)
-      }
-      if (property === 'name' && value !== null && value.length > 31) {
-        value = value.substring(0, 30)
-      }
-      if (property === 'created_at') {
-        this.useQueenMarkColor = true
-      } else if (property === 'color') {
-        this.useQueenMarkColor = false
-      }
-      this.activeHive.queen[property] = value
-      this.setHiveEdited(true)
     },
     validateText(value, property, maxLength) {
       if (value !== null && value.length > maxLength + 1) {
@@ -759,9 +471,5 @@ export default {
 
 .hive-number-input {
   max-width: 130px !important;
-}
-
-.queen-details {
-  padding: 0 12px;
 }
 </style>
