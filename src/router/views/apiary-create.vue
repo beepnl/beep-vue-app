@@ -674,8 +674,12 @@ export default {
      * @param {String} id Input container ID
      */
     getAddressData: function(addressData, placeResultData, id) {
-      this.newHive.country_code =
-        placeResultData.address_components[5].short_name
+      const countryCode = placeResultData.address_components.filter(
+        (addressComponent) => {
+          return addressComponent.types.includes('country')
+        }
+      )[0].short_name
+      this.newHive.country_code = countryCode
       this.newHive.lat = addressData.latitude
       this.newHive.lon = addressData.longitude
       this.newHive.city = addressData.locality
