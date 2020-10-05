@@ -68,12 +68,13 @@
 
         <HiveIcon
           :hive="hive"
+          :show-hive="showMenu"
           @show-hive-menu="showHiveMenu($event)"
         ></HiveIcon>
 
-        <v-overlay :value="hiveMenu">
+        <v-overlay :value="showMenu">
           <v-menu
-            v-model="hiveMenu"
+            v-model="showMenu"
             :position-x="x"
             :position-y="y"
             absolute
@@ -424,7 +425,7 @@ export default {
     },
   },
   data: () => ({
-    hiveMenu: false,
+    showMenu: false,
     x: 0,
     y: 0,
     volumeBars: [
@@ -485,7 +486,7 @@ export default {
     showHiveMenu(e) {
       this.x = e.clientX
       this.y = e.clientY
-      this.hiveMenu = true
+      this.showMenu = true
     },
   },
 }

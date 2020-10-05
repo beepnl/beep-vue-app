@@ -10,7 +10,7 @@
     height="auto"
     @click="showHiveMenu($event)"
   >
-    <div class="hive-icon-layers">
+    <div class="hive-icon-layers" :style="`${showHive ? 'z-index: 6;' : ''}`">
       <v-sheet
         v-for="(layer, l) in orderedLayers(hive)"
         :key="l"
@@ -32,6 +32,10 @@ export default {
       type: Object,
       default: null,
       required: true,
+    },
+    showHive: {
+      type: Boolean,
+      default: false,
     },
   },
   computed: {
