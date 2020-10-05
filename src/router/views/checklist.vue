@@ -96,14 +96,18 @@ export default {
       activeChecklistTaxonomy: null,
       checklistEdited: false,
       valid: false,
-      hive_id: null,
-      inspection_edit: null,
       showLoadingIcon: false,
     }
   },
   computed: {
     id() {
       return parseInt(this.$route.params.id)
+    },
+    hiveId() {
+      return parseInt(this.$route.query.hive_id) || null
+    },
+    inspectionEdit() {
+      return parseInt(this.$route.query.inspection_edit) || null
     },
     locale() {
       return this.$i18n.locale
@@ -117,12 +121,6 @@ export default {
   created() {
     this.getChecklistById(this.id)
     this.getChecklistTaxonomy(this.id)
-    this.$route.query.hive_id
-      ? (this.hive_id = Number(this.$route.query.hive_id))
-      : (this.hive_id = null)
-    this.$route.query.inspection_edit
-      ? (this.inspection_edit = Number(this.$route.query.inspection_edit))
-      : (this.inspection_edit = null)
   },
   methods: {
     async getChecklistById(id) {
@@ -175,20 +173,20 @@ export default {
             checklistUpdate
           )
           setTimeout(() => {
-            if (this.hive_id !== null && this.inspection_edit !== null) {
+            if (this.hiveId !== null && this.inspectionEdit !== null) {
               return this.$router.push({
                 name: 'hive-inspect-edit',
                 params: {
-                  id: this.hive_id,
-                  inspection: this.inspection_edit,
+                  id: this.hiveId,
+                  inspection: this.inspectionEdit,
                 },
                 query: { checklist_id: this.id },
               })
-            } else if (this.hive_id !== null) {
+            } else if (this.hiveId !== null) {
               return this.$router.push({
                 name: 'hive-inspect',
                 params: {
-                  id: this.hive_id,
+                  id: this.hiveId,
                 },
                 query: { checklist_id: this.id },
               })

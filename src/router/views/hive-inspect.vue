@@ -377,7 +377,6 @@ export default {
       selectedChecklist: null,
       checklists: null,
       activeInspection: null,
-      preSelectedChecklistId: null,
       selectedChecklistId: null,
       showGeneral: true,
       showCategoriesByIndex: [],
@@ -392,10 +391,10 @@ export default {
       return parseInt(this.$route.params.id)
     },
     inspectionId() {
-      if (this.$route.params.inspection) {
-        return parseInt(this.$route.params.inspection)
-      }
-      return null
+      return parseInt(this.$route.params.inspection) || null
+    },
+    preSelectedChecklistId() {
+      return parseInt(this.$route.query.checklist_id) || null
     },
     inspectionDate: {
       get() {
@@ -439,9 +438,6 @@ export default {
     },
   },
   created() {
-    this.$route.query.checklist_id
-      ? (this.preSelectedChecklistId = Number(this.$route.query.checklist_id))
-      : (this.preSelectedChecklistId = null)
     // If hive-inspect-edit route is used, retrieve to-be-edited inspection
     if (this.inspectionId !== null) {
       this.getInspection(this.inspectionId).then((response) => {

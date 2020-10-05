@@ -497,9 +497,7 @@ export default {
     }
   },
   created() {
-    this.$route.query.search
-      ? (this.search = this.$route.query.search)
-      : (this.search = null)
+    this.search = this.$route.query.search || null
     this.readApiariesAndGroups().then(() => {
       this.ready = true
     })
