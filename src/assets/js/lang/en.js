@@ -621,6 +621,7 @@ const translations = {
     'Are you sure you want to select a different checklist? Values of already filled in fields will be kept.',
   view: 'View',
   share: 'Share',
+  edit_details: 'Edit details',
 }
 
 export default translations

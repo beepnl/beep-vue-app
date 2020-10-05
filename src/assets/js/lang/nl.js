@@ -625,6 +625,7 @@ const translations = {
     'Weet je zeker dat je een andere kastkaart wilt selecteren? Waardes van reeds ingevulde velden zullen behouden blijven.',
   view: 'Bekijk',
   share: 'Deel',
+  edit_details: 'Aanpassen details',
 }
 
 export default translations

@@ -783,7 +783,7 @@ export default {
     confirmDeleteInspection(inspection) {
       this.$refs.confirm
         .open(
-          this.$i18n.t('Delete'),
+          this.$i18n.t('remove_inspection'),
           this.$i18n.t('remove_inspection') +
             ' (' +
             this.$i18n.t('Date').toLocaleLowerCase() +

@@ -9,7 +9,16 @@
       <v-toolbar dark :color="options.color" dense flat>
         <v-toolbar-title class="white--text">{{ title }}</v-toolbar-title>
       </v-toolbar>
-      <v-card-text v-show="!!message" class="pa-4">{{ message }}</v-card-text>
+      <v-card-text
+        v-show="!!warningMessage"
+        class="pa-4 pb-0 red--text"
+        v-text="warningMessage"
+      ></v-card-text>
+      <v-card-text
+        v-show="!!message"
+        class="pa-4"
+        v-text="message"
+      ></v-card-text>
       <v-card-actions class="pt-0">
         <v-spacer></v-spacer>
         <v-btn color="primary darken-1" text @click.native="agree">{{
@@ -57,6 +66,7 @@ export default {
     dialog: false,
     resolve: null,
     reject: null,
+    warningMessage: null,
     message: null,
     title: null,
     options: {
@@ -66,9 +76,10 @@ export default {
     },
   }),
   methods: {
-    open(title, message, options) {
+    open(title, message, options, warningMessage = null) {
       this.dialog = true
       this.title = title
+      this.warningMessage = warningMessage
       this.message = message
       this.options = Object.assign(this.options, options)
       return new Promise((resolve, reject) => {

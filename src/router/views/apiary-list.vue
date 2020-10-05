@@ -210,69 +210,70 @@
               "
             >
             </pre>
-            <div v-if="typeof hiveSet.owner !== 'undefined' && hiveSet.owner">
-              <v-menu>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-icon
-                    small
-                    class="color-grey-light ml-2"
-                    v-bind="attrs"
-                    v-on="on"
-                    >mdi-cog</v-icon
+
+            <v-menu
+              v-if="typeof hiveSet.owner !== 'undefined' && hiveSet.owner"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-icon
+                  small
+                  class="color-grey-light ml-2"
+                  v-bind="attrs"
+                  v-on="on"
+                  >mdi-cog</v-icon
+                >
+              </template>
+              <v-list dense>
+                <v-list-item-group>
+                  <v-list-item
+                    :to="{
+                      name: 'apiary-edit',
+                      params: { id: hiveSet.id },
+                    }"
                   >
-                </template>
-                <v-list dense>
-                  <v-list-item-group>
-                    <v-list-item
-                      :to="{
-                        name: 'apiary-edit',
-                        params: { id: hiveSet.id },
-                      }"
-                    >
-                      <v-list-item-icon class="mr-3">
-                        <v-icon>mdi-pencil</v-icon>
-                      </v-list-item-icon>
+                    <v-list-item-icon class="mr-3">
+                      <v-icon>mdi-pencil</v-icon>
+                    </v-list-item-icon>
 
-                      <v-list-item-content>
-                        <v-list-item-title
-                          v-text="$t('edit') + ' ' + $t('details')"
-                        ></v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
-                    <v-list-item>
-                      <v-list-item-icon class="mr-3">
-                        <v-icon>mdi-plus</v-icon>
-                      </v-list-item-icon>
+                    <v-list-item-content>
+                      <v-list-item-title
+                        v-text="$t('edit_details')"
+                      ></v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-icon class="mr-3">
+                      <v-icon>mdi-plus</v-icon>
+                    </v-list-item-icon>
 
-                      <v-list-item-content>
-                        <v-list-item-title
-                          v-text="$t('New') + ' ' + $tc('hive', 1)"
-                        ></v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
-                  </v-list-item-group>
+                    <v-list-item-content>
+                      <v-list-item-title
+                        v-text="$t('New') + ' ' + $tc('hive', 1)"
+                      ></v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list-item-group>
 
-                  <v-divider v-if="hiveSet.owner" class="my-1"></v-divider>
+                <v-divider v-if="hiveSet.owner" class="my-1"></v-divider>
 
-                  <v-list-item-group>
-                    <v-list-item
-                      v-if="hiveSet.owner"
-                      @click="confirmDeleteApiary(hiveSet.id)"
-                    >
-                      <v-list-item-icon class="mr-3">
-                        <v-icon class="red--text">mdi-delete</v-icon>
-                      </v-list-item-icon>
+                <v-list-item-group>
+                  <v-list-item
+                    v-if="hiveSet.owner"
+                    @click="confirmDeleteApiary(hiveSet)"
+                  >
+                    <v-list-item-icon class="mr-3">
+                      <v-icon class="red--text">mdi-delete</v-icon>
+                    </v-list-item-icon>
 
-                      <v-list-item-content>
-                        <v-list-item-title class="red--text">{{
-                          $t('remove_apiary')
-                        }}</v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
-                  </v-list-item-group>
-                </v-list>
-              </v-menu>
-            </div>
+                    <v-list-item-content>
+                      <v-list-item-title class="red--text">{{
+                        $t('remove_apiary')
+                      }}</v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list-item-group>
+              </v-list>
+            </v-menu>
           </div>
           <ScaleTransition
             :duration="300"
@@ -551,25 +552,36 @@ export default {
         console.log(e)
       }
     },
-    confirmDeleteApiary(id) {
+    confirmDeleteApiary(hiveSet) {
+      const warningMessage =
+        hiveSet.hives.length > 0 ? this.$i18n.t('first_remove_hives') : null
       this.$refs.confirm
-        .open(this.$i18n.t('Delete'), this.$i18n.t('remove_apiary') + '?', {
-          color: 'red',
-        })
+        .open(
+          this.$i18n.t('remove_apiary'),
+          this.$i18n.t('remove_apiary') + ' "' + hiveSet.name + '"?',
+          {
+            color: 'red',
+          },
+          warningMessage
+        )
         .then((confirm) => {
-          this.deleteApiaryById(id)
+          this.deleteApiaryById(hiveSet.id)
         })
         .catch((reject) => {
           return true
         })
     },
-    confirmDeleteHive(id) {
+    confirmDeleteHive(hive) {
       this.$refs.confirm
-        .open(this.$i18n.t('Delete'), this.$i18n.t('remove_hive') + '?', {
-          color: 'red',
-        })
+        .open(
+          this.$i18n.t('remove_hive'),
+          this.$i18n.t('remove_hive') + ' "' + hive.name + '"?',
+          {
+            color: 'red',
+          }
+        )
         .then((confirm) => {
-          this.deleteHiveById(id)
+          this.deleteHiveById(hive.id)
         })
         .catch((reject) => {
           return true

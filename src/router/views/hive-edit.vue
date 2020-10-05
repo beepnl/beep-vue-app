@@ -556,9 +556,13 @@ export default {
     },
     confirmDeleteHive() {
       this.$refs.confirm
-        .open(this.$i18n.t('Delete'), this.$i18n.t('remove_hive') + '?', {
-          color: 'red',
-        })
+        .open(
+          this.$i18n.t('remove_hive'),
+          this.$i18n.t('remove_hive') + ' "' + this.activeHive.name + '"?',
+          {
+            color: 'red',
+          }
+        )
         .then((confirm) => {
           this.deleteHive()
         })

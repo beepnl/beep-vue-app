@@ -195,7 +195,7 @@
               <v-list-item-group>
                 <v-list-item
                   v-if="hive.owner"
-                  @click="confirmDeleteHive(hive.id)"
+                  @click="confirmDeleteHive(hive)"
                 >
                   <v-list-item-icon class="mr-3">
                     <v-icon class="red--text">mdi-delete</v-icon>
@@ -473,8 +473,8 @@ export default {
   }),
 
   methods: {
-    confirmDeleteHive(id) {
-      this.$emit('confirm-delete-hive', id)
+    confirmDeleteHive(hive) {
+      this.$emit('confirm-delete-hive', hive)
     },
     lastVisit(hive) {
       if (hive.last_inspection_date !== null) {

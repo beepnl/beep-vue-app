@@ -378,10 +378,19 @@ export default {
       this.overlay = false
     },
     confirmDeleteApiary() {
+      const warningMessage =
+        this.activeApiary.hives.length > 0
+          ? this.$i18n.t('first_remove_hives')
+          : null
       this.$refs.confirm
-        .open(this.$i18n.t('Delete'), this.$i18n.t('remove_apiary') + '?', {
-          color: 'red',
-        })
+        .open(
+          this.$i18n.t('remove_apiary'),
+          this.$i18n.t('remove_apiary') + ' "' + this.activeApiary.name + '"?',
+          {
+            color: 'red',
+          },
+          warningMessage
+        )
         .then((confirm) => {
           this.deleteApiary()
         })
