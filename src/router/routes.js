@@ -121,6 +121,14 @@ export default [
     meta: {
       authRequired: true,
     },
+    path: '/hives/create',
+    name: 'hive-create',
+    component: () => lazyLoadView(import('@views/hive-edit.vue')),
+  },
+  {
+    meta: {
+      authRequired: true,
+    },
     path: '/hives/:id/edit',
     name: 'hive-edit',
     component: () => lazyLoadView(import('@views/hive-edit.vue')),

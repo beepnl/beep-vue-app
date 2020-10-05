@@ -1,8 +1,16 @@
 <template>
-  <Layout :title="`${$t('edit')} ${$tc('hive', 1)}`" :no-box-shadow="true">
+  <Layout
+    :title="
+      locationId
+        ? `${$t('create_new')} ${$tc('hive', 1)}`
+        : `${$t('edit')} ${$tc('hive', 1)}`
+    "
+    :no-box-shadow="true"
+  >
     <h1
       v-if="
-        activeHive &&
+        locationId === null &&
+          activeHive &&
           typeof activeHive.name !== 'undefined' &&
           !activeHive.editable &&
           !activeHive.owner
@@ -23,7 +31,9 @@
     <v-form ref="form" v-model="valid" @submit.prevent="saveHive">
       <v-toolbar
         v-if="
-          activeHive && activeHive.name !== undefined && activeHive.editable
+          activeHive &&
+            ((activeHive.name !== undefined && activeHive.editable) ||
+              locationId !== null)
         "
         class="save-bar"
         dense
@@ -55,7 +65,9 @@
 
       <v-container
         v-if="
-          activeHive && activeHive.name !== undefined && activeHive.editable
+          activeHive &&
+            ((activeHive.name !== undefined && activeHive.editable) ||
+              locationId !== null)
         "
         class="content-container"
       >
@@ -63,7 +75,7 @@
           <v-col cols="12" sm="6" md="4">
             <v-text-field
               v-if="activeHive"
-              :value="activeHive.name"
+              v-model="activeHive.name"
               class="hive-edit-name mb-sm-3"
               counter="30"
               :rules="requiredRule"
@@ -103,7 +115,7 @@
                 inline
                 controls
                 @click="setHiveEdited(true)"
-                @change="updateHive(parseInt($event), 'order')"
+                @change="updateHiveProperties(parseInt($event), 'order')"
               ></VueNumberInput>
             </div>
           </v-col>
@@ -347,6 +359,7 @@ export default {
       activeHive: null,
       valid: false,
       showLoadingIcon: false,
+      newHiveNumber: 1,
     }
   },
   computed: {
@@ -357,6 +370,9 @@ export default {
     },
     id() {
       return parseInt(this.$route.params.id)
+    },
+    locationId() {
+      return parseInt(this.$route.query.locationId) || null
     },
     locale() {
       return this.$i18n.locale
@@ -451,11 +467,91 @@ export default {
     },
   },
   created() {
-    this.readHive()
-    this.readApiaries()
     this.readTaxonomy()
+    this.readApiaries().then((response) => {
+      // If hive-create route is used, make empty hive object
+      if (this.locationId !== null) {
+        if (this.apiaries.length > 0) {
+          const apiary = this.apiaries.filter((apiary) => {
+            return apiary.id === this.locationId
+          })[0]
+          console.log(apiary)
+          this.newHiveNumber = apiary.hives.length + 1
+        }
+        this.activeHive = {
+          location_id: this.locationId,
+          hive_type_id: null,
+          color: '#F29100',
+          name: this.$i18n.tc('Hive', 1) + ' ' + this.newHiveNumber,
+          bb_width_cm: null,
+          bb_depth_cm: null,
+          bb_height_cm: null,
+          fr_width_cm: null,
+          fr_height_cm: null,
+          order: null,
+          layers: [
+            {
+              color: '#ffa000',
+              type: 'honey',
+              order: 3,
+              framecount: 10,
+              key: 3,
+            },
+            {
+              color: '#ffa000',
+              type: 'brood',
+              order: 2,
+              framecount: 10,
+              key: 2,
+            },
+            {
+              color: '#ffa000',
+              type: 'brood',
+              order: 1,
+              framecount: 10,
+              key: 1,
+            },
+          ],
+          queen: {
+            clipped: null,
+            color: null,
+            created_at: null,
+            description: null,
+            fertilized: null,
+            name: null,
+          },
+        }
+        // Else retrieve to-be-edited hive
+      } else {
+        this.readHive()
+      }
+    })
   },
   methods: {
+    async createHive() {
+      if (this.$refs.form.validate()) {
+        this.showLoadingIcon = true
+        try {
+          const response = await this.$store.dispatch(
+            'hives/createHive',
+            this.activeHive
+          )
+          if (!response) {
+            this.snackbar.text = this.$i18n.t('not_saved_error')
+            this.snackbar.show = true
+          }
+          setTimeout(() => {
+            return this.$router.push({
+              name: 'home',
+            })
+          }, 300) // wait for API to update locations/hives
+        } catch (error) {
+          console.log(error)
+          this.snackbar.text = this.$i18n.t('not_saved_error')
+          this.snackbar.show = true
+        }
+      }
+    },
     async deleteHive() {
       try {
         const response = await this.$store.dispatch(
@@ -525,7 +621,7 @@ export default {
         this.$router.push({ name: '404' })
       }
     },
-    async saveHive() {
+    async updateHive() {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
         try {
@@ -570,6 +666,13 @@ export default {
           return true
         })
     },
+    saveHive() {
+      if (this.locationId !== null) {
+        this.createHive()
+      } else {
+        this.updateHive()
+      }
+    },
     selectLocale(array) {
       if (array.length) {
         const locale = this.$i18n.locale
@@ -591,7 +694,7 @@ export default {
         this.updateQueen(this.queenMarkColor, 'color')
       }
     },
-    updateHive(event, property) {
+    updateHiveProperties(event, property) {
       var value = null
       if (event === null) {
         value = null

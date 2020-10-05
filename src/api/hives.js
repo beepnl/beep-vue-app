@@ -1,5 +1,9 @@
 import axios from './axios'
 
+export function createHive(hive) {
+  return axios.post('/hives', hive)
+}
+
 export function saveHiveSettings(id, hive) {
   console.log('saving... to: /hives/' + id)
   return axios.put('/hives/' + id, hive)

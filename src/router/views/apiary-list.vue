@@ -241,7 +241,12 @@
                       ></v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
-                  <v-list-item>
+                  <v-list-item
+                    :to="{
+                      name: 'hive-create',
+                      query: { locationId: hiveSet.id },
+                    }"
+                  >
                     <v-list-item-icon class="mr-3">
                       <v-icon>mdi-plus</v-icon>
                     </v-list-item-icon>
