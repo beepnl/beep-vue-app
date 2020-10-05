@@ -241,7 +241,7 @@ export default {
     queenBirthDate: {
       get() {
         if (this.queen && this.queen.created_at) {
-          if (this.queen.created_at == null) {
+          if (this.queen.created_at === null) {
             return null
           }
           return this.momentifyRemoveTime(this.queen.created_at)

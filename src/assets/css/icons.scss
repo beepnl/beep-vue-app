@@ -38,6 +38,14 @@
     }
   }
 
+  &-queen--no-outline {
+    background-color: transparent;
+    background-image: url('~@assets/img/icn_bee_dark.svg');
+    background-size: 17px;
+    border: none;
+    border-radius: 0;
+  }
+
   &-queen--large {
     width: 40px;
     height: 40px;
@@ -48,6 +56,18 @@
     font-size: 13px;
     &::before {
       margin-left: 2px;
+      font-family: 'Material Design Icons';
+      content: '\F060A';
+    }
+  }
+
+  &-sensors--no-outline {
+    font-size: 22px;
+    color: $color-grey;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    &::before {
       font-family: 'Material Design Icons';
       content: '\F060A';
     }

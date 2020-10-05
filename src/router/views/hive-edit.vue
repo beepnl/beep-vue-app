@@ -374,6 +374,7 @@ export default {
           )
           .then((confirm) => {
             this.activeHive.queen = this.emptyQueen
+            // TODO: + saveHive + router
           })
           .catch((reject) => {
             return true

@@ -630,6 +630,7 @@ const translations = {
   view: 'View',
   share: 'Share',
   edit_details: 'Edit details',
+  remove_queen: 'Remove queen',
 }
 
 export default translations

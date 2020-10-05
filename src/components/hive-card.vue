@@ -140,7 +140,9 @@
                 >
                   <v-list-item-icon class="mr-3">
                     <div class="my-0">
-                      <v-sheet class="beep-icon beep-icon-sensors"></v-sheet>
+                      <v-sheet
+                        class="beep-icon beep-icon-sensors--no-outline"
+                      ></v-sheet>
                     </div>
                   </v-list-item-icon>
 
@@ -186,7 +188,11 @@
                   }"
                 >
                   <v-list-item-icon class="mr-3">
-                    <v-icon>mdi-square-edit-outline</v-icon>
+                    <div class="my-0">
+                      <v-sheet
+                        class="beep-icon beep-icon-queen--no-outline"
+                      ></v-sheet>
+                    </div>
                   </v-list-item-icon>
 
                   <v-list-item-content>
