@@ -220,6 +220,7 @@ export default {
           this.hive.layers = remainingLayers
           this.hive.frames = this.hive.layers[0].framecount
           this.setHiveEdited(true)
+          this.setApiaryEdited(true)
 
           this.cancelColorPicker()
         })
@@ -275,6 +276,9 @@ export default {
       })
       return orderedLayers
     },
+    setApiaryEdited(bool) {
+      this.$store.commit('locations/setApiaryEdited', bool)
+    },
     setHiveEdited(bool) {
       this.$store.commit('hives/setHiveEdited', bool)
     },
@@ -288,6 +292,7 @@ export default {
       this.hive.layers[layerIndex].color = this.layerColorPickerValue
       this.hive.frames = this.hive.layers[0].framecount
       this.setHiveEdited(true)
+      this.setApiaryEdited(true)
 
       this.cancelColorPicker()
     },
@@ -300,6 +305,7 @@ export default {
       this.hive.layers = layers
       this.hive.frames = this.hive.layers[0].framecount
       this.setHiveEdited(true)
+      this.setApiaryEdited(true)
     },
   },
 }

@@ -39,7 +39,7 @@
                   inline
                   controls
                   rounded
-                  @click="setHiveEdited(true)"
+                  @click="setHiveEdited(true), setApiaryEdited(true)"
                   @change="
                     updateHiveLayers(
                       parseInt($event),
@@ -138,7 +138,7 @@
                           :step="0.1"
                           inline
                           controls
-                          @click="setHiveEdited(true)"
+                          @click="setHiveEdited(true), setApiaryEdited(true)"
                           @change="
                             updateHive(
                               $event.toString(),
@@ -172,7 +172,7 @@
                           :step="0.1"
                           inline
                           controls
-                          @click="setHiveEdited(true)"
+                          @click="setHiveEdited(true), setApiaryEdited(true)"
                           @change="
                             updateHive(
                               $event.toString(),
@@ -322,6 +322,21 @@ export default {
       this.colorPreview = false
       this.overlay = false
     },
+    selectLocale(array) {
+      if (array.length) {
+        const locale = this.$i18n.locale
+        if (array[0].trans[locale] === undefined) {
+          return 'en'
+        } else {
+          return locale
+        }
+      } else {
+        return 'en'
+      }
+    },
+    setApiaryEdited(bool) {
+      this.$store.commit('locations/setApiaryEdited', bool)
+    },
     setHiveEdited(bool) {
       this.$store.commit('hives/setHiveEdited', bool)
     },
@@ -344,6 +359,7 @@ export default {
         property !== 'fr_height_cm'
       ) {
         this.setHiveEdited(true) // NB edited tracking for vue-number-input component inputs happens only via @click event as it calls @change when component is initialized, before any changes are made
+        this.setApiaryEdited(true)
       }
     },
     updateHiveLayers(value, property) {
@@ -355,6 +371,7 @@ export default {
       } else {
         this.hive.frames = this.hive.layers[0].framecount
         this.setHiveEdited(true)
+        this.setApiaryEdited(true)
       }
       if (property === 'color') {
         this.hive[property] = value
@@ -399,18 +416,6 @@ export default {
           this.updateHive(hiveDimensions[i], i)
           i++
         }
-      }
-    },
-    selectLocale(array) {
-      if (array.length) {
-        const locale = this.$i18n.locale
-        if (array[0].trans[locale] === undefined) {
-          return 'en'
-        } else {
-          return locale
-        }
-      } else {
-        return 'en'
       }
     },
   },
