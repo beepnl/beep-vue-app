@@ -424,41 +424,6 @@ export default {
   border: 1px solid rgba(0, 0, 0, 0.3) !important;
 }
 
-.flex-color-picker {
-  display: flex;
-  flex-direction: column;
-  .v-color-picker__controls {
-    order: 2;
-  }
-  .v-color-picker__swatches {
-    margin-top: 10px;
-    .v-color-picker__swatch:nth-child(2) {
-      .v-color-picker__color > div {
-        border: 1px solid $color-grey-light;
-      }
-    }
-  }
-}
-.hive-color-picker {
-  margin-top: -10px;
-}
-
-.hive-color-picker-toolbar,
-.hive-color-picker-footer {
-  border-radius: 4px;
-}
-
-.hive-color-picker-title {
-  font-weight: 500;
-}
-
-.hive-color-picker-footer {
-  margin-top: -5px;
-  .v-toolbar__content {
-    padding: 0 10px;
-  }
-}
-
 .hive-number-frame-input {
   max-width: 130px !important;
 }

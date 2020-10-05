@@ -123,12 +123,11 @@
         }
       }
     }
-  }
-
-  &:not(.slider--big-label) {
-    .v-slider {
-      max-width: 245px !important;
-      margin-top: 18px !important;
+    &:not(.slider--big-label) {
+      .v-slider {
+        max-width: 245px !important;
+        margin-top: 18px !important;
+      }
     }
   }
 

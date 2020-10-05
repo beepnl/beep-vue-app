@@ -97,7 +97,7 @@
                         <v-icon
                           class="mr-1"
                           color="primary"
-                          @click="updateLocation(colorPickerValue, 'hex_color')"
+                          @click="editApiary(colorPickerValue, 'hex_color')"
                           >mdi-check</v-icon
                         >
                         <v-icon @click="cancelColorPicker">mdi-close</v-icon>
@@ -120,6 +120,7 @@
                     v-if="activeApiary"
                     v-model="activeApiary.roofed"
                     :label="`${$t('roofed')}`"
+                    @change="setApiaryEdited(true)"
                   ></v-switch>
                 </v-col>
               </v-row>
@@ -157,6 +158,7 @@
                     :country="activeApiary.country_code.toUpperCase()"
                     :usei18n="false"
                     class="country-select"
+                    @input="setApiaryEdited(true)"
                   />
                 </v-col>
                 <v-col cols="6" sm="4">
@@ -169,7 +171,8 @@
                     :max="90"
                     inline
                     controls
-                    @change="updateLocation($event, 'lat')"
+                    @click="setApiaryEdited(true)"
+                    @change="editApiary($event, 'lat')"
                   ></VueNumberInput>
                 </v-col>
                 <v-col cols="6" sm="4">
@@ -182,7 +185,8 @@
                     :max="180"
                     inline
                     controls
-                    @change="updateLocation($event, 'lon')"
+                    @click="setApiaryEdited(true)"
+                    @change="editApiary($event, 'lon')"
                   ></VueNumberInput>
                 </v-col>
               </v-row>
@@ -194,6 +198,7 @@
                     :label="`${$t('City')}`"
                     outlined
                     dense
+                    @change="setApiaryEdited(true)"
                   >
                   </v-text-field>
                 </v-col>
@@ -204,6 +209,7 @@
                     :label="`${$t('Postal_code')}`"
                     outlined
                     dense
+                    @change="setApiaryEdited(true)"
                   >
                   </v-text-field>
                 </v-col>
@@ -214,6 +220,7 @@
                     :label="`${$t('Street')}`"
                     outlined
                     dense
+                    @change="setApiaryEdited(true)"
                   >
                   </v-text-field>
                 </v-col>
@@ -224,6 +231,7 @@
                     :label="`${$t('Number')}`"
                     outlined
                     dense
+                    @change="setApiaryEdited(true)"
                   >
                   </v-text-field>
                 </v-col>
@@ -248,6 +256,7 @@
 <script>
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
+import { mapGetters } from 'vuex'
 import VueGoogleAutocomplete from 'vue-google-autocomplete'
 import VueNumberInput from '@chenfengyuan/vue-number-input'
 
@@ -278,6 +287,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('locations', ['apiaryEdited']),
     id() {
       return parseInt(this.$route.params.id)
     },
@@ -305,7 +315,7 @@ export default {
   created() {
     this.getApiary(this.id).then((apiary) => {
       this.activeApiary = apiary
-      this.$store.commit('locations/setApiaryEdited', false)
+      this.setApiaryEdited(false)
     })
   },
   methods: {
@@ -399,10 +409,17 @@ export default {
       this.activeApiary.street = addressData.route
       this.activeApiary.street_no = addressData.street_number
     },
-    updateLocation(value, property) {
+    setApiaryEdited(bool) {
+      this.$store.commit('locations/setApiaryEdited', bool)
+    },
+    editApiary(value, property) {
       this.activeApiary[property] = value
       if (property === 'hex_color') {
         this.cancelColorPicker()
+      }
+      if (property !== 'lat' && property !== 'lon') {
+        // if value is present, vueNumberInput always triggers editApiary method for these properties
+        this.setApiaryEdited(true)
       }
     },
     validateText(value, property, maxLength) {
@@ -410,6 +427,7 @@ export default {
         value = value.substring(0, maxLength)
         this.activeApiary[property] = value
       }
+      this.setApiaryEdited(true)
     },
   },
 }

@@ -314,14 +314,13 @@ export default {
         this.$emit('calculate-liebefeld-colony-size')
       }
       this.object[property] = value
-      // this.setInspectionEdited(true) // FIXME: use different stepper component because vue-number-input always triggers @change (and thus sets inspectionEdited to true) when loaded
     },
     validateText(value, id, maxLength) {
       if (value !== null && value.length > maxLength + 1) {
         value = value.substring(0, maxLength)
         this.object[id] = value
-        this.setInspectionEdited(true)
       }
+      this.setInspectionEdited(true)
     },
   },
 }

@@ -68,7 +68,9 @@ export default {
   methods: {
     back: function() {
       if (
-        (this.$route.name === 'apiary-create' && this.apiaryEdited) ||
+        ((this.$route.name === 'apiary-create' ||
+          this.$route.name === 'apiary-edit') &&
+          this.apiaryEdited) ||
         (this.$route.name === 'hive-edit' && this.hiveEdited) ||
         (this.$route.name === 'hive-inspect' && this.inspectionEdited) ||
         (this.$route.name === 'checklist' && this.edited)

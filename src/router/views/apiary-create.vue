@@ -106,9 +106,7 @@
                           <v-icon
                             class="mr-1"
                             color="primary"
-                            @click="
-                              updateLocation(colorPickerValue, 'hex_color')
-                            "
+                            @click="editApiary(colorPickerValue, 'hex_color')"
                             >mdi-check</v-icon
                           >
                           <v-icon @click="cancelColorPicker">mdi-close</v-icon>
@@ -205,7 +203,7 @@
                       :max="90"
                       inline
                       controls
-                      @change="updateLocation($event, 'lat')"
+                      @change="editApiary($event, 'lat')"
                     ></VueNumberInput>
                   </v-col>
                   <v-col cols="6" sm="4">
@@ -218,7 +216,7 @@
                       :max="180"
                       inline
                       controls
-                      @change="updateLocation($event, 'lon')"
+                      @change="editApiary($event, 'lon')"
                     ></VueNumberInput>
                   </v-col>
                 </v-row>
@@ -690,7 +688,7 @@ export default {
     setActiveTab(int) {
       this.activeTab = 'tab-' + int
     },
-    updateLocation(value, property) {
+    editApiary(value, property) {
       this.newHive[property] = value
       if (property === 'hex_color') {
         this.cancelColorPicker()

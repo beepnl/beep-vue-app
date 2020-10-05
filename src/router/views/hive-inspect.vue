@@ -643,8 +643,8 @@ export default {
       if (value !== null && value.length > maxLength + 1) {
         value = value.substring(0, maxLength)
         this.activeInspection[property] = value
-        this.setInspectionEdited(true)
       }
+      this.setInspectionEdited(true)
     },
   },
 }

@@ -68,7 +68,7 @@
               counter="30"
               :rules="requiredRule"
               required
-              @input="updateHive($event, 'name')"
+              @input="validateText($event, 'name', 30)"
             >
             </v-text-field>
           </v-col>
@@ -96,12 +96,14 @@
             <div>
               <div class="beep-label" v-text="`${$t('Hive_order')}`"></div>
               <VueNumberInput
+                v-if="activeHive"
                 :value="activeHive.order"
                 class="hive-number-input"
                 :step="1"
                 inline
                 controls
-                @change="updateHive($event, 'order')"
+                @click="setHiveEdited(true)"
+                @change="updateHive(parseInt($event), 'order')"
               ></VueNumberInput>
             </div>
           </v-col>
@@ -259,7 +261,7 @@
                         </div>
                         <v-color-picker
                           v-model="queenColor"
-                          class="flex-color-picker"
+                          class="flex-color-picker queen-color-picker"
                           :swatches="swatchesQueen"
                           show-swatches
                           canvas-height="120"
@@ -594,12 +596,11 @@ export default {
       } else {
         value = event
       }
-      if (property === 'name' && value !== null && value.length > 31) {
-        value = value.substring(0, 30)
-      }
       this.activeHive[property] = value
       this.activeHive.frames = this.activeHive.layers[0].framecount
-      this.setHiveEdited(true)
+      if (property !== 'order') {
+        this.setHiveEdited(true) // NB edited tracking for vue-number-input component inputs happens only via @click event as it calls @change when component is initialized, before any changes are made
+      }
     },
     updateQueen(event, property) {
       var value = null
@@ -624,6 +625,13 @@ export default {
       this.activeHive.queen[property] = value
       this.setHiveEdited(true)
     },
+    validateText(value, property, maxLength) {
+      if (value !== null && value.length > maxLength + 1) {
+        value = value.substring(0, maxLength)
+        this.activeHive[property] = value
+      }
+      this.setHiveEdited(true)
+    },
   },
 }
 </script>
@@ -644,22 +652,6 @@ export default {
 
 .hive-number-input {
   max-width: 130px !important;
-}
-
-.flex-color-picker {
-  display: flex;
-  flex-direction: column;
-  .v-color-picker__controls {
-    order: 2;
-  }
-  .v-color-picker__swatches {
-    margin-top: 10px;
-    .v-color-picker__swatch:nth-child(2) {
-      .v-color-picker__color > div {
-        border: 1px solid $color-grey-light;
-      }
-    }
-  }
 }
 
 .queen-details {
