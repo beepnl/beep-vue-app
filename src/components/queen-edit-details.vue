@@ -102,15 +102,13 @@
             </div>
 
             <v-switch
-              :value="queen ? queen.clipped : false"
+              v-model="queenClipped"
               :label="`${$t('Queen_clipped')}`"
-              @change="updateQueen($event, 'clipped')"
             ></v-switch>
 
             <v-switch
-              :value="queen ? queen.fertilized : false"
+              v-model="queenFertilized"
               :label="`${$t('Queen_fertilized')}`"
-              @change="updateQueen($event, 'fertilized')"
             ></v-switch>
 
             <v-switch
@@ -197,7 +195,6 @@ export default {
       ],
       modal: false,
       useQueenMarkColor: false,
-      queenHasColor: false,
     }
   },
   computed: {
@@ -240,19 +237,22 @@ export default {
     },
     queenBirthDate: {
       get() {
-        if (this.queen && this.queen.created_at) {
-          if (this.queen.created_at === null) {
-            return null
-          }
+        if (this.queen && this.queen.created_at !== null) {
           return this.momentifyRemoveTime(this.queen.created_at)
-        } else if (this.queen) {
-          return this.momentifyRemoveTime(new Date())
         } else {
           return ''
         }
       },
       set(value) {
         this.updateQueen(value, 'created_at')
+      },
+    },
+    queenClipped: {
+      get() {
+        return this.queen.clipped === 1
+      },
+      set(value) {
+        this.updateQueen(value, 'clipped')
       },
     },
     queenColor: {
@@ -265,6 +265,22 @@ export default {
       },
       set(value) {
         this.updateQueen(value, 'color')
+      },
+    },
+    queenFertilized: {
+      get() {
+        return this.queen.fertilized === 1
+      },
+      set(value) {
+        this.updateQueen(value, 'fertilized')
+      },
+    },
+    queenHasColor: {
+      get() {
+        return this.queen.color !== null
+      },
+      set(value) {
+        this.queenHasColor = value
       },
     },
     showQueenColorPicker: {
@@ -317,6 +333,9 @@ export default {
     },
     setHiveEdited(bool) {
       this.$store.commit('hives/setHiveEdited', bool)
+    },
+    toBoolean(int) {
+      return int === 1
     },
     updateQueenBirthDate() {
       this.$refs.dialog.save(this.queenBirthDate)

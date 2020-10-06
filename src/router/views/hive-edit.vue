@@ -26,14 +26,20 @@
       >
         <v-spacer></v-spacer>
         <v-icon
-          v-if="activeHive.owner"
+          v-if="activeHive.owner && !queenEdit"
           dark
           class="mr-4"
           color="red"
           @click="confirmDeleteHive"
           >mdi-delete</v-icon
         >
-        <v-btn class="mr-n2" icon type="submit" :disabled="!valid">
+        <v-btn
+          v-if="!queenEdit"
+          class="mr-n2"
+          icon
+          type="submit"
+          :disabled="!valid"
+        >
           <v-progress-circular
             v-if="showLoadingIcon"
             class="mr-2"
@@ -45,6 +51,27 @@
           <v-icon v-if="!showLoadingIcon" dark color="primary"
             >mdi-check</v-icon
           >
+        </v-btn>
+
+        <v-btn
+          v-if="queenEdit"
+          tile
+          outlined
+          color="primary"
+          class="save-button mr-1"
+          type="submit"
+          :disabled="!valid"
+        >
+          <v-progress-circular
+            v-if="showLoadingIcon"
+            class="ml-n1 mr-2"
+            size="18"
+            width="2"
+            color="primary"
+            indeterminate
+          />
+          <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
+          {{ $t('save') + ' ' + $t('queen') }}
         </v-btn>
       </v-toolbar>
 
@@ -343,43 +370,20 @@ export default {
       }
     },
     confirmDeleteHive() {
-      if (!this.queenEdit) {
-        this.$refs.confirm
-          .open(
-            this.$i18n.t('remove_hive'),
-            this.$i18n.t('remove_hive') + ' "' + this.activeHive.name + '"?',
-            {
-              color: 'red',
-            }
-          )
-          .then((confirm) => {
-            this.deleteHive()
-          })
-          .catch((reject) => {
-            return true
-          })
-      } else {
-        this.$refs.confirm
-          .open(
-            this.$i18n.t('remove_queen'),
-            this.$i18n.t('remove_queen') +
-              ' ' +
-              this.$i18n.t('for') +
-              ' "' +
-              this.activeHive.name +
-              '"?',
-            {
-              color: 'red',
-            }
-          )
-          .then((confirm) => {
-            this.activeHive.queen = this.emptyQueen
-            // TODO: + saveHive + router
-          })
-          .catch((reject) => {
-            return true
-          })
-      }
+      this.$refs.confirm
+        .open(
+          this.$i18n.t('remove_hive'),
+          this.$i18n.t('remove_hive') + ' "' + this.activeHive.name + '"?',
+          {
+            color: 'red',
+          }
+        )
+        .then((confirm) => {
+          this.deleteHive()
+        })
+        .catch((reject) => {
+          return true
+        })
     },
     getTitle() {
       if (this.locationId) {

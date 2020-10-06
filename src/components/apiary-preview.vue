@@ -113,7 +113,7 @@ export default {
 }
 
 .layer {
-  min-width: 40px;
+  min-width: 8px;
   border: 1px solid rgba(0, 0, 0, 0.3);
   border-color: rgba(0, 0, 0, 0.3) !important;
   border-radius: 0;

@@ -329,7 +329,7 @@ export default {
 }
 
 .layer {
-  min-width: 40px;
+  min-width: 8px;
   cursor: grabbing;
   cursor: -moz-grabbing;
   cursor: -webkit-grabbing;

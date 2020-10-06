@@ -180,7 +180,7 @@
                 </v-list-item>
 
                 <v-list-item
-                  v-if="hive.editable && hive.queen !== null"
+                  v-if="hive.editable"
                   :to="{
                     name: `queen-edit`,
                     params: { id: hive.id },
