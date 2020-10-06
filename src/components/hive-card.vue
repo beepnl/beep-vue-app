@@ -57,7 +57,14 @@
 
     <div class="hive-details d-flex flex-no-wrap justify-flex-start align-end">
       <div class="hive-icon-wrapper d-flex flex-column align-center">
-        <div v-if="apiaryView" class="red--text apiary-view-alert">
+        <div
+          v-if="apiaryView"
+          :class="
+            `red--text apiary-view-alert ${
+              hasLayer('feeding_box') ? 'mr-1' : ''
+            }`
+          "
+        >
           <v-icon
             v-if="hive.attention || hive.reminder || hive.reminder_date"
             class="red--text"
@@ -497,6 +504,9 @@ export default {
   methods: {
     confirmDeleteHive(hive) {
       this.$emit('confirm-delete-hive', hive)
+    },
+    hasLayer(type) {
+      return this.hive.layers.some((layer) => layer.type === type)
     },
     lastVisit(hive) {
       if (hive.last_inspection_date !== null) {
