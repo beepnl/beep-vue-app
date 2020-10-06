@@ -4,7 +4,7 @@
       `hive-icon d-flex flex-column justify-center align-center white--text text--small mr-1 ${
         hasLayer('queen_excluder') ? 'has-queen-excluder' : ''
       } ${hasLayer('feeding_box') ? 'has-feeding-box' : ''} ${
-        apiaryView ? 'apiary-view' : ''
+        apiaryView || diaryView ? 'apiary-view' : ''
       }`
     "
     height="auto"
@@ -32,6 +32,10 @@ export default {
       type: Object,
       default: null,
       required: true,
+    },
+    diaryView: {
+      type: Boolean,
+      default: false,
     },
     showHive: {
       type: Boolean,
