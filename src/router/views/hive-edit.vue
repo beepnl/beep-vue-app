@@ -151,6 +151,7 @@
 </template>
 
 <script>
+import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import HiveEditDetails from '@components/hive-edit-details.vue'
 import { mapGetters } from 'vuex'
@@ -225,7 +226,6 @@ export default {
           const apiary = this.apiaries.filter((apiary) => {
             return apiary.id === this.locationId
           })[0]
-          console.log(apiary)
           this.newHiveNumber = apiary.hives.length + 1
         }
         this.activeHive = {
@@ -275,10 +275,7 @@ export default {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
         try {
-          const response = await this.$store.dispatch(
-            'hives/createHive',
-            this.activeHive
-          )
+          const response = await Api.createRequest('/hives', this.activeHive)
           if (!response) {
             this.snackbar.text = this.$i18n.t('not_saved_error')
             this.snackbar.show = true
@@ -289,6 +286,13 @@ export default {
             })
           }, 300) // wait for API to update locations/hives
         } catch (error) {
+          if (error.response) {
+            console.log(error.response)
+          } else if (error.request) {
+            console.log(error.request)
+          } else if (error.message) {
+            console.log('Error', error.message)
+          }
           console.log(error)
           this.snackbar.text = this.$i18n.t('not_saved_error')
           this.snackbar.show = true
@@ -297,10 +301,7 @@ export default {
     },
     async deleteHive() {
       try {
-        const response = await this.$store.dispatch(
-          'hives/deleteHive',
-          this.activeHive.id
-        )
+        const response = await Api.deleteRequest('/hives/', this.activeHive.id)
         if (!response) {
           this.snackbar.text = this.$i18n.t('something_wrong')
           this.snackbar.show = true
@@ -311,6 +312,13 @@ export default {
           })
         }, 100) // wait for API to update locations/hives
       } catch (error) {
+        if (error.response) {
+          console.log(error.response)
+        } else if (error.request) {
+          console.log(error.request)
+        } else if (error.message) {
+          console.log('Error', error.message)
+        }
         console.log(error)
         this.snackbar.text = this.$i18n.t('something_wrong')
         this.snackbar.show = true
@@ -318,20 +326,27 @@ export default {
     },
     async readApiaries() {
       try {
-        const response = await this.$store.dispatch('locations/findAll')
-        this.apiaries = response.locations
+        const response = await Api.readRequest('/locations')
+        this.apiaries = response.data.locations
         return true
-      } catch (e) {
-        console.log(e)
+      } catch (error) {
+        if (error.response) {
+          console.log(error.response)
+        } else if (error.request) {
+          console.log(error.request)
+        } else if (error.message) {
+          console.log('Error', error.message)
+        }
+        console.log(error)
       }
     },
     async readHive() {
       try {
-        const response = await this.$store.dispatch('hives/findById', this.id)
-        if (response.length === 0) {
+        const response = await Api.readRequest('/hives/', this.id)
+        if (response.data.length === 0) {
           this.$router.push({ name: '404', params: { resource: 'hive' } })
         }
-        const hive = response.hives[0]
+        const hive = response.data.hives[0]
         if (hive.queen && hive.queen.color && hive.queen.color !== null) {
           this.queenHasColor = true
         } else if (hive.queen === null) {
@@ -340,8 +355,15 @@ export default {
         this.activeHive = hive
         this.setHiveEdited(false)
         return true
-      } catch (e) {
-        console.log(e)
+      } catch (error) {
+        if (error.response) {
+          console.log(error.response)
+        } else if (error.request) {
+          console.log(error.request)
+        } else if (error.message) {
+          console.log('Error', error.message)
+        }
+        console.log(error)
         this.$router.push({ name: '404', params: { resource: 'hive' } })
       }
     },
@@ -349,8 +371,9 @@ export default {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
         try {
-          const response = await this.$store.dispatch(
-            'hives/saveHiveSettings',
+          const response = await Api.updateRequest(
+            '/hives/',
+            this.activeHive.id,
             this.activeHive
           )
           if (!response) {
@@ -363,6 +386,13 @@ export default {
             })
           }, 300) // wait for API to update locations/hives
         } catch (error) {
+          if (error.response) {
+            console.log(error.response)
+          } else if (error.request) {
+            console.log(error.request)
+          } else if (error.message) {
+            console.log('Error', error.message)
+          }
           console.log(error)
           this.snackbar.text = this.$i18n.t('not_saved_error')
           this.snackbar.show = true

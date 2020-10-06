@@ -323,6 +323,7 @@
 </template>
 
 <script>
+import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import HiveCard from '@components/hive-card.vue'
 import Layout from '@layouts/main.vue'
@@ -526,7 +527,7 @@ export default {
     },
     async deleteHiveById(id) {
       try {
-        const response = await this.$store.dispatch('hives/deleteHive', id)
+        const response = await Api.deleteRequest('/hives/', id)
         if (!response) {
           this.snackbar.text = this.$i18n.t('something_wrong')
           this.snackbar.show = true

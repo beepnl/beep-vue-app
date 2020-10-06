@@ -558,6 +558,7 @@
 </template>
 
 <script>
+import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import imageOverlay from '@components/image-overlay.vue'
 // import { ScaleTransition } from 'vue2-transitions'
@@ -748,14 +749,21 @@ export default {
     },
     async getActiveHive(id) {
       try {
-        const response = await this.$store.dispatch('hives/findById', id)
-        if (response.length === 0) {
+        const response = await Api.readRequest('/hives/', id)
+        if (response.data.length === 0) {
           this.$router.push({ name: '404', params: { resource: 'hive' } })
         }
-        const hive = response.hives[0]
+        const hive = response.data.hives[0]
         return hive
-      } catch (e) {
-        console.log(e)
+      } catch (error) {
+        if (error.response) {
+          console.log(error.response)
+        } else if (error.request) {
+          console.log(error.request)
+        } else if (error.message) {
+          console.log('Error', error.message)
+        }
+        console.log(error)
         this.$router.push({ name: '404', params: { resource: 'hive' } })
       }
     },

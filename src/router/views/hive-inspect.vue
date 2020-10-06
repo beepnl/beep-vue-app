@@ -345,6 +345,7 @@
 </template>
 
 <script>
+import Api from '@api/Api'
 import checklistFieldset from '@components/checklist-fieldset.vue'
 import Confirm from '@components/confirm.vue'
 import { Datetime } from 'vue-datetime'
@@ -483,11 +484,22 @@ export default {
   methods: {
     async getActiveHive(id) {
       try {
-        const response = await this.$store.dispatch('hives/findById', id)
-        const hive = response.hives[0]
+        const response = await Api.readRequest('/hives/', id)
+        if (response.data.length === 0) {
+          this.$router.push({ name: '404', params: { resource: 'hive' } })
+        }
+        const hive = response.data.hives[0]
         return hive
-      } catch (e) {
-        console.log(e)
+      } catch (error) {
+        if (error.response) {
+          console.log(error.response)
+        } else if (error.request) {
+          console.log(error.request)
+        } else if (error.message) {
+          console.log('Error', error.message)
+        }
+        console.log(error)
+        this.$router.push({ name: '404', params: { resource: 'hive' } })
       }
     },
     async getChecklistById(id) {

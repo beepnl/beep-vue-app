@@ -46,20 +46,20 @@ export const actions = {
     }
     return false
   },
-  getInspectionsForHiveIds: function({ _ }, hiveIds) {
-    return Promise.all(
-      hiveIds.map((hiveId) => resource.endpoint.read(hiveId))
-    ).then((data) =>
-      data.reduce((all, item) => all.concat(item.inspections), [])
-    )
-  },
-  getInspectionsForHives: function({ _ }, hives) {
-    return Promise.all(
-      hives.map((hive) => resource.endpoint.read(hive.id))
-    ).then((data) =>
-      data.reduce((all, item) => all.concat(item.inspections), [])
-    )
-  },
+  // getInspectionsForHiveIds: function({ _ }, hiveIds) {
+  //   return Promise.all(
+  //     hiveIds.map((hiveId) => resource.endpoint.read(hiveId))
+  //   ).then((data) =>
+  //     data.reduce((all, item) => all.concat(item.inspections), [])
+  //   )
+  // },
+  // getInspectionsForHives: function({ _ }, hives) {
+  //   return Promise.all(
+  //     hives.map((hive) => resource.endpoint.read(hive.id))
+  //   ).then((data) =>
+  //     data.reduce((all, item) => all.concat(item.inspections), [])
+  //   )
+  // },
   getAllInspectionsForHiveId: function({ _ }, hiveId) {
     const response = resource.endpoint.read(hiveId)
     if (response) {
