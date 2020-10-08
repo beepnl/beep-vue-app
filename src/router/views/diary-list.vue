@@ -115,6 +115,11 @@
               dense
             >
               <v-card
+                :to="{
+                  name: 'hive-inspections',
+                  params: { id: inspection.hive_id },
+                  query: { search: inspection.id.toString() },
+                }"
                 class="diary-card d-flex flex-column justify-end align-start"
                 outlined
               >
@@ -304,6 +309,10 @@ export default {
       }
 
       var propertyFilteredInspections = textFilteredInspections
+        .slice()
+        .sort(function(a, b) {
+          return new Date(b.created_at) - new Date(a.created_at)
+        })
         .map((inspection) => {
           if (typeof inspection !== 'undefined' && this.filterByReminder) {
             if (

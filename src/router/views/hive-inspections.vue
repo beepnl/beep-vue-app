@@ -617,6 +617,8 @@ export default {
                   // && key !== ('description' || 'type' || 'hex_color' || 'created_at')
                 ) {
                   return value.toLowerCase().includes(this.search.toLowerCase())
+                } else if (key === 'id') {
+                  return value.toString().includes(this.search)
                 }
               }
             )
@@ -722,6 +724,7 @@ export default {
     },
   },
   created() {
+    this.search = this.$route.query.search || null
     this.getActiveHive(this.id).then((hive) => {
       this.$store.commit('hives/setActiveHive', hive)
     })
@@ -944,7 +947,6 @@ export default {
   .add-to-calendar {
     display: block;
     display: -webkit-box;
-    max-height: 22px;
     padding: 0;
     margin-bottom: 0;
     overflow: hidden;
@@ -955,7 +957,6 @@ export default {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     @include for-phone-only {
-      max-height: none;
       font-size: 10px;
       -webkit-line-clamp: 3;
     }
