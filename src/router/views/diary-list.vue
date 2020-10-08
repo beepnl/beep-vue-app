@@ -115,7 +115,7 @@
       </div>
 
       <v-container class="diary-inspections-content">
-        <v-row>
+        <v-row dense>
           <ScaleTransition
             :duration="300"
             group
@@ -593,15 +593,6 @@ export default {
     locale() {
       return this.$i18n.locale
     },
-    // widestHive() {
-    // return (
-    //   Math.max(
-    //     ...this.hives.map((hive) =>
-    //       Math.max(...hive.layers.map((layer) => layer.framecount))
-    //     )
-    //   ) * 3.5
-    // )
-    // },
   },
   created() {
     this.search = this.$route.query.search || null
@@ -770,7 +761,6 @@ export default {
 }
 
 .diary-inspections-content {
-  max-width: 100vw;
   margin-top: 61px;
   overflow: hidden;
   @include for-phone-only {
