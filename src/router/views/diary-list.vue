@@ -96,6 +96,20 @@
                 </v-icon>
               </v-card-actions>
             </div>
+            <v-card-actions class="view-buttons">
+              <v-icon
+                :class="`${listView ? 'color-primary' : ''} mr-2`"
+                @click="toggleGrid"
+              >
+                mdi-view-headline
+              </v-icon>
+              <v-icon
+                :class="`${gridView ? 'color-primary' : ''} mr-2`"
+                @click="toggleGrid"
+              >
+                mdi-view-grid-outline
+              </v-icon>
+            </v-card-actions>
           </v-row>
         </v-container>
       </div>
@@ -111,11 +125,15 @@
               v-for="(inspection, j) in filteredInspections"
               :key="j"
               sm="auto"
-              class="diary-item"
+              :class="`diary-item ${listView ? 'list-view' : ''}`"
               dense
             >
               <v-card
-                class="diary-card d-flex flex-column justify-space-between align-start"
+                :class="
+                  `diary-card d-flex flex-column justify-space-between align-start ${
+                    listView ? 'list-view' : ''
+                  }`
+                "
                 outlined
               >
                 <div style="width: 100%;" class="mb-3">
@@ -128,7 +146,7 @@
                       </div>
                       <div class="d-flex flex-row mr-3">
                         <h4
-                          class="hive-name mb-3"
+                          :class="`hive-name ${listView ? 'mb-1' : 'mb-3'}`"
                           v-text="
                             `${
                               hives[inspection.hive_id].name.length < 35
@@ -228,14 +246,19 @@
                     </v-menu>
                   </div>
                 </div>
-                <div class="d-flex flex-no-wrap justify-flex-start align-end">
-                  <div class="mr-2 d-flex flex-column align-center">
+                <div
+                  class="d-flex flex-no-wrap justify-flex-start align-end"
+                  style="width: 100%;"
+                >
+                  <div
+                    class="hive-icon-wrapper mr-2 d-flex flex-column align-center"
+                  >
                     <HiveIcon
                       :hive="hives[inspection.hive_id]"
                       :diary-view="true"
                     ></HiveIcon>
                   </div>
-                  <div class="pl-2 pr-0 py-0">
+                  <div v-if="gridView" class="pl-2 pr-0 py-0">
                     <div
                       v-if="inspection.created_at"
                       class="diary-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
@@ -321,6 +344,149 @@
                       <span class="mr-2" v-text="inspection.notes"> </span>
                     </div>
                   </div>
+
+                  <v-row
+                    v-if="listView"
+                    class="ml-2 px-0 py-0"
+                    style="width:100%;"
+                  >
+                    <v-col
+                      v-if="inspection.created_at"
+                      cols="12"
+                      sm="3"
+                      class="diary-details-item d-flex flex-column align-start pa-0"
+                    >
+                      <div
+                        class="d-flex flex-no-wrap justify-flex-start align-center"
+                      >
+                        <div class="mr-1 my-0">
+                          <v-sheet
+                            class="beep-icon beep-icon-magnify"
+                          ></v-sheet>
+                        </div>
+                        <span
+                          class="diary-label"
+                          v-text="`${$tc('Inspection', 1)}`"
+                        >
+                        </span>
+                      </div>
+                      <span
+                        class="ml-7 last-visit"
+                        v-text="momentFromNow(inspection.created_at)"
+                      >
+                      </span>
+                    </v-col>
+
+                    <v-col
+                      v-if="inspection.impression"
+                      cols="12"
+                      sm="3"
+                      class="diary-details-item d-flex flex-column align-start  pa-0"
+                    >
+                      <div
+                        class="d-flex flex-no-wrap justify-flex-start align-center"
+                      >
+                        <div class="mr-1 my-0">
+                          <v-icon
+                            v-if="inspection.impression === 1"
+                            class="red--text"
+                          >
+                            mdi-emoticon-sad
+                          </v-icon>
+                          <v-icon
+                            v-if="inspection.impression === 3"
+                            class="green--text"
+                          >
+                            mdi-emoticon-happy
+                          </v-icon>
+                          <v-icon
+                            v-if="inspection.impression === 2"
+                            class="orange--text"
+                          >
+                            mdi-emoticon-neutral
+                          </v-icon>
+                          <v-icon
+                            v-if="inspection.impression === null"
+                            class="color-grey"
+                          >
+                            mdi-emoticon-neutral
+                          </v-icon>
+                        </div>
+                        <span
+                          class="diary-label"
+                          v-text="`${$t('positive_impression')}`"
+                        >
+                        </span>
+                      </div>
+                      <div class="ml-7">
+                        <span v-if="inspection.impression === null">{{
+                          $t('no_data')
+                        }}</span>
+                      </div>
+                    </v-col>
+
+                    <v-col
+                      v-if="
+                        inspection.attention ||
+                          inspection.reminder ||
+                          inspection.reminder_date
+                      "
+                      cols="12"
+                      sm="3"
+                      class="diary-details-item d-flex flex-column align-start  pa-0"
+                    >
+                      <div
+                        class="d-flex flex-no-wrap justify-flex-start align-center"
+                      >
+                        <div class="mr-1 my-0">
+                          <v-icon class="red--text">
+                            mdi-alert-circle
+                          </v-icon>
+                        </div>
+                        <span
+                          v-if="inspection.reminder_date"
+                          class="to-do-date mr-2"
+                          v-text="momentifyDayMonth(inspection.reminder_date)"
+                        >
+                        </span>
+                        <span
+                          class="diary-label"
+                          v-text="`${$t('needs_attention')}`"
+                        >
+                        </span>
+                      </div>
+                      <div class="ml-7">
+                        <span
+                          v-if="inspection.reminder"
+                          class="reminder"
+                          v-text="inspection.reminder"
+                        >
+                        </span>
+                      </div>
+                    </v-col>
+
+                    <v-col
+                      v-if="inspection.notes"
+                      cols="12"
+                      sm="3"
+                      class="diary-details-item d-flex flex-column align-start  pa-0"
+                    >
+                      <div
+                        class="d-flex flex-no-wrap justify-flex-start align-center"
+                      >
+                        <div class="mr-1 my-0">
+                          <v-icon class="color-grey">
+                            mdi-pencil-circle
+                          </v-icon>
+                        </div>
+                        <span class="diary-label" v-text="`${$t('notes')}`">
+                        </span>
+                      </div>
+                      <div class="ml-7">
+                        <span class="notes" v-text="inspection.notes"> </span>
+                      </div>
+                    </v-col>
+                  </v-row>
                 </div>
               </v-card>
             </v-col>
@@ -358,6 +524,8 @@ export default {
       hiveIds: null,
       hives: null,
       showDiaryPlaceholder: false,
+      listView: true,
+      gridView: false,
     }
   },
   computed: {
@@ -425,6 +593,15 @@ export default {
     locale() {
       return this.$i18n.locale
     },
+    // widestHive() {
+    // return (
+    //   Math.max(
+    //     ...this.hives.map((hive) =>
+    //       Math.max(...hive.layers.map((layer) => layer.framecount))
+    //     )
+    //   ) * 3.5
+    // )
+    // },
   },
   created() {
     this.search = this.$route.query.search || null
@@ -530,6 +707,10 @@ export default {
           return true
         })
     },
+    toggleGrid() {
+      this.listView = !this.listView
+      this.gridView = !this.gridView
+    },
     updateFilterByImpression(number) {
       if (this.filterByImpression.includes(number)) {
         this.filterByImpression.splice(
@@ -571,6 +752,9 @@ export default {
         max-width: 115px;
       }
     }
+    .view-buttons {
+      padding: 9px;
+    }
     .hide-on-mobile {
       @include for-phone-only {
         display: none;
@@ -608,6 +792,10 @@ export default {
       flex-grow: 1 !important;
       min-width: 100%;
     }
+    &.list-view {
+      flex-grow: 1 !important;
+      min-width: 100%;
+    }
   }
 
   .diary-card {
@@ -633,6 +821,13 @@ export default {
       max-width: 24px !important;
       height: 24px !important;
     }
+    .diary-label {
+      font-size: 0.75rem !important;
+      font-weight: 600;
+      line-height: 1rem;
+      color: $color-grey;
+      letter-spacing: 0.0333333333em !important;
+    }
     .diary-details-item {
       max-width: 300px;
       margin-bottom: 8px;
@@ -651,6 +846,26 @@ export default {
       white-space: nowrap;
       border: 1px solid red;
       border-radius: 5px;
+    }
+    &.list-view {
+      .hive-icon-wrapper {
+        width: 80px;
+      }
+      .diary-details-item {
+        max-width: none;
+        margin-bottom: 0;
+        line-height: 1.1rem;
+      }
+      .notes,
+      .reminder {
+        display: inline-block;
+        max-height: 30px;
+        overflow: hidden;
+        line-height: 1.1em;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
     }
   }
 }
