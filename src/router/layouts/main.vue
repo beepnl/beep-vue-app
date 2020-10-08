@@ -27,9 +27,9 @@
       </template>
     </v-app-bar>
 
-    <v-content class="overflow-hidden">
+    <v-main class="overflow-hidden">
       <slot></slot>
-    </v-content>
+    </v-main>
   </div>
 </template>
 

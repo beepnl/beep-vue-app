@@ -102,112 +102,153 @@
 
       <v-container class="hive-inspections-content">
         <v-row>
-          <v-col
-            v-for="(inspection, j) in filteredInspections"
-            :key="j"
-            cols="12"
-            md="6"
-            lg="4"
-            dense
+          <ScaleTransition
+            :duration="300"
+            group
+            class="diary-item-transition-wrapper"
           >
-            <v-card class="diary-card">
-              <div class="d-flex flex-no-wrap justify-flex-start align-end">
-                <div
-                  class="hive-icon-wrapper mr-2 d-flex flex-column align-center"
-                >
+            <v-col
+              v-for="(inspection, j) in filteredInspections"
+              :key="j"
+              sm="auto"
+              class="diary-item"
+              dense
+            >
+              <v-card
+                class="diary-card d-flex flex-column justify-end align-start"
+                outlined
+              >
+                <v-row class="ml-0 mb-3 mr-2">
                   <div
-                    class="d-flex flex-column justify-flex-start align-start"
+                    style="width: 100%;"
+                    class="d-flex flex-column align-start"
                   >
                     <div class="beep-label">
-                      {{ hives[inspection.hive_id].location }}
+                      {{ momentify(inspection.created_at) }}
                     </div>
-                    <div class="beep-label">
-                      {{ hives[inspection.hive_id].name }}
-                    </div>
-                  </div>
-                  <HiveIcon
-                    :hive="hives[inspection.hive_id]"
-                    :diary-view="true"
-                  ></HiveIcon>
-                </div>
-                <div class="hive-details-icons-text pl-2 pr-0 py-0">
-                  <div
-                    v-if="inspection.impression"
-                    class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
-                  >
-                    <div class="mr-2 my-0">
-                      <v-icon
-                        v-if="inspection.impression === 1"
-                        class="red--text"
-                      >
-                        mdi-emoticon-sad
-                      </v-icon>
-                      <v-icon
-                        v-if="inspection.impression === 3"
-                        class="green--text"
-                      >
-                        mdi-emoticon-happy
-                      </v-icon>
-                      <v-icon
-                        v-if="inspection.impression === 2"
-                        class="orange--text"
-                      >
-                        mdi-emoticon-neutral
-                      </v-icon>
-                    </div>
-                  </div>
-
-                  <div
-                    v-if="
-                      inspection.attention ||
-                        inspection.reminder ||
-                        inspection.reminder_date
-                    "
-                    class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
-                  >
-                    <div class="mr-2 my-0">
-                      <v-icon
-                        v-if="
-                          inspection.attention ||
-                            inspection.reminder ||
-                            inspection.reminder_date
+                    <div class="d-flex flex-row mr-3">
+                      <h4
+                        class="hive-name mb-3"
+                        v-text="
+                          `${
+                            hives[inspection.hive_id].name.length < 35
+                              ? hives[inspection.hive_id].name
+                              : hives[inspection.hive_id].name.substring(
+                                  0,
+                                  // eslint-disable-next-line vue/comma-dangle
+                                  35
+                                ) + '...'
+                          }`
                         "
-                        class="red--text"
                       >
-                        mdi-alert-circle
-                      </v-icon>
+                      </h4>
+                      <pre
+                        class="caption hive-name-caption"
+                        v-text="` (${hives[inspection.hive_id].location})`"
+                      >
+                      </pre>
                     </div>
-                    <span
-                      v-if="inspection.reminder_date"
-                      class="to-do-date mr-2"
-                      v-text="momentifyDayMonth(inspection.reminder_date)"
-                    >
-                    </span>
-                    <span
-                      v-if="inspection.reminder"
-                      v-text="inspection.reminder"
-                    >
-                    </span>
                   </div>
-
+                </v-row>
+                <div class="d-flex flex-no-wrap justify-flex-start align-end">
                   <div
-                    v-if="inspection.notes"
-                    class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
+                    class="hive-icon-wrapper mr-2 d-flex flex-column align-center"
                   >
-                    <div class="mr-2 my-0">
-                      <v-icon class="color-grey">
-                        mdi-pencil-circle
-                      </v-icon>
+                    <HiveIcon
+                      :hive="hives[inspection.hive_id]"
+                      :diary-view="true"
+                    ></HiveIcon>
+                  </div>
+                  <div class="hive-details-icons-text pl-2 pr-0 py-0">
+                    <div
+                      v-if="inspection.created_at"
+                      class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
+                    >
+                      <div class="mr-2 my-0">
+                        <v-sheet class="beep-icon beep-icon-magnify"></v-sheet>
+                      </div>
+                      <span
+                        class="mr-2 last-visit"
+                        v-text="momentFromNow(inspection.created_at)"
+                      >
+                      </span>
                     </div>
-                    <span class="mr-2" v-text="inspection.notes"> </span>
+
+                    <div
+                      v-if="inspection.impression"
+                      class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
+                    >
+                      <div class="mr-2 my-0">
+                        <v-icon
+                          v-if="inspection.impression === 1"
+                          class="red--text"
+                        >
+                          mdi-emoticon-sad
+                        </v-icon>
+                        <v-icon
+                          v-if="inspection.impression === 3"
+                          class="green--text"
+                        >
+                          mdi-emoticon-happy
+                        </v-icon>
+                        <v-icon
+                          v-if="inspection.impression === 2"
+                          class="orange--text"
+                        >
+                          mdi-emoticon-neutral
+                        </v-icon>
+                      </div>
+                    </div>
+
+                    <div
+                      v-if="
+                        inspection.attention ||
+                          inspection.reminder ||
+                          inspection.reminder_date
+                      "
+                      class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
+                    >
+                      <div class="mr-2 my-0">
+                        <v-icon
+                          v-if="
+                            inspection.attention ||
+                              inspection.reminder ||
+                              inspection.reminder_date
+                          "
+                          class="red--text"
+                        >
+                          mdi-alert-circle
+                        </v-icon>
+                      </div>
+                      <span
+                        v-if="inspection.reminder_date"
+                        class="to-do-date mr-2"
+                        v-text="momentifyDayMonth(inspection.reminder_date)"
+                      >
+                      </span>
+                      <span
+                        v-if="inspection.reminder"
+                        v-text="inspection.reminder"
+                      >
+                      </span>
+                    </div>
+
+                    <div
+                      v-if="inspection.notes"
+                      class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
+                    >
+                      <div class="mr-2 my-0">
+                        <v-icon class="color-grey">
+                          mdi-pencil-circle
+                        </v-icon>
+                      </div>
+                      <span class="mr-2" v-text="inspection.notes"> </span>
+                    </div>
                   </div>
                 </div>
-                <div class="beep-label float-right">
-                  {{ momentify(inspection.created_at) }}
-                </div>
-              </div>
-            </v-card>
-          </v-col>
+              </v-card>
+            </v-col>
+          </ScaleTransition>
         </v-row>
       </v-container>
     </div>
@@ -218,11 +259,13 @@
 import Layout from '@layouts/main.vue'
 import HiveIcon from '@components/hive-icon.vue'
 import { momentMixin } from '@mixins/momentMixin'
+import { ScaleTransition } from 'vue2-transitions'
 
 export default {
   components: {
     Layout,
     HiveIcon,
+    ScaleTransition,
   },
   mixins: [momentMixin],
   data: function() {
@@ -424,16 +467,54 @@ export default {
     margin-top: 55px;
   }
 
+  .diary-item-transition-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    @include for-phone-only {
+      min-width: 100%;
+    }
+  }
+  .diary-item {
+    flex-grow: 0 !important;
+    padding: 4px;
+
+    @include xs-only {
+      flex-grow: 1 !important;
+      min-width: 100%;
+    }
+  }
+
   .diary-card {
     height: 100%;
     padding: 12px;
     font-size: 0.875rem !important;
-    .hive-details-item {
-      margin-bottom: 8px;
+
+    .hive-name {
       line-height: 1rem;
+    }
+
+    .hive-name-caption {
+      font-weight: 600;
+      line-height: 1rem;
+    }
+    .hive-details-item {
+      max-width: 300px;
+      margin-bottom: 8px;
+      line-height: 1.1rem;
       &:last-child {
         margin-bottom: 0;
       }
+    }
+    .to-do-date {
+      width: auto;
+      padding: 2px 4px !important;
+      font-weight: 600;
+      line-height: 1rem;
+      color: red;
+      text-align: center;
+      white-space: nowrap;
+      border: 1px solid red;
+      border-radius: 5px;
     }
   }
 }
