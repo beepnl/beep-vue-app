@@ -355,6 +355,7 @@ export default {
       filterByBase: false,
       filterByImpression: [],
       inspections: null,
+      hiveIds: null,
       hives: null,
       showDiaryPlaceholder: false,
     }
@@ -444,7 +445,9 @@ export default {
           this.snackbar.text = this.$i18n.t('something_wrong')
           this.snackbar.show = true
         }
-        this.getAllInspectionsForHiveId()
+        this.getInspectionsForHiveIds(this.hiveIds).then((inspections) => {
+          this.inspections = inspections
+        })
       } catch (error) {
         console.log(error)
         this.snackbar.text = this.$i18n.t('something_wrong')
@@ -484,6 +487,7 @@ export default {
           }
 
           this.hives = uniqueHives
+          this.hiveIds = uniqueHiveIds
 
           return uniqueHiveIds
         }
