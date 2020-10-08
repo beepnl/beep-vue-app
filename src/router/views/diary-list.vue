@@ -100,7 +100,7 @@
         </v-container>
       </div>
 
-      <v-container class="hive-inspections-content">
+      <v-container class="diary-inspections-content">
         <v-row>
           <ScaleTransition
             :duration="300"
@@ -115,59 +115,130 @@
               dense
             >
               <v-card
-                :to="{
-                  name: 'hive-inspections',
-                  params: { id: inspection.hive_id },
-                  query: { search: inspection.id.toString() },
-                }"
-                class="diary-card d-flex flex-column justify-end align-start"
+                class="diary-card d-flex flex-column justify-space-between align-start"
                 outlined
               >
-                <v-row class="ml-0 mb-3 mr-2">
+                <div style="width: 100%;" class="mb-3">
                   <div
-                    style="width: 100%;"
-                    class="d-flex flex-column align-start"
+                    class="d-flex flex-row justify-space-between align-start"
                   >
-                    <div class="beep-label">
-                      {{ momentify(inspection.created_at) }}
+                    <div class="d-flex flex-column align-start">
+                      <div class="beep-label">
+                        {{ momentify(inspection.created_at) }}
+                      </div>
+                      <div class="d-flex flex-row mr-3">
+                        <h4
+                          class="hive-name mb-3"
+                          v-text="
+                            `${
+                              hives[inspection.hive_id].name.length < 35
+                                ? hives[inspection.hive_id].name
+                                : hives[inspection.hive_id].name.substring(
+                                    0,
+                                    // eslint-disable-next-line vue/comma-dangle
+                                    35
+                                  ) + '...'
+                            }`
+                          "
+                        >
+                        </h4>
+                        <pre
+                          class="caption hive-name-caption"
+                          v-text="` (${hives[inspection.hive_id].location})`"
+                        >
+                        </pre>
+                      </div>
                     </div>
-                    <div class="d-flex flex-row mr-3">
-                      <h4
-                        class="hive-name mb-3"
-                        v-text="
-                          `${
-                            hives[inspection.hive_id].name.length < 35
-                              ? hives[inspection.hive_id].name
-                              : hives[inspection.hive_id].name.substring(
-                                  0,
-                                  // eslint-disable-next-line vue/comma-dangle
-                                  35
-                                ) + '...'
-                          }`
-                        "
-                      >
-                      </h4>
-                      <pre
-                        class="caption hive-name-caption"
-                        v-text="` (${hives[inspection.hive_id].location})`"
-                      >
-                      </pre>
-                    </div>
+                    <v-menu bottom left>
+                      <template v-slot:activator="{ on }">
+                        <v-btn
+                          class="diary-menu-button pa-0"
+                          depressed
+                          color="transparent"
+                          v-on="on"
+                        >
+                          <v-icon class="color-grey">mdi-dots-vertical</v-icon>
+                        </v-btn>
+                      </template>
+
+                      <v-list dense>
+                        <v-list-item-group>
+                          <v-list-item
+                            :to="{
+                              name: 'hive-inspections',
+                              params: { id: inspection.hive_id },
+                              query: { search: inspection.id.toString() },
+                            }"
+                          >
+                            <v-list-item-icon class="mr-3">
+                              <v-icon>mdi-magnify</v-icon>
+                            </v-list-item-icon>
+
+                            <v-list-item-content>
+                              <v-list-item-title
+                                >{{ $t('view') }}
+                                {{ $tc('inspection', 1) }}</v-list-item-title
+                              >
+                            </v-list-item-content>
+                          </v-list-item>
+                          <v-list-item
+                            v-if="inspection.owner"
+                            :to="{
+                              name: 'hive-inspect-edit',
+                              params: {
+                                id: inspection.hive_id,
+                                inspection: inspection.id,
+                              },
+                            }"
+                          >
+                            <v-list-item-icon class="mr-3">
+                              <v-icon>mdi-pencil</v-icon>
+                            </v-list-item-icon>
+
+                            <v-list-item-content>
+                              <v-list-item-title
+                                v-text="`${$t('Edit_inspection')}`"
+                              ></v-list-item-title>
+                            </v-list-item-content>
+                          </v-list-item>
+                        </v-list-item-group>
+
+                        <v-divider
+                          v-if="inspection.owner"
+                          class="my-1"
+                        ></v-divider>
+
+                        <v-list-item-group>
+                          <v-list-item
+                            v-if="inspection.owner"
+                            @click="confirmDeleteInspection(inspection)"
+                          >
+                            <v-list-item-icon class="mr-3">
+                              <v-icon class="red--text">mdi-delete</v-icon>
+                            </v-list-item-icon>
+
+                            <v-list-item-content>
+                              <v-list-item-title class="red--text">{{
+                                $t('remove_inspection')
+                              }}</v-list-item-title>
+                            </v-list-item-content>
+                          </v-list-item>
+                        </v-list-item-group>
+                      </v-list>
+                    </v-menu>
                   </div>
-                </v-row>
+                </div>
                 <div class="d-flex flex-no-wrap justify-flex-start align-end">
-                  <div
-                    class="hive-icon-wrapper mr-2 d-flex flex-column align-center"
-                  >
+                  <div class="mr-2 d-flex flex-column align-center">
                     <HiveIcon
                       :hive="hives[inspection.hive_id]"
                       :diary-view="true"
                     ></HiveIcon>
                   </div>
-                  <div class="hive-details-icons-text pl-2 pr-0 py-0">
+                  <div class="pl-2 pr-0 py-0">
                     <div
                       v-if="inspection.created_at"
-                      class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
+                      class="diary-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
                     >
                       <div class="mr-2 my-0">
                         <v-sheet class="beep-icon beep-icon-magnify"></v-sheet>
@@ -181,7 +252,7 @@
 
                     <div
                       v-if="inspection.impression"
-                      class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
+                      class="diary-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
                     >
                       <div class="mr-2 my-0">
                         <v-icon
@@ -211,7 +282,7 @@
                           inspection.reminder ||
                           inspection.reminder_date
                       "
-                      class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
+                      class="diary-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
                     >
                       <div class="mr-2 my-0">
                         <v-icon
@@ -240,7 +311,7 @@
 
                     <div
                       v-if="inspection.notes"
-                      class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
+                      class="diary-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
                     >
                       <div class="mr-2 my-0">
                         <v-icon class="color-grey">
@@ -257,10 +328,13 @@
         </v-row>
       </v-container>
     </div>
+
+    <Confirm ref="confirm"></Confirm>
   </Layout>
 </template>
 
 <script>
+import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/main.vue'
 import HiveIcon from '@components/hive-icon.vue'
 import { momentMixin } from '@mixins/momentMixin'
@@ -268,6 +342,7 @@ import { ScaleTransition } from 'vue2-transitions'
 
 export default {
   components: {
+    Confirm,
     Layout,
     HiveIcon,
     ScaleTransition,
@@ -359,6 +434,23 @@ export default {
     })
   },
   methods: {
+    async deleteInspection(id) {
+      try {
+        const response = await this.$store.dispatch(
+          'inspections/deleteInspection',
+          id
+        )
+        if (!response) {
+          this.snackbar.text = this.$i18n.t('something_wrong')
+          this.snackbar.show = true
+        }
+        this.getAllInspectionsForHiveId()
+      } catch (error) {
+        console.log(error)
+        this.snackbar.text = this.$i18n.t('something_wrong')
+        this.snackbar.show = true
+      }
+    },
     async getAllHivesAndIds() {
       try {
         const ownHives = await this.$store.dispatch('hives/findAll')
@@ -412,6 +504,27 @@ export default {
       } catch (e) {
         console.log(e)
       }
+    },
+    confirmDeleteInspection(inspection) {
+      this.$refs.confirm
+        .open(
+          this.$i18n.t('remove_inspection'),
+          this.$i18n.t('remove_inspection') +
+            ' (' +
+            this.$i18n.t('Date').toLocaleLowerCase() +
+            ': ' +
+            this.momentify(inspection.created_at) +
+            ')?',
+          {
+            color: 'red',
+          }
+        )
+        .then((confirm) => {
+          this.deleteInspection(inspection.id)
+        })
+        .catch((reject) => {
+          return true
+        })
     },
     updateFilterByImpression(number) {
       if (this.filterByImpression.includes(number)) {
@@ -468,7 +581,7 @@ export default {
   }
 }
 
-.hive-inspections-content {
+.diary-inspections-content {
   max-width: 100vw;
   margin-top: 61px;
   overflow: hidden;
@@ -497,6 +610,10 @@ export default {
     height: 100%;
     padding: 12px;
     font-size: 0.875rem !important;
+    @include for-phone-only {
+      padding: 10px;
+      font-size: 0.8125rem !important;
+    }
 
     .hive-name {
       line-height: 1rem;
@@ -506,7 +623,13 @@ export default {
       font-weight: 600;
       line-height: 1rem;
     }
-    .hive-details-item {
+    .diary-menu-button {
+      left: 10px;
+      min-width: 24px !important;
+      max-width: 24px !important;
+      height: 24px !important;
+    }
+    .diary-details-item {
       max-width: 300px;
       margin-bottom: 8px;
       line-height: 1.1rem;

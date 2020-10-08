@@ -530,10 +530,8 @@ export default {
   padding: 12px;
   font-size: 0.875rem !important;
   @include for-phone-only {
-    font-size: 0.8125rem !important;
-  }
-  @include for-phone-only {
     padding: 10px;
+    font-size: 0.8125rem !important;
   }
   &.apiary-view {
     padding: 0 !important;
