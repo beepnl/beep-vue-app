@@ -349,7 +349,8 @@
               <td
                 v-if="itemByDate.items === null"
                 :colspan="filteredInspections.length + 1"
-                class="header"
+                class="header expandable-header"
+                @click="toggleCategory(itemByDate.name)"
               ></td>
 
               <td v-for="(item, j) in itemByDate.items" :key="j" class="tdc">
@@ -672,6 +673,9 @@ export default {
       })
       return inspectionIndexes
     },
+    locale() {
+      return this.$i18n.locale
+    },
     matchedItemsByDate() {
       var matchedItemsByDate = []
       matchedItemsByDate = this.inspections.items_by_date
@@ -679,7 +683,7 @@ export default {
           if (
             itemByDate.anc === null ||
             this.hiddenCategories.length === 0 ||
-            !this.hiddenCategories.includes(itemByDate.anc.split(' ')[0])
+            !this.hiddenCategories.includes(itemByDate.anc.split(' >')[0])
           ) {
             acc.push(itemByDate)
           }
@@ -721,6 +725,11 @@ export default {
         3: this.$i18n.t('Good'),
         4: this.$i18n.t('Excellent'),
       }
+    },
+  },
+  watch: {
+    locale() {
+      this.getAllInspectionsForHiveId()
     },
   },
   created() {
@@ -950,7 +959,7 @@ export default {
     padding: 0;
     margin-bottom: 0;
     overflow: hidden;
-    font-size: 80%;
+    font-size: 11px;
     font-style: italic;
     line-height: 1.1em;
     text-overflow: ellipsis;
@@ -971,7 +980,8 @@ export default {
   .reminder-date {
     width: auto;
     max-width: 150px;
-    padding: 2px 4px !important;
+    padding: 2px 4px 0 4px !important;
+    font-size: 11px;
     font-weight: 600;
     line-height: 1rem;
     color: red;
@@ -1071,5 +1081,8 @@ span.header {
   font-weight: bold;
   line-height: 24px;
   background-color: $color-orange-medium;
+  &.expandable-header {
+    cursor: pointer;
+  }
 }
 </style>
