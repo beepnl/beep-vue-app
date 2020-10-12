@@ -564,27 +564,40 @@ export default {
     }
   },
   computed: {
+    // make inspections filterable by hive name and location
+    inspectionsWithHiveDetails() {
+      var inspectionsWithHiveDetails = this.inspections
+      inspectionsWithHiveDetails.map((inspection) => {
+        const name = this.hives[inspection.hive_id].name
+        const location = this.hives[inspection.hive_id].location
+        inspection.hive_name = name
+        inspection.hive_location = location
+      })
+      return inspectionsWithHiveDetails
+    },
     filteredInspectionsWithUndefined() {
       var textFilteredInspections = []
       if (this.search === null) {
-        textFilteredInspections = this.inspections
+        textFilteredInspections = this.inspectionsWithHiveDetails
       } else {
-        textFilteredInspections = this.inspections.map((inspection) => {
-          const inspectionMatch = Object.entries(inspection).some(
-            ([key, value]) => {
-              if (
-                value !== null &&
-                typeof value === 'string'
-                // && key !== ('description' || 'type' || 'hex_color' || 'created_at')
-              ) {
-                return value.toLowerCase().includes(this.search.toLowerCase())
+        textFilteredInspections = this.inspectionsWithHiveDetails.map(
+          (inspection) => {
+            const inspectionMatch = Object.entries(inspection).some(
+              ([key, value]) => {
+                if (
+                  value !== null &&
+                  typeof value === 'string'
+                  // && key !== ('description' || 'type' || 'hex_color' || 'created_at')
+                ) {
+                  return value.toLowerCase().includes(this.search.toLowerCase())
+                }
               }
+            )
+            if (inspectionMatch) {
+              return inspection
             }
-          )
-          if (inspectionMatch) {
-            return inspection
           }
-        })
+        )
       }
 
       var propertyFilteredInspections = textFilteredInspections
@@ -805,6 +818,7 @@ export default {
   .diary-item-transition-wrapper {
     display: flex;
     flex-wrap: wrap;
+    max-width: 1200px;
     @include for-phone-only {
       min-width: 100%;
     }
