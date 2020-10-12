@@ -65,10 +65,10 @@ export default {
       return this.hive.layers.some((layer) => layer.type === type)
     },
     hiveWidth: function(hive) {
-      if (!this.apiaryView && !this.diaryView) {
-        return hive.layers[0].framecount * 6
-      } else {
+      if (this.apiaryView || this.diaryView) {
         return hive.layers[0].framecount * 3.5
+      } else {
+        return hive.layers[0].framecount * 6
       }
     },
     showHiveMenu(event) {
