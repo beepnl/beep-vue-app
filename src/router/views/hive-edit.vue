@@ -399,8 +399,10 @@ export default {
           ' - ' +
           this.activeHive.name
         )
-      } else {
+      } else if (this.activeHive !== null) {
         return this.$i18n.t('edit') + ' ' + this.$i18n.tc('hive', 1)
+      } else {
+        return this.$i18n.t('edit') + '...'
       }
     },
     saveHive() {
