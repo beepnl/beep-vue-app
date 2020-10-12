@@ -347,7 +347,7 @@
 
                   <v-row
                     v-if="listView"
-                    class="ml-2 px-0 py-0"
+                    class="ml-2 pl-0 pr-3 py-0"
                     style="width:100%;"
                   >
                     <v-col
@@ -371,7 +371,8 @@
                         </span>
                       </div>
                       <span
-                        class="ml-7 last-visit"
+                        class="ml-7 diary-inspection-text
+                        last-visit"
                         v-text="momentFromNow(inspection.created_at)"
                       >
                       </span>
@@ -418,11 +419,6 @@
                         >
                         </span>
                       </div>
-                      <div class="ml-7">
-                        <span v-if="inspection.impression === null">{{
-                          $t('no_data')
-                        }}</span>
-                      </div>
                     </v-col>
 
                     <v-col
@@ -455,9 +451,30 @@
                         >
                         </span>
                       </div>
-                      <div class="ml-7">
+                      <div class="ml-7 diary-inspection-text">
+                        <v-tooltip
+                          v-if="
+                            inspection.reminder &&
+                              inspection.reminder.length > 30
+                          "
+                          class="diary-tooltip"
+                          bottom
+                          max-width="60%"
+                        >
+                          <template v-slot:activator="{ on, attrs }">
+                            <span
+                              v-bind="attrs"
+                              class="reminder"
+                              v-on="on"
+                              v-text="inspection.reminder"
+                            >
+                            </span>
+                          </template>
+                          <span class="reminder" v-text="inspection.reminder">
+                          </span>
+                        </v-tooltip>
                         <span
-                          v-if="inspection.reminder"
+                          v-else-if="inspection.reminder"
                           class="reminder"
                           v-text="inspection.reminder"
                         >
@@ -482,8 +499,26 @@
                         <span class="diary-label" v-text="`${$t('notes')}`">
                         </span>
                       </div>
-                      <div class="ml-7">
-                        <span class="notes" v-text="inspection.notes"> </span>
+                      <div class="ml-7 diary-inspection-text">
+                        <v-tooltip
+                          v-if="inspection.notes.length > 30"
+                          class="diary-tooltip"
+                          bottom
+                          max-width="60%"
+                        >
+                          <template v-slot:activator="{ on, attrs }">
+                            <span
+                              v-bind="attrs"
+                              class="notes"
+                              v-on="on"
+                              v-text="inspection.notes"
+                            >
+                            </span>
+                          </template>
+                          <span class="notes" v-text="inspection.notes"> </span>
+                        </v-tooltip>
+                        <span v-else class="notes" v-text="inspection.notes">
+                        </span>
                       </div>
                     </v-col>
                   </v-row>
@@ -846,6 +881,9 @@ export default {
         margin-bottom: 0;
         line-height: 1.1rem;
       }
+      .diary-inspection-text {
+        margin-top: 2px;
+      }
       .notes,
       .reminder {
         display: inline-block;
@@ -855,6 +893,9 @@ export default {
         text-overflow: ellipsis;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
+        @include for-phone-only {
+          max-height: 28px;
+        }
       }
     }
   }
