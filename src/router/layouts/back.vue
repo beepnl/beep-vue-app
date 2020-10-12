@@ -22,9 +22,9 @@
       <LocaleChanger></LocaleChanger>
       <HeaderMenu v-if="menuItems.length" :menu-items="menuItems"></HeaderMenu>
     </v-app-bar>
-    <v-content>
+    <v-main>
       <slot></slot>
-    </v-content>
+    </v-main>
 
     <Confirm ref="confirm"></Confirm>
   </div>

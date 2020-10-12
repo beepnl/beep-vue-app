@@ -4,7 +4,7 @@
       `hive-icon d-flex flex-column justify-center align-center white--text text--small mr-1 ${
         hasLayer('queen_excluder') ? 'has-queen-excluder' : ''
       } ${hasLayer('feeding_box') ? 'has-feeding-box' : ''} ${
-        apiaryView ? 'apiary-view' : ''
+        apiaryView || diaryView ? 'apiary-view' : ''
       }`
     "
     height="auto"
@@ -32,6 +32,10 @@ export default {
       type: Object,
       default: null,
       required: true,
+    },
+    diaryView: {
+      type: Boolean,
+      default: false,
     },
     showHive: {
       type: Boolean,
@@ -61,10 +65,10 @@ export default {
       return this.hive.layers.some((layer) => layer.type === type)
     },
     hiveWidth: function(hive) {
-      if (!this.apiaryView) {
-        return hive.layers[0].framecount * 6
-      } else {
+      if (this.apiaryView || this.diaryView) {
         return hive.layers[0].framecount * 3.5
+      } else {
+        return hive.layers[0].framecount * 6
       }
     },
     showHiveMenu(event) {

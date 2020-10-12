@@ -328,15 +328,24 @@
           class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
         >
           <div class="mr-2 my-0">
-            <v-sheet
-              :class="
-                `beep-icon beep-icon-queen  ${
-                  darkIconColor(hive.queen.color) ? 'dark' : ''
-                }`
-              "
-              :color="hive.queen.color"
+            <router-link
+              v-if="hive.editable"
+              :to="{
+                name: `queen-edit`,
+                params: { id: hive.id },
+                query: { queenEdit: true },
+              }"
             >
-            </v-sheet>
+              <v-sheet
+                :class="
+                  `beep-icon beep-icon-queen  ${
+                    darkIconColor(hive.queen.color) ? 'dark' : ''
+                  }`
+                "
+                :color="hive.queen.color"
+              >
+              </v-sheet>
+            </router-link>
           </div>
           <div v-if="hive.id % 7 === 0 || hive.id === 1" class="mr-2 my-0">
             <v-icon class="red--text">
@@ -530,10 +539,8 @@ export default {
   padding: 12px;
   font-size: 0.875rem !important;
   @include for-phone-only {
-    font-size: 0.8125rem !important;
-  }
-  @include for-phone-only {
     padding: 10px;
+    font-size: 0.8125rem !important;
   }
   &.apiary-view {
     padding: 0 !important;

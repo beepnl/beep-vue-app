@@ -237,7 +237,7 @@
 
                     <v-list-item-content>
                       <v-list-item-title
-                        v-text="$t('edit_details')"
+                        v-text="$t('edit') + ' ' + $tc('location', 1)"
                       ></v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>

@@ -349,7 +349,8 @@
               <td
                 v-if="itemByDate.items === null"
                 :colspan="filteredInspections.length + 1"
-                class="header"
+                class="header expandable-header"
+                @click="toggleCategory(itemByDate.name)"
               ></td>
 
               <td v-for="(item, j) in itemByDate.items" :key="j" class="tdc">
@@ -618,6 +619,8 @@ export default {
                   // && key !== ('description' || 'type' || 'hex_color' || 'created_at')
                 ) {
                   return value.toLowerCase().includes(this.search.toLowerCase())
+                } else if (key === 'id') {
+                  return value.toString().includes(this.search)
                 }
               }
             )
@@ -671,6 +674,9 @@ export default {
       })
       return inspectionIndexes
     },
+    locale() {
+      return this.$i18n.locale
+    },
     matchedItemsByDate() {
       var matchedItemsByDate = []
       matchedItemsByDate = this.inspections.items_by_date
@@ -678,7 +684,7 @@ export default {
           if (
             itemByDate.anc === null ||
             this.hiddenCategories.length === 0 ||
-            !this.hiddenCategories.includes(itemByDate.anc.split(' ')[0])
+            !this.hiddenCategories.includes(itemByDate.anc.split(' >')[0])
           ) {
             acc.push(itemByDate)
           }
@@ -722,7 +728,13 @@ export default {
       }
     },
   },
+  watch: {
+    locale() {
+      this.getAllInspectionsForHiveId()
+    },
+  },
   created() {
+    this.search = this.$route.query.search || null
     this.getActiveHive(this.id).then((hive) => {
       this.$store.commit('hives/setActiveHive', hive)
     })
@@ -952,18 +964,16 @@ export default {
   .add-to-calendar {
     display: block;
     display: -webkit-box;
-    max-height: 22px;
     padding: 0;
     margin-bottom: 0;
     overflow: hidden;
-    font-size: 80%;
+    font-size: 11px;
     font-style: italic;
     line-height: 1.1em;
     text-overflow: ellipsis;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     @include for-phone-only {
-      max-height: none;
       font-size: 10px;
       -webkit-line-clamp: 3;
     }
@@ -978,7 +988,8 @@ export default {
   .reminder-date {
     width: auto;
     max-width: 150px;
-    padding: 2px 4px !important;
+    padding: 2px 4px 0 4px !important;
+    font-size: 11px;
     font-weight: 600;
     line-height: 1rem;
     color: red;
@@ -1078,5 +1089,8 @@ span.header {
   font-weight: bold;
   line-height: 24px;
   background-color: $color-orange-medium;
+  &.expandable-header {
+    cursor: pointer;
+  }
 }
 </style>
