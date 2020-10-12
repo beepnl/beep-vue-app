@@ -119,7 +119,9 @@
           <ScaleTransition
             :duration="300"
             group
-            class="diary-item-transition-wrapper"
+            :class="
+              `diary-item-transition-wrapper ${listView ? 'list-view' : ''}`
+            "
           >
             <v-col
               v-for="(inspection, j) in filteredInspections"
@@ -818,7 +820,9 @@ export default {
   .diary-item-transition-wrapper {
     display: flex;
     flex-wrap: wrap;
-    max-width: 1200px;
+    &.list-view {
+      max-width: 1200px;
+    }
     @include for-phone-only {
       min-width: 100%;
     }
