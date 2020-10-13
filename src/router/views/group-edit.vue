@@ -1,8 +1,5 @@
 <template>
-  <Layout
-    :title="`${$t('create_new') + ' ' + $tc('group', 1)}`"
-    :no-box-shadow="true"
-  >
+  <Layout :title="getTitle()" :no-box-shadow="true">
     <h1
       v-if="activeGroup && !activeGroup.creator && !activeGroup.admin"
       class="unauthorized-title"
@@ -529,6 +526,13 @@ export default {
         this.overlay = false
       }
       this.setGroupEdited(true)
+    },
+    getTitle() {
+      if (this.createMode) {
+        return this.$i18n.t('create_new') + ' ' + this.$i18n.tc('group', 1)
+      } else {
+        return this.$i18n.t('edit') + ' ' + this.$i18n.tc('group', 1)
+      }
     },
     saveGroup() {
       if (this.createMode) {
