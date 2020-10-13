@@ -100,7 +100,7 @@
                           @click="editApiary(colorPickerValue, 'hex_color')"
                           >mdi-check</v-icon
                         >
-                        <v-icon @click="cancelColorPicker">mdi-close</v-icon>
+                        <v-icon @click="overlay = false">mdi-close</v-icon>
                       </v-toolbar-items>
                     </v-toolbar>
 
@@ -374,9 +374,6 @@ export default {
         }
       }
     },
-    cancelColorPicker() {
-      this.overlay = false
-    },
     confirmDeleteApiary() {
       const warningMessage =
         this.activeApiary.hives.length > 0
@@ -424,7 +421,7 @@ export default {
     editApiary(value, property) {
       this.activeApiary[property] = value
       if (property === 'hex_color') {
-        this.cancelColorPicker()
+        this.overlay = false
       }
       if (property !== 'lat' && property !== 'lon') {
         // if value is present, vueNumberInput always triggers editApiary method for these properties
@@ -457,6 +454,7 @@ export default {
   .apiary-color {
     width: 35px;
     height: 35px;
+    cursor: pointer;
     border: 1px solid rgba(0, 0, 0, 0.3) !important;
   }
 
