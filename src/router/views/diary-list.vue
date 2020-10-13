@@ -733,10 +733,8 @@ export default {
   .diary-item-transition-wrapper {
     display: flex;
     flex-wrap: wrap;
+    width: 100%;
     max-width: 1200px;
-    @include for-phone-only {
-      min-width: 100%;
-    }
   }
   .diary-item {
     flex-grow: 1 !important;
