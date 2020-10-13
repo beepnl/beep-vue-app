@@ -122,10 +122,10 @@
                   <v-row class="ml-0 pl-0 py-0" style="width:100%;">
                     <v-col
                       cols="12"
-                      sm="8"
+                      sm="6"
                       md="5"
                       lg="4"
-                      class="diary-details-item diary-inspection-meta d-flex flex-row justify-flex-start pa-0 mr-n6"
+                      class="diary-details-item diary-inspection-meta d-flex flex-row justify-flex-start pa-0"
                     >
                       <v-row class="pl-3 py-0">
                         <v-col
@@ -191,21 +191,22 @@
 
                     <v-col
                       cols="12"
+                      sm="7"
                       md="7"
                       lg="8"
                       class="diary-inspection-content pa-0"
                     >
                       <v-row class="py-0">
                         <v-col
-                          v-if="inspection.impression"
                           cols="12"
                           sm="1"
                           md="3"
                           lg="2"
-                          class="diary-details-item diary-content-item d-flex flex-column align-start pa-0"
+                          class="diary-details-item d-flex flex-column align-start pa-0"
                         >
                           <div
-                            class="d-flex flex-no-wrap justify-flex-start align-center mr-2"
+                            v-if="inspection.impression"
+                            class="diary-content-item d-flex flex-no-wrap justify-flex-start align-center mr-2"
                           >
                             <div class="mr-1 my-0">
                               <v-icon
@@ -226,12 +227,6 @@
                               >
                                 mdi-emoticon-neutral
                               </v-icon>
-                              <v-icon
-                                v-if="inspection.impression === null"
-                                class="color-grey"
-                              >
-                                mdi-emoticon-neutral
-                              </v-icon>
                             </div>
                             <span
                               class="diary-label hide-md"
@@ -242,115 +237,126 @@
                         </v-col>
 
                         <v-col
-                          v-if="
-                            inspection.attention ||
-                              inspection.reminder ||
-                              inspection.reminder_date
-                          "
                           cols="12"
                           sm="5"
-                          class="diary-details-item diary-content-item d-flex flex-column align-start  pa-0"
+                          class="diary-details-item d-flex flex-column align-start  pa-0"
                         >
                           <div
-                            class="d-flex flex-no-wrap justify-flex-start align-center mr-2"
+                            v-if="
+                              inspection.attention ||
+                                inspection.reminder ||
+                                inspection.reminder_date
+                            "
+                            class="diary-content-item"
                           >
-                            <div class="mr-1 my-0">
-                              <v-icon class="red--text">
-                                mdi-alert-circle
-                              </v-icon>
+                            <div
+                              class="d-flex flex-no-wrap justify-flex-start align-center mr-2"
+                            >
+                              <div class="mr-1 my-0">
+                                <v-icon class="red--text">
+                                  mdi-alert-circle
+                                </v-icon>
+                              </div>
+                              <span
+                                v-if="inspection.reminder_date"
+                                class="to-do-date mr-2"
+                                v-text="
+                                  momentifyDayMonth(inspection.reminder_date)
+                                "
+                              >
+                              </span>
+                              <span
+                                class="diary-label"
+                                v-text="`${$t('needs_attention')}`"
+                              >
+                              </span>
                             </div>
-                            <span
-                              v-if="inspection.reminder_date"
-                              class="to-do-date mr-2"
-                              v-text="
-                                momentifyDayMonth(inspection.reminder_date)
-                              "
-                            >
-                            </span>
-                            <span
-                              class="diary-label"
-                              v-text="`${$t('needs_attention')}`"
-                            >
-                            </span>
-                          </div>
-                          <div class="ml-7 diary-inspection-text">
-                            <v-tooltip
-                              v-if="
-                                inspection.reminder &&
-                                  inspection.reminder.length > 30
-                              "
-                              class="diary-tooltip"
-                              bottom
-                              max-width="60%"
-                            >
-                              <template v-slot:activator="{ on, attrs }">
+                            <div class="ml-7 diary-inspection-text">
+                              <v-tooltip
+                                v-if="
+                                  inspection.reminder &&
+                                    inspection.reminder.length > 30
+                                "
+                                class="diary-tooltip"
+                                bottom
+                                max-width="60%"
+                              >
+                                <template v-slot:activator="{ on, attrs }">
+                                  <span
+                                    v-bind="attrs"
+                                    class="reminder"
+                                    v-on="on"
+                                    v-text="inspection.reminder"
+                                  >
+                                  </span>
+                                </template>
                                 <span
-                                  v-bind="attrs"
                                   class="reminder"
-                                  v-on="on"
                                   v-text="inspection.reminder"
                                 >
                                 </span>
-                              </template>
+                              </v-tooltip>
                               <span
+                                v-else-if="inspection.reminder"
                                 class="reminder"
                                 v-text="inspection.reminder"
                               >
                               </span>
-                            </v-tooltip>
-                            <span
-                              v-else-if="inspection.reminder"
-                              class="reminder"
-                              v-text="inspection.reminder"
-                            >
-                            </span>
+                            </div>
                           </div>
                         </v-col>
 
                         <v-col
-                          v-if="inspection.notes"
                           cols="12"
                           sm="6"
                           md="4"
                           lg="5"
-                          class="diary-details-item diary-content-item d-flex flex-column align-start  pa-0"
+                          class="diary-details-item d-flex flex-column align-start  pa-0"
                         >
                           <div
-                            class="d-flex flex-no-wrap justify-flex-start align-center mr-2"
+                            v-if="inspection.notes"
+                            class="diary-content-item"
                           >
-                            <div class="mr-1 my-0">
-                              <v-icon class="color-grey">
-                                mdi-pencil-circle
-                              </v-icon>
-                            </div>
-                            <span class="diary-label" v-text="`${$t('notes')}`">
-                            </span>
-                          </div>
-                          <div class="ml-7 diary-inspection-text mr-2">
-                            <v-tooltip
-                              v-if="inspection.notes.length > 30"
-                              class="diary-tooltip"
-                              bottom
-                              max-width="60%"
+                            <div
+                              class="d-flex flex-no-wrap justify-flex-start align-center mr-2"
                             >
-                              <template v-slot:activator="{ on, attrs }">
-                                <span
-                                  v-bind="attrs"
-                                  class="notes"
-                                  v-on="on"
-                                  v-text="inspection.notes"
-                                >
-                                </span>
-                              </template>
-                              <span class="notes" v-text="inspection.notes">
+                              <div class="mr-1 my-0">
+                                <v-icon class="color-grey">
+                                  mdi-pencil-circle
+                                </v-icon>
+                              </div>
+                              <span
+                                class="diary-label"
+                                v-text="`${$t('notes')}`"
+                              >
                               </span>
-                            </v-tooltip>
-                            <span
-                              v-else
-                              class="notes"
-                              v-text="inspection.notes"
-                            >
-                            </span>
+                            </div>
+                            <div class="ml-7 diary-inspection-text mr-2">
+                              <v-tooltip
+                                v-if="inspection.notes.length > 30"
+                                class="diary-tooltip"
+                                bottom
+                                max-width="60%"
+                              >
+                                <template v-slot:activator="{ on, attrs }">
+                                  <span
+                                    v-bind="attrs"
+                                    class="notes"
+                                    v-on="on"
+                                    v-text="inspection.notes"
+                                  >
+                                  </span>
+                                </template>
+                                <span class="notes" v-text="inspection.notes">
+                                </span>
+                              </v-tooltip>
+                              <span
+                                v-else
+                                class="notes"
+                                v-text="inspection.notes"
+                              >
+                              </span>
+                            </div>
                           </div>
                         </v-col>
                       </v-row>
@@ -715,7 +721,7 @@ export default {
 
 .hide-md {
   display: flex;
-  @include for-tablet-portrait-up {
+  @media (min-width: 850px) {
     display: none;
   }
   @include for-tablet-landscape-up {
@@ -735,6 +741,9 @@ export default {
     flex-wrap: wrap;
     width: 100%;
     max-width: 1200px;
+    @media (max-width: 849px) {
+      max-width: 480px;
+    }
   }
   .diary-item {
     flex-grow: 1 !important;
@@ -744,11 +753,12 @@ export default {
 
   .diary-card {
     height: 100%;
-    padding: 12px;
-    font-size: 0.875rem !important;
-    @include for-phone-only {
-      padding: 10px;
-      font-size: 0.8125rem !important;
+    padding: 10px;
+    font-size: 0.8125rem !important;
+
+    @include for-tablet-landscape-up {
+      padding: 12px;
+      font-size: 0.875rem !important;
     }
     .diary-menu-button {
       left: 10px;
@@ -767,6 +777,9 @@ export default {
       max-width: none;
       margin-bottom: 0;
       line-height: 1.1rem;
+      @media (max-width: 849px) {
+        min-width: 100%;
+      }
     }
     .to-do-date {
       width: auto;
@@ -781,8 +794,12 @@ export default {
     }
     .diary-inspection-meta {
       max-width: 330px;
+      margin-right: -24px;
       @include for-tablet-landscape-up {
         max-width: none;
+      }
+      @media (max-width: 849px) {
+        margin-right: -8px;
       }
     }
     .hive-icon-wrapper {
@@ -790,7 +807,7 @@ export default {
         margin-right: 16px !important;
       }
       @include for-tablet-portrait-up {
-        margin-right: 24px !important;
+        margin-right: 20px !important;
       }
       @include for-tablet-landscape-up {
         margin-right: 16px !important;
@@ -820,13 +837,13 @@ export default {
     .diary-inspection-content {
       margin-top: 10px !important;
       margin-left: 10px !important;
-      @include for-tablet-landscape-up {
+      @media (min-width: 850px) {
         margin-top: 0 !important;
         margin-left: 0 !important;
       }
       .diary-content-item {
         margin-bottom: 4px;
-        @include for-tablet-landscape-up {
+        @media (min-width: 850px) {
           margin-bottom: 0 !important;
         }
       }
