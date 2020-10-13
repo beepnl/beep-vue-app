@@ -18,26 +18,48 @@
         light
       >
         <v-spacer></v-spacer>
-        <v-icon
-          v-if="activeGroup && activeGroup.creator"
-          dark
-          class="mr-4"
+        <v-btn
+          v-if="activeGroup && activeGroup.creator && !createMode"
+          tile
+          outlined
           color="red"
+          class="save-button mr-3"
           @click="confirmDeleteGroup"
-          >mdi-delete</v-icon
         >
-        <v-btn class="mr-n2" icon type="submit" :disabled="!valid">
+          <v-icon v-if="!showLoadingIcon" left>mdi-delete</v-icon>
+          {{ $t('Delete') }}
+        </v-btn>
+
+        <v-btn
+          v-if="activeGroup && !activeGroup.creator && !createMode"
+          tile
+          outlined
+          color="red"
+          class="save-button mr-3"
+          @click="confirmDetachGroup"
+        >
+          <v-icon v-if="!showLoadingIcon" left>mdi-delete</v-icon>
+          {{ $t('Detach_from_group') }}
+        </v-btn>
+
+        <v-btn
+          tile
+          outlined
+          color="primary"
+          class="save-button mr-1"
+          type="submit"
+          :disabled="!valid"
+        >
           <v-progress-circular
             v-if="showLoadingIcon"
-            class="mr-2"
+            class="ml-n1 mr-2"
             size="18"
             width="2"
             color="primary"
             indeterminate
           />
-          <v-icon v-if="!showLoadingIcon" dark color="primary"
-            >mdi-check</v-icon
-          >
+          <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
+          {{ $t('save') + ' ' + $tc('group', 1) }}
         </v-btn>
       </v-toolbar>
 
@@ -93,7 +115,7 @@
                       v-if="activeGroup"
                       class="group-color"
                       dark
-                      :color="activeGroup.color"
+                      :color="activeGroup.hex_color"
                       @click="overlay = !overlay"
                     ></v-sheet>
                   </div>
@@ -109,7 +131,7 @@
                         <v-icon
                           class="mr-1"
                           color="primary"
-                          @click="editGroup(colorPickerValue, 'color')"
+                          @click="editGroup(colorPickerValue, 'hex_color')"
                           >mdi-check</v-icon
                         >
                         <v-icon @click="overlay = false">mdi-close</v-icon>
@@ -234,6 +256,21 @@
             </div>
           </v-col>
         </v-row>
+
+        <v-row>
+          <v-col cols="12">
+            <div class="overline mb-4">{{ $tc('Hive', 2) }}</div>
+            <div class="rounded-border">
+              <div v-for="(apiary, i) in apiaries" :key="i">
+                <span>{{ apiary.name }}</span>
+                <ApiaryPreviewHiveSelector
+                  class="mt-4 mb-4"
+                  :hives="apiary.hives"
+                ></ApiaryPreviewHiveSelector>
+              </div>
+            </div>
+          </v-col>
+        </v-row>
       </v-container>
     </v-form>
 
@@ -249,12 +286,14 @@
 </template>
 
 <script>
+import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 import Confirm from '@components/confirm.vue'
 import { mapGetters } from 'vuex'
 import Layout from '@layouts/back.vue'
 
 export default {
   components: {
+    ApiaryPreviewHiveSelector,
     Confirm,
     Layout,
   },
@@ -272,6 +311,7 @@ export default {
       ],
       colorPickerValue: '',
       groups: null,
+      apiaries: null,
       activeGroup: null,
       valid: false,
       showLoadingIcon: false,
@@ -285,13 +325,13 @@ export default {
     id() {
       return parseInt(this.$route.params.id)
     },
-    createRoute() {
+    createMode() {
       return this.$route.name === 'group-create'
     },
     colorPicker: {
       get() {
         if (this.activeGroup) {
-          return this.activeGroup.color
+          return this.activeGroup.hex_color
         } else {
           return '#ffa000'
         }
@@ -307,15 +347,15 @@ export default {
     },
   },
   created() {
-    this.readGroups().then((response) => {
+    this.readApiariesAndGroups().then((response) => {
       // If Group-create route is used, make empty Group object
-      if (this.createRoute) {
+      if (this.createMode) {
         if (this.groups.length > 0) {
           this.newGroupNumber = this.groups.length + 1
         }
         this.activeGroup = {
           creator: true,
-          color: '#F29100',
+          hex_color: '#F29100',
           name: this.$i18n.tc('Group', 1) + ' ' + this.newGroupNumber,
           description: '',
           hives_selected: [],
@@ -386,10 +426,17 @@ export default {
       //   this.snackbar.show = true
       // }
     },
-    async readGroups() {
+    async detachGroup() {
+      console.log('detach Group')
+      console.log(this.id)
+      // TODO: fix
+    },
+    async readApiariesAndGroups() {
       try {
-        const response = await this.$store.dispatch('groups/findAll')
-        this.groups = response.groups
+        const responseApiaries = await this.$store.dispatch('locations/findAll')
+        const responseGroups = await this.$store.dispatch('groups/findAll')
+        this.groups = responseGroups.groups
+        this.apiaries = responseApiaries.locations
         return true
       } catch (e) {
         console.log(e)
@@ -398,11 +445,10 @@ export default {
     async readGroup() {
       try {
         const response = await this.$store.dispatch('groups/findById', this.id)
-        if (response.length === 0) {
+        if (response === null) {
           this.$router.push({ name: '404', params: { resource: 'group' } })
         }
-        const group = response.groups[0]
-        this.activeGroup = group
+        this.activeGroup = response
         this.setGroupEdited(false)
         return true
       } catch (e) {
@@ -448,13 +494,25 @@ export default {
       this.$refs.confirm
         .open(
           this.$i18n.t('Delete') + ' ' + this.$i18n.tc('group', 1),
-          this.$i18n.t('Remove_group'),
+          this.$i18n.t('Remove_group') + '?',
           {
             color: 'red',
           }
         )
         .then((confirm) => {
           this.deleteGroup()
+        })
+        .catch((reject) => {
+          return true
+        })
+    },
+    confirmDetachGroup() {
+      this.$refs.confirm
+        .open(this.$i18n.t('Delete'), this.$i18n.t('Detach_from_group') + '?', {
+          color: 'red',
+        })
+        .then((confirm) => {
+          this.detachGroup()
         })
         .catch((reject) => {
           return true
@@ -467,13 +525,13 @@ export default {
     },
     editGroup(value, property) {
       this.activeGroup[property] = value
-      if (property === 'color') {
+      if (property === 'hex_color') {
         this.overlay = false
       }
       this.setGroupEdited(true)
     },
     saveGroup() {
-      if (this.createRoute) {
+      if (this.createMode) {
         this.createGroup()
       } else {
         this.updateGroup()

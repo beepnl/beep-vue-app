@@ -472,7 +472,7 @@ export default {
     menuItems: function() {
       return [
         { title: this.$i18n.t('new_apiary'), route: 'apiary-create' },
-        { title: this.$i18n.t('new_group') },
+        { title: this.$i18n.t('new_group'), route: 'group-create' },
       ]
     },
   },
