@@ -4,7 +4,7 @@
     :no-box-shadow="true"
   >
     <h1
-      v-if="!activeGroup.creator && !activeGroup.admin"
+      v-if="activeGroup && !activeGroup.creator && !activeGroup.admin"
       class="unauthorized-title"
       v-text="unauthorizedText"
     >
@@ -52,7 +52,7 @@
             }}</div>
             <div class="rounded-border">
               <v-row>
-                <v-col cols="12" sm="6" md="4">
+                <v-col cols="12" sm="6" md="5">
                   <v-text-field
                     v-if="activeGroup"
                     v-model="activeGroup.name"
@@ -65,21 +65,25 @@
                     @input="validateText($event, 'name', 30)"
                   >
                   </v-text-field>
+                </v-col>
 
+                <v-col cols="12">
                   <v-textarea
                     v-if="activeGroup"
                     v-model="activeGroup.description"
-                    :label="`${$t('Description')}*`"
+                    :label="`${$t('Description')}`"
                     :placeholder="`${$t('Description')}`"
                     class="group-edit-description"
                     counter="250"
-                    rows="2"
+                    rows="1"
                     clearable
                     auto-grow
                     @input="validateText($event, 'description', 250)"
                   >
                   </v-textarea>
+                </v-col>
 
+                <v-col cols="12">
                   <div>
                     <div
                       class="beep-label"
@@ -98,7 +102,7 @@
                     <v-toolbar class="hive-color-picker-toolbar" dense light>
                       <div
                         class="hive-color-picker-title"
-                        v-text="`${$t('Group_color')}`"
+                        v-text="`${$tc('Group', 1) + ' ' + $t('color')}`"
                       ></div>
                       <v-spacer></v-spacer>
                       <v-toolbar-items>
@@ -125,6 +129,108 @@
                   </v-overlay>
                 </v-col>
               </v-row>
+            </div>
+          </v-col>
+        </v-row>
+
+        <v-row>
+          <v-col cols="12">
+            <div class="d-flex justify-space-between">
+              <div class="overline mb-4">{{
+                $tc('Member', 1) + ' (' + activeGroup.users.length + ')'
+              }}</div>
+              <v-spacer></v-spacer>
+              <v-btn
+                tile
+                outlined
+                class="save-button"
+                color="primary"
+                @click="addGroupUser"
+              >
+                <v-icon left>mdi-plus</v-icon>
+                {{ $t('add') + ' ' + $tc('member', 1) }}
+              </v-btn>
+            </div>
+            <div class="rounded-border">
+              <v-simple-table dense>
+                <template v-slot>
+                  <thead>
+                    <tr>
+                      <th class="text-left">
+                        #
+                      </th>
+                      <th class="text-left">
+                        {{ $t('Name') }}
+                      </th>
+                      <th class="text-left">
+                        {{ $t('email') }}
+                      </th>
+                      <th class="text-left">
+                        {{ $t('Invited') }}
+                      </th>
+                      <th class="text-left">
+                        {{ $t('Type') }} {{ $tc('member', 1) }}
+                      </th>
+                      <th class="text-center">
+                        {{ $t('Actions') }}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(user, index) in activeGroup.users" :key="index">
+                      <td>{{ index + 1 }}</td>
+                      <td>
+                        <v-text-field
+                          v-model="user.name"
+                          :disabled="user.id && user.id !== null"
+                          :placeholder="`${$t('invitee_name')}`"
+                          class="user-input mt-2 mb-n5"
+                          solo
+                        ></v-text-field>
+                      </td>
+                      <td>
+                        <v-text-field
+                          v-model="user.email"
+                          :disabled="user.id && user.id !== null"
+                          :placeholder="`${$t('email_is_required')}`"
+                          class="user-input mt-2 mb-n5"
+                          solo
+                        ></v-text-field>
+                      </td>
+                      <td>
+                        <span v-if="user.accepted === null">{{
+                          user.invited
+                        }}</span>
+                      </td>
+                      <td>
+                        <v-checkbox
+                          v-if="!user.creator"
+                          v-model="user.admin"
+                          color="primary"
+                          class="mt-0"
+                          :disabled="user.delete"
+                          hide-details
+                          :ripple="false"
+                        >
+                          <template v-slot:label>
+                            <span class="user-label">{{ $t('Admin') }}</span>
+                          </template>
+                        </v-checkbox>
+                        <span v-if="user.creator">{{ $t('Creator') }}</span>
+                      </td>
+                      <td class="text-center">
+                        <v-icon
+                          v-if="!user.creator"
+                          dark
+                          color="red"
+                          @click="deleteGroupUser(index)"
+                          >mdi-delete</v-icon
+                        >
+                      </td>
+                    </tr>
+                  </tbody>
+                </template>
+              </v-simple-table>
             </div>
           </v-col>
         </v-row>
@@ -175,7 +281,7 @@ export default {
   },
   computed: {
     ...mapGetters('auth', ['userEmail', 'userName']),
-    ...mapGetters('Groups', ['groupEdited']),
+    ...mapGetters('groups', ['groupEdited']),
     id() {
       return parseInt(this.$route.params.id)
     },
@@ -330,6 +436,14 @@ export default {
         // }
       }
     },
+    addGroupUser() {
+      this.activeGroup.users.push({
+        name: '',
+        email: '',
+        admin: false,
+        creator: false,
+      })
+    },
     confirmDeleteGroup() {
       this.$refs.confirm
         .open(
@@ -345,6 +459,18 @@ export default {
         .catch((reject) => {
           return true
         })
+    },
+    deleteGroupUser(index) {
+      return typeof this.activeGroup.users[index] !== 'undefined'
+        ? this.activeGroup.users.splice(index, 1)
+        : null
+    },
+    editGroup(value, property) {
+      this.activeGroup[property] = value
+      if (property === 'color') {
+        this.overlay = false
+      }
+      this.setGroupEdited(true)
     },
     saveGroup() {
       if (this.createRoute) {
@@ -393,19 +519,28 @@ export default {
 <style lang="scss">
 .group-edit {
   .group-edit-name {
-    padding-top: 0;
+    padding-top: 12px;
     font-size: 2rem;
+    @include for-phone-only {
+      font-size: 1.6rem;
+    }
 
-    &.v-input input {
+    &.v-text-field input {
       min-height: 45px !important;
-      max-height: 45px !important;
     }
   }
+  .user-input.v-text-field.v-text-field--solo .v-input__control {
+    min-width: 160px !important;
+  }
+
   .group-color {
     width: 35px;
     height: 35px;
     cursor: pointer;
     border: 1px solid rgba(0, 0, 0, 0.3) !important;
+  }
+  .user-label {
+    font-size: 14px;
   }
 }
 </style>

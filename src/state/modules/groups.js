@@ -10,6 +10,7 @@ const resource = createResource({ path: 'groups', other })
 
 export const state = {
   ...resource.state,
+  groupEdited: false,
 }
 export const getters = {
   ...resource.getters,

@@ -58,7 +58,7 @@
             }}</div>
             <div class="rounded-border">
               <v-row>
-                <v-col cols="12" sm="6" md="4">
+                <v-col cols="12" sm="6" md="5">
                   <v-text-field
                     v-if="activeApiary"
                     v-model="activeApiary.name"
@@ -442,8 +442,11 @@ export default {
 <style lang="scss">
 .apiary-edit {
   .apiary-edit-name {
-    padding-top: 0;
+    padding-top: 12px;
     font-size: 2rem;
+    @include for-phone-only {
+      font-size: 1.6rem;
+    }
 
     &.v-input input {
       min-height: 45px !important;
