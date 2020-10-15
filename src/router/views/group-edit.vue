@@ -156,7 +156,10 @@
           <v-col cols="12">
             <div class="d-flex justify-space-between">
               <div class="overline mb-4">{{
-                $tc('Member', 1) + ' (' + activeGroup.users.length + ')'
+                $tc('Member', activeGroup.users.length) +
+                  ' (' +
+                  activeGroup.users.length +
+                  ')'
               }}</div>
               <v-spacer></v-spacer>
               <v-btn
@@ -255,14 +258,17 @@
         </v-row>
 
         <v-row>
-          <v-col cols="12">
+          <v-col v-if="activeGroup" cols="12">
             <div class="overline mb-4">{{ $tc('Hive', 2) }}</div>
             <div class="rounded-border">
               <div v-for="(apiary, i) in apiaries" :key="i">
                 <span>{{ apiary.name }}</span>
                 <ApiaryPreviewHiveSelector
-                  class="mt-4 mb-4"
+                  class="mb-4"
                   :hives="apiary.hives"
+                  :hives-selected="activeGroup.hives_selected"
+                  :hives-editable="activeGroup.hives_editable"
+                  @select-hive="selectHive($event)"
                 ></ApiaryPreviewHiveSelector>
               </div>
             </div>
@@ -344,6 +350,7 @@ export default {
     },
   },
   created() {
+    this.setGroupEdited(false)
     this.readApiariesAndGroups().then((response) => {
       // If Group-create route is used, make empty Group object
       if (this.createMode) {
@@ -445,8 +452,24 @@ export default {
         if (response === null) {
           this.$router.push({ name: '404', params: { resource: 'group' } })
         }
-        this.activeGroup = response
-        this.setGroupEdited(false)
+        var group = response
+        // eslint-disable-next-line camelcase
+        var hives_selected = []
+        // eslint-disable-next-line camelcase
+        var hives_editable = []
+        if (typeof group.hives !== 'undefined' && group.hives.length > 0) {
+          group.hives.map((hive) => {
+            if (hive.editable) {
+              hives_editable.push(hive.id)
+            }
+            hives_selected.push(hive.id)
+          })
+          // eslint-disable-next-line camelcase
+          group.hives_selected = hives_selected
+          // eslint-disable-next-line camelcase
+          group.hives_editable = hives_editable
+        }
+        this.activeGroup = group
         return true
       } catch (e) {
         console.log(e)
@@ -539,6 +562,26 @@ export default {
         this.createGroup()
       } else {
         this.updateGroup()
+      }
+    },
+    selectHive(id) {
+      console.log(id, typeof id)
+      if (!this.activeGroup.hives_selected.includes(id)) {
+        this.activeGroup.hives_selected.push(id)
+      } else if (!this.activeGroup.hives_editable.includes(id)) {
+        this.activeGroup.hives_editable.push(id)
+      } else if (
+        this.activeGroup.hives_selected.includes(id) &&
+        this.activeGroup.hives_editable.includes(id)
+      ) {
+        this.activeGroup.hives_selected.splice(
+          this.activeGroup.hives_selected.indexOf(id),
+          1
+        )
+        this.activeGroup.hives_editable.splice(
+          this.activeGroup.hives_editable.indexOf(id),
+          1
+        )
       }
     },
     setGroupEdited(bool) {

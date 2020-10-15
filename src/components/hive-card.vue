@@ -61,7 +61,7 @@
           v-if="apiaryView"
           :class="
             `red--text apiary-view-alert ${
-              hasLayer('feeding_box') ? 'mr-1' : ''
+              hasLayer('queen_excluder') ? 'mr-1' : ''
             }`
           "
         >

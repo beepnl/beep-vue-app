@@ -1,31 +1,53 @@
 <template>
   <div class="d-flex align-end apiary-preview">
-    <v-sheet
-      v-for="(hive, j) in hives"
+    <div
+      v-for="(hive, j) in sortedHives"
       :key="j"
-      :class="
-        `hive-icon hive-icon-preview d-flex flex-column justify-center align-center white--text text--small mr-1 ${
-          hasLayer(hive, 'queen_excluder') ? 'has-queen-excluder' : ''
-        } ${hasLayer(hive, 'feeding_box') ? 'has-feeding-box' : ''}`
-      "
-      height="auto"
+      class="hive-icon-wrapper d-flex flex-column align-center"
+      @click="selectHive(hive.id)"
     >
-      <div class="hive-icon-layers">
-        <v-sheet
-          v-for="(layer, l) in orderedLayers(hive)"
-          :key="l"
-          :class="[`layer ${layer.type}-layer`]"
-          :width="`${hiveWidth(hive)}px`"
-          :color="layer.color"
-        >
-        </v-sheet>
+      <div class="hive-in-group">
+        <v-icon v-if="hivesEditable.includes(hive.id)" class="green--text">
+          mdi-pencil-circle
+        </v-icon>
+        <v-icon v-else-if="hivesSelected.includes(hive.id)" class="green--text">
+          mdi-eye-circle
+        </v-icon>
       </div>
-      <span
-        :style="`width: ${hiveWidth(hive) + 16}px;`"
-        class="hive-caption caption"
-        >{{ hive.name }}</span
+
+      <v-sheet
+        :class="
+          `hive-icon hive-icon-preview d-flex flex-column justify-center align-center white--text text--small mr-1 ${
+            hasLayer(hive, 'queen_excluder') ? 'has-queen-excluder' : ''
+          } ${hasLayer(hive, 'feeding_box') ? 'has-feeding-box' : ''}`
+        "
+        height="auto"
       >
-    </v-sheet>
+        <div class="hive-icon-layers">
+          <div
+            :class="
+              `selectable-wrapper ${
+                hivesSelected.includes(hive.id) ? '--selected' : ''
+              }`
+            "
+          >
+            <v-sheet
+              v-for="(layer, l) in orderedLayers(hive)"
+              :key="l"
+              :class="[`layer ${layer.type}-layer`]"
+              :width="`${hiveWidth(hive)}px`"
+              :color="layer.color"
+            >
+            </v-sheet>
+          </div>
+        </div>
+        <span
+          :style="`width: ${hiveWidth(hive) + 16}px;`"
+          class="hive-caption caption"
+          >{{ hive.name }}</span
+        >
+      </v-sheet>
+    </div>
   </div>
 </template>
 
@@ -37,12 +59,37 @@ export default {
       default: null,
       required: true,
     },
+    hivesEditable: {
+      type: Array,
+      default: () => [],
+      required: false,
+    },
+    hivesSelected: {
+      type: Array,
+      default: () => [],
+      required: false,
+    },
   },
   computed: {
-    hasQueenExcluder(hive) {
-      return this.newHive.layers.some(
-        (layer) => layer.type === 'queen_excluder'
-      )
+    sortedHives() {
+      const sortedHives = this.hives.slice().sort(function(a, b) {
+        if (a.order > b.order) {
+          return 1
+        }
+        if (b.order > a.order) {
+          return -1
+        }
+        if (a.order === b.order) {
+          if (a.name > b.name) {
+            return 1
+          }
+          if (b.name > a.name) {
+            return -1
+          }
+          return 0
+        }
+      })
+      return sortedHives
     },
   },
   methods: {
@@ -69,6 +116,9 @@ export default {
         return 0
       })
     },
+    selectHive(id) {
+      this.$emit('select-hive', id)
+    },
   },
 }
 </script>
@@ -76,6 +126,12 @@ export default {
 <style lang="scss" scoped>
 .apiary-preview {
   overflow-x: auto;
+}
+
+.hive-in-group {
+  height: 24px;
+  margin-bottom: 2px;
+  cursor: pointer;
 }
 
 .hive-icon-preview {
@@ -98,7 +154,7 @@ export default {
     }
   }
   &.has-feeding-box {
-    margin-top: 20px !important;
+    margin-top: 12px !important;
   }
 }
 
@@ -112,6 +168,13 @@ export default {
   }
   &:last-child:not(.queen_excluder-layer) {
     border-bottom: 0;
+  }
+}
+
+.selectable-wrapper {
+  cursor: pointer;
+  &.--selected {
+    box-shadow: 0 0 0 2px yellow;
   }
 }
 
