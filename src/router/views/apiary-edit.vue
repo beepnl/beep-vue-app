@@ -254,6 +254,7 @@
 </template>
 
 <script>
+import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
@@ -321,8 +322,8 @@ export default {
   methods: {
     async deleteApiary() {
       try {
-        const response = await this.$store.dispatch(
-          'locations/deleteApiary',
+        const response = await Api.deleteRequest(
+          '/locations/',
           this.activeApiary.id
         )
         if (!response) {
@@ -335,26 +336,27 @@ export default {
           })
         }, 100) // wait for API to update locations/hives
       } catch (error) {
-        console.log(error)
+        console.log('Error: ', error)
         this.snackbar.text = this.$i18n.t('something_wrong')
         this.snackbar.show = true
       }
     },
     async getApiary(id) {
       try {
-        const response = await this.$store.dispatch('locations/findById', id)
-        const apiary = response.locations[0]
+        const response = await Api.readRequest('/locations/', id)
+        const apiary = response.data.locations[0]
         return apiary
-      } catch (e) {
-        console.log(e)
+      } catch (error) {
+        console.log('Error: ', error)
       }
     },
     async updateApiary() {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
         try {
-          const response = await this.$store.dispatch(
-            'locations/updateApiary',
+          const response = await Api.updateRequest(
+            '/locations/',
+            this.activeApiary.id,
             this.activeApiary
           )
           if (!response) {
@@ -368,7 +370,7 @@ export default {
             })
           }, 300) // wait for API to update locations/hives
         } catch (error) {
-          console.log(error)
+          console.log('Error: ', error)
           this.snackbar.text = this.$i18n.t('not_saved_error')
           this.snackbar.show = true
         }

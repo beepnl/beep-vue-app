@@ -26,6 +26,8 @@
 </template>
 
 <script>
+import Api from '@api/Api'
+import { mapGetters } from 'vuex'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
@@ -43,7 +45,6 @@ export default {
   },
   data() {
     return {
-      apiaries: null,
       normalizerApiary(node) {
         return {
           id: node.id,
@@ -59,17 +60,20 @@ export default {
       },
     }
   },
+  computed: {
+    ...mapGetters('locations', ['apiaries']),
+  },
   created() {
     this.readApiaries()
   },
   methods: {
     async readApiaries() {
       try {
-        const response = await this.$store.dispatch('locations/findAll')
-        this.apiaries = response.locations
+        const response = await Api.readRequest('/locations')
+        this.$store.commit('locations/setApiaries', response.data.locations)
         return true
-      } catch (e) {
-        console.log(e)
+      } catch (error) {
+        console.log('Error: ', error)
       }
     },
     setInspectionEdited(bool) {

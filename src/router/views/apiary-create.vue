@@ -432,6 +432,7 @@
 </template>
 
 <script>
+import Api from '@api/Api'
 import ApiaryPreview from '@components/apiary-preview.vue'
 import Confirm from '@components/confirm.vue'
 import HiveEditDetails from '@components/hive-edit-details.vue'
@@ -586,10 +587,7 @@ export default {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
         try {
-          const response = await this.$store.dispatch(
-            'locations/createApiary',
-            this.newHive
-          )
+          const response = await Api.createRequest('/locations', this.newHive)
           if (!response) {
             this.snackbar.text = this.$i18n.t('not_saved_error')
             this.snackbar.show = true
@@ -601,7 +599,7 @@ export default {
             })
           }, 300) // wait for API to update locations/hives
         } catch (error) {
-          console.log(error)
+            console.log('Error: ', error)
           this.snackbar.text = this.$i18n.t('not_saved_error')
           this.snackbar.show = true
         }
@@ -609,11 +607,11 @@ export default {
     },
     async readApiaries() {
       try {
-        const response = await this.$store.dispatch('locations/findAll')
-        return response.locations.length
-      } catch (e) {
-        console.log(e)
-      }
+        const response = await Api.readRequest('/locations')
+        return response.data.locations.length
+        } catch (error) {
+            console.log('Error: ', error)
+          }
     },
     cancelColorPicker() {
       this.overlay = false

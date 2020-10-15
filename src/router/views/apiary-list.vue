@@ -519,7 +519,12 @@ export default {
             return hiveSet
           }
         })
-        .filter((x) => x.hives.length > 0)
+
+      if (this.search !== null) {
+        propertyFilteredHiveSets = propertyFilteredHiveSets.filter(
+          (x) => x.hives.length > 0 // exclude hiveSets without search results (but include empty hiveSets in overall overview for housekeeping purposes)
+        )
+      }
 
       return propertyFilteredHiveSets
     },
@@ -559,34 +564,51 @@ export default {
   methods: {
     async deleteApiaryById(id) {
       try {
-        const response = await this.$store.dispatch(
-          'locations/deleteApiary',
-          id
-        )
+        const response = await Api.deleteRequest('/locations/', id)
         if (!response) {
           this.snackbar.text = this.$i18n.t('something_wrong')
           this.snackbar.show = true
         }
         setTimeout(() => {
-          return this.$router.push({
-            name: 'home',
-          })
+          this.readApiariesAndGroups()
         }, 100) // wait for API to update locations/hives
       } catch (error) {
-        console.log(error)
+        console.log('Error: ', error)
         this.snackbar.text = this.$i18n.t('something_wrong')
         this.snackbar.show = true
       }
     },
     async deleteGroupById(id) {
-      console.log('delete Group By Id')
-      console.log(id)
-      // TODO: fix
+      try {
+        const response = await Api.deleteRequest('/groups/', id)
+        if (!response) {
+          this.snackbar.text = this.$i18n.t('something_wrong')
+          this.snackbar.show = true
+        }
+        setTimeout(() => {
+          this.readApiariesAndGroups()
+        }, 100) // wait for API to update locations/hives
+      } catch (error) {
+        console.log('Error: ', error)
+        this.snackbar.text = this.$i18n.t('something_wrong')
+        this.snackbar.show = true
+      }
     },
     async detachGroupById(id) {
-      console.log('detach Group By Id')
-      console.log(id)
-      // TODO: fix
+      try {
+        const response = await Api.deleteRequest('/groups/detach/', id)
+        if (!response) {
+          this.snackbar.text = this.$i18n.t('something_wrong')
+          this.snackbar.show = true
+        }
+        setTimeout(() => {
+          this.readApiariesAndGroups()
+        }, 100) // wait for API to update locations/hives
+      } catch (error) {
+        console.log('Error: ', error)
+        this.snackbar.text = this.$i18n.t('something_wrong')
+        this.snackbar.show = true
+      }
     },
     async deleteHiveById(id) {
       try {
@@ -599,21 +621,27 @@ export default {
           this.readApiariesAndGroups()
         }, 100) // wait for API to update locations/hives
       } catch (error) {
-        console.log(error)
+        console.log('Error: ', error)
         this.snackbar.text = this.$i18n.t('something_wrong')
         this.snackbar.show = true
       }
     },
     async readApiariesAndGroups() {
       try {
-        const responseApiaries = await this.$store.dispatch('locations/findAll')
-        const responseGroups = await this.$store.dispatch('groups/findAll')
+        const responseApiaries = await Api.readRequest('/locations')
+        const responseGroups = await Api.readRequest('/groups')
         if (
-          responseApiaries.locations.length === 0 &&
-          responseGroups.groups.length === 0
+          responseApiaries.data.locations.length === 0 &&
+          responseGroups.data.groups.length === 0
         ) {
           this.showApiaryPlaceholder = true
         }
+        this.$store.commit(
+          'locations/setApiaries',
+          responseApiaries.data.locations
+        )
+        this.$store.commit('groups/setGroups', responseGroups.data.groups)
+
         return true
       } catch (e) {
         console.log(e)

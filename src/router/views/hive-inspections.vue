@@ -754,7 +754,7 @@ export default {
         }
         this.getAllInspectionsForHiveId()
       } catch (error) {
-        console.log(error)
+        console.log('Error: ', error)
         this.snackbar.text = this.$i18n.t('something_wrong')
         this.snackbar.show = true
       }
@@ -768,14 +768,7 @@ export default {
         const hive = response.data.hives[0]
         return hive
       } catch (error) {
-        if (error.response) {
-          console.log(error.response)
-        } else if (error.request) {
-          console.log(error.request)
-        } else if (error.message) {
-          console.log('Error', error.message)
-        }
-        console.log(error)
+        console.log('Error: ', error)
         this.$router.push({ name: '404', params: { resource: 'hive' } })
       }
     },
@@ -787,8 +780,8 @@ export default {
         )
         this.inspections = response
         return true
-      } catch (e) {
-        console.log(e)
+      } catch (error) {
+        console.log('Error: ', error)
       }
     },
     async readImages() {
@@ -796,8 +789,8 @@ export default {
         const response = await this.$store.dispatch('images/findAll')
         this.images = response
         return true
-      } catch (e) {
-        console.log(e)
+      } catch (error) {
+        console.log('Error: ', error)
       }
     },
     confirmDeleteInspection(inspection) {

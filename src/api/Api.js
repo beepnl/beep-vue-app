@@ -5,7 +5,7 @@ class Api {
     return axios.post(url, payload)
   }
 
-  readRequest(url, id = null) {
+  readRequest(url, id = '') {
     return axios.get(url + id)
   }
 

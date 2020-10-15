@@ -1,7 +1,9 @@
 <template>
   <Layout :title="getTitle()" :no-box-shadow="true">
     <h1
-      v-if="activeGroup && !activeGroup.creator && !activeGroup.admin"
+      v-if="
+        activeGroup && !createMode && !activeGroup.creator && !activeGroup.admin
+      "
       class="unauthorized-title"
       v-text="unauthorizedText"
     >
@@ -9,7 +11,12 @@
 
     <v-form ref="form" v-model="valid" @submit.prevent="saveGroup">
       <v-toolbar
-        v-if="activeGroup && (activeGroup.creator || activeGroup.admin)"
+        v-if="
+          (activeGroup && createMode) ||
+            (activeGroup &&
+              !createMode &&
+              (activeGroup.creator || activeGroup.admin))
+        "
         class="save-bar"
         dense
         light
@@ -59,7 +66,12 @@
       </v-toolbar>
 
       <v-container
-        v-if="activeGroup && (activeGroup.creator || activeGroup.admin)"
+        v-if="
+          (activeGroup && createMode) ||
+            (activeGroup &&
+              !createMode &&
+              (activeGroup.creator || activeGroup.admin))
+        "
         class="group-edit content-container"
       >
         <v-row>
@@ -333,6 +345,7 @@
 </template>
 
 <script>
+import Api from '@api/Api'
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 import Confirm from '@components/confirm.vue'
 import { mapGetters } from 'vuex'
@@ -357,8 +370,6 @@ export default {
         ['#bca55e', '#754B1F', '#3F3104'],
       ],
       colorPickerValue: '',
-      groups: null,
-      apiaries: null,
       activeGroup: null,
       valid: false,
       showLoadingIcon: false,
@@ -368,7 +379,8 @@ export default {
   },
   computed: {
     ...mapGetters('auth', ['userEmail', 'userName']),
-    ...mapGetters('groups', ['groupEdited']),
+    ...mapGetters('groups', ['groupEdited', 'groups']),
+    ...mapGetters('locations', ['apiaries']),
     id() {
       return parseInt(this.$route.params.id)
     },
@@ -402,7 +414,6 @@ export default {
           this.newGroupNumber = this.groups.length + 1
         }
         this.activeGroup = {
-          creator: true,
           hex_color: '#F29100',
           name: this.$i18n.tc('Group', 1) + ' ' + this.newGroupNumber,
           description: '',
@@ -430,73 +441,88 @@ export default {
         this.showLoadingIcon = true
         console.log('create Group')
         console.log(this.activeGroup)
-        // try {
-        //   const response = await this.$store.dispatch(
-        //     'groups/createGroup',
-        //     this.activeGroup
-        //   )
-        //   if (!response) {
-        //     this.snackbar.text = this.$i18n.t('not_saved_error')
-        //     this.snackbar.show = true
-        //   }
-        //   setTimeout(() => {
-        //     return this.$router.push({
-        //       name: 'home',
-        //     })
-        //   }, 300) // wait for API to update locations/Groups
-        // } catch (error) {
-        //   console.log(error)
-        //   this.snackbar.text = this.$i18n.t('not_saved_error')
-        //   this.snackbar.show = true
-        // }
+        try {
+          const response = await Api.createRequest('/groups', this.activeGroup)
+          if (!response) {
+            this.snackbar.text = this.$i18n.t('not_saved_error')
+            this.snackbar.show = true
+          }
+          setTimeout(() => {
+            return this.$router.push({
+              name: 'home',
+              query: { search: this.activeGroup.name },
+            })
+          }, 300) // wait for API to update locations/Groups
+        } catch (error) {
+          console.log('Error: ', error)
+          this.snackbar.text = this.$i18n.t('not_saved_error')
+          this.snackbar.show = true
+        }
       }
     },
     async deleteGroup() {
-      console.log('delete Group')
-      console.log(this.id)
-      // try {
-      //   const response = await this.$store.dispatch(
-      //     'groups/deleteGroup',
-      //     this.activeGroup.id
-      //   )
-      //   if (!response) {
-      //     this.snackbar.text = this.$i18n.t('something_wrong')
-      //     this.snackbar.show = true
-      //   }
-      //   setTimeout(() => {
-      //     return this.$router.push({
-      //       name: 'home',
-      //     })
-      //   }, 100) // wait for API to update locations/Groups
-      // } catch (error) {
-      //   console.log(error)
-      //   this.snackbar.text = this.$i18n.t('something_wrong')
-      //   this.snackbar.show = true
-      // }
+      try {
+        const response = await Api.deleteRequest(
+          '/groups/',
+          this.activeGroup.id
+        )
+        if (!response) {
+          this.snackbar.text = this.$i18n.t('something_wrong')
+          this.snackbar.show = true
+        }
+        setTimeout(() => {
+          return this.$router.push({
+            name: 'home',
+          })
+        }, 100) // wait for API to update groups
+      } catch (error) {
+        console.log('Error: ', error)
+        this.snackbar.text = this.$i18n.t('something_wrong')
+        this.snackbar.show = true
+      }
     },
     async detachGroup() {
-      console.log('detach Group')
-      console.log(this.id)
-      // TODO: fix
+      try {
+        const response = await Api.deleteRequest(
+          '/groups/detach/',
+          this.activeGroup.id
+        )
+        if (!response) {
+          this.snackbar.text = this.$i18n.t('something_wrong')
+          this.snackbar.show = true
+        }
+        setTimeout(() => {
+          return this.$router.push({
+            name: 'home',
+          })
+        }, 100) // wait for API to update groups
+      } catch (error) {
+        console.log('Error: ', error)
+        this.snackbar.text = this.$i18n.t('something_wrong')
+        this.snackbar.show = true
+      }
     },
     async readApiariesAndGroups() {
       try {
-        const responseApiaries = await this.$store.dispatch('locations/findAll')
-        const responseGroups = await this.$store.dispatch('groups/findAll')
-        this.groups = responseGroups.groups
-        this.apiaries = responseApiaries.locations
+        const responseApiaries = await Api.readRequest('/locations')
+        const responseGroups = await Api.readRequest('/groups')
+        this.$store.commit(
+          'locations/setApiaries',
+          responseApiaries.data.locations
+        )
+        this.$store.commit('groups/setGroups', responseGroups.data.groups)
         return true
-      } catch (e) {
-        console.log(e)
+      } catch (error) {
+        console.log('Error: ', error)
       }
     },
     async readGroup() {
       try {
-        const response = await this.$store.dispatch('groups/findById', this.id)
-        if (response === null) {
+        const response = await Api.readRequest('/groups/', this.id)
+        if (response.data.length === 0) {
           this.$router.push({ name: '404', params: { resource: 'group' } })
         }
-        var group = response
+        var group = response.data
         // eslint-disable-next-line camelcase
         var hives_selected = []
         // eslint-disable-next-line camelcase
@@ -515,8 +541,8 @@ export default {
         }
         this.activeGroup = group
         return true
-      } catch (e) {
-        console.log(e)
+      } catch (error) {
+        console.log('Error: ', error)
         this.$router.push({ name: '404', params: { resource: 'group' } })
       }
     },
@@ -525,25 +551,26 @@ export default {
         this.showLoadingIcon = true
         console.log('update Group')
         console.log(this.activeGroup)
-        // try {
-        //   const response = await this.$store.dispatch(
-        //     'groups/saveGroupSettings',
-        //     this.activeGroup
-        //   )
-        //   if (!response) {
-        //     this.snackbar.text = this.$i18n.t('not_saved_error')
-        //     this.snackbar.show = true
-        //   }
-        //   setTimeout(() => {
-        //     return this.$router.push({
-        //       name: 'home',
-        //     })
-        //   }, 300) // wait for API to update locations/Groups
-        // } catch (error) {
-        //   console.log(error)
-        //   this.snackbar.text = this.$i18n.t('not_saved_error')
-        //   this.snackbar.show = true
-        // }
+        try {
+          const response = await Api.updateRequest(
+            '/groups/',
+            this.activeGroup.id,
+            this.activeGroup
+          )
+          if (!response) {
+            this.snackbar.text = this.$i18n.t('not_saved_error')
+            this.snackbar.show = true
+          }
+          setTimeout(() => {
+            return this.$router.push({
+              name: 'home',
+            })
+          }, 300) // wait for API to update locations/Groups
+        } catch (error) {
+          console.log('Error: ', error)
+          this.snackbar.text = this.$i18n.t('not_saved_error')
+          this.snackbar.show = true
+        }
       }
     },
     addGroupUser() {
@@ -620,6 +647,7 @@ export default {
           1
         )
       }
+      this.setGroupEdited(true)
     },
     setGroupEdited(bool) {
       this.$store.commit('groups/setGroupEdited', bool)

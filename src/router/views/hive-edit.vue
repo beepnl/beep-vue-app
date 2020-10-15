@@ -286,14 +286,7 @@ export default {
             })
           }, 300) // wait for API to update locations/hives
         } catch (error) {
-          if (error.response) {
-            console.log(error.response)
-          } else if (error.request) {
-            console.log(error.request)
-          } else if (error.message) {
-            console.log('Error', error.message)
-          }
-          console.log(error)
+          console.log('Error: ', error)
           this.snackbar.text = this.$i18n.t('not_saved_error')
           this.snackbar.show = true
         }
@@ -312,14 +305,7 @@ export default {
           })
         }, 100) // wait for API to update locations/hives
       } catch (error) {
-        if (error.response) {
-          console.log(error.response)
-        } else if (error.request) {
-          console.log(error.request)
-        } else if (error.message) {
-          console.log('Error', error.message)
-        }
-        console.log(error)
+        console.log('Error: ', error)
         this.snackbar.text = this.$i18n.t('something_wrong')
         this.snackbar.show = true
       }
@@ -330,14 +316,7 @@ export default {
         this.apiaries = response.data.locations
         return true
       } catch (error) {
-        if (error.response) {
-          console.log(error.response)
-        } else if (error.request) {
-          console.log(error.request)
-        } else if (error.message) {
-          console.log('Error', error.message)
-        }
-        console.log(error)
+        console.log('Error: ', error)
       }
     },
     async readHive() {
@@ -356,14 +335,7 @@ export default {
         this.setHiveEdited(false)
         return true
       } catch (error) {
-        if (error.response) {
-          console.log(error.response)
-        } else if (error.request) {
-          console.log(error.request)
-        } else if (error.message) {
-          console.log('Error', error.message)
-        }
-        console.log(error)
+        console.log('Error: ', error)
         this.$router.push({ name: '404', params: { resource: 'hive' } })
       }
     },
@@ -386,14 +358,7 @@ export default {
             })
           }, 300) // wait for API to update locations/hives
         } catch (error) {
-          if (error.response) {
-            console.log(error.response)
-          } else if (error.request) {
-            console.log(error.request)
-          } else if (error.message) {
-            console.log('Error', error.message)
-          }
-          console.log(error)
+          console.log('Error: ', error)
           this.snackbar.text = this.$i18n.t('not_saved_error')
           this.snackbar.show = true
         }

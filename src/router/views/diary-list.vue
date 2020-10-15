@@ -455,6 +455,7 @@
 </template>
 
 <script>
+import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/main.vue'
 import HiveIcon from '@components/hive-icon.vue'
@@ -582,26 +583,29 @@ export default {
         this.getInspectionsForHiveIds(this.hiveIds).then((inspections) => {
           this.inspections = inspections
         })
-      } catch (error) {
-        console.log(error)
+        } catch (error) {
+          console.log('Error: ', error)
         this.snackbar.text = this.$i18n.t('something_wrong')
         this.snackbar.show = true
       }
     },
     async getAllHivesAndIds() {
       try {
-        const ownHives = await this.$store.dispatch('hives/findAll')
-        const sharedApiaries = await this.$store.dispatch('groups/findAll')
-        if (ownHives.hives.length === 0 && sharedApiaries.groups.length === 0) {
+        const ownHives = await Api.readRequest('/hives')
+        const sharedApiaries = await Api.readRequest('/groups')
+        if (
+          ownHives.data.hives.length === 0 &&
+          sharedApiaries.data.groups.length === 0
+        ) {
           this.showDiaryPlaceholder = true
         } else {
           const ownHivesArray = []
-          ownHives.hives.forEach((hive) => {
+          ownHives.data.hives.forEach((hive) => {
             ownHivesArray.push(hive)
           })
 
           const sharedHivesArray = []
-          sharedApiaries.groups.forEach((group) => {
+          sharedApiaries.data.groups.forEach((group) => {
             group.hives.forEach((hive) => {
               sharedHivesArray.push(hive)
             })
@@ -625,8 +629,8 @@ export default {
 
           return uniqueHiveIds
         }
-      } catch (e) {
-        console.log(e)
+        } catch (error) {
+          console.log('Error: ', error)
       }
     },
     async getInspectionsForHiveIds(hiveIds) {
@@ -639,8 +643,8 @@ export default {
           this.showDiaryPlaceholder = true
         }
         return inspections
-      } catch (e) {
-        console.log(e)
+        } catch (error) {
+          console.log('Error: ', error)
       }
     },
     confirmDeleteInspection(inspection) {

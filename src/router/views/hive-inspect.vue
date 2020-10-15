@@ -491,14 +491,7 @@ export default {
         const hive = response.data.hives[0]
         return hive
       } catch (error) {
-        if (error.response) {
-          console.log(error.response)
-        } else if (error.request) {
-          console.log(error.request)
-        } else if (error.message) {
-          console.log('Error', error.message)
-        }
-        console.log(error)
+        console.log('Error: ', error)
         this.$router.push({ name: '404', params: { resource: 'hive' } })
       }
     },
@@ -558,8 +551,8 @@ export default {
         this.activeInspection.checklist_id = this.selectedChecklistId
 
         return true
-      } catch (e) {
-        console.log(e)
+      } catch (error) {
+        console.log('Error: ', error)
       }
     },
     async getChecklists() {
@@ -578,8 +571,8 @@ export default {
           id
         )
         return response
-      } catch (e) {
-        console.log(e)
+      } catch (error) {
+        console.log('Error: ', error)
         this.$router.push({ name: '404', params: { resource: 'inspection' } })
       }
     },
@@ -599,7 +592,7 @@ export default {
             })
           }, 300)
         } catch (error) {
-          console.log(error)
+          console.log('Error: ', error)
           this.snackbar.text = this.$i18n.t('not_saved_error')
           this.snackbar.show = true
         }
