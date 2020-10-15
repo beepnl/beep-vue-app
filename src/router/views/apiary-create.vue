@@ -705,13 +705,13 @@ export default {
         min-width: 70px !important;
         font-size: 16px !important;
         .hide-on-mobile {
-          display: none;
+          display: none !important;
         }
         .show-on-mobile {
-          display: inline;
+          display: inline !important;
         }
         .v-icon {
-          display: inline;
+          display: inline !important;
           font-size: 24px;
         }
       }

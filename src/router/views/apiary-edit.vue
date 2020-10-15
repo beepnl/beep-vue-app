@@ -58,13 +58,13 @@
             }}</div>
             <div class="rounded-border">
               <v-row>
-                <v-col cols="12" sm="6" md="5">
+                <v-col cols="12" sm="8" md="6" lg="5">
                   <v-text-field
                     v-if="activeApiary"
                     v-model="activeApiary.name"
                     :label="`${$t('Name')}*`"
                     :placeholder="`${$t('Name')}`"
-                    class="apiary-edit-name"
+                    class="apiary-edit-name mb-sm-3"
                     counter="30"
                     :rules="requiredRule"
                     required
@@ -443,9 +443,9 @@ export default {
 .apiary-edit {
   .apiary-edit-name {
     padding-top: 12px;
-    font-size: 2rem;
-    @include for-phone-only {
-      font-size: 1.6rem;
+    font-size: 1.6rem;
+    @include for-tablet-landscape-up {
+      font-size: 2rem;
     }
 
     &.v-input input {

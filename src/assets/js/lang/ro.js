@@ -476,6 +476,7 @@ const translations = {
   Collaborate: 'Colabora',
   Group: 'Grup de colaborare | Grupuri de colaborare',
   group: 'grup de colaborare | grupuri de colaborare',
+  group_short: 'grup | grupuri',
   to_share:
     'pentru a partaja cu acest grup. 1 click = numai membrii grupului pot vedea, 2 click-uri = membrii grupului pot edita.',
   Invitation_accepted: 'Invitație acceptată',

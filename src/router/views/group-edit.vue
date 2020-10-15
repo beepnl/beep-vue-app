@@ -16,28 +16,26 @@
       >
         <v-spacer></v-spacer>
         <v-btn
-          v-if="activeGroup && activeGroup.creator && !createMode"
+          v-if="activeGroup && !createMode"
           tile
           outlined
           color="red"
-          class="save-button mr-3"
-          @click="confirmDeleteGroup"
+          class="show-on-desktop save-button mr-3"
+          @click="confirmDeleteOrDetachGroup"
         >
           <v-icon v-if="!showLoadingIcon" left>mdi-delete</v-icon>
-          {{ $t('Delete') }}
+          {{
+            `${activeGroup.creator ? $t('Delete') : $t('Detach_from_group')}`
+          }}
         </v-btn>
-
-        <v-btn
-          v-if="activeGroup && !activeGroup.creator && !createMode"
-          tile
-          outlined
+        <v-icon
+          v-if="activeGroup && !createMode"
+          dark
+          class="hide-on-desktop mr-4"
           color="red"
-          class="save-button mr-3"
-          @click="confirmDetachGroup"
+          @click="confirmDeleteOrDetachGroup"
+          >mdi-delete</v-icon
         >
-          <v-icon v-if="!showLoadingIcon" left>mdi-delete</v-icon>
-          {{ $t('Detach_from_group') }}
-        </v-btn>
 
         <v-btn
           tile
@@ -56,7 +54,7 @@
             indeterminate
           />
           <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
-          {{ $t('save') + ' ' + $tc('group', 1) }}
+          {{ $t('save') + ' ' + $tc('group_short', 1) }}
         </v-btn>
       </v-toolbar>
 
@@ -71,7 +69,7 @@
             }}</div>
             <div class="rounded-border">
               <v-row>
-                <v-col cols="12" sm="6" md="5">
+                <v-col cols="12" sm="8" md="6" lg="5">
                   <v-text-field
                     v-if="activeGroup"
                     v-model="activeGroup.name"
@@ -165,12 +163,22 @@
               <v-btn
                 tile
                 outlined
-                class="save-button"
+                class="show-on-desktop save-button"
                 color="primary"
                 @click="addGroupUser"
               >
                 <v-icon left>mdi-plus</v-icon>
                 {{ $t('add') + ' ' + $tc('member', 1) }}
+              </v-btn>
+              <v-btn
+                tile
+                outlined
+                class="hide-on-desktop save-button"
+                color="primary"
+                @click="addGroupUser"
+              >
+                <v-icon left>mdi-plus</v-icon>
+                {{ $t('add') }}
               </v-btn>
             </div>
             <div class="rounded-border">
@@ -259,10 +267,46 @@
 
         <v-row>
           <v-col v-if="activeGroup" cols="12">
-            <div class="overline mb-4">{{ $tc('Hive', 2) }}</div>
+            <div class="overline mb-4">{{
+              $t('My_shared') + ' ' + $tc('hive', 2)
+            }}</div>
             <div class="rounded-border">
+              <div
+                class="beep-label mt-3 mt-sm-1 mb-3 mb-sm-4"
+                v-text="
+                  `${$t('Select') +
+                    ' ' +
+                    $tc('hive', 2) +
+                    ' ' +
+                    $t('to_share')}`
+                "
+              ></div>
               <div v-for="(apiary, i) in apiaries" :key="i">
-                <span>{{ apiary.name }}</span>
+                <div
+                  class="apiary-title d-flex flex-row justify-flex-start align-center"
+                  :style="
+                    `color: ${
+                      apiary.hex_color ? apiary.hex_color : ''
+                    }; border-color: ${
+                      apiary.hex_color ? apiary.hex_color : ''
+                    };`
+                  "
+                >
+                  <v-icon
+                    class="icon-apiary-owned ml-1 mr-2 my-0"
+                    :style="
+                      `background-color: ${
+                        apiary.hex_color ? apiary.hex_color : ''
+                      }; border-color: ${
+                        apiary.hex_color ? apiary.hex_color : ''
+                      };`
+                    "
+                  >
+                    mdi-home-analytics
+                  </v-icon>
+                  <h4 v-text="apiary.name"></h4>
+                </div>
+
                 <ApiaryPreviewHiveSelector
                   class="mb-4"
                   :hives="apiary.hives"
@@ -510,29 +554,23 @@ export default {
         creator: false,
       })
     },
-    confirmDeleteGroup() {
+    confirmDeleteOrDetachGroup() {
+      const title = this.activeGroup.creator
+        ? this.$i18n.t('Delete') + ' ' + this.$i18n.tc('group_short', 1)
+        : this.$i18n.t('Delete')
+      const message = this.activeGroup.creator
+        ? this.$i18n.t('Remove_group') + '?'
+        : this.$i18n.t('Detach_from_group') + '?'
       this.$refs.confirm
-        .open(
-          this.$i18n.t('Delete') + ' ' + this.$i18n.tc('group', 1),
-          this.$i18n.t('Remove_group') + '?',
-          {
-            color: 'red',
-          }
-        )
-        .then((confirm) => {
-          this.deleteGroup()
-        })
-        .catch((reject) => {
-          return true
-        })
-    },
-    confirmDetachGroup() {
-      this.$refs.confirm
-        .open(this.$i18n.t('Delete'), this.$i18n.t('Detach_from_group') + '?', {
+        .open(title, message, {
           color: 'red',
         })
         .then((confirm) => {
-          this.detachGroup()
+          if (this.activeGroup.creator) {
+            this.deleteGroup()
+          } else {
+            this.detachGroup()
+          }
         })
         .catch((reject) => {
           return true
@@ -565,7 +603,6 @@ export default {
       }
     },
     selectHive(id) {
-      console.log(id, typeof id)
       if (!this.activeGroup.hives_selected.includes(id)) {
         this.activeGroup.hives_selected.push(id)
       } else if (!this.activeGroup.hives_editable.includes(id)) {
@@ -625,15 +662,27 @@ export default {
 .group-edit {
   .group-edit-name {
     padding-top: 12px;
-    font-size: 2rem;
-    @include for-phone-only {
-      font-size: 1.6rem;
+    font-size: 1.6rem;
+    @include for-tablet-landscape-up {
+      font-size: 2rem;
     }
 
     &.v-text-field input {
       min-height: 45px !important;
     }
   }
+  .apiary-title {
+    width: 100%;
+    padding-bottom: 4px;
+    margin: 10px 0 16px;
+    color: $color-primary;
+    border-bottom: 1px solid $color-primary;
+    @include for-phone-only {
+      padding-bottom: 2px;
+      margin: 8px 0 10px;
+    }
+  }
+
   .user-input.v-text-field.v-text-field--solo .v-input__control {
     min-width: 160px !important;
   }

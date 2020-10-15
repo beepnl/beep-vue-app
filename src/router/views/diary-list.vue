@@ -705,17 +705,6 @@ export default {
         max-width: 115px;
       }
     }
-    .hide-on-mobile {
-      @include for-phone-only {
-        display: none;
-      }
-    }
-    .show-on-mobile {
-      display: none;
-      @include for-phone-only {
-        display: flex;
-      }
-    }
   }
 }
 

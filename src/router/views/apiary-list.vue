@@ -790,17 +790,6 @@ export default {
     .view-buttons {
       padding: 9px;
     }
-    .hide-on-mobile {
-      @include for-phone-only {
-        display: none;
-      }
-    }
-    .show-on-mobile {
-      display: none;
-      @include for-phone-only {
-        display: flex;
-      }
-    }
   }
 }
 
