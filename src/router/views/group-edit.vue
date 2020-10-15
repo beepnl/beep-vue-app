@@ -23,7 +23,7 @@
           class="show-on-desktop save-button mr-3"
           @click="confirmDeleteOrDetachGroup"
         >
-          <v-icon v-if="!showLoadingIcon" left>mdi-delete</v-icon>
+          <v-icon left>mdi-delete</v-icon>
           {{
             `${activeGroup.creator ? $t('Delete') : $t('Detach_from_group')}`
           }}
