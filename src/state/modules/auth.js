@@ -11,11 +11,17 @@ export const getters = {
   loggedIn: function(state) {
     return !!state.currentUser
   },
+  userEmail: function(state) {
+    return (state.currentUser && state.currentUser.email) || null
+  },
   userId: function(state) {
     return (state.currentUser && state.currentUser.id) || null
   },
   userLocale: function(state) {
     return (state.currentUser && state.currentUser.locale) || null
+  },
+  userName: function(state) {
+    return (state.currentUser && state.currentUser.name) || null
   },
   apiToken: function(state) {
     return (state.currentUser && state.currentUser.api_token) || null

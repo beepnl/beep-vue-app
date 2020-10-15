@@ -462,8 +462,7 @@ const translations = {
     'not yet available. Click on the button in the upper right corner to add one.',
   Users: 'Users',
   member: 'member | members',
-  Member: 'Group member',
-  Members: 'Group members',
+  Member: 'Group member | Group members',
   Invite: 'Invite',
   Invited: 'Invited',
   invitations: 'invitations',
@@ -472,6 +471,7 @@ const translations = {
   Collaborate: 'Collaborate',
   Group: 'Collaboration group | Collaboration groups',
   group: 'collaboration group | collaboration groups',
+  group_short: 'group | groups',
   to_share:
     'to share with this group. 1 click = group members can view only, 2 clicks = group members can edit',
   Invitation_accepted: 'Invitation accepted',

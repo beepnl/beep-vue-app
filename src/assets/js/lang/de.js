@@ -474,6 +474,7 @@ const translations = {
   Collaborate: 'Kooperieren',
   Group: 'Kollaborationsgruppe | Kollaborationsgruppen',
   group: 'Kollaborationsgruppe | Kollaborationsgruppen',
+  group_short: 'Gruppe | Gruppen',
   to_share:
     'mit dieser Gruppe zu teilen. 1 Klick = Gruppenmitglieder können nur anzeigen, 2 Klicks = Gruppenmitglieder können bearbeiten',
   Invitation_accepted: 'Einladung angenommen',

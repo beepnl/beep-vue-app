@@ -478,6 +478,7 @@ const translations = {
   Collaborate: 'Collaborer',
   Group: 'Groupe de collaboration | Groupes de collaboration',
   group: 'groupe de collaboration | groupes de collaboration',
+  group_short: 'groupe | groupes',
   to_share:
     'pour partager avec ce groupe. 1 clic = les membres du groupe peuvent afficher uniquement, 2 clics = les membres du groupe peuvent modifier',
   Invitation_accepted: 'Invitation acceptée',

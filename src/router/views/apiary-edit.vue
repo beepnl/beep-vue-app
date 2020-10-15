@@ -58,13 +58,13 @@
             }}</div>
             <div class="rounded-border">
               <v-row>
-                <v-col cols="12" sm="6" md="4">
+                <v-col cols="12" sm="8" md="6" lg="5">
                   <v-text-field
                     v-if="activeApiary"
                     v-model="activeApiary.name"
                     :label="`${$t('Name')}*`"
                     :placeholder="`${$t('Name')}`"
-                    class="apiary-edit-name"
+                    class="apiary-edit-name mb-sm-3"
                     counter="30"
                     :rules="requiredRule"
                     required
@@ -100,7 +100,7 @@
                           @click="editApiary(colorPickerValue, 'hex_color')"
                           >mdi-check</v-icon
                         >
-                        <v-icon @click="cancelColorPicker">mdi-close</v-icon>
+                        <v-icon @click="overlay = false">mdi-close</v-icon>
                       </v-toolbar-items>
                     </v-toolbar>
 
@@ -374,9 +374,6 @@ export default {
         }
       }
     },
-    cancelColorPicker() {
-      this.overlay = false
-    },
     confirmDeleteApiary() {
       const warningMessage =
         this.activeApiary.hives.length > 0
@@ -424,7 +421,7 @@ export default {
     editApiary(value, property) {
       this.activeApiary[property] = value
       if (property === 'hex_color') {
-        this.cancelColorPicker()
+        this.overlay = false
       }
       if (property !== 'lat' && property !== 'lon') {
         // if value is present, vueNumberInput always triggers editApiary method for these properties
@@ -445,8 +442,11 @@ export default {
 <style lang="scss">
 .apiary-edit {
   .apiary-edit-name {
-    padding-top: 0;
-    font-size: 2rem;
+    padding-top: 12px;
+    font-size: 1.6rem;
+    @include for-tablet-landscape-up {
+      font-size: 2rem;
+    }
 
     &.v-input input {
       min-height: 45px !important;
@@ -457,6 +457,7 @@ export default {
   .apiary-color {
     width: 35px;
     height: 35px;
+    cursor: pointer;
     border: 1px solid rgba(0, 0, 0, 0.3) !important;
   }
 

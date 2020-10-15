@@ -84,7 +84,7 @@
         class="content-container"
       >
         <v-row v-if="!queenEdit">
-          <v-col cols="12" sm="6" md="4">
+          <v-col cols="12" sm="8" md="6" lg="5">
             <v-text-field
               v-if="activeHive"
               v-model="activeHive.name"
@@ -495,9 +495,12 @@ export default {
 <style lang="scss">
 .hive-edit-name {
   padding-top: 0 !important;
-  font-size: 2rem;
+  font-size: 1.6rem;
   @include for-tablet-portrait-up {
     margin-top: 19px;
+  }
+  @include for-tablet-landscape-up {
+    font-size: 2rem;
   }
 
   input {

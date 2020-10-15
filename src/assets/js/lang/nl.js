@@ -477,6 +477,7 @@ const translations = {
   Collaborate: 'Samenwerken',
   Group: 'Samenwerkingsgroep | Samenwerkingsgroepen',
   group: 'samenwerkingsgroep | samenwerkingsgroepen',
+  group_short: 'groep | groepen',
   to_share:
     'om te delen met de groep. 1x klikken = delen om te bekijken, 2x klikken is delen met aanpassingsmogelijkheid',
   Invitation_accepted: 'Uitnodiging geaccepteerd',

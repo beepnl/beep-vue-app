@@ -10,15 +10,22 @@ const resource = createResource({ path: 'groups', other })
 
 export const state = {
   ...resource.state,
+  groupEdited: false,
 }
 export const getters = {
   ...resource.getters,
   groups: (state) => {
     return state.data.groups || []
   },
+  groupEdited: (state) => {
+    return state.groupEdited
+  },
 }
 export const mutations = {
   ...resource.mutations,
+  setGroupEdited: function(state, bool) {
+    state.groupEdited = bool
+  },
 }
 export const actions = {
   ...resource.actions,
@@ -29,6 +36,9 @@ export const actions = {
       return groups
     }
     return false
+  },
+  findById: function({ commit }, id) {
+    return resource.endpoint.read(id)
   },
   // proxy actions for other methods
   checktoken: function() {

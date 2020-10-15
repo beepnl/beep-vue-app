@@ -211,9 +211,7 @@
             >
             </pre>
 
-            <v-menu
-              v-if="typeof hiveSet.owner !== 'undefined' && hiveSet.owner"
-            >
+            <v-menu>
               <template v-slot:activator="{ on, attrs }">
                 <v-icon
                   small
@@ -223,7 +221,7 @@
                   >mdi-cog</v-icon
                 >
               </template>
-              <v-list dense>
+              <v-list v-if="!hiveSet.users" dense>
                 <v-list-item-group>
                   <v-list-item
                     :to="{
@@ -273,6 +271,61 @@
                     <v-list-item-content>
                       <v-list-item-title class="red--text">{{
                         $t('remove_apiary')
+                      }}</v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list-item-group>
+              </v-list>
+
+              <v-list v-if="hiveSet.users" dense>
+                <v-list-item-group>
+                  <v-list-item
+                    :to="{
+                      name: 'group-edit',
+                      params: { id: hiveSet.id },
+                    }"
+                  >
+                    <v-list-item-icon class="mr-3">
+                      <v-icon>mdi-pencil</v-icon>
+                    </v-list-item-icon>
+
+                    <v-list-item-content>
+                      <v-list-item-title
+                        v-text="$t('edit') + ' ' + $tc('group', 1)"
+                      ></v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list-item-group>
+
+                <v-divider class="my-1"></v-divider>
+
+                <v-list-item-group>
+                  <v-list-item
+                    v-if="hiveSet.creator"
+                    @click="confirmDeleteGroup(hiveSet)"
+                  >
+                    <v-list-item-icon class="mr-3">
+                      <v-icon class="red--text">mdi-delete</v-icon>
+                    </v-list-item-icon>
+
+                    <v-list-item-content>
+                      <v-list-item-title class="red--text">{{
+                        $t('Remove_group')
+                      }}</v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+
+                  <v-list-item
+                    v-if="!hiveSet.creator"
+                    @click="confirmDetachGroup(hiveSet)"
+                  >
+                    <v-list-item-icon class="mr-3">
+                      <v-icon class="red--text">mdi-delete</v-icon>
+                    </v-list-item-icon>
+
+                    <v-list-item-content>
+                      <v-list-item-title class="red--text">{{
+                        $t('Detach_from_group')
                       }}</v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
@@ -473,7 +526,7 @@ export default {
     menuItems: function() {
       return [
         { title: this.$i18n.t('new_apiary'), route: 'apiary-create' },
-        { title: this.$i18n.t('new_group') },
+        { title: this.$i18n.t('new_group'), route: 'group-create' },
       ]
     },
   },
@@ -525,6 +578,16 @@ export default {
         this.snackbar.show = true
       }
     },
+    async deleteGroupById(id) {
+      console.log('delete Group By Id')
+      console.log(id)
+      // TODO: fix
+    },
+    async detachGroupById(id) {
+      console.log('detach Group By Id')
+      console.log(id)
+      // TODO: fix
+    },
     async deleteHiveById(id) {
       try {
         const response = await Api.deleteRequest('/hives/', id)
@@ -570,6 +633,34 @@ export default {
         )
         .then((confirm) => {
           this.deleteApiaryById(hiveSet.id)
+        })
+        .catch((reject) => {
+          return true
+        })
+    },
+    confirmDeleteGroup(hiveSet) {
+      this.$refs.confirm
+        .open(
+          this.$i18n.t('Delete') + ' ' + this.$i18n.tc('group', 1),
+          this.$i18n.t('Remove_group') + '?',
+          {
+            color: 'red',
+          }
+        )
+        .then((confirm) => {
+          this.deleteGroupById(hiveSet.id)
+        })
+        .catch((reject) => {
+          return true
+        })
+    },
+    confirmDetachGroup(hiveSet) {
+      this.$refs.confirm
+        .open(this.$i18n.t('Delete'), this.$i18n.t('Detach_from_group') + '?', {
+          color: 'red',
+        })
+        .then((confirm) => {
+          this.detachGroupById(hiveSet.id)
         })
         .catch((reject) => {
           return true
@@ -699,17 +790,6 @@ export default {
     }
     .view-buttons {
       padding: 9px;
-    }
-    .hide-on-mobile {
-      @include for-phone-only {
-        display: none;
-      }
-    }
-    .show-on-mobile {
-      display: none;
-      @include for-phone-only {
-        display: flex;
-      }
     }
   }
 }

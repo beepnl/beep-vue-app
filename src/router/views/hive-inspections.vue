@@ -912,18 +912,6 @@ export default {
   }
 }
 
-.hide-on-mobile {
-  @include for-phone-only {
-    display: none !important;
-  }
-}
-.show-on-mobile {
-  display: none !important;
-  @include for-phone-only {
-    display: flex !important;
-  }
-}
-
 .hive-inspections-content {
   max-width: 100vw;
   margin-top: 61px;

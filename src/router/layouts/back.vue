@@ -61,6 +61,7 @@ export default {
     },
   },
   computed: {
+    ...mapGetters('groups', ['groupEdited']),
     ...mapGetters('hives', ['hiveEdited']),
     ...mapGetters('inspections', ['inspectionEdited']),
     ...mapGetters('locations', ['apiaryEdited']),
@@ -71,6 +72,9 @@ export default {
         ((this.$route.name === 'apiary-create' ||
           this.$route.name === 'apiary-edit') &&
           this.apiaryEdited) ||
+        ((this.$route.name === 'group-create' ||
+          this.$route.name === 'group-edit') &&
+          this.groupEdited) ||
         (this.$route.name === 'hive-edit' && this.hiveEdited) ||
         (this.$route.name === 'hive-inspect' && this.inspectionEdited) ||
         (this.$route.name === 'checklist' && this.edited)

@@ -73,3 +73,27 @@
   border-bottom: 1px solid #fff5e2 !important;
   box-shadow: none !important;
 }
+
+.hide-on-mobile {
+  @include for-phone-only {
+    display: none !important;
+  }
+}
+.show-on-mobile {
+  display: none !important;
+  @include for-phone-only {
+    display: flex !important;
+  }
+}
+
+.hide-on-desktop {
+  @include for-tablet-landscape-up {
+    display: none !important;
+  }
+}
+.show-on-desktop {
+  display: none !important;
+  @include for-tablet-landscape-up {
+    display: flex !important;
+  }
+}

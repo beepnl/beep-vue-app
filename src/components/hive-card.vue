@@ -61,7 +61,7 @@
           v-if="apiaryView"
           :class="
             `red--text apiary-view-alert ${
-              hasLayer('feeding_box') ? 'mr-1' : ''
+              hasLayer('queen_excluder') ? 'mr-1' : ''
             }`
           "
         >
@@ -346,6 +346,16 @@
               >
               </v-sheet>
             </router-link>
+            <v-sheet
+              v-else
+              :class="
+                `beep-icon beep-icon-queen  ${
+                  darkIconColor(hive.queen.color) ? 'dark' : ''
+                }`
+              "
+              :color="hive.queen.color"
+            >
+            </v-sheet>
           </div>
           <div v-if="hive.id % 7 === 0 || hive.id === 1" class="mr-2 my-0">
             <v-icon class="red--text">

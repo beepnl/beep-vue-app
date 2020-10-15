@@ -473,6 +473,7 @@ const translations = {
   Collaborate: 'Colaborar',
   Group: 'Grupo de colaboração | Grupos de colaboração',
   group: 'grupo de colaboração | grupos de colaboração',
+  group_short: 'grupo | grupos',
   to_share:
     'para partilhar com este grupo. 1 clique = os membros do grupo apenas podem visualizar, 2 cliques = os membros do grupo podem editar',
   Invitation_accepted: 'Convite aceite',
