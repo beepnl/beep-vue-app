@@ -520,7 +520,12 @@ export default {
           }
         })
 
-      if (this.search !== null) {
+      if (
+        this.search !== null ||
+        this.filterByReminder ||
+        this.filterByBase ||
+        this.filterByImpression.length > 0
+      ) {
         propertyFilteredHiveSets = propertyFilteredHiveSets.filter(
           (x) => x.hives.length > 0 // exclude hiveSets without search results (but include empty hiveSets in overall overview for housekeeping purposes)
         )
