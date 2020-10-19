@@ -1,16 +1,14 @@
 import createResource from '@utils/store/vuex-resource'
 
-const other = {
-  checktoken: 'POST groups/checktoken',
-}
 // Make sure the location path matches the module path,
 // or provide an explicit mutation otherwise.
-const resource = createResource({ path: 'groups', other })
+const resource = createResource({ path: 'groups' })
 
 export const state = {
   ...resource.state,
   groups: [],
   groupEdited: false,
+  invitations: [],
 }
 export const getters = {
   ...resource.getters,
@@ -19,6 +17,9 @@ export const getters = {
   },
   groupEdited: (state) => {
     return state.groupEdited
+  },
+  invitations: (state) => {
+    return state.invitations || []
   },
 }
 export const mutations = {
@@ -29,11 +30,10 @@ export const mutations = {
   setGroups: function(state, payload) {
     state.groups = payload
   },
+  setInvitations: function(state, payload) {
+    state.invitations = payload
+  },
 }
 export const actions = {
   ...resource.actions,
-  // proxy actions for other methods
-  checktoken: function() {
-    resource.endpoint.checktoken()
-  },
 }

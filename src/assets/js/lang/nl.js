@@ -471,7 +471,7 @@ const translations = {
   Member: 'Groepslid | Groepsleden',
   Invite: 'Uitnodigen',
   Invited: 'Uitgenodigd',
-  invitations: 'uitnodigingen',
+  Invitation: 'Uitnodiging | Uitnodigingen',
   Admin: 'Beheerder',
   Creator: 'Groep eigenaar',
   Collaborate: 'Samenwerken',

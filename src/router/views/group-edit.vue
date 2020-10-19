@@ -1,26 +1,7 @@
 <template>
   <Layout :title="getTitle()" :no-box-shadow="true">
-    <h1
-      v-if="
-        activeGroup && !createMode && !activeGroup.creator && !activeGroup.admin
-      "
-      class="unauthorized-title"
-      v-text="unauthorizedText"
-    >
-    </h1>
-
     <v-form ref="form" v-model="valid" @submit.prevent="saveGroup">
-      <v-toolbar
-        v-if="
-          (activeGroup && createMode) ||
-            (activeGroup &&
-              !createMode &&
-              (activeGroup.creator || activeGroup.admin))
-        "
-        class="save-bar"
-        dense
-        light
-      >
+      <v-toolbar v-if="activeGroup" class="save-bar" dense light>
         <v-spacer></v-spacer>
         <v-btn
           v-if="activeGroup && !createMode"
@@ -65,16 +46,15 @@
         </v-btn>
       </v-toolbar>
 
-      <v-container
-        v-if="
-          (activeGroup && createMode) ||
-            (activeGroup &&
-              !createMode &&
-              (activeGroup.creator || activeGroup.admin))
-        "
-        class="group-edit content-container"
-      >
-        <v-row>
+      <v-container v-if="activeGroup" class="group-edit content-container">
+        <v-row
+          v-if="
+            (activeGroup && createMode) ||
+              (activeGroup &&
+                !createMode &&
+                (activeGroup.creator || activeGroup.admin))
+          "
+        >
           <v-col cols="12">
             <div class="overline mb-4">{{
               $tc('Group', 1) + ' ' + $t('settings')
@@ -162,7 +142,14 @@
           </v-col>
         </v-row>
 
-        <v-row>
+        <v-row
+          v-if="
+            (activeGroup && createMode) ||
+              (activeGroup &&
+                !createMode &&
+                (activeGroup.creator || activeGroup.admin))
+          "
+        >
           <v-col cols="12">
             <div class="d-flex justify-space-between">
               <div class="overline mb-4">{{
@@ -241,7 +228,7 @@
                       </td>
                       <td>
                         <span v-if="user.accepted === null">{{
-                          user.invited
+                          momentify(user.invited)
                         }}</span>
                       </td>
                       <td>
@@ -293,7 +280,7 @@
                     $t('to_share')}`
                 "
               ></div>
-              <div v-for="(apiary, i) in apiaries" :key="i">
+              <div v-for="(apiary, i) in filteredApiaries" :key="i">
                 <div
                   class="apiary-title d-flex flex-row justify-flex-start align-center"
                   :style="
@@ -350,6 +337,7 @@ import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.
 import Confirm from '@components/confirm.vue'
 import { mapGetters } from 'vuex'
 import Layout from '@layouts/back.vue'
+import { momentMixin } from '@mixins/momentMixin'
 
 export default {
   components: {
@@ -357,6 +345,7 @@ export default {
     Confirm,
     Layout,
   },
+  mixins: [momentMixin],
   data: function() {
     return {
       snackbar: {
@@ -398,6 +387,21 @@ export default {
       set(value) {
         this.colorPickerValue = value
       },
+    },
+    filteredApiaries() {
+      const sortedAndFilledApiaries = this.apiaries
+        .slice()
+        .sort(function(a, b) {
+          if (a.name > b.name) {
+            return 1
+          }
+          if (b.name > a.name) {
+            return -1
+          }
+          return 0
+        })
+        .filter((x) => x.hives.length > 0)
+      return sortedAndFilledApiaries
     },
     requiredRule: function() {
       return [

@@ -470,7 +470,7 @@ const translations = {
   Member: 'Membrul grupului | Membrii grupului',
   Invite: 'Invită',
   Invited: 'Invitat',
-  invitations: 'invitații',
+  Invitation: 'Invitație | Invitații',
   Admin: 'Administrator',
   Creator: 'Proprietarul grupului',
   Collaborate: 'Colabora',

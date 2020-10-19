@@ -467,7 +467,7 @@ const translations = {
   Member: 'Membro do grupo | Membros do grupo',
   Invite: 'Convidar',
   Invited: 'Convidado',
-  invitations: 'Convites',
+  Invitation: 'Convite | Convites',
   Admin: 'Administrador',
   Creator: 'Proprietário do grupo',
   Collaborate: 'Colaborar',

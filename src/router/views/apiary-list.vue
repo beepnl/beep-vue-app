@@ -163,8 +163,8 @@
       </div>
       <v-container>
         <v-row
-          v-for="(hiveSet, j) in filteredHiveSets"
-          :key="j"
+          v-for="hiveSet in filteredHiveSets"
+          :key="'hiveSet ' + hiveSet.name + ' ' + hiveSet.id"
           :class="`hive-set ${apiaryView ? 'apiary-view' : ''}`"
           dense
         >
@@ -339,8 +339,8 @@
             class="hive-item-transition-wrapper"
           >
             <v-col
-              v-for="(hive, i) in sortedHives(hiveSet.hives)"
-              :key="i"
+              v-for="hive in sortedHives(hiveSet.hives)"
+              :key="'Hive ' + hive.id"
               sm="auto"
               :class="
                 `hive-item ${listView ? 'list-view' : ''} ${
@@ -368,8 +368,135 @@
             {{ $t('no_results') }}
           </v-col>
         </v-row>
+        <v-row
+          v-for="invitation in invitations"
+          :key="'Invitation ' + invitation.id"
+          :class="`hive-set ${apiaryView ? 'apiary-view' : ''}`"
+          dense
+        >
+          <div
+            class="hive-set-title d-flex flex-row justify-space-between align-end"
+          >
+            <div
+              class="d-flex flex-row justify-flex-start align-center"
+              :style="
+                `color: ${
+                  invitation.color ? invitation.color : ''
+                }; border-color: ${invitation.color ? invitation.color : ''};`
+              "
+            >
+              <v-icon
+                class="icon-apiary-shared ml-1 mr-2 my-0"
+                :style="
+                  `background-color: ${
+                    invitation.color ? invitation.color : ''
+                  }; border-color: ${invitation.color ? invitation.color : ''};`
+                "
+              >
+                mdi-account-multiple
+              </v-icon>
+              <h4 v-text="$tc('Invitation', 1) + ': ' + invitation.name"></h4>
+            </div>
+            <div>
+              <v-btn
+                tile
+                outlined
+                class="hide-on-mobile green--text mb-1"
+                @click="
+                  checkToken(invitation.token, invitation.id, invitation.name)
+                "
+              >
+                <v-progress-circular
+                  v-if="showLoadingIconForId === invitation.id"
+                  class="green--text ml-n1 mr-2"
+                  size="18"
+                  width="2"
+                  indeterminate
+                />
+                <v-icon v-if="showLoadingIconForId !== invitation.id" left
+                  >mdi-check</v-icon
+                >
+                {{ $t('Accept') }}
+              </v-btn>
+              <v-progress-circular
+                v-if="showLoadingIconForId === invitation.id"
+                class="show-on-mobile green--text mb-1"
+                size="18"
+                width="2"
+                indeterminate
+              />
+              <v-icon
+                v-if="showLoadingIconForId !== invitation.id"
+                dark
+                class="show-on-mobile green--text mb-1"
+                @click="
+                  checkToken(invitation.token, invitation.id, invitation.name)
+                "
+              >
+                mdi-check</v-icon
+              >
+            </div>
+          </div>
+          <div
+            class="rounded-border invitation-wrapper ma-1"
+            :style="
+              `border-color: ${
+                invitation.color ? invitation.color : '#ffa000'
+              };`
+            "
+          >
+            <v-simple-table dense>
+              <template v-slot>
+                <thead>
+                  <tr>
+                    <th class="text-left invitation-description">
+                      {{ $t('Description') }}
+                    </th>
+                    <th class="text-left">
+                      {{ $t('Date') }}
+                    </th>
+                    <th class="text-left">
+                      {{ $tc('Member', 2) }}
+                    </th>
+                    <th class="text-left">
+                      {{ $tc('Hive', 2) }}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <span>{{ invitation.description }}</span>
+                    </td>
+                    <td>
+                      <span class="show-on-desktop">{{
+                        momentify(invitation.invited)
+                      }}</span>
+                      <span class="hide-on-desktop">{{
+                        momentifyDayMonth(invitation.invited)
+                      }}</span>
+                    </td>
+                    <td>
+                      <span>{{ invitation.usercount }}</span>
+                    </td>
+                    <td>
+                      <span>{{ invitation.hivecount }}</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+          </div>
+        </v-row>
       </v-container>
     </div>
+
+    <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
+      {{ snackbar.text }}
+      <v-btn color="primary" text @click="snackbar.show = false">
+        {{ $t('Close') }}
+      </v-btn>
+    </v-snackbar>
 
     <Confirm ref="confirm"></Confirm>
   </Layout>
@@ -393,6 +520,11 @@ export default {
   },
   mixins: [momentMixin],
   data: () => ({
+    snackbar: {
+      show: false,
+      timeout: 2000,
+      text: 'notification',
+    },
     search: null,
     filterByReminder: false,
     filterByBase: false,
@@ -401,12 +533,13 @@ export default {
     gridView: false,
     apiaryView: false,
     settings: [],
+    showLoadingIconForId: null,
     showApiaryPlaceholder: false,
     ready: false,
   }),
   computed: {
     ...mapGetters('locations', ['apiaries']),
-    ...mapGetters('groups', ['groups']),
+    ...mapGetters('groups', ['groups', 'invitations']),
     hiveSets() {
       return this.apiaries.concat(this.groups)
     },
@@ -567,6 +700,30 @@ export default {
     })
   },
   methods: {
+    async checkToken(token, groupId, groupName) {
+      this.showLoadingIconForId = groupId
+      try {
+        const response = await Api.createRequest('/groups/checktoken', {
+          group_id: groupId,
+          token: token,
+        })
+        if (!response) {
+          this.snackbar.text = this.$i18n.t('something_wrong')
+          this.snackbar.show = true
+        }
+        this.snackbar.text = this.$i18n.t('Invitation_accepted')
+        this.snackbar.show = true
+        setTimeout(() => {
+          this.readApiariesAndGroups()
+          this.search = groupName
+          this.showLoadingIconForId = null
+        }, 100) // wait for API to update locations/hives
+      } catch (error) {
+        console.log('Error: ', error)
+        this.snackbar.text = this.$i18n.t('something_wrong')
+        this.snackbar.show = true
+      }
+    },
     async deleteApiaryById(id) {
       try {
         const response = await Api.deleteRequest('/locations/', id)
@@ -646,6 +803,12 @@ export default {
           responseApiaries.data.locations
         )
         this.$store.commit('groups/setGroups', responseGroups.data.groups)
+        if (responseGroups.data.invitations.length > 0) {
+          this.$store.commit(
+            'groups/setInvitations',
+            responseGroups.data.invitations
+          )
+        }
 
         return true
       } catch (e) {
@@ -873,6 +1036,26 @@ export default {
         flex-grow: 1 !important;
         min-width: 100%;
       }
+    }
+  }
+}
+.invitation-wrapper {
+  width: 100%;
+  .v-data-table > .v-data-table__wrapper > table > thead > tr > th {
+    @include for-phone-only {
+      padding: 0 8px !important;
+    }
+  }
+  .v-data-table > .v-data-table__wrapper > table > tbody > tr > td {
+    @include for-phone-only {
+      padding: 4px 8px !important;
+      font-size: 0.8125rem !important;
+    }
+  }
+  .invitation-description {
+    width: 25vw;
+    @include for-tablet-landscape-up {
+      width: 40vw;
     }
   }
 }
