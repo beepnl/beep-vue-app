@@ -56,7 +56,7 @@
           "
         >
           <v-col cols="12">
-            <div class="overline mb-4">{{
+            <div class="overline mb-3">{{
               $tc('Group', 1) + ' ' + $t('settings')
             }}</div>
             <div class="rounded-border">
@@ -152,7 +152,7 @@
         >
           <v-col cols="12">
             <div class="d-flex justify-space-between">
-              <div class="overline mb-4">{{
+              <div class="overline mb-3">{{
                 $tc('Member', activeGroup.users.length) +
                   ' (' +
                   activeGroup.users.length +
@@ -270,7 +270,7 @@
 
         <v-row>
           <v-col v-if="activeGroup" cols="12">
-            <div class="overline mb-4">{{
+            <div class="overline mb-3">{{
               $t('My_shared') + ' ' + $tc('hive', 2)
             }}</div>
             <div class="rounded-border">

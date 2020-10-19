@@ -53,7 +53,7 @@
       <v-container class="apiary-edit content-container">
         <v-row>
           <v-col cols="12">
-            <div class="overline mb-4">{{
+            <div class="overline mb-3">{{
               $tc('Location', 1) + ' ' + $t('settings')
             }}</div>
             <div class="rounded-border">
@@ -130,7 +130,7 @@
 
         <v-row>
           <v-col cols="12">
-            <div class="overline mb-4">
+            <div class="overline mb-3">
               {{
                 $t('Place') + ' ' + $t('details') + ' (' + $t('optional') + ')'
               }}</div

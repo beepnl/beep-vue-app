@@ -210,6 +210,14 @@ export default [
     meta: {
       authRequired: true,
     },
+    path: '/research',
+    name: 'research',
+    component: () => lazyLoadView(import('@views/research.vue')),
+  },
+  {
+    meta: {
+      authRequired: true,
+    },
     path: '/hives/:id/edit',
     name: 'queen-edit',
     component: () => lazyLoadView(import('@views/hive-edit.vue')),
