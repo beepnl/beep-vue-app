@@ -275,7 +275,7 @@ export default {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
         try {
-          const response = await Api.createRequest('/hives', this.activeHive)
+          const response = await Api.postRequest('/hives', this.activeHive)
           if (!response) {
             this.snackbar.text = this.$i18n.t('not_saved_error')
             this.snackbar.show = true

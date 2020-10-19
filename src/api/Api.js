@@ -1,7 +1,7 @@
 import axios from './axios'
 
 class Api {
-  createRequest(url, payload) {
+  postRequest(url, payload) {
     return axios.post(url, payload)
   }
 

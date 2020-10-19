@@ -703,7 +703,7 @@ export default {
     async checkToken(token, groupId, groupName) {
       this.showLoadingIconForId = groupId
       try {
-        const response = await Api.createRequest('/groups/checktoken', {
+        const response = await Api.postRequest('/groups/checktoken', {
           group_id: groupId,
           token: token,
         })

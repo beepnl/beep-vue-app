@@ -70,6 +70,20 @@
                   </p>
                 </div>
               </div>
+              <div>
+                <span>{{
+                  research.consent ? $t('consent_yes') : $t('consent_no')
+                }}</span>
+                <br />
+                <v-btn
+                  tile
+                  outlined
+                  color="primary"
+                  @click="consentToggle(research.id, research.consent ? 0 : 1)"
+                >
+                  {{ research.consent ? $t('consent_no') : $t('consent_yes') }}
+                </v-btn>
+              </div>
             </div>
           </v-col>
         </v-row>
@@ -112,6 +126,19 @@ export default {
       try {
         const response = await Api.readRequest('/research')
         this.researchProjects = response.data
+        return true
+      } catch (error) {
+        console.log('Error: ', error)
+      }
+    },
+    async consentToggle(id, consent) {
+      try {
+        if (consent) {
+          await Api.postRequest('research/' + id + '/add_consent')
+        } else {
+          await Api.postRequest('research/' + id + '/remove_consent')
+        }
+        this.readResearchProjects()
         return true
       } catch (error) {
         console.log('Error: ', error)

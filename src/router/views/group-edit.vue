@@ -473,7 +473,7 @@ export default {
         console.log('create Group')
         console.log(this.activeGroup)
         try {
-          const response = await Api.createRequest('/groups', this.activeGroup)
+          const response = await Api.postRequest('/groups', this.activeGroup)
           if (!response) {
             this.snackbar.text = this.$i18n.t('not_saved_error')
             this.snackbar.show = true

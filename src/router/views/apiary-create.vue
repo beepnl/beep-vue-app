@@ -587,7 +587,7 @@ export default {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
         try {
-          const response = await Api.createRequest('/locations', this.newHive)
+          const response = await Api.postRequest('/locations', this.newHive)
           if (!response) {
             this.snackbar.text = this.$i18n.t('not_saved_error')
             this.snackbar.show = true
@@ -599,7 +599,7 @@ export default {
             })
           }, 300) // wait for API to update locations/hives
         } catch (error) {
-            console.log('Error: ', error)
+          console.log('Error: ', error)
           this.snackbar.text = this.$i18n.t('not_saved_error')
           this.snackbar.show = true
         }
@@ -609,9 +609,9 @@ export default {
       try {
         const response = await Api.readRequest('/locations')
         return response.data.locations.length
-        } catch (error) {
-            console.log('Error: ', error)
-          }
+      } catch (error) {
+        console.log('Error: ', error)
+      }
     },
     cancelColorPicker() {
       this.overlay = false
