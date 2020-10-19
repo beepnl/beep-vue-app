@@ -271,48 +271,70 @@
             }}</div>
             <div class="rounded-border">
               <div
-                class="beep-label mt-3 mt-sm-1 mb-3 mb-sm-4"
-                v-text="
-                  `${$t('Select') +
-                    ' ' +
-                    $tc('hive', 2) +
-                    ' ' +
-                    $t('to_share')}`
-                "
-              ></div>
-              <div v-for="(apiary, i) in filteredApiaries" :key="i">
-                <div
-                  class="apiary-title d-flex flex-row justify-flex-start align-center"
-                  :style="
-                    `color: ${
-                      apiary.hex_color ? apiary.hex_color : ''
-                    }; border-color: ${
-                      apiary.hex_color ? apiary.hex_color : ''
-                    };`
-                  "
+                v-if="showApiaryPlaceholder"
+                class="apiary-placeholder d-flex flex-column align-start"
+              >
+                <div class="beep-label mt-3 mt-sm-1 mb-3 mb-sm-4">{{
+                  $t('no_apiaries_yet')
+                }}</div>
+
+                <router-link
+                  class="apiary-placeholder-item mb-3"
+                  :to="{
+                    name: `apiary-create`,
+                  }"
                 >
-                  <v-icon
-                    class="icon-apiary-owned ml-1 mr-2 my-0"
+                  <div class="color-primary"
+                    ><v-icon class="color-primary" left>mdi-plus-circle</v-icon
+                    >{{ $t('add') + ' ' + $tc('location', 1) }}</div
+                  >
+                </router-link>
+              </div>
+              <div v-if="!showApiaryPlaceholder">
+                <div
+                  class="beep-label mt-3 mt-sm-1 mb-3 mb-sm-4"
+                  v-text="
+                    `${$t('Select') +
+                      ' ' +
+                      $tc('hive', 2) +
+                      ' ' +
+                      $t('to_share')}`
+                  "
+                ></div>
+                <div v-for="(apiary, i) in filteredApiaries" :key="i">
+                  <div
+                    class="apiary-title d-flex flex-row justify-flex-start align-center"
                     :style="
-                      `background-color: ${
+                      `color: ${
                         apiary.hex_color ? apiary.hex_color : ''
                       }; border-color: ${
                         apiary.hex_color ? apiary.hex_color : ''
                       };`
                     "
                   >
-                    mdi-home-analytics
-                  </v-icon>
-                  <h4 v-text="apiary.name"></h4>
-                </div>
+                    <v-icon
+                      class="icon-apiary-owned ml-1 mr-2 my-0"
+                      :style="
+                        `background-color: ${
+                          apiary.hex_color ? apiary.hex_color : ''
+                        }; border-color: ${
+                          apiary.hex_color ? apiary.hex_color : ''
+                        };`
+                      "
+                    >
+                      mdi-home-analytics
+                    </v-icon>
+                    <h4 v-text="apiary.name"></h4>
+                  </div>
 
-                <ApiaryPreviewHiveSelector
-                  class="mb-4"
-                  :hives="apiary.hives"
-                  :hives-selected="activeGroup.hives_selected"
-                  :hives-editable="activeGroup.hives_editable"
-                  @select-hive="selectHive($event)"
-                ></ApiaryPreviewHiveSelector>
+                  <ApiaryPreviewHiveSelector
+                    class="mb-4"
+                    :hives="apiary.hives"
+                    :hives-selected="activeGroup.hives_selected"
+                    :hives-editable="activeGroup.hives_editable"
+                    @select-hive="selectHive($event)"
+                  ></ApiaryPreviewHiveSelector>
+                </div>
               </div>
             </div>
           </v-col>
@@ -361,6 +383,7 @@ export default {
       colorPickerValue: '',
       activeGroup: null,
       valid: false,
+      showApiaryPlaceholder: false,
       showLoadingIcon: false,
       newGroupNumber: 1,
       overlay: false,
@@ -510,6 +533,9 @@ export default {
       try {
         const responseApiaries = await Api.readRequest('/locations')
         const responseGroups = await Api.readRequest('/groups')
+        if (responseApiaries.data.locations.length === 0) {
+          this.showApiaryPlaceholder = true
+        }
         this.$store.commit(
           'locations/setApiaries',
           responseApiaries.data.locations
