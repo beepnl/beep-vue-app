@@ -206,7 +206,11 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="(user, index) in activeGroup.users" :key="index">
+                    <tr
+                      v-for="(user, index) in activeGroup.users"
+                      :key="index"
+                      :class="user.delete === true ? 'user-delete' : ''"
+                    >
                       <td>{{ index + 1 }}</td>
                       <td>
                         <v-text-field
@@ -569,6 +573,12 @@ export default {
           // eslint-disable-next-line camelcase
           group.hives_editable = hives_editable
         }
+        var usersWithDeleteProp = group.users // otherwise Vue can't track the 'delete' property
+        usersWithDeleteProp.map((user) => {
+          user.delete = false
+        })
+        group.users = usersWithDeleteProp
+
         this.activeGroup = group
         return true
       } catch (error) {
@@ -633,10 +643,17 @@ export default {
           return true
         })
     },
-    deleteGroupUser(index) {
+    removeGroupUser(index) {
       return typeof this.activeGroup.users[index] !== 'undefined'
         ? this.activeGroup.users.splice(index, 1)
         : null
+    },
+    deleteGroupUser(index) {
+      const user = this.activeGroup.users[index]
+      if (typeof user.id === 'undefined') {
+        return this.removeGroupUser(index)
+      }
+      user.delete = !user.delete
     },
     editGroup(value, property) {
       this.activeGroup[property] = value
@@ -753,6 +770,9 @@ export default {
   }
   .user-label {
     font-size: 14px;
+  }
+  .user-delete {
+    background-color: rgba(255, 0, 0, 0.2);
   }
 }
 </style>
