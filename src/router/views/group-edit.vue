@@ -54,9 +54,24 @@
             </v-alert>
           </v-col>
         </v-row>
+        <v-row v-if="acceptMode && showAcceptMessage">
+          <v-col cols="12">
+            <v-alert
+              v-model="showAcceptMessage"
+              text
+              prominent
+              dense
+              dismissable
+              type="success"
+              color="green"
+            >
+              {{ acceptMessage }}
+            </v-alert>
+          </v-col>
+        </v-row>
         <v-row
           v-if="
-            (activeGroup && createMode) ||
+            (showGroupDetails && activeGroup && createMode) ||
               (activeGroup &&
                 !createMode &&
                 (activeGroup.creator || activeGroup.admin))
@@ -151,7 +166,7 @@
 
         <v-row
           v-if="
-            (activeGroup && createMode) ||
+            (showGroupDetails && activeGroup && createMode) ||
               (activeGroup &&
                 !createMode &&
                 (activeGroup.creator || activeGroup.admin))
@@ -275,8 +290,8 @@
           </v-col>
         </v-row>
 
-        <v-row>
-          <v-col v-if="activeGroup" cols="12">
+        <v-row v-if="showGroupDetails && activeGroup">
+          <v-col cols="12">
             <div class="overline mb-3">{{
               $t('My_shared') + ' ' + $tc('hive', 2)
             }}</div>
@@ -398,7 +413,10 @@ export default {
       showLoadingIcon: false,
       newGroupNumber: 1,
       overlay: false,
+      showAcceptMessage: false,
+      showGroupDetails: false,
       errorMessage: null,
+      token: null,
     }
   },
   computed: {
@@ -410,6 +428,12 @@ export default {
     },
     createMode() {
       return this.$route.name === 'group-create'
+    },
+    acceptMode() {
+      return this.$route.name === 'group-accept'
+    },
+    acceptMessage() {
+      return this.$i18n.t('Invitation_accepted')
     },
     colorPicker: {
       get() {
@@ -445,6 +469,14 @@ export default {
     },
   },
   created() {
+    if (this.acceptMode) {
+      this.token = this.$route.params.token || null
+      if (this.token) {
+        this.checkToken(this.token, this.id)
+      }
+    } else {
+      this.showGroupDetails = true
+    }
     this.setGroupEdited(false)
     this.readApiariesAndGroups().then((response) => {
       // If Group-create route is used, make empty Group object
@@ -475,6 +507,30 @@ export default {
     })
   },
   methods: {
+    async checkToken(token, groupId) {
+      try {
+        const response = await Api.postRequest('/groups/checktoken', {
+          group_id: groupId,
+          token: token,
+        })
+        if (!response) {
+          this.$router.push({ name: '404', params: { resource: 'Invitation' } })
+        }
+        console.log(response)
+        if (!response.data.errors) {
+          this.showAcceptMessage = true
+          this.showGroupDetails = true
+        } else if (response.data.errors.token) {
+          this.errorMessage =
+            this.$i18n.t('Error') + ': ' + response.data.errors.token
+          this.showGroupDetails = false
+        }
+        return true
+      } catch (error) {
+        console.log('Error: ', error)
+        this.$router.push({ name: '404', params: { resource: 'Invitation' } })
+      }
+    },
     async createGroup() {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
@@ -497,7 +553,7 @@ export default {
             error.status === 422
               ? this.$i18n.t('Error') +
                 ': ' +
-                this.convertObjectToArray(error.message).join(', ')
+                Object.values(error.message).join(', ')
               : this.$i18n.t('empty_fields') + '.'
           console.log('Error: ', this.errorMessage)
         }
@@ -623,7 +679,7 @@ export default {
             error.status === 422
               ? this.$i18n.t('Error') +
                 ': ' +
-                this.convertObjectToArray(error.message).join(', ')
+                Object.values(error.message).join(', ')
               : this.$i18n.t('empty_fields') + '.'
           console.log('Error: ', this.errorMessage)
         }
@@ -658,15 +714,6 @@ export default {
         .catch((reject) => {
           return true
         })
-    },
-    convertObjectToArray(obj) {
-      var array = []
-
-      for (var i in obj) {
-        array.push(obj[i])
-      }
-
-      return array
     },
     removeGroupUser(index) {
       return typeof this.activeGroup.users[index] !== 'undefined'

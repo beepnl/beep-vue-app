@@ -137,6 +137,14 @@ export default [
     meta: {
       authRequired: true,
     },
+    path: '/groups/:id/token/:token',
+    name: 'group-accept',
+    component: () => lazyLoadView(import('@views/group-edit.vue')),
+  },
+  {
+    meta: {
+      authRequired: true,
+    },
     path: '/hives/create',
     name: 'hive-create',
     component: () => lazyLoadView(import('@views/hive-edit.vue')),
