@@ -628,6 +628,7 @@ const translations = {
   share: 'Deel',
   edit_details: 'Aanpassen details',
   remove_queen: 'Verwijder koningin',
+  remove_group_short: 'Verwijder samenwerkingsgroep',
 }
 
 export default translations

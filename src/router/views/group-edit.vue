@@ -47,6 +47,13 @@
       </v-toolbar>
 
       <v-container v-if="activeGroup" class="group-edit content-container">
+        <v-row v-if="errorMessage">
+          <v-col cols="12">
+            <v-alert text prominent dense type="error" color="red">
+              {{ errorMessage }}
+            </v-alert>
+          </v-col>
+        </v-row>
         <v-row
           v-if="
             (activeGroup && createMode) ||
@@ -391,6 +398,7 @@ export default {
       showLoadingIcon: false,
       newGroupNumber: 1,
       overlay: false,
+      errorMessage: null,
     }
   },
   computed: {
@@ -475,8 +483,8 @@ export default {
         try {
           const response = await Api.postRequest('/groups', this.activeGroup)
           if (!response) {
-            this.snackbar.text = this.$i18n.t('not_saved_error')
-            this.snackbar.show = true
+            this.errorMessage =
+              this.$i18n.t('Error') + ': ' + this.$i18n.t('not_saved_error')
           }
           setTimeout(() => {
             return this.$router.push({
@@ -485,9 +493,13 @@ export default {
             })
           }, 300) // wait for API to update locations/Groups
         } catch (error) {
-          console.log('Error: ', error)
-          this.snackbar.text = this.$i18n.t('not_saved_error')
-          this.snackbar.show = true
+          this.errorMessage =
+            error.status === 422
+              ? this.$i18n.t('Error') +
+                ': ' +
+                this.convertObjectToArray(error.message).join(', ')
+              : this.$i18n.t('empty_fields') + '.'
+          console.log('Error: ', this.errorMessage)
         }
       }
     },
@@ -598,8 +610,8 @@ export default {
             this.activeGroup
           )
           if (!response) {
-            this.snackbar.text = this.$i18n.t('not_saved_error')
-            this.snackbar.show = true
+            this.errorMessage =
+              this.$i18n.t('Error') + ': ' + this.$i18n.t('not_saved_error')
           }
           setTimeout(() => {
             return this.$router.push({
@@ -607,9 +619,13 @@ export default {
             })
           }, 300) // wait for API to update locations/Groups
         } catch (error) {
-          console.log('Error: ', error)
-          this.snackbar.text = this.$i18n.t('not_saved_error')
-          this.snackbar.show = true
+          this.errorMessage =
+            error.status === 422
+              ? this.$i18n.t('Error') +
+                ': ' +
+                this.convertObjectToArray(error.message).join(', ')
+              : this.$i18n.t('empty_fields') + '.'
+          console.log('Error: ', this.errorMessage)
         }
       }
     },
@@ -642,6 +658,15 @@ export default {
         .catch((reject) => {
           return true
         })
+    },
+    convertObjectToArray(obj) {
+      var array = []
+
+      for (var i in obj) {
+        array.push(obj[i])
+      }
+
+      return array
     },
     removeGroupUser(index) {
       return typeof this.activeGroup.users[index] !== 'undefined'

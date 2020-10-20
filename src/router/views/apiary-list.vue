@@ -163,6 +163,127 @@
       </div>
       <v-container>
         <v-row
+          v-for="invitation in invitations"
+          :key="'Invitation ' + invitation.id"
+          :class="`hive-set ${apiaryView ? 'apiary-view' : ''}`"
+          dense
+        >
+          <div
+            class="hive-set-title d-flex flex-row justify-space-between align-end"
+          >
+            <div
+              class="d-flex flex-row justify-flex-start align-center"
+              :style="
+                `color: ${
+                  invitation.color ? invitation.color : ''
+                }; border-color: ${invitation.color ? invitation.color : ''};`
+              "
+            >
+              <v-icon
+                class="icon-apiary-shared ml-1 mr-2 my-0"
+                :style="
+                  `background-color: ${
+                    invitation.color ? invitation.color : ''
+                  }; border-color: ${invitation.color ? invitation.color : ''};`
+                "
+              >
+                mdi-account-multiple
+              </v-icon>
+              <h4 v-text="$tc('Invitation', 1) + ': ' + invitation.name"></h4>
+            </div>
+            <div>
+              <v-btn
+                tile
+                outlined
+                class="hide-on-mobile green--text mb-1"
+                @click="
+                  checkToken(invitation.token, invitation.id, invitation.name)
+                "
+              >
+                <v-progress-circular
+                  v-if="showLoadingIconForId === invitation.id"
+                  class="green--text ml-n1 mr-2"
+                  size="18"
+                  width="2"
+                  indeterminate
+                />
+                <v-icon v-if="showLoadingIconForId !== invitation.id" left
+                  >mdi-check</v-icon
+                >
+                {{ $t('Accept') }}
+              </v-btn>
+              <v-progress-circular
+                v-if="showLoadingIconForId === invitation.id"
+                class="show-on-mobile green--text mb-1"
+                size="18"
+                width="2"
+                indeterminate
+              />
+              <v-icon
+                v-if="showLoadingIconForId !== invitation.id"
+                dark
+                class="show-on-mobile green--text mb-1"
+                @click="
+                  checkToken(invitation.token, invitation.id, invitation.name)
+                "
+              >
+                mdi-check</v-icon
+              >
+            </div>
+          </div>
+          <div
+            class="rounded-border invitation-wrapper ma-1"
+            :style="
+              `border-color: ${
+                invitation.color ? invitation.color : '#ffa000'
+              };`
+            "
+          >
+            <v-simple-table dense>
+              <template v-slot>
+                <thead>
+                  <tr>
+                    <th class="text-left invitation-description">
+                      {{ $t('Description') }}
+                    </th>
+                    <th class="text-left">
+                      {{ $t('Date') }}
+                    </th>
+                    <th class="text-left">
+                      {{ $tc('Member', 2) }}
+                    </th>
+                    <th class="text-left">
+                      {{ $tc('Hive', 2) }}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <span>{{ invitation.description }}</span>
+                    </td>
+                    <td>
+                      <span class="show-on-desktop">{{
+                        momentify(invitation.invited)
+                      }}</span>
+                      <span class="hide-on-desktop">{{
+                        momentifyDayMonth(invitation.invited)
+                      }}</span>
+                    </td>
+                    <td>
+                      <span>{{ invitation.usercount }}</span>
+                    </td>
+                    <td>
+                      <span>{{ invitation.hivecount }}</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+          </div>
+        </v-row>
+
+        <v-row
           v-for="hiveSet in filteredHiveSets"
           :key="'hiveSet ' + hiveSet.name + ' ' + hiveSet.id"
           :class="`hive-set ${apiaryView ? 'apiary-view' : ''}`"
@@ -310,7 +431,7 @@
 
                     <v-list-item-content>
                       <v-list-item-title class="red--text">{{
-                        $t('Remove_group')
+                        $t('remove_group_short')
                       }}</v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
@@ -367,126 +488,6 @@
           <v-col sm="auto" :cols="12">
             {{ $t('no_results') }}
           </v-col>
-        </v-row>
-        <v-row
-          v-for="invitation in invitations"
-          :key="'Invitation ' + invitation.id"
-          :class="`hive-set ${apiaryView ? 'apiary-view' : ''}`"
-          dense
-        >
-          <div
-            class="hive-set-title d-flex flex-row justify-space-between align-end"
-          >
-            <div
-              class="d-flex flex-row justify-flex-start align-center"
-              :style="
-                `color: ${
-                  invitation.color ? invitation.color : ''
-                }; border-color: ${invitation.color ? invitation.color : ''};`
-              "
-            >
-              <v-icon
-                class="icon-apiary-shared ml-1 mr-2 my-0"
-                :style="
-                  `background-color: ${
-                    invitation.color ? invitation.color : ''
-                  }; border-color: ${invitation.color ? invitation.color : ''};`
-                "
-              >
-                mdi-account-multiple
-              </v-icon>
-              <h4 v-text="$tc('Invitation', 1) + ': ' + invitation.name"></h4>
-            </div>
-            <div>
-              <v-btn
-                tile
-                outlined
-                class="hide-on-mobile green--text mb-1"
-                @click="
-                  checkToken(invitation.token, invitation.id, invitation.name)
-                "
-              >
-                <v-progress-circular
-                  v-if="showLoadingIconForId === invitation.id"
-                  class="green--text ml-n1 mr-2"
-                  size="18"
-                  width="2"
-                  indeterminate
-                />
-                <v-icon v-if="showLoadingIconForId !== invitation.id" left
-                  >mdi-check</v-icon
-                >
-                {{ $t('Accept') }}
-              </v-btn>
-              <v-progress-circular
-                v-if="showLoadingIconForId === invitation.id"
-                class="show-on-mobile green--text mb-1"
-                size="18"
-                width="2"
-                indeterminate
-              />
-              <v-icon
-                v-if="showLoadingIconForId !== invitation.id"
-                dark
-                class="show-on-mobile green--text mb-1"
-                @click="
-                  checkToken(invitation.token, invitation.id, invitation.name)
-                "
-              >
-                mdi-check</v-icon
-              >
-            </div>
-          </div>
-          <div
-            class="rounded-border invitation-wrapper ma-1"
-            :style="
-              `border-color: ${
-                invitation.color ? invitation.color : '#ffa000'
-              };`
-            "
-          >
-            <v-simple-table dense>
-              <template v-slot>
-                <thead>
-                  <tr>
-                    <th class="text-left invitation-description">
-                      {{ $t('Description') }}
-                    </th>
-                    <th class="text-left">
-                      {{ $t('Date') }}
-                    </th>
-                    <th class="text-left">
-                      {{ $tc('Member', 2) }}
-                    </th>
-                    <th class="text-left">
-                      {{ $tc('Hive', 2) }}
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      <span>{{ invitation.description }}</span>
-                    </td>
-                    <td>
-                      <span class="show-on-desktop">{{
-                        momentify(invitation.invited)
-                      }}</span>
-                      <span class="hide-on-desktop">{{
-                        momentifyDayMonth(invitation.invited)
-                      }}</span>
-                    </td>
-                    <td>
-                      <span>{{ invitation.usercount }}</span>
-                    </td>
-                    <td>
-                      <span>{{ invitation.hivecount }}</span>
-                    </td>
-                  </tr>
-                </tbody>
-              </template>
-            </v-simple-table>
-          </div>
         </v-row>
       </v-container>
     </div>

@@ -630,6 +630,7 @@ const translations = {
   share: 'Share',
   edit_details: 'Edit details',
   remove_queen: 'Remove queen',
+  remove_group_short: 'Remove collaboration group',
 }
 
 export default translations
