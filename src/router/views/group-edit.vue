@@ -72,7 +72,8 @@
         <v-row
           v-if="
             (showGroupDetails && activeGroup && createMode) ||
-              (activeGroup &&
+              (showGroupDetails &&
+                activeGroup &&
                 !createMode &&
                 (activeGroup.creator || activeGroup.admin))
           "
@@ -167,7 +168,8 @@
         <v-row
           v-if="
             (showGroupDetails && activeGroup && createMode) ||
-              (activeGroup &&
+              (showGroupDetails &&
+                activeGroup &&
                 !createMode &&
                 (activeGroup.creator || activeGroup.admin))
           "
@@ -737,6 +739,8 @@ export default {
     getTitle() {
       if (this.createMode) {
         return this.$i18n.t('create_new') + ' ' + this.$i18n.tc('group', 1)
+      } else if (this.acceptMode) {
+        return this.$i18n.tc('Invitation', 1) + ' ' + this.$i18n.tc('group', 1)
       } else {
         return this.$i18n.t('edit') + ' ' + this.$i18n.tc('group', 1)
       }

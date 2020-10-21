@@ -169,7 +169,7 @@
           dense
         >
           <div
-            class="hive-set-title d-flex flex-row justify-space-between align-end"
+            class="hive-set-title mt-0 d-flex flex-row justify-space-between align-end"
           >
             <div
               class="d-flex flex-row justify-flex-start align-center"
@@ -718,7 +718,7 @@ export default {
           this.readApiariesAndGroups()
           this.search = groupName
           this.showLoadingIconForId = null
-        }, 100) // wait for API to update locations/hives
+        }, 100) // wait for API to update groups
       } catch (error) {
         console.log('Error: ', error)
         this.snackbar.text = this.$i18n.t('something_wrong')
@@ -1040,6 +1040,7 @@ export default {
     }
   }
 }
+
 .invitation-wrapper {
   width: 100%;
   .v-data-table > .v-data-table__wrapper > table > thead > tr > th {
