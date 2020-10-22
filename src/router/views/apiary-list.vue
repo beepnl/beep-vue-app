@@ -179,7 +179,7 @@
               </v-btn>
               <v-progress-circular
                 v-if="showLoadingIconForId === invitation.id"
-                class="show-on-mobile green--text mb-1"
+                class="show-on-mobile invitation-loading-icon green--text mb-1"
                 size="18"
                 width="2"
                 indeterminate
@@ -1005,7 +1005,7 @@ export default {
   &:first-child {
     margin-top: 70px;
     @include for-phone-only {
-      margin-top: 48px;
+      margin-top: 56px;
     }
   }
   &:last-child {
@@ -1045,6 +1045,10 @@ export default {
       }
     }
   }
+}
+
+.invitation-loading-icon {
+  margin-top: 6px;
 }
 
 .invitation-wrapper {

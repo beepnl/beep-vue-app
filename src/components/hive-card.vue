@@ -65,12 +65,20 @@
             }`
           "
         >
-          <v-icon
-            v-if="hive.attention || hive.reminder || hive.reminder_date"
-            class="red--text"
+          <router-link
+            :to="{
+              name: 'hive-inspections',
+              params: { id: hive.id },
+              query: { search: hive.last_inspection_date },
+            }"
           >
-            mdi-alert-circle
-          </v-icon>
+            <v-icon
+              v-if="hive.attention || hive.reminder || hive.reminder_date"
+              class="red--text"
+            >
+              mdi-alert-circle
+            </v-icon>
+          </router-link>
         </div>
 
         <HiveIcon
@@ -297,12 +305,20 @@
           class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
         >
           <div class="mr-2 my-0">
-            <v-icon
-              v-if="hive.attention || hive.reminder || hive.reminder_date"
-              class="red--text"
+            <router-link
+              :to="{
+                name: 'hive-inspections',
+                params: { id: hive.id },
+                query: { search: hive.last_inspection_date },
+              }"
             >
-              mdi-alert-circle
-            </v-icon>
+              <v-icon
+                v-if="hive.attention || hive.reminder || hive.reminder_date"
+                class="red--text"
+              >
+                mdi-alert-circle
+              </v-icon>
+            </router-link>
           </div>
           <span
             v-if="hive.reminder_date"
