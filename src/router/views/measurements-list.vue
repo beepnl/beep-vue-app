@@ -2,7 +2,7 @@
   <Layout :no-box-shadow="true">
     <v-container>
       <v-row>
-        <v-col sm="auto" :cols="12">
+        <v-col cols="12">
           <Treeselect
             v-if="devices"
             v-model="selectedSensorId"
@@ -15,14 +15,18 @@
             @input="loadData"
           />
         </v-col>
-        <v-col sm="auto" :cols="12">
+        <v-col cols="12">
           last sensor values:
           {{ lastSensorValues }}
         </v-col>
-        <hr />
-        <v-col sm="auto" :cols="12">
-          measurement data:
-          {{ measurementData }}
+        <v-col cols="12">
+          <chartist
+            ratio="ct-chart"
+            type="Line"
+            :data="chartDataTemp"
+            :options="chartOptions"
+          >
+          </chartist>
         </v-col>
       </v-row>
     </v-container>
@@ -33,11 +37,13 @@
 import Api from '@api/Api'
 import Layout from '@layouts/main.vue'
 import { mapGetters } from 'vuex'
+import { momentMixin } from '@mixins/momentMixin'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 export default {
   components: { Layout, Treeselect },
+  mixins: [momentMixin],
   data() {
     return {
       selectedSensorId: 257,
@@ -47,10 +53,60 @@ export default {
       timeIndex: 0,
       timeGroup: 'day',
       timeZone: 'Europe/Amsterdam',
+      chartData: {
+        labels: ['A', 'B', 'C'],
+        series: [
+          [1, 3, 2],
+          [4, 6, 5],
+        ],
+      },
+      chartOptions: {
+        showPoint: true,
+        lineSmooth: this.$chartist.Interpolation.cardinal({
+          fillHoles: true,
+        }),
+        axisX: {
+          // type: this.$chartist.AutoScaleAxis,
+          // type: this.$chartist.FixedScaleAxis,
+          // divisor: 4,
+          // ticks: [
+          //   '2020-10-21T23:40:00Z',
+          //   '2020-10-22T02:10:00Z',
+          //   '2020-10-22T06:20:00Z',
+          //   '2020-10-22T10:30:00Z',
+          // ],
+          showGrid: false,
+          labelInterpolationFnc(value, index) {
+            if (index % 8 === 0) {
+              // const date = new Date(value)
+              // return this.$moment(date).format('HH')
+              return value.charAt(11) + value.charAt(12)
+            } else {
+              return ''
+            }
+          },
+        },
+        axisY: {
+          offset: 19,
+        },
+      },
     }
   },
   computed: {
     ...mapGetters('devices', ['devices']),
+    chartDataTemp() {
+      var data = {
+        labels: [],
+        series: [[]],
+      }
+      if (typeof this.measurementData.measurements !== 'undefined') {
+        this.measurementData.measurements.map((measurement) => {
+          data.labels.push(measurement.time)
+          data.series[0].push(measurement.t_i)
+        })
+      }
+      return data
+    },
     sortedDevices() {
       var apiaryArray = []
       this.devices.map((device, index) => {
@@ -150,6 +206,19 @@ export default {
       this.loadLastSensorValues()
       this.sensorMeasurementRequest()
       // this.loadRemoteSensorMeasurements(this.activePeriod, this.periodIndex, this.timeGroup, this.timeZone, id)
+    },
+    momentifyDayMonth(date) {
+      const currentYear = new Date().getFullYear()
+      const currentYearEn = ', ' + currentYear
+      const currentYearEsPt = ' de ' + currentYear
+      const currentYearNl = '. ' + currentYear
+      return this.$moment(date)
+        .locale(this.$i18n.locale)
+        .format('ll')
+        .replace(currentYearNl, '')
+        .replace(currentYearEn, '')
+        .replace(currentYearEsPt, '')
+        .replace(' ' + currentYear, '') // Remove year hardcoded per language, currently no other way to get rid of year whilst keeping localized time
     },
   },
 }

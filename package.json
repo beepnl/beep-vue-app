@@ -49,7 +49,7 @@
     "vue": "^2.6.11",
     "vue-add-to-calendar": "^1.0.6",
     "vue-async-computed": "^3.8.2",
-    "vue-chartist": "^2.2.1",
+    "vue-chartist": "^2.3.1",
     "vue-country-region-select": "^2.0.14",
     "vue-datetime": "^1.0.0-beta.13",
     "vue-faker": "^1.0.1",

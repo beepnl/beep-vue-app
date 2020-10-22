@@ -20,6 +20,7 @@ import App from './app.vue'
 
 Vue.use(VueI18n)
 Vue.use(vueCountryRegionSelect)
+Vue.use(require('vue-chartist'))
 Vue.prototype.$moment = moment
 
 // Don't warn about using the dev version of Vue in development.
