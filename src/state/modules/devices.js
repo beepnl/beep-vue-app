@@ -8,5 +8,28 @@ const other = {
 }
 const resource = createResource({ path: 'devices', other })
 
-resource.actions.multiple = (devices) => resource.endpoint.multiple(devices)
-export default resource
+// Add some custom functionality to the resource module
+export const state = {
+  ...resource.state,
+  devices: [],
+}
+export const getters = {
+  ...resource.getters,
+  devices: (state) => {
+    return state.devices
+  },
+}
+export const mutations = {
+  ...resource.mutations,
+  // FIXME: most of the following should be either moved to local view state
+  // or be replaced by endpoint actions
+  setDevices: function(state, payload) {
+    state.devices = payload
+  },
+}
+export const actions = {
+  ...resource.actions,
+  multiple: function(devices) {
+    resource.endpoint.multiple(devices)
+  },
+}
