@@ -46,7 +46,7 @@
         </v-btn>
       </v-toolbar>
 
-      <v-container v-if="activeGroup" class="group-edit content-container">
+      <v-container class="group-edit content-container">
         <v-row v-if="errorMessage">
           <v-col cols="12">
             <v-alert text prominent dense type="error" color="red">
@@ -471,15 +471,6 @@ export default {
     },
   },
   created() {
-    if (this.acceptMode) {
-      this.token = this.$route.params.token || null
-      if (this.token) {
-        this.checkToken(this.token, this.id)
-      }
-    } else {
-      this.showGroupDetails = true
-    }
-    this.setGroupEdited(false)
     this.readApiariesAndGroups().then((response) => {
       // If Group-create route is used, make empty Group object
       if (this.createMode) {
@@ -502,11 +493,24 @@ export default {
             },
           ],
         }
+        this.showGroupDetails = true
         // Else retrieve to-be-edited Group
+      } else if (this.acceptMode) {
+        this.token = this.$route.params.token || null
+        if (this.token) {
+          this.checkToken(this.token, this.id).then(() => {
+            if (this.errorMessage === null) {
+              this.readGroup()
+              this.showGroupDetails = true
+            }
+          })
+        }
       } else {
         this.readGroup()
+        this.showGroupDetails = true
       }
     })
+    this.setGroupEdited(false)
   },
   methods: {
     async checkToken(token, groupId) {
@@ -515,17 +519,14 @@ export default {
           group_id: groupId,
           token: token,
         })
-        if (!response) {
-          this.$router.push({ name: '404', params: { resource: 'Invitation' } })
-        }
-        console.log(response)
         if (!response.data.errors) {
           this.showAcceptMessage = true
-          this.showGroupDetails = true
         } else if (response.data.errors.token) {
           this.errorMessage =
             this.$i18n.t('Error') + ': ' + response.data.errors.token
           this.showGroupDetails = false
+        } else if (!response) {
+          this.$router.push({ name: '404', params: { resource: 'Invitation' } })
         }
         return true
       } catch (error) {
@@ -638,11 +639,11 @@ export default {
             }
             hives_selected.push(hive.id)
           })
-          // eslint-disable-next-line camelcase
-          group.hives_selected = hives_selected
-          // eslint-disable-next-line camelcase
-          group.hives_editable = hives_editable
         }
+        // eslint-disable-next-line camelcase
+        group.hives_selected = hives_selected
+        // eslint-disable-next-line camelcase
+        group.hives_editable = hives_editable
         var usersWithDeleteProp = group.users // otherwise Vue can't track the 'delete' property
         usersWithDeleteProp.map((user) => {
           user.delete = false
@@ -737,12 +738,21 @@ export default {
       this.setGroupEdited(true)
     },
     getTitle() {
+      var addName = ''
+      if (this.activeGroup && !this.createMode && !this.activeGroup.admin) {
+        addName = ' - ' + this.activeGroup.name
+      }
       if (this.createMode) {
         return this.$i18n.t('create_new') + ' ' + this.$i18n.tc('group', 1)
       } else if (this.acceptMode) {
-        return this.$i18n.tc('Invitation', 1) + ' ' + this.$i18n.tc('group', 1)
+        return (
+          this.$i18n.tc('Invitation', 1) +
+          ' ' +
+          this.$i18n.tc('group', 1) +
+          addName
+        )
       } else {
-        return this.$i18n.t('edit') + ' ' + this.$i18n.tc('group', 1)
+        return this.$i18n.t('edit') + ' ' + this.$i18n.tc('group', 1) + addName
       }
     },
     saveGroup() {

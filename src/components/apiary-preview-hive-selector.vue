@@ -179,10 +179,10 @@ export default {
 }
 
 .honey-layer {
-  height: 9px;
+  height: 9px !important;
 }
 .brood-layer {
-  height: 16px;
+  height: 16px !important;
 }
 .queen_excluder-layer,
 .feeding_box-layer {
