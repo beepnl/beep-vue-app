@@ -124,14 +124,13 @@
                       cols="12"
                       sm="6"
                       md="5"
-                      lg="4"
                       class="diary-details-item diary-inspection-meta d-flex flex-row justify-flex-start pa-0"
                     >
                       <v-row class="pl-3 py-0">
                         <v-col
                           v-if="inspection.created_at"
                           cols="5"
-                          class="diary-inspection-date-item d-flex flex-column align-start pa-0 pr-3"
+                          class="diary-inspection-date-item d-flex flex-column align-start pa-0"
                         >
                           <div>
                             <span
@@ -149,8 +148,8 @@
                         </v-col>
 
                         <v-col
-                          cols="2"
-                          class="hive-icon-wrapper mr-2 d-flex justify-flex-start align-end pa-0"
+                          cols="3"
+                          class="hive-icon-wrapper mt-1 ml-1 ml-md-0 ml-lg-n2 mr-1 mr-md-0 mr-lg-n2 d-flex justify-center align-end pa-0"
                         >
                           <HiveIcon
                             :hive="hives[inspection.hive_id]"
@@ -159,7 +158,7 @@
                         </v-col>
 
                         <v-col
-                          cols="5"
+                          cols="4"
                           class="diary-inspection-date-item d-flex flex-column align-start pa-0 pr-3"
                         >
                           <div>
@@ -193,7 +192,6 @@
                       cols="12"
                       sm="7"
                       md="7"
-                      lg="8"
                       class="diary-inspection-content pa-0"
                     >
                       <v-row class="py-0">
@@ -583,8 +581,8 @@ export default {
         this.getInspectionsForHiveIds(this.hiveIds).then((inspections) => {
           this.inspections = inspections
         })
-        } catch (error) {
-          console.log('Error: ', error)
+      } catch (error) {
+        console.log('Error: ', error)
         this.snackbar.text = this.$i18n.t('something_wrong')
         this.snackbar.show = true
       }
@@ -629,8 +627,8 @@ export default {
 
           return uniqueHiveIds
         }
-        } catch (error) {
-          console.log('Error: ', error)
+      } catch (error) {
+        console.log('Error: ', error)
       }
     },
     async getInspectionsForHiveIds(hiveIds) {
@@ -643,8 +641,8 @@ export default {
           this.showDiaryPlaceholder = true
         }
         return inspections
-        } catch (error) {
-          console.log('Error: ', error)
+      } catch (error) {
+        console.log('Error: ', error)
       }
     },
     confirmDeleteInspection(inspection) {
@@ -765,6 +763,9 @@ export default {
       line-height: 1;
       color: $color-grey;
       letter-spacing: 0.0333333333em !important;
+      @include for-phone-only {
+        font-size: 0.7rem !important;
+      }
     }
     .diary-details-item {
       max-width: none;
@@ -787,23 +788,11 @@ export default {
     }
     .diary-inspection-meta {
       max-width: 330px;
-      margin-right: -24px;
       @include for-tablet-landscape-up {
         max-width: none;
       }
       @media (max-width: 849px) {
         margin-right: -8px;
-      }
-    }
-    .hive-icon-wrapper {
-      @include for-phone-only {
-        margin-right: 16px !important;
-      }
-      @include for-tablet-portrait-up {
-        margin-right: 20px !important;
-      }
-      @include for-tablet-landscape-up {
-        margin-right: 16px !important;
       }
     }
     .diary-inspection-date-item {
@@ -821,6 +810,10 @@ export default {
       line-height: 24px;
       color: $color-grey-dark;
       letter-spacing: 0.0333333333em !important;
+      white-space: nowrap;
+      @include for-phone-only {
+        font-size: 0.7rem !important;
+      }
     }
     .diary-inspection-text {
       @include for-tablet-portrait-up {
