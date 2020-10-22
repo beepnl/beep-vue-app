@@ -46,6 +46,21 @@
       <v-toolbar class="save-bar" dense light>
         <v-spacer></v-spacer>
         <v-btn
+          v-if="selectedChecklist && selectedChecklist.owner"
+          tile
+          outlined
+          class="hide-on-mobile save-button mr-3"
+          :href="
+            inspectionId
+              ? `/checklist/${selectedChecklistId}/edit?hive_id=${id}&inspection_edit=${inspectionId}`
+              : `/checklist/${selectedChecklistId}/edit?hive_id=${id}`
+          "
+          color="primary"
+        >
+          <v-icon left>mdi-pencil</v-icon>
+          {{ $t('edit') + ' ' + $tc('checklist', 1) }}
+        </v-btn>
+        <v-btn
           tile
           outlined
           color="primary"
@@ -118,7 +133,7 @@
               v-if="selectedChecklist && selectedChecklist.owner"
               tile
               outlined
-              class="save-button"
+              class="show-on-mobile save-button"
               :href="
                 inspectionId
                   ? `/checklist/${selectedChecklistId}/edit?hive_id=${id}&inspection_edit=${inspectionId}`
@@ -665,6 +680,7 @@ export default {
 }
 .hive-inspect-card-title {
   line-height: 1.5rem !important;
+  background-color: $color-orange-medium;
   &.hive-inspect-card-title--border-bottom {
     border-bottom: 1px solid $color-grey-light;
   }
