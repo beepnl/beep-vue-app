@@ -16,8 +16,11 @@
           />
         </v-col>
         <v-col cols="12">
-          last sensor values:
-          {{ lastSensorValues }}
+          last sensor values: batterij: {{ lastSensorValues.bv }}, luchtdruk:
+          {{ lastSensorValues.p }}, luchtvochtigheid: {{ lastSensorValues.h }},
+          temp in kast: {{ lastSensorValues.t_i }}, temperatuur:
+          {{ lastSensorValues.t }}, zendruis: {{ lastSensorValues.snr }},
+          zendsterkte: {{ lastSensorValues.rssi }}
         </v-col>
         <v-col cols="12">
           <chartist
@@ -37,13 +40,11 @@
 import Api from '@api/Api'
 import Layout from '@layouts/main.vue'
 import { mapGetters } from 'vuex'
-import { momentMixin } from '@mixins/momentMixin'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 export default {
   components: { Layout, Treeselect },
-  mixins: [momentMixin],
   data() {
     return {
       selectedSensorId: 257,
@@ -53,43 +54,6 @@ export default {
       timeIndex: 0,
       timeGroup: 'day',
       timeZone: 'Europe/Amsterdam',
-      chartData: {
-        labels: ['A', 'B', 'C'],
-        series: [
-          [1, 3, 2],
-          [4, 6, 5],
-        ],
-      },
-      chartOptions: {
-        showPoint: true,
-        lineSmooth: this.$chartist.Interpolation.cardinal({
-          fillHoles: true,
-        }),
-        axisX: {
-          // type: this.$chartist.AutoScaleAxis,
-          // type: this.$chartist.FixedScaleAxis,
-          // divisor: 4,
-          // ticks: [
-          //   '2020-10-21T23:40:00Z',
-          //   '2020-10-22T02:10:00Z',
-          //   '2020-10-22T06:20:00Z',
-          //   '2020-10-22T10:30:00Z',
-          // ],
-          showGrid: false,
-          labelInterpolationFnc(value, index) {
-            if (index % 8 === 0) {
-              // const date = new Date(value)
-              // return this.$moment(date).format('HH')
-              return value.charAt(11) + value.charAt(12)
-            } else {
-              return ''
-            }
-          },
-        },
-        axisY: {
-          offset: 19,
-        },
-      },
     }
   },
   computed: {
@@ -102,10 +66,33 @@ export default {
       if (typeof this.measurementData.measurements !== 'undefined') {
         this.measurementData.measurements.map((measurement) => {
           data.labels.push(measurement.time)
-          data.series[0].push(measurement.t_i)
+          data.series[0].push(measurement.t)
         })
       }
       return data
+    },
+    chartOptions() {
+      const self = this
+      return {
+        fullWidth: true,
+
+        showPoint: true,
+        lineSmooth: this.$chartist.Interpolation.simple({
+          divisor: 10,
+          fillHoles: true,
+        }),
+        axisX: {
+          showGrid: true,
+          labelInterpolationFnc(value, index) {
+            if (index % 6 === 0) {
+              // return value.charAt(11) + value.charAt(12)
+              return self.momentFromISO8601(value)
+            } else {
+              return ''
+            }
+          },
+        },
+      }
     },
     sortedDevices() {
       var apiaryArray = []
@@ -207,19 +194,30 @@ export default {
       this.sensorMeasurementRequest()
       // this.loadRemoteSensorMeasurements(this.activePeriod, this.periodIndex, this.timeGroup, this.timeZone, id)
     },
-    momentifyDayMonth(date) {
-      const currentYear = new Date().getFullYear()
-      const currentYearEn = ', ' + currentYear
-      const currentYearEsPt = ' de ' + currentYear
-      const currentYearNl = '. ' + currentYear
+    momentFromISO8601(date) {
       return this.$moment(date)
+        .utc()
         .locale(this.$i18n.locale)
-        .format('ll')
-        .replace(currentYearNl, '')
-        .replace(currentYearEn, '')
-        .replace(currentYearEsPt, '')
-        .replace(' ' + currentYear, '') // Remove year hardcoded per language, currently no other way to get rid of year whilst keeping localized time
+        .format('LT')
     },
   },
 }
 </script>
+
+<style lang="scss">
+.ct-grids {
+  .ct-grid.ct-horizontal:not(:nth-child(6n + 1)) {
+    stroke: none !important;
+  }
+}
+.ct-series {
+  .ct-point {
+    stroke-width: 8px !important;
+  }
+}
+.ct-labels {
+  .ct-label.ct-horizontal.ct-end {
+    font-size: 0.7rem !important;
+  }
+}
+</style>
