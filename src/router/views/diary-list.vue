@@ -475,7 +475,6 @@ export default {
       filterByBase: false,
       filterByImpression: [],
       inspections: null,
-      hiveIds: null,
       hives: null,
       showDiaryPlaceholder: false,
     }
@@ -561,10 +560,8 @@ export default {
   },
   created() {
     this.search = this.$route.query.search || null
-    this.getAllHivesAndIds().then((hiveIds) => {
-      this.getInspectionsForHiveIds(hiveIds).then((inspections) => {
-        this.inspections = inspections
-      })
+    this.getAllHives().then(() => {
+      this.getAllInspections()
     })
   },
   methods: {
@@ -578,16 +575,14 @@ export default {
           this.snackbar.text = this.$i18n.t('something_wrong')
           this.snackbar.show = true
         }
-        this.getInspectionsForHiveIds(this.hiveIds).then((inspections) => {
-          this.inspections = inspections
-        })
+        this.getAllInspections()
       } catch (error) {
         console.log('Error: ', error)
         this.snackbar.text = this.$i18n.t('something_wrong')
         this.snackbar.show = true
       }
     },
-    async getAllHivesAndIds() {
+    async getAllHives() {
       try {
         const ownHives = await Api.readRequest('/hives')
         const sharedApiaries = await Api.readRequest('/groups')
@@ -612,35 +607,30 @@ export default {
           const allHives = ownHivesArray.concat(sharedHivesArray)
 
           var uniqueHives = {}
-          var uniqueHiveIds = []
           const map = new Map()
           for (const item of allHives) {
             if (!map.has(item.id)) {
               map.set(item.id, true) // set any value to Map
               uniqueHives[item.id] = item
-              uniqueHiveIds.push(item.id)
             }
           }
 
           this.hives = uniqueHives
-          this.hiveIds = uniqueHiveIds
 
-          return uniqueHiveIds
+          return true
         }
       } catch (error) {
         console.log('Error: ', error)
       }
     },
-    async getInspectionsForHiveIds(hiveIds) {
+    async getAllInspections() {
       try {
-        const inspections = await this.$store.dispatch(
-          'inspections/getInspectionsForHiveIds',
-          hiveIds
-        )
-        if (inspections.length === 0) {
+        const response = await Api.readRequest('/inspections')
+        if (response.data.length === 0) {
           this.showDiaryPlaceholder = true
         }
-        return inspections
+        this.inspections = response.data
+        return true
       } catch (error) {
         console.log('Error: ', error)
       }
