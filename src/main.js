@@ -15,6 +15,7 @@ import languages from '@assets/js/lang/languages'
 import moment from 'moment'
 import vueCountryRegionSelect from 'vue-country-region-select'
 import './plugins/element.js'
+import 'chartist-plugin-legend'
 
 import App from './app.vue'
 

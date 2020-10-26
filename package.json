@@ -36,6 +36,8 @@
     "@riophae/vue-treeselect": "^0.4.0",
     "axios": "^0.19.2",
     "axios-actions": "^4.0.2",
+    "chartist-plugin-legend": "^0.6.2",
+    "chartist-plugin-pointlabels": "0.0.6",
     "core-js": "^3.6.4",
     "date-fns": "2.10.0",
     "element-ui": "^2.4.5",

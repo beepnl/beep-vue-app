@@ -16,18 +16,94 @@
           />
         </v-col>
         <v-col cols="12">
-          last sensor values: batterij: {{ lastSensorValues.bv }}, luchtdruk:
+          <div
+            class="overline mb-3 text-center"
+            v-text="$t('last_measurement')"
+          ></div>
+          batterij: {{ lastSensorValues.bv }}, luchtdruk:
           {{ lastSensorValues.p }}, luchtvochtigheid: {{ lastSensorValues.h }},
           temp in kast: {{ lastSensorValues.t_i }}, temperatuur:
           {{ lastSensorValues.t }}, zendruis: {{ lastSensorValues.snr }},
           zendsterkte: {{ lastSensorValues.rssi }}
         </v-col>
         <v-col cols="12">
+          <div class="overline mb-3 text-center" v-text="$t('sensor')"></div>
           <chartist
+            :class="interval"
             ratio="ct-chart"
             type="Line"
-            :data="chartDataTemp"
+            :data="chartDataSingleSeries('temperature', 't')"
             :options="chartOptions"
+          >
+          </chartist>
+
+          <chartist
+            :class="`${interval} mt-4`"
+            ratio="ct-chart ct-series-b"
+            type="Line"
+            :data="chartDataSingleSeries('humidity', 'h')"
+            :options="chartOptions"
+          >
+          </chartist>
+
+          <chartist
+            :class="`${interval} mt-4`"
+            ratio="ct-chart ct-series-c"
+            type="Line"
+            :data="chartDataSingleSeries('air_pressure', 'p')"
+            :options="chartOptions"
+          >
+          </chartist>
+
+          <chartist
+            :class="`${interval} mt-4`"
+            ratio="ct-chart ct-series-d"
+            type="Line"
+            :data="chartDataSingleSeries('t_i', 't_i')"
+            :options="chartOptions"
+          >
+          </chartist>
+
+          <chartist
+            :class="`${interval} mt-4`"
+            ratio="ct-chart ct-series-e"
+            type="Line"
+            :data="chartDataSingleSeries('weight', 'weight_kg')"
+            :options="chartOptions"
+          >
+          </chartist>
+
+          <div
+            class="overline mt-4 mb-3 text-center"
+            v-text="$t('Sound_measurements')"
+          ></div>
+          <chartist
+            :class="interval"
+            ratio="ct-chart"
+            type="Line"
+            :data="chartDataSound"
+            :options="chartOptions"
+          >
+          </chartist>
+
+          <div
+            class="overline mt-4 mb-3 text-center"
+            v-text="$t('Sensor_info')"
+          ></div>
+          <chartist
+            :class="interval"
+            ratio="ct-chart ct-series-battery"
+            type="Line"
+            :data="chartDataSensorInfo"
+            :options="chartOptions"
+          >
+          </chartist>
+          <chartist
+            :class="`${interval} rssi-chart`"
+            ratio="ct-chart ct-series-l"
+            type="Line"
+            :data="chartDataSingleSeries('rssi', 'rssi')"
+            :options="chartOptionsYAxisEnd"
           >
           </chartist>
         </v-col>
@@ -42,6 +118,7 @@ import Layout from '@layouts/main.vue'
 import { mapGetters } from 'vuex'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+import 'chartist/dist/chartist.min.css'
 
 export default {
   components: { Layout, Treeselect },
@@ -54,19 +131,60 @@ export default {
       timeIndex: 0,
       timeGroup: 'day',
       timeZone: 'Europe/Amsterdam',
+      moduloNumber: 6,
     }
   },
   computed: {
     ...mapGetters('devices', ['devices']),
-    chartDataTemp() {
+    chartDataSensorInfo() {
+      // TODO: enable dual / composite / compound y-axis
       var data = {
         labels: [],
-        series: [[]],
+        series: [
+          { name: this.$i18n.t('bv'), data: [] },
+          // { name: this.$i18n.t('rssi'), data: [] },
+          { name: this.$i18n.t('snr'), data: [] },
+        ],
       }
       if (typeof this.measurementData.measurements !== 'undefined') {
         this.measurementData.measurements.map((measurement) => {
           data.labels.push(measurement.time)
-          data.series[0].push(measurement.t)
+          data.series[0].data.push(measurement.bv)
+          // data.series[1].data.push(measurement.rssi)
+          data.series[1].data.push(measurement.snr)
+        })
+      }
+      return data
+    },
+    chartDataSound() {
+      var data = {
+        labels: [],
+        series: [
+          { name: '071-122Hz', data: [] },
+          { name: '122-173Hz', data: [] },
+          { name: '173-224Hz', data: [] },
+          { name: '224-276Hz', data: [] },
+          { name: '276-327Hz', data: [] },
+          { name: '327-378Hz', data: [] },
+          { name: '378-429Hz', data: [] },
+          { name: '429-480Hz', data: [] },
+          { name: '480-532Hz', data: [] },
+          { name: '532-583Hz', data: [] },
+        ],
+      }
+      if (typeof this.measurementData.measurements !== 'undefined') {
+        this.measurementData.measurements.map((measurement) => {
+          data.labels.push(measurement.time)
+          data.series[0].data.push(measurement.s_bin_71_122)
+          data.series[1].data.push(measurement.s_bin_122_173)
+          data.series[2].data.push(measurement.s_bin_173_224)
+          data.series[3].data.push(measurement.s_bin_224_276)
+          data.series[4].data.push(measurement.s_bin_276_327)
+          data.series[5].data.push(measurement.s_bin_327_378)
+          data.series[6].data.push(measurement.s_bin_378_429)
+          data.series[7].data.push(measurement.s_bin_429_480)
+          data.series[8].data.push(measurement.s_bin_480_532)
+          data.series[9].data.push(measurement.s_bin_532_583)
         })
       }
       return data
@@ -75,7 +193,7 @@ export default {
       const self = this
       return {
         fullWidth: true,
-
+        plugins: [this.$chartist.plugins.legend()],
         showPoint: true,
         lineSmooth: this.$chartist.Interpolation.simple({
           divisor: 10,
@@ -84,8 +202,7 @@ export default {
         axisX: {
           showGrid: true,
           labelInterpolationFnc(value, index) {
-            if (index % 6 === 0) {
-              // return value.charAt(11) + value.charAt(12)
+            if (index % self.moduloNumber === 0) {
               return self.momentFromISO8601(value)
             } else {
               return ''
@@ -94,6 +211,47 @@ export default {
         },
       }
     },
+    chartOptionsYAxisEnd() {
+      const self = this
+      return {
+        fullWidth: true,
+        chartPadding: {
+          left: 50,
+          right: -25,
+        },
+        plugins: [
+          this.$chartist.plugins.legend({
+            clickable: true,
+          }),
+        ],
+        showPoint: true,
+        lineSmooth: this.$chartist.Interpolation.simple({
+          divisor: 10,
+          fillHoles: true,
+        }),
+        axisX: {
+          showGrid: true,
+          labelInterpolationFnc(value, index) {
+            if (index % self.moduloNumber === 0) {
+              // return value.charAt(11) + value.charAt(12)
+              return self.momentFromISO8601(value)
+            } else {
+              return ''
+            }
+          },
+        },
+        axisY: {
+          // On the y-axis start means left and end means right
+          position: 'end',
+        },
+      }
+    },
+    // moduloNumber() {
+    //   if (this.interval === 'day') {
+    //     return 6
+    //   }
+    //   return 1
+    // },
     sortedDevices() {
       var apiaryArray = []
       this.devices.map((device, index) => {
@@ -189,6 +347,24 @@ export default {
         console.log('Error: ', error)
       }
     },
+    chartDataSingleSeries(legend, variable) {
+      var data = {
+        labels: [],
+        series: [
+          {
+            name: this.$i18n.t(legend),
+            data: [],
+          },
+        ],
+      }
+      if (typeof this.measurementData.measurements !== 'undefined') {
+        this.measurementData.measurements.map((measurement) => {
+          data.labels.push(measurement.time)
+          data.series[0].data.push(measurement[variable])
+        })
+      }
+      return data
+    },
     loadData() {
       this.loadLastSensorValues()
       this.sensorMeasurementRequest()
@@ -205,11 +381,29 @@ export default {
 </script>
 
 <style lang="scss">
-.ct-grids {
-  .ct-grid.ct-horizontal:not(:nth-child(6n + 1)) {
-    stroke: none !important;
+svg.ct-chart-bar,
+svg.ct-chart-line {
+  overflow: visible;
+}
+.ct-label.ct-label.ct-horizontal.ct-end {
+  position: relative;
+  justify-content: flex-end;
+  text-align: right;
+  white-space: nowrap;
+  transform: translate(-100%) rotate(-45deg);
+  transform-origin: 100% 0;
+}
+
+.ct-chart {
+  &.day {
+    .ct-grids {
+      .ct-grid.ct-horizontal:not(:nth-child(6n + 1)) {
+        stroke: none !important;
+      }
+    }
   }
 }
+
 .ct-series {
   .ct-point {
     stroke-width: 8px !important;
@@ -218,6 +412,142 @@ export default {
 .ct-labels {
   .ct-label.ct-horizontal.ct-end {
     font-size: 0.7rem !important;
+  }
+}
+.ct-legend {
+  position: relative !important;
+  text-align: center;
+  list-style: none;
+
+  li {
+    position: relative !important;
+    display: inline-block;
+    padding-left: 23px !important;
+    margin-right: 10px;
+    margin-bottom: 3px;
+    cursor: pointer;
+  }
+
+  li::before {
+    position: absolute !important;
+    top: 3px !important;
+    left: 0 !important;
+    width: 15px !important;
+    height: 15px !important;
+    content: '' !important;
+    border: 3px solid transparent;
+    border-radius: 2px !important;
+  }
+
+  li.inactive::before {
+    background: transparent !important;
+  }
+
+  &.ct-legend-inside {
+    position: absolute !important;
+    top: 0 !important;
+    right: 0 !important;
+  }
+
+  @for $i from 0 to length($ct-series-colors) {
+    .ct-series-#{$i} {
+      color: nth($ct-series-colors, $i + 1);
+      &::before {
+        background-color: nth($ct-series-colors, $i + 1);
+        border-color: nth($ct-series-colors, $i + 1);
+      }
+    }
+  }
+  .ct-legend-inside li {
+    display: block;
+    margin: 0;
+  }
+}
+.ct-series-b .ct-legend {
+  .ct-series-0 {
+    color: nth($ct-series-colors, 2);
+    &::before {
+      background-color: nth($ct-series-colors, 2);
+      border-color: nth($ct-series-colors, 2);
+    }
+  }
+}
+
+.ct-series-c .ct-legend {
+  .ct-series-0 {
+    color: nth($ct-series-colors, 3);
+    &::before {
+      background-color: nth($ct-series-colors, 3);
+      border-color: nth($ct-series-colors, 3);
+    }
+  }
+}
+
+.ct-series-d .ct-legend {
+  .ct-series-0 {
+    color: nth($ct-series-colors, 4);
+    &::before {
+      background-color: nth($ct-series-colors, 4);
+      border-color: nth($ct-series-colors, 4);
+    }
+  }
+}
+
+.ct-series-e .ct-legend {
+  .ct-series-0 {
+    color: nth($ct-series-colors, 5);
+    &::before {
+      background-color: nth($ct-series-colors, 5);
+      border-color: nth($ct-series-colors, 5);
+    }
+  }
+}
+
+.ct-series-l .ct-legend {
+  .ct-series-0 {
+    color: nth($ct-series-colors, 12);
+    &::before {
+      background-color: nth($ct-series-colors, 12);
+      border-color: nth($ct-series-colors, 12);
+    }
+  }
+}
+.ct-series-battery {
+  .ct-legend {
+    z-index: 1;
+    margin-left: -100px;
+    .ct-series-0 {
+      color: nth($ct-series-colors, 16) !important;
+      &::before {
+        background-color: nth($ct-series-colors, 16);
+        border-color: nth($ct-series-colors, 16) !important;
+      }
+    }
+    .ct-series-1 {
+      color: nth($ct-series-colors, 17) !important;
+      &::before {
+        background-color: nth($ct-series-colors, 17);
+        border-color: nth($ct-series-colors, 17) !important;
+      }
+    }
+  }
+  .ct-series-a .ct-point,
+  .ct-series-a .ct-line {
+    stroke: nth($ct-series-colors, 16) !important;
+  }
+  .ct-series-b .ct-point,
+  .ct-series-b .ct-line {
+    stroke: nth($ct-series-colors, 17) !important;
+  }
+}
+// hacky solution to show all battery info in 1 chart. TODO: implement dual y-axis in 1 chart when option is enabled in chartist
+.rssi-chart {
+  margin-top: -184px !important;
+  .ct-legend {
+    margin-left: 195px;
+  }
+  .ct-labels .ct-label.ct-horizontal.ct-end {
+    display: none;
   }
 }
 </style>

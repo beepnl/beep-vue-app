@@ -88,6 +88,7 @@ export default {
 
 <style lang="scss">
 header.v-app-bar--no-box-shadow {
+  z-index: 2;
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
 }
