@@ -32,8 +32,8 @@
             :class="interval"
             ratio="ct-chart"
             type="Line"
-            :data="chartDataSingleSeries('temperature', 't')"
-            :options="chartOptions"
+            :data="chartDataSingleSeries('temperature', 't', '°C')"
+            :options="chartOptions('°C')"
           >
           </chartist>
 
@@ -41,8 +41,8 @@
             :class="`${interval} mt-4`"
             ratio="ct-chart ct-series-b"
             type="Line"
-            :data="chartDataSingleSeries('humidity', 'h')"
-            :options="chartOptions"
+            :data="chartDataSingleSeries('humidity', 'h', '%RH')"
+            :options="chartOptions('%RH')"
           >
           </chartist>
 
@@ -50,8 +50,8 @@
             :class="`${interval} mt-4`"
             ratio="ct-chart ct-series-c"
             type="Line"
-            :data="chartDataSingleSeries('air_pressure', 'p')"
-            :options="chartOptions"
+            :data="chartDataSingleSeries('air_pressure', 'p', 'mbar')"
+            :options="chartOptions('mbar')"
           >
           </chartist>
 
@@ -59,8 +59,8 @@
             :class="`${interval} mt-4`"
             ratio="ct-chart ct-series-d"
             type="Line"
-            :data="chartDataSingleSeries('t_i', 't_i')"
-            :options="chartOptions"
+            :data="chartDataSingleSeries('t_i', 't_i', '°C')"
+            :options="chartOptions('°C')"
           >
           </chartist>
 
@@ -68,8 +68,8 @@
             :class="`${interval} mt-4`"
             ratio="ct-chart ct-series-e"
             type="Line"
-            :data="chartDataSingleSeries('weight', 'weight_kg')"
-            :options="chartOptions"
+            :data="chartDataSingleSeries('weight', 'weight_kg', 'kg')"
+            :options="chartOptions('kg')"
           >
           </chartist>
 
@@ -82,7 +82,7 @@
             ratio="ct-chart"
             type="Line"
             :data="chartDataSound"
-            :options="chartOptions"
+            :options="chartOptions('')"
           >
           </chartist>
 
@@ -95,14 +95,14 @@
             ratio="ct-chart ct-series-battery"
             type="Line"
             :data="chartDataSensorInfo"
-            :options="chartOptions"
+            :options="chartOptions('V', true)"
           >
           </chartist>
           <chartist
-            :class="`${interval} rssi-chart`"
-            ratio="ct-chart ct-series-l"
+            :class="interval"
+            ratio="ct-chart ct-series-rssi"
             type="Line"
-            :data="chartDataSingleSeries('rssi', 'rssi')"
+            :data="chartDataSingleSeries('rssi', 'rssi', 'dBm')"
             :options="chartOptionsYAxisEnd"
           >
           </chartist>
@@ -141,9 +141,9 @@ export default {
       var data = {
         labels: [],
         series: [
-          { name: this.$i18n.t('bv'), data: [] },
+          { name: this.$i18n.t('bv') + ' (V)', data: [] },
           // { name: this.$i18n.t('rssi'), data: [] },
-          { name: this.$i18n.t('snr'), data: [] },
+          { name: this.$i18n.t('snr') + ' (dB)', data: [] },
         ],
       }
       if (typeof this.measurementData.measurements !== 'undefined') {
@@ -189,28 +189,6 @@ export default {
       }
       return data
     },
-    chartOptions() {
-      const self = this
-      return {
-        fullWidth: true,
-        plugins: [this.$chartist.plugins.legend()],
-        showPoint: true,
-        lineSmooth: this.$chartist.Interpolation.simple({
-          divisor: 10,
-          fillHoles: true,
-        }),
-        axisX: {
-          showGrid: true,
-          labelInterpolationFnc(value, index) {
-            if (index % self.moduloNumber === 0) {
-              return self.momentFromISO8601(value)
-            } else {
-              return ''
-            }
-          },
-        },
-      }
-    },
     chartOptionsYAxisEnd() {
       const self = this
       return {
@@ -221,7 +199,21 @@ export default {
         },
         plugins: [
           this.$chartist.plugins.legend({
-            clickable: true,
+            clickable: true, // Doesn't work yet with single series data
+          }),
+          this.$chartist.plugins.ctPointLabels({
+            labelOffset: {
+              x: 7,
+              y: 0,
+            },
+            textAnchor: 'start',
+            labelInterpolationFnc(value) {
+              if (typeof value !== 'undefined') {
+                return value
+              } else {
+                return '-'
+              }
+            },
           }),
         ],
         showPoint: true,
@@ -331,7 +323,7 @@ export default {
             '&timezone=' +
             this.timeZone
         )
-        console.log(response)
+        // console.log(response)
         this.measurementData = response.data
         return true
       } catch (error) {
@@ -347,12 +339,12 @@ export default {
         console.log('Error: ', error)
       }
     },
-    chartDataSingleSeries(legend, variable) {
+    chartDataSingleSeries(legend, variable, unit) {
       var data = {
         labels: [],
         series: [
           {
-            name: this.$i18n.t(legend),
+            name: this.$i18n.t(legend) + ' (' + unit + ')',
             data: [],
           },
         ],
@@ -364,6 +356,46 @@ export default {
         })
       }
       return data
+    },
+    chartOptions(unit, battery = false) {
+      const self = this
+      return {
+        fullWidth: true,
+        plugins: [
+          this.$chartist.plugins.legend(),
+          this.$chartist.plugins.ctPointLabels({
+            labelOffset: {
+              x: 7,
+              y: 0,
+            },
+            textAnchor: 'start',
+            labelInterpolationFnc(value) {
+              if (battery) {
+                return value
+              } else if (typeof value !== 'undefined' && !battery) {
+                return value + ' ' + unit
+              } else {
+                return '-'
+              }
+            },
+          }),
+        ],
+        showPoint: true,
+        lineSmooth: this.$chartist.Interpolation.simple({
+          divisor: 10,
+          fillHoles: true,
+        }),
+        axisX: {
+          showGrid: true,
+          labelInterpolationFnc(value, index) {
+            if (index % self.moduloNumber === 0) {
+              return self.momentFromISO8601(value)
+            } else {
+              return ''
+            }
+          },
+        },
+      }
     },
     loadData() {
       this.loadLastSensorValues()
@@ -407,11 +439,25 @@ svg.ct-chart-line {
 .ct-series {
   .ct-point {
     stroke-width: 8px !important;
+    @include for-phone-only {
+      stroke-width: 6px !important;
+    }
+  }
+  .ct-line {
+    @include for-phone-only {
+      stroke-width: 3px !important;
+    }
+  }
+  .ct-label:not(:last-child) {
+    display: none;
   }
 }
 .ct-labels {
   .ct-label.ct-horizontal.ct-end {
     font-size: 0.7rem !important;
+    @include for-phone-only {
+      font-size: 0.6rem !important;
+    }
   }
 }
 .ct-legend {
@@ -503,19 +549,10 @@ svg.ct-chart-line {
   }
 }
 
-.ct-series-l .ct-legend {
-  .ct-series-0 {
-    color: nth($ct-series-colors, 12);
-    &::before {
-      background-color: nth($ct-series-colors, 12);
-      border-color: nth($ct-series-colors, 12);
-    }
-  }
-}
 .ct-series-battery {
   .ct-legend {
     z-index: 1;
-    margin-left: -100px;
+    margin-left: -125px;
     .ct-series-0 {
       color: nth($ct-series-colors, 16) !important;
       &::before {
@@ -541,10 +578,24 @@ svg.ct-chart-line {
   }
 }
 // hacky solution to show all battery info in 1 chart. TODO: implement dual y-axis in 1 chart when option is enabled in chartist
-.rssi-chart {
+.ct-series-rssi {
   margin-top: -184px !important;
   .ct-legend {
-    margin-left: 195px;
+    margin-left: 280px;
+    @include for-phone-only {
+      margin-left: 220px;
+    }
+    .ct-series-0 {
+      color: nth($ct-series-colors, 12);
+      &::before {
+        background-color: nth($ct-series-colors, 12);
+        border-color: nth($ct-series-colors, 12);
+      }
+    }
+  }
+  .ct-series-a .ct-point,
+  .ct-series-a .ct-line {
+    stroke: nth($ct-series-colors, 12) !important;
   }
   .ct-labels .ct-label.ct-horizontal.ct-end {
     display: none;
