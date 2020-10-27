@@ -28,9 +28,11 @@
             <v-icon class="color-grey-dark" @click="setTimeIndex(1)">
               mdi-chevron-left
             </v-icon>
-            <span class="overline--big" style="margin-top: 1px;">{{
-              chartTitle
-            }}</span>
+            <span
+              class="overline--big"
+              style="margin-top: 1px; margin-left: 2px;"
+              >{{ chartTitle }}</span
+            >
             <v-icon
               v-if="timeIndex !== 0"
               class="color-grey-dark"
@@ -280,7 +282,7 @@ export default {
             textAnchor: 'start',
             labelInterpolationFnc(value) {
               if (typeof value !== 'undefined') {
-                return value
+                return value.toFixed(1)
               } else {
                 return '-'
               }
@@ -459,14 +461,14 @@ export default {
             },
             textAnchor: 'start',
             labelInterpolationFnc(value) {
-              if (battery) {
-                return value
-              } else if (typeof value !== 'undefined' && unit === 'mbar') {
+              if (typeof value !== 'undefined' && unit === 'mbar') {
                 return value + ' ' + unit
               } else if (typeof value !== 'undefined' && unit === 'kg') {
                 return value.toFixed(2) + ' ' + unit
               } else if (typeof value !== 'undefined' && !battery) {
                 return value.toFixed(1) + ' ' + unit
+              } else if (typeof value !== 'undefined' && battery) {
+                return value.toFixed(1)
               } else {
                 return '-'
               }
