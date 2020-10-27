@@ -103,7 +103,7 @@
             ratio="ct-chart ct-series-rssi"
             type="Line"
             :data="chartDataSingleSeries('rssi', 'rssi', 'dBm')"
-            :options="chartOptionsYAxisEnd"
+            :options="chartOptionsRssi"
           >
           </chartist>
         </v-col>
@@ -189,10 +189,10 @@ export default {
       }
       return data
     },
-    chartOptionsYAxisEnd() {
-      const self = this
+    chartOptionsRssi() {
       return {
         fullWidth: true,
+        height: '220px',
         chartPadding: {
           left: 50,
           right: -25,
@@ -222,15 +222,7 @@ export default {
           fillHoles: true,
         }),
         axisX: {
-          showGrid: true,
-          labelInterpolationFnc(value, index) {
-            if (index % self.moduloNumber === 0) {
-              // return value.charAt(11) + value.charAt(12)
-              return self.momentFromISO8601(value)
-            } else {
-              return ''
-            }
-          },
+          showGrid: false,
         },
         axisY: {
           // On the y-axis start means left and end means right
@@ -361,6 +353,7 @@ export default {
       const self = this
       return {
         fullWidth: true,
+        height: '220px',
         plugins: [
           this.$chartist.plugins.legend(),
           this.$chartist.plugins.ctPointLabels({
@@ -552,7 +545,10 @@ svg.ct-chart-line {
 .ct-series-battery {
   .ct-legend {
     z-index: 1;
-    margin-left: -125px;
+    margin-left: -160px;
+    @include for-phone-only {
+      margin-left: -130px;
+    }
     .ct-series-0 {
       color: nth($ct-series-colors, 16) !important;
       &::before {
@@ -568,6 +564,11 @@ svg.ct-chart-line {
       }
     }
   }
+  .ct-chart-line {
+    @include for-phone-only {
+      margin-left: -16px;
+    }
+  }
   .ct-series-a .ct-point,
   .ct-series-a .ct-line {
     stroke: nth($ct-series-colors, 16) !important;
@@ -579,11 +580,11 @@ svg.ct-chart-line {
 }
 // hacky solution to show all battery info in 1 chart. TODO: implement dual y-axis in 1 chart when option is enabled in chartist
 .ct-series-rssi {
-  margin-top: -184px !important;
+  margin-top: -254px !important;
   .ct-legend {
-    margin-left: 280px;
+    margin-left: 245px;
     @include for-phone-only {
-      margin-left: 220px;
+      margin-left: 217px;
     }
     .ct-series-0 {
       color: nth($ct-series-colors, 12);
@@ -591,6 +592,15 @@ svg.ct-chart-line {
         background-color: nth($ct-series-colors, 12);
         border-color: nth($ct-series-colors, 12);
       }
+      @include for-phone-only {
+        line-height: 16px;
+      }
+    }
+  }
+  .ct-chart-line {
+    @include for-phone-only {
+      margin-top: -8px;
+      margin-left: -16px;
     }
   }
   .ct-series-a .ct-point,
