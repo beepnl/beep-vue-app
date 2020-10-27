@@ -13,11 +13,7 @@
                 }`
               "
               text
-              @click="
-                sensorMeasurementRequest(period.interval),
-                  (interval = period.interval),
-                  (moduloNumber = period.moduloNumber)
-              "
+              @click="setInterval(period.interval, period.moduloNumber)"
             >
               {{ period.name }}
             </v-btn>
@@ -27,6 +23,23 @@
     </div>
     <v-container class="measurements-content">
       <v-row>
+        <v-col cols="12">
+          <div class="d-flex align-center justify-center">
+            <v-icon class="color-grey-dark" @click="setTimeIndex(1)">
+              mdi-chevron-left
+            </v-icon>
+            <span class="overline--big" style="margin-top: 1px;">{{
+              chartTitle
+            }}</span>
+            <v-icon
+              v-if="timeIndex !== 0"
+              class="color-grey-dark"
+              @click="setTimeIndex(-1)"
+            >
+              mdi-chevron-right
+            </v-icon>
+          </div>
+        </v-col>
         <v-col cols="12">
           <Treeselect
             v-if="devices"
@@ -157,7 +170,7 @@ export default {
   components: { Layout, Treeselect },
   data() {
     return {
-      selectedSensorId: 257,
+      selectedSensorId: 60, // 257,
       lastSensorValues: {},
       measurementData: {},
       interval: 'day',
@@ -165,6 +178,11 @@ export default {
       timeZone: 'Europe/Amsterdam',
       moduloNumber: 6,
       showLoadingIcon: false,
+      chartTitle: '',
+      startTime: '',
+      endTime: '',
+      dateFormat: 'yyyy-MM-dd',
+      selectedDate: '',
     }
   },
   computed: {
@@ -459,6 +477,7 @@ export default {
       }
     },
     loadData() {
+      this.setDataTitle()
       this.loadLastSensorValues()
       this.sensorMeasurementRequest(this.interval)
       // this.loadRemoteSensorMeasurements(this.activePeriod, this.periodIndex, this.timeGroup, this.timeZone, id)
@@ -493,6 +512,52 @@ export default {
           .replace(currentYearEsPt, '')
           .replace(' ' + currentYear, '') // Remove year hardcoded per language, currently no other way to get rid of year whilst keeping localized time
       }
+    },
+    setDataTitle() {
+      var p = this.interval
+      var d = p + 's'
+      var i = this.timeIndex
+      var startTimeFormat = 'ddd D MMM YYYY'
+      var endTimeFormat = 'ddd D MMM YYYY'
+
+      if (p === 'hour') {
+        endTimeFormat = 'HH:mm'
+        startTimeFormat += ' ' + endTimeFormat
+      } else if (p === 'day') {
+        endTimeFormat = null
+      } else if (p === 'week') {
+        p = 'isoweek'
+      }
+
+      var ep = p
+
+      var pStaTime = this.$moment()
+        .subtract(i, d)
+        .startOf(p)
+      var pEndTime = this.$moment()
+        .subtract(i, d)
+        .endOf(ep)
+
+      var s = pStaTime.format(startTimeFormat)
+      var e = pEndTime.format(endTimeFormat)
+
+      this.chartTitle = s + '' + (endTimeFormat !== null ? ' - ' + e : '')
+
+      this.startTime = pStaTime
+      this.endTime = pEndTime
+
+      this.selectedDate = pStaTime.format(this.dateFormat.toUpperCase())
+    },
+    setInterval(interval, modulonr) {
+      this.timeIndex = 0
+      this.sensorMeasurementRequest(interval)
+      this.interval = interval
+      this.moduloNumber = modulonr
+      this.setDataTitle()
+    },
+    setTimeIndex(offset) {
+      this.timeIndex += offset
+      this.loadData()
     },
   },
 }
@@ -682,10 +747,7 @@ svg.ct-chart-line {
 .ct-series-battery {
   .ct-legend {
     z-index: 1;
-    margin-left: -160px;
-    @include for-phone-only {
-      margin-left: -130px;
-    }
+    margin-bottom: 27px;
     .ct-series-0 {
       color: nth($ct-series-colors, 16) !important;
       &::before {
@@ -719,18 +781,11 @@ svg.ct-chart-line {
 .ct-series-rssi {
   margin-top: -254px !important;
   .ct-legend {
-    margin-left: 245px;
-    @include for-phone-only {
-      margin-left: 217px;
-    }
     .ct-series-0 {
       color: nth($ct-series-colors, 12);
       &::before {
         background-color: nth($ct-series-colors, 12);
         border-color: nth($ct-series-colors, 12);
-      }
-      @include for-phone-only {
-        line-height: 16px;
       }
     }
   }
