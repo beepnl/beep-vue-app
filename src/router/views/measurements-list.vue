@@ -165,9 +165,11 @@ import { mapGetters } from 'vuex'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import 'chartist/dist/chartist.min.css'
+import { sensorMixin } from '@mixins/sensorMixin'
 
 export default {
   components: { Layout, Treeselect },
+  mixins: [sensorMixin],
   data() {
     return {
       selectedSensorId: 60, // 257,
@@ -183,6 +185,8 @@ export default {
       endTime: '',
       dateFormat: 'yyyy-MM-dd',
       selectedDate: '',
+      currentSensors: [],
+      currentSoundSensors: [],
     }
   },
   computed: {
@@ -391,6 +395,16 @@ export default {
         // console.log(response)
         this.showLoadingIcon = false
         this.measurementData = response.data
+        this.currentSensors = []
+        this.currentSoundSensors = []
+        Object.keys(this.measurementData.measurements[0]).map((quantity) => {
+          if (this.SENSORS.indexOf(quantity) > -1) {
+            this.currentSensors.push(quantity)
+          } else if (this.SOUND.indexOf(quantity) > -1) {
+            this.currentSoundSensors.push(quantity)
+          }
+        })
+
         return true
       } catch (error) {
         console.log('Error: ', error)
