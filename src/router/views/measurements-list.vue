@@ -1,6 +1,31 @@
 <template>
   <Layout :no-box-shadow="true">
-    <v-container>
+    <div class="period-bar-wrapper">
+      <v-container class="period-container">
+        <v-row
+          class="period-bar d-flex flex-row justify-space-between align-center"
+        >
+          <div v-for="period in periods" :key="period.interval">
+            <v-btn
+              :class="
+                `grey--text ${
+                  period.interval === interval ? 'primary--text' : ''
+                }`
+              "
+              text
+              @click="
+                sensorMeasurementRequest(period.interval),
+                  (interval = period.interval),
+                  (moduloNumber = period.moduloNumber)
+              "
+            >
+              {{ period.name }}
+            </v-btn>
+          </div>
+        </v-row>
+      </v-container>
+    </div>
+    <v-container class="measurements-content">
       <v-row>
         <v-col cols="12">
           <Treeselect
@@ -26,7 +51,15 @@
           {{ lastSensorValues.t }}, zendruis: {{ lastSensorValues.snr }},
           zendsterkte: {{ lastSensorValues.rssi }}
         </v-col>
-        <v-col cols="12">
+        <v-col
+          v-if="showLoadingIcon"
+          class="d-flex align-center justify-center"
+          style="margin-top: 20vh;"
+          cols="12"
+        >
+          <v-progress-circular color="primary" size="50" indeterminate />
+        </v-col>
+        <v-col v-if="measurementData !== null" cols="12">
           <div class="overline mb-3 text-center" v-text="$t('sensor')"></div>
           <chartist
             :class="interval"
@@ -129,9 +162,9 @@ export default {
       measurementData: {},
       interval: 'day',
       timeIndex: 0,
-      timeGroup: 'day',
       timeZone: 'Europe/Amsterdam',
       moduloNumber: 6,
+      showLoadingIcon: false,
     }
   },
   computed: {
@@ -147,11 +180,19 @@ export default {
         ],
       }
       if (typeof this.measurementData.measurements !== 'undefined') {
-        this.measurementData.measurements.map((measurement) => {
-          data.labels.push(measurement.time)
-          data.series[0].data.push(measurement.bv)
-          // data.series[1].data.push(measurement.rssi)
-          data.series[1].data.push(measurement.snr)
+        this.measurementData.measurements.map((measurement, index) => {
+          if (
+            ((this.interval === 'month' || this.interval === 'year') &&
+              index !== 0) || // skip first value for month and year interval (belongs to previous month/year)
+            this.interval === 'hour' ||
+            this.interval === 'day' ||
+            this.interval === 'week'
+          ) {
+            data.labels.push(measurement.time)
+            data.series[0].data.push(measurement.bv)
+            // data.series[1].data.push(measurement.rssi)
+            data.series[1].data.push(measurement.snr)
+          }
         })
       }
       return data
@@ -173,18 +214,26 @@ export default {
         ],
       }
       if (typeof this.measurementData.measurements !== 'undefined') {
-        this.measurementData.measurements.map((measurement) => {
-          data.labels.push(measurement.time)
-          data.series[0].data.push(measurement.s_bin_71_122)
-          data.series[1].data.push(measurement.s_bin_122_173)
-          data.series[2].data.push(measurement.s_bin_173_224)
-          data.series[3].data.push(measurement.s_bin_224_276)
-          data.series[4].data.push(measurement.s_bin_276_327)
-          data.series[5].data.push(measurement.s_bin_327_378)
-          data.series[6].data.push(measurement.s_bin_378_429)
-          data.series[7].data.push(measurement.s_bin_429_480)
-          data.series[8].data.push(measurement.s_bin_480_532)
-          data.series[9].data.push(measurement.s_bin_532_583)
+        this.measurementData.measurements.map((measurement, index) => {
+          if (
+            ((this.interval === 'month' || this.interval === 'year') &&
+              index !== 0) || // skip first value for month and year interval (belongs to previous month/year)
+            this.interval === 'hour' ||
+            this.interval === 'day' ||
+            this.interval === 'week'
+          ) {
+            data.labels.push(measurement.time)
+            data.series[0].data.push(measurement.s_bin_71_122)
+            data.series[1].data.push(measurement.s_bin_122_173)
+            data.series[2].data.push(measurement.s_bin_173_224)
+            data.series[3].data.push(measurement.s_bin_224_276)
+            data.series[4].data.push(measurement.s_bin_276_327)
+            data.series[5].data.push(measurement.s_bin_327_378)
+            data.series[6].data.push(measurement.s_bin_378_429)
+            data.series[7].data.push(measurement.s_bin_429_480)
+            data.series[8].data.push(measurement.s_bin_480_532)
+            data.series[9].data.push(measurement.s_bin_532_583)
+          }
         })
       }
       return data
@@ -230,12 +279,15 @@ export default {
         },
       }
     },
-    // moduloNumber() {
-    //   if (this.interval === 'day') {
-    //     return 6
-    //   }
-    //   return 1
-    // },
+    periods() {
+      return [
+        { name: this.$i18n.t('hour'), interval: 'hour', moduloNumber: 1 },
+        { name: this.$i18n.t('day'), interval: 'day', moduloNumber: 6 },
+        { name: this.$i18n.t('week'), interval: 'week', moduloNumber: 6 },
+        { name: this.$i18n.t('month'), interval: 'month', moduloNumber: 8 },
+        { name: this.$i18n.t('year'), interval: 'year', moduloNumber: 11 },
+      ]
+    },
     sortedDevices() {
       var apiaryArray = []
       this.devices.map((device, index) => {
@@ -301,21 +353,25 @@ export default {
         console.log('Error: ', error)
       }
     },
-    async sensorMeasurementRequest() {
+    async sensorMeasurementRequest(interval) {
+      var timeGroup = interval === 'hour' ? null : interval
+      this.measurementData = null // needed to let chartist redraw charts after interval switch, otherwise there's a bug in chartist-plugin-legend where old data is loaded after legend click see https://github.com/CodeYellowBV/chartist-plugin-legend/issues/48
+      this.showLoadingIcon = true
       try {
         const response = await Api.readRequest(
           '/sensors/measurements?id=' +
             this.selectedSensorId +
             '&interval=' +
-            this.interval +
+            interval +
             '&index=' +
             this.timeIndex +
             '&timeGroup=' +
-            this.timeGroup +
+            timeGroup +
             '&timezone=' +
             this.timeZone
         )
         // console.log(response)
+        this.showLoadingIcon = false
         this.measurementData = response.data
         return true
       } catch (error) {
@@ -342,9 +398,17 @@ export default {
         ],
       }
       if (typeof this.measurementData.measurements !== 'undefined') {
-        this.measurementData.measurements.map((measurement) => {
-          data.labels.push(measurement.time)
-          data.series[0].data.push(measurement[variable])
+        this.measurementData.measurements.map((measurement, index) => {
+          if (
+            ((this.interval === 'month' || this.interval === 'year') &&
+              index !== 0) || // skip first value for month and year interval (belongs to previous month/year)
+            this.interval === 'hour' ||
+            this.interval === 'day' ||
+            this.interval === 'week'
+          ) {
+            data.labels.push(measurement.time)
+            data.series[0].data.push(measurement[variable])
+          }
         })
       }
       return data
@@ -365,8 +429,12 @@ export default {
             labelInterpolationFnc(value) {
               if (battery) {
                 return value
-              } else if (typeof value !== 'undefined' && !battery) {
+              } else if (typeof value !== 'undefined' && unit === 'mbar') {
                 return value + ' ' + unit
+              } else if (typeof value !== 'undefined' && unit === 'kg') {
+                return value.toFixed(2) + ' ' + unit
+              } else if (typeof value !== 'undefined' && !battery) {
+                return value.toFixed(1) + ' ' + unit
               } else {
                 return '-'
               }
@@ -392,20 +460,74 @@ export default {
     },
     loadData() {
       this.loadLastSensorValues()
-      this.sensorMeasurementRequest()
+      this.sensorMeasurementRequest(this.interval)
       // this.loadRemoteSensorMeasurements(this.activePeriod, this.periodIndex, this.timeGroup, this.timeZone, id)
     },
     momentFromISO8601(date) {
-      return this.$moment(date)
-        .utc()
-        .locale(this.$i18n.locale)
-        .format('LT')
+      if (this.interval === 'hour') {
+        return this.$moment(date)
+          .locale(this.$i18n.locale)
+          .format('LT')
+      } else if (this.interval === 'day' || this.interval === 'week') {
+        var unit = this.$i18n.locale === 'nl' ? 'u' : 'h'
+        return (
+          this.$moment(date)
+            .locale(this.$i18n.locale)
+            .format('ddd') +
+          ' ' +
+          this.$moment(date)
+            .locale(this.$i18n.locale)
+            .format('H') +
+          unit
+        )
+      } else {
+        const currentYear = this.$moment(date).format('YYYY')
+        const currentYearEn = ', ' + currentYear
+        const currentYearEsPt = ' de ' + currentYear
+        const currentYearNl = '. ' + currentYear
+        return this.$moment(date)
+          .locale(this.$i18n.locale)
+          .format('ll')
+          .replace(currentYearNl, '')
+          .replace(currentYearEn, '')
+          .replace(currentYearEsPt, '')
+          .replace(' ' + currentYear, '') // Remove year hardcoded per language, currently no other way to get rid of year whilst keeping localized time
+      }
     },
   },
 }
 </script>
 
 <style lang="scss">
+.period-bar-wrapper {
+  position: fixed;
+  top: 100px;
+  z-index: 1;
+  width: 100%;
+  margin-top: -4px;
+  background-color: $color-orange-light;
+  border-bottom: 1px solid #fff5e2;
+  .period-container {
+    padding-right: 80px;
+    padding-left: 80px;
+    @include for-phone-only {
+      padding: 10px;
+    }
+  }
+  .period-bar {
+    margin-top: -10px;
+    margin-bottom: -10px;
+    @include for-tablet-portrait-up {
+      margin-top: -12px;
+      margin-bottom: -12px;
+    }
+  }
+}
+
+.measurements-content {
+  margin-top: 40px;
+}
+
 svg.ct-chart-bar,
 svg.ct-chart-line {
   overflow: visible;
@@ -420,9 +542,24 @@ svg.ct-chart-line {
 }
 
 .ct-chart {
-  &.day {
+  &.day,
+  &.week {
     .ct-grids {
       .ct-grid.ct-horizontal:not(:nth-child(6n + 1)) {
+        stroke: none !important;
+      }
+    }
+  }
+  &.month {
+    .ct-grids {
+      .ct-grid.ct-horizontal:not(:nth-child(8n + 1)) {
+        stroke: none !important;
+      }
+    }
+  }
+  &.year {
+    .ct-grids {
+      .ct-grid.ct-horizontal:not(:nth-child(11n + 1)) {
         stroke: none !important;
       }
     }

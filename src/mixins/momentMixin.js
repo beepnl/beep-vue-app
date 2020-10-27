@@ -16,7 +16,7 @@ export const momentMixin = {
         .format('lll')
     },
     momentifyDayMonth(date) {
-      const currentYear = new Date().getFullYear()
+      const currentYear = this.$moment(date).format('YYYY')
       const currentYearEn = ', ' + currentYear
       const currentYearEsPt = ' de ' + currentYear
       const currentYearNl = '. ' + currentYear
