@@ -67,7 +67,7 @@
           zendsterkte: {{ lastSensorValues.rssi }}
         </v-col>
         <v-col
-          v-if="showLoadingIcon"
+          v-if="measurementData === null"
           class="d-flex align-center justify-center"
           style="margin-top: 20vh;"
           cols="12"
@@ -75,64 +75,34 @@
           <v-progress-circular color="primary" size="50" indeterminate />
         </v-col>
         <v-col v-if="measurementData !== null" cols="12">
-          <div class="overline mb-3 text-center" v-text="$t('sensor')"></div>
-          <chartist
-            :class="interval"
-            ratio="ct-chart"
-            type="Line"
-            :data="chartDataSingleSeries('temperature', 't', '°C')"
-            :options="chartOptions('°C')"
-          >
-          </chartist>
+          <div v-if="sensorsPresent">
+            <div class="overline mb-3 text-center" v-text="$t('sensor')"></div>
+            <chartist
+              v-for="(sensor, index) in currentSensors"
+              :key="index"
+              :class="`${interval} mb-4`"
+              :ratio="`ct-chart ct-series-${index}`"
+              type="Line"
+              :data="chartDataSingleSeries(sensor, SENSOR_UNITS[sensor])"
+              :options="chartOptions(SENSOR_UNITS[sensor])"
+            >
+            </chartist>
+          </div>
 
-          <chartist
-            :class="`${interval} mt-4`"
-            ratio="ct-chart ct-series-b"
-            type="Line"
-            :data="chartDataSingleSeries('humidity', 'h', '%RH')"
-            :options="chartOptions('%RH')"
-          >
-          </chartist>
-
-          <chartist
-            :class="`${interval} mt-4`"
-            ratio="ct-chart ct-series-c"
-            type="Line"
-            :data="chartDataSingleSeries('air_pressure', 'p', 'mbar')"
-            :options="chartOptions('mbar')"
-          >
-          </chartist>
-
-          <chartist
-            :class="`${interval} mt-4`"
-            ratio="ct-chart ct-series-d"
-            type="Line"
-            :data="chartDataSingleSeries('t_i', 't_i', '°C')"
-            :options="chartOptions('°C')"
-          >
-          </chartist>
-
-          <chartist
-            :class="`${interval} mt-4`"
-            ratio="ct-chart ct-series-e"
-            type="Line"
-            :data="chartDataSingleSeries('weight', 'weight_kg', 'kg')"
-            :options="chartOptions('kg')"
-          >
-          </chartist>
-
-          <div
-            class="overline mt-4 mb-3 text-center"
-            v-text="$t('Sound_measurements')"
-          ></div>
-          <chartist
-            :class="interval"
-            ratio="ct-chart"
-            type="Line"
-            :data="chartDataSound"
-            :options="chartOptions('')"
-          >
-          </chartist>
+          <div v-if="soundSensorsPresent">
+            <div
+              class="overline mt-4 mb-3 text-center"
+              v-text="$t('Sound_measurements')"
+            ></div>
+            <chartist
+              :class="`${interval} mb-4`"
+              ratio="ct-chart"
+              type="Line"
+              :data="chartDataSound(currentSoundSensors)"
+              :options="chartOptions()"
+            >
+            </chartist>
+          </div>
 
           <div
             class="overline mt-4 mb-3 text-center"
@@ -150,7 +120,7 @@
             :class="interval"
             ratio="ct-chart ct-series-rssi"
             type="Line"
-            :data="chartDataSingleSeries('rssi', 'rssi', 'dBm')"
+            :data="chartDataSingleSeries('rssi', 'dBm')"
             :options="chartOptionsRssi"
           >
           </chartist>
@@ -174,21 +144,22 @@ export default {
   mixins: [sensorMixin],
   data() {
     return {
-      selectedSensorId: 60, // 257,
+      selectedSensorId: 257, // 257 60
       lastSensorValues: {},
       measurementData: {},
       interval: 'day',
       timeIndex: 0,
       timeZone: 'Europe/Amsterdam',
       moduloNumber: 6,
-      showLoadingIcon: false,
       chartTitle: '',
       startTime: '',
       endTime: '',
       dateFormat: 'yyyy-MM-dd',
       selectedDate: '',
       currentSensors: [],
-      currentSoundSensors: [],
+      currentSoundSensors: {},
+      sensorsPresent: false,
+      soundSensorsPresent: false,
     }
   },
   computed: {
@@ -216,47 +187,6 @@ export default {
             data.series[0].data.push(measurement.bv)
             // data.series[1].data.push(measurement.rssi)
             data.series[1].data.push(measurement.snr)
-          }
-        })
-      }
-      return data
-    },
-    chartDataSound() {
-      var data = {
-        labels: [],
-        series: [
-          { name: '071-122Hz', data: [] },
-          { name: '122-173Hz', data: [] },
-          { name: '173-224Hz', data: [] },
-          { name: '224-276Hz', data: [] },
-          { name: '276-327Hz', data: [] },
-          { name: '327-378Hz', data: [] },
-          { name: '378-429Hz', data: [] },
-          { name: '429-480Hz', data: [] },
-          { name: '480-532Hz', data: [] },
-          { name: '532-583Hz', data: [] },
-        ],
-      }
-      if (typeof this.measurementData.measurements !== 'undefined') {
-        this.measurementData.measurements.map((measurement, index) => {
-          if (
-            ((this.interval === 'month' || this.interval === 'year') &&
-              index !== 0) || // skip first value for month and year interval (belongs to previous month/year)
-            this.interval === 'hour' ||
-            this.interval === 'day' ||
-            this.interval === 'week'
-          ) {
-            data.labels.push(measurement.time)
-            data.series[0].data.push(measurement.s_bin_71_122)
-            data.series[1].data.push(measurement.s_bin_122_173)
-            data.series[2].data.push(measurement.s_bin_173_224)
-            data.series[3].data.push(measurement.s_bin_224_276)
-            data.series[4].data.push(measurement.s_bin_276_327)
-            data.series[5].data.push(measurement.s_bin_327_378)
-            data.series[6].data.push(measurement.s_bin_378_429)
-            data.series[7].data.push(measurement.s_bin_429_480)
-            data.series[8].data.push(measurement.s_bin_480_532)
-            data.series[9].data.push(measurement.s_bin_532_583)
           }
         })
       }
@@ -380,7 +310,6 @@ export default {
     async sensorMeasurementRequest(interval) {
       var timeGroup = interval === 'hour' ? null : interval
       this.measurementData = null // needed to let chartist redraw charts after interval switch, otherwise there's a bug in chartist-plugin-legend where old data is loaded after legend click see https://github.com/CodeYellowBV/chartist-plugin-legend/issues/48
-      this.showLoadingIcon = true
       try {
         const response = await Api.readRequest(
           '/sensors/measurements?id=' +
@@ -395,15 +324,19 @@ export default {
             this.timeZone
         )
         // console.log(response)
-        this.showLoadingIcon = false
         this.measurementData = response.data
         this.currentSensors = []
-        this.currentSoundSensors = []
+        this.sensorsPresent = false
+        this.currentSoundSensors = {}
+        this.soundSensorsPresent = false
         Object.keys(this.measurementData.measurements[0]).map((quantity) => {
           if (this.SENSORS.indexOf(quantity) > -1) {
             this.currentSensors.push(quantity)
+            this.sensorsPresent = true
           } else if (this.SOUND.indexOf(quantity) > -1) {
-            this.currentSoundSensors.push(quantity)
+            var sensorName = this.SENSOR_NAMES[quantity]
+            this.currentSoundSensors[sensorName] = quantity
+            this.soundSensorsPresent = true
           }
         })
 
@@ -421,12 +354,12 @@ export default {
         console.log('Error: ', error)
       }
     },
-    chartDataSingleSeries(legend, variable, unit) {
+    chartDataSingleSeries(quantity, unit) {
       var data = {
         labels: [],
         series: [
           {
-            name: this.$i18n.t(legend) + ' (' + unit + ')',
+            name: this.$i18n.t(quantity) + ' (' + unit + ')',
             data: [],
           },
         ],
@@ -441,13 +374,45 @@ export default {
             this.interval === 'week'
           ) {
             data.labels.push(measurement.time)
-            data.series[0].data.push(measurement[variable])
+            data.series[0].data.push(measurement[quantity])
           }
         })
       }
       return data
     },
-    chartOptions(unit, battery = false) {
+    chartDataSound(soundSensorObject) {
+      var data = {
+        labels: [],
+        series: [],
+      }
+      Object.keys(soundSensorObject)
+        .sort()
+        .map((soundSensorName) => {
+          data.series.push({ name: soundSensorName, data: [] })
+        })
+      if (typeof this.measurementData.measurements !== 'undefined') {
+        this.measurementData.measurements.map((measurement, index) => {
+          if (
+            ((this.interval === 'month' || this.interval === 'year') &&
+              index !== 0) || // skip first value for month and year interval (belongs to previous month/year)
+            this.interval === 'hour' ||
+            this.interval === 'day' ||
+            this.interval === 'week'
+          ) {
+            data.labels.push(measurement.time)
+            data.series.map((serie, index) => {
+              var currentSoundSensor = soundSensorObject[serie.name]
+              serie.data.push(measurement[currentSoundSensor])
+            })
+          }
+        })
+      }
+      data.series.map((serie) => {
+        serie.name = serie.name.replace(/^0/, '') // remove first zero for legend legibility (esp with sound sensor s_bin_201_402 and further)
+      })
+      return data
+    },
+    chartOptions(unit = '', battery = false) {
       const self = this
       return {
         fullWidth: true,
@@ -621,7 +586,9 @@ svg.ct-chart-line {
   transform: translate(-100%) rotate(-45deg);
   transform-origin: 100% 0;
 }
-
+.ct-label.ct-vertical.ct-end {
+  margin-left: -5px;
+}
 .ct-chart {
   &.day,
   &.week {
@@ -720,44 +687,31 @@ svg.ct-chart-line {
     margin: 0;
   }
 }
-.ct-series-b .ct-legend {
-  .ct-series-0 {
-    color: nth($ct-series-colors, 2);
-    &::before {
-      background-color: nth($ct-series-colors, 2);
-      border-color: nth($ct-series-colors, 2);
+
+@for $i from 0 to length($ct-series-colors) {
+  .ct-series-#{$i} {
+    .ct-legend {
+      .ct-series-0 {
+        color: nth($ct-series-colors, $i + 1);
+        &::before {
+          background-color: nth($ct-series-colors, $i + 1);
+          border-color: nth($ct-series-colors, $i + 1);
+        }
+      }
+    }
+    .ct-series-a .ct-point,
+    .ct-series-a .ct-line {
+      stroke: nth($ct-series-colors, $i + 1) !important;
     }
   }
 }
 
-.ct-series-c .ct-legend {
-  .ct-series-0 {
-    color: nth($ct-series-colors, 3);
-    &::before {
-      background-color: nth($ct-series-colors, 3);
-      border-color: nth($ct-series-colors, 3);
-    }
-  }
-}
-
-.ct-series-d .ct-legend {
-  .ct-series-0 {
-    color: nth($ct-series-colors, 4);
-    &::before {
-      background-color: nth($ct-series-colors, 4);
-      border-color: nth($ct-series-colors, 4);
-    }
-  }
-}
-
-.ct-series-e .ct-legend {
-  .ct-series-0 {
-    color: nth($ct-series-colors, 5);
-    &::before {
-      background-color: nth($ct-series-colors, 5);
-      border-color: nth($ct-series-colors, 5);
-    }
-  }
+.ct-series-i .ct-point,
+.ct-series-i .ct-line {
+  stroke: nth(
+    $ct-series-colors,
+    9
+  ) !important; // use different color than chartist.css as color i is identical to color b there
 }
 
 .ct-series-battery {
