@@ -12,11 +12,15 @@ const resource = createResource({ path: 'devices', other })
 export const state = {
   ...resource.state,
   devices: [],
+  selectedDeviceId: null,
 }
 export const getters = {
   ...resource.getters,
   devices: (state) => {
     return state.devices
+  },
+  selectedDeviceId: (state) => {
+    return state.selectedDeviceId
   },
 }
 export const mutations = {
@@ -25,6 +29,9 @@ export const mutations = {
   // or be replaced by endpoint actions
   setDevices: function(state, payload) {
     state.devices = payload
+  },
+  setSelectedDeviceId: function(state, id) {
+    state.selectedDeviceId = id
   },
 }
 export const actions = {

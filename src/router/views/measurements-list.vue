@@ -45,7 +45,7 @@
         <v-col cols="12">
           <Treeselect
             v-if="devices"
-            v-model="selectedSensorId"
+            v-model="selectedDeviceId"
             :options="sortedDevices"
             :placeholder="`${$t('Select')} ${$tc('hive', 1)}`"
             :no-results-text="`${$t('no_results')}`"
@@ -77,22 +77,10 @@
         >
           <v-progress-circular color="primary" size="50" indeterminate />
         </v-col>
-        <v-col
-          v-if="
-            measurementData !== null &&
-              measurementData.measurements.length === 0
-          "
-          cols="12"
-          class="text-center mt-10"
-        >
+        <v-col v-if="noChartData" cols="12" class="text-center mt-10">
           {{ $t('no_chart_data') }}
         </v-col>
-        <v-col
-          v-if="
-            measurementData !== null && measurementData.measurements.length > 0
-          "
-          cols="12"
-        >
+        <v-col v-if="measurementData !== null" cols="12">
           <div v-if="sensorsPresent">
             <div class="overline mb-3 text-center" v-text="$t('sensor')"></div>
             <chartist
@@ -161,7 +149,6 @@
 <script>
 import Api from '@api/Api'
 import Layout from '@layouts/main.vue'
-import { mapGetters } from 'vuex'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import 'chartist/dist/chartist.min.css'
@@ -172,10 +159,10 @@ export default {
   mixins: [sensorMixin],
   data() {
     return {
-      selectedSensorId: 257, // 257 60
       lastSensorDate: null,
       lastSensorValues: {},
       measurementData: {},
+      devices: [],
       interval: 'day',
       timeIndex: 0,
       timeZone: 'Europe/Amsterdam',
@@ -192,10 +179,10 @@ export default {
       soundSensorsPresent: false,
       debugSensorsPresent: false,
       rssiSensorPresent: false,
+      noChartData: false,
     }
   },
   computed: {
-    ...mapGetters('devices', ['devices']),
     chartOptionsYaxisEnd() {
       return {
         fullWidth: true,
@@ -245,6 +232,14 @@ export default {
         { name: this.$i18n.t('month'), interval: 'month', moduloNumber: 8 },
         { name: this.$i18n.t('year'), interval: 'year', moduloNumber: 11 },
       ]
+    },
+    selectedDeviceId: {
+      get() {
+        return this.$store.getters['devices/selectedDeviceId']
+      },
+      set(value) {
+        this.$store.commit('devices/setSelectedDeviceId', parseInt(value))
+      },
     },
     sortedDevices() {
       var apiaryArray = []
@@ -297,13 +292,18 @@ export default {
   },
   created() {
     this.readDevices()
-    this.loadData()
+      .then(() => {
+        this.setInitialDeviceId()
+      })
+      .then(() => {
+        this.loadData()
+      })
   },
   methods: {
     async loadLastSensorValues() {
       try {
         const response = await Api.readRequest(
-          '/sensors/lastvalues?id=' + this.selectedSensorId
+          '/sensors/lastvalues?id=' + this.selectedDeviceId
         )
         this.lastSensorValues = response.data
         this.lastSensorDate = response.data.time
@@ -314,11 +314,12 @@ export default {
     },
     async sensorMeasurementRequest(interval) {
       var timeGroup = interval === 'hour' ? null : interval
+      this.noChartData = false
       this.measurementData = null // needed to let chartist redraw charts after interval switch, otherwise there's a bug in chartist-plugin-legend where old data is loaded after legend click see https://github.com/CodeYellowBV/chartist-plugin-legend/issues/48
       try {
         const response = await Api.readRequest(
           '/sensors/measurements?id=' +
-            this.selectedSensorId +
+            this.selectedDeviceId +
             '&interval=' +
             interval +
             '&index=' +
@@ -337,28 +338,32 @@ export default {
         this.soundSensorsPresent = false
         this.debugSensorsPresent = false
         this.rssiSensorPresent = false
-        Object.keys(this.measurementData.measurements[0]).map((quantity) => {
-          if (this.SENSORS.indexOf(quantity) > -1) {
-            this.currentSensors.push(quantity)
-            this.sensorsPresent = true
-          } else if (this.SOUND.indexOf(quantity) > -1) {
-            var soundSensorName = this.SENSOR_NAMES[quantity]
-            this.currentSoundSensors[soundSensorName] = quantity
-            this.soundSensorsPresent = true
-          } else if (this.DEBUG.indexOf(quantity) > -1) {
-            if (quantity === 'bv' || quantity === 'snr') {
-              var debugSensorName =
-                this.$i18n.t(quantity) +
-                ' (' +
-                this.SENSOR_UNITS[quantity] +
-                ')'
-              this.currentDebugSensors[debugSensorName] = quantity
-              this.debugSensorsPresent = true
-            } else if (quantity === 'rssi') {
-              this.rssiSensorPresent = true
+        if (this.measurementData.measurements.length > 0) {
+          Object.keys(this.measurementData.measurements[0]).map((quantity) => {
+            if (this.SENSORS.indexOf(quantity) > -1) {
+              this.currentSensors.push(quantity)
+              this.sensorsPresent = true
+            } else if (this.SOUND.indexOf(quantity) > -1) {
+              var soundSensorName = this.SENSOR_NAMES[quantity]
+              this.currentSoundSensors[soundSensorName] = quantity
+              this.soundSensorsPresent = true
+            } else if (this.DEBUG.indexOf(quantity) > -1) {
+              if (quantity === 'bv' || quantity === 'snr') {
+                var debugSensorName =
+                  this.$i18n.t(quantity) +
+                  ' (' +
+                  this.SENSOR_UNITS[quantity] +
+                  ')'
+                this.currentDebugSensors[debugSensorName] = quantity
+                this.debugSensorsPresent = true
+              } else if (quantity === 'rssi') {
+                this.rssiSensorPresent = true
+              }
             }
-          }
-        })
+          })
+        } else {
+          this.noChartData = true
+        }
 
         return true
       } catch (error) {
@@ -368,7 +373,8 @@ export default {
     async readDevices() {
       try {
         const response = await Api.readRequest('/devices')
-        this.$store.commit('devices/setDevices', response.data)
+        // this.$store.commit('devices/setDevices', response.data)
+        this.devices = response.data
         return true
       } catch (error) {
         console.log('Error: ', error)
@@ -548,6 +554,15 @@ export default {
       this.endTime = pEndTime
 
       this.selectedDate = pStaTime.format(this.dateFormat.toUpperCase())
+    },
+    setInitialDeviceId() {
+      if (this.selectedDeviceId === null) {
+        if (this.$route.name === 'measurements-id') {
+          this.selectedDeviceId = parseInt(this.$route.params.id)
+        } else {
+          this.selectedDeviceId = this.devices[0].id
+        }
+      }
     },
     setInterval(interval, modulonr) {
       this.timeIndex = 0

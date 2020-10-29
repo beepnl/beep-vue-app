@@ -201,6 +201,14 @@ export default [
     meta: {
       authRequired: true,
     },
+    path: '/measurements/:id',
+    name: 'measurements-id',
+    component: () => lazyLoadView(import('@views/measurements-list.vue')),
+  },
+  {
+    meta: {
+      authRequired: true,
+    },
     path: '/photos',
     name: 'photos',
     component: () => lazyLoadView(import('@views/photo-gallery.vue')),
