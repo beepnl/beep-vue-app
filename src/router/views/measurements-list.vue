@@ -51,7 +51,7 @@
             @input="loadData"
           />
         </v-col>
-        <v-col v-if="!lastSensorDate" cols="12" class="text-center mt-10">
+        <v-col v-if="!lastSensorDate" cols="12" class="text-center my-10">
           {{ $t('no_data') }}
         </v-col>
         <v-col cols="12">
@@ -76,7 +76,7 @@
         <v-col v-if="noChartData" cols="12" class="text-center mt-10">
           {{ $t('no_chart_data') }}
         </v-col>
-        <v-col v-if="measurementData !== null" cols="12">
+        <v-col v-if="measurementData !== null" cols="12" class="charts">
           <div v-if="sensorsPresent">
             <div class="overline mb-3 text-center" v-text="$t('sensor')"></div>
             <chartist
@@ -622,124 +622,108 @@ export default {
   margin-top: 40px;
 }
 
-svg.ct-chart-bar,
-svg.ct-chart-line {
-  overflow: visible;
-}
-.ct-label.ct-label.ct-horizontal.ct-end {
-  position: relative;
-  justify-content: flex-end;
-  text-align: right;
-  white-space: nowrap;
-  transform: translate(-100%) rotate(-45deg);
-  transform-origin: 100% 0;
-}
-.ct-label.ct-vertical.ct-end {
-  margin-left: -5px;
-}
-.ct-chart {
-  &.day,
-  &.week {
-    .ct-grids {
-      .ct-grid.ct-horizontal:not(:nth-child(6n + 1)) {
-        stroke: none !important;
+.charts {
+  svg.ct-chart-bar,
+  svg.ct-chart-line {
+    overflow: visible;
+  }
+  .ct-label.ct-label.ct-horizontal.ct-end {
+    position: relative;
+    justify-content: flex-end;
+    text-align: right;
+    white-space: nowrap;
+    transform: translate(-100%) rotate(-45deg);
+    transform-origin: 100% 0;
+  }
+  .ct-label.ct-vertical.ct-end {
+    margin-left: -5px;
+  }
+  .ct-chart {
+    &.day,
+    &.week {
+      .ct-grids {
+        .ct-grid.ct-horizontal:not(:nth-child(6n + 1)) {
+          stroke: none !important;
+        }
+      }
+    }
+    &.month {
+      .ct-grids {
+        .ct-grid.ct-horizontal:not(:nth-child(8n + 1)) {
+          stroke: none !important;
+        }
+      }
+    }
+    &.year {
+      .ct-grids {
+        .ct-grid.ct-horizontal:not(:nth-child(11n + 1)) {
+          stroke: none !important;
+        }
       }
     }
   }
-  &.month {
-    .ct-grids {
-      .ct-grid.ct-horizontal:not(:nth-child(8n + 1)) {
-        stroke: none !important;
-      }
-    }
-  }
-  &.year {
-    .ct-grids {
-      .ct-grid.ct-horizontal:not(:nth-child(11n + 1)) {
-        stroke: none !important;
-      }
-    }
-  }
-}
 
-.ct-series {
-  .ct-point {
-    stroke-width: 6px !important;
-    @include for-phone-only {
-      stroke-width: 4px !important;
+  .ct-series {
+    .ct-point {
+      stroke-width: 6px !important;
+      @include for-phone-only {
+        stroke-width: 4px !important;
+      }
+    }
+    .ct-line {
+      @include for-phone-only {
+        stroke-width: 3px !important;
+      }
+    }
+    .ct-label:not(:last-child) {
+      display: none;
     }
   }
-  .ct-line {
-    @include for-phone-only {
-      stroke-width: 3px !important;
+  .ct-labels {
+    .ct-label.ct-horizontal.ct-end {
+      font-size: 0.7rem !important;
+      @include for-phone-only {
+        font-size: 0.6rem !important;
+      }
     }
   }
-  .ct-label:not(:last-child) {
-    display: none;
-  }
-}
-.ct-labels {
-  .ct-label.ct-horizontal.ct-end {
-    font-size: 0.7rem !important;
-    @include for-phone-only {
-      font-size: 0.6rem !important;
-    }
-  }
-}
-.ct-legend {
-  position: relative !important;
-  text-align: center;
-  list-style: none;
-
-  li {
+  .ct-legend {
     position: relative !important;
-    display: inline-block;
-    padding-left: 23px !important;
-    margin-right: 10px;
-    margin-bottom: 3px;
-    cursor: pointer;
-  }
+    text-align: center;
+    list-style: none;
 
-  li::before {
-    position: absolute !important;
-    top: 3px !important;
-    left: 0 !important;
-    width: 15px !important;
-    height: 15px !important;
-    content: '' !important;
-    border: 3px solid transparent;
-    border-radius: 2px !important;
-  }
-
-  li.inactive::before {
-    background: transparent !important;
-  }
-
-  &.ct-legend-inside {
-    position: absolute !important;
-    top: 0 !important;
-    right: 0 !important;
-  }
-
-  @for $i from 0 to length($ct-series-colors) {
-    .ct-series-#{$i} {
-      color: nth($ct-series-colors, $i + 1);
-      &::before {
-        background-color: nth($ct-series-colors, $i + 1);
-        border-color: nth($ct-series-colors, $i + 1);
-      }
+    li {
+      position: relative !important;
+      display: inline-block;
+      padding-left: 23px !important;
+      margin-right: 10px;
+      margin-bottom: 3px;
+      cursor: pointer;
     }
-  }
-  .ct-legend-inside li {
-    display: block;
-    margin: 0;
-  }
-}
 
-@for $i from 0 to length($ct-series-colors) {
-  .ct-series-#{$i} {
-    .ct-legend {
-      .ct-series-0 {
+    li::before {
+      position: absolute !important;
+      top: 3px !important;
+      left: 0 !important;
+      width: 15px !important;
+      height: 15px !important;
+      content: '' !important;
+      border: 3px solid transparent;
+      border-radius: 2px !important;
+    }
+
+    li.inactive::before {
+      background: transparent !important;
+    }
+
+    &.ct-legend-inside {
+      position: absolute !important;
+      top: 0 !important;
+      right: 0 !important;
+    }
+
+    @for $i from 0 to length($ct-series-colors) {
+      .ct-series-#{$i} {
         color: nth($ct-series-colors, $i + 1);
         &::before {
           background-color: nth($ct-series-colors, $i + 1);
@@ -747,120 +731,138 @@ svg.ct-chart-line {
         }
       }
     }
-    .ct-series-a .ct-point,
-    .ct-series-a .ct-line {
-      stroke: nth($ct-series-colors, $i + 1) !important;
+    .ct-legend-inside li {
+      display: block;
+      margin: 0;
     }
   }
-}
 
-.ct-series-i .ct-point,
-.ct-series-i .ct-line {
-  stroke: nth(
-    $ct-series-colors,
-    9
-  ) !important; // use different color than chartist.css as color i is identical to color b there
-}
-
-.ct-series-p .ct-point,
-.ct-series-p .ct-line {
-  stroke: nth(
-    $ct-series-colors,
-    16
-  ) !important; // use different color than chartist.css as color i is identical to color b there
-}
-
-.ct-series-q .ct-point,
-.ct-series-q .ct-line {
-  stroke: nth(
-    $ct-series-colors,
-    17
-  ) !important; // use different color than chartist.css as color i is identical to color b there
-}
-
-.ct-series-r .ct-point,
-.ct-series-r .ct-line {
-  stroke: nth(
-    $ct-series-colors,
-    18
-  ) !important; // use different color than chartist.css as color i is identical to color b there
-}
-
-.ct-series-s .ct-point,
-.ct-series-s .ct-line {
-  stroke: nth(
-    $ct-series-colors,
-    19
-  ) !important; // use different color than chartist.css as color i is identical to color b there
-}
-
-.ct-series-t .ct-point,
-.ct-series-t .ct-line {
-  stroke: nth(
-    $ct-series-colors,
-    20
-  ) !important; // use different color than chartist.css as color i is identical to color b there
-}
-
-.ct-series-battery {
-  .ct-legend {
-    z-index: 1;
-    margin-bottom: 27px;
-    .ct-series-0 {
-      color: nth($ct-series-colors, 16) !important;
-      &::before {
-        background-color: nth($ct-series-colors, 16);
-        border-color: nth($ct-series-colors, 16) !important;
+  @for $i from 0 to length($ct-series-colors) {
+    .ct-series-#{$i} {
+      .ct-legend {
+        .ct-series-0 {
+          color: nth($ct-series-colors, $i + 1);
+          &::before {
+            background-color: nth($ct-series-colors, $i + 1);
+            border-color: nth($ct-series-colors, $i + 1);
+          }
+        }
       }
-    }
-    .ct-series-1 {
-      color: nth($ct-series-colors, 17) !important;
-      &::before {
-        background-color: nth($ct-series-colors, 17);
-        border-color: nth($ct-series-colors, 17) !important;
+      .ct-series-a .ct-point,
+      .ct-series-a .ct-line {
+        stroke: nth($ct-series-colors, $i + 1) !important;
       }
     }
   }
-  .ct-chart-line {
-    @include for-phone-only {
-      margin-left: -16px;
+
+  .ct-series-i .ct-point,
+  .ct-series-i .ct-line {
+    stroke: nth(
+      $ct-series-colors,
+      9
+    ) !important; // use different color than chartist.css as color i is identical to color b there
+  }
+
+  .ct-series-p .ct-point,
+  .ct-series-p .ct-line {
+    stroke: nth(
+      $ct-series-colors,
+      16
+    ) !important; // use different color than chartist.css as color i is identical to color b there
+  }
+
+  .ct-series-q .ct-point,
+  .ct-series-q .ct-line {
+    stroke: nth(
+      $ct-series-colors,
+      17
+    ) !important; // use different color than chartist.css as color i is identical to color b there
+  }
+
+  .ct-series-r .ct-point,
+  .ct-series-r .ct-line {
+    stroke: nth(
+      $ct-series-colors,
+      18
+    ) !important; // use different color than chartist.css as color i is identical to color b there
+  }
+
+  .ct-series-s .ct-point,
+  .ct-series-s .ct-line {
+    stroke: nth(
+      $ct-series-colors,
+      19
+    ) !important; // use different color than chartist.css as color i is identical to color b there
+  }
+
+  .ct-series-t .ct-point,
+  .ct-series-t .ct-line {
+    stroke: nth(
+      $ct-series-colors,
+      20
+    ) !important; // use different color than chartist.css as color i is identical to color b there
+  }
+
+  .ct-series-battery {
+    .ct-legend {
+      z-index: 1;
+      margin-bottom: 27px;
+      .ct-series-0 {
+        color: nth($ct-series-colors, 16) !important;
+        &::before {
+          background-color: nth($ct-series-colors, 16);
+          border-color: nth($ct-series-colors, 16) !important;
+        }
+      }
+      .ct-series-1 {
+        color: nth($ct-series-colors, 17) !important;
+        &::before {
+          background-color: nth($ct-series-colors, 17);
+          border-color: nth($ct-series-colors, 17) !important;
+        }
+      }
     }
-  }
-  .ct-series-a .ct-point,
-  .ct-series-a .ct-line {
-    stroke: nth($ct-series-colors, 16) !important;
-  }
-  .ct-series-b .ct-point,
-  .ct-series-b .ct-line {
-    stroke: nth($ct-series-colors, 17) !important;
-  }
-}
-// hacky solution to show all battery info in 1 chart. TODO: implement dual y-axis in 1 chart when option is enabled in chartist
-.ct-series-rssi {
-  &.rssi-chart-overlapping {
-    margin-top: -254px !important;
     .ct-chart-line {
       @include for-phone-only {
-        margin-top: -8px;
         margin-left: -16px;
       }
     }
-  }
-  .ct-legend {
-    .ct-series-0 {
-      color: nth($ct-series-colors, 12);
-      &::before {
-        background-color: nth($ct-series-colors, 12);
-        border-color: nth($ct-series-colors, 12);
-      }
+    .ct-series-a .ct-point,
+    .ct-series-a .ct-line {
+      stroke: nth($ct-series-colors, 16) !important;
+    }
+    .ct-series-b .ct-point,
+    .ct-series-b .ct-line {
+      stroke: nth($ct-series-colors, 17) !important;
     }
   }
-  .ct-series-a .ct-point,
-  .ct-series-a .ct-line {
-    stroke: nth($ct-series-colors, 12) !important;
-  }
-  .ct-labels .ct-label.ct-horizontal.ct-end {
-    display: none;
+  // hacky solution to show all battery info in 1 chart. TODO: implement dual y-axis in 1 chart when option is enabled in chartist
+  .ct-series-rssi {
+    &.rssi-chart-overlapping {
+      margin-top: -254px !important;
+      .ct-chart-line {
+        @include for-phone-only {
+          margin-top: -8px;
+          margin-left: -16px;
+        }
+      }
+    }
+    .ct-legend {
+      .ct-series-0 {
+        color: nth($ct-series-colors, 12);
+        &::before {
+          background-color: nth($ct-series-colors, 12);
+          border-color: nth($ct-series-colors, 12);
+        }
+      }
+    }
+    .ct-series-a .ct-point,
+    .ct-series-a .ct-line {
+      stroke: nth($ct-series-colors, 12) !important;
+    }
+    .ct-labels .ct-label.ct-horizontal.ct-end {
+      display: none;
+    }
   }
 }
 </style>
