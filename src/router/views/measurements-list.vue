@@ -28,11 +28,7 @@
             <v-icon class="color-grey-dark" @click="setTimeIndex(1)">
               mdi-chevron-left
             </v-icon>
-            <span
-              class="overline--big"
-              style="margin-top: 1px; margin-left: 2px;"
-              >{{ chartTitle }}</span
-            >
+            <span class="period-browser">{{ chartTitle }}</span>
             <v-icon
               v-if="timeIndex !== 0"
               class="color-grey-dark"
@@ -605,6 +601,23 @@ export default {
   }
 }
 
+.period-browser {
+  margin-top: 1px;
+  margin-left: 2px;
+  font-family: 'Roboto', sans-serif !important;
+  font-size: 1rem !important;
+  font-weight: 500;
+  line-height: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1666666667em !important;
+  @include for-phone-only {
+    margin-top: 0;
+    margin-left: 1px;
+    font-size: 14px !important;
+    letter-spacing: 0.15em !important;
+  }
+}
+
 .measurements-content {
   margin-top: 40px;
 }
@@ -651,9 +664,9 @@ svg.ct-chart-line {
 
 .ct-series {
   .ct-point {
-    stroke-width: 8px !important;
+    stroke-width: 6px !important;
     @include for-phone-only {
-      stroke-width: 6px !important;
+      stroke-width: 4px !important;
     }
   }
   .ct-line {
