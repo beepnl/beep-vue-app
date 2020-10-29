@@ -714,6 +714,46 @@ svg.ct-chart-line {
   ) !important; // use different color than chartist.css as color i is identical to color b there
 }
 
+.ct-series-p .ct-point,
+.ct-series-p .ct-line {
+  stroke: nth(
+    $ct-series-colors,
+    16
+  ) !important; // use different color than chartist.css as color i is identical to color b there
+}
+
+.ct-series-q .ct-point,
+.ct-series-q .ct-line {
+  stroke: nth(
+    $ct-series-colors,
+    17
+  ) !important; // use different color than chartist.css as color i is identical to color b there
+}
+
+.ct-series-r .ct-point,
+.ct-series-r .ct-line {
+  stroke: nth(
+    $ct-series-colors,
+    18
+  ) !important; // use different color than chartist.css as color i is identical to color b there
+}
+
+.ct-series-s .ct-point,
+.ct-series-s .ct-line {
+  stroke: nth(
+    $ct-series-colors,
+    19
+  ) !important; // use different color than chartist.css as color i is identical to color b there
+}
+
+.ct-series-t .ct-point,
+.ct-series-t .ct-line {
+  stroke: nth(
+    $ct-series-colors,
+    20
+  ) !important; // use different color than chartist.css as color i is identical to color b there
+}
+
 .ct-series-battery {
   .ct-legend {
     z-index: 1;
