@@ -91,39 +91,49 @@
 
           <div v-if="soundSensorsPresent">
             <div
-              class="overline mt-4 mb-3 text-center"
+              class="overline mt-4 mt-sm-6 mb-3 text-center"
               v-text="$t('Sound_measurements')"
             ></div>
             <chartist
               :class="`${interval} mb-4`"
               ratio="ct-chart"
               type="Line"
-              :data="chartDataSound(currentSoundSensors)"
+              :data="chartDataMultipleSeries(currentSoundSensors)"
               :options="chartOptions()"
             >
             </chartist>
           </div>
 
-          <div
-            class="overline mt-4 mb-3 text-center"
-            v-text="$t('Sensor_info')"
-          ></div>
-          <chartist
-            :class="interval"
-            ratio="ct-chart ct-series-battery"
-            type="Line"
-            :data="chartDataSensorInfo"
-            :options="chartOptions('V', true)"
-          >
-          </chartist>
-          <chartist
-            :class="interval"
-            ratio="ct-chart ct-series-rssi"
-            type="Line"
-            :data="chartDataSingleSeries('rssi', 'dBm')"
-            :options="chartOptionsRssi"
-          >
-          </chartist>
+          <div v-if="rssiSensorPresent || debugSensorsPresent">
+            <div
+              class="overline mt-4 mt-sm-6 mb-3 text-center"
+              v-text="$t('Sensor_info')"
+            ></div>
+            <chartist
+              v-if="debugSensorsPresent"
+              :class="interval"
+              ratio="ct-chart ct-series-battery"
+              type="Line"
+              :data="chartDataMultipleSeries(currentDebugSensors)"
+              :options="chartOptions('', true)"
+            >
+            </chartist>
+            <chartist
+              v-if="rssiSensorPresent"
+              :class="
+                `${interval} ${
+                  debugSensorsPresent ? 'rssi-chart-overlapping' : ''
+                }`
+              "
+              ratio="ct-chart ct-series-rssi"
+              type="Line"
+              :data="chartDataSingleSeries('rssi', 'dBm')"
+              :options="
+                debugSensorsPresent ? chartOptionsYaxisEnd : chartOptions('dBm')
+              "
+            >
+            </chartist>
+          </div>
         </v-col>
       </v-row>
     </v-container>
@@ -158,41 +168,16 @@ export default {
       selectedDate: '',
       currentSensors: [],
       currentSoundSensors: {},
+      currentDebugSensors: {},
       sensorsPresent: false,
       soundSensorsPresent: false,
+      debugSensorsPresent: false,
+      rssiSensorPresent: false,
     }
   },
   computed: {
     ...mapGetters('devices', ['devices']),
-    chartDataSensorInfo() {
-      // TODO: enable dual / composite / compound y-axis
-      var data = {
-        labels: [],
-        series: [
-          { name: this.$i18n.t('bv') + ' (V)', data: [] },
-          // { name: this.$i18n.t('rssi'), data: [] },
-          { name: this.$i18n.t('snr') + ' (dB)', data: [] },
-        ],
-      }
-      if (typeof this.measurementData.measurements !== 'undefined') {
-        this.measurementData.measurements.map((measurement, index) => {
-          if (
-            ((this.interval === 'month' || this.interval === 'year') &&
-              index !== 0) || // skip first value for month and year interval (belongs to previous month/year)
-            this.interval === 'hour' ||
-            this.interval === 'day' ||
-            this.interval === 'week'
-          ) {
-            data.labels.push(measurement.time)
-            data.series[0].data.push(measurement.bv)
-            // data.series[1].data.push(measurement.rssi)
-            data.series[1].data.push(measurement.snr)
-          }
-        })
-      }
-      return data
-    },
-    chartOptionsRssi() {
+    chartOptionsYaxisEnd() {
       return {
         fullWidth: true,
         height: '220px',
@@ -326,17 +311,32 @@ export default {
         // console.log(response)
         this.measurementData = response.data
         this.currentSensors = []
-        this.sensorsPresent = false
         this.currentSoundSensors = {}
+        this.currentDebugSensors = {}
+        this.sensorsPresent = false
         this.soundSensorsPresent = false
+        this.debugSensorsPresent = false
+        this.rssiSensorPresent = false
         Object.keys(this.measurementData.measurements[0]).map((quantity) => {
           if (this.SENSORS.indexOf(quantity) > -1) {
             this.currentSensors.push(quantity)
             this.sensorsPresent = true
           } else if (this.SOUND.indexOf(quantity) > -1) {
-            var sensorName = this.SENSOR_NAMES[quantity]
-            this.currentSoundSensors[sensorName] = quantity
+            var soundSensorName = this.SENSOR_NAMES[quantity]
+            this.currentSoundSensors[soundSensorName] = quantity
             this.soundSensorsPresent = true
+          } else if (this.DEBUG.indexOf(quantity) > -1) {
+            if (quantity === 'bv' || quantity === 'snr') {
+              var debugSensorName =
+                this.$i18n.t(quantity) +
+                ' (' +
+                this.SENSOR_UNITS[quantity] +
+                ')'
+              this.currentDebugSensors[debugSensorName] = quantity
+              this.debugSensorsPresent = true
+            } else if (quantity === 'rssi') {
+              this.rssiSensorPresent = true
+            }
           }
         })
 
@@ -380,15 +380,15 @@ export default {
       }
       return data
     },
-    chartDataSound(soundSensorObject) {
+    chartDataMultipleSeries(sensorObject) {
       var data = {
         labels: [],
         series: [],
       }
-      Object.keys(soundSensorObject)
+      Object.keys(sensorObject)
         .sort()
-        .map((soundSensorName) => {
-          data.series.push({ name: soundSensorName, data: [] })
+        .map((sensorName) => {
+          data.series.push({ name: sensorName, data: [] })
         })
       if (typeof this.measurementData.measurements !== 'undefined') {
         this.measurementData.measurements.map((measurement, index) => {
@@ -401,8 +401,8 @@ export default {
           ) {
             data.labels.push(measurement.time)
             data.series.map((serie, index) => {
-              var currentSoundSensor = soundSensorObject[serie.name]
-              serie.data.push(measurement[currentSoundSensor])
+              var currentSensor = sensorObject[serie.name]
+              serie.data.push(measurement[currentSensor])
             })
           }
         })
@@ -749,7 +749,15 @@ svg.ct-chart-line {
 }
 // hacky solution to show all battery info in 1 chart. TODO: implement dual y-axis in 1 chart when option is enabled in chartist
 .ct-series-rssi {
-  margin-top: -254px !important;
+  &.rssi-chart-overlapping {
+    margin-top: -254px !important;
+    .ct-chart-line {
+      @include for-phone-only {
+        margin-top: -8px;
+        margin-left: -16px;
+      }
+    }
+  }
   .ct-legend {
     .ct-series-0 {
       color: nth($ct-series-colors, 12);
@@ -757,12 +765,6 @@ svg.ct-chart-line {
         background-color: nth($ct-series-colors, 12);
         border-color: nth($ct-series-colors, 12);
       }
-    }
-  }
-  .ct-chart-line {
-    @include for-phone-only {
-      margin-top: -8px;
-      margin-left: -16px;
     }
   }
   .ct-series-a .ct-point,
