@@ -55,6 +55,9 @@
             @input="loadData"
           />
         </v-col>
+        <v-col v-if="!lastSensorDate" cols="12" class="text-center mt-10">
+          {{ $t('no_data') }}
+        </v-col>
         <v-col cols="12">
           <div
             class="overline mb-3 text-center"
@@ -74,7 +77,22 @@
         >
           <v-progress-circular color="primary" size="50" indeterminate />
         </v-col>
-        <v-col v-if="measurementData !== null" cols="12">
+        <v-col
+          v-if="
+            measurementData !== null &&
+              measurementData.measurements.length === 0
+          "
+          cols="12"
+          class="text-center mt-10"
+        >
+          {{ $t('no_chart_data') }}
+        </v-col>
+        <v-col
+          v-if="
+            measurementData !== null && measurementData.measurements.length > 0
+          "
+          cols="12"
+        >
           <div v-if="sensorsPresent">
             <div class="overline mb-3 text-center" v-text="$t('sensor')"></div>
             <chartist
@@ -155,6 +173,7 @@ export default {
   data() {
     return {
       selectedSensorId: 257, // 257 60
+      lastSensorDate: null,
       lastSensorValues: {},
       measurementData: {},
       interval: 'day',
@@ -287,6 +306,7 @@ export default {
           '/sensors/lastvalues?id=' + this.selectedSensorId
         )
         this.lastSensorValues = response.data
+        this.lastSensorDate = response.data.time
         return true
       } catch (error) {
         console.log('Error: ', error)
