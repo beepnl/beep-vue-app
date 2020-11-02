@@ -118,102 +118,140 @@
             </vue-ellipse-progress>
           </div>
         </v-col>
-        <v-col
-          v-if="measurementData === null"
-          class="d-flex align-center justify-center"
-          style="margin-top: 20vh;"
-          cols="12"
-        >
-          <v-progress-circular color="primary" size="50" indeterminate />
-        </v-col>
-        <v-col v-if="noChartData" cols="12" class="text-center mt-10">
-          {{ $t('no_chart_data') }}
-        </v-col>
-        <v-col v-if="measurementData !== null" cols="12" class="charts">
-          <div
-            class="overline mb-3 text-center"
-            v-text="
-              selectedDevice
-                ? $t('measurements') +
-                  ': ' +
-                  selectedDevice.hive_name +
-                  ' - ' +
-                  selectedDevice.name
-                : $t('measurements')
+
+        <v-card outlined class="mt-3">
+          <v-card-title
+            :class="
+              `hive-inspect-card-title ${
+                showMeasurements ? 'hive-inspect-card-title--border-bottom' : ''
+              }`
             "
-          ></div>
-          <div v-if="sensorsPresent">
-            <div
-              class="overline mb-3 text-center"
-              v-text="
-                measurementData.resolution
-                  ? $t('sensor') +
-                    ' (' +
-                    $t('measurement_interval') +
-                    ': ' +
-                    measurementData.resolution +
-                    ')'
-                  : $t('sensor')
-              "
-            ></div>
-            <chartist
-              v-for="(sensor, index) in currentSensors"
-              :key="index"
-              :class="`${interval} mb-4`"
-              :ratio="`ct-chart ct-series-${index}`"
-              type="Line"
-              :data="chartDataSingleSeries(sensor, SENSOR_UNITS[sensor])"
-              :options="chartOptions(SENSOR_UNITS[sensor])"
-            >
-            </chartist>
-          </div>
+          >
+            <v-row>
+              <v-col cols="12" class="py-0">
+                <span>{{
+                  selectedDevice
+                    ? $t('measurements') +
+                      ': ' +
+                      selectedDevice.hive_name +
+                      ' - ' +
+                      selectedDevice.name
+                    : $t('measurements')
+                }}</span>
+                <div class="float-right">
+                  <v-icon
+                    :class="
+                      `toggle-icon mdi ${
+                        showMeasurements ? 'mdi-minus' : 'mdi-plus'
+                      }`
+                    "
+                    @click="showMeasurements = !showMeasurements"
+                  ></v-icon>
+                </div>
+              </v-col>
+            </v-row>
+          </v-card-title>
 
-          <div v-if="soundSensorsPresent">
-            <div
-              class="overline mt-4 mt-sm-6 mb-3 text-center"
-              v-text="$t('Sound_measurements')"
-            ></div>
-            <chartist
-              :class="`${interval} mb-4`"
-              ratio="ct-chart"
-              type="Line"
-              :data="chartDataMultipleSeries(currentSoundSensors)"
-              :options="chartOptions()"
-            >
-            </chartist>
-          </div>
+          <SlideYUpTransition :duration="150">
+            <!-- New dynamic checklist -->
+            <v-card-text v-if="showMeasurements === true">
+              <v-row class="sub-inspection-wrapper">
+                <v-col
+                  v-if="measurementData === null"
+                  class="d-flex align-center justify-center"
+                  style="margin-top: 20vh;"
+                  cols="12"
+                >
+                  <v-progress-circular
+                    color="primary"
+                    size="50"
+                    indeterminate
+                  />
+                </v-col>
+                <v-col v-if="noChartData" cols="12" class="text-center mt-10">
+                  {{ $t('no_chart_data') }}
+                </v-col>
+                <v-col v-if="measurementData !== null" cols="12" class="charts">
+                  <div v-if="sensorsPresent">
+                    <div
+                      class="overline mb-3 text-center"
+                      v-text="
+                        measurementData.resolution
+                          ? $t('sensor') +
+                            ' (' +
+                            $t('measurement_interval') +
+                            ': ' +
+                            measurementData.resolution +
+                            ')'
+                          : $t('sensor')
+                      "
+                    ></div>
+                    <chartist
+                      v-for="(sensor, index) in currentSensors"
+                      :key="index"
+                      :class="`${interval} mb-4`"
+                      :ratio="`ct-chart ct-series-${index}`"
+                      type="Line"
+                      :data="
+                        chartDataSingleSeries(sensor, SENSOR_UNITS[sensor])
+                      "
+                      :options="chartOptions(SENSOR_UNITS[sensor])"
+                    >
+                    </chartist>
+                  </div>
 
-          <div v-if="rssiSensorPresent || debugSensorsPresent">
-            <div
-              class="overline mt-4 mt-sm-6 mb-3 text-center"
-              v-text="$t('Sensor_info')"
-            ></div>
-            <chartist
-              v-if="debugSensorsPresent"
-              :class="interval"
-              ratio="ct-chart ct-series-battery"
-              type="Line"
-              :data="chartDataMultipleSeries(currentDebugSensors)"
-              :options="chartOptions('', true)"
-            >
-            </chartist>
-            <chartist
-              v-if="rssiSensorPresent"
-              :class="
-                `${interval} ${
-                  debugSensorsPresent ? 'rssi-chart-overlapping' : ''
-                }`
-              "
-              ratio="ct-chart ct-series-rssi"
-              type="Line"
-              :data="chartDataSingleSeries('rssi', 'dBm')"
-              :options="
-                debugSensorsPresent ? chartOptionsYaxisEnd : chartOptions('dBm')
-              "
-            >
-            </chartist>
-          </div>
-        </v-col>
+                  <div v-if="soundSensorsPresent">
+                    <div
+                      class="overline mt-4 mt-sm-6 mb-3 text-center"
+                      v-text="$t('Sound_measurements')"
+                    ></div>
+                    <chartist
+                      :class="`${interval} mb-4`"
+                      ratio="ct-chart"
+                      type="Line"
+                      :data="chartDataMultipleSeries(currentSoundSensors)"
+                      :options="chartOptions()"
+                    >
+                    </chartist>
+                  </div>
+
+                  <div v-if="rssiSensorPresent || debugSensorsPresent">
+                    <div
+                      class="overline mt-4 mt-sm-6 mb-3 text-center"
+                      v-text="$t('Sensor_info')"
+                    ></div>
+                    <chartist
+                      v-if="debugSensorsPresent"
+                      :class="interval"
+                      ratio="ct-chart ct-series-battery"
+                      type="Line"
+                      :data="chartDataMultipleSeries(currentDebugSensors)"
+                      :options="chartOptions('', true)"
+                    >
+                    </chartist>
+                    <chartist
+                      v-if="rssiSensorPresent"
+                      :class="
+                        `${interval} ${
+                          debugSensorsPresent ? 'rssi-chart-overlapping' : ''
+                        }`
+                      "
+                      ratio="ct-chart ct-series-rssi"
+                      type="Line"
+                      :data="chartDataSingleSeries('rssi', 'dBm')"
+                      :options="
+                        debugSensorsPresent
+                          ? chartOptionsYaxisEnd
+                          : chartOptions('dBm')
+                      "
+                    >
+                    </chartist>
+                  </div>
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </SlideYUpTransition>
+        </v-card>
       </v-row>
     </v-container>
   </Layout>
@@ -226,9 +264,10 @@ import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import 'chartist/dist/chartist.min.css'
 import { sensorMixin } from '@mixins/sensorMixin'
+import { SlideYUpTransition } from 'vue2-transitions'
 
 export default {
-  components: { Layout, Treeselect },
+  components: { Layout, SlideYUpTransition, Treeselect },
   mixins: [sensorMixin],
   data() {
     return {
@@ -250,6 +289,7 @@ export default {
       rssiSensorPresent: false,
       noChartData: false,
       currentLastSensorValues: [],
+      showMeasurements: true,
     }
   },
   computed: {
