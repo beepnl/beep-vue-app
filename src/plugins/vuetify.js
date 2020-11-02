@@ -5,6 +5,9 @@ import colors from 'vuetify/lib/util/colors'
 Vue.use(Vuetify)
 
 export default new Vuetify({
+  breakpoint: {
+    mobileBreakpoint: 'xs', // This is equivalent to a value of 600
+  },
   icons: {
     iconfont: 'mdi',
   },

@@ -76,6 +76,66 @@
     }
   }
 
+  &-bv {
+    font-size: 15px;
+    &::before {
+      font-family: 'Material Design Icons';
+      content: '\F0081';
+    }
+  }
+
+  &-h {
+    font-size: 18px;
+    &::before {
+      font-family: 'Material Design Icons';
+      content: '\F058E';
+    }
+  }
+
+  &-p {
+    font-size: 15px;
+    &::before {
+      font-family: 'Material Design Icons';
+      content: '\F015F';
+    }
+  }
+
+  &-snr,
+  &-rssi {
+    font-size: 15px;
+    &::before {
+      font-family: 'Material Design Icons';
+      content: '\F0493';
+    }
+  }
+
+  &-t,
+  &-t_0,
+  &-t_1,
+  &-t_2,
+  &-t_3,
+  &-t_4,
+  &-t_5,
+  &-t_6,
+  &-t_7,
+  &-t_8,
+  &-t_9,
+  &-t_i {
+    font-size: 16px;
+    &::before {
+      font-family: 'Material Design Icons';
+      content: '\F050F';
+    }
+  }
+
+  &-weight_kg {
+    font-size: 15px;
+    &::before {
+      font-family: 'Material Design Icons';
+      content: '\F05A1';
+    }
+  }
+
   &-magnify {
     font-size: 15px;
     &::before {

@@ -59,51 +59,61 @@
             class="overline mb-3 text-center"
             v-text="$t('last_measurement')"
           ></div>
-          <vue-ellipse-progress
-            v-for="(sensorData, index) in currentLastSensorValues"
-            :key="sensorData + index"
-            class="mr-2"
-            :progress="
-              calculateProgress(
-                SENSOR_MIN[sensorData.name],
-                SENSOR_MAX[sensorData.name],
-                // eslint-disable-next-line vue/comma-dangle
-                sensorData.value
-              )
-            "
-            :legend-value="sensorData.value"
-            :color="
-              sensorData.value < SENSOR_LOW[sensorData.name]
-                ? '#ffcc66'
-                : sensorData.value > SENSOR_HIGH[sensorData.name]
-                ? '#f00'
-                : '#417505'
-            "
-            :size="100"
-            half
-            :angle="0"
-          >
-            <template v-slot="{ counterTick }">
-              <span
-                :style="
-                  `color: ${
-                    sensorData.value < SENSOR_LOW[sensorData.name]
-                      ? '#ffcc66'
-                      : sensorData.value > SENSOR_HIGH[sensorData.name]
-                      ? '#f00'
-                      : '#417505'
-                  };`
-                "
-              >
-                {{ counterTick.currentValue }}</span
-              ><span style="font-size: 0.75rem;">{{
-                SENSOR_UNITS[sensorData.name]
-              }}</span>
-              <div class="gauge-label">{{
-                $t(SENSOR_NAMES[sensorData.name])
-              }}</div>
-            </template>
-          </vue-ellipse-progress>
+          <div class="d-flex flex-wrap justify-center">
+            <vue-ellipse-progress
+              v-for="(sensorData, index) in currentLastSensorValues"
+              :key="sensorData + index"
+              class="mr-2"
+              :progress="
+                calculateProgress(
+                  SENSOR_MIN[sensorData.name],
+                  SENSOR_MAX[sensorData.name],
+                  // eslint-disable-next-line vue/comma-dangle
+                  sensorData.value
+                )
+              "
+              :legend-value="sensorData.value"
+              :color="
+                sensorData.value < SENSOR_LOW[sensorData.name]
+                  ? '#ffcc66'
+                  : sensorData.value > SENSOR_HIGH[sensorData.name]
+                  ? '#f00'
+                  : '#417505'
+              "
+              :size="mobile ? 75 : 100"
+              half
+              :angle="0"
+            >
+              <template v-slot="{ counterTick }">
+                <v-sheet
+                  :class="
+                    `beep-icon beep-icon-${sensorData.name} mt-2 mb-n2 mt-sm-1 mb-sm-n1`
+                  "
+                ></v-sheet>
+                <div
+                  :style="
+                    `color: ${
+                      sensorData.value < SENSOR_LOW[sensorData.name]
+                        ? '#ffcc66'
+                        : sensorData.value > SENSOR_HIGH[sensorData.name]
+                        ? '#f00'
+                        : '#417505'
+                    };
+                  font-size: ${mobile ? '14px' : '16px'}
+                  ;`
+                  "
+                >
+                  {{ counterTick.currentValue
+                  }}<span style="font-size: 0.75rem;">{{
+                    SENSOR_UNITS[sensorData.name]
+                  }}</span></div
+                >
+                <div class="gauge-label">{{
+                  $t(SENSOR_NAMES[sensorData.name])
+                }}</div>
+              </template>
+            </vue-ellipse-progress>
+          </div>
         </v-col>
         <v-col
           v-if="measurementData === null"
@@ -257,6 +267,9 @@ export default {
         },
       }
     },
+    mobile() {
+      return this.$vuetify.breakpoint.mobile
+    },
     periods() {
       return [
         { name: this.$i18n.t('hour'), interval: 'hour', moduloNumber: 1 },
@@ -341,7 +354,7 @@ export default {
         this.currentLastSensorValues = []
         const allLastSensorValues = response.data
         Object.entries(allLastSensorValues).map(([key, value]) => {
-          if (value !== null && key.includes('weight_kg')) {
+          if (value !== null && key === 'weight_kg') {
             const roundedValue = Math.round(value * 1e4) / 1e4
             this.currentLastSensorValues.push({
               value: roundedValue,
@@ -694,7 +707,9 @@ export default {
 .measurements-content {
   margin-top: 40px;
 }
-
+.ep-legend--value {
+  margin-top: -24px !important;
+}
 .gauge-label {
   max-width: 75px;
   font-size: 0.6rem !important;
