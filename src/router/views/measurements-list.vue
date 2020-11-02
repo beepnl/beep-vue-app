@@ -54,16 +54,56 @@
         <v-col v-if="!lastSensorDate" cols="12" class="text-center my-10">
           {{ $t('no_data') }}
         </v-col>
-        <v-col cols="12">
+        <v-col v-if="currentLastSensorValues.length > 0" cols="12">
           <div
             class="overline mb-3 text-center"
             v-text="$t('last_measurement')"
           ></div>
-          batterij: {{ lastSensorValues.bv }}, luchtdruk:
-          {{ lastSensorValues.p }}, luchtvochtigheid: {{ lastSensorValues.h }},
-          temp in kast: {{ lastSensorValues.t_i }}, temperatuur:
-          {{ lastSensorValues.t }}, zendruis: {{ lastSensorValues.snr }},
-          zendsterkte: {{ lastSensorValues.rssi }}
+          <vue-ellipse-progress
+            v-for="(sensorData, index) in currentLastSensorValues"
+            :key="sensorData + index"
+            class="mr-2"
+            :progress="
+              calculateProgress(
+                SENSOR_MIN[sensorData.name],
+                SENSOR_MAX[sensorData.name],
+                // eslint-disable-next-line vue/comma-dangle
+                sensorData.value
+              )
+            "
+            :legend-value="sensorData.value"
+            :color="
+              sensorData.value < SENSOR_LOW[sensorData.name]
+                ? '#ffcc66'
+                : sensorData.value > SENSOR_HIGH[sensorData.name]
+                ? '#f00'
+                : '#417505'
+            "
+            :size="100"
+            half
+            :angle="0"
+          >
+            <template v-slot="{ counterTick }">
+              <span
+                :style="
+                  `color: ${
+                    sensorData.value < SENSOR_LOW[sensorData.name]
+                      ? '#ffcc66'
+                      : sensorData.value > SENSOR_HIGH[sensorData.name]
+                      ? '#f00'
+                      : '#417505'
+                  };`
+                "
+              >
+                {{ counterTick.currentValue }}</span
+              ><span style="font-size: 0.75rem;">{{
+                SENSOR_UNITS[sensorData.name]
+              }}</span>
+              <div class="gauge-label">{{
+                $t(SENSOR_NAMES[sensorData.name])
+              }}</div>
+            </template>
+          </vue-ellipse-progress>
         </v-col>
         <v-col
           v-if="measurementData === null"
@@ -156,7 +196,6 @@ export default {
   data() {
     return {
       lastSensorDate: null,
-      lastSensorValues: {},
       measurementData: {},
       devices: [],
       interval: 'day',
@@ -164,10 +203,7 @@ export default {
       timeZone: 'Europe/Amsterdam',
       moduloNumber: 6,
       chartTitle: '',
-      startTime: '',
-      endTime: '',
-      dateFormat: 'yyyy-MM-dd',
-      selectedDate: '',
+      timeFormat: 'ddd D MMM YYYY',
       currentSensors: [],
       currentSoundSensors: {},
       currentDebugSensors: {},
@@ -176,6 +212,7 @@ export default {
       debugSensorsPresent: false,
       rssiSensorPresent: false,
       noChartData: false,
+      currentLastSensorValues: [],
     }
   },
   computed: {
@@ -189,14 +226,14 @@ export default {
         },
         plugins: [
           this.$chartist.plugins.legend({
-            clickable: true, // Doesn't work yet with single series data
+            removeAll: true,
           }),
           this.$chartist.plugins.ctPointLabels({
             labelOffset: {
-              x: 7,
-              y: 0,
+              x: 0, // 7
+              y: -7, // 0
             },
-            textAnchor: 'start',
+            textAnchor: 'middle', // 'start'
             labelInterpolationFnc(value) {
               if (typeof value !== 'undefined') {
                 return value.toFixed(1)
@@ -301,7 +338,39 @@ export default {
         const response = await Api.readRequest(
           '/sensors/lastvalues?id=' + this.selectedDeviceId
         )
-        this.lastSensorValues = response.data
+        this.currentLastSensorValues = []
+        const allLastSensorValues = response.data
+        Object.entries(allLastSensorValues).map(([key, value]) => {
+          if (value !== null && key.includes('weight_kg')) {
+            const roundedValue = Math.round(value * 1e4) / 1e4
+            this.currentLastSensorValues.push({
+              value: roundedValue,
+              name: key,
+            })
+          } else if (
+            value !== null &&
+            key !== 'time' &&
+            (this.SENSORS.indexOf(key) > -1 || this.DEBUG.indexOf(key) > -1)
+          ) {
+            this.currentLastSensorValues.push({ value: value, name: key })
+          }
+        })
+
+        const self = this
+        var sortedArray = this.currentLastSensorValues
+          .slice()
+          .sort(function(a, b) {
+            const compareA = self.$i18n.t(a.name)
+            const compareB = self.$i18n.t(b.name)
+            if (compareA < compareB) {
+              return -1
+            }
+            if (compareA > compareB) {
+              return 1
+            }
+            return 0
+          })
+        this.currentLastSensorValues = sortedArray
         this.lastSensorDate = response.data.time
         return true
       } catch (error) {
@@ -376,6 +445,13 @@ export default {
         console.log('Error: ', error)
       }
     },
+    calculateProgress(min, max, value) {
+      if (value > max) {
+        return 100
+      } else {
+        return ((value - min) / (max - min)) * 100
+      }
+    },
     chartDataSingleSeries(quantity, unit) {
       var data = {
         labels: [],
@@ -440,13 +516,15 @@ export default {
         fullWidth: true,
         height: '220px',
         plugins: [
-          this.$chartist.plugins.legend(),
+          this.$chartist.plugins.legend({
+            removeAll: true,
+          }),
           this.$chartist.plugins.ctPointLabels({
             labelOffset: {
-              x: 7,
-              y: 0,
+              x: 0,
+              y: -7,
             },
-            textAnchor: 'start',
+            textAnchor: 'middle',
             labelInterpolationFnc(value) {
               if (typeof value !== 'undefined' && unit === 'mbar') {
                 return value + ' ' + unit
@@ -520,8 +598,8 @@ export default {
       var p = this.interval
       var d = p + 's'
       var i = this.timeIndex
-      var startTimeFormat = 'ddd D MMM YYYY'
-      var endTimeFormat = 'ddd D MMM YYYY'
+      var startTimeFormat = this.timeFormat
+      var endTimeFormat = this.timeFormat
 
       if (p === 'hour') {
         endTimeFormat = 'HH:mm'
@@ -541,15 +619,10 @@ export default {
         .subtract(i, d)
         .endOf(ep)
 
-      var s = pStaTime.format(startTimeFormat)
-      var e = pEndTime.format(endTimeFormat)
+      var s = pStaTime.locale(this.$i18n.locale).format(startTimeFormat)
+      var e = pEndTime.locale(this.$i18n.locale).format(endTimeFormat)
 
       this.chartTitle = s + '' + (endTimeFormat !== null ? ' - ' + e : '')
-
-      this.startTime = pStaTime
-      this.endTime = pEndTime
-
-      this.selectedDate = pStaTime.format(this.dateFormat.toUpperCase())
     },
     setInitialDeviceId() {
       if (this.selectedDeviceId === null) {
@@ -620,6 +693,13 @@ export default {
 
 .measurements-content {
   margin-top: 40px;
+}
+
+.gauge-label {
+  max-width: 75px;
+  font-size: 0.6rem !important;
+  line-height: 1 !important;
+  word-break: break-word;
 }
 
 .charts {

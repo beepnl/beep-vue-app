@@ -17,12 +17,14 @@ import vueCountryRegionSelect from 'vue-country-region-select'
 import './plugins/element.js'
 import 'chartist-plugin-legend'
 import 'chartist-plugin-pointlabels'
+import VueEllipseProgress from 'vue-ellipse-progress'
 
 import App from './app.vue'
 
 Vue.use(VueI18n)
 Vue.use(vueCountryRegionSelect)
 Vue.use(require('vue-chartist'))
+Vue.use(VueEllipseProgress)
 Vue.prototype.$moment = moment
 
 // Don't warn about using the dev version of Vue in development.
