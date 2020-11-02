@@ -57,7 +57,7 @@
         <v-col v-if="currentLastSensorValues.length > 0" cols="12">
           <div
             class="overline mb-3 text-center"
-            v-text="$t('last_measurement')"
+            v-text="$t('last_measurement') + ': ' + momentFull(lastSensorDate)"
           ></div>
           <div class="d-flex flex-wrap justify-center">
             <vue-ellipse-progress
@@ -81,6 +81,9 @@
                   : '#417505'
               "
               :size="mobile ? 75 : 100"
+              empty-color="#eee"
+              :thickness="4"
+              :empty-thickness="3"
               half
               :angle="0"
             >
@@ -127,8 +130,32 @@
           {{ $t('no_chart_data') }}
         </v-col>
         <v-col v-if="measurementData !== null" cols="12" class="charts">
+          <div
+            class="overline mb-3 text-center"
+            v-text="
+              selectedDevice
+                ? $t('measurements') +
+                  ': ' +
+                  selectedDevice.hive_name +
+                  ' - ' +
+                  selectedDevice.name
+                : $t('measurements')
+            "
+          ></div>
           <div v-if="sensorsPresent">
-            <div class="overline mb-3 text-center" v-text="$t('sensor')"></div>
+            <div
+              class="overline mb-3 text-center"
+              v-text="
+                measurementData.resolution
+                  ? $t('sensor') +
+                    ' (' +
+                    $t('measurement_interval') +
+                    ': ' +
+                    measurementData.resolution +
+                    ')'
+                  : $t('sensor')
+              "
+            ></div>
             <chartist
               v-for="(sensor, index) in currentSensors"
               :key="index"
@@ -267,6 +294,9 @@ export default {
         },
       }
     },
+    locale() {
+      return this.$i18n.locale
+    },
     mobile() {
       return this.$vuetify.breakpoint.mobile
     },
@@ -278,6 +308,13 @@ export default {
         { name: this.$i18n.t('month'), interval: 'month', moduloNumber: 8 },
         { name: this.$i18n.t('year'), interval: 'year', moduloNumber: 11 },
       ]
+    },
+    selectedDevice() {
+      return (
+        this.devices.filter((device) => {
+          return device.id === this.selectedDeviceId
+        })[0] || null
+      )
     },
     selectedDeviceId: {
       get() {
@@ -573,23 +610,33 @@ export default {
     loadData() {
       this.setDataTitle()
       this.loadLastSensorValues()
+      // if (this.currentLastSensorValues.length === 0) {
+      //   this.loadLastSensorValues()
+      // }
+      // window.setInterval(() => {
+      //   this.loadLastSensorValues()
+      // }, 10000)
       this.sensorMeasurementRequest(this.interval)
-      // this.loadRemoteSensorMeasurements(this.activePeriod, this.periodIndex, this.timeGroup, this.timeZone, id)
+    },
+    momentFull(date) {
+      return this.$moment(date)
+        .locale(this.locale)
+        .format('llll')
     },
     momentFromISO8601(date) {
       if (this.interval === 'hour') {
         return this.$moment(date)
-          .locale(this.$i18n.locale)
+          .locale(this.locale)
           .format('LT')
       } else if (this.interval === 'day' || this.interval === 'week') {
-        var unit = this.$i18n.locale === 'nl' ? 'u' : 'h'
+        var unit = this.locale === 'nl' ? 'u' : 'h'
         return (
           this.$moment(date)
-            .locale(this.$i18n.locale)
+            .locale(this.locale)
             .format('ddd') +
           ' ' +
           this.$moment(date)
-            .locale(this.$i18n.locale)
+            .locale(this.locale)
             .format('H') +
           unit
         )
@@ -599,7 +646,7 @@ export default {
         const currentYearEsPt = ' de ' + currentYear
         const currentYearNl = '. ' + currentYear
         return this.$moment(date)
-          .locale(this.$i18n.locale)
+          .locale(this.locale)
           .format('ll')
           .replace(currentYearNl, '')
           .replace(currentYearEn, '')
@@ -632,8 +679,8 @@ export default {
         .subtract(i, d)
         .endOf(ep)
 
-      var s = pStaTime.locale(this.$i18n.locale).format(startTimeFormat)
-      var e = pEndTime.locale(this.$i18n.locale).format(endTimeFormat)
+      var s = pStaTime.locale(this.locale).format(startTimeFormat)
+      var e = pEndTime.locale(this.locale).format(endTimeFormat)
 
       this.chartTitle = s + '' + (endTimeFormat !== null ? ' - ' + e : '')
     },

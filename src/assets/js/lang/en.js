@@ -562,6 +562,13 @@ const translations = {
   beep_base_explanation:
     "If you have a BEEP base (shown in the picture above), please use the native app (iOS and Android) to set-up the communication with this app. If you don't have a BEEP base yet, please click on the menu item 'BEEP website' for updates on how to get a BEEP base. I you have your own measurement device and would like to see the data in the BEEP app, please send us a message to ask for joining our Slack community and you can get access to the API description.",
 
+  sample_code_hive: 'First select a hive, to generate a unique sample code',
+  sample_code_generate: 'Generate unique sample code',
+  sample_code_delete: 'Delete unique sample code',
+
+  measurement_interval: 'interval',
+  from_weather_service: 'from weather service',
+
   /* New translations v3 */
   click_hives_to_filter: 'Click hives to filter',
   for: 'for',
