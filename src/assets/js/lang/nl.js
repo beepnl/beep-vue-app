@@ -62,7 +62,7 @@ const translations = {
   lighting: 'Sfeerverlichting',
   camera: 'Camera',
   weather: 'Weer',
-  sensors: 'Meetsystemen',
+  sensors: 'Sensoren',
   sensors_na:
     'Hier komt straks een overzicht van jouw BEEP sensoren, waarmee je kasten op afstand kunt monitoren. Je kunt ook sensoren van andere partijen koppelen, mits ze een API hebben, waarmee je de data kunt uitlezen.',
 
@@ -282,7 +282,7 @@ const translations = {
   sensors_title: 'Meetsysteem instellingen',
   sensors_description: 'Meetsysteem status en registratie',
   //   sensors: 'Meetsystemen',
-  sensor: 'Meetsysteem',
+  sensor: 'Sensor',
 
   Select: 'Selecteer',
   Not_selected: 'Niet geselecteerd',
@@ -637,6 +637,7 @@ const translations = {
   edit_details: 'Aanpassen details',
   remove_queen: 'Verwijder koningin',
   remove_group_short: 'Verwijder samenwerkingsgroep',
+  device: 'meetsysteem | meetsystemen',
 }
 
 export default translations

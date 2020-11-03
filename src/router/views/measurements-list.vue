@@ -1,6 +1,6 @@
 <template>
   <Layout :no-box-shadow="true">
-    <div class="period-bar-wrapper">
+    <div v-if="devices.length > 0" class="period-bar-wrapper">
       <v-container class="period-container">
         <v-row
           class="period-bar d-flex flex-row justify-space-between align-center"
@@ -21,14 +21,14 @@
         </v-row>
       </v-container>
     </div>
-    <v-container class="measurements-content">
+    <v-container :class="devices.length > 0 ? 'measurements-content' : ''">
       <v-row>
-        <v-col cols="12">
+        <v-col v-if="devices.length > 0" cols="12">
           <div class="d-flex align-center justify-center">
             <v-icon class="color-grey-dark" @click="setTimeIndex(1)">
               mdi-chevron-left
             </v-icon>
-            <span class="period-browser">{{ chartTitle }}</span>
+            <span class="period-title">{{ periodTitle }}</span>
             <v-icon
               v-if="timeIndex !== 0"
               class="color-grey-dark"
@@ -38,10 +38,11 @@
             </v-icon>
           </div>
         </v-col>
-        <v-col cols="12">
+        <v-col class="d-flex justify-space-between" cols="12">
           <Treeselect
-            v-if="devices"
+            v-if="devices.length > 0"
             v-model="selectedDeviceId"
+            class="mr-3"
             :options="sortedDevices"
             :placeholder="`${$t('Select')} ${$tc('hive', 1)}`"
             :no-results-text="`${$t('no_results')}`"
@@ -50,238 +51,272 @@
             search-nested
             @input="loadData"
           />
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col v-if="!lastSensorDate" cols="12" class="text-center my-10">
-          {{ $t('no_data') }}
+          <v-spacer></v-spacer>
+          <v-btn
+            tile
+            outlined
+            :small="mobile && devices.length > 0"
+            href="/devices"
+            class="edit-button"
+            color="primary"
+          >
+            <v-icon :left="!mobile">mdi-pencil</v-icon>
+            {{
+              mobile && devices.length > 0
+                ? ''
+                : $t('edit') + ' ' + $tc('device', 2)
+            }}
+          </v-btn>
         </v-col>
       </v-row>
 
-      <v-card outlined class="mt-3">
-        <v-card-title
-          :class="
-            `measurements-card-title ${
-              showLastSensorValues
-                ? 'measurements-card-title--border-bottom'
-                : ''
-            }`
-          "
-        >
-          <v-row>
-            <v-col cols="12" class="py-0">
-              <span
-                v-text="
-                  mobile
-                    ? $t('Last') + ': ' + momentFull(lastSensorDate)
-                    : $t('last_measurement') + ': ' + momentFull(lastSensorDate)
-                "
-              ></span>
-              <div class="float-right">
-                <v-icon
-                  :class="
-                    `toggle-icon mdi ${
-                      showLastSensorValues ? 'mdi-minus' : 'mdi-plus'
-                    }`
-                  "
-                  @click="showLastSensorValues = !showLastSensorValues"
-                ></v-icon>
-              </div>
-            </v-col>
-          </v-row>
-        </v-card-title>
-
-        <SlideYUpTransition :duration="150">
-          <v-card-text v-if="showLastSensorValues">
+      <div v-if="devices.length > 0">
+        <v-card v-if="lastSensorDate" outlined class="mt-3">
+          <v-card-title
+            :class="
+              `measurements-card-title ${
+                showLastSensorValues
+                  ? 'measurements-card-title--border-bottom'
+                  : ''
+              }`
+            "
+          >
             <v-row>
-              <v-col v-if="currentLastSensorValues.length > 0" cols="12">
-                <div class="d-flex flex-wrap justify-center mt-5 mt-sm-7">
-                  <vue-ellipse-progress
-                    v-for="(sensorData, index) in currentLastSensorValues"
-                    :key="sensorData + index"
-                    class="mr-2"
-                    :progress="
-                      calculateProgress(
-                        SENSOR_MIN[sensorData.name],
-                        SENSOR_MAX[sensorData.name],
-                        // eslint-disable-next-line vue/comma-dangle
-                        sensorData.value
-                      )
+              <v-col cols="12" class="py-0">
+                <span
+                  v-text="
+                    mobile
+                      ? $t('Last') + ': ' + momentFull(lastSensorDate)
+                      : $t('last_measurement') +
+                        ': ' +
+                        momentFull(lastSensorDate)
+                  "
+                ></span>
+                <div class="float-right">
+                  <v-icon
+                    :class="
+                      `toggle-icon mdi ${
+                        showLastSensorValues ? 'mdi-minus' : 'mdi-plus'
+                      }`
                     "
-                    :legend-value="sensorData.value"
-                    :color="
-                      sensorData.value < SENSOR_LOW[sensorData.name]
-                        ? '#ffcc66'
-                        : sensorData.value > SENSOR_HIGH[sensorData.name]
-                        ? '#f00'
-                        : '#417505'
-                    "
-                    :size="mobile ? 75 : 100"
-                    empty-color="#eee"
-                    :thickness="4"
-                    :empty-thickness="3"
-                    half
-                    :angle="0"
-                  >
-                    <template v-slot="{ counterTick }">
-                      <v-sheet
-                        :class="
-                          `beep-icon beep-icon-${sensorData.name} mt-2 mb-n2 mt-sm-1 mb-sm-n1`
-                        "
-                      ></v-sheet>
-                      <div
-                        :style="
-                          `color: ${
-                            sensorData.value < SENSOR_LOW[sensorData.name]
-                              ? '#ffcc66'
-                              : sensorData.value > SENSOR_HIGH[sensorData.name]
-                              ? '#f00'
-                              : '#417505'
-                          };
-                  font-size: ${mobile ? '14px' : '16px'}
-                  ;`
-                        "
-                      >
-                        {{ counterTick.currentValue
-                        }}<span style="font-size: 0.75rem;">{{
-                          SENSOR_UNITS[sensorData.name]
-                        }}</span></div
-                      >
-                      <div class="gauge-label">{{
-                        $t(SENSOR_NAMES[sensorData.name])
-                      }}</div>
-                    </template>
-                  </vue-ellipse-progress>
+                    @click="showLastSensorValues = !showLastSensorValues"
+                  ></v-icon>
                 </div>
               </v-col>
             </v-row>
-          </v-card-text>
-        </SlideYUpTransition>
-      </v-card>
+          </v-card-title>
 
-      <v-card outlined class="mt-3">
-        <v-card-title
-          :class="
-            `measurements-card-title ${
-              showMeasurements ? 'measurements-card-title--border-bottom' : ''
-            }`
-          "
-        >
-          <v-row>
-            <v-col cols="12" class="py-0">
-              <span>{{
-                selectedDevice && !mobile
-                  ? $t('measurements') +
-                    ': ' +
-                    selectedDevice.hive_name +
-                    ' - ' +
-                    selectedDevice.name
-                  : $t('measurements')
-              }}</span>
-              <div class="float-right">
-                <v-icon
-                  :class="
-                    `toggle-icon mdi ${
-                      showMeasurements ? 'mdi-minus' : 'mdi-plus'
-                    }`
-                  "
-                  @click="showMeasurements = !showMeasurements"
-                ></v-icon>
-              </div>
-            </v-col>
-          </v-row>
-        </v-card-title>
+          <SlideYUpTransition :duration="150">
+            <v-card-text v-if="showLastSensorValues">
+              <v-row>
+                <v-col v-if="currentLastSensorValues.length > 0" cols="12">
+                  <div class="d-flex flex-wrap justify-center mt-5 mt-sm-7">
+                    <vue-ellipse-progress
+                      v-for="(sensorData, index) in currentLastSensorValues"
+                      :key="sensorData + index"
+                      class="mr-2"
+                      :progress="
+                        calculateProgress(
+                          SENSOR_MIN[sensorData.name],
+                          SENSOR_MAX[sensorData.name],
+                          // eslint-disable-next-line vue/comma-dangle
+                          sensorData.value
+                        )
+                      "
+                      :legend-value="sensorData.value"
+                      :color="
+                        sensorData.value < SENSOR_LOW[sensorData.name]
+                          ? '#ffcc66'
+                          : sensorData.value > SENSOR_HIGH[sensorData.name]
+                          ? '#f00'
+                          : '#417505'
+                      "
+                      :size="mobile ? 75 : 100"
+                      empty-color="#eee"
+                      :thickness="4"
+                      :empty-thickness="3"
+                      half
+                      :angle="0"
+                    >
+                      <template v-slot="{ counterTick }">
+                        <v-sheet
+                          :class="
+                            `beep-icon beep-icon-${sensorData.name} mt-3 mb-n1 mt-sm-1 mb-sm-n1`
+                          "
+                        ></v-sheet>
+                        <div
+                          :style="
+                            `color: ${
+                              sensorData.value < SENSOR_LOW[sensorData.name]
+                                ? '#ffcc66'
+                                : sensorData.value >
+                                  SENSOR_HIGH[sensorData.name]
+                                ? '#f00'
+                                : '#417505'
+                            };
+                  font-size: ${mobile ? '14px' : '16px'}
+                  ;`
+                          "
+                        >
+                          {{ counterTick.currentValue
+                          }}<span style="font-size: 0.75rem;">{{
+                            SENSOR_UNITS[sensorData.name]
+                          }}</span></div
+                        >
+                        <div class="gauge-label">{{
+                          $t(SENSOR_NAMES[sensorData.name])
+                        }}</div>
+                      </template>
+                    </vue-ellipse-progress>
+                  </div>
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </SlideYUpTransition>
+        </v-card>
 
-        <SlideYUpTransition :duration="150">
-          <v-card-text v-if="showMeasurements">
+        <v-card v-if="lastSensorDate" outlined class="mt-3">
+          <v-card-title
+            :class="
+              `measurements-card-title ${
+                showMeasurements ? 'measurements-card-title--border-bottom' : ''
+              }`
+            "
+          >
             <v-row>
-              <v-col
-                v-if="measurementData === null"
-                class="d-flex align-center justify-center my-16"
-                cols="12"
-              >
-                <v-progress-circular color="primary" size="50" indeterminate />
-              </v-col>
-              <v-col v-if="noChartData" cols="12" class="text-center my-16">
-                {{ $t('no_chart_data') }}
-              </v-col>
-            </v-row>
-            <v-row v-if="measurementData !== null" class="charts">
-              <v-col v-if="sensorsPresent" cols="12">
-                <div
-                  class="overline mb-3 text-center"
-                  v-text="
-                    measurementData.resolution
-                      ? $t('sensor') +
-                        ' (' +
-                        $t('measurement_interval') +
-                        ': ' +
-                        measurementData.resolution +
-                        ')'
-                      : $t('sensor')
-                  "
-                ></div>
-                <chartist
-                  v-for="(sensor, index) in currentSensors"
-                  :key="index"
-                  :class="`${interval} mb-4`"
-                  :ratio="`ct-chart ct-series-${index}`"
-                  type="Line"
-                  :data="chartDataSingleSeries(sensor, SENSOR_UNITS[sensor])"
-                  :options="chartOptions(SENSOR_UNITS[sensor])"
-                >
-                </chartist>
-              </v-col>
-              <v-col v-if="soundSensorsPresent" cols="12">
-                <div
-                  class="overline mt-n4 mt-sm-2 mb-3 text-center"
-                  v-text="$t('Sound_measurements')"
-                ></div>
-                <chartist
-                  :class="`${interval} mb-4`"
-                  ratio="ct-chart"
-                  type="Line"
-                  :data="chartDataMultipleSeries(currentSoundSensors)"
-                  :options="chartOptions()"
-                >
-                </chartist>
-              </v-col>
-              <v-col v-if="rssiSensorPresent || debugSensorsPresent" cols="12">
-                <div
-                  class="overline mt-n4 mt-sm-2 mb-3 text-center"
-                  v-text="$t('Sensor_info')"
-                ></div>
-                <chartist
-                  v-if="debugSensorsPresent"
-                  :class="`${interval} mb-4`"
-                  ratio="ct-chart ct-series-battery"
-                  type="Line"
-                  :data="chartDataMultipleSeries(currentDebugSensors)"
-                  :options="chartOptions('', true)"
-                >
-                </chartist>
-                <chartist
-                  v-if="rssiSensorPresent"
-                  :class="
-                    `${interval} ${
-                      debugSensorsPresent ? 'rssi-chart-overlapping' : ''
-                    } mb-4`
-                  "
-                  ratio="ct-chart ct-series-rssi"
-                  type="Line"
-                  :data="chartDataSingleSeries('rssi', 'dBm')"
-                  :options="
-                    debugSensorsPresent
-                      ? chartOptionsYaxisEnd
-                      : chartOptions('dBm')
-                  "
-                >
-                </chartist>
+              <v-col cols="12" class="py-0">
+                <span>{{
+                  selectedDevice && !mobile
+                    ? $t('measurements') +
+                      ': ' +
+                      selectedDevice.hive_name +
+                      ' - ' +
+                      selectedDevice.name
+                    : $t('measurements')
+                }}</span>
+                <div class="float-right">
+                  <v-icon
+                    :class="
+                      `toggle-icon mdi ${
+                        showMeasurements ? 'mdi-minus' : 'mdi-plus'
+                      }`
+                    "
+                    @click="showMeasurements = !showMeasurements"
+                  ></v-icon>
+                </div>
               </v-col>
             </v-row>
-          </v-card-text>
-        </SlideYUpTransition>
-      </v-card>
+          </v-card-title>
+
+          <SlideYUpTransition :duration="150">
+            <v-card-text v-if="showMeasurements">
+              <v-row>
+                <v-col
+                  v-if="measurementData === null"
+                  class="d-flex align-center justify-center my-16"
+                  cols="12"
+                >
+                  <v-progress-circular
+                    color="primary"
+                    size="50"
+                    indeterminate
+                  />
+                </v-col>
+                <v-col v-if="noChartData" cols="12" class="text-center my-16">
+                  {{ $t('no_chart_data') }}
+                </v-col>
+              </v-row>
+              <v-row v-if="measurementData !== null" class="charts">
+                <v-col v-if="sensorsPresent" cols="12">
+                  <div
+                    class="overline mb-3 text-center"
+                    v-text="
+                      measurementData.resolution
+                        ? $t('sensor') +
+                          ' (' +
+                          $t('measurement_interval') +
+                          ': ' +
+                          measurementData.resolution +
+                          ')'
+                        : $t('sensor')
+                    "
+                  ></div>
+                  <chartist
+                    v-for="(sensor, index) in currentSensors"
+                    :key="index"
+                    :class="`${interval} mb-4`"
+                    :ratio="`ct-chart ct-series-${index}`"
+                    type="Line"
+                    :data="chartDataSingleSeries(sensor, SENSOR_UNITS[sensor])"
+                    :options="chartOptions(SENSOR_UNITS[sensor])"
+                  >
+                  </chartist>
+                </v-col>
+                <v-col v-if="soundSensorsPresent" cols="12">
+                  <div
+                    class="overline mt-n4 mt-sm-2 mb-3 text-center"
+                    v-text="$t('Sound_measurements')"
+                  ></div>
+                  <chartist
+                    :class="`${interval} mb-4`"
+                    ratio="ct-chart"
+                    type="Line"
+                    :data="chartDataMultipleSeries(currentSoundSensors)"
+                    :options="chartOptions()"
+                  >
+                  </chartist>
+                </v-col>
+                <v-col
+                  v-if="rssiSensorPresent || debugSensorsPresent"
+                  cols="12"
+                >
+                  <div
+                    class="overline mt-n4 mt-sm-2 mb-3 text-center"
+                    v-text="$t('Sensor_info')"
+                  ></div>
+                  <chartist
+                    v-if="debugSensorsPresent"
+                    :class="`${interval} mb-4`"
+                    ratio="ct-chart ct-series-battery"
+                    type="Line"
+                    :data="chartDataMultipleSeries(currentDebugSensors)"
+                    :options="chartOptions('', true)"
+                  >
+                  </chartist>
+                  <chartist
+                    v-if="rssiSensorPresent"
+                    :class="
+                      `${interval} ${
+                        debugSensorsPresent ? 'rssi-chart-overlapping' : ''
+                      } mb-4`
+                    "
+                    ratio="ct-chart ct-series-rssi"
+                    type="Line"
+                    :data="chartDataSingleSeries('rssi', 'dBm')"
+                    :options="
+                      debugSensorsPresent
+                        ? chartOptionsYaxisEnd
+                        : chartOptions('dBm')
+                    "
+                  >
+                  </chartist>
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </SlideYUpTransition>
+        </v-card>
+        <v-row>
+          <v-col v-if="!lastSensorDate" cols="12" class="text-center my-10">
+            {{ $t('no_data') }}
+          </v-col>
+        </v-row>
+      </div>
+
+      <v-row v-if="devices.length === 0">
+        <v-col cols="12" class="text-center my-10">
+          {{ $t('sensors_na') }}
+        </v-col>
+      </v-row>
     </v-container>
   </Layout>
 </template>
@@ -307,7 +342,7 @@ export default {
       timeIndex: 0,
       timeZone: 'Europe/Amsterdam',
       moduloNumber: 6,
-      chartTitle: '',
+      periodTitle: '',
       timeFormat: 'ddd D MMM YYYY',
       currentSensors: [],
       currentSoundSensors: {},
@@ -752,7 +787,7 @@ export default {
       var s = pStaTime.locale(this.locale).format(startTimeFormat)
       var e = pEndTime.locale(this.locale).format(endTimeFormat)
 
-      this.chartTitle = s + '' + (endTimeFormat !== null ? ' - ' + e : '')
+      this.periodTitle = s + '' + (endTimeFormat !== null ? ' - ' + e : '')
     },
     setInitialDeviceId() {
       if (this.selectedDeviceId === null) {
@@ -804,7 +839,7 @@ export default {
   }
 }
 
-.period-browser {
+.period-title {
   margin-top: 1px;
   margin-left: 2px;
   font-family: 'Roboto', sans-serif !important;
@@ -825,6 +860,14 @@ export default {
   line-height: 1.5rem !important;
   &.measurements-card-title--border-bottom {
     border-bottom: 1px solid $color-grey-light;
+  }
+}
+
+.edit-button {
+  @include for-phone-only {
+    &.v-btn:not(.v-btn--round).v-size--small {
+      height: 36px !important;
+    }
   }
 }
 
