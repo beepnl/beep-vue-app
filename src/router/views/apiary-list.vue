@@ -543,6 +543,8 @@ export default {
     showLoadingIconForId: null,
     showApiaryPlaceholder: false,
     ready: false,
+    allLastSensorValues: {},
+    deviceIdArray: [],
   }),
   computed: {
     ...mapGetters('locations', ['apiaries']),
@@ -705,6 +707,9 @@ export default {
     this.readApiariesAndGroups().then(() => {
       this.ready = true
     })
+    this.getDeviceIds().then(() => {
+      this.getAllLastSensorValues()
+    })
   },
   methods: {
     async checkToken(token, groupId, groupName) {
@@ -794,6 +799,31 @@ export default {
         console.log('Error: ', error)
         this.snackbar.text = this.$i18n.t('something_wrong')
         this.snackbar.show = true
+      }
+    },
+    async getDeviceIds() {
+      try {
+        const response = await Api.readRequest('/devices')
+        const devices = response.data
+        // var deviceIdArray = []
+        var allLastSensorValues = {}
+        devices.map((device) => {
+          allLastSensorValues[device.id] = {}
+          // deviceIdArray.push(device.id)
+        })
+        this.allLastSensorValues = allLastSensorValues
+        this.deviceIdArray = Object.keys(allLastSensorValues)
+        return true
+      } catch (error) {
+        console.log('Error: ', error)
+      }
+    },
+    async loadLastSensorValues(id) {
+      try {
+        const response = await Api.readRequest('/sensors/lastvalues?id=' + id)
+        return response.data
+      } catch (error) {
+        console.log('Error: ', error)
       }
     },
     async readApiariesAndGroups() {
@@ -893,6 +923,13 @@ export default {
       } else {
         return []
       }
+    },
+    getAllLastSensorValues() {
+      this.deviceIdArray.map((deviceId) =>
+        this.loadLastSensorValues(deviceId).then((response) => {
+          this.allLastSensorValues[deviceId] = response
+        })
+      )
     },
     sortedHives(hives) {
       const sortedHives = hives.slice().sort(function(a, b) {
