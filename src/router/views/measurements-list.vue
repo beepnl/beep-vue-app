@@ -21,7 +21,10 @@
         </v-row>
       </v-container>
     </div>
-    <v-container :class="devices.length > 0 ? 'measurements-content' : ''">
+    <v-container
+      v-if="ready"
+      :class="devices.length > 0 ? 'measurements-content' : ''"
+    >
       <v-row>
         <v-col v-if="devices.length > 0" cols="12">
           <div class="d-flex align-center justify-center">
@@ -359,6 +362,7 @@ export default {
       currentLastSensorValues: [],
       showMeasurements: true,
       showLastSensorValues: true,
+      ready: false,
     }
   },
   computed: {
@@ -485,6 +489,11 @@ export default {
       return uniqueApiaries
     },
   },
+  watch: {
+    locale() {
+      this.loadData()
+    },
+  },
   created() {
     this.readDevices()
       .then(() => {
@@ -492,6 +501,7 @@ export default {
       })
       .then(() => {
         this.loadData()
+        this.ready = true
       })
   },
   beforeDestroy() {
