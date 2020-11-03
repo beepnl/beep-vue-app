@@ -15,8 +15,6 @@ import languages from '@assets/js/lang/languages'
 import moment from 'moment'
 import vueCountryRegionSelect from 'vue-country-region-select'
 import './plugins/element.js'
-import 'chartist-plugin-legend'
-import 'chartist-plugin-pointlabels'
 import VueEllipseProgress from 'vue-ellipse-progress'
 
 import App from './app.vue'

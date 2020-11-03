@@ -329,6 +329,8 @@ import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import 'chartist/dist/chartist.min.css'
 import { sensorMixin } from '@mixins/sensorMixin'
 import { SlideYUpTransition } from 'vue2-transitions'
+import 'chartist-plugin-legend'
+import 'chartist-plugin-pointlabels'
 
 export default {
   components: { Layout, SlideYUpTransition, Treeselect },
@@ -487,8 +489,11 @@ export default {
         this.loadData()
       })
   },
+  beforeDestroy() {
+    clearInterval(this.timer)
+  },
   methods: {
-    async loadLastSensorValues() {
+    async loadLastSensorValuesFunc() {
       try {
         const response = await Api.readRequest(
           '/sensors/lastvalues?id=' + this.selectedDeviceId
@@ -714,14 +719,17 @@ export default {
     },
     loadData() {
       this.setDataTitle()
-      this.loadLastSensorValues()
-      // if (this.currentLastSensorValues.length === 0) {
-      //   this.loadLastSensorValues()
-      // }
-      // window.setInterval(() => {
-      //   this.loadLastSensorValues()
-      // }, 10000)
+      this.loadLastSensorValuesTimer()
       this.sensorMeasurementRequest(this.interval)
+    },
+    loadLastSensorValuesTimer() {
+      if (this.timeIndex === 0) {
+        this.loadLastSensorValuesFunc()
+        this.timer = setInterval(this.loadLastSensorValuesFunc, 60 * 1000) // NB timer var not added to data on purpose, otherwise clearInterval stops working
+      } else {
+        clearInterval(this.timer)
+        this.loadLastSensorValuesFunc()
+      }
     },
     momentFull(date) {
       return this.$moment(date)
