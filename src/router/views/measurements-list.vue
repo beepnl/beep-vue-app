@@ -86,10 +86,10 @@
                 <span
                   v-text="
                     mobile
-                      ? $t('Last') + ': ' + momentFull(lastSensorDate)
+                      ? $t('Last') + ': ' + momentAll(lastSensorDate)
                       : $t('last_measurement') +
                         ': ' +
-                        momentFull(lastSensorDate)
+                        momentAll(lastSensorDate)
                   "
                 ></span>
                 <div class="float-right">
@@ -331,6 +331,8 @@ import { sensorMixin } from '@mixins/sensorMixin'
 import { SlideYUpTransition } from 'vue2-transitions'
 import 'chartist-plugin-legend'
 import 'chartist-plugin-pointlabels'
+import 'chartist-plugin-tooltips-updated'
+import 'chartist-plugin-tooltips-updated/dist/chartist-plugin-tooltip.css'
 
 export default {
   components: { Layout, SlideYUpTransition, Treeselect },
@@ -369,6 +371,9 @@ export default {
           right: -25,
         },
         plugins: [
+          this.$chartist.plugins.tooltip({
+            class: 'beep-tooltip',
+          }),
           this.$chartist.plugins.legend({
             removeAll: true,
           }),
@@ -632,7 +637,10 @@ export default {
             this.interval === 'week'
           ) {
             data.labels.push(measurement.time)
-            data.series[0].data.push(measurement[quantity])
+            data.series[0].data.push({
+              meta: this.momentAll(measurement.time),
+              value: measurement[quantity],
+            })
           }
         })
       }
@@ -660,7 +668,10 @@ export default {
             data.labels.push(measurement.time)
             data.series.map((serie, index) => {
               var currentSensor = sensorObject[serie.name]
-              serie.data.push(measurement[currentSensor])
+              serie.data.push({
+                meta: this.momentAll(measurement.time),
+                value: measurement[currentSensor],
+              })
             })
           }
         })
@@ -676,6 +687,9 @@ export default {
         fullWidth: true,
         height: '220px',
         plugins: [
+          this.$chartist.plugins.tooltip({
+            class: 'beep-tooltip',
+          }),
           this.$chartist.plugins.legend({
             removeAll: true,
           }),
@@ -731,7 +745,7 @@ export default {
         this.loadLastSensorValuesFunc()
       }
     },
-    momentFull(date) {
+    momentAll(date) {
       return this.$moment(date)
         .locale(this.locale)
         .format('llll')
@@ -1145,6 +1159,20 @@ export default {
     .ct-labels .ct-label.ct-horizontal.ct-end {
       display: none;
     }
+  }
+}
+
+.beep-tooltip {
+  font-family: 'Roboto', sans-serif !important;
+  font-size: 0.8rem;
+  font-weight: 500 !important;
+  color: $color-grey-dark !important;
+  background-color: rgba(255, 160, 0, 0.87) !important;
+  border-radius: 4px;
+  &::before {
+    margin-left: -5px !important;
+    border: 5px solid transparent !important;
+    border-top-color: rgba(255, 160, 0, 0.87) !important;
   }
 }
 </style>
