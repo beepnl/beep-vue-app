@@ -491,7 +491,11 @@ export default {
   },
   watch: {
     locale() {
-      this.loadData()
+      const temp = this.measurementData
+      this.measurementData = null // charts are redrawn when measurementData is null
+      setTimeout(() => {
+        this.measurementData = temp
+      }, 10)
     },
   },
   created() {
