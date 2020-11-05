@@ -230,9 +230,34 @@
                 </v-col>
               </v-row>
               <v-row v-if="measurementData !== null" class="charts">
+                <v-col v-if="weatherSensorsPresent" cols="12">
+                  <div
+                    v-if="selectedDevice"
+                    class="overline mt-n4 mt-sm-3 mb-3 text-center"
+                    v-text="
+                      !mobile
+                        ? $t('weather') +
+                          ' @ ' +
+                          selectedDevice.location_name +
+                          ' (' +
+                          $t('from_weather_service') +
+                          ')'
+                        : $t('weather') + ' @ ' + selectedDevice.location_name
+                    "
+                  ></div>
+                  <chartist
+                    :class="`${interval} mb-4 mb-sm-6`"
+                    ratio="ct-chart"
+                    type="Line"
+                    :data="chartDataMultipleSeries(currentWeatherSensors, true)"
+                    :options="chartOptions()"
+                    @draw="Test"
+                  >
+                  </chartist>
+                </v-col>
                 <v-col v-if="sensorsPresent" cols="12">
                   <div
-                    class="overline mt-sm-3 mb-3 text-center"
+                    class="overline mt-n4 mt-sm-3 mb-3 text-center"
                     v-text="
                       measurementData.resolution
                         ? $t('sensor') +
@@ -269,7 +294,7 @@
                   >
                   </chartist>
                 </v-col>
-                <v-col v-if="debugSensorsPresent" cols="12">
+                <v-col v-if="debugSensorsPresent" cols="12" class="mb-sm-4">
                   <div
                     class="overline mt-n4 mt-sm-3 mb-3 text-center"
                     v-text="$t('Sensor_info')"
@@ -283,7 +308,7 @@
                       class="pt-lg-0"
                     >
                       <chartist
-                        :class="`${interval} mt-n2 mt-sm-0 mb-lg-4`"
+                        :class="`${interval} mt-n2 mt-sm-0`"
                         :ratio="`ct-chart ct-chart-debug ct-chart-${index}`"
                         type="Line"
                         :data="
@@ -342,9 +367,11 @@ export default {
       moduloNumber: 6,
       periodTitle: '',
       timeFormat: 'ddd D MMM YYYY',
+      currentWeatherSensors: {},
       currentSensors: [],
       currentSoundSensors: {},
       currentDebugSensors: [],
+      weatherSensorsPresent: false,
       sensorsPresent: false,
       soundSensorsPresent: false,
       debugSensorsPresent: false,
@@ -521,15 +548,24 @@ export default {
         )
         // console.log(response)
         this.measurementData = response.data
+        this.currentWeatherSensors = {}
         this.currentSensors = []
         this.currentSoundSensors = {}
         this.currentDebugSensors = []
+        this.weatherSensorsPresent = false
         this.sensorsPresent = false
         this.soundSensorsPresent = false
         this.debugSensorsPresent = false
         if (this.measurementData.measurements.length > 0) {
           Object.keys(this.measurementData.measurements[0]).map((quantity) => {
-            if (this.SENSORS.indexOf(quantity) > -1) {
+            if (this.WEATHER.indexOf(quantity) > -1) {
+              var weatherSensorName = this.SENSOR_NAMES[quantity]
+              var weatherSensorUnit = this.SENSOR_UNITS[quantity]
+              weatherSensorName =
+                this.$i18n.t(weatherSensorName) + ' (' + weatherSensorUnit + ')'
+              this.currentWeatherSensors[weatherSensorName] = quantity
+              this.weatherSensorsPresent = true
+            } else if (this.SENSORS.indexOf(quantity) > -1) {
               this.currentSensors.push(quantity)
               this.sensorsPresent = true
             } else if (this.SOUND.indexOf(quantity) > -1) {
@@ -588,7 +624,13 @@ export default {
           ) {
             data.labels.push(measurement.time)
             data.series[0].data.push({
-              meta: this.momentAll(measurement.time),
+              meta:
+                this.momentAll(measurement.time) +
+                '<br>' +
+                this.$i18n.t(quantity) +
+                ': ' +
+                measurement[quantity] +
+                unit,
               value: measurement[quantity],
             })
           }
@@ -596,7 +638,7 @@ export default {
       }
       return data
     },
-    chartDataMultipleSeries(sensorObject) {
+    chartDataMultipleSeries(sensorObject, weather = false) {
       var data = {
         labels: [],
         series: [],
@@ -619,7 +661,13 @@ export default {
             data.series.map((serie, index) => {
               var currentSensor = sensorObject[serie.name]
               serie.data.push({
-                meta: this.momentAll(measurement.time),
+                meta:
+                  this.momentAll(measurement.time) +
+                  '<br>' +
+                  (weather ? this.$i18n.t(currentSensor) : serie.name) +
+                  ': ' +
+                  measurement[currentSensor] +
+                  this.SENSOR_UNITS[currentSensor],
                 value: measurement[currentSensor],
               })
             })
@@ -639,6 +687,7 @@ export default {
         plugins: [
           this.$chartist.plugins.tooltip({
             class: 'beep-tooltip',
+            metaIsHTML: true,
           }),
           this.$chartist.plugins.legend({
             removeAll: true,
@@ -779,6 +828,9 @@ export default {
       this.timeIndex += offset
       this.loadData()
     },
+    Test() {
+      console.log('hallo')
+    },
   },
 }
 </script>
@@ -855,11 +907,6 @@ export default {
 }
 
 .charts {
-  // padding-right: 12px;
-  // @include for-phone-only {
-  //   padding-right: 0;
-  // }
-
   svg.ct-chart-bar,
   svg.ct-chart-line {
     overflow: visible;
@@ -1097,5 +1144,9 @@ export default {
     border: 5px solid transparent !important;
     border-top-color: rgba(255, 160, 0, 0.87) !important;
   }
+}
+
+.chartist-tooltip-value {
+  display: none !important;
 }
 </style>
