@@ -260,13 +260,13 @@
                     class="overline mt-n4 mt-sm-3 mb-3 text-center"
                     v-text="
                       measurementData.resolution
-                        ? $t('sensor') +
+                        ? $t('measurements') +
                           ' (' +
                           $t('measurement_interval') +
                           ': ' +
                           measurementData.resolution +
                           ')'
-                        : $t('sensor')
+                        : $t('measurements')
                     "
                   ></div>
                   <chartist
@@ -297,7 +297,9 @@
                 <v-col v-if="debugSensorsPresent" cols="12" class="mb-sm-4">
                   <div
                     class="overline mt-n4 mt-sm-3 mb-3 text-center"
-                    v-text="$t('Sensor_info')"
+                    v-text="
+                      $tc('device', 1) + ' ' + $t('Info').toLocaleLowerCase()
+                    "
                   ></div>
                   <v-row>
                     <v-col
@@ -734,7 +736,10 @@ export default {
       this.sensorMeasurementRequest(this.interval)
     },
     loadLastSensorValuesTimer() {
-      if (this.timeIndex === 0) {
+      if (
+        this.timeIndex === 0 &&
+        (this.interval === 'hour' || this.interval === 'day')
+      ) {
         this.loadLastSensorValuesFunc()
         this.timer = setInterval(this.loadLastSensorValuesFunc, 60 * 1000) // NB timer var not added to data on purpose, otherwise clearInterval stops working
       } else {
