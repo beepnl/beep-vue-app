@@ -476,6 +476,7 @@ export default {
     },
   },
   created() {
+    clearInterval(this.timer)
     this.readDevices()
       .then(() => {
         this.setInitialDeviceId()
@@ -650,7 +651,10 @@ export default {
       Object.keys(sensorObject)
         .sort()
         .map((sensorName) => {
-          data.series.push({ name: sensorName, data: [] })
+          data.series.push({
+            name: sensorName,
+            data: [],
+          })
         })
       if (typeof this.measurementData.measurements !== 'undefined') {
         this.measurementData.measurements.map((measurement, index) => {
@@ -741,9 +745,10 @@ export default {
         (this.interval === 'hour' || this.interval === 'day')
       ) {
         this.loadLastSensorValuesFunc()
-        this.timer = setInterval(this.loadLastSensorValuesFunc, 6 * 1000) // NB timer var not added to data on purpose, otherwise clearInterval stops working
+        this.timer = setInterval(this.loadLastSensorValuesFunc, 60 * 1000) // NB timer var not added to data on purpose, otherwise clearInterval stops working
       } else {
         clearInterval(this.timer)
+        this.timer = false
         this.loadLastSensorValuesFunc()
       }
     },
@@ -831,9 +836,6 @@ export default {
     setTimeIndex(offset) {
       this.timeIndex += offset
       this.loadData()
-    },
-    Test() {
-      console.log('hallo')
     },
   },
 }
