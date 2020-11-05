@@ -997,6 +997,9 @@ export default {
       margin-right: 10px;
       margin-bottom: 3px;
       cursor: pointer;
+      &.ct-legend--no-pointer {
+        cursor: none;
+      }
     }
 
     li::before {

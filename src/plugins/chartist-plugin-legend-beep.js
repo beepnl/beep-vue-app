@@ -1,3 +1,9 @@
+// Internet Systems Consortium license
+// ===================================
+
+// Copyright (c) 2016, Code Yellow B.V.
+// modified by Beep.nl (2020)
+
 ;(function(root, factory) {
   if (typeof exports === 'object') {
     // Node. Does not work with strict CommonJS, but
@@ -127,6 +133,9 @@
         if (classNamesViable) {
           li.className += ' ' + options.classNames[i]
         }
+        if (chart.data.series.length === 1) {
+          li.className += ' ct-legend--no-pointer'
+        }
         li.setAttribute('data-legend', i)
         li.textContent = legend.name || legend
         legendElement.appendChild(li)
@@ -155,64 +164,46 @@
 
       if (options.clickable) {
         legendElement.addEventListener('click', function(e) {
-          var li = e.target
+          var clickedSeries = e.target
           if (
-            li.parentNode !== legendElement ||
-            !li.hasAttribute('data-legend')
+            clickedSeries.parentNode !== legendElement ||
+            !clickedSeries.hasAttribute('data-legend')
           )
             return
           e.preventDefault()
 
-          var clickedSeriesIndex = parseInt(li.getAttribute('data-legend'))
-          var otherSeriesItems = Array.prototype.slice.call(
-            legendElement.childNodes
+          var clickedSeriesIndex = parseInt(
+            clickedSeries.getAttribute('data-legend')
           )
-          otherSeriesItems.splice(clickedSeriesIndex, 1)
-          var otherSeriesItemsIndexArray = []
-          otherSeriesItems.forEach(function(item) {
-            otherSeriesItemsIndexArray.push(
+          var otherSeries = Array.prototype.slice.call(legendElement.childNodes)
+          otherSeries.splice(clickedSeriesIndex, 1)
+          var otherSeriesIndexArray = []
+          otherSeries.forEach(function(item) {
+            otherSeriesIndexArray.push(
               parseInt(item.getAttribute('data-legend'))
             )
           })
-          // otherSeriesItemsIndexArray.splice(clickedSeriesIndex, 1)
-
           var removedSeriesIndex = removedSeries.indexOf(clickedSeriesIndex)
-          console.log(clickedSeriesIndex)
-          console.log(otherSeriesItemsIndexArray)
-          console.log(otherSeriesItems)
 
-          if (removedSeriesIndex > -1) {
-            // if clicked series is inactive
-            // Add to series again.
-            removedSeries.splice(removedSeriesIndex, 1)
-            otherSeriesItems.forEach(function(item) {
+          if (removedSeriesIndex > -1 && removedSeries.length === 1) {
+            // if clicked series is the only inactive series, make all series active again
+            removedSeries = []
+            clickedSeries.classList.remove('inactive')
+          } else if (removedSeriesIndex > -1 || removedSeries.length === 0) {
+            // if clicked series is inactive, or all series are active
+            // make clicked series active and all other series inactive
+            removedSeries = otherSeriesIndexArray
+            otherSeries.forEach(function(item) {
               item.classList.add('inactive')
             })
-            li.classList.remove('inactive')
+            clickedSeries.classList.remove('inactive')
           } else {
-            if (!options.removeAll) {
-              // Remove from series, only if a minimum of one series is still visible.
-              if (chart.data.series.length > 1) {
-                otherSeriesItemsIndexArray.map((index) => {
-                  removedSeries.push(index)
-                })
-                li.classList.remove('inactive')
-              }
-              // Set all series as active.
-              else {
-                removedSeries = otherSeriesItemsIndexArray
-                // var seriesItems = Array.prototype.slice.call(
-                //   legendElement.childNodes
-                // )
-                otherSeriesItems.forEach(function(item) {
-                  item.classList.add('inactive')
-                })
-              }
-            } else {
-              // Remove series unaffected if it is the last or not
-              removedSeries.splice(removedSeriesIndex, 1)
-              li.classList.remove('inactive')
-            }
+            // if clicked series is active, make it inactive and all other series active
+            removedSeries = [clickedSeriesIndex]
+            clickedSeries.classList.add('inactive')
+            otherSeries.forEach(function(item) {
+              item.classList.remove('inactive')
+            })
           }
 
           // Reset the series to original and remove each series that
@@ -231,8 +222,6 @@
               labelsCopy.splice(series, 1)
             }
           })
-
-          console.log(removedSeries)
 
           if (options.onClick) {
             options.onClick(chart, e)
