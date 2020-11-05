@@ -349,7 +349,8 @@ import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import 'chartist/dist/chartist.min.css'
 import { sensorMixin } from '@mixins/sensorMixin'
 import { SlideYUpTransition } from 'vue2-transitions'
-import 'chartist-plugin-legend'
+// import 'chartist-plugin-legend'
+import '@plugins/chartist-plugin-legend-beep.js'
 import 'chartist-plugin-pointlabels'
 import 'chartist-plugin-tooltips-updated'
 import 'chartist-plugin-tooltips-updated/dist/chartist-plugin-tooltip.css'
@@ -704,7 +705,7 @@ export default {
             class: 'beep-tooltip',
             metaIsHTML: true,
           }),
-          this.$chartist.plugins.legend(),
+          this.$chartist.plugins.legendBeep(),
           this.$chartist.plugins.ctPointLabels({
             labelOffset: {
               x: 7,
