@@ -13,7 +13,7 @@
                 }`
               "
               text
-              @click="setInterval(period.interval, period.moduloNumber)"
+              @click="setPeriodInterval(period.interval, period.moduloNumber)"
             >
               {{ period.name }}
             </v-btn>
@@ -298,7 +298,7 @@
                   <div
                     class="overline mt-n4 mt-sm-3 mb-3 text-center"
                     v-text="
-                      $tc('device', 1) + ' ' + $t('Info').toLocaleLowerCase()
+                      $tc('device', 1) + ' ' + $t('info').toLocaleLowerCase()
                     "
                   ></div>
                   <v-row>
@@ -741,7 +741,7 @@ export default {
         (this.interval === 'hour' || this.interval === 'day')
       ) {
         this.loadLastSensorValuesFunc()
-        this.timer = setInterval(this.loadLastSensorValuesFunc, 60 * 1000) // NB timer var not added to data on purpose, otherwise clearInterval stops working
+        this.timer = setInterval(this.loadLastSensorValuesFunc, 6 * 1000) // NB timer var not added to data on purpose, otherwise clearInterval stops working
       } else {
         clearInterval(this.timer)
         this.loadLastSensorValuesFunc()
@@ -822,12 +822,11 @@ export default {
         }
       }
     },
-    setInterval(interval, modulonr) {
+    setPeriodInterval(interval, modulonr) {
       this.timeIndex = 0
-      this.sensorMeasurementRequest(interval)
       this.interval = interval
       this.moduloNumber = modulonr
-      this.setDataTitle()
+      this.loadData()
     },
     setTimeIndex(offset) {
       this.timeIndex += offset
