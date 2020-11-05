@@ -365,7 +365,6 @@ export default {
       devices: [],
       interval: 'day',
       timeIndex: 0,
-      timeZone: 'Europe/Amsterdam',
       moduloNumber: 6,
       periodTitle: '',
       timeFormat: 'ddd D MMM YYYY',
@@ -385,6 +384,9 @@ export default {
     }
   },
   computed: {
+    timeZone() {
+      return this.$moment.tz.guess()
+    },
     locale() {
       return this.$i18n.locale
     },
@@ -681,19 +683,17 @@ export default {
       })
       return data
     },
-    chartOptions(unit = '', debug = false) {
+    chartOptions(unit = '', low = false) {
       const self = this
       return {
         fullWidth: true,
-        height: debug ? '150px' : '220px',
+        height: low ? '150px' : '220px',
         plugins: [
           this.$chartist.plugins.tooltip({
             class: 'beep-tooltip',
             metaIsHTML: true,
           }),
-          this.$chartist.plugins.legend({
-            removeAll: true,
-          }),
+          this.$chartist.plugins.legend(),
           this.$chartist.plugins.ctPointLabels({
             labelOffset: {
               x: 7,
