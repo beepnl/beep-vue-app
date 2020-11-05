@@ -247,11 +247,10 @@
                   ></div>
                   <chartist
                     :class="`${interval} mb-4 mb-sm-6`"
-                    ratio="ct-chart"
+                    ratio="ct-chart ct-chart-weather"
                     type="Line"
                     :data="chartDataMultipleSeries(currentWeatherSensors, true)"
                     :options="chartOptions()"
-                    @draw="Test"
                   >
                   </chartist>
                 </v-col>
@@ -650,11 +649,19 @@ export default {
       }
       Object.keys(sensorObject)
         .sort()
-        .map((sensorName) => {
-          data.series.push({
-            name: sensorName,
-            data: [],
-          })
+        .map((sensorName, index) => {
+          data.series.push(
+            weather
+              ? {
+                  name: sensorName,
+                  data: [],
+                  className: 'ct-series ct-series-' + index, // change classname to use different colors, only for weather chart
+                }
+              : {
+                  name: sensorName,
+                  data: [],
+                }
+          )
         })
       if (typeof this.measurementData.measurements !== 'undefined') {
         this.measurementData.measurements.map((measurement, index) => {
@@ -1091,6 +1098,33 @@ export default {
       $ct-series-colors,
       20
     ) !important; // use different color than chartist.css as color i is identical to color b there
+  }
+
+  .ct-chart-weather {
+    @for $i from 0 to length($ct-series-colors) {
+      .ct-legend {
+        .ct-series-#{$i} {
+          color: nth($ct-series-colors, length($ct-series-colors) - $i);
+          &::before {
+            background-color: nth(
+              $ct-series-colors,
+              length($ct-series-colors) - $i
+            );
+            border-color: nth(
+              $ct-series-colors,
+              length($ct-series-colors) - $i
+            );
+          }
+        }
+      }
+      .ct-series-#{$i} .ct-point,
+      .ct-series-#{$i} .ct-line {
+        stroke: nth(
+          $ct-series-colors,
+          length($ct-series-colors) - $i
+        ) !important;
+      }
+    }
   }
 
   .ct-chart-debug {
