@@ -232,7 +232,7 @@
               <v-row v-if="measurementData !== null" class="charts">
                 <v-col v-if="sensorsPresent" cols="12">
                   <div
-                    class="overline mb-3 text-center"
+                    class="overline mt-sm-3 mb-3 text-center"
                     v-text="
                       measurementData.resolution
                         ? $t('sensor') +
@@ -247,7 +247,7 @@
                   <chartist
                     v-for="(sensor, index) in currentSensors"
                     :key="index"
-                    :class="`${interval} mb-4`"
+                    :class="`${interval} mb-4 mb-sm-6`"
                     :ratio="`ct-chart ct-series-${index}`"
                     type="Line"
                     :data="chartDataSingleSeries(sensor, SENSOR_UNITS[sensor])"
@@ -257,11 +257,11 @@
                 </v-col>
                 <v-col v-if="soundSensorsPresent" cols="12">
                   <div
-                    class="overline mt-n4 mt-sm-2 mb-3 text-center"
+                    class="overline mt-n4 mt-sm-3 mb-3 text-center"
                     v-text="$t('Sound_measurements')"
                   ></div>
                   <chartist
-                    :class="`${interval} mb-4`"
+                    :class="`${interval} mb-4 mb-sm-6`"
                     ratio="ct-chart"
                     type="Line"
                     :data="chartDataMultipleSeries(currentSoundSensors)"
@@ -269,40 +269,31 @@
                   >
                   </chartist>
                 </v-col>
-                <v-col
-                  v-if="rssiSensorPresent || debugSensorsPresent"
-                  cols="12"
-                >
+                <v-col v-if="debugSensorsPresent" cols="12">
                   <div
-                    class="overline mt-n4 mt-sm-2 mb-3 text-center"
+                    class="overline mt-n4 mt-sm-3 mb-3 text-center"
                     v-text="$t('Sensor_info')"
                   ></div>
-                  <chartist
-                    v-if="debugSensorsPresent"
-                    :class="`${interval} mb-4`"
-                    ratio="ct-chart ct-series-battery"
-                    type="Line"
-                    :data="chartDataMultipleSeries(currentDebugSensors)"
-                    :options="chartOptions('', true)"
-                  >
-                  </chartist>
-                  <chartist
-                    v-if="rssiSensorPresent"
-                    :class="
-                      `${interval} ${
-                        debugSensorsPresent ? 'rssi-chart-overlapping' : ''
-                      } mb-4`
-                    "
-                    ratio="ct-chart ct-series-rssi"
-                    type="Line"
-                    :data="chartDataSingleSeries('rssi', 'dBm')"
-                    :options="
-                      debugSensorsPresent
-                        ? chartOptionsYaxisEnd
-                        : chartOptions('dBm')
-                    "
-                  >
-                  </chartist>
+                  <v-row>
+                    <v-col
+                      v-for="(sensor, index) in currentDebugSensors"
+                      :key="index"
+                      cols="12"
+                      lg="4"
+                      class="pt-lg-0"
+                    >
+                      <chartist
+                        :class="`${interval} mt-n2 mt-sm-0 mb-lg-4`"
+                        :ratio="`ct-chart ct-chart-debug ct-chart-${index}`"
+                        type="Line"
+                        :data="
+                          chartDataSingleSeries(sensor, SENSOR_UNITS[sensor])
+                        "
+                        :options="chartOptions(SENSOR_UNITS[sensor], true)"
+                      >
+                      </chartist>
+                    </v-col>
+                  </v-row>
                 </v-col>
               </v-row>
             </v-card-text>
@@ -353,11 +344,10 @@ export default {
       timeFormat: 'ddd D MMM YYYY',
       currentSensors: [],
       currentSoundSensors: {},
-      currentDebugSensors: {},
+      currentDebugSensors: [],
       sensorsPresent: false,
       soundSensorsPresent: false,
       debugSensorsPresent: false,
-      rssiSensorPresent: false,
       noChartData: false,
       currentLastSensorValues: [],
       showMeasurements: true,
@@ -366,50 +356,6 @@ export default {
     }
   },
   computed: {
-    chartOptionsYaxisEnd() {
-      return {
-        fullWidth: true,
-        height: '220px',
-        chartPadding: {
-          left: 50,
-          right: -25,
-        },
-        plugins: [
-          this.$chartist.plugins.tooltip({
-            class: 'beep-tooltip',
-          }),
-          this.$chartist.plugins.legend({
-            removeAll: true,
-          }),
-          this.$chartist.plugins.ctPointLabels({
-            labelOffset: {
-              x: 0, // 0 7
-              y: -7, // -7 0
-            },
-            textAnchor: 'middle', // 'middle' 'start'
-            labelInterpolationFnc(value) {
-              if (typeof value !== 'undefined') {
-                return value.toFixed(1)
-              } else {
-                return '-'
-              }
-            },
-          }),
-        ],
-        showPoint: true,
-        lineSmooth: this.$chartist.Interpolation.simple({
-          divisor: 10,
-          fillHoles: true,
-        }),
-        axisX: {
-          showGrid: false,
-        },
-        axisY: {
-          // On the y-axis start means left and end means right
-          position: 'end',
-        },
-      }
-    },
     locale() {
       return this.$i18n.locale
     },
@@ -577,11 +523,10 @@ export default {
         this.measurementData = response.data
         this.currentSensors = []
         this.currentSoundSensors = {}
-        this.currentDebugSensors = {}
+        this.currentDebugSensors = []
         this.sensorsPresent = false
         this.soundSensorsPresent = false
         this.debugSensorsPresent = false
-        this.rssiSensorPresent = false
         if (this.measurementData.measurements.length > 0) {
           Object.keys(this.measurementData.measurements[0]).map((quantity) => {
             if (this.SENSORS.indexOf(quantity) > -1) {
@@ -592,17 +537,8 @@ export default {
               this.currentSoundSensors[soundSensorName] = quantity
               this.soundSensorsPresent = true
             } else if (this.DEBUG.indexOf(quantity) > -1) {
-              if (quantity === 'bv' || quantity === 'snr') {
-                var debugSensorName =
-                  this.$i18n.t(quantity) +
-                  ' (' +
-                  this.SENSOR_UNITS[quantity] +
-                  ')'
-                this.currentDebugSensors[debugSensorName] = quantity
-                this.debugSensorsPresent = true
-              } else if (quantity === 'rssi') {
-                this.rssiSensorPresent = true
-              }
+              this.currentDebugSensors.push(quantity)
+              this.debugSensorsPresent = true
             }
           })
         } else {
@@ -695,11 +631,11 @@ export default {
       })
       return data
     },
-    chartOptions(unit = '', battery = false) {
+    chartOptions(unit = '', debug = false) {
       const self = this
       return {
         fullWidth: true,
-        height: '220px',
+        height: debug ? '150px' : '220px',
         plugins: [
           this.$chartist.plugins.tooltip({
             class: 'beep-tooltip',
@@ -709,19 +645,17 @@ export default {
           }),
           this.$chartist.plugins.ctPointLabels({
             labelOffset: {
-              x: 0,
-              y: -7,
+              x: 7,
+              y: 0,
             },
-            textAnchor: 'middle',
+            textAnchor: 'start',
             labelInterpolationFnc(value) {
               if (typeof value !== 'undefined' && unit === 'mbar') {
                 return value + ' ' + unit
               } else if (typeof value !== 'undefined' && unit === 'kg') {
                 return value.toFixed(2) + ' ' + unit
-              } else if (typeof value !== 'undefined' && !battery) {
+              } else if (typeof value !== 'undefined') {
                 return value.toFixed(1) + ' ' + unit
-              } else if (typeof value !== 'undefined' && battery) {
-                return value.toFixed(1)
               } else {
                 return '-'
               }
@@ -921,10 +855,10 @@ export default {
 }
 
 .charts {
-  padding-right: 12px;
-  @include for-phone-only {
-    padding-right: 0;
-  }
+  // padding-right: 12px;
+  // @include for-phone-only {
+  //   padding-right: 0;
+  // }
 
   svg.ct-chart-bar,
   svg.ct-chart-line {
@@ -942,7 +876,6 @@ export default {
     margin-left: -5px;
   }
   .ct-chart {
-    margin-left: -14px;
     &.day,
     &.week {
       .ct-grids {
@@ -1107,13 +1040,8 @@ export default {
     ) !important; // use different color than chartist.css as color i is identical to color b there
   }
 
-  .ct-series-battery {
-    .ct-legend {
-      z-index: 1;
-      margin-bottom: 24px;
-      @include for-phone-only {
-        margin-bottom: 16px;
-      }
+  .ct-chart-debug {
+    &.ct-chart-0 {
       .ct-series-0 {
         color: nth($ct-series-colors, 16) !important;
         &::before {
@@ -1121,57 +1049,38 @@ export default {
           border-color: nth($ct-series-colors, 16) !important;
         }
       }
-      .ct-series-1 {
+      .ct-series-a .ct-point,
+      .ct-series-a .ct-line {
+        stroke: nth($ct-series-colors, 16) !important;
+      }
+    }
+
+    &.ct-chart-1 {
+      .ct-series-0 {
         color: nth($ct-series-colors, 17) !important;
         &::before {
           background-color: nth($ct-series-colors, 17);
           border-color: nth($ct-series-colors, 17) !important;
         }
       }
-    }
-    .ct-chart-line {
-      @include for-phone-only {
-        margin-left: -16px;
+      .ct-series-a .ct-point,
+      .ct-series-a .ct-line {
+        stroke: nth($ct-series-colors, 17) !important;
       }
     }
-    .ct-series-a .ct-point,
-    .ct-series-a .ct-line {
-      stroke: nth($ct-series-colors, 16) !important;
-    }
-    .ct-series-b .ct-point,
-    .ct-series-b .ct-line {
-      stroke: nth($ct-series-colors, 17) !important;
-    }
-  }
-  // hacky solution to show all battery info in 1 chart. TODO: implement dual y-axis in 1 chart when option is enabled in chartist
-  .ct-series-rssi {
-    &.rssi-chart-overlapping {
-      margin-top: -267px !important;
-      @include for-phone-only {
-        margin-top: -259px !important;
-      }
-      .ct-chart-line {
-        @include for-phone-only {
-          margin-top: -8px;
-          margin-left: -16px;
-        }
-      }
-    }
-    .ct-legend {
+
+    &.ct-chart-2 {
       .ct-series-0 {
-        color: nth($ct-series-colors, 12);
+        color: nth($ct-series-colors, 12) !important;
         &::before {
           background-color: nth($ct-series-colors, 12);
-          border-color: nth($ct-series-colors, 12);
+          border-color: nth($ct-series-colors, 12) !important;
         }
       }
-    }
-    .ct-series-a .ct-point,
-    .ct-series-a .ct-line {
-      stroke: nth($ct-series-colors, 12) !important;
-    }
-    .ct-labels .ct-label.ct-horizontal.ct-end {
-      display: none;
+      .ct-series-a .ct-point,
+      .ct-series-a .ct-line {
+        stroke: nth($ct-series-colors, 12) !important;
+      }
     }
   }
 }
