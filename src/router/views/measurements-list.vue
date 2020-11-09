@@ -215,7 +215,7 @@
             <v-card-text v-if="showMeasurements">
               <v-row>
                 <v-col
-                  v-if="measurementData === null"
+                  v-if="measurementData === null && !noChartData"
                   class="d-flex align-center justify-center my-16"
                   cols="12"
                 >
@@ -531,6 +531,9 @@ export default {
         return true
       } catch (error) {
         console.log('Error: ', error)
+        if (error.response.status === 404 || error.response.status === 500) {
+          this.lastSensorDate = null
+        }
       }
     },
     async sensorMeasurementRequest(interval) {
@@ -554,6 +557,9 @@ export default {
         return true
       } catch (error) {
         console.log('Error: ', error)
+        if (error.response.status === 404 || error.response.status === 500) {
+          this.noChartData = true
+        }
       }
     },
     async readDevices() {
@@ -700,19 +706,20 @@ export default {
       }
     },
     formatMeasurementData(measurementData) {
-      this.measurementData = measurementData
-      this.currentWeatherSensors = {}
-      this.currentSensors = []
-      this.currentSoundSensors = {}
-      this.currentDebugSensors = []
-      this.weatherSensorsPresent = false
-      this.sensorsPresent = false
-      this.soundSensorsPresent = false
-      this.debugSensorsPresent = false
       if (
-        this.measurementData.measurements &&
-        this.measurementData.measurements.length > 0
+        measurementData &&
+        measurementData.measurements &&
+        measurementData.measurements.length > 0
       ) {
+        this.measurementData = measurementData
+        this.currentWeatherSensors = {}
+        this.currentSensors = []
+        this.currentSoundSensors = {}
+        this.currentDebugSensors = []
+        this.weatherSensorsPresent = false
+        this.sensorsPresent = false
+        this.soundSensorsPresent = false
+        this.debugSensorsPresent = false
         Object.keys(this.measurementData.measurements[0]).map((quantity) => {
           if (this.WEATHER.indexOf(quantity) > -1) {
             var weatherSensorName = this.SENSOR_NAMES[quantity]
