@@ -637,7 +637,7 @@ const translations = {
   edit_details: 'Aanpassen details',
   remove_queen: 'Verwijder koningin',
   remove_group_short: 'Verwijder samenwerkingsgroep',
-  device: 'meetsysteem | meetsystemen',
+  device: 'Meetsysteem | Meetsystemen',
 }
 
 export default translations

@@ -27,9 +27,11 @@
                   >
                 </v-col>
                 <v-col cols="4">
-                  <span
-                    ><v-icon>mdi-archive</v-icon> {{ $t('sensors') }}:
-                    {{ sensors.length }}</span
+                  <span>
+                    <v-sheet
+                      class="beep-icon beep-icon-sensors--no-outline"
+                    ></v-sheet>
+                    {{ $tc('device', 2) }}: {{ numberOfDevices }}</span
                   >
                 </v-col>
               </v-row>
@@ -108,7 +110,7 @@ export default {
       researchProjects: [],
       apiaries: [1, 2],
       hives: [1, 2, 3],
-      sensors: [1],
+      numberOfDevices: null,
     }
   },
   computed: {
@@ -120,8 +122,18 @@ export default {
   },
   created() {
     this.readResearchProjects()
+    this.getDevicesLength()
   },
   methods: {
+    async getDevicesLength() {
+      try {
+        const response = await Api.readRequest('/devices')
+        this.numberOfDevices = response.data.length
+        return true
+      } catch (error) {
+        console.log('Error: ', error)
+      }
+    },
     async readResearchProjects() {
       try {
         const response = await Api.readRequest('/research')
