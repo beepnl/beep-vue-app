@@ -584,7 +584,12 @@ export default {
         labels: [],
         series: [
           {
-            name: this.$i18n.t(quantity) + ' (' + unit + ')',
+            name: this.measurementData.sensorDefinitions[quantity]
+              ? this.measurementData.sensorDefinitions[quantity].name +
+                ' (' +
+                unit +
+                ')'
+              : this.$i18n.t(quantity) + ' (' + unit + ')',
             data: [],
           },
         ],
@@ -732,7 +737,11 @@ export default {
             this.currentSensors.push(quantity)
             this.sensorsPresent = true
           } else if (this.SOUND.indexOf(quantity) > -1) {
-            var soundSensorName = this.SENSOR_NAMES[quantity]
+            var soundSensorName = this.measurementData.sensorDefinitions[
+              quantity
+            ]
+              ? this.measurementData.sensorDefinitions[quantity].name
+              : this.SENSOR_NAMES[quantity]
             this.currentSoundSensors[soundSensorName] = quantity
             this.soundSensorsPresent = true
           } else if (this.DEBUG.indexOf(quantity) > -1) {
