@@ -709,7 +709,10 @@ export default {
       this.sensorsPresent = false
       this.soundSensorsPresent = false
       this.debugSensorsPresent = false
-      if (this.measurementData.measurements.length > 0) {
+      if (
+        this.measurementData.measurements &&
+        this.measurementData.measurements.length > 0
+      ) {
         Object.keys(this.measurementData.measurements[0]).map((quantity) => {
           if (this.WEATHER.indexOf(quantity) > -1) {
             var weatherSensorName = this.SENSOR_NAMES[quantity]
