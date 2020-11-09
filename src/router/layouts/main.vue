@@ -27,7 +27,7 @@
       </template>
     </v-app-bar>
 
-    <v-main class="overflow-hidden">
+    <v-main>
       <slot></slot>
     </v-main>
   </div>
@@ -69,11 +69,6 @@ export default {
           title: this.$i18n.t('data'),
           icon: 'mdi-chart-line',
           route: 'measurements',
-        },
-        {
-          title: this.$i18n.tc('photo', 2),
-          icon: 'mdi-image-multiple',
-          route: 'photos',
         },
       ]
     },
