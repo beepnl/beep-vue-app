@@ -247,7 +247,7 @@
                   ></div>
                   <chartist
                     :class="`${interval} mb-4 mb-sm-6`"
-                    ratio="ct-chart ct-chart-weather"
+                    ratio="ct-chart"
                     type="Line"
                     :data="chartDataMultipleSeries(currentWeatherSensors, true)"
                     :options="chartOptions()"
@@ -349,7 +349,6 @@ import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import 'chartist/dist/chartist.min.css'
 import { sensorMixin } from '@mixins/sensorMixin'
 import { SlideYUpTransition } from 'vue2-transitions'
-// import 'chartist-plugin-legend'
 import '@plugins/chartist-plugin-legend-beep.js'
 import 'chartist-plugin-pointlabels'
 import 'chartist-plugin-tooltips-updated'
@@ -651,18 +650,10 @@ export default {
       Object.keys(sensorObject)
         .sort()
         .map((sensorName, index) => {
-          data.series.push(
-            weather
-              ? {
-                  name: sensorName,
-                  data: [],
-                  className: 'ct-series ct-series-' + index, // change classname to use different colors, only for weather chart
-                }
-              : {
-                  name: sensorName,
-                  data: [],
-                }
-          )
+          data.series.push({
+            name: sensorName,
+            data: [],
+          })
         })
       if (typeof this.measurementData.measurements !== 'undefined') {
         this.measurementData.measurements.map((measurement, index) => {
@@ -1042,16 +1033,25 @@ export default {
     .ct-series-#{$i} {
       .ct-legend {
         .ct-series-0 {
-          color: nth($ct-series-colors, $i + 1);
+          color: nth($ct-series-colors, length($ct-series-colors) - $i);
           &::before {
-            background-color: nth($ct-series-colors, $i + 1);
-            border-color: nth($ct-series-colors, $i + 1);
+            background-color: nth(
+              $ct-series-colors,
+              length($ct-series-colors) - $i
+            );
+            border-color: nth(
+              $ct-series-colors,
+              length($ct-series-colors) - $i
+            );
           }
         }
       }
       .ct-series-a .ct-point,
       .ct-series-a .ct-line {
-        stroke: nth($ct-series-colors, $i + 1) !important;
+        stroke: nth(
+          $ct-series-colors,
+          length($ct-series-colors) - $i
+        ) !important;
       }
     }
   }
@@ -1102,33 +1102,6 @@ export default {
       $ct-series-colors,
       20
     ) !important; // use different color than chartist.css as color i is identical to color b there
-  }
-
-  .ct-chart-weather {
-    @for $i from 0 to length($ct-series-colors) {
-      .ct-legend {
-        .ct-series-#{$i} {
-          color: nth($ct-series-colors, length($ct-series-colors) - $i);
-          &::before {
-            background-color: nth(
-              $ct-series-colors,
-              length($ct-series-colors) - $i
-            );
-            border-color: nth(
-              $ct-series-colors,
-              length($ct-series-colors) - $i
-            );
-          }
-        }
-      }
-      .ct-series-#{$i} .ct-point,
-      .ct-series-#{$i} .ct-line {
-        stroke: nth(
-          $ct-series-colors,
-          length($ct-series-colors) - $i
-        ) !important;
-      }
-    }
   }
 
   .ct-chart-debug {

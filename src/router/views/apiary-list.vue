@@ -707,9 +707,9 @@ export default {
     this.readApiariesAndGroups().then(() => {
       this.ready = true
     })
-    this.getDeviceIds().then(() => {
-      this.getAllLastSensorValues()
-    })
+    // this.getDeviceIds().then(() => {
+    //   this.getAllLastSensorValues()
+    // })
   },
   methods: {
     async checkToken(token, groupId, groupName) {
