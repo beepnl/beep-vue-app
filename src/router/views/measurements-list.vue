@@ -470,7 +470,7 @@ export default {
       const temp = this.measurementData
       this.measurementData = null // charts are redrawn when measurementData is null
       setTimeout(() => {
-        this.measurementData = temp
+        this.formatMeasurementData(temp)
       }, 10)
     },
   },
@@ -550,41 +550,7 @@ export default {
             '&timezone=' +
             this.timeZone
         )
-        // console.log(response)
-        this.measurementData = response.data
-        this.currentWeatherSensors = {}
-        this.currentSensors = []
-        this.currentSoundSensors = {}
-        this.currentDebugSensors = []
-        this.weatherSensorsPresent = false
-        this.sensorsPresent = false
-        this.soundSensorsPresent = false
-        this.debugSensorsPresent = false
-        if (this.measurementData.measurements.length > 0) {
-          Object.keys(this.measurementData.measurements[0]).map((quantity) => {
-            if (this.WEATHER.indexOf(quantity) > -1) {
-              var weatherSensorName = this.SENSOR_NAMES[quantity]
-              var weatherSensorUnit = this.SENSOR_UNITS[quantity]
-              weatherSensorName =
-                this.$i18n.t(weatherSensorName) + ' (' + weatherSensorUnit + ')'
-              this.currentWeatherSensors[weatherSensorName] = quantity
-              this.weatherSensorsPresent = true
-            } else if (this.SENSORS.indexOf(quantity) > -1) {
-              this.currentSensors.push(quantity)
-              this.sensorsPresent = true
-            } else if (this.SOUND.indexOf(quantity) > -1) {
-              var soundSensorName = this.SENSOR_NAMES[quantity]
-              this.currentSoundSensors[soundSensorName] = quantity
-              this.soundSensorsPresent = true
-            } else if (this.DEBUG.indexOf(quantity) > -1) {
-              this.currentDebugSensors.push(quantity)
-              this.debugSensorsPresent = true
-            }
-          })
-        } else {
-          this.noChartData = true
-        }
-
+        this.formatMeasurementData(response.data)
         return true
       } catch (error) {
         console.log('Error: ', error)
@@ -731,6 +697,41 @@ export default {
             }
           },
         },
+      }
+    },
+    formatMeasurementData(measurementData) {
+      this.measurementData = measurementData
+      this.currentWeatherSensors = {}
+      this.currentSensors = []
+      this.currentSoundSensors = {}
+      this.currentDebugSensors = []
+      this.weatherSensorsPresent = false
+      this.sensorsPresent = false
+      this.soundSensorsPresent = false
+      this.debugSensorsPresent = false
+      if (this.measurementData.measurements.length > 0) {
+        Object.keys(this.measurementData.measurements[0]).map((quantity) => {
+          if (this.WEATHER.indexOf(quantity) > -1) {
+            var weatherSensorName = this.SENSOR_NAMES[quantity]
+            var weatherSensorUnit = this.SENSOR_UNITS[quantity]
+            weatherSensorName =
+              this.$i18n.t(weatherSensorName) + ' (' + weatherSensorUnit + ')'
+            this.currentWeatherSensors[weatherSensorName] = quantity
+            this.weatherSensorsPresent = true
+          } else if (this.SENSORS.indexOf(quantity) > -1) {
+            this.currentSensors.push(quantity)
+            this.sensorsPresent = true
+          } else if (this.SOUND.indexOf(quantity) > -1) {
+            var soundSensorName = this.SENSOR_NAMES[quantity]
+            this.currentSoundSensors[soundSensorName] = quantity
+            this.soundSensorsPresent = true
+          } else if (this.DEBUG.indexOf(quantity) > -1) {
+            this.currentDebugSensors.push(quantity)
+            this.debugSensorsPresent = true
+          }
+        })
+      } else {
+        this.noChartData = true
       }
     },
     loadData() {
