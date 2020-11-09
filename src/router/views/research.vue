@@ -103,7 +103,7 @@
                     </v-col>
                   </v-row>
                   <v-row v-if="research.checklist_names.length > 0">
-                    <v-col class="research-item-col" cols="4">
+                    <v-col class="research-item-col pb-1" cols="4">
                       <span
                         class="research-property"
                         v-text="
@@ -156,7 +156,7 @@
                       <span>{{ research.end_date }}</span>
                     </v-col>
                   </v-row>
-                  <v-row class="mt-3">
+                  <v-row class="mt-4">
                     <v-col class="research-item-col" cols="4">
                       <span
                         class="research-property"
@@ -219,7 +219,22 @@
                       class="research-item-col"
                       cols="12"
                     >
-                      <span>{{ consentHistory.updated_at }}</span>
+                      <span>
+                        {{ consentHistory.updated_at }}
+                        <!-- <Datetime
+                          v-model="consentHistory.updated_at"
+                          type="datetime"
+                        >
+                          <template slot="button-cancel">
+                            <v-btn text color="primary">{{
+                              $t('Cancel')
+                            }}</v-btn>
+                          </template>
+                          <template slot="button-confirm">
+                            <v-btn text color="primary">{{ $t('ok') }}</v-btn>
+                          </template>
+                        </Datetime> -->
+                      </span>
                     </v-col>
                   </v-row>
                 </v-col>
@@ -239,10 +254,15 @@
 
 <script>
 import Api from '@api/Api'
+// import { Datetime } from 'vue-datetime'
+// import 'vue-datetime/dist/vue-datetime.min.css'
 import Layout from '@layouts/back.vue'
 
 export default {
-  components: { Layout },
+  components: {
+    // Datetime,
+    Layout,
+  },
   data: function() {
     return {
       researchProjects: [],
@@ -308,6 +328,14 @@ export default {
         console.log('Error: ', error)
       }
     },
+    // momentISO8601(date) {
+    //   return this.$moment(date)
+    //     .locale(this.$i18n.locale)
+    //     .format()
+    // },
+    // updatedDate(consentHistory) {
+    //   return this.momentISO8601(consentHistory.updated_at)
+    // },
   },
 }
 </script>
@@ -333,12 +361,9 @@ export default {
 }
 
 .research-property {
-  // @include for-phone-only {
   font-size: 0.75rem;
   font-weight: 500;
   color: $color-grey-dark;
-  // font-weight: 400;
   letter-spacing: 0.0333333333em !important;
-  // }
 }
 </style>
