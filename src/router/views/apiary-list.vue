@@ -543,7 +543,8 @@ export default {
     showLoadingIconForId: null,
     showApiaryPlaceholder: false,
     ready: false,
-    allLastSensorValues: {},
+    lastSensorValuesByDeviceId: {},
+    sensorDefinitionsByDeviceId: {},
     deviceIdArray: [],
   }),
   computed: {
@@ -707,9 +708,9 @@ export default {
     this.readApiariesAndGroups().then(() => {
       this.ready = true
     })
-    // this.getDeviceIds().then(() => {
-    //   this.getAllLastSensorValues()
-    // })
+    this.getDeviceIds().then(() => {
+      this.getAllLastSensorValues()
+    })
   },
   methods: {
     async checkToken(token, groupId, groupName) {
@@ -806,13 +807,31 @@ export default {
         const response = await Api.readRequest('/devices')
         const devices = response.data
         // var deviceIdArray = []
-        var allLastSensorValues = {}
+        var lastSensorValuesByDeviceId = {}
+        var sensorDefinitionsByDeviceId = {}
         devices.map((device) => {
-          allLastSensorValues[device.id] = {}
+          lastSensorValuesByDeviceId[device.id] = {}
           // deviceIdArray.push(device.id)
+          if (device.sensor_definitions.length > 0) {
+            var sensorDefs = device.sensor_definitions.reduce(
+              (acc, sensorDef) => {
+                var abbr =
+                  sensorDef.output_abbr !== null
+                    ? sensorDef.output_abbr
+                    : sensorDef.input_abbr !== null
+                    ? sensorDef.input_abbr
+                    : null
+                acc[abbr] = sensorDef.name
+                return acc
+              },
+              {}
+            )
+            sensorDefinitionsByDeviceId[device.id] = sensorDefs
+          }
         })
-        this.allLastSensorValues = allLastSensorValues
-        this.deviceIdArray = Object.keys(allLastSensorValues)
+        this.lastSensorValuesByDeviceId = lastSensorValuesByDeviceId
+        this.sensorDefinitionsByDeviceId = sensorDefinitionsByDeviceId
+        this.deviceIdArray = Object.keys(lastSensorValuesByDeviceId)
         return true
       } catch (error) {
         console.log('Error: ', error)
@@ -927,7 +946,32 @@ export default {
     getAllLastSensorValues() {
       this.deviceIdArray.map((deviceId) =>
         this.loadLastSensorValues(deviceId).then((response) => {
-          this.allLastSensorValues[deviceId] = response
+          // this.lastSensorValuesByDeviceId[deviceId] = response
+          if (typeof response === 'undefined') {
+            response = null
+          } else {
+            var soundResponse = Object.entries(response).reduce(
+              (acc, [key, value]) => {
+                if (key.toString().includes('s_bin')) {
+                  // FIXME
+                  acc[key] = value
+                  return acc
+                }
+              },
+              {}
+            )
+
+            console.log(soundResponse)
+
+            var filteredResponse = Object.keys(
+              this.sensorDefinitionsByDeviceId[deviceId]
+            ).reduce((acc, sensorDef) => {
+              acc[sensorDef] = response[sensorDef]
+              return acc
+            }, {})
+            response = filteredResponse
+          }
+          this.lastSensorValuesByDeviceId[deviceId] = response
         })
       )
     },
