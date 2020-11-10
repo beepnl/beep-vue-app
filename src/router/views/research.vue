@@ -291,7 +291,11 @@
                           <v-btn
                             text
                             color="primary"
-                            @click="editedCHItems.push(chItem.id)"
+                            @click="
+                              editedCHItems.indexOf(chItem.id) === -1
+                                ? editedCHItems.push(chItem.id)
+                                : null
+                            "
                             >{{ $t('ok') }}</v-btn
                           >
                         </template>
