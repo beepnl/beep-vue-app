@@ -83,31 +83,31 @@
               <v-row>
                 <v-col cols="12" md="6">
                   <v-row v-if="research.url !== null">
-                    <v-col class="research-item-col" cols="4">
+                    <v-col class="research-item-col" cols="5" sm="4">
                       <span
                         class="research-property"
                         v-text="$t('link')"
                       ></span>
                     </v-col>
-                    <v-col class="research-item-col" cols="8">
+                    <v-col class="research-item-col" cols="7" sm="8">
                       <a :href="research.url" target="_blank">{{
                         research.url
                       }}</a>
                     </v-col>
                   </v-row>
                   <v-row v-if="research.institution !== null">
-                    <v-col class="research-item-col" cols="4">
+                    <v-col class="research-item-col" cols="5" sm="4">
                       <span
                         class="research-property"
                         v-text="$t('institution')"
                       ></span>
                     </v-col>
-                    <v-col class="research-item-col" cols="8">
+                    <v-col class="research-item-col" cols="7" sm="8">
                       <span>{{ research.institution }}</span>
                     </v-col>
                   </v-row>
                   <v-row v-if="research.checklist_names.length > 0">
-                    <v-col class="research-item-col pb-1" cols="4">
+                    <v-col class="research-item-col pb-1" cols="5" sm="4">
                       <span
                         class="research-property"
                         v-text="
@@ -115,7 +115,7 @@
                         "
                       ></span>
                     </v-col>
-                    <v-col class="research-item-col pb-1" cols="8">
+                    <v-col class="research-item-col pb-1" cols="7" sm="8">
                       <v-chip
                         v-for="checklistName in research.checklist_names"
                         :key="checklistName"
@@ -128,46 +128,46 @@
                     </v-col>
                   </v-row>
                   <v-row v-if="research.type_of_data_used !== null">
-                    <v-col class="research-item-col" cols="4">
+                    <v-col class="research-item-col" cols="5" sm="4">
                       <span
                         class="research-property"
                         v-text="$t('type_of_data_used')"
                       ></span>
                     </v-col>
-                    <v-col class="research-item-col" cols="8">
+                    <v-col class="research-item-col" cols="7" sm="8">
                       <span>{{ research.type_of_data_used }}</span>
                     </v-col>
                   </v-row>
                   <v-row v-if="research.start_date !== null">
-                    <v-col class="research-item-col" cols="4">
+                    <v-col class="research-item-col" cols="5" sm="4">
                       <span
                         class="research-property"
                         v-text="$t('start_date')"
                       ></span>
                     </v-col>
-                    <v-col class="research-item-col" cols="8">
+                    <v-col class="research-item-col" cols="7" sm="8">
                       <span>{{ momentify(research.start_date) }}</span>
                     </v-col>
                   </v-row>
                   <v-row v-if="research.end_date !== null">
-                    <v-col class="research-item-col" cols="4">
+                    <v-col class="research-item-col" cols="5" sm="4">
                       <span
                         class="research-property"
                         v-text="$t('end_date')"
                       ></span>
                     </v-col>
-                    <v-col class="research-item-col" cols="8">
+                    <v-col class="research-item-col" cols="7" sm="8">
                       <span>{{ momentify(research.end_date) }}</span>
                     </v-col>
                   </v-row>
                   <v-row class="mt-4">
-                    <v-col class="research-item-col" cols="4">
+                    <v-col class="research-item-col" cols="5" sm="4">
                       <span
                         class="research-property"
                         v-text="$t('Current_consent')"
                       ></span>
                     </v-col>
-                    <v-col class="research-item-col" cols="8">
+                    <v-col class="research-item-col" cols="7" sm="8">
                       <strong>{{
                         research.consent ? $t('consent_yes') : $t('consent_no')
                       }}</strong>
@@ -186,6 +186,7 @@
                       <v-btn
                         tile
                         outlined
+                        :small="mobile"
                         :class="research.consent ? 'red--text' : 'green--text'"
                         @click="
                           consentToggle(research.id, research.consent ? 0 : 1)
@@ -193,14 +194,19 @@
                       >
                         <v-progress-circular
                           v-if="showLoadingIconConsentToggle"
-                          class="ml-n1 mr-2"
-                          size="18"
+                          :class="`ml-n1 ${mobile ? 'mr-3' : 'mr-2'}`"
+                          :size="mobile ? 14 : 18"
                           width="2"
                           indeterminate
                         />
-                        <v-icon v-if="!showLoadingIconConsentToggle" left>{{
-                          research.consent ? 'mdi-close' : 'mdi-check'
-                        }}</v-icon>
+                        <v-icon
+                          v-if="!showLoadingIconConsentToggle"
+                          left
+                          :small="mobile"
+                          >{{
+                            research.consent ? 'mdi-close' : 'mdi-check'
+                          }}</v-icon
+                        >
                         {{
                           research.consent
                             ? $t('consent_no')
@@ -400,6 +406,9 @@ export default {
       var baseUrl = process.env.VUE_APP_API_URL
       baseUrl = baseUrl.replace('/api/', '')
       return baseUrl
+    },
+    mobile() {
+      return this.$vuetify.breakpoint.mobile
     },
     sortedResearchProjects() {
       var sortedRPs = this.researchProjects.slice().sort(function(a, b) {
