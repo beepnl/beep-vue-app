@@ -49,7 +49,7 @@
 
         <v-row class="mt-3">
           <v-col
-            v-for="research in researchProjects"
+            v-for="research in sortedResearchProjects"
             :key="research.id"
             cols="12"
           >
@@ -218,7 +218,7 @@
                     v-for="chItem in research.consent_history"
                     :key="chItem.id"
                   >
-                    <v-col class="research-item-col" cols="12" md="6">
+                    <v-col class="research-item-col" cols="12" md="6" lg="5">
                       <Datetime
                         v-model="chItem.updated_at"
                         type="datetime"
@@ -301,6 +301,7 @@
                       class="research-item-col d-flex align-center"
                       cols="12"
                       md="6"
+                      lg="7"
                     >
                       <strong
                         :class="
@@ -364,6 +365,18 @@ export default {
       var baseUrl = process.env.VUE_APP_API_URL
       baseUrl = baseUrl.replace('/api/', '')
       return baseUrl
+    },
+    sortedResearchProjects() {
+      var sortedRPs = this.researchProjects.slice().sort(function(a, b) {
+        if (a.name > b.name) {
+          return 1
+        }
+        if (b.name > a.name) {
+          return -1
+        }
+        return 0
+      })
+      return sortedRPs
     },
   },
   created() {
