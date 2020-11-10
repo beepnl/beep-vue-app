@@ -19,7 +19,12 @@
 
       <template v-slot:extension>
         <v-tabs icons-and-text dense dark grow background-color="primary">
-          <v-tab v-for="(tab, i) in tabs" :key="i" :to="{ name: tab.route }">
+          <v-tab
+            v-for="(tab, i) in tabs"
+            :key="i"
+            :to="{ name: tab.route }"
+            exact
+          >
             <span v-if="tab.title">{{ tab.title }}</span>
             <v-icon v-if="tab.icon">{{ tab.icon }}</v-icon>
           </v-tab>

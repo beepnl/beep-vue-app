@@ -195,7 +195,7 @@ export default [
     },
     path: '/measurements',
     name: 'measurements',
-    component: () => lazyLoadView(import('@views/measurements-list.vue')),
+    component: () => import('@views/measurements-list.vue'), // no lazyLoadView in order to be able to use beforeDestroy hook to clearInterval for lastSensorValues API call when navigating away
   },
   {
     meta: {
@@ -203,7 +203,7 @@ export default [
     },
     path: '/measurements/:id',
     name: 'measurements-id',
-    component: () => lazyLoadView(import('@views/measurements-list.vue')),
+    component: () => import('@views/measurements-list.vue'), // no lazyLoadView in order to be able to use beforeDestroy hook to clearInterval for lastSensorValues API call when navigating away
   },
   {
     meta: {

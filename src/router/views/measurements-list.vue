@@ -486,7 +486,9 @@ export default {
       })
   },
   beforeDestroy() {
-    clearInterval(this.timer)
+    if (this.timer > 0) {
+      clearInterval(this.timer)
+    }
   },
   methods: {
     async loadLastSensorValuesFunc() {
@@ -767,7 +769,6 @@ export default {
         this.timer = setInterval(this.loadLastSensorValuesFunc, 60 * 1000) // NB timer var not added to data on purpose, otherwise clearInterval stops working
       } else {
         clearInterval(this.timer)
-        this.timer = false
         this.loadLastSensorValuesFunc()
       }
     },
