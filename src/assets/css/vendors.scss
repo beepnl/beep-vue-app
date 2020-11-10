@@ -280,6 +280,12 @@
   cursor: pointer;
 }
 
+.vdatetime.green--text {
+  .vdatetime-input {
+    color: $color-green;
+  }
+}
+
 .vdatetime-popup {
   border-radius: 4px;
 

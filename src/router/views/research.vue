@@ -191,6 +191,16 @@
                           consentToggle(research.id, research.consent ? 0 : 1)
                         "
                       >
+                        <v-progress-circular
+                          v-if="showLoadingIconConsentToggle"
+                          class="ml-n1 mr-2"
+                          size="18"
+                          width="2"
+                          indeterminate
+                        />
+                        <v-icon v-if="!showLoadingIconConsentToggle" left>{{
+                          research.consent ? 'mdi-close' : 'mdi-check'
+                        }}</v-icon>
                         {{
                           research.consent
                             ? $t('consent_no')
@@ -218,10 +228,17 @@
                     v-for="chItem in research.consent_history"
                     :key="chItem.id"
                   >
-                    <v-col class="research-item-col" cols="12" md="6" lg="5">
+                    <v-col class="research-item-col" cols="12" md="6" xl="5">
                       <Datetime
                         v-model="chItem.updated_at"
                         type="datetime"
+                        :class="
+                          `${
+                            editedCHItems.indexOf(chItem.id) > -1
+                              ? 'green--text'
+                              : 'color-primary'
+                          }`
+                        "
                         :min-datetime="
                           chItem.consent === 0 ? chItem.updated_at : null
                         "
@@ -248,7 +265,19 @@
                               )
                             "
                           >
-                            <v-icon left x-small>mdi-check</v-icon>
+                            <v-progress-circular
+                              v-if="showLoadingIcon.indexOf(chItem.id) > -1"
+                              class="ml-n1 mr-2"
+                              size="12"
+                              width="2"
+                              indeterminate
+                            />
+                            <v-icon
+                              v-if="showLoadingIcon.indexOf(chItem.id) === -1"
+                              left
+                              x-small
+                              >mdi-check</v-icon
+                            >
                             {{ $t('save') }}</v-btn
                           >
                         </span>
@@ -305,7 +334,7 @@
                       class="research-item-col d-flex align-center"
                       cols="12"
                       md="6"
-                      lg="7"
+                      xl="7"
                     >
                       <strong
                         :class="
@@ -320,7 +349,7 @@
                         class="red--text ml-1 cursor-pointer"
                         size="20"
                         @click="confirmDeleteNoConsent(research.id, chItem)"
-                        >mdi-close</v-icon
+                        >mdi-delete</v-icon
                       >
                     </v-col>
                   </v-row>
@@ -362,6 +391,8 @@ export default {
       numberOfDevices: 0,
       editedCHItems: [],
       ready: false,
+      showLoadingIconConsentToggle: false,
+      showLoadingIcon: [],
     }
   },
   computed: {
@@ -434,13 +465,16 @@ export default {
       }
     },
     async consentToggle(id, consent) {
+      this.showLoadingIconConsentToggle = true
       try {
         if (consent) {
           await Api.postRequest('/research/' + id + '/add_consent')
         } else {
           await Api.postRequest('/research/' + id + '/remove_consent')
         }
-        this.readResearchProjects()
+        this.readResearchProjects().then(() => {
+          this.showLoadingIconConsentToggle = false
+        })
         return true
       } catch (error) {
         console.log('Error: ', error)
@@ -465,7 +499,9 @@ export default {
           consentId,
           { updated_at: date }
         )
-        this.readResearchProjects()
+        this.readResearchProjects().then(() => {
+          this.showLoadingIcon = []
+        })
         return true
       } catch (error) {
         console.log('Error: ', error)
@@ -514,6 +550,7 @@ export default {
         .format('YYYY-MM-DD HH:mm:ss')
     },
     updateConsentDate(researchId, consentId, date) {
+      this.showLoadingIcon.push(consentId)
       var formattedDate = this.momentUpdatedAt(date)
       this.editedCHItems.splice(this.editedCHItems.indexOf(consentId), 1)
       console.log('Update consent: ', consentId, formattedDate)
