@@ -326,7 +326,11 @@
           </SlideYUpTransition>
         </v-card>
         <v-row>
-          <v-col v-if="!lastSensorDate" cols="12" class="text-center my-10">
+          <v-col
+            v-if="ready && !lastSensorDate"
+            cols="12"
+            class="text-center my-10"
+          >
             {{ $t('no_data') }}
           </v-col>
         </v-row>
@@ -482,6 +486,8 @@ export default {
       })
       .then(() => {
         this.loadData()
+      })
+      .then(() => {
         this.ready = true
       })
   },
