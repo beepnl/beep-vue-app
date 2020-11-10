@@ -1,5 +1,9 @@
 <template>
-  <Layout :title="$t('research')" :no-box-shadow="true">
+  <Layout
+    :title="$t('research')"
+    :no-box-shadow="true"
+    :edited="editedCHItems.length > 0"
+  >
     <v-container class="mt-2 mt-sm-6">
       <div v-if="researchProjects.length > 0">
         <v-row>
@@ -14,7 +18,7 @@
             <div class="overline mb-2 mb-sm-3">{{ $t('my_beep_data') }}</div>
             <div class="rounded-border">
               <v-row>
-                <v-col cols="12" sm="4">
+                <v-col cols="12" md="4">
                   <span class="d-flex align-center"
                     ><v-icon size="23" class="mr-1">mdi-home-analytics</v-icon>
                     <span
@@ -22,13 +26,13 @@
                     >
                   </span>
                 </v-col>
-                <v-col cols="12" sm="4">
+                <v-col cols="12" md="4">
                   <span class="d-flex align-center"
                     ><v-icon size="20" class="mr-1">mdi-archive</v-icon>
                     <span>{{ $tc('Hive', 2) }}: {{ numberOfHives }}</span></span
                   >
                 </v-col>
-                <v-col cols="12" sm="4">
+                <v-col cols="12" md="4">
                   <span class="d-flex align-center">
                     <v-sheet
                       class="beep-icon beep-icon-sensors--no-outline ma-0 mr-1"
@@ -43,7 +47,7 @@
           </v-col>
         </v-row>
 
-        <v-row>
+        <v-row class="mt-3">
           <v-col
             v-for="research in researchProjects"
             :key="research.id"
@@ -77,7 +81,7 @@
                 </div>
               </div>
               <v-row>
-                <v-col cols="12" sm="6">
+                <v-col cols="12" md="6">
                   <v-row v-if="research.url !== null">
                     <v-col class="research-item-col" cols="4">
                       <span
@@ -111,7 +115,7 @@
                         "
                       ></span>
                     </v-col>
-                    <v-col class="research-item-col" cols="8">
+                    <v-col class="research-item-col pb-1" cols="8">
                       <v-chip
                         v-for="checklistName in research.checklist_names"
                         :key="checklistName"
@@ -142,7 +146,7 @@
                       ></span>
                     </v-col>
                     <v-col class="research-item-col" cols="8">
-                      <span>{{ research.start_date }}</span>
+                      <span>{{ momentify(research.start_date) }}</span>
                     </v-col>
                   </v-row>
                   <v-row v-if="research.end_date !== null">
@@ -153,7 +157,7 @@
                       ></span>
                     </v-col>
                     <v-col class="research-item-col" cols="8">
-                      <span>{{ research.end_date }}</span>
+                      <span>{{ momentify(research.end_date) }}</span>
                     </v-col>
                   </v-row>
                   <v-row class="mt-4">
@@ -164,13 +168,13 @@
                       ></span>
                     </v-col>
                     <v-col class="research-item-col" cols="8">
-                      <span>{{
+                      <strong>{{
                         research.consent ? $t('consent_yes') : $t('consent_no')
-                      }}</span>
+                      }}</strong>
                     </v-col>
                   </v-row>
                   <v-row>
-                    <v-col class="research-item-col" cols="12" sm="4">
+                    <v-col class="research-item-col" cols="12" md="4">
                       <span
                         class="research-property"
                         v-text="
@@ -178,13 +182,11 @@
                         "
                       ></span>
                     </v-col>
-                    <v-col class="research-item-col" cols="12" sm="8">
+                    <v-col class="research-item-col" cols="12" md="8">
                       <v-btn
                         tile
                         outlined
-                        :class="
-                          `${research.consent ? 'red--text' : 'green--text'}`
-                        "
+                        :class="research.consent ? 'red--text' : 'green--text'"
                         @click="
                           consentToggle(research.id, research.consent ? 0 : 1)
                         "
@@ -201,7 +203,7 @@
                 <v-col
                   v-if="research.consent_history.length > 0"
                   cols="12"
-                  sm="6"
+                  md="6"
                 >
                   <v-row>
                     <v-col class="research-item-col" cols="12">
@@ -212,29 +214,109 @@
                     </v-col>
                   </v-row>
 
-                  <v-row>
-                    <v-col
-                      v-for="consentHistory in research.consent_history"
-                      :key="consentHistory.id"
-                      class="research-item-col"
-                      cols="12"
-                    >
-                      <span>
-                        {{ consentHistory.updated_at }}
-                        <!-- <Datetime
-                          v-model="consentHistory.updated_at"
-                          type="datetime"
+                  <v-row
+                    v-for="chItem in research.consent_history"
+                    :key="chItem.id"
+                  >
+                    <v-col class="research-item-col" cols="12" md="6">
+                      <Datetime
+                        v-model="chItem.updated_at"
+                        type="datetime"
+                        :min-datetime="
+                          chItem.consent === 0 ? chItem.updated_at : null
+                        "
+                        :max-datetime="
+                          chItem.consent === 1 ? chItem.updated_at : null
+                        "
+                      >
+                        <span
+                          v-if="editedCHItems.indexOf(chItem.id) > -1"
+                          slot="after"
+                          class="ml-1"
                         >
-                          <template slot="button-cancel">
-                            <v-btn text color="primary">{{
-                              $t('Cancel')
-                            }}</v-btn>
-                          </template>
-                          <template slot="button-confirm">
-                            <v-btn text color="primary">{{ $t('ok') }}</v-btn>
-                          </template>
-                        </Datetime> -->
-                      </span>
+                          <v-btn
+                            tile
+                            outlined
+                            class="mt-n1 green--text"
+                            x-small
+                            @click="
+                              updateConsentDate(
+                                research.id,
+                                chItem.id,
+                                // eslint-disable-next-line vue/comma-dangle
+                                chItem.updated_at
+                              )
+                            "
+                          >
+                            <v-icon left x-small>mdi-check</v-icon>
+                            {{ $t('save') }}</v-btn
+                          >
+                        </span>
+                        <span
+                          v-if="editedCHItems.indexOf(chItem.id) === -1"
+                          slot="after"
+                          class="description cursor-pointer"
+                        >
+                          <v-tooltip bottom>
+                            <template v-slot:activator="{ on }">
+                              <v-icon
+                                class="mdi mdi-information icon-info"
+                                dark
+                                small
+                                color="primary"
+                                v-on="on"
+                              ></v-icon>
+                            </template>
+                            <span
+                              >{{ $t('click_date_to_edit') }}
+                              {{ $t('Consent_can_only_be_set') }}
+                              {{
+                                chItem.consent === 1
+                                  ? $t('earlier') +
+                                    ' ' +
+                                    $t('start_date').toLowerCase() +
+                                    '.'
+                                  : $t('later') +
+                                    ' ' +
+                                    $t('end_date').toLowerCase() +
+                                    '.'
+                              }}
+                            </span>
+                          </v-tooltip>
+                        </span>
+                        <template slot="button-cancel">
+                          <v-btn text color="primary">{{ $t('Cancel') }}</v-btn>
+                        </template>
+                        <template slot="button-confirm">
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="editedCHItems.push(chItem.id)"
+                            >{{ $t('ok') }}</v-btn
+                          >
+                        </template>
+                      </Datetime>
+                    </v-col>
+                    <v-col
+                      class="research-item-col d-flex align-center"
+                      cols="12"
+                      md="6"
+                    >
+                      <strong
+                        :class="
+                          chItem.consent === 1 ? 'green--text' : 'red--text'
+                        "
+                        >{{
+                          chItem.consent ? $t('consent_yes') : $t('consent_no')
+                        }}</strong
+                      >
+                      <v-icon
+                        v-if="chItem.consent === 0"
+                        class="red--text ml-1 cursor-pointer"
+                        size="20"
+                        @click="confirmDeleteNoConsent(research.id, chItem)"
+                        >mdi-close</v-icon
+                      >
                     </v-col>
                   </v-row>
                 </v-col>
@@ -243,24 +325,28 @@
           </v-col>
         </v-row>
       </div>
-      <v-row v-if="researchProjects.length === 0">
+      <v-row v-if="ready && researchProjects.length === 0">
         <v-col cols="12">
           {{ $t('no_data') }}
         </v-col>
       </v-row>
     </v-container>
+
+    <Confirm ref="confirm"></Confirm>
   </Layout>
 </template>
 
 <script>
 import Api from '@api/Api'
-// import { Datetime } from 'vue-datetime'
-// import 'vue-datetime/dist/vue-datetime.min.css'
+import Confirm from '@components/confirm.vue'
+import { Datetime } from 'vue-datetime'
+import 'vue-datetime/dist/vue-datetime.min.css'
 import Layout from '@layouts/back.vue'
 
 export default {
   components: {
-    // Datetime,
+    Confirm,
+    Datetime,
     Layout,
   },
   data: function() {
@@ -269,6 +355,8 @@ export default {
       numberOfHives: 0,
       numberOfApiaries: 0,
       numberOfDevices: 0,
+      editedCHItems: [],
+      ready: false,
     }
   },
   computed: {
@@ -279,9 +367,11 @@ export default {
     },
   },
   created() {
-    this.readResearchProjects()
     this.getDevicesLength()
     this.getApiariesAndHivesLength()
+    this.readResearchProjects().then(() => {
+      this.ready = true
+    })
   },
   methods: {
     async getDevicesLength() {
@@ -309,7 +399,18 @@ export default {
     async readResearchProjects() {
       try {
         const response = await Api.readRequest('/research')
-        this.researchProjects = response.data
+        var researchProjects = response.data
+        researchProjects.map((researchProject) => {
+          if (researchProject.consent_history.length > 0) {
+            researchProject.consent_history.map((chItem) => {
+              chItem.updated_at = this.momentISO8601(
+                // required for datetimepicker v-model to work
+                chItem.updated_at
+              )
+            })
+          }
+        })
+        this.researchProjects = researchProjects
         return true
       } catch (error) {
         console.log('Error: ', error)
@@ -318,9 +419,9 @@ export default {
     async consentToggle(id, consent) {
       try {
         if (consent) {
-          await Api.postRequest('research/' + id + '/add_consent')
+          await Api.postRequest('/research/' + id + '/add_consent')
         } else {
-          await Api.postRequest('research/' + id + '/remove_consent')
+          await Api.postRequest('/research/' + id + '/remove_consent')
         }
         this.readResearchProjects()
         return true
@@ -328,14 +429,79 @@ export default {
         console.log('Error: ', error)
       }
     },
-    // momentISO8601(date) {
-    //   return this.$moment(date)
-    //     .locale(this.$i18n.locale)
-    //     .format()
-    // },
-    // updatedDate(consentHistory) {
-    //   return this.momentISO8601(consentHistory.updated_at)
-    // },
+    async deleteNoConsent(researchId, consentId) {
+      try {
+        await Api.deleteRequest(
+          '/research/' + researchId + '/delete/',
+          consentId
+        )
+        this.readResearchProjects()
+        return true
+      } catch (error) {
+        console.log('Error: ', error)
+      }
+    },
+    async updateDate(researchId, consentId, date) {
+      try {
+        await Api.updateRequest(
+          '/research/' + researchId + '/edit/',
+          consentId,
+          { updated_at: date }
+        )
+        this.readResearchProjects()
+        return true
+      } catch (error) {
+        console.log('Error: ', error)
+      }
+    },
+    confirmDeleteNoConsent(researchId, chItem) {
+      this.$refs.confirm
+        .open(
+          this.$i18n.t('Delete') + ' ' + this.$i18n.t('Consent'),
+          this.$i18n.t('Delete') +
+            ' ' +
+            this.$i18n.t('Consent').toLocaleLowerCase() +
+            ': ' +
+            this.momentify(chItem.updated_at) +
+            ' "' +
+            this.$i18n.t('consent_no') +
+            '"?',
+          {
+            color: 'red',
+          }
+        )
+        .then((confirm) => {
+          this.deleteNoConsent(researchId, chItem.id)
+        })
+        .catch((reject) => {
+          return true
+        })
+    },
+    momentISO8601(date) {
+      if (date !== null) {
+        return this.$moment(date)
+          .locale(this.$i18n.locale)
+          .format()
+      } else {
+        return null
+      }
+    },
+    momentify(date) {
+      return this.$moment(date)
+        .locale(this.$i18n.locale)
+        .format('lll')
+    },
+    momentUpdatedAt(date) {
+      return this.$moment(date)
+        .locale(this.$i18n.locale)
+        .format('YYYY-MM-DD HH:mm:ss')
+    },
+    updateConsentDate(researchId, consentId, date) {
+      var formattedDate = this.momentUpdatedAt(date)
+      this.editedCHItems.splice(this.editedCHItems.indexOf(consentId), 1)
+      console.log('Update consent: ', consentId, formattedDate)
+      this.updateDate(researchId, consentId, formattedDate)
+    },
   },
 }
 </script>
@@ -347,6 +513,9 @@ export default {
   @include for-phone-only {
     padding: 10px;
   }
+  .cursor-pointer {
+    cursor: pointer;
+  }
 }
 
 .research-avatar {
@@ -357,7 +526,7 @@ export default {
 }
 
 .research-item-col {
-  padding: 0 0 8px 12px !important;
+  padding: 0 12px 8px 12px !important;
 }
 
 .research-property {

@@ -77,7 +77,9 @@ export default {
           this.groupEdited) ||
         (this.$route.name === 'hive-edit' && this.hiveEdited) ||
         (this.$route.name === 'hive-inspect' && this.inspectionEdited) ||
-        (this.$route.name === 'checklist' && this.edited)
+        ((this.$route.name === 'checklist' ||
+          this.$route.name === 'research') &&
+          this.edited)
       ) {
         this.$refs.confirm
           .open(this.$i18n.t('unsaved_changes'), this.$i18n.t('save_changes'), {

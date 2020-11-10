@@ -636,6 +636,7 @@ const translations = {
   remove_queen: 'Remove queen',
   remove_group_short: 'Remove collaboration group',
   device: 'Device | Devices',
+  click_date_to_edit: 'Click date to edit.',
 }
 
 export default translations

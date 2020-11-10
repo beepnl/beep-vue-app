@@ -638,6 +638,7 @@ const translations = {
   remove_queen: 'Verwijder koningin',
   remove_group_short: 'Verwijder samenwerkingsgroep',
   device: 'Meetsysteem | Meetsystemen',
+  click_date_to_edit: 'Klik op de datum om deze aan te passen.',
 }
 
 export default translations
