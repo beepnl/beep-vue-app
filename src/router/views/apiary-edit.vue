@@ -309,7 +309,11 @@ export default {
     },
     requiredRule: function() {
       return [
-        (v) => !!v || this.$i18n.t('Name') + ' ' + this.$i18n.t('is_required'),
+        (v) => !!v ||           this.$i18n.t('the_field') +
+            ' "' +
+            this.$i18n.t('Name') +
+            '" ' +
+            this.$i18n.t('is_required'),
       ]
     },
   },

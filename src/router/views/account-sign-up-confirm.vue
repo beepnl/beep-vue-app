@@ -56,9 +56,11 @@ export default {
       return [
         (v) =>
           !!v ||
-          (this.$i18n.t('the_field'),
-          this.$i18n.t('verification_code'),
-          this.$i18n.t('is_required')),
+          this.$i18n.t('the_field') +
+            ' "' +
+            this.$i18n.t('verification_code') +
+            '" ' +
+            this.$i18n.t('is_required'),
       ]
     },
   },

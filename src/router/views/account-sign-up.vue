@@ -57,14 +57,10 @@ export default {
       credentials: {},
       valid: false,
       repeatedPassword: '',
-      agreeToTerms: false,
       errors: [],
     }
   },
   computed: {
-    hasErrors() {
-      return this.errors.length > 0
-    },
     emailRules: function() {
       return [
         (v) => !!v || this.$i18n.t('email_is_required'),
@@ -83,7 +79,13 @@ export default {
     },
     repeatPasswordRules: function() {
       return [
-        (v) => !!v || this.$i18n.t('is_required'),
+        (v) =>
+          !!v ||
+          this.$i18n.t('the_field') +
+            ' "' +
+            this.$i18n.t('confirm_password') +
+            '" ' +
+            this.$i18n.t('is_required'),
         (v) =>
           v === this.resetPasswordRequest.newPassword ||
           this.$i18n.t('no_password_match'),

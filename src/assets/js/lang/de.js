@@ -409,7 +409,7 @@ const translations = {
   Export_your_data:
     'Exportiere alle Daten aus Deinem Account per Email (Exceldatei).',
 
-  Terms_of_use: 'Nutzungsbedingungen (EN)',
+  Terms_of_use: 'Nutzungsbedingungen',
   accept_policy:
     'Ich akzeptiere die BEEP-Nutzungsbedingungen, die mit dem neuen europäischen Datenschutzgesetz vereinbar sind',
   policy_url: 'https://beep.nl/terms-of-service',
@@ -637,6 +637,10 @@ const translations = {
   remove_group_short: 'Remove collaboration group',
   device: 'Device | Devices',
   click_date_to_edit: 'Click date to edit.',
+  accept_policy_1: 'Ich akzeptiere die BEEP-',
+  accept_policy_2:
+    ', die mit dem neuen europäischen Datenschutzgesetz vereinbar sind',
+  terms_of_use: 'Nutzungsbedingungen',
 }
 
 export default translations

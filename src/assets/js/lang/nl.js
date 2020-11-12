@@ -460,8 +460,8 @@ const translations = {
     'Dit item kan niet worden verwijderd, omdat het een verplicht item bevat',
   sensor_key: 'Sensor code',
   Undelete: 'Niet verwijderen',
-  the_field: 'Vul een',
-  is_required: 'in',
+  the_field: 'Het veld',
+  is_required: 'is verplicht',
 
   No_groups: 'Geen groepen beschikbaar',
   not_available_yet:
@@ -639,6 +639,9 @@ const translations = {
   remove_group_short: 'Verwijder samenwerkingsgroep',
   device: 'Meetsysteem | Meetsystemen',
   click_date_to_edit: 'Klik op de datum om deze aan te passen.',
+  accept_policy_1: 'Ik accepteer de BEEP ',
+  accept_policy_2: ', die in lijn zijn met de nieuwe Europese privacywetgeving',
+  terms_of_use: ' servicevoorwaarden',
 }
 
 export default translations

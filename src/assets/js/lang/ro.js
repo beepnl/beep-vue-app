@@ -640,6 +640,10 @@ const translations = {
   remove_group_short: 'Remove collaboration group',
   device: 'Device | Devices',
   click_date_to_edit: 'Click date to edit.',
+  accept_policy_1: 'Accept ',
+  accept_policy_2:
+    ' BEEP, care sunt compatibili cu noua lege Europeană privind confidențialitatea datelor.',
+  terms_of_use: 'termenii serviciului',
 }
 
 export default translations

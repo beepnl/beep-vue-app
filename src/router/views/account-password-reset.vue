@@ -85,9 +85,11 @@ export default {
       return [
         (v) =>
           !!v ||
-          (this.$i18n.t('the_field'),
-          this.$i18n.t('verification_code'),
-          this.$i18n.t('is_required')),
+          this.$i18n.t('the_field') +
+            ' "' +
+            this.$i18n.t('verification_code') +
+            '" ' +
+            this.$i18n.t('is_required'),
       ]
     },
     passwordRules: function() {
@@ -102,7 +104,13 @@ export default {
     },
     repeatPasswordRules: function() {
       return [
-        (v) => !!v || this.$i18n.t('is_required'),
+        (v) =>
+          !!v ||
+          this.$i18n.t('the_field') +
+            ' "' +
+            this.$i18n.t('confirm_new_password') +
+            '" ' +
+            this.$i18n.t('is_required'),
         (v) =>
           v === this.resetPasswordRequest.newPassword ||
           this.$i18n.t('no_password_match'),
