@@ -23,7 +23,7 @@
             v-for="(tab, i) in tabs"
             :key="i"
             :to="{ name: tab.route }"
-            exact
+            :exact="tab.exact"
           >
             <span v-if="tab.title">{{ tab.title }}</span>
             <v-icon v-if="tab.icon">{{ tab.icon }}</v-icon>
@@ -64,16 +64,19 @@ export default {
           title: this.$i18n.tc('Hive_short', 2),
           icon: 'mdi-home-analytics',
           route: 'home',
+          exact: true,
         },
         {
           title: this.$i18n.t('diary'),
           icon: 'mdi-calendar-edit',
           route: 'diary',
+          exact: true,
         },
         {
           title: this.$i18n.t('data'),
           icon: 'mdi-chart-line',
           route: 'measurements',
+          exact: false,
         },
       ]
     },
