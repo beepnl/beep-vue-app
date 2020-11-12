@@ -113,6 +113,14 @@ export default [
     meta: {
       authRequired: true,
     },
+    path: '/devices',
+    name: 'devices',
+    component: () => lazyLoadView(import('@views/devices.vue')),
+  },
+  {
+    meta: {
+      authRequired: true,
+    },
     path: '/diary',
     name: 'diary',
     component: () => lazyLoadView(import('@views/diary-list.vue')),
