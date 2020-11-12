@@ -71,7 +71,7 @@ export default {
     title: null,
     options: {
       color: 'primary',
-      width: 300,
+      width: 320,
       zIndex: 200,
     },
   }),

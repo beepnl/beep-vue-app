@@ -1,91 +1,151 @@
 <template>
   <Layout :title="`${$t('User_data')}`">
-    <v-card>
-      <v-form ref="form" v-model="valid" @submit.prevent="editUser">
-        <v-card-title>{{ $t('User_data') }}</v-card-title>
-        <v-card-text>
-          <v-alert
-            v-for="error in errors"
-            :key="error.name"
-            text
-            prominent
-            dense
-            type="error"
+    <v-form ref="form" v-model="valid" @submit.prevent="editUser">
+      <v-toolbar class="save-bar" dense light>
+        <v-spacer></v-spacer>
+        <v-btn
+          v-if="!mobile"
+          tile
+          outlined
+          color="red"
+          class="save-button mr-3"
+          @click="confirmDeleteUser"
+        >
+          <v-progress-circular
+            v-if="showDeleteLoadingIcon"
+            class="mr-2"
+            size="18"
+            width="2"
             color="red"
-          >
-            {{ errorMessage }}
-          </v-alert>
-          <v-alert
-            v-if="successMessage !== null"
-            text
-            prominent
-            dense
-            type="success"
-            color="green"
-          >
-            {{ successMessage }}
-          </v-alert>
-          <v-text-field
-            v-model="user.name"
-            :label="`${$t('name')}`"
-            autocomplete="off"
-            disabled
+            indeterminate
           />
-          <v-text-field
-            v-model="email"
-            :label="`${$t('email')}`"
-            autocomplete="off"
-            :rules="emailRules"
-          />
-          <v-text-field
-            v-model="password"
-            :label="`${$t('new_password')}`"
-            type="password"
-            :rules="passwordRules"
-          />
-          <v-text-field
-            v-model="repeatPassword"
-            :label="`${$t('confirm_new_password')}`"
-            type="password"
-            :rules="repeatPasswordRules"
-            @keydown.enter="$event.target.blur"
-          />
-          <v-checkbox v-model="policyAccepted" :rules="termsRules" required>
-            <template slot="label" class="keep-spaces">
-              {{ $t('accept_policy_1') }}
-              <a :href="$t('policy_url')">{{ $t('terms_of_use') }}</a>
-              {{ $t('accept_policy_2') }}
-            </template>
-          </v-checkbox>
-        </v-card-text>
+          <v-icon v-if="!showDeleteLoadingIcon" left>mdi-delete</v-icon>
+          {{ $t('Delete') }}
+        </v-btn>
+        <v-progress-circular
+          v-if="mobile && showDeleteLoadingIcon"
+          class="ml-n1 mr-4"
+          size="18"
+          width="2"
+          color="red"
+          indeterminate
+        />
+        <v-icon
+          v-if="mobile && !showDeleteLoadingIcon"
+          dark
+          class="mr-4"
+          color="red"
+          @click="confirmDeleteUser"
+          >mdi-delete</v-icon
+        >
 
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn tile outlined color="primary" type="submit" :disabled="!valid">
-            <v-progress-circular
-              v-if="showLoadingIcon"
-              class="mr-2"
-              size="18"
-              width="2"
-              color="primary"
-              indeterminate
+        <v-btn
+          tile
+          outlined
+          class="mr-1"
+          color="primary"
+          type="submit"
+          :disabled="!valid"
+        >
+          <v-progress-circular
+            v-if="showLoadingIcon"
+            class="ml-n1 mr-2"
+            size="18"
+            width="2"
+            color="primary"
+            indeterminate
+          />
+          <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon
+          >{{ $t('save') }}</v-btn
+        >
+      </v-toolbar>
+
+      <v-container class="content-container">
+        <v-row v-if="errors.length > 0">
+          <v-col cols="12">
+            <v-alert
+              v-for="error in errors"
+              :key="error.name"
+              text
+              prominent
+              dense
+              type="error"
+              color="red"
+            >
+              {{ error.errorMessage }}
+            </v-alert>
+          </v-col>
+        </v-row>
+        <v-row v-if="successMessage !== null">
+          <v-col cols="12">
+            <v-alert text prominent dense type="success" color="green">
+              {{ successMessage }}
+            </v-alert>
+          </v-col>
+        </v-row>
+        <div class="overline mb-3" v-text="$t('User_data')"></div>
+        <v-card outlined>
+          <v-card-text>
+            <v-text-field
+              v-model="user.name"
+              :label="`${$t('name')}`"
+              autocomplete="off"
+              disabled
             />
-            <v-icon v-if="!showLoadingIcon" dark color="primary"
-              >mdi-check</v-icon
-            >{{ $t('save') }}</v-btn
-          >
-        </v-card-actions>
-      </v-form>
-    </v-card>
+            <v-text-field
+              v-model="email"
+              :label="`${$t('email')}`"
+              autocomplete="off"
+              :rules="emailRules"
+            />
+            <v-text-field
+              v-model="password"
+              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+              :label="`${$t('new_password')}`"
+              :type="show1 ? 'text' : 'password'"
+              :rules="passwordRules"
+              @click:append="show1 = !show1"
+            />
+            <v-text-field
+              v-model="repeatPassword"
+              :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+              :label="`${$t('confirm_new_password')}`"
+              :type="show2 ? 'text' : 'password'"
+              :rules="repeatPasswordRules"
+              @keydown.enter="$event.target.blur"
+              @click:append="show2 = !show2"
+            />
+            <v-checkbox
+              v-model="policyAccepted"
+              :rules="termsRules"
+              required
+              class="keep-spaces"
+            >
+              <template slot="label"
+                ><span class="user-checkbox-label"
+                  >{{ $t('accept_policy_1')
+                  }}<a :href="$t('policy_url')">{{ $t('terms_of_use') }}</a
+                  >{{ $t('accept_policy_2') }}
+                </span></template
+              >
+            </v-checkbox>
+          </v-card-text>
+        </v-card>
+      </v-container>
+    </v-form>
+
+    <Confirm ref="confirm"></Confirm>
   </Layout>
 </template>
 
 <script>
 import Api from '@api/Api'
+import Confirm from '@components/confirm.vue'
+import languages from '@assets/js/lang/languages'
 import Layout from '@layouts/back.vue'
 
 export default {
-  components: { Layout },
+  components: { Confirm, Layout },
   props: {
     user: {
       type: Object,
@@ -100,14 +160,14 @@ export default {
       password: '',
       repeatPassword: '',
       successMessage: null,
+      show1: false,
+      show2: false,
+      showDeleteLoadingIcon: false,
       showLoadingIcon: false,
       valid: false,
     }
   },
   computed: {
-    baseUrl() {
-      return process.env.VUE_APP_BASE_URL
-    },
     edit() {
       return {
         email: this.email,
@@ -121,6 +181,9 @@ export default {
         (v) => !!v || this.$i18n.t('email_is_required'),
         (v) => /.+@.+\..+/.test(v) || this.$i18n.t('no_valid_email'),
       ]
+    },
+    mobile() {
+      return this.$vuetify.breakpoint.mobile
     },
     passwordRules: function() {
       return [
@@ -149,12 +212,36 @@ export default {
     },
   },
   methods: {
+    async deleteUser() {
+      this.showDeleteLoadingIcon = true
+      try {
+        const response = await Api.deleteRequest('/user', null)
+        if (!response) {
+          this.errors.push({
+            errorMessage: this.$i18n.t('error'),
+          })
+        }
+        this.signOut()
+      } catch (error) {
+        this.valid = false
+        this.showDeleteLoadingIcon = false
+        if (error.message !== undefined) {
+          this.errors.push({ errorMessage: error.message })
+          console.log('Error: ', error.message)
+        } else {
+          this.errors.push({
+            errorMessage: this.$i18n.t('error'),
+          })
+          console.log('Error: ', error)
+        }
+      }
+    },
     async editUser() {
       if (this.$refs.form.validate()) {
         this.clearMessages()
         this.showLoadingIcon = true
         try {
-          const response = await Api.updateRequest('/user', '', this.edit)
+          const response = await Api.updateRequest('/user', null, this.edit)
           if (!response) {
             this.errors.push({
               errorMessage: this.$i18n.t('not_saved_error'),
@@ -183,6 +270,32 @@ export default {
       this.errors = []
       this.successMessage = null
     },
+    confirmDeleteUser() {
+      const warningMessage = this.$i18n.t('delete_complete_account')
+      this.$refs.confirm
+        .open(
+          this.$i18n.t('Delete') + ' ' + this.$i18n.t('user_data'),
+          null,
+          {
+            color: 'red',
+          },
+          warningMessage
+        )
+        .then((confirm) => {
+          this.deleteUser()
+        })
+        .catch((reject) => {
+          return true
+        })
+    },
+    signOut() {
+      this.$store
+        .dispatch('auth/signOut')
+        .then(() => this.$router.push({ name: 'sign-in' }))
+        .then(() => {
+          this.$i18n.locale = languages.checkBrowserLanguage()
+        })
+    },
   },
 }
 </script>
@@ -190,5 +303,9 @@ export default {
 <style lang="scss" scoped>
 .keep-spaces {
   white-space: pre-wrap;
+}
+.user-checkbox-label {
+  display: inline-block !important;
+  max-width: 100% !important;
 }
 </style>

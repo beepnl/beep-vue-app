@@ -641,7 +641,7 @@ const translations = {
   click_date_to_edit: 'Klik op de datum om deze aan te passen.',
   accept_policy_1: 'Ik accepteer de BEEP ',
   accept_policy_2: ', die in lijn zijn met de nieuwe Europese privacywetgeving',
-  terms_of_use: ' servicevoorwaarden',
+  terms_of_use: 'servicevoorwaarden',
 }
 
 export default translations

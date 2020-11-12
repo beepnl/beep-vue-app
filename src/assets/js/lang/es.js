@@ -640,6 +640,8 @@ const translations = {
   accept_policy_2:
     ' BEEP, que son compatibles con la nueva ley europea de privacidad',
   terms_of_use: 'términos del servicio',
+  the_field: 'The',
+  is_required: 'is required',
 }
 
 export default translations
