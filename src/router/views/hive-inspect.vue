@@ -3,7 +3,6 @@
     :title="
       inspectionId ? `${$t('Edit_inspection')}` : `${$t('New_inspection')}`
     "
-    :no-box-shadow="true"
   >
     <h1
       v-if="

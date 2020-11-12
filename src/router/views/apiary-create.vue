@@ -1,8 +1,5 @@
 <template>
-  <Layout
-    :title="`${$t('create_new')} ${$tc('location', 1)}`"
-    :no-box-shadow="true"
-  >
+  <Layout :title="`${$t('create_new')} ${$tc('location', 1)}`">
     <v-form ref="form" v-model="valid" @submit.prevent="createApiary">
       <v-tabs
         v-model="activeTab"

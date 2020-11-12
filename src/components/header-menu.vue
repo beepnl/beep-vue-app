@@ -38,7 +38,7 @@
         </template>
         <v-divider v-if="menuItems.length"></v-divider>
         <v-list-item :to="{ name: 'settings' }">{{
-          $t('settings')
+          $t('Settings')
         }}</v-list-item>
         <v-list-item :disabled="!loggedIn" @click="signOut">{{
           $t('logout')

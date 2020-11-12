@@ -47,12 +47,13 @@ export default {
           icon: 'mdi-key',
           title: this.$i18n.t('Profile'),
           route: 'profile',
-          subtitle: 'email, research consent, privacy',
+          subtitle: 'email, privacy',
         },
         {
-          icon: 'mdi-account-multiple',
-          title: this.$i18n.tc('Group', 2),
-          subtitle: 'members and sharing',
+          icon: 'mdi-share-variant',
+          title: this.$i18n.t('research'),
+          route: 'research',
+          subtitle: 'research consent',
         },
         {
           icon: 'mdi-format-list-checks',

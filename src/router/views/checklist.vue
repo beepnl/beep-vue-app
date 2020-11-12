@@ -1,7 +1,6 @@
 <template>
   <Layout
     :title="`${$t('edit')} ${$tc('checklist', 1)}`"
-    :no-box-shadow="true"
     :edited="checklistEdited"
   >
     <h1

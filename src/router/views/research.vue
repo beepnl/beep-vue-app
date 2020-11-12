@@ -1,7 +1,6 @@
 <template>
   <Layout
     :title="$t('research')"
-    :no-box-shadow="true"
     :edited="editedCHItems.length > 0"
   >
     <v-container class="mt-2 mt-sm-6">

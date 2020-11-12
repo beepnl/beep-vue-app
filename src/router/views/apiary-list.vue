@@ -1,5 +1,5 @@
 <template>
-  <Layout :menu-items="menuItems" :no-box-shadow="true">
+  <Layout :menu-items="menuItems">
     <div v-if="ready">
       <div v-if="!showApiaryPlaceholder" class="filter-bar-wrapper">
         <v-container class="filter-container">

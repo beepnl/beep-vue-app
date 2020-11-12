@@ -1,5 +1,5 @@
 <template>
-  <Layout :title="getTitle()" :no-box-shadow="true">
+  <Layout :title="getTitle()">
     <v-form ref="form" v-model="valid" @submit.prevent="saveGroup">
       <v-toolbar v-if="activeGroup" class="save-bar" dense light>
         <v-spacer></v-spacer>

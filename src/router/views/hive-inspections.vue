@@ -2,7 +2,6 @@
   <Layout
     v-if="activeHive"
     :title="`${$tc('Inspection', 2)} ${activeHive.name}`"
-    :no-box-shadow="true"
   >
     <div class="filter-bar-wrapper">
       <v-container class="filter-container">

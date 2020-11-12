@@ -1,5 +1,5 @@
 <template>
-  <Layout :title="`${$t('edit')} ${$tc('location', 1)}`" :no-box-shadow="true">
+  <Layout :title="`${$t('edit')} ${$tc('location', 1)}`">
     <h1
       v-if="
         activeApiary &&

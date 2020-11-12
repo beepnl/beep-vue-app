@@ -1,13 +1,6 @@
 <template>
   <div>
-    <v-app-bar
-      :no-box-shadow="noBoxShadow"
-      :class="noBoxShadow ? 'v-app-bar--no-box-shadow' : ''"
-      app
-      color="primary"
-      dark
-      dense
-    >
+    <v-app-bar app color="primary" dark dense>
       <slot name="icon">
         <v-btn icon @click="back">
           <v-icon>mdi-arrow-left</v-icon>
@@ -50,10 +43,6 @@ export default {
     menuItems: {
       type: Array,
       default: () => [],
-    },
-    noBoxShadow: {
-      type: Boolean,
-      default: false,
     },
     edited: {
       type: Boolean,
@@ -100,7 +89,7 @@ export default {
 </script>
 
 <style lang="scss">
-header.v-app-bar--no-box-shadow {
+header.v-app-bar {
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
 }

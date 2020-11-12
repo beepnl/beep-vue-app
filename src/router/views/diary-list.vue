@@ -1,5 +1,5 @@
 <template>
-  <Layout :no-box-shadow="true">
+  <Layout>
     <v-container v-if="showDiaryPlaceholder">
       <v-row>
         <v-col sm="auto" :cols="12">

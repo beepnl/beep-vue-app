@@ -1,5 +1,5 @@
 <template>
-  <Layout :title="getTitle()" :no-box-shadow="true">
+  <Layout :title="getTitle()">
     <h1
       v-if="
         locationId === null &&

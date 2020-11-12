@@ -1,5 +1,5 @@
 <template>
-  <Layout :no-box-shadow="true">
+  <Layout>
     <div v-if="devices.length > 0" class="period-bar-wrapper">
       <v-container class="period-container">
         <v-row
