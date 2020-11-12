@@ -845,12 +845,10 @@ export default {
       this.periodTitle = s + '' + (endTimeFormat !== null ? ' - ' + e : '')
     },
     setInitialDeviceId() {
-      if (this.selectedDeviceId === null) {
-        if (this.$route.name === 'measurements-id') {
-          this.selectedDeviceId = parseInt(this.$route.params.id)
-        } else {
-          this.selectedDeviceId = this.devices[0].id
-        }
+      if (this.$route.name === 'measurements-id') {
+        this.selectedDeviceId = parseInt(this.$route.params.id)
+      } else if (this.selectedDeviceId === null) {
+        this.selectedDeviceId = this.devices[0].id
       }
     },
     setPeriodInterval(interval, modulonr) {

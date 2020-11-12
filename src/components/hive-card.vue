@@ -146,12 +146,11 @@
                   </v-list-item-content>
                 </v-list-item>
                 <v-list-item
-                  v-if="
-                    hive.id % 2 === 0 ||
-                      hive.id % 3 === 0 ||
-                      hive.id % 5 === 0 ||
-                      hive.id === 1
-                  "
+                  v-if="hive.sensors.length !== 0"
+                  :to="{
+                    name: 'measurements-id',
+                    params: { id: hive.sensors[0] },
+                  }"
                 >
                   <v-list-item-icon class="mr-3">
                     <div class="my-0">
@@ -390,12 +389,7 @@
         </div>
 
         <div
-          v-if="
-            hive.id % 2 === 0 ||
-              hive.id % 3 === 0 ||
-              hive.id % 5 === 0 ||
-              hive.id === 1
-          "
+          v-if="hive.sensors.length !== 0"
           class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
         >
           <div class="mr-2 my-0">
@@ -403,13 +397,13 @@
           </div>
           <div class="icon-wrapper d-flex flex-row">
             <div class="mr-1 my-0 icon-wrapper d-flex flex-row align-center">
-              <v-icon :class="`${hive.id % 6 === 0 ? 'red--text' : ''}`">
+              <v-icon :class="`${hive.id % 3 === 0 ? 'red--text' : ''}`">
                 mdi-weight
               </v-icon>
               <v-icon
                 :class="
                   `ml-n1 icon-side-arrow ${
-                    hive.id % 6 === 0 ? 'red--text' : ''
+                    hive.id % 3 === 0 ? 'red--text' : ''
                   }`
                 "
               >
@@ -417,18 +411,18 @@
               </v-icon>
             </div>
             <div class="mr-2 my-0 icon-wrapper d-flex flex-row align-center">
-              <v-icon :class="`${hive.id === 18 ? 'red--text' : ''}`">
+              <v-icon :class="`${hive.id === 2 ? 'red--text' : ''}`">
                 mdi-thermometer
               </v-icon>
               <v-icon
-                v-if="hive.id === 18"
+                v-if="hive.id === 2"
                 class="ml-n2 mr-1 icon-side-arrow red--text"
               >
                 mdi-arrow-down-thick
               </v-icon>
               <div
                 :class="
-                  `ml-n1 temp ${hive.id === 18 ? 'red--text' : 'color-grey'}`
+                  `ml-n1 temp ${hive.id === 4 ? 'red--text' : 'color-grey'}`
                 "
                 >{{ Math.floor(Math.random() * 6) + 16 + '°C' }}</div
               >
