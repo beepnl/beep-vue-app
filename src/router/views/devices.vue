@@ -24,7 +24,7 @@
                 `device-title-row d-flex flex-no-wrap justify-flex-start ${
                   mobile ? 'align-start' : 'align-center'
                 } ${
-                  showDevicesById[device.id]
+                  showDevicesById.includes(device.id)
                     ? 'device-title-row--border-bottom'
                     : ''
                 }`
@@ -97,7 +97,9 @@
                 <v-icon
                   :class="
                     `color-grey-light ${mobile ? 'pr-2 pt-3' : 'pa-2'} mdi ${
-                      showDevicesById[device.id] ? 'mdi-minus' : 'mdi-cog'
+                      showDevicesById.includes(device.id)
+                        ? 'mdi-minus'
+                        : 'mdi-cog'
                     }`
                   "
                   @click="toggleDevice(device.id)"
@@ -107,16 +109,43 @@
             </div>
 
             <SlideYUpTransition :duration="150">
-              <v-card-text v-if="showDevicesById[device.id] === true">
+              <v-card-text v-if="showDevicesById.includes(device.id)">
                 <v-row>
                   <v-col cols="12" md="6">
                     <v-text-field
                       v-model="device.name"
                       :label="`${$t('name')}`"
                     />
+                  </v-col>
+                  <v-col cols="12" md="6">
                     <v-text-field
                       v-model="device.key"
-                      :label="`${$t('sensor_key') + '(DEV EUI)'}`"
+                      :label="`${$t('sensor_key') + ' (DEV EUI)'}`"
+                    />
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <Treeselect
+                      v-if="sensorTypes.length > 0"
+                      v-model="device.type"
+                      :normalizer="normalizerSensorTypes"
+                      :options="sensorTypes"
+                      :placeholder="`${$t('Select')} ${$t('type')}`"
+                      :no-results-text="`${$t('no_results')}`"
+                      :disable-branch-nodes="true"
+                      :default-expand-level="1"
+                    />
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <Treeselect
+                      v-if="apiaries.length > 0"
+                      v-model="device.hive_id"
+                      :options="apiaries"
+                      :normalizer="normalizerHives"
+                      :placeholder="`${$t('Select')} ${$tc('hive', 1)}`"
+                      :no-results-text="`${$t('no_results')}`"
+                      :disable-branch-nodes="true"
+                      :default-expand-level="1"
+                      search-nested
                     />
                   </v-col>
                 </v-row>
@@ -136,12 +165,29 @@ import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
 import { SlideYUpTransition } from 'vue2-transitions'
+import Treeselect from '@riophae/vue-treeselect'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 export default {
-  components: { Confirm, Layout, SlideYUpTransition },
+  components: { Confirm, Layout, SlideYUpTransition, Treeselect },
   data() {
     return {
+      apiaries: [],
       devices: [],
+      normalizerHives(node) {
+        return {
+          id: node.id,
+          label: node.name,
+          children: node.hives,
+        }
+      },
+      normalizerSensorTypes(node) {
+        return {
+          id: node.name,
+          label: node.name,
+        }
+      },
+      sensorTypes: [],
       showDevicesById: [],
     }
   },
@@ -157,6 +203,8 @@ export default {
   },
   created() {
     this.getDevices()
+    this.readApiaries()
+    this.readTaxonomy()
   },
   methods: {
     async getDevices() {
@@ -168,13 +216,35 @@ export default {
         console.log('Error: ', error)
       }
     },
+    async readApiaries() {
+      try {
+        const response = await Api.readRequest('/locations')
+        this.apiaries = response.data.locations
+        return true
+      } catch (error) {
+        console.log('Error: ', error)
+      }
+    },
+    async readTaxonomy() {
+      try {
+        const response = await Api.readRequest('/taxonomy/lists')
+        this.sensorTypes = response.data.sensortypes
+        return true
+      } catch (error) {
+        console.log('Error: ', error)
+      }
+    },
     momentify(date) {
       return this.$moment(date)
         .locale(this.$i18n.locale)
         .format('lll')
     },
     toggleDevice(deviceId) {
-      this.$set(this.showDevicesById, deviceId, !this.showDevicesById[deviceId])
+      if (this.showDevicesById.includes(deviceId)) {
+        this.showDevicesById.splice(this.showDevicesById.indexOf(deviceId), 1)
+      } else {
+        this.showDevicesById.push(deviceId)
+      }
     },
     transmissionText(device) {
       return device.measurement_transmission_ratio < 2

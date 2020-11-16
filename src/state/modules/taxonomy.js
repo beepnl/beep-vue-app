@@ -31,6 +31,9 @@ export const getters = {
   hiveTypesList: (state) => {
     return state.data.lists.hivetypes || []
   },
+  sensorTypesList: (state) => {
+    return state.data.lists.sensortypes || []
+  },
 }
 export const mutations = {
   SET_LISTS: function(state, data) {
