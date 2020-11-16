@@ -20,18 +20,42 @@
         >
           <v-card outlined>
             <div
-              class="device-title-row d-flex flex-no-wrap justify-flex-start align-start"
+              :class="
+                `device-title-row d-flex flex-no-wrap justify-flex-start ${
+                  mobile ? 'align-start' : 'align-center'
+                } ${
+                  showDevicesById[device.id]
+                    ? 'device-title-row--border-bottom'
+                    : ''
+                }`
+              "
               style="width: 100%;"
             >
               <v-row class="ml-0 pl-0 py-0" style="width:100%;">
                 <v-col cols="6" md="3">
                   <h4 class="device-title">{{ device.name }}</h4>
+                  <span class="beep-label"
+                    >{{ device.hive_name }} ({{ device.location_name }})</span
+                  >
                 </v-col>
                 <v-col
                   cols="6"
                   md="9"
                   class="d-flex flex-wrap justify-flex-start align-center"
                 >
+                  <div class="mr-3">
+                    <router-link
+                      :to="{
+                        name: 'measurements-id',
+                        params: { id: device.id },
+                      }"
+                    >
+                      <v-icon small color="primary">
+                        mdi-chart-line
+                      </v-icon>
+                    </router-link>
+                  </div>
+
                   <div class="mr-3">
                     <v-icon small>
                       mdi-battery
@@ -45,7 +69,7 @@
 
                   <div class="mr-3">
                     <v-sheet
-                      class="beep-icon beep-icon--small beep-icon-sensors--no-outline beep-icon-sensors--no-outline--small ma-0 mt-1"
+                      class="beep-icon beep-icon--small beep-icon-sensors--no-outline beep-icon-sensors--no-outline--small"
                     ></v-sheet>
                     <span class="beep-label">{{
                       device.last_message_received !== null
@@ -70,25 +94,34 @@
               </v-row>
 
               <div>
-                <v-icon class="color-grey-light pr-2 pt-3">
-                  mdi-cog
+                <v-icon
+                  :class="
+                    `color-grey-light ${mobile ? 'pr-2 pt-3' : 'pa-2'} mdi ${
+                      showDevicesById[device.id] ? 'mdi-minus' : 'mdi-cog'
+                    }`
+                  "
+                  @click="toggleDevice(device.id)"
+                >
                 </v-icon>
               </div>
             </div>
-            <v-card-text>
-              <v-row>
-                <v-col cols="12">
-                  <v-text-field
-                    v-model="device.name"
-                    :label="`${$t('name')}`"
-                  />
-                  <v-text-field
-                    v-model="device.key"
-                    :label="`${$t('sensor_key') + '(DEV EUI)'}`"
-                  />
-                </v-col>
-              </v-row>
-            </v-card-text>
+
+            <SlideYUpTransition :duration="150">
+              <v-card-text v-if="showDevicesById[device.id] === true">
+                <v-row>
+                  <v-col cols="12" md="6">
+                    <v-text-field
+                      v-model="device.name"
+                      :label="`${$t('name')}`"
+                    />
+                    <v-text-field
+                      v-model="device.key"
+                      :label="`${$t('sensor_key') + '(DEV EUI)'}`"
+                    />
+                  </v-col>
+                </v-row>
+              </v-card-text>
+            </SlideYUpTransition>
           </v-card>
         </v-col>
       </v-row>
@@ -102,12 +135,14 @@
 import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
+import { SlideYUpTransition } from 'vue2-transitions'
 
 export default {
-  components: { Confirm, Layout },
+  components: { Confirm, Layout, SlideYUpTransition },
   data() {
     return {
       devices: [],
+      showDevicesById: [],
     }
   },
   computed: {
@@ -138,6 +173,9 @@ export default {
         .locale(this.$i18n.locale)
         .format('lll')
     },
+    toggleDevice(deviceId) {
+      this.$set(this.showDevicesById, deviceId, !this.showDevicesById[deviceId])
+    },
     transmissionText(device) {
       return device.measurement_transmission_ratio < 2
         ? device.measurement_interval_min + ' min'
@@ -157,7 +195,10 @@ export default {
   padding: 4px;
 
   .device-title-row {
-    border-bottom: 1px solid $color-grey-light;
+    line-height: 1.2rem !important;
+    &--border-bottom {
+      border-bottom: 1px solid $color-grey-light;
+    }
   }
   .device-title {
     @include for-phone-only {
