@@ -90,7 +90,6 @@ const translations = {
 
   already_registered: 'Ik heb al een account',
   invalid_user: 'Gebruikersnaam of wachtwoord incorrect',
-  invalid_password: 'Wachtwoord te kort (min. 8 tekens)',
   no_password_match: 'De wachtwoorden komen niet overeen',
   invalid_token: 'Ongeldige code',
 
@@ -642,6 +641,8 @@ const translations = {
   accept_policy_1: 'Ik accepteer de BEEP ',
   accept_policy_2: ', die in lijn zijn met de nieuwe Europese privacywetgeving',
   terms_of_use: 'servicevoorwaarden',
+  invalid_password:
+    'Wachtwoord moet minimaal 8 tekens, een kleine letter, een hoofdletter, een cijfer en een bijzonder teken (\\]{}()?\\-"!@#%&/\\,><\':;|_~`) bevatten',
 }
 
 export default translations

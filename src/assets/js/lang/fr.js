@@ -90,7 +90,6 @@ const translations = {
 
   already_registered: 'Je suis déjà inscrit',
   invalid_user: 'Utilisateur inconnu ou mot de passe incorrect',
-  invalid_password: 'Mot de passe trop court (min. 8 caractères)',
   no_password_match: 'Les mots de passe ne correspondent pas',
   invalid_token: 'Code non valide',
 
@@ -646,6 +645,8 @@ const translations = {
   accept_policy_2:
     ' de BEEP, qui sont compatibles avec la nouvelle loi européenne sur la protection de la vie privée',
   terms_of_use: "conditions d'utilisation",
+  invalid_password:
+    'Password must contain at least 8 characters, one lowercase letter, one uppercase letter, one number and one special character (\\]{}()?\\-"!@#%&/\\,><\':;|_~`)',
 }
 
 export default translations
