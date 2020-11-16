@@ -547,7 +547,6 @@ const translations = {
   Size: 'Grootte',
   preview: 'voorbeeld',
 
-  Sensor_definitions: 'Sensor definitie',
   Inside: 'Meet binnen',
   Offset: 'Offset',
   Multiplier: 'Multiplier',
@@ -643,6 +642,7 @@ const translations = {
   terms_of_use: 'servicevoorwaarden',
   invalid_password:
     'Wachtwoord moet minimaal 8 tekens, een kleine letter, een hoofdletter, een cijfer en een bijzonder teken (\\]{}()?\\-"!@#%&/\\,><\':;|_~`) bevatten',
+  sensor_definition: 'sensor definitie | sensor definities',
 }
 
 export default translations

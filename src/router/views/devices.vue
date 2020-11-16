@@ -13,7 +13,7 @@
       <v-row dense>
         <v-col
           v-for="device in ownedDevices"
-          :key="device.id"
+          :key="device.name + device.id"
           sm="auto"
           class="device-item"
           dense
@@ -111,13 +111,13 @@
             <SlideYUpTransition :duration="150">
               <v-card-text v-if="showDevicesById.includes(device.id)">
                 <v-row>
-                  <v-col cols="12" md="6">
+                  <v-col cols="12" md="6" class="pb-0 pb-sm-3">
                     <v-text-field
                       v-model="device.name"
                       :label="`${$t('name')}`"
                     />
                   </v-col>
-                  <v-col cols="12" md="6">
+                  <v-col cols="12" md="6" class="pb-0 pb-sm-3">
                     <v-text-field
                       v-model="device.key"
                       :label="`${$t('sensor_key') + ' (DEV EUI)'}`"
@@ -149,6 +149,121 @@
                     />
                   </v-col>
                 </v-row>
+                <v-row>
+                  <v-col cols="12">
+                    <div
+                      class="overline mb-2"
+                      v-text="`${$tc('sensor_definition', 2)}`"
+                    ></div>
+                    <div class="rounded-border">
+                      <v-simple-table dense>
+                        <template v-slot>
+                          <thead>
+                            <tr>
+                              <th class="text-left">
+                                {{ $t('Name') }}
+                              </th>
+                              <th class="text-left">
+                                {{ $t('Inside') }}
+                              </th>
+                              <th class="text-left">
+                                {{ $t('Offset') }}
+                              </th>
+                              <th class="text-left">
+                                {{ $t('Multiplier') }}
+                              </th>
+                              <th class="text-left">
+                                {{ $t('Input') }}
+                              </th>
+                              <th class="text-left">
+                                {{ $t('Output') }}
+                              </th>
+                              <th class="text-center">
+                                {{ $t('Actions') }}
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr
+                              v-for="(sensorDef,
+                              index) in device.sensor_definitions"
+                              :key="index"
+                              :class="
+                                sensorDef.delete === true ? 'user-delete' : ''
+                              "
+                            >
+                              <td>
+                                <v-text-field
+                                  v-model="sensorDef.name"
+                                  :disabled="sensorDef.delete"
+                                  :placeholder="`${$t('Name')}`"
+                                  class="device-input mt-2 mb-n5"
+                                  solo
+                                ></v-text-field>
+                              </td>
+                              <td>
+                                <v-text-field
+                                  v-model="sensorDef.inside"
+                                  class="device-input mt-2 mb-n5"
+                                  solo
+                                ></v-text-field>
+                              </td>
+                              <td>
+                                <v-text-field
+                                  v-model="sensorDef.offset"
+                                  :disabled="sensorDef.delete"
+                                  :placeholder="`${$t('Offset')}`"
+                                  class="device-input mt-2 mb-n5"
+                                  solo
+                                ></v-text-field>
+                                <!-- <VueNumberInput
+                                  v-model="sensorDef.offset"
+                                  class="device-input mt-2 mb-n5"
+                                  solo
+                                ></VueNumberInput> -->
+                              </td>
+                              <td>
+                                <v-text-field
+                                  v-model="sensorDef.multiplier"
+                                  :disabled="sensorDef.delete"
+                                  :placeholder="`${$t('Multiplier')}`"
+                                  class="device-input mt-2 mb-n5"
+                                  solo
+                                ></v-text-field>
+                              </td>
+                              <td>
+                                <v-text-field
+                                  v-model="sensorDef.input_measurement"
+                                  :disabled="sensorDef.delete"
+                                  :placeholder="`${$t('Input')}`"
+                                  class="device-input mt-2 mb-n5"
+                                  solo
+                                ></v-text-field>
+                              </td>
+                              <td>
+                                <v-text-field
+                                  v-model="sensorDef.output_measurement"
+                                  :disabled="sensorDef.delete"
+                                  :placeholder="`${$t('Output')}`"
+                                  class="device-input mt-2 mb-n5"
+                                  solo
+                                ></v-text-field>
+                              </td>
+                              <td class="text-center">
+                                <v-icon
+                                  dark
+                                  color="red"
+                                  @click="deleteSensorDef(sensorDef.id)"
+                                  >mdi-delete</v-icon
+                                >
+                              </td>
+                            </tr>
+                          </tbody>
+                        </template>
+                      </v-simple-table>
+                    </div>
+                  </v-col>
+                </v-row>
               </v-card-text>
             </SlideYUpTransition>
           </v-card>
@@ -167,9 +282,16 @@ import Layout from '@layouts/back.vue'
 import { SlideYUpTransition } from 'vue2-transitions'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+// import VueNumberInput from '@chenfengyuan/vue-number-input'
 
 export default {
-  components: { Confirm, Layout, SlideYUpTransition, Treeselect },
+  components: {
+    Confirm,
+    Layout,
+    SlideYUpTransition,
+    Treeselect,
+    // VueNumberInput,
+  },
   data() {
     return {
       apiaries: [],
@@ -234,6 +356,9 @@ export default {
         console.log('Error: ', error)
       }
     },
+    deleteSensorDef(sensorDefId) {
+      console.log('deleting: ', sensorDefId)
+    },
     momentify(date) {
       return this.$moment(date)
         .locale(this.$i18n.locale)
@@ -274,6 +399,9 @@ export default {
     @include for-phone-only {
       font-size: 12px;
     }
+  }
+  .device-input.v-text-field.v-text-field--solo .v-input__control {
+    min-width: 160px !important;
   }
 }
 </style>

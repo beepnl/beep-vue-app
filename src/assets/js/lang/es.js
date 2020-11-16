@@ -543,7 +543,6 @@ const translations = {
   Size: 'Size',
   preview: 'preview',
 
-  Sensor_definitions: 'Sensor definitions',
   Inside: 'Measures inside',
   Offset: 'Offset',
   Multiplier: 'Multiplier',
@@ -643,6 +642,7 @@ const translations = {
   is_required: 'is required',
   invalid_password:
     'Password must contain at least 8 characters, one lowercase letter, one uppercase letter, one number and one special character (\\]{}()?\\-"!@#%&/\\,><\':;|_~`)',
+  sensor_definition: 'sensor definition | sensor definitions',
 }
 
 export default translations
