@@ -89,7 +89,6 @@ const translations = {
 
   already_registered: 'Ya estoy registrado',
   invalid_user: 'Usuario desconocido, o contraseña incorrecta',
-  invalid_password: 'Contraseña demasiado corta (mín. 8 caracteres)',
   no_password_match: 'Las contraseñas no coinciden',
   invalid_token: 'Código no válido',
 
@@ -642,6 +641,8 @@ const translations = {
   terms_of_use: 'términos del servicio',
   the_field: 'The',
   is_required: 'is required',
+  invalid_password:
+    'Password must contain at least 8 characters, one lowercase letter, one uppercase letter, one number and one special character (\\]{}()?\\-"!@#%&/\\,><\':;|_~`)',
 }
 
 export default translations

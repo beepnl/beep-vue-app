@@ -89,7 +89,6 @@ const translations = {
 
   already_registered: 'Ich bin bereits registriert',
   invalid_user: 'Der Benutzer konnte nicht gefunden werden',
-  invalid_password: 'Das Passwort ist zu kurz (min. 8 Zeichen)',
   no_password_match: 'Falsches Passwort',
   invalid_token: 'Falscher Code',
 
@@ -641,6 +640,8 @@ const translations = {
   accept_policy_2:
     ', die mit dem neuen europäischen Datenschutzgesetz vereinbar sind',
   terms_of_use: 'Nutzungsbedingungen',
+  invalid_password:
+    'Password must contain at least 8 characters, one lowercase letter, one uppercase letter, one number and one special character (\\]{}()?\\-"!@#%&/\\,><\':;|_~`)',
 }
 
 export default translations

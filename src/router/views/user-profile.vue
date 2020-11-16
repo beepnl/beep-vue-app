@@ -87,10 +87,9 @@
         <v-card outlined>
           <v-card-text>
             <v-text-field
-              v-model="user.name"
+              v-model="name"
               :label="`${$t('name')}`"
               autocomplete="off"
-              disabled
             />
             <v-text-field
               v-model="email"
@@ -156,6 +155,7 @@ export default {
     return {
       errors: [],
       email: this.user.email,
+      name: this.user.name,
       policyAccepted: true,
       password: '',
       repeatPassword: '',
@@ -170,6 +170,7 @@ export default {
   computed: {
     edit() {
       return {
+        name: this.name,
         email: this.email,
         password: this.password,
         password_confirmation: this.repeatPassword,
@@ -188,9 +189,8 @@ export default {
     passwordRules: function() {
       return [
         (v) => !!v || this.$i18n.t('password_is_required'),
-        // FIXME: don't impose and expose password requirements besides minimum length
         (v) =>
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.[\]{}()?\-"!@#%&/\\,><':;|_~`])(?=.{6,98})/.test(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.[\]{}()?\-"!@#%&/\\,><':;|_~`])(?=.{8,98})/.test(
             v
           ) || this.$i18n.t('invalid_password'),
       ]
@@ -241,12 +241,13 @@ export default {
         this.clearMessages()
         this.showLoadingIcon = true
         try {
-          const response = await Api.updateRequest('/user', null, this.edit)
+          const response = await Api.updateRequest('/user', '', this.edit)
           if (!response) {
             this.errors.push({
               errorMessage: this.$i18n.t('not_saved_error'),
             })
           }
+          this.$store.commit('auth/SET_CURRENT_USER', response.data)
           this.valid = false
           this.successMessage =
             this.$i18n.t('User_data') + ' ' + this.$i18n.t('updated')

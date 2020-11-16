@@ -89,7 +89,6 @@ const translations = {
 
   already_registered: 'Sunt deja înregistrat',
   invalid_user: 'Utilizator necunoscut sau parolă greșită',
-  invalid_password: 'Parola este prea scurtă (min. 8 caractere)',
   no_password_match: 'Parolele nu se potrivesc',
   invalid_token: 'Cod invalid',
 
@@ -644,6 +643,8 @@ const translations = {
   accept_policy_2:
     ' BEEP, care sunt compatibili cu noua lege Europeană privind confidențialitatea datelor.',
   terms_of_use: 'termenii serviciului',
+  invalid_password:
+    'Password must contain at least 8 characters, one lowercase letter, one uppercase letter, one number and one special character (\\]{}()?\\-"!@#%&/\\,><\':;|_~`)',
 }
 
 export default translations
