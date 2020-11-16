@@ -116,6 +116,7 @@ export default [
     path: '/devices',
     name: 'devices',
     component: () => lazyLoadView(import('@views/devices.vue')),
+    alias: '/sensors', // old v2 path which might be saved and therefore used by users coming from v2 app
   },
   {
     meta: {

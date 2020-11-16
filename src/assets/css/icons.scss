@@ -31,6 +31,11 @@
   border: 2px solid $color-grey;
   border-radius: 50%;
 
+  &--small {
+    width: 16px;
+    height: 16px;
+  }
+
   &-queen {
     background-image: url('~@assets/img/icn_bee.svg');
     background-size: 10px;
@@ -73,6 +78,10 @@
     &::before {
       font-family: 'Material Design Icons';
       content: '\F060A';
+    }
+
+    &--small {
+      font-size: 16px;
     }
   }
 
