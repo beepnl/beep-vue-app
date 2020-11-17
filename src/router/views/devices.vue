@@ -229,7 +229,9 @@
                               index) in device.sensor_definitions"
                               :key="index"
                               :class="
-                                sensorDef.delete === true ? 'user-delete' : ''
+                                sensorDef.delete === true
+                                  ? 'sensordef-delete'
+                                  : ''
                               "
                             >
                               <td>
@@ -309,7 +311,7 @@
                                 <v-icon
                                   dark
                                   color="red"
-                                  @click="deleteSensorDef(sensorDef.id)"
+                                  @click="deleteSensorDef(device, index)"
                                   >mdi-delete</v-icon
                                 >
                               </td>
@@ -403,7 +405,19 @@ export default {
     async getDevices() {
       try {
         const response = await Api.readRequest('/devices')
-        this.devices = response.data
+        var devices = response.data
+
+        devices.map((device) => {
+          if (device.sensor_definitions.length > 0) {
+            var sensorDefsWithDeleteProp = device.sensor_definitions
+            sensorDefsWithDeleteProp.map((sensorDef) => {
+              sensorDef.delete = false // otherwise Vue can't track the 'delete' property
+            })
+            device.sensor_definitions = sensorDefsWithDeleteProp
+          }
+        })
+
+        this.devices = devices
         return true
       } catch (error) {
         console.log('Error: ', error)
@@ -439,8 +453,17 @@ export default {
         output_measurement_id: null,
       })
     },
-    deleteSensorDef(sensorDefId) {
-      console.log('deleting: ', sensorDefId)
+    deleteSensorDef(device, index) {
+      const sensorDef = device.sensor_definitions[index]
+      if (typeof sensorDef.id === 'undefined') {
+        return this.removeSensorDef(device, index)
+      }
+      sensorDef.delete = !sensorDef.delete
+    },
+    removeSensorDef(device, index) {
+      return typeof device.sensor_definitions[index] !== 'undefined'
+        ? device.sensor_definitions.splice(index, 1)
+        : null
     },
     momentify(date) {
       return this.$moment(date)
@@ -488,6 +511,9 @@ export default {
   }
   .device-number-input {
     margin-top: 6px !important;
+  }
+  .sensordef-delete {
+    background-color: rgba(255, 0, 0, 0.2);
   }
 }
 </style>

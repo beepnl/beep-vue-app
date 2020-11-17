@@ -57,6 +57,9 @@
 .v-text-field {
   &.v-text-field--solo .v-input__control {
     min-width: 160px !important;
+    @include for-desktop-up {
+      min-width: 0 !important;
+    }
   }
   .v-input__control .v-input__slot {
     display: flex !important;
@@ -232,6 +235,9 @@
     padding-left: 3rem !important;
     border-color: $color-grey-light;
     border-radius: 4px;
+    &:focus {
+      border-color: $color-primary;
+    }
   }
   button.number-input__button {
     font-size: 24px;
