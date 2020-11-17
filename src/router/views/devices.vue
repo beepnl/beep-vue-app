@@ -151,11 +151,51 @@
                 </v-row>
                 <v-row>
                   <v-col cols="12">
+                    <div class="d-flex justify-space-between">
+                      <div
+                        v-if="device.sensor_definitions.length > 0"
+                        class="overline mb-3"
+                        v-text="
+                          `${$tc(
+                            'sensor_definition',
+                            // eslint-disable-next-line vue/comma-dangle
+                            device.sensor_definitions.length
+                          )}`
+                        "
+                      ></div>
+                      <v-spacer></v-spacer>
+                      <v-btn
+                        v-if="!mobile"
+                        tile
+                        outlined
+                        class="save-button"
+                        color="primary"
+                        @click="addSensorDef(device)"
+                      >
+                        <v-icon left>mdi-plus</v-icon>
+                        {{ $t('add') + ' ' + $tc('sensor_definition', 1) }}
+                      </v-btn>
+                      <v-btn
+                        v-if="mobile"
+                        tile
+                        outlined
+                        class="save-button"
+                        color="primary"
+                        @click="addSensorDef(device)"
+                      >
+                        <v-icon left>mdi-plus</v-icon>
+                        {{ $t('add') }}
+                        {{
+                          device.sensor_definitions.length === 0
+                            ? $tc('sensor_definition', 1)
+                            : ''
+                        }}
+                      </v-btn>
+                    </div>
                     <div
-                      class="overline mb-2"
-                      v-text="`${$tc('sensor_definition', 2)}`"
-                    ></div>
-                    <div class="rounded-border">
+                      v-if="device.sensor_definitions.length > 0"
+                      class="rounded-border"
+                    >
                       <v-simple-table dense>
                         <template v-slot>
                           <thead>
@@ -197,7 +237,7 @@
                                   v-model="sensorDef.name"
                                   :disabled="sensorDef.delete"
                                   :placeholder="`${$t('Name')}`"
-                                  class="device-input mt-2 mb-n5"
+                                  class="mt-2 mb-n5"
                                   solo
                                 ></v-text-field>
                               </td>
@@ -243,7 +283,7 @@
                                       1
                                     )} ...`
                                   "
-                                  class="device-input mt-2 mb-n5"
+                                  class="mt-2 mb-n5"
                                   solo
                                 ></v-select>
                               </td>
@@ -261,7 +301,7 @@
                                       1
                                     )} ...`
                                   "
-                                  class="device-input mt-2 mb-n5"
+                                  class="mt-2 mb-n5"
                                   solo
                                 ></v-select>
                               </td>
@@ -388,6 +428,17 @@ export default {
         console.log('Error: ', error)
       }
     },
+    addSensorDef(device) {
+      device.sensor_definitions.push({
+        device_id: device.id,
+        name: 'Sensor ' + (device.sensor_definitions.length + 1),
+        inside: null,
+        offset: 0,
+        multiplier: 1,
+        input_measurement_id: null,
+        output_measurement_id: null,
+      })
+    },
     deleteSensorDef(sensorDefId) {
       console.log('deleting: ', sensorDefId)
     },
@@ -431,9 +482,6 @@ export default {
     @include for-phone-only {
       font-size: 12px;
     }
-  }
-  .device-input.v-text-field.v-text-field--solo .v-input__control {
-    min-width: 160px !important;
   }
   .device-yes-no {
     white-space: nowrap;

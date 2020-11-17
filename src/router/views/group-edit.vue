@@ -241,7 +241,7 @@
                           v-model="user.name"
                           :disabled="user.id && user.id !== null"
                           :placeholder="`${$t('invitee_name')}`"
-                          class="user-input mt-2 mb-n5"
+                          class="mt-2 mb-n5"
                           solo
                         ></v-text-field>
                       </td>
@@ -250,7 +250,7 @@
                           v-model="user.email"
                           :disabled="user.id && user.id !== null"
                           :placeholder="`${$t('email_is_required')}`"
-                          class="user-input mt-2 mb-n5"
+                          class="mt-2 mb-n5"
                           solo
                         ></v-text-field>
                       </td>
@@ -847,11 +847,6 @@ export default {
       margin: 8px 0 10px;
     }
   }
-
-  .user-input.v-text-field.v-text-field--solo .v-input__control {
-    min-width: 160px !important;
-  }
-
   .group-color {
     width: 35px;
     height: 35px;
