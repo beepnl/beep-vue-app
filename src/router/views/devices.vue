@@ -61,6 +61,9 @@
         v-text="$tc('device', ownedDevices.length)"
       ></div>
       <v-row dense>
+        <v-col v-if="ready && ownedDevices.length === 0" cols="12">
+          {{ $t('no_data') }}
+        </v-col>
         <v-col
           v-for="device in ownedDevices"
           :key="device.key"
@@ -472,6 +475,7 @@ export default {
           label: node.trans.en,
         }
       },
+      ready: false,
       sensorTypes: [],
       sensorMeasurements: [],
       showDevicesByKey: [],
@@ -504,7 +508,9 @@ export default {
   created() {
     this.getDevices()
     this.readApiaries()
-    this.readTaxonomy()
+    this.readTaxonomy().then(() => {
+      this.ready = true
+    })
   },
   methods: {
     async getDevices() {
