@@ -7,6 +7,7 @@
             small ? 'yes-no-button--small pr-0' : 'pr-2'
           }`
         "
+        :disabled="disabled"
         text
         @click="updateObject(1, property)"
       >
@@ -23,6 +24,7 @@
             small ? 'yes-no-button--small px-0' : 'px-2'
           }`
         "
+        :disabled="disabled"
         text
         @click="updateObject(0, property)"
       >
@@ -47,6 +49,11 @@ export default {
     property: {
       type: [String, Number],
       required: true,
+    },
+    disabled: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
     small: {
       type: Boolean,

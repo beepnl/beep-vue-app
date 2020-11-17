@@ -5,6 +5,10 @@ class Api {
     return axios.post(url, payload)
   }
 
+  putRequest(url, payload) {
+    return axios.put(url, payload)
+  }
+
   readRequest(url, id = '') {
     return axios.get(url + id)
   }
@@ -13,8 +17,8 @@ class Api {
     return axios.patch(url + id, payload)
   }
 
-  deleteRequest(url, id) {
-    return axios.delete(url + id)
+  deleteRequest(url, id, payload = null) {
+    return axios.delete(url + id, { data: payload })
   }
 }
 

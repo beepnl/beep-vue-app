@@ -205,7 +205,6 @@
                         v-if="!mobile"
                         tile
                         outlined
-                        class="save-button"
                         color="primary"
                         @click="addSensorDef(device)"
                       >
@@ -216,7 +215,6 @@
                         v-if="mobile"
                         tile
                         outlined
-                        class="save-button"
                         color="primary"
                         @click="addSensorDef(device)"
                       >
@@ -285,6 +283,7 @@
                                   v-if="sensorDef"
                                   :object="sensorDef"
                                   property="inside"
+                                  :disabled="sensorDef.delete"
                                   :small="true"
                                   class="device-yes-no mt-n3 mb-n5"
                                 ></yesNoRating>
@@ -293,6 +292,7 @@
                                 <VueNumberInput
                                   v-model="sensorDef.offset"
                                   class="device-number-input"
+                                  :disabled="sensorDef.delete"
                                   size="small"
                                   inline
                                   controls
@@ -303,6 +303,7 @@
                                 <VueNumberInput
                                   v-model="sensorDef.multiplier"
                                   class="device-number-input"
+                                  :disabled="sensorDef.delete"
                                   size="small"
                                   inline
                                   controls
@@ -344,7 +345,33 @@
                                   solo
                                 ></v-select>
                               </td>
-                              <td class="text-center">
+                              <td
+                                class="text-center d-flex flex-no-wrap align-center button-wrapper"
+                              >
+                                <v-progress-circular
+                                  v-if="
+                                    showLoadingIconById.indexOf(sensorDef.id) >
+                                      -1
+                                  "
+                                  class="progress-icon mr-3"
+                                  size="18"
+                                  width="2"
+                                  color="green"
+                                  indeterminate
+                                />
+                                <v-icon
+                                  v-if="
+                                    showLoadingIconById.indexOf(
+                                      // eslint-disable-next-line vue/comma-dangle
+                                      sensorDef.id
+                                    ) === -1
+                                  "
+                                  dark
+                                  class="mr-3"
+                                  color="green"
+                                  @click="updateSensorDef(sensorDef)"
+                                  >mdi-check</v-icon
+                                >
                                 <v-icon
                                   dark
                                   color="red"
@@ -411,6 +438,7 @@ export default {
       sensorMeasurements: [],
       showDevicesById: [],
       showLoadingIcon: false,
+      showLoadingIconById: [],
     }
   },
   computed: {
@@ -506,6 +534,48 @@ export default {
         console.log('Error: ', this.errorMessage)
       }
     },
+    async updateSensorDef(sensorDef) {
+      this.showLoadingIconById.push(sensorDef.id)
+      var sensorDefId =
+        typeof sensorDef.id !== 'undefined' ? sensorDef.id : null
+      try {
+        var response = false
+        if (sensorDef.delete === true) {
+          console.log(sensorDef)
+          response = await Api.deleteRequest(
+            '/sensordefinition/',
+            sensorDefId,
+            sensorDef
+          )
+        } else if (sensorDefId !== null) {
+          response = await Api.putRequest(
+            '/sensordefinition/' + sensorDefId,
+            sensorDef
+          )
+        } else {
+          response = await Api.postRequest('/sensordefinition', sensorDef)
+        }
+        if (!response) {
+          this.errorMessage =
+            this.$i18n.t('Error') + ': ' + this.$i18n.t('not_saved_error')
+        }
+        this.getDevices().then(() => {
+          this.showLoadingIconById.splice(
+            this.showLoadingIconById.indexOf(sensorDef.id),
+            1
+          )
+        })
+        return true
+      } catch (error) {
+        this.errorMessage =
+          error.status === 422
+            ? this.$i18n.t('Error') +
+              ': ' +
+              Object.values(error.message).join(', ')
+            : this.$i18n.t('empty_fields') + '.'
+        console.log('Error: ', this.errorMessage)
+      }
+    },
     addSensorDef(device) {
       device.sensor_definitions.push({
         device_id: device.id,
@@ -584,6 +654,12 @@ export default {
   }
   .sensordef-delete {
     background-color: rgba(255, 0, 0, 0.2);
+  }
+  .button-wrapper {
+    height: 51px;
+  }
+  .progress-icon {
+    margin-left: 6px;
   }
 }
 </style>
