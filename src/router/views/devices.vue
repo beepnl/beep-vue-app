@@ -79,9 +79,7 @@
           >
             <div
               :class="
-                `device-title-row d-flex flex-no-wrap justify-flex-start ${
-                  mobile ? 'align-start' : 'align-center'
-                } ${
+                `device-title-row d-flex flex-no-wrap justify-flex-start align-center ${
                   showDevicesByKey.includes(device.key)
                     ? 'device-title-row--border-bottom'
                     : ''
@@ -160,7 +158,7 @@
               <div>
                 <v-icon
                   :class="
-                    `color-grey-light ${mobile ? 'pr-2 pt-3' : 'pa-2'} mdi ${
+                    `color-grey-light pa-2 mdi ${
                       showDevicesByKey.includes(device.key)
                         ? 'mdi-minus'
                         : 'mdi-cog'
@@ -175,7 +173,7 @@
             <SlideYUpTransition :duration="150">
               <v-card-text v-if="showDevicesByKey.includes(device.key)">
                 <v-row>
-                  <v-col cols="12" md="6" class="pb-0 pb-sm-3">
+                  <v-col cols="12" md="6" class="pt-1 pb-0 py-sm-3">
                     <v-text-field
                       v-model="device.name"
                       :label="`${$t('name')}`"
@@ -716,6 +714,9 @@ export default {
   padding: 4px;
   .device-title-row {
     line-height: 1.2rem !important;
+    @include for-phone-only {
+      line-height: 1rem !important;
+    }
     &--border-bottom {
       border-bottom: 1px solid $color-grey-light;
     }

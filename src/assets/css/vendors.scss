@@ -60,6 +60,9 @@
     @include for-desktop-up {
       min-width: 0 !important;
     }
+    .v-input__slot {
+      background: transparent !important;
+    }
   }
   .v-input__control .v-input__slot {
     display: flex !important;
@@ -226,6 +229,10 @@
   }
 }
 
+.v-data-table {
+  background-color: transparent !important;
+}
+
 /* VueNumberInput */
 .number-input {
   input.number-input__input {
@@ -233,6 +240,7 @@
     padding-right: 3rem !important;
     padding-bottom: 5px;
     padding-left: 3rem !important;
+    background-color: transparent !important;
     border-color: $color-grey-light;
     border-radius: 4px;
     &:focus {
@@ -242,6 +250,7 @@
   button.number-input__button {
     font-size: 24px;
     color: $color-grey-dark;
+    background-color: transparent !important;
     &::before {
       position: relative;
       top: 0;
