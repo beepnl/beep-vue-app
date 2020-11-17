@@ -647,6 +647,7 @@ const translations = {
     'Password must contain at least 8 characters, one lowercase letter, one uppercase letter, one number and one special character (\\]{}()?\\-"!@#%&/\\,><\':;|_~`)',
   sensor_definition: 'sensor definition | sensor definitions',
   measurement: 'mesure | mesures',
+  remove_device: 'Remove device',
 }
 
 export default translations

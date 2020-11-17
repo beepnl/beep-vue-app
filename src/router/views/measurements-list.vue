@@ -428,7 +428,9 @@ export default {
           label: device.location_name,
           children: [],
         })
-        device.label = device.hive_name + ' - ' + device.name
+        device.label = device.hive_name
+          ? device.hive_name + ' - ' + device.name
+          : device.name
       })
       var uniqueApiaries = []
       const map = new Map()

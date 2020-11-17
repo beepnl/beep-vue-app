@@ -2,7 +2,14 @@
   <Layout :title="`${$tc('device', 2)}`">
     <v-toolbar class="save-bar mt-0" dense light>
       <v-spacer></v-spacer>
-      <v-btn v-if="!mobile" tile outlined class="mr-3" color="primary">
+      <v-btn
+        v-if="!mobile"
+        tile
+        outlined
+        class="mr-3"
+        color="primary"
+        @click="addDevice"
+      >
         <v-icon left>mdi-plus</v-icon>{{ $t('create_new') }}
         {{ $tc('device', 1) }}</v-btn
       >
@@ -37,7 +44,13 @@
       </v-row>
       <v-row v-if="mobile">
         <v-col cols="12">
-          <v-btn tile outlined color="primary" class="save-button mt-n4">
+          <v-btn
+            tile
+            outlined
+            color="primary"
+            class="save-button mt-n4"
+            @click="addDevice"
+          >
             <v-icon left>mdi-plus</v-icon>{{ $t('create_new') }}
             {{ $tc('device', 1) }}</v-btn
           >
@@ -50,18 +63,23 @@
       <v-row dense>
         <v-col
           v-for="device in ownedDevices"
-          :key="device.name + device.id"
+          :key="device.key"
           sm="auto"
           class="device-item"
           dense
         >
-          <v-card outlined>
+          <v-card
+            outlined
+            :class="
+              `'device-card ${device.delete === true ? 'device-delete' : ''}`
+            "
+          >
             <div
               :class="
                 `device-title-row d-flex flex-no-wrap justify-flex-start ${
                   mobile ? 'align-start' : 'align-center'
                 } ${
-                  showDevicesById.includes(device.id)
+                  showDevicesByKey.includes(device.key)
                     ? 'device-title-row--border-bottom'
                     : ''
                 }`
@@ -71,7 +89,7 @@
               <v-row class="ml-0 pl-0 py-0" style="width:100%;">
                 <v-col cols="6" md="3">
                   <h4 class="device-title">{{ device.name }}</h4>
-                  <span class="beep-label"
+                  <span v-if="device.hive_name" class="beep-label"
                     >{{ device.hive_name }} ({{ device.location_name }})</span
                   >
                 </v-col>
@@ -80,7 +98,7 @@
                   md="9"
                   class="d-flex flex-wrap justify-flex-start align-center"
                 >
-                  <div class="mr-3">
+                  <div v-if="device.id" class="mr-3">
                     <router-link
                       :to="{
                         name: 'measurements-id',
@@ -93,7 +111,7 @@
                     </router-link>
                   </div>
 
-                  <div class="mr-3">
+                  <div v-if="device.battery_voltage !== undefined" class="mr-3">
                     <v-icon small>
                       mdi-battery
                     </v-icon>
@@ -104,7 +122,10 @@
                     }}</span>
                   </div>
 
-                  <div class="mr-3">
+                  <div
+                    v-if="device.last_message_received !== undefined"
+                    class="mr-3"
+                  >
                     <v-sheet
                       class="beep-icon beep-icon--small beep-icon-sensors--no-outline beep-icon-sensors--no-outline--small"
                     ></v-sheet>
@@ -115,7 +136,10 @@
                     }}</span>
                   </div>
 
-                  <div class="mr-3">
+                  <div
+                    v-if="device.measurement_transmission_ratio !== undefined"
+                    class="mr-3"
+                  >
                     <v-icon small>
                       mdi-send
                     </v-icon>
@@ -134,19 +158,19 @@
                 <v-icon
                   :class="
                     `color-grey-light ${mobile ? 'pr-2 pt-3' : 'pa-2'} mdi ${
-                      showDevicesById.includes(device.id)
+                      showDevicesByKey.includes(device.key)
                         ? 'mdi-minus'
                         : 'mdi-cog'
                     }`
                   "
-                  @click="toggleDevice(device.id)"
+                  @click="toggleDevice(device.key)"
                 >
                 </v-icon>
               </div>
             </div>
 
             <SlideYUpTransition :duration="150">
-              <v-card-text v-if="showDevicesById.includes(device.id)">
+              <v-card-text v-if="showDevicesByKey.includes(device.key)">
                 <v-row>
                   <v-col cols="12" md="6" class="pb-0 pb-sm-3">
                     <v-text-field
@@ -202,7 +226,7 @@
                       ></div>
                       <v-spacer></v-spacer>
                       <v-btn
-                        v-if="!mobile"
+                        v-if="!mobile && device.id"
                         tile
                         outlined
                         color="primary"
@@ -212,7 +236,7 @@
                         {{ $t('add') + ' ' + $tc('sensor_definition', 1) }}
                       </v-btn>
                       <v-btn
-                        v-if="mobile"
+                        v-if="mobile && device.id"
                         tile
                         outlined
                         color="primary"
@@ -386,6 +410,20 @@
                     </div>
                   </v-col>
                 </v-row>
+                <v-row>
+                  <v-col cols="12" class="d-flex">
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      tile
+                      outlined
+                      color="red"
+                      class="save-button"
+                      @click="deleteDevice(device)"
+                    >
+                      <v-icon left>mdi-delete</v-icon>{{ $t('remove_device') }}
+                    </v-btn>
+                  </v-col>
+                </v-row>
               </v-card-text>
             </SlideYUpTransition>
           </v-card>
@@ -431,12 +469,12 @@ export default {
       normalizerSensorTypes(node) {
         return {
           id: node.name,
-          label: node.name,
+          label: node.trans.en,
         }
       },
       sensorTypes: [],
       sensorMeasurements: [],
-      showDevicesById: [],
+      showDevicesByKey: [],
       showLoadingIcon: false,
       showLoadingIconById: [],
     }
@@ -475,6 +513,7 @@ export default {
         var devices = response.data
 
         devices.map((device) => {
+          device.delete = false // otherwise Vue can't track the 'delete' property
           if (device.sensor_definitions.length > 0) {
             var sensorDefsWithDeleteProp = device.sensor_definitions
             sensorDefsWithDeleteProp.map((sensorDef) => {
@@ -541,7 +580,6 @@ export default {
       try {
         var response = false
         if (sensorDef.delete === true) {
-          console.log(sensorDef)
           response = await Api.deleteRequest(
             '/sensordefinition/',
             sensorDefId,
@@ -576,6 +614,16 @@ export default {
         console.log('Error: ', this.errorMessage)
       }
     },
+    addDevice() {
+      var key = this.randomString(16).toLowerCase()
+      this.devices.push({
+        name: 'Device ' + (this.ownedDevices.length + 1),
+        key: key,
+        owner: true,
+        sensor_definitions: [],
+      })
+      this.toggleDevice(key)
+    },
     addSensorDef(device) {
       device.sensor_definitions.push({
         device_id: device.id,
@@ -587,6 +635,12 @@ export default {
         output_measurement_id: null,
       })
     },
+    deleteDevice(device) {
+      if (typeof device.id === 'undefined') {
+        return this.removeDevice(device.key)
+      }
+      device.delete = !device.delete
+    },
     deleteSensorDef(device, index) {
       const sensorDef = device.sensor_definitions[index]
       if (typeof sensorDef.id === 'undefined') {
@@ -594,21 +648,41 @@ export default {
       }
       sensorDef.delete = !sensorDef.delete
     },
-    removeSensorDef(device, index) {
-      return typeof device.sensor_definitions[index] !== 'undefined'
-        ? device.sensor_definitions.splice(index, 1)
-        : null
-    },
     momentify(date) {
       return this.$moment(date)
         .locale(this.$i18n.locale)
         .format('lll')
     },
-    toggleDevice(deviceId) {
-      if (this.showDevicesById.includes(deviceId)) {
-        this.showDevicesById.splice(this.showDevicesById.indexOf(deviceId), 1)
+    randomString(length) {
+      var text = ''
+      var possible =
+        'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjklmnpqrstuvwxyz0123456789' // excluded o and O to avoid confusion with 0
+
+      for (var i = 0; i < length; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length))
+      }
+
+      return text
+    },
+    removeDevice(key) {
+      var deviceIndex = null
+      this.devices.map((device, index) => {
+        if (device.key === key) {
+          deviceIndex = index
+        }
+      })
+      this.devices.splice(deviceIndex, 1)
+    },
+    removeSensorDef(device, index) {
+      return typeof device.sensor_definitions[index] !== 'undefined'
+        ? device.sensor_definitions.splice(index, 1)
+        : null
+    },
+    toggleDevice(key) {
+      if (this.showDevicesByKey.includes(key)) {
+        this.showDevicesByKey.splice(this.showDevicesByKey.indexOf(key), 1)
       } else {
-        this.showDevicesById.push(deviceId)
+        this.showDevicesByKey.push(key)
       }
     },
     transmissionText(device) {
@@ -634,7 +708,6 @@ export default {
   flex-grow: 1 !important;
   min-width: 100%;
   padding: 4px;
-
   .device-title-row {
     line-height: 1.2rem !important;
     &--border-bottom {
@@ -652,14 +725,21 @@ export default {
   .device-number-input {
     margin-top: 6px !important;
   }
-  .sensordef-delete {
-    background-color: rgba(255, 0, 0, 0.2);
-  }
   .button-wrapper {
     height: 51px;
   }
   .progress-icon {
     margin-left: 6px;
+  }
+  .device-delete {
+    background-color: rgba(255, 0, 0, 0.05);
+    border-color: $color-red;
+    .device-title-row--border-bottom {
+      border-bottom: 1px solid $color-red;
+    }
+  }
+  .sensordef-delete {
+    background-color: rgba(255, 0, 0, 0.2);
   }
 }
 </style>

@@ -643,6 +643,7 @@ const translations = {
     'Wachtwoord moet minimaal 8 tekens, een kleine letter, een hoofdletter, een cijfer en een bijzonder teken (\\]{}()?\\-"!@#%&/\\,><\':;|_~`) bevatten',
   sensor_definition: 'sensor definitie | sensor definities',
   measurement: 'meting | metingen',
+  remove_device: 'Verwijder meetsysteem',
 }
 
 export default translations

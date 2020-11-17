@@ -283,11 +283,10 @@
 }
 
 /* Treeselect */
-.vue-treeselect__control {
-  border-radius: 4px;
-}
 .vue-treeselect .vue-treeselect__control {
+  background: transparent;
   border-color: $color-grey-light;
+  border-radius: 4px;
 }
 
 .vue-treeselect--focused:not(.vue-treeselect--open) .vue-treeselect__control {
