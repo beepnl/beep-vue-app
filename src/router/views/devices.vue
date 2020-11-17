@@ -2,14 +2,51 @@
   <Layout :title="`${$tc('device', 2)}`">
     <v-toolbar class="save-bar mt-0" dense light>
       <v-spacer></v-spacer>
-      <v-btn tile outlined class="mr-1" color="primary">
+      <v-btn v-if="!mobile" tile outlined class="mr-3" color="primary">
         <v-icon left>mdi-plus</v-icon>{{ $t('create_new') }}
         {{ $tc('device', 1) }}</v-btn
+      >
+      <v-btn
+        tile
+        outlined
+        class="save-button mr-1"
+        color="primary"
+        @click="saveDevices"
+      >
+        <v-progress-circular
+          v-if="showLoadingIcon"
+          class="ml-n1 mr-2"
+          size="18"
+          width="2"
+          color="primary"
+          indeterminate
+        />
+        <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
+        {{ $t('save') }}
+        {{ $tc('device', ownedDevices.length) }}</v-btn
       >
     </v-toolbar>
 
     <v-container class="content-container">
-      <div class="overline mb-2" v-text="$tc('device', 2)"></div>
+      <v-row v-if="errorMessage">
+        <v-col cols="12">
+          <v-alert text prominent dense type="error" color="red">
+            {{ errorMessage }}
+          </v-alert>
+        </v-col>
+      </v-row>
+      <v-row v-if="mobile">
+        <v-col cols="12">
+          <v-btn tile outlined color="primary" class="save-button mt-n4">
+            <v-icon left>mdi-plus</v-icon>{{ $t('create_new') }}
+            {{ $tc('device', 1) }}</v-btn
+          >
+        </v-col>
+      </v-row>
+      <div
+        class="overline mb-2"
+        v-text="$tc('device', ownedDevices.length)"
+      ></div>
       <v-row dense>
         <v-col
           v-for="device in ownedDevices"
@@ -356,6 +393,7 @@ export default {
     return {
       apiaries: [],
       devices: [],
+      errorMessage: null,
       normalizerHives(node) {
         return {
           id: node.id,
@@ -372,6 +410,7 @@ export default {
       sensorTypes: [],
       sensorMeasurements: [],
       showDevicesById: [],
+      showLoadingIcon: false,
     }
   },
   computed: {
@@ -442,6 +481,31 @@ export default {
         console.log('Error: ', error)
       }
     },
+    async saveDevices() {
+      this.showLoadingIcon = true
+      try {
+        const response = await Api.postRequest(
+          '/devices/multiple',
+          this.ownedDevices
+        )
+        if (!response) {
+          this.errorMessage =
+            this.$i18n.t('Error') + ': ' + this.$i18n.t('not_saved_error')
+        }
+        this.getDevices().then(() => {
+          this.showLoadingIcon = false
+        })
+        return true
+      } catch (error) {
+        this.errorMessage =
+          error.status === 422
+            ? this.$i18n.t('Error') +
+              ': ' +
+              Object.values(error.message).join(', ')
+            : this.$i18n.t('empty_fields') + '.'
+        console.log('Error: ', this.errorMessage)
+      }
+    },
     addSensorDef(device) {
       device.sensor_definitions.push({
         device_id: device.id,
@@ -490,6 +554,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.save-button {
+  @include for-phone-only {
+    width: 100%;
+  }
+}
+
 .device-item {
   flex-grow: 1 !important;
   min-width: 100%;
