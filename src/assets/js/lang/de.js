@@ -240,7 +240,6 @@ const translations = {
   /* dashboard */
   dashboard_title: 'Übersichtstabelle',
   dashboard: 'Übersichtstabelle',
-  measurements: 'Messungen',
   measurementsError:
     'Kann keine Messungen laden, bitte Netzwerkverbindung prüfen',
   last_measurement: 'Letzte aufgezeichnete Messung war',
@@ -642,6 +641,7 @@ const translations = {
   invalid_password:
     'Password must contain at least 8 characters, one lowercase letter, one uppercase letter, one number and one special character (\\]{}()?\\-"!@#%&/\\,><\':;|_~`)',
   sensor_definition: 'sensor definition | sensor definitions',
+  measurement: 'Messung | Messungen',
 }
 
 export default translations

@@ -242,7 +242,6 @@ const translations = {
   /* dashboard */
   dashboard_title: 'Dashboard',
   dashboard: 'Dashboard',
-  measurements: 'Metingen',
   measurementsError: 'Kan geen metingen laden, controleer de netwerkverbinding',
   last_measurement: 'Laatste meetwaarde',
   at: 'op',
@@ -643,6 +642,7 @@ const translations = {
   invalid_password:
     'Wachtwoord moet minimaal 8 tekens, een kleine letter, een hoofdletter, een cijfer en een bijzonder teken (\\]{}()?\\-"!@#%&/\\,><\':;|_~`) bevatten',
   sensor_definition: 'sensor definitie | sensor definities',
+  measurement: 'meting | metingen',
 }
 
 export default translations

@@ -2,7 +2,11 @@
   <div>
     <div>
       <v-btn
-        :class="`yes-no-button pr-2 pl-0 ${yesRed ? 'yes-red' : ''}`"
+        :class="
+          `yes-no-button pl-0 ${yesRed ? 'yes-red' : ''} ${
+            small ? 'yes-no-button--small pr-0' : 'pr-2'
+          }`
+        "
         text
         @click="updateObject(1, property)"
       >
@@ -14,7 +18,11 @@
         {{ $t('yes') }}
       </v-btn>
       <v-btn
-        :class="`yes-no-button px-2 ${yesRed ? 'yes-red' : ''}`"
+        :class="
+          `yes-no-button ${yesRed ? 'yes-red' : ''} ${
+            small ? 'yes-no-button--small px-0' : 'px-2'
+          }`
+        "
         text
         @click="updateObject(0, property)"
       >
@@ -39,6 +47,11 @@ export default {
     property: {
       type: [String, Number],
       required: true,
+    },
+    small: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
     yesRed: {
       type: Boolean,
@@ -73,6 +86,11 @@ export default {
     .red--text {
       color: $color-green !important;
     }
+  }
+
+  &.yes-no-button--small {
+    height: auto !important;
+    font-size: 12px !important;
   }
 }
 </style>

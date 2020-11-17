@@ -241,7 +241,6 @@ const translations = {
   /* dashboard */
   dashboard_title: 'Tablou de bord',
   dashboard: 'Tablou de bord',
-  measurements: 'Măsurători',
   measurementsError:
     'Nu pot fi încărcate măsurătorile, verificați conexiunea la rețea',
   last_measurement: 'Ultima măsurare',
@@ -645,6 +644,7 @@ const translations = {
   invalid_password:
     'Password must contain at least 8 characters, one lowercase letter, one uppercase letter, one number and one special character (\\]{}()?\\-"!@#%&/\\,><\':;|_~`)',
   sensor_definition: 'sensor definition | sensor definitions',
+  measurement: 'măsurare| măsurători',
 }
 
 export default translations

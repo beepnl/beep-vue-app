@@ -202,52 +202,68 @@
                                 ></v-text-field>
                               </td>
                               <td>
-                                <v-text-field
-                                  v-model="sensorDef.inside"
-                                  class="device-input mt-2 mb-n5"
-                                  solo
-                                ></v-text-field>
+                                <yesNoRating
+                                  v-if="sensorDef"
+                                  :object="sensorDef"
+                                  property="inside"
+                                  :small="true"
+                                  class="device-yes-no mt-n3 mb-n5"
+                                ></yesNoRating>
                               </td>
                               <td>
-                                <v-text-field
+                                <VueNumberInput
                                   v-model="sensorDef.offset"
-                                  :disabled="sensorDef.delete"
-                                  :placeholder="`${$t('Offset')}`"
-                                  class="device-input mt-2 mb-n5"
-                                  solo
-                                ></v-text-field>
-                                <!-- <VueNumberInput
-                                  v-model="sensorDef.offset"
-                                  class="device-input mt-2 mb-n5"
-                                  solo
-                                ></VueNumberInput> -->
+                                  class="device-number-input"
+                                  size="small"
+                                  inline
+                                  controls
+                                  rounded
+                                ></VueNumberInput>
                               </td>
                               <td>
-                                <v-text-field
+                                <VueNumberInput
                                   v-model="sensorDef.multiplier"
-                                  :disabled="sensorDef.delete"
-                                  :placeholder="`${$t('Multiplier')}`"
-                                  class="device-input mt-2 mb-n5"
-                                  solo
-                                ></v-text-field>
+                                  class="device-number-input"
+                                  size="small"
+                                  inline
+                                  controls
+                                ></VueNumberInput>
                               </td>
                               <td>
-                                <v-text-field
-                                  v-model="sensorDef.input_measurement"
+                                <v-select
+                                  v-model="sensorDef.input_measurement_id"
                                   :disabled="sensorDef.delete"
-                                  :placeholder="`${$t('Input')}`"
+                                  :items="sortedSensorMeasurements"
+                                  item-text="abbreviation"
+                                  item-value="id"
+                                  :label="
+                                    `${$t('Select')} ${$tc(
+                                      'measurement',
+                                      // eslint-disable-next-line vue/comma-dangle
+                                      1
+                                    )} ...`
+                                  "
                                   class="device-input mt-2 mb-n5"
                                   solo
-                                ></v-text-field>
+                                ></v-select>
                               </td>
                               <td>
-                                <v-text-field
-                                  v-model="sensorDef.output_measurement"
+                                <v-select
+                                  v-model="sensorDef.output_measurement_id"
                                   :disabled="sensorDef.delete"
-                                  :placeholder="`${$t('Output')}`"
+                                  :items="sortedSensorMeasurements"
+                                  item-text="abbreviation"
+                                  item-value="id"
+                                  :label="
+                                    `${$t('Select')} ${$tc(
+                                      'measurement',
+                                      // eslint-disable-next-line vue/comma-dangle
+                                      1
+                                    )} ...`
+                                  "
                                   class="device-input mt-2 mb-n5"
                                   solo
-                                ></v-text-field>
+                                ></v-select>
                               </td>
                               <td class="text-center">
                                 <v-icon
@@ -282,7 +298,8 @@ import Layout from '@layouts/back.vue'
 import { SlideYUpTransition } from 'vue2-transitions'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-// import VueNumberInput from '@chenfengyuan/vue-number-input'
+import VueNumberInput from '@chenfengyuan/vue-number-input'
+import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 
 export default {
   components: {
@@ -290,7 +307,8 @@ export default {
     Layout,
     SlideYUpTransition,
     Treeselect,
-    // VueNumberInput,
+    yesNoRating,
+    VueNumberInput,
   },
   data() {
     return {
@@ -310,6 +328,7 @@ export default {
         }
       },
       sensorTypes: [],
+      sensorMeasurements: [],
       showDevicesById: [],
     }
   },
@@ -321,6 +340,18 @@ export default {
       return this.devices.filter((device) => {
         return device.owner
       })
+    },
+    sortedSensorMeasurements() {
+      var sortedSMs = this.sensorMeasurements.slice().sort(function(a, b) {
+        if (a.abbreviation > b.abbrevation) {
+          return 1
+        }
+        if (b.abbreviation > a.abbreviation) {
+          return -1
+        }
+        return 0
+      })
+      return sortedSMs
     },
   },
   created() {
@@ -351,6 +382,7 @@ export default {
       try {
         const response = await Api.readRequest('/taxonomy/lists')
         this.sensorTypes = response.data.sensortypes
+        this.sensorMeasurements = response.data.sensormeasurements
         return true
       } catch (error) {
         console.log('Error: ', error)
@@ -402,6 +434,12 @@ export default {
   }
   .device-input.v-text-field.v-text-field--solo .v-input__control {
     min-width: 160px !important;
+  }
+  .device-yes-no {
+    white-space: nowrap;
+  }
+  .device-number-input {
+    margin-top: 6px !important;
   }
 }
 </style>

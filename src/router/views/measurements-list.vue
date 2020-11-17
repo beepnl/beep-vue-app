@@ -190,12 +190,12 @@
               <v-col cols="12" class="py-0">
                 <span>{{
                   selectedDevice && !mobile
-                    ? $t('measurements') +
+                    ? $tc('measurement', 2) +
                       ': ' +
                       selectedDevice.hive_name +
                       ' - ' +
                       selectedDevice.name
-                    : $t('measurements')
+                    : $tc('measurement', 2)
                 }}</span>
                 <div class="float-right">
                   <v-icon
@@ -259,13 +259,13 @@
                     class="overline mt-n4 mt-sm-3 mb-3 text-center"
                     v-text="
                       measurementData.resolution
-                        ? $t('measurements') +
+                        ? $tc('measurement', 2) +
                           ' (' +
                           $t('measurement_interval') +
                           ': ' +
                           measurementData.resolution +
                           ')'
-                        : $t('measurements')
+                        : $tc('measurement', 2)
                     "
                   ></div>
                   <chartist

@@ -259,6 +259,18 @@
       }
     }
   }
+  &.number-input--small {
+    button.number-input__button {
+      &::before {
+        top: -3px;
+        margin-left: 1px;
+      }
+    }
+    input.number-input__input {
+      padding-right: 2.2rem !important;
+      padding-left: 2.2rem !important;
+    }
+  }
 }
 
 /* Treeselect */

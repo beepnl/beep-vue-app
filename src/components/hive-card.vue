@@ -163,7 +163,7 @@
                   <v-list-item-content>
                     <v-list-item-title
                       >{{ $t('view') }}
-                      {{ $t('measurements') }}</v-list-item-title
+                      {{ $tc('measurement', 2) }}</v-list-item-title
                     >
                   </v-list-item-content>
                 </v-list-item>

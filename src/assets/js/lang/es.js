@@ -238,7 +238,6 @@ const translations = {
   /* tablero */
   dashboard_title: 'Tablero',
   dashboard: 'Tablero',
-  measurements: 'Medidas',
   measurementsError:
     'No es posible cargar las mediciones, comprobar la conexión de red',
   last_measurement: 'Última medición',
@@ -643,6 +642,7 @@ const translations = {
   invalid_password:
     'Password must contain at least 8 characters, one lowercase letter, one uppercase letter, one number and one special character (\\]{}()?\\-"!@#%&/\\,><\':;|_~`)',
   sensor_definition: 'sensor definition | sensor definitions',
+  measurement: 'medición | mediciones',
 }
 
 export default translations

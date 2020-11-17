@@ -236,7 +236,6 @@ const translations = {
   /* dashboard */
   dashboard_title: 'Dashboard',
   dashboard: 'Dashboard',
-  measurements: 'Measurements',
   measurementsError: 'Cannot load measurements, check network connection',
   last_measurement: 'Last measurement',
   at: 'at',
@@ -637,6 +636,7 @@ const translations = {
   invalid_password:
     'Password must contain at least 8 characters, one lowercase letter, one uppercase letter, one number and one special character (\\]{}()?\\-"!@#%&/\\,><\':;|_~`)',
   sensor_definition: 'sensor definition | sensor definitions',
+  measurement: 'measurement | measurements',
 }
 
 export default translations
