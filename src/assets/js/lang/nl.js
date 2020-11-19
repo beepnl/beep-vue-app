@@ -463,7 +463,7 @@ const translations = {
 
   No_groups: 'Geen groepen beschikbaar',
   not_available_yet:
-    'nog niet beschikbaar. Maak de eerste aan door op de knop in de rechte bovenhoek te drukken.',
+    'nog niet beschikbaar. Maak de eerste aan door op de knop in de rechter bovenhoek te drukken.',
   Users: 'Gebruikers',
   member: 'groepslid | groepsleden',
   Member: 'Groepslid | Groepsleden',

@@ -3,7 +3,7 @@
     <v-toolbar class="save-bar mt-0" dense light>
       <v-spacer></v-spacer>
       <v-btn
-        v-if="!mobile"
+        v-if="!mobile || ownedDevices.length === 0"
         tile
         outlined
         class="mr-3"
@@ -14,6 +14,7 @@
         {{ $tc('device', 1) }}</v-btn
       >
       <v-btn
+        v-if="ownedDevices.length > 0"
         tile
         outlined
         class="save-button mr-1"
@@ -42,7 +43,7 @@
           </v-alert>
         </v-col>
       </v-row>
-      <v-row v-if="mobile">
+      <v-row v-if="mobile && ownedDevices.length > 0">
         <v-col cols="12">
           <v-btn
             tile
@@ -57,12 +58,20 @@
         </v-col>
       </v-row>
       <div
+        v-if="ownedDevices.length > 0"
         class="overline mb-2"
         v-text="$tc('device', ownedDevices.length)"
       ></div>
       <v-row dense>
         <v-col v-if="ready && ownedDevices.length === 0" cols="12">
-          {{ $t('no_data') }}
+          <p v-text="$t('sensors') + ' ' + $t('not_available_yet')"></p>
+          <div class="text-center">
+            <img
+              src="@assets/img/beep-base-small.jpg"
+              style=" width: 100%;max-width: 500px;"
+            />
+          </div>
+          <div>{{ $t('beep_base_explanation') }}</div>
         </v-col>
         <v-col
           v-for="device in ownedDevices"
