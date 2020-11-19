@@ -1,5 +1,5 @@
 <template>
-  <Layout :title="`${$tc('device', 2)}`">
+  <Layout :title="`${$tc('device', 2)}`" :edited="deletedButNotSaved">
     <v-toolbar class="save-bar mt-0" dense light>
       <v-spacer></v-spacer>
       <v-btn
@@ -531,6 +531,19 @@ export default {
     }
   },
   computed: {
+    deletedButNotSaved() {
+      const unsavedDeletions = this.ownedDevices.filter((ownedDevice) => {
+        const unsavedSensorDefs = ownedDevice.sensor_definitions.filter(
+          (sensorDef) => {
+            return sensorDef.delete
+          }
+        )
+        return unsavedSensorDefs.length > 0
+          ? unsavedSensorDefs
+          : ownedDevice.delete
+      })
+      return unsavedDeletions.length > 0
+    },
     mobile() {
       return this.$vuetify.breakpoint.mobile
     },

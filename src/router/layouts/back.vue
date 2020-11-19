@@ -67,7 +67,8 @@ export default {
         (this.$route.name === 'hive-edit' && this.hiveEdited) ||
         (this.$route.name === 'hive-inspect' && this.inspectionEdited) ||
         ((this.$route.name === 'checklist' ||
-          this.$route.name === 'research') &&
+          this.$route.name === 'research' ||
+          this.$route.name === 'devices') &&
           this.edited)
       ) {
         this.$refs.confirm
