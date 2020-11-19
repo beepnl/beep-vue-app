@@ -112,46 +112,61 @@
                     </router-link>
                   </div>
 
-                  <div v-if="device.battery_voltage !== undefined" class="mr-3">
-                    <v-icon small>
-                      mdi-battery
-                    </v-icon>
-                    <span class="beep-label">{{
-                      device.battery_voltage !== null
-                        ? device.battery_voltage + ' V'
-                        : '?'
-                    }}</span>
-                  </div>
+                  <v-tooltip bottom max-width="60%">
+                    <template v-slot:activator="{ on }">
+                      <span
+                        class="d-flex flex-wrap justify-flex-start align-center"
+                        v-on="on"
+                      >
+                        <div
+                          v-if="device.battery_voltage !== undefined"
+                          class="mr-3"
+                        >
+                          <v-icon small>
+                            mdi-battery
+                          </v-icon>
+                          <span class="beep-label">{{
+                            device.battery_voltage !== null
+                              ? device.battery_voltage + ' V'
+                              : '?'
+                          }}</span>
+                        </div>
 
-                  <div
-                    v-if="device.last_message_received !== undefined"
-                    class="mr-3"
-                  >
-                    <v-sheet
-                      class="beep-icon beep-icon--small beep-icon-sensors--no-outline beep-icon-sensors--no-outline--small"
-                    ></v-sheet>
-                    <span class="beep-label">{{
-                      device.last_message_received !== null
-                        ? momentify(device.last_message_received)
-                        : '?'
-                    }}</span>
-                  </div>
+                        <div
+                          v-if="device.last_message_received !== undefined"
+                          class="mr-3"
+                        >
+                          <v-sheet
+                            class="beep-icon beep-icon--small beep-icon-sensors--no-outline beep-icon-sensors--no-outline--small"
+                          ></v-sheet>
+                          <span class="beep-label">{{
+                            device.last_message_received !== null
+                              ? momentify(device.last_message_received)
+                              : '?'
+                          }}</span>
+                        </div>
 
-                  <div
-                    v-if="device.measurement_transmission_ratio !== undefined"
-                    class="mr-3"
-                  >
-                    <v-icon small>
-                      mdi-send
-                    </v-icon>
-                    <span class="beep-label">
-                      {{
-                        device.measurement_transmission_ratio !== null
-                          ? transmissionText(device)
-                          : '?'
-                      }}
-                    </span>
-                  </div>
+                        <div
+                          v-if="
+                            device.measurement_transmission_ratio !== undefined
+                          "
+                          class="mr-3"
+                        >
+                          <v-icon small>
+                            mdi-send
+                          </v-icon>
+                          <span class="beep-label">
+                            {{
+                              device.measurement_transmission_ratio !== null
+                                ? transmissionText(device)
+                                : '?'
+                            }}
+                          </span>
+                        </div>
+                      </span>
+                    </template>
+                    <span v-text="$t('connection_state')"> </span>
+                  </v-tooltip>
                 </v-col>
               </v-row>
 
@@ -208,6 +223,7 @@
                       :disable-branch-nodes="true"
                       :default-expand-level="1"
                       search-nested
+                      @select="addHiveName($event, device)"
                     />
                   </v-col>
                 </v-row>
@@ -397,7 +413,26 @@
                                   @click="updateSensorDef(sensorDef)"
                                   >mdi-check</v-icon
                                 >
+                                <v-tooltip
+                                  v-if="sensorDef.delete"
+                                  open-delay="500"
+                                  bottom
+                                >
+                                  <template v-slot:activator="{ on }">
+                                    <v-icon
+                                      dark
+                                      color="red"
+                                      v-on="on"
+                                      @click="deleteSensorDef(device, index)"
+                                      >mdi-refresh</v-icon
+                                    >
+                                  </template>
+                                  <span v-if="sensorDef.delete">{{
+                                    $t('Undelete')
+                                  }}</span>
+                                </v-tooltip>
                                 <v-icon
+                                  v-if="!sensorDef.delete"
                                   dark
                                   color="red"
                                   @click="deleteSensorDef(device, index)"
@@ -421,7 +456,12 @@
                       class="save-button"
                       @click="deleteDevice(device)"
                     >
-                      <v-icon left>mdi-delete</v-icon>{{ $t('remove_device') }}
+                      <v-icon left>{{
+                        device.delete ? 'mdi-refresh' : 'mdi-delete'
+                      }}</v-icon
+                      >{{
+                        device.delete ? $t('Undelete') : $t('remove_device')
+                      }}
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -627,6 +667,10 @@ export default {
         sensor_definitions: [],
       })
       this.toggleDevice(key)
+    },
+    addHiveName(event, device) {
+      device.hive_name = event.name
+      device.location_name = event.location
     },
     addSensorDef(device) {
       device.sensor_definitions.push({
