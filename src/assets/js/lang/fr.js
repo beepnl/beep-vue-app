@@ -648,6 +648,8 @@ const translations = {
   sensor_definition: 'sensor definition | sensor definitions',
   measurement: 'mesure | mesures',
   remove_device: 'Remove device',
+  last_message_received: 'Last message received',
+  transmission_ratio: 'Transmission ratio',
 }
 
 export default translations

@@ -644,6 +644,8 @@ const translations = {
   sensor_definition: 'sensor definitie | sensor definities',
   measurement: 'meting | metingen',
   remove_device: 'Verwijder meetsysteem',
+  last_message_received: 'Laatste bericht ontvangen',
+  transmission_ratio: 'Transmissieratio',
 }
 
 export default translations

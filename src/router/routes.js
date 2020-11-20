@@ -116,7 +116,6 @@ export default [
     path: '/devices',
     name: 'devices',
     component: () => lazyLoadView(import('@views/devices.vue')),
-    alias: '/sensors', // old v2 path which might be saved and therefore used by users coming from v2 app
   },
   {
     meta: {
@@ -125,6 +124,14 @@ export default [
     path: '/diary',
     name: 'diary',
     component: () => lazyLoadView(import('@views/diary-list.vue')),
+  },
+  {
+    meta: {
+      authRequired: true,
+    },
+    path: '/export',
+    name: 'export',
+    component: () => lazyLoadView(import('@views/export.vue')),
   },
   {
     meta: {
@@ -246,6 +253,10 @@ export default [
     path: '/hives/:id/edit',
     name: 'queen-edit',
     component: () => lazyLoadView(import('@views/hive-edit.vue')),
+  },
+  {
+    path: '/sensors', // old v2 path which might be saved and therefore used by users coming from v2 app
+    redirect: '/devices',
   },
   {
     path: '/support',

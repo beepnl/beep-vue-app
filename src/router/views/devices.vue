@@ -97,11 +97,35 @@
               style="width: 100%;"
             >
               <v-row class="ml-0 pl-0 py-0" style="width:100%;">
-                <v-col cols="6" md="3">
-                  <h4 class="device-title">{{ device.name }}</h4>
-                  <span v-if="device.hive_name" class="beep-label"
-                    >{{ device.hive_name }} ({{ device.location_name }})</span
-                  >
+                <v-col
+                  cols="6"
+                  md="3"
+                  class="d-flex flex-no-wrap justify-flex-start"
+                >
+                  <div class="mr-3">
+                    <v-avatar
+                      v-if="device.type !== 'beep'"
+                      rounded="4px"
+                      tile
+                      color="primary"
+                    >
+                      <v-icon dark>
+                        mdi-devices
+                      </v-icon>
+                    </v-avatar>
+                    <v-avatar v-else height="auto" tile color="primary">
+                      <img
+                        src="@assets/img/beep-base-small.jpg"
+                        alt="BEEP Base"
+                      />
+                    </v-avatar>
+                  </div>
+                  <div class="d-flex flex-column justify-flex-start">
+                    <h4 class="device-title">{{ device.name }}</h4>
+                    <span v-if="device.hive_name" class="beep-label"
+                      >{{ device.hive_name }} ({{ device.location_name }})</span
+                    >
+                  </div>
                 </v-col>
                 <v-col
                   cols="6"
@@ -123,10 +147,7 @@
 
                   <v-tooltip bottom max-width="60%">
                     <template v-slot:activator="{ on }">
-                      <span
-                        class="d-flex flex-wrap justify-flex-start align-center"
-                        v-on="on"
-                      >
+                      <span v-on="on">
                         <div
                           v-if="device.battery_voltage !== undefined"
                           class="mr-3"
@@ -140,7 +161,14 @@
                               : '?'
                           }}</span>
                         </div>
+                      </span>
+                    </template>
+                    <span v-text="$t('bat_volt')"> </span>
+                  </v-tooltip>
 
+                  <v-tooltip bottom max-width="60%">
+                    <template v-slot:activator="{ on }">
+                      <span v-on="on">
                         <div
                           v-if="device.last_message_received !== undefined"
                           class="mr-3"
@@ -154,7 +182,14 @@
                               : '?'
                           }}</span>
                         </div>
+                      </span>
+                    </template>
+                    <span v-text="$t('last_message_received')"> </span>
+                  </v-tooltip>
 
+                  <v-tooltip bottom max-width="60%">
+                    <template v-slot:activator="{ on }">
+                      <span v-on="on">
                         <div
                           v-if="
                             device.measurement_transmission_ratio !== undefined
@@ -162,7 +197,7 @@
                           class="mr-3"
                         >
                           <v-icon small>
-                            mdi-send
+                            mdi-sync
                           </v-icon>
                           <span class="beep-label">
                             {{
@@ -174,7 +209,7 @@
                         </div>
                       </span>
                     </template>
-                    <span v-text="$t('connection_state')"> </span>
+                    <span v-text="$t('transmission_ratio')"> </span>
                   </v-tooltip>
                 </v-col>
               </v-row>
@@ -198,15 +233,26 @@
               <v-card-text v-if="showDevicesByKey.includes(device.key)">
                 <v-row>
                   <v-col cols="12" md="6" class="pt-1 pb-0 py-sm-3">
-                    <v-text-field
-                      v-model="device.name"
-                      :label="`${$t('name')}`"
-                    />
+                    <v-text-field v-model="device.name" :label="$t('name')" />
                   </v-col>
                   <v-col cols="12" md="6" class="pb-0 pb-sm-3">
                     <v-text-field
                       v-model="device.key"
                       :label="`${$t('sensor_key') + ' (DEV EUI)'}`"
+                    />
+                  </v-col>
+                  <v-col cols="12" md="6" class="pb-0 pb-sm-3">
+                    <v-text-field
+                      v-model="device.hardware_id"
+                      label="HW ID"
+                      disabled
+                    />
+                  </v-col>
+                  <v-col cols="12" md="6" class="pb-0 pb-sm-3">
+                    <v-text-field
+                      v-model="device.firmware_version"
+                      label="FW v"
+                      disabled
                     />
                   </v-col>
                   <v-col cols="12" md="6">
