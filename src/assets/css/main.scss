@@ -74,6 +74,12 @@
   box-shadow: none !important;
 }
 
+.save-button {
+  @include for-phone-only {
+    width: 100%;
+  }
+}
+
 .hide-on-mobile {
   @include for-phone-only {
     display: none !important;

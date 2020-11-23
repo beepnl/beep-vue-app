@@ -672,11 +672,6 @@ export default {
 .clear-icon {
   cursor: pointer;
 }
-.save-button {
-  @include for-phone-only {
-    width: 100%;
-  }
-}
 .hive-inspect-card-title {
   line-height: 1.5rem !important;
   background-color: $color-orange-medium;

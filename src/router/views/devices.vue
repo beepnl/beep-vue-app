@@ -819,12 +819,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.save-button {
-  @include for-phone-only {
-    width: 100%;
-  }
-}
-
 .device-item {
   flex-grow: 1 !important;
   min-width: 100%;
