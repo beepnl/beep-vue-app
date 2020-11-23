@@ -80,6 +80,7 @@
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
                   v-model="dateRangeText"
+                  :rules="requiredRules"
                   :label="$t('period')"
                   prepend-icon="mdi-calendar"
                   readonly
@@ -143,7 +144,9 @@
           <v-col class="d-flex justify-space-between" cols="12">
             <v-spacer></v-spacer>
             <v-btn
-              :disabled="!dataAvailable"
+              :disabled="
+                !dataAvailable || dates[0] === dates[1] || dates.length < 2
+              "
               tile
               outlined
               color="primary"
@@ -300,6 +303,16 @@ export default {
       })
       return uniqueApiaries
     },
+    requiredRules() {
+      return [
+        (v) =>
+          this.dates[0] !== this.dates[1] ||
+          this.$i18n.t('different_end_start'), // don't allow end date identical to start date
+        (v) =>
+          this.dates.length > 1 ||
+          this.$i18n.t('end_date') + ' ' + this.$i18n.t('not_filled'), // don't allow start date only
+      ]
+    },
   },
   created() {
     this.readDevices()
@@ -315,6 +328,7 @@ export default {
   },
   methods: {
     async exportData() {
+      this.errorMessage = null
       this.showDataLoadingIcon = true
       try {
         const response = await Api.readRequest('/export')
@@ -322,9 +336,12 @@ export default {
         return response
       } catch (error) {
         console.log('Error: ', error)
+        this.errorMessage = this.$i18n.t('no_data')
+        this.showDeviceDataLoadingIcon = false
       }
     },
     async exportDeviceData() {
+      this.errorMessage = null
       this.showDeviceDataLoadingIcon = true
       var payload = {
         device_id: this.selectedDeviceId,
@@ -337,9 +354,14 @@ export default {
         const response = await Api.postRequest('/export/csv', payload)
         this.showDeviceDataLoadingIcon = false
         console.log(response) // TODO: after API update: handle returned link to download file
+        if (response.status === -1) {
+          this.errorMessage = this.$i18n.t('too_much_data')
+        }
         return response
       } catch (error) {
         console.log('Error: ', error)
+        this.errorMessage = this.$i18n.t('no_data')
+        this.showDeviceDataLoadingIcon = false
       }
     },
     async loadMeasurementTypesAvailable() {

@@ -642,6 +642,7 @@ const translations = {
   transmission_ratio: 'Transmission ratio',
   period: 'Period',
   download: 'Download',
+  different_end_start: 'End and start date must differ',
 }
 
 export default translations
