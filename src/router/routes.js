@@ -85,14 +85,14 @@ export default [
     name: 'apiary-create',
     component: () => lazyLoadView(import('@views/apiary-create.vue')),
   },
-  {
-    meta: {
-      authRequired: true,
-    },
-    path: '/apiaries/:id',
-    name: 'apiary-details',
-    component: () => lazyLoadView(import('@views/apiary-details.vue')),
-  },
+  // {
+  //   meta: {
+  //     authRequired: true,
+  //   },
+  //   path: '/apiaries/:id',
+  //   name: 'apiary-details',
+  //   component: () => lazyLoadView(import('@views/apiary-details.vue')),
+  // },
   {
     meta: {
       authRequired: true,
@@ -141,6 +141,14 @@ export default [
     name: 'group-create',
     component: () => lazyLoadView(import('@views/group-edit.vue')),
   },
+  // {
+  //   meta: {
+  //     authRequired: true,
+  //   },
+  //   path: '/groups/:id',
+  //   name: 'group-details',
+  //   component: () => lazyLoadView(import('@views/group-details.vue')),
+  // },
   {
     meta: {
       authRequired: true,
@@ -198,12 +206,9 @@ export default [
     component: () => lazyLoadView(import('@views/hive-inspections.vue')),
   },
   {
-    meta: {
-      authRequired: true,
-    },
-    path: '/groups/:id',
-    name: 'group-details',
-    component: () => lazyLoadView(import('@views/group-details.vue')),
+    path: '/info',
+    name: 'info',
+    component: () => lazyLoadView(import('@views/info.vue')),
   },
   {
     meta: {
@@ -221,13 +226,18 @@ export default [
     name: 'measurements-id',
     component: () => import('@views/measurements-list.vue'), // no lazyLoadView in order to be able to use beforeDestroy hook to clearInterval for lastSensorValues API call when navigating away
   },
+  // {
+  //   meta: {
+  //     authRequired: true,
+  //   },
+  //   path: '/photos',
+  //   name: 'photos',
+  //   component: () => lazyLoadView(import('@views/photo-gallery.vue')),
+  // },
   {
-    meta: {
-      authRequired: true,
-    },
-    path: '/photos',
-    name: 'photos',
-    component: () => lazyLoadView(import('@views/photo-gallery.vue')),
+    path: '/new',
+    name: 'new',
+    component: () => lazyLoadView(import('@views/new.vue')),
   },
   {
     meta: {

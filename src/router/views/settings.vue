@@ -66,8 +66,9 @@ export default {
         },
         {
           icon: 'mdi-help-circle-outline',
-          title: this.$i18n.t('Help'),
-          subtitle: 'FAQ, BEEP website, support ',
+          title: this.$i18n.t('Info'),
+          route: 'info',
+          subtitle: 'Helpdesk, Changelog, BEEP website',
         },
       ]
     },
