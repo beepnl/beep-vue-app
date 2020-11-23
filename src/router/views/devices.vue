@@ -102,18 +102,23 @@
                   md="3"
                   class="d-flex flex-no-wrap justify-flex-start"
                 >
-                  <div class="mr-3">
-                    <v-avatar
+                  <div class="d-flex flex-column justify-center mr-3">
+                    <v-icon
                       v-if="device.type !== 'beep'"
-                      rounded="4px"
+                      light
+                      large
+                      color="primary"
+                      class="text-center device-icon"
+                    >
+                      mdi-devices
+                    </v-icon>
+                    <v-avatar
+                      v-else
+                      height="auto"
                       tile
                       color="primary"
+                      class="mt-n1"
                     >
-                      <v-icon dark>
-                        mdi-devices
-                      </v-icon>
-                    </v-avatar>
-                    <v-avatar v-else height="auto" tile color="primary">
                       <img
                         src="@assets/img/beep-base-small.jpg"
                         alt="BEEP Base"
@@ -837,6 +842,9 @@ export default {
     @include for-phone-only {
       font-size: 12px;
     }
+  }
+  .device-icon {
+    width: 48px;
   }
   .device-yes-no {
     white-space: nowrap;
