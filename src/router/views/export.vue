@@ -19,26 +19,157 @@
               @click="exportData"
             >
               <v-progress-circular
-                v-if="showLoadingIcon"
+                v-if="showDataLoadingIcon"
                 class="ml-n1 mr-2"
                 size="18"
                 width="2"
                 color="primary"
                 indeterminate
               />
-              <v-icon v-if="!showLoadingIcon" left>mdi-export-variant</v-icon
+              <v-icon v-if="!showDataLoadingIcon" left>mdi-download</v-icon
               >{{ $t('Data_export') }}</v-btn
             >
           </v-col>
         </v-row>
       </div>
+
       <v-row v-if="errorMessage">
         <v-col cols="12">
-          <v-alert text prominent dense type="error" color="red">
+          <v-alert text prominent dense type="error" color="red" class="mb-0">
             {{ errorMessage }}
           </v-alert>
         </v-col>
       </v-row>
+
+      <div
+        class="overline mt-6 mb-2"
+        v-text="$tc('device', 1) + ' ' + $t('Data_export')"
+      ></div>
+      <div class="rounded-border">
+        <v-row>
+          <v-col cols="12">
+            <p v-text="$t('Export_sensor_data')"></p>
+          </v-col>
+        </v-row>
+        <v-row v-if="devices.length > 0">
+          <v-col cols="12" md="9" lg="6">
+            <div class="beep-label" v-text="`${$tc('device', 1)}`"></div>
+            <Treeselect
+              v-if="devices.length > 0"
+              v-model="selectedDeviceId"
+              :options="sortedDevices"
+              :placeholder="`${$t('Select')} ${$tc('device', 1)}`"
+              :no-results-text="`${$t('no_results')}`"
+              :disable-branch-nodes="true"
+              :default-expand-level="1"
+              search-nested
+              allow-clearing-disabled
+              @input="loadMeasurementTypesAvailable"
+            />
+          </v-col>
+          <v-col cols="12" sm="4" md="3">
+            <v-menu
+              ref="menu"
+              v-model="menu"
+              :close-on-content-click="false"
+              :return-value.sync="dates"
+              transition="scale-transition"
+              offset-y
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="dateRangeText"
+                  :label="$t('period')"
+                  prepend-icon="mdi-calendar"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                v-model="dates"
+                :first-day-of-week="1"
+                :locale="locale"
+                range
+                no-title
+                scrollable
+              >
+                <v-spacer></v-spacer>
+                <v-btn text color="primary" @click="menu = false">
+                  {{ $t('Cancel') }}
+                </v-btn>
+                <v-btn text color="primary" @click="$refs.menu.save(dates)">
+                  {{ $t('ok') }}
+                </v-btn>
+              </v-date-picker>
+            </v-menu>
+          </v-col>
+        </v-row>
+
+        <v-row v-if="dataAvailable">
+          <v-col cols="12" md="9" lg="6">
+            <div
+              class="beep-label"
+              v-text="`${$t('Sensor_measurements')}`"
+            ></div>
+            <Treeselect
+              v-model="selectedMeasurementTypes"
+              :options="measurementTypes"
+              :normalizer="normalizerMeasurementTypes"
+              :placeholder="
+                `${$t('Select')} ${$t('Sensor_measurements').toLowerCase()}`
+              "
+              :no-results-text="`${$t('no_results')}`"
+              :max-height="mobile ? 120 : 180"
+              multiple
+            />
+          </v-col>
+          <v-col cols="12" md="3">
+            <div
+              class="beep-label"
+              v-text="`${$t('CSV_export_separator')}`"
+            ></div>
+            <Treeselect
+              v-model="selectedSeparator"
+              :options="separators"
+              :placeholder="`${$t('Select')} ${$t('CSV_export_separator')}`"
+              :no-results-text="`${$t('no_results')}`"
+            />
+          </v-col>
+        </v-row>
+
+        <v-row>
+          <v-col class="d-flex justify-space-between" cols="12">
+            <v-spacer></v-spacer>
+            <v-btn
+              :disabled="!dataAvailable"
+              tile
+              outlined
+              color="primary"
+              class="save-button"
+              @click="exportDeviceData"
+            >
+              <v-progress-circular
+                v-if="showDeviceDataLoadingIcon"
+                class="ml-n1 mr-2"
+                size="18"
+                width="2"
+                color="primary"
+                indeterminate
+              />
+              <v-icon v-if="!showDeviceDataLoadingIcon" left
+                >mdi-download</v-icon
+              >{{ $t('download') + ' ' + $t('Sensor_measurements') }}</v-btn
+            >
+          </v-col>
+        </v-row>
+        <v-row v-if="devices.length === 0">
+          <v-col cols="12">
+            <p v-text="$t('no_chart_data')"></p>
+          </v-col>
+        </v-row>
+      </div>
     </v-container>
   </Layout>
 </template>
@@ -46,68 +177,70 @@
 <script>
 import Api from '@api/Api'
 import Layout from '@layouts/back.vue'
-// import Treeselect from '@riophae/vue-treeselect'
+import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import { sensorMixin } from '@mixins/sensorMixin'
 
 export default {
   components: {
     Layout,
-    // Treeselect,
+    Treeselect,
   },
-  mixins: [sensorMixin],
   data() {
     return {
-      // lastSensorDate: null,
-      // measurementData: {},
+      normalizerMeasurementTypes(node) {
+        return {
+          id: node.abbreviation,
+          label: node.pq_name_unit,
+        }
+      },
+      separators: [
+        {
+          id: ';',
+          label: '; (semicollon)',
+        },
+        {
+          id: ',',
+          label: ', (comma)',
+        },
+        {
+          id: '|',
+          label: '| (pipe)',
+        },
+      ],
+      selectedSeparator: ';',
+      menu: false,
+      dates: [
+        this.$moment()
+          .add(-1, 'weeks')
+          .toISOString()
+          .substr(0, 10),
+        this.$moment()
+          .toISOString()
+          .substr(0, 10),
+      ],
+      measurementTypes: null,
+      selectedMeasurementTypes: [],
       devices: [],
       errorMessage: null,
-      // interval: 'day',
-      // timeIndex: 0,
-      // moduloNumber: 6,
-      // periodTitle: '',
-      // timeFormat: 'ddd D MMM YYYY',
-      // currentWeatherSensors: {},
-      // currentSensors: [],
-      // currentSoundSensors: {},
-      // currentDebugSensors: [],
-      // weatherSensorsPresent: false,
-      // sensorsPresent: false,
-      // soundSensorsPresent: false,
-      // debugSensorsPresent: false,
-      // noChartData: false,
-      // currentLastSensorValues: [],
-      // showMeasurements: true,
-      // showLastSensorValues: true,
-      showLoadingIcon: false,
+      showDataLoadingIcon: false,
+      showDeviceDataLoadingIcon: false,
       ready: false,
     }
   },
   computed: {
-    timeZone() {
-      return this.$moment.tz.guess()
+    dataAvailable() {
+      return this.measurementTypes !== null
+        ? Object.keys(this.measurementTypes).length > 0
+        : false
+    },
+    dateRangeText() {
+      return this.dates.join(' ~ ')
     },
     locale() {
       return this.$i18n.locale
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile
-    },
-    periods() {
-      return [
-        { name: this.$i18n.t('hour'), interval: 'hour', moduloNumber: 1 },
-        { name: this.$i18n.t('day'), interval: 'day', moduloNumber: 6 },
-        { name: this.$i18n.t('week'), interval: 'week', moduloNumber: 6 },
-        { name: this.$i18n.t('month'), interval: 'month', moduloNumber: 8 },
-        { name: this.$i18n.t('year'), interval: 'year', moduloNumber: 11 },
-      ]
-    },
-    selectedDevice() {
-      return (
-        this.devices.filter((device) => {
-          return device.id === this.selectedDeviceId
-        })[0] || null
-      )
     },
     selectedDeviceId: {
       get() {
@@ -173,48 +306,59 @@ export default {
       .then(() => {
         this.setInitialDeviceId()
       })
-      // .then(() => {
-      //   this.loadData()
-      // })
+      .then(() => {
+        this.loadMeasurementTypesAvailable()
+      })
       .then(() => {
         this.ready = true
       })
   },
   methods: {
     async exportData() {
-      this.showLoadingIcon = true
+      this.showDataLoadingIcon = true
       try {
         const response = await Api.readRequest('/export')
-        this.showLoadingIcon = false
+        this.showDataLoadingIcon = false
         return response
       } catch (error) {
         console.log('Error: ', error)
       }
     },
-    async sensorMeasurementRequest(interval) {
-      var timeGroup = interval === 'hour' ? null : interval
-      this.noChartData = false
-      this.measurementData = null // needed to let chartist redraw charts after interval switch, otherwise there's a bug in chartist-plugin-legend where old data is loaded after legend click see https://github.com/CodeYellowBV/chartist-plugin-legend/issues/48
+    async exportDeviceData() {
+      this.showDeviceDataLoadingIcon = true
+      var payload = {
+        device_id: this.selectedDeviceId,
+        start: this.dates[0],
+        end: this.dates[1],
+        separator: this.selectedSeparator,
+        measurements: this.selectedMeasurementTypes,
+      }
       try {
-        const response = await Api.readRequest(
-          '/sensors/measurements?id=' +
-            this.selectedDeviceId +
-            '&interval=' +
-            interval +
-            '&index=' +
-            this.timeIndex +
-            '&timeGroup=' +
-            timeGroup +
-            '&timezone=' +
-            this.timeZone
-        )
-        this.formatMeasurementData(response.data)
-        return true
+        const response = await Api.postRequest('/export/csv', payload)
+        this.showDeviceDataLoadingIcon = false
+        console.log(response) // TODO: after API update: handle returned link to download file
+        return response
       } catch (error) {
         console.log('Error: ', error)
-        if (error.response.status === 404 || error.response.status === 500) {
-          this.noChartData = true
-        }
+      }
+    },
+    async loadMeasurementTypesAvailable() {
+      this.errorMessage = null
+      try {
+        const response = await Api.readRequest(
+          '/sensors/measurement_types_available?device_id=' +
+            this.selectedDeviceId +
+            '&start=' +
+            this.dates[0] +
+            '&end=' +
+            this.dates[1]
+        )
+        this.measurementTypes = Object.values(response.data)
+        return true
+      } catch (error) {
+        this.measurementTypes = null
+        this.errorMessage = this.$i18n.t('no_chart_data')
+        console.log('Error: ', error)
       }
     },
     async readDevices() {
@@ -227,42 +371,6 @@ export default {
         console.log('Error: ', error)
       }
     },
-    momentAll(date) {
-      return this.$moment(date)
-        .locale(this.locale)
-        .format('llll')
-    },
-    momentFromISO8601(date) {
-      if (this.interval === 'hour') {
-        return this.$moment(date)
-          .locale(this.locale)
-          .format('LT')
-      } else if (this.interval === 'day' || this.interval === 'week') {
-        var unit = this.locale === 'nl' ? 'u' : 'h'
-        return (
-          this.$moment(date)
-            .locale(this.locale)
-            .format('ddd') +
-          ' ' +
-          this.$moment(date)
-            .locale(this.locale)
-            .format('H') +
-          unit
-        )
-      } else {
-        const currentYear = this.$moment(date).format('YYYY')
-        const currentYearEn = ', ' + currentYear
-        const currentYearEsPt = ' de ' + currentYear
-        const currentYearNl = '. ' + currentYear
-        return this.$moment(date)
-          .locale(this.locale)
-          .format('ll')
-          .replace(currentYearNl, '')
-          .replace(currentYearEn, '')
-          .replace(currentYearEsPt, '')
-          .replace(' ' + currentYear, '') // Remove year hardcoded per language, currently no other way to get rid of year whilst keeping localized time
-      }
-    },
     setInitialDeviceId() {
       if (this.$route.name === 'measurements-id') {
         this.selectedDeviceId = parseInt(this.$route.params.id)
@@ -273,5 +381,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped></style>

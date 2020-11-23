@@ -299,8 +299,25 @@
 }
 
 .vue-treeselect--focused:not(.vue-treeselect--open) .vue-treeselect__control {
-  border-color: $color-primary;
-  box-shadow: none;
+  border-color: $color-primary !important;
+  box-shadow: none !important;
+}
+
+.vue-treeselect__multi-value-item {
+  color: $color-primary-dark !important;
+  background: $color-orange-medium !important;
+  .vue-treeselect__multi-value-label {
+    font-weight: 600 !important;
+  }
+}
+
+.vue-treeselect__value-remove {
+  color: $color-primary-dark !important;
+}
+
+.vue-treeselect__checkbox--checked {
+  background: $color-primary !important;
+  border-color: $color-primary !important;
 }
 
 /* Vue Datetime */

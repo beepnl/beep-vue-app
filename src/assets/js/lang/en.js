@@ -640,6 +640,8 @@ const translations = {
   remove_device: 'Remove device',
   last_message_received: 'Last message received',
   transmission_ratio: 'Transmission ratio',
+  period: 'Period',
+  download: 'Download',
 }
 
 export default translations

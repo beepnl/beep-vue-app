@@ -47,7 +47,6 @@ export default {
           icon: 'mdi-key',
           title: this.$i18n.t('Profile'),
           route: 'profile',
-          subtitle: 'email, privacy',
         },
         {
           icon: 'mdi-share-variant',
@@ -63,7 +62,7 @@ export default {
         {
           icon: 'mdi-cloud-download',
           title: this.$i18n.t('Data_export'),
-          subtitle: 'JSON, CSV',
+          route: 'export',
         },
         {
           icon: 'mdi-help-circle-outline',
