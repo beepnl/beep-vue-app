@@ -6,7 +6,10 @@
           v-for="error in errors"
           :key="error.name"
           type="error"
-          outlined
+          text
+          prominent
+          dense
+          color="red"
         >
           {{ error.type }}
         </v-alert>
@@ -19,14 +22,18 @@
         <v-text-field
           v-model="credentials.password"
           :label="`${$t('password')}`"
-          type="password"
+          :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+          :type="show1 ? 'text' : 'password'"
           :rules="passwordRules"
+          @click:append="show1 = !show1"
         />
         <v-text-field
           v-model="repeatedPassword"
           :label="`${$t('confirm_password')}`"
-          type="password"
+          :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+          :type="show2 ? 'text' : 'password'"
           :rules="repeatPasswordRules"
+          @click:append="show2 = !show2"
         />
         <v-checkbox
           v-model="credentials.policyAccepted"
@@ -55,7 +62,7 @@
       <v-divider class="mx-3"></v-divider>
       <v-card-actions>
         <router-link :to="{ name: 'sign-in' }">
-          <span class="sign-in-link">{{ $t('already_registered') }}</span>
+          <span class="sign-in-link ml-1">{{ $t('already_registered') }}</span>
         </router-link>
         <v-spacer></v-spacer>
       </v-card-actions>
@@ -74,6 +81,8 @@ export default {
       valid: false,
       repeatedPassword: '',
       errors: [],
+      show1: false,
+      show2: false,
     }
   },
   computed: {
@@ -86,9 +95,8 @@ export default {
     passwordRules: function() {
       return [
         (v) => !!v || this.$i18n.t('password_is_required'),
-        // FIXME: don't impose and expose password requirements besides minimum length
         (v) =>
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.[\]{}()?\-"!@#%&/\\,><':;|_~`])(?=.{6,98})/.test(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.[\]{}()?\-"!@#%&/\\,><':;|_~`])(?=.{8,98})/.test(
             v
           ) || this.$i18n.t('invalid_password'),
       ]
@@ -103,8 +111,7 @@ export default {
             '" ' +
             this.$i18n.t('is_required'),
         (v) =>
-          v === this.resetPasswordRequest.newPassword ||
-          this.$i18n.t('no_password_match'),
+          v === this.credentials.password || this.$i18n.t('no_password_match'),
       ]
     },
     termsRules: function() {

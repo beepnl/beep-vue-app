@@ -11,7 +11,10 @@
           v-for="error in errors"
           :key="error.name"
           type="error"
-          outlined
+          text
+          prominent
+          dense
+          color="red"
         >
           {{ error.type }}
         </v-alert>
@@ -33,14 +36,18 @@
           :label="`${$t('new_password')}`"
           :rules="passwordRules"
           autocomplete="off"
-          type="password"
+          :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+          :type="show1 ? 'text' : 'password'"
+          @click:append="show1 = !show1"
         ></v-text-field>
         <v-text-field
           v-model="newPasswordRepeated"
           :label="`${$t('confirm_new_password')}`"
           :rules="repeatPasswordRules"
           autocomplete="off"
-          type="password"
+          :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+          :type="show2 ? 'text' : 'password'"
+          @click:append="show2 = !show2"
         ></v-text-field>
       </v-card-text>
 
@@ -79,6 +86,8 @@ export default {
       newPasswordRepeated: '',
       valid: false,
       errors: [],
+      show1: false,
+      show2: false,
     }
   },
   computed: {
@@ -102,9 +111,8 @@ export default {
     passwordRules: function() {
       return [
         (v) => !!v || this.$i18n.t('password_is_required'),
-        // FIXME: don't impose and expose password requirements besides minimum length
         (v) =>
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.[\]{}()?\-"!@#%&/\\,><':;|_~`])(?=.{6,98})/.test(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.[\]{}()?\-"!@#%&/\\,><':;|_~`])(?=.{8,98})/.test(
             v
           ) || this.$i18n.t('invalid_password'),
       ]

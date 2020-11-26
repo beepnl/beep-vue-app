@@ -61,14 +61,14 @@ export default {
     } else {
       this.$i18n.locale = languages.checkBrowserLanguage()
     }
-    Settings.defaultLocale = this.$i18n.locale
+    Settings.defaultLocale = this.$i18n.locale // for hive-inspect vue-datetime picker
   },
   methods: {
     switchLocale(language) {
       this.$store.dispatch('auth/setLocale', language).then(() => {
         this.$i18n.locale = language
         console.log(language)
-        Settings.defaultLocale = language
+        Settings.defaultLocale = language // for hive-inspect vue-datetime picker
       })
     },
   },

@@ -6,7 +6,10 @@
           v-for="error in errors"
           :key="error.name"
           type="error"
-          outlined
+          text
+          prominent
+          dense
+          color="red"
         >
           {{ error.type }}
         </v-alert>
