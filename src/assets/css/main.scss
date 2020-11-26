@@ -54,13 +54,17 @@
   }
 }
 
+.lowercase {
+  text-transform: lowercase;
+}
+
 .rounded-border {
   padding: 12px;
   border: 1px solid $color-grey-light;
   border-radius: 4px;
 
   @include for-phone-only {
-    padding: 0 10px;
+    padding: 10px;
   }
 }
 
