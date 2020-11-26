@@ -1,3 +1,4 @@
+import router from '@router'
 import axios from 'axios'
 import store from '@state/store'
 
@@ -9,11 +10,26 @@ const instance = axios.create({
 instance.interceptors.response.use(undefined, function(err) {
   return new Promise((resolve, reject) => {
     if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
-      store.dispatch('auth/signOut')
+      // FIXME error object does not have status etc? createError vs enhanceError?
+      // store.dispatch('auth/signOut')
+      router.push('/sign-in')
     }
     throw err
   })
 })
+
+// const UNAUTHORIZED = 401
+// instance.interceptors.response.use(
+//   (response) => response,
+//   (error) => {
+//     console.log(error)
+//     const { status } = error.response
+//     if (status === UNAUTHORIZED) {
+//       router.push('/sign-in')
+//     }
+//     return Promise.reject(error)
+//   }
+// )
 
 // Dynamically add API token to requests
 // Dynamically add Accept-Language to requests

@@ -100,19 +100,27 @@
             <v-text-field
               v-model="password"
               :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-              :label="`${$t('new_password')}`"
+              :label="`${$t('password')}`"
               :type="show1 ? 'text' : 'password'"
               :rules="passwordRules"
               @click:append="show1 = !show1"
             />
             <v-text-field
-              v-model="repeatPassword"
+              v-model="newPassword"
               :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-              :label="`${$t('confirm_new_password')}`"
+              :label="`${$t('new_password')}`"
               :type="show2 ? 'text' : 'password'"
+              :rules="newPasswordRules"
+              @click:append="show2 = !show2"
+            />
+            <v-text-field
+              v-model="repeatPassword"
+              :append-icon="show3 ? 'mdi-eye' : 'mdi-eye-off'"
+              :label="`${$t('confirm_new_password')}`"
+              :type="show3 ? 'text' : 'password'"
               :rules="repeatPasswordRules"
               @keydown.enter="$event.target.blur"
-              @click:append="show2 = !show2"
+              @click:append="show3 = !show3"
             />
             <v-checkbox
               v-model="policyAccepted"
@@ -158,10 +166,12 @@ export default {
       name: this.user.name,
       policyAccepted: true,
       password: '',
+      newPassword: '',
       repeatPassword: '',
       successMessage: null,
       show1: false,
       show2: false,
+      show3: false,
       showDeleteLoadingIcon: false,
       showLoadingIcon: false,
       valid: false,
@@ -173,6 +183,7 @@ export default {
         name: this.name,
         email: this.email,
         password: this.password,
+        password_new: this.newPassword,
         password_confirmation: this.repeatPassword,
         policy_accepted: this.policyAccepted ? this.user.policy_accepted : '',
       }
@@ -187,6 +198,9 @@ export default {
       return this.$vuetify.breakpoint.mobile
     },
     passwordRules: function() {
+      return [(v) => !!v || this.$i18n.t('password_is_required')]
+    },
+    newPasswordRules: function() {
       return [
         (v) => !!v || this.$i18n.t('password_is_required'),
         (v) =>
@@ -204,7 +218,8 @@ export default {
             this.$i18n.t('confirm_new_password') +
             '" ' +
             this.$i18n.t('is_required'),
-        (v) => v === this.edit.password || this.$i18n.t('no_password_match'),
+        (v) =>
+          v === this.edit.password_new || this.$i18n.t('no_password_match'),
       ]
     },
     termsRules: function() {
@@ -247,7 +262,8 @@ export default {
               errorMessage: this.$i18n.t('not_saved_error'),
             })
           }
-          this.$store.commit('auth/SET_CURRENT_USER', response.data)
+          this.$store.dispatch('auth/validateUser')
+          // this.$store.commit('auth/SET_CURRENT_USER', response.data)
           this.valid = false
           this.successMessage =
             this.$i18n.t('User_data') + ' ' + this.$i18n.t('updated')
