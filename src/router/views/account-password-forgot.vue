@@ -1,7 +1,11 @@
 <template>
-  <v-card>
-    <v-form ref="form" v-model="valid" @submit.prevent="forgotPassword">
-      <v-card-title>{{ $t('password_recovery_title') }}</v-card-title>
+  <Layout :title="$t('password_recovery_title')">
+    <v-form
+      ref="form"
+      v-model="valid"
+      style="width: 100%;"
+      @submit.prevent="forgotPassword"
+    >
       <v-card-text>
         <v-alert
           v-for="error in errors"
@@ -26,11 +30,14 @@
         }}</v-btn>
       </v-card-actions>
     </v-form>
-  </v-card>
+  </Layout>
 </template>
 
 <script>
+import Layout from '@layouts/account.vue'
+
 export default {
+  components: { Layout },
   data() {
     return {
       valid: false,

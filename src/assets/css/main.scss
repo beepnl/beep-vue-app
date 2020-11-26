@@ -9,6 +9,12 @@
   }
 }
 
+.checkbox-label {
+  display: inline-block !important;
+  max-width: 100% !important;
+  font-size: 14px;
+}
+
 .content-container {
   margin-top: 56px;
 }
@@ -52,6 +58,10 @@
   .v-toolbar__content {
     padding: 0 10px;
   }
+}
+
+.keep-spaces {
+  white-space: pre-wrap;
 }
 
 .lowercase {

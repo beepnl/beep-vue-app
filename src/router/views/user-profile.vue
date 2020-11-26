@@ -121,7 +121,7 @@
               class="keep-spaces"
             >
               <template slot="label"
-                ><span class="user-checkbox-label"
+                ><span class="checkbox-label"
                   >{{ $t('accept_policy_1')
                   }}<a :href="$t('policy_url')">{{ $t('terms_of_use') }}</a
                   >{{ $t('accept_policy_2') }}
@@ -300,13 +300,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.keep-spaces {
-  white-space: pre-wrap;
-}
-.user-checkbox-label {
-  display: inline-block !important;
-  max-width: 100% !important;
-}
-</style>

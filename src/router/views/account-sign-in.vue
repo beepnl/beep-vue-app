@@ -1,10 +1,6 @@
 <template>
-  <v-card class="login-card d-flex flex-column align-center">
-    <div class="login-logo mt-2">
-      <a href="/"><img v-cloak src="@assets/img/beep-icon-logo.svg"/></a>
-    </div>
+  <Layout :title="$t('login_title')">
     <v-form ref="form" v-model="valid" @submit.prevent="login">
-      <v-card-title>{{ $t('login_title') }}</v-card-title>
       <v-card-text>
         <v-alert
           v-for="error in errors"
@@ -22,9 +18,11 @@
         ></v-text-field>
         <v-text-field
           v-model="credentials.password"
+          :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+          :type="show ? 'text' : 'password'"
           :label="`${$t('password')}`"
-          type="password"
           :rules="[(v) => !!v || signinRules.password_required]"
+          @click:append="show = !show"
         ></v-text-field>
         <router-link :to="{ name: 'password-forgot' }">
           {{ $t('forgot_password') }}
@@ -42,11 +40,14 @@
         }}</v-btn>
       </v-card-actions>
     </v-form>
-  </v-card>
+  </Layout>
 </template>
 
 <script>
+import Layout from '@layouts/account.vue'
+
 export default {
+  components: { Layout },
   props: {
     email: {
       type: String,
@@ -60,6 +61,7 @@ export default {
         password: '',
       },
       errors: [],
+      show: false,
       tryingToLogIn: false,
       valid: false,
     }
@@ -118,14 +120,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.login-card {
-  width: 90%;
-  margin: 50px auto;
-  @include for-tablet-portrait-up {
-    width: 380px;
-    margin: 10% auto;
-  }
-}
-</style>

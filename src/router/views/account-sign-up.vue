@@ -1,7 +1,6 @@
 <template>
-  <v-card>
+  <Layout :title="$t('create_login')">
     <v-form ref="form" v-model="valid" @submit.prevent="createAccount">
-      <v-card-title>{{ $t('create_login') }}</v-card-title>
       <v-card-text>
         <v-alert
           v-for="error in errors"
@@ -34,10 +33,16 @@
           :rules="termsRules"
           :label="`${$t('accept_policy')}`"
           required
-        ></v-checkbox>
-        <a href="https://test.beep.nl/terms-of-service">{{
-          $t('Terms_of_use')
-        }}</a>
+          class="keep-spaces"
+        >
+          <template slot="label"
+            ><span class="checkbox-label"
+              >{{ $t('accept_policy_1')
+              }}<a :href="$t('policy_url')">{{ $t('terms_of_use') }}</a
+              >{{ $t('accept_policy_2') }}
+            </span></template
+          >
+        </v-checkbox>
       </v-card-text>
 
       <v-card-actions>
@@ -46,12 +51,23 @@
           $t('create_login_summary')
         }}</v-btn>
       </v-card-actions>
+
+      <v-divider class="mx-3"></v-divider>
+      <v-card-actions>
+        <router-link :to="{ name: 'sign-in' }">
+          <span class="sign-in-link">{{ $t('already_registered') }}</span>
+        </router-link>
+        <v-spacer></v-spacer>
+      </v-card-actions>
     </v-form>
-  </v-card>
+  </Layout>
 </template>
 
 <script>
+import Layout from '@layouts/account.vue'
+
 export default {
+  components: { Layout },
   data() {
     return {
       credentials: {},
@@ -140,3 +156,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.sign-in-link {
+  font-size: 14px;
+}
+</style>

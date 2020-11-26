@@ -1,7 +1,6 @@
 <template>
-  <v-card>
+  <Layout :title="$t('confirm_email_title')">
     <v-form ref="form" v-model="valid" @submit.prevent="confirmSignup">
-      <v-card-title>{{ $t('confirm_email_title') }}</v-card-title>
       <v-card-text>
         {{ $t('confirm_email_summary') }}
       </v-card-text>
@@ -30,14 +29,17 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn text type="submit">{{ $t('confirm') }}</v-btn>
+        <v-btn text :disabled="!valid" type="submit">{{ $t('confirm') }}</v-btn>
       </v-card-actions>
     </v-form>
-  </v-card>
+  </Layout>
 </template>
 
 <script>
+import Layout from '@layouts/account.vue'
+
 export default {
+  components: { Layout },
   props: {
     email: {
       type: String,
