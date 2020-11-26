@@ -282,7 +282,7 @@
             >
               <div class="color-grey-medium"
                 ><v-icon class="color-grey-medium" large left
-                  >mdi-comment-question</v-icon
+                  >mdi-comment-question-outline</v-icon
                 >{{ $t('need_help') }}</div
               >
             </router-link>
