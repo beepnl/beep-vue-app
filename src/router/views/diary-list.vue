@@ -122,8 +122,7 @@
                   <v-row class="ml-0 pl-0 py-0" style="width:100%;">
                     <v-col
                       cols="12"
-                      sm="6"
-                      md="5"
+                      sm="5"
                       class="diary-details-item diary-inspection-meta d-flex flex-row justify-flex-start pa-0"
                     >
                       <v-row class="pl-3 py-0">
@@ -191,7 +190,6 @@
                     <v-col
                       cols="12"
                       sm="7"
-                      md="7"
                       class="diary-inspection-content pa-0"
                     >
                       <v-row class="py-0">
