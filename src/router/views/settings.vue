@@ -19,7 +19,8 @@
         v-for="(item, i) in items"
         :key="i"
         exact
-        :to="{ name: item.route }"
+        :href="item.external ? item.route : ''"
+        :to="!item.external ? { name: item.route } : ''"
       >
         <v-list-item-avatar>
           <v-icon color="primary">{{ item.icon }}</v-icon>
@@ -65,12 +66,30 @@ export default {
           route: 'export',
         },
         {
-          icon: 'mdi-help-circle-outline',
-          title: this.$i18n.t('Info'),
-          route: 'info',
-          subtitle: 'Helpdesk, Changelog, BEEP website',
+          icon: 'mdi-comment-question-outline',
+          title: this.$i18n.t('Support'),
+          route: 'support',
+          subtitle: 'Helpdesk',
+        },
+        {
+          icon: 'mdi-new-box',
+          title: this.$i18n.t('Whats_new'),
+          route: 'new',
+          subtitle: 'Changelog',
+        },
+        {
+          icon: 'mdi-information-outline',
+          title: 'Beep ' + this.$i18n.t('Website'),
+          external: true,
+          route:
+            this.locale === 'nl'
+              ? 'https://beep.nl'
+              : 'https://beep.nl/home-english',
         },
       ]
+    },
+    locale() {
+      return this.$i18n.locale
     },
   },
 }
