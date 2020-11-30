@@ -48,7 +48,7 @@ export function forgotPasswordSubmit(email, verificationCode, newPassword) {
     email,
     token: verificationCode,
     password: newPassword,
-    password_confirm: newPassword, // FIXME: confirmation is not present in AWSAuth
+    password_confirmation: newPassword, // FIXME: confirmation is not present in AWSAuth
   })
 }
 

@@ -238,7 +238,6 @@ export default {
         }
         this.signOut()
       } catch (error) {
-        this.valid = false
         this.showDeleteLoadingIcon = false
         if (error.message !== undefined) {
           this.errors.push({ errorMessage: error.message })
@@ -262,15 +261,18 @@ export default {
               errorMessage: this.$i18n.t('not_saved_error'),
             })
           }
-          this.$store.dispatch('auth/validateUser')
-          // this.$store.commit('auth/SET_CURRENT_USER', response.data)
-          this.valid = false
+          this.$store.commit('auth/SET_CURRENT_USER', response.data)
           this.successMessage =
             this.$i18n.t('User_data') + ' ' + this.$i18n.t('updated')
           this.showLoadingIcon = false
+          this.password = null
+          this.newPassword = null
+          this.repeatPassword = null
+          this.$refs.form.resetValidation()
+          console.log(response)
         } catch (error) {
-          this.valid = false
           this.showLoadingIcon = false
+          console.log(error)
           if (error.message !== undefined) {
             this.errors.push({ errorMessage: error.message })
             console.log('Error: ', error.message)

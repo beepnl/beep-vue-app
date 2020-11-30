@@ -2,6 +2,9 @@ import AWSAuth from '@aws-amplify/auth'
 import * as BEEPAuth from '@api/auth.js'
 
 let Auth = null
+
+// import * as Auth from '@api/auth.js'
+
 export const state = {
   currentUser: getSavedState('auth.currentUser'),
   currentSession: getSavedState('auth.currentSession'),
@@ -68,7 +71,6 @@ export const actions = {
 
     Auth.signOut().then(() => {
       commit('SET_CURRENT_USER', null)
-      window.localStorage.removeItem('auth')
       return null
     })
   },
