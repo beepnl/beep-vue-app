@@ -108,7 +108,7 @@ export const actions = {
     return Auth.signUp(credentials)
   },
   confirmSignUp: function(_, signup) {
-    return Auth.confirmSignUp(signup.username, signup.code)
+    return Auth.confirmSignUp(signup.code)
   },
   forgotPassword: function(_, username) {
     return Auth.forgotPassword(username)

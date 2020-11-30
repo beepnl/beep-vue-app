@@ -5,6 +5,9 @@ export default [
     path: '/sign-in',
     name: 'sign-in',
     component: () => import('@views/account-sign-in.vue'),
+    props: (route) => ({
+      email: route.query.email,
+    }),
     meta: {
       beforeResolve(routeTo, routeFrom, next) {
         // If the user is already logged in

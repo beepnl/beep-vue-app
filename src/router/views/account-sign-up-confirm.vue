@@ -73,13 +73,13 @@ export default {
     confirmSignup() {
       this.clearErrors()
       this.$store
-        .dispatch('auth/confirmSignup', {
+        .dispatch('auth/confirmSignUp', {
           username: this.email,
           code: this.code,
         })
         .then(() =>
           this.$router.push({
-            name: 'signIn',
+            name: 'sign-in',
             query: { email: this.email },
           })
         )

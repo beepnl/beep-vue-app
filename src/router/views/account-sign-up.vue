@@ -28,7 +28,7 @@
           @click:append="show1 = !show1"
         />
         <v-text-field
-          v-model="repeatedPassword"
+          v-model="credentials.passwordConfirmation"
           :label="`${$t('confirm_password')}`"
           :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
           :type="show2 ? 'text' : 'password'"
@@ -79,7 +79,6 @@ export default {
     return {
       credentials: {},
       valid: false,
-      repeatedPassword: '',
       errors: [],
       show1: false,
       show2: false,
@@ -125,8 +124,6 @@ export default {
         this.$store
           .dispatch('auth/signUp', this.credentials)
           .then(() =>
-            // FIXME: the backend returns a 400 Bad Request that should be 200 Accepted,
-            // so this block never gets executed
             this.$router.push({
               name: 'sign-up-confirm',
               query: { email: this.credentials.username },

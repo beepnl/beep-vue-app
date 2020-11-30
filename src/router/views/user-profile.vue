@@ -230,7 +230,7 @@ export default {
     async deleteUser() {
       this.showDeleteLoadingIcon = true
       try {
-        const response = await Api.deleteRequest('/user', null)
+        const response = await Api.deleteRequest('/user', '')
         if (!response) {
           this.errors.push({
             errorMessage: this.$i18n.t('error'),
