@@ -582,17 +582,19 @@ export default {
     },
     async getAllHives() {
       try {
-        const ownHives = await Api.readRequest('/hives')
+        const ownApiaries = await Api.readRequest('/locations') // direct hives request can lead to 404 error which goes straight to catch block
         const sharedApiaries = await Api.readRequest('/groups')
         if (
-          ownHives.data.hives.length === 0 &&
+          ownApiaries.data.locations.length === 0 &&
           sharedApiaries.data.groups.length === 0
         ) {
           this.showDiaryPlaceholder = true
         } else {
           const ownHivesArray = []
-          ownHives.data.hives.forEach((hive) => {
-            ownHivesArray.push(hive)
+          ownApiaries.data.locations.forEach((location) => {
+            location.hives.forEach((hive) => {
+              ownHivesArray.push(hive)
+            })
           })
 
           const sharedHivesArray = []
