@@ -484,10 +484,14 @@ export default {
     clearInterval(this.timer)
     this.readDevices()
       .then(() => {
-        this.setInitialDeviceId()
+        if (this.devices.length > 0) {
+          this.setInitialDeviceId()
+        }
       })
       .then(() => {
-        this.loadData()
+        if (this.devices.length > 0) {
+          this.loadData()
+        }
       })
       .then(() => {
         this.ready = true
@@ -849,9 +853,10 @@ export default {
     setInitialDeviceId() {
       if (this.$route.name === 'measurements-id') {
         this.selectedDeviceId = parseInt(this.$route.params.id)
-      } else if (this.selectedDeviceId === null) {
+      } else if (this.selectedDeviceId === null && this.devices.length > 0) {
         this.selectedDeviceId = this.devices[0].id
       }
+      return true
     },
     setPeriodInterval(interval, modulonr) {
       this.timeIndex = 0

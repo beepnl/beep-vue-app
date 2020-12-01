@@ -3,11 +3,11 @@
     <v-container v-if="showDiaryPlaceholder">
       <v-row>
         <v-col sm="auto" :cols="12">
-          {{ $t('no_results') }}
+          {{ $t('no_data') }}
         </v-col>
       </v-row>
     </v-container>
-    <div v-if="inspections">
+    <div v-if="!showDiaryPlaceholder && inspections">
       <div class="filter-bar-wrapper">
         <v-container class="filter-container">
           <v-row
