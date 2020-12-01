@@ -2,6 +2,9 @@
   <Layout :title="$t('login_title')">
     <v-form ref="form" v-model="valid" @submit.prevent="login">
       <v-card-text>
+        <v-alert v-if="msg" type="success" text prominent dense color="green">
+          {{ $t(msg) }}
+        </v-alert>
         <v-alert
           v-for="error in errors"
           :key="error.name"
@@ -54,6 +57,10 @@ export default {
     email: {
       type: String,
       default: '',
+    },
+    msg: {
+      type: String,
+      default: null,
     },
   },
   data() {
