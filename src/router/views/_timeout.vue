@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import Api from '@api/Api'
 import Layout from '@layouts/main.vue'
 import LoadingView from './_loading.vue'
 
@@ -26,8 +27,7 @@ export default {
     }
   },
   beforeCreate() {
-    this.$store
-      .dispatch('auth/checkConnection')
+    Api.checkConnection()
       .then(() => {
         window.location.reload()
       })

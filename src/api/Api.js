@@ -20,6 +20,12 @@ class Api {
   deleteRequest(url, id, payload = null) {
     return axios.delete(url + id, { data: payload })
   }
+
+  checkConnection() {
+    // FIXME: do a lightweight unauthed ping/HEAD request to check if API is up
+    return axios.head('/')
+    // return Promise.resolve(true)
+  }
 }
 
 export default new Api()

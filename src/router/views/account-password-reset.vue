@@ -26,13 +26,13 @@
           disabled
         ></v-text-field>
         <v-text-field
-          v-model="resetPasswordRequest.verificationCode"
+          v-model="resetPasswordRequest.token"
           :label="`${$t('verification_code')}`"
           :rules="verificationCodeRules"
           autocomplete="off"
         ></v-text-field>
         <v-text-field
-          v-model="resetPasswordRequest.newPassword"
+          v-model="resetPasswordRequest.password"
           :label="`${$t('new_password')}`"
           :rules="passwordRules"
           autocomplete="off"
@@ -41,7 +41,7 @@
           @click:append="show1 = !show1"
         ></v-text-field>
         <v-text-field
-          v-model="newPasswordRepeated"
+          v-model="resetPasswordRequest.password_confirmation"
           :label="`${$t('confirm_new_password')}`"
           :rules="repeatPasswordRules"
           autocomplete="off"
@@ -57,11 +57,20 @@
           {{ $t('password_recovery_reset_password') }}
         </v-btn>
       </v-card-actions>
+
+      <v-divider class="mx-3"></v-divider>
+      <v-card-text>
+        <router-link :to="{ name: 'password-forgot', query: { email: email } }">
+          {{ $t('password_recovery_code_not_received') }}
+        </router-link>
+        <v-spacer></v-spacer>
+      </v-card-text>
     </v-form>
   </Layout>
 </template>
 
 <script>
+import Api from '@api/Api'
 import Layout from '@layouts/account.vue'
 
 export default {
@@ -79,11 +88,11 @@ export default {
   data() {
     return {
       resetPasswordRequest: {
-        email: this.email,
-        verificationCode: this.code,
-        newPassword: '',
+        email: this.email || '',
+        token: this.code || '',
+        password: '',
+        password_confirmation: '',
       },
-      newPasswordRepeated: '',
       valid: false,
       errors: [],
       show1: false,
@@ -127,41 +136,45 @@ export default {
             '" ' +
             this.$i18n.t('is_required'),
         (v) =>
-          v === this.resetPasswordRequest.newPassword ||
+          v === this.resetPasswordRequest.password ||
           this.$i18n.t('no_password_match'),
       ]
     },
   },
   methods: {
-    resetPassword() {
+    async resetPassword() {
       if (this.$refs.form.validate()) {
         this.clearErrors()
-        this.$store
-          .dispatch('auth/forgotPasswordSubmit', this.resetPasswordRequest)
-          .then(() => this.$router.push({ name: 'sign-in' }))
-          .catch((error) => {
-            switch (error.code) {
-              case 'UserNotFoundException':
-                this.errors.push({
-                  type: this.$i18n.t('invalid_user'),
-                })
-                break
-              case 'LimitExceededException':
-                this.errors.push({
-                  type: this.$i18n.t('limit_exceeded'),
-                })
-                break
-              case 'CodeMismatchException':
-                this.errors.push({
-                  type: this.$i18n.t('invalid_token'),
-                })
-                break
-              default:
-                this.errors.push({
-                  type: this.$i18n.t('error'),
-                })
-            }
-          })
+        try {
+          const response = await Api.postRequest(
+            '/user/reset',
+            this.resetPasswordRequest
+          )
+          this.$router.push({ name: 'sign-in', query: { email: this.email } })
+          return response
+        } catch (error) {
+          switch (error.code) {
+            case 'UserNotFoundException':
+              this.errors.push({
+                type: this.$i18n.t('invalid_user'),
+              })
+              break
+            case 'LimitExceededException':
+              this.errors.push({
+                type: this.$i18n.t('limit_exceeded'),
+              })
+              break
+            case 'CodeMismatchException':
+              this.errors.push({
+                type: this.$i18n.t('invalid_token'),
+              })
+              break
+            default:
+              this.errors.push({
+                type: this.$i18n.t('error'),
+              })
+          }
+        }
       }
     },
     clearErrors() {

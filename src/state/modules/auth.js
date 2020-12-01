@@ -1,4 +1,4 @@
-import * as Auth from '@api/auth.js'
+import Api from '@api/Api'
 
 export const state = {
   currentUser: getSavedState('auth.currentUser'),
@@ -8,6 +8,9 @@ export const state = {
 export const getters = {
   loggedIn: function(state) {
     return !!state.currentUser
+  },
+  currentUser: function(state) {
+    return state.currentUser || null
   },
   userEmail: function(state) {
     return (state.currentUser && state.currentUser.email) || null
@@ -30,19 +33,12 @@ export const mutations = {
     state.currentUser = newValue
     saveState('auth.currentUser', newValue)
   },
-  SET_CURRENT_SESSION: function(state, newValue) {
-    state.currentSession = newValue
-    saveState('auth.currentSession', newValue)
-  },
 }
 export const actions = {
-  checkConnection: function() {
-    return Auth.checkConnection()
-  },
-  signIn: function({ commit, dispatch, getters }, { username, password } = {}) {
+  signIn: function({ commit, dispatch, getters }, credentials = {}) {
     if (getters.loggedIn) return dispatch('validateUser')
 
-    return Auth.signIn(username, password).then((response) => {
+    return Api.postRequest('/login', credentials).then((response) => {
       const user = response.data
       commit('SET_CURRENT_USER', user)
       return user
@@ -53,10 +49,8 @@ export const actions = {
       throw new Error('User is already logged out.')
     }
 
-    Auth.signOut().then(() => {
-      commit('SET_CURRENT_USER', null)
-      return null
-    })
+    commit('SET_CURRENT_USER', null)
+    return null
   },
 
   // Validates the current user's token and refreshes it
@@ -64,7 +58,7 @@ export const actions = {
   validateUser: function({ state, commit, dispatch }) {
     return (
       state.currentUser ||
-      Auth.currentAuthenticatedUser()
+      Api.postRequest('/authenticate')
         .then((response) => {
           const user = response.data
           commit('SET_CURRENT_USER', user)
@@ -72,37 +66,17 @@ export const actions = {
         })
         .catch((error) => {
           if (error.response && error.response.status === 401)
-            return dispatch('auth/signOut')
+            return dispatch('signOut')
         })
-    )
-  },
-  validateSession: function({ _, commit }) {
-    return Auth.currentSession()
-      .then((response) => {
-        const session = response.data
-        commit('SET_CURRENT_SESSION', session)
-        return session
-      })
-      .catch((_) => {
-        return commit('SET_CURRENT_SESSION', null)
-      })
-  },
-  forgotPassword: function(_, username) {
-    return Auth.forgotPassword(username)
-  },
-  forgotPasswordSubmit: function(_, forgotPasswordRequest) {
-    return Auth.forgotPasswordSubmit(
-      forgotPasswordRequest.email,
-      forgotPasswordRequest.verificationCode,
-      forgotPasswordRequest.newPassword
     )
   },
   setLocale: function({ commit, getters }, locale) {
     if (getters.loggedIn) {
-      const user = state.currentUser
-      const email = user.email
+      var user = getters.currentUser
+      const email = getters.userEmail
       user.locale = locale
-      Auth.setLocale(email, locale).then(() => {
+      // FIXME: allow locale update without password parameter
+      Api.updateRequest('/user', '', { email, locale }).then(() => {
         return commit('SET_CURRENT_USER', user)
       })
     } else {

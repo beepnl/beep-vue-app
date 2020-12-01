@@ -17,7 +17,7 @@
           {{ error.type }}
         </v-alert>
         <v-text-field
-          v-model="credentials.username"
+          v-model="credentials.email"
           :label="`${$t('email')}`"
           :rules="[(v) => !!v || signinRules.email_required]"
         ></v-text-field>
@@ -29,7 +29,12 @@
           :rules="[(v) => !!v || signinRules.password_required]"
           @click:append="show = !show"
         ></v-text-field>
-        <router-link :to="{ name: 'password-forgot' }">
+        <router-link
+          :to="{
+            name: 'password-forgot',
+            query: { email: credentials.email },
+          }"
+        >
           {{ $t('forgot_password') }}
         </router-link>
         <v-spacer></v-spacer>
@@ -66,7 +71,7 @@ export default {
   data() {
     return {
       credentials: {
-        username: this.email || '',
+        email: this.email || '',
         password: '',
       },
       errors: [],

@@ -67,12 +67,12 @@
       </v-card-actions>
 
       <v-divider v-if="!registered" class="mx-3"></v-divider>
-      <v-card-actions v-if="!registered">
+      <v-card-text v-if="!registered">
         <router-link :to="{ name: 'sign-in' }">
-          <span class="sign-in-link ml-1">{{ $t('already_registered') }}</span>
+          {{ $t('already_registered') }}
         </router-link>
         <v-spacer></v-spacer>
-      </v-card-actions>
+      </v-card-text>
     </v-form>
   </Layout>
 </template>
@@ -194,9 +194,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped>
-.sign-in-link {
-  font-size: 14px;
-}
-</style>

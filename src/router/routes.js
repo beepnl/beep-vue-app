@@ -26,6 +26,9 @@ export default [
     path: '/password-forgot',
     name: 'password-forgot',
     component: () => lazyLoadView(import('@views/account-password-forgot.vue')),
+    props: (route) => ({
+      email: route.query.email,
+    }),
   },
   {
     path: '/password-reset',
@@ -202,11 +205,6 @@ export default [
     component: () => lazyLoadView(import('@views/hive-inspections.vue')),
   },
   {
-    path: '/info',
-    name: 'info',
-    component: () => lazyLoadView(import('@views/info.vue')),
-  },
-  {
     meta: {
       authRequired: true,
     },
@@ -265,6 +263,9 @@ export default [
     redirect: '/devices',
   },
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/support',
     name: 'support',
     component: () => lazyLoadView(import('@views/support.vue')),
