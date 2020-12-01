@@ -58,6 +58,7 @@ export default {
     // if locale is saved in database, use it
     if (this.userLocale !== null) {
       this.$i18n.locale = this.userLocale
+      localStorage.beepLocale = this.userLocale
     } else {
       this.$i18n.locale = languages.checkBrowserLanguage()
     }
@@ -69,6 +70,7 @@ export default {
         this.$i18n.locale = language
         console.log(language)
         Settings.defaultLocale = language // for hive-inspect vue-datetime picker
+        localStorage.beepLocale = language // remember language for sign-in
       })
     },
   },

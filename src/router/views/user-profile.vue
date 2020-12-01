@@ -148,7 +148,6 @@
 <script>
 import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
-import languages from '@assets/js/lang/languages'
 import Layout from '@layouts/back.vue'
 
 export default {
@@ -317,9 +316,6 @@ export default {
       this.$store
         .dispatch('auth/signOut')
         .then(() => this.$router.push({ name: 'sign-in' }))
-        .then(() => {
-          this.$i18n.locale = languages.checkBrowserLanguage()
-        })
     },
   },
 }

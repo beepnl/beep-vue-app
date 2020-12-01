@@ -60,8 +60,6 @@
 </template>
 
 <script>
-import languages from '@assets/js/lang/languages'
-
 export default {
   props: {
     menuItems: {
@@ -98,9 +96,6 @@ export default {
       this.$store
         .dispatch('auth/signOut')
         .then(() => this.$router.push({ name: 'sign-in' }))
-        .then(() => {
-          this.$i18n.locale = languages.checkBrowserLanguage()
-        })
     },
   },
 }

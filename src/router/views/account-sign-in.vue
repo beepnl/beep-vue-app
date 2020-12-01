@@ -54,6 +54,7 @@
 </template>
 
 <script>
+import languages from '@assets/js/lang/languages'
 import Layout from '@layouts/account.vue'
 
 export default {
@@ -87,6 +88,14 @@ export default {
         password_required: this.$i18n.t('password_is_required'),
       }
     },
+  },
+  created() {
+    // if locale is saved in localStorage, use it
+    if (localStorage.beepLocale) {
+      this.$i18n.locale = localStorage.beepLocale
+    } else {
+      this.$i18n.locale = languages.checkBrowserLanguage()
+    }
   },
   methods: {
     login() {
