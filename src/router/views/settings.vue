@@ -21,6 +21,7 @@
         exact
         :href="item.external ? item.route : ''"
         :to="!item.external ? { name: item.route } : ''"
+        :target="item.external ? '_blank' : '_self'"
       >
         <v-list-item-avatar>
           <v-icon color="primary">{{ item.icon }}</v-icon>

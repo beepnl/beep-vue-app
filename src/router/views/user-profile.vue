@@ -185,7 +185,9 @@ export default {
         password: this.password,
         password_new: this.newPassword,
         password_confirmation: this.repeatPassword,
-        policy_accepted: this.policyAccepted ? this.user.policy_accepted : '',
+        policy_accepted: this.policyAccepted
+          ? this.$i18n.t('policy_version')
+          : '',
       }
     },
     emailRules: function() {

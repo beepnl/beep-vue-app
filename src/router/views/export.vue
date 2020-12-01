@@ -349,6 +349,7 @@ export default {
         end: this.dates[1],
         separator: this.selectedSeparator,
         measurements: this.selectedMeasurementTypes,
+        link: true,
       }
       try {
         const response = await Api.postRequest('/export/csv', payload)
