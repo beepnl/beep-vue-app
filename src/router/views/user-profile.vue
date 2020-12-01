@@ -264,17 +264,21 @@ export default {
             })
           }
           this.$store.commit('auth/SET_CURRENT_USER', response.data)
-          this.successMessage =
-            this.$i18n.t('User_data') + ' ' + this.$i18n.t('updated')
+          if (response.data.email_verified == null) {
+            this.successMessage = this.$i18n.t('email_verification_sent')
+          } else {
+            this.successMessage =
+              this.$i18n.t('User_data') + ' ' + this.$i18n.t('updated')
+          }
           this.showLoadingIcon = false
           this.password = null
           this.newPassword = null
           this.repeatPassword = null
           this.$refs.form.resetValidation()
-          console.log(response)
+          // console.log(response)
         } catch (error) {
           this.showLoadingIcon = false
-          console.log(error)
+          // console.log(error)
           if (error.message !== undefined) {
             this.errors.push({ errorMessage: error.message })
             console.log('Error: ', error.message)
