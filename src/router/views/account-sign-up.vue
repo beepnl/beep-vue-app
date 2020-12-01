@@ -1,7 +1,14 @@
 <template>
   <Layout :title="$t('create_login')">
     <v-form ref="form" v-model="valid" @submit.prevent="createAccount">
-      <v-card-text>
+      <v-card-text v-if="registered">
+        <v-alert text prominent dense color="green">
+          {{ $t('email_verification_sent') }}
+        </v-alert>
+        <p>{{ $t('succesfully_registered') }}</p>
+        <a @click="sendEmailVerification">{{ $t('email_new_verification') }}</a>
+      </v-card-text>
+      <v-card-text v-if="!registered">
         <v-alert
           v-for="error in errors"
           :key="error.name"
@@ -14,13 +21,13 @@
           {{ error.type }}
         </v-alert>
         <v-text-field
-          v-model="credentials.username"
+          v-model="email"
           :label="`${$t('email')}`"
           autocomplete="off"
           :rules="emailRules"
         />
         <v-text-field
-          v-model="credentials.password"
+          v-model="password"
           :label="`${$t('password')}`"
           :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
           :type="show1 ? 'text' : 'password'"
@@ -28,7 +35,7 @@
           @click:append="show1 = !show1"
         />
         <v-text-field
-          v-model="credentials.passwordConfirmation"
+          v-model="passwordConfirmation"
           :label="`${$t('confirm_password')}`"
           :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
           :type="show2 ? 'text' : 'password'"
@@ -36,7 +43,7 @@
           @click:append="show2 = !show2"
         />
         <v-checkbox
-          v-model="credentials.policyAccepted"
+          v-model="policyAccepted"
           :rules="termsRules"
           :label="`${$t('accept_policy')}`"
           required
@@ -52,15 +59,15 @@
         </v-checkbox>
       </v-card-text>
 
-      <v-card-actions>
+      <v-card-actions v-if="!registered">
         <v-spacer></v-spacer>
         <v-btn text type="submit" :disabled="!valid">{{
           $t('create_login_summary')
         }}</v-btn>
       </v-card-actions>
 
-      <v-divider class="mx-3"></v-divider>
-      <v-card-actions>
+      <v-divider v-if="!registered" class="mx-3"></v-divider>
+      <v-card-actions v-if="!registered">
         <router-link :to="{ name: 'sign-in' }">
           <span class="sign-in-link ml-1">{{ $t('already_registered') }}</span>
         </router-link>
@@ -71,20 +78,35 @@
 </template>
 
 <script>
+import Api from '@api/Api'
 import Layout from '@layouts/account.vue'
 
 export default {
   components: { Layout },
   data() {
     return {
-      credentials: {},
+      email: '',
+      password: '',
+      passwordConfirmation: '',
+      policyAccepted: false,
       valid: false,
       errors: [],
       show1: false,
       show2: false,
+      registered: false,
     }
   },
   computed: {
+    credentials() {
+      return {
+        email: this.email,
+        password: this.password,
+        password_confirmation: this.passwordConfirmation,
+        policy_accepted: this.policyAccepted
+          ? this.$i18n.t('policy_version')
+          : '',
+      }
+    },
     emailRules: function() {
       return [
         (v) => !!v || this.$i18n.t('email_is_required'),
@@ -109,8 +131,7 @@ export default {
             this.$i18n.t('confirm_password') +
             '" ' +
             this.$i18n.t('is_required'),
-        (v) =>
-          v === this.credentials.password || this.$i18n.t('no_password_match'),
+        (v) => v === this.password || this.$i18n.t('no_password_match'),
       ]
     },
     termsRules: function() {
@@ -118,40 +139,53 @@ export default {
     },
   },
   methods: {
-    createAccount() {
+    async createAccount() {
       if (this.$refs.form.validate()) {
         this.clearErrors()
-        this.$store
-          .dispatch('auth/signUp', this.credentials)
-          .then(() =>
-            this.$router.push({
-              name: 'sign-up-confirm',
-              query: { email: this.credentials.username },
-            })
-          )
-          .catch((error) => {
-            switch (error.code) {
-              case 'UsernameExistsException':
-                this.errors.push({
-                  type: this.$i18n.t('username_already_exists'),
-                })
-                break
-              case 'LimitExceededException':
-                this.errors.push({
-                  type: this.$i18n.t('limit_exceeded'),
-                })
-                break
-              case 'ResourceNotFoundException':
-                this.errors.push({
-                  type: this.$i18n.t('error'),
-                })
-                break
-              default:
-                this.errors.push({
-                  type: this.$i18n.t('error'),
-                })
-            }
-          })
+        try {
+          const response = await Api.postRequest('/register', this.credentials)
+          this.registered = true
+          return response
+        } catch (error) {
+          switch (error.code) {
+            case 'UsernameExistsException':
+              this.errors.push({
+                type: this.$i18n.t('username_already_exists'),
+              })
+              break
+            case 'LimitExceededException':
+              this.errors.push({
+                type: this.$i18n.t('limit_exceeded'),
+              })
+              break
+            case 'ResourceNotFoundException':
+              this.errors.push({
+                type: this.$i18n.t('error'),
+              })
+              break
+            default:
+              this.errors.push({
+                type: this.$i18n.t('error'),
+              })
+          }
+        }
+      }
+    },
+    async sendEmailVerification() {
+      try {
+        const response = await Api.postRequest(
+          '/email/resend',
+          this.credentials
+        )
+        return response
+      } catch (error) {
+        this.errorMessage =
+          error.status === 422
+            ? this.$i18n.t('Error') +
+              ': ' +
+              Object.values(error.message).join(', ')
+            : this.$i18n.t('empty_fields') + '.'
+        console.log('Error: ', this.errorMessage)
       }
     },
     clearErrors() {

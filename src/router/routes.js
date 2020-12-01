@@ -6,6 +6,7 @@ export default [
     name: 'sign-in',
     component: () => import('@views/account-sign-in.vue'),
     props: (route) => ({
+      msg: route.query.msg,
       email: route.query.email,
     }),
     meta: {
@@ -39,14 +40,6 @@ export default [
     path: '/sign-up',
     name: 'sign-up',
     component: () => lazyLoadView(import('@views/account-sign-up.vue')),
-  },
-  {
-    path: '/sign-up-confirm',
-    name: 'sign-up-confirm',
-    component: () => lazyLoadView(import('@views/account-sign-up-confirm.vue')),
-    props: (route) => ({
-      email: route.query.email,
-    }),
   },
   {
     meta: {

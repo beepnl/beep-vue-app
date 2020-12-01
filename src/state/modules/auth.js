@@ -1,9 +1,4 @@
-import AWSAuth from '@aws-amplify/auth'
-import * as BEEPAuth from '@api/auth.js'
-
-let Auth = null
-
-// import * as Auth from '@api/auth.js'
+import * as Auth from '@api/auth.js'
 
 export const state = {
   currentUser: getSavedState('auth.currentUser'),
@@ -41,19 +36,9 @@ export const mutations = {
   },
 }
 export const actions = {
-  init: function() {
-    // legacy BEEP API or AWS API?
-    const BEEPApi =
-      process.env.VUE_APP_API_URL &&
-      process.env.VUE_APP_API_URL.indexOf('test' >= 0)
-
-    Auth = BEEPApi ? BEEPAuth : AWSAuth
-  },
-
   checkConnection: function() {
     return Auth.checkConnection()
   },
-
   signIn: function({ commit, dispatch, getters }, { username, password } = {}) {
     if (getters.loggedIn) return dispatch('validateUser')
 
@@ -63,7 +48,6 @@ export const actions = {
       return user
     })
   },
-
   signOut: function({ _, commit, getters }) {
     if (!getters.loggedIn) {
       throw new Error('User is already logged out.')
@@ -102,13 +86,6 @@ export const actions = {
       .catch((_) => {
         return commit('SET_CURRENT_SESSION', null)
       })
-  },
-
-  signUp: function(_, credentials) {
-    return Auth.signUp(credentials)
-  },
-  confirmSignUp: function(_, signup) {
-    return Auth.confirmSignUp(signup.code)
   },
   forgotPassword: function(_, username) {
     return Auth.forgotPassword(username)

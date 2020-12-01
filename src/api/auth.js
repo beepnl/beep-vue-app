@@ -16,27 +16,6 @@ export function signOut() {
   return Promise.resolve(null)
 }
 
-export function signUp({
-  username,
-  password,
-  passwordConfirmation,
-  policyAccepted,
-} = {}) {
-  // For the existing BEEP backend, policy must be accepted during registration
-  return axios.post('/register', {
-    email: username,
-    password,
-    password_confirmation: passwordConfirmation,
-    policy_accepted: policyAccepted,
-  })
-}
-
-export function confirmSignUp(token) {
-  return axios.get('/email/verify', {
-    id: token,
-  })
-}
-
 export function resendEmailVerification(email) {
   return axios.post('/email/resend', {
     email,

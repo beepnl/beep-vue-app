@@ -16,7 +16,6 @@
         <v-text-field
           v-model="credentials.username"
           :label="`${$t('email')}`"
-          autocomplete="off"
           :rules="[(v) => !!v || signinRules.email_required]"
         ></v-text-field>
         <v-text-field
