@@ -72,8 +72,7 @@ export default {
 #bee1 {
   top: 50%;
   left: 40%;
-  animation: beeAnimation 2.95s cubic-bezier(0.02, 0.01, 0.31, 1) infinite,
-    antiRotate 20s linear infinite;
+  animation: beeAnimation 2.95s cubic-bezier(0.02, 0.01, 0.31, 1) infinite;
 }
 #bee2 {
   top: 40%;
@@ -83,13 +82,14 @@ export default {
 #bee3 {
   top: 10%;
   right: 20%;
-  animation: beeAnimation 3.5s cubic-bezier(0.02, 0.01, 0.31, 1) infinite,
-    antiRotate 20s linear infinite;
+  animation: beeAnimation 3.5s cubic-bezier(0.02, 0.01, 0.31, 1) infinite;
+  // antiRotate 20s linear infinite;
 }
 #bee::after,
 #bee2::after,
 #bee3::after {
-  animation: spanAnimation 3s cubic-bezier(0.3, 0.27, 0.07, 1.64) infinite;
+  // animation: spanAnimation 3s cubic-bezier(0.3, 0.27, 0.07, 1.64) infinite;
+  animation: antiRotate 20s linear infinite;
 }
 
 @keyframes beeBoxAnimation {
