@@ -19,8 +19,8 @@
         <v-text-field
           v-model="credentials.email"
           :label="`${$t('email')}`"
-          :rules="[(v) => !!v || signinRules.email_required]"
           type="email"
+          :rules="[(v) => !!v || signinRules.email_required]"
         ></v-text-field>
         <v-text-field
           v-model="credentials.password"
@@ -83,7 +83,7 @@ export default {
     }
   },
   computed: {
-    signinRules: function() {
+    signinRules: function () {
       return {
         email_required: this.$i18n.t('email_is_required'),
         password_required: this.$i18n.t('password_is_required'),

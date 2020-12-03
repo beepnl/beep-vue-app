@@ -3,7 +3,7 @@
     <v-form
       ref="form"
       v-model="valid"
-      style="width: 100%;"
+      style="width: 100%"
       @submit.prevent="resetPassword"
     >
       <div v-if="passwordReset">
@@ -31,7 +31,7 @@
             v-model="resetPasswordRequest.email"
             :label="`${$t('email')}`"
             :rules="emailRules"
-            autocomplete="off"
+            type="email"
             disabled
           ></v-text-field>
           <v-text-field
@@ -113,13 +113,13 @@ export default {
     }
   },
   computed: {
-    emailRules: function() {
+    emailRules: function () {
       return [
         (v) => !!v || this.$i18n.t('email_is_required'),
         (v) => /.+@.+\..+/.test(v) || this.$i18n.t('no_valid_email'),
       ]
     },
-    verificationCodeRules: function() {
+    verificationCodeRules: function () {
       return [
         (v) =>
           !!v ||
@@ -130,7 +130,7 @@ export default {
             this.$i18n.t('is_required'),
       ]
     },
-    passwordRules: function() {
+    passwordRules: function () {
       return [
         (v) => !!v || this.$i18n.t('password_is_required'),
         (v) =>
@@ -139,7 +139,7 @@ export default {
           ) || this.$i18n.t('invalid_password'),
       ]
     },
-    repeatPasswordRules: function() {
+    repeatPasswordRules: function () {
       return [
         (v) =>
           !!v ||

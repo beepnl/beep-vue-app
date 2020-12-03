@@ -118,9 +118,9 @@
               v-model="selectedMeasurementTypes"
               :options="measurementTypes"
               :normalizer="normalizerMeasurementTypes"
-              :placeholder="
-                `${$t('Select')} ${$t('Sensor_measurements').toLowerCase()}`
-              "
+              :placeholder="`${$t('Select')} ${$t(
+                'Sensor_measurements'
+              ).toLowerCase()}`"
               :no-results-text="`${$t('no_results')}`"
               :max-height="mobile ? 120 : 180"
               multiple
@@ -213,13 +213,8 @@ export default {
       selectedSeparator: ';',
       menu: false,
       dates: [
-        this.$moment()
-          .add(-1, 'weeks')
-          .toISOString()
-          .substr(0, 10),
-        this.$moment()
-          .toISOString()
-          .substr(0, 10),
+        this.$moment().add(-1, 'weeks').toISOString().substr(0, 10),
+        this.$moment().toISOString().substr(0, 10),
       ],
       measurementTypes: null,
       selectedMeasurementTypes: [],
@@ -273,7 +268,7 @@ export default {
           uniqueApiaries.push(item)
         }
       }
-      uniqueApiaries.slice().sort(function(a, b) {
+      uniqueApiaries.slice().sort(function (a, b) {
         if (a.label < b.label) {
           return -1
         }
@@ -290,7 +285,7 @@ export default {
         })
       })
       uniqueApiaries.map((apiary) => {
-        var sortedChildren = apiary.children.slice().sort(function(a, b) {
+        var sortedChildren = apiary.children.slice().sort(function (a, b) {
           if (a.label < b.label) {
             return -1
           }
@@ -352,7 +347,7 @@ export default {
         link: true,
       }
       try {
-        const response = await Api.postRequest('/export/csv', payload)
+        const response = await Api.postRequest('/export/csv?link=1', payload)
         this.showDeviceDataLoadingIcon = false
         console.log(response) // TODO: after API update: handle returned link to download file
         if (response.status === -1) {

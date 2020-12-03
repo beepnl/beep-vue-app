@@ -21,9 +21,13 @@
           {{ error.type }}
         </v-alert>
         <v-text-field
+          v-model="name"
+          :label="`${$t('username') + '(' + $t('optional') + ')'}`"
+        />
+        <v-text-field
           v-model="email"
           :label="`${$t('email')}`"
-          autocomplete="off"
+          type="email"
           :rules="emailRules"
         />
         <v-text-field
@@ -85,6 +89,7 @@ export default {
   components: { Layout },
   data() {
     return {
+      name: null,
       email: '',
       password: '',
       passwordConfirmation: '',
@@ -99,6 +104,7 @@ export default {
   computed: {
     credentials() {
       return {
+        name: this.name,
         email: this.email,
         password: this.password,
         password_confirmation: this.passwordConfirmation,
@@ -107,13 +113,13 @@ export default {
           : '',
       }
     },
-    emailRules: function() {
+    emailRules: function () {
       return [
         (v) => !!v || this.$i18n.t('email_is_required'),
         (v) => /.+@.+\..+/.test(v) || this.$i18n.t('no_valid_email'),
       ]
     },
-    passwordRules: function() {
+    passwordRules: function () {
       return [
         (v) => !!v || this.$i18n.t('password_is_required'),
         (v) =>
@@ -122,7 +128,7 @@ export default {
           ) || this.$i18n.t('invalid_password'),
       ]
     },
-    repeatPasswordRules: function() {
+    repeatPasswordRules: function () {
       return [
         (v) =>
           !!v ||
@@ -134,7 +140,7 @@ export default {
         (v) => v === this.password || this.$i18n.t('no_password_match'),
       ]
     },
-    termsRules: function() {
+    termsRules: function () {
       return [(v) => !!v || this.$i18n.t('policy_accepted_is_required')]
     },
   },

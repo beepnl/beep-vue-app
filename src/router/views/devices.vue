@@ -290,17 +290,33 @@
                 <v-row>
                   <v-col cols="12">
                     <div class="d-flex justify-space-between">
-                      <div
-                        v-if="device.sensor_definitions.length > 0"
-                        class="overline mb-3"
-                        v-text="
-                          `${$tc(
-                            'sensor_definition',
-                            // eslint-disable-next-line vue/comma-dangle
-                            device.sensor_definitions.length
-                          )}`
-                        "
-                      ></div>
+                      <div>
+                        <div class="d-flex flex-row align-center">
+                          <div
+                            v-if="device.sensor_definitions.length > 0"
+                            class="overline mb-3"
+                            v-text="
+                              `${$tc(
+                                'sensor_definition',
+                                // eslint-disable-next-line vue/comma-dangle
+                                device.sensor_definitions.length
+                              )}`
+                            "
+                          ></div>
+                          <a
+                            ><v-icon
+                              class="mdi mdi-information ml-1 icon-info"
+                              dark
+                              small
+                              color="primary"
+                              @click="showDescription = !showDescription"
+                            ></v-icon
+                          ></a>
+                        </div>
+                        <p v-if="showDescription" class="sensordef-description">
+                          <em>{{ $t('sensordef_info') }}</em>
+                        </p>
+                      </div>
                       <v-spacer></v-spacer>
                       <v-btn
                         v-if="!mobile && device.id"
@@ -579,6 +595,7 @@ export default {
       showDevicesByKey: [],
       showLoadingIcon: false,
       showLoadingIconById: [],
+      showDescription: false,
     }
   },
   computed: {

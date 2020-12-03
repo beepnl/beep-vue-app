@@ -88,7 +88,7 @@
           <v-card-text>
             <v-text-field
               v-model="name"
-              :label="`${$t('name')}`"
+              :label="`${$t('username')}`"
               autocomplete="off"
             />
             <v-text-field
@@ -295,22 +295,26 @@ export default {
       this.successMessage = null
     },
     confirmDeleteUser() {
-      const warningMessage = this.$i18n.t('delete_complete_account')
-      this.$refs.confirm
-        .open(
-          this.$i18n.t('Delete') + ' ' + this.$i18n.t('user_data'),
-          null,
-          {
-            color: 'red',
-          },
-          warningMessage
-        )
-        .then((confirm) => {
-          this.deleteUser()
-        })
-        .catch((reject) => {
-          return true
-        })
+      if (this.password === '') {
+        console.log('no password') // TODO: mark password field as required and/or mention that in separate popup
+      } else {
+        const warningMessage = this.$i18n.t('delete_complete_account')
+        this.$refs.confirm
+          .open(
+            this.$i18n.t('Delete') + ' ' + this.$i18n.t('user_data'),
+            null,
+            {
+              color: 'red',
+            },
+            warningMessage
+          )
+          .then((confirm) => {
+            this.deleteUser()
+          })
+          .catch((reject) => {
+            return true
+          })
+      }
     },
     signOut() {
       this.$store

@@ -651,6 +651,8 @@ const translations = {
   different_end_start: 'Eind- en startdatum moeten verschillen',
   new_email_verification_sent:
     'Er is een bericht met een validatie-link naar je nieuwe e-mail adres gestuurd. Klik op de link in de e-mail om je nieuwe e-mail adres te bevestigen en opnieuw in te loggen.',
+  sensordef_info:
+    "Een sensordefinitie is bedoeld om de sensorwaarde van een inkomende 'ruwe' sensorwaarde om te zetten in een waarde volgens een grootheid en eenheid (bijv. w_v = 1098273 => weight_kg = 62,400 kg) of om een sensor te calibreren (bijv. t_0 = 15.3 °C => t_0 = 15.8 °C). Dit kan worden gedaan door een 'offset' en een 'multiplier' in te stellen. De in- en uitgaande waarde blijft gelijk als als offset '0' en als multiplier '1' wordt ingesteld. De BEEP base app (uit de App Store) zal deze correct voor je instellen als je de BEEP base voor het eerst configureert.",
 }
 
 export default translations

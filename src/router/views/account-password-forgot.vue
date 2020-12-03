@@ -3,7 +3,7 @@
     <v-form
       ref="form"
       v-model="valid"
-      style="width: 100%;"
+      style="width: 100%"
       @submit.prevent="forgotPassword"
     >
       <div v-if="reminderSent">
@@ -37,6 +37,7 @@
           <v-text-field
             v-model.trim="emailToSubmit"
             :label="`${$t('email')}`"
+            type="email"
             :rules="emailRules"
           ></v-text-field>
         </v-card-text>
@@ -91,7 +92,7 @@ export default {
     hasErrors() {
       return this.errors.length > 0
     },
-    emailRules: function() {
+    emailRules: function () {
       return [
         (v) => !!v || this.$i18n.t('email_is_required'),
         (v) => /.+@.+\..+/.test(v) || this.$i18n.t('no_valid_email'),
