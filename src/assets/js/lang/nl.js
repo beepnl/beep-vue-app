@@ -649,6 +649,8 @@ const translations = {
   period: 'Periode',
   download: 'Download',
   different_end_start: 'Eind- en startdatum moeten verschillen',
+  new_email_verification_sent:
+    'Er is een bericht met een validatie-link naar je nieuwe e-mail adres gestuurd. Klik op de link in de e-mail om je nieuwe e-mail adres te bevestigen en opnieuw in te loggen.',
 }
 
 export default translations

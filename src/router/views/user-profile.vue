@@ -264,7 +264,7 @@ export default {
           }
           this.$store.commit('auth/SET_CURRENT_USER', response.data)
           if (response.data.email_verified == null) {
-            this.successMessage = this.$i18n.t('email_verification_sent')
+            this.successMessage = this.$i18n.t('new_email_verification_sent')
           } else {
             this.successMessage =
               this.$i18n.t('User_data') + ' ' + this.$i18n.t('updated')
