@@ -37,9 +37,10 @@
 </template>
 
 <script>
+import Api from '@api/Api'
 import languages from '@assets/js/lang/languages'
 import { Settings } from 'luxon' // for hive-inspect vue-datetime picker
-import { mapGetters } from 'vuex' // FIXME: this does not fix vuex strict mode warnings
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'LocaleChanger',
@@ -49,7 +50,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('auth', ['userLocale']),
+    ...mapGetters('auth', ['userLocale', 'userEmail']),
     selectedLanguage() {
       return this.$i18n.locale
     },
@@ -66,12 +67,15 @@ export default {
   },
   methods: {
     switchLocale(language) {
-      this.$store.dispatch('auth/setLocale', language).then(() => {
-        this.$i18n.locale = language
-        console.log(language)
-        Settings.defaultLocale = language // for hive-inspect vue-datetime picker
-        localStorage.beepLocale = language // remember language for sign-in
-      })
+      const email = this.userEmail
+      Api.updateRequest('/user', '', { email, language })
+      // .then(() => { // TODO: enable then block when user patch API is fixed
+      this.$store.commit('auth/SET_LOCALE', language)
+      this.$i18n.locale = language
+      console.log(language)
+      Settings.defaultLocale = language // for hive-inspect vue-datetime picker
+      localStorage.beepLocale = language // remember language for sign-in
+      // })
     },
   },
 }

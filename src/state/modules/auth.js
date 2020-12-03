@@ -33,6 +33,10 @@ export const mutations = {
     state.currentUser = newValue
     saveState('auth.currentUser', newValue)
   },
+  SET_LOCALE: function(state, newValue) {
+    state.currentUser.locale = newValue
+    saveState('auth.currentUser.locale', newValue)
+  },
 }
 export const actions = {
   signIn: function({ commit, dispatch, getters }, credentials = {}) {
@@ -69,19 +73,6 @@ export const actions = {
             return dispatch('signOut')
         })
     )
-  },
-  setLocale: function({ commit, getters }, locale) {
-    if (getters.loggedIn) {
-      var user = getters.currentUser
-      const email = getters.userEmail
-      user.locale = locale
-      // FIXME: allow locale update without password parameter
-      Api.updateRequest('/user', '', { email, locale }).then(() => {
-        return commit('SET_CURRENT_USER', user)
-      })
-    } else {
-      return false
-    }
   },
 }
 
