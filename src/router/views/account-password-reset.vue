@@ -16,7 +16,6 @@
       </div>
       <div v-if="!passwordReset">
         <v-card-text>
-          {{ apiToken }}
           <v-alert
             v-for="error in errors"
             :key="error.name"
