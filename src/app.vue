@@ -1,5 +1,5 @@
 <template>
-  <v-app id="app">
+  <v-app id="app" class="overflow-hidden">
     <!--
     Even when routes use the same component, treat them
     as distinct and create the component again.
@@ -23,6 +23,9 @@ export default {
 </script>
 
 <style lang="scss">
+.overflow-hidden {
+  overflow: hidden;
+}
 // Style loading bar between pages.
 // https://github.com/rstacruz/nprogress
 
@@ -38,7 +41,7 @@ export default {
   z-index: 1031;
   width: 100%;
   height: 2px;
-  background: $color-primary;
+  background: white;
 }
 
 /* Fancy blur effect */
@@ -48,7 +51,6 @@ export default {
   display: block;
   width: 100px;
   height: 100%;
-  box-shadow: 0 0 10px #29d, 0 0 5px #29d;
   opacity: 1;
   -webkit-transform: rotate(3deg) translate(0, -4px);
   -ms-transform: rotate(3deg) translate(0, -4px);

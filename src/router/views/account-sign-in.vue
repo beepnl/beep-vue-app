@@ -20,6 +20,7 @@
           v-model="credentials.email"
           :label="`${$t('email')}`"
           :rules="[(v) => !!v || signinRules.email_required]"
+          type="email"
         ></v-text-field>
         <v-text-field
           v-model="credentials.password"
