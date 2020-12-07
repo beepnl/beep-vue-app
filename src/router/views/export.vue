@@ -357,10 +357,10 @@ export default {
         end: this.dates[1],
         separator: this.selectedSeparator,
         measurements: this.selectedMeasurementTypes,
-        link: true,
+        link: 1,
       }
       try {
-        const response = await Api.postRequest('/export/csv?link=1', payload)
+        const response = await Api.postRequest('/export/csv', payload)
         this.showDeviceDataLoadingIcon = false
         if (response.status === -1) {
           this.errorMessage = this.$i18n.t('too_much_data')
@@ -368,7 +368,7 @@ export default {
         const csvLink = this.baseApiUrl + response.data.link
         // trick to download returned csv link (doesn't work via v-btn because it has already been clicked)
         var link = document.createElement('a')
-        link.href = window.URL.createObjectURL(csvLink)
+        link.href = csvLink
         link.setAttribute('download', csvLink)
         document.body.appendChild(link)
         link.click()
