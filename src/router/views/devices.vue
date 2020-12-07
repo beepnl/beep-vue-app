@@ -289,60 +289,62 @@
                 </v-row>
                 <v-row>
                   <v-col cols="12">
-                    <div class="d-flex justify-space-between">
-                      <div>
-                        <div class="d-flex flex-row align-center">
-                          <div
-                            v-if="device.sensor_definitions.length > 0"
-                            class="overline mb-3"
-                            v-text="
-                              `${$tc(
-                                'sensor_definition',
-                                // eslint-disable-next-line vue/comma-dangle
-                                device.sensor_definitions.length
-                              )}`
-                            "
-                          ></div>
-                          <a
-                            ><v-icon
-                              class="mdi mdi-information ml-1 icon-info"
-                              dark
-                              small
-                              color="primary"
-                              @click="showDescription = !showDescription"
-                            ></v-icon
-                          ></a>
+                    <div>
+                      <div class="d-flex justify-space-between">
+                        <div>
+                          <div class="d-flex flex-row align-center mb-3">
+                            <div
+                              v-if="device.sensor_definitions.length > 0"
+                              class="overline"
+                              v-text="
+                                `${$tc(
+                                  'sensor_definition',
+                                  // eslint-disable-next-line vue/comma-dangle
+                                  device.sensor_definitions.length
+                                )}`
+                              "
+                            ></div>
+                            <a
+                              ><v-icon
+                                class="mdi mdi-information ml-1 icon-info"
+                                dark
+                                small
+                                color="primary"
+                                @click="showDescription = !showDescription"
+                              ></v-icon
+                            ></a>
+                          </div>
                         </div>
-                        <p v-if="showDescription" class="sensordef-description">
-                          <em>{{ $t('sensordef_info') }}</em>
-                        </p>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                          v-if="!mobile && device.id"
+                          tile
+                          outlined
+                          color="primary"
+                          @click="addSensorDef(device)"
+                        >
+                          <v-icon left>mdi-plus</v-icon>
+                          {{ $t('add') + ' ' + $tc('sensor_definition', 1) }}
+                        </v-btn>
+                        <v-btn
+                          v-if="mobile && device.id"
+                          tile
+                          outlined
+                          color="primary"
+                          @click="addSensorDef(device)"
+                        >
+                          <v-icon left>mdi-plus</v-icon>
+                          {{ $t('add') }}
+                          {{
+                            device.sensor_definitions.length === 0
+                              ? $tc('sensor_definition', 1)
+                              : ''
+                          }}
+                        </v-btn>
                       </div>
-                      <v-spacer></v-spacer>
-                      <v-btn
-                        v-if="!mobile && device.id"
-                        tile
-                        outlined
-                        color="primary"
-                        @click="addSensorDef(device)"
-                      >
-                        <v-icon left>mdi-plus</v-icon>
-                        {{ $t('add') + ' ' + $tc('sensor_definition', 1) }}
-                      </v-btn>
-                      <v-btn
-                        v-if="mobile && device.id"
-                        tile
-                        outlined
-                        color="primary"
-                        @click="addSensorDef(device)"
-                      >
-                        <v-icon left>mdi-plus</v-icon>
-                        {{ $t('add') }}
-                        {{
-                          device.sensor_definitions.length === 0
-                            ? $tc('sensor_definition', 1)
-                            : ''
-                        }}
-                      </v-btn>
+                      <p v-if="showDescription" class="sensordef-description">
+                        <em>{{ $t('sensordef_info') }}</em>
+                      </p>
                     </div>
                     <div
                       v-if="device.sensor_definitions.length > 0"

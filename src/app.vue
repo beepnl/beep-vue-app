@@ -1,5 +1,5 @@
 <template>
-  <v-app id="app" class="overflow-hidden">
+  <v-app id="app">
     <!--
     Even when routes use the same component, treat them
     as distinct and create the component again.
@@ -23,9 +23,6 @@ export default {
 </script>
 
 <style lang="scss">
-.overflow-hidden {
-  overflow: hidden;
-}
 // Style loading bar between pages.
 // https://github.com/rstacruz/nprogress
 

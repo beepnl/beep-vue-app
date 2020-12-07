@@ -54,11 +54,8 @@ export default {
 
 #beeBox {
   position: absolute;
-  top: 0%;
-  left: 0%;
-  width: 100vw;
-  height: 100vw;
-  animation: beeBoxAnimation 20s linear infinite;
+  width: 100%;
+  height: 100%;
 }
 #bee1,
 #bee2,
@@ -66,51 +63,83 @@ export default {
   position: absolute;
   width: 20px;
   height: 20px;
-  margin: -20px 0 0 -20px;
   background-image: url('~@assets/img/icn_bee_dark.svg');
 }
 #bee1 {
-  top: 50%;
-  left: 40%;
-  animation: beeAnimation 2.95s cubic-bezier(0.02, 0.01, 0.31, 1) infinite;
+  animation: beeAnimation1 13s linear infinite, rotateBee1 13s linear infinite;
 }
 #bee2 {
-  top: 40%;
-  right: 30%;
-  animation: beeAnimation 3.2s cubic-bezier(0.02, 0.01, 0.31, 1) infinite;
+  animation: beeAnimation2 10s linear infinite, rotateBee2 10s linear infinite;
 }
 #bee3 {
-  top: 10%;
-  right: 20%;
-  animation: beeAnimation 3.5s cubic-bezier(0.02, 0.01, 0.31, 1) infinite;
-  // antiRotate 20s linear infinite;
-}
-#bee::after,
-#bee2::after,
-#bee3::after {
-  // animation: spanAnimation 3s cubic-bezier(0.3, 0.27, 0.07, 1.64) infinite;
-  animation: antiRotate 20s linear infinite;
+  animation: beeAnimation3 15s linear infinite, rotateBee3 5s linear infinite;
 }
 
-@keyframes beeBoxAnimation {
-  100% {
-    transform: rotate(360deg);
+@keyframes beeAnimation1 {
+  0% {
+    top: 0%;
+    left: -5%;
   }
-}
-
-@keyframes antiRotate {
-  100% {
-    transform: rotate(-360deg);
-  }
-}
-@keyframes beeAnimation {
   50% {
-    transform: translateY(-50px);
+    top: 6%;
+    left: 55%;
+  }
+  100% {
+    top: 3%;
+    left: 110%;
   }
 }
-@keyframes spanAnimation {
+@keyframes beeAnimation2 {
+  0% {
+    top: 20%;
+    left: -10%;
+  }
+  100% {
+    top: 45%;
+    left: 110%;
+  }
+}
+@keyframes beeAnimation3 {
+  0% {
+    top: 60%;
+    left: -5%;
+  }
+  100% {
+    top: 62%;
+    left: 110%;
+  }
+}
+@keyframes rotateBee1 {
+  0% {
+    transform: rotate(63deg);
+  }
   50% {
-    transform: translateX(-50px);
+    transform: rotate(40deg);
+  }
+  100% {
+    transform: rotate(35deg);
+  }
+}
+@keyframes rotateBee2 {
+  0% {
+    transform: rotate(35deg);
+  }
+  50% {
+    transform: rotate(55deg);
+  }
+  100% {
+    transform: rotate(45deg);
+  }
+}
+@keyframes rotateBee3 {
+  0% {
+    transform: rotate(38deg);
+  }
+  50% {
+    transform: rotate(52deg);
+  }
+  100% {
+    transform: rotate(38deg);
   }
 }
 </style>
