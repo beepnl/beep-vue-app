@@ -4,6 +4,7 @@
       <div id="bee1"></div>
       <div id="bee2"></div>
       <div id="bee3"></div>
+      <div id="bee4"></div>
     </div>
     <v-card class="account-card d-flex flex-column align-center">
       <div class="mt-4">
@@ -59,7 +60,8 @@ export default {
 }
 #bee1,
 #bee2,
-#bee3 {
+#bee3,
+#bee4 {
   position: absolute;
   width: 20px;
   height: 20px;
@@ -69,10 +71,15 @@ export default {
   animation: beeAnimation1 13s linear infinite, rotateBee1 13s linear infinite;
 }
 #bee2 {
-  animation: beeAnimation2 10s linear infinite, rotateBee2 10s linear infinite;
+  animation: beeAnimation2 10s linear infinite,
+    rotateBee2 10s cubic-bezier(0.02, 0.01, 0.31, 1) infinite;
 }
 #bee3 {
   animation: beeAnimation3 15s linear infinite, rotateBee3 5s linear infinite;
+}
+#bee4 {
+  animation: beeAnimation4 12s linear infinite,
+    rotateBee4 6s cubic-bezier(0.02, 0.01, 0.31, 1) infinite;
 }
 
 @keyframes beeAnimation1 {
@@ -109,6 +116,16 @@ export default {
     left: 110%;
   }
 }
+@keyframes beeAnimation4 {
+  0% {
+    top: 78%;
+    left: 105%;
+  }
+  100% {
+    top: 73%;
+    left: -10%;
+  }
+}
 @keyframes rotateBee1 {
   0% {
     transform: rotate(63deg);
@@ -140,6 +157,17 @@ export default {
   }
   100% {
     transform: rotate(38deg);
+  }
+}
+@keyframes rotateBee4 {
+  0% {
+    transform: rotate(230deg);
+  }
+  50% {
+    transform: rotate(240deg);
+  }
+  100% {
+    transform: rotate(230deg);
   }
 }
 </style>
