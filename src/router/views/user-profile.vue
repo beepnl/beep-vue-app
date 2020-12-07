@@ -93,23 +93,22 @@
             />
             <v-text-field
               v-model="email"
+              :class="fieldErrors.email ? 'error--text' : ''"
               :label="`${$t('email')}`"
               :rules="emailRules"
-              :error-messages="fieldErrors.email ? $t(msg) : null"
+              validate-on-blur
             />
             <v-text-field
               v-model="password"
+              :class="fieldErrors.password ? 'error--text' : ''"
               :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
               :label="`${$t('password')}`"
               :type="show1 ? 'text' : 'password'"
               :rules="passwordRules"
               :error-messages="
-                password.length === 0
-                  ? passwordError
-                  : null || fieldErrors.password
-                  ? $t(msg)
-                  : null
+                displayPasswordError ? $t('password_is_required') : null
               "
+              validate-on-blur
               @click:append="show1 = !show1"
             />
             <v-text-field
@@ -118,6 +117,7 @@
               :label="`${$t('new_password')}`"
               :type="show2 ? 'text' : 'password'"
               :rules="newPasswordRules"
+              validate-on-blur
               @click:append="show2 = !show2"
             />
             <v-text-field
@@ -181,12 +181,11 @@ export default {
       showDeleteLoadingIcon: false,
       showLoadingIcon: false,
       valid: false,
-      passwordError: null,
+      displayPasswordError: false,
       fieldErrors: {
         email: false,
         password: false,
       },
-      msg: null,
     }
   },
   computed: {
@@ -257,17 +256,17 @@ export default {
       } catch (error) {
         this.showDeleteLoadingIcon = false
         if (error.response) {
-          this.msg = error.response.data.message
-          if (this.msg === 'invalid_user') {
+          const msg = error.response.data.message
+          if (msg === 'invalid_user') {
             this.fieldErrors.email = true
             this.fieldErrors.password = true
-          } else if (this.msg === 'invalid_password') {
+          } else if (msg === 'invalid_password') {
             this.fieldErrors.password = true
-          } else if (this.msg.indexOf('email') > -1) {
+          } else if (msg.indexOf('email') > -1) {
             this.fieldErrors.email = true
           }
           this.errors.push({
-            errorMessage: this.$i18n.t(this.msg),
+            errorMessage: this.$i18n.t(msg),
           })
         } else {
           this.errors.push({
@@ -302,15 +301,23 @@ export default {
           // console.log(response)
         } catch (error) {
           this.showLoadingIcon = false
-          // console.log(error)
-          if (error.message !== undefined) {
-            this.errors.push({ errorMessage: error.message })
-            console.log('Error: ', error.message)
+          if (error.response) {
+            const msg = error.response.data.message
+            if (msg === 'invalid_user') {
+              this.fieldErrors.email = true
+              this.fieldErrors.password = true
+            } else if (msg === 'invalid_password') {
+              this.fieldErrors.password = true
+            } else if (msg.indexOf('email') > -1) {
+              this.fieldErrors.email = true
+            }
+            this.errors.push({
+              errorMessage: this.$i18n.t(msg),
+            })
           } else {
             this.errors.push({
               errorMessage: this.$i18n.t('error'),
             })
-            console.log('Error: ', error)
           }
         }
       }
@@ -320,13 +327,12 @@ export default {
       this.successMessage = null
       this.fieldErrors.email = false
       this.fieldErrors.password = false
-      this.msg = null
     },
     confirmDeleteUser() {
-      if (this.password === '') {
-        this.passwordError = this.$i18n.t('password_is_required')
-        // console.log('no password') // TODO: mark password field as required and/or mention that in separate popup
+      if (this.password === '' || this.password === null) {
+        this.displayPasswordError = true
       } else {
+        this.displayPasswordError = false
         const warningMessage = this.$i18n.t('delete_complete_account')
         this.$refs.confirm
           .open(

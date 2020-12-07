@@ -25,10 +25,11 @@
             dense
             color="red"
           >
-            {{ error.type }}
+            {{ error.errorMessage }}
           </v-alert>
           <v-text-field
             v-model="resetPasswordRequest.email"
+            :class="fieldErrors.email ? 'error--text' : ''"
             :label="`${$t('email')}`"
             :rules="emailRules"
             type="email"
@@ -36,12 +37,14 @@
           ></v-text-field>
           <v-text-field
             v-model="resetPasswordRequest.token"
+            :class="fieldErrors.token ? 'error--text' : ''"
             :label="`${$t('verification_code')}`"
             :rules="verificationCodeRules"
             autocomplete="off"
           ></v-text-field>
           <v-text-field
             v-model="resetPasswordRequest.password"
+            :class="fieldErrors.password ? 'error--text' : ''"
             :label="`${$t('new_password')}`"
             :rules="passwordRules"
             autocomplete="off"
@@ -110,16 +113,21 @@ export default {
       show1: false,
       show2: false,
       passwordReset: false,
+      fieldErrors: {
+        email: false,
+        password: false,
+        token: false,
+      },
     }
   },
   computed: {
-    emailRules: function () {
+    emailRules: function() {
       return [
         (v) => !!v || this.$i18n.t('email_is_required'),
         (v) => /.+@.+\..+/.test(v) || this.$i18n.t('no_valid_email'),
       ]
     },
-    verificationCodeRules: function () {
+    verificationCodeRules: function() {
       return [
         (v) =>
           !!v ||
@@ -130,7 +138,7 @@ export default {
             this.$i18n.t('is_required'),
       ]
     },
-    passwordRules: function () {
+    passwordRules: function() {
       return [
         (v) => !!v || this.$i18n.t('password_is_required'),
         (v) =>
@@ -139,7 +147,7 @@ export default {
           ) || this.$i18n.t('invalid_password'),
       ]
     },
-    repeatPasswordRules: function () {
+    repeatPasswordRules: function() {
       return [
         (v) =>
           !!v ||
@@ -168,26 +176,24 @@ export default {
 
           return response
         } catch (error) {
-          switch (error.code) {
-            case 'UserNotFoundException':
-              this.errors.push({
-                type: this.$i18n.t('invalid_user'),
-              })
-              break
-            case 'LimitExceededException':
-              this.errors.push({
-                type: this.$i18n.t('limit_exceeded'),
-              })
-              break
-            case 'CodeMismatchException':
-              this.errors.push({
-                type: this.$i18n.t('invalid_token'),
-              })
-              break
-            default:
-              this.errors.push({
-                type: this.$i18n.t('error'),
-              })
+          if (error.response) {
+            console.log(error.response)
+            const msg = error.response.data.message
+            if (msg === 'invalid_user') {
+              this.fieldErrors.email = true
+              this.fieldErrors.password = true
+            } else if (msg === 'invalid_password') {
+              this.fieldErrors.password = true
+            } else if (msg === 'invalid_token') {
+              this.fieldErrors.token = true
+            }
+            this.errors.push({
+              errorMessage: this.$i18n.t(msg),
+            })
+          } else {
+            this.errors.push({
+              errorMessage: this.$i18n.t('error'),
+            })
           }
         }
       }
@@ -229,6 +235,9 @@ export default {
     },
     clearErrors() {
       this.errors = []
+      this.fieldErrors.email = false
+      this.fieldErrors.password = false
+      this.fieldErrors.token = false
     },
     clearResetPasswordRequest() {
       this.resetPasswordRequest = {}

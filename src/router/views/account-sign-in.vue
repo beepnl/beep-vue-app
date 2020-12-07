@@ -14,16 +14,18 @@
           dense
           color="red"
         >
-          {{ error.type }}
+          {{ error.errorMessage }}
         </v-alert>
         <v-text-field
           v-model="credentials.email"
+          :class="fieldErrors.email ? 'error--text' : ''"
           :label="`${$t('email')}`"
           type="email"
           :rules="[(v) => !!v || signinRules.email_required]"
         ></v-text-field>
         <v-text-field
           v-model="credentials.password"
+          :class="fieldErrors.password ? 'error--text' : ''"
           :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
           :type="show ? 'text' : 'password'"
           :label="`${$t('password')}`"
@@ -46,9 +48,7 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn text type="submit" :disabled="!valid || tryingToLogIn">{{
-          $t('login')
-        }}</v-btn>
+        <v-btn text type="submit" :disabled="!valid">{{ $t('login') }}</v-btn>
       </v-card-actions>
     </v-form>
   </Layout>
@@ -78,12 +78,15 @@ export default {
       },
       errors: [],
       show: false,
-      tryingToLogIn: false,
       valid: false,
+      fieldErrors: {
+        email: false,
+        password: false,
+      },
     }
   },
   computed: {
-    signinRules: function () {
+    signinRules: function() {
       return {
         email_required: this.$i18n.t('email_is_required'),
         password_required: this.$i18n.t('password_is_required'),
@@ -100,43 +103,45 @@ export default {
   },
   methods: {
     login() {
-      this.tryingToLogIn = true
-      this.clearErrors()
-      this.$store
-        .dispatch('auth/signIn', this.credentials)
-        .then((token) => {
-          this.$router.push(this.$route.query.redirectFrom || { name: 'home' })
-          this.clearCredentials()
-        })
-        // Redirect to the originally requested page, or to the home page
-        .catch((error) => {
-          this.tryingToLogIn = false
-          switch (error.code) {
-            case 'UserNotFoundException':
+      if (this.$refs.form.validate()) {
+        this.clearErrors()
+        this.$store
+          .dispatch('auth/signIn', this.credentials)
+          .then((token) => {
+            this.$router.push(
+              this.$route.query.redirectFrom || { name: 'home' }
+            )
+            this.clearCredentials()
+          })
+          // Redirect to the originally requested page, or to the home page
+          .catch((error) => {
+            if (error.response) {
+              console.log(error.response)
+              const msg = error.response.data.message
+              if (msg === 'invalid_user') {
+                this.fieldErrors.email = true
+                this.fieldErrors.password = true
+              } else if (msg === 'invalid_password') {
+                this.fieldErrors.password = true
+              } else if (msg.indexOf('email') > -1) {
+                this.fieldErrors.email = true
+              }
               this.errors.push({
-                type: this.$i18n.t('invalid_user'),
+                errorMessage: this.$i18n.t(msg),
               })
-              break
-            case 'NotAuthorizedException':
+            } else {
               this.errors.push({
-                type: this.$i18n.t('authentication_failed'),
+                errorMessage: this.$i18n.t('authentication_failed'),
               })
-              break
-            case 'LimitExceededException':
-              this.errors.push({
-                type: this.$i18n.t('limit_exceeded'),
-              })
-              break
-            default:
-              this.errors.push({
-                type: this.$i18n.t('authentication_failed'),
-              })
-          }
-        })
+            }
+          })
+      }
     },
 
     clearErrors() {
       this.errors = []
+      this.fieldErrors.email = false
+      this.fieldErrors.password = false
     },
     clearCredentials() {
       this.credentials = {}

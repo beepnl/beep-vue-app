@@ -32,10 +32,11 @@
             dense
             color="red"
           >
-            {{ error.type }}
+            {{ error.errorMessage }}
           </v-alert>
           <v-text-field
             v-model.trim="emailToSubmit"
+            :class="fieldErrors.email ? 'error--text' : ''"
             :label="`${$t('email')}`"
             type="email"
             :rules="emailRules"
@@ -86,13 +87,16 @@ export default {
       errors: [],
       emailToSubmit: this.email || '',
       reminderSent: false,
+      fieldErrors: {
+        email: false,
+      },
     }
   },
   computed: {
     hasErrors() {
       return this.errors.length > 0
     },
-    emailRules: function () {
+    emailRules: function() {
       return [
         (v) => !!v || this.$i18n.t('email_is_required'),
         (v) => /.+@.+\..+/.test(v) || this.$i18n.t('no_valid_email'),
@@ -107,32 +111,31 @@ export default {
           const response = await Api.postRequest('/user/reminder', {
             email: this.emailToSubmit,
           })
-          // if (response === 'reminder_sent') { TODO: enable when 400 errors are changed into 500 errors
+          // if (response.data === 'reminder_sent') { TODO: enable when 400 errors are changed into 500 errors
           this.reminderSent = true
           // }
           return response
         } catch (error) {
-          switch (error.code) {
-            case 'UserNotFoundException':
-              this.errors.push({
-                type: this.$i18n.t('invalid_user'),
-              })
-              break
-            case 'LimitExceededException':
-              this.errors.push({
-                type: this.$i18n.t('limit_exceeded'),
-              })
-              break
-            default:
-              this.errors.push({
-                type: this.$i18n.t('email_is_required'),
-              })
+          if (error.response) {
+            console.log(error.response)
+            const msg = error.response.data.message
+            if (msg === 'invalid_user' || msg.indexOf('email') > -1) {
+              this.fieldErrors.email = true
+            }
+            this.errors.push({
+              errorMessage: this.$i18n.t(msg),
+            })
+          } else {
+            this.errors.push({
+              errorMessage: this.$i18n.t('error'),
+            })
           }
         }
       }
     },
     clearErrors() {
       this.errors = []
+      this.fieldErrors.email = false
     },
   },
 }

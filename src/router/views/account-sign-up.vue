@@ -18,7 +18,7 @@
           dense
           color="red"
         >
-          {{ error.type }}
+          {{ error.errorMessage }}
         </v-alert>
         <v-text-field
           v-model="name"
@@ -26,16 +26,20 @@
         />
         <v-text-field
           v-model="email"
+          :class="fieldErrors.email ? 'error--text' : ''"
           :label="`${$t('email')}`"
           type="email"
           :rules="emailRules"
+          validate-on-blur
         />
         <v-text-field
           v-model="password"
+          :class="fieldErrors.password ? 'error--text' : ''"
           :label="`${$t('password')}`"
           :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
           :type="show1 ? 'text' : 'password'"
           :rules="passwordRules"
+          validate-on-blur
           @click:append="show1 = !show1"
         />
         <v-text-field
@@ -99,6 +103,10 @@ export default {
       show1: false,
       show2: false,
       registered: false,
+      fieldErrors: {
+        email: false,
+        password: false,
+      },
     }
   },
   computed: {
@@ -164,26 +172,24 @@ export default {
           this.registered = true
           return response
         } catch (error) {
-          switch (error.code) {
-            case 'UsernameExistsException':
-              this.errors.push({
-                type: this.$i18n.t('username_already_exists'),
-              })
-              break
-            case 'LimitExceededException':
-              this.errors.push({
-                type: this.$i18n.t('limit_exceeded'),
-              })
-              break
-            case 'ResourceNotFoundException':
-              this.errors.push({
-                type: this.$i18n.t('error'),
-              })
-              break
-            default:
-              this.errors.push({
-                type: this.$i18n.t('error'),
-              })
+          if (error.response) {
+            console.log(error.response)
+            const msg = error.response.data.message
+            if (msg === 'invalid_user') {
+              this.fieldErrors.email = true
+              this.fieldErrors.password = true
+            } else if (msg === 'invalid_password') {
+              this.fieldErrors.password = true
+            } else if (msg.indexOf('email') > -1) {
+              this.fieldErrors.email = true
+            }
+            this.errors.push({
+              errorMessage: this.$i18n.t(msg),
+            })
+          } else {
+            this.errors.push({
+              errorMessage: this.$i18n.t('error'),
+            })
           }
         }
       }
@@ -196,17 +202,23 @@ export default {
         )
         return response
       } catch (error) {
-        this.errorMessage =
-          error.status === 422
-            ? this.$i18n.t('Error') +
-              ': ' +
-              Object.values(error.message).join(', ')
-            : this.$i18n.t('empty_fields') + '.'
-        console.log('Error: ', this.errorMessage)
+        if (error.response && error.response.status === 422) {
+          console.log(error.response)
+          const msg = error.response.data.message
+          this.errors.push({
+            errorMessage: this.$i18n.t(msg),
+          })
+        } else {
+          this.errors.push({
+            errorMessage: this.$i18n.t('empty_fields'),
+          })
+        }
       }
     },
     clearErrors() {
       this.errors = []
+      this.fieldErrors.email = false
+      this.fieldErrors.password = false
     },
   },
 }
