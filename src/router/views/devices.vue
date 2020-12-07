@@ -222,7 +222,7 @@
               <div>
                 <v-icon
                   :class="
-                    `color-grey-light pa-2 mdi ${
+                    `color-grey-light py-2 px-3 mdi ${
                       showDevicesByKey.includes(device.key)
                         ? 'mdi-minus'
                         : 'mdi-cog'
@@ -292,9 +292,11 @@
                     <div>
                       <div class="d-flex justify-space-between">
                         <div>
-                          <div class="d-flex flex-row align-center mb-3">
+                          <div
+                            v-if="device.sensor_definitions.length > 0"
+                            class="d-flex flex-row align-center mb-3"
+                          >
                             <div
-                              v-if="device.sensor_definitions.length > 0"
                               class="overline"
                               v-text="
                                 `${$tc(
@@ -661,9 +663,13 @@ export default {
 
         this.devices = devices
         return true
-      } catch (error) {
-        console.log('Error: ', error)
-      }
+        } catch (error) {
+          if (error.response) {
+            console.log('Error: ', error.response)
+          } else {
+            console.log('Error: ', error)
+          }
+        }
     },
     async readApiaries() {
       try {
@@ -671,7 +677,11 @@ export default {
         this.apiaries = response.data.locations
         return true
       } catch (error) {
-        console.log('Error: ', error)
+          if (error.response) {
+            console.log('Error: ', error.response)
+          } else {
+            console.log('Error: ', error)
+          }
       }
     },
     async readTaxonomy() {
@@ -681,7 +691,11 @@ export default {
         this.sensorMeasurements = response.data.sensormeasurements
         return true
       } catch (error) {
-        console.log('Error: ', error)
+          if (error.response) {
+            console.log('Error: ', error.response)
+          } else {
+            console.log('Error: ', error)
+          }
       }
     },
     async saveDevices() {
@@ -700,13 +714,13 @@ export default {
         })
         return true
       } catch (error) {
-        this.errorMessage =
-          error.status === 422
-            ? this.$i18n.t('Error') +
-              ': ' +
-              Object.values(error.message).join(', ')
-            : this.$i18n.t('empty_fields') + '.'
-        console.log('Error: ', this.errorMessage)
+        if (error.response) {
+          console.log('Error: ', error.response)
+          const msg = error.response.data.message
+          this.errorMessage = this.$i18n.t(msg)
+        } else {
+          this.errorMessage = this.$i18n.t('error')
+        }
       }
     },
     async updateSensorDef(sensorDef) {
@@ -741,13 +755,13 @@ export default {
         })
         return true
       } catch (error) {
-        this.errorMessage =
-          error.status === 422
-            ? this.$i18n.t('Error') +
-              ': ' +
-              Object.values(error.message).join(', ')
-            : this.$i18n.t('empty_fields') + '.'
-        console.log('Error: ', this.errorMessage)
+        if (error.response) {
+          console.log('Error: ', error.response)
+          const msg = error.response.data.message
+          this.errorMessage = this.$i18n.t(msg)
+        } else {
+          this.errorMessage = this.$i18n.t('error')
+        }
       }
     },
     addDevice() {

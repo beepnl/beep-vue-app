@@ -202,7 +202,7 @@ export default {
         )
         return response
       } catch (error) {
-        if (error.response && error.response.status === 422) {
+        if (error.response) {
           console.log(error.response)
           const msg = error.response.data.message
           this.errors.push({
@@ -210,7 +210,7 @@ export default {
           })
         } else {
           this.errors.push({
-            errorMessage: this.$i18n.t('empty_fields'),
+            errorMessage: this.$i18n.t('error'),
           })
         }
       }
