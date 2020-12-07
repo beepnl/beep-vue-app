@@ -234,6 +234,11 @@ export default {
     }
   },
   computed: {
+    baseApiUrl() {
+      var baseUrl = process.env.VUE_APP_API_URL
+      baseUrl = baseUrl.replace('/api/', '')
+      return baseUrl
+    },
     dataAvailable() {
       return this.measurementTypes !== null
         ? Object.keys(this.measurementTypes).length > 0
@@ -357,10 +362,16 @@ export default {
       try {
         const response = await Api.postRequest('/export/csv?link=1', payload)
         this.showDeviceDataLoadingIcon = false
-        console.log(response) // TODO: after API update: handle returned link to download file
         if (response.status === -1) {
           this.errorMessage = this.$i18n.t('too_much_data')
         }
+        const csvLink = this.baseApiUrl + response.data.link
+        // trick to download returned csv link (doesn't work via v-btn because it has already been clicked)
+        var link = document.createElement('a')
+        link.href = window.URL.createObjectURL(csvLink)
+        link.setAttribute('download', csvLink)
+        document.body.appendChild(link)
+        link.click()
         return response
       } catch (error) {
         console.log('Error: ', error)
