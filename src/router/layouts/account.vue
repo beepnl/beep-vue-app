@@ -68,18 +68,22 @@ export default {
   background-image: url('~@assets/img/icn_bee_dark.svg');
 }
 #bee1 {
-  animation: beeAnimation1 13s linear infinite, rotateBee1 13s linear infinite;
+  animation: beeAnimation1 11s linear infinite, rotateBee1 11s linear infinite;
 }
 #bee2 {
-  animation: beeAnimation2 10s linear infinite,
-    rotateBee2 10s cubic-bezier(0.02, 0.01, 0.31, 1) infinite;
+  width: 27px;
+  height: 27px;
+  animation: beeAnimation2 8s linear infinite,
+    rotateBee2 8s cubic-bezier(0.02, 0.01, 0.31, 1) infinite;
 }
 #bee3 {
-  animation: beeAnimation3 15s linear infinite, rotateBee3 5s linear infinite;
+  width: 16px;
+  height: 16px;
+  animation: beeAnimation3 12s linear infinite, rotateBee3 4s linear infinite;
 }
 #bee4 {
-  animation: beeAnimation4 12s linear infinite,
-    rotateBee4 6s cubic-bezier(0.02, 0.01, 0.31, 1) infinite;
+  animation: beeAnimation4 10s linear infinite,
+    rotateBee4 5s cubic-bezier(0.02, 0.01, 0.31, 1) infinite;
 }
 
 @keyframes beeAnimation1 {
@@ -101,8 +105,16 @@ export default {
     top: 20%;
     left: -10%;
   }
-  100% {
+  75% {
     top: 45%;
+    left: 80%;
+  }
+  76% {
+    top: 45%;
+    left: 82%;
+  }
+  100% {
+    top: 35%;
     left: 110%;
   }
 }
@@ -139,13 +151,16 @@ export default {
 }
 @keyframes rotateBee2 {
   0% {
+    transform: rotate(40deg);
+  }
+  74% {
+    transform: rotate(60deg);
+  }
+  77% {
     transform: rotate(35deg);
   }
-  50% {
-    transform: rotate(55deg);
-  }
   100% {
-    transform: rotate(45deg);
+    transform: rotate(18deg);
   }
 }
 @keyframes rotateBee3 {

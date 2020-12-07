@@ -582,7 +582,7 @@ export default {
       errorMessage: null,
       normalizerHives(node) {
         return {
-          id: node.id,
+          id: node.type === 'apiary' ? node.name + ' ' + node.id : node.id,
           label: node.name,
           children: node.hives,
         }
