@@ -663,13 +663,13 @@ export default {
 
         this.devices = devices
         return true
-        } catch (error) {
-          if (error.response) {
-            console.log('Error: ', error.response)
-          } else {
-            console.log('Error: ', error)
-          }
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
         }
+      }
     },
     async readApiaries() {
       try {
@@ -677,11 +677,11 @@ export default {
         this.apiaries = response.data.locations
         return true
       } catch (error) {
-          if (error.response) {
-            console.log('Error: ', error.response)
-          } else {
-            console.log('Error: ', error)
-          }
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
       }
     },
     async readTaxonomy() {
@@ -691,14 +691,15 @@ export default {
         this.sensorMeasurements = response.data.sensormeasurements
         return true
       } catch (error) {
-          if (error.response) {
-            console.log('Error: ', error.response)
-          } else {
-            console.log('Error: ', error)
-          }
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
       }
     },
     async saveDevices() {
+      this.errorMessage = null
       this.showLoadingIcon = true
       try {
         const response = await Api.postRequest(
@@ -714,16 +715,18 @@ export default {
         })
         return true
       } catch (error) {
+        this.showLoadingIcon = false
         if (error.response) {
           console.log('Error: ', error.response)
           const msg = error.response.data.message
           this.errorMessage = this.$i18n.t(msg)
         } else {
-          this.errorMessage = this.$i18n.t('error')
+          this.errorMessage = this.$i18n.t('Error')
         }
       }
     },
     async updateSensorDef(sensorDef) {
+      this.errorMessage = null
       this.showLoadingIconById.push(sensorDef.id)
       var sensorDefId =
         typeof sensorDef.id !== 'undefined' ? sensorDef.id : null
@@ -755,12 +758,16 @@ export default {
         })
         return true
       } catch (error) {
+        this.showLoadingIconById.splice(
+          this.showLoadingIconById.indexOf(sensorDef.id),
+          1
+        )
         if (error.response) {
           console.log('Error: ', error.response)
           const msg = error.response.data.message
           this.errorMessage = this.$i18n.t(msg)
         } else {
-          this.errorMessage = this.$i18n.t('error')
+          this.errorMessage = this.$i18n.t('Error')
         }
       }
     },

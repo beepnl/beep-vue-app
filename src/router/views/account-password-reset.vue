@@ -192,7 +192,7 @@ export default {
             })
           } else {
             this.errors.push({
-              errorMessage: this.$i18n.t('error'),
+              errorMessage: this.$i18n.t('Error'),
             })
           }
         }
