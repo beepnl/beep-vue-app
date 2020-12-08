@@ -1,10 +1,10 @@
 <template>
   <div>
     <div id="beeBox">
-      <div id="bee1"></div>
-      <div id="bee2"></div>
-      <div id="bee3"></div>
-      <div id="bee4"></div>
+      <div id="bee1" :class="mobile ? 'bee--mobile' : ''"></div>
+      <div id="bee2" :class="mobile ? 'bee--mobile' : ''"></div>
+      <div id="bee3" :class="mobile ? 'bee--mobile' : ''"></div>
+      <div id="bee4" :class="mobile ? 'bee--mobile' : ''"></div>
     </div>
     <v-card class="account-card d-flex flex-column align-center">
       <div class="mt-4">
@@ -28,6 +28,11 @@ export default {
       type: String,
       required: false,
       default: '',
+    },
+  },
+  computed: {
+    mobile() {
+      return this.$vuetify.breakpoint.mobile
     },
   },
 }
@@ -69,21 +74,35 @@ export default {
 }
 #bee1 {
   animation: beeAnimation1 11s linear infinite, rotateBee1 11s linear infinite;
+  &.bee--mobile {
+    animation: beeAnimation1 5s linear infinite, rotateBee1 5s linear infinite;
+  }
 }
 #bee2 {
   width: 27px;
   height: 27px;
   animation: beeAnimation2 8s linear infinite,
     rotateBee2 8s cubic-bezier(0.02, 0.01, 0.31, 1) infinite;
+  &.bee--mobile {
+    animation: beeAnimation2 3s linear infinite,
+      rotateBee2 3s cubic-bezier(0.02, 0.01, 0.31, 1) infinite;
+  }
 }
 #bee3 {
   width: 16px;
   height: 16px;
   animation: beeAnimation3 12s linear infinite, rotateBee3 4s linear infinite;
+  &.bee--mobile {
+    animation: beeAnimation3 6s linear infinite, rotateBee3 2s linear infinite;
+  }
 }
 #bee4 {
   animation: beeAnimation4 10s linear infinite,
     rotateBee4 5s cubic-bezier(0.02, 0.01, 0.31, 1) infinite;
+  &.bee--mobile {
+    animation: beeAnimation4 4s linear infinite,
+      rotateBee4 2s cubic-bezier(0.02, 0.01, 0.31, 1) infinite;
+  }
 }
 
 @keyframes beeAnimation1 {
