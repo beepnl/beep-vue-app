@@ -54,7 +54,7 @@
                 </v-icon>
                 <div class="mr-2 my-0" @click="filterByBase = !filterByBase">
                   <v-sheet
-                    class="beep-icon beep-icon-sensors"
+                    class="beep-icon beep-icon-sensors cursor-pointer"
                     :color="`${filterByBase ? 'green' : ''}`"
                   >
                   </v-sheet>

@@ -1,8 +1,5 @@
 <template>
-  <Layout
-    :title="$t('research')"
-    :edited="editedCHItems.length > 0"
-  >
+  <Layout :title="$t('research')" :edited="editedCHItems.length > 0">
     <v-container class="mt-2 mt-sm-6">
       <div v-if="researchProjects.length > 0">
         <v-row>
@@ -574,9 +571,6 @@ export default {
   border-color: $color-primary !important;
   @include for-phone-only {
     padding: 10px;
-  }
-  .cursor-pointer {
-    cursor: pointer;
   }
 }
 

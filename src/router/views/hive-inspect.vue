@@ -1,7 +1,9 @@
 <template>
   <Layout
     :title="
-      inspectionId ? `${$t('Edit_inspection')}` : `${$t('New_inspection')}`
+      `${inspectionId ? $t('Edit_inspection') : $t('New_inspection')} ${
+        activeHive ? ' - ' + activeHive.name : ''
+      }`
     "
   >
     <h1

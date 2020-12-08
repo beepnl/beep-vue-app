@@ -70,7 +70,7 @@ export default {
   position: absolute;
   width: 20px;
   height: 20px;
-  background-image: url('~@assets/img/icn_bee_dark.svg');
+  background-image: url('~@assets/img/icons/icn_bee_dark.svg');
 }
 #bee1 {
   animation: beeAnimation1 11s linear infinite, rotateBee1 11s linear infinite;
@@ -195,13 +195,13 @@ export default {
 }
 @keyframes rotateBee4 {
   0% {
-    transform: rotate(230deg);
+    transform: rotate(228deg);
   }
-  50% {
-    transform: rotate(240deg);
+  60% {
+    transform: rotate(236deg);
   }
   100% {
-    transform: rotate(230deg);
+    transform: rotate(228deg);
   }
 }
 </style>

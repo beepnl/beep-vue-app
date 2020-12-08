@@ -195,6 +195,7 @@ export default {
       ],
       modal: false,
       useQueenMarkColor: false,
+      queenHasColor: false,
     }
   },
   computed: {
@@ -275,14 +276,6 @@ export default {
         this.updateQueen(value, 'fertilized')
       },
     },
-    queenHasColor: {
-      get() {
-        return this.queen.color !== null
-      },
-      set(value) {
-        this.queenHasColor = value
-      },
-    },
     showQueenColorPicker: {
       get() {
         return this.queenHasColor
@@ -300,6 +293,7 @@ export default {
   },
   created() {
     this.readTaxonomy()
+    this.queenHasColor = this.queen.color !== null
   },
   methods: {
     async readTaxonomy() {
