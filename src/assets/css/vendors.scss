@@ -237,6 +237,15 @@
   background-color: transparent !important;
 }
 
+.v-data-table.v-data-table--dense.table--heatmap
+  > .v-data-table__wrapper
+  > table
+  > tbody
+  > tr
+  > td {
+  height: 13px !important;
+}
+
 /* VueNumberInput */
 .number-input {
   input.number-input__input {

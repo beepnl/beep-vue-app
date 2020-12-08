@@ -46,6 +46,12 @@ $color-red: #f44336;
   color: $color-black;
 }
 
+$heatmap-colors: [#0544d3, #12660e, #59922b, #b2c326, #eacf7d, #f4c63d, #d17905,
+  #f05b4f, #d70206, #6b0392, #dda458, #86797d, #6188e2, #a748ca, #242424,
+  #b0b0b0, #31bcea, #cc7cb1, #919369];
+
+$heatmap-color-null: #31bcea;
+
 // spacing
 $gutter-x-small: 0.8rem;
 $gutter-small: 1.6rem;

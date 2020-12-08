@@ -284,8 +284,59 @@
                     class="overline mt-n4 mt-sm-3 mb-3 text-center"
                     v-text="$t('Sound_measurements')"
                   ></div>
+                  <div>
+                    <v-simple-table
+                      class="table--heatmap"
+                      width="100%"
+                      dense
+                      light
+                    >
+                      <template v-slot>
+                        <tfoot>
+                          <tr>
+                            <td></td>
+                            <td
+                              v-for="(measurementTime,
+                              h) in measurementData.measurements"
+                              :key="'measurement-time ' + h"
+                              class="tf--heatmap"
+                            >
+                              <div class="tf--heatmap-label ml-n5">
+                                <span class="tf--heatmap-label-span">
+                                  {{
+                                    h % moduloNumber === 0
+                                      ? momentFromISO8601(measurementTime.time)
+                                      : ''
+                                  }}
+                                </span>
+                              </div>
+                            </td>
+                          </tr>
+                        </tfoot>
+                        <tbody>
+                          <tr
+                            v-for="(soundSensor,
+                            index) in sortedCurrentSoundSensors"
+                            :key="soundSensor + index"
+                            class="tr--heatmap"
+                          >
+                            <td class="td--heatmap-label">{{ index }}</td>
+                            <td
+                              v-for="(measurement,
+                              i) in measurementData.measurements"
+                              :key="'measurement ' + i"
+                              :class="
+                                `td--heatmap td-color-${measurement[soundSensor]}`
+                              "
+                            ></td>
+                          </tr>
+                        </tbody>
+                      </template>
+                    </v-simple-table>
+                  </div>
+
                   <chartist
-                    :class="`${interval} mb-4 mb-sm-6`"
+                    :class="`${interval} mt-4 mb-4 mb-sm-6`"
                     ratio="ct-chart"
                     type="Line"
                     :data="chartDataMultipleSeries(currentSoundSensors)"
@@ -384,7 +435,6 @@ export default {
       showMeasurements: true,
       showLastSensorValues: true,
       ready: false,
-      timer: null,
     }
   },
   computed: {
@@ -420,6 +470,18 @@ export default {
       set(value) {
         this.$store.commit('devices/setSelectedDeviceId', parseInt(value))
       },
+    },
+    sortedCurrentSoundSensors() {
+      var sorted = Object.keys(this.currentSoundSensors)
+        .sort()
+        .reduce(
+          (acc, key) => ({
+            ...acc,
+            [key]: this.currentSoundSensors[key],
+          }),
+          {}
+        )
+      return sorted
     },
     sortedDevices() {
       var apiaryArray = []
@@ -482,8 +544,8 @@ export default {
     },
   },
   created() {
-    window.clearInterval(this.timer)
-    this.timer = null
+    clearInterval(this.timer)
+    this.timer = 0
     this.readDevices()
       .then(() => {
         if (this.devices.length > 0) {
@@ -501,8 +563,8 @@ export default {
   },
   beforeDestroy() {
     if (this.timer > 0) {
-      window.clearInterval(this.timer)
-      this.timer = null
+      clearInterval(this.timer)
+      this.timer = 0
     }
   },
   methods: {
@@ -781,13 +843,10 @@ export default {
         (this.interval === 'hour' || this.interval === 'day')
       ) {
         this.loadLastSensorValuesFunc()
-        this.timer = window.setInterval(
-          this.loadLastSensorValuesFunc,
-          60 * 1000
-        )
+        this.timer = setInterval(this.loadLastSensorValuesFunc, 60 * 1000)
       } else {
-        window.clearInterval(this.timer)
-        this.timer = null
+        clearInterval(this.timer)
+        this.timer = 0
         this.loadLastSensorValuesFunc()
       }
     },
@@ -1204,5 +1263,72 @@ export default {
 
 .chartist-tooltip-value {
   display: none !important;
+}
+
+.table--heatmap {
+  font-size: 0.7rem !important;
+  line-height: 13px !important;
+  @include for-phone-only {
+    font-size: 0.6rem !important;
+  }
+}
+
+.tf--heatmap-label,
+.td--heatmap-label {
+  font-size: 0.7rem !important;
+  font-weight: 400 !important;
+  color: $color-grey-medium !important;
+  white-space: nowrap;
+  @include for-phone-only {
+    font-size: 0.6rem !important;
+  }
+}
+
+.td--heatmap-label {
+  width: 1px !important;
+  max-width: 64px !important;
+  height: 13px !important;
+  padding: 0 8px 0 0 !important;
+}
+
+.tf--heatmap-label {
+  text-align: right;
+  transform: rotate(-45deg);
+  // transform-origin: 100% 0;
+}
+
+.tf--heatmap-label-span {
+  position: relative;
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.tf--heatmap {
+  width: 13px !important;
+  max-width: 13px !important;
+  padding: 0 !important;
+  line-height: 42px;
+}
+
+.tr--heatmap {
+  height: 13px !important;
+  max-height: 13px !important;
+}
+
+.td--heatmap {
+  width: 13px !important;
+  max-width: 13px !important;
+  height: 13px !important;
+  padding: 0 !important;
+}
+
+@for $i from 0 to length($heatmap-colors) {
+  .td-color-#{$i} {
+    background-color: nth($heatmap-colors, $i + 1);
+  }
+}
+
+.td-color-null {
+  background-color: $heatmap-color-null;
 }
 </style>
