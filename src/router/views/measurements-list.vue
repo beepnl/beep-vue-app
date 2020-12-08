@@ -384,6 +384,7 @@ export default {
       showMeasurements: true,
       showLastSensorValues: true,
       ready: false,
+      timer: null,
     }
   },
   computed: {
@@ -481,7 +482,8 @@ export default {
     },
   },
   created() {
-    clearInterval(this.timer)
+    window.clearInterval(this.timer)
+    this.timer = null
     this.readDevices()
       .then(() => {
         if (this.devices.length > 0) {
@@ -499,7 +501,8 @@ export default {
   },
   beforeDestroy() {
     if (this.timer > 0) {
-      clearInterval(this.timer)
+      window.clearInterval(this.timer)
+      this.timer = null
     }
   },
   methods: {
@@ -778,9 +781,13 @@ export default {
         (this.interval === 'hour' || this.interval === 'day')
       ) {
         this.loadLastSensorValuesFunc()
-        this.timer = setInterval(this.loadLastSensorValuesFunc, 60 * 1000) // NB timer var not added to data on purpose, otherwise clearInterval stops working
+        this.timer = window.setInterval(
+          this.loadLastSensorValuesFunc,
+          60 * 1000
+        )
       } else {
-        clearInterval(this.timer)
+        window.clearInterval(this.timer)
+        this.timer = null
         this.loadLastSensorValuesFunc()
       }
     },
