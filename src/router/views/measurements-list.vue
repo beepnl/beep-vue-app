@@ -363,7 +363,7 @@
                                 }`
                               "
                               :style="
-                                `background-color: ${calculateHSL(
+                                `background-color: ${calculateHeatmapColor(
                                   // eslint-disable-next-line vue/comma-dangle
                                   measurement[soundSensor]
                                 )}`
@@ -712,11 +712,11 @@ export default {
         console.log('Error: ', error)
       }
     },
-    calculateHSL(value) {
+    calculateHeatmapColor(value) {
       const max = this.maxSoundSensorValue
       return value !== null
         ? 'hsl(' + (235 + (value / max) * -235).toFixed(0) + ', 100%, 50%)'
-        : 'hsl(283, 32%, 77%)'
+        : 'hsl(360, 100%, 100%)'
     },
     calculateProgress(min, max, value) {
       if (value > max) {
