@@ -332,11 +332,15 @@
                               i) in measurementData.measurements"
                               :key="'measurement ' + i"
                               :class="
-                                `td--heatmap td-color-${
-                                  measurement[soundSensor] !== null
-                                    ? measurement[soundSensor].toFixed(0)
-                                    : 'null'
-                                } ${i % moduloNumber === 0 ? 'td-border' : ''}`
+                                `td--heatmap ${
+                                  i % moduloNumber === 0 ? 'td-border' : ''
+                                }`
+                              "
+                              :style="
+                                `background-color: ${calculateHSL(
+                                  // eslint-disable-next-line vue/comma-dangle
+                                  measurement[soundSensor]
+                                )}`
                               "
                             >
                               <span class="beep-tooltip"
@@ -669,6 +673,12 @@ export default {
       } catch (error) {
         console.log('Error: ', error)
       }
+    },
+    calculateHSL(value) {
+      const max = 8 // TODO: calc actual max value
+      return value !== null
+        ? 'hsl(' + (235 + (value / max) * -235).toFixed(0) + ', 100%, 50%)'
+        : 'hsl(283, 32%, 77%)'
     },
     calculateProgress(min, max, value) {
       if (value > max) {
@@ -1387,22 +1397,6 @@ export default {
   max-width: 8px !important;
   padding: 0 !important;
   line-height: 42px;
-}
-
-@for $i from 0 to length($heatmap-colors) {
-  .td-color-#{$i} {
-    background-color: nth($heatmap-colors, $i + 1);
-    &:hover {
-      background-color: darken(nth($heatmap-colors, $i + 1), 10%);
-    }
-  }
-}
-
-.td-color-null {
-  background-color: $heatmap-color-null;
-  &:hover {
-    background-color: darken($heatmap-color-null, 10%);
-  }
 }
 
 .td-border {
