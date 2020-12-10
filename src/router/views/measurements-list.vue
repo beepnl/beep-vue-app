@@ -333,14 +333,19 @@
                               :key="'measurement ' + i"
                               :class="
                                 `td--heatmap td-color-${
-                                  measurement[soundSensor]
+                                  measurement[soundSensor] !== null
+                                    ? measurement[soundSensor].toFixed(0)
+                                    : 'null'
                                 } ${i % moduloNumber === 0 ? 'td-border' : ''}`
                               "
                             >
                               <span class="beep-tooltip"
                                 >{{ momentAll(measurement.time) }}<br />{{
                                   index
-                                }}: {{ measurement[soundSensor] }}</span
+                                }}:
+                                {{
+                                  displayValue(measurement[soundSensor])
+                                }}</span
                               >
                             </td>
                           </tr>
@@ -802,6 +807,13 @@ export default {
           },
         },
       }
+    },
+    displayValue(input) {
+      return input !== null
+        ? Math.round(input) !== input
+          ? input.toFixed(2)
+          : input
+        : '-'
     },
     formatMeasurementData(measurementData) {
       if (
