@@ -343,6 +343,7 @@
                                 )}`
                               "
                             >
+                              <span class="hover-overlay"></span>
                               <span class="beep-tooltip"
                                 >{{ momentAll(measurement.time) }}<br />{{
                                   index
@@ -466,6 +467,16 @@ export default {
     },
     locale() {
       return this.$i18n.locale
+    },
+    maxSoundSensorValue() {
+      var allSoundSensorValues = []
+      const soundSensors = Object.values(this.currentSoundSensors)
+      this.measurementData.measurements.map((measurement) =>
+        soundSensors.map((soundSensor) => {
+          allSoundSensorValues.push(measurement[soundSensor])
+        })
+      )
+      return Math.max(...allSoundSensorValues)
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile
@@ -675,7 +686,7 @@ export default {
       }
     },
     calculateHSL(value) {
-      const max = 8 // TODO: calc actual max value
+      const max = this.maxSoundSensorValue
       return value !== null
         ? 'hsl(' + (235 + (value / max) * -235).toFixed(0) + ', 100%, 50%)'
         : 'hsl(283, 32%, 77%)'
@@ -1345,11 +1356,19 @@ export default {
   max-width: 8px !important;
   height: 13px !important;
   padding: 0 !important;
-  .beep-tooltip {
+  .beep-tooltip,
+  .hover-overlay {
     display: none;
   }
   &:hover {
     cursor: pointer;
+    .hover-overlay {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      opacity: 0.5;
+    }
     .beep-tooltip {
       position: absolute;
       display: block;
