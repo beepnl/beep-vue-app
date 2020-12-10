@@ -284,10 +284,15 @@
                     class="overline mt-n4 mt-sm-3 mb-3 text-center"
                     v-text="$t('Sound_measurements')"
                   ></div>
-                  <div>
+                  <div
+                    :class="interval === 'hour' ? 'd-flex justify-center' : ''"
+                  >
                     <v-simple-table
-                      class="table--heatmap"
-                      width="100%"
+                      :class="
+                        `table--heatmap ${
+                          interval === 'hour' ? 'hour--heatmap' : ''
+                        }`
+                      "
                       dense
                       light
                     >
@@ -301,7 +306,7 @@
                               :key="'measurement-time ' + h"
                               class="tf--heatmap"
                             >
-                              <div class="tf--heatmap-label ml-n5">
+                              <div class="tf--heatmap-label ml-n8 mt-n3">
                                 <span class="tf--heatmap-label-span">
                                   {{
                                     h % moduloNumber === 0
@@ -326,7 +331,9 @@
                               i) in measurementData.measurements"
                               :key="'measurement ' + i"
                               :class="
-                                `td--heatmap td-color-${measurement[soundSensor]}`
+                                `td--heatmap td-color-${
+                                  measurement[soundSensor]
+                                } ${i % moduloNumber === 0 ? 'td-border' : ''}`
                               "
                             ></td>
                           </tr>
@@ -1271,6 +1278,21 @@ export default {
   @include for-phone-only {
     font-size: 0.6rem !important;
   }
+  &.hour--heatmap {
+    margin-left: -100px;
+    @include for-tablet-portrait-up {
+      width: 90%;
+    }
+    @include for-tablet-landscape-up {
+      width: 70%;
+    }
+    @include for-desktop-up {
+      width: 50%;
+    }
+    @include for-big-desktop-up {
+      width: 40%;
+    }
+  }
 }
 
 .tf--heatmap-label,
@@ -1278,23 +1300,35 @@ export default {
   font-size: 0.7rem !important;
   font-weight: 400 !important;
   color: $color-grey-medium !important;
-  white-space: nowrap;
+  white-space: inherit; //
   @include for-phone-only {
     font-size: 0.6rem !important;
   }
 }
 
+.td--heatmap {
+  width: 8px !important;
+  max-width: 8px !important;
+  height: 13px !important;
+  padding: 0 !important;
+}
+
 .td--heatmap-label {
-  width: 1px !important;
+  width: 64px !important;
+  min-width: 64px !important; //
   max-width: 64px !important;
   height: 13px !important;
   padding: 0 8px 0 0 !important;
+  text-align: right !important; //
+  border-bottom: 0 !important;
+  // white-space: inherit;
 }
 
 .tf--heatmap-label {
+  position: absolute;
+  min-width: 42px;
   text-align: right;
   transform: rotate(-45deg);
-  // transform-origin: 100% 0;
 }
 
 .tf--heatmap-label-span {
@@ -1304,8 +1338,8 @@ export default {
 }
 
 .tf--heatmap {
-  width: 13px !important;
-  max-width: 13px !important;
+  width: 8px !important;
+  max-width: 8px !important;
   padding: 0 !important;
   line-height: 42px;
 }
@@ -1313,13 +1347,6 @@ export default {
 .tr--heatmap {
   height: 13px !important;
   max-height: 13px !important;
-}
-
-.td--heatmap {
-  width: 13px !important;
-  max-width: 13px !important;
-  height: 13px !important;
-  padding: 0 !important;
 }
 
 @for $i from 0 to length($heatmap-colors) {
@@ -1330,5 +1357,9 @@ export default {
 
 .td-color-null {
   background-color: $heatmap-color-null;
+}
+
+.td-border {
+  border-left: 1px solid rgb(0, 0, 0, 0.1);
 }
 </style>
