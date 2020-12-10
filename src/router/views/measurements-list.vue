@@ -326,6 +326,7 @@
                             class="tr--heatmap"
                           >
                             <td class="td--heatmap-label">{{ index }}</td>
+
                             <td
                               v-for="(measurement,
                               i) in measurementData.measurements"
@@ -335,7 +336,13 @@
                                   measurement[soundSensor]
                                 } ${i % moduloNumber === 0 ? 'td-border' : ''}`
                               "
-                            ></td>
+                            >
+                              <span class="beep-tooltip"
+                                >{{ momentAll(measurement.time) }}<br />{{
+                                  index
+                                }}: {{ measurement[soundSensor] }}</span
+                              >
+                            </td>
                           </tr>
                         </tbody>
                       </template>
@@ -1295,12 +1302,17 @@ export default {
   }
 }
 
+.tr--heatmap {
+  height: 13px !important;
+  max-height: 13px !important;
+}
+
 .tf--heatmap-label,
 .td--heatmap-label {
   font-size: 0.7rem !important;
   font-weight: 400 !important;
   color: $color-grey-medium !important;
-  white-space: inherit; //
+  white-space: inherit;
   @include for-phone-only {
     font-size: 0.6rem !important;
   }
@@ -1311,17 +1323,38 @@ export default {
   max-width: 8px !important;
   height: 13px !important;
   padding: 0 !important;
+  .beep-tooltip {
+    display: none;
+  }
+  &:hover {
+    cursor: pointer;
+    .beep-tooltip {
+      position: absolute;
+      display: block;
+      width: 150px;
+      padding: 4px 8px;
+      margin-top: -65px;
+      margin-left: -73px;
+      line-height: 1rem;
+      text-align: center;
+      &::before {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        content: ' ';
+      }
+    }
+  }
 }
 
 .td--heatmap-label {
   width: 64px !important;
-  min-width: 64px !important; //
+  min-width: 64px !important;
   max-width: 64px !important;
   height: 13px !important;
   padding: 0 8px 0 0 !important;
-  text-align: right !important; //
+  text-align: right !important;
   border-bottom: 0 !important;
-  // white-space: inherit;
 }
 
 .tf--heatmap-label {
@@ -1344,19 +1377,20 @@ export default {
   line-height: 42px;
 }
 
-.tr--heatmap {
-  height: 13px !important;
-  max-height: 13px !important;
-}
-
 @for $i from 0 to length($heatmap-colors) {
   .td-color-#{$i} {
     background-color: nth($heatmap-colors, $i + 1);
+    &:hover {
+      background-color: darken(nth($heatmap-colors, $i + 1), 10%);
+    }
   }
 }
 
 .td-color-null {
   background-color: $heatmap-color-null;
+  &:hover {
+    background-color: darken($heatmap-color-null, 10%);
+  }
 }
 
 .td-border {
