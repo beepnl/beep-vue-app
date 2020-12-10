@@ -47,10 +47,10 @@
       <v-toolbar class="save-bar" dense light>
         <v-spacer></v-spacer>
         <v-btn
-          v-if="selectedChecklist && selectedChecklist.owner"
+          v-if="selectedChecklist && selectedChecklist.owner && !mobile"
           tile
           outlined
-          class="hide-on-mobile save-button mr-3"
+          class="save-button mr-3"
           :href="
             inspectionId
               ? `/checklist/${selectedChecklistId}/edit?hive_id=${id}&inspection_edit=${inspectionId}`
@@ -131,10 +131,10 @@
           <v-col class="d-flex" cols="12" sm="4">
             <v-spacer></v-spacer>
             <v-btn
-              v-if="selectedChecklist && selectedChecklist.owner"
+              v-if="selectedChecklist && selectedChecklist.owner && mobile"
               tile
               outlined
-              class="show-on-mobile save-button"
+              class="save-button"
               :href="
                 inspectionId
                   ? `/checklist/${selectedChecklistId}/edit?hive_id=${id}&inspection_edit=${inspectionId}`
@@ -432,6 +432,9 @@ export default {
     },
     locale() {
       return this.$i18n.locale
+    },
+    mobile() {
+      return this.$vuetify.breakpoint.mobile
     },
     reminderDate: {
       get() {

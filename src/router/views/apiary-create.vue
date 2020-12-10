@@ -15,9 +15,8 @@
         <v-tab v-for="(tab, i) in tabs" :key="i" :href="`#tab-${i}`">
           <span v-if="tab.title"
             ><v-icon v-if="tab.icon">{{ tab.icon }}</v-icon
-            ><span class="hide-on-mobile">{{ tab.title }}</span
-            ><span class="show-on-mobile">{{ tab.title_mobile }}</span></span
-          >
+            ><span v-text="mobile ? tab.title_mobile : tab.title"></span>
+          </span>
         </v-tab>
 
         <v-tab-item value="tab-0">
@@ -85,7 +84,7 @@
                       ></div>
                       <v-sheet
                         v-if="newHive"
-                        class="apiary-color"
+                        class="apiary-color cursor-pointer"
                         dark
                         :color="newHive.hex_color"
                         @click="overlay = !overlay"
@@ -485,9 +484,14 @@ export default {
     locale() {
       return this.$i18n.locale
     },
+    mobile() {
+      return this.$vuetify.breakpoint.mobile
+    },
     requiredRule: function() {
       return [
-        (v) => !!v ||           this.$i18n.t('the_field') +
+        (v) =>
+          !!v ||
+          this.$i18n.t('the_field') +
             ' "' +
             this.$i18n.t('Naam') +
             '" ' +
@@ -682,33 +686,17 @@ export default {
         }
       }
 
-      .show-on-mobile {
-        display: none;
-      }
-
       @media (max-width: 900px) {
         padding: 0 4px;
         font-size: 12px !important;
         .v-icon {
           font-size: 16px;
         }
-        // .v-icon {
-        //   display: block;
-        //   &::before {
-        //     margin-top: 2px;
-        //   }
-        // }
       }
 
       @media (max-width: 725px) {
         min-width: 70px !important;
         font-size: 16px !important;
-        .hide-on-mobile {
-          display: none !important;
-        }
-        .show-on-mobile {
-          display: inline !important;
-        }
         .v-icon {
           display: inline !important;
           font-size: 24px;

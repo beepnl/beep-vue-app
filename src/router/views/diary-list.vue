@@ -16,24 +16,7 @@
             <div
               class="filter-buttons d-flex flex-row justify-flex-start align-center"
             >
-              <v-col cols="5" class="hide-on-mobile pr-1">
-                <v-text-field
-                  ref="filter"
-                  v-model="search"
-                  :label="`${$t('Search')}`"
-                  :class="
-                    `${
-                      search !== null ? 'v-input--is-focused primary--text' : ''
-                    } filter-text-field`
-                  "
-                  height="36px"
-                  clearable
-                  outlined
-                  dense
-                  hide-details
-                ></v-text-field>
-              </v-col>
-              <v-col cols="5" class="show-on-mobile pr-0">
+              <v-col cols="5" :class="mobile ? 'pr-0' : 'pr-1'">
                 <v-text-field
                   v-model="search"
                   :label="`${$t('Search')}`"
@@ -42,7 +25,7 @@
                       search !== null ? 'v-input--is-focused primary--text' : ''
                     } filter-text-field`
                   "
-                  height="30px"
+                  :height="mobile ? '30px' : '36px'"
                   clearable
                   outlined
                   dense
@@ -554,6 +537,9 @@ export default {
     },
     locale() {
       return this.$i18n.locale
+    },
+    mobile() {
+      return this.$vuetify.breakpoint.mobile
     },
   },
   created() {

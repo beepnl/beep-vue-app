@@ -11,24 +11,7 @@
           <div
             class="filter-buttons d-flex flex-row justify-flex-start align-center"
           >
-            <v-col cols="5" class="hide-on-mobile pr-1">
-              <v-text-field
-                ref="filter"
-                v-model="search"
-                :label="`${$t('Search')}`"
-                :class="
-                  `${
-                    search !== null ? 'v-input--is-focused primary--text' : ''
-                  } filter-text-field`
-                "
-                height="36px"
-                clearable
-                outlined
-                dense
-                hide-details
-              ></v-text-field>
-            </v-col>
-            <v-col cols="5" class="show-on-mobile pr-0">
+            <v-col cols="5" :class="mobile ? 'pr-0' : 'pr-1'">
               <v-text-field
                 v-model="search"
                 :label="`${$t('Search')}`"
@@ -37,7 +20,7 @@
                     search !== null ? 'v-input--is-focused primary--text' : ''
                   } filter-text-field`
                 "
-                height="30px"
+                :height="mobile ? '30px' : '36px'"
                 clearable
                 outlined
                 dense
@@ -90,7 +73,7 @@
 
           <v-card-actions v-if="activeHive.editable || activeHive.owner">
             <v-btn
-              class="hide-on-mobile"
+              v-if="!mobile"
               :href="`/hives/${id}/inspect`"
               medium
               tile
@@ -101,7 +84,7 @@
               {{ $t('New_inspection') }}
             </v-btn>
             <v-icon
-              class="show-on-mobile"
+              v-if="mobile"
               :href="`/hives/${id}/inspect`"
               dark
               color="primary"
@@ -147,11 +130,10 @@
                     <v-icon small class="color-grey-medium">mdi-delete</v-icon>
                   </a>
                 </div>
-                <strong class="d-flex justify-center hide-on-mobile">{{
-                  momentify(inspection.created_at)
-                }}</strong>
-                <strong class="d-flex justify-center show-on-mobile ">{{
-                  momentifyDayMonth(inspection.created_at)
+                <strong class="d-flex justify-center">{{
+                  mobile
+                    ? momentifyDayMonth(inspection.created_at)
+                    : momentify(inspection.created_at)
                 }}</strong>
               </th>
               <th class="filler"></th>
@@ -302,14 +284,12 @@
                   <span
                     v-if="inspection.reminder_date !== null"
                     :title="inspection.reminder_date"
-                    class="hide-on-mobile d-flex justify-center reminder-date"
-                    v-text="momentify(inspection.reminder_date)"
-                  ></span>
-                  <span
-                    v-if="inspection.reminder_date !== null"
-                    :title="inspection.reminder_date"
-                    class="show-on-mobile d-flex justify-center reminder-date"
-                    v-text="momentifyDayMonth(inspection.reminder_date)"
+                    class="d-flex justify-center reminder-date"
+                    v-text="
+                      mobile
+                        ? momentifyDayMonth(inspection.reminder_date)
+                        : momentify(inspection.reminder_date)
+                    "
                   ></span>
                 </div>
               </td>
@@ -438,7 +418,8 @@
                 </span>
                 <span v-if="item.type === 'score'">
                   <div
-                    class="d-flex flex-row justify-center flex-wrap hide-on-mobile"
+                    v-if="!mobile"
+                    class="d-flex flex-row justify-center flex-wrap"
                     ><v-icon
                       v-for="star in [0, 1, 2, 3, 4]"
                       :key="star + 1"
@@ -449,7 +430,8 @@
                     >
                   </div>
                   <div
-                    class="d-flex flex-row justify-center flex-wrap show-on-mobile"
+                    v-if="mobile"
+                    class="d-flex flex-row justify-center flex-wrap"
                     ><v-icon
                       v-for="star in [0, 1, 2, 3, 4]"
                       :key="star + 1"
@@ -709,6 +691,9 @@ export default {
           }
         })
       return matchedItemsByDate
+    },
+    mobile() {
+      return this.$vuetify.breakpoint.mobile
     },
     scoreAmountOptions() {
       return {

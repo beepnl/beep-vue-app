@@ -9,25 +9,7 @@
             <div
               class="filter-buttons d-flex flex-row justify-flex-start align-center"
             >
-              <v-col cols="5" class="hide-on-mobile pr-1">
-                <v-text-field
-                  ref="filter"
-                  v-model="search"
-                  :label="`${$t('Search')}`"
-                  :class="
-                    `${
-                      search !== null ? 'primary--text' : ''
-                    } filter-text-field`
-                  "
-                  :autofocus="search !== null"
-                  height="36px"
-                  clearable
-                  outlined
-                  dense
-                  hide-details
-                ></v-text-field>
-              </v-col>
-              <v-col cols="5" class="show-on-mobile pr-0">
+              <v-col cols="5" :class="mobile ? 'pr-0' : 'pr-1'">
                 <v-text-field
                   v-model="search"
                   :label="`${$t('Search')}`"
@@ -36,7 +18,8 @@
                       search !== null ? 'v-input--is-focused primary--text' : ''
                     } filter-text-field`
                   "
-                  height="30px"
+                  :height="mobile ? '30px' : '36px'"
+                  :autofocus="search !== null"
                   clearable
                   outlined
                   dense
@@ -105,9 +88,8 @@
                 mdi-view-headline
               </v-icon>
               <v-icon
-                :class="
-                  `${gridView ? 'color-primary' : ''} hide-on-mobile mr-2`
-                "
+                v-if="!mobile"
+                :class="`${gridView ? 'color-primary' : ''} mr-2`"
                 @click="toggleGrid('gridView')"
               >
                 mdi-view-grid-outline
@@ -158,9 +140,10 @@
             </div>
             <div>
               <v-btn
+                v-if="!mobile"
                 tile
                 outlined
-                class="hide-on-mobile green--text mb-1"
+                class="green--text mb-1"
                 @click="
                   checkToken(invitation.token, invitation.id, invitation.name)
                 "
@@ -178,16 +161,16 @@
                 {{ $t('Accept') }}
               </v-btn>
               <v-progress-circular
-                v-if="showLoadingIconForId === invitation.id"
-                class="show-on-mobile invitation-loading-icon green--text mb-1"
+                v-if="showLoadingIconForId === invitation.id && mobile"
+                class="invitation-loading-icon green--text mb-1"
                 size="18"
                 width="2"
                 indeterminate
               />
               <v-icon
-                v-if="showLoadingIconForId !== invitation.id"
+                v-if="showLoadingIconForId !== invitation.id && mobile"
                 dark
-                class="show-on-mobile green--text mb-1"
+                class="green--text mb-1"
                 @click="
                   checkToken(invitation.token, invitation.id, invitation.name)
                 "
@@ -680,6 +663,9 @@ export default {
         { title: this.$i18n.t('new_apiary'), route: 'apiary-create' },
         { title: this.$i18n.t('new_group'), route: 'group-create' },
       ]
+    },
+    mobile() {
+      return this.$vuetify.breakpoint.mobile
     },
   },
   mounted() {
