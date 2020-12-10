@@ -1408,10 +1408,10 @@ export default {
     .beep-tooltip {
       position: absolute;
       display: block;
-      width: 150px;
+      width: 175px;
       padding: 4px 8px;
       margin-top: -65px;
-      margin-left: -73px;
+      margin-left: -86px;
       line-height: 1rem;
       text-align: center;
       &::before {
