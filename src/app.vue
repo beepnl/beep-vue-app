@@ -41,7 +41,7 @@ export default {
   z-index: 1031;
   width: 100%;
   height: 2px;
-  background: white;
+  background: $color-primary;
 }
 
 /* Fancy blur effect */

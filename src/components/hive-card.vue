@@ -9,7 +9,7 @@
       `border-color: ${
         hiveSet.hex_color
           ? hiveSet.hex_color + ' !important'
-          : '#ffa000 !important'
+          : '#F8B133 !important'
       };`
     "
     outlined

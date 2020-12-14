@@ -58,7 +58,7 @@ export default {
       } else if (this.hive.color !== null) {
         return this.hive.color
       } else {
-        return '#ffa000'
+        return '#F8B133'
       }
     },
     hasLayer(type) {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-app-bar app color="primary" dark dense>
+    <v-app-bar app light background-color="#000" color="primary" dense>
       <v-toolbar-title class="d-flex align-self-center"
         ><img src="@assets/img/beep-logo-black.svg"
       /></v-toolbar-title>
@@ -11,7 +11,15 @@
       <HeaderMenu :menu-items="menuItems"></HeaderMenu>
 
       <template v-slot:extension>
-        <v-tabs icons-and-text dense dark grow background-color="primary">
+        <v-tabs
+          icons-and-text
+          dense
+          light
+          grow
+          background-color="#F8B133"
+          color="#000"
+          height="48px"
+        >
           <v-tab
             v-for="(tab, i) in tabs"
             :key="i"
@@ -19,7 +27,7 @@
             :exact="tab.exact"
           >
             <span v-if="tab.title">{{ tab.title }}</span>
-            <v-icon v-if="tab.icon">{{ tab.icon }}</v-icon>
+            <v-icon v-if="tab.icon" size="20px">{{ tab.icon }}</v-icon>
           </v-tab>
         </v-tabs>
       </template>
