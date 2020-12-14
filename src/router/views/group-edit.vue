@@ -4,11 +4,11 @@
       <v-toolbar v-if="activeGroup" class="save-bar" dense light>
         <v-spacer></v-spacer>
         <v-btn
-          v-if="activeGroup && !createMode"
+          v-if="activeGroup && !createMode && tabletLandscapeUp"
           tile
           outlined
           color="red"
-          class="show-on-desktop save-button mr-3"
+          class="save-button mr-3"
           @click="confirmDeleteOrDetachGroup"
         >
           <v-icon left>mdi-delete</v-icon>
@@ -17,9 +17,9 @@
           }}
         </v-btn>
         <v-icon
-          v-if="activeGroup && !createMode"
+          v-if="activeGroup && !createMode && !tabletLandscapeUp"
           dark
-          class="hide-on-desktop mr-4"
+          class="mr-4"
           color="red"
           @click="confirmDeleteOrDetachGroup"
           >mdi-delete</v-icon
@@ -186,22 +186,16 @@
               <v-btn
                 tile
                 outlined
-                class="show-on-desktop save-button"
+                class="save-button"
                 color="primary"
                 @click="addGroupUser"
               >
                 <v-icon left>mdi-plus</v-icon>
-                {{ $t('add') + ' ' + $tc('member', 1) }}
-              </v-btn>
-              <v-btn
-                tile
-                outlined
-                class="hide-on-desktop save-button"
-                color="primary"
-                @click="addGroupUser"
-              >
-                <v-icon left>mdi-plus</v-icon>
-                {{ $t('add') }}
+                {{
+                  tabletLandscapeUp
+                    ? $t('add') + ' ' + $tc('member', 1)
+                    : $t('add')
+                }}
               </v-btn>
             </div>
             <div class="rounded-border">
@@ -466,12 +460,17 @@ export default {
     },
     requiredRule: function() {
       return [
-        (v) => !!v ||           this.$i18n.t('the_field') +
+        (v) =>
+          !!v ||
+          this.$i18n.t('the_field') +
             ' "' +
             this.$i18n.t('Name') +
             '" ' +
             this.$i18n.t('is_required'),
       ]
+    },
+    tabletLandscapeUp() {
+      return this.$vuetify.breakpoint.mdAndUp
     },
   },
   created() {

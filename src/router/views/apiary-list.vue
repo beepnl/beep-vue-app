@@ -211,11 +211,10 @@
                       <span>{{ invitation.description }}</span>
                     </td>
                     <td>
-                      <span class="show-on-desktop">{{
-                        momentify(invitation.invited)
-                      }}</span>
-                      <span class="hide-on-desktop">{{
-                        momentifyDayMonth(invitation.invited)
+                      <span>{{
+                        tabletLandscapeUp
+                          ? momentify(invitation.invited)
+                          : momentifyDayMonth(invitation.invited)
                       }}</span>
                     </td>
                     <td>
@@ -532,35 +531,6 @@ export default {
   computed: {
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups', 'invitations']),
-    hiveSets() {
-      return this.apiaries.concat(this.groups)
-    },
-    mobile() {
-      return this.$vuetify.breakpoint.mobile
-    },
-    sortedHiveSets() {
-      const sortedHiveSets = this.hiveSets
-        .slice()
-        .sort(function(a, b) {
-          if (a.name > b.name) {
-            return 1
-          }
-          if (b.name > a.name) {
-            return -1
-          }
-          return 0
-        })
-        .sort(function(a, b) {
-          if ('type' in b) {
-            return 1
-          }
-          if ('type' in a) {
-            return -1
-          }
-          return 0
-        })
-      return sortedHiveSets
-    },
     filteredHiveSets() {
       var textFilteredHiveSets = []
       if (this.search === null) {
@@ -661,11 +631,43 @@ export default {
 
       return propertyFilteredHiveSets
     },
+    hiveSets() {
+      return this.apiaries.concat(this.groups)
+    },
     menuItems: function() {
       return [
         { title: this.$i18n.t('new_apiary'), route: 'apiary-create' },
         { title: this.$i18n.t('new_group'), route: 'group-create' },
       ]
+    },
+    mobile() {
+      return this.$vuetify.breakpoint.mobile
+    },
+    sortedHiveSets() {
+      const sortedHiveSets = this.hiveSets
+        .slice()
+        .sort(function(a, b) {
+          if (a.name > b.name) {
+            return 1
+          }
+          if (b.name > a.name) {
+            return -1
+          }
+          return 0
+        })
+        .sort(function(a, b) {
+          if ('type' in b) {
+            return 1
+          }
+          if ('type' in a) {
+            return -1
+          }
+          return 0
+        })
+      return sortedHiveSets
+    },
+    tabletLandscapeUp() {
+      return this.$vuetify.breakpoint.mdAndUp
     },
   },
   mounted() {
