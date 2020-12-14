@@ -47,6 +47,18 @@
         class="content-container"
       >
         <v-row>
+          <v-col cols="12">
+            <v-alert
+              v-if="errorMessage"
+              type="error"
+              text
+              prominent
+              dense
+              color="red"
+            >
+              {{ errorMessage }}
+            </v-alert>
+          </v-col>
           <v-col cols="12" sm="6" md="4">
             <v-text-field
               v-if="activeChecklist"
@@ -78,6 +90,7 @@
 </template>
 
 <script>
+import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
 import checklistTree from '@components/checklist-tree.vue'
@@ -93,6 +106,7 @@ export default {
       activeChecklist: null,
       activeChecklistId: null,
       activeChecklistTaxonomy: null,
+      errorMessage: null,
       checklistEdited: false,
       valid: false,
       showLoadingIcon: false,
@@ -141,14 +155,11 @@ export default {
     },
     async getChecklistTaxonomy(id) {
       try {
-        const response = await this.$store.dispatch(
-          'checklists/getChecklistTaxonomy',
-          id
-        )
+        const response = await Api.readRequest('checklists/', id)
         if (response.length === 0) {
           this.$router.push({ name: '404', params: { resource: 'checklist' } })
         }
-        this.activeChecklistTaxonomy = response.taxonomy
+        this.activeChecklistTaxonomy = response.data.taxonomy
         return true
       } catch (e) {
         console.log(e)
@@ -167,10 +178,14 @@ export default {
           categories: categoryIds,
         }
         try {
-          await this.$store.dispatch(
-            'checklists/saveChecklist',
+          const response = await Api.updateRequest(
+            '/checklists/',
+            this.activeChecklist.id,
             checklistUpdate
           )
+          if (!response) {
+            this.errorMessage = this.$i18n.t('Error')
+          }
           setTimeout(() => {
             if (this.hiveId !== null && this.inspectionEdit !== null) {
               return this.$router.push({
@@ -200,7 +215,13 @@ export default {
             }
           }, 200)
         } catch (error) {
-          console.log(error)
+          if (error.response) {
+            console.log(error.response)
+            const msg = error.response.data.message
+            this.errorMessage = this.$i18n.t(msg)
+          } else {
+            this.errorMessage = this.$i18n.t('Error')
+          }
         }
       }
     },
