@@ -44,9 +44,11 @@
   .v-tab {
     text-transform: none !important;
     letter-spacing: 0.075;
+    > *:first-child {
+      margin-bottom: 2px !important;
+    }
   }
 }
-
 .v-toolbar__content {
   // height: 48px !important;
   .v-toolbar__title {

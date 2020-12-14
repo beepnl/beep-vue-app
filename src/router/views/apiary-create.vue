@@ -3,11 +3,12 @@
     <v-form ref="form" v-model="valid" @submit.prevent="createApiary">
       <v-tabs
         v-model="activeTab"
-        background-color="primary"
         class="elevation-2 apiary-create"
         dense
-        dark
+        light
         grow
+        background-color="#F8B133"
+        color="#000"
         icons-and-text
       >
         <v-tabs-slider></v-tabs-slider>
@@ -62,73 +63,81 @@
                 <div class="overline mb-4">{{
                   $tc('Location', 1) + ' ' + $t('settings')
                 }}</div>
-                <v-row>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      v-if="newHive"
-                      v-model="newHive.name"
-                      :label="`${$t('Name')}*`"
-                      :placeholder="`${$t('Name')}`"
-                      class="apiary-create-name"
-                      counter="30"
-                      :rules="requiredRule"
-                      required
-                      @input="validateText($event, 'name', 30)"
-                    >
-                    </v-text-field>
-
-                    <div>
-                      <div
-                        class="beep-label"
-                        v-text="`${$t('Apiary_color')}`"
-                      ></div>
-                      <v-sheet
+                <div class="rounded-border">
+                  <v-row>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field
                         v-if="newHive"
-                        class="apiary-color cursor-pointer"
-                        dark
-                        :color="newHive.hex_color"
-                        @click="overlay = !overlay"
-                      ></v-sheet>
-                    </div>
+                        v-model="newHive.name"
+                        :label="`${$t('Name')}*`"
+                        :placeholder="`${$t('Name')}`"
+                        class="apiary-create-name"
+                        counter="30"
+                        :rules="requiredRule"
+                        required
+                        @input="validateText($event, 'name', 30)"
+                      >
+                      </v-text-field>
 
-                    <v-overlay :value="overlay">
-                      <v-toolbar class="hive-color-picker-toolbar" dense light>
+                      <div>
                         <div
-                          class="hive-color-picker-title"
+                          class="beep-label"
                           v-text="`${$t('Apiary_color')}`"
                         ></div>
-                        <v-spacer></v-spacer>
-                        <v-toolbar-items>
-                          <v-icon
-                            class="mr-1"
-                            color="primary"
-                            @click="editApiary(colorPickerValue, 'hex_color')"
-                            >mdi-check</v-icon
-                          >
-                          <v-icon @click="cancelColorPicker">mdi-close</v-icon>
-                        </v-toolbar-items>
-                      </v-toolbar>
+                        <v-sheet
+                          v-if="newHive"
+                          class="apiary-color cursor-pointer"
+                          dark
+                          :color="newHive.hex_color"
+                          @click="overlay = !overlay"
+                        ></v-sheet>
+                      </div>
 
-                      <v-color-picker
-                        v-model="colorPicker"
-                        class="hive-color-picker flex-color-picker"
-                        :swatches="swatchesApiary"
-                        show-swatches
-                        hide-canvas
-                        light
-                        flat
-                      >
-                      </v-color-picker>
-                    </v-overlay>
+                      <v-overlay :value="overlay">
+                        <v-toolbar
+                          class="hive-color-picker-toolbar"
+                          dense
+                          light
+                        >
+                          <div
+                            class="hive-color-picker-title"
+                            v-text="`${$t('Apiary_color')}`"
+                          ></div>
+                          <v-spacer></v-spacer>
+                          <v-toolbar-items>
+                            <v-icon
+                              class="mr-1"
+                              color="primary"
+                              @click="editApiary(colorPickerValue, 'hex_color')"
+                              >mdi-check</v-icon
+                            >
+                            <v-icon @click="cancelColorPicker"
+                              >mdi-close</v-icon
+                            >
+                          </v-toolbar-items>
+                        </v-toolbar>
 
-                    <v-switch
-                      v-if="newHive"
-                      v-model="newHive.roofed"
-                      :label="`${$t('roofed')}`"
-                      @change="setApiaryEdited(true)"
-                    ></v-switch>
-                  </v-col>
-                </v-row>
+                        <v-color-picker
+                          v-model="colorPicker"
+                          class="hive-color-picker flex-color-picker"
+                          :swatches="swatchesApiary"
+                          show-swatches
+                          hide-canvas
+                          light
+                          flat
+                        >
+                        </v-color-picker>
+                      </v-overlay>
+
+                      <v-switch
+                        v-if="newHive"
+                        v-model="newHive.roofed"
+                        :label="`${$t('roofed')}`"
+                        @change="setApiaryEdited(true)"
+                      ></v-switch>
+                    </v-col>
+                  </v-row>
+                </div>
               </v-col>
             </v-row>
             <div class="d-flex justify-space-between">
@@ -454,7 +463,7 @@ export default {
         text: 'notification',
       },
       swatchesApiary: [
-        ['#b5c4b2', '#F7BE02', '#FFA000'],
+        ['#b5c4b2', '#F7BE02', '#F8B133'],
         ['#049717', '#1b6308', '#00466b'],
         ['#bca55e', '#754B1F', '#3F3104'],
       ],
@@ -474,7 +483,7 @@ export default {
         if (this.newHive) {
           return this.newHive.hex_color
         } else {
-          return '#ffa000'
+          return '#F8B133'
         }
       },
       set(value) {
@@ -539,7 +548,7 @@ export default {
       this.newHive = {
         name: this.$i18n.tc('Location', 1) + ' ' + this.newApiaryNumber,
         color: '#F29100',
-        hex_color: '#ffa000',
+        hex_color: '#F8B133',
         hive_type_id: null,
         hive_amount: 1,
         frames: 10,
@@ -560,21 +569,21 @@ export default {
         roofed: 0,
         layers: [
           {
-            color: '#ffa000',
+            color: '#F8B133',
             type: 'honey',
             order: 3,
             framecount: 10,
             key: 3,
           },
           {
-            color: '#ffa000',
+            color: '#F8B133',
             type: 'brood',
             order: 2,
             framecount: 10,
             key: 2,
           },
           {
-            color: '#ffa000',
+            color: '#F8B133',
             type: 'brood',
             order: 1,
             framecount: 10,
@@ -674,15 +683,8 @@ export default {
     .v-tab {
       .v-icon {
         font-size: 20px;
-        color: rgba(255, 255, 255, 0.6);
         &::before {
           margin-top: -2px;
-        }
-      }
-
-      &.v-tab--active {
-        .v-icon {
-          color: $color-white;
         }
       }
 

@@ -96,6 +96,7 @@
               :class="fieldErrors.email ? 'error--text' : ''"
               :label="`${$t('email')}`"
               :rules="emailRules"
+              required
               validate-on-blur
             />
             <v-text-field
@@ -105,6 +106,7 @@
               :label="`${$t('password')}`"
               :type="show1 ? 'text' : 'password'"
               :rules="passwordRules"
+              required
               :error-messages="
                 displayPasswordError ? $t('password_is_required') : null
               "
@@ -116,7 +118,7 @@
               :label="`${$t('new_password')}`"
               :type="show2 ? 'text' : 'password'"
               :rules="newPasswordRules"
-              validate-on-blur
+              @keydown.enter="$event.target.blur"
               @click:append="show2 = !show2"
             />
             <v-text-field
@@ -171,8 +173,8 @@ export default {
       name: this.user.name,
       policyAccepted: true,
       password: '',
-      newPassword: '',
-      repeatPassword: '',
+      newPassword: null,
+      repeatPassword: null,
       successMessage: null,
       show1: false,
       show2: false,
@@ -214,22 +216,16 @@ export default {
     },
     newPasswordRules: function() {
       return [
-        (v) => !!v || this.$i18n.t('password_is_required'),
         (v) =>
+          v === null ||
           /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.[\]{}()?\-"!@#%&/\\,><':;|_~`])(?=.{8,98})/.test(
             v
-          ) || this.$i18n.t('invalid_password'),
+          ) ||
+          this.$i18n.t('invalid_password'),
       ]
     },
     repeatPasswordRules: function() {
       return [
-        (v) =>
-          !!v ||
-          this.$i18n.t('the_field') +
-            ' "' +
-            this.$i18n.t('confirm_new_password') +
-            '" ' +
-            this.$i18n.t('is_required'),
         (v) =>
           v === this.edit.password_new || this.$i18n.t('no_password_match'),
       ]

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-app-bar app color="primary" dark dense>
+    <v-app-bar app light background-color="#000" color="primary" dense>
       <slot name="icon">
         <v-btn icon @click="back">
           <v-icon>mdi-arrow-left</v-icon>

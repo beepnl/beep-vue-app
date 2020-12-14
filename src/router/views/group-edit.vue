@@ -398,7 +398,7 @@ export default {
         text: 'notification',
       },
       swatchesGroup: [
-        ['#b5c4b2', '#F7BE02', '#FFA000'],
+        ['#b5c4b2', '#F7BE02', '#F8B133'],
         ['#049717', '#1b6308', '#00466b'],
         ['#bca55e', '#754B1F', '#3F3104'],
       ],
@@ -436,7 +436,7 @@ export default {
         if (this.activeGroup) {
           return this.activeGroup.hex_color
         } else {
-          return '#ffa000'
+          return '#F8B133'
         }
       },
       set(value) {

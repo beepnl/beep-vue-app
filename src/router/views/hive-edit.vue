@@ -247,21 +247,21 @@ export default {
           order: null,
           layers: [
             {
-              color: '#ffa000',
+              color: '#F8B133',
               type: 'honey',
               order: 3,
               framecount: 10,
               key: 3,
             },
             {
-              color: '#ffa000',
+              color: '#F8B133',
               type: 'brood',
               order: 2,
               framecount: 10,
               key: 2,
             },
             {
-              color: '#ffa000',
+              color: '#F8B133',
               type: 'brood',
               order: 1,
               framecount: 10,

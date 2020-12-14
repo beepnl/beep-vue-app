@@ -540,10 +540,10 @@ export default {
           var firstNumberB = parseInt(b.substring(0, b.indexOf('-')))
 
           if (firstNumberA < firstNumberB) {
-            return -1
+            return 1
           }
           if (firstNumberA > firstNumberB) {
-            return 1
+            return -1
           }
           return 0
         })

@@ -1,6 +1,11 @@
 <template>
   <Layout :title="$t('login_title')">
-    <v-form ref="form" v-model="valid" @submit.prevent="login">
+    <v-form
+      ref="form"
+      v-model="valid"
+      style="width: 100%"
+      @submit.prevent="login"
+    >
       <v-card-text>
         <v-alert v-if="msg" type="success" text prominent dense color="green">
           {{ $t(msg) }}
@@ -22,6 +27,7 @@
           :label="`${$t('email')}`"
           type="email"
           :rules="[(v) => !!v || signinRules.email_required]"
+          autocomplete="on"
         ></v-text-field>
         <v-text-field
           v-model="credentials.password"
@@ -30,6 +36,7 @@
           :type="show ? 'text' : 'password'"
           :label="`${$t('password')}`"
           :rules="[(v) => !!v || signinRules.password_required]"
+          autocomplete="off"
           @click:append="show = !show"
         ></v-text-field>
         <router-link

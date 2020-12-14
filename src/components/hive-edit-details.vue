@@ -23,7 +23,7 @@
                 <v-sheet
                   class="hive-color"
                   dark
-                  :color="hive.color !== null ? hive.color : '#ffa000'"
+                  :color="hive.color !== null ? hive.color : '#F8B133'"
                   @click="overlay = !overlay"
                 ></v-sheet>
               </v-col>
@@ -217,7 +217,7 @@ export default {
   data: function() {
     return {
       swatchesHive: [
-        ['#b5c4b2', '#F7BE02', '#FFA000'],
+        ['#b5c4b2', '#F7BE02', '#F8B133'],
         ['#049717', '#1b6308', '#00466b'],
         ['#bca55e', '#754B1F', '#3F3104'],
       ],

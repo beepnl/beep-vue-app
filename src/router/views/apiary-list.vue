@@ -186,7 +186,7 @@
         <div
           class="rounded-border invitation-wrapper ma-1"
           :style="
-            `border-color: ${invitation.color ? invitation.color : '#ffa000'};`
+            `border-color: ${invitation.color ? invitation.color : '#F8B133'};`
           "
         >
           <v-simple-table dense>
