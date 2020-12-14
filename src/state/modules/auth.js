@@ -29,6 +29,10 @@ export const getters = {
   },
 }
 export const mutations = {
+  SET_API_TOKEN: function(state, newValue) {
+    state.currentUser.api_token = newValue
+    saveState('auth.currentUser.api_token', newValue)
+  },
   SET_CURRENT_USER: function(state, newValue) {
     state.currentUser = newValue
     saveState('auth.currentUser', newValue)

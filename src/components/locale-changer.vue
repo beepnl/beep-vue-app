@@ -66,16 +66,30 @@ export default {
     Settings.defaultLocale = this.$i18n.locale // for hive-inspect vue-datetime picker
   },
   methods: {
-    switchLocale(language) {
+    async switchLocale(language) {
       const email = this.userEmail
-      Api.updateRequest('/user', '', { email, language })
-      // .then(() => { // TODO: enable then block when user patch API is fixed
-      this.$store.commit('auth/SET_LOCALE', language)
-      this.$i18n.locale = language
-      console.log(language)
-      Settings.defaultLocale = language // for hive-inspect vue-datetime picker
-      localStorage.beepLocale = language // remember language for sign-in
-      // })
+      try {
+        const response = await Api.updateRequest('/user', '', {
+          email,
+          language,
+        })
+        if (!response) {
+          console.log('error')
+        }
+        this.$store.commit('auth/SET_LOCALE', language)
+        this.$store.commit('auth/SET_API_TOKEN', response.data.api_token)
+        this.$i18n.locale = language
+        console.log(language)
+        Settings.defaultLocale = language // for hive-inspect vue-datetime picker
+        localStorage.beepLocale = language // remember language for sign-in
+      } catch (error) {
+        if (error.response) {
+          const msg = error.response.data.message
+          console.log(msg)
+        } else {
+          console.log(error)
+        }
+      }
     },
   },
 }

@@ -534,11 +534,22 @@ export default {
     },
     sortedCurrentSoundSensors() {
       var sorted = Object.keys(this.currentSoundSensors)
-        .sort()
+        .sort(function(a, b) {
+          var firstNumberA = parseInt(a.substring(0, a.indexOf('-')))
+          var firstNumberB = parseInt(b.substring(0, b.indexOf('-')))
+
+          if (firstNumberA < firstNumberB) {
+            return -1
+          }
+          if (firstNumberA > firstNumberB) {
+            return 1
+          }
+          return 0
+        })
         .reduce(
           (acc, key) => ({
             ...acc,
-            [key]: this.currentSoundSensors[key],
+            [key.replace(/^0/, '')]: this.currentSoundSensors[key], // remove first zero for legend legibility (esp with sound sensor s_bin_201_402 and further)
           }),
           {}
         )
@@ -1425,19 +1436,22 @@ export default {
 }
 
 .td--heatmap-label {
-  width: 64px !important;
-  min-width: 64px !important;
-  max-width: 64px !important;
+  width: 76px !important;
+  min-width: 76px !important;
+  max-width: 76px !important;
   height: 13px !important;
   padding: 0 8px 0 0 !important;
+  overflow: hidden;
   text-align: right !important;
-  white-space: no-wrap;
+  white-space: nowrap;
   border-bottom: 0 !important;
   @include for-phone-only {
     width: 51px !important;
     min-width: 51px !important;
     max-width: 51px !important;
     padding: 0 2px 0 0 !important;
+    font-size: 0.55rem !important;
+    text-overflow: ellipsis;
   }
 }
 
