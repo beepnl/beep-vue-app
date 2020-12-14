@@ -108,7 +108,6 @@
               :error-messages="
                 displayPasswordError ? $t('password_is_required') : null
               "
-              validate-on-blur
               @click:append="show1 = !show1"
             />
             <v-text-field
