@@ -287,7 +287,7 @@ export default {
             })
           }
           this.$store.commit('auth/SET_CURRENT_USER', response.data)
-          if (response.data.email_verified == null) {
+          if (response.data.email_verified_at == null) {
             this.successMessage = this.$i18n.t('new_email_verification_sent')
           } else {
             this.successMessage =
