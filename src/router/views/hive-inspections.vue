@@ -417,27 +417,17 @@
                   </div>
                 </span>
                 <span v-if="item.type === 'score'">
-                  <div
-                    v-if="!mobile"
-                    class="d-flex flex-row justify-center flex-wrap"
+                  <div class="d-flex flex-row justify-center flex-wrap"
                     ><v-icon
                       v-for="star in [0, 1, 2, 3, 4]"
                       :key="star + 1"
+                      :x-small="mobile"
                       :class="
-                        star < item.val ? 'primary--text' : 'color-grey-medium'
-                      "
-                      >mdi-star</v-icon
-                    >
-                  </div>
-                  <div
-                    v-if="mobile"
-                    class="d-flex flex-row justify-center flex-wrap"
-                    ><v-icon
-                      v-for="star in [0, 1, 2, 3, 4]"
-                      :key="star + 1"
-                      x-small
-                      :class="
-                        star < item.val ? 'primary--text' : 'hide-on-mobile'
+                        star < item.val
+                          ? 'primary--text'
+                          : mobile
+                          ? 'd-none'
+                          : 'color-grey-medium'
                       "
                       >mdi-star</v-icon
                     >

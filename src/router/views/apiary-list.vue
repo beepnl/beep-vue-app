@@ -535,6 +535,9 @@ export default {
     hiveSets() {
       return this.apiaries.concat(this.groups)
     },
+    mobile() {
+      return this.$vuetify.breakpoint.mobile
+    },
     sortedHiveSets() {
       const sortedHiveSets = this.hiveSets
         .slice()
@@ -663,9 +666,6 @@ export default {
         { title: this.$i18n.t('new_apiary'), route: 'apiary-create' },
         { title: this.$i18n.t('new_group'), route: 'group-create' },
       ]
-    },
-    mobile() {
-      return this.$vuetify.breakpoint.mobile
     },
   },
   mounted() {

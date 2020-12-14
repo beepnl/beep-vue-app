@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="star-wrapper d-flex flex-row flex-wrap hide-on-mobile">
+    <div class="star-wrapper d-flex flex-row flex-wrap">
       <v-icon
         v-for="star in [0, 1, 2, 3, 4]"
         :key="star + 1"
