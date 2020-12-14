@@ -547,7 +547,7 @@ export default {
       this.newApiaryNumber = data + 1
       this.newHive = {
         name: this.$i18n.tc('Location', 1) + ' ' + this.newApiaryNumber,
-        color: '#F29100',
+        color: '#F8B133',
         hex_color: '#F8B133',
         hive_type_id: null,
         hive_amount: 1,

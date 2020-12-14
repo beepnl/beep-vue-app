@@ -266,7 +266,7 @@ export default {
       if (value < 6) return '#5F3F90'
       if (value < 8) return '#243D80'
       if (value < 11) return '#069518'
-      return '#F29100'
+      return '#F8B133'
     },
     inputProvided(id) {
       if (this.object[id] === null) {

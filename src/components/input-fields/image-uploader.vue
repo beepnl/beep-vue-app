@@ -52,6 +52,7 @@
 </template>
 
 <script>
+import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import imageOverlay from '@components/image-overlay.vue'
 
@@ -138,8 +139,8 @@ export default {
         const headers = { 'Content-Type': 'multipart/form-data; boundary=XXX' }
 
         try {
-          const response = await this.$store.dispatch(
-            'images/saveImage',
+          const response = await Api.postRequestWithHeaders(
+            '/images',
             formData,
             headers
           )
@@ -171,8 +172,8 @@ export default {
     },
     async readImages() {
       try {
-        const response = await this.$store.dispatch('images/findAll')
-        this.images = response
+        const response = await Api.readRequest('/images')
+        this.images = response.data
         return true
       } catch (e) {
         console.log(e)

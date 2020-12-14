@@ -20,7 +20,7 @@
           "id": 15957,
           "location_id": 3271,
           "hive_type_id": 54,
-          "color": "#F29100",
+          "color": "#F8B133",
           "name": "Kast 1",
           "created_at": "2019-09-23 12:56:13",
           "type": "dartington_long_deep",
@@ -36,35 +36,35 @@
             {
               "id": 38750,
               "order": 0,
-              "color": "#F29100",
+              "color": "#F8B133",
               "type": "brood",
               "framecount": 10
             },
             {
               "id": 38751,
               "order": 1,
-              "color": "#F29100",
+              "color": "#F8B133",
               "type": "brood",
               "framecount": 10
             },
             {
               "id": 38752,
               "order": 2,
-              "color": "#F29100",
+              "color": "#F8B133",
               "type": "brood",
               "framecount": 10
             },
             {
               "id": 38753,
               "order": 3,
-              "color": "#F29100",
+              "color": "#F8B133",
               "type": "honey",
               "framecount": 10
             },
             {
               "id": 38754,
               "order": 4,
-              "color": "#F29100",
+              "color": "#F8B133",
               "type": "honey",
               "framecount": 10
             }
@@ -103,35 +103,35 @@
             {
               "id": 38755,
               "order": 0,
-              "color": "#F29100",
+              "color": "#F8B133",
               "type": "brood",
               "framecount": 10
             },
             {
               "id": 38756,
               "order": 1,
-              "color": "#F29100",
+              "color": "#F8B133",
               "type": "brood",
               "framecount": 10
             },
             {
               "id": 38757,
               "order": 2,
-              "color": "#F29100",
+              "color": "#F8B133",
               "type": "brood",
               "framecount": 10
             },
             {
               "id": 38758,
               "order": 3,
-              "color": "#F29100",
+              "color": "#F8B133",
               "type": "honey",
               "framecount": 10
             },
             {
               "id": 38759,
               "order": 4,
-              "color": "#F29100",
+              "color": "#F8B133",
               "type": "honey",
               "framecount": 10
             },
@@ -313,7 +313,7 @@
           "id": 15959,
           "location_id": 3272,
           "hive_type_id": 63,
-          "color": "#F29100",
+          "color": "#F8B133",
           "name": "Kast 1",
           "created_at": "2019-09-23 12:56:58",
           "type": "custom",
@@ -329,21 +329,21 @@
             {
               "id": 38760,
               "order": 0,
-              "color": "#F29100",
+              "color": "#F8B133",
               "type": "brood",
               "framecount": 10
             },
             {
               "id": 38761,
               "order": 1,
-              "color": "#F29100",
+              "color": "#F8B133",
               "type": "brood",
               "framecount": 10
             },
             {
               "id": 38762,
               "order": 2,
-              "color": "#F29100",
+              "color": "#F8B133",
               "type": "honey",
               "framecount": 10
             }
@@ -597,7 +597,7 @@
         "id": 1364,
         "location_id": 321,
         "hive_type_id": 43,
-        "color": "#F29100",
+        "color": "#F8B133",
         "name": "Floriade WiFi",
         "created_at": "2018-02-27 13:43:12",
         "type": "spaarkast",
@@ -653,7 +653,7 @@
         "id": 1364,
         "location_id": 321,
         "hive_type_id": 43,
-        "color": "#F29100",
+        "color": "#F8B133",
         "name": "Floriade WiFi",
         "created_at": "2018-02-27 13:43:12",
         "type": "spaarkast",
@@ -709,7 +709,7 @@
         "id": 15957,
         "location_id": 3271,
         "hive_type_id": 54,
-        "color": "#F29100",
+        "color": "#F8B133",
         "name": "Kast 1",
         "created_at": "2019-09-23 12:56:13",
         "type": "dartington_long_deep",
@@ -905,7 +905,7 @@
         "id": 281,
         "location_id": 72,
         "hive_type_id": 43,
-        "color": "#F29100",
+        "color": "#F8B133",
         "name": "Hive 4 - BMSv3",
         "created_at": "2017-08-10 18:16:05",
         "type": "spaarkast",

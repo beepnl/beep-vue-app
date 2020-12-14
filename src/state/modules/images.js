@@ -26,11 +26,6 @@ export const actions = {
     }
     return false
   },
-  saveImage: function({ _ }, data, headers) {
-    return Api.saveImage(data, headers).then((response) => {
-      return response
-    })
-  },
   deleteImage: function({ _ }, data) {
     return Api.deleteImage(data).then((response) => {
       return response

@@ -237,7 +237,7 @@ export default {
         this.activeHive = {
           location_id: this.locationId,
           hive_type_id: null,
-          color: '#F29100',
+          color: '#F8B133',
           name: this.$i18n.tc('Hive', 1) + ' ' + this.newHiveNumber,
           bb_width_cm: null,
           bb_depth_cm: null,

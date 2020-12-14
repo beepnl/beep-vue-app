@@ -481,7 +481,7 @@ export default {
           this.newGroupNumber = this.groups.length + 1
         }
         this.activeGroup = {
-          hex_color: '#F29100',
+          hex_color: '#F8B133',
           name: this.$i18n.tc('Group', 1) + ' ' + this.newGroupNumber,
           description: '',
           hives_selected: [],

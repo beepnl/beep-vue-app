@@ -809,7 +809,7 @@ export default {
       if (value < 6) return '#5F3F90'
       if (value < 8) return '#243D80'
       if (value < 11) return '#069518'
-      return '#F29100'
+      return '#F8B133'
     },
     toggleCategory(string) {
       if (this.hiddenCategories.includes(string)) {
@@ -824,7 +824,7 @@ export default {
       if (value === '2') return '#243D80'
       if (value === '3') return '#5F3F90'
       if (value === '4') return '#8F1619'
-      return '#F29100'
+      return '#F8B133'
     },
     scoreQualityColor(value) {
       if (value === '0') return '#CCC'
@@ -832,7 +832,7 @@ export default {
       if (value === '2') return '#5F3F90'
       if (value === '3') return '#243D80'
       if (value === '4') return '#069518'
-      return '#F29100'
+      return '#F8B133'
     },
     setActiveImage(thumburl) {
       if (this.images !== null) {

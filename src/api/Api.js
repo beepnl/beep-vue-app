@@ -5,6 +5,10 @@ class Api {
     return axios.post(url, payload)
   }
 
+  postRequestWithHeaders(url, payload, headers) {
+    return axios.post(url, payload, { headers })
+  }
+
   putRequest(url, payload) {
     return axios.put(url, payload)
   }
