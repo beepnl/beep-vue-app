@@ -269,7 +269,7 @@ function lazyLoadView(AsyncView) {
     loading: require('@views/_loading.vue').default,
     // Delay before showing the loading component.
     // Default: 200 (milliseconds).
-    delay: 400,
+    delay: 800,
     // A fallback component in case the timeout is exceeded
     // when loading the component.
     error: require('@views/_timeout.vue').default,

@@ -95,7 +95,15 @@
       </v-container>
     </div>
 
-    <div class="hive-inspections-content">
+    <v-container v-if="!ready" class="hive-inspections-content">
+      <div class="loading">
+        <Transition appear>
+          <v-progress-circular size="50" color="primary" indeterminate />
+        </Transition>
+      </div>
+    </v-container>
+
+    <div v-if="ready" class="hive-inspections-content">
       <v-simple-table
         v-if="
           inspections.inspections !== undefined && filteredInspections.length
@@ -563,6 +571,7 @@ export default {
       images: null,
       activeImage: null,
       calendars: ['Google', 'Microsoft', 'Office365'],
+      ready: false,
     }
   },
   computed: {
@@ -712,7 +721,9 @@ export default {
     this.getActiveHive(this.id).then((hive) => {
       this.$store.commit('hives/setActiveHive', hive)
     })
-    this.getAllInspectionsForHiveId()
+    this.getAllInspectionsForHiveId().then(() => {
+      this.ready = true
+    })
     this.readImages()
   },
   methods: {

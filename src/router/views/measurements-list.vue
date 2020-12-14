@@ -1,6 +1,6 @@
 <template>
   <Layout>
-    <div v-if="devices.length > 0" class="period-bar-wrapper">
+    <div v-if="devices.length > 0 && ready" class="period-bar-wrapper">
       <v-container class="period-container">
         <v-row
           class="period-bar d-flex flex-row justify-space-between align-center"
@@ -21,6 +21,7 @@
         </v-row>
       </v-container>
     </div>
+
     <v-container
       v-if="ready"
       :class="devices.length > 0 ? 'measurements-content' : ''"

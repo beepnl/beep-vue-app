@@ -43,8 +43,13 @@
       }}
     </h1>
 
-    <v-form v-else ref="form" v-model="valid" @submit.prevent="saveInspection">
-      <v-toolbar class="save-bar" dense light>
+    <v-form
+      v-else-if="ready"
+      ref="form"
+      v-model="valid"
+      @submit.prevent="saveInspection"
+    >
+      <v-toolbar v-if="ready" class="save-bar" dense light>
         <v-spacer></v-spacer>
         <v-btn
           v-if="selectedChecklist && selectedChecklist.owner && !mobile"
@@ -83,7 +88,7 @@
       </v-toolbar>
 
       <v-container
-        v-if="activeInspection && selectedChecklist !== null"
+        v-if="activeInspection && selectedChecklist !== null && ready"
         class="content-container"
       >
         <v-row>
@@ -349,6 +354,14 @@
       </v-container>
     </v-form>
 
+    <v-container v-if="!ready">
+      <div class="loading">
+        <Transition appear>
+          <v-progress-circular size="50" color="primary" indeterminate />
+        </Transition>
+      </div>
+    </v-container>
+
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
       <v-btn color="blue" text @click="snackbar.show = false">
@@ -399,6 +412,7 @@ export default {
       showCategoriesByIndex: [],
       showLoadingIcon: false,
       valid: false,
+      ready: false,
     }
   },
   computed: {
@@ -496,6 +510,7 @@ export default {
     }
     this.getActiveHive(this.id).then((hive) => {
       this.$store.commit('hives/setActiveHive', hive)
+      this.ready = true
     })
     this.$store.commit('inspections/setSelectedInspectionId', this.inspectionId)
     this.setInspectionEdited(false)
