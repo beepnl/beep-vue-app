@@ -49,6 +49,19 @@
     }
   }
 }
+.v-tabs {
+  .v-tab {
+    &:hover::before {
+      opacity: 0 !important;
+    }
+  }
+  .v-tab--active {
+    &:hover::before {
+      opacity: 0 !important;
+    }
+  }
+}
+
 .v-toolbar__content {
   // height: 48px !important;
   .v-toolbar__title {
@@ -96,6 +109,21 @@
       margin-top: 6px !important;
       @include for-phone-only {
         margin-top: 3px !important;
+      }
+    }
+  }
+  &.beep--large {
+    padding-top: 0 !important;
+    font-size: 2rem !important;
+
+    &.v-text-field {
+      .v-input__control .v-input__slot {
+        height: 45px !important;
+        min-height: 45px !important;
+      }
+      input {
+        padding: 0 0 4px !important;
+        margin-top: 8px !important;
       }
     }
   }

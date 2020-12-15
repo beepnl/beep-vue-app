@@ -13,11 +13,19 @@
       >
         <v-tabs-slider></v-tabs-slider>
 
-        <v-tab v-for="(tab, i) in tabs" :key="i" :href="`#tab-${i}`">
-          <span v-if="tab.title"
-            ><v-icon v-if="tab.icon">{{ tab.icon }}</v-icon
-            ><span v-text="mobile ? tab.title_mobile : tab.title"></span>
-          </span>
+        <v-tab
+          v-for="(tab, i) in tabs"
+          :key="i"
+          class="d-flex flex-row apiary-tab"
+          :href="`#tab-${i}`"
+        >
+          <v-icon v-if="tab.title && tab.icon" class="mt-1 mr-1">{{
+            tab.icon
+          }}</v-icon
+          ><span
+            v-if="tab.title"
+            v-text="mobile ? tab.title_mobile : tab.title"
+          ></span>
         </v-tab>
 
         <v-tab-item value="tab-0">
@@ -93,7 +101,7 @@
                         v-model="newHive.name"
                         :label="`${$t('Name')}*`"
                         :placeholder="`${$t('Name')}`"
-                        class="apiary-create-name"
+                        class="beep--large"
                         counter="30"
                         :rules="requiredRule"
                         required
@@ -352,7 +360,7 @@
                 tile
                 outlined
                 color="primary"
-                class="mr-2"
+                class="mr-3"
                 type="submit"
                 :disabled="!valid"
               >
@@ -703,7 +711,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .apiary-create {
   &.v-tabs--icons-and-text > .v-tabs-bar {
     .v-tab {
@@ -730,24 +738,27 @@ export default {
           font-size: 24px;
         }
       }
+      &.v-tab--active {
+        background-color: $color-primary;
+        .v-icon {
+          &::before {
+            color: $color-black;
+          }
+        }
+      }
     }
+  }
+
+  .apiary-tab {
+    white-space: nowrap;
   }
 
   .browse-tabs-bar {
-    padding: 8px 20px;
+    padding: 8px 16px;
     background-color: $color-orange-light !important;
     border-bottom: 1px solid #fff5e2 !important;
     @include for-phone-only {
-      padding: 4px 4px;
-    }
-  }
-  .apiary-create-name {
-    padding-top: 0;
-    font-size: 2rem;
-
-    &.v-input input {
-      min-height: 45px !important;
-      max-height: 45px !important;
+      padding: 4px 0;
     }
   }
 
@@ -771,12 +782,6 @@ export default {
     }
   }
 
-  .next {
-    margin-right: -6px;
-  }
-  .prev {
-    margin-left: -6px;
-  }
   .bounce {
     animation: bounce 2s infinite;
   }

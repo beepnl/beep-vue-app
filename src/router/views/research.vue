@@ -565,7 +565,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .research-item {
   padding: 12px;
   border-color: $color-primary !important;
@@ -575,10 +575,8 @@ export default {
 }
 
 .research-avatar {
-  .v-responsive__content {
-    border: 1px solid $color-primary;
-    border-radius: 4px;
-  }
+  border: 1px solid $color-primary !important;
+  border-radius: 4px !important;
 }
 
 .research-item-col {
@@ -586,9 +584,9 @@ export default {
 }
 
 .research-property {
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: $color-grey-dark;
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+  color: $color-grey-dark !important;
   letter-spacing: 0.0333333333em !important;
 }
 </style>
