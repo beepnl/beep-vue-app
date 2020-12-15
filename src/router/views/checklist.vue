@@ -1,10 +1,16 @@
 <template>
   <Layout
-    :title="`${$t('edit')} ${$tc('checklist', 1)}`"
+    :title="
+      `${
+        checklistsPage
+          ? this.$i18n.tc('Checklist_template', 2)
+          : $t('edit') + ' ' + $tc('checklist', 1)
+      }`
+    "
     :edited="checklistEdited"
   >
     <h1
-      v-if="activeChecklist && !activeChecklist.owner"
+      v-if="activeChecklist && !activeChecklist.owner && !checklistsPage"
       class="unauthorized-title"
     >
       {{
@@ -18,7 +24,12 @@
       }}
     </h1>
 
-    <v-form ref="form" v-model="valid" @submit.prevent="saveChecklist">
+    <v-form
+      v-if="(activeChecklist && activeChecklist.owner) || checklistsPage"
+      ref="form"
+      v-model="valid"
+      @submit.prevent="saveChecklist"
+    >
       <v-toolbar class="save-bar" dense light>
         <v-spacer></v-spacer>
         <v-btn
@@ -27,7 +38,7 @@
           color="primary"
           class="mr-1"
           type="submit"
-          :disabled="!valid"
+          :disabled="!valid || (activeChecklist && !activeChecklist.owner)"
         >
           <v-progress-circular
             v-if="showLoadingIcon"
@@ -42,8 +53,19 @@
         </v-btn>
       </v-toolbar>
 
+      <v-container v-if="!ready">
+        <div class="loading">
+          <Transition appear>
+            <v-progress-circular size="50" color="primary" indeterminate />
+          </Transition>
+        </div>
+      </v-container>
+
       <v-container
-        v-if="activeChecklist && activeChecklist.owner"
+        v-if="
+          ready &&
+            ((activeChecklist && activeChecklist.owner) || checklistsPage)
+        "
         class="content-container"
       >
         <v-row>
@@ -59,6 +81,26 @@
               {{ errorMessage }}
             </v-alert>
           </v-col>
+          <v-col
+            v-if="
+              checklistsPage && checklists !== null && checklists.length > 1
+            "
+            class="d-flex"
+            cols="12"
+            sm="4"
+          >
+            <v-select
+              v-model="selectedChecklistId"
+              class="select-checklist"
+              :items="checklists"
+              :item-text="getText"
+              item-value="id"
+              hide-details
+              :label="`${$t('Select') + ' ' + $tc('checklist', 1)}`"
+              @input="selectChecklist($event)"
+            >
+            </v-select>
+          </v-col>
           <v-col cols="12" sm="6" md="4">
             <v-text-field
               v-if="activeChecklist"
@@ -67,17 +109,36 @@
               :placeholder="`${$t('Name')}`"
               class="checklist-name"
               counter="50"
+              :disabled="!activeChecklist.owner"
               @input="validateText($event, 'name', 50)"
             >
             </v-text-field>
           </v-col>
           <v-col cols="12">
+            <p
+              v-if="activeChecklist && !activeChecklist.owner"
+              class="description"
+              >{{
+                $t('sorry') +
+                  ', ' +
+                  $tc('checklist', 1) +
+                  ' "' +
+                  activeChecklist.name +
+                  '" ' +
+                  $t('not_editable')
+              }}</p
+            >
             <div class="beep-label" v-text="`${$t('Checklist_items')}`"></div>
-            <p class="description">{{ $t('edit_hive_checklist') }}</p>
+            <p
+              v-if="activeChecklist && activeChecklist.owner"
+              class="description"
+              >{{ $t('edit_hive_checklist') }}</p
+            >
             <checklistTree
               v-if="activeChecklist && activeChecklistTaxonomy"
               :items="activeChecklistTaxonomy"
               :selected="activeChecklist.category_ids"
+              :disabled="!activeChecklist.owner"
               @update-categories="updateCategoryIds($event)"
             ></checklistTree>
           </v-col>
@@ -104,17 +165,23 @@ export default {
   data: function() {
     return {
       activeChecklist: null,
-      activeChecklistId: null,
       activeChecklistTaxonomy: null,
       errorMessage: null,
       checklistEdited: false,
       valid: false,
       showLoadingIcon: false,
+      checklists: null,
+      selectedChecklistId: null,
+      ready: false,
     }
   },
   computed: {
     id() {
-      return parseInt(this.$route.params.id)
+      if (this.checklistsPage) {
+        return this.selectedChecklistId
+      } else {
+        return parseInt(this.$route.params.id)
+      }
     },
     hiveId() {
       return parseInt(this.$route.query.hive_id) || null
@@ -125,6 +192,9 @@ export default {
     locale() {
       return this.$i18n.locale
     },
+    checklistsPage() {
+      return this.$route.name === 'checklists'
+    },
   },
   watch: {
     locale() {
@@ -132,10 +202,29 @@ export default {
     },
   },
   created() {
-    this.getChecklistById(this.id)
-    this.getChecklistTaxonomy(this.id)
+    if (this.checklistsPage) {
+      this.getChecklists().then(() => {
+        this.getChecklistById(this.selectedChecklistId)
+        this.getChecklistTaxonomy(this.selectedChecklistId)
+        this.ready = true
+      })
+    } else {
+      this.getChecklistById(this.id)
+      this.getChecklistTaxonomy(this.id)
+      this.ready = true
+    }
   },
   methods: {
+    async getChecklists() {
+      try {
+        const response = await Api.readRequest('/inspections/lists')
+        this.checklists = response.data.checklists
+        this.selectedChecklistId = response.data.checklist.id
+        return response
+      } catch (e) {
+        console.log(e)
+      }
+    },
     async getChecklistById(id) {
       try {
         const response = await this.$store.dispatch(
@@ -146,7 +235,6 @@ export default {
           this.$router.push({ name: '404', params: { resource: 'checklist' } })
         }
         this.activeChecklist = response.checklist
-        this.activeChecklistId = response.checklist.id
         return response.checklist
       } catch (e) {
         console.log(e)
@@ -175,6 +263,7 @@ export default {
         }
         var checklistUpdate = {
           id: this.activeChecklist.id,
+          name: this.activeChecklist.name,
           categories: categoryIds,
         }
         try {
@@ -225,15 +314,31 @@ export default {
         }
       }
     },
+    checkIfItemIsNotOwned(item) {
+      return item.owner === false
+    },
+    getText(item) {
+      const name = item.name
+      var research = ''
+      if (item.researches.length > 0) {
+        research =
+          ' (' + this.$i18n.t('research') + ': ' + item.researches[0] + ')'
+      }
+      return name + research
+    },
+    selectChecklist(id) {
+      this.getChecklistById(id)
+      this.getChecklistTaxonomy(id)
+    },
+    updateCategoryIds(event) {
+      this.checklistEdited = true
+      this.activeChecklist.category_ids = event
+    },
     validateText(value, property, maxLength) {
       if (value !== null && value.length > maxLength + 1) {
         value = value.substring(0, maxLength)
         this.activeChecklist[property] = value
       }
-    },
-    updateCategoryIds(event) {
-      this.checklistEdited = true
-      this.activeChecklist.category_ids = event
     },
   },
 }

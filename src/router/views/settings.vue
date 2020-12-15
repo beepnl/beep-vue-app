@@ -1,19 +1,5 @@
 <template>
   <Layout :title="`${$t('settings_title')}`">
-    <v-list two-line>
-      <v-list-item>
-        <v-list-item-avatar>
-          <v-icon color="primary">mdi-nfc</v-icon>
-        </v-list-item-avatar>
-        <v-list-item-content>
-          <v-list-item-title>BEEP HQ</v-list-item-title>
-          <v-list-item-subtitle>Driebergen</v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
-    </v-list>
-
-    <v-divider></v-divider>
-
     <v-list two-line flat>
       <v-list-item
         v-for="(item, i) in items"
@@ -59,6 +45,7 @@ export default {
         {
           icon: 'mdi-format-list-checks',
           title: this.$i18n.tc('Checklist_template', 2),
+          route: 'checklists',
           subtitle: 'personal, shared, research',
         },
         {

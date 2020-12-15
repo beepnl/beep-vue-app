@@ -93,7 +93,7 @@
     >
       <v-row dense>
         <ScaleTransition
-          :duration="300"
+          :duration="500"
           group
           class="diary-item-transition-wrapper"
         >

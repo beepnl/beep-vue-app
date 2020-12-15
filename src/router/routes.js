@@ -104,6 +104,14 @@ export default [
     meta: {
       authRequired: true,
     },
+    path: '/checklists/',
+    name: 'checklists',
+    component: () => lazyLoadView(import('@views/checklist.vue')),
+  },
+  {
+    meta: {
+      authRequired: true,
+    },
     path: '/devices',
     name: 'devices',
     component: () => lazyLoadView(import('@views/devices.vue')),

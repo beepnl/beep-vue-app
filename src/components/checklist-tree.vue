@@ -15,30 +15,38 @@
       hide-details
     ></v-text-field>
 
-    <el-tree
-      ref="tree"
-      class="filter-tree"
-      :data="items"
-      show-checkbox
-      check-strictly
-      :default-checked-keys="selected"
-      node-key="id"
-      render-after-expand
-      expand-on-click-node
-      highlight-current
-      :props="defaultProps"
-      draggable
-      :allow-drop="allowDrop"
-      :filter-node-method="filterNode"
-      @check-change="updateCategories"
-    >
-    </el-tree>
+    <el-form :disabled="disabled">
+      <el-form-item>
+        <el-tree
+          ref="tree"
+          class="filter-tree"
+          :data="items"
+          show-checkbox
+          check-strictly
+          :default-checked-keys="selected"
+          node-key="id"
+          render-after-expand
+          expand-on-click-node
+          highlight-current
+          :props="defaultProps"
+          draggable
+          :allow-drop="allowDrop"
+          :filter-node-method="filterNode"
+          @check-change="updateCategories"
+        >
+        </el-tree>
+      </el-form-item>
+    </el-form>
   </v-card>
 </template>
 
 <script>
 export default {
   props: {
+    disabled: {
+      type: Boolean,
+      required: false,
+    },
     items: {
       type: Array,
       required: true,
