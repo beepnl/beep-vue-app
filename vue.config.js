@@ -4,6 +4,7 @@ const appConfig = require('./src/app.config')
 /** @type import('@vue/cli-service').ProjectOptions */
 module.exports = {
   runtimeCompiler: true,
+  productionSourceMap: false,
   // https://github.com/neutrinojs/webpack-chain/tree/v4#getting-started
   chainWebpack(config) {
     // We provide the app's title in Webpack's name field, so that
@@ -26,8 +27,8 @@ module.exports = {
     )
   },
   css: {
-    // Enable CSS source maps.
-    sourceMap: true,
+    // Enable CSS source maps. Disable for production build!
+    sourceMap: false,
     loaderOptions: {
       scss: {
         prependData: `@import "~@assets/css/mixins.scss"; @import "~@assets/css/variables.scss"; @import "~@assets/css/main.scss"; @import "~@assets/css/icons.scss"; @import "~@assets/css/typography.scss"; @import "~@assets/css/grid.scss"; @import "~@assets/css/vendors.scss";`,
