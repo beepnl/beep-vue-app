@@ -227,15 +227,12 @@ export default {
     },
     async getChecklistById(id) {
       try {
-        const response = await this.$store.dispatch(
-          'inspections/getChecklistById',
-          id
-        )
+        const response = await Api.readRequest('/inspections/lists?id=', id)
         if (response.length === 0) {
           this.$router.push({ name: '404', params: { resource: 'checklist' } })
         }
-        this.activeChecklist = response.checklist
-        return response.checklist
+        this.activeChecklist = response.data.checklist
+        return response.data.checklist
       } catch (e) {
         console.log(e)
         this.$router.push({ name: '404', params: { resource: 'checklist' } })
@@ -296,6 +293,9 @@ export default {
             } else {
               this.$router.push(-1).catch((error) => {
                 if (error.name === 'NavigationDuplicated') {
+                  if (this.checklistsPage) {
+                    this.getChecklists()
+                  }
                   this.getChecklistById(this.id)
                   this.getChecklistTaxonomy(this.id)
                   this.showLoadingIcon = false

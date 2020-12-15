@@ -531,12 +531,9 @@ export default {
     },
     async getChecklistById(id) {
       try {
-        const response = await this.$store.dispatch(
-          'inspections/getChecklistById',
-          id
-        )
-        this.selectedChecklist = response.checklist
-        this.selectedChecklistId = response.checklist.id
+        const response = await Api.readRequest('/inspections/lists?id=', id)
+        this.selectedChecklist = response.data.checklist
+        this.selectedChecklistId = response.data.checklist.id
 
         if (
           this.selectedChecklist !== null &&
@@ -591,9 +588,9 @@ export default {
     },
     async getChecklists() {
       try {
-        const response = await this.$store.dispatch('inspections/getChecklists')
-        this.checklists = response.checklists
-        return response
+        const response = await Api.readRequest('/inspections/lists')
+        this.checklists = response.data.checklists
+        return response.data
       } catch (e) {
         console.log(e)
       }

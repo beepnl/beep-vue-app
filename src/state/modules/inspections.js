@@ -2,12 +2,10 @@ import createResource from '@utils/store/vuex-resource'
 import * as Api from '@api/inspections.js'
 
 const other = {
-  index: 'GET inspections/lists',
   read: 'GET inspections/hive/:id',
   create: 'POST inspections/store',
   update: 'POST inspections/store',
   delete: 'DELETE inspections/:id',
-  getchecklistbyid: 'GET inspections/lists?id=:id',
   getinspectionbyid: 'GET inspections/:id',
 }
 
@@ -50,20 +48,6 @@ export const actions = {
     const response = resource.endpoint.read(hiveId)
     if (response) {
       return response
-    }
-    return false
-  },
-  getChecklists: function({ _ }) {
-    const checklists = resource.endpoint.index()
-    if (checklists) {
-      return checklists
-    }
-    return false
-  },
-  getChecklistById: function({ _ }, id) {
-    const checklist = resource.endpoint.getchecklistbyid(id)
-    if (checklist) {
-      return checklist
     }
     return false
   },
