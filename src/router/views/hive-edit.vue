@@ -26,7 +26,7 @@
       >
         <v-spacer></v-spacer>
         <v-icon
-          v-if="activeHive.owner && !queenEdit"
+          v-if="activeHive.owner && !queenEditMode"
           dark
           class="mr-4"
           color="red"
@@ -34,7 +34,7 @@
           >mdi-delete</v-icon
         >
         <v-btn
-          v-if="!queenEdit"
+          v-if="!queenEditMode"
           class="mr-n2"
           icon
           type="submit"
@@ -54,7 +54,7 @@
         </v-btn>
 
         <v-btn
-          v-if="queenEdit"
+          v-if="queenEditMode"
           tile
           outlined
           color="primary"
@@ -83,7 +83,7 @@
         "
         class="content-container"
       >
-        <v-row v-if="!queenEdit">
+        <v-row v-if="!queenEditMode">
           <v-col cols="12" sm="8" md="6" lg="5">
             <v-text-field
               v-if="activeHive"
@@ -133,9 +133,15 @@
           </v-col>
         </v-row>
 
-        <HiveEditDetails v-if="!queenEdit" :hive="activeHive"></HiveEditDetails>
+        <HiveEditDetails
+          v-if="!queenEditMode"
+          :hive="activeHive"
+        ></HiveEditDetails>
 
-        <QueenEditDetails :queen="activeHive.queen"></QueenEditDetails>
+        <QueenEditDetails
+          v-if="queenEditMode || hiveCreateMode"
+          :queen="activeHive.queen"
+        ></QueenEditDetails>
       </v-container>
     </v-form>
 
@@ -200,17 +206,17 @@ export default {
   },
   computed: {
     ...mapGetters('hives', ['hiveEdited']),
+    hiveCreateMode() {
+      return this.$route.name === 'hive-create'
+    },
     id() {
       return parseInt(this.$route.params.id)
     },
     locationId() {
       return parseInt(this.$route.query.locationId) || null
     },
-    queenEdit() {
-      if (typeof this.$route.query.queenEdit !== 'undefined') {
-        return this.$route.name === 'queen-edit' || this.$route.query.queenEdit
-      }
-      return false
+    queenEditMode() {
+      return this.$route.name === 'queen-edit'
     },
     requiredRule: function() {
       return [
@@ -227,7 +233,7 @@ export default {
   created() {
     this.readApiaries().then((response) => {
       // If hive-create route is used, make empty hive object
-      if (this.locationId !== null) {
+      if (this.hiveCreateMode && this.locationId !== null) {
         if (this.apiaries.length > 0) {
           const apiary = this.apiaries.filter((apiary) => {
             return apiary.id === this.locationId
@@ -389,7 +395,7 @@ export default {
     getTitle() {
       if (this.locationId) {
         return this.$i18n.t('create_new') + ' ' + this.$i18n.tc('hive', 1)
-      } else if (this.queenEdit && this.activeHive !== null) {
+      } else if (this.queenEditMode && this.activeHive !== null) {
         const queenName = this.activeHive.queen.name || ''
         return (
           this.$i18n.t('edit') +
@@ -417,7 +423,7 @@ export default {
       this.$store.commit('hives/setHiveEdited', bool)
     },
     unauthorizedText() {
-      if (this.queenEdit) {
+      if (this.queenEditMode) {
         return (
           this.$i18n.t('sorry') +
           ', ' +
