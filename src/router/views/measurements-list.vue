@@ -370,8 +370,13 @@
                                 )}`
                               "
                             >
-                              <span class="hover-overlay"></span>
-                              <span class="beep-tooltip"
+                              <span
+                                v-if="measurement[soundSensor] !== null"
+                                class="hover-overlay"
+                              ></span>
+                              <span
+                                v-if="measurement[soundSensor] !== null"
+                                class="beep-tooltip"
                                 >{{ momentAll(measurement.time) }}<br />{{
                                   index
                                 }}:
@@ -869,11 +874,7 @@ export default {
       }
     },
     displayValue(input) {
-      return input !== null
-        ? Math.round(input) !== input
-          ? input.toFixed(2)
-          : input
-        : '-'
+      return Math.round(input) !== input ? input.toFixed(2) : input
     },
     formatMeasurementData(measurementData) {
       if (
@@ -1182,7 +1183,7 @@ export default {
       margin-bottom: 3px;
       cursor: pointer;
       &.ct-legend--no-pointer {
-        cursor: none;
+        cursor: auto;
       }
     }
 
@@ -1413,6 +1414,7 @@ export default {
   max-width: 8px !important;
   height: 13px !important;
   padding: 0 !important;
+  cursor: auto !important;
   .beep-tooltip,
   .hover-overlay {
     display: none;
