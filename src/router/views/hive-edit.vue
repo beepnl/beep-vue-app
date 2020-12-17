@@ -229,6 +229,27 @@ export default {
             this.$i18n.t('is_required'),
       ]
     },
+    unauthorizedText() {
+      if (this.queenEditMode) {
+        return (
+          this.$i18n.t('sorry') +
+          ', ' +
+          this.$i18n.t('queen') +
+          ' ' +
+          this.$i18n.t('not_editable')
+        )
+      } else {
+        return (
+          this.$i18n.t('sorry') +
+          ', ' +
+          this.$i18n.tc('hive', 1) +
+          ' "' +
+          this.activeHive.name +
+          '" ' +
+          this.$i18n.t('not_editable')
+        )
+      }
+    },
   },
   created() {
     this.readApiaries().then((response) => {
@@ -421,27 +442,6 @@ export default {
     },
     setHiveEdited(bool) {
       this.$store.commit('hives/setHiveEdited', bool)
-    },
-    unauthorizedText() {
-      if (this.queenEditMode) {
-        return (
-          this.$i18n.t('sorry') +
-          ', ' +
-          this.$i18n.t('queen') +
-          ' ' +
-          this.$i18n.t('not_editable')
-        )
-      } else {
-        return (
-          this.$i18n.t('sorry') +
-          ', ' +
-          this.$i18n.tc('hive', 1) +
-          ' "' +
-          this.activeHive.name +
-          '" ' +
-          this.$i18n.t('not_editable')
-        )
-      }
     },
     updateHiveProperties(event, property) {
       var value = null

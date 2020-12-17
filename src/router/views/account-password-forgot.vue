@@ -111,9 +111,9 @@ export default {
           const response = await Api.postRequest('/user/reminder', {
             email: this.emailToSubmit,
           })
-          // if (response.data === 'reminder_sent') { TODO: enable when 400 errors are changed into 500 errors
-          this.reminderSent = true
-          // }
+          if (response.data.message === 'reminder_sent') {
+            this.reminderSent = true
+          }
           return response
         } catch (error) {
           if (error.response) {

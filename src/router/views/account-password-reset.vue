@@ -171,9 +171,9 @@ export default {
             '/user/reset',
             this.resetPasswordRequest
           )
-          console.log(response.data.data)
-          this.passwordReset = true
-
+          if (response.data.data.api_token !== null) {
+            this.passwordReset = true
+          }
           return response
         } catch (error) {
           if (error.response) {
