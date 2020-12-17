@@ -285,111 +285,14 @@
                     class="overline mt-n4 mt-sm-3 mb-3 text-center"
                     v-text="$t('Sound_measurements')"
                   ></div>
-                  <div class="d-flex justify-center">
-                    <table class="table-heatmap--legend mb-3">
-                      <tr>
-                        <td
-                          v-for="index in 118"
-                          :key="'hsl-color ' + index"
-                          class="td--heatmap-legend"
-                          :style="
-                            `background-color:hsl(${236 - index * 2},100%,50%);`
-                          "
-                        ></td>
-                      </tr>
-                      <tr>
-                        <td v-for="index in 118" :key="'hsl-text ' + index">
-                          <span
-                            v-if="index === 1 || index === 118"
-                            v-text="
-                              index === 118
-                                ? displayValue(maxSoundSensorValue)
-                                : '0'
-                            "
-                          >
-                          </span>
-                        </td>
-                      </tr>
-                    </table>
-                  </div>
-                  <div
-                    :class="interval === 'hour' ? 'd-flex justify-center' : ''"
+                  <MeasurementsChartHeatmap
+                    :data="measurementsForHeatmap"
+                    :max-value="maxSoundSensorValue"
+                    :y-axis="sortedCurrentSoundSensors"
+                    :modulo-number="moduloNumber"
+                    :interval="interval"
                   >
-                    <v-simple-table
-                      :class="
-                        `table-heatmap ${
-                          interval === 'hour' ? 'table-heatmap--hour' : ''
-                        }`
-                      "
-                      dense
-                      light
-                    >
-                      <template v-slot>
-                        <tfoot>
-                          <tr>
-                            <td></td>
-                            <td
-                              v-for="(measurementTime,
-                              h) in measurementsForHeatmap"
-                              :key="'measurement-time ' + h"
-                              class="tf--heatmap"
-                            >
-                              <div class="tf--heatmap-label ml-n8 mt-n3">
-                                <span class="tf--heatmap-label-span">
-                                  {{
-                                    h % moduloNumber === 0
-                                      ? momentFromISO8601(measurementTime.time)
-                                      : ''
-                                  }}
-                                </span>
-                              </div>
-                            </td>
-                          </tr>
-                        </tfoot>
-                        <tbody>
-                          <tr
-                            v-for="(soundSensor,
-                            index) in sortedCurrentSoundSensors"
-                            :key="soundSensor + index"
-                            class="tr--heatmap"
-                          >
-                            <td class="td--heatmap-label">{{ index }}</td>
-
-                            <td
-                              v-for="(measurement, i) in measurementsForHeatmap"
-                              :key="'measurement ' + i"
-                              :class="
-                                `td--heatmap ${
-                                  i % moduloNumber === 0 ? 'td-border' : ''
-                                }`
-                              "
-                              :style="
-                                `background-color: ${calculateHeatmapColor(
-                                  // eslint-disable-next-line vue/comma-dangle
-                                  measurement[soundSensor]
-                                )}`
-                              "
-                            >
-                              <span
-                                v-if="measurement[soundSensor] !== null"
-                                class="hover-overlay"
-                              ></span>
-                              <span
-                                v-if="measurement[soundSensor] !== null"
-                                class="beep-tooltip"
-                                >{{ momentAll(measurement.time) }}<br />{{
-                                  index
-                                }}:
-                                {{
-                                  displayValue(measurement[soundSensor])
-                                }}</span
-                              >
-                            </td>
-                          </tr>
-                        </tbody>
-                      </template>
-                    </v-simple-table>
-                  </div>
+                  </MeasurementsChartHeatmap>
                 </v-col>
                 <v-col v-if="debugSensorsPresent" cols="12" class="mb-sm-4">
                   <div
@@ -446,6 +349,7 @@
 <script>
 import Api from '@api/Api'
 import Layout from '@layouts/main.vue'
+import MeasurementsChartHeatmap from '@components/measurements-chart-heatmap.vue'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import 'chartist/dist/chartist.min.css'
@@ -457,7 +361,12 @@ import 'chartist-plugin-tooltips-updated'
 import 'chartist-plugin-tooltips-updated/dist/chartist-plugin-tooltip.css'
 
 export default {
-  components: { Layout, SlideYUpTransition, Treeselect },
+  components: {
+    Layout,
+    MeasurementsChartHeatmap,
+    SlideYUpTransition,
+    Treeselect,
+  },
   mixins: [sensorMixin],
   data() {
     return {
@@ -729,12 +638,6 @@ export default {
         console.log('Error: ', error)
       }
     },
-    calculateHeatmapColor(value) {
-      const max = this.maxSoundSensorValue
-      return value !== null
-        ? 'hsl(' + (235 + (value / max) * -235).toFixed(0) + ', 100%, 50%)'
-        : 'hsl(360, 100%, 100%)'
-    },
     calculateProgress(min, max, value) {
       if (value > max) {
         return 100
@@ -872,9 +775,6 @@ export default {
           },
         },
       }
-    },
-    displayValue(input) {
-      return Math.round(input) !== input ? input.toFixed(2) : input
     },
     formatMeasurementData(measurementData) {
       if (
@@ -1359,135 +1259,5 @@ export default {
 
 .chartist-tooltip-value {
   display: none !important;
-}
-
-.table-heatmap--legend {
-  border-spacing: 0;
-  .td--heatmap-legend {
-    width: 1px;
-    height: 13px;
-    padding: 0;
-  }
-}
-
-.table-heatmap {
-  font-size: 0.7rem !important;
-  line-height: 13px !important;
-  @include for-phone-only {
-    font-size: 0.6rem !important;
-  }
-  &.table-heatmap--hour {
-    margin-left: -100px;
-    @include for-tablet-portrait-up {
-      width: 90%;
-    }
-    @include for-tablet-landscape-up {
-      width: 70%;
-    }
-    @include for-desktop-up {
-      width: 50%;
-    }
-    @include for-big-desktop-up {
-      width: 40%;
-    }
-  }
-}
-
-.tr--heatmap {
-  height: 13px !important;
-  max-height: 13px !important;
-}
-
-.tf--heatmap-label,
-.td--heatmap-label {
-  font-size: 0.7rem !important;
-  font-weight: 400 !important;
-  color: $color-grey-medium !important;
-  white-space: inherit;
-  @include for-phone-only {
-    font-size: 0.6rem !important;
-  }
-}
-
-.td--heatmap {
-  width: 8px !important;
-  max-width: 8px !important;
-  height: 13px !important;
-  padding: 0 !important;
-  cursor: auto !important;
-  .beep-tooltip,
-  .hover-overlay {
-    display: none;
-  }
-  &:hover {
-    cursor: pointer;
-    .hover-overlay {
-      display: block;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.6);
-      opacity: 0.5;
-    }
-    .beep-tooltip {
-      position: absolute;
-      display: block;
-      width: 175px;
-      padding: 4px 8px;
-      margin-top: -65px;
-      margin-left: -86px;
-      line-height: 1rem;
-      text-align: center;
-      &::before {
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        content: ' ';
-      }
-    }
-  }
-}
-
-.td--heatmap-label {
-  width: 76px !important;
-  min-width: 76px !important;
-  max-width: 76px !important;
-  height: 13px !important;
-  padding: 0 8px 0 0 !important;
-  overflow: hidden;
-  text-align: right !important;
-  white-space: nowrap;
-  border-bottom: 0 !important;
-  @include for-phone-only {
-    width: 51px !important;
-    min-width: 51px !important;
-    max-width: 51px !important;
-    padding: 0 2px 0 0 !important;
-    font-size: 0.55rem !important;
-    text-overflow: ellipsis;
-  }
-}
-
-.tf--heatmap-label {
-  position: absolute;
-  min-width: 42px;
-  text-align: right;
-  transform: rotate(-45deg);
-}
-
-.tf--heatmap-label-span {
-  position: relative;
-  justify-content: flex-end;
-  text-align: right;
-}
-
-.tf--heatmap {
-  width: 8px !important;
-  max-width: 8px !important;
-  padding: 0 !important;
-  line-height: 42px;
-}
-
-.td-border {
-  border-left: 1px solid rgb(0, 0, 0, 0.1);
 }
 </style>
