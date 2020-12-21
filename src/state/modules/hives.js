@@ -18,13 +18,6 @@ export const getters = {
   hiveEdited: (state) => {
     return state.hiveEdited
   },
-  getHivesForApiary: (state) => (apiaryId) => {
-    return (
-      (state.data.hives &&
-        state.data.hives.filter((hive) => hive.location_id === apiaryId)) ||
-      []
-    )
-  },
 }
 export const mutations = {
   ...resource.mutations,

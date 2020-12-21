@@ -105,14 +105,19 @@ export default {
         }
         // empty input field even if deleting image gives error
         this.object[id] = null
-        const response = await this.$store.dispatch('images/deleteImage', data)
+        const response = await Api.deleteRequest('images', '', data)
         if (!response) {
           this.snackbar.text = this.$i18n.t('something_wrong')
           this.snackbar.show = true
         }
       } catch (error) {
-        console.log(error)
-        this.snackbar.text = this.$i18n.t('something_wrong')
+        if (error.response) {
+          console.log('Error: ', error.response)
+          this.snackbar.text = error.response
+        } else {
+          console.log('Error: ', error)
+          this.snackbar.text = this.$i18n.t('something_wrong')
+        }
         this.snackbar.show = true
       }
     },
@@ -159,14 +164,14 @@ export default {
             this.readImages()
           }
         } catch (error) {
-          console.log('Image upload error: ', error)
-          if (
-            typeof error.data !== 'undefined' &&
-            typeof error.data.message !== 'undefined'
-          ) {
-            this.snackbar.text = error.data.message
-            this.snackbar.show = true
+          if (error.response) {
+            console.log('Error: ', error.response)
+            this.snackbar.text = error.response
+          } else {
+            console.log('Error: ', error)
+            this.snackbar.text = this.$i18n.t('something_wrong')
           }
+          this.snackbar.show = true
         }
       }
     },
@@ -175,8 +180,12 @@ export default {
         const response = await Api.readRequest('/images')
         this.images = response.data
         return true
-      } catch (e) {
-        console.log(e)
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
       }
     },
     confirmDeleteImage(id) {

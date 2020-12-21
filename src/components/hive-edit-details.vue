@@ -195,8 +195,8 @@
 </template>
 
 <script>
+import Api from '@api/Api'
 import HiveFactory from '@components/hive-factory.vue'
-import { mapGetters } from 'vuex'
 import VueNumberInput from '@chenfengyuan/vue-number-input'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
@@ -226,10 +226,11 @@ export default {
       overlay: false,
       colorPreview: false,
       colorPickerValue: '',
+      hiveDimensionsList: {},
+      hiveTypesList: [],
     }
   },
   computed: {
-    ...mapGetters('taxonomy', ['hiveDimensionsList', 'hiveTypesList']),
     locale() {
       return this.$i18n.locale
     },
@@ -303,14 +304,16 @@ export default {
   methods: {
     async readTaxonomy() {
       try {
-        const response = await this.$store.dispatch('taxonomy/index')
-        if (response.length === 0) {
-          this.$router.push({ name: '404' })
-        }
+        const response = await Api.readRequest('/taxonomy/lists')
+        this.hiveDimensionsList = response.data.hivedimensions
+        this.hiveTypesList = response.data.hivetypes
         return true
-      } catch (e) {
-        console.log(e)
-        this.$router.push({ name: '404' })
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
       }
     },
     cancelColorPicker() {

@@ -35,24 +35,6 @@ export const mutations = {
   selectHive: function(_, hive) {
     Vue.set(hive, 'selected', !hive.selected)
   },
-  unselectHive: function(_, hive) {
-    Vue.set(hive, 'selected', false)
-  },
-  addHive: function(state, { apiary = null, hive = null }) {
-    if (!apiary) {
-      apiary = state.apiary
-    }
-    const defaultHive = {
-      brood: 1,
-      honey: 1,
-      frames: 10,
-      color: 'orange',
-    }
-    if (!hive) {
-      hive = { ...defaultHive }
-    }
-    apiary.hives.push(hive)
-  },
   setApiaryListView: function(state, string) {
     state.apiaryListView = string
   },

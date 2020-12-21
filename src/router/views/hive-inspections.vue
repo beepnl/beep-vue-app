@@ -775,8 +775,8 @@ export default {
     },
     async readImages() {
       try {
-        const response = await this.$store.dispatch('images/findAll')
-        this.images = response
+        const response = await Api.readRequest('/images')
+        this.images = response.data
         return true
       } catch (error) {
         console.log('Error: ', error)

@@ -31,7 +31,6 @@
             :key="`i-${index}`"
             :disabled="item.disabled"
             :to="item.route ? { name: item.route } : null"
-            @click="wrapAction(item)"
           >
             <v-list-item-title v-text="item.title" />
           </v-list-item>
@@ -81,17 +80,6 @@ export default {
     },
   },
   methods: {
-    wrapAction(item) {
-      if (!item.action) {
-        this.showDialog(item)
-      } else {
-        this.$store.dispatch(item.action)
-      }
-    },
-    showDialog: function(item) {
-      this.dialog.title = item.title
-      this.dialog.show = true
-    },
     signOut() {
       this.$store
         .dispatch('auth/signOut')

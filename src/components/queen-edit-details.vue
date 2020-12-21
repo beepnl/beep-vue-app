@@ -154,8 +154,8 @@
 </template>
 
 <script>
+import Api from '@api/Api'
 import { darkIconMixin } from '@mixins/darkIconMixin'
-import { mapGetters } from 'vuex'
 import { momentMixin } from '@mixins/momentMixin'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
@@ -196,10 +196,10 @@ export default {
       modal: false,
       useQueenMarkColor: false,
       queenHasColor: false,
+      beeRacesList: [],
     }
   },
   computed: {
-    ...mapGetters('taxonomy', ['beeRacesList']),
     locale() {
       return this.$i18n.locale
     },
@@ -298,14 +298,15 @@ export default {
   methods: {
     async readTaxonomy() {
       try {
-        const response = await this.$store.dispatch('taxonomy/index')
-        if (response.length === 0) {
-          this.$router.push({ name: '404' })
-        }
+        const response = await Api.readRequest('/taxonomy/lists')
+        this.beeRacesList = response.data.beeraces
         return true
-      } catch (e) {
-        console.log(e)
-        this.$router.push({ name: '404' })
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
       }
     },
     cancelDatePicker() {

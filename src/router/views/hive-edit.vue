@@ -216,7 +216,7 @@ export default {
       return parseInt(this.$route.query.locationId) || null
     },
     queenEditMode() {
-      return this.$route.name === 'queen-edit'
+      return this.$route.name === 'queen-edit' || this.$route.query.queenEdit
     },
     requiredRule: function() {
       return [

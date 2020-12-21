@@ -401,7 +401,6 @@ export default {
     async readDevices() {
       try {
         const response = await Api.readRequest('/devices')
-        // this.$store.commit('devices/setDevices', response.data)
         this.devices = response.data
         return true
       } catch (error) {
