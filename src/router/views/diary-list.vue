@@ -550,18 +550,20 @@ export default {
   methods: {
     async deleteInspection(id) {
       try {
-        const response = await this.$store.dispatch(
-          'inspections/deleteInspection',
-          id
-        )
+        const response = await Api.deleteRequest('/inspections/', id)
         if (!response) {
           this.snackbar.text = this.$i18n.t('something_wrong')
           this.snackbar.show = true
         }
         this.getAllInspections()
       } catch (error) {
-        console.log('Error: ', error)
-        this.snackbar.text = this.$i18n.t('something_wrong')
+        if (error.response) {
+          console.log('Error: ', error.response)
+          this.snackbar.text = error.response
+        } else {
+          console.log('Error: ', error)
+          this.snackbar.text = this.$i18n.t('something_wrong')
+        }
         this.snackbar.show = true
       }
     },

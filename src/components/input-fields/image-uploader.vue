@@ -105,7 +105,7 @@ export default {
         }
         // empty input field even if deleting image gives error
         this.object[id] = null
-        const response = await Api.deleteRequest('images', '', data)
+        const response = await Api.deleteRequest('/images', '', data)
         if (!response) {
           this.snackbar.text = this.$i18n.t('something_wrong')
           this.snackbar.show = true

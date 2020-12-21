@@ -597,13 +597,12 @@ export default {
     },
     async getInspection(id) {
       try {
-        const response = await this.$store.dispatch(
-          'inspections/getInspectionById',
-          id
-        )
-        return response
+        const response = await Api.readRequest('/inspections/', id)
+        return response.data
       } catch (error) {
-        console.log('Error: ', error)
+        error.response
+          ? console.log('Error: ', error.response)
+          : console.log('Error: ', error)
         this.$router.push({ name: '404', params: { resource: 'inspection' } })
       }
     },
@@ -613,18 +612,20 @@ export default {
         console.log('saving Inspection...')
         console.log(this.activeInspection)
         try {
-          await this.$store.dispatch(
-            'inspections/saveInspection',
-            this.activeInspection
-          )
+          await Api.postRequest('/inspections/store', this.activeInspection)
           setTimeout(() => {
             return this.$router.push({
               name: 'hive-inspections',
             })
           }, 300)
         } catch (error) {
-          console.log('Error: ', error)
-          this.snackbar.text = this.$i18n.t('not_saved_error')
+          if (error.response) {
+            console.log('Error: ', error.response)
+            this.snackbar.text = error.response
+          } else {
+            console.log('Error: ', error)
+            this.snackbar.text = this.$i18n.t('something_wrong')
+          }
           this.snackbar.show = true
         }
       }

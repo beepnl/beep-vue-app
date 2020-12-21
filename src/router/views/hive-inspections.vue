@@ -733,18 +733,20 @@ export default {
   methods: {
     async deleteInspection(id) {
       try {
-        const response = await this.$store.dispatch(
-          'inspections/deleteInspection',
-          id
-        )
+        const response = await Api.deleteRequest('/inspections/', id)
         if (!response) {
           this.snackbar.text = this.$i18n.t('something_wrong')
           this.snackbar.show = true
         }
         this.getAllInspectionsForHiveId()
       } catch (error) {
-        console.log('Error: ', error)
-        this.snackbar.text = this.$i18n.t('something_wrong')
+        if (error.response) {
+          console.log('Error: ', error.response)
+          this.snackbar.text = error.response
+        } else {
+          console.log('Error: ', error)
+          this.snackbar.text = this.$i18n.t('something_wrong')
+        }
         this.snackbar.show = true
       }
     },
@@ -763,11 +765,8 @@ export default {
     },
     async getAllInspectionsForHiveId() {
       try {
-        const response = await this.$store.dispatch(
-          'inspections/getAllInspectionsForHiveId',
-          this.id
-        )
-        this.inspections = response
+        const response = await Api.readRequest('/inspections/hive/', this.id)
+        this.inspections = response.data
         return true
       } catch (error) {
         console.log('Error: ', error)

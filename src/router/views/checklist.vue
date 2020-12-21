@@ -240,7 +240,7 @@ export default {
     },
     async getChecklistTaxonomy(id) {
       try {
-        const response = await Api.readRequest('checklists/', id)
+        const response = await Api.readRequest('/checklists/', id)
         if (response.length === 0) {
           this.$router.push({ name: '404', params: { resource: 'checklist' } })
         }
