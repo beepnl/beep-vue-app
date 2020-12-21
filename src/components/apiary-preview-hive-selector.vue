@@ -6,7 +6,7 @@
       class="hive-icon-wrapper d-flex flex-column align-center"
       @click="selectHive(hive.id)"
     >
-      <div class="hive-in-group">
+      <div v-if="showIcons" class="hive-in-group">
         <v-icon v-if="hivesEditable.includes(hive.id)" class="green--text">
           mdi-pencil-circle
         </v-icon>
@@ -67,6 +67,11 @@ export default {
     hivesSelected: {
       type: Array,
       default: () => [],
+      required: false,
+    },
+    showIcons: {
+      type: Boolean,
+      default: false,
       required: false,
     },
   },
@@ -130,7 +135,7 @@ export default {
 
 .hive-in-group {
   height: 24px;
-  margin-bottom: 2px;
+  margin-bottom: 1px;
   cursor: pointer;
 }
 
@@ -172,6 +177,7 @@ export default {
 }
 
 .selectable-wrapper {
+  margin-top: 2px;
   cursor: pointer;
   &.--selected {
     box-shadow: 0 0 0 2px yellow;

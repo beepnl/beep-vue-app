@@ -354,6 +354,7 @@
                     :hives="apiary.hives"
                     :hives-selected="activeGroup.hives_selected"
                     :hives-editable="activeGroup.hives_editable"
+                    :show-icons="true"
                     @select-hive="selectHive($event)"
                   ></ApiaryPreviewHiveSelector>
                 </div>

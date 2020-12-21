@@ -349,6 +349,22 @@
                     ></v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
+                                <v-list-item
+                  :to="{
+                    name: 'bulk-inspect',
+                    params: { apiaryId: hiveSet.id },
+                  }"
+                >
+                  <v-list-item-icon class="mr-3">
+                    <v-icon>mdi-pencil</v-icon>
+                  </v-list-item-icon>
+
+                  <v-list-item-content>
+                    <v-list-item-title
+                      v-text="$t('New') + ' ' + $tc('inspection', 1)"
+                    ></v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
                 <v-list-item
                   :to="{
                     name: 'hive-create',
@@ -406,6 +422,24 @@
                   </v-list-item-content>
                 </v-list-item>
               </v-list-item-group>
+
+                                              <v-list-item
+                                              v-if="hiveSet.admin"
+                  :to="{
+                    name: 'bulk-inspect',
+                    params: { groupId: hiveSet.id },
+                  }"
+                >
+                  <v-list-item-icon class="mr-3">
+                    <v-icon>mdi-pencil</v-icon>
+                  </v-list-item-icon>
+
+                  <v-list-item-content>
+                    <v-list-item-title
+                      v-text="$t('New') + ' ' + $tc('inspection', 1)"
+                    ></v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
 
               <v-divider class="my-1"></v-divider>
 

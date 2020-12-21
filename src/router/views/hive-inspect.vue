@@ -91,6 +91,31 @@
         v-if="activeInspection && selectedChecklist !== null && ready"
         class="content-container"
       >
+        <v-row v-if="bulkInspection">
+          <v-col class="d-flex" cols="12" sm="4">
+            <v-select
+              v-if="apiaries !== null && apiaries.length > 1"
+              v-model="selectedApiaryId"
+              class="select-apiary"
+              :items="apiaries"
+              item-text="name"
+              item-value="id"
+              hide-details
+              :label="`${$t('Select') + ' ' + $tc('location', 1)}`"
+              @input="selectApiary($event)"
+            >
+            </v-select>
+          </v-col>
+
+          <v-col class="d-flex" cols="12" sm="8">
+            <ApiaryPreviewHiveSelector
+              :hives="selectedApiary.hives"
+              :hives-selected="selectedHives"
+              @select-hive="selectHive($event)"
+            ></ApiaryPreviewHiveSelector>
+          </v-col>
+        </v-row>
+
         <v-row>
           <v-col cols="12" sm="4">
             <div class="d-flex justify-flex-start align-center">
@@ -375,6 +400,7 @@
 
 <script>
 import Api from '@api/Api'
+import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 import checklistFieldset from '@components/checklist-fieldset.vue'
 import Confirm from '@components/confirm.vue'
 import { Datetime } from 'vue-datetime'
@@ -388,6 +414,7 @@ import { SlideYUpTransition } from 'vue2-transitions'
 
 export default {
   components: {
+    ApiaryPreviewHiveSelector,
     checklistFieldset,
     Confirm,
     Datetime,
@@ -413,11 +440,24 @@ export default {
       showLoadingIcon: false,
       valid: false,
       ready: false,
+      selectedApiaryId: null,
+      selectedApiary: null,
+      selectedHives: [],
     }
   },
   computed: {
     ...mapGetters('inspections', ['inspectionEdited']),
     ...mapGetters('hives', ['activeHive']),
+    ...mapGetters('locations', ['apiaries']),
+    bulkInspection() {
+      return this.$route.name === 'bulk-inspect'
+    },
+    apiaryId() {
+      return this.$route.params.apiaryId
+    },
+    groupId() {
+      return this.$route.params.groupId
+    },
     id() {
       return parseInt(this.$route.params.id)
     },
@@ -508,12 +548,17 @@ export default {
         this.activeInspection.items = itemsObject
       })
     }
-    this.getActiveHive(this.id).then((hive) => {
-      this.$store.commit('hives/setActiveHive', hive)
-      this.ready = true
-    })
+    if (!this.bulkInspection) {
+      this.getActiveHive(this.id).then((hive) => {
+        this.$store.commit('hives/setActiveHive', hive)
+      })
+    } else {
+      this.selectedApiaryId = this.apiaryId // TODO: what about groups?
+      this.selectApiary(this.apiaryId)
+    }
     this.$store.commit('inspections/setSelectedInspectionId', this.inspectionId)
     this.setInspectionEdited(false)
+    this.ready = true
   },
   methods: {
     async getActiveHive(id) {
@@ -641,6 +686,25 @@ export default {
           ' (' + this.$i18n.t('research') + ': ' + item.researches[0] + ')'
       }
       return name + research
+    },
+    selectApiary(id) {
+      var hiveIds = []
+      const apiary = this.apiaries.filter((apiary) => {
+        return apiary.id === id
+      })[0]
+      apiary.hives.map((hive) => {
+        hiveIds.push(hive.id)
+      })
+      this.selectedApiary = apiary
+      this.selectedHives = hiveIds
+    },
+    selectHive(id) {
+      if (!this.selectedHives.includes(id)) {
+        this.selectedHives.push(id)
+      } else {
+        this.selectedHives.splice(this.selectedHives.indexOf(id), 1)
+      }
+      // this.setGroupEdited(true) TODO: adapt for bulk-inspect
     },
     setInspectionEdited(bool) {
       this.$store.commit('inspections/setInspectionEdited', bool)

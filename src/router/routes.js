@@ -200,6 +200,14 @@ export default [
     meta: {
       authRequired: true,
     },
+    path: '/inspect',
+    name: 'bulk-inspect',
+    component: () => lazyLoadView(import('@views/hive-inspect.vue')),
+  },
+  {
+    meta: {
+      authRequired: true,
+    },
     path: '/measurements',
     name: 'measurements',
     component: () => import('@views/measurements-list.vue'), // no lazyLoadView in order to be able to use beforeDestroy hook to clearInterval for lastSensorValues API call when navigating away
