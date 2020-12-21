@@ -122,7 +122,7 @@ export default {
 @keyframes beeAnimation2 {
   0% {
     top: 20%;
-    left: -10%;
+    left: -20%;
   }
   75% {
     top: 45%;

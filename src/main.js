@@ -6,7 +6,9 @@ import VueI18n from 'vue-i18n'
 import de from '@assets/js/lang/de'
 import en from '@assets/js/lang/en'
 import es from '@assets/js/lang/es'
+import fi from '@assets/js/lang/fi'
 import fr from '@assets/js/lang/fr'
+import it from '@assets/js/lang/it'
 import nl from '@assets/js/lang/nl'
 import pt from '@assets/js/lang/pt'
 import ro from '@assets/js/lang/ro'
@@ -41,7 +43,9 @@ const i18n = new VueI18n({
     de,
     en,
     es,
+    fi,
     fr,
+    it,
     nl,
     pt,
     ro,

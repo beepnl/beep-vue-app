@@ -520,7 +520,11 @@
       >
         <v-row>
           <v-col sm="auto" :cols="12">
-            {{ $t('no_results') }}
+            {{
+              activeHive.editable || activeHive.owner
+                ? $tc('Inspection', 2) + ' ' + $t('not_available_yet')
+                : $t('no_results')
+            }}
           </v-col>
         </v-row>
       </v-container>

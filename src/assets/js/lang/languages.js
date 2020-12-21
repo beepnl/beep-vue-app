@@ -4,9 +4,11 @@ const languages = {
     { lang: 'de', title: 'Deutsch' },
     { lang: 'en', title: 'English' },
     { lang: 'fr', title: 'Français' },
+    { lang: 'it', title: 'Italiano' },
     { lang: 'pt', title: 'Português' },
     { lang: 'ro', title: 'Română' },
     { lang: 'es', title: 'Spanish' },
+    { lang: 'fi', title: 'Suomi' },
     // { lang: 'en-US', title: 'English US' },
   ],
   checkBrowserLanguage() {
