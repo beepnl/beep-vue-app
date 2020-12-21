@@ -134,9 +134,9 @@ export default {
   data: function() {
     return {
       swatches: [
-        ['#b5c4b2', '#F7BE02', '#F8B133'],
-        ['#049717', '#1b6308', '#00466b'],
-        ['#bca55e', '#754B1F', '#3F3104'],
+        ['#e9eae1', '#EAD49E', '#F8B133'],
+        ['#2dbde5', '#094da0', '#27820e'],
+        ['#ffe900', '#d80d0d', '#754B1F'],
       ],
       overlay: false,
       currentLayer: null,
