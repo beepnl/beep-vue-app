@@ -1,5 +1,5 @@
 // const fs = require('fs')
-const appConfig = require('./src/app.config')
+const appConfig = require('./public/manifest')
 
 /** @type import('@vue/cli-service').ProjectOptions */
 module.exports = {
