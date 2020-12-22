@@ -74,7 +74,7 @@
           <v-card-actions v-if="activeHive.editable || activeHive.owner">
             <v-btn
               v-if="!mobile"
-              :href="`/hives/${id}/inspect`"
+              :to="{ name: 'inspect', query: { hiveId: id } }"
               medium
               tile
               outlined
@@ -85,7 +85,7 @@
             </v-btn>
             <v-icon
               v-if="mobile"
-              :href="`/hives/${id}/inspect`"
+              :to="{ name: 'inspect', query: { hiveId: id } }"
               dark
               color="primary"
               >mdi-plus-circle</v-icon

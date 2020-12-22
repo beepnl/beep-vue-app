@@ -176,14 +176,6 @@ export default [
     meta: {
       authRequired: true,
     },
-    path: '/hives/:id/inspect',
-    name: 'hive-inspect',
-    component: () => lazyLoadView(import('@views/hive-inspect.vue')),
-  },
-  {
-    meta: {
-      authRequired: true,
-    },
     path: '/hives/:id/inspections/:inspection',
     name: 'hive-inspect-edit',
     component: () => lazyLoadView(import('@views/hive-inspect.vue')),
@@ -201,7 +193,7 @@ export default [
       authRequired: true,
     },
     path: '/inspect',
-    name: 'bulk-inspect',
+    name: 'inspect',
     component: () => lazyLoadView(import('@views/hive-inspect.vue')),
   },
   {

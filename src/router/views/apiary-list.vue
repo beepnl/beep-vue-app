@@ -351,7 +351,7 @@
                 </v-list-item>
                 <v-list-item
                   :to="{
-                    name: 'bulk-inspect',
+                    name: 'inspect',
                     query: { apiaryId: hiveSet.id },
                   }"
                 >
@@ -426,7 +426,7 @@
               <v-list-item
                 v-if="hiveSet.hasEditableHive"
                 :to="{
-                  name: 'bulk-inspect',
+                  name: 'inspect',
                   query: { groupId: hiveSet.id },
                 }"
               >

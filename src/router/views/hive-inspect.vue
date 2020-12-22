@@ -1,11 +1,5 @@
 <template>
-  <Layout
-    :title="
-      `${inspectionId ? $t('Edit_inspection') : $t('New_inspection')} ${
-        activeHive ? ' - ' + activeHive.name : ''
-      }`
-    "
-  >
+  <Layout :title="inspectionId ? $t('Edit_inspection') : $t('New_inspection')">
     <h1
       v-if="
         inspectionId && activeInspection && activeInspection.owner === false
@@ -19,26 +13,6 @@
           ' ' +
           inspectionId +
           ' ' +
-          $t('not_editable')
-      }}
-    </h1>
-
-    <h1
-      v-if="
-        inspectionId === null &&
-          activeHive &&
-          activeHive.editable === false &&
-          activeHive.owner === false
-      "
-      class="unauthorized-title"
-    >
-      {{
-        $t('sorry') +
-          ', ' +
-          $tc('hive', 1) +
-          ' "' +
-          activeHive.name +
-          '" ' +
           $t('not_editable')
       }}
     </h1>
@@ -95,7 +69,7 @@
         v-if="activeInspection && selectedChecklist !== null && ready"
         class="content-container"
       >
-        <v-row v-if="bulkInspection">
+        <v-row>
           <v-col cols="12" sm="4">
             <div class="beep-label mt-3" v-text="treeselectLabel"></div>
             <Treeselect
@@ -465,39 +439,22 @@ export default {
       editableHives: [],
       showBulkPlaceholder: false,
       showHiveSetNotFound: false,
+      showHiveNotFound: false,
+      notEditableHiveId: null,
     }
   },
   computed: {
     ...mapGetters('inspections', ['inspectionEdited']),
-    ...mapGetters('hives', ['activeHive']),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
-    bulkInspection() {
-      return this.$route.name === 'bulk-inspect'
-    },
     apiaryId() {
-      if (this.bulkInspection && this.$route.query.apiaryId) {
-        return this.$route.query.apiaryId
-      } else {
-        return null
-      }
+      return this.$route.query.apiaryId || null
     },
     groupId() {
-      if (this.bulkInspection && this.$route.query.groupId) {
-        return this.$route.query.groupId
-      } else {
-        return null
-      }
+      return this.$route.query.groupId || null
     },
     hiveId() {
-      if (
-        this.$route.name === 'hive-inspect' ||
-        this.$route.name === 'hive-inspect-edit'
-      ) {
-        return parseInt(this.$route.params.id)
-      } else {
-        return null
-      }
+      return parseInt(this.$route.query.hiveId) || null
     },
     inspectionId() {
       return parseInt(this.$route.params.inspection) || null
@@ -596,6 +553,14 @@ export default {
     },
   },
   created() {
+    // If apiaries and groups are not in store, retrieve those first
+    if (this.apiaries.length === 0 && this.groups.length === 0) {
+      this.readApiariesAndGroups().then(() => {
+        this.selectInitialHiveSet()
+      })
+    } else {
+      this.selectInitialHiveSet()
+    }
     // If hive-inspect-edit route is used, retrieve to-be-edited inspection
     if (this.inspectionId !== null) {
       this.getInspection(this.inspectionId).then((response) => {
@@ -604,6 +569,10 @@ export default {
           ? this.getChecklistById(this.preSelectedChecklistId)
           : this.getChecklistById(this.activeInspection.checklist_id)
         this.getChecklists()
+        this.$store.commit(
+          'inspections/setSelectedInspectionId',
+          this.inspectionId
+        )
       })
       // Else make an empty inspection object
     } else {
@@ -615,7 +584,7 @@ export default {
         reminder_date: null,
         reminder: null,
         checklist_id: null,
-        hive_id: this.hiveId,
+        hive_ids: this.selectedHives, // TODO: fix for only 1 hiveId
         items: {},
       }
       this.getChecklists().then((response) => {
@@ -632,43 +601,10 @@ export default {
         this.activeInspection.items = itemsObject
       })
     }
-    // If no bulk inspection route is used, set activeHive by hiveId
-    if (!this.bulkInspection) {
-      this.getActiveHive(this.hiveId).then((hive) => {
-        this.$store.commit('hives/setActiveHive', hive)
-        this.$store.commit(
-          'inspections/setSelectedInspectionId',
-          this.inspectionId
-        )
-      })
-      // Else, if bulk inspection route is used, select the initial hiveSet (= apiary or group)
-    } else if (this.bulkInspection) {
-      // If apiaries and groups are not in store, retrieve those first
-      if (this.apiaries.length === 0 && this.groups.length === 0) {
-        this.readApiariesAndGroups().then(() => {
-          this.selectInitialHiveSet()
-        })
-      } else {
-        this.selectInitialHiveSet()
-      }
-    }
     this.setInspectionEdited(false)
     this.ready = true
   },
   methods: {
-    async getActiveHive(id) {
-      try {
-        const response = await Api.readRequest('/hives/', id)
-        if (response.data.length === 0) {
-          this.$router.push({ name: '404', params: { resource: 'hive' } })
-        }
-        const hive = response.data.hives[0]
-        return hive
-      } catch (error) {
-        console.log('Error: ', error)
-        this.$router.push({ name: '404', params: { resource: 'hive' } })
-      }
-    },
     async getChecklistById(id) {
       try {
         const response = await Api.readRequest('/inspections/lists?id=', id)
@@ -769,24 +705,37 @@ export default {
     async saveInspection() {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
+        var inspectionToSave = this.activeInspection
+        inspectionToSave.hive_ids = this.selectedHives
         console.log('saving Inspection...')
-        console.log(this.activeInspection)
+        console.log(inspectionToSave)
         try {
-          await Api.postRequest('/inspections/store', this.activeInspection)
-          setTimeout(() => {
-            return this.$router.push({
-              name: 'hive-inspections',
-            })
-          }, 300)
+          await Api.postRequest('/inspections/store', inspectionToSave)
+          if (this.selectedHives.length > 1) {
+            setTimeout(() => {
+              return this.$router.push({
+                name: 'diary',
+              })
+            }, 300)
+          } else {
+            setTimeout(() => {
+              return this.$router.push({
+                name: 'hive-inspections',
+                params: { id: this.selectedHives[0] },
+              })
+            }, 300)
+          }
         } catch (error) {
           if (error.response) {
-            console.log('Error: ', error.response)
-            this.snackbar.text = error.response
+            const msg = error.response.data.message
+            console.log('Error: ', msg)
+            this.snackbar.text = msg
           } else {
             console.log('Error: ', error)
             this.snackbar.text = this.$i18n.t('something_wrong')
           }
           this.snackbar.show = true
+          this.showLoadingIcon = false
         }
       }
     },
@@ -813,6 +762,9 @@ export default {
           this.selectedHives.push(hive.id)
           this.editableHives.push(hive.id)
         })
+        if (this.hiveId) {
+          this.selectedHives = [this.hiveId]
+        }
         this.selectedHiveSet = apiary
         // If apiary id doesn't exist return first hiveset from the list
       } else {
@@ -833,6 +785,14 @@ export default {
             this.editableHives.push(hive.id)
           }
         })
+        if (this.hiveId) {
+          // if hiveId is specified, only select it if editable
+          if (this.editableHives.includes(this.hiveId)) {
+            this.selectedHives = [this.hiveId]
+          } else {
+            this.notEditableHiveId = this.hiveId
+          }
+        }
         this.selectedHiveSet = group
         // If group id doesn't exist, return first hiveset from the list
       } else {
@@ -856,6 +816,7 @@ export default {
     },
     selectHiveSet(id) {
       this.showHiveSetNotFound = false
+      this.showHiveNotFound = false
       var stringId = id.toString()
       var isApiary = parseInt(stringId.substring(0, 1)) === 1
       var hiveSetId = parseInt(stringId.substring(1, stringId.length + 1))
@@ -868,6 +829,28 @@ export default {
       } else if (this.groupId) {
         this.selectedHiveSetId = parseInt('2' + this.groupId)
         this.selectGroup(parseInt(this.groupId))
+      } else if (this.hiveId) {
+        // if no apiary or group id is specified, find hiveset that contains the hive id, select the first result
+        var hiveSets = this.sortedHiveSets
+          .map((groupsOrApiaries) => {
+            return groupsOrApiaries.children.filter((hiveSet) => {
+              return (
+                hiveSet.hives.filter((hive) => {
+                  return hive.id === this.hiveId
+                }).length > 0
+              )
+            })
+          })
+          .filter((groupsOrApiaries) => {
+            return groupsOrApiaries.length > 0
+          })
+        if (hiveSets.length > 0) {
+          this.selectedHiveSetId = hiveSets[0][0].treeselectId
+          this.selectHiveSet(this.selectedHiveSetId)
+        } else {
+          this.selectFirstHiveSet()
+          this.showHiveNotFound = true
+        }
       } else {
         this.selectFirstHiveSet()
       }

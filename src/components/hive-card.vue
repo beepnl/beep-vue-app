@@ -106,10 +106,7 @@
               <v-list-item-group>
                 <v-list-item
                   v-if="hive.editable || hive.owner"
-                  :to="{
-                    name: 'hive-inspect',
-                    params: { id: hive.id },
-                  }"
+                  :to="inspectLink(false)"
                 >
                   <v-list-item-icon class="mr-3">
                     <v-icon>mdi-pencil</v-icon>
@@ -254,16 +251,7 @@
           class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
         >
           <div class="mr-2 my-0">
-            <router-link
-              :to="{
-                name: `${
-                  hive.last_inspection_date !== null
-                    ? 'hive-inspections'
-                    : 'hive-inspect'
-                }`,
-                params: { id: hive.id },
-              }"
-            >
+            <router-link :to="inspectLink(true)">
               <v-icon v-if="hive.impression === 1" class="red--text">
                 mdi-emoticon-sad
               </v-icon>
@@ -529,13 +517,32 @@ export default {
       },
     ],
   }),
-
   methods: {
     confirmDeleteHive(hive) {
       this.$emit('confirm-delete-hive', hive)
     },
     hasLayer(type) {
       return this.hive.layers.some((layer) => layer.type === type)
+    },
+    inspectLink(linkToInspections) {
+      if (this.hive.last_inspection_date !== null && linkToInspections) {
+        return {
+          name: 'hive-inspections',
+          params: { id: this.hive.id },
+        }
+      } else {
+        if (this.hiveSet.users) {
+          return {
+            name: 'inspect',
+            query: { hiveId: this.hive.id, groupId: this.hiveSet.id },
+          }
+        } else {
+          return {
+            name: 'inspect',
+            query: { hiveId: this.hive.id, apiaryId: this.hiveSet.id },
+          }
+        }
+      }
     },
     lastVisit(hive) {
       if (hive.last_inspection_date !== null) {

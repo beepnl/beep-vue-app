@@ -65,7 +65,7 @@ export default {
           this.$route.name === 'group-edit') &&
           this.groupEdited) ||
         (this.$route.name === 'hive-edit' && this.hiveEdited) ||
-        (this.$route.name === 'hive-inspect' && this.inspectionEdited) ||
+        (this.$route.name === 'inspect' && this.inspectionEdited) ||
         ((this.$route.name === 'checklist' ||
           this.$route.name === 'research' ||
           this.$route.name === 'devices') &&
