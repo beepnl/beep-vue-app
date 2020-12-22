@@ -454,7 +454,11 @@ export default {
       return this.$route.query.groupId || null
     },
     hiveId() {
-      return parseInt(this.$route.query.hiveId) || null
+      return (
+        parseInt(this.$route.query.hiveId) ||
+        parseInt(this.$route.params.id) ||
+        null
+      )
     },
     inspectionId() {
       return parseInt(this.$route.params.inspection) || null
@@ -512,10 +516,22 @@ export default {
         treeselectApiaries.map((apiary) => {
           apiary.treeselectId = parseInt('1' + apiary.id.toString())
         })
+        var sortedTreeselectApiaries = treeselectApiaries
+          .slice()
+          .sort(function(a, b) {
+            if (a.name > b.name) {
+              return 1
+            }
+            if (b.name > a.name) {
+              return -1
+            }
+            return 0
+          })
+
         treeselectArray.push({
           treeselectId: -1,
           name: this.$i18n.tc('Location', 2),
-          children: treeselectApiaries,
+          children: sortedTreeselectApiaries,
         })
       }
       if (this.groups && this.groups.length > 0) {
@@ -528,10 +544,22 @@ export default {
             }).length === 0
           group.treeselectId = parseInt('2' + group.id.toString())
         })
+        var sortedTreeselectGroups = treeselectGroups
+          .slice()
+          .sort(function(a, b) {
+            if (a.name > b.name) {
+              return 1
+            }
+            if (b.name > a.name) {
+              return -1
+            }
+            return 0
+          })
+
         treeselectArray.push({
           treeselectId: -2,
           name: this.$i18n.tc('Group', 2),
-          children: treeselectGroups,
+          children: sortedTreeselectGroups,
         })
       }
       return treeselectArray
