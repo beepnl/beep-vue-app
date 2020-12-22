@@ -350,11 +350,11 @@
                   </div>
 
                   <ApiaryPreviewHiveSelector
-                    class="mb-4"
+                    class="mb-3"
                     :hives="apiary.hives"
                     :hives-selected="activeGroup.hives_selected"
                     :hives-editable="activeGroup.hives_editable"
-                    :show-icons="true"
+                    :group-mode="true"
                     @select-hive="selectHive($event)"
                   ></ApiaryPreviewHiveSelector>
                 </div>
@@ -839,12 +839,12 @@ export default {
   .apiary-title {
     width: 100%;
     padding-bottom: 4px;
-    margin: 10px 0 16px;
+    margin: 6px 0 16px;
     color: $color-primary;
     border-bottom: 1px solid $color-primary;
     @include for-phone-only {
       padding-bottom: 2px;
-      margin: 8px 0 10px;
+      margin: 4px 0 10px;
     }
   }
   .group-color {

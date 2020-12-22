@@ -6,12 +6,18 @@
       class="hive-icon-wrapper d-flex flex-column align-center"
       @click="selectHive(hive.id)"
     >
-      <div v-if="showIcons" class="hive-in-group">
+      <div v-if="groupMode" class="hive-in-group">
         <v-icon v-if="hivesEditable.includes(hive.id)" class="green--text">
           mdi-pencil-circle
         </v-icon>
         <v-icon v-else-if="hivesSelected.includes(hive.id)" class="green--text">
           mdi-eye-circle
+        </v-icon>
+      </div>
+
+      <div v-if="inspectionMode" class="hive-in-inspection">
+        <v-icon v-if="hivesSelected.includes(hive.id)" class="green--text">
+          mdi-check-circle
         </v-icon>
       </div>
 
@@ -28,13 +34,23 @@
             :class="
               `selectable-wrapper ${
                 hivesSelected.includes(hive.id) ? '--selected' : ''
+              } ${
+                inspectionMode && hivesEditable.indexOf(hive.id) === -1
+                  ? '--not-editable'
+                  : ''
               }`
             "
           >
             <v-sheet
               v-for="(layer, l) in orderedLayers(hive)"
               :key="l"
-              :class="[`layer ${layer.type}-layer`]"
+              :class="[
+                `layer ${layer.type}-layer ${
+                  inspectionMode && hivesEditable.indexOf(hive.id) === -1
+                    ? '--not-editable'
+                    : ''
+                }`,
+              ]"
               :width="`${hiveWidth(hive)}px`"
               :color="layer.color"
             >
@@ -69,7 +85,12 @@ export default {
       default: () => [],
       required: false,
     },
-    showIcons: {
+    groupMode: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
+    inspectionMode: {
       type: Boolean,
       default: false,
       required: false,
@@ -131,9 +152,11 @@ export default {
 <style lang="scss" scoped>
 .apiary-preview {
   overflow-x: auto;
+  overflow-y: hidden;
 }
 
-.hive-in-group {
+.hive-in-group,
+.hive-in-inspection {
   height: 24px;
   margin-bottom: 1px;
   cursor: pointer;
@@ -174,6 +197,18 @@ export default {
   &:last-child:not(.queen_excluder-layer) {
     border-bottom: 0;
   }
+  &.--not-editable {
+    &::before {
+      position: absolute;
+      display: block;
+      width: inherit;
+      height: inherit;
+      margin-top: -1px;
+      margin-left: -1px;
+      content: '';
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+  }
 }
 
 .selectable-wrapper {
@@ -181,6 +216,9 @@ export default {
   cursor: pointer;
   &.--selected {
     box-shadow: 0 0 0 2px yellow;
+  }
+  &.--not-editable {
+    cursor: not-allowed;
   }
 }
 
@@ -219,10 +257,11 @@ export default {
   }
 }
 .hive-caption {
-  height: 42px;
+  height: 54px;
   line-height: 0.9rem;
   color: $color-grey-dark;
   text-align: center;
+  text-overflow: ellipsis;
   word-break: break-word;
 }
 </style>
