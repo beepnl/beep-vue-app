@@ -840,7 +840,7 @@ export default {
           this.selectedHives.splice(this.selectedHives.indexOf(id), 1)
         }
       }
-      // this.setInspectionEdited(true) TODO: adapt for bulk-inspect
+      this.setInspectionEdited(true)
     },
     selectFirstHiveSet() {
       this.selectedHiveSetId = this.sortedHiveSets[0].children[0].treeselectId
