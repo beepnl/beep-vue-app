@@ -561,16 +561,8 @@ export default {
           children: treeselectApiaries,
         })
       }
-      if (this.groups && this.groups.length > 0) {
-        var treeselectGroups = this.groups
-        // Only include groups that have at least 1 editable hive
-        treeselectGroups = treeselectGroups.filter((group) => {
-          return (
-            group.hives.filter((hive) => {
-              return hive.editable === true
-            }).length > 0
-          )
-        })
+      if (this.editableGroups && this.editableGroups.length > 0) {
+        var treeselectGroups = this.editableGroups
         treeselectGroups.map((group) => {
           group.treeselectId = parseInt('2' + group.id.toString())
         })
@@ -581,6 +573,16 @@ export default {
         })
       }
       return treeselectArray
+    },
+    editableGroups() {
+      // Only include groups that have at least 1 editable hive
+      return this.groups.filter((group) => {
+        return (
+          group.hives.filter((hive) => {
+            return hive.editable === true
+          }).length > 0
+        )
+      })
     },
   },
   created() {
@@ -811,7 +813,7 @@ export default {
     selectGroup(id) {
       this.selectedHives = []
       this.editableHives = []
-      const group = this.groups.filter((group) => {
+      const group = this.editableGroups.filter((group) => {
         return group.id === id
       })[0]
       if (group) {
