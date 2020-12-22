@@ -75,6 +75,22 @@
               </v-icon>
             </v-card-actions>
           </div>
+          <v-card-actions class="mr-1">
+            <v-btn
+              v-if="!mobile"
+              :to="{ name: 'inspect' }"
+              medium
+              tile
+              outlined
+              color="primary"
+            >
+              <v-icon left>mdi-plus</v-icon>
+              {{ $t('New_inspection') }}
+            </v-btn>
+            <v-icon v-if="mobile" :to="{ name: 'inspect' }" dark color="primary"
+              >mdi-plus-circle</v-icon
+            >
+          </v-card-actions>
         </v-row>
       </v-container>
     </div>
