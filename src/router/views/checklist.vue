@@ -176,6 +176,18 @@ export default {
     }
   },
   computed: {
+    apiaryId() {
+      return parseInt(this.$route.query.apiaryId) || null
+    },
+    checklistsPage() {
+      return this.$route.name === 'checklists'
+    },
+    groupId() {
+      return parseInt(this.$route.query.groupId) || null
+    },
+    hiveId() {
+      return parseInt(this.$route.query.hiveId) || null
+    },
     id() {
       if (this.checklistsPage) {
         return this.selectedChecklistId
@@ -183,17 +195,11 @@ export default {
         return parseInt(this.$route.params.id)
       }
     },
-    hiveId() {
-      return parseInt(this.$route.query.hive_id) || null
-    },
     inspectionEdit() {
-      return parseInt(this.$route.query.inspection_edit) || null
+      return parseInt(this.$route.query.inspectionId) || null
     },
     locale() {
       return this.$i18n.locale
-    },
-    checklistsPage() {
-      return this.$route.name === 'checklists'
     },
   },
   watch: {
@@ -280,15 +286,17 @@ export default {
                   id: this.hiveId,
                   inspection: this.inspectionEdit,
                 },
-                query: { checklist_id: this.id },
+                query: { checklistId: this.id },
               })
-            } else if (this.hiveId !== null) {
+            } else if (this.hiveId || this.apiaryId || this.groupId) {
               return this.$router.push({
-                name: 'hive-inspect',
-                params: {
-                  id: this.hiveId,
+                name: 'inspect',
+                query: {
+                  checklistId: this.id,
+                  hiveId: this.hiveId,
+                  apiaryId: this.apiaryId,
+                  groupId: this.groupId,
                 },
-                query: { checklist_id: this.id },
               })
             } else {
               this.$router.push(-1).catch((error) => {

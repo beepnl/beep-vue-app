@@ -178,7 +178,7 @@ export default [
     },
     path: '/hives/:id/inspections/:inspection',
     name: 'hive-inspect-edit',
-    component: () => lazyLoadView(import('@views/hive-inspect.vue')),
+    component: () => lazyLoadView(import('@views/inspect.vue')),
   },
   {
     meta: {
@@ -194,7 +194,7 @@ export default [
     },
     path: '/inspect',
     name: 'inspect',
-    component: () => lazyLoadView(import('@views/hive-inspect.vue')),
+    component: () => lazyLoadView(import('@views/inspect.vue')),
   },
   {
     meta: {

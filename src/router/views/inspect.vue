@@ -30,11 +30,7 @@
           tile
           outlined
           class="save-button mr-3"
-          :href="
-            inspectionId
-              ? `/checklist/${selectedChecklistId}/edit?hive_id=${hiveId}&inspection_edit=${inspectionId}`
-              : `/checklist/${selectedChecklistId}/edit?hive_id=${hiveId}`
-          "
+          :to="checklistLink"
           color="primary"
         >
           <v-icon left>mdi-pencil</v-icon>
@@ -148,11 +144,7 @@
               tile
               outlined
               class="save-button"
-              :href="
-                inspectionId
-                  ? `/checklist/${selectedChecklistId}/edit?hive_id=${hiveId}&inspection_edit=${inspectionId}`
-                  : `/checklist/${selectedChecklistId}/edit?hive_id=${hiveId}`
-              "
+              :to="checklistLink"
               color="primary"
             >
               <v-icon left>mdi-pencil</v-icon>
@@ -450,6 +442,18 @@ export default {
     apiaryId() {
       return this.$route.query.apiaryId || null
     },
+    checklistLink() {
+      return {
+        name: 'checklist',
+        params: { id: this.selectedChecklistId },
+        query: {
+          hiveId: this.hiveId,
+          inspectionId: this.inspectionId,
+          groupId: this.groupId,
+          apiaryId: this.apiaryId,
+        },
+      }
+    },
     groupId() {
       return this.$route.query.groupId || null
     },
@@ -464,7 +468,7 @@ export default {
       return parseInt(this.$route.params.inspection) || null
     },
     preSelectedChecklistId() {
-      return parseInt(this.$route.query.checklist_id) || null
+      return parseInt(this.$route.query.checklistId) || null
     },
     inspectionDate: {
       get() {
