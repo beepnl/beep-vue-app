@@ -97,16 +97,13 @@
       >
         <v-row v-if="bulkInspection">
           <v-col cols="12" sm="4">
-            <div
-              class="beep-label mt-3"
-              v-text="`${$t('Select')} ${$tc('location', 1)}`"
-            ></div>
+            <div class="beep-label mt-3" v-text="treeselectLabel"></div>
             <Treeselect
               v-if="sortedHiveSets && sortedHiveSets.length > 0"
               v-model="selectedHiveSetId"
               :options="sortedHiveSets"
               :normalizer="normalizerHiveSets"
-              :placeholder="`${$t('Select')} ${$tc('location', 1)}`"
+              :placeholder="treeselectLabel"
               :no-results-text="`${$t('no_results')}`"
               :disable-branch-nodes="true"
               :default-expand-level="1"
@@ -116,7 +113,9 @@
 
           <v-col cols="12" sm="8">
             <ApiaryPreviewHiveSelector
-              v-if="selectedHiveSet"
+              v-if="
+                selectedHiveSet && editableHives && editableHives.length > 0
+              "
               :hives="selectedHiveSet.hives"
               :hives-selected="selectedHives"
               :hives-editable="editableHives"
@@ -443,6 +442,7 @@ export default {
         return {
           id: node.treeselectId,
           label: node.name,
+          isDisabled: node.noEditableHives,
         }
       },
       snackbar: {
@@ -557,32 +557,42 @@ export default {
         })
         treeselectArray.push({
           treeselectId: -1,
-          name: 'Apiaries',
+          name: this.$i18n.tc('Location', 2),
           children: treeselectApiaries,
         })
       }
-      if (this.editableGroups && this.editableGroups.length > 0) {
-        var treeselectGroups = this.editableGroups
+      if (this.groups && this.groups.length > 0) {
+        var treeselectGroups = this.groups
         treeselectGroups.map((group) => {
+          // groups with no editable hives will be disabled in the treeselect component
+          group.noEditableHives =
+            group.hives.filter((hive) => {
+              return hive.editable === true
+            }).length === 0
           group.treeselectId = parseInt('2' + group.id.toString())
         })
         treeselectArray.push({
           treeselectId: -2,
-          name: 'Groups',
+          name: this.$i18n.tc('Group', 2),
           children: treeselectGroups,
         })
       }
       return treeselectArray
     },
-    editableGroups() {
-      // Only include groups that have at least 1 editable hive
-      return this.groups.filter((group) => {
-        return (
-          group.hives.filter((hive) => {
-            return hive.editable === true
-          }).length > 0
-        )
-      })
+    treeselectLabel() {
+      var label = ''
+      if (this.apiaries.length > 0) {
+        label =
+          this.$i18n.t('Select') +
+          ' ' +
+          this.$i18n.tc('location', 1) +
+          (this.groups.length > 0
+            ? ' ' + this.$i18n.t('or') + ' ' + this.$i18n.tc('group', 1)
+            : '')
+      } else if (this.groups.length > 0) {
+        label = this.$i18n.t('Select') + ' ' + this.$i18n.tc('group', 1)
+      }
+      return label
     },
   },
   created() {
@@ -813,7 +823,7 @@ export default {
     selectGroup(id) {
       this.selectedHives = []
       this.editableHives = []
-      const group = this.editableGroups.filter((group) => {
+      const group = this.groups.filter((group) => {
         return group.id === id
       })[0]
       if (group) {
@@ -824,7 +834,7 @@ export default {
           }
         })
         this.selectedHiveSet = group
-        // If group id doesn't exist / doesn't have editable hives, return first hiveset from the list
+        // If group id doesn't exist, return first hiveset from the list
       } else {
         this.selectFirstHiveSet()
         this.showHiveSetNotFound = true
