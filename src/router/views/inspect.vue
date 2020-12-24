@@ -17,6 +17,18 @@
       }}
     </h1>
 
+    <h1 v-if="hiveNotEditable" class="unauthorized-title">
+      {{
+        $t('sorry') +
+          ', ' +
+          $tc('hive', 1) +
+          ' ' +
+          activeHive.name +
+          ' ' +
+          $t('not_editable')
+      }}
+    </h1>
+
     <v-form
       v-else-if="ready"
       ref="form"
@@ -67,7 +79,10 @@
       >
         <v-row>
           <v-col cols="12" sm="4">
-            <div class="beep-label mt-3" v-text="treeselectLabel"></div>
+            <div
+              class="beep-label mt-n3 mt-sm-0"
+              v-text="treeselectLabel"
+            ></div>
             <Treeselect
               v-if="sortedHiveSets && sortedHiveSets.length > 0"
               v-model="selectedHiveSetId"
@@ -81,7 +96,7 @@
             />
           </v-col>
 
-          <v-col cols="12" sm="8">
+          <v-col cols="12" md="8">
             <ApiaryPreviewHiveSelector
               v-if="
                 selectedHiveSet && editableHives && editableHives.length > 0
@@ -429,10 +444,8 @@ export default {
       selectedHiveSet: null,
       selectedHives: [],
       editableHives: [],
-      showBulkPlaceholder: false,
-      showHiveSetNotFound: false,
-      showHiveNotFound: false,
-      notEditableHiveId: null,
+      activeHive: null,
+      hiveNotEditable: false,
     }
   },
   computed: {
@@ -585,6 +598,10 @@ export default {
     },
   },
   created() {
+    // If hive id is specified, first check if hive is present / accessible and editable
+    if (this.hiveId !== null) {
+      this.getActiveHive(this.hiveId)
+    }
     // If apiaries and groups are not in store, retrieve those first
     if (this.apiaries.length === 0 && this.groups.length === 0) {
       this.readApiariesAndGroups().then(() => {
@@ -637,6 +654,22 @@ export default {
     this.ready = true
   },
   methods: {
+    async getActiveHive(id) {
+      try {
+        const response = await Api.readRequest('/hives/', id)
+        if (response.data.length === 0) {
+          this.$router.push({ name: '404', params: { resource: 'hive' } })
+        }
+        this.activeHive = response.data.hives[0]
+        if (!this.activeHive.editable) {
+          this.hiveNotEditable = true
+        }
+        return true
+      } catch (error) {
+        console.log('Error: ', error)
+        this.$router.push({ name: '404', params: { resource: 'hive' } })
+      }
+    },
     async getChecklistById(id) {
       try {
         const response = await Api.readRequest('/inspections/lists?id=', id)
@@ -718,12 +751,7 @@ export default {
       try {
         const responseApiaries = await Api.readRequest('/locations')
         const responseGroups = await Api.readRequest('/groups')
-        if (
-          responseApiaries.data.locations.length === 0 &&
-          responseGroups.data.groups.length === 0
-        ) {
-          this.showBulkPlaceholder = true
-        }
+        // no placeholder needed when response is empty because this page won't be accesible without any hives
         this.$store.commit(
           'locations/setApiaries',
           responseApiaries.data.locations
@@ -791,8 +819,7 @@ export default {
         this.selectedHiveSet = apiary
         // If apiary id doesn't exist return first hiveset from the list
       } else {
-        this.selectFirstHiveSet()
-        this.showHiveSetNotFound = true
+        this.selectFirstHiveSetFromList()
       }
     },
     selectGroup(id) {
@@ -812,15 +839,12 @@ export default {
           // if hiveId is specified, only select it if editable
           if (this.editableHives.includes(this.hiveId)) {
             this.selectedHives = [this.hiveId]
-          } else {
-            this.notEditableHiveId = this.hiveId
           }
         }
         this.selectedHiveSet = group
         // If group id doesn't exist, return first hiveset from the list
       } else {
-        this.selectFirstHiveSet()
-        this.showHiveSetNotFound = true
+        this.selectFirstHiveSetFromList()
       }
     },
     selectHive(id) {
@@ -833,13 +857,11 @@ export default {
       }
       this.setInspectionEdited(true)
     },
-    selectFirstHiveSet() {
+    selectFirstHiveSetFromList() {
       this.selectedHiveSetId = this.sortedHiveSets[0].children[0].treeselectId
       this.selectHiveSet(this.selectedHiveSetId)
     },
     selectHiveSet(id) {
-      this.showHiveSetNotFound = false
-      this.showHiveNotFound = false
       var stringId = id.toString()
       var isApiary = parseInt(stringId.substring(0, 1)) === 1
       var hiveSetId = parseInt(stringId.substring(1, stringId.length + 1))
@@ -847,35 +869,24 @@ export default {
     },
     selectInitialHiveSet() {
       if (this.apiaryId) {
-        this.selectedHiveSetId = parseInt('1' + this.apiaryId)
+        this.selectedHiveSetId = parseInt('1' + this.apiaryId) // add '1' to id to distinguish apiaries from groups when id is selected in treeselect component
         this.selectApiary(parseInt(this.apiaryId))
       } else if (this.groupId) {
-        this.selectedHiveSetId = parseInt('2' + this.groupId)
+        this.selectedHiveSetId = parseInt('2' + this.groupId) // add '2' to id to distinguish groups from apiaries when id is selected in treeselect component
         this.selectGroup(parseInt(this.groupId))
       } else if (this.hiveId) {
-        // if no apiary or group id is specified, find hiveset that contains the hive id, select the first result
-        var hiveSets = this.sortedHiveSets
-          .map((groupsOrApiaries) => {
-            return groupsOrApiaries.children.filter((hiveSet) => {
-              return (
-                hiveSet.hives.filter((hive) => {
-                  return hive.id === this.hiveId
-                }).length > 0
-              )
-            })
-          })
-          .filter((groupsOrApiaries) => {
-            return groupsOrApiaries.length > 0
-          })
-        if (hiveSets.length > 0) {
-          this.selectedHiveSetId = hiveSets[0][0].treeselectId
-          this.selectHiveSet(this.selectedHiveSetId)
+        // if no apiary or group id is specified, select apiary if owner is true, else select group
+        if (this.activeHive.owner) {
+          const apiaryId = this.activeHive.location_id
+          this.selectedHiveSetId = parseInt('1' + apiaryId) // add '1' to id to distinguish apiaries from groups when id is selected in treeselect component
+          this.selectApiary(parseInt(apiaryId))
         } else {
-          this.selectFirstHiveSet()
-          this.showHiveNotFound = true
+          const groupId = this.activeHive.group_ids[0]
+          this.selectedHiveSetId = parseInt('2' + groupId) // add '2' to id to distinguish groups from apiaries when id is selected in treeselect component
+          this.selectGroup(parseInt(groupId))
         }
       } else {
-        this.selectFirstHiveSet()
+        this.selectFirstHiveSetFromList()
       }
     },
     setInspectionEdited(bool) {
