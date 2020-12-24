@@ -24,7 +24,7 @@
           }}</v-icon
           ><span
             v-if="tab.title"
-            v-text="mobile ? tab.title_mobile : tab.title"
+            v-text="smallScreen ? tab.title_mobile : tab.title"
           ></span>
         </v-tab>
 
@@ -508,7 +508,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('locations', ['apiaryEdited']),
+    ...mapGetters('locations', ['apiaryEdited', 'apiaries']),
     colorPicker: {
       get() {
         if (this.newHive) {
@@ -526,6 +526,9 @@ export default {
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile
+    },
+    smallScreen() {
+      return this.$vuetify.breakpoint.width < 751
     },
     requiredRule: function() {
       return [
@@ -576,9 +579,9 @@ export default {
     },
   },
   created() {
-    this.readApiaries().then((data) => {
+    this.readApiariesIfNotPresent().then(() => {
       this.setApiaryEdited(false)
-      this.newApiaryNumber = data + 1
+      this.newApiaryNumber = this.apiaries.length + 1
       this.newHive = {
         name: this.$i18n.tc('Location', 1) + ' ' + this.newApiaryNumber,
         color: '#F8B133',
@@ -641,11 +644,13 @@ export default {
             this.snackbar.show = true
           }
           setTimeout(() => {
-            return this.$router.push({
-              name: 'home',
-              query: { search: this.newHive.name },
+            return this.readApiaries().then(() => {
+              this.$router.push({
+                name: 'home',
+                query: { search: this.newHive.name },
+              })
             })
-          }, 300) // wait for API to update locations/hives
+          }, 50) // wait for API to update locations/hives
         } catch (error) {
           console.log('Error: ', error)
           this.snackbar.text = this.$i18n.t('not_saved_error')
@@ -656,9 +661,33 @@ export default {
     async readApiaries() {
       try {
         const response = await Api.readRequest('/locations')
-        return response.data.locations.length
+        this.$store.commit('locations/setApiaries', response.data.locations)
+        return true
       } catch (error) {
-        console.log('Error: ', error)
+        if (error.response) {
+          const msg = error.response.data.message
+          console.log(msg)
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
+    async readApiariesIfNotPresent() {
+      if (this.apiaries.length === 0) {
+        try {
+          const response = await Api.readRequest('/locations')
+          this.$store.commit('locations/setApiaries', response.data.locations)
+          return true
+        } catch (error) {
+          if (error.response) {
+            const msg = error.response.data.message
+            console.log(msg)
+          } else {
+            console.log('Error: ', error)
+          }
+        }
+      } else {
+        return true
       }
     },
     cancelColorPicker() {

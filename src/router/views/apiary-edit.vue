@@ -337,10 +337,12 @@ export default {
           this.snackbar.show = true
         }
         setTimeout(() => {
-          return this.$router.push({
-            name: 'home',
+          return this.readApiaries().then(() => {
+            this.$router.push({
+              name: 'home',
+            })
           })
-        }, 100) // wait for API to update locations/hives
+        }, 50) // wait for API to update locations/hives
       } catch (error) {
         console.log('Error: ', error)
         this.snackbar.text = this.$i18n.t('something_wrong')
@@ -354,6 +356,19 @@ export default {
         return apiary
       } catch (error) {
         console.log('Error: ', error)
+      }
+    },
+    async readApiaries() {
+      try {
+        const response = await Api.readRequest('/locations')
+        this.$store.commit('locations/setApiaries', response.data.locations)
+        return true
+      } catch (error) {
+        if (error.response) {
+          console.log(error.response)
+        } else {
+          console.log('Error: ', error)
+        }
       }
     },
     async updateApiary() {
@@ -370,11 +385,13 @@ export default {
             this.snackbar.show = true
           }
           setTimeout(() => {
-            return this.$router.push({
-              name: 'home',
-              query: { search: this.activeApiary.name },
+            return this.readApiaries().then(() => {
+              this.$router.push({
+                name: 'home',
+                query: { search: this.activeApiary.name },
+              })
             })
-          }, 300) // wait for API to update locations/hives
+          }, 50) // wait for API to update locations/hives
         } catch (error) {
           console.log('Error: ', error)
           this.snackbar.text = this.$i18n.t('not_saved_error')

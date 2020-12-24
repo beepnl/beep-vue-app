@@ -473,7 +473,7 @@ export default {
     },
   },
   created() {
-    this.readApiariesAndGroups().then((response) => {
+    this.readApiariesAndGroupsIfNotPresent().then((response) => {
       // If Group-create route is used, make empty Group object
       if (this.createMode) {
         if (this.groups.length > 0) {
@@ -524,6 +524,7 @@ export default {
         if (!response.data.errors) {
           this.successMessage = this.$i18n.t('Invitation_accepted')
           this.showSuccessMessage = true
+          this.readGroups()
         } else if (response.data.errors.token) {
           this.errorMessage =
             this.$i18n.t('Error') + ': ' + response.data.errors.token
@@ -549,11 +550,13 @@ export default {
               this.$i18n.t('Error') + ': ' + this.$i18n.t('not_saved_error')
           }
           setTimeout(() => {
-            return this.$router.push({
-              name: 'home',
-              query: { search: this.activeGroup.name },
+            return this.readGroups().then(() => {
+              this.$router.push({
+                name: 'home',
+                query: { search: this.activeGroup.name },
+              })
             })
-          }, 300) // wait for API to update locations/Groups
+          }, 50) // wait for API to update groups
         } catch (error) {
           this.errorMessage =
             error.status === 422
@@ -576,13 +579,21 @@ export default {
           this.snackbar.show = true
         }
         setTimeout(() => {
-          return this.$router.push({
-            name: 'home',
+          return this.readGroups().then(() => {
+            this.$router.push({
+              name: 'home',
+            })
           })
-        }, 100) // wait for API to update groups
+        }, 50) // wait for API to update groups
       } catch (error) {
-        console.log('Error: ', error)
-        this.snackbar.text = this.$i18n.t('something_wrong')
+        if (error.response) {
+          console.log('Error: ', error.response)
+          const msg = error.response.data.message
+          this.snackbar.text = msg
+        } else {
+          console.log('Error: ', error)
+          this.snackbar.text = this.$i18n.t('something_wrong')
+        }
         this.snackbar.show = true
       }
     },
@@ -597,31 +608,47 @@ export default {
           this.snackbar.show = true
         }
         setTimeout(() => {
-          return this.$router.push({
-            name: 'home',
+          return this.readGroups().then(() => {
+            this.$router.push({
+              name: 'home',
+            })
           })
-        }, 100) // wait for API to update groups
+        }, 50) // wait for API to update groups
       } catch (error) {
-        console.log('Error: ', error)
-        this.snackbar.text = this.$i18n.t('something_wrong')
+        if (error.response) {
+          console.log('Error: ', error.response)
+          const msg = error.response.data.message
+          this.snackbar.text = msg
+        } else {
+          console.log('Error: ', error)
+          this.snackbar.text = this.$i18n.t('something_wrong')
+        }
         this.snackbar.show = true
       }
     },
-    async readApiariesAndGroups() {
-      try {
-        const responseApiaries = await Api.readRequest('/locations')
-        const responseGroups = await Api.readRequest('/groups')
-        if (responseApiaries.data.locations.length === 0) {
-          this.showApiaryPlaceholder = true
+    async readApiariesAndGroupsIfNotPresent() {
+      if (this.apiaries.length === 0) {
+        try {
+          const responseApiaries = await Api.readRequest('/locations')
+          const responseGroups = await Api.readRequest('/groups')
+          if (responseApiaries.data.locations.length === 0) {
+            this.showApiaryPlaceholder = true
+          }
+          this.$store.commit(
+            'locations/setApiaries',
+            responseApiaries.data.locations
+          )
+          this.$store.commit('groups/setGroups', responseGroups.data.groups)
+          return true
+        } catch (error) {
+          if (error.response) {
+            console.log(error.response)
+          } else {
+            console.log('Error: ', error)
+          }
         }
-        this.$store.commit(
-          'locations/setApiaries',
-          responseApiaries.data.locations
-        )
-        this.$store.commit('groups/setGroups', responseGroups.data.groups)
+      } else {
         return true
-      } catch (error) {
-        console.log('Error: ', error)
       }
     },
     async readGroup() {
@@ -656,8 +683,25 @@ export default {
         this.activeGroup = group
         return true
       } catch (error) {
-        console.log('Error: ', error)
+        if (error.response) {
+          console.log(error.response)
+        } else {
+          console.log('Error: ', error)
+        }
         this.$router.push({ name: '404', params: { resource: 'group' } })
+      }
+    },
+    async readGroups() {
+      try {
+        const response = await Api.readRequest('/groups')
+        this.$store.commit('groups/setGroups', response.data.groups)
+        return true
+      } catch (error) {
+        if (error.response) {
+          console.log(error.response)
+        } else {
+          console.log('Error: ', error)
+        }
       }
     },
     async updateGroup() {
@@ -678,18 +722,22 @@ export default {
           this.successMessage = response.data.message
           this.showSuccessMessage = true
           setTimeout(() => {
-            return this.$router.push({
-              name: 'home',
+            return this.readGroups().then(() => {
+              this.$router.push({
+                name: 'home',
+                query: { search: this.activeGroup.name },
+              })
             })
-          }, 800) // wait for API to update locations/Groups
+          }, 800) // wait for API to update groups and for user to read success message
         } catch (error) {
-          this.errorMessage =
-            error.status === 422
-              ? this.$i18n.t('Error') +
-                ': ' +
-                Object.values(error.message).join(', ')
-              : this.$i18n.t('empty_fields') + '.'
-          console.log('Error: ', this.errorMessage)
+          if (error.response) {
+            const msg = error.response.data.message
+            this.errorMessage = msg
+            console.log(error.response)
+          } else {
+            this.errorMessage = this.$i18n.t('empty_fields')
+            console.log('Error: ', error)
+          }
         }
       }
     },

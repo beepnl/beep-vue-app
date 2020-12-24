@@ -64,7 +64,9 @@ export default {
     ...mapGetters('locations', ['apiaries']),
   },
   created() {
-    this.readApiaries()
+    if (this.apiaries.length === 0) {
+      this.readApiaries()
+    }
   },
   methods: {
     async readApiaries() {
@@ -73,7 +75,11 @@ export default {
         this.$store.commit('locations/setApiaries', response.data.locations)
         return true
       } catch (error) {
-        console.log('Error: ', error)
+        if (error.response) {
+          console.log(error.response)
+        } else {
+          console.log('Error: ', error)
+        }
       }
     },
     setInspectionEdited(bool) {

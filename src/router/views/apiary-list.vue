@@ -736,9 +736,13 @@ export default {
   },
   created() {
     this.search = this.$route.query.search || null
-    this.readApiariesAndGroups().then(() => {
+    if (this.apiaries.length === 0 && this.groups.length === 0) {
+      this.readApiariesAndGroups().then(() => {
+        this.ready = true
+      })
+    } else {
       this.ready = true
-    })
+    }
     // this.getDeviceIds().then(() => {
     //   this.getAllLastSensorValues()
     // })

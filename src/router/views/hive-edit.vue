@@ -98,7 +98,11 @@
           </v-col>
 
           <v-col
-            v-if="activeHive && activeHive.owner && apiaries !== null"
+            v-if="
+              activeHive &&
+                (activeHive.owner || hiveCreateMode) &&
+                apiaries !== null
+            "
             cols="12"
             sm="6"
             md="4"
@@ -120,7 +124,12 @@
             </div>
           </v-col>
 
-          <v-col v-if="activeHive && activeHive.owner" cols="12" sm="6" md="4">
+          <v-col
+            v-if="activeHive && (activeHive.owner || hiveCreateMode)"
+            cols="12"
+            sm="6"
+            md="4"
+          >
             <div>
               <div class="beep-label" v-text="`${$t('Hive_order')}`"></div>
               <VueNumberInput
@@ -186,7 +195,6 @@ export default {
         timeout: 2000,
         text: 'notification',
       },
-      apiaries: null,
       normalizerApiary(node) {
         return {
           id: node.id,
@@ -209,6 +217,7 @@ export default {
   },
   computed: {
     ...mapGetters('hives', ['hiveEdited']),
+    ...mapGetters('locations', ['apiaries']),
     hiveCreateMode() {
       return this.$route.name === 'hive-create'
     },
@@ -267,7 +276,7 @@ export default {
     },
   },
   created() {
-    this.readApiaries().then((response) => {
+    this.readApiariesIfNotPresent().then(() => {
       // If hive-create route is used, make empty hive object
       if (this.hiveCreateMode && this.locationId !== null) {
         if (this.apiaries.length > 0) {
@@ -329,13 +338,21 @@ export default {
             this.snackbar.show = true
           }
           setTimeout(() => {
-            return this.$router.push({
-              name: 'home',
+            return this.readApiariesOrGroups().then(() => {
+              this.$router.push({
+                name: 'home',
+              })
             })
-          }, 300) // wait for API to update locations/hives
+          }, 50) // wait for API to update locations/hives
         } catch (error) {
-          console.log('Error: ', error)
-          this.snackbar.text = this.$i18n.t('not_saved_error')
+          if (error.response) {
+            console.log('Error: ', error.response)
+            const msg = error.response.data.message
+            this.snackbar.text = msg
+          } else {
+            console.log('Error: ', error)
+            this.snackbar.text = this.$i18n.t('something_wrong')
+          }
           this.snackbar.show = true
         }
       }
@@ -348,23 +365,59 @@ export default {
           this.snackbar.show = true
         }
         setTimeout(() => {
-          return this.$router.push({
-            name: 'home',
+          return this.readApiariesOrGroups().then(() => {
+            this.$router.push({
+              name: 'home',
+            })
           })
-        }, 100) // wait for API to update locations/hives
+        }, 50) // wait for API to update locations/hives
       } catch (error) {
-        console.log('Error: ', error)
-        this.snackbar.text = this.$i18n.t('something_wrong')
+        if (error.response) {
+          console.log('Error: ', error.response)
+          const msg = error.response.data.message
+          this.snackbar.text = msg
+        } else {
+          console.log('Error: ', error)
+          this.snackbar.text = this.$i18n.t('something_wrong')
+        }
         this.snackbar.show = true
       }
     },
-    async readApiaries() {
+    async readApiariesIfNotPresent() {
+      if (this.apiaries.length === 0) {
+        try {
+          const response = await Api.readRequest('/locations')
+          this.$store.commit('locations/setApiaries', response.data.locations)
+          return true
+        } catch (error) {
+          if (error.response) {
+            const msg = error.response.data.message
+            console.log(msg)
+          } else {
+            console.log('Error: ', error)
+          }
+        }
+      } else {
+        return true
+      }
+    },
+    async readApiariesOrGroups() {
       try {
-        const response = await Api.readRequest('/locations')
-        this.apiaries = response.data.locations
+        if (this.activeHive.owner || this.hiveCreateMode) {
+          const response = await Api.readRequest('/locations')
+          this.$store.commit('locations/setApiaries', response.data.locations)
+        } else {
+          const response = await Api.readRequest('/groups')
+          this.$store.commit('groups/setGroups', response.data.groups)
+        }
         return true
       } catch (error) {
-        console.log('Error: ', error)
+        if (error.response) {
+          const msg = error.response.data.message
+          console.log(msg)
+        } else {
+          console.log('Error: ', error)
+        }
       }
     },
     async readHive() {
@@ -401,13 +454,21 @@ export default {
             this.snackbar.show = true
           }
           setTimeout(() => {
-            return this.$router.push({
-              name: 'home',
+            return this.readApiariesOrGroups().then(() => {
+              this.$router.push({
+                name: 'home',
+              })
             })
-          }, 300) // wait for API to update locations/hives
+          }, 50) // wait for API to update locations/hives
         } catch (error) {
-          console.log('Error: ', error)
-          this.snackbar.text = this.$i18n.t('not_saved_error')
+          if (error.response) {
+            console.log('Error: ', error.response)
+            const msg = error.response.data.message
+            this.snackbar.text = msg
+          } else {
+            console.log('Error: ', error)
+            this.snackbar.text = this.$i18n.t('something_wrong')
+          }
           this.snackbar.show = true
         }
       }
