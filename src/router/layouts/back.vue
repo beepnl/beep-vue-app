@@ -13,7 +13,7 @@
       <v-spacer></v-spacer>
 
       <LocaleChanger></LocaleChanger>
-      <HeaderMenu v-if="menuItems.length" :menu-items="menuItems"></HeaderMenu>
+      <HeaderMenu :menu-items="menuItems"></HeaderMenu>
     </v-app-bar>
     <v-main>
       <slot></slot>

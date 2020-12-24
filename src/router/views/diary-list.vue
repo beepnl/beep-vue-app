@@ -211,7 +211,7 @@
                   </v-col>
 
                   <v-col cols="12" sm="7" class="diary-inspection-content pa-0">
-                    <v-row class="py-0 ml-0">
+                    <v-row class="py-0 ml-sm-0">
                       <v-col
                         cols="12"
                         sm="1"
@@ -743,7 +743,7 @@ export default {
     width: 100%;
     max-width: 1200px;
     @media (max-width: 849px) {
-      max-width: 480px;
+      max-width: 580px;
     }
   }
   .diary-item {
@@ -834,9 +834,11 @@ export default {
     .diary-inspection-content {
       margin-top: 10px !important;
       margin-left: 10px !important;
+      @include for-tablet-portrait-up {
+        margin-left: 0 !important;
+      }
       @media (min-width: 850px) {
         margin-top: 0 !important;
-        margin-left: 0 !important;
       }
       .diary-content-item {
         margin-bottom: 4px;
