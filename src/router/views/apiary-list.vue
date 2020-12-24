@@ -340,7 +340,7 @@
                   }"
                 >
                   <v-list-item-icon class="mr-3">
-                    <v-icon>mdi-pencil</v-icon>
+                    <v-icon>mdi-home-edit</v-icon>
                   </v-list-item-icon>
 
                   <v-list-item-content>
@@ -356,7 +356,7 @@
                   }"
                 >
                   <v-list-item-icon class="mr-3">
-                    <v-icon>mdi-pencil</v-icon>
+                    <v-icon>mdi-file-document-edit-outline</v-icon>
                   </v-list-item-icon>
 
                   <v-list-item-content>
@@ -412,7 +412,7 @@
                   }"
                 >
                   <v-list-item-icon class="mr-3">
-                    <v-icon>mdi-pencil</v-icon>
+                    <v-icon>mdi-account-multiple-plus</v-icon>
                   </v-list-item-icon>
 
                   <v-list-item-content>
@@ -431,7 +431,7 @@
                 }"
               >
                 <v-list-item-icon class="mr-3">
-                  <v-icon>mdi-pencil</v-icon>
+                  <v-icon>mdi-file-document-edit-outline</v-icon>
                 </v-list-item-icon>
 
                 <v-list-item-content>

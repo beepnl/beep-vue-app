@@ -109,7 +109,7 @@
                   :to="inspectLink(false)"
                 >
                   <v-list-item-icon class="mr-3">
-                    <v-icon>mdi-pencil</v-icon>
+                    <v-icon>mdi-file-document-edit-outline</v-icon>
                   </v-list-item-icon>
 
                   <v-list-item-content>
