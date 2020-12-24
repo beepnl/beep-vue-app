@@ -743,20 +743,11 @@ export default {
         console.log(inspectionToSave)
         try {
           await Api.postRequest('/inspections/store', inspectionToSave)
-          if (this.selectedHives.length > 1) {
-            setTimeout(() => {
-              return this.$router.push({
-                name: 'diary',
-              })
-            }, 300)
-          } else {
-            setTimeout(() => {
-              return this.$router.push({
-                name: 'hive-inspections',
-                params: { id: this.selectedHives[0] },
-              })
-            }, 300)
-          }
+          setTimeout(() => {
+            return this.$router.push({
+              name: 'diary',
+            })
+          }, 300)
         } catch (error) {
           if (error.response) {
             const msg = error.response.data.message

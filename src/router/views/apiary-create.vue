@@ -175,26 +175,24 @@
 
         <v-tab-item value="tab-2">
           <div class="browse-tabs-bar">
-            <v-container>
-              <div class="d-flex justify-space-between">
-                <v-icon
-                  x-large
-                  dark
-                  color="primary"
-                  class="prev"
-                  @click="setActiveTab(tabIndex - 1)"
-                  >mdi-chevron-left</v-icon
-                >
-                <v-icon
-                  x-large
-                  dark
-                  color="primary"
-                  class="next"
-                  @click="setActiveTab(tabIndex + 1)"
-                  >mdi-chevron-right</v-icon
-                >
-              </div>
-            </v-container>
+            <div class="d-flex justify-space-between">
+              <v-icon
+                x-large
+                dark
+                color="primary"
+                class="prev"
+                @click="setActiveTab(tabIndex - 1)"
+                >mdi-chevron-left</v-icon
+              >
+              <v-icon
+                x-large
+                dark
+                color="primary"
+                class="next"
+                @click="setActiveTab(tabIndex + 1)"
+                >mdi-chevron-right</v-icon
+              >
+            </div>
           </div>
           <v-container>
             <v-row>

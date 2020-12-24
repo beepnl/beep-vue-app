@@ -167,20 +167,37 @@
                         class="diary-inspection-date-item d-flex flex-column align-start pa-0 pr-3"
                       >
                         <div>
+                          <v-tooltip
+                            v-if="hives[inspection.hive_id].name.length >= 15"
+                            class="diary-tooltip"
+                            bottom
+                            max-width="60%"
+                          >
+                            <template v-slot:activator="{ on, attrs }">
+                              <span
+                                class="diary-label"
+                                v-bind="attrs"
+                                v-on="on"
+                                v-text="
+                                  hives[inspection.hive_id].name.substring(
+                                    0,
+                                    // eslint-disable-next-line vue/comma-dangle
+                                    14
+                                  ) + '...'
+                                "
+                              >
+                              </span>
+                            </template>
+                            <span
+                              class="diary-label"
+                              v-text="hives[inspection.hive_id].name"
+                            >
+                            </span>
+                          </v-tooltip>
                           <span
+                            v-else
                             class="diary-label"
-                            style="line-height: 24px;"
-                            v-text="
-                              `${
-                                hives[inspection.hive_id].name.length < 35
-                                  ? hives[inspection.hive_id].name
-                                  : hives[inspection.hive_id].name.substring(
-                                      0,
-                                      // eslint-disable-next-line vue/comma-dangle
-                                      35
-                                    ) + '...'
-                              }`
-                            "
+                            v-text="hives[inspection.hive_id].name"
                           >
                           </span>
                         </div>
@@ -194,7 +211,7 @@
                   </v-col>
 
                   <v-col cols="12" sm="7" class="diary-inspection-content pa-0">
-                    <v-row class="py-0">
+                    <v-row class="py-0 ml-0">
                       <v-col
                         cols="12"
                         sm="1"
@@ -753,9 +770,10 @@ export default {
     .diary-label {
       font-size: 0.75rem !important;
       font-weight: 600;
-      line-height: 1;
+      line-height: 24px !important;
       color: $color-grey;
       letter-spacing: 0.0333333333em !important;
+      white-space: nowrap;
       @include for-phone-only {
         font-size: 0.7rem !important;
       }
