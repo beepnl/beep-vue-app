@@ -168,7 +168,10 @@
                       >
                         <div>
                           <v-tooltip
-                            v-if="hives[inspection.hive_id].name.length >= 15"
+                            v-if="
+                              hives[inspection.hive_id].name.length >= 15 &&
+                                !smallScreen
+                            "
                             class="diary-tooltip"
                             bottom
                             max-width="60%"
@@ -290,7 +293,9 @@
                             <v-tooltip
                               v-if="
                                 inspection.reminder &&
-                                  inspection.reminder.length > 30
+                                  inspection.reminder.length > 30 &&
+                                  !mobile &&
+                                  !smallScreen
                               "
                               class="diary-tooltip"
                               bottom
@@ -342,7 +347,11 @@
                           </div>
                           <div class="ml-7 diary-inspection-text mr-2">
                             <v-tooltip
-                              v-if="inspection.notes.length > 30"
+                              v-if="
+                                inspection.notes.length > 30 &&
+                                  !mobile &&
+                                  !smallScreen
+                              "
                               class="diary-tooltip"
                               bottom
                               max-width="60%"
@@ -570,6 +579,12 @@ export default {
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile
+    },
+    smallScreen() {
+      return (
+        this.$vuetify.breakpoint.width < 850 &&
+        this.$vuetify.breakpoint.width > 500
+      )
     },
   },
   created() {
