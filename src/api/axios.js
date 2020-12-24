@@ -12,8 +12,8 @@ instance.interceptors.response.use(
   (response) => response,
   (error) => {
     console.log(error)
-    const status = error.response.status
-    if (status === UNAUTHORIZED) {
+    const status = error.response ? error.response.status : 'No response'
+    if (status === UNAUTHORIZED || status === 'No response') {
       store.commit('auth/SET_CURRENT_USER', null)
       router.push('/sign-in')
     }
