@@ -40,10 +40,10 @@ export default {
       type: String,
       default: 'Back', // () => this.$i18n.t('back') werkt niet, ook niet via created hook,
     },
-    menuItems: {
-      type: Array,
-      default: () => [],
-    },
+    // menuItems: {
+    //   type: Array,
+    //   default: () => [],
+    // },
     edited: {
       type: Boolean,
       default: false,
@@ -54,6 +54,9 @@ export default {
     ...mapGetters('hives', ['hiveEdited']),
     ...mapGetters('inspections', ['inspectionEdited']),
     ...mapGetters('locations', ['apiaryEdited']),
+    menuItems: function() {
+      return [{ title: this.$i18n.tc('Hive_short', 2), route: 'home' }]
+    },
   },
   methods: {
     back: function() {

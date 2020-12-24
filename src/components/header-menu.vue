@@ -31,6 +31,7 @@
             :key="`i-${index}`"
             :disabled="item.disabled"
             :to="item.route ? { name: item.route } : null"
+            exact
           >
             <v-list-item-title v-text="item.title" />
           </v-list-item>

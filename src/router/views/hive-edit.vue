@@ -97,13 +97,17 @@
             </v-text-field>
           </v-col>
 
-          <v-col cols="12" sm="6" md="4">
+          <v-col
+            v-if="activeHive && activeHive.owner && apiaries !== null"
+            cols="12"
+            sm="6"
+            md="4"
+          >
             <div>
               <div class="beep-label" v-text="`${$tc('Location', 1)}`"></div>
               <Treeselect
-                v-if="apiaries !== null"
                 v-model="activeHive.location_id"
-                :options="apiaries"
+                :options="sortedApiaries"
                 :normalizer="normalizerApiary"
                 :placeholder="`${$t('Select')} ${$tc('location', 1)}`"
                 :no-results-text="`${$t('no_results')}`"
@@ -116,11 +120,10 @@
             </div>
           </v-col>
 
-          <v-col cols="12" sm="6" md="4">
+          <v-col v-if="activeHive && activeHive.owner" cols="12" sm="6" md="4">
             <div>
               <div class="beep-label" v-text="`${$t('Hive_order')}`"></div>
               <VueNumberInput
-                v-if="activeHive"
                 :value="activeHive.order"
                 class="hive-number-input"
                 :step="1"
@@ -228,6 +231,18 @@ export default {
             '" ' +
             this.$i18n.t('is_required'),
       ]
+    },
+    sortedApiaries() {
+      var sortedApiaries = this.apiaries.slice().sort(function(a, b) {
+        if (a.name > b.name) {
+          return 1
+        }
+        if (b.name > a.name) {
+          return -1
+        }
+        return 0
+      })
+      return sortedApiaries
     },
     unauthorizedText() {
       if (this.queenEditMode) {
