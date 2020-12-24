@@ -313,7 +313,6 @@ export default {
           }, 200)
         } catch (error) {
           if (error.response) {
-            console.log(error.response)
             const msg = error.response.data.message
             this.errorMessage = this.$i18n.t(msg)
           } else {

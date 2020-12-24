@@ -40,13 +40,6 @@
       @close-overlay="activeImage = null"
     ></imageOverlay>
 
-    <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
-      {{ snackbar.text }}
-      <v-btn color="blue" text @click="snackbar.show = false">
-        {{ $t('Close') }}
-      </v-btn>
-    </v-snackbar>
-
     <Confirm ref="confirm"></Confirm>
   </div>
 </template>
@@ -72,11 +65,6 @@ export default {
     },
   },
   data: () => ({
-    snackbar: {
-      show: false,
-      timeout: 2000,
-      text: 'notification',
-    },
     rules: [
       (value) =>
         !value ||
@@ -107,18 +95,15 @@ export default {
         this.object[id] = null
         const response = await Api.deleteRequest('/images', '', data)
         if (!response) {
-          this.snackbar.text = this.$i18n.t('something_wrong')
-          this.snackbar.show = true
+          console.log('error')
         }
       } catch (error) {
         if (error.response) {
-          console.log('Error: ', error.response)
-          this.snackbar.text = error.response
+          const msg = error.response.data.message
+          console.log(msg)
         } else {
           console.log('Error: ', error)
-          this.snackbar.text = this.$i18n.t('something_wrong')
         }
-        this.snackbar.show = true
       }
     },
     async onUpload() {
@@ -150,8 +135,7 @@ export default {
             headers
           )
           if (!response) {
-            this.snackbar.text = this.$i18n.t('not_saved_error')
-            this.snackbar.show = true
+            console.log('error')
           }
           if (
             response &&
@@ -165,13 +149,11 @@ export default {
           }
         } catch (error) {
           if (error.response) {
-            console.log('Error: ', error.response)
-            this.snackbar.text = error.response
+            const msg = error.response.data.message
+            console.log(msg)
           } else {
             console.log('Error: ', error)
-            this.snackbar.text = this.$i18n.t('something_wrong')
           }
-          this.snackbar.show = true
         }
       }
     },
@@ -182,7 +164,8 @@ export default {
         return true
       } catch (error) {
         if (error.response) {
-          console.log('Error: ', error.response)
+          const msg = error.response.data.message
+          console.log(msg)
         } else {
           console.log('Error: ', error)
         }

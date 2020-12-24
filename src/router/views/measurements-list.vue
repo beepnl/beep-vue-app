@@ -596,9 +596,13 @@ export default {
         this.lastSensorDate = response.data.time
         return true
       } catch (error) {
-        console.log('Error: ', error)
-        if (error.response.status === 404 || error.response.status === 500) {
-          this.lastSensorDate = null
+        if (error.response) {
+          console.log(error.response)
+          if (error.response.status === 404 || error.response.status === 500) {
+            this.lastSensorDate = null
+          }
+        } else {
+          console.log('Error: ', error)
         }
       }
     },
@@ -622,9 +626,13 @@ export default {
         this.formatMeasurementData(response.data)
         return true
       } catch (error) {
-        console.log('Error: ', error)
-        if (error.response.status === 404 || error.response.status === 500) {
-          this.noChartData = true
+        if (error.response) {
+          console.log(error.response)
+          if (error.response.status === 404 || error.response.status === 500) {
+            this.noChartData = true
+          }
+        } else {
+          console.log('Error: ', error)
         }
       }
     },

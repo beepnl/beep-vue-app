@@ -54,10 +54,10 @@
             </v-alert>
           </v-col>
         </v-row>
-        <v-row v-if="acceptMode && showAcceptMessage">
+        <v-row v-if="showSuccessMessage">
           <v-col cols="12">
             <v-alert
-              v-model="showAcceptMessage"
+              v-model="showSuccessMessage"
               text
               prominent
               dense
@@ -65,7 +65,7 @@
               type="success"
               color="green"
             >
-              {{ acceptMessage }}
+              {{ successMessage }}
             </v-alert>
           </v-col>
         </v-row>
@@ -367,7 +367,7 @@
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
-      <v-btn color="blue" text @click="snackbar.show = false">
+      <v-btn color="primary" text @click="snackbar.show = false">
         {{ $t('Close') }}
       </v-btn>
     </v-snackbar>
@@ -410,10 +410,11 @@ export default {
       showLoadingIcon: false,
       newGroupNumber: 1,
       overlay: false,
-      showAcceptMessage: false,
+      showSuccessMessage: false,
       showGroupDetails: false,
       errorMessage: null,
       token: null,
+      successMessage: null,
     }
   },
   computed: {
@@ -428,9 +429,6 @@ export default {
     },
     acceptMode() {
       return this.$route.name === 'group-accept'
-    },
-    acceptMessage() {
-      return this.$i18n.t('Invitation_accepted')
     },
     colorPicker: {
       get() {
@@ -524,7 +522,8 @@ export default {
           token: token,
         })
         if (!response.data.errors) {
-          this.showAcceptMessage = true
+          this.successMessage = this.$i18n.t('Invitation_accepted')
+          this.showSuccessMessage = true
         } else if (response.data.errors.token) {
           this.errorMessage =
             this.$i18n.t('Error') + ': ' + response.data.errors.token
@@ -676,11 +675,13 @@ export default {
             this.errorMessage =
               this.$i18n.t('Error') + ': ' + this.$i18n.t('not_saved_error')
           }
+          this.successMessage = response.data.message
+          this.showSuccessMessage = true
           setTimeout(() => {
             return this.$router.push({
               name: 'home',
             })
-          }, 300) // wait for API to update locations/Groups
+          }, 800) // wait for API to update locations/Groups
         } catch (error) {
           this.errorMessage =
             error.status === 422

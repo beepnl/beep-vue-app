@@ -665,7 +665,8 @@ export default {
         return true
       } catch (error) {
         if (error.response) {
-          console.log('Error: ', error.response)
+          const msg = error.response.data.message
+          console.log(msg)
         } else {
           console.log('Error: ', error)
         }
@@ -678,7 +679,8 @@ export default {
         return true
       } catch (error) {
         if (error.response) {
-          console.log('Error: ', error.response)
+          const msg = error.response.data.message
+          console.log(msg)
         } else {
           console.log('Error: ', error)
         }
@@ -692,7 +694,8 @@ export default {
         return true
       } catch (error) {
         if (error.response) {
-          console.log('Error: ', error.response)
+          const msg = error.response.data.message
+          console.log(msg)
         } else {
           console.log('Error: ', error)
         }

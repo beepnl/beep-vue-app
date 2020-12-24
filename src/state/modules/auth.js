@@ -65,8 +65,10 @@ export const actions = {
           return user
         })
         .catch((error) => {
-          if (error.response && error.response.status === 401)
+          if (error.response && error.response.status === 401) {
+            console.log(error.response)
             return dispatch('signOut')
+          }
         })
     )
   },

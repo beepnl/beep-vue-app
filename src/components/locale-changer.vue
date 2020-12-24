@@ -86,7 +86,7 @@ export default {
           const msg = error.response.data.message
           console.log(msg)
         } else {
-          console.log(error)
+          console.log('Error: ', error)
         }
       }
     },

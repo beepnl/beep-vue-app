@@ -379,7 +379,7 @@
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
-      <v-btn color="blue" text @click="snackbar.show = false">
+      <v-btn color="primary" text @click="snackbar.show = false">
         {{ $t('Close') }}
       </v-btn>
     </v-snackbar>
@@ -779,7 +779,7 @@ export default {
         } catch (error) {
           if (error.response) {
             const msg = error.response.data.message
-            console.log('Error: ', msg)
+            console.log('Error: ', error.response)
             this.snackbar.text = msg
           } else {
             console.log('Error: ', error)

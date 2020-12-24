@@ -762,11 +762,9 @@ export default {
             this.search = groupName
             this.showLoadingIconForId = null
           })
-        }, 100) // wait for API to update groups
+        }, 300) // wait for API to update groups
       } catch (error) {
-        console.log('Error: ', error)
-        this.snackbar.text = this.$i18n.t('something_wrong')
-        this.snackbar.show = true
+        this.handleError(error)
       }
     },
     async deleteApiaryById(id) {
@@ -780,9 +778,7 @@ export default {
           this.readApiariesAndGroups()
         }, 100) // wait for API to update locations/hives
       } catch (error) {
-        console.log('Error: ', error)
-        this.snackbar.text = this.$i18n.t('something_wrong')
-        this.snackbar.show = true
+        this.handleError(error)
       }
     },
     async deleteGroupById(id) {
@@ -796,9 +792,7 @@ export default {
           this.readApiariesAndGroups()
         }, 100) // wait for API to update locations/hives
       } catch (error) {
-        console.log('Error: ', error)
-        this.snackbar.text = this.$i18n.t('something_wrong')
-        this.snackbar.show = true
+        this.handleError(error)
       }
     },
     async detachGroupById(id) {
@@ -812,9 +806,7 @@ export default {
           this.readApiariesAndGroups()
         }, 100) // wait for API to update locations/hives
       } catch (error) {
-        console.log('Error: ', error)
-        this.snackbar.text = this.$i18n.t('something_wrong')
-        this.snackbar.show = true
+        this.handleError(error)
       }
     },
     async deleteHiveById(id) {
@@ -828,36 +820,44 @@ export default {
           this.readApiariesAndGroups()
         }, 100) // wait for API to update locations/hives
       } catch (error) {
-        console.log('Error: ', error)
-        this.snackbar.text = this.$i18n.t('something_wrong')
-        this.snackbar.show = true
+        this.handleError(error)
       }
     },
-    async getDeviceIds() {
-      try {
-        const response = await Api.readRequest('/devices')
-        const devices = response.data
-        // var deviceIdArray = []
-        var allLastSensorValues = {}
-        devices.map((device) => {
-          allLastSensorValues[device.id] = {}
-          // deviceIdArray.push(device.id)
-        })
-        this.allLastSensorValues = allLastSensorValues
-        this.deviceIdArray = Object.keys(allLastSensorValues)
-        return true
-      } catch (error) {
-        console.log('Error: ', error)
-      }
-    },
-    async loadLastSensorValues(id) {
-      try {
-        const response = await Api.readRequest('/sensors/lastvalues?id=' + id)
-        return response.data
-      } catch (error) {
-        console.log('Error: ', error)
-      }
-    },
+    // async getDeviceIds() {
+    //   try {
+    //     const response = await Api.readRequest('/devices')
+    //     const devices = response.data
+    //     // var deviceIdArray = []
+    //     var allLastSensorValues = {}
+    //     devices.map((device) => {
+    //       allLastSensorValues[device.id] = {}
+    //       // deviceIdArray.push(device.id)
+    //     })
+    //     this.allLastSensorValues = allLastSensorValues
+    //     this.deviceIdArray = Object.keys(allLastSensorValues)
+    //     return true
+    //   } catch (error) {
+    //     if (error.response) {
+    //       const msg = error.response.data.message
+    //       console.log(msg)
+    //     } else {
+    //       console.log('Error: ', error)
+    //     }
+    //   }
+    // },
+    // async loadLastSensorValues(id) {
+    //   try {
+    //     const response = await Api.readRequest('/sensors/lastvalues?id=' + id)
+    //     return response.data
+    //   } catch (error) {
+    //     if (error.response) {
+    //       const msg = error.response.data.message
+    //       console.log(msg)
+    //     } else {
+    //       console.log('Error: ', error)
+    //     }
+    //   }
+    // },
     async readApiariesAndGroups() {
       try {
         const responseApiaries = await Api.readRequest('/locations')
@@ -880,8 +880,13 @@ export default {
           responseGroups.data.invitations
         )
         return true
-      } catch (e) {
-        console.log(e)
+      } catch (error) {
+        if (error.response) {
+          const msg = error.response.data.message
+          console.log(msg)
+        } else {
+          console.log('Error: ', error)
+        }
       }
     },
     confirmDeleteApiary(hiveSet) {
@@ -962,6 +967,17 @@ export default {
           this.allLastSensorValues[deviceId] = response
         })
       )
+    },
+    handleError(error) {
+      if (error.response) {
+        console.log('Error: ', error.response)
+        const msg = error.response.data.message
+        this.snackbar.text = msg
+      } else {
+        console.log('Error: ', error)
+        this.snackbar.text = this.$i18n.t('something_wrong')
+      }
+      this.snackbar.show = true
     },
     sortedHives(hives) {
       const sortedHives = hives.slice().sort(function(a, b) {

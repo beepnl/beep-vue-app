@@ -607,7 +607,8 @@ export default {
       } catch (error) {
         if (error.response) {
           console.log('Error: ', error.response)
-          this.snackbar.text = error.response
+          const msg = error.response.data.message
+          this.snackbar.text = msg
         } else {
           console.log('Error: ', error)
           this.snackbar.text = this.$i18n.t('something_wrong')
