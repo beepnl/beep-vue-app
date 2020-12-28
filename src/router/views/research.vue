@@ -17,9 +17,7 @@
                 <v-col cols="12" md="4">
                   <span class="d-flex align-center"
                     ><v-icon size="23" class="mr-1">mdi-home-analytics</v-icon>
-                    <span
-                      >{{ $tc('Location', 2) }}: {{ numberOfApiaries }}</span
-                    >
+                    <span>{{ $tc('Location', 2) }}: {{ apiaries.length }}</span>
                   </span>
                 </v-col>
                 <v-col cols="12" md="4">
@@ -170,7 +168,7 @@
                     </v-col>
                   </v-row>
                   <v-row>
-                    <v-col class="research-item-col" cols="12" md="4">
+                    <v-col class="research-item-col" cols="5" sm="4">
                       <span
                         class="research-property"
                         v-text="
@@ -178,27 +176,31 @@
                         "
                       ></span>
                     </v-col>
-                    <v-col class="research-item-col" cols="12" md="8">
+                    <v-col class="research-item-col" cols="7" sm="8">
                       <v-btn
                         tile
                         outlined
-                        :small="mobile"
-                        :class="research.consent ? 'red--text' : 'green--text'"
+                        :small="mdAndDown"
+                        :class="
+                          `${
+                            research.consent ? 'red--text' : 'green--text'
+                          } research-consent-button`
+                        "
                         @click="
                           consentToggle(research.id, research.consent ? 0 : 1)
                         "
                       >
                         <v-progress-circular
                           v-if="showLoadingIconConsentToggle"
-                          :class="`ml-n1 ${mobile ? 'mr-3' : 'mr-2'}`"
-                          :size="mobile ? 14 : 18"
+                          :class="`ml-n1 ${mdAndDown ? 'mr-3' : 'mr-2'}`"
+                          :size="mdAndDown ? 14 : 18"
                           width="2"
                           indeterminate
                         />
                         <v-icon
                           v-if="!showLoadingIconConsentToggle"
                           left
-                          :small="mobile"
+                          :small="mdAndDown"
                           >{{
                             research.consent ? 'mdi-close' : 'mdi-check'
                           }}</v-icon
@@ -378,6 +380,7 @@ import Confirm from '@components/confirm.vue'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
 import Layout from '@layouts/back.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -388,8 +391,6 @@ export default {
   data: function() {
     return {
       researchProjects: [],
-      numberOfHives: 0,
-      numberOfApiaries: 0,
       numberOfDevices: 0,
       editedCHItems: [],
       ready: false,
@@ -398,13 +399,21 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('locations', ['apiaries']),
+    ...mapGetters('groups', ['groups']),
     baseApiUrl() {
       var baseUrl = process.env.VUE_APP_API_URL
       baseUrl = baseUrl.replace('/api/', '')
       return baseUrl
     },
-    mobile() {
-      return this.$vuetify.breakpoint.mobile
+    mdAndDown() {
+      return this.$vuetify.breakpoint.mdAndDown
+    },
+    numberOfHives() {
+      return this.apiaries.reduce((acc, apiary) => {
+        acc += apiary.hives.length
+        return acc
+      }, 0)
     },
     sortedResearchProjects() {
       var sortedRPs = this.researchProjects.slice().sort(function(a, b) {
@@ -421,7 +430,10 @@ export default {
   },
   created() {
     this.getDevicesLength()
-    this.getApiariesAndHivesLength()
+    if (this.apiaries.length === 0 && this.groups.length === 0) {
+      // in case view is opened directly without loggin in (via localstorage) or in case of hard refresh
+      this.readApiariesAndGroups()
+    }
     this.readResearchProjects().then(() => {
       this.ready = true
     })
@@ -436,17 +448,22 @@ export default {
         console.log('Error: ', error)
       }
     },
-    async getApiariesAndHivesLength() {
+    async readApiariesAndGroups() {
       try {
-        const response = await Api.readRequest('/locations')
-        this.numberOfApiaries = response.data.locations.length
-        this.numberOfHives = response.data.locations.reduce((acc, location) => {
-          acc += location.hives.length
-          return acc
-        }, 0)
+        const responseApiaries = await Api.readRequest('/locations')
+        const responseGroups = await Api.readRequest('/groups')
+        this.$store.commit(
+          'locations/setApiaries',
+          responseApiaries.data.locations
+        )
+        this.$store.commit('groups/setGroups', responseGroups.data.groups)
         return true
       } catch (error) {
-        console.log('Error: ', error)
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
       }
     },
     async readResearchProjects() {
@@ -565,7 +582,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .research-item {
   padding: 12px;
   border-color: $color-primary !important;
@@ -588,5 +605,29 @@ export default {
   font-weight: 500 !important;
   color: $color-grey-dark !important;
   letter-spacing: 0.0333333333em !important;
+}
+
+.research-consent-button {
+  display: block;
+  word-break: break-word;
+  .v-btn__content {
+    white-space: normal !important;
+  }
+  &.v-btn:not(.v-btn--round).v-size--small {
+    height: 100% !important;
+    min-height: 28px;
+    .v-btn__content {
+      padding: 2px 0;
+      line-height: 18px;
+    }
+  }
+  &.v-btn:not(.v-btn--round).v-size--default {
+    height: 100% !important;
+    min-height: 36px;
+    .v-btn__content {
+      padding: 3px 0;
+      line-height: 20px;
+    }
+  }
 }
 </style>

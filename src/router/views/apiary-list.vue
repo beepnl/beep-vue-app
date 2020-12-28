@@ -737,7 +737,7 @@ export default {
   created() {
     this.search = this.$route.query.search || null
     if (this.apiaries.length === 0 && this.groups.length === 0) {
-      // in case user is freshly logged in
+      // in case user is freshly logged in or in case of hard refresh
       this.readApiariesAndGroups().then(() => {
         this.ready = true
       })

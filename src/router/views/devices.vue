@@ -642,7 +642,7 @@ export default {
   created() {
     this.getDevices()
     if (this.apiaries.length === 0 && this.groups.length === 0) {
-      // in case view is opened directly without loggin in (via localstorage)
+      // in case view is opened directly without loggin in (via localstorage) or in case of hard refresh
       this.readApiariesAndGroups()
     }
     this.readTaxonomy().then(() => {

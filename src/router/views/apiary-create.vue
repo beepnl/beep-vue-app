@@ -674,7 +674,7 @@ export default {
     },
     async readApiariesAndGroupsIfNotPresent() {
       if (this.apiaries.length === 0 && this.groups.length === 0) {
-        // in case view is opened directly without loggin in (via localstorage)
+        // in case view is opened directly without loggin in (via localstorage) or in case of hard refresh
         try {
           const responseApiaries = await Api.readRequest('/locations')
           const responseGroups = await Api.readRequest('/groups')
