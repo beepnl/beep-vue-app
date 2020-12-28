@@ -303,8 +303,7 @@ export default {
         return true
       } catch (error) {
         if (error.response) {
-          const msg = error.response.data.message
-          console.log(msg)
+          console.log(error.response)
         } else {
           console.log('Error: ', error)
         }

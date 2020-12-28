@@ -737,6 +737,7 @@ export default {
   created() {
     this.search = this.$route.query.search || null
     if (this.apiaries.length === 0 && this.groups.length === 0) {
+      // in case user is freshly logged in
       this.readApiariesAndGroups().then(() => {
         this.ready = true
       })
@@ -842,8 +843,7 @@ export default {
     //     return true
     //   } catch (error) {
     //     if (error.response) {
-    //       const msg = error.response.data.message
-    //       console.log(msg)
+    // console.log(error.response)
     //     } else {
     //       console.log('Error: ', error)
     //     }
@@ -855,8 +855,7 @@ export default {
     //     return response.data
     //   } catch (error) {
     //     if (error.response) {
-    //       const msg = error.response.data.message
-    //       console.log(msg)
+    // console.log(error.response)
     //     } else {
     //       console.log('Error: ', error)
     //     }
@@ -886,8 +885,7 @@ export default {
         return true
       } catch (error) {
         if (error.response) {
-          const msg = error.response.data.message
-          console.log(msg)
+          console.log(error.response)
         } else {
           console.log('Error: ', error)
         }

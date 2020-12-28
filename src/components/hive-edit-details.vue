@@ -1,5 +1,5 @@
 <template>
-  <v-row class="hive-edit-details-wrapper">
+  <v-row v-if="ready" class="hive-edit-details-wrapper">
     <v-col cols="12">
       <div
         class="overline mb-3"
@@ -228,6 +228,7 @@ export default {
       colorPickerValue: '',
       hiveDimensionsList: {},
       hiveTypesList: [],
+      ready: false,
     }
   },
   computed: {
@@ -299,7 +300,9 @@ export default {
     },
   },
   created() {
-    this.readTaxonomy()
+    this.readTaxonomy().then(() => {
+      this.ready = true
+    })
   },
   methods: {
     async readTaxonomy() {

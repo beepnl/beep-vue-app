@@ -227,8 +227,12 @@ export default {
         this.checklists = response.data.checklists
         this.selectedChecklistId = response.data.checklist.id
         return response
-      } catch (e) {
-        console.log(e)
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
       }
     },
     async getChecklistById(id) {
@@ -239,8 +243,12 @@ export default {
         }
         this.activeChecklist = response.data.checklist
         return response.data.checklist
-      } catch (e) {
-        console.log(e)
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
         this.$router.push({ name: '404', params: { resource: 'checklist' } })
       }
     },
@@ -252,8 +260,12 @@ export default {
         }
         this.activeChecklistTaxonomy = response.data.taxonomy
         return true
-      } catch (e) {
-        console.log(e)
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
         this.$router.push({ name: '404', params: { resource: 'checklist' } })
       }
     },
@@ -313,9 +325,11 @@ export default {
           }, 200)
         } catch (error) {
           if (error.response) {
+            console.log(error.response)
             const msg = error.response.data.message
             this.errorMessage = this.$i18n.t(msg)
           } else {
+            console.log(error)
             this.errorMessage = this.$i18n.t('Error')
           }
         }

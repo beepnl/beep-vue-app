@@ -251,6 +251,7 @@ export default {
       } catch (error) {
         this.showDeleteLoadingIcon = false
         if (error.response) {
+          console.log(error.response)
           const msg = error.response.data.message
           if (msg === 'invalid_user') {
             this.fieldErrors.email = true
@@ -297,6 +298,7 @@ export default {
         } catch (error) {
           this.showLoadingIcon = false
           if (error.response) {
+            console.log(error.response)
             const msg = error.response.data.message
             if (msg === 'invalid_user') {
               this.fieldErrors.email = true

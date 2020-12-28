@@ -337,7 +337,7 @@ export default {
           this.snackbar.show = true
         }
         setTimeout(() => {
-          return this.readApiaries().then(() => {
+          return this.readApiariesAndGroups().then(() => {
             this.$router.push({
               name: 'home',
             })
@@ -358,10 +358,15 @@ export default {
         console.log('Error: ', error)
       }
     },
-    async readApiaries() {
+    async readApiariesAndGroups() {
       try {
-        const response = await Api.readRequest('/locations')
-        this.$store.commit('locations/setApiaries', response.data.locations)
+        const responseApiaries = await Api.readRequest('/locations')
+        const responseGroups = await Api.readRequest('/groups')
+        this.$store.commit(
+          'locations/setApiaries',
+          responseApiaries.data.locations
+        )
+        this.$store.commit('groups/setGroups', responseGroups.data.groups)
         return true
       } catch (error) {
         if (error.response) {
@@ -385,7 +390,7 @@ export default {
             this.snackbar.show = true
           }
           setTimeout(() => {
-            return this.readApiaries().then(() => {
+            return this.readApiariesAndGroups().then(() => {
               this.$router.push({
                 name: 'home',
                 query: { search: this.activeApiary.name },

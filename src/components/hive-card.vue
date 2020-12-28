@@ -317,7 +317,7 @@
             v-if="hive.reminder && listView"
             v-text="
               `${
-                hive.reminder < 22
+                hive.reminder.length < 22
                   ? hive.reminder
                   : hive.reminder.substring(0, 22) + '...'
               }`

@@ -508,6 +508,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('groups', ['groups']),
     ...mapGetters('locations', ['apiaryEdited', 'apiaries']),
     colorPicker: {
       get() {
@@ -579,7 +580,7 @@ export default {
     },
   },
   created() {
-    this.readApiariesIfNotPresent().then(() => {
+    this.readApiariesAndGroupsIfNotPresent().then(() => {
       this.setApiaryEdited(false)
       this.newApiaryNumber = this.apiaries.length + 1
       this.newHive = {
@@ -665,23 +666,27 @@ export default {
         return true
       } catch (error) {
         if (error.response) {
-          const msg = error.response.data.message
-          console.log(msg)
+          console.log(error.response)
         } else {
           console.log('Error: ', error)
         }
       }
     },
-    async readApiariesIfNotPresent() {
-      if (this.apiaries.length === 0) {
+    async readApiariesAndGroupsIfNotPresent() {
+      if (this.apiaries.length === 0 && this.groups.length === 0) {
+        // in case view is opened directly without loggin in (via localstorage)
         try {
-          const response = await Api.readRequest('/locations')
-          this.$store.commit('locations/setApiaries', response.data.locations)
+          const responseApiaries = await Api.readRequest('/locations')
+          const responseGroups = await Api.readRequest('/groups')
+          this.$store.commit(
+            'locations/setApiaries',
+            responseApiaries.data.locations
+          )
+          this.$store.commit('groups/setGroups', responseGroups.data.groups)
           return true
         } catch (error) {
           if (error.response) {
-            const msg = error.response.data.message
-            console.log(msg)
+            console.log(error.response)
           } else {
             console.log('Error: ', error)
           }

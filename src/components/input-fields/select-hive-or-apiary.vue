@@ -26,7 +26,6 @@
 </template>
 
 <script>
-import Api from '@api/Api'
 import { mapGetters } from 'vuex'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
@@ -63,25 +62,7 @@ export default {
   computed: {
     ...mapGetters('locations', ['apiaries']),
   },
-  created() {
-    if (this.apiaries.length === 0) {
-      this.readApiaries()
-    }
-  },
   methods: {
-    async readApiaries() {
-      try {
-        const response = await Api.readRequest('/locations')
-        this.$store.commit('locations/setApiaries', response.data.locations)
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log(error.response)
-        } else {
-          console.log('Error: ', error)
-        }
-      }
-    },
     setInspectionEdited(bool) {
       this.$store.commit('inspections/setInspectionEdited', bool)
     },

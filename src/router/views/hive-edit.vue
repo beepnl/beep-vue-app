@@ -213,9 +213,11 @@ export default {
       valid: false,
       showLoadingIcon: false,
       newHiveNumber: 1,
+      newHiveLocation: null,
     }
   },
   computed: {
+    ...mapGetters('groups', ['groups']),
     ...mapGetters('hives', ['hiveEdited']),
     ...mapGetters('locations', ['apiaries']),
     hiveCreateMode() {
@@ -276,17 +278,19 @@ export default {
     },
   },
   created() {
-    this.readApiariesIfNotPresent().then(() => {
-      // If hive-create route is used, make empty hive object
-      if (this.hiveCreateMode && this.locationId !== null) {
+    // If hive-create route is used, make empty hive object
+    if (this.hiveCreateMode && this.locationId !== null) {
+      this.readApiariesAndGroupsIfNotPresent().then(() => {
         if (this.apiaries.length > 0) {
           const apiary = this.apiaries.filter((apiary) => {
             return apiary.id === this.locationId
           })[0]
           this.newHiveNumber = apiary.hives.length + 1
+          this.newHiveLocation = apiary.name
         }
         this.activeHive = {
           location_id: this.locationId,
+          location: this.newHiveLocation,
           hive_type_id: null,
           color: '#F8B133',
           name: this.$i18n.tc('Hive', 1) + ' ' + this.newHiveNumber,
@@ -321,11 +325,15 @@ export default {
           ],
           queen: this.emptyQueen,
         }
-        // Else retrieve to-be-edited hive
-      } else {
-        this.readHive()
-      }
-    })
+      })
+      // Else retrieve to-be-edited hive
+    } else {
+      this.readHive().then(() => {
+        if (this.activeHive.owner) {
+          this.readApiariesAndGroupsIfNotPresent()
+        }
+      })
+    }
   },
   methods: {
     async createHive() {
@@ -338,9 +346,10 @@ export default {
             this.snackbar.show = true
           }
           setTimeout(() => {
-            return this.readApiariesOrGroups().then(() => {
+            return this.readApiariesAndGroups().then(() => {
               this.$router.push({
                 name: 'home',
+                query: { search: this.activeHive.location },
               })
             })
           }, 50) // wait for API to update locations/hives
@@ -365,9 +374,10 @@ export default {
           this.snackbar.show = true
         }
         setTimeout(() => {
-          return this.readApiariesOrGroups().then(() => {
+          return this.readApiariesAndGroups().then(() => {
             this.$router.push({
               name: 'home',
+              query: { search: this.activeHive.location },
             })
           })
         }, 50) // wait for API to update locations/hives
@@ -383,16 +393,21 @@ export default {
         this.snackbar.show = true
       }
     },
-    async readApiariesIfNotPresent() {
-      if (this.apiaries.length === 0) {
+    async readApiariesAndGroupsIfNotPresent() {
+      if (this.apiaries.length === 0 && this.groups.length === 0) {
+        // in case view is opened directly without loggin in (via localstorage)
         try {
-          const response = await Api.readRequest('/locations')
-          this.$store.commit('locations/setApiaries', response.data.locations)
+          const responseApiaries = await Api.readRequest('/locations')
+          const responseGroups = await Api.readRequest('/groups')
+          this.$store.commit(
+            'locations/setApiaries',
+            responseApiaries.data.locations
+          )
+          this.$store.commit('groups/setGroups', responseGroups.data.groups)
           return true
         } catch (error) {
           if (error.response) {
-            const msg = error.response.data.message
-            console.log(msg)
+            console.log(error.response)
           } else {
             console.log('Error: ', error)
           }
@@ -401,20 +416,19 @@ export default {
         return true
       }
     },
-    async readApiariesOrGroups() {
+    async readApiariesAndGroups() {
       try {
-        if (this.activeHive.owner || this.hiveCreateMode) {
-          const response = await Api.readRequest('/locations')
-          this.$store.commit('locations/setApiaries', response.data.locations)
-        } else {
-          const response = await Api.readRequest('/groups')
-          this.$store.commit('groups/setGroups', response.data.groups)
-        }
+        const responseApiaries = await Api.readRequest('/locations')
+        const responseGroups = await Api.readRequest('/groups')
+        this.$store.commit(
+          'locations/setApiaries',
+          responseApiaries.data.locations
+        )
+        this.$store.commit('groups/setGroups', responseGroups.data.groups)
         return true
       } catch (error) {
         if (error.response) {
-          const msg = error.response.data.message
-          console.log(msg)
+          console.log(error.response)
         } else {
           console.log('Error: ', error)
         }
@@ -454,9 +468,10 @@ export default {
             this.snackbar.show = true
           }
           setTimeout(() => {
-            return this.readApiariesOrGroups().then(() => {
+            return this.readApiariesAndGroups().then(() => {
               this.$router.push({
                 name: 'home',
+                query: { search: this.activeHive.location },
               })
             })
           }, 50) // wait for API to update locations/hives

@@ -560,6 +560,7 @@
 import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
+import { mapGetters } from 'vuex'
 import { SlideYUpTransition } from 'vue2-transitions'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
@@ -577,7 +578,6 @@ export default {
   },
   data() {
     return {
-      apiaries: [],
       devices: [],
       errorMessage: null,
       normalizerHives(node) {
@@ -603,6 +603,8 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('groups', ['groups']),
+    ...mapGetters('locations', ['apiaries']),
     deletedButNotSaved() {
       const unsavedDeletions = this.ownedDevices.filter((ownedDevice) => {
         const unsavedSensorDefs = ownedDevice.sensor_definitions.filter(
@@ -639,7 +641,10 @@ export default {
   },
   created() {
     this.getDevices()
-    this.readApiaries()
+    if (this.apiaries.length === 0 && this.groups.length === 0) {
+      // in case view is opened directly without loggin in (via localstorage)
+      this.readApiariesAndGroups()
+    }
     this.readTaxonomy().then(() => {
       this.ready = true
     })
@@ -665,22 +670,38 @@ export default {
         return true
       } catch (error) {
         if (error.response) {
-          const msg = error.response.data.message
-          console.log(msg)
+          console.log(error.response)
         } else {
           console.log('Error: ', error)
         }
       }
     },
-    async readApiaries() {
+    // async readApiaries() {
+    //   try {
+    //     const response = await Api.readRequest('/locations')
+    //     this.$store.commit('locations/setApiaries', response.data.locations)
+    //     return true
+    //   } catch (error) {
+    //     if (error.response) {
+    //       console.log(error.response)
+    //     } else {
+    //       console.log('Error: ', error)
+    //     }
+    //   }
+    // },
+    async readApiariesAndGroups() {
       try {
-        const response = await Api.readRequest('/locations')
-        this.apiaries = response.data.locations
+        const responseApiaries = await Api.readRequest('/locations')
+        const responseGroups = await Api.readRequest('/groups')
+        this.$store.commit(
+          'locations/setApiaries',
+          responseApiaries.data.locations
+        )
+        this.$store.commit('groups/setGroups', responseGroups.data.groups)
         return true
       } catch (error) {
         if (error.response) {
-          const msg = error.response.data.message
-          console.log(msg)
+          console.log(error.response)
         } else {
           console.log('Error: ', error)
         }
@@ -694,8 +715,7 @@ export default {
         return true
       } catch (error) {
         if (error.response) {
-          const msg = error.response.data.message
-          console.log(msg)
+          console.log(error.response)
         } else {
           console.log('Error: ', error)
         }
@@ -716,6 +736,7 @@ export default {
         this.getDevices().then(() => {
           this.showLoadingIcon = false
         })
+        // TODO: this.readApiaries() for latest measurement data? Groups as well??
         return true
       } catch (error) {
         this.showLoadingIcon = false
@@ -759,6 +780,7 @@ export default {
             1
           )
         })
+        // TODO: this.readApiaries() for latest measurement data? Groups as well??
         return true
       } catch (error) {
         this.showLoadingIconById.splice(

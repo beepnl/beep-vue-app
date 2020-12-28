@@ -739,10 +739,11 @@ export default {
           this.snackbar.show = true
         }
         this.getAllInspectionsForHiveId()
+        this.readApiariesAndGroups() // update apiaries and groups so the latest inspection will be displayed at apiary-list
       } catch (error) {
         if (error.response) {
           console.log('Error: ', error.response)
-                    const msg = error.response.data.message
+          const msg = error.response.data.message
           this.snackbar.text = msg
         } else {
           console.log('Error: ', error)
@@ -760,7 +761,11 @@ export default {
         const hive = response.data.hives[0]
         return hive
       } catch (error) {
-        console.log('Error: ', error)
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
         this.$router.push({ name: '404', params: { resource: 'hive' } })
       }
     },
@@ -770,7 +775,30 @@ export default {
         this.inspections = response.data
         return true
       } catch (error) {
-        console.log('Error: ', error)
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
+    async readApiariesAndGroups() {
+      try {
+        const responseApiaries = await Api.readRequest('/locations')
+        const responseGroups = await Api.readRequest('/groups')
+        // no placeholder needed when response is empty because this page won't be accesible without any hives
+        this.$store.commit(
+          'locations/setApiaries',
+          responseApiaries.data.locations
+        )
+        this.$store.commit('groups/setGroups', responseGroups.data.groups)
+        return true
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
       }
     },
     async readImages() {
@@ -779,7 +807,11 @@ export default {
         this.images = response.data
         return true
       } catch (error) {
-        console.log('Error: ', error)
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
       }
     },
     confirmDeleteInspection(inspection) {

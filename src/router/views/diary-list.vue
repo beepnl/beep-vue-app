@@ -348,7 +348,7 @@
                           <div class="ml-7 diary-inspection-text mr-2">
                             <v-tooltip
                               v-if="
-                                inspection.notes.length > 30 &&
+                                inspection.notes.length > 35 &&
                                   !mobile &&
                                   !smallScreen
                               "
@@ -476,6 +476,7 @@ import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/main.vue'
 import HiveIcon from '@components/hive-icon.vue'
+import { mapGetters } from 'vuex'
 import { momentMixin } from '@mixins/momentMixin'
 import { ScaleTransition } from 'vue2-transitions'
 
@@ -500,6 +501,8 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('locations', ['apiaries']),
+    ...mapGetters('groups', ['groups']),
     // make inspections filterable by hive name and location
     inspectionsWithHiveDetails() {
       var inspectionsWithHiveDetails = this.inspections
@@ -589,10 +592,16 @@ export default {
   },
   created() {
     this.search = this.$route.query.search || null
-    this.getAllHives().then(() => {
-      this.getAllInspections().then(() => {
-        this.ready = true
+    if (this.apiaries.length === 0 && this.groups.length === 0) {
+      // in case view is opened directly without loggin in (via localstorage)
+      this.readApiariesAndGroups().then(() => {
+        this.getUniqueHives()
       })
+    } else {
+      this.getUniqueHives()
+    }
+    this.getAllInspections().then(() => {
+      this.ready = true
     })
   },
   methods: {
@@ -604,6 +613,7 @@ export default {
           this.snackbar.show = true
         }
         this.getAllInspections()
+        this.readApiariesAndGroups() // update apiaries and groups so the latest inspection will be displayed at apiary-list
       } catch (error) {
         if (error.response) {
           console.log('Error: ', error.response)
@@ -616,49 +626,6 @@ export default {
         this.snackbar.show = true
       }
     },
-    async getAllHives() {
-      try {
-        const ownApiaries = await Api.readRequest('/locations') // direct hives request can lead to 404 error which goes straight to catch block
-        const sharedApiaries = await Api.readRequest('/groups')
-        if (
-          ownApiaries.data.locations.length === 0 &&
-          sharedApiaries.data.groups.length === 0
-        ) {
-          this.showDiaryPlaceholder = true
-        } else {
-          const ownHivesArray = []
-          ownApiaries.data.locations.forEach((location) => {
-            location.hives.forEach((hive) => {
-              ownHivesArray.push(hive)
-            })
-          })
-
-          const sharedHivesArray = []
-          sharedApiaries.data.groups.forEach((group) => {
-            group.hives.forEach((hive) => {
-              sharedHivesArray.push(hive)
-            })
-          })
-
-          const allHives = ownHivesArray.concat(sharedHivesArray)
-
-          var uniqueHives = {}
-          const map = new Map()
-          for (const item of allHives) {
-            if (!map.has(item.id)) {
-              map.set(item.id, true) // set any value to Map
-              uniqueHives[item.id] = item
-            }
-          }
-
-          this.hives = uniqueHives
-
-          return true
-        }
-      } catch (error) {
-        console.log('Error: ', error)
-      }
-    },
     async getAllInspections() {
       try {
         const response = await Api.readRequest('/inspections')
@@ -668,7 +635,30 @@ export default {
         this.inspections = response.data
         return true
       } catch (error) {
-        console.log('Error: ', error)
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
+    async readApiariesAndGroups() {
+      try {
+        const responseApiaries = await Api.readRequest('/locations')
+        const responseGroups = await Api.readRequest('/groups')
+        // no placeholder needed when response is empty because this page won't be accesible without any hives
+        this.$store.commit(
+          'locations/setApiaries',
+          responseApiaries.data.locations
+        )
+        this.$store.commit('groups/setGroups', responseGroups.data.groups)
+        return true
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
       }
     },
     confirmDeleteInspection(inspection) {
@@ -691,6 +681,40 @@ export default {
         .catch((reject) => {
           return true
         })
+    },
+    getUniqueHives() {
+      // direct get /hives request can lead to 404 error which goes straight to catch block
+      // so hives are retrieved via apiaries and groups
+      if (this.apiaries.length === 0 && this.groups.length === 0) {
+        this.showDiaryPlaceholder = true
+      } else {
+        const ownHivesArray = []
+        this.apiaries.forEach((apiary) => {
+          apiary.hives.forEach((hive) => {
+            ownHivesArray.push(hive)
+          })
+        })
+
+        const sharedHivesArray = []
+        this.groups.forEach((group) => {
+          group.hives.forEach((hive) => {
+            sharedHivesArray.push(hive)
+          })
+        })
+
+        const allHives = ownHivesArray.concat(sharedHivesArray)
+
+        var uniqueHives = {}
+        const map = new Map()
+        for (const item of allHives) {
+          if (!map.has(item.id)) {
+            map.set(item.id, true) // set any value to Map
+            uniqueHives[item.id] = item
+          }
+        }
+
+        this.hives = uniqueHives
+      }
     },
     updateFilterByImpression(number) {
       if (this.filterByImpression.includes(number)) {

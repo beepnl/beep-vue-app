@@ -600,15 +600,11 @@ export default {
   created() {
     // If hive id is specified, first check if hive is present / accessible and editable
     if (this.hiveId !== null) {
-      this.getActiveHive(this.hiveId)
-    }
-    // If apiaries and groups are not in store, retrieve those first
-    if (this.apiaries.length === 0 && this.groups.length === 0) {
-      this.readApiariesAndGroups().then(() => {
-        this.selectInitialHiveSet()
+      this.getActiveHive(this.hiveId).then(() => {
+        this.getHiveSet()
       })
     } else {
-      this.selectInitialHiveSet()
+      this.getHiveSet()
     }
     // If hive-inspect-edit route is used, retrieve to-be-edited inspection
     if (this.inspectionId !== null) {
@@ -724,7 +720,11 @@ export default {
 
         return true
       } catch (error) {
-        console.log('Error: ', error)
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
       }
     },
     async getChecklists() {
@@ -732,8 +732,12 @@ export default {
         const response = await Api.readRequest('/inspections/lists')
         this.checklists = response.data.checklists
         return response.data
-      } catch (e) {
-        console.log(e)
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
       }
     },
     async getInspection(id) {
@@ -758,8 +762,12 @@ export default {
         )
         this.$store.commit('groups/setGroups', responseGroups.data.groups)
         return true
-      } catch (e) {
-        console.log(e)
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
       }
     },
     async saveInspection() {
@@ -772,10 +780,12 @@ export default {
         try {
           await Api.postRequest('/inspections/store', inspectionToSave)
           setTimeout(() => {
-            return this.$router.push({
-              name: 'diary',
+            return this.readApiariesAndGroups().then(() => {
+              this.$router.push({
+                name: 'diary',
+              })
             })
-          }, 300)
+          }, 50) // wait for API to update inspections
         } catch (error) {
           if (error.response) {
             const msg = error.response.data.message
@@ -801,6 +811,16 @@ export default {
           ' (' + this.$i18n.t('research') + ': ' + item.researches[0] + ')'
       }
       return name + research
+    },
+    getHiveSet() {
+      if (this.apiaries.length === 0 && this.groups.length === 0) {
+        // if apiaries and groups are not in store, in case view is opened directly without loggin in (via localstorage)
+        this.readApiariesAndGroups().then(() => {
+          this.selectInitialHiveSet()
+        })
+      } else {
+        this.selectInitialHiveSet()
+      }
     },
     selectApiary(id) {
       this.selectedHives = []
