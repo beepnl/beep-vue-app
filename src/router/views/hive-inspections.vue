@@ -1034,20 +1034,6 @@ export default {
   }
 }
 
-.trh {
-  height: 56px;
-  background-color: $color-orange-medium !important;
-  @include for-phone-only {
-    height: 50px;
-  }
-  .tdr {
-    font-size: 14px;
-    @include for-phone-only {
-      font-size: 12px;
-    }
-  }
-}
-
 .tdr {
   width: 200px;
   min-width: 200px;
@@ -1069,6 +1055,21 @@ export default {
     float: left;
   }
 }
+
+.trh {
+  height: 56px;
+  background-color: $color-orange-medium !important;
+  @include for-phone-only {
+    height: 50px;
+  }
+  .tdr {
+    font-size: 14px;
+    @include for-phone-only {
+      font-size: 12px;
+    }
+  }
+}
+
 .tdc {
   min-width: 200px;
   max-width: 200px;

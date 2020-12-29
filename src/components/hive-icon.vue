@@ -98,12 +98,17 @@ export default {
 <style lang="scss">
 .hive-icon {
   position: relative;
-  min-width: 40px;
   padding: 0 8px;
   margin-bottom: 3px;
   background-color: transparent !important;
   border-bottom: 1px solid green !important;
   border-radius: 2px 2px 0 0;
+  .honey-layer {
+    height: 18px;
+  }
+  .brood-layer {
+    height: 30px;
+  }
   .hive-icon-layers {
     width: 100%;
     height: 100%;
@@ -112,6 +117,12 @@ export default {
     margin-right: 0 !important;
     &.has-feeding-box {
       margin-top: 12px;
+    }
+    .honey-layer {
+      height: 9px;
+    }
+    .brood-layer {
+      height: 16px;
     }
   }
   &.has-queen-excluder {
@@ -129,23 +140,6 @@ export default {
   }
   &:last-child:not(.queen_excluder-layer) {
     border-bottom: 0;
-  }
-}
-
-.hive-icon {
-  .honey-layer {
-    height: 18px;
-  }
-  .brood-layer {
-    height: 30px;
-  }
-  &.apiary-view {
-    .honey-layer {
-      height: 9px;
-    }
-    .brood-layer {
-      height: 16px;
-    }
   }
 }
 

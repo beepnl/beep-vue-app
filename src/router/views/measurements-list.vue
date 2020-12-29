@@ -598,7 +598,7 @@ export default {
       } catch (error) {
         if (error.response) {
           console.log(error.response)
-          if (error.response.status === 404 || error.response.status === 500) {
+          if (error.response.status === 500) {
             this.lastSensorDate = null
           }
         } else {
@@ -628,8 +628,12 @@ export default {
       } catch (error) {
         if (error.response) {
           console.log(error.response)
-          if (error.response.status === 404 || error.response.status === 500) {
+          if (error.response.status === 500) {
             this.noChartData = true
+          }
+          if (error.response.status === 404 || error.response.status === 422) {
+            this.selectedDeviceId = this.devices[0].id // overwrite value in store with valid device id
+            this.$router.push({ name: '404', params: { resource: 'device' } })
           }
         } else {
           console.log('Error: ', error)
@@ -642,7 +646,11 @@ export default {
         this.devices = response.data
         return true
       } catch (error) {
-        console.log('Error: ', error)
+        if (error.response) {
+          console.log(error.response)
+        } else {
+          console.log('Error: ', error)
+        }
       }
     },
     calculateProgress(min, max, value) {

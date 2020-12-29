@@ -344,7 +344,11 @@ export default {
           })
         }, 50) // wait for API to update locations/hives
       } catch (error) {
-        console.log('Error: ', error)
+        if (error.response) {
+          console.log(error.response)
+        } else {
+          console.log('Error: ', error)
+        }
         this.snackbar.text = this.$i18n.t('something_wrong')
         this.snackbar.show = true
       }
@@ -352,10 +356,20 @@ export default {
     async getApiary(id) {
       try {
         const response = await Api.readRequest('/locations/', id)
+        if (response.data.length === 0) {
+          this.$router.push({ name: '404', params: { resource: 'location' } })
+        }
         const apiary = response.data.locations[0]
         return apiary
       } catch (error) {
-        console.log('Error: ', error)
+        if (error.response) {
+          console.log(error.response)
+          if (error.response.status === 404) {
+            this.$router.push({ name: '404', params: { resource: 'location' } })
+          }
+        } else {
+          console.log('Error: ', error)
+        }
       }
     },
     async readApiariesAndGroups() {
@@ -398,7 +412,11 @@ export default {
             })
           }, 50) // wait for API to update locations/hives
         } catch (error) {
-          console.log('Error: ', error)
+          if (error.response) {
+            console.log(error.response)
+          } else {
+            console.log('Error: ', error)
+          }
           this.snackbar.text = this.$i18n.t('not_saved_error')
           this.snackbar.show = true
         }

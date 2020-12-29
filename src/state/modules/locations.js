@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import createResource from '@utils/store/vuex-resource'
 
 const resource = createResource({ path: 'locations' })
@@ -24,16 +23,11 @@ export const getters = {
 }
 export const mutations = {
   ...resource.mutations,
-  // FIXME: most of the following should be either moved to local view state
-  // or be replaced by endpoint actions
   setApiaries: function(state, payload) {
     state.apiaries = payload
   },
   setApiaryEdited: function(state, bool) {
     state.apiaryEdited = bool
-  },
-  selectHive: function(_, hive) {
-    Vue.set(hive, 'selected', !hive.selected)
   },
   setApiaryListView: function(state, string) {
     state.apiaryListView = string

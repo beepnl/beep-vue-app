@@ -662,8 +662,14 @@ export default {
         }
         return true
       } catch (error) {
-        console.log('Error: ', error)
-        this.$router.push({ name: '404', params: { resource: 'hive' } })
+        if (error.response) {
+          console.log(error.response)
+          if (error.response.status === 404) {
+            this.$router.push({ name: '404', params: { resource: 'hive' } })
+          }
+        } else {
+          console.log('Error: ', error)
+        }
       }
     },
     async getChecklistById(id) {
@@ -745,10 +751,17 @@ export default {
         const response = await Api.readRequest('/inspections/', id)
         return response.data
       } catch (error) {
-        error.response
-          ? console.log('Error: ', error.response)
-          : console.log('Error: ', error)
-        this.$router.push({ name: '404', params: { resource: 'inspection' } })
+        if (error.response) {
+          console.log(error.response)
+          if (error.response.status === 404) {
+            this.$router.push({
+              name: '404',
+              params: { resource: 'inspection' },
+            })
+          }
+        } else {
+          console.log('Error: ', error)
+        }
       }
     },
     async readApiariesAndGroups() {
@@ -837,9 +850,12 @@ export default {
           this.selectedHives = [this.hiveId]
         }
         this.selectedHiveSet = apiary
-        // If apiary id doesn't exist return first hiveset from the list
+        // If apiary id doesn't exist return 404
       } else {
-        this.selectFirstHiveSetFromList()
+        this.$router.push({
+          name: '404',
+          params: { resource: 'location' },
+        })
       }
     },
     selectGroup(id) {
@@ -862,9 +878,12 @@ export default {
           }
         }
         this.selectedHiveSet = group
-        // If group id doesn't exist, return first hiveset from the list
+        // If group id doesn't exist return 404
       } else {
-        this.selectFirstHiveSetFromList()
+        this.$router.push({
+          name: '404',
+          params: { resource: 'group' },
+        })
       }
     },
     selectHive(id) {

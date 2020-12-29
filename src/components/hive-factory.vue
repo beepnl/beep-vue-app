@@ -312,6 +312,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.hive-icon {
+  padding: 0 16px;
+  border-bottom: 1px solid green !important;
+  border-radius: 2px 2px 0 0;
+}
+
 .hive-factory {
   &.has-queen-excluder {
     .draggable-layer-wrapper.queen_excluder-layer-wrapper {
@@ -379,14 +385,16 @@ export default {
   }
 }
 
-.hive-icon {
-  padding: 0 16px;
-  border-bottom: 1px solid green !important;
-  border-radius: 2px 2px 0 0;
-}
-
 .draggable-layers {
   width: 150px;
+  .sortable-drag {
+    .beep-label {
+      color: transparent;
+    }
+    .layer {
+      border-radius: 0;
+    }
+  }
   .draggable-layer-wrapper {
     .layer {
       border-radius: 0;
@@ -407,17 +415,6 @@ export default {
       margin-bottom: 10px;
     }
   }
-}
-
-.draggable-layers {
-  .sortable-drag {
-    .beep-label {
-      color: transparent;
-    }
-    .layer {
-      border-radius: 0;
-    }
-  }
   .layer.sortable-ghost:not(.feeding_box-layer):not(.queen_excluder-layer) {
     border: 0;
     border-radius: 0;
@@ -433,6 +430,7 @@ export default {
     }
   }
 }
+
 .hive-icon-layers {
   .sortable-ghost {
     .beep-label {

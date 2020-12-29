@@ -450,8 +450,14 @@ export default {
         this.setHiveEdited(false)
         return true
       } catch (error) {
-        console.log('Error: ', error)
-        this.$router.push({ name: '404', params: { resource: 'hive' } })
+        if (error.response) {
+          console.log(error.response)
+          if (error.response.status === 404) {
+            this.$router.push({ name: '404', params: { resource: 'hive' } })
+          }
+        } else {
+          console.log('Error: ', error)
+        }
       }
     },
     async updateHive() {

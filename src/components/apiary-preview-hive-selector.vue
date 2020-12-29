@@ -170,7 +170,7 @@ export default {
   border-bottom: 0 !important;
   border-radius: 2px 2px 0 0;
   .hive-icon-layers {
-    width: 100%;
+    width: auto;
     height: 100%;
     padding: 0 10px;
     margin-bottom: 3px;
