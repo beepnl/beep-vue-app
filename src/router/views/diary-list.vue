@@ -494,13 +494,13 @@ export default {
       filterByReminder: false,
       filterByBase: false,
       filterByImpression: [],
-      inspections: null,
       ready: false,
     }
   },
   computed: {
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
+    ...mapGetters('inspections', ['generalInspections']),
     hives() {
       const ownHivesArray = []
       this.apiaries.forEach((apiary) => {
@@ -530,7 +530,7 @@ export default {
     },
     // make inspections filterable by hive name and location
     inspectionsWithHiveDetails() {
-      var inspectionsWithHiveDetails = this.inspections
+      var inspectionsWithHiveDetails = this.generalInspections
       inspectionsWithHiveDetails.map((inspection) => {
         const name = this.hives[inspection.hive_id].name
         const location = this.hives[inspection.hive_id].location
@@ -621,7 +621,7 @@ export default {
   created() {
     this.search = this.$route.query.search || null
     this.readApiariesAndGroupsIfNotPresent().then(() => {
-      this.getAllInspections().then(() => {
+      this.readGeneralInspectionsIfNotPresent().then(() => {
         this.ready = true
       })
     })
@@ -633,24 +633,8 @@ export default {
         if (!response) {
           console.log('Error')
         }
-        this.getAllInspections()
+        this.readGeneralInspections() // update generalInspections in store
         this.readApiariesAndGroups() // update apiaries and groups so the latest inspection will be displayed at apiary-list
-      } catch (error) {
-        if (error.response) {
-          console.log('Error: ', error.response)
-        } else {
-          console.log('Error: ', error)
-        }
-      }
-    },
-    async getAllInspections() {
-      try {
-        const response = await Api.readRequest('/inspections')
-        if (response.data.length === 0) {
-          this.showDiaryPlaceholder = true
-        }
-        this.inspections = response.data
-        return true
       } catch (error) {
         if (error.response) {
           console.log('Error: ', error.response)
@@ -693,6 +677,42 @@ export default {
         } catch (error) {
           if (error.response) {
             console.log(error.response)
+          } else {
+            console.log('Error: ', error)
+          }
+        }
+      } else {
+        return true
+      }
+    },
+    async readGeneralInspections() {
+      try {
+        const response = await Api.readRequest('/inspections')
+        if (response.data.length === 0) {
+          this.showDiaryPlaceholder = true
+        }
+        this.$store.commit('inspections/setGeneralInspections', response.data)
+        return true
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
+    async readGeneralInspectionsIfNotPresent() {
+      if (this.generalInspections.length === 0) {
+        try {
+          const response = await Api.readRequest('/inspections')
+          if (response.data.length === 0) {
+            this.showDiaryPlaceholder = true
+          }
+          this.$store.commit('inspections/setGeneralInspections', response.data)
+          return true
+        } catch (error) {
+          if (error.response) {
+            console.log('Error: ', error.response)
           } else {
             console.log('Error: ', error)
           }

@@ -717,7 +717,7 @@ export default {
   },
   watch: {
     locale() {
-      this.getAllInspectionsForHiveId()
+      this.readAllInspectionsForHiveId()
     },
   },
   created() {
@@ -725,7 +725,7 @@ export default {
     this.getActiveHive(this.id).then((hive) => {
       this.$store.commit('hives/setActiveHive', hive)
     })
-    this.getAllInspectionsForHiveId().then(() => {
+    this.readAllInspectionsForHiveId().then(() => {
       this.ready = true
     })
     this.readImages()
@@ -738,7 +738,8 @@ export default {
           this.snackbar.text = this.$i18n.t('something_wrong')
           this.snackbar.show = true
         }
-        this.getAllInspectionsForHiveId()
+        this.readAllInspectionsForHiveId()
+        this.readGeneralInspections() // update generalInspections in store for diary-list
         this.readApiariesAndGroups() // update apiaries and groups so the latest inspection will be displayed at apiary-list
       } catch (error) {
         if (error.response) {
@@ -769,7 +770,7 @@ export default {
         this.$router.push({ name: '404', params: { resource: 'hive' } })
       }
     },
-    async getAllInspectionsForHiveId() {
+    async readAllInspectionsForHiveId() {
       try {
         const response = await Api.readRequest('/inspections/hive/', this.id)
         this.inspections = response.data
@@ -792,6 +793,19 @@ export default {
           responseApiaries.data.locations
         )
         this.$store.commit('groups/setGroups', responseGroups.data.groups)
+        return true
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
+        async readGeneralInspections() {
+      try {
+        const response = await Api.readRequest('/inspections')
+        this.$store.commit('inspections/setGeneralInspections', response.data)
         return true
       } catch (error) {
         if (error.response) {

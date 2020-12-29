@@ -783,6 +783,19 @@ export default {
         }
       }
     },
+    async readGeneralInspections() {
+      try {
+        const response = await Api.readRequest('/inspections')
+        this.$store.commit('inspections/setGeneralInspections', response.data)
+        return true
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
     async saveInspection() {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
@@ -794,8 +807,11 @@ export default {
           await Api.postRequest('/inspections/store', inspectionToSave)
           setTimeout(() => {
             return this.readApiariesAndGroups().then(() => {
-              this.$router.push({
-                name: 'diary',
+              this.readGeneralInspections().then(() => {
+                // update generalInspections in store for diary-list
+                this.$router.push({
+                  name: 'diary',
+                })
               })
             })
           }, 50) // wait for API to update inspections
@@ -836,17 +852,18 @@ export default {
       }
     },
     selectApiary(id) {
-      this.selectedHives = []
-      this.editableHives = []
       const apiary = this.apiaries.filter((apiary) => {
         return apiary.id === id
       })[0]
       if (apiary) {
         apiary.hives.map((hive) => {
-          this.selectedHives.push(hive.id)
+          if (!this.selectedHives.includes(hive.id)) {
+            this.selectedHives.push(hive.id)
+          }
           this.editableHives.push(hive.id)
         })
-        if (this.hiveId) {
+        // upon init, if hiveId is specified, only select that hive instead of all hives in the apiary
+        if (this.hiveId && this.selectedHives.length < 2) {
           this.selectedHives = [this.hiveId]
         }
         this.selectedHiveSet = apiary
@@ -859,19 +876,20 @@ export default {
       }
     },
     selectGroup(id) {
-      this.selectedHives = []
-      this.editableHives = []
       const group = this.groups.filter((group) => {
         return group.id === id
       })[0]
       if (group) {
         group.hives.map((hive) => {
           if (hive.editable) {
-            this.selectedHives.push(hive.id)
+            if (!this.selectedHives.includes(hive.id)) {
+              this.selectedHives.push(hive.id)
+            }
             this.editableHives.push(hive.id)
           }
         })
-        if (this.hiveId) {
+        // upon init, if hiveId is specified, only select that hive instead of all editable hives in the group
+        if (this.hiveId && this.selectedHives.length < 2) {
           // if hiveId is specified, only select it if editable
           if (this.editableHives.includes(this.hiveId)) {
             this.selectedHives = [this.hiveId]
