@@ -97,7 +97,7 @@
               item-value="id"
               hide-details
               :label="`${$t('Select') + ' ' + $tc('checklist', 1)}`"
-              @input="getChecklistAndTaxonomy($event)"
+              @input="readChecklistAndTaxonomy($event)"
             >
             </v-select>
           </v-col>
@@ -206,22 +206,22 @@ export default {
   },
   watch: {
     locale() {
-      this.getChecklistTaxonomy(this.id)
+      this.readChecklistAndTaxonomy(this.id)
     },
   },
   created() {
     if (this.checklistsPage) {
       this.readChecklistsIfNotPresent().then(() => {
-        this.getChecklistAndTaxonomy(this.checklist.id)
+        this.readChecklistAndTaxonomy(this.checklist.id)
         this.ready = true
       })
     } else {
-      this.getChecklistAndTaxonomy(this.id)
+      this.readChecklistAndTaxonomy(this.id)
       this.ready = true
     }
   },
   methods: {
-    async getChecklists() {
+    async readChecklists() {
       try {
         const response = await Api.readRequest('/inspections/lists')
         this.$store.commit(
@@ -238,7 +238,7 @@ export default {
         }
       }
     },
-    async getChecklistAndTaxonomy(id) {
+    async readChecklistAndTaxonomy(id) {
       try {
         const response = await Api.readRequest('/checklists/', id)
         if (response.length === 0) {
@@ -307,7 +307,7 @@ export default {
             this.errorMessage = this.$i18n.t('Error')
           }
           setTimeout(() => {
-            this.getChecklists()
+            this.readChecklists() // update checklists and checklist in store when checklist is edited
             if (this.hiveId !== null && this.inspectionEdit !== null) {
               return this.$router.push({
                 name: 'hive-inspect-edit',
@@ -330,7 +330,7 @@ export default {
             } else {
               this.$router.push(-1).catch((error) => {
                 if (error.name === 'NavigationDuplicated') {
-                  this.getChecklistAndTaxonomy(this.id)
+                  this.readChecklistAndTaxonomy(this.id)
                   this.showLoadingIcon = false
                 }
               })
