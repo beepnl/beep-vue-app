@@ -26,9 +26,9 @@ class Api {
   }
 
   checkConnection() {
-    // FIXME: do a lightweight unauthed ping/HEAD request to check if API is up
-    return axios.head('/')
-    // return Promise.resolve(true)
+    // FIXME: do a lightweight unauthed ping (HEAD?) request to check if API is up
+    // return axios.head('/')
+    return axios.get('/settings')
   }
 }
 

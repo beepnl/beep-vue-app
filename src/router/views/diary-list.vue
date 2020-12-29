@@ -1,6 +1,6 @@
 <template>
   <Layout>
-    <v-container v-if="showDiaryPlaceholder">
+    <v-container v-if="showDiaryPlaceholder && ready">
       <v-row>
         <v-col sm="auto" :cols="12">
           {{ $t('no_data') }}
@@ -495,14 +495,39 @@ export default {
       filterByBase: false,
       filterByImpression: [],
       inspections: null,
-      hives: null,
-      showDiaryPlaceholder: false,
       ready: false,
     }
   },
   computed: {
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
+    hives() {
+      const ownHivesArray = []
+      this.apiaries.forEach((apiary) => {
+        apiary.hives.forEach((hive) => {
+          ownHivesArray.push(hive)
+        })
+      })
+
+      const sharedHivesArray = []
+      this.groups.forEach((group) => {
+        group.hives.forEach((hive) => {
+          sharedHivesArray.push(hive)
+        })
+      })
+
+      const allHives = ownHivesArray.concat(sharedHivesArray)
+
+      var uniqueHives = {}
+      const map = new Map()
+      for (const item of allHives) {
+        if (!map.has(item.id)) {
+          map.set(item.id, true) // set any value to Map
+          uniqueHives[item.id] = item
+        }
+      }
+      return uniqueHives
+    },
     // make inspections filterable by hive name and location
     inspectionsWithHiveDetails() {
       var inspectionsWithHiveDetails = this.inspections
@@ -583,6 +608,9 @@ export default {
     mobile() {
       return this.$vuetify.breakpoint.mobile
     },
+    showDiaryPlaceholder() {
+      return this.apiaries.length === 0 && this.groups.length === 0
+    },
     smallScreen() {
       return (
         this.$vuetify.breakpoint.width < 850 &&
@@ -592,16 +620,10 @@ export default {
   },
   created() {
     this.search = this.$route.query.search || null
-    if (this.apiaries.length === 0 && this.groups.length === 0) {
-      // in case view is opened directly without loggin in (via localstorage) or in case of hard refresh
-      this.readApiariesAndGroups().then(() => {
-        this.getUniqueHives()
+    this.readApiariesAndGroupsIfNotPresent().then(() => {
+      this.getAllInspections().then(() => {
+        this.ready = true
       })
-    } else {
-      this.getUniqueHives()
-    }
-    this.getAllInspections().then(() => {
-      this.ready = true
     })
   },
   methods: {
@@ -609,21 +631,16 @@ export default {
       try {
         const response = await Api.deleteRequest('/inspections/', id)
         if (!response) {
-          this.snackbar.text = this.$i18n.t('something_wrong')
-          this.snackbar.show = true
+          console.log('Error')
         }
         this.getAllInspections()
         this.readApiariesAndGroups() // update apiaries and groups so the latest inspection will be displayed at apiary-list
       } catch (error) {
         if (error.response) {
           console.log('Error: ', error.response)
-          const msg = error.response.data.message
-          this.snackbar.text = msg
         } else {
           console.log('Error: ', error)
-          this.snackbar.text = this.$i18n.t('something_wrong')
         }
-        this.snackbar.show = true
       }
     },
     async getAllInspections() {
@@ -661,6 +678,29 @@ export default {
         }
       }
     },
+    async readApiariesAndGroupsIfNotPresent() {
+      if (this.apiaries.length === 0 && this.groups.length === 0) {
+        // in case view is opened directly without loggin in (via localstorage) or in case of hard refresh
+        try {
+          const responseApiaries = await Api.readRequest('/locations')
+          const responseGroups = await Api.readRequest('/groups')
+          this.$store.commit(
+            'locations/setApiaries',
+            responseApiaries.data.locations
+          )
+          this.$store.commit('groups/setGroups', responseGroups.data.groups)
+          return true
+        } catch (error) {
+          if (error.response) {
+            console.log(error.response)
+          } else {
+            console.log('Error: ', error)
+          }
+        }
+      } else {
+        return true
+      }
+    },
     confirmDeleteInspection(inspection) {
       this.$refs.confirm
         .open(
@@ -681,40 +721,6 @@ export default {
         .catch((reject) => {
           return true
         })
-    },
-    getUniqueHives() {
-      // direct get /hives request can lead to 404 error which goes straight to catch block
-      // so hives are retrieved via apiaries and groups
-      if (this.apiaries.length === 0 && this.groups.length === 0) {
-        this.showDiaryPlaceholder = true
-      } else {
-        const ownHivesArray = []
-        this.apiaries.forEach((apiary) => {
-          apiary.hives.forEach((hive) => {
-            ownHivesArray.push(hive)
-          })
-        })
-
-        const sharedHivesArray = []
-        this.groups.forEach((group) => {
-          group.hives.forEach((hive) => {
-            sharedHivesArray.push(hive)
-          })
-        })
-
-        const allHives = ownHivesArray.concat(sharedHivesArray)
-
-        var uniqueHives = {}
-        const map = new Map()
-        for (const item of allHives) {
-          if (!map.has(item.id)) {
-            map.set(item.id, true) // set any value to Map
-            uniqueHives[item.id] = item
-          }
-        }
-
-        this.hives = uniqueHives
-      }
     },
     updateFilterByImpression(number) {
       if (this.filterByImpression.includes(number)) {
