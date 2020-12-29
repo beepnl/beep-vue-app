@@ -97,7 +97,7 @@
               item-value="id"
               hide-details
               :label="`${$t('Select') + ' ' + $tc('checklist', 1)}`"
-              @input="selectChecklist($event)"
+              @input="getChecklistAndTaxonomy($event)"
             >
             </v-select>
           </v-col>
@@ -154,6 +154,7 @@
 import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
+import { mapGetters } from 'vuex'
 import checklistTree from '@components/checklist-tree.vue'
 
 export default {
@@ -176,6 +177,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('inspections', ['checklist', 'checklists']),
     apiaryId() {
       return parseInt(this.$route.query.apiaryId) || null
     },
@@ -209,14 +211,12 @@ export default {
   },
   created() {
     if (this.checklistsPage) {
-      this.getChecklists().then(() => {
-        this.getChecklistById(this.selectedChecklistId)
-        this.getChecklistTaxonomy(this.selectedChecklistId)
+      this.readChecklistsIfNotPresent().then(() => {
+        this.getChecklistAndTaxonomy(this.checklist.id)
         this.ready = true
       })
     } else {
-      this.getChecklistById(this.id)
-      this.getChecklistTaxonomy(this.id)
+      this.getChecklistAndTaxonomy(this.id)
       this.ready = true
     }
   },
@@ -224,8 +224,11 @@ export default {
     async getChecklists() {
       try {
         const response = await Api.readRequest('/inspections/lists')
-        this.checklists = response.data.checklists
-        this.selectedChecklistId = response.data.checklist.id
+        this.$store.commit(
+          'inspections/setChecklists',
+          response.data.checklists
+        )
+        this.$store.commit('inspections/setChecklist', response.data.checklist)
         return response
       } catch (error) {
         if (error.response) {
@@ -235,38 +238,51 @@ export default {
         }
       }
     },
-    async getChecklistById(id) {
-      try {
-        const response = await Api.readRequest('/inspections/lists?id=', id)
-        if (response.length === 0) {
-          this.$router.push({ name: '404', params: { resource: 'checklist' } })
-        }
-        this.activeChecklist = response.data.checklist
-        return response.data.checklist
-      } catch (error) {
-        if (error.response) {
-          console.log('Error: ', error.response)
-        } else {
-          console.log('Error: ', error)
-        }
-        this.$router.push({ name: '404', params: { resource: 'checklist' } })
-      }
-    },
-    async getChecklistTaxonomy(id) {
+    async getChecklistAndTaxonomy(id) {
       try {
         const response = await Api.readRequest('/checklists/', id)
         if (response.length === 0) {
           this.$router.push({ name: '404', params: { resource: 'checklist' } })
         }
+        this.activeChecklist = response.data
         this.activeChecklistTaxonomy = response.data.taxonomy
         return true
       } catch (error) {
         if (error.response) {
           console.log('Error: ', error.response)
+          if (error.response.status === 404) {
+            this.$router.push({
+              name: '404',
+              params: { resource: 'checklist' },
+            })
+          }
         } else {
           console.log('Error: ', error)
         }
-        this.$router.push({ name: '404', params: { resource: 'checklist' } })
+      }
+    },
+    async readChecklistsIfNotPresent() {
+      if (this.checklists.length === 0) {
+        try {
+          const response = await Api.readRequest('/inspections/lists')
+          this.$store.commit(
+            'inspections/setChecklists',
+            response.data.checklists
+          )
+          this.$store.commit(
+            'inspections/setChecklist',
+            response.data.checklist
+          )
+          return true
+        } catch (error) {
+          if (error.response) {
+            console.log('Error: ', error.response)
+          } else {
+            console.log('Error: ', error)
+          }
+        }
+      } else {
+        return true
       }
     },
     async saveChecklist() {
@@ -291,6 +307,7 @@ export default {
             this.errorMessage = this.$i18n.t('Error')
           }
           setTimeout(() => {
+            this.getChecklists()
             if (this.hiveId !== null && this.inspectionEdit !== null) {
               return this.$router.push({
                 name: 'hive-inspect-edit',
@@ -313,11 +330,7 @@ export default {
             } else {
               this.$router.push(-1).catch((error) => {
                 if (error.name === 'NavigationDuplicated') {
-                  if (this.checklistsPage) {
-                    this.getChecklists()
-                  }
-                  this.getChecklistById(this.id)
-                  this.getChecklistTaxonomy(this.id)
+                  this.getChecklistAndTaxonomy(this.id)
                   this.showLoadingIcon = false
                 }
               })
@@ -346,10 +359,6 @@ export default {
           ' (' + this.$i18n.t('research') + ': ' + item.researches[0] + ')'
       }
       return name + research
-    },
-    selectChecklist(id) {
-      this.getChecklistById(id)
-      this.getChecklistTaxonomy(id)
     },
     updateCategoryIds(event) {
       this.checklistEdited = true

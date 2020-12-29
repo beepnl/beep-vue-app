@@ -6,13 +6,21 @@ const resource = createResource({ path: 'inspections' })
 export const state = {
   ...resource.state,
   generalInspections: [],
+  checklist: {},
+  checklists: [],
   inspectionEdited: false,
   selectedInspectionId: null,
 }
 export const getters = {
   ...resource.getters,
+  checklist: (state) => {
+    return state.checklist || {}
+  },
+  checklists: (state) => {
+    return state.checklists || []
+  },
   generalInspections: (state) => {
-    return state.generalInspections
+    return state.generalInspections || []
   },
   inspectionEdited: (state) => {
     return state.inspectionEdited
@@ -23,6 +31,12 @@ export const getters = {
 }
 export const mutations = {
   ...resource.mutations,
+  setChecklist: function(state, payload) {
+    state.checklist = payload
+  },
+  setChecklists: function(state, payload) {
+    state.checklists = payload
+  },
   setGeneralInspections: function(state, payload) {
     state.generalInspections = payload
   },

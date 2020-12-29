@@ -123,13 +123,16 @@
                 class="tdc"
               >
                 <div class="inspection-actions d-flex justify-center">
-                  <a
+                  <router-link
                     v-if="inspection.owner || activeHive.owner"
-                    :href="`/hives/${id}/inspections/${inspection.id}`"
+                    :to="{
+                      name: 'hive-inspect-edit',
+                      params: { id: id, inspection: inspection.id },
+                    }"
                     class="icon-button"
                   >
                     <v-icon small class="color-grey-medium">mdi-pencil</v-icon>
-                  </a>
+                  </router-link>
                   <a
                     v-if="inspection.owner || activeHive.owner"
                     class="icon-button delete"
@@ -802,7 +805,7 @@ export default {
         }
       }
     },
-        async readGeneralInspections() {
+    async readGeneralInspections() {
       try {
         const response = await Api.readRequest('/inspections')
         this.$store.commit('inspections/setGeneralInspections', response.data)

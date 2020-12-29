@@ -432,7 +432,6 @@ export default {
         text: 'notification',
       },
       selectedChecklist: null,
-      checklists: null,
       activeInspection: null,
       selectedChecklistId: null,
       showGeneral: true,
@@ -449,7 +448,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('inspections', ['inspectionEdited']),
+    ...mapGetters('inspections', [
+      'checklist',
+      'checklists',
+      'inspectionEdited',
+    ]),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
     apiaryId() {
@@ -613,7 +616,7 @@ export default {
         this.preSelectedChecklistId
           ? this.getChecklistById(this.preSelectedChecklistId)
           : this.getChecklistById(this.activeInspection.checklist_id)
-        this.getChecklists()
+        this.readChecklistsIfNotPresent()
         this.$store.commit(
           'inspections/setSelectedInspectionId',
           this.inspectionId
@@ -632,11 +635,11 @@ export default {
         hive_ids: this.selectedHives, // TODO: fix for only 1 hiveId
         items: {},
       }
-      this.getChecklists().then((response) => {
-        this.selectedChecklist = response.checklist
+      this.readChecklistsIfNotPresent().then(() => {
+        this.selectedChecklist = this.checklist
         this.preSelectedChecklistId
           ? (this.selectedChecklistId = this.preSelectedChecklistId)
-          : (this.selectedChecklistId = response.checklist.id)
+          : (this.selectedChecklistId = this.checklist.id)
         this.activeInspection.checklist_id = this.selectedChecklistId
         var itemsObject = {}
         this.selectedChecklist.category_ids.map((categoryId) => {
@@ -733,19 +736,6 @@ export default {
         }
       }
     },
-    async getChecklists() {
-      try {
-        const response = await Api.readRequest('/inspections/lists')
-        this.checklists = response.data.checklists
-        return response.data
-      } catch (error) {
-        if (error.response) {
-          console.log('Error: ', error.response)
-        } else {
-          console.log('Error: ', error)
-        }
-      }
-    },
     async getInspection(id) {
       try {
         const response = await Api.readRequest('/inspections/', id)
@@ -781,6 +771,30 @@ export default {
         } else {
           console.log('Error: ', error)
         }
+      }
+    },
+    async readChecklistsIfNotPresent() {
+      if (this.checklists.length === 0) {
+        try {
+          const response = await Api.readRequest('/inspections/lists')
+          this.$store.commit(
+            'inspections/setChecklists',
+            response.data.checklists
+          )
+          this.$store.commit(
+            'inspections/setChecklist',
+            response.data.checklist
+          )
+          return true
+        } catch (error) {
+          if (error.response) {
+            console.log('Error: ', error.response)
+          } else {
+            console.log('Error: ', error)
+          }
+        }
+      } else {
+        return true
       }
     },
     async readGeneralInspections() {
