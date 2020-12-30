@@ -87,8 +87,8 @@
               <v-icon left>mdi-plus</v-icon>
               {{ $t('New_inspection') }}
             </v-btn>
-            <v-icon v-if="mobile" :to="{ name: 'inspect' }" dark color="primary"
-              >mdi-plus-circle</v-icon
+            <router-link v-if="mobile" :to="{ name: 'inspect' }">
+              <v-icon dark color="primary">mdi-plus-circle</v-icon></router-link
             >
           </v-card-actions>
         </v-row>

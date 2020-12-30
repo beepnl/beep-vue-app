@@ -866,18 +866,18 @@ export default {
       }
     },
     selectApiary(id) {
+      this.selectedHives = []
+      this.editableHives = []
       const apiary = this.apiaries.filter((apiary) => {
         return apiary.id === id
       })[0]
       if (apiary) {
         apiary.hives.map((hive) => {
-          if (!this.selectedHives.includes(hive.id)) {
-            this.selectedHives.push(hive.id)
-          }
+          this.selectedHives.push(hive.id)
           this.editableHives.push(hive.id)
         })
-        // upon init, if hiveId is specified, only select that hive instead of all hives in the apiary
-        if (this.hiveId && this.selectedHives.length < 2) {
+        // only when selecting the apiary from the queried hive Id, select just that hive
+        if (this.hiveId && apiary.id === this.activeHive.location_id) {
           this.selectedHives = [this.hiveId]
         }
         this.selectedHiveSet = apiary
@@ -890,20 +890,20 @@ export default {
       }
     },
     selectGroup(id) {
+      this.selectedHives = []
+      this.editableHives = []
       const group = this.groups.filter((group) => {
         return group.id === id
       })[0]
       if (group) {
         group.hives.map((hive) => {
           if (hive.editable) {
-            if (!this.selectedHives.includes(hive.id)) {
-              this.selectedHives.push(hive.id)
-            }
+            this.selectedHives.push(hive.id)
             this.editableHives.push(hive.id)
           }
         })
-        // upon init, if hiveId is specified, only select that hive instead of all editable hives in the group
-        if (this.hiveId && this.selectedHives.length < 2) {
+        // only when selecting a group containing the queried hive Id, select just that hive
+        if (this.hiveId && this.activeHive.group_ids.includes(group.id)) {
           // if hiveId is specified, only select it if editable
           if (this.editableHives.includes(this.hiveId)) {
             this.selectedHives = [this.hiveId]
