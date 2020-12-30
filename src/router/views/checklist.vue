@@ -171,7 +171,6 @@ export default {
       checklistEdited: false,
       valid: false,
       showLoadingIcon: false,
-      checklists: null,
       selectedChecklistId: null,
       ready: false,
     }
@@ -212,7 +211,8 @@ export default {
   created() {
     if (this.checklistsPage) {
       this.readChecklistsIfNotPresent().then(() => {
-        this.readChecklistAndTaxonomy(this.checklist.id)
+        this.selectedChecklistId = this.checklist.id
+        this.readChecklistAndTaxonomy(this.selectedChecklistId)
         this.ready = true
       })
     } else {
