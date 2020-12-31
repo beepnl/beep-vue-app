@@ -129,8 +129,16 @@
   }
 }
 
-.v-input textarea {
-  padding-top: 4px;
+.v-input {
+  &.v-input--selection-controls.v-input--switch .v-input__slot > .v-label {
+    font-size: 0.75rem !important;
+    line-height: 1rem;
+    letter-spacing: 0.0333333333em !important;
+  }
+
+  textarea {
+    padding-top: 4px;
+  }
 }
 
 .v-input__slider {

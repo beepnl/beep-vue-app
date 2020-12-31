@@ -78,25 +78,40 @@
         class="content-container"
       >
         <v-row>
-          <v-col cols="12" sm="4">
-            <div
-              class="beep-label mt-n3 mt-sm-0"
-              v-text="treeselectLabel"
-            ></div>
-            <Treeselect
-              v-if="sortedHiveSets && sortedHiveSets.length > 0"
-              v-model="selectedHiveSetId"
-              :options="sortedHiveSets"
-              :normalizer="normalizerHiveSets"
-              :placeholder="treeselectLabel"
-              :no-results-text="`${$t('no_results')}`"
-              :disable-branch-nodes="true"
-              :default-expand-level="1"
-              @input="selectHiveSet($event)"
-            />
+          <v-col cols="12" md="4">
+            <v-row>
+              <v-col cols="12" sm="7" md="12">
+                <div
+                  class="beep-label mt-n3 mt-sm-0"
+                  v-text="treeselectLabel"
+                ></div>
+                <Treeselect
+                  v-if="sortedHiveSets && sortedHiveSets.length > 0"
+                  v-model="selectedHiveSetId"
+                  :options="sortedHiveSets"
+                  :normalizer="normalizerHiveSets"
+                  :placeholder="treeselectLabel"
+                  :no-results-text="`${$t('no_results')}`"
+                  :disable-branch-nodes="true"
+                  :default-expand-level="1"
+                  @input="selectHiveSet($event)"
+                />
+              </v-col>
+              <v-col
+                cols="12"
+                sm="5"
+                md="12"
+                class="py-0 py-sm-3 mb-n4 mb-sm-0 mt-n3 mt-sm-1 mt-md-n4"
+              >
+                <v-switch
+                  v-model="selectAllHives"
+                  :label="`${$t('select_all_hives')}`"
+                ></v-switch>
+              </v-col>
+            </v-row>
           </v-col>
 
-          <v-col cols="12" md="8">
+          <v-col cols="12" md="7">
             <ApiaryPreviewHiveSelector
               v-if="
                 selectedHiveSet && editableHives && editableHives.length > 0
@@ -309,7 +324,7 @@
                           <v-icon
                             class="mr-2"
                             :color="reminderDate !== null ? 'primary' : ''"
-                            >mdi-calendar</v-icon
+                            >mdi-calendar-clock</v-icon
                           >
                           <div>
                             <div
@@ -526,6 +541,18 @@ export default {
           this.setInspectionEdited(true)
         } else {
           this.activeInspection.reminder_date = null
+        }
+      },
+    },
+    selectAllHives: {
+      get() {
+        return this.selectedHives.length === this.editableHives.length
+      },
+      set(value) {
+        if (value === false) {
+          this.selectedHives = []
+        } else {
+          this.selectedHives = this.editableHives
         }
       },
     },
