@@ -30,7 +30,7 @@ export const getters = {
     return state.diaryFilterByGroup
   },
   diaryFilterByImpression: (state) => {
-    return state.diaryFilterByImpression
+    return state.diaryFilterByImpression || []
   },
   diaryFilterByReminder: (state) => {
     return state.diaryFilterByReminder

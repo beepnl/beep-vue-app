@@ -49,7 +49,7 @@
                       : 'color-grey'
                   } mr-2`
                 "
-                @click="updateFilterByImpression(3)"
+                @click="filterByImpression = updateFilterByImpression(3)"
               >
                 mdi-emoticon-happy
               </v-icon>
@@ -61,7 +61,7 @@
                       : 'color-grey'
                   } mr-2`
                 "
-                @click="updateFilterByImpression(2)"
+                @click="filterByImpression = updateFilterByImpression(2)"
               >
                 mdi-emoticon-neutral
               </v-icon>
@@ -71,7 +71,7 @@
                     filterByImpression.includes(1) ? 'red--text' : 'color-grey'
                   } mr-2`
                 "
-                @click="updateFilterByImpression(1)"
+                @click="filterByImpression = updateFilterByImpression(1)"
               >
                 mdi-emoticon-sad
               </v-icon>
@@ -122,7 +122,18 @@
     </v-container>
 
     <v-container
-      v-if="!showDiaryPlaceholder && ready"
+      v-if="filteredInspections.length === 0 && ready"
+      class="diary-inspections-content"
+    >
+      <v-row>
+        <v-col sm="auto" :cols="12">
+          {{ $t('no_data') }}
+        </v-col>
+      </v-row>
+    </v-container>
+
+    <v-container
+      v-if="!showDiaryPlaceholder && filteredInspections.length > 0 && ready"
       class="diary-inspections-content"
     >
       <v-row dense>
@@ -876,14 +887,14 @@ export default {
         })
     },
     updateFilterByImpression(number) {
-      if (this.filterByImpression.includes(number)) {
-        this.filterByImpression.splice(
-          this.filterByImpression.indexOf(number),
-          1
-        )
+      const filterByImpression = this.filterByImpression
+      // to avoid mutating vuex store state outside mutation handle
+      if (filterByImpression.includes(number)) {
+        filterByImpression.splice(filterByImpression.indexOf(number), 1)
       } else {
-        this.filterByImpression.push(number)
+        filterByImpression.push(number)
       }
+      return filterByImpression
     },
   },
 }
