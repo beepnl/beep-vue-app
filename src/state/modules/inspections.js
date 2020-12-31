@@ -30,7 +30,7 @@ export const getters = {
     return state.diaryFilterByGroup
   },
   diaryFilterByImpression: (state) => {
-    return state.diaryFilterByImpression || []
+    return state.diaryFilterByImpression
   },
   diaryFilterByReminder: (state) => {
     return state.diaryFilterByReminder
@@ -55,6 +55,15 @@ export const mutations = {
   },
   setFilter: function(state, payload) {
     state[payload.filter] = payload.value
+  },
+  setFilterByImpression: function(state, payload) {
+    var array = state.diaryFilterByImpression
+    if (array.includes(payload)) {
+      array.splice(array.indexOf(payload), 1)
+    } else {
+      array.push(payload)
+    }
+    state.diaryFilterByImpression = array
   },
   setGeneralInspections: function(state, payload) {
     state.generalInspections = payload

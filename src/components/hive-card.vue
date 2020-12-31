@@ -73,7 +73,7 @@
             }"
           >
             <v-icon
-              v-if="hive.attention || hive.reminder || hive.reminder_date"
+              v-if="hive.attention"
               class="red--text"
             >
               mdi-alert-circle
@@ -252,25 +252,13 @@
         >
           <div class="mr-2 my-0">
             <router-link :to="inspectLink(true)">
-              <v-icon v-if="hive.impression === 1" class="red--text">
-                mdi-emoticon-sad
-              </v-icon>
-              <v-icon v-if="hive.impression === 3" class="green--text">
-                mdi-emoticon-happy
-              </v-icon>
-              <v-icon v-if="hive.impression === 2" class="orange--text">
-                mdi-emoticon-neutral
-              </v-icon>
               <v-icon
                 v-if="hive.last_inspection_date === null"
                 class="color-grey"
               >
                 mdi-pencil-circle
               </v-icon>
-              <div
-                v-if="hive.last_inspection_date !== null && !hive.impression"
-                class="my-0"
-              >
+              <div v-else class="my-0">
                 <v-sheet class="beep-icon beep-icon-magnify"></v-sheet>
               </div>
             </router-link>
@@ -288,7 +276,45 @@
         </div>
 
         <div
-          v-if="hive.attention || hive.reminder || hive.reminder_date"
+          class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
+        >
+          <div class="mr-2 my-0">
+            <router-link :to="inspectLink(true)">
+              <v-icon v-if="hive.attention" class="red--text mr-1">
+                mdi-alert-circle
+              </v-icon>
+              <v-icon v-if="hive.impression === 1" class="red--text">
+                mdi-emoticon-sad
+              </v-icon>
+              <v-icon v-if="hive.impression === 3" class="green--text">
+                mdi-emoticon-happy
+              </v-icon>
+              <v-icon v-if="hive.impression === 2" class="orange--text">
+                mdi-emoticon-neutral
+              </v-icon>
+              <v-icon
+                v-if="!hive.impression && !hive.attention && hive.notes"
+                class="orange--text"
+              >
+                mdi-pencil-circle
+              </v-icon>
+            </router-link>
+          </div>
+          <span
+            v-if="hive.notes && listView"
+            v-text="
+              `${
+                hive.notes.length < 22
+                  ? hive.notes
+                  : hive.notes.substring(0, 22) + '...'
+              }`
+            "
+          >
+          </span>
+        </div>
+
+        <div
+          v-if="hive.reminder || hive.reminder_date"
           class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
         >
           <div class="mr-2 my-0">
@@ -300,16 +326,31 @@
               }"
             >
               <v-icon
-                v-if="hive.attention || hive.reminder || hive.reminder_date"
-                class="red--text"
+                v-if="hive.reminder_date"
+                :class="
+                  `${
+                    $moment(hive.reminder_date).isBefore()
+                      ? 'red--text'
+                      : 'green--text'
+                  }`
+                "
               >
-                mdi-alert-circle
+                mdi-calendar-clock
+              </v-icon>
+              <v-icon v-if="!hive.reminder_date" class="color-grey">
+                mdi-calendar-clock
               </v-icon>
             </router-link>
           </div>
           <span
             v-if="hive.reminder_date"
-            class="to-do-date mr-2"
+            :class="
+              `to-do-date ${
+                $moment(hive.reminder_date).isBefore()
+                  ? 'red--text'
+                  : 'green--text'
+              } mr-2`
+            "
             v-text="momentifyDayMonth(hive.reminder_date)"
           >
           </span>

@@ -27,18 +27,13 @@
             </v-col>
             <v-card-actions>
               <v-icon
-                :class="`${filterByReminder ? 'red--text' : 'color-grey'} mr-2`"
-                @click="filterByReminder = !filterByReminder"
+                :class="
+                  `${filterByAttention ? 'red--text' : 'color-grey'} mr-2`
+                "
+                @click="filterByAttention = !filterByAttention"
               >
                 mdi-alert-circle
               </v-icon>
-              <div class="mr-2 my-0" @click="filterByBase = !filterByBase">
-                <v-sheet
-                  class="beep-icon beep-icon-sensors cursor-pointer"
-                  :color="`${filterByBase ? 'green' : ''}`"
-                >
-                </v-sheet>
-              </div>
               <v-icon
                 :class="
                   `${
@@ -73,6 +68,19 @@
               >
                 mdi-emoticon-sad
               </v-icon>
+              <v-icon
+                :class="`${filterByReminder ? 'red--text' : 'color-grey'} mr-2`"
+                @click="filterByReminder = !filterByReminder"
+              >
+                mdi-clock-alert
+              </v-icon>
+              <div class="mr-2 my-0" @click="filterByBase = !filterByBase">
+                <v-sheet
+                  class="beep-icon beep-icon-sensors cursor-pointer"
+                  :color="`${filterByBase ? 'green' : ''}`"
+                >
+                </v-sheet>
+              </div>
             </v-card-actions>
           </div>
           <v-card-actions class="view-buttons">
@@ -549,9 +557,10 @@ export default {
       text: 'notification',
     },
     search: null,
-    filterByReminder: false,
+    filterByAttention: false,
     filterByBase: false,
     filterByImpression: [],
+    filterByReminder: false,
     listView: true,
     gridView: false,
     apiaryView: false,
@@ -615,25 +624,10 @@ export default {
 
       var propertyFilteredHiveSets = textFilteredHiveSets
         .map((hiveSet) => {
-          if (this.filterByReminder) {
+          if (this.filterByAttention) {
             return {
               ...hiveSet,
-              hives: hiveSet.hives.filter(
-                (hive) =>
-                  hive.attention === 1 ||
-                  hive.reminder !== null ||
-                  hive.reminder_date !== null
-              ),
-            }
-          } else {
-            return hiveSet
-          }
-        })
-        .map((hiveSet) => {
-          if (this.filterByBase) {
-            return {
-              ...hiveSet,
-              hives: hiveSet.hives.filter((hive) => hive.sensors.length > 0),
+              hives: hiveSet.hives.filter((hive) => hive.attention === 1),
             }
           } else {
             return hiveSet
@@ -651,12 +645,35 @@ export default {
             return hiveSet
           }
         })
+        .map((hiveSet) => {
+          if (this.filterByReminder) {
+            return {
+              ...hiveSet,
+              hives: hiveSet.hives.filter(
+                (hive) => hive.reminder !== null || hive.reminder_date !== null
+              ),
+            }
+          } else {
+            return hiveSet
+          }
+        })
+        .map((hiveSet) => {
+          if (this.filterByBase) {
+            return {
+              ...hiveSet,
+              hives: hiveSet.hives.filter((hive) => hive.sensors.length > 0),
+            }
+          } else {
+            return hiveSet
+          }
+        })
 
       if (
         this.search !== null ||
-        this.filterByReminder ||
+        this.filterByAttention ||
         this.filterByBase ||
-        this.filterByImpression.length > 0
+        this.filterByImpression.length > 0 ||
+        this.filterByReminder
       ) {
         propertyFilteredHiveSets = propertyFilteredHiveSets.filter(
           (x) => x.hives.length > 0 // exclude hiveSets without search results (but include empty hiveSets in overall overview for housekeeping purposes)

@@ -49,7 +49,7 @@
                       : 'color-grey'
                   } mr-2`
                 "
-                @click="filterByImpression = updateFilterByImpression(3)"
+                @click="filterByImpression = 3"
               >
                 mdi-emoticon-happy
               </v-icon>
@@ -61,7 +61,7 @@
                       : 'color-grey'
                   } mr-2`
                 "
-                @click="filterByImpression = updateFilterByImpression(2)"
+                @click="filterByImpression = 2"
               >
                 mdi-emoticon-neutral
               </v-icon>
@@ -71,7 +71,7 @@
                     filterByImpression.includes(1) ? 'red--text' : 'color-grey'
                   } mr-2`
                 "
-                @click="filterByImpression = updateFilterByImpression(1)"
+                @click="filterByImpression = 1"
               >
                 mdi-emoticon-sad
               </v-icon>
@@ -607,10 +607,7 @@ export default {
         return this.$store.getters['inspections/diaryFilterByImpression']
       },
       set(value) {
-        this.$store.commit('inspections/setFilter', {
-          filter: 'diaryFilterByImpression',
-          value,
-        })
+        this.$store.commit('inspections/setFilterByImpression', value)
       },
     },
     filterByReminder: {
@@ -885,16 +882,6 @@ export default {
         .catch((reject) => {
           return true
         })
-    },
-    updateFilterByImpression(number) {
-      const filterByImpression = this.filterByImpression
-      // to avoid mutating vuex store state outside mutation handle
-      if (filterByImpression.includes(number)) {
-        filterByImpression.splice(filterByImpression.indexOf(number), 1)
-      } else {
-        filterByImpression.push(number)
-      }
-      return filterByImpression
     },
   },
 }
