@@ -177,6 +177,11 @@
     background-color: $color-green;
     border-color: $color-green;
   }
+
+  &.color-primary {
+    background-color: $color-primary;
+    border-color: $color-primary;
+  }
 }
 
 .icon-apiary-shared,
@@ -190,6 +195,10 @@
   border-radius: 100%;
   &::before {
     margin-left: 1px;
+  }
+  &.color-grey {
+    background-color: $color-grey;
+    border-color: $color-grey;
   }
 }
 

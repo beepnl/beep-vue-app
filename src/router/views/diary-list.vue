@@ -34,8 +34,10 @@
             </v-col>
             <v-card-actions>
               <v-icon
-                :class="`${filterByReminder ? 'red--text' : 'color-grey'} mr-2`"
-                @click="filterByReminder = !filterByReminder"
+                :class="
+                  `${filterByAttention ? 'red--text' : 'color-grey'} mr-2`
+                "
+                @click="filterByAttention = !filterByAttention"
               >
                 mdi-alert-circle
               </v-icon>
@@ -74,11 +76,16 @@
                 mdi-emoticon-sad
               </v-icon>
               <v-icon
-                class="icon-apiary-shared mr-2 my-0"
-                :style="
-                  `background-color: ${
-                    filterByGroup ? '#f8b133' : '#606060'
-                  }; border-color: ${filterByGroup ? '#f8b133' : '#606060'};`
+                :class="`${filterByReminder ? 'red--text' : 'color-grey'} mr-2`"
+                @click="filterByReminder = !filterByReminder"
+              >
+                mdi-clock-alert
+              </v-icon>
+              <v-icon
+                :class="
+                  `icon-apiary-shared mr-2 my-0 ${
+                    filterByGroup ? '' : 'color-grey'
+                  }`
                 "
                 @click="filterByGroup = !filterByGroup"
               >
@@ -175,7 +182,7 @@
 
                       <v-col
                         cols="4"
-                        class="diary-inspection-date-item d-flex flex-column align-start pa-0 pr-3"
+                        class="d-flex flex-column align-start pa-0 pr-3"
                       >
                         <div>
                           <v-tooltip
@@ -234,57 +241,15 @@
                   </v-col>
 
                   <v-col cols="12" sm="7" class="diary-inspection-content pa-0">
-                    <v-row class="py-0 ml-sm-0">
+                    <v-row class="py-0 ml-sm-0 mr-sm-n4">
                       <v-col
                         cols="12"
                         sm="1"
-                        md="3"
-                        lg="2"
-                        class="diary-details-item d-flex flex-column align-start pa-0"
-                      >
-                        <div
-                          v-if="inspection.impression"
-                          class="diary-content-item d-flex flex-no-wrap justify-flex-start align-center mr-2"
-                        >
-                          <div class="mr-1 my-0">
-                            <v-icon
-                              v-if="inspection.impression === 1"
-                              class="red--text"
-                            >
-                              mdi-emoticon-sad
-                            </v-icon>
-                            <v-icon
-                              v-if="inspection.impression === 3"
-                              class="green--text"
-                            >
-                              mdi-emoticon-happy
-                            </v-icon>
-                            <v-icon
-                              v-if="inspection.impression === 2"
-                              class="orange--text"
-                            >
-                              mdi-emoticon-neutral
-                            </v-icon>
-                          </div>
-                          <span
-                            class="diary-label hide-md"
-                            v-text="`${$t('positive_impression')}`"
-                          >
-                          </span>
-                        </div>
-                      </v-col>
-
-                      <v-col
-                        cols="12"
-                        sm="5"
+                        lg="3"
                         class="diary-details-item d-flex flex-column align-start  pa-0"
                       >
                         <div
-                          v-if="
-                            inspection.attention ||
-                              inspection.reminder ||
-                              inspection.reminder_date
-                          "
+                          v-if="inspection.attention"
                           class="diary-content-item"
                         >
                           <div
@@ -296,50 +261,8 @@
                               </v-icon>
                             </div>
                             <span
-                              v-if="inspection.reminder_date"
-                              class="to-do-date mr-2"
-                              v-text="
-                                momentifyDayMonth(inspection.reminder_date)
-                              "
-                            >
-                            </span>
-                            <span
-                              class="diary-label"
+                              class="diary-label hide-md"
                               v-text="`${$t('needs_attention')}`"
-                            >
-                            </span>
-                          </div>
-                          <div class="ml-7 diary-inspection-text">
-                            <v-tooltip
-                              v-if="
-                                inspection.reminder &&
-                                  inspection.reminder.length > 30 &&
-                                  !mobile &&
-                                  !smallScreen
-                              "
-                              class="diary-tooltip"
-                              bottom
-                              max-width="60%"
-                            >
-                              <template v-slot:activator="{ on, attrs }">
-                                <span
-                                  v-bind="attrs"
-                                  class="reminder"
-                                  v-on="on"
-                                  v-text="inspection.reminder"
-                                >
-                                </span>
-                              </template>
-                              <span
-                                class="reminder"
-                                v-text="inspection.reminder"
-                              >
-                              </span>
-                            </v-tooltip>
-                            <span
-                              v-else-if="inspection.reminder"
-                              class="reminder"
-                              v-text="inspection.reminder"
                             >
                             </span>
                           </div>
@@ -348,24 +271,61 @@
 
                       <v-col
                         cols="12"
-                        sm="6"
-                        md="4"
-                        lg="5"
-                        class="diary-details-item d-flex flex-column align-start  pa-0"
+                        sm="5"
+                        lg="4"
+                        class="diary-details-item d-flex flex-column align-start pa-0"
                       >
-                        <div v-if="inspection.notes" class="diary-content-item">
+                        <div
+                          v-if="inspection.impression || inspection.notes"
+                          class="diary-content-item"
+                        >
                           <div
                             class="d-flex flex-no-wrap justify-flex-start align-center mr-2"
                           >
                             <div class="mr-1 my-0">
-                              <v-icon class="color-grey">
+                              <v-icon
+                                v-if="inspection.impression === 1"
+                                class="red--text"
+                              >
+                                mdi-emoticon-sad
+                              </v-icon>
+                              <v-icon
+                                v-if="inspection.impression === 3"
+                                class="green--text"
+                              >
+                                mdi-emoticon-happy
+                              </v-icon>
+                              <v-icon
+                                v-if="inspection.impression === 2"
+                                class="orange--text"
+                              >
+                                mdi-emoticon-neutral
+                              </v-icon>
+                              <v-icon
+                                v-if="!inspection.impression"
+                                class="color-grey"
+                              >
                                 mdi-pencil-circle
                               </v-icon>
                             </div>
-                            <span class="diary-label" v-text="`${$t('notes')}`">
+                            <span
+                              v-if="!inspection.impression"
+                              class="diary-label"
+                              v-text="`${$t('notes')}`"
+                            >
+                            </span>
+                            <span
+                              v-else
+                              class="diary-label"
+                              v-text="`${$t('positive_impression')}`"
+                            >
                             </span>
                           </div>
-                          <div class="ml-7 diary-inspection-text mr-2">
+
+                          <div
+                            v-if="inspection.notes"
+                            class="ml-7 diary-inspection-text"
+                          >
                             <v-tooltip
                               v-if="
                                 inspection.notes.length > 35 &&
@@ -392,6 +352,97 @@
                               v-else
                               class="notes"
                               v-text="inspection.notes"
+                            >
+                            </span>
+                          </div>
+                        </div>
+                      </v-col>
+
+                      <v-col
+                        cols="12"
+                        sm="5"
+                        lg="4"
+                        class="diary-details-item d-flex flex-column align-start  pa-0"
+                      >
+                        <div
+                          v-if="inspection.reminder || inspection.reminder_date"
+                          class="diary-content-item"
+                        >
+                          <div
+                            class="d-flex flex-no-wrap justify-flex-start align-center mr-2"
+                          >
+                            <div class="mr-1 my-0">
+                              <v-icon
+                                v-if="inspection.reminder_date"
+                                :class="
+                                  `${
+                                    $moment(inspection.reminder_date).isBefore()
+                                      ? 'red--text'
+                                      : 'green--text'
+                                  }`
+                                "
+                              >
+                                mdi-calendar-clock
+                              </v-icon>
+                              <v-icon
+                                v-if="!inspection.reminder_date"
+                                class="color-grey"
+                              >
+                                mdi-calendar-clock
+                              </v-icon>
+                            </div>
+                            <span
+                              v-if="inspection.reminder_date"
+                              :class="
+                                `to-do-date ${
+                                  $moment(inspection.reminder_date).isBefore()
+                                    ? 'red--text'
+                                    : 'green--text'
+                                } mr-2`
+                              "
+                              v-text="
+                                momentifyDayMonth(inspection.reminder_date)
+                              "
+                            >
+                            </span>
+                            <span
+                              v-if="!inspection.reminder_date"
+                              class="diary-label"
+                              v-text="`${$t('reminder')}`"
+                            >
+                            </span>
+                          </div>
+                          <div class="ml-7 diary-inspection-text mr-2">
+                            <v-tooltip
+                              v-if="
+                                inspection.reminder &&
+                                  inspection.reminder.length > 35 &&
+                                  !mobile &&
+                                  !smallScreen
+                              "
+                              class="diary-tooltip"
+                              bottom
+                              max-width="60%"
+                            >
+                              <template v-slot:activator="{ on, attrs }">
+                                <span
+                                  v-bind="attrs"
+                                  class="reminder"
+                                  v-on="on"
+                                  v-text="inspection.reminder"
+                                >
+                                </span>
+                              </template>
+                              <span
+                                class="reminder"
+                                v-text="inspection.reminder"
+                              >
+                              </span>
+                            </v-tooltip>
+                            <span
+                              v-else-if="inspection.reminder"
+                              class="reminder"
+                              v-text="inspection.reminder"
                             >
                             </span>
                           </div>
@@ -511,9 +562,10 @@ export default {
   data: function() {
     return {
       search: null,
-      filterByReminder: false,
+      filterByAttention: false,
       filterByBase: false,
       filterByImpression: [],
+      filterByReminder: false,
       filterByGroup: false,
       ready: false,
     }
@@ -594,12 +646,8 @@ export default {
           return new Date(b.created_at) - new Date(a.created_at)
         })
         .filter((inspection) => {
-          if (typeof inspection !== 'undefined' && this.filterByReminder) {
-            if (
-              inspection.attention === 1 ||
-              inspection.reminder !== null ||
-              inspection.reminder_date !== null
-            ) {
+          if (typeof inspection !== 'undefined' && this.filterByAttention) {
+            if (inspection.attention === 1) {
               return inspection
             }
           } else {
@@ -612,6 +660,18 @@ export default {
             this.filterByImpression.length > 0
           ) {
             if (this.filterByImpression.includes(inspection.impression)) {
+              return inspection
+            }
+          } else {
+            return inspection
+          }
+        })
+        .filter((inspection) => {
+          if (typeof inspection !== 'undefined' && this.filterByReminder) {
+            if (
+              inspection.reminder !== null ||
+              inspection.reminder_date !== null
+            ) {
               return inspection
             }
           } else {
@@ -820,16 +880,6 @@ export default {
   }
 }
 
-.hide-md {
-  display: flex;
-  @media (min-width: 850px) {
-    display: none;
-  }
-  @include for-tablet-landscape-up {
-    display: flex;
-  }
-}
-
 .diary-inspections-content {
   margin-top: 61px;
   overflow: hidden;
@@ -886,17 +936,6 @@ export default {
         min-width: 100%;
       }
     }
-    .to-do-date {
-      width: auto;
-      padding: 2px 4px !important;
-      font-weight: 600;
-      line-height: 1rem;
-      color: red;
-      text-align: center;
-      white-space: nowrap;
-      border: 1px solid red;
-      border-radius: 5px;
-    }
     .diary-inspection-meta {
       max-width: 330px;
       @include for-tablet-landscape-up {
@@ -931,6 +970,14 @@ export default {
         margin-top: 2px;
       }
     }
+
+    .hide-md {
+      display: flex;
+      @media (min-width: 851px) and (max-width: 1264px) {
+        display: none;
+      }
+    }
+
     .diary-inspection-content {
       margin-top: 10px !important;
       margin-left: 10px !important;

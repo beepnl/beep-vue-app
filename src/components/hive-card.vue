@@ -609,17 +609,6 @@ export default {
     .last-visit {
       white-space: nowrap;
     }
-    .to-do-date {
-      width: auto;
-      padding: 2px 4px !important;
-      font-weight: 600;
-      line-height: 1rem;
-      color: red;
-      text-align: center;
-      white-space: nowrap;
-      border: 1px solid red;
-      border-radius: 5px;
-    }
     .temp {
       font-weight: 600;
     }
