@@ -29,8 +29,10 @@
             </v-col>
             <v-card-actions>
               <v-icon
-                :class="`${filterByReminder ? 'red--text' : 'color-grey'} mr-2`"
-                @click="filterByReminder = !filterByReminder"
+                :class="
+                  `${filterByAttention ? 'red--text' : 'color-grey'} mr-2`
+                "
+                @click="filterByAttention = !filterByAttention"
               >
                 mdi-alert-circle
               </v-icon>
@@ -67,6 +69,12 @@
                 @click="updateFilterByImpression(1)"
               >
                 mdi-emoticon-sad
+              </v-icon>
+              <v-icon
+                :class="`${filterByReminder ? 'red--text' : 'color-grey'} mr-2`"
+                @click="filterByReminder = !filterByReminder"
+              >
+                mdi-clock-alert
               </v-icon>
             </v-card-actions>
           </div>
@@ -294,7 +302,13 @@
                   <span
                     v-if="inspection.reminder_date !== null"
                     :title="inspection.reminder_date"
-                    class="d-flex justify-center reminder-date"
+                    :class="
+                      `d-flex justify-center reminder-date ${
+                        $moment(inspection.reminder_date).isBefore()
+                          ? 'red--text'
+                          : 'green--text'
+                      }`
+                    "
                     v-text="
                       mobile
                         ? momentifyDayMonth(inspection.reminder_date)
@@ -523,7 +537,8 @@
         <v-row>
           <v-col sm="auto" :cols="12">
             {{
-              activeHive.editable || activeHive.owner
+              (activeHive.editable || activeHive.owner) &&
+              inspections.inspections.length === 0
                 ? $tc('Inspection', 2) + ' ' + $t('not_available_yet')
                 : $t('no_results')
             }}
@@ -570,8 +585,9 @@ export default {
         text: 'notification',
       },
       inspections: [],
-      filterByReminder: false,
+      filterByAttention: false,
       filterByImpression: [],
+      filterByReminder: false,
       search: null,
       hiddenCategories: [],
       images: null,
@@ -618,25 +634,33 @@ export default {
       }
 
       var propertyFilteredInspections = textFilteredInspections
-        .map((inspection) => {
-          if (typeof inspection !== 'undefined' && this.filterByReminder) {
-            if (
-              inspection.attention === 1 ||
-              inspection.reminder !== null ||
-              inspection.reminder_date !== null
-            ) {
+        .filter((inspection) => {
+          if (typeof inspection !== 'undefined' && this.filterByAttention) {
+            if (inspection.attention === 1) {
               return inspection
             }
           } else {
             return inspection
           }
         })
-        .map((inspection) => {
+        .filter((inspection) => {
           if (
             typeof inspection !== 'undefined' &&
             this.filterByImpression.length > 0
           ) {
             if (this.filterByImpression.includes(inspection.impression)) {
+              return inspection
+            }
+          } else {
+            return inspection
+          }
+        })
+        .filter((inspection) => {
+          if (typeof inspection !== 'undefined' && this.filterByReminder) {
+            if (
+              inspection.reminder !== null ||
+              inspection.reminder_date !== null
+            ) {
               return inspection
             }
           } else {
@@ -1018,6 +1042,9 @@ export default {
     border-radius: 5px;
     @include for-phone-only {
       max-width: 80px;
+    }
+    &.green--text {
+      border-color: green;
     }
   }
   .label-inspection {
