@@ -73,6 +73,17 @@
               >
                 mdi-emoticon-sad
               </v-icon>
+              <v-icon
+                class="icon-apiary-shared mr-2 my-0"
+                :style="
+                  `background-color: ${
+                    filterByGroup ? '#f8b133' : '#606060'
+                  }; border-color: ${filterByGroup ? '#f8b133' : '#606060'};`
+                "
+                @click="filterByGroup = !filterByGroup"
+              >
+                mdi-account-multiple
+              </v-icon>
             </v-card-actions>
           </div>
           <v-card-actions class="mr-1">
@@ -169,8 +180,7 @@
                         <div>
                           <v-tooltip
                             v-if="
-                              hives[inspection.hive_id].name.length >= 15 &&
-                                !smallScreen
+                              inspection.hive_name.length >= 15 && !smallScreen
                             "
                             class="diary-tooltip"
                             bottom
@@ -182,7 +192,7 @@
                                 v-bind="attrs"
                                 v-on="on"
                                 v-text="
-                                  hives[inspection.hive_id].name.substring(
+                                  inspection.hive_name.substring(
                                     0,
                                     // eslint-disable-next-line vue/comma-dangle
                                     14
@@ -193,20 +203,30 @@
                             </template>
                             <span
                               class="diary-label"
-                              v-text="hives[inspection.hive_id].name"
+                              v-text="inspection.hive_name"
                             >
                             </span>
                           </v-tooltip>
                           <span
                             v-else
                             class="diary-label"
-                            v-text="hives[inspection.hive_id].name"
+                            v-text="inspection.hive_name"
                           >
                           </span>
                         </div>
                         <span
                           class="diary-inspection-text"
-                          v-text="hives[inspection.hive_id].location"
+                          v-text="
+                            inspection.hive_group_name
+                              ? inspection.hive_group_name
+                              : inspection.hive_location
+                          "
+                        >
+                        </span>
+                        <span
+                          v-if="inspection.hive_group_name"
+                          class="beep-label"
+                          v-text="'(' + inspection.hive_location + ')'"
                         >
                         </span>
                       </v-col>
@@ -494,6 +514,7 @@ export default {
       filterByReminder: false,
       filterByBase: false,
       filterByImpression: [],
+      filterByGroup: false,
       ready: false,
     }
   },
@@ -512,6 +533,7 @@ export default {
       const sharedHivesArray = []
       this.groups.forEach((group) => {
         group.hives.forEach((hive) => {
+          hive.group_name = group.name
           sharedHivesArray.push(hive)
         })
       })
@@ -536,6 +558,8 @@ export default {
         const location = this.hives[inspection.hive_id].location
         inspection.hive_name = name
         inspection.hive_location = location
+        const groupName = this.hives[inspection.hive_id].group_name || null
+        inspection.hive_group_name = groupName
       })
       return inspectionsWithHiveDetails
     },
@@ -569,7 +593,7 @@ export default {
         .sort(function(a, b) {
           return new Date(b.created_at) - new Date(a.created_at)
         })
-        .map((inspection) => {
+        .filter((inspection) => {
           if (typeof inspection !== 'undefined' && this.filterByReminder) {
             if (
               inspection.attention === 1 ||
@@ -582,7 +606,7 @@ export default {
             return inspection
           }
         })
-        .map((inspection) => {
+        .filter((inspection) => {
           if (
             typeof inspection !== 'undefined' &&
             this.filterByImpression.length > 0
@@ -591,6 +615,16 @@ export default {
               return inspection
             }
           } else {
+            return inspection
+          }
+        })
+        .filter((inspection) => {
+          if (typeof inspection !== 'undefined' && this.filterByGroup) {
+            if (inspection.hive_group_name !== null) {
+              return inspection
+            }
+          } else if (inspection.hive_group_name === null) {
+            // hide hives from groups when filter is off
             return inspection
           }
         })

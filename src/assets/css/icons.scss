@@ -188,6 +188,9 @@
   background-color: $color-primary;
   border: 2px solid $color-primary;
   border-radius: 100%;
+  &::before {
+    margin-left: 1px;
+  }
 }
 
 .icon-side-arrow {
