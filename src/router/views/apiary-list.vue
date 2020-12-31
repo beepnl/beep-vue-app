@@ -8,7 +8,7 @@
           <div
             class="filter-buttons d-flex flex-row justify-flex-start align-center"
           >
-            <v-col cols="5" :class="mobile ? 'pr-0' : 'pr-1'">
+            <v-col cols="4" sm="5" :class="mobile ? 'pr-0' : 'pr-1'">
               <v-text-field
                 v-model="search"
                 :label="`${$t('Search')}`"
@@ -74,7 +74,7 @@
               >
                 mdi-clock-alert
               </v-icon>
-              <div class="mr-2 my-0" @click="filterByBase = !filterByBase">
+              <div class="my-0" @click="filterByBase = !filterByBase">
                 <v-sheet
                   class="beep-icon beep-icon-sensors cursor-pointer"
                   :color="`${filterByBase ? 'green' : ''}`"
@@ -1088,6 +1088,11 @@ export default {
     @include for-tablet-portrait-up {
       margin-top: -12px;
       margin-bottom: -12px;
+    }
+    .filter-buttons {
+      @include for-phone-only {
+        max-width: 300px;
+      }
     }
     .v-input {
       background-color: $color-white;

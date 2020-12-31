@@ -32,7 +32,7 @@
                 hide-details
               ></v-text-field>
             </v-col>
-            <v-card-actions>
+            <v-card-actions class="pl-0 pl-sm-2">
               <v-icon
                 :class="
                   `${filterByAttention ? 'red--text' : 'color-grey'} mr-2`
