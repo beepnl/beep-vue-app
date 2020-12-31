@@ -562,11 +562,6 @@ export default {
   data: function() {
     return {
       search: null,
-      filterByAttention: false,
-      filterByBase: false,
-      filterByImpression: [],
-      filterByReminder: false,
-      filterByGroup: false,
       ready: false,
     }
   },
@@ -574,6 +569,50 @@ export default {
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
     ...mapGetters('inspections', ['generalInspections']),
+    filterByAttention: {
+      get() {
+        return this.$store.getters['inspections/diaryFilterByAttention']
+      },
+      set(value) {
+        this.$store.commit('inspections/setFilter', {
+          filter: 'diaryFilterByAttention',
+          value,
+        })
+      },
+    },
+    filterByGroup: {
+      get() {
+        return this.$store.getters['inspections/diaryFilterByGroup']
+      },
+      set(value) {
+        this.$store.commit('inspections/setFilter', {
+          filter: 'diaryFilterByGroup',
+          value,
+        })
+      },
+    },
+    filterByImpression: {
+      get() {
+        return this.$store.getters['inspections/diaryFilterByImpression']
+      },
+      set(value) {
+        this.$store.commit('inspections/setFilter', {
+          filter: 'diaryFilterByImpression',
+          value,
+        })
+      },
+    },
+    filterByReminder: {
+      get() {
+        return this.$store.getters['inspections/diaryFilterByReminder']
+      },
+      set(value) {
+        this.$store.commit('inspections/setFilter', {
+          filter: 'diaryFilterByReminder',
+          value,
+        })
+      },
+    },
     hives() {
       const ownHivesArray = []
       this.apiaries.forEach((apiary) => {

@@ -5,6 +5,10 @@ const resource = createResource({ path: 'inspections' })
 // Add some custom functionality to the resource module
 export const state = {
   ...resource.state,
+  diaryFilterByAttention: false,
+  diaryFilterByGroup: false,
+  diaryFilterByImpression: [],
+  diaryFilterByReminder: false,
   generalInspections: [],
   checklist: {},
   checklists: [],
@@ -18,6 +22,18 @@ export const getters = {
   },
   checklists: (state) => {
     return state.checklists || []
+  },
+  diaryFilterByAttention: (state) => {
+    return state.diaryFilterByAttention
+  },
+  diaryFilterByGroup: (state) => {
+    return state.diaryFilterByGroup
+  },
+  diaryFilterByImpression: (state) => {
+    return state.diaryFilterByImpression
+  },
+  diaryFilterByReminder: (state) => {
+    return state.diaryFilterByReminder
   },
   generalInspections: (state) => {
     return state.generalInspections || []
@@ -36,6 +52,9 @@ export const mutations = {
   },
   setChecklists: function(state, payload) {
     state.checklists = payload
+  },
+  setFilter: function(state, payload) {
+    state[payload.filter] = payload.value
   },
   setGeneralInspections: function(state, payload) {
     state.generalInspections = payload
