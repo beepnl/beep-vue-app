@@ -104,6 +104,7 @@
                 class="py-0 py-sm-3 mb-n4 mb-sm-0 mt-n3 mt-sm-1 mt-md-n4"
               >
                 <v-switch
+                  v-if="selectedHiveSet"
                   v-model="selectAllHives"
                   :label="
                     `${

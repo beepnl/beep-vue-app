@@ -151,7 +151,7 @@
                           >
                             <div class="mr-1 my-0">
                               <v-icon class="red--text">
-                                mdi-alert-circle
+                                mdi-clipboard-alert-outline
                               </v-icon>
                             </div>
                             <span
@@ -178,7 +178,7 @@
                           >
                             <div class="mr-1 my-0">
                               <v-icon class="red--text">
-                                mdi-alert-circle
+                                mdi-clipboard-alert-outline
                               </v-icon>
                             </div>
                             <span
@@ -386,6 +386,21 @@ export default {
       //     this.showAlertPlaceholder = true
       //   }
       //   // this.$store.commit('alerts/setAlerts', response.data)
+      //   return true
+      // } catch (error) {
+      //   if (error.response) {
+      //     console.log('Error: ', error.response)
+      //   } else {
+      //     console.log('Error: ', error)
+      //   }
+      // }
+    },
+    async readAlertRules() {
+      // DUMMY DATA
+      this.alertRules = []
+      // try {
+      //   const response = await Api.readRequest('/alerts/rules')
+      //   // this.$store.commit('alerts/setAlertRules', response.data)
       //   return true
       // } catch (error) {
       //   if (error.response) {

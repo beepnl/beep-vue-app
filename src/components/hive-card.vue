@@ -72,11 +72,8 @@
               query: { search: hive.last_inspection_date },
             }"
           >
-            <v-icon
-              v-if="hive.attention"
-              class="red--text"
-            >
-              mdi-alert-circle
+            <v-icon v-if="hive.attention" class="red--text">
+              mdi-clipboard-alert-outline
             </v-icon>
           </router-link>
         </div>
@@ -258,7 +255,26 @@
               >
                 mdi-pencil-circle
               </v-icon>
-              <div v-else class="my-0">
+              <v-icon v-if="hive.attention" class="red--text mr-1">
+                mdi-clipboard-alert-outline
+              </v-icon>
+              <v-icon v-if="hive.impression === 1" class="red--text">
+                mdi-emoticon-sad
+              </v-icon>
+              <v-icon v-if="hive.impression === 3" class="green--text">
+                mdi-emoticon-happy
+              </v-icon>
+              <v-icon v-if="hive.impression === 2" class="orange--text">
+                mdi-emoticon-neutral
+              </v-icon>
+              <div
+                v-if="
+                  !hive.impression &&
+                    !hive.attention &&
+                    hive.last_inspection_date
+                "
+                class="my-0"
+              >
                 <v-sheet class="beep-icon beep-icon-magnify"></v-sheet>
               </div>
             </router-link>
@@ -276,26 +292,12 @@
         </div>
 
         <div
+          v-if="hive.notes"
           class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
         >
           <div class="mr-2 my-0">
             <router-link :to="inspectLink(true)">
-              <v-icon v-if="hive.attention" class="red--text mr-1">
-                mdi-alert-circle
-              </v-icon>
-              <v-icon v-if="hive.impression === 1" class="red--text">
-                mdi-emoticon-sad
-              </v-icon>
-              <v-icon v-if="hive.impression === 3" class="green--text">
-                mdi-emoticon-happy
-              </v-icon>
-              <v-icon v-if="hive.impression === 2" class="orange--text">
-                mdi-emoticon-neutral
-              </v-icon>
-              <v-icon
-                v-if="!hive.impression && !hive.attention && hive.notes"
-                class="orange--text"
-              >
+              <v-icon class="orange--text">
                 mdi-pencil-circle
               </v-icon>
             </router-link>

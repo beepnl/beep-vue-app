@@ -39,7 +39,13 @@
                 "
                 @click="filterByAttention = !filterByAttention"
               >
-                mdi-alert-circle
+                mdi-clipboard-alert-outline
+              </v-icon>
+              <v-icon
+                :class="`${filterByReminder ? 'red--text' : 'color-grey'} mr-2`"
+                @click="filterByReminder = !filterByReminder"
+              >
+                mdi-calendar-clock
               </v-icon>
               <v-icon
                 :class="
@@ -74,12 +80,6 @@
                 @click="filterByImpression = 1"
               >
                 mdi-emoticon-sad
-              </v-icon>
-              <v-icon
-                :class="`${filterByReminder ? 'red--text' : 'color-grey'} mr-2`"
-                @click="filterByReminder = !filterByReminder"
-              >
-                mdi-clock-alert
               </v-icon>
               <v-icon
                 :class="
@@ -257,7 +257,7 @@
                           >
                             <div class="mr-1 my-0">
                               <v-icon class="red--text">
-                                mdi-alert-circle
+                                mdi-clipboard-alert-outline
                               </v-icon>
                             </div>
                             <span
