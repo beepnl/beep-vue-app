@@ -105,7 +105,13 @@
               >
                 <v-switch
                   v-model="selectAllHives"
-                  :label="`${$t('select_all_hives')}`"
+                  :label="
+                    `${
+                      selectedHiveSet.users
+                        ? $t('select_all_editable_hives')
+                        : $t('select_all_hives')
+                    }`
+                  "
                 ></v-switch>
               </v-col>
             </v-row>
