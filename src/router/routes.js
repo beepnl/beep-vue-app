@@ -71,6 +71,14 @@ export default [
     meta: {
       authRequired: true,
     },
+    path: '/alerts',
+    name: 'alerts',
+    component: () => lazyLoadView(import('@views/alerts.vue')),
+  },
+  {
+    meta: {
+      authRequired: true,
+    },
     path: '/',
     alias: '/apiaries',
     name: 'home',
