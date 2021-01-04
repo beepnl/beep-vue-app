@@ -552,7 +552,12 @@ export default {
         if (value === false) {
           this.selectedHives = []
         } else {
-          this.selectedHives = this.editableHives
+          this.selectedHives = []
+          this.selectedHiveSet.hives.map((hive) => {
+            if (hive.editable) {
+              this.selectedHives.push(hive.id)
+            }
+          })
         }
       },
     },
