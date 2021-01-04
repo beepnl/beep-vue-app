@@ -121,22 +121,11 @@
       </div>
     </v-container>
 
-    <v-container
-      v-if="filteredInspections.length === 0 && ready"
-      class="diary-inspections-content"
-    >
-      <v-row>
-        <v-col sm="auto" :cols="12">
-          {{ $t('no_data') }}
-        </v-col>
-      </v-row>
-    </v-container>
-
-    <v-container
-      v-if="!showDiaryPlaceholder && filteredInspections.length > 0 && ready"
-      class="diary-inspections-content"
-    >
-      <v-row dense>
+    <v-container v-if="ready" class="diary-inspections-content">
+      <v-row
+        v-if="!showDiaryPlaceholder && filteredInspections.length > 0"
+        dense
+      >
         <ScaleTransition
           :duration="500"
           group
@@ -546,6 +535,11 @@
             </v-card>
           </v-col>
         </ScaleTransition>
+      </v-row>
+      <v-row v-if="filteredInspections.length === 0">
+        <v-col sm="auto" :cols="12">
+          {{ $t('no_results') }}
+        </v-col>
       </v-row>
     </v-container>
 

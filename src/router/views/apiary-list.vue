@@ -514,6 +514,7 @@
       </v-row>
       <v-row
         v-if="sortedHiveSets.length && !filteredHiveSets.length"
+        dense
         class="hive-set"
       >
         <v-col sm="auto" :cols="12">
