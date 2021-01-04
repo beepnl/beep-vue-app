@@ -655,6 +655,7 @@ const translations = {
   or: 'or',
   select_all_hives: 'Select all hives',
   select_all_editable_hives: 'Selecteer alle aanpasbare bijenkasten',
+  alert: 'Alert | Alerts',
 }
 
 export default translations

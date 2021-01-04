@@ -40,8 +40,10 @@
 </template>
 
 <script>
+import Api from '@api/Api'
 import HeaderMenu from '@components/header-menu.vue'
 import LocaleChanger from '@components/locale-changer.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -55,30 +57,83 @@ export default {
     },
   },
   computed: {
+    ...mapGetters('devices', ['devices', 'devicesPresent']),
     tabs: function() {
-      return [
-        {
-          title: this.$i18n.tc('Hive_short', 2),
-          icon: 'mdi-home-analytics',
-          route: 'home',
-          exact: true,
-        },
-        {
-          title: this.$i18n.t('diary'),
-          icon: 'mdi-calendar-edit',
-          route: 'diary',
-          exact: true,
-        },
-        {
-          title: this.$i18n.t('data'),
-          icon: 'mdi-chart-line',
-          route: 'measurements',
-          exact: false,
-        },
-      ]
+      if (this.devicesPresent) {
+        return [
+          {
+            title: this.$i18n.tc('Hive_short', 2),
+            icon: 'mdi-home-analytics',
+            route: 'home',
+            exact: true,
+          },
+          {
+            title: this.$i18n.t('diary'),
+            icon: 'mdi-calendar-edit',
+            route: 'diary',
+            exact: true,
+          },
+          {
+            title: this.$i18n.t('data'),
+            icon: 'mdi-chart-line',
+            route: 'measurements',
+            exact: false,
+          },
+          {
+            title: this.$i18n.tc('alert', 2),
+            icon: 'mdi-alert',
+            route: 'alerts',
+            exact: false,
+          },
+        ]
+      } else {
+        return [
+          {
+            title: this.$i18n.tc('Hive_short', 2),
+            icon: 'mdi-home-analytics',
+            route: 'home',
+            exact: true,
+          },
+          {
+            title: this.$i18n.t('diary'),
+            icon: 'mdi-calendar-edit',
+            route: 'diary',
+            exact: true,
+          },
+          {
+            title: this.$i18n.t('data'),
+            icon: 'mdi-chart-line',
+            route: 'measurements',
+            exact: false,
+          },
+        ]
+      }
     },
   },
   methods: {
+    async readDevices() {
+      if (this.devicesPresent && this.devices.length === 0) {
+        try {
+          const response = await Api.readRequest('/devices')
+          const devicesPresent = response.data.length > 0
+          this.$store.commit('devices/setData', {
+            prop: 'devices',
+            value: response.data,
+          })
+          this.$store.commit('devices/setData', {
+            prop: 'devicesPresent',
+            value: devicesPresent,
+          })
+          return true
+        } catch (error) {
+          if (error.response) {
+            console.log(error.response)
+          } else {
+            console.log('Error: ', error)
+          }
+        }
+      }
+    },
     updateRoute(val) {
       this.$router.push(val) // respond to tab swipes
     },
