@@ -8,6 +8,43 @@
       </v-row>
     </v-container>
 
+    <div v-if="!showAlertPlaceholder && ready" class="filter-bar-wrapper">
+      <v-container class="filter-container">
+        <v-row
+          class="filter-bar d-flex flex-row justify-space-between align-center"
+        >
+          <div
+            class="filter-buttons d-flex flex-row justify-flex-start align-center"
+          >
+            <v-col cols="7" :class="mobile ? 'pr-0' : 'pr-1'">
+              <v-text-field
+                v-model="search"
+                :label="`${$t('Search')}`"
+                :class="
+                  `${
+                    search !== null ? 'v-input--is-focused primary--text' : ''
+                  } filter-text-field`
+                "
+                :height="mobile ? '30px' : '36px'"
+                clearable
+                outlined
+                dense
+                hide-details
+              ></v-text-field>
+            </v-col>
+          </div>
+          <v-card-actions class="mr-1">
+            <v-switch
+              v-model="alertsEnabled"
+              label="enable Alerts"
+              hide-details
+              @click="toggleAlerts"
+            ></v-switch>
+          </v-card-actions>
+        </v-row>
+      </v-container>
+    </div>
+
     <v-container v-if="!ready">
       <div class="loading">
         <Transition appear>
@@ -24,7 +61,7 @@
           class="alerts-item-transition-wrapper"
         >
           <v-col
-            v-for="(alert, j) in alertsWithHiveDetails"
+            v-for="(alert, j) in filteredAlerts"
             :key="j"
             sm="auto"
             class="alerts-item"
@@ -228,7 +265,9 @@ export default {
   data: function() {
     return {
       alerts: [],
+      alertsEnabled: true,
       ready: false,
+      search: null,
     }
   },
   computed: {
@@ -238,19 +277,32 @@ export default {
     alertsWithHiveDetails() {
       var alertsWithHiveDetails = this.alerts
       alertsWithHiveDetails.map((alert) => {
-        const device = this.devices.filter(
-          (device) => device.id === alert.device_id
-        )[0]
-        const hiveId = device.hive_id
-        alert.hive_id = hiveId
-        const name = this.hives[hiveId].name
-        const location = this.hives[hiveId].location
-        const groupName = this.hives[hiveId].group_name || null
+        const name = this.hives[alert.hive_id].name // FIXME: what if hive does not exist anymore??
+        const location = this.hives[alert.hive_id].location
+        const groupName = this.hives[alert.hive_id].group_name || null
         alert.hive_name = name
         alert.hive_location = location
         alert.hive_group_name = groupName
       })
       return alertsWithHiveDetails
+    },
+    filteredAlerts() {
+      var textFilteredAlerts = []
+      if (this.search === null) {
+        textFilteredAlerts = this.alertsWithHiveDetails
+      } else {
+        textFilteredAlerts = this.alertsWithHiveDetails.map((alert) => {
+          const alertMatch = Object.entries(alert).some(([key, value]) => {
+            if (value !== null && typeof value === 'string') {
+              return value.toLowerCase().includes(this.search.toLowerCase())
+            }
+          })
+          if (alertMatch) {
+            return alert
+          }
+        })
+      }
+      return textFilteredAlerts.filter((x) => x !== undefined)
     },
     hives() {
       const ownHivesArray = []
@@ -291,6 +343,7 @@ export default {
     },
   },
   created() {
+    this.search = this.$route.query.search || null
     this.readApiariesAndGroupsIfNotPresent().then(() => {
       this.readDevices().then(() => {
         this.readAlerts().then(() => {
@@ -370,6 +423,7 @@ export default {
           alert_value: 'weight_kg < -12% in 15 minutes',
           read: false,
           device_id: 257,
+          hive_id: 121,
         },
         {
           created_at: '2021-01-03T05:07:36+00:00',
@@ -378,6 +432,7 @@ export default {
           alert_value: 't_0 = 11C, t_0=11C, t_0=10C, t_0=10C',
           read: false,
           device_id: 257,
+          hive_id: 121,
         },
       ]
       // try {
@@ -449,16 +504,50 @@ export default {
           return true
         })
     },
+    toggleAlerts() {
+      this.alertsEnabled = !this.alertsEnabled
+      console.log('toggle alerts...') // TODO: dis- or enable all alerts
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
+.filter-bar-wrapper {
+  position: fixed;
+  top: 100px;
+  z-index: 1;
+  width: 100%;
+  margin-top: -4px;
+  background-color: $color-orange-light;
+  border-bottom: 1px solid #fff5e2;
+  .filter-container {
+    @include for-phone-only {
+      padding: 10px;
+    }
+  }
+  .filter-bar {
+    margin-top: -10px;
+    margin-bottom: -10px;
+    @include for-tablet-portrait-up {
+      margin-top: -12px;
+      margin-bottom: -12px;
+    }
+    .v-input:not(.v-input--switch) {
+      background-color: $color-white;
+    }
+    .v-input--selection-controls {
+      padding-top: 0;
+      margin-top: 0;
+    }
+  }
+}
+
 .alerts-content {
-  margin-top: 16px;
+  margin-top: 61px;
   overflow: hidden;
   @include for-phone-only {
-    margin-top: 12px;
+    margin-top: 55px;
   }
 
   .alerts-item-transition-wrapper {
