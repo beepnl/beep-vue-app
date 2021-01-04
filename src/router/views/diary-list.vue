@@ -862,7 +862,7 @@ export default {
           this.$i18n.t('remove_inspection'),
           this.$i18n.t('remove_inspection') +
             ' (' +
-            this.$i18n.t('Date').toLocaleLowerCase() +
+            this.$i18n.t('Date').toLowerCase() +
             ': ' +
             this.momentify(inspection.created_at) +
             ')?',

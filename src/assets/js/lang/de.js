@@ -656,6 +656,7 @@ const translations = {
   select_all_hives: 'Select all hives',
   select_all_editable_hives: 'Select all editable hives',
   alert: 'Alert | Alerts',
+  remove_alert: 'Remove alert',
 }
 
 export default translations

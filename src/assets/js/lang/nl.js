@@ -657,6 +657,7 @@ const translations = {
   select_all_hives: 'Selecteer alle bijenkasten',
   select_all_editable_hives: 'Selecteer alle aanpasbare bijenkasten',
   alert: 'Alert | Alerts',
+  remove_alert: 'Verwijder alert',
 }
 
 export default translations

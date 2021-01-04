@@ -68,12 +68,13 @@
             dense
           >
             <v-alert
+              v-model="alert.show"
               type="error"
               text
               prominent
               dense
               color="red"
-              class="alerts-card"
+              class="alerts-card mb-0"
               outlined
             >
               <div
@@ -83,10 +84,10 @@
                 <v-row class="ml-0 pl-0 py-0" style="width:100%;">
                   <v-col
                     cols="12"
-                    sm="5"
+                    sm="4"
                     class="alert-details-item alert-meta d-flex flex-row justify-flex-start pa-0"
                   >
-                    <v-row class="pl-3 py-0">
+                    <v-row class="py-0">
                       <v-col
                         v-if="alert.created_at"
                         cols="5"
@@ -109,7 +110,7 @@
 
                       <v-col
                         cols="3"
-                        class="hive-icon-wrapper mt-1 ml-1 ml-md-0 ml-lg-n2 mr-1 mr-md-0 mr-lg-n2 d-flex justify-center align-end pa-0"
+                        class="hive-icon-wrapper mt-1 ml-1 ml-md-0 ml-lg-n2 mr-1 mr-md-0 mr-lg-n2 d-flex justify-center align-start pa-0"
                       >
                         <HiveIcon
                           :hive="hives[alert.hive_id]"
@@ -118,8 +119,9 @@
                       </v-col>
 
                       <v-col
-                        cols="4"
-                        class="d-flex flex-column align-start pa-0 pr-3"
+                        cols="3"
+                        sm="4"
+                        class="d-flex flex-column align-start pa-0"
                       >
                         <div>
                           <v-tooltip
@@ -171,30 +173,23 @@
                     </v-row>
                   </v-col>
 
-                  <v-col cols="12" sm="7" class="alert-content pa-0">
-                    <v-row class="py-0 ml-sm-0 mr-sm-n4">
+                  <v-col cols="12" sm="8" class="alert-content pa-0">
+                    <v-row class="py-0 ml-n6 ml-sm-0 mr-sm-n4">
                       <v-col
                         cols="12"
-                        sm="1"
-                        lg="3"
+                        sm="3"
                         class="alert-details-item d-flex flex-column align-start  pa-0"
                       >
-                        <div
-                          v-if="alert.alert_function"
-                          class="alert-content-item"
-                        >
+                        <div v-if="alert.rule_name" class="alert-content-item">
                           <div
-                            class="d-flex flex-no-wrap justify-flex-start align-center mr-2"
+                            class="d-flex flex-no-wrap justify-flex-start align-start mr-2"
                           >
                             <div class="mr-1 my-0">
-                              <v-icon class="red--text">
-                                mdi-clipboard-alert-outline
+                              <v-icon>
+                                mdi-exclamation-thick
                               </v-icon>
                             </div>
-                            <span
-                              class="alerts-label hide-md"
-                              v-text="alert.alert_function"
-                            >
+                            <span class="alerts-label" v-text="alert.rule_name">
                             </span>
                           </div>
                         </div>
@@ -203,32 +198,88 @@
                       <v-col
                         cols="12"
                         sm="1"
-                        lg="3"
+                        class="alert-details-item d-flex flex-column align-start  pa-0"
+                      >
+                        <v-tooltip
+                          v-if="alert.alert_function && !upTo850"
+                          bottom
+                          max-width="60%"
+                        >
+                          <template v-slot:activator="{ on, attrs }">
+                            <span v-bind="attrs" class="mr-1 my-0" v-on="on">
+                              <v-icon>
+                                mdi-function
+                              </v-icon>
+                            </span>
+                          </template>
+                          <span
+                            class="alerts-label"
+                            v-text="alert.alert_function"
+                          >
+                          </span>
+                        </v-tooltip>
+                        <div
+                          v-else
+                          class="d-flex flex-no-wrap justify-flex-start align-start mr-2"
+                        >
+                          <span class="mr-1 my-0">
+                            <v-icon>
+                              mdi-function
+                            </v-icon>
+                          </span>
+                          <span
+                            class="alerts-label"
+                            v-text="alert.alert_function"
+                          >
+                          </span>
+                        </div>
+                      </v-col>
+
+                      <v-col
+                        cols="12"
+                        sm="7"
                         class="alert-details-item d-flex flex-column align-start  pa-0"
                       >
                         <div
-                          v-if="alert.alert_value"
+                          v-if="alert.alert_value.length > 0"
                           class="alert-content-item"
                         >
                           <div
-                            class="d-flex flex-no-wrap justify-flex-start align-center mr-2"
+                            class="d-flex flex-no-wrap justify-flex-start align-start mr-2"
                           >
                             <div class="mr-1 my-0">
-                              <v-icon class="red--text">
-                                mdi-clipboard-alert-outline
+                              <v-icon>
+                                mdi-calculator
                               </v-icon>
                             </div>
-                            <span
-                              class="alerts-label hide-md"
-                              v-text="alert.alert_value"
-                            >
-                            </span>
+                            <div class="d-flex flex-column">
+                              <div
+                                v-for="(alertValue, index) in alert.alert_value"
+                                :key="`alertValue + ${index}`"
+                                class="alerts-label"
+                                v-text="alertValue"
+                              >
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </v-col>
                     </v-row>
                   </v-col>
                 </v-row>
+                <div class="float-right">
+                  <button
+                    type="button"
+                    class="v-alert__dismissible v-btn v-btn--flat v-btn--icon v-btn--round theme--light v-size--small red--text"
+                    aria-label="Close"
+                    @click="confirmHideAlert(alert)"
+                    ><span class="v-btn__content"
+                      ><i
+                        aria-hidden="true"
+                        class="v-icon notranslate mdi mdi-close-circle theme--light red--text"
+                      ></i></span
+                  ></button>
+                </div>
               </div>
             </v-alert>
           </v-col>
@@ -265,6 +316,7 @@ export default {
   data: function() {
     return {
       alerts: [],
+      alertRules: [],
       alertsEnabled: true,
       ready: false,
       search: null,
@@ -274,27 +326,37 @@ export default {
     ...mapGetters('devices', ['devices', 'devicesPresent']),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
-    alertsWithHiveDetails() {
-      var alertsWithHiveDetails = this.alerts
-      alertsWithHiveDetails.map((alert) => {
-        const name = this.hives[alert.hive_id].name // FIXME: what if hive does not exist anymore??
-        const location = this.hives[alert.hive_id].location
-        const groupName = this.hives[alert.hive_id].group_name || null
-        alert.hive_name = name
-        alert.hive_location = location
-        alert.hive_group_name = groupName
+    alertsWithHiveAndRuleDetails() {
+      var alertsWithHiveAndRuleDetails = this.alerts
+      alertsWithHiveAndRuleDetails.map((alert) => {
+        const hiveName = this.hives[alert.hive_id].name // FIXME: what if hive does not exist anymore??
+        const hiveLocation = this.hives[alert.hive_id].location
+        const hiveGroupName = this.hives[alert.hive_id].group_name || null
+        alert.hive_name = hiveName
+        alert.hive_location = hiveLocation
+        alert.hive_group_name = hiveGroupName
+        const ruleName = this.alertRules.filter(
+          (alertRule) => alertRule.id === alert.rule_id
+        )[0].name
+        alert.rule_name = ruleName
       })
-      return alertsWithHiveDetails
+      return alertsWithHiveAndRuleDetails
     },
     filteredAlerts() {
       var textFilteredAlerts = []
       if (this.search === null) {
-        textFilteredAlerts = this.alertsWithHiveDetails
+        textFilteredAlerts = this.alertsWithHiveAndRuleDetails
       } else {
-        textFilteredAlerts = this.alertsWithHiveDetails.map((alert) => {
+        textFilteredAlerts = this.alertsWithHiveAndRuleDetails.map((alert) => {
           const alertMatch = Object.entries(alert).some(([key, value]) => {
             if (value !== null && typeof value === 'string') {
               return value.toLowerCase().includes(this.search.toLowerCase())
+            } else if (value !== null && key === 'alert_value') {
+              return (
+                value.filter((val) => {
+                  return val.toLowerCase().includes(this.search.toLowerCase())
+                }).length > 0
+              )
             }
           })
           if (alertMatch) {
@@ -341,16 +403,31 @@ export default {
     showAlertPlaceholder() {
       return this.alerts.length === 0
     },
+    smallScreen() {
+      return (
+        this.$vuetify.breakpoint.width < 850 &&
+        this.$vuetify.breakpoint.width > 500
+      )
+    },
+    upTo850() {
+      return this.$vuetify.breakpoint.width < 850
+    },
   },
   created() {
     this.search = this.$route.query.search || null
-    this.readApiariesAndGroupsIfNotPresent().then(() => {
-      this.readDevices().then(() => {
-        this.readAlerts().then(() => {
-          this.ready = true
-        })
+    this.readApiariesAndGroupsIfNotPresent()
+      .then(() => {
+        this.readDevices()
       })
-    })
+      .then(() => {
+        this.readAlertRules()
+      })
+      .then(() => {
+        this.readAlerts()
+      })
+      .then(() => {
+        this.ready = true
+      })
   },
   methods: {
     async deleteAlertRule(id) {
@@ -416,21 +493,27 @@ export default {
       // DUMMY DATA
       this.alerts = [
         {
+          id: 1,
           created_at: '2021-01-04T09:07:36+00:00',
           rule_id: 1,
-          alert_function:
-            'weight_kg < -10% in 15 minutes OR t_0 < 10% in 15 minutes',
-          alert_value: 'weight_kg < -12% in 15 minutes',
-          read: false,
+          alert_function: 'min. weight < 10kg in 15 minutes',
+          alert_value: ['min. weight = 2kg in 15 minutes'],
+          show: true,
           device_id: 257,
           hive_id: 121,
         },
         {
+          id: 2,
           created_at: '2021-01-03T05:07:36+00:00',
           rule_id: 2,
-          alert_function: 't_0 < 12C in 24 hours',
-          alert_value: 't_0 = 11C, t_0=11C, t_0=10C, t_0=10C',
-          read: false,
+          alert_function: 'min. temperature inside < 12C in 4 x 6 hours',
+          alert_value: [
+            'min. temperature inside = 11C',
+            'min. temperature inside = 11C',
+            'min. temperature inside = 10C',
+            'min. temperature inside = 10C',
+          ],
+          show: true,
           device_id: 257,
           hive_id: 121,
         },
@@ -452,7 +535,88 @@ export default {
     },
     async readAlertRules() {
       // DUMMY DATA
-      this.alertRules = []
+      this.alertRules = [
+        {
+          id: 1,
+          name: 'Theft',
+          description: 'Check if colony has been stolen or fallen over',
+          measurement: 'weight_kg',
+          active_hours: [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+          ],
+          active_months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+          period: 15,
+          number_of_times: 1,
+          calculation: 'min',
+          comparator: '<',
+          comparison_function: 'value',
+          value: 10.0,
+          active: true,
+        },
+        {
+          id: 2,
+          name: 'Winter survival',
+          description: 'Check if colony is still alive',
+          measurement: 't_0',
+          active_hours: [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+          ],
+          active_months: [1, 2, 3, 4, 10, 11, 12],
+          period: 360,
+          number_of_times: 4,
+          calculation: 'min',
+          comparator: '<',
+          comparison_function: 'value',
+          value: 12.0,
+          active: true,
+        },
+      ]
       // try {
       //   const response = await Api.readRequest('/alerts/rules')
       //   // this.$store.commit('alerts/setAlertRules', response.data)
@@ -488,21 +652,33 @@ export default {
         }
       }
     },
-    confirmDeleteAlert(alert) {
+    confirmHideAlert(alert) {
       this.$refs.confirm
         .open(
           this.$i18n.t('remove_alert'),
-          this.$i18n.t('remove_alert') + ' (' + alert.title + ')?',
+          this.$i18n.t('remove_alert') +
+            ' (' +
+            alert.rule_name +
+            ', ' +
+            this.$i18n.t('Date').toLowerCase() +
+            ': ' +
+            this.momentify(alert.created_at) +
+            ')?',
           {
             color: 'red',
           }
         )
         .then((confirm) => {
-          this.deleteAlert(alert.id)
+          this.hideAlert(alert)
         })
         .catch((reject) => {
           return true
         })
+    },
+    hideAlert(alert) {
+      alert.show = false
+      console.log('toggle show boolean for alert ', alert.id)
+      // TODO: async patch request to update show boolean
     },
     toggleAlerts() {
       this.alertsEnabled = !this.alertsEnabled
@@ -594,7 +770,7 @@ export default {
       }
     }
     .alert-meta {
-      max-width: 330px;
+      max-width: 275px;
       @include for-tablet-landscape-up {
         max-width: none;
       }
@@ -607,7 +783,7 @@ export default {
       margin-bottom: 0;
       line-height: 1.1rem;
       @include for-phone-only {
-        max-width: 120px;
+        max-width: 110px;
       }
     }
     .alert-date {
@@ -626,13 +802,6 @@ export default {
       color: rgba(0, 0, 0, 0.87);
       @include for-tablet-portrait-up {
         margin-top: 2px;
-      }
-    }
-
-    .hide-md {
-      display: flex;
-      @media (min-width: 851px) and (max-width: 1264px) {
-        display: none;
       }
     }
 
