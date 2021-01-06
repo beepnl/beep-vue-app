@@ -35,7 +35,7 @@
     "@fortawesome/fontawesome-svg-core": "1.2.27",
     "@fortawesome/free-solid-svg-icons": "5.12.1",
     "@fortawesome/vue-fontawesome": "0.1.9",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "axios-actions": "^4.0.2",
     "core-js": "^3.6.4",
     "date-fns": "2.10.0",
