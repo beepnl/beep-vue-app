@@ -329,7 +329,7 @@ export default {
                   },
                 })
               } else {
-                this.$router.push(-1).catch((error) => {
+                this.$router.go(-1).catch((error) => {
                   if (error.name === 'NavigationDuplicated') {
                     this.readChecklistAndTaxonomy(this.id)
                     this.showLoadingIcon = false
