@@ -203,8 +203,9 @@
                 showCategoriesByIndex[index]
                   ? 'hive-inspect-card-title--border-bottom'
                   : ''
-              }`
+              } cursor-pointer`
             "
+            @click="toggleCategory(index)"
           >
             <v-row>
               <v-col cols="12" class="py-0">
@@ -218,7 +219,6 @@
                         showCategoriesByIndex[index] ? 'mdi-minus' : 'mdi-plus'
                       }`
                     "
-                    @click="toggleCategory(index)"
                   ></v-icon>
                 </div>
               </v-col>
