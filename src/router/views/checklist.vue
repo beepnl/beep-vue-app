@@ -307,34 +307,36 @@ export default {
             this.errorMessage = this.$i18n.t('Error')
           }
           setTimeout(() => {
-            this.readChecklists() // update checklists and checklist in store when checklist is edited
-            if (this.hiveId !== null && this.inspectionEdit !== null) {
-              return this.$router.push({
-                name: 'hive-inspect-edit',
-                params: {
-                  id: this.hiveId,
-                  inspection: this.inspectionEdit,
-                },
-                query: { checklistId: this.id },
-              })
-            } else if (this.hiveId || this.apiaryId || this.groupId) {
-              return this.$router.push({
-                name: 'inspect',
-                query: {
-                  checklistId: this.id,
-                  hiveId: this.hiveId,
-                  apiaryId: this.apiaryId,
-                  groupId: this.groupId,
-                },
-              })
-            } else {
-              this.$router.push(-1).catch((error) => {
-                if (error.name === 'NavigationDuplicated') {
-                  this.readChecklistAndTaxonomy(this.id)
-                  this.showLoadingIcon = false
-                }
-              })
-            }
+            this.readChecklists().then(() => {
+              // update checklists and checklist in store when checklist is edited
+              if (this.hiveId !== null && this.inspectionEdit !== null) {
+                return this.$router.push({
+                  name: 'hive-inspect-edit',
+                  params: {
+                    id: this.hiveId,
+                    inspection: this.inspectionEdit,
+                  },
+                  query: { checklistId: this.id },
+                })
+              } else if (this.hiveId || this.apiaryId || this.groupId) {
+                return this.$router.push({
+                  name: 'inspect',
+                  query: {
+                    checklistId: this.id,
+                    hiveId: this.hiveId,
+                    apiaryId: this.apiaryId,
+                    groupId: this.groupId,
+                  },
+                })
+              } else {
+                this.$router.push(-1).catch((error) => {
+                  if (error.name === 'NavigationDuplicated') {
+                    this.readChecklistAndTaxonomy(this.id)
+                    this.showLoadingIcon = false
+                  }
+                })
+              }
+            })
           }, 200)
         } catch (error) {
           if (error.response) {
