@@ -658,6 +658,10 @@ const translations = {
   select_all_editable_hives: 'Selecteer alle aanpasbare bijenkasten',
   alert: 'Alert | Alerts',
   remove_alert: 'Remove alert',
+  edit_checklist_confirm:
+    'Are you sure you want to edit the checklist? Any unsaved changes to your inspection will be lost.',
+  edit_checklist_confirm_deselectedhives:
+    'Are you sure you want to edit the checklist? Any unsaved changes to your inspection and your hive selection will be lost.',
 }
 
 export default translations

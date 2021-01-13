@@ -658,6 +658,10 @@ const translations = {
   select_all_editable_hives: 'Selecteer alle aanpasbare bijenkasten',
   alert: 'Alert | Alerts',
   remove_alert: 'Verwijder alert',
+  edit_checklist_confirm:
+    'Weet je zeker dat je de kastkaart wilt aanpassen? Niet opgeslagen aanpassingen aan je inspectie zullen verloren gaan.',
+  edit_checklist_confirm_deselectedhives:
+    'Weet je zeker dat je de kastkaart wilt aanpassen? Niet opgeslagen aanpassingen aan je inspectie en je hiveselectie zullen verloren gaan.',
 }
 
 export default translations
