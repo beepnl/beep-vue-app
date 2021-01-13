@@ -150,14 +150,7 @@
                         ></v-sheet>
                         <div
                           :style="
-                            `color: ${
-                              sensorData.value < SENSOR_LOW[sensorData.name]
-                                ? '#ffcc66'
-                                : sensorData.value >
-                                  SENSOR_HIGH[sensorData.name]
-                                ? '#f00'
-                                : '#417505'
-                            };
+                            `color: #242424;
                   font-size: ${mobile ? '14px' : '16px'}
                   ;`
                           "
@@ -1024,6 +1017,16 @@ export default {
   svg.ct-chart-bar,
   svg.ct-chart-line {
     overflow: visible;
+  }
+  .ct-grid.ct-horizontal:first-child,
+  .ct-grid.ct-horizontal + .ct-grid.ct-vertical {
+    stroke: $color-grey;
+  }
+  .ct-label {
+    color: $color-grey-dark;
+  }
+  text.ct-label {
+    fill: $color-grey-dark;
   }
   .ct-label.ct-label.ct-horizontal.ct-end {
     position: relative;
