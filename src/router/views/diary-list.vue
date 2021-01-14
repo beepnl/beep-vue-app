@@ -536,7 +536,7 @@
           </v-col>
         </ScaleTransition>
       </v-row>
-      <v-row v-if="filteredInspections.length === 0">
+      <v-row v-if="!showDiaryPlaceholder && filteredInspections.length === 0">
         <v-col sm="auto" :cols="12">
           {{ $t('no_results') }}
         </v-col>
@@ -645,16 +645,20 @@ export default {
     },
     // make inspections filterable by hive name and location
     inspectionsWithHiveDetails() {
-      var inspectionsWithHiveDetails = this.generalInspections
-      inspectionsWithHiveDetails.map((inspection) => {
-        const name = this.hives[inspection.hive_id].name
-        const location = this.hives[inspection.hive_id].location
-        inspection.hive_name = name
-        inspection.hive_location = location
-        const groupName = this.hives[inspection.hive_id].group_name || null
-        inspection.hive_group_name = groupName
-      })
-      return inspectionsWithHiveDetails
+      if (this.generalInspections.length > 0) {
+        var inspectionsWithHiveDetails = this.generalInspections
+        inspectionsWithHiveDetails.map((inspection) => {
+          const name = this.hives[inspection.hive_id].name
+          const location = this.hives[inspection.hive_id].location
+          inspection.hive_name = name
+          inspection.hive_location = location
+          const groupName = this.hives[inspection.hive_id].group_name || null
+          inspection.hive_group_name = groupName
+        })
+        return inspectionsWithHiveDetails
+      } else {
+        return []
+      }
     },
     filteredInspectionsWithUndefined() {
       var textFilteredInspections = []
@@ -744,7 +748,10 @@ export default {
       return this.$vuetify.breakpoint.mobile
     },
     showDiaryPlaceholder() {
-      return this.apiaries.length === 0 && this.groups.length === 0
+      return (
+        (this.apiaries.length === 0 && this.groups.length === 0) ||
+        this.generalInspections.length === 0
+      )
     },
     smallScreen() {
       return (
@@ -823,9 +830,6 @@ export default {
     async readGeneralInspections() {
       try {
         const response = await Api.readRequest('/inspections')
-        if (response.data.length === 0) {
-          this.showDiaryPlaceholder = true
-        }
         this.$store.commit('inspections/setGeneralInspections', response.data)
         return true
       } catch (error) {
@@ -840,9 +844,6 @@ export default {
       if (this.generalInspections.length === 0) {
         try {
           const response = await Api.readRequest('/inspections')
-          if (response.data.length === 0) {
-            this.showDiaryPlaceholder = true
-          }
           this.$store.commit('inspections/setGeneralInspections', response.data)
           return true
         } catch (error) {
@@ -862,7 +863,7 @@ export default {
           this.$i18n.t('remove_inspection'),
           this.$i18n.t('remove_inspection') +
             ' (' +
-            this.$i18n.t('Date').toLowerCase() +
+            this.$i18n.t('Date').toLocaleLowerCase() +
             ': ' +
             this.momentify(inspection.created_at) +
             ')?',

@@ -1,7 +1,7 @@
 <template>
   <Layout :title="$t('research')" :edited="editedCHItems.length > 0">
     <v-container class="mt-2 mt-sm-6">
-      <div v-if="researchProjects.length > 0">
+      <div>
         <v-row>
           <v-col cols="12">
             <p>{{ $t('research_explanation') }}</p>
@@ -41,7 +41,7 @@
           </v-col>
         </v-row>
 
-        <v-row class="mt-3">
+        <v-row v-if="researchProjects.length > 0" class="mt-3">
           <v-col
             v-for="research in sortedResearchProjects"
             :key="research.id"
@@ -362,12 +362,12 @@
             </div>
           </v-col>
         </v-row>
+        <v-row v-if="ready && researchProjects.length === 0" class="mt-3">
+          <v-col cols="12">
+            {{ $t('no_data') }}
+          </v-col>
+        </v-row>
       </div>
-      <v-row v-if="ready && researchProjects.length === 0">
-        <v-col cols="12">
-          {{ $t('no_data') }}
-        </v-col>
-      </v-row>
     </v-container>
 
     <Confirm ref="confirm"></Confirm>

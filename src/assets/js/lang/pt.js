@@ -657,6 +657,8 @@ const translations = {
   select_all_editable_hives: 'Selecteer alle aanpasbare bijenkasten',
   alert: 'Alert | Alerts',
   remove_alert: 'Remove alert',
+  alerts_enabled: 'Alerts enabled',
+  alerts_disabled: 'Alerts disabled',
   edit_checklist_confirm:
     'Are you sure you want to edit the checklist? Any unsaved changes to your inspection will be lost.',
   edit_checklist_confirm_deselectedhives:

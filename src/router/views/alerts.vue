@@ -36,7 +36,9 @@
           <v-card-actions class="mr-1">
             <v-switch
               v-model="alertsEnabled"
-              label="enable Alerts"
+              :label="
+                alertsEnabled ? $t('alerts_enabled') : $t('alerts_disabled')
+              "
               hide-details
               @click="toggleAlerts"
             ></v-switch>
@@ -273,12 +275,10 @@
                     class="v-alert__dismissible v-btn v-btn--flat v-btn--icon v-btn--round theme--light v-size--small red--text"
                     aria-label="Close"
                     @click="confirmHideAlert(alert)"
-                    ><span class="v-btn__content"
-                      ><i
-                        aria-hidden="true"
-                        class="v-icon notranslate mdi mdi-close-circle theme--light red--text"
-                      ></i></span
-                  ></button>
+                    ><span class="v-btn__content">
+                      <v-icon class="red--text">mdi-delete</v-icon></span
+                    ></button
+                  >
                 </div>
               </div>
             </v-alert>
@@ -401,7 +401,7 @@ export default {
       return this.$vuetify.breakpoint.mobile
     },
     showAlertPlaceholder() {
-      return this.alerts.length === 0
+      return this.alerts.length === 0 || this.hives.length === 0
     },
     smallScreen() {
       return (
