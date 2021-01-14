@@ -244,7 +244,7 @@
                     ratio="ct-chart"
                     type="Line"
                     :data="chartDataMultipleSeries(currentWeatherSensors, true)"
-                    :options="chartOptions()"
+                    :options="chartOptions('', false, currentWeatherSensors)"
                   >
                   </chartist>
                 </v-col>
@@ -269,7 +269,7 @@
                     :ratio="`ct-chart ct-series-${index}`"
                     type="Line"
                     :data="chartDataSingleSeries(sensor, SENSOR_UNITS[sensor])"
-                    :options="chartOptions(SENSOR_UNITS[sensor])"
+                    :options="chartOptions(SENSOR_UNITS[sensor], false, sensor)"
                   >
                   </chartist>
                 </v-col>
@@ -309,7 +309,9 @@
                         :data="
                           chartDataSingleSeries(sensor, SENSOR_UNITS[sensor])
                         "
-                        :options="chartOptions(SENSOR_UNITS[sensor], true)"
+                        :options="
+                          chartOptions(SENSOR_UNITS[sensor], true, sensor)
+                        "
                       >
                       </chartist>
                     </v-col>
@@ -658,6 +660,7 @@ export default {
         labels: [],
         series: [
           {
+            className: 'ct-series-' + this.SENSOR_COLOR[quantity],
             name: this.measurementData.sensorDefinitions[quantity]
               ? this.measurementData.sensorDefinitions[quantity].name +
                 ' (' +
@@ -702,6 +705,8 @@ export default {
         .sort()
         .map((sensorName, index) => {
           data.series.push({
+            className:
+              'ct-series-' + this.SENSOR_COLOR[sensorObject[sensorName]],
             name: sensorName,
             data: [],
           })
@@ -737,8 +742,22 @@ export default {
       })
       return data
     },
-    chartOptions(unit = '', low = false) {
+    chartOptions(unit = '', low = false, sensor) {
       const self = this
+      var legendOptions = {}
+      if (sensor.constructor.name === 'Object') {
+        var classNames = []
+        for (const value of Object.values(sensor)) {
+          classNames.push('ct-series-' + self.SENSOR_COLOR[value])
+        }
+        legendOptions = {
+          classNames: classNames,
+        }
+      } else {
+        legendOptions = {
+          classNames: ['ct-series-' + self.SENSOR_COLOR[sensor]],
+        }
+      }
       return {
         fullWidth: true,
         height: low ? '150px' : '220px',
@@ -747,7 +766,7 @@ export default {
             class: 'beep-tooltip',
             metaIsHTML: true,
           }),
-          this.$chartist.plugins.legendBeep(),
+          this.$chartist.plugins.legendBeep(legendOptions),
           this.$chartist.plugins.ctPointLabels({
             labelOffset: {
               x: 7,
@@ -1164,6 +1183,24 @@ export default {
           $ct-series-colors,
           length($ct-series-colors) - $i
         ) !important;
+      }
+    }
+  }
+
+  @for $i from 0 to length($ct-series-colornames) {
+    .ct-series-#{nth($ct-series-colornames, $i + 1)} {
+      .ct-legend {
+        .ct-series-0 {
+          color: nth($ct-series-colornames, $i + 1);
+          &::before {
+            background-color: nth($ct-series-colornames, $i + 1);
+            border-color: nth($ct-series-colornames, $i + 1);
+          }
+        }
+      }
+      .ct-series-a .ct-point,
+      .ct-series-a .ct-line {
+        stroke: nth($ct-series-colornames, $i + 1) !important;
       }
     }
   }
