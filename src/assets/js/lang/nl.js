@@ -667,6 +667,8 @@ const translations = {
   user_not_edited:
     'Gebruikersgegevens zijn niet aangepast. Wellicht zijn de gebruikersgegevens identiek aan de gegevens die al in de database aanwezig zijn, of één of meer velden zijn niet correct ingevuld. Controleer uw gegevens en probeer opnieuw.',
   user_not_deleted: 'Er is iets misgegaan, de gebruiker is niet verwijderd.',
+  research_consent: 'Toestemming voor onderzoek',
+  checklist_types: 'Persoonlijk, gedeeld, onderzoek',
 }
 
 export default translations

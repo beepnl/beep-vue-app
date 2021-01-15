@@ -667,6 +667,8 @@ const translations = {
   user_not_edited:
     'User data has not been edited. Possibly the user data is identical to the user data already in the database, or one or more fields are not correctly filled in. Please check your data and try again.',
   user_not_deleted: 'Something went wrong, user has not been deleted.',
+  research_consent: 'Research consent',
+  checklist_types: 'Personal, shared, research',
 }
 
 export default translations
