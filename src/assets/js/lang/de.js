@@ -663,6 +663,9 @@ const translations = {
     'Are you sure you want to edit the checklist? Any unsaved changes to your inspection will be lost.',
   edit_checklist_confirm_deselectedhives:
     'Are you sure you want to edit the checklist? Any unsaved changes to your inspection and your hive selection will be lost.',
+  user_not_edited:
+    'User data has not been edited. Possibly the user data is identical to the user data already in the database, or one or more fields are not correctly filled in. Please check your data and try again.',
+  user_not_deleted: 'Something went wrong, user has not been deleted.',
 }
 
 export default translations

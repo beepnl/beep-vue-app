@@ -664,6 +664,9 @@ const translations = {
     'Weet je zeker dat je de kastkaart wilt aanpassen? Niet opgeslagen aanpassingen aan je inspectie zullen verloren gaan.',
   edit_checklist_confirm_deselectedhives:
     'Weet je zeker dat je de kastkaart wilt aanpassen? Niet opgeslagen aanpassingen aan je inspectie en je hiveselectie zullen verloren gaan.',
+  user_not_edited:
+    'Gebruikersgegevens zijn niet aangepast. Wellicht zijn de gebruikersgegevens identiek aan de gegevens die al in de database aanwezig zijn, of één of meer velden zijn niet correct ingevuld. Controleer uw gegevens en probeer opnieuw.',
+  user_not_deleted: 'Er is iets misgegaan, de gebruiker is niet verwijderd.',
 }
 
 export default translations
