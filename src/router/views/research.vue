@@ -466,6 +466,23 @@ export default {
         }
       }
     },
+    async readChecklists() {
+      try {
+        const response = await Api.readRequest('/inspections/lists')
+        this.$store.commit(
+          'inspections/setChecklists',
+          response.data.checklists
+        )
+        this.$store.commit('inspections/setChecklist', response.data.checklist)
+        return true
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
     async readResearchProjects() {
       try {
         const response = await Api.readRequest('/research')
@@ -494,6 +511,7 @@ export default {
         } else {
           await Api.postRequest('/research/' + id + '/remove_consent')
         }
+        this.readChecklists() // update checklists with or without research checklists
         this.readResearchProjects().then(() => {
           this.showLoadingIconConsentToggle = false
         })
