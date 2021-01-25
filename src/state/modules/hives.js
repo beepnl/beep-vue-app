@@ -27,6 +27,10 @@ export const mutations = {
   setActiveHive: function(state, hive) {
     state.activeHive = hive
   },
+  resetState: function(state) {
+    state.hiveEdited = false
+    state.activeHive = null
+  },
 }
 export const actions = {
   ...resource.actions,

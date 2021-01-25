@@ -20,6 +20,12 @@
           color="red"
         >
           {{ error.errorMessage }}
+          <a
+            v-if="error.verifyLink"
+            class="red--text alert-link"
+            @click="sendEmailVerification"
+            >{{ $t('email_new_verification') }}</a
+          >
         </v-alert>
         <v-text-field
           v-model="credentials.email"
@@ -62,6 +68,7 @@
 </template>
 
 <script>
+import Api from '@api/Api'
 import languages from '@assets/js/lang/languages'
 import Layout from '@layouts/account.vue'
 
@@ -109,6 +116,27 @@ export default {
     }
   },
   methods: {
+    async sendEmailVerification() {
+      try {
+        const response = await Api.postRequest(
+          '/email/resend',
+          this.credentials
+        )
+        return response
+      } catch (error) {
+        if (error.response) {
+          console.log(error.response)
+          const msg = error.response.data.message
+          this.errors.push({
+            errorMessage: this.$i18n.t(msg),
+          })
+        } else {
+          this.errors.push({
+            errorMessage: this.$i18n.t('Error'),
+          })
+        }
+      }
+    },
     login() {
       if (this.$refs.form.validate()) {
         this.clearErrors()
@@ -124,7 +152,11 @@ export default {
           .catch((error) => {
             if (error.response) {
               console.log(error.response)
-              const msg = error.response.data.message
+              if (typeof error.response.data.message !== 'undefined') {
+                var msg = error.response.data.message
+              } else {
+                msg = error.response.data
+              }
               if (msg === 'invalid_user') {
                 this.fieldErrors.email = true
                 this.fieldErrors.password = true
@@ -133,8 +165,13 @@ export default {
               } else if (msg.indexOf('email') > -1) {
                 this.fieldErrors.email = true
               }
+              var verifyOn = false
+              if (msg === 'email_not_verified') {
+                verifyOn = true
+              }
               this.errors.push({
                 errorMessage: this.$i18n.t(msg),
+                verifyLink: verifyOn,
               })
             } else {
               this.errors.push({
@@ -156,3 +193,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.alert-link {
+  text-decoration: underline !important;
+}
+</style>

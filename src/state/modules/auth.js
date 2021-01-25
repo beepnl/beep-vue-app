@@ -49,6 +49,13 @@ export const actions = {
       throw new Error('User is already logged out.')
     }
 
+    // reset all module states
+    commit('devices/resetState', null, { root: true })
+    commit('groups/resetState', null, { root: true })
+    commit('hives/resetState', null, { root: true })
+    commit('inspections/resetState', null, { root: true })
+    commit('locations/resetState', null, { root: true })
+
     commit('SET_CURRENT_USER', null)
     return null
   },

@@ -74,6 +74,17 @@ export const mutations = {
   setSelectedInspectionId: function(state, id) {
     state.selectedInspectionId = id
   },
+  resetState: function(state) {
+    state.diaryFilterByAttention = false
+    state.diaryFilterByGroup = false
+    state.diaryFilterByImpression = []
+    state.diaryFilterByReminder = false
+    state.generalInspections = []
+    state.checklist = {}
+    state.checklists = []
+    state.inspectionEdited = false
+    state.selectedInspectionId = null
+  },
 }
 export const actions = {
   ...resource.actions,

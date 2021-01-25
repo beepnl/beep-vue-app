@@ -33,6 +33,11 @@ export const mutations = {
   setInvitations: function(state, payload) {
     state.invitations = payload
   },
+  resetState: function(state) {
+    state.groups = []
+    state.groupEdited = false
+    state.invitations = []
+  },
 }
 export const actions = {
   ...resource.actions,
