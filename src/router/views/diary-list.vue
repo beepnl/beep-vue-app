@@ -882,35 +882,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.filter-bar-wrapper {
-  position: fixed;
-  top: 100px;
-  z-index: 1;
-  width: 100%;
-  margin-top: -4px;
-  background-color: $color-orange-light;
-  border-bottom: 1px solid #fff5e2;
-  .filter-container {
-    @include for-phone-only {
-      padding: 10px;
-    }
-  }
-  .filter-bar {
-    margin-top: -10px;
-    margin-bottom: -10px;
-    @include for-tablet-portrait-up {
-      margin-top: -12px;
-      margin-bottom: -12px;
-    }
-    .v-input {
-      background-color: $color-white;
-      @include for-phone-only {
-        max-width: 115px;
-      }
-    }
-  }
-}
-
 .diary-inspections-content {
   margin-top: 61px;
   overflow: hidden;

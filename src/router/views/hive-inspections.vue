@@ -3,7 +3,7 @@
     v-if="activeHive"
     :title="`${$tc('Inspection', 2)} ${activeHive.name}`"
   >
-    <div class="filter-bar-wrapper">
+    <div class="filter-bar-wrapper filter-bar-inspections">
       <v-container class="filter-container">
         <v-row
           class="filter-bar d-flex flex-row justify-space-between align-center"
@@ -936,34 +936,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.filter-bar-wrapper {
-  position: fixed;
+.filter-bar-inspections {
   top: 52px;
-  z-index: 1;
-  width: 100%;
   max-width: 100vw;
-  margin-top: -4px;
-  background-color: $color-orange-light;
-  border-bottom: 1px solid #fff5e2;
-  .filter-container {
-    @include for-phone-only {
-      padding: 10px;
-    }
-  }
-  .filter-bar {
-    margin-top: -10px;
-    margin-bottom: -10px;
-    @include for-tablet-portrait-up {
-      margin-top: -12px;
-      margin-bottom: -12px;
-    }
-    .v-input {
-      background-color: $color-white;
-      @include for-phone-only {
-        max-width: 115px;
-      }
-    }
-  }
 }
 
 .hive-inspections-content {
