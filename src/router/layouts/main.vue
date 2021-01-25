@@ -110,6 +110,9 @@ export default {
       }
     },
   },
+  created() {
+    this.readDevices()
+  },
   methods: {
     async readDevices() {
       if (this.devicesPresent && this.devices.length === 0) {
@@ -130,6 +133,22 @@ export default {
             console.log(error.response)
           } else {
             console.log('Error: ', error)
+          }
+          if (error.response.data === 'no_devices_found') {
+            this.$store.commit('devices/setData', {
+              prop: 'devicesPresent',
+              value: false,
+            })
+            if (error.response.data === 'no_devices_found') {
+              this.$store.commit('devices/setData', {
+                prop: 'devicesPresent',
+                value: false,
+              })
+              this.$store.commit('devices/setData', {
+                prop: 'devices',
+                value: [],
+              })
+            }
           }
         }
       }
