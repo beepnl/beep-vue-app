@@ -681,7 +681,6 @@ export default {
         return true
       } catch (error) {
         if (error.response) {
-          console.log(error.response)
           if (error.response.data === 'no_devices_found') {
             this.$store.commit('devices/setData', {
               prop: 'devicesPresent',

@@ -69,15 +69,8 @@
         class="content-container"
       >
         <v-row>
-          <v-col cols="12">
-            <v-alert
-              v-if="errorMessage"
-              type="error"
-              text
-              prominent
-              dense
-              color="red"
-            >
+          <v-col v-if="errorMessage" cols="12">
+            <v-alert type="error" text prominent dense color="red">
               {{ errorMessage }}
             </v-alert>
           </v-col>
@@ -132,7 +125,11 @@
             <p
               v-if="activeChecklist && activeChecklist.owner"
               class="description"
-              >{{ $t('edit_hive_checklist') }}</p
+              >{{
+                mobile || touchDevice
+                  ? $t('edit_hive_checklist_touch')
+                  : $t('edit_hive_checklist_no_touch')
+              }}</p
             >
             <checklistTree
               v-if="activeChecklist && activeChecklistTaxonomy"
@@ -201,6 +198,12 @@ export default {
     },
     locale() {
       return this.$i18n.locale
+    },
+    mobile() {
+      return this.$vuetify.breakpoint.mobile
+    },
+    touchDevice() {
+      return window.matchMedia('(hover: none)').matches
     },
   },
   watch: {
