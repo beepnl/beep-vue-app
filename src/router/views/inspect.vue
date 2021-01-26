@@ -207,7 +207,7 @@
             "
             @click="toggleCategory(index)"
           >
-            <v-row>
+            <v-row class="my-0">
               <v-col cols="12" class="py-0">
                 <span>{{
                   mainCategory.trans[locale] || mainCategory.name
@@ -228,7 +228,7 @@
           <SlideYUpTransition :duration="150">
             <!-- New dynamic checklist -->
             <v-card-text v-if="showCategoriesByIndex[index] === true">
-              <v-row class="sub-inspection-wrapper">
+              <v-row class="sub-inspection-wrapper my-0">
                 <v-col
                   v-for="(category, catIndex) in mainCategory.children"
                   :key="catIndex"
@@ -255,7 +255,7 @@
               }`
             "
           >
-            <v-row>
+            <v-row class="my-0">
               <v-col cols="12" class="py-0 mt-n1">
                 <span>{{ $t('overall') }}</span>
                 <div class="float-right">
@@ -273,7 +273,7 @@
           </v-card-title>
           <SlideYUpTransition :duration="150">
             <v-card-text v-if="showGeneral">
-              <v-row class="sub-inspection-wrapper">
+              <v-row class="sub-inspection-wrapper my-0">
                 <v-col cols="12">
                   <div
                     class="overline mb-2"
@@ -321,7 +321,7 @@
                 </v-col>
               </v-row>
 
-              <v-row class="sub-inspection-wrapper">
+              <v-row class="sub-inspection-wrapper my-0">
                 <v-col cols="12">
                   <div class="overline mb-2" v-text="`${$t('reminder')}`"></div>
                   <div class="sub-inspection-details rounded-border">

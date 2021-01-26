@@ -94,7 +94,7 @@
                   $tc('Location', 1) + ' ' + $t('settings')
                 }}</div>
                 <div class="rounded-border">
-                  <v-row>
+                  <v-row class="my-0">
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-if="newHive"
@@ -208,7 +208,7 @@
                   }}</div
                 >
                 <div class="rounded-border">
-                  <v-row>
+                  <v-row class="my-0">
                     <v-col cols="12">
                       <div class="beep-label" v-text="`${$t('Address')}`"></div>
                       <VueGoogleAutocomplete
@@ -384,7 +384,7 @@
                   $tc('Location', 1) + ' ' + $tc('hive', 2)
                 }}</div>
                 <div class="rounded-border">
-                  <v-row>
+                  <v-row class="my-0">
                     <v-col cols="12" md="3">
                       <div
                         class="beep-label"

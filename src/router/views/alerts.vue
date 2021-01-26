@@ -95,13 +95,13 @@
                 class="d-flex flex-no-wrap justify-flex-start align-start"
                 style="width: 100%;"
               >
-                <v-row class="ml-0 pl-0 py-0" style="width:100%;">
+                <v-row class="ml-0 my-0 pl-0 py-0" style="width:100%;">
                   <v-col
                     cols="12"
                     sm="4"
                     class="alert-details-item alert-meta d-flex flex-row justify-flex-start pa-0"
                   >
-                    <v-row class="py-0">
+                    <v-row class="my-0 py-0">
                       <v-col
                         v-if="alert.created_at"
                         cols="5"
@@ -190,7 +190,7 @@
                   </v-col>
 
                   <v-col cols="12" sm="8" class="alert-content pa-0">
-                    <v-row class="py-0 ml-n6 ml-sm-0 mr-sm-n4">
+                    <v-row class="my-0 py-0 ml-n6 ml-sm-0 mr-sm-n4">
                       <v-col
                         cols="12"
                         sm="3"

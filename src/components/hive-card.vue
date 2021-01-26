@@ -14,7 +14,7 @@
     "
     outlined
   >
-    <v-row v-if="!apiaryView" class="ml-0 mb-3 mr-2">
+    <v-row v-if="!apiaryView" class="ml-0 mt-0 mb-3 mr-2">
       <h4
         v-if="gridView"
         class="hive-name mb-3"

@@ -275,7 +275,7 @@
                 </v-col>
                 <v-col v-if="soundSensorsPresent" cols="12">
                   <div
-                    class="overline mt-n4 mt-sm-3 mb-3 text-center"
+                    class="overline mt-n4 mt-0 mb-3 text-center"
                     v-text="$t('Sound_measurements')"
                   ></div>
                   <MeasurementsChartHeatmap

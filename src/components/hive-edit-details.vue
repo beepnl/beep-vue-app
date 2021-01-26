@@ -7,9 +7,9 @@
       ></div>
 
       <div class="hive-edit-details rounded-border">
-        <v-row>
+        <v-row class="my-0">
           <v-col cols="12" md="6" lg="4">
-            <v-row>
+            <v-row class="my-0">
               <v-col cols="12" md="7">
                 <div
                   class="beep-label"
@@ -90,7 +90,7 @@
           </v-col>
 
           <v-col cols="12" md="6" lg="4">
-            <v-row>
+            <v-row class="my-0">
               <v-col cols="12" sm="7" md="12">
                 <div class="beep-label" v-text="`${$t('Hive_type')}*`"></div>
                 <Treeselect
@@ -108,14 +108,14 @@
               </v-col>
             </v-row>
 
-            <v-row class="hive-dimensions-wrapper">
+            <v-row class="hive-dimensions-wrapper my-0">
               <v-col cols="12" sm="7" md="12">
                 <div
                   class="beep-label"
                   v-text="`${$t('Brood_box_and_frame')} ${$t('dimensions')}`"
                 ></div>
                 <div class="hive-dimensions-details rounded-border">
-                  <v-row>
+                  <v-row class="my-0">
                     <v-col cols="12" md="6">
                       <div
                         v-for="(bbDimension, b) in bbDimensions"

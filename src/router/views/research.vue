@@ -74,7 +74,7 @@
                   </p>
                 </div>
               </div>
-              <v-row>
+              <v-row class="mb-0 mt-3">
                 <v-col cols="12" md="6">
                   <v-row v-if="research.url !== null">
                     <v-col class="research-item-col" cols="5" sm="4">
