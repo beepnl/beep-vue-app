@@ -668,7 +668,7 @@ const translations = {
   edit_hive_checklist_no_touch:
     'Check/unckeck the boxes in the list below to add/remove items from your hive checklist. You can also unfold/fold and drag/drop the items to re-order them to your own style (N.B. this is not possible on a touchscreen device).',
   edit_hive_checklist_touch:
-    'Check/unckeck the boxes in the list below to add/remove items from your hive checklist. Unfortunately, changing the order of items is only possible on a desktop computer.',
+    'Check/unckeck the boxes in the list below to add/remove items from your hive checklist. Changing the order of items is only possible on a desktop computer.',
 }
 
 export default translations
