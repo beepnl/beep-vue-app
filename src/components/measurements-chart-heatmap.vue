@@ -176,6 +176,7 @@ export default {
 
 <style lang="scss">
 .table-heatmap--legend {
+  color: $color-grey-dark;
   border-spacing: 0;
   .td--heatmap-legend {
     width: 1px;
@@ -216,7 +217,7 @@ export default {
 .td--heatmap-label {
   font-size: 0.7rem !important;
   font-weight: 400 !important;
-  color: $color-grey-medium !important;
+  color: $color-grey-dark !important;
   white-space: inherit;
   @include for-phone-only {
     font-size: 0.6rem !important;

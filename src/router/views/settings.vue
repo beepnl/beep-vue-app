@@ -40,13 +40,13 @@ export default {
           icon: 'mdi-share-variant',
           title: this.$i18n.t('research'),
           route: 'research',
-          subtitle: 'research consent',
+          subtitle: this.$i18n.t('research_consent'),
         },
         {
           icon: 'mdi-format-list-checks',
           title: this.$i18n.tc('Checklist_template', 2),
           route: 'checklists',
-          subtitle: 'personal, shared, research',
+          subtitle: this.$i18n.t('checklist_types'),
         },
         {
           icon: 'mdi-cloud-download',

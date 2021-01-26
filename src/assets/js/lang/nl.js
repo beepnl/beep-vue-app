@@ -658,6 +658,21 @@ const translations = {
   select_all_editable_hives: 'Selecteer alle aanpasbare bijenkasten',
   alert: 'Alert | Alerts',
   remove_alert: 'Verwijder alert',
+  alerts_enabled: 'Alerts ingeschakeld',
+  alerts_disabled: 'Alerts uitgeschakeld',
+  edit_checklist_confirm:
+    'Weet je zeker dat je de kastkaart wilt aanpassen? Niet opgeslagen aanpassingen aan je inspectie zullen verloren gaan.',
+  edit_checklist_confirm_deselectedhives:
+    'Weet je zeker dat je de kastkaart wilt aanpassen? Niet opgeslagen aanpassingen aan je inspectie en je hiveselectie zullen verloren gaan.',
+  user_not_edited:
+    'Gebruikersgegevens zijn niet aangepast. Wellicht zijn de gebruikersgegevens identiek aan de gegevens die al in de database aanwezig zijn, of één of meer velden zijn niet correct ingevuld. Controleer uw gegevens en probeer opnieuw.',
+  user_not_deleted: 'Er is iets misgegaan, de gebruiker is niet verwijderd.',
+  research_consent: 'Toestemming voor onderzoek',
+  checklist_types: 'Persoonlijk, gedeeld, onderzoek',
+  edit_hive_checklist_no_touch:
+    'Vink items in de onderstaande lijst van beschikbare kastkaartitems aan/uit om ze aan je eigen kastkaart toe te voegen/te verwijderen. Voor meer overzicht, kun je de categorieën in- en uitklappen. Ook kun je ze naar boven/beneden slepen om de volgorde van jouw kastkaart te bepalen (N.B. dit is alleen mogelijk m.b.v. een muis).',
+  edit_hive_checklist_touch:
+    'Vink items in de onderstaande lijst van beschikbare kastkaartitems aan/uit om ze aan je eigen kastkaart toe te voegen/te verwijderen. Voor meer overzicht, kun je de categorieën in- en uitklappen. Het veranderen van de volgorde van items is helaas alleen op een desktop computer mogelijk.',
 }
 
 export default translations

@@ -150,14 +150,7 @@
                         ></v-sheet>
                         <div
                           :style="
-                            `color: ${
-                              sensorData.value < SENSOR_LOW[sensorData.name]
-                                ? '#ffcc66'
-                                : sensorData.value >
-                                  SENSOR_HIGH[sensorData.name]
-                                ? '#f00'
-                                : '#417505'
-                            };
+                            `color: #242424;
                   font-size: ${mobile ? '14px' : '16px'}
                   ;`
                           "
@@ -251,7 +244,7 @@
                     ratio="ct-chart"
                     type="Line"
                     :data="chartDataMultipleSeries(currentWeatherSensors, true)"
-                    :options="chartOptions()"
+                    :options="chartOptions('', false, currentWeatherSensors)"
                   >
                   </chartist>
                 </v-col>
@@ -276,7 +269,7 @@
                     :ratio="`ct-chart ct-series-${index}`"
                     type="Line"
                     :data="chartDataSingleSeries(sensor, SENSOR_UNITS[sensor])"
-                    :options="chartOptions(SENSOR_UNITS[sensor])"
+                    :options="chartOptions(SENSOR_UNITS[sensor], false, sensor)"
                   >
                   </chartist>
                 </v-col>
@@ -316,7 +309,9 @@
                         :data="
                           chartDataSingleSeries(sensor, SENSOR_UNITS[sensor])
                         "
-                        :options="chartOptions(SENSOR_UNITS[sensor], true)"
+                        :options="
+                          chartOptions(SENSOR_UNITS[sensor], true, sensor)
+                        "
                       >
                       </chartist>
                     </v-col>
@@ -665,6 +660,7 @@ export default {
         labels: [],
         series: [
           {
+            className: 'ct-series-' + this.SENSOR_COLOR[quantity],
             name: this.measurementData.sensorDefinitions[quantity]
               ? this.measurementData.sensorDefinitions[quantity].name +
                 ' (' +
@@ -709,6 +705,8 @@ export default {
         .sort()
         .map((sensorName, index) => {
           data.series.push({
+            className:
+              'ct-series-' + this.SENSOR_COLOR[sensorObject[sensorName]],
             name: sensorName,
             data: [],
           })
@@ -744,8 +742,22 @@ export default {
       })
       return data
     },
-    chartOptions(unit = '', low = false) {
+    chartOptions(unit = '', low = false, sensor) {
       const self = this
+      var legendOptions = {}
+      if (sensor.constructor.name === 'Object') {
+        var classNames = []
+        for (const value of Object.values(sensor)) {
+          classNames.push('ct-series-' + self.SENSOR_COLOR[value])
+        }
+        legendOptions = {
+          classNames: classNames,
+        }
+      } else {
+        legendOptions = {
+          classNames: ['ct-series-' + self.SENSOR_COLOR[sensor]],
+        }
+      }
       return {
         fullWidth: true,
         height: low ? '150px' : '220px',
@@ -754,7 +766,7 @@ export default {
             class: 'beep-tooltip',
             metaIsHTML: true,
           }),
-          this.$chartist.plugins.legendBeep(),
+          this.$chartist.plugins.legendBeep(legendOptions),
           this.$chartist.plugins.ctPointLabels({
             labelOffset: {
               x: 7,
@@ -1025,6 +1037,16 @@ export default {
   svg.ct-chart-line {
     overflow: visible;
   }
+  .ct-grid.ct-horizontal:first-child,
+  .ct-grid.ct-horizontal + .ct-grid.ct-vertical {
+    stroke: $color-grey;
+  }
+  .ct-label {
+    color: $color-grey-dark;
+  }
+  text.ct-label {
+    fill: $color-grey-dark;
+  }
   .ct-label.ct-label.ct-horizontal.ct-end {
     position: relative;
     justify-content: flex-end;
@@ -1123,136 +1145,36 @@ export default {
       right: 0 !important;
     }
 
-    @for $i from 0 to length($ct-series-colors) {
-      .ct-series-#{$i} {
-        color: nth($ct-series-colors, $i + 1);
+    @each $color in $ct-series-colornames {
+      .ct-series-#{$color} {
+        color: #{$color};
         &::before {
-          background-color: nth($ct-series-colors, $i + 1);
-          border-color: nth($ct-series-colors, $i + 1);
+          background-color: #{$color};
+          border-color: #{$color};
         }
       }
     }
+
     .ct-legend-inside li {
       display: block;
       margin: 0;
     }
   }
 
-  @for $i from 0 to length($ct-series-colors) {
-    .ct-series-#{$i} {
+  @each $color in $ct-series-colornames {
+    .ct-chart {
       .ct-legend {
-        .ct-series-0 {
-          color: nth($ct-series-colors, length($ct-series-colors) - $i);
+        .ct-series-#{$color} {
+          color: #{$color};
           &::before {
-            background-color: nth(
-              $ct-series-colors,
-              length($ct-series-colors) - $i
-            );
-            border-color: nth(
-              $ct-series-colors,
-              length($ct-series-colors) - $i
-            );
+            background-color: #{$color};
+            border-color: #{$color};
           }
         }
       }
-      .ct-series-a .ct-point,
-      .ct-series-a .ct-line {
-        stroke: nth(
-          $ct-series-colors,
-          length($ct-series-colors) - $i
-        ) !important;
-      }
-    }
-  }
-
-  .ct-series-i .ct-point,
-  .ct-series-i .ct-line {
-    stroke: nth(
-      $ct-series-colors,
-      9
-    ) !important; // use different color than chartist.css as color i is identical to color b there
-  }
-
-  .ct-series-p .ct-point,
-  .ct-series-p .ct-line {
-    stroke: nth(
-      $ct-series-colors,
-      16
-    ) !important; // use different color than chartist.css as color i is identical to color b there
-  }
-
-  .ct-series-q .ct-point,
-  .ct-series-q .ct-line {
-    stroke: nth(
-      $ct-series-colors,
-      17
-    ) !important; // use different color than chartist.css as color i is identical to color b there
-  }
-
-  .ct-series-r .ct-point,
-  .ct-series-r .ct-line {
-    stroke: nth(
-      $ct-series-colors,
-      18
-    ) !important; // use different color than chartist.css as color i is identical to color b there
-  }
-
-  .ct-series-s .ct-point,
-  .ct-series-s .ct-line {
-    stroke: nth(
-      $ct-series-colors,
-      19
-    ) !important; // use different color than chartist.css as color i is identical to color b there
-  }
-
-  .ct-series-t .ct-point,
-  .ct-series-t .ct-line {
-    stroke: nth(
-      $ct-series-colors,
-      20
-    ) !important; // use different color than chartist.css as color i is identical to color b there
-  }
-
-  .ct-chart-debug {
-    &.ct-chart-0 {
-      .ct-series-0 {
-        color: nth($ct-series-colors, 16) !important;
-        &::before {
-          background-color: nth($ct-series-colors, 16);
-          border-color: nth($ct-series-colors, 16) !important;
-        }
-      }
-      .ct-series-a .ct-point,
-      .ct-series-a .ct-line {
-        stroke: nth($ct-series-colors, 16) !important;
-      }
-    }
-
-    &.ct-chart-1 {
-      .ct-series-0 {
-        color: nth($ct-series-colors, 17) !important;
-        &::before {
-          background-color: nth($ct-series-colors, 17);
-          border-color: nth($ct-series-colors, 17) !important;
-        }
-      }
-      .ct-series-a .ct-point,
-      .ct-series-a .ct-line {
-        stroke: nth($ct-series-colors, 17) !important;
-      }
-    }
-
-    &.ct-chart-2 {
-      .ct-series-0 {
-        color: nth($ct-series-colors, 12) !important;
-        &::before {
-          background-color: nth($ct-series-colors, 12);
-          border-color: nth($ct-series-colors, 12) !important;
-        }
-      }
-      .ct-series-a .ct-point,
-      .ct-series-a .ct-line {
-        stroke: nth($ct-series-colors, 12) !important;
+      .ct-series-#{$color} .ct-point,
+      .ct-series-#{$color} .ct-line {
+        stroke: #{$color} !important;
       }
     }
   }

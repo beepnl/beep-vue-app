@@ -69,15 +69,8 @@
         class="content-container"
       >
         <v-row>
-          <v-col cols="12">
-            <v-alert
-              v-if="errorMessage"
-              type="error"
-              text
-              prominent
-              dense
-              color="red"
-            >
+          <v-col v-if="errorMessage" cols="12">
+            <v-alert type="error" text prominent dense color="red">
               {{ errorMessage }}
             </v-alert>
           </v-col>
@@ -132,7 +125,11 @@
             <p
               v-if="activeChecklist && activeChecklist.owner"
               class="description"
-              >{{ $t('edit_hive_checklist') }}</p
+              >{{
+                mobile || touchDevice
+                  ? $t('edit_hive_checklist_touch')
+                  : $t('edit_hive_checklist_no_touch')
+              }}</p
             >
             <checklistTree
               v-if="activeChecklist && activeChecklistTaxonomy"
@@ -201,6 +198,12 @@ export default {
     },
     locale() {
       return this.$i18n.locale
+    },
+    mobile() {
+      return this.$vuetify.breakpoint.mobile
+    },
+    touchDevice() {
+      return window.matchMedia('(hover: none)').matches
     },
   },
   watch: {
@@ -307,34 +310,36 @@ export default {
             this.errorMessage = this.$i18n.t('Error')
           }
           setTimeout(() => {
-            this.readChecklists() // update checklists and checklist in store when checklist is edited
-            if (this.hiveId !== null && this.inspectionEdit !== null) {
-              return this.$router.push({
-                name: 'hive-inspect-edit',
-                params: {
-                  id: this.hiveId,
-                  inspection: this.inspectionEdit,
-                },
-                query: { checklistId: this.id },
-              })
-            } else if (this.hiveId || this.apiaryId || this.groupId) {
-              return this.$router.push({
-                name: 'inspect',
-                query: {
-                  checklistId: this.id,
-                  hiveId: this.hiveId,
-                  apiaryId: this.apiaryId,
-                  groupId: this.groupId,
-                },
-              })
-            } else {
-              this.$router.push(-1).catch((error) => {
-                if (error.name === 'NavigationDuplicated') {
-                  this.readChecklistAndTaxonomy(this.id)
-                  this.showLoadingIcon = false
-                }
-              })
-            }
+            this.readChecklists().then(() => {
+              // update checklists and checklist in store when checklist is edited
+              if (this.hiveId !== null && this.inspectionEdit !== null) {
+                return this.$router.push({
+                  name: 'hive-inspect-edit',
+                  params: {
+                    id: this.hiveId,
+                    inspection: this.inspectionEdit,
+                  },
+                  query: { checklistId: this.id },
+                })
+              } else if (this.hiveId || this.apiaryId || this.groupId) {
+                return this.$router.push({
+                  name: 'inspect',
+                  query: {
+                    checklistId: this.id,
+                    hiveId: this.hiveId,
+                    apiaryId: this.apiaryId,
+                    groupId: this.groupId,
+                  },
+                })
+              } else {
+                this.$router.go(-1).catch((error) => {
+                  if (error.name === 'NavigationDuplicated') {
+                    this.readChecklistAndTaxonomy(this.id)
+                    this.showLoadingIcon = false
+                  }
+                })
+              }
+            })
           }, 200)
         } catch (error) {
           if (error.response) {

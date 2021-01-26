@@ -31,6 +31,11 @@ export const mutations = {
   setData: function(state, payload) {
     state[payload.prop] = payload.value
   },
+  resetState: function(state) {
+    state.devices = []
+    state.devicesPresent = true
+    state.selectedDeviceId = null
+  },
 }
 export const actions = {
   ...resource.actions,

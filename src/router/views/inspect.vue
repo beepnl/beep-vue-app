@@ -42,8 +42,8 @@
           tile
           outlined
           class="save-button mr-3"
-          :to="checklistLink"
           color="primary"
+          @click="confirmEditChecklist"
         >
           <v-icon left>mdi-pencil</v-icon>
           {{ $t('edit') + ' ' + $tc('checklist', 1) }}
@@ -181,8 +181,8 @@
               tile
               outlined
               class="save-button"
-              :to="checklistLink"
               color="primary"
+              @click="confirmEditChecklist"
             >
               <v-icon left>mdi-pencil</v-icon>
               {{ $t('edit') + ' ' + $tc('checklist', 1) }}
@@ -203,8 +203,9 @@
                 showCategoriesByIndex[index]
                   ? 'hive-inspect-card-title--border-bottom'
                   : ''
-              }`
+              } cursor-pointer`
             "
+            @click="toggleCategory(index)"
           >
             <v-row>
               <v-col cols="12" class="py-0">
@@ -218,7 +219,6 @@
                         showCategoriesByIndex[index] ? 'mdi-minus' : 'mdi-plus'
                       }`
                     "
-                    @click="toggleCategory(index)"
                   ></v-icon>
                 </div>
               </v-col>
@@ -467,6 +467,8 @@ export default {
       editableHives: [],
       activeHive: null,
       hiveNotEditable: false,
+      isApiary: true,
+      hiveSetId: null,
     }
   },
   computed: {
@@ -481,15 +483,24 @@ export default {
       return this.$route.query.apiaryId || null
     },
     checklistLink() {
+      var query = {}
+      // pass current apiary or group id (even if user has switched from initially (pre)selected apiary or group)
+      this.isApiary
+        ? (query = {
+            hiveId: this.hiveId,
+            inspectionId: this.inspectionId,
+            apiaryId: this.hiveSetId,
+          })
+        : (query = {
+            hiveId: this.hiveId,
+            inspectionId: this.inspectionId,
+            groupId: this.hiveSetId,
+          })
+
       return {
         name: 'checklist',
         params: { id: this.selectedChecklistId },
-        query: {
-          hiveId: this.hiveId,
-          inspectionId: this.inspectionId,
-          groupId: this.groupId,
-          apiaryId: this.apiaryId,
-        },
+        query: query,
       }
     },
     groupId() {
@@ -885,6 +896,28 @@ export default {
     clearDate() {
       this.activeInspection.reminder_date = null
     },
+    confirmEditChecklist(id) {
+      if (this.inspectionEdited || this.selectedHives !== this.editableHives) {
+        this.$refs.confirm
+          .open(
+            this.$i18n.t('edit') + ' ' + this.$i18n.tc('checklist', 1),
+            this.selectedHives === this.editableHives
+              ? this.$i18n.t('edit_checklist_confirm')
+              : this.$i18n.t('edit_checklist_confirm_deselectedhives'),
+            {
+              color: 'red',
+            }
+          )
+          .then((confirm) => {
+            this.$router.push(this.checklistLink)
+          })
+          .catch((reject) => {
+            return true
+          })
+      } else {
+        this.$router.push(this.checklistLink)
+      }
+    },
     getText(item) {
       const name = item.name
       var research = ''
@@ -973,9 +1006,11 @@ export default {
     },
     selectHiveSet(id) {
       var stringId = id.toString()
-      var isApiary = parseInt(stringId.substring(0, 1)) === 1
-      var hiveSetId = parseInt(stringId.substring(1, stringId.length + 1))
-      isApiary ? this.selectApiary(hiveSetId) : this.selectGroup(hiveSetId)
+      this.isApiary = parseInt(stringId.substring(0, 1)) === 1
+      this.hiveSetId = parseInt(stringId.substring(1, stringId.length + 1))
+      this.isApiary
+        ? this.selectApiary(this.hiveSetId)
+        : this.selectGroup(this.hiveSetId)
     },
     selectInitialHiveSet() {
       if (this.apiaryId) {

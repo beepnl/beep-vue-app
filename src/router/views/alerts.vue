@@ -36,7 +36,9 @@
           <v-card-actions class="mr-1">
             <v-switch
               v-model="alertsEnabled"
-              label="enable Alerts"
+              :label="
+                alertsEnabled ? $t('alerts_enabled') : $t('alerts_disabled')
+              "
               hide-details
               @click="toggleAlerts"
             ></v-switch>
@@ -54,6 +56,18 @@
     </v-container>
 
     <v-container v-if="ready" class="alerts-content">
+      <v-alert
+        v-for="error in errors"
+        :key="error.errorMessage"
+        type="error"
+        text
+        prominent
+        dense
+        color="red"
+      >
+        {{ error.errorMessage }}
+      </v-alert>
+
       <v-row v-if="!showAlertPlaceholder && alerts.length > 0" dense>
         <ScaleTransition
           :duration="500"
@@ -113,9 +127,11 @@
                         class="hive-icon-wrapper mt-1 ml-1 ml-md-0 ml-lg-n2 mr-1 mr-md-0 mr-lg-n2 d-flex justify-center align-start pa-0"
                       >
                         <HiveIcon
+                          v-if="typeof hives[alert.hive_id] !== 'undefined'"
                           :hive="hives[alert.hive_id]"
                           :diary-view="true"
                         ></HiveIcon>
+                        <span v-else>{{ alert.device_id }}</span>
                       </v-col>
 
                       <v-col
@@ -273,12 +289,10 @@
                     class="v-alert__dismissible v-btn v-btn--flat v-btn--icon v-btn--round theme--light v-size--small red--text"
                     aria-label="Close"
                     @click="confirmHideAlert(alert)"
-                    ><span class="v-btn__content"
-                      ><i
-                        aria-hidden="true"
-                        class="v-icon notranslate mdi mdi-close-circle theme--light red--text"
-                      ></i></span
-                  ></button>
+                    ><span class="v-btn__content">
+                      <v-icon class="red--text">mdi-delete</v-icon></span
+                    ></button
+                  >
                 </div>
               </div>
             </v-alert>
@@ -320,6 +334,7 @@ export default {
       alertsEnabled: true,
       ready: false,
       search: null,
+      errors: [],
     }
   },
   computed: {
@@ -329,9 +344,19 @@ export default {
     alertsWithHiveAndRuleDetails() {
       var alertsWithHiveAndRuleDetails = this.alerts
       alertsWithHiveAndRuleDetails.map((alert) => {
-        const hiveName = this.hives[alert.hive_id].name // FIXME: what if hive does not exist anymore??
-        const hiveLocation = this.hives[alert.hive_id].location
-        const hiveGroupName = this.hives[alert.hive_id].group_name || null
+        // FIXME: what if hive does not exist anymore?? display device name instead?
+        if (
+          this.hives.length === 0 ||
+          typeof this.hives[alert.hive_id] === 'undefined'
+        ) {
+          var hiveName = 'unknown hive'
+          var hiveLocation = 'unknown apiary'
+          var hiveGroupName = null
+        } else {
+          hiveName = this.hives[alert.hive_id].name
+          hiveLocation = this.hives[alert.hive_id].location
+          hiveGroupName = this.hives[alert.hive_id].group_name || null
+        }
         alert.hive_name = hiveName
         alert.hive_location = hiveLocation
         alert.hive_group_name = hiveGroupName
@@ -401,7 +426,7 @@ export default {
       return this.$vuetify.breakpoint.mobile
     },
     showAlertPlaceholder() {
-      return this.alerts.length === 0
+      return this.alerts.length === 0 || this.hives.length === 0
     },
     smallScreen() {
       return (
@@ -645,9 +670,28 @@ export default {
           return true
         } catch (error) {
           if (error.response) {
-            console.log(error.response)
+            if (typeof error.response.data.message !== 'undefined') {
+              var msg = error.response.data.message
+            } else {
+              msg = error.response.data
+            }
+            this.errors.push({
+              errorMessage: this.$i18n.t(msg),
+            })
+            if (error.response.data === 'no_devices_found') {
+              this.$store.commit('devices/setData', {
+                prop: 'devicesPresent',
+                value: false,
+              })
+              this.$store.commit('devices/setData', {
+                prop: 'devices',
+                value: [],
+              })
+            }
           } else {
-            console.log('Error: ', error)
+            this.errors.push({
+              errorMessage: this.$i18n.t('Error'),
+            })
           }
         }
       }
@@ -674,6 +718,9 @@ export default {
         .catch((reject) => {
           return true
         })
+    },
+    deviceName(id) {
+      return this.devices.filter((device) => device.id === id)[0].name
     },
     hideAlert(alert) {
       alert.show = false

@@ -7,11 +7,33 @@
       @submit.prevent="resetPassword"
     >
       <div v-if="passwordReset">
-        <v-card-text>
+        <v-card-text v-if="errors.length === 0">
           <v-alert text prominent dense color="green">
             {{ $t('password_recovery_reset_success') }}
           </v-alert>
           <a @click="login">{{ $t('go_to_dashboard') }}</a>
+        </v-card-text>
+        <v-card-text v-if="errors.length > 0">
+          <v-alert
+            v-for="error in errors"
+            :key="error.name"
+            type="error"
+            text
+            prominent
+            dense
+            color="red"
+          >
+            {{ error.errorMessage }}
+            <a
+              v-if="error.verifyLink"
+              class="red--text alert-link"
+              @click="sendEmailVerification"
+              >{{ $t('email_new_verification') }}</a
+            >
+          </v-alert>
+          <router-link :to="{ name: 'sign-up' }">
+            {{ $t('create_login_question') }}
+          </router-link>
         </v-card-text>
       </div>
       <div v-if="!passwordReset">
@@ -178,7 +200,11 @@ export default {
         } catch (error) {
           if (error.response) {
             console.log(error.response)
-            const msg = error.response.data.message
+            if (typeof error.response.data.message !== 'undefined') {
+              var msg = error.response.data.message
+            } else {
+              msg = error.response.data
+            }
             if (msg === 'invalid_user') {
               this.fieldErrors.email = true
               this.fieldErrors.password = true
@@ -187,8 +213,13 @@ export default {
             } else if (msg === 'invalid_token') {
               this.fieldErrors.token = true
             }
+            var verifyOn = false
+            if (msg === 'email_not_verified') {
+              verifyOn = true
+            }
             this.errors.push({
               errorMessage: this.$i18n.t(msg),
+              verifyLink: verifyOn,
             })
           } else {
             this.errors.push({
@@ -198,7 +229,28 @@ export default {
         }
       }
     },
+    async sendEmailVerification() {
+      try {
+        const response = await Api.postRequest('/email/resend', {
+          email: this.email,
+        })
+        return response
+      } catch (error) {
+        if (error.response) {
+          console.log(error.response)
+          const msg = error.response.data.message
+          this.errors.push({
+            errorMessage: this.$i18n.t(msg),
+          })
+        } else {
+          this.errors.push({
+            errorMessage: this.$i18n.t('Error'),
+          })
+        }
+      }
+    },
     login() {
+      this.clearErrors()
       this.$store
         .dispatch('auth/signIn', {
           email: this.resetPasswordRequest.email,
@@ -210,26 +262,33 @@ export default {
         })
         .catch((error) => {
           this.tryingToLogIn = false
-          switch (error.code) {
-            case 'UserNotFoundException':
-              this.errors.push({
-                type: this.$i18n.t('invalid_user'),
-              })
-              break
-            case 'NotAuthorizedException':
-              this.errors.push({
-                type: this.$i18n.t('authentication_failed'),
-              })
-              break
-            case 'LimitExceededException':
-              this.errors.push({
-                type: this.$i18n.t('limit_exceeded'),
-              })
-              break
-            default:
-              this.errors.push({
-                type: this.$i18n.t('authentication_failed'),
-              })
+          if (error.response) {
+            console.log(error.response)
+            if (typeof error.response.data.message !== 'undefined') {
+              var msg = error.response.data.message
+            } else {
+              msg = error.response.data
+            }
+            if (msg === 'invalid_user') {
+              this.fieldErrors.email = true
+              this.fieldErrors.password = true
+            } else if (msg === 'invalid_password') {
+              this.fieldErrors.password = true
+            } else if (msg.indexOf('email') > -1) {
+              this.fieldErrors.email = true
+            }
+            var verifyOn = false
+            if (msg === 'email_not_verified') {
+              verifyOn = true
+            }
+            this.errors.push({
+              errorMessage: this.$i18n.t(msg),
+              verifyLink: verifyOn,
+            })
+          } else {
+            this.errors.push({
+              errorMessage: this.$i18n.t('authentication_failed'),
+            })
           }
         })
     },
@@ -245,3 +304,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.alert-link {
+  text-decoration: underline !important;
+}
+</style>

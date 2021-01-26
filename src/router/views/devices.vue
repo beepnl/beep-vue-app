@@ -655,6 +655,17 @@ export default {
         const response = await Api.readRequest('/devices')
         var devices = response.data
 
+        if (devices.length > 0) {
+          this.$store.commit('devices/setData', {
+            prop: 'devicesPresent',
+            value: true,
+          })
+          this.$store.commit('devices/setData', {
+            prop: 'devices',
+            value: devices,
+          })
+        }
+
         devices.map((device) => {
           device.delete = false // otherwise Vue can't track the 'delete' property
           if (device.sensor_definitions.length > 0) {
@@ -670,7 +681,16 @@ export default {
         return true
       } catch (error) {
         if (error.response) {
-          console.log(error.response)
+          if (error.response.data === 'no_devices_found') {
+            this.$store.commit('devices/setData', {
+              prop: 'devicesPresent',
+              value: false,
+            })
+            this.$store.commit('devices/setData', {
+              prop: 'devices',
+              value: [],
+            })
+          }
         } else {
           console.log('Error: ', error)
         }

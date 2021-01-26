@@ -32,6 +32,11 @@ export const mutations = {
   setApiaryListView: function(state, string) {
     state.apiaryListView = string
   },
+  resetState: function(state) {
+    state.apiaries = []
+    state.apiaryListView = 'listView'
+    state.apiaryEdited = false
+  },
 }
 export const actions = {
   ...resource.actions,

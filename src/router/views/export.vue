@@ -408,9 +408,7 @@ export default {
       }
     },
     setInitialDeviceId() {
-      if (this.$route.name === 'measurements-id') {
-        this.selectedDeviceId = parseInt(this.$route.params.id)
-      } else if (this.selectedDeviceId === null) {
+      if (this.selectedDeviceId === null) {
         this.selectedDeviceId = this.devices[0].id
       }
     },

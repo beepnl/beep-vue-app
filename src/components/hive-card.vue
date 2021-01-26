@@ -403,16 +403,6 @@
             >
             </v-sheet>
           </div>
-          <div v-if="hive.id % 7 === 0 || hive.id === 1" class="mr-2 my-0">
-            <v-icon class="red--text">
-              mdi-bugle
-            </v-icon>
-          </div>
-          <div v-if="hive.id % 4 === 0 || hive.id === 1" class="mr-2 my-0">
-            <v-icon class="red--text">
-              mdi-duck
-            </v-icon>
-          </div>
           <span
             v-if="hive.queen.name && listView"
             v-text="hive.queen.name"
@@ -425,53 +415,6 @@
         >
           <div class="mr-2 my-0">
             <v-sheet class="beep-icon beep-icon-sensors color-green"> </v-sheet>
-          </div>
-          <div class="icon-wrapper d-flex flex-row">
-            <div class="mr-1 my-0 icon-wrapper d-flex flex-row align-center">
-              <v-icon :class="`${hive.id % 3 === 0 ? 'red--text' : ''}`">
-                mdi-weight
-              </v-icon>
-              <v-icon
-                :class="
-                  `ml-n1 icon-side-arrow ${
-                    hive.id % 3 === 0 ? 'red--text' : ''
-                  }`
-                "
-              >
-                mdi-arrow-up-thick
-              </v-icon>
-            </div>
-            <div class="mr-2 my-0 icon-wrapper d-flex flex-row align-center">
-              <v-icon :class="`${hive.id === 2 ? 'red--text' : ''}`">
-                mdi-thermometer
-              </v-icon>
-              <v-icon
-                v-if="hive.id === 2"
-                class="ml-n2 mr-1 icon-side-arrow red--text"
-              >
-                mdi-arrow-down-thick
-              </v-icon>
-              <div
-                :class="
-                  `ml-n1 temp ${hive.id === 4 ? 'red--text' : 'color-grey'}`
-                "
-                >{{ Math.floor(Math.random() * 6) + 16 + '°C' }}</div
-              >
-            </div>
-            <div class="my-0 icon-wrapper d-flex flex-row">
-              <v-icon>
-                mdi-volume-low
-              </v-icon>
-              <div class="sound-chart d-flex justify-center align-end">
-                <v-sheet
-                  v-for="(volumeBar, i) in volumeBars"
-                  :key="i"
-                  :height="`${volumeBar.value}%`"
-                  :class="`volume-bar ${volumeBar.alarm ? 'alarm' : ''}`"
-                >
-                </v-sheet>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -517,48 +460,6 @@ export default {
     showMenu: false,
     x: 0,
     y: 0,
-    volumeBars: [
-      {
-        value: 25,
-        alarm: false,
-      },
-      {
-        value: 0,
-        alarm: false,
-      },
-      {
-        value: 22,
-        alarm: false,
-      },
-      {
-        value: 100,
-        alarm: true,
-      },
-      {
-        value: 45,
-        alarm: false,
-      },
-      {
-        value: 80,
-        alarm: true,
-      },
-      {
-        value: 25,
-        alarm: false,
-      },
-      {
-        value: 45,
-        alarm: false,
-      },
-      {
-        value: 30,
-        alarm: false,
-      },
-      {
-        value: 35,
-        alarm: false,
-      },
-    ],
   }),
   methods: {
     confirmDeleteHive(hive) {
@@ -651,22 +552,6 @@ export default {
     }
     .last-visit {
       white-space: nowrap;
-    }
-    .temp {
-      font-weight: 600;
-    }
-    .sound-chart {
-      width: 24px;
-      height: 20px;
-      margin-left: -3px;
-      border-bottom: 1px solid $color-grey;
-      .volume-bar {
-        width: 2px;
-        background-color: $color-grey;
-        &.alarm {
-          background-color: red;
-        }
-      }
     }
   }
 }

@@ -654,6 +654,21 @@ const translations = {
   select_all_editable_hives: 'Selecteer alle aanpasbare bijenkasten',
   alert: 'Alert | Alerts',
   remove_alert: 'Remove alert',
+  alerts_enabled: 'Alerts enabled',
+  alerts_disabled: 'Alerts disabled',
+  edit_checklist_confirm:
+    'Are you sure you want to edit the checklist? Any unsaved changes to your inspection will be lost.',
+  edit_checklist_confirm_deselectedhives:
+    'Are you sure you want to edit the checklist? Any unsaved changes to your inspection and your hive selection will be lost.',
+  user_not_edited:
+    'User data has not been edited. Possibly the user data is identical to the user data already in the database, or one or more fields are not correctly filled in. Please check your data and try again.',
+  user_not_deleted: 'Something went wrong, user has not been deleted.',
+  research_consent: 'Research consent',
+  checklist_types: 'Personal, shared, research',
+  edit_hive_checklist_no_touch:
+    'Check/unckeck the boxes in the list below to add/remove items from your hive checklist. You can also unfold/fold and drag/drop the items to re-order them to your own style (N.B. this is not possible on a touchscreen device).',
+  edit_hive_checklist_touch:
+    'Check/unckeck the boxes in the list below to add/remove items from your hive checklist. Unfortunately, changing the order of items is only possible on a desktop computer.',
 }
 
 export default translations
