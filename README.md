@@ -4,19 +4,20 @@
 
 ### Prerequisites
 
-- Install and configure the [AWS
-- CLI](<https://docs.aws.amazon.com/cli/latest/userguide/install-bundle.html#install-bundle-other)>
 - Install [Docker](https://www.docker.com/products/docker-desktop)
-- Install the AWS ECR [credential helper](https://github.com/awslabs/amazon-ecr-credential-helper)
 
 You **should not** run npm install. The container will do this for you upon
 first run.
 
-### Running the container
+### First install
 
-```sh
-docker-compose up
-```
+- cd dir (to directory where this repo is cloned/pulled)
+- docker run -it --rm -v \$PWD:/var/app -w /var/app node:lts npm install
+- docker-compose build --no-cache
+
+### Running the container (after first install)
+
+- docker-compose up
 
 ## Development
 
@@ -26,21 +27,28 @@ development experience we use
 
 As a development IDE we recommend Visual Studio Code. Settings for this project are defined in the .vscode folder.
 If you need to install dependencies, **do not run npm install from your local machine**.
-Instead run it inside the container:
+Instead run npm calls inside the container:
 
-```sh
-docker-compose exec npm install
-```
+- docker-compose exec ui bash
+- npm install
 
-As a rule, any call you would normally make to npm, you should prepend with `docker-compose exec ui`. This way the command is run inside the container.
+OR before running the container:
+
+- docker run -it --rm -v \$PWD:/var/app -w /var/app node:lts npm install
 
 ### Running the app locally
 
-To compile and run the server, run
+To compile and run the server, run the dev task:
 
-```sh
-docker-compose exec npm run dev
-```
+- Open Vue Project Manager on localhost:8000 -> import your directory, go to tasks -> dev -> run task
+
+OR:
+
+- go into the docker container from your repo directory:
+- docker-compose exec ui bash
+- npm run dev
+
+- Open the app on localhost:8080
 
 ### Hot reload
 
