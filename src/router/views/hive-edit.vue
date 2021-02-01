@@ -132,15 +132,13 @@
           >
             <div>
               <div class="beep-label" v-text="`${$t('Hive_order')}`"></div>
-              <VueNumberInput
-                :value="activeHive.order"
-                class="hive-number-input"
+              <VueNumericInput
+                v-model="activeHive.order"
                 :step="1"
-                inline
-                controls
-                @click="setHiveEdited(true)"
-                @change="updateHiveProperties(parseInt($event), 'order')"
-              ></VueNumberInput>
+                :precision="0"
+                @input="setHiveEdited(true)"
+              >
+              </VueNumericInput>
             </div>
           </v-col>
         </v-row>
@@ -177,7 +175,7 @@ import Layout from '@layouts/back.vue'
 import QueenEditDetails from '@components/queen-edit-details.vue'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import VueNumberInput from '@chenfengyuan/vue-number-input'
+import VueNumericInput from 'vue-numeric-input'
 
 export default {
   components: {
@@ -186,7 +184,7 @@ export default {
     Layout,
     QueenEditDetails,
     Treeselect,
-    VueNumberInput,
+    VueNumericInput,
   },
   data: function() {
     return {
@@ -540,21 +538,6 @@ export default {
     setHiveEdited(bool) {
       this.$store.commit('hives/setHiveEdited', bool)
     },
-    updateHiveProperties(event, property) {
-      var value = null
-      if (event === null) {
-        value = null
-      } else if (event.target !== undefined) {
-        value = event.target.value
-      } else {
-        value = event
-      }
-      this.activeHive[property] = value
-      this.activeHive.frames = this.activeHive.layers[0].framecount
-      if (property !== 'order') {
-        this.setHiveEdited(true) // NB edited tracking for vue-number-input component inputs happens only via @click event as it calls @change when component is initialized, before any changes are made
-      }
-    },
     validateText(value, property, maxLength) {
       if (value !== null && value.length > maxLength + 1) {
         value = value.substring(0, maxLength)
@@ -581,9 +564,5 @@ export default {
     min-height: 36px;
     padding-top: 0 !important;
   }
-}
-
-.hive-number-input {
-  max-width: 130px !important;
 }
 </style>

@@ -238,34 +238,32 @@
                         class="beep-label"
                         v-text="`${$t('Lattitude')}`"
                       ></div>
-                      <VueNumberInput
+                      <VueNumericInput
                         v-if="newHive"
-                        :value="parseFloat(newHive.lat)"
-                        :step="0.001"
+                        v-model="newHive.lat"
                         :min="-90"
                         :max="90"
-                        inline
-                        controls
-                        @click="setApiaryEdited(true)"
-                        @change="editApiary($event, 'lat')"
-                      ></VueNumberInput>
+                        :step="0.001"
+                        :precision="3"
+                        @input="setApiaryEdited(true)"
+                      >
+                      </VueNumericInput>
                     </v-col>
                     <v-col cols="6" sm="4">
                       <div
                         class="beep-label"
                         v-text="`${$t('Longitude')}`"
                       ></div>
-                      <VueNumberInput
+                      <VueNumericInput
                         v-if="newHive"
-                        :value="parseFloat(newHive.lon)"
-                        :step="0.001"
+                        v-model="newHive.lon"
                         :min="-180"
                         :max="180"
-                        inline
-                        controls
-                        @click="setApiaryEdited(true)"
-                        @change="editApiary($event, 'lon')"
-                      ></VueNumberInput>
+                        :step="0.001"
+                        :precision="3"
+                        @input="setApiaryEdited(true)"
+                      >
+                      </VueNumericInput>
                     </v-col>
                   </v-row>
                   <v-row>
@@ -390,15 +388,14 @@
                         class="beep-label"
                         v-text="`${$t('Hive_amount')}`"
                       ></div>
-                      <VueNumberInput
+                      <VueNumericInput
                         v-if="newHive"
                         v-model="newHive.hive_amount"
                         :min="1"
                         :max="50"
-                        inline
-                        controls
-                        @click="setApiaryEdited(true)"
-                      ></VueNumberInput>
+                        @input="setApiaryEdited(true)"
+                      >
+                      </VueNumericInput>
                     </v-col>
 
                     <v-col cols="6" md="4">
@@ -424,14 +421,12 @@
                           class="beep-label"
                           v-text="`${$t('Hive_number_offset')}`"
                         ></div>
-                        <VueNumberInput
+                        <VueNumericInput
                           v-if="newHive"
                           v-model="newHive.offset"
-                          :step="1"
-                          inline
-                          controls
-                          @click="setApiaryEdited(true)"
-                        ></VueNumberInput>
+                          @input="setApiaryEdited(true)"
+                        >
+                        </VueNumericInput>
                       </div>
                     </v-col>
 
@@ -475,7 +470,7 @@ import HiveEditDetails from '@components/hive-edit-details.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
 import VueGoogleAutocomplete from 'vue-google-autocomplete'
-import VueNumberInput from '@chenfengyuan/vue-number-input'
+import VueNumericInput from 'vue-numeric-input'
 
 export default {
   components: {
@@ -484,7 +479,7 @@ export default {
     HiveEditDetails,
     Layout,
     VueGoogleAutocomplete,
-    VueNumberInput,
+    VueNumericInput,
   },
   data: function() {
     return {
@@ -728,10 +723,6 @@ export default {
       this.newHive[property] = value
       if (property === 'hex_color') {
         this.cancelColorPicker()
-      }
-      if (property !== 'lat' && property !== 'lon') {
-        // if value is present, vueNumberInput always triggers editApiary method for these properties
-        this.setApiaryEdited(true)
       }
     },
     validateText(value, property, maxLength) {

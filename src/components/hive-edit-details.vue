@@ -30,24 +30,22 @@
 
               <v-col cols="12" md="5">
                 <div class="beep-label" v-text="`${$t('Hive_frames')}`"></div>
-                <VueNumberInput
+                <VueNumericInput
                   v-if="hive && hive.layers"
-                  :value="hive.layers[0].framecount"
-                  class="hive-number-frame-input"
+                  v-model="hive.layers[0].framecount"
                   :min="1"
                   :max="20"
-                  inline
-                  controls
-                  rounded
-                  @click="setHiveEdited(true), setApiaryEdited(true)"
-                  @change="
+                  :step="1"
+                  :precision="0"
+                  @input="
                     updateHiveLayers(
                       parseInt($event),
                       // eslint-disable-next-line vue/comma-dangle
                       'framecount'
                     )
                   "
-                ></VueNumberInput>
+                >
+                </VueNumericInput>
               </v-col>
             </v-row>
 
@@ -126,27 +124,25 @@
                           class="beep-label"
                           v-text="`${$t(bbDimension)}`"
                         ></div>
-                        <VueNumberInput
+                        <VueNumericInput
                           :value="
                             hive[bbDimension]
                               ? parseFloat(hive[bbDimension])
                               : 0
                           "
-                          class="hive-number-frame-input"
                           :min="0"
                           :max="100"
                           :step="0.1"
-                          inline
-                          controls
-                          @click="setHiveEdited(true), setApiaryEdited(true)"
-                          @change="
+                          :precision="1"
+                          @input="
                             updateHive(
                               $event.toString(),
                               // eslint-disable-next-line vue/comma-dangle
                               bbDimension
                             )
                           "
-                        ></VueNumberInput>
+                        >
+                        </VueNumericInput>
                       </div>
                     </v-col>
 
@@ -160,27 +156,25 @@
                           class="beep-label"
                           v-text="`${$t(frDimension)}`"
                         ></div>
-                        <VueNumberInput
+                        <VueNumericInput
                           :value="
                             hive[frDimension]
                               ? parseFloat(hive[frDimension])
                               : 0
                           "
-                          class="hive-number-frame-input"
                           :min="0"
                           :max="100"
                           :step="0.1"
-                          inline
-                          controls
-                          @click="setHiveEdited(true), setApiaryEdited(true)"
-                          @change="
+                          :precision="1"
+                          @input="
                             updateHive(
                               $event.toString(),
                               // eslint-disable-next-line vue/comma-dangle
                               frDimension
                             )
                           "
-                        ></VueNumberInput>
+                        >
+                        </VueNumericInput>
                       </div>
                     </v-col>
                   </v-row>
@@ -197,14 +191,14 @@
 <script>
 import Api from '@api/Api'
 import HiveFactory from '@components/hive-factory.vue'
-import VueNumberInput from '@chenfengyuan/vue-number-input'
+import VueNumericInput from 'vue-numeric-input'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 export default {
   components: {
     HiveFactory,
-    VueNumberInput,
+    VueNumericInput,
     Treeselect,
   },
   props: {
@@ -352,28 +346,16 @@ export default {
       }
       this.hive[property] = value
       this.hive.frames = this.hive.layers[0].framecount
-      if (
-        property !== 'bb_width_cm' &&
-        property !== 'bb_height_cm' &&
-        property !== 'bb_depth_cm' &&
-        property !== 'fr_width_cm' &&
-        property !== 'fr_height_cm'
-      ) {
-        this.setHiveEdited(true) // NB edited tracking for vue-number-input component inputs happens only via @click event as it calls @change when component is initialized, before any changes are made
-        this.setApiaryEdited(true)
-      }
+      this.setHiveEdited(true)
+      this.setApiaryEdited(true)
     },
     updateHiveLayers(value, property) {
       this.hive.layers.forEach((layer) => {
         layer[property] = value
       })
-      if (property === 'framecount') {
-        this.hive.frames = value // NB edited tracking for vue-number-input component inputs happens only via @click event as it calls @change when component is initialized, before any changes are made
-      } else {
-        this.hive.frames = this.hive.layers[0].framecount
-        this.setHiveEdited(true)
-        this.setApiaryEdited(true)
-      }
+      this.hive.frames = this.hive.layers[0].framecount
+      this.setHiveEdited(true)
+      this.setApiaryEdited(true)
       if (property === 'color') {
         this.hive[property] = value
         this.cancelColorPicker()
@@ -428,10 +410,6 @@ export default {
   width: 35px;
   height: 35px;
   border: 1px solid rgba(0, 0, 0, 0.3) !important;
-}
-
-.hive-number-frame-input {
-  max-width: 130px !important;
 }
 
 .hive-dimensions-wrapper {

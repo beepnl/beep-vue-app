@@ -96,7 +96,7 @@
               "
               style="width: 100%;"
             >
-              <v-row class="ml-0 pl-0 py-0" style="width:100%;">
+              <v-row class="ml-0 my-0 pl-0 py-0" style="width:100%;">
                 <v-col
                   cols="6"
                   md="3"
@@ -162,7 +162,7 @@
                           </v-icon>
                           <span class="beep-label">{{
                             device.battery_voltage !== null
-                              ? device.battery_voltage + ' V'
+                              ? device.battery_voltage.toFixed(2) + ' V'
                               : '?'
                           }}</span>
                         </div>
@@ -410,25 +410,20 @@
                                 ></yesNoRating>
                               </td>
                               <td>
-                                <VueNumberInput
+                                <VueNumericInput
                                   v-model="sensorDef.offset"
-                                  class="device-number-input"
+                                  class="vue-numeric-input--small"
                                   :disabled="sensorDef.delete"
-                                  size="small"
-                                  inline
-                                  controls
-                                  rounded
-                                ></VueNumberInput>
+                                >
+                                </VueNumericInput>
                               </td>
                               <td>
-                                <VueNumberInput
+                                <VueNumericInput
                                   v-model="sensorDef.multiplier"
-                                  class="device-number-input"
+                                  class="vue-numeric-input--small"
                                   :disabled="sensorDef.delete"
-                                  size="small"
-                                  inline
-                                  controls
-                                ></VueNumberInput>
+                                >
+                                </VueNumericInput>
                               </td>
                               <td>
                                 <v-select
@@ -564,7 +559,7 @@ import { mapGetters } from 'vuex'
 import { SlideYUpTransition } from 'vue2-transitions'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import VueNumberInput from '@chenfengyuan/vue-number-input'
+import VueNumericInput from 'vue-numeric-input'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 
 export default {
@@ -574,7 +569,7 @@ export default {
     SlideYUpTransition,
     Treeselect,
     yesNoRating,
-    VueNumberInput,
+    VueNumericInput,
   },
   data() {
     return {
@@ -927,9 +922,6 @@ export default {
   }
   .device-yes-no {
     white-space: nowrap;
-  }
-  .device-number-input {
-    margin-top: 6px !important;
   }
   .button-wrapper {
     height: 51px;
