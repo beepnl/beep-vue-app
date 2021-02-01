@@ -19,7 +19,7 @@
       }}
     </h1>
 
-    <v-form ref="form" v-model="valid" @submit.prevent="updateApiary">
+    <v-form ref="form" v-model="valid">
       <v-toolbar
         v-if="activeApiary && activeApiary.owner"
         class="save-bar"
@@ -35,7 +35,12 @@
           @click="confirmDeleteApiary"
           >mdi-delete</v-icon
         >
-        <v-btn class="mr-n2" icon type="submit" :disabled="!valid">
+        <v-btn
+          class="mr-n2"
+          icon
+          :disabled="!valid"
+          @click.prevent="updateApiary"
+        >
           <v-progress-circular
             v-if="showLoadingIcon"
             class="mr-2"
@@ -163,31 +168,29 @@
                 </v-col>
                 <v-col cols="6" sm="4">
                   <div class="beep-label" v-text="`${$t('Lattitude')}`"></div>
-                  <VueNumberInput
+                  <VueNumericInput
                     v-if="activeApiary"
-                    :value="parseFloat(activeApiary.lat)"
-                    :step="0.001"
+                    v-model="activeApiary.coordinate_lat"
                     :min="-90"
                     :max="90"
-                    inline
-                    controls
-                    @click="setApiaryEdited(true)"
-                    @change="editApiary($event, 'lat')"
-                  ></VueNumberInput>
+                    :step="0.001"
+                    :precision="3"
+                    @input="editApiary($event, 'lat'), setApiaryEdited(true)"
+                  >
+                  </VueNumericInput>
                 </v-col>
                 <v-col cols="6" sm="4">
                   <div class="beep-label" v-text="`${$t('Longitude')}`"></div>
-                  <VueNumberInput
+                  <VueNumericInput
                     v-if="activeApiary"
-                    :value="parseFloat(activeApiary.lon)"
-                    :step="0.001"
+                    v-model="activeApiary.coordinate_lon"
                     :min="-180"
                     :max="180"
-                    inline
-                    controls
-                    @click="setApiaryEdited(true)"
-                    @change="editApiary($event, 'lon')"
-                  ></VueNumberInput>
+                    :step="0.001"
+                    :precision="3"
+                    @input="editApiary($event, 'lon'), setApiaryEdited(true)"
+                  >
+                  </VueNumericInput>
                 </v-col>
               </v-row>
               <v-row>
@@ -259,14 +262,14 @@ import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
 import VueGoogleAutocomplete from 'vue-google-autocomplete'
-import VueNumberInput from '@chenfengyuan/vue-number-input'
+import VueNumericInput from 'vue-numeric-input'
 
 export default {
   components: {
     Confirm,
     Layout,
     VueGoogleAutocomplete,
-    VueNumberInput,
+    VueNumericInput,
   },
   data: function() {
     return {
@@ -450,12 +453,17 @@ export default {
      * @param {String} id Input container ID
      */
     getAddressData: function(addressData, placeResultData, id) {
+      // console.log('addressData ', addressData)
+      // console.log('placeResultData ', placeResultData)
+      // console.log('id ', id)
       const countryCode = placeResultData.address_components.filter(
         (addressComponent) => {
           return addressComponent.types.includes('country')
         }
       )[0].short_name
       this.activeApiary.country_code = countryCode
+      this.activeApiary.coordinate_lat = addressData.latitude
+      this.activeApiary.coordinate_lon = addressData.longitude
       this.activeApiary.lat = addressData.latitude
       this.activeApiary.lon = addressData.longitude
       this.activeApiary.city = addressData.locality
@@ -471,9 +479,12 @@ export default {
       if (property === 'hex_color') {
         this.overlay = false
       }
-      if (property !== 'lat' && property !== 'lon') {
-        // if value is present, vueNumberInput always triggers editApiary method for these properties
-        this.setApiaryEdited(true)
+      // always include both lat & lon even when editing only one of them
+      if (property === 'lat') {
+        this.activeApiary.lon = this.activeApiary.coordinate_lon
+      }
+      if (property === 'lon') {
+        this.activeApiary.lat = this.activeApiary.coordinate_lat
       }
     },
     validateText(value, property, maxLength) {
