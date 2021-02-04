@@ -13,7 +13,7 @@
     >
     </h1>
 
-    <v-form ref="form" v-model="valid" @submit.prevent="saveHive">
+    <v-form ref="form" v-model="valid">
       <v-toolbar
         v-if="
           activeHive &&
@@ -37,8 +37,8 @@
           v-if="!queenEditMode"
           class="mr-n2"
           icon
-          type="submit"
           :disabled="!valid"
+          @click.prevent="saveHive"
         >
           <v-progress-circular
             v-if="showLoadingIcon"
@@ -59,8 +59,8 @@
           outlined
           color="primary"
           class="save-button mr-1"
-          type="submit"
           :disabled="!valid"
+          @click.prevent="saveHive"
         >
           <v-progress-circular
             v-if="showLoadingIcon"

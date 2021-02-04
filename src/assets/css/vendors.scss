@@ -360,6 +360,7 @@
   }
   .btn {
     width: 34px !important;
+    color: $color-grey-dark;
     background: none !important;
     border: 0 !important;
     border-radius: 0 !important;
@@ -367,11 +368,21 @@
     box-shadow: none !important;
     -webkit-transition: none !important;
     transition: none !important;
+    .btn-icon::before {
+      position: relative !important;
+      top: 6px !important;
+      left: 0 !important;
+      font-family: 'Material Design Icons' !important;
+      font-size: 24px !important;
+      font-style: normal !important;
+      background: none !important;
+      background-color: transparent !important;
+    }
     &:hover {
-      .btn-icon::before,
-      .btn-icon::after {
-        background-color: $color-primary !important;
-      }
+      color: $color-primary;
+    }
+    &:disabled:hover {
+      color: $color-grey-dark;
     }
   }
   .btn-decrement {
@@ -380,6 +391,10 @@
     left: 0 !important;
     border: 0 !important;
     border-right: 1px solid $color-grey-light !important;
+    .btn-icon::before {
+      margin-left: 1px;
+      content: '\F0374' !important;
+    }
   }
   .btn-increment {
     top: 1px !important;
@@ -387,6 +402,14 @@
     bottom: 1px !important;
     border: 0 !important;
     border-left: 1px solid $color-grey-light !important;
+    .btn-icon {
+      &::before {
+        content: '\F0415' !important;
+      }
+      &::after {
+        height: 0 !important;
+      }
+    }
   }
   &:focus {
     outline-color: $color-primary !important;
@@ -397,6 +420,10 @@
     }
     .btn {
       width: 29px !important;
+      .btn-icon::before {
+        top: 0 !important;
+        font-size: 20px !important;
+      }
     }
   }
 }

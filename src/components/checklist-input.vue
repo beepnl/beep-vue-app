@@ -81,62 +81,49 @@
       :object="object"
     ></slider>
 
-    <VueNumberInput
+    <VueNumericInput
       v-if="item.input === 'number' || item.input === 'number_0_decimals'"
-      :value="object[item.id]"
-      class="checklist-number-input"
+      :value="object[item.id] === null ? 0 : object[item.id]"
       :step="1"
-      controls
-      @click="setInspectionEdited(true)"
       @change="updateNumber($event, item.id, item.name)"
-    ></VueNumberInput>
+    ></VueNumericInput>
 
-    <VueNumberInput
+    <VueNumericInput
       v-if="
         item.input === 'number_1_decimals' ||
           item.input === 'number_2_decimals' ||
           item.input === 'square_25cm2'
       "
-      :value="object[item.id]"
-      class="checklist-number-input"
+      :value="object[item.id] === null ? 0 : object[item.id]"
       :step="item.input === 'number_2_decimals' ? 0.01 : 0.1"
-      controls
-      @click="setInspectionEdited(true)"
+      :precision="item.input === 'number_2_decimals' ? 2 : 1"
       @change="updateNumber($event, item.id, item.name)"
-    ></VueNumberInput>
+    ></VueNumericInput>
 
-    <VueNumberInput
+    <VueNumericInput
       v-if="item.input === 'number_3_decimals'"
-      :value="object[item.id]"
-      class="checklist-number-input"
+      :value="object[item.id] === null ? 0 : object[item.id]"
       :step="0.001"
-      controls
-      @click="setInspectionEdited(true)"
+      :precision="3"
       @change="updateNumber($event, item.id, item.name)"
-    ></VueNumberInput>
+    ></VueNumericInput>
 
-    <VueNumberInput
+    <VueNumericInput
       v-if="item.input === 'number_negative'"
-      :value="object[item.id]"
-      class="checklist-number-input"
+      :value="object[item.id] === null ? 0 : object[item.id]"
       :max="0"
       :step="1"
-      controls
-      @click="setInspectionEdited(true)"
       @change="updateNumber($event, item.id, item.name)"
-    ></VueNumberInput>
+    ></VueNumericInput>
 
-    <VueNumberInput
+    <VueNumericInput
       v-if="item.input === 'number_positive'"
-      :value="object[item.id]"
-      class="checklist-number-input"
+      :value="object[item.id] === null ? 0 : object[item.id]"
       :min="0"
       :step="1"
-      controls
       :disabled="item.name === 'colony_size'"
-      @click="setInspectionEdited(true)"
       @change="updateNumber($event, item.id, item.name)"
-    ></VueNumberInput>
+    ></VueNumericInput>
 
     <starRating
       v-if="item.input === 'score'"
@@ -223,7 +210,7 @@
 </template>
 
 <script>
-import VueNumberInput from '@chenfengyuan/vue-number-input'
+import VueNumericInput from 'vue-numeric-input'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
 import imageUploader from '@components/input-fields/image-uploader.vue'
@@ -240,7 +227,7 @@ export default {
     ChecklistFieldset: () => import('@components/checklist-fieldset.vue'), // needed to fix Vue recursive component error
     dateTimePicker,
     imageUploader,
-    VueNumberInput,
+    VueNumericInput,
     labelWithDescription,
     selectHiveOrApiary,
     slider,
@@ -314,6 +301,7 @@ export default {
         this.$emit('calculate-liebefeld-colony-size')
       }
       this.object[property] = value
+      this.setInspectionEdited(true)
     },
     validateText(value, id, maxLength) {
       if (value !== null && value.length > maxLength + 1) {

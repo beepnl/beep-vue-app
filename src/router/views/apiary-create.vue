@@ -1,6 +1,6 @@
 <template>
   <Layout :title="`${$t('create_new')} ${$tc('location', 1)}`">
-    <v-form ref="form" v-model="valid" @submit.prevent="createApiary">
+    <v-form ref="form" v-model="valid">
       <v-tabs
         v-model="activeTab"
         class="apiary-create"
@@ -359,8 +359,8 @@
                 outlined
                 color="primary"
                 class="mr-3"
-                type="submit"
                 :disabled="!valid"
+                @click.prevent="createApiary"
               >
                 <v-progress-circular
                   v-if="showLoadingIcon"

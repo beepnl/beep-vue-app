@@ -29,12 +29,7 @@
       }}
     </h1>
 
-    <v-form
-      v-else-if="ready"
-      ref="form"
-      v-model="valid"
-      @submit.prevent="saveInspection"
-    >
+    <v-form v-else-if="ready" ref="form" v-model="valid">
       <v-toolbar v-if="ready" class="save-bar" dense light>
         <v-spacer></v-spacer>
         <v-btn
@@ -53,8 +48,8 @@
           outlined
           color="primary"
           class="save-button mr-1"
-          type="submit"
           :disabled="!valid || (selectedHives && selectedHives.length === 0)"
+          @click.prevent="saveInspection"
         >
           <v-progress-circular
             v-if="showLoadingIcon"
@@ -94,7 +89,7 @@
                   :no-results-text="`${$t('no_results')}`"
                   :disable-branch-nodes="true"
                   :default-expand-level="1"
-                  @input="selectHiveSet($event)"
+                  @input.prevent="selectHiveSet($event)"
                 />
               </v-col>
               <v-col
