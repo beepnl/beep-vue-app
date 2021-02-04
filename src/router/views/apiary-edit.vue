@@ -170,12 +170,16 @@
                   <div class="beep-label" v-text="`${$t('Lattitude')}`"></div>
                   <VueNumericInput
                     v-if="activeApiary"
-                    v-model="activeApiary.coordinate_lat"
+                    :value="
+                      activeApiary.coordinate_lat === null
+                        ? 0
+                        : activeApiary.coordinate_lat
+                    "
                     :min="-90"
                     :max="90"
                     :step="0.001"
                     :precision="3"
-                    @input="editApiary($event, 'lat'), setApiaryEdited(true)"
+                    @input="editApiary($event, 'lat')"
                   >
                   </VueNumericInput>
                 </v-col>
@@ -183,12 +187,16 @@
                   <div class="beep-label" v-text="`${$t('Longitude')}`"></div>
                   <VueNumericInput
                     v-if="activeApiary"
-                    v-model="activeApiary.coordinate_lon"
+                    :value="
+                      activeApiary.coordinate_lon === null
+                        ? 0
+                        : activeApiary.coordinate_lon
+                    "
                     :min="-180"
                     :max="180"
                     :step="0.001"
                     :precision="3"
-                    @input="editApiary($event, 'lon'), setApiaryEdited(true)"
+                    @input="editApiary($event, 'lon')"
                   >
                   </VueNumericInput>
                 </v-col>
@@ -475,6 +483,9 @@ export default {
       this.$store.commit('locations/setApiaryEdited', bool)
     },
     editApiary(value, property) {
+      if (value === 0) {
+        value = null
+      }
       this.activeApiary[property] = value
       if (property === 'hex_color') {
         this.overlay = false
@@ -486,6 +497,7 @@ export default {
       if (property === 'lon') {
         this.activeApiary.lat = this.activeApiary.coordinate_lat
       }
+      this.setApiaryEdited(true)
     },
     validateText(value, property, maxLength) {
       if (value !== null && value.length > maxLength + 1) {
