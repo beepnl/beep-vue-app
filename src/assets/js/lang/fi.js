@@ -669,6 +669,10 @@ const translations = {
     'Check/unckeck the boxes in the list below to add/remove items from your hive checklist. You can also unfold/fold and drag/drop the items to re-order them to your own style (N.B. this is not possible on a touchscreen device).',
   edit_hive_checklist_touch:
     'Check/unckeck the boxes in the list below to add/remove items from your hive checklist. Changing the order of items is only possible on a desktop computer.',
+  input_not_possible_for_bulkinspection:
+    'This item is not available when multiple hives are selected for an inspection, as it can only be filled in per individual hive. It is possible to fill in this item for a single hive at a later time, by editing the inspection for that hive.',
+  save_bulkinspection_confirm:
+    'Are you sure that you want to save this inspection for multiple hives at the same time?',
 }
 
 export default translations

@@ -16,6 +16,7 @@
       v-if="item.input === 'image'"
       :object="object"
       :item="item"
+      :input-disabled="disabled"
     ></imageUploader>
 
     <v-list v-if="item.input === 'list'" class="inspection-checkbox-list">
@@ -83,8 +84,10 @@
 
     <VueNumericInput
       v-if="item.input === 'number' || item.input === 'number_0_decimals'"
+      class="vue-numeric-input--extratop"
       :value="object[item.id] === null ? 0 : object[item.id]"
       :step="1"
+      :disabled="disabled"
       @change="updateNumber($event, item.id, item.name)"
     ></VueNumericInput>
 
@@ -94,34 +97,41 @@
           item.input === 'number_2_decimals' ||
           item.input === 'square_25cm2'
       "
+      class="vue-numeric-input--extratop"
       :value="object[item.id] === null ? 0 : object[item.id]"
       :step="item.input === 'number_2_decimals' ? 0.01 : 0.1"
       :precision="item.input === 'number_2_decimals' ? 2 : 1"
+      :disabled="disabled"
       @change="updateNumber($event, item.id, item.name)"
     ></VueNumericInput>
 
     <VueNumericInput
       v-if="item.input === 'number_3_decimals'"
+      class="vue-numeric-input--extratop"
       :value="object[item.id] === null ? 0 : object[item.id]"
       :step="0.001"
       :precision="3"
+      :disabled="disabled"
       @change="updateNumber($event, item.id, item.name)"
     ></VueNumericInput>
 
     <VueNumericInput
       v-if="item.input === 'number_negative'"
+      class="vue-numeric-input--extratop"
       :value="object[item.id] === null ? 0 : object[item.id]"
       :max="0"
       :step="1"
+      :disabled="disabled"
       @change="updateNumber($event, item.id, item.name)"
     ></VueNumericInput>
 
     <VueNumericInput
       v-if="item.input === 'number_positive'"
+      class="vue-numeric-input--extratop"
       :value="object[item.id] === null ? 0 : object[item.id]"
       :min="0"
       :step="1"
-      :disabled="item.name === 'colony_size'"
+      :disabled="item.name === 'colony_size' || disabled"
       @change="updateNumber($event, item.id, item.name)"
     ></VueNumericInput>
 
@@ -250,6 +260,11 @@ export default {
     locale: {
       type: String,
       default: 'en',
+      required: false,
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
       required: false,
     },
   },

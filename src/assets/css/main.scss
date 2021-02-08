@@ -101,6 +101,10 @@
   }
 }
 
+.input-disabled-overlay {
+  cursor: not-allowed !important;
+}
+
 .keep-spaces {
   white-space: pre-wrap;
 }
@@ -156,4 +160,8 @@
   &.green--text {
     border-color: green;
   }
+}
+
+.zindex4 {
+  z-index: 4;
 }

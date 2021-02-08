@@ -6,8 +6,9 @@
       class="pt-0 image-uploader"
       :rules="rules"
       accept="image/png, image/jpeg, image/bmp"
-      :placeholder="`${$t('Select')} ${$tc('Image', 1).toLocaleLowerCase()}`"
+      :placeholder="`${$t('Select')} ${$tc('Image', 1).toLowerCase()}`"
       prepend-icon="mdi-camera"
+      :disabled="inputDisabled"
       @change="onUpload"
     ></v-file-input>
     <div class="image-preview">
@@ -62,6 +63,11 @@ export default {
     object: {
       type: Object,
       required: true,
+    },
+    inputDisabled: {
+      type: Boolean,
+      default: false,
+      required: false,
     },
   },
   data: () => ({

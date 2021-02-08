@@ -673,6 +673,10 @@ const translations = {
     'Vink items in de onderstaande lijst van beschikbare kastkaartitems aan/uit om ze aan je eigen kastkaart toe te voegen/te verwijderen. Voor meer overzicht, kun je de categorieën in- en uitklappen. Ook kun je ze naar boven/beneden slepen om de volgorde van jouw kastkaart te bepalen (N.B. dit is alleen mogelijk m.b.v. een muis).',
   edit_hive_checklist_touch:
     'Vink items in de onderstaande lijst van beschikbare kastkaartitems aan/uit om ze aan je eigen kastkaart toe te voegen/te verwijderen. Voor meer overzicht, kun je de categorieën in- en uitklappen. Het veranderen van de volgorde van items is alleen op een desktop computer mogelijk.',
+  input_not_possible_for_bulkinspection:
+    'Dit item is niet beschikbaar wanneer meerdere bijenkasten zijn geselecteerd voor een inspectie, omdat het per bijenkast apart moet worden ingevuld. Het is wel mogelijk om dit item later in te vullen voor een individuele kast, door de inspectie voor die kast te bewerken.',
+  save_bulkinspection_confirm:
+    'Weet je zeker dat je deze inspectie voor meerdere kasten tegelijk wilt opslaan?',
 }
 
 export default translations

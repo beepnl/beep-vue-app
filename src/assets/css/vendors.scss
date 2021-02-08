@@ -303,7 +303,7 @@
   .btn {
     width: 34px !important;
     color: $color-grey-dark;
-    cursor: pointer;
+    cursor: pointer !important;
     background: none !important;
     border: 0 !important;
     border-radius: 0 !important;
@@ -356,6 +356,13 @@
   }
   &:focus {
     outline-color: $color-primary !important;
+  }
+  &.vue-numeric-input--extratop {
+    .btn {
+      .btn-icon::before {
+        top: 6px !important;
+      }
+    }
   }
   &.vue-numeric-input--small {
     .numeric-input {

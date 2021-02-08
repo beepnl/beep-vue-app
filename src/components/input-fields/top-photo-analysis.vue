@@ -1,147 +1,175 @@
 <template>
-  <div class="rounded-border">
-    <div class="border-bottom">
-      <h4>Top Photo Aanalysis protocol (EN)</h4>
-      <ol>
-        <li>Blow a puff of smoke into the hive from below.</li>
-        <li
-          >After a minute, remove the lid and take first a high-resolution photo
-          from the label of the hive and then of the topside. For the accuracy
-          of the photo analysis, take care to include the entire top frame in
-          the photo, and use a standard angle (35mm) (Figure 1).</li
+  <div>
+    <v-alert
+      v-if="bulkInspection"
+      type="error"
+      text
+      prominent
+      dense
+      color="red"
+    >
+      {{ $t('input_not_possible_for_bulkinspection') }}
+    </v-alert>
+    <!-- <div :class="`rounded-border ${bulkInspection ? 'input-disabled' : ''}`"> -->
+    <v-card outlined class="pa-3">
+      <div class="border-bottom">
+        <h4>Top Photo Aanalysis protocol (EN)</h4>
+        <ol>
+          <li>Blow a puff of smoke into the hive from below.</li>
+          <li
+            >After a minute, remove the lid and take first a high-resolution
+            photo from the label of the hive and then of the topside. For the
+            accuracy of the photo analysis, take care to include the entire top
+            frame in the photo, and use a standard angle (35mm) (Figure 1).</li
+          >
+        </ol>
+        <img
+          style="width:100%;"
+          src="@assets/img/inspection-top-photo-analysis-explanation.jpg"
+        />
+        <p style="font-style: italic; text-align: center;"
+          >Figure 1. Correct position of hive top in photograph and potential
+          mistakes to avoid.</p
         >
-      </ol>
-      <img
-        style="width:100%;"
-        src="@assets/img/inspection-top-photo-analysis-explanation.jpg"
-      />
-      <p style="font-style: italic; text-align: center;"
-        >Figure 1. Correct position of hive top in photograph and potential
-        mistakes to avoid.</p
-      >
-    </div>
+      </div>
 
-    <div v-if="activeHive !== null" class="border-bottom">
-      <v-row>
-        <v-col cols="5" sm="2" md="3" class="d-flex flex-column justify-end">
-          <h4 class="hive-name mb-3" v-text="activeHive.name"></h4>
-          <div class="d-flex mb-3">
-            <HiveIcon :hive="activeHive"></HiveIcon>
-          </div>
-        </v-col>
+      <div v-if="activeHive !== null" class="border-bottom">
+        <v-row>
+          <v-col cols="5" sm="2" md="3" class="d-flex flex-column justify-end">
+            <h4 class="hive-name mb-3" v-text="activeHive.name"></h4>
+            <div class="d-flex mb-3">
+              <HiveIcon :hive="activeHive"></HiveIcon>
+            </div>
+          </v-col>
 
-        <v-col cols="6" sm="4" md="3">
-          <v-row>
-            <v-col cols="12">
-              <div
-                class="beep-label"
-                v-text="`${$tc('Hive_brood_layer', 2)} ${$t('with_bees')}`"
-              ></div>
-              <VueNumericInput
-                v-if="activeHive && activeHive.layers"
-                v-model="broodLayersForCalculation"
-                :min="0"
-                :max="maxBroodLayers"
-                @change="calculateTpaColonySize"
-              ></VueNumericInput>
-            </v-col>
-            <v-col cols="12">
-              <div
-                class="beep-label"
-                v-text="`${$t('Hive_frames')} ${$t('with_bees')}`"
-              ></div>
-              <VueNumericInput
-                v-if="activeHive && activeHive.layers"
-                v-model="framesForCalculation"
-                :min="0"
-                :max="maxFrames"
-                @change="calculateTpaColonySize"
-              ></VueNumericInput>
-            </v-col>
-          </v-row>
-        </v-col>
+          <v-col cols="6" sm="4" md="3">
+            <v-row>
+              <v-col cols="12">
+                <div
+                  class="beep-label"
+                  v-text="`${$tc('Hive_brood_layer', 2)} ${$t('with_bees')}`"
+                ></div>
+                <VueNumericInput
+                  v-if="activeHive && activeHive.layers"
+                  v-model="broodLayersForCalculation"
+                  class="vue-numeric-input--extratop"
+                  :min="0"
+                  :max="maxBroodLayers"
+                  :disabled="bulkInspection"
+                  @change="calculateTpaColonySize"
+                ></VueNumericInput>
+              </v-col>
+              <v-col cols="12">
+                <div
+                  class="beep-label"
+                  v-text="`${$t('Hive_frames')} ${$t('with_bees')}`"
+                ></div>
+                <VueNumericInput
+                  v-if="activeHive && activeHive.layers"
+                  v-model="framesForCalculation"
+                  class="vue-numeric-input--extratop"
+                  :min="0"
+                  :max="maxFrames"
+                  :disabled="bulkInspection"
+                  @change="calculateTpaColonySize"
+                ></VueNumericInput>
+              </v-col>
+            </v-row>
+          </v-col>
 
-        <v-col cols="5" sm="3">
-          <v-row>
-            <v-col cols="12">
-              <div class="beep-label" v-text="`${$t('fr_width_cm')}`"></div>
-              <p
-                v-if="!activeHive.fr_width_cm"
-                style=" font-weight: bold;color:red;"
-                >{{ $t('fr_width_cm') }} N/A!</p
-              >
-              <p
-                v-if="
-                  activeHive.fr_width_cm &&
-                    Math.round(activeHive.fr_width_cm) === 0
-                "
-                style=" font-weight: bold;color:red;"
-                >0 cm</p
-              >
-              <p v-else>{{ activeHive.fr_width_cm }} cm</p>
-            </v-col>
-            <v-col cols="12">
-              <div class="beep-label" v-text="`${$t('fr_height_cm')}`"></div>
-              <p
-                v-if="!activeHive.fr_height_cm"
-                style=" font-weight: bold;color:red;"
-                >{{ $t('fr_height_cm') }} N/A!</p
-              >
-              <p
-                v-if="
-                  activeHive.fr_height_cm &&
-                    Math.round(activeHive.fr_height_cm) === 0
-                "
-                style=" font-weight: bold;color:red;"
-                >0 cm</p
-              >
-              <p v-else>{{ activeHive.fr_height_cm }} cm</p>
-            </v-col>
-          </v-row>
-        </v-col>
-
-        <v-col cols="6" sm="2" md="3">
-          <v-row>
-            <v-col cols="12">
-              <div
-                class="beep-label"
-                v-text="`${$t('Total_colony_size')}`"
-              ></div>
-              <h1 class="mt-2">
-                <span v-if="colonySize"
-                  >{{ colonySize }} {{ $tc('bee', 2) }}</span
+          <v-col cols="5" sm="3">
+            <v-row>
+              <v-col cols="12">
+                <div class="beep-label" v-text="`${$t('fr_width_cm')}`"></div>
+                <p
+                  v-if="!activeHive.fr_width_cm"
+                  style=" font-weight: bold;color:red;"
+                  >{{ $t('fr_width_cm') }} N/A!</p
                 >
-                <span v-if="!colonySize">N/A</span>
-              </h1>
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
-    </div>
+                <p
+                  v-if="
+                    activeHive.fr_width_cm &&
+                      Math.round(activeHive.fr_width_cm) === 0
+                  "
+                  style=" font-weight: bold;color:red;"
+                  >0 cm</p
+                >
+                <p v-else>{{ activeHive.fr_width_cm }} cm</p>
+              </v-col>
+              <v-col cols="12">
+                <div class="beep-label" v-text="`${$t('fr_height_cm')}`"></div>
+                <p
+                  v-if="!activeHive.fr_height_cm"
+                  style=" font-weight: bold;color:red;"
+                  >{{ $t('fr_height_cm') }} N/A!</p
+                >
+                <p
+                  v-if="
+                    activeHive.fr_height_cm &&
+                      Math.round(activeHive.fr_height_cm) === 0
+                  "
+                  style=" font-weight: bold;color:red;"
+                  >0 cm</p
+                >
+                <p v-else>{{ activeHive.fr_height_cm }} cm</p>
+              </v-col>
+            </v-row>
+          </v-col>
 
-    <div v-if="category.children.length > 0">
-      <v-row>
-        <div
-          v-for="(item, index) in category.children"
-          :key="index"
-          :class="generateClassNames(item)"
-        >
-          <ChecklistInput
-            v-if="item.input !== 'label' && item.name !== 'colony_size'"
-            :object="object"
-            :item="item"
-            :locale="locale"
-            @calculate-tpa-colony-size="calculateTpaColonySize"
-          ></ChecklistInput>
-          <ChecklistFieldset
-            v-if="item.input === 'label'"
-            :object="object"
-            :category="item"
-            :locale="locale"
-          ></ChecklistFieldset>
-        </div>
-      </v-row>
-    </div>
+          <v-col cols="6" sm="2" md="3">
+            <v-row>
+              <v-col cols="12">
+                <div
+                  class="beep-label"
+                  v-text="`${$t('Total_colony_size')}`"
+                ></div>
+                <h1 class="mt-2">
+                  <span v-if="colonySize"
+                    >{{ colonySize }} {{ $tc('bee', 2) }}</span
+                  >
+                  <span v-if="!colonySize">N/A</span>
+                </h1>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+      </div>
+
+      <div v-if="category.children.length > 0">
+        <v-row>
+          <div
+            v-for="(item, index) in category.children"
+            :key="index"
+            :class="generateClassNames(item)"
+          >
+            <ChecklistInput
+              v-if="item.input !== 'label' && item.name !== 'colony_size'"
+              :object="object"
+              :item="item"
+              :locale="locale"
+              :disabled="bulkInspection"
+              @calculate-tpa-colony-size="calculateTpaColonySize"
+            ></ChecklistInput>
+            <ChecklistFieldset
+              v-if="item.input === 'label'"
+              :object="object"
+              :category="item"
+              :locale="locale"
+            ></ChecklistFieldset>
+          </div>
+        </v-row>
+      </div>
+      <v-overlay
+        :absolute="true"
+        :value="bulkInspection"
+        :opacity="0.5"
+        color="white"
+        z-index="3"
+        class="input-disabled-overlay"
+      >
+      </v-overlay>
+      <!-- </div> -->
+    </v-card>
   </div>
 </template>
 
@@ -150,6 +178,7 @@ import ChecklistInput from '@components/checklist-input.vue'
 import ChecklistFieldset from '@components/checklist-fieldset.vue'
 import HiveIcon from '@components/hive-icon.vue'
 import VueNumericInput from 'vue-numeric-input'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -189,6 +218,9 @@ export default {
       maxFrames: 12,
       framesForCalculation: 0,
     }
+  },
+  computed: {
+    ...mapGetters('inspections', ['bulkInspection']),
   },
   created() {
     this.activeHive = this.$store.getters['hives/activeHive']

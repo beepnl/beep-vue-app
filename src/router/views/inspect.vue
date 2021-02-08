@@ -30,7 +30,7 @@
     </h1>
 
     <v-form v-else-if="ready" ref="form" v-model="valid">
-      <v-toolbar v-if="ready" class="save-bar" dense light>
+      <v-toolbar v-if="ready" class="save-bar zindex4" dense light>
         <v-spacer></v-spacer>
         <v-btn
           v-if="selectedChecklist && selectedChecklist.owner && !mobile"
@@ -49,7 +49,7 @@
           color="primary"
           class="save-button mr-1"
           :disabled="!valid || (selectedHives && selectedHives.length === 0)"
-          @click.prevent="saveInspection"
+          @click.prevent="confirmSaveInspection"
         >
           <v-progress-circular
             v-if="showLoadingIcon"
@@ -471,6 +471,7 @@ export default {
       'checklist',
       'checklists',
       'inspectionEdited',
+      'bulkInspection',
     ]),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
@@ -695,6 +696,7 @@ export default {
       })
     }
     this.setInspectionEdited(false)
+    this.setBulkInspection(this.selectedHives.length > 1)
     this.ready = true
   },
   methods: {
@@ -914,6 +916,30 @@ export default {
         this.$router.push(this.checklistLink)
       }
     },
+    confirmSaveInspection() {
+      if (this.bulkInspection) {
+        this.$refs.confirm
+          .open(
+            this.$i18n.t('save') +
+              ' ' +
+              this.selectedHives.length +
+              ' ' +
+              this.$i18n.tc('inspection', 2),
+            this.$i18n.t('save_bulkinspection_confirm'),
+            {
+              color: 'red',
+            }
+          )
+          .then((confirm) => {
+            this.saveInspection()
+          })
+          .catch((reject) => {
+            return true
+          })
+      } else {
+        this.saveInspection()
+      }
+    },
     getText(item) {
       const name = item.name
       var research = ''
@@ -949,6 +975,7 @@ export default {
           this.selectedHives = [this.hiveId]
         }
         this.selectedHiveSet = apiary
+        this.setBulkInspection(this.selectedHives.length > 1)
         // If apiary id doesn't exist return 404
       } else {
         this.$router.push({
@@ -978,6 +1005,7 @@ export default {
           }
         }
         this.selectedHiveSet = group
+        this.setBulkInspection(this.selectedHives.length > 1)
         // If group id doesn't exist return 404
       } else {
         this.$router.push({
@@ -995,6 +1023,7 @@ export default {
         }
       }
       this.setInspectionEdited(true)
+      this.setBulkInspection(this.selectedHives.length > 1)
     },
     selectFirstHiveSetFromList() {
       this.selectedHiveSetId = this.sortedHiveSets[0].children[0].treeselectId
@@ -1032,6 +1061,12 @@ export default {
     },
     setInspectionEdited(bool) {
       this.$store.commit('inspections/setInspectionEdited', bool)
+    },
+    setBulkInspection(bool) {
+      this.$store.commit('inspections/setData', {
+        prop: 'bulkInspection',
+        value: bool,
+      })
     },
     switchChecklist(id) {
       if (this.inspectionId !== null || this.inspectionEdited) {

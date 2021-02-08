@@ -14,6 +14,7 @@ export const state = {
   checklists: [],
   inspectionEdited: false,
   selectedInspectionId: null,
+  bulkInspection: false,
 }
 export const getters = {
   ...resource.getters,
@@ -43,6 +44,9 @@ export const getters = {
   },
   selectedInspectionId: (state) => {
     return state.selectedInspectionId
+  },
+  bulkInspection: (state) => {
+    return state.bulkInspection
   },
 }
 export const mutations = {
@@ -74,6 +78,9 @@ export const mutations = {
   setSelectedInspectionId: function(state, id) {
     state.selectedInspectionId = id
   },
+  setData: function(state, payload) {
+    state[payload.prop] = payload.value
+  },
   resetState: function(state) {
     state.diaryFilterByAttention = false
     state.diaryFilterByGroup = false
@@ -84,6 +91,7 @@ export const mutations = {
     state.checklists = []
     state.inspectionEdited = false
     state.selectedInspectionId = null
+    state.bulkInspection = false
   },
 }
 export const actions = {
