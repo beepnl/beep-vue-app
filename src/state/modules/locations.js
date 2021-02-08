@@ -8,6 +8,7 @@ export const state = {
   apiaries: [],
   apiaryListView: 'listView',
   apiaryEdited: false,
+  hiveSearch: null,
 }
 export const getters = {
   ...resource.getters,
@@ -19,6 +20,9 @@ export const getters = {
   },
   apiaryEdited: (state) => {
     return state.apiaryEdited
+  },
+  hiveSearch: (state) => {
+    return state.hiveSearch
   },
 }
 export const mutations = {
@@ -32,10 +36,14 @@ export const mutations = {
   setApiaryListView: function(state, string) {
     state.apiaryListView = string
   },
+  setData: function(state, payload) {
+    state[payload.prop] = payload.value
+  },
   resetState: function(state) {
     state.apiaries = []
     state.apiaryListView = 'listView'
     state.apiaryEdited = false
+    state.hiveSearch = null
   },
 }
 export const actions = {

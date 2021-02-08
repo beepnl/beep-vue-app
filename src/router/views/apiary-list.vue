@@ -10,15 +10,17 @@
           >
             <v-col cols="4" sm="5" :class="mobile ? 'pr-0' : 'pr-1'">
               <v-text-field
-                v-model="search"
+                v-model="hiveSearch"
                 :label="`${$t('Search')}`"
                 :class="
                   `${
-                    search !== null ? 'v-input--is-focused primary--text' : ''
+                    hiveSearch !== null
+                      ? 'v-input--is-focused primary--text'
+                      : ''
                   } filter-text-field`
                 "
                 :height="mobile ? '30px' : '36px'"
-                :autofocus="search !== null"
+                :autofocus="hiveSearch !== null"
                 clearable
                 outlined
                 dense
@@ -557,7 +559,6 @@ export default {
       timeout: 2000,
       text: 'notification',
     },
-    search: null,
     filterByAttention: false,
     filterByBase: false,
     filterByImpression: [],
@@ -575,9 +576,20 @@ export default {
   computed: {
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups', 'invitations']),
+    hiveSearch: {
+      get() {
+        return this.$store.getters['locations/hiveSearch']
+      },
+      set(value) {
+        this.$store.commit('locations/setData', {
+          prop: 'hiveSearch',
+          value,
+        })
+      },
+    },
     filteredHiveSets() {
       var textFilteredHiveSets = []
-      if (this.search === null) {
+      if (this.hiveSearch === null) {
         textFilteredHiveSets = this.sortedHiveSets
       } else {
         textFilteredHiveSets = this.sortedHiveSets.map((hiveSet) => {
@@ -587,7 +599,7 @@ export default {
               typeof value === 'string' &&
               key !== ('description' || 'hex_color')
             ) {
-              return value.toLowerCase().includes(this.search.toLowerCase())
+              return value.toLowerCase().includes(this.hiveSearch.toLowerCase())
             }
           })
           if (hiveSetMatch) {
@@ -600,9 +612,9 @@ export default {
                   if (value !== null && typeof value === 'string') {
                     return value
                       .toLowerCase()
-                      .includes(this.search.toLowerCase())
+                      .includes(this.hiveSearch.toLowerCase())
                   } else if (key === 'id') {
-                    return value.toString().includes(this.search)
+                    return value.toString().includes(this.hiveSearch)
                   } else if (key === 'queen' && value !== null) {
                     return Object.entries(value).some(([key, value]) => {
                       if (
@@ -612,7 +624,7 @@ export default {
                       ) {
                         return value
                           .toLowerCase()
-                          .includes(this.search.toLowerCase())
+                          .includes(this.hiveSearch.toLowerCase())
                       }
                     })
                   }
@@ -670,7 +682,7 @@ export default {
         })
 
       if (
-        this.search !== null ||
+        this.hiveSearch !== null ||
         this.filterByAttention ||
         this.filterByBase ||
         this.filterByImpression.length > 0 ||
@@ -753,7 +765,12 @@ export default {
     }
   },
   created() {
-    this.search = this.$route.query.search || null
+    if (
+      this.$route.query.search !== null &&
+      this.$route.query.search !== undefined
+    ) {
+      this.hiveSearch = this.$route.query.search
+    }
     if (this.apiaries.length === 0 && this.groups.length === 0) {
       // in case user is freshly logged in or in case of hard refresh
       this.readApiariesAndGroups().then(() => {
@@ -782,7 +799,7 @@ export default {
         this.snackbar.show = true
         setTimeout(() => {
           this.readApiariesAndGroups().then(() => {
-            this.search = groupName
+            this.hiveSearch = groupName
             this.showLoadingIconForId = null
           })
         }, 300) // wait for API to update groups
