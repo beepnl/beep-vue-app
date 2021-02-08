@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row class="hive-factory-wrapper">
+    <v-row class="hive-factory-wrapper my-0">
       <v-col cols="12" sm="7" md="12">
         <div class="beep-label" v-text="`${$t('drag_layers')}`"></div>
         <div

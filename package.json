@@ -28,7 +28,6 @@
     "test:unit:watch": "yarn test:unit --watch --notify --notifyMode change"
   },
   "dependencies": {
-    "@chenfengyuan/vue-number-input": "^1.2.1",
     "@fortawesome/fontawesome-svg-core": "1.2.27",
     "@fortawesome/free-solid-svg-icons": "5.12.1",
     "@fortawesome/vue-fontawesome": "0.1.9",

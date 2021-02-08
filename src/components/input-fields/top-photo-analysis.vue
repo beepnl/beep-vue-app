@@ -37,34 +37,26 @@
                 class="beep-label"
                 v-text="`${$tc('Hive_brood_layer', 2)} ${$t('with_bees')}`"
               ></div>
-              <VueNumberInput
+              <VueNumericInput
                 v-if="activeHive && activeHive.layers"
                 v-model="broodLayersForCalculation"
-                class="hive-frame-number-input"
                 :min="0"
                 :max="maxBroodLayers"
-                inline
-                controls
-                rounded
                 @change="calculateTpaColonySize"
-              ></VueNumberInput>
+              ></VueNumericInput>
             </v-col>
             <v-col cols="12">
               <div
                 class="beep-label"
                 v-text="`${$t('Hive_frames')} ${$t('with_bees')}`"
               ></div>
-              <VueNumberInput
+              <VueNumericInput
                 v-if="activeHive && activeHive.layers"
                 v-model="framesForCalculation"
-                class="hive-frame-number-input"
                 :min="0"
                 :max="maxFrames"
-                inline
-                controls
-                rounded
                 @change="calculateTpaColonySize"
-              ></VueNumberInput>
+              ></VueNumericInput>
             </v-col>
           </v-row>
         </v-col>
@@ -157,14 +149,14 @@
 import ChecklistInput from '@components/checklist-input.vue'
 import ChecklistFieldset from '@components/checklist-fieldset.vue'
 import HiveIcon from '@components/hive-icon.vue'
-import VueNumberInput from '@chenfengyuan/vue-number-input'
+import VueNumericInput from 'vue-numeric-input'
 
 export default {
   components: {
     ChecklistInput,
     ChecklistFieldset,
     HiveIcon,
-    VueNumberInput,
+    VueNumericInput,
   },
   props: {
     category: {

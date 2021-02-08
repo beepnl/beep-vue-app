@@ -106,7 +106,7 @@
               </v-col>
             </v-row>
 
-            <v-row class="hive-dimensions-wrapper my-0">
+            <v-row class="my-0">
               <v-col cols="12" sm="7" md="12">
                 <div
                   class="beep-label"
@@ -412,9 +412,6 @@ export default {
   border: 1px solid rgba(0, 0, 0, 0.3) !important;
 }
 
-.hive-dimensions-wrapper {
-  margin-top: 6px;
-}
 .hive-edit-details,
 .hive-dimensions-details {
   padding: 0 12px !important;

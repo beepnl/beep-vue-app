@@ -77,51 +77,39 @@
                     class="beep-label"
                     v-text="`${$tc('Hive_honey_layer', 2)} ${$t('with_bees')}`"
                   ></div>
-                  <VueNumberInput
+                  <VueNumericInput
                     v-if="activeHive && activeHive.layers"
                     v-model="honeyLayersForCalculation"
-                    class="hive-frame-number-input"
                     :min="0"
                     :max="maxHoneyLayers"
-                    inline
-                    controls
-                    rounded
                     @change="calculateLiebefeldColonySize"
-                  ></VueNumberInput>
+                  ></VueNumericInput>
                 </v-col>
                 <v-col cols="12">
                   <div
                     class="beep-label"
                     v-text="`${$tc('Hive_brood_layer', 2)} ${$t('with_bees')}`"
                   ></div>
-                  <VueNumberInput
+                  <VueNumericInput
                     v-if="activeHive && activeHive.layers"
                     v-model="broodLayersForCalculation"
-                    class="hive-frame-number-input"
                     :min="0"
                     :max="maxBroodLayers"
-                    inline
-                    controls
-                    rounded
                     @change="calculateLiebefeldColonySize"
-                  ></VueNumberInput>
+                  ></VueNumericInput>
                 </v-col>
                 <v-col cols="12">
                   <div
                     class="beep-label"
                     v-text="`${$t('Hive_frames')} ${$t('with_bees')}`"
                   ></div>
-                  <VueNumberInput
+                  <VueNumericInput
                     v-if="activeHive && activeHive.layers"
                     v-model="framesForCalculation"
-                    class="hive-frame-number-input"
                     :min="0"
                     :max="maxFrames"
-                    inline
-                    controls
-                    rounded
                     @change="calculateLiebefeldColonySize"
-                  ></VueNumberInput>
+                  ></VueNumericInput>
                 </v-col>
               </v-row>
             </v-col>
@@ -242,13 +230,13 @@
 <script>
 import ChecklistInput from '@components/checklist-input.vue'
 import HiveIcon from '@components/hive-icon.vue'
-import VueNumberInput from '@chenfengyuan/vue-number-input'
+import VueNumericInput from 'vue-numeric-input'
 
 export default {
   components: {
     ChecklistInput,
     HiveIcon,
-    VueNumberInput,
+    VueNumericInput,
   },
   props: {
     category: {
@@ -358,8 +346,5 @@ export default {
   &.has-feeding-box {
     margin-top: 20px;
   }
-}
-.hive-frame-number-input {
-  max-width: 150px !important;
 }
 </style>

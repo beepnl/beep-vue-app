@@ -705,6 +705,7 @@ export default {
           this.$router.push({ name: '404', params: { resource: 'hive' } })
         }
         this.activeHive = response.data.hives[0]
+        this.$store.commit('hives/setActiveHive', this.activeHive)
         if (!this.activeHive.editable) {
           this.hiveNotEditable = true
         }

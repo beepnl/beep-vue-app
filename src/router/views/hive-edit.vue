@@ -134,8 +134,6 @@
               <div class="beep-label" v-text="`${$t('Hive_order')}`"></div>
               <VueNumericInput
                 v-model="activeHive.order"
-                :step="1"
-                :precision="0"
                 @input="setHiveEdited(true)"
               >
               </VueNumericInput>

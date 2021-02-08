@@ -286,64 +286,6 @@
   height: 13px !important;
 }
 
-/* VueNumberInput */
-.number-input {
-  input.number-input__input {
-    padding-top: 5px;
-    padding-right: 3rem !important;
-    padding-bottom: 5px;
-    padding-left: 3rem !important;
-    background-color: transparent !important;
-    border-color: $color-grey-light;
-    border-radius: 4px;
-    &:focus {
-      border-color: $color-primary;
-    }
-  }
-  button.number-input__button {
-    font-size: 24px;
-    color: $color-grey-dark;
-    background-color: transparent !important;
-    &::before {
-      position: relative;
-      top: 0;
-      left: 0;
-      height: 0;
-      margin-left: 2px;
-      font-family: 'Material Design Icons';
-      background: none !important;
-      background-color: transparent;
-      transform: none;
-    }
-    &--plus::before {
-      content: '\F0415';
-    }
-    &--plus::after {
-      height: 0;
-    }
-    &--minus::before {
-      content: '\F0374';
-    }
-    &:hover {
-      &::before {
-        color: $color-primary;
-      }
-    }
-  }
-  &.number-input--small {
-    button.number-input__button {
-      &::before {
-        top: -3px;
-        margin-left: 1px;
-      }
-    }
-    input.number-input__input {
-      padding-right: 2.2rem !important;
-      padding-left: 2.2rem !important;
-    }
-  }
-}
-
 /* Vue Numeric Input */
 .vue-numeric-input {
   .numeric-input {
@@ -361,6 +303,7 @@
   .btn {
     width: 34px !important;
     color: $color-grey-dark;
+    cursor: pointer;
     background: none !important;
     border: 0 !important;
     border-radius: 0 !important;
