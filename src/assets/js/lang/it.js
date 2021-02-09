@@ -678,6 +678,8 @@ const translations = {
     'This item is not available when multiple hives are selected for an inspection, as it can only be filled in per individual hive. It is possible to fill in this item for a single hive at a later time, by editing the inspection for that hive.',
   save_bulkinspection_confirm:
     'Are you sure that you want to save this inspection for multiple hives at the same time?',
+  deleted_but_not_saved_devices_warning:
+    "N.B.: devices will only be removed after clicking the 'Save Devices' button in the top right corner.",
 }
 
 export default translations

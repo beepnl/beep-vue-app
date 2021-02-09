@@ -677,6 +677,8 @@ const translations = {
     'Dit item is niet beschikbaar wanneer meerdere bijenkasten zijn geselecteerd voor een inspectie, omdat het per bijenkast apart moet worden ingevuld. Het is wel mogelijk om dit item later in te vullen voor een individuele kast, door de inspectie voor die kast te bewerken.',
   save_bulkinspection_confirm:
     'Weet je zeker dat je deze inspectie voor meerdere kasten tegelijk wilt opslaan?',
+  deleted_but_not_saved_devices_warning:
+    "Let op: meetsystemen worden pas definitief verwijderd wanneer je op de 'Opslaan Meetsystemen' knop klikt, rechtsboven.",
 }
 
 export default translations

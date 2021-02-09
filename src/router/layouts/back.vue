@@ -55,6 +55,11 @@ export default {
       type: Boolean,
       default: false,
     },
+    warningMessage: {
+      type: String,
+      default: '',
+      required: false,
+    },
   },
   computed: {
     ...mapGetters('groups', ['groupEdited']),
@@ -82,9 +87,14 @@ export default {
           this.edited)
       ) {
         this.$refs.confirm
-          .open(this.$i18n.t('unsaved_changes'), this.$i18n.t('save_changes'), {
-            color: 'red',
-          })
+          .open(
+            this.$i18n.t('unsaved_changes'),
+            this.$i18n.t('save_changes'),
+            {
+              color: 'red',
+            },
+            this.warningMessage
+          )
           .then((confirm) => {
             this.$router.go(-1)
           })
