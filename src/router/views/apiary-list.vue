@@ -559,10 +559,6 @@ export default {
       timeout: 2000,
       text: 'notification',
     },
-    filterByAttention: false,
-    filterByBase: false,
-    filterByImpression: [],
-    filterByReminder: false,
     listView: true,
     gridView: false,
     apiaryView: false,
@@ -576,13 +572,46 @@ export default {
   computed: {
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups', 'invitations']),
-    hiveSearch: {
+    filterByAttention: {
       get() {
-        return this.$store.getters['locations/hiveSearch']
+        return this.$store.getters['locations/hiveFilterByAttention']
       },
       set(value) {
         this.$store.commit('locations/setData', {
-          prop: 'hiveSearch',
+          prop: 'hiveFilterByAttention',
+          value,
+        })
+      },
+    },
+    filterByBase: {
+      get() {
+        return this.$store.getters['locations/hiveFilterByBase']
+      },
+      set(value) {
+        this.$store.commit('locations/setData', {
+          prop: 'hiveFilterByBase',
+          value,
+        })
+      },
+    },
+    filterByImpression: {
+      get() {
+        return this.$store.getters['locations/hiveFilterByImpression']
+      },
+      set(value) {
+        this.$store.commit('locations/setData', {
+          prop: 'hiveFilterByImpression',
+          value,
+        })
+      },
+    },
+    filterByReminder: {
+      get() {
+        return this.$store.getters['locations/hiveFilterByReminder']
+      },
+      set(value) {
+        this.$store.commit('locations/setData', {
+          prop: 'hiveFilterByReminder',
           value,
         })
       },
@@ -694,6 +723,17 @@ export default {
       }
 
       return propertyFilteredHiveSets
+    },
+    hiveSearch: {
+      get() {
+        return this.$store.getters['locations/hiveSearch']
+      },
+      set(value) {
+        this.$store.commit('locations/setData', {
+          prop: 'hiveSearch',
+          value,
+        })
+      },
     },
     hiveSets() {
       var groupsWithEditableHivesProp = this.groups

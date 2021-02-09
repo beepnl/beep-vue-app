@@ -9,6 +9,10 @@ export const state = {
   apiaryListView: 'listView',
   apiaryEdited: false,
   hiveSearch: null,
+  hiveFilterByAttention: false,
+  hiveFilterByBase: false,
+  hiveFilterByImpression: [],
+  hiveFilterByReminder: false,
 }
 export const getters = {
   ...resource.getters,
@@ -20,6 +24,18 @@ export const getters = {
   },
   apiaryEdited: (state) => {
     return state.apiaryEdited
+  },
+  hiveFilterByAttention: (state) => {
+    return state.hiveFilterByAttention
+  },
+  hiveFilterByBase: (state) => {
+    return state.hiveFilterByBase
+  },
+  hiveFilterByImpression: (state) => {
+    return state.hiveFilterByImpression
+  },
+  hiveFilterByReminder: (state) => {
+    return state.hiveFilterByReminder
   },
   hiveSearch: (state) => {
     return state.hiveSearch
@@ -44,6 +60,10 @@ export const mutations = {
     state.apiaryListView = 'listView'
     state.apiaryEdited = false
     state.hiveSearch = null
+    state.hiveFilterByAttention = false
+    state.hiveFilterByBase = false
+    state.hiveFilterByImpression = []
+    state.hiveFilterByReminder = false
   },
 }
 export const actions = {
