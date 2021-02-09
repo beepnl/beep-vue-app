@@ -18,11 +18,13 @@
           >
             <v-col cols="5" :class="mobile ? 'pr-0' : 'pr-1'">
               <v-text-field
-                v-model="search"
+                v-model="diarySearch"
                 :label="`${$t('Search')}`"
                 :class="
                   `${
-                    search !== null ? 'v-input--is-focused primary--text' : ''
+                    diarySearch !== null
+                      ? 'v-input--is-focused primary--text'
+                      : ''
                   } filter-text-field`
                 "
                 :height="mobile ? '30px' : '36px'"
@@ -565,7 +567,6 @@ export default {
   mixins: [momentMixin],
   data: function() {
     return {
-      search: null,
       ready: false,
     }
   },
@@ -573,6 +574,17 @@ export default {
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
     ...mapGetters('inspections', ['generalInspections']),
+    diarySearch: {
+      get() {
+        return this.$store.getters['inspections/diarySearch']
+      },
+      set(value) {
+        this.$store.commit('inspections/setData', {
+          prop: 'diarySearch',
+          value,
+        })
+      },
+    },
     filterByAttention: {
       get() {
         return this.$store.getters['inspections/diaryFilterByAttention']
@@ -661,7 +673,7 @@ export default {
     },
     filteredInspectionsWithUndefined() {
       var textFilteredInspections = []
-      if (this.search === null) {
+      if (this.diarySearch === null) {
         textFilteredInspections = this.inspectionsWithHiveDetails
       } else {
         textFilteredInspections = this.inspectionsWithHiveDetails.map(
@@ -673,7 +685,9 @@ export default {
                   typeof value === 'string'
                   // && key !== ('description' || 'type' || 'hex_color' || 'created_at')
                 ) {
-                  return value.toLowerCase().includes(this.search.toLowerCase())
+                  return value
+                    .toLowerCase()
+                    .includes(this.diarySearch.toLowerCase())
                 }
               }
             )
@@ -760,7 +774,12 @@ export default {
     },
   },
   created() {
-    this.search = this.$route.query.search || null
+    if (
+      this.$route.query.search !== null &&
+      this.$route.query.search !== undefined
+    ) {
+      this.diarySearch = this.$route.query.search
+    }
     this.readApiariesAndGroupsIfNotPresent().then(() => {
       this.readGeneralInspectionsIfNotPresent().then(() => {
         this.ready = true

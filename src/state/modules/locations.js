@@ -55,6 +55,15 @@ export const mutations = {
   setData: function(state, payload) {
     state[payload.prop] = payload.value
   },
+  setFilterByImpression: function(state, payload) {
+    var array = state.hiveFilterByImpression
+    if (array.includes(payload)) {
+      array.splice(array.indexOf(payload), 1)
+    } else {
+      array.push(payload)
+    }
+    state.hiveFilterByImpression = array
+  },
   resetState: function(state) {
     state.apiaries = []
     state.apiaryListView = 'listView'

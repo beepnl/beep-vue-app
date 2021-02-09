@@ -50,7 +50,7 @@
                       : 'color-grey'
                   } mr-2`
                 "
-                @click="updateFilterByImpression(3)"
+                @click="filterByImpression = 3"
               >
                 mdi-emoticon-happy
               </v-icon>
@@ -62,7 +62,7 @@
                       : 'color-grey'
                   } mr-2`
                 "
-                @click="updateFilterByImpression(2)"
+                @click="filterByImpression = 2"
               >
                 mdi-emoticon-neutral
               </v-icon>
@@ -72,7 +72,7 @@
                     filterByImpression.includes(1) ? 'red--text' : 'color-grey'
                   } mr-2`
                 "
-                @click="updateFilterByImpression(1)"
+                @click="filterByImpression = 1"
               >
                 mdi-emoticon-sad
               </v-icon>
@@ -599,10 +599,7 @@ export default {
         return this.$store.getters['locations/hiveFilterByImpression']
       },
       set(value) {
-        this.$store.commit('locations/setData', {
-          prop: 'hiveFilterByImpression',
-          value,
-        })
+        this.$store.commit('locations/setFilterByImpression', value)
       },
     },
     filterByReminder: {
@@ -1100,16 +1097,6 @@ export default {
         this.gridView = false
       }
       this.$store.commit('locations/setApiaryListView', view)
-    },
-    updateFilterByImpression(number) {
-      if (this.filterByImpression.includes(number)) {
-        this.filterByImpression.splice(
-          this.filterByImpression.indexOf(number),
-          1
-        )
-      } else {
-        this.filterByImpression.push(number)
-      }
     },
   },
 }
