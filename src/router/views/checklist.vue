@@ -96,7 +96,7 @@
           </v-col>
           <v-col cols="12" sm="6" md="4">
             <v-text-field
-              v-if="activeChecklist"
+              v-if="activeChecklist && !retrievingChecklist"
               v-model="activeChecklist.name"
               :label="`${$t('Name')}`"
               :placeholder="`${$t('Name')}`"
@@ -107,7 +107,14 @@
             >
             </v-text-field>
           </v-col>
-          <v-col cols="12">
+          <v-col v-if="retrievingChecklist" cols="12">
+            <div class="loading">
+              <Transition appear>
+                <v-progress-circular size="50" color="primary" indeterminate />
+              </Transition>
+            </div>
+          </v-col>
+          <v-col v-if="!retrievingChecklist" cols="12">
             <p
               v-if="activeChecklist && !activeChecklist.owner"
               class="description"
@@ -170,6 +177,7 @@ export default {
       showLoadingIcon: false,
       selectedChecklistId: null,
       ready: false,
+      retrievingChecklist: false,
     }
   },
   computed: {
@@ -242,6 +250,7 @@ export default {
       }
     },
     async readChecklistAndTaxonomy(id) {
+      this.retrievingChecklist = true
       try {
         const response = await Api.readRequest('/checklists/', id)
         if (response.length === 0) {
@@ -249,6 +258,7 @@ export default {
         }
         this.activeChecklist = response.data
         this.activeChecklistTaxonomy = response.data.taxonomy
+        this.retrievingChecklist = false
         return true
       } catch (error) {
         if (error.response) {
