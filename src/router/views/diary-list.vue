@@ -478,7 +478,7 @@
                     :to="{
                       name: 'hive-inspections',
                       params: { id: inspection.hive_id },
-                      query: { search: inspection.id.toString() },
+                      query: { search: 'id=' + inspection.id.toString() },
                     }"
                   >
                     <v-list-item-icon class="mr-3">

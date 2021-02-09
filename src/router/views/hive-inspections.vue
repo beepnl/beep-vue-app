@@ -617,10 +617,18 @@ export default {
               ([key, value]) => {
                 if (
                   value !== null &&
-                  typeof value === 'string'
+                  typeof value === 'string' &&
+                  this.search.substring(0, 3) !== 'id='
                   // && key !== ('description' || 'type' || 'hex_color' || 'created_at')
                 ) {
                   return value.toLowerCase().includes(this.search.toLowerCase())
+                } else if (
+                  key === 'id' &&
+                  this.search.substring(0, 3) === 'id='
+                ) {
+                  return value
+                    .toString()
+                    .includes(this.search.substring(3, this.search.length))
                 } else if (key === 'id') {
                   return value.toString().includes(this.search)
                 }
