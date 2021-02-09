@@ -532,7 +532,7 @@ export default {
           !!v ||
           this.$i18n.t('the_field') +
             ' "' +
-            this.$i18n.t('Naam') +
+            this.$i18n.t('Name') +
             '" ' +
             this.$i18n.t('is_required'),
       ]
