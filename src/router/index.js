@@ -111,4 +111,10 @@ router.beforeResolve(async (routeTo, routeFrom, next) => {
 //   NProgress.done()
 // })
 
+// When each route is finished evaluating store previous route name
+router.afterEach((routeTo, routeFrom) => {
+  localStorage.beepNextRoute = routeTo.name
+  localStorage.beepPreviousRoute = routeFrom.name
+})
+
 export default router

@@ -869,8 +869,12 @@ export default {
           await Api.postRequest('/inspections/store', inspectionToSave)
           setTimeout(() => {
             return this.readApiariesAndGroups().then(() => {
+              // update generalInspections in store for diary-list
               this.readGeneralInspections().then(() => {
-                // update generalInspections in store for diary-list
+                // if previous page was inspections, return there (with inspection id as search term?)
+                // if previous page was apiary-list, return there (with apiary or hive name as search term?)
+                console.log('next route: ', localStorage.beepNextRoute)
+                console.log('previous route: ', localStorage.beepPreviousRoute)
                 this.$router.push({
                   name: 'diary',
                 })
