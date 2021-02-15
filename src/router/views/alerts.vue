@@ -299,288 +299,300 @@
     </v-container>
 
     <v-container>
-      <v-row>
-        <v-col cols="12">
+      <v-card outlined>
+        <div
+          :class="
+            `alertrules-title-row d-flex flex-no-wrap justify-flex-start align-center ${
+              showAlertRules ? 'alertrules-title-row--border-bottom' : ''
+            }`
+          "
+          style="width: 100%;"
+        >
+          <v-row class="ml-0 my-0 pa-3" style="width:100%;">
+            <div class="overline" v-text="$tc('alert_rule', 2)"></div>
+          </v-row>
           <div>
-            <div class="d-flex justify-space-between">
-              <div>
-                <div
-                  v-if="alertRules.length > 0"
-                  class="d-flex flex-row align-center mb-3"
-                >
-                  <div
-                    class="overline"
-                    v-text="
-                      `${$tc(
-                        'alert_rule',
-                        // eslint-disable-next-line vue/comma-dangle
-                        alertRules.length
-                      )}`
-                    "
-                  ></div>
-                  <a
-                    ><v-icon
-                      class="mdi mdi-information ml-1 icon-info"
-                      dark
-                      small
-                      color="primary"
-                      @click="showDescription = !showDescription"
-                    ></v-icon
-                  ></a>
+            <v-icon
+              :class="
+                `color-grey-light py-2 px-3 mdi ${
+                  showAlertRules ? 'mdi-minus' : 'mdi-plus'
+                }`
+              "
+              @click="showAlertRules = !showAlertRules"
+            >
+            </v-icon>
+          </div>
+        </div>
+
+        <v-card-text v-if="showAlertRules">
+          <v-row>
+            <v-col cols="12">
+              <div class="d-flex justify-space-between mb-3">
+                <div class="d-flex justify-start align-center mb-3">
+                  <v-icon
+                    v-if="showAlertRules"
+                    class="mdi mdi-information ml-1 icon-info cursor-pointer mr-2"
+                    dark
+                    small
+                    color="primary"
+                    @click="showDescription = !showDescription"
+                  ></v-icon>
+                  <p v-if="showDescription && ready" class="mb-0">
+                    <em
+                      >{{ $t('alertrule_info') + ' '
+                      }}<a :href="$t('alertrule_url')">{{
+                        $t('alertrule_url_text')
+                      }}</a></em
+                    >
+                  </p>
                 </div>
+                <v-spacer></v-spacer>
+                <v-btn
+                  v-if="!mobile"
+                  tile
+                  outlined
+                  color="primary"
+                  @click="addAlertRule"
+                >
+                  <v-icon left>mdi-plus</v-icon>
+                  {{ $t('add') + ' ' + $tc('alert_rule', 1) }}
+                </v-btn>
+                <v-btn
+                  v-if="mobile"
+                  tile
+                  outlined
+                  color="primary"
+                  @click="addAlertRule"
+                >
+                  <v-icon left>mdi-plus</v-icon>
+                  {{ $t('add') }}
+                  {{ alertRules.length === 0 ? $tc('alert_rule', 1) : '' }}
+                </v-btn>
               </div>
-              <v-spacer></v-spacer>
-              <v-btn
-                v-if="!mobile"
-                tile
-                outlined
-                color="primary"
-                @click="addAlertRule"
-              >
-                <v-icon left>mdi-plus</v-icon>
-                {{ $t('add') + ' ' + $tc('alert_rule', 1) }}
-              </v-btn>
-              <v-btn
-                v-if="mobile"
-                tile
-                outlined
-                color="primary"
-                @click="addAlertRule"
-              >
-                <v-icon left>mdi-plus</v-icon>
-                {{ $t('add') }}
-                {{ alertRules.length === 0 ? $tc('alert_rule', 1) : '' }}
-              </v-btn>
-            </div>
-            <p v-if="showDescription && ready" class="alertrule-description">
-              <em
-                >{{ $t('alertrule_info') + ' '
-                }}<a :href="$t('alertrule_url')">{{
-                  $t('alertrule_url_text')
-                }}</a></em
-              >
-            </p>
-          </div>
-          <div v-if="alertRules.length > 0" class="rounded-border">
-            <v-simple-table dense class="alertrule-table">
-              <template v-slot>
-                <thead>
-                  <tr>
-                    <th class="text-left">
-                      {{ $t('Active') }}
-                    </th>
-                    <th class="text-left">
-                      {{ $t('Alert_via_email') }}
-                    </th>
-                    <th class="text-left">
-                      {{ $t('Name') }}
-                    </th>
-                    <th class="text-left">
-                      {{ $t('Description') }}
-                    </th>
-                    <th class="text-left">
-                      {{ $tc('Measurement', 1) }}
-                    </th>
-                    <th class="text-left">
-                      {{ $t('Calculation') }}
-                    </th>
-                    <th class="text-left">
-                      {{ $t('Calculation_minutes') }}
-                    </th>
-                    <th class="text-left">
-                      {{ $t('Comparator') }}
-                    </th>
-                    <th class="text-left">
-                      {{ $t('Comparison') }}
-                    </th>
-                    <th class="text-left">
-                      {{ $t('Threshold_value') }}
-                    </th>
-                    <th class="text-left">
-                      {{ $t('Exclude') + ' ' + $t('months') }}
-                    </th>
-                    <th class="text-left">
-                      {{ $t('Exclude') + ' ' + $t('hours') }}
-                    </th>
-                    <th class="text-left">
-                      {{ $t('Exclude') + ' ' + $tc('hive', 2) }}
-                    </th>
-                    <th class="text-left">
-                      {{ $t('Webhook_url') }}
-                    </th>
-                    <th class="text-center">
-                      {{ $t('Actions') }}
-                    </th>
-                    <th class="text-center"> </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(alertRule, index) in alertRules" :key="index">
-                    <td>
-                      <v-checkbox
-                        v-model="alertRule.active"
-                        color="primary"
-                      ></v-checkbox>
-                    </td>
-                    <td>
-                      <v-checkbox
-                        v-model="alertRule.alert_via_email"
-                        color="primary"
-                      ></v-checkbox>
-                    </td>
-                    <td class="td--small pb-5">
-                      <v-text-field
-                        v-model="alertRule.name"
-                        :placeholder="`${$t('Name')}`"
-                        class="mt-2 mb-n5"
-                        dense
-                      ></v-text-field>
-                    </td>
-                    <td class="td--medium pb-5">
-                      <v-text-field
-                        v-model="alertRule.description"
-                        :placeholder="`${$t('Description')}`"
-                        class="mt-2 mb-n5"
-                        dense
-                      ></v-text-field>
-                    </td>
-                    <td class="td--medium">
-                      <v-select
-                        v-model="alertRule.measurement_id"
-                        :items="sortedSensorMeasurements"
-                        :item-text="getText"
-                        item-value="id"
-                        :label="
-                          `${$t('Select')} ${$tc(
-                            'measurement',
-                            // eslint-disable-next-line vue/comma-dangle
-                            1
-                          )} ...`
-                        "
-                        class="mt-2 mb-n5"
-                        solo
-                      ></v-select>
-                    </td>
-                    <td class="td--small">
-                      <v-select
-                        v-model="alertRule.calculation"
-                        :items="calculations"
-                        item-text="full"
-                        item-value="short"
-                        :label="`${$t('Select')} ${$t('calculation')} ...`"
-                        class="mt-2 mb-n5"
-                        solo
-                      ></v-select>
-                    </td>
-                    <td>
-                      <VueNumericInput
-                        v-model="alertRule.calculation_minutes"
-                        class="vue-numeric-input--xsmall"
-                      >
-                      </VueNumericInput>
-                    </td>
-                    <td class="td--xsmall">
-                      <v-select
-                        v-model="alertRule.comparator"
-                        :items="comparators"
-                        :label="`${$t('Select')} ${$t('comparator')} ...`"
-                        class="select-xsmall mt-2 mb-n5"
-                        solo
-                      ></v-select>
-                    </td>
-                    <td class="td--small">
-                      <v-select
-                        v-model="alertRule.comparison"
-                        :items="comparisons"
-                        item-text="full"
-                        item-value="short"
-                        :label="`${$t('Select')} ${$t('comparison')} ...`"
-                        class="mt-2 mb-n5"
-                        solo
-                      ></v-select>
-                    </td>
-                    <td>
-                      <VueNumericInput
-                        v-model="alertRule.threshold_value"
-                        class="vue-numeric-input--xsmall"
-                        :step="0.1"
-                        :precision="1"
-                      >
-                      </VueNumericInput>
-                    </td>
-                    <td class="td--treeselect">
-                      <Treeselect
-                        v-model="alertRule.exclude_months"
-                        :options="months"
-                        :placeholder="`${$t('Select')} ${$t('months')}`"
-                        :no-results-text="`${$t('no_results')}`"
-                        multiple
-                      />
-                    </td>
-                    <td class="td--treeselect">
-                      <Treeselect
-                        v-model="alertRule.exclude_hours"
-                        :options="hours"
-                        :placeholder="`${$t('Select')} ${$t('hours')}`"
-                        :no-results-text="`${$t('no_results')}`"
-                        multiple
-                      />
-                    </td>
-                    <td class="td--treeselect">
-                      <Treeselect
-                        v-model="alertRule.exclude_hive_ids"
-                        :options="hivesArray"
-                        :placeholder="`${$t('Select')} ${$tc('hive', 2)}`"
-                        :no-results-text="`${$t('no_results')}`"
-                        multiple
-                      />
-                    </td>
-                    <td class="td--small pb-5">
-                      <v-text-field
-                        v-model="alertRule.webhook_url"
-                        :placeholder="`${$t('Webhook_url')}`"
-                        class="mt-2 mb-n5"
-                        dense
-                      ></v-text-field>
-                    </td>
-                    <td class="pr-0">
-                      <v-progress-circular
-                        v-if="showLoadingIconById.indexOf(alertRule.id) > -1"
-                        class="progress-icon mr-3"
-                        size="18"
-                        width="2"
-                        color="green"
-                        indeterminate
-                      />
-                      <v-icon
-                        v-if="
-                          showLoadingIconById.indexOf(
-                            // eslint-disable-next-line vue/comma-dangle
-                            alertRule.id
-                          ) === -1
-                        "
-                        dark
-                        class="mr-3"
-                        color="green"
-                        @click="saveAlertRule(alertRule)"
-                        >mdi-check</v-icon
-                      >
-                    </td>
-                    <td class="px-0">
-                      <v-icon
-                        dark
-                        color="red"
-                        @click="confirmDeleteAlertRule(alertRule, index)"
-                        >mdi-delete</v-icon
-                      >
-                    </td>
-                  </tr>
-                </tbody>
-              </template>
-            </v-simple-table>
-          </div>
-        </v-col>
-      </v-row>
+              <div v-if="alertRules.length > 0" class="rounded-border">
+                <v-simple-table dense class="alertrule-table">
+                  <template v-slot>
+                    <thead>
+                      <tr>
+                        <th class="text-left">
+                          {{ $t('Active') }}
+                        </th>
+                        <th class="text-left">
+                          {{ $t('Alert_via_email') }}
+                        </th>
+                        <th class="text-left">
+                          {{ $t('Name') }}
+                        </th>
+                        <th class="text-left">
+                          {{ $t('Description') }}
+                        </th>
+                        <th class="text-left">
+                          {{ $tc('Measurement', 1) }}
+                        </th>
+                        <th class="text-left">
+                          {{ $t('Calculation') }}
+                        </th>
+                        <th class="text-left">
+                          {{ $t('Calculation_minutes') }}
+                        </th>
+                        <th class="text-left">
+                          {{ $t('Comparator') }}
+                        </th>
+                        <th class="text-left">
+                          {{ $t('Comparison') }}
+                        </th>
+                        <th class="text-left">
+                          {{ $t('Threshold_value') }}
+                        </th>
+                        <th class="text-left">
+                          {{ $t('Exclude') + ' ' + $t('months') }}
+                        </th>
+                        <th class="text-left">
+                          {{ $t('Exclude') + ' ' + $t('hours') }}
+                        </th>
+                        <th class="text-left">
+                          {{ $t('Exclude') + ' ' + $tc('hive', 2) }}
+                        </th>
+                        <th class="text-left">
+                          {{ $t('Webhook_url') }}
+                        </th>
+                        <th class="text-center">
+                          {{ $t('Actions') }}
+                        </th>
+                        <th class="text-center"> </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="(alertRule, index) in alertRules" :key="index">
+                        <td>
+                          <v-checkbox
+                            v-model="alertRule.active"
+                            color="primary"
+                          ></v-checkbox>
+                        </td>
+                        <td>
+                          <v-checkbox
+                            v-model="alertRule.alert_via_email"
+                            color="primary"
+                          ></v-checkbox>
+                        </td>
+                        <td class="td--small pb-5">
+                          <v-text-field
+                            v-model="alertRule.name"
+                            :placeholder="`${$t('Name')}`"
+                            class="mt-2 mb-n5"
+                            dense
+                          ></v-text-field>
+                        </td>
+                        <td class="td--medium pb-5">
+                          <v-text-field
+                            v-model="alertRule.description"
+                            :placeholder="`${$t('Description')}`"
+                            class="mt-2 mb-n5"
+                            dense
+                          ></v-text-field>
+                        </td>
+                        <td class="td--medium">
+                          <v-select
+                            v-model="alertRule.measurement_id"
+                            :items="sortedSensorMeasurements"
+                            :item-text="getText"
+                            item-value="id"
+                            :label="
+                              `${$t('Select')} ${$tc(
+                                'measurement',
+                                // eslint-disable-next-line vue/comma-dangle
+                                1
+                              )} ...`
+                            "
+                            class="mt-2 mb-n5"
+                            solo
+                          ></v-select>
+                        </td>
+                        <td class="td--small">
+                          <v-select
+                            v-model="alertRule.calculation"
+                            :items="calculations"
+                            item-text="full"
+                            item-value="short"
+                            :label="`${$t('Select')} ${$t('calculation')} ...`"
+                            class="mt-2 mb-n5"
+                            solo
+                          ></v-select>
+                        </td>
+                        <td>
+                          <VueNumericInput
+                            v-model="alertRule.calculation_minutes"
+                            class="vue-numeric-input--xsmall"
+                          >
+                          </VueNumericInput>
+                        </td>
+                        <td class="td--xsmall">
+                          <v-select
+                            v-model="alertRule.comparator"
+                            :items="comparators"
+                            :label="`${$t('Select')} ${$t('comparator')} ...`"
+                            class="select-xsmall mt-2 mb-n5"
+                            solo
+                          ></v-select>
+                        </td>
+                        <td class="td--small">
+                          <v-select
+                            v-model="alertRule.comparison"
+                            :items="comparisons"
+                            item-text="full"
+                            item-value="short"
+                            :label="`${$t('Select')} ${$t('comparison')} ...`"
+                            class="mt-2 mb-n5"
+                            solo
+                          ></v-select>
+                        </td>
+                        <td>
+                          <VueNumericInput
+                            v-model="alertRule.threshold_value"
+                            class="vue-numeric-input--xsmall"
+                            :step="0.1"
+                            :precision="1"
+                          >
+                          </VueNumericInput>
+                        </td>
+                        <td class="td--treeselect">
+                          <Treeselect
+                            v-model="alertRule.exclude_months"
+                            :options="months"
+                            :placeholder="`${$t('Select')} ${$t('months')}`"
+                            :no-results-text="`${$t('no_results')}`"
+                            multiple
+                          />
+                        </td>
+                        <td class="td--treeselect">
+                          <Treeselect
+                            v-model="alertRule.exclude_hours"
+                            :options="hours"
+                            :placeholder="`${$t('Select')} ${$t('hours')}`"
+                            :no-results-text="`${$t('no_results')}`"
+                            multiple
+                          />
+                        </td>
+                        <td class="td--treeselect">
+                          <Treeselect
+                            v-model="alertRule.exclude_hive_ids"
+                            :options="hivesArray"
+                            :placeholder="`${$t('Select')} ${$tc('hive', 2)}`"
+                            :no-results-text="`${$t('no_results')}`"
+                            multiple
+                          />
+                        </td>
+                        <td class="td--small pb-5">
+                          <v-text-field
+                            v-model="alertRule.webhook_url"
+                            :placeholder="`${$t('Webhook_url')}`"
+                            class="mt-2 mb-n5"
+                            dense
+                          ></v-text-field>
+                        </td>
+                        <td class="pr-0">
+                          <v-progress-circular
+                            v-if="
+                              showLoadingIconById.indexOf(alertRule.id) > -1
+                            "
+                            class="progress-icon mr-3"
+                            size="18"
+                            width="2"
+                            color="green"
+                            indeterminate
+                          />
+                          <v-icon
+                            v-if="
+                              showLoadingIconById.indexOf(
+                                // eslint-disable-next-line vue/comma-dangle
+                                alertRule.id
+                              ) === -1
+                            "
+                            dark
+                            class="mr-3"
+                            color="green"
+                            @click="saveAlertRule(alertRule)"
+                            >mdi-check</v-icon
+                          >
+                        </td>
+                        <td class="px-0">
+                          <v-icon
+                            dark
+                            color="red"
+                            @click="confirmDeleteAlertRule(alertRule, index)"
+                            >mdi-delete</v-icon
+                          >
+                        </td>
+                      </tr>
+                    </tbody>
+                  </template>
+                </v-simple-table>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
     </v-container>
 
     <Confirm ref="confirm"></Confirm>
@@ -621,6 +633,7 @@ export default {
       showDescription: true,
       sensorMeasurements: [],
       showLoadingIconById: [],
+      showAlertRules: false,
     }
   },
   computed: {
@@ -1128,7 +1141,7 @@ export default {
 }
 
 .alerts-content {
-  margin-top: 61px;
+  margin-top: 80px;
   overflow: hidden;
   @include for-phone-only {
     margin-top: 55px;
@@ -1229,6 +1242,16 @@ export default {
         }
       }
     }
+  }
+}
+
+.alertrules-title-row {
+  line-height: 1.2rem !important;
+  @include for-phone-only {
+    line-height: 1rem !important;
+  }
+  &--border-bottom {
+    border-bottom: 1px solid $color-grey-light;
   }
 }
 
