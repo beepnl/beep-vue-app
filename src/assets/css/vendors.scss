@@ -282,6 +282,27 @@
 
 .v-data-table {
   background-color: transparent !important;
+  .td--xsmall {
+    .v-input__control {
+      min-width: 70px !important;
+      max-width: 70px !important;
+    }
+  }
+  .td--small {
+    .v-input__control {
+      min-width: 130px !important;
+      max-width: 130px !important;
+    }
+  }
+  .td--medium {
+    .v-input__control {
+      min-width: 150px !important;
+      max-width: 150px !important;
+    }
+  }
+  .v-input__control {
+    font-size: 14px !important;
+  }
 }
 
 .v-data-table.v-data-table--dense.table--heatmap
@@ -371,7 +392,9 @@
       }
     }
   }
-  &.vue-numeric-input--small {
+  &.vue-numeric-input--small,
+  &.vue-numeric-input--xsmall {
+    max-width: 120px !important;
     .numeric-input {
       height: 31px !important;
     }
@@ -382,6 +405,9 @@
         font-size: 20px !important;
       }
     }
+  }
+  &.vue-numeric-input--xsmall {
+    max-width: 108px !important;
   }
 }
 

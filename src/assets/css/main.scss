@@ -52,7 +52,7 @@
         max-width: 300px;
       }
     }
-    .v-input {
+    .v-input:not(.v-input--switch) {
       background-color: $color-white;
       @include for-phone-only {
         max-width: 115px;
