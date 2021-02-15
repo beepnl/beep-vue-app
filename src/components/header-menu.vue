@@ -43,6 +43,10 @@
         <v-list-item :disabled="!loggedIn" @click="signOut">{{
           $t('logout')
         }}</v-list-item>
+        <v-divider></v-divider>
+        <v-list-item dense class="version-number">
+          v3.0.1
+        </v-list-item>
       </v-list>
     </v-menu>
     <v-dialog v-model="dialog.show">
@@ -94,5 +98,12 @@ export default {
 .header-menu-button {
   min-width: 12px !important;
   padding: 0 4px !important;
+}
+.version-number {
+  min-height: 20px !important;
+  max-height: 20px !important;
+  padding-top: 8px !important;
+  font-size: 11px !important;
+  color: $color-grey-light !important;
 }
 </style>
