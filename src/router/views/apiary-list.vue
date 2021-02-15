@@ -87,23 +87,23 @@
           </div>
           <v-card-actions class="view-buttons">
             <v-icon
-              :class="`${listView ? 'color-primary' : ''} mr-2`"
-              @click="toggleGrid('listView')"
+              :class="`${apiaryView ? 'color-primary' : ''} mr-1 mr-sm-2`"
+              @click="toggleGrid('apiaryView')"
             >
-              mdi-view-headline
+              mdi-size-xs
             </v-icon>
             <v-icon
               v-if="!mobile"
               :class="`${gridView ? 'color-primary' : ''} mr-2`"
               @click="toggleGrid('gridView')"
             >
-              mdi-view-grid-outline
+              mdi-size-m
             </v-icon>
             <v-icon
-              :class="`${apiaryView ? 'color-primary' : ''}`"
-              @click="toggleGrid('apiaryView')"
+              :class="`${listView ? 'color-primary' : ''}`"
+              @click="toggleGrid('listView')"
             >
-              mdi-home-analytics
+              mdi-size-xl
             </v-icon>
           </v-card-actions>
         </v-row>

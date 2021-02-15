@@ -627,9 +627,6 @@ export default {
     })
   },
   methods: {
-    consoleLog(blub) {
-      console.log(blub)
-    },
     async createApiary() {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
@@ -780,6 +777,7 @@ export default {
 
   .browse-tabs-bar {
     padding: 4px 0;
+    margin-top: 48px;
     background-color: $color-orange-light !important;
     border-bottom: 1px solid #fff5e2 !important;
     @include for-tablet-landscape-up {

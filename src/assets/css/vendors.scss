@@ -62,6 +62,13 @@
   }
 }
 
+.apiary-create .v-item-group.v-tabs-bar {
+  position: fixed !important;
+  top: 48px !important;
+  z-index: 1 !important;
+  width: 100% !important;
+}
+
 .v-toolbar__content {
   // height: 48px !important;
   .v-toolbar__title {
