@@ -120,17 +120,21 @@
         <v-card-text v-if="showAlertRules">
           <v-row>
             <v-col cols="12">
-              <div class="d-flex justify-space-between mb-3">
-                <div class="d-flex justify-start align-center mb-3">
+              <v-row>
+                <v-col
+                  cols="12"
+                  lg="10"
+                  class="d-flex justify-start align-start pb-0 mb-lg-3"
+                >
                   <v-icon
                     v-if="showAlertRules"
-                    class="mdi mdi-information ml-1 icon-info cursor-pointer mr-2"
+                    class="mdi mdi-information icon-info cursor-pointer mr-2"
                     dark
                     small
                     color="primary"
                     @click="showDescription = !showDescription"
                   ></v-icon>
-                  <p v-if="showDescription && ready" class="mb-0">
+                  <p v-if="showDescription && ready" class="mt-n1 mb-0">
                     <em
                       >{{ $t('alertrule_info') + ' '
                       }}<a :href="$t('alertrule_url')">{{
@@ -138,32 +142,26 @@
                       }}</a></em
                     >
                   </p>
-                </div>
-                <v-spacer></v-spacer>
-                <v-btn
-                  v-if="!mobile"
-                  tile
-                  outlined
-                  color="primary"
-                  @click="addAlertRule"
+                </v-col>
+                <v-col
+                  cols="12"
+                  lg="2"
+                  class="d-flex justify-end align-center mb-3"
                 >
-                  <v-icon left>mdi-plus</v-icon>
-                  {{ $t('add') + ' ' + $tc('alertrule', 1) }}
-                </v-btn>
-                <v-btn
-                  v-if="mobile"
-                  tile
-                  outlined
-                  color="primary"
-                  @click="addAlertRule"
-                >
-                  <v-icon left>mdi-plus</v-icon>
-                  {{ $t('add') }}
-                  {{ alertRules.length === 0 ? $tc('alertrule', 1) : '' }}
-                </v-btn>
-              </div>
+                  <router-link
+                    :to="{
+                      name: 'alertrule-create',
+                    }"
+                  >
+                    <v-btn tile outlined color="primary">
+                      <v-icon left>mdi-plus</v-icon>
+                      {{ $t('add') + ' ' + $tc('alertrule', 1) }}
+                    </v-btn>
+                  </router-link>
+                </v-col>
+              </v-row>
               <div v-if="alertRules.length > 0" class="rounded-border">
-                <v-simple-table dense class="alertrule-table">
+                <v-simple-table class="alertrule-table">
                   <template v-slot>
                     <thead>
                       <tr>
@@ -180,185 +178,90 @@
                           {{ $t('Description') }}
                         </th>
                         <th class="text-left">
-                          {{ $tc('Measurement', 1) }}
-                        </th>
-                        <th class="text-left">
-                          {{ $t('Calculation') }}
-                        </th>
-                        <th class="text-left">
-                          {{ $t('Calculation_minutes') }}
-                        </th>
-                        <th class="text-left">
-                          {{ $t('Comparator') }}
-                        </th>
-                        <th class="text-left">
-                          {{ $t('Comparison') }}
-                        </th>
-                        <th class="text-left">
-                          {{ $t('Threshold_value') }}
-                        </th>
-                        <th class="text-left">
-                          {{ $t('Exclude') + ' ' + $t('months') }}
-                        </th>
-                        <th class="text-left">
-                          {{ $t('Exclude') + ' ' + $t('hours') }}
-                        </th>
-                        <th class="text-left">
-                          {{ $t('Exclude') + ' ' + $tc('hive', 2) }}
-                        </th>
-                        <th class="text-center">
                           {{ $t('Actions') }}
                         </th>
-                        <th class="text-center"> </th>
+                        <th></th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr v-for="(alertRule, index) in alertRules" :key="index">
                         <td>
-                          <v-checkbox
-                            v-model="alertRule.active"
-                            color="primary"
-                          ></v-checkbox>
-                        </td>
-                        <td>
-                          <v-checkbox
-                            v-model="alertRule.alert_via_email"
-                            color="primary"
-                          ></v-checkbox>
-                        </td>
-                        <td class="td--small pb-5">
-                          <v-text-field
-                            v-model="alertRule.name"
-                            :placeholder="`${$t('Name')}`"
-                            class="mt-2 mb-n5"
-                            dense
-                          ></v-text-field>
-                        </td>
-                        <td class="td--medium pb-5">
-                          <v-text-field
-                            v-model="alertRule.description"
-                            :placeholder="`${$t('Description')}`"
-                            class="mt-2 mb-n5"
-                            dense
-                          ></v-text-field>
-                        </td>
-                        <td class="td--medium">
-                          <v-select
-                            v-model="alertRule.measurement_id"
-                            :items="sortedSensorMeasurements"
-                            :item-text="getText"
-                            item-value="id"
-                            :label="
-                              `${$t('Select')} ${$tc(
-                                'measurement',
-                                // eslint-disable-next-line vue/comma-dangle
-                                1
-                              )} ...`
-                            "
-                            class="mt-2 mb-n5"
-                            solo
-                          ></v-select>
-                        </td>
-                        <td class="td--small">
-                          <v-select
-                            v-model="alertRule.calculation"
-                            :items="calculations"
-                            item-text="full"
-                            item-value="short"
-                            :label="`${$t('Select')} ${$t('calculation')} ...`"
-                            class="mt-2 mb-n5"
-                            solo
-                          ></v-select>
-                        </td>
-                        <td>
-                          <VueNumericInput
-                            v-model="alertRule.calculation_minutes"
-                            class="vue-numeric-input--xsmall"
-                          >
-                          </VueNumericInput>
-                        </td>
-                        <td class="td--xsmall">
-                          <v-select
-                            v-model="alertRule.comparator"
-                            :items="comparators"
-                            :label="`${$t('Select')} ${$t('comparator')} ...`"
-                            class="select-xsmall mt-2 mb-n5"
-                            solo
-                          ></v-select>
-                        </td>
-                        <td class="td--small">
-                          <v-select
-                            v-model="alertRule.comparison"
-                            :items="comparisons"
-                            item-text="full"
-                            item-value="short"
-                            :label="`${$t('Select')} ${$t('comparison')} ...`"
-                            class="mt-2 mb-n5"
-                            solo
-                          ></v-select>
-                        </td>
-                        <td>
-                          <VueNumericInput
-                            v-model="alertRule.threshold_value"
-                            class="vue-numeric-input--xsmall"
-                            :step="0.1"
-                            :precision="1"
-                          >
-                          </VueNumericInput>
-                        </td>
-                        <td class="td--treeselect">
-                          <Treeselect
-                            v-model="alertRule.exclude_months"
-                            :options="months"
-                            :placeholder="`${$t('Select')} ${$t('months')}`"
-                            :no-results-text="`${$t('no_results')}`"
-                            multiple
-                          />
-                        </td>
-                        <td class="td--treeselect">
-                          <Treeselect
-                            v-model="alertRule.exclude_hours"
-                            :options="hours"
-                            :placeholder="`${$t('Select')} ${$t('hours')}`"
-                            :no-results-text="`${$t('no_results')}`"
-                            multiple
-                          />
-                        </td>
-                        <td class="td--treeselect">
-                          <Treeselect
-                            v-model="alertRule.exclude_hive_ids"
-                            :options="hivesArray"
-                            :placeholder="`${$t('Select')} ${$tc('hive', 2)}`"
-                            :no-results-text="`${$t('no_results')}`"
-                            multiple
-                          />
-                        </td>
-                        <td class="pr-0">
                           <v-progress-circular
                             v-if="
-                              showLoadingIconById.indexOf(alertRule.id) > -1
+                              showLoadingIconById.active.indexOf(alertRule.id) >
+                                -1
                             "
-                            class="progress-icon mr-3"
+                            class="progress-icon"
                             size="18"
                             width="2"
-                            color="green"
+                            :color="alertRule.active ? 'red' : 'green'"
                             indeterminate
                           />
                           <v-icon
                             v-if="
-                              showLoadingIconById.indexOf(
+                              showLoadingIconById.active.indexOf(
                                 // eslint-disable-next-line vue/comma-dangle
                                 alertRule.id
                               ) === -1
                             "
                             dark
-                            class="mr-3"
-                            color="green"
-                            @click="saveAlertRule(alertRule)"
-                            >mdi-check</v-icon
+                            :color="alertRule.active ? 'green' : 'red'"
+                            @click="toggleAlertRule(alertRule, 'active')"
+                            >{{
+                              alertRule.active ? 'mdi-check' : 'mdi-close'
+                            }}</v-icon
                           >
                         </td>
-                        <td class="px-0">
+                        <td>
+                          <v-progress-circular
+                            v-if="
+                              showLoadingIconById.alert_via_email.indexOf(
+                                // eslint-disable-next-line vue/comma-dangle
+                                alertRule.id
+                              ) > -1
+                            "
+                            class="progress-icon"
+                            size="18"
+                            width="2"
+                            :color="alertRule.alert_via_email ? 'red' : 'green'"
+                            indeterminate
+                          />
+                          <v-icon
+                            v-if="
+                              showLoadingIconById.alert_via_email.indexOf(
+                                // eslint-disable-next-line vue/comma-dangle
+                                alertRule.id
+                              ) === -1
+                            "
+                            dark
+                            :color="alertRule.alert_via_email ? 'green' : 'red'"
+                            @click="
+                              toggleAlertRule(alertRule, 'alert_via_email')
+                            "
+                            >{{
+                              alertRule.alert_via_email
+                                ? 'mdi-check'
+                                : 'mdi-close'
+                            }}</v-icon
+                          >
+                        </td>
+                        <td>
+                          <span v-text="alertRule.name"></span>
+                        </td>
+                        <td>
+                          <span v-text="alertRule.description"></span>
+                        </td>
+                        <td>
+                          <router-link
+                            :to="{
+                              name: 'alertrule-edit',
+                              params: { id: alertRule.id },
+                            }"
+                          >
+                            <v-icon dark color="primary">mdi-pencil</v-icon>
+                          </router-link>
+                        </td>
+                        <td>
                           <v-icon
                             dark
                             color="red"
@@ -389,9 +292,6 @@ import Layout from '@layouts/main.vue'
 import { mapGetters } from 'vuex'
 import { momentMixin } from '@mixins/momentMixin'
 import { ScaleTransition } from 'vue2-transitions'
-import VueNumericInput from 'vue-numeric-input'
-import Treeselect from '@riophae/vue-treeselect'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 export default {
   components: {
@@ -399,13 +299,10 @@ export default {
     Confirm,
     Layout,
     ScaleTransition,
-    VueNumericInput,
-    Treeselect,
   },
   mixins: [momentMixin],
   data: function() {
     return {
-      comparators: ['=', '<', '>', '<=', '>='],
       alerts: [],
       alertRules: [],
       alertsEnabled: true,
@@ -413,13 +310,15 @@ export default {
       search: null,
       errors: [],
       showDescription: true,
-      sensorMeasurements: [],
-      showLoadingIconById: [],
+      // sensorMeasurements: [],
       showAlertRules: false,
+      showLoadingIconById: {
+        active: [],
+        alert_via_email: [],
+      },
     }
   },
   computed: {
-    ...mapGetters('devices', ['devices', 'devicesPresent']),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
     alertsWithRuleDetails() {
@@ -454,50 +353,6 @@ export default {
         alert.rule_name = ruleName
       })
       return alertsWithRuleDetails
-    },
-    calculations() {
-      return [
-        {
-          short: 'min',
-          full: this.$i18n.t('Minimum'),
-        },
-        {
-          short: 'max',
-          full: this.$i18n.t('Maximum'),
-        },
-        {
-          short: 'ave',
-          full: this.$i18n.t('Average'),
-        },
-        {
-          short: 'der',
-          full: this.$i18n.t('Derivative'),
-        },
-        {
-          short: 'cnt',
-          full: this.$i18n.t('Count'),
-        },
-      ]
-    },
-    comparisons() {
-      return [
-        {
-          short: 'val',
-          full: this.$i18n.t('Value'),
-        },
-        {
-          short: 'dif',
-          full: this.$i18n.t('Difference'),
-        },
-        {
-          short: 'abs',
-          full: this.$i18n.t('Absolute_value'),
-        },
-        {
-          short: 'abs_dif',
-          full: this.$i18n.t('Absolute_value_of_dif'),
-        },
-      ]
     },
     filteredAlerts() {
       var textFilteredAlerts = []
@@ -553,67 +408,22 @@ export default {
       }
       return uniqueHives
     },
-    hivesArray() {
-      return Object.values(this.hives)
-    },
-    hours() {
-      var hoursArray = []
-      for (var i = 0; i < 24; i++) {
-        hoursArray.push({
-          id: i,
-          label: i,
-        })
-      }
-      return hoursArray
-    },
     locale() {
       return this.$i18n.locale
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile
     },
-    months() {
-      var monthsArray = []
-      for (var i = 1; i < 13; i++) {
-        monthsArray.push({
-          id: i,
-          label: this.$i18n.t('monthsShort')[i - 1],
-        })
-      }
-      return monthsArray
-    },
     showAlertPlaceholder() {
       return this.alerts.length === 0
-    },
-    smallScreen() {
-      return (
-        this.$vuetify.breakpoint.width < 850 &&
-        this.$vuetify.breakpoint.width > 500
-      )
-    },
-    sortedSensorMeasurements() {
-      var sortedSMs = this.sensorMeasurements.slice().sort(function(a, b) {
-        if (a.abbreviation > b.abbreviation) {
-          return 1
-        }
-        if (b.abbreviation > a.abbreviation) {
-          return -1
-        }
-        return 0
-      })
-      return sortedSMs
-    },
-    upTo850() {
-      return this.$vuetify.breakpoint.width < 850
     },
   },
   created() {
     this.search = this.$route.query.search || null
     this.readApiariesAndGroupsIfNotPresent().then(() => {
-      this.readDevices().then(() => {
-        this.readTaxonomy()
-        this.readAlertRules()
-        this.readAlerts().then(() => {
+      this.readAlerts().then(() => {
+        // this.readTaxonomy()
+        this.readAlertRules().then(() => {
           this.ready = true
         })
       })
@@ -710,161 +520,69 @@ export default {
         }
       }
     },
-    async readDevices() {
-      if (this.devicesPresent && this.devices.length === 0) {
-        try {
-          const response = await Api.readRequest('/devices')
-          const devicesPresent = response.data.length > 0
-          this.$store.commit('devices/setData', {
-            prop: 'devices',
-            value: response.data,
-          })
-          this.$store.commit('devices/setData', {
-            prop: 'devicesPresent',
-            value: devicesPresent,
-          })
-          return true
-        } catch (error) {
-          if (error.response) {
-            if (typeof error.response.data.message !== 'undefined') {
-              var msg = error.response.data.message
-            } else {
-              msg = error.response.data
-            }
-            this.errors.push({
-              errorMessage: this.$i18n.t(msg),
-            })
-            if (error.response.data === 'no_devices_found') {
-              this.$store.commit('devices/setData', {
-                prop: 'devicesPresent',
-                value: false,
-              })
-              this.$store.commit('devices/setData', {
-                prop: 'devices',
-                value: [],
-              })
-            }
-          } else {
-            this.errors.push({
-              errorMessage: this.$i18n.t('Error'),
-            })
-          }
-        }
-      }
-    },
-    async readTaxonomy() {
+    // async readTaxonomy() {
+    //   try {
+    //     const response = await Api.readRequest('/taxonomy/lists')
+    //     this.sensorMeasurements = response.data.sensormeasurements
+    //     return true
+    //   } catch (error) {
+    //     if (error.response) {
+    //       console.log(error.response)
+    //     } else {
+    //       console.log('Error: ', error)
+    //     }
+    //   }
+    // },
+    async toggleAlertRule(alertRule, property) {
+      this.showLoadingIconById[property].push(alertRule.id)
+      alertRule[property] = !alertRule[property]
       try {
-        const response = await Api.readRequest('/taxonomy/lists')
-        this.sensorMeasurements = response.data.sensormeasurements
-        return true
+        const response = await Api.updateRequest(
+          '/alert-rules/',
+          alertRule.id,
+          alertRule
+        )
+        if (response) {
+          this.readAlertRules().then(() => {
+            this.showLoadingIconById[property].splice(
+              this.showLoadingIconById[property].indexOf(alertRule.id),
+              1
+            )
+          })
+        }
       } catch (error) {
+        alertRule[property] = !alertRule[property]
+        this.showLoadingIconById[property].splice(
+          this.showLoadingIconById[property].indexOf(alertRule.id),
+          1
+        )
         if (error.response) {
-          console.log(error.response)
+          console.log('Error: ', error.response)
         } else {
           console.log('Error: ', error)
         }
       }
     },
-    async saveAlertRule(alertRule) {
-      this.errorMessage = null
-      this.showLoadingIconById.push(alertRule.id)
-      try {
-        var response = false
-        if (alertRule.id !== undefined) {
-          response = await Api.updateRequest(
-            '/alert-rules/',
-            alertRule.id,
-            alertRule
-          )
-        } else {
-          // const formData = new FormData()
-          // formData.append('name', alertRule.name)
-          // formData.append('measurement_id', alertRule.measurement_id)
-          // formData.append('calculation', alertRule.calculation)
-          // formData.append('comparator', alertRule.comparator)
-          // formData.append('comparison', alertRule.comparison)
-          // formData.append('threshold_value', alertRule.threshold_value)
-
-          // const headers = {
-          //   'Content-Type': 'multipart/form-data; boundary=XXX',
-          // }
-
-          // response = await Api.postRequestWithHeaders(
-          //   '/alert-rules',
-          //   formData,
-          //   headers
-          // )
-          response = await Api.postRequest('/alert-rules', alertRule)
-        }
-        if (!response) {
-          this.errorMessage =
-            this.$i18n.t('Error') + ': ' + this.$i18n.t('not_saved_error')
-        }
-        this.readAlertRules().then(() => {
-          this.showLoadingIconById.splice(
-            this.showLoadingIconById.indexOf(alertRule.id),
-            1
-          )
-        })
-        // TODO: this.readApiaries() for latest measurement data? Groups as well??
-        return true
-      } catch (error) {
-        this.showLoadingIconById.splice(
-          this.showLoadingIconById.indexOf(alertRule.id),
-          1
-        )
-        if (error.response) {
-          console.log('Error: ', error.response)
-          const msg = error.response.data.message
-          this.errorMessage = this.$i18n.t(msg)
-        } else {
-          this.errorMessage = this.$i18n.t('Error')
-        }
-      }
-    },
-    addAlertRule() {
-      this.alertRules.push({
-        name: '',
-        description: '',
-        measurement_id: null,
-        calculation: null,
-        calculation_minutes: null,
-        comparator: null,
-        comparison: null,
-        threshold_value: null,
-        exclude_months: [],
-        exclude_hours: [],
-        exclude_hive_ids: [],
-        default_rule: 0,
-        active: 1,
-        alert_via_email: 0,
-        webhook_url: '',
-      })
-    },
     confirmDeleteAlertRule(alertRule, index) {
-      if (alertRule.id !== undefined) {
-        this.$refs.confirm
-          .open(
-            this.$i18n.t('delete_alertrule'),
-            this.$i18n.t('delete_alertrule') +
-              ' (' +
-              alertRule.name +
-              ' - ' +
-              alertRule.description +
-              ')?',
-            {
-              color: 'red',
-            }
-          )
-          .then((confirm) => {
-            this.deleteAlertRule(alertRule.id)
-          })
-          .catch((reject) => {
-            return true
-          })
-      } else {
-        this.alertRules.splice(index, 1)
-      }
+      this.$refs.confirm
+        .open(
+          this.$i18n.t('delete_alertrule'),
+          this.$i18n.t('delete_alertrule') +
+            ' (' +
+            alertRule.name +
+            ' - ' +
+            alertRule.description +
+            ')?',
+          {
+            color: 'red',
+          }
+        )
+        .then((confirm) => {
+          this.deleteAlertRule(alertRule.id)
+        })
+        .catch((reject) => {
+          return true
+        })
     },
     confirmHideAlert(alert) {
       this.$refs.confirm
@@ -888,9 +606,6 @@ export default {
         .catch((reject) => {
           return true
         })
-    },
-    deviceName(id) {
-      return this.devices.filter((device) => device.id === id)[0].name
     },
     hideAlert(alert) {
       alert.show = 0
@@ -978,10 +693,6 @@ export default {
     @include for-phone-only {
       font-size: 12px !important;
     }
-  }
-  .td--treeselect {
-    min-width: 140px;
-    padding: 6px 2px;
   }
 }
 </style>

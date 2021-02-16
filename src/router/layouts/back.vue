@@ -62,6 +62,7 @@ export default {
     },
   },
   computed: {
+    ...mapGetters('alertss', ['alertRuleEdited']),
     ...mapGetters('groups', ['groupEdited']),
     ...mapGetters('hives', ['hiveEdited']),
     ...mapGetters('inspections', ['inspectionEdited']),
@@ -81,6 +82,7 @@ export default {
           this.groupEdited) ||
         (this.$route.name === 'hive-edit' && this.hiveEdited) ||
         (this.$route.name === 'inspect' && this.inspectionEdited) ||
+        (this.$route.name === 'alertrule-edit' && this.alertRuleEdited) ||
         ((this.$route.name === 'checklist' ||
           this.$route.name === 'research' ||
           this.$route.name === 'devices') &&
