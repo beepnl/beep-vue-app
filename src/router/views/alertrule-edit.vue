@@ -47,8 +47,6 @@
               v-model="activeAlertRule.description"
               class="alertrule-edit-name mb-sm-3"
               counter="100"
-              :rules="requiredRule"
-              required
               @input="validateText($event, 'description', 100)"
             >
             </v-text-field>
@@ -109,7 +107,7 @@
 
           <v-col cols="6" sm="3" md="2">
             <div
-              :class="`beep-label ${thresholdValueIsNull ? 'red--text' : ''}`"
+              :class="`beep-label ${thresholdValueIsNaN ? 'red--text' : ''}`"
               v-text="$t('Threshold_value')"
             ></div>
             <VueNumericInput
@@ -119,7 +117,7 @@
               :precision="1"
             >
             </VueNumericInput>
-            <div v-if="thresholdValueIsNull" class="v-text-field__details mt-1"
+            <div v-if="thresholdValueIsNaN" class="v-text-field__details mt-1"
               ><div class="v-messages theme--light error--text" role="alert"
                 ><div class="v-messages__wrapper"
                   ><div class="v-messages__message"
@@ -265,7 +263,6 @@ export default {
       showLoadingIcon: false,
       newAlertRuleNumber: 1,
       newAlertRuleLocation: null,
-      thresholdValueIsNull: false,
     }
   },
   computed: {
@@ -400,6 +397,9 @@ export default {
       })
       return sortedSMs
     },
+    thresholdValueIsNaN() {
+      return isNaN(this.activeAlertRule.threshold_value)
+    },
     unauthorizedText() {
       return (
         this.$i18n.t('sorry') +
@@ -415,32 +415,34 @@ export default {
   created() {
     // this.readApiariesAndGroupsIfNotPresent()
     this.readApiariesAndGroups()
-    this.readTaxonomy()
-    // If alertrule-create route is used, make empty alertrule object
-    if (this.alertruleCreateMode) {
-      this.activeAlertRule = {
-        name: '',
-        description: '',
-        measurement_id: null,
-        calculation: null,
-        calculation_minutes: null,
-        comparator: null,
-        comparison: null,
-        threshold_value: null,
-        exclude_months: [],
-        exclude_hours: [],
-        exclude_hive_ids: [],
-        active: 1,
-        alert_via_email: 0,
+    this.readTaxonomy().then(() => {
+      // If alertrule-create route is used, make empty alertrule object
+      if (this.alertruleCreateMode) {
+        this.activeAlertRule = {
+          name:
+            this.$i18n.tc('alertrule', 1) + ' ' + (this.alertRules.length + 1),
+          description: '',
+          measurement_id: this.sensorMeasurements[0].id,
+          calculation: 'max',
+          calculation_minutes: null,
+          comparator: '<',
+          comparison: 'val',
+          threshold_value: 0,
+          exclude_months: [],
+          exclude_hours: [],
+          exclude_hive_ids: [],
+          active: 1,
+          alert_via_email: 0,
+        }
+        // Else retrieve to-be-edited alertrule
+      } else {
+        this.readAlertRule()
       }
-      // Else retrieve to-be-edited alertrule
-    } else {
-      this.readAlertRule()
-    }
+    })
   },
   methods: {
     async createAlertRule() {
-      if (this.$refs.form.validate() && !this.thresholdValueIsNull) {
+      if (this.$refs.form.validate() && !this.thresholdValueIsNaN) {
         this.showLoadingIcon = true
         try {
           const response = await Api.postRequest(
@@ -595,7 +597,7 @@ export default {
       }
     },
     async updateAlertRule() {
-      if (this.$refs.form.validate() && !this.thresholdValueIsNull) {
+      if (this.$refs.form.validate() && !this.thresholdValueIsNaN) {
         this.showLoadingIcon = true
         try {
           const response = await Api.updateRequest(
@@ -660,7 +662,6 @@ export default {
       }
     },
     saveAlertRule() {
-      this.thresholdValueIsNull = this.activeAlertRule.threshold_value === null
       if (this.alertruleCreateMode) {
         this.createAlertRule()
       } else {
