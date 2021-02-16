@@ -680,11 +680,17 @@ const translations = {
   deleted_but_not_saved_devices_warning:
     "Let op: meetsystemen worden pas definitief verwijderd wanneer je op de 'Opslaan Meetsystemen' knop klikt, rechtsboven.",
   no_alerts: 'Geen nieuwe alerts',
-  alert_rule: 'Alertregel | Alertregels',
+  alertrule: 'Alertregel | Alertregels',
   Measurement: 'Meting | Metingen',
   Calculation: 'Berekening',
   calculation: 'berekening',
   Calculation_minutes: 'Per aantal minuten',
+  Alert_on_occurences: 'Wanneer wil je deze alert ontvangen?',
+  Alert_on_occurences_hint:
+    'Direct, of pas nadat deze een x aantal keer is opgetreden?',
+  Direct: 'Direct',
+  After: 'Na ',
+  times: ' keer',
   Comparator: 'Comparator',
   comparator: 'comparator',
   Comparison: 'Vergelijking',
@@ -703,6 +709,11 @@ const translations = {
   alertrule_url_text:
     'Hier kunt u de voorgeprogrammeerde alertregels bekijken en desgewenst toevoegen aan uw eigen alertregels.',
   Exclude: 'Excludeer',
+  Exclude_months: 'Ik wil géén alerts ontvangen in de volgende maanden:',
+  Exclude_hours: 'Ik wil géén alerts ontvangen tijdens de volgende uren:',
+  Exclude_hours_details:
+    'N.B. Tijdens de geselecteerde uren zullen er ook geen berekeningen verricht worden om een eventuele alert te creeëren.',
+  Exclude_hives: 'Ik wil géén alerts ontvangen van de volgende bijenkasten:',
   months: 'maanden',
   hours: 'uren',
   delete_alertrule: 'Verwijder alertregel',

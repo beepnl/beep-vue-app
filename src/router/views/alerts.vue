@@ -102,7 +102,7 @@
           style="width: 100%;"
         >
           <v-row class="ml-0 my-0 pa-3" style="width:100%;">
-            <div class="overline" v-text="$tc('alert_rule', 2)"></div>
+            <div class="overline" v-text="$tc('alertrule', 2)"></div>
           </v-row>
           <div>
             <v-icon
@@ -148,7 +148,7 @@
                   @click="addAlertRule"
                 >
                   <v-icon left>mdi-plus</v-icon>
-                  {{ $t('add') + ' ' + $tc('alert_rule', 1) }}
+                  {{ $t('add') + ' ' + $tc('alertrule', 1) }}
                 </v-btn>
                 <v-btn
                   v-if="mobile"
@@ -159,7 +159,7 @@
                 >
                   <v-icon left>mdi-plus</v-icon>
                   {{ $t('add') }}
-                  {{ alertRules.length === 0 ? $tc('alert_rule', 1) : '' }}
+                  {{ alertRules.length === 0 ? $tc('alertrule', 1) : '' }}
                 </v-btn>
               </div>
               <div v-if="alertRules.length > 0" class="rounded-border">
@@ -205,9 +205,6 @@
                         </th>
                         <th class="text-left">
                           {{ $t('Exclude') + ' ' + $tc('hive', 2) }}
-                        </th>
-                        <th class="text-left">
-                          {{ $t('Webhook_url') }}
                         </th>
                         <th class="text-center">
                           {{ $t('Actions') }}
@@ -335,14 +332,6 @@
                             :no-results-text="`${$t('no_results')}`"
                             multiple
                           />
-                        </td>
-                        <td class="td--small pb-5">
-                          <v-text-field
-                            v-model="alertRule.webhook_url"
-                            :placeholder="`${$t('Webhook_url')}`"
-                            class="mt-2 mb-n5"
-                            dense
-                          ></v-text-field>
                         </td>
                         <td class="pr-0">
                           <v-progress-circular

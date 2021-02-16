@@ -79,6 +79,22 @@ export default [
     meta: {
       authRequired: true,
     },
+    path: '/alertrules/create',
+    name: 'alertrule-create',
+    component: () => lazyLoadView(import('@views/alertrule-edit.vue')),
+  },
+  {
+    meta: {
+      authRequired: true,
+    },
+    path: '/alertrules/:id/edit',
+    name: 'alertrule-edit',
+    component: () => lazyLoadView(import('@views/alertrule-edit.vue')),
+  },
+  {
+    meta: {
+      authRequired: true,
+    },
     path: '/',
     alias: '/apiaries',
     name: 'home',

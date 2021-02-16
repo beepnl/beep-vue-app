@@ -50,6 +50,7 @@ export const actions = {
     }
 
     // reset all module states
+    commit('alerts/resetState', null, { root: true })
     commit('devices/resetState', null, { root: true })
     commit('groups/resetState', null, { root: true })
     commit('hives/resetState', null, { root: true })
