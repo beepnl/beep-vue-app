@@ -720,6 +720,7 @@ const translations = {
   Active: 'Actief',
   Alert_via_email: 'Alert via email',
   Webhook_url: 'Webhook url',
+  this_field: 'Dit veld',
 }
 
 export default translations

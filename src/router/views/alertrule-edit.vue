@@ -3,15 +3,15 @@
     <v-form ref="form" v-model="valid">
       <v-toolbar class="save-bar" dense light>
         <v-spacer></v-spacer>
-        <v-icon dark class="mr-4" color="red" @click="confirmDeleteAlertRule"
+        <v-icon
+          v-if="!alertruleCreateMode"
+          dark
+          class="mr-4"
+          color="red"
+          @click="confirmDeleteAlertRule"
           >mdi-delete</v-icon
         >
-        <v-btn
-          class="mr-n2"
-          icon
-          :disabled="!valid"
-          @click.prevent="saveAlertRule"
-        >
+        <v-btn class="mr-n2" icon @click.prevent="saveAlertRule">
           <v-progress-circular
             v-if="showLoadingIcon"
             class="mr-2"
@@ -70,7 +70,7 @@
                 )} ...`
               "
               :label="$tc('Measurement', 1)"
-              hide-details
+              :rules="requiredRule"
             ></v-select>
           </v-col>
 
@@ -82,7 +82,7 @@
               item-value="short"
               :placeholder="`${$t('Select')} ${$t('calculation')} ...`"
               :label="$t('Calculation')"
-              hide-details
+              :rules="requiredRule"
             ></v-select>
           </v-col>
 
@@ -94,7 +94,7 @@
               item-value="short"
               :placeholder="`${$t('Select')} ${$t('comparison')} ...`"
               :label="$t('Comparison')"
-              hide-details
+              :rules="requiredRule"
             ></v-select>
           </v-col>
 
@@ -103,12 +103,15 @@
               v-model="activeAlertRule.comparator"
               :items="comparators"
               :label="$t('Comparator')"
-              hide-details
+              :rules="requiredRule"
             ></v-select>
           </v-col>
 
           <v-col cols="6" sm="3" md="2">
-            <div class="beep-label" v-text="$t('Threshold_value')"></div>
+            <div
+              :class="`beep-label ${thresholdValueIsNull ? 'red--text' : ''}`"
+              v-text="$t('Threshold_value')"
+            ></div>
             <VueNumericInput
               v-model="activeAlertRule.threshold_value"
               class="vue-numeric-input--small"
@@ -116,6 +119,15 @@
               :precision="1"
             >
             </VueNumericInput>
+            <div v-if="thresholdValueIsNull" class="v-text-field__details mt-1"
+              ><div class="v-messages theme--light error--text" role="alert"
+                ><div class="v-messages__wrapper"
+                  ><div class="v-messages__message"
+                    >Dit veld is verplicht</div
+                  ></div
+                ></div
+              ></div
+            >
           </v-col>
         </v-row>
 
@@ -253,6 +265,7 @@ export default {
       showLoadingIcon: false,
       newAlertRuleNumber: 1,
       newAlertRuleLocation: null,
+      thresholdValueIsNull: false,
     }
   },
   computed: {
@@ -345,12 +358,7 @@ export default {
     requiredRule: function() {
       return [
         (v) =>
-          !!v ||
-          this.$i18n.t('the_field') +
-            ' "' +
-            this.$i18n.t('Name') +
-            '" ' +
-            this.$i18n.t('is_required'),
+          !!v || this.$i18n.t('this_field') + ' ' + this.$i18n.t('is_required'),
       ]
     },
     sortedApiaries() {
@@ -432,7 +440,7 @@ export default {
   },
   methods: {
     async createAlertRule() {
-      if (this.$refs.form.validate()) {
+      if (this.$refs.form.validate() && !this.thresholdValueIsNull) {
         this.showLoadingIcon = true
         try {
           const response = await Api.postRequest(
@@ -587,7 +595,7 @@ export default {
       }
     },
     async updateAlertRule() {
-      if (this.$refs.form.validate()) {
+      if (this.$refs.form.validate() && !this.thresholdValueIsNull) {
         this.showLoadingIcon = true
         try {
           const response = await Api.updateRequest(
@@ -652,6 +660,7 @@ export default {
       }
     },
     saveAlertRule() {
+      this.thresholdValueIsNull = this.activeAlertRule.threshold_value === null
       if (this.alertruleCreateMode) {
         this.createAlertRule()
       } else {
