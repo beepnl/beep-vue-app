@@ -684,7 +684,7 @@ const translations = {
   Measurement: 'Meting | Metingen',
   Calculation: 'Berekening',
   calculation: 'berekening',
-  Calculation_minutes: 'Per aantal minuten',
+  Calculation_minutes: 'Bereken per x aantal minuten',
   Alert_on_occurences: 'Wanneer wil je deze alert ontvangen?',
   Alert_on_occurences_hint:
     'Direct, of pas nadat deze een x aantal keer is opgetreden?',

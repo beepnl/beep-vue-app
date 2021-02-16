@@ -304,14 +304,12 @@ export default {
   data: function() {
     return {
       alerts: [],
-      alertRules: [],
       alertsEnabled: true,
       ready: false,
       search: null,
       errors: [],
       showDescription: true,
       // sensorMeasurements: [],
-      showAlertRules: false,
       showLoadingIconById: {
         active: [],
         alert_via_email: [],
@@ -319,6 +317,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('alerts', ['alertRules']),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
     alertsWithRuleDetails() {
@@ -337,7 +336,10 @@ export default {
         //   hiveGroupName = this.hives[alert.hive_id].group_name || null
         // }
         var hiveGroupName = null
-        if (this.hives[alert.hive_id].group_name !== undefined) {
+        if (
+          this.hives[alert.hive_id] !== undefined &&
+          this.hives[alert.hive_id].group_name !== undefined
+        ) {
           hiveGroupName = this.hives[alert.hive_id].group_name
         }
         // alert.hive_name = hiveName
@@ -417,15 +419,30 @@ export default {
     showAlertPlaceholder() {
       return this.alerts.length === 0
     },
+    showAlertRules: {
+      get() {
+        return this.$store.getters['alerts/showAlertRules']
+      },
+      set(value) {
+        this.$store.commit('alerts/setData', {
+          prop: 'showAlertRules',
+          value,
+        })
+      },
+    },
   },
   created() {
     this.search = this.$route.query.search || null
     this.readApiariesAndGroupsIfNotPresent().then(() => {
       this.readAlerts().then(() => {
         // this.readTaxonomy()
-        this.readAlertRules().then(() => {
+        if (this.alertRules.length === 0) {
+          this.readAlertRules().then(() => {
+            this.ready = true
+          })
+        } else {
           this.ready = true
-        })
+        }
       })
     })
   },
@@ -433,13 +450,29 @@ export default {
     async deleteAlertRule(id) {
       console.log('Deleting alert rule ', id)
       try {
-        const response = await Api.deleteRequest('/alert-rules/', id) // FIXME: of hele alert-rule??
+        const response = await Api.deleteRequest('/alert-rules/', id)
         if (!response) {
           console.log('Error')
         }
         this.readAlertRules() // update generalalerts in store
         // this.readApiariesAndGroups() // TODO: update apiaries and groups so the latest alert will be displayed at apiary-list
       } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
+    async hideAlert(alert) {
+      alert.show = 0
+      try {
+        const response = await Api.updateRequest('/alerts/', alert.id, alert)
+        if (response) {
+          this.readAlerts()
+        }
+      } catch (error) {
+        alert.show = 1
         if (error.response) {
           console.log('Error: ', error.response)
         } else {
@@ -509,8 +542,10 @@ export default {
     async readAlertRules() {
       try {
         const response = await Api.readRequest('/alert-rules')
-        // TODO: ? this.$store.commit('alerts/setAlertRules', response.data.alert_rules)
-        this.alertRules = response.data.alert_rules
+        this.$store.commit('alerts/setData', {
+          prop: 'alertRules',
+          value: response.data.alert_rules,
+        })
         return true
       } catch (error) {
         if (error.response) {
@@ -606,11 +641,6 @@ export default {
         .catch((reject) => {
           return true
         })
-    },
-    hideAlert(alert) {
-      alert.show = 0
-      console.log('toggle show boolean for alert ', alert.id)
-      // TODO: async patch request to update show boolean
     },
     getText(item) {
       return item.abbreviation + ' (' + item.pq_name_unit + ')'

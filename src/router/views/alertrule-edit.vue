@@ -11,7 +11,7 @@
           @click="confirmDeleteAlertRule"
           >mdi-delete</v-icon
         >
-        <v-btn class="mr-n2" icon @click.prevent="saveAlertRule">
+        <v-btn v-if="mobile" class="mr-n2" icon @click.prevent="saveAlertRule">
           <v-progress-circular
             v-if="showLoadingIcon"
             class="mr-2"
@@ -23,6 +23,25 @@
           <v-icon v-if="!showLoadingIcon" dark color="primary"
             >mdi-check</v-icon
           >
+        </v-btn>
+        <v-btn
+          v-else
+          tile
+          outlined
+          color="primary"
+          class="mr-1"
+          @click.prevent="saveAlertRule"
+        >
+          <v-progress-circular
+            v-if="showLoadingIcon"
+            class="ml-n1 mr-2"
+            size="18"
+            width="2"
+            color="primary"
+            indeterminate
+          />
+          <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
+          {{ $t('save') + ' ' + $tc('alertrule', 1) }}
         </v-btn>
       </v-toolbar>
 
@@ -120,9 +139,11 @@
             <div v-if="thresholdValueIsNaN" class="v-text-field__details mt-1"
               ><div class="v-messages theme--light error--text" role="alert"
                 ><div class="v-messages__wrapper"
-                  ><div class="v-messages__message"
-                    >Dit veld is verplicht</div
-                  ></div
+                  ><div class="v-messages__message">{{
+                    this.$i18n.t('this_field') +
+                      ' ' +
+                      this.$i18n.t('is_required')
+                  }}</div></div
                 ></div
               ></div
             >
@@ -130,16 +151,29 @@
         </v-row>
 
         <v-row v-if="activeAlertRule">
-          <v-col cols="6" sm="3" md="2">
+          <v-col cols="6" sm="4" md="3">
             <div class="beep-label" v-text="$t('Calculation_minutes')"></div>
             <VueNumericInput
               v-model="activeAlertRule.calculation_minutes"
               class="vue-numeric-input--small"
             >
             </VueNumericInput>
+            <div
+              v-if="calculationMinutesIsNaN"
+              class="v-text-field__details mt-1"
+              ><div class="v-messages theme--light error--text" role="alert"
+                ><div class="v-messages__wrapper"
+                  ><div class="v-messages__message">{{
+                    this.$i18n.t('this_field') +
+                      ' ' +
+                      this.$i18n.t('is_required')
+                  }}</div></div
+                ></div
+              ></div
+            >
           </v-col>
 
-          <v-col cols="12" sm="5" md="4">
+          <v-col cols="12" sm="5" md="3">
             <div class="beep-label" v-text="$t('Alert_on_occurences')"></div>
             <v-select
               v-model="activeAlertRule.alert_on_occurences"
@@ -153,7 +187,7 @@
             ></v-select>
           </v-col>
 
-          <v-col cols="4" sm="2" md="1">
+          <v-col cols="2" sm="1">
             <div class="beep-label" v-text="$t('Active')"></div>
             <v-checkbox
               v-model="activeAlertRule.active"
@@ -162,7 +196,7 @@
             ></v-checkbox>
           </v-col>
 
-          <v-col cols="4" sm="2" md="2">
+          <v-col cols="4" sm="2">
             <div class="beep-label" v-text="$t('Alert_via_email')"></div>
             <v-checkbox
               v-model="activeAlertRule.alert_via_email"
@@ -296,6 +330,9 @@ export default {
         },
       ]
     },
+    calculationMinutesIsNaN() {
+      return isNaN(this.activeAlertRule.calculation_minutes)
+    },
     comparisons() {
       return [
         {
@@ -424,7 +461,7 @@ export default {
           description: '',
           measurement_id: this.sensorMeasurements[0].id,
           calculation: 'max',
-          calculation_minutes: null,
+          calculation_minutes: 60,
           comparator: '<',
           comparison: 'val',
           threshold_value: 0,
@@ -442,7 +479,11 @@ export default {
   },
   methods: {
     async createAlertRule() {
-      if (this.$refs.form.validate() && !this.thresholdValueIsNaN) {
+      if (
+        this.$refs.form.validate() &&
+        !this.thresholdValueIsNaN &&
+        !this.calculationMinutesIsNaN
+      ) {
         this.showLoadingIcon = true
         try {
           const response = await Api.postRequest(
@@ -531,8 +572,10 @@ export default {
     async readAlertRules() {
       try {
         const response = await Api.readRequest('/alert-rules')
-        // TODO: ? this.$store.commit('alerts/setAlertRules', response.data.alert_rules)
-        this.alertRules = response.data.alert_rules
+        this.$store.commit('alerts/setData', {
+          prop: 'alertRules',
+          value: response.data.alert_rules,
+        })
         return true
       } catch (error) {
         if (error.response) {
@@ -597,7 +640,11 @@ export default {
       }
     },
     async updateAlertRule() {
-      if (this.$refs.form.validate() && !this.thresholdValueIsNaN) {
+      if (
+        this.$refs.form.validate() &&
+        !this.thresholdValueIsNaN &&
+        !this.calculationMinutesIsNaN
+      ) {
         this.showLoadingIcon = true
         try {
           const response = await Api.updateRequest(
