@@ -11,21 +11,7 @@
           @click="confirmDeleteAlertRule"
           >mdi-delete</v-icon
         >
-        <v-btn v-if="mobile" class="mr-n2" icon @click.prevent="saveAlertRule">
-          <v-progress-circular
-            v-if="showLoadingIcon"
-            class="mr-2"
-            size="18"
-            width="2"
-            color="primary"
-            indeterminate
-          />
-          <v-icon v-if="!showLoadingIcon" dark color="primary"
-            >mdi-check</v-icon
-          >
-        </v-btn>
         <v-btn
-          v-else
           tile
           outlined
           color="primary"

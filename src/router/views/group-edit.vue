@@ -8,7 +8,7 @@
           tile
           outlined
           color="red"
-          class="save-button mr-3"
+          class="mr-3"
           @click="confirmDeleteOrDetachGroup"
         >
           <v-icon left>mdi-delete</v-icon>
@@ -29,7 +29,7 @@
           tile
           outlined
           color="primary"
-          class="save-button mr-1"
+          class="mr-1"
           type="submit"
           :disabled="!valid"
         >
@@ -183,13 +183,7 @@
                   ')'
               }}</div>
               <v-spacer></v-spacer>
-              <v-btn
-                tile
-                outlined
-                class="save-button"
-                color="primary"
-                @click="addGroupUser"
-              >
+              <v-btn tile outlined color="primary" @click="addGroupUser">
                 <v-icon left>mdi-plus</v-icon>
                 {{
                   tabletLandscapeUp
@@ -230,22 +224,22 @@
                       :class="user.delete === true ? 'user-delete' : ''"
                     >
                       <td>{{ index + 1 }}</td>
-                      <td>
+                      <td :class="mobile ? 'td--small' : ''">
                         <v-text-field
                           v-model="user.name"
                           :disabled="user.id && user.id !== null"
                           :placeholder="`${$t('invitee_name')}`"
-                          class="mt-2 mb-n5"
-                          solo
+                          class="mt-2"
+                          dense
                         ></v-text-field>
                       </td>
-                      <td>
+                      <td :class="mobile ? 'td--medium' : ''">
                         <v-text-field
                           v-model="user.email"
                           :disabled="user.id && user.id !== null"
                           :placeholder="`${$t('email_is_required')}`"
-                          class="mt-2 mb-n5"
-                          solo
+                          class="mt-2"
+                          dense
                         ></v-text-field>
                       </td>
                       <td>
@@ -314,7 +308,7 @@
               </div>
               <div v-if="!showApiaryPlaceholder">
                 <div
-                  class="beep-label mt-3 mt-sm-1 mb-3 mb-sm-4"
+                  class="beep-label mt-1 mb-3 mb-sm-4"
                   v-text="
                     `${$t('Select') +
                       ' ' +
@@ -456,6 +450,9 @@ export default {
         })
         .filter((x) => x.hives.length > 0)
       return sortedAndFilledApiaries
+    },
+    mobile() {
+      return this.$vuetify.breakpoint.mobile
     },
     requiredRule: function() {
       return [
@@ -905,6 +902,9 @@ export default {
   }
   .user-label {
     font-size: 14px;
+    @include for-phone-only {
+      font-size: 12px;
+    }
   }
   .user-delete {
     background-color: rgba(255, 0, 0, 0.2);

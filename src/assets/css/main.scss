@@ -142,7 +142,7 @@
   box-shadow: none !important;
 }
 
-.save-button {
+.save-button-mobile-wide {
   @include for-phone-only {
     width: 100%;
   }

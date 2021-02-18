@@ -8,7 +8,7 @@
           tile
           outlined
           color="red"
-          class="save-button mr-3"
+          class="mr-3"
           @click="confirmDeleteUser"
         >
           <v-progress-circular

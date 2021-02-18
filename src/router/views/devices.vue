@@ -23,7 +23,7 @@
         v-if="ownedDevices.length > 0"
         tile
         outlined
-        class="save-button mr-1"
+        class="save-button-mobile-wide mr-1"
         :color="deletedButNotSaved ? 'red' : 'primary'"
         @click="saveDevices"
       >
@@ -55,7 +55,7 @@
             tile
             outlined
             color="primary"
-            class="save-button mt-n4"
+            class="save-button-mobile-wide mt-n4"
             @click="addDevice"
           >
             <v-icon left>mdi-plus</v-icon>{{ $t('create_new') }}
@@ -350,6 +350,7 @@
                           tile
                           outlined
                           color="primary"
+                          class="save-button-mobile-wide"
                           @click="addSensorDef(ownedDevice)"
                         >
                           <v-icon left>mdi-plus</v-icon>
@@ -399,8 +400,8 @@
                           <tbody>
                             <tr
                               v-for="(sensorDef,
-                              indexSensors) in ownedDevice.sensor_definitions"
-                              :key="indexSensors"
+                              indexSensor) in ownedDevice.sensor_definitions"
+                              :key="indexSensor"
                               :class="
                                 sensorDef.delete === true
                                   ? 'sensordef-delete'
@@ -553,7 +554,7 @@
                       tile
                       outlined
                       color="red"
-                      class="save-button"
+                      class="save-button-mobile-wide"
                       @click="deleteDevice(ownedDevice)"
                     >
                       <v-icon left>{{

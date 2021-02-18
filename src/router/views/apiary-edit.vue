@@ -36,22 +36,23 @@
           >mdi-delete</v-icon
         >
         <v-btn
-          class="mr-n2"
-          icon
+          tile
+          outlined
+          color="primary"
+          class="mr-1"
           :disabled="!valid"
           @click.prevent="updateApiary"
         >
           <v-progress-circular
             v-if="showLoadingIcon"
-            class="mr-2"
+            class="ml-n1 mr-2"
             size="18"
             width="2"
             color="primary"
             indeterminate
           />
-          <v-icon v-if="!showLoadingIcon" dark color="primary"
-            >mdi-check</v-icon
-          >
+          <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
+          {{ $t('save') + ' ' + $tc('location', 1) }}
         </v-btn>
       </v-toolbar>
 

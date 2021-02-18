@@ -15,7 +15,7 @@
               tile
               outlined
               color="primary"
-              class="save-button"
+              class="save-button-mobile-wide"
               @click="exportData"
             >
               <v-progress-circular
@@ -153,7 +153,7 @@
               tile
               outlined
               color="primary"
-              class="save-button"
+              class="save-button-mobile-wide"
               @click="exportDeviceData"
             >
               <v-progress-circular

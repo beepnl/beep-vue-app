@@ -36,7 +36,7 @@
           v-if="selectedChecklist && selectedChecklist.owner && !mobile"
           tile
           outlined
-          class="save-button mr-3"
+          class="mr-3"
           color="primary"
           @click="confirmEditChecklist"
         >
@@ -175,7 +175,7 @@
               v-if="selectedChecklist && selectedChecklist.owner && mobile"
               tile
               outlined
-              class="save-button"
+              class="save-button-mobile-wide"
               color="primary"
               @click="confirmEditChecklist"
             >

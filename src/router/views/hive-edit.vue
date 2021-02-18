@@ -34,31 +34,14 @@
           >mdi-delete</v-icon
         >
         <v-btn
-          v-if="!queenEditMode"
-          class="mr-n2"
-          icon
-          :disabled="!valid"
-          @click.prevent="saveHive"
-        >
-          <v-progress-circular
-            v-if="showLoadingIcon"
-            class="mr-2"
-            size="18"
-            width="2"
-            color="primary"
-            indeterminate
-          />
-          <v-icon v-if="!showLoadingIcon" dark color="primary"
-            >mdi-check</v-icon
-          >
-        </v-btn>
-
-        <v-btn
-          v-if="queenEditMode"
           tile
           outlined
           color="primary"
-          class="save-button mr-1"
+          :class="
+            `${
+              queenEditMode || hiveCreateMode ? 'save-button-mobile-wide' : ''
+            } mr-1`
+          "
           :disabled="!valid"
           @click.prevent="saveHive"
         >
@@ -71,7 +54,11 @@
             indeterminate
           />
           <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
-          {{ $t('save') + ' ' + $t('queen') }}
+          {{
+            queenEditMode
+              ? $t('save') + ' ' + $t('queen')
+              : $t('save') + ' ' + $tc('hive', 1)
+          }}
         </v-btn>
       </v-toolbar>
 

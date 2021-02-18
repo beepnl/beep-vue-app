@@ -161,7 +161,7 @@
                 </v-col>
               </v-row>
               <div v-if="alertRules.length > 0" class="rounded-border">
-                <v-simple-table class="alertrule-table">
+                <v-simple-table class="v-data-table--smallfont">
                   <template v-slot>
                     <thead>
                       <tr>
@@ -695,15 +695,6 @@ export default {
   }
   &--border-bottom {
     border-bottom: 1px solid $color-grey-light;
-  }
-}
-
-.alertrule-table {
-  input {
-    font-size: 14px !important;
-    @include for-phone-only {
-      font-size: 12px !important;
-    }
   }
 }
 </style>
