@@ -280,7 +280,7 @@
   }
 }
 
-.v-data-table {
+.v-data-table:not(.table-heatmap) {
   background-color: transparent !important;
   input {
     @include for-phone-only {
