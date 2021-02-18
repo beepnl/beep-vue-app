@@ -671,8 +671,52 @@ const translations = {
     'This item is not available when multiple hives are selected for an inspection, as it can only be filled in per individual hive. It is possible to fill in this item for a single hive at a later time, by editing the inspection for that hive.',
   save_bulkinspection_confirm:
     'Are you sure that you want to save this inspection for multiple hives at the same time?',
-    deleted_but_not_saved_devices_warning:
+  deleted_but_not_saved_devices_warning:
     "N.B.: devices will only be removed after clicking the 'Save Devices' button in the top right corner.",
+  no_alerts: 'No new alerts',
+  alertrule: 'alert rule | alert rules',
+  Measurement: 'Measurement | Measurements',
+  Calculation: 'Calculation',
+  calculation: 'calculation',
+  Calculation_minutes: 'Calculate per x number of minutes',
+  Alert_on_occurences: 'When would you like to receive this alert?',
+  Alert_on_occurences_hint:
+    'Directly, or only after it has occurred an x number of times?',
+  Direct: 'Directly',
+  After: 'After ',
+  times: ' times',
+  Comparator: 'Comparator',
+  comparator: 'comparator',
+  Comparison: 'Comparison',
+  comparison: 'comparison',
+  Threshold_value: 'Threshold value',
+  Minimum: 'Minimum',
+  Maximum: 'Maximum',
+  Derivative: 'Derivative (increase or decrease)',
+  Count: 'Count',
+  Value: 'Value',
+  Difference: 'Difference',
+  Absolute_value: 'Absolute value',
+  Absolute_value_of_dif: 'Absolute value of the difference',
+  alertrule_info: 'This will be replaced by some info on alert rules.',
+  alertrules_default_url_text:
+    'Here you can view the default alert rules and copy them to your own alert rules if you like.',
+  Exclude_months:
+    'I do NOT want to receive any alerts during the following months:',
+  Exclude_hours:
+    'I do NOT want to receive any alerts during the following hours:',
+  Exclude_hours_details:
+    'N.B. During the selected hours no calculations will be performed in order to create any alerts.',
+  Exclude_hives: 'I do NOT want to receive any alerts for the following hives:',
+  months: 'months',
+  hours: 'hours',
+  delete_alertrule: 'Delete alert rule',
+  Active: 'Active',
+  Alert_via_email: 'Alert via email',
+  Webhook_url: 'Webhook url',
+  this_field: 'This field',
+  alertrule_default: 'Default alert rule | Default alert rules',
+  copy: 'Copy',
 }
 
 export default translations

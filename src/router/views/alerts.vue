@@ -429,7 +429,6 @@ export default {
     this.search = this.$route.query.search || null
     this.readApiariesAndGroupsIfNotPresent().then(() => {
       this.readAlerts().then(() => {
-        // this.readTaxonomy()
         if (this.alertRules.length === 0) {
           this.readAlertRules().then(() => {
             this.ready = true
@@ -448,8 +447,7 @@ export default {
         if (!response) {
           console.log('Error')
         }
-        this.readAlertRules() // update generalalerts in store
-        // this.readApiariesAndGroups() // TODO: update apiaries and groups so the latest alert will be displayed at apiary-list
+        this.readAlertRules() // update alertRules in store
       } catch (error) {
         if (error.response) {
           console.log('Error: ', error.response)
@@ -522,7 +520,6 @@ export default {
         if (response.data.length === 0) {
           this.showAlertPlaceholder = true
         }
-        // TODO: ? this.$store.commit('alerts/setAlerts', response.data.alerts)
         this.alerts = response.data.alerts
         return true
       } catch (error) {

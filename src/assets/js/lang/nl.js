@@ -707,7 +707,6 @@ const translations = {
   alertrule_info: 'Hier komt uitleg over de alertregels.',
   alertrules_default_url_text:
     'Hier kunt u de voorgeprogrammeerde alertregels bekijken en desgewenst toevoegen aan uw eigen alertregels.',
-  Exclude: 'Excludeer',
   Exclude_months: 'Ik wil géén alerts ontvangen in de volgende maanden:',
   Exclude_hours: 'Ik wil géén alerts ontvangen tijdens de volgende uren:',
   Exclude_hours_details:
