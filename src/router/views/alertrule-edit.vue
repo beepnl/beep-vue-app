@@ -88,6 +88,7 @@
               "
               :label="$tc('Measurement', 1)"
               :rules="requiredRule"
+              @input="setAlertRuleEdited(true)"
             ></v-select>
           </v-col>
 
@@ -100,6 +101,7 @@
               :placeholder="`${$t('Select')} ${$t('calculation')} ...`"
               :label="$t('Calculation')"
               :rules="requiredRule"
+              @input="setAlertRuleEdited(true)"
             ></v-select>
           </v-col>
 
@@ -112,6 +114,7 @@
               :placeholder="`${$t('Select')} ${$t('comparison')} ...`"
               :label="$t('Comparison')"
               :rules="requiredRule"
+              @input="setAlertRuleEdited(true)"
             ></v-select>
           </v-col>
 
@@ -121,6 +124,7 @@
               :items="comparators"
               :label="$t('Comparator')"
               :rules="requiredRule"
+              @input="setAlertRuleEdited(true)"
             ></v-select>
           </v-col>
 
@@ -134,6 +138,7 @@
               class="vue-numeric-input--small"
               :step="0.1"
               :precision="1"
+              @input="setAlertRuleEdited(true)"
             >
             </VueNumericInput>
             <div v-if="thresholdValueIsNaN" class="v-text-field__details mt-1"
@@ -156,6 +161,7 @@
             <VueNumericInput
               v-model="activeAlertRule.calculation_minutes"
               class="vue-numeric-input--small"
+              @input="setAlertRuleEdited(true)"
             >
             </VueNumericInput>
             <div
@@ -184,6 +190,7 @@
               :hint="$t('Alert_on_occurences_hint')"
               class="pt-0"
               persistent-hint
+              @input="setAlertRuleEdited(true)"
             ></v-select>
           </v-col>
 
@@ -193,6 +200,7 @@
               v-model="activeAlertRule.active"
               color="primary"
               class="mt-1"
+              @change="setAlertRuleEdited(true)"
             ></v-checkbox>
           </v-col>
 
@@ -202,6 +210,7 @@
               v-model="activeAlertRule.alert_via_email"
               color="primary"
               class="mt-1"
+              @change="setAlertRuleEdited(true)"
             ></v-checkbox>
           </v-col>
         </v-row>
@@ -215,6 +224,7 @@
               :placeholder="`${$t('Select')} ${$t('months')}`"
               :no-results-text="`${$t('no_results')}`"
               multiple
+              @input="setAlertRuleEdited(true)"
             />
           </v-col>
 
@@ -226,6 +236,7 @@
               :placeholder="`${$t('Select')} ${$t('hours')}`"
               :no-results-text="`${$t('no_results')}`"
               multiple
+              @input="setAlertRuleEdited(true)"
             />
             <div
               class="beep-label mt-1"
