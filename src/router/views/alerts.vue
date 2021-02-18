@@ -137,9 +137,9 @@
                   <p v-if="showDescription && ready" class="mt-n1 mb-0">
                     <em
                       >{{ $t('alertrule_info') + ' '
-                      }}<a :href="$t('alertrules_default_url')">{{
+                      }}<router-link :to="{ name: 'alertrules-default' }">{{
                         $t('alertrules_default_url_text')
-                      }}</a></em
+                      }}</router-link></em
                     >
                   </p>
                 </v-col>

@@ -62,7 +62,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters('alertss', ['alertRuleEdited']),
+    ...mapGetters('alerts', ['alertRuleEdited']),
     ...mapGetters('groups', ['groupEdited']),
     ...mapGetters('hives', ['hiveEdited']),
     ...mapGetters('inspections', ['inspectionEdited']),

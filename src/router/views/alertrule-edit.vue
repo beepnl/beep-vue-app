@@ -366,6 +366,9 @@ export default {
     id() {
       return parseInt(this.$route.params.id)
     },
+    mobile() {
+      return this.$vuetify.breakpoint.mobile
+    },
     months() {
       var monthsArray = []
       for (var i = 1; i < 13; i++) {

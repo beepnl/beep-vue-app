@@ -705,7 +705,6 @@ const translations = {
   Absolute_value: 'Absolute waarde',
   Absolute_value_of_dif: 'Absolute waarde van het verschil',
   alertrule_info: 'Hier komt uitleg over de alertregels.',
-  alertrules_default_url: '/alertrules/default',
   alertrules_default_url_text:
     'Hier kunt u de voorgeprogrammeerde alertregels bekijken en desgewenst toevoegen aan uw eigen alertregels.',
   Exclude: 'Excludeer',
