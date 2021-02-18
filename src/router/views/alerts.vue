@@ -40,7 +40,7 @@
                 alertsEnabled ? $t('alerts_enabled') : $t('alerts_disabled')
               "
               hide-details
-              @click="toggleAlerts"
+              @change="toggleAlerts"
             ></v-switch>
           </v-card-actions>
         </v-row>
@@ -423,6 +423,9 @@ export default {
         // this.readTaxonomy()
         if (this.alertRules.length === 0) {
           this.readAlertRules().then(() => {
+            this.alertsEnabled =
+              this.alertRules.filter((alertRule) => alertRule.active === 1)
+                .length > 0
             this.ready = true
           })
         } else {
@@ -542,7 +545,7 @@ export default {
     },
     async toggleAlertRule(alertRule, property) {
       this.showLoadingIconById[property].push(alertRule.id)
-      alertRule[property] = !alertRule[property]
+      alertRule[property] = !alertRule[property] // NB yields vuex strict error but can be ignored here because the property value will be changed in the store directly after triggering this error
       try {
         const response = await Api.updateRequest(
           '/alert-rules/',
@@ -618,8 +621,11 @@ export default {
       return item.abbreviation + ' (' + item.pq_name_unit + ')'
     },
     toggleAlerts() {
-      this.alertsEnabled = !this.alertsEnabled
-      console.log('toggle alerts...') // TODO: dis- or enable all alerts
+      this.alertRules.map((alertRule) => {
+        if (alertRule.active !== this.alertsEnabled) {
+          this.toggleAlertRule(alertRule, 'active')
+        }
+      })
     },
   },
 }
