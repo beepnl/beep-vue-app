@@ -304,7 +304,6 @@ export default {
   data: function() {
     return {
       alerts: [],
-      alertsEnabled: true,
       ready: false,
       search: null,
       errors: [],
@@ -319,6 +318,16 @@ export default {
     ...mapGetters('alerts', ['alertRules']),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
+    alertsEnabled() {
+      if (this.alertRules.length > 0) {
+        return (
+          this.alertRules.filter((alertRule) => alertRule.active === 1).length >
+          0
+        )
+      } else {
+        return false
+      }
+    },
     alertsWithRuleDetails() {
       var alertsWithRuleDetails = this.alerts
       alertsWithRuleDetails.map((alert) => {
@@ -423,9 +432,6 @@ export default {
         // this.readTaxonomy()
         if (this.alertRules.length === 0) {
           this.readAlertRules().then(() => {
-            this.alertsEnabled =
-              this.alertRules.filter((alertRule) => alertRule.active === 1)
-                .length > 0
             this.ready = true
           })
         } else {
