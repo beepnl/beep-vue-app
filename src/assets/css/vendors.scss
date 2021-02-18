@@ -342,6 +342,10 @@
   color: $color-grey-light !important;
 }
 
+.v-navigation-drawer {
+  z-index: 999999 !important;
+}
+
 /* Vue Numeric Input */
 .vue-numeric-input {
   .numeric-input {

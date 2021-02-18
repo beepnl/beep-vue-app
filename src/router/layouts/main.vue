@@ -10,6 +10,11 @@
 
       <HeaderMenu :menu-items="menuItems"></HeaderMenu>
 
+      <!-- <v-app-bar-nav-icon
+        class="ml-n3"
+        @click="drawer = !drawer"
+      ></v-app-bar-nav-icon> -->
+
       <template v-slot:extension>
         <v-tabs
           icons-and-text
@@ -33,6 +38,8 @@
       </template>
     </v-app-bar>
 
+    <!-- <NavDrawer :drawer="drawer"></NavDrawer> -->
+
     <v-main>
       <slot></slot>
     </v-main>
@@ -44,17 +51,24 @@ import Api from '@api/Api'
 import HeaderMenu from '@components/header-menu.vue'
 import LocaleChanger from '@components/locale-changer.vue'
 import { mapGetters } from 'vuex'
+// import NavDrawer from '@components/nav-drawer.vue'
 
 export default {
   components: {
     HeaderMenu,
     LocaleChanger,
+    // NavDrawer,
   },
   props: {
     menuItems: {
       type: Array,
       default: () => [],
     },
+  },
+  data: function() {
+    return {
+      drawer: false,
+    }
   },
   computed: {
     ...mapGetters('devices', ['devices', 'devicesPresent']),

@@ -52,10 +52,14 @@
         max-width: 300px;
       }
     }
-    .v-input:not(.v-input--switch) {
-      background-color: $color-white;
-      @include for-phone-only {
-        max-width: 115px;
+    .v-input {
+      &:not(.v-input--switch) {
+        background-color: $color-white;
+      }
+      &:not(.filter-text-field--large) {
+        @include for-phone-only {
+          max-width: 105px;
+        }
       }
     }
     .view-buttons {

@@ -23,7 +23,7 @@
                 :class="
                   `${
                     search !== null ? 'v-input--is-focused primary--text' : ''
-                  } filter-text-field`
+                  } filter-text-field--large`
                 "
                 :height="mobile ? '30px' : '36px'"
                 clearable
