@@ -407,13 +407,13 @@
                                   : ''
                               "
                             >
-                              <td>
+                              <td class="td--small">
                                 <v-text-field
                                   v-model="sensorDef.name"
                                   :disabled="sensorDef.delete"
                                   :placeholder="`${$t('Name')}`"
-                                  class="mt-2 mb-n5"
-                                  solo
+                                  class="mt-2"
+                                  dense
                                 ></v-text-field>
                               </td>
                               <td>
@@ -429,7 +429,7 @@
                               <td>
                                 <VueNumericInput
                                   v-model="sensorDef.offset"
-                                  class="vue-numeric-input--small"
+                                  class="vue-numeric-input--xsmall"
                                   :disabled="sensorDef.delete"
                                 >
                                 </VueNumericInput>
@@ -437,12 +437,12 @@
                               <td>
                                 <VueNumericInput
                                   v-model="sensorDef.multiplier"
-                                  class="vue-numeric-input--small"
+                                  class="vue-numeric-input--xsmall"
                                   :disabled="sensorDef.delete"
                                 >
                                 </VueNumericInput>
                               </td>
-                              <td>
+                              <td class="td--small">
                                 <v-select
                                   v-model="sensorDef.input_measurement_id"
                                   :disabled="sensorDef.delete"
@@ -460,7 +460,7 @@
                                   solo
                                 ></v-select>
                               </td>
-                              <td>
+                              <td class="td--small">
                                 <v-select
                                   v-model="sensorDef.output_measurement_id"
                                   :disabled="sensorDef.delete"
@@ -983,6 +983,7 @@ export default {
     width: 48px;
   }
   .device-yes-no {
+    font-size: 12px;
     white-space: nowrap;
   }
   .button-wrapper {
