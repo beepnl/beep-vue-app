@@ -1,8 +1,14 @@
 <template>
-  <Layout :title="$t('alertrules_default')">
+  <Layout :title="$tc('alertrule_default', 2)">
     <v-toolbar class="save-bar" dense light>
       <v-spacer></v-spacer>
-      <v-btn v-if="mobile" class="mr-n2" icon @click.prevent="copyAlertRules">
+      <v-btn
+        v-if="mobile"
+        class="mr-n2"
+        icon
+        :disabled="numberOfSelectedRules === 0"
+        @click.prevent="copySelectedAlertRules"
+      >
         <v-progress-circular
           v-if="showLoadingIcon"
           class="mr-2"
@@ -11,7 +17,9 @@
           color="primary"
           indeterminate
         />
-        <v-icon v-if="!showLoadingIcon" dark color="primary">mdi-check</v-icon>
+        <v-icon v-if="!showLoadingIcon" dark color="primary"
+          >mdi-content-copy</v-icon
+        >
       </v-btn>
       <v-btn
         v-else
@@ -19,7 +27,8 @@
         outlined
         color="primary"
         class="mr-1"
-        @click.prevent="copyAlertRules"
+        :disabled="numberOfSelectedRules === 0"
+        @click.prevent="copySelectedAlertRules"
       >
         <v-progress-circular
           v-if="showLoadingIcon"
@@ -29,8 +38,14 @@
           color="primary"
           indeterminate
         />
-        <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
-        {{ $t('copy') + ' ' + $tc('alertrule', 1) }}
+        <v-icon v-if="!showLoadingIcon" left>mdi-content-copy</v-icon>
+        {{
+          $t('copy') +
+            ' ' +
+            numberOfSelectedRules +
+            ' ' +
+            $tc('alertrule', numberOfSelectedRules)
+        }}
       </v-btn>
     </v-toolbar>
 
@@ -42,22 +57,30 @@
       </div>
     </v-container>
 
-    <v-container v-if="ready" class="alerts-content">
+    <v-container v-if="ready" class="alertrules-default-content">
       <v-row v-if="alertRulesDefault.length > 0" dense>
-        <ScaleTransition
-          :duration="500"
-          group
-          class="alerts-item-transition-wrapper"
-        >
+        <ScaleTransition :duration="500" group style="width:100%;">
           <v-col
-            v-for="(alertRuleDefault, j) in alertRulesDefault"
+            v-for="(alertRule, j) in alertRulesDefault"
             :key="j"
-            sm="auto"
+            cols="12"
             class="alerts-item"
             dense
           >
             <v-card outlined>
-              {{ alertRuleDefault.name }}
+              <v-row class="ma-2 d-flex align-center">
+                <v-col cols="2" sm="1" class="mr-n2 mr-md-n4 mr-lg-n10">
+                  <v-checkbox v-model="alertRule.selected"></v-checkbox>
+                </v-col>
+                <v-col cols="10" sm="5" md="4">
+                  <div class="d-flex flex-column">
+                    <span class="alertrule-label">{{ alertRule.name }}</span>
+                    <span class="alertrule-text">{{
+                      alertRule.description
+                    }}</span>
+                  </div>
+                </v-col>
+              </v-row>
             </v-card>
           </v-col>
         </ScaleTransition>
@@ -69,7 +92,6 @@
 </template>
 
 <script>
-// import AlertCard from '@components/alert-card.vue'
 import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
@@ -79,7 +101,6 @@ import { ScaleTransition } from 'vue2-transitions'
 
 export default {
   components: {
-    // AlertCard,
     Confirm,
     Layout,
     ScaleTransition,
@@ -87,19 +108,22 @@ export default {
   mixins: [momentMixin],
   data: function() {
     return {
+      alertRulesDefault: [],
       ready: false,
-      selectedAlertRules: [],
       showLoadingIcon: false,
     }
   },
   computed: {
-    ...mapGetters('alerts', ['alertRulesDefault']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     locale() {
       return this.$i18n.locale
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile
+    },
+    numberOfSelectedRules() {
+      return this.alertRulesDefault.filter((alertRule) => alertRule.selected)
+        .length
     },
   },
   created() {
@@ -110,31 +134,44 @@ export default {
     })
   },
   methods: {
-    async copyAlertRules() {
-      console.log('copying alertRules...')
-      this.selectedAlertRules.map((selectedAlertRule) => {
-        selectedAlertRule.default_rule = 0
-        console.log(selectedAlertRule)
-      })
-      // try {
-      //   const response = await Api.postRequest('/alert-rules')
-
-      //   return true
-      // } catch (error) {
-      //   if (error.response) {
-      //     console.log('Error: ', error.response)
-      //   } else {
-      //     console.log('Error: ', error)
-      //   }
-      // }
+    async copyAlertRule(alertRule) {
+      this.showLoadingIcon = true
+      try {
+        await Api.postRequest('/alert-rules', alertRule)
+        return true
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
+    async readAlertRules() {
+      try {
+        const response = await Api.readRequest('/alert-rules')
+        this.$store.commit('alerts/setData', {
+          prop: 'alertRules',
+          value: response.data.alert_rules,
+        })
+        return true
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
+      }
     },
     async readDefaultAlertRules() {
       try {
         const response = await Api.readRequest('/alert-rules-default')
-        this.$store.commit('alerts/setData', {
-          prop: 'alertRulesDefault',
-          value: response.data['alert-rules'],
+        var alertRulesDefault = response.data['alert-rules']
+        alertRulesDefault.map((alertRuleDefault) => {
+          alertRuleDefault.default_rule = 0
+          alertRuleDefault.selected = false
         })
+        this.alertRulesDefault = alertRulesDefault
         return true
       } catch (error) {
         if (error.response) {
@@ -162,6 +199,21 @@ export default {
         }
       }
     },
+    copySelectedAlertRules() {
+      this.alertRulesDefault.map((alertRuleDefault) => {
+        if (alertRuleDefault.selected) {
+          this.copyAlertRule(alertRuleDefault)
+        }
+      })
+      this.showLoadingIcon = false
+      setTimeout(() => {
+        return this.readAlertRules().then(() => {
+          this.$router.push({
+            name: 'alerts',
+          })
+        })
+      }, 250) // wait for API to update alertrules
+    },
     getText(item) {
       return item.abbreviation + ' (' + item.pq_name_unit + ')'
     },
@@ -170,6 +222,33 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.save-bar {
+  margin-top: 0 !important;
+}
+
+.alertrules-default-content {
+  margin-top: 56px;
+}
+
+.alertrule-label {
+  margin-bottom: 8px;
+  font-size: 0.75rem !important;
+  font-weight: 600;
+  color: $color-grey;
+  letter-spacing: 0.0333333333em !important;
+  @include for-phone-only {
+    font-size: 0.7rem !important;
+  }
+}
+
+.alertrule-text {
+  font-size: 0.75rem !important;
+  color: rgba(0, 0, 0, 0.87);
+  @include for-tablet-portrait-up {
+    font-size: 0.7rem !important;
+  }
+}
+
 .alertrules-title-row {
   line-height: 1.2rem !important;
   @include for-phone-only {

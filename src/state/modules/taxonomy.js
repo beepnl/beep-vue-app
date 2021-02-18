@@ -4,10 +4,6 @@ const resource = createResource({ path: 'taxonomy' })
 
 export const state = {
   ...resource.state,
-  // beeRacesList: [],
-  // hiveDimensionsList: [],
-  // hiveTypesList: [],
-  // sensorMeasurements: [],
   taxonomyLists: {},
 }
 export const getters = {
@@ -34,10 +30,6 @@ export const mutations = {
     state[payload.prop] = payload.value
   },
   resetState: function(state) {
-    // state.beeRacesList = []
-    // state.hiveDimensionsList = []
-    // state.hiveTypesList = []
-    // state.sensorMeasurementsList = []
     state.taxonomyLists = {}
   },
 }

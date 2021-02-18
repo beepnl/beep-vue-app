@@ -7,7 +7,6 @@ export const state = {
   activeAlertRule: null,
   alertRuleEdited: false,
   alertRules: [],
-  alertRulesDefault: [],
   showAlertRules: false,
 }
 export const getters = {
@@ -17,9 +16,6 @@ export const getters = {
   },
   alertRules: (state) => {
     return state.alertRules || []
-  },
-  alertRulesDefault: (state) => {
-    return state.alertRulesDefault || []
   },
   alertRuleEdited: (state) => {
     return state.alertRuleEdited
@@ -37,7 +33,6 @@ export const mutations = {
     state.alertRuleEdited = false
     state.activeAlertRule = null
     state.alertRules = []
-    state.alertRulesDefault = []
     state.showAlertRules = false
   },
 }

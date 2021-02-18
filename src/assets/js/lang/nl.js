@@ -721,6 +721,9 @@ const translations = {
   Alert_via_email: 'Alert via email',
   Webhook_url: 'Webhook url',
   this_field: 'Dit veld',
+  alertrule_default:
+    'Voorgeprogrammeerde alertregel | Voorgeprogrammeerde alertregels',
+  copy: 'Kopieer',
 }
 
 export default translations
