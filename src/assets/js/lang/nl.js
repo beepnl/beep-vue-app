@@ -680,7 +680,7 @@ const translations = {
   deleted_but_not_saved_devices_warning:
     "Let op: meetsystemen worden pas definitief verwijderd wanneer je op de 'Opslaan Meetsystemen' knop klikt, rechtsboven.",
   no_alerts: 'Geen nieuwe alerts',
-  alertrule: 'Alertregel | Alertregels',
+  alertrule: 'alertregel | alertregels',
   Measurement: 'Meting | Metingen',
   Calculation: 'Berekening',
   calculation: 'berekening',
@@ -705,8 +705,8 @@ const translations = {
   Absolute_value: 'Absolute waarde',
   Absolute_value_of_dif: 'Absolute waarde van het verschil',
   alertrule_info: 'Hier komt uitleg over de alertregels.',
-  alertrule_url: '/alertrules',
-  alertrule_url_text:
+  alertrules_default_url: '/alertrules/default',
+  alertrules_default_url_text:
     'Hier kunt u de voorgeprogrammeerde alertregels bekijken en desgewenst toevoegen aan uw eigen alertregels.',
   Exclude: 'Excludeer',
   Exclude_months: 'Ik wil géén alerts ontvangen in de volgende maanden:',

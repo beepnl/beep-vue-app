@@ -191,6 +191,7 @@
 <script>
 import Api from '@api/Api'
 import HiveFactory from '@components/hive-factory.vue'
+import { mapGetters } from 'vuex'
 import VueNumericInput from 'vue-numeric-input'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
@@ -220,12 +221,11 @@ export default {
       overlay: false,
       colorPreview: false,
       colorPickerValue: '',
-      hiveDimensionsList: {},
-      hiveTypesList: [],
       ready: false,
     }
   },
   computed: {
+    ...mapGetters('taxonomy', ['hiveDimensionsList', 'hiveTypesList']),
     locale() {
       return this.$i18n.locale
     },
@@ -300,16 +300,23 @@ export default {
   },
   methods: {
     async readTaxonomy() {
-      try {
-        const response = await Api.readRequest('/taxonomy/lists')
-        this.hiveDimensionsList = response.data.hivedimensions
-        this.hiveTypesList = response.data.hivetypes
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log(error.response)
-        } else {
-          console.log('Error: ', error)
+      if (
+        this.hiveDimensionsList.length === 0 ||
+        this.hiveTypesList.length === 0
+      ) {
+        try {
+          const response = await Api.readRequest('/taxonomy/lists')
+          this.$store.commit('taxonomy/setData', {
+            prop: 'taxonomyLists',
+            value: response.data,
+          })
+          return true
+        } catch (error) {
+          if (error.response) {
+            console.log(error.response)
+          } else {
+            console.log('Error: ', error)
+          }
         }
       }
     },
@@ -376,7 +383,7 @@ export default {
         this.hiveDimensionsList &&
         this.hiveDimensionsList[hiveTypeName] !== undefined
       ) {
-        const hiveDimensions = {
+        var hiveDimensions = {
           bb_width_cm: parseFloat(
             this.hiveDimensionsList[hiveTypeName].bb_width_cm
           ),
@@ -393,12 +400,19 @@ export default {
             this.hiveDimensionsList[hiveTypeName].fr_height_cm
           ),
         }
-
-        var i = 0
-        for (i in hiveDimensions) {
-          this.updateHive(hiveDimensions[i], i)
-          i++
+      } else {
+        hiveDimensions = {
+          bb_width_cm: 0,
+          bb_depth_cm: 0,
+          bb_height_cm: 0,
+          fr_width_cm: 0,
+          fr_height_cm: 0,
         }
+      }
+      var i = 0
+      for (i in hiveDimensions) {
+        this.updateHive(hiveDimensions[i], i)
+        i++
       }
     },
   },

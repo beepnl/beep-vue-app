@@ -293,7 +293,6 @@ export default {
       },
       activeAlertRule: null,
       valid: false,
-      sensorMeasurements: [],
       showLoadingIcon: false,
       newAlertRuleNumber: 1,
       newAlertRuleLocation: null,
@@ -303,6 +302,7 @@ export default {
     ...mapGetters('groups', ['groups']),
     ...mapGetters('alerts', ['alertRules', 'alertRuleEdited']),
     ...mapGetters('locations', ['apiaries']),
+    ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     alertruleCreateMode() {
       return this.$route.name === 'alertrule-create'
     },
@@ -423,7 +423,7 @@ export default {
       return sortedApiaries
     },
     sortedSensorMeasurements() {
-      var sortedSMs = this.sensorMeasurements.slice().sort(function(a, b) {
+      var sortedSMs = this.sensorMeasurementsList.slice().sort(function(a, b) {
         if (a.abbreviation > b.abbreviation) {
           return 1
         }
@@ -459,7 +459,7 @@ export default {
           name:
             this.$i18n.tc('alertrule', 1) + ' ' + (this.alertRules.length + 1),
           description: '',
-          measurement_id: this.sensorMeasurements[0].id,
+          measurement_id: this.sensorMeasurementsList[0].id,
           calculation: 'max',
           calculation_minutes: 60,
           comparator: '<',
@@ -627,15 +627,20 @@ export default {
       }
     },
     async readTaxonomy() {
-      try {
-        const response = await Api.readRequest('/taxonomy/lists')
-        this.sensorMeasurements = response.data.sensormeasurements
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log(error.response)
-        } else {
-          console.log('Error: ', error)
+      if (this.sensorMeasurementsList.length === 0) {
+        try {
+          const response = await Api.readRequest('/taxonomy/lists')
+          this.$store.commit('taxonomy/setData', {
+            prop: 'taxonomyLists',
+            value: response.data,
+          })
+          return true
+        } catch (error) {
+          if (error.response) {
+            console.log(error.response)
+          } else {
+            console.log('Error: ', error)
+          }
         }
       }
     },

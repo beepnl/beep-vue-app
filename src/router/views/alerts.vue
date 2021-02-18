@@ -137,8 +137,8 @@
                   <p v-if="showDescription && ready" class="mt-n1 mb-0">
                     <em
                       >{{ $t('alertrule_info') + ' '
-                      }}<a :href="$t('alertrule_url')">{{
-                        $t('alertrule_url_text')
+                      }}<a :href="$t('alertrules_default_url')">{{
+                        $t('alertrules_default_url_text')
                       }}</a></em
                     >
                   </p>
@@ -309,7 +309,6 @@ export default {
       search: null,
       errors: [],
       showDescription: true,
-      // sensorMeasurements: [],
       showLoadingIconById: {
         active: [],
         alert_via_email: [],
@@ -323,18 +322,6 @@ export default {
     alertsWithRuleDetails() {
       var alertsWithRuleDetails = this.alerts
       alertsWithRuleDetails.map((alert) => {
-        // if (
-        //   this.hives.length === 0 ||
-        //   typeof this.hives[alert.hive_id] === 'undefined'
-        // ) {
-        // var hiveName = 'unknown hive'
-        // var hiveLocation = 'unknown apiary'
-        //   var hiveGroupName = null
-        // } else {
-        // hiveName = this.hives[alert.hive_id].name
-        // hiveLocation = this.hives[alert.hive_id].location
-        //   hiveGroupName = this.hives[alert.hive_id].group_name || null
-        // }
         var hiveGroupName = null
         if (
           this.hives[alert.hive_id] !== undefined &&
@@ -342,8 +329,6 @@ export default {
         ) {
           hiveGroupName = this.hives[alert.hive_id].group_name
         }
-        // alert.hive_name = hiveName
-        // alert.location_name = hiveLocation
         alert.hive_group_name = hiveGroupName
         var ruleExists = this.alertRules.filter(
           (alertRule) => alertRule.id === alert.alert_rule_id
@@ -555,19 +540,6 @@ export default {
         }
       }
     },
-    // async readTaxonomy() {
-    //   try {
-    //     const response = await Api.readRequest('/taxonomy/lists')
-    //     this.sensorMeasurements = response.data.sensormeasurements
-    //     return true
-    //   } catch (error) {
-    //     if (error.response) {
-    //       console.log(error.response)
-    //     } else {
-    //       console.log('Error: ', error)
-    //     }
-    //   }
-    // },
     async toggleAlertRule(alertRule, property) {
       this.showLoadingIconById[property].push(alertRule.id)
       alertRule[property] = !alertRule[property]

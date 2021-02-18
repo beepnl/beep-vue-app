@@ -104,6 +104,5 @@ export default {
   max-height: 20px !important;
   padding-top: 8px !important;
   font-size: 11px !important;
-  color: $color-grey-light !important;
 }
 </style>

@@ -315,6 +315,10 @@
   height: 13px !important;
 }
 
+.theme--light.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled).version-number {
+  color: $color-grey-light !important;
+}
+
 /* Vue Numeric Input */
 .vue-numeric-input {
   .numeric-input {

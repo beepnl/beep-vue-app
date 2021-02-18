@@ -95,6 +95,14 @@ export default [
     meta: {
       authRequired: true,
     },
+    path: '/alertrules/default',
+    name: 'alertrules-default',
+    component: () => lazyLoadView(import('@views/alertrules-default.vue')),
+  },
+  {
+    meta: {
+      authRequired: true,
+    },
     path: '/',
     alias: '/apiaries',
     name: 'home',

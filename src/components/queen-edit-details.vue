@@ -156,6 +156,7 @@
 <script>
 import Api from '@api/Api'
 import { darkIconMixin } from '@mixins/darkIconMixin'
+import { mapGetters } from 'vuex'
 import { momentMixin } from '@mixins/momentMixin'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
@@ -196,10 +197,10 @@ export default {
       modal: false,
       useQueenMarkColor: false,
       queenHasColor: false,
-      beeRacesList: [],
     }
   },
   computed: {
+    ...mapGetters('taxonomy', ['beeRacesList']),
     locale() {
       return this.$i18n.locale
     },
@@ -297,15 +298,20 @@ export default {
   },
   methods: {
     async readTaxonomy() {
-      try {
-        const response = await Api.readRequest('/taxonomy/lists')
-        this.beeRacesList = response.data.beeraces
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log(error.response)
-        } else {
-          console.log('Error: ', error)
+      if (this.beeRacesList.length === 0) {
+        try {
+          const response = await Api.readRequest('/taxonomy/lists')
+          this.$store.commit('taxonomy/setData', {
+            prop: 'taxonomyLists',
+            value: response.data,
+          })
+          return true
+        } catch (error) {
+          if (error.response) {
+            console.log(error.response)
+          } else {
+            console.log('Error: ', error)
+          }
         }
       }
     },

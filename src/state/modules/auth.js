@@ -56,6 +56,7 @@ export const actions = {
     commit('hives/resetState', null, { root: true })
     commit('inspections/resetState', null, { root: true })
     commit('locations/resetState', null, { root: true })
+    commit('taxonomy/resetState', null, { root: true })
 
     commit('SET_CURRENT_USER', null)
     return null

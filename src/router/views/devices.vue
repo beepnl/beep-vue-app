@@ -278,10 +278,10 @@
                   <v-col cols="12" md="6">
                     <div class="beep-label" v-text="`${$t('Type')}`"></div>
                     <Treeselect
-                      v-if="sensorTypes.length > 0"
+                      v-if="sensorTypesList.length > 0"
                       v-model="ownedDevice.type"
                       :normalizer="normalizerSensorTypes"
-                      :options="sensorTypes"
+                      :options="sensorTypesList"
                       :placeholder="`${$t('Select')} ${$t('type')}`"
                       :no-results-text="`${$t('no_results')}`"
                       :disable-branch-nodes="true"
@@ -616,8 +616,6 @@ export default {
         }
       },
       ready: false,
-      sensorTypes: [],
-      sensorMeasurements: [],
       showDevicesByKey: [],
       showLoadingIcon: false,
       showLoadingIconById: [],
@@ -627,6 +625,7 @@ export default {
   computed: {
     ...mapGetters('groups', ['groups']),
     ...mapGetters('locations', ['apiaries']),
+    ...mapGetters('taxonomy', ['sensorMeasurementsList', 'sensorTypesList']),
     deletedButNotSaved() {
       const unsavedDeletions = this.ownedDevices.filter((ownedDevice) => {
         const unsavedSensorDefs = ownedDevice.sensor_definitions.filter(
@@ -660,7 +659,7 @@ export default {
       return sortedOwnedDevices
     },
     sortedSensorMeasurements() {
-      var sortedSMs = this.sensorMeasurements.slice().sort(function(a, b) {
+      var sortedSMs = this.sensorMeasurementsList.slice().sort(function(a, b) {
         if (a.abbreviation > b.abbrevation) {
           return 1
         }
@@ -722,19 +721,6 @@ export default {
         }
       }
     },
-    // async readApiaries() {
-    //   try {
-    //     const response = await Api.readRequest('/locations')
-    //     this.$store.commit('locations/setApiaries', response.data.locations)
-    //     return true
-    //   } catch (error) {
-    //     if (error.response) {
-    //       console.log(error.response)
-    //     } else {
-    //       console.log('Error: ', error)
-    //     }
-    //   }
-    // },
     async readApiariesAndGroups() {
       try {
         const responseApiaries = await Api.readRequest('/locations')
@@ -754,16 +740,23 @@ export default {
       }
     },
     async readTaxonomy() {
-      try {
-        const response = await Api.readRequest('/taxonomy/lists')
-        this.sensorTypes = response.data.sensortypes
-        this.sensorMeasurements = response.data.sensormeasurements
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log(error.response)
-        } else {
-          console.log('Error: ', error)
+      if (
+        this.sensorMeasurementsList.length === 0 ||
+        this.sensorTypesList.length === 0
+      ) {
+        try {
+          const response = await Api.readRequest('/taxonomy/lists')
+          this.$store.commit('taxonomy/setData', {
+            prop: 'taxonomyLists',
+            value: response.data,
+          })
+          return true
+        } catch (error) {
+          if (error.response) {
+            console.log(error.response)
+          } else {
+            console.log('Error: ', error)
+          }
         }
       }
     },
