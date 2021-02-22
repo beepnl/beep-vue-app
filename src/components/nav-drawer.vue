@@ -34,7 +34,7 @@ Nav menu
                 </v-list-item-avatar>
                 <v-list-item-content>
                   <v-list-item-title>{{ item.title }}</v-list-item-title>
-                  <v-list-item-subtitle>{{
+                  <v-list-item-subtitle v-if="item.subtitle">{{
                     item.subtitle
                   }}</v-list-item-subtitle>
                 </v-list-item-content>
@@ -56,7 +56,9 @@ Nav menu
               </v-list-item-avatar>
               <v-list-item-content>
                 <v-list-item-title>{{ item.title }}</v-list-item-title>
-                <v-list-item-subtitle>{{ item.subtitle }}</v-list-item-subtitle>
+                <v-list-item-subtitle v-if="item.subtitle">{{
+                  item.subtitle
+                }}</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
 

@@ -89,7 +89,7 @@
                   :no-results-text="`${$t('no_results')}`"
                   :disable-branch-nodes="true"
                   :default-expand-level="1"
-                  @input.prevent="selectHiveSet($event)"
+                  @input="selectHiveSet($event)"
                 />
               </v-col>
               <v-col
@@ -863,21 +863,42 @@ export default {
         this.showLoadingIcon = true
         var inspectionToSave = this.activeInspection
         inspectionToSave.hive_ids = this.selectedHives
-        console.log('saving Inspection...')
-        console.log(inspectionToSave)
+        // console.log('saving Inspection...')
+        // console.log(inspectionToSave)
         try {
-          await Api.postRequest('/inspections/store', inspectionToSave)
+          const response = await Api.postRequest(
+            '/inspections/store',
+            inspectionToSave
+          )
+          if (response.status === 201) {
+            var searchInspectionId = response.data
+          }
+          var searchTerm = null
+          this.activeHive === null
+            ? (searchTerm = this.selectedHiveSet.name)
+            : (searchTerm = this.activeHive.name)
           setTimeout(() => {
             return this.readApiariesAndGroups().then(() => {
               // update generalInspections in store for diary-list
               this.readGeneralInspections().then(() => {
-                // if previous page was inspections, return there (with inspection id as search term?)
-                // if previous page was apiary-list, return there (with apiary or hive name as search term?)
-                console.log('next route: ', localStorage.beepNextRoute)
-                console.log('previous route: ', localStorage.beepPreviousRoute)
-                this.$router.push({
-                  name: 'diary',
-                })
+                // if previous page was inspections, return there (with inspection id as search term)
+                if (localStorage.beepPreviousRoute === 'hive-inspections') {
+                  this.$router.push({
+                    name: 'hive-inspections',
+                    query: { search: 'id=' + searchInspectionId },
+                  })
+                  // if previous page was apiary-list, return there (with apiary or hive name as search term, N.B. this wont overwrite any stored hiveSearch terms if present)
+                } else if (localStorage.beepPreviousRoute === 'home') {
+                  this.$router.push({
+                    name: 'home',
+                    query: { search: searchTerm },
+                  })
+                } else {
+                  this.$router.push({
+                    name: 'diary',
+                    query: { search: searchTerm },
+                  })
+                }
               })
             })
           }, 50) // wait for API to update inspections

@@ -812,7 +812,9 @@ export default {
     }
   },
   created() {
+    // set query search term as hiveSearch only if no stored hiveSearch is present
     if (
+      this.hiveSearch === null &&
       this.$route.query.search !== null &&
       this.$route.query.search !== undefined
     ) {

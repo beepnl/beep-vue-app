@@ -93,7 +93,7 @@ export default {
           icon: 'mdi-home-analytics',
           title: this.$i18n.t('Home'),
           route: 'home',
-          authRequired: false,
+          authRequired: true,
         },
       ]
     },

@@ -91,7 +91,7 @@ export default {
             title: this.$i18n.t('diary'),
             icon: 'mdi-calendar-edit',
             route: 'diary',
-            exact: true,
+            exact: false,
           },
           {
             title: this.$i18n.t('data'),
