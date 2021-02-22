@@ -47,6 +47,9 @@
     > *:first-child {
       margin-bottom: 2px !important;
     }
+    @include for-phone-only {
+      font-size: 12px !important;
+    }
   }
 }
 .v-tabs {
@@ -340,14 +343,6 @@
 
 .v-navigation-drawer {
   z-index: 999999 !important;
-}
-
-.v-list--two-line .v-list-item,
-.v-list-item--two-line {
-  @include for-phone-only {
-    min-height: 60px !important;
-    max-height: 60px !important;
-  }
 }
 
 /* Vue Numeric Input */

@@ -19,7 +19,7 @@ Nav menu
               >
             </v-btn>
           </div> -->
-          <v-list two-line flat dense>
+          <v-list flat dense>
             <div v-if="menuItems.length > 0">
               <v-list-item
                 v-for="(item, i) in menuItems"
@@ -34,9 +34,6 @@ Nav menu
                 </v-list-item-avatar>
                 <v-list-item-content>
                   <v-list-item-title>{{ item.title }}</v-list-item-title>
-                  <v-list-item-subtitle v-if="item.subtitle">{{
-                    item.subtitle
-                  }}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
 
@@ -56,9 +53,6 @@ Nav menu
               </v-list-item-avatar>
               <v-list-item-content>
                 <v-list-item-title>{{ item.title }}</v-list-item-title>
-                <v-list-item-subtitle v-if="item.subtitle">{{
-                  item.subtitle
-                }}</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
 
@@ -85,8 +79,6 @@ Nav menu
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
   props: {
     menuItems: {
@@ -100,28 +92,30 @@ export default {
     },
   },
   computed: {
-    ...mapGetters('auth', ['userName']),
     settingItems() {
       return [
         {
           icon: 'mdi-key',
           title: this.$i18n.t('Profile'),
           route: 'profile',
-          subtitle: this.userName,
-          authRequired: true,
-        },
-        {
-          icon: 'mdi-share-variant',
-          title: this.$i18n.t('research'),
-          route: 'research',
-          subtitle: this.$i18n.t('research_consent'),
           authRequired: true,
         },
         {
           icon: 'mdi-format-list-checks',
           title: this.$i18n.tc('Checklist_template', 2),
           route: 'checklists',
-          subtitle: this.$i18n.t('checklist_types'),
+          authRequired: true,
+        },
+        {
+          icon: 'mdi-devices',
+          title: this.$i18n.tc('device', 2),
+          route: 'devices',
+          authRequired: true,
+        },
+        {
+          icon: 'mdi-alert',
+          title: this.$i18n.tc('Alertrule', 2),
+          route: 'export',
           authRequired: true,
         },
         {
@@ -131,17 +125,21 @@ export default {
           authRequired: true,
         },
         {
+          icon: 'mdi-share-variant',
+          title: this.$i18n.t('research'),
+          route: 'research',
+          authRequired: true,
+        },
+        {
           icon: 'mdi-comment-question-outline',
           title: this.$i18n.t('Support'),
           route: 'support',
-          subtitle: 'Helpdesk',
           authRequired: true,
         },
         {
           icon: 'mdi-new-box',
           title: this.$i18n.t('Whats_new'),
           route: 'new',
-          subtitle: 'Changelog',
           authRequired: false,
         },
         {

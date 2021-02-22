@@ -1,5 +1,5 @@
 <template>
-  <Layout :menu-items="menuItems">
+  <Layout>
     <div v-if="devices.length > 0 && ready" class="period-bar-wrapper">
       <v-container class="period-container">
         <v-row
@@ -86,7 +86,7 @@
             "
           >
             <v-row>
-              <v-col cols="12" class="py-0">
+              <v-col cols="12" class="my-0">
                 <span
                   v-text="
                     mobile
@@ -181,15 +181,15 @@
             "
           >
             <v-row>
-              <v-col cols="12" class="py-0">
+              <v-col cols="12" class="my-0">
                 <span>{{
                   selectedDevice && !mobile
-                    ? $tc('measurement', 2) +
+                    ? $tc('Measurement', 2) +
                       ': ' +
                       selectedDevice.hive_name +
                       ' - ' +
                       selectedDevice.name
-                    : $tc('measurement', 2)
+                    : $tc('Measurement', 2)
                 }}</span>
                 <div class="float-right">
                   <v-icon
@@ -415,16 +415,6 @@ export default {
         })
       )
       return Math.max(...allSoundSensorValues)
-    },
-    menuItems: function() {
-      return [
-        {
-          icon: 'mdi-devices',
-          title: this.$i18n.tc('device', 2),
-          route: 'devices',
-          authRequired: true,
-        },
-      ]
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile

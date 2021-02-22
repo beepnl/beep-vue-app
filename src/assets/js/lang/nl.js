@@ -656,10 +656,10 @@ const translations = {
   or: 'of',
   select_all_hives: 'Selecteer alle bijenkasten',
   select_all_editable_hives: 'Selecteer alle aanpasbare bijenkasten',
-  alert: 'Alert | Alerts',
-  remove_alert: 'Verwijder alert',
-  alerts_enabled: 'Alerts ingeschakeld',
-  alerts_disabled: 'Alerts uitgeschakeld',
+  alert: 'Notificatie | Notificaties',
+  remove_alert: 'Verwijder notificatie',
+  alerts_enabled: 'Notificaties ingeschakeld',
+  alerts_disabled: 'Notificaties uitgeschakeld',
   edit_checklist_confirm:
     'Weet je zeker dat je de kastkaart wilt aanpassen? Niet opgeslagen aanpassingen aan je inspectie zullen verloren gaan.',
   edit_checklist_confirm_deselectedhives:
@@ -679,13 +679,13 @@ const translations = {
     'Weet je zeker dat je deze inspectie voor meerdere kasten tegelijk wilt opslaan?',
   deleted_but_not_saved_devices_warning:
     "Let op: meetsystemen worden pas definitief verwijderd wanneer je op de 'Opslaan Meetsystemen' knop klikt, rechtsboven.",
-  no_alerts: 'Geen nieuwe alerts',
-  alertrule: 'alertregel | alertregels',
+  no_alerts: 'Geen nieuwe notificaties',
+  alertrule: 'notificatie-instelling | notificatie-instelling',
   Measurement: 'Meting | Metingen',
   Calculation: 'Berekening',
   calculation: 'berekening',
   Calculation_minutes: 'Bereken per x aantal minuten',
-  Alert_on_occurences: 'Wanneer wil je deze alert ontvangen?',
+  Alert_on_occurences: 'Wanneer wil je deze notificatie ontvangen?',
   Alert_on_occurences_hint:
     'Direct, of pas nadat deze een x aantal keer is opgetreden?',
   Direct: 'Direct',
@@ -714,13 +714,13 @@ const translations = {
   Exclude_hives: 'Ik wil géén alerts ontvangen van de volgende bijenkasten:',
   months: 'maanden',
   hours: 'uren',
-  delete_alertrule: 'Verwijder alertregel',
+  delete_alertrule: 'Verwijder notificatie-instelling',
   Active: 'Actief',
   Alert_via_email: 'Alert via email',
   Webhook_url: 'Webhook url',
   this_field: 'Dit veld',
   alertrule_default:
-    'Voorgeprogrammeerde alertregel | Voorgeprogrammeerde alertregels',
+    'Standaard notificatie-instelling | Standaard notificatie-instellingen',
   copy: 'Kopieer',
   Home: 'Home',
 }

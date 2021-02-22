@@ -1,5 +1,5 @@
 <template>
-  <Layout :menu-items="menuItems">
+  <Layout>
     <div v-if="!showApiaryPlaceholder && ready" class="filter-bar-wrapper">
       <v-container class="filter-container">
         <v-row
@@ -744,22 +744,6 @@ export default {
           : (group.hasEditableHive = false)
       })
       return this.apiaries.concat(groupsWithEditableHivesProp)
-    },
-    menuItems: function() {
-      return [
-        {
-          icon: 'mdi-home-plus',
-          title: this.$i18n.t('new_apiary'),
-          route: 'apiary-create',
-          authRequired: true,
-        },
-        {
-          icon: 'mdi-account-multiple-plus',
-          title: this.$i18n.t('new_group'),
-          route: 'group-create',
-          authRequired: true,
-        },
-      ]
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile
