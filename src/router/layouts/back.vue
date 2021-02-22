@@ -20,8 +20,21 @@
       <v-spacer></v-spacer>
 
       <LocaleChanger></LocaleChanger>
-      <HeaderMenu :menu-items="menuItems"></HeaderMenu>
+
+      <v-app-bar-nav-icon
+        class="ml-n3"
+        @click.stop="drawer = !drawer"
+      ></v-app-bar-nav-icon>
+
+      <!-- <HeaderMenu :menu-items="menuItems"></HeaderMenu> -->
     </v-app-bar>
+
+    <NavDrawer
+      :menu-items="menuItems"
+      :drawer="drawer"
+      @update-drawer-value="drawer = $event"
+    ></NavDrawer>
+
     <v-main>
       <slot></slot>
     </v-main>
@@ -32,15 +45,17 @@
 
 <script>
 import Confirm from '@components/confirm.vue'
-import HeaderMenu from '@components/header-menu.vue'
+// import HeaderMenu from '@components/header-menu.vue'
 import LocaleChanger from '@components/locale-changer.vue'
 import { mapGetters } from 'vuex'
+import NavDrawer from '@components/nav-drawer.vue'
 
 export default {
   components: {
     Confirm,
-    HeaderMenu,
+    // HeaderMenu,
     LocaleChanger,
+    NavDrawer,
   },
   props: {
     title: {
@@ -61,6 +76,11 @@ export default {
       required: false,
     },
   },
+  data: function() {
+    return {
+      drawer: false,
+    }
+  },
   computed: {
     ...mapGetters('alerts', ['alertRuleEdited']),
     ...mapGetters('groups', ['groupEdited']),
@@ -68,7 +88,14 @@ export default {
     ...mapGetters('inspections', ['inspectionEdited']),
     ...mapGetters('locations', ['apiaryEdited']),
     menuItems: function() {
-      return [{ title: this.$i18n.tc('Hive_short', 2), route: 'home' }]
+      return [
+        {
+          icon: 'mdi-home-analytics',
+          title: this.$i18n.t('Home'),
+          route: 'home',
+          authRequired: false,
+        },
+      ]
     },
   },
   methods: {

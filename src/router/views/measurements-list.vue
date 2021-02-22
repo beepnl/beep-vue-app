@@ -1,5 +1,5 @@
 <template>
-  <Layout>
+  <Layout :menu-items="menuItems">
     <div v-if="devices.length > 0 && ready" class="period-bar-wrapper">
       <v-container class="period-container">
         <v-row
@@ -60,7 +60,7 @@
             tile
             outlined
             :small="mobile && devices.length > 0"
-            href="/devices"
+            :to="{ name: 'devices' }"
             class="edit-button"
             color="primary"
           >
@@ -415,6 +415,16 @@ export default {
         })
       )
       return Math.max(...allSoundSensorValues)
+    },
+    menuItems: function() {
+      return [
+        {
+          icon: 'mdi-devices',
+          title: this.$i18n.tc('device', 2),
+          route: 'devices',
+          authRequired: true,
+        },
+      ]
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile

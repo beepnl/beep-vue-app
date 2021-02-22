@@ -338,12 +338,16 @@
   height: 13px !important;
 }
 
-.theme--light.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled).version-number {
-  color: $color-grey-light !important;
-}
-
 .v-navigation-drawer {
   z-index: 999999 !important;
+}
+
+.v-list--two-line .v-list-item,
+.v-list-item--two-line {
+  @include for-phone-only {
+    min-height: 60px !important;
+    max-height: 60px !important;
+  }
 }
 
 /* Vue Numeric Input */

@@ -747,8 +747,18 @@ export default {
     },
     menuItems: function() {
       return [
-        { title: this.$i18n.t('new_apiary'), route: 'apiary-create' },
-        { title: this.$i18n.t('new_group'), route: 'group-create' },
+        {
+          icon: 'mdi-home-plus',
+          title: this.$i18n.t('new_apiary'),
+          route: 'apiary-create',
+          authRequired: true,
+        },
+        {
+          icon: 'mdi-account-multiple-plus',
+          title: this.$i18n.t('new_group'),
+          route: 'group-create',
+          authRequired: true,
+        },
       ]
     },
     mobile() {

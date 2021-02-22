@@ -722,6 +722,7 @@ const translations = {
   alertrule_default:
     'Voorgeprogrammeerde alertregel | Voorgeprogrammeerde alertregels',
   copy: 'Kopieer',
+  Home: 'Home',
 }
 
 export default translations

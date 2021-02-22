@@ -8,12 +8,14 @@
 
       <LocaleChanger class="mr-1"></LocaleChanger>
 
-      <HeaderMenu :menu-items="menuItems"></HeaderMenu>
+      <!-- <HeaderMenu :menu-items="menuItems"></HeaderMenu> -->
 
-      <!-- <v-app-bar-nav-icon
+      <v-app-bar-nav-icon
         class="ml-n3"
-        @click="drawer = !drawer"
-      ></v-app-bar-nav-icon> -->
+        @click.stop="drawer = !drawer"
+      ></v-app-bar-nav-icon>
+
+      <!-- <NavDrawer></NavDrawer> -->
 
       <template v-slot:extension>
         <v-tabs
@@ -38,7 +40,11 @@
       </template>
     </v-app-bar>
 
-    <!-- <NavDrawer :drawer="drawer"></NavDrawer> -->
+    <NavDrawer
+      :menu-items="menuItems"
+      :drawer="drawer"
+      @update-drawer-value="drawer = $event"
+    ></NavDrawer>
 
     <v-main>
       <slot></slot>
@@ -48,16 +54,16 @@
 
 <script>
 import Api from '@api/Api'
-import HeaderMenu from '@components/header-menu.vue'
+// import HeaderMenu from '@components/header-menu.vue'
 import LocaleChanger from '@components/locale-changer.vue'
 import { mapGetters } from 'vuex'
-// import NavDrawer from '@components/nav-drawer.vue'
+import NavDrawer from '@components/nav-drawer.vue'
 
 export default {
   components: {
-    HeaderMenu,
+    // HeaderMenu,
     LocaleChanger,
-    // NavDrawer,
+    NavDrawer,
   },
   props: {
     menuItems: {

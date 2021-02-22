@@ -719,6 +719,7 @@ const translations = {
   this_field: 'This field',
   alertrule_default: 'Default alert rule | Default alert rules',
   copy: 'Copy',
+  Home: 'Home',
 }
 
 export default translations
