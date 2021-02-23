@@ -4,21 +4,13 @@ Nav menu
   <div>
     <v-navigation-drawer
       v-model="showDrawer"
-      absolute
+      fixed
       temporary
       right
       class="nav-drawer"
     >
       <div class="nav-drawer-wrapper d-flex flex-column justify-space-between">
         <div>
-          <!-- <div class="d-flex flex-row align-end">
-            <v-spacer></v-spacer>
-            <v-btn icon>
-              <v-icon class="color-grey-medium" @click="showDrawer = false"
-                >mdi-close</v-icon
-              >
-            </v-btn>
-          </div> -->
           <v-list flat dense>
             <div v-if="menuItems.length > 0">
               <v-list-item
@@ -40,23 +32,26 @@ Nav menu
               <v-divider></v-divider>
             </div>
 
-            <v-list-item
-              v-for="(item, i) in settingItems"
-              :key="i"
-              exact
-              :to="!item.external ? { name: item.route } : ''"
-              :target="item.external ? '_blank' : '_self'"
-              :disabled="item.authRequired && !loggedIn"
-            >
-              <v-list-item-avatar>
-                <v-icon color="primary">{{ item.icon }}</v-icon>
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
+            <template v-for="(item, i) in settingItems">
+              <v-list-item
+                v-if="item.title"
+                :key="i"
+                exact
+                :to="!item.external ? { name: item.route } : ''"
+                :href="item.external ? item.route : ''"
+                :target="item.external ? '_blank' : '_self'"
+                :disabled="item.authRequired && !loggedIn"
+              >
+                <v-list-item-avatar>
+                  <v-icon color="primary">{{ item.icon }}</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
 
-            <v-divider></v-divider>
+              <v-divider v-else-if="item.divider" :key="`d-${i}`"></v-divider>
+            </template>
 
             <v-list-item :disabled="!loggedIn" @click="signOut">
               <v-list-item-avatar>
@@ -95,9 +90,9 @@ export default {
     settingItems() {
       return [
         {
-          icon: 'mdi-key',
-          title: this.$i18n.t('Profile'),
-          route: 'profile',
+          icon: 'mdi-share-variant',
+          title: this.$i18n.t('research'),
+          route: 'research',
           authRequired: true,
         },
         {
@@ -114,7 +109,7 @@ export default {
         },
         {
           icon: 'mdi-alert',
-          title: this.$i18n.tc('Alertrule', 2),
+          title: this.$i18n.t('alertrule_link'),
           route: 'export',
           authRequired: true,
         },
@@ -125,10 +120,7 @@ export default {
           authRequired: true,
         },
         {
-          icon: 'mdi-share-variant',
-          title: this.$i18n.t('research'),
-          route: 'research',
-          authRequired: true,
+          divider: true,
         },
         {
           icon: 'mdi-comment-question-outline',
@@ -151,6 +143,15 @@ export default {
               ? 'https://beep.nl'
               : 'https://beep.nl/home-english',
           authRequired: false,
+        },
+        {
+          divider: true,
+        },
+        {
+          icon: 'mdi-account',
+          title: this.$i18n.t('Profile'),
+          route: 'profile',
+          authRequired: true,
         },
       ]
     },

@@ -382,7 +382,7 @@
                   }"
                 >
                   <v-list-item-icon class="mr-3">
-                    <v-icon>mdi-plus</v-icon>
+                    <v-icon>mdi-plus-box-outline</v-icon>
                   </v-list-item-icon>
 
                   <v-list-item-content>

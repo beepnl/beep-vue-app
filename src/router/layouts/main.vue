@@ -1,21 +1,27 @@
 <template>
   <div>
     <v-app-bar app light background-color="#000" color="primary" dense>
-      <v-toolbar-title class="d-flex align-self-center"
-        ><img src="@assets/img/beep-logo-black.svg"
-      /></v-toolbar-title>
-      <v-spacer></v-spacer>
+      <div
+        class="d-flex flex-row justify-space-between align-center"
+        style="width:100%;"
+      >
+        <v-toolbar-title class="d-flex align-self-center"
+          ><img src="@assets/img/beep-logo-black.svg"
+        /></v-toolbar-title>
 
-      <LocaleChanger class="mr-1"></LocaleChanger>
+        <PlusMenu></PlusMenu>
 
-      <!-- <HeaderMenu :menu-items="menuItems"></HeaderMenu> -->
+        <div>
+          <LocaleChanger class="mr-1"></LocaleChanger>
 
-      <v-app-bar-nav-icon
-        class="ml-n3"
-        @click.stop="drawer = !drawer"
-      ></v-app-bar-nav-icon>
+          <!-- <HeaderMenu :menu-items="menuItems"></HeaderMenu> -->
 
-      <!-- <NavDrawer></NavDrawer> -->
+          <v-app-bar-nav-icon
+            class="ml-n3"
+            @click.stop="drawer = !drawer"
+          ></v-app-bar-nav-icon>
+        </div>
+      </div>
 
       <template v-slot:extension>
         <v-tabs
@@ -58,12 +64,14 @@ import Api from '@api/Api'
 import LocaleChanger from '@components/locale-changer.vue'
 import { mapGetters } from 'vuex'
 import NavDrawer from '@components/nav-drawer.vue'
+import PlusMenu from '@components/plus-menu.vue'
 
 export default {
   components: {
     // HeaderMenu,
     LocaleChanger,
     NavDrawer,
+    PlusMenu,
   },
   props: {
     menuItems: {

@@ -680,7 +680,8 @@ const translations = {
   deleted_but_not_saved_devices_warning:
     "Let op: meetsystemen worden pas definitief verwijderd wanneer je op de 'Opslaan Meetsystemen' knop klikt, rechtsboven.",
   no_alerts: 'Geen nieuwe notificaties',
-  alertrule: 'notificatie-instelling | notificatie-instelling',
+  alertrule: 'notificatie-instelling | notificatie-instellingen',
+  alertrule_link: 'Notificaties beheren',
   Measurement: 'Meting | Metingen',
   Calculation: 'Berekening',
   calculation: 'berekening',
