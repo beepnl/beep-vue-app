@@ -8,25 +8,32 @@
       dense
       class="zindex4"
     >
-      <slot name="icon">
-        <v-btn icon @click="back">
-          <v-icon>mdi-arrow-left</v-icon>
-        </v-btn>
-      </slot>
-      <slot name="title">
-        <v-toolbar-title>{{ title }}</v-toolbar-title>
-      </slot>
+      <div
+        class="d-flex flex-row justify-space-between align-center"
+        style="width:100%;"
+      >
+        <div class="d-flex flex-row align-center ml-n3">
+          <slot name="icon">
+            <v-btn icon @click="back">
+              <v-icon>mdi-arrow-left</v-icon>
+            </v-btn>
+          </slot>
+          <slot name="title">
+            <v-toolbar-title class="back-title">{{ title }}</v-toolbar-title>
+          </slot>
+        </div>
 
-      <v-spacer></v-spacer>
+        <PlusMenu v-if="!tinyScreen"></PlusMenu>
 
-      <LocaleChanger></LocaleChanger>
+        <div class="mr-n2">
+          <LocaleChanger></LocaleChanger>
 
-      <v-app-bar-nav-icon
-        class="ml-n3"
-        @click.stop="drawer = !drawer"
-      ></v-app-bar-nav-icon>
-
-      <!-- <HeaderMenu :menu-items="menuItems"></HeaderMenu> -->
+          <v-app-bar-nav-icon
+            class="ml-n2"
+            @click.stop="drawer = !drawer"
+          ></v-app-bar-nav-icon>
+        </div>
+      </div>
     </v-app-bar>
 
     <NavDrawer
@@ -45,27 +52,23 @@
 
 <script>
 import Confirm from '@components/confirm.vue'
-// import HeaderMenu from '@components/header-menu.vue'
 import LocaleChanger from '@components/locale-changer.vue'
 import { mapGetters } from 'vuex'
 import NavDrawer from '@components/nav-drawer.vue'
+import PlusMenu from '@components/plus-menu.vue'
 
 export default {
   components: {
     Confirm,
-    // HeaderMenu,
     LocaleChanger,
     NavDrawer,
+    PlusMenu,
   },
   props: {
     title: {
       type: String,
-      default: 'Back', // () => this.$i18n.t('back') werkt niet, ook niet via created hook,
+      default: 'Back',
     },
-    // menuItems: {
-    //   type: Array,
-    //   default: () => [],
-    // },
     edited: {
       type: Boolean,
       default: false,
@@ -96,6 +99,9 @@ export default {
           authRequired: true,
         },
       ]
+    },
+    tinyScreen() {
+      return this.$vuetify.breakpoint.width < 350
     },
   },
   methods: {
@@ -142,5 +148,11 @@ export default {
 header.v-app-bar {
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
+}
+
+.back-title {
+  @include for-phone-only {
+    max-width: 180px;
+  }
 }
 </style>

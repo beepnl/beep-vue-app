@@ -45,14 +45,6 @@ export default [
     component: () => lazyLoadView(import('@views/account-sign-up.vue')),
   },
   {
-    meta: {
-      authRequired: true,
-    },
-    path: '/settings',
-    name: 'settings',
-    component: () => lazyLoadView(import('@views/settings.vue')),
-  },
-  {
     path: '/404',
     name: '404',
     component: require('@views/_404.vue').default,

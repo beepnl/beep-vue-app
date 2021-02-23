@@ -11,13 +11,11 @@
 
         <PlusMenu></PlusMenu>
 
-        <div>
-          <LocaleChanger class="mr-1"></LocaleChanger>
-
-          <!-- <HeaderMenu :menu-items="menuItems"></HeaderMenu> -->
+        <div class="mr-n2">
+          <LocaleChanger></LocaleChanger>
 
           <v-app-bar-nav-icon
-            class="ml-n3"
+            class="ml-n2"
             @click.stop="drawer = !drawer"
           ></v-app-bar-nav-icon>
         </div>
@@ -60,7 +58,6 @@
 
 <script>
 import Api from '@api/Api'
-// import HeaderMenu from '@components/header-menu.vue'
 import LocaleChanger from '@components/locale-changer.vue'
 import { mapGetters } from 'vuex'
 import NavDrawer from '@components/nav-drawer.vue'
@@ -68,7 +65,6 @@ import PlusMenu from '@components/plus-menu.vue'
 
 export default {
   components: {
-    // HeaderMenu,
     LocaleChanger,
     NavDrawer,
     PlusMenu,
