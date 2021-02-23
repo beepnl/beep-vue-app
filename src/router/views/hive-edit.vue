@@ -2,7 +2,7 @@
   <Layout :title="getTitle()">
     <h1
       v-if="
-        locationId === null &&
+        !hiveCreateMode &&
           activeHive &&
           typeof activeHive.name !== 'undefined' &&
           !activeHive.editable &&
@@ -18,7 +18,7 @@
         v-if="
           activeHive &&
             ((activeHive.name !== undefined && activeHive.editable) ||
-              locationId !== null)
+              hiveCreateMode)
         "
         class="save-bar"
         dense
@@ -66,7 +66,7 @@
         v-if="
           activeHive &&
             ((activeHive.name !== undefined && activeHive.editable) ||
-              locationId !== null)
+              hiveCreateMode)
         "
         class="content-container"
       >
@@ -95,19 +95,38 @@
             md="4"
           >
             <div>
-              <div class="beep-label" v-text="`${$tc('Location', 1)}`"></div>
+              <div
+                :class="
+                  `beep-label ${
+                    isNaN(activeHive.location_id) ? 'red--text' : ''
+                  }`
+                "
+                v-text="$tc('Location', 1)"
+              ></div>
               <Treeselect
                 v-model="activeHive.location_id"
                 :options="sortedApiaries"
                 :normalizer="normalizerApiary"
                 :placeholder="`${$t('Select')} ${$tc('location', 1)}`"
                 :no-results-text="`${$t('no_results')}`"
-                :disabled="!activeHive.owner"
                 @input="setHiveEdited(true)"
               />
               <p v-if="apiaries === null" class="color-grey-medium mt-3">{{
                 $t('no_apiaries_yet')
               }}</p>
+              <div
+                v-if="isNaN(activeHive.location_id)"
+                class="v-text-field__details mt-1"
+                ><div class="v-messages theme--light error--text" role="alert"
+                  ><div class="v-messages__wrapper"
+                    ><div class="v-messages__message">{{
+                      this.$i18n.t('this_field') +
+                        ' ' +
+                        this.$i18n.t('is_required')
+                    }}</div></div
+                  ></div
+                ></div
+              >
             </div>
           </v-col>
 
@@ -262,17 +281,23 @@ export default {
   },
   created() {
     // If hive-create route is used, make empty hive object
-    if (this.hiveCreateMode && this.locationId !== null) {
+    if (this.hiveCreateMode) {
       this.readApiariesAndGroupsIfNotPresent().then(() => {
         if (this.apiaries.length > 0) {
-          const apiary = this.apiaries.filter((apiary) => {
-            return apiary.id === this.locationId
-          })[0]
-          this.newHiveNumber = apiary.hives.length + 1
-          this.newHiveLocation = apiary.name
+          var selectedApiary = this.sortedApiaries[0]
+          var selectedLocationId = selectedApiary.id
+          this.newHiveLocation = null
+          if (this.locationId !== null) {
+            selectedLocationId = this.locationId
+            selectedApiary = this.apiaries.filter((apiary) => {
+              return apiary.id === this.locationId
+            })[0]
+            this.newHiveLocation = selectedApiary.name
+          }
+          this.newHiveNumber = selectedApiary.hives.length + 1
         }
         this.activeHive = {
-          location_id: this.locationId,
+          location_id: selectedLocationId,
           location: this.newHiveLocation,
           hive_type_id: null,
           color: '#F8B133',
@@ -328,11 +353,14 @@ export default {
             this.snackbar.text = this.$i18n.t('not_saved_error')
             this.snackbar.show = true
           }
+          var newLocation = this.apiaries.filter((apiary) => {
+            return apiary.id === this.activeHive.location_id
+          })[0]
           setTimeout(() => {
             return this.readApiariesAndGroups().then(() => {
               this.$router.push({
                 name: 'home',
-                query: { search: this.activeHive.location },
+                query: { search: newLocation.name },
               })
             })
           }, 50) // wait for API to update locations/hives
@@ -494,7 +522,7 @@ export default {
         })
     },
     getTitle() {
-      if (this.locationId) {
+      if (this.hiveCreateMode) {
         return this.$i18n.t('create_new') + ' ' + this.$i18n.tc('hive', 1)
       } else if (this.queenEditMode && this.activeHive !== null) {
         const queenName = this.activeHive.queen.name || ''
@@ -514,7 +542,7 @@ export default {
       }
     },
     saveHive() {
-      if (this.locationId !== null) {
+      if (this.hiveCreateMode !== null) {
         this.createHive()
       } else {
         this.updateHive()
