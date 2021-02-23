@@ -683,7 +683,7 @@ const translations = {
     "N.B.: devices will only be removed after clicking the 'Save Devices' button in the top right corner.",
   no_alerts: 'No new alerts',
   alertrule: 'alert rule | alert rules',
-  alertrule_link: 'Alert settings',
+  alertrule_pagetitle: 'Alert settings',
   Measurement: 'Measurement | Measurements',
   Calculation: 'Calculation',
   calculation: 'calculation',

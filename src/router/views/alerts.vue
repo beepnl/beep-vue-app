@@ -36,7 +36,7 @@
           <v-card-actions class="mr-1">
             <v-btn :to="{ name: 'alertrules' }" tile outlined color="primary">
               <v-icon left>mdi-pencil</v-icon>
-              {{ $t('alertrule_link') }}
+              {{ $t('alertrule_pagetitle') }}
             </v-btn>
           </v-card-actions>
         </v-row>
@@ -200,9 +200,6 @@ export default {
         }
       }
       return uniqueHives
-    },
-    locale() {
-      return this.$i18n.locale
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile

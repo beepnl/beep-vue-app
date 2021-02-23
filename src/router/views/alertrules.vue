@@ -1,5 +1,5 @@
 <template>
-  <Layout>
+  <Layout :title="this.$i18n.t('alertrule_pagetitle')">
     <v-container v-if="showAlertPlaceholder && ready">
       <v-row>
         <v-col sm="auto" :cols="12">
@@ -10,30 +10,8 @@
 
     <div v-if="!showAlertPlaceholder && ready" class="filter-bar-wrapper">
       <v-container class="filter-container">
-        <v-row
-          class="filter-bar d-flex flex-row justify-space-between align-center"
-        >
-          <div
-            class="filter-buttons d-flex flex-row justify-flex-start align-center"
-          >
-            <v-col cols="7" :class="mobile ? 'pr-0' : 'pr-1'">
-              <v-text-field
-                v-model="search"
-                :label="`${$t('Search')}`"
-                :class="
-                  `${
-                    search !== null ? 'v-input--is-focused primary--text' : ''
-                  } filter-text-field--large`
-                "
-                :height="mobile ? '30px' : '36px'"
-                clearable
-                outlined
-                dense
-                hide-details
-              ></v-text-field>
-            </v-col>
-          </div>
-          <v-card-actions class="mr-1">
+        <v-row class="filter-bar d-flex flex-row justify-end align-center">
+          <v-card-actions class="mr-6 mr-sm-1">
             <v-switch
               v-model="alertsEnabled"
               :label="
@@ -56,192 +34,173 @@
     </v-container>
 
     <v-container class="alertrules-content">
-      <v-card outlined>
-        <div
-          :class="
-            `alertrules-title-row d-flex flex-no-wrap justify-flex-start align-center ${
-              showAlertRules ? 'alertrules-title-row--border-bottom' : ''
-            }`
-          "
-          style="width: 100%;"
-        >
-          <v-row class="ml-0 my-0 pa-3" style="width:100%;">
-            <div class="overline" v-text="$tc('alertrule', 2)"></div>
-          </v-row>
-          <div>
-            <v-icon
-              :class="
-                `color-grey-light py-2 px-3 mdi ${
-                  showAlertRules ? 'mdi-minus' : 'mdi-plus'
-                }`
-              "
-              @click="showAlertRules = !showAlertRules"
-            >
-            </v-icon>
-          </div>
-        </div>
-
-        <v-card-text v-if="showAlertRules">
+      <v-row>
+        <v-col cols="12">
           <v-row>
-            <v-col cols="12">
-              <v-row>
-                <v-col
-                  cols="12"
-                  lg="10"
-                  class="d-flex justify-start align-start pb-0 mb-lg-3"
-                >
-                  <v-icon
-                    v-if="showAlertRules"
-                    class="mdi mdi-information icon-info cursor-pointer mr-2"
-                    dark
-                    small
+            <v-col
+              cols="12"
+              lg="10"
+              class="d-flex justify-start align-start pb-0 mb-lg-3"
+            >
+              <v-icon
+                class="mdi mdi-information icon-info cursor-pointer mr-2"
+                dark
+                small
+                color="primary"
+                @click="showDescription = !showDescription"
+              ></v-icon>
+              <p v-if="showDescription && ready" class="mt-n1 mb-0">
+                <em>{{ $t('alertrule_info') }}</em>
+              </p>
+            </v-col>
+            <v-col
+              cols="12"
+              lg="2"
+              class="d-flex justify-end align-center mb-3"
+            >
+              <v-menu offset-y>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    tile
+                    outlined
                     color="primary"
-                    @click="showDescription = !showDescription"
-                  ></v-icon>
-                  <p v-if="showDescription && ready" class="mt-n1 mb-0">
-                    <em
-                      >{{ $t('alertrule_info') + ' '
-                      }}<router-link :to="{ name: 'alertrules-default' }">{{
-                        $t('alertrules_default_url_text')
-                      }}</router-link></em
-                    >
-                  </p>
-                </v-col>
-                <v-col
-                  cols="12"
-                  lg="2"
-                  class="d-flex justify-end align-center mb-3"
-                >
-                  <router-link
-                    :to="{
-                      name: 'alertrule-create',
-                    }"
+                    class="save-button-mobile-wide"
+                    v-bind="attrs"
+                    v-on="on"
                   >
-                    <v-btn tile outlined color="primary">
-                      <v-icon left>mdi-plus</v-icon>
-                      {{ $t('add') + ' ' + $tc('alertrule', 1) }}
-                    </v-btn>
-                  </router-link>
-                </v-col>
-              </v-row>
-              <div v-if="alertRules.length > 0" class="rounded-border">
-                <v-simple-table class="v-data-table--smallfont">
-                  <template v-slot>
-                    <thead>
-                      <tr>
-                        <th class="text-left">
-                          {{ $t('Active') }}
-                        </th>
-                        <th class="text-left">
-                          {{ $t('Alert_via_email') }}
-                        </th>
-                        <th class="text-left">
-                          {{ $t('Name') }}
-                        </th>
-                        <th class="text-left">
-                          {{ $t('Description') }}
-                        </th>
-                        <th class="text-left">
-                          {{ $t('Actions') }}
-                        </th>
-                        <th></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="(alertRule, index) in alertRules" :key="index">
-                        <td>
-                          <v-progress-circular
-                            v-if="
-                              showLoadingIconById.active.indexOf(alertRule.id) >
-                                -1
-                            "
-                            class="progress-icon"
-                            size="18"
-                            width="2"
-                            :color="alertRule.active ? 'red' : 'green'"
-                            indeterminate
-                          />
-                          <v-icon
-                            v-if="
-                              showLoadingIconById.active.indexOf(
-                                // eslint-disable-next-line vue/comma-dangle
-                                alertRule.id
-                              ) === -1
-                            "
-                            dark
-                            :color="alertRule.active ? 'green' : 'red'"
-                            @click="toggleAlertRule(alertRule, 'active')"
-                            >{{
-                              alertRule.active ? 'mdi-check' : 'mdi-close'
-                            }}</v-icon
-                          >
-                        </td>
-                        <td>
-                          <v-progress-circular
-                            v-if="
-                              showLoadingIconById.alert_via_email.indexOf(
-                                // eslint-disable-next-line vue/comma-dangle
-                                alertRule.id
-                              ) > -1
-                            "
-                            class="progress-icon"
-                            size="18"
-                            width="2"
-                            :color="alertRule.alert_via_email ? 'red' : 'green'"
-                            indeterminate
-                          />
-                          <v-icon
-                            v-if="
-                              showLoadingIconById.alert_via_email.indexOf(
-                                // eslint-disable-next-line vue/comma-dangle
-                                alertRule.id
-                              ) === -1
-                            "
-                            dark
-                            :color="alertRule.alert_via_email ? 'green' : 'red'"
-                            @click="
-                              toggleAlertRule(alertRule, 'alert_via_email')
-                            "
-                            >{{
-                              alertRule.alert_via_email
-                                ? 'mdi-check'
-                                : 'mdi-close'
-                            }}</v-icon
-                          >
-                        </td>
-                        <td>
-                          <span v-text="alertRule.name"></span>
-                        </td>
-                        <td>
-                          <span v-text="alertRule.description"></span>
-                        </td>
-                        <td>
-                          <router-link
-                            :to="{
-                              name: 'alertrule-edit',
-                              params: { id: alertRule.id },
-                            }"
-                          >
-                            <v-icon dark color="primary">mdi-pencil</v-icon>
-                          </router-link>
-                        </td>
-                        <td>
-                          <v-icon
-                            dark
-                            color="red"
-                            @click="confirmDeleteAlertRule(alertRule, index)"
-                            >mdi-delete</v-icon
-                          >
-                        </td>
-                      </tr>
-                    </tbody>
-                  </template>
-                </v-simple-table>
-              </div>
+                    <v-icon left>mdi-plus</v-icon>
+                    {{ $t('add') + ' ' + $tc('alertrule', 1) }}
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item
+                    v-for="(item, index) in buttonMenuItems"
+                    :key="index"
+                    :to="item.route ? { name: item.route } : null"
+                  >
+                    <v-list-item-icon class="mr-3">
+                      <v-icon>{{ item.icon }}</v-icon>
+                    </v-list-item-icon>
+
+                    <v-list-item-content>
+                      <v-list-item-title>{{ item.title }}</v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
             </v-col>
           </v-row>
-        </v-card-text>
-      </v-card>
+          <div v-if="alertRules.length > 0" class="rounded-border">
+            <v-simple-table class="v-data-table--smallfont">
+              <template v-slot>
+                <thead>
+                  <tr>
+                    <th class="text-left">
+                      {{ $t('Active') }}
+                    </th>
+                    <th class="text-left">
+                      {{ $t('Alert_via_email') }}
+                    </th>
+                    <th class="text-left">
+                      {{ $t('Name') }}
+                    </th>
+                    <th class="text-left">
+                      {{ $t('Description') }}
+                    </th>
+                    <th class="text-left">
+                      {{ $t('Actions') }}
+                    </th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(alertRule, index) in alertRules" :key="index">
+                    <td>
+                      <v-progress-circular
+                        v-if="
+                          showLoadingIconById.active.indexOf(alertRule.id) > -1
+                        "
+                        class="progress-icon"
+                        size="18"
+                        width="2"
+                        :color="alertRule.active ? 'red' : 'green'"
+                        indeterminate
+                      />
+                      <v-icon
+                        v-if="
+                          showLoadingIconById.active.indexOf(
+                            // eslint-disable-next-line vue/comma-dangle
+                            alertRule.id
+                          ) === -1
+                        "
+                        dark
+                        :color="alertRule.active ? 'green' : 'red'"
+                        @click="toggleAlertRule(alertRule, 'active')"
+                        >{{
+                          alertRule.active ? 'mdi-check' : 'mdi-close'
+                        }}</v-icon
+                      >
+                    </td>
+                    <td>
+                      <v-progress-circular
+                        v-if="
+                          showLoadingIconById.alert_via_email.indexOf(
+                            // eslint-disable-next-line vue/comma-dangle
+                            alertRule.id
+                          ) > -1
+                        "
+                        class="progress-icon"
+                        size="18"
+                        width="2"
+                        :color="alertRule.alert_via_email ? 'red' : 'green'"
+                        indeterminate
+                      />
+                      <v-icon
+                        v-if="
+                          showLoadingIconById.alert_via_email.indexOf(
+                            // eslint-disable-next-line vue/comma-dangle
+                            alertRule.id
+                          ) === -1
+                        "
+                        dark
+                        :color="alertRule.alert_via_email ? 'green' : 'red'"
+                        @click="toggleAlertRule(alertRule, 'alert_via_email')"
+                        >{{
+                          alertRule.alert_via_email ? 'mdi-check' : 'mdi-close'
+                        }}</v-icon
+                      >
+                    </td>
+                    <td>
+                      <span v-text="alertRule.name"></span>
+                    </td>
+                    <td>
+                      <span v-text="alertRule.description"></span>
+                    </td>
+                    <td>
+                      <router-link
+                        :to="{
+                          name: 'alertrule-edit',
+                          params: { id: alertRule.id },
+                        }"
+                      >
+                        <v-icon dark color="primary">mdi-pencil</v-icon>
+                      </router-link>
+                    </td>
+                    <td>
+                      <v-icon
+                        dark
+                        color="red"
+                        @click="confirmDeleteAlertRule(alertRule, index)"
+                        >mdi-delete</v-icon
+                      >
+                    </td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+          </div>
+        </v-col>
+      </v-row>
     </v-container>
 
     <Confirm ref="confirm"></Confirm>
@@ -251,7 +210,7 @@
 <script>
 import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
-import Layout from '@layouts/main.vue'
+import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -261,9 +220,7 @@ export default {
   },
   data: function() {
     return {
-      alerts: [],
       ready: false,
-      search: null,
       errors: [],
       showDescription: true,
       showLoadingIconById: {
@@ -286,26 +243,22 @@ export default {
         return false
       }
     },
-    locale() {
-      return this.$i18n.locale
-    },
-    mobile() {
-      return this.$vuetify.breakpoint.mobile
-    },
-    showAlertRules: {
-      get() {
-        return this.$store.getters['alerts/showAlertRules']
-      },
-      set(value) {
-        this.$store.commit('alerts/setData', {
-          prop: 'showAlertRules',
-          value,
-        })
-      },
+    buttonMenuItems() {
+      return [
+        {
+          icon: 'mdi-plus',
+          title: this.$i18n.t('New') + ' ' + this.$i18n.tc('alertrule', 1),
+          route: 'alertrule-create',
+        },
+        {
+          icon: 'mdi-content-copy',
+          title: this.$i18n.t('Select_default_alertrule'),
+          route: 'alertrules-default',
+        },
+      ]
     },
   },
   created() {
-    this.search = this.$route.query.search || null
     if (this.alertRules.length === 0) {
       this.readAlertRules().then(() => {
         this.ready = true
@@ -398,9 +351,6 @@ export default {
           return true
         })
     },
-    getText(item) {
-      return item.abbreviation + ' (' + item.pq_name_unit + ')'
-    },
     toggleAlerts() {
       this.alertRules.map((alertRule) => {
         if (alertRule.active !== this.alertsEnabled) {
@@ -414,41 +364,20 @@ export default {
 
 <style lang="scss" scoped>
 .filter-bar-wrapper {
-  position: fixed;
-  top: 100px;
-  z-index: 1;
-  width: 100%;
-  margin-top: -4px;
-  background-color: $color-orange-light;
-  border-bottom: 1px solid #fff5e2;
-  .filter-container {
-    @include for-phone-only {
-      padding: 10px;
-    }
-  }
+  top: 48px;
   .filter-bar {
-    margin-top: -10px;
-    margin-bottom: -10px;
-    @include for-tablet-portrait-up {
-      margin-top: -12px;
-      margin-bottom: -12px;
-    }
     .v-input:not(.v-input--switch) {
       background-color: $color-white;
     }
     .v-input--selection-controls {
-      padding-top: 0;
       margin-top: 0;
     }
   }
 }
 
 .alertrules-content {
-  margin-top: 80px;
+  margin-top: 55px;
   overflow: hidden;
-  @include for-phone-only {
-    margin-top: 55px;
-  }
 }
 
 .alertrules-title-row {

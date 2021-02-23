@@ -109,7 +109,7 @@ export default {
         },
         {
           icon: 'mdi-bell',
-          title: this.$i18n.t('alertrule_link'),
+          title: this.$i18n.t('alertrule_pagetitle'),
           route: 'alertrules',
           authRequired: true,
         },
