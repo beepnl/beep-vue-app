@@ -50,6 +50,10 @@
     @include for-phone-only {
       font-size: 12px !important;
     }
+    @media (max-width: 350px) {
+      min-width: 70px !important;
+      padding: 0 4px !important;
+    }
   }
 }
 .v-tabs {

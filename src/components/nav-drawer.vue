@@ -108,9 +108,9 @@ export default {
           authRequired: true,
         },
         {
-          icon: 'mdi-alert',
+          icon: 'mdi-bell',
           title: this.$i18n.t('alertrule_link'),
-          route: 'export',
+          route: 'alertrules',
           authRequired: true,
         },
         {

@@ -5,13 +5,20 @@
         class="d-flex flex-row justify-space-between align-center"
         style="width:100%;"
       >
-        <v-toolbar-title class="d-flex align-self-center"
-          ><img src="@assets/img/beep-logo-black.svg"
-        /></v-toolbar-title>
+        <div
+          class="d-flex flex-row justify-start align-center"
+          style="width: 48%;"
+        >
+          <v-toolbar-title class="d-flex align-self-center"
+            ><img src="@assets/img/beep-logo-black.svg"
+          /></v-toolbar-title>
+        </div>
 
-        <PlusMenu></PlusMenu>
+        <div class="d-flex justify-center" style="width: 4%">
+          <PlusMenu></PlusMenu>
+        </div>
 
-        <div class="mr-n2">
+        <div class="d-flex justify-end align-center mr-n3" style="width: 48%;">
           <LocaleChanger></LocaleChanger>
 
           <v-app-bar-nav-icon
@@ -105,7 +112,7 @@ export default {
           },
           {
             title: this.$i18n.tc('alert', 2),
-            icon: 'mdi-alert',
+            icon: 'mdi-bell',
             route: 'alerts',
             exact: false,
           },

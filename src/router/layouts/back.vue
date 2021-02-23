@@ -12,20 +12,25 @@
         class="d-flex flex-row justify-space-between align-center"
         style="width:100%;"
       >
-        <div class="d-flex flex-row align-center ml-n3">
+        <div
+          class="d-flex flex-row justify-start align-center ml-n3"
+          style="width: 48%;"
+        >
           <slot name="icon">
             <v-btn icon @click="back">
               <v-icon>mdi-arrow-left</v-icon>
             </v-btn>
           </slot>
           <slot name="title">
-            <v-toolbar-title class="back-title">{{ title }}</v-toolbar-title>
+            <v-toolbar-title>{{ title }}</v-toolbar-title>
           </slot>
         </div>
 
-        <PlusMenu v-if="!tinyScreen"></PlusMenu>
+        <div class="d-flex justify-center" style="width: 4%">
+          <PlusMenu></PlusMenu>
+        </div>
 
-        <div class="mr-n2">
+        <div class="d-flex justify-end align-center mr-n3" style="width: 48%;">
           <LocaleChanger></LocaleChanger>
 
           <v-app-bar-nav-icon
@@ -100,9 +105,6 @@ export default {
         },
       ]
     },
-    tinyScreen() {
-      return this.$vuetify.breakpoint.width < 350
-    },
   },
   methods: {
     back: function() {
@@ -148,11 +150,5 @@ export default {
 header.v-app-bar {
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
-}
-
-.back-title {
-  @include for-phone-only {
-    max-width: 180px;
-  }
 }
 </style>
