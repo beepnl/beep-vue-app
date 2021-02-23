@@ -1,6 +1,6 @@
 <template>
   <Layout :title="this.$i18n.t('alertrule_pagetitle')">
-    <v-container v-if="showAlertPlaceholder && ready">
+    <v-container v-if="ready">
       <v-row>
         <v-col sm="auto" :cols="12">
           {{ $t('no_alerts') }}
@@ -8,16 +8,17 @@
       </v-row>
     </v-container>
 
-    <div v-if="!showAlertPlaceholder && ready" class="filter-bar-wrapper">
+    <div v-if="ready" class="filter-bar-wrapper">
       <v-container class="filter-container">
         <v-row class="filter-bar d-flex flex-row justify-end align-center">
-          <v-card-actions class="mr-6 mr-sm-1">
+          <v-card-actions class="mr-1">
             <v-switch
               v-model="alertsEnabled"
               :label="
                 alertsEnabled ? $t('alerts_enabled') : $t('alerts_disabled')
               "
               hide-details
+              class="filter-text-field--large"
               @change="toggleAlerts"
             ></v-switch>
           </v-card-actions>
@@ -378,6 +379,9 @@ export default {
 .alertrules-content {
   margin-top: 55px;
   overflow: hidden;
+  @include for-phone-only {
+    margin-top: 0;
+  }
 }
 
 .alertrules-title-row {

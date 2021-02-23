@@ -9,7 +9,7 @@
         dense
         icon="mdi-bell"
         color="red"
-        class="alert-card mb-0"
+        class="alert-card cursor-pointer mb-0"
         outlined
         v-on="menu"
       >

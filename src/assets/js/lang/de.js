@@ -705,15 +705,11 @@ const translations = {
   Absolute_value: 'Absolute value',
   Absolute_value_of_dif: 'Absolute value of the difference',
   alertrule_info: 'This will be replaced by some info on alert rules.',
-  alertrules_default_url_text:
-    'Here you can view the default alert rules and copy them to your own alert rules if you like.',
-  Exclude_months:
-    'I do NOT want to receive any alerts during the following months:',
-  Exclude_hours:
-    'I do NOT want to receive any alerts during the following hours:',
-  Exclude_hours_details:
-    'N.B. During the selected hours no calculations will be performed in order to create any alerts.',
-  Exclude_hives: 'I do NOT want to receive any alerts for the following hives:',
+  Exclude_months: 'Deactivate this alert during the following months:',
+  Exclude_hours: 'Deactivate this alert during the following hours:',
+  Exclude_hives: 'Deactivate this alert for the following hives:',
+  Exclude_hives_details:
+    'N.B. By default, this alert will be executed for all hives with a measurement device.',
   months: 'months',
   hours: 'hours',
   delete_alertrule: 'Delete alert rule',
@@ -724,6 +720,7 @@ const translations = {
   alertrule_default: 'Default alert rule | Default alert rules',
   copy: 'Copy',
   Home: 'Home',
+  Select_default_alertrule: 'Copy default alert rule',
 }
 
 export default translations

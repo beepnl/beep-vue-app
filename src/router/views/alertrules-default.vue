@@ -3,30 +3,10 @@
     <v-toolbar class="save-bar" dense light>
       <v-spacer></v-spacer>
       <v-btn
-        v-if="mobile"
-        class="mr-n2"
-        icon
-        :disabled="numberOfSelectedRules === 0"
-        @click.prevent="copySelectedAlertRules"
-      >
-        <v-progress-circular
-          v-if="showLoadingIcon"
-          class="mr-2"
-          size="18"
-          width="2"
-          color="primary"
-          indeterminate
-        />
-        <v-icon v-if="!showLoadingIcon" dark color="primary"
-          >mdi-content-copy</v-icon
-        >
-      </v-btn>
-      <v-btn
-        v-else
         tile
         outlined
         color="primary"
-        class="mr-1"
+        class="save-button-mobile-wide mr-1"
         :disabled="numberOfSelectedRules === 0"
         @click.prevent="copySelectedAlertRules"
       >

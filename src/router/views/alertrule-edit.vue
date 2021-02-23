@@ -6,7 +6,7 @@
         <v-icon
           v-if="!alertruleCreateMode"
           dark
-          class="mr-4"
+          class="mr-2"
           color="red"
           @click="confirmDeleteAlertRule"
           >mdi-delete</v-icon
@@ -15,7 +15,9 @@
           tile
           outlined
           color="primary"
-          class="mr-1"
+          :class="
+            `${alertruleCreateMode ? 'save-button-mobile-wide' : ''} mr-1`
+          "
           @click.prevent="saveAlertRule"
         >
           <v-progress-circular
@@ -224,13 +226,9 @@
               multiple
               @input="setAlertRuleEdited(true)"
             />
-            <div
-              class="beep-label mt-1"
-              v-text="$t('Exclude_hours_details')"
-            ></div>
           </v-col>
 
-          <v-col cols="12" lg="4">
+          <v-col v-if="devices.length > 1" cols="12" lg="4">
             <div class="beep-label" v-text="$t('Exclude_hives')"></div>
             <Treeselect
               v-model="activeAlertRule.exclude_hive_ids"
@@ -243,6 +241,10 @@
               multiple
               @input="setAlertRuleEdited(true)"
             />
+            <div
+              class="beep-label mt-1"
+              v-text="$t('Exclude_hives_details')"
+            ></div>
           </v-col>
         </v-row>
       </v-container>
@@ -296,8 +298,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('groups', ['groups']),
     ...mapGetters('alerts', ['alertRules', 'alertRuleEdited']),
+    ...mapGetters('devices', ['devices']),
+    ...mapGetters('groups', ['groups']),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     alertruleCreateMode() {
@@ -378,11 +381,11 @@ export default {
     },
     occurences() {
       var occArray = []
-      for (var i = 0; i < 11; i++) {
+      for (var i = 1; i < 11; i++) {
         occArray.push({
           id: i,
           label:
-            i === 0
+            i === 1
               ? this.$i18n.t('Direct')
               : this.$i18n.t('After') + ' ' + i + ' ' + this.$i18n.t('times'),
         })
@@ -424,10 +427,10 @@ export default {
     },
     sortedSensorMeasurements() {
       var sortedSMs = this.sensorMeasurementsList.slice().sort(function(a, b) {
-        if (a.abbreviation > b.abbreviation) {
+        if (a.pq_name_unit > b.pq_name_unit) {
           return 1
         }
-        if (b.abbreviation > a.abbreviation) {
+        if (b.pq_name_unit > a.pq_name_unit) {
           return -1
         }
         return 0
@@ -450,8 +453,7 @@ export default {
     },
   },
   created() {
-    // this.readApiariesAndGroupsIfNotPresent()
-    this.readApiariesAndGroups()
+    this.readApiariesAndGroupsIfNotPresent()
     this.readTaxonomy().then(() => {
       // If alertrule-create route is used, make empty alertrule object
       if (this.alertruleCreateMode) {
@@ -460,7 +462,7 @@ export default {
             this.$i18n.tc('alertrule', 1) + ' ' + (this.alertRules.length + 1),
           description: '',
           measurement_id: this.sensorMeasurementsList[0].id,
-          calculation: 'max',
+          calculation: 'ave',
           calculation_minutes: 60,
           comparator: '<',
           comparison: 'val',
@@ -470,6 +472,7 @@ export default {
           exclude_hive_ids: [],
           active: 1,
           alert_via_email: 0,
+          alert_on_occurences: 1,
         }
         // Else retrieve to-be-edited alertrule
       } else {
@@ -608,24 +611,6 @@ export default {
         return true
       }
     },
-    async readApiariesAndGroups() {
-      try {
-        const responseApiaries = await Api.readRequest('/locations')
-        const responseGroups = await Api.readRequest('/groups')
-        this.$store.commit(
-          'locations/setApiaries',
-          responseApiaries.data.locations
-        )
-        this.$store.commit('groups/setGroups', responseGroups.data.groups)
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log(error.response)
-        } else {
-          console.log('Error: ', error)
-        }
-      }
-    },
     async readTaxonomy() {
       if (this.sensorMeasurementsList.length === 0) {
         try {
@@ -702,7 +687,7 @@ export default {
         })
     },
     getText(item) {
-      return item.abbreviation + ' (' + item.pq_name_unit + ')'
+      return item.pq_name_unit + ' (' + item.abbreviation + ')'
     },
     getTitle() {
       if (this.alertruleCreateMode) {

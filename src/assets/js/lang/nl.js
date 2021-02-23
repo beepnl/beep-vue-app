@@ -706,13 +706,11 @@ const translations = {
   Absolute_value: 'Absolute waarde',
   Absolute_value_of_dif: 'Absolute waarde van het verschil',
   alertrule_info: 'Hier komt uitleg over de alertregels.',
-  alertrules_default_url_text:
-    'Hier kunt u de voorgeprogrammeerde alertregels bekijken en desgewenst toevoegen aan uw eigen alertregels.',
-  Exclude_months: 'Ik wil géén alerts ontvangen in de volgende maanden:',
-  Exclude_hours: 'Ik wil géén alerts ontvangen tijdens de volgende uren:',
-  Exclude_hours_details:
-    'N.B. Tijdens de geselecteerde uren zullen er ook geen berekeningen verricht worden om een eventuele alert te creeëren.',
-  Exclude_hives: 'Ik wil géén alerts ontvangen van de volgende bijenkasten:',
+  Exclude_months: 'Deze alert deactiveren gedurende de volgende maanden:',
+  Exclude_hours: 'Deze alert deactiveren tijdens de volgende uren:',
+  Exclude_hives: 'Deze alert deactiveren voor de volgende bijenkasten:',
+  Exclude_hives_details:
+    'N.B. De alert wordt standaard voor alle bijenkasten met een meetsysteem uitgevoerd.',
   months: 'maanden',
   hours: 'uren',
   delete_alertrule: 'Verwijder notificatie-instelling',
