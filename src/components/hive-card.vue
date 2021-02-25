@@ -210,7 +210,7 @@
                   </v-list-item-content>
                 </v-list-item>
 
-                <v-list-item v-if="hive.owner">
+                <!-- <v-list-item v-if="hive.owner">
                   <v-list-item-icon class="mr-3">
                     <v-icon>mdi-account-multiple-plus</v-icon>
                   </v-list-item-icon>
@@ -220,7 +220,7 @@
                       >{{ $t('share') }} {{ $tc('hive', 1) }}</v-list-item-title
                     >
                   </v-list-item-content>
-                </v-list-item>
+                </v-list-item> -->
               </v-list-item-group>
 
               <v-divider v-if="hive.owner" class="my-1"></v-divider>
