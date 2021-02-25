@@ -26,7 +26,7 @@
           <LocaleChanger></LocaleChanger>
 
           <v-app-bar-nav-icon
-            class="ml-n2"
+            class="color-black ml-n2"
             @click.stop="drawer = !drawer"
           ></v-app-bar-nav-icon>
         </div>

@@ -1,5 +1,13 @@
 .v-icon {
   color: $color-grey;
+}
+
+.v-icon,
+.theme--light.v-btn.v-btn--icon,
+.v-btn > .v-btn__content .v-icon {
+  &.color-black {
+    color: $color-black;
+  }
   &.color-primary {
     color: $color-primary;
   }
@@ -15,6 +23,10 @@
   &.color-grey-light {
     color: $color-grey-light;
   }
+}
+
+.v-btn.color-black > .v-btn__content .v-icon {
+  color: $color-black;
 }
 
 .beep-icon {

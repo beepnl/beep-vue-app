@@ -349,6 +349,11 @@
   z-index: 999999 !important;
 }
 
+.v-list-item--dense,
+.v-list--dense .v-list-item {
+  max-height: 52px;
+}
+
 /* Vue Numeric Input */
 .vue-numeric-input {
   .numeric-input {

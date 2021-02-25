@@ -3,7 +3,7 @@
     <v-menu bottom right>
       <template v-slot:activator="{ on }">
         <v-btn icon v-on="on">
-          <v-icon class="color-grey-medium">mdi-plus</v-icon>
+          <v-icon class="color-black">mdi-plus-circle-outline</v-icon>
         </v-btn>
       </template>
 

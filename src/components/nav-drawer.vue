@@ -1,5 +1,3 @@
-Nav menu
-
 <template>
   <div>
     <v-navigation-drawer
@@ -12,6 +10,17 @@ Nav menu
       <div class="nav-drawer-wrapper d-flex flex-column justify-space-between">
         <div>
           <v-list flat dense>
+            <v-list-item>
+              <v-list-item-avatar>
+                <v-icon color="black" @click="showDrawer = false"
+                  >mdi-close</v-icon
+                >
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <v-list-item-title>{{ $t('Menu') }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-divider></v-divider>
             <div v-if="menuItems.length > 0">
               <v-list-item
                 v-for="(item, i) in menuItems"
@@ -90,15 +99,9 @@ export default {
     settingItems() {
       return [
         {
-          icon: 'mdi-share-variant',
-          title: this.$i18n.t('research'),
-          route: 'research',
-          authRequired: true,
-        },
-        {
-          icon: 'mdi-format-list-checks',
-          title: this.$i18n.tc('Checklist_template', 2),
-          route: 'checklists',
+          icon: 'mdi-account',
+          title: this.$i18n.t('Profile'),
+          route: 'profile',
           authRequired: true,
         },
         {
@@ -117,6 +120,18 @@ export default {
           icon: 'mdi-cloud-download',
           title: this.$i18n.t('Data_export'),
           route: 'export',
+          authRequired: true,
+        },
+        {
+          icon: 'mdi-format-list-checks',
+          title: this.$i18n.tc('Checklist_template', 2),
+          route: 'checklists',
+          authRequired: true,
+        },
+        {
+          icon: 'mdi-share-variant',
+          title: this.$i18n.t('research'),
+          route: 'research',
           authRequired: true,
         },
         {
@@ -146,12 +161,6 @@ export default {
         },
         {
           divider: true,
-        },
-        {
-          icon: 'mdi-account',
-          title: this.$i18n.t('Profile'),
-          route: 'profile',
-          authRequired: true,
         },
       ]
     },

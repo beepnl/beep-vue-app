@@ -8,37 +8,23 @@
       dense
       class="zindex4"
     >
-      <div
-        class="d-flex flex-row justify-space-between align-center"
-        style="width:100%;"
-      >
-        <div
-          class="d-flex flex-row justify-start align-center ml-n3"
-          style="width: 48%;"
-        >
-          <slot name="icon">
-            <v-btn icon @click="back">
-              <v-icon>mdi-arrow-left</v-icon>
-            </v-btn>
-          </slot>
-          <slot name="title">
-            <v-toolbar-title>{{ title }}</v-toolbar-title>
-          </slot>
-        </div>
+      <slot name="icon">
+        <v-btn icon @click="back">
+          <v-icon>mdi-arrow-left</v-icon>
+        </v-btn>
+      </slot>
+      <slot name="title">
+        <v-toolbar-title>{{ title }}</v-toolbar-title>
+      </slot>
 
-        <div class="d-flex justify-center" style="width: 4%">
-          <PlusMenu></PlusMenu>
-        </div>
+      <v-spacer></v-spacer>
 
-        <div class="d-flex justify-end align-center mr-n3" style="width: 48%;">
-          <LocaleChanger></LocaleChanger>
+      <LocaleChanger></LocaleChanger>
 
-          <v-app-bar-nav-icon
-            class="ml-n2"
-            @click.stop="drawer = !drawer"
-          ></v-app-bar-nav-icon>
-        </div>
-      </div>
+      <v-app-bar-nav-icon
+        class="color-black ml-n2"
+        @click.stop="drawer = !drawer"
+      ></v-app-bar-nav-icon>
     </v-app-bar>
 
     <NavDrawer
@@ -60,14 +46,12 @@ import Confirm from '@components/confirm.vue'
 import LocaleChanger from '@components/locale-changer.vue'
 import { mapGetters } from 'vuex'
 import NavDrawer from '@components/nav-drawer.vue'
-import PlusMenu from '@components/plus-menu.vue'
 
 export default {
   components: {
     Confirm,
     LocaleChanger,
     NavDrawer,
-    PlusMenu,
   },
   props: {
     title: {

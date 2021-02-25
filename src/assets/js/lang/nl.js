@@ -748,6 +748,7 @@ const translations = {
   alertrule_not_active:
     "Deze notificatie is uitgeschakeld. Je kunt deze weer activeren door 'Actief' aan te vinken en de notificatie-instelling op te slaan.",
   export_email_sent: 'E-mail met Excel bestand is verzonden.',
+  Menu: 'Menu',
 }
 
 export default translations
