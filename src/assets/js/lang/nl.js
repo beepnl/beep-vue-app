@@ -706,16 +706,16 @@ const translations = {
   Absolute_value: 'Absolute waarde',
   Absolute_value_of_dif: 'Absolute waarde van het verschil',
   alertrule_info: 'Hier komt uitleg over de alertregels.',
-  Exclude_months: 'Deze alert deactiveren gedurende de volgende maanden:',
-  Exclude_hours: 'Deze alert deactiveren tijdens de volgende uren:',
-  Exclude_hives: 'Deze alert deactiveren voor de volgende bijenkasten:',
+  Exclude_months: 'Deze notificatie deactiveren gedurende de volgende maanden:',
+  Exclude_hours: 'Deze notificatie deactiveren tijdens de volgende uren:',
+  Exclude_hives: 'Deze notificatie deactiveren voor de volgende bijenkasten:',
   Exclude_hives_details:
-    'N.B. De alert wordt standaard voor alle bijenkasten met een meetsysteem uitgevoerd.',
+    'N.B. De notificatie wordt standaard voor alle bijenkasten met een meetsysteem uitgevoerd.',
   months: 'maanden',
   hours: 'uren',
   delete_alertrule: 'Verwijder notificatie-instelling',
   Active: 'Actief',
-  Alert_via_email: 'Alert via email',
+  Alert_via_email: 'Notificatie via email',
   Webhook_url: 'Webhook url',
   this_field: 'Dit veld',
   alertrule_default:
@@ -723,6 +723,30 @@ const translations = {
   copy: 'Kopieer',
   Home: 'Home',
   Select_default_alertrule: 'Kopieer standaardinstelling',
+  alertrule_main_sentence:
+    'Ik wil een notificatie ontvangen als [calculation] [comparison] van de [measurement_id] [comparator] [threshold_value]. Deze berekening wordt elke [calculation_minutes] minuten uitgevoerd, ',
+  alertrule_occurences_direct_sentence:
+    'en ik ontvang hier direct een notificatie van. ',
+  alertrule_occurences_indirect_sentence:
+    ' maar ik ontvang pas een notificatie wanneer dit [alert_on_occurences] keer achter elkaar is opgetreden. ',
+  alertrule_exclude_months_sentence:
+    'Deze notificatie is uitgeschakeld in de maanden [exclude_months]. ',
+  alertrule_exclude_hours_sentence:
+    'Deze notificatie is uitgeschakeld tijdens de uren [exclude_hours]. ',
+  alertrule_exclude_hives_sentence:
+    'Deze notificatie is uitgeschakeld voor deze bijenkasten: [exclude_hive_ids].',
+  min: 'de minimum',
+  max: 'de maximum',
+  ave: 'de gemiddelde',
+  der: 'het verschil',
+  cnt: 'de absolute waarde van het verschil',
+  equal_to: 'gelijk is aan',
+  less_than: 'minder is dan',
+  greater_than: 'meer is dan',
+  less_than_or_equal: 'minder dan of gelijk is aan',
+  greater_than_or_equal: 'meer dan of gelijk is aan',
+  alertrule_not_active:
+    "Deze notificatie is uitgeschakeld. Je kunt deze weer activeren door 'Actief' aan te vinken en de notificatie-instelling op te slaan.",
 }
 
 export default translations

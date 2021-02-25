@@ -344,6 +344,7 @@
 <script>
 import Api from '@api/Api'
 import Layout from '@layouts/main.vue'
+import { mapGetters } from 'vuex'
 import MeasurementsChartHeatmap from '@components/measurements-chart-heatmap.vue'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
@@ -367,7 +368,6 @@ export default {
     return {
       lastSensorDate: null,
       measurementData: {},
-      devices: [],
       interval: 'day',
       timeIndex: 0,
       moduloNumber: 6,
@@ -390,6 +390,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('devices', ['devices', 'devicesPresent']),
     timeZone() {
       return this.$moment.tz.guess()
     },
@@ -636,15 +637,36 @@ export default {
       }
     },
     async readDevices() {
-      try {
-        const response = await Api.readRequest('/devices')
-        this.devices = response.data
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log(error.response)
-        } else {
-          console.log('Error: ', error)
+      // devicesPresent boolean prevents unnecessary API calls to read devices when user has none
+      if (this.devicesPresent && this.devices.length === 0) {
+        try {
+          const response = await Api.readRequest('/devices')
+          const devicesPresent = response.data.length > 0
+          this.$store.commit('devices/setData', {
+            prop: 'devices',
+            value: response.data,
+          })
+          this.$store.commit('devices/setData', {
+            prop: 'devicesPresent',
+            value: devicesPresent,
+          })
+          return true
+        } catch (error) {
+          if (error.response) {
+            console.log(error.response)
+          } else {
+            console.log('Error: ', error)
+          }
+          if (error.response.data === 'no_devices_found') {
+            this.$store.commit('devices/setData', {
+              prop: 'devicesPresent',
+              value: false,
+            })
+            this.$store.commit('devices/setData', {
+              prop: 'devices',
+              value: [],
+            })
+          }
         }
       }
     },

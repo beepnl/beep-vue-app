@@ -90,7 +90,7 @@ export default {
   computed: {
     ...mapGetters('devices', ['devices', 'devicesPresent']),
     tabs: function() {
-      if (this.devicesPresent) {
+      if (this.devices.length > 0) {
         return [
           {
             title: this.$i18n.tc('Hive_short', 2),
@@ -146,6 +146,7 @@ export default {
   },
   methods: {
     async readDevices() {
+      // devicesPresent boolean prevents unnecessary API calls to read devices when user has none
       if (this.devicesPresent && this.devices.length === 0) {
         try {
           const response = await Api.readRequest('/devices')
@@ -170,16 +171,10 @@ export default {
               prop: 'devicesPresent',
               value: false,
             })
-            if (error.response.data === 'no_devices_found') {
-              this.$store.commit('devices/setData', {
-                prop: 'devicesPresent',
-                value: false,
-              })
-              this.$store.commit('devices/setData', {
-                prop: 'devices',
-                value: [],
-              })
-            }
+            this.$store.commit('devices/setData', {
+              prop: 'devices',
+              value: [],
+            })
           }
         }
       }

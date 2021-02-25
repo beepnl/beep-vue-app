@@ -35,6 +35,17 @@
 
       <v-container class="content-container">
         <v-row v-if="activeAlertRule">
+          <v-col cols="12">
+            <em v-if="!activeAlertRule.active" class="red--text">{{
+              $t('alertrule_not_active')
+            }}</em>
+            <p
+              :class="!activeAlertRule.active ? 'color-grey-light' : 'strong'"
+              >{{ alertRuleSentence() }}</p
+            >
+          </v-col>
+        </v-row>
+        <v-row v-if="activeAlertRule">
           <v-col cols="12" sm="4" lg="5">
             <div class="beep-label" v-text="$t('Name')"></div>
             <v-text-field
@@ -93,7 +104,7 @@
             ></v-select>
           </v-col>
 
-          <v-col cols="12" sm="6" md="3">
+          <v-col cols="12" sm="6" md="2">
             <v-select
               v-model="activeAlertRule.comparison"
               :items="comparisons"
@@ -106,10 +117,12 @@
             ></v-select>
           </v-col>
 
-          <v-col cols="6" sm="3" md="1">
+          <v-col cols="6" sm="3" md="2">
             <v-select
               v-model="activeAlertRule.comparator"
               :items="comparators"
+              item-text="full"
+              item-value="short"
               :label="$t('Comparator')"
               :rules="requiredRule"
               @input="setAlertRuleEdited(true)"
@@ -144,7 +157,7 @@
         </v-row>
 
         <v-row v-if="activeAlertRule">
-          <v-col cols="6" sm="4" md="3">
+          <v-col cols="6" sm="3">
             <div class="beep-label" v-text="$t('Calculation_minutes')"></div>
             <VueNumericInput
               v-model="activeAlertRule.calculation_minutes"
@@ -192,7 +205,7 @@
             ></v-checkbox>
           </v-col>
 
-          <v-col cols="4" sm="2">
+          <v-col cols="6" sm="3" md="2">
             <div class="beep-label" v-text="$t('Alert_via_email')"></div>
             <v-checkbox
               v-model="activeAlertRule.alert_via_email"
@@ -232,10 +245,9 @@
             <div class="beep-label" v-text="$t('Exclude_hives')"></div>
             <Treeselect
               v-model="activeAlertRule.exclude_hive_ids"
-              :options="sortedApiaries"
+              :options="sortedDevices"
               :disable-branch-nodes="true"
               :default-expand-level="1"
-              :normalizer="normalizerApiary"
               :placeholder="`${$t('Select')} ${$tc('hive', 2)}`"
               :no-results-text="`${$t('no_results')}`"
               multiple
@@ -279,16 +291,10 @@ export default {
   },
   data: function() {
     return {
-      comparators: ['=', '<', '>', '<=', '>='],
       snackbar: {
         show: false,
         timeout: 2000,
         text: 'notification',
-      },
-      normalizerApiary(node) {
-        return {
-          label: node.name,
-        }
       },
       activeAlertRule: null,
       valid: false,
@@ -299,9 +305,7 @@ export default {
   },
   computed: {
     ...mapGetters('alerts', ['alertRules', 'alertRuleEdited']),
-    ...mapGetters('devices', ['devices']),
-    ...mapGetters('groups', ['groups']),
-    ...mapGetters('locations', ['apiaries']),
+    ...mapGetters('devices', ['devices', 'devicesPresent']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     alertruleCreateMode() {
       return this.$route.name === 'alertrule-create'
@@ -332,6 +336,30 @@ export default {
     },
     calculationMinutesIsNaN() {
       return isNaN(this.activeAlertRule.calculation_minutes)
+    },
+    comparators() {
+      return [
+        {
+          short: '=',
+          full: this.$i18n.t('equal_to'),
+        },
+        {
+          short: '<',
+          full: this.$i18n.t('less_than'),
+        },
+        {
+          short: '>',
+          full: this.$i18n.t('greater_than'),
+        },
+        {
+          short: '<=',
+          full: this.$i18n.t('less_than_or_equal'),
+        },
+        {
+          short: '>=',
+          full: this.$i18n.t('greater_than_or_equal'),
+        },
+      ]
     },
     comparisons() {
       return [
@@ -398,32 +426,58 @@ export default {
           !!v || this.$i18n.t('this_field') + ' ' + this.$i18n.t('is_required'),
       ]
     },
-    sortedApiaries() {
-      var treeselectArray = []
-
-      this.apiaries.map((apiary, index) => {
-        var hivesWithSensors = apiary.hives.filter(
-          (hive) => hive.sensors.length > 0
-        )
-        if (hivesWithSensors.length > 0) {
-          treeselectArray.push({
-            id: apiary.id,
-            name: apiary.name,
-            children: hivesWithSensors,
-          })
-        }
+    sortedDevices() {
+      var apiaryArray = []
+      this.devices.map((device, index) => {
+        apiaryArray.push({
+          id: -(index + 1), // random because it has to have an id for Treeselect but won't be used later
+          label: device.location_name,
+          children: [],
+        })
       })
-
-      var sortedApiaries = treeselectArray.slice().sort(function(a, b) {
-        if (a.name > b.name) {
-          return 1
+      var uniqueApiaries = []
+      const map = new Map()
+      for (const item of apiaryArray) {
+        if (!map.has(item.label)) {
+          map.set(item.label, true) // set any value to Map
+          uniqueApiaries.push(item)
         }
-        if (b.name > a.name) {
+      }
+      uniqueApiaries.slice().sort(function(a, b) {
+        if (a.label < b.label) {
           return -1
+        }
+        if (a.label > b.label) {
+          return 1
         }
         return 0
       })
-      return sortedApiaries
+      this.devices.map((device) => {
+        uniqueApiaries.map((apiary) => {
+          if (apiary.label === device.location_name) {
+            const deviceLabel = device.hive_name
+              ? device.hive_name + ' - ' + device.name
+              : device.name
+            apiary.children.push({
+              id: device.hive_id,
+              label: deviceLabel,
+            })
+          }
+        })
+      })
+      uniqueApiaries.map((apiary) => {
+        var sortedChildren = apiary.children.slice().sort(function(a, b) {
+          if (a.label < b.label) {
+            return -1
+          }
+          if (a.label > b.label) {
+            return 1
+          }
+          return 0
+        })
+        apiary.children = sortedChildren
+      })
+      return uniqueApiaries
     },
     sortedSensorMeasurements() {
       var sortedSMs = this.sensorMeasurementsList.slice().sort(function(a, b) {
@@ -453,7 +507,7 @@ export default {
     },
   },
   created() {
-    this.readApiariesAndGroupsIfNotPresent()
+    this.readDevices()
     this.readTaxonomy().then(() => {
       // If alertrule-create route is used, make empty alertrule object
       if (this.alertruleCreateMode) {
@@ -588,17 +642,20 @@ export default {
         }
       }
     },
-    async readApiariesAndGroupsIfNotPresent() {
-      if (this.apiaries.length === 0 && this.groups.length === 0) {
-        // in case view is opened directly without loggin in (via localstorage) or in case of hard refresh
+    async readDevices() {
+      // devicesPresent boolean prevents unnecessary API calls to read devices when user has none
+      if (this.devicesPresent && this.devices.length === 0) {
         try {
-          const responseApiaries = await Api.readRequest('/locations')
-          const responseGroups = await Api.readRequest('/groups')
-          this.$store.commit(
-            'locations/setApiaries',
-            responseApiaries.data.locations
-          )
-          this.$store.commit('groups/setGroups', responseGroups.data.groups)
+          const response = await Api.readRequest('/devices')
+          const devicesPresent = response.data.length > 0
+          this.$store.commit('devices/setData', {
+            prop: 'devices',
+            value: response.data,
+          })
+          this.$store.commit('devices/setData', {
+            prop: 'devicesPresent',
+            value: devicesPresent,
+          })
           return true
         } catch (error) {
           if (error.response) {
@@ -606,9 +663,17 @@ export default {
           } else {
             console.log('Error: ', error)
           }
+          if (error.response.data === 'no_devices_found') {
+            this.$store.commit('devices/setData', {
+              prop: 'devicesPresent',
+              value: false,
+            })
+            this.$store.commit('devices/setData', {
+              prop: 'devices',
+              value: [],
+            })
+          }
         }
-      } else {
-        return true
       }
     },
     async readTaxonomy() {
@@ -686,6 +751,93 @@ export default {
           return true
         })
     },
+    alertRuleSentence() {
+      var sentence = this.$i18n.t('alertrule_main_sentence')
+
+      var replacedSentence = sentence.replace(
+        '[calculation]',
+        this.$i18n.t(this.activeAlertRule.calculation)
+      )
+
+      var comparisonTranslation = this.comparisons.filter(
+        (comparison) => comparison.short === this.activeAlertRule.comparison
+      )[0].full
+      replacedSentence = replacedSentence.replace(
+        '[comparison]',
+        comparisonTranslation.toLowerCase()
+      )
+
+      var measurement = this.sensorMeasurementsList.filter(
+        (measurement) => measurement.id === this.activeAlertRule.measurement_id
+      )[0].pq_name_unit
+      replacedSentence = replacedSentence.replace(
+        '[measurement_id]',
+        measurement
+      )
+
+      var comparatorTranslation = this.comparators.filter(
+        (comparator) => comparator.short === this.activeAlertRule.comparator
+      )[0].full
+      replacedSentence = replacedSentence.replace(
+        '[comparator]',
+        comparatorTranslation
+      )
+
+      const replaceValues = ['threshold_value', 'calculation_minutes']
+      replaceValues.map((replaceValue) => {
+        replacedSentence = this.replaceString(replacedSentence, replaceValue)
+      })
+
+      if (this.activeAlertRule.alert_on_occurences === 1) {
+        replacedSentence += this.$i18n.t('alertrule_occurences_direct_sentence')
+      } else {
+        replacedSentence += this.$i18n.t(
+          'alertrule_occurences_indirect_sentence'
+        )
+        replacedSentence = this.replaceString(
+          replacedSentence,
+          'alert_on_occurences'
+        )
+      }
+
+      if (this.activeAlertRule.exclude_months.length > 0) {
+        replacedSentence += this.$i18n.t('alertrule_exclude_months_sentence')
+        var monthsArray = []
+        this.activeAlertRule.exclude_months.map((month) => {
+          monthsArray.push(this.$i18n.t('monthsFull')[month - 1])
+        })
+        replacedSentence = replacedSentence.replace(
+          '[exclude_months]',
+          monthsArray.join(', ')
+        )
+      }
+
+      if (this.activeAlertRule.exclude_hours.length > 0) {
+        replacedSentence += this.$i18n.t('alertrule_exclude_hours_sentence')
+        var hoursString = this.activeAlertRule.exclude_hours.join(', ')
+        replacedSentence = replacedSentence.replace(
+          '[exclude_hours]',
+          hoursString
+        )
+      }
+
+      if (this.activeAlertRule.exclude_hive_ids.length > 0) {
+        replacedSentence += this.$i18n.t('alertrule_exclude_hives_sentence')
+        var hivesArray = []
+        this.activeAlertRule.exclude_hive_ids.map((hiveId) => {
+          hivesArray.push(
+            this.devices.filter((device) => device.hive_id === hiveId)[0]
+              .hive_name
+          )
+        })
+        replacedSentence = replacedSentence.replace(
+          '[exclude_hive_ids]',
+          hivesArray.join(', ')
+        )
+      }
+
+      return replacedSentence
+    },
     getText(item) {
       return item.pq_name_unit + ' (' + item.abbreviation + ')'
     },
@@ -697,6 +849,9 @@ export default {
       } else {
         return this.$i18n.t('edit') + '...'
       }
+    },
+    replaceString(sentence, prop) {
+      return sentence.replace('[' + prop + ']', this.activeAlertRule[prop])
     },
     saveAlertRule() {
       if (this.alertruleCreateMode) {

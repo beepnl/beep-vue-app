@@ -377,7 +377,7 @@ export default {
 }
 
 .alertrules-content {
-  margin-top: 55px;
+  margin-top: 8px;
   overflow: hidden;
   @include for-phone-only {
     margin-top: 0;

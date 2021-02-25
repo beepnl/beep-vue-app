@@ -861,16 +861,10 @@ export default {
             prop: 'devicesPresent',
             value: false,
           })
-          if (error.response.data === 'no_devices_found') {
-            this.$store.commit('devices/setData', {
-              prop: 'devicesPresent',
-              value: false,
-            })
-            this.$store.commit('devices/setData', {
-              prop: 'devices',
-              value: [],
-            })
-          }
+          this.$store.commit('devices/setData', {
+            prop: 'devices',
+            value: [],
+          })
         }
       }
     },
