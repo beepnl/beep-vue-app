@@ -724,15 +724,15 @@ const translations = {
   Home: 'Home',
   Select_default_alertrule: 'Kopieer standaardinstelling',
   alertrule_main_sentence:
-    'Ik wil een notificatie ontvangen als [calculation] [comparison] van de [measurement_id] [comparator] [threshold_value]. Deze berekening wordt elke [calculation_minutes] minuten uitgevoerd, ',
+    'Ik wil een notificatie ontvangen als [calculation] [comparison] van de [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Deze berekening wordt elke [calculation_minutes] minuten uitgevoerd, ',
   alertrule_occurences_direct_sentence:
     'en ik ontvang hier direct een notificatie van. ',
   alertrule_occurences_indirect_sentence:
     ' maar ik ontvang pas een notificatie wanneer dit [alert_on_occurences] keer achter elkaar is opgetreden. ',
   alertrule_exclude_months_sentence:
-    'Deze notificatie is uitgeschakeld in de maanden [exclude_months]. ',
+    'Deze notificatie is uitgeschakeld in de maanden: [exclude_months]. ',
   alertrule_exclude_hours_sentence:
-    'Deze notificatie is uitgeschakeld tijdens de uren [exclude_hours]. ',
+    'Deze notificatie is uitgeschakeld tijdens de uren: [exclude_hours]. ',
   alertrule_exclude_hives_sentence:
     'Deze notificatie is uitgeschakeld voor deze bijenkasten: [exclude_hive_ids].',
   min: 'de minimum',

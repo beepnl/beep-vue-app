@@ -60,6 +60,13 @@
                     }}</span>
                   </div>
                 </v-col>
+                <v-col v-if="alertRule" cols="12" sm="6" md="7">
+                  <div class="d-flex flex-column">
+                    <span class="alertrule-text">{{
+                      alertRuleSentence(alertRule)
+                    }}</span>
+                  </div>
+                </v-col>
               </v-row>
             </v-card>
           </v-col>
@@ -95,6 +102,50 @@ export default {
   },
   computed: {
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
+    comparators() {
+      return [
+        {
+          short: '=',
+          full: this.$i18n.t('equal_to'),
+        },
+        {
+          short: '<',
+          full: this.$i18n.t('less_than'),
+        },
+        {
+          short: '>',
+          full: this.$i18n.t('greater_than'),
+        },
+        {
+          short: '<=',
+          full: this.$i18n.t('less_than_or_equal'),
+        },
+        {
+          short: '>=',
+          full: this.$i18n.t('greater_than_or_equal'),
+        },
+      ]
+    },
+    comparisons() {
+      return [
+        {
+          short: 'val',
+          full: this.$i18n.t('Value'),
+        },
+        {
+          short: 'dif',
+          full: this.$i18n.t('Difference'),
+        },
+        {
+          short: 'abs',
+          full: this.$i18n.t('Absolute_value'),
+        },
+        {
+          short: 'abs_dif',
+          full: this.$i18n.t('Absolute_value_of_dif'),
+        },
+      ]
+    },
     locale() {
       return this.$i18n.locale
     },
@@ -179,6 +230,93 @@ export default {
         }
       }
     },
+    alertRuleSentence(alertRule) {
+      var sentence = this.$i18n.t('alertrule_main_sentence')
+
+      var replacedSentence = sentence.replace(
+        '[calculation]',
+        this.$i18n.t(alertRule.calculation)
+      )
+
+      var comparisonTranslation = this.comparisons.filter(
+        (comparison) => comparison.short === alertRule.comparison
+      )[0].full
+      replacedSentence = replacedSentence.replace(
+        '[comparison]',
+        comparisonTranslation.toLowerCase()
+      )
+
+      var measurement = this.sensorMeasurementsList.filter(
+        (measurement) => measurement.id === alertRule.measurement_id
+      )[0]
+      replacedSentence = replacedSentence.replace(
+        '[measurement_quantity]',
+        measurement.pq
+      )
+      replacedSentence = replacedSentence.replace(
+        '[measurement_unit]',
+        measurement.unit
+      )
+
+      var comparatorTranslation = this.comparators.filter(
+        (comparator) => comparator.short === alertRule.comparator
+      )[0].full
+      replacedSentence = replacedSentence.replace(
+        '[comparator]',
+        comparatorTranslation
+      )
+
+      const replaceValues = ['threshold_value', 'calculation_minutes']
+      replaceValues.map((replaceValue) => {
+        replacedSentence = this.replaceString(
+          alertRule,
+          replacedSentence,
+          replaceValue
+        )
+      })
+
+      if (alertRule.alert_on_occurences === 1) {
+        replacedSentence += this.$i18n.t('alertrule_occurences_direct_sentence')
+      } else {
+        replacedSentence += this.$i18n.t(
+          'alertrule_occurences_indirect_sentence'
+        )
+        replacedSentence = this.replaceString(
+          alertRule,
+          replacedSentence,
+          'alert_on_occurences'
+        )
+      }
+
+      if (
+        alertRule.exclude_months !== null &&
+        alertRule.exclude_months.length > 0
+      ) {
+        replacedSentence += this.$i18n.t('alertrule_exclude_months_sentence')
+        var monthsArray = []
+        alertRule.exclude_months.map((month) => {
+          monthsArray.push(this.$i18n.t('monthsFull')[month - 1])
+        })
+        replacedSentence = replacedSentence.replace(
+          '[exclude_months]',
+          monthsArray.join(', ')
+        )
+      }
+
+      if (
+        alertRule.exclude_hours !== null &&
+        alertRule.exclude_hours.length > 0
+      ) {
+        replacedSentence += this.$i18n.t('alertrule_exclude_hours_sentence')
+        var hoursString = alertRule.exclude_hours.join(', ')
+        replacedSentence = replacedSentence.replace(
+          '[exclude_hours]',
+          hoursString
+        )
+      }
+
+      return replacedSentence
+    },
     copySelectedAlertRules() {
       this.alertRulesDefault.map((alertRuleDefault) => {
         if (alertRuleDefault.selected) {
@@ -196,6 +334,9 @@ export default {
     },
     getText(item) {
       return item.abbreviation + ' (' + item.pq_name_unit + ')'
+    },
+    replaceString(alertRule, sentence, prop) {
+      return sentence.replace('[' + prop + ']', alertRule[prop])
     },
   },
 }

@@ -41,7 +41,7 @@
             }}</em>
             <p
               :class="!activeAlertRule.active ? 'color-grey-light' : 'strong'"
-              >{{ alertRuleSentence() }}</p
+              >{{ alertRuleSentence(activeAlertRule) }}</p
             >
           </v-col>
         </v-row>
@@ -751,16 +751,16 @@ export default {
           return true
         })
     },
-    alertRuleSentence() {
+    alertRuleSentence(alertRule) {
       var sentence = this.$i18n.t('alertrule_main_sentence')
 
       var replacedSentence = sentence.replace(
         '[calculation]',
-        this.$i18n.t(this.activeAlertRule.calculation)
+        this.$i18n.t(alertRule.calculation)
       )
 
       var comparisonTranslation = this.comparisons.filter(
-        (comparison) => comparison.short === this.activeAlertRule.comparison
+        (comparison) => comparison.short === alertRule.comparison
       )[0].full
       replacedSentence = replacedSentence.replace(
         '[comparison]',
@@ -768,15 +768,19 @@ export default {
       )
 
       var measurement = this.sensorMeasurementsList.filter(
-        (measurement) => measurement.id === this.activeAlertRule.measurement_id
-      )[0].pq_name_unit
+        (measurement) => measurement.id === alertRule.measurement_id
+      )[0]
       replacedSentence = replacedSentence.replace(
-        '[measurement_id]',
-        measurement
+        '[measurement_quantity]',
+        measurement.pq
+      )
+      replacedSentence = replacedSentence.replace(
+        '[measurement_unit]',
+        measurement.unit
       )
 
       var comparatorTranslation = this.comparators.filter(
-        (comparator) => comparator.short === this.activeAlertRule.comparator
+        (comparator) => comparator.short === alertRule.comparator
       )[0].full
       replacedSentence = replacedSentence.replace(
         '[comparator]',
@@ -785,25 +789,33 @@ export default {
 
       const replaceValues = ['threshold_value', 'calculation_minutes']
       replaceValues.map((replaceValue) => {
-        replacedSentence = this.replaceString(replacedSentence, replaceValue)
+        replacedSentence = this.replaceString(
+          alertRule,
+          replacedSentence,
+          replaceValue
+        )
       })
 
-      if (this.activeAlertRule.alert_on_occurences === 1) {
+      if (alertRule.alert_on_occurences === 1) {
         replacedSentence += this.$i18n.t('alertrule_occurences_direct_sentence')
       } else {
         replacedSentence += this.$i18n.t(
           'alertrule_occurences_indirect_sentence'
         )
         replacedSentence = this.replaceString(
+          alertRule,
           replacedSentence,
           'alert_on_occurences'
         )
       }
 
-      if (this.activeAlertRule.exclude_months.length > 0) {
+      if (
+        alertRule.exclude_months !== null &&
+        alertRule.exclude_months.length > 0
+      ) {
         replacedSentence += this.$i18n.t('alertrule_exclude_months_sentence')
         var monthsArray = []
-        this.activeAlertRule.exclude_months.map((month) => {
+        alertRule.exclude_months.map((month) => {
           monthsArray.push(this.$i18n.t('monthsFull')[month - 1])
         })
         replacedSentence = replacedSentence.replace(
@@ -812,19 +824,25 @@ export default {
         )
       }
 
-      if (this.activeAlertRule.exclude_hours.length > 0) {
+      if (
+        alertRule.exclude_hours !== null &&
+        alertRule.exclude_hours.length > 0
+      ) {
         replacedSentence += this.$i18n.t('alertrule_exclude_hours_sentence')
-        var hoursString = this.activeAlertRule.exclude_hours.join(', ')
+        var hoursString = alertRule.exclude_hours.join(', ')
         replacedSentence = replacedSentence.replace(
           '[exclude_hours]',
           hoursString
         )
       }
 
-      if (this.activeAlertRule.exclude_hive_ids.length > 0) {
+      if (
+        alertRule.exclude_hive_ids !== null &&
+        alertRule.exclude_hive_ids.length > 0
+      ) {
         replacedSentence += this.$i18n.t('alertrule_exclude_hives_sentence')
         var hivesArray = []
-        this.activeAlertRule.exclude_hive_ids.map((hiveId) => {
+        alertRule.exclude_hive_ids.map((hiveId) => {
           hivesArray.push(
             this.devices.filter((device) => device.hive_id === hiveId)[0]
               .hive_name
@@ -850,8 +868,8 @@ export default {
         return this.$i18n.t('edit') + '...'
       }
     },
-    replaceString(sentence, prop) {
-      return sentence.replace('[' + prop + ']', this.activeAlertRule[prop])
+    replaceString(alertRule, sentence, prop) {
+      return sentence.replace('[' + prop + ']', alertRule[prop])
     },
     saveAlertRule() {
       if (this.alertruleCreateMode) {
