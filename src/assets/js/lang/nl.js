@@ -724,7 +724,7 @@ const translations = {
   Home: 'Home',
   Select_default_alertrule: 'Kopieer standaardinstelling',
   alertrule_main_sentence:
-    'Ik wil een notificatie ontvangen als [calculation] [comparison] van de [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Deze berekening wordt elke [calculation_minutes] minuten uitgevoerd, ',
+    'Ik wil een notificatie ontvangen als [calculation] [comparison] van de/het [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Deze berekening wordt elke [calculation_minutes] uur uitgevoerd, ',
   alertrule_occurences_direct_sentence:
     'en ik ontvang hier direct een notificatie van. ',
   alertrule_occurences_indirect_sentence:
@@ -735,11 +735,11 @@ const translations = {
     'Deze notificatie is uitgeschakeld tijdens de uren: [exclude_hours]. ',
   alertrule_exclude_hives_sentence:
     'Deze notificatie is uitgeschakeld voor deze bijenkasten: [exclude_hive_ids].',
-  min: 'de minimum',
-  max: 'de maximum',
-  ave: 'de gemiddelde',
-  der: 'het verschil',
-  cnt: 'de absolute waarde van het verschil',
+  min: 'de/het minimum',
+  max: 'de/het maximum',
+  ave: 'de/het gemiddelde',
+  der: 'de afgeleide van de/het',
+  cnt: 'de telling van de/het',
   equal_to: 'gelijk is aan',
   less_than: 'minder is dan',
   greater_than: 'meer is dan',

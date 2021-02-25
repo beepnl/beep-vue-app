@@ -232,47 +232,33 @@ export default {
     },
     alertRuleSentence(alertRule) {
       var sentence = this.$i18n.t('alertrule_main_sentence')
-
-      var replacedSentence = sentence.replace(
-        '[calculation]',
-        this.$i18n.t(alertRule.calculation)
-      )
-
-      var comparisonTranslation = this.comparisons.filter(
-        (comparison) => comparison.short === alertRule.comparison
-      )[0].full
-      replacedSentence = replacedSentence.replace(
-        '[comparison]',
-        comparisonTranslation.toLowerCase()
-      )
+      var replacedSentence = sentence
 
       var measurement = this.sensorMeasurementsList.filter(
         (measurement) => measurement.id === alertRule.measurement_id
       )[0]
-      replacedSentence = replacedSentence.replace(
-        '[measurement_quantity]',
-        measurement.pq
-      )
-      replacedSentence = replacedSentence.replace(
-        '[measurement_unit]',
-        measurement.unit
-      )
 
-      var comparatorTranslation = this.comparators.filter(
-        (comparator) => comparator.short === alertRule.comparator
-      )[0].full
-      replacedSentence = replacedSentence.replace(
-        '[comparator]',
-        comparatorTranslation
-      )
+      var replaceWith = {
+        calculation: this.$i18n.t(alertRule.calculation),
+        comparison: this.comparisons
+          .filter((comparison) => comparison.short === alertRule.comparison)[0]
+          .full.toLowerCase(),
+        measurement_quantity: measurement.pq,
+        measurement_unit: measurement.unit,
+        comparator: this.comparators.filter(
+          (comparator) => comparator.short === alertRule.comparator
+        )[0].full,
+        threshold_value: alertRule.threshold_value,
+        calculation_minutes: parseFloat(
+          this.$moment
+            .duration(alertRule.calculation_minutes, 'minutes')
+            .asHours()
+            .toFixed(2)
+        ),
+      }
 
-      const replaceValues = ['threshold_value', 'calculation_minutes']
-      replaceValues.map((replaceValue) => {
-        replacedSentence = this.replaceString(
-          alertRule,
-          replacedSentence,
-          replaceValue
-        )
+      Object.entries(replaceWith).map(([key, value]) => {
+        replacedSentence = replacedSentence.replace('[' + key + ']', value)
       })
 
       if (alertRule.alert_on_occurences === 1) {
@@ -281,17 +267,13 @@ export default {
         replacedSentence += this.$i18n.t(
           'alertrule_occurences_indirect_sentence'
         )
-        replacedSentence = this.replaceString(
-          alertRule,
-          replacedSentence,
-          'alert_on_occurences'
+        replacedSentence = replacedSentence.replace(
+          '[alert_on_occurences]',
+          alertRule.alert_on_occurences
         )
       }
 
-      if (
-        alertRule.exclude_months !== null &&
-        alertRule.exclude_months.length > 0
-      ) {
+      if (alertRule.exclude_months !== null) {
         replacedSentence += this.$i18n.t('alertrule_exclude_months_sentence')
         var monthsArray = []
         alertRule.exclude_months.map((month) => {
@@ -303,10 +285,7 @@ export default {
         )
       }
 
-      if (
-        alertRule.exclude_hours !== null &&
-        alertRule.exclude_hours.length > 0
-      ) {
+      if (alertRule.exclude_hours !== null) {
         replacedSentence += this.$i18n.t('alertrule_exclude_hours_sentence')
         var hoursString = alertRule.exclude_hours.join(', ')
         replacedSentence = replacedSentence.replace(
@@ -334,9 +313,6 @@ export default {
     },
     getText(item) {
       return item.abbreviation + ' (' + item.pq_name_unit + ')'
-    },
-    replaceString(alertRule, sentence, prop) {
-      return sentence.replace('[' + prop + ']', alertRule[prop])
     },
   },
 }
