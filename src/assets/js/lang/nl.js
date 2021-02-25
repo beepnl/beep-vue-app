@@ -747,6 +747,7 @@ const translations = {
   greater_than_or_equal: 'meer dan of gelijk is aan',
   alertrule_not_active:
     "Deze notificatie is uitgeschakeld. Je kunt deze weer activeren door 'Actief' aan te vinken en de notificatie-instelling op te slaan.",
+  export_email_sent: 'E-mail met Excel bestand is verzonden.',
 }
 
 export default translations

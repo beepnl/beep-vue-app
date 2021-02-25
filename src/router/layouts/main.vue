@@ -9,9 +9,13 @@
           class="d-flex flex-row justify-start align-center"
           style="width: 48%;"
         >
-          <v-toolbar-title class="d-flex align-self-center"
-            ><img src="@assets/img/beep-logo-black.svg"
-          /></v-toolbar-title>
+          <router-link :to="{ name: 'home' }">
+            <v-toolbar-title class="d-flex align-self-center"
+              ><img
+                src="@assets/img/beep-logo-black.svg"
+                @click="clearHiveFilters"
+            /></v-toolbar-title>
+          </router-link>
         </div>
 
         <div class="d-flex justify-center" style="width: 4%">
@@ -178,6 +182,9 @@ export default {
           }
         }
       }
+    },
+    clearHiveFilters() {
+      this.$store.commit('locations/clearFilters')
     },
     updateRoute(val) {
       this.$router.push(val) // respond to tab swipes

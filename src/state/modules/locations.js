@@ -64,6 +64,13 @@ export const mutations = {
     }
     state.hiveFilterByImpression = array
   },
+  clearFilters: function(state) {
+    state.hiveSearch = null
+    state.hiveFilterByAttention = false
+    state.hiveFilterByBase = false
+    state.hiveFilterByImpression = []
+    state.hiveFilterByReminder = false
+  },
   resetState: function(state) {
     state.apiaries = []
     state.apiaryListView = 'listView'

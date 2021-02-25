@@ -61,7 +61,7 @@
               text
               prominent
               dense
-              dismissable
+              dismissible
               type="success"
               color="green"
             >

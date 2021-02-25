@@ -33,6 +33,22 @@
         </v-row>
       </div>
 
+      <v-row v-if="showSuccessMessage">
+        <v-col cols="12">
+          <v-alert
+            v-model="showSuccessMessage"
+            text
+            prominent
+            dense
+            dismissible
+            type="success"
+            color="green"
+          >
+            {{ successMessage }}
+          </v-alert>
+        </v-col>
+      </v-row>
+
       <v-row v-if="errorMessage">
         <v-col cols="12">
           <v-alert text prominent dense type="error" color="red" class="mb-0">
@@ -228,6 +244,8 @@ export default {
       measurementTypes: null,
       selectedMeasurementTypes: [],
       errorMessage: null,
+      successMessage: null,
+      showSuccessMessage: false,
       showDataLoadingIcon: false,
       showDeviceDataLoadingIcon: false,
       ready: false,
@@ -339,9 +357,14 @@ export default {
     async exportData() {
       this.errorMessage = null
       this.showDataLoadingIcon = true
+      this.showSuccessMessage = false
       try {
         const response = await Api.readRequest('/export')
         this.showDataLoadingIcon = false
+        if (response.data.file) {
+          this.showSuccessMessage = true
+          this.successMessage = this.$i18n.t('export_email_sent')
+        }
         return response
       } catch (error) {
         console.log('Error: ', error)
