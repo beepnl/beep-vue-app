@@ -215,7 +215,6 @@ export default {
       normalizerMeasurementTypes(node) {
         return {
           id: node.abbreviation,
-          label: node.pq_name_unit,
         }
       },
       separators: [
@@ -273,6 +272,11 @@ export default {
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile
+    },
+    selectedDevice() {
+      return this.devices.filter(
+        (device) => device.id === this.selectedDeviceId
+      )[0]
     },
     selectedDeviceId: {
       get() {
@@ -416,7 +420,10 @@ export default {
             '&end=' +
             this.dates[1]
         )
-        this.measurementTypes = Object.values(response.data)
+        var rawMeasurementTypes = Object.values(response.data)
+        this.measurementTypes = this.generateMeasurementTypes(
+          rawMeasurementTypes
+        )
         return true
       } catch (error) {
         this.measurementTypes = null
@@ -424,10 +431,64 @@ export default {
         console.log('Error: ', error)
       }
     },
+    generateMeasurementTypes(rawMeasurementTypes) {
+      // check if most recent sensordef of the selected device with same abbreviation as output_abbr has a name
+      // if so: this will be the label. If not: set default translation as the label.
+      var sortedSensorDefs = this.sortedSensorDefinitions(
+        this.selectedDevice.sensor_definitions
+      )
+      var measurementTypesWithLabel = rawMeasurementTypes
+      measurementTypesWithLabel.map((measurementType) => {
+        var label = ''
+        var match = sortedSensorDefs.filter(
+          (sensorDef) => sensorDef.output_abbr === measurementType.abbreviation
+        )
+        if (match.length > 0 && match[0].name !== null) {
+          label = match[0].name
+        } else {
+          label = this.$i18n.t(measurementType.abbreviation)
+        }
+        measurementType.label = label
+      })
+      var sortedMeasurementTypes = measurementTypesWithLabel
+        .slice()
+        .sort(function(a, b) {
+          if (a.label.toLowerCase() > b.label.toLowerCase()) {
+            return 1
+          }
+          if (b.label.toLowerCase() > a.label.toLowerCase()) {
+            return -1
+          }
+          return 0
+        })
+
+      return sortedMeasurementTypes
+    },
     setInitialDeviceId() {
       if (this.selectedDeviceId === null) {
         this.selectedDeviceId = this.devices[0].id
       }
+    },
+    sortedSensorDefinitions(sensordefs) {
+      // sort sensor_definitions: sort first by output_abbr then updated_at
+      const sortedSensorDefs = sensordefs.slice().sort(function(a, b) {
+        if (a.output_abbr > b.output_abbr) {
+          return 1
+        }
+        if (b.output_abbr > a.output_abbr) {
+          return -1
+        }
+        if (a.output_abbr === b.output_abbr) {
+          if (a.updated_at > b.updated_at) {
+            return -1
+          }
+          if (b.updated_at < a.updated_at) {
+            return 1
+          }
+          return 0
+        }
+      })
+      return sortedSensorDefs
     },
   },
 }

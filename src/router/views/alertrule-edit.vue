@@ -482,11 +482,25 @@ export default {
       return uniqueApiaries
     },
     sortedSensorMeasurements() {
-      var sortedSMs = this.sensorMeasurementsList.slice().sort(function(a, b) {
-        if (a.pq_name_unit > b.pq_name_unit) {
+      var measurementTypes = this.sensorMeasurementsList
+
+      // check if translation exists, if not don't display the measurement type
+      measurementTypes = measurementTypes.filter(
+        (measurementType) =>
+          this.$i18n.te(measurementType.abbreviation) === true
+      )
+
+      // add translation as label property
+      measurementTypes.map((measurementType) => {
+        measurementType.label = this.$i18n.t(measurementType.abbreviation)
+      })
+
+      // sort by label
+      var sortedSMs = measurementTypes.slice().sort(function(a, b) {
+        if (a.label.toLowerCase() > b.label.toLowerCase()) {
           return 1
         }
-        if (b.pq_name_unit > a.pq_name_unit) {
+        if (b.label.toLowerCase() > a.label.toLowerCase()) {
           return -1
         }
         return 0
@@ -807,7 +821,7 @@ export default {
       return replacedSentence
     },
     getText(item) {
-      return item.pq_name_unit + ' (' + item.abbreviation + ')'
+      return item.label + ' (' + item.abbreviation + ')'
     },
     getTitle() {
       if (this.alertruleCreateMode) {
