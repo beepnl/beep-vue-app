@@ -564,7 +564,7 @@ const translations = {
     'Too much data to process, please select fewer Sensor measurements, or reduce the timespan between start and end date.',
 
   beep_base_explanation:
-    "If you have a BEEP base (shown in the picture above), please use the native app (iOS and Android) to set-up the communication with this app. If you don't have a BEEP base yet, please click on the menu item 'BEEP website' for updates on how to get a BEEP base. I you have your own measurement device and would like to see the data in the BEEP app, please send us a message to ask for joining our Slack community and you can get access to the API description.",
+    "If you have a BEEP base (shown in the picture above), please use the BEEP base app (iOS and Android) to set-up the communication with this app. If you don't have a BEEP base yet, please click on the menu item 'BEEP website' for updates on how to get a BEEP base. I you have your own measurement device and would like to see the data in the BEEP app, please send us a message to ask for joining our Slack community and you can get access to the API description.",
 
   sample_code_hive: 'First select a hive, to generate a unique sample code',
   sample_code_generate: 'Generate unique sample code',
@@ -726,6 +726,33 @@ const translations = {
   copy: 'Copy',
   Home: 'Home',
   Select_default_alertrule: 'Copy default alert rule',
+  alertrule_main_sentence:
+    'I would like to receive an alert if the [calculation] [comparison] of the [measurement_quantity] [comparator] [threshold_value][measurement_unit]. This calculation will be executed every [calculation_minutes] hours, ',
+  alertrule_occurences_direct_sentence:
+    'and I would like to receive the alert directly. ',
+  alertrule_occurences_indirect_sentence:
+    ' but I would like to receive the alert only if it occurs [alert_on_occurences] times. ',
+  alertrule_exclude_months_sentence:
+    'This alert will be deactivated during the following months: [exclude_months]. ',
+  alertrule_exclude_hours_sentence:
+    'This alert will be deactivated during the following hours: [exclude_hours]. ',
+  alertrule_exclude_hives_sentence:
+    'This alert will be deactivated for the following hives: [exclude_hive_ids].',
+  min: 'minimum',
+  max: 'maximum',
+  ave: 'average',
+  der: 'derivative',
+  cnt: 'count',
+  equal_to: 'is equal to',
+  less_than: 'is less than',
+  greater_than: 'is greater than',
+  less_than_or_equal: 'is less than or equal to',
+  greater_than_or_equal: 'is greater than or equal to',
+  alertrule_not_active:
+    "This alert has been deactivated. You can activate it by checking the 'Active' box and saving this alert rule.",
+  export_email_sent: 'Email with Excel file has been sent.',
+  Updated_at: 'Updated at',
+  Not_yet_saved: 'Not yet saved',
 }
 
 export default translations

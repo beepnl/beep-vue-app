@@ -557,7 +557,7 @@ const translations = {
     'Too much data to process, please select fewer Sensor measurements, or reduce the timespan between start and end date.',
 
   beep_base_explanation:
-    "If you have a BEEP base (shown in the picture above), please use the native app (iOS and Android) to set-up the communication with this app. If you don't have a BEEP base yet, please click on the menu item 'BEEP website' for updates on how to get a BEEP base. I you have your own measurement device and would like to see the data in the BEEP app, please send us a message to ask for joining our Slack community and you can get access to the API description.",
+    "If you have a BEEP base (shown in the picture above), please use the BEEP base app (iOS and Android) to set-up the communication with this app. If you don't have a BEEP base yet, please click on the menu item 'BEEP website' for updates on how to get a BEEP base. I you have your own measurement device and would like to see the data in the BEEP app, please send us a message to ask for joining our Slack community and you can get access to the API description.",
 
   sample_code_hive: 'First select a hive, to generate a unique sample code',
   sample_code_generate: 'Generate unique sample code',
@@ -741,6 +741,8 @@ const translations = {
   alertrule_not_active:
     "This alert has been deactivated. You can activate it by checking the 'Active' box and saving this alert rule.",
   export_email_sent: 'Email with Excel file has been sent.',
+  Updated_at: 'Updated at',
+  Not_yet_saved: 'Not yet saved',
 }
 
 export default translations
