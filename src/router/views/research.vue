@@ -381,6 +381,7 @@ import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
+import { readDevicesIfNotPresent } from '@mixins/readDevicesMixin'
 
 export default {
   components: {
@@ -388,6 +389,7 @@ export default {
     Datetime,
     Layout,
   },
+  mixins: [readDevicesIfNotPresent],
   data: function() {
     return {
       researchProjects: [],
@@ -432,7 +434,7 @@ export default {
     },
   },
   created() {
-    this.readDevices()
+    this.readDevicesIfNotPresent()
     if (this.apiaries.length === 0 && this.groups.length === 0) {
       // in case view is opened directly without loggin in (via localstorage) or in case of hard refresh
       this.readApiariesAndGroups()
@@ -442,40 +444,6 @@ export default {
     })
   },
   methods: {
-    async readDevices() {
-      // devicesPresent boolean prevents unnecessary API calls to read devices when user has none
-      if (this.devicesPresent && this.devices.length === 0) {
-        try {
-          const response = await Api.readRequest('/devices')
-          const devicesPresent = response.data.length > 0
-          this.$store.commit('devices/setData', {
-            prop: 'devices',
-            value: response.data,
-          })
-          this.$store.commit('devices/setData', {
-            prop: 'devicesPresent',
-            value: devicesPresent,
-          })
-          return true
-        } catch (error) {
-          if (error.response) {
-            console.log(error.response)
-          } else {
-            console.log('Error: ', error)
-          }
-          if (error.response.data === 'no_devices_found') {
-            this.$store.commit('devices/setData', {
-              prop: 'devicesPresent',
-              value: false,
-            })
-            this.$store.commit('devices/setData', {
-              prop: 'devices',
-              value: [],
-            })
-          }
-        }
-      }
-    },
     async readApiariesAndGroups() {
       try {
         const responseApiaries = await Api.readRequest('/locations')

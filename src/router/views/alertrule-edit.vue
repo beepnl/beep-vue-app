@@ -278,6 +278,7 @@ import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import { mapGetters } from 'vuex'
 import Layout from '@layouts/back.vue'
+import { readDevicesIfNotPresent } from '@mixins/readDevicesMixin'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import VueNumericInput from 'vue-numeric-input'
@@ -289,6 +290,7 @@ export default {
     Treeselect,
     VueNumericInput,
   },
+  mixins: [readDevicesIfNotPresent],
   data: function() {
     return {
       snackbar: {
@@ -507,7 +509,7 @@ export default {
     },
   },
   created() {
-    this.readDevices()
+    this.readDevicesIfNotPresent()
     this.readTaxonomy().then(() => {
       // If alertrule-create route is used, make empty alertrule object
       if (this.alertruleCreateMode) {
@@ -642,40 +644,6 @@ export default {
         }
       }
     },
-    async readDevices() {
-      // devicesPresent boolean prevents unnecessary API calls to read devices when user has none
-      if (this.devicesPresent && this.devices.length === 0) {
-        try {
-          const response = await Api.readRequest('/devices')
-          const devicesPresent = response.data.length > 0
-          this.$store.commit('devices/setData', {
-            prop: 'devices',
-            value: response.data,
-          })
-          this.$store.commit('devices/setData', {
-            prop: 'devicesPresent',
-            value: devicesPresent,
-          })
-          return true
-        } catch (error) {
-          if (error.response) {
-            console.log(error.response)
-          } else {
-            console.log('Error: ', error)
-          }
-          if (error.response.data === 'no_devices_found') {
-            this.$store.commit('devices/setData', {
-              prop: 'devicesPresent',
-              value: false,
-            })
-            this.$store.commit('devices/setData', {
-              prop: 'devices',
-              value: [],
-            })
-          }
-        }
-      }
-    },
     async readTaxonomy() {
       if (this.sensorMeasurementsList.length === 0) {
         try {
@@ -771,10 +739,7 @@ export default {
         )[0].full,
         threshold_value: alertRule.threshold_value,
         calculation_minutes: parseFloat(
-          this.$moment
-            .duration(alertRule.calculation_minutes, 'minutes')
-            .asHours()
-            .toFixed(2)
+          (alertRule.calculation_minutes / 60).toFixed(2)
         ),
       }
 

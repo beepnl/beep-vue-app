@@ -543,6 +543,7 @@ import HiveCard from '@components/hive-card.vue'
 import Layout from '@layouts/main.vue'
 import { mapGetters } from 'vuex'
 import { momentMixin } from '@mixins/momentMixin'
+import { readDevices } from '@mixins/readDevicesMixin'
 import { ScaleTransition } from 'vue2-transitions'
 
 export default {
@@ -552,7 +553,7 @@ export default {
     Layout,
     ScaleTransition,
   },
-  mixins: [momentMixin],
+  mixins: [momentMixin, readDevices],
   data: () => ({
     snackbar: {
       show: false,
@@ -831,9 +832,11 @@ export default {
         this.snackbar.text = this.$i18n.t('Invitation_accepted')
         this.snackbar.show = true
         setTimeout(() => {
-          this.readApiariesAndGroups().then(() => {
-            this.hiveSearch = groupName
-            this.showLoadingIconForId = null
+          this.readDevices().then(() => {
+            this.readApiariesAndGroups().then(() => {
+              this.hiveSearch = groupName
+              this.showLoadingIconForId = null
+            })
           })
         }, 300) // wait for API to update groups
       } catch (error) {

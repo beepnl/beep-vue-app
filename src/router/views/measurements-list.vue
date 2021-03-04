@@ -349,6 +349,7 @@ import MeasurementsChartHeatmap from '@components/measurements-chart-heatmap.vue
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import 'chartist/dist/chartist.min.css'
+import { readDevicesIfNotPresent } from '@mixins/readDevicesMixin'
 import { sensorMixin } from '@mixins/sensorMixin'
 import { SlideYUpTransition } from 'vue2-transitions'
 import '@plugins/chartist-plugin-legend-beep.js'
@@ -363,7 +364,7 @@ export default {
     SlideYUpTransition,
     Treeselect,
   },
-  mixins: [sensorMixin],
+  mixins: [readDevicesIfNotPresent, sensorMixin],
   data() {
     return {
       lastSensorDate: null,
@@ -529,7 +530,7 @@ export default {
   },
   created() {
     this.stopTimer()
-    this.readDevices()
+    this.readDevicesIfNotPresent()
       .then(() => {
         if (this.devices.length > 0) {
           this.setInitialDeviceId()
@@ -636,40 +637,6 @@ export default {
         }
       }
     },
-    async readDevices() {
-      // devicesPresent boolean prevents unnecessary API calls to read devices when user has none
-      if (this.devicesPresent && this.devices.length === 0) {
-        try {
-          const response = await Api.readRequest('/devices')
-          const devicesPresent = response.data.length > 0
-          this.$store.commit('devices/setData', {
-            prop: 'devices',
-            value: response.data,
-          })
-          this.$store.commit('devices/setData', {
-            prop: 'devicesPresent',
-            value: devicesPresent,
-          })
-          return true
-        } catch (error) {
-          if (error.response) {
-            console.log(error.response)
-          } else {
-            console.log('Error: ', error)
-          }
-          if (error.response.data === 'no_devices_found') {
-            this.$store.commit('devices/setData', {
-              prop: 'devicesPresent',
-              value: false,
-            })
-            this.$store.commit('devices/setData', {
-              prop: 'devices',
-              value: [],
-            })
-          }
-        }
-      }
-    },
     calculateProgress(min, max, value) {
       if (value > max) {
         return 100
@@ -683,12 +650,14 @@ export default {
         series: [
           {
             className: 'ct-series-' + this.SENSOR_COLOR[quantity],
-            name: this.measurementData.sensorDefinitions[quantity]
-              ? this.measurementData.sensorDefinitions[quantity].name +
-                ' (' +
-                unit +
-                ')'
-              : this.$i18n.t(quantity) + ' (' + unit + ')',
+            name:
+              this.measurementData.sensorDefinitions[quantity] &&
+              this.measurementData.sensorDefinitions[quantity].name !== null
+                ? this.measurementData.sensorDefinitions[quantity].name +
+                  ' (' +
+                  unit +
+                  ')'
+                : this.$i18n.t(quantity) + ' (' + unit + ')',
             data: [],
           },
         ],

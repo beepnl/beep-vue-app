@@ -68,11 +68,11 @@
 </template>
 
 <script>
-import Api from '@api/Api'
 import LocaleChanger from '@components/locale-changer.vue'
 import { mapGetters } from 'vuex'
 import NavDrawer from '@components/nav-drawer.vue'
 import PlusMenu from '@components/plus-menu.vue'
+import { readDevicesIfNotPresent } from '@mixins/readDevicesMixin'
 
 export default {
   components: {
@@ -80,6 +80,7 @@ export default {
     NavDrawer,
     PlusMenu,
   },
+  mixins: [readDevicesIfNotPresent],
   props: {
     menuItems: {
       type: Array,
@@ -146,43 +147,9 @@ export default {
     },
   },
   created() {
-    this.readDevices()
+    this.readDevicesIfNotPresent()
   },
   methods: {
-    async readDevices() {
-      // devicesPresent boolean prevents unnecessary API calls to read devices when user has none
-      if (this.devicesPresent && this.devices.length === 0) {
-        try {
-          const response = await Api.readRequest('/devices')
-          const devicesPresent = response.data.length > 0
-          this.$store.commit('devices/setData', {
-            prop: 'devices',
-            value: response.data,
-          })
-          this.$store.commit('devices/setData', {
-            prop: 'devicesPresent',
-            value: devicesPresent,
-          })
-          return true
-        } catch (error) {
-          if (error.response) {
-            console.log(error.response)
-          } else {
-            console.log('Error: ', error)
-          }
-          if (error.response.data === 'no_devices_found') {
-            this.$store.commit('devices/setData', {
-              prop: 'devicesPresent',
-              value: false,
-            })
-            this.$store.commit('devices/setData', {
-              prop: 'devices',
-              value: [],
-            })
-          }
-        }
-      }
-    },
     clearHiveFilters() {
       this.$store.commit('locations/clearFilters')
     },
