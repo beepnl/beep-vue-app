@@ -700,10 +700,10 @@ const translations = {
   Absolute_value: 'Absolute value',
   Absolute_value_of_dif: 'Absolute value of the difference',
   alertrule_info: 'This will be replaced by some info on alert rules.',
-    Exclude_months: 'Deactivate this alert during the following months:',
-    Exclude_hours: 'Deactivate this alert during the following hours:',
-    Exclude_hives: 'Deactivate this alert for the following hives:',
-    Exclude_hives_details:
+  Exclude_months: 'Deactivate this alert during the following months:',
+  Exclude_hours: 'Deactivate this alert during the following hours:',
+  Exclude_hives: 'Deactivate this alert for the following hives:',
+  Exclude_hives_details:
     'N.B. By default, this alert will be executed for all hives with a measurement device.',
   months: 'months',
   hours: 'hours',
@@ -716,6 +716,31 @@ const translations = {
   copy: 'Copy',
   Home: 'Home',
   Select_default_alertrule: 'Copy default alert rule',
+  alertrule_main_sentence:
+    'I would like to receive an alert if the [calculation] [comparison] of the [measurement_quantity] [comparator] [threshold_value][measurement_unit]. This calculation will be executed every [calculation_minutes] hours, ',
+  alertrule_occurences_direct_sentence:
+    'and I would like to receive the alert directly. ',
+  alertrule_occurences_indirect_sentence:
+    ' but I would like to receive the alert only if it occurs [alert_on_occurences] times. ',
+  alertrule_exclude_months_sentence:
+    'This alert will be deactivated during the following months: [exclude_months]. ',
+  alertrule_exclude_hours_sentence:
+    'This alert will be deactivated during the following hours: [exclude_hours]. ',
+  alertrule_exclude_hives_sentence:
+    'This alert will be deactivated for the following hives: [exclude_hive_ids].',
+  min: 'minimum',
+  max: 'maximum',
+  ave: 'average',
+  der: 'derivative',
+  cnt: 'count',
+  equal_to: 'is equal to',
+  less_than: 'is less than',
+  greater_than: 'is greater than',
+  less_than_or_equal: 'is less than or equal to',
+  greater_than_or_equal: 'is greater than or equal to',
+  alertrule_not_active:
+    "This alert has been deactivated. You can activate it by checking the 'Active' box and saving this alert rule.",
+  export_email_sent: 'Email with Excel file has been sent.',
 }
 
 export default translations

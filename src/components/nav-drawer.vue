@@ -17,7 +17,7 @@
                 >
               </v-list-item-avatar>
               <v-list-item-content>
-                <v-list-item-title>{{ $t('Menu') }}</v-list-item-title>
+                <v-list-item-title>{{ $t('menu') }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
             <v-divider></v-divider>
@@ -75,7 +75,7 @@
 
         <div class="d-flex flex-row align-end version-number mt-n2 mr-1">
           <v-spacer></v-spacer>
-          v3.0.1
+          v3.0.2
         </div>
       </div>
     </v-navigation-drawer>
