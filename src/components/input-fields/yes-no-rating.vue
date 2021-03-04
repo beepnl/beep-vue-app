@@ -13,7 +13,11 @@
       >
         <v-icon
           left
-          :class="object[property] === 1 ? 'green--text' : 'color-grey'"
+          :class="
+            object[property] === 1 || object[property] === true
+              ? 'green--text'
+              : 'color-grey'
+          "
           >mdi-check-circle</v-icon
         >
         {{ $t('yes') }}
@@ -30,7 +34,11 @@
       >
         <v-icon
           left
-          :class="object[property] === 0 ? 'red--text' : 'color-grey'"
+          :class="
+            object[property] === 0 || object[property] === false
+              ? 'red--text'
+              : 'color-grey'
+          "
           >mdi-close-circle</v-icon
         >
         {{ $t('no') }}

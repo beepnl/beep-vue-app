@@ -370,7 +370,7 @@
                       v-if="ownedDevice.sensor_definitions.length > 0"
                       class="rounded-border"
                     >
-                      <v-simple-table dense>
+                      <v-simple-table class="v-data-table--smallfont" dense>
                         <template v-slot>
                           <thead>
                             <tr>
@@ -392,7 +392,10 @@
                               <th class="text-left">
                                 {{ $t('Output') }}
                               </th>
-                              <th class="text-center">
+                              <th class="text-left">
+                                {{ $t('Updated_at') }}
+                              </th>
+                              <th class="text-left">
                                 {{ $t('Actions') }}
                               </th>
                             </tr>
@@ -400,7 +403,10 @@
                           <tbody>
                             <tr
                               v-for="(sensorDef,
-                              indexSensor) in ownedDevice.sensor_definitions"
+                              indexSensor) in sortedSensorDefinitions(
+                                // eslint-disable-next-line vue/comma-dangle
+                                ownedDevice.sensor_definitions
+                              )"
                               :key="indexSensor"
                               :class="
                                 sensorDef.delete === true
@@ -479,66 +485,77 @@
                                   solo
                                 ></v-select>
                               </td>
-                              <td
-                                class="text-center d-flex flex-no-wrap align-center button-wrapper"
-                              >
-                                <v-progress-circular
-                                  v-if="
-                                    showLoadingIconById.indexOf(sensorDef.id) >
-                                      -1
+                              <td>
+                                <span
+                                  v-text="
+                                    sensorDef.updated_at !== null
+                                      ? momentify(sensorDef.updated_at)
+                                      : $t('Not_yet_saved')
                                   "
-                                  class="progress-icon mr-3"
-                                  size="18"
-                                  width="2"
-                                  color="green"
-                                  indeterminate
-                                />
-                                <v-icon
-                                  v-if="
-                                    showLoadingIconById.indexOf(
-                                      // eslint-disable-next-line vue/comma-dangle
-                                      sensorDef.id
-                                    ) === -1
-                                  "
-                                  dark
-                                  class="mr-3"
-                                  color="green"
-                                  @click="updateSensorDef(sensorDef)"
-                                  >mdi-check</v-icon
-                                >
-                                <v-tooltip
-                                  v-if="sensorDef.delete"
-                                  open-delay="500"
-                                  bottom
-                                >
-                                  <template v-slot:activator="{ on }">
-                                    <v-icon
-                                      dark
-                                      color="red"
-                                      v-on="on"
-                                      @click="
-                                        deleteSensorDef(
-                                          ownedDevice,
-                                          // eslint-disable-next-line vue/comma-dangle
-                                          indexSensor
-                                        )
-                                      "
-                                      >mdi-refresh</v-icon
-                                    >
-                                  </template>
-                                  <span v-if="sensorDef.delete">{{
-                                    $t('Undelete')
-                                  }}</span>
-                                </v-tooltip>
-                                <v-icon
-                                  v-if="!sensorDef.delete"
-                                  dark
-                                  color="red"
-                                  @click="
-                                    deleteSensorDef(ownedDevice, indexSensor)
-                                  "
-                                  >mdi-delete</v-icon
-                                >
+                                ></span>
+                              </td>
+                              <td>
+                                <div class="d-flex flex-no-wrap">
+                                  <v-progress-circular
+                                    v-if="
+                                      showLoadingIconById.indexOf(
+                                        // eslint-disable-next-line vue/comma-dangle
+                                        sensorDef.id
+                                      ) > -1
+                                    "
+                                    class="progress-icon mr-3"
+                                    size="18"
+                                    width="2"
+                                    color="green"
+                                    indeterminate
+                                  />
+                                  <v-icon
+                                    v-if="
+                                      showLoadingIconById.indexOf(
+                                        // eslint-disable-next-line vue/comma-dangle
+                                        sensorDef.id
+                                      ) === -1
+                                    "
+                                    dark
+                                    class="mr-3"
+                                    color="green"
+                                    @click="updateSensorDef(sensorDef)"
+                                    >mdi-check</v-icon
+                                  >
+                                  <v-tooltip
+                                    v-if="sensorDef.delete"
+                                    open-delay="500"
+                                    bottom
+                                  >
+                                    <template v-slot:activator="{ on }">
+                                      <v-icon
+                                        dark
+                                        color="red"
+                                        v-on="on"
+                                        @click="
+                                          deleteSensorDef(
+                                            ownedDevice,
+                                            // eslint-disable-next-line vue/comma-dangle
+                                            indexSensor
+                                          )
+                                        "
+                                        >mdi-refresh</v-icon
+                                      >
+                                    </template>
+                                    <span v-if="sensorDef.delete">{{
+                                      $t('Undelete')
+                                    }}</span>
+                                  </v-tooltip>
+                                  <v-icon
+                                    v-if="!sensorDef.delete"
+                                    dark
+                                    color="red"
+                                    @click="
+                                      deleteSensorDef(ownedDevice, indexSensor)
+                                    "
+                                    >mdi-delete</v-icon
+                                  >
+                                </div>
                               </td>
                             </tr>
                           </tbody>
@@ -673,13 +690,14 @@ export default {
     },
   },
   created() {
-    this.getDevicesForList()
     if (this.apiaries.length === 0 && this.groups.length === 0) {
       // in case view is opened directly without loggin in (via localstorage) or in case of hard refresh
       this.readApiariesAndGroups()
     }
-    this.readTaxonomy().then(() => {
-      this.ready = true
+    this.getDevicesForList().then(() => {
+      this.readTaxonomy().then(() => {
+        this.ready = true
+      })
     })
   },
   methods: {
@@ -891,6 +909,7 @@ export default {
         multiplier: 1,
         input_measurement_id: null,
         output_measurement_id: null,
+        updated_at: null,
       })
     },
     deleteDevice(device) {
@@ -935,6 +954,51 @@ export default {
       return typeof device.sensor_definitions[index] !== 'undefined'
         ? device.sensor_definitions.splice(index, 1)
         : null
+    },
+    sortedSensorDefinitions(sensordefs) {
+      // sort sensor_definitions: newly added first (if multiple new: sory by name), then first by output_abbr then input_abbr then updated_at
+      const sortedSensorDefs = sensordefs.slice().sort(function(a, b) {
+        if (a.updated_at === null && b.updated_at !== null) {
+          return -1
+        }
+        if (b.updated_at === null && a.updated_at !== null) {
+          return 1
+        }
+        if (b.updated_at === null && a.updated_at === null) {
+          if (a.name > b.name) {
+            return -1
+          }
+          if (b.name > a.name) {
+            return 1
+          }
+        }
+        if (a.updated_at !== null && b.updated_at !== null) {
+          if (a.output_abbr > b.output_abbr) {
+            return 1
+          }
+          if (b.output_abbr > a.output_abbr) {
+            return -1
+          }
+          if (a.output_abbr === b.output_abbr) {
+            if (a.input_abbr > b.input_abbr) {
+              return 1
+            }
+            if (b.input_abbr > a.input_abbr) {
+              return -1
+            }
+            if (a.input_abbr === b.input_abbr) {
+              if (a.updated_at > b.updated_at) {
+                return -1
+              }
+              if (b.updated_at < a.updated_at) {
+                return 1
+              }
+              return 0
+            }
+          }
+        }
+      })
+      return sortedSensorDefs
     },
     toggleDevice(key) {
       if (this.showDevicesByKey.includes(key)) {
