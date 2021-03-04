@@ -42,7 +42,7 @@
               queenEditMode || hiveCreateMode ? 'save-button-mobile-wide' : ''
             } mr-1`
           "
-          :disabled="!valid"
+          :disabled="!valid || typeof activeHive.location_id === 'undefined'"
           @click.prevent="saveHive"
         >
           <v-progress-circular
@@ -101,7 +101,7 @@
                     isNaN(activeHive.location_id) ? 'red--text' : ''
                   }`
                 "
-                v-text="$tc('Location', 1)"
+                v-text="$tc('Location', 1) + '*'"
               ></div>
               <Treeselect
                 v-model="activeHive.location_id"
@@ -137,7 +137,7 @@
             md="4"
           >
             <div>
-              <div class="beep-label" v-text="`${$t('Hive_order')}`"></div>
+              <div class="beep-label" v-text="$t('Hive_order')"></div>
               <VueNumericInput
                 v-model="activeHive.order"
                 @input="setHiveEdited(true)"
