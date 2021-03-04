@@ -353,11 +353,21 @@ export default {
         })
     },
     toggleAlerts() {
-      this.alertRules.map((alertRule) => {
-        if (alertRule.active !== this.alertsEnabled) {
-          this.toggleAlertRule(alertRule, 'active')
-        }
-      })
+      if (this.alertsEnabled) {
+        // disable active alerts
+        this.alertRules.map((alertRule) => {
+          if (alertRule.active) {
+            this.toggleAlertRule(alertRule, 'active')
+          }
+        })
+      } else {
+        // enable inactive alerts
+        this.alertRules.map((alertRule) => {
+          if (!alertRule.active) {
+            this.toggleAlertRule(alertRule, 'active')
+          }
+        })
+      }
     },
   },
 }
