@@ -16,9 +16,8 @@
         color="primary"
         @click="addDevice"
       >
-        <v-icon left>mdi-plus</v-icon>{{ $t('create_new') }}
-        {{ $tc('device', 1) }}</v-btn
-      >
+        <v-icon left>mdi-plus</v-icon>{{ $t('add_own_device') }}
+      </v-btn>
       <v-btn
         v-if="ownedDevices.length > 0"
         tile
@@ -58,9 +57,8 @@
             class="save-button-mobile-wide mt-n4"
             @click="addDevice"
           >
-            <v-icon left>mdi-plus</v-icon>{{ $t('create_new') }}
-            {{ $tc('device', 1) }}</v-btn
-          >
+            <v-icon left>mdi-plus</v-icon>{{ $t('add_own_device') }}
+          </v-btn>
         </v-col>
       </v-row>
       <div

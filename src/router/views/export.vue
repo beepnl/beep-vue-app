@@ -51,7 +51,7 @@
 
       <v-row v-if="errorMessage">
         <v-col cols="12">
-          <v-alert text prominent dense type="error" color="red" class="mb-0">
+          <v-alert text prominent dense type="error" color="red" class="mb-3">
             {{ errorMessage }}
           </v-alert>
         </v-col>
