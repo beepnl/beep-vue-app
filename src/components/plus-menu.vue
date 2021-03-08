@@ -30,35 +30,73 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import { readDevicesIfNotPresent } from '@mixins/readDevicesMixin'
+
 export default {
+  mixins: [readDevicesIfNotPresent],
   computed: {
+    ...mapGetters('devices', ['devices']),
     plusItems() {
-      return [
-        {
-          icon: 'mdi-file-document-edit-outline',
-          title: this.$i18n.t('New') + ' ' + this.$i18n.tc('inspection', 1),
-          route: 'inspect',
-        },
-        {
-          icon: 'mdi-plus-box-outline',
-          title: this.$i18n.t('New') + ' ' + this.$i18n.tc('hive', 1),
-          route: 'hive-create',
-        },
-        {
-          icon: 'mdi-home-plus',
-          title: this.$i18n.t('new_apiary'),
-          route: 'apiary-create',
-        },
-        {
-          icon: 'mdi-account-multiple-plus',
-          title: this.$i18n.t('new_group'),
-          route: 'group-create',
-        },
-      ]
+      if (this.devices.length > 0) {
+        return [
+          {
+            icon: 'mdi-file-document-edit-outline',
+            title: this.$i18n.t('New') + ' ' + this.$i18n.tc('inspection', 1),
+            route: 'inspect',
+          },
+          {
+            icon: 'mdi-archive',
+            title: this.$i18n.t('New') + ' ' + this.$i18n.tc('hive', 1),
+            route: 'hive-create',
+          },
+          {
+            icon: 'mdi-home-analytics',
+            title: this.$i18n.t('new_apiary'),
+            route: 'apiary-create',
+          },
+          {
+            icon: 'mdi-account-multiple-plus',
+            title: this.$i18n.t('new_group'),
+            route: 'group-create',
+          },
+          {
+            icon: 'mdi-bell',
+            title: this.$i18n.t('New') + ' ' + this.$i18n.tc('alertrule', 1),
+            route: 'alertrule-create',
+          },
+        ]
+      } else {
+        return [
+          {
+            icon: 'mdi-file-document-edit-outline',
+            title: this.$i18n.t('New') + ' ' + this.$i18n.tc('inspection', 1),
+            route: 'inspect',
+          },
+          {
+            icon: 'mdi-archive',
+            title: this.$i18n.t('New') + ' ' + this.$i18n.tc('hive', 1),
+            route: 'hive-create',
+          },
+          {
+            icon: 'mdi-home-analytics',
+            title: this.$i18n.t('new_apiary'),
+            route: 'apiary-create',
+          },
+          {
+            icon: 'mdi-account-multiple-plus',
+            title: this.$i18n.t('new_group'),
+            route: 'group-create',
+          },
+        ]
+      }
     },
     loggedIn() {
       return this.$store.getters['auth/loggedIn']
     },
+  },
+  created() {
+    this.readDevicesIfNotPresent()
   },
   methods: {},
 }

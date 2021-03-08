@@ -85,6 +85,12 @@
           </v-col>
         </ScaleTransition>
       </v-row>
+
+      <v-row v-if="!showAlertPlaceholder && alerts.length === 0">
+        <v-col sm="auto" :cols="12">
+          {{ $t('no_alerts') }}
+        </v-col>
+      </v-row>
     </v-container>
 
     <Confirm ref="confirm"></Confirm>
@@ -205,7 +211,7 @@ export default {
       return this.$vuetify.breakpoint.mobile
     },
     showAlertPlaceholder() {
-      return this.alerts.length === 0
+      return this.alertRules.length === 0
     },
   },
   created() {
@@ -284,9 +290,6 @@ export default {
     async readAlerts() {
       try {
         const response = await Api.readRequest('/alerts')
-        if (response.data.length === 0) {
-          this.showAlertPlaceholder = true
-        }
         this.alerts = response.data.alerts
         return true
       } catch (error) {
