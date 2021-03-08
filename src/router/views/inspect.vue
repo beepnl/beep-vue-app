@@ -877,6 +877,7 @@ export default {
           this.activeHive === null
             ? (searchTerm = this.selectedHiveSet.name)
             : (searchTerm = this.activeHive.name)
+          var lastHiveId = this.selectedHives[this.selectedHives.length - 1]
           setTimeout(() => {
             return this.readApiariesAndGroups().then(() => {
               // update generalInspections in store for diary-list
@@ -885,6 +886,7 @@ export default {
                 if (localStorage.beepPreviousRoute === 'hive-inspections') {
                   this.$router.push({
                     name: 'hive-inspections',
+                    params: { id: lastHiveId },
                     query: { search: 'id=' + searchInspectionId },
                   })
                   // if previous page was apiary-list, return there (with apiary or hive name as search term, N.B. this wont overwrite any stored hiveSearch terms if present)
