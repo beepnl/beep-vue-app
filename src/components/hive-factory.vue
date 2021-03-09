@@ -67,12 +67,12 @@
               ></div>
               <v-spacer></v-spacer>
               <v-toolbar-items>
-                <v-icon
+                <!-- <v-icon
                   class="mr-1"
                   color="primary"
                   @click="updateHiveLayerColor"
                   >mdi-check</v-icon
-                >
+                > -->
                 <v-icon @click="cancelColorPicker">mdi-close</v-icon>
               </v-toolbar-items>
             </v-toolbar>
@@ -90,10 +90,10 @@
 
             <v-toolbar class="hive-color-picker-footer" dense light flat>
               <v-spacer></v-spacer>
-              <v-btn small tile outlined color="red" @click="deleteLayer">
-                <v-icon left>mdi-delete</v-icon>
-                {{ $t('Delete') }}
-              </v-btn>
+              <v-icon color="red" @click="deleteLayer">mdi-delete</v-icon>
+              <v-icon class="ml-3" color="primary" @click="updateHiveLayerColor"
+                >mdi-check</v-icon
+              >
             </v-toolbar>
           </v-overlay>
         </div>
