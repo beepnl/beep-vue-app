@@ -43,6 +43,7 @@
                 mdi-calendar-clock
               </v-icon>
               <v-icon
+              v-if="!tinyScreen"
                 :class="
                   `${
                     filterByImpression.includes(3)
@@ -55,6 +56,7 @@
                 mdi-emoticon-happy
               </v-icon>
               <v-icon
+               v-if="!tinyScreen"
                 :class="
                   `${
                     filterByImpression.includes(2)
@@ -67,6 +69,7 @@
                 mdi-emoticon-neutral
               </v-icon>
               <v-icon
+               v-if="!tinyScreen"
                 :class="
                   `${
                     filterByImpression.includes(1) ? 'red--text' : 'color-grey'
@@ -76,18 +79,24 @@
               >
                 mdi-emoticon-sad
               </v-icon>
-              <div class="my-0" @click="filterByBase = !filterByBase">
+              <div class="my-0 mr-2" @click="filterByBase = !filterByBase">
                 <v-sheet
                   class="beep-icon beep-icon-sensors cursor-pointer"
                   :color="`${filterByBase ? 'green' : ''}`"
                 >
                 </v-sheet>
               </div>
+              <v-icon
+                :class="`${filterByAlert ? 'red--text' : 'color-grey'}`"
+                @click="filterByAlert = !filterByAlert"
+              >
+                mdi-bell
+              </v-icon>
             </v-card-actions>
           </div>
-          <v-card-actions class="view-buttons">
+          <v-card-actions class="view-buttons mr-n1 mr-sm-0">
             <v-icon
-              :class="`${apiaryView ? 'color-primary' : ''} mr-1 mr-sm-2`"
+              :class="`${apiaryView ? 'color-primary' : ''} mr-sm-2`"
               @click="toggleGrid('apiaryView')"
             >
               mdi-size-xs
@@ -506,6 +515,7 @@
               :key="`${hive.id}`"
               :hive="hive"
               :hive-set="hiveSet"
+              :alerts="alertsPerHive(hive.id)"
               :list-view="listView"
               :grid-view="gridView"
               :apiary-view="apiaryView"
@@ -567,12 +577,23 @@ export default {
     showLoadingIconForId: null,
     showApiaryPlaceholder: false,
     ready: false,
-    allLastSensorValues: {},
     deviceIdArray: [],
   }),
   computed: {
+    ...mapGetters('alerts', ['alerts']),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups', 'invitations']),
+    filterByAlert: {
+      get() {
+        return this.$store.getters['locations/hiveFilterByAlert']
+      },
+      set(value) {
+        this.$store.commit('locations/setData', {
+          prop: 'hiveFilterByAlert',
+          value,
+        })
+      },
+    },
     filterByAttention: {
       get() {
         return this.$store.getters['locations/hiveFilterByAttention']
@@ -664,6 +685,18 @@ export default {
 
       var propertyFilteredHiveSets = textFilteredHiveSets
         .map((hiveSet) => {
+          if (this.filterByAlert) {
+            return {
+              ...hiveSet,
+              hives: hiveSet.hives.filter(
+                (hive) => this.alertsPerHive(hive.id).length > 0
+              ),
+            }
+          } else {
+            return hiveSet
+          }
+        })
+        .map((hiveSet) => {
           if (this.filterByAttention) {
             return {
               ...hiveSet,
@@ -710,6 +743,7 @@ export default {
 
       if (
         this.hiveSearch !== null ||
+        this.filterByAlert ||
         this.filterByAttention ||
         this.filterByBase ||
         this.filterByImpression.length > 0 ||
@@ -775,6 +809,9 @@ export default {
     tabletLandscapeUp() {
       return this.$vuetify.breakpoint.mdAndUp
     },
+    tinyScreen() {
+      return this.$vuetify.breakpoint.width < 373
+    },
   },
   mounted() {
     if (localStorage.listView) {
@@ -805,17 +842,16 @@ export default {
     ) {
       this.hiveSearch = this.$route.query.search
     }
-    if (this.apiaries.length === 0 && this.groups.length === 0) {
-      // in case user is freshly logged in or in case of hard refresh
-      this.readApiariesAndGroups().then(() => {
+    this.readAlerts().then(() => {
+      if (this.apiaries.length === 0 && this.groups.length === 0) {
+        // in case user is freshly logged in or in case of hard refresh
+        this.readApiariesAndGroups().then(() => {
+          this.ready = true
+        })
+      } else {
         this.ready = true
-      })
-    } else {
-      this.ready = true
-    }
-    // this.getDeviceIds().then(() => {
-    //   this.getAllLastSensorValues()
-    // })
+      }
+    })
   },
   methods: {
     async checkToken(token, groupId, groupName) {
@@ -899,39 +935,22 @@ export default {
         this.handleError(error)
       }
     },
-    // async getDeviceIds() {
-    //   try {
-    //     const response = await Api.readRequest('/devices')
-    //     const devices = response.data
-    //     // var deviceIdArray = []
-    //     var allLastSensorValues = {}
-    //     devices.map((device) => {
-    //       allLastSensorValues[device.id] = {}
-    //       // deviceIdArray.push(device.id)
-    //     })
-    //     this.allLastSensorValues = allLastSensorValues
-    //     this.deviceIdArray = Object.keys(allLastSensorValues)
-    //     return true
-    //   } catch (error) {
-    //     if (error.response) {
-    // console.log(error.response)
-    //     } else {
-    //       console.log('Error: ', error)
-    //     }
-    //   }
-    // },
-    // async loadLastSensorValues(id) {
-    //   try {
-    //     const response = await Api.readRequest('/sensors/lastvalues?id=' + id)
-    //     return response.data
-    //   } catch (error) {
-    //     if (error.response) {
-    // console.log(error.response)
-    //     } else {
-    //       console.log('Error: ', error)
-    //     }
-    //   }
-    // },
+    async readAlerts() {
+      try {
+        const response = await Api.readRequest('/alerts')
+        this.$store.commit('alerts/setData', {
+          prop: 'alerts',
+          value: response.data.alerts,
+        })
+        return true
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
     async readApiariesAndGroups() {
       try {
         const responseApiaries = await Api.readRequest('/locations')
@@ -960,6 +979,13 @@ export default {
         } else {
           console.log('Error: ', error)
         }
+      }
+    },
+    alertsPerHive(hiveId) {
+      if (this.alerts.filter((alert) => alert.hive_id === hiveId).length > 0) {
+        return this.alerts.filter((alert) => alert.hive_id === hiveId)
+      } else {
+        return []
       }
     },
     confirmDeleteApiary(hiveSet) {
@@ -1033,13 +1059,6 @@ export default {
       } else {
         return []
       }
-    },
-    getAllLastSensorValues() {
-      this.deviceIdArray.map((deviceId) =>
-        this.loadLastSensorValues(deviceId).then((response) => {
-          this.allLastSensorValues[deviceId] = response
-        })
-      )
     },
     handleError(error) {
       if (error.response) {

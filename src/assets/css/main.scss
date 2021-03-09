@@ -58,7 +58,24 @@
       }
       &:not(.filter-text-field--large) {
         @include for-phone-only {
-          max-width: 105px;
+          max-width: 98px;
+        }
+      }
+      &.v-text-field.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo).v-text-field--outlined
+        .v-input__slot {
+        @include for-phone-only {
+          padding: 0 6px !important;
+          .v-text-field__slot {
+            min-width: 72px;
+          }
+        }
+      }
+      &.v-text-field.v-input--is-focused.v-input--dense:not(.v-text-field--solo).v-text-field--outlined
+        .v-input__slot {
+        @include for-phone-only {
+          .v-text-field__slot {
+            min-width: 52px;
+          }
         }
       }
     }

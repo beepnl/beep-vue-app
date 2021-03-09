@@ -7,6 +7,7 @@ export const state = {
   activeAlertRule: null,
   alertRuleEdited: false,
   alertRules: [],
+  alerts: [],
 }
 export const getters = {
   ...resource.getters,
@@ -19,6 +20,9 @@ export const getters = {
   alertRuleEdited: (state) => {
     return state.alertRuleEdited
   },
+  alerts: (state) => {
+    return state.alerts || []
+  },
 }
 export const mutations = {
   ...resource.mutations,
@@ -29,6 +33,7 @@ export const mutations = {
     state.alertRuleEdited = false
     state.activeAlertRule = null
     state.alertRules = []
+    state.alerts = []
   },
 }
 export const actions = {

@@ -116,7 +116,7 @@ export default {
   mixins: [momentMixin],
   data: function() {
     return {
-      alerts: [],
+      // alerts: [],
       ready: false,
       search: null,
       errors: [],
@@ -128,7 +128,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('alerts', ['alertRules']),
+    ...mapGetters('alerts', ['alertRules', 'alerts']),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
     alertsWithRuleDetails() {
@@ -151,7 +151,17 @@ export default {
         }
         alert.rule_name = ruleName
       })
-      return alertsWithRuleDetails
+
+      var sortedAlerts = alertsWithRuleDetails.slice().sort(function(a, b) {
+        if (a.created_at > b.created_at) {
+          return -1
+        }
+        if (b.created_at < a.created_at) {
+          return 1
+        }
+        return 0
+      })
+      return sortedAlerts
     },
     filteredAlerts() {
       var textFilteredAlerts = []
@@ -290,7 +300,10 @@ export default {
     async readAlerts() {
       try {
         const response = await Api.readRequest('/alerts')
-        this.alerts = response.data.alerts
+        this.$store.commit('alerts/setData', {
+          prop: 'alerts',
+          value: response.data.alerts,
+        })
         return true
       } catch (error) {
         if (error.response) {

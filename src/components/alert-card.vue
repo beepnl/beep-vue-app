@@ -64,9 +64,7 @@
                   <div v-if="alert.hive_name !== null">
                     <v-tooltip
                       v-if="
-                        alert.hive_name !== null &&
-                          alert.hive_name.length >= 15 &&
-                          !smallScreen
+                        alert.hive_name !== null && alert.hive_name.length >= 15
                       "
                       bottom
                       max-width="60%"
@@ -96,8 +94,7 @@
                     <v-tooltip
                       v-if="
                         alert.device_name !== null &&
-                          alert.device_name.length >= 15 &&
-                          !smallScreen
+                          alert.device_name.length >= 15
                       "
                       bottom
                       max-width="60%"

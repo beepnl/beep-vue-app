@@ -76,6 +76,16 @@
               mdi-clipboard-alert-outline
             </v-icon>
           </router-link>
+          <router-link
+            :to="{
+              name: 'alerts',
+              query: { search: hive.name },
+            }"
+          >
+            <v-icon v-if="alerts.length > 0" class="red--text">
+              mdi-bell
+            </v-icon>
+          </router-link>
         </div>
 
         <HiveIcon
@@ -410,12 +420,27 @@
         </div>
 
         <div
-          v-if="hive.sensors.length !== 0"
+          v-if="hive.sensors.length !== 0 && alerts.length === 0"
           class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
         >
           <div class="mr-2 my-0">
             <v-sheet class="beep-icon beep-icon-sensors color-green"> </v-sheet>
           </div>
+        </div>
+        <div
+          v-else-if="alerts.length > 0"
+          class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
+        >
+          <router-link
+            :to="{
+              name: 'alerts',
+              query: { search: hive.name },
+            }"
+          >
+            <v-icon color="red">
+              mdi-bell
+            </v-icon>
+          </router-link>
         </div>
       </div>
     </div>
@@ -452,6 +477,11 @@ export default {
     },
     hiveSet: {
       type: Object,
+      default: null,
+      required: true,
+    },
+    alerts: {
+      type: Array,
       default: null,
       required: true,
     },
