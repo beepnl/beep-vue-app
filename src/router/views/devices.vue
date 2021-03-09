@@ -61,11 +61,28 @@
           </v-btn>
         </v-col>
       </v-row>
-      <div
-        v-if="ownedDevices.length > 0"
-        class="overline mb-2"
-        v-text="$tc('device', ownedDevices.length)"
-      ></div>
+      <div class="mb-2">
+        <div v-if="ownedDevices.length > 0" class="overline">
+          {{ $tc('device', ownedDevices.length) }}
+          <v-icon
+            class="mdi mdi-information ml-1 icon-info cursor-pointer"
+            dark
+            small
+            color="primary"
+            @click="showInfo = !showInfo"
+          ></v-icon>
+        </div>
+
+        <p v-if="showInfo" class="info-text">
+          <em
+            >{{ $t('devices_info_text')
+            }}<a href="https://beep.nl/beep-base-app" target="_blank">{{
+              $t('devices_url_text')
+            }}</a></em
+          >
+        </p>
+      </div>
+
       <v-row dense>
         <v-col v-if="ready && ownedDevices.length === 0" cols="12">
           <p v-text="$t('sensors') + ' ' + $t('not_available_yet')"></p>
@@ -636,6 +653,7 @@ export default {
       showLoadingIcon: false,
       showLoadingIconById: [],
       showDescription: false,
+      showInfo: true,
     }
   },
   computed: {

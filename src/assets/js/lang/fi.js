@@ -764,6 +764,9 @@ const translations = {
   beep_base_explanation:
     "Jos sinulla on BEEP alusta (ks. yllä oleva kuva), käytä 'BEEP base app' (iOS ja Android) yhteyden muodostamiseksi tämän sovelluksen kanssa. Jos sinulla ei vielä ole BEEP alustaa, klikkaa valikon kohdasta 'BEEP verkkosivu' saadaksesi lisätietoja BEEP alustan saamisesta. Jos sinulla on oma mittauslaite ja haluat nähdä sen tiedot BEEP-sovelluksessa, lähetä meille viesti ja pyydä liittymistä Slack-yhteisöömme ja saat pääsyn API-kuvaukseen.",
   add_own_device: 'Add own device',
+  devices_info_text:
+    'Please note: do you own a BEEP base? Use the BEEP base app to add your device. It will then automatically appear in the list below.',
+  devices_url_text: 'Here you can find more information on the BEEP base app.',
 }
 
 export default translations

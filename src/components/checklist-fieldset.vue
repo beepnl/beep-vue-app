@@ -23,7 +23,7 @@
         ></a>
       </div>
 
-      <p v-if="showDescription" class="inspection-item-description">
+      <p v-if="showDescription" class="info-text">
         <em v-if="category.description !== null && showDescription"
           >{{ category.description }}<br
         /></em>

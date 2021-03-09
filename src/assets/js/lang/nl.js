@@ -771,6 +771,9 @@ const translations = {
   Updated_at: 'Aangepast op',
   Not_yet_saved: 'Nog niet opgeslagen',
   add_own_device: 'Voeg eigen meetsysteem toe',
+  devices_info_text:
+    'Let op: heb je een BEEP base? Gebruik dan de BEEP base app om je meetsysteem toe te voegen. Deze zal daarna automatisch in onderstaande lijst verschijnen. ',
+  devices_url_text: 'Lees hier meer uitleg over de BEEP base app.',
 }
 
 export default translations

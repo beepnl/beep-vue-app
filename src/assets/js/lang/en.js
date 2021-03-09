@@ -764,6 +764,9 @@ const translations = {
   Updated_at: 'Updated at',
   Not_yet_saved: 'Not yet saved',
   add_own_device: 'Add own device',
+  devices_info_text:
+    'Please note: do you own a BEEP base? Use the BEEP base app to add your device. It will then automatically appear in the list below.',
+  devices_url_text: 'Here you can find more information on the BEEP base app.',
 }
 
 export default translations

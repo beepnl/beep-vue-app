@@ -15,7 +15,7 @@
       ></a>
     </div>
 
-    <p v-if="showDescription" class="inspection-item-description">
+    <p v-if="showDescription" class="info-text">
       <em v-if="item.description !== null">{{ item.description }}<br /></em>
       <a v-if="item.source !== null" :href="item.source" target="_blank">{{
         item.source
@@ -45,10 +45,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.inspection-item-description {
-  margin-bottom: 4px;
-  font-size: 0.75rem !important;
-  line-height: 1.5;
-}
-</style>
+<style lang="scss" scoped></style>
