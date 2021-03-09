@@ -49,7 +49,15 @@
             :exact="tab.exact"
           >
             <span v-if="tab.title">{{ tab.title }}</span>
-            <v-icon v-if="tab.icon" size="20px">{{ tab.icon }}</v-icon>
+            <v-badge
+              v-if="tab.route === 'alerts' && alerts.length > 0"
+              overlap
+              color="red"
+              :content="alerts.length"
+            >
+              <v-icon v-if="tab.icon" size="20px">{{ tab.icon }}</v-icon>
+            </v-badge>
+            <v-icon v-else size="20px">{{ tab.icon }}</v-icon>
           </v-tab>
         </v-tabs>
       </template>
@@ -93,6 +101,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('alerts', ['alerts']),
     ...mapGetters('devices', ['devices', 'devicesPresent']),
     tabs: function() {
       if (this.devices.length > 0) {

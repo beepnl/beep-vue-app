@@ -354,6 +354,13 @@
   max-height: 52px;
 }
 
+.v-badge__badge {
+  min-width: 16px !important;
+  height: 16px !important;
+  padding: 3px 5px !important;
+  font-size: 11px !important;
+}
+
 /* Vue Numeric Input */
 .vue-numeric-input {
   .numeric-input {
