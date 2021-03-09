@@ -52,7 +52,14 @@
                 :disabled="item.authRequired && !loggedIn"
               >
                 <v-list-item-avatar>
-                  <v-icon color="primary">{{ item.icon }}</v-icon>
+                  <v-icon v-if="!item.icon.includes('icon')" color="primary">{{
+                    item.icon
+                  }}</v-icon>
+                  <div v-else>
+                    <v-sheet
+                      :class="`beep-icon beep-${item.icon} primary--text`"
+                    ></v-sheet>
+                  </div>
                 </v-list-item-avatar>
                 <v-list-item-content>
                   <v-list-item-title>{{ item.title }}</v-list-item-title>
@@ -105,7 +112,7 @@ export default {
           authRequired: true,
         },
         {
-          icon: 'mdi-devices',
+          icon: 'icon-sensors--no-outline',
           title: this.$i18n.tc('device', 2),
           route: 'devices',
           authRequired: true,
@@ -129,7 +136,7 @@ export default {
           authRequired: true,
         },
         {
-          icon: 'mdi-share-variant',
+          icon: 'mdi-school',
           title: this.$i18n.t('research'),
           route: 'research',
           authRequired: true,

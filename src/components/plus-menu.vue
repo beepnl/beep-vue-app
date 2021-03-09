@@ -56,7 +56,7 @@ export default {
             route: 'apiary-create',
           },
           {
-            icon: 'mdi-account-multiple-plus',
+            icon: 'mdi-account-multiple',
             title: this.$i18n.t('new_group'),
             route: 'group-create',
           },
@@ -84,7 +84,7 @@ export default {
             route: 'apiary-create',
           },
           {
-            icon: 'mdi-account-multiple-plus',
+            icon: 'mdi-account-multiple',
             title: this.$i18n.t('new_group'),
             route: 'group-create',
           },
