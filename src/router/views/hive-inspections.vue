@@ -86,7 +86,7 @@
               medium
               tile
               outlined
-              color="primary"
+              color="black"
             >
               <v-icon left>mdi-plus</v-icon>
               {{ $t('New_inspection') }}

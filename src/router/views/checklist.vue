@@ -35,8 +35,8 @@
         <v-btn
           tile
           outlined
-          color="primary"
-          class="mr-1"
+          color="black"
+          class="mr-1 save-button-mobile-wide"
           type="submit"
           :disabled="!valid || (activeChecklist && !activeChecklist.owner)"
         >
@@ -45,11 +45,11 @@
             class="ml-n1 mr-2"
             size="18"
             width="2"
-            color="primary"
+            color="black"
             indeterminate
           />
           <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
-          {{ $t('save') + ' ' + $tc('checklist', 1) }}
+          {{ $t('save') }}
         </v-btn>
       </v-toolbar>
 

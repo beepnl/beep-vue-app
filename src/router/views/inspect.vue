@@ -46,8 +46,8 @@
         <v-btn
           tile
           outlined
-          color="primary"
-          class="save-button mr-1"
+          color="black"
+          class="save-button-mobile-wide mr-1"
           :disabled="!valid || (selectedHives && selectedHives.length === 0)"
           @click.prevent="confirmSaveInspection"
         >
@@ -56,15 +56,11 @@
             class="ml-n1 mr-2"
             size="18"
             width="2"
-            color="primary"
+            color="black"
             indeterminate
           />
           <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
-          {{
-            $t('save') +
-              (selectedHives ? ' ' + selectedHives.length + ' ' : ' ') +
-              $tc('inspection', selectedHives ? selectedHives.length : 1)
-          }}
+          {{ $t('save') }}
         </v-btn>
       </v-toolbar>
 

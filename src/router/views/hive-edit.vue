@@ -36,7 +36,7 @@
         <v-btn
           tile
           outlined
-          color="primary"
+          color="black"
           :class="
             `${
               queenEditMode || hiveCreateMode ? 'save-button-mobile-wide' : ''
@@ -50,15 +50,11 @@
             class="ml-n1 mr-2"
             size="18"
             width="2"
-            color="primary"
+            color="black"
             indeterminate
           />
           <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
-          {{
-            queenEditMode
-              ? $t('save') + ' ' + $t('queen')
-              : $t('save') + ' ' + $tc('hive', 1)
-          }}
+          {{ $t('save') }}
         </v-btn>
       </v-toolbar>
 

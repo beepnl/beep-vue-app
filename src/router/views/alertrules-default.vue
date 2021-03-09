@@ -5,7 +5,7 @@
       <v-btn
         tile
         outlined
-        color="primary"
+        color="black"
         class="save-button-mobile-wide mr-1"
         :disabled="numberOfSelectedRules === 0"
         @click.prevent="copySelectedAlertRules"
@@ -15,7 +15,7 @@
           class="ml-n1 mr-2"
           size="18"
           width="2"
-          color="primary"
+          color="black"
           indeterminate
         />
         <v-icon v-if="!showLoadingIcon" left>mdi-content-copy</v-icon>

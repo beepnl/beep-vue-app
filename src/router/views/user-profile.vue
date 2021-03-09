@@ -43,7 +43,7 @@
           tile
           outlined
           class="mr-1"
-          color="primary"
+          color="black"
           type="submit"
           :disabled="!valid"
         >
@@ -52,7 +52,7 @@
             class="ml-n1 mr-2"
             size="18"
             width="2"
-            color="primary"
+            color="black"
             indeterminate
           />
           <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon

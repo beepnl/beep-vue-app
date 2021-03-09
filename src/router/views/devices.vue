@@ -23,7 +23,7 @@
         tile
         outlined
         class="save-button-mobile-wide mr-1"
-        :color="deletedButNotSaved ? 'red' : 'primary'"
+        :color="deletedButNotSaved ? 'red' : 'black'"
         @click="saveDevices"
       >
         <v-progress-circular
@@ -31,12 +31,11 @@
           class="ml-n1 mr-2"
           size="18"
           width="2"
-          color="primary"
+          :color="deletedButNotSaved ? 'red' : 'black'"
           indeterminate
         />
         <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
-        {{ $t('save') }}
-        {{ $tc('device', ownedDevices.length) }}</v-btn
+        {{ $t('save') }}</v-btn
       >
     </v-toolbar>
 

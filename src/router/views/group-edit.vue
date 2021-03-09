@@ -28,8 +28,8 @@
         <v-btn
           tile
           outlined
-          color="primary"
-          class="mr-1"
+          color="black"
+          :class="`mr-1 ${createMode ? 'save-button-mobile-wide' : ''}`"
           type="submit"
           :disabled="!valid"
         >
@@ -38,11 +38,11 @@
             class="ml-n1 mr-2"
             size="18"
             width="2"
-            color="primary"
+            color="black"
             indeterminate
           />
           <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
-          {{ $t('save') + ' ' + $tc('group_short', 1) }}
+          {{ $t('save') }}
         </v-btn>
       </v-toolbar>
 
@@ -789,21 +789,19 @@ export default {
       this.setGroupEdited(true)
     },
     getTitle() {
+      var group = this.mobile
+        ? this.$i18n.tc('group_short', 1)
+        : this.$i18n.tc('group', 1)
       var addName = ''
       if (this.activeGroup && !this.createMode && !this.activeGroup.admin) {
         addName = ' - ' + this.activeGroup.name
       }
       if (this.createMode) {
-        return this.$i18n.t('create_new') + ' ' + this.$i18n.tc('group', 1)
+        return this.$i18n.t('create_new') + ' ' + group
       } else if (this.acceptMode) {
-        return (
-          this.$i18n.tc('Invitation', 1) +
-          ' ' +
-          this.$i18n.tc('group', 1) +
-          addName
-        )
+        return this.$i18n.tc('Invitation', 1) + ' ' + group + addName
       } else {
-        return this.$i18n.t('edit') + ' ' + this.$i18n.tc('group', 1) + addName
+        return this.$i18n.t('edit') + ' ' + group + addName
       }
     },
     saveGroup() {

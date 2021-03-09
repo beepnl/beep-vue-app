@@ -34,7 +34,7 @@
             </v-col>
           </div>
           <v-card-actions class="mr-1">
-            <v-btn :to="{ name: 'alertrules' }" tile outlined color="primary">
+            <v-btn :to="{ name: 'alertrules' }" tile outlined color="black">
               <v-icon left>mdi-pencil</v-icon>
               {{ $t('alertrule_pagetitle') }}
             </v-btn>

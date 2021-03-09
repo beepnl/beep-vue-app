@@ -91,9 +91,20 @@
             <v-toolbar class="hive-color-picker-footer" dense light flat>
               <v-spacer></v-spacer>
               <v-icon color="red" @click="deleteLayer">mdi-delete</v-icon>
-              <v-icon class="ml-3" color="primary" @click="updateHiveLayerColor"
-                >mdi-check</v-icon
+              <v-btn
+                small
+                tile
+                outlined
+                color="black"
+                class="ml-3"
+                @click="updateHiveLayerColor"
               >
+                <v-icon left>mdi-check</v-icon>
+                {{ $t('save') }}
+              </v-btn>
+              <!-- <v-icon class="ml-3" color="primary" @click="updateHiveLayerColor"
+                >mdi-check</v-icon
+              > -->
             </v-toolbar>
           </v-overlay>
         </div>
