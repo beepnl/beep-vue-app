@@ -836,17 +836,6 @@ export default {
     setGroupEdited(bool) {
       this.$store.commit('groups/setGroupEdited', bool)
     },
-    unauthorizedText() {
-      return (
-        this.$i18n.t('sorry') +
-        ', ' +
-        this.$i18n.tc('group', 1) +
-        ' "' +
-        this.activeGroup.name +
-        '" ' +
-        this.$i18n.t('not_editable')
-      )
-    },
     updateGroupProperties(event, property) {
       var value = null
       if (event === null) {

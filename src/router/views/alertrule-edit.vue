@@ -510,44 +510,37 @@ export default {
     thresholdValueIsNaN() {
       return isNaN(this.activeAlertRule.threshold_value)
     },
-    unauthorizedText() {
-      return (
-        this.$i18n.t('sorry') +
-        ', ' +
-        this.$i18n.tc('alertrule', 1) +
-        ' "' +
-        this.activeAlertRule.name +
-        '" ' +
-        this.$i18n.t('not_editable')
-      )
-    },
   },
   created() {
     this.readDevicesIfNotPresent()
-    this.readTaxonomy().then(() => {
-      // If alertrule-create route is used, make empty alertrule object
-      if (this.alertruleCreateMode) {
-        this.activeAlertRule = {
-          name:
-            this.$i18n.tc('alertrule', 1) + ' ' + (this.alertRules.length + 1),
-          description: '',
-          measurement_id: this.sensorMeasurementsList[0].id,
-          calculation: 'ave',
-          calculation_minutes: 60,
-          comparator: '<',
-          comparison: 'val',
-          threshold_value: 0,
-          exclude_months: [],
-          exclude_hours: [],
-          exclude_hive_ids: [],
-          active: 1,
-          alert_via_email: 0,
-          alert_on_occurences: 1,
+    this.readAlertRulesIfNotPresent().then(() => {
+      this.readTaxonomy().then(() => {
+        // If alertrule-create route is used, make empty alertrule object
+        if (this.alertruleCreateMode) {
+          this.activeAlertRule = {
+            name:
+              this.$i18n.tc('alertrule', 1) +
+              ' ' +
+              (this.alertRules.length + 1),
+            description: '',
+            measurement_id: this.sensorMeasurementsList[0].id,
+            calculation: 'ave',
+            calculation_minutes: 60,
+            comparator: '<',
+            comparison: 'val',
+            threshold_value: 0,
+            exclude_months: [],
+            exclude_hours: [],
+            exclude_hive_ids: [],
+            active: 1,
+            alert_via_email: 0,
+            alert_on_occurences: 1,
+          }
+          // Else retrieve to-be-edited alertrule
+        } else {
+          this.setActiveAlertRule(this.id)
         }
-        // Else retrieve to-be-edited alertrule
-      } else {
-        this.readAlertRule()
-      }
+      })
     })
   },
   methods: {
@@ -602,7 +595,6 @@ export default {
           return this.readAlertRules().then(() => {
             this.$router.push({
               name: 'alerts',
-              // query: { search: this.activeAlertRule.location }, TODO: query to open alertrule section!
             })
           })
         }, 50) // wait for API to update alertrules
@@ -616,30 +608,6 @@ export default {
           this.snackbar.text = this.$i18n.t('something_wrong')
         }
         this.snackbar.show = true
-      }
-    },
-    async readAlertRule() {
-      try {
-        const response = await Api.readRequest('/alert-rules/', this.id)
-        if (response.data.length === 0) {
-          this.$router.push({ name: '404', params: { resource: 'alertrule' } })
-        }
-        const alertrule = response.data
-        this.activeAlertRule = alertrule
-        this.setAlertRuleEdited(false)
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log(error.response)
-          if (error.response.status === 404) {
-            this.$router.push({
-              name: '404',
-              params: { resource: 'alertrule' },
-            })
-          }
-        } else {
-          console.log('Error: ', error)
-        }
       }
     },
     async readAlertRules() {
@@ -656,6 +624,26 @@ export default {
         } else {
           console.log('Error: ', error)
         }
+      }
+    },
+    async readAlertRulesIfNotPresent() {
+      if (this.alertRules.length === 0) {
+        try {
+          const response = await Api.readRequest('/alert-rules')
+          this.$store.commit('alerts/setData', {
+            prop: 'alertRules',
+            value: response.data.alert_rules,
+          })
+          return true
+        } catch (error) {
+          if (error.response) {
+            console.log('Error: ', error.response)
+          } else {
+            console.log('Error: ', error)
+          }
+        }
+      } else {
+        return true
       }
     },
     async readTaxonomy() {
@@ -737,7 +725,7 @@ export default {
       var sentence = this.$i18n.t('alertrule_main_sentence')
       var replacedSentence = sentence
 
-      var measurement = this.sensorMeasurementsList.filter(
+      var measurement = this.sortedSensorMeasurements.filter(
         (measurement) => measurement.id === alertRule.measurement_id
       )[0]
 
@@ -746,7 +734,7 @@ export default {
         comparison: this.comparisons
           .filter((comparison) => comparison.short === alertRule.comparison)[0]
           .full.toLowerCase(),
-        measurement_quantity: measurement.pq,
+        measurement_quantity: measurement.label,
         measurement_unit: measurement.unit,
         comparator: this.comparators.filter(
           (comparator) => comparator.short === alertRule.comparator
@@ -839,6 +827,18 @@ export default {
         this.updateAlertRule()
       }
     },
+    setActiveAlertRule(id) {
+      this.activeAlertRule = this.alertRules.filter(
+        (alertRule) => alertRule.id === id
+      )[0]
+      if (this.activeAlertRule === undefined) {
+        this.$router.push({
+          name: '404',
+          params: { resource: 'alertrule' },
+        })
+      }
+      this.setAlertRuleEdited(false)
+    },
     setAlertRuleEdited(bool) {
       this.$store.commit('alerts/setData', {
         prop: 'alertRuleEdited',
@@ -860,15 +860,11 @@ export default {
 .alertrule-edit-name {
   padding-top: 0 !important;
   font-size: 1.2rem;
-  // @include for-tablet-portrait-up {
-  //   margin-top: 19px;
-  // }
   @include for-tablet-landscape-up {
     font-size: 1.5rem;
   }
 
   input {
-    // min-height: 36px;
     padding-top: 0 !important;
   }
 }
