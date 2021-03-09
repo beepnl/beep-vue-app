@@ -125,7 +125,7 @@ export default {
             exact: false,
           },
           {
-            title: this.$i18n.tc('alert', 2),
+            title: this.$i18n.tc('Alert', 2),
             icon: 'mdi-bell',
             route: 'alerts',
             exact: false,

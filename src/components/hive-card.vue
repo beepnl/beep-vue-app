@@ -77,12 +77,22 @@
             </v-icon>
           </router-link>
           <router-link
+            v-if="alerts.length > 0"
             :to="{
               name: 'alerts',
               query: { search: hive.name },
             }"
           >
-            <v-icon v-if="alerts.length > 0" class="red--text">
+            <v-badge
+              v-if="alerts.length > 1 && alerts.length < 100"
+              :offset-x="alerts.length > 9 ? '23' : '20'"
+              offset-y="20"
+              color="transparent"
+              :content="alerts.length"
+            >
+              <v-icon color="red">mdi-bell</v-icon>
+            </v-badge>
+            <v-icon v-else color="red">
               mdi-bell
             </v-icon>
           </router-link>
@@ -146,6 +156,24 @@
                     <v-list-item-title
                       >{{ $t('view') }}
                       {{ $tc('inspection', 2) }}</v-list-item-title
+                    >
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item
+                  v-if="alerts.length > 0"
+                  :to="{
+                    name: 'alerts',
+                    query: { search: hive.name },
+                  }"
+                >
+                  <v-list-item-icon class="mr-3">
+                    <v-icon>mdi-bell</v-icon>
+                  </v-list-item-icon>
+
+                  <v-list-item-content>
+                    <v-list-item-title
+                      >{{ $t('view') }}
+                      {{ $tc('alert', alerts.length) }}</v-list-item-title
                     >
                   </v-list-item-content>
                 </v-list-item>
@@ -423,9 +451,17 @@
           v-if="hive.sensors.length !== 0 && alerts.length === 0"
           class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
         >
-          <div class="mr-2 my-0">
-            <v-sheet class="beep-icon beep-icon-sensors color-green"> </v-sheet>
-          </div>
+          <router-link
+            :to="{
+              name: 'measurements-id',
+              params: { id: hive.sensors[0] },
+            }"
+          >
+            <div class="mr-2 my-0">
+              <v-sheet class="beep-icon beep-icon-sensors color-green">
+              </v-sheet>
+            </div>
+          </router-link>
         </div>
         <div
           v-else-if="alerts.length > 0"
@@ -437,7 +473,16 @@
               query: { search: hive.name },
             }"
           >
-            <v-icon color="red">
+            <v-badge
+              v-if="alerts.length > 1 && alerts.length < 100"
+              :offset-x="alerts.length > 9 ? '23' : '20'"
+              offset-y="20"
+              color="transparent"
+              :content="alerts.length"
+            >
+              <v-icon color="red">mdi-bell</v-icon>
+            </v-badge>
+            <v-icon v-else color="red">
               mdi-bell
             </v-icon>
           </router-link>

@@ -43,7 +43,7 @@
                 mdi-calendar-clock
               </v-icon>
               <v-icon
-              v-if="!tinyScreen"
+                v-if="!tinyScreen || (tinyScreen && devices.length === 0)"
                 :class="
                   `${
                     filterByImpression.includes(3)
@@ -56,7 +56,7 @@
                 mdi-emoticon-happy
               </v-icon>
               <v-icon
-               v-if="!tinyScreen"
+                v-if="!tinyScreen || (tinyScreen && devices.length === 0)"
                 :class="
                   `${
                     filterByImpression.includes(2)
@@ -69,7 +69,7 @@
                 mdi-emoticon-neutral
               </v-icon>
               <v-icon
-               v-if="!tinyScreen"
+                v-if="!tinyScreen || (tinyScreen && devices.length === 0)"
                 :class="
                   `${
                     filterByImpression.includes(1) ? 'red--text' : 'color-grey'
@@ -79,7 +79,11 @@
               >
                 mdi-emoticon-sad
               </v-icon>
-              <div class="my-0 mr-2" @click="filterByBase = !filterByBase">
+              <div
+                v-if="devices.length > 0"
+                class="my-0 mr-2"
+                @click="filterByBase = !filterByBase"
+              >
                 <v-sheet
                   class="beep-icon beep-icon-sensors cursor-pointer"
                   :color="`${filterByBase ? 'green' : ''}`"
@@ -87,6 +91,7 @@
                 </v-sheet>
               </div>
               <v-icon
+                v-if="devices.length > 0"
                 :class="`${filterByAlert ? 'red--text' : 'color-grey'}`"
                 @click="filterByAlert = !filterByAlert"
               >
@@ -581,6 +586,7 @@ export default {
   }),
   computed: {
     ...mapGetters('alerts', ['alerts']),
+    ...mapGetters('devices', ['devices']),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups', 'invitations']),
     filterByAlert: {
