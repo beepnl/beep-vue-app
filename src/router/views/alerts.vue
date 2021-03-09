@@ -80,7 +80,7 @@
             <AlertCard
               :alert="alert"
               :hives="hives"
-              @confirm-hide-alert="confirmHideAlert($event)"
+              @confirm-delete-alert="confirmDeleteAlert($event)"
             ></AlertCard>
           </v-col>
         </ScaleTransition>
@@ -239,15 +239,14 @@ export default {
     })
   },
   methods: {
-    async hideAlert(alert) {
-      alert.show = 0
+    async deleteAlert(id) {
       try {
-        const response = await Api.updateRequest('/alerts/', alert.id, alert)
-        if (response) {
-          this.readAlerts()
+        const response = await Api.deleteRequest('/alerts/', id)
+        if (!response) {
+          console.log('Error')
         }
+        this.readAlerts() // update alerts in store
       } catch (error) {
-        alert.show = 1
         if (error.response) {
           console.log('Error: ', error.response)
         } else {
@@ -329,7 +328,7 @@ export default {
         }
       }
     },
-    confirmHideAlert(alert) {
+    confirmDeleteAlert(alert) {
       this.$refs.confirm
         .open(
           this.$i18n.t('remove_alert'),
@@ -346,7 +345,7 @@ export default {
           }
         )
         .then((confirm) => {
-          this.hideAlert(alert)
+          this.deleteAlert(alert.id)
         })
         .catch((reject) => {
           return true

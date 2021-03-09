@@ -2,7 +2,6 @@
   <v-menu bottom left absolute offset-y>
     <template v-slot:activator="{ on: menu }">
       <v-alert
-        v-if="alert.show === 1"
         type="error"
         text
         prominent
@@ -245,7 +244,7 @@
       <v-divider class="my-1"></v-divider>
 
       <v-list-item-group>
-        <v-list-item @click="confirmHideAlert(alert)">
+        <v-list-item @click="confirmDeleteAlert(alert)">
           <v-list-item-icon class="mr-3">
             <v-icon class="red--text">mdi-delete</v-icon>
           </v-list-item-icon>
@@ -284,8 +283,8 @@ export default {
   },
   data: () => ({}),
   methods: {
-    confirmHideAlert(alert) {
-      this.$emit('confirm-hide-alert', alert)
+    confirmDeleteAlert(alert) {
+      this.$emit('confirm-delete-alert', alert)
     },
   },
 }
