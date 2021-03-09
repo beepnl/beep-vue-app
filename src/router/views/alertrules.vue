@@ -1,14 +1,19 @@
 <template>
   <Layout :title="this.$i18n.t('alertrule_pagetitle')">
-    <v-container v-if="ready">
+    <v-container v-if="ready && showAlertRulePlaceholder" class="mb-n12">
       <v-row>
-        <v-col sm="auto" :cols="12">
-          {{ $t('no_alerts') }}
+        <v-col>
+          <div class="text-center">
+            <img
+              src="@assets/img/BEEP-alert-rule.png"
+              style="max-width: 180px;"
+            />
+          </div>
         </v-col>
       </v-row>
     </v-container>
 
-    <div v-if="ready" class="filter-bar-wrapper">
+    <div v-if="ready && !showAlertRulePlaceholder" class="filter-bar-wrapper">
       <v-container class="filter-container">
         <v-row class="filter-bar d-flex flex-row justify-end align-center">
           <v-card-actions class="mr-1">
@@ -51,7 +56,9 @@
                 @click="showDescription = !showDescription"
               ></v-icon>
               <p v-if="showDescription && ready" class="mt-n1 mb-0">
-                <em>{{ $t('alertrule_info') }}</em>
+                <em>{{
+                  $t('alert_explanation_1') + ' ' + $t('alert_explanation_2')
+                }}</em>
               </p>
             </v-col>
             <v-col
@@ -91,7 +98,7 @@
               </v-menu>
             </v-col>
           </v-row>
-          <div v-if="alertRules.length > 0" class="rounded-border">
+          <div v-if="!showAlertRulePlaceholder" class="rounded-border">
             <v-simple-table class="v-data-table--smallfont">
               <template v-slot>
                 <thead>
@@ -258,6 +265,9 @@ export default {
         },
       ]
     },
+    showAlertRulePlaceholder() {
+      return this.alertRules.length === 0
+    },
   },
   created() {
     if (this.alertRules.length === 0) {
@@ -387,11 +397,8 @@ export default {
 }
 
 .alertrules-content {
-  margin-top: 8px;
+  margin-top: 52px;
   overflow: hidden;
-  @include for-phone-only {
-    margin-top: 0;
-  }
 }
 
 .alertrules-title-row {

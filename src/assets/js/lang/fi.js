@@ -718,7 +718,6 @@ const translations = {
   Difference: 'Difference',
   Absolute_value: 'Absolute value',
   Absolute_value_of_dif: 'Absolute value of the difference',
-  alertrule_info: 'This will be replaced by some info on alert rules.',
   Exclude_months: 'Deactivate this alert during the following months:',
   Exclude_hours: 'Deactivate this alert during the following hours:',
   Exclude_hives: 'Deactivate this alert for the following hives:',
@@ -768,6 +767,12 @@ const translations = {
   devices_info_text:
     'Please note: do you own a BEEP base? Use the BEEP base app to add your device. It will then automatically appear in the list below.',
   devices_url_text: 'Here you can find more information on the BEEP base app.',
+  alert_explanation_1:
+    'If you own a BEEP base you can set alerts, such that you will receive an alert when the measurement data meets certain requirements. For example, a sudden drop in weight because of swarming. Alerts will be shown in this app, you can choose to receive them via email as well.',
+  alert_explanation_2:
+    'To get you started there are a few default alert rules you can use (and adapt to your own needs). In addition, you can create your own alert rules.',
+  alertrules_url_text:
+    "Go to 'Alert settings' to create your first alert rule.",
 }
 
 export default translations

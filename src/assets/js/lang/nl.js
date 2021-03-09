@@ -726,7 +726,6 @@ const translations = {
   Difference: 'Verschil',
   Absolute_value: 'Absolute waarde',
   Absolute_value_of_dif: 'Absolute waarde van het verschil',
-  alertrule_info: 'Hier komt uitleg over de alertregels.',
   Exclude_months: 'Deze notificatie deactiveren gedurende de volgende maanden:',
   Exclude_hours: 'Deze notificatie deactiveren tijdens de volgende uren:',
   Exclude_hives: 'Deze notificatie deactiveren voor de volgende bijenkasten:',
@@ -775,6 +774,12 @@ const translations = {
   devices_info_text:
     'Let op: heb je een BEEP base? Gebruik dan de BEEP base app om je meetsysteem toe te voegen. Deze zal daarna automatisch in onderstaande lijst verschijnen. ',
   devices_url_text: 'Lees hier meer uitleg over de BEEP base app.',
+  alert_explanation_1:
+    'Wanneer je een BEEP base hebt kan je hiervoor notificaties instellen, zodat je een notificatie ontvangt wanneer de meetgegevens aan bepaalde condities voldoen. Denk hierbij bijvoorbeeld aan een plotselinge gewichtsafname vanwege een zwerm. Deze notificaties ontvang je in de app, daarnaast kan je ervoor kiezen om ze per e-mail te ontvangen.',
+  alert_explanation_2:
+    'Om je op weg te helpen zijn er een aantal standaardinstellingen die je kan gebruiken (en aanpassen naar eigen behoefte). Je kan ook zelf een nieuwe notificatie-instelling maken.',
+  alertrules_url_text:
+    "Ga naar 'notificaties beheren' om je eerste notificatie in te stellen.",
 }
 
 export default translations

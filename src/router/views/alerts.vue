@@ -2,8 +2,24 @@
   <Layout>
     <v-container v-if="showAlertPlaceholder && ready">
       <v-row>
-        <v-col sm="auto" :cols="12">
-          {{ $t('no_alerts') }}
+        <v-col>
+          <div class="text-center">
+            <img
+              src="@assets/img/BEEP-alert-rule.png"
+              style="max-width: 180px;"
+            />
+          </div>
+          <p>{{ $t('alert_explanation_1') }}</p>
+          <p
+            >{{ $t('alert_explanation_2') }}
+            <router-link
+              :to="{
+                name: 'alertrules',
+              }"
+            >
+              {{ $t('alertrules_url_text') }}
+            </router-link>
+          </p>
         </v-col>
       </v-row>
     </v-container>
