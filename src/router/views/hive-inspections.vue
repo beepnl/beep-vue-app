@@ -263,7 +263,7 @@
                         <v-list-item-action>
                           <AddToCalendar
                             :title="
-                              `Beep ${$t('reminder')} ${
+                              `BEEP ${$t('reminder')} ${
                                 inspection.reminder !== null
                                   ? ': ' + inspection.reminder
                                   : ''
@@ -275,7 +275,7 @@
                             :start="new Date(inspection.reminder_date)"
                             :end="new Date(inspection.reminder_date + 1)"
                             :details="
-                              `Beep app ${$tc('Inspection', 1)} @ ${momentify(
+                              `BEEP app ${$tc('Inspection', 1)} @ ${momentify(
                                 // eslint-disable-next-line vue/comma-dangle
                                 inspection.created_at
                               )}`

@@ -1,5 +1,5 @@
 /*
- * Beep - Translations
+ * BEEP - Translations
  * Author: Pim van Gennip (pim@iconize.nl)
  *
  */
@@ -52,9 +52,9 @@ const translations = {
   /* main */
   Website: 'Website',
   Feedback: 'Feedback',
-  Feedback_mail_header: 'Feedback aplicație Beep ',
+  Feedback_mail_header: 'Feedback aplicație BEEP ',
   Feedback_mail_body:
-    'Dragă fundație Beep,%0D%0A%0D%0APrin prezenta feedbackul meu pentru aplicația Beep%0D%0A%0D%0AI am descoperit această:%0D%0A%0D%0înainte să apară acest mesaj, am efectuat:%0D%0A%0D%0APe ecran a apărut (vă rugăm să includeți o captură de ecran):%0D%0A%0D%0A%0D%0A%0D%0A',
+    'Dragă fundație BEEP,%0D%0A%0D%0APrin prezenta feedbackul meu pentru aplicația BEEP%0D%0A%0D%0AI am descoperit această:%0D%0A%0D%0înainte să apară acest mesaj, am efectuat:%0D%0A%0D%0APe ecran a apărut (vă rugăm să includeți o captură de ecran):%0D%0A%0D%0A%0D%0A%0D%0A',
   Diagnostic_info: 'Informații diagnostic (în cazul unei erori):%0D%0A',
   back: 'Înapoi',
   menu: 'Meniu',
@@ -153,7 +153,7 @@ const translations = {
   logout: 'Deconectați-vă',
   logout_title: 'Deconectați-vă ca',
   logout_now: 'Doriți să vă deconectați acum?',
-  member_since: 'Membru Beep din',
+  member_since: 'Membru BEEP din',
 
   /* password recovery */
   password_recovery_title: 'Ați uitat parola?',
@@ -189,8 +189,8 @@ const translations = {
   connection_state: 'Starea conexiunii',
 
   /* hives */
-  locations_title: 'Beep',
-  hives_title: 'Beep',
+  locations_title: 'BEEP',
+  hives_title: 'BEEP',
   Hive: 'Stup | Stupi',
   hive: 'stup | stupi',
   Location: 'Stupină | Stupine',
@@ -245,7 +245,7 @@ const translations = {
     'Nu pot fi încărcate măsurătorile, verificați conexiunea la rețea',
   last_measurement: 'Ultima măsurare',
   at: 'la',
-  measurement_system: 'Sistem de măsurare Beep',
+  measurement_system: 'Sistem de măsurare BEEP',
   no_data: 'Nu există date disponibile',
   no_chart_data: 'Nu există date din grafic pentru perioada selectată',
 
@@ -511,7 +511,7 @@ const translations = {
   group_explanation_1:
     '1. Creați un nou grup de colaborare cu un titlu clar și o descriere opțională',
   group_explanation_2:
-    '2. Invitați alți utilizatori Beep adresa lor de e-mail Beep',
+    '2. Invitați alți utilizatori BEEP adresa lor de e-mail BEEP',
   group_explanation_3:
     '3. Împărțiți informații specifice despre anumite colonii, care pot fi văzute de alți utilizatori pentru a coopera pe',
   Filter_and_sort_on: 'Filtrați și sortați pe:',
@@ -776,7 +776,7 @@ const translations = {
     'Please note: do you own a BEEP base? Use the BEEP base app to add your device. It will then automatically appear in the list below.',
   devices_url_text: 'Here you can find more information on the BEEP base app.',
   alert_explanation_1:
-    'If you own a BEEP base you can set alerts, such that you will receive an alert when the measurement data meets certain requirements. For example, a sudden drop in weight because of swarming. Alerts will be shown in this app, you can choose to receive them via email as well.',
+    'If you own a BEEP base or another device you can set alerts, such that you will receive an alert when the measurement data meets certain requirements. For example, a sudden drop in weight because of swarming. Alerts will be shown in this app, you can choose to receive them via email as well.',
   alert_explanation_2:
     'To get you started there are a few default alert rules you can use (and adapt to your own needs). In addition, you can create your own alert rules.',
   alertrules_url_text:

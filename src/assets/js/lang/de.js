@@ -1,5 +1,5 @@
 /*
- * Beep - Translations
+ * BEEP - Translations
  * Author: Pim van Gennip (pim@iconize.nl)
  *
  */
@@ -52,9 +52,9 @@ const translations = {
   /* main */
   Website: 'Webseite',
   Feedback: 'Feedback',
-  Feedback_mail_header: 'Beep app feedback',
+  Feedback_mail_header: 'BEEP app feedback',
   Feedback_mail_body:
-    'Dear Beep foundation,%0D%0A%0D%0AHereby my feedback about the Beep app.%0D%0A%0D%0AI discovered this:%0D%0A%0D%0AJust before that happened, i did:%0D%0A%0D%0AThe screen was looking like (please include a screenshot):%0D%0A%0D%0A%0D%0A%0D%0A',
+    'Dear BEEP foundation,%0D%0A%0D%0AHereby my feedback about the BEEP app.%0D%0A%0D%0AI discovered this:%0D%0A%0D%0AJust before that happened, i did:%0D%0A%0D%0AThe screen was looking like (please include a screenshot):%0D%0A%0D%0A%0D%0A%0D%0A',
   Diagnostic_info: 'Diagnostic information (in case of a bug):%0D%0A',
   back: 'Zurück',
   menu: 'Menü',
@@ -244,7 +244,7 @@ const translations = {
     'Kann keine Messungen laden, bitte Netzwerkverbindung prüfen',
   last_measurement: 'Letzte aufgezeichnete Messung war',
   at: 'am',
-  measurement_system: 'Beep Meßsystem',
+  measurement_system: 'BEEP Meßsystem',
   no_data: 'Kein Data',
   no_chart_data: 'Kein Graph für den gewählten Zeitraum',
 
@@ -509,7 +509,7 @@ const translations = {
   group_explanation_1:
     '1. Erstellen Sie eine neue Kooperationsgruppe mit einem eindeutigen Titel und einer optionalen Beschreibung.',
   group_explanation_2:
-    '2. Laden Sie andere Beep-Benutzer zu ihrer Beep-E-Mail-Adresse ein.',
+    '2. Laden Sie andere BEEP-Benutzer zu ihrer BEEP-E-Mail-Adresse ein.',
   group_explanation_3:
     '3. Teilen Sie bestimmte Bienenstöcke, die von anderen gesehen werden sollen, oder arbeiten Sie zusammen an',
   Filter_and_sort_on: 'Filtern und sortieren nach:',
@@ -773,7 +773,7 @@ const translations = {
     'Please note: do you own a BEEP base? Use the BEEP base app to add your device. It will then automatically appear in the list below.',
   devices_url_text: 'Here you can find more information on the BEEP base app.',
   alert_explanation_1:
-    'If you own a BEEP base you can set alerts, such that you will receive an alert when the measurement data meets certain requirements. For example, a sudden drop in weight because of swarming. Alerts will be shown in this app, you can choose to receive them via email as well.',
+    'If you own a BEEP base or another device you can set alerts, such that you will receive an alert when the measurement data meets certain requirements. For example, a sudden drop in weight because of swarming. Alerts will be shown in this app, you can choose to receive them via email as well.',
   alert_explanation_2:
     'To get you started there are a few default alert rules you can use (and adapt to your own needs). In addition, you can create your own alert rules.',
   alertrules_url_text:

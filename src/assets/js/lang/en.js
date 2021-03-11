@@ -1,5 +1,5 @@
 /*
- * Beep - Translations
+ * BEEP - Translations
  * Author: Pim van Gennip (pim@iconize.nl)
  *
  */
@@ -52,9 +52,9 @@ const translations = {
   /* main */
   Website: 'Website',
   Feedback: 'Feedback',
-  Feedback_mail_header: 'Beep app feedback',
+  Feedback_mail_header: 'BEEP app feedback',
   Feedback_mail_body:
-    'Dear Beep foundation,%0D%0A%0D%0AHereby my feedback about the Beep app.%0D%0A%0D%0AI discovered this:%0D%0A%0D%0AJust before that happened, i did:%0D%0A%0D%0AThe screen was looking like (please include a screenshot):%0D%0A%0D%0A%0D%0A%0D%0A',
+    'Dear BEEP foundation,%0D%0A%0D%0AHereby my feedback about the BEEP app.%0D%0A%0D%0AI discovered this:%0D%0A%0D%0AJust before that happened, i did:%0D%0A%0D%0AThe screen was looking like (please include a screenshot):%0D%0A%0D%0A%0D%0A%0D%0A',
   Diagnostic_info: 'Diagnostic information (in case of a bug):%0D%0A',
   back: 'Back',
   menu: 'Menu',
@@ -151,7 +151,7 @@ const translations = {
   logout: 'Log out',
   logout_title: 'Log out as ',
   logout_now: 'Do you realy want to log out now?',
-  member_since: 'Beeping since',
+  member_since: 'BEEPing since',
 
   /* password recovery */
   password_recovery_title: 'Forgot your password?',
@@ -186,8 +186,8 @@ const translations = {
   connection_state: 'Connection status',
 
   /* hives */
-  locations_title: 'Beep',
-  hives_title: 'Beep',
+  locations_title: 'BEEP',
+  hives_title: 'BEEP',
   Hive: 'Hive | Hives',
   hive: 'hive | hives',
   Location: 'Apiary | Apiaries',
@@ -239,7 +239,7 @@ const translations = {
   measurementsError: 'Cannot load measurements, check network connection',
   last_measurement: 'Last measurement',
   at: 'at',
-  measurement_system: 'Beep measurement system',
+  measurement_system: 'BEEP measurement system',
   no_data: 'No data available',
   no_chart_data: 'No chart data for the selected period',
 
@@ -422,7 +422,7 @@ const translations = {
   /* user */
   Data_export: 'Data export',
   Export_your_data:
-    'Export all data that is in your Beep account and send an e-mail cointaining the data as an Excel file. The Excel file has different tabs containing your personal, hive, location, and inspection data.',
+    'Export all data that is in your BEEP account and send an e-mail cointaining the data as an Excel file. The Excel file has different tabs containing your personal, hive, location, and inspection data.',
 
   Terms_of_use: 'Terms of service',
   accept_policy:
@@ -506,7 +506,7 @@ const translations = {
   group_explanation_1:
     '1. Create a new cooperation group with a clear title, and an optional description',
   group_explanation_2:
-    '2. Invite other Beep users on their Beep e-mail address',
+    '2. Invite other BEEP users on their BEEP e-mail address',
   group_explanation_3:
     '3. Share specific hives to be viewed by others, of to cooperate on',
   Filter_and_sort_on: 'Filter and sort on:',
@@ -768,7 +768,7 @@ const translations = {
     'Please note: do you own a BEEP base? Use the BEEP base app to add your device. It will then automatically appear in the list below.',
   devices_url_text: 'Here you can find more information on the BEEP base app.',
   alert_explanation_1:
-    'If you own a BEEP base you can set alerts, such that you will receive an alert when the measurement data meets certain requirements. For example, a sudden drop in weight because of swarming. Alerts will be shown in this app, you can choose to receive them via email as well.',
+    'If you own a BEEP base or another device you can set alerts, such that you will receive an alert when the measurement data meets certain requirements. For example, a sudden drop in weight because of swarming. Alerts will be shown in this app, you can choose to receive them via email as well.',
   alert_explanation_2:
     'To get you started there are a few default alert rules you can use (and adapt to your own needs). In addition, you can create your own alert rules.',
   alertrules_url_text:

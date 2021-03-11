@@ -1,5 +1,5 @@
 /*
- * Beep - Translations
+ * BEEP - Translations
  * Author: Pim van Gennip (pim@iconize.nl)
  *
  */
@@ -52,7 +52,7 @@ const translations = {
   /* main */
   Website: 'Sitoweb',
   Feedback: 'Opinione',
-  Feedback_mail_header: 'Opinione App Beep',
+  Feedback_mail_header: 'Opinione App BEEP',
   Feedback_mail_body:
     'Cara Fondazione BEEP,%0D%0A%0D%0AEcco la mia opinione sulla App BEEP.%0D%0A%0D%0AHo riscontrato questo:%0D%0A%0D%0AAppena prima che accadesse, ho fatto:%0D%0A%0D%0ALo schermo appariva così (allega una foto dello schermo):%0D%0A%0D%0A%0D%0A%0D%0A',
   Diagnostic_info:
@@ -189,8 +189,8 @@ const translations = {
   connection_state: 'Stato connessione',
 
   /* hives */
-  locations_title: 'Beep',
-  hives_title: 'Beep',
+  locations_title: 'BEEP',
+  hives_title: 'BEEP',
   Hive: 'Alveare | Alveari',
   hive: 'alveare | alveari',
   Location: 'Apiario | Apiari',
@@ -246,7 +246,7 @@ const translations = {
     'Non posso caricare le misurazioni, verifica la connessione',
   last_measurement: 'Ultima misurazione',
   at: 'a',
-  measurement_system: 'Sistema di misurazioni Beep',
+  measurement_system: 'Sistema di misurazioni BEEP',
   no_data: 'Nessun dato disponibile',
   no_chart_data: 'Nessun grafico per il periodo selezionato',
 
@@ -428,7 +428,7 @@ const translations = {
   /* user */
   Data_export: 'Esporta i dati',
   Export_your_data:
-    'Esporta tutti i dati del tuo account Beep e invia una e-mail con allegati i dati in formato Excel. Il file Excel ha vari fogli di lavoro, contenenti i tuoi dati personali, alveari, posizioni e visite.',
+    'Esporta tutti i dati del tuo account BEEP e invia una e-mail con allegati i dati in formato Excel. Il file Excel ha vari fogli di lavoro, contenenti i tuoi dati personali, alveari, posizioni e visite.',
 
   Terms_of_use: 'Condizioni di servizio',
   accept_policy:
@@ -510,7 +510,7 @@ const translations = {
   group_explanation_1:
     '1. Crea un nuovo gruppo di collaborazione con un nome chiaro, e una (opzionale) descrizione',
   group_explanation_2:
-    '2. Invita altri utenti Beep tramite il loro indirizzo e-mail Beep',
+    '2. Invita altri utenti BEEP tramite il loro indirizzo e-mail BEEP',
   group_explanation_3:
     '3. Condividi specifici alveari per essere visti da altri o consentire loro di collaborare',
   Filter_and_sort_on: 'Ordina e filtra:',
@@ -775,7 +775,7 @@ const translations = {
     'Please note: do you own a BEEP base? Use the BEEP base app to add your device. It will then automatically appear in the list below.',
   devices_url_text: 'Here you can find more information on the BEEP base app.',
   alert_explanation_1:
-    'If you own a BEEP base you can set alerts, such that you will receive an alert when the measurement data meets certain requirements. For example, a sudden drop in weight because of swarming. Alerts will be shown in this app, you can choose to receive them via email as well.',
+    'If you own a BEEP base or another device you can set alerts, such that you will receive an alert when the measurement data meets certain requirements. For example, a sudden drop in weight because of swarming. Alerts will be shown in this app, you can choose to receive them via email as well.',
   alert_explanation_2:
     'To get you started there are a few default alert rules you can use (and adapt to your own needs). In addition, you can create your own alert rules.',
   alertrules_url_text:

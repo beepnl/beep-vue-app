@@ -84,11 +84,11 @@
             }"
           >
             <v-badge
-              v-if="alerts.length > 1 && alerts.length < 100"
+              v-if="alerts.length > 1"
               :offset-x="alerts.length > 9 ? '23' : '20'"
               offset-y="20"
               color="transparent"
-              :content="alerts.length"
+              :content="alerts.length > 99 ? '99' : alerts.length"
             >
               <v-icon color="red">mdi-bell</v-icon>
             </v-badge>
@@ -474,11 +474,11 @@
             }"
           >
             <v-badge
-              v-if="alerts.length > 1 && alerts.length < 100"
+              v-if="alerts.length > 1"
               :offset-x="alerts.length > 9 ? '23' : '20'"
               offset-y="20"
               color="transparent"
-              :content="alerts.length"
+              :content="alerts.length > 99 ? '99' : alerts.length"
             >
               <v-icon color="red">mdi-bell</v-icon>
             </v-badge>

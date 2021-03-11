@@ -158,7 +158,7 @@ export default {
         },
         {
           icon: 'mdi-information-outline',
-          title: 'Beep ' + this.$i18n.t('Website'),
+          title: 'BEEP ' + this.$i18n.t('Website'),
           external: true,
           route:
             this.locale === 'nl'

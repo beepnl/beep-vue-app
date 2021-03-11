@@ -1,5 +1,5 @@
 /*
- * Beep - Translations
+ * BEEP - Translations
  * Author: Pim van Gennip (pim@iconize.nl)
  *
  */
@@ -52,9 +52,9 @@ const translations = {
   /* main */
   Website: 'Sitio web',
   Feedback: 'Comentarios',
-  Feedback_mail_header: 'Beep app feedback',
+  Feedback_mail_header: 'BEEP app feedback',
   Feedback_mail_body:
-    'Querida fundación Beep,%0D%0A%0D%0A Aquí le envio mis comentarios sobre la aplicación Beep.%0 D%0A%0D%0AI descubrió esto:%0D%0A%0D%0AJusto antes de que ocurriera, hice:%0D%0A%0D%0ALa pantalla se veía como (por favor incluya una captura de pantalla):%0D%0A%0D%0A%0D%0A%0A%0D%0A',
+    'Querida fundación BEEP,%0D%0A%0D%0A Aquí le envio mis comentarios sobre la aplicación BEEP.%0 D%0A%0D%0AI descubrió esto:%0D%0A%0D%0AJusto antes de que ocurriera, hice:%0D%0A%0D%0ALa pantalla se veía como (por favor incluya una captura de pantalla):%0D%0A%0D%0A%0D%0A%0A%0D%0A',
   Diagnostic_info: 'Información de diagnóstico (en caso de error):%0D%0A',
   back: 'Atrás',
   menu: 'Menú',
@@ -152,7 +152,7 @@ const translations = {
   logout: 'Cerrar sesión',
   logout_title: 'Cerrar sesión como ',
   logout_now: '¿Realmente quieres cerrar sesión ahora?',
-  member_since: 'Beeping desde',
+  member_since: 'BEEPing desde',
 
   /* Recuperación de contraseñas */
   password_recovery_title: '¿Olvidó su contraseña?',
@@ -426,7 +426,7 @@ const translations = {
   /* usuario */
   Data_export: 'Exportación de datos',
   Export_your_data:
-    'Exportar todos los datos que se encuentran en su cuenta de Beep y enviar un correo electrónico que contenga los datos como un archivo de Excel. El archivo de Excel tiene diferentes pestañas que contienen sus datos personales, colmena, ubicación y datos de inspección.',
+    'Exportar todos los datos que se encuentran en su cuenta de BEEP y enviar un correo electrónico que contenga los datos como un archivo de Excel. El archivo de Excel tiene diferentes pestañas que contienen sus datos personales, colmena, ubicación y datos de inspección.',
 
   Terms_of_use: 'Términos del servicio',
   accept_policy:
@@ -507,7 +507,7 @@ const translations = {
   group_explanation_1:
     '1. Crear un nuevo grupo de cooperación con un título claro y una descripción opcional',
   group_explanation_2:
-    '2. Invitar a otros usuarios de Beep en su dirección de correo electrónico Beep',
+    '2. Invitar a otros usuarios de BEEP en su dirección de correo electrónico BEEP',
   group_explanation_3:
     '3. Compartir colmenas específicas para ser vistas por otros, de cooperar en',
   Filter_and_sort_on: 'Filtrar y ordenar:',
@@ -774,11 +774,11 @@ const translations = {
     'Please note: do you own a BEEP base? Use the BEEP base app to add your device. It will then automatically appear in the list below.',
   devices_url_text: 'Here you can find more information on the BEEP base app.',
   alert_explanation_1:
-  'If you own a BEEP base you can set alerts, such that you will receive an alert when the measurement data meets certain requirements. For example, a sudden drop in weight because of swarming. Alerts will be shown in this app, you can choose to receive them via email as well.',
-alert_explanation_2:
-  'To get you started there are a few default alert rules you can use (and adapt to your own needs). In addition, you can create your own alert rules.',
-alertrules_url_text:
-  "Go to 'Alert settings' to create your first alert rule.",
+    'If you own a BEEP base or another device you can set alerts, such that you will receive an alert when the measurement data meets certain requirements. For example, a sudden drop in weight because of swarming. Alerts will be shown in this app, you can choose to receive them via email as well.',
+  alert_explanation_2:
+    'To get you started there are a few default alert rules you can use (and adapt to your own needs). In addition, you can create your own alert rules.',
+  alertrules_url_text:
+    "Go to 'Alert settings' to create your first alert rule.",
 }
 
 export default translations

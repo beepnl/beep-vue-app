@@ -1,4 +1,4 @@
-# Beep Vue app + Legacy API
+# BEEP Vue app + Legacy API
 
 ## Installation
 
@@ -21,7 +21,7 @@ first run.
 
 ## Development
 
-This repository is for the web app of Beep. In order to create a consistent
+This repository is for the web app of BEEP. In order to create a consistent
 development experience we use
 [Docker](https://github.com/beepnl/beep-ui/wiki/Docker).
 

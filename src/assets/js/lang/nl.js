@@ -1,5 +1,5 @@
 /*
- * Beep - Translations
+ * BEEP - Translations
  * Author: Pim van Gennip (pim@iconize.nl)
  *
  */
@@ -52,9 +52,9 @@ const translations = {
   /* main */
   Website: 'Website',
   Feedback: 'Feedback',
-  Feedback_mail_header: 'Beep app feedback',
+  Feedback_mail_header: 'BEEP app feedback',
   Feedback_mail_body:
-    'Beste Stichting Beep,%0D%0A%0D%0AHierbij mijn feedback over de Beep app.%0D%0A%0D%0AIk kwam het volgende tegen:%0D%0A%0D%0AVoordat dit gebeurde deed ik het volgende:%0D%0A%0D%0AHet beeld zag er zo uit (graag screenshot meesturen):%0D%0A%0D%0A%0D%0A%0D%0A',
+    'Beste Stichting BEEP,%0D%0A%0D%0AHierbij mijn feedback over de BEEP app.%0D%0A%0D%0AIk kwam het volgende tegen:%0D%0A%0D%0AVoordat dit gebeurde deed ik het volgende:%0D%0A%0D%0AHet beeld zag er zo uit (graag screenshot meesturen):%0D%0A%0D%0A%0D%0A%0D%0A',
   Diagnostic_info:
     'Diagnostische informatie (voor het traceren van evt. problemen):%0D%0A',
   back: 'Terug',
@@ -154,7 +154,7 @@ const translations = {
   logout: 'Uitloggen',
   logout_title: 'Uitloggen als ',
   logout_now: 'Weet je zeker dat je wil uitloggen?',
-  member_since: 'Beept sinds',
+  member_since: 'BEEPt sinds',
 
   /* password recovery */
   password_recovery_title: 'Wachtwoord vergeten?',
@@ -190,8 +190,8 @@ const translations = {
   connection_state: 'Status verbinding',
 
   /* hives */
-  locations_title: 'Beep',
-  hives_title: 'Beep',
+  locations_title: 'BEEP',
+  hives_title: 'BEEP',
   Hive: 'Kast | Bijenkasten',
   hive: 'kast | bijenkasten',
   Location: 'Bijenstand | Bijenstanden',
@@ -245,7 +245,7 @@ const translations = {
   measurementsError: 'Kan geen metingen laden, controleer de netwerkverbinding',
   last_measurement: 'Laatste meetwaarde',
   at: 'op',
-  measurement_system: 'Beep meetsysteem',
+  measurement_system: 'BEEP meetsysteem',
   no_data: 'Geen data beschikbaar',
   no_chart_data: 'Geen sensordata beschikbaar voor de geselecteerde periode',
 
@@ -428,7 +428,7 @@ const translations = {
   /* user */
   Data_export: 'Data exporteren',
   Export_your_data:
-    'Exporteer alle data die is opgeslagen in je Beep account en verstuur deze in een e-mail met als bijlage een Excel (.xslx) bestand. Het bestand heeft meerdere tabbladen met daarop je persoonlijke-, bijenstand-, kast- en inspectiegegevens.',
+    'Exporteer alle data die is opgeslagen in je BEEP account en verstuur deze in een e-mail met als bijlage een Excel (.xslx) bestand. Het bestand heeft meerdere tabbladen met daarop je persoonlijke-, bijenstand-, kast- en inspectiegegevens.',
 
   Terms_of_use: 'Servicevoorwaarden',
   accept_policy:
@@ -512,7 +512,7 @@ const translations = {
   group_explanation_1:
     '1. Maak een nieuwe samenwerkingsgroep aan met een duidelijke titel en evt. beschrijving',
   group_explanation_2:
-    '2. Nodig andere Beep gebruikers uit op hun Beep e-mail adres',
+    '2. Nodig andere BEEP gebruikers uit op hun BEEP e-mail adres',
   group_explanation_3:
     '3. Deel specifieke kasten om te bekijken, of om samen aan te werken',
   Filter_and_sort_on: 'Filter en sorteer op:',
@@ -775,7 +775,7 @@ const translations = {
     'Let op: heb je een BEEP base? Gebruik dan de BEEP base app om je meetsysteem toe te voegen. Deze zal daarna automatisch in onderstaande lijst verschijnen. ',
   devices_url_text: 'Lees hier meer uitleg over de BEEP base app.',
   alert_explanation_1:
-    'Wanneer je een BEEP base hebt kan je hiervoor notificaties instellen, zodat je een notificatie ontvangt wanneer de meetgegevens aan bepaalde condities voldoen. Denk hierbij bijvoorbeeld aan een plotselinge gewichtsafname vanwege een zwerm. Deze notificaties ontvang je in de app, daarnaast kan je ervoor kiezen om ze per e-mail te ontvangen.',
+    'Wanneer je een BEEP base of een ander meetsysteem gebruikt kan je hiervoor notificaties instellen, zodat je een notificatie ontvangt wanneer de meetgegevens aan bepaalde voorwaarden voldoen. Denk hierbij bijvoorbeeld aan een plotselinge gewichtsafname vanwege een zwerm. Deze notificaties ontvang je in de app, daarnaast kan je ervoor kiezen om ze per e-mail te ontvangen.',
   alert_explanation_2:
     'Om je op weg te helpen zijn er een aantal standaardinstellingen die je kan gebruiken (en aanpassen naar eigen behoefte). Je kan ook zelf een nieuwe notificatie-instelling maken.',
   alertrules_url_text:

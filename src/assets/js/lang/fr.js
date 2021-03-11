@@ -1,5 +1,5 @@
 /*
- * Beep - Translations
+ * BEEP - Translations
  * Author: Pim van Gennip (pim@iconize.nl)
  *
  */
@@ -54,7 +54,7 @@ const translations = {
   Feedback: 'Avis',
   Feedback_mail_header: "Commentaires de l'application beep",
   Feedback_mail_body:
-    "Cher Beep foundation, % 0D % 0A % 0D % 0AVoici mon commentaire sur l'application Beep. % 0D % 0A % 0D % 0AI a découvert ceci : % 0D % 0A % 0D % 0AJuste avant que cela ne se produise, j'ai fait : % 0D % 0A % 0D % 0AL'écran ressemblait (s'il vous plaît inclure une capture d'écran) : % 0D % 0A % 0A % 0D % 0A % 0A % 0A % 0A D % 0A % 0D % 0A",
+    "Cher BEEP foundation, % 0D % 0A % 0D % 0AVoici mon commentaire sur l'application BEEP. % 0D % 0A % 0D % 0AI a découvert ceci : % 0D % 0A % 0D % 0AJuste avant que cela ne se produise, j'ai fait : % 0D % 0A % 0D % 0AL'écran ressemblait (s'il vous plaît inclure une capture d'écran) : % 0D % 0A % 0A % 0D % 0A % 0A % 0A % 0A D % 0A % 0D % 0A",
   Diagnostic_info: 'Informations de diagnostic (en cas de bogue) : % 0D % 0A',
   back: 'Retourner',
   menu: 'Menu',
@@ -154,7 +154,7 @@ const translations = {
   logout: 'Se déconnecter',
   logout_title: 'Se déconnecter en tant que',
   logout_now: 'Voulez-vous vraiment vous déconnecter maintenant ?',
-  member_since: 'Beep depuis',
+  member_since: 'BEEP depuis',
 
   /* password recovery */
   password_recovery_title: 'Vous avez oublié votre mot de passe ?',
@@ -190,8 +190,8 @@ const translations = {
   connection_state: 'État de la connexion',
 
   /* hives */
-  locations_title: 'Beep',
-  hives_title: 'Beep',
+  locations_title: 'BEEP',
+  hives_title: 'BEEP',
   Hive: 'Ruche | Ruches',
   hive: 'ruche | ruches',
   Location: 'Rucher | Ruchers',
@@ -246,7 +246,7 @@ const translations = {
     'Impossible de charger les mesures, vérifiez la connexion réseau',
   last_measurement: 'Dernière mesure',
   at: 'à',
-  measurement_system: 'Système de mesure Beep',
+  measurement_system: 'Système de mesure BEEP',
   no_data: 'Aucune donnée disponible',
   no_chart_data: 'Aucune donnée graphique pour la période sélectionnée',
 
@@ -513,7 +513,7 @@ const translations = {
   group_explanation_1:
     '1. Créer un nouveau groupe de coopération avec un titre clair et une description facultative',
   group_explanation_2:
-    "2. Inviter d'autres utilisateurs Beep sur leur adresse e-mail Beep",
+    "2. Inviter d'autres utilisateurs BEEP sur leur adresse e-mail BEEP",
   group_explanation_3:
     "3. Partager des ruches spécifiques pour être vues par d'autres, pour coopérer",
   Filter_and_sort_on: 'Filtrer et trier sur:',
@@ -778,7 +778,7 @@ const translations = {
     'Please note: do you own a BEEP base? Use the BEEP base app to add your device. It will then automatically appear in the list below.',
   devices_url_text: 'Here you can find more information on the BEEP base app.',
   alert_explanation_1:
-    'If you own a BEEP base you can set alerts, such that you will receive an alert when the measurement data meets certain requirements. For example, a sudden drop in weight because of swarming. Alerts will be shown in this app, you can choose to receive them via email as well.',
+    'If you own a BEEP base or another device you can set alerts, such that you will receive an alert when the measurement data meets certain requirements. For example, a sudden drop in weight because of swarming. Alerts will be shown in this app, you can choose to receive them via email as well.',
   alert_explanation_2:
     'To get you started there are a few default alert rules you can use (and adapt to your own needs). In addition, you can create your own alert rules.',
   alertrules_url_text:

@@ -1,5 +1,5 @@
 /*
- * Beep - Translations
+ * BEEP - Translations
  * Author: Pim van Gennip (pim@iconize.nl)
  *
  */
@@ -52,9 +52,9 @@ const translations = {
   /* main */
   Website: 'Verkkosivu',
   Feedback: 'Palaute',
-  Feedback_mail_header: 'Beep app palaute',
+  Feedback_mail_header: 'BEEP app palaute',
   Feedback_mail_body:
-    'Hyvä Beep Säätiö,%0D%0A%0D%0ATässä palautteeni about the Beep sovelluksesta.%0D%0A%0D%0AHuomasin että:%0D%0A%0D%0AJuuri ennen kuin näin tapahtui, tein:%0D%0A%0D%0ANäyttö näytti tältä (lisää kuvakaappaus):%0D%0A%0D%0A%0D%0A%0D%0A',
+    'Hyvä BEEP Säätiö,%0D%0A%0D%0ATässä palautteeni about the BEEP sovelluksesta.%0D%0A%0D%0AHuomasin että:%0D%0A%0D%0AJuuri ennen kuin näin tapahtui, tein:%0D%0A%0D%0ANäyttö näytti tältä (lisää kuvakaappaus):%0D%0A%0D%0A%0D%0A%0D%0A',
   Diagnostic_info: 'Diagnostiikkatiedot (jos kyseessä on bugi):%0D%0A',
   back: 'Takaisin',
   menu: 'Valikko',
@@ -186,8 +186,8 @@ const translations = {
   connection_state: 'Yhteyden tila',
 
   /* hives */
-  locations_title: 'Beep',
-  hives_title: 'Beep',
+  locations_title: 'BEEP',
+  hives_title: 'BEEP',
   Hive: 'Pesä | Pesät',
   hive: 'pesä | pesät',
   Location: 'Mehiläistarha | Mehiläistarhat',
@@ -242,7 +242,7 @@ const translations = {
   measurementsError: 'Mittauksia ei voi ladata, tarkista verkkoyhteys',
   last_measurement: 'Viimeisin mittaus',
   at: 'klo',
-  measurement_system: 'Beep mittausjärjestelmä',
+  measurement_system: 'BEEP mittausjärjestelmä',
   no_data: 'Tietoja ei käytettävissä',
   no_chart_data: 'Ei kaaviotietoja valitulta ajanjaksolta',
 
@@ -424,7 +424,7 @@ const translations = {
   /* user */
   Data_export: 'Vie tiedot',
   Export_your_data:
-    'Vie kaikki Beep-tililläsi olevat tiedot ja lähetä Excel-tiedostona sähköpostissa. Excel-tiedostossa on oma välilehti henkilökohtaisille, pesän, tarhapaikan ja tarkastusten tiedoille.',
+    'Vie kaikki BEEP-tililläsi olevat tiedot ja lähetä Excel-tiedostona sähköpostissa. Excel-tiedostossa on oma välilehti henkilökohtaisille, pesän, tarhapaikan ja tarkastusten tiedoille.',
 
   Terms_of_use: 'Käyttöehdot',
   accept_policy:
@@ -505,7 +505,7 @@ const translations = {
   group_activated: 'Ryhmäkutsu hyväksytty',
   group_explanation_1:
     '1. Luo uusi yhteistyöryhmä, jolla on selkeä otsikko ja valinnainen kuvaus',
-  group_explanation_2: '2. Kutsu muita Beep käyttäjiä sähköpostilla',
+  group_explanation_2: '2. Kutsu muita BEEP käyttäjiä sähköpostilla',
   group_explanation_3:
     '3. Jaa tietyt pesät, joita muut voivat tarkastella ja tehdä yhteistyötä',
   Filter_and_sort_on: 'Suodata ja lajittele:',
@@ -768,7 +768,7 @@ const translations = {
     'Please note: do you own a BEEP base? Use the BEEP base app to add your device. It will then automatically appear in the list below.',
   devices_url_text: 'Here you can find more information on the BEEP base app.',
   alert_explanation_1:
-    'If you own a BEEP base you can set alerts, such that you will receive an alert when the measurement data meets certain requirements. For example, a sudden drop in weight because of swarming. Alerts will be shown in this app, you can choose to receive them via email as well.',
+    'If you own a BEEP base or another device you can set alerts, such that you will receive an alert when the measurement data meets certain requirements. For example, a sudden drop in weight because of swarming. Alerts will be shown in this app, you can choose to receive them via email as well.',
   alert_explanation_2:
     'To get you started there are a few default alert rules you can use (and adapt to your own needs). In addition, you can create your own alert rules.',
   alertrules_url_text:

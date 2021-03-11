@@ -1,5 +1,5 @@
 /*
- * Beep - Translations
+ * BEEP - Translations
  * Author: Pim van Gennip (pim@iconize.nl)
  *
  */
@@ -52,9 +52,9 @@ const translations = {
   /* main */
   Website: 'Site da internet',
   Feedback: 'Comentários',
-  Feedback_mail_header: 'Comentários da aplicação Beep',
+  Feedback_mail_header: 'Comentários da aplicação BEEP',
   Feedback_mail_body:
-    'Cara fundação Beep,%0D%0A%0D%0ADeixo abaixo os meus comentários sobre a aplicação Beep.%0D%0A%0D%0AEncontrei isto:%0D%0A%0D%0AMesmo antes de isto acontecer, fiz o seguinte:%0D%0A%0D%0AO monitor estava assim (por favor inclua uma captura de ecrã):%0D%0A%0D%0A%0D%0A%0D%0A',
+    'Cara fundação BEEP,%0D%0A%0D%0ADeixo abaixo os meus comentários sobre a aplicação BEEP.%0D%0A%0D%0AEncontrei isto:%0D%0A%0D%0AMesmo antes de isto acontecer, fiz o seguinte:%0D%0A%0D%0AO monitor estava assim (por favor inclua uma captura de ecrã):%0D%0A%0D%0A%0D%0A%0D%0A',
   Diagnostic_info:
     'Informação de diagnóstico (no caso de um bug/problema):%0D%0A',
   back: 'Para trás',
@@ -153,7 +153,7 @@ const translations = {
   logout: 'Sair',
   logout_title: 'Sair como ',
   logout_now: 'Quer mesmo sair agora?',
-  member_since: 'A usar o Beep desde',
+  member_since: 'A usar o BEEP desde',
 
   /* password recovery */
   password_recovery_title: ' Esqueceu-se da sua senha?',
@@ -189,8 +189,8 @@ const translations = {
   connection_state: 'Estado da conexão',
 
   /* hives */
-  locations_title: 'Beep',
-  hives_title: 'Beep',
+  locations_title: 'BEEP',
+  hives_title: 'BEEP',
   Hive: 'Colmeia | Colmeias',
   hive: 'colmeia | colmeias',
   Location: 'Apiário | Apiários',
@@ -243,7 +243,7 @@ const translations = {
     'Não é possível carregar medições, verificar ligação à internet',
   last_measurement: 'Última medição',
   at: 'em',
-  measurement_system: 'Sistema de medição Beep',
+  measurement_system: 'Sistema de medição BEEP',
   no_data: 'Sem dados disponíveis',
   no_chart_data: 'Nenhum dado do gráfico para o período selecionado',
 
@@ -426,7 +426,7 @@ const translations = {
   /* user */
   Data_export: 'Exportação de dados',
   Export_your_data:
-    'Exportar todos os dados que estão na sua conta Beep e enviar um email contendo os dados como um ficheiro Excel. O ficheiro Excel possui seções diferentes que contêm os seus dados pessoais, das colmeias, de localização e de inspeção.',
+    'Exportar todos os dados que estão na sua conta BEEP e enviar um email contendo os dados como um ficheiro Excel. O ficheiro Excel possui seções diferentes que contêm os seus dados pessoais, das colmeias, de localização e de inspeção.',
 
   Terms_of_use: 'Termos de serviço',
   accept_policy:
@@ -508,7 +508,7 @@ const translations = {
   group_explanation_1:
     '1. Crie um novo grupo de cooperação com um título claro e uma descrição opcional',
   group_explanation_2:
-    '2. Convide outros usuários do Beep através do seu endereço de email do Beep',
+    '2. Convide outros usuários do BEEP através do seu endereço de email do BEEP',
   group_explanation_3:
     '3. Compartilhar colmeias específicas para serem vistas por outras pessoas, ou para cooperar',
   Filter_and_sort_on: 'Filtrar e classificar:',
@@ -773,7 +773,7 @@ const translations = {
     'Please note: do you own a BEEP base? Use the BEEP base app to add your device. It will then automatically appear in the list below.',
   devices_url_text: 'Here you can find more information on the BEEP base app.',
   alert_explanation_1:
-    'If you own a BEEP base you can set alerts, such that you will receive an alert when the measurement data meets certain requirements. For example, a sudden drop in weight because of swarming. Alerts will be shown in this app, you can choose to receive them via email as well.',
+    'If you own a BEEP base or another device you can set alerts, such that you will receive an alert when the measurement data meets certain requirements. For example, a sudden drop in weight because of swarming. Alerts will be shown in this app, you can choose to receive them via email as well.',
   alert_explanation_2:
     'To get you started there are a few default alert rules you can use (and adapt to your own needs). In addition, you can create your own alert rules.',
   alertrules_url_text:

@@ -53,9 +53,9 @@
                 dark
                 small
                 color="primary"
-                @click="showDescription = !showDescription"
+                @click="showExplanation = !showExplanation"
               ></v-icon>
-              <p v-if="showDescription && ready" class="mt-n1 mb-0">
+              <p v-if="showExplanation && ready" class="mt-n1 mb-0">
                 <em>{{
                   $t('alert_explanation_1') + ' ' + $t('alert_explanation_2')
                 }}</em>
@@ -230,7 +230,7 @@ export default {
     return {
       ready: false,
       errors: [],
-      showDescription: true,
+      showExplanation: false,
       showLoadingIconById: {
         active: [],
         alert_via_email: [],
@@ -272,6 +272,9 @@ export default {
   created() {
     if (this.alertRules.length === 0) {
       this.readAlertRules().then(() => {
+        if (this.alertRules.length === 0) {
+          this.showExplanation = true
+        }
         this.ready = true
       })
     } else {
