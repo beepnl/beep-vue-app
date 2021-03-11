@@ -538,7 +538,7 @@ export default {
       }
     },
     saveHive() {
-      if (this.hiveCreateMode !== null) {
+      if (this.hiveCreateMode) {
         this.createHive()
       } else {
         this.updateHive()
