@@ -67,6 +67,9 @@
           padding: 0 6px !important;
           .v-text-field__slot {
             min-width: 72px;
+            .v-label--active {
+              left: 4px !important;
+            }
           }
         }
       }
@@ -75,6 +78,12 @@
         @include for-phone-only {
           .v-text-field__slot {
             min-width: 52px;
+            height: 30px !important;
+          }
+        }
+        @media (max-width: 372px) {
+          .v-text-field__slot {
+            min-width: 35px;
           }
         }
       }

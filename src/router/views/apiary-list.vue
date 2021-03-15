@@ -405,6 +405,22 @@
                     ></v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
+                                <v-list-item
+                  :to="{
+                    name: 'apiary-management',
+                    params: { id: hiveSet.id },
+                  }"
+                >
+                  <v-list-item-icon class="mr-3">
+                    <v-icon>mdi-home-export-outline</v-icon>
+                  </v-list-item-icon>
+
+                  <v-list-item-content>
+                    <v-list-item-title
+                      v-text="$t('Move') + ' ' + $tc('hive', 2)"
+                    ></v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
               </v-list-item-group>
 
               <v-divider v-if="hiveSet.owner" class="my-1"></v-divider>

@@ -780,6 +780,9 @@ const translations = {
     'Om je op weg te helpen zijn er een aantal standaardinstellingen die je kan gebruiken (en aanpassen naar eigen behoefte). Je kan ook zelf een nieuwe notificatie-instelling maken.',
   alertrules_url_text:
     "Ga naar 'notificaties beheren' om je eerste notificatie in te stellen.",
+  Apiary_management: 'Bijenstand management',
+  Move: 'Verplaats',
+  Current_apiary: 'Huidige bijenstand',
 }
 
 export default translations
