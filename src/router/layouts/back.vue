@@ -94,7 +94,8 @@ export default {
     back: function() {
       if (
         ((this.$route.name === 'apiary-create' ||
-          this.$route.name === 'apiary-edit') &&
+          this.$route.name === 'apiary-edit' ||
+          this.$route.name === 'apiary-management') &&
           this.apiaryEdited) ||
         ((this.$route.name === 'group-create' ||
           this.$route.name === 'group-edit') &&

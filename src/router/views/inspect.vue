@@ -96,7 +96,7 @@
               >
                 <v-switch
                   v-if="selectedHiveSet"
-                  v-model="selectAllHives"
+                  v-model="allHivesSelected"
                   :label="
                     `${
                       selectedHiveSet.users
@@ -554,7 +554,7 @@ export default {
         }
       },
     },
-    selectAllHives: {
+    allHivesSelected: {
       get() {
         return this.selectedHives.length === this.editableHives.length
       },

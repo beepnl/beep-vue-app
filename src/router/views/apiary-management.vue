@@ -1,18 +1,6 @@
 <template>
   <Layout :title="$t('Apiary_management')">
-    <h1 v-if="hiveNotEditable" class="unauthorized-title">
-      {{
-        $t('sorry') +
-          ', ' +
-          $tc('hive', 1) +
-          ' ' +
-          activeHive.name +
-          ' ' +
-          $t('not_editable')
-      }}
-    </h1>
-
-    <v-form v-else-if="ready" ref="form" v-model="valid">
+    <v-form v-if="ready" ref="form" v-model="valid">
       <v-toolbar v-if="ready" class="save-bar zindex4" dense light>
         <v-spacer></v-spacer>
         <v-btn
@@ -21,7 +9,9 @@
           color="black"
           class="save-button-mobile-wide mr-1"
           :disabled="
-            !valid || (selectedHiveIds && selectedHiveIds.length === 0)
+            !valid ||
+              (selectedHiveIds && selectedHiveIds.length === 0) ||
+              newApiaryId === undefined
           "
           @click.prevent="updateHives(selectedHives)"
         >
@@ -60,7 +50,7 @@
                   :normalizer="normalizerApiary"
                   :placeholder="`${$t('Select')} ${$tc('location', 1)}`"
                   :no-results-text="`${$t('no_results')}`"
-                  @input="selectApiary($event), setApiaryEdited(true)"
+                  @input="selectAllHives(), setApiaryEdited(true)"
                 />
               </v-col>
               <v-col
@@ -71,7 +61,7 @@
               >
                 <v-switch
                   v-if="selectedApiary"
-                  v-model="selectAllHives"
+                  v-model="allHivesSelected"
                   :label="$t('select_all_hives')"
                 ></v-switch>
               </v-col>
@@ -80,12 +70,12 @@
 
           <v-col cols="12" md="7">
             <ApiaryPreviewHiveSelector
-              v-if="selectedApiary && allHives.length > 0"
+              v-if="selectedApiary && allHiveIds.length > 0"
               :hives="selectedApiary.hives"
               :hives-selected="selectedHiveIds"
-              :hives-editable="allHives"
+              :hives-editable="allHiveIds"
               :inspection-mode="true"
-              @select-hive="selectHive($event)"
+              @select-hive="selectHive($event), setApiaryEdited(true)"
             ></ApiaryPreviewHiveSelector>
           </v-col>
         </v-row>
@@ -133,7 +123,6 @@ import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
-import { momentMixin } from '@mixins/momentMixin'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
@@ -144,7 +133,6 @@ export default {
     Layout,
     Treeselect,
   },
-  mixins: [momentMixin],
   data: function() {
     return {
       normalizerApiary(node) {
@@ -162,27 +150,17 @@ export default {
       valid: false,
       ready: false,
       selectedApiaryId: null,
-      selectedApiary: null,
       selectedHiveIds: [],
-      activeHive: null,
-      hiveNotEditable: false,
       newApiaryId: null,
     }
   },
   computed: {
     ...mapGetters('locations', ['apiaries']),
-    allHives() {
-      var allHives = []
-      this.selectedApiary.hives.map((hive) => {
-        allHives.push(hive.id)
-      })
-      return allHives
+    allHiveIds() {
+      return this.getHiveIds(this.selectedApiary.hives)
     },
     apiaryId() {
       return parseInt(this.$route.params.id)
-    },
-    hiveId() {
-      return parseInt(this.$route.query.hiveId) || null
     },
     locale() {
       return this.$i18n.locale
@@ -195,17 +173,22 @@ export default {
         return apiary.id === this.newApiaryId
       })[0].name
     },
-    selectAllHives: {
+    allHivesSelected: {
       get() {
-        return this.selectedHiveIds.length === this.selectedApiary.hives.length
+        return this.selectedHiveIds.length === this.allHiveIds.length
       },
       set(value) {
         if (value === false) {
           this.selectedHiveIds = []
         } else {
-          this.selectedHiveIds = this.allHives
+          this.selectedHiveIds = this.getHiveIds(this.selectedApiary.hives)
         }
       },
+    },
+    selectedApiary() {
+      return this.apiaries.filter((apiary) => {
+        return apiary.id === this.selectedApiaryId
+      })[0]
     },
     selectedHives() {
       return this.selectedApiary.hives.filter(
@@ -226,40 +209,19 @@ export default {
     },
   },
   created() {
-    // If hive id is specified, first check if hive is present / accessible and editable
-    if (this.hiveId !== null) {
-      this.getActiveHive(this.hiveId).then(() => {
-        this.getApiary()
+    this.setApiaryEdited(false)
+    if (this.apiaries.length === 0) {
+      // if apiaries are not in store, in case view is opened directly without loggin in (via localstorage)
+      this.readApiaries().then(() => {
+        this.selectInitialApiaries()
+        this.ready = true
       })
     } else {
-      this.getApiary()
+      this.selectInitialApiaries()
+      this.ready = true
     }
-    this.ready = true
   },
   methods: {
-    async getActiveHive(id) {
-      try {
-        const response = await Api.readRequest('/hives/', id)
-        if (response.data.length === 0) {
-          this.$router.push({ name: '404', params: { resource: 'hive' } })
-        }
-        this.activeHive = response.data.hives[0]
-        this.$store.commit('hives/setActiveHive', this.activeHive)
-        if (!this.activeHive.editable) {
-          this.hiveNotEditable = true
-        }
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log(error.response)
-          if (error.response.status === 404) {
-            this.$router.push({ name: '404', params: { resource: 'hive' } })
-          }
-        } else {
-          console.log('Error: ', error)
-        }
-      }
-    },
     async readApiaries() {
       try {
         const response = await Api.readRequest('/locations')
@@ -275,9 +237,6 @@ export default {
     },
     async updateHive(hive) {
       try {
-        // var hiveWithNewApiaryId = hive
-        // hiveWithNewApiaryId.location_id = this.newApiaryId
-        // console.log('updating hive ', hive.id, hiveWithNewApiaryId)
         const response = await Api.updateRequest('/hives/', hive.id, hive)
         if (!response) {
           this.snackbar.text = this.$i18n.t('not_saved_error')
@@ -297,6 +256,31 @@ export default {
         return false
       }
     },
+    getHiveIds(hives) {
+      var hiveIds = []
+      hives.map((hive) => {
+        hiveIds.push(hive.id)
+      })
+      return hiveIds
+    },
+    selectAllHives() {
+      this.selectedHiveIds = this.getHiveIds(this.selectedApiary.hives)
+    },
+    selectHive(id) {
+      if (!this.selectedHiveIds.includes(id)) {
+        this.selectedHiveIds.push(id)
+      } else {
+        this.selectedHiveIds.splice(this.selectedHiveIds.indexOf(id), 1)
+      }
+    },
+    selectInitialApiaries() {
+      this.selectedApiaryId = this.apiaryId
+      this.newApiaryId = this.apiaryId
+      this.selectAllHives()
+    },
+    setApiaryEdited(bool) {
+      this.$store.commit('locations/setApiaryEdited', bool)
+    },
     updateHives(hives) {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
@@ -313,75 +297,13 @@ export default {
         value: this.newApiaryName, // set search term via store instead of query to overrule possible stored search terms
       })
       setTimeout(() => {
-        this.showLoadingIcon = false
         return this.readApiaries().then(() => {
+          this.showLoadingIcon = false
           this.$router.push({
             name: 'home',
           })
         })
-      }, 300) // wait for API to update locations/hives
-    },
-    getApiary() {
-      if (this.apiaries.length === 0) {
-        // if apiaries are not in store, in case view is opened directly without loggin in (via localstorage)
-        this.readApiaries().then(() => {
-          this.selectInitialApiary()
-        })
-      } else {
-        this.selectInitialApiary()
-      }
-    },
-    selectApiary(id) {
-      this.selectedHiveIds = []
-      const apiary = this.apiaries.filter((apiary) => {
-        return apiary.id === id
-      })[0]
-      if (apiary) {
-        apiary.hives.map((hive) => {
-          this.selectedHiveIds.push(hive.id)
-        })
-        // only when selecting the apiary from the queried hive Id, select just that hive
-        if (this.hiveId && apiary.id === this.activeHive.location_id) {
-          this.selectedHiveIds = [this.hiveId]
-        }
-        this.selectedApiary = apiary
-        // If apiary id doesn't exist return 404
-      } else {
-        this.$router.push({
-          name: '404',
-          params: { resource: 'location' },
-        })
-      }
-    },
-    selectHive(id) {
-      if (!this.selectedHiveIds.includes(id)) {
-        this.selectedHiveIds.push(id)
-      } else {
-        this.selectedHiveIds.splice(this.selectedHiveIds.indexOf(id), 1)
-      }
-    },
-    selectFirstApiaryFromList() {
-      this.selectedApiaryId = this.sortedApiaries[0].id
-      this.newApiaryId = this.sortedApiaries[0].id
-      this.selectApiary(this.selectedApiaryId)
-    },
-    selectInitialApiary() {
-      if (this.apiaryId) {
-        this.selectedApiaryId = this.apiaryId
-        this.newApiaryId = this.apiaryId
-        this.selectApiary(this.apiaryId)
-      } else if (this.hiveId) {
-        // if no apiary is specified, select apiary via hive
-        this.apiaryId = this.activeHive.location_id
-        this.selectedApiaryId = this.apiaryId
-        this.newApiaryId = this.apiaryId
-        this.selectApiary(this.apiaryId)
-      } else {
-        this.selectFirstApiaryFromList()
-      }
-    },
-    setApiaryEdited(bool) {
-      this.$store.commit('locations/setApiaryEdited', bool)
+      }, 500) // wait for API to update locations/hives
     },
   },
 }
