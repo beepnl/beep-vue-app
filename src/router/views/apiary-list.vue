@@ -355,6 +355,44 @@
                 >mdi-cog</v-icon
               >
             </template>
+            <!-- <v-list v-if="!hiveSet.users" dense>
+              <v-list-item-group>
+                <template v-for="(item, index) in apiaryMenu(hiveSet)">
+                  <v-list-item
+                    v-if="
+                      item.title &&
+                        (!item.ownerRequired ||
+                          (item.ownerRequired && hiveSet.owner))
+                    "
+                    :key="`i-${index}`"
+                    :to="item.to"
+                    @click="
+                      item.ownerRequired ? confirmDeleteApiary(hiveSet) : null
+                    "
+                  >
+                    <v-list-item-icon class="mr-3">
+                      <v-icon :class="item.ownerRequired ? 'red--text' : ''">{{
+                        item.icon
+                      }}</v-icon>
+                    </v-list-item-icon>
+
+                    <v-list-item-content>
+                      <v-list-item-title
+                        :class="item.ownerRequired ? 'red--text' : ''"
+                        v-text="item.title"
+                      ></v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+
+                  <v-divider
+                    v-else-if="item.divider && hiveSet.owner"
+                    :key="`d-${index}`"
+                    class="my-1"
+                  ></v-divider>
+                </template>
+              </v-list-item-group>
+            </v-list> -->
+
             <v-list v-if="!hiveSet.users" dense>
               <v-list-item-group>
                 <v-list-item
@@ -605,6 +643,51 @@ export default {
     ...mapGetters('devices', ['devices']),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups', 'invitations']),
+    apiaryMenu(hiveSet) {
+      return [
+        {
+          icon: 'mdi-home-edit',
+          title: this.$i18n.t('edit') + ' ' + this.$i18n.tc('location', 1),
+          to: {
+            name: 'apiary-edit',
+            params: { id: hiveSet.id },
+          },
+        },
+        {
+          icon: 'mdi-file-document-edit-outline',
+          title: this.$i18n.t('New') + ' ' + this.$i18n.tc('inspection', 1),
+          to: {
+            name: 'inspect',
+            query: { apiaryId: hiveSet.id },
+          },
+        },
+        {
+          icon: 'mdi-plus-box-outline',
+          title: this.$i18n.t('New') + ' ' + this.$i18n.tc('hive', 1),
+          to: {
+            name: 'hive-create',
+            query: { locationId: hiveSet.id },
+          },
+        },
+        {
+          icon: 'mdi-home-export-outline',
+          title: this.$i18n.t('Move') + ' ' + this.$i18n.tc('hive', 2),
+          to: {
+            name: 'apiary-management',
+            params: { id: hiveSet.id },
+          },
+        },
+        {
+          divider: true,
+        },
+        {
+          ownerRequired: true,
+          icon: 'mdi-delete',
+          title: this.$i18n.t('remove_apiary'),
+          to: null,
+        },
+      ]
+    },
     filterByAlert: {
       get() {
         return this.$store.getters['locations/hiveFilterByAlert']
