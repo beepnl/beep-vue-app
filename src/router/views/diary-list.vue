@@ -659,12 +659,14 @@ export default {
       if (this.generalInspections.length > 0) {
         var inspectionsWithHiveDetails = this.generalInspections
         inspectionsWithHiveDetails.map((inspection) => {
-          const name = this.hives[inspection.hive_id].name
-          const location = this.hives[inspection.hive_id].location
-          inspection.hive_name = name
-          inspection.hive_location = location
-          const groupName = this.hives[inspection.hive_id].group_name || null
-          inspection.hive_group_name = groupName
+          if (this.hives[inspection.hive_id] !== undefined) {
+            const name = this.hives[inspection.hive_id].name
+            const location = this.hives[inspection.hive_id].location
+            inspection.hive_name = name
+            inspection.hive_location = location
+            const groupName = this.hives[inspection.hive_id].group_name || null
+            inspection.hive_group_name = groupName
+          }
         })
         return inspectionsWithHiveDetails
       } else {

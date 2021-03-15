@@ -405,7 +405,7 @@
                     ></v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
-                                <v-list-item
+                <v-list-item
                   :to="{
                     name: 'apiary-management',
                     params: { id: hiveSet.id },
@@ -910,6 +910,7 @@ export default {
         }
         setTimeout(() => {
           this.readApiariesAndGroups()
+          this.readGeneralInspections()
         }, 100) // wait for API to update locations/hives
       } catch (error) {
         this.handleError(error)
@@ -924,6 +925,7 @@ export default {
         }
         setTimeout(() => {
           this.readApiariesAndGroups()
+          this.readGeneralInspections()
         }, 100) // wait for API to update locations/hives
       } catch (error) {
         this.handleError(error)
@@ -938,6 +940,7 @@ export default {
         }
         setTimeout(() => {
           this.readApiariesAndGroups()
+          this.readGeneralInspections()
         }, 100) // wait for API to update locations/hives
       } catch (error) {
         this.handleError(error)
@@ -952,6 +955,7 @@ export default {
         }
         setTimeout(() => {
           this.readApiariesAndGroups()
+          this.readGeneralInspections()
         }, 100) // wait for API to update locations/hives
       } catch (error) {
         this.handleError(error)
@@ -998,6 +1002,19 @@ export default {
       } catch (error) {
         if (error.response) {
           console.log(error.response)
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
+    async readGeneralInspections() {
+      try {
+        const response = await Api.readRequest('/inspections')
+        this.$store.commit('inspections/setGeneralInspections', response.data)
+        return true
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
         } else {
           console.log('Error: ', error)
         }
