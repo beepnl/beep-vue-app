@@ -470,7 +470,6 @@ const translations = {
   not_filled: 'is required, but not filled out',
   cannot_deselect:
     'Unable to remove this item, because it contains a required item',
-  sensor_key: 'Sensor key',
   Undelete: 'Do not delete',
   the_field: 'The',
   is_required: 'is required',
@@ -776,6 +775,8 @@ const translations = {
   Apiary_management: 'Apiary management',
   Move: 'Move',
   Current_apiary: 'Current apiary',
+  sensor_key: 'Device unique identifier',
+  disabled_settings: 'Manually editing these settings is disabled.',
 }
 
 export default translations

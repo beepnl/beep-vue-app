@@ -476,7 +476,6 @@ const translations = {
   not_filled: 'este necesar, dar nu a fost completat',
   cannot_deselect:
     'Acest element nu poate fi eliminat, deoarece conține un element obligatoriu',
-  sensor_key: 'Cheie senzor',
   Undelete: 'Nu ștergeți',
   the_field: 'Acest',
   is_required: 'este necesar.',
@@ -784,6 +783,8 @@ const translations = {
   Apiary_management: 'Apiary management',
   Move: 'Move',
   Current_apiary: 'Current apiary',
+  sensor_key: 'Device unique identifier',
+  disabled_settings: 'Manually editing these settings is disabled.',
 }
 
 export default translations

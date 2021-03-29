@@ -471,7 +471,6 @@ const translations = {
   not_filled: 'Vaaditaan, mutta ei täytetä',
   cannot_deselect:
     'Tätä kohdetta ei voi poistaa, koska se sisältää pakollista tietoa',
-  sensor_key: 'Anturi näppäin',
   Undelete: 'älä poista',
   the_field: 'Kenttä',
   is_required: 'on pakollinen',
@@ -773,9 +772,11 @@ const translations = {
     'To get you started there are a few default alert rules you can use (and adapt to your own needs). In addition, you can create your own alert rules.',
   alertrules_url_text:
     "Go to 'Alert settings' to create your first alert rule.",
-    Apiary_management: 'Apiary management',
-    Move: 'Move',
-    Current_apiary: 'Current apiary',
+  Apiary_management: 'Apiary management',
+  Move: 'Move',
+  Current_apiary: 'Current apiary',
+  sensor_key: 'Device unique identifier',
+  disabled_settings: 'Manually editing these settings is disabled.',
 }
 
 export default translations

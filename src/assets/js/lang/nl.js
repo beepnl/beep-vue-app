@@ -476,7 +476,6 @@ const translations = {
   not_filled: 'is verplicht, maar niet ingevuld',
   cannot_deselect:
     'Dit item kan niet worden verwijderd, omdat het een verplicht item bevat',
-  sensor_key: 'Sensor code',
   Undelete: 'Niet verwijderen',
   the_field: 'Het veld',
   is_required: 'is verplicht',
@@ -783,6 +782,8 @@ const translations = {
   Apiary_management: 'Bijenstand management',
   Move: 'Verplaats',
   Current_apiary: 'Huidige bijenstand',
+  sensor_key: 'Identificatiecode uniek voor meetsysteem',
+  disabled_settings: 'Je kunt deze instellingen niet handmatig aanpassen.',
 }
 
 export default translations

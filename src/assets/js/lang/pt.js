@@ -473,7 +473,6 @@ const translations = {
   not_filled: 'é obrigatório, mas não está preenchido',
   cannot_deselect:
     'Não foi possível remover este item, pois contém um item obrigatório',
-  sensor_key: 'Sensor chave',
   Undelete: 'Não apagar',
   the_field: 'O',
   is_required: 'é obrigatório',
@@ -781,6 +780,8 @@ const translations = {
   Apiary_management: 'Apiary management',
   Move: 'Move',
   Current_apiary: 'Current apiary',
+  sensor_key: 'Device unique identifier',
+  disabled_settings: 'Manually editing these settings is disabled.',
 }
 
 export default translations

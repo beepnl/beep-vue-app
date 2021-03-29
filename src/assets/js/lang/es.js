@@ -475,7 +475,6 @@ const translations = {
   not_filled: 'es necesario, pero no rellenado',
   cannot_deselect:
     'No se puede quitar este elemento, porque contiene un elemento necesario',
-  sensor_key: 'Tecla del sensor',
   Undelete: 'No borrar',
   No_groups: 'No hay grupos disponibles',
   not_available_yet: 'todavía no disponible. Por favor, cree el primero aquí.',
@@ -779,9 +778,11 @@ const translations = {
     'To get you started there are a few default alert rules you can use (and adapt to your own needs). In addition, you can create your own alert rules.',
   alertrules_url_text:
     "Go to 'Alert settings' to create your first alert rule.",
-        Apiary_management: 'Apiary management',
-    Move: 'Move',
-    Current_apiary: 'Current apiary',
+  Apiary_management: 'Apiary management',
+  Move: 'Move',
+  Current_apiary: 'Current apiary',
+  sensor_key: 'Device unique identifier',
+  disabled_settings: 'Manually editing these settings is disabled.',
 }
 
 export default translations

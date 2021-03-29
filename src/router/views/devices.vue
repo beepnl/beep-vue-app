@@ -272,20 +272,31 @@
                   <v-col cols="12" md="6" class="pb-0 pb-sm-3">
                     <v-text-field
                       v-model="ownedDevice.key"
-                      :label="`${$t('sensor_key') + ' (DEV EUI)'}`"
-                    />
-                  </v-col>
-                  <v-col cols="12" md="6" class="pb-0 pb-sm-3">
-                    <v-text-field
-                      v-model="ownedDevice.hardware_id"
-                      label="HW ID"
+                      :label="$t('sensor_key') + '*'"
                       disabled
                     />
                   </v-col>
                   <v-col cols="12" md="6" class="pb-0 pb-sm-3">
                     <v-text-field
-                      v-model="ownedDevice.firmware_version"
-                      label="FW v"
+                      :value="
+                        ownedDevice.hardware_id !== null &&
+                        ownedDevice.hardware_id !== undefined
+                          ? ownedDevice.hardware_id
+                          : '-'
+                      "
+                      label="Hardware ID*"
+                      disabled
+                    />
+                  </v-col>
+                  <v-col cols="12" md="6" class="pb-0 pb-sm-3">
+                    <v-text-field
+                      :value="
+                        ownedDevice.firmware_version !== null &&
+                        ownedDevice.firmware_version !== undefined
+                          ? ownedDevice.firmware_version
+                          : '-'
+                      "
+                      label="BEEP base firmware version*"
                       disabled
                     />
                   </v-col>
@@ -579,7 +590,12 @@
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-col cols="12" class="d-flex">
+                  <v-col cols="12" md="6" class="d-flex align-end">
+                    <div class="beep-label mb-0"
+                      ><sup>*</sup>{{ $t('disabled_settings') }}</div
+                    >
+                  </v-col>
+                  <v-col cols="12" md="6" class="d-flex">
                     <v-spacer></v-spacer>
                     <v-btn
                       tile

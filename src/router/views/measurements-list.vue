@@ -172,7 +172,7 @@
           </SlideYUpTransition>
         </v-card>
 
-        <v-card v-if="lastSensorDate" outlined class="mt-3">
+        <v-card v-if="lastSensorDate" outlined class="mt-3 mb-3">
           <v-card-title
             :class="
               `measurements-card-title ${
@@ -223,7 +223,7 @@
                   {{ $t('no_chart_data') }}
                 </v-col>
               </v-row>
-              <v-row v-if="measurementData !== null" class="charts mt-6">
+              <v-row v-if="measurementData !== null" class="charts mt-6 mb-3">
                 <v-col v-if="weatherSensorsPresent" cols="12">
                   <div
                     v-if="selectedDevice"
@@ -765,9 +765,10 @@ export default {
             },
             textAnchor: 'start',
             labelInterpolationFnc(value) {
-              if (typeof value !== 'undefined' && unit === 'mbar') {
-                return value + ' ' + unit
-              } else if (typeof value !== 'undefined' && unit === 'kg') {
+              if (
+                typeof value !== 'undefined' &&
+                (unit === 'kg' || unit === 'mbar')
+              ) {
                 return value.toFixed(2) + ' ' + unit
               } else if (typeof value !== 'undefined') {
                 return value.toFixed(1) + ' ' + unit
