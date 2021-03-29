@@ -265,7 +265,15 @@ export default {
         : false
     },
     dateRangeText() {
-      return this.dates.join(' ~ ')
+      if (this.dates.length > 0) {
+        var momentDates = [
+          this.momentShort(this.dates[0]),
+          this.dates[1] !== undefined ? this.momentShort(this.dates[1]) : '',
+        ]
+        return momentDates.join(' ~ ')
+      } else {
+        return this.$i18n.t('selection_placeholder')
+      }
     },
     locale() {
       return this.$i18n.locale
@@ -463,6 +471,11 @@ export default {
         })
 
       return sortedMeasurementTypes
+    },
+    momentShort(date) {
+      return this.$moment(date)
+        .locale(this.locale)
+        .format('ll')
     },
     setInitialDeviceId() {
       if (this.selectedDeviceId === null) {

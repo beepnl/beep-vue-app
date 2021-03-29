@@ -372,7 +372,6 @@ export default {
       interval: 'day',
       timeIndex: 0,
       moduloNumber: 6,
-      periodTitle: '',
       timeFormat: 'ddd D MMM YYYY',
       currentWeatherSensors: {},
       currentSensors: [],
@@ -429,6 +428,36 @@ export default {
         { name: this.$i18n.t('month'), interval: 'month', moduloNumber: 8 },
         { name: this.$i18n.t('year'), interval: 'year', moduloNumber: 11 },
       ]
+    },
+    periodTitle() {
+      var p = this.interval
+      var d = p + 's'
+      var i = this.timeIndex
+      var startTimeFormat = this.timeFormat
+      var endTimeFormat = this.timeFormat
+
+      if (p === 'hour') {
+        endTimeFormat = 'HH:mm'
+        startTimeFormat += ' ' + endTimeFormat
+      } else if (p === 'day') {
+        endTimeFormat = null
+      } else if (p === 'week') {
+        p = 'isoweek'
+      }
+
+      var ep = p
+
+      var pStaTime = this.$moment()
+        .subtract(i, d)
+        .startOf(p)
+      var pEndTime = this.$moment()
+        .subtract(i, d)
+        .endOf(ep)
+
+      var s = pStaTime.locale(this.locale).format(startTimeFormat)
+      var e = pEndTime.locale(this.locale).format(endTimeFormat)
+
+      return s + '' + (endTimeFormat !== null ? ' - ' + e : '')
     },
     selectedDevice() {
       return (
@@ -839,7 +868,6 @@ export default {
       }
     },
     loadData() {
-      this.setDataTitle()
       this.loadLastSensorValuesTimer()
       this.sensorMeasurementRequest(this.interval)
     },
@@ -890,36 +918,6 @@ export default {
           .replace(currentYearEsPt, '')
           .replace(' ' + currentYear, '') // Remove year hardcoded per language, currently no other way to get rid of year whilst keeping localized time
       }
-    },
-    setDataTitle() {
-      var p = this.interval
-      var d = p + 's'
-      var i = this.timeIndex
-      var startTimeFormat = this.timeFormat
-      var endTimeFormat = this.timeFormat
-
-      if (p === 'hour') {
-        endTimeFormat = 'HH:mm'
-        startTimeFormat += ' ' + endTimeFormat
-      } else if (p === 'day') {
-        endTimeFormat = null
-      } else if (p === 'week') {
-        p = 'isoweek'
-      }
-
-      var ep = p
-
-      var pStaTime = this.$moment()
-        .subtract(i, d)
-        .startOf(p)
-      var pEndTime = this.$moment()
-        .subtract(i, d)
-        .endOf(ep)
-
-      var s = pStaTime.locale(this.locale).format(startTimeFormat)
-      var e = pEndTime.locale(this.locale).format(endTimeFormat)
-
-      this.periodTitle = s + '' + (endTimeFormat !== null ? ' - ' + e : '')
     },
     setInitialDeviceId() {
       if (this.$route.name === 'measurements-id') {
