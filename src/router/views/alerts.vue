@@ -158,14 +158,6 @@ export default {
           hiveGroupName = this.hives[alert.hive_id].group_name
         }
         alert.hive_group_name = hiveGroupName
-        var ruleExists = this.alertRules.filter(
-          (alertRule) => alertRule.id === alert.alert_rule_id
-        )
-        var ruleName = 'unknown rule'
-        if (ruleExists.length > 0) {
-          ruleName = ruleExists[0].name
-        }
-        alert.rule_name = ruleName
       })
 
       var sortedAlerts = alertsWithRuleDetails.slice().sort(function(a, b) {
@@ -350,7 +342,7 @@ export default {
           this.$i18n.t('remove_alert'),
           this.$i18n.t('remove_alert') +
             ' (' +
-            alert.rule_name +
+            alert.alert_rule_name +
             ', ' +
             this.$i18n.t('Date').toLowerCase() +
             ': ' +

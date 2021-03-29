@@ -146,7 +146,7 @@
                   sm="3"
                   class="alert-details-item d-flex flex-column align-start  pa-0"
                 >
-                  <div v-if="alert.rule_name" class="alert-content-item">
+                  <div v-if="alert.alert_rule_name" class="alert-content-item">
                     <div
                       class="d-flex flex-no-wrap justify-flex-start align-start mr-2"
                     >
@@ -157,7 +157,7 @@
                       </div>
                       <span
                         class="alert-label alert-label-break"
-                        v-text="alert.rule_name"
+                        v-text="alert.alert_rule_name"
                       >
                       </span>
                     </div>
@@ -236,7 +236,7 @@
               >{{ $t('edit') + ' ' + $tc('alertrule', 1) }}
             </v-list-item-title>
             <v-list-item-subtitle>
-              {{ alert.rule_name }}
+              {{ alert.alert_rule_name }}
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>

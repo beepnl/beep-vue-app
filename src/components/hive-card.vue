@@ -14,45 +14,28 @@
     "
     outlined
   >
-    <v-row v-if="!apiaryView" class="ml-0 mt-0 mb-3 mr-2">
+    <v-row v-if="!apiaryView" class="ml-0 mt-0 mb-3 pr-3">
       <h4
         v-if="gridView"
-        class="hive-name mb-3"
-        v-text="
-          `
-      ${hive.name.length < 25 ? hive.name : hive.name.substring(0, 25) + '...'}
-      `
-        "
+        class="hive-name truncate mb-3"
+        style="max-width: 150px;"
+        v-text="hive.name"
       >
       </h4>
-      <div
-        v-if="listView && hiveSet.users && hiveSet.users.length"
-        class="d-flex flex-row"
-      >
+      <div v-if="listView" class="d-flex flex-row">
         <h4
-          class="hive-name mb-3"
-          v-text="
-            `${
-              hive.name.length < 35
-                ? hive.name
-                : hive.name.substring(0, 35) + '...'
-            }`
-          "
+          class="hive-name truncate mb-3"
+          style="max-width: 205px;"
+          v-text="hive.name"
         >
         </h4>
-        <pre class="caption hive-name-caption" v-text="` (${hive.location})`">
+        <pre
+          v-if="hiveSet.users && hiveSet.users.length"
+          class="caption hive-name-caption"
+          v-text="` (${hive.location})`"
+        >
         </pre>
       </div>
-      <h4
-        v-if="listView && !hiveSet.users"
-        class="hive-name mb-3"
-        v-text="
-          `
-      ${hive.name.length < 50 ? hive.name : hive.name.substring(0, 50) + '...'}
-      `
-        "
-      >
-      </h4>
     </v-row>
 
     <div class="hive-details d-flex flex-no-wrap justify-flex-start align-end">
@@ -330,30 +313,6 @@
         </div>
 
         <div
-          v-if="hive.notes"
-          class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
-        >
-          <div class="mr-2 my-0">
-            <router-link :to="inspectLink(true)">
-              <v-icon class="orange--text">
-                mdi-pencil-circle
-              </v-icon>
-            </router-link>
-          </div>
-          <span
-            v-if="hive.notes && listView"
-            v-text="
-              `${
-                hive.notes.length < 22
-                  ? hive.notes
-                  : hive.notes.substring(0, 22) + '...'
-              }`
-            "
-          >
-          </span>
-        </div>
-
-        <div
           v-if="hive.reminder || hive.reminder_date"
           class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
         >
@@ -396,13 +355,9 @@
           </span>
           <span
             v-if="hive.reminder && listView"
-            v-text="
-              `${
-                hive.reminder.length < 22
-                  ? hive.reminder
-                  : hive.reminder.substring(0, 22) + '...'
-              }`
-            "
+            class="truncate"
+            style="max-width: 164px;"
+            v-text="hive.reminder"
           >
           </span>
         </div>
@@ -467,25 +422,32 @@
           v-else-if="alerts.length > 0"
           class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
         >
-          <router-link
-            :to="{
-              name: 'alerts',
-              query: { search: hive.name },
-            }"
-          >
-            <v-badge
-              v-if="alerts.length > 1"
-              :offset-x="alerts.length > 9 ? '23' : '20'"
-              offset-y="20"
-              color="transparent"
-              :content="alerts.length > 99 ? '99' : alerts.length"
+          <div class="mr-2 my-0">
+            <router-link
+              :to="{
+                name: 'alerts',
+                query: { search: hive.name },
+              }"
             >
-              <v-icon color="red">mdi-bell</v-icon>
-            </v-badge>
-            <v-icon v-else color="red">
-              mdi-bell
-            </v-icon>
-          </router-link>
+              <v-badge
+                v-if="alerts.length > 1"
+                :offset-x="alerts.length > 9 ? '23' : '20'"
+                offset-y="20"
+                color="transparent"
+                :content="alerts.length > 99 ? '99' : alerts.length"
+              >
+                <v-icon color="red">mdi-bell</v-icon>
+              </v-badge>
+              <v-icon v-else color="red">
+                mdi-bell
+              </v-icon>
+            </router-link>
+          </div>
+          <span
+            class="truncate"
+            style="max-width: 224px;"
+            v-text="alertRuleNamesText"
+          ></span>
         </div>
       </div>
     </div>
@@ -536,6 +498,14 @@ export default {
     x: 0,
     y: 0,
   }),
+  computed: {
+    alertRuleNamesText() {
+      var alertRuleNames = this.alerts.map((alert) => {
+        return alert.alert_rule_name
+      })
+      return alertRuleNames.join(', ')
+    },
+  },
   methods: {
     confirmDeleteHive(hive) {
       this.$emit('confirm-delete-hive', hive)
