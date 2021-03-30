@@ -266,6 +266,95 @@
 
       <div v-if="!apiaryView" class="hive-details-icons-text pl-2 pr-0 py-0">
         <div
+          v-if="hive.sensors.length !== 0 && alerts.length === 0"
+          class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
+        >
+          <router-link
+            :to="{
+              name: 'measurements-id',
+              params: { id: hive.sensors[0] },
+            }"
+          >
+            <div class="mr-2 my-0">
+              <v-sheet class="beep-icon beep-icon-sensors color-green">
+              </v-sheet>
+            </div>
+          </router-link>
+        </div>
+        <div
+          v-else-if="alerts.length > 0"
+          class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
+        >
+          <div class="mr-2 my-0">
+            <router-link
+              :to="{
+                name: 'alerts',
+                query: { search: hive.name },
+              }"
+            >
+              <v-badge
+                v-if="alerts.length > 1"
+                :offset-x="alerts.length > 9 ? '23' : '20'"
+                offset-y="20"
+                color="transparent"
+                :content="alerts.length > 99 ? '99' : alerts.length"
+              >
+                <v-icon color="red">mdi-bell</v-icon>
+              </v-badge>
+              <v-icon v-else color="red">
+                mdi-bell
+              </v-icon>
+            </router-link>
+          </div>
+          <span
+            v-if="listView"
+            class="truncate"
+            style="max-width: 224px;"
+            v-text="alertRuleNamesText"
+          ></span>
+        </div>
+
+        <div
+          v-if="hive.queen !== null"
+          class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
+        >
+          <div class="mr-2 my-0">
+            <router-link
+              v-if="hive.editable"
+              :to="{
+                name: `queen-edit`,
+                params: { id: hive.id },
+                query: { queenEdit: true },
+              }"
+            >
+              <v-sheet
+                :class="
+                  `beep-icon beep-icon-queen  ${
+                    darkIconColor(hive.queen.color) ? 'dark' : ''
+                  }`
+                "
+                :color="hive.queen.color"
+              >
+              </v-sheet>
+            </router-link>
+            <v-sheet
+              v-else
+              :class="
+                `beep-icon beep-icon-queen  ${
+                  darkIconColor(hive.queen.color) ? 'dark' : ''
+                }`
+              "
+              :color="hive.queen.color"
+            >
+            </v-sheet>
+          </div>
+          <span
+            v-if="hive.queen.name && listView"
+            v-text="hive.queen.name"
+          ></span>
+        </div>
+
+        <div
           class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
         >
           <div class="mr-2 my-0">
@@ -276,7 +365,7 @@
               >
                 mdi-pencil-circle
               </v-icon>
-              <v-icon v-if="hive.attention" class="red--text mr-1">
+              <v-icon v-if="hive.attention" class="red--text">
                 mdi-clipboard-alert-outline
               </v-icon>
               <v-icon v-if="hive.impression === 1" class="red--text">
@@ -308,6 +397,26 @@
               } mr-2 last-visit`
             "
             v-text="lastVisit(hive)"
+          >
+          </span>
+        </div>
+
+        <div
+          v-if="hive.notes"
+          class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
+        >
+          <div class="mr-2 my-0">
+            <router-link :to="inspectLink(true)">
+              <v-icon>
+                mdi-pencil-circle
+              </v-icon>
+            </router-link>
+          </div>
+          <span
+            v-if="hive.notes && listView"
+            class="truncate"
+            style="max-width: 224px;"
+            v-text="hive.notes"
           >
           </span>
         </div>
@@ -361,94 +470,6 @@
           >
           </span>
         </div>
-
-        <div
-          v-if="hive.queen !== null"
-          class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
-        >
-          <div class="mr-2 my-0">
-            <router-link
-              v-if="hive.editable"
-              :to="{
-                name: `queen-edit`,
-                params: { id: hive.id },
-                query: { queenEdit: true },
-              }"
-            >
-              <v-sheet
-                :class="
-                  `beep-icon beep-icon-queen  ${
-                    darkIconColor(hive.queen.color) ? 'dark' : ''
-                  }`
-                "
-                :color="hive.queen.color"
-              >
-              </v-sheet>
-            </router-link>
-            <v-sheet
-              v-else
-              :class="
-                `beep-icon beep-icon-queen  ${
-                  darkIconColor(hive.queen.color) ? 'dark' : ''
-                }`
-              "
-              :color="hive.queen.color"
-            >
-            </v-sheet>
-          </div>
-          <span
-            v-if="hive.queen.name && listView"
-            v-text="hive.queen.name"
-          ></span>
-        </div>
-
-        <div
-          v-if="hive.sensors.length !== 0 && alerts.length === 0"
-          class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
-        >
-          <router-link
-            :to="{
-              name: 'measurements-id',
-              params: { id: hive.sensors[0] },
-            }"
-          >
-            <div class="mr-2 my-0">
-              <v-sheet class="beep-icon beep-icon-sensors color-green">
-              </v-sheet>
-            </div>
-          </router-link>
-        </div>
-        <div
-          v-else-if="alerts.length > 0"
-          class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
-        >
-          <div class="mr-2 my-0">
-            <router-link
-              :to="{
-                name: 'alerts',
-                query: { search: hive.name },
-              }"
-            >
-              <v-badge
-                v-if="alerts.length > 1"
-                :offset-x="alerts.length > 9 ? '23' : '20'"
-                offset-y="20"
-                color="transparent"
-                :content="alerts.length > 99 ? '99' : alerts.length"
-              >
-                <v-icon color="red">mdi-bell</v-icon>
-              </v-badge>
-              <v-icon v-else color="red">
-                mdi-bell
-              </v-icon>
-            </router-link>
-          </div>
-          <span
-            class="truncate"
-            style="max-width: 224px;"
-            v-text="alertRuleNamesText"
-          ></span>
-        </div>
       </div>
     </div>
   </v-card>
@@ -500,10 +521,13 @@ export default {
   }),
   computed: {
     alertRuleNamesText() {
-      var alertRuleNames = this.alerts.map((alert) => {
-        return alert.alert_rule_name
+      var uniqueAlertRuleNames = []
+      this.alerts.map((alert) => {
+        if (uniqueAlertRuleNames.indexOf(alert.alert_rule_name) === -1) {
+          uniqueAlertRuleNames.push(alert.alert_rule_name)
+        }
       })
-      return alertRuleNames.join(', ')
+      return uniqueAlertRuleNames.join(', ')
     },
   },
   methods: {

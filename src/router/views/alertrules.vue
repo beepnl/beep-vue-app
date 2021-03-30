@@ -45,8 +45,9 @@
           <v-row>
             <v-col
               cols="12"
-              lg="10"
-              class="d-flex justify-start align-start pb-0 mb-lg-3"
+              sm="8"
+              md="10"
+              class="d-flex justify-start align-start mb-n4 mb-sm-0"
             >
               <v-icon
                 class="mdi mdi-information icon-info cursor-pointer mr-2"
@@ -55,7 +56,7 @@
                 color="primary"
                 @click="showExplanation = !showExplanation"
               ></v-icon>
-              <p v-if="showExplanation && ready" class="mt-n1 mb-0">
+              <p v-if="showExplanation && ready" class="beep-label mt-n1 mb-2">
                 <em>{{
                   $t('alert_explanation_1') + ' ' + $t('alert_explanation_2')
                 }}</em>
@@ -63,8 +64,9 @@
             </v-col>
             <v-col
               cols="12"
-              lg="2"
-              class="d-flex justify-end align-center mb-3"
+              sm="4"
+              md="2"
+              class="d-flex justify-end align-end mb-3"
             >
               <v-menu offset-y>
                 <template v-slot:activator="{ on, attrs }">
@@ -400,8 +402,7 @@ export default {
 }
 
 .alertrules-content {
-  margin-top: 52px;
-  overflow: hidden;
+  margin-top: 40px;
 }
 
 .alertrules-title-row {
