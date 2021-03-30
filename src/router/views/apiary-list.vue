@@ -101,21 +101,21 @@
           </div>
           <v-card-actions class="view-buttons mr-n1 mr-sm-0">
             <v-icon
-              :class="`${apiaryView ? 'color-primary' : ''} mr-sm-2`"
-              @click="toggleGrid('apiaryView')"
+              :class="`${xsView ? 'color-primary' : ''} mr-sm-2`"
+              @click="toggleGrid('xsView')"
             >
               mdi-size-xs
             </v-icon>
             <v-icon
               v-if="!mobile"
-              :class="`${gridView ? 'color-primary' : ''} mr-2`"
-              @click="toggleGrid('gridView')"
+              :class="`${mView ? 'color-primary' : ''} mr-2`"
+              @click="toggleGrid('mView')"
             >
               mdi-size-m
             </v-icon>
             <v-icon
-              :class="`${listView ? 'color-primary' : ''}`"
-              @click="toggleGrid('listView')"
+              :class="`${xlView ? 'color-primary' : ''}`"
+              @click="toggleGrid('xlView')"
             >
               mdi-size-xl
             </v-icon>
@@ -137,7 +137,7 @@
         v-for="invitation in invitations"
         :key="'Invitation ' + invitation.id"
         :class="
-          `hive-set ${apiaryView ? 'apiary-view' : ''} ${
+          `hive-set ${xsView ? 'xs-view' : ''} ${
             showApiaryPlaceholder ? 'mt-2' : ''
           }`
         "
@@ -299,7 +299,7 @@
       <v-row
         v-for="hiveSet in filteredHiveSets"
         :key="'hiveSet ' + hiveSet.name + ' ' + hiveSet.id"
-        :class="`hive-set ${apiaryView ? 'apiary-view' : ''}`"
+        :class="`hive-set ${xsView ? 'xs-view' : ''}`"
         dense
       >
         <div
@@ -333,7 +333,7 @@
 
           <h4 v-text="hiveSet.name"></h4>
           <pre
-            v-if="listView && hiveSet.users && hiveSet.users.length"
+            v-if="xlView && hiveSet.users && hiveSet.users.length"
             class="caption hive-set-caption"
             v-text="
               ` (${hiveSet.users.length} ${$tc(
@@ -565,9 +565,7 @@
             :key="'Hive ' + hive.id"
             sm="auto"
             :class="
-              `hive-item ${listView ? 'list-view' : ''} ${
-                apiaryView ? 'apiary-view' : ''
-              }`
+              `hive-item ${xlView ? 'xl-view' : ''} ${xsView ? 'xs-view' : ''}`
             "
           >
             <HiveCard
@@ -575,9 +573,9 @@
               :hive="hive"
               :hive-set="hiveSet"
               :alerts="alertsPerHive(hive.id)"
-              :list-view="listView"
-              :grid-view="gridView"
-              :apiary-view="apiaryView"
+              :xl-view="xlView"
+              :m-view="mView"
+              :xs-view="xsView"
               @confirm-delete-hive="confirmDeleteHive($event)"
             ></HiveCard>
           </v-col>
@@ -629,9 +627,9 @@ export default {
       timeout: 2000,
       text: 'notification',
     },
-    listView: true,
-    gridView: false,
-    apiaryView: false,
+    xlView: true,
+    mView: false,
+    xsView: false,
     settings: [],
     showLoadingIconForId: null,
     showApiaryPlaceholder: false,
@@ -919,22 +917,22 @@ export default {
     },
   },
   mounted() {
-    if (localStorage.listView) {
-      this.listView = localStorage.listView === 'true'
-      if (this.listView) {
-        this.$store.commit('locations/setApiaryListView', 'listView')
+    if (localStorage.xlView) {
+      this.xlView = localStorage.xlView === 'true'
+      if (this.xlView) {
+        this.$store.commit('locations/setHiveView', 'xlView')
       }
     }
-    if (localStorage.gridView) {
-      this.gridView = localStorage.gridView === 'true'
-      if (this.gridView) {
-        this.$store.commit('locations/setApiaryListView', 'gridView')
+    if (localStorage.mView) {
+      this.mView = localStorage.mView === 'true'
+      if (this.mView) {
+        this.$store.commit('locations/setHiveView', 'mView')
       }
     }
-    if (localStorage.apiaryView) {
-      this.apiaryView = localStorage.apiaryView === 'true'
-      if (this.apiaryView) {
-        this.$store.commit('locations/setApiaryListView', 'apiaryView')
+    if (localStorage.xsView) {
+      this.xsView = localStorage.xsView === 'true'
+      if (this.xsView) {
+        this.$store.commit('locations/setHiveView', 'xsView')
       }
     }
   },
@@ -1214,29 +1212,29 @@ export default {
       return sortedHives
     },
     toggleGrid(view) {
-      if (view === 'listView') {
-        localStorage.listView = 'true'
-        this.listView = true
-        localStorage.gridView = 'false'
-        this.gridView = false
-        localStorage.apiaryView = 'false'
-        this.apiaryView = false
-      } else if (view === 'gridView') {
-        localStorage.gridView = 'true'
-        this.gridView = true
-        localStorage.listView = 'false'
-        this.listView = false
-        localStorage.apiaryView = 'false'
-        this.apiaryView = false
-      } else if (view === 'apiaryView') {
-        localStorage.apiaryView = 'true'
-        this.apiaryView = true
-        localStorage.listView = 'false'
-        this.listView = false
-        localStorage.gridView = 'false'
-        this.gridView = false
+      if (view === 'xlView') {
+        localStorage.xlView = 'true'
+        this.xlView = true
+        localStorage.mView = 'false'
+        this.mView = false
+        localStorage.xsView = 'false'
+        this.xsView = false
+      } else if (view === 'mView') {
+        localStorage.mView = 'true'
+        this.mView = true
+        localStorage.xlView = 'false'
+        this.xlView = false
+        localStorage.xsView = 'false'
+        this.xsView = false
+      } else if (view === 'xsView') {
+        localStorage.xsView = 'true'
+        this.xsView = true
+        localStorage.xlView = 'false'
+        this.xlView = false
+        localStorage.mView = 'false'
+        this.mView = false
       }
-      this.$store.commit('locations/setApiaryListView', view)
+      this.$store.commit('locations/setHiveView', view)
     },
   },
 }
@@ -1292,10 +1290,10 @@ export default {
   .hive-item {
     flex-grow: 0 !important;
     padding: 4px;
-    &.apiary-view {
+    &.xs-view {
       padding: 0 !important;
     }
-    &.list-view {
+    &.xl-view {
       @include xs-only {
         flex-grow: 1 !important;
         min-width: 100%;

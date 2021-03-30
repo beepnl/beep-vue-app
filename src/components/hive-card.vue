@@ -2,7 +2,7 @@
   <v-card
     :class="
       `hive-card d-flex flex-column justify-end align-start ${
-        apiaryView ? 'apiary-view' : ''
+        xsView ? 'xs-view' : ''
       }`
     "
     :style="
@@ -14,15 +14,15 @@
     "
     outlined
   >
-    <v-row v-if="!apiaryView" class="ml-0 mt-0 mb-3 pr-3">
+    <v-row v-if="!xsView" class="ml-0 mt-0 mb-3 pr-3">
       <h4
-        v-if="gridView"
+        v-if="mView"
         class="hive-name truncate mb-3"
         style="max-width: 150px;"
         v-text="hive.name"
       >
       </h4>
-      <div v-if="listView" class="d-flex flex-row">
+      <div v-if="xlView" class="d-flex flex-row">
         <h4
           class="hive-name truncate mb-3"
           style="max-width: 205px;"
@@ -41,9 +41,9 @@
     <div class="hive-details d-flex flex-no-wrap justify-flex-start align-end">
       <div class="hive-icon-wrapper d-flex flex-column align-center">
         <div
-          v-if="apiaryView"
+          v-if="xsView"
           :class="
-            `red--text apiary-view-alert ${
+            `d-flex flex-row justify-center red--text xs-view-alert ${
               hasLayer('queen_excluder') ? 'mr-1' : ''
             }`
           "
@@ -66,18 +66,25 @@
               query: { search: hive.name },
             }"
           >
-            <v-badge
-              v-if="alerts.length > 1"
-              :offset-x="alerts.length > 9 ? '23' : '20'"
-              offset-y="20"
-              color="transparent"
-              :content="alerts.length > 99 ? '99' : alerts.length"
-            >
-              <v-icon color="red">mdi-bell</v-icon>
-            </v-badge>
-            <v-icon v-else color="red">
-              mdi-bell
-            </v-icon>
+            <v-tooltip bottom max-width="60%">
+              <template v-slot:activator="{ on, attrs }">
+                <div v-bind="attrs" v-on="on">
+                  <v-badge
+                    v-if="alerts.length > 1"
+                    :offset-x="alerts.length > 9 ? '23' : '20'"
+                    offset-y="20"
+                    color="transparent"
+                    :content="alerts.length > 99 ? '99' : alerts.length"
+                  >
+                    <v-icon color="red">mdi-bell</v-icon>
+                  </v-badge>
+                  <v-icon v-else color="red">
+                    mdi-bell
+                  </v-icon>
+                </div>
+              </template>
+              <span v-text="alertRuleNamesText"> </span>
+            </v-tooltip>
           </router-link>
         </div>
 
@@ -230,18 +237,6 @@
                     >
                   </v-list-item-content>
                 </v-list-item>
-
-                <!-- <v-list-item v-if="hive.owner">
-                  <v-list-item-icon class="mr-3">
-                    <v-icon>mdi-account-multiple-plus</v-icon>
-                  </v-list-item-icon>
-
-                  <v-list-item-content>
-                    <v-list-item-title
-                      >{{ $t('share') }} {{ $tc('hive', 1) }}</v-list-item-title
-                    >
-                  </v-list-item-content>
-                </v-list-item> -->
               </v-list-item-group>
 
               <v-divider v-if="hive.owner" class="my-1"></v-divider>
@@ -264,7 +259,7 @@
         </v-overlay>
       </div>
 
-      <div v-if="!apiaryView" class="hive-details-icons-text pl-2 pr-0 py-0">
+      <div v-if="!xsView" class="hive-details-icons-text pl-2 pr-0 py-0">
         <div
           v-if="hive.sensors.length !== 0 && alerts.length === 0"
           class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
@@ -292,22 +287,44 @@
                 query: { search: hive.name },
               }"
             >
-              <v-badge
-                v-if="alerts.length > 1"
-                :offset-x="alerts.length > 9 ? '23' : '20'"
-                offset-y="20"
-                color="transparent"
-                :content="alerts.length > 99 ? '99' : alerts.length"
-              >
-                <v-icon color="red">mdi-bell</v-icon>
-              </v-badge>
-              <v-icon v-else color="red">
-                mdi-bell
-              </v-icon>
+              <div v-if="xlView">
+                <v-badge
+                  v-if="alerts.length > 1"
+                  :offset-x="alerts.length > 9 ? '23' : '20'"
+                  offset-y="20"
+                  color="transparent"
+                  :content="alerts.length > 99 ? '99' : alerts.length"
+                >
+                  <v-icon color="red">mdi-bell</v-icon>
+                </v-badge>
+                <v-icon v-else color="red">
+                  mdi-bell
+                </v-icon>
+              </div>
+
+              <v-tooltip v-if="mView" bottom max-width="60%">
+                <template v-slot:activator="{ on, attrs }">
+                  <div v-bind="attrs" v-on="on">
+                    <v-badge
+                      v-if="alerts.length > 1"
+                      :offset-x="alerts.length > 9 ? '23' : '20'"
+                      offset-y="20"
+                      color="transparent"
+                      :content="alerts.length > 99 ? '99' : alerts.length"
+                    >
+                      <v-icon color="red">mdi-bell</v-icon>
+                    </v-badge>
+                    <v-icon v-else color="red">
+                      mdi-bell
+                    </v-icon>
+                  </div>
+                </template>
+                <span v-text="alertRuleNamesText"> </span>
+              </v-tooltip>
             </router-link>
           </div>
           <span
-            v-if="listView"
+            v-if="xlView"
             class="truncate"
             style="max-width: 224px;"
             v-text="alertRuleNamesText"
@@ -349,7 +366,7 @@
             </v-sheet>
           </div>
           <span
-            v-if="hive.queen.name && listView"
+            v-if="hive.queen.name && xlView"
             v-text="hive.queen.name"
           ></span>
         </div>
@@ -390,7 +407,7 @@
             </router-link>
           </div>
           <span
-            v-if="listView"
+            v-if="xlView"
             :class="
               `${
                 hive.last_inspection_date !== null ? '' : 'color-grey'
@@ -413,7 +430,7 @@
             </router-link>
           </div>
           <span
-            v-if="hive.notes && listView"
+            v-if="hive.notes && xlView"
             class="truncate"
             style="max-width: 224px;"
             v-text="hive.notes"
@@ -463,7 +480,7 @@
           >
           </span>
           <span
-            v-if="hive.reminder && listView"
+            v-if="hive.reminder && xlView"
             class="truncate"
             style="max-width: 164px;"
             v-text="hive.reminder"
@@ -491,15 +508,15 @@ export default {
       default: null,
       required: true,
     },
-    listView: {
+    xlView: {
       type: Boolean,
       default: false,
     },
-    gridView: {
+    mView: {
       type: Boolean,
       default: false,
     },
-    apiaryView: {
+    xsView: {
       type: Boolean,
       default: false,
     },
@@ -582,7 +599,7 @@ export default {
     padding: 10px;
     font-size: 0.8125rem !important;
   }
-  &.apiary-view {
+  &.xs-view {
     padding: 0 !important;
     border: none !important;
   }
@@ -600,7 +617,7 @@ export default {
   }
 
   .hive-details {
-    .apiary-view-alert {
+    .xs-view-alert {
       margin-bottom: 2px;
     }
 

@@ -45,9 +45,8 @@
           <v-row>
             <v-col
               cols="12"
-              sm="8"
-              md="10"
-              class="d-flex justify-start align-start mb-n4 mb-sm-0"
+              lg="9"
+              class="d-flex justify-start align-start mb-n4 mb-lg-0"
             >
               <v-icon
                 class="mdi mdi-information icon-info cursor-pointer mr-2"
@@ -62,12 +61,7 @@
                 }}</em>
               </p>
             </v-col>
-            <v-col
-              cols="12"
-              sm="4"
-              md="2"
-              class="d-flex justify-end align-end mb-3"
-            >
+            <v-col cols="12" lg="3" class="d-flex justify-end align-end mb-3">
               <v-menu offset-y>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn

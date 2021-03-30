@@ -4,7 +4,7 @@
       `hive-icon d-flex flex-column justify-center align-center white--text text--small mr-1 ${
         hasLayer('queen_excluder') ? 'has-queen-excluder' : ''
       } ${hasLayer('feeding_box') ? 'has-feeding-box' : ''} ${
-        apiaryView || diaryView ? 'apiary-view' : ''
+        xsView || diaryView ? 'xs-view' : ''
       }`
     "
     height="auto"
@@ -43,9 +43,9 @@ export default {
     },
   },
   computed: {
-    ...mapGetters('locations', ['apiaryListView']),
-    apiaryView() {
-      if (this.apiaryListView === 'apiaryView') {
+    ...mapGetters('locations', ['hiveView']),
+    xsView() {
+      if (this.hiveView === 'xsView') {
         return true
       }
       return false
@@ -65,7 +65,7 @@ export default {
       return this.hive.layers.some((layer) => layer.type === type)
     },
     hiveWidth: function(hive) {
-      if (this.apiaryView || this.diaryView) {
+      if (this.xsView || this.diaryView) {
         return hive.layers[0].framecount * 3.5
       } else {
         return hive.layers[0].framecount * 6
@@ -113,7 +113,7 @@ export default {
     width: 100%;
     height: 100%;
   }
-  &.apiary-view {
+  &.xs-view {
     margin-right: 0 !important;
     &.has-feeding-box {
       margin-top: 12px;

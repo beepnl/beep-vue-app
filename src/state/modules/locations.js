@@ -6,7 +6,7 @@ const resource = createResource({ path: 'locations' })
 export const state = {
   ...resource.state,
   apiaries: [],
-  apiaryListView: 'listView',
+  hiveView: 'xlView',
   apiaryEdited: false,
   hiveSearch: null,
   hiveFilterByAlert: false,
@@ -20,8 +20,8 @@ export const getters = {
   apiaries: (state) => {
     return state.apiaries
   },
-  apiaryListView: (state) => {
-    return state.apiaryListView
+  hiveView: (state) => {
+    return state.hiveView
   },
   apiaryEdited: (state) => {
     return state.apiaryEdited
@@ -53,8 +53,8 @@ export const mutations = {
   setApiaryEdited: function(state, bool) {
     state.apiaryEdited = bool
   },
-  setApiaryListView: function(state, string) {
-    state.apiaryListView = string
+  setHiveView: function(state, string) {
+    state.hiveView = string
   },
   setData: function(state, payload) {
     state[payload.prop] = payload.value
@@ -78,7 +78,7 @@ export const mutations = {
   },
   resetState: function(state) {
     state.apiaries = []
-    state.apiaryListView = 'listView'
+    state.hiveView = 'xlView'
     state.apiaryEdited = false
     state.hiveSearch = null
     state.hiveFilterByAlert = false
