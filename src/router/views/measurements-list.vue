@@ -352,6 +352,7 @@ import 'chartist/dist/chartist.min.css'
 import { readDevicesIfNotPresent } from '@mixins/readDevicesMixin'
 import { sensorMixin } from '@mixins/sensorMixin'
 import { SlideYUpTransition } from 'vue2-transitions'
+import '@plugins/chartist-plugin-beep.js'
 import '@plugins/chartist-plugin-legend-beep.js'
 import 'chartist-plugin-pointlabels'
 import 'chartist-plugin-tooltips-updated'
@@ -678,7 +679,7 @@ export default {
         labels: [],
         series: [
           {
-            className: 'ct-series-' + this.SENSOR_COLOR[quantity],
+            color: this.SENSOR_COLOR[quantity],
             name:
               this.measurementData.sensorDefinitions[quantity] &&
               this.measurementData.sensorDefinitions[quantity].name !== null
@@ -725,8 +726,7 @@ export default {
         .sort()
         .map((sensorName, index) => {
           data.series.push({
-            className:
-              'ct-series-' + this.SENSOR_COLOR[sensorObject[sensorName]],
+            color: this.SENSOR_COLOR[sensorObject[sensorName]],
             name: sensorName,
             data: [],
           })
@@ -764,20 +764,6 @@ export default {
     },
     chartOptions(unit = '', low = false, sensor) {
       const self = this
-      var legendOptions = {}
-      if (sensor.constructor.name === 'Object') {
-        var classNames = []
-        for (const value of Object.values(sensor)) {
-          classNames.push('ct-series-' + self.SENSOR_COLOR[value])
-        }
-        legendOptions = {
-          classNames: classNames,
-        }
-      } else {
-        legendOptions = {
-          classNames: ['ct-series-' + self.SENSOR_COLOR[sensor]],
-        }
-      }
       return {
         fullWidth: true,
         height: low ? '150px' : '220px',
@@ -786,7 +772,8 @@ export default {
             class: 'beep-tooltip',
             metaIsHTML: true,
           }),
-          this.$chartist.plugins.legendBeep(legendOptions),
+          this.$chartist.plugins.beep(),
+          this.$chartist.plugins.legendBeep(),
           this.$chartist.plugins.ctPointLabels({
             labelOffset: {
               x: 7,
@@ -1114,7 +1101,7 @@ export default {
       }
     }
 
-    li::before {
+    li .ct-legend-square {
       position: absolute !important;
       top: 3px !important;
       left: 0 !important;
@@ -1125,7 +1112,7 @@ export default {
       border-radius: 2px !important;
     }
 
-    li.inactive::before {
+    li.inactive .ct-legend-square {
       background: transparent !important;
     }
 
@@ -1135,37 +1122,9 @@ export default {
       right: 0 !important;
     }
 
-    @each $color in $ct-series-colornames {
-      .ct-series-#{$color} {
-        color: #{$color};
-        &::before {
-          background-color: #{$color};
-          border-color: #{$color};
-        }
-      }
-    }
-
     .ct-legend-inside li {
       display: block;
       margin: 0;
-    }
-  }
-
-  @each $color in $ct-series-colornames {
-    .ct-chart {
-      .ct-legend {
-        .ct-series-#{$color} {
-          color: #{$color};
-          &::before {
-            background-color: #{$color};
-            border-color: #{$color};
-          }
-        }
-      }
-      .ct-series-#{$color} .ct-point,
-      .ct-series-#{$color} .ct-line {
-        stroke: #{$color} !important;
-      }
     }
   }
 }

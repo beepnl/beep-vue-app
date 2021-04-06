@@ -128,7 +128,10 @@
       // Loop through all legends to set each name in a list item.
       legendNames.forEach(function(legend, i) {
         var li = document.createElement('li')
+        var div = document.createElement('div')
+        var span = document.createElement('span')
         li.className = 'ct-series-' + i
+        div.className = 'ct-legend-square'
         // Append specific class to a legend element, if viable classes are given
         if (classNamesViable) {
           li.className += ' ' + options.classNames[i]
@@ -136,8 +139,21 @@
         if (chart.data.series.length === 1) {
           li.className += ' ct-legend--no-pointer'
         }
+
         li.setAttribute('data-legend', i)
-        li.textContent = legend.name || legend
+        li.setAttribute('style', 'color: ' + legend.color + ';')
+        div.setAttribute(
+          'style',
+          'background-color: ' +
+            legend.color +
+            '; border-color: ' +
+            legend.color +
+            ';'
+        )
+
+        span.textContent = legend.name || legend
+        li.appendChild(div)
+        li.appendChild(span)
         legendElement.appendChild(li)
       })
 
@@ -165,6 +181,11 @@
       if (options.clickable) {
         legendElement.addEventListener('click', function(e) {
           var clickedSeries = e.target
+
+          if (clickedSeries.parentNode.getAttribute('data-legend') !== null) {
+            clickedSeries = clickedSeries.parentNode
+          }
+
           if (
             clickedSeries.parentNode !== legendElement ||
             !clickedSeries.hasAttribute('data-legend')
@@ -205,6 +226,17 @@
               item.classList.remove('inactive')
             })
           }
+
+          // Alternative simple toggle:
+          // if (removedSeriesIndex > -1) {
+          //   // if clicked series is inactive, make it active
+          //   removedSeries.splice(removedSeriesIndex, 1)
+          //   clickedSeries.classList.remove('inactive')
+          // } else {
+          //   // if clicked series is active, make it inactive
+          //   removedSeries.push(clickedSeriesIndex)
+          //   clickedSeries.classList.add('inactive')
+          // }
 
           // Reset the series to original and remove each series that
           // is still removed again, to remain index order.
