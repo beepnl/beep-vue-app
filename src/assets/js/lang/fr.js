@@ -672,6 +672,7 @@ const translations = {
   period: 'Période',
   download: 'Download',
   different_end_start: 'End and start date must differ',
+  later_end_start: 'Start date must be earlier than end date',
   new_email_verification_sent:
     'A message with a verification link has been sent to your new e-mail address. Click the link in the e-mail to confirm your new e-mail address and log in.',
   sensordef_info:

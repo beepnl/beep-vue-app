@@ -68,7 +68,7 @@
           </v-col>
         </v-row>
         <v-row v-if="devices.length > 0">
-          <v-col cols="12" md="9" lg="6">
+          <v-col cols="12" md="8" lg="6">
             <div class="beep-label" v-text="`${$tc('device', 1)}`"></div>
             <Treeselect
               v-if="devices.length > 0"
@@ -83,7 +83,7 @@
               @input="loadMeasurementTypesAvailable"
             />
           </v-col>
-          <v-col cols="12" sm="4" md="3">
+          <v-col cols="12" sm="6" md="4" lg="3">
             <v-menu
               ref="menu"
               v-model="menu"
@@ -116,7 +116,12 @@
                 <v-btn text color="primary" @click="menu = false">
                   {{ $t('Cancel') }}
                 </v-btn>
-                <v-btn text color="primary" @click="$refs.menu.save(dates)">
+                <v-btn
+                  :disabled="invalidDates(dates)"
+                  text
+                  color="primary"
+                  @click="$refs.menu.save(dates)"
+                >
                   {{ $t('ok') }}
                 </v-btn>
               </v-date-picker>
@@ -345,7 +350,12 @@ export default {
       return uniqueApiaries
     },
     requiredRules() {
+      var laterEndDate = true
+      this.dates.length === 2 && this.dates[0] > this.dates[1]
+        ? (laterEndDate = false)
+        : (laterEndDate = true)
       return [
+        (v) => laterEndDate || this.$i18n.t('later_end_start'), // don't allow start date later than end date
         (v) =>
           this.dates[0] !== this.dates[1] ||
           this.$i18n.t('different_end_start'), // don't allow end date identical to start date
@@ -471,6 +481,13 @@ export default {
         })
 
       return sortedMeasurementTypes
+    },
+    invalidDates(dates) {
+      return (
+        (dates.length === 2 && dates[0] > dates[1]) ||
+        dates[0] === dates[1] ||
+        dates.length === 1
+      )
     },
     momentShort(date) {
       return this.$moment(date)
