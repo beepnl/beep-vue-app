@@ -215,7 +215,7 @@
                         id="map"
                         ref="address"
                         classname="autocomplete-field v-input v-input--dense v-text-field v-text-field--outlined"
-                        :placeholder="`${$t('Address')}`"
+                        :placeholder="`${$t('Address_placeholder')}`"
                         @placechanged="getAddressData"
                       >
                       </VueGoogleAutocomplete>
@@ -391,7 +391,7 @@
                       <VueNumericInput
                         v-if="newHive"
                         v-model="newHive.hive_amount"
-                        :min="1"
+                        :min="0"
                         :max="50"
                         @input="setApiaryEdited(true)"
                       >

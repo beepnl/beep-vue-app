@@ -785,6 +785,7 @@ const translations = {
   Current_apiary: 'Huidige bijenstand',
   sensor_key: 'Identificatiecode uniek voor meetsysteem',
   disabled_settings: 'Je kunt deze instellingen niet handmatig aanpassen.',
+  Address_placeholder: 'Straatnaam huisnummer, Stad',
 }
 
 export default translations
