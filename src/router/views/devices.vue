@@ -836,7 +836,7 @@ export default {
           this.updateDevicesInStore()
           this.showLoadingIcon = false
         })
-        // TODO: this.readApiaries() for latest measurement data? Groups as well??
+        this.readApiariesAndGroups() // to update hive.sensors
         return true
       } catch (error) {
         this.showLoadingIcon = false

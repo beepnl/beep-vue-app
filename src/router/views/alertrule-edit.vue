@@ -794,10 +794,14 @@ export default {
         replacedSentence += this.$i18n.t('alertrule_exclude_hives_sentence')
         var hivesArray = []
         alertRule.exclude_hive_ids.map((hiveId) => {
-          hivesArray.push(
-            this.devices.filter((device) => device.hive_id === hiveId)[0]
-              .hive_name
+          var hiveName = hiveId + ' (unknown)'
+          var filteredDevices = this.devices.filter(
+            (device) => device.hive_id === hiveId
           )
+          if (filteredDevices !== undefined && filteredDevices.length > 0) {
+            hiveName = filteredDevices[0].hive_name
+          }
+          hivesArray.push(hiveName)
         })
         replacedSentence = replacedSentence.replace(
           '[exclude_hive_ids]',
