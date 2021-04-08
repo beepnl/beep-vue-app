@@ -98,6 +98,15 @@
     }
   }
 
+  &-note {
+    font-size: 12px;
+    &::before {
+      margin-left: 2px;
+      font-family: 'Material Design Icons';
+      content: '\F0262';
+    }
+  }
+
   &-bv {
     font-size: 15px;
     &::before {

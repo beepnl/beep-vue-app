@@ -205,7 +205,7 @@
                   }"
                 >
                   <v-list-item-icon class="mr-3">
-                    <v-icon>mdi-square-edit-outline</v-icon>
+                    <v-icon>mdi-archive</v-icon>
                   </v-list-item-icon>
 
                   <v-list-item-content>
@@ -380,8 +380,9 @@
                 v-if="hive.last_inspection_date === null"
                 class="color-grey"
               >
-                mdi-pencil-circle
+                mdi-plus-circle
               </v-icon>
+              <!-- <v-sheet v-if="hive.last_inspection_date === null" class="beep-icon beep-icon-note color-grey"> </v-sheet> -->
               <v-icon v-if="hive.attention" class="red--text">
                 mdi-clipboard-alert-outline
               </v-icon>
@@ -424,9 +425,7 @@
         >
           <div class="mr-2 my-0">
             <router-link :to="inspectLink(true)">
-              <v-icon>
-                mdi-pencil-circle
-              </v-icon>
+              <v-sheet class="beep-icon beep-icon-note color-grey"> </v-sheet>
             </router-link>
           </div>
           <span
