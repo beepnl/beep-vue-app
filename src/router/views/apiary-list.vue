@@ -91,6 +91,16 @@
                 </v-sheet>
               </div>
               <v-icon
+                :class="
+                  `icon-apiary-shared mr-2 my-0 ${
+                    filterByGroup ? '' : 'color-grey'
+                  }`
+                "
+                @click="filterByGroup = !filterByGroup"
+              >
+                mdi-account-multiple
+              </v-icon>
+              <v-icon
                 v-if="devices.length > 0"
                 :class="`${filterByAlert ? 'red--text' : 'color-grey'}`"
                 @click="filterByAlert = !filterByAlert"
@@ -710,6 +720,17 @@ export default {
         })
       },
     },
+    filterByGroup: {
+      get() {
+        return this.$store.getters['locations/hiveFilterByGroup']
+      },
+      set(value) {
+        this.$store.commit('locations/setData', {
+          prop: 'hiveFilterByGroup',
+          value,
+        })
+      },
+    },
     filterByImpression: {
       get() {
         return this.$store.getters['locations/hiveFilterByImpression']
@@ -834,12 +855,25 @@ export default {
             return hiveSet
           }
         })
+        .filter((hiveSet) => {
+          if (this.filterByGroup) {
+            if (hiveSet.users !== undefined) {
+              return { ...hiveSet }
+            }
+          } else {
+            // hide groups when filter is off
+            if (hiveSet.users === undefined) {
+              return { ...hiveSet }
+            }
+          }
+        })
 
       if (
         this.hiveSearch !== null ||
         this.filterByAlert ||
         this.filterByAttention ||
         this.filterByBase ||
+        this.filterByGroup ||
         this.filterByImpression.length > 0 ||
         this.filterByReminder
       ) {

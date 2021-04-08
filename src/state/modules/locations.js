@@ -12,6 +12,7 @@ export const state = {
   hiveFilterByAlert: false,
   hiveFilterByAttention: false,
   hiveFilterByBase: false,
+  hiveFilterByGroup: false,
   hiveFilterByImpression: [],
   hiveFilterByReminder: false,
 }
@@ -34,6 +35,9 @@ export const getters = {
   },
   hiveFilterByBase: (state) => {
     return state.hiveFilterByBase
+  },
+  hiveFilterByGroup: (state) => {
+    return state.hiveFilterByGroup
   },
   hiveFilterByImpression: (state) => {
     return state.hiveFilterByImpression
@@ -73,6 +77,7 @@ export const mutations = {
     state.hiveFilterByAlert = false
     state.hiveFilterByAttention = false
     state.hiveFilterByBase = false
+    state.hiveFilterByGroup = false
     state.hiveFilterByImpression = []
     state.hiveFilterByReminder = false
   },
@@ -84,6 +89,7 @@ export const mutations = {
     state.hiveFilterByAlert = false
     state.hiveFilterByAttention = false
     state.hiveFilterByBase = false
+    state.hiveFilterByGroup = false
     state.hiveFilterByImpression = []
     state.hiveFilterByReminder = false
   },

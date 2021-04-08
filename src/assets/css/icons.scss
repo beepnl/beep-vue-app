@@ -214,13 +214,19 @@
   background-color: $color-primary;
   border: 2px solid $color-primary;
   border-radius: 100%;
-  &::before {
-    margin-left: 1px;
-  }
+
   &.color-grey {
     background-color: $color-grey;
     border-color: $color-grey;
   }
+}
+
+.icon-apiary-shared::before {
+  margin-left: 0;
+}
+
+.icon-apiary-owned::before {
+  margin-left: 1px;
 }
 
 .icon-side-arrow {
