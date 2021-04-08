@@ -79,16 +79,24 @@
                   <span
                     class="diary-inspection-text"
                     v-text="
-                      inspection.hive_group_name
+                      inspection.hive_group_name && !inspection.owned_and_group
                         ? inspection.hive_group_name
                         : inspection.hive_location
                     "
                   >
                   </span>
                   <span
-                    v-if="inspection.hive_group_name"
+                    v-if="
+                      inspection.hive_group_name && !inspection.owned_and_group
+                    "
                     class="beep-label"
                     v-text="'(' + inspection.hive_location + ')'"
+                  >
+                  </span>
+                  <span
+                    v-if="diaryFilterByGroup && inspection.owned_and_group"
+                    class="beep-label"
+                    v-text="'(' + inspection.hive_group_name + ')'"
                   >
                   </span>
                 </v-col>
@@ -364,6 +372,7 @@
 
 <script>
 import HiveIcon from '@components/hive-icon.vue'
+import { mapGetters } from 'vuex'
 import { momentMixin } from '@mixins/momentMixin'
 
 export default {
@@ -384,6 +393,7 @@ export default {
     },
   },
   computed: {
+    ...mapGetters('inspections', ['diaryFilterByGroup']),
     mobile() {
       return this.$vuetify.breakpoint.mobile
     },

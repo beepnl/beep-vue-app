@@ -145,7 +145,6 @@
               :hive="hives[inspection.hive_id]"
               @confirm-delete-inspection="confirmDeleteInspection($event)"
             ></DiaryCard>
-
           </v-col>
         </ScaleTransition>
       </v-row>
@@ -274,7 +273,20 @@ export default {
             const location = this.hives[inspection.hive_id].location
             inspection.hive_name = name
             inspection.hive_location = location
-            const groupName = this.hives[inspection.hive_id].group_name || null
+            var groupName = this.hives[inspection.hive_id].group_name || null
+            const isOwnedAndInGroup =
+              this.hives[inspection.hive_id].group_ids.length > 0 &&
+              groupName === null
+            if (isOwnedAndInGroup) {
+              inspection.owned_and_group = true
+              var groupNamesArray = []
+              this.hives[inspection.hive_id].group_ids.map((groupId) => {
+                groupNamesArray.push(
+                  this.groups.filter((group) => group.id === groupId)[0].name
+                )
+              })
+              groupName = groupNamesArray.join(', ')
+            }
             inspection.hive_group_name = groupName
           }
         })
@@ -353,7 +365,10 @@ export default {
             if (inspection.hive_group_name !== null) {
               return inspection
             }
-          } else if (inspection.hive_group_name === null) {
+          } else if (
+            inspection.hive_group_name === null ||
+            inspection.owned_and_group
+          ) {
             // hide hives from groups when filter is off
             return inspection
           }
@@ -502,7 +517,7 @@ export default {
           return true
         })
     },
-        momentify(date) {
+    momentify(date) {
       return this.$moment(date)
         .locale(this.$i18n.locale)
         .format('lll')
