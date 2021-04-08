@@ -113,8 +113,8 @@ export default {
             exact: true,
           },
           {
-            title: this.$i18n.t('diary'),
-            icon: 'mdi-calendar-edit',
+            title: this.$i18n.tc('Inspection', 2),
+            icon: 'mdi-file-document-edit-outline',
             route: 'diary',
             exact: false,
           },
@@ -140,8 +140,8 @@ export default {
             exact: true,
           },
           {
-            title: this.$i18n.t('diary'),
-            icon: 'mdi-calendar-edit',
+            title: this.$i18n.tc('Inspection', 2),
+            icon: 'mdi-file-document-edit-outline',
             route: 'diary',
             exact: true,
           },
