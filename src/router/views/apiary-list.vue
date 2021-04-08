@@ -355,43 +355,6 @@
                 >mdi-cog</v-icon
               >
             </template>
-            <!-- <v-list v-if="!hiveSet.users" dense>
-              <v-list-item-group>
-                <template v-for="(item, index) in apiaryMenu(hiveSet)">
-                  <v-list-item
-                    v-if="
-                      item.title &&
-                        (!item.ownerRequired ||
-                          (item.ownerRequired && hiveSet.owner))
-                    "
-                    :key="`i-${index}`"
-                    :to="item.to"
-                    @click="
-                      item.ownerRequired ? confirmDeleteApiary(hiveSet) : null
-                    "
-                  >
-                    <v-list-item-icon class="mr-3">
-                      <v-icon :class="item.ownerRequired ? 'red--text' : ''">{{
-                        item.icon
-                      }}</v-icon>
-                    </v-list-item-icon>
-
-                    <v-list-item-content>
-                      <v-list-item-title
-                        :class="item.ownerRequired ? 'red--text' : ''"
-                        v-text="item.title"
-                      ></v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-
-                  <v-divider
-                    v-else-if="item.divider && hiveSet.owner"
-                    :key="`d-${index}`"
-                    class="my-1"
-                  ></v-divider>
-                </template>
-              </v-list-item-group>
-            </v-list> -->
 
             <v-list v-if="!hiveSet.users" dense>
               <v-list-item-group>
@@ -424,6 +387,22 @@
                   <v-list-item-content>
                     <v-list-item-title
                       v-text="$t('New') + ' ' + $tc('inspection', 1)"
+                    ></v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item
+                  :to="{
+                    name: 'diary',
+                    query: { search: hiveSet.name },
+                  }"
+                >
+                  <v-list-item-icon class="mr-3">
+                    <v-icon>mdi-magnify</v-icon>
+                  </v-list-item-icon>
+
+                  <v-list-item-content>
+                    <v-list-item-title
+                      v-text="$t('view') + ' ' + $tc('inspection', 2)"
                     ></v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
@@ -515,6 +494,18 @@
                 <v-list-item-content>
                   <v-list-item-title
                     v-text="$t('New') + ' ' + $tc('inspection', 1)"
+                  ></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+
+              <v-list-item @click="setDiaryGroupFilterAndGo(hiveSet.name)">
+                <v-list-item-icon class="mr-3">
+                  <v-icon>mdi-magnify</v-icon>
+                </v-list-item-icon>
+
+                <v-list-item-content>
+                  <v-list-item-title
+                    v-text="$t('view') + ' ' + $tc('inspection', 2)"
                   ></v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
@@ -1190,6 +1181,16 @@ export default {
         this.snackbar.text = this.$i18n.t('something_wrong')
       }
       this.snackbar.show = true
+    },
+    setDiaryGroupFilterAndGo(searchTerm) {
+      this.$store.commit('inspections/setFilter', {
+        filter: 'diaryFilterByGroup',
+        value: true,
+      })
+      this.$router.push({
+        name: 'diary',
+        query: { search: searchTerm },
+      })
     },
     sortedHives(hives) {
       const sortedHives = hives.slice().sort(function(a, b) {
