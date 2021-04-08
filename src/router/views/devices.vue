@@ -272,8 +272,11 @@
                   <v-col cols="12" md="6" class="pb-0 pb-sm-3">
                     <v-text-field
                       v-model="ownedDevice.key"
-                      :label="$t('sensor_key') + '*'"
-                      disabled
+                      :label="
+                        $t('sensor_key') +
+                          (ownedDevice.type === 'beep' ? '*' : '')
+                      "
+                      :disabled="ownedDevice.type === 'beep'"
                     />
                   </v-col>
                   <v-col cols="12" md="6" class="pb-0 pb-sm-3">
@@ -284,8 +287,10 @@
                           ? ownedDevice.hardware_id
                           : '-'
                       "
-                      label="Hardware ID*"
-                      disabled
+                      :label="
+                        'Hardware ID' + (ownedDevice.type === 'beep' ? '*' : '')
+                      "
+                      :disabled="ownedDevice.type === 'beep'"
                     />
                   </v-col>
                   <v-col cols="12" md="6" class="pb-0 pb-sm-3">
@@ -296,8 +301,11 @@
                           ? ownedDevice.firmware_version
                           : '-'
                       "
-                      label="BEEP base firmware version*"
-                      disabled
+                      :label="
+                        'Firmware version' +
+                          (ownedDevice.type === 'beep' ? ' BEEP base*' : '')
+                      "
+                      :disabled="ownedDevice.type === 'beep'"
                     />
                   </v-col>
                   <v-col cols="12" md="6">
@@ -591,7 +599,9 @@
                 </v-row>
                 <v-row>
                   <v-col cols="12" md="6" class="d-flex align-end">
-                    <div class="beep-label mb-0"
+                    <div
+                      v-if="ownedDevice.type === 'beep'"
+                      class="beep-label mb-0"
                       ><sup>*</sup>{{ $t('disabled_settings') }}</div
                     >
                   </v-col>
