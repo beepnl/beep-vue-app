@@ -306,10 +306,10 @@ export default {
       setTimeout(() => {
         return this.readAlertRules().then(() => {
           this.$router.push({
-            name: 'alerts',
+            name: 'alertrules',
           })
         })
-      }, 250) // wait for API to update alertrules
+      }, 150) // wait for API to update alertrules
     },
     getText(item) {
       return item.abbreviation + ' (' + item.pq_name_unit + ')'

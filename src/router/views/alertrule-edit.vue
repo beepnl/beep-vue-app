@@ -684,11 +684,10 @@ export default {
           setTimeout(() => {
             return this.readAlertRules().then(() => {
               this.$router.push({
-                name: 'alerts',
-                // query: { search: this.activeAlertRule.location }, TODO: query to open alertrule section!
+                name: 'alertrules',
               })
             })
-          }, 50) // wait for API to update alertrules
+          }, 150) // wait for API to update alertrules
         } catch (error) {
           if (error.response) {
             console.log('Error: ', error.response)
