@@ -45,7 +45,7 @@
           <v-row>
             <v-col
               cols="12"
-              lg="9"
+              xl="9"
               class="d-flex justify-start align-start mb-n4 mb-lg-0"
             >
               <v-icon
@@ -61,7 +61,7 @@
                 }}</em>
               </p>
             </v-col>
-            <v-col cols="12" lg="3" class="d-flex justify-end align-end mb-3">
+            <v-col cols="12" xl="3" class="d-flex justify-end align-end mb-3">
               <v-menu offset-y>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
