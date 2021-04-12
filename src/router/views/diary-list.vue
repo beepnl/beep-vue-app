@@ -36,6 +36,17 @@
             </v-col>
             <v-card-actions class="pl-0 pl-sm-2">
               <v-icon
+                v-if="groups.length > 0"
+                :class="
+                  `icon-apiary-shared mr-2 my-0 ${
+                    filterByGroup ? '' : 'color-grey'
+                  }`
+                "
+                @click="filterByGroup = !filterByGroup"
+              >
+                mdi-account-multiple
+              </v-icon>
+              <v-icon
                 :class="
                   `${filterByAttention ? 'red--text' : 'color-grey'} mr-2`
                 "
@@ -83,21 +94,11 @@
               >
                 mdi-emoticon-sad
               </v-icon>
-              <v-icon
-                :class="
-                  `icon-apiary-shared mr-2 my-0 ${
-                    filterByGroup ? '' : 'color-grey'
-                  }`
-                "
-                @click="filterByGroup = !filterByGroup"
-              >
-                mdi-account-multiple
-              </v-icon>
             </v-card-actions>
           </div>
           <v-card-actions class="mr-1">
             <v-btn
-              v-if="!mobile"
+              v-if="!mobile && !smallScreen"
               :to="{ name: 'inspect' }"
               medium
               tile
@@ -393,6 +394,12 @@ export default {
         this.generalInspections.length === 0
       )
     },
+    smallScreen() {
+      return (
+        this.$vuetify.breakpoint.width < 910 &&
+        this.$vuetify.breakpoint.width > 500
+      )
+    },
   },
   created() {
     if (
@@ -539,7 +546,7 @@ export default {
     flex-wrap: wrap;
     width: 100%;
     max-width: 1200px;
-    @media (max-width: 849px) {
+    @media (max-width: 909px) {
       max-width: 580px;
     }
   }

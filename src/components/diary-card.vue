@@ -2,21 +2,21 @@
   <v-menu bottom left absolute offset-y>
     <template v-slot:activator="{ on: menu }">
       <v-card class="diary-card" outlined v-on="menu">
-        <div
-          class="d-flex flex-no-wrap justify-flex-start align-start"
-          style="width: 100%;"
-        >
-          <v-row class="ml-0 my-0 pl-0 py-0" style="width:100%;">
+        <div style="width: 100%;">
+          <v-row
+            class="d-flex justify-space-between align-start mx-0"
+            style="width:100%;"
+          >
             <v-col
               cols="12"
               sm="5"
-              class="diary-details-item diary-inspection-meta d-flex flex-row justify-flex-start pa-0"
+              class="diary-details-item diary-inspection-meta d-flex flex-row justify-flex-start pl-0"
             >
-              <v-row class="my-0 pl-3 py-0">
+              <v-row class="">
                 <v-col
                   v-if="inspection.created_at"
                   cols="5"
-                  class="diary-inspection-date-item d-flex flex-column align-start pa-0"
+                  class="diary-inspection-date-item d-flex flex-column align-start"
                 >
                   <div>
                     <span
@@ -35,15 +35,12 @@
 
                 <v-col
                   cols="3"
-                  class="hive-icon-wrapper mt-1 ml-1 ml-md-0 ml-lg-n2 mr-1 mr-md-0 mr-lg-n2 d-flex justify-center align-end pa-0"
+                  class="hive-icon-wrapper d-flex justify-center align-end"
                 >
                   <HiveIcon :hive="hive" :diary-view="true"></HiveIcon>
                 </v-col>
 
-                <v-col
-                  cols="4"
-                  class="d-flex flex-column align-start pa-0 pr-3"
-                >
+                <v-col cols="4" class="d-flex flex-column align-start">
                   <div>
                     <v-tooltip
                       v-if="inspection.hive_name.length >= 15 && !smallScreen"
@@ -66,20 +63,34 @@
                         >
                         </span>
                       </template>
-                      <span class="diary-label" v-text="inspection.hive_name">
+                      <span
+                        class="diary-label"
+                        v-text="
+                          inspection.hive_name +
+                            (diaryFilterByGroup && inspection.owned_and_group
+                              ? ' (' + $t('my_hive') + ')'
+                              : '')
+                        "
+                      >
                       </span>
                     </v-tooltip>
-                    <span
-                      v-else
-                      class="diary-label"
-                      v-text="inspection.hive_name"
-                    >
-                    </span>
+                    <div v-else class="d-flex align-center">
+                      <span class="diary-label" v-text="inspection.hive_name">
+                      </span>
+                      <pre
+                        v-if="diaryFilterByGroup && inspection.owned_and_group"
+                        class="beep-label mb-0"
+                        v-text="' (' + $t('my_hive') + ')'"
+                      >
+                      </pre>
+                    </div>
                   </div>
                   <span
                     class="diary-inspection-text"
                     v-text="
-                      inspection.hive_group_name && !inspection.owned_and_group
+                      (inspection.hive_group_name &&
+                        !inspection.owned_and_group) ||
+                      (diaryFilterByGroup && inspection.owned_and_group)
                         ? inspection.hive_group_name
                         : inspection.hive_location
                     "
@@ -87,33 +98,29 @@
                   </span>
                   <span
                     v-if="
-                      inspection.hive_group_name && !inspection.owned_and_group
+                      (inspection.hive_group_name &&
+                        !inspection.owned_and_group) ||
+                        (diaryFilterByGroup && inspection.owned_and_group)
                     "
                     class="beep-label"
                     v-text="'(' + inspection.hive_location + ')'"
-                  >
-                  </span>
-                  <span
-                    v-if="diaryFilterByGroup && inspection.owned_and_group"
-                    class="beep-label"
-                    v-text="'(' + inspection.hive_group_name + ')'"
                   >
                   </span>
                 </v-col>
               </v-row>
             </v-col>
 
-            <v-col cols="12" sm="7" class="diary-inspection-content pa-0">
-              <v-row class="my-0 py-0 ml-sm-0 mr-sm-n4">
+            <v-col cols="12" sm="7" class="diary-inspection-content pr-0">
+              <v-row class="d-flex justify-start">
                 <v-col
                   cols="12"
                   sm="1"
                   lg="3"
-                  class="diary-details-item d-flex flex-column align-start  pa-0"
+                  class="diary-details-item diary-details-item--padding d-flex flex-column align-start"
                 >
                   <div v-if="inspection.attention" class="diary-content-item">
                     <div
-                      class="d-flex flex-no-wrap justify-flex-start align-center mr-2"
+                      class="d-flex flex-no-wrap justify-flex-start align-center"
                     >
                       <div class="mr-1 my-0">
                         <v-icon class="red--text">
@@ -133,14 +140,14 @@
                   cols="12"
                   sm="5"
                   lg="4"
-                  class="diary-details-item d-flex flex-column align-start pa-0"
+                  class="diary-details-item diary-details-item--padding d-flex flex-column align-start"
                 >
                   <div
                     v-if="inspection.impression || inspection.notes"
                     class="diary-content-item"
                   >
                     <div
-                      class="d-flex flex-no-wrap justify-flex-start align-center mr-2"
+                      class="d-flex flex-no-wrap justify-flex-start align-center"
                     >
                       <div class="mr-1 my-0">
                         <v-icon
@@ -161,8 +168,16 @@
                         >
                           mdi-emoticon-neutral
                         </v-icon>
-                        <div v-if="!inspection.impression" class="no-icon">
+                        <div
+                          v-if="!inspection.impression && !smallScreen"
+                          class="no-icon"
+                        >
                         </div>
+                        <v-sheet
+                          v-else-if="!inspection.impression"
+                          class="beep-icon beep-icon-note color-grey"
+                        >
+                        </v-sheet>
                       </div>
                       <span
                         v-if="!inspection.impression"
@@ -180,14 +195,10 @@
 
                     <div
                       v-if="inspection.notes"
-                      class="ml-7 diary-inspection-text"
+                      class="diary-inspection-text ml-7"
                     >
                       <v-tooltip
-                        v-if="
-                          inspection.notes.length > 35 &&
-                            !mobile &&
-                            !smallScreen
-                        "
+                        v-if="inspection.notes.length > 35 && !smallScreen"
                         class="diary-tooltip"
                         bottom
                         max-width="60%"
@@ -213,14 +224,14 @@
                   cols="12"
                   sm="5"
                   lg="4"
-                  class="diary-details-item d-flex flex-column align-start  pa-0"
+                  class="diary-details-item diary-details-item--padding d-flex flex-column align-start"
                 >
                   <div
                     v-if="inspection.reminder || inspection.reminder_date"
                     class="diary-content-item"
                   >
                     <div
-                      class="d-flex flex-no-wrap justify-flex-start align-center mr-2"
+                      class="d-flex flex-no-wrap justify-flex-start align-center"
                     >
                       <div class="mr-1 my-0">
                         <v-icon
@@ -267,12 +278,11 @@
                       >
                       </span>
                     </div>
-                    <div class="ml-7 diary-inspection-text mr-2">
+                    <div class="diary-inspection-text ml-7">
                       <v-tooltip
                         v-if="
                           inspection.reminder &&
                             inspection.reminder.length > 35 &&
-                            !mobile &&
                             !smallScreen
                         "
                         class="diary-tooltip"
@@ -327,7 +337,7 @@
           </v-list-item-content>
         </v-list-item>
         <v-list-item
-          v-if="inspection.owner"
+          v-if="inspection.owner || inspection.owned_and_group"
           :to="{
             name: 'hive-inspect-edit',
             params: {
@@ -348,11 +358,14 @@
         </v-list-item>
       </v-list-item-group>
 
-      <v-divider v-if="inspection.owner" class="my-1"></v-divider>
+      <v-divider
+        v-if="inspection.owner || inspection.owned_and_group"
+        class="my-1"
+      ></v-divider>
 
       <v-list-item-group>
         <v-list-item
-          v-if="inspection.owner"
+          v-if="inspection.owner || inspection.owned_and_group"
           @click="confirmDeleteInspection(inspection)"
         >
           <v-list-item-icon class="mr-3">
@@ -394,14 +407,8 @@ export default {
   },
   computed: {
     ...mapGetters('inspections', ['diaryFilterByGroup']),
-    mobile() {
-      return this.$vuetify.breakpoint.mobile
-    },
     smallScreen() {
-      return (
-        this.$vuetify.breakpoint.width < 850 &&
-        this.$vuetify.breakpoint.width > 500
-      )
+      return this.$vuetify.breakpoint.width < 910
     },
   },
   methods: {
@@ -440,11 +447,17 @@ export default {
     }
   }
   .diary-details-item {
+    min-width: 28px;
     max-width: none;
     margin-bottom: 0;
     line-height: 1.1rem;
-    @media (max-width: 849px) {
+    @media (max-width: 909px) {
       min-width: 100%;
+    }
+    &.diary-details-item--padding {
+      @media (max-width: 909px) {
+        padding: 0 12px 0 0 !important;
+      }
     }
   }
   .diary-inspection-meta {
@@ -452,7 +465,7 @@ export default {
     @include for-tablet-landscape-up {
       max-width: none;
     }
-    @media (max-width: 849px) {
+    @media (max-width: 909px) {
       margin-right: -8px;
     }
   }
@@ -492,15 +505,18 @@ export default {
   .diary-inspection-content {
     margin-top: 10px !important;
     margin-left: 10px !important;
+    @media (max-width: 909px) {
+      margin: 10px 0 !important;
+    }
     @include for-tablet-portrait-up {
       margin-left: 0 !important;
     }
-    @media (min-width: 850px) {
+    @media (min-width: 910px) {
       margin-top: 0 !important;
     }
     .diary-content-item {
       margin-bottom: 4px;
-      @media (min-width: 850px) {
+      @media (min-width: 910px) {
         margin-bottom: 0 !important;
       }
     }
