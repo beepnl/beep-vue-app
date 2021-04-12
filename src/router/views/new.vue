@@ -1,7 +1,7 @@
 <template>
   <Layout :title="$t('Whats_new')">
     <v-container>
-      <div class="overline mb-1"
+      <div class="overline mb-1 primary--text"
         ><span class="lowercase">v</span>
         <span v-if="dutch">3.0.7 (12-04-2021) - Huidige versie</span>
         <span v-if="!dutch">3.0.7 (12-04-2021) - Current version</span>
@@ -101,9 +101,9 @@
             <ul>
               <li
                 >Heat map: if sound data is present this will be displayed in a
-                heatmap. The more sound in a certain frequency band width has
-                been recorded, the warmer the color of the corresponding data
-                point.</li
+                heatmap. The more often sound in a certain frequency bandwidth
+                has been recorded, the warmer the color of the corresponding
+                data point.</li
               >
             </ul>
           </li>
@@ -259,16 +259,16 @@
           >
           <li
             >Data export:
-            <a :href="'/export'"
-              >ability to also export data of collaboration group hives with
-              measurement systems</a
+            <router-link :to="{ name: 'export' }">
+              ability to also export data of collaboration group hives with
+              measurement systems</router-link
             ></li
           >
           <li
             >Data export:
-            <a :href="'/export'"
-              >bugfix that prevented from exporting CSV data files from selected
-              dates and measurement systems</a
+            <router-link :to="{ name: 'export' }">
+              bugfix that prevented from exporting CSV data files from selected
+              dates and measurement systems</router-link
             ></li
           >
           <li
@@ -294,30 +294,31 @@
           >
           <li
             >Research:
-            <a :href="'/research'"
-              >ability to consent to sharing your data with research</a
+            <router-link :to="{ name: 'research' }">
+              ability to consent to sharing your data with research</router-link
             ></li
           >
           <!-- <li>Photos: ability to add images to inspections<a ng-click="switchMenu($event, true, '/images')">and view all images</a></li> -->
           <li
             >Helpdesk:
-            <a :href="'/support'"
-              >search the knowledge base for help, or file a support ticket
-              directly from the app</a
+            <router-link :to="{ name: 'support' }">
+              search the knowledge base for help, or file a support ticket
+              directly from the app</router-link
             ></li
           >
           <li
             >Weather:
-            <a :href="'/measurements'"
-              >See apiary weather info (if lat/lon coordinates have been filled
-              and you have installed a BEEP base) powered by Darksky API</a
+            <router-link :to="{ name: 'measurements' }">
+              See apiary weather info (if lat/lon coordinates have been filled
+              and you have installed a BEEP base) powered by Darksky
+              API</router-link
             ></li
           >
           <li
             >Export:
-            <a :href="'/export'"
-              >export and download sensor measurements to a CSV file if you have
-              installed a BEEP base</a
+            <router-link :to="{ name: 'export' }">
+              export and download sensor measurements to a CSV file if you have
+              installed a BEEP base</router-link
             ></li
           >
           <li
@@ -335,9 +336,9 @@
         <ul>
           <li
             >Collaborate:
-            <a :href="'/groups/create'"
-              >ability to share hives, inspections and measurements with other
-              BEEP users</a
+            <router-link :to="{ name: 'group-create' }">
+              ability to share hives, inspections and measurements with other
+              BEEP users</router-link
             ></li
           >
           <li>Bugfixes: small fixes for issues received as feedback</li>
@@ -367,8 +368,8 @@
         <ul>
           <li
             >Measurements:
-            <a :href="'/devices'"
-              >ability to add new sensors for using API data input</a
+            <router-link :to="{ name: 'devices' }">
+              ability to add new sensors for using API data input</router-link
             ></li
           >
           <li
@@ -384,7 +385,10 @@
       <div class="rounded-border mb-4">
         <ul>
           <li
-            >Usability: <a :href="'/'">Apiary and hive overview improved</a></li
+            >Usability:
+            <router-link :to="{ name: 'home' }"
+              >Apiary and hive overview improved</router-link
+            ></li
           >
           <li>Inspection: Dynamic inspection list</li>
           <li>Inspection: Create your own inspection list and order</li>
