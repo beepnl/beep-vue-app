@@ -50,15 +50,19 @@
                     >
                       <template v-slot:activator="{ on, attrs }">
                         <span
-                          class="diary-label"
+                          class="diary-label diary-label--truncate"
                           v-bind="attrs"
                           v-on="on"
                           v-text="
                             inspection.hive_name.substring(
                               0,
                               // eslint-disable-next-line vue/comma-dangle
-                              14
-                            ) + '...'
+                              12
+                            ) +
+                              '...' +
+                              (diaryFilterByGroup && inspection.owned_and_group
+                                ? ' (' + $t('my_hive') + ')'
+                                : '')
                           "
                         >
                         </span>
@@ -75,14 +79,17 @@
                       </span>
                     </v-tooltip>
                     <div v-else class="d-flex align-center">
-                      <span class="diary-label" v-text="inspection.hive_name">
-                      </span>
-                      <pre
-                        v-if="diaryFilterByGroup && inspection.owned_and_group"
-                        class="beep-label mb-0"
-                        v-text="' (' + $t('my_hive') + ')'"
-                      >
-                      </pre>
+                      <div class="diary-label diary-label--truncate">
+                        {{ inspection.hive_name }}
+                        <span
+                          v-if="
+                            diaryFilterByGroup && inspection.owned_and_group
+                          "
+                          class="beep-label mb-0"
+                          v-text="' (' + $t('my_hive') + ')'"
+                        >
+                        </span>
+                      </div>
                     </div>
                   </div>
                   <span
@@ -445,6 +452,13 @@ export default {
     @include for-phone-only {
       font-size: 0.7rem !important;
     }
+    &.diary-label--truncate {
+      @media (min-width: 910px) and (max-width: 1080px) {
+        max-width: 140px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
   }
   .diary-details-item {
     min-width: 28px;
@@ -483,7 +497,6 @@ export default {
     font-weight: 600;
     line-height: 24px;
     color: $color-grey-dark;
-    letter-spacing: 0.0333333333em !important;
     white-space: nowrap;
     @include for-phone-only {
       font-size: 0.7rem !important;
