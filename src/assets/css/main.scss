@@ -51,6 +51,9 @@
       @include for-phone-only {
         max-width: 300px;
       }
+      @media (max-width: 320px) {
+        max-width: 270px;
+      }
     }
     .v-input {
       &:not(.v-input--switch) {
@@ -90,6 +93,12 @@
     }
     .view-buttons {
       padding: 9px;
+      @include for-phone-only {
+        padding: 0 8px 0 0;
+      }
+      @media (max-width: 320px) {
+        padding: 0 4px 0 0;
+      }
     }
   }
 }

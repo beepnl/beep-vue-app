@@ -35,7 +35,7 @@
 
                 <v-col
                   cols="3"
-                  class="hive-icon-wrapper d-flex justify-center align-end"
+                  class="hive-icon-wrapper d-flex justify-center align-end mt-4"
                 >
                   <HiveIcon :hive="hive" :diary-view="true"></HiveIcon>
                 </v-col>
@@ -93,7 +93,7 @@
                     </div>
                   </div>
                   <span
-                    class="diary-inspection-text"
+                    class="diary-inspection-text diary-inspection-text--truncate"
                     v-text="
                       (inspection.hive_group_name &&
                         !inspection.owned_and_group) ||
@@ -458,6 +458,11 @@ export default {
         overflow: hidden;
         text-overflow: ellipsis;
       }
+      @media (max-width: 909px) {
+        max-width: 125px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
   }
   .diary-details-item {
@@ -505,6 +510,11 @@ export default {
   .diary-inspection-text {
     @include for-tablet-portrait-up {
       margin-top: 2px;
+    }
+    &.diary-inspection-text--truncate {
+      @include for-phone-only {
+        max-width: 130px;
+      }
     }
   }
 

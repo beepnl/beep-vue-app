@@ -29,6 +29,17 @@
             </v-col>
             <v-card-actions>
               <v-icon
+                v-if="groups.length > 0"
+                :class="
+                  `icon-apiary-shared mr-2 my-0 ${
+                    filterByGroup ? '' : 'color-grey'
+                  }`
+                "
+                @click="filterByGroup = !filterByGroup"
+              >
+                mdi-account-multiple
+              </v-icon>
+              <v-icon
                 :class="
                   `${filterByAttention ? 'red--text' : 'color-grey'} mr-2`
                 "
@@ -43,7 +54,6 @@
                 mdi-calendar-clock
               </v-icon>
               <v-icon
-                v-if="!tinyScreen || (tinyScreen && devices.length === 0)"
                 :class="
                   `${
                     filterByImpression.includes(3)
@@ -56,7 +66,7 @@
                 mdi-emoticon-happy
               </v-icon>
               <v-icon
-                v-if="!tinyScreen || (tinyScreen && devices.length === 0)"
+                v-if="!tinyScreen"
                 :class="
                   `${
                     filterByImpression.includes(2)
@@ -69,7 +79,6 @@
                 mdi-emoticon-neutral
               </v-icon>
               <v-icon
-                v-if="!tinyScreen || (tinyScreen && devices.length === 0)"
                 :class="
                   `${
                     filterByImpression.includes(1) ? 'red--text' : 'color-grey'
@@ -80,7 +89,7 @@
                 mdi-emoticon-sad
               </v-icon>
               <div
-                v-if="devices.length > 0"
+                v-if="devices.length > 0 && screenSize > 390"
                 class="my-0 mr-2"
                 @click="filterByBase = !filterByBase"
               >
@@ -91,17 +100,7 @@
                 </v-sheet>
               </div>
               <v-icon
-                :class="
-                  `icon-apiary-shared mr-2 my-0 ${
-                    filterByGroup ? '' : 'color-grey'
-                  }`
-                "
-                @click="filterByGroup = !filterByGroup"
-              >
-                mdi-account-multiple
-              </v-icon>
-              <v-icon
-                v-if="devices.length > 0"
+                v-if="devices.length > 0 && screenSize > 418"
                 :class="`${filterByAlert ? 'red--text' : 'color-grey'}`"
                 @click="filterByAlert = !filterByAlert"
               >
@@ -109,7 +108,7 @@
               </v-icon>
             </v-card-actions>
           </div>
-          <v-card-actions class="view-buttons mr-n1 mr-sm-0">
+          <v-card-actions class="view-buttons mr-0">
             <v-icon
               :class="`${xsView ? 'color-primary' : ''} mr-sm-2`"
               @click="toggleGrid('xsView')"
@@ -401,10 +400,7 @@
                   </v-list-item-content>
                 </v-list-item>
                 <v-list-item
-                  :to="{
-                    name: 'diary',
-                    query: { search: hiveSet.name },
-                  }"
+                  @click="setDiaryGroupFilterAndGo(hiveSet.name, false)"
                 >
                   <v-list-item-icon class="mr-3">
                     <v-icon>mdi-magnify</v-icon>
@@ -423,7 +419,7 @@
                   }"
                 >
                   <v-list-item-icon class="mr-3">
-                    <v-icon>mdi-plus-box-outline</v-icon>
+                    <v-icon>mdi-archive</v-icon>
                   </v-list-item-icon>
 
                   <v-list-item-content>
@@ -508,7 +504,9 @@
                 </v-list-item-content>
               </v-list-item>
 
-              <v-list-item @click="setDiaryGroupFilterAndGo(hiveSet.name)">
+              <v-list-item
+                @click="setDiaryGroupFilterAndGo(hiveSet.name, true)"
+              >
                 <v-list-item-icon class="mr-3">
                   <v-icon>mdi-magnify</v-icon>
                 </v-list-item-icon>
@@ -642,51 +640,6 @@ export default {
     ...mapGetters('devices', ['devices']),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups', 'invitations']),
-    apiaryMenu(hiveSet) {
-      return [
-        {
-          icon: 'mdi-home-edit',
-          title: this.$i18n.t('edit') + ' ' + this.$i18n.tc('location', 1),
-          to: {
-            name: 'apiary-edit',
-            params: { id: hiveSet.id },
-          },
-        },
-        {
-          icon: 'mdi-file-document-edit-outline',
-          title: this.$i18n.t('New') + ' ' + this.$i18n.tc('inspection', 1),
-          to: {
-            name: 'inspect',
-            query: { apiaryId: hiveSet.id },
-          },
-        },
-        {
-          icon: 'mdi-plus-box-outline',
-          title: this.$i18n.t('New') + ' ' + this.$i18n.tc('hive', 1),
-          to: {
-            name: 'hive-create',
-            query: { locationId: hiveSet.id },
-          },
-        },
-        {
-          icon: 'mdi-home-export-outline',
-          title: this.$i18n.t('Move') + ' ' + this.$i18n.tc('hive', 2),
-          to: {
-            name: 'apiary-management',
-            params: { id: hiveSet.id },
-          },
-        },
-        {
-          divider: true,
-        },
-        {
-          ownerRequired: true,
-          icon: 'mdi-delete',
-          title: this.$i18n.t('remove_apiary'),
-          to: null,
-        },
-      ]
-    },
     filterByAlert: {
       get() {
         return this.$store.getters['locations/hiveFilterByAlert']
@@ -910,6 +863,9 @@ export default {
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile
+    },
+    screenSize() {
+      return this.$vuetify.breakpoint.width
     },
     sortedHiveSets() {
       const sortedHiveSets = this.hiveSets
@@ -1216,10 +1172,10 @@ export default {
       }
       this.snackbar.show = true
     },
-    setDiaryGroupFilterAndGo(searchTerm) {
+    setDiaryGroupFilterAndGo(searchTerm, bool) {
       this.$store.commit('inspections/setFilter', {
         filter: 'diaryFilterByGroup',
-        value: true,
+        value: bool,
       })
       this.$router.push({
         name: 'diary',
