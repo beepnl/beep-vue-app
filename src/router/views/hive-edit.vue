@@ -384,8 +384,8 @@ export default {
         }
         setTimeout(() => {
           return this.readApiariesAndGroups().then(() => {
-            this.readGeneralInspections()
-            this.readDevices()
+            this.readGeneralInspections() // update inspections to exclude those from deleted hive
+            this.readDevices() // update devices to remove deleted hives coupled to devices
             this.$router.push({
               name: 'home',
               query: { search: this.activeHive.location },
@@ -487,6 +487,7 @@ export default {
     async updateHive() {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
+        this.activeHive.frames = this.activeHive.layers[0].framecount
         try {
           const response = await Api.updateRequest(
             '/hives/',
@@ -499,6 +500,8 @@ export default {
           }
           setTimeout(() => {
             return this.readApiariesAndGroups().then(() => {
+              this.readGeneralInspections() // retrieve hive action inspections
+              this.readDevices() // update devices to reflect updated hive names for example
               this.$router.push({
                 name: 'home',
                 query: { search: this.activeHive.location },
