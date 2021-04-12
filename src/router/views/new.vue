@@ -11,7 +11,7 @@
           <li>
             <strong
               ><router-link :to="{ name: 'home' }">Hives</router-link> -
-              Overview of all hives per apiary or group</strong
+              Overview of all hives per apiary or collaboration group</strong
             >
             <ul>
               <li
@@ -19,9 +19,14 @@
                 reminder etc.</li
               >
               <li
-                >Filterable: by group (if any) - attention needed - reminder
-                present - impression (good, neutral, bad) - device (BEEP base or
-                other) present - alerts present</li
+                >Filterable: by group - attention needed - reminder present -
+                impression (good, neutral, bad) - device (BEEP base or other)
+                present - alerts present.<br />
+                Please note: depending on screen size some filters may not be
+                visible in order to save space. In addition, when no devices
+                (BEEP base or other) are present, device and alerts filter won't
+                be displayed. Group filter is only present if you are a member
+                of at least 1 collaboration groups.</li
               >
               <li
                 >Different views: XS (hive + attention and alert icon) - M (hive
@@ -82,6 +87,10 @@
                 >Inspection menu: view inspection (in detail), edit or delete
                 inspection by clicking on the inspection item</li
               >
+              <li
+                >Hive actions (changes in hive configuration) are saved as
+                inspections and shown here as well.</li
+              >
             </ul>
           </li>
           <li>
@@ -106,10 +115,8 @@
             If you own a BEEP base or another device you can set alerts, such
             that you will receive an alert when the measurement data meets
             certain requirements. For example, a sudden drop in weight because
-            of swarming. Alerts will be shown here and in the h<router-link
-              :to="{ name: 'home' }"
-              >hives</router-link
-            >
+            of swarming. Alerts will be shown here and in the
+            <router-link :to="{ name: 'home' }">hives</router-link>
             overview, you can choose to receive them via email as well.
             <ul>
               <li
@@ -122,10 +129,10 @@
                 >
                 - To get you started there are a few default alert rules you can
                 use (and adapt to your own needs). In addition, you can create
-                and edit your own alert rules. Both via the 'add alert rule'
-                button. They can be (de)activated via the alert rule overview
-                table or the 'alerts enabled' / 'alerts disabled' switch at the
-                top.</li
+                and edit your own alert rules. Both can be added via the 'add
+                alert rule' button. They can be (de)activated via the alert rule
+                overview table or the 'alerts enabled' / 'alerts disabled'
+                switch at the top.</li
               >
               <li
                 >Alert menu: edit alert rule or delete alert by clicking on an
@@ -180,7 +187,7 @@
             <ul>
               <li
                 >Sentence at the top 'translates' the rule into plain
-                language</li
+                language.</li
               >
               <li
                 >By default, an alert rule will apply to all months, hours of
@@ -204,8 +211,9 @@
             <ul>
               <li
                 >Add a new inspection, hive, apiary, group or alert rule by
-                clicking the '+' button in the top row of the main navigation
-                bar</li
+                clicking the '+' button centered at the top of the
+                <router-link :to="{ name: 'home' }">home</router-link>
+                navigation bar</li
               >
             </ul>
           </li>
