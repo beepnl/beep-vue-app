@@ -788,7 +788,7 @@ const translations = {
   Current_apiary: 'Current apiary',
   sensor_key: 'Device unique identifier',
   disabled_settings: 'Manually editing these settings is disabled.',
-  Address_placeholder: '11 Honey Street, Beetown',
+  Address_placeholder: 'Number, Street name, City',
 }
 
 export default translations

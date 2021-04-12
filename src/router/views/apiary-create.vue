@@ -636,12 +636,19 @@ export default {
             this.snackbar.text = this.$i18n.t('not_saved_error')
             this.snackbar.show = true
           }
+          this.clearHiveFilters()
           setTimeout(() => {
             return this.readApiaries().then(() => {
-              this.$router.push({
-                name: 'home',
-                query: { search: this.newHive.name },
-              })
+              this.newHive.hive_amount !== 0
+                ? this.$router.push({
+                    name: 'home',
+                    query: {
+                      search: this.newHive.name,
+                    },
+                  })
+                : this.$router.push({
+                    name: 'home',
+                  })
             })
           }, 50) // wait for API to update locations/hives
         } catch (error) {
@@ -689,6 +696,9 @@ export default {
     },
     cancelColorPicker() {
       this.overlay = false
+    },
+    clearHiveFilters() {
+      this.$store.commit('locations/clearFilters')
     },
     /**
      * When the location found
