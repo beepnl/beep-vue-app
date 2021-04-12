@@ -431,11 +431,13 @@ export default {
     sortedDevices() {
       var apiaryArray = []
       this.devices.map((device, index) => {
-        apiaryArray.push({
-          id: -(index + 1), // random because it has to have an id for Treeselect but won't be used later
-          label: device.location_name,
-          children: [],
-        })
+        if (device.location_name !== '') {
+          apiaryArray.push({
+            id: -(index + 1), // random because it has to have an id for Treeselect but won't be used later
+            label: device.location_name,
+            children: [],
+          })
+        }
       })
       var uniqueApiaries = []
       const map = new Map()
@@ -798,7 +800,11 @@ export default {
           var filteredDevices = this.devices.filter(
             (device) => device.hive_id === hiveId
           )
-          if (filteredDevices !== undefined && filteredDevices.length > 0) {
+          if (
+            filteredDevices !== undefined &&
+            filteredDevices.length > 0 &&
+            filteredDevices[0].hive_name !== ''
+          ) {
             hiveName = filteredDevices[0].hive_name
           }
           hivesArray.push(hiveName)

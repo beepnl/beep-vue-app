@@ -173,6 +173,7 @@ import HiveEditDetails from '@components/hive-edit-details.vue'
 import { mapGetters } from 'vuex'
 import Layout from '@layouts/back.vue'
 import QueenEditDetails from '@components/queen-edit-details.vue'
+import { readDevices } from '@mixins/readDevicesMixin'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import VueNumericInput from 'vue-numeric-input'
@@ -186,6 +187,7 @@ export default {
     Treeselect,
     VueNumericInput,
   },
+  mixins: [readDevices],
   data: function() {
     return {
       snackbar: {
@@ -382,6 +384,8 @@ export default {
         }
         setTimeout(() => {
           return this.readApiariesAndGroups().then(() => {
+            this.readGeneralInspections()
+            this.readDevices()
             this.$router.push({
               name: 'home',
               query: { search: this.activeHive.location },
@@ -436,6 +440,19 @@ export default {
       } catch (error) {
         if (error.response) {
           console.log(error.response)
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
+    async readGeneralInspections() {
+      try {
+        const response = await Api.readRequest('/inspections')
+        this.$store.commit('inspections/setGeneralInspections', response.data)
+        return true
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
         } else {
           console.log('Error: ', error)
         }

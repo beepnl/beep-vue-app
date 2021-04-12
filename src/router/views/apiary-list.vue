@@ -973,6 +973,7 @@ export default {
         setTimeout(() => {
           this.readApiariesAndGroups()
           this.readGeneralInspections()
+          this.readDevices()
         }, 100) // wait for API to update locations/hives
       } catch (error) {
         this.handleError(error)
@@ -1018,6 +1019,7 @@ export default {
         setTimeout(() => {
           this.readApiariesAndGroups()
           this.readGeneralInspections()
+          this.readDevices()
         }, 100) // wait for API to update locations/hives
       } catch (error) {
         this.handleError(error)

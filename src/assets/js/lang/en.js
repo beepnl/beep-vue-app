@@ -82,7 +82,7 @@ const translations = {
   username_is_required: 'Please enter the username',
   username_already_exists: 'Username already exists',
   password_is_required: 'Please enter a password',
-  email_is_required: 'Please enter a e-mailadres',
+  email_is_required: 'Please enter an e-mail address',
   email_already_exists: 'The e-mailaddress is already in use',
   policy_accepted_is_required:
     'You need to accept the terms of service to register',
@@ -92,7 +92,7 @@ const translations = {
   no_password_match: 'The passwords do not match',
   invalid_token: 'Invalid code',
 
-  no_valid_email: 'Invalid e-mailaddress',
+  no_valid_email: 'Invalid e-mail address',
 
   empty_fields: 'Please fill in all the fields',
   match_passwords: 'Passwords do not match',

@@ -1,8 +1,23 @@
 <template>
   <Layout :title="inspectionId ? $t('Edit_inspection') : $t('New_inspection')">
+    <h1 v-if="hiveNotEditable" class="unauthorized-title">
+      {{
+        $t('sorry') +
+          ', ' +
+          $tc('hive', 1) +
+          ' ' +
+          activeHive.name +
+          ' ' +
+          $t('not_editable')
+      }}
+    </h1>
+
     <h1
       v-if="
-        inspectionId && activeInspection && activeInspection.owner === false
+        inspectionId &&
+          activeInspection &&
+          activeInspection.owner === false &&
+          activeHive.owner === false
       "
       class="unauthorized-title"
     >
@@ -17,19 +32,7 @@
       }}
     </h1>
 
-    <h1 v-if="hiveNotEditable" class="unauthorized-title">
-      {{
-        $t('sorry') +
-          ', ' +
-          $tc('hive', 1) +
-          ' ' +
-          activeHive.name +
-          ' ' +
-          $t('not_editable')
-      }}
-    </h1>
-
-    <v-form v-else-if="ready" ref="form" v-model="valid">
+    <v-form v-else-if="ready && !hiveNotEditable" ref="form" v-model="valid">
       <v-toolbar v-if="ready" class="save-bar zindex4" dense light>
         <v-spacer></v-spacer>
         <v-btn
