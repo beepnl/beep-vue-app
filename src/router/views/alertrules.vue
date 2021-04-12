@@ -118,7 +118,10 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(alertRule, index) in alertRules" :key="index">
+                  <tr
+                    v-for="(alertRule, index) in sortedAlertRules"
+                    :key="index"
+                  >
                     <td>
                       <v-progress-circular
                         v-if="
@@ -263,6 +266,18 @@ export default {
     },
     showAlertRulePlaceholder() {
       return this.alertRules.length === 0
+    },
+    sortedAlertRules() {
+      const sortedAlertRules = this.alertRules.slice().sort(function(a, b) {
+        if (a.name > b.name) {
+          return 1
+        }
+        if (b.name > a.name) {
+          return -1
+        }
+        return 0
+      })
+      return sortedAlertRules
     },
   },
   created() {
