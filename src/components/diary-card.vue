@@ -10,87 +10,44 @@
             <v-col
               cols="12"
               sm="5"
-              class="diary-details-item diary-inspection-meta d-flex flex-row justify-flex-start pl-0"
+              class="diary-details-item diary-inspection-meta d-flex flex-row justify-flex-start px-0"
             >
-              <v-row class="">
-                <v-col
-                  v-if="inspection.created_at"
-                  cols="5"
-                  class="diary-inspection-date-item d-flex flex-column align-start"
-                >
-                  <div>
-                    <span
-                      class="diary-inspection-date"
-                      v-text="momentify(inspection.created_at)"
-                    >
-                    </span>
-                  </div>
+              <div
+                v-if="inspection.created_at"
+                class="diary-inspection-date-item d-flex flex-column align-start"
+              >
+                <div>
                   <span
-                    class="diary-inspection-text
-                        last-visit"
-                    v-text="momentFromNow(inspection.created_at)"
+                    class="diary-inspection-date"
+                    v-text="momentify(inspection.created_at)"
                   >
                   </span>
-                </v-col>
+                </div>
+                <span
+                  class="diary-inspection-text
+                        last-visit"
+                  v-text="momentFromNow(inspection.created_at)"
+                >
+                </span>
+              </div>
 
+              <v-row class="d-flex justify-start">
                 <v-col
-                  cols="3"
-                  class="hive-icon-wrapper d-flex justify-center align-end mt-4"
+                  cols="5"
+                  class="hive-icon-wrapper d-flex flex-row justify-center align-end mt-6 mt-sm-4 mb-1"
                 >
                   <HiveIcon :hive="hive" :diary-view="true"></HiveIcon>
                 </v-col>
 
-                <v-col cols="4" class="d-flex flex-column align-start">
-                  <div>
-                    <v-tooltip
-                      v-if="inspection.hive_name.length >= 15 && !smallScreen"
-                      class="diary-tooltip"
-                      bottom
-                      max-width="60%"
+                <v-col cols="7" class="d-flex flex-column align-start">
+                  <div class="diary-label">
+                    {{ inspection.hive_name }}
+                    <small
+                      v-if="diaryFilterByGroup && inspection.owned_and_group"
+                      class="beep-label mb-0"
+                      v-text="' (' + $t('my_hive') + ')'"
                     >
-                      <template v-slot:activator="{ on, attrs }">
-                        <span
-                          class="diary-label diary-label--truncate"
-                          v-bind="attrs"
-                          v-on="on"
-                          v-text="
-                            inspection.hive_name.substring(
-                              0,
-                              // eslint-disable-next-line vue/comma-dangle
-                              12
-                            ) +
-                              '...' +
-                              (diaryFilterByGroup && inspection.owned_and_group
-                                ? ' (' + $t('my_hive') + ')'
-                                : '')
-                          "
-                        >
-                        </span>
-                      </template>
-                      <span
-                        class="diary-label"
-                        v-text="
-                          inspection.hive_name +
-                            (diaryFilterByGroup && inspection.owned_and_group
-                              ? ' (' + $t('my_hive') + ')'
-                              : '')
-                        "
-                      >
-                      </span>
-                    </v-tooltip>
-                    <div v-else class="d-flex align-center">
-                      <div class="diary-label diary-label--truncate">
-                        {{ inspection.hive_name }}
-                        <span
-                          v-if="
-                            diaryFilterByGroup && inspection.owned_and_group
-                          "
-                          class="beep-label mb-0"
-                          v-text="' (' + $t('my_hive') + ')'"
-                        >
-                        </span>
-                      </div>
-                    </div>
+                    </small>
                   </div>
                   <span
                     class="diary-inspection-text diary-inspection-text--truncate"
@@ -443,26 +400,19 @@ export default {
     height: 24px !important;
   }
   .diary-label {
+    width: 100%;
+    overflow: hidden;
     font-size: 0.75rem !important;
     font-weight: 600;
     line-height: 24px !important;
     color: $color-grey;
+    text-overflow: ellipsis;
     letter-spacing: 0.0333333333em !important;
     white-space: nowrap;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
     @include for-phone-only {
       font-size: 0.7rem !important;
-    }
-    &.diary-label--truncate {
-      @media (min-width: 910px) and (max-width: 1080px) {
-        max-width: 140px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      @media (max-width: 909px) {
-        max-width: 125px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
     }
   }
   .diary-details-item {
@@ -480,20 +430,23 @@ export default {
     }
   }
   .diary-inspection-meta {
-    max-width: 330px;
+    padding-right: -0;
     @include for-tablet-landscape-up {
-      max-width: none;
-    }
-    @media (max-width: 909px) {
-      margin-right: -8px;
+      padding-right: 12px;
     }
   }
   .diary-inspection-date-item {
-    max-width: 130px;
+    width: 130px;
+    min-width: 130px;
     margin-bottom: 0;
     line-height: 1.1rem;
     @include for-phone-only {
-      max-width: 120px;
+      width: 120px;
+      min-width: 120px;
+    }
+    @media (max-width: 373px) {
+      width: 90px;
+      min-width: 90px;
     }
   }
   .diary-inspection-date {
@@ -512,15 +465,16 @@ export default {
       margin-top: 2px;
     }
     &.diary-inspection-text--truncate {
-      @include for-phone-only {
-        max-width: 130px;
-      }
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      word-break: break-all;
     }
   }
 
   .hide-md {
     display: flex;
-    @media (min-width: 851px) and (max-width: 1264px) {
+    @media (min-width: 910px) and (max-width: 1264px) {
       display: none;
     }
   }

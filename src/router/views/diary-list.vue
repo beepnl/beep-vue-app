@@ -34,7 +34,7 @@
                 hide-details
               ></v-text-field>
             </v-col>
-            <v-card-actions class="pl-0 pl-sm-2">
+            <v-card-actions class="pl-1 pl-sm-2">
               <v-icon
                 v-if="groups.length > 0"
                 :class="

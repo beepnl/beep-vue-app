@@ -4,7 +4,7 @@
       `hive-icon d-flex flex-column justify-center align-center white--text text--small mr-1 ${
         hasLayer('queen_excluder') ? 'has-queen-excluder' : ''
       } ${hasLayer('feeding_box') ? 'has-feeding-box' : ''} ${
-        xsView || diaryView ? 'xs-view' : ''
+        xsView ? 'xs-view' : diaryView ? 'xs-view diary-view' : ''
       }`
     "
     height="auto"
@@ -127,6 +127,9 @@ export default {
   }
   &.has-queen-excluder {
     padding-right: 12px;
+    &.diary-view {
+      margin-left: 4px !important;
+    }
   }
 }
 
