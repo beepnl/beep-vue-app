@@ -80,7 +80,7 @@ import LocaleChanger from '@components/locale-changer.vue'
 import { mapGetters } from 'vuex'
 import NavDrawer from '@components/nav-drawer.vue'
 import PlusMenu from '@components/plus-menu.vue'
-import { readDevicesIfNotPresent } from '@mixins/readDevicesMixin'
+import { readDevicesIfNotPresent } from '@mixins/methodsMixin'
 
 export default {
   components: {

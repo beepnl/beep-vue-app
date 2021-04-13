@@ -14,6 +14,7 @@
         v-model="dateInput"
         :placeholder="`${$t('Select')} ${$t('Date').toLocaleLowerCase()}`"
         type="datetime"
+        class="accent--text"
       >
         <span
           v-if="dateInput !== null"
@@ -21,13 +22,13 @@
           class="description clear-icon"
           @click="clearDate(item.id)"
         >
-          <v-icon class="mt-n1" color="primary">mdi-close</v-icon></span
+          <v-icon class="mt-n1" color="accent">mdi-close</v-icon></span
         >
         <template slot="button-cancel">
-          <v-btn text color="primary">{{ $t('Cancel') }}</v-btn>
+          <v-btn text color="accent">{{ $t('Cancel') }}</v-btn>
         </template>
         <template slot="button-confirm">
-          <v-btn text color="primary">{{ $t('ok') }}</v-btn>
+          <v-btn text color="accent">{{ $t('ok') }}</v-btn>
         </template>
       </Datetime>
     </div>

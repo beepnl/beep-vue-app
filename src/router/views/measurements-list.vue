@@ -62,7 +62,7 @@
             :small="mobile && devices.length > 0"
             :to="{ name: 'devices' }"
             class="edit-button"
-            color="primary"
+            color="accent"
           >
             <v-icon :left="!mobile">mdi-pencil</v-icon>
             {{
@@ -349,7 +349,7 @@ import MeasurementsChartHeatmap from '@components/measurements-chart-heatmap.vue
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import 'chartist/dist/chartist.min.css'
-import { readDevicesIfNotPresent } from '@mixins/readDevicesMixin'
+import { readAlerts, readDevicesIfNotPresent } from '@mixins/methodsMixin'
 import { sensorMixin } from '@mixins/sensorMixin'
 import { SlideYUpTransition } from 'vue2-transitions'
 import '@plugins/chartist-plugin-beep.js'
@@ -365,7 +365,7 @@ export default {
     SlideYUpTransition,
     Treeselect,
   },
-  mixins: [readDevicesIfNotPresent, sensorMixin],
+  mixins: [readAlerts, readDevicesIfNotPresent, sensorMixin],
   data() {
     return {
       lastSensorDate: null,
@@ -559,6 +559,7 @@ export default {
     },
   },
   created() {
+    this.readAlerts() // for alerts-tab badge
     this.stopTimer()
     this.readDevicesIfNotPresent()
       .then(() => {

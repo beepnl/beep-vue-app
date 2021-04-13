@@ -205,7 +205,7 @@
 import Api from '@api/Api'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
-import { readDevicesIfNotPresent } from '@mixins/readDevicesMixin'
+import { readDevicesIfNotPresent } from '@mixins/methodsMixin'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 

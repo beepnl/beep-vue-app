@@ -13,7 +13,7 @@
         tile
         outlined
         class="mr-3"
-        color="primary"
+        color="accent"
         @click="addDevice"
       >
         <v-icon left>mdi-plus</v-icon>{{ $t('add_own_device') }}
@@ -52,7 +52,7 @@
           <v-btn
             tile
             outlined
-            color="primary"
+            color="accent"
             class="save-button-mobile-wide mt-n4"
             @click="addDevice"
           >
@@ -372,7 +372,7 @@
                           v-if="!mobile && ownedDevice.id"
                           tile
                           outlined
-                          color="primary"
+                          color="accent"
                           @click="addSensorDef(ownedDevice)"
                         >
                           <v-icon left>mdi-plus</v-icon>
@@ -382,7 +382,7 @@
                           v-if="mobile && ownedDevice.id"
                           tile
                           outlined
-                          color="primary"
+                          color="accent"
                           class="save-button-mobile-wide"
                           @click="addSensorDef(ownedDevice)"
                         >

@@ -166,6 +166,7 @@ import Confirm from '@components/confirm.vue'
 import DiaryCard from '@components/diary-card.vue'
 import Layout from '@layouts/main.vue'
 import { mapGetters } from 'vuex'
+import { readAlerts } from '@mixins/methodsMixin'
 import { ScaleTransition } from 'vue2-transitions'
 
 export default {
@@ -175,6 +176,7 @@ export default {
     Layout,
     ScaleTransition,
   },
+  mixins: [readAlerts],
   data: function() {
     return {
       ready: false,
@@ -402,6 +404,7 @@ export default {
     },
   },
   created() {
+    this.readAlerts() // for alerts-tab badge
     if (
       this.$route.query.search !== null &&
       this.$route.query.search !== undefined

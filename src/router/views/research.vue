@@ -240,7 +240,7 @@
                           `${
                             editedCHItems.indexOf(chItem.id) > -1
                               ? 'green--text'
-                              : 'color-primary'
+                              : 'accent--text'
                           }`
                         "
                         :min-datetime="
@@ -296,7 +296,7 @@
                                 class="mdi mdi-information icon-info"
                                 dark
                                 small
-                                color="primary"
+                                color="accent"
                                 v-on="on"
                               ></v-icon>
                             </template>
@@ -318,12 +318,12 @@
                           </v-tooltip>
                         </span>
                         <template slot="button-cancel">
-                          <v-btn text color="primary">{{ $t('Cancel') }}</v-btn>
+                          <v-btn text color="accent">{{ $t('Cancel') }}</v-btn>
                         </template>
                         <template slot="button-confirm">
                           <v-btn
                             text
-                            color="primary"
+                            color="accent"
                             @click="
                               editedCHItems.indexOf(chItem.id) === -1
                                 ? editedCHItems.push(chItem.id)
@@ -381,7 +381,7 @@ import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
-import { readDevicesIfNotPresent } from '@mixins/readDevicesMixin'
+import { readDevicesIfNotPresent } from '@mixins/methodsMixin'
 
 export default {
   components: {

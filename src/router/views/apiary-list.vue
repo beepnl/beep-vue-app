@@ -609,7 +609,7 @@ import HiveCard from '@components/hive-card.vue'
 import Layout from '@layouts/main.vue'
 import { mapGetters } from 'vuex'
 import { momentMixin } from '@mixins/momentMixin'
-import { readDevices } from '@mixins/readDevicesMixin'
+import { readAlerts, readDevices } from '@mixins/methodsMixin'
 import { ScaleTransition } from 'vue2-transitions'
 
 export default {
@@ -619,7 +619,7 @@ export default {
     Layout,
     ScaleTransition,
   },
-  mixins: [momentMixin, readDevices],
+  mixins: [momentMixin, readAlerts, readDevices],
   data: () => ({
     snackbar: {
       show: false,
@@ -1023,22 +1023,6 @@ export default {
         }, 100) // wait for API to update locations/hives
       } catch (error) {
         this.handleError(error)
-      }
-    },
-    async readAlerts() {
-      try {
-        const response = await Api.readRequest('/alerts')
-        this.$store.commit('alerts/setData', {
-          prop: 'alerts',
-          value: response.data.alerts,
-        })
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log('Error: ', error.response)
-        } else {
-          console.log('Error: ', error)
-        }
       }
     },
     async readApiariesAndGroups() {

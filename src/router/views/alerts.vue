@@ -120,6 +120,7 @@ import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/main.vue'
 import { mapGetters } from 'vuex'
 import { momentMixin } from '@mixins/momentMixin'
+import { readAlerts } from '@mixins/methodsMixin'
 import { ScaleTransition } from 'vue2-transitions'
 
 export default {
@@ -129,7 +130,7 @@ export default {
     Layout,
     ScaleTransition,
   },
-  mixins: [momentMixin],
+  mixins: [momentMixin, readAlerts],
   data: function() {
     return {
       // alerts: [],
@@ -302,22 +303,6 @@ export default {
         }
       } else {
         return true
-      }
-    },
-    async readAlerts() {
-      try {
-        const response = await Api.readRequest('/alerts')
-        this.$store.commit('alerts/setData', {
-          prop: 'alerts',
-          value: response.data.alerts,
-        })
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log('Error: ', error.response)
-        } else {
-          console.log('Error: ', error)
-        }
       }
     },
     async readAlertRules() {

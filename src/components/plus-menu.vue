@@ -31,7 +31,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { readDevicesIfNotPresent } from '@mixins/readDevicesMixin'
+import { readDevicesIfNotPresent } from '@mixins/methodsMixin'
 
 export default {
   mixins: [readDevicesIfNotPresent],

@@ -1,5 +1,27 @@
 import Api from '@api/Api'
 
+
+export const readAlerts = {
+  methods: {
+async readAlerts() {
+  try {
+    const response = await Api.readRequest('/alerts')
+    this.$store.commit('alerts/setData', {
+      prop: 'alerts',
+      value: response.data.alerts,
+    })
+    return true
+  } catch (error) {
+    if (error.response) {
+      console.log('Error: ', error.response)
+    } else {
+      console.log('Error: ', error)
+    }
+  }
+},
+},
+}
+
 export const readDevices = {
   methods: {
     async readDevices() {

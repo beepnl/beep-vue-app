@@ -7,16 +7,6 @@
 }
 
 /* Vuetify */
-.v-application .accent {
-  background-color: $color-primary !important;
-  border-color: $color-primary !important;
-}
-
-.v-application .accent--text {
-  color: $color-primary !important;
-  caret-color: $color-primary !important;
-}
-
 .theme--light.v-label {
   color: $color-grey-dark;
 }
@@ -476,7 +466,7 @@
 }
 
 .vue-treeselect__multi-value-item {
-  color: $color-primary-dark !important;
+  color: $color-accent !important;
   background: $color-orange-medium !important;
   .vue-treeselect__multi-value-label {
     font-weight: 600 !important;
@@ -484,7 +474,7 @@
 }
 
 .vue-treeselect__value-remove {
-  color: $color-primary-dark !important;
+  color: $color-accent !important;
 }
 
 .vue-treeselect__checkbox--checked {

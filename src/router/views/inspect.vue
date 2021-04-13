@@ -40,7 +40,7 @@
           tile
           outlined
           class="mr-3"
-          color="primary"
+          color="accent"
           @click="confirmEditChecklist"
         >
           <v-icon left>mdi-pencil</v-icon>
@@ -129,7 +129,7 @@
         <v-row>
           <v-col cols="12" sm="4">
             <div class="d-flex justify-flex-start align-center">
-              <v-icon dark color="primary" class="mr-2"
+              <v-icon dark color="accent" class="mr-2"
                 >mdi-calendar-edit</v-icon
               >
               <div>
@@ -141,12 +141,13 @@
                   v-if="activeInspection"
                   v-model="inspectionDate"
                   type="datetime"
+                  class="accent--text"
                 >
                   <template slot="button-cancel">
-                    <v-btn text color="primary">{{ $t('Cancel') }}</v-btn>
+                    <v-btn text color="accent">{{ $t('Cancel') }}</v-btn>
                   </template>
                   <template slot="button-confirm">
-                    <v-btn text color="primary">{{ $t('ok') }}</v-btn>
+                    <v-btn text color="accent">{{ $t('ok') }}</v-btn>
                   </template>
                 </Datetime>
               </div>
@@ -175,7 +176,7 @@
               tile
               outlined
               class="save-button-mobile-wide"
-              color="primary"
+              color="accent"
               @click="confirmEditChecklist"
             >
               <v-icon left>mdi-pencil</v-icon>
@@ -324,7 +325,7 @@
                         <div class="d-flex justify-flex-start align-center">
                           <v-icon
                             class="mr-2"
-                            :color="reminderDate !== null ? 'primary' : ''"
+                            :color="reminderDate !== null ? 'accent' : ''"
                             >mdi-calendar-clock</v-icon
                           >
                           <div>
@@ -337,6 +338,7 @@
                               v-model="reminderDate"
                               :placeholder="`${$t('Set_notification_date')}`"
                               type="datetime"
+                              class="accent--text"
                             >
                               <span
                                 v-if="reminderDate !== null"
@@ -344,17 +346,17 @@
                                 class="description clear-icon"
                                 @click="clearDate"
                               >
-                                <v-icon class="mt-n1" color="primary"
+                                <v-icon class="mt-n1" color="accent"
                                   >mdi-close</v-icon
                                 ></span
                               >
                               <template slot="button-cancel">
-                                <v-btn text color="primary">{{
+                                <v-btn text color="accent">{{
                                   $t('Cancel')
                                 }}</v-btn>
                               </template>
                               <template slot="button-confirm">
-                                <v-btn text color="primary">{{
+                                <v-btn text color="accent">{{
                                   $t('ok')
                                 }}</v-btn>
                               </template>
