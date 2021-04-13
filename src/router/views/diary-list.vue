@@ -267,10 +267,26 @@ export default {
       return uniqueHives
     },
     // make inspections filterable by hive name and location
-    inspectionsWithHiveDetails() {
+    inspectionsWithDatesAndHiveDetails() {
       if (this.generalInspections.length > 0) {
-        var inspectionsWithHiveDetails = this.generalInspections
-        inspectionsWithHiveDetails.map((inspection) => {
+        var inspectionsWithDatesAndHiveDetails = this.generalInspections
+        inspectionsWithDatesAndHiveDetails.map((inspection) => {
+          inspection.created_at_locale_date = this.momentify(
+            inspection.created_at
+          )
+          inspection.created_at_moment_from_now = this.momentFromNow(
+            inspection.created_at
+          )
+          inspection.reminder_date !== null
+            ? (inspection.reminder_date_locale_date = this.momentify(
+                inspection.reminder_date
+              ))
+            : (inspection.reminder_date_locale_date = null)
+          inspection.reminder_date !== null
+            ? (inspection.reminder_date_day_month = this.momentifyDayMonth(
+                inspection.reminder_date
+              ))
+            : (inspection.reminder_date_day_month = null)
           if (this.hives[inspection.hive_id] !== undefined) {
             const name = this.hives[inspection.hive_id].name
             const location = this.hives[inspection.hive_id].location
@@ -293,7 +309,7 @@ export default {
             inspection.hive_group_name = groupName
           }
         })
-        return inspectionsWithHiveDetails
+        return inspectionsWithDatesAndHiveDetails
       } else {
         return []
       }
@@ -301,20 +317,30 @@ export default {
     filteredInspectionsWithUndefined() {
       var textFilteredInspections = []
       if (this.diarySearch === null) {
-        textFilteredInspections = this.inspectionsWithHiveDetails
+        textFilteredInspections = this.inspectionsWithDatesAndHiveDetails
       } else {
-        textFilteredInspections = this.inspectionsWithHiveDetails.map(
+        textFilteredInspections = this.inspectionsWithDatesAndHiveDetails.map(
           (inspection) => {
             const inspectionMatch = Object.entries(inspection).some(
               ([key, value]) => {
                 if (
                   value !== null &&
-                  typeof value === 'string'
-                  // && key !== ('description' || 'type' || 'hex_color' || 'created_at')
+                  typeof value === 'string' &&
+                  key !== ('created_at' || 'reminder_date') &&
+                  this.diarySearch.substring(0, 3) !== 'id='
                 ) {
                   return value
                     .toLowerCase()
                     .includes(this.diarySearch.toLowerCase())
+                } else if (
+                  key === 'id' &&
+                  this.diarySearch.substring(0, 3) === 'id='
+                ) {
+                  return value
+                    .toString()
+                    .includes(
+                      this.diarySearch.substring(3, this.diarySearch.length)
+                    )
                 }
               }
             )
@@ -527,10 +553,29 @@ export default {
           return true
         })
     },
+    momentFromNow(date) {
+      const moment = this.$moment(date)
+        .locale(this.$i18n.locale)
+        .fromNow()
+      return moment.charAt(0).toUpperCase() + moment.slice(1)
+    },
     momentify(date) {
       return this.$moment(date)
         .locale(this.$i18n.locale)
         .format('lll')
+    },
+    momentifyDayMonth(date) {
+      const currentYear = this.$moment(date).format('YYYY')
+      const currentYearEn = ', ' + currentYear
+      const currentYearEsPt = ' de ' + currentYear
+      const currentYearNl = '. ' + currentYear
+      return this.$moment(date)
+        .locale(this.$i18n.locale)
+        .format('ll')
+        .replace(currentYearNl, '')
+        .replace(currentYearEn, '')
+        .replace(currentYearEsPt, '')
+        .replace(' ' + currentYear, '') // Remove year hardcoded per language, currently no other way to get rid of year whilst keeping localized time
     },
   },
 }

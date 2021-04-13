@@ -29,16 +29,12 @@
                   class="alert-date-item d-flex flex-column align-start pa-0"
                 >
                   <div>
-                    <span
-                      class="alert-date"
-                      v-text="momentify(alert.created_at)"
-                    >
-                    </span>
+                    <span class="alert-date" v-text="alert.locale_date"> </span>
                   </div>
                   <span
                     class="alert-text
                         last-visit"
-                    v-text="momentFromNow(alert.created_at)"
+                    v-text="alert.moment_from_now"
                   >
                   </span>
                 </v-col>
@@ -262,13 +258,11 @@
 
 <script>
 import HiveIcon from '@components/hive-icon.vue'
-import { momentMixin } from '@mixins/momentMixin'
 
 export default {
   components: {
     HiveIcon,
   },
-  mixins: [momentMixin],
   props: {
     alert: {
       type: Object,

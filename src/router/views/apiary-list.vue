@@ -713,7 +713,9 @@ export default {
             if (
               value !== null &&
               typeof value === 'string' &&
-              key !== ('description' || 'hex_color')
+              key !==
+                ('description' || 'hex_color' || 'type' || 'created_at') &&
+              this.hiveSearch.substring(0, 3) !== 'id='
             ) {
               return value.toLowerCase().includes(this.hiveSearch.toLowerCase())
             }
@@ -725,12 +727,23 @@ export default {
               ...hiveSet,
               hives: hiveSet.hives.filter((hive) => {
                 return Object.entries(hive).some(([key, value]) => {
-                  if (value !== null && typeof value === 'string') {
+                  if (
+                    value !== null &&
+                    typeof value === 'string' &&
+                    key !== ('color' || 'last_inspection_date' || 'created_at' || 'reminder_date' || 'last_inspection_date_locale_date')
+                  ) {
                     return value
                       .toLowerCase()
                       .includes(this.hiveSearch.toLowerCase())
-                  } else if (key === 'id') {
-                    return value.toString().includes(this.hiveSearch)
+                  } else if (
+                    key === 'id' &&
+                    this.hiveSearch.substring(0, 3) === 'id='
+                  ) {
+                    return value
+                      .toString()
+                      .includes(
+                        this.hiveSearch.substring(3, this.hiveSearch.length)
+                      )
                   } else if (key === 'queen' && value !== null) {
                     return Object.entries(value).some(([key, value]) => {
                       if (
@@ -849,8 +862,18 @@ export default {
       },
     },
     hiveSets() {
-      var groupsWithEditableHivesProp = this.groups
-      groupsWithEditableHivesProp.map((group) => {
+      var apiariesWithDates = this.apiaries
+
+      apiariesWithDates.map((apiary) => {
+        apiary.hives.map((hive) => {
+          this.addDates(hive)
+        })
+      })
+      var groupsWithDatesAndEditableHivesProp = this.groups
+      groupsWithDatesAndEditableHivesProp.map((group) => {
+        group.hives.map((hive) => {
+          this.addDates(hive)
+        })
         var hasEditableHive =
           group.hives.filter((hive) => {
             return hive.editable
@@ -859,7 +882,7 @@ export default {
           ? (group.hasEditableHive = true)
           : (group.hasEditableHive = false)
       })
-      return this.apiaries.concat(groupsWithEditableHivesProp)
+      return apiariesWithDates.concat(groupsWithDatesAndEditableHivesProp)
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile
@@ -1066,6 +1089,28 @@ export default {
         } else {
           console.log('Error: ', error)
         }
+      }
+    },
+    addDates(hive) {
+      if (hive.last_inspection_date !== null) {
+        hive.last_inspection_date_moment_from_now = this.momentFromNow(
+          hive.last_inspection_date
+        )
+        hive.last_inspection_date_locale_date = this.momentify(
+          hive.last_inspection_date
+        )
+      } else {
+        hive.last_inspection_date_moment_from_now = null
+        hive.last_inspection_date_locale_date = null
+      }
+      if (hive.reminder_date !== null) {
+        hive.reminder_date_day_month = this.momentifyDayMonth(
+          hive.reminder_date
+        )
+        hive.reminder_date_locale_date = this.momentify(hive.reminder_date)
+      } else {
+        hive.reminder_date_day_month = null
+        hive.reminder_date_locale_date = null
       }
     },
     alertsPerHive(hiveId) {

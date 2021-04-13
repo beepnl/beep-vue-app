@@ -52,7 +52,7 @@
             :to="{
               name: 'hive-inspections',
               params: { id: hive.id },
-              query: { search: hive.last_inspection_date },
+              query: { search: hive.last_inspection_date_locale_date },
             }"
           >
             <v-icon v-if="hive.attention" class="red--text">
@@ -446,7 +446,7 @@
               :to="{
                 name: 'hive-inspections',
                 params: { id: hive.id },
-                query: { search: hive.last_inspection_date },
+                query: { search: hive.last_inspection_date_locale_date },
               }"
             >
               <v-icon
@@ -475,7 +475,7 @@
                   : 'green--text'
               } mr-2`
             "
-            v-text="momentifyDayMonth(hive.reminder_date)"
+            v-text="hive.reminder_date_day_month"
           >
           </span>
           <span
@@ -494,13 +494,12 @@
 <script>
 import { darkIconMixin } from '@mixins/darkIconMixin'
 import HiveIcon from '@components/hive-icon.vue'
-import { momentMixin } from '@mixins/momentMixin'
 
 export default {
   components: {
     HiveIcon,
   },
-  mixins: [darkIconMixin, momentMixin],
+  mixins: [darkIconMixin],
   props: {
     hive: {
       type: Object,
@@ -558,6 +557,7 @@ export default {
         return {
           name: 'hive-inspections',
           params: { id: this.hive.id },
+          query: { search: this.hive.last_inspection_date_locale_date },
         }
       } else {
         if (this.hiveSet.users) {
@@ -575,7 +575,7 @@ export default {
     },
     lastVisit(hive) {
       if (hive.last_inspection_date !== null) {
-        return this.momentFromNow(hive.last_inspection_date)
+        return hive.last_inspection_date_moment_from_now
       } else {
         return this.$i18n.t('no_inspections')
       }

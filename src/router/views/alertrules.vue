@@ -67,7 +67,7 @@
                   <v-btn
                     tile
                     outlined
-                    color="primary"
+                    color="accent"
                     class="save-button-mobile-wide"
                     v-bind="attrs"
                     v-on="on"

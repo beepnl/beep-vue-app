@@ -150,8 +150,8 @@
                 </div>
                 <strong class="d-flex justify-center">{{
                   mobile
-                    ? momentifyDayMonth(inspection.created_at)
-                    : momentify(inspection.created_at)
+                    ? inspection.created_at_day_month
+                    : inspection.created_at_locale_date
                 }}</strong>
               </th>
               <th class="filler"></th>
@@ -275,10 +275,10 @@
                             :start="new Date(inspection.reminder_date)"
                             :end="new Date(inspection.reminder_date + 1)"
                             :details="
-                              `BEEP app ${$tc('Inspection', 1)} @ ${momentify(
+                              `BEEP app ${$tc('Inspection', 1)} @ ${
                                 // eslint-disable-next-line vue/comma-dangle
-                                inspection.created_at
-                              )}`
+                                inspection.created_at_locale_date
+                              }`
                             "
                             :calendar="calendarItem"
                           ></AddToCalendar>
@@ -311,8 +311,8 @@
                     "
                     v-text="
                       mobile
-                        ? momentifyDayMonth(inspection.reminder_date)
-                        : momentify(inspection.reminder_date)
+                        ? inspection.reminder_date_day_month
+                        : inspection.reminder_date_locale_date
                     "
                   ></span>
                 </div>
@@ -606,20 +606,42 @@ export default {
     id() {
       return parseInt(this.$route.params.id)
     },
+    inspectionsWithDates() {
+      var inspectionsWithDates = this.inspections.inspections
+      inspectionsWithDates.map((inspection) => {
+        inspection.created_at_locale_date = this.momentify(
+          inspection.created_at
+        )
+        inspection.created_at_day_month = this.momentifyDayMonth(
+          inspection.created_at
+        )
+        inspection.reminder_date !== null
+          ? (inspection.reminder_date_locale_date = this.momentify(
+              inspection.reminder_date
+            ))
+          : (inspection.reminder_date_locale_date = null)
+        inspection.reminder_date !== null
+          ? (inspection.reminder_date_day_month = this.momentifyDayMonth(
+              inspection.reminder_date
+            ))
+          : (inspection.reminder_date_day_month = null)
+      })
+      return inspectionsWithDates
+    },
     filteredInspectionsWithUndefined() {
       var textFilteredInspections = []
       if (this.search === null) {
-        textFilteredInspections = this.inspections.inspections
+        textFilteredInspections = this.inspectionsWithDates
       } else {
-        textFilteredInspections = this.inspections.inspections.map(
+        textFilteredInspections = this.inspectionsWithDates.map(
           (inspection) => {
             const inspectionMatch = Object.entries(inspection).some(
               ([key, value]) => {
                 if (
                   value !== null &&
                   typeof value === 'string' &&
-                  this.search.substring(0, 3) !== 'id='
-                  // && key !== ('description' || 'type' || 'hex_color' || 'created_at')
+                  this.search.substring(0, 3) !== 'id=' &&
+                  key !== ('created_at' || 'reminder_date')
                 ) {
                   return value.toLowerCase().includes(this.search.toLowerCase())
                 } else if (
@@ -629,8 +651,6 @@ export default {
                   return value
                     .toString()
                     .includes(this.search.substring(3, this.search.length))
-                } else if (key === 'id') {
-                  return value.toString().includes(this.search)
                 }
               }
             )
@@ -870,7 +890,7 @@ export default {
             ' (' +
             this.$i18n.t('Date').toLocaleLowerCase() +
             ': ' +
-            this.momentify(inspection.created_at) +
+            inspection.created_at_locale_date +
             ')?',
           {
             color: 'red',

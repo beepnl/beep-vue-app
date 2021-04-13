@@ -151,6 +151,8 @@ export default {
     alertsWithRuleDetails() {
       var alertsWithRuleDetails = this.alerts
       alertsWithRuleDetails.map((alert) => {
+        alert.locale_date = this.momentify(alert.created_at)
+        alert.moment_from_now = this.momentFromNow(alert.created_at)
         var hiveGroupName = null
         if (
           this.hives[alert.hive_id] !== undefined &&
@@ -179,7 +181,11 @@ export default {
       } else {
         textFilteredAlerts = this.alertsWithRuleDetails.map((alert) => {
           const alertMatch = Object.entries(alert).some(([key, value]) => {
-            if (value !== null && typeof value === 'string') {
+            if (
+              value !== null &&
+              typeof value === 'string' &&
+              key !== 'created_at'
+            ) {
               return value.toLowerCase().includes(this.search.toLowerCase())
             } else if (value !== null && key === 'alert_value') {
               return (

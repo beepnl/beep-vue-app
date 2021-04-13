@@ -19,14 +19,14 @@
                 <div>
                   <span
                     class="diary-inspection-date"
-                    v-text="momentify(inspection.created_at)"
+                    v-text="inspection.created_at_locale_date"
                   >
                   </span>
                 </div>
                 <span
                   class="diary-inspection-text
                         last-visit"
-                  v-text="momentFromNow(inspection.created_at)"
+                  v-text="inspection.created_at_moment_from_now"
                 >
                 </span>
               </div>
@@ -232,7 +232,7 @@
                               : 'green--text'
                           } mr-2`
                         "
-                        v-text="momentifyDayMonth(inspection.reminder_date)"
+                        v-text="inspection.reminder_date_day_month"
                       >
                       </span>
                       <span
@@ -350,13 +350,11 @@
 <script>
 import HiveIcon from '@components/hive-icon.vue'
 import { mapGetters } from 'vuex'
-import { momentMixin } from '@mixins/momentMixin'
 
 export default {
   components: {
     HiveIcon,
   },
-  mixins: [momentMixin],
   props: {
     inspection: {
       type: Object,
