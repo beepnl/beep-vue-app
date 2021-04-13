@@ -899,7 +899,7 @@ export default {
                 } else {
                   this.$router.push({
                     name: 'diary',
-                    query: { search: searchTerm },
+                    query: { search: 'id=' + searchInspectionId },
                   })
                 }
               })

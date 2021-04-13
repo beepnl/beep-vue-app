@@ -15,81 +15,136 @@
             >
             <ul>
               <li
-                >Searchable: by name, location, latest inspection notes or
-                reminder etc.</li
+                >Searchable: by apiary / group / hive / queen name, location
+                (address, country code), latest inspection (notes, reminder
+                text, reminder date, time ago), hive type and hive id (adding
+                'id=', f.e.: 'id=99').</li
               >
               <li
-                >Filterable: by group - attention needed - reminder present -
-                impression (good, neutral, bad) - device (BEEP base or other)
-                present - alerts present.<br />
+                >Filterable: by group (if any), attention needed, reminder
+                present, impression (good, neutral, bad), device (BEEP base or
+                other) present, alerts present.<br />
                 Please note: depending on screen size some filters may not be
-                visible in order to save space. In addition, when no devices
-                (BEEP base or other) are present, device and alerts filter won't
-                be displayed. Group filter is only present if you are a member
-                of at least 1 collaboration groups.</li
+                visible in order to save space. Filters will be remembered
+                throughout a browsing session. Clicking the BEEP icon at the top
+                left of the screen will clear all filters.</li
               >
               <li
                 >Different views: XS (hive + attention and alert icon) - M (hive
-                + icons, not possible on mobile) - XL (hive + icons + text)
-                )</li
-              >
+                + icons, not possible on mobile) - XL (hive + icons + text).
+              </li>
               <li
                 >Hive menu: edit and view hive or queen properties and
-                inspections by clicking on the hive icon</li
+                inspections by clicking on the hive icon.</li
               >
               <li
                 >Apiary / group menu: edit and view apiary or group properties
                 and inspections by clicking on the settings icon next to the
-                apiary / group name</li
+                apiary / group name.</li
               >
               <li
                 >Move hives: move multiple hives to another apiary at once by
                 clicking on the settings icon next to the apiary name -> 'Move
-                hives'</li
+                hives'.</li
+              >
+            </ul>
+          </li>
+          <li>
+            <strong
+              ><router-link :to="{ name: 'hive-create' }">Hive</router-link> -
+              Create / edit hive</strong
+            >
+            <ul>
+              <li
+                >New layer types: feeding box (will automatically be placed on
+                top) and queen excluder.</li
+              >
+              <li
+                >Add new hive layers: by dragging them from the left stack to
+                the desired location in the hive icon.</li
+              >
+              <li
+                >Change layer order: by drag- and dropping within the hive
+                icon.</li
+              >
+              <li>Change individual layer color: by clicking on the layer.</li>
+              <li
+                >Delete layer: by clicking on the layer and then clicking the
+                bin icon.</li
+              >
+              <li
+                >Edit hive: hives can be edited by clicking on the hive in the
+                <router-link :to="{ name: 'home' }">Hives</router-link> overview
+                which opens the hive menu -> 'Edit hive'. Please note: only
+                owned hives and shared hives that are provided editing rights
+                are editable.</li
+              >
+              <li
+                >Edit queen: queens can be edited separately by clicking on the
+                queen icon (for M and XL views) or by selecting 'Edit queen'
+                from the hive menu (see above).</li
               >
             </ul>
           </li>
           <li>
             <strong
               ><router-link :to="{ name: 'diary' }">Inspections</router-link> -
-              Overview of all inspections</strong
+              Overview of all inspections (short version containing only overall
+              impression, attention needed, notes and reminder)</strong
             >
             <ul>
               <li
-                >Searchable: by hive / apiary / group name, notes and reminder
-                text</li
+                >Searchable: by date, time ago, hive / apiary / group name,
+                notes, reminder text, reminder date and inspection id (adding
+                'id=', f.e.: 'id=99').</li
               >
               <li
-                >Filterable: by group (if any) - attention needed - reminder
-                present - impression (good, neutral, bad)</li
-              >
-              <li
-                >Inspection menu: view inspection (in detail), edit or delete
-                inspection by clicking on the inspection item</li
-              >
-            </ul>
-          </li>
-          <li>
-            <strong
-              ><router-link :to="{ name: 'diary' }">Inspections</router-link> -
-              Overview of all inspections</strong
-            >
-            <ul>
-              <li
-                >Searchable: by hive / apiary / group name, notes and reminder
-                text</li
-              >
-              <li
-                >Filterable: by group (if any) - attention needed - reminder
-                present - impression (good, neutral, bad)</li
-              >
+                >Filterable: by group (if any), attention needed, reminder
+                present, impression (good, neutral, bad).<br />
+                Please note: group filter is only present if you are a member of
+                at least 1 collaboration group. Filters will be remembered
+                throughout a browsing session.
+              </li>
               <li
                 >Inspection menu: view inspection (in detail), edit or delete
-                inspection by clicking on the inspection item</li
+                inspection by clicking on the inspection item.</li
               >
               <li
                 >Hive actions (changes in hive configuration) are saved as
                 inspections and shown here as well.</li
+              >
+            </ul>
+          </li>
+          <li>
+            <strong
+              >Inspections overview per hive - Table containing all inspection
+              data per hive</strong
+            ><br />
+            Accessible via hive menu in
+            <router-link :to="{ name: 'home' }">Hives</router-link> overview ->
+            'View inspections' or inspection menu in
+            <router-link :to="{ name: 'diary' }">Inspections</router-link>
+            overview -> 'View inspection'.
+            <ul>
+              <li
+                >Searchable: by date, notes, reminder text, reminder date and
+                inspection id (adding 'id=', f.e.: 'id=99').</li
+              >
+              <li
+                >Filterable: by attention needed, reminder present, impression
+                (good, neutral, bad).
+              </li>
+            </ul>
+          </li>
+          <li>
+            <strong
+              ><router-link :to="{ name: 'inspect' }">Inspect</router-link> -
+              New inspection</strong
+            >
+            <ul>
+              <li
+                >Bulk inspection: inspect multiple hives per apiary / group at
+                once by selecting the hive icons you want to include.</li
               >
             </ul>
           </li>
@@ -116,62 +171,32 @@
             that you will receive an alert when the measurement data meets
             certain requirements. For example, a sudden drop in weight because
             of swarming. Alerts will be shown here and in the
-            <router-link :to="{ name: 'home' }">hives</router-link>
+            <router-link :to="{ name: 'home' }">Hives</router-link>
             overview, you can choose to receive them via email as well.
             <ul>
               <li
-                >Searchable: by hive / apiary / group name, alert rule name,
-                function and value</li
+                >Searchable: by date, time ago, hive / apiary / group name,
+                alert rule name, function and value.</li
               >
               <li
                 ><router-link :to="{ name: 'alertrules' }"
                   >Alert settings</router-link
                 >
-                - To get you started there are a few default alert rules you can
-                use (and adapt to your own needs). In addition, you can create
-                and edit your own alert rules. Both can be added via the 'add
-                alert rule' button. They can be (de)activated via the alert rule
-                overview table or the 'alerts enabled' / 'alerts disabled'
-                switch at the top.</li
+                - To get you started there are a few
+                <router-link :to="{ name: 'alertrules-default' }"
+                  >default alert rules</router-link
+                >
+                you can use (and adapt to your own needs). In addition, you can
+                <router-link :to="{ name: 'alertrule-create' }"
+                  >create and edit your own alert rules</router-link
+                >. Both can be added via the 'add alert rule' button. They can
+                be (de)activated via the alert rule overview table or the
+                'alerts enabled' / 'alerts disabled' switch at the top.</li
               >
               <li
                 >Alert menu: edit alert rule or delete alert by clicking on an
-                alert item</li
+                alert item.</li
               >
-            </ul>
-          </li>
-          <li>
-            <strong
-              ><router-link :to="{ name: 'inspect' }">Inspect</router-link> -
-              New inspection</strong
-            >
-            <ul>
-              <li
-                >Bulk inspection: inspect multiple hives per apiary / group at
-                once by selecting the hive icons you want to include</li
-              >
-            </ul>
-          </li>
-          <li>
-            <strong
-              ><router-link :to="{ name: 'hive-create' }">Hive</router-link> -
-              Create / edit hive</strong
-            >
-            <ul>
-              <li
-                >New layer types: feeding box (will automatically be placed on
-                top) and queen excluder.</li
-              >
-              <li
-                >Add new hive layers: by dragging them from the left stack to
-                the desired location in the hive icon.</li
-              >
-              <li
-                >Change layer order: by drag- and dropping within the hive
-                icon.</li
-              >
-              <li>Change individual layer color: by clicking on the layer.</li>
-              <li>Delete layer: by clicking on the layer.</li>
             </ul>
           </li>
           <li>
@@ -207,31 +232,44 @@
             </ul>
           </li>
           <li>
-            <strong>Quick action menu</strong>
+            <strong>Where to find? - Menu changes</strong>
             <ul>
               <li
-                >Add a new inspection, hive, apiary, group or alert rule by
-                clicking the '+' button centered at the top of the
+                >Quick action menu - Add a new inspection, hive, apiary, group
+                or alert rule by clicking the '+' button centered at the top of
+                the
                 <router-link :to="{ name: 'home' }">home</router-link>
-                navigation bar</li
-              >
-            </ul>
-          </li>
-          <li>
-            <strong
-              ><router-link :to="{ name: 'checklists' }"
-                >Checklist templates</router-link
-              >
-              - View / edit checklist templates</strong
-            >
-            <ul>
-              <li
-                >Change item order: drag and drop the item (only possible on a
-                desktop computer, if template is editable)</li
+                navigation bar.</li
               >
               <li
-                >Change included items: check and uncheck items to add or remove
-                them to/from the template (if template is editable).</li
+                ><router-link :to="{ name: 'home' }">Hives</router-link>,
+                <router-link :to="{ name: 'diary' }">Inspections</router-link>,
+                <router-link :to="{ name: 'measurements' }">Data</router-link>
+                and
+                <router-link :to="{ name: 'alerts' }">Alerts</router-link> tabs
+                are always visible in the top bar.</li
+              >
+              <li
+                ><router-link :to="{ name: 'home' }">Hives</router-link> tab
+                contains former Apiaries page and former Hives page in one
+                overview.</li
+              >
+              <li
+                >Collaboration groups are now directly visible in the
+                <router-link :to="{ name: 'home' }">Hives</router-link> overview
+                via the group filter (first in row after search field, only
+                visible if you are a member of any collaboration group).</li
+              >
+              <li
+                ><router-link :to="{ name: 'devices' }">Devices</router-link>,
+                <router-link :to="{ name: 'export' }">Data export</router-link>,
+                <router-link :to="{ name: 'research' }">Research</router-link>,
+                <router-link :to="{ name: 'support' }">Helpdesk</router-link>,
+                <router-link :to="{ name: 'new' }">New</router-link> and
+                <a href="https://beep.nl/home-english" target="_blank"
+                  >BEEP website</a
+                >
+                are moved to the menu at the top right of the screen.</li
               >
             </ul>
           </li>
