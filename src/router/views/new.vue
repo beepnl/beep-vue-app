@@ -21,27 +21,64 @@
                 'id=', f.e.: 'id=99').</li
               >
               <li
-                >Filterable: by group (if any), attention needed, reminder
-                present, impression (good, neutral, bad), device (BEEP base or
-                other) present, alerts present.<br />
+                >Filterable: by
+                <v-icon class="icon-apiary-shared color-grey inline-icon"
+                  >mdi-account-multiple</v-icon
+                >
+                group (if any),
+                <v-icon class="inline-icon">mdi-clipboard-alert-outline</v-icon>
+                attention needed,
+                <v-icon class="color-grey inline-icon"
+                  >mdi-calendar-clock</v-icon
+                >
+                reminder present, impression (<v-icon
+                  class="color-grey inline-icon"
+                  >mdi-emoticon-happy</v-icon
+                >
+                good,
+                <v-icon class="color-grey inline-icon"
+                  >mdi-emoticon-neutral</v-icon
+                >
+                neutral,
+                <v-icon class="color-grey inline-icon">mdi-emoticon-sad</v-icon>
+                bad),
+                <v-sheet class="beep-icon beep-icon-sensors color-grey">
+                </v-sheet>
+                device (BEEP base or other) present,
+                <v-icon class="color-grey inline-icon">mdi-bell</v-icon>
+                alerts present.<br />
                 Please note: depending on screen size some filters may not be
                 visible in order to save space. Filters will be remembered
                 throughout a browsing session. Clicking the BEEP logo at the top
                 left of the screen will clear all filters.</li
               >
               <li
-                >Different views: XS (hive + attention and alert icon) - M (hive
-                + icons, not possible on mobile) - XL (hive + icons + text).
+                >Different views:
+                <v-icon class="inline-icon">mdi-size-xs</v-icon> (hive +
+                <v-icon small class="red--text inline-icon"
+                  >mdi-clipboard-alert-outline</v-icon
+                >
+                attention and
+                <v-icon small class="red--text inline-icon">mdi-bell</v-icon>
+                alert icon),
+                <v-icon class="inline-icon">mdi-size-m</v-icon> (hive + all
+                icons, not possible on mobile),
+                <v-icon class="inline-icon">mdi-size-xl</v-icon> (hive + all
+                icons + text).
               </li>
               <li
                 >Hive menu: click on a hive to edit it, edit the queen, create
                 an inspection or view inspections.</li
               >
               <li
-                >Apiary / group menu: click on the settings icon next to the
-                apiary / group name to edit apiary or group properties, create a
-                bulk inspection or view inspections. And for apiary menu only:
-                to add a new hive or move hives (see below).</li
+                >Apiary / group menu: click on the
+                <v-icon small class="color-grey-light inline-icon"
+                  >mdi-cog</v-icon
+                >
+                icon next to the apiary / group name to edit apiary or group
+                properties, create a bulk inspection or view inspections. And
+                for apiary menu only: to add a new hive or move hives (see
+                below).</li
               >
               <li
                 >Move hives: move multiple hives to another apiary at once by
@@ -64,25 +101,30 @@
                 the desired location in the hive.</li
               >
               <li
-                >Change layer order: by drag- and dropping within the hive
+                >Change layer order: by drag- and dropping within the hive.</li
+              >
+              <li>Change individual layer color: by clicking the layer.</li>
+              <li
+                >Delete layer: by clicking the layer and then clicking the
+                <v-icon small class="red--text inline-icon">mdi-delete</v-icon>
                 icon.</li
               >
-              <li>Change individual layer color: by clicking on the layer.</li>
               <li
-                >Delete layer: by clicking on the layer and then clicking the
-                bin icon.</li
-              >
-              <li
-                >Edit hive: hives can be edited by clicking on the hive in the
+                >Edit hive: hives can be edited by clicking the hive in the
                 <router-link :to="{ name: 'home' }">Hives</router-link> overview
                 which opens the hive menu → 'Edit hive'. Please note: only owned
                 hives and shared hives that are provided editing rights are
                 editable.</li
               >
               <li
-                >Edit queen: queens can be edited separately by clicking on the
-                queen icon (for M and XL views) or by selecting 'Edit queen'
-                from the hive menu (see above).</li
+                >Edit queen: queens can be edited separately by clicking the
+                <v-sheet
+                  class="beep-icon beep-icon-queen"
+                  color="#4A90E2"
+                ></v-sheet>
+                icon (for <v-icon class="inline-icon">mdi-size-m</v-icon> and
+                <v-icon class="inline-icon">mdi-size-xl</v-icon> views) or by
+                selecting 'Edit queen' from the hive menu (see above).</li
               >
             </ul>
           </li>
@@ -99,8 +141,24 @@
                 'id=', f.e.: 'id=99').</li
               >
               <li
-                >Filterable: by group (if any), attention needed, reminder
-                present, impression (good, neutral, bad).<br />
+                >Filterable: by
+                <v-icon class="icon-apiary-shared color-grey inline-icon"
+                  >mdi-account-multiple</v-icon
+                >
+                group (if any),
+                <v-icon class="inline-icon">mdi-clipboard-alert-outline</v-icon>
+                attention needed,
+                <v-icon class="inline-icon">mdi-calendar-clock</v-icon> reminder
+                present, impression (<v-icon class="color-grey inline-icon"
+                  >mdi-emoticon-happy</v-icon
+                >
+                good,
+                <v-icon class="color-grey inline-icon"
+                  >mdi-emoticon-neutral</v-icon
+                >
+                neutral,
+                <v-icon class="color-grey inline-icon">mdi-emoticon-sad</v-icon>
+                bad).<br />
                 Please note: filters will be remembered throughout a browsing
                 session.
               </li>
@@ -131,8 +189,20 @@
                 inspection id (adding 'id=', f.e.: 'id=99').</li
               >
               <li
-                >Filterable: by attention needed, reminder present, impression
-                (good, neutral, bad).
+                >Filterable: by
+                <v-icon class="inline-icon">mdi-clipboard-alert-outline</v-icon>
+                attention needed,
+                <v-icon class="inline-icon">mdi-calendar-clock</v-icon> reminder
+                present, impression (<v-icon class="color-grey inline-icon"
+                  >mdi-emoticon-happy</v-icon
+                >
+                good,
+                <v-icon class="color-grey inline-icon"
+                  >mdi-emoticon-neutral</v-icon
+                >
+                neutral,
+                <v-icon class="color-grey inline-icon">mdi-emoticon-sad</v-icon>
+                bad).
               </li>
             </ul>
           </li>
@@ -241,8 +311,11 @@
             <ul>
               <li
                 >Quick action menu - Create a new inspection, new hive, new
-                apiary, new group or new alert rule by clicking the '+' button
-                centered at the top of the
+                apiary, new group or new alert rule by clicking the
+                <v-icon class="color-black inline-icon"
+                  >mdi-plus-circle-outline</v-icon
+                >
+                button centered at the top of the
                 <router-link :to="{ name: 'home' }">home</router-link>
                 navigation bar.</li
               >
@@ -257,14 +330,18 @@
               >
               <li
                 ><router-link :to="{ name: 'home' }">Hives</router-link> tab
-                contains former Apiaries page and former Hives page in a single
+                combines former Apiaries page and former Hives page in a single
                 overview.</li
               >
               <li
                 >Collaboration groups are now directly visible in the
                 <router-link :to="{ name: 'home' }">Hives</router-link> overview
-                via the group filter (first icon in row after search field, only
-                visible if you are a member of any collaboration group).</li
+                via the group filter (<v-icon
+                  class="icon-apiary-shared color-grey"
+                  >mdi-account-multiple</v-icon
+                >
+                icon, first in row after search field, only visible if you are a
+                member of any collaboration group).</li
               >
               <li
                 ><router-link :to="{ name: 'devices' }">Devices</router-link>,
@@ -275,10 +352,14 @@
                 <a href="https://beep.nl/home-english" target="_blank"
                   >BEEP website</a
                 >
-                are moved to the menu at the top right of the screen.</li
+                are moved to the
+                <v-icon class="color-black inline-icon">mdi-menu</v-icon> menu
+                at the top right of the screen.</li
               >
               <li
-                >New in the menu (top right):
+                >New in the
+                <v-icon class="color-black inline-icon">mdi-menu</v-icon> menu
+                (top right):
                 <router-link :to="{ name: 'alertrules' }"
                   >Alert settings</router-link
                 >
@@ -308,9 +389,30 @@
                 'id=' toe te voegen, bijv: 'id=99').</li
               >
               <li>
-                Filterbaar: op groep (als aanwezig), aandacht nodig, herinnering
-                aanwezig, totaalindruk (goed, neutraal, slecht), meetsysteem
-                (BEEP base of anders) aanwezig, notificaties aanwezig.<br />
+                Filterbaar: op
+                <v-icon class="icon-apiary-shared color-grey inline-icon"
+                  >mdi-account-multiple</v-icon
+                >
+                groep (als aanwezig),
+                <v-icon class="inline-icon">mdi-clipboard-alert-outline</v-icon>
+                aandacht nodig,
+                <v-icon class="inline-icon">mdi-calendar-clock</v-icon>
+                herinnering aanwezig, totaalindruk (<v-icon
+                  class="color-grey inline-icon"
+                  >mdi-emoticon-happy</v-icon
+                >
+                goed,
+                <v-icon class="color-grey inline-icon"
+                  >mdi-emoticon-neutral</v-icon
+                >
+                neutraal,
+                <v-icon class="color-grey inline-icon">mdi-emoticon-sad</v-icon>
+                slecht),
+                <v-sheet class="beep-icon beep-icon-sensors color-grey">
+                </v-sheet>
+                meetsysteem (BEEP base of anders) aanwezig,
+                <v-icon class="color-grey inline-icon">mdi-bell</v-icon>
+                notificaties aanwezig.<br />
                 N.B.: afhankelijk van schermgrootte zullen sommige filters niet
                 zichtbaar zijn om ruimte te besparen. Filters worden onthouden
                 gedurende de browsersessie. Door te klikken op het BEEP logo in
@@ -318,8 +420,17 @@
                 gewist.</li
               >
               <li
-                >Verschillende layouts: XS (kast + aandacht en notificatie
-                icoon) - M (kast + iconen, niet mogelijk op mobiel) - XL (kast +
+                >Verschillende layouts:
+                <v-icon class="inline-icon">mdi-size-xs</v-icon> (kast +
+                <v-icon small class="red--text inline-icon"
+                  >mdi-clipboard-alert-outline</v-icon
+                >
+                aandacht en
+                <v-icon small class="red--text inline-icon">mdi-bell</v-icon>
+                notificatie icoon),
+                <v-icon class="inline-icon">mdi-size-m</v-icon> (kast + alle
+                iconen, niet mogelijk op mobiel),
+                <v-icon class="inline-icon">mdi-size-xl</v-icon> (kast + alle
                 iconen + tekst).
               </li>
               <li
@@ -327,11 +438,14 @@
                 te passen een inspectie te maken of inspecties te bekijken.</li
               >
               <li
-                >Bijenstand / groep menu: klik op het 'instellingen' icoon naast
-                de bijenstand / groep naam om deze aan te passen, een bulk
-                inspectie te maken of inspecties te bekijken. En alleen voor het
-                bijenstand menu: voeg een nieuwe kast toe of verplaats kasten
-                (zie onder).</li
+                >Bijenstand / groep menu: klik op het
+                <v-icon small class="color-grey-light inline-icon"
+                  >mdi-cog</v-icon
+                >
+                icoon naast de bijenstand / groep naam om deze aan te passen,
+                een bulk inspectie te maken of inspecties te bekijken. En alleen
+                voor het bijenstand menu: voeg een nieuwe kast toe of verplaats
+                kasten (zie onder).</li
               >
               <li
                 >Verplaats bijenkasten: verplaats meerdere kasten in één keer
@@ -364,7 +478,9 @@
               >
               <li>
                 Verwijder kamer: door te klikken op de kamer en vervolgens op
-                het prullenbak icoon te klikken.</li
+                het
+                <v-icon small class="red--text inline-icon">mdi-delete</v-icon>
+                icoon te klikken.</li
               >
               <li>
                 Pas kast aan: bijenkasten kunnen aangepast worden door op de
@@ -376,7 +492,14 @@
               >
               <li
                 >Pas moer aan: moeren kunnen afzonderlijk aangepast worden door
-                op het moer icoon te klikken (in de M en XL layout) of door
+                op het
+                <v-sheet
+                  class="beep-icon beep-icon-queen"
+                  color="#4A90E2"
+                ></v-sheet>
+                icoon te klikken (in de
+                <v-icon class="inline-icon">mdi-size-m</v-icon> en
+                <v-icon class="inline-icon">mdi-size-xl</v-icon> layout) of door
                 'Aanpassen moer' te selecteren in het kast menu (zie boven).</li
               >
             </ul>
@@ -394,8 +517,25 @@
                 id (door 'id=' toe te voegen, bijv: 'id=99').</li
               >
               <li>
-                Filterbaar: op groep (als aanwezig), aandacht nodig, herinnering
-                aanwezig, totaalindruk (goed, neutraal, slecht).<br />
+                Filterbaar: op
+                <v-icon class="icon-apiary-shared color-grey inline-icon"
+                  >mdi-account-multiple</v-icon
+                >
+                groep (als aanwezig),
+                <v-icon class="inline-icon">mdi-clipboard-alert-outline</v-icon>
+                aandacht nodig,
+                <v-icon class="inline-icon">mdi-calendar-clock</v-icon>
+                herinnering aanwezig, totaalindruk (<v-icon
+                  class="color-grey inline-icon"
+                  >mdi-emoticon-happy</v-icon
+                >
+                goed,
+                <v-icon class="color-grey inline-icon"
+                  >mdi-emoticon-neutral</v-icon
+                >
+                neutraal,
+                <v-icon class="color-grey inline-icon">mdi-emoticon-sad</v-icon>
+                slecht).<br />
                 N.B.: Filters worden onthouden gedurende de browsersessie.
               </li>
               <li
@@ -426,8 +566,21 @@
                 inspectie id (door 'id=' toe te voegen, bijv: 'id=99').</li
               >
               <li
-                >Filterbaar: aandacht nodig, herinnering aanwezig, totaalindruk
-                (goed, neutraal, slecht).
+                >Filterbaar: op
+                <v-icon class="inline-icon">mdi-clipboard-alert-outline</v-icon>
+                aandacht nodig,
+                <v-icon class="inline-icon">mdi-calendar-clock</v-icon>
+                herinnering aanwezig, totaalindruk (<v-icon
+                  class="color-grey inline-icon"
+                  >mdi-emoticon-happy</v-icon
+                >
+                goed,
+                <v-icon class="color-grey inline-icon"
+                  >mdi-emoticon-neutral</v-icon
+                >
+                neutraal,
+                <v-icon class="color-grey inline-icon">mdi-emoticon-sad</v-icon>
+                slecht).
               </li>
             </ul>
           </li>
@@ -541,8 +694,11 @@
               <li
                 >Snelle actie menu - Maak direct een nieuwe inspectie, nieuwe
                 kast, nieuwe bijenstand, nieuwe groep of nieuwe
-                notificatie-instelling door op de '+' knop te klikken midden
-                bovenaan de
+                notificatie-instelling door op de
+                <v-icon class="color-black inline-icon"
+                  >mdi-plus-circle-outline</v-icon
+                >
+                knop te klikken midden bovenaan de
                 <router-link :to="{ name: 'home' }">home</router-link>
                 navigatiebalk.</li
               >
@@ -564,9 +720,12 @@
               <li
                 >Samenwerkingsgroepen zijn nu direct zichtbaar in het
                 <router-link :to="{ name: 'home' }">Kasten</router-link>
-                overzicht via de groepsfilter (het eerste icoon in de rij na het
-                zoekveld, alleen zichtbaar als je lid bent van tenminste één
-                samenwerkingsgroep).</li
+                overzicht via de groepsfilter (<v-icon
+                  class="icon-apiary-shared color-grey"
+                  >mdi-account-multiple</v-icon
+                >
+                icoon, eerste in de rij na het zoekveld, alleen zichtbaar als je
+                lid bent van tenminste één samenwerkingsgroep).</li
               >
               <li
                 ><router-link :to="{ name: 'devices' }"
@@ -579,10 +738,14 @@
                 <router-link :to="{ name: 'support' }">Helpdesk</router-link>,
                 <router-link :to="{ name: 'new' }">Nieuw!</router-link> en
                 <a href="https://beep.nl/" target="_blank">BEEP website</a>
-                zijn verhuisd naar het menu rechtsboven.</li
+                zijn verhuisd naar het
+                <v-icon class="color-black inline-icon">mdi-menu</v-icon> menu
+                rechtsboven.</li
               >
               <li
-                >Nieuw in het menu (rechtsboven):
+                >Nieuw in het
+                <v-icon class="color-black inline-icon">mdi-menu</v-icon> menu
+                (rechtsboven):
                 <router-link :to="{ name: 'alertrules' }"
                   >Notificaties beheren</router-link
                 >
@@ -780,3 +943,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.inline-icon {
+  margin-top: -2px;
+}
+</style>
