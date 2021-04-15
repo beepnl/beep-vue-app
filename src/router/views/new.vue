@@ -34,18 +34,18 @@
                 + icons, not possible on mobile) - XL (hive + icons + text).
               </li>
               <li
-                >Hive menu: edit hive or queen properties, create an inspection
-                or view inspections by clicking on the hive.</li
+                >Hive menu: click on a hive to edit it, edit the queen, create
+                an inspection or view inspections.</li
               >
               <li
-                >Apiary / group menu: edit apiary or group properties, create a
-                bulk inspection or view inspections by clicking on the settings
-                icon next to the apiary / group name.</li
+                >Apiary / group menu: click on the settings icon next to the
+                apiary / group name to edit apiary or group properties, create a
+                bulk inspection or view inspections. And for apiary menu only:
+                to add a new hive or move hives (see below).</li
               >
               <li
                 >Move hives: move multiple hives to another apiary at once by
-                clicking on the settings icon next to the apiary name -> 'Move
-                hives'.</li
+                selecting 'Move hives' from the apiary menu (see above).</li
               >
             </ul>
           </li>
@@ -75,9 +75,9 @@
               <li
                 >Edit hive: hives can be edited by clicking on the hive in the
                 <router-link :to="{ name: 'home' }">Hives</router-link> overview
-                which opens the hive menu -> 'Edit hive'. Please note: only
-                owned hives and shared hives that are provided editing rights
-                are editable.</li
+                which opens the hive menu → 'Edit hive'. Please note: only owned
+                hives and shared hives that are provided editing rights are
+                editable.</li
               >
               <li
                 >Edit queen: queens can be edited separately by clicking on the
@@ -105,8 +105,8 @@
                 session.
               </li>
               <li
-                >Inspection menu: view inspection (in detail), edit or delete
-                inspection by clicking on the inspection item.</li
+                >Inspection menu: click on an inspection to view it (in detail),
+                to edit or delete it.</li
               >
               <li
                 >Hive actions (changes in hive configuration) are saved as
@@ -119,11 +119,12 @@
               >Inspections overview per hive - Table containing all inspection
               data per hive</strong
             ><br />
-            Accessible via hive menu in
-            <router-link :to="{ name: 'home' }">Hives</router-link> overview ->
-            'View inspections' or inspection menu in
+            Accessible via hive menu: click on a hive in the
+            <router-link :to="{ name: 'home' }">Hives</router-link> overview →
+            'View inspections'. Or via inspection menu: click on an inspection
+            in the
             <router-link :to="{ name: 'diary' }">Inspections</router-link>
-            overview -> 'View inspection'.
+            overview → 'View inspection'.
             <ul>
               <li
                 >Searchable: by date, notes, reminder text, reminder date and
@@ -143,7 +144,9 @@
             <ul>
               <li
                 >Bulk inspection: inspect multiple hives per apiary / group at
-                once by selecting the hives you want to include.</li
+                once by selecting the hives you want to include. The inspection
+                will be saved for each hive individually, such that it can later
+                be retrieved (and edited / deleted) per hive.</li
               >
             </ul>
           </li>
@@ -190,13 +193,14 @@
                 you can use (and adapt to your own needs). In addition, you can
                 <router-link :to="{ name: 'alertrule-create' }"
                   >create and edit your own alert rules</router-link
-                >. Both can be added via the 'add alert rule' button. They can
+                >. Both can be added via the 'Add alert rule' button. They can
                 be (de)activated via the alert rule overview table or the
-                'alerts enabled' / 'alerts disabled' switch at the top.</li
+                'Alerts enabled' / 'Alerts disabled' switch at the top
+                right.</li
               >
               <li
-                >Alert menu: edit alert rule or delete alert by clicking on an
-                alert item.</li
+                >Alert menu: click on an alert item to edit alert rule or delete
+                alert.</li
               >
             </ul>
           </li>
@@ -236,9 +240,9 @@
             <strong>Where to find? - Menu changes</strong>
             <ul>
               <li
-                >Quick action menu - Add a new inspection, hive, apiary, group
-                or alert rule by clicking the '+' button centered at the top of
-                the
+                >Quick action menu - Create a new inspection, new hive, new
+                apiary, new group or new alert rule by clicking the '+' button
+                centered at the top of the
                 <router-link :to="{ name: 'home' }">home</router-link>
                 navigation bar.</li
               >
@@ -248,17 +252,18 @@
                 <router-link :to="{ name: 'measurements' }">Data</router-link>
                 and
                 <router-link :to="{ name: 'alerts' }">Alerts</router-link> tabs
-                are always visible in the top bar.</li
+                are always visible in the top bar of the
+                <router-link :to="{ name: 'home' }">home</router-link> page.</li
               >
               <li
                 ><router-link :to="{ name: 'home' }">Hives</router-link> tab
-                contains former Apiaries page and former Hives page in one
+                contains former Apiaries page and former Hives page in a single
                 overview.</li
               >
               <li
                 >Collaboration groups are now directly visible in the
                 <router-link :to="{ name: 'home' }">Hives</router-link> overview
-                via the group filter (first in row after search field, only
+                via the group filter (first icon in row after search field, only
                 visible if you are a member of any collaboration group).</li
               >
               <li
@@ -266,11 +271,21 @@
                 <router-link :to="{ name: 'export' }">Data export</router-link>,
                 <router-link :to="{ name: 'research' }">Research</router-link>,
                 <router-link :to="{ name: 'support' }">Helpdesk</router-link>,
-                <router-link :to="{ name: 'new' }">New</router-link> and
+                <router-link :to="{ name: 'new' }">New!</router-link> and
                 <a href="https://beep.nl/home-english" target="_blank"
                   >BEEP website</a
                 >
                 are moved to the menu at the top right of the screen.</li
+              >
+              <li
+                >New in the menu (top right):
+                <router-link :to="{ name: 'alertrules' }"
+                  >Alert settings</router-link
+                >
+                and
+                <router-link :to="{ name: 'checklists' }"
+                  >Checklist templates</router-link
+                >.</li
               >
             </ul>
           </li>
@@ -308,19 +323,20 @@
                 iconen + tekst).
               </li>
               <li
-                >Kast menu: pas kast of moer aan, bekijk of maak een inspectie
-                door op de kast te klikken.</li
+                >Kast menu: klik op een kast om deze aan te passen, de moer een
+                te passen een inspectie te maken of inspecties te bekijken.</li
               >
               <li
-                >Bijenstand / groep menu: pas bijenstand of groep aan, maak een
-                bulk inspectie or bekijk inspecties door op het 'instellingen'
-                icoon naast de bijenstand / groep naam te klikken.</li
+                >Bijenstand / groep menu: klik op het 'instellingen' icoon naast
+                de bijenstand / groep naam om deze aan te passen, een bulk
+                inspectie te maken of inspecties te bekijken. En alleen voor het
+                bijenstand menu: voeg een nieuwe kast toe of verplaats kasten
+                (zie onder).</li
               >
               <li
                 >Verplaats bijenkasten: verplaats meerdere kasten in één keer
-                naar een andere bijenstand door op het 'instellingen' icoon
-                naast de bijenstand naam te klikken -> 'Verplaats
-                bijenkasten'.</li
+                naar een andere bijenstand door 'Verplaats bijenkasten' te
+                selecteren in het bijenstand menu (zie boven).</li
               >
             </ul>
           </li>
@@ -354,13 +370,13 @@
                 Pas kast aan: bijenkasten kunnen aangepast worden door op de
                 kast te klikken in het
                 <router-link :to="{ name: 'home' }">Kasten</router-link>
-                overzicht wat het kast menu opent -> 'Aanpassen kast'. N.B.:
+                overzicht wat het kast menu opent → 'Aanpassen kast'. N.B.:
                 alleen eigen kasten en gedeelde kasten met aanpasrechten zijn
                 aanpasbaar.</li
               >
               <li
                 >Pas moer aan: moeren kunnen afzonderlijk aangepast worden door
-                op het moer icoon te klikken (in de M en XL layout) or door
+                op het moer icoon te klikken (in de M en XL layout) of door
                 'Aanpassen moer' te selecteren in het kast menu (zie boven).</li
               >
             </ul>
@@ -373,9 +389,9 @@
             >
             <ul>
               <li
-                >Zoekbaar: op datum, tijd geleden, kast / bijenstand / groep
-                naam, notitie, herinnering, herinneringsdatum en inspectie id
-                (door 'id=' toe te voegen, bijv: 'id=99').</li
+                >Zoekbaar: op datum, tijd geleden, bijenkast / bijenstand /
+                groep naam, notitie, herinnering, herinneringsdatum en inspectie
+                id (door 'id=' toe te voegen, bijv: 'id=99').</li
               >
               <li>
                 Filterbaar: op groep (als aanwezig), aandacht nodig, herinnering
@@ -383,8 +399,8 @@
                 N.B.: Filters worden onthouden gedurende de browsersessie.
               </li>
               <li
-                >Inspectie menu: bekijk inspectie (in detail), aanpassen of
-                verwijderen inspectie door te klikken op het inspectie item.</li
+                >Inspectie menu: klik op een inspectie om deze te bekijken (in
+                detail), aan te passen of te verwijderen.</li
               >
               <li
                 >Kast handelingen (aanpassingen van de kastconfiguratie) worden
@@ -398,11 +414,12 @@
               >Inspecties per kast - Tabel met alle inspectiedata per
               kast</strong
             ><br />
-            Toegankelijk via het kast menu in het
-            <router-link :to="{ name: 'home' }">Kasten</router-link> overzicht
-            -> 'Bekijk inspecties' of het inspectie menu in het
+            Toegankelijk via het kast menu: klik op de kast in het
+            <router-link :to="{ name: 'home' }">Kasten</router-link> overzicht →
+            'Bekijk inspecties'. Of via het inspectie menu: klik op een
+            inspectie in het
             <router-link :to="{ name: 'diary' }">Inspecties</router-link>
-            overzicht -> 'Bekijk inspectie'.
+            overzicht → 'Bekijk inspectie'.
             <ul>
               <li>
                 Zoekbaar: op datum, notitie, herinnering, herinneringsdatum en
@@ -422,8 +439,10 @@
             <ul>
               <li
                 >Bulk inspectie: inspecteer meerdere kasten per bijenstand /
-                groep in één keer door de kasten te selecten die je mee wilt
-                nemen in je inspectie.</li
+                groep in één keer door de kasten te selecteren die je mee wilt
+                nemen in je inspectie. Per kast wordt de inspectie apart
+                opgeslagen, zodat deze later per kast terug te vinden (en
+                aanpasbaar / verwijderbaar) is.</li
               >
             </ul>
           </li>
@@ -444,113 +463,133 @@
           </li>
           <li>
             <strong
-              ><router-link :to="{ name: 'alerts' }">Alerts</router-link> -
-              Overview of alerts (als er een BEEP base of ander meetsysteem
-              aanwezig is)</strong
+              ><router-link :to="{ name: 'alerts' }">Notificaties</router-link>
+              - Overzicht van notificaties (als er een BEEP base of ander
+              meetsysteem aanwezig is)</strong
             ><br />
-            If you own a BEEP base or another device you can set alerts, such
-            that you will receive an alert when the measurement data meets
-            certain requirements. For example, a sudden drop in weight because
-            of swarming. Alerts will be shown here and in the
-            <router-link :to="{ name: 'home' }">Hives</router-link>
-            overview, you can choose to receive them via email as well.
+            Wanneer je een BEEP base of een ander meetsysteem gebruikt kan je
+            hiervoor notificaties instellen, zodat je een notificatie ontvangt
+            wanneer de meetgegevens aan bepaalde voorwaarden voldoen. Denk
+            hierbij bijvoorbeeld aan een plotselinge gewichtsafname vanwege een
+            zwerm. Deze notificaties worden hier getoond en in het
+            <router-link :to="{ name: 'home' }">Kasten</router-link> overzicht,
+            daarnaast kan je ervoor kiezen om ze per e-mail te ontvangen.
             <ul>
-              <li
-                >Searchable: by date, time ago, hive / apiary / group name,
-                alert rule name, function and value.</li
+              <li>
+                Zoekbaar: op datum, tijd geleden, bijenkast / bijenstand / groep
+                naam, notificatie naam, functie en waarde.</li
               >
               <li
                 ><router-link :to="{ name: 'alertrules' }"
-                  >Alert settings</router-link
+                  >Notificaties beheren</router-link
                 >
-                - To get you started there are a few
+                - Om je op weg te helpen zijn er een aantal
                 <router-link :to="{ name: 'alertrules-default' }"
-                  >default alert rules</router-link
+                  >standaardinstellingen</router-link
                 >
-                you can use (and adapt to your own needs). In addition, you can
+                die je kan gebruiken (en aanpassen naar eigen behoefte). Je kan
+                ook zelf een
                 <router-link :to="{ name: 'alertrule-create' }"
-                  >create and edit your own alert rules</router-link
-                >. Both can be added via the 'add alert rule' button. They can
-                be (de)activated via the alert rule overview table or the
-                'alerts enabled' / 'alerts disabled' switch at the top.</li
+                  >nieuwe notificatie-instelling maken of aanpassen</router-link
+                >. Beiden kunnen toegevoegd worden via de 'Toevoegen
+                notificatie-instelling' knop. Ze kunnen ge(de)activeerd worden
+                via de tabel met notificatie-instellingen of de 'Notificaties
+                ingeschakeld' / 'Notificaties uitgeschakeld' schuifknop
+                rechtsboven.</li
               >
               <li
-                >Alert menu: edit alert rule or delete alert by clicking on an
-                alert item.</li
+                >Notificatie menu: klik op een notificatie om de
+                notificatie-instelling aan te passen of de notificatie te
+                verwijderen.</li
               >
             </ul>
           </li>
           <li>
             <strong
               ><router-link :to="{ name: 'alertrule-create' }"
-                >Alert rule</router-link
+                >Notificatie-instelling</router-link
               >
-              - Create / edit alert rule</strong
+              - Maak een nieuwe notificatie-instelling of pas deze aan</strong
             ><br />
-            Set a rule which triggers an alert whenever certain requirements in
-            the measurement data are met. For example, a sudden drop in weight
-            because of swarming.
+            Stel een notificatie in, zodat je een melding krijgt wanneer de
+            meetgegevens aan bepaalde voorwaarden voldoen. Bijvoorbeeld een
+            plotselinge gewichtsafname vanwege een zwerm.
             <ul>
               <li
-                >Sentence at the top 'translates' the rule into plain
-                language.</li
+                >De zin bovenaan 'vertaalt' de instelling naar gewone taal.</li
               >
               <li
-                >By default, an alert rule will apply to all months, hours of
-                day and hives (that are connected to a device). The alert rule
-                can be deactivated for specified months, hours and hives (see
-                bottom three input fields).</li
+                >De instelling is standaard van toepassing op alle maanden, uren
+                van de dag en kasten (die verbonden zijn met een meetsysteem).
+                Je kan deze deactiveren voor bepaalde maanden, uren en kasten (
+                zie de laatste drie velden van het formulier).</li
               >
               <li
                 ><router-link :to="{ name: 'alertrules-default' }"
-                  >Default alert rules</router-link
+                  >Standaard notificatie-instellingen</router-link
                 >
-                - To get you started there are a few default alert rules you can
-                be selected and copied to your own set of rules here. After
-                copying, they can be edited to adapt them to your own needs, if
-                desired.</li
+                - Om je op weg te helpen zijn er een aantal
+                standaardinstellingen die je hier kan selecteren en kopiëren
+                naar je eigen notificatie-instellingen. Nadat ze gekopieerd
+                zijn, kunnen ze naar eigen behoefte aangepast worden.</li
               >
             </ul>
           </li>
           <li>
-            <strong>Where to find? - Menu changes</strong>
+            <strong>Waar is alles te vinden? - Menu aanpassingen</strong>
             <ul>
               <li
-                >Quick action menu - Add a new inspection, hive, apiary, group
-                or alert rule by clicking the '+' button centered at the top of
-                the
+                >Snelle actie menu - Maak direct een nieuwe inspectie, nieuwe
+                kast, nieuwe bijenstand, nieuwe groep of nieuwe
+                notificatie-instelling door op de '+' knop te klikken midden
+                bovenaan de
                 <router-link :to="{ name: 'home' }">home</router-link>
-                navigation bar.</li
+                navigatiebalk.</li
               >
               <li
-                ><router-link :to="{ name: 'home' }">Hives</router-link>,
-                <router-link :to="{ name: 'diary' }">Inspections</router-link>,
+                ><router-link :to="{ name: 'home' }">Kasten</router-link>,
+                <router-link :to="{ name: 'diary' }">Inspecties</router-link>,
                 <router-link :to="{ name: 'measurements' }">Data</router-link>
-                and
-                <router-link :to="{ name: 'alerts' }">Alerts</router-link> tabs
-                are always visible in the top bar.</li
+                en
+                <router-link :to="{ name: 'alerts' }">Notificaties</router-link>
+                tabs zijn altijd zichtbaar in de bovenste balk van de
+                <router-link :to="{ name: 'home' }">home</router-link>
+                pagina.</li
               >
               <li
-                ><router-link :to="{ name: 'home' }">Hives</router-link> tab
-                contains former Apiaries page and former Hives page in one
-                overview.</li
+                ><router-link :to="{ name: 'home' }">Kasten</router-link> tab
+                combineert de voormalige 'Bijenstanden' en 'Bijenkasten'
+                pagina's in één overzicht.</li
               >
               <li
-                >Collaboration groups are now directly visible in the
-                <router-link :to="{ name: 'home' }">Hives</router-link> overview
-                via the group filter (first in row after search field, only
-                visible if you are a member of any collaboration group).</li
+                >Samenwerkingsgroepen zijn nu direct zichtbaar in het
+                <router-link :to="{ name: 'home' }">Kasten</router-link>
+                overzicht via de groepsfilter (het eerste icoon in de rij na het
+                zoekveld, alleen zichtbaar als je lid bent van tenminste één
+                samenwerkingsgroep).</li
               >
               <li
-                ><router-link :to="{ name: 'devices' }">Devices</router-link>,
-                <router-link :to="{ name: 'export' }">Data export</router-link>,
-                <router-link :to="{ name: 'research' }">Research</router-link>,
+                ><router-link :to="{ name: 'devices' }"
+                  >Meetsystemen</router-link
+                >,
+                <router-link :to="{ name: 'export' }"
+                  >Data exporteren</router-link
+                >,
+                <router-link :to="{ name: 'research' }">Onderzoek</router-link>,
                 <router-link :to="{ name: 'support' }">Helpdesk</router-link>,
-                <router-link :to="{ name: 'new' }">New</router-link> and
-                <a href="https://beep.nl/home-english" target="_blank"
-                  >BEEP website</a
+                <router-link :to="{ name: 'new' }">Nieuw!</router-link> en
+                <a href="https://beep.nl/" target="_blank">BEEP website</a>
+                zijn verhuisd naar het menu rechtsboven.</li
+              >
+              <li
+                >Nieuw in het menu (rechtsboven):
+                <router-link :to="{ name: 'alertrules' }"
+                  >Notificaties beheren</router-link
                 >
-                are moved to the menu at the top right of the screen.</li
+                en
+                <router-link :to="{ name: 'checklists' }"
+                  >Kastkaart templates</router-link
+                >.</li
               >
             </ul>
           </li>

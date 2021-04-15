@@ -180,6 +180,9 @@ export default {
         this.$emit('update-drawer-value', value)
       },
     },
+    locale() {
+      return this.$i18n.locale
+    },
     loggedIn() {
       return this.$store.getters['auth/loggedIn']
     },
