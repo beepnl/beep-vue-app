@@ -3,8 +3,8 @@
     <v-container>
       <div class="overline mb-1 primary--text"
         ><span class="lowercase">v</span>
-        <span v-if="dutch">3.0.7 (12-04-2021) - Huidige versie</span>
-        <span v-if="!dutch">3.0.7 (12-04-2021) - Current version</span>
+        <span v-if="dutch">3.0.8 (19-04-2021) - Huidige versie</span>
+        <span v-if="!dutch">3.0.8 (19-04-2021) - Current version</span>
       </div>
       <div v-if="!dutch" class="rounded-border primary-border mb-4">
         <ul>
@@ -17,8 +17,8 @@
               <li
                 >Searchable: by hive / apiary / group / queen name, location
                 (address, country code), latest inspection (notes, reminder
-                text, reminder date, time ago), hive type and hive id (adding
-                'id=', f.e.: 'id=99').</li
+                text, reminder date, time ago), hive type, hive id (adding
+                'id=', f.e.: 'id=99') and (queen) bee race.</li
               >
               <li
                 >Filterable: by
@@ -385,8 +385,9 @@
               <li>
                 Zoekbaar: op bijenkast / bijenstand / groep / moer naam, locatie
                 (adres, landcode), laatste inspectie (notitie, herinnering,
-                herinneringsdatum, tijd geleden), kasttype en kast id (door
-                'id=' toe te voegen, bijv: 'id=99').</li
+                herinneringsdatum, tijd geleden), kasttype, kast id (door 'id='
+                toe te voegen, bijv: 'id=99') en bijenras (als gespecificeerd
+                bij de moer, in het Engels).</li
               >
               <li>
                 Filterbaar: op
