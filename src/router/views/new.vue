@@ -371,6 +371,14 @@
             </ul>
           </li>
         </ul>
+        <p class="mt-3">
+          <strong>More info:</strong><br />
+          <a
+            href="https://beepsupport.freshdesk.com/en/support/solutions/articles/60000696834-beep-app-v3/"
+            target="_blank"
+            >BEEP support article on app v3 (including screenshots)</a
+          >
+        </p>
       </div>
 
       <div v-if="dutch" class="rounded-border primary-border mb-4">
@@ -758,6 +766,14 @@
             </ul>
           </li>
         </ul>
+        <p class="mt-3">
+          <strong>Meer informatie:</strong><br />
+          <a
+            href="https://beepsupport.freshdesk.com/nl/support/solutions/articles/60000696834-beep-app-v3/"
+            target="_blank"
+            >BEEP support artikel over app v3 (inclusief screenshots)</a
+          >
+        </p>
       </div>
 
       <div class="overline mb-1"

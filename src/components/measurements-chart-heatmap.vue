@@ -14,7 +14,7 @@
           <td v-for="index in 118" :key="'hsl-text ' + index">
             <span
               v-if="index === 1 || index === 118"
-              v-text="index === 118 ? displayValue(maxValue) : '0'"
+              v-text="index === 118 ? maxValue.toFixed(0) : '0'"
             >
             </span>
           </td>
