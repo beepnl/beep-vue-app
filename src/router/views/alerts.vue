@@ -120,7 +120,10 @@ import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/main.vue'
 import { mapGetters } from 'vuex'
 import { momentMixin } from '@mixins/momentMixin'
-import { readAlerts } from '@mixins/methodsMixin'
+import {
+  readAlerts,
+  readApiariesAndGroupsIfNotPresent,
+} from '@mixins/methodsMixin'
 import { ScaleTransition } from 'vue2-transitions'
 
 export default {
@@ -130,7 +133,7 @@ export default {
     Layout,
     ScaleTransition,
   },
-  mixins: [momentMixin, readAlerts],
+  mixins: [momentMixin, readAlerts, readApiariesAndGroupsIfNotPresent],
   data: function() {
     return {
       // alerts: [],
@@ -267,48 +270,6 @@ export default {
         } else {
           console.log('Error: ', error)
         }
-      }
-    },
-    async readApiariesAndGroups() {
-      try {
-        const responseApiaries = await Api.readRequest('/locations')
-        const responseGroups = await Api.readRequest('/groups')
-        // no placeholder needed when response is empty because this page won't be accesible without any hives
-        this.$store.commit(
-          'locations/setApiaries',
-          responseApiaries.data.locations
-        )
-        this.$store.commit('groups/setGroups', responseGroups.data.groups)
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log('Error: ', error.response)
-        } else {
-          console.log('Error: ', error)
-        }
-      }
-    },
-    async readApiariesAndGroupsIfNotPresent() {
-      if (this.apiaries.length === 0 && this.groups.length === 0) {
-        // in case view is opened directly without loggin in (via localstorage) or in case of hard refresh
-        try {
-          const responseApiaries = await Api.readRequest('/locations')
-          const responseGroups = await Api.readRequest('/groups')
-          this.$store.commit(
-            'locations/setApiaries',
-            responseApiaries.data.locations
-          )
-          this.$store.commit('groups/setGroups', responseGroups.data.groups)
-          return true
-        } catch (error) {
-          if (error.response) {
-            console.log(error.response)
-          } else {
-            console.log('Error: ', error)
-          }
-        }
-      } else {
-        return true
       }
     },
     async readAlertRules() {

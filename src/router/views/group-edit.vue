@@ -377,6 +377,7 @@ import Confirm from '@components/confirm.vue'
 import { mapGetters } from 'vuex'
 import Layout from '@layouts/back.vue'
 import { momentMixin } from '@mixins/momentMixin'
+import { readApiariesAndGroupsIfNotPresent } from '@mixins/methodsMixin'
 
 export default {
   components: {
@@ -384,7 +385,7 @@ export default {
     Confirm,
     Layout,
   },
-  mixins: [momentMixin],
+  mixins: [momentMixin, readApiariesAndGroupsIfNotPresent],
   data: function() {
     return {
       snackbar: {
@@ -400,7 +401,6 @@ export default {
       colorPickerValue: '',
       activeGroup: null,
       valid: false,
-      showApiaryPlaceholder: false,
       showLoadingIcon: false,
       newGroupNumber: 1,
       overlay: false,
@@ -464,6 +464,9 @@ export default {
             '" ' +
             this.$i18n.t('is_required'),
       ]
+    },
+    showApiaryPlaceholder() {
+      return this.apiaries.length === 0
     },
     tabletLandscapeUp() {
       return this.$vuetify.breakpoint.mdAndUp
@@ -548,9 +551,16 @@ export default {
           }
           setTimeout(() => {
             return this.readGroups().then(() => {
+              this.$store.commit('locations/setData', {
+                prop: 'hiveFilterByGroup',
+                value: true,
+              })
+              this.$store.commit('locations/setData', {
+                prop: 'hiveSearch',
+                value: this.activeGroup.name, // set search term via store instead of query to overrule possible stored search terms
+              })
               this.$router.push({
                 name: 'home',
-                query: { search: this.activeGroup.name },
               })
             })
           }, 50) // wait for API to update groups
@@ -621,32 +631,6 @@ export default {
           this.snackbar.text = this.$i18n.t('something_wrong')
         }
         this.snackbar.show = true
-      }
-    },
-    async readApiariesAndGroupsIfNotPresent() {
-      if (this.apiaries.length === 0 && this.groups.length === 0) {
-        // in case view is opened directly without loggin in (via localstorage) or in case of hard refresh
-        try {
-          const responseApiaries = await Api.readRequest('/locations')
-          const responseGroups = await Api.readRequest('/groups')
-          if (responseApiaries.data.locations.length === 0) {
-            this.showApiaryPlaceholder = true
-          }
-          this.$store.commit(
-            'locations/setApiaries',
-            responseApiaries.data.locations
-          )
-          this.$store.commit('groups/setGroups', responseGroups.data.groups)
-          return true
-        } catch (error) {
-          if (error.response) {
-            console.log(error.response)
-          } else {
-            console.log('Error: ', error)
-          }
-        }
-      } else {
-        return true
       }
     },
     async readGroup() {
@@ -721,9 +705,16 @@ export default {
           this.showSuccessMessage = true
           setTimeout(() => {
             return this.readGroups().then(() => {
+              this.$store.commit('locations/setData', {
+                prop: 'hiveFilterByGroup',
+                value: true,
+              })
+              this.$store.commit('locations/setData', {
+                prop: 'hiveSearch',
+                value: this.activeGroup.name, // set search term via store instead of query to overrule possible stored search terms
+              })
               this.$router.push({
                 name: 'home',
-                query: { search: this.activeGroup.name },
               })
             })
           }, 800) // wait for API to update groups and for user to read success message

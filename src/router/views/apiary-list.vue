@@ -265,46 +265,6 @@
         </div>
       </v-row>
 
-      <div
-        v-if="showApiaryPlaceholder"
-        class="apiary-placeholder d-flex align-center"
-      >
-        <v-container class="d-flex flex-column align-center">
-          <v-img
-            class="apiary-placeholder-item"
-            height="auto"
-            src="~@assets/img/apiary-illustration.png"
-          >
-          </v-img>
-          <h4 class="mt-5 mb-8">{{ $t('no_apiaries_yet') }}</h4>
-
-          <router-link
-            class="apiary-placeholder-item mt-10"
-            :to="{
-              name: `apiary-create`,
-            }"
-          >
-            <div class="color-primary"
-              ><v-icon class="color-primary" large left>mdi-plus-circle</v-icon
-              >{{ $t('add') + ' ' + $tc('location', 1) }}</div
-            >
-          </router-link>
-
-          <router-link
-            class="apiary-placeholder-item mt-5"
-            :to="{
-              name: `support`,
-            }"
-          >
-            <div class="color-grey-medium"
-              ><v-icon class="color-grey-medium" large left
-                >mdi-comment-question-outline</v-icon
-              >{{ $t('need_help') }}</div
-            >
-          </router-link>
-        </v-container>
-      </div>
-
       <v-row
         v-for="hiveSet in filteredHiveSets"
         :key="'hiveSet ' + hiveSet.name + ' ' + hiveSet.id"
@@ -580,8 +540,54 @@
           </v-col>
         </ScaleTransition>
       </v-row>
+
+      <div
+        v-if="
+          showApiaryPlaceholder || (apiaries.length === 0 && !filterByGroup)
+        "
+        :class="
+          `apiary-placeholder d-flex align-center ${
+            invitations.length > 0 ? 'apiary-placeholder--with-invitations' : ''
+          }`
+        "
+      >
+        <v-container class="d-flex flex-column align-center">
+          <v-img
+            class="apiary-placeholder-item apiary-placeholder-image"
+            height="auto"
+            src="~@assets/img/apiary-illustration.png"
+          >
+          </v-img>
+          <h4 class="mt-5 mb-8">{{ $t('no_apiaries_yet') }}</h4>
+
+          <router-link
+            class="apiary-placeholder-item mt-10"
+            :to="{
+              name: `apiary-create`,
+            }"
+          >
+            <div class="color-primary"
+              ><v-icon class="color-primary" large left>mdi-plus-circle</v-icon
+              >{{ $t('add') + ' ' + $tc('location', 1) }}</div
+            >
+          </router-link>
+
+          <router-link
+            class="apiary-placeholder-item mt-5"
+            :to="{
+              name: `support`,
+            }"
+          >
+            <div class="color-grey-medium"
+              ><v-icon class="color-grey-medium" large left
+                >mdi-comment-question-outline</v-icon
+              >{{ $t('need_help') }}</div
+            >
+          </router-link>
+        </v-container>
+      </div>
       <v-row
-        v-if="sortedHiveSets.length && !filteredHiveSets.length"
+        v-else-if="sortedHiveSets.length && !filteredHiveSets.length"
         dense
         class="hive-set"
       >
@@ -609,7 +615,11 @@ import HiveCard from '@components/hive-card.vue'
 import Layout from '@layouts/main.vue'
 import { mapGetters } from 'vuex'
 import { momentMixin } from '@mixins/momentMixin'
-import { readAlerts, readDevices } from '@mixins/methodsMixin'
+import {
+  readAlerts,
+  readApiariesAndGroups,
+  readDevices,
+} from '@mixins/methodsMixin'
 import { ScaleTransition } from 'vue2-transitions'
 
 export default {
@@ -619,7 +629,7 @@ export default {
     Layout,
     ScaleTransition,
   },
-  mixins: [momentMixin, readAlerts, readDevices],
+  mixins: [momentMixin, readAlerts, readApiariesAndGroups, readDevices],
   data: () => ({
     snackbar: {
       show: false,
@@ -631,7 +641,6 @@ export default {
     xsView: false,
     settings: [],
     showLoadingIconForId: null,
-    showApiaryPlaceholder: false,
     ready: false,
     deviceIdArray: [],
   }),
@@ -714,7 +723,11 @@ export default {
               value !== null &&
               typeof value === 'string' &&
               key !==
-                ('description' || 'hex_color' || 'type' || 'created_at') &&
+                ('description' ||
+                  'hex_color' ||
+                  'type' ||
+                  'created_at' ||
+                  'last_weather_time') &&
               this.hiveSearch.substring(0, 3) !== 'id='
             ) {
               return value.toLowerCase().includes(this.hiveSearch.toLowerCase())
@@ -730,7 +743,12 @@ export default {
                   if (
                     value !== null &&
                     typeof value === 'string' &&
-                    key !== ('color' || 'last_inspection_date' || 'created_at' || 'reminder_date' || 'last_inspection_date_locale_date')
+                    key !==
+                      ('color' ||
+                        'last_inspection_date' ||
+                        'created_at' ||
+                        'reminder_date' ||
+                        'last_inspection_date_locale_date')
                   ) {
                     return value
                       .toLowerCase()
@@ -739,11 +757,10 @@ export default {
                     key === 'id' &&
                     this.hiveSearch.substring(0, 3) === 'id='
                   ) {
-                    return value
-                      .toString()
-                      .includes(
-                        this.hiveSearch.substring(3, this.hiveSearch.length)
-                      )
+                    return (
+                      value.toString() ===
+                      this.hiveSearch.substring(3, this.hiveSearch.length)
+                    )
                   } else if (key === 'queen' && value !== null) {
                     return Object.entries(value).some(([key, value]) => {
                       if (
@@ -890,6 +907,9 @@ export default {
     screenSize() {
       return this.$vuetify.breakpoint.width
     },
+    showApiaryPlaceholder() {
+      return this.apiaries.length === 0 && this.groups.length === 0
+    },
     sortedHiveSets() {
       const sortedHiveSets = this.hiveSets
         .slice()
@@ -977,6 +997,7 @@ export default {
         setTimeout(() => {
           this.readDevices().then(() => {
             this.readApiariesAndGroups().then(() => {
+              this.filterByGroup = true
               this.hiveSearch = groupName
               this.showLoadingIconForId = null
             })
@@ -1046,36 +1067,6 @@ export default {
         }, 100) // wait for API to update locations/hives
       } catch (error) {
         this.handleError(error)
-      }
-    },
-    async readApiariesAndGroups() {
-      try {
-        const responseApiaries = await Api.readRequest('/locations')
-        const responseGroups = await Api.readRequest('/groups')
-        if (
-          responseApiaries.data.locations.length === 0 &&
-          responseGroups.data.groups.length === 0
-        ) {
-          this.showApiaryPlaceholder = true
-        } else {
-          this.showApiaryPlaceholder = false
-        }
-        this.$store.commit(
-          'locations/setApiaries',
-          responseApiaries.data.locations
-        )
-        this.$store.commit('groups/setGroups', responseGroups.data.groups)
-        this.$store.commit(
-          'groups/setInvitations',
-          responseGroups.data.invitations
-        )
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log(error.response)
-        } else {
-          console.log('Error: ', error)
-        }
       }
     },
     async readGeneralInspections() {
@@ -1264,13 +1255,20 @@ export default {
 
 <style lang="scss" scoped>
 .apiary-placeholder {
-  height: calc(100vh - 104px);
-
+  margin-top: 120px;
+  @include for-phone-only {
+    margin-top: 80px;
+  }
+  &.apiary-placeholder--with-invitations {
+    margin-top: 64px;
+  }
   .apiary-placeholder-item {
-    width: 60%;
     max-width: 250px;
     font-weight: 600;
     text-align: center;
+  }
+  .apiary-placeholder-image {
+    width: 60%;
   }
 }
 

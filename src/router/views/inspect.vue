@@ -415,6 +415,7 @@ import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
+import { readApiariesAndGroups } from '@mixins/methodsMixin'
 import { momentMixin } from '@mixins/momentMixin'
 import { SlideYUpTransition } from 'vue2-transitions'
 import smileRating from '@components/input-fields/smile-rating.vue'
@@ -434,7 +435,7 @@ export default {
     yesNoRating,
     Treeselect,
   },
-  mixins: [momentMixin],
+  mixins: [momentMixin, readApiariesAndGroups],
   data: function() {
     return {
       normalizerHiveSets(node) {
@@ -798,25 +799,6 @@ export default {
               params: { resource: 'inspection' },
             })
           }
-        } else {
-          console.log('Error: ', error)
-        }
-      }
-    },
-    async readApiariesAndGroups() {
-      try {
-        const responseApiaries = await Api.readRequest('/locations')
-        const responseGroups = await Api.readRequest('/groups')
-        // no placeholder needed when response is empty because this page won't be accesible without any hives
-        this.$store.commit(
-          'locations/setApiaries',
-          responseApiaries.data.locations
-        )
-        this.$store.commit('groups/setGroups', responseGroups.data.groups)
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log('Error: ', error.response)
         } else {
           console.log('Error: ', error)
         }

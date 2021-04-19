@@ -166,7 +166,11 @@ import Confirm from '@components/confirm.vue'
 import DiaryCard from '@components/diary-card.vue'
 import Layout from '@layouts/main.vue'
 import { mapGetters } from 'vuex'
-import { readAlerts } from '@mixins/methodsMixin'
+import {
+  readAlerts,
+  readApiariesAndGroups,
+  readApiariesAndGroupsIfNotPresent,
+} from '@mixins/methodsMixin'
 import { ScaleTransition } from 'vue2-transitions'
 
 export default {
@@ -176,7 +180,11 @@ export default {
     Layout,
     ScaleTransition,
   },
-  mixins: [readAlerts],
+  mixins: [
+    readAlerts,
+    readApiariesAndGroups,
+    readApiariesAndGroupsIfNotPresent,
+  ],
   data: function() {
     return {
       ready: false,
@@ -336,11 +344,10 @@ export default {
                   key === 'id' &&
                   this.diarySearch.substring(0, 3) === 'id='
                 ) {
-                  return value
-                    .toString()
-                    .includes(
-                      this.diarySearch.substring(3, this.diarySearch.length)
-                    )
+                  return (
+                    value.toString() ===
+                    this.diarySearch.substring(3, this.diarySearch.length)
+                  )
                 }
               }
             )
@@ -458,48 +465,6 @@ export default {
         } else {
           console.log('Error: ', error)
         }
-      }
-    },
-    async readApiariesAndGroups() {
-      try {
-        const responseApiaries = await Api.readRequest('/locations')
-        const responseGroups = await Api.readRequest('/groups')
-        // no placeholder needed when response is empty because this page won't be accesible without any hives
-        this.$store.commit(
-          'locations/setApiaries',
-          responseApiaries.data.locations
-        )
-        this.$store.commit('groups/setGroups', responseGroups.data.groups)
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log('Error: ', error.response)
-        } else {
-          console.log('Error: ', error)
-        }
-      }
-    },
-    async readApiariesAndGroupsIfNotPresent() {
-      if (this.apiaries.length === 0 && this.groups.length === 0) {
-        // in case view is opened directly without loggin in (via localstorage) or in case of hard refresh
-        try {
-          const responseApiaries = await Api.readRequest('/locations')
-          const responseGroups = await Api.readRequest('/groups')
-          this.$store.commit(
-            'locations/setApiaries',
-            responseApiaries.data.locations
-          )
-          this.$store.commit('groups/setGroups', responseGroups.data.groups)
-          return true
-        } catch (error) {
-          if (error.response) {
-            console.log(error.response)
-          } else {
-            console.log('Error: ', error)
-          }
-        }
-      } else {
-        return true
       }
     },
     async readGeneralInspections() {

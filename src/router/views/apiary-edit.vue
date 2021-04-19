@@ -270,6 +270,7 @@ import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
+import { readApiariesAndGroups } from '@mixins/methodsMixin'
 import VueGoogleAutocomplete from 'vue-google-autocomplete'
 import VueNumericInput from 'vue-numeric-input'
 
@@ -280,6 +281,7 @@ export default {
     VueGoogleAutocomplete,
     VueNumericInput,
   },
+  mixins: [readApiariesAndGroups],
   data: function() {
     return {
       snackbar: {
@@ -384,24 +386,6 @@ export default {
         }
       }
     },
-    async readApiariesAndGroups() {
-      try {
-        const responseApiaries = await Api.readRequest('/locations')
-        const responseGroups = await Api.readRequest('/groups')
-        this.$store.commit(
-          'locations/setApiaries',
-          responseApiaries.data.locations
-        )
-        this.$store.commit('groups/setGroups', responseGroups.data.groups)
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log(error.response)
-        } else {
-          console.log('Error: ', error)
-        }
-      }
-    },
     async updateApiary() {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
@@ -417,9 +401,16 @@ export default {
           }
           setTimeout(() => {
             return this.readApiariesAndGroups().then(() => {
+              this.$store.commit('locations/setData', {
+                prop: 'hiveFilterByGroup',
+                value: false,
+              })
+              this.$store.commit('locations/setData', {
+                prop: 'hiveSearch',
+                value: this.activeApiary.name, // set search term via store instead of query to overrule possible stored search terms
+              })
               this.$router.push({
                 name: 'home',
-                query: { search: this.activeApiary.name },
               })
             })
           }, 50) // wait for API to update locations/hives

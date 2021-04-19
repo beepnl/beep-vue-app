@@ -381,7 +381,10 @@ import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
-import { readDevicesIfNotPresent } from '@mixins/methodsMixin'
+import {
+  readApiariesAndGroups,
+  readDevicesIfNotPresent,
+} from '@mixins/methodsMixin'
 
 export default {
   components: {
@@ -389,7 +392,7 @@ export default {
     Datetime,
     Layout,
   },
-  mixins: [readDevicesIfNotPresent],
+  mixins: [readApiariesAndGroups, readDevicesIfNotPresent],
   data: function() {
     return {
       researchProjects: [],
@@ -444,24 +447,6 @@ export default {
     })
   },
   methods: {
-    async readApiariesAndGroups() {
-      try {
-        const responseApiaries = await Api.readRequest('/locations')
-        const responseGroups = await Api.readRequest('/groups')
-        this.$store.commit(
-          'locations/setApiaries',
-          responseApiaries.data.locations
-        )
-        this.$store.commit('groups/setGroups', responseGroups.data.groups)
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log('Error: ', error.response)
-        } else {
-          console.log('Error: ', error)
-        }
-      }
-    },
     async readChecklists() {
       try {
         const response = await Api.readRequest('/inspections/lists')

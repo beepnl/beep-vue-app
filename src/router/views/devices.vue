@@ -641,6 +641,7 @@ import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
+import { readApiariesAndGroups } from '@mixins/methodsMixin'
 import { SlideYUpTransition } from 'vue2-transitions'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
@@ -656,6 +657,7 @@ export default {
     yesNoRating,
     VueNumericInput,
   },
+  mixins: [readApiariesAndGroups],
   data() {
     return {
       devices: [],
@@ -776,24 +778,6 @@ export default {
               value: false,
             })
           }
-        } else {
-          console.log('Error: ', error)
-        }
-      }
-    },
-    async readApiariesAndGroups() {
-      try {
-        const responseApiaries = await Api.readRequest('/locations')
-        const responseGroups = await Api.readRequest('/groups')
-        this.$store.commit(
-          'locations/setApiaries',
-          responseApiaries.data.locations
-        )
-        this.$store.commit('groups/setGroups', responseGroups.data.groups)
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log(error.response)
         } else {
           console.log('Error: ', error)
         }

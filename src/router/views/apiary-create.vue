@@ -469,6 +469,7 @@ import Confirm from '@components/confirm.vue'
 import HiveEditDetails from '@components/hive-edit-details.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
+import { readApiariesAndGroupsIfNotPresent } from '@mixins/methodsMixin'
 import VueGoogleAutocomplete from 'vue-google-autocomplete'
 import VueNumericInput from 'vue-numeric-input'
 
@@ -481,6 +482,7 @@ export default {
     VueGoogleAutocomplete,
     VueNumericInput,
   },
+  mixins: [readApiariesAndGroupsIfNotPresent],
   data: function() {
     return {
       snackbar: {
@@ -639,16 +641,15 @@ export default {
           this.clearHiveFilters()
           setTimeout(() => {
             return this.readApiaries().then(() => {
-              this.newHive.hive_amount !== 0
-                ? this.$router.push({
-                    name: 'home',
-                    query: {
-                      search: this.newHive.name,
-                    },
-                  })
-                : this.$router.push({
-                    name: 'home',
-                  })
+              if (this.newHive.hive_amount !== 0) {
+                this.$store.commit('locations/setData', {
+                  prop: 'hiveSearch',
+                  value: this.newHive.name, // set search term via store instead of query to overrule possible stored search terms
+                })
+              }
+              this.$router.push({
+                name: 'home',
+              })
             })
           }, 50) // wait for API to update locations/hives
         } catch (error) {
@@ -669,29 +670,6 @@ export default {
         } else {
           console.log('Error: ', error)
         }
-      }
-    },
-    async readApiariesAndGroupsIfNotPresent() {
-      if (this.apiaries.length === 0 && this.groups.length === 0) {
-        // in case view is opened directly without loggin in (via localstorage) or in case of hard refresh
-        try {
-          const responseApiaries = await Api.readRequest('/locations')
-          const responseGroups = await Api.readRequest('/groups')
-          this.$store.commit(
-            'locations/setApiaries',
-            responseApiaries.data.locations
-          )
-          this.$store.commit('groups/setGroups', responseGroups.data.groups)
-          return true
-        } catch (error) {
-          if (error.response) {
-            console.log(error.response)
-          } else {
-            console.log('Error: ', error)
-          }
-        }
-      } else {
-        return true
       }
     },
     cancelColorPicker() {
