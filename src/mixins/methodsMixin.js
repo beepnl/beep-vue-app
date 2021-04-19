@@ -171,3 +171,21 @@ export const readDevicesIfNotPresent = {
     },
   },
 }
+
+export const readGeneralInspections = {
+  methods: {
+    async readGeneralInspections() {
+      try {
+        const response = await Api.readRequest('/inspections')
+        this.$store.commit('inspections/setGeneralInspections', response.data)
+        return true
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
+  },
+}

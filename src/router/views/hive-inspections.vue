@@ -565,7 +565,10 @@ import imageOverlay from '@components/image-overlay.vue'
 // import { ScaleTransition } from 'vue2-transitions'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
-import { readApiariesAndGroups } from '@mixins/methodsMixin'
+import {
+  readApiariesAndGroups,
+  readGeneralInspections,
+} from '@mixins/methodsMixin'
 import { momentMixin } from '@mixins/momentMixin'
 import AddToCalendar from '@components/add-to-calendar.vue'
 
@@ -577,7 +580,7 @@ export default {
     AddToCalendar,
     Layout,
   },
-  mixins: [momentMixin, readApiariesAndGroups],
+  mixins: [momentMixin, readApiariesAndGroups, readGeneralInspections],
   data: function() {
     return {
       snackbar: {
@@ -649,8 +652,10 @@ export default {
                   key === 'id' &&
                   this.search.substring(0, 3) === 'id='
                 ) {
-                  return value
-                    .toString() === this.search.substring(3, this.search.length)
+                  return (
+                    value.toString() ===
+                    this.search.substring(3, this.search.length)
+                  )
                 }
               }
             )
@@ -828,19 +833,6 @@ export default {
       try {
         const response = await Api.readRequest('/inspections/hive/', this.id)
         this.inspections = response.data
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log('Error: ', error.response)
-        } else {
-          console.log('Error: ', error)
-        }
-      }
-    },
-    async readGeneralInspections() {
-      try {
-        const response = await Api.readRequest('/inspections')
-        this.$store.commit('inspections/setGeneralInspections', response.data)
         return true
       } catch (error) {
         if (error.response) {

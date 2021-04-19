@@ -195,6 +195,7 @@ import {
   readApiariesAndGroups,
   readApiariesAndGroupsIfNotPresent,
   readDevices,
+  readGeneralInspections,
 } from '@mixins/methodsMixin'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
@@ -213,6 +214,7 @@ export default {
     readApiariesAndGroups,
     readApiariesAndGroupsIfNotPresent,
     readDevices,
+    readGeneralInspections,
   ],
   data: function() {
     return {
@@ -432,19 +434,6 @@ export default {
           this.snackbar.text = this.$i18n.t('something_wrong')
         }
         this.snackbar.show = true
-      }
-    },
-    async readGeneralInspections() {
-      try {
-        const response = await Api.readRequest('/inspections')
-        this.$store.commit('inspections/setGeneralInspections', response.data)
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log('Error: ', error.response)
-        } else {
-          console.log('Error: ', error)
-        }
       }
     },
     async readHive() {

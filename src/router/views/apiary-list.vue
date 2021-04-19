@@ -619,6 +619,7 @@ import {
   readAlerts,
   readApiariesAndGroups,
   readDevices,
+  readGeneralInspections,
 } from '@mixins/methodsMixin'
 import { ScaleTransition } from 'vue2-transitions'
 
@@ -629,7 +630,13 @@ export default {
     Layout,
     ScaleTransition,
   },
-  mixins: [momentMixin, readAlerts, readApiariesAndGroups, readDevices],
+  mixins: [
+    momentMixin,
+    readAlerts,
+    readApiariesAndGroups,
+    readDevices,
+    readGeneralInspections,
+  ],
   data: () => ({
     snackbar: {
       show: false,
@@ -1067,19 +1074,6 @@ export default {
         }, 100) // wait for API to update locations/hives
       } catch (error) {
         this.handleError(error)
-      }
-    },
-    async readGeneralInspections() {
-      try {
-        const response = await Api.readRequest('/inspections')
-        this.$store.commit('inspections/setGeneralInspections', response.data)
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log('Error: ', error.response)
-        } else {
-          console.log('Error: ', error)
-        }
       }
     },
     addDates(hive) {

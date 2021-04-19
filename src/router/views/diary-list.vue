@@ -170,6 +170,7 @@ import {
   readAlerts,
   readApiariesAndGroups,
   readApiariesAndGroupsIfNotPresent,
+  readGeneralInspections,
 } from '@mixins/methodsMixin'
 import { ScaleTransition } from 'vue2-transitions'
 
@@ -184,6 +185,7 @@ export default {
     readAlerts,
     readApiariesAndGroups,
     readApiariesAndGroupsIfNotPresent,
+    readGeneralInspections,
   ],
   data: function() {
     return {
@@ -459,19 +461,6 @@ export default {
         }
         this.readGeneralInspections() // update generalInspections in store
         this.readApiariesAndGroups() // update apiaries and groups so the latest inspection will be displayed at apiary-list
-      } catch (error) {
-        if (error.response) {
-          console.log('Error: ', error.response)
-        } else {
-          console.log('Error: ', error)
-        }
-      }
-    },
-    async readGeneralInspections() {
-      try {
-        const response = await Api.readRequest('/inspections')
-        this.$store.commit('inspections/setGeneralInspections', response.data)
-        return true
       } catch (error) {
         if (error.response) {
           console.log('Error: ', error.response)

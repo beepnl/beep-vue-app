@@ -415,7 +415,7 @@ import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
-import { readApiariesAndGroups } from '@mixins/methodsMixin'
+import { readApiariesAndGroups, readGeneralInspections } from '@mixins/methodsMixin'
 import { momentMixin } from '@mixins/momentMixin'
 import { SlideYUpTransition } from 'vue2-transitions'
 import smileRating from '@components/input-fields/smile-rating.vue'
@@ -435,7 +435,7 @@ export default {
     yesNoRating,
     Treeselect,
   },
-  mixins: [momentMixin, readApiariesAndGroups],
+  mixins: [momentMixin, readApiariesAndGroups, readGeneralInspections ],
   data: function() {
     return {
       normalizerHiveSets(node) {
@@ -826,19 +826,6 @@ export default {
         }
       } else {
         return true
-      }
-    },
-    async readGeneralInspections() {
-      try {
-        const response = await Api.readRequest('/inspections')
-        this.$store.commit('inspections/setGeneralInspections', response.data)
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log('Error: ', error.response)
-        } else {
-          console.log('Error: ', error)
-        }
       }
     },
     async saveInspection() {

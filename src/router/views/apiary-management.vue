@@ -123,6 +123,7 @@ import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
+import { readGeneralInspections } from '@mixins/methodsMixin'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
@@ -133,6 +134,7 @@ export default {
     Layout,
     Treeselect,
   },
+  mixins: [readGeneralInspections],
   data: function() {
     return {
       normalizerApiary(node) {
@@ -298,6 +300,7 @@ export default {
       })
       setTimeout(() => {
         return this.readApiaries().then(() => {
+          this.readGeneralInspections()
           this.showLoadingIcon = false
           this.$router.push({
             name: 'home',
