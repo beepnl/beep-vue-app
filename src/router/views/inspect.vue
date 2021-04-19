@@ -415,7 +415,10 @@ import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
-import { readApiariesAndGroups, readGeneralInspections } from '@mixins/methodsMixin'
+import {
+  readApiariesAndGroups,
+  readGeneralInspections,
+} from '@mixins/methodsMixin'
 import { momentMixin } from '@mixins/momentMixin'
 import { SlideYUpTransition } from 'vue2-transitions'
 import smileRating from '@components/input-fields/smile-rating.vue'
@@ -435,7 +438,7 @@ export default {
     yesNoRating,
     Treeselect,
   },
-  mixins: [momentMixin, readApiariesAndGroups, readGeneralInspections ],
+  mixins: [momentMixin, readApiariesAndGroups, readGeneralInspections],
   data: function() {
     return {
       normalizerHiveSets(node) {
@@ -684,17 +687,19 @@ export default {
         items: {},
       }
       this.readChecklistsIfNotPresent().then(() => {
-        this.selectedChecklist = this.checklist
-        this.preSelectedChecklistId
-          ? (this.selectedChecklistId = this.preSelectedChecklistId)
-          : (this.selectedChecklistId = this.checklist.id)
-        this.activeInspection.checklist_id = this.selectedChecklistId
-        var itemsObject = {}
-        this.selectedChecklist.category_ids.map((categoryId) => {
-          // TODO: what if category ids is empty?
-          itemsObject[categoryId] = null
-        })
-        this.activeInspection.items = itemsObject
+        if (this.preSelectedChecklistId !== null) {
+          this.getChecklistById(this.preSelectedChecklistId)
+        } else {
+          this.selectedChecklistId = this.checklist.id
+          this.selectedChecklist = this.checklist
+          this.activeInspection.checklist_id = this.selectedChecklistId
+          var itemsObject = {}
+          this.selectedChecklist.category_ids.map((categoryId) => {
+            // TODO: what if category ids is empty?
+            itemsObject[categoryId] = null
+          })
+          this.activeInspection.items = itemsObject
+        }
       })
     }
     this.setInspectionEdited(false)
