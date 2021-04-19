@@ -333,7 +333,7 @@ export default {
           bb_height_cm: null,
           fr_width_cm: null,
           fr_height_cm: null,
-          order: null,
+          order: this.newHiveNumber,
           layers: [
             {
               color: '#F8B133',

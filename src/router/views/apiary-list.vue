@@ -1206,7 +1206,7 @@ export default {
         if (b.order > a.order) {
           return -1
         }
-        if (a.order === b.order) {
+        if (a.order === b.order || a.order === null || b.order === null) {
           if (a.name > b.name) {
             return 1
           }
