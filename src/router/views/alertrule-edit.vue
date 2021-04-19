@@ -431,6 +431,7 @@ export default {
     sortedDevices() {
       var apiaryArray = []
       this.devices.map((device, index) => {
+        // only add device if it is coupled to an existing hive
         if (device.location_name !== '') {
           apiaryArray.push({
             id: -(index + 1), // random because it has to have an id for Treeselect but won't be used later

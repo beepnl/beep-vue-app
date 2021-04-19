@@ -641,7 +641,7 @@ import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
-import { readApiariesAndGroups } from '@mixins/methodsMixin'
+import { readApiariesAndGroups, readDevices } from '@mixins/methodsMixin'
 import { SlideYUpTransition } from 'vue2-transitions'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
@@ -657,7 +657,7 @@ export default {
     yesNoRating,
     VueNumericInput,
   },
-  mixins: [readApiariesAndGroups],
+  mixins: [readApiariesAndGroups, readDevices],
   data() {
     return {
       devices: [],
@@ -817,7 +817,7 @@ export default {
             this.$i18n.t('Error') + ': ' + this.$i18n.t('not_saved_error')
         }
         this.getDevicesForList().then(() => {
-          this.updateDevicesInStore()
+          this.readDevices()
           this.showLoadingIcon = false
         })
         this.readApiariesAndGroups() // to update hive.sensors
@@ -877,37 +877,6 @@ export default {
           this.errorMessage = this.$i18n.t(msg)
         } else {
           this.errorMessage = this.$i18n.t('Error')
-        }
-      }
-    },
-    async updateDevicesInStore() {
-      try {
-        const response = await Api.readRequest('/devices')
-        const devicesPresent = response.data.length > 0
-        this.$store.commit('devices/setData', {
-          prop: 'devices',
-          value: response.data,
-        })
-        this.$store.commit('devices/setData', {
-          prop: 'devicesPresent',
-          value: devicesPresent,
-        })
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log(error.response)
-        } else {
-          console.log('Error: ', error)
-        }
-        if (error.response.data === 'no_devices_found') {
-          this.$store.commit('devices/setData', {
-            prop: 'devicesPresent',
-            value: false,
-          })
-          this.$store.commit('devices/setData', {
-            prop: 'devices',
-            value: [],
-          })
         }
       }
     },

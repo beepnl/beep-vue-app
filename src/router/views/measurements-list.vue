@@ -501,14 +501,17 @@ export default {
     sortedDevices() {
       var apiaryArray = []
       this.devices.map((device, index) => {
-        apiaryArray.push({
-          id: -(index + 1), // random because it has to have an id for Treeselect but won't be used later
-          label: device.location_name,
-          children: [],
-        })
-        device.label = device.hive_name
-          ? device.hive_name + ' - ' + device.name
-          : device.name
+        // only add device if it is coupled to an existing hive
+        if (device.location_name !== '') {
+          apiaryArray.push({
+            id: -(index + 1), // random because it has to have an id for Treeselect but won't be used later
+            label: device.location_name,
+            children: [],
+          })
+          device.label = device.hive_name
+            ? device.hive_name + ' - ' + device.name
+            : device.name
+        }
       })
       var uniqueApiaries = []
       const map = new Map()
