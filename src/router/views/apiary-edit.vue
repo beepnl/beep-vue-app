@@ -85,9 +85,13 @@
                     ></div>
                     <v-sheet
                       v-if="activeApiary"
-                      class="apiary-color"
+                      class="apiary-color cursor-pointer"
                       dark
-                      :color="activeApiary.hex_color"
+                      :color="
+                        activeApiary.hex_color !== null
+                          ? activeApiary.hex_color
+                          : '#f8b133'
+                      "
                       @click="overlay = !overlay"
                     ></v-sheet>
                   </div>
@@ -308,7 +312,7 @@ export default {
     },
     colorPicker: {
       get() {
-        if (this.activeApiary) {
+        if (this.activeApiary && this.activeApiary.hex_color !== null) {
           return this.activeApiary.hex_color
         } else {
           return '#F8B133'
@@ -520,7 +524,6 @@ export default {
   .apiary-color {
     width: 35px;
     height: 35px;
-    cursor: pointer;
     border: 1px solid rgba(0, 0, 0, 0.3) !important;
   }
 
