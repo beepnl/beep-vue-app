@@ -786,6 +786,7 @@ const translations = {
   sensor_key: 'Identificatiecode uniek voor meetsysteem',
   disabled_settings: 'Je kunt deze instellingen niet handmatig aanpassen.',
   Address_placeholder: 'Straatnaam huisnummer, Stad',
+  first_create_apiary: 'Maak eerst een bijenstand',
 }
 
 export default translations

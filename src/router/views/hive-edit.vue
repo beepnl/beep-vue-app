@@ -67,6 +67,27 @@
         class="content-container"
       >
         <v-row v-if="!queenEditMode">
+          <v-col cols="12">
+            <p
+              v-if="
+                activeHive.location === null &&
+                  (apiaries === null || apiaries.length === 0)
+              "
+              class="red--text mt-3"
+              >{{ $t('no_apiaries_yet') }}
+              <router-link
+                :to="{
+                  name: `apiary-create`,
+                }"
+              >
+                <div class="color-primary"
+                  ><v-icon class="color-primary" left>mdi-plus-circle</v-icon
+                  >{{ $t('first_create_apiary') }}</div
+                >
+              </router-link>
+            </p>
+          </v-col>
+
           <v-col cols="12" sm="8" md="6" lg="5">
             <v-text-field
               v-if="activeHive"
@@ -107,9 +128,6 @@
                 :no-results-text="`${$t('no_results')}`"
                 @input="setHiveEdited(true)"
               />
-              <p v-if="apiaries === null" class="color-grey-medium mt-3">{{
-                $t('no_apiaries_yet')
-              }}</p>
               <div
                 v-if="isNaN(activeHive.location_id)"
                 class="v-text-field__details mt-1"
@@ -173,7 +191,11 @@ import HiveEditDetails from '@components/hive-edit-details.vue'
 import { mapGetters } from 'vuex'
 import Layout from '@layouts/back.vue'
 import QueenEditDetails from '@components/queen-edit-details.vue'
-import { readDevices } from '@mixins/methodsMixin'
+import {
+  readApiariesAndGroups,
+  readApiariesAndGroupsIfNotPresent,
+  readDevices,
+} from '@mixins/methodsMixin'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import VueNumericInput from 'vue-numeric-input'
@@ -187,7 +209,11 @@ export default {
     Treeselect,
     VueNumericInput,
   },
-  mixins: [readDevices],
+  mixins: [
+    readApiariesAndGroups,
+    readApiariesAndGroupsIfNotPresent,
+    readDevices,
+  ],
   data: function() {
     return {
       snackbar: {
@@ -351,14 +377,15 @@ export default {
             this.snackbar.text = this.$i18n.t('not_saved_error')
             this.snackbar.show = true
           }
-          var newLocation = this.apiaries.filter((apiary) => {
-            return apiary.id === this.activeHive.location_id
-          })[0]
           setTimeout(() => {
+            const id = response.data.hives[0].id
             return this.readApiariesAndGroups().then(() => {
+              this.$store.commit('locations/setData', {
+                prop: 'hiveSearch',
+                value: 'id=' + id, // set search term via store instead of query to overrule possible stored search terms
+              })
               this.$router.push({
                 name: 'home',
-                query: { search: newLocation.name },
               })
             })
           }, 50) // wait for API to update locations/hives
@@ -386,9 +413,12 @@ export default {
           return this.readApiariesAndGroups().then(() => {
             this.readGeneralInspections() // update inspections to exclude those from deleted hive
             this.readDevices() // update devices to remove deleted hives coupled to devices
+            this.$store.commit('locations/setData', {
+              prop: 'hiveSearch',
+              value: this.activeHive.location, // set search term via store instead of query to overrule possible stored search terms
+            })
             this.$router.push({
               name: 'home',
-              query: { search: this.activeHive.location },
             })
           })
         }, 50) // wait for API to update locations/hives
@@ -402,47 +432,6 @@ export default {
           this.snackbar.text = this.$i18n.t('something_wrong')
         }
         this.snackbar.show = true
-      }
-    },
-    async readApiariesAndGroupsIfNotPresent() {
-      if (this.apiaries.length === 0 && this.groups.length === 0) {
-        // in case view is opened directly without loggin in (via localstorage) or in case of hard refresh
-        try {
-          const responseApiaries = await Api.readRequest('/locations')
-          const responseGroups = await Api.readRequest('/groups')
-          this.$store.commit(
-            'locations/setApiaries',
-            responseApiaries.data.locations
-          )
-          this.$store.commit('groups/setGroups', responseGroups.data.groups)
-          return true
-        } catch (error) {
-          if (error.response) {
-            console.log(error.response)
-          } else {
-            console.log('Error: ', error)
-          }
-        }
-      } else {
-        return true
-      }
-    },
-    async readApiariesAndGroups() {
-      try {
-        const responseApiaries = await Api.readRequest('/locations')
-        const responseGroups = await Api.readRequest('/groups')
-        this.$store.commit(
-          'locations/setApiaries',
-          responseApiaries.data.locations
-        )
-        this.$store.commit('groups/setGroups', responseGroups.data.groups)
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log(error.response)
-        } else {
-          console.log('Error: ', error)
-        }
       }
     },
     async readGeneralInspections() {
@@ -502,9 +491,12 @@ export default {
             return this.readApiariesAndGroups().then(() => {
               this.readGeneralInspections() // retrieve hive action inspections
               this.readDevices() // update devices to reflect updated hive names for example
+              this.$store.commit('locations/setData', {
+                prop: 'hiveSearch',
+                value: 'id=' + this.activeHive.id, // set search term via store instead of query to overrule possible stored search terms
+              })
               this.$router.push({
                 name: 'home',
-                query: { search: this.activeHive.location },
               })
             })
           }, 50) // wait for API to update locations/hives

@@ -787,6 +787,7 @@ const translations = {
   sensor_key: 'Device unique identifier',
   disabled_settings: 'Manually editing these settings is disabled.',
   Address_placeholder: 'Number, Street name, City',
+  first_create_apiary: 'First, create an apiary',
 }
 
 export default translations
