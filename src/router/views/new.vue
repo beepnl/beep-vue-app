@@ -352,7 +352,7 @@
                 <a href="https://beep.nl/home-english" target="_blank"
                   >BEEP website</a
                 >
-                are moved to the
+                have been moved to the
                 <v-icon class="color-black inline-icon">mdi-menu</v-icon> menu
                 at the top right of the screen.</li
               >
