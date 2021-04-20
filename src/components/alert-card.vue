@@ -62,7 +62,11 @@
                   >
                 </v-col>
 
-                <v-col cols="3" class="d-flex flex-column align-start pa-0">
+                <v-col
+                  cols="3"
+                  md="4"
+                  class="d-flex flex-column align-start pa-0"
+                >
                   <div v-if="alert.hive_name !== null">
                     <v-tooltip
                       v-if="
