@@ -19,7 +19,7 @@
           <v-row class="ml-0 my-0 pl-0 py-0" style="width:100%;">
             <v-col
               cols="12"
-              sm="4"
+              sm="5"
               class="alert-details-item alert-meta d-flex flex-row justify-flex-start pa-0"
             >
               <v-row class="my-0 py-0">
@@ -62,11 +62,7 @@
                   >
                 </v-col>
 
-                <v-col
-                  cols="3"
-                  sm="4"
-                  class="d-flex flex-column align-start pa-0"
-                >
+                <v-col cols="3" class="d-flex flex-column align-start pa-0">
                   <div v-if="alert.hive_name !== null">
                     <v-tooltip
                       v-if="
@@ -146,7 +142,7 @@
               </v-row>
             </v-col>
 
-            <v-col cols="12" sm="8" class="alert-content pa-0">
+            <v-col cols="12" sm="7" class="alert-content pa-0">
               <v-row class="my-0 py-0 ml-n6 ml-sm-0 mr-sm-n4">
                 <v-col
                   cols="12"
@@ -177,7 +173,7 @@
 
                 <v-col
                   cols="12"
-                  sm="3"
+                  sm="4"
                   class="alert-details-item d-flex flex-column align-start  pa-0"
                 >
                   <div
