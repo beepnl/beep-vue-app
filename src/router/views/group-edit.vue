@@ -376,7 +376,7 @@ import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.
 import Confirm from '@components/confirm.vue'
 import { mapGetters } from 'vuex'
 import Layout from '@layouts/back.vue'
-import { momentMixin } from '@mixins/momentMixin'
+import { momentify } from '@mixins/momentMixin'
 import { readApiariesAndGroupsIfNotPresent } from '@mixins/methodsMixin'
 
 export default {
@@ -385,7 +385,7 @@ export default {
     Confirm,
     Layout,
   },
-  mixins: [momentMixin, readApiariesAndGroupsIfNotPresent],
+  mixins: [momentify, readApiariesAndGroupsIfNotPresent],
   data: function() {
     return {
       snackbar: {

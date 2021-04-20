@@ -641,6 +641,7 @@ import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
+import { momentify } from '@mixins/momentMixin'
 import {
   readApiariesAndGroups,
   readDevices,
@@ -661,7 +662,7 @@ export default {
     yesNoRating,
     VueNumericInput,
   },
-  mixins: [readApiariesAndGroups, readDevices, readTaxonomy],
+  mixins: [momentify, readApiariesAndGroups, readDevices, readTaxonomy],
   data() {
     return {
       devices: [],
@@ -901,11 +902,6 @@ export default {
         return this.removeSensorDef(device, index)
       }
       sensorDef.delete = !sensorDef.delete
-    },
-    momentify(date) {
-      return this.$moment(date)
-        .locale(this.$i18n.locale)
-        .format('lll')
     },
     randomString(length) {
       var text = ''

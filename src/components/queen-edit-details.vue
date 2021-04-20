@@ -156,7 +156,11 @@
 <script>
 import { darkIconMixin } from '@mixins/darkIconMixin'
 import { mapGetters } from 'vuex'
-import { momentMixin } from '@mixins/momentMixin'
+import {
+  momentAge,
+  momentLastDigitOfYear,
+  momentifyRemoveTime,
+} from '@mixins/momentMixin'
 import { readTaxonomy } from '@mixins/methodsMixin'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
@@ -165,7 +169,13 @@ export default {
   components: {
     Treeselect,
   },
-  mixins: [darkIconMixin, momentMixin, readTaxonomy],
+  mixins: [
+    darkIconMixin,
+    momentAge,
+    momentLastDigitOfYear,
+    momentifyRemoveTime,
+    readTaxonomy,
+  ],
   props: {
     queen: {
       type: Object,

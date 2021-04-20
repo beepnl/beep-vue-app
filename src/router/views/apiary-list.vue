@@ -614,7 +614,11 @@ import Confirm from '@components/confirm.vue'
 import HiveCard from '@components/hive-card.vue'
 import Layout from '@layouts/main.vue'
 import { mapGetters } from 'vuex'
-import { momentMixin } from '@mixins/momentMixin'
+import {
+  momentFromNow,
+  momentify,
+  momentifyDayMonth,
+} from '@mixins/momentMixin'
 import {
   checkAlerts,
   readApiariesAndGroups,
@@ -631,8 +635,10 @@ export default {
     ScaleTransition,
   },
   mixins: [
-    momentMixin,
     checkAlerts,
+      momentFromNow,
+  momentify,
+  momentifyDayMonth,
     readApiariesAndGroups,
     readDevices,
     readGeneralInspections,

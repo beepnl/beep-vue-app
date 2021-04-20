@@ -380,6 +380,7 @@ import Confirm from '@components/confirm.vue'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
 import Layout from '@layouts/back.vue'
+import { momentify, momentISO8601, momentUpdatedAt } from '@mixins/momentMixin'
 import { mapGetters } from 'vuex'
 import {
   readApiariesAndGroups,
@@ -392,7 +393,13 @@ export default {
     Datetime,
     Layout,
   },
-  mixins: [readApiariesAndGroups, readDevicesIfNotPresent],
+  mixins: [
+    momentify,
+    momentISO8601,
+    momentUpdatedAt,
+    readApiariesAndGroups,
+    readDevicesIfNotPresent,
+  ],
   data: function() {
     return {
       researchProjects: [],
@@ -550,25 +557,6 @@ export default {
         .catch((reject) => {
           return true
         })
-    },
-    momentISO8601(date) {
-      if (date !== null) {
-        return this.$moment(date)
-          .locale(this.$i18n.locale)
-          .format()
-      } else {
-        return null
-      }
-    },
-    momentify(date) {
-      return this.$moment(date)
-        .locale(this.$i18n.locale)
-        .format('lll')
-    },
-    momentUpdatedAt(date) {
-      return this.$moment(date)
-        .locale(this.$i18n.locale)
-        .format('YYYY-MM-DD HH:mm:ss')
     },
     updateConsentDate(researchId, consentId, date) {
       this.showLoadingIcon.push(consentId)

@@ -569,7 +569,7 @@ import {
   readApiariesAndGroups,
   readGeneralInspections,
 } from '@mixins/methodsMixin'
-import { momentMixin } from '@mixins/momentMixin'
+import { momentify, momentifyDayMonth } from '@mixins/momentMixin'
 import AddToCalendar from '@components/add-to-calendar.vue'
 
 export default {
@@ -580,7 +580,7 @@ export default {
     AddToCalendar,
     Layout,
   },
-  mixins: [momentMixin, readApiariesAndGroups, readGeneralInspections],
+  mixins: [momentify, momentifyDayMonth, readApiariesAndGroups, readGeneralInspections],
   data: function() {
     return {
       snackbar: {

@@ -83,7 +83,6 @@ import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
-import { momentMixin } from '@mixins/momentMixin'
 import { ScaleTransition } from 'vue2-transitions'
 import { readAlertRules, readTaxonomy } from '@mixins/methodsMixin'
 
@@ -93,7 +92,7 @@ export default {
     Layout,
     ScaleTransition,
   },
-  mixins: [momentMixin, readAlertRules, readTaxonomy],
+  mixins: [readAlertRules, readTaxonomy],
   data: function() {
     return {
       alertRulesDefault: [],

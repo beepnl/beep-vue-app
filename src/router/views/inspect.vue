@@ -419,7 +419,7 @@ import {
   readApiariesAndGroups,
   readGeneralInspections,
 } from '@mixins/methodsMixin'
-import { momentMixin } from '@mixins/momentMixin'
+import { momentCreatedAt, momentISO8601 } from '@mixins/momentMixin'
 import { SlideYUpTransition } from 'vue2-transitions'
 import smileRating from '@components/input-fields/smile-rating.vue'
 import Treeselect from '@riophae/vue-treeselect'
@@ -438,7 +438,12 @@ export default {
     yesNoRating,
     Treeselect,
   },
-  mixins: [momentMixin, readApiariesAndGroups, readGeneralInspections],
+  mixins: [
+    momentCreatedAt,
+    momentISO8601,
+    readApiariesAndGroups,
+    readGeneralInspections,
+  ],
   data: function() {
     return {
       normalizerHiveSets(node) {

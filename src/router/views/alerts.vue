@@ -119,7 +119,7 @@ import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/main.vue'
 import { mapGetters } from 'vuex'
-import { momentMixin } from '@mixins/momentMixin'
+import { momentFromNow, momentify } from '@mixins/momentMixin'
 import {
   checkAlerts,
   readApiariesAndGroupsIfNotPresent,
@@ -133,7 +133,12 @@ export default {
     Layout,
     ScaleTransition,
   },
-  mixins: [momentMixin, checkAlerts, readApiariesAndGroupsIfNotPresent],
+  mixins: [
+    checkAlerts,
+    momentFromNow,
+    momentify,
+    readApiariesAndGroupsIfNotPresent,
+  ],
   data: function() {
     return {
       // alerts: [],

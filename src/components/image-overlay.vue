@@ -29,10 +29,10 @@
 </template>
 
 <script>
-import { momentMixin } from '@mixins/momentMixin'
+import { momentify } from '@mixins/momentMixin'
 
 export default {
-  mixins: [momentMixin],
+  mixins: [momentify],
   props: {
     date: {
       type: String,

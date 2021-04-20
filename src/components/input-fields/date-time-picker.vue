@@ -38,14 +38,14 @@
 <script>
 import { Datetime } from 'vue-datetime'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
-import { momentMixin } from '@mixins/momentMixin'
+import { momentCreatedAt, momentISO8601 } from '@mixins/momentMixin'
 
 export default {
   components: {
     Datetime,
     labelWithDescription,
   },
-  mixins: [momentMixin],
+  mixins: [momentCreatedAt, momentISO8601],
   props: {
     item: {
       type: Object,

@@ -167,6 +167,11 @@ import DiaryCard from '@components/diary-card.vue'
 import Layout from '@layouts/main.vue'
 import { mapGetters } from 'vuex'
 import {
+  momentFromNow,
+  momentify,
+  momentifyDayMonth,
+} from '@mixins/momentMixin'
+import {
   checkAlerts,
   readApiariesAndGroups,
   readApiariesAndGroupsIfNotPresent,
@@ -183,6 +188,9 @@ export default {
   },
   mixins: [
     checkAlerts,
+    momentFromNow,
+    momentify,
+    momentifyDayMonth,
     readApiariesAndGroups,
     readApiariesAndGroupsIfNotPresent,
     readGeneralInspections,
@@ -506,30 +514,6 @@ export default {
         .catch((reject) => {
           return true
         })
-    },
-    momentFromNow(date) {
-      const moment = this.$moment(date)
-        .locale(this.$i18n.locale)
-        .fromNow()
-      return moment.charAt(0).toUpperCase() + moment.slice(1)
-    },
-    momentify(date) {
-      return this.$moment(date)
-        .locale(this.$i18n.locale)
-        .format('lll')
-    },
-    momentifyDayMonth(date) {
-      const currentYear = this.$moment(date).format('YYYY')
-      const currentYearEn = ', ' + currentYear
-      const currentYearEsPt = ' de ' + currentYear
-      const currentYearNl = '. ' + currentYear
-      return this.$moment(date)
-        .locale(this.$i18n.locale)
-        .format('ll')
-        .replace(currentYearNl, '')
-        .replace(currentYearEn, '')
-        .replace(currentYearEsPt, '')
-        .replace(' ' + currentYear, '') // Remove year hardcoded per language, currently no other way to get rid of year whilst keeping localized time
     },
   },
 }
