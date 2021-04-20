@@ -154,10 +154,10 @@
 </template>
 
 <script>
-import Api from '@api/Api'
 import { darkIconMixin } from '@mixins/darkIconMixin'
 import { mapGetters } from 'vuex'
 import { momentMixin } from '@mixins/momentMixin'
+import { readTaxonomy } from '@mixins/methodsMixin'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
@@ -165,7 +165,7 @@ export default {
   components: {
     Treeselect,
   },
-  mixins: [darkIconMixin, momentMixin],
+  mixins: [darkIconMixin, momentMixin, readTaxonomy],
   props: {
     queen: {
       type: Object,
@@ -297,24 +297,6 @@ export default {
     this.queenHasColor = this.queen.color !== null
   },
   methods: {
-    async readTaxonomy() {
-      if (this.beeRacesList.length === 0) {
-        try {
-          const response = await Api.readRequest('/taxonomy/lists')
-          this.$store.commit('taxonomy/setData', {
-            prop: 'taxonomyLists',
-            value: response.data,
-          })
-          return true
-        } catch (error) {
-          if (error.response) {
-            console.log(error.response)
-          } else {
-            console.log('Error: ', error)
-          }
-        }
-      }
-    },
     cancelDatePicker() {
       this.useQueenMarkColor = false
       this.modal = false

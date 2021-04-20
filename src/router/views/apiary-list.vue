@@ -616,7 +616,7 @@ import Layout from '@layouts/main.vue'
 import { mapGetters } from 'vuex'
 import { momentMixin } from '@mixins/momentMixin'
 import {
-  readAlerts,
+  checkAlerts,
   readApiariesAndGroups,
   readDevices,
   readGeneralInspections,
@@ -632,7 +632,7 @@ export default {
   },
   mixins: [
     momentMixin,
-    readAlerts,
+    checkAlerts,
     readApiariesAndGroups,
     readDevices,
     readGeneralInspections,
@@ -976,7 +976,7 @@ export default {
     ) {
       this.hiveSearch = this.$route.query.search
     }
-    this.readAlerts().then(() => {
+    this.checkAlertRulesAndAlerts().then(() => {
       if (this.apiaries.length === 0 && this.groups.length === 0) {
         // in case user is freshly logged in or in case of hard refresh
         this.readApiariesAndGroups().then(() => {

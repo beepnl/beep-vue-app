@@ -219,12 +219,14 @@ import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
+import { readAlertRules } from '@mixins/methodsMixin'
 
 export default {
   components: {
     Confirm,
     Layout,
   },
+  mixins: [readAlertRules],
   data: function() {
     return {
       ready: false,
@@ -301,22 +303,6 @@ export default {
           console.log('Error')
         }
         this.readAlertRules() // update alertRules in store
-      } catch (error) {
-        if (error.response) {
-          console.log('Error: ', error.response)
-        } else {
-          console.log('Error: ', error)
-        }
-      }
-    },
-    async readAlertRules() {
-      try {
-        const response = await Api.readRequest('/alert-rules')
-        this.$store.commit('alerts/setData', {
-          prop: 'alertRules',
-          value: response.data.alert_rules,
-        })
-        return true
       } catch (error) {
         if (error.response) {
           console.log('Error: ', error.response)

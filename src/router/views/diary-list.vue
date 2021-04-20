@@ -167,7 +167,7 @@ import DiaryCard from '@components/diary-card.vue'
 import Layout from '@layouts/main.vue'
 import { mapGetters } from 'vuex'
 import {
-  readAlerts,
+  checkAlerts,
   readApiariesAndGroups,
   readApiariesAndGroupsIfNotPresent,
   readGeneralInspections,
@@ -182,7 +182,7 @@ export default {
     ScaleTransition,
   },
   mixins: [
-    readAlerts,
+    checkAlerts,
     readApiariesAndGroups,
     readApiariesAndGroupsIfNotPresent,
     readGeneralInspections,
@@ -439,7 +439,7 @@ export default {
     },
   },
   created() {
-    this.readAlerts() // for alerts-tab badge
+    this.checkAlertRulesAndAlerts() // for alerts-tab badge
     if (
       this.$route.query.search !== null &&
       this.$route.query.search !== undefined

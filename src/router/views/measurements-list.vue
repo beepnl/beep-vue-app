@@ -349,7 +349,7 @@ import MeasurementsChartHeatmap from '@components/measurements-chart-heatmap.vue
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import 'chartist/dist/chartist.min.css'
-import { readAlerts, readDevicesIfNotPresent } from '@mixins/methodsMixin'
+import { checkAlerts, readDevicesIfNotPresent } from '@mixins/methodsMixin'
 import { sensorMixin } from '@mixins/sensorMixin'
 import { SlideYUpTransition } from 'vue2-transitions'
 import '@plugins/chartist-plugin-beep.js'
@@ -365,7 +365,7 @@ export default {
     SlideYUpTransition,
     Treeselect,
   },
-  mixins: [readAlerts, readDevicesIfNotPresent, sensorMixin],
+  mixins: [checkAlerts, readDevicesIfNotPresent, sensorMixin],
   data() {
     return {
       lastSensorDate: null,
@@ -562,7 +562,7 @@ export default {
     },
   },
   created() {
-    this.readAlerts() // for alerts-tab badge
+    this.checkAlertRulesAndAlerts() // for alerts-tab badge
     this.stopTimer()
     this.readDevicesIfNotPresent()
       .then(() => {

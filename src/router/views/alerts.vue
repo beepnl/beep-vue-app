@@ -121,7 +121,7 @@ import Layout from '@layouts/main.vue'
 import { mapGetters } from 'vuex'
 import { momentMixin } from '@mixins/momentMixin'
 import {
-  readAlerts,
+  checkAlerts,
   readApiariesAndGroupsIfNotPresent,
 } from '@mixins/methodsMixin'
 import { ScaleTransition } from 'vue2-transitions'
@@ -133,7 +133,7 @@ export default {
     Layout,
     ScaleTransition,
   },
-  mixins: [momentMixin, readAlerts, readApiariesAndGroupsIfNotPresent],
+  mixins: [momentMixin, checkAlerts, readApiariesAndGroupsIfNotPresent],
   data: function() {
     return {
       // alerts: [],
@@ -245,14 +245,8 @@ export default {
   created() {
     this.search = this.$route.query.search || null
     this.readApiariesAndGroupsIfNotPresent().then(() => {
-      this.readAlerts().then(() => {
-        if (this.alertRules.length === 0) {
-          this.readAlertRules().then(() => {
-            this.ready = true
-          })
-        } else {
-          this.ready = true
-        }
+      this.checkAlertRulesAndAlerts().then(() => {
+        this.ready = true
       })
     })
   },
@@ -264,22 +258,6 @@ export default {
           console.log('Error')
         }
         this.readAlerts() // update alerts in store
-      } catch (error) {
-        if (error.response) {
-          console.log('Error: ', error.response)
-        } else {
-          console.log('Error: ', error)
-        }
-      }
-    },
-    async readAlertRules() {
-      try {
-        const response = await Api.readRequest('/alert-rules')
-        this.$store.commit('alerts/setData', {
-          prop: 'alertRules',
-          value: response.data.alert_rules,
-        })
-        return true
       } catch (error) {
         if (error.response) {
           console.log('Error: ', error.response)

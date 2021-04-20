@@ -1,13 +1,81 @@
 import Api from '@api/Api'
+import { mapGetters } from 'vuex'
 
-export const readAlerts = {
+export const checkAlerts = {
+  computed: {
+    ...mapGetters('alerts', ['alertRules', 'alertRulesChecked']),
+  },
   methods: {
-    async readAlerts() {
+    // check whether alertrules have been read, if not do so, then only read alerts if alert rules present
+    async checkAlertRulesAndAlerts() {
+      if (!this.alertRulesChecked) {
+        this.readAlertRules().then(() => {
+          this.readAlerts().then(() => {
+            return true
+          })
+        })
+      } else {
+        this.readAlerts().then(() => {
+          return true
+        })
+      }
+    },
+    async readAlertRules() {
       try {
-        const response = await Api.readRequest('/alerts')
+        const response = await Api.readRequest('/alert-rules')
         this.$store.commit('alerts/setData', {
-          prop: 'alerts',
-          value: response.data.alerts,
+          prop: 'alertRules',
+          value: response.data.alert_rules,
+        })
+        this.$store.commit('alerts/setData', {
+          prop: 'alertRulesChecked',
+          value: true,
+        })
+        return true
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
+    // only read alerts if alert rules present
+    async readAlerts() {
+      if (this.alertRulesChecked && this.alertRules.length > 0) {
+        try {
+          const response = await Api.readRequest('/alerts')
+          this.$store.commit('alerts/setData', {
+            prop: 'alerts',
+            value: response.data.alerts,
+          })
+          return true
+        } catch (error) {
+          if (error.response) {
+            console.log('Error: ', error.response)
+          } else {
+            console.log('Error: ', error)
+          }
+        }
+      } else {
+        return true
+      }
+    },
+  },
+}
+
+export const readAlertRules = {
+  methods: {
+    async readAlertRules() {
+      try {
+        const response = await Api.readRequest('/alert-rules')
+        this.$store.commit('alerts/setData', {
+          prop: 'alertRules',
+          value: response.data.alert_rules,
+        })
+        this.$store.commit('alerts/setData', {
+          prop: 'alertRulesChecked',
+          value: true,
         })
         return true
       } catch (error) {
@@ -184,6 +252,30 @@ export const readGeneralInspections = {
           console.log('Error: ', error.response)
         } else {
           console.log('Error: ', error)
+        }
+      }
+    },
+  },
+}
+
+export const readTaxonomy = {
+  methods: {
+    async readTaxonomy() {
+      const beeRacesList = this.$store.getters['taxonomy/beeRacesList']
+      if (beeRacesList.length === 0) {
+        try {
+          const response = await Api.readRequest('/taxonomy/lists')
+          this.$store.commit('taxonomy/setData', {
+            prop: 'taxonomyLists',
+            value: response.data,
+          })
+          return true
+        } catch (error) {
+          if (error.response) {
+            console.log(error.response)
+          } else {
+            console.log('Error: ', error)
+          }
         }
       }
     },

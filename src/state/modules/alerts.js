@@ -7,6 +7,7 @@ export const state = {
   activeAlertRule: null,
   alertRuleEdited: false,
   alertRules: [],
+  alertRulesChecked: false,
   alerts: [],
 }
 export const getters = {
@@ -14,11 +15,14 @@ export const getters = {
   activeAlertRule: (state) => {
     return state.activeAlertRule
   },
+  alertRuleEdited: (state) => {
+    return state.alertRuleEdited
+  },
   alertRules: (state) => {
     return state.alertRules || []
   },
-  alertRuleEdited: (state) => {
-    return state.alertRuleEdited
+  alertRulesChecked: (state) => {
+    return state.alertRulesChecked
   },
   alerts: (state) => {
     return state.alerts || []
@@ -33,6 +37,7 @@ export const mutations = {
     state.alertRuleEdited = false
     state.activeAlertRule = null
     state.alertRules = []
+    state.alertRulesChecked = false
     state.alerts = []
   },
 }

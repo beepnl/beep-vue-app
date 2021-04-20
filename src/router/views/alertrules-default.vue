@@ -85,6 +85,7 @@ import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
 import { momentMixin } from '@mixins/momentMixin'
 import { ScaleTransition } from 'vue2-transitions'
+import { readAlertRules, readTaxonomy } from '@mixins/methodsMixin'
 
 export default {
   components: {
@@ -92,7 +93,7 @@ export default {
     Layout,
     ScaleTransition,
   },
-  mixins: [momentMixin],
+  mixins: [momentMixin, readAlertRules, readTaxonomy],
   data: function() {
     return {
       alertRulesDefault: [],
@@ -178,22 +179,6 @@ export default {
         }
       }
     },
-    async readAlertRules() {
-      try {
-        const response = await Api.readRequest('/alert-rules')
-        this.$store.commit('alerts/setData', {
-          prop: 'alertRules',
-          value: response.data.alert_rules,
-        })
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log('Error: ', error.response)
-        } else {
-          console.log('Error: ', error)
-        }
-      }
-    },
     async readDefaultAlertRules() {
       try {
         const response = await Api.readRequest('/alert-rules-default')
@@ -209,24 +194,6 @@ export default {
           console.log('Error: ', error.response)
         } else {
           console.log('Error: ', error)
-        }
-      }
-    },
-    async readTaxonomy() {
-      if (this.sensorMeasurementsList.length === 0) {
-        try {
-          const response = await Api.readRequest('/taxonomy/lists')
-          this.$store.commit('taxonomy/setData', {
-            prop: 'taxonomyLists',
-            value: response.data,
-          })
-          return true
-        } catch (error) {
-          if (error.response) {
-            console.log(error.response)
-          } else {
-            console.log('Error: ', error)
-          }
         }
       }
     },

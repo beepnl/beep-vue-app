@@ -641,7 +641,11 @@ import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
-import { readApiariesAndGroups, readDevices } from '@mixins/methodsMixin'
+import {
+  readApiariesAndGroups,
+  readDevices,
+  readTaxonomy,
+} from '@mixins/methodsMixin'
 import { SlideYUpTransition } from 'vue2-transitions'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
@@ -657,7 +661,7 @@ export default {
     yesNoRating,
     VueNumericInput,
   },
-  mixins: [readApiariesAndGroups, readDevices],
+  mixins: [readApiariesAndGroups, readDevices, readTaxonomy],
   data() {
     return {
       devices: [],
@@ -780,27 +784,6 @@ export default {
           }
         } else {
           console.log('Error: ', error)
-        }
-      }
-    },
-    async readTaxonomy() {
-      if (
-        this.sensorMeasurementsList.length === 0 ||
-        this.sensorTypesList.length === 0
-      ) {
-        try {
-          const response = await Api.readRequest('/taxonomy/lists')
-          this.$store.commit('taxonomy/setData', {
-            prop: 'taxonomyLists',
-            value: response.data,
-          })
-          return true
-        } catch (error) {
-          if (error.response) {
-            console.log(error.response)
-          } else {
-            console.log('Error: ', error)
-          }
         }
       }
     },

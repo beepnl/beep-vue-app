@@ -278,7 +278,7 @@ import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import { mapGetters } from 'vuex'
 import Layout from '@layouts/back.vue'
-import { readDevicesIfNotPresent } from '@mixins/methodsMixin'
+import { readAlertRules, readDevicesIfNotPresent, readTaxonomy } from '@mixins/methodsMixin'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import VueNumericInput from 'vue-numeric-input'
@@ -290,7 +290,7 @@ export default {
     Treeselect,
     VueNumericInput,
   },
-  mixins: [readDevicesIfNotPresent],
+  mixins: [readAlertRules, readDevicesIfNotPresent, readTaxonomy],
   data: function() {
     return {
       snackbar: {
@@ -612,22 +612,6 @@ export default {
         this.snackbar.show = true
       }
     },
-    async readAlertRules() {
-      try {
-        const response = await Api.readRequest('/alert-rules')
-        this.$store.commit('alerts/setData', {
-          prop: 'alertRules',
-          value: response.data.alert_rules,
-        })
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log('Error: ', error.response)
-        } else {
-          console.log('Error: ', error)
-        }
-      }
-    },
     async readAlertRulesIfNotPresent() {
       if (this.alertRules.length === 0) {
         try {
@@ -646,24 +630,6 @@ export default {
         }
       } else {
         return true
-      }
-    },
-    async readTaxonomy() {
-      if (this.sensorMeasurementsList.length === 0) {
-        try {
-          const response = await Api.readRequest('/taxonomy/lists')
-          this.$store.commit('taxonomy/setData', {
-            prop: 'taxonomyLists',
-            value: response.data,
-          })
-          return true
-        } catch (error) {
-          if (error.response) {
-            console.log(error.response)
-          } else {
-            console.log('Error: ', error)
-          }
-        }
       }
     },
     async updateAlertRule() {
