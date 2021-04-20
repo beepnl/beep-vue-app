@@ -538,8 +538,14 @@ export default {
     alertRuleNamesText() {
       var uniqueAlertRuleNames = []
       this.alerts.map((alert) => {
-        if (uniqueAlertRuleNames.indexOf(alert.alert_rule_name) === -1) {
-          uniqueAlertRuleNames.push(alert.alert_rule_name)
+        var alertName =
+          alert.alert_rule_name !== null
+            ? alert.alert_rule_name
+            : alert.alert_function !== null
+            ? alert.alert_function
+            : this.$i18n.t('Unknown')
+        if (uniqueAlertRuleNames.indexOf(alertName) === -1) {
+          uniqueAlertRuleNames.push(alertName)
         }
       })
       return uniqueAlertRuleNames.join(', ')

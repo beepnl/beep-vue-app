@@ -40,15 +40,26 @@
                 </v-col>
 
                 <v-col
+                  v-if="typeof hives[alert.hive_id] !== 'undefined'"
                   cols="3"
                   class="hive-icon-wrapper mt-1 ml-1 ml-md-0 ml-lg-n2 mr-1 mr-md-0 mr-lg-n2 d-flex justify-center align-start pa-0"
                 >
                   <HiveIcon
-                    v-if="typeof hives[alert.hive_id] !== 'undefined'"
                     :hive="hives[alert.hive_id]"
                     :diary-view="true"
                   ></HiveIcon>
-                  <span v-else>{{ alert.device_id }}</span>
+                </v-col>
+
+                <v-col
+                  v-else
+                  cols="3"
+                  class="ml-1 ml-md-0 ml-lg-n2 mr-1 mr-md-0 mr-lg-n2 d-flex flex-column align-center pa-0"
+                  ><span class="alert-label alert-label-break text-center"
+                    ><i
+                      >{{ $tc('Hive_short', 1) }}<br />
+                      {{ $t('unknown') }}
+                    </i></span
+                  >
                 </v-col>
 
                 <v-col
@@ -142,7 +153,7 @@
                   sm="3"
                   class="alert-details-item d-flex flex-column align-start  pa-0"
                 >
-                  <div v-if="alert.alert_rule_name" class="alert-content-item">
+                  <div class="alert-content-item">
                     <div
                       class="d-flex flex-no-wrap justify-flex-start align-start mr-2"
                     >
@@ -152,9 +163,13 @@
                         </v-icon>
                       </div>
                       <span
+                        v-if="alert.alert_rule_name !== null"
                         class="alert-label alert-label-break"
                         v-text="alert.alert_rule_name"
                       >
+                      </span>
+                      <span v-else class="alert-label alert-label-break"
+                        ><i>{{ $t('alertrule_deleted') }}</i>
                       </span>
                     </div>
                   </div>
@@ -218,6 +233,7 @@
     <v-list dense>
       <v-list-item-group>
         <v-list-item
+          v-if="alert.alert_rule_name !== null"
           :to="{
             name: 'alertrule-edit',
             params: { id: alert.alert_rule_id },
@@ -237,7 +253,7 @@
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
-      <v-divider class="my-1"></v-divider>
+      <v-divider v-if="alert.alert_rule_name !== null" class="my-1"></v-divider>
 
       <v-list-item-group>
         <v-list-item @click="confirmDeleteAlert(alert)">

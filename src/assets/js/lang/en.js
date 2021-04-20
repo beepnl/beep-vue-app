@@ -780,6 +780,9 @@ const translations = {
   disabled_settings: 'Manually editing these settings is disabled.',
   Address_placeholder: 'Number, Street name, City',
   first_create_apiary: 'First, create an apiary',
+  alertrule_deleted: 'Alert rule has been deleted',
+  Unknown: 'Unknown',
+  unknown: 'unknown',
 }
 
 export default translations

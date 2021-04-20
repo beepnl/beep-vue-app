@@ -277,8 +277,9 @@ export default {
           this.$i18n.t('remove_alert'),
           this.$i18n.t('remove_alert') +
             ' (' +
-            alert.alert_rule_name +
-            ', ' +
+            (alert.alert_rule_name !== null
+              ? alert.alert_rule_name + ', '
+              : '') +
             this.$i18n.t('Date').toLowerCase() +
             ': ' +
             this.momentify(alert.created_at) +

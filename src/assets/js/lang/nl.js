@@ -787,6 +787,9 @@ const translations = {
   disabled_settings: 'Je kunt deze instellingen niet handmatig aanpassen.',
   Address_placeholder: 'Straatnaam huisnummer, Stad',
   first_create_apiary: 'Maak eerst een bijenstand',
+  alertrule_deleted: 'Notificatie-instelling is verwijderd',
+  Unknown: 'Onbekend',
+  unknown: 'onbekend',
 }
 
 export default translations
