@@ -520,10 +520,6 @@ const translations = {
   info: 'Info',
   research: 'Onderzoek',
   roofed: 'Heeft de bijenstand een dak?',
-  research_explanation:
-    'Dit scherm bevat de beschikbare onderzoeken waarvoor je toestemming kunt geven om de gegevens die je in de BEEP app bijhoudt mee te delen. Door toestemming te geven voor het delen van de bij het onderzoek aangegeven gegevens, kun je bijdragen aan onderzoek ter ondersteuning van de gezondheid van honingbijen. Lees voordat je toestemming geeft de onderzoeksbeschrijving via de onderstaande link en vraag indien nodig om aanvullende informatie. Je kunt je toestemming te allen tijde intrekken. Vanaf dat moment worden er geen nieuwe gegevens gedeeld. De gegevens die je hebt gedeeld in de periode waarvoor je toestemming hebt gegeven, blijven beschikbaar voor onderzoek. Neem bij vragen contact op met de daarvoor bestemde contactpersoon.',
-  research_info:
-    'Door uw gegevens met onderzoekers te delen, helpt u hen om meer gegevens te kunnen analyseren en tot betere conclusies te komen voor hun onderzoek.',
   start_date: 'Startdatum',
   end_date: 'Einddatum',
   purpose: 'Onderzoeksdoel',
@@ -790,6 +786,14 @@ const translations = {
   alertrule_deleted: 'Notificatie-instelling is verwijderd',
   Unknown: 'Onbekend',
   unknown: 'onbekend',
+  research_warning:
+    'N.B. Wanneer je geen uitnodiging hebt ontvangen voor onderzoeksdeelname is het niet nodig om je gegevens te delen, hier zal dan niks mee gedaan worden.',
+  research_explanation_p1:
+    'Het BEEP platform wordt gebruikt in onderstaande onderzoeken. Wanneer je een uitnodiging ontvangt om deel te nemen aan een onderzoek, is het nodig om toestemming te geven om je bijendata te delen met de onderzoekers. Dit gaat om de gegevens die je in de BEEP app bijhoudt. Met jouw bijendata kun je dan bijdragen aan onderzoek ter ondersteuning van de gezondheid van honingbijen.',
+  research_explanation_p2:
+    'Je kunt je toestemming te allen tijde intrekken. Vanaf dat moment worden er geen nieuwe gegevens gedeeld. De gegevens die je hebt gedeeld in de periode waarvoor je toestemming hebt gegeven, blijven beschikbaar voor onderzoek. Neem bij vragen contact op met de daarvoor bestemde contactpersoon.',
+  research_info:
+    'Lees voordat je toestemming geeft de onderzoeksbeschrijving via de onderstaande link en vraag indien nodig om aanvullende informatie.',
 }
 
 export default translations

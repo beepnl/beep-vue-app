@@ -4,8 +4,12 @@
       <div>
         <v-row>
           <v-col cols="12">
-            <p>{{ $t('research_explanation') }}</p>
-            <p class="mb-0">{{ $t('research_info') }}</p>
+            <p class="red--text">{{ $t('research_warning') }}</p>
+            <p>{{ $t('research_explanation_p1') }}</p>
+            <p>{{ $t('research_explanation_p2') }}</p>
+            <p class="mb-0"
+              ><i>{{ $t('research_info') }}</i></p
+            >
           </v-col>
         </v-row>
 
@@ -115,7 +119,7 @@
                         :key="checklistName"
                         class="mr-1 mb-1"
                         small
-                        color="accent"
+                        color="primary"
                       >
                         {{ checklistName }}
                       </v-chip>

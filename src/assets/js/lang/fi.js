@@ -514,11 +514,7 @@ const translations = {
   info: 'Info',
 
   research: 'Tutkimus',
-  research_explanation:
-    'Tästä näytöstä löydät tutkimukset, joiden kanssa voit jakaa tietosi. Kun annat suostumuksesi BEEB tilisi tietojen käyttöön, osallistut tutkimukseen, joka tukee mehiläisten terveyttä. Ennen kuin annat suostumuksesi, tutustu tutkimuksen kuvaukseen alla olevan linkin kautta ja pyydä tarvittaessa lisätietoja.Voit peruuttaa suostumuksesi milloin tahansa, uusia tietoja ei jaeta siitä hetkestä lähtien. Tiedot, jotka annoit suostumusen aikana, ovat edelleen tutkimuksen käytettävissä. Jos sinulla on kysyttävää, ole hyvä ja ota yhteyttä alla ilmoitettuun yhteyshenkilöön.',
-  research_info:
-    'Jakamalla tietosi tutkijoiden kanssa autat heitä analysoimaan enemmän tietoa ja tekemään parempia johtopäätöksiä tutkimuksessaan.',
-  start_date: 'Aloituspäivämäärä',
+start_date: 'Aloituspäivämäärä',
   end_date: 'Päättymispäivämäärä',
   purpose: 'Tutkimuksen tarkoitus',
   institution: 'Tutkimuslaitos',
@@ -783,6 +779,15 @@ const translations = {
   alertrule_deleted: 'Alert rule has been deleted',
   Unknown: 'Unknown',
   unknown: 'unknown',
+  research_warning:
+  "Please note: if you did not receive an invitation to participate, it is not needed to give consent to share your data, as your data won't be used in that case.",
+research_explanation_p1:
+  'The BEEP platform is used in the research projects that are listed below. After you are invited to participate in a research project, you need to give consent for the researchers to access your bee data.',
+research_explanation_p2:
+  'You can withdraw your consent at any time. From that moment onwards, no new data will be shared. The data that you shared in the period for which you gave consent will remain available for the research. In case of questions, please direct these to the contact person of your research project.',
+research_info:
+  'Before you consent, please review the research description provided through the link below and request for additional details if needed.',
+
 }
 
 export default translations
