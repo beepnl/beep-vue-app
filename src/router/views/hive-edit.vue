@@ -80,8 +80,8 @@
                   name: `apiary-create`,
                 }"
               >
-                <div class="color-primary"
-                  ><v-icon class="color-primary" left>mdi-plus-circle</v-icon
+                <div class="color-accent"
+                  ><v-icon color="accent" left>mdi-plus-circle</v-icon
                   >{{ $t('first_create_apiary') }}</div
                 >
               </router-link>
@@ -175,7 +175,7 @@
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
-      <v-btn color="primary" text @click="snackbar.show = false">
+      <v-btn color="accent" text @click="snackbar.show = false">
         {{ $t('Close') }}
       </v-btn>
     </v-snackbar>

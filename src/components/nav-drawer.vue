@@ -31,7 +31,7 @@
                 :disabled="item.authRequired && !loggedIn"
               >
                 <v-list-item-avatar>
-                  <v-icon color="primary">{{ item.icon }}</v-icon>
+                  <v-icon color="accent">{{ item.icon }}</v-icon>
                 </v-list-item-avatar>
                 <v-list-item-content>
                   <v-list-item-title>{{ item.title }}</v-list-item-title>
@@ -52,7 +52,7 @@
                 :disabled="item.authRequired && !loggedIn"
               >
                 <v-list-item-avatar>
-                  <v-icon v-if="!item.icon.includes('icon')" color="primary">{{
+                  <v-icon v-if="!item.icon.includes('icon')" color="accent">{{
                     item.icon
                   }}</v-icon>
                   <div v-else>
@@ -71,7 +71,7 @@
 
             <v-list-item :disabled="!loggedIn" @click="signOut">
               <v-list-item-avatar>
-                <v-icon color="primary">mdi-logout-variant</v-icon>
+                <v-icon color="accent">mdi-logout-variant</v-icon>
               </v-list-item-avatar>
               <v-list-item-content>
                 <v-list-item-title>{{ $t('logout') }}</v-list-item-title>

@@ -199,7 +199,7 @@
             <div class="beep-label" v-text="$t('Active')"></div>
             <v-checkbox
               v-model="activeAlertRule.active"
-              color="primary"
+              color="accent"
               class="mt-1"
               @change="setAlertRuleEdited(true)"
             ></v-checkbox>
@@ -209,7 +209,7 @@
             <div class="beep-label" v-text="$t('Alert_via_email')"></div>
             <v-checkbox
               v-model="activeAlertRule.alert_via_email"
-              color="primary"
+              color="accent"
               class="mt-1"
               @change="setAlertRuleEdited(true)"
             ></v-checkbox>
@@ -264,7 +264,7 @@
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
-      <v-btn color="primary" text @click="snackbar.show = false">
+      <v-btn color="accent" text @click="snackbar.show = false">
         {{ $t('Close') }}
       </v-btn>
     </v-snackbar>

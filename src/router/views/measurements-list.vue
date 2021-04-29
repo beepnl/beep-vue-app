@@ -9,7 +9,7 @@
             <v-btn
               :class="
                 `grey--text ${
-                  period.interval === interval ? 'primary--text' : ''
+                  period.interval === interval ? 'accent--text' : ''
                 }`
               "
               text

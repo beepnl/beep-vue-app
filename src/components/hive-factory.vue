@@ -60,20 +60,16 @@
           <v-overlay :value="overlay">
             <v-toolbar class="hive-color-picker-toolbar" dense light>
               <div
-                class="hive-color-picker-title"
+                class="hive-color-picker-title ml-1"
                 v-text="
                   currentLayer !== null ? layerTypeText(currentLayer) : ''
                 "
               ></div>
               <v-spacer></v-spacer>
               <v-toolbar-items>
-                <!-- <v-icon
-                  class="mr-1"
-                  color="primary"
-                  @click="updateHiveLayerColor"
-                  >mdi-check</v-icon
-                > -->
-                <v-icon @click="cancelColorPicker">mdi-close</v-icon>
+                <v-icon class="mr-1" @click="cancelColorPicker"
+                  >mdi-close</v-icon
+                >
               </v-toolbar-items>
             </v-toolbar>
 
@@ -91,20 +87,12 @@
             <v-toolbar class="hive-color-picker-footer" dense light flat>
               <v-spacer></v-spacer>
               <v-icon color="red" @click="deleteLayer">mdi-delete</v-icon>
-              <v-btn
-                small
-                tile
-                outlined
-                color="black"
-                class="ml-3"
+              <v-icon
+                class="ml-5 mr-1"
+                color="accent"
                 @click="updateHiveLayerColor"
-              >
-                <v-icon left>mdi-check</v-icon>
-                {{ $t('save') }}
-              </v-btn>
-              <!-- <v-icon class="ml-3" color="primary" @click="updateHiveLayerColor"
                 >mdi-check</v-icon
-              > -->
+              >
             </v-toolbar>
           </v-overlay>
         </div>

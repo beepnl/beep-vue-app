@@ -9,7 +9,7 @@
           class="mdi mdi-information ml-1 icon-info"
           dark
           small
-          color="primary"
+          color="accent"
           @click="showDescription = !showDescription"
         ></v-icon
       ></a>

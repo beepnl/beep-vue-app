@@ -95,7 +95,7 @@
               v-if="mobile"
               :to="{ name: 'inspect', query: { hiveId: id } }"
             >
-              <v-icon dark color="primary">mdi-plus-circle</v-icon></router-link
+              <v-icon dark color="accent">mdi-plus-circle</v-icon></router-link
             >
           </v-card-actions>
         </v-row>
@@ -246,7 +246,7 @@
                   <v-menu>
                     <template v-slot:activator="{ on, attrs }">
                       <span
-                        class="add-to-calendar primary--text"
+                        class="add-to-calendar accent--text"
                         v-bind="attrs"
                         v-on="on"
                       >
@@ -448,7 +448,7 @@
                       :x-small="mobile"
                       :class="
                         star < item.val
-                          ? 'primary--text'
+                          ? 'color-accent'
                           : mobile
                           ? 'd-none'
                           : 'color-grey-medium'
@@ -549,7 +549,7 @@
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
-      <v-btn color="primary" text @click="snackbar.show = false">
+      <v-btn color="accent" text @click="snackbar.show = false">
         {{ $t('Close') }}
       </v-btn>
     </v-snackbar>
@@ -580,7 +580,12 @@ export default {
     AddToCalendar,
     Layout,
   },
-  mixins: [momentify, momentifyDayMonth, readApiariesAndGroups, readGeneralInspections],
+  mixins: [
+    momentify,
+    momentifyDayMonth,
+    readApiariesAndGroups,
+    readGeneralInspections,
+  ],
   data: function() {
     return {
       snackbar: {

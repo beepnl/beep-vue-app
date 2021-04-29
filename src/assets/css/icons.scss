@@ -11,6 +11,9 @@
   &.color-primary {
     color: $color-primary;
   }
+  &.color-accent {
+    color: $color-accent;
+  }
   &.color-grey {
     color: $color-grey;
   }
@@ -202,6 +205,10 @@
   &.color-primary {
     background-color: $color-primary;
     border-color: $color-primary;
+  }
+  &.color-accent {
+    background-color: $color-accent;
+    border-color: $color-accent;
   }
 }
 

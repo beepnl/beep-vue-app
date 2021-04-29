@@ -52,7 +52,7 @@
                 class="mdi mdi-information icon-info cursor-pointer mr-2"
                 dark
                 small
-                color="primary"
+                color="accent"
                 @click="showExplanation = !showExplanation"
               ></v-icon>
               <p v-if="showExplanation && ready" class="beep-label mt-n1 mb-2">
@@ -190,7 +190,7 @@
                           params: { id: alertRule.id },
                         }"
                       >
-                        <v-icon dark color="primary">mdi-pencil</v-icon>
+                        <v-icon dark color="accent">mdi-pencil</v-icon>
                       </router-link>
                     </td>
                     <td>

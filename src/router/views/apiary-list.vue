@@ -110,20 +110,20 @@
           </div>
           <v-card-actions class="view-buttons mr-0">
             <v-icon
-              :class="`${xsView ? 'color-primary' : ''} mr-sm-2`"
+              :class="`${xsView ? 'color-accent' : ''} mr-sm-2`"
               @click="toggleGrid('xsView')"
             >
               mdi-size-xs
             </v-icon>
             <v-icon
               v-if="!mobile"
-              :class="`${mView ? 'color-primary' : ''} mr-2`"
+              :class="`${mView ? 'color-accent' : ''} mr-2`"
               @click="toggleGrid('mView')"
             >
               mdi-size-m
             </v-icon>
             <v-icon
-              :class="`${xlView ? 'color-primary' : ''}`"
+              :class="`${xlView ? 'color-accent' : ''}`"
               @click="toggleGrid('xlView')"
             >
               mdi-size-xl
@@ -566,8 +566,8 @@
               name: `apiary-create`,
             }"
           >
-            <div class="color-primary"
-              ><v-icon class="color-primary" large left>mdi-plus-circle</v-icon
+            <div class="color-accent"
+              ><v-icon color="accent" large left>mdi-plus-circle</v-icon
               >{{ $t('add') + ' ' + $tc('location', 1) }}</div
             >
           </router-link>
@@ -599,7 +599,7 @@
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
-      <v-btn color="primary" text @click="snackbar.show = false">
+      <v-btn color="accent" text @click="snackbar.show = false">
         {{ $t('Close') }}
       </v-btn>
     </v-snackbar>
@@ -636,9 +636,9 @@ export default {
   },
   mixins: [
     checkAlerts,
-      momentFromNow,
-  momentify,
-  momentifyDayMonth,
+    momentFromNow,
+    momentify,
+    momentifyDayMonth,
     readApiariesAndGroups,
     readDevices,
     readGeneralInspections,
@@ -1290,8 +1290,8 @@ export default {
     width: 100%;
     padding-bottom: 4px;
     margin: 10px 0 16px;
-    color: $color-primary;
-    border-bottom: 1px solid $color-primary;
+    color: $color-accent;
+    border-bottom: 1px solid $color-accent;
     @include for-phone-only {
       padding-bottom: 2px;
       margin: 8px 0 10px;

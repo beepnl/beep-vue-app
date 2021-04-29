@@ -40,7 +40,7 @@
                 <v-icon
                   x-large
                   dark
-                  color="primary"
+                  color="accent"
                   class="next"
                   @click="setActiveTab(tabIndex + 1)"
                   >mdi-chevron-right</v-icon
@@ -72,7 +72,7 @@
               <v-icon
                 x-large
                 dark
-                color="primary"
+                color="accent"
                 class="prev"
                 @click="setActiveTab(tabIndex - 1)"
                 >mdi-chevron-left</v-icon
@@ -80,7 +80,7 @@
               <v-icon
                 x-large
                 dark
-                color="primary"
+                color="accent"
                 class="next"
                 @click="setActiveTab(tabIndex + 1)"
                 >mdi-chevron-right</v-icon
@@ -130,18 +130,12 @@
                           light
                         >
                           <div
-                            class="hive-color-picker-title"
+                            class="hive-color-picker-title ml-1"
                             v-text="`${$t('Apiary_color')}`"
                           ></div>
                           <v-spacer></v-spacer>
                           <v-toolbar-items>
-                            <v-icon
-                              class="mr-1"
-                              color="primary"
-                              @click="editApiary(colorPickerValue, 'hex_color')"
-                              >mdi-check</v-icon
-                            >
-                            <v-icon @click="cancelColorPicker"
+                            <v-icon class="mr-1" @click="cancelColorPicker"
                               >mdi-close</v-icon
                             >
                           </v-toolbar-items>
@@ -157,6 +151,21 @@
                           flat
                         >
                         </v-color-picker>
+
+                        <v-toolbar
+                          class="hive-color-picker-footer"
+                          dense
+                          light
+                          flat
+                        >
+                          <v-spacer></v-spacer>
+                          <v-icon
+                            class="mr-1"
+                            color="accent"
+                            @click="editApiary(colorPickerValue, 'hex_color')"
+                            >mdi-check</v-icon
+                          >
+                        </v-toolbar>
                       </v-overlay>
 
                       <v-switch
@@ -179,7 +188,7 @@
               <v-icon
                 x-large
                 dark
-                color="primary"
+                color="accent"
                 class="prev"
                 @click="setActiveTab(tabIndex - 1)"
                 >mdi-chevron-left</v-icon
@@ -187,7 +196,7 @@
               <v-icon
                 x-large
                 dark
-                color="primary"
+                color="accent"
                 class="next"
                 @click="setActiveTab(tabIndex + 1)"
                 >mdi-chevron-right</v-icon
@@ -324,7 +333,7 @@
               <v-icon
                 x-large
                 dark
-                color="primary"
+                color="accent"
                 class="prev"
                 @click="setActiveTab(tabIndex - 1)"
                 >mdi-chevron-left</v-icon
@@ -332,7 +341,7 @@
               <v-icon
                 x-large
                 dark
-                color="primary"
+                color="accent"
                 class="next"
                 @click="setActiveTab(tabIndex + 1)"
                 >mdi-chevron-right</v-icon
@@ -350,7 +359,7 @@
               <v-icon
                 x-large
                 dark
-                color="primary"
+                color="accent"
                 @click="setActiveTab(tabIndex - 1)"
                 >mdi-chevron-left</v-icon
               >
@@ -453,7 +462,7 @@
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
-      <v-btn color="primary" text @click="snackbar.show = false">
+      <v-btn color="accent" text @click="snackbar.show = false">
         {{ $t('Close') }}
       </v-btn>
     </v-snackbar>

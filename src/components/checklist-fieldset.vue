@@ -18,7 +18,7 @@
             class="mdi mdi-information ml-1 icon-info"
             dark
             small
-            color="primary"
+            color="accent"
           ></v-icon
         ></a>
       </div>

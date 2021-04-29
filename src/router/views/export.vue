@@ -14,7 +14,7 @@
             <v-btn
               tile
               outlined
-              color="primary"
+              color="accent"
               class="save-button-mobile-wide"
               @click="exportData"
             >
@@ -23,7 +23,7 @@
                 class="ml-n1 mr-2"
                 size="18"
                 width="2"
-                color="primary"
+                color="accent"
                 indeterminate
               />
               <v-icon v-if="!showDataLoadingIcon" left>mdi-download</v-icon
@@ -113,13 +113,13 @@
                 scrollable
               >
                 <v-spacer></v-spacer>
-                <v-btn text color="primary" @click="menu = false">
+                <v-btn text color="accent" @click="menu = false">
                   {{ $t('Cancel') }}
                 </v-btn>
                 <v-btn
                   :disabled="invalidDates(dates)"
                   text
-                  color="primary"
+                  color="accent"
                   @click="$refs.menu.save(dates)"
                 >
                   {{ $t('ok') }}
@@ -173,7 +173,7 @@
               "
               tile
               outlined
-              color="primary"
+              color="accent"
               class="save-button-mobile-wide"
               @click="exportDeviceData"
             >
@@ -182,7 +182,7 @@
                 class="ml-n1 mr-2"
                 size="18"
                 width="2"
-                color="primary"
+                color="accent"
                 indeterminate
               />
               <v-icon v-if="!showDeviceDataLoadingIcon" left

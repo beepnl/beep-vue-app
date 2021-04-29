@@ -99,18 +99,14 @@
                   <v-overlay :value="overlay">
                     <v-toolbar class="hive-color-picker-toolbar" dense light>
                       <div
-                        class="hive-color-picker-title"
+                        class="hive-color-picker-title ml-1"
                         v-text="`${$t('Apiary_color')}`"
                       ></div>
                       <v-spacer></v-spacer>
                       <v-toolbar-items>
-                        <v-icon
-                          class="mr-1"
-                          color="primary"
-                          @click="editApiary(colorPickerValue, 'hex_color')"
-                          >mdi-check</v-icon
+                        <v-icon class="mr-1" @click="overlay = false"
+                          >mdi-close</v-icon
                         >
-                        <v-icon @click="overlay = false">mdi-close</v-icon>
                       </v-toolbar-items>
                     </v-toolbar>
 
@@ -124,6 +120,21 @@
                       flat
                     >
                     </v-color-picker>
+
+                    <v-toolbar
+                      class="hive-color-picker-footer"
+                      dense
+                      light
+                      flat
+                    >
+                      <v-spacer></v-spacer>
+                      <v-icon
+                        class="mr-1"
+                        color="accent"
+                        @click="editApiary(colorPickerValue, 'hex_color')"
+                        >mdi-check</v-icon
+                      >
+                    </v-toolbar>
                   </v-overlay>
 
                   <v-switch
@@ -260,7 +271,7 @@
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
-      <v-btn color="primary" text @click="snackbar.show = false">
+      <v-btn color="accent" text @click="snackbar.show = false">
         {{ $t('Close') }}
       </v-btn>
     </v-snackbar>

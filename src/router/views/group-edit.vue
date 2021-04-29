@@ -131,20 +131,20 @@
                   </div>
 
                   <v-overlay :value="overlay">
-                    <v-toolbar class="hive-color-picker-toolbar" dense light>
+                    <v-toolbar
+                      class="hive-color-picker-toolbar"
+                      dense
+                      light
+                    >
                       <div
-                        class="hive-color-picker-title"
+                        class="hive-color-picker-title ml-1"
                         v-text="`${$tc('Group', 1) + ' ' + $t('color')}`"
                       ></div>
                       <v-spacer></v-spacer>
                       <v-toolbar-items>
-                        <v-icon
-                          class="mr-1"
-                          color="primary"
-                          @click="editGroup(colorPickerValue, 'hex_color')"
-                          >mdi-check</v-icon
+                        <v-icon class="mr-1" @click="overlay = false"
+                          >mdi-close</v-icon
                         >
-                        <v-icon @click="overlay = false">mdi-close</v-icon>
                       </v-toolbar-items>
                     </v-toolbar>
 
@@ -158,6 +158,21 @@
                       flat
                     >
                     </v-color-picker>
+
+                    <v-toolbar
+                      class="hive-color-picker-footer"
+                      dense
+                      light
+                      flat
+                    >
+                      <v-spacer></v-spacer>
+                      <v-icon
+                        class="mr-1"
+                        color="accent"
+                        @click="editGroup(colorPickerValue, 'hex_color')"
+                        >mdi-check</v-icon
+                      >
+                    </v-toolbar>
                   </v-overlay>
                 </v-col>
               </v-row>
@@ -183,7 +198,7 @@
                   ')'
               }}</div>
               <v-spacer></v-spacer>
-              <v-btn tile outlined color="primary" @click="addGroupUser">
+              <v-btn tile outlined color="accent" @click="addGroupUser">
                 <v-icon left>mdi-plus</v-icon>
                 {{
                   tabletLandscapeUp
@@ -251,7 +266,7 @@
                         <v-checkbox
                           v-if="!user.creator"
                           v-model="user.admin"
-                          color="primary"
+                          color="accent"
                           class="mt-0"
                           :disabled="user.delete"
                           hide-details
@@ -300,8 +315,8 @@
                     name: `apiary-create`,
                   }"
                 >
-                  <div class="color-primary"
-                    ><v-icon class="color-primary" left>mdi-plus-circle</v-icon
+                  <div class="color-accent"
+                    ><v-icon color="accent" left>mdi-plus-circle</v-icon
                     >{{ $t('add') + ' ' + $tc('location', 1) }}</div
                   >
                 </router-link>
@@ -361,7 +376,7 @@
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
-      <v-btn color="primary" text @click="snackbar.show = false">
+      <v-btn color="accent" text @click="snackbar.show = false">
         {{ $t('Close') }}
       </v-btn>
     </v-snackbar>

@@ -3,7 +3,7 @@
     <v-toolbar dense light flat class="image-overlay-toolbar">
       <v-spacer></v-spacer>
       <v-toolbar-items>
-        <v-icon color="primary" dark class="close-icon" @click="closeOverlay"
+        <v-icon color="accent" dark class="close-icon" @click="closeOverlay"
           >mdi-close</v-icon
         >
       </v-toolbar-items>

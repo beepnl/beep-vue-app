@@ -66,10 +66,10 @@
                   scrollable
                 >
                   <v-spacer></v-spacer>
-                  <v-btn text color="primary" @click="cancelDatePicker">{{
+                  <v-btn text color="accent" @click="cancelDatePicker">{{
                     $t('Cancel')
                   }}</v-btn>
-                  <v-btn text color="primary" @click="updateQueenBirthDate">{{
+                  <v-btn text color="accent" @click="updateQueenBirthDate">{{
                     $t('ok')
                   }}</v-btn>
                 </v-date-picker>

@@ -16,7 +16,7 @@
         v-if="object[item.id] !== null"
         class="mt-n1 clear-icon"
         right
-        color="primary"
+        color="accent"
         @click="confirmDeleteImage(item.id)"
         >mdi-close</v-icon
       >

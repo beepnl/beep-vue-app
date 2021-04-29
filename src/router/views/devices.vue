@@ -67,7 +67,7 @@
             class="mdi mdi-information ml-1 icon-info cursor-pointer"
             dark
             small
-            color="primary"
+            color="accent"
             @click="showInfo = !showInfo"
           ></v-icon>
         </div>
@@ -129,7 +129,7 @@
                       v-if="ownedDevice.type !== 'beep'"
                       light
                       large
-                      color="primary"
+                      color="accent"
                       class="text-center device-icon"
                     >
                       mdi-devices
@@ -138,7 +138,7 @@
                       v-else
                       height="auto"
                       tile
-                      color="primary"
+                      color="accent"
                       class="mt-n1"
                     >
                       <img
@@ -168,7 +168,7 @@
                         params: { id: ownedDevice.id },
                       }"
                     >
-                      <v-icon small color="primary">
+                      <v-icon small color="accent">
                         mdi-chart-line
                       </v-icon>
                     </router-link>
@@ -361,7 +361,7 @@
                                 class="mdi mdi-information ml-1 icon-info"
                                 dark
                                 small
-                                color="primary"
+                                color="accent"
                                 @click="showDescription = !showDescription"
                               ></v-icon
                             ></a>

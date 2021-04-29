@@ -46,7 +46,7 @@
         <v-icon
           v-if="inputProvided(item.id)"
           class="mt-6 clear-icon"
-          color="primary"
+          color="accent"
           @click="clearValue(item.id)"
           >mdi-close</v-icon
         >

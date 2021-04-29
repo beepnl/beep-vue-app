@@ -115,7 +115,7 @@
                         :key="checklistName"
                         class="mr-1 mb-1"
                         small
-                        color="primary"
+                        color="accent"
                       >
                         {{ checklistName }}
                       </v-chip>
@@ -240,7 +240,7 @@
                           `${
                             editedCHItems.indexOf(chItem.id) > -1
                               ? 'green--text'
-                              : 'accent--text'
+                              : 'color-accent'
                           }`
                         "
                         :min-datetime="
@@ -572,14 +572,14 @@ export default {
 <style lang="scss">
 .research-item {
   padding: 12px;
-  border-color: $color-primary !important;
+  border-color: $color-accent !important;
   @include for-phone-only {
     padding: 10px;
   }
 }
 
 .research-avatar {
-  border: 1px solid $color-primary !important;
+  border: 1px solid $color-accent !important;
   border-radius: 4px !important;
 }
 
