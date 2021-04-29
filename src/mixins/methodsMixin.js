@@ -22,14 +22,14 @@ export const checkAlerts = {
     },
     async readAlertRules() {
       try {
+        this.$store.commit('alerts/setData', {
+          prop: 'alertRulesChecked',
+          value: true,
+        })
         const response = await Api.readRequest('/alert-rules')
         this.$store.commit('alerts/setData', {
           prop: 'alertRules',
           value: response.data.alert_rules,
-        })
-        this.$store.commit('alerts/setData', {
-          prop: 'alertRulesChecked',
-          value: true,
         })
         return true
       } catch (error) {
@@ -68,14 +68,14 @@ export const readAlertRules = {
   methods: {
     async readAlertRules() {
       try {
+        this.$store.commit('alerts/setData', {
+          prop: 'alertRulesChecked',
+          value: true,
+        })
         const response = await Api.readRequest('/alert-rules')
         this.$store.commit('alerts/setData', {
           prop: 'alertRules',
           value: response.data.alert_rules,
-        })
-        this.$store.commit('alerts/setData', {
-          prop: 'alertRulesChecked',
-          value: true,
         })
         return true
       } catch (error) {

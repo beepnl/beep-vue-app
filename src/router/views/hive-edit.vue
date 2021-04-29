@@ -17,7 +17,8 @@
       <v-toolbar
         v-if="
           activeHive &&
-            ((activeHive.name !== undefined && activeHive.editable) ||
+            ((activeHive.name !== undefined &&
+              (activeHive.editable || activeHive.owner)) ||
               hiveCreateMode)
         "
         class="save-bar"
@@ -61,7 +62,8 @@
       <v-container
         v-if="
           activeHive &&
-            ((activeHive.name !== undefined && activeHive.editable) ||
+            ((activeHive.name !== undefined &&
+              (activeHive.editable || activeHive.owner)) ||
               hiveCreateMode)
         "
         class="content-container"

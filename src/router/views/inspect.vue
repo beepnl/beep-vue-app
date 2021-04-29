@@ -578,7 +578,7 @@ export default {
         } else {
           this.selectedHives = []
           this.selectedHiveSet.hives.map((hive) => {
-            if (hive.editable) {
+            if (hive.editable || hive.owner) {
               this.selectedHives.push(hive.id)
             }
           })
@@ -616,7 +616,7 @@ export default {
           // groups with no editable hives will be disabled in the treeselect component
           group.noEditableHives =
             group.hives.filter((hive) => {
-              return hive.editable === true
+              return hive.editable || hive.owner
             }).length === 0
           group.treeselectId = parseInt('2' + group.id.toString())
         })
@@ -720,7 +720,7 @@ export default {
         }
         this.activeHive = response.data.hives[0]
         this.$store.commit('hives/setActiveHive', this.activeHive)
-        if (!this.activeHive.editable) {
+        if (!this.activeHive.editable && !this.activeHive.owner) {
           this.hiveNotEditable = true
         }
         return true
@@ -999,7 +999,7 @@ export default {
       })[0]
       if (group) {
         group.hives.map((hive) => {
-          if (hive.editable) {
+          if (hive.editable || hive.owner) {
             this.selectedHives.push(hive.id)
             this.editableHives.push(hive.id)
           }

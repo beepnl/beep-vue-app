@@ -198,7 +198,7 @@
 
               <v-list-item-group>
                 <v-list-item
-                  v-if="hive.editable"
+                  v-if="hive.editable || hive.owner"
                   :to="{
                     name: `hive-edit`,
                     params: { id: hive.id },
@@ -216,7 +216,7 @@
                 </v-list-item>
 
                 <v-list-item
-                  v-if="hive.editable"
+                  v-if="hive.editable || hive.owner"
                   :to="{
                     name: `queen-edit`,
                     params: { id: hive.id },
@@ -337,7 +337,7 @@
         >
           <div class="mr-2 my-0">
             <router-link
-              v-if="hive.editable"
+              v-if="hive.editable || hive.owner"
               :to="{
                 name: `queen-edit`,
                 params: { id: hive.id },

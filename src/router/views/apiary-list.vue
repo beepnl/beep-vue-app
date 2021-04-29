@@ -865,16 +865,16 @@ export default {
         })
 
       if (
-        this.hiveSearch !== null ||
+        (this.hiveSearch !== null && this.hiveSearch !== '') ||
         this.filterByAlert ||
         this.filterByAttention ||
         this.filterByBase ||
-        this.filterByGroup ||
+        // this.filterByGroup ||
         this.filterByImpression.length > 0 ||
         this.filterByReminder
       ) {
         propertyFilteredHiveSets = propertyFilteredHiveSets.filter(
-          (x) => x.hives.length > 0 // exclude hiveSets without search results (but include empty hiveSets in overall overview for housekeeping purposes)
+          (x) => x.hives.length > 0 // exclude hiveSets without search results (but include empty hiveSets in apiary overview & groups overview (filterByGroup) for housekeeping purposes)
         )
       }
 
@@ -906,7 +906,7 @@ export default {
         })
         var hasEditableHive =
           group.hives.filter((hive) => {
-            return hive.editable
+            return hive.editable || hive.owner
           }).length > 0
         hasEditableHive
           ? (group.hasEditableHive = true)
