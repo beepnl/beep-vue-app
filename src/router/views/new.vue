@@ -3,8 +3,8 @@
     <v-container>
       <div class="overline mb-1 primary--text"
         ><span class="lowercase">v</span>
-        <span v-if="dutch">3.0.9 (29-04-2021) - Huidige versie</span>
-        <span v-if="!dutch">3.0.9 (29-04-2021) - Current version</span>
+        <span v-if="dutch">3.0.10 (03-05-2021) - Huidige versie</span>
+        <span v-if="!dutch">3.0.10 (03-05-2021) - Current version</span>
       </div>
       <div v-if="!dutch" class="rounded-border primary-border mb-4">
         <ul>
