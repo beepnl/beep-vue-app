@@ -13,7 +13,7 @@
                 }`
               "
               text
-              @click="setPeriodInterval(period.interval, period.moduloNumber)"
+              @click="setPeriodInterval(period.interval)"
             >
               {{ period.name }}
             </v-btn>
@@ -240,7 +240,9 @@
                     "
                   ></div>
                   <chartist
-                    :class="`${interval} mb-4 mb-sm-6`"
+                    :class="
+                      `${interval} ${interval + '-' + moduloNr} mb-4 mb-sm-6`
+                    "
                     ratio="ct-chart"
                     type="Line"
                     :data="chartDataMultipleSeries(currentWeatherSensors, true)"
@@ -265,7 +267,9 @@
                   <chartist
                     v-for="(sensor, index) in currentSensors"
                     :key="index"
-                    :class="`${interval} mb-4 mb-sm-6`"
+                    :class="
+                      `${interval} ${interval + '-' + moduloNr} mb-4 mb-sm-6`
+                    "
                     :ratio="`ct-chart ct-series-${index}`"
                     type="Line"
                     :data="chartDataSingleSeries(sensor, SENSOR_UNITS[sensor])"
@@ -282,7 +286,7 @@
                     :data="measurementsForHeatmap"
                     :max-value="maxSoundSensorValue"
                     :y-axis="sortedCurrentSoundSensors"
-                    :modulo-number="moduloNumber"
+                    :modulo-number="moduloNr"
                     :interval="interval"
                   >
                   </MeasurementsChartHeatmap>
@@ -372,7 +376,6 @@ export default {
       measurementData: {},
       interval: 'day',
       timeIndex: 0,
-      moduloNumber: 6,
       timeFormat: 'ddd D MMM YYYY',
       currentWeatherSensors: {},
       currentSensors: [],
@@ -421,13 +424,32 @@ export default {
     mobile() {
       return this.$vuetify.breakpoint.mobile
     },
+    moduloNr() {
+      switch (this.interval) {
+        case 'hour':
+          return 1
+        case 'week':
+          return 6
+        case 'month':
+          return 8
+        case 'year':
+          return 11
+        case 'day':
+          if (this.resolutionNr !== null) {
+            return 60 / this.resolutionNr
+          } else {
+            return 6
+          }
+      }
+      return 6
+    },
     periods() {
       return [
-        { name: this.$i18n.t('hour'), interval: 'hour', moduloNumber: 1 },
-        { name: this.$i18n.t('day'), interval: 'day', moduloNumber: 6 },
-        { name: this.$i18n.t('week'), interval: 'week', moduloNumber: 6 },
-        { name: this.$i18n.t('month'), interval: 'month', moduloNumber: 8 },
-        { name: this.$i18n.t('year'), interval: 'year', moduloNumber: 11 },
+        { name: this.$i18n.t('hour'), interval: 'hour' },
+        { name: this.$i18n.t('day'), interval: 'day' },
+        { name: this.$i18n.t('week'), interval: 'week' },
+        { name: this.$i18n.t('month'), interval: 'month' },
+        { name: this.$i18n.t('year'), interval: 'year' },
       ]
     },
     periodTitle() {
@@ -459,6 +481,11 @@ export default {
       var e = pEndTime.locale(this.locale).format(endTimeFormat)
 
       return s + '' + (endTimeFormat !== null ? ' - ' + e : '')
+    },
+    resolutionNr() {
+      return this.measurementData !== null
+        ? this.measurementData.resolution.slice(0, -1)
+        : null
     },
     selectedDevice() {
       return (
@@ -814,7 +841,7 @@ export default {
         axisX: {
           showGrid: true,
           labelInterpolationFnc(value, index) {
-            if (index % self.moduloNumber === 0) {
+            if (index % self.moduloNr === 0) {
               return self.momentFromISO8601(value)
             } else {
               return ''
@@ -938,7 +965,6 @@ export default {
     setPeriodInterval(interval, modulonr) {
       this.timeIndex = 0
       this.interval = interval
-      this.moduloNumber = modulonr
       this.loadData()
     },
     setTimeIndex(offset) {
@@ -1057,7 +1083,14 @@ export default {
     margin-left: -5px;
   }
   .ct-chart {
-    &.day,
+    &.day-4 {
+      .ct-grids {
+        .ct-grid.ct-horizontal:not(:nth-child(4n + 1)) {
+          stroke: none !important;
+        }
+      }
+    }
+    &.day-6,
     &.week {
       .ct-grids {
         .ct-grid.ct-horizontal:not(:nth-child(6n + 1)) {
