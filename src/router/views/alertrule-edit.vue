@@ -278,7 +278,11 @@ import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import { mapGetters } from 'vuex'
 import Layout from '@layouts/back.vue'
-import { readAlertRules, readDevicesIfNotPresent, readTaxonomy } from '@mixins/methodsMixin'
+import {
+  readAlertRules,
+  readDevicesIfNotPresent,
+  readTaxonomy,
+} from '@mixins/methodsMixin'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import VueNumericInput from 'vue-numeric-input'
@@ -431,14 +435,14 @@ export default {
     sortedDevices() {
       var apiaryArray = []
       this.devices.map((device, index) => {
-        // only add device if it is coupled to an existing hive
-        if (device.location_name !== '') {
-          apiaryArray.push({
-            id: -(index + 1), // random because it has to have an id for Treeselect but won't be used later
-            label: device.location_name,
-            children: [],
-          })
-        }
+        apiaryArray.push({
+          id: -(index + 1), // random because it has to have an id for Treeselect but won't be used later
+          label:
+            device.location_name !== ''
+              ? device.location_name
+              : this.$i18n.t('Unknown'),
+          children: [],
+        })
       })
       var uniqueApiaries = []
       const map = new Map()
@@ -448,7 +452,7 @@ export default {
           uniqueApiaries.push(item)
         }
       }
-      uniqueApiaries.slice().sort(function(a, b) {
+      uniqueApiaries = uniqueApiaries.slice().sort(function(a, b) {
         if (a.label < b.label) {
           return -1
         }
@@ -459,7 +463,11 @@ export default {
       })
       this.devices.map((device) => {
         uniqueApiaries.map((apiary) => {
-          if (apiary.label === device.location_name) {
+          if (
+            apiary.label === device.location_name ||
+            (apiary.label === this.$i18n.t('Unknown') &&
+              device.location_name === '')
+          ) {
             const deviceLabel = device.hive_name
               ? device.hive_name + ' - ' + device.name
               : device.name

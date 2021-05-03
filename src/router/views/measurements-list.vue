@@ -53,7 +53,7 @@
             :disable-branch-nodes="true"
             :default-expand-level="1"
             search-nested
-            @input="loadData"
+            @input="selectDevice($event)"
           />
           <v-spacer></v-spacer>
           <v-btn
@@ -472,7 +472,7 @@ export default {
         return this.$store.getters['devices/selectedDeviceId']
       },
       set(value) {
-        this.$store.commit('devices/setSelectedDeviceId', parseInt(value))
+        this.$store.commit('devices/setSelectedDeviceId', value)
       },
     },
     sortedCurrentSoundSensors() {
@@ -501,17 +501,17 @@ export default {
     sortedDevices() {
       var apiaryArray = []
       this.devices.map((device, index) => {
-        // only add device if it is coupled to an existing hive
-        if (device.location_name !== '') {
-          apiaryArray.push({
-            id: -(index + 1), // random because it has to have an id for Treeselect but won't be used later
-            label: device.location_name,
-            children: [],
-          })
-          device.label = device.hive_name
-            ? device.hive_name + ' - ' + device.name
-            : device.name
-        }
+        apiaryArray.push({
+          id: -(index + 1), // random because it has to have an id for Treeselect but won't be used later
+          label:
+            device.location_name !== ''
+              ? device.location_name
+              : this.$i18n.t('Unknown'),
+          children: [],
+        })
+        device.label = device.hive_name
+          ? device.hive_name + ' - ' + device.name
+          : device.name
       })
       var uniqueApiaries = []
       const map = new Map()
@@ -521,7 +521,7 @@ export default {
           uniqueApiaries.push(item)
         }
       }
-      uniqueApiaries.slice().sort(function(a, b) {
+      uniqueApiaries = uniqueApiaries.slice().sort(function(a, b) {
         if (a.label < b.label) {
           return -1
         }
@@ -532,7 +532,11 @@ export default {
       })
       this.devices.map((device) => {
         uniqueApiaries.map((apiary) => {
-          if (apiary.label === device.location_name) {
+          if (
+            apiary.label === device.location_name ||
+            (apiary.label === this.$i18n.t('Unknown') &&
+              device.location_name === '')
+          ) {
             apiary.children.push(device)
           }
         })
@@ -587,54 +591,58 @@ export default {
   },
   methods: {
     async loadLastSensorValuesFunc() {
-      try {
-        const response = await Api.readRequest(
-          '/sensors/lastvalues?id=' + this.selectedDeviceId
-        )
-        this.currentLastSensorValues = []
-        const allLastSensorValues = response.data
-        Object.entries(allLastSensorValues).map(([key, value]) => {
-          if (value !== null && key === 'weight_kg') {
-            const roundedValue = Math.round(value * 1e4) / 1e4
-            this.currentLastSensorValues.push({
-              value: roundedValue,
-              name: key,
-            })
-          } else if (
-            value !== null &&
-            key !== 'time' &&
-            (this.SENSORS.indexOf(key) > -1 || this.DEBUG.indexOf(key) > -1)
-          ) {
-            this.currentLastSensorValues.push({ value: value, name: key })
-          }
-        })
-
-        const self = this
-        var sortedArray = this.currentLastSensorValues
-          .slice()
-          .sort(function(a, b) {
-            const compareA = self.$i18n.t(a.name)
-            const compareB = self.$i18n.t(b.name)
-            if (compareA < compareB) {
-              return -1
+      if (this.selectedDeviceId) {
+        try {
+          const response = await Api.readRequest(
+            '/sensors/lastvalues?id=' + this.selectedDeviceId
+          )
+          this.currentLastSensorValues = []
+          const allLastSensorValues = response.data
+          Object.entries(allLastSensorValues).map(([key, value]) => {
+            if (value !== null && key === 'weight_kg') {
+              const roundedValue = Math.round(value * 1e4) / 1e4
+              this.currentLastSensorValues.push({
+                value: roundedValue,
+                name: key,
+              })
+            } else if (
+              value !== null &&
+              key !== 'time' &&
+              (this.SENSORS.indexOf(key) > -1 || this.DEBUG.indexOf(key) > -1)
+            ) {
+              this.currentLastSensorValues.push({ value: value, name: key })
             }
-            if (compareA > compareB) {
-              return 1
-            }
-            return 0
           })
-        this.currentLastSensorValues = sortedArray
-        this.lastSensorDate = response.data.time
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log(error.response)
-          if (error.response.status === 500) {
-            this.lastSensorDate = null
+
+          const self = this
+          var sortedArray = this.currentLastSensorValues
+            .slice()
+            .sort(function(a, b) {
+              const compareA = self.$i18n.t(a.name)
+              const compareB = self.$i18n.t(b.name)
+              if (compareA < compareB) {
+                return -1
+              }
+              if (compareA > compareB) {
+                return 1
+              }
+              return 0
+            })
+          this.currentLastSensorValues = sortedArray
+          this.lastSensorDate = response.data.time
+          return true
+        } catch (error) {
+          if (error.response) {
+            console.log(error.response)
+            if (error.response.status === 500) {
+              this.lastSensorDate = null
+            }
+          } else {
+            console.log('Error: ', error)
           }
-        } else {
-          console.log('Error: ', error)
         }
+      } else {
+        return true
       }
     },
     async sensorMeasurementRequest(interval) {
@@ -663,7 +671,7 @@ export default {
             this.noChartData = true
           }
           if (error.response.status === 404 || error.response.status === 422) {
-            this.selectedDeviceId = this.devices[0].id // overwrite value in store with valid device id
+            this.selectedDeviceId = parseInt(this.devices[0].id) // overwrite value in store with valid device id
             this.$router.push({ name: '404', params: { resource: 'device' } })
           }
         } else {
@@ -910,11 +918,20 @@ export default {
           .replace(' ' + currentYear, '') // Remove year hardcoded per language, currently no other way to get rid of year whilst keeping localized time
       }
     },
+    selectDevice(event) {
+      if (event === undefined) {
+        this.selectedDeviceId = null
+        this.lastSensorDate = null
+        this.stopTimer()
+      } else {
+        this.loadData()
+      }
+    },
     setInitialDeviceId() {
       if (this.$route.name === 'measurements-id') {
         this.selectedDeviceId = parseInt(this.$route.params.id)
       } else if (this.selectedDeviceId === null && this.devices.length > 0) {
-        this.selectedDeviceId = this.devices[0].id
+        this.selectedDeviceId = parseInt(this.devices[0].id)
       }
       return true
     },

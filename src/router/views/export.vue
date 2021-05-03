@@ -120,7 +120,7 @@
                   :disabled="invalidDates(dates)"
                   text
                   color="accent"
-                  @click="$refs.menu.save(dates)"
+                  @click="updateDates(dates)"
                 >
                   {{ $t('ok') }}
                 </v-btn>
@@ -304,7 +304,10 @@ export default {
       this.devices.map((device, index) => {
         apiaryArray.push({
           id: -(index + 1), // random because it has to have an id for Treeselect but won't be used later
-          label: device.location_name,
+          label:
+            device.location_name !== ''
+              ? device.location_name
+              : this.$i18n.t('Unknown'),
           children: [],
         })
         device.label = device.hive_name
@@ -330,7 +333,11 @@ export default {
       })
       this.devices.map((device) => {
         uniqueApiaries.map((apiary) => {
-          if (apiary.label === device.location_name) {
+          if (
+            apiary.label === device.location_name ||
+            (apiary.label === this.$i18n.t('Unknown') &&
+              device.location_name === '')
+          ) {
             apiary.children.push(device)
           }
         })
@@ -519,6 +526,10 @@ export default {
         }
       })
       return sortedSensorDefs
+    },
+    updateDates(dates) {
+      this.$refs.menu.save(dates)
+      this.loadMeasurementTypesAvailable()
     },
   },
 }
