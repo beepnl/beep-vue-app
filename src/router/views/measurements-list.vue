@@ -240,9 +240,7 @@
                     "
                   ></div>
                   <chartist
-                    :class="
-                      `${interval} ${interval + '-' + moduloNr} mb-4 mb-sm-6`
-                    "
+                    :class="`${interval} ${'modulo-' + moduloNr} mb-4 mb-sm-6`"
                     ratio="ct-chart"
                     type="Line"
                     :data="chartDataMultipleSeries(currentWeatherSensors, true)"
@@ -267,9 +265,7 @@
                   <chartist
                     v-for="(sensor, index) in currentSensors"
                     :key="index"
-                    :class="
-                      `${interval} ${interval + '-' + moduloNr} mb-4 mb-sm-6`
-                    "
+                    :class="`${interval} ${'modulo-' + moduloNr} mb-4 mb-sm-6`"
                     :ratio="`ct-chart ct-series-${index}`"
                     type="Line"
                     :data="chartDataSingleSeries(sensor, SENSOR_UNITS[sensor])"
@@ -307,7 +303,9 @@
                       class="pt-lg-0"
                     >
                       <chartist
-                        :class="`${interval} mt-n2 mt-sm-0`"
+                        :class="
+                          `${interval} ${'modulo-' + moduloNr} mt-n2 mt-sm-0`
+                        "
                         :ratio="`ct-chart ct-chart-debug ct-chart-${index}`"
                         type="Line"
                         :data="
@@ -429,14 +427,39 @@ export default {
         case 'hour':
           return 1
         case 'week':
-          return 6
+          if (this.resolutionUnit === 'm' && this.resolutionNr !== null) {
+            if (this.resolutionNr < 720) {
+              return 360 / this.resolutionNr
+            } else {
+              return 1
+            }
+          } else {
+            return 6
+          }
         case 'month':
-          return 8
+          if (this.resolutionUnit === 'm' && this.resolutionNr !== null) {
+            return 1440 / this.resolutionNr
+          } else {
+            return 8
+          }
+
         case 'year':
-          return 11
+          if (
+            this.resolutionUnit === 'd' &&
+            this.resolutionNr !== null &&
+            this.resolutionNr > 1
+          ) {
+            return 12 / this.resolutionNr
+          } else {
+            return 11
+          }
         case 'day':
-          if (this.resolutionNr !== null) {
-            return 60 / this.resolutionNr
+          if (this.resolutionUnit === 'm' && this.resolutionNr !== null) {
+            if (this.resolutionNr < 60) {
+              return 60 / this.resolutionNr
+            } else {
+              return 1
+            }
           } else {
             return 6
           }
@@ -484,7 +507,12 @@ export default {
     },
     resolutionNr() {
       return this.measurementData !== null
-        ? this.measurementData.resolution.slice(0, -1)
+        ? parseInt(this.measurementData.resolution.slice(0, -1))
+        : null
+    },
+    resolutionUnit() {
+      return this.measurementData !== null
+        ? this.measurementData.resolution.slice(-1)
         : null
     },
     selectedDevice() {
@@ -1083,31 +1111,58 @@ export default {
     margin-left: -5px;
   }
   .ct-chart {
-    &.day-4 {
+    &.modulo-2 {
+      .ct-grids {
+        .ct-grid.ct-horizontal:not(:nth-child(2n + 1)) {
+          stroke: none !important;
+        }
+      }
+    }
+    &.modulo-3 {
+      .ct-grids {
+        .ct-grid.ct-horizontal:not(:nth-child(3n + 1)) {
+          stroke: none !important;
+        }
+      }
+    }
+    &.modulo-4 {
       .ct-grids {
         .ct-grid.ct-horizontal:not(:nth-child(4n + 1)) {
           stroke: none !important;
         }
       }
     }
-    &.day-6,
-    &.week {
+    &.modulo-6 {
       .ct-grids {
         .ct-grid.ct-horizontal:not(:nth-child(6n + 1)) {
           stroke: none !important;
         }
       }
     }
-    &.month {
+    &.modulo-8 {
       .ct-grids {
         .ct-grid.ct-horizontal:not(:nth-child(8n + 1)) {
           stroke: none !important;
         }
       }
     }
-    &.year {
+    &.modulo-11 {
       .ct-grids {
         .ct-grid.ct-horizontal:not(:nth-child(11n + 1)) {
+          stroke: none !important;
+        }
+      }
+    }
+    &.modulo-12 {
+      .ct-grids {
+        .ct-grid.ct-horizontal:not(:nth-child(12n + 1)) {
+          stroke: none !important;
+        }
+      }
+    }
+    &.modulo-60 {
+      .ct-grids {
+        .ct-grid.ct-horizontal:not(:nth-child(60n + 1)) {
           stroke: none !important;
         }
       }

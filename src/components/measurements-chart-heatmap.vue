@@ -21,10 +21,14 @@
         </tr>
       </table>
     </div>
-    <div :class="interval === 'hour' ? 'd-flex justify-center' : ''">
+    <div>
       <v-simple-table
         :class="
-          `table-heatmap ${interval === 'hour' ? 'table-heatmap--hour' : ''}`
+          `table-heatmap ${
+            interval === 'hour' || interval === 'day'
+              ? 'table-heatmap--hour-day d-flex justify-start'
+              : ''
+          }`
         "
         dense
         light
@@ -191,21 +195,6 @@ export default {
   @include for-phone-only {
     font-size: 0.6rem !important;
   }
-  &.table-heatmap--hour {
-    margin-left: -100px;
-    @include for-tablet-portrait-up {
-      width: 90%;
-    }
-    @include for-tablet-landscape-up {
-      width: 70%;
-    }
-    @include for-desktop-up {
-      width: 50%;
-    }
-    @include for-big-desktop-up {
-      width: 40%;
-    }
-  }
 }
 
 .tr--heatmap {
@@ -259,6 +248,13 @@ export default {
         content: ' ';
       }
     }
+  }
+}
+
+.table-heatmap--hour-day {
+  .td--heatmap {
+    width: 13px !important;
+    max-width: 13px !important;
   }
 }
 
