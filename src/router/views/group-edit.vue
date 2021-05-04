@@ -131,11 +131,7 @@
                   </div>
 
                   <v-overlay :value="overlay">
-                    <v-toolbar
-                      class="hive-color-picker-toolbar"
-                      dense
-                      light
-                    >
+                    <v-toolbar class="hive-color-picker-toolbar" dense light>
                       <div
                         class="hive-color-picker-title ml-1"
                         v-text="`${$tc('Group', 1) + ' ' + $t('color')}`"
@@ -728,6 +724,7 @@ export default {
                 prop: 'hiveSearch',
                 value: this.activeGroup.name, // set search term via store instead of query to overrule possible stored search terms
               })
+              this.showLoadingIcon = false
               this.$router.push({
                 name: 'home',
               })
@@ -735,11 +732,13 @@ export default {
           }, 800) // wait for API to update groups and for user to read success message
         } catch (error) {
           if (error.response) {
-            const msg = error.response.data.message
+            const msg = error.response.data.error
             this.errorMessage = msg
+            this.showLoadingIcon = false
             console.log(error.response)
           } else {
             this.errorMessage = this.$i18n.t('empty_fields')
+            this.showLoadingIcon = false
             console.log('Error: ', error)
           }
         }
