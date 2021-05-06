@@ -239,7 +239,7 @@ export default {
         )
       }
 
-      if (alertRule.exclude_months !== null) {
+      if (alertRule.exclude_months.length > 0) {
         replacedSentence += this.$i18n.t('alertrule_exclude_months_sentence')
         var monthsArray = []
         alertRule.exclude_months.map((month) => {
@@ -251,7 +251,7 @@ export default {
         )
       }
 
-      if (alertRule.exclude_hours !== null) {
+      if (alertRule.exclude_hours.length > 0) {
         replacedSentence += this.$i18n.t('alertrule_exclude_hours_sentence')
         var hoursString = alertRule.exclude_hours.join(', ')
         replacedSentence = replacedSentence.replace(
