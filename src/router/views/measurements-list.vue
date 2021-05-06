@@ -775,7 +775,9 @@ export default {
                 '<br>' +
                 this.$i18n.t(quantity) +
                 ': ' +
-                measurement[quantity] +
+                (measurement[quantity] !== null
+                  ? measurement[quantity].toFixed(2)
+                  : measurement[quantity]) +
                 unit,
               value: measurement[quantity],
             })
@@ -816,7 +818,9 @@ export default {
                   '<br>' +
                   (weather ? this.$i18n.t(currentSensor) : serie.name) +
                   ': ' +
-                  measurement[currentSensor] +
+                  (measurement[currentSensor] !== null
+                    ? measurement[currentSensor].toFixed(1)
+                    : measurement[currentSensor]) +
                   this.SENSOR_UNITS[currentSensor],
                 value: measurement[currentSensor],
               })

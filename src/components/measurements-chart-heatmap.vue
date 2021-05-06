@@ -25,8 +25,8 @@
       <v-simple-table
         :class="
           `table-heatmap ${
-            interval === 'hour' || interval === 'day'
-              ? 'table-heatmap--hour-day d-flex justify-start'
+            interval === 'hour' || interval === 'day' || interval === 'week'
+              ? 'table-heatmap--flex d-flex justify-start'
               : ''
           }`
         "
@@ -251,7 +251,7 @@ export default {
   }
 }
 
-.table-heatmap--hour-day {
+.table-heatmap--flex {
   .td--heatmap {
     width: 13px !important;
     max-width: 13px !important;
