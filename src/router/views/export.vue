@@ -49,153 +49,150 @@
         </v-col>
       </v-row>
 
-      <v-row v-if="errorMessage">
-        <v-col cols="12">
-          <v-alert text prominent dense type="error" color="red" class="mb-3">
-            {{ errorMessage }}
-          </v-alert>
-        </v-col>
-      </v-row>
-
-      <div
-        class="overline mb-2"
-        v-text="$tc('device', 1) + ' ' + $t('Data_export')"
-      ></div>
-      <div class="rounded-border">
-        <v-row>
+      <div v-if="devices.length > 0">
+        <v-row v-if="errorMessage">
           <v-col cols="12">
-            <p v-text="$t('Export_sensor_data')"></p>
-          </v-col>
-        </v-row>
-        <v-row v-if="devices.length > 0">
-          <v-col cols="12" md="8" lg="6">
-            <div class="beep-label" v-text="`${$tc('device', 1)}`"></div>
-            <Treeselect
-              v-if="devices.length > 0"
-              v-model="selectedDeviceId"
-              :options="sortedDevices"
-              :placeholder="`${$t('Select')} ${$tc('device', 1)}`"
-              :no-results-text="`${$t('no_results')}`"
-              :disable-branch-nodes="true"
-              :default-expand-level="1"
-              search-nested
-              allow-clearing-disabled
-              @input="loadMeasurementTypesAvailable"
-            />
-          </v-col>
-          <v-col cols="12" sm="6" md="4" lg="3">
-            <v-menu
-              ref="menu"
-              v-model="menu"
-              :close-on-content-click="false"
-              :return-value.sync="dates"
-              transition="scale-transition"
-              offset-y
-              min-width="290px"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  v-model="dateRangeText"
-                  :rules="requiredRules"
-                  :label="$t('period')"
-                  prepend-icon="mdi-calendar"
-                  readonly
-                  v-bind="attrs"
-                  v-on="on"
-                ></v-text-field>
-              </template>
-              <v-date-picker
-                v-model="dates"
-                :first-day-of-week="1"
-                :locale="locale"
-                range
-                no-title
-                scrollable
-              >
-                <v-spacer></v-spacer>
-                <v-btn text color="accent" @click="menu = false">
-                  {{ $t('Cancel') }}
-                </v-btn>
-                <v-btn
-                  :disabled="invalidDates(dates)"
-                  text
-                  color="accent"
-                  @click="updateDates(dates)"
-                >
-                  {{ $t('ok') }}
-                </v-btn>
-              </v-date-picker>
-            </v-menu>
+            <v-alert text prominent dense type="error" color="red" class="mb-3">
+              {{ errorMessage }}
+            </v-alert>
           </v-col>
         </v-row>
 
-        <v-row v-if="dataAvailable">
-          <v-col cols="12" md="9" lg="6">
-            <div
-              class="beep-label"
-              v-text="`${$t('Sensor_measurements')}`"
-            ></div>
-            <Treeselect
-              v-model="selectedMeasurementTypes"
-              :options="measurementTypes"
-              :normalizer="normalizerMeasurementTypes"
-              :placeholder="
-                `${$t('Select')} ${$t(
-                  // eslint-disable-next-line vue/comma-dangle
-                  'Sensor_measurements'
-                ).toLowerCase()}`
-              "
-              :no-results-text="`${$t('no_results')}`"
-              :max-height="mobile ? 120 : 180"
-              multiple
-            />
-          </v-col>
-          <v-col cols="12" md="3">
-            <div
-              class="beep-label"
-              v-text="`${$t('CSV_export_separator')}`"
-            ></div>
-            <Treeselect
-              v-model="selectedSeparator"
-              :options="separators"
-              :placeholder="`${$t('Select')} ${$t('CSV_export_separator')}`"
-              :no-results-text="`${$t('no_results')}`"
-            />
-          </v-col>
-        </v-row>
-
-        <v-row>
-          <v-col class="d-flex justify-space-between" cols="12">
-            <v-spacer></v-spacer>
-            <v-btn
-              :disabled="
-                !dataAvailable || dates[0] === dates[1] || dates.length < 2
-              "
-              tile
-              outlined
-              color="accent"
-              class="save-button-mobile-wide"
-              @click="exportDeviceData"
-            >
-              <v-progress-circular
-                v-if="showDeviceDataLoadingIcon"
-                class="ml-n1 mr-2"
-                size="18"
-                width="2"
-                color="accent"
-                indeterminate
+        <div
+          class="overline mb-2"
+          v-text="$tc('device', 1) + ' ' + $t('Data_export')"
+        ></div>
+        <div class="rounded-border">
+          <v-row>
+            <v-col cols="12">
+              <p v-text="$t('Export_sensor_data')"></p>
+            </v-col>
+          </v-row>
+          <v-row v-if="devices.length > 0">
+            <v-col cols="12" md="8" lg="6">
+              <div class="beep-label" v-text="`${$tc('device', 1)}`"></div>
+              <Treeselect
+                v-if="devices.length > 0"
+                v-model="selectedDeviceId"
+                :options="sortedDevices"
+                :placeholder="`${$t('Select')} ${$tc('device', 1)}`"
+                :no-results-text="`${$t('no_results')}`"
+                :disable-branch-nodes="true"
+                :default-expand-level="1"
+                search-nested
+                allow-clearing-disabled
+                @input="loadMeasurementTypesAvailable"
               />
-              <v-icon v-if="!showDeviceDataLoadingIcon" left
-                >mdi-download</v-icon
-              >{{ $t('download') + ' ' + $t('Sensor_measurements') }}</v-btn
-            >
-          </v-col>
-        </v-row>
-        <v-row v-if="devices.length === 0">
-          <v-col cols="12">
-            <p v-text="$t('no_chart_data')"></p>
-          </v-col>
-        </v-row>
+            </v-col>
+            <v-col cols="12" sm="6" md="4" lg="3">
+              <v-menu
+                ref="menu"
+                v-model="menu"
+                :close-on-content-click="false"
+                :return-value.sync="dates"
+                transition="scale-transition"
+                offset-y
+                min-width="290px"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-text-field
+                    v-model="dateRangeText"
+                    :rules="requiredRules"
+                    :label="$t('period')"
+                    prepend-icon="mdi-calendar"
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker
+                  v-model="dates"
+                  :first-day-of-week="1"
+                  :locale="locale"
+                  range
+                  no-title
+                  scrollable
+                >
+                  <v-spacer></v-spacer>
+                  <v-btn text color="accent" @click="menu = false">
+                    {{ $t('Cancel') }}
+                  </v-btn>
+                  <v-btn
+                    :disabled="invalidDates(dates)"
+                    text
+                    color="accent"
+                    @click="updateDates(dates)"
+                  >
+                    {{ $t('ok') }}
+                  </v-btn>
+                </v-date-picker>
+              </v-menu>
+            </v-col>
+          </v-row>
+
+          <v-row v-if="dataAvailable">
+            <v-col cols="12" md="9" lg="6">
+              <div
+                class="beep-label"
+                v-text="`${$t('Sensor_measurements')}`"
+              ></div>
+              <Treeselect
+                v-model="selectedMeasurementTypes"
+                :options="measurementTypes"
+                :normalizer="normalizerMeasurementTypes"
+                :placeholder="
+                  `${$t('Select')} ${$t(
+                    // eslint-disable-next-line vue/comma-dangle
+                    'Sensor_measurements'
+                  ).toLowerCase()}`
+                "
+                :no-results-text="`${$t('no_results')}`"
+                :max-height="mobile ? 120 : 180"
+                multiple
+              />
+            </v-col>
+            <v-col cols="12" md="3">
+              <div
+                class="beep-label"
+                v-text="`${$t('CSV_export_separator')}`"
+              ></div>
+              <Treeselect
+                v-model="selectedSeparator"
+                :options="separators"
+                :placeholder="`${$t('Select')} ${$t('CSV_export_separator')}`"
+                :no-results-text="`${$t('no_results')}`"
+              />
+            </v-col>
+          </v-row>
+
+          <v-row>
+            <v-col class="d-flex justify-space-between" cols="12">
+              <v-spacer></v-spacer>
+              <v-btn
+                :disabled="
+                  !dataAvailable || dates[0] === dates[1] || dates.length < 2
+                "
+                tile
+                outlined
+                color="accent"
+                class="save-button-mobile-wide"
+                @click="exportDeviceData"
+              >
+                <v-progress-circular
+                  v-if="showDeviceDataLoadingIcon"
+                  class="ml-n1 mr-2"
+                  size="18"
+                  width="2"
+                  color="accent"
+                  indeterminate
+                />
+                <v-icon v-if="!showDeviceDataLoadingIcon" left
+                  >mdi-download</v-icon
+                >{{ $t('download') + ' ' + $t('Sensor_measurements') }}</v-btn
+              >
+            </v-col>
+          </v-row>
+        </div>
       </div>
     </v-container>
   </Layout>
@@ -502,7 +499,7 @@ export default {
         .format('ll')
     },
     setInitialDeviceId() {
-      if (this.selectedDeviceId === null) {
+      if (this.selectedDeviceId === null && this.devices.length > 0) {
         this.selectedDeviceId = this.devices[0].id
       }
     },
