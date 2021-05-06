@@ -85,6 +85,11 @@ export const mutations = {
   setData: function(state, payload) {
     state[payload.prop] = payload.value
   },
+  clearFiltersExceptGroup: function(state) {
+    state.diaryFilterByAttention = false
+    state.diaryFilterByImpression = []
+    state.diaryFilterByReminder = false
+  },
   resetState: function(state) {
     state.diaryFilterByAttention = false
     state.diaryFilterByGroup = false

@@ -143,7 +143,7 @@ export default {
             title: this.$i18n.tc('Inspection', 2),
             icon: 'mdi-file-document-edit-outline',
             route: 'diary',
-            exact: true,
+            exact: false,
           },
           {
             title: this.$i18n.t('data'),

@@ -856,7 +856,7 @@ export default {
           var searchTerm = null
           this.activeHive === null
             ? (searchTerm = this.selectedHiveSet.name)
-            : (searchTerm = this.activeHive.name)
+            : (searchTerm = this.activeHive.location)
           var lastHiveId = this.selectedHives[this.selectedHives.length - 1]
           setTimeout(() => {
             return this.readApiariesAndGroups().then(() => {
@@ -876,10 +876,13 @@ export default {
                     query: { search: searchTerm },
                   })
                 } else {
-                  this.$router.push({
-                    name: 'diary',
-                    query: { search: 'id=' + searchInspectionId },
-                  })
+                  this.clearDiaryFilters()
+                  setTimeout(() => {
+                    this.$router.push({
+                      name: 'diary',
+                      query: { search: 'id=' + searchInspectionId },
+                    })
+                  }, 100) // wait for API to clear filters
                 }
               })
             })
@@ -900,6 +903,9 @@ export default {
     },
     clearDate() {
       this.activeInspection.reminder_date = null
+    },
+    clearDiaryFilters() {
+      this.$store.commit('inspections/clearFiltersExceptGroup')
     },
     confirmEditChecklist(id) {
       if (this.inspectionEdited || this.selectedHives !== this.editableHives) {
@@ -927,11 +933,7 @@ export default {
       if (this.bulkInspection) {
         this.$refs.confirm
           .open(
-            this.$i18n.t('save') +
-              ' ' +
-              this.selectedHives.length +
-              ' ' +
-              this.$i18n.tc('inspection', 2),
+            this.$i18n.t('save') + ' ' + this.$i18n.tc('inspection', 1),
             this.$i18n.t('save_bulkinspection_confirm'),
             {
               color: 'red',
