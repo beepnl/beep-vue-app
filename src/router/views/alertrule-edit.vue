@@ -435,14 +435,17 @@ export default {
     sortedDevices() {
       var apiaryArray = []
       this.devices.map((device, index) => {
-        apiaryArray.push({
-          id: -(index + 1), // random because it has to have an id for Treeselect but won't be used later
-          label:
-            device.location_name !== ''
-              ? device.location_name
-              : this.$i18n.t('Unknown'),
-          children: [],
-        })
+        if (device.hive_id !== null) {
+          // exclude devices without coupled hive id because hive id is required value for exclude_hive_ids array
+          apiaryArray.push({
+            id: -(index + 1), // random because it has to have an id for Treeselect but won't be used later
+            label:
+              device.location_name !== ''
+                ? device.location_name
+                : this.$i18n.t('Unknown'),
+            children: [],
+          })
+        }
       })
       var uniqueApiaries = []
       const map = new Map()
@@ -811,9 +814,9 @@ export default {
       }
     },
     setActiveAlertRule(id) {
-      this.activeAlertRule = this.alertRules.filter(
-        (alertRule) => alertRule.id === id
-      )[0]
+      this.activeAlertRule = {
+        ...this.alertRules.filter((alertRule) => alertRule.id === id)[0],
+      }
       if (this.activeAlertRule === undefined) {
         this.$router.push({
           name: '404',
