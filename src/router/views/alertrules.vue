@@ -2,23 +2,39 @@
   <Layout :title="this.$i18n.t('alertrule_pagetitle')">
     <div v-if="ready" class="filter-bar-wrapper">
       <v-container class="filter-container">
-        <v-row class="filter-bar d-flex flex-row justify-end align-center">
+        <v-row class="filter-bar d-flex align-center">
           <v-card-actions
             :class="
-              showAlertRulePlaceholder ? 'save-button-mobile-wide' : 'mr-1'
+              `${
+                showAlertRulePlaceholder ? 'save-button-mobile-wide' : 'mr-1'
+              } d-flex ${
+                mobile ? 'justify-end' : 'justify-space-between'
+              } align-center`
             "
+            style="width: 100%;"
           >
-            <v-switch
+            <div
               v-if="!showAlertRulePlaceholder"
-              v-model="alertsEnabled"
-              :label="
-                alertsEnabled ? $t('alerts_enabled') : $t('alerts_disabled')
-              "
-              hide-details
-              class="filter-text-field--large pt-0"
-              @change="toggleAlerts"
-            ></v-switch>
-            <v-menu v-if="showAlertRulePlaceholder" offset-y>
+              class="d-flex justify-start align-center"
+            >
+              <v-switch
+                v-model="alertsEnabled"
+                :label="
+                  alertsEnabled ? $t('alerts_enabled') : $t('alerts_disabled')
+                "
+                hide-details
+                class="filter-text-field--large pt-0"
+                @change="toggleAlerts"
+              ></v-switch>
+              <v-icon
+                class="mdi mdi-information icon-info cursor-pointer ml-2"
+                dark
+                small
+                :color="showExplanation ? 'accent' : 'grey'"
+                @click="showExplanation = !showExplanation"
+              ></v-icon>
+            </div>
+            <v-menu v-if="showAlertRulePlaceholder || !mobile" offset-y>
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   tile
@@ -79,25 +95,24 @@
         <v-col cols="12">
           <v-row>
             <v-col
+              v-if="showExplanation && ready"
               cols="12"
               xl="9"
-              class="d-flex justify-start align-start mb-n4 mb-lg-0"
+              class="d-flex justify-start align-start"
             >
-              <v-icon
-                class="mdi mdi-information icon-info cursor-pointer mr-2"
-                dark
-                small
-                color="accent"
-                @click="showExplanation = !showExplanation"
-              ></v-icon>
-              <p v-if="showExplanation && ready" class="beep-label mt-n1 mb-2">
+              <p :class="`beep-label mb-2 ${mobile ? 'mb-n2' : 'mt-n6'}`">
                 <em>{{
                   $t('alert_explanation_1') + ' ' + $t('alert_explanation_2')
                 }}</em>
               </p>
             </v-col>
-            <v-col cols="12" xl="3" class="d-flex justify-end align-end mb-3">
-              <v-menu v-if="!showAlertRulePlaceholder" offset-y>
+            <v-col
+              v-if="mobile"
+              cols="12"
+              xl="3"
+              class="d-flex justify-end align-end mb-3"
+            >
+              <v-menu offset-y>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
                     tile
@@ -277,15 +292,20 @@ export default {
     ...mapGetters('alerts', ['alertRules']),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
-    alertsEnabled() {
-      if (this.alertRules.length > 0) {
-        return (
-          this.alertRules.filter((alertRule) => alertRule.active === 1).length >
-          0
-        )
-      } else {
-        return false
-      }
+    alertsEnabled: {
+      get() {
+        if (this.alertRules.length > 0) {
+          return (
+            this.alertRules.filter((alertRule) => alertRule.active === 1)
+              .length > 0
+          )
+        } else {
+          return false
+        }
+      },
+      set(value) {
+        return null
+      },
     },
     buttonMenuItems() {
       return [
@@ -300,6 +320,9 @@ export default {
           route: 'alertrules-default',
         },
       ]
+    },
+    mobile() {
+      return this.$vuetify.breakpoint.mobile
     },
     showAlertRulePlaceholder() {
       return this.alertRules.length === 0
@@ -348,12 +371,13 @@ export default {
     },
     async toggleAlertRule(alertRule, property) {
       this.showLoadingIconById[property].push(alertRule.id)
-      alertRule[property] = !alertRule[property] // NB yields vuex strict error but can be ignored here because the property value will be changed in the store directly after triggering this error
+      var alertRuleNew = { ...alertRule }
+      alertRuleNew[property] = !alertRuleNew[property] // NB yields vuex strict error but can be ignored here because the property value will be changed in the store directly after triggering this error
       try {
         const response = await Api.updateRequest(
           '/alert-rules/',
           alertRule.id,
-          alertRule
+          alertRuleNew
         )
         if (response) {
           this.readAlertRules().then(() => {
@@ -432,7 +456,10 @@ export default {
 }
 
 .alertrules-content {
-  margin-top: 44px;
+  margin-top: 75px;
+  @include for-phone-only {
+    margin-top: 40px;
+  }
 }
 
 .alertrules-title-row {

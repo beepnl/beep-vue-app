@@ -59,17 +59,22 @@
               />
             </router-link>
           </div>
-          <p>{{ $t('alert_explanation_1') }}</p>
-          <p
-            >{{ $t('alert_explanation_2') }}
-            <router-link
-              :to="{
-                name: 'alertrules',
-              }"
-            >
-              {{ $t('alertrules_url_text') }}
-            </router-link>
-          </p>
+          <p class="beep-label"
+            ><em
+              >{{
+                $t('alert_explanation_1') +
+                  ' ' +
+                  $t('alert_explanation_2') +
+                  ''
+              }}<router-link
+                :to="{
+                  name: 'alertrules',
+                }"
+              >
+                {{ $t('alertrules_url_text') }}
+              </router-link></em
+            ></p
+          >
         </v-col>
       </v-row>
     </v-container>
