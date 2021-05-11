@@ -96,7 +96,7 @@
             <AlertCard
               :alert="alert"
               :hives="hives"
-              @confirm-delete-alert="confirmDeleteAlert($event)"
+              @delete-alert="deleteAlert($event)"
             ></AlertCard>
           </v-col>
         </ScaleTransition>
@@ -108,15 +108,12 @@
         </v-col>
       </v-row>
     </v-container>
-
-    <Confirm ref="confirm"></Confirm>
   </Layout>
 </template>
 
 <script>
 import AlertCard from '@components/alert-card.vue'
 import Api from '@api/Api'
-import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/main.vue'
 import { mapGetters } from 'vuex'
 import { momentFromNow, momentify } from '@mixins/momentMixin'
@@ -129,7 +126,6 @@ import { ScaleTransition } from 'vue2-transitions'
 export default {
   components: {
     AlertCard,
-    Confirm,
     Layout,
     ScaleTransition,
   },
@@ -270,30 +266,6 @@ export default {
           console.log('Error: ', error)
         }
       }
-    },
-    confirmDeleteAlert(alert) {
-      this.$refs.confirm
-        .open(
-          this.$i18n.t('remove_alert'),
-          this.$i18n.t('remove_alert') +
-            ' (' +
-            (alert.alert_rule_name !== null
-              ? alert.alert_rule_name + ', '
-              : '') +
-            this.$i18n.t('Date').toLowerCase() +
-            ': ' +
-            this.momentify(alert.created_at) +
-            ')?',
-          {
-            color: 'red',
-          }
-        )
-        .then((confirm) => {
-          this.deleteAlert(alert.id)
-        })
-        .catch((reject) => {
-          return true
-        })
     },
   },
 }

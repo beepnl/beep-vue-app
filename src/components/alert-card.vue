@@ -256,7 +256,7 @@
       <v-divider v-if="alert.alert_rule_name !== null" class="my-1"></v-divider>
 
       <v-list-item-group>
-        <v-list-item @click="confirmDeleteAlert(alert)">
+        <v-list-item @click="deleteAlert(alert.id)">
           <v-list-item-icon class="mr-3">
             <v-icon class="red--text">mdi-delete</v-icon>
           </v-list-item-icon>
@@ -293,8 +293,8 @@ export default {
   },
   data: () => ({}),
   methods: {
-    confirmDeleteAlert(alert) {
-      this.$emit('confirm-delete-alert', alert)
+    deleteAlert(id) {
+      this.$emit('delete-alert', id)
     },
   },
 }
