@@ -1,6 +1,59 @@
 <template>
   <Layout :title="this.$i18n.t('alertrule_pagetitle')">
-    <v-container v-if="ready && showAlertRulePlaceholder" class="mb-n12">
+    <div v-if="ready" class="filter-bar-wrapper">
+      <v-container class="filter-container">
+        <v-row class="filter-bar d-flex flex-row justify-end align-center">
+          <v-card-actions
+            :class="
+              showAlertRulePlaceholder ? 'save-button-mobile-wide' : 'mr-1'
+            "
+          >
+            <v-switch
+              v-if="!showAlertRulePlaceholder"
+              v-model="alertsEnabled"
+              :label="
+                alertsEnabled ? $t('alerts_enabled') : $t('alerts_disabled')
+              "
+              hide-details
+              class="filter-text-field--large pt-0"
+              @change="toggleAlerts"
+            ></v-switch>
+            <v-menu v-if="showAlertRulePlaceholder" offset-y>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  tile
+                  outlined
+                  color="black"
+                  class="save-button-mobile-wide"
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <v-icon left>mdi-plus</v-icon>
+                  {{ $t('add') + ' ' + $tc('alertrule', 1) }}
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item
+                  v-for="(item, index) in buttonMenuItems"
+                  :key="index"
+                  :to="item.route ? { name: item.route } : null"
+                >
+                  <v-list-item-icon class="mr-3">
+                    <v-icon>{{ item.icon }}</v-icon>
+                  </v-list-item-icon>
+
+                  <v-list-item-content>
+                    <v-list-item-title>{{ item.title }}</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </v-card-actions>
+        </v-row>
+      </v-container>
+    </div>
+
+    <v-container v-if="ready && showAlertRulePlaceholder" class="mb-n12 mt-12">
       <v-row>
         <v-col>
           <div class="text-center">
@@ -12,24 +65,6 @@
         </v-col>
       </v-row>
     </v-container>
-
-    <div v-if="ready && !showAlertRulePlaceholder" class="filter-bar-wrapper">
-      <v-container class="filter-container">
-        <v-row class="filter-bar d-flex flex-row justify-end align-center">
-          <v-card-actions class="mr-1">
-            <v-switch
-              v-model="alertsEnabled"
-              :label="
-                alertsEnabled ? $t('alerts_enabled') : $t('alerts_disabled')
-              "
-              hide-details
-              class="filter-text-field--large"
-              @change="toggleAlerts"
-            ></v-switch>
-          </v-card-actions>
-        </v-row>
-      </v-container>
-    </div>
 
     <v-container v-if="!ready">
       <div class="loading">
@@ -62,7 +97,7 @@
               </p>
             </v-col>
             <v-col cols="12" xl="3" class="d-flex justify-end align-end mb-3">
-              <v-menu offset-y>
+              <v-menu v-if="!showAlertRulePlaceholder" offset-y>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
                     tile
@@ -385,7 +420,7 @@ export default {
 
 <style lang="scss" scoped>
 .filter-bar-wrapper {
-  top: 48px;
+  top: 52px;
   .filter-bar {
     .v-input:not(.v-input--switch) {
       background-color: $color-white;
@@ -397,7 +432,7 @@ export default {
 }
 
 .alertrules-content {
-  margin-top: 40px;
+  margin-top: 44px;
 }
 
 .alertrules-title-row {

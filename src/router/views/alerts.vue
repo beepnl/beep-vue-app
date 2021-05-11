@@ -48,10 +48,16 @@
       <v-row>
         <v-col>
           <div class="text-center">
-            <img
-              src="@assets/img/BEEP-alert-rule.png"
-              style="max-width: 180px;"
-            />
+            <router-link
+              :to="{
+                name: 'alertrules',
+              }"
+            >
+              <img
+                src="@assets/img/BEEP-alert-rule.png"
+                style="max-width: 180px;"
+              />
+            </router-link>
           </div>
           <p>{{ $t('alert_explanation_1') }}</p>
           <p
