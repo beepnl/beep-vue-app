@@ -123,6 +123,14 @@ export default {
           .catch((reject) => {
             return true
           })
+      } else if (
+        localStorage.beepPreviousRoute === 'alertrule-edit' ||
+        localStorage.beepPreviousRoute === 'alertrule-create' ||
+        localStorage.beepPreviousRoute === 'alertrules-default'
+      ) {
+        this.$router.push({
+          name: 'alerts',
+        })
       } else {
         this.$router.go(-1)
       }

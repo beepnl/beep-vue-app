@@ -577,7 +577,7 @@ export default {
           setTimeout(() => {
             return this.readAlertRules().then(() => {
               this.$router.push({
-                name: 'alerts',
+                name: 'alertrules',
               })
             })
           }, 50) // wait for API to update alertrules
@@ -607,7 +607,7 @@ export default {
         setTimeout(() => {
           return this.readAlertRules().then(() => {
             this.$router.push({
-              name: 'alerts',
+              name: 'alertrules',
             })
           })
         }, 50) // wait for API to update alertrules

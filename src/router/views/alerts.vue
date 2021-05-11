@@ -1,30 +1,14 @@
 <template>
   <Layout>
-    <v-container v-if="showAlertPlaceholder && ready">
-      <v-row>
-        <v-col>
-          <div class="text-center">
-            <img
-              src="@assets/img/BEEP-alert-rule.png"
-              style="max-width: 180px;"
-            />
-          </div>
-          <p>{{ $t('alert_explanation_1') }}</p>
-          <p
-            >{{ $t('alert_explanation_2') }}
-            <router-link
-              :to="{
-                name: 'alertrules',
-              }"
-            >
-              {{ $t('alertrules_url_text') }}
-            </router-link>
-          </p>
-        </v-col>
-      </v-row>
+    <v-container v-if="!ready">
+      <div class="loading">
+        <Transition appear>
+          <v-progress-circular size="50" color="primary" indeterminate />
+        </Transition>
+      </div>
     </v-container>
 
-    <div v-if="!showAlertPlaceholder && ready" class="filter-bar-wrapper">
+    <div v-if="ready" class="filter-bar-wrapper">
       <v-container class="filter-container">
         <v-row
           class="filter-bar d-flex flex-row justify-space-between align-center"
@@ -34,6 +18,7 @@
           >
             <v-col cols="12" sm="7" :class="mobile ? 'pr-0' : 'pr-1'">
               <v-text-field
+                v-if="!showAlertPlaceholder"
                 v-model="search"
                 :label="`${$t('Search')}`"
                 :class="
@@ -59,15 +44,31 @@
       </v-container>
     </div>
 
-    <v-container v-if="!ready">
-      <div class="loading">
-        <Transition appear>
-          <v-progress-circular size="50" color="primary" indeterminate />
-        </Transition>
-      </div>
+    <v-container v-if="showAlertPlaceholder && ready" class="alerts-content">
+      <v-row>
+        <v-col>
+          <div class="text-center">
+            <img
+              src="@assets/img/BEEP-alert-rule.png"
+              style="max-width: 180px;"
+            />
+          </div>
+          <p>{{ $t('alert_explanation_1') }}</p>
+          <p
+            >{{ $t('alert_explanation_2') }}
+            <router-link
+              :to="{
+                name: 'alertrules',
+              }"
+            >
+              {{ $t('alertrules_url_text') }}
+            </router-link>
+          </p>
+        </v-col>
+      </v-row>
     </v-container>
 
-    <v-container v-if="ready" class="alerts-content">
+    <v-container v-if="!showAlertPlaceholder && ready" class="alerts-content">
       <v-alert
         v-for="error in errors"
         :key="error.errorMessage"
@@ -80,7 +81,7 @@
         {{ error.errorMessage }}
       </v-alert>
 
-      <v-row v-if="!showAlertPlaceholder && alerts.length > 0" dense>
+      <v-row v-if="alerts.length > 0" dense>
         <ScaleTransition
           :duration="500"
           group
@@ -102,7 +103,7 @@
         </ScaleTransition>
       </v-row>
 
-      <v-row v-if="!showAlertPlaceholder && alerts.length === 0">
+      <v-row v-if="alerts.length === 0">
         <v-col sm="auto" :cols="12">
           {{ $t('no_alerts') }}
         </v-col>
@@ -137,7 +138,6 @@ export default {
   ],
   data: function() {
     return {
-      // alerts: [],
       ready: false,
       search: null,
       errors: [],
