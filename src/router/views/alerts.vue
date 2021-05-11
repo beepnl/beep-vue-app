@@ -240,14 +240,20 @@ export default {
       return this.$vuetify.breakpoint.mobile
     },
     showAlertPlaceholder() {
-      return this.alertRules.length === 0
+      if (this.ready) {
+        return this.alertRules.length === 0
+      } else {
+        return false
+      }
     },
   },
   created() {
     this.search = this.$route.query.search || null
     this.readApiariesAndGroupsIfNotPresent().then(() => {
       this.checkAlertRulesAndAlerts().then(() => {
-        this.ready = true
+        setTimeout(() => {
+          this.ready = true
+        }, 300) // wait for API to update alerts otherwise no alerts placeholder will briefly flash
       })
     })
   },

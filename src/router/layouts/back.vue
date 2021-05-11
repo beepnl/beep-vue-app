@@ -123,13 +123,15 @@ export default {
           .catch((reject) => {
             return true
           })
+        // in alertrules view don't return to edit or copy alertrule view if that was previous route but go to route previous to first entering alertrules view
+        // (or to alerts if alertrule-edit was visited directly from there)
       } else if (
         localStorage.beepPreviousRoute === 'alertrule-edit' ||
         localStorage.beepPreviousRoute === 'alertrule-create' ||
         localStorage.beepPreviousRoute === 'alertrules-default'
       ) {
         this.$router.push({
-          name: 'alerts',
+          name: localStorage.beepAlertRulesBack,
         })
       } else {
         this.$router.go(-1)

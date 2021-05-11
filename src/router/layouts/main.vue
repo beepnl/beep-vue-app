@@ -47,6 +47,7 @@
             :key="i"
             :to="{ name: tab.route }"
             :exact="tab.exact"
+            @click="tab.route === 'alerts' ? reloadAlerts : null"
           >
             <span v-if="tab.title">{{ tab.title }}</span>
             <v-badge
@@ -80,7 +81,7 @@ import LocaleChanger from '@components/locale-changer.vue'
 import { mapGetters } from 'vuex'
 import NavDrawer from '@components/nav-drawer.vue'
 import PlusMenu from '@components/plus-menu.vue'
-import { readDevicesIfNotPresent } from '@mixins/methodsMixin'
+import { checkAlerts, readDevicesIfNotPresent } from '@mixins/methodsMixin'
 
 export default {
   components: {
@@ -88,7 +89,7 @@ export default {
     NavDrawer,
     PlusMenu,
   },
-  mixins: [readDevicesIfNotPresent],
+  mixins: [checkAlerts, readDevicesIfNotPresent],
   props: {
     menuItems: {
       type: Array,
@@ -159,6 +160,9 @@ export default {
     this.readDevicesIfNotPresent()
   },
   methods: {
+    reloadAlerts() {
+      this.checkAlertRulesAndAlerts()
+    },
     clearHiveFilters() {
       this.$store.commit('locations/clearFilters')
     },

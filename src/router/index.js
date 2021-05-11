@@ -40,6 +40,19 @@ router.beforeEach((routeTo, routeFrom, next) => {
   //   NProgress.start()
   // }
 
+  // make sure alertrules back button does not go back to edit/create or copy alertrule view
+  if (
+    // remember route from which alertrules view is initially entered
+    (routeFrom.name !== 'alertrule-edit' &&
+      routeFrom.name !== 'alertrule-create' &&
+      routeFrom.name !== 'alertrules-default' &&
+      routeTo.name === 'alertrules') ||
+    // if alertrule is edited directly from alerts view, make alertrules back button refer to alerts view
+    (routeTo.name === 'alertrule-edit' && routeFrom.name === 'alerts')
+  ) {
+    localStorage.beepAlertRulesBack = routeFrom.name
+  }
+
   // Check if auth is required on this route
   // (including nested routes).
   const authRequired = routeTo.matched.some((route) => route.meta.authRequired)

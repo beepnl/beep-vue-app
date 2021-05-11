@@ -216,7 +216,7 @@
                       <div class="d-flex flex-column">
                         <div
                           class="alert-label alert-label-break"
-                          v-text="alert.alert_value"
+                          v-text="alertValueText"
                         >
                         </div>
                       </div>
@@ -292,6 +292,24 @@ export default {
     },
   },
   data: () => ({}),
+  computed: {
+    alertValueText() {
+      if (this.alert !== null) {
+        if (this.alert.alert_value !== null) {
+          var number = parseFloat(this.alert.alert_value)
+          if (!isNaN(number)) {
+            return number.toFixed(2)
+          } else {
+            return this.alert.alert_value
+          }
+        } else {
+          return null
+        }
+      } else {
+        return null
+      }
+    },
+  },
   methods: {
     deleteAlert(id) {
       this.$emit('delete-alert', id)
