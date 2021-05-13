@@ -1,14 +1,6 @@
 <template>
-  <Layout>
-    <v-container v-if="!ready">
-      <div class="loading">
-        <Transition appear>
-          <v-progress-circular size="50" color="primary" indeterminate />
-        </Transition>
-      </div>
-    </v-container>
-
-    <div v-if="ready" class="filter-bar-wrapper">
+  <Layout @loading-alerts="showLoading($event)">
+    <div v-if="ready || reloading" class="filter-bar-wrapper">
       <v-container class="filter-container">
         <v-row
           class="filter-bar d-flex flex-row justify-space-between align-center"
@@ -43,6 +35,14 @@
         </v-row>
       </v-container>
     </div>
+
+    <v-container v-if="!ready">
+      <div class="loading">
+        <Transition appear>
+          <v-progress-circular size="50" color="primary" indeterminate />
+        </Transition>
+      </div>
+    </v-container>
 
     <v-container v-if="showAlertPlaceholder && ready" class="alerts-content">
       <v-row>
@@ -150,6 +150,7 @@ export default {
   data: function() {
     return {
       ready: false,
+      reloading: false,
       search: null,
       errors: [],
       showDescription: true,
@@ -283,6 +284,10 @@ export default {
           console.log('Error: ', error)
         }
       }
+    },
+    showLoading(bool) {
+      this.ready = !bool
+      this.reloading = bool
     },
   },
 }

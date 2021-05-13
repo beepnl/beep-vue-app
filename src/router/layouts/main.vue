@@ -47,7 +47,7 @@
             :key="i"
             :to="{ name: tab.route }"
             :exact="tab.exact"
-            @click="tab.route === 'alerts' ? reloadAlerts : null"
+            @click="reloadAlerts(tab.route)"
           >
             <span v-if="tab.title">{{ tab.title }}</span>
             <v-badge
@@ -160,8 +160,10 @@ export default {
     this.readDevicesIfNotPresent()
   },
   methods: {
-    reloadAlerts() {
-      this.checkAlertRulesAndAlerts()
+    reloadAlerts(route) {
+      if (route === 'alerts' || route === 'home') {
+        this.checkAlertRulesAndAlerts()
+      }
     },
     clearHiveFilters() {
       this.$store.commit('locations/clearFilters')
