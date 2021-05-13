@@ -1,6 +1,9 @@
 <template>
   <Layout @loading-alerts="showLoading($event)">
-    <div v-if="ready || reloading" class="filter-bar-wrapper">
+    <div
+      v-if="ready || (reloading && alertRules.length > 0)"
+      class="filter-bar-wrapper"
+    >
       <v-container class="filter-container">
         <v-row
           class="filter-bar d-flex flex-row justify-space-between align-center"

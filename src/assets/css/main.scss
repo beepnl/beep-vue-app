@@ -76,6 +76,14 @@
           }
         }
       }
+      &.v-text-field.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo).v-text-field--outlined.filter-text-field--large
+        .v-input__slot {
+        @media (max-width: 372px) {
+          .v-text-field__slot {
+            min-width: 60px;
+          }
+        }
+      }
       &.v-text-field.v-input--is-focused.v-input--dense:not(.v-text-field--solo).v-text-field--outlined
         .v-input__slot {
         @include for-phone-only {

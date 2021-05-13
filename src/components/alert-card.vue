@@ -22,7 +22,7 @@
               sm="5"
               class="alert-details-item alert-meta d-flex flex-row justify-flex-start pa-0"
             >
-              <v-row class="my-0 py-0">
+              <v-row class="my-0 py-0 pr-3">
                 <v-col
                   v-if="alert.created_at"
                   cols="5"
@@ -147,7 +147,7 @@
             </v-col>
 
             <v-col cols="12" sm="7" class="alert-content pa-0">
-              <v-row class="my-0 py-0 ml-n6 ml-sm-0 mr-sm-n4">
+              <v-row class="my-0 py-0 ml-n6 ml-sm-0 mr-sm-n4 pr-6 pr-sm-3">
                 <v-col
                   cols="12"
                   sm="3"
@@ -385,6 +385,9 @@ export default {
     color: rgba(0, 0, 0, 0.87);
     @include for-tablet-portrait-up {
       margin-top: 2px;
+    }
+    @include for-phone-only {
+      word-break: break-all;
     }
   }
 

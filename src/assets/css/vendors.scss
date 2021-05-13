@@ -39,10 +39,14 @@
     }
     @include for-phone-only {
       font-size: 12px !important;
+      letter-spacing: 0.05;
     }
-    @media (max-width: 350px) {
+    @media (max-width: 400px) {
       min-width: 70px !important;
       padding: 0 4px !important;
+    }
+    @media (max-width: 500px) {
+      padding: 0 8px !important;
     }
   }
 }
