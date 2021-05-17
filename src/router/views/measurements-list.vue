@@ -33,6 +33,8 @@
               mdi-chevron-left
             </v-icon>
 
+            <span class="period-title">{{ periodTitle }}</span>
+
             <v-dialog
               ref="dialog"
               v-model="modal"
@@ -40,10 +42,10 @@
               persistent
               width="290px"
             >
-              <template v-slot:activator="{ on, attrs }">
-                <span v-bind="attrs" class="period-title" v-on="on">{{
-                  periodTitle
-                }}</span>
+              <template v-slot:activator="{ on }">
+                <v-icon small class="color-grey-light ml-1" v-on="on">
+                  mdi-pencil
+                </v-icon>
               </template>
               <v-date-picker
                 v-model="selectedDate"
@@ -67,6 +69,7 @@
                 </v-btn>
               </v-date-picker>
             </v-dialog>
+
             <v-icon
               v-if="timeIndex !== 0"
               class="color-grey-dark"
