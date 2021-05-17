@@ -702,11 +702,19 @@ export default {
         this.showLoadingIcon = true
         console.log('update Group')
         console.log(this.activeGroup)
+        var group = {
+          description: this.activeGroup.description,
+          hex_color: this.activeGroup.hex_color,
+          hives_editable: this.activeGroup.hives_editable,
+          hives_selected: this.activeGroup.hives_selected,
+          name: this.activeGroup.name,
+          users: this.activeGroup.users,
+        }
         try {
           const response = await Api.updateRequest(
             '/groups/',
             this.activeGroup.id,
-            this.activeGroup
+            group
           )
           if (!response) {
             this.errorMessage =
