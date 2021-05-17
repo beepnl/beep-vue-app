@@ -43,7 +43,7 @@
 
     <v-radio-group
       v-if="item.input === 'options'"
-      :value="object[item.id]"
+      :value="parseInt(object[item.id])"
       class="inspection-options-list"
     >
       <v-radio
