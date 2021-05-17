@@ -32,7 +32,41 @@
             <v-icon class="color-grey-dark" @click="setTimeIndex(1)">
               mdi-chevron-left
             </v-icon>
-            <span class="period-title">{{ periodTitle }}</span>
+
+            <v-dialog
+              ref="dialog"
+              v-model="modal"
+              :return-value.sync="selectedDate"
+              persistent
+              width="290px"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <span v-bind="attrs" class="period-title" v-on="on">{{
+                  periodTitle
+                }}</span>
+              </template>
+              <v-date-picker
+                v-model="selectedDate"
+                :first-day-of-week="1"
+                :locale="locale"
+                no-title
+                scrollable
+              >
+                <v-spacer></v-spacer>
+                <v-btn text color="secondary" @click="modal = false">
+                  {{ $t('Cancel') }}
+                </v-btn>
+                <v-btn
+                  text
+                  color="secondary"
+                  @click="
+                    $refs.dialog.save(selectedDate), selectDate(selectedDate)
+                  "
+                >
+                  {{ $t('ok') }}
+                </v-btn>
+              </v-date-picker>
+            </v-dialog>
             <v-icon
               v-if="timeIndex !== 0"
               class="color-grey-dark"
@@ -389,6 +423,9 @@ export default {
       showLastSensorValues: true,
       ready: false,
       timer: 0,
+      selectedDate: '',
+      modal: false,
+      periodTitle: null,
     }
   },
   computed: {
@@ -475,36 +512,36 @@ export default {
         { name: this.$i18n.t('year'), interval: 'year' },
       ]
     },
-    periodTitle() {
-      var p = this.interval
-      var d = p + 's'
-      var i = this.timeIndex
-      var startTimeFormat = this.timeFormat
-      var endTimeFormat = this.timeFormat
+    // periodTitle() {
+    //   var p = this.interval
+    //   var d = p + 's'
+    //   var i = this.timeIndex
+    //   var startTimeFormat = this.timeFormat
+    //   var endTimeFormat = this.timeFormat
 
-      if (p === 'hour') {
-        endTimeFormat = 'HH:mm'
-        startTimeFormat += ' ' + endTimeFormat
-      } else if (p === 'day') {
-        endTimeFormat = null
-      } else if (p === 'week') {
-        p = 'isoweek'
-      }
+    //   if (p === 'hour') {
+    //     endTimeFormat = 'HH:mm'
+    //     startTimeFormat += ' ' + endTimeFormat
+    //   } else if (p === 'day') {
+    //     endTimeFormat = null
+    //   } else if (p === 'week') {
+    //     p = 'isoweek'
+    //   }
 
-      var ep = p
+    //   var ep = p
 
-      var pStaTime = this.$moment()
-        .subtract(i, d)
-        .startOf(p)
-      var pEndTime = this.$moment()
-        .subtract(i, d)
-        .endOf(ep)
+    //   var pStaTime = this.$moment()
+    //     .subtract(i, d)
+    //     .startOf(p)
+    //   var pEndTime = this.$moment()
+    //     .subtract(i, d)
+    //     .endOf(ep)
 
-      var s = pStaTime.locale(this.locale).format(startTimeFormat)
-      var e = pEndTime.locale(this.locale).format(endTimeFormat)
+    //   var s = pStaTime.locale(this.locale).format(startTimeFormat)
+    //   var e = pEndTime.locale(this.locale).format(endTimeFormat)
 
-      return s + '' + (endTimeFormat !== null ? ' - ' + e : '')
-    },
+    //   return s + '' + (endTimeFormat !== null ? ' - ' + e : '')
+    // },
     resolutionNr() {
       return this.measurementData !== null
         ? parseInt(this.measurementData.resolution.slice(0, -1))
@@ -928,6 +965,7 @@ export default {
     loadData() {
       this.loadLastSensorValuesTimer()
       this.sensorMeasurementRequest(this.interval)
+      this.setPeriodTitle()
     },
     loadLastSensorValuesTimer() {
       if (
@@ -977,6 +1015,21 @@ export default {
           .replace(' ' + currentYear, '') // Remove year hardcoded per language, currently no other way to get rid of year whilst keeping localized time
       }
     },
+    selectDate(date) {
+      var p = this.interval
+      var d = p + 's'
+
+      var selectedMoment = this.$moment(date)
+      var currentMoment = this.$moment()
+      var periodeDiff = currentMoment.diff(selectedMoment, d)
+
+      if (!isNaN(periodeDiff)) {
+        this.timeIndex = periodeDiff
+        this.loadData()
+      } else {
+        console.log('Error selectDate: ' + date)
+      }
+    },
     selectDevice(event) {
       if (event === undefined) {
         this.selectedDeviceId = null
@@ -985,6 +1038,37 @@ export default {
       } else {
         this.loadData()
       }
+    },
+    setPeriodTitle() {
+      var p = this.interval
+      var d = p + 's'
+      var i = this.timeIndex
+      var startTimeFormat = this.timeFormat
+      var endTimeFormat = this.timeFormat
+
+      if (p === 'hour') {
+        endTimeFormat = 'HH:mm'
+        startTimeFormat += ' ' + endTimeFormat
+      } else if (p === 'day') {
+        endTimeFormat = null
+      } else if (p === 'week') {
+        p = 'isoweek'
+      }
+
+      var ep = p
+
+      var pStaTime = this.$moment()
+        .subtract(i, d)
+        .startOf(p)
+      var pEndTime = this.$moment()
+        .subtract(i, d)
+        .endOf(ep)
+
+      var s = pStaTime.locale(this.locale).format(startTimeFormat)
+      var e = pEndTime.locale(this.locale).format(endTimeFormat)
+
+      this.periodTitle = s + '' + (endTimeFormat !== null ? ' - ' + e : '')
+      this.selectedDate = pStaTime.format('YYYY-MM-DD')
     },
     setInitialDeviceId() {
       if (this.$route.name === 'measurements-id') {
