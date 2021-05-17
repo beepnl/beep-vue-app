@@ -193,8 +193,8 @@
                     "
                     :min="-90"
                     :max="90"
-                    :step="0.001"
-                    :precision="3"
+                    :step="0.000001"
+                    :precision="6"
                     @input="editApiary($event, 'lat')"
                   >
                   </VueNumericInput>
@@ -210,8 +210,8 @@
                     "
                     :min="-180"
                     :max="180"
-                    :step="0.001"
-                    :precision="3"
+                    :step="0.000001"
+                    :precision="6"
                     @input="editApiary($event, 'lon')"
                   >
                   </VueNumericInput>

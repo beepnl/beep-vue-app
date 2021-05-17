@@ -162,8 +162,10 @@ export default {
 .hive-caption {
   z-index: 1;
   max-width: 64px;
+  min-height: 30px;
   line-height: 0.9rem;
   color: $color-grey-dark;
   text-align: center;
+  word-break: break-word;
 }
 </style>

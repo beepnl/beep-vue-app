@@ -3,12 +3,12 @@
     <v-container>
       <div class="overline mb-1 primary--text"
         ><span class="lowercase">v</span>
-        <span v-if="dutch">3.0.14 (13-05-2021) - Huidige versie</span>
-        <span v-if="!dutch">3.0.14 (13-05-2021) - Current version</span>
+        <span v-if="dutch">3.0.15 (17-05-2021) - Huidige versie</span>
+        <span v-if="!dutch">3.0.15 (17-05-2021) - Current version</span>
       </div>
       <div v-if="!dutch" class="rounded-border primary-border mb-4">
         <ul>
-          <li>
+          <li class="new-block">
             <strong
               ><router-link :to="{ name: 'home' }">Hives</router-link> -
               Overview of all hives per apiary or collaboration group</strong
@@ -86,7 +86,7 @@
               >
             </ul>
           </li>
-          <li>
+          <li class="new-block">
             <strong
               ><router-link :to="{ name: 'hive-create' }">Hive</router-link> -
               Create / edit hive</strong
@@ -128,7 +128,7 @@
               >
             </ul>
           </li>
-          <li>
+          <li class="new-block">
             <strong
               ><router-link :to="{ name: 'diary' }">Inspections</router-link> -
               Overview of all inspections (short version containing only overall
@@ -172,7 +172,7 @@
               >
             </ul>
           </li>
-          <li>
+          <li class="new-block">
             <strong
               >Inspections overview per hive - Table containing all inspection
               data per hive</strong
@@ -206,7 +206,7 @@
               </li>
             </ul>
           </li>
-          <li>
+          <li class="new-block">
             <strong
               ><router-link :to="{ name: 'inspect' }">Inspect</router-link> -
               New inspection</strong
@@ -220,7 +220,7 @@
               >
             </ul>
           </li>
-          <li>
+          <li class="new-block">
             <strong
               ><router-link :to="{ name: 'measurements' }">Data</router-link> -
               Overview of measurement data (if BEEP base or other device is
@@ -235,7 +235,7 @@
               >
             </ul>
           </li>
-          <li>
+          <li class="new-block">
             <strong
               ><router-link :to="{ name: 'alerts' }">Alerts</router-link> -
               Overview of alerts (if BEEP base or other device is
@@ -274,7 +274,7 @@
               >
             </ul>
           </li>
-          <li>
+          <li class="new-block">
             <strong
               ><router-link :to="{ name: 'alertrule-create' }"
                 >Alert rule</router-link
@@ -306,7 +306,7 @@
               >
             </ul>
           </li>
-          <li>
+          <li class="new-block">
             <strong>Where to find? - Menu changes</strong>
             <ul>
               <li
@@ -383,7 +383,7 @@
 
       <div v-if="dutch" class="rounded-border primary-border mb-4">
         <ul>
-          <li>
+          <li class="new-block">
             <strong
               ><router-link :to="{ name: 'home' }">Kasten</router-link> -
               Overzicht van alle kasten per bijenstand of
@@ -463,7 +463,7 @@
               >
             </ul>
           </li>
-          <li>
+          <li class="new-block">
             <strong
               ><router-link :to="{ name: 'hive-create' }">Kast</router-link> -
               Maak een nieuwe kast / pas een kast aan</strong
@@ -513,7 +513,7 @@
               >
             </ul>
           </li>
-          <li>
+          <li class="new-block">
             <strong
               ><router-link :to="{ name: 'diary' }">Inspecties</router-link> -
               Overzicht van alle inspecties (korte versie met totaalindruk,
@@ -558,7 +558,7 @@
               >
             </ul>
           </li>
-          <li>
+          <li class="new-block">
             <strong
               >Inspecties per kast - Tabel met alle inspectiedata per
               kast</strong
@@ -593,7 +593,7 @@
               </li>
             </ul>
           </li>
-          <li>
+          <li class="new-block">
             <strong
               ><router-link :to="{ name: 'inspect' }">Inspectie</router-link> -
               Nieuwe inspectie</strong
@@ -608,7 +608,7 @@
               >
             </ul>
           </li>
-          <li>
+          <li class="new-block">
             <strong
               ><router-link :to="{ name: 'measurements' }">Data</router-link> -
               Overzicht van de metingen (als er een BEEP base of ander
@@ -623,7 +623,7 @@
               >
             </ul>
           </li>
-          <li>
+          <li class="new-block">
             <strong
               ><router-link :to="{ name: 'alerts' }">Notificaties</router-link>
               - Overzicht van notificaties (als er een BEEP base of ander
@@ -666,7 +666,7 @@
               >
             </ul>
           </li>
-          <li>
+          <li class="new-block">
             <strong
               ><router-link :to="{ name: 'alertrule-create' }"
                 >Notificatie-instelling</router-link
@@ -697,7 +697,7 @@
               >
             </ul>
           </li>
-          <li>
+          <li class="new-block">
             <strong>Waar is alles te vinden? - Menu aanpassingen</strong>
             <ul>
               <li
@@ -962,6 +962,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.new-block {
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+
 .inline-icon {
   margin-top: -2px;
 }

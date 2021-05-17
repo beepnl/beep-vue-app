@@ -252,8 +252,8 @@
                         v-model="newHive.lat"
                         :min="-90"
                         :max="90"
-                        :step="0.001"
-                        :precision="3"
+                        :step="0.000001"
+                        :precision="6"
                         @input="setApiaryEdited(true)"
                       >
                       </VueNumericInput>
@@ -268,8 +268,8 @@
                         v-model="newHive.lon"
                         :min="-180"
                         :max="180"
-                        :step="0.001"
-                        :precision="3"
+                        :step="0.000001"
+                        :precision="6"
                         @input="setApiaryEdited(true)"
                       >
                       </VueNumericInput>
@@ -446,7 +446,7 @@
                       ></div>
                       <ApiaryPreview
                         v-if="newHive"
-                        class="mt-10 mb-5"
+                        class="mt-10"
                         :new-hive="newHive"
                         :number-of-hives="newHive.hive_amount"
                       ></ApiaryPreview>
