@@ -382,11 +382,11 @@ export default {
             this.snackbar.show = true
           }
           setTimeout(() => {
-            const id = response.data.hives[0].id
+            const location = response.data.hives[0].location
             return this.readApiariesAndGroups().then(() => {
               this.$store.commit('locations/setData', {
                 prop: 'hiveSearch',
-                value: 'id=' + id, // set search term via store instead of query to overrule possible stored search terms
+                value: location, // set search term via store instead of query to overrule possible stored search terms
               })
               this.$router.push({
                 name: 'home',
@@ -484,7 +484,7 @@ export default {
               this.readDevices() // update devices to reflect updated hive names for example
               this.$store.commit('locations/setData', {
                 prop: 'hiveSearch',
-                value: 'id=' + this.activeHive.id, // set search term via store instead of query to overrule possible stored search terms
+                value: this.activeHive.location, // set search term via store instead of query to overrule possible stored search terms
               })
               this.$router.push({
                 name: 'home',

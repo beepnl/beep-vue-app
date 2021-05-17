@@ -74,7 +74,7 @@
 
         <p v-if="showInfo" class="info-text">
           <em
-            >{{ $t('devices_info_text')
+            >{{ $t('devices_info_text') + ' '
             }}<a href="https://beep.nl/beep-base-app" target="_blank">{{
               $t('devices_url_text')
             }}</a></em
