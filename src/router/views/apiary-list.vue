@@ -1206,21 +1206,19 @@ export default {
     },
     sortedHives(hives) {
       const sortedHives = hives.slice().sort(function(a, b) {
-        if (a.order > b.order) {
-          return 1
-        }
-        if (b.order > a.order) {
-          return -1
-        }
-        if (a.order === b.order || a.order === null || b.order === null) {
-          if (a.name > b.name) {
-            return 1
-          }
-          if (b.name > a.name) {
-            return -1
-          }
-          return 0
-        }
+        // order = null comes last
+        return (
+          (a.order === null) - (b.order === null) ||
+          +(a.order > b.order) ||
+          -(a.order < b.order) ||
+          (a.order === b.order
+            ? a.name > b.name
+              ? 1
+              : b.name > a.name
+              ? -1
+              : 0
+            : 0)
+        )
       })
       return sortedHives
     },
