@@ -560,10 +560,17 @@ export default {
     },
     inspectLink(linkToInspections) {
       if (this.hive.last_inspection_date !== null && linkToInspections) {
-        return {
-          name: 'hive-inspections',
-          params: { id: this.hive.id },
-          query: { search: this.hive.last_inspection_date_locale_date },
+        if (!this.hive.attention && !this.hive.impression) {
+          return {
+            name: 'hive-inspections',
+            params: { id: this.hive.id },
+          }
+        } else {
+          return {
+            name: 'hive-inspections',
+            params: { id: this.hive.id },
+            query: { search: this.hive.last_inspection_date_locale_date },
+          }
         }
       } else {
         if (this.hiveSet.users) {
