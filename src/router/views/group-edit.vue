@@ -535,7 +535,17 @@ export default {
         if (!response.data.errors) {
           this.successMessage = this.$i18n.t('Invitation_accepted')
           this.showSuccessMessage = true
-          this.readGroups()
+          this.readGroups().then(() => {
+            var group = this.groups.filter((group) => group.id === groupId)[0]
+            this.$store.commit('locations/setData', {
+              prop: 'hiveFilterByGroup',
+              value: true,
+            })
+            this.$store.commit('locations/setData', {
+              prop: 'hiveSearch',
+              value: group.name, // set search term via store instead of query to overrule possible stored search terms
+            })
+          })
         } else if (response.data.errors.token) {
           this.errorMessage =
             this.$i18n.t('Error') + ': ' + response.data.errors.token
