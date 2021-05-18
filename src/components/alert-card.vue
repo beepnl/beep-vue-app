@@ -252,6 +252,30 @@
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item
+          v-if="alert.device_id !== null"
+          :to="{
+            name: 'measurements-id',
+            params: { id: alert.device_id },
+            query: {
+              date: alert.created_at.substr(0, 10),
+            },
+          }"
+        >
+          <v-list-item-icon class="mr-3">
+            <div class="my-0">
+              <v-sheet
+                class="beep-icon beep-icon-sensors--no-outline"
+              ></v-sheet>
+            </div>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title
+              >{{ $t('view') }} {{ $tc('measurement', 2) }}</v-list-item-title
+            >
+          </v-list-item-content>
+        </v-list-item>
       </v-list-item-group>
       <v-divider v-if="alert.alert_rule_name !== null" class="my-1"></v-divider>
 

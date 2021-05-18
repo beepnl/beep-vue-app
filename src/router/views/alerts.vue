@@ -311,7 +311,7 @@ export default {
 }
 
 .alerts-content {
-  margin-top: 80px;
+  margin-top: 68px;
   overflow: hidden;
   @include for-phone-only {
     margin-top: 55px;

@@ -429,6 +429,8 @@ export default {
       selectedDate: '',
       modal: false,
       periodTitle: null,
+      preselectedDate: null,
+      preselectedDeviceId: null,
     }
   },
   computed: {
@@ -661,17 +663,21 @@ export default {
     },
   },
   created() {
+    this.preselectedDate = this.$route.query.date || null
+    this.preselectedDeviceId = parseInt(this.$route.params.id) || null
     this.checkAlertRulesAndAlerts() // for alerts-tab badge
     this.stopTimer()
     this.readDevicesIfNotPresent()
       .then(() => {
-        if (this.devices.length > 0) {
-          this.setInitialDeviceId()
-        }
-      })
-      .then(() => {
-        if (this.devices.length > 0) {
-          this.loadData()
+        if (
+          this.preselectedDate !== null &&
+          this.preselectedDate.length === 10 &&
+          !isNaN(this.preselectedDeviceId)
+        ) {
+          this.selectedDeviceId = this.preselectedDeviceId
+          this.selectDate(this.preselectedDate)
+        } else if (this.devices.length > 0) {
+          this.setInitialDeviceIdAndLoadData()
         }
       })
       .then(() => {
@@ -1073,12 +1079,13 @@ export default {
       this.periodTitle = s + '' + (endTimeFormat !== null ? ' - ' + e : '')
       this.selectedDate = pStaTime.format('YYYY-MM-DD')
     },
-    setInitialDeviceId() {
+    setInitialDeviceIdAndLoadData() {
       if (this.$route.name === 'measurements-id') {
         this.selectedDeviceId = parseInt(this.$route.params.id)
       } else if (this.selectedDeviceId === null && this.devices.length > 0) {
         this.selectedDeviceId = parseInt(this.devices[0].id)
       }
+      this.loadData()
       return true
     },
     setPeriodInterval(interval, modulonr) {
