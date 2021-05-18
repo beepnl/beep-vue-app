@@ -424,6 +424,10 @@ export default {
         link.setAttribute('download', csvLink)
         document.body.appendChild(link)
         link.click()
+        if (response.status === 200) {
+          this.showSuccessMessage = true
+          this.successMessage = this.$i18n.t('export_file_saved')
+        }
         return response
       } catch (error) {
         console.log('Error: ', error)

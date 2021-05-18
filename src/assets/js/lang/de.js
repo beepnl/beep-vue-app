@@ -761,7 +761,8 @@ const translations = {
   greater_than_or_equal: 'is greater than or equal to',
   alertrule_not_active:
     "This alert has been deactivated. You can activate it by checking the 'Active' box and saving this alert rule.",
-  export_email_sent: 'Email with Excel file has been sent.',
+  export_email_sent: 'Email with Excel file has been sent',
+  export_file_saved: 'Excel file has been saved in your Downloads folder',
   Updated_at: 'Updated at',
   Not_yet_saved: 'Not yet saved',
   add_own_device: 'Add own device',

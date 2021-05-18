@@ -514,7 +514,7 @@ const translations = {
   info: 'Info',
 
   research: 'Tutkimus',
-start_date: 'Aloituspäivämäärä',
+  start_date: 'Aloituspäivämäärä',
   end_date: 'Päättymispäivämäärä',
   purpose: 'Tutkimuksen tarkoitus',
   institution: 'Tutkimuslaitos',
@@ -754,7 +754,8 @@ start_date: 'Aloituspäivämäärä',
   greater_than_or_equal: 'is greater than or equal to',
   alertrule_not_active:
     "This alert has been deactivated. You can activate it by checking the 'Active' box and saving this alert rule.",
-  export_email_sent: 'Email with Excel file has been sent.',
+  export_email_sent: 'Email with Excel file has been sent',
+  export_file_saved: 'Excel file has been saved in your Downloads folder',
   Updated_at: 'Updated at',
   Not_yet_saved: 'Not yet saved',
   beep_base_explanation:
@@ -780,14 +781,13 @@ start_date: 'Aloituspäivämäärä',
   Unknown: 'Unknown',
   unknown: 'unknown',
   research_warning:
-  "Please note: if you did not receive an invitation to participate, it is not needed to give consent to share your data, as your data won't be used in that case.",
-research_explanation_p1:
-  'The BEEP platform is used in the research projects that are listed below. After you are invited to participate in a research project, you need to give consent for the researchers to access your bee data.',
-research_explanation_p2:
-  'You can withdraw your consent at any time. From that moment onwards, no new data will be shared. The data that you shared in the period for which you gave consent will remain available for the research. In case of questions, please direct these to the contact person of your research project.',
-research_info:
-  'Before you consent, please review the research description provided through the link below and request for additional details if needed.',
-
+    "Please note: if you did not receive an invitation to participate, it is not needed to give consent to share your data, as your data won't be used in that case.",
+  research_explanation_p1:
+    'The BEEP platform is used in the research projects that are listed below. After you are invited to participate in a research project, you need to give consent for the researchers to access your bee data.',
+  research_explanation_p2:
+    'You can withdraw your consent at any time. From that moment onwards, no new data will be shared. The data that you shared in the period for which you gave consent will remain available for the research. In case of questions, please direct these to the contact person of your research project.',
+  research_info:
+    'Before you consent, please review the research description provided through the link below and request for additional details if needed.',
 }
 
 export default translations
