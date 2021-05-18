@@ -329,10 +329,10 @@ export default {
     },
     sortedAlertRules() {
       const sortedAlertRules = this.alertRules.slice().sort(function(a, b) {
-        if (a.name > b.name) {
+        if (a.name.toLowerCase() > b.name.toLowerCase()) {
           return 1
         }
-        if (b.name > a.name) {
+        if (b.name.toLowerCase() > a.name.toLowerCase()) {
           return -1
         }
         return 0
