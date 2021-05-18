@@ -697,7 +697,7 @@ const translations = {
   save_bulkinspection_confirm:
     'Are you sure that you want to save this inspection for multiple hives at the same time?',
   deleted_but_not_saved_devices_warning:
-    "N.B.: devices will only be removed after clicking the 'Save Devices' button in the top right corner.",
+    "N.B.: devices will only be removed after clicking the 'Save and delete' button in the top right corner.",
   no_alerts: 'No new alerts',
   alertrule: 'alert rule | alert rules',
   alertrule_pagetitle: 'Alert settings',
@@ -796,6 +796,7 @@ const translations = {
     'You can withdraw your consent at any time. From that moment onwards, no new data will be shared. The data that you shared in the period for which you gave consent will remain available for the research. In case of questions, please direct these to the contact person of your research project.',
   research_info:
     'Before you consent, please review the research description provided through the link below and request for additional details if needed.',
+  save_and_delete: 'Save and delete',
 }
 
 export default translations

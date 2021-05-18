@@ -35,7 +35,7 @@
           indeterminate
         />
         <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
-        {{ $t('save') }}</v-btn
+        {{ deletedButNotSaved ? $t('save_and_delete') : $t('save') }}</v-btn
       >
     </v-toolbar>
 

@@ -476,7 +476,7 @@ const translations = {
   not_filled: 'is verplicht, maar niet ingevuld',
   cannot_deselect:
     'Dit item kan niet worden verwijderd, omdat het een verplicht item bevat',
-  Undelete: 'Niet verwijderen',
+  Undelete: 'Toch niet verwijderen',
   the_field: 'Het veld',
   is_required: 'is verplicht',
 
@@ -695,7 +695,7 @@ const translations = {
   save_bulkinspection_confirm:
     'Weet je zeker dat je deze inspectie voor meerdere kasten tegelijk wilt opslaan?',
   deleted_but_not_saved_devices_warning:
-    "Let op: meetsystemen worden pas definitief verwijderd wanneer je op de 'Opslaan Meetsystemen' knop klikt, rechtsboven.",
+    "Let op: meetsystemen worden pas definitief verwijderd wanneer je op de 'Opslaan en verwijderen' knop klikt, rechtsboven.",
   no_alerts: 'Geen nieuwe notificaties',
   alertrule: 'notificatie-instelling | notificatie-instellingen',
   alertrule_pagetitle: 'Notificaties beheren',
@@ -795,6 +795,7 @@ const translations = {
     'Je kunt je toestemming te allen tijde intrekken. Vanaf dat moment worden er geen nieuwe gegevens gedeeld. De gegevens die je hebt gedeeld in de periode waarvoor je toestemming hebt gegeven, blijven beschikbaar voor onderzoek. Neem bij vragen contact op met de daarvoor bestemde contactpersoon.',
   research_info:
     'Lees voordat je toestemming geeft de onderzoeksbeschrijving via de onderstaande link en vraag indien nodig om aanvullende informatie.',
+  save_and_delete: 'Opslaan en verwijderen',
 }
 
 export default translations
