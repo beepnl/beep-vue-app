@@ -95,7 +95,7 @@
                 cols="12"
                 sm="5"
                 md="12"
-                class="py-0 py-sm-3 mb-n4 mb-sm-0 mt-n3 mt-sm-1 mt-md-n4"
+                class="py-0 py-sm-3 mb-n2 mb-sm-0 mt-sm-3 mt-md-0 hives-switch d-flex align-center"
               >
                 <v-switch
                   v-if="selectedHiveSet"
@@ -107,12 +107,13 @@
                         : $t('select_all_hives')
                     }`
                   "
+                  hide-details
                 ></v-switch>
               </v-col>
             </v-row>
           </v-col>
 
-          <v-col cols="12" md="7">
+          <v-col cols="12" md="7" class="mb-n3 mb-sm-0">
             <ApiaryPreviewHiveSelector
               v-if="
                 selectedHiveSet && editableHives && editableHives.length > 0
@@ -126,7 +127,7 @@
           </v-col>
         </v-row>
 
-        <v-row>
+        <v-row class="my-0">
           <v-col cols="12" sm="4">
             <div class="d-flex justify-flex-start align-center">
               <v-icon dark color="accent" class="mr-2"
@@ -154,19 +155,20 @@
             </div>
           </v-col>
 
-          <v-col class="d-flex" cols="12" sm="4">
-            <v-select
+          <v-col cols="12" sm="4">
+            <div
+              class="beep-label mt-n3 mt-sm-0"
+              v-text="`${$t('Select') + ' ' + $tc('checklist', 1)}`"
+            ></div>
+            <Treeselect
               v-if="checklists !== null && checklists.length > 1"
               v-model="selectedChecklistId"
-              class="select-checklist"
-              :items="checklists"
-              :item-text="getText"
-              item-value="id"
-              hide-details
-              :label="`${$t('Select') + ' ' + $tc('checklist', 1)}`"
+              :options="checklists"
+              :normalizer="normalizer"
+              :placeholder="`${$t('Select') + ' ' + $tc('checklist', 1)}`"
+              :no-results-text="`${$t('no_results')}`"
               @input="switchChecklist($event)"
-            >
-            </v-select>
+            />
           </v-col>
 
           <v-col class="d-flex" cols="12" sm="4">
@@ -451,6 +453,20 @@ export default {
           id: node.treeselectId,
           label: node.name,
           isDisabled: node.noEditableHives,
+        }
+      },
+      normalizer(node) {
+        return {
+          id: node.id,
+          label:
+            node.name +
+            (node.researches.length > 0
+              ? ' (' +
+                this.$i18n.t('research') +
+                ': ' +
+                node.researches[0] +
+                ')'
+              : ''),
         }
       },
       snackbar: {
@@ -949,15 +965,6 @@ export default {
         this.saveInspection()
       }
     },
-    getText(item) {
-      const name = item.name
-      var research = ''
-      if (item.researches.length > 0) {
-        research =
-          ' (' + this.$i18n.t('research') + ': ' + item.researches[0] + ')'
-      }
-      return name + research
-    },
     getHiveSet() {
       if (this.apiaries.length === 0 && this.groups.length === 0) {
         // if apiaries and groups are not in store, in case view is opened directly without loggin in (via localstorage)
@@ -1116,6 +1123,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.hives-switch {
+  .v-input--selection-controls {
+    margin-top: 0 !important;
+  }
+}
 .select-checklist {
   margin-top: 1px !important;
 }
