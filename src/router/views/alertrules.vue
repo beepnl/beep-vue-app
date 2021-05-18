@@ -198,7 +198,7 @@
                         }}</v-icon
                       >
                     </td>
-                    <td>
+                    <td :class="!alertRule.active ? 'td--not-active' : ''">
                       <v-progress-circular
                         v-if="
                           showLoadingIconById.alert_via_email.indexOf(
@@ -227,13 +227,13 @@
                         }}</v-icon
                       >
                     </td>
-                    <td>
+                    <td :class="!alertRule.active ? 'td--not-active' : ''">
                       <span v-text="alertRule.name"></span>
                     </td>
-                    <td>
+                    <td :class="!alertRule.active ? 'td--not-active' : ''">
                       <span v-text="alertRule.description"></span>
                     </td>
-                    <td>
+                    <td :class="!alertRule.active ? 'td--not-active' : ''">
                       <router-link
                         :to="{
                           name: 'alertrule-edit',
@@ -243,7 +243,7 @@
                         <v-icon dark color="accent">mdi-pencil</v-icon>
                       </router-link>
                     </td>
-                    <td>
+                    <td :class="!alertRule.active ? 'td--not-active' : ''">
                       <v-icon
                         dark
                         color="red"
@@ -470,5 +470,9 @@ export default {
   &--border-bottom {
     border-bottom: 1px solid $color-grey-light;
   }
+}
+
+.td--not-active {
+  opacity: 0.5;
 }
 </style>
