@@ -688,6 +688,7 @@ export default {
       try {
         const response = await Api.readRequest('/groups')
         this.$store.commit('groups/setGroups', response.data.groups)
+        this.$store.commit('groups/setInvitations', response.data.invitations)
         return true
       } catch (error) {
         if (error.response) {
