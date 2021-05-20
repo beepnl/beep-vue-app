@@ -51,6 +51,7 @@
                   :class="[`layer ${layer.type}-layer`]"
                   :width="`${hiveWidth(hive)}px`"
                   @click.native="openOverlay(layer)"
+                  @touchstart="openOverlay(layer)"
                 >
                 </v-sheet>
               </draggable>
@@ -256,7 +257,6 @@ export default {
       this.currentLayer = layer
       this.layerColorPreview = true
       this.layerColorPickerValue = layer.color
-      console.log('open color for layer', layer)
     },
     orderedLayers: function(hive) {
       const orderedLayers = hive.layers.slice().sort(function(a, b) {

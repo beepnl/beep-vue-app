@@ -312,7 +312,6 @@ export default {
     },
     openColorPicker() {
       this.overlay = true
-      console.log('open color picker', this.colorPicker)
     },
     selectLocale(array) {
       if (array.length) {
