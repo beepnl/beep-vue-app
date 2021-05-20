@@ -97,7 +97,7 @@
                   </div>
 
                   <v-overlay :value="overlay">
-                    <v-toolbar class="hive-color-picker-toolbar" dense light>
+                    <v-toolbar class="hive-color-picker-toolbar" dense light flat>
                       <div
                         class="hive-color-picker-title ml-1"
                         v-text="`${$t('Apiary_color')}`"

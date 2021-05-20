@@ -24,7 +24,7 @@
                   class="hive-color cursor-pointer"
                   dark
                   :color="hive.color !== null ? hive.color : '#F8B133'"
-                  @click="overlay = !overlay"
+                  @click="openColorPicker"
                 ></v-sheet>
               </v-col>
 
@@ -50,7 +50,7 @@
             </v-row>
 
             <v-overlay :value="overlay">
-              <v-toolbar class="hive-color-picker-toolbar" dense light>
+              <v-toolbar class="hive-color-picker-toolbar" dense light flat>
                 <div
                   class="hive-color-picker-title ml-1"
                   v-text="`${$t('Hive_color')}`"
@@ -309,6 +309,10 @@ export default {
     cancelColorPicker() {
       this.colorPreview = false
       this.overlay = false
+    },
+    openColorPicker() {
+      this.overlay = true
+      console.log('open color picker', this.colorPicker)
     },
     selectLocale(array) {
       if (array.length) {

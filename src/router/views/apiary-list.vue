@@ -1207,16 +1207,16 @@ export default {
     sortedHives(hives) {
       const sortedHives = hives.slice().sort(function(a, b) {
         // order = null comes last
+        // if order is equal, sort by name with number sensitivity (10 comes after 2 instead of 1)
         return (
           (a.order === null) - (b.order === null) ||
           +(a.order > b.order) ||
           -(a.order < b.order) ||
           (a.order === b.order
-            ? a.name > b.name
-              ? 1
-              : b.name > a.name
-              ? -1
-              : 0
+            ? a.name.localeCompare(b.name, undefined, {
+                numeric: true,
+                sensitivity: 'base',
+              })
             : 0)
         )
       })

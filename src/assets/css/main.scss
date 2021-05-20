@@ -25,6 +25,9 @@
 
 .hive-color-picker {
   margin-top: -10px;
+  @include for-phone-only {
+    margin-top: -12px;
+  }
 }
 
 .filter-bar-wrapper {

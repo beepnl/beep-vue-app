@@ -147,7 +147,7 @@ const translations = {
   create_login_question:
     'Nog geen account? Registreer als een nieuwe gebruiker',
   create_login: 'Registreer als een nieuwe gebruiker',
-  create_login_summary: 'Creeër een nieuw account',
+  create_login_summary: 'Creëer een nieuw account',
   save: 'Opslaan',
   save_and_return: 'Opslaan en terug',
 

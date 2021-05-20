@@ -46,19 +46,19 @@
               >
                 <v-sheet
                   v-for="layer in hiveLayers"
-                  :key="layer.key"
+                  :key="layer.id !== undefined ? layer.id : layer.key"
                   :color="checkColor(layer)"
                   :class="[`layer ${layer.type}-layer`]"
                   :width="`${hiveWidth(hive)}px`"
-                  @click="openOverlay(layer)"
+                  @click.native="openOverlay(layer)"
                 >
                 </v-sheet>
               </draggable>
             </div>
           </v-sheet>
 
-          <v-overlay :value="overlay">
-            <v-toolbar class="hive-color-picker-toolbar" dense light>
+          <v-overlay :value="overlayLayerColor">
+            <v-toolbar class="hive-color-picker-toolbar" dense light flat>
               <div
                 class="hive-color-picker-title ml-1"
                 v-text="
@@ -137,7 +137,7 @@ export default {
         ['#2dbde5', '#094da0', '#27820e'],
         ['#ffe900', '#d80d0d', '#754B1F'],
       ],
-      overlay: false,
+      overlayLayerColor: false,
       currentLayer: null,
       layerColorPickerValue: '',
       layerColorPreview: false,
@@ -175,7 +175,7 @@ export default {
   },
   methods: {
     cancelColorPicker() {
-      this.overlay = false
+      this.overlayLayerColor = false
       this.layerColorPreview = false
       this.currentLayer = null
     },
@@ -246,16 +246,17 @@ export default {
       return this.hive.layers.some((layer) => layer.type === type)
     },
     hiveWidth: function(hive) {
-      return hive.layers[0].framecount * 6
+      return hive.layers[0].framecount * 7 // 6
     },
     layerTypeText(layer) {
       return this.$i18n.tc('Hive_' + layer.type + '_layer', 1)
     },
     openOverlay(layer) {
-      this.overlay = true
+      this.overlayLayerColor = true
       this.currentLayer = layer
       this.layerColorPreview = true
       this.layerColorPickerValue = layer.color
+      console.log('open color for layer', layer)
     },
     orderedLayers: function(hive) {
       const orderedLayers = hive.layers.slice().sort(function(a, b) {
@@ -350,10 +351,10 @@ export default {
 }
 
 .honey-layer {
-  height: 18px;
+  height: 21px;
 }
 .brood-layer {
-  height: 30px;
+  height: 34px;
 }
 .queen_excluder-layer,
 .feeding_box-layer {

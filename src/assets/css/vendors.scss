@@ -19,6 +19,13 @@
   color: inherit;
 }
 
+.theme--light.v-input--is-disabled input,
+.theme--light.v-input--is-disabled textarea {
+  @include for-phone-only {
+    color: $color-grey !important;
+  }
+}
+
 .v-icon.v-icon::after,
 .v-btn::before,
 .v-btn .v-ripple__container {

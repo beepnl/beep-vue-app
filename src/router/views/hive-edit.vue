@@ -155,8 +155,8 @@
             <div>
               <div class="beep-label" v-text="$t('Hive_order')"></div>
               <VueNumericInput
-                :value="activeHive.order === null ? 0 : activeHive.order"
-                @input=";(activeHive.order = $event), setHiveEdited(true)"
+                v-model="activeHive.order"
+                @input="setHiveEdited(true)"
               >
               </VueNumericInput>
             </div>

@@ -131,7 +131,12 @@
                   </div>
 
                   <v-overlay :value="overlay">
-                    <v-toolbar class="hive-color-picker-toolbar" dense light>
+                    <v-toolbar
+                      class="hive-color-picker-toolbar"
+                      dense
+                      light
+                      flat
+                    >
                       <div
                         class="hive-color-picker-title ml-1"
                         v-text="`${$tc('Group', 1) + ' ' + $t('color')}`"
