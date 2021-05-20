@@ -3,8 +3,8 @@
     <v-container>
       <div class="overline mb-1 primary--text"
         ><span class="lowercase">v</span>
-        <span v-if="dutch">3.0.18 (18-05-2021) - Huidige versie</span>
-        <span v-if="!dutch">3.0.18 (18-05-2021) - Current version</span>
+        <span v-if="dutch">3.0.19 (20-05-2021) - Huidige versie</span>
+        <span v-if="!dutch">3.0.19 (20-05-2021) - Current version</span>
       </div>
       <div v-if="!dutch" class="rounded-border primary-border mb-4">
         <ul>
@@ -71,14 +71,27 @@
                 an inspection or view inspections.</li
               >
               <li
+                >Collaboration groups: can be found by clicking the
+                <v-icon class="icon-apiary-shared color-grey inline-icon"
+                  >mdi-account-multiple</v-icon
+                >
+                group filter at the top bar (only visible if you are a member of
+                any collaboration group). Or start a new group via the 'Quick
+                action menu' (see below).</li
+              >
+              <li
                 >Apiary / group menu: click on the
                 <v-icon small class="color-grey-light inline-icon"
                   >mdi-cog</v-icon
                 >
                 icon next to the apiary / group name to edit apiary or group
-                properties, create a bulk inspection or view inspections. And
-                for apiary menu only: to add a new hive or move hives (see
-                below).</li
+                properties (f.e. sharing hives), create a bulk inspection or
+                view inspections. And for apiary menu only: to add a new hive or
+                move hives (see below). Groups are only visible when the
+                <v-icon class="icon-apiary-shared color-grey"
+                  >mdi-account-multiple</v-icon
+                >
+                group filter is selected.</li
               >
               <li
                 >Move hives: move multiple hives to another apiary at once by
@@ -126,6 +139,47 @@
                 <v-icon class="inline-icon">mdi-size-xl</v-icon> views) or by
                 selecting 'Edit queen' from the hive menu (see above).</li
               >
+              <li
+                >Share hive:
+                <ul>
+                  <li
+                    >Either start a new collaboration group via the 'Quick
+                    action menu' (see below) -> 'New group'.</li
+                  >
+                  <li>
+                    Or share a hive with an existing collaboration group (if you
+                    have any) via the menu of that particular group. Groups can
+                    be shown by clicking the group filter (<v-icon
+                      class="icon-apiary-shared color-grey"
+                      >mdi-account-multiple</v-icon
+                    >
+                    icon in the
+                    <router-link :to="{ name: 'home' }">Hives</router-link>
+                    overview). Then click on the
+                    <v-icon small class="color-grey-light inline-icon"
+                      >mdi-cog</v-icon
+                    >
+                    icon next to the group name -> 'Edit collaboration group' to
+                    share your hive.</li
+                  >
+                </ul>
+              </li>
+              <li
+                >Move hive:
+                <ul>
+                  <li
+                    >Move multiple hives to another apiary at once by selecting
+                    'Move hives' from the apiary menu (see 'Apiary / group menu'
+                    above).</li
+                  >
+                  <li
+                    >For a single hive: change the apiary and/or order within an
+                    apiary by editing your hive (see 'Edit hive' above). Please
+                    note that hives without a specified order number will always
+                    be shown last.</li
+                  >
+                </ul>
+              </li>
             </ul>
           </li>
           <li class="new-block">
@@ -310,8 +364,9 @@
             <strong>Where to find? - Menu changes</strong>
             <ul>
               <li
-                >Quick action menu - Create a new inspection, new hive, new
-                apiary, new group or new alert rule by clicking the
+                ><strong>Quick action menu</strong> - Create a new inspection,
+                new hive, new apiary, new group or new alert rule by clicking
+                the
                 <v-icon class="color-black inline-icon"
                   >mdi-plus-circle-outline</v-icon
                 >
@@ -334,7 +389,8 @@
                 overview.</li
               >
               <li
-                >Collaboration groups are now directly visible in the
+                ><strong>Collaboration groups</strong> are now directly visible
+                in the
                 <router-link :to="{ name: 'home' }">Hives</router-link> overview
                 via the group filter (<v-icon
                   class="icon-apiary-shared color-grey"
@@ -447,6 +503,16 @@
                 te passen een inspectie te maken of inspecties te bekijken.</li
               >
               <li
+                >Samenwerkingsgroepen: klik op de
+                <v-icon class="icon-apiary-shared color-grey inline-icon"
+                  >mdi-account-multiple</v-icon
+                >
+                groepsfilter in de filterbalk bovenaan om jouw groepen te tonen
+                (de groepsfilter is alleen zichtbaar als je lid bent van
+                tenminste één samenwerkingsgroep). Of start een nieuwe groep via
+                het 'Snelle actie menu' (zie onder).</li
+              >
+              <li
                 >Bijenstand / groep menu: klik op het
                 <v-icon small class="color-grey-light inline-icon"
                   >mdi-cog</v-icon
@@ -511,6 +577,47 @@
                 <v-icon class="inline-icon">mdi-size-xl</v-icon> layout) of door
                 'Aanpassen moer' te selecteren in het kast menu (zie boven).</li
               >
+              <li
+                >Deel kast:
+                <ul>
+                  <li
+                    >Start een nieuwe samenwerkingsgroep via het 'Snelle actie
+                    menu' (zie onder).</li
+                  >
+                  <li
+                    >Of deel een kast met een bestaande samenwerkingsgroep via
+                    het menu van de betreffende groep. Groepen kunnen getoond
+                    worden door de groepsfilter aan te klikken (<v-icon
+                      class="icon-apiary-shared color-grey"
+                      >mdi-account-multiple</v-icon
+                    >
+                    icoon in het
+                    <router-link :to="{ name: 'home' }">Kasten</router-link>
+                    overzicht). Klik dan op het
+                    <v-icon small class="color-grey-light inline-icon"
+                      >mdi-cog</v-icon
+                    >
+                    icoon naast de groepsnaam -> 'Aanpassen samenwerkingsgroep'
+                    om je kast te delen.</li
+                  >
+                </ul>
+              </li>
+              <li
+                >Verplaats kast:
+                <ul>
+                  <li
+                    >Verplaats meerdere kasten in één keer naar een andere
+                    bijenstand door 'Verplaats bijenkasten' te selecteren in het
+                    bijenstand menu (zie 'Bijenstand / groep menu' boven).</li
+                  >
+                  <li
+                    >Voor een enkele kast: verander de bijenstand en/of volgorde
+                    binnen de bijenstand door de kast aan te passen (zie 'Pas
+                    kast aan' boven). N.B. kasten zonder een gespecificeerde
+                    volgorde zullen als laatste getoond worden.</li
+                  >
+                </ul>
+              </li>
             </ul>
           </li>
           <li class="new-block">
@@ -701,9 +808,9 @@
             <strong>Waar is alles te vinden? - Menu aanpassingen</strong>
             <ul>
               <li
-                >Snelle actie menu - Maak direct een nieuwe inspectie, nieuwe
-                kast, nieuwe bijenstand, nieuwe groep of nieuwe
-                notificatie-instelling door op de
+                ><strong>Snelle actie menu</strong> - Maak direct een nieuwe
+                inspectie, nieuwe kast, nieuwe bijenstand, nieuwe groep of
+                nieuwe notificatie-instelling door op de
                 <v-icon class="color-black inline-icon"
                   >mdi-plus-circle-outline</v-icon
                 >
@@ -727,7 +834,8 @@
                 pagina's in één overzicht.</li
               >
               <li
-                >Samenwerkingsgroepen zijn nu direct zichtbaar in het
+                ><strong>Samenwerkingsgroepen</strong> zijn nu direct zichtbaar
+                in het
                 <router-link :to="{ name: 'home' }">Kasten</router-link>
                 overzicht via de groepsfilter (<v-icon
                   class="icon-apiary-shared color-grey"
