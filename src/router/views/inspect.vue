@@ -51,7 +51,11 @@
           outlined
           color="black"
           class="save-button-mobile-wide mr-1"
-          :disabled="!valid || (selectedHives && selectedHives.length === 0)"
+          :disabled="
+            !valid ||
+              (selectedHives && selectedHives.length === 0) ||
+              showLoadingIcon
+          "
           @click.prevent="confirmSaveInspection"
         >
           <v-progress-circular
@@ -59,7 +63,7 @@
             class="ml-n1 mr-2"
             size="18"
             width="2"
-            color="black"
+            color="disabled"
             indeterminate
           />
           <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
@@ -143,6 +147,7 @@
                   v-model="inspectionDate"
                   type="datetime"
                   class="color-accent"
+                  :max-datetime="endOfToday"
                 >
                   <template slot="button-cancel">
                     <v-btn text color="accent">{{ $t('Cancel') }}</v-btn>
@@ -391,9 +396,7 @@
 
     <v-container v-if="!ready">
       <div class="loading">
-        <Transition appear>
-          <v-progress-circular size="50" color="primary" indeterminate />
-        </Transition>
+        <v-progress-circular size="50" color="primary" indeterminate />
       </div>
     </v-container>
 
@@ -524,6 +527,11 @@ export default {
         params: { id: this.selectedChecklistId },
         query: query,
       }
+    },
+    endOfToday() {
+      return this.$moment()
+        .endOf('day')
+        .format()
     },
     groupId() {
       return this.$route.query.groupId || null

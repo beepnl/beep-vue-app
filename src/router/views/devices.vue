@@ -24,6 +24,7 @@
         outlined
         class="save-button-mobile-wide mr-1"
         :color="deletedButNotSaved ? 'red' : 'black'"
+        :disabled="showLoadingIcon"
         @click="saveDevices"
       >
         <v-progress-circular
@@ -31,7 +32,7 @@
           class="ml-n1 mr-2"
           size="18"
           width="2"
-          :color="deletedButNotSaved ? 'red' : 'black'"
+          color="disabled"
           indeterminate
         />
         <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
@@ -799,6 +800,7 @@ export default {
         if (!response) {
           this.errorMessage =
             this.$i18n.t('Error') + ': ' + this.$i18n.t('not_saved_error')
+          this.showLoadingIcon = false
         }
         this.getDevicesForList().then(() => {
           this.readDevices()
@@ -841,6 +843,10 @@ export default {
         if (!response) {
           this.errorMessage =
             this.$i18n.t('Error') + ': ' + this.$i18n.t('not_saved_error')
+          this.showLoadingIconById.splice(
+            this.showLoadingIconById.indexOf(sensorDef.id),
+            1
+          )
         }
         this.getDevicesForList().then(() => {
           this.showLoadingIconById.splice(

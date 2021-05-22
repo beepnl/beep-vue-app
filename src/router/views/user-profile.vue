@@ -9,6 +9,7 @@
           outlined
           color="red"
           class="mr-3"
+          :disabled="showDeleteLoadingIcon"
           @click="confirmDeleteUser"
         >
           <v-progress-circular
@@ -16,7 +17,7 @@
             class="mr-2"
             size="18"
             width="2"
-            color="red"
+            color="disabled"
             indeterminate
           />
           <v-icon v-if="!showDeleteLoadingIcon" left>mdi-delete</v-icon>
@@ -45,14 +46,14 @@
           class="mr-1"
           color="black"
           type="submit"
-          :disabled="!valid"
+          :disabled="!valid || showLoadingIcon"
         >
           <v-progress-circular
             v-if="showLoadingIcon"
             class="ml-n1 mr-2"
             size="18"
             width="2"
-            color="black"
+            color="disabled"
             indeterminate
           />
           <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon
@@ -247,6 +248,7 @@ export default {
           this.errors.push({
             errorMessage: this.$i18n.t('Error'),
           })
+          this.showDeleteLoadingIcon = false
         }
         this.signOut()
       } catch (error) {
@@ -282,6 +284,7 @@ export default {
             this.errors.push({
               errorMessage: this.$i18n.t('not_saved_error'),
             })
+            this.showLoadingIcon = false
           }
           this.$store.commit('auth/SET_CURRENT_USER', response.data)
           if (response.data.email_verified_at == null) {

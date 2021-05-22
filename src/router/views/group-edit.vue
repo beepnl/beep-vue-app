@@ -31,14 +31,14 @@
           color="black"
           :class="`mr-1 ${createMode ? 'save-button-mobile-wide' : ''}`"
           type="submit"
-          :disabled="!valid"
+          :disabled="!valid || showLoadingIcon"
         >
           <v-progress-circular
             v-if="showLoadingIcon"
             class="ml-n1 mr-2"
             size="18"
             width="2"
-            color="black"
+            color="disabled"
             indeterminate
           />
           <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
@@ -574,6 +574,7 @@ export default {
           if (!response) {
             this.errorMessage =
               this.$i18n.t('Error') + ': ' + this.$i18n.t('not_saved_error')
+            this.showLoadingIcon = false
           }
           setTimeout(() => {
             return this.readGroups().then(() => {
@@ -598,6 +599,7 @@ export default {
                 Object.values(error.message).join(', ')
               : this.$i18n.t('empty_fields') + '.'
           console.log('Error: ', this.errorMessage)
+          this.showLoadingIcon = false
         }
       }
     },

@@ -11,7 +11,8 @@
           :disabled="
             !valid ||
               (selectedHiveIds && selectedHiveIds.length === 0) ||
-              newApiaryId === undefined
+              newApiaryId === undefined ||
+              showLoadingIcon
           "
           @click.prevent="updateHives(selectedHives)"
         >
@@ -20,7 +21,7 @@
             class="ml-n1 mr-2"
             size="18"
             width="2"
-            color="black"
+            color="disabled"
             indeterminate
           />
           <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
@@ -100,9 +101,7 @@
 
     <v-container v-if="!ready">
       <div class="loading">
-        <Transition appear>
-          <v-progress-circular size="50" color="primary" indeterminate />
-        </Transition>
+        <v-progress-circular size="50" color="primary" indeterminate />
       </div>
     </v-container>
 
@@ -287,7 +286,7 @@ export default {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
         hives.map((hive) => {
-          var hiveWithNewApiaryId = hive
+          var hiveWithNewApiaryId = { ...hive }
           hiveWithNewApiaryId.location_id = this.newApiaryId
           this.updateHive(hiveWithNewApiaryId)
         })
@@ -311,5 +310,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss" scoped></style>

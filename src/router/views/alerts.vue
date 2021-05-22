@@ -39,11 +39,9 @@
       </v-container>
     </div>
 
-    <v-container v-if="!ready">
+    <v-container v-if="!ready" class="alerts-content">
       <div class="loading">
-        <Transition appear>
-          <v-progress-circular size="50" color="primary" indeterminate />
-        </Transition>
+        <v-progress-circular size="50" color="primary" indeterminate />
       </div>
     </v-container>
 

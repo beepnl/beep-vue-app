@@ -369,7 +369,7 @@
                 outlined
                 color="black"
                 class="mr-3"
-                :disabled="!valid"
+                :disabled="!valid || showLoadingIcon"
                 @click.prevent="createApiary"
               >
                 <v-progress-circular
@@ -377,7 +377,7 @@
                   class="ml-n1 mr-2"
                   size="18"
                   width="2"
-                  color="black"
+                  color="disabled"
                   indeterminate
                 />
                 <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
@@ -647,6 +647,7 @@ export default {
           if (!response) {
             this.snackbar.text = this.$i18n.t('not_saved_error')
             this.snackbar.show = true
+            this.showLoadingIcon = false
           }
           this.clearHiveFilters()
           setTimeout(() => {
@@ -666,6 +667,7 @@ export default {
           console.log('Error: ', error)
           this.snackbar.text = this.$i18n.t('not_saved_error')
           this.snackbar.show = true
+          this.showLoadingIcon = false
         }
       }
     },

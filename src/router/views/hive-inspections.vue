@@ -104,9 +104,7 @@
 
     <v-container v-if="!ready" class="hive-inspections-content">
       <div class="loading">
-        <Transition appear>
           <v-progress-circular size="50" color="primary" indeterminate />
-        </Transition>
       </div>
     </v-container>
 

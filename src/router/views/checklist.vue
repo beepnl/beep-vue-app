@@ -38,14 +38,18 @@
           color="black"
           class="mr-1 save-button-mobile-wide"
           type="submit"
-          :disabled="!valid || (activeChecklist && !activeChecklist.owner)"
+          :disabled="
+            !valid ||
+              (activeChecklist && !activeChecklist.owner) ||
+              showLoadingIcon
+          "
         >
           <v-progress-circular
             v-if="showLoadingIcon"
             class="ml-n1 mr-2"
             size="18"
             width="2"
-            color="black"
+            color="disabled"
             indeterminate
           />
           <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
@@ -55,9 +59,7 @@
 
       <v-container v-if="!ready">
         <div class="loading">
-          <Transition appear>
-            <v-progress-circular size="50" color="primary" indeterminate />
-          </Transition>
+          <v-progress-circular size="50" color="primary" indeterminate />
         </div>
       </v-container>
 
@@ -109,9 +111,7 @@
           </v-col>
           <v-col v-if="retrievingChecklist" cols="12">
             <div class="loading">
-              <Transition appear>
-                <v-progress-circular size="50" color="primary" indeterminate />
-              </Transition>
+              <v-progress-circular size="50" color="primary" indeterminate />
             </div>
           </v-col>
           <v-col v-if="!retrievingChecklist" cols="12">
@@ -318,6 +318,7 @@ export default {
           )
           if (!response) {
             this.errorMessage = this.$i18n.t('Error')
+            this.showLoadingIcon = false
           }
           setTimeout(() => {
             this.readChecklists().then(() => {
@@ -352,6 +353,7 @@ export default {
             })
           }, 200)
         } catch (error) {
+          this.showLoadingIcon = false
           if (error.response) {
             console.log(error.response)
             const msg = error.response.data.message

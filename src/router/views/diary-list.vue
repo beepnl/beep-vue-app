@@ -118,9 +118,7 @@
 
     <v-container v-if="!ready">
       <div class="loading">
-        <Transition appear>
-          <v-progress-circular size="50" color="primary" indeterminate />
-        </Transition>
+        <v-progress-circular size="50" color="primary" indeterminate />
       </div>
     </v-container>
 

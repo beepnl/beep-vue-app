@@ -135,9 +135,7 @@
 
     <v-container v-if="!ready">
       <div class="loading">
-        <Transition appear>
-          <v-progress-circular size="50" color="primary" indeterminate />
-        </Transition>
+        <v-progress-circular size="50" color="primary" indeterminate />
       </div>
     </v-container>
 
@@ -181,15 +179,17 @@
               tile
               outlined
               class="green--text mb-1"
+              :disabled="showLoadingIconForId === invitation.id"
               @click="
                 checkToken(invitation.token, invitation.id, invitation.name)
               "
             >
               <v-progress-circular
                 v-if="showLoadingIconForId === invitation.id"
-                class="green--text ml-n1 mr-2"
+                class="ml-n1 mr-2"
                 size="18"
                 width="2"
+                color="disabled"
                 indeterminate
               />
               <v-icon v-if="showLoadingIconForId !== invitation.id" left
@@ -199,9 +199,10 @@
             </v-btn>
             <v-progress-circular
               v-if="showLoadingIconForId === invitation.id && mobile"
-              class="invitation-loading-icon green--text mb-1"
+              class="invitation-loading-icon mb-1"
               size="18"
               width="2"
+              color="disabled"
               indeterminate
             />
             <v-icon
@@ -1004,6 +1005,7 @@ export default {
         if (!response) {
           this.snackbar.text = this.$i18n.t('something_wrong')
           this.snackbar.show = true
+          this.showLoadingIconForId = null
         }
         this.snackbar.text = this.$i18n.t('Invitation_accepted')
         this.snackbar.show = true
@@ -1017,6 +1019,7 @@ export default {
           })
         }, 300) // wait for API to update groups
       } catch (error) {
+        this.showLoadingIconForId = null
         this.handleError(error)
       }
     },

@@ -43,7 +43,11 @@
               queenEditMode || hiveCreateMode ? 'save-button-mobile-wide' : ''
             } mr-1`
           "
-          :disabled="!valid || typeof activeHive.location_id === 'undefined'"
+          :disabled="
+            !valid ||
+              typeof activeHive.location_id === 'undefined' ||
+              showLoadingIcon
+          "
           @click.prevent="saveHive"
         >
           <v-progress-circular
@@ -51,7 +55,7 @@
             class="ml-n1 mr-2"
             size="18"
             width="2"
-            color="black"
+            color="disabled"
             indeterminate
           />
           <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
@@ -380,6 +384,7 @@ export default {
           if (!response) {
             this.snackbar.text = this.$i18n.t('not_saved_error')
             this.snackbar.show = true
+            this.showLoadingIcon = false
           }
           setTimeout(() => {
             const location = response.data.hives[0].location
@@ -403,6 +408,7 @@ export default {
             this.snackbar.text = this.$i18n.t('something_wrong')
           }
           this.snackbar.show = true
+          this.showLoadingIcon = false
         }
       }
     },

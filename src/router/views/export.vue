@@ -16,6 +16,7 @@
               outlined
               color="accent"
               class="save-button-mobile-wide"
+              :disabled="showDataLoadingIcon"
               @click="exportData"
             >
               <v-progress-circular
@@ -23,7 +24,7 @@
                 class="ml-n1 mr-2"
                 size="18"
                 width="2"
-                color="accent"
+                color="disabled"
                 indeterminate
               />
               <v-icon v-if="!showDataLoadingIcon" left>mdi-download</v-icon
@@ -170,7 +171,10 @@
               <v-spacer></v-spacer>
               <v-btn
                 :disabled="
-                  !dataAvailable || dates[0] === dates[1] || dates.length < 2
+                  !dataAvailable ||
+                    dates[0] === dates[1] ||
+                    dates.length < 2 ||
+                    showDeviceDataLoadingIcon
                 "
                 tile
                 outlined
@@ -183,7 +187,7 @@
                   class="ml-n1 mr-2"
                   size="18"
                   width="2"
-                  color="accent"
+                  color="disabled"
                   indeterminate
                 />
                 <v-icon v-if="!showDeviceDataLoadingIcon" left
@@ -397,7 +401,7 @@ export default {
       } catch (error) {
         console.log('Error: ', error)
         this.errorMessage = this.$i18n.t('no_data')
-        this.showDeviceDataLoadingIcon = false
+        this.showDataLoadingIcon = false
       }
     },
     async exportDeviceData() {

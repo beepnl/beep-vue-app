@@ -7,7 +7,7 @@
         outlined
         color="black"
         class="save-button-mobile-wide mr-1"
-        :disabled="numberOfSelectedRules === 0"
+        :disabled="numberOfSelectedRules === 0 || showLoadingIcon"
         @click.prevent="copySelectedAlertRules"
       >
         <v-progress-circular
@@ -15,7 +15,7 @@
           class="ml-n1 mr-2"
           size="18"
           width="2"
-          color="black"
+          color="disabled"
           indeterminate
         />
         <v-icon v-if="!showLoadingIcon" left>mdi-content-copy</v-icon>
@@ -31,9 +31,7 @@
 
     <v-container v-if="!ready">
       <div class="loading">
-        <Transition appear>
-          <v-progress-circular size="50" color="primary" indeterminate />
-        </Transition>
+        <v-progress-circular size="50" color="primary" indeterminate />
       </div>
     </v-container>
 
@@ -169,8 +167,10 @@ export default {
       this.showLoadingIcon = true
       try {
         await Api.postRequest('/alert-rules', alertRule)
+        this.showLoadingIcon = false
         return true
       } catch (error) {
+        this.showLoadingIcon = false
         if (error.response) {
           console.log('Error: ', error.response)
         } else {

@@ -40,7 +40,7 @@
           outlined
           color="black"
           class="mr-1"
-          :disabled="!valid"
+          :disabled="!valid || showLoadingIcon"
           @click.prevent="updateApiary"
         >
           <v-progress-circular
@@ -48,7 +48,7 @@
             class="ml-n1 mr-2"
             size="18"
             width="2"
-            color="black"
+            color="disabled"
             indeterminate
           />
           <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
@@ -97,7 +97,12 @@
                   </div>
 
                   <v-overlay :value="overlay">
-                    <v-toolbar class="hive-color-picker-toolbar" dense light flat>
+                    <v-toolbar
+                      class="hive-color-picker-toolbar"
+                      dense
+                      light
+                      flat
+                    >
                       <div
                         class="hive-color-picker-title ml-1"
                         v-text="`${$t('Apiary_color')}`"
@@ -413,6 +418,7 @@ export default {
           if (!response) {
             this.snackbar.text = this.$i18n.t('not_saved_error')
             this.snackbar.show = true
+            this.showLoadingIcon = false
           }
           setTimeout(() => {
             return this.readApiariesAndGroups().then(() => {
@@ -437,6 +443,7 @@ export default {
           }
           this.snackbar.text = this.$i18n.t('not_saved_error')
           this.snackbar.show = true
+          this.showLoadingIcon = false
         }
       }
     },

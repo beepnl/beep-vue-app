@@ -18,6 +18,7 @@
           :class="
             `${alertruleCreateMode ? 'save-button-mobile-wide' : ''} mr-1`
           "
+          :disabled="showLoadingIcon"
           @click.prevent="saveAlertRule"
         >
           <v-progress-circular
@@ -25,7 +26,7 @@
             class="ml-n1 mr-2"
             size="18"
             width="2"
-            color="black"
+            color="disabled"
             indeterminate
           />
           <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
@@ -573,6 +574,7 @@ export default {
           if (!response) {
             this.snackbar.text = this.$i18n.t('not_saved_error')
             this.snackbar.show = true
+            this.showLoadingIcon = false
           }
           setTimeout(() => {
             return this.readAlertRules().then(() => {
@@ -591,6 +593,7 @@ export default {
             this.snackbar.text = this.$i18n.t('something_wrong')
           }
           this.snackbar.show = true
+          this.showLoadingIcon = false
         }
       }
     },
@@ -659,6 +662,7 @@ export default {
           if (!response) {
             this.snackbar.text = this.$i18n.t('not_saved_error')
             this.snackbar.show = true
+            this.showLoadingIcon = false
           }
           setTimeout(() => {
             return this.readAlertRules().then(() => {
@@ -677,6 +681,7 @@ export default {
             this.snackbar.text = this.$i18n.t('something_wrong')
           }
           this.snackbar.show = true
+          this.showLoadingIcon = false
         }
       }
     },
