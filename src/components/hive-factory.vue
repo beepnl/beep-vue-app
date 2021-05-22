@@ -319,11 +319,12 @@ export default {
 }
 
 .hive-factory {
-  &.has-queen-excluder {
-    .draggable-layer-wrapper.queen_excluder-layer-wrapper {
-      display: none;
-    }
-  }
+  // enable this to allow for only 1 queen excluder layer
+  // &.has-queen-excluder {
+  //   .draggable-layer-wrapper.queen_excluder-layer-wrapper {
+  //     display: none;
+  //   }
+  // }
   &.has-feeding-box {
     .draggable-layer-wrapper.feeding_box-layer-wrapper {
       display: none;
