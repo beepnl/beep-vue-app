@@ -69,7 +69,7 @@
 
       <v-card-actions v-if="!registered">
         <v-spacer></v-spacer>
-        <v-btn text type="submit" :disabled="!valid">{{
+        <v-btn text type="submit" :disabled="disabled">{{
           $t('create_login_summary')
         }}</v-btn>
       </v-card-actions>
@@ -107,6 +107,7 @@ export default {
         email: false,
         password: false,
       },
+      disabled: false,
     }
   },
   computed: {
@@ -147,17 +148,20 @@ export default {
           ) || this.$i18n.t('invalid_password'),
       ]
     },
-    repeatPasswordRules: function() {
-      return [
-        (v) =>
-          !!v ||
+    repeatPasswordRules() {
+      if (!this.passwordConfirmation) {
+        return [
           this.$i18n.t('the_field') +
             ' "' +
             this.$i18n.t('confirm_password') +
             '" ' +
             this.$i18n.t('is_required'),
-        (v) => v === this.password || this.$i18n.t('no_password_match'),
-      ]
+        ]
+      } else if (this.passwordConfirmation !== this.password) {
+        return [this.$i18n.t('no_password_match')]
+      } else {
+        return []
+      }
     },
     termsRules: function() {
       return [(v) => !!v || this.$i18n.t('policy_accepted_is_required')]
@@ -167,11 +171,13 @@ export default {
     async createAccount() {
       if (this.$refs.form.validate()) {
         this.clearErrors()
+        this.disabled = true
         try {
           const response = await Api.postRequest('/register', this.credentials)
           this.registered = true
           return response
         } catch (error) {
+          this.disabled = false
           if (error.response) {
             console.log(error.response)
             const msg = error.response.data.message
