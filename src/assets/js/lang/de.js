@@ -513,6 +513,7 @@ const translations = {
     '3. Teilen Sie bestimmte Bienenstöcke, die von anderen gesehen werden sollen, oder arbeiten Sie zusammen an',
   Filter_and_sort_on: 'Filtern und sortieren nach:',
 
+  /* TO BE TRANSLATED */
   /* New translations v2.2.0 */
   roofed: 'Does the apiary have a roof?',
   info: 'Info',
@@ -602,7 +603,7 @@ const translations = {
   edit_group: 'Gruppe bearbeiten',
   new_group: 'Neue Gruppe',
   verification_code: 'verifikationscode',
-  /* TO BE TRANSLATED */
+
   limit_exceeded: 'Limit has been reached, try again later',
   confirm_email_title: 'Confirm your email',
   confirm_email_summary:
@@ -737,6 +738,7 @@ const translations = {
   copy: 'Copy',
   Home: 'Home',
   Select_default_alertrule: 'Copy default alert rule',
+  /* below, please keep all terms between [] in english: */
   alertrule_main_sentence:
     'I would like to receive an alert if the [calculation] [comparison] of the [measurement_quantity] [comparator] [threshold_value][measurement_unit]. This calculation will be executed every [calculation_minutes] hours, ',
   alertrule_occurences_direct_sentence:

@@ -580,6 +580,8 @@ const translations = {
 
   /* New translations v3 */
   Collaborate: 'Tehdä yhteistyötä',
+
+  /* TO BE TRANSLATED */
   click_hives_to_filter: 'Click hives to filter',
   for: 'for',
   last_visit: 'Last visit',
@@ -730,6 +732,7 @@ const translations = {
   copy: 'Copy',
   Home: 'Home',
   Select_default_alertrule: 'Copy default alert rule',
+  /* below, please keep all terms between [] in english: */
   alertrule_main_sentence:
     'I would like to receive an alert if the [calculation] [comparison] of the [measurement_quantity] [comparator] [threshold_value][measurement_unit]. This calculation will be executed every [calculation_minutes] hours, ',
   alertrule_occurences_direct_sentence:

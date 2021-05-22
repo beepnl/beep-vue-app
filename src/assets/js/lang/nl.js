@@ -739,6 +739,7 @@ const translations = {
   copy: 'Kopieer',
   Home: 'Home',
   Select_default_alertrule: 'Kopieer standaardinstelling',
+  /* below, please keep all terms between [] in english: */
   alertrule_main_sentence:
     'Ik wil een notificatie ontvangen als [calculation] [comparison] van de/het [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Deze berekening wordt elke [calculation_minutes] uur uitgevoerd, ',
   alertrule_occurences_direct_sentence:
