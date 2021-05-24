@@ -7,6 +7,16 @@
 }
 
 /* Vuetify */
+.v-application .red--text {
+  color: $color-red !important;
+  caret-color: $color-red !important;
+}
+
+.v-application .red {
+  background-color: $color-red !important;
+  border-color: $color-red !important;
+}
+
 .theme--light.v-label {
   color: $color-grey-dark;
 }
