@@ -293,10 +293,11 @@ export default {
       } else {
         return false
       }
-      this.$store.commit('locations/setData', {
-        prop: 'hiveSearch',
-        value: this.newApiaryName, // set search term via store instead of query to overrule possible stored search terms
-      })
+      // enable to filter by apiary hives were moved to (disabled on request because user wants to see apiary where hives were moved from as well)
+      // this.$store.commit('locations/setData', {
+      //   prop: 'hiveSearch',
+      //   value: this.newApiaryName, // set search term via store instead of query to overrule possible stored search terms
+      // })
       setTimeout(() => {
         return this.readApiaries().then(() => {
           this.readGeneralInspections()
