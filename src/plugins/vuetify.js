@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify/lib'
 import colors from 'vuetify/lib/util/colors'
+import minifyTheme from 'minify-css-string'
 
 Vue.use(Vuetify)
 
@@ -13,6 +14,7 @@ export default new Vuetify({
   },
   theme: {
     themes: {
+      options: { minifyTheme },
       light: {
         primary: '#F8B133',
         secondary: colors.black,

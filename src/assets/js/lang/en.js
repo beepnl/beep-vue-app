@@ -510,6 +510,7 @@ const translations = {
     '3. Share specific hives to be viewed by others, of to cooperate on',
   Filter_and_sort_on: 'Filter and sort on:',
 
+  /* TO BE TRANSLATED */
   /* New translations v2.2.0 */
   roofed: 'Does the apiary have a roof?',
   info: 'Info',
