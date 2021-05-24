@@ -61,7 +61,7 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn text type="submit" :disabled="!valid">{{ $t('login') }}</v-btn>
+        <v-btn text type="submit">{{ $t('login') }}</v-btn>
       </v-card-actions>
     </v-form>
   </Layout>
@@ -152,7 +152,10 @@ export default {
           .catch((error) => {
             if (error.response) {
               console.log(error.response)
-              if (typeof error.response.data.message !== 'undefined') {
+              if (
+                typeof error.response.data !== 'undefined' &&
+                typeof error.response.data.message !== 'undefined'
+              ) {
                 var msg = error.response.data.message
               } else {
                 msg = error.response.data

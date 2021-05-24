@@ -49,6 +49,8 @@ export const actions = {
       throw new Error('User is already logged out.')
     }
 
+    commit('SET_CURRENT_USER', null)
+
     // reset all module states
     commit('alerts/resetState', null, { root: true })
     commit('devices/resetState', null, { root: true })
@@ -57,8 +59,6 @@ export const actions = {
     commit('inspections/resetState', null, { root: true })
     commit('locations/resetState', null, { root: true })
     commit('taxonomy/resetState', null, { root: true })
-
-    commit('SET_CURRENT_USER', null)
     return null
   },
 
