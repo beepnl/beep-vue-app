@@ -30,14 +30,18 @@
             <v-card-actions>
               <v-icon
                 :class="
-                  `${filterByAttention ? 'red--text' : 'color-grey'} mr-2`
+                  `${
+                    filterByAttention ? 'red--text' : 'color-grey-filter'
+                  } mr-2`
                 "
                 @click="filterByAttention = !filterByAttention"
               >
                 mdi-clipboard-alert-outline
               </v-icon>
               <v-icon
-                :class="`${filterByReminder ? 'red--text' : 'color-grey'} mr-2`"
+                :class="
+                  `${filterByReminder ? 'red--text' : 'color-grey-filter'} mr-2`
+                "
                 @click="filterByReminder = !filterByReminder"
               >
                 mdi-calendar-clock
@@ -47,7 +51,7 @@
                   `${
                     filterByImpression.includes(3)
                       ? 'green--text'
-                      : 'color-grey'
+                      : 'color-grey-filter'
                   } mr-2`
                 "
                 @click="updateFilterByImpression(3)"
@@ -59,7 +63,7 @@
                   `${
                     filterByImpression.includes(2)
                       ? 'orange--text'
-                      : 'color-grey'
+                      : 'color-grey-filter'
                   } mr-2`
                 "
                 @click="updateFilterByImpression(2)"
@@ -69,7 +73,9 @@
               <v-icon
                 :class="
                   `${
-                    filterByImpression.includes(1) ? 'red--text' : 'color-grey'
+                    filterByImpression.includes(1)
+                      ? 'red--text'
+                      : 'color-grey-filter'
                   } mr-2`
                 "
                 @click="updateFilterByImpression(1)"
@@ -104,7 +110,7 @@
 
     <v-container v-if="!ready" class="hive-inspections-content">
       <div class="loading">
-          <v-progress-circular size="50" color="primary" indeterminate />
+        <v-progress-circular size="50" color="primary" indeterminate />
       </div>
     </v-container>
 
@@ -1013,17 +1019,17 @@ export default {
     font-size: 11px;
     font-weight: 600;
     line-height: 1rem;
-    color: red;
+    color: $color-red;
     text-align: center;
     white-space: nowrap;
     white-space: pre-wrap;
-    border: 1px solid red;
+    border: 1px solid $color-red;
     border-radius: 5px;
     @include for-phone-only {
       max-width: 80px;
     }
     &.green--text {
-      border-color: green;
+      border-color: $color-green;
     }
   }
   .label-inspection {

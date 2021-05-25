@@ -32,7 +32,7 @@
                 v-if="groups.length > 0"
                 :class="
                   `icon-apiary-shared mr-2 my-0 ${
-                    filterByGroup ? '' : 'color-grey'
+                    filterByGroup ? '' : 'color-grey-filter'
                   }`
                 "
                 @click="filterByGroup = !filterByGroup"
@@ -41,14 +41,18 @@
               </v-icon>
               <v-icon
                 :class="
-                  `${filterByAttention ? 'red--text' : 'color-grey'} mr-2`
+                  `${
+                    filterByAttention ? 'red--text' : 'color-grey-filter'
+                  } mr-2`
                 "
                 @click="filterByAttention = !filterByAttention"
               >
                 mdi-clipboard-alert-outline
               </v-icon>
               <v-icon
-                :class="`${filterByReminder ? 'red--text' : 'color-grey'} mr-2`"
+                :class="
+                  `${filterByReminder ? 'red--text' : 'color-grey-filter'} mr-2`
+                "
                 @click="filterByReminder = !filterByReminder"
               >
                 mdi-calendar-clock
@@ -58,7 +62,7 @@
                   `${
                     filterByImpression.includes(3)
                       ? 'green--text'
-                      : 'color-grey'
+                      : 'color-grey-filter'
                   } mr-2`
                 "
                 @click="filterByImpression = 3"
@@ -71,7 +75,7 @@
                   `${
                     filterByImpression.includes(2)
                       ? 'orange--text'
-                      : 'color-grey'
+                      : 'color-grey-filter'
                   } mr-2`
                 "
                 @click="filterByImpression = 2"
@@ -81,7 +85,9 @@
               <v-icon
                 :class="
                   `${
-                    filterByImpression.includes(1) ? 'red--text' : 'color-grey'
+                    filterByImpression.includes(1)
+                      ? 'red--text'
+                      : 'color-grey-filter'
                   } mr-2`
                 "
                 @click="filterByImpression = 1"
@@ -94,14 +100,14 @@
                 @click="filterByBase = !filterByBase"
               >
                 <v-sheet
-                  class="beep-icon beep-icon-sensors cursor-pointer"
+                  class="beep-icon beep-icon-filter beep-icon-sensors cursor-pointer"
                   :color="`${filterByBase ? 'green' : ''}`"
                 >
                 </v-sheet>
               </div>
               <v-icon
                 v-if="devices.length > 0 && screenSize > 418"
-                :class="`${filterByAlert ? 'red--text' : 'color-grey'}`"
+                :class="`${filterByAlert ? 'red--text' : 'color-grey-filter'}`"
                 @click="filterByAlert = !filterByAlert"
               >
                 mdi-bell

@@ -17,6 +17,9 @@
   &.color-grey {
     color: $color-grey;
   }
+  &.color-grey-filter {
+    color: $color-grey-filter;
+  }
   &.color-grey-medium {
     color: $color-grey-medium;
   }
@@ -59,6 +62,11 @@
       background-image: url('~@assets/img/icons/icn_bee_dark.svg');
       border: 1px solid $color-grey-dark !important;
     }
+  }
+
+  &-filter {
+    background-color: $color-grey-filter;
+    border: 2px solid $color-grey-filter;
   }
 
   &-queen--no-outline {

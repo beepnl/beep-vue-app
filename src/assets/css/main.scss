@@ -206,13 +206,13 @@
   padding: 2px 4px !important;
   font-weight: 600;
   line-height: 1rem;
-  color: red;
+  color: $color-red;
   text-align: center;
   white-space: nowrap;
-  border: 1px solid red;
+  border: 1px solid $color-red;
   border-radius: 5px;
   &.green--text {
-    border-color: green;
+    border-color: $color-green;
   }
 }
 
