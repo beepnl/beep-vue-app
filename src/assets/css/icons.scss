@@ -35,6 +35,10 @@
   color: $color-black;
 }
 
+.theme--light.v-btn.v-btn--disabled {
+  border-color: rgba(0, 0, 0, 0.26) !important; // fix mobile styling bug
+}
+
 .beep-icon {
   display: inline-block;
   width: 20px;

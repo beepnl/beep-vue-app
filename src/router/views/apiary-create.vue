@@ -104,7 +104,6 @@
                         class="beep--large"
                         counter="30"
                         :rules="requiredRule"
-                        required
                         @input="validateText($event, 'name', 30)"
                       >
                       </v-text-field>

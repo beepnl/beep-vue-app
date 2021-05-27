@@ -474,6 +474,7 @@ export default {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
         this.activeHive.frames = this.activeHive.layers[0].framecount
+        const updatedLocation = this.findApiaryById(this.activeHive.location_id)
         try {
           const response = await Api.updateRequest(
             '/hives/',
@@ -490,7 +491,7 @@ export default {
               this.readDevices() // update devices to reflect updated hive names for example
               this.$store.commit('locations/setData', {
                 prop: 'hiveSearch',
-                value: this.activeHive.location, // set search term via store instead of query to overrule possible stored search terms
+                value: updatedLocation, // set search term via store instead of query to overrule possible stored search terms
               })
               this.$router.push({
                 name: 'home',
@@ -545,6 +546,9 @@ export default {
       } else {
         return this.$i18n.t('edit') + '...'
       }
+    },
+    findApiaryById(id) {
+      return this.apiaries.filter((apiary) => apiary.id === id)[0].name
     },
     saveHive() {
       if (this.hiveCreateMode) {

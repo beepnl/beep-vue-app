@@ -139,7 +139,11 @@
   }
   &.beep--large {
     padding-top: 0 !important;
-    font-size: 2rem !important;
+    font-size: 1.8rem !important;
+
+    @include for-phone-only {
+      font-size: 1.6rem !important;
+    }
 
     &.v-text-field {
       .v-input__control .v-input__slot {
@@ -147,8 +151,12 @@
         min-height: 45px !important;
       }
       input {
-        padding: 0 0 4px !important;
+        padding: 0 !important;
         margin-top: 8px !important;
+        margin-bottom: -10px;
+        @include for-phone-only {
+          margin-bottom: -14px;
+        }
       }
     }
   }
