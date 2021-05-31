@@ -366,9 +366,7 @@
                     ></v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
-                <v-list-item
-                  @click="setDiaryGroupFilterAndGo(hiveSet.name, false)"
-                >
+                <v-list-item @click="setDiaryGroupFilterAndGo(hiveSet.name)">
                   <v-list-item-icon class="mr-3">
                     <v-icon>mdi-magnify</v-icon>
                   </v-list-item-icon>
@@ -471,9 +469,7 @@
                 </v-list-item-content>
               </v-list-item>
 
-              <v-list-item
-                @click="setDiaryGroupFilterAndGo(hiveSet.name, true)"
-              >
+              <v-list-item @click="setDiaryGroupFilterAndGo(hiveSet.name)">
                 <v-list-item-icon class="mr-3">
                   <v-icon>mdi-magnify</v-icon>
                 </v-list-item-icon>
@@ -549,9 +545,7 @@
       </v-row>
 
       <div
-        v-if="
-          showApiaryPlaceholder || (apiaries.length === 0 && !filterByGroup)
-        "
+        v-if="showApiaryPlaceholder"
         :class="
           `apiary-placeholder d-flex align-center ${
             invitations.length > 0 ? 'apiary-placeholder--with-invitations' : ''
@@ -864,10 +858,7 @@ export default {
               return { ...hiveSet }
             }
           } else {
-            // hide groups when filter is off
-            if (hiveSet.users === undefined) {
-              return { ...hiveSet }
-            }
+            return { ...hiveSet }
           }
         })
 
@@ -1018,7 +1009,6 @@ export default {
         setTimeout(() => {
           this.readDevices().then(() => {
             this.readApiariesAndGroups().then(() => {
-              this.filterByGroup = true
               this.hiveSearch = groupName
               this.showLoadingIconForId = null
             })
@@ -1203,10 +1193,10 @@ export default {
       }
       this.snackbar.show = true
     },
-    setDiaryGroupFilterAndGo(searchTerm, bool) {
+    setDiaryGroupFilterAndGo(searchTerm) {
       this.$store.commit('inspections/setFilter', {
         filter: 'diaryFilterByGroup',
-        value: bool,
+        value: false, // in case it was set to true
       })
       this.$router.push({
         name: 'diary',

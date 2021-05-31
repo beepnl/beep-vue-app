@@ -238,6 +238,11 @@
     background-color: $color-grey;
     border-color: $color-grey;
   }
+
+  &.color-grey-filter {
+    background-color: $color-grey-filter;
+    border-color: $color-grey-filter;
+  }
 }
 
 .icon-apiary-shared::before {

@@ -415,11 +415,7 @@ export default {
             if (inspection.hive_group_name !== null) {
               return inspection
             }
-          } else if (
-            inspection.hive_group_name === null ||
-            inspection.owned_and_group
-          ) {
-            // hide hives from groups when filter is off
+          } else {
             return inspection
           }
         })

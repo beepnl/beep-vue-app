@@ -3,8 +3,8 @@
     <v-container>
       <div class="overline mb-1 primary--text"
         ><span class="lowercase">v</span>
-        <span v-if="dutch">3.0.23 (27-05-2021) - Huidige versie</span>
-        <span v-if="!dutch">3.0.23 (27-05-2021) - Current version</span>
+        <span v-if="dutch">3.0.24 (31-05-2021) - Huidige versie</span>
+        <span v-if="!dutch">3.0.24 (31-05-2021) - Current version</span>
       </div>
       <div v-if="!dutch" class="rounded-border primary-border mb-4">
         <ul>
@@ -71,13 +71,16 @@
                 an inspection or view inspections.</li
               >
               <li
-                >Collaboration groups: can be found by clicking the
+                >Collaboration groups: are shown in the
+                <router-link :to="{ name: 'home' }">Hives</router-link>
+                overview. By clicking the
                 <v-icon class="icon-apiary-shared color-grey inline-icon"
                   >mdi-account-multiple</v-icon
                 >
-                group filter at the top bar (only visible if you are a member of
-                any collaboration group). Or start a new group via the 'Quick
-                action menu' (see below).</li
+                group filter at the top bar <em>only</em> groups will be shown
+                (filter button only visible if you are a member of any
+                collaboration group). Or start a new group via the 'Quick action
+                menu' (see below).</li
               >
               <li
                 >Apiary / group menu: click on the
@@ -87,11 +90,7 @@
                 icon next to the apiary / group name to edit apiary or group
                 properties (f.e. sharing hives), create a bulk inspection or
                 view inspections. And for apiary menu only: to add a new hive or
-                move hives (see below). Groups are only visible when the
-                <v-icon class="icon-apiary-shared color-grey"
-                  >mdi-account-multiple</v-icon
-                >
-                group filter is selected.</li
+                move hives (see below).</li
               >
               <li
                 >Move hives: move multiple hives to another apiary at once by
@@ -149,13 +148,13 @@
                   <li>
                     Or share a hive with an existing collaboration group (if you
                     have any) via the menu of that particular group. Groups can
-                    be shown by clicking the group filter (<v-icon
-                      class="icon-apiary-shared color-grey"
+                    be found in the
+                    <router-link :to="{ name: 'home' }">Hives</router-link>
+                    overview, or shown exclusively by clicking the group filter
+                    (<v-icon class="icon-apiary-shared color-grey"
                       >mdi-account-multiple</v-icon
                     >
-                    icon in the
-                    <router-link :to="{ name: 'home' }">Hives</router-link>
-                    overview). Then click on the
+                    icon. Then click on the
                     <v-icon small class="color-grey-light inline-icon"
                       >mdi-cog</v-icon
                     >
@@ -391,13 +390,14 @@
               <li
                 ><strong>Collaboration groups</strong> are now directly visible
                 in the
-                <router-link :to="{ name: 'home' }">Hives</router-link> overview
-                via the group filter (<v-icon
+                <router-link :to="{ name: 'home' }">Hives</router-link>
+                overview. Via the group filter (<v-icon
                   class="icon-apiary-shared color-grey"
                   >mdi-account-multiple</v-icon
                 >
-                icon, first in row after search field, only visible if you are a
-                member of any collaboration group).</li
+                icon) groups will be shown exclusively (first in row after
+                search field, only visible if you are a member of any
+                collaboration group).</li
               >
               <li
                 ><router-link :to="{ name: 'devices' }">Devices</router-link>,
@@ -503,14 +503,16 @@
                 te passen een inspectie te maken of inspecties te bekijken.</li
               >
               <li
-                >Samenwerkingsgroepen: klik op de
+                >Samenwerkingsgroepen: worden getoond in het
+                <router-link :to="{ name: 'home' }">Kasten</router-link>
+                overzicht. Klik op de
                 <v-icon class="icon-apiary-shared color-grey inline-icon"
                   >mdi-account-multiple</v-icon
                 >
-                groepsfilter in de filterbalk bovenaan om jouw groepen te tonen
-                (de groepsfilter is alleen zichtbaar als je lid bent van
-                tenminste één samenwerkingsgroep). Of start een nieuwe groep via
-                het 'Snelle actie menu' (zie onder).</li
+                groepsfilter in de filterbalk bovenaan om <em>alleen</em> jouw
+                groepen te tonen (de groepsfilter is alleen zichtbaar als je lid
+                bent van tenminste één samenwerkingsgroep). Of start een nieuwe
+                groep via het 'Snelle actie menu' (zie onder).</li
               >
               <li
                 >Bijenstand / groep menu: klik op het
@@ -586,14 +588,15 @@
                   >
                   <li
                     >Of deel een kast met een bestaande samenwerkingsgroep via
-                    het menu van de betreffende groep. Groepen kunnen getoond
-                    worden door de groepsfilter aan te klikken (<v-icon
+                    het menu van de betreffende groep. Groepen worden getoond in
+                    het
+                    <router-link :to="{ name: 'home' }">Kasten</router-link>
+                    overzicht, of kunnen <em>exclusief</em> getoond worden door
+                    de groepsfilter aan te klikken (<v-icon
                       class="icon-apiary-shared color-grey"
                       >mdi-account-multiple</v-icon
                     >
-                    icoon in het
-                    <router-link :to="{ name: 'home' }">Kasten</router-link>
-                    overzicht). Klik dan op het
+                    icoon). Klik dan op het
                     <v-icon small class="color-grey-light inline-icon"
                       >mdi-cog</v-icon
                     >
@@ -837,12 +840,13 @@
                 ><strong>Samenwerkingsgroepen</strong> zijn nu direct zichtbaar
                 in het
                 <router-link :to="{ name: 'home' }">Kasten</router-link>
-                overzicht via de groepsfilter (<v-icon
+                overzicht. Via de groepsfilter (<v-icon
                   class="icon-apiary-shared color-grey"
                   >mdi-account-multiple</v-icon
                 >
-                icoon, eerste in de rij na het zoekveld, alleen zichtbaar als je
-                lid bent van tenminste één samenwerkingsgroep).</li
+                icoon) kunnen groepen exclusief getoond worden (eerste in de rij
+                na het zoekveld, alleen zichtbaar als je lid bent van tenminste
+                één samenwerkingsgroep).</li
               >
               <li
                 ><router-link :to="{ name: 'devices' }"

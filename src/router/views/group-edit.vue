@@ -543,10 +543,6 @@ export default {
           this.readGroups().then(() => {
             var group = this.groups.filter((group) => group.id === groupId)[0]
             this.$store.commit('locations/setData', {
-              prop: 'hiveFilterByGroup',
-              value: true,
-            })
-            this.$store.commit('locations/setData', {
               prop: 'hiveSearch',
               value: group.name, // set search term via store instead of query to overrule possible stored search terms
             })
@@ -578,10 +574,6 @@ export default {
           }
           setTimeout(() => {
             return this.readGroups().then(() => {
-              this.$store.commit('locations/setData', {
-                prop: 'hiveFilterByGroup',
-                value: true,
-              })
               this.$store.commit('locations/setData', {
                 prop: 'hiveSearch',
                 value: this.activeGroup.name, // set search term via store instead of query to overrule possible stored search terms
@@ -742,10 +734,6 @@ export default {
           this.showSuccessMessage = true
           setTimeout(() => {
             return this.readGroups().then(() => {
-              this.$store.commit('locations/setData', {
-                prop: 'hiveFilterByGroup',
-                value: true,
-              })
               this.$store.commit('locations/setData', {
                 prop: 'hiveSearch',
                 value: this.activeGroup.name, // set search term via store instead of query to overrule possible stored search terms

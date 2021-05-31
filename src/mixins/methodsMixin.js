@@ -113,20 +113,6 @@ export const readApiariesAndGroups = {
           'groups/setInvitations',
           responseGroups.data.invitations
         )
-        // activate Hives & Diary group filter by default if user only has groups and no apiaries
-        if (
-          responseApiaries.data.locations.length === 0 &&
-          responseGroups.data.groups.length > 0
-        ) {
-          this.$store.commit('locations/setData', {
-            prop: 'hiveFilterByGroup',
-            value: true,
-          })
-          this.$store.commit('inspections/setFilter', {
-            filter: 'diaryFilterByGroup',
-            value: true,
-          })
-        }
         return true
       } catch (error) {
         if (error.response) {
