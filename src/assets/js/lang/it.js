@@ -758,6 +758,8 @@ const translations = {
   research_info:
     'Prima di acconsentire, verifica la descrizione della ricerca disponibile al link sottostante e chiedi ulteriori spiegazioni se ne senti il bisogno.',
   save_and_delete: 'Salva e cancella',
+  drag_layers_info_text:
+    'Drag layers from the left hand side to the desired position within the hive on the right hand side. Delete a layer from the hive by clicking on it and then clicking on the red bin icon. Within the hive layers can be dragged as well to edit the position, layer color can be edited by clicking on the layer.',
 }
 
 export default translations

@@ -2,7 +2,20 @@
   <div>
     <v-row class="hive-factory-wrapper my-0">
       <v-col cols="12" sm="7" md="12">
-        <div class="beep-label" v-text="`${$t('drag_layers')}`"></div>
+        <div class="beep-label">
+          {{ $t('drag_layers') }}
+          <v-icon
+            class="mdi mdi-information ml-1 icon-info cursor-pointer"
+            dark
+            small
+            color="accent"
+            @click="showInfo = !showInfo"
+          ></v-icon>
+        </div>
+
+        <p v-if="showInfo" class="info-text">
+          <em>{{ $t('drag_layers_info_text') }} </em>
+        </p>
         <div
           :class="
             `hive-factory rounded-border d-flex flex-row align-center justify-flex-start ${
@@ -142,6 +155,7 @@ export default {
       currentLayer: null,
       layerColorPickerValue: '',
       layerColorPreview: false,
+      showInfo: false,
     }
   },
   computed: {

@@ -759,6 +759,8 @@ const translations = {
   research_info:
     'Înainte de a vă da consimțământul, vă rugăm să consultați descrierea cercetării oferită prin linkul de mai jos și să solicitați detalii suplimentare, dacă considerați necesar.',
   save_and_delete: 'Salvați și ștergeți',
+  drag_layers_info_text:
+    'Drag layers from the left hand side to the desired position within the hive on the right hand side. Delete a layer from the hive by clicking on it and then clicking on the red bin icon. Within the hive layers can be dragged as well to edit the position, layer color can be edited by clicking on the layer.',
 }
 
 export default translations
