@@ -16,7 +16,7 @@
           <div
             class="filter-buttons d-flex flex-row justify-flex-start align-center"
           >
-            <v-col cols="5" :class="mobile ? 'pr-0' : 'pr-1'">
+            <v-col class="pa-3">
               <v-text-field
                 v-model="diarySearch"
                 :label="`${$t('Search')}`"
@@ -34,7 +34,7 @@
                 hide-details
               ></v-text-field>
             </v-col>
-            <v-card-actions class="pl-1 pl-sm-2">
+            <v-card-actions class="pl-0">
               <v-icon
                 v-if="groups.length > 0"
                 :class="
@@ -102,15 +102,8 @@
               </v-icon>
             </v-card-actions>
           </div>
-          <v-card-actions class="mr-1">
-            <v-btn
-              v-if="!mobile && !smallScreen"
-              :to="{ name: 'inspect' }"
-              medium
-              tile
-              outlined
-              color="black"
-            >
+          <v-card-actions v-if="!mobile && !smallScreen" class="mr-1">
+            <v-btn :to="{ name: 'inspect' }" medium tile outlined color="black">
               <v-icon left>mdi-plus</v-icon>
               {{ $t('New_inspection') }}
             </v-btn>

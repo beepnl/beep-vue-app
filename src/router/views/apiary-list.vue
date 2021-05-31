@@ -6,9 +6,9 @@
           class="filter-bar d-flex flex-row justify-space-between align-center"
         >
           <div
-            class="filter-buttons d-flex flex-row justify-flex-start align-center"
+            class="filter-buttons filter-buttons--has-max d-flex flex-row justify-flex-start align-center"
           >
-            <v-col cols="4" sm="5" :class="mobile ? 'pr-0' : 'pr-1'">
+            <v-col class="pa-3">
               <v-text-field
                 v-model="hiveSearch"
                 :label="`${$t('Search')}`"
@@ -20,14 +20,13 @@
                   } filter-text-field`
                 "
                 :height="mobile ? '30px' : '36px'"
-                :autofocus="hiveSearch !== null"
                 clearable
                 outlined
                 dense
                 hide-details
               ></v-text-field>
             </v-col>
-            <v-card-actions>
+            <v-card-actions class="pl-0">
               <v-icon
                 v-if="groups.length > 0"
                 :class="

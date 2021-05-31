@@ -50,9 +50,9 @@
       margin-top: -12px;
       margin-bottom: -12px;
     }
-    .filter-buttons {
+    .filter-buttons.filter-buttons--has-max {
       @include for-phone-only {
-        max-width: 300px;
+        max-width: 320px;
       }
       @media (max-width: 320px) {
         max-width: 270px;
@@ -62,42 +62,61 @@
       &:not(.v-input--switch) {
         background-color: $color-white;
       }
-      &:not(.filter-text-field--large) {
+      @include for-phone-only {
+        min-width: 80px;
+      }
+      &.v-text-field.v-text-field--outlined input {
+        text-overflow: ellipsis;
         @include for-phone-only {
-          max-width: 98px;
+          font-size: 14px;
         }
       }
-      &.v-text-field.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo).v-text-field--outlined
+      &.v-text-field.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo).v-text-field--outlined {
         .v-input__slot {
-        @include for-phone-only {
-          padding: 0 6px !important;
-          .v-text-field__slot {
-            min-width: 72px;
-            .v-label--active {
-              left: 4px !important;
+          .v-label.v-label--active {
+            color: $color-primary !important;
+          }
+          @include for-phone-only {
+            padding: 0 2px 0 6px !important;
+            .v-text-field__slot {
+              min-width: 72px;
+              .v-label--active {
+                left: 4px !important;
+              }
             }
           }
         }
-      }
-      &.v-text-field.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo).v-text-field--outlined.filter-text-field--large
-        .v-input__slot {
-        @media (max-width: 372px) {
-          .v-text-field__slot {
-            min-width: 60px;
+        &.filter-text-field--alerts {
+          @include for-phone-only {
+            max-width: 110px;
+          }
+          @media (max-width: 372px) {
+            max-width: 86px;
           }
         }
       }
-      &.v-text-field.v-input--is-focused.v-input--dense:not(.v-text-field--solo).v-text-field--outlined
+      &.v-text-field.v-input--is-focused.v-input--dense:not(.v-text-field--solo).v-text-field--outlined {
         .v-input__slot {
-        @include for-phone-only {
-          .v-text-field__slot {
-            min-width: 52px;
-            height: 30px !important;
+          @include for-phone-only {
+            .v-text-field__slot {
+              min-width: 63px;
+              height: 30px !important;
+            }
+          }
+          @media (max-width: 372px) {
+            max-width: 90px;
+            .v-text-field__slot {
+              min-width: 55px;
+            }
           }
         }
-        @media (max-width: 372px) {
-          .v-text-field__slot {
-            min-width: 35px;
+        &.filter-text-field--alerts {
+          .v-input__slot {
+            @media (max-width: 372px) {
+              .v-text-field__slot {
+                min-width: 45px;
+              }
+            }
           }
         }
       }

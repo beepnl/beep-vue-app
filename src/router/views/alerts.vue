@@ -9,9 +9,9 @@
           class="filter-bar d-flex flex-row justify-space-between align-center"
         >
           <div
-            class="filter-buttons d-flex flex-row justify-flex-start align-center"
+            class="filter-buttons filter-buttons--has-max d-flex flex-row justify-flex-start align-center"
           >
-            <v-col cols="12" sm="7" :class="mobile ? 'pr-0' : 'pr-1'">
+            <v-col class="pa-3">
               <v-text-field
                 v-if="!showAlertPlaceholder"
                 v-model="search"
@@ -19,7 +19,7 @@
                 :class="
                   `${
                     search !== null ? 'v-input--is-focused primary--text' : ''
-                  } filter-text-field--large`
+                  } filter-text-field--alerts`
                 "
                 :height="mobile ? '30px' : '36px'"
                 clearable
@@ -29,8 +29,14 @@
               ></v-text-field>
             </v-col>
           </div>
-          <v-card-actions class="mr-1">
-            <v-btn :to="{ name: 'alertrules' }" tile outlined color="black">
+          <v-card-actions class="pl-0 mr-1">
+            <v-btn
+              :to="{ name: 'alertrules' }"
+              tile
+              outlined
+              color="black"
+              :small="tinyScreen"
+            >
               <v-icon left>mdi-pencil</v-icon>
               {{ $t('alertrule_pagetitle') }}
             </v-btn>
@@ -258,6 +264,9 @@ export default {
       } else {
         return false
       }
+    },
+    tinyScreen() {
+      return this.$vuetify.breakpoint.width < 373
     },
   },
   created() {

@@ -73,13 +73,14 @@
         class="content-container"
       >
         <v-row v-if="!queenEditMode">
-          <v-col cols="12">
-            <p
-              v-if="
-                activeHive.location === null &&
-                  (apiaries === null || apiaries.length === 0)
-              "
-              class="red--text mt-3"
+          <v-col
+            v-if="
+              activeHive.location === null &&
+                (apiaries === null || apiaries.length === 0)
+            "
+            cols="12"
+          >
+            <p class="red--text mt-3"
               >{{ $t('no_apiaries_yet') }}
               <router-link
                 :to="{

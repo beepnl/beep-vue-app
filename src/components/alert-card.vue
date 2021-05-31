@@ -22,7 +22,7 @@
               sm="5"
               class="alert-details-item alert-meta d-flex flex-row justify-flex-start pa-0"
             >
-              <v-row class="my-0 py-0 pr-3">
+              <v-row class="my-0 py-0 pr-1">
                 <v-col
                   v-if="alert.created_at"
                   cols="5"

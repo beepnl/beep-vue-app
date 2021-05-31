@@ -23,7 +23,7 @@
                   alertsEnabled ? $t('alerts_enabled') : $t('alerts_disabled')
                 "
                 hide-details
-                class="filter-text-field--large pt-0"
+                class="pt-0"
                 @change="toggleAlerts"
               ></v-switch>
               <v-icon
