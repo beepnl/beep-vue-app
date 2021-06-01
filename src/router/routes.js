@@ -283,16 +283,16 @@ export default [
     component: () => lazyLoadView(import('@views/hive-edit.vue')),
   },
   {
-    path: '/sensors', // old v2 path which might be saved and therefore used by users coming from v2 app
-    redirect: '/devices',
-  },
-  {
     meta: {
       authRequired: true,
     },
     path: '/support',
     name: 'support',
     component: () => lazyLoadView(import('@views/support.vue')),
+  },
+  {
+    path: '/webapp', // old v2 path
+    redirect: '/',
   },
 ]
 
