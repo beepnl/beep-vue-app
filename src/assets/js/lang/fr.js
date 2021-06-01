@@ -1,46 +1,46 @@
 /*
  * BEEP - Translations
- * Author: Pim van Gennip (pim@iconize.nl)
+ * Author: Pim van Gennip (pim@iconize.nl) & Cyrille Duverne (cyrille.duverne@gmail.com)
  *
  */
 const translations = {
   /* Date picker */
   monthsFull: [
-    'Janvier ',
-    ' Février ',
-    ' Mars ',
-    ' Avril ',
-    ' Mai ',
-    ' Juin ',
-    ' Juillet ',
-    ' Août ',
-    ' Septembre ',
-    ' Octobre ',
-    ' Novembre ',
-    ' Décembre ',
+    'Janvier',
+    'Février',
+    'Mars',
+    'Avril',
+    'Mai',
+    'Juin',
+    'Juillet',
+    'Août',
+    'Septembre',
+    'Octobre',
+    'Novembre',
+    'Décembre',
   ],
   monthsShort: [
-    'Jan ',
-    ' Fév ',
-    ' Mar ',
-    ' Avr ',
-    ' Mai ',
-    ' Juin ',
-    ' Juil ',
-    ' Août ',
-    ' Sep ',
-    ' Oct ',
-    ' Nov ',
-    ' Dec',
+    'Jan',
+    'Fév',
+    'Mar',
+    'Avr',
+    'Mai',
+    'Juin',
+    'Juil',
+    'Août',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
   ],
   weekdaysFull: [
-    'Dimanche ',
-    ' Lundi ',
-    ' Mardi ',
-    ' Mercredi ',
-    ' Jeudi ',
-    ' Vendredi ',
-    ' Samedi ',
+    'Dimanche',
+    'Lundi',
+    'Mardi',
+    'Mercredi',
+    'Jeudi',
+    'Vendredi',
+    'Samedi',
   ],
   weekdaysShort: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
   Today: "Aujourd'hui",
@@ -54,9 +54,9 @@ const translations = {
   Feedback: 'Avis',
   Feedback_mail_header: "Commentaires de l'application beep",
   Feedback_mail_body:
-    "Cher BEEP foundation, % 0D % 0A % 0D % 0AVoici mon commentaire sur l'application BEEP. % 0D % 0A % 0D % 0AI a découvert ceci : % 0D % 0A % 0D % 0AJuste avant que cela ne se produise, j'ai fait : % 0D % 0A % 0D % 0AL'écran ressemblait (s'il vous plaît inclure une capture d'écran) : % 0D % 0A % 0A % 0D % 0A % 0A % 0A % 0A D % 0A % 0D % 0A",
-  Diagnostic_info: 'Informations de diagnostic (en cas de bogue) : % 0D % 0A',
-  back: 'Retourner',
+    "Cher BEEP foundation, % 0D % 0A % 0D % 0AVoici mon avis sur l'application BEEP. % 0D % 0A % 0D % 0J'ai découvert ceci : % 0D % 0A % 0D % 0AJuste avant que cela ne se produise, j'ai fait : % 0D % 0A % 0D % 0AL'écran affichait (Merci d'inclure une capture d'écran) : % 0D % 0A % 0A % 0D % 0A % 0A % 0A % 0A D % 0A % 0D % 0A",
+  Diagnostic_info: 'Données de diagnostic (en cas de bug) : % 0D % 0A',
+  back: 'Précédent',
   menu: 'Menu',
   lighting: 'Éclairage',
   camera: 'Appareil photo',
@@ -64,12 +64,10 @@ const translations = {
   sensors: 'Capteurs',
   sensors_na:
     'Des capteurs BEEP pour surveiller à distance votre ruche seront bientôt disponibles..',
-
   no_valid_authentication:
     "Aucune donnée d'authentification valide n'a été reçue",
   succesfully_saved: 'Sauvegardé avec succès',
-
-  switch_language: 'Changez de langue',
+  switch_language: 'Changer de langue',
   Delete: 'Supprimer',
   Search: 'Recherche...',
 
@@ -78,43 +76,43 @@ const translations = {
   User_data: 'Données utilisateur',
   user_data: 'données utilisateur',
   updated: 'mis à jour',
+  /* Cyrille - 31/05 : Translation updated */
   delete_complete_account:
-    "Êtes-vous sûr de vouloir supprimer votre compte complet, y compris tous les ruchers, ruches et inspections ? C'est irréversible.",
+    'Êtes-vous sûr de vouloir complètement supprimer votre compte, y compris tous les ruchers, ruches et inspections ? Cette action est irréversible.',
   username_is_required: "Veuillez saisir le nom d'utilisateur",
-  username_already_exists: "Le nom d'utilisateur existe déjà",
+  username_already_exists: "Ce nom d'utilisateur existe déjà",
   password_is_required: 'Veuillez saisir un mot de passe',
-  email_is_required: 'Veuillez saisir un e-mail',
-  email_already_exists: "L'adresse e-mail est déjà utilisée",
+  /* Cyrille - 31/05 : Translation updated */
+  email_is_required: 'Veuillez saisir une adresse e-mail',
+  /* Cyrille - 31/05 : Translation updated */
+  email_already_exists: 'Cette adresse e-mail est déjà utilisée',
   policy_accepted_is_required:
-    'Vous devez accepter les conditions de service pour vous inscrire',
-
-  already_registered: 'Je suis déjà inscrit',
+    "Vous devez accepter les conditions d'utilisation pour vous inscrire",
+  /* Cyrille - 31/05 : Translation updated */
+  already_registered: "J'ai déjà un compte",
   invalid_user: 'Utilisateur inconnu ou mot de passe incorrect',
   no_password_match: 'Les mots de passe ne correspondent pas',
   invalid_token: 'Code non valide',
-
   no_valid_email: 'Adresse e-mail non valide',
-
   empty_fields: 'Veuillez remplir tous les champs',
   match_passwords: 'Les mots de passe ne correspondent pas',
-
   succesfully_registered: 'Vous êtes enregistré avec succès',
   authentication_failed: "Échec de l'authentification",
-
   no_valid_input_received:
     "Les données n'ont pas pu être enregistrées, aucune entrée valide n'a été reçue",
-
-  remove_all_settings: 'Supprimez tous les paramètres',
-  remove_apiary: 'Enlevez le rucher',
-  remove_hive: 'Enlevez la ruche',
-  remove_inspection: "Retirer l'inspection",
-
+  remove_all_settings: 'Supprimer tous les paramètres',
+  /* Cyrille - 31/05 : Translation updated */
+  remove_apiary: 'Supprimer le rucher',
+  /* Cyrille - 31/05 : Translation updated */
+  remove_hive: 'Supprimer la ruche',
+  /* Cyrille - 31/05 : Translation updated */
+  remove_inspection: "Supprimer l'inspection",
   Error: 'Erreur',
   Warning: 'Attention',
+  /* Cyrille - 31/05 : Translation updated */
   first_remove_hives:
-    "Attention : il y a encore des ruches à ce rucher. Vous pouvez enregistrer des ruches spécifiques (et leurs inspections) en les déplaçant d'abord vers un autre rucher. Si vous continuez à supprimer, vous supprimerez TOUTES les ruches et les inspections présentes à cet emplacement",
-
-  Date: 'Rendez-vous',
+    "Attention : il y a encore des ruches associées à ce rucher. Vous pouvez enregistrer des ruches spécifiques (et leurs inspections) en les déplaçant d'abord vers un autre rucher. Si vous poursuivez, vous supprimerez TOUTES les ruches et les inspections présentes à cet emplacement",
+  Date: 'Date',
   ok: 'Ok',
   previous: 'Précédent',
   prev: 'précédent',
@@ -122,9 +120,7 @@ const translations = {
   add: 'Ajouter',
   create_new: 'Créer un nouveau',
   New: 'Nouveau',
-
   warning: 'Attention',
-
   apply: 'Appliquer',
   Cancel: 'Annuler',
   automatic: 'Automatique',
@@ -135,58 +131,64 @@ const translations = {
   /* login */
   login_title: 'Connectez-vous',
   login: 'Connectez-vous',
-  back_to_login: 'Retour à la connexion',
-  forgot_password: 'Vous avez oublié votre mot de passe ?',
-
+  /* Cyrille - 31/05 : Translation updated */
+  back_to_login: "Retour à l'écran de connexion",
+  /* Cyrille - 31/05 : Translation updated */
+  forgot_password: 'Mot de passe oublié ?',
   username: "Nom d'utilisateur",
   password: 'Mot de passe',
   confirm_password: 'Confirmez le mot de passe',
   email: 'E-mail',
   token: 'Code',
-
-  create_login_question:
-    'Pas encore de compte ? Inscrivez-vous en tant que nouvel utilisateur',
-  create_login: 'Inscrivez-vous en tant que nouvel utilisateur',
-  create_login_summary: "Créez un nouveau compte d'utilisateur",
-  save: 'Sauvegarder et retour',
-  save_and_return: 'Sauvegarder et retour',
-
+  /* Cyrille - 31/05 : Translation updated */
+  create_login_question: 'Pas encore de compte ? Inscrivez vous !',
+  create_login: 'Inscrivez-vous',
+  /* Cyrille - 31/05 : Translation updated */
+  create_login_summary: 'Créer un nouveau compte utilisateur',
+  /* Cyrille - 31/05 : Translation updated */
+  save: 'Sauvegarder',
+  /* Cyrille - 31/05 : Translation updated */
+  save_and_return: 'Sauvegarde et retour',
   logout: 'Se déconnecter',
-  logout_title: 'Se déconnecter en tant que',
+  /* Cyrille - 31/05 : Translation updated */
+  logout_title: 'Se déconnecter',
   logout_now: 'Voulez-vous vraiment vous déconnecter maintenant ?',
   member_since: 'BEEP depuis',
 
   /* password recovery */
   password_recovery_title: 'Vous avez oublié votre mot de passe ?',
+  /* Cyrille - 31/05 : Translation updated */
   password_recovery_remembered:
-    'Oh, maintenant je me suis rappelé mon mot de passe !',
-  password_recovery_user: 'Informations utilisateur',
+    'Oh, maintenant je me souviens de mon mot de passe !',
+  /* Cyrille - 31/05 : Translation updated */
+  password_recovery_user: "Nom d'utilisateur",
   password_recovery_send_mail: 'Envoyer le code de vérification',
   password_recovery_code_not_received: 'Code non reçu dans les 5 minutes ?',
   password_recovery_enter_code:
     'Vous avez déjà un code de vérification ? Entrez le ici',
   password_recovery_reset_title: 'Entrez un nouveau mot de passe',
   password_recovery_reset_password: 'Changer le mot de passe',
+  /* Cyrille - 31/05 : Translation updated */
   password_recovery_reminder_success:
-    "Un e-mail a été envoyé. Cliquez sur le lien dans l'e-mail pour réinitialiser votre mot de passe pour ce compte",
+    "Un e-mail a été envoyé. Cliquez sur le lien dans l'e-mail pour réinitialiser votre mot de passe",
+  /* Cyrille - 31/05 : Translation updated */
   password_recovery_reminder_summary:
-    "Entrez votre adresse e-mail. Vous recevrez un e-mail avec un lien pour changer votre mot de passe à l'étape suivante",
-
+    'Entrez votre adresse e-mail. Vous recevrez un e-mail avec un lien pour changer votre mot de passe',
   password_recovery_reset_summary:
     'Utilisez le code que vous avez reçu pour définir un nouveau mot de passe pour votre compte',
+  /* Cyrille - 31/05 : Translation updated */
   password_recovery_reset_success:
-    'Vous passowrd est modifié avec succès, et vous êtes connecté.',
-
+    'Vous passowrd a été modifié avec succès, et vous êtes connecté.',
   new_password: 'Nouveau mot de passe',
   confirm_new_password: 'Confirmez le nouveau mot de passe',
-
   go_to_dashboard: 'Allez sur mon tableau de bord',
 
   /* overview */
   overview_title: "Vue d'ensemble",
   overview: "Vue d'ensemble",
   color: 'Couleur',
-  state: 'Marche/arrêt',
+  /* Cyrille - 31/05 : Translation updated */
+  state: 'Marche/Arrêt',
   connection_state: 'État de la connexion',
 
   /* hives */
@@ -214,8 +216,10 @@ const translations = {
   edit: 'Modifier',
   // Hive_brood_layers: 'Cadre de couvain',
   // Hive_honey_layers: 'Cadre de miel',
-  Hive_layer_amount: "Quantité d'éléments",
-  Bee_race: "Course d'abeilles",
+  /* Cyrille - 31/05 : Translation updated */
+  Hive_layer_amount: "Nombre d'éléments",
+  /* Cyrille - 31/05 : Translation updated */
+  Bee_race: "Espèce d'abeilles",
   Birth_date: 'Date de naissance',
   Color: 'Couleur',
   Queen_colored: 'Reine marquée',
@@ -229,21 +233,22 @@ const translations = {
   action: 'Action',
   reminder: 'Rappel',
   remind_date: 'Date de rappel',
-
   overall: "Dans l'ensemble",
   positive_impression: 'Impression totale',
   needs_attention: "Besoin d'attention",
   notes: 'Notes',
   notes_for_next_inspection:
     "Brève note pour la prochaine inspection (visible sur la vue d'ensemble)",
-  Not_implemented_yet: "Cet élément n'est pas encore implémenté",
+  /* Cyrille - 31/05 : Translation updated */
+  Not_implemented_yet: "Cet élément n'est pas encore disponible",
   save_input_first: "Voulez-vous d'abord enregistrer votre saisie ?",
 
   /* dashboard */
   dashboard_title: 'Tableau de bord',
   dashboard: 'Tableau de bord',
+  /* Cyrille - 31/05 : Translation updated */
   measurementsError:
-    'Impossible de charger les mesures, vérifiez la connexion réseau',
+    "Impossible d'afficher les mesures, vérifiez la connexion réseau",
   last_measurement: 'Dernière mesure',
   at: 'à',
   measurement_system: 'Système de mesure BEEP',
@@ -256,44 +261,52 @@ const translations = {
   Country: 'Pays',
   City: 'Ville',
   Address: 'Adresse',
-  Lattitude: 'Lattitude',
+  /* Cyrille - 31/05 : Translation updated */
+  Lattitude: 'Latitude',
   Longitude: 'Longitude',
   Street: 'Rue',
-  Number: 'Non',
+  /* Cyrille - 31/05 : Translation updated */
+  Number: 'Numéro',
   Postal_code: 'Code postal',
   Description: 'Description',
   Hive_settings: 'Paramètres de la ruche',
-  Hive_amount: 'Nombe de ruches à cet emplacement',
-  Hive_prefix: 'Nom de la ruche préfixe (avant numéro)',
+  /* Cyrille - 31/05 : Translation updated */
+  Hive_amount: 'Nombre de ruches à cet emplacement',
+  /* Cyrille - 31/05 : Translation updated */
+  Hive_prefix: 'Préfixe de ruche (avant numéro)',
   Hive_number_offset: 'Début de numérotation',
   Hive_type: 'Type de ruche',
-  Hive_layers: 'Element de ruche',
+  /* Cyrille - 31/05 : Translation updated */
+  Hive_layers: 'Elément de ruche',
   Hive_frames: 'Cadres par élément',
-
-  Hive_color: 'Couleur ruche',
+  /* Cyrille - 31/05 : Translation updated */
+  Hive_color: 'Couleur de la ruche',
   Queen: 'Reine',
   queen: 'reine',
-
   settings_title: 'Paramètres',
   settings_description: 'Réglages des capteurs',
   Settings: 'Paramètres',
   settings: 'paramètres',
-
   sensors_title: 'Réglages du capteur',
-  sensors_description: 'État et enregistrement des capteurs',
+  /* Cyrille - 31/05 : Translation updated */
+  sensors_description: 'Description des capteurs',
   //   sensors: 'Capteurs',
   sensor: 'Capteur',
-
   Select: 'Sélectionner',
   Not_selected: 'Non sélectionné',
-  Poor: 'Pauvre',
-  Fair: 'Juste',
+  /* Cyrille - 31/05 : Translation updated */
+  Poor: 'Faible',
+  /* Cyrille - 31/05 : Translation updated */
+  Fair: 'Suffisante',
   Average: 'Moyenne',
-  Good: 'Bon',
-  Excellent: 'Très bien',
+  /* Cyrille - 31/05 : Translation updated */
+  Good: 'Bonne',
+  /* Cyrille - 31/05 : Translation updated */
+  Excellent: 'Excellente',
   Low: 'Faible',
   Medium: 'Moyenne',
-  High: 'Elevé',
+  /* Cyrille - 31/05 : Translation updated */
+  High: 'Elevée',
   Extreme: 'Extrême',
 
   /* colors */
@@ -314,38 +327,52 @@ const translations = {
   t_7: 'Température 8',
   t_8: 'Température 9',
   t_9: 'Température 10',
-  light: 'Lumière du soleil',
-  l: 'Lumière du soleil',
+  light: 'Ensoleillement',
+  l: 'Ensoleillement',
   water: 'Eau',
   w: 'Eau',
   humidity: 'Humidité',
   h: 'Humidité',
-  air_pressure: "Pression de l'air",
-  p: "Pression de l'air",
+  air_pressure: 'Pression atmosphérique',
+  p: 'Pression atmosphérique',
   weight: 'Poids',
-  w_v: 'Valeur du capteur de poids tous les capteurs',
-  w_fl: 'Valeur du capteur de poids avant gauche',
-  w_fr: 'Valeur du capteur de poids avant droit',
-  w_bl: 'Valeur du capteur de poids arrière gauche',
-  w_br: 'Valeur du capteur de poids retour à droite',
+  /* Cyrille - 31/05 : Translation updated */
+  w_v: 'Valeur totale des capteurs de poids',
+  /* Cyrille - 31/05 : Translation updated */
+  w_fl: 'Valeur du capteur de poids avant/gauche',
+  /* Cyrille - 31/05 : Translation updated */
+  w_fr: 'Valeur du capteur de poids avant/droit',
+  /* Cyrille - 31/05 : Translation updated */
+  w_bl: 'Valeur du capteur de poids arrière/gauche',
+  /* Cyrille - 31/05 : Translation updated */
+  w_br: 'Valeur du capteur de poids arrière/droit',
   weight_kg: 'Poids',
-  weight_kg_corrected: 'Poids (corr)',
+  /* Cyrille - 31/05 : Translation updated */
+  weight_kg_corrected: 'Poids (corrigé)',
   weight_combined_kg: 'Poids combiné',
   bat_volt: 'Batterie',
   bv: 'Batterie',
-  sound_fanning_4days: 'Fan 4d abeilles',
-  s_fan_4: 'Fan 4d abeilles',
-  sound_fanning_6days: 'Fan 6d abeilles',
-  s_fan_6: 'Fan 6d abeilles',
-  sound_fanning_9days: 'Fan 9d abeilles',
-  s_fan_9: 'Fan 9d abeilles',
+  /* Cyrille - 31/05 : Translation updated */
+  sound_fanning_4days: 'Ventilation 4d abeilles',
+  /* Cyrille - 31/05 : Translation updated */
+  s_fan_4: 'Ventilation 4d abeilles',
+  /* Cyrille - 31/05 : Translation updated */
+  sound_fanning_6days: 'Ventilation 6d abeilles',
+  /* Cyrille - 31/05 : Translation updated */
+  s_fan_6: 'Ventilation 6d abeilles',
+  /* Cyrille - 31/05 : Translation updated */
+  sound_fanning_9days: 'Ventilation 9d abeilles',
+  /* Cyrille - 31/05 : Translation updated */
+  s_fan_9: 'Ventilation 9d abeilles',
   sound_flying_adult: 'Abeilles volantes',
   s_fly_a: 'Abeilles volantes',
   sound_total: 'Son total',
   s_tot: 'Son total',
   s_spl: 'Son total',
-  bee_count_in: 'Comptez les abeilles',
-  bc_i: 'Comptez les abeilles',
+  /* Cyrille - 31/05 : Translation updated */
+  bee_count_in: "Comptage d'abeilles entrantes",
+  /* Cyrille - 31/05 : Translation updated */
+  bc_i: "Comptage d'abeilles entrantes",
   bee_count_out: "Comptage d'abeilles sorties",
   bc_o: "Comptage d'abeilles sorties",
   t_i: "Temp. à l'intérieur",
@@ -383,21 +410,35 @@ const translations = {
   s_bin_1406_1607: '1406-1607Hz',
   s_bin_1607_1807: '1607-1807Hz',
   s_bin_1807_2008: '1807-2008Hz',
-  icon: 'Icon',
-  precipIntensity: 'Rainfall',
-  precipProbability: 'Rain probability',
-  precipType: 'Rain type',
-  outsideTemperature: 'Outside temperature',
-  apparentTemperature: 'Apparent temperature',
-  dewPoint: 'Dew point',
+  /* Cyrille - 31/05 : Translation updated */
+  icon: 'Icone',
+  /* Cyrille - 31/05 : Translation updated */
+  precipIntensity: 'Pluie',
+  /* Cyrille - 31/05 : Translation updated */
+  precipProbability: 'Probabilité de pluie',
+  /* Cyrille - 31/05 : Translation updated */
+  precipType: 'Type de pluie',
+  /* Cyrille - 31/05 : Translation updated */
+  outsideTemperature: 'Température extérieure',
+  /* Cyrille - 31/05 : Translation updated */
+  apparentTemperature: 'Température ressentie',
+  /* Cyrille - 31/05 : Translation updated */
+  dewPoint: 'Point de rosée',
   //   humidity: 'Humidity',
-  pressure: 'Air pressure',
-  windSpeed: 'Wind speed',
-  windGust: 'Wind gust',
-  windBearing: 'Wind bearing',
-  cloudCover: 'Cloud cover',
-  uvIndex: 'UV index',
-  visibility: 'Visibility',
+  /* Cyrille - 31/05 : Translation updated */
+  pressure: 'Pression atmosphérique',
+  /* Cyrille - 31/05 : Translation updated */
+  windSpeed: 'Vitesse du vent',
+  /* Cyrille - 31/05 : Translation updated */
+  windGust: 'Rafale de vent',
+  /* Cyrille - 31/05 : Translation updated, but needs more context */
+  windBearing: 'Orientation du vent',
+  /* Cyrille - 31/05 : Translation updated */
+  cloudCover: 'Couverture nuageuse',
+  /* Cyrille - 31/05 : Translation updated */
+  uvIndex: 'Index UV',
+  /* Cyrille - 31/05 : Translation updated */
+  visibility: 'Visibilité',
   ozone: 'Ozone',
 
   /* Measurements */
@@ -409,40 +450,44 @@ const translations = {
 
   /* settings */
   could_not_load_settings: 'Impossible de charger les paramètres',
-  offline: 'Pas de connexion',
+  /* Cyrille - 31/05 : Translation updated */
+  offline: 'Hors-connexion',
   remote: 'À distance',
-  connected: 'Direct',
-
+  /* Cyrille - 31/05 : Translation updated */
+  connected: 'Connecté',
   yes: 'Oui',
   no: 'Non',
-
   footer_text: 'Apiculture open source',
   beep_foundation: 'la fondation BEEP',
-
   Checklist: 'Liste de contrôle | Listes de contrôle',
   checklist: 'liste de contrôle | listes de contrôle',
   Checklist_items: 'Éléments de la liste de contrôle',
+  /* Cyrille - 31/05 : Translation updated */
   edit_hive_checklist:
-    'Cochez ou décochez les cases de la liste ci-dessous pour ajouter/supprimer des éléments de votre liste de vérification de la ruche. Vous pouvez également déplier/plier et glisser/déposer les éléments pour les réorganiser à votre propre style.',
+    'Cochez ou décochez les cases de la liste ci-dessous pour ajouter/supprimer des éléments à controler dans la ruche. Vous pouvez également grouper/dégrouper et glisser/déposer les éléments pour les réorganiser à votre guise.',
 
   /* user */
-  Data_export: 'Exportation de données',
+  /* Cyrille - 31/05 : Translation updated */
+  Data_export: 'Exportation des données',
+  /* Cyrille - 31/05 : Translation updated */
   Export_your_data:
-    'Exportez toutes les données qui se trouvent dans votre compte BEEP et envoyez un e-mail contenant les données en tant que fichier Excel 2007',
-
+    'Exporter toutes les données qui se trouvent dans votre compte BEEP et envoyez un e-mail contenant les données en tant que fichier Excel 2007',
   Terms_of_use: "Conditions d'utilisation",
   accept_policy:
     "J'accepte les conditions d'utilisation de BEEP, qui sont compatibles avec la nouvelle loi européenne sur la protection de la vie privée",
   policy_url: 'https://beep.nl/terms-of-service',
   policy_version: 'beep_terms_2018_05_25_avg_v1',
+  /* Cyrille - 31/05 : Translation updated */
   approve_policy:
-    "Vous n'avez pas encore respecté les dernières conditions d'utilisation",
+    "Vous n'avez pas encore accepté les dernières conditions d'utilisation",
 
   /* General items */
-  server_down:
-    "L'application n'est pas disponible en raison  de maintenance. Veuillez réessayer plus tard",
+  /* Cyrille - 31/05 : Translation updated */
+  server_down: "L'application est en maintenance. Veuillez réessayer plus tard",
   add_to_calendar: 'Ajouter au calendrier',
-  sort_on: 'Trier sur',
+  /* Cyrille - 31/05 : Translation updated */
+  sort_on: 'Trier par',
+  /* Cyrille - 31/05 : Translation updated */
   Whats_new: 'Nouveau!',
   Manual: 'Manuel (EN)',
 
@@ -452,37 +497,38 @@ const translations = {
     'Réglez le poids des capteurs à 0 en soustrayant la valeur de mesure actuelle',
   set_as_zero_value: 'Définissez ces valeurs en tant que valeurs 0',
   set_weight_factor: 'Définissez le facteur de poids',
-  own_weight_kg: 'Quel est votre propre poids en kg ?',
+  /* Cyrille - 31/05 : Translation updated */
+  own_weight_kg: 'Quel est votre propre poids ? (en kg)',
   start_calibration:
     'Maintenant, marchez sur la balance et appuyez sur le bouton ci-dessous pour définir le facteur de poids. Répartissez votre poids également',
   currently_there_is: 'Il y a un poids de',
-  nothing: 'rien',
+  /* Cyrille - 31/05 : Translation updated */
+  nothing: '0 kg',
   on_the_scale: 'sur la balance',
   calibration_started:
-    "L'étalonnage a commencé... Attendez que la prochaine mesure prenne effet",
-  calibration_ended: "L'étalonnage a réussi !",
-
+    "L'étalonnage a commencé... Attendez la prochaine mesure",
+  /* Cyrille - 31/05 : Translation updated */
+  calibration_ended: "L'étalonnage est terminé !",
   Site_title: 'BEEP | Moniteur abeille',
-
+  /* Cyrille - 31/05 : Translation updated */
   could_not_create_user:
-    "L'utilisateur ne peut pas être créé pour le moment. Désolé pour la gêne occasionnée, veuillez réessayer plus tard",
+    "L'utilisateur ne peut pas être créé pour le moment. Désolé, veuillez réessayer plus tard",
   email_verified: 'Votre adresse e-mail a été vérifiée',
   email_not_verified: "Votre adresse e-mail n'a pas encore été vérifiée",
   email_new_verification:
     'Cliquez sur ce lien pour envoyer un nouvel e-mail de vérification',
   email_verification_sent:
     "Un message avec un lien de vérification a été envoyé à votre adresse e-mail. Cliquez sur le lien dans l'e-mail pour activer votre compte et vous connecter",
-
   not_filled: 'non rempli',
   cannot_deselect:
     'Impossible de supprimer cet élément, car il contient un élément requis',
   Undelete: 'Ne pas supprimer',
-  the_field: 'Le',
+  /* Cyrille - 31/05 : Translation updated */
+  the_field: 'Le champ',
   is_required: 'est obligatoire',
-
   No_groups: "Aucun groupe n'est disponible",
-  not_available_yet:
-    "pas encore disponible. S'il vous plaît créer le premier ici.",
+  /* Cyrille - 31/05 : Translation updated */
+  not_available_yet: 'pas encore disponible. Merci de créer le premier ici.',
   Users: 'Utilisateurs',
   member: 'membre du groupe | membres du groupe',
   Member: 'Membre du groupe',
@@ -492,7 +538,6 @@ const translations = {
   Invitation: 'Invitation | Invitations',
   Admin: 'Administrateur',
   Creator: 'Propriétaire du groupe',
-  Collaborate: 'Collaborer',
   Group: 'Groupe de collaboration | Groupes de collaboration',
   group: 'groupe de collaboration | groupes de collaboration',
   group_short: 'groupe | groupes',
@@ -502,92 +547,98 @@ const translations = {
   Accept: 'Accepter',
   My_shared: 'Mon partage',
   invitee_name: "Nom de l'invité",
+  /* Cyrille - 31/05 : Translation updated */
   Remove_group:
-    'Êtes-vous sûr de vouloir supprimer ce groupe partagé en compétition pour tous ses membres',
+    'Êtes-vous sûr de vouloir supprimer ce groupe partagé pour tous ses membres',
   Detach_from_group: 'Retirez moi et mes ruches de ce groupe',
   my_hive: 'Ma ruche',
   created: 'créé',
   group_detached: 'A quitté le groupe avec succès',
   group_activated: 'Invitation de groupe acceptée',
+  /* Cyrille - 31/05 : Translation updated */
   group_explanation_1:
-    '1. Créer un nouveau groupe de coopération avec un titre clair et une description facultative',
+    '1. Créer un nouveau groupe de coopération avec un titre clair et une description',
+  /* Cyrille - 31/05 : Translation updated */
   group_explanation_2:
-    "2. Inviter d'autres utilisateurs BEEP sur leur adresse e-mail BEEP",
+    "2. Inviter d'autres utilisateurs BEEP en utilisant leur adresse email enregistrée dans BEEP",
   group_explanation_3:
     "3. Partager des ruches spécifiques pour être vues par d'autres, pour coopérer",
-  Filter_and_sort_on: 'Filtrer et trier sur:',
+  Filter_and_sort_on: 'Filtrer et trier par:',
 
   /* TO BE TRANSLATED */
   /* New translations v2.2.0 */
-  roofed: 'Does the apiary have a roof?',
+  roofed: 'Le rucher est-il couvert ?',
   info: 'Info',
+  research: 'Recherche',
+  start_date: 'Date de début',
+  end_date: 'Date de fin',
+  purpose: 'But de la recherche',
+  institution: 'Organisation Chercheuse',
+  type_of_data_used: 'Type de données utilisées',
+  link: 'Lien',
+  Consent: 'Consentement',
+  history: 'historique',
+  Current_consent: 'Consentement actuel',
+  consent_yes: 'Je consent à partager mes données',
+  consent_no: 'Je ne consent pas au partage de mes données',
+  my_beep_data: 'Mes données',
+  Consent_can_only_be_set: 'Le consentement ne peux être ajusté que pour: ',
+  /* Cyrille - 31/05 : This translation needs more context */
+  earlier: 'une précédente',
+  /* Cyrille - 31/05 : This translation needs more context */
+  later: 'une future',
 
-  research: 'Research',
-  start_date: 'Start date',
-  end_date: 'End date',
-  purpose: 'Research purpose',
-  institution: 'Research institution',
-  type_of_data_used: 'Data usage',
-  link: 'Link',
-  Consent: 'Consent',
-  history: 'history',
-  Current_consent: 'Current consent',
-  consent_yes: 'I consent to share my data',
-  consent_no: 'I do NOT consent to share my data',
-  my_beep_data: 'My own BEEP data',
-  Consent_can_only_be_set: 'Consent can only be adjusted to',
-  earlier: 'an earlier',
-  later: 'a later',
-
-  new_apiary_explanation: 'Create a new apiary in 4 steps',
-  start_here: 'Click here to start',
-  optional: 'optional',
+  /* Cyrille - 31/05 : This translation needs more context */
+  new_apiary_explanation: 'Créer un nouveau rucher en 4 étapes',
+  start_here: 'Cliquer ici pour commencer',
+  optional: 'optionnel',
   dimensions: 'dimensions',
-  details: 'details',
+  details: 'détails',
   configuration: 'configuration',
-  adjustments: 'adjustments',
-  changes_queen_color: 'editing changes the color',
+  /* Cyrille - 31/05 : This translation needs more context */
+  adjustments: 'modifications',
+  /* Cyrille - 31/05 : This translation needs more context */
+  changes_queen_color: 'Modifier ce paramètre change la couleur de la reine',
 
-  Brood_box_and_frame: 'Brood box and frame',
-  Hive_order: 'Hive order at apiary',
-  bb_width_cm: 'Brood box width (cm)',
-  bb_height_cm: 'Brood box height (cm)',
-  bb_depth_cm: 'Brood box depth (cm)',
-  fr_width_cm: 'Frame width (cm)',
-  fr_height_cm: 'Frame height (cm)',
-  queen_line: 'line',
-  queen_tree: 'tree',
+  Brood_box_and_frame: 'Corps et cadres de couvain',
+  Hive_order: 'Ordre de la ruche dans le rucher',
+  bb_width_cm: 'Largeur du corps de la ruche (cm)',
+  bb_height_cm: 'Hauteur du corps de la ruche (cm)',
+  bb_depth_cm: 'Profondeur du corps de la ruche (cm)',
+  fr_width_cm: 'Largeur de cadre (cm)',
+  fr_height_cm: 'Hateur de cadre (cm)',
+  queen_line: 'lignée',
+  queen_tree: 'généalogie',
   queen_description: 'notes',
-  Hive_short: 'Hive | Hives',
-
+  Hive_short: 'Ruche | Ruches',
   Image: 'Image | Images',
-  Size: 'Size',
-  preview: 'preview',
-
-  Inside: 'Measures inside',
-  Offset: 'Offset',
-  Multiplier: 'Multiplier',
-  Input: 'Input',
-  Output: 'Output',
-  Last: 'Last',
-
+  Size: 'Taille',
+  preview: 'aperçu',
+  Inside: 'Mesures internes',
+  Offset: 'Décalage',
+  Multiplier: 'Multiplicateur',
+  /* Cyrille - 31/05 : This translation needs more context */
+  Input: 'Entrée',
+  /* Cyrille - 31/05 : This translation needs more context */
+  Output: 'Sortie',
+  /* Cyrille - 31/05 : This translation needs more context */
+  Last: 'Dernier',
   Export_sensor_data:
-    "Export all data per device in the highest possible resolution as a .csv file that you can open in Excel, or SPSS. NB: The date time data in the 'time' column is in GMT time, formatted by the RFC 3339 date-time standard.",
-  CSV_export_separator: 'CSV data column separator',
-  Selected_date: 'Selected time span',
-  Sensor_measurements: 'Sensor measurements',
+    'Exporter toutes les données avec la résolution maximale, au format CSV. Le fichier peut être ouvert avec Excel ou SPSS. NB: Les données de date sont alignées au temps GMT, en suivant la RFC 3339 du standard de temps.',
+  CSV_export_separator: 'Séparateur de colonne dans le fichier CSV',
+  Selected_date: 'Intervalle choisi',
+  Sensor_measurements: 'Mesures des capteurs',
   too_much_data:
-    'Too much data to process, please select fewer Sensor measurements, or reduce the timespan between start and end date.',
-
+    "Trop de données à compulser. Veuillez choisir moins de mesures ou réduisez l'intervalle de temps choisi.",
   beep_base_explanation:
-    "If you have a BEEP base (shown in the picture above), please use the BEEP base app (iOS and Android) to set-up the communication with this app. If you don't have a BEEP base yet, please click on the menu item 'BEEP website' for updates on how to get a BEEP base. I you have your own measurement device and would like to see the data in the BEEP app, please send us a message to ask for joining our Slack community and you can get access to the API description.",
-
-  sample_code_hive: 'First select a hive, to generate a unique sample code',
-  sample_code_generate: 'Generate unique sample code',
-  sample_code_delete: 'Delete unique sample code',
-
-  measurement_interval: 'interval',
-  from_weather_service: 'from weather service',
+    "Si vous possédez une base BEEP (Voir photo ci-dessous), Veuillez utiliser l'application BEEP (Pour iOS ou Android) afin d'établir la connexion avec cette applcation.Si vous ne possédez pas de base BEEP, Cliquer sur le bouton 'Site web BEEP' pour connaitre la marche à suivre. Si vous posséder un autre systême de mesure, envoyez nous un message pour nous demander de rejoindre notre communauté Slack et avoir accès á la documentation de nos API.",
+  sample_code_hive:
+    "Selectionner d'abord une ruche, afin de générer un code unique.",
+  sample_code_generate: 'Générer un code unique',
+  sample_code_delete: 'Supprimer le code unique',
+  measurement_interval: 'intervalle',
+  /* Cyrille - 31/05 : This translation needs more context */
+  from_weather_service: 'à partir du service météo',
 
   /* New translations v3 */
   click_hives_to_filter: 'Cliquez sur les ruches pour filtrer',
@@ -598,7 +649,7 @@ const translations = {
   diary: 'Journal',
   data: 'Données',
   photo: 'photo | photos',
-  add_checklist: 'Ajouter une liste de contrôle',
+  add_checklist: 'Ajouter une liste de contrôles',
   add_hive: 'Ajouter une ruche',
   delete_apiary: 'Supprimer le rucher',
   edit_apiary: 'Modifier le rucher',
@@ -607,199 +658,217 @@ const translations = {
   edit_group: 'Modifier le groupe',
   new_group: 'Nouveau groupe',
   verification_code: 'code de vérification',
-
-  limit_exceeded: 'Limit has been reached, try again later',
-  confirm_email_title: 'Confirm your email',
+  limit_exceeded: 'La limite a été atteinte, réessayer plus tard',
+  confirm_email_title: 'Confirmer votre adresse email',
   confirm_email_summary:
-    "You've received a verification code in your email. Enter it below to verify your email adress",
-  confirm: 'Confirm',
-  Profile: 'Profile',
-  Checklist_template: 'Checklist template | Checklist templates',
-  Help: 'Help',
-  Privacy: 'Privacy',
+    'Vous avez recu un code de vérification par email. Entrez le ci-dessous pour vérifier votre adresse email',
+  confirm: 'Confirmer',
+  Profile: 'Profil',
+  Checklist_template:
+    'Modèle de liste de controles | Modèles de liste de controles',
+  Help: 'Aide',
+  Privacy: 'Vie privée',
   FAQ: 'FAQ',
-  Support: 'Support',
-  no_inspections: 'No inspections yet',
-  no_results: 'No results',
-  Hive_brood_layer: 'Brood layer | Brood layers',
-  Hive_honey_layer: 'Honey layer | Honey layers',
-  Hive_queen_excluder_layer: 'Queen excluder | Queen excluders',
-  Hive_feeding_box_layer: 'Feeding box | Feeding boxes',
-  overrides_layer_colors: 'overrides layer colors',
-  drag_layers: 'Drag layers to configure hive',
+  Support: 'Assistance',
+  no_inspections: 'Aucune inspection pour le moment',
+  no_results: 'Aucun résultat',
+  Hive_brood_layer: 'Cadre de couvain | Cadres de couvain',
+  Hive_honey_layer: 'Cadre de miel | Cadres de miel',
+  Hive_queen_excluder_layer: 'Grille à reine | Grilles à reine',
+  Hive_feeding_box_layer: 'Nourisseur | Nourisseurs',
+  overrides_layer_colors: 'Remplacer la couleur des cadres',
+  drag_layers: 'Glisser des cadres pour configurer la ruche',
   page: 'page | pages',
-  not_found: 'not found',
-  sorry: 'Sorry',
-  delete_layer: 'Delete layer',
+  not_found: 'introuvable',
+  sorry: 'désolé',
+  delete_layer: 'Supprimer le cadre',
   not_saved_error: "Les données n'ont pas pu être enregistrées",
-  something_wrong: 'Something went wrong',
-  not_editable: 'not editable',
-  unsaved_changes: 'Unsaved changes',
+  something_wrong: 'Il y a eu un problème',
+  /* Cyrille - 31/05 : This translation needs more context */
+  not_editable: 'non modifiable',
+  unsaved_changes: 'Changements non sauvegardés',
   save_changes:
-    'Are you sure you want to leave this page? Any unsaved changes will be lost.',
-  no_apiaries_yet: "You don't have any apiaries yet",
-  need_help: 'Need help?',
-  Apiary_color: 'Apiary color',
-  Set_notification_date: 'Set notification date',
-  remove_image: 'Remove image',
-  Total_colony_size: 'Total colony size',
-  bee: 'bee | bees',
-  with_bees: 'with bees',
+    'Voulez-vous vraiment quitter cette page ? Tous les changements non-enregistrés seront perdus',
+  no_apiaries_yet: "Vous n'avez aucun rucher pour le moment",
+  need_help: "Besoin d'aide?",
+  Apiary_color: 'Couleur du rucher',
+  /* Cyrille - 31/05 : This translation needs more context */
+  Set_notification_date: 'Definir la date de notification',
+  remove_image: 'Supprimer image',
+  Total_colony_size: 'Taille totale de la colonie',
+  bee: 'abeille | abeilles',
+  /* Cyrille - 31/05 : This translation needs more context */
+  with_bees: 'avec abeilles',
   change_checklist_confirm:
-    'Are you sure you want to select a different checklist? Values of already filled in fields will be kept.',
-  view: 'View',
-  share: 'Share',
-  edit_details: 'Edit details',
-  remove_queen: 'Remove queen',
-  remove_group_short: 'Remove collaboration group',
-  device: 'Device | Devices',
-  click_date_to_edit: 'Click date to edit.',
+    'Etes-vous sûr de vouloir sélectionner une liste différente ? Les valeurs déjà collectées seront conservées.',
+  view: 'Voir',
+  share: 'Partager',
+  edit_details: 'Modifier',
+  remove_queen: 'Supprimer la reine',
+  remove_group_short: 'Supprimer le groupe',
+  device: 'Appareil | Appareils',
+  click_date_to_edit: 'Selectionner la date à modifier.',
   accept_policy_1: "J'accepte les ",
   accept_policy_2:
     ' de BEEP, qui sont compatibles avec la nouvelle loi européenne sur la protection de la vie privée',
   terms_of_use: "conditions d'utilisation",
   invalid_password:
-    'Password must contain at least 8 characters, one lowercase letter, one uppercase letter, one number and one special character (\\]{}()?\\-"!@#%&/\\,><\':;|_~`)',
-  sensor_definition: 'sensor definition | sensor definitions',
+    'Le mot de passe doit contenir au moins 8 caratères, dont 1 minuscule, 1 majuscule, 1 chiffre et 1 caractère spécial (\\]{}()?\\-"!@#%&/\\,><\':|_~`)',
+  sensor_definition: 'définition du capteur | définitions des capteurs',
   measurement: 'mesure | mesures',
-  remove_device: 'Remove device',
-  last_message_received: 'Last message received',
-  transmission_ratio: 'Transmission ratio',
+  remove_device: "Supprimer l'appareil",
+  last_message_received: 'Dernier message recu',
+  /* Cyrille - 31/05 : This translation needs more context */
+  transmission_ratio: 'Fréquence de transmission',
   period: 'Période',
-  download: 'Download',
-  different_end_start: 'End and start date must differ',
-  later_end_start: 'Start date must be earlier than end date',
+  /* Cyrille - 31/05 : This translation needs more context */
+  download: 'Téléchargement',
+  different_end_start:
+    'La date de début et la date de fin doivent être différentes.',
+  later_end_start: 'La date de début doit être antérieure à la date de fin',
   new_email_verification_sent:
-    'A message with a verification link has been sent to your new e-mail address. Click the link in the e-mail to confirm your new e-mail address and log in.',
+    'Un mail contenant un lien de vérification a été envoyé. Cliquez sur le lien pour confirmer votre nouvelle adresse email et vous connectez.',
   sensordef_info:
-    "A sensor definition is intended to convert a sensor value from an incoming 'raw' sensor value into a value according to a physical quantity and unit (e.g. w_v = 1098273 => weight_kg = 62,400 kg) or to calibrate a sensor (e.g. t_0 = 15.3 ° C => t_0 = 15.8 ° C). This can be done by setting an 'offset' and a 'multiplier'. The input and output value remains the same if offset '0' and multiplier '1' is set. The BEEP base app (from the App Store) will provide you with the right sensor definitions at the initial setup of your BEEP base.",
-  or: 'or',
-  select_all_hives: 'Select all hives',
-  select_all_editable_hives: 'Selecteer alle aanpasbare bijenkasten',
-  Alert: 'Alert | Alerts',
-  alert: 'alert | alerts',
-  remove_alert: 'Remove alert',
-  alerts_enabled: 'Alerts enabled',
-  alerts_disabled: 'Alerts disabled',
+    'Une définition de capteur permet de convertir une valeur brute en valeur physique (ex. w_v = 1098273 => weight_kg = 62,400 kg) ou pour calibrer un capteur (ex. t_0 = 15.3 ° C => t_0 = 15.8 ° C). Ceci peut être accompli grace à un "décalage" et un "multiplicateur". La valeur brute reste inchangée si le décalage est "0" et le multiplicateur "1". L\'application mobile BEEP vous donnera les définitions des capteurs au moment de la configuration initiale.',
+  or: 'ou',
+  select_all_hives: 'Sélectionner toutes les ruches',
+  select_all_editable_hives: 'Selectionner toutes les ruches modifiables',
+  Alert: 'Alerte | Alertes',
+  alert: 'alerte | alertes',
+  remove_alert: 'Supprimer alerte',
+  alerts_enabled: 'Alertes activées',
+  alerts_disabled: 'Alertes désactivées',
   edit_checklist_confirm:
-    'Are you sure you want to edit the checklist? Any unsaved changes to your inspection will be lost.',
+    'Etes-vous sûr de vouloir modifier la liste de contrôle ? Tout changement non-enregistré sera perdu',
   edit_checklist_confirm_deselectedhives:
-    'Are you sure you want to edit the checklist? Any unsaved changes to your inspection and your hive selection will be lost.',
+    'Etes-vous sûr de vouloir modifier la liste de contrôle ? Tout changement non-enregistré sera perdu',
   user_not_edited:
-    'User data has not been edited. Possibly the user data is identical to the user data already in the database, or one or more fields are not correctly filled in. Please check your data and try again.',
-  user_not_deleted: 'Something went wrong, user has not been deleted.',
-  research_consent: 'Research consent',
-  checklist_types: 'Personal, shared, research',
+    "Les données utilisateur n'ont pas été modifiées. Les données sont peut-être identiques à celles présentes dans la base de données, ou un ou plusieurs champs sont mal remplis. Veuillez vérifier vos données et recommencer.",
+  user_not_deleted:
+    "Il y a eu un problème, l'utilisateur n'a pas été supprimé.",
+  research_consent: 'Consentement de recherche',
+  checklist_types: 'Personnel, partagé, recherche',
   edit_hive_checklist_no_touch:
-    'Check/uncheck the boxes in the list below to add/remove items from your hive checklist. You can also unfold/fold and drag/drop the items to re-order them to your own style (N.B. this is not possible on a touchscreen device).',
+    "Cocher/Décocher les cases dans la liste ci-dessous pour ajouter ou supprimer des éléments dans la liste de controle. Vous pouvez aussi grouper les éléments pour changer l'ordre de la liste. (NB: Cette fonctionnalité n'est pas disponible sur les écrans tactiles).",
   edit_hive_checklist_touch:
-    'Check/uncheck the boxes in the list below to add/remove items from your hive checklist. Changing the order of items is only possible on a desktop computer.',
+    "Cocher/Décocher les cases dans la liste ci-dessous pour ajouter ou supprimer des éléments dans la liste de controle. Modifier l'ordre des éléments n'est pas disponible dans l'app",
   input_not_possible_for_bulkinspection:
-    'This item is not available when multiple hives are selected for an inspection, as it can only be filled in per individual hive. It is possible to fill in this item for a single hive at a later time, by editing the inspection for that hive.',
+    "Cet élément n'est pas disponible pour une inspection groupée, car il ne peut être remplis qu'individuellement. Il est possible de remplir ce champ plus tard, en éditant l'inspection de la ruche concernée.",
   save_bulkinspection_confirm:
-    'Are you sure that you want to save this inspection for multiple hives at the same time?',
+    "Etes-vous sûr de vouloir sauuvegarder l'inspection pour toutes ces ruches en meme temps?",
   deleted_but_not_saved_devices_warning:
-    "N.B.: devices will only be removed after clicking the 'Save and delete' button in the top right corner.",
-  no_alerts: 'No new alerts',
-  alertrule: 'alert rule | alert rules',
-  alertrule_pagetitle: 'Alert settings',
-  Measurement: 'Measurement | Measurements',
-  Calculation: 'Calculation',
-  calculation: 'calculation',
-  Calculation_minutes: 'Calculate per x number of minutes',
-  Alert_on_occurences: 'When would you like to receive this alert?',
+    'N.B.: Les appareils seront supprimés après avoir cliqué sur "Sauvergarder et supprimer" dans le coin supérieur droit de l\'écran.',
+  no_alerts: 'Pas de nouvelles alertes',
+  alertrule: "règle d'alerte | règles d'alerte",
+  alertrule_pagetitle: "Réglages d'alertes",
+  Measurement: 'Mesure | Mesures',
+  /* Cyrille - 31/05 : This translation needs more context */
+  Calculation: 'Calcul',
+  /* Cyrille - 31/05 : This translation needs more context */
+  calculation: 'calcul',
+  Calculation_minutes: 'Calculer toutes les x minutes',
+  Alert_on_occurences: 'Quand voulez-vous recevoir les alertes?',
   Alert_on_occurences_hint:
-    'Directly, or only after it has occurred an x number of times?',
-  Direct: 'Directly',
-  After: 'After ',
-  times: ' times',
-  Comparator: 'Comparator',
-  comparator: 'comparator',
-  Comparison: 'Comparison',
-  comparison: 'comparison',
-  Threshold_value: 'Threshold value',
+    'Directement, ou uniquement si elles arrivent x fois?',
+  Direct: 'Directement',
+  After: 'Après ',
+  times: ' fois',
+  Comparator: 'Comparateur',
+  comparator: 'comparateur',
+  Comparison: 'Comparaison',
+  comparison: 'comparaison',
+  Threshold_value: 'Valeur plancher',
   Minimum: 'Minimum',
   Maximum: 'Maximum',
-  Derivative: 'Derivative (increase or decrease)',
-  Count: 'Count',
-  Value: 'Value',
-  Difference: 'Difference',
-  Absolute_value: 'Absolute value',
-  Absolute_value_of_dif: 'Absolute value of the difference',
-  Exclude_months: 'Deactivate this alert during the following months:',
-  Exclude_hours: 'Deactivate this alert during the following hours:',
-  Exclude_hives: 'Deactivate this alert for the following hives:',
+  /* Cyrille - 31/05 : This translation needs more context */
+  Derivative: 'Tendance (haussière or baissière)',
+  /* Cyrille - 31/05 : This translation needs more context */
+  Count: 'Nombre',
+  Value: 'Valeur',
+  Difference: 'Différence',
+  Absolute_value: 'Valeur absolue',
+  Absolute_value_of_dif: 'Valeur absolue de la différence',
+  Exclude_months: 'Désactiver cette alerte pendant ce nombre de mois:',
+  /* Cyrille - 31/05 : This translation needs more context */
+  Exclude_hours: 'Désactiver cette alerte pendant les heures suivantes:',
+  Exclude_hives: 'Désactiver cette alerte pour les ruches suivantes:',
   Exclude_hives_details:
-    'N.B. By default, this alert will be executed for all hives with a measurement device.',
-  months: 'months',
-  hours: 'hours',
-  delete_alertrule: 'Delete alert rule',
-  Active: 'Active',
-  Alert_via_email: 'Alert via email',
-  Webhook_url: 'Webhook url',
-  this_field: 'This field',
-  alertrule_default: 'Default alert rule | Default alert rules',
-  copy: 'Copy',
-  Home: 'Home',
-  Select_default_alertrule: 'Copy default alert rule',
+    "N.B. Par défaut, ces alertes seront éxécutées pour toutes les ruches équipées d'un appareil.",
+  months: 'mois',
+  hours: 'heures',
+  delete_alertrule: "Supprimer la règle d'alerte",
+  Active: 'Actif',
+  Alert_via_email: 'Alerte par email',
+  this_field: 'Ce champ',
+  alertrule_default: "Règle d'alerte par défaut | Règles d'alerte par défaut",
+  copy: 'Copier',
+  Home: "Page d'accueil",
+  Select_default_alertrule: "Copier la règle d'alerte par défaut",
   /* below, please keep all terms between [] in english: */
+  /* Cyrille - 31/05 : This translation needs more context */
   alertrule_main_sentence:
-    'I would like to receive an alert if the [calculation] [comparison] of the [measurement_quantity] [comparator] [threshold_value][measurement_unit]. This calculation will be executed every [calculation_minutes] hours, ',
+    'Je veux recevoir une alerte si la [calculation] [comparison] de [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Ce calcul sera éxécuté toutes les [calculation_minutes] heures, ',
   alertrule_occurences_direct_sentence:
-    'and I would like to receive the alert directly. ',
+    'et je veux recevoir ces alertes directement. ',
   alertrule_occurences_indirect_sentence:
-    ' but I would like to receive the alert only if it occurs [alert_on_occurences] times. ',
+    'mais je voudrais recevoir ses alertes uniquement si elles se produisent [alert_on_occurences] fois. ',
   alertrule_exclude_months_sentence:
-    'This alert will be deactivated during the following months: [exclude_months]. ',
+    'Cette alerte sera désactivée pour une durée de: [exclude_months]. ',
+  /* Cyrille - 31/05 : This translation needs more context */
   alertrule_exclude_hours_sentence:
-    'This alert will be deactivated during the following hours: [exclude_hours]. ',
+    'Cette alerte sera désactivée durant les heures suivantes: [exclude_hours]. ',
   alertrule_exclude_hives_sentence:
-    'This alert will be deactivated for the following hives: [exclude_hive_ids].',
+    'Cette alerte sera désactivée pour les ruches suivantes: [exclude_hive_ids].',
   min: 'minimum',
   max: 'maximum',
-  ave: 'average',
-  der: 'derivative',
-  cnt: 'count',
-  equal_to: 'is equal to',
-  less_than: 'is less than',
-  greater_than: 'is greater than',
+  ave: 'moyenne',
+  der: 'tendance',
+  cnt: 'nombre',
+  equal_to: 'est égal à',
+  less_than: 'est plus petit que',
+  greater_than: 'est plus grand que',
   less_than_or_equal: 'is less than or equal to',
-  greater_than_or_equal: 'is greater than or equal to',
+  greater_than_or_equal: 'est plus grand ou égal à',
   alertrule_not_active:
-    "This alert has been deactivated. You can activate it by checking the 'Active' box and saving this alert rule.",
-  export_email_sent: 'Email with Excel file has been sent',
-  export_file_saved: 'Excel file has been saved in your Downloads folder',
-  Updated_at: 'Updated at',
-  Not_yet_saved: 'Not yet saved',
-  add_own_device: 'Add own device',
+    'Cette alerte a été désactivée. Vous pouvez l\'activer en cochant la case "Actif" et en sauvegardant cette règle.',
+  export_email_sent: 'Email avec fichier Excel envoyé',
+  export_file_saved:
+    'Le fichier Excel a été sauvegardé dans votre dossier "Téléchargements"',
+  Updated_at: 'Mis à jour à',
+  Not_yet_saved: 'Pas encore sauvegardé',
+  add_own_device: 'Ajouter votre appareil',
   devices_info_text:
-    'Please note: do you own a BEEP base? Use the BEEP base app to add your device. It will then automatically appear in the list below.',
-  devices_url_text: 'Here you can find more information on the BEEP base app.',
+    "Note: Vous possédez une base BEEP ? Utilisez l'app pour ajouter votre base. Elle apparaitra ici automatiquement.",
+  devices_url_text:
+    "Ici, vous pouvez trouver plus d'information sur l'app BEEP.",
   alert_explanation_1:
-    'If you own a BEEP base or another device you can set alerts, such that you will receive an alert when the measurement data meets certain requirements. For example, a sudden drop in weight because of swarming. Alerts will be shown in this app, you can choose to receive them via email as well.',
+    "Si vous possédez une base BEEP ou un autre appareil avec lequel vous pouvez définir des alertes, de sorte que vous receviez une notification si certains critères sont atteints. Par exemple, une brusque perte de poids à cause d'un essaimage. Les alertes seront présentées dans l'app, vous pouvez également les recevoir par email.",
   alert_explanation_2:
-    'To get you started there are a few default alert rules you can use (and adapt to your own needs). In addition, you can create your own alert rules.',
+    'Pour démarrer, vous pouvez utiliser plusieurs alertes préconfigurées (et les adapter à vos besoins). Vous pouvez également créer vos propres alertes.',
   alertrules_url_text:
-    "Go to 'Alert settings' to create your first alert rule.",
-  Apiary_management: 'Apiary management',
-  Move: 'Move',
-  Current_apiary: 'Current apiary',
-  sensor_key: 'Device unique identifier',
-  disabled_settings: 'Manually editing these settings is disabled.',
-  Address_placeholder: 'Number, Street name, City',
-  first_create_apiary: 'First, create an apiary',
-  alertrule_deleted: 'Alert rule has been deleted',
-  Unknown: 'Unknown',
-  unknown: 'unknown',
+    'Aller dans "réglages d\'alerte" pour créer votre propre règle.',
+  Apiary_management: 'Gestion du rucher',
+  Move: 'Déplacer',
+  Current_apiary: 'Rucher actuel',
+  sensor_key: "Identifiant unique de l'appareil",
+  disabled_settings:
+    'La modification manuelle de ces paramètres est désactivée.',
+  Address_placeholder: 'Numéro, nom de rue, ville',
+  first_create_apiary: "Tour d'abord, créer un rucher",
+  alertrule_deleted: "La règle d'alerte à été désactivée",
+  /* Cyrille - 31/05 : This translation needs more context */
+  Unknown: 'Inconnu',
+  /* Cyrille - 31/05 : This translation needs more context */
+  unknown: 'Inconnu',
   research_warning:
-    "Please note: if you did not receive an invitation to participate, it is not needed to give consent to share your data, as your data won't be used in that case.",
+    "Note: Si vous n'avez pas recu d'invitation à participer, il n'est pas nécessaire de donner votre consentement pour partager vos données, car elles ne seront pas utilisées.",
   research_explanation_p1:
-    'The BEEP platform is used in the research projects that are listed below. After you are invited to participate in a research project, you need to give consent for the researchers to access your bee data.',
+    'La plateforme BEEP est utilisée dans les projets de recherche ci-dessous. Après avoir été invité à participer à un projet, vous devez donner votre consentement pour que les chercheurs puissent accéder aux données de vos abeilles.',
   research_explanation_p2:
-    'You can withdraw your consent at any time. From that moment onwards, no new data will be shared. The data that you shared in the period for which you gave consent will remain available for the research. In case of questions, please direct these to the contact person of your research project.',
+    'Vous pouvez retirer votre consentement à tout moment. A partir de ce moment, vos données ne seront plus partagées. Les données envoyées, pendant la période précédent votre retrait, restent disponibles pour les chercheurs. Pour toute question, merci de vous adresser au responsable de votre projet.',
   research_info:
-    'Before you consent, please review the research description provided through the link below and request for additional details if needed.',
-  save_and_delete: 'Save and delete',
+    'Avant de donner votre consentement, merci de revoir la description du projet disponible en suivant le lien ci-dessous et demander toute information complémentaire, si besoin.',
+  save_and_delete: 'Sauvegarder et supprimer',
   drag_layers_info_text:
     'Drag layers from the left hand side to the desired position within the hive on the right hand side. Delete a layer from the hive by clicking on it and then clicking on the red bin icon. Within the hive layers can be dragged as well to edit the position, layer color can be edited by clicking on the layer.',
 }
