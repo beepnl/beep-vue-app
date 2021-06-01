@@ -47,7 +47,7 @@
               <v-col cols="12">
                 <div
                   class="beep-label"
-                  v-text="`${$tc('Hive_brood_layer', 2)} ${$t('with_bees')}`"
+                  v-text="$tc('Hive_brood_layer', 2)"
                 ></div>
                 <VueNumericInput
                   v-if="activeHive && activeHive.layers"
@@ -60,10 +60,7 @@
                 ></VueNumericInput>
               </v-col>
               <v-col cols="12">
-                <div
-                  class="beep-label"
-                  v-text="`${$t('Hive_frames')} ${$t('with_bees')}`"
-                ></div>
+                <div class="beep-label" v-text="$t('Hive_frames')"></div>
                 <VueNumericInput
                   v-if="activeHive && activeHive.layers"
                   v-model="framesForCalculation"

@@ -162,11 +162,12 @@
 
           <v-col cols="12" sm="4">
             <div
+              v-if="checklists !== null && checklists.length > 0"
               class="beep-label mt-n3 mt-sm-0"
               v-text="`${$t('Select') + ' ' + $tc('checklist', 1)}`"
             ></div>
             <Treeselect
-              v-if="checklists !== null && checklists.length > 1"
+              v-if="checklists !== null && checklists.length > 0"
               v-model="selectedChecklistId"
               :options="checklists"
               :normalizer="normalizer"
