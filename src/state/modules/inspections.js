@@ -16,6 +16,7 @@ export const state = {
   selectedInspectionId: null,
   bulkInspection: false,
   diarySearch: null,
+  activeInspectionDate: null,
 }
 export const getters = {
   ...resource.getters,
@@ -51,6 +52,9 @@ export const getters = {
   },
   diarySearch: (state) => {
     return state.diarySearch
+  },
+  activeInspectionDate: (state) => {
+    return state.activeInspectionDate
   },
 }
 export const mutations = {
@@ -102,6 +106,7 @@ export const mutations = {
     state.selectedInspectionId = null
     state.bulkInspection = false
     state.diarySearch = null
+    state.activeInspectionDate = null
   },
 }
 export const actions = {

@@ -564,8 +564,9 @@ export default {
         }
       },
       set(value) {
-        this.activeInspection.date = this.momentCreatedAt(value)
-        this.setActiveInspectionDate(this.activeInspection.date)
+        var date = this.momentCreatedAt(value)
+        this.activeInspection.date = date
+        this.setActiveInspectionDate(date)
       },
     },
     locale() {

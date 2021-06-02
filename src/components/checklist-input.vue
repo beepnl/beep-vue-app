@@ -184,6 +184,12 @@
       :nested="true"
     ></ChecklistFieldset>
 
+    <sampleCode
+      v-if="item.input === 'sample_code'"
+      :item="item"
+      :object="object"
+    />
+
     <div
       v-if="
         item.input !== 'boolean' &&
@@ -211,7 +217,8 @@
           item.input !== 'list' &&
           item.input !== 'image' &&
           item.input !== 'select_hive' &&
-          item.input !== 'select_location'
+          item.input !== 'select_location' &&
+          item.input !== 'sample_code'
       "
     >
       {{ $t('Not_implemented_yet') }}
@@ -224,6 +231,7 @@ import VueNumericInput from 'vue-numeric-input'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
 import imageUploader from '@components/input-fields/image-uploader.vue'
+import sampleCode from '@components/input-fields/sample-code.vue'
 import selectHiveOrApiary from '@components/input-fields/select-hive-or-apiary.vue'
 import slider from '@components/input-fields/slider.vue'
 import smileRating from '@components/input-fields/smile-rating.vue'
@@ -239,6 +247,7 @@ export default {
     imageUploader,
     VueNumericInput,
     labelWithDescription,
+    sampleCode,
     selectHiveOrApiary,
     slider,
     smileRating,
