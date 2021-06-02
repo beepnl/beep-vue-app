@@ -792,7 +792,13 @@ const translations = {
     'Before you consent, please review the research description provided through the link below and request for additional details if needed.',
   save_and_delete: 'Save and delete',
   drag_layers_info_text:
-    'Drag layers from the left hand side to the desired position within the hive on the right hand side. Delete a layer from the hive by clicking on it and then clicking on the red bin icon. Within the hive layers can be dragged as well to edit the position, layer color can be edited by clicking on the layer.',
+    'Drag layers from the left hand side to the desired position within the hive on the right hand side. Delete a layer from the hive by clicking on it and then clicking on the red bin icon. Within the hive, layers can be dragged as well to edit the position, layer color can be edited by clicking on the layer.',
+  New_hive: 'New hive',
+  New_alertrule: 'New alert rule',
+  Add_alertrule: 'Add alert rule',
+  Add_apiary: 'Add apiary',
+  Add_sensor_definition: 'Add sensor definition',
+  Add_member: 'Add member',
 }
 
 export default translations

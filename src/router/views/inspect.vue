@@ -565,6 +565,7 @@ export default {
       },
       set(value) {
         this.activeInspection.date = this.momentCreatedAt(value)
+        this.setActiveInspectionDate(this.activeInspection.date)
       },
     },
     locale() {
@@ -733,6 +734,7 @@ export default {
       })
     }
     this.setInspectionEdited(false)
+    this.setActiveInspectionDate(this.activeInspection.date)
     this.setBulkInspection(this.selectedHives.length > 1)
     this.ready = true
   },
@@ -1086,6 +1088,12 @@ export default {
     },
     setInspectionEdited(bool) {
       this.$store.commit('inspections/setInspectionEdited', bool)
+    },
+    setActiveInspectionDate(date) {
+      this.$store.commit('inspections/setData', {
+        prop: 'activeInspectionDate',
+        value: date,
+      })
     },
     setBulkInspection(bool) {
       this.$store.commit('inspections/setData', {

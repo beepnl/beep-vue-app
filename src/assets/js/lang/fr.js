@@ -870,7 +870,13 @@ const translations = {
     'Avant de donner votre consentement, merci de revoir la description du projet disponible en suivant le lien ci-dessous et demander toute information complémentaire, si besoin.',
   save_and_delete: 'Sauvegarder et supprimer',
   drag_layers_info_text:
-    'Drag layers from the left hand side to the desired position within the hive on the right hand side. Delete a layer from the hive by clicking on it and then clicking on the red bin icon. Within the hive layers can be dragged as well to edit the position, layer color can be edited by clicking on the layer.',
+    'Déplacer les cadres à gauche, vers leur position dans la ruche sur le côté droit. Supprimer un cadre de la ruche en cliquant dessus puis sur la poubelle rouge. Dans la ruche, les cadres peuvent être déplacés et leur couleur peut être modifiée en cliquant sur le cadre.',
+  New_hive: 'Nouvelle ruche',
+  New_alertrule: 'Nouvelle alerte',
+  Add_alertrule: 'Ajouter alerte',
+  Add_apiary: 'Ajouter rucher',
+  Add_sensor_definition: 'Ajouter définition de capteur',
+  Add_member: 'Ajouter membre',
 }
 
 export default translations

@@ -203,7 +203,7 @@
                 <v-icon left>mdi-plus</v-icon>
                 {{
                   tabletLandscapeUp
-                    ? $t('add') + ' ' + $tc('member', 1)
+                    ? $t('Add_member')
                     : $t('add')
                 }}
               </v-btn>
@@ -318,7 +318,7 @@
                 >
                   <div class="color-accent"
                     ><v-icon color="accent" left>mdi-plus-circle</v-icon
-                    >{{ $t('add') + ' ' + $tc('location', 1) }}</div
+                    >{{ $t('Add_apiary') }}</div
                   >
                 </router-link>
               </div>

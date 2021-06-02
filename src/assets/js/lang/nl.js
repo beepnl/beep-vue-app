@@ -797,7 +797,14 @@ const translations = {
   research_info:
     'Lees voordat je toestemming geeft de onderzoeksbeschrijving via de onderstaande link en vraag indien nodig om aanvullende informatie.',
   save_and_delete: 'Opslaan en verwijderen',
-  drag_layers_info_text: 'Versleep kamers van links naar de gewenste positie in de kast aan de rechterkant. Verwijder een kamer uit de kast door erop te klikken en dan op het prullenbakicoon te klikken. Binnen de kast kunnen kamers ook versleept worden om de positie te wijzigen, en de kleur kan aangepast worden door erop te klikken.',
+  drag_layers_info_text:
+    'Versleep kamers van links naar de gewenste positie in de kast aan de rechterkant. Verwijder een kamer uit de kast door erop te klikken en dan op het prullenbakicoon te klikken. Binnen de kast kunnen kamers ook versleept worden om de positie te wijzigen, en de kleur kan aangepast worden door erop te klikken.',
+  New_hive: 'Nieuwe kast',
+  New_alertrule: 'Nieuwe notificatie-instelling',
+  Add_alertrule: 'Toevoegen notificatie-instelling',
+  Add_apiary: 'Toevoegen bijenstand',
+  Add_sensor_definition: 'Toevoegen sensordefinitie',
+  Add_member: 'Toevoegen groepslid',
 }
 
 export default translations

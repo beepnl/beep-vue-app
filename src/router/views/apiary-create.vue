@@ -562,7 +562,7 @@ export default {
     tabs: function() {
       return [
         {
-          title: ' ' + this.$i18n.t('New') + ' ' + this.$i18n.tc('location', 1),
+          title: ' ' + this.$i18n.t('new_apiary'),
           title_mobile: '',
           icon: 'mdi-star',
         },

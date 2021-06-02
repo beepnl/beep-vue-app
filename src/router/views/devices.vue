@@ -377,7 +377,7 @@
                           @click="addSensorDef(ownedDevice)"
                         >
                           <v-icon left>mdi-plus</v-icon>
-                          {{ $t('add') + ' ' + $tc('sensor_definition', 1) }}
+                          {{ $t('Add_sensor_definition') }}
                         </v-btn>
                         <v-btn
                           v-if="mobile && ownedDevice.id"
@@ -388,11 +388,10 @@
                           @click="addSensorDef(ownedDevice)"
                         >
                           <v-icon left>mdi-plus</v-icon>
-                          {{ $t('add') }}
                           {{
                             ownedDevice.sensor_definitions.length === 0
-                              ? $tc('sensor_definition', 1)
-                              : ''
+                              ? $t('Add_sensor_definition')
+                              : $t('add')
                           }}
                         </v-btn>
                       </div>

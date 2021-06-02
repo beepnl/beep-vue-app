@@ -760,7 +760,13 @@ const translations = {
     'Înainte de a vă da consimțământul, vă rugăm să consultați descrierea cercetării oferită prin linkul de mai jos și să solicitați detalii suplimentare, dacă considerați necesar.',
   save_and_delete: 'Salvați și ștergeți',
   drag_layers_info_text:
-    'Drag layers from the left hand side to the desired position within the hive on the right hand side. Delete a layer from the hive by clicking on it and then clicking on the red bin icon. Within the hive layers can be dragged as well to edit the position, layer color can be edited by clicking on the layer.',
+    'Trageți straturile din partea stângă în poziția dorită la stupul din partea dreaptă. Ștergeți un strat din stup făcând clic pe acesta și apoi făcând clic pe pictograma in forma unui coș roșu  . În interiorul stratului dintr-un stup se poate trage și pentru a edita pozițiaacestuia, de asemenea culoarea stratului poate fi editată făcând clic pe strat.',
+  New_hive: 'Stup nou',
+  New_alertrule: 'Regulă nouă pentru alertă',
+  Add_alertrule: 'Adăugați o regulă de alertă',
+  Add_apiary: 'Adăugați o stupină',
+  Add_sensor_definition: 'Adăugați definiția senzorului',
+  Add_member: 'Adăugați un membru',
 }
 
 export default translations

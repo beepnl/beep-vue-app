@@ -45,7 +45,7 @@
                   v-on="on"
                 >
                   <v-icon left>mdi-plus</v-icon>
-                  {{ $t('add') + ' ' + $tc('alertrule', 1) }}
+                  {{ $t('Add_alertrule') }}
                 </v-btn>
               </template>
               <v-list>
@@ -84,7 +84,7 @@
 
     <v-container v-if="!ready">
       <div class="loading">
-          <v-progress-circular size="50" color="primary" indeterminate />
+        <v-progress-circular size="50" color="primary" indeterminate />
       </div>
     </v-container>
 
@@ -121,7 +121,7 @@
                     v-on="on"
                   >
                     <v-icon left>mdi-plus</v-icon>
-                    {{ $t('add') + ' ' + $tc('alertrule', 1) }}
+                    {{ $t('Add_alertrule') }}
                   </v-btn>
                 </template>
                 <v-list>
@@ -309,7 +309,7 @@ export default {
       return [
         {
           icon: 'mdi-plus',
-          title: this.$i18n.t('New') + ' ' + this.$i18n.tc('alertrule', 1),
+          title: this.$i18n.t('New_alertrule'),
           route: 'alertrule-create',
         },
         {

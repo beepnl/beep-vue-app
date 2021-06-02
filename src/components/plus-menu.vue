@@ -42,12 +42,12 @@ export default {
         return [
           {
             icon: 'mdi-file-document-edit-outline',
-            title: this.$i18n.t('New') + ' ' + this.$i18n.tc('inspection', 1),
+            title: this.$i18n.t('New_inspection'),
             route: 'inspect',
           },
           {
             icon: 'mdi-archive',
-            title: this.$i18n.t('New') + ' ' + this.$i18n.tc('hive', 1),
+            title: this.$i18n.t('New_hive'),
             route: 'hive-create',
           },
           {
@@ -62,7 +62,7 @@ export default {
           },
           {
             icon: 'mdi-bell',
-            title: this.$i18n.t('New') + ' ' + this.$i18n.tc('alertrule', 1),
+            title: this.$i18n.t('New_alertrule'),
             route: 'alertrule-create',
           },
         ]
@@ -70,12 +70,12 @@ export default {
         return [
           {
             icon: 'mdi-file-document-edit-outline',
-            title: this.$i18n.t('New') + ' ' + this.$i18n.tc('inspection', 1),
+            title: this.$i18n.t('New_inspection'),
             route: 'inspect',
           },
           {
             icon: 'mdi-archive',
-            title: this.$i18n.t('New') + ' ' + this.$i18n.tc('hive', 1),
+            title: this.$i18n.t('New_hive'),
             route: 'hive-create',
           },
           {

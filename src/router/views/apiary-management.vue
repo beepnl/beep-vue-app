@@ -84,7 +84,7 @@
           <v-col cols="12" md="4">
             <div
               class="beep-label mt-n3 mt-sm-0"
-              v-text="$t('New') + ' ' + $tc('location', 1)"
+              v-text="$t('new_apiary')"
             ></div>
             <Treeselect
               v-if="sortedApiaries && sortedApiaries.length > 0"

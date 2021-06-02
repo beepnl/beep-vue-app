@@ -361,7 +361,7 @@
 
                   <v-list-item-content>
                     <v-list-item-title
-                      v-text="$t('New') + ' ' + $tc('inspection', 1)"
+                      v-text="$t('New_inspection')"
                     ></v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
@@ -388,7 +388,7 @@
 
                   <v-list-item-content>
                     <v-list-item-title
-                      v-text="$t('New') + ' ' + $tc('hive', 1)"
+                      v-text="$t('New_hive')"
                     ></v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
@@ -463,7 +463,7 @@
 
                 <v-list-item-content>
                   <v-list-item-title
-                    v-text="$t('New') + ' ' + $tc('inspection', 1)"
+                    v-text="$t('New_inspection')"
                   ></v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
@@ -568,7 +568,7 @@
           >
             <div class="color-accent"
               ><v-icon color="accent" large left>mdi-plus-circle</v-icon
-              >{{ $t('add') + ' ' + $tc('location', 1) }}</div
+              >{{ $t('Add_apiary') }}</div
             >
           </router-link>
 
