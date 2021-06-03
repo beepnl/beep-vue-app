@@ -12,6 +12,7 @@
     </v-alert>
     <v-btn
       v-if="object[item.id] === null || object[item.id] === undefined"
+      class="mt-1"
       tile
       outlined
       color="accent"
@@ -30,32 +31,40 @@
       {{ $t('sample_code_generate') }}
     </v-btn>
 
-    <v-btn
-      v-if="object[item.id] !== null"
-      tile
-      outlined
-      color="accent"
-      :disabled="showLoadingIcon || bulkInspection"
-      @click.prevent="removeSampleCode(object[item.id])"
-    >
-      <v-progress-circular
-        v-if="showLoadingIcon"
-        class="ml-n1 mr-2"
-        size="18"
-        width="2"
-        color="disabled"
-        indeterminate
-      />
+    <div v-if="object[item.id] !== null" class="d-flex align-center mt-1">
+      <span
+        style=" font-weight: bold;letter-spacing: 2px;"
+        v-text="object[item.id]"
+        >{{ item.val }}</span
+      >
+      <div>
+        <v-progress-circular
+          v-if="showLoadingIcon"
+          class="ml-n1 mr-2"
+          size="18"
+          width="2"
+          color="disabled"
+          indeterminate
+        />
 
-      <v-tooltip v-if="!showLoadingIcon" bottom>
-        <template v-slot:activator="{ on, attrs }">
-          <v-icon v-bind="attrs" left v-on="on">mdi-delete</v-icon>
-        </template>
-        <span v-text="$t('sample_code_delete')"> </span>
-      </v-tooltip>
-
-      {{ object[item.id] }}
-    </v-btn>
+        <v-tooltip v-if="!showLoadingIcon" bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              v-if="object[item.id] !== null"
+              icon
+              color="red"
+              v-bind="attrs"
+              :disabled="showLoadingIcon || bulkInspection"
+              v-on="on"
+              @click.prevent="removeSampleCode(object[item.id])"
+            >
+              <v-icon small>mdi-delete</v-icon>
+            </v-btn>
+          </template>
+          <span v-text="$t('sample_code_delete')"> </span>
+        </v-tooltip>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -82,9 +91,6 @@ export default {
   computed: {
     ...mapGetters('inspections', ['bulkInspection', 'activeInspectionDate']),
     ...mapGetters('hives', ['activeHive']),
-  },
-  created() {
-    console.log(this.item.id, this.object, this.object[this.item.id])
   },
   methods: {
     async removeSampleCode(code) {
@@ -115,8 +121,6 @@ export default {
           if (!response) {
             this.object[this.item.id] = null
           }
-
-          console.log(response.data.sample_code)
           this.object[this.item.id] = response.data.sample_code
           this.setInspectionEdited(true)
           return true
