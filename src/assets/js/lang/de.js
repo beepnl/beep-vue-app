@@ -323,9 +323,9 @@ const translations = {
   bc_i: 'Bienenzähler nach innen',
   bee_count_out: 'Bienenzähler nach außen',
   bc_o: 'Bienenzähler nach außen',
-  t_i: 'Temp. innen',
+  t_i: 'Innentemperatur',
   rssi: 'Signalstärke',
-  snr: 'Signal Krach',
+  snr: 'Signalrauschen',
   Sound_measurements: 'Geräuschmessungen',
   Sensor_info: 'Sensorinfo',
   s_bin098_146Hz: '098-146Hz',
@@ -760,13 +760,13 @@ const translations = {
     'Bevor Du einwilligst, lies bitte die Forschungsbeschreibung, die Du über den unten stehenden Link erhälst und fordere bei Bedarf zusätzliche Details an.',
   save_and_delete: 'Speichern und löschen',
   drag_layers_info_text:
-    'Drag layers from the left hand side to the desired position within the hive on the right hand side. Delete a layer from the hive by clicking on it and then clicking on the red bin icon. Within the hive, layers can be dragged as well to edit the position, layer color can be edited by clicking on the layer.',
-  New_hive: 'New hive',
-  New_alertrule: 'New alert rule',
-  Add_alertrule: 'Add alert rule',
-  Add_apiary: 'Add apiary',
-  Add_sensor_definition: 'Add sensor definition',
-  Add_member: 'Add member',
+    'Ziehe die Elemente von der linken Seite an die gewünschte Position innerhalb der Beute auf der rechten Seite. Lösche eine Ebene aus der Beute, indem Du sie anklickst und dann auf das rote Mülltonnensymbol klickst. Innerhalb der Beute können Elemente auch gezogen werden, um die Position zu bearbeiten, die Farbe kann durch Klicken auf das Element bearbeitet werden.',
+  New_hive: 'Neue Beute',
+  New_alertrule: 'Neue Alarmregel',
+  Add_alertrule: 'Füge eine Alarmregel hinzu',
+  Add_apiary: 'Füge einen Bienenstand hinzu',
+  Add_sensor_definition: 'Füge eine Sensordefinition hinzu',
+  Add_member: 'Füge ein Mitglied hinzu',
 }
 
 export default translations
