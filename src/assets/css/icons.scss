@@ -1,0 +1,262 @@
+.v-icon {
+  color: $color-grey;
+}
+
+.v-icon,
+.theme--light.v-btn.v-btn--icon,
+.v-btn > .v-btn__content .v-icon {
+  &.color-black {
+    color: $color-black;
+  }
+  &.color-primary {
+    color: $color-primary;
+  }
+  &.color-accent {
+    color: $color-accent;
+  }
+  &.color-grey {
+    color: $color-grey;
+  }
+  &.color-grey-filter {
+    color: $color-grey-filter;
+  }
+  &.color-grey-medium {
+    color: $color-grey-medium;
+  }
+  &.color-grey-dark {
+    color: $color-grey-dark;
+  }
+  &.color-grey-light {
+    color: $color-grey-light;
+  }
+}
+
+.v-btn.color-black > .v-btn__content .v-icon {
+  color: $color-black;
+}
+
+.theme--light.v-btn.v-btn--disabled {
+  border-color: rgba(0, 0, 0, 0.26) !important; // fix mobile styling bug
+}
+
+.beep-icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin: 2px;
+  line-height: 1rem;
+  color: $color-white;
+  vertical-align: top;
+  background-color: $color-grey;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: 2px solid $color-grey;
+  border-radius: 50%;
+
+  &--small {
+    width: 16px;
+    height: 16px;
+  }
+
+  &-queen {
+    background-image: url('~@assets/img/icons/icn_bee.svg');
+    background-size: 10px;
+
+    &.dark {
+      background-image: url('~@assets/img/icons/icn_bee_dark.svg');
+      border: 1px solid $color-grey-dark !important;
+    }
+  }
+
+  &-filter {
+    background-color: $color-grey-filter;
+    border: 2px solid $color-grey-filter;
+  }
+
+  &-queen--no-outline {
+    background-color: transparent;
+    background-image: url('~@assets/img/icons/icn_bee_dark.svg');
+    background-size: 17px;
+    border: none;
+    border-radius: 0;
+  }
+
+  &-queen--large {
+    width: 40px;
+    height: 40px;
+    background-size: 20px;
+  }
+
+  &-sensors {
+    font-size: 13px;
+    &::before {
+      margin-left: 2px;
+      font-family: 'Material Design Icons';
+      content: '\F060A';
+    }
+  }
+
+  &-sensors--no-outline {
+    font-size: 22px;
+    color: $color-grey;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    &::before {
+      font-family: 'Material Design Icons';
+      content: '\F060A';
+    }
+
+    &--small {
+      margin: 2px 0 0 0;
+      font-size: 16px;
+    }
+  }
+
+  &-note {
+    font-size: 12px;
+    &::before {
+      margin-left: 2px;
+      font-family: 'Material Design Icons';
+      content: '\F0262';
+    }
+  }
+
+  &-bv {
+    font-size: 15px;
+    &::before {
+      font-family: 'Material Design Icons';
+      content: '\F0081';
+    }
+  }
+
+  &-h {
+    font-size: 18px;
+    &::before {
+      font-family: 'Material Design Icons';
+      content: '\F058E';
+    }
+  }
+
+  &-p {
+    font-size: 15px;
+    &::before {
+      font-family: 'Material Design Icons';
+      content: '\F015F';
+    }
+  }
+
+  &-snr,
+  &-rssi {
+    font-size: 15px;
+    &::before {
+      font-family: 'Material Design Icons';
+      content: '\F0493';
+    }
+  }
+
+  &-t,
+  &-t_0,
+  &-t_1,
+  &-t_2,
+  &-t_3,
+  &-t_4,
+  &-t_5,
+  &-t_6,
+  &-t_7,
+  &-t_8,
+  &-t_9,
+  &-t_i {
+    font-size: 16px;
+    &::before {
+      font-family: 'Material Design Icons';
+      content: '\F050F';
+    }
+  }
+
+  &-weight_kg {
+    font-size: 15px;
+    &::before {
+      font-family: 'Material Design Icons';
+      content: '\F05A1';
+    }
+  }
+
+  &-magnify {
+    font-size: 15px;
+    &::before {
+      margin-left: 1px;
+      font-family: 'Material Design Icons';
+      content: '\F0349';
+    }
+  }
+
+  &-sound {
+    background-image: url('~@assets/img/icons/icn_bee.svg');
+    background-size: 20px;
+    border: none;
+    border-radius: 0;
+  }
+
+  &-text {
+    font-size: 9.5px;
+    font-weight: 600;
+    color: $color-white;
+  }
+
+  &.color-red {
+    background-color: $color-red;
+    border-color: $color-red;
+  }
+
+  &.color-green {
+    background-color: $color-green;
+    border-color: $color-green;
+  }
+
+  &.color-primary {
+    background-color: $color-primary;
+    border-color: $color-primary;
+  }
+  &.color-accent {
+    background-color: $color-accent;
+    border-color: $color-accent;
+  }
+}
+
+.icon-apiary-shared,
+.icon-apiary-owned {
+  width: 20px !important;
+  height: 20px !important;
+  font-size: 14px !important;
+  color: $color-white !important;
+  background-color: $color-primary;
+  border: 2px solid $color-primary;
+  border-radius: 100%;
+
+  &.color-grey {
+    background-color: $color-grey;
+    border-color: $color-grey;
+  }
+
+  &.color-grey-filter {
+    background-color: $color-grey-filter;
+    border-color: $color-grey-filter;
+  }
+}
+
+.icon-apiary-shared::before {
+  margin-left: 0;
+}
+
+.icon-apiary-owned::before {
+  margin-left: 1px;
+}
+
+.icon-side-arrow {
+  font-size: 18px;
+}
+
+.icon-info {
+  margin-top: -2px;
+}

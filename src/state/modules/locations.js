@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import createResource from '@utils/store/vuex-resource'
 
 const resource = createResource({ path: 'locations' })
@@ -6,157 +5,95 @@ const resource = createResource({ path: 'locations' })
 // Add some custom functionality to the resource module
 export const state = {
   ...resource.state,
+  apiaries: [],
+  hiveView: 'xlView',
+  apiaryEdited: false,
+  hiveSearch: null,
+  hiveFilterByAlert: false,
+  hiveFilterByAttention: false,
+  hiveFilterByBase: false,
+  hiveFilterByGroup: false,
+  hiveFilterByImpression: [],
+  hiveFilterByReminder: false,
 }
 export const getters = {
   ...resource.getters,
-  apiaries: function(state) {
-    return state.data.locations || []
+  apiaries: (state) => {
+    return state.apiaries
   },
-  highestHive: function(state, getters, rootState, rootGetters) {
-    // returns the highest hive across all apiaries
-    return Math.max(
-      ...getters.apiaries.map((apiary) =>
-        Math.max(
-          rootGetters['hives/getHivesForApiary'](apiary.id).map(
-            (hive) => hive.honey + hive.brood
-          )
-        )
-      )
-    )
+  hiveView: (state) => {
+    return state.hiveView
   },
-
-  widestApiary: function(state, getters, rootState, rootGetters) {
-    // returns the widest apiary (most total frames)
-    return Math.max(
-      ...getters.apiaries.map((apiary) =>
-        rootGetters['hives/getHivesForApiary'](apiary.id).reduce(
-          (frames, hive) => frames + hive.frames,
-          0
-        )
-      )
-    )
+  apiaryEdited: (state) => {
+    return state.apiaryEdited
   },
-  selectedHives: function(state, getters, rootState, rootGetters) {
-    // FIXME: this does not need to be in the store: put in the view's
-    // `data` and pass as argument where needed
-    // returns an Array of currently selected hives
-    const hiveIndexes =
-      (state.apiary &&
-        state.apiary.hives &&
-        state.apiary.hives.reduce((hiveIndexes, hive, i) => {
-          if (hive.selected) {
-            hiveIndexes.push(i + 1)
-          }
-          return hiveIndexes
-        }, [])) ||
-      []
-    return hiveIndexes
+  hiveFilterByAlert: (state) => {
+    return state.hiveFilterByAlert
+  },
+  hiveFilterByAttention: (state) => {
+    return state.hiveFilterByAttention
+  },
+  hiveFilterByBase: (state) => {
+    return state.hiveFilterByBase
+  },
+  hiveFilterByGroup: (state) => {
+    return state.hiveFilterByGroup
+  },
+  hiveFilterByImpression: (state) => {
+    return state.hiveFilterByImpression
+  },
+  hiveFilterByReminder: (state) => {
+    return state.hiveFilterByReminder
+  },
+  hiveSearch: (state) => {
+    return state.hiveSearch
   },
 }
 export const mutations = {
   ...resource.mutations,
-  // FIXME: most of the following should be either moved to local view state
-  // or be replaced by endpoint actions
-  setSelectedApiary: function(state, apiary) {
-    state.apiary = apiary
+  setApiaries: function(state, payload) {
+    state.apiaries = payload
   },
-  setEditable: function(state, editable) {
-    state.editing = editable
+  setApiaryEdited: function(state, bool) {
+    state.apiaryEdited = bool
   },
-  selectHive: function(_, hive) {
-    Vue.set(hive, 'selected', !hive.selected)
+  setHiveView: function(state, string) {
+    state.hiveView = string
   },
-  unselectHives: function(state) {
-    state.apiary.hives.forEach((hive) => Vue.set(hive, 'selected', false))
+  setData: function(state, payload) {
+    state[payload.prop] = payload.value
   },
-  addHive: function(state, { apiary = null, hive = null }) {
-    if (!apiary) {
-      apiary = state.apiary
+  setFilterByImpression: function(state, payload) {
+    var array = state.hiveFilterByImpression
+    if (array.includes(payload)) {
+      array.splice(array.indexOf(payload), 1)
+    } else {
+      array.push(payload)
     }
-    const defaultHive = {
-      brood: 1,
-      honey: 1,
-      frames: 10,
-      color: 'orange',
-    }
-    if (!hive) {
-      hive = { ...defaultHive }
-    }
-    apiary.hives.push(hive)
+    state.hiveFilterByImpression = array
   },
-  setHives: function(_, { apiary = null, hives = null }) {
-    if (!apiary || !hives) {
-      return
-    }
-    Vue.set(apiary, 'hives', hives)
+  clearFilters: function(state) {
+    state.hiveSearch = null
+    state.hiveFilterByAlert = false
+    state.hiveFilterByAttention = false
+    state.hiveFilterByBase = false
+    state.hiveFilterByGroup = false
+    state.hiveFilterByImpression = []
+    state.hiveFilterByReminder = false
   },
-  createApiary: function(_, getters, { apiary = null }) {
-    const defaultApiary = {
-      id: Math.max(getters.apiaries.map((apiary) => apiary.id) + 1),
-      title: 'New Apiary',
-      hives: [].splice(),
-    }
-    if (!apiary) {
-      apiary = defaultApiary
-    }
-    getters.apiaries.push(apiary)
-  },
-  updateApiary: function(
-    _,
-    getters,
-    { apiary = null, id = null, update = null }
-  ) {
-    id = id || apiary.id
-    if (!id) {
-      return
-    }
-    const index = getters.apiaries.map((apiary) => apiary.id).indexOf(id)
-    if (index > -1) {
-      if (update) {
-        getters.apiaries.splice(index, 1, update)
-      } else {
-        getters.apiaries.splice(index, 1)
-      }
-    }
+  resetState: function(state) {
+    state.apiaries = []
+    state.hiveView = 'xlView'
+    state.apiaryEdited = false
+    state.hiveSearch = null
+    state.hiveFilterByAlert = false
+    state.hiveFilterByAttention = false
+    state.hiveFilterByBase = false
+    state.hiveFilterByGroup = false
+    state.hiveFilterByImpression = []
+    state.hiveFilterByReminder = false
   },
 }
 export const actions = {
   ...resource.actions,
-  // add actions as needed
-
-  // FIXME: most of the following should be either moved to local view state
-  // or be replaced by endpoint actions
-
-  selectApiary: function({ getters, commit }, id) {
-    const apiary = getters.apiaries.find((apiary) => apiary.id === id)
-    if (apiary) {
-      commit('setSelectedApiary', apiary)
-      return apiary
-    }
-    return false
-  },
-  editOn: function({ commit }) {
-    return commit('setEditable', true)
-  },
-  editOff: function({ commit }) {
-    return commit('setEditable', false)
-  },
-  selectHive: function({ commit }, payload) {
-    return commit('selectHive', payload || {})
-  },
-  unselectHives: function({ commit }) {
-    return commit('unselectHives')
-  },
-  addHive: function({ commit }, payload) {
-    return commit('addHive', payload || {})
-  },
-  createApiary: function({ commit }) {
-    return commit('createApiary')
-  },
-  updateApiary: function({ commit }, payload) {
-    return commit('updateApiary', payload || {})
-  },
-  deleteApiary: function({ commit }, payload) {
-    return commit('deleteApiary', payload || {})
-  },
 }

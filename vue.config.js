@@ -1,8 +1,10 @@
-const fs = require('fs')
-const appConfig = require('./src/app.config')
+// const fs = require('fs')
+const appConfig = require('./public/manifest')
 
 /** @type import('@vue/cli-service').ProjectOptions */
 module.exports = {
+  runtimeCompiler: true,
+  productionSourceMap: false,
   // https://github.com/neutrinojs/webpack-chain/tree/v4#getting-started
   chainWebpack(config) {
     // We provide the app's title in Webpack's name field, so that
@@ -25,17 +27,22 @@ module.exports = {
     )
   },
   css: {
-    // Enable CSS source maps.
-    sourceMap: true,
+    // Enable CSS source maps. Disable for production build!
+    sourceMap: false,
+    loaderOptions: {
+      scss: {
+        prependData: `@import "~@assets/css/mixins.scss"; @import "~@assets/css/variables.scss"; @import "~@assets/css/main.scss"; @import "~@assets/css/icons.scss"; @import "~@assets/css/typography.scss"; @import "~@assets/css/grid.scss"; @import "~@assets/css/vendors.scss";`,
+      },
+    },
   },
   // Configure Webpack's dev server.
   // https://cli.vuejs.org/guide/cli-service.html
   devServer: {
-    https: {
-      key: fs.readFileSync('./localhost.key'),
-      cert: fs.readFileSync('./localhost.crt'),
-    },
-    public: 'https://localhost:8080/',
+    // https: {
+    //   key: fs.readFileSync('./localhost.key'),
+    //   cert: fs.readFileSync('./localhost.crt'),
+    // },
+    public: 'http://localhost:8080/',
   },
   publicPath: '/',
 }

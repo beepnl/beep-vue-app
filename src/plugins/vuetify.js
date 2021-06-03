@@ -1,19 +1,24 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify/lib'
 import colors from 'vuetify/lib/util/colors'
+import minifyTheme from 'minify-css-string'
 
 Vue.use(Vuetify)
 
 export default new Vuetify({
+  breakpoint: {
+    mobileBreakpoint: 'xs', // This is equivalent to a value of 600
+  },
   icons: {
     iconfont: 'mdi',
   },
   theme: {
     themes: {
+      options: { minifyTheme },
       light: {
-        primary: colors.amber.darken2,
-        secondary: colors.teal,
-        accent: colors.deepPurple,
+        primary: '#F8B133',
+        secondary: colors.black,
+        accent: '#f29100',
       },
     },
   },

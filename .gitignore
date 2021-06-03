@@ -11,11 +11,11 @@ node_modules/
 /tests/e2e/screenshots/
 /tests/unit/coverage/
 jsconfig.json
-package-lock.json
 
 # Local Env Files
 .env.local
 .env.*.local
+.env.development
 localhost.*
 
 # Log Files

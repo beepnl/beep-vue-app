@@ -1,0 +1,549 @@
+/* Element-UI */
+
+.el-checkbox__input.is-checked .el-checkbox__inner,
+.el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  background-color: $color-primary;
+  border-color: $color-primary;
+}
+
+/* Vuetify */
+.v-application .red--text {
+  color: $color-red !important;
+  caret-color: $color-red !important;
+}
+
+.v-application .red {
+  background-color: $color-red !important;
+  border-color: $color-red !important;
+}
+
+.theme--light.v-label {
+  color: $color-grey-dark;
+}
+
+.theme--light.v-card.v-card--outlined {
+  border: thin solid $color-grey-light;
+}
+
+.theme--light.v-btn {
+  color: inherit;
+}
+
+.theme--light.v-input--is-disabled input,
+.theme--light.v-input--is-disabled textarea {
+  @include for-phone-only {
+    color: $color-grey !important;
+  }
+}
+
+.v-icon.v-icon::after,
+.v-btn::before,
+.v-btn .v-ripple__container {
+  display: none !important;
+}
+
+.v-text-field--outlined fieldset {
+  border-color: $color-grey-light;
+}
+
+.v-tabs--icons-and-text > .v-tabs-bar {
+  height: 48px !important;
+  .v-tab {
+    text-transform: none !important;
+    letter-spacing: 0.075;
+    > *:first-child {
+      margin-bottom: 2px !important;
+    }
+    @include for-phone-only {
+      font-size: 12px !important;
+      letter-spacing: 0.05;
+    }
+    @media (max-width: 400px) {
+      min-width: 70px !important;
+      padding: 0 4px !important;
+    }
+    @media (max-width: 500px) {
+      padding: 0 8px !important;
+    }
+  }
+}
+.v-tabs {
+  .v-tab {
+    &:hover::before {
+      opacity: 0 !important;
+    }
+  }
+  .v-tab--active {
+    &:hover::before {
+      opacity: 0 !important;
+    }
+  }
+}
+
+.apiary-create .v-item-group.v-tabs-bar {
+  position: fixed !important;
+  top: 48px !important;
+  z-index: 1 !important;
+  width: 100% !important;
+}
+
+.v-toolbar__content {
+  // height: 48px !important;
+  .v-toolbar__title {
+    padding-left: 0 !important;
+  }
+}
+
+.v-text-field {
+  &.error--text .v-label {
+    color: #ff5252 !important;
+    caret-color: #ff5252 !important;
+  }
+  &.v-text-field--solo .v-input__control {
+    min-width: 160px !important;
+    @include for-desktop-up {
+      min-width: 0 !important;
+    }
+    .v-input__slot {
+      background: transparent !important;
+    }
+  }
+  .v-input__control .v-input__slot {
+    display: flex !important;
+    align-items: center !important;
+    min-height: auto !important;
+  }
+
+  &:not(.v-text-field--outlined):not(.v-text-field--solo):not(.v-select)input {
+    padding: 8px 0 0;
+  }
+
+  &.v-text-field--outlined {
+    input {
+      width: 100%;
+      max-height: none !important;
+      padding-top: 10px;
+    }
+  }
+
+  &.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo).v-text-field--outlined {
+    .v-input__slot {
+      padding-right: 4px !important;
+    }
+    .v-input__append-inner {
+      margin-top: 6px !important;
+      @include for-phone-only {
+        margin-top: 3px !important;
+      }
+    }
+  }
+  &.beep--large {
+    padding-top: 0 !important;
+    font-size: 1.8rem !important;
+
+    @include for-phone-only {
+      font-size: 1.6rem !important;
+    }
+
+    &.v-text-field {
+      .v-input__control .v-input__slot {
+        height: 45px !important;
+        min-height: 45px !important;
+      }
+      input {
+        padding: 0 !important;
+        margin-top: 8px !important;
+        margin-bottom: -10px;
+        @include for-phone-only {
+          margin-bottom: -14px;
+        }
+      }
+    }
+  }
+}
+
+.v-input {
+  &.v-input--selection-controls.v-input--switch .v-input__slot > .v-label {
+    font-size: 0.75rem !important;
+    line-height: 1rem;
+    letter-spacing: 0.0333333333em !important;
+  }
+
+  textarea {
+    padding-top: 4px;
+  }
+}
+
+.v-input__slider {
+  max-width: 600px;
+
+  .v-slider.v-slider--horizontal .v-slider__tick .v-slider__tick-label {
+    width: 65px;
+    max-width: 65px;
+    margin-top: 2px;
+    font-size: 0.75rem !important;
+    line-height: 1rem;
+    text-align: center;
+    white-space: normal;
+  }
+
+  .v-slider.v-slider--horizontal
+    .v-slider__tick:last-child
+    .v-slider__tick-label,
+  .v-slider.v-slider--horizontal
+    .v-slider__tick:first-child
+    .v-slider__tick-label {
+    -webkit-transform: translateX(-50%) !important;
+    transform: translateX(-50%) !important;
+  }
+
+  &.slider--default {
+    .v-slider {
+      div[aria-valuenow='0'] {
+        .primary {
+          color: $color-grey-medium !important;
+          background-color: $color-grey-medium !important;
+        }
+        .v-slider__thumb-label {
+          display: none !important;
+        }
+      }
+    }
+    &:not(.slider--big-label) {
+      .v-slider {
+        max-width: 245px !important;
+        margin-top: 18px !important;
+      }
+    }
+  }
+
+  &.slider--big-label {
+    .v-slider {
+      margin-top: 25px !important;
+    }
+  }
+
+  &.slider--number-percentage {
+    .v-slider {
+      div[aria-valuenow='-1'] {
+        .primary {
+          color: $color-grey-medium !important;
+          background-color: $color-grey-medium !important;
+        }
+        .v-slider__thumb-label {
+          display: none !important;
+        }
+      }
+    }
+  }
+
+  &.slider--score-amount .v-slider__ticks-container .v-slider__tick {
+    &:nth-child(2) {
+      background-color: #069518 !important;
+    }
+    &:nth-child(3) {
+      background-color: #243d80 !important;
+    }
+    &:nth-child(4) {
+      background-color: #5f3f90 !important;
+    }
+    &:nth-child(5) {
+      background-color: #8f1619 !important;
+    }
+  }
+
+  &.slider--score-quality .v-slider__ticks-container .v-slider__tick {
+    &:nth-child(5) {
+      background-color: #069518 !important;
+    }
+    &:nth-child(4) {
+      background-color: #243d80 !important;
+    }
+    &:nth-child(3) {
+      background-color: #5f3f90 !important;
+    }
+    &:nth-child(2) {
+      background-color: #8f1619 !important;
+    }
+  }
+
+  &.slider--grade .v-slider__ticks-container .v-slider__tick {
+    &:nth-child(11),
+    &:nth-child(10),
+    &:nth-child(9) {
+      background-color: #069518 !important;
+    }
+    &:nth-child(8),
+    &:nth-child(7) {
+      background-color: #243d80 !important;
+    }
+    &:nth-child(6),
+    &:nth-child(5) {
+      background-color: #5f3f90 !important;
+    }
+    &:nth-child(4),
+    &:nth-child(3),
+    &:nth-child(2) {
+      background-color: #8f1619 !important;
+    }
+  }
+}
+
+.v-card__subtitle,
+.v-card__text,
+.v-card__title {
+  padding: 12px !important;
+  @include for-phone-only {
+    padding: 10px !important;
+  }
+}
+
+.v-card__title + .v-card__subtitle,
+.v-card__title + .v-card__text {
+  padding: 0 12px !important;
+  @include for-phone-only {
+    padding: 0 10px !important;
+  }
+}
+
+.v-data-table:not(.table-heatmap) {
+  background-color: transparent !important;
+  input {
+    @include for-phone-only {
+      font-size: 12px !important;
+    }
+  }
+  .v-input__control {
+    @include for-phone-only {
+      font-size: 12px !important;
+    }
+  }
+  .td--small {
+    .v-input__control {
+      min-width: 116px !important;
+      max-width: 116px !important;
+      @include for-phone-only {
+        min-width: 80px !important;
+        max-width: 80px !important;
+      }
+    }
+  }
+  .td--medium {
+    .v-input__control {
+      min-width: 130px !important;
+      max-width: 130px !important;
+    }
+  }
+  .v-data-table__wrapper > table > tbody > tr > td,
+  .v-data-table__wrapper > table > thead > tr > th {
+    @include for-phone-only {
+      padding: 0 5px !important;
+      font-size: 12px !important;
+    }
+  }
+  &.v-data-table--smallfont {
+    input {
+      font-size: 12px !important;
+    }
+    .v-input__control {
+      font-size: 12px !important;
+    }
+    .v-data-table__wrapper > table > tbody > tr > td,
+    .v-data-table__wrapper > table > thead > tr > th {
+      font-size: 12px !important;
+    }
+  }
+}
+
+.v-data-table.v-data-table--dense.table--heatmap
+  > .v-data-table__wrapper
+  > table
+  > tbody
+  > tr
+  > td {
+  height: 13px !important;
+}
+
+.v-navigation-drawer {
+  z-index: 999999 !important;
+}
+
+.v-list-item--dense,
+.v-list--dense .v-list-item {
+  max-height: 52px;
+}
+
+.v-badge__badge {
+  min-width: 16px !important;
+  height: 16px !important;
+  padding: 3px 5px !important;
+  font-size: 11px !important;
+}
+
+/* Vue Numeric Input */
+.vue-numeric-input {
+  .numeric-input {
+    height: 36px !important;
+    padding-right: 2.6rem !important;
+    padding-left: 2.6rem !important;
+    border: 1px solid $color-grey-light !important;
+    border-radius: 4px !important;
+    -webkit-transition: none !important;
+    transition: none !important;
+    &:focus {
+      outline-color: $color-primary !important;
+    }
+  }
+  .btn {
+    width: 34px !important;
+    color: $color-grey-dark;
+    cursor: pointer !important;
+    background: none !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    -webkit-transition: none !important;
+    transition: none !important;
+    .btn-icon::before {
+      position: relative !important;
+      top: 0 !important;
+      left: 0 !important;
+      font-family: 'Material Design Icons' !important;
+      font-size: 24px !important;
+      font-style: normal !important;
+      background: none !important;
+      background-color: transparent !important;
+    }
+    &:hover {
+      color: $color-primary;
+    }
+    &:disabled:hover {
+      color: $color-grey-dark;
+    }
+  }
+  .btn-decrement {
+    top: 1px !important;
+    bottom: 1px !important;
+    left: 0 !important;
+    border: 0 !important;
+    border-right: 1px solid $color-grey-light !important;
+    .btn-icon::before {
+      margin-left: 1px;
+      content: '\F0374' !important;
+    }
+  }
+  .btn-increment {
+    top: 1px !important;
+    right: 0 !important;
+    bottom: 1px !important;
+    border: 0 !important;
+    border-left: 1px solid $color-grey-light !important;
+    .btn-icon {
+      &::before {
+        content: '\F0415' !important;
+      }
+      &::after {
+        height: 0 !important;
+      }
+    }
+  }
+  &:focus {
+    outline-color: $color-primary !important;
+  }
+  &.vue-numeric-input--extratop {
+    .btn {
+      .btn-icon::before {
+        top: 6px !important;
+      }
+    }
+  }
+  &.vue-numeric-input--small,
+  &.vue-numeric-input--xsmall {
+    max-width: 120px !important;
+    .numeric-input {
+      height: 31px !important;
+    }
+    .btn {
+      width: 29px !important;
+      .btn-icon::before {
+        top: 0 !important;
+        font-size: 20px !important;
+      }
+    }
+  }
+  &.vue-numeric-input--xsmall {
+    max-width: 100px !important;
+    .numeric-input {
+      padding-right: 1.6rem !important;
+      padding-left: 2.2rem !important;
+      font-size: 12px !important;
+    }
+  }
+}
+
+/* Treeselect */
+.vue-treeselect .vue-treeselect__control {
+  background: transparent;
+  border-color: $color-grey-light;
+  border-radius: 4px;
+}
+
+.vue-treeselect--focused:not(.vue-treeselect--open) .vue-treeselect__control {
+  border-color: $color-primary !important;
+  box-shadow: none !important;
+}
+
+.vue-treeselect__multi-value-item {
+  color: $color-accent !important;
+  background: $color-orange-medium !important;
+  .vue-treeselect__multi-value-label {
+    font-weight: 600 !important;
+  }
+}
+
+.vue-treeselect__value-remove {
+  color: $color-accent !important;
+}
+
+.vue-treeselect__checkbox--checked {
+  background: $color-primary !important;
+  border-color: $color-primary !important;
+}
+
+/* Vue Datetime */
+.vdatetime-input {
+  color: $color-primary;
+  cursor: pointer;
+}
+
+.vdatetime.green--text {
+  .vdatetime-input {
+    color: $color-green;
+  }
+}
+
+.vdatetime-popup {
+  border-radius: 4px;
+
+  .vdatetime-popup__header,
+  .vdatetime-calendar__month__day--selected > span > span,
+  .vdatetime-calendar__month__day--selected:hover > span > span {
+    background: $color-primary !important;
+  }
+
+  .vdatetime-year-picker__item--selected,
+  .vdatetime-time-picker__item--selected,
+  .vdatetime-popup__actions__button {
+    color: $color-primary !important;
+  }
+
+  .vdatetime-popup__header {
+    border-top-left-radius: inherit;
+    border-top-right-radius: inherit;
+  }
+
+  .vdatetime-popup__actions__button {
+    padding: 0 !important;
+  }
+}

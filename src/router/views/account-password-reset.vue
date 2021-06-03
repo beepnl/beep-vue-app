@@ -1,57 +1,117 @@
 <template>
-  <v-card>
-    <v-form ref="form" v-model="valid" @submit.prevent="resetPassword">
-      <v-card-title>Reset password</v-card-title>
-      <v-card-text>
-        <v-alert
-          v-for="error in errors"
-          :key="error.name"
-          type="error"
-          outlined
-        >
-          {{ error.type }}
-        </v-alert>
-        <v-text-field
-          v-model="resetPasswordRequest.email"
-          label="email"
-          :rules="emailRules"
-          autocomplete="off"
-          disabled
-        ></v-text-field>
-        <v-text-field
-          v-model="resetPasswordRequest.verificationCode"
-          label="verification code"
-          :rules="verificationCodeRules"
-          autocomplete="off"
-        ></v-text-field>
-        <v-text-field
-          v-model="resetPasswordRequest.newPassword"
-          label="new password"
-          :rules="passwordRules"
-          autocomplete="off"
-          type="password"
-        ></v-text-field>
-        <v-text-field
-          v-model="newPasswordRepeated"
-          label="repeat new password"
-          :rules="repeatPasswordRules"
-          autocomplete="off"
-          type="password"
-        ></v-text-field>
-      </v-card-text>
+  <Layout :title="$t('password_recovery_reset_password')">
+    <v-form
+      ref="form"
+      v-model="valid"
+      style="width: 100%"
+      @submit.prevent="resetPassword"
+    >
+      <div v-if="passwordReset">
+        <v-card-text v-if="errors.length === 0">
+          <v-alert text prominent dense color="green">
+            {{ $t('password_recovery_reset_success') }}
+          </v-alert>
+          <a @click="login">{{ $t('go_to_dashboard') }}</a>
+        </v-card-text>
+        <v-card-text v-if="errors.length > 0">
+          <v-alert
+            v-for="error in errors"
+            :key="error.name"
+            type="error"
+            text
+            prominent
+            dense
+            color="red"
+          >
+            {{ error.errorMessage }}
+            <a
+              v-if="error.verifyLink"
+              class="red--text alert-link"
+              @click="sendEmailVerification"
+              >{{ $t('email_new_verification') }}</a
+            >
+          </v-alert>
+          <router-link :to="{ name: 'sign-up' }">
+            {{ $t('create_login_question') }}
+          </router-link>
+        </v-card-text>
+      </div>
+      <div v-if="!passwordReset">
+        <v-card-text>
+          <v-alert
+            v-for="error in errors"
+            :key="error.name"
+            type="error"
+            text
+            prominent
+            dense
+            color="red"
+          >
+            {{ error.errorMessage }}
+          </v-alert>
+          <v-text-field
+            v-model="resetPasswordRequest.email"
+            :class="fieldErrors.email ? 'error--text' : ''"
+            :label="`${$t('email')}`"
+            :rules="emailRules"
+            type="email"
+            disabled
+          ></v-text-field>
+          <v-text-field
+            v-model="resetPasswordRequest.token"
+            :class="fieldErrors.token ? 'error--text' : ''"
+            :label="`${$t('verification_code')}`"
+            :rules="verificationCodeRules"
+            autocomplete="off"
+          ></v-text-field>
+          <v-text-field
+            v-model="resetPasswordRequest.password"
+            :class="fieldErrors.password ? 'error--text' : ''"
+            :label="`${$t('new_password')}`"
+            :rules="passwordRules"
+            autocomplete="off"
+            :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+            :type="show1 ? 'text' : 'password'"
+            @click:append="show1 = !show1"
+          ></v-text-field>
+          <v-text-field
+            v-model="resetPasswordRequest.password_confirmation"
+            :label="`${$t('confirm_new_password')}`"
+            :rules="repeatPasswordRules"
+            autocomplete="off"
+            :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+            :type="show2 ? 'text' : 'password'"
+            @click:append="show2 = !show2"
+          ></v-text-field>
+        </v-card-text>
 
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn :disabled="!valid" text type="submit">
-          Reset password
-        </v-btn>
-      </v-card-actions>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn :disabled="!valid" text type="submit">
+            {{ $t('password_recovery_reset_password') }}
+          </v-btn>
+        </v-card-actions>
+
+        <v-divider class="mx-3"></v-divider>
+        <v-card-text>
+          <router-link
+            :to="{ name: 'password-forgot', query: { email: email } }"
+          >
+            {{ $t('password_recovery_code_not_received') }}
+          </router-link>
+          <v-spacer></v-spacer>
+        </v-card-text>
+      </div>
     </v-form>
-  </v-card>
+  </Layout>
 </template>
 
 <script>
+import Api from '@api/Api'
+import Layout from '@layouts/account.vue'
+
 export default {
+  components: { Layout },
   props: {
     email: {
       type: String,
@@ -65,69 +125,188 @@ export default {
   data() {
     return {
       resetPasswordRequest: {
-        email: this.email,
-        verificationCode: this.code,
-        newPassword: '',
+        email: this.email || '',
+        token: this.code || '',
+        password: '',
+        password_confirmation: '',
       },
-      newPasswordRepeated: '',
       valid: false,
       errors: [],
-      emailRules: [
-        (v) => !!v || 'error.email_required',
-        (v) => /.+@.+\..+/.test(v) || 'error.invalid_email',
-      ],
-      verificationCodeRules: [(v) => !!v || 'error.verification_code_required'],
-      passwordRules: [
-        (v) => !!v || 'error.password_required',
-        // FIXME: don't impose and expose password requirements besides minimum length
-        (v) =>
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.[\]{}()?\-"!@#%&/\\,><':;|_~`])(?=.{6,98})/.test(
-            v
-          ) || 'error.password_does_not_match_policy',
-      ],
-      repeatPasswordRules: [
-        (v) => !!v || 'error.field_required',
-        (v) =>
-          v === this.resetPasswordRequest.newPassword ||
-          'error.passwords_do_not_match',
-      ],
+      show1: false,
+      show2: false,
+      passwordReset: false,
+      fieldErrors: {
+        email: false,
+        password: false,
+        token: false,
+      },
     }
   },
+  computed: {
+    emailRules: function() {
+      return [
+        (v) => !!v || this.$i18n.t('email_is_required'),
+        (v) => /.+@.+\..+/.test(v) || this.$i18n.t('no_valid_email'),
+      ]
+    },
+    verificationCodeRules: function() {
+      return [
+        (v) =>
+          !!v ||
+          this.$i18n.t('the_field') +
+            ' "' +
+            this.$i18n.t('verification_code') +
+            '" ' +
+            this.$i18n.t('is_required'),
+      ]
+    },
+    passwordRules: function() {
+      return [
+        (v) => !!v || this.$i18n.t('password_is_required'),
+        (v) =>
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.[\]{}()?\-"!@#%&/\\,><':;|_~`])(?=.{8,98})/.test(
+            v
+          ) || this.$i18n.t('invalid_password'),
+      ]
+    },
+    repeatPasswordRules: function() {
+      return [
+        (v) =>
+          !!v ||
+          this.$i18n.t('the_field') +
+            ' "' +
+            this.$i18n.t('confirm_new_password') +
+            '" ' +
+            this.$i18n.t('is_required'),
+        (v) =>
+          v === this.resetPasswordRequest.password ||
+          this.$i18n.t('no_password_match'),
+      ]
+    },
+  },
   methods: {
-    resetPassword() {
+    async resetPassword() {
       if (this.$refs.form.validate()) {
         this.clearErrors()
-        this.$store
-          .dispatch('auth/forgotPasswordSubmit', this.resetPasswordRequest)
-          .then(() => this.$router.push({ name: 'sign-in' }))
-          .catch((error) => {
-            switch (error.code) {
-              case 'UserNotFoundException':
-                this.errors.push({
-                  type: 'error.user_not_found',
-                })
-                break
-              case 'LimitExceededException':
-                this.errors.push({
-                  type: 'error.limit_exceeded_try_again_later',
-                })
-                break
-              case 'CodeMismatchException':
-                this.errors.push({
-                  type: 'error.invalid_verification_code',
-                })
-                break
-              default:
-                this.errors.push({
-                  type: 'error.unknown_error',
-                })
+        try {
+          const response = await Api.postRequest(
+            '/user/reset',
+            this.resetPasswordRequest
+          )
+          if (response.data.data.api_token !== null) {
+            this.passwordReset = true
+          }
+          return response
+        } catch (error) {
+          if (error.response) {
+            console.log(error.response)
+            if (typeof error.response.data.message !== 'undefined') {
+              var msg = error.response.data.message
+            } else {
+              msg = error.response.data
             }
-          })
+            if (msg === 'invalid_user') {
+              this.fieldErrors.email = true
+              this.fieldErrors.password = true
+            } else if (msg === 'invalid_password') {
+              this.fieldErrors.password = true
+            } else if (msg === 'invalid_token') {
+              this.fieldErrors.token = true
+            }
+            var verifyOn = false
+            if (msg === 'email_not_verified') {
+              verifyOn = true
+            }
+            this.errors.push({
+              errorMessage: this.$i18n.t(msg),
+              verifyLink: verifyOn,
+            })
+          } else {
+            this.errors.push({
+              errorMessage: this.$i18n.t('Error'),
+            })
+          }
+        }
       }
+    },
+    async sendEmailVerification() {
+      try {
+        const response = await Api.postRequest('/email/resend', {
+          email: this.email,
+        })
+        return response
+      } catch (error) {
+        if (error.response) {
+          console.log(error.response)
+          const msg = error.response.data.message
+          this.errors.push({
+            errorMessage: this.$i18n.t(msg),
+          })
+        } else {
+          this.errors.push({
+            errorMessage: this.$i18n.t('Error'),
+          })
+        }
+      }
+    },
+    login() {
+      this.clearErrors()
+      this.$store
+        .dispatch('auth/signIn', {
+          email: this.resetPasswordRequest.email,
+          password: this.resetPasswordRequest.password,
+        })
+        .then((token) => {
+          this.$router.push({ name: 'home' })
+          this.clearResetPasswordRequest()
+        })
+        .catch((error) => {
+          this.tryingToLogIn = false
+          if (error.response) {
+            console.log(error.response)
+            if (typeof error.response.data.message !== 'undefined') {
+              var msg = error.response.data.message
+            } else {
+              msg = error.response.data
+            }
+            if (msg === 'invalid_user') {
+              this.fieldErrors.email = true
+              this.fieldErrors.password = true
+            } else if (msg === 'invalid_password') {
+              this.fieldErrors.password = true
+            } else if (msg.indexOf('email') > -1) {
+              this.fieldErrors.email = true
+            }
+            var verifyOn = false
+            if (msg === 'email_not_verified') {
+              verifyOn = true
+            }
+            this.errors.push({
+              errorMessage: this.$i18n.t(msg),
+              verifyLink: verifyOn,
+            })
+          } else {
+            this.errors.push({
+              errorMessage: this.$i18n.t('authentication_failed'),
+            })
+          }
+        })
     },
     clearErrors() {
       this.errors = []
+      this.fieldErrors.email = false
+      this.fieldErrors.password = false
+      this.fieldErrors.token = false
+    },
+    clearResetPasswordRequest() {
+      this.resetPasswordRequest = {}
     },
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.alert-link {
+  text-decoration: underline !important;
+}
+</style>

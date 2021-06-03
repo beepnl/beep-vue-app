@@ -1,0 +1,1127 @@
+<template>
+  <Layout
+    v-if="activeHive"
+    :title="`${$tc('Inspection', 2)} ${activeHive.name}`"
+  >
+    <div class="filter-bar-wrapper filter-bar-inspections">
+      <v-container class="filter-container">
+        <v-row
+          class="filter-bar d-flex flex-row justify-space-between align-center"
+        >
+          <div
+            class="filter-buttons filter-buttons--has-max d-flex flex-row justify-flex-start align-center"
+          >
+            <v-col class="pa-3">
+              <v-text-field
+                v-model="search"
+                :label="`${$t('Search')}`"
+                :class="
+                  `${
+                    search !== null ? 'v-input--is-focused primary--text' : ''
+                  } filter-text-field`
+                "
+                :height="mobile ? '30px' : '36px'"
+                clearable
+                outlined
+                dense
+                hide-details
+              ></v-text-field>
+            </v-col>
+            <v-card-actions class="pl-0">
+              <v-icon
+                :class="
+                  `${
+                    filterByAttention ? 'red--text' : 'color-grey-filter'
+                  } mr-2`
+                "
+                @click="filterByAttention = !filterByAttention"
+              >
+                mdi-clipboard-alert-outline
+              </v-icon>
+              <v-icon
+                :class="
+                  `${filterByReminder ? 'red--text' : 'color-grey-filter'} mr-2`
+                "
+                @click="filterByReminder = !filterByReminder"
+              >
+                mdi-calendar-clock
+              </v-icon>
+              <v-icon
+                :class="
+                  `${
+                    filterByImpression.includes(3)
+                      ? 'green--text'
+                      : 'color-grey-filter'
+                  } mr-2`
+                "
+                @click="updateFilterByImpression(3)"
+              >
+                mdi-emoticon-happy
+              </v-icon>
+              <v-icon
+                :class="
+                  `${
+                    filterByImpression.includes(2)
+                      ? 'orange--text'
+                      : 'color-grey-filter'
+                  } mr-2`
+                "
+                @click="updateFilterByImpression(2)"
+              >
+                mdi-emoticon-neutral
+              </v-icon>
+              <v-icon
+                :class="
+                  `${
+                    filterByImpression.includes(1)
+                      ? 'red--text'
+                      : 'color-grey-filter'
+                  } mr-2`
+                "
+                @click="updateFilterByImpression(1)"
+              >
+                mdi-emoticon-sad
+              </v-icon>
+            </v-card-actions>
+          </div>
+
+          <v-card-actions v-if="activeHive.editable || activeHive.owner">
+            <v-btn
+              v-if="!mobile"
+              :to="{ name: 'inspect', query: { hiveId: id } }"
+              medium
+              tile
+              outlined
+              color="black"
+            >
+              <v-icon left>mdi-plus</v-icon>
+              {{ $t('New_inspection') }}
+            </v-btn>
+            <router-link
+              v-if="mobile"
+              :to="{ name: 'inspect', query: { hiveId: id } }"
+            >
+              <v-icon dark color="accent">mdi-plus-circle</v-icon></router-link
+            >
+          </v-card-actions>
+        </v-row>
+      </v-container>
+    </div>
+
+    <v-container v-if="!ready" class="hive-inspections-content">
+      <div class="loading">
+        <v-progress-circular size="50" color="primary" indeterminate />
+      </div>
+    </v-container>
+
+    <div v-if="ready" class="hive-inspections-content">
+      <v-simple-table
+        v-if="
+          inspections.inspections !== undefined && filteredInspections.length
+        "
+        light
+        class="table-responsive"
+      >
+        <template v-slot>
+          <thead>
+            <tr class="trh">
+              <th class="tdr"
+                ><strong>{{ $tc('Inspection', 2) }}</strong></th
+              >
+              <th
+                v-for="(inspection, a) in filteredInspections"
+                :key="a"
+                class="tdc"
+              >
+                <div class="inspection-actions d-flex justify-center">
+                  <router-link
+                    v-if="inspection.owner || activeHive.owner"
+                    :to="{
+                      name: 'hive-inspect-edit',
+                      params: { id: id, inspection: inspection.id },
+                    }"
+                    class="icon-button"
+                  >
+                    <v-icon small class="color-grey-medium">mdi-pencil</v-icon>
+                  </router-link>
+                  <a
+                    v-if="inspection.owner || activeHive.owner"
+                    class="icon-button delete"
+                    @click="confirmDeleteInspection(inspection)"
+                  >
+                    <v-icon small class="color-grey-medium">mdi-delete</v-icon>
+                  </a>
+                </div>
+                <strong class="d-flex justify-center">{{
+                  mobile
+                    ? inspection.created_at_day_month
+                    : inspection.created_at_locale_date
+                }}</strong>
+              </th>
+              <th class="filler"></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td class="tdr">{{ $t('positive_impression') }}</td>
+              <td
+                v-for="(inspection, b) in filteredInspections"
+                :key="b"
+                class="tdc"
+              >
+                <div
+                  v-if="
+                    inspection.impression !== null && inspection.impression > -1
+                  "
+                >
+                  <v-icon v-if="inspection.impression === 3" class="green--text"
+                    >mdi-emoticon-happy</v-icon
+                  >
+                  <v-icon
+                    v-if="inspection.impression === 2"
+                    class="orange--text"
+                    >mdi-emoticon-neutral</v-icon
+                  >
+                  <v-icon v-if="inspection.impression === 1" class="red--text"
+                    >mdi-emoticon-sad</v-icon
+                  >
+                </div>
+              </td>
+              <td class="filler"></td>
+            </tr>
+            <tr>
+              <td class="tdr">{{ $t('needs_attention') }}</td>
+              <td
+                v-for="(inspection, c) in filteredInspections"
+                :key="c"
+                class="tdc"
+              >
+                <div
+                  v-if="
+                    inspection.attention !== null && inspection.attention > -1
+                  "
+                >
+                  <v-icon v-if="inspection.attention === 1" class="red--text"
+                    >mdi-clipboard-alert-outline</v-icon
+                  >
+
+                  <v-sheet
+                    v-if="inspection.attention === 0"
+                    class="beep-icon beep-icon-text color-green"
+                  >
+                    {{ $t('no') }}
+                  </v-sheet>
+                </div>
+              </td>
+              <td class="filler"></td>
+            </tr>
+            <tr>
+              <td class="tdr">{{ $t('notes') }}</td>
+              <td
+                v-for="(inspection, d) in filteredInspections"
+                :key="d"
+                class="tdc"
+              >
+                <span
+                  v-if="inspection.notes !== null"
+                  :title="inspection.notes"
+                  class="notes"
+                  >{{ inspection.notes }}</span
+                >
+              </td>
+              <td class="filler"></td>
+            </tr>
+
+            <tr>
+              <td class="tdr">{{ $t('reminder') }}</td>
+              <td
+                v-for="(inspection, e) in filteredInspections"
+                :key="e"
+                class="tdc"
+              >
+                <span
+                  v-if="inspection.reminder !== null"
+                  :title="inspection.reminder"
+                  :class="`notes ${inspection.reminder_date ? 'pt-2' : ''}`"
+                  >{{ inspection.reminder }}</span
+                >
+                <div v-if="inspection.reminder_date">
+                  <v-menu>
+                    <template v-slot:activator="{ on, attrs }">
+                      <span
+                        class="add-to-calendar accent--text"
+                        v-bind="attrs"
+                        v-on="on"
+                      >
+                        {{ $t('add_to_calendar').toUpperCase() }}
+                      </span>
+                    </template>
+                    <v-list dense>
+                      <v-list-item
+                        v-for="(calendarItem, index) in calendars"
+                        :key="index"
+                        link
+                        dense
+                      >
+                        <v-list-item-action>
+                          <AddToCalendar
+                            :title="
+                              `BEEP ${$t('reminder')} ${
+                                inspection.reminder !== null
+                                  ? ': ' + inspection.reminder
+                                  : ''
+                              }`
+                            "
+                            :location="
+                              `${activeHive.location} - ${activeHive.name}`
+                            "
+                            :start="new Date(inspection.reminder_date)"
+                            :end="new Date(inspection.reminder_date + 1)"
+                            :details="
+                              `BEEP app ${$tc('Inspection', 1)} @ ${
+                                // eslint-disable-next-line vue/comma-dangle
+                                inspection.created_at_locale_date
+                              }`
+                            "
+                            :calendar="calendarItem"
+                          ></AddToCalendar>
+                        </v-list-item-action>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
+                </div>
+              </td>
+              <td class="filler"></td>
+            </tr>
+
+            <tr>
+              <td class="tdr">{{ $t('remind_date') }}</td>
+              <td
+                v-for="(inspection, f) in filteredInspections"
+                :key="f"
+                class="tdc"
+              >
+                <div class="d-flex justify-center">
+                  <span
+                    v-if="inspection.reminder_date !== null"
+                    :title="inspection.reminder_date"
+                    :class="
+                      `d-flex justify-center reminder-date ${
+                        $moment(inspection.reminder_date).isBefore()
+                          ? 'red--text'
+                          : 'green--text'
+                      }`
+                    "
+                    v-text="
+                      mobile
+                        ? inspection.reminder_date_day_month
+                        : inspection.reminder_date_locale_date
+                    "
+                  ></span>
+                </div>
+              </td>
+              <td class="filler"></td>
+            </tr>
+
+            <tr v-for="(itemByDate, i) in matchedItemsByDate" :key="i">
+              <td
+                class="tdr"
+                :class="
+                  itemByDate.items === null ? 'header expandable-header' : ''
+                "
+                @click="toggleCategory($event.target.textContent)"
+              >
+                <v-icon
+                  v-if="itemByDate.items === null"
+                  :id="`toggle-icon-${itemByDate.name}`"
+                  left
+                  :class="
+                    `toggle-icon mdi ${
+                      hiddenCategories.includes(itemByDate.name)
+                        ? 'mdi-plus'
+                        : 'mdi-minus'
+                    }`
+                  "
+                  @click="toggleCategory(itemByDate.name)"
+                ></v-icon>
+                <span v-if="itemByDate.items !== null" class="ancestors">{{
+                  itemByDate.anc
+                }}</span>
+                <span :class="itemByDate.items === null ? 'header' : ''">{{
+                  itemByDate.name
+                }}</span>
+              </td>
+
+              <td
+                v-if="itemByDate.items === null"
+                :colspan="filteredInspections.length + 1"
+                class="header expandable-header"
+                @click="toggleCategory(itemByDate.name)"
+              ></td>
+
+              <td v-for="(item, j) in itemByDate.items" :key="j" class="tdc">
+                <span v-if="item.type === 'slider'">{{ item.val }}</span>
+
+                <span v-if="item.type === 'list'">
+                  <div
+                    v-for="(opt, o) in item.val.split(',')"
+                    :key="o"
+                    style="margin-bottom: 3px;"
+                    class="label-inspection"
+                    >{{ opt }}</div
+                  >
+                </span>
+
+                <span v-if="item.type === 'options'">{{ item.val }}</span>
+                <span v-if="item.type === 'select'">{{ item.val }}</span>
+                <span v-if="item.type === 'text'">{{ item.val }}</span>
+
+                <span
+                  v-if="item.type === 'sample_code'"
+                  style=" font-weight: bold;letter-spacing: 2px;"
+                  >{{ item.val }}</span
+                >
+                <span v-if="item.type === 'date'">{{
+                  momentify(item.val)
+                }}</span>
+                <span
+                  v-if="
+                    item.type !== undefined && item.type.indexOf('number') > -1
+                  "
+                  >{{ item.val }}</span
+                >
+
+                <span
+                  v-if="item.type === 'boolean' || item.type === 'list_item'"
+                >
+                  <div>
+                    <v-sheet
+                      v-if="parseInt(item.value) === 1"
+                      class="beep-icon beep-icon-text color-green"
+                    >
+                      {{ $t('yes') }}
+                    </v-sheet>
+                    <v-sheet
+                      v-if="parseInt(item.value) === 0"
+                      class="beep-icon beep-icon-text color-red"
+                    >
+                      {{ $t('no') }}
+                    </v-sheet>
+                  </div>
+                </span>
+                <span v-if="item.type === 'boolean_yes_red'">
+                  <div>
+                    <v-sheet
+                      v-if="parseInt(item.value) === 1"
+                      class="beep-icon beep-icon-text color-red"
+                    >
+                      {{ $t('yes') }}
+                    </v-sheet>
+                    <v-sheet
+                      v-if="parseInt(item.value) === 0"
+                      class="beep-icon beep-icon-text color-green"
+                    >
+                      {{ $t('no') }}
+                    </v-sheet>
+                  </div>
+                </span>
+
+                <span v-if="item.type === 'smileys_3' && item.value !== null">
+                  <div>
+                    <v-icon
+                      v-if="parseInt(item.value) === 3"
+                      class="green--text"
+                      >mdi-emoticon-happy</v-icon
+                    >
+                    <v-icon
+                      v-if="parseInt(item.value) === 2"
+                      class="orange--text"
+                      >mdi-emoticon-neutral</v-icon
+                    >
+                    <v-icon v-if="parseInt(item.value) === 1" class="red--text"
+                      >mdi-emoticon-sad</v-icon
+                    >
+                  </div>
+                </span>
+                <span v-if="item.type === 'score'">
+                  <div class="d-flex flex-row justify-center flex-wrap"
+                    ><v-icon
+                      v-for="star in [0, 1, 2, 3, 4]"
+                      :key="star + 1"
+                      :x-small="mobile"
+                      :class="
+                        star < item.val
+                          ? 'color-accent'
+                          : mobile
+                          ? 'd-none'
+                          : 'color-grey-medium'
+                      "
+                      >mdi-star</v-icon
+                    >
+                  </div>
+                </span>
+
+                <span
+                  v-if="item.type === 'grade'"
+                  :style="
+                    `color: ${gradeColor(item.value)}; font-weight: bold;`
+                  "
+                  >{{ item.val }}</span
+                >
+                <span
+                  v-if="item.type === 'score_quality'"
+                  :style="`color: ${scoreQualityColor(item.value)};`"
+                  >{{ scoreQualityOptions[item.value] }}</span
+                >
+                <span
+                  v-if="item.type === 'score_amount'"
+                  :style="
+                    `color: ${scoreAmountColor(
+                      // eslint-disable-next-line vue/comma-dangle
+                      item.value
+                    )}; font-weight: bold;`
+                  "
+                  >{{ scoreAmountOptions[item.value] }}</span
+                >
+                <span v-if="item.type === 'square_25cm2'"
+                  >{{ (item.val * 25).toFixed(1) }} cm<sup>2</sup> ({{
+                    item.val
+                  }}
+                  sq)</span
+                >
+                <span v-if="item.type === 'select_location'">{{
+                  item.val
+                }}</span>
+                <span v-if="item.type === 'select_hive'">{{ item.val }}</span>
+                <span v-if="item.type === 'select_country'">{{
+                  item.val.toUpperCase()
+                }}</span>
+                <span v-if="item.type === 'bee_subspecies'">{{
+                  item.val
+                }}</span>
+                <span v-if="item.type === 'select_hive_type'">{{
+                  item.val
+                }}</span>
+                <span
+                  v-if="item.type === 'image'"
+                  class="d-flex justify-center py-2"
+                >
+                  <v-img
+                    :src="baseApiUrl + item.val"
+                    class="grey lighten-2 image-thumb"
+                    @click="setActiveImage(item.val)"
+                  >
+                  </v-img>
+                  <imageOverlay
+                    :date="activeImage ? activeImage.date : null"
+                    :thumburl="item.val"
+                    :overlay="
+                      activeImage !== null && activeImage.thumb_url === item.val
+                    "
+                    @close-overlay="activeImage = null"
+                  ></imageOverlay>
+                </span>
+
+                <span
+                  v-if="item.unit !== null && item.type !== 'square_25cm2'"
+                  >{{ item.unit }}</span
+                >
+              </td>
+              <td v-if="itemByDate.items !== null" class="filler"></td>
+            </tr>
+          </tbody>
+        </template>
+      </v-simple-table>
+      <v-container
+        v-if="
+          inspections.inspections !== undefined && !filteredInspections.length
+        "
+      >
+        <v-row>
+          <v-col sm="auto" :cols="12">
+            {{
+              (activeHive.editable || activeHive.owner) &&
+              inspections.inspections.length === 0
+                ? $tc('Inspection', 2) + ' ' + $t('not_available_yet')
+                : $t('no_results')
+            }}
+          </v-col>
+        </v-row>
+      </v-container>
+    </div>
+
+    <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
+      {{ snackbar.text }}
+      <v-btn color="accent" text @click="snackbar.show = false">
+        {{ $t('Close') }}
+      </v-btn>
+    </v-snackbar>
+
+    <Confirm ref="confirm"></Confirm>
+  </Layout>
+</template>
+
+<script>
+import Api from '@api/Api'
+import Confirm from '@components/confirm.vue'
+import imageOverlay from '@components/image-overlay.vue'
+// import { ScaleTransition } from 'vue2-transitions'
+import Layout from '@layouts/back.vue'
+import { mapGetters } from 'vuex'
+import {
+  readApiariesAndGroups,
+  readGeneralInspections,
+} from '@mixins/methodsMixin'
+import { momentify, momentifyDayMonth } from '@mixins/momentMixin'
+import AddToCalendar from '@components/add-to-calendar.vue'
+
+export default {
+  components: {
+    imageOverlay,
+    Confirm,
+    // ScaleTransition,
+    AddToCalendar,
+    Layout,
+  },
+  mixins: [
+    momentify,
+    momentifyDayMonth,
+    readApiariesAndGroups,
+    readGeneralInspections,
+  ],
+  data: function() {
+    return {
+      snackbar: {
+        show: false,
+        timeout: 2000,
+        text: 'notification',
+      },
+      inspections: [],
+      filterByAttention: false,
+      filterByImpression: [],
+      filterByReminder: false,
+      search: null,
+      hiddenCategories: [],
+      images: null,
+      activeImage: null,
+      calendars: ['Google', 'Microsoft', 'Office365'],
+      ready: false,
+    }
+  },
+  computed: {
+    ...mapGetters('hives', ['activeHive']),
+    baseApiUrl() {
+      var baseUrl = process.env.VUE_APP_API_URL
+      baseUrl = baseUrl.replace('/api/', '')
+      return baseUrl
+    },
+    id() {
+      return parseInt(this.$route.params.id)
+    },
+    inspectionsWithDates() {
+      var inspectionsWithDates = this.inspections.inspections
+      inspectionsWithDates.map((inspection) => {
+        inspection.created_at_locale_date = this.momentify(
+          inspection.created_at
+        )
+        inspection.created_at_day_month = this.momentifyDayMonth(
+          inspection.created_at
+        )
+        inspection.reminder_date !== null
+          ? (inspection.reminder_date_locale_date = this.momentify(
+              inspection.reminder_date
+            ))
+          : (inspection.reminder_date_locale_date = null)
+        inspection.reminder_date !== null
+          ? (inspection.reminder_date_day_month = this.momentifyDayMonth(
+              inspection.reminder_date
+            ))
+          : (inspection.reminder_date_day_month = null)
+      })
+      return inspectionsWithDates
+    },
+    filteredInspectionsWithUndefined() {
+      var textFilteredInspections = []
+      if (this.search === null) {
+        textFilteredInspections = this.inspectionsWithDates
+      } else {
+        textFilteredInspections = this.inspectionsWithDates.map(
+          (inspection) => {
+            const inspectionMatch = Object.entries(inspection).some(
+              ([key, value]) => {
+                if (
+                  value !== null &&
+                  typeof value === 'string' &&
+                  this.search.substring(0, 3) !== 'id=' &&
+                  key !== ('created_at' || 'reminder_date')
+                ) {
+                  return value.toLowerCase().includes(this.search.toLowerCase())
+                } else if (
+                  key === 'id' &&
+                  this.search.substring(0, 3) === 'id='
+                ) {
+                  return (
+                    value.toString() ===
+                    this.search.substring(3, this.search.length)
+                  )
+                }
+              }
+            )
+            if (inspectionMatch) {
+              return inspection
+            }
+          }
+        )
+      }
+
+      var propertyFilteredInspections = textFilteredInspections
+        .filter((inspection) => {
+          if (typeof inspection !== 'undefined' && this.filterByAttention) {
+            if (inspection.attention === 1) {
+              return inspection
+            }
+          } else {
+            return inspection
+          }
+        })
+        .filter((inspection) => {
+          if (
+            typeof inspection !== 'undefined' &&
+            this.filterByImpression.length > 0
+          ) {
+            if (this.filterByImpression.includes(inspection.impression)) {
+              return inspection
+            }
+          } else {
+            return inspection
+          }
+        })
+        .filter((inspection) => {
+          if (typeof inspection !== 'undefined' && this.filterByReminder) {
+            if (
+              inspection.reminder !== null ||
+              inspection.reminder_date !== null
+            ) {
+              return inspection
+            }
+          } else {
+            return inspection
+          }
+        })
+
+      return propertyFilteredInspections
+    },
+    filteredInspections() {
+      return this.filteredInspectionsWithUndefined.filter(
+        (x) => x !== undefined
+      )
+    },
+    inspectionIndexes() {
+      var inspectionIndexes = []
+      this.filteredInspectionsWithUndefined.map((inspection, i) => {
+        if (inspection !== undefined) {
+          inspectionIndexes.push(i)
+        }
+      })
+      return inspectionIndexes
+    },
+    locale() {
+      return this.$i18n.locale
+    },
+    matchedItemsByDate() {
+      var matchedItemsByDate = []
+      matchedItemsByDate = this.inspections.items_by_date
+        .reduce((acc, itemByDate) => {
+          if (
+            itemByDate.anc === null ||
+            this.hiddenCategories.length === 0 ||
+            !this.hiddenCategories.includes(itemByDate.anc.split(' >')[0])
+          ) {
+            acc.push(itemByDate)
+          }
+          return acc
+        }, [])
+        .map((itemByDate) => {
+          if (itemByDate.items !== null) {
+            return {
+              ...itemByDate,
+              items: itemByDate.items.reduce((acc, item, index) => {
+                if (this.inspectionIndexes.includes(index)) {
+                  if (typeof item === 'object') {
+                    acc.push(item)
+                  } else {
+                    acc.push('')
+                  }
+                }
+                return acc
+              }, []),
+            }
+          } else {
+            return itemByDate
+          }
+        })
+      return matchedItemsByDate
+    },
+    mobile() {
+      return this.$vuetify.breakpoint.mobile
+    },
+    scoreAmountOptions() {
+      return {
+        1: this.$i18n.t('Low'),
+        2: this.$i18n.t('Medium'),
+        3: this.$i18n.t('High'),
+        4: this.$i18n.t('Extreme'),
+      }
+    },
+    scoreQualityOptions() {
+      return {
+        1: this.$i18n.t('Poor'),
+        2: this.$i18n.t('Fair'),
+        3: this.$i18n.t('Good'),
+        4: this.$i18n.t('Excellent'),
+      }
+    },
+  },
+  watch: {
+    locale() {
+      this.readAllInspectionsForHiveId()
+    },
+  },
+  created() {
+    this.search = this.$route.query.search || null
+    this.getActiveHive(this.id).then((hive) => {
+      this.$store.commit('hives/setActiveHive', hive)
+    })
+    this.readAllInspectionsForHiveId().then(() => {
+      this.ready = true
+    })
+    this.readImages()
+  },
+  methods: {
+    async deleteInspection(id) {
+      try {
+        const response = await Api.deleteRequest('/inspections/', id)
+        if (!response) {
+          this.snackbar.text = this.$i18n.t('something_wrong')
+          this.snackbar.show = true
+        }
+        this.readAllInspectionsForHiveId()
+        this.readGeneralInspections() // update generalInspections in store for diary-list
+        this.readApiariesAndGroups() // update apiaries and groups so the latest inspection will be displayed at apiary-list
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+          const msg = error.response.data.message
+          this.snackbar.text = msg
+        } else {
+          console.log('Error: ', error)
+          this.snackbar.text = this.$i18n.t('something_wrong')
+        }
+        this.snackbar.show = true
+      }
+    },
+    async getActiveHive(id) {
+      try {
+        const response = await Api.readRequest('/hives/', id)
+        if (response.data.length === 0) {
+          this.$router.push({ name: '404', params: { resource: 'hive' } })
+        }
+        const hive = response.data.hives[0]
+        return hive
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
+        this.$router.push({ name: '404', params: { resource: 'hive' } })
+      }
+    },
+    async readAllInspectionsForHiveId() {
+      try {
+        const response = await Api.readRequest('/inspections/hive/', this.id)
+        this.inspections = response.data
+        return true
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
+    async readImages() {
+      try {
+        const response = await Api.readRequest('/images')
+        this.images = response.data
+        return true
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
+    confirmDeleteInspection(inspection) {
+      this.$refs.confirm
+        .open(
+          this.$i18n.t('remove_inspection'),
+          this.$i18n.t('remove_inspection') +
+            ' (' +
+            this.$i18n.t('Date').toLocaleLowerCase() +
+            ': ' +
+            inspection.created_at_locale_date +
+            ')?',
+          {
+            color: 'red',
+          }
+        )
+        .then((confirm) => {
+          this.deleteInspection(inspection.id)
+        })
+        .catch((reject) => {
+          return true
+        })
+    },
+    getImageUrl(thumburl) {
+      var imageUrl = thumburl.replace('thumbs', 'images')
+      return imageUrl
+    },
+    gradeColor(value) {
+      if (value === 0) return '#CCC'
+      if (value < 4) return '#8F1619'
+      if (value < 6) return '#5F3F90'
+      if (value < 8) return '#243D80'
+      if (value < 11) return '#069518'
+      return '#F8B133'
+    },
+    toggleCategory(string) {
+      if (this.hiddenCategories.includes(string)) {
+        this.hiddenCategories.splice(this.hiddenCategories.indexOf(string), 1)
+      } else {
+        this.hiddenCategories.push(string)
+      }
+    },
+    scoreAmountColor(value) {
+      if (value === '0') return '#CCC'
+      if (value === '1') return '#069518'
+      if (value === '2') return '#243D80'
+      if (value === '3') return '#5F3F90'
+      if (value === '4') return '#8F1619'
+      return '#F8B133'
+    },
+    scoreQualityColor(value) {
+      if (value === '0') return '#CCC'
+      if (value === '1') return '#8F1619'
+      if (value === '2') return '#5F3F90'
+      if (value === '3') return '#243D80'
+      if (value === '4') return '#069518'
+      return '#F8B133'
+    },
+    setActiveImage(thumburl) {
+      if (this.images !== null) {
+        this.images.forEach((image) => {
+          if (image.thumb_url === thumburl) {
+            this.activeImage = image
+          }
+        })
+      } else {
+        this.activeImage = null
+      }
+    },
+    updateFilterByImpression(number) {
+      if (this.filterByImpression.includes(number)) {
+        this.filterByImpression.splice(
+          this.filterByImpression.indexOf(number),
+          1
+        )
+      } else {
+        this.filterByImpression.push(number)
+      }
+    },
+  },
+}
+</script>
+
+<style lang="scss" scoped>
+.filter-bar-inspections {
+  top: 52px;
+  max-width: 100vw;
+}
+
+.hive-inspections-content {
+  max-width: 100vw;
+  margin-top: 61px;
+  overflow: hidden;
+  @include for-phone-only {
+    margin-top: 55px;
+  }
+}
+
+.table-responsive {
+  overflow: visible;
+  font-size: 14px;
+  border-top: 1px solid $color-grey-light;
+  border-bottom: 1px solid $color-grey-light;
+  border-radius: 0;
+
+  @include for-phone-only {
+    font-size: 12px;
+  }
+
+  .ancestors {
+    display: block;
+    font-size: 10px;
+  }
+
+  .inspection-actions {
+    display: block;
+    min-width: 67px;
+    min-height: 18px;
+    a > i {
+      min-width: 33px;
+      @include for-phone-only {
+        min-width: 25px;
+      }
+    }
+  }
+  .notes,
+  .add-to-calendar {
+    display: block;
+    display: -webkit-box;
+    padding: 0;
+    margin-bottom: 0;
+    overflow: hidden;
+    font-size: 11px;
+    font-style: italic;
+    line-height: 1.1em;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    @include for-phone-only {
+      font-size: 10px;
+      -webkit-line-clamp: 3;
+    }
+  }
+  .add-to-calendar {
+    max-height: none;
+    padding: 8px 0;
+    font-style: normal;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .reminder-date {
+    width: auto;
+    max-width: 150px;
+    padding: 2px 4px 0 4px !important;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1rem;
+    color: $color-red;
+    text-align: center;
+    white-space: nowrap;
+    white-space: pre-wrap;
+    border: 1px solid $color-red;
+    border-radius: 5px;
+    @include for-phone-only {
+      max-width: 80px;
+    }
+    &.green--text {
+      border-color: $color-green;
+    }
+  }
+  .label-inspection {
+    display: block;
+    padding: 0.3em 0.6em 0.2em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    color: #444;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    background-color: #eee;
+    border-radius: 0.25em;
+  }
+  .image-thumb {
+    width: auto;
+    max-width: 80px;
+    height: auto;
+    max-height: 120px;
+    cursor: zoom-in;
+    border: 1px solid $color-grey;
+    border-radius: 4px;
+    @include for-phone-only {
+      max-width: 100%;
+    }
+  }
+  .filler {
+    width: 100%;
+  }
+}
+
+.tdr {
+  width: 200px;
+  min-width: 200px;
+  max-width: 200px;
+  text-align: right !important;
+  white-space: inherit;
+  @include for-phone-only {
+    min-width: 150px;
+    max-width: 150px;
+    font-size: 12px;
+  }
+  &.header {
+    padding: 8px 16px;
+    &.expandable-header {
+      cursor: pointer;
+    }
+  }
+  .toggle-icon {
+    float: left;
+  }
+}
+
+.trh {
+  height: 56px;
+  background-color: $color-orange-medium !important;
+  @include for-phone-only {
+    height: 50px;
+  }
+  .tdr {
+    font-size: 14px;
+    @include for-phone-only {
+      font-size: 12px;
+    }
+  }
+}
+
+.tdc {
+  min-width: 200px;
+  max-width: 200px;
+  text-align: center;
+  white-space: inherit !important;
+  @include for-phone-only {
+    min-width: 100px;
+    max-width: 100px;
+    span {
+      display: inline-block;
+      font-size: 12px;
+      line-height: 1.2em;
+    }
+  }
+}
+
+td.header,
+span.header {
+  height: 12px;
+  font-weight: bold;
+  line-height: 24px;
+  background-color: $color-orange-medium;
+  &.expandable-header {
+    cursor: pointer;
+  }
+}
+</style>

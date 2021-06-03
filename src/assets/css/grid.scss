@@ -1,0 +1,5 @@
+.container {
+  @include for-tablet-landscape-up {
+    max-width: calc(100vw - 48px) !important;
+  }
+}

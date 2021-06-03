@@ -1,0 +1,25 @@
+a {
+  color: $color-accent;
+  text-decoration: none;
+}
+
+.beep-label {
+  margin-bottom: 4px;
+  font-family: 'Roboto', sans-serif !important;
+  font-size: 0.75rem !important;
+  font-weight: 400;
+  line-height: 1rem;
+  color: $color-grey-dark;
+  letter-spacing: 0.0333333333em !important;
+}
+
+.info-text {
+  margin-bottom: 4px;
+  font-size: 0.75rem !important;
+  line-height: 1.5;
+}
+
+.unauthorized-title {
+  padding-top: 40px;
+  text-align: center;
+}

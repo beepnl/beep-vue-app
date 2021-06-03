@@ -1,125 +1,230 @@
 <template>
-  <v-card>
+  <Layout :title="$t('create_login')">
     <v-form ref="form" v-model="valid" @submit.prevent="createAccount">
-      <v-card-title>Create account</v-card-title>
-      <v-card-text>
+      <v-card-text v-if="registered">
+        <v-alert text prominent dense color="green">
+          {{ $t('email_verification_sent') }}
+        </v-alert>
+        <p>{{ $t('succesfully_registered') }}</p>
+        <a @click="sendEmailVerification">{{ $t('email_new_verification') }}</a>
+      </v-card-text>
+      <v-card-text v-if="!registered">
         <v-alert
           v-for="error in errors"
           :key="error.name"
           type="error"
-          outlined
+          text
+          prominent
+          dense
+          color="red"
         >
-          {{ error.type }}
+          {{ error.errorMessage }}
         </v-alert>
         <v-text-field
-          v-model="credentials.username"
-          label="email"
-          autocomplete="off"
+          v-model="name"
+          :label="`${$t('username') + ' (' + $t('optional') + ')'}`"
+        />
+        <v-text-field
+          v-model="email"
+          :class="fieldErrors.email ? 'error--text' : ''"
+          :label="`${$t('email')}`"
+          type="email"
           :rules="emailRules"
+          validate-on-blur
         />
         <v-text-field
-          v-model="credentials.password"
-          label="password"
-          type="password"
+          v-model="password"
+          :class="fieldErrors.password ? 'error--text' : ''"
+          :label="`${$t('password')}`"
+          :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+          :type="show1 ? 'text' : 'password'"
           :rules="passwordRules"
+          validate-on-blur
+          @click:append="show1 = !show1"
         />
         <v-text-field
-          v-model="repeatedPassword"
-          label="repeat password"
-          type="password"
+          v-model="passwordConfirmation"
+          :label="`${$t('confirm_password')}`"
+          :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+          :type="show2 ? 'text' : 'password'"
           :rules="repeatPasswordRules"
+          @click:append="show2 = !show2"
         />
         <v-checkbox
-          v-model="credentials.policyAccepted"
+          v-model="policyAccepted"
           :rules="termsRules"
-          label="I accept the BEEP terms of service, that are compatible with the new European privacy law"
+          :label="`${$t('accept_policy')}`"
           required
-        ></v-checkbox>
-        <a href="https://test.beep.nl/terms-of-service">Terms of service</a>
+          class="keep-spaces"
+        >
+          <template slot="label"
+            ><span class="checkbox-label"
+              >{{ $t('accept_policy_1')
+              }}<a :href="$t('policy_url')">{{ $t('terms_of_use') }}</a
+              >{{ $t('accept_policy_2') }}
+            </span></template
+          >
+        </v-checkbox>
       </v-card-text>
 
-      <v-card-actions>
+      <v-card-actions v-if="!registered">
         <v-spacer></v-spacer>
-        <v-btn text type="submit" :disabled="!valid">Create account</v-btn>
+        <v-btn text type="submit" :disabled="disabled">{{
+          $t('create_login_summary')
+        }}</v-btn>
       </v-card-actions>
+
+      <v-divider v-if="!registered" class="mx-3"></v-divider>
+      <v-card-text v-if="!registered">
+        <router-link :to="{ name: 'sign-in' }">
+          {{ $t('already_registered') }}
+        </router-link>
+        <v-spacer></v-spacer>
+      </v-card-text>
     </v-form>
-  </v-card>
+  </Layout>
 </template>
 
 <script>
+import Api from '@api/Api'
+import Layout from '@layouts/account.vue'
+
 export default {
+  components: { Layout },
   data() {
     return {
-      credentials: {},
+      name: null,
+      email: '',
+      password: '',
+      passwordConfirmation: '',
+      policyAccepted: false,
       valid: false,
-      repeatedPassword: '',
-      agreeToTerms: false,
       errors: [],
-      emailRules: [
-        (v) => !!v || 'error.email_required',
-        (v) => /.+@.+\..+/.test(v) || 'error.invalid_email',
-      ],
-      passwordRules: [
-        (v) => !!v || 'error.password_required',
-        (v) =>
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.[\]{}()?\-"!@#%&/\\,><':;|_~`])(?=.{6,98})/.test(
-            v
-          ) || 'error.password_does_not_match_policy',
-      ],
-      repeatPasswordRules: [
-        (v) => !!v || 'error.field_required',
-        (v) =>
-          v === this.credentials.password || 'error.passwords_do_not_match',
-      ],
-      termsRules: [(v) => !!v || 'error.field_required'],
+      show1: false,
+      show2: false,
+      registered: false,
+      fieldErrors: {
+        email: false,
+        password: false,
+      },
+      disabled: false,
     }
   },
   computed: {
-    hasErrors() {
-      return this.errors.length > 0
+    credentials() {
+      if (this.name) {
+        return {
+          name: this.name,
+          email: this.email,
+          password: this.password,
+          password_confirmation: this.passwordConfirmation,
+          policy_accepted: this.policyAccepted
+            ? this.$i18n.t('policy_version')
+            : '',
+        }
+      } else {
+        return {
+          email: this.email,
+          password: this.password,
+          password_confirmation: this.passwordConfirmation,
+          policy_accepted: this.policyAccepted
+            ? this.$i18n.t('policy_version')
+            : '',
+        }
+      }
+    },
+    emailRules: function() {
+      return [
+        (v) => !!v || this.$i18n.t('email_is_required'),
+        (v) => /.+@.+\..+/.test(v) || this.$i18n.t('no_valid_email'),
+      ]
+    },
+    passwordRules: function() {
+      return [
+        (v) => !!v || this.$i18n.t('password_is_required'),
+        (v) =>
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\^$*.[\]{}()?\-"!@#%&/\\,><':;|_~`])(?=.{8,98})/.test(
+            v
+          ) || this.$i18n.t('invalid_password'),
+      ]
+    },
+    repeatPasswordRules() {
+      if (!this.passwordConfirmation) {
+        return [
+          this.$i18n.t('the_field') +
+            ' "' +
+            this.$i18n.t('confirm_password') +
+            '" ' +
+            this.$i18n.t('is_required'),
+        ]
+      } else if (this.passwordConfirmation !== this.password) {
+        return [this.$i18n.t('no_password_match')]
+      } else {
+        return []
+      }
+    },
+    termsRules: function() {
+      return [(v) => !!v || this.$i18n.t('policy_accepted_is_required')]
     },
   },
   methods: {
-    createAccount() {
+    async createAccount() {
       if (this.$refs.form.validate()) {
         this.clearErrors()
-        this.$store
-          .dispatch('auth/signUp', this.credentials)
-          .then(() =>
-            // FIXME: the backend returns a 400 Bad Request that should be 200 Accepted,
-            // so this block never gets executed
-            this.$router.push({
-              name: 'sign-up-confirm',
-              query: { email: this.credentials.username },
-            })
-          )
-          .catch((error) => {
-            switch (error.code) {
-              case 'UsernameExistsException':
-                this.errors.push({
-                  type: 'error.user_already_exists',
-                })
-                break
-              case 'LimitExceededException':
-                this.errors.push({
-                  type: 'error.limit_exceeded_try_again_later',
-                })
-                break
-              case 'ResourceNotFoundException':
-                this.errors.push({
-                  type: 'error.user_pool_client_not_found',
-                })
-                break
-              default:
-                this.errors.push({
-                  type: 'error.unknown_error',
-                })
+        this.disabled = true
+        try {
+          const response = await Api.postRequest('/register', this.credentials)
+          this.registered = true
+          return response
+        } catch (error) {
+          this.disabled = false
+          if (error.response) {
+            console.log(error.response)
+            const msg = error.response.data.message
+            if (msg === 'invalid_user') {
+              this.fieldErrors.email = true
+              this.fieldErrors.password = true
+            } else if (msg === 'invalid_password') {
+              this.fieldErrors.password = true
+            } else if (msg.indexOf('email') > -1) {
+              this.fieldErrors.email = true
             }
+            this.errors.push({
+              errorMessage: this.$i18n.t(msg),
+            })
+          } else {
+            this.errors.push({
+              errorMessage: this.$i18n.t('Error'),
+            })
+          }
+        }
+      }
+    },
+    async sendEmailVerification() {
+      try {
+        const response = await Api.postRequest(
+          '/email/resend',
+          this.credentials
+        )
+        return response
+      } catch (error) {
+        if (error.response) {
+          console.log(error.response)
+          const msg = error.response.data.message
+          this.errors.push({
+            errorMessage: this.$i18n.t(msg),
           })
+        } else {
+          this.errors.push({
+            errorMessage: this.$i18n.t('Error'),
+          })
+        }
       }
     },
     clearErrors() {
       this.errors = []
+      this.fieldErrors.email = false
+      this.fieldErrors.password = false
     },
   },
 }

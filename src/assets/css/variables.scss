@@ -1,0 +1,66 @@
+// fonts
+
+// colors
+$color-white: #fff;
+$color-black: #000;
+$color-grey-dark: #242424;
+$color-grey: #606060;
+$color-grey-filter: #808080;
+$color-grey-medium: #b0b0b0;
+$color-grey-light: #ddd;
+$color-off-white: #e9eae1;
+
+$color-primary: #f8b133;
+$color-accent: #f29100;
+$color-orange-medium: #ffedc7;
+$color-orange-light: #fffaf0;
+
+$color-yellow: #ffe900;
+
+$color-green: #049717;
+$color-green-dark: #27820e;
+$color-blue-dark: #094da0;
+$color-blue: #09bdef;
+
+$color-beige: #ead49e;
+$color-brown: #b7701f;
+$color-brown-dark: #754b1f;
+
+$color-red: #ff001d; // #f44336;
+$color-red-dark: #d80d0d;
+
+.color-primary {
+  color: $color-primary;
+}
+
+.color-accent {
+  color: $color-accent;
+}
+
+.color-grey {
+  color: $color-grey;
+}
+
+.color-grey-medium {
+  color: $color-grey-medium;
+}
+
+.color-grey-light {
+  color: $color-grey-light;
+}
+
+.color-grey-dark {
+  color: $color-grey-dark;
+}
+
+.color-black {
+  color: $color-black;
+}
+
+// spacing
+$gutter-x-small: 0.8rem;
+$gutter-small: 1.6rem;
+$gutter: 2.4rem;
+$gutter-medium: 4.8rem;
+$gutter-large: 9.6rem;
+$gutter-x-large: 12rem;

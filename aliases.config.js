@@ -14,6 +14,8 @@ const aliases = {
   '@utils': 'src/utils',
   '@plugins': 'src/plugins',
   '@state': 'src/state',
+  '@modules': 'src/state/modules',
+  '@mixins': 'src/mixins',
 }
 
 module.exports = {

@@ -1,7 +1,5 @@
-import AWSAuth from '@aws-amplify/auth'
-import * as BEEPAuth from '@api/auth.js'
+import Api from '@api/Api'
 
-let Auth = null
 export const state = {
   currentUser: getSavedState('auth.currentUser'),
   currentSession: getSavedState('auth.currentSession'),
@@ -11,7 +9,21 @@ export const getters = {
   loggedIn: function(state) {
     return !!state.currentUser
   },
-
+  currentUser: function(state) {
+    return state.currentUser || null
+  },
+  userEmail: function(state) {
+    return (state.currentUser && state.currentUser.email) || null
+  },
+  userId: function(state) {
+    return (state.currentUser && state.currentUser.id) || null
+  },
+  userLocale: function(state) {
+    return (state.currentUser && state.currentUser.locale) || null
+  },
+  userName: function(state) {
+    return (state.currentUser && state.currentUser.name) || null
+  },
   apiToken: function(state) {
     return (state.currentUser && state.currentUser.api_token) || null
   },
@@ -21,46 +33,33 @@ export const mutations = {
     state.currentUser = newValue
     saveState('auth.currentUser', newValue)
   },
-
-  SET_CURRENT_SESSION: function(state, newValue) {
-    state.currentSession = newValue
-    saveState('auth.currentSession', newValue)
-  },
 }
 export const actions = {
-  init: function() {
-    // legacy BEEP API or AWS API?
-    const BEEPApi =
-      process.env.VUE_APP_API_URL &&
-      process.env.VUE_APP_API_URL.indexOf('test.beep.nl/api' >= 0)
-
-    Auth = BEEPApi ? BEEPAuth : AWSAuth
-  },
-
-  checkConnection: function() {
-    return Auth.checkConnection()
-  },
-
-  signIn: function({ commit, dispatch, getters }, { username, password } = {}) {
+  signIn: function({ commit, dispatch, getters }, credentials = {}) {
     if (getters.loggedIn) return dispatch('validateUser')
 
-    return Auth.signIn(username, password).then((response) => {
+    return Api.postRequest('/login', credentials).then((response) => {
       const user = response.data
-
       commit('SET_CURRENT_USER', user)
       return user
     })
   },
-
   signOut: function({ _, commit, getters }) {
     if (!getters.loggedIn) {
       throw new Error('User is already logged out.')
     }
 
-    Auth.signOut().then(() => {
-      commit('SET_CURRENT_USER', null)
-      return null
-    })
+    commit('SET_CURRENT_USER', null)
+
+    // reset all module states
+    commit('alerts/resetState', null, { root: true })
+    commit('devices/resetState', null, { root: true })
+    commit('groups/resetState', null, { root: true })
+    commit('hives/resetState', null, { root: true })
+    commit('inspections/resetState', null, { root: true })
+    commit('locations/resetState', null, { root: true })
+    commit('taxonomy/resetState', null, { root: true })
+    return null
   },
 
   // Validates the current user's token and refreshes it
@@ -68,44 +67,18 @@ export const actions = {
   validateUser: function({ state, commit, dispatch }) {
     return (
       state.currentUser ||
-      Auth.currentAuthenticatedUser()
+      Api.postRequest('/authenticate')
         .then((response) => {
           const user = response.data
           commit('SET_CURRENT_USER', user)
           return user
         })
         .catch((error) => {
-          if (error.response && error.response.status === 401)
-            return dispatch('auth/signOut')
+          if (error.response && error.response.status === 401) {
+            console.log(error.response)
+            return dispatch('signOut')
+          }
         })
-    )
-  },
-  validateSession: function({ _, commit }) {
-    return Auth.currentSession()
-      .then((response) => {
-        const session = response.data
-        commit('SET_CURRENT_SESSION', session)
-        return session
-      })
-      .catch((_) => {
-        return commit('SET_CURRENT_SESSION', null)
-      })
-  },
-
-  signUp: function(_, credentials) {
-    return Auth.signUp(credentials)
-  },
-  confirmSignUp: function(_, signup) {
-    return Auth.confirmSignUp(signup.username, signup.code)
-  },
-  forgotPassword: function(_, username) {
-    return Auth.forgotPassword(username)
-  },
-  forgotPasswordSubmit: function(_, forgotPasswordRequest) {
-    return Auth.forgotPasswordSubmit(
-      forgotPasswordRequest.email,
-      forgotPasswordRequest.verificationCode,
-      forgotPasswordRequest.newPassword
     )
   },
 }

@@ -1,42 +1,38 @@
-import axios from '@api/axios'
-import store from '@state/store'
-import { ApiGroup } from 'axios-actions'
+import createResource from '@utils/store/vuex-resource'
 
-// TODO: verify if the below functionality taken from the API docs
-// is as intended
-const apiConfig = {
-  lists: `GET taxonomy/lists`,
-  taxonomy: `GET taxonomy/taxonomy`,
-}
-const endpoint = new ApiGroup(axios, apiConfig)
-
-endpoint
-  .when('lists', (data) => store.commit(`taxonomy/SET_LISTS`, data))
-  .when('taxonomy', (data) => store.commit(`taxonomy/SET_TAXONOMY`, data))
-  .use('data')
+const resource = createResource({ path: 'taxonomy' })
 
 export const state = {
-  data: {
-    lists: [],
-    taxonomy: [],
+  ...resource.state,
+  taxonomyLists: {},
+}
+export const getters = {
+  ...resource.getters,
+  beeRacesList: (state) => {
+    return state.taxonomyLists.beeraces || []
+  },
+  hiveDimensionsList: (state) => {
+    return state.taxonomyLists.hivedimensions || []
+  },
+  hiveTypesList: (state) => {
+    return state.taxonomyLists.hivetypes || []
+  },
+  sensorMeasurementsList: (state) => {
+    return state.taxonomyLists.sensormeasurements || []
+  },
+  sensorTypesList: (state) => {
+    return state.taxonomyLists.sensortypes || []
   },
 }
 export const mutations = {
-  SET_LISTS: function(state, data) {
-    // axios provides a fresh object.
-    state.data.lists = data
+  ...resource.mutations,
+  setData: function(state, payload) {
+    state[payload.prop] = payload.value
   },
-  SET_TAXONOMY: function(state, data) {
-    // axios provides a fresh object.
-    state.data.taxonomy = data
+  resetState: function(state) {
+    state.taxonomyLists = {}
   },
 }
 export const actions = {
-  init() {
-    // fetch the models
-    return endpoint.lists().then(() => endpoint.taxonomy)
-  },
-  index() {
-    return endpoint.lists().then(() => endpoint.taxonomy)
-  },
+  ...resource.actions,
 }

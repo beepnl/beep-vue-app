@@ -1,4 +1,4 @@
-const appConfig = require('../src/app.config')
+const appConfig = require('../public/manifest')
 
 module.exports = {
   title: appConfig.title + ' Docs',

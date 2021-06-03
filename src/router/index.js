@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 // https://github.com/declandewet/vue-meta
 import VueMeta from 'vue-meta'
 // Adds a loading bar at the top during page loads.
-import NProgress from 'nprogress/nprogress'
+// import NProgress from 'nprogress/nprogress'
 import store from '@state/store'
 import routes from './routes'
 
@@ -35,9 +35,22 @@ const router = new VueRouter({
 // Before each route evaluates...
 router.beforeEach((routeTo, routeFrom, next) => {
   // If this isn't an initial page load...
-  if (routeFrom.name !== null) {
-    // Start the route progress bar.
-    NProgress.start()
+  // if (routeFrom.name !== null) {
+  //   // Start the route progress bar.
+  //   NProgress.start()
+  // }
+
+  // make sure alertrules back button does not go back to edit/create or copy alertrule view
+  if (
+    // remember route from which alertrules view is initially entered
+    (routeFrom.name !== 'alertrule-edit' &&
+      routeFrom.name !== 'alertrule-create' &&
+      routeFrom.name !== 'alertrules-default' &&
+      routeTo.name === 'alertrules') ||
+    // if alertrule is edited directly from alerts view, make alertrules back button refer to alerts view
+    (routeTo.name === 'alertrule-edit' && routeFrom.name === 'alerts')
+  ) {
+    localStorage.beepAlertRulesBack = routeFrom.name
   }
 
   // Check if auth is required on this route
@@ -79,10 +92,10 @@ router.beforeResolve(async (routeTo, routeFrom, next) => {
             // If the user chose to redirect...
             if (args.length) {
               // If redirecting to the same route we're coming from...
-              if (routeFrom.name === args[0].name) {
-                // Complete the animation of the route progress bar.
-                NProgress.done()
-              }
+              // if (routeFrom.name === args[0].name) {
+              //   // Complete the animation of the route progress bar.
+              //   NProgress.done()
+              // }
               // Complete the redirect.
               next(...args)
               reject(new Error('Redirected'))
@@ -106,9 +119,15 @@ router.beforeResolve(async (routeTo, routeFrom, next) => {
 })
 
 // When each route is finished evaluating...
+// router.afterEach((routeTo, routeFrom) => {
+//   // Complete the animation of the route progress bar.
+//   NProgress.done()
+// })
+
+// When each route is finished evaluating store previous route name
 router.afterEach((routeTo, routeFrom) => {
-  // Complete the animation of the route progress bar.
-  NProgress.done()
+  localStorage.beepNextRoute = routeTo.name
+  localStorage.beepPreviousRoute = routeFrom.name
 })
 
 export default router

@@ -33,6 +33,7 @@ module.exports = {
     'vue/eqeqeq': 'error',
     'vue/key-spacing': 'error',
     'vue/keyword-spacing': 'error',
+    'vue/max-attributes-per-line': 'off',
     'vue/no-boolean-default': ['error', 'default-false'],
     'vue/no-deprecated-scope-attribute': 'error',
     'vue/no-empty-pattern': 'error',
