@@ -108,16 +108,7 @@
             </v-text-field>
           </v-col>
 
-          <v-col
-            v-if="
-              activeHive &&
-                (activeHive.owner || hiveCreateMode) &&
-                apiaries !== null
-            "
-            cols="12"
-            sm="6"
-            md="4"
-          >
+          <v-col cols="12" sm="6" md="4">
             <div>
               <div
                 :class="
@@ -128,6 +119,11 @@
                 v-text="$tc('Location', 1) + '*'"
               ></div>
               <Treeselect
+                v-if="
+                  activeHive &&
+                    (activeHive.owner || hiveCreateMode) &&
+                    apiaries !== null
+                "
                 v-model="activeHive.location_id"
                 :options="sortedApiaries"
                 :normalizer="normalizerApiary"
@@ -135,6 +131,15 @@
                 :no-results-text="`${$t('no_results')}`"
                 @input="setHiveEdited(true)"
               />
+
+              <v-select
+                v-if="!activeHive.owner"
+                v-model="activeHive.location"
+                class="pt-1"
+                :items="singleLocationArray"
+                disabled
+              />
+
               <div
                 v-if="isNaN(activeHive.location_id)"
                 class="v-text-field__details mt-1"
@@ -152,7 +157,7 @@
           </v-col>
 
           <v-col
-            v-if="activeHive && (activeHive.owner || hiveCreateMode)"
+            v-if="activeHive || (activeHive && hiveCreateMode)"
             cols="12"
             sm="6"
             md="4"
@@ -278,6 +283,9 @@ export default {
             this.$i18n.t('is_required'),
       ]
     },
+    singleLocationArray() {
+      return this.activeHive !== null ? [this.activeHive.location] : []
+    },
     sortedApiaries() {
       var sortedApiaries = this.apiaries.slice().sort(function(a, b) {
         if (a.name > b.name) {
@@ -391,6 +399,10 @@ export default {
             const location = response.data.hives[0].location
             return this.readApiariesAndGroups().then(() => {
               this.$store.commit('locations/setData', {
+                prop: 'hiveFilterByGroup',
+                value: false,
+              })
+              this.$store.commit('locations/setData', {
                 prop: 'hiveSearch',
                 value: location, // set search term via store instead of query to overrule possible stored search terms
               })
@@ -424,6 +436,10 @@ export default {
           return this.readApiariesAndGroups().then(() => {
             this.readGeneralInspections() // update inspections to exclude those from deleted hive
             this.readDevices() // update devices to remove deleted hives coupled to devices
+            this.$store.commit('locations/setData', {
+              prop: 'hiveFilterByGroup',
+              value: false,
+            })
             this.$store.commit('locations/setData', {
               prop: 'hiveSearch',
               value: this.activeHive.location, // set search term via store instead of query to overrule possible stored search terms
@@ -475,7 +491,6 @@ export default {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
         this.activeHive.frames = this.activeHive.layers[0].framecount
-        const updatedLocation = this.findApiaryById(this.activeHive.location_id)
         try {
           const response = await Api.updateRequest(
             '/hives/',
@@ -490,10 +505,6 @@ export default {
             return this.readApiariesAndGroups().then(() => {
               this.readGeneralInspections() // retrieve hive action inspections
               this.readDevices() // update devices to reflect updated hive names for example
-              this.$store.commit('locations/setData', {
-                prop: 'hiveSearch',
-                value: updatedLocation, // set search term via store instead of query to overrule possible stored search terms
-              })
               this.$router.push({
                 name: 'home',
               })
@@ -547,9 +558,6 @@ export default {
       } else {
         return this.$i18n.t('edit') + '...'
       }
-    },
-    findApiaryById(id) {
-      return this.apiaries.filter((apiary) => apiary.id === id)[0].name
     },
     saveHive() {
       if (this.hiveCreateMode) {
