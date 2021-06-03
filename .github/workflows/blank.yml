@@ -33,3 +33,10 @@ jobs:
       - name: Build
         run: npm run build --if-present
       - run: ls
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+      - name: SSH
+        run: ssh -i ${{ secrets.SSH_PRIVATE_KEY }} bitname@${{ secrets.SSH_HOST }}
