@@ -645,6 +645,7 @@ import { momentify } from '@mixins/momentMixin'
 import {
   readApiariesAndGroups,
   readDevices,
+  readGeneralInspections,
   readTaxonomy,
 } from '@mixins/methodsMixin'
 import { SlideYUpTransition } from 'vue2-transitions'
@@ -662,7 +663,13 @@ export default {
     yesNoRating,
     VueNumericInput,
   },
-  mixins: [momentify, readApiariesAndGroups, readDevices, readTaxonomy],
+  mixins: [
+    momentify,
+    readApiariesAndGroups,
+    readDevices,
+    readGeneralInspections,
+    readTaxonomy,
+  ],
   data() {
     return {
       devices: [],
@@ -805,6 +812,7 @@ export default {
           this.readDevices()
           this.showLoadingIcon = false
         })
+        this.readGeneralInspections()
         this.readApiariesAndGroups() // to update hive.sensors
         return true
       } catch (error) {
