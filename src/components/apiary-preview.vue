@@ -28,7 +28,10 @@
 </template>
 
 <script>
+import { orderedLayers } from '@mixins/methodsMixin'
+
 export default {
+  mixins: [orderedLayers],
   props: {
     newHive: {
       type: Object,
@@ -61,23 +64,6 @@ export default {
     },
     hiveWidth: function(hive) {
       return hive.layers[0].framecount * 6
-    },
-    orderedLayers: function(hive) {
-      return hive.layers.slice().sort(function(a, b) {
-        if (a.type === 'feeding_box') {
-          return -1
-        }
-        if (b.type === 'feeding_box') {
-          return 1
-        }
-        if (a.order > b.order) {
-          return -1
-        }
-        if (b.order > a.order) {
-          return 1
-        }
-        return 0
-      })
     },
   },
 }

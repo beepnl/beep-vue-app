@@ -120,6 +120,7 @@
 <script>
 import draggable from 'vuedraggable'
 import Confirm from '@components/confirm.vue'
+import { orderedLayers } from '@mixins/methodsMixin'
 var keyGlobal = 0
 
 export default {
@@ -127,6 +128,7 @@ export default {
     Confirm,
     draggable,
   },
+  mixins: [orderedLayers],
   props: {
     colorPreview: {
       type: Boolean,
@@ -271,24 +273,6 @@ export default {
       this.currentLayer = layer
       this.layerColorPreview = true
       this.layerColorPickerValue = layer.color
-    },
-    orderedLayers: function(hive) {
-      const orderedLayers = hive.layers.slice().sort(function(a, b) {
-        if (a.type === 'feeding_box') {
-          return -1
-        }
-        if (b.type === 'feeding_box') {
-          return 1
-        }
-        if (a.order > b.order) {
-          return -1
-        }
-        if (b.order > a.order) {
-          return 1
-        }
-        return 0
-      })
-      return orderedLayers
     },
     setApiaryEdited(bool) {
       this.$store.commit('locations/setApiaryEdited', bool)

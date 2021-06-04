@@ -73,6 +73,48 @@ export const checkAlerts = {
   },
 }
 
+export const orderedLayers = {
+  methods: {
+    orderedLayers: function(hive) {
+      // change sorting if hive was created in app v2 to make sure it is being displayed correctly in v3 (honey layers on top of brood layers)
+      var v2hive = hive.layers.filter((layer) => layer.order === 0).length > 0 // only v2 hives have at least one layer with order number 0
+      if (v2hive) {
+        return hive.layers.slice().sort(function(a, b) {
+          if (a.type === 'honey' && b.type === 'brood') {
+            return -1
+          }
+          if (b.type === 'honey' && a.type === 'brood') {
+            return 1
+          }
+          if (a.order > b.order) {
+            return -1
+          }
+          if (b.order > a.order) {
+            return 1
+          }
+          return 0
+        })
+      } else {
+        return hive.layers.slice().sort(function(a, b) {
+          if (a.type === 'feeding_box') {
+            return -1
+          }
+          if (b.type === 'feeding_box') {
+            return 1
+          }
+          if (a.order > b.order) {
+            return -1
+          }
+          if (b.order > a.order) {
+            return 1
+          }
+          return 0
+        })
+      }
+    },
+  },
+}
+
 export const readAlertRules = {
   methods: {
     async readAlertRules() {

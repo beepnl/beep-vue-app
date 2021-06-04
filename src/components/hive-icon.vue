@@ -25,8 +25,10 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { orderedLayers } from '@mixins/methodsMixin'
 
 export default {
+  mixins: [orderedLayers],
   props: {
     hive: {
       type: Object,
@@ -73,23 +75,6 @@ export default {
     },
     showHiveMenu(event) {
       this.$emit('show-hive-menu', event)
-    },
-    orderedLayers: function(hive) {
-      return hive.layers.slice().sort(function(a, b) {
-        if (a.type === 'feeding_box') {
-          return -1
-        }
-        if (b.type === 'feeding_box') {
-          return 1
-        }
-        if (a.order > b.order) {
-          return -1
-        }
-        if (b.order > a.order) {
-          return 1
-        }
-        return 0
-      })
     },
   },
 }
