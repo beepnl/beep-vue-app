@@ -33,10 +33,24 @@
 
               <v-row class="d-flex justify-start">
                 <v-col
+                  v-if="hive !== null"
                   cols="5"
                   class="hive-icon-wrapper d-flex flex-row justify-center align-end mt-6 mt-sm-4 mb-1"
                 >
                   <HiveIcon :hive="hive" :diary-view="true"></HiveIcon>
+                </v-col>
+
+                <v-col
+                  v-else
+                  cols="5"
+                  class="d-flex flex-row justify-center align-start"
+                >
+                  <span class="diary-inspection-date text-center">
+                    <i
+                      >{{ $tc('Hive_short', 1) }}<br />
+                      {{ $t('unknown') }}
+                    </i>
+                  </span>
                 </v-col>
 
                 <v-col cols="7" class="d-flex flex-column align-start">
