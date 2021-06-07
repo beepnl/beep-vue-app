@@ -1171,6 +1171,9 @@ export default {
 
 .measurements-content {
   margin-top: 40px;
+  @media (max-width: 377px) {
+    margin-top: 76px;
+  }
 }
 .ep-legend--value {
   margin-top: -24px !important;
