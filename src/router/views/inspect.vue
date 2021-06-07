@@ -696,6 +696,7 @@ export default {
     if (this.inspectionId !== null) {
       this.getInspection(this.inspectionId).then((response) => {
         this.activeInspection = response
+        this.setActiveInspectionDate(response.date)
         this.preSelectedChecklistId
           ? this.getChecklistById(this.preSelectedChecklistId)
           : this.getChecklistById(this.activeInspection.checklist_id)
@@ -707,8 +708,9 @@ export default {
       })
       // Else make an empty inspection object
     } else {
+      var now = this.momentISO8601(new Date())
       this.activeInspection = {
-        date: this.momentISO8601(new Date()),
+        date: now,
         impression: null,
         attention: null,
         notes: null,
@@ -718,6 +720,7 @@ export default {
         hive_ids: this.selectedHives, // TODO: fix for only 1 hiveId
         items: {},
       }
+      this.setActiveInspectionDate(now)
       this.readChecklistsIfNotPresent().then(() => {
         if (this.preSelectedChecklistId !== null) {
           this.getChecklistById(this.preSelectedChecklistId)
@@ -735,7 +738,6 @@ export default {
       })
     }
     this.setInspectionEdited(false)
-    this.setActiveInspectionDate(this.activeInspection.date)
     this.setBulkInspection(this.selectedHives.length > 1)
     this.ready = true
   },
