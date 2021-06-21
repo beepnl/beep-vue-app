@@ -3,15 +3,25 @@
     <v-container>
       <div class="overline mb-1 primary--text"
         ><span class="lowercase">v</span>
-        <span v-if="dutch">3.0.29 (07-06-2021) - Huidige versie</span>
-        <span v-if="!dutch">3.0.29 (07-06-2021) - Current version</span>
+        <span v-if="dutch">3.0.30 (21-06-2021) - Huidige versie</span>
+        <span v-if="!dutch">3.0.30 (21-06-2021) - Current version</span>
       </div>
       <div v-if="!dutch" class="rounded-border primary-border mb-4">
+        <p class="mb-3">
+          <a
+            href="https://beepsupport.freshdesk.com/en/support/solutions/articles/60000696834-beep-app-v3/"
+            target="_blank"
+            ><v-icon class="support-icon" small color="accent"
+              >mdi-arrow-right</v-icon
+            >
+            BEEP support article on app v3 (including screenshots)</a
+          >
+        </p>
         <ul>
           <li class="new-block">
             <strong
               ><router-link :to="{ name: 'home' }">Hives</router-link> -
-              Overview of all hives per apiary or collaboration group</strong
+              Overview of all hives per apiary and collaboration group</strong
             >
             <ul>
               <li
@@ -427,22 +437,24 @@
             </ul>
           </li>
         </ul>
-        <p class="mt-3">
-          <strong>More info:</strong><br />
-          <a
-            href="https://beepsupport.freshdesk.com/en/support/solutions/articles/60000696834-beep-app-v3/"
-            target="_blank"
-            >BEEP support article on app v3 (including screenshots)</a
-          >
-        </p>
       </div>
 
       <div v-if="dutch" class="rounded-border primary-border mb-4">
+        <p class="mb-3">
+          <a
+            href="https://beepsupport.freshdesk.com/nl/support/solutions/articles/60000696834-beep-app-v3/"
+            target="_blank"
+            ><v-icon class="support-icon" small color="accent"
+              >mdi-arrow-right</v-icon
+            >
+            BEEP support artikel over app v3 (inclusief screenshots)</a
+          >
+        </p>
         <ul>
           <li class="new-block">
             <strong
               ><router-link :to="{ name: 'home' }">Kasten</router-link> -
-              Overzicht van alle kasten per bijenstand of
+              Overzicht van alle kasten per bijenstand en
               samenwerkingsgroep</strong
             >
             <ul>
@@ -878,14 +890,6 @@
             </ul>
           </li>
         </ul>
-        <p class="mt-3">
-          <strong>Meer informatie:</strong><br />
-          <a
-            href="https://beepsupport.freshdesk.com/nl/support/solutions/articles/60000696834-beep-app-v3/"
-            target="_blank"
-            >BEEP support artikel over app v3 (inclusief screenshots)</a
-          >
-        </p>
       </div>
 
       <div class="overline mb-1"
@@ -1081,5 +1085,9 @@ export default {
 
 .inline-icon {
   margin-top: -2px;
+}
+
+.support-icon {
+  margin: -2px 2px 0 2px;
 }
 </style>
