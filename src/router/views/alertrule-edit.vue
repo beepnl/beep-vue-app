@@ -163,6 +163,7 @@
             <VueNumericInput
               v-model="activeAlertRule.calculation_minutes"
               class="vue-numeric-input--small"
+              :precision="0"
               @input="setAlertRuleEdited(true)"
             >
             </VueNumericInput>

@@ -96,6 +96,7 @@
                       class="vue-numeric-input--extratop"
                       :min="0"
                       :max="maxHoneyLayers"
+                      :precision="0"
                       :disabled="bulkInspection"
                       @change="calculateLiebefeldColonySize"
                     ></VueNumericInput>
@@ -111,6 +112,7 @@
                       class="vue-numeric-input--extratop"
                       :min="0"
                       :max="maxBroodLayers"
+                      :precision="0"
                       :disabled="bulkInspection"
                       @change="calculateLiebefeldColonySize"
                     ></VueNumericInput>
@@ -123,6 +125,7 @@
                       class="vue-numeric-input--extratop"
                       :min="0"
                       :max="maxFrames"
+                      :precision="0"
                       :disabled="bulkInspection"
                       @change="calculateLiebefeldColonySize"
                     ></VueNumericInput>
@@ -154,7 +157,7 @@
       <div v-if="category.children.length > 0">
         <v-row>
           <div
-            v-for="(item, index) in category.children"
+            v-for="(item, index) in sortedChildren"
             :key="index"
             :class="
               (item.input === 'label' &&
@@ -179,6 +182,7 @@
               :disabled="bulkInspection"
               @calculate-liebefeld-colony-size="calculateLiebefeldColonySize"
             ></ChecklistInput>
+
             <!-- div below is same as checklist-fieldset component but needed to keep the nested checklist-input within this template to catch the @calculate-liebefeld-colony-size emit event -->
             <div
               v-if="
@@ -293,7 +297,6 @@ export default {
   },
   data() {
     return {
-      activeHive: null,
       colonySize: null,
       maxBroodLayers: 2,
       maxHoneyLayers: 1,
@@ -306,9 +309,21 @@ export default {
   },
   computed: {
     ...mapGetters('inspections', ['bulkInspection']),
+    ...mapGetters('hives', ['activeHive']),
+    sortedChildren() {
+      var sortedChildren = this.category.children.slice().sort(function(a, b) {
+        if (a.name.indexOf('super') > -1) {
+          return -1
+        }
+        if (a.name.indexOf('frame') > -1) {
+          return 1
+        }
+        return 0
+      })
+      return sortedChildren
+    },
   },
   created() {
-    this.activeHive = this.$store.getters['hives/activeHive']
     this.maxBroodLayers =
       this.countLayers('brood') < 2 ? this.countLayers('brood') : 2
     this.maxHoneyLayers =

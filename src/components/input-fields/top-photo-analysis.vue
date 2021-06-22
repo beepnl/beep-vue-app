@@ -55,6 +55,7 @@
                   class="vue-numeric-input--extratop"
                   :min="0"
                   :max="maxBroodLayers"
+                  :precision="0"
                   :disabled="bulkInspection"
                   @change="calculateTpaColonySize"
                 ></VueNumericInput>
@@ -67,6 +68,7 @@
                   class="vue-numeric-input--extratop"
                   :min="0"
                   :max="maxFrames"
+                  :precision="0"
                   :disabled="bulkInspection"
                   @change="calculateTpaColonySize"
                 ></VueNumericInput>
@@ -208,7 +210,6 @@ export default {
   },
   data() {
     return {
-      activeHive: null,
       colonySize: null,
       maxBroodLayers: 2,
       broodLayersForCalculation: 0,
@@ -218,9 +219,9 @@ export default {
   },
   computed: {
     ...mapGetters('inspections', ['bulkInspection']),
+    ...mapGetters('hives', ['activeHive']),
   },
   created() {
-    this.activeHive = this.$store.getters['hives/activeHive']
     this.maxBroodLayers = this.countLayers('brood')
     this.maxFrames = this.activeHive.layers[0].framecount
   },

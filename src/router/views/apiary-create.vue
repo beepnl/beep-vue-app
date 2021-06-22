@@ -409,6 +409,7 @@
                           v-model="newHive.hive_amount"
                           :min="0"
                           :max="50"
+                          :precision="0"
                           @input="setApiaryEdited(true)"
                         >
                         </VueNumericInput>
@@ -440,6 +441,7 @@
                           <VueNumericInput
                             v-if="newHive"
                             v-model="newHive.offset"
+                            :precision="0"
                             @input="setApiaryEdited(true)"
                           >
                           </VueNumericInput>

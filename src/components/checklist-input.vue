@@ -87,6 +87,7 @@
       class="vue-numeric-input--extratop"
       :value="object[item.id] === null ? 0 : object[item.id]"
       :step="1"
+      :precision="0"
       :disabled="disabled"
       @change="updateNumber($event, item.id, item.name)"
     ></VueNumericInput>
@@ -121,6 +122,7 @@
       :value="object[item.id] === null ? 0 : object[item.id]"
       :max="0"
       :step="1"
+      :precision="0"
       :disabled="disabled"
       @change="updateNumber($event, item.id, item.name)"
     ></VueNumericInput>
@@ -131,6 +133,7 @@
       :value="object[item.id] === null ? 0 : object[item.id]"
       :min="0"
       :step="1"
+      :precision="0"
       :disabled="item.name === 'colony_size' || disabled"
       @change="updateNumber($event, item.id, item.name)"
     ></VueNumericInput>

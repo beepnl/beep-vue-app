@@ -683,6 +683,11 @@ export default {
       return label
     },
   },
+  watch: {
+    selectedHives() {
+      this.setActiveHive()
+    },
+  },
   created() {
     // If hive id is specified, first check if hive is present / accessible and editable
     if (this.hiveId !== null) {
@@ -749,7 +754,7 @@ export default {
           this.$router.push({ name: '404', params: { resource: 'hive' } })
         }
         this.activeHive = response.data.hives[0]
-        this.$store.commit('hives/setActiveHive', this.activeHive)
+        this.$store.commit('hives/setActiveHive', response.data.hives[0])
         if (!this.activeHive.editable && !this.activeHive.owner) {
           this.hiveNotEditable = true
         }
@@ -1091,6 +1096,13 @@ export default {
     },
     setInspectionEdited(bool) {
       this.$store.commit('inspections/setInspectionEdited', bool)
+    },
+    setActiveHive() {
+      if (this.selectedHives.length === 1) {
+        this.getActiveHive(this.selectedHives[0])
+      } else if (this.activeHive !== null) {
+        this.$store.commit('hives/setActiveHive', null)
+      }
     },
     setActiveInspectionDate(date) {
       this.$store.commit('inspections/setData', {
