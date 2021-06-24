@@ -23,12 +23,12 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # - name: Install SSH Key
-      #   uses: shimataro/ssh-key-action@v2
-      #   with:
-      #     key: ${{ secrets.SSH_PRIVATE_KEY }}
-      #     name: id_rsa
-      #     known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          name: id_rsa
+          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
 
       # - name: Adding Known Hosts
       #   run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
@@ -38,18 +38,18 @@ jobs:
       #     ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       #     ssh-host: ${{ secrets.SSH_HOST }}
 
-      - name: Create SSH key
-        run: |
-          mkdir -p ~/.ssh/
-          echo "$SSH_PRIVATE_KEY" > ../private.key
-          sudo chmod 600 ../private.key
-          echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
-        shell: bash
-        env:
-          SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
-          SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
-          SSH_KEY_PATH: ${{ github.workspace }}/../private.key
-      - name: SSH
-        run: ssh -i ${{ github.workspace }}/../private.key ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} ls -a apps/appv3.beep.nl/public
+      # - name: Create SSH key
+      #   run: |
+      #     mkdir -p ~/.ssh/
+      #     echo "$SSH_PRIVATE_KEY" > ../private.key
+      #     sudo chmod 600 ../private.key
+      #     echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+      #   shell: bash
+      #   env:
+      #     SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+      #     SSH_KNOWN_HOSTS: ${{secrets.SSH_KNOWN_HOSTS}}
+      #     SSH_KEY_PATH: ${{ github.workspace }}/../private.key
       # - name: SSH
-      #   run: ssh -i /home/runner/.ssh/id_rsa ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} ls -a apps/appv3.beep.nl/public
+      #   run: ssh -i ${{ github.workspace }}/../private.key ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} ls -a apps/appv3.beep.nl/public
+      - name: SSH
+        run: ssh -i /home/runner/.ssh/id_rsa ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} ls -a apps/appv3.beep.nl/public
