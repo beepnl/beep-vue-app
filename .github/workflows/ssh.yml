@@ -29,9 +29,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           name: id_rsa
           known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
-      - run: ls
-      - run: cd .ssh
-      - run: ls
       # - name: Adding Known Hosts
       #   run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
       # - name: Setup SSH
@@ -40,4 +37,4 @@ jobs:
       #     ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       #     ssh-host: ${{ secrets.SSH_HOST }}
       - name: SSH
-        run: ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}
+        run: ssh -t ~/.ssh/id_rsa ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}
