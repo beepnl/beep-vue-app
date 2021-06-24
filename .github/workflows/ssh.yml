@@ -37,4 +37,4 @@ jobs:
       #     ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       #     ssh-host: ${{ secrets.SSH_HOST }}
       - name: SSH
-        run: ssh -t ~/.ssh/id_rsa ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}
+        run: ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} ls -a apps/appv3.beep.nl/public
