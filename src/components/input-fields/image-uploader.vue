@@ -4,12 +4,13 @@
       v-if="object[item.id] === null"
       ref="image"
       class="pt-0 image-uploader"
-      :rules="rules"
       accept="image/png, image/jpeg, image/bmp"
       :placeholder="`${$t('Select')} ${$tc('Image', 1).toLowerCase()}`"
       prepend-icon="mdi-camera"
+      :error-messages="errorMessage"
       :disabled="inputDisabled"
       @change="onUpload"
+      @click:clear="errorMessage = null"
     ></v-file-input>
     <div class="image-preview">
       <v-icon
@@ -71,14 +72,14 @@ export default {
     },
   },
   data: () => ({
-    rules: [
-      (value) =>
-        !value ||
-        value.size < 2000000 ||
-        'Image size should be less than 2 MB!',
-    ],
+    // rules: [
+    //   (value) =>
+    //     !this.errorMessage ||
+    //     'Image size should be less than 8 MB!',
+    // ],
     images: null,
     activeImage: null,
+    errorMessage: null,
   }),
   computed: {
     baseApiUrl() {
@@ -114,7 +115,7 @@ export default {
     async onUpload() {
       const file = this.$refs.image.internalValue
 
-      if (typeof file !== 'undefined' && !file.$error) {
+      if (typeof file !== 'undefined' && (file !== null) & !file.$error) {
         const userId = this.$store.getters['auth/userId']
         const hiveId =
           this.$store.getters['hives/activeHive'] !== null
@@ -132,6 +133,8 @@ export default {
         formData.append('category_id', this.item.id)
 
         const headers = { 'Content-Type': 'multipart/form-data; boundary=XXX' }
+
+        this.errorMessage = null
 
         try {
           const response = await Api.postRequestWithHeaders(
@@ -155,8 +158,10 @@ export default {
         } catch (error) {
           if (error.response) {
             console.log(error.response)
+            this.errorMessage = this.$i18n.t('something_wrong')
           } else {
             console.log('Error: ', error)
+            this.errorMessage = this.$i18n.t('something_wrong')
           }
         }
       }
