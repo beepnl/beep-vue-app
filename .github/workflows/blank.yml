@@ -37,6 +37,8 @@ jobs:
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          name: id_rsa
           known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+      - run: ls
       - name: SSH
-        run: ssh -i ${{ secrets.SSH_PRIVATE_KEY }} bitname@${{ secrets.SSH_HOST }}
+        run: ssh -i /home/runner/.ssh/id_rsa ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} ls -a apps/appv3.beep.nl/public
