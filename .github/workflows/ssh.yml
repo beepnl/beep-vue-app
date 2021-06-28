@@ -51,6 +51,5 @@ jobs:
       #     SSH_KEY_PATH: ${{ github.workspace }}/../private.key
       # - name: SSH
       #   run: ssh -i ${{ github.workspace }}/../private.key ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} ls -a apps/appv3.beep.nl/public
-      - run: ls /home/runner/.ssh
       - name: SSH
-        run: ssh -i /home/runner/.ssh/id_rsa ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} ls -a apps/appv3.beep.nl/public
+        run: ssh -i -vv /home/runner/.ssh/id_rsa ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} ls -a apps/appv3.beep.nl/public
