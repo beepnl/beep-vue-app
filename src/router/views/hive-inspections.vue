@@ -676,34 +676,44 @@ export default {
       }
 
       var propertyFilteredInspections = textFilteredInspections
-        .filter((inspection) => {
-          if (typeof inspection !== 'undefined' && this.filterByAttention) {
-            if (inspection.attention === 1) {
-              return inspection
-            }
-          } else {
-            return inspection
-          }
-        })
-        .filter((inspection) => {
-          if (
-            typeof inspection !== 'undefined' &&
-            this.filterByImpression.length > 0
-          ) {
-            if (this.filterByImpression.includes(inspection.impression)) {
-              return inspection
-            }
-          } else {
-            return inspection
-          }
-        })
-        .filter((inspection) => {
-          if (typeof inspection !== 'undefined' && this.filterByReminder) {
+        .map((inspection) => {
+          if (this.filterByAttention) {
             if (
-              inspection.reminder !== null ||
-              inspection.reminder_date !== null
+              typeof inspection !== 'undefined' &&
+              inspection.attention === 1
             ) {
               return inspection
+            } else {
+              return 'undefined'
+            }
+          } else {
+            return inspection
+          }
+        })
+        .map((inspection) => {
+          if (this.filterByReminder) {
+            if (
+              typeof inspection !== 'undefined' &&
+              (inspection.reminder !== null ||
+                inspection.reminder_date !== null)
+            ) {
+              return inspection
+            } else {
+              return 'undefined'
+            }
+          } else {
+            return inspection
+          }
+        })
+        .map((inspection) => {
+          if (this.filterByImpression.length > 0) {
+            if (
+              typeof inspection !== 'undefined' &&
+              this.filterByImpression.includes(inspection.impression)
+            ) {
+              return inspection
+            } else {
+              return 'undefined'
             }
           } else {
             return inspection
@@ -714,13 +724,13 @@ export default {
     },
     filteredInspections() {
       return this.filteredInspectionsWithUndefined.filter(
-        (x) => x !== undefined
+        (x) => x !== 'undefined' && typeof x !== 'undefined'
       )
     },
     inspectionIndexes() {
       var inspectionIndexes = []
       this.filteredInspectionsWithUndefined.map((inspection, i) => {
-        if (inspection !== undefined) {
+        if (inspection !== 'undefined' && typeof inspection !== 'undefined') {
           inspectionIndexes.push(i)
         }
       })
