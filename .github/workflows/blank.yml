@@ -39,6 +39,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           name: id_rsa
           known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
-      - run: ls
-      - name: SSH
-        run: ssh -i ~/home/runner/.ssh/id_rsa ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} ls -a apps/appv3.beep.nl/public
+      # - run: ls
+      # - name: SSH
+      #   run: ssh -i ~/home/runner/.ssh/id_rsa ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} ls -a apps/appv3.beep.nl/public
+      - name: Deploy with rsync
+        run: rsync --dry-run -avz ./dist/favicon.ico ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/apps/appv3.beep.nl/public/favicon.ico
