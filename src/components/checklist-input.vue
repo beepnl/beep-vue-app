@@ -353,7 +353,7 @@ export default {
       this.checkName(name)
 
       var decimals = 0
-      if (input === 'number_1_decimals' || input === 'square_25m2') {
+      if (input === 'number_1_decimals' || input === 'square_25cm2') {
         decimals = 1
       } else if (input === 'number_2_decimals') {
         decimals = 2
@@ -363,6 +363,7 @@ export default {
 
       if (value !== null) {
         value = value.toFixed(decimals)
+        // console.log('save value', value)
       }
 
       this.object[property] = value
