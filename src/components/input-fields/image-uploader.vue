@@ -24,10 +24,10 @@
       <span>
         <v-img
           v-if="object[item.id] !== null"
-          :src="baseApiUrl + object[item.id]"
+          :src="imageLink"
           class="grey lighten-2 image-thumb"
           aspect-ratio="1"
-          @click="setActiveImage(object[item.id])"
+          @click="setActiveImage(thumbUrl)"
         >
         </v-img>
       </span>
@@ -80,13 +80,18 @@ export default {
     images: null,
     activeImage: null,
     errorMessage: null,
+    thumbUrl: '',
   }),
   computed: {
     baseApiUrl() {
-      var baseUrl = process.env.VUE_APP_API_URL
-      baseUrl = baseUrl.replace('/api/', '')
-      return baseUrl
+      return process.env.VUE_APP_BASE_API_URL
     },
+    fullUrl() {
+      return this.thumbUrl.indexOf('https://') > -1
+    },
+    imageLink() {
+     return this.fullUrl ? this.thumbUrl : this.baseApiUrl + this.thumbUrl
+    }
   },
   created() {
     this.readImages()
@@ -150,6 +155,7 @@ export default {
             typeof response.data !== 'undefined' &&
             response.data.thumb_url
           ) {
+            this.thumbUrl = response.data.thumb_url
             this.object[this.item.id] = response.data.thumb_url
             this.setInspectionEdited(true)
 

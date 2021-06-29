@@ -261,9 +261,7 @@ export default {
   computed: {
     ...mapGetters('devices', ['devices', 'devicesPresent']),
     baseApiUrl() {
-      var baseUrl = process.env.VUE_APP_API_URL
-      baseUrl = baseUrl.replace('/api/', '')
-      return baseUrl
+      return process.env.VUE_APP_BASE_API_URL
     },
     dataAvailable() {
       return this.measurementTypes !== null
@@ -421,7 +419,11 @@ export default {
         if (response.status === -1) {
           this.errorMessage = this.$i18n.t('too_much_data')
         }
-        const csvLink = this.baseApiUrl + response.data.link
+        const responseLink = response.data.link
+        const csvLink =
+          responseLink.indexOf('https://') > -1
+            ? responseLink
+            : this.baseApiUrl + responseLink
         // trick to download returned csv link (doesn't work via v-btn because it has already been clicked)
         var link = document.createElement('a')
         link.href = csvLink

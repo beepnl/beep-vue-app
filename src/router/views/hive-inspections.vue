@@ -508,7 +508,7 @@
                   class="d-flex justify-center py-2"
                 >
                   <v-img
-                    :src="baseApiUrl + item.val"
+                    :src="getThumbUrl(item.val)"
                     class="grey lighten-2 image-thumb"
                     @click="setActiveImage(item.val)"
                   >
@@ -612,9 +612,7 @@ export default {
   computed: {
     ...mapGetters('hives', ['activeHive']),
     baseApiUrl() {
-      var baseUrl = process.env.VUE_APP_API_URL
-      baseUrl = baseUrl.replace('/api/', '')
-      return baseUrl
+      return process.env.VUE_APP_BASE_API_URL
     },
     id() {
       return parseInt(this.$route.params.id)
@@ -898,6 +896,9 @@ export default {
     getImageUrl(thumburl) {
       var imageUrl = thumburl.replace('thumbs', 'images')
       return imageUrl
+    },
+    getThumbUrl(val) {
+      return val.indexOf('https://') > -1 ? val : this.baseApiUrl + val
     },
     gradeColor(value) {
       if (value === 0) return '#CCC'

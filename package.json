@@ -27,9 +27,6 @@
     "test:unit:watch": "yarn test:unit --watch --notify --notifyMode change"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "1.2.27",
-    "@fortawesome/free-solid-svg-icons": "5.12.1",
-    "@fortawesome/vue-fontawesome": "0.1.9",
     "@riophae/vue-treeselect": "^0.4.0",
     "axios": "^0.21.1",
     "axios-actions": "^4.0.2",
@@ -44,7 +41,6 @@
     "moment": "^2.26.0",
     "moment-timezone": "^0.5.33",
     "nprogress": "^0.2.0",
-    "optipng": "^2.1.0",
     "sortablejs": "^1.10.2",
     "vue": "^2.6.11",
     "vue-add-to-calendar": "^1.0.6",
@@ -60,8 +56,7 @@
     "vue-treeselect": "^1.0.7",
     "vue2-transitions": "^0.3.0",
     "vuedraggable": "^2.24.3",
-    "vuex": "^3.6.2",
-    "weekstart": "^1.0.1"
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "4.5.9",
@@ -87,7 +82,6 @@
     "eslint-plugin-vue": "6.2.x",
     "express": "4.17.x",
     "faker": "^4.1.0",
-    "flat-to-nested": "^1.1.1",
     "imagemin-lint-staged": "0.4.x",
     "lint-staged": "10.0.x",
     "markdownlint-cli": "0.22.x",

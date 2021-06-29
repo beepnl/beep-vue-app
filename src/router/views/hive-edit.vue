@@ -512,6 +512,7 @@ export default {
             })
           }, 50) // wait for API to update locations/hives
         } catch (error) {
+          console.log('update hive', error)
           if (error.response) {
             console.log('Error: ', error.response)
             const msg = error.response.data.message
