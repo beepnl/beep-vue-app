@@ -6,6 +6,10 @@
   border-color: $color-primary;
 }
 
+.el-input-number.comma-warning .el-input__inner {
+  border: 1px solid $color-red !important;
+}
+
 /* Vuetify */
 .v-application .red--text {
   color: $color-red !important;

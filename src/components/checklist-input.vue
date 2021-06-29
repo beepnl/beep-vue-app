@@ -82,61 +82,72 @@
       :object="object"
     ></slider>
 
-    <VueNumericInput
+    <el-input-number
       v-if="item.input === 'number' || item.input === 'number_0_decimals'"
-      class="vue-numeric-input--extratop"
-      :value="object[item.id] === null ? 0 : object[item.id]"
+      :value="object[item.id] === null ? 0 : parseFloat(object[item.id])"
       :step="1"
       :precision="0"
+      :step-strictly="true"
       :disabled="disabled"
-      @change="updateNumber($event, item.id, item.name)"
-    ></VueNumericInput>
+      @change="updateInput($event, item.id, item.name, item.input)"
+      @input.native="inputNative($event, item.id, item.name)"
+    ></el-input-number>
 
-    <VueNumericInput
+    <div
       v-if="
         item.input === 'number_1_decimals' ||
           item.input === 'number_2_decimals' ||
           item.input === 'square_25cm2'
       "
-      class="vue-numeric-input--extratop"
-      :value="object[item.id] === null ? 0 : object[item.id]"
-      :step="item.input === 'number_2_decimals' ? 0.01 : 0.1"
-      :precision="item.input === 'number_2_decimals' ? 2 : 1"
-      :disabled="disabled"
-      @change="updateNumber($event, item.id, item.name)"
-    ></VueNumericInput>
+      class="d-flex flex-column"
+    >
+      <el-input-number
+        :value="object[item.id] === null ? 0 : parseFloat(object[item.id])"
+        :class="showCommaWarning ? 'comma-warning' : ''"
+        :step="item.input === 'number_2_decimals' ? 0.01 : 0.1"
+        :precision="item.input === 'number_2_decimals' ? 2 : 1"
+        :disabled="disabled"
+        @change="updateInput($event, item.id, item.name, item.input)"
+        @input.native="inputNative($event, item.id, item.name)"
+      ></el-input-number>
+      <span v-if="showCommaWarning" class="red--text font-small"
+        >Use point as decimal separator (comma not allowed)</span
+      >
+    </div>
 
-    <VueNumericInput
+    <el-input-number
       v-if="item.input === 'number_3_decimals'"
-      class="vue-numeric-input--extratop"
-      :value="object[item.id] === null ? 0 : object[item.id]"
+      :value="object[item.id] === null ? 0 : parseFloat(object[item.id])"
       :step="0.001"
       :precision="3"
       :disabled="disabled"
-      @change="updateNumber($event, item.id, item.name)"
-    ></VueNumericInput>
+      @change="updateInput($event, item.id, item.name, item.input)"
+      @input.native="inputNative($event, item.id, item.name)"
+    ></el-input-number>
 
-    <VueNumericInput
+    <el-input-number
       v-if="item.input === 'number_negative'"
-      class="vue-numeric-input--extratop"
-      :value="object[item.id] === null ? 0 : object[item.id]"
+      :value="object[item.id] === null ? 0 : parseFloat(object[item.id])"
       :max="0"
       :step="1"
       :precision="0"
+      :step-strictly="true"
       :disabled="disabled"
-      @change="updateNumber($event, item.id, item.name)"
-    ></VueNumericInput>
+      @change="updateInput($event, item.id, item.name, item.input)"
+      @input.native="inputNative($event, item.id, item.name)"
+    ></el-input-number>
 
-    <VueNumericInput
+    <el-input-number
       v-if="item.input === 'number_positive'"
-      class="vue-numeric-input--extratop"
-      :value="object[item.id] === null ? 0 : object[item.id]"
+      :value="object[item.id] === null ? 0 : parseFloat(object[item.id])"
       :min="0"
       :step="1"
       :precision="0"
+      :step-strictly="true"
       :disabled="item.name === 'colony_size' || disabled"
-      @change="updateNumber($event, item.id, item.name)"
-    ></VueNumericInput>
+      @change="updateInput($event, item.id, item.name, item.input)"
+      @input.native="inputNative($event, item.id, item.name)"
+    ></el-input-number>
 
     <starRating
       v-if="item.input === 'score'"
@@ -230,7 +241,7 @@
 </template>
 
 <script>
-import VueNumericInput from 'vue-numeric-input'
+// import VueNumericInput from 'vue-numeric-input'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
 import imageUploader from '@components/input-fields/image-uploader.vue'
@@ -248,7 +259,7 @@ export default {
     ChecklistFieldset: () => import('@components/checklist-fieldset.vue'), // needed to fix Vue recursive component error
     dateTimePicker,
     imageUploader,
-    VueNumericInput,
+    // VueNumericInput,
     labelWithDescription,
     sampleCode,
     selectHiveOrApiary,
@@ -279,6 +290,12 @@ export default {
       default: false,
       required: false,
     },
+  },
+  data() {
+    return {
+      showCommaWarning: false,
+      savedNrOfDecimals: 0,
+    }
   },
   computed: {
     // for v-model of 'list' checkbox an array of value is needed instead of a string
@@ -317,17 +334,67 @@ export default {
       this.object[listId] = selectedArrayToString
       this.setInspectionEdited(true)
     },
-    updateNumber(value, property, name = null) {
-      if (value === 0) {
-        value = null
-      }
+    checkName(name) {
       if (name === 'pixels_with_bees' || name === 'pixels_total_top') {
         this.$emit('calculate-tpa-colony-size')
       }
       if (name === 'bees_squares_25cm2') {
         this.$emit('calculate-liebefeld-colony-size')
       }
+    },
+    updateInput(value, property, name = null, input = null) {
+      // console.log('update input (change event)', value, property)
+      // console.log('save value', value.toFixed(1))
+
+      if (value === 0) {
+        value = null
+      }
+
+      this.checkName(name)
+
+      var decimals = 0
+      if (input === 'number_1_decimals' || input === 'square_25m2') {
+        decimals = 1
+      } else if (input === 'number_2_decimals') {
+        decimals = 2
+      } else if (input === 'number_3_decimals') {
+        decimals = 3
+      }
+
+      if (value !== null) {
+        value = value.toFixed(decimals)
+      }
+
       this.object[property] = value
+      this.setInspectionEdited(true)
+    },
+    inputNative(event, property, name = null) {
+      const val = event.target.value
+
+      var pointVal = val.replace(',', '.')
+      if (pointVal.indexOf('.0.') > -1) {
+        pointVal = pointVal.replace('.0.', '.')
+      }
+
+      // if (val.indexOf(',') > -1) {
+      //   this.showCommaWarning = true
+      // } else {
+      //   this.showCommaWarning = false
+      // }
+
+      // console.log('input', val)
+      // console.log('saved value', pointVal)
+
+      if (val === 0) {
+        pointVal = null
+      }
+      this.checkName(name)
+
+      // if (val.indexOf(',') === -1) {
+      //   this.object[property] = val
+      // this.showCommaWarning = false
+      // }
+      this.object[property] = pointVal
       this.setInspectionEdited(true)
     },
     validateText(value, id, maxLength) {

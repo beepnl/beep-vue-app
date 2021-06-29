@@ -800,11 +800,13 @@ export default {
             if (
               item.type.indexOf('boolean') > -1 ||
               item.type.indexOf('smileys') > -1 ||
-              item.type.indexOf('number') > -1 ||
+              // item.type.indexOf('number') > -1 ||
               item.type.indexOf('grade') > -1 ||
+              item.type.indexOf('number_degrees') > -1 ||
+              item.type.indexOf('number_percentage') > -1 ||
               item.type.indexOf('score') > -1 ||
-              item.type.indexOf('slider') > -1 ||
-              item.type.indexOf('square') > -1
+              item.type.indexOf('slider') > -1
+              // item.type.indexOf('square') > -1
             ) {
               itemsObject[item.category_id] = Number(item.value)
             } else {
