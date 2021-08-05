@@ -741,8 +741,7 @@ export default {
         if (this.preSelectedChecklistId !== null) {
           this.getChecklistById(this.preSelectedChecklistId)
         } else if (this.lastSelectedChecklist !== null) {
-          this.selectedChecklistId = this.lastSelectedChecklist.id
-          this.selectedChecklist = this.lastSelectedChecklist
+          this.getChecklistById(this.lastSelectedChecklist.id)
         } else {
           this.selectedChecklistId = this.checklist.id
           this.selectedChecklist = this.checklist

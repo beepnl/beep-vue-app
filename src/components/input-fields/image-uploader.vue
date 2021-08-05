@@ -95,6 +95,9 @@ export default {
   },
   created() {
     this.readImages()
+    if (this.object[this.item.id] !== null) {
+      this.thumbUrl = this.object[this.item.id]
+    }
   },
   methods: {
     async deleteImage(id) {
