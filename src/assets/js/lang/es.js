@@ -443,7 +443,10 @@ const translations = {
     'Haga clic en este enlace para enviar un nuevo correo electrónico de verificación.',
   email_verification_sent:
     'Se ha enviado un mensaje con un enlace de verificación a su dirección de correo electrónico. Haga clic en el enlace del correo electrónico para activar su cuenta e iniciar sesión.',
-  not_filled: 'no completado',
+    email_verification_resent:
+    'Se ha enviado un nuevo mensaje con un enlace de verificación a su dirección de correo electrónico. Haga clic en el enlace del correo electrónico para activar su cuenta e iniciar sesión.',
+
+    not_filled: 'no completado',
   cannot_deselect:
     'No se puede quitar este elemento, porque contiene un elemento necesario',
   Undelete: 'No borrar',

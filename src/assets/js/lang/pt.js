@@ -469,6 +469,9 @@ const translations = {
     ' Clique neste link para enviar um novo email de verificação.',
   email_verification_sent:
     'Uma mensagem com um link de verificação foi enviada para o seu endereço de email. Clique no link do email para ativar sua conta e fazer login.',
+    email_verification_resent:
+    'Uma nova mensagem com um link de verificação foi enviada para o seu endereço de email. Clique no link do email para ativar sua conta e fazer login.',
+
 
   not_filled: 'é obrigatório, mas não está preenchido',
   cannot_deselect:

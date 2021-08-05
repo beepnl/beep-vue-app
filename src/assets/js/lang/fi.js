@@ -467,6 +467,8 @@ const translations = {
     'Klikkaa tätä linkkiä lähettääksesi uuden vahvistussähköpostin',
   email_verification_sent:
     'Vahvistuslinkillä varustettu viesti on lähetetty sähköpostiosoitteeseesi. Aktivoi tilisi ja kirjaudu sisään napsauttamalla sähköpostissa olevaa linkkiä.',
+    email_verification_resent:
+    'Uusi vahvistuslinkillä varustettu viesti on lähetetty sähköpostiosoitteeseesi. Aktivoi tilisi ja kirjaudu sisään napsauttamalla sähköpostissa olevaa linkkiä.',
 
   not_filled: 'Vaaditaan, mutta ei täytetä',
   cannot_deselect:

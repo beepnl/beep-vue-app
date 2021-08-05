@@ -444,7 +444,10 @@ const translations = {
     'Faceți clic pe acest link pentru a trimite un nou e-mail de verificare.',
   email_verification_sent:
     'Un mesaj cu un link pentru verificare a fost trimis pe adresa dvs. de e-mail. Faceți click pe link-ul din e-mail pentru a vă activa contul și pentru a vă conecta.',
-  not_filled: 'este necesar, dar nu a fost completat',
+    email_verification_resent:
+    'Un mesaj nou cu un link pentru verificare a fost trimis pe adresa dvs. de e-mail. Faceți click pe link-ul din e-mail pentru a vă activa contul și pentru a vă conecta.',
+
+    not_filled: 'este necesar, dar nu a fost completat',
   cannot_deselect:
     'Acest element nu poate fi eliminat, deoarece conține un element obligatoriu',
   Undelete: 'Nu ștergeți',

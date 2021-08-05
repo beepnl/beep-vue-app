@@ -7,8 +7,8 @@
       @submit.prevent="login"
     >
       <v-card-text>
-        <v-alert v-if="msg" type="success" text prominent dense color="green">
-          {{ $t(msg) }}
+        <v-alert v-if="msg || resentVerification" type="success" text prominent dense color="green">
+           {{ resentVerification ? $t('email_verification_resent') : $t(msg) }}
         </v-alert>
         <v-alert
           v-for="error in errors"
@@ -21,9 +21,9 @@
         >
           {{ error.errorMessage }}
           <a
-            v-if="error.verifyLink"
+            v-if="error.verifyLink && !resentVerification"
             class="red--text alert-link"
-            @click="sendEmailVerification"
+            @click="resendEmailVerification"
             >{{ $t('email_new_verification') }}</a
           >
         </v-alert>
@@ -97,6 +97,7 @@ export default {
         email: false,
         password: false,
       },
+      resentVerification: false,
     }
   },
   computed: {
@@ -116,12 +117,13 @@ export default {
     }
   },
   methods: {
-    async sendEmailVerification() {
+    async resendEmailVerification() {
       try {
         const response = await Api.postRequest(
           '/email/resend',
           this.credentials
         )
+        this.resentVerification = true
         return response
       } catch (error) {
         if (error.response) {
@@ -189,6 +191,7 @@ export default {
       this.errors = []
       this.fieldErrors.email = false
       this.fieldErrors.password = false
+      this.resentVerification = false
     },
     clearCredentials() {
       this.credentials = {}
