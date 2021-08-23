@@ -80,7 +80,8 @@ const translations = {
   username_is_required: 'Por favor, introduzca el nombre de usuario',
   username_already_exists: 'El nombre de usuario ya existe',
   password_is_required: 'Por favor, introduzca una contraseña',
-  email_is_required: 'Por favor, introduzca una dirección de correo electrónico',
+  email_is_required:
+    'Por favor, introduzca una dirección de correo electrónico',
   email_already_exists: 'La dirección de correo electrónico ya está en uso',
   policy_accepted_is_required:
     'Es necesario que Usted acepte los términos del servicio para registrarse',
@@ -407,8 +408,7 @@ const translations = {
     'Acepto las condiciones del servicio BEEP, las cuales son compatibles con la nueva ley europea de privacidad',
   policy_url: 'https://beep.nl/terms-of-service',
   policy_version: 'beep_terms_2018_05_25_avg_v1',
-  approve_policy:
-    'Usted aún no ha aceptado los términos del servicio.',
+  approve_policy: 'Usted aún no ha aceptado los términos del servicio.',
 
   /* Ajustes de calibración de peso */
   calibrate_weight: 'Calibrar peso',
@@ -443,10 +443,10 @@ const translations = {
     'Haga clic en este enlace para enviar un nuevo correo electrónico de verificación.',
   email_verification_sent:
     'Se ha enviado un mensaje con un enlace de verificación a su dirección de correo electrónico. Haga clic en el enlace del correo electrónico para activar su cuenta e iniciar sesión.',
-    email_verification_resent:
+  email_verification_resent:
     'Se ha enviado un nuevo mensaje con un enlace de verificación a su dirección de correo electrónico. Haga clic en el enlace del correo electrónico para activar su cuenta e iniciar sesión.',
 
-    not_filled: 'no completado',
+  not_filled: 'no completado',
   cannot_deselect:
     'No se puede quitar este elemento, porque contiene un elemento necesario',
   Undelete: 'No borrar',
@@ -568,7 +568,8 @@ const translations = {
   verification_code: 'código de verificación',
   limit_exceeded: 'límite excedido',
   confirm_email_title: 'confirme su dirección de correo electrónico',
-  confirm_email_summary: "Usted ha recibido un código de verificación en su correo electrónico. Ingréselo abajo para verificar su correo electrónico",
+  confirm_email_summary:
+    'Usted ha recibido un código de verificación en su correo electrónico. Ingréselo abajo para verificar su correo electrónico',
   confirm: 'confirme',
   Profile: 'Perfil',
   Checklist_template: ' Lista de chequeo de moldes',
@@ -580,7 +581,8 @@ const translations = {
   no_results: 'sin resultados',
   Hive_brood_layer: 'Capa de Cría | Capas de Cría',
   Hive_honey_layer: 'Capa de Miel | Capas de Miel',
-  Hive_queen_excluder_layer: 'Excluidor de abeja reina | Excluidores de abejas reinas',
+  Hive_queen_excluder_layer:
+    'Excluidor de abeja reina | Excluidores de abejas reinas',
   Hive_feeding_box_layer: 'Capa de alza',
   overrides_layer_colors: 'anula los colores de las capas',
   drag_layers: 'Arrastrar capas para configurar colmenas',
@@ -593,8 +595,8 @@ const translations = {
   not_editable: 'no editable',
   unsaved_changes: 'cambios no guardados',
   save_changes:
-'¿Está seguro que desea abandonar esta página? Cualquier cambio no guardado se perderá',
-  no_apiaries_yet: "Usted no tiene ningún apiario aun",
+    '¿Está seguro que desea abandonar esta página? Cualquier cambio no guardado se perderá',
+  no_apiaries_yet: 'Usted no tiene ningún apiario aun',
   need_help: 'Necesita ayuda?',
   Apiary_color: 'Color del apiario',
   Set_notification_date: 'Establecer la fecha de notificación',
@@ -603,7 +605,7 @@ const translations = {
   bee: 'abeja | abejas',
   with_bees: 'con abejas',
   change_checklist_confirm:
-'Èstá seguro que desea seleccionar una lista de verificación diferente? Los valores de los campos ya rellenados se mantendrán',
+    'Èstá seguro que desea seleccionar una lista de verificación diferente? Los valores de los campos ya rellenados se mantendrán',
   view: 'ver',
   share: 'compartir',
   edit_details: 'editar detalles',
@@ -617,8 +619,9 @@ const translations = {
   terms_of_use: 'términos del servicio',
   the_field: 'el campo',
   is_required: 'is required',
-  invalid_password: 'La clave debe contener al menos 8 caracteres, una letra minúscula, una letra mayúscula, un número y un caracter especial (\\]{}()?\\-"!@#%&/\\,><\':;|_~`)',
-sensor_definition: ' definición del sensor | definiciones del sensor',
+  invalid_password:
+    'La clave debe contener al menos 8 caracteres, una letra minúscula, una letra mayúscula, un número y un caracter especial (\\]{}()?\\-"!@#%&/\\,><\':;|_~`)',
+  sensor_definition: ' definición del sensor | definiciones del sensor',
   measurement: 'medición | mediciones',
   remove_device: 'remover dispositivo',
   last_message_received: 'último mensaje recibido',
@@ -628,40 +631,48 @@ sensor_definition: ' definición del sensor | definiciones del sensor',
   different_end_start: 'fin e inicio deben diferir',
   later_end_start: 'fecha de inicio debe ser anterior a la fecha de término',
   new_email_verification_sent:
-    'A message with a verification link has been sent to your new e-mail address. Click the link in the e-mail to confirm your new e-mail address and log in.',
+    'Se ha enviado un mensaje con un enlace de verificación a su nueva dirección de correo electrónico. Haga clic en el enlace del correo electrónico para confirmar su nueva dirección de correo electrónico e iniciar sesión.',
 
-
-sensordef_info: "Una definición de sensor es destinada a convertir un valor de sensor desde un valor sensor 'crudo' entrante'en un valor de acuerdo a la cantidad física y unidad ((e.g. p_v = 1098273 => peso_kg = 62,400 kg) o calibrar un sensor (e.g. t_0 = 15.3 ° C => t_0 = 15.8 ° C). Lo anterior, puede ser realizado ajustando un 'compensar y un 'multiplicador. Los valores de ingreso y salida permanecen igual si se ha fijado la compensación en 0 y el multiplicador en 1. La app de la base BEEP (a partir del App Store) le proveerá definiciones correctas de los sensores en la instalación(configuración?) inicial de su base BEEP.",
+  sensordef_info:
+    "Una definición de sensor es destinada a convertir un valor de sensor desde un valor sensor 'crudo' entrante'en un valor de acuerdo a la cantidad física y unidad ((e.g. p_v = 1098273 => peso_kg = 62,400 kg) o calibrar un sensor (e.g. t_0 = 15.3 ° C => t_0 = 15.8 ° C). Lo anterior, puede ser realizado ajustando un 'compensar y un 'multiplicador. Los valores de ingreso y salida permanecen igual si se ha fijado la compensación en 0 y el multiplicador en 1. La app de la base BEEP (a partir del App Store) le proveerá definiciones correctas de los sensores en la instalación(configuración?) inicial de su base BEEP.",
   or: 'o',
-select_all_hives: 'Seleccionar todas las colmenas',
+  select_all_hives: 'Seleccionar todas las colmenas',
   select_all_editable_hives: 'Seleccionar todas las colmenas editables',
   Alert: 'Alerta | Alertas',
   alert: 'alerta | alertas',
   remove_alert: 'remove alerta',
   alerts_enabled: 'alerta habilitada',
   alerts_disabled: 'alerta deshabilitada',
-edit_checklist_confirm: 'Está seguro que desea editar la lista de verificación? Datos de su inspección no guardados se perderán',
-  edit_checklist_confirm_deselectedhives: 'Está seguro que desea editar la lista de verificación? Datos de su inspección no guardados y su selección de colmenas se perderán',
+  edit_checklist_confirm:
+    'Está seguro que desea editar la lista de verificación? Datos de su inspección no guardados se perderán',
+  edit_checklist_confirm_deselectedhives:
+    'Está seguro que desea editar la lista de verificación? Datos de su inspección no guardados y su selección de colmenas se perderán',
   user_not_edited:
     'Datos del usuario no han sido editados. Posiblemente los datos de usuario son idénticos a los actuales datos de usuario, o uno o más campos no han sido completados correctamente. Por favor, revise sus datos y pruebe de nuevo.',
   user_not_deleted: 'Algo salió mal, usuario no ha sido eliminado.',
   research_consent: 'Consentir investigación',
   checklist_types: 'Personal, compartido, investigación',
-edit_hive_checklist_no_touch: 'Chequear/no chequear las cajas en la lista de abajo para agregar/remover ítems de su lista de verificación de colmenas. Además, Usted puede archivar/des archivar y arrastrar/dejar caer los ítems para re-ordenarlos a su propia manera (N. B. esto no es posible de realizar en un dispositivo pantalla táctil',
-edit_hive_checklist_touch: 'Chequear/no chequear las cajas en la lista de abajo para agregar/remover ítems de su lista de verificación de colmenas. Es posible cambiar el orden de los ítems solo en un computador de escritorio.',
-input_not_possible_for_bulkinspection: 'Este ítem no está disponible cuando numerosas colmenas son seleccionadas para una inspección, ya que este solo puede ser completado para una colmena en particular. Es posible completar este ítem para una única colmena a último momento, editando la inspección para aquella colmena.',
-save_bulkinspection_confirm: '¿Está seguro que desea guardar esta inspección para numerosas colmenas al mismo tiempo?',
-deleted_but_not_saved_devices_warning: "N. B.: dispositivos serán solo removidos luego de hacer en click en el botón 'Guardar y eliminar' en lado superior derecho.",
-no_alerts: 'sin alerta',
-alertrule: 'regla de alerta | reglas de alerta',
-alertrule_pagetitle: 'Ajustes de alerta',
+  edit_hive_checklist_no_touch:
+    'Chequear/no chequear las cajas en la lista de abajo para agregar/remover ítems de su lista de verificación de colmenas. Además, Usted puede archivar/des archivar y arrastrar/dejar caer los ítems para re-ordenarlos a su propia manera (N. B. esto no es posible de realizar en un dispositivo pantalla táctil',
+  edit_hive_checklist_touch:
+    'Chequear/no chequear las cajas en la lista de abajo para agregar/remover ítems de su lista de verificación de colmenas. Es posible cambiar el orden de los ítems solo en un computador de escritorio.',
+  input_not_possible_for_bulkinspection:
+    'Este ítem no está disponible cuando numerosas colmenas son seleccionadas para una inspección, ya que este solo puede ser completado para una colmena en particular. Es posible completar este ítem para una única colmena a último momento, editando la inspección para aquella colmena.',
+  save_bulkinspection_confirm:
+    '¿Está seguro que desea guardar esta inspección para numerosas colmenas al mismo tiempo?',
+  deleted_but_not_saved_devices_warning:
+    "N. B.: dispositivos serán solo removidos luego de hacer en click en el botón 'Guardar y eliminar' en lado superior derecho.",
+  no_alerts: 'sin alerta',
+  alertrule: 'regla de alerta | reglas de alerta',
+  alertrule_pagetitle: 'Ajustes de alerta',
   Measurement: 'Medición | Mediciones',
   Calculation: 'Cálculo',
   calculation: 'cálculo',
   Calculation_minutes: 'Calcular por x número de minutos',
   Alert_on_occurences: 'Cuando le gustaría recibir esta alerta?',
-  Alert_on_occurences_hint: 'Directamente, o solo después que este haya ocurrido un x número de veces?',
-Direct: 'Directamente',
+  Alert_on_occurences_hint:
+    'Directamente, o solo después que este haya ocurrido un x número de veces?',
+  Direct: 'Directamente',
   After: 'Después',
   times: ' veces',
   Comparator: 'Comparador',
@@ -689,22 +700,25 @@ Direct: 'Directamente',
   Alert_via_email: 'Alerta via correo electrónico',
   Webhook_url: 'Webhook url',
   this_field: 'Este campo',
-  alertrule_default: 'Regla de alerta por defecto | Reglas de alerta por defecto',
+  alertrule_default:
+    'Regla de alerta por defecto | Reglas de alerta por defecto',
   copy: 'copiar',
   Home: 'Hogar',
   Select_default_alertrule: 'Copiar regla de alerta por defecto',
   /* below, please keep all terms between [] in english: */
-alertrule_main_sentence: 'Me gustaría recibir una alerta si la [calculation] [comparison] de las [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Este cálculo será realizado cada [calculation_minutes] horass, ',
-alertrule_occurences_direct_sentence: 'Y me gustaría recibir la alerta directamente. ',
+  alertrule_main_sentence:
+    'Me gustaría recibir una alerta si la [calculation] [comparison] de las [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Este cálculo será realizado cada [calculation_minutes] horass, ',
+  alertrule_occurences_direct_sentence:
+    'Y me gustaría recibir la alerta directamente. ',
   alertrule_occurences_indirect_sentence:
-'pero me gustaría recibir la alerta solo si ocurre [alert_on_occurences] veces. ',
-alertrule_exclude_months_sentence:
-'Esta alerta será desactivada durante los siguientes meses: [exclude_months]. ',
+    'pero me gustaría recibir la alerta solo si ocurre [alert_on_occurences] veces. ',
+  alertrule_exclude_months_sentence:
+    'Esta alerta será desactivada durante los siguientes meses: [exclude_months]. ',
   alertrule_exclude_hours_sentence:
-'Esta alerta será desactivada durante las siguientes horas: [exclude_hours]. ',
+    'Esta alerta será desactivada durante las siguientes horas: [exclude_hours]. ',
   alertrule_exclude_hives_sentence:
-  'Esta alerta será desactivada para las siguientes colmenas: [exclude_hive_ids].',
-min: 'mínimo',
+    'Esta alerta será desactivada para las siguientes colmenas: [exclude_hive_ids].',
+  min: 'mínimo',
   max: 'máximo',
   ave: 'promedio',
   der: 'derivada',
@@ -714,20 +728,26 @@ min: 'mínimo',
   greater_than: 'mayor que',
   less_than_or_equal: 'menor que o igual a',
   greater_than_or_equal: 'mayor que o igual a',
-  alertrule_not_active: "Esta alerta ha sido desactivada. Usted puede activarla haciendo click en la caja 'Activa' y guardando esta regla de alerta",
-  export_email_sent: 'un correo electrónico con el archivo Excel ha sido enviado',
-  export_file_saved: 'el archivo Excel ha sido guardado en su carpeta Descargas',
+  alertrule_not_active:
+    "Esta alerta ha sido desactivada. Usted puede activarla haciendo click en la caja 'Activa' y guardando esta regla de alerta",
+  export_email_sent:
+    'un correo electrónico con el archivo Excel ha sido enviado',
+  export_file_saved:
+    'el archivo Excel ha sido guardado en su carpeta Descargas',
   Updated_at: 'Actualizado en',
   Not_yet_saved: 'No guardado aun',
   add_own_device: 'Agregar su propio dispositivo',
-devices_info_text:
-  'Atención: Eres propietario de una base BEEP? Utiliza la app de la base BEEP para agregar tu dispositivo. Este aparecerá luego automáticamente en la lista de abajo',
-devices_url_text: 'Aquí puedes encontrar mas información sobre la app de la base BEEEP',
-alert_explanation_1: 'Si posees una base BEEP u otro dispositivo puedes definir alertas, de esa forma recibirás una alerta cuando los datos de medición cumplan ciertos requerimientos. Por ejemplo, una caída repentina en la pérdida de peso debida a enjambrazón. La alerta será mostrada en esta app, tu también puedes escoger recibirlas vía correo electrónico',
-  alert_explanation_2: 'Para empezar hay algunas reglas de alertas que puedes utilizar (y adaptar según tus propias necesidades). Además, puedes crear tus propias reglas de alertas',
-alertrules_url_text:
-  "Ir a Ajustes de alerta para crear tu primera regla de alerta",
-Apiary_management: 'Manejo de apiario',
+  devices_info_text:
+    'Atención: Eres propietario de una base BEEP? Utiliza la app de la base BEEP para agregar tu dispositivo. Este aparecerá luego automáticamente en la lista de abajo',
+  devices_url_text:
+    'Aquí puedes encontrar mas información sobre la app de la base BEEEP',
+  alert_explanation_1:
+    'Si posees una base BEEP u otro dispositivo puedes definir alertas, de esa forma recibirás una alerta cuando los datos de medición cumplan ciertos requerimientos. Por ejemplo, una caída repentina en la pérdida de peso debida a enjambrazón. La alerta será mostrada en esta app, tu también puedes escoger recibirlas vía correo electrónico',
+  alert_explanation_2:
+    'Para empezar hay algunas reglas de alertas que puedes utilizar (y adaptar según tus propias necesidades). Además, puedes crear tus propias reglas de alertas',
+  alertrules_url_text:
+    'Ir a Ajustes de alerta para crear tu primera regla de alerta',
+  Apiary_management: 'Manejo de apiario',
   Move: 'Mover',
   Current_apiary: 'Apiario actual',
   sensor_key: 'Identificador de dispositivo único',
@@ -738,21 +758,22 @@ Apiary_management: 'Manejo de apiario',
   Unknown: 'Desconocido',
   unknown: 'desconocido',
   research_warning:
-"Atención: Si Usted no recibió ninguna invitación a participar, no era necesario entregar consentimiento para compartir sus datos, ya que en ese caso sus datos no serán utilizados",
-  research_explanation_p1: 'La plataforma BEEP es utilizada en los proyectos de investigación listados abajo. Luego que Usted sea invitado a participar en un proyecto de investigación, Usted necesita entregar consentimiento a los investigadores para acceder a los datos de sus abejas',
+    'Atención: Si Usted no recibió ninguna invitación a participar, no era necesario entregar consentimiento para compartir sus datos, ya que en ese caso sus datos no serán utilizados',
+  research_explanation_p1:
+    'La plataforma BEEP es utilizada en los proyectos de investigación listados abajo. Luego que Usted sea invitado a participar en un proyecto de investigación, Usted necesita entregar consentimiento a los investigadores para acceder a los datos de sus abejas',
   research_explanation_p2:
-'Usted puede retirar su consentimiento en cualquier momento. A partir de ese momento, ningún dato nuevo será compartido. Los datos que Usted comparta en el periodo para el cual Usted entregó consentimiento permanecerán disponibles para la investigación. En caso de preguntas, por favor dirigirse a la persona contacto de su proyecto de investigación',
+    'Usted puede retirar su consentimiento en cualquier momento. A partir de ese momento, ningún dato nuevo será compartido. Los datos que Usted comparta en el periodo para el cual Usted entregó consentimiento permanecerán disponibles para la investigación. En caso de preguntas, por favor dirigirse a la persona contacto de su proyecto de investigación',
   research_info:
-'Antes que Usted consienta, por favor revise la descripción de investigación provista en el vínculo de abajo, si es necesario puede solicitar detalles adicionales',
+    'Antes que Usted consienta, por favor revise la descripción de investigación provista en el vínculo de abajo, si es necesario puede solicitar detalles adicionales',
   save_and_delete: 'Guardar y eliminar',
   drag_layers_info_text:
-    'Drag layers from the left hand side to the desired position within the hive on the right hand side. Delete a layer from the hive by clicking on it and then clicking on the red bin icon. Within the hive layers can be dragged as well to edit the position, layer color can be edited by clicking on the layer.',
-  New_hive: 'New hive',
-  New_alertrule: 'New alert rule',
-  Add_alertrule: 'Add alert rule',
-  Add_apiary: 'Add apiary',
-  Add_sensor_definition: 'Add sensor definition',
-  Add_member: 'Add member',
+    'Arrastre capas desde el lado izquierdo a la posición deseada dentro de la colmena en el lado derecho. Elimine una capa de la colmena haciendo clic en ella y luego en el icono de la papelera roja. Dentro de la colmena, las capas también se pueden arrastrar para editar la posición, el color de la capa se puede editar haciendo clic en la capa.',
+  New_hive: 'Nueva colmena',
+  New_alertrule: 'Nueva regla de alerta',
+  Add_alertrule: 'Agregar regla de alerta',
+  Add_apiary: 'Agregar apiario',
+  Add_sensor_definition: 'Agregar definición de sensor',
+  Add_member: 'Agregar miembro',
 }
 
 export default translations
