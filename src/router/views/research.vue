@@ -418,9 +418,7 @@ export default {
     ...mapGetters('devices', ['devices', 'devicesPresent']),
     ...mapGetters('groups', ['groups']),
     baseApiUrl() {
-      var baseUrl = process.env.VUE_APP_API_URL
-      baseUrl = baseUrl.replace('/api/', '')
-      return baseUrl
+      return process.env.VUE_APP_BASE_API_URL
     },
     mdAndDown() {
       return this.$vuetify.breakpoint.mdAndDown

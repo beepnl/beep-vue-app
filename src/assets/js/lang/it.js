@@ -441,7 +441,10 @@ const translations = {
     'Clicca su questo link per inviare una nuova e-mail di verifica.',
   email_verification_sent:
     "Un messaggio con in link di verifica è stato inviato al tuo indirizzo e-mail. Clicca sul link nella email per attivare il tuo account ed eseguire l'accesso.",
-  not_filled: 'è richiesto, ma non compilato',
+    email_verification_resent:
+    "Un nuovo messaggio con in link di verifica è stato inviato al tuo indirizzo e-mail. Clicca sul link nella email per attivare il tuo account ed eseguire l'accesso.",
+
+    not_filled: 'è richiesto, ma non compilato',
   cannot_deselect:
     'Impossibile rimuovere questo elemento, perchè contiene informazioni obbligatorie',
   Undelete: 'Non cancellare',

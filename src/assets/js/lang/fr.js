@@ -519,7 +519,11 @@ const translations = {
     'Cliquez sur ce lien pour envoyer un nouvel e-mail de vérification',
   email_verification_sent:
     "Un message avec un lien de vérification a été envoyé à votre adresse e-mail. Cliquez sur le lien dans l'e-mail pour activer votre compte et vous connecter",
-  not_filled: 'non rempli',
+    email_verification_resent:
+    "Un nouveau message avec un lien de vérification a été envoyé à votre adresse e-mail. Cliquez sur le lien dans l'e-mail pour activer votre compte et vous connecter",
+
+
+    not_filled: 'non rempli',
   cannot_deselect:
     'Impossible de supprimer cet élément, car il contient un élément requis',
   Undelete: 'Ne pas supprimer',

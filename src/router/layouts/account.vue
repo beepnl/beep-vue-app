@@ -15,7 +15,7 @@
             src="@assets/img/beep-icon-logo.svg"
         /></a>
       </div>
-      <v-card-title class="account-title">{{ title }}</v-card-title>
+      <v-card-title class="account-title mb-n2">{{ title }}</v-card-title>
       <slot></slot>
     </v-card>
   </div>
@@ -41,11 +41,11 @@ export default {
 <style lang="scss" scoped>
 .account-card {
   width: 90%;
-  margin: 50px auto;
+  margin: 40px auto;
   overflow: hidden;
   @include for-tablet-portrait-up {
     width: 380px;
-    margin: 10% auto;
+    margin: 6% auto;
   }
 }
 .account-logo {
@@ -53,8 +53,9 @@ export default {
 }
 .account-title {
   width: 100%;
+  font-size: 18px;
   @include for-phone-only {
-    font-size: 18px;
+    font-size: 16px;
   }
 }
 

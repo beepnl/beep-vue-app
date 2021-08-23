@@ -612,6 +612,17 @@ export default {
         }
       },
     },
+    lastSelectedChecklist: {
+      get() {
+        return this.$store.getters['inspections/lastSelectedChecklist']
+      },
+      set(value) {
+        this.$store.commit('inspections/setData', {
+          prop: 'lastSelectedChecklist',
+          value,
+        })
+      },
+    },
     sortedHiveSets() {
       var treeselectArray = []
       if (this.apiaries && this.apiaries.length > 0) {
@@ -729,9 +740,12 @@ export default {
       this.readChecklistsIfNotPresent().then(() => {
         if (this.preSelectedChecklistId !== null) {
           this.getChecklistById(this.preSelectedChecklistId)
+        } else if (this.lastSelectedChecklist !== null) {
+          this.getChecklistById(this.lastSelectedChecklist.id)
         } else {
           this.selectedChecklistId = this.checklist.id
           this.selectedChecklist = this.checklist
+          this.lastSelectedChecklist = this.checklist
           this.activeInspection.checklist_id = this.selectedChecklistId
           var itemsObject = {}
           this.selectedChecklist.category_ids.map((categoryId) => {
@@ -775,6 +789,7 @@ export default {
         const response = await Api.readRequest('/inspections/lists?id=', id)
         this.selectedChecklist = response.data.checklist
         this.selectedChecklistId = response.data.checklist.id
+        this.lastSelectedChecklist = response.data.checklist
 
         if (
           this.selectedChecklist !== null &&

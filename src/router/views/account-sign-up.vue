@@ -3,10 +3,14 @@
     <v-form ref="form" v-model="valid" @submit.prevent="createAccount">
       <v-card-text v-if="registered">
         <v-alert text prominent dense color="green">
-          {{ $t('email_verification_sent') }}
+          {{
+            resentVerification
+              ? $t('email_verification_resent')
+              : $t('email_verification_sent')
+          }}
         </v-alert>
         <p>{{ $t('succesfully_registered') }}</p>
-        <a @click="sendEmailVerification">{{ $t('email_new_verification') }}</a>
+        <a @click="resendEmailVerification">{{ $t('email_new_verification') }}</a>
       </v-card-text>
       <v-card-text v-if="!registered">
         <v-alert
@@ -108,6 +112,7 @@ export default {
         password: false,
       },
       disabled: false,
+      resentVerification: false,
     }
   },
   computed: {
@@ -200,12 +205,13 @@ export default {
         }
       }
     },
-    async sendEmailVerification() {
+    async resendEmailVerification() {
       try {
         const response = await Api.postRequest(
           '/email/resend',
           this.credentials
         )
+        this.resentVerification = true
         return response
       } catch (error) {
         if (error.response) {
@@ -225,6 +231,7 @@ export default {
       this.errors = []
       this.fieldErrors.email = false
       this.fieldErrors.password = false
+      this.resentVerification = false
     },
   },
 }

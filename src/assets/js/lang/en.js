@@ -82,8 +82,8 @@ const translations = {
   username_is_required: 'Please enter the username',
   username_already_exists: 'Username already exists',
   password_is_required: 'Please enter a password',
-  email_is_required: 'Please enter an e-mail address',
-  email_already_exists: 'The e-mailaddress is already in use',
+  email_is_required: 'Please enter an email address',
+  email_already_exists: 'The email address is already in use',
   policy_accepted_is_required:
     'You need to accept the terms of service to register',
 
@@ -92,7 +92,7 @@ const translations = {
   no_password_match: 'The passwords do not match',
   invalid_token: 'Invalid code',
 
-  no_valid_email: 'Invalid e-mail address',
+  no_valid_email: 'Invalid email address',
 
   empty_fields: 'Please fill in all the fields',
   match_passwords: 'Passwords do not match',
@@ -164,9 +164,9 @@ const translations = {
   password_recovery_reset_title: 'Enter a new password',
   password_recovery_reset_password: 'Change password',
   password_recovery_reminder_success:
-    'An e-mail has been sent. Click the link in your e-mail to reset your password for this account.',
+    'An email has been sent. Click the link in your email to reset your password for this account.',
   password_recovery_reminder_summary:
-    'Enter your e-mail address. You will receive an e-mail with a link to change your password in the next step.',
+    'Enter your email address. You will receive an email with a link to change your password in the next step.',
 
   password_recovery_reset_summary:
     'Use the code that you received to set a new password for your account',
@@ -422,7 +422,7 @@ const translations = {
   /* user */
   Data_export: 'Data export',
   Export_your_data:
-    'Export all data that is in your BEEP account and send an e-mail cointaining the data as an Excel file. The Excel file has different tabs containing your personal, hive, location, and inspection data.',
+    'Export all data that is in your BEEP account and send an email cointaining the data as an Excel file. The Excel file has different tabs containing your personal, hive, location, and inspection data.',
 
   Terms_of_use: 'Terms of service',
   accept_policy:
@@ -460,12 +460,14 @@ const translations = {
 
   could_not_create_user:
     'User cannot be created at this moment. Sorry for the inconvenience, please try again later.',
-  email_verified: 'Your e-mail address has been verified.',
-  email_not_verified: 'Your e-mail address has not yet been verified.',
+  email_verified: 'Your email address has been verified.',
+  email_not_verified: 'Your email address has not yet been verified.',
   email_new_verification:
-    'Click on this link to send a new verification e-mail.',
+    'Click on this link to send a new verification email.',
   email_verification_sent:
-    'A message with a verification link has been sent to your e-mail address. Click the link in the e-mail to activate your account and log in.',
+    'A message with a verification link has been sent to your email address. Click the link in the email to activate your account and log in.',
+  email_verification_resent:
+    'A new message with a verification link has been sent to your email address. Click the link in the email to activate your account and log in.',
 
   not_filled: 'is required, but not filled out',
   cannot_deselect:
@@ -504,8 +506,7 @@ const translations = {
   group_activated: 'Group invitation accepted',
   group_explanation_1:
     '1. Create a new cooperation group with a clear title, and an optional description',
-  group_explanation_2:
-    '2. Invite other BEEP users on their BEEP e-mail address',
+  group_explanation_2: '2. Invite other BEEP users on their BEEP email address',
   group_explanation_3:
     '3. Share specific hives to be viewed by others, of to cooperate on',
   Filter_and_sort_on: 'Filter and sort on:',
@@ -661,7 +662,7 @@ const translations = {
   different_end_start: 'End and start date must differ',
   later_end_start: 'Start date must be earlier than end date',
   new_email_verification_sent:
-    'A message with a verification link has been sent to your new e-mail address. Click the link in the e-mail to confirm your new e-mail address and log in.',
+    'A message with a verification link has been sent to your new email address. Click the link in the email to confirm your new email address and log in.',
   sensordef_info:
     "A sensor definition is intended to convert a sensor value from an incoming 'raw' sensor value into a value according to a physical quantity and unit (e.g. w_v = 1098273 => weight_kg = 62,400 kg) or to calibrate a sensor (e.g. t_0 = 15.3 ° C => t_0 = 15.8 ° C). This can be done by setting an 'offset' and a 'multiplier'. The input and output value remains the same if offset '0' and multiplier '1' is set. The BEEP base app (from the App Store) will provide you with the right sensor definitions at the initial setup of your BEEP base.",
   or: 'or',

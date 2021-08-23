@@ -10,7 +10,7 @@
     </v-toolbar>
     <div class="px-3 pb-1 image-wrapper">
       <v-img
-        :src="baseApiUrl + getImageUrl(thumburl)"
+        :src="fullUrl ? imageUrl : baseApiUrl + imageUrl"
         class="grey lighten-2 image-overlay-content"
       >
       </v-img>
@@ -50,18 +50,18 @@ export default {
   },
   computed: {
     baseApiUrl() {
-      var baseUrl = process.env.VUE_APP_API_URL
-      baseUrl = baseUrl.replace('/api/', '')
-      return baseUrl
+      return process.env.VUE_APP_BASE_API_URL
+    },
+    imageUrl() {
+      return this.thumburl.replace('thumbs', 'images')
+    },
+    fullUrl() {
+      return this.thumburl.indexOf('https://') > -1
     },
   },
   methods: {
     closeOverlay() {
       this.$emit('close-overlay')
-    },
-    getImageUrl(thumburl) {
-      var imageUrl = thumburl.replace('thumbs', 'images')
-      return imageUrl
     },
   },
 }
