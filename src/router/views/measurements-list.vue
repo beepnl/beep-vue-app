@@ -261,7 +261,7 @@
                 </v-col>
               </v-row>
               <v-row v-if="measurementData !== null" class="charts mt-6 mb-3">
-                <v-col v-if="weatherSensorsPresent" cols="12">
+                <v-col v-if="weatherSensorsPresent" cols="12" lg="6" xl="4">
                   <div
                     v-if="selectedDevice"
                     class="overline mt-0 mt-sm-3 mb-3 text-center"
@@ -285,7 +285,13 @@
                   >
                   </chartist>
                 </v-col>
-                <v-col v-if="sensorsPresent" cols="12" class="mb-6">
+                <v-col
+                  v-if="sensorsPresent"
+                  cols="12"
+                  lg="6"
+                  xl="4"
+                  class="mb-6"
+                >
                   <div
                     class="overline mt-0 mt-sm-3 mb-3 text-center"
                     v-text="
@@ -310,9 +316,15 @@
                   >
                   </chartist>
                 </v-col>
-                <v-col v-if="soundSensorsPresent" cols="12">
+                <v-col
+                  v-if="soundSensorsPresent"
+                  cols="12"
+                  lg="6"
+                  xl="4"
+                  class="mb-6"
+                >
                   <div
-                    class="overline mt-n4 mt-0 mb-3 text-center"
+                    class="overline mt-0 mt-sm-3 mb-3 text-center"
                     v-text="$t('Sound_measurements')"
                   ></div>
                   <MeasurementsChartHeatmap
@@ -341,7 +353,7 @@
                     >
                       <chartist
                         :class="
-                          `${interval} ${'modulo-' + moduloNr} mt-n2 mt-sm-0`
+                          `${interval} ${'modulo-' + moduloNr} mt-n2 mt-sm-3`
                         "
                         :ratio="`ct-chart ct-chart-debug ct-chart-${index}`"
                         type="Line"
