@@ -135,14 +135,22 @@
               :class="`beep-label ${thresholdValueIsNaN ? 'red--text' : ''}`"
               v-text="$t('Threshold_value')"
             ></div>
-            <VueNumericInput
+            <!-- <VueNumericInput
               v-model="activeAlertRule.threshold_value"
               class="vue-numeric-input--small"
               :step="0.1"
               :precision="1"
               @input="setAlertRuleEdited(true)"
             >
-            </VueNumericInput>
+            </VueNumericInput> -->
+            <el-input-number
+              v-model="activeAlertRule.threshold_value"
+              :step="0.1"
+              :precision="1"
+              :step-strictly="true"
+              size="small"
+              @change="setAlertRuleEdited(true)"
+            ></el-input-number>
             <div v-if="thresholdValueIsNaN" class="v-text-field__details mt-1"
               ><div class="v-messages theme--light error--text" role="alert"
                 ><div class="v-messages__wrapper"
@@ -286,7 +294,6 @@ import {
   readTaxonomy,
 } from '@mixins/methodsMixin'
 import Treeselect from '@riophae/vue-treeselect'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import VueNumericInput from 'vue-numeric-input'
 
 export default {

@@ -211,7 +211,6 @@ import {
   readGeneralInspections,
 } from '@mixins/methodsMixin'
 import Treeselect from '@riophae/vue-treeselect'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import VueNumericInput from 'vue-numeric-input'
 
 export default {

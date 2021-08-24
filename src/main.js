@@ -17,6 +17,7 @@ import languages from '@assets/js/lang/languages'
 import moment from 'moment-timezone'
 import vueCountryRegionSelect from 'vue-country-region-select'
 import './plugins/element.js'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import VueEllipseProgress from 'vue-ellipse-progress'
 
 import App from './app.vue'

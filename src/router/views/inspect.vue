@@ -429,7 +429,6 @@ import { momentCreatedAt, momentISO8601 } from '@mixins/momentMixin'
 import { SlideYUpTransition } from 'vue2-transitions'
 import smileRating from '@components/input-fields/smile-rating.vue'
 import Treeselect from '@riophae/vue-treeselect'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 
 export default {

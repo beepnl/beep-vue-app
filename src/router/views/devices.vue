@@ -650,7 +650,6 @@ import {
 } from '@mixins/methodsMixin'
 import { SlideYUpTransition } from 'vue2-transitions'
 import Treeselect from '@riophae/vue-treeselect'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import VueNumericInput from 'vue-numeric-input'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 
