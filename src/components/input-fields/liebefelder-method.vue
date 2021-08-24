@@ -90,45 +90,48 @@
                       class="beep-label"
                       v-text="$tc('Hive_honey_layer', 2)"
                     ></div>
-                    <VueNumericInput
+                    <el-input-number
                       v-if="activeHive && activeHive.layers"
                       v-model="honeyLayersForCalculation"
-                      class="vue-numeric-input--extratop"
                       :min="0"
                       :max="maxHoneyLayers"
                       :precision="0"
                       :disabled="bulkInspection"
+                      size="medium"
                       @change="calculateLiebefeldColonySize"
-                    ></VueNumericInput>
+                      @input.native="calculateLiebefeldColonySize"
+                    ></el-input-number>
                   </v-col>
                   <v-col cols="12">
                     <div
                       class="beep-label"
                       v-text="$tc('Hive_brood_layer', 2)"
                     ></div>
-                    <VueNumericInput
+                    <el-input-number
                       v-if="activeHive && activeHive.layers"
                       v-model="broodLayersForCalculation"
-                      class="vue-numeric-input--extratop"
                       :min="0"
                       :max="maxBroodLayers"
                       :precision="0"
                       :disabled="bulkInspection"
+                      size="medium"
                       @change="calculateLiebefeldColonySize"
-                    ></VueNumericInput>
+                      @input.native="calculateLiebefeldColonySize"
+                    ></el-input-number>
                   </v-col>
                   <v-col cols="12">
                     <div class="beep-label" v-text="$t('Hive_frames')"></div>
-                    <VueNumericInput
+                    <el-input-number
                       v-if="activeHive && activeHive.layers"
                       v-model="framesForCalculation"
-                      class="vue-numeric-input--extratop"
                       :min="0"
                       :max="maxFrames"
                       :precision="0"
                       :disabled="bulkInspection"
+                      size="medium"
                       @change="calculateLiebefeldColonySize"
-                    ></VueNumericInput>
+                      @input.native="calculateLiebefeldColonySize"
+                    ></el-input-number>
                   </v-col>
                 </v-row>
               </v-col>
@@ -252,14 +255,12 @@
 <script>
 import ChecklistInput from '@components/checklist-input.vue'
 import HiveIcon from '@components/hive-icon.vue'
-import VueNumericInput from 'vue-numeric-input'
 import { mapGetters } from 'vuex'
 
 export default {
   components: {
     ChecklistInput,
     HiveIcon,
-    VueNumericInput,
   },
   props: {
     category: {

@@ -84,13 +84,14 @@
 
     <el-input-number
       v-if="item.input === 'number' || item.input === 'number_0_decimals'"
-      :value="object[item.id] === null ? 0 : parseFloat(object[item.id])"
+      :value="object[item.id] === null ? 0 : object[item.id]"
       :step="1"
       :precision="0"
       :step-strictly="true"
       :disabled="disabled"
+      size="medium"
       @change="updateInput($event, item.id, item.name, item.input)"
-      @input.native="inputNative($event, item.id, item.name)"
+      @input.native="convertComma($event, item.name)"
     ></el-input-number>
 
     <div
@@ -102,13 +103,14 @@
       class="d-flex flex-column"
     >
       <el-input-number
-        :value="object[item.id] === null ? 0 : parseFloat(object[item.id])"
+        :value="object[item.id] === null ? 0 : object[item.id]"
         :class="showCommaWarning ? 'comma-warning' : ''"
         :step="item.input === 'number_2_decimals' ? 0.01 : 0.1"
         :precision="item.input === 'number_2_decimals' ? 2 : 1"
         :disabled="disabled"
+        size="medium"
         @change="updateInput($event, item.id, item.name, item.input)"
-        @input.native="inputNative($event, item.id, item.name)"
+        @input.native="convertComma($event, item.name)"
       ></el-input-number>
       <span v-if="showCommaWarning" class="red--text font-small"
         >Use point as decimal separator (comma not allowed)</span
@@ -117,36 +119,39 @@
 
     <el-input-number
       v-if="item.input === 'number_3_decimals'"
-      :value="object[item.id] === null ? 0 : parseFloat(object[item.id])"
+      :value="object[item.id] === null ? 0 : object[item.id]"
       :step="0.001"
       :precision="3"
       :disabled="disabled"
+      size="medium"
       @change="updateInput($event, item.id, item.name, item.input)"
-      @input.native="inputNative($event, item.id, item.name)"
+      @input.native="convertComma($event, item.name)"
     ></el-input-number>
 
     <el-input-number
       v-if="item.input === 'number_negative'"
-      :value="object[item.id] === null ? 0 : parseFloat(object[item.id])"
+      :value="object[item.id] === null ? 0 : object[item.id]"
       :max="0"
       :step="1"
       :precision="0"
       :step-strictly="true"
       :disabled="disabled"
+      size="medium"
       @change="updateInput($event, item.id, item.name, item.input)"
-      @input.native="inputNative($event, item.id, item.name)"
+      @input.native="convertComma($event, item.name)"
     ></el-input-number>
 
     <el-input-number
       v-if="item.input === 'number_positive'"
-      :value="object[item.id] === null ? 0 : parseFloat(object[item.id])"
+      :value="object[item.id] === null ? 0 : object[item.id]"
       :min="0"
       :step="1"
       :precision="0"
       :step-strictly="true"
       :disabled="item.name === 'colony_size' || disabled"
+      size="medium"
       @change="updateInput($event, item.id, item.name, item.input)"
-      @input.native="inputNative($event, item.id, item.name)"
+      @input.native="convertComma($event, item.name)"
     ></el-input-number>
 
     <starRating
@@ -309,6 +314,19 @@ export default {
     },
   },
   methods: {
+    convertComma(event, name = null) {
+      console.log('convert comma ', event.target.value)
+      var value = event.target.value
+      // if user inputs a value with a comma followed by at least one decimal, convert it to a dot
+      if (
+        value.toString().indexOf(',') > -1 &&
+        value.length > value.toString().indexOf(',') + 1
+      ) {
+        value = parseFloat(value.toString().replace(',', '.'))
+        this.object[this.item.id] = value
+      }
+      this.checkNameForEmit(name)
+    },
     setInspectionEdited(bool) {
       this.$store.commit('inspections/setInspectionEdited', bool)
     },
@@ -334,7 +352,7 @@ export default {
       this.object[listId] = selectedArrayToString
       this.setInspectionEdited(true)
     },
-    checkName(name) {
+    checkNameForEmit(name) {
       if (name === 'pixels_with_bees' || name === 'pixels_total_top') {
         this.$emit('calculate-tpa-colony-size')
       }
@@ -344,27 +362,25 @@ export default {
     },
     updateInput(value, property, name = null, input = null) {
       // console.log('update input (change event)', value, property)
-      // console.log('save value', value.toFixed(1))
 
       if (value === 0) {
         value = null
       }
 
-      this.checkName(name)
+      this.checkNameForEmit(name)
 
-      var decimals = 0
-      if (input === 'number_1_decimals' || input === 'square_25cm2') {
-        decimals = 1
-      } else if (input === 'number_2_decimals') {
-        decimals = 2
-      } else if (input === 'number_3_decimals') {
-        decimals = 3
-      }
+      // var decimals = 0
+      // if (input === 'number_1_decimals' || input === 'square_25cm2') {
+      //   decimals = 1
+      // } else if (input === 'number_2_decimals') {
+      //   decimals = 2
+      // } else if (input === 'number_3_decimals') {
+      //   decimals = 3
+      // }
 
-      if (value !== null) {
-        value = value.toFixed(decimals)
-        // console.log('save value', value)
-      }
+      // if (value !== null) {
+      //   value = value.toFixed(decimals)
+      // }
 
       this.object[property] = value
       this.setInspectionEdited(true)

@@ -10,6 +10,26 @@
   border: 1px solid $color-red !important;
 }
 
+.el-input-number--medium {
+  width: 160px !important;
+}
+
+.el-input-number__decrease,
+.el-input-number__increase {
+  background: none !important;
+}
+
+.el-input.is-active .el-input__inner,
+.el-input__inner:focus,
+.el-input-number__decrease:hover:not(.is-disabled)
+  ~ .el-input
+  .el-input__inner:not(.is-disabled),
+.el-input-number__increase:hover:not(.is-disabled)
+  ~ .el-input
+  .el-input__inner:not(.is-disabled) {
+  border-color: $color-primary !important;
+}
+
 /* Vuetify */
 .v-application .red--text {
   color: $color-red !important;

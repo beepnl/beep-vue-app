@@ -49,7 +49,7 @@
                   class="beep-label"
                   v-text="$tc('Hive_brood_layer', 2)"
                 ></div>
-                <VueNumericInput
+                <el-input-number
                   v-if="activeHive && activeHive.layers"
                   v-model="broodLayersForCalculation"
                   class="vue-numeric-input--extratop"
@@ -57,12 +57,14 @@
                   :max="maxBroodLayers"
                   :precision="0"
                   :disabled="bulkInspection"
+                  size="medium"
                   @change="calculateTpaColonySize"
-                ></VueNumericInput>
+                  @input.native="calculateTpaColonySize"
+                ></el-input-number>
               </v-col>
               <v-col cols="12">
                 <div class="beep-label" v-text="$t('Hive_frames')"></div>
-                <VueNumericInput
+                <el-input-number
                   v-if="activeHive && activeHive.layers"
                   v-model="framesForCalculation"
                   class="vue-numeric-input--extratop"
@@ -70,8 +72,10 @@
                   :max="maxFrames"
                   :precision="0"
                   :disabled="bulkInspection"
+                  size="medium"
                   @change="calculateTpaColonySize"
-                ></VueNumericInput>
+                  @input.native="calculateTpaColonySize"
+                ></el-input-number>
               </v-col>
             </v-row>
           </v-col>
@@ -176,7 +180,6 @@
 import ChecklistInput from '@components/checklist-input.vue'
 import ChecklistFieldset from '@components/checklist-fieldset.vue'
 import HiveIcon from '@components/hive-icon.vue'
-import VueNumericInput from 'vue-numeric-input'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -184,7 +187,6 @@ export default {
     ChecklistInput,
     ChecklistFieldset,
     HiveIcon,
-    VueNumericInput,
   },
   props: {
     category: {
