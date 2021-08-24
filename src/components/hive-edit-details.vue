@@ -200,7 +200,6 @@ import { mapGetters } from 'vuex'
 import VueNumericInput from 'vue-numeric-input'
 import { readTaxonomy } from '@mixins/methodsMixin'
 import Treeselect from '@riophae/vue-treeselect'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 export default {
   components: {
@@ -310,6 +309,26 @@ export default {
       this.colorPreview = false
       this.overlay = false
     },
+    focus(event, property) {
+      console.log(event, property)
+      const val = event.target.value
+      console.log(val)
+      console.log(this.hive[property])
+
+      var pointVal = val.replace(',', '.')
+      if (pointVal.indexOf('.0.') > -1) {
+        pointVal = pointVal.replace('.0.', '.')
+      }
+
+      if (val === 0) {
+        pointVal = null
+      }
+
+      this.hive[property] = pointVal
+
+      this.setHiveEdited(true)
+      this.setApiaryEdited(true)
+    },
     openColorPicker() {
       this.overlay = true
     },
@@ -332,6 +351,7 @@ export default {
       this.$store.commit('hives/setHiveEdited', bool)
     },
     updateHive(event, property) {
+      console.log(event)
       var value = null
       if (event === null) {
         value = null
