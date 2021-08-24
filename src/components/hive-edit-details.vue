@@ -30,22 +30,22 @@
 
               <v-col cols="12" md="5">
                 <div class="beep-label" v-text="`${$t('Hive_frames')}`"></div>
-                <VueNumericInput
+                <el-input-number
                   v-if="hive && hive.layers"
                   v-model="hive.layers[0].framecount"
                   :min="1"
                   :max="20"
                   :step="1"
                   :precision="0"
-                  @input="
+                  size="medium"
+                  @change="
                     updateHiveLayers(
                       parseInt($event),
                       // eslint-disable-next-line vue/comma-dangle
                       'framecount'
                     )
                   "
-                >
-                </VueNumericInput>
+                ></el-input-number>
               </v-col>
             </v-row>
 
@@ -130,7 +130,7 @@
                           class="beep-label"
                           v-text="`${$t(bbDimension)}`"
                         ></div>
-                        <VueNumericInput
+                        <el-input-number
                           :value="
                             hive[bbDimension]
                               ? parseFloat(hive[bbDimension])
@@ -140,15 +140,16 @@
                           :max="100"
                           :step="0.1"
                           :precision="1"
-                          @input="
+                          size="medium"
+                          @change="
                             updateHive(
                               $event.toString(),
                               // eslint-disable-next-line vue/comma-dangle
                               bbDimension
                             )
                           "
-                        >
-                        </VueNumericInput>
+                          @input.native="convertComma($event, bbDimension)"
+                        ></el-input-number>
                       </div>
                     </v-col>
 
@@ -162,7 +163,7 @@
                           class="beep-label"
                           v-text="`${$t(frDimension)}`"
                         ></div>
-                        <VueNumericInput
+                        <el-input-number
                           :value="
                             hive[frDimension]
                               ? parseFloat(hive[frDimension])
@@ -172,15 +173,16 @@
                           :max="100"
                           :step="0.1"
                           :precision="1"
-                          @input="
+                          size="medium"
+                          @change="
                             updateHive(
                               $event.toString(),
                               // eslint-disable-next-line vue/comma-dangle
                               frDimension
                             )
                           "
-                        >
-                        </VueNumericInput>
+                          @input.native="convertComma($event, frDimension)"
+                        ></el-input-number>
                       </div>
                     </v-col>
                   </v-row>
@@ -197,14 +199,12 @@
 <script>
 import HiveFactory from '@components/hive-factory.vue'
 import { mapGetters } from 'vuex'
-import VueNumericInput from 'vue-numeric-input'
 import { readTaxonomy } from '@mixins/methodsMixin'
 import Treeselect from '@riophae/vue-treeselect'
 
 export default {
   components: {
     HiveFactory,
-    VueNumericInput,
     Treeselect,
   },
   mixins: [readTaxonomy],
@@ -309,22 +309,17 @@ export default {
       this.colorPreview = false
       this.overlay = false
     },
-    focus(event, property) {
-      console.log(event, property)
-      const val = event.target.value
-      console.log(val)
-      console.log(this.hive[property])
-
-      var pointVal = val.replace(',', '.')
-      if (pointVal.indexOf('.0.') > -1) {
-        pointVal = pointVal.replace('.0.', '.')
+    convertComma(event, property) {
+      // console.log('convert comma ', event.target.value)
+      var value = event.target.value
+      // if user inputs a value with a comma followed by at least one decimal, convert it to a dot
+      if (
+        value.toString().indexOf(',') > -1 &&
+        value.length > value.toString().indexOf(',') + 1
+      ) {
+        value = parseFloat(value.toString().replace(',', '.'))
+        this.hive[property] = value
       }
-
-      if (val === 0) {
-        pointVal = null
-      }
-
-      this.hive[property] = pointVal
 
       this.setHiveEdited(true)
       this.setApiaryEdited(true)
@@ -351,7 +346,7 @@ export default {
       this.$store.commit('hives/setHiveEdited', bool)
     },
     updateHive(event, property) {
-      console.log(event)
+      // console.log(event)
       var value = null
       if (event === null) {
         value = null

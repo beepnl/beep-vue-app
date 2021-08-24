@@ -164,12 +164,12 @@
           >
             <div>
               <div class="beep-label" v-text="$t('Hive_order')"></div>
-              <VueNumericInput
+              <el-input-number
                 v-model="activeHive.order"
                 :precision="0"
-                @input="setHiveEdited(true)"
-              >
-              </VueNumericInput>
+                size="medium"
+                @change="setHiveEdited(true)"
+              ></el-input-number>
             </div>
           </v-col>
         </v-row>
@@ -211,7 +211,6 @@ import {
   readGeneralInspections,
 } from '@mixins/methodsMixin'
 import Treeselect from '@riophae/vue-treeselect'
-import VueNumericInput from 'vue-numeric-input'
 
 export default {
   components: {
@@ -220,7 +219,6 @@ export default {
     Layout,
     QueenEditDetails,
     Treeselect,
-    VueNumericInput,
   },
   mixins: [
     readApiariesAndGroups,
