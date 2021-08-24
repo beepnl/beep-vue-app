@@ -184,19 +184,7 @@
             ></ChecklistInput>
 
             <!-- div below is same as checklist-fieldset component but needed to keep the nested checklist-input within this template to catch the @calculate-liebefeld-colony-size emit event -->
-            <div
-              v-if="
-                (item.input === 'label' &&
-                  item.name.indexOf('frame') > -1 &&
-                  parseInt(item.name.split('_')[1]) <=
-                    broodLayersForCalculation * framesForCalculation) ||
-                  (item.input === 'label' &&
-                    item.name.indexOf('super') > -1 &&
-                    parseInt(item.name.split('_')[1]) <=
-                      honeyLayersForCalculation)
-              "
-              class="checklist-fieldset"
-            >
+            <div v-if="superAndFrameFilter(item)" class="checklist-fieldset">
               <div class="overline mb-2"
                 >{{ item.trans[locale] || item.name }}
                 <a
@@ -344,7 +332,7 @@ export default {
 
       setTimeout(() => {
         this.category.children.map((child) => {
-          if (child.children.length > 0) {
+          if (this.superAndFrameFilter(child) && child.children.length > 0) {
             child.children.map((child2) => {
               if (
                 typeof child2 !== 'undefined' &&
@@ -384,6 +372,23 @@ export default {
     countLayers(type) {
       return this.activeHive.layers.filter((layer) => layer.type === type)
         .length
+    },
+    superAndFrameFilter(item) {
+      if (
+        item.input === 'label' &&
+        item.name.indexOf('frame') > -1 &&
+        parseInt(item.name.split('_')[1]) <=
+          this.broodLayersForCalculation * this.framesForCalculation
+      ) {
+        return true
+      } else if (
+        item.input === 'label' &&
+        item.name.indexOf('super') > -1 &&
+        parseInt(item.name.split('_')[1]) <= this.honeyLayersForCalculation
+      ) {
+        return true
+      }
+      return false
     },
   },
 }
