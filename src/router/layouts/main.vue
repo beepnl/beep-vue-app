@@ -47,7 +47,7 @@
             :key="i"
             :to="{ name: tab.route }"
             :exact="tab.exact"
-            @click="reloadAlerts(tab.route)"
+            @click="reloadData(tab.route)"
           >
             <span v-if="tab.title">{{ tab.title }}</span>
             <v-badge
@@ -81,7 +81,12 @@ import LocaleChanger from '@components/locale-changer.vue'
 import { mapGetters } from 'vuex'
 import NavDrawer from '@components/nav-drawer.vue'
 import PlusMenu from '@components/plus-menu.vue'
-import { checkAlerts, readDevicesIfNotPresent } from '@mixins/methodsMixin'
+import {
+  checkAlerts,
+  readApiariesAndGroups,
+  readDevicesIfNotPresent,
+  readGeneralInspections,
+} from '@mixins/methodsMixin'
 
 export default {
   components: {
@@ -89,7 +94,12 @@ export default {
     NavDrawer,
     PlusMenu,
   },
-  mixins: [checkAlerts, readDevicesIfNotPresent],
+  mixins: [
+    checkAlerts,
+    readApiariesAndGroups,
+    readDevicesIfNotPresent,
+    readGeneralInspections,
+  ],
   props: {
     menuItems: {
       type: Array,
@@ -160,9 +170,14 @@ export default {
     this.readDevicesIfNotPresent()
   },
   methods: {
-    reloadAlerts(route) {
-      if (route === 'alerts' || route === 'home') {
+    reloadData(route) {
+      if (route === 'alerts') {
         this.checkAlertRulesAndAlerts()
+      } else if (route === 'diary') {
+        this.readGeneralInspections()
+      } else if (route === 'home') {
+        this.checkAlertRulesAndAlerts()
+        this.readApiariesAndGroups()
       }
     },
     clearHiveFilters() {
