@@ -148,7 +148,11 @@
                               bbDimension
                             )
                           "
-                          @input.native="convertComma($event, bbDimension)"
+                          @input.native="
+                            convertComma($event, hive, bbDimension),
+                              setHiveEdited(true),
+                              setApiaryEdited(true)
+                          "
                         ></el-input-number>
                       </div>
                     </v-col>
@@ -181,7 +185,11 @@
                               frDimension
                             )
                           "
-                          @input.native="convertComma($event, frDimension)"
+                          @input.native="
+                            convertComma($event, hive, frDimension),
+                              setHiveEdited(true),
+                              setApiaryEdited(true)
+                          "
                         ></el-input-number>
                       </div>
                     </v-col>
@@ -199,7 +207,7 @@
 <script>
 import HiveFactory from '@components/hive-factory.vue'
 import { mapGetters } from 'vuex'
-import { readTaxonomy } from '@mixins/methodsMixin'
+import { convertComma, readTaxonomy } from '@mixins/methodsMixin'
 import Treeselect from '@riophae/vue-treeselect'
 
 export default {
@@ -207,7 +215,7 @@ export default {
     HiveFactory,
     Treeselect,
   },
-  mixins: [readTaxonomy],
+  mixins: [convertComma, readTaxonomy],
   props: {
     hive: {
       type: Object,
@@ -308,21 +316,6 @@ export default {
     cancelColorPicker() {
       this.colorPreview = false
       this.overlay = false
-    },
-    convertComma(event, property) {
-      // console.log('convert comma ', event.target.value)
-      var value = event.target.value
-      // if user inputs a value with a comma followed by at least one decimal, convert it to a dot
-      if (
-        value.toString().indexOf(',') > -1 &&
-        value.length > value.toString().indexOf(',') + 1
-      ) {
-        value = parseFloat(value.toString().replace(',', '.'))
-        this.hive[property] = value
-      }
-
-      this.setHiveEdited(true)
-      this.setApiaryEdited(true)
     },
     openColorPicker() {
       this.overlay = true

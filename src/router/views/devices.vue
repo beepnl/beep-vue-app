@@ -466,20 +466,29 @@
                                 ></yesNoRating>
                               </td>
                               <td>
-                                <VueNumericInput
+                                <el-input-number
                                   v-model="sensorDef.offset"
-                                  class="vue-numeric-input--xsmall"
                                   :disabled="sensorDef.delete"
-                                >
-                                </VueNumericInput>
+                                  size="small"
+                                  @input.native="
+                                    convertComma($event, sensorDef, 'offset')
+                                  "
+                                ></el-input-number>
                               </td>
                               <td>
-                                <VueNumericInput
+                                <el-input-number
                                   v-model="sensorDef.multiplier"
-                                  class="vue-numeric-input--xsmall"
                                   :disabled="sensorDef.delete"
-                                >
-                                </VueNumericInput>
+                                  size="small"
+                                  @input.native="
+                                    convertComma(
+                                      $event,
+                                      sensorDef,
+                                      // eslint-disable-next-line vue/comma-dangle
+                                      'multiplier'
+                                    )
+                                  "
+                                ></el-input-number>
                               </td>
                               <td class="td--small">
                                 <v-select
@@ -642,6 +651,7 @@ import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
 import { momentify } from '@mixins/momentMixin'
 import {
+  convertComma,
   readApiariesAndGroups,
   readDevices,
   readGeneralInspections,
@@ -649,7 +659,6 @@ import {
 } from '@mixins/methodsMixin'
 import { SlideYUpTransition } from 'vue2-transitions'
 import Treeselect from '@riophae/vue-treeselect'
-import VueNumericInput from 'vue-numeric-input'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 
 export default {
@@ -659,9 +668,9 @@ export default {
     SlideYUpTransition,
     Treeselect,
     yesNoRating,
-    VueNumericInput,
   },
   mixins: [
+    convertComma,
     momentify,
     readApiariesAndGroups,
     readDevices,

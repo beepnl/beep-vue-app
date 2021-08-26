@@ -73,6 +73,23 @@ export const checkAlerts = {
   },
 }
 
+export const convertComma = {
+  // method for el-input-number with 1 or more decimals
+  methods: {
+    convertComma(event, object, property) {
+      var value = event.target.value
+      // if user inputs a value with a comma followed by at least one decimal, convert it to a dot
+      if (
+        value.toString().indexOf(',') > -1 &&
+        value.length > value.toString().indexOf(',') + 1
+      ) {
+        value = parseFloat(value.toString().replace(',', '.'))
+        object[property] = value
+      }
+    },
+  },
+}
+
 export const orderedLayers = {
   methods: {
     orderedLayers: function(hive) {

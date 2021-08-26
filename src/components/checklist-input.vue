@@ -246,7 +246,6 @@
 </template>
 
 <script>
-// import VueNumericInput from 'vue-numeric-input'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
 import imageUploader from '@components/input-fields/image-uploader.vue'
@@ -264,7 +263,6 @@ export default {
     ChecklistFieldset: () => import('@components/checklist-fieldset.vue'), // needed to fix Vue recursive component error
     dateTimePicker,
     imageUploader,
-    // VueNumericInput,
     labelWithDescription,
     sampleCode,
     selectHiveOrApiary,

@@ -135,14 +135,6 @@
               :class="`beep-label ${thresholdValueIsNaN ? 'red--text' : ''}`"
               v-text="$t('Threshold_value')"
             ></div>
-            <!-- <VueNumericInput
-              v-model="activeAlertRule.threshold_value"
-              class="vue-numeric-input--small"
-              :step="0.1"
-              :precision="1"
-              @input="setAlertRuleEdited(true)"
-            >
-            </VueNumericInput> -->
             <el-input-number
               v-model="activeAlertRule.threshold_value"
               :step="0.1"
@@ -150,6 +142,10 @@
               :step-strictly="true"
               size="small"
               @change="setAlertRuleEdited(true)"
+              @input.native="
+                convertComma($event, activeAlertRule, 'threshold_value'),
+                  setAlertRuleEdited(true)
+              "
             ></el-input-number>
             <div v-if="thresholdValueIsNaN" class="v-text-field__details mt-1"
               ><div class="v-messages theme--light error--text" role="alert"
@@ -168,13 +164,18 @@
         <v-row v-if="activeAlertRule">
           <v-col cols="6" sm="3">
             <div class="beep-label" v-text="$t('Calculation_minutes')"></div>
-            <VueNumericInput
+            <el-input-number
               v-model="activeAlertRule.calculation_minutes"
               class="vue-numeric-input--small"
               :precision="0"
-              @input="setAlertRuleEdited(true)"
-            >
-            </VueNumericInput>
+              :step-strictly="true"
+              size="small"
+              @change="setAlertRuleEdited(true)"
+              @input.native="
+                convertComma($event, activeAlertRule, 'calculation_minutes'),
+                  setAlertRuleEdited(true)
+              "
+            ></el-input-number>
             <div
               v-if="calculationMinutesIsNaN"
               class="v-text-field__details mt-1"
@@ -289,21 +290,20 @@ import Confirm from '@components/confirm.vue'
 import { mapGetters } from 'vuex'
 import Layout from '@layouts/back.vue'
 import {
+  convertComma,
   readAlertRules,
   readDevicesIfNotPresent,
   readTaxonomy,
 } from '@mixins/methodsMixin'
 import Treeselect from '@riophae/vue-treeselect'
-import VueNumericInput from 'vue-numeric-input'
 
 export default {
   components: {
     Confirm,
     Layout,
     Treeselect,
-    VueNumericInput,
   },
-  mixins: [readAlertRules, readDevicesIfNotPresent, readTaxonomy],
+  mixins: [convertComma, readAlertRules, readDevicesIfNotPresent, readTaxonomy],
   data: function() {
     return {
       snackbar: {
