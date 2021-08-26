@@ -62,8 +62,6 @@ const translations = {
   camera: 'Kamera',
   weather: 'Wetter',
   sensors: 'Sensoren',
-  sensors_na:
-    'BEEP Sensoren zum Anzeigen der Beuten-Daten werden bald verfügbar sein...',
   no_valid_authentication: 'Keine gültigen Authentifizierungsdaten erhalten',
   succesfully_saved: 'Erfolgreich gesichert',
   switch_language: 'Sprache wechseln',
@@ -441,10 +439,10 @@ const translations = {
     'Klicken Sie auf diesen Link, um eine neue Bestätigungs-E-Mail zu senden.',
   email_verification_sent:
     'Eine Nachricht mit einem Bestätigungslink wurde an Deine E-Mail-Adresse gesendet. Klicke auf den Link in der E-Mail, um Dein Konto zu aktivieren und anzumelden. ',
-    email_verification_resent:
+  email_verification_resent:
     'Eine neue Nachricht mit einem Bestätigungslink wurde an Deine E-Mail-Adresse gesendet. Klicke auf den Link in der E-Mail, um Dein Konto zu aktivieren und anzumelden. ',
 
-    not_filled: 'ist erforderlich, aber nicht ausgefüllt',
+  not_filled: 'ist erforderlich, aber nicht ausgefüllt',
   cannot_deselect:
     'Dieses Objekt kann nicht entfernt werden, da es ein erforderliches Objekt enthält',
   Undelete: 'Nicht löschen',

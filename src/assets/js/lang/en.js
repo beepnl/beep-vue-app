@@ -62,8 +62,6 @@ const translations = {
   camera: 'Camera',
   weather: 'Weather',
   sensors: 'Devices',
-  sensors_na:
-    'BEEP sensors to remotely monitor your hive are soon to be available...',
 
   no_valid_authentication: 'No valid authentication data received',
   succesfully_saved: 'Succesfully saved',

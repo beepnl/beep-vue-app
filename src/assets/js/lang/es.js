@@ -62,8 +62,6 @@ const translations = {
   camera: 'cámara',
   weather: 'tiempo atmosférico',
   sensors: 'sensores',
-  sensors_na:
-    'Los sensores BEEP para monitorear remotamente su colmena pronto estarán disponibles...',
   no_valid_authentication: ' No se han recibido datos de autenticación válidos',
   succesfully_saved: 'guardado con éxito',
   switch_language: 'Definir idioma',

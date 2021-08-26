@@ -63,8 +63,6 @@ const translations = {
   camera: 'Camera',
   weather: 'Weer',
   sensors: 'Sensoren',
-  sensors_na:
-    'Hier komt straks een overzicht van jouw BEEP sensoren, waarmee je kasten op afstand kunt monitoren. Je kunt ook sensoren van andere partijen koppelen, mits ze een API hebben, waarmee je de data kunt uitlezen.',
 
   no_valid_authentication: 'Geen geldige login ontvangen',
   succesfully_saved: 'Succesvol opgeslagen',
@@ -472,9 +470,8 @@ const translations = {
     'Klik op deze link om een nieuwe validatie e-mail te versturen.',
   email_verification_sent:
     'Er is een bericht met een validatie-link naar je e-mail adres gestuurd. Klik op de link in de e-mail om je account te activeren en in te loggen.',
-    email_verification_resent:
+  email_verification_resent:
     'Er is een nieuw bericht met een validatie-link naar je e-mail adres gestuurd. Klik op de link in de e-mail om je account te activeren en in te loggen.',
-
 
   not_filled: 'is verplicht, maar niet ingevuld',
   cannot_deselect:

@@ -384,8 +384,15 @@
       </div>
 
       <v-row v-if="devices.length === 0">
-        <v-col cols="12" class="text-center my-10">
-          {{ $t('sensors_na') }}
+        <v-col cols="12">
+          <p v-text="$t('sensors') + ' ' + $t('not_available_yet')"></p>
+          <div class="text-center">
+            <img
+              src="@assets/img/beep-base-small.jpg"
+              style=" width: 100%;max-width: 500px;"
+            />
+          </div>
+          <div>{{ $t('beep_base_explanation') }}</div>
         </v-col>
       </v-row>
     </v-container>
