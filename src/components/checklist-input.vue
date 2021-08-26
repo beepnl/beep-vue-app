@@ -326,6 +326,7 @@ export default {
         this.object[this.item.id] = value
       }
       this.checkNameForEmit(name)
+      this.setInspectionEdited(true)
     },
     setInspectionEdited(bool) {
       this.$store.commit('inspections/setInspectionEdited', bool)

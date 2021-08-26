@@ -345,7 +345,7 @@
                         <div>
                           <div
                             v-if="ownedDevice.sensor_definitions.length > 0"
-                            class="d-flex flex-row align-center mb-3"
+                            class="d-flex flex-row align-center mb-3 mr-3"
                           >
                             <div
                               class="overline"
@@ -384,7 +384,6 @@
                           tile
                           outlined
                           color="accent"
-                          class="save-button-mobile-wide"
                           @click="addSensorDef(ownedDevice)"
                         >
                           <v-icon left>mdi-plus</v-icon>
@@ -569,7 +568,7 @@
                                           deleteSensorDef(
                                             ownedDevice,
                                             // eslint-disable-next-line vue/comma-dangle
-                                            indexSensor
+                                            sensorDef
                                           )
                                         "
                                         >mdi-refresh</v-icon
@@ -584,7 +583,7 @@
                                     dark
                                     color="red"
                                     @click="
-                                      deleteSensorDef(ownedDevice, indexSensor)
+                                      deleteSensorDef(ownedDevice, sensorDef)
                                     "
                                     >mdi-delete</v-icon
                                   >
@@ -908,10 +907,9 @@ export default {
       }
       device.delete = !device.delete
     },
-    deleteSensorDef(device, index) {
-      const sensorDef = device.sensor_definitions[index]
+    deleteSensorDef(device, sensorDef) {
       if (typeof sensorDef.id === 'undefined') {
-        return this.removeSensorDef(device, index)
+        return this.removeSensorDef(device, sensorDef.id)
       }
       sensorDef.delete = !sensorDef.delete
     },
@@ -935,9 +933,14 @@ export default {
       })
       this.devices.splice(deviceIndex, 1)
     },
-    removeSensorDef(device, index) {
-      return typeof device.sensor_definitions[index] !== 'undefined'
-        ? device.sensor_definitions.splice(index, 1)
+    removeSensorDef(device, sensorDefId) {
+      var sensorDefIndex = device.sensor_definitions
+        .map(function(sensorDef) {
+          return sensorDef.id
+        })
+        .indexOf(sensorDefId)
+      return typeof device.sensor_definitions[sensorDefIndex] !== 'undefined'
+        ? device.sensor_definitions.splice(sensorDefIndex, 1)
         : null
     },
     sortedSensorDefinitions(sensordefs) {
