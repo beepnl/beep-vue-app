@@ -13,9 +13,16 @@ instance.interceptors.response.use(
   (error) => {
     console.log(error)
     const status = error.response ? error.response.status : 'No response'
-    if (status === UNAUTHORIZED || status === 'No response') {
-      store.commit('auth/SET_CURRENT_USER', null)
-      router.push('/sign-in')
+    const originalRequest = error.config
+
+    if (status === UNAUTHORIZED) {
+      // store.dispatch('auth/signOut')
+      // router.push('/sign-in')
+      router.push('/401')
+    } else if (status === 'No response' && !originalRequest._retry) {
+      // router.push('/loading')
+      originalRequest._retry = true
+      return axios(originalRequest)
     }
     return Promise.reject(error)
   }

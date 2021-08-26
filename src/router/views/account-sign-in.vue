@@ -148,7 +148,6 @@ export default {
             this.$router.push(
               this.$route.query.redirectFrom || { name: 'home' }
             )
-            this.clearCredentials()
           })
           // Redirect to the originally requested page, or to the home page
           .catch((error) => {
@@ -192,9 +191,6 @@ export default {
       this.fieldErrors.email = false
       this.fieldErrors.password = false
       this.resentVerification = false
-    },
-    clearCredentials() {
-      this.credentials = {}
     },
   },
 }
