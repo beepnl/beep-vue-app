@@ -535,14 +535,18 @@
       </v-simple-table>
       <v-container
         v-if="
-          inspections.inspections !== undefined && !filteredInspections.length
+          (inspections.inspections !== undefined &&
+            !filteredInspections.length) ||
+            show500Response
         "
       >
         <v-row>
           <v-col sm="auto" :cols="12">
             {{
-              (activeHive.editable || activeHive.owner) &&
-              inspections.inspections.length === 0
+              show500Response
+                ? $t('something_wrong')
+                : (activeHive.editable || activeHive.owner) &&
+                  inspections.inspections.length === 0
                 ? $tc('Inspection', 2) + ' ' + $t('not_available_yet')
                 : $t('no_results')
             }}
@@ -607,6 +611,7 @@ export default {
       activeImage: null,
       calendars: ['Google', 'Microsoft', 'Office365'],
       ready: false,
+      show500Response: false,
     }
   },
   computed: {
@@ -854,6 +859,9 @@ export default {
       } catch (error) {
         if (error.response) {
           console.log('Error: ', error.response)
+          if (error.response.status === 500) {
+            this.show500Response = true
+          }
         } else {
           console.log('Error: ', error)
         }
