@@ -149,7 +149,7 @@
                             )
                           "
                           @input.native="
-                            convertComma($event, hive, bbDimension),
+                            convertComma($event, hive, bbDimension, 1),
                               setHiveEdited(true),
                               setApiaryEdited(true)
                           "
@@ -186,7 +186,7 @@
                             )
                           "
                           @input.native="
-                            convertComma($event, hive, frDimension),
+                            convertComma($event, hive, frDimension, 1),
                               setHiveEdited(true),
                               setApiaryEdited(true)
                           "

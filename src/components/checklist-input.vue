@@ -91,7 +91,7 @@
       :disabled="disabled"
       size="medium"
       @change="updateInput($event, item.id, item.name, item.input)"
-      @input.native="convertComma($event, item.name)"
+      @input.native="convertComma($event, item.name, 0)"
     ></el-input-number>
 
     <div
@@ -110,7 +110,14 @@
         :disabled="disabled"
         size="medium"
         @change="updateInput($event, item.id, item.name, item.input)"
-        @input.native="convertComma($event, item.name)"
+        @input.native="
+          convertComma(
+            $event,
+            item.name,
+            // eslint-disable-next-line vue/comma-dangle
+            item.input === 'number_2_decimals' ? 2 : 1
+          )
+        "
       ></el-input-number>
       <span v-if="showCommaWarning" class="red--text font-small"
         >Use point as decimal separator (comma not allowed)</span
@@ -125,7 +132,7 @@
       :disabled="disabled"
       size="medium"
       @change="updateInput($event, item.id, item.name, item.input)"
-      @input.native="convertComma($event, item.name)"
+      @input.native="convertComma($event, item.name, 3)"
     ></el-input-number>
 
     <el-input-number
@@ -138,7 +145,7 @@
       :disabled="disabled"
       size="medium"
       @change="updateInput($event, item.id, item.name, item.input)"
-      @input.native="convertComma($event, item.name)"
+      @input.native="convertComma($event, item.name, 0)"
     ></el-input-number>
 
     <el-input-number
@@ -151,7 +158,7 @@
       :disabled="item.name === 'colony_size' || disabled"
       size="medium"
       @change="updateInput($event, item.id, item.name, item.input)"
-      @input.native="convertComma($event, item.name)"
+      @input.native="convertComma($event, item.name, 0)"
     ></el-input-number>
 
     <starRating
@@ -312,17 +319,26 @@ export default {
     },
   },
   methods: {
-    convertComma(event, name = null) {
-      console.log('convert comma ', event.target.value)
+    convertComma(event, name = null, precision = 1) {
+      // console.log('convert comma ', event.target.value)
       var value = event.target.value
       // if user inputs a value with a comma followed by at least one decimal, convert it to a dot
-      if (
-        value.toString().indexOf(',') > -1 &&
-        value.length > value.toString().indexOf(',') + 1
-      ) {
-        value = parseFloat(value.toString().replace(',', '.'))
-        this.object[this.item.id] = value
+      if (value.toString().indexOf(',') > -1) {
+        if (
+          precision <= 1 &&
+          value.length > value.toString().indexOf(',') + precision
+        ) {
+          value = parseFloat(value.toString().replace(',', '.'))
+          this.object[this.item.id] = value
+        } else if (precision > 1) {
+          // wait for user to stop typing if precision > 1
+          setTimeout(() => {
+            value = parseFloat(value.toString().replace(',', '.'))
+            this.object[this.item.id] = value
+          }, 1200)
+        }
       }
+
       this.checkNameForEmit(name)
       this.setInspectionEdited(true)
     },

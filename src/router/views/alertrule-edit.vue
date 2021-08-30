@@ -143,7 +143,7 @@
               size="small"
               @change="setAlertRuleEdited(true)"
               @input.native="
-                convertComma($event, activeAlertRule, 'threshold_value'),
+                convertComma($event, activeAlertRule, 'threshold_value', 1),
                   setAlertRuleEdited(true)
               "
             ></el-input-number>
@@ -166,13 +166,12 @@
             <div class="beep-label" v-text="$t('Calculation_minutes')"></div>
             <el-input-number
               v-model="activeAlertRule.calculation_minutes"
-              class="vue-numeric-input--small"
               :precision="0"
               :step-strictly="true"
               size="small"
               @change="setAlertRuleEdited(true)"
               @input.native="
-                convertComma($event, activeAlertRule, 'calculation_minutes'),
+                convertComma($event, activeAlertRule, 'calculation_minutes', 0),
                   setAlertRuleEdited(true)
               "
             ></el-input-number>

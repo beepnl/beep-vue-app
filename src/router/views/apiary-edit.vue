@@ -189,7 +189,7 @@
                 </v-col>
                 <v-col cols="6" sm="4">
                   <div class="beep-label" v-text="`${$t('Lattitude')}`"></div>
-                  <VueNumericInput
+                  <el-input-number
                     v-if="activeApiary"
                     :value="
                       activeApiary.coordinate_lat === null
@@ -198,15 +198,27 @@
                     "
                     :min="-90"
                     :max="90"
-                    :step="0.000001"
-                    :precision="6"
-                    @input="editApiary($event, 'lat')"
-                  >
-                  </VueNumericInput>
+                    :step="0.001"
+                    :precision="3"
+                    :step-strictly="true"
+                    size="medium"
+                    @change="editApiary($event, 'lat')"
+                    @input.native="
+                      convertComma(
+                        $event,
+                        activeApiary,
+                        // eslint-disable-next-line vue/comma-dangle
+                        'lat',
+                        // eslint-disable-next-line vue/comma-dangle
+                        3
+                      ),
+                        setApiaryEdited(true)
+                    "
+                  ></el-input-number>
                 </v-col>
                 <v-col cols="6" sm="4">
                   <div class="beep-label" v-text="`${$t('Longitude')}`"></div>
-                  <VueNumericInput
+                  <el-input-number
                     v-if="activeApiary"
                     :value="
                       activeApiary.coordinate_lon === null
@@ -215,11 +227,23 @@
                     "
                     :min="-180"
                     :max="180"
-                    :step="0.000001"
-                    :precision="6"
-                    @input="editApiary($event, 'lon')"
-                  >
-                  </VueNumericInput>
+                    :step="0.001"
+                    :precision="3"
+                    :step-strictly="true"
+                    size="medium"
+                    @change="editApiary($event, 'lon')"
+                    @input.native="
+                      convertComma(
+                        $event,
+                        activeApiary,
+                        // eslint-disable-next-line vue/comma-dangle
+                        'lon',
+                        // eslint-disable-next-line vue/comma-dangle
+                        3
+                      ),
+                        setApiaryEdited(true)
+                    "
+                  ></el-input-number>
                 </v-col>
               </v-row>
               <v-row>
@@ -290,18 +314,16 @@ import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
-import { readApiariesAndGroups } from '@mixins/methodsMixin'
+import { convertComma, readApiariesAndGroups } from '@mixins/methodsMixin'
 import VueGoogleAutocomplete from 'vue-google-autocomplete'
-import VueNumericInput from 'vue-numeric-input'
 
 export default {
   components: {
     Confirm,
     Layout,
     VueGoogleAutocomplete,
-    VueNumericInput,
   },
-  mixins: [readApiariesAndGroups],
+  mixins: [convertComma, readApiariesAndGroups],
   data: function() {
     return {
       snackbar: {
@@ -501,16 +523,19 @@ export default {
         value = null
       }
       this.activeApiary[property] = value
+
       if (property === 'hex_color') {
         this.overlay = false
       }
       // always include both lat & lon even when editing only one of them
-      if (property === 'lat') {
+      else if (property === 'lat') {
+        this.activeApiary.coordinate_lat = value
         this.activeApiary.lon = this.activeApiary.coordinate_lon
-      }
-      if (property === 'lon') {
+      } else if (property === 'lon') {
+        this.activeApiary.coordinate_lon = value
         this.activeApiary.lat = this.activeApiary.coordinate_lat
       }
+
       this.setApiaryEdited(true)
     },
     validateText(value, property, maxLength) {

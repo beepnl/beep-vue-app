@@ -254,32 +254,42 @@
                           class="beep-label"
                           v-text="`${$t('Lattitude')}`"
                         ></div>
-                        <VueNumericInput
+                        <el-input-number
                           v-if="newHive"
                           v-model="newHive.lat"
                           :min="-90"
                           :max="90"
-                          :step="0.000001"
-                          :precision="6"
-                          @input="setApiaryEdited(true)"
-                        >
-                        </VueNumericInput>
+                          :step="0.001"
+                          :precision="3"
+                          :step-strictly="true"
+                          size="medium"
+                          @change="setApiaryEdited(true)"
+                          @input.native="
+                            convertComma($event, newHive, 'lat', 3),
+                              setApiaryEdited(true)
+                          "
+                        ></el-input-number>
                       </v-col>
                       <v-col cols="6" sm="4">
                         <div
                           class="beep-label"
                           v-text="`${$t('Longitude')}`"
                         ></div>
-                        <VueNumericInput
+                        <el-input-number
                           v-if="newHive"
                           v-model="newHive.lon"
                           :min="-180"
                           :max="180"
-                          :step="0.000001"
-                          :precision="6"
-                          @input="setApiaryEdited(true)"
-                        >
-                        </VueNumericInput>
+                          :step="0.001"
+                          :precision="3"
+                          :step-strictly="true"
+                          size="medium"
+                          @change="setApiaryEdited(true)"
+                          @input.native="
+                            convertComma($event, newHive, 'lon', 3),
+                              setApiaryEdited(true)
+                          "
+                        ></el-input-number>
                       </v-col>
                     </v-row>
                     <v-row>
@@ -404,15 +414,16 @@
                           class="beep-label"
                           v-text="`${$t('Hive_amount')}`"
                         ></div>
-                        <VueNumericInput
+                        <el-input-number
                           v-if="newHive"
                           v-model="newHive.hive_amount"
                           :min="0"
                           :max="50"
                           :precision="0"
-                          @input="setApiaryEdited(true)"
-                        >
-                        </VueNumericInput>
+                          :step-strictly="true"
+                          size="medium"
+                          @change="setApiaryEdited(true)"
+                        ></el-input-number>
                       </v-col>
 
                       <v-col cols="6" md="4">
@@ -438,13 +449,13 @@
                             class="beep-label"
                             v-text="`${$t('Hive_number_offset')}`"
                           ></div>
-                          <VueNumericInput
+                          <el-input-number
                             v-if="newHive"
                             v-model="newHive.offset"
                             :precision="0"
-                            @input="setApiaryEdited(true)"
-                          >
-                          </VueNumericInput>
+                            size="medium"
+                            @change="setApiaryEdited(true)"
+                          ></el-input-number>
                         </div>
                       </v-col>
 
@@ -488,9 +499,11 @@ import Confirm from '@components/confirm.vue'
 import HiveEditDetails from '@components/hive-edit-details.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
-import { readApiariesAndGroupsIfNotPresent } from '@mixins/methodsMixin'
+import {
+  convertComma,
+  readApiariesAndGroupsIfNotPresent,
+} from '@mixins/methodsMixin'
 import VueGoogleAutocomplete from 'vue-google-autocomplete'
-import VueNumericInput from 'vue-numeric-input'
 
 export default {
   components: {
@@ -499,9 +512,8 @@ export default {
     HiveEditDetails,
     Layout,
     VueGoogleAutocomplete,
-    VueNumericInput,
   },
-  mixins: [readApiariesAndGroupsIfNotPresent],
+  mixins: [convertComma, readApiariesAndGroupsIfNotPresent],
   data: function() {
     return {
       snackbar: {

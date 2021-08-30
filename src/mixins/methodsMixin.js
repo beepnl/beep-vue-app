@@ -76,15 +76,38 @@ export const checkAlerts = {
 export const convertComma = {
   // method for el-input-number with 1 or more decimals
   methods: {
-    convertComma(event, object, property) {
+    convertComma(event, object, property, precision = 1) {
+      // console.log('convert comma', event.target.value)
       var value = event.target.value
       // if user inputs a value with a comma followed by at least one decimal, convert it to a dot
-      if (
-        value.toString().indexOf(',') > -1 &&
-        value.length > value.toString().indexOf(',') + 1
-      ) {
-        value = parseFloat(value.toString().replace(',', '.'))
-        object[property] = value
+      if (value.toString().indexOf(',') > -1) {
+        if (
+          precision <= 1 &&
+          value.length > value.toString().indexOf(',') + precision
+        ) {
+          this.convert(value, object, property)
+        } else if (precision > 1) {
+          // wait for user to stop typing if precision > 1
+          setTimeout(() => {
+            this.convert(value, object, property)
+          }, 1200)
+        }
+      }
+    },
+    convert(value, object, property) {
+      console.log(value, ' convert')
+      value = parseFloat(value.toString().replace(',', '.'))
+      object[property] = value
+      this.checkProperty(value, object, property)
+    },
+    checkProperty(value, object, property) {
+      // always include both lat & lon even when editing only one of them, only for existing apiary (that has id)
+      if (object.id !== undefined && property === 'lat') {
+        object.coordinate_lat = value
+        object.lon = object.coordinate_lon
+      } else if (object.id !== undefined && property === 'lon') {
+        object.coordinate_lon = value
+        object.lat = object.coordinate_lat
       }
     },
   },

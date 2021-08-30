@@ -52,7 +52,6 @@
                 <el-input-number
                   v-if="activeHive && activeHive.layers"
                   v-model="broodLayersForCalculation"
-                  class="vue-numeric-input--extratop"
                   :min="0"
                   :max="maxBroodLayers"
                   :precision="0"
@@ -67,7 +66,6 @@
                 <el-input-number
                   v-if="activeHive && activeHive.layers"
                   v-model="framesForCalculation"
-                  class="vue-numeric-input--extratop"
                   :min="0"
                   :max="maxFrames"
                   :precision="0"
