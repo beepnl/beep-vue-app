@@ -9,6 +9,7 @@
       prepend-icon="mdi-camera"
       :error-messages="errorMessage"
       :disabled="inputDisabled"
+      :loading="showLoading ? 'primary' : false"
       @change="onUpload"
       @click:clear="errorMessage = null"
     ></v-file-input>
@@ -81,6 +82,7 @@ export default {
     activeImage: null,
     errorMessage: null,
     thumbUrl: '',
+    showLoading: false,
   }),
   computed: {
     baseApiUrl() {
@@ -90,8 +92,8 @@ export default {
       return this.thumbUrl.indexOf('https://') > -1
     },
     imageLink() {
-     return this.fullUrl ? this.thumbUrl : this.baseApiUrl + this.thumbUrl
-    }
+      return this.fullUrl ? this.thumbUrl : this.baseApiUrl + this.thumbUrl
+    },
   },
   created() {
     this.readImages()
@@ -124,6 +126,7 @@ export default {
       const file = this.$refs.image.internalValue
 
       if (typeof file !== 'undefined' && (file !== null) & !file.$error) {
+        this.showLoading = true
         const userId = this.$store.getters['auth/userId']
         const hiveId =
           this.$store.getters['hives/activeHive'] !== null
@@ -164,7 +167,9 @@ export default {
 
             this.readImages()
           }
+          this.showLoading = false
         } catch (error) {
+          this.showLoading = false
           if (error.response) {
             console.log(error.response)
             this.errorMessage = this.$i18n.t('something_wrong')
