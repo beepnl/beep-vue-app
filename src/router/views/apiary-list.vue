@@ -30,13 +30,21 @@
               <v-icon
                 v-if="groups.length > 0"
                 :class="
-                  `icon-apiary-shared mr-2 my-0 ${
-                    filterByGroup ? '' : 'color-grey-filter'
-                  }`
+                  `${
+                    filterByGroupStatus === 'off' ? 'color-grey-filter' : ''
+                  } ${
+                    filterByGroupStatus === 'owned'
+                      ? 'icon-apiary-owned'
+                      : 'icon-apiary-shared'
+                  } mr-2`
                 "
-                @click="filterByGroup = !filterByGroup"
+                @click="toggleFilterByGroup"
               >
-                mdi-account-multiple
+                {{
+                  filterByGroupStatus === 'owned'
+                    ? 'mdi-home-analytics'
+                    : 'mdi-account-multiple'
+                }}
               </v-icon>
               <v-icon
                 :class="
@@ -624,6 +632,7 @@ import {
   readApiariesAndGroups,
   readDevices,
   readGeneralInspections,
+  toggleFilterByGroup,
 } from '@mixins/methodsMixin'
 import { ScaleTransition } from 'vue2-transitions'
 
@@ -642,6 +651,7 @@ export default {
     readApiariesAndGroups,
     readDevices,
     readGeneralInspections,
+    toggleFilterByGroup,
   ],
   data: () => ({
     snackbar: {
@@ -695,7 +705,7 @@ export default {
         })
       },
     },
-    filterByGroup: {
+    filterByGroupStatus: {
       get() {
         return this.$store.getters['locations/hiveFilterByGroup']
       },
@@ -852,8 +862,12 @@ export default {
           }
         })
         .filter((hiveSet) => {
-          if (this.filterByGroup) {
+          if (this.filterByGroupStatus === 'group') {
             if (hiveSet.users !== undefined) {
+              return { ...hiveSet }
+            }
+          } else if (this.filterByGroupStatus === 'owned') {
+            if (hiveSet.users === undefined) {
               return { ...hiveSet }
             }
           } else {
@@ -1195,7 +1209,7 @@ export default {
     setDiaryGroupFilterAndGo(searchTerm) {
       this.$store.commit('inspections/setFilter', {
         filter: 'diaryFilterByGroup',
-        value: false, // in case it was set to true
+        value: 'off', // in case it was filtering by owned hives or group hives
       })
       this.$router.push({
         name: 'diary',

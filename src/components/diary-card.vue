@@ -57,7 +57,10 @@
                   <div class="diary-label">
                     {{ inspection.hive_name }}
                     <small
-                      v-if="diaryFilterByGroup && inspection.owned_and_group"
+                      v-if="
+                        diaryFilterByGroup === 'group' &&
+                          inspection.owned_and_group
+                      "
                       class="beep-label mb-0"
                       v-text="' (' + $t('my_hive') + ')'"
                     >
@@ -68,7 +71,8 @@
                     v-text="
                       (inspection.hive_group_name &&
                         !inspection.owned_and_group) ||
-                      (diaryFilterByGroup && inspection.owned_and_group)
+                      (diaryFilterByGroup === 'group' &&
+                        inspection.owned_and_group)
                         ? inspection.hive_group_name
                         : inspection.hive_location
                     "
@@ -78,7 +82,8 @@
                     v-if="
                       (inspection.hive_group_name &&
                         !inspection.owned_and_group) ||
-                        (diaryFilterByGroup && inspection.owned_and_group)
+                        (diaryFilterByGroup === 'group' &&
+                          inspection.owned_and_group)
                     "
                     class="beep-label"
                     v-text="'(' + inspection.hive_location + ')'"

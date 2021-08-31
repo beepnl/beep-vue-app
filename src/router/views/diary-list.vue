@@ -38,13 +38,21 @@
               <v-icon
                 v-if="groups.length > 0"
                 :class="
-                  `icon-apiary-shared mr-2 my-0 ${
-                    filterByGroup ? '' : 'color-grey-filter'
-                  }`
+                  `${
+                    filterByGroupStatus === 'off' ? 'color-grey-filter' : ''
+                  } ${
+                    filterByGroupStatus === 'owned'
+                      ? 'icon-apiary-owned'
+                      : 'icon-apiary-shared'
+                  } mr-2`
                 "
-                @click="filterByGroup = !filterByGroup"
+                @click="toggleFilterByGroup"
               >
-                mdi-account-multiple
+                {{
+                  filterByGroupStatus === 'owned'
+                    ? 'mdi-home-analytics'
+                    : 'mdi-account-multiple'
+                }}
               </v-icon>
               <v-icon
                 :class="
@@ -173,6 +181,7 @@ import {
   readApiariesAndGroups,
   readApiariesAndGroupsIfNotPresent,
   readGeneralInspections,
+  toggleFilterByGroup,
 } from '@mixins/methodsMixin'
 import { ScaleTransition } from 'vue2-transitions'
 
@@ -191,6 +200,7 @@ export default {
     readApiariesAndGroups,
     readApiariesAndGroupsIfNotPresent,
     readGeneralInspections,
+    toggleFilterByGroup,
   ],
   data: function() {
     return {
@@ -223,7 +233,7 @@ export default {
         })
       },
     },
-    filterByGroup: {
+    filterByGroupStatus: {
       get() {
         return this.$store.getters['inspections/diaryFilterByGroup']
       },
@@ -404,8 +414,21 @@ export default {
           }
         })
         .filter((inspection) => {
-          if (typeof inspection !== 'undefined' && this.filterByGroup) {
+          if (
+            typeof inspection !== 'undefined' &&
+            this.filterByGroupStatus === 'group'
+          ) {
             if (inspection.hive_group_name !== null) {
+              return inspection
+            }
+          } else if (
+            typeof inspection !== 'undefined' &&
+            this.filterByGroupStatus === 'owned'
+          ) {
+            if (
+              inspection.hive_group_name === null ||
+              inspection.owned_and_group
+            ) {
               return inspection
             }
           } else {

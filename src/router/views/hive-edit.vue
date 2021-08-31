@@ -398,7 +398,7 @@ export default {
             return this.readApiariesAndGroups().then(() => {
               this.$store.commit('locations/setData', {
                 prop: 'hiveFilterByGroup',
-                value: false,
+                value: 'off',
               })
               this.$store.commit('locations/setData', {
                 prop: 'hiveSearch',
@@ -436,7 +436,7 @@ export default {
             this.readDevices() // update devices to remove deleted hives coupled to devices
             this.$store.commit('locations/setData', {
               prop: 'hiveFilterByGroup',
-              value: false,
+              value: 'off',
             })
             this.$store.commit('locations/setData', {
               prop: 'hiveSearch',

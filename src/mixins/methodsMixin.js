@@ -358,3 +358,21 @@ export const readTaxonomy = {
     },
   },
 }
+
+export const toggleFilterByGroup = {
+  methods: {
+    toggleFilterByGroup() {
+      switch (this.filterByGroupStatus) {
+        case 'off':
+          this.filterByGroupStatus = 'group'
+          break
+        case 'group':
+          this.filterByGroupStatus = 'owned'
+          break
+        case 'owned':
+          this.filterByGroupStatus = 'off'
+          break
+      }
+    },
+  },
+}

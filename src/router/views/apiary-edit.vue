@@ -446,7 +446,7 @@ export default {
             return this.readApiariesAndGroups().then(() => {
               this.$store.commit('locations/setData', {
                 prop: 'hiveFilterByGroup',
-                value: false,
+                value: 'off',
               })
               this.$store.commit('locations/setData', {
                 prop: 'hiveSearch',

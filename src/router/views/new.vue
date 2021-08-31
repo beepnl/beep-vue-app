@@ -3,8 +3,8 @@
     <v-container>
       <div class="overline mb-1 primary--text"
         ><span class="lowercase">v</span>
-        <span v-if="dutch">3.0.37 (30-08-2021) - Huidige versie</span>
-        <span v-if="!dutch">3.0.37 (30-08-2021) - Current version</span>
+        <span v-if="dutch">3.0.38 (31-08-2021) - Huidige versie</span>
+        <span v-if="!dutch">3.0.38 (31-08-2021) - Current version</span>
       </div>
       <div v-if="!dutch" class="rounded-border primary-border mb-4">
         <p class="mb-3">
@@ -35,7 +35,18 @@
                 <v-icon class="icon-apiary-shared color-grey inline-icon"
                   >mdi-account-multiple</v-icon
                 >
-                group (if any),
+                group (if any, toggle between groups
+                <v-icon class="icon-apiary-shared color-primary inline-icon"
+                  >mdi-account-multiple</v-icon
+                >
+                , owned apiaries
+                <v-icon class="icon-apiary-owned color-primary inline-icon"
+                  >mdi-home-analytics</v-icon
+                >
+                and all hives
+                <v-icon class="icon-apiary-shared color-grey inline-icon"
+                  >mdi-account-multiple</v-icon
+                >),
                 <v-icon class="inline-icon">mdi-clipboard-alert-outline</v-icon>
                 attention needed,
                 <v-icon class="color-grey inline-icon"
@@ -87,8 +98,8 @@
                 <v-icon class="icon-apiary-shared color-grey inline-icon"
                   >mdi-account-multiple</v-icon
                 >
-                group filter at the top bar <em>only</em> groups will be shown
-                (filter button only visible if you are a member of any
+                group filter at the top bar once <em>only</em> groups will be
+                shown (filter button only visible if you are a member of any
                 collaboration group). Or start a new group via the 'Quick action
                 menu' (see below).</li
               >
@@ -164,7 +175,7 @@
                     (<v-icon class="icon-apiary-shared color-grey"
                       >mdi-account-multiple</v-icon
                     >
-                    icon. Then click on the
+                    icon) once. Then click on the
                     <v-icon small class="color-grey-light inline-icon"
                       >mdi-cog</v-icon
                     >
@@ -208,7 +219,18 @@
                 <v-icon class="icon-apiary-shared color-grey inline-icon"
                   >mdi-account-multiple</v-icon
                 >
-                group (if any),
+                group (if any, toggle between groups
+                <v-icon class="icon-apiary-shared color-primary inline-icon"
+                  >mdi-account-multiple</v-icon
+                >
+                , owned hives
+                <v-icon class="icon-apiary-owned color-primary inline-icon"
+                  >mdi-home-analytics</v-icon
+                >
+                and all hives
+                <v-icon class="icon-apiary-shared color-grey inline-icon"
+                  >mdi-account-multiple</v-icon
+                >),
                 <v-icon class="inline-icon">mdi-clipboard-alert-outline</v-icon>
                 attention needed,
                 <v-icon class="inline-icon">mdi-calendar-clock</v-icon> reminder
@@ -470,7 +492,18 @@
                 <v-icon class="icon-apiary-shared color-grey inline-icon"
                   >mdi-account-multiple</v-icon
                 >
-                groep (als aanwezig),
+                groep (als aanwezig, switch tussen groepen
+                <v-icon class="icon-apiary-shared color-primary inline-icon"
+                  >mdi-account-multiple</v-icon
+                >
+                , eigen bijenstanden
+                <v-icon class="icon-apiary-owned color-primary inline-icon"
+                  >mdi-home-analytics</v-icon
+                >
+                en alle bijenkasten
+                <v-icon class="icon-apiary-shared color-grey inline-icon"
+                  >mdi-account-multiple</v-icon
+                >),
                 <v-icon class="inline-icon">mdi-clipboard-alert-outline</v-icon>
                 aandacht nodig,
                 <v-icon class="inline-icon">mdi-calendar-clock</v-icon>
@@ -517,7 +550,7 @@
               <li
                 >Samenwerkingsgroepen: worden getoond in het
                 <router-link :to="{ name: 'home' }">Kasten</router-link>
-                overzicht. Klik op de
+                overzicht. Klik eenmaal op de
                 <v-icon class="icon-apiary-shared color-grey inline-icon"
                   >mdi-account-multiple</v-icon
                 >
@@ -604,7 +637,7 @@
                     het
                     <router-link :to="{ name: 'home' }">Kasten</router-link>
                     overzicht, of kunnen <em>exclusief</em> getoond worden door
-                    de groepsfilter aan te klikken (<v-icon
+                    eenmaal de groepsfilter aan te klikken (<v-icon
                       class="icon-apiary-shared color-grey"
                       >mdi-account-multiple</v-icon
                     >
@@ -652,7 +685,18 @@
                 <v-icon class="icon-apiary-shared color-grey inline-icon"
                   >mdi-account-multiple</v-icon
                 >
-                groep (als aanwezig),
+                groep (als aanwezig, switch tussen groepen
+                <v-icon class="icon-apiary-shared color-primary inline-icon"
+                  >mdi-account-multiple</v-icon
+                >
+                , eigen bijenkasten
+                <v-icon class="icon-apiary-owned color-primary inline-icon"
+                  >mdi-home-analytics</v-icon
+                >
+                en alle bijenkasten
+                <v-icon class="icon-apiary-shared color-grey inline-icon"
+                  >mdi-account-multiple</v-icon
+                >),
                 <v-icon class="inline-icon">mdi-clipboard-alert-outline</v-icon>
                 aandacht nodig,
                 <v-icon class="inline-icon">mdi-calendar-clock</v-icon>

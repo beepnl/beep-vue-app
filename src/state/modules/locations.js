@@ -12,7 +12,7 @@ export const state = {
   hiveFilterByAlert: false,
   hiveFilterByAttention: false,
   hiveFilterByBase: false,
-  hiveFilterByGroup: false,
+  hiveFilterByGroup: 'off',
   hiveFilterByImpression: [],
   hiveFilterByReminder: false,
 }
@@ -77,7 +77,7 @@ export const mutations = {
     state.hiveFilterByAlert = false
     state.hiveFilterByAttention = false
     state.hiveFilterByBase = false
-    state.hiveFilterByGroup = false
+    state.hiveFilterByGroup = 'off'
     state.hiveFilterByImpression = []
     state.hiveFilterByReminder = false
   },
@@ -89,7 +89,7 @@ export const mutations = {
     state.hiveFilterByAlert = false
     state.hiveFilterByAttention = false
     state.hiveFilterByBase = false
-    state.hiveFilterByGroup = false
+    state.hiveFilterByGroup = 'off'
     state.hiveFilterByImpression = []
     state.hiveFilterByReminder = false
   },

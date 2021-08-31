@@ -6,7 +6,7 @@ const resource = createResource({ path: 'inspections' })
 export const state = {
   ...resource.state,
   diaryFilterByAttention: false,
-  diaryFilterByGroup: false,
+  diaryFilterByGroup: 'off',
   diaryFilterByImpression: [],
   diaryFilterByReminder: false,
   generalInspections: [],
@@ -93,14 +93,15 @@ export const mutations = {
   setData: function(state, payload) {
     state[payload.prop] = payload.value
   },
-  clearFiltersExceptGroup: function(state) {
+  clearFilters: function(state) {
     state.diaryFilterByAttention = false
+    state.diaryFilterByGroup = 'off'
     state.diaryFilterByImpression = []
     state.diaryFilterByReminder = false
   },
   resetState: function(state) {
     state.diaryFilterByAttention = false
-    state.diaryFilterByGroup = false
+    state.diaryFilterByGroup = 'off'
     state.diaryFilterByImpression = []
     state.diaryFilterByReminder = false
     state.generalInspections = []

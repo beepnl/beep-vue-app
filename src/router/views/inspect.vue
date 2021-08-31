@@ -956,7 +956,7 @@ export default {
       this.activeInspection.reminder_date = null
     },
     clearDiaryFilters() {
-      this.$store.commit('inspections/clearFiltersExceptGroup')
+      this.$store.commit('inspections/clearFilters')
     },
     confirmEditChecklist(id) {
       if (this.inspectionEdited || this.selectedHives !== this.editableHives) {
