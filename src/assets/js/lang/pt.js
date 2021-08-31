@@ -799,6 +799,9 @@ const translations = {
   /* TO BE TRANSLATED */
   deleted_or_new_but_not_saved_sensor_defs_warning:
     'N.B.: sensor definitions will only be removed or added after clicking the green check icon at the end of the sensor definition row in the table.',
+  delete_all_alerts: 'Delete all alerts',
+  delete_all_alerts_warning:
+    'Are you sure you want to delete all alerts? This cannot be undone.',
 }
 
 export default translations

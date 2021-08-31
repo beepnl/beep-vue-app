@@ -920,14 +920,18 @@ export default {
       })
     },
     confirmSaveDevices() {
+      const warningMessage = this.$i18n.t(
+        'deleted_or_new_but_not_saved_sensor_defs_warning'
+      )
       if (this.deletedOrNewButNotSavedSensorDefs) {
         this.$refs.confirm
           .open(
             this.$i18n.t('save') + ' ' + this.$i18n.tc('device', 2),
-            this.$i18n.t('deleted_or_new_but_not_saved_sensor_defs_warning'),
+            null,
             {
               color: 'red',
-            }
+            },
+            warningMessage
           )
           .then((confirm) => {
             this.saveDevices()

@@ -30,6 +30,25 @@
             </v-col>
           </div>
           <v-card-actions class="pl-0 mr-1">
+            <!-- <v-btn
+              v-if="alerts.length > 1 && !mobile"
+              tile
+              outlined
+              class="mr-3"
+              color="red"
+              @click="confirmDeleteAlerts"
+            >
+              <v-progress-circular
+                v-if="showLoadingIcon"
+                class="ml-n1 mr-2"
+                size="18"
+                width="2"
+                color="disabled"
+                indeterminate
+              />
+              <v-icon v-if="!showLoadingIcon" left>mdi-delete</v-icon>
+              {{ !smallScreen ? $t('delete_all_alerts') : $t('Delete') }}</v-btn
+            > -->
             <v-btn
               :to="{ name: 'alertrules' }"
               tile
@@ -87,6 +106,26 @@
     </v-container>
 
     <v-container v-if="!showAlertPlaceholder && ready" class="alerts-content">
+      <!-- <v-btn
+        v-if="alerts.length > 1 && mobile"
+        tile
+        outlined
+        class="save-button-mobile-wide mb-3"
+        color="red"
+        @click="confirmDeleteAlerts"
+      >
+        <v-progress-circular
+          v-if="showLoadingIcon"
+          class="ml-n1 mr-2"
+          size="18"
+          width="2"
+          color="disabled"
+          indeterminate
+        />
+        <v-icon v-if="!showLoadingIcon" left>mdi-delete</v-icon>
+        {{ $t('delete_all_alerts') }}</v-btn
+      > -->
+
       <v-alert
         v-for="error in errors"
         :key="error.errorMessage"
@@ -127,12 +166,14 @@
         </v-col>
       </v-row>
     </v-container>
+    <Confirm ref="confirm"></Confirm>
   </Layout>
 </template>
 
 <script>
 import AlertCard from '@components/alert-card.vue'
 import Api from '@api/Api'
+import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/main.vue'
 import { mapGetters } from 'vuex'
 import { momentFromNow, momentify } from '@mixins/momentMixin'
@@ -145,6 +186,7 @@ import { ScaleTransition } from 'vue2-transitions'
 export default {
   components: {
     AlertCard,
+    Confirm,
     Layout,
     ScaleTransition,
   },
@@ -165,6 +207,7 @@ export default {
         active: [],
         alert_via_email: [],
       },
+      showLoadingIcon: false,
     }
   },
   computed: {
@@ -265,6 +308,9 @@ export default {
         return false
       }
     },
+    smallScreen() {
+      return this.$vuetify.breakpoint.width < 960
+    },
     tinyScreen() {
       return this.$vuetify.breakpoint.width < 373
     },
@@ -294,6 +340,42 @@ export default {
           console.log('Error: ', error)
         }
       }
+    },
+    async deleteAllAlerts() {
+      this.showLoadingIcon = true
+      try {
+        const response = await Api.deleteRequest('/alerts/all') // TODO: use actual call
+        if (!response) {
+          console.log('Error')
+        }
+        this.showLoadingIcon = false
+        this.readAlerts() // update alerts in store
+      } catch (error) {
+        this.showLoadingIcon = false
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
+    confirmDeleteAlerts() {
+      const warningMessage = this.$i18n.t('delete_all_alerts_warning')
+      this.$refs.confirm
+        .open(
+          this.$i18n.t('delete_all_alerts'),
+          null,
+          {
+            color: 'red',
+          },
+          warningMessage
+        )
+        .then((confirm) => {
+          this.deleteAllAlerts()
+        })
+        .catch((reject) => {
+          return true
+        })
     },
     showLoading(bool) {
       this.ready = !bool
