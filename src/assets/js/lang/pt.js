@@ -795,6 +795,10 @@ const translations = {
   Add_apiary: 'Adicionar apiário',
   Add_sensor_definition: 'Adicionar definição de sensor',
   Add_member: 'Adicionar membro',
+
+  /* TO BE TRANSLATED */
+  deleted_or_new_but_not_saved_sensor_defs_warning:
+    'N.B.: sensor definitions will only be removed or added after clicking the green check icon at the end of the sensor definition row in the table.',
 }
 
 export default translations

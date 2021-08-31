@@ -1,9 +1,11 @@
 <template>
   <Layout
     :title="`${$tc('device', 2)}`"
-    :edited="deletedButNotSaved"
+    :edited="deletedButNotSavedDevices || deletedOrNewButNotSavedSensorDefs"
     :warning-message="
-      deletedButNotSaved ? $t('deleted_but_not_saved_devices_warning') : null
+      deletedButNotSavedDevices
+        ? $t('deleted_but_not_saved_devices_warning')
+        : $t('deleted_or_new_but_not_saved_sensor_defs_warning')
     "
   >
     <v-toolbar class="save-bar mt-0" dense light>
@@ -23,9 +25,9 @@
         tile
         outlined
         class="save-button-mobile-wide mr-1"
-        :color="deletedButNotSaved ? 'red' : 'black'"
+        :color="deletedButNotSavedDevices ? 'red' : 'black'"
         :disabled="showLoadingIcon"
-        @click="saveDevices"
+        @click="confirmSaveDevices"
       >
         <v-progress-circular
           v-if="showLoadingIcon"
@@ -36,7 +38,9 @@
           indeterminate
         />
         <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
-        {{ deletedButNotSaved ? $t('save_and_delete') : $t('save') }}</v-btn
+        {{
+          deletedButNotSavedDevices ? $t('save_and_delete') : $t('save')
+        }}</v-btn
       >
     </v-toolbar>
 
@@ -706,18 +710,23 @@ export default {
     ...mapGetters('groups', ['groups']),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList', 'sensorTypesList']),
-    deletedButNotSaved() {
+    deletedButNotSavedDevices() {
       const unsavedDeletions = this.ownedDevices.filter((ownedDevice) => {
+        return ownedDevice.delete
+      })
+      return unsavedDeletions.length > 0
+    },
+    deletedOrNewButNotSavedSensorDefs() {
+      const unsavedChanges = this.ownedDevices.filter((ownedDevice) => {
         const unsavedSensorDefs = ownedDevice.sensor_definitions.filter(
           (sensorDef) => {
-            return sensorDef.delete
+            return sensorDef.delete || sensorDef.id === undefined
           }
         )
         return unsavedSensorDefs.length > 0
-          ? unsavedSensorDefs
-          : ownedDevice.delete
       })
-      return unsavedDeletions.length > 0
+
+      return unsavedChanges.length > 0
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile
@@ -909,6 +918,26 @@ export default {
         output_measurement_id: null,
         updated_at: null,
       })
+    },
+    confirmSaveDevices() {
+      if (this.deletedOrNewButNotSavedSensorDefs) {
+        this.$refs.confirm
+          .open(
+            this.$i18n.t('save') + ' ' + this.$i18n.tc('device', 2),
+            this.$i18n.t('deleted_or_new_but_not_saved_sensor_defs_warning'),
+            {
+              color: 'red',
+            }
+          )
+          .then((confirm) => {
+            this.saveDevices()
+          })
+          .catch((reject) => {
+            return true
+          })
+      } else {
+        this.saveDevices()
+      }
     },
     deleteDevice(device) {
       if (typeof device.id === 'undefined') {
