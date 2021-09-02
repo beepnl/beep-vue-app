@@ -1007,11 +1007,13 @@ export default {
       }
     },
     momentAll(date) {
+      // automagically converted from utc time to users timezone because moment guesses (and then sets its) timezone in this view
       return this.$moment(date)
         .locale(this.locale)
         .format('llll')
     },
     momentFromISO8601(date) {
+      // automagically converted from utc time to users timezone because moment guesses (and then sets its) timezone in this view
       if (this.interval === 'hour') {
         return this.$moment(date)
           .locale(this.locale)

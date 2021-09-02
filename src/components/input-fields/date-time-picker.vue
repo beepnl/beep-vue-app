@@ -38,14 +38,14 @@
 <script>
 import { Datetime } from 'vue-datetime'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
-import { momentCreatedAt, momentISO8601 } from '@mixins/momentMixin'
+import { momentFullDateTime, momentISO8601 } from '@mixins/momentMixin'
 
 export default {
   components: {
     Datetime,
     labelWithDescription,
   },
-  mixins: [momentCreatedAt, momentISO8601],
+  mixins: [momentFullDateTime, momentISO8601],
   props: {
     item: {
       type: Object,
@@ -76,7 +76,7 @@ export default {
       },
       set(value) {
         if (value !== '' && value !== null) {
-          this.object[this.item.id] = this.momentCreatedAt(value)
+          this.object[this.item.id] = this.momentFullDateTime(value)
           this.setInspectionEdited(true)
         } else {
           this.object[this.item.id] = null

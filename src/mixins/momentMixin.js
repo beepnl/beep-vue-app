@@ -10,9 +10,9 @@ export const momentAge = {
   },
 }
 
-export const momentCreatedAt = {
+export const momentFullDateTime = {
   methods: {
-    momentCreatedAt(date) {
+    momentFullDateTime(date) {
       return this.$moment(date)
         .locale(this.$i18n.locale)
         .format('YYYY-MM-DD HH:mm:ss')
@@ -22,10 +22,14 @@ export const momentCreatedAt = {
 
 export const momentFromNow = {
   methods: {
-    momentFromNow(date) {
-      const moment = this.$moment(date)
-        .locale(this.$i18n.locale)
-        .fromNow()
+    momentFromNow(date, inUtcTime = false) {
+      var inLocalTime = null
+      if (inUtcTime) {
+        inLocalTime = this.$moment.utc(date).local()
+      } else {
+        inLocalTime = this.$moment(date)
+      }
+      const moment = inLocalTime.locale(this.$i18n.locale).fromNow()
       return moment.charAt(0).toUpperCase() + moment.slice(1)
     },
   },
@@ -33,10 +37,18 @@ export const momentFromNow = {
 
 export const momentify = {
   methods: {
-    momentify(date) {
-      return this.$moment(date)
-        .locale(this.$i18n.locale)
-        .format('lll')
+    momentify(date, inUtcTime = false) {
+      if (date !== null) {
+        var inLocalTime = null
+        if (inUtcTime) {
+          inLocalTime = this.$moment.utc(date).local()
+        } else {
+          inLocalTime = this.$moment(date)
+        }
+        return inLocalTime.locale(this.$i18n.locale).format('lll')
+      } else {
+        return null
+      }
     },
   },
 }
@@ -89,16 +101,6 @@ export const momentLastDigitOfYear = {
       return this.$moment(date)
         .format('YY')
         .substr(1, 1)
-    },
-  },
-}
-
-export const momentUpdatedAt = {
-  methods: {
-    momentUpdatedAt(date) {
-      return this.$moment(date)
-        .locale(this.$i18n.locale)
-        .format('YYYY-MM-DD HH:mm:ss')
     },
   },
 }

@@ -425,7 +425,7 @@ import {
   readApiariesAndGroups,
   readGeneralInspections,
 } from '@mixins/methodsMixin'
-import { momentCreatedAt, momentISO8601 } from '@mixins/momentMixin'
+import { momentFullDateTime, momentISO8601 } from '@mixins/momentMixin'
 import { SlideYUpTransition } from 'vue2-transitions'
 import smileRating from '@components/input-fields/smile-rating.vue'
 import Treeselect from '@riophae/vue-treeselect'
@@ -444,7 +444,7 @@ export default {
     Treeselect,
   },
   mixins: [
-    momentCreatedAt,
+    momentFullDateTime,
     momentISO8601,
     readApiariesAndGroups,
     readGeneralInspections,
@@ -563,7 +563,7 @@ export default {
         }
       },
       set(value) {
-        var date = this.momentCreatedAt(value)
+        var date = this.momentFullDateTime(value)
         this.activeInspection.date = date
         this.setActiveInspectionDate(date)
       },
@@ -587,7 +587,7 @@ export default {
       },
       set(value) {
         if (value !== '' && value !== null) {
-          this.activeInspection.reminder_date = this.momentCreatedAt(value)
+          this.activeInspection.reminder_date = this.momentFullDateTime(value)
           this.setInspectionEdited(true)
         } else {
           this.activeInspection.reminder_date = null

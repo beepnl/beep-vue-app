@@ -211,7 +211,8 @@
                             class="beep-icon beep-icon--small beep-icon-sensors--no-outline beep-icon-sensors--no-outline--small"
                           ></v-sheet>
                           <span class="beep-label">{{
-                            ownedDevice.last_message_received !== null
+                            ownedDevice.last_message_received !==
+                            null /* eslint-disable vue/comma-dangle */
                               ? momentify(ownedDevice.last_message_received)
                               : '?'
                           }}</span>
@@ -356,7 +357,6 @@
                               v-text="
                                 `${$tc(
                                   'sensor_definition',
-                                  // eslint-disable-next-line vue/comma-dangle
                                   ownedDevice.sensor_definitions.length
                                 )}`
                               "
@@ -440,7 +440,6 @@
                             <tr
                               v-for="(sensorDef,
                               indexSensor) in sortedSensorDefinitions(
-                                // eslint-disable-next-line vue/comma-dangle
                                 ownedDevice.sensor_definitions
                               )"
                               :key="indexSensor"
@@ -488,7 +487,6 @@
                                     convertComma(
                                       $event,
                                       sensorDef,
-                                      // eslint-disable-next-line vue/comma-dangle
                                       'multiplier'
                                     )
                                   "
@@ -504,7 +502,6 @@
                                   :label="
                                     `${$t('Select')} ${$tc(
                                       'measurement',
-                                      // eslint-disable-next-line vue/comma-dangle
                                       1
                                     )} ...`
                                   "
@@ -522,7 +519,6 @@
                                   :label="
                                     `${$t('Select')} ${$tc(
                                       'measurement',
-                                      // eslint-disable-next-line vue/comma-dangle
                                       1
                                     )} ...`
                                   "
@@ -544,7 +540,6 @@
                                   <v-progress-circular
                                     v-if="
                                       showLoadingIconById.indexOf(
-                                        // eslint-disable-next-line vue/comma-dangle
                                         sensorDef.id
                                       ) > -1
                                     "
@@ -557,7 +552,6 @@
                                   <v-icon
                                     v-if="
                                       showLoadingIconById.indexOf(
-                                        // eslint-disable-next-line vue/comma-dangle
                                         sensorDef.id
                                       ) === -1
                                     "
@@ -580,7 +574,6 @@
                                         @click="
                                           deleteSensorDef(
                                             ownedDevice,
-                                            // eslint-disable-next-line vue/comma-dangle
                                             sensorDef
                                           )
                                         "

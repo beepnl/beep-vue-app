@@ -384,7 +384,11 @@ import Confirm from '@components/confirm.vue'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
 import Layout from '@layouts/back.vue'
-import { momentify, momentISO8601, momentUpdatedAt } from '@mixins/momentMixin'
+import {
+  momentify,
+  momentISO8601,
+  momentFullDateTime,
+} from '@mixins/momentMixin'
 import { mapGetters } from 'vuex'
 import {
   readApiariesAndGroups,
@@ -400,7 +404,7 @@ export default {
   mixins: [
     momentify,
     momentISO8601,
-    momentUpdatedAt,
+    momentFullDateTime,
     readApiariesAndGroups,
     readDevicesIfNotPresent,
   ],
@@ -562,7 +566,7 @@ export default {
     },
     updateConsentDate(researchId, consentId, date) {
       this.showLoadingIcon.push(consentId)
-      var formattedDate = this.momentUpdatedAt(date)
+      var formattedDate = this.momentFullDateTime(date)
       this.editedCHItems.splice(this.editedCHItems.indexOf(consentId), 1)
       console.log('Update consent: ', consentId, formattedDate)
       this.updateDate(researchId, consentId, formattedDate)
