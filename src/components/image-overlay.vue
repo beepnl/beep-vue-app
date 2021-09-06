@@ -21,6 +21,7 @@
       light
       outline
       flat
+      height="40px"
       class="image-overlay-toolbar-footer"
     >
       <span>{{ momentify(date) }}</span>
@@ -85,6 +86,10 @@ export default {
   background-color: $color-white;
   border-bottom-right-radius: 4px;
   border-bottom-left-radius: 4px;
+  @media (max-height: 450px) {
+    max-width: 120vh;
+    max-height: 90vh;
+  }
 }
 .image-overlay-content {
   max-width: 80vw;
