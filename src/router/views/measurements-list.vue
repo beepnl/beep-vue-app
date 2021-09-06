@@ -219,24 +219,37 @@
           >
             <v-row>
               <v-col cols="12" class="my-0">
-                <span>{{
-                  selectedDevice && !mobile
-                    ? $tc('Measurement', 2) +
-                      ': ' +
-                      selectedDevice.hive_name +
-                      ' - ' +
-                      selectedDevice.name
-                    : $tc('Measurement', 2)
-                }}</span>
-                <div class="float-right">
-                  <v-icon
-                    :class="
-                      `toggle-icon mdi ${
-                        showMeasurements ? 'mdi-minus' : 'mdi-plus'
-                      }`
-                    "
-                    @click="showMeasurements = !showMeasurements"
-                  ></v-icon>
+                <div class="d-flex justify-space-between align-center">
+                  <span>{{
+                    selectedDevice && !mobile
+                      ? $tc('Measurement', 2) +
+                        ': ' +
+                        selectedDevice.hive_name +
+                        ' - ' +
+                        selectedDevice.name
+                      : $tc('Measurement', 2)
+                  }}</span>
+                  <v-spacer></v-spacer>
+                  <div class="d-flex justify-end align-center">
+                    <template v-for="(icon, n) in chartColsIcons">
+                      <v-icon
+                        v-if="!smallScreen"
+                        :key="'icon' + n"
+                        class="mr-2"
+                        :color="chartCols === icon.value ? 'primary' : 'grey'"
+                        @click="chartCols = icon.value"
+                        >{{ icon.name }}</v-icon
+                      >
+                    </template>
+                    <v-icon
+                      :class="
+                        `toggle-icon mdi ${
+                          showMeasurements ? 'mdi-minus' : 'mdi-plus'
+                        }`
+                      "
+                      @click="showMeasurements = !showMeasurements"
+                    ></v-icon>
+                  </div>
                 </div>
               </v-col>
             </v-row>
@@ -260,8 +273,8 @@
                   {{ $t('no_chart_data') }}
                 </v-col>
               </v-row>
-              <v-row v-if="measurementData !== null" class="charts mt-6 mb-3">
-                <v-col v-if="weatherSensorsPresent" cols="12" lg="6" xl="4">
+              <v-row v-if="measurementData !== null" class="charts mt-6">
+                <v-col v-if="weatherSensorsPresent" cols="12">
                   <div
                     v-if="selectedDevice"
                     class="overline mt-0 mt-sm-3 mb-3 text-center"
@@ -276,22 +289,26 @@
                         : $t('weather') + ' @ ' + selectedDevice.location_name
                     "
                   ></div>
-                  <chartist
-                    :class="`${interval} ${'modulo-' + moduloNr} mb-4 mb-sm-6`"
-                    ratio="ct-chart"
-                    type="Line"
-                    :data="chartDataMultipleSeries(currentWeatherSensors, true)"
-                    :options="chartOptions('', false, currentWeatherSensors)"
-                  >
-                  </chartist>
+                  <v-row class="my-0">
+                    <v-col cols="12" :md="chartCols">
+                      <chartist
+                        :class="
+                          `${interval} ${'modulo-' + moduloNr} mb-4 mb-sm-6`
+                        "
+                        ratio="ct-chart"
+                        type="Line"
+                        :data="
+                          chartDataMultipleSeries(currentWeatherSensors, true)
+                        "
+                        :options="
+                          chartOptions('', false, currentWeatherSensors)
+                        "
+                      >
+                      </chartist>
+                    </v-col>
+                  </v-row>
                 </v-col>
-                <v-col
-                  v-if="sensorsPresent"
-                  cols="12"
-                  lg="6"
-                  xl="4"
-                  class="mb-6"
-                >
+                <v-col v-if="sensorsPresent" cols="12" class="mb-6">
                   <div
                     class="overline mt-0 mt-sm-3 mb-3 text-center"
                     v-text="
@@ -305,36 +322,47 @@
                         : $tc('measurement', 2)
                     "
                   ></div>
-                  <chartist
-                    v-for="(sensor, index) in currentSensors"
-                    :key="index"
-                    :class="`${interval} ${'modulo-' + moduloNr} mb-4 mb-sm-6`"
-                    :ratio="`ct-chart ct-series-${index}`"
-                    type="Line"
-                    :data="chartDataSingleSeries(sensor, SENSOR_UNITS[sensor])"
-                    :options="chartOptions(SENSOR_UNITS[sensor], false, sensor)"
-                  >
-                  </chartist>
+                  <v-row class="my-0">
+                    <v-col
+                      v-for="(sensor, index) in currentSensors"
+                      :key="index"
+                      cols="12"
+                      :md="chartCols"
+                    >
+                      <chartist
+                        :class="
+                          `${interval} ${'modulo-' + moduloNr} mb-4 mb-sm-6`
+                        "
+                        :ratio="`ct-chart ct-series-${index}`"
+                        type="Line"
+                        :data="
+                          chartDataSingleSeries(sensor, SENSOR_UNITS[sensor])
+                        "
+                        :options="
+                          chartOptions(SENSOR_UNITS[sensor], false, sensor)
+                        "
+                      >
+                      </chartist>
+                    </v-col>
+                  </v-row>
                 </v-col>
-                <v-col
-                  v-if="soundSensorsPresent"
-                  cols="12"
-                  lg="6"
-                  xl="4"
-                  class="mb-6"
-                >
+                <v-col v-if="soundSensorsPresent" cols="12" class="mb-6">
                   <div
                     class="overline mt-0 mt-sm-3 mb-3 text-center"
                     v-text="$t('Sound_measurements')"
                   ></div>
-                  <MeasurementsChartHeatmap
-                    :data="measurementsForHeatmap"
-                    :max-value="maxSoundSensorValue"
-                    :y-axis="sortedCurrentSoundSensors"
-                    :modulo-number="moduloNr"
-                    :interval="interval"
-                  >
-                  </MeasurementsChartHeatmap>
+                  <v-row class="my-0">
+                    <v-col cols="12" :md="chartCols">
+                      <MeasurementsChartHeatmap
+                        :data="measurementsForHeatmap"
+                        :max-value="maxSoundSensorValue"
+                        :y-axis="sortedCurrentSoundSensors"
+                        :modulo-number="moduloNr"
+                        :interval="interval"
+                      >
+                      </MeasurementsChartHeatmap>
+                    </v-col>
+                  </v-row>
                 </v-col>
                 <v-col v-if="debugSensorsPresent" cols="12" class="mb-sm-4">
                   <div
@@ -348,7 +376,7 @@
                       v-for="(sensor, index) in currentDebugSensors"
                       :key="index"
                       cols="12"
-                      lg="4"
+                      :md="chartCols"
                       class="pt-lg-0"
                     >
                       <chartist
@@ -449,6 +477,12 @@ export default {
       periodTitle: null,
       preselectedDate: null,
       preselectedDeviceId: null,
+      chartCols: 6,
+      chartColsIcons: [
+        { value: 12, name: 'mdi-format-align-justify' },
+        { value: 6, name: 'mdi-grid-large' },
+        { value: 4, name: 'mdi-grid' },
+      ],
     }
   },
   computed: {
@@ -482,25 +516,37 @@ export default {
     mobile() {
       return this.$vuetify.breakpoint.mobile
     },
+    moduloFactor() {
+      switch (this.screenSize) {
+        case 'md':
+          return this.chartCols === 6 ? 2 : this.chartCols === 4 ? 3 : 1
+        case 'lg':
+          return this.chartCols === 4 ? 3 : 1
+        case 'xl':
+          return 1
+      }
+      return 1
+    },
+
     moduloNr() {
       switch (this.interval) {
         case 'hour':
-          return 1
+          return 1 * this.moduloFactor
         case 'week':
           if (this.resolutionUnit === 'm' && this.resolutionNr !== null) {
             if (this.resolutionNr < 720) {
-              return 360 / this.resolutionNr
+              return (360 / this.resolutionNr) * this.moduloFactor
             } else {
-              return 1
+              return 1 * this.moduloFactor
             }
           } else {
-            return 6
+            return 6 * this.moduloFactor
           }
         case 'month':
           if (this.resolutionUnit === 'm' && this.resolutionNr !== null) {
-            return 1440 / this.resolutionNr
+            return (1440 / this.resolutionNr) * this.moduloFactor
           } else {
-            return 8
+            return 8 * this.moduloFactor
           }
 
         case 'year':
@@ -509,22 +555,22 @@ export default {
             this.resolutionNr !== null &&
             this.resolutionNr > 1
           ) {
-            return 12 / this.resolutionNr
+            return (12 / this.resolutionNr) * this.moduloFactor
           } else {
-            return 11
+            return 11 * this.moduloFactor
           }
         case 'day':
           if (this.resolutionUnit === 'm' && this.resolutionNr !== null) {
             if (this.resolutionNr < 60) {
-              return 60 / this.resolutionNr
+              return (60 / this.resolutionNr) * this.moduloFactor
             } else {
-              return 1
+              return 1 * this.moduloFactor
             }
           } else {
-            return 6
+            return 6 * this.moduloFactor
           }
       }
-      return 6
+      return 6 * this.moduloFactor
     },
     periods() {
       return [
@@ -575,6 +621,13 @@ export default {
         ? this.measurementData.resolution.slice(-1)
         : null
     },
+    screenSize() {
+      return this.$vuetify.breakpoint.width < 1300
+        ? 'md'
+        : this.$vuetify.breakpoint.width > 1900
+        ? 'xl'
+        : 'lg'
+    },
     selectedDevice() {
       return (
         this.devices.filter((device) => {
@@ -589,6 +642,9 @@ export default {
       set(value) {
         this.$store.commit('devices/setSelectedDeviceId', value)
       },
+    },
+    smallScreen() {
+      return this.$vuetify.breakpoint.width < 960
     },
     sortedCurrentSoundSensors() {
       var sorted = Object.keys(this.currentSoundSensors)
@@ -1232,61 +1288,56 @@ export default {
     margin-left: -5px;
   }
   .ct-chart {
-    &.modulo-2 {
-      .ct-grids {
-        .ct-grid.ct-horizontal:not(:nth-child(2n + 1)) {
-          stroke: none !important;
-        }
-      }
+    &.modulo-2 .ct-grids .ct-grid.ct-horizontal:not(:nth-child(2n + 1)) {
+      stroke: none !important;
     }
-    &.modulo-3 {
-      .ct-grids {
-        .ct-grid.ct-horizontal:not(:nth-child(3n + 1)) {
-          stroke: none !important;
-        }
-      }
+    &.modulo-3 .ct-grids .ct-grid.ct-horizontal:not(:nth-child(3n + 1)) {
+      stroke: none !important;
     }
-    &.modulo-4 {
-      .ct-grids {
-        .ct-grid.ct-horizontal:not(:nth-child(4n + 1)) {
-          stroke: none !important;
-        }
-      }
+    &.modulo-4 .ct-grids .ct-grid.ct-horizontal:not(:nth-child(4n + 1)) {
+      stroke: none !important;
     }
-    &.modulo-6 {
-      .ct-grids {
-        .ct-grid.ct-horizontal:not(:nth-child(6n + 1)) {
-          stroke: none !important;
-        }
-      }
+    &.modulo-6 .ct-grids .ct-grid.ct-horizontal:not(:nth-child(6n + 1)) {
+      stroke: none !important;
     }
-    &.modulo-8 {
-      .ct-grids {
-        .ct-grid.ct-horizontal:not(:nth-child(8n + 1)) {
-          stroke: none !important;
-        }
-      }
+    &.modulo-8 .ct-grids .ct-grid.ct-horizontal:not(:nth-child(8n + 1)) {
+      stroke: none !important;
     }
-    &.modulo-11 {
-      .ct-grids {
-        .ct-grid.ct-horizontal:not(:nth-child(11n + 1)) {
-          stroke: none !important;
-        }
-      }
+    &.modulo-9 .ct-grids .ct-grid.ct-horizontal:not(:nth-child(9n + 1)) {
+      stroke: none !important;
     }
-    &.modulo-12 {
-      .ct-grids {
-        .ct-grid.ct-horizontal:not(:nth-child(12n + 1)) {
-          stroke: none !important;
-        }
-      }
+    &.modulo-11 .ct-grids .ct-grid.ct-horizontal:not(:nth-child(11n + 1)) {
+      stroke: none !important;
     }
-    &.modulo-60 {
-      .ct-grids {
-        .ct-grid.ct-horizontal:not(:nth-child(60n + 1)) {
-          stroke: none !important;
-        }
-      }
+    &.modulo-12 .ct-grids .ct-grid.ct-horizontal:not(:nth-child(12n + 1)) {
+      stroke: none !important;
+    }
+    &.modulo-16 .ct-grids .ct-grid.ct-horizontal:not(:nth-child(16n + 1)) {
+      stroke: none !important;
+    }
+    &.modulo-18 .ct-grids .ct-grid.ct-horizontal:not(:nth-child(18n + 1)) {
+      stroke: none !important;
+    }
+    &.modulo-22 .ct-grids .ct-grid.ct-horizontal:not(:nth-child(22n + 1)) {
+      stroke: none !important;
+    }
+    &.modulo-24 .ct-grids .ct-grid.ct-horizontal:not(:nth-child(24n + 1)) {
+      stroke: none !important;
+    }
+    &.modulo-33 .ct-grids .ct-grid.ct-horizontal:not(:nth-child(33n + 1)) {
+      stroke: none !important;
+    }
+    &.modulo-36 .ct-grids .ct-grid.ct-horizontal:not(:nth-child(36n + 1)) {
+      stroke: none !important;
+    }
+    &.modulo-60 .ct-grids .ct-grid.ct-horizontal:not(:nth-child(60n + 1)) {
+      stroke: none !important;
+    }
+    &.modulo-120 .ct-grids .ct-grid.ct-horizontal:not(:nth-child(120n + 1)) {
+      stroke: none !important;
+    }
+    &.modulo-180 .ct-grids .ct-grid.ct-horizontal:not(:nth-child(180n + 1)) {
+      stroke: none !important;
     }
   }
 
