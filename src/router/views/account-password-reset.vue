@@ -48,6 +48,15 @@
             color="red"
           >
             {{ error.errorMessage }}
+            <span v-if="error.passwordForgotLink" class="alert-link">
+              <br />
+              <router-link
+                class="red--text"
+                :to="{ name: 'password-forgot', query: { email: email } }"
+              >
+                {{ $t('password_recovery_resend_mail') }}
+              </router-link>
+            </span>
           </v-alert>
           <v-text-field
             v-model="resetPasswordRequest.email"
@@ -55,7 +64,6 @@
             :label="`${$t('email')}`"
             :rules="emailRules"
             type="email"
-            disabled
           ></v-text-field>
           <v-text-field
             v-model="resetPasswordRequest.token"
@@ -200,6 +208,9 @@ export default {
         } catch (error) {
           if (error.response) {
             console.log(error.response)
+            var verifyLink = false
+            var passwordForgotLink = false
+
             if (typeof error.response.data.message !== 'undefined') {
               var msg = error.response.data.message
             } else {
@@ -212,14 +223,15 @@ export default {
               this.fieldErrors.password = true
             } else if (msg === 'invalid_token') {
               this.fieldErrors.token = true
+              passwordForgotLink = true
             }
-            var verifyOn = false
             if (msg === 'email_not_verified') {
-              verifyOn = true
+              verifyLink = true
             }
             this.errors.push({
               errorMessage: this.$i18n.t(msg),
-              verifyLink: verifyOn,
+              verifyLink,
+              passwordForgotLink,
             })
           } else {
             this.errors.push({
@@ -264,6 +276,7 @@ export default {
           this.tryingToLogIn = false
           if (error.response) {
             console.log(error.response)
+            var verifyLink = false
             if (typeof error.response.data.message !== 'undefined') {
               var msg = error.response.data.message
             } else {
@@ -277,13 +290,13 @@ export default {
             } else if (msg.indexOf('email') > -1) {
               this.fieldErrors.email = true
             }
-            var verifyOn = false
+
             if (msg === 'email_not_verified') {
-              verifyOn = true
+              verifyLink = true
             }
             this.errors.push({
               errorMessage: this.$i18n.t(msg),
-              verifyLink: verifyOn,
+              verifyLink,
             })
           } else {
             this.errors.push({

@@ -802,6 +802,8 @@ const translations = {
   delete_all_alerts: 'Delete all alerts',
   delete_all_alerts_warning:
     'Are you sure you want to delete all alerts? This cannot be undone.',
+  already_verified: 'I have verified my email address and would like to login',
+  password_recovery_resend_mail: 'Send new verification code',
 }
 
 export default translations

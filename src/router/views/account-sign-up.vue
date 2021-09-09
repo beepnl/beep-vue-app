@@ -10,7 +10,9 @@
           }}
         </v-alert>
         <p>{{ $t('succesfully_registered') }}</p>
-        <a @click="resendEmailVerification">{{ $t('email_new_verification') }}</a>
+        <a @click="resendEmailVerification">{{
+          $t('email_new_verification')
+        }}</a>
       </v-card-text>
       <v-card-text v-if="!registered">
         <v-alert
@@ -78,10 +80,10 @@
         }}</v-btn>
       </v-card-actions>
 
-      <v-divider v-if="!registered" class="mx-3"></v-divider>
-      <v-card-text v-if="!registered">
+      <v-divider class="mx-3"></v-divider>
+      <v-card-text>
         <router-link :to="{ name: 'sign-in' }">
-          {{ $t('already_registered') }}
+          {{ !registered ? $t('already_registered') : $t('already_verified') }}
         </router-link>
         <v-spacer></v-spacer>
       </v-card-text>

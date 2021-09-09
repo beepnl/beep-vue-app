@@ -810,6 +810,8 @@ const translations = {
   delete_all_alerts: 'Verwijder alle notificaties',
   delete_all_alerts_warning:
     'Weet u zeker dat u alle notificaties wilt verwijderen? Dit kan niet ongedaan gemaakt worden.',
+  already_verified: 'Ik heb mijn e-mailadres gevalideerd en wil graag inloggen',
+  password_recovery_resend_mail: 'Verstuur code opnieuw',
 }
 
 export default translations
