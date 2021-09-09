@@ -1,7 +1,7 @@
 <template>
-  <Layout @loading-alerts="showLoading($event)">
+  <Layout>
     <div
-      v-if="ready || (reloading && alertRules.length > 0)"
+      v-if="ready || (alertsLoading && alertRules.length > 0)"
       class="filter-bar-wrapper"
     >
       <v-container class="filter-container">
@@ -64,7 +64,7 @@
       </v-container>
     </div>
 
-    <v-container v-if="!ready" class="alerts-content">
+    <v-container v-if="!ready || alertsLoading" class="alerts-content">
       <div class="loading">
         <v-progress-circular size="50" color="primary" indeterminate />
       </div>
@@ -160,7 +160,7 @@
         </ScaleTransition>
       </v-row>
 
-      <v-row v-if="alerts.length === 0">
+      <v-row v-if="alerts.length === 0 && !alertsLoading">
         <v-col sm="auto" :cols="12">
           {{ $t('no_alerts') }}
         </v-col>
@@ -199,7 +199,6 @@ export default {
   data: function() {
     return {
       ready: false,
-      reloading: false,
       search: null,
       errors: [],
       showDescription: true,
@@ -211,7 +210,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('alerts', ['alertRules', 'alerts']),
+    ...mapGetters('alerts', ['alertRules', 'alerts', 'alertsLoading']),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
     alertsWithRuleDetails() {
@@ -319,9 +318,7 @@ export default {
     this.search = this.$route.query.search || null
     this.readApiariesAndGroupsIfNotPresent().then(() => {
       this.checkAlertRulesAndAlerts().then(() => {
-        setTimeout(() => {
-          this.ready = true
-        }, 300) // wait for API to update alerts otherwise no alerts placeholder will briefly flash
+        this.ready = true
       })
     })
   },
@@ -376,11 +373,6 @@ export default {
         .catch((reject) => {
           return true
         })
-    },
-    showLoading(bool) {
-      console.log('show loading')
-      this.ready = !bool
-      this.reloading = bool
     },
   },
 }

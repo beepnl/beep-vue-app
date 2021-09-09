@@ -8,17 +8,18 @@ export const checkAlerts = {
   methods: {
     // check whether alertrules have been read, if not do so, then only read alerts if alert rules present
     async checkAlertRulesAndAlerts() {
-      this.$emit('loading-alerts', true)
+      this.$store.commit('alerts/setData', {
+        prop: 'alertsLoading',
+        value: true,
+      })
       if (!this.alertRulesChecked) {
         this.readAlertRules().then(() => {
           this.readAlerts().then(() => {
-            this.$emit('loading-alerts', false)
             return true
           })
         })
       } else {
         this.readAlerts().then(() => {
-          this.$emit('loading-alerts', false)
           return true
         })
       }
@@ -52,10 +53,18 @@ export const checkAlerts = {
             prop: 'alerts',
             value: response.data.alerts,
           })
+          this.$store.commit('alerts/setData', {
+            prop: 'alertsLoading',
+            value: false,
+          })
           return true
         } catch (error) {
           if (error.response) {
             console.log('Error: ', error.response)
+            this.$store.commit('alerts/setData', {
+              prop: 'alertsLoading',
+              value: false,
+            })
             if (error.response.status === 404) {
               this.$store.commit('alerts/setData', {
                 prop: 'alerts',

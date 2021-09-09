@@ -9,6 +9,7 @@ export const state = {
   alertRules: [],
   alertRulesChecked: false,
   alerts: [],
+  alertsLoading: false,
 }
 export const getters = {
   ...resource.getters,
@@ -27,6 +28,9 @@ export const getters = {
   alerts: (state) => {
     return state.alerts || []
   },
+  alertsLoading: (state) => {
+    return state.alertsLoading
+  },
 }
 export const mutations = {
   ...resource.mutations,
@@ -39,6 +43,7 @@ export const mutations = {
     state.alertRules = []
     state.alertRulesChecked = false
     state.alerts = []
+    state.alertsLoading = false
   },
 }
 export const actions = {
