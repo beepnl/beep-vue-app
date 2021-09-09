@@ -28,18 +28,15 @@
           :src="imageLink"
           class="grey lighten-2 image-thumb"
           aspect-ratio="1"
-          @click="setActiveImage(thumbUrl)"
+          @click="activeImage = thumbUrl"
         >
         </v-img>
       </span>
     </div>
     <imageOverlay
       v-if="object[item.id] !== null"
-      :date="activeImage ? activeImage.date : null"
       :thumburl="object[item.id]"
-      :overlay="
-        activeImage !== null && activeImage.thumb_url === object[item.id]
-      "
+      :overlay="activeImage !== null && activeImage === object[item.id]"
       @close-overlay="activeImage = null"
     ></imageOverlay>
 
@@ -96,7 +93,6 @@ export default {
     },
   },
   created() {
-    this.readImages()
     if (this.object[this.item.id] !== null) {
       this.thumbUrl = this.object[this.item.id]
     }
@@ -164,8 +160,6 @@ export default {
             this.thumbUrl = response.data.thumb_url
             this.object[this.item.id] = response.data.thumb_url
             this.setInspectionEdited(true)
-
-            this.readImages()
           }
           this.showLoading = false
         } catch (error) {
@@ -180,19 +174,6 @@ export default {
         }
       }
     },
-    async readImages() {
-      try {
-        const response = await Api.readRequest('/images')
-        this.images = response.data
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log(error.response)
-        } else {
-          console.log('Error: ', error)
-        }
-      }
-    },
     confirmDeleteImage(id) {
       this.$refs.confirm
         .open(this.$i18n.t('Delete'), this.$i18n.t('remove_image') + '?', {
@@ -204,17 +185,6 @@ export default {
         .catch((reject) => {
           return true
         })
-    },
-    setActiveImage(thumburl) {
-      if (this.images !== null) {
-        this.images.forEach((image) => {
-          if (image.thumb_url === thumburl) {
-            this.activeImage = image
-          }
-        })
-      } else {
-        this.activeImage = null
-      }
     },
     setInspectionEdited(bool) {
       this.$store.commit('inspections/setInspectionEdited', bool)

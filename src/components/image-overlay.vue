@@ -16,7 +16,6 @@
       </v-img>
     </div>
     <v-toolbar
-      v-if="date"
       dense
       light
       outline
@@ -24,7 +23,7 @@
       height="40px"
       class="image-overlay-toolbar-footer"
     >
-      <span>{{ momentify(date) }}</span>
+      <span>{{ date ? momentify(date) : ' ' }}</span>
     </v-toolbar>
   </v-overlay>
 </template>
@@ -54,7 +53,7 @@ export default {
       return process.env.VUE_APP_BASE_API_URL
     },
     imageUrl() {
-      return this.thumburl.replace('thumbs', 'images')
+      return this.thumburl.replace('/thumbs/', '/images/')
     },
     fullUrl() {
       return this.thumburl.indexOf('https://') > -1

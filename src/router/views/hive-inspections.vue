@@ -510,15 +510,12 @@
                   <v-img
                     :src="getThumbUrl(item.val)"
                     class="grey lighten-2 image-thumb"
-                    @click="setActiveImage(item.val)"
+                    @click="activeImage = item.val"
                   >
                   </v-img>
                   <imageOverlay
-                    :date="activeImage ? activeImage.date : null"
                     :thumburl="item.val"
-                    :overlay="
-                      activeImage !== null && activeImage.thumb_url === item.val
-                    "
+                    :overlay="activeImage !== null && activeImage === item.val"
                     @close-overlay="activeImage = null"
                   ></imageOverlay>
                 </span>
@@ -809,7 +806,6 @@ export default {
     this.readAllInspectionsForHiveId().then(() => {
       this.ready = true
     })
-    this.readImages()
   },
   methods: {
     async deleteInspection(id) {
@@ -862,19 +858,6 @@ export default {
           if (error.response.status === 500) {
             this.show500Response = true
           }
-        } else {
-          console.log('Error: ', error)
-        }
-      }
-    },
-    async readImages() {
-      try {
-        const response = await Api.readRequest('/images')
-        this.images = response.data
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log('Error: ', error.response)
         } else {
           console.log('Error: ', error)
         }
@@ -938,17 +921,6 @@ export default {
       if (value === '3') return '#243D80'
       if (value === '4') return '#069518'
       return '#F8B133'
-    },
-    setActiveImage(thumburl) {
-      if (this.images !== null) {
-        this.images.forEach((image) => {
-          if (image.thumb_url === thumburl) {
-            this.activeImage = image
-          }
-        })
-      } else {
-        this.activeImage = null
-      }
     },
     updateFilterByImpression(number) {
       if (this.filterByImpression.includes(number)) {
