@@ -884,10 +884,6 @@ export default {
           return true
         })
     },
-    getImageUrl(thumburl) {
-      var imageUrl = thumburl.replace('thumbs', 'images')
-      return imageUrl
-    },
     getThumbUrl(val) {
       return val.indexOf('https://') > -1 ? val : this.baseApiUrl + val
     },
