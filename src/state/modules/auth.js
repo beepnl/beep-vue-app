@@ -1,11 +1,14 @@
 import Api from '@api/Api'
 
 export const state = {
-  currentUser: getSavedState('auth.currentUser'),
-  currentSession: getSavedState('auth.currentSession'),
+  currentUser: null,
+  apiToken: getSavedState('auth.beepToken'),
 }
 
 export const getters = {
+  apiToken: function(state) {
+    return state.apiToken
+  },
   loggedIn: function(state) {
     return !!state.currentUser
   },
@@ -24,14 +27,14 @@ export const getters = {
   userName: function(state) {
     return (state.currentUser && state.currentUser.name) || null
   },
-  apiToken: function(state) {
-    return (state.currentUser && state.currentUser.api_token) || null
-  },
 }
 export const mutations = {
-  SET_CURRENT_USER: function(state, newValue) {
-    state.currentUser = newValue
-    saveState('auth.currentUser', newValue)
+  SET_CURRENT_USER: function(state, value) {
+    state.currentUser = value
+  },
+  SET_API_TOKEN: function(state, value) {
+    state.apiToken = value
+    saveState('auth.beepToken', value)
   },
 }
 export const actions = {
@@ -41,15 +44,15 @@ export const actions = {
     return Api.postRequest('/login', credentials).then((response) => {
       const user = response.data
       commit('SET_CURRENT_USER', user)
+      commit('SET_API_TOKEN', user.api_token)
       return user
     })
   },
   signOut: function({ _, commit, getters }) {
+    console.log('sign out')
     if (!getters.loggedIn) {
       throw new Error('User is already logged out.')
     }
-
-    commit('SET_CURRENT_USER', null)
 
     // reset all module states
     commit('alerts/resetState', null, { root: true })
@@ -59,18 +62,24 @@ export const actions = {
     commit('inspections/resetState', null, { root: true })
     commit('locations/resetState', null, { root: true })
     commit('taxonomy/resetState', null, { root: true })
+
+    commit('SET_CURRENT_USER', null)
+    commit('SET_API_TOKEN', null)
+
     return null
   },
 
   // Validates the current user's token and refreshes it
   // with new data from the API.
   validateUser: function({ state, commit, dispatch }) {
+    console.log('validate user')
     return (
       state.currentUser ||
       Api.postRequest('/authenticate')
         .then((response) => {
           const user = response.data
           commit('SET_CURRENT_USER', user)
+          // api token is already correctly set, otherwise authentication would fail
           return user
         })
         .catch((error) => {

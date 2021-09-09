@@ -63,8 +63,16 @@ router.beforeEach((routeTo, routeFrom, next) => {
   if (store.getters['auth/loggedIn']) {
     // If the user is logged in, continue
     next()
+  } else if (
+    store.getters['auth/apiToken'] &&
+    !store.getters['auth/loggedIn']
+  ) {
+    // If the user is empty but api token is present in local storage (f.e. after hard refresh), first validate user.
+    store.dispatch('auth/validateUser').then(() => {
+      next()
+    })
   } else {
-    // If the user is NOT currently logged in redirect to login.
+    // If the user is NOT currently logged in and no api token is present redirect to login.
     redirectToLogin()
   }
 

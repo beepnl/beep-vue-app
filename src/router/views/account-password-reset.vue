@@ -87,7 +87,7 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn :disabled="!valid" text type="submit">
+          <v-btn text type="submit">
             {{ $t('password_recovery_reset_password') }}
           </v-btn>
         </v-card-actions>

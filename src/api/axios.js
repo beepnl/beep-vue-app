@@ -15,10 +15,12 @@ instance.interceptors.response.use(
     const status = error.response ? error.response.status : 'No response'
     const originalRequest = error.config
 
-    if (status === UNAUTHORIZED) {
-      // store.dispatch('auth/signOut')
+    if (status === UNAUTHORIZED && !originalRequest._retry) {
+      originalRequest._retry = true
+      store.dispatch('auth/signOut')
+      return router.push('/sign-in')
       // router.push('/sign-in')
-      router.push('/401')
+      // router.push('/401')
     } else if (status === 'No response' && !originalRequest._retry) {
       // router.push('/loading')
       originalRequest._retry = true

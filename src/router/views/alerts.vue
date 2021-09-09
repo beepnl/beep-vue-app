@@ -378,6 +378,7 @@ export default {
         })
     },
     showLoading(bool) {
+      console.log('show loading')
       this.ready = !bool
       this.reloading = bool
     },
