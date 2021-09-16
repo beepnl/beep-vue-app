@@ -237,7 +237,7 @@
                         :key="'icon' + n"
                         class="mr-2"
                         :color="chartCols === icon.value ? 'primary' : 'grey'"
-                        @click="chartCols = icon.value"
+                        @click="updateChartCols(icon.value)"
                         >{{ icon.name }}</v-icon
                       >
                     </template>
@@ -737,6 +737,9 @@ export default {
     },
   },
   created() {
+    if (localStorage.beepChartCols) {
+      this.chartCols = parseInt(localStorage.beepChartCols)
+    }
     this.preselectedDate = this.$route.query.date || null
     this.preselectedDeviceId = parseInt(this.$route.params.id) || null
     this.checkAlertRulesAndAlerts() // for alerts-tab badge
@@ -1182,6 +1185,10 @@ export default {
         clearInterval(this.timer)
         this.timer = 0
       }
+    },
+    updateChartCols(value) {
+      this.chartCols = value
+      localStorage.beepChartCols = value
     },
   },
 }
