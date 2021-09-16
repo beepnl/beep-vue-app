@@ -771,7 +771,10 @@ export default {
         var devices = response.data
 
         if (devices.length > 0) {
-          localStorage.beepDevicesPresent = true
+          this.$store.commit('devices/setData', {
+            prop: 'devicesPresent',
+            value: true,
+          })
         }
 
         devices.map((device) => {
@@ -791,7 +794,10 @@ export default {
       } catch (error) {
         if (error.response) {
           if (error.response.data === 'no_devices_found') {
-            localStorage.beepDevicesPresent = false
+            this.$store.commit('devices/setData', {
+              prop: 'devicesPresent',
+              value: false,
+            })
           }
         } else {
           console.log('Error: ', error)

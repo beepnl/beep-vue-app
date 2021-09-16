@@ -259,7 +259,10 @@ export const readDevices = {
           prop: 'devices',
           value: response.data,
         })
-        localStorage.beepDevicesPresent = devicesPresent
+        this.$store.commit('devices/setData', {
+          prop: 'devicesPresent',
+          value: devicesPresent,
+        })
         return true
       } catch (error) {
         if (error.response) {
@@ -269,7 +272,10 @@ export const readDevices = {
               prop: 'devices',
               value: [],
             })
-            localStorage.beepDevicesPresent = false
+            this.$store.commit('devices/setData', {
+              prop: 'devicesPresent',
+              value: false,
+            })
           }
         } else {
           console.log('Error: ', error)
@@ -282,14 +288,8 @@ export const readDevices = {
 export const readDevicesIfNotPresent = {
   methods: {
     async readDevicesIfNotPresent() {
-      // devicesPresent boolean in local storage prevents unnecessary API calls to read devices when user has none
-      var devicesPresent = localStorage.beepDevicesPresent
-
-      if (
-        // if value hasn't been stored yet OR has been stored as true
-        (devicesPresent === undefined || devicesPresent) &&
-        this.devices.length === 0
-      ) {
+      // devicesPresent boolean prevents unnecessary API calls to read devices when user has none
+      if (this.devicesPresent && this.devices.length === 0) {
         try {
           const response = await Api.readRequest('/devices')
           const devicesPresent = response.data.length > 0
@@ -297,7 +297,10 @@ export const readDevicesIfNotPresent = {
             prop: 'devices',
             value: response.data,
           })
-          localStorage.beepDevicesPresent = devicesPresent
+          this.$store.commit('devices/setData', {
+            prop: 'devicesPresent',
+            value: devicesPresent,
+          })
           return true
         } catch (error) {
           if (error.response) {
@@ -307,7 +310,10 @@ export const readDevicesIfNotPresent = {
                 prop: 'devices',
                 value: [],
               })
-              localStorage.beepDevicesPresent = false
+              this.$store.commit('devices/setData', {
+                prop: 'devicesPresent',
+                value: false,
+              })
             }
           } else {
             console.log('Error: ', error)

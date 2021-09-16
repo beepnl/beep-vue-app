@@ -8,12 +8,16 @@ const resource = createResource({ path: 'devices' })
 export const state = {
   ...resource.state,
   devices: [],
+  devicesPresent: true,
   selectedDeviceId: null,
 }
 export const getters = {
   ...resource.getters,
   devices: (state) => {
     return state.devices
+  },
+  devicesPresent: (state) => {
+    return state.devicesPresent
   },
   selectedDeviceId: (state) => {
     return state.selectedDeviceId
@@ -29,6 +33,7 @@ export const mutations = {
   },
   resetState: function(state) {
     state.devices = []
+    state.devicesPresent = true
     state.selectedDeviceId = null
   },
 }

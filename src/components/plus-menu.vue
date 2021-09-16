@@ -36,7 +36,7 @@ import { readDevicesIfNotPresent } from '@mixins/methodsMixin'
 export default {
   mixins: [readDevicesIfNotPresent],
   computed: {
-    ...mapGetters('devices', ['devices']),
+    ...mapGetters('devices', ['devices', 'devicesPresent']),
     plusItems() {
       if (this.devices.length > 0) {
         return [

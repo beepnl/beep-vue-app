@@ -107,7 +107,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters('devices', ['devices']),
+    ...mapGetters('devices', ['devices', 'devicesPresent']),
     settingItems() {
       if (this.devices.length > 0) {
         return [
