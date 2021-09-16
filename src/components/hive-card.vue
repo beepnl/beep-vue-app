@@ -261,23 +261,7 @@
 
       <div v-if="!xsView" class="hive-details-icons-text pl-2 pr-0 py-0">
         <div
-          v-if="hive.sensors.length !== 0 && alerts.length === 0"
-          class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
-        >
-          <router-link
-            :to="{
-              name: 'measurements-id',
-              params: { id: hive.sensors[0] },
-            }"
-          >
-            <div class="mr-2 my-0">
-              <v-sheet class="beep-icon beep-icon-sensors color-green">
-              </v-sheet>
-            </div>
-          </router-link>
-        </div>
-        <div
-          v-else-if="alerts.length > 0"
+          v-if="alerts.length > 0"
           class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
         >
           <div class="mr-2 my-0">
@@ -330,7 +314,22 @@
             v-text="alertRuleNamesText"
           ></span>
         </div>
-
+        <div
+          v-if="hive.sensors.length !== 0"
+          class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
+        >
+          <router-link
+            :to="{
+              name: 'measurements-id',
+              params: { id: hive.sensors[0] },
+            }"
+          >
+            <div class="mr-2 my-0">
+              <v-sheet class="beep-icon beep-icon-sensors color-green">
+              </v-sheet>
+            </div>
+          </router-link>
+        </div>
         <div
           v-if="hive.queen !== null"
           class="hive-details-item d-flex flex-no-wrap justify-flex-start align-center pa-0"
