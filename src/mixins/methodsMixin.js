@@ -289,7 +289,9 @@ export const readDevicesIfNotPresent = {
   methods: {
     async readDevicesIfNotPresent() {
       // devicesPresent boolean prevents unnecessary API calls to read devices when user has none
-      if (this.devicesPresent && this.devices.length === 0) {
+      const devicesPresent = this.$store.getters['devices/devicesPresent']
+
+      if (devicesPresent && this.devices.length === 0) {
         try {
           const response = await Api.readRequest('/devices')
           const devicesPresent = response.data.length > 0

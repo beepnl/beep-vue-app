@@ -113,7 +113,7 @@ export default {
   },
   computed: {
     ...mapGetters('alerts', ['alerts']),
-    ...mapGetters('devices', ['devices', 'devicesPresent']),
+    ...mapGetters('devices', ['devices']),
     tabs: function() {
       if (this.devices.length > 0) {
         return [

@@ -487,7 +487,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('devices', ['devices', 'devicesPresent']),
+    ...mapGetters('devices', ['devices']),
     timeZone() {
       return this.$moment.tz.guess()
     },

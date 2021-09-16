@@ -258,7 +258,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('devices', ['devices', 'devicesPresent']),
+    ...mapGetters('devices', ['devices']),
     baseApiUrl() {
       return process.env.VUE_APP_BASE_API_URL
     },

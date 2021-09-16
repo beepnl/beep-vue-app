@@ -319,7 +319,7 @@ export default {
   },
   computed: {
     ...mapGetters('alerts', ['alertRules', 'alertRuleEdited']),
-    ...mapGetters('devices', ['devices', 'devicesPresent']),
+    ...mapGetters('devices', ['devices']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     alertruleCreateMode() {
       return this.$route.name === 'alertrule-create'
