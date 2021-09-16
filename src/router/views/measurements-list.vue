@@ -730,6 +730,7 @@ export default {
   },
   watch: {
     locale() {
+      this.setPeriodTitle() // translate period title
       const temp = this.measurementData
       this.measurementData = null // charts are redrawn when measurementData is null
       setTimeout(() => {
