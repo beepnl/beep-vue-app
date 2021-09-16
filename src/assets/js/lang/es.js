@@ -33,16 +33,6 @@ const translations = {
     'Nov',
     'Dec',
   ],
-  weekdaysFull: [
-    'Domingo',
-    'Lunes',
-    'Martes',
-    'Miércoles',
-    'Jueves',
-    'Viernes',
-    'Sábado',
-  ],
-  weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
   Today: 'Hoy',
   Clear: 'Borrar',
   Close: 'Cerrar',
@@ -773,7 +763,7 @@ const translations = {
   Add_sensor_definition: 'Agregar definición de sensor',
   Add_member: 'Agregar miembro',
 
-  /* TO BE TRANSLATED */
+  /* TO BE TRANSLATED FOR 3.1 */
   deleted_or_new_but_not_saved_sensor_defs_warning:
     'N.B.: sensor definitions will only be removed or added after clicking the green check icon at the end of the sensor definition row in the table.',
   delete_all_alerts: 'Delete all alerts',

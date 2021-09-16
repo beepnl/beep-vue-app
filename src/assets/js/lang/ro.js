@@ -33,16 +33,6 @@ const translations = {
     'Nov',
     'Dec',
   ],
-  weekdaysFull: [
-    'Duminică',
-    'Luni',
-    'Marți',
-    'Miercuri',
-    'Joi',
-    'Vineri',
-    'Sâmbătă',
-  ],
-  weekdaysShort: ['Dum.', 'Lun.', 'Mar.', 'Mie.', 'Joi', 'Vin.', 'Sâm.'],
   Today: 'Astăzi',
   Clear: 'Ștergeți',
   Close: 'închideți',
@@ -769,7 +759,7 @@ const translations = {
   Add_sensor_definition: 'Adăugați definiția senzorului',
   Add_member: 'Adăugați un membru',
 
-  /* TO BE TRANSLATED */
+  /* TO BE TRANSLATED FOR 3.1 */
   deleted_or_new_but_not_saved_sensor_defs_warning:
     'N.B.: sensor definitions will only be removed or added after clicking the green check icon at the end of the sensor definition row in the table.',
   delete_all_alerts: 'Delete all alerts',
