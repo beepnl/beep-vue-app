@@ -12,6 +12,7 @@
                   period.interval === interval ? 'accent--text' : ''
                 }`
               "
+              :small="mobile"
               text
               @click="setPeriodInterval(period.interval)"
             >
@@ -1254,8 +1255,8 @@ export default {
 
 .measurements-content {
   margin-top: 40px;
-  @media (max-width: 377px) {
-    margin-top: 76px;
+  @media (max-width: 374px) {
+    margin-top: 65px;
   }
 }
 .ep-legend--value {
