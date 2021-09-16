@@ -419,7 +419,7 @@ export default {
   },
   computed: {
     ...mapGetters('locations', ['apiaries']),
-    ...mapGetters('devices', ['devices', 'devicesPresent']),
+    ...mapGetters('devices', ['devices']),
     ...mapGetters('groups', ['groups']),
     baseApiUrl() {
       return process.env.VUE_APP_BASE_API_URL

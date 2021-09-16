@@ -805,6 +805,7 @@ const translations = {
   Add_apiary: 'Toevoegen bijenstand',
   Add_sensor_definition: 'Toevoegen sensordefinitie',
   Add_member: 'Toevoegen groepslid',
+
   deleted_or_new_but_not_saved_sensor_defs_warning:
     'Let op: sensor definities worden pas definitief verwijderd of toegevoegd wanneer je op het groene vink icoon klikt, aan het einde van de sensor definitie rij in de tabel.',
   delete_all_alerts: 'Verwijder alle notificaties',
@@ -812,6 +813,12 @@ const translations = {
     'Weet u zeker dat u alle notificaties wilt verwijderen? Dit kan niet ongedaan gemaakt worden.',
   already_verified: 'Ik heb mijn e-mailadres gevalideerd en wil graag inloggen',
   password_recovery_resend_mail: 'Verstuur code opnieuw',
+  Data_import: 'Data importeren',
+  Flash_logs: 'Flash logs',
+  Upload_date: 'Upload datum',
+  Messages: 'Berichten',
+  Log_time: 'Tijd gelogd',
+  check_flash_log: 'Check log data',
 }
 
 export default translations

@@ -90,7 +90,11 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import { readDevicesIfNotPresent } from '@mixins/methodsMixin'
+
 export default {
+  mixins: [readDevicesIfNotPresent],
   props: {
     menuItems: {
       type: Array,
@@ -103,73 +107,149 @@ export default {
     },
   },
   computed: {
+    ...mapGetters('devices', ['devices']),
     settingItems() {
-      return [
-        {
-          icon: 'mdi-account',
-          title: this.$i18n.t('Profile'),
-          route: 'profile',
-          authRequired: true,
-        },
-        {
-          icon: 'icon-sensors--no-outline',
-          title: this.$i18n.tc('device', 2),
-          route: 'devices',
-          authRequired: true,
-        },
-        {
-          icon: 'mdi-bell',
-          title: this.$i18n.t('alertrule_pagetitle'),
-          route: 'alertrules',
-          authRequired: true,
-        },
-        {
-          icon: 'mdi-cloud-download',
-          title: this.$i18n.t('Data_export'),
-          route: 'export',
-          authRequired: true,
-        },
-        {
-          icon: 'mdi-format-list-checks',
-          title: this.$i18n.tc('Checklist_template', 2),
-          route: 'checklists',
-          authRequired: true,
-        },
-        {
-          icon: 'mdi-school',
-          title: this.$i18n.t('research'),
-          route: 'research',
-          authRequired: true,
-        },
-        {
-          divider: true,
-        },
-        {
-          icon: 'mdi-comment-question-outline',
-          title: this.$i18n.t('Support'),
-          route: 'support',
-          authRequired: true,
-        },
-        {
-          icon: 'mdi-new-box',
-          title: this.$i18n.t('Whats_new'),
-          route: 'new',
-          authRequired: false,
-        },
-        {
-          icon: 'mdi-information-outline',
-          title: 'BEEP ' + this.$i18n.t('Website'),
-          external: true,
-          route:
-            this.locale === 'nl'
-              ? 'https://beep.nl'
-              : 'https://beep.nl/home-english',
-          authRequired: false,
-        },
-        {
-          divider: true,
-        },
-      ]
+      if (this.devices.length > 0) {
+        return [
+          {
+            icon: 'mdi-account',
+            title: this.$i18n.t('Profile'),
+            route: 'profile',
+            authRequired: true,
+          },
+          {
+            icon: 'icon-sensors--no-outline',
+            title: this.$i18n.tc('device', 2),
+            route: 'devices',
+            authRequired: true,
+          },
+          {
+            icon: 'mdi-bell',
+            title: this.$i18n.t('alertrule_pagetitle'),
+            route: 'alertrules',
+            authRequired: true,
+          },
+          {
+            icon: 'mdi-cloud-download',
+            title: this.$i18n.t('Data_export'),
+            route: 'export',
+            authRequired: true,
+          },
+          {
+            icon: 'mdi-application-import',
+            title: this.$i18n.t('Data_import'),
+            route: 'import',
+            authRequired: true,
+          },
+          {
+            icon: 'mdi-format-list-checks',
+            title: this.$i18n.tc('Checklist_template', 2),
+            route: 'checklists',
+            authRequired: true,
+          },
+          {
+            icon: 'mdi-school',
+            title: this.$i18n.t('research'),
+            route: 'research',
+            authRequired: true,
+          },
+          {
+            divider: true,
+          },
+          {
+            icon: 'mdi-comment-question-outline',
+            title: this.$i18n.t('Support'),
+            route: 'support',
+            authRequired: true,
+          },
+          {
+            icon: 'mdi-new-box',
+            title: this.$i18n.t('Whats_new'),
+            route: 'new',
+            authRequired: false,
+          },
+          {
+            icon: 'mdi-information-outline',
+            title: 'BEEP ' + this.$i18n.t('Website'),
+            external: true,
+            route:
+              this.locale === 'nl'
+                ? 'https://beep.nl'
+                : 'https://beep.nl/home-english',
+            authRequired: false,
+          },
+          {
+            divider: true,
+          },
+        ]
+      } else {
+        return [
+          {
+            icon: 'mdi-account',
+            title: this.$i18n.t('Profile'),
+            route: 'profile',
+            authRequired: true,
+          },
+          {
+            icon: 'icon-sensors--no-outline',
+            title: this.$i18n.tc('device', 2),
+            route: 'devices',
+            authRequired: true,
+          },
+          {
+            icon: 'mdi-bell',
+            title: this.$i18n.t('alertrule_pagetitle'),
+            route: 'alertrules',
+            authRequired: true,
+          },
+          {
+            icon: 'mdi-cloud-download',
+            title: this.$i18n.t('Data_export'),
+            route: 'export',
+            authRequired: true,
+          },
+          {
+            icon: 'mdi-format-list-checks',
+            title: this.$i18n.tc('Checklist_template', 2),
+            route: 'checklists',
+            authRequired: true,
+          },
+          {
+            icon: 'mdi-school',
+            title: this.$i18n.t('research'),
+            route: 'research',
+            authRequired: true,
+          },
+          {
+            divider: true,
+          },
+          {
+            icon: 'mdi-comment-question-outline',
+            title: this.$i18n.t('Support'),
+            route: 'support',
+            authRequired: true,
+          },
+          {
+            icon: 'mdi-new-box',
+            title: this.$i18n.t('Whats_new'),
+            route: 'new',
+            authRequired: false,
+          },
+          {
+            icon: 'mdi-information-outline',
+            title: 'BEEP ' + this.$i18n.t('Website'),
+            external: true,
+            route:
+              this.locale === 'nl'
+                ? 'https://beep.nl'
+                : 'https://beep.nl/home-english',
+            authRequired: false,
+          },
+          {
+            divider: true,
+          },
+        ]
+      }
     },
     // can't use drawer prop directly because v-model will mutate it directly which is not allowed
     showDrawer: {
@@ -186,6 +266,9 @@ export default {
     loggedIn() {
       return this.$store.getters['auth/loggedIn']
     },
+  },
+  created() {
+    this.readDevicesIfNotPresent()
   },
   methods: {
     signOut() {
