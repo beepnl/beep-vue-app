@@ -30,7 +30,7 @@
             </v-col>
           </div>
           <v-card-actions class="pl-0 mr-1">
-            <!-- <v-btn
+            <v-btn
               v-if="alerts.length > 1 && !mobile"
               tile
               outlined
@@ -48,7 +48,7 @@
               />
               <v-icon v-if="!showLoadingIcon" left>mdi-delete</v-icon>
               {{ !smallScreen ? $t('delete_all_alerts') : $t('Delete') }}</v-btn
-            > -->
+            >
             <v-btn
               :to="{ name: 'alertrules' }"
               tile
@@ -106,7 +106,7 @@
     </v-container>
 
     <v-container v-if="!showAlertPlaceholder && ready" class="alerts-content">
-      <!-- <v-btn
+      <v-btn
         v-if="alerts.length > 1 && mobile"
         tile
         outlined
@@ -124,7 +124,7 @@
         />
         <v-icon v-if="!showLoadingIcon" left>mdi-delete</v-icon>
         {{ $t('delete_all_alerts') }}</v-btn
-      > -->
+      >
 
       <v-alert
         v-for="error in errors"
@@ -341,7 +341,7 @@ export default {
     async deleteAllAlerts() {
       this.showLoadingIcon = true
       try {
-        const response = await Api.deleteRequest('/alerts/all') // TODO: use actual call
+        const response = await Api.deleteRequest('/alerts/', 'all')
         if (!response) {
           console.log('Error')
         }
