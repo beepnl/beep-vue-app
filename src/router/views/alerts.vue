@@ -357,7 +357,10 @@ export default {
       }
     },
     confirmDeleteAlerts() {
-      const warningMessage = this.$i18n.t('delete_all_alerts_warning')
+      const warningMessage =
+        this.search !== null && this.search !== ''
+          ? this.$i18n.t('delete_all_alerts_warning_filter_active')
+          : this.$i18n.t('delete_all_alerts_warning')
       this.$refs.confirm
         .open(
           this.$i18n.t('delete_all_alerts'),
