@@ -799,6 +799,21 @@ const translations = {
     'Are you sure you want to delete all alerts? Alerts that do not match your search term will be deleted as well. This cannot be undone.',
   already_verified: 'I have verified my email address and would like to login',
   password_recovery_resend_mail: 'Send new verification code',
+  Log_data_import: 'Import log data',
+  Flashlogs: 'Log files',
+  Upload_date: 'Upload date',
+  Messages: 'Messages',
+  Log_time: 'Time logged',
+  File_size: 'File size',
+  check_flashlog: 'Check log data',
+  delete_flashlog: 'Delete log file',
+  commit_flashlog_short: 'Import log data',
+  commit_flashlog: 'Import data from this log file to the BEEP app: ',
+  flashlog_explanation: 'Here will come some explanation about log files.', // TODO: update term!
+  flashlog_url_text:
+    'Here you can find the support article on downloading log data with the BEEP Base app.',
+  flashlog_support_url:
+    'https://beepsupport.freshdesk.com/en/support/solutions/articles/60000697129-download-beep-base-data-through-bluetooth',
 }
 
 export default translations

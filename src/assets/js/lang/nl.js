@@ -806,12 +806,21 @@ const translations = {
     'Weet u zeker dat u alle notificaties wilt verwijderen? Ook notificaties die niet aan je zoekterm voldoen zullen verwijderd worden. Dit kan niet ongedaan gemaakt worden.',
   already_verified: 'Ik heb mijn e-mailadres gevalideerd en wil graag inloggen',
   password_recovery_resend_mail: 'Verstuur code opnieuw',
-  Data_import: 'Data importeren',
-  Flash_logs: 'Flash logs',
+  Log_data_import: 'Log data importeren',
+  Flashlogs: 'Logbestanden',
   Upload_date: 'Upload datum',
   Messages: 'Berichten',
   Log_time: 'Tijd gelogd',
-  check_flash_log: 'Check log data',
+  File_size: 'Bestandsgrootte',
+  check_flashlog: 'Check log data',
+  delete_flashlog: 'Verwijder logbestand',
+  commit_flashlog_short: 'Importeer log data',
+  commit_flashlog: 'Importeer data van dit logbestand naar de BEEP app: ',
+  flashlog_explanation: 'Hier komt uitleg over de logbestanden.', // TODO: update term!
+  flashlog_url_text:
+    'Lees hier het support artikel over het downloaden van log data m.b.v. de BEEP Base app.',
+  flashlog_support_url:
+    'https://beepsupport.freshdesk.com/nl/support/solutions/articles/60000697129-beep-base-data-downloaden-met-bluetooth',
 }
 
 export default translations
