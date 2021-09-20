@@ -213,7 +213,10 @@
                           <span class="beep-label">{{
                             ownedDevice.last_message_received !==
                             null /* eslint-disable vue/comma-dangle */
-                              ? momentify(ownedDevice.last_message_received)
+                              ? momentify(
+                                  ownedDevice.last_message_received,
+                                  true
+                                )
                               : '?'
                           }}</span>
                         </div>
@@ -530,7 +533,7 @@
                                 <span
                                   v-text="
                                     sensorDef.updated_at !== null
-                                      ? momentify(sensorDef.updated_at)
+                                      ? momentify(sensorDef.updated_at, true)
                                       : $t('Not_yet_saved')
                                   "
                                 ></span>

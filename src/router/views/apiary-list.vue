@@ -262,7 +262,7 @@
                   <td>
                     <span>{{
                       tabletLandscapeUp
-                        ? momentify(invitation.invited)
+                        ? momentify(invitation.invited, true)
                         : momentifyDayMonth(invitation.invited)
                     }}</span>
                   </td>
