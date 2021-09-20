@@ -33,16 +33,6 @@ const translations = {
     'Marras',
     'Joulu',
   ],
-  weekdaysFull: [
-    'Sunnuntai',
-    'Maanantai',
-    'Tiistai',
-    'Keskiviikko',
-    'Torstai',
-    'Perjantai',
-    'Lauantai',
-  ],
-  weekdaysShort: ['Su', 'Ma', 'Ti', 'Ke', 'To', 'Pe', 'La'],
   Today: 'Tänään',
   Clear: 'Poista',
   Close: 'Sulje',
@@ -805,12 +795,15 @@ const translations = {
   Add_sensor_definition: 'Lisää anturin määritelmä',
   Add_member: 'Lisää jäsen',
 
-  /* TO BE TRANSLATED */
-  deleted_or_new_but_not_saved_sensor_defs_warning:
-    'N.B.: sensor definitions will only be removed or added after clicking the green check icon at the end of the sensor definition row in the table.',
+  /* TO BE TRANSLATED FOR 3.1 */
+  new_but_not_saved_sensor_defs_warning:
+    'N.B.: sensor definitions will only be added after clicking the green check icon at the end of the sensor definition row in the table.',
+  delete_sensordef: 'Delete sensor definition',
   delete_all_alerts: 'Delete all alerts',
   delete_all_alerts_warning:
     'Are you sure you want to delete all alerts? This cannot be undone.',
+  delete_all_alerts_warning_filter_active:
+    'Are you sure you want to delete all alerts? Alerts that do not match your search term will be deleted as well. This cannot be undone.',
   already_verified: 'I have verified my email address and would like to login',
   password_recovery_resend_mail: 'Send new verification code',
 }

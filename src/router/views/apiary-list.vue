@@ -262,7 +262,7 @@
                   <td>
                     <span>{{
                       tabletLandscapeUp
-                        ? momentify(invitation.invited)
+                        ? momentify(invitation.invited, true)
                         : momentifyDayMonth(invitation.invited)
                     }}</span>
                   </td>
@@ -669,7 +669,7 @@ export default {
   }),
   computed: {
     ...mapGetters('alerts', ['alerts']),
-    ...mapGetters('devices', ['devices', 'devicesPresent']),
+    ...mapGetters('devices', ['devices']),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups', 'invitations']),
     filterByAlert: {

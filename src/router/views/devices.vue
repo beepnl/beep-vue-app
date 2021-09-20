@@ -1,11 +1,11 @@
 <template>
   <Layout
     :title="`${$tc('device', 2)}`"
-    :edited="deletedButNotSavedDevices || deletedOrNewButNotSavedSensorDefs"
+    :edited="deletedButNotSavedDevices || newButNotSavedSensorDefs"
     :warning-message="
       deletedButNotSavedDevices
         ? $t('deleted_but_not_saved_devices_warning')
-        : $t('deleted_or_new_but_not_saved_sensor_defs_warning')
+        : $t('new_but_not_saved_sensor_defs_warning')
     "
   >
     <v-toolbar class="save-bar mt-0" dense light>
@@ -213,7 +213,10 @@
                           <span class="beep-label">{{
                             ownedDevice.last_message_received !==
                             null /* eslint-disable vue/comma-dangle */
-                              ? momentify(ownedDevice.last_message_received)
+                              ? momentify(
+                                  ownedDevice.last_message_received,
+                                  true
+                                )
                               : '?'
                           }}</span>
                         </div>
@@ -530,7 +533,7 @@
                                 <span
                                   v-text="
                                     sensorDef.updated_at !== null
-                                      ? momentify(sensorDef.updated_at)
+                                      ? momentify(sensorDef.updated_at, true)
                                       : $t('Not_yet_saved')
                                   "
                                 ></span>
@@ -549,23 +552,28 @@
                                     color="green"
                                     indeterminate
                                   />
-                                  <v-icon
+                                  <v-tooltip
                                     v-if="
                                       showLoadingIconById.indexOf(
                                         sensorDef.id
                                       ) === -1
                                     "
-                                    dark
-                                    class="mr-3"
-                                    color="green"
-                                    @click="updateSensorDef(sensorDef)"
-                                    >mdi-check</v-icon
-                                  >
-                                  <v-tooltip
-                                    v-if="sensorDef.delete"
                                     open-delay="500"
                                     bottom
                                   >
+                                    <template v-slot:activator="{ on }">
+                                      <v-icon
+                                        dark
+                                        class="mr-3"
+                                        color="green"
+                                        v-on="on"
+                                        @click="updateSensorDef(sensorDef)"
+                                        >mdi-check</v-icon
+                                      >
+                                    </template>
+                                    <span>{{ $t('save') }}</span>
+                                  </v-tooltip>
+                                  <v-tooltip open-delay="500" bottom>
                                     <template v-slot:activator="{ on }">
                                       <v-icon
                                         dark
@@ -577,22 +585,11 @@
                                             sensorDef
                                           )
                                         "
-                                        >mdi-refresh</v-icon
+                                        >mdi-delete</v-icon
                                       >
                                     </template>
-                                    <span v-if="sensorDef.delete">{{
-                                      $t('Undelete')
-                                    }}</span>
+                                    <span>{{ $t('Delete') }}</span>
                                   </v-tooltip>
-                                  <v-icon
-                                    v-if="!sensorDef.delete"
-                                    dark
-                                    color="red"
-                                    @click="
-                                      deleteSensorDef(ownedDevice, sensorDef)
-                                    "
-                                    >mdi-delete</v-icon
-                                  >
                                 </div>
                               </td>
                             </tr>
@@ -709,11 +706,11 @@ export default {
       })
       return unsavedDeletions.length > 0
     },
-    deletedOrNewButNotSavedSensorDefs() {
+    newButNotSavedSensorDefs() {
       const unsavedChanges = this.ownedDevices.filter((ownedDevice) => {
         const unsavedSensorDefs = ownedDevice.sensor_definitions.filter(
           (sensorDef) => {
-            return sensorDef.delete || sensorDef.id === undefined
+            return sensorDef.id === undefined
           }
         )
         return unsavedSensorDefs.length > 0
@@ -914,9 +911,9 @@ export default {
     },
     confirmSaveDevices() {
       const warningMessage = this.$i18n.t(
-        'deleted_or_new_but_not_saved_sensor_defs_warning'
+        'new_but_not_saved_sensor_defs_warning'
       )
-      if (this.deletedOrNewButNotSavedSensorDefs) {
+      if (this.newButNotSavedSensorDefs) {
         this.$refs.confirm
           .open(
             this.$i18n.t('save') + ' ' + this.$i18n.tc('device', 2),
@@ -944,9 +941,25 @@ export default {
     },
     deleteSensorDef(device, sensorDef) {
       if (typeof sensorDef.id === 'undefined') {
-        return this.removeSensorDef(device, sensorDef.id)
+        this.removeSensorDef(device, sensorDef)
+      } else {
+        sensorDef.delete = !sensorDef.delete
+        this.$refs.confirm
+          .open(
+            this.$i18n.t('delete_sensordef'),
+            this.$i18n.t('delete_sensordef') + ' (' + sensorDef.name + ')?',
+            {
+              color: 'red',
+            }
+          )
+          .then((confirm) => {
+            this.updateSensorDef(sensorDef)
+          })
+          .catch((reject) => {
+            sensorDef.delete = !sensorDef.delete
+            return true
+          })
       }
-      sensorDef.delete = !sensorDef.delete
     },
     randomString(length) {
       var text = ''
@@ -968,15 +981,15 @@ export default {
       })
       this.devices.splice(deviceIndex, 1)
     },
-    removeSensorDef(device, sensorDefId) {
+    removeSensorDef(device, sensorDefinition) {
       var sensorDefIndex = device.sensor_definitions
         .map(function(sensorDef) {
           return sensorDef.id
         })
-        .indexOf(sensorDefId)
-      return typeof device.sensor_definitions[sensorDefIndex] !== 'undefined'
-        ? device.sensor_definitions.splice(sensorDefIndex, 1)
-        : null
+        .indexOf(sensorDefinition.id)
+      if (device.sensor_definitions[sensorDefIndex] !== 'undefined') {
+        device.sensor_definitions.splice(sensorDefIndex, 1)
+      }
     },
     sortedSensorDefinitions(sensordefs) {
       // sort sensor_definitions: newly added first (if multiple new: sory by name), then first by output_abbr then input_abbr then updated_at

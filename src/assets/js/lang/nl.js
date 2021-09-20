@@ -33,16 +33,6 @@ const translations = {
     'nov',
     'dec',
   ],
-  weekdaysFull: [
-    'zondag',
-    'maandag',
-    'dinsdag',
-    'woensdag',
-    'donderdag',
-    'vrijdag',
-    'zaterdag',
-  ],
-  weekdaysShort: ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za'],
   Today: 'Vandaag',
   Clear: 'Verwijderen',
   Close: 'Sluiten',
@@ -806,11 +796,14 @@ const translations = {
   Add_sensor_definition: 'Toevoegen sensordefinitie',
   Add_member: 'Toevoegen groepslid',
 
-  deleted_or_new_but_not_saved_sensor_defs_warning:
-    'Let op: sensor definities worden pas definitief verwijderd of toegevoegd wanneer je op het groene vink icoon klikt, aan het einde van de sensor definitie rij in de tabel.',
+  new_but_not_saved_sensor_defs_warning:
+    'Let op: sensor definities worden pas definitief toegevoegd wanneer je op het groene vink icoon klikt, aan het einde van de sensor definitie rij in de tabel.',
+  delete_sensordef: 'Verwijder sensordefinitie',
   delete_all_alerts: 'Verwijder alle notificaties',
   delete_all_alerts_warning:
     'Weet u zeker dat u alle notificaties wilt verwijderen? Dit kan niet ongedaan gemaakt worden.',
+  delete_all_alerts_warning_filter_active:
+    'Weet u zeker dat u alle notificaties wilt verwijderen? Ook notificaties die niet aan je zoekterm voldoen zullen verwijderd worden. Dit kan niet ongedaan gemaakt worden.',
   already_verified: 'Ik heb mijn e-mailadres gevalideerd en wil graag inloggen',
   password_recovery_resend_mail: 'Verstuur code opnieuw',
   Data_import: 'Data importeren',

@@ -201,11 +201,7 @@
               <v-spacer></v-spacer>
               <v-btn tile outlined color="accent" @click="addGroupUser">
                 <v-icon left>mdi-plus</v-icon>
-                {{
-                  tabletLandscapeUp
-                    ? $t('Add_member')
-                    : $t('add')
-                }}
+                {{ tabletLandscapeUp ? $t('Add_member') : $t('add') }}
               </v-btn>
             </div>
             <div class="rounded-border">
@@ -260,7 +256,7 @@
                       </td>
                       <td>
                         <span v-if="user.accepted === null">{{
-                          momentify(user.invited)
+                          momentify(user.invited, true)
                         }}</span>
                       </td>
                       <td>

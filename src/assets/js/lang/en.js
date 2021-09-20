@@ -33,16 +33,6 @@ const translations = {
     'Nov',
     'Dec',
   ],
-  weekdaysFull: [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-  ],
-  weekdaysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
   Today: 'Today',
   Clear: 'Clear',
   Close: 'Close',
@@ -799,11 +789,14 @@ const translations = {
   Add_sensor_definition: 'Add sensor definition',
   Add_member: 'Add member',
 
-  deleted_or_new_but_not_saved_sensor_defs_warning:
-    'N.B.: sensor definitions will only be removed or added after clicking the green check icon at the end of the sensor definition row in the table.',
+  new_but_not_saved_sensor_defs_warning:
+    'N.B.: sensor definitions will only be added after clicking the green check icon at the end of the sensor definition row in the table.',
+  delete_sensordef: 'Delete sensor definition',
   delete_all_alerts: 'Delete all alerts',
   delete_all_alerts_warning:
     'Are you sure you want to delete all alerts? This cannot be undone.',
+  delete_all_alerts_warning_filter_active:
+    'Are you sure you want to delete all alerts? Alerts that do not match your search term will be deleted as well. This cannot be undone.',
   already_verified: 'I have verified my email address and would like to login',
   password_recovery_resend_mail: 'Send new verification code',
 }

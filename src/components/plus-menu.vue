@@ -31,10 +31,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { readDevicesIfNotPresent } from '@mixins/methodsMixin'
 
 export default {
-  mixins: [readDevicesIfNotPresent],
   computed: {
     ...mapGetters('devices', ['devices', 'devicesPresent']),
     plusItems() {
@@ -94,9 +92,6 @@ export default {
     loggedIn() {
       return this.$store.getters['auth/loggedIn']
     },
-  },
-  created() {
-    this.readDevicesIfNotPresent()
   },
   methods: {},
 }
