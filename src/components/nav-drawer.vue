@@ -153,7 +153,7 @@ export default {
           beepBaseRequired: false,
         },
         {
-          icon: 'mdi-bluetooth-transfer',
+          icon: 'icon-beep-base',
           title: this.$i18n.t('Log_data_import'),
           route: 'import',
           authRequired: true,

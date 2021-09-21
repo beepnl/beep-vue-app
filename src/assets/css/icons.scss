@@ -68,6 +68,15 @@
     }
   }
 
+  &-beep-base {
+    width: 41px;
+    height: 28px;
+    background-color: transparent;
+    background-image: url('~@assets/img/icons/icn_beep_base_small.png');
+    background-size: contain;
+    border: 0;
+  }
+
   &-filter {
     background-color: $color-grey-filter;
     border: 2px solid $color-grey-filter;
