@@ -799,6 +799,8 @@ const translations = {
     'Are you sure you want to delete all alerts? Alerts that do not match your search term will be deleted as well. This cannot be undone.',
   already_verified: 'I have verified my email address and would like to login',
   password_recovery_resend_mail: 'Send new verification code',
+  alert_rule_created: 'New alert rule has been created',
+  alert_rule_deleted: 'Alert rule has been deleted',
 }
 
 export default translations

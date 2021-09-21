@@ -56,7 +56,7 @@
                 </v-col>
 
                 <v-col
-                  v-else
+                  v-else-if="alert.hive_id !== null"
                   cols="3"
                   sm="12"
                   md="3"
@@ -327,6 +327,9 @@ export default {
     alertValueText() {
       if (this.alert !== null) {
         if (this.alert.alert_value !== null) {
+          if (this.alert.alert_value.indexOf('alert_rule') > -1) {
+            return this.$i18n.t(this.alert.alert_value)
+          }
           var number = parseFloat(this.alert.alert_value)
           if (!isNaN(number)) {
             return number.toFixed(2)

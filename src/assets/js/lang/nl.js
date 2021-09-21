@@ -806,6 +806,8 @@ const translations = {
     'Weet u zeker dat u alle notificaties wilt verwijderen? Ook notificaties die niet aan je zoekterm voldoen zullen verwijderd worden. Dit kan niet ongedaan gemaakt worden.',
   already_verified: 'Ik heb mijn e-mailadres gevalideerd en wil graag inloggen',
   password_recovery_resend_mail: 'Verstuur code opnieuw',
+  alert_rule_created: 'Nieuwe notificatie ingesteld',
+  alert_rule_deleted: 'Notificatie-instelling verwijderd',
 }
 
 export default translations
