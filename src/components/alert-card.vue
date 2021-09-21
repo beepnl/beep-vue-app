@@ -19,13 +19,16 @@
           <v-row class="ml-0 my-0 pl-0 py-0" style="width:100%;">
             <v-col
               cols="12"
-              sm="5"
+              sm="4"
+              md="5"
               class="alert-details-item alert-meta d-flex flex-row justify-flex-start pa-0"
             >
               <v-row class="my-0 py-0 pr-1">
                 <v-col
                   v-if="alert.created_at"
                   cols="5"
+                  sm="6"
+                  md="5"
                   class="alert-date-item d-flex flex-column align-start pa-0"
                 >
                   <div>
@@ -40,8 +43,10 @@
                 </v-col>
 
                 <v-col
-                  v-if="typeof hives[alert.hive_id] !== 'undefined'"
+                  v-if="hives[alert.hive_id] !== undefined"
                   cols="3"
+                  sm="4"
+                  md="3"
                   class="hive-icon-wrapper mt-1 ml-1 ml-md-0 ml-lg-n2 mr-1 mr-md-0 mr-lg-n2 d-flex justify-center align-start pa-0"
                 >
                   <HiveIcon
@@ -53,6 +58,8 @@
                 <v-col
                   v-else
                   cols="3"
+                  sm="12"
+                  md="3"
                   class="ml-1 ml-md-0 ml-lg-n2 mr-1 mr-md-0 mr-lg-n2 d-flex flex-column align-center pa-0"
                   ><span class="alert-label alert-label-break text-center"
                     ><i
@@ -146,7 +153,7 @@
               </v-row>
             </v-col>
 
-            <v-col cols="12" sm="7" class="alert-content pa-0">
+            <v-col cols="12" sm="8" md="7" class="alert-content pa-0">
               <v-row class="my-0 py-0 ml-n6 ml-sm-0 mr-sm-n4 pr-6 pr-sm-3">
                 <v-col
                   cols="12"
@@ -386,11 +393,11 @@ export default {
     }
   }
   .alert-date-item {
-    max-width: 130px;
+    max-width: 150px;
     margin-bottom: 0;
     line-height: 1.1rem;
     @include for-phone-only {
-      max-width: 110px;
+      max-width: 115px;
     }
   }
   .alert-date {
@@ -403,6 +410,8 @@ export default {
     white-space: nowrap;
     @include for-phone-only {
       font-size: 0.7rem !important;
+      line-height: 10px;
+      white-space: break-spaces;
     }
   }
   .alert-text {
@@ -411,6 +420,7 @@ export default {
       margin-top: 2px;
     }
     @include for-phone-only {
+      margin-top: 5px;
       word-break: break-all;
     }
   }

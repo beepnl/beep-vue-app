@@ -167,6 +167,7 @@
             <el-input-number
               v-model="activeAlertRule.calculation_minutes"
               :precision="0"
+              :min="15"
               :step-strictly="true"
               size="small"
               @change="setAlertRuleEdited(true)"

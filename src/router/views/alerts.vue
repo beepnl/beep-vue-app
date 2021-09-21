@@ -216,7 +216,7 @@ export default {
     alertsWithRuleDetails() {
       var alertsWithRuleDetails = this.alerts
       alertsWithRuleDetails.map((alert) => {
-        alert.locale_date = this.momentify(alert.created_at, true)
+        alert.locale_date = this.momentify(alert.created_at, true, 'llll')
         alert.moment_from_now = this.momentFromNow(alert.created_at, true)
         var hiveGroupName = null
         if (
