@@ -616,9 +616,7 @@ export default {
         }
         setTimeout(() => {
           return this.readAlertRules().then(() => {
-            this.$router.push({
-              name: 'alertrules',
-            })
+            this.nextRoute()
           })
         }, 50) // wait for API to update alertrules
       } catch (error) {
@@ -673,9 +671,7 @@ export default {
           }
           setTimeout(() => {
             return this.readAlertRules().then(() => {
-              this.$router.push({
-                name: 'alertrules',
-              })
+              this.nextRoute()
             })
           }, 150) // wait for API to update alertrules
         } catch (error) {
@@ -690,6 +686,17 @@ export default {
           this.snackbar.show = true
           this.showLoadingIcon = false
         }
+      }
+    },
+    nextRoute() {
+      if (localStorage.beepPreviousRoute === 'alerts') {
+        this.$router.push({
+          name: 'alerts',
+        })
+      } else {
+        this.$router.push({
+          name: 'alertrules',
+        })
       }
     },
     confirmDeleteAlertRule() {

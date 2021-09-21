@@ -345,8 +345,9 @@ export default {
         if (!response) {
           console.log('Error')
         }
-        this.showLoadingIcon = false
-        this.readAlerts() // update alerts in store
+        this.readAlerts().then(() => {
+          this.showLoadingIcon = false
+        }) // update alerts in store
       } catch (error) {
         this.showLoadingIcon = false
         if (error.response) {
