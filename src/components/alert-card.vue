@@ -6,12 +6,28 @@
         text
         prominent
         dense
-        icon="mdi-bell"
         color="red"
         class="alert-card cursor-pointer mb-0"
         outlined
         v-on="menu"
       >
+        <template v-slot:prepend>
+          <div class="alert-icon d-flex align-center">
+            <v-badge
+              v-if="alert.count > 1"
+              :offset-x="alert.count > 9 ? '23' : '20'"
+              offset-y="20"
+              color="transparent"
+              :content="alert.count > 99 ? '99' : alert.count"
+            >
+              <v-icon color="red">mdi-bell</v-icon>
+            </v-badge>
+            <v-icon v-else color="red">
+              mdi-bell
+            </v-icon>
+          </div>
+        </template>
+
         <div
           class="d-flex flex-no-wrap justify-flex-start align-start"
           style="width: 100%;"
@@ -25,7 +41,7 @@
             >
               <v-row class="my-0 py-0 pr-1">
                 <v-col
-                  v-if="alert.created_at"
+                  v-if="alert.updated_at"
                   cols="5"
                   sm="6"
                   md="5"
@@ -37,7 +53,7 @@
                   <span
                     class="alert-text
                         last-visit"
-                    v-text="alert.moment_from_now"
+                    v-text="alert.momentified"
                   >
                   </span>
                 </v-col>
@@ -265,7 +281,7 @@
             name: 'measurements-id',
             params: { id: alert.device_id },
             query: {
-              date: alert.created_at.substr(0, 10),
+              date: alert.updated_at.substr(0, 10),
             },
           }"
         >
@@ -325,7 +341,6 @@ export default {
   data: () => ({}),
   computed: {
     alertValueText() {
-      var countText = ', count: ' + this.alert.count
       if (this.alert !== null) {
         if (this.alert.alert_value !== null) {
           if (this.alert.alert_value.indexOf('alert_rule') > -1) {
@@ -333,9 +348,9 @@ export default {
           }
           var number = parseFloat(this.alert.alert_value)
           if (!isNaN(number)) {
-            return number.toFixed(2) + countText
+            return number.toFixed(2)
           } else {
-            return this.alert.alert_value + countText
+            return this.alert.alert_value
           }
         } else {
           return null
@@ -444,6 +459,11 @@ export default {
         margin-bottom: 0 !important;
       }
     }
+  }
+
+  .alert-icon {
+    min-width: 44px;
+    height: 44px;
   }
 }
 </style>
