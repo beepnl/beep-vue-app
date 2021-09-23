@@ -712,9 +712,12 @@ const translations = {
   Difference: 'Verschil',
   Absolute_value: 'Absolute waarde',
   Absolute_value_of_dif: 'Absolute waarde van het verschil',
-  Exclude_months: 'Deze notificatie deactiveren gedurende de volgende maanden:',
-  Exclude_hours: 'Deze notificatie deactiveren tijdens de volgende uren:',
-  Exclude_hives: 'Deze notificatie deactiveren voor de volgende bijenkasten:',
+  Exclude_months:
+    'Deze notificatie <strong>deactiveren</strong> gedurende de volgende maanden:',
+  Exclude_hours:
+    'Deze notificatie <strong>deactiveren</strong> tijdens de volgende uren:',
+  Exclude_hives:
+    'Deze notificatie <strong>deactiveren</strong> voor de volgende bijenkasten:',
   Exclude_hives_details:
     'N.B. De notificatie wordt standaard voor alle bijenkasten met een meetsysteem uitgevoerd.',
   months: 'maanden',

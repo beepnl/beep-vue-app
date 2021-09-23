@@ -673,10 +673,12 @@ const translations = {
   Difference: 'Differenza',
   Absolute_value: 'Valore assoluto',
   Absolute_value_of_dif: 'Valore assoluto della differenza',
-  Exclude_months: 'Disattiva questo messaggio di allerta per i seguenti mesi:',
-  Exclude_hours: 'Disattiva questo messaggio di allerta per le seguenti more:',
+  Exclude_months:
+    '<strong>Disattiva</strong> questo messaggio di allerta per i seguenti mesi:',
+  Exclude_hours:
+    '<strong>Disattiva</strong> questo messaggio di allerta per le seguenti more:',
   Exclude_hives:
-    'Disattiva questo messaggio di allerta per i seguenti alveari:',
+    '<strong>Disattiva</strong> questo messaggio di allerta per i seguenti alveari:',
   Exclude_hives_details:
     'N.B. Come impostazione standard, questo messaggio di allerta sarà associato a tutti gli alveari con dispositivo per misurazioni.',
   months: 'mesi',

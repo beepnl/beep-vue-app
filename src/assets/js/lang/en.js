@@ -706,9 +706,12 @@ const translations = {
   Difference: 'Difference',
   Absolute_value: 'Absolute value',
   Absolute_value_of_dif: 'Absolute value of the difference',
-  Exclude_months: 'Deactivate this alert during the following months:',
-  Exclude_hours: 'Deactivate this alert during the following hours:',
-  Exclude_hives: 'Deactivate this alert for the following hives:',
+  Exclude_months:
+    '<strong>Deactivate</strong> this alert during the following months:',
+  Exclude_hours:
+    '<strong>Deactivate</strong> this alert during the following hours:',
+  Exclude_hives:
+    '<strong>Deactivate</strong> this alert for the following hives:',
   Exclude_hives_details:
     'N.B. By default, this alert will be executed for all hives with a measurement device.',
   months: 'months',

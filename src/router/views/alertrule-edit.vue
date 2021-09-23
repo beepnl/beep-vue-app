@@ -229,7 +229,9 @@
 
         <v-row v-if="activeAlertRule">
           <v-col cols="12" sm="6" lg="4">
-            <div class="beep-label" v-text="$t('Exclude_months')"></div>
+            <div class="beep-label" v-html="$t('Exclude_months')"
+              ><span>{{}}</span
+            ></div>
             <Treeselect
               v-model="activeAlertRule.exclude_months"
               :options="months"
@@ -241,7 +243,7 @@
           </v-col>
 
           <v-col cols="12" sm="6" lg="4">
-            <div class="beep-label" v-text="$t('Exclude_hours')"></div>
+            <div class="beep-label" v-html="$t('Exclude_hours')"></div>
             <Treeselect
               v-model="activeAlertRule.exclude_hours"
               :options="hours"
@@ -253,7 +255,7 @@
           </v-col>
 
           <v-col v-if="devices.length > 1" cols="12" lg="4">
-            <div class="beep-label" v-text="$t('Exclude_hives')"></div>
+            <div class="beep-label" v-html="$t('Exclude_hives')"></div>
             <Treeselect
               v-model="activeAlertRule.exclude_hive_ids"
               :options="sortedDevices"
@@ -476,9 +478,10 @@ export default {
       this.devices.map((device) => {
         uniqueApiaries.map((apiary) => {
           if (
-            apiary.label === device.location_name ||
-            (apiary.label === this.$i18n.t('Unknown') &&
-              device.location_name === '')
+            device.hive_id !== null &&
+            (apiary.label === device.location_name ||
+              (apiary.label === this.$i18n.t('Unknown') &&
+                device.location_name === ''))
           ) {
             const deviceLabel = device.hive_name
               ? device.hive_name + ' - ' + device.name
