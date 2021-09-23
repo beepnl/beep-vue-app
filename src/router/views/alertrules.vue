@@ -405,8 +405,7 @@ export default {
           this.$i18n.t('delete_alertrule') +
             ' (' +
             alertRule.name +
-            ' - ' +
-            alertRule.description +
+            (alertRule.description ? ' - ' + alertRule.description : '') +
             ')?',
           {
             color: 'red',

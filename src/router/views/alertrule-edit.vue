@@ -545,7 +545,7 @@ export default {
     sortedSensorMeasurements() {
       var measurementTypes = this.sensorMeasurementsList
 
-      // check if translation exists, if not don't display the measurement type
+      // check if measurement type should be shown in alerts and if translation exists, if not don't display the measurement type
       measurementTypes = measurementTypes.filter(
         (measurementType) =>
           measurementType.show_in_alerts &&
@@ -585,7 +585,7 @@ export default {
               ' ' +
               (this.alertRules.length + 1),
             description: '',
-            measurement_id: this.sensorMeasurementsList[0].id,
+            measurement_id: this.sortedSensorMeasurements[0].id,
             calculation: 'ave',
             calculation_minutes: 60,
             comparator: '<',
@@ -771,8 +771,9 @@ export default {
         comparison: this.comparisons
           .filter((comparison) => comparison.short === alertRule.comparison)[0]
           .full.toLowerCase(),
-        measurement_quantity: measurement.label,
-        measurement_unit: measurement.unit,
+        measurement_quantity:
+          measurement !== undefined ? measurement.label : '-',
+        measurement_unit: measurement !== undefined ? measurement.unit : '',
         comparator: this.comparators.filter(
           (comparator) => comparator.short === alertRule.comparator
         )[0].full,
@@ -832,7 +833,7 @@ export default {
         replacedSentence += this.$i18n.t('alertrule_exclude_hives_sentence')
         var hivesArray = []
         alertRule.exclude_hive_ids.map((hiveId) => {
-          var hiveName = hiveId + ' (unknown)'
+          var hiveName = hiveId + ' (' + this.$i18n.t('unknown') + ')'
           var filteredDevices = this.devices.filter(
             (device) => device.hive_id === hiveId
           )
