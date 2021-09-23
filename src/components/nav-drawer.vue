@@ -29,6 +29,7 @@
                 :to="!item.external ? { name: item.route } : ''"
                 :target="item.external ? '_blank' : '_self'"
                 :disabled="item.authRequired && !loggedIn"
+                @click="checkRoute(item.route)"
               >
                 <v-list-item-avatar>
                   <v-icon color="accent">{{ item.icon }}</v-icon>
@@ -50,6 +51,7 @@
                 :href="item.external ? item.route : ''"
                 :target="item.external ? '_blank' : '_self'"
                 :disabled="item.authRequired && !loggedIn"
+                @click="checkRoute(item.route)"
               >
                 <v-list-item-avatar>
                   <v-icon v-if="!item.icon.includes('icon')" color="accent">{{
@@ -103,6 +105,9 @@ export default {
     },
   },
   computed: {
+    currentRoute() {
+      return this.$route.name
+    },
     settingItems() {
       return [
         {
@@ -188,6 +193,11 @@ export default {
     },
   },
   methods: {
+    checkRoute(routeName) {
+      if (routeName === this.currentRoute) {
+        this.showDrawer = false
+      }
+    },
     signOut() {
       this.$store
         .dispatch('auth/signOut')
