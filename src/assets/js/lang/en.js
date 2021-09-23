@@ -792,8 +792,8 @@ const translations = {
   Add_member: 'Add member',
 
   alert_rule_deleted: 'Alert rule has been deleted',
-  new_but_not_saved_sensor_defs_warning:
-    'N.B.: sensor definitions will only be added after clicking the green check icon at the end of the sensor definition row in the table.',
+  new_or_edited_but_not_saved_sensor_defs_warning:
+    'N.B.: sensor definitions will only be saved or added after clicking the green check icon at the end of the sensor definition row in the table.',
   delete_sensordef: 'Delete sensor definition',
   delete_all_alerts: 'Delete all alerts',
   delete_all_alerts_warning:

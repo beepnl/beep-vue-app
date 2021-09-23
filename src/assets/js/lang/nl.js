@@ -799,8 +799,8 @@ const translations = {
   Add_member: 'Toevoegen groepslid',
   alert_rule_deleted: 'Notificatie-instelling verwijderd',
 
-  new_but_not_saved_sensor_defs_warning:
-    'Let op: sensor definities worden pas definitief toegevoegd wanneer je op het groene vink icoon klikt, aan het einde van de sensor definitie rij in de tabel.',
+  new_or_edited_but_not_saved_sensor_defs_warning:
+    'Let op: sensor definities worden pas opgeslagen of definitief toegevoegd wanneer je op het groene vink icoon klikt, aan het einde van de sensor definitie rij in de tabel.',
   delete_sensordef: 'Verwijder sensordefinitie',
   delete_all_alerts: 'Verwijder alle notificaties',
   delete_all_alerts_warning:

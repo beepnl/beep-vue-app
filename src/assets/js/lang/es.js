@@ -767,8 +767,8 @@ const translations = {
   alert_rule_deleted: 'La regla de alerta ha sido eliminada',
 
   /* TO BE TRANSLATED FOR 3.1 */
-  new_but_not_saved_sensor_defs_warning:
-    'N.B.: sensor definitions will only be added after clicking the green check icon at the end of the sensor definition row in the table.',
+  new_or_edited_but_not_saved_sensor_defs_warning:
+    'N.B.: sensor definitions will only be saved or added after clicking the green check icon at the end of the sensor definition row in the table.',
   delete_sensordef: 'Delete sensor definition',
   delete_all_alerts: 'Delete all alerts',
   delete_all_alerts_warning:

@@ -1,11 +1,13 @@
 <template>
   <Layout
     :title="`${$tc('device', 2)}`"
-    :edited="deletedButNotSavedDevices || newButNotSavedSensorDefs"
+    :edited="
+      deletedButNotSavedDevices || newButNotSavedSensorDefs || sensorDefEdited
+    "
     :warning-message="
       deletedButNotSavedDevices
         ? $t('deleted_but_not_saved_devices_warning')
-        : $t('new_but_not_saved_sensor_defs_warning')
+        : $t('new_or_edited_but_not_saved_sensor_defs_warning')
     "
   >
     <v-toolbar class="save-bar mt-0" dense light>
@@ -459,6 +461,7 @@
                                   :placeholder="`${$t('Name')}`"
                                   class="mt-2"
                                   dense
+                                  @input="sensorDefEdited = true"
                                 ></v-text-field>
                               </td>
                               <td>
@@ -478,7 +481,9 @@
                                   size="small"
                                   @input.native="
                                     convertComma($event, sensorDef, 'offset')
+                                    sensorDefEdited = true
                                   "
+                                  @change="sensorDefEdited = true"
                                 ></el-input-number>
                               </td>
                               <td>
@@ -491,8 +496,10 @@
                                       $event,
                                       sensorDef,
                                       'multiplier'
-                                    )
+                                    ),
+                                      (sensorDefEdited = true)
                                   "
+                                  @change="sensorDefEdited = true"
                                 ></el-input-number>
                               </td>
                               <td class="td--small">
@@ -510,6 +517,7 @@
                                   "
                                   class="mt-2 mb-n5"
                                   solo
+                                  @input="sensorDefEdited = true"
                                 ></v-select>
                               </td>
                               <td class="td--small">
@@ -527,6 +535,7 @@
                                   "
                                   class="mt-2 mb-n5"
                                   solo
+                                  @input="sensorDefEdited = true"
                                 ></v-select>
                               </td>
                               <td>
@@ -694,6 +703,7 @@ export default {
       showLoadingIconById: [],
       showDescription: false,
       showInfo: true,
+      sensorDefEdited: false,
     }
   },
   computed: {
@@ -837,6 +847,7 @@ export default {
       this.showLoadingIconById.push(sensorDef.id)
       var sensorDefId =
         typeof sensorDef.id !== 'undefined' ? sensorDef.id : null
+      this.sensorDefEdited = false
       try {
         var response = false
         if (sensorDef.delete === true) {
@@ -911,9 +922,9 @@ export default {
     },
     confirmSaveDevices() {
       const warningMessage = this.$i18n.t(
-        'new_but_not_saved_sensor_defs_warning'
+        'new_or_edited_but_not_saved_sensor_defs_warning'
       )
-      if (this.newButNotSavedSensorDefs) {
+      if (this.newButNotSavedSensorDefs || this.sensorDefEdited) {
         this.$refs.confirm
           .open(
             this.$i18n.t('save') + ' ' + this.$i18n.tc('device', 2),
@@ -982,6 +993,7 @@ export default {
       this.devices.splice(deviceIndex, 1)
     },
     removeSensorDef(device, sensorDefinition) {
+      this.sensorDefEdited = false
       var sensorDefIndex = device.sensor_definitions
         .map(function(sensorDef) {
           return sensorDef.id
