@@ -768,7 +768,6 @@ const translations = {
   disabled_settings: 'A edição manual destas definições está desativada',
   Address_placeholder: 'Número, Rua, Cidade',
   first_create_apiary: 'Primeiro, crie um apiário',
-  alertrule_deleted: 'Regra de alerta foi eliminada',
   Unknown: 'Desconhecido',
   unknown: 'desconhecido',
   research_warning:
@@ -788,6 +787,7 @@ const translations = {
   Add_apiary: 'Adicionar apiário',
   Add_sensor_definition: 'Adicionar definição de sensor',
   Add_member: 'Adicionar membro',
+  alert_rule_deleted: 'Regra de alerta foi eliminada',
 
   /* TO BE TRANSLATED FOR 3.1 */
   new_but_not_saved_sensor_defs_warning:
@@ -800,6 +800,27 @@ const translations = {
     'Are you sure you want to delete all alerts? Alerts that do not match your search term will be deleted as well. This cannot be undone.',
   already_verified: 'I have verified my email address and would like to login',
   password_recovery_resend_mail: 'Send new verification code',
+  alert_rule_created: 'New alert rule has been created',
+  select_all: 'Select all',
+  During: 'During', // context: 'During 2 days', or 'During 1 hour', to notify the period during which the same alert has been triggered (each evaluation) in a row
+
+  // For soon to be launched new log data import page
+  Log_data_import: 'Import log data',
+  Log_files: 'Log files',
+  Upload_date: 'Upload date',
+  Messages: 'Messages',
+  Log_time: 'Time logged',
+  File_size: 'File size',
+  check_log_data: 'Check log data',
+  delete_log_file: 'Delete log file',
+  commit_log_data_short: 'Import log data',
+  commit_log_data: 'Import data from this log file to the BEEP app: ',
+  import_log_data_explanation:
+    "In the BEEP base app you can download log data from the internal memory of the BEEP base. Every time you download log data, the internal memory gets cleared and the data gets uploaded to the BEEP app. Below is the list of your downloaded log data. You can replace the data in the database by the data inside the downloaded log files by clicking the button 'Check log data'. This will first check how much data will be replaced inside the database, and if the time of the data in the log file is correct. You will get a confirmation box with the resulting info, and the possibility to apply or deny the replacement.",
+  import_log_data_url_text:
+    'Here you can find the support article on downloading log data with the BEEP base app.',
+  import_log_data_support_url:
+    'https://beepsupport.freshdesk.com/pt-PT/support/solutions/articles/60000697129-baixe-os-dados-da-base-do-beep-por-bluetooth',
 }
 
 export default translations

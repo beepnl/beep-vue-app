@@ -771,7 +771,6 @@ const translations = {
   disabled_settings: 'Manually editing these settings is disabled.',
   Address_placeholder: 'Number, Street name, City',
   first_create_apiary: 'First, create an apiary',
-  alertrule_deleted: 'Alert rule has been deleted',
   Unknown: 'Unknown',
   unknown: 'unknown',
   research_warning:
@@ -792,6 +791,7 @@ const translations = {
   Add_sensor_definition: 'Add sensor definition',
   Add_member: 'Add member',
 
+  alert_rule_deleted: 'Alert rule has been deleted',
   new_but_not_saved_sensor_defs_warning:
     'N.B.: sensor definitions will only be added after clicking the green check icon at the end of the sensor definition row in the table.',
   delete_sensordef: 'Delete sensor definition',
@@ -803,8 +803,8 @@ const translations = {
   already_verified: 'I have verified my email address and would like to login',
   password_recovery_resend_mail: 'Send new verification code',
   alert_rule_created: 'New alert rule has been created',
-  alert_rule_deleted: 'Alert rule has been deleted',
   select_all: 'Select all',
+  During: 'During',
   Log_data_import: 'Import log data',
   Log_files: 'Log files', // Flashlogs
   Upload_date: 'Upload date',

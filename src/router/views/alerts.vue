@@ -222,10 +222,13 @@ export default {
           var createdMoment = this.$moment(alert.created_at)
           var updatedMoment = this.$moment(alert.updated_at)
           var period = updatedMoment.diff(createdMoment, 'seconds')
-          alert.momentified = this.$moment
-            .duration(period, 'seconds')
-            .locale(this.$i18n.locale)
-            .humanize()
+          alert.momentified =
+            this.$i18n.t('During') +
+            ' ' +
+            this.$moment
+              .duration(period, 'seconds')
+              .locale(this.$i18n.locale)
+              .humanize()
         } else {
           alert.momentified = this.momentFromNow(alert.updated_at, true)
         }

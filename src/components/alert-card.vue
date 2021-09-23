@@ -186,13 +186,9 @@
                         </v-icon>
                       </div>
                       <span
-                        v-if="alert.alert_rule_name !== null"
                         class="alert-label alert-label-break"
-                        v-text="alert.alert_rule_name"
+                        v-text="alert.alert_rule_name || '-'"
                       >
-                      </span>
-                      <span v-else class="alert-label alert-label-break"
-                        ><i>{{ $t('alertrule_deleted') }}</i>
                       </span>
                     </div>
                   </div>

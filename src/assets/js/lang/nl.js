@@ -778,7 +778,6 @@ const translations = {
   disabled_settings: 'Je kunt deze instellingen niet handmatig aanpassen.',
   Address_placeholder: 'Straatnaam huisnummer, Stad',
   first_create_apiary: 'Maak eerst een bijenstand',
-  alertrule_deleted: 'Notificatie-instelling is verwijderd',
   Unknown: 'Onbekend',
   unknown: 'onbekend',
   research_warning:
@@ -798,6 +797,7 @@ const translations = {
   Add_apiary: 'Toevoegen bijenstand',
   Add_sensor_definition: 'Toevoegen sensordefinitie',
   Add_member: 'Toevoegen groepslid',
+  alert_rule_deleted: 'Notificatie-instelling verwijderd',
 
   new_but_not_saved_sensor_defs_warning:
     'Let op: sensor definities worden pas definitief toegevoegd wanneer je op het groene vink icoon klikt, aan het einde van de sensor definitie rij in de tabel.',
@@ -810,8 +810,24 @@ const translations = {
   already_verified: 'Ik heb mijn e-mailadres gevalideerd en wil graag inloggen',
   password_recovery_resend_mail: 'Verstuur code opnieuw',
   alert_rule_created: 'Nieuwe notificatie ingesteld',
-  alert_rule_deleted: 'Notificatie-instelling verwijderd',
   select_all: 'Selecteer alle',
+  During: 'Gedurende',
+  Log_data_import: 'Log data importeren',
+  Flashlogs: 'Logbestanden',
+  Upload_date: 'Upload datum',
+  Messages: 'Berichten',
+  Log_time: 'Tijd gelogd',
+  File_size: 'Bestandsgrootte',
+  check_flashlog: 'Check log data',
+  delete_flashlog: 'Verwijder logbestand',
+  commit_flashlog_short: 'Importeer log data',
+  commit_flashlog: 'Importeer data van dit logbestand naar de BEEP app: ',
+  flashlog_explanation:
+    "In de BEEP base app kan je log data downloaden van het interne geheugen van de BEEP base. Steeds als je log data downloadt, wordt het interne geheugen gewist en de data geüpload naar de BEEP app. Hieronder vind je de lijst met jouw gedownloade log data. Je kan de data in de database vervangen door de data uit de gedownloade logbestanden door op de knop 'Check log data' te klikken. Er zal dan eerst gecheckt worden hoeveel data in de database vervangen zal worden, en of de tijd van de data uit het logbestand klopt. Je ziet dan een pop-up waarin het resultaat van de check vermeld staat, waarbij je kan kiezen om het vervangen van de data toe te passen ('Ok') of te annuleren.",
+  flashlog_url_text:
+    'Lees hier het support artikel over het downloaden van log data m.b.v. de BEEP base app.',
+  flashlog_support_url:
+    'https://beepsupport.freshdesk.com/nl/support/solutions/articles/60000697129-beep-base-data-downloaden-met-bluetooth',
 }
 
 export default translations
