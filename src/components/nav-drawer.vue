@@ -22,22 +22,22 @@
             </v-list-item>
             <v-divider></v-divider>
             <div v-if="menuItems.length > 0">
-              <template v-for="(item, i) in menuItems">
-                <v-list-item
-                  :key="i"
-                  exact
-                  :to="!item.external ? { name: item.route } : ''"
-                  :target="item.external ? '_blank' : '_self'"
-                  :disabled="item.authRequired && !loggedIn"
-                >
-                  <v-list-item-avatar>
-                    <v-icon color="accent">{{ item.icon }}</v-icon>
-                  </v-list-item-avatar>
-                  <v-list-item-content>
-                    <v-list-item-title>{{ item.title }}</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-              </template>
+              <v-list-item
+                v-for="(item, i) in menuItems"
+                :key="i"
+                exact
+                :to="!item.external ? { name: item.route } : ''"
+                :target="item.external ? '_blank' : '_self'"
+                :disabled="item.authRequired && !loggedIn"
+                @click="checkRoute(item.route)"
+              >
+                <v-list-item-avatar>
+                  <v-icon color="accent">{{ item.icon }}</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
 
               <v-divider></v-divider>
             </div>
@@ -55,6 +55,7 @@
                 :href="item.external ? item.route : ''"
                 :target="item.external ? '_blank' : '_self'"
                 :disabled="item.authRequired && !loggedIn"
+                @click="checkRoute(item.route)"
               >
                 <v-list-item-avatar>
                   <v-icon v-if="!item.icon.includes('icon')" color="accent">{{
@@ -87,7 +88,7 @@
 
         <div class="d-flex flex-row align-end version-number mt-n2 mr-1">
           <v-spacer></v-spacer>
-          v3.0.41
+          v3.0.43
         </div>
       </div>
     </v-navigation-drawer>
@@ -121,6 +122,9 @@ export default {
       } else {
         return false
       }
+    },
+    currentRoute() {
+      return this.$route.name
     },
     settingItems() {
       return [
@@ -226,6 +230,11 @@ export default {
     this.readDevicesIfNotPresent()
   },
   methods: {
+    checkRoute(routeName) {
+      if (routeName === this.currentRoute) {
+        this.showDrawer = false
+      }
+    },
     signOut() {
       this.$store
         .dispatch('auth/signOut')

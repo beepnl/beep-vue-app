@@ -6,12 +6,28 @@
         text
         prominent
         dense
-        icon="mdi-bell"
         color="red"
         class="alert-card cursor-pointer mb-0"
         outlined
         v-on="menu"
       >
+        <template v-slot:prepend>
+          <div class="alert-icon d-flex align-center">
+            <v-badge
+              v-if="alert.count > 1"
+              :offset-x="alert.count > 9 ? '23' : '20'"
+              offset-y="20"
+              color="transparent"
+              :content="alert.count > 99 ? '99' : alert.count"
+            >
+              <v-icon color="red">mdi-bell</v-icon>
+            </v-badge>
+            <v-icon v-else color="red">
+              mdi-bell
+            </v-icon>
+          </div>
+        </template>
+
         <div
           class="d-flex flex-no-wrap justify-flex-start align-start"
           style="width: 100%;"
@@ -19,13 +35,16 @@
           <v-row class="ml-0 my-0 pl-0 py-0" style="width:100%;">
             <v-col
               cols="12"
-              sm="5"
+              sm="4"
+              md="5"
               class="alert-details-item alert-meta d-flex flex-row justify-flex-start pa-0"
             >
               <v-row class="my-0 py-0 pr-1">
                 <v-col
-                  v-if="alert.created_at"
+                  v-if="alert.updated_at"
                   cols="5"
+                  sm="6"
+                  md="5"
                   class="alert-date-item d-flex flex-column align-start pa-0"
                 >
                   <div>
@@ -34,14 +53,16 @@
                   <span
                     class="alert-text
                         last-visit"
-                    v-text="alert.moment_from_now"
+                    v-text="alert.momentified"
                   >
                   </span>
                 </v-col>
 
                 <v-col
-                  v-if="typeof hives[alert.hive_id] !== 'undefined'"
+                  v-if="hives[alert.hive_id] !== undefined"
                   cols="3"
+                  sm="4"
+                  md="3"
                   class="hive-icon-wrapper mt-1 ml-1 ml-md-0 ml-lg-n2 mr-1 mr-md-0 mr-lg-n2 d-flex justify-center align-start pa-0"
                 >
                   <HiveIcon
@@ -51,8 +72,10 @@
                 </v-col>
 
                 <v-col
-                  v-else
+                  v-else-if="alert.hive_id !== null"
                   cols="3"
+                  sm="12"
+                  md="3"
                   class="ml-1 ml-md-0 ml-lg-n2 mr-1 mr-md-0 mr-lg-n2 d-flex flex-column align-center pa-0"
                   ><span class="alert-label alert-label-break text-center"
                     ><i
@@ -146,7 +169,7 @@
               </v-row>
             </v-col>
 
-            <v-col cols="12" sm="7" class="alert-content pa-0">
+            <v-col cols="12" sm="8" md="7" class="alert-content pa-0">
               <v-row class="my-0 py-0 ml-n6 ml-sm-0 mr-sm-n4 pr-6 pr-sm-3">
                 <v-col
                   cols="12"
@@ -258,7 +281,7 @@
             name: 'measurements-id',
             params: { id: alert.device_id },
             query: {
-              date: alert.created_at.substr(0, 10),
+              date: alert.updated_at.substr(0, 10),
             },
           }"
         >
@@ -320,6 +343,9 @@ export default {
     alertValueText() {
       if (this.alert !== null) {
         if (this.alert.alert_value !== null) {
+          if (this.alert.alert_value.indexOf('alert_rule') > -1) {
+            return this.$i18n.t(this.alert.alert_value)
+          }
           var number = parseFloat(this.alert.alert_value)
           if (!isNaN(number)) {
             return number.toFixed(2)
@@ -386,11 +412,11 @@ export default {
     }
   }
   .alert-date-item {
-    max-width: 130px;
+    max-width: 150px;
     margin-bottom: 0;
     line-height: 1.1rem;
     @include for-phone-only {
-      max-width: 110px;
+      max-width: 115px;
     }
   }
   .alert-date {
@@ -403,6 +429,8 @@ export default {
     white-space: nowrap;
     @include for-phone-only {
       font-size: 0.7rem !important;
+      line-height: 10px;
+      white-space: break-spaces;
     }
   }
   .alert-text {
@@ -411,6 +439,7 @@ export default {
       margin-top: 2px;
     }
     @include for-phone-only {
+      margin-top: 5px;
       word-break: break-all;
     }
   }
@@ -430,6 +459,11 @@ export default {
         margin-bottom: 0 !important;
       }
     }
+  }
+
+  .alert-icon {
+    min-width: 44px;
+    height: 44px;
   }
 }
 </style>

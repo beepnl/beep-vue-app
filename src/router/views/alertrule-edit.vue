@@ -167,6 +167,7 @@
             <el-input-number
               v-model="activeAlertRule.calculation_minutes"
               :precision="0"
+              :min="15"
               :step-strictly="true"
               size="small"
               @change="setAlertRuleEdited(true)"
@@ -227,8 +228,10 @@
         </v-row>
 
         <v-row v-if="activeAlertRule">
-          <v-col cols="12" sm="6" lg="4">
-            <div class="beep-label" v-text="$t('Exclude_months')"></div>
+          <v-col cols="12" sm="6" lg="4" class="mt-lg-5">
+            <div class="beep-label" v-html="$t('Exclude_months')"
+              ><span>{{}}</span></div
+            >
             <Treeselect
               v-model="activeAlertRule.exclude_months"
               :options="months"
@@ -239,8 +242,8 @@
             />
           </v-col>
 
-          <v-col cols="12" sm="6" lg="4">
-            <div class="beep-label" v-text="$t('Exclude_hours')"></div>
+          <v-col cols="12" sm="6" lg="4" class="mt-lg-5">
+            <div class="beep-label" v-html="$t('Exclude_hours')"></div>
             <Treeselect
               v-model="activeAlertRule.exclude_hours"
               :options="hours"
@@ -251,8 +254,15 @@
             />
           </v-col>
 
-          <v-col v-if="devices.length > 1" cols="12" lg="4">
-            <div class="beep-label" v-text="$t('Exclude_hives')"></div>
+          <v-col v-if="devices.length > 1" cols="12" lg="4" class="mt-5">
+            <v-switch
+              v-if="numberOfSortedDevices > 3"
+              v-model="allDevicesSelected"
+              class="mt-n8 mb-1"
+              :label="$t('deactivate_for_all_hives')"
+              hide-details
+            ></v-switch>
+            <div class="beep-label" v-html="$t('Exclude_hives')"></div>
             <Treeselect
               v-model="activeAlertRule.exclude_hive_ids"
               :options="sortedDevices"
@@ -323,6 +333,27 @@ export default {
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     alertruleCreateMode() {
       return this.$route.name === 'alertrule-create'
+    },
+    allDevicesSelected: {
+      get() {
+        return (
+          this.activeAlertRule.exclude_hive_ids.length ===
+          this.numberOfSortedDevices
+        )
+      },
+      set(value) {
+        if (value === false) {
+          this.activeAlertRule.exclude_hive_ids = []
+        } else {
+          this.activeAlertRule.exclude_hive_ids = []
+          this.sortedDevices.map((apiary) => {
+            console.log(apiary.children.length)
+            apiary.children.map((device) => {
+              this.activeAlertRule.exclude_hive_ids.push(device.id)
+            })
+          })
+        }
+      },
     },
     calculations() {
       return [
@@ -421,6 +452,12 @@ export default {
       }
       return monthsArray
     },
+    numberOfSortedDevices() {
+      return this.sortedDevices.reduce((acc, apiary) => {
+        acc += apiary.children.length
+        return acc
+      }, 0)
+    },
     occurences() {
       var occArray = []
       for (var i = 1; i < 11; i++) {
@@ -475,9 +512,10 @@ export default {
       this.devices.map((device) => {
         uniqueApiaries.map((apiary) => {
           if (
-            apiary.label === device.location_name ||
-            (apiary.label === this.$i18n.t('Unknown') &&
-              device.location_name === '')
+            device.hive_id !== null &&
+            (apiary.label === device.location_name ||
+              (apiary.label === this.$i18n.t('Unknown') &&
+                device.location_name === ''))
           ) {
             const deviceLabel = device.hive_name
               ? device.hive_name + ' - ' + device.name

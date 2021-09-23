@@ -712,9 +712,12 @@ const translations = {
   Difference: 'Verschil',
   Absolute_value: 'Absolute waarde',
   Absolute_value_of_dif: 'Absolute waarde van het verschil',
-  Exclude_months: 'Deze notificatie deactiveren gedurende de volgende maanden:',
-  Exclude_hours: 'Deze notificatie deactiveren tijdens de volgende uren:',
-  Exclude_hives: 'Deze notificatie deactiveren voor de volgende bijenkasten:',
+  Exclude_months:
+    'Deze notificatie <strong>deactiveren</strong> gedurende de volgende maanden:',
+  Exclude_hours:
+    'Deze notificatie <strong>deactiveren</strong> tijdens de volgende uren:',
+  Exclude_hives:
+    'Deze notificatie <strong>deactiveren</strong> voor de volgende bijenkasten:',
   Exclude_hives_details:
     'N.B. De notificatie wordt standaard voor alle bijenkasten met een meetsysteem uitgevoerd.',
   months: 'maanden',
@@ -806,6 +809,9 @@ const translations = {
     'Weet u zeker dat u alle notificaties wilt verwijderen? Ook notificaties die niet aan je zoekterm voldoen zullen verwijderd worden. Dit kan niet ongedaan gemaakt worden.',
   already_verified: 'Ik heb mijn e-mailadres gevalideerd en wil graag inloggen',
   password_recovery_resend_mail: 'Verstuur code opnieuw',
+  alert_rule_created: 'Nieuwe notificatie ingesteld',
+  alert_rule_deleted: 'Notificatie-instelling verwijderd',
+  deactivate_for_all_hives: 'Deactiveer notificatie voor alle bijenkasten',
   Log_data_import: 'Log data importeren',
   Flashlogs: 'Logbestanden',
   Upload_date: 'Upload datum',

@@ -702,9 +702,12 @@ const translations = {
   Difference: 'Diferença',
   Absolute_value: 'Valor absoluto',
   Absolute_value_of_dif: 'Valor absoluto da diferença',
-  Exclude_months: 'Desativar este alerta durante os seguintes meses:',
-  Exclude_hours: 'Desativar este alerta durante as seguintes horas:',
-  Exclude_hives: 'Desativar este alerta para as seguintes colmeias:',
+  Exclude_months:
+    '<strong>Desativar</strong> este alerta durante os seguintes meses:',
+  Exclude_hours:
+    '<strong>Desativar</strong> este alerta durante as seguintes horas:',
+  Exclude_hives:
+    '<strong>Desativar</strong> este alerta para as seguintes colmeias:',
   Exclude_hives_details:
     'N.B. Por defeito, este alerta será executado para todas as colmeias que tenham um aparelho de medição',
   months: 'meses',

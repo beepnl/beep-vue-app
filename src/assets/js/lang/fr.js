@@ -779,10 +779,10 @@ const translations = {
   Difference: 'Différence',
   Absolute_value: 'Valeur absolue',
   Absolute_value_of_dif: 'Valeur absolue de la différence',
-  Exclude_months: 'Désactiver cette alerte pendant ce nombre de mois:',
+  Exclude_months: '<strong>Désactiver</strong> cette alerte pendant ce nombre de mois:',
   /* Cyrille - 31/05 : This translation needs more context */
-  Exclude_hours: 'Désactiver cette alerte pendant les heures suivantes:',
-  Exclude_hives: 'Désactiver cette alerte pour les ruches suivantes:',
+  Exclude_hours: '<strong>Désactiver</strong> cette alerte pendant les heures suivantes:',
+  Exclude_hives: '<strong>Désactiver</strong> cette alerte pour les ruches suivantes:',
   Exclude_hives_details:
     "N.B. Par défaut, ces alertes seront éxécutées pour toutes les ruches équipées d'un appareil.",
   months: 'mois',

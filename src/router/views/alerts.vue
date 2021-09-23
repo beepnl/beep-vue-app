@@ -216,8 +216,20 @@ export default {
     alertsWithRuleDetails() {
       var alertsWithRuleDetails = this.alerts
       alertsWithRuleDetails.map((alert) => {
-        alert.locale_date = this.momentify(alert.created_at, true)
-        alert.moment_from_now = this.momentFromNow(alert.created_at, true)
+        alert.locale_date = this.momentify(alert.updated_at, true, 'llll')
+
+        if (alert.count > 1) {
+          var createdMoment = this.$moment(alert.created_at)
+          var updatedMoment = this.$moment(alert.updated_at)
+          var period = updatedMoment.diff(createdMoment, 'hours')
+          alert.momentified = this.$moment
+            .duration(period, 'hours')
+            .locale(this.$i18n.locale)
+            .humanize()
+        } else {
+          alert.momentified = this.momentFromNow(alert.updated_at, true)
+        }
+
         var hiveGroupName = null
         if (
           this.hives[alert.hive_id] !== undefined &&
@@ -229,10 +241,10 @@ export default {
       })
 
       var sortedAlerts = alertsWithRuleDetails.slice().sort(function(a, b) {
-        if (a.created_at > b.created_at) {
+        if (a.updated_at > b.updated_at) {
           return -1
         }
-        if (b.created_at < a.created_at) {
+        if (b.updated_at < a.updated_at) {
           return 1
         }
         return 0
@@ -249,7 +261,7 @@ export default {
             if (
               value !== null &&
               typeof value === 'string' &&
-              key !== 'created_at'
+              key !== 'updated_at'
             ) {
               return value.toLowerCase().includes(this.search.toLowerCase())
             } else if (value !== null && key === 'alert_value') {

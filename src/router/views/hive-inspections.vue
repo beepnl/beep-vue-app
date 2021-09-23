@@ -258,36 +258,30 @@
                       </span>
                     </template>
                     <v-list dense>
-                      <v-list-item
-                        v-for="(calendarItem, index) in calendars"
-                        :key="index"
-                        link
-                        dense
-                      >
-                        <v-list-item-action>
-                          <AddToCalendar
-                            :title="
-                              `BEEP ${$t('reminder')} ${
-                                inspection.reminder !== null
-                                  ? ': ' + inspection.reminder
-                                  : ''
-                              }`
-                            "
-                            :location="
-                              `${activeHive.location} - ${activeHive.name}`
-                            "
-                            :start="new Date(inspection.reminder_date)"
-                            :end="new Date(inspection.reminder_date + 1)"
-                            :details="
-                              `BEEP app ${$tc('Inspection', 1)} @ ${
-                                // eslint-disable-next-line vue/comma-dangle
-                                inspection.created_at_locale_date
-                              }`
-                            "
-                            :calendar="calendarItem"
-                          ></AddToCalendar>
-                        </v-list-item-action>
-                      </v-list-item>
+                      <template v-for="(calendarItem, index) in calendars">
+                        <AddToCalendar
+                          :key="index"
+                          :title="
+                            `BEEP ${$t('reminder')} ${
+                              inspection.reminder !== null
+                                ? ': ' + inspection.reminder
+                                : ''
+                            }`
+                          "
+                          :location="
+                            `${activeHive.location} - ${activeHive.name}`
+                          "
+                          :start="new Date(inspection.reminder_date)"
+                          :end="new Date(inspection.reminder_date + 1)"
+                          :details="
+                            `BEEP app ${$tc('Inspection', 1)} @ ${
+                              // eslint-disable-next-line vue/comma-dangle
+                              inspection.created_at_locale_date
+                            }`
+                          "
+                          :calendar="calendarItem"
+                        ></AddToCalendar>
+                      </template>
                     </v-list>
                   </v-menu>
                 </div>

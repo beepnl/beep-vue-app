@@ -37,7 +37,7 @@ export const momentFromNow = {
 
 export const momentify = {
   methods: {
-    momentify(date, inUtcTime = false) {
+    momentify(date, inUtcTime = false, format = 'lll') {
       if (date !== null) {
         var inLocalTime = null
         if (inUtcTime) {
@@ -45,7 +45,7 @@ export const momentify = {
         } else {
           inLocalTime = this.$moment(date)
         }
-        return inLocalTime.locale(this.$i18n.locale).format('lll')
+        return inLocalTime.locale(this.$i18n.locale).format(format)
       } else {
         return null
       }

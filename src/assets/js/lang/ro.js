@@ -676,9 +676,12 @@ const translations = {
   Difference: 'Diferență',
   Absolute_value: 'Valoare absolută',
   Absolute_value_of_dif: 'Valoarea absolută a diferenței',
-  Exclude_months: 'Dezactivați această alertă în timpul următoarelor luni:',
-  Exclude_hours: 'Dezactivați această alertă pe perioada următoarelor ore:',
-  Exclude_hives: 'Dezactivați această alertă pentru umătorii stupi:',
+  Exclude_months:
+    '<strong>Dezactivați</strong> această alertă în timpul următoarelor luni:',
+  Exclude_hours:
+    '<strong>Dezactivați</strong> această alertă pe perioada următoarelor ore:',
+  Exclude_hives:
+    '<strong>Dezactivați</strong> această alertă pentru umătorii stupi:',
   Exclude_hives_details:
     'N.B. În mod implicit, această alertă va fi executată pentru toți stupii cu un dispozitiv de măsurare.',
   months: 'luni',

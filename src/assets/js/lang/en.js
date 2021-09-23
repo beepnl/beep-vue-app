@@ -706,9 +706,12 @@ const translations = {
   Difference: 'Difference',
   Absolute_value: 'Absolute value',
   Absolute_value_of_dif: 'Absolute value of the difference',
-  Exclude_months: 'Deactivate this alert during the following months:',
-  Exclude_hours: 'Deactivate this alert during the following hours:',
-  Exclude_hives: 'Deactivate this alert for the following hives:',
+  Exclude_months:
+    '<strong>Deactivate</strong> this alert during the following months:',
+  Exclude_hours:
+    '<strong>Deactivate</strong> this alert during the following hours:',
+  Exclude_hives:
+    '<strong>Deactivate</strong> this alert for the following hives:',
   Exclude_hives_details:
     'N.B. By default, this alert will be executed for all hives with a measurement device.',
   months: 'months',
@@ -799,6 +802,9 @@ const translations = {
     'Are you sure you want to delete all alerts? Alerts that do not match your search term will be deleted as well. This cannot be undone.',
   already_verified: 'I have verified my email address and would like to login',
   password_recovery_resend_mail: 'Send new verification code',
+  alert_rule_created: 'New alert rule has been created',
+  alert_rule_deleted: 'Alert rule has been deleted',
+  deactivate_for_all_hives: 'Deactivate alert for all hives',
   Log_data_import: 'Import log data',
   Flashlogs: 'Log files',
   Upload_date: 'Upload date',

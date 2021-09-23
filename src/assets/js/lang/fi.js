@@ -708,9 +708,12 @@ const translations = {
   Difference: 'Ero',
   Absolute_value: 'Absoluuttinen arvo',
   Absolute_value_of_dif: 'Eron absoluuttinen arvo',
-  Exclude_months: 'Poista tämä hälytys käytöstä seuraavien kuukausien aikana:',
-  Exclude_hours: 'Poista tämä hälytys käytöstä seuraavien tuntien aikana:',
-  Exclude_hives: 'Poista tämä hälytys käytöstä seuraavissa pesissä',
+  Exclude_months:
+    '<strong>Poista</strong> tämä hälytys käytöstä seuraavien kuukausien aikana:',
+  Exclude_hours:
+    '<strong>Poista</strong> tämä hälytys käytöstä seuraavien tuntien aikana:',
+  Exclude_hives:
+    '<strong>Poista</strong> tämä hälytys käytöstä seuraavissa pesissä',
   Exclude_hives_details:
     'HUOM. Tämä hälytys suoritetaan oletusarvoisesti kaikista pesistä, joissa on mittauslaite.',
   months: 'kuukaudet',

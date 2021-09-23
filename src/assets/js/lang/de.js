@@ -673,9 +673,12 @@ const translations = {
   Difference: 'Differenz',
   Absolute_value: 'Absolutwert',
   Absolute_value_of_dif: 'Absolutwert der Differenz',
-  Exclude_months: 'Deaktiviere diesen Alarm während der folgenden Monate:',
-  Exclude_hours: 'Deaktiviere diesen Alarm während der folgenden Stunden:',
-  Exclude_hives: 'Deaktiviere diesen Alarm für die folgenden Bienenstöcke:',
+  Exclude_months:
+    '<strong>Deaktiviere</strong> diesen Alarm während der folgenden Monate:',
+  Exclude_hours:
+    '<strong>Deaktiviere</strong> diesen Alarm während der folgenden Stunden:',
+  Exclude_hives:
+    '<strong>Deaktiviere</strong> diesen Alarm für die folgenden Bienenstöcke:',
   Exclude_hives_details:
     'Hinweis: Standardmäßig wird dieser Alarm für alle Bienenstöcke mit einem Messgerät ausgeführt.',
   months: 'Monate',
