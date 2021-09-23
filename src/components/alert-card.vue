@@ -325,6 +325,7 @@ export default {
   data: () => ({}),
   computed: {
     alertValueText() {
+      var countText = ', count: ' + this.alert.count
       if (this.alert !== null) {
         if (this.alert.alert_value !== null) {
           if (this.alert.alert_value.indexOf('alert_rule') > -1) {
@@ -332,9 +333,9 @@ export default {
           }
           var number = parseFloat(this.alert.alert_value)
           if (!isNaN(number)) {
-            return number.toFixed(2)
+            return number.toFixed(2) + countText
           } else {
-            return this.alert.alert_value
+            return this.alert.alert_value + countText
           }
         } else {
           return null
