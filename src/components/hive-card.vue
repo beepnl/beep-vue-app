@@ -14,28 +14,35 @@
     "
     outlined
   >
-    <v-row v-if="!xsView" class="ml-0 mt-0 mb-3 pr-3">
+    <v-row
+      v-if="!xsView"
+      class="ml-0 mt-0 mb-3 d-flex justify-space-between align-start"
+      style="width: 100%"
+    >
       <h4
         v-if="mView"
         class="hive-name truncate mb-3"
-        style="max-width: 150px;"
+        style="max-width: 118px;"
         v-text="hive.name"
       >
       </h4>
       <div v-if="xlView" class="d-flex flex-row">
-        <h4
-          class="hive-name truncate mb-3"
-          style="max-width: 205px;"
-          v-text="hive.name"
-        >
+        <h4 class="hive-name truncate mb-3" style="max-width: 205px;">
+          {{ hive.name }}
+          <span
+            v-if="hiveSet.users && hiveSet.users.length"
+            class="caption hive-name-caption"
+            v-text="` (${hive.location})`"
+          >
+          </span>
         </h4>
-        <pre
-          v-if="hiveSet.users && hiveSet.users.length"
-          class="caption hive-name-caption"
-          v-text="` (${hive.location})`"
-        >
-        </pre>
       </div>
+      <v-icon
+        small
+        class="color-black mr-n2"
+        @click="showHiveMenu($event, true)"
+        >mdi-dots-vertical</v-icon
+      >
     </v-row>
 
     <div class="hive-details d-flex flex-no-wrap justify-flex-start align-end">
@@ -103,7 +110,7 @@
             offset-y
           >
             <v-list dense class="hive-menu-list">
-              <v-list-item>
+              <v-list-item v-if="!hideHiveName">
                 <v-list-item-content>
                   <v-list-item-title class="title">
                     {{ hive.name }}
@@ -532,6 +539,7 @@ export default {
     showMenu: false,
     x: 0,
     y: 0,
+    hideHiveName: false,
   }),
   computed: {
     alertRuleNamesText() {
@@ -592,10 +600,11 @@ export default {
         return this.$i18n.t('no_inspections')
       }
     },
-    showHiveMenu(e) {
+    showHiveMenu(e, hideHiveName = false) {
       this.x = e.clientX
       this.y = e.clientY
       this.showMenu = true
+      this.hideHiveName = hideHiveName
     },
   },
 }
