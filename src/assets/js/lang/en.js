@@ -804,7 +804,26 @@ const translations = {
   password_recovery_resend_mail: 'Send new verification code',
   alert_rule_created: 'New alert rule has been created',
   alert_rule_deleted: 'Alert rule has been deleted',
-  deactivate_for_all_hives: 'Deactivate alert for all hives',
+  select_all: 'Select all',
+  Log_data_import: 'Import log data',
+  Log_files: 'Log files', // Flashlogs
+  Upload_date: 'Upload date',
+  Messages: 'Messages',
+  Log_time: 'Time logged',
+  File_size: 'File size',
+  check_log_data: 'Check log data', // Check_flashlog
+  delete_log_file: 'Delete log file', // Delete_flashlog
+  commit_log_data_short: 'Import log data', // commit_flashlog_short
+  commit_log_data: 'Import data from this log file to the BEEP app: ', // commit_flashlog
+  // flashlog_explanation
+  import_log_data_explanation:
+    "In the BEEP base app you can download log data from the internal memory of the BEEP base. Every time you download log data, the internal memory gets cleared and the data gets uploaded to the BEEP app. Below is the list of your downloaded log data. You can replace the data in the database by the data inside the downloaded log files by clicking the button 'Check log data'. This will first check how much data will be replaced inside the database, and if the time of the data in the log file is correct. You will get a confirmation box with the resulting info, and the possibility to apply or deny the replacement.",
+  // flashlog_url_text
+  import_log_data_url_text:
+    'Here you can find the support article on downloading log data with the BEEP base app.',
+  // flashlog_support_url
+  import_log_data_support_url:
+    'https://beepsupport.freshdesk.com/en/support/solutions/articles/60000697129-download-beep-base-data-through-bluetooth',
 }
 
 export default translations

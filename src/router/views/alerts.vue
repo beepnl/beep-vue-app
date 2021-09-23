@@ -221,9 +221,9 @@ export default {
         if (alert.count > 1) {
           var createdMoment = this.$moment(alert.created_at)
           var updatedMoment = this.$moment(alert.updated_at)
-          var period = updatedMoment.diff(createdMoment, 'hours')
+          var period = updatedMoment.diff(createdMoment, 'seconds')
           alert.momentified = this.$moment
-            .duration(period, 'hours')
+            .duration(period, 'seconds')
             .locale(this.$i18n.locale)
             .humanize()
         } else {

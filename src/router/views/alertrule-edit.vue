@@ -228,7 +228,7 @@
         </v-row>
 
         <v-row v-if="activeAlertRule">
-          <v-col cols="12" sm="6" lg="4" class="mt-lg-5">
+          <v-col cols="12" sm="6" lg="4">
             <div class="beep-label" v-html="$t('Exclude_months')"
               ><span>{{}}</span></div
             >
@@ -242,7 +242,7 @@
             />
           </v-col>
 
-          <v-col cols="12" sm="6" lg="4" class="mt-lg-5">
+          <v-col cols="12" sm="6" lg="4">
             <div class="beep-label" v-html="$t('Exclude_hours')"></div>
             <Treeselect
               v-model="activeAlertRule.exclude_hours"
@@ -254,15 +254,17 @@
             />
           </v-col>
 
-          <v-col v-if="devices.length > 1" cols="12" lg="4" class="mt-5">
-            <v-switch
-              v-if="numberOfSortedDevices > 3"
-              v-model="allDevicesSelected"
-              class="mt-n8 mb-1"
-              :label="$t('deactivate_for_all_hives')"
-              hide-details
-            ></v-switch>
-            <div class="beep-label" v-html="$t('Exclude_hives')"></div>
+          <v-col v-if="devices.length > 1" cols="12" lg="4">
+            <div class="d-flex justify-space-between">
+              <div class="beep-label" v-html="$t('Exclude_hives')"></div>
+              <v-switch
+                v-if="numberOfSortedDevices > 3"
+                v-model="allDevicesSelected"
+                class="pt-2 mt-n4"
+                :label="$t('select_all')"
+                hide-details
+              ></v-switch>
+            </div>
             <Treeselect
               v-model="activeAlertRule.exclude_hive_ids"
               :options="sortedDevices"
@@ -347,7 +349,6 @@ export default {
         } else {
           this.activeAlertRule.exclude_hive_ids = []
           this.sortedDevices.map((apiary) => {
-            console.log(apiary.children.length)
             apiary.children.map((device) => {
               this.activeAlertRule.exclude_hive_ids.push(device.id)
             })
@@ -547,6 +548,7 @@ export default {
       // check if translation exists, if not don't display the measurement type
       measurementTypes = measurementTypes.filter(
         (measurementType) =>
+          measurementType.show_in_alerts &&
           this.$i18n.te(measurementType.abbreviation) === true
       )
 

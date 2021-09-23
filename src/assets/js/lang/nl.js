@@ -811,7 +811,7 @@ const translations = {
   password_recovery_resend_mail: 'Verstuur code opnieuw',
   alert_rule_created: 'Nieuwe notificatie ingesteld',
   alert_rule_deleted: 'Notificatie-instelling verwijderd',
-  deactivate_for_all_hives: 'Deactiveer notificatie voor alle bijenkasten',
+  select_all: 'Selecteer alle',
 }
 
 export default translations
