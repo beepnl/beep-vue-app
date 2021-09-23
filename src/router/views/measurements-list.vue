@@ -435,7 +435,11 @@ import { mapGetters } from 'vuex'
 import MeasurementsChartHeatmap from '@components/measurements-chart-heatmap.vue'
 import Treeselect from '@riophae/vue-treeselect'
 import 'chartist/dist/chartist.min.css'
-import { checkAlerts, readDevicesIfNotPresent } from '@mixins/methodsMixin'
+import {
+  checkAlerts,
+  readDevicesIfNotPresent,
+  readTaxonomy,
+} from '@mixins/methodsMixin'
 import { sensorMixin } from '@mixins/sensorMixin'
 import { SlideYUpTransition } from 'vue2-transitions'
 import '@plugins/chartist-plugin-beep.js'
@@ -451,7 +455,7 @@ export default {
     SlideYUpTransition,
     Treeselect,
   },
-  mixins: [checkAlerts, readDevicesIfNotPresent, sensorMixin],
+  mixins: [checkAlerts, readDevicesIfNotPresent, readTaxonomy, sensorMixin],
   data() {
     return {
       lastSensorDate: null,
@@ -488,6 +492,7 @@ export default {
   },
   computed: {
     ...mapGetters('devices', ['devices']),
+    ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     timeZone() {
       return this.$moment.tz.guess()
     },
@@ -739,6 +744,7 @@ export default {
     },
   },
   created() {
+    this.readTaxonomy()
     if (localStorage.beepChartCols) {
       this.chartCols = parseInt(localStorage.beepChartCols)
     }
@@ -779,6 +785,9 @@ export default {
           this.currentLastSensorValues = []
           const allLastSensorValues = response.data
           Object.entries(allLastSensorValues).map(([key, value]) => {
+            var mT = this.sensorMeasurementsList.filter(
+              (measurementType) => measurementType.abbreviation === key
+            )[0]
             if (value !== null && key === 'weight_kg') {
               const roundedValue = Math.round(value * 1e4) / 1e4
               this.currentLastSensorValues.push({
@@ -787,8 +796,8 @@ export default {
               })
             } else if (
               value !== null &&
-              key !== 'time' &&
-              (this.SENSORS.indexOf(key) > -1 || this.DEBUG.indexOf(key) > -1)
+              mT !== undefined &&
+              mT.show_in_dials === 1
             ) {
               this.currentLastSensorValues.push({ value: value, name: key })
             }
