@@ -11,14 +11,21 @@
             dismissible
             type="success"
             color="green"
-            class="mb-n2"
+            class="mt-3 mb-n4"
           >
             {{ commitMessage }}
           </v-alert>
         </v-col>
 
         <v-col v-if="errorMessage" cols="12">
-          <v-alert text prominent dense type="error" color="red" class="mb-n2">
+          <v-alert
+            text
+            prominent
+            dense
+            type="error"
+            color="red"
+            class="mt-3 mb-n4"
+          >
             {{ errorMessage }}
           </v-alert>
         </v-col>

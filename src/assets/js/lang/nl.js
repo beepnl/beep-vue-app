@@ -822,9 +822,10 @@ const translations = {
   delete_flashlog: 'Verwijder logbestand',
   commit_flashlog_short: 'Importeer log data',
   commit_flashlog: 'Importeer data van dit logbestand naar de BEEP app: ',
-  flashlog_explanation: 'Hier komt uitleg over de logbestanden.', // TODO: update term!
+  flashlog_explanation:
+    "In de BEEP base app kan je log data downloaden van het interne geheugen van de BEEP base. Steeds als je log data downloadt, wordt het interne geheugen gewist en de data geüpload naar de BEEP app. Hieronder vind je de lijst met jouw gedownloade log data. Je kan de data in de database vervangen door de data uit de gedownloade logbestanden door op de knop 'Check log data' te klikken. Er zal dan eerst gecheckt worden hoeveel data in de database vervangen zal worden, en of de tijd van de data uit het logbestand klopt. Je ziet dan een pop-up waarin het resultaat van de check vermeld staat, waarbij je kan kiezen om het vervangen van de data toe te passen ('Ok') of te annuleren.",
   flashlog_url_text:
-    'Lees hier het support artikel over het downloaden van log data m.b.v. de BEEP Base app.',
+    'Lees hier het support artikel over het downloaden van log data m.b.v. de BEEP base app.',
   flashlog_support_url:
     'https://beepsupport.freshdesk.com/nl/support/solutions/articles/60000697129-beep-base-data-downloaden-met-bluetooth',
 }
