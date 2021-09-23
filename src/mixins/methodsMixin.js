@@ -59,12 +59,12 @@ export const checkAlerts = {
           })
           return true
         } catch (error) {
+          this.$store.commit('alerts/setData', {
+            prop: 'alertsLoading',
+            value: false,
+          })
           if (error.response) {
             console.log('Error: ', error.response)
-            this.$store.commit('alerts/setData', {
-              prop: 'alertsLoading',
-              value: false,
-            })
             if (error.response.status === 404) {
               this.$store.commit('alerts/setData', {
                 prop: 'alerts',
