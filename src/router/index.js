@@ -46,6 +46,7 @@ router.beforeEach((routeTo, routeFrom, next) => {
     (routeFrom.name !== 'alertrule-edit' &&
       routeFrom.name !== 'alertrule-create' &&
       routeFrom.name !== 'alertrules-default' &&
+      routeFrom.name !== 'alertrules' &&
       routeTo.name === 'alertrules') ||
     // if alertrule is edited directly from alerts view, make alertrules back button refer to alerts view
     (routeTo.name === 'alertrule-edit' && routeFrom.name === 'alerts')
