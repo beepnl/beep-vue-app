@@ -1,7 +1,9 @@
 <template>
-  <a :href="calendarUrl(calendar)" target="_blank">
-    {{ calendar }}
-  </a>
+  <v-list-item link dense @click="goTo(calendarUrl(calendar))">
+    <a :href="calendarUrl(calendar)" target="_blank">
+      {{ calendar }}
+    </a>
+  </v-list-item>
 </template>
 
 <script>
@@ -146,6 +148,10 @@ export default {
 
     formatDate(date) {
       return date ? date.toISOString().replace(/-|:|\.\d+/g, '') : null
+    },
+
+    goTo(url) {
+      window.open(url, '_blank')
     },
   },
 }
