@@ -17,7 +17,7 @@
     <v-row
       v-if="!xsView"
       class="ml-0 mt-0 mb-3 d-flex justify-space-between align-start"
-      style="width: 100%"
+      style="width: 100%;"
     >
       <h4
         v-if="mView"
