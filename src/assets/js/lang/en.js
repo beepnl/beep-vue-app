@@ -804,6 +804,7 @@ const translations = {
   password_recovery_resend_mail: 'Send new verification code',
   alert_rule_created: 'New alert rule has been created',
   alert_rule_deleted: 'Alert rule has been deleted',
+  deactivate_for_all_hives: 'Deactivate alert for all hives',
 }
 
 export default translations
