@@ -84,6 +84,7 @@
     "lint-staged": "10.0.x",
     "markdownlint-cli": "0.22.x",
     "minify-css-string": "^1.0.0",
+    "nth-check": ">=2.0.1",
     "prettier": "^1.19.1",
     "sass": "^1.32.8",
     "sass-loader": "8.0.x",
