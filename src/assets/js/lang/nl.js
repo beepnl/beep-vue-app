@@ -831,6 +831,8 @@ const translations = {
   Every: 'Elke', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 24 hours etc.
   minutes_unit: 'min | min', // singular | plural
   hours_unit: 'uur | uur', // singular | plural
+  Alert_on_occurences_short: 'Wanneer ontvang je de notificatie?', // for alert rule overview table header
+  Calculation_minutes_short: 'Hoe vaak berekend?', // for alert rule overview table header
 }
 
 export default translations

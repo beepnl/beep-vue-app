@@ -156,8 +156,14 @@
                     <th class="text-left">
                       {{ $t('Name') }}
                     </th>
-                    <th class="text-left">
+                    <!-- <th class="text-left">
                       {{ $t('Description') }}
+                    </th> -->
+                    <th class="text-left">
+                      {{ $t('Calculation_minutes_short') }}
+                    </th>
+                    <th class="text-left">
+                      {{ $t('Alert_on_occurences_short') }}
                     </th>
                     <th class="text-left">
                       {{ $t('Actions') }}
@@ -228,8 +234,28 @@
                     <td :class="!alertRule.active ? 'td--not-active' : ''">
                       <span v-text="alertRule.name"></span>
                     </td>
-                    <td :class="!alertRule.active ? 'td--not-active' : ''">
+                    <!-- <td :class="!alertRule.active ? 'td--not-active' : ''">
                       <span v-text="alertRule.description"></span>
+                    </td> -->
+                    <td :class="!alertRule.active ? 'td--not-active' : ''">
+                      <span
+                        v-text="
+                          getCalculationMinutesText(
+                            // eslint-disable-next-line vue/comma-dangle
+                            alertRule.calculation_minutes
+                          )
+                        "
+                      ></span>
+                    </td>
+                    <td :class="!alertRule.active ? 'td--not-active' : ''">
+                      <span
+                        v-text="
+                          getAlertOnOccurencesText(
+                            // eslint-disable-next-line vue/comma-dangle
+                            alertRule.alert_on_occurences
+                          )
+                        "
+                      ></span>
                     </td>
                     <td :class="!alertRule.active ? 'td--not-active' : ''">
                       <router-link
@@ -417,6 +443,21 @@ export default {
         .catch((reject) => {
           return true
         })
+    },
+    getAlertOnOccurencesText(number) {
+      return number === 1
+        ? this.$i18n.t('Direct')
+        : this.$i18n.t('After') + ' ' + number + ' ' + this.$i18n.t('times')
+    },
+    getCalculationMinutesText(minutes) {
+      var hours = minutes / 60
+      return (
+        this.$i18n.t('Every') +
+        ' ' +
+        (hours >= 1
+          ? hours + ' ' + this.$i18n.tc('hours_unit', hours)
+          : minutes + ' ' + this.$i18n.tc('minutes_unit', 2))
+      )
     },
     toggleAlerts() {
       if (this.alertsEnabled) {

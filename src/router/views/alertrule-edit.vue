@@ -180,7 +180,7 @@
             <div class="beep-label" v-text="$t('Alert_on_occurences')"></div>
             <v-select
               v-model="activeAlertRule.alert_on_occurences"
-              :items="occurences"
+              :items="alertOnOccurencesItems"
               item-text="label"
               item-value="id"
               :placeholder="$t('Select') + '...'"
@@ -321,6 +321,19 @@ export default {
     ...mapGetters('alerts', ['alertRules', 'alertRuleEdited']),
     ...mapGetters('devices', ['devices']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
+        alertOnOccurencesItems() {
+      var occArray = []
+      for (var i = 1; i < 11; i++) {
+        occArray.push({
+          id: i,
+          label:
+            i === 1
+              ? this.$i18n.t('Direct')
+              : this.$i18n.t('After') + ' ' + i + ' ' + this.$i18n.t('times'),
+        })
+      }
+      return occArray
+    },
     alertruleCreateMode() {
       return this.$route.name === 'alertrule-create'
     },
@@ -488,19 +501,6 @@ export default {
         acc += apiary.children.length
         return acc
       }, 0)
-    },
-    occurences() {
-      var occArray = []
-      for (var i = 1; i < 11; i++) {
-        occArray.push({
-          id: i,
-          label:
-            i === 1
-              ? this.$i18n.t('Direct')
-              : this.$i18n.t('After') + ' ' + i + ' ' + this.$i18n.t('times'),
-        })
-      }
-      return occArray
     },
     requiredRule: function() {
       return [
