@@ -312,7 +312,7 @@ const translations = {
   weight_kg_corrected: 'Weight (corr)',
   weight_combined_kg: 'Weight combi',
   bat_volt: 'Battery',
-  bv: 'Battery',
+  bv: 'Battery voltage',
   sound_fanning_4days: 'Fan 4d bees',
   s_fan_4: 'Fan 4d bees',
   sound_fanning_6days: 'Fan 6d bees',

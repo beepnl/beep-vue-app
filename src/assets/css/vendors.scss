@@ -433,6 +433,18 @@
   border-color: $color-primary !important;
 }
 
+.vue-treeselect.color-red {
+  .vue-treeselect__multi-value-item,
+  .vue-treeselect__value-remove {
+    color: $color-red !important;
+    background: $color-red-light !important;
+  }
+  .vue-treeselect__checkbox--checked {
+    background: $color-red !important;
+    border-color: $color-red !important;
+  }
+}
+
 /* Vue Datetime */
 .vdatetime-input {
   color: $color-primary;

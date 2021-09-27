@@ -318,7 +318,7 @@ const translations = {
   weight_kg_corrected: 'Gewicht (corr)',
   weight_combined_kg: 'Gewicht combi',
   bat_volt: 'Batterij',
-  bv: 'Batterij',
+  bv: 'Batterij voltage',
   sound_fanning_4days: 'Vent 4d bijen',
   s_fan_4: 'Vent 4d bijen',
   sound_fanning_6days: 'Vent 6d bijen',
@@ -734,7 +734,7 @@ const translations = {
   Select_default_alertrule: 'Kopieer standaardinstelling',
   /* below, please keep all terms between [] in english: */
   alertrule_main_sentence:
-    'Ik wil een notificatie ontvangen als [calculation] [comparison] van de/het [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Deze berekening wordt elke [calculation_minutes] uur uitgevoerd, ',
+    'Ik wil een notificatie ontvangen als [calculation] [measurement_quantity] [comparison] [comparator] [threshold_value][measurement_unit]. Deze berekening wordt elke [calculation_minutes] uur uitgevoerd, ',
   alertrule_occurences_direct_sentence:
     'en ik ontvang hier direct een notificatie van. ',
   alertrule_occurences_indirect_sentence:
@@ -749,7 +749,7 @@ const translations = {
   max: 'de/het maximum',
   ave: 'de/het gemiddelde',
   der: 'de afgeleide van de/het',
-  cnt: 'de telling van de/het',
+  cnt: 'het aantal keer voorkomen van',
   equal_to: 'gelijk is aan',
   less_than: 'minder is dan',
   greater_than: 'meer is dan',

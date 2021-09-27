@@ -234,6 +234,7 @@
             >
             <Treeselect
               v-model="activeAlertRule.exclude_months"
+              class="color-red"
               :options="months"
               :placeholder="`${$t('Select')} ${$t('months')}`"
               :no-results-text="`${$t('no_results')}`"
@@ -246,6 +247,7 @@
             <div class="beep-label" v-html="$t('Exclude_hours')"></div>
             <Treeselect
               v-model="activeAlertRule.exclude_hours"
+              class="color-red"
               :options="hours"
               :placeholder="`${$t('Select')} ${$t('hours')}`"
               :no-results-text="`${$t('no_results')}`"
@@ -267,6 +269,7 @@
             </div>
             <Treeselect
               v-model="activeAlertRule.exclude_hive_ids"
+              class="color-red"
               :options="sortedDevices"
               :disable-branch-nodes="true"
               :default-expand-level="1"
@@ -773,11 +776,19 @@ export default {
           .full.toLowerCase(),
         measurement_quantity:
           measurement !== undefined ? measurement.label : '-',
-        measurement_unit: measurement !== undefined ? measurement.unit : '',
+        measurement_unit:
+          alertRule.calculation === 'cnt'
+            ? '#'
+            : measurement !== undefined
+            ? measurement.unit
+            : '',
         comparator: this.comparators.filter(
           (comparator) => comparator.short === alertRule.comparator
         )[0].full,
-        threshold_value: alertRule.threshold_value,
+        threshold_value:
+          alertRule.calculation === 'der'
+            ? 'Δ' + alertRule.threshold_value
+            : alertRule.threshold_value,
         calculation_minutes: parseFloat(
           (alertRule.calculation_minutes / 60).toFixed(2)
         ),
