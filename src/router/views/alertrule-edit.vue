@@ -214,9 +214,15 @@
 
         <v-row v-if="activeAlertRule">
           <v-col cols="12" sm="6" lg="4">
-            <div class="beep-label" v-html="$t('Exclude_months')"
-              ><span>{{}}</span></div
-            >
+            <div class="d-flex justify-space-between">
+              <div class="beep-label" v-html="$t('Exclude_months')"></div>
+              <v-switch
+                v-model="allMonthsSelected"
+                class="pt-2 mt-n4"
+                :label="$t('select_all')"
+                hide-details
+              ></v-switch>
+            </div>
             <Treeselect
               v-model="activeAlertRule.exclude_months"
               class="color-red"
@@ -229,7 +235,15 @@
           </v-col>
 
           <v-col cols="12" sm="6" lg="4">
-            <div class="beep-label" v-html="$t('Exclude_hours')"></div>
+            <div class="d-flex justify-space-between">
+              <div class="beep-label" v-html="$t('Exclude_hours')"></div>
+              <v-switch
+                v-model="allHoursSelected"
+                class="pt-2 mt-n4"
+                :label="$t('select_all')"
+                hide-details
+              ></v-switch>
+            </div>
             <Treeselect
               v-model="activeAlertRule.exclude_hours"
               class="color-red"
@@ -327,7 +341,7 @@ export default {
   computed: {
     ...mapGetters('alerts', ['alertRules', 'alertRuleEdited']),
     ...mapGetters('devices', ['devices']),
-    ...mapGetters('taxonomy', ['sensorMeasurementsList']),
+    ...mapGetters('taxonomy', ['alertRulesList', 'sensorMeasurementsList']),
     alertOnOccurencesItems() {
       var occArray = []
       for (var i = 1; i < 11; i++) {
@@ -364,6 +378,36 @@ export default {
         }
       },
     },
+    allHoursSelected: {
+      get() {
+        return this.activeAlertRule.exclude_hours.length === 24
+      },
+      set(value) {
+        if (value === false) {
+          this.activeAlertRule.exclude_hours = []
+        } else {
+          this.activeAlertRule.exclude_hours = []
+          this.hours.map((hour) => {
+            this.activeAlertRule.exclude_hours.push(hour.id)
+          })
+        }
+      },
+    },
+    allMonthsSelected: {
+      get() {
+        return this.activeAlertRule.exclude_months.length === 12
+      },
+      set(value) {
+        if (value === false) {
+          this.activeAlertRule.exclude_months = []
+        } else {
+          this.activeAlertRule.exclude_months = []
+          this.months.map((month) => {
+            this.activeAlertRule.exclude_months.push(month.id)
+          })
+        }
+      },
+    },
     calculationMinutesItems() {
       return [
         {
@@ -393,72 +437,13 @@ export default {
       ]
     },
     calculations() {
-      return [
-        {
-          short: 'min',
-          full: this.$i18n.t('Minimum'),
-        },
-        {
-          short: 'max',
-          full: this.$i18n.t('Maximum'),
-        },
-        {
-          short: 'ave',
-          full: this.$i18n.t('Average'),
-        },
-        {
-          short: 'der',
-          full: this.$i18n.t('Derivative'),
-        },
-        {
-          short: 'cnt',
-          full: this.$i18n.t('Count'),
-        },
-      ]
+      return this.formatFromTaxonomy(this.alertRulesList.calculations)
     },
     comparators() {
-      return [
-        {
-          short: '=',
-          full: this.$i18n.t('equal_to'),
-        },
-        {
-          short: '<',
-          full: this.$i18n.t('less_than'),
-        },
-        {
-          short: '>',
-          full: this.$i18n.t('greater_than'),
-        },
-        {
-          short: '<=',
-          full: this.$i18n.t('less_than_or_equal'),
-        },
-        {
-          short: '>=',
-          full: this.$i18n.t('greater_than_or_equal'),
-        },
-      ]
+      return this.formatFromTaxonomy(this.alertRulesList.comparators)
     },
     comparisons() {
-      return [
-        {
-          short: 'val',
-          full: this.$i18n.t('Value'),
-        },
-        {
-          short: 'dif',
-          full: this.$i18n.t('Difference'),
-        },
-        {
-          short: 'abs',
-          full: this.$i18n.t('Absolute_value'),
-        },
-        {
-          short: 'abs_dif',
-          full: this.$i18n.t('Absolute_value_of_dif'),
-        },
-      ]
+      return this.formatFromTaxonomy(this.alertRulesList.comparisons)
     },
     hours() {
       var hoursArray = []
@@ -802,10 +787,7 @@ export default {
         comparator: this.comparators.filter(
           (comparator) => comparator.short === alertRule.comparator
         )[0].full,
-        threshold_value:
-          alertRule.calculation === 'der'
-            ? 'Δ' + alertRule.threshold_value
-            : alertRule.threshold_value,
+        threshold_value: alertRule.threshold_value,
         calculation_minutes: this.momentHumanizeDuration(
           alertRule.calculation_minutes,
           'minutes'
@@ -901,6 +883,16 @@ export default {
       } else {
         return this.$i18n.t('edit') + '...'
       }
+    },
+    formatFromTaxonomy(array) {
+      var formattedArray = []
+      Object.entries(array).map(([key, value]) => {
+        formattedArray.push({
+          short: key,
+          full: this.$i18n.t(value),
+        })
+      })
+      return formattedArray
     },
     saveAlertRule() {
       if (this.alertruleCreateMode) {

@@ -8,6 +8,9 @@ export const state = {
 }
 export const getters = {
   ...resource.getters,
+  alertRulesList: (state) => {
+    return state.taxonomyLists.alert_rules || []
+  },
   beeRacesList: (state) => {
     return state.taxonomyLists.beeraces || []
   },
