@@ -164,31 +164,16 @@
         <v-row v-if="activeAlertRule">
           <v-col cols="6" sm="3">
             <div class="beep-label" v-text="$t('Calculation_minutes')"></div>
-            <el-input-number
+            <v-select
               v-model="activeAlertRule.calculation_minutes"
-              :precision="0"
-              :min="15"
-              :step-strictly="true"
-              size="small"
-              @change="setAlertRuleEdited(true)"
-              @input.native="
-                convertComma($event, activeAlertRule, 'calculation_minutes', 0),
-                  setAlertRuleEdited(true)
-              "
-            ></el-input-number>
-            <div
-              v-if="calculationMinutesIsNaN"
-              class="v-text-field__details mt-1"
-              ><div class="v-messages theme--light error--text" role="alert"
-                ><div class="v-messages__wrapper"
-                  ><div class="v-messages__message">{{
-                    this.$i18n.t('this_field') +
-                      ' ' +
-                      this.$i18n.t('is_required')
-                  }}</div></div
-                ></div
-              ></div
-            >
+              :items="calculationMinutesItems"
+              item-text="label"
+              item-value="minutes"
+              :placeholder="$t('Select') + '...'"
+              :rules="requiredRule"
+              class="pt-0"
+              @input="setAlertRuleEdited(true)"
+            ></v-select>
           </v-col>
 
           <v-col cols="12" sm="5" md="3">
@@ -359,6 +344,51 @@ export default {
         }
       },
     },
+    calculationMinutesItems() {
+      return [
+        {
+          minutes: 15,
+          label:
+            this.$i18n.t('Every') + ' 15 ' + this.$i18n.tc('minutes_unit', 2),
+        },
+        {
+          minutes: 30,
+          label:
+            this.$i18n.t('Every') + ' 30 ' + this.$i18n.tc('minutes_unit', 2),
+        },
+        {
+          minutes: 60,
+          label: this.$i18n.t('Every') + ' 1 ' + this.$i18n.tc('hours_unit', 1),
+        },
+        {
+          minutes: 180,
+          label: this.$i18n.t('Every') + ' 3 ' + this.$i18n.tc('hours_unit', 2),
+        },
+        {
+          minutes: 360,
+          label: this.$i18n.t('Every') + ' 6 ' + this.$i18n.tc('hours_unit', 2),
+        },
+        {
+          minutes: 360,
+          label: this.$i18n.t('Every') + ' 6 ' + this.$i18n.tc('hours_unit', 2),
+        },
+        {
+          minutes: 720,
+          label:
+            this.$i18n.t('Every') + ' 12 ' + this.$i18n.tc('hours_unit', 2),
+        },
+        {
+          minutes: 1440,
+          label:
+            this.$i18n.t('Every') + ' 24 ' + this.$i18n.tc('hours_unit', 2),
+        },
+        {
+          minutes: 2880,
+          label:
+            this.$i18n.t('Every') + ' 48 ' + this.$i18n.tc('hours_unit', 2),
+        },
+      ]
+    },
     calculations() {
       return [
         {
@@ -382,9 +412,6 @@ export default {
           full: this.$i18n.t('Count'),
         },
       ]
-    },
-    calculationMinutesIsNaN() {
-      return isNaN(this.activeAlertRule.calculation_minutes)
     },
     comparators() {
       return [

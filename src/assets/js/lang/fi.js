@@ -688,7 +688,6 @@ const translations = {
   Measurement: 'Mittaus | Mittaukset',
   Calculation: 'Laskeminen',
   calculation: 'laskeminen',
-  Calculation_minutes: 'Laske per x minuuttia',
   Alert_on_occurences: 'Milloin haluaisit saada tämän ilmoituksen?',
   Alert_on_occurences_hint:
     'Heti vai vasta sen jälkeen, kun se on tapahtunut x kertaa?',
@@ -830,6 +829,11 @@ const translations = {
     'Here you can find the support article on downloading log data with the BEEP base app.',
   import_log_data_support_url:
     'https://beepsupport.freshdesk.com/fi/support/solutions/articles/60000697129-lataa-beep-perustiedot-bluetoothin-kautta',
+  Calculation_minutes:
+    'Hoe often would you like the calculation to be performed?',
+  Every: 'Every', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 24 hours etc.
+  minutes_unit: 'min | min', // singular | plural
+  hours_unit: 'hour | hours', // singular | plural
 }
 
 export default translations

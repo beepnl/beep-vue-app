@@ -656,7 +656,6 @@ const translations = {
   Measurement: 'Medición | Mediciones',
   Calculation: 'Cálculo',
   calculation: 'cálculo',
-  Calculation_minutes: 'Calcular por x número de minutos',
   Alert_on_occurences: 'Cuando le gustaría recibir esta alerta?',
   Alert_on_occurences_hint:
     'Directamente, o solo después que este haya ocurrido un x número de veces?',
@@ -798,6 +797,11 @@ const translations = {
     'Here you can find the support article on downloading log data with the BEEP base app.',
   import_log_data_support_url:
     'https://beepsupport.freshdesk.com/es/support/solutions/articles/60000697129-descargar-datos-de-base-de-beep-a-trav%C3%A9s-de-bluetooth',
+  Calculation_minutes:
+    'Hoe often would you like the calculation to be performed?',
+  Every: 'Every', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 24 hours etc.
+  minutes_unit: 'min | min', // singular | plural
+  hours_unit: 'hour | hours', // singular | plural
 }
 
 export default translations

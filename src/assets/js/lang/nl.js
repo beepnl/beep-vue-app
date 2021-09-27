@@ -692,7 +692,6 @@ const translations = {
   Measurement: 'Meting | Metingen',
   Calculation: 'Berekening',
   calculation: 'berekening',
-  Calculation_minutes: 'Bereken per x aantal minuten',
   Alert_on_occurences: 'Wanneer wil je deze notificatie ontvangen?',
   Alert_on_occurences_hint:
     'Direct, of pas nadat deze een x aantal keer is opgetreden?',
@@ -828,6 +827,10 @@ const translations = {
     'Lees hier het support artikel over het downloaden van log data m.b.v. de BEEP base app.',
   flashlog_support_url:
     'https://beepsupport.freshdesk.com/nl/support/solutions/articles/60000697129-beep-base-data-downloaden-met-bluetooth',
+  Calculation_minutes: 'Hoe vaak wil je de berekening uit laten voeren?',
+  Every: 'Elke', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 24 hours etc.
+  minutes_unit: 'min | min', // singular | plural
+  hours_unit: 'uur | uur', // singular | plural
 }
 
 export default translations
