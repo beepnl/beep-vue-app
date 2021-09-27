@@ -35,6 +35,20 @@ export const momentFromNow = {
   },
 }
 
+export const momentHumanizeDuration = {
+  methods: {
+    momentHumanizeDuration(input, unit, prefix = '') {
+      return (
+        prefix +
+        this.$moment
+          .duration(input, unit)
+          .locale(this.$i18n.locale)
+          .humanize()
+      )
+    },
+  },
+}
+
 export const momentify = {
   methods: {
     momentify(date, inUtcTime = false, format = 'lll') {

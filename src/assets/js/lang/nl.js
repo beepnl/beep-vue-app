@@ -744,10 +744,10 @@ const translations = {
     'Deze notificatie is uitgeschakeld tijdens de uren: [exclude_hours]. ',
   alertrule_exclude_hives_sentence:
     'Deze notificatie is uitgeschakeld voor deze bijenkasten: [exclude_hive_ids].',
-  min: 'de/het minimum',
-  max: 'de/het maximum',
-  ave: 'de/het gemiddelde',
-  der: 'de afgeleide van de/het',
+  min: 'minimum',
+  max: 'maximum',
+  ave: 'gemiddelde',
+  der: 'de afgeleide van',
   cnt: 'het aantal keer voorkomen van',
   equal_to: 'gelijk is aan',
   less_than: 'minder is dan',
@@ -829,10 +829,12 @@ const translations = {
     'https://beepsupport.freshdesk.com/nl/support/solutions/articles/60000697129-beep-base-data-downloaden-met-bluetooth',
   Calculation_minutes: 'Hoe vaak wil je de berekening uit laten voeren?',
   Every: 'Elke', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 24 hours etc.
-  minutes_unit: 'min | min', // singular | plural
-  hours_unit: 'uur | uur', // singular | plural
   Alert_on_occurences_short: 'Wanneer ontvang je de notificatie?', // for alert rule overview table header
   Calculation_minutes_short: 'Hoe vaak berekend?', // for alert rule overview table header
+  Disable_alert_for_this_hive: 'Deactiveer notificatie voor deze kast',
+  Alert_disabled_for_this_hive: 'Notificatie gedeactiveerd voor deze kast',
+  disabled_for_hive: 'gedeactiveerd voor kast', // [alert] has been disabled for the following hive
+  Alert_disabled: 'Notificatie gedeactiveerd',
 }
 
 export default translations

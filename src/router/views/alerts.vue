@@ -154,6 +154,8 @@
             <AlertCard
               :alert="alert"
               :hives="hives"
+              :unit="getUnit(alert.measurement_id)"
+              @show-snackbar=";(snackbar.text = $event), (snackbar.show = true)"
               @delete-alert="deleteAlert($event)"
             ></AlertCard>
           </v-col>
@@ -166,6 +168,14 @@
         </v-col>
       </v-row>
     </v-container>
+
+    <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
+      {{ snackbar.text }}
+      <v-btn color="accent" text @click="snackbar.show = false">
+        {{ $t('Close') }}
+      </v-btn>
+    </v-snackbar>
+
     <Confirm ref="confirm"></Confirm>
   </Layout>
 </template>
@@ -176,10 +186,15 @@ import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/main.vue'
 import { mapGetters } from 'vuex'
-import { momentFromNow, momentify } from '@mixins/momentMixin'
+import {
+  momentFromNow,
+  momentHumanizeDuration,
+  momentify,
+} from '@mixins/momentMixin'
 import {
   checkAlerts,
   readApiariesAndGroupsIfNotPresent,
+  readTaxonomy,
 } from '@mixins/methodsMixin'
 import { ScaleTransition } from 'vue2-transitions'
 
@@ -193,8 +208,10 @@ export default {
   mixins: [
     checkAlerts,
     momentFromNow,
+    momentHumanizeDuration,
     momentify,
     readApiariesAndGroupsIfNotPresent,
+    readTaxonomy,
   ],
   data: function() {
     return {
@@ -207,12 +224,18 @@ export default {
         alert_via_email: [],
       },
       showLoadingIcon: false,
+      snackbar: {
+        show: false,
+        timeout: 3000,
+        text: 'notification',
+      },
     }
   },
   computed: {
     ...mapGetters('alerts', ['alertRules', 'alerts', 'alertsLoading']),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
+    ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     alertsWithRuleDetails() {
       var alertsWithRuleDetails = this.alerts
       alertsWithRuleDetails.map((alert) => {
@@ -222,13 +245,11 @@ export default {
           var createdMoment = this.$moment(alert.created_at)
           var updatedMoment = this.$moment(alert.updated_at)
           var period = updatedMoment.diff(createdMoment, 'seconds')
-          alert.momentified =
-            this.$i18n.t('During') +
-            ' ' +
-            this.$moment
-              .duration(period, 'seconds')
-              .locale(this.$i18n.locale)
-              .humanize()
+          alert.momentified = this.momentHumanizeDuration(
+            period,
+            'seconds',
+            this.$i18n.t('During') + ' '
+          )
         } else {
           alert.momentified = this.momentFromNow(alert.updated_at, true)
         }
@@ -331,9 +352,11 @@ export default {
   },
   created() {
     this.search = this.$route.query.search || null
-    this.readApiariesAndGroupsIfNotPresent().then(() => {
-      this.checkAlertRulesAndAlerts().then(() => {
-        this.ready = true
+    this.readTaxonomy().then(() => {
+      this.readApiariesAndGroupsIfNotPresent().then(() => {
+        this.checkAlertRulesAndAlerts().then(() => {
+          this.ready = true
+        })
       })
     })
   },
@@ -392,6 +415,11 @@ export default {
         .catch((reject) => {
           return true
         })
+    },
+    getUnit(measurementId) {
+      return this.sensorMeasurementsList.filter(
+        (measurementType) => measurementType.id === measurementId
+      )[0].unit
     },
   },
 }

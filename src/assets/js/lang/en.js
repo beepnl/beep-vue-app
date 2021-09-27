@@ -726,7 +726,7 @@ const translations = {
   Select_default_alertrule: 'Copy default alert rule',
   /* below, please keep all terms between [] as is: */
   alertrule_main_sentence:
-    'I would like to receive an alert if the [calculation] [comparison] of the [measurement_quantity] [comparator] [threshold_value][measurement_unit]. This calculation will be executed every [calculation_minutes] hours, ',
+    'I would like to receive an alert if the [calculation] [comparison] of the [measurement_quantity] [comparator] [threshold_value][measurement_unit]. This calculation will be executed every [calculation_minutes], ',
   alertrule_occurences_direct_sentence:
     'and I would like to receive the alert directly. ',
   alertrule_occurences_indirect_sentence:
@@ -830,6 +830,10 @@ const translations = {
   hours_unit: 'hour | hours', // singular | plural
   Calculation_minutes_short: 'How often is it calculated?', // for alert rule overview table header
   Alert_on_occurences_short: 'When do you receive the alert?', // for alert rule overview table header
+  Disable_alert_for_this_hive: 'Disable alert for this hive',
+  Alert_disabled_for_this_hive: 'Alert is disabled for this hive',
+  disabled_for_hive: 'has been disabled for hive', // [alert] has been disabled for the following hive
+  Alert_disabled: 'Alert disabled',
 }
 
 export default translations

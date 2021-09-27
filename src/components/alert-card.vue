@@ -299,6 +299,43 @@
       <v-divider v-if="alert.alert_rule_name !== null" class="my-1"></v-divider>
 
       <v-list-item-group>
+        <v-list-item
+          v-if="
+            alertRule !== undefined &&
+              (!alertRule.active ||
+                alertRule.exclude_hive_ids.indexOf(alert.hive_id) > -1)
+          "
+          disabled
+        >
+          <v-list-item-icon class="mr-3">
+            <v-icon>mdi-close</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>{{
+              !alertRule.active
+                ? $t('Alert_disabled')
+                : $t('Alert_disabled_for_this_hive')
+            }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item
+          v-else-if="
+            alertRule !== undefined &&
+              alertRule.exclude_hive_ids.indexOf(alert.hive_id) === -1
+          "
+          @click="disableAlertForHive"
+        >
+          <v-list-item-icon class="mr-3">
+            <v-icon class="red--text">mdi-close</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title class="red--text">{{
+              $t('Disable_alert_for_this_hive')
+            }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         <v-list-item @click="deleteAlert(alert.id)">
           <v-list-item-icon class="mr-3">
             <v-icon class="red--text">mdi-delete</v-icon>
@@ -316,12 +353,16 @@
 </template>
 
 <script>
+import Api from '@api/Api'
 import HiveIcon from '@components/hive-icon.vue'
+import { mapGetters } from 'vuex'
+import { readAlertRules } from '@mixins/methodsMixin'
 
 export default {
   components: {
     HiveIcon,
   },
+  mixins: [readAlertRules],
   props: {
     alert: {
       type: Object,
@@ -333,9 +374,20 @@ export default {
       default: null,
       required: true,
     },
+    unit: {
+      type: String,
+      default: '',
+      required: false,
+    },
   },
   data: () => ({}),
   computed: {
+    ...mapGetters('alerts', ['alertRules']),
+    alertRule() {
+      return this.alertRules.filter(
+        (alertRule) => alertRule.id === this.alert.alert_rule_id
+      )[0]
+    },
     alertValueText() {
       if (this.alert !== null) {
         if (this.alert.alert_value !== null) {
@@ -344,7 +396,7 @@ export default {
           }
           var number = parseFloat(this.alert.alert_value)
           if (!isNaN(number)) {
-            return number.toFixed(2)
+            return number.toFixed(2) + this.unit
           } else {
             return this.alert.alert_value
           }
@@ -357,6 +409,39 @@ export default {
     },
   },
   methods: {
+    async disableAlertForHive() {
+      var updatedAlertRule = { ...this.alertRule }
+      updatedAlertRule.exclude_hive_ids.push(this.alert.hive_id)
+      try {
+        const response = await Api.updateRequest(
+          '/alert-rules/',
+          updatedAlertRule.id,
+          updatedAlertRule
+        )
+        if (response) {
+          var disabledText =
+            this.$i18n.tc('Alert', 1) +
+            ' "' +
+            updatedAlertRule.name +
+            '" ' +
+            this.$i18n.t('disabled_for_hive') +
+            ' "' +
+            this.alert.hive_name +
+            '" '
+          this.$emit('show-snackbar', disabledText)
+        }
+        setTimeout(() => {
+          return this.readAlertRules()
+        }, 150) // wait for API to update alertrules
+      } catch (error) {
+        this.$emit('show-snackbar', this.$i18n.t('something_wrong'))
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
     deleteAlert(id) {
       this.$emit('delete-alert', id)
     },

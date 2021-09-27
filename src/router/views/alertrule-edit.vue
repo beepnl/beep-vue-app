@@ -167,7 +167,7 @@
             <v-select
               v-model="activeAlertRule.calculation_minutes"
               :items="calculationMinutesItems"
-              item-text="label"
+              :item-text="getCalculationMinutesText"
               item-value="minutes"
               :placeholder="$t('Select') + '...'"
               :rules="requiredRule"
@@ -294,6 +294,7 @@ import {
   readDevicesIfNotPresent,
   readTaxonomy,
 } from '@mixins/methodsMixin'
+import { momentHumanizeDuration } from '@mixins/momentMixin'
 import Treeselect from '@riophae/vue-treeselect'
 
 export default {
@@ -302,7 +303,13 @@ export default {
     Layout,
     Treeselect,
   },
-  mixins: [convertComma, readAlertRules, readDevicesIfNotPresent, readTaxonomy],
+  mixins: [
+    convertComma,
+    momentHumanizeDuration,
+    readAlertRules,
+    readDevicesIfNotPresent,
+    readTaxonomy,
+  ],
   data: function() {
     return {
       snackbar: {
@@ -321,7 +328,7 @@ export default {
     ...mapGetters('alerts', ['alertRules', 'alertRuleEdited']),
     ...mapGetters('devices', ['devices']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
-        alertOnOccurencesItems() {
+    alertOnOccurencesItems() {
       var occArray = []
       for (var i = 1; i < 11; i++) {
         occArray.push({
@@ -361,44 +368,27 @@ export default {
       return [
         {
           minutes: 15,
-          label:
-            this.$i18n.t('Every') + ' 15 ' + this.$i18n.tc('minutes_unit', 2),
         },
         {
           minutes: 30,
-          label:
-            this.$i18n.t('Every') + ' 30 ' + this.$i18n.tc('minutes_unit', 2),
         },
         {
           minutes: 60,
-          label: this.$i18n.t('Every') + ' 1 ' + this.$i18n.tc('hours_unit', 1),
         },
         {
           minutes: 180,
-          label: this.$i18n.t('Every') + ' 3 ' + this.$i18n.tc('hours_unit', 2),
         },
         {
           minutes: 360,
-          label: this.$i18n.t('Every') + ' 6 ' + this.$i18n.tc('hours_unit', 2),
-        },
-        {
-          minutes: 360,
-          label: this.$i18n.t('Every') + ' 6 ' + this.$i18n.tc('hours_unit', 2),
         },
         {
           minutes: 720,
-          label:
-            this.$i18n.t('Every') + ' 12 ' + this.$i18n.tc('hours_unit', 2),
         },
         {
           minutes: 1440,
-          label:
-            this.$i18n.t('Every') + ' 24 ' + this.$i18n.tc('hours_unit', 2),
         },
         {
           minutes: 2880,
-          label:
-            this.$i18n.t('Every') + ' 48 ' + this.$i18n.tc('hours_unit', 2),
         },
       ]
     },
@@ -816,8 +806,9 @@ export default {
           alertRule.calculation === 'der'
             ? 'Δ' + alertRule.threshold_value
             : alertRule.threshold_value,
-        calculation_minutes: parseFloat(
-          (alertRule.calculation_minutes / 60).toFixed(2)
+        calculation_minutes: this.momentHumanizeDuration(
+          alertRule.calculation_minutes,
+          'minutes'
         ),
       }
 
@@ -891,6 +882,13 @@ export default {
       }
 
       return replacedSentence
+    },
+    getCalculationMinutesText(item) {
+      return this.momentHumanizeDuration(
+        item.minutes,
+        'minutes',
+        this.$i18n.t('Every') + ' '
+      )
     },
     getText(item) {
       return item.label + ' (' + item.abbreviation + ')'

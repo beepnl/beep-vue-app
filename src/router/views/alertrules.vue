@@ -240,9 +240,11 @@
                     <td :class="!alertRule.active ? 'td--not-active' : ''">
                       <span
                         v-text="
-                          getCalculationMinutesText(
+                          momentHumanizeDuration(
+                            alertRule.calculation_minutes,
+                            'minutes',
                             // eslint-disable-next-line vue/comma-dangle
-                            alertRule.calculation_minutes
+                            $t('Every') + ' '
                           )
                         "
                       ></span>
@@ -293,6 +295,7 @@ import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
+import { momentHumanizeDuration } from '@mixins/momentMixin'
 import { readAlertRules } from '@mixins/methodsMixin'
 
 export default {
@@ -300,7 +303,7 @@ export default {
     Confirm,
     Layout,
   },
-  mixins: [readAlertRules],
+  mixins: [momentHumanizeDuration, readAlertRules],
   data: function() {
     return {
       ready: false,
@@ -448,16 +451,6 @@ export default {
       return number === 1
         ? this.$i18n.t('Direct')
         : this.$i18n.t('After') + ' ' + number + ' ' + this.$i18n.t('times')
-    },
-    getCalculationMinutesText(minutes) {
-      var hours = minutes / 60
-      return (
-        this.$i18n.t('Every') +
-        ' ' +
-        (hours >= 1
-          ? hours + ' ' + this.$i18n.tc('hours_unit', hours)
-          : minutes + ' ' + this.$i18n.tc('minutes_unit', 2))
-      )
     },
     toggleAlerts() {
       if (this.alertsEnabled) {
