@@ -60,122 +60,194 @@ export default [
     redirect: '/',
   },
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/alerts',
     name: 'alerts',
     component: () => lazyLoadView(import('@views/alerts.vue')),
   },
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/alertrules',
     name: 'alertrules',
     component: () => lazyLoadView(import('@views/alertrules.vue')),
   },
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/alertrules/create',
     name: 'alertrule-create',
     component: () => lazyLoadView(import('@views/alertrule-edit.vue')),
   },
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/alertrules/:id/edit',
     name: 'alertrule-edit',
     component: () => lazyLoadView(import('@views/alertrule-edit.vue')),
   },
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/alertrules/default',
     name: 'alertrules-default',
     component: () => lazyLoadView(import('@views/alertrules-default.vue')),
   },
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/',
     alias: '/apiaries',
     name: 'home',
     component: () => lazyLoadView(import('@views/apiary-list.vue')),
   },
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/apiaries/create',
     name: 'apiary-create',
     component: () => lazyLoadView(import('@views/apiary-create.vue')),
   },
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/apiaries/:id/edit',
     name: 'apiary-edit',
     component: () => lazyLoadView(import('@views/apiary-edit.vue')),
   },
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/apiaries/:id/management',
     name: 'apiary-management',
     component: () => lazyLoadView(import('@views/apiary-management.vue')),
   },
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/checklist/:id/edit',
     name: 'checklist',
     component: () => lazyLoadView(import('@views/checklist.vue')),
   },
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/checklists/',
     name: 'checklists',
     component: () => lazyLoadView(import('@views/checklist.vue')),
   },
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/devices',
     name: 'devices',
     component: () => lazyLoadView(import('@views/devices.vue')),
   },
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/diary',
     name: 'diary',
     component: () => lazyLoadView(import('@views/diary-list.vue')),
   },
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/export',
     name: 'export',
     component: () => lazyLoadView(import('@views/export.vue')),
   },
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/groups/create',
     name: 'group-create',
     component: () => lazyLoadView(import('@views/group-edit.vue')),
   },
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/groups/:id/edit',
     name: 'group-edit',
     component: () => lazyLoadView(import('@views/group-edit.vue')),
   },
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/groups/:id/token/:token',
     name: 'group-accept',
     component: () => lazyLoadView(import('@views/group-edit.vue')),
   },
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/hives/create',
     name: 'hive-create',
     component: () => lazyLoadView(import('@views/hive-edit.vue')),
   },
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/hives/:id/edit',
     name: 'hive-edit',
     component: () => lazyLoadView(import('@views/hive-edit.vue')),
   },
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/hives/:id/inspections/:inspection',
     name: 'hive-inspect-edit',
     component: () => lazyLoadView(import('@views/inspect.vue')),
   },
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/hives/:id/inspections/',
     name: 'hive-inspections',
     component: () => lazyLoadView(import('@views/hive-inspections.vue')),
   },
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/inspect',
     name: 'inspect',
     component: () => lazyLoadView(import('@views/inspect.vue')),
   },
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/measurements',
     name: 'measurements',
     component: () => import('@views/measurements-list.vue'), // no lazyLoadView in order to be able to use beforeDestroy hook to clearInterval for lastSensorValues API call when navigating away
   },
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/measurements/:id',
     name: 'measurements-id',
     component: () => import('@views/measurements-list.vue'), // no lazyLoadView in order to be able to use beforeDestroy hook to clearInterval for lastSensorValues API call when navigating away
@@ -186,22 +258,34 @@ export default [
     component: () => lazyLoadView(import('@views/new.vue')),
   },
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/profile',
     name: 'profile',
     component: () => lazyLoadView(import('@views/user-profile.vue')),
     props: () => ({ user: store.state.auth.currentUser || {} }),
   },
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/research',
     name: 'research',
     component: () => lazyLoadView(import('@views/research.vue')),
   },
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/hives/:id/edit',
     name: 'queen-edit',
     component: () => lazyLoadView(import('@views/hive-edit.vue')),
   },
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/support',
     name: 'support',
     component: () => lazyLoadView(import('@views/support.vue')),

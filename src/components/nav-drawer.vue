@@ -28,6 +28,7 @@
                 exact
                 :to="!item.external ? { name: item.route } : ''"
                 :target="item.external ? '_blank' : '_self'"
+                :disabled="item.authRequired && !loggedIn"
                 @click="checkRoute(item.route)"
               >
                 <v-list-item-avatar>
@@ -49,6 +50,7 @@
                 :to="!item.external ? { name: item.route } : ''"
                 :href="item.external ? item.route : ''"
                 :target="item.external ? '_blank' : '_self'"
+                :disabled="item.authRequired && !loggedIn"
                 @click="checkRoute(item.route)"
               >
                 <v-list-item-avatar>
@@ -82,7 +84,7 @@
 
         <div class="d-flex flex-row align-end version-number mt-n2 mr-1">
           <v-spacer></v-spacer>
-          v3.0.47
+          v3.0.46
         </div>
       </div>
     </v-navigation-drawer>
@@ -112,31 +114,37 @@ export default {
           icon: 'mdi-account',
           title: this.$i18n.t('Profile'),
           route: 'profile',
+          authRequired: true,
         },
         {
           icon: 'icon-sensors--no-outline',
           title: this.$i18n.tc('device', 2),
           route: 'devices',
+          authRequired: true,
         },
         {
           icon: 'mdi-bell',
           title: this.$i18n.t('alertrule_pagetitle'),
           route: 'alertrules',
+          authRequired: true,
         },
         {
           icon: 'mdi-cloud-download',
           title: this.$i18n.t('Data_export'),
           route: 'export',
+          authRequired: true,
         },
         {
           icon: 'mdi-format-list-checks',
           title: this.$i18n.tc('Checklist_template', 2),
           route: 'checklists',
+          authRequired: true,
         },
         {
           icon: 'mdi-school',
           title: this.$i18n.t('research'),
           route: 'research',
+          authRequired: true,
         },
         {
           divider: true,
@@ -145,11 +153,13 @@ export default {
           icon: 'mdi-comment-question-outline',
           title: this.$i18n.t('Support'),
           route: 'support',
+          authRequired: true,
         },
         {
           icon: 'mdi-new-box',
           title: this.$i18n.t('Whats_new'),
           route: 'new',
+          authRequired: false,
         },
         {
           icon: 'mdi-information-outline',
@@ -159,6 +169,7 @@ export default {
             this.locale === 'nl'
               ? 'https://beep.nl'
               : 'https://beep.nl/home-english',
+          authRequired: false,
         },
         {
           divider: true,
