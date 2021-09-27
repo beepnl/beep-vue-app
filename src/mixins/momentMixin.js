@@ -12,10 +12,17 @@ export const momentAge = {
 
 export const momentFullDateTime = {
   methods: {
-    momentFullDateTime(date) {
-      return this.$moment(date)
-        .locale(this.$i18n.locale)
-        .format('YYYY-MM-DD HH:mm:ss')
+    momentFullDateTime(date, toUtcTime = false) {
+      // return this.$moment(date)
+      //   .locale(this.$i18n.locale)
+      //   .format('YYYY-MM-DD HH:mm:ss')
+      var time = null
+      if (toUtcTime) {
+        time = this.$moment.utc(date)
+      } else {
+        time = this.$moment(date)
+      }
+      return time.locale(this.$i18n.locale).format('YYYY-MM-DD HH:mm:ss')
     },
   },
 }

@@ -384,11 +384,7 @@ import Confirm from '@components/confirm.vue'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
 import Layout from '@layouts/back.vue'
-import {
-  momentify,
-  momentISO8601,
-  momentFullDateTime,
-} from '@mixins/momentMixin'
+import { momentify, momentFullDateTime } from '@mixins/momentMixin'
 import { mapGetters } from 'vuex'
 import {
   readApiariesAndGroups,
@@ -403,7 +399,6 @@ export default {
   },
   mixins: [
     momentify,
-    momentISO8601,
     momentFullDateTime,
     readApiariesAndGroups,
     readDevicesIfNotPresent,
@@ -484,9 +479,11 @@ export default {
         researchProjects.map((researchProject) => {
           if (researchProject.consent_history.length > 0) {
             researchProject.consent_history.map((chItem) => {
-              chItem.updated_at = this.momentISO8601(
+              chItem.updated_at = this.momentify(
                 // required for datetimepicker v-model to work
-                chItem.updated_at
+                chItem.updated_at,
+                true,
+                null
               )
             })
           }
@@ -549,7 +546,7 @@ export default {
             ' ' +
             this.$i18n.t('Consent').toLocaleLowerCase() +
             ': ' +
-            this.momentify(chItem.updated_at) +
+            this.momentify(chItem.updated_at, true) +
             ' "' +
             this.$i18n.t('consent_no') +
             '"?',
@@ -566,7 +563,7 @@ export default {
     },
     updateConsentDate(researchId, consentId, date) {
       this.showLoadingIcon.push(consentId)
-      var formattedDate = this.momentFullDateTime(date)
+      var formattedDate = this.momentFullDateTime(date, true)
       this.editedCHItems.splice(this.editedCHItems.indexOf(consentId), 1)
       console.log('Update consent: ', consentId, formattedDate)
       this.updateDate(researchId, consentId, formattedDate)
