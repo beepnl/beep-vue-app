@@ -251,7 +251,7 @@ export default {
         if (this.queen && this.queen.created_at !== null) {
           return this.momentifyRemoveTime(this.queen.created_at)
         } else {
-          return ''
+          return this.$moment().format('YYYY-MM-DD')
         }
       },
       set(value) {
