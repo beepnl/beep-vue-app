@@ -6,7 +6,13 @@
         text
         prominent
         dense
-        color="red"
+        :color="
+          alert.alert_value.indexOf('alert_rule') > -1
+            ? 'primary'
+            : alertRuleNotActive
+            ? 'grey'
+            : 'red'
+        "
         class="alert-card cursor-pointer mb-0"
         outlined
         v-on="menu"
@@ -178,16 +184,30 @@
                 >
                   <div class="alert-content-item">
                     <div
-                      class="d-flex flex-no-wrap justify-flex-start align-start mr-2"
+                      class="d-flex flex-column justify-flex-start align-start mr-2"
                     >
-                      <div class="mr-1 my-0">
-                        <v-icon>
-                          mdi-exclamation-thick
-                        </v-icon>
+                      <div class="d-flex flex-no-wrap">
+                        <div class="mr-1 my-0">
+                          <v-icon>
+                            mdi-exclamation-thick
+                          </v-icon>
+                        </div>
+                        <span
+                          class="alert-label alert-label-break"
+                          v-text="alert.alert_rule_name || '-'"
+                        >
+                        </span>
                       </div>
                       <span
-                        class="alert-label alert-label-break"
-                        v-text="alert.alert_rule_name || '-'"
+                        v-if="alertRuleNotActive"
+                        class="ml-7 alert-text font-small"
+                        v-text="
+                          '(' +
+                            (!alertRule.active
+                              ? $t('Alert_disabled')
+                              : $t('Alert_disabled_for_this_hive')) +
+                            ')'
+                        "
                       >
                       </span>
                     </div>
@@ -299,14 +319,7 @@
       <v-divider v-if="alert.alert_rule_name !== null" class="my-1"></v-divider>
 
       <v-list-item-group>
-        <v-list-item
-          v-if="
-            alertRule !== undefined &&
-              (!alertRule.active ||
-                alertRule.exclude_hive_ids.indexOf(alert.hive_id) > -1)
-          "
-          disabled
-        >
+        <v-list-item v-if="alertRuleNotActive" disabled>
           <v-list-item-icon class="mr-3">
             <v-icon>mdi-close</v-icon>
           </v-list-item-icon>
@@ -387,6 +400,13 @@ export default {
       return this.alertRules.filter(
         (alertRule) => alertRule.id === this.alert.alert_rule_id
       )[0]
+    },
+    alertRuleNotActive() {
+      return (
+        this.alertRule !== undefined &&
+        (!this.alertRule.active ||
+          this.alertRule.exclude_hive_ids.indexOf(this.alert.hive_id) > -1)
+      )
     },
     alertValueText() {
       if (this.alert !== null) {
