@@ -54,13 +54,6 @@ router.beforeEach((routeTo, routeFrom, next) => {
     localStorage.beepAlertRulesBack = routeFrom.name
   }
 
-  // Check if auth is required on this route
-  // (including nested routes).
-  const authRequired = routeTo.matched.some((route) => route.meta.authRequired)
-
-  // If auth isn't required for the route, just continue.
-  if (!authRequired) return next()
-
   if (store.getters['auth/loggedIn']) {
     // If the user is logged in, continue
     next()
