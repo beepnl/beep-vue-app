@@ -417,7 +417,10 @@ export default {
     ...mapGetters('devices', ['devices']),
     ...mapGetters('groups', ['groups']),
     baseApiUrl() {
-      return process.env.VUE_APP_BASE_API_URL
+      return (
+        process.env.VUE_APP_BASE_API_URL ||
+        process.env.VUE_APP_BASE_API_URL_FALLBACK
+      )
     },
     mdAndDown() {
       return this.$vuetify.breakpoint.mdAndDown

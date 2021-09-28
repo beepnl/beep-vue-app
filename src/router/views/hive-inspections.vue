@@ -608,7 +608,8 @@ export default {
   computed: {
     ...mapGetters('hives', ['activeHive']),
     baseApiUrl() {
-      return process.env.VUE_APP_BASE_API_URL
+      return process.env.VUE_APP_BASE_API_URL ||
+        process.env.VUE_APP_BASE_API_URL_FALLBACK
     },
     id() {
       return parseInt(this.$route.params.id)

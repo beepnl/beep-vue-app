@@ -50,7 +50,10 @@ export default {
   },
   computed: {
     baseApiUrl() {
-      return process.env.VUE_APP_BASE_API_URL
+      return (
+        process.env.VUE_APP_BASE_API_URL ||
+        process.env.VUE_APP_BASE_API_URL_FALLBACK
+      )
     },
     imageUrl() {
       return this.thumburl.replace('/thumbs/', '/images/')

@@ -260,7 +260,10 @@ export default {
   computed: {
     ...mapGetters('devices', ['devices']),
     baseApiUrl() {
-      return process.env.VUE_APP_BASE_API_URL
+      return (
+        process.env.VUE_APP_BASE_API_URL ||
+        process.env.VUE_APP_BASE_API_URL_FALLBACK
+      )
     },
     dataAvailable() {
       return this.measurementTypes !== null
