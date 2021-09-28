@@ -50,9 +50,6 @@ export const actions = {
   },
   signOut: function({ _, commit, getters }) {
     console.log('sign out')
-    if (!getters.loggedIn) {
-      throw new Error('User is already logged out.')
-    }
 
     // reset all module states
     commit('alerts/resetState', null, { root: true })

@@ -12,7 +12,6 @@
           <v-list-item
             :key="`i-${index}`"
             :to="item.route ? { name: item.route } : null"
-            :disabled="!loggedIn"
             exact
           >
             <v-list-item-icon class="mr-3">
@@ -89,12 +88,7 @@ export default {
         ]
       }
     },
-    loggedIn() {
-      return this.$store.getters['auth/loggedIn']
-    },
   },
   methods: {},
 }
 </script>
-
-<style lang="scss" scoped></style>

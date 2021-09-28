@@ -290,10 +290,6 @@ export default [
     name: 'support',
     component: () => lazyLoadView(import('@views/support.vue')),
   },
-  {
-    path: '/webapp', // old v2 path
-    redirect: '/',
-  },
 ]
 
 // Lazy-loads view components, but with better UX. A loading view
