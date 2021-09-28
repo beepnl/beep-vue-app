@@ -811,6 +811,15 @@ const translations = {
   alert_rule_created: 'Nieuwe notificatie ingesteld',
   select_all: 'Selecteer alle',
   During: 'Gedurende',
+  Calculation_minutes: 'Hoe vaak wil je de berekening uit laten voeren?',
+  Every: 'Elke', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 24 hours etc.
+  Alert_on_occurences_short: 'Wanneer ontvang je de notificatie?', // for alert rule overview table header
+  Calculation_minutes_short: 'Hoe vaak berekend?', // for alert rule overview table header
+  Disable_alert_for_this_hive: 'Deactiveer notificatie voor deze kast',
+  Alert_disabled_for_this_hive: 'Notificatie gedeactiveerd voor deze kast',
+  disabled_for_hive: 'gedeactiveerd voor kast', // [alert] has been disabled for the following hive
+  Alert_disabled: 'Notificatie gedeactiveerd',
+
   Log_data_import: 'Log data importeren',
   Flashlogs: 'Logbestanden',
   Upload_date: 'Upload datum',
@@ -827,14 +836,6 @@ const translations = {
     'Lees hier het support artikel over het downloaden van log data m.b.v. de BEEP base app.',
   flashlog_support_url:
     'https://beepsupport.freshdesk.com/nl/support/solutions/articles/60000697129-beep-base-data-downloaden-met-bluetooth',
-  Calculation_minutes: 'Hoe vaak wil je de berekening uit laten voeren?',
-  Every: 'Elke', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 24 hours etc.
-  Alert_on_occurences_short: 'Wanneer ontvang je de notificatie?', // for alert rule overview table header
-  Calculation_minutes_short: 'Hoe vaak berekend?', // for alert rule overview table header
-  Disable_alert_for_this_hive: 'Deactiveer notificatie voor deze kast',
-  Alert_disabled_for_this_hive: 'Notificatie gedeactiveerd voor deze kast',
-  disabled_for_hive: 'gedeactiveerd voor kast', // [alert] has been disabled for the following hive
-  Alert_disabled: 'Notificatie gedeactiveerd',
 }
 
 export default translations

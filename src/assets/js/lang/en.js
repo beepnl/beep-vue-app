@@ -804,6 +804,16 @@ const translations = {
   alert_rule_created: 'New alert rule has been created',
   select_all: 'Select all',
   During: 'During',
+  Calculation_minutes:
+    'Hoe often would you like the calculation to be performed?',
+  Every: 'Every', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 24 hours etc.
+  Calculation_minutes_short: 'How often is it calculated?', // for alert rule overview table header
+  Alert_on_occurences_short: 'When do you receive the alert?', // for alert rule overview table header
+  Disable_alert_for_this_hive: 'Disable alert for this hive',
+  Alert_disabled_for_this_hive: 'Alert is disabled for this hive',
+  disabled_for_hive: 'has been disabled for hive', // [alert] has been disabled for the following hive
+  Alert_disabled: 'Alert disabled',
+
   Log_data_import: 'Import log data',
   Log_files: 'Log files', // Flashlogs
   Upload_date: 'Upload date',
@@ -823,17 +833,6 @@ const translations = {
   // flashlog_support_url
   import_log_data_support_url:
     'https://beepsupport.freshdesk.com/en/support/solutions/articles/60000697129-download-beep-base-data-through-bluetooth',
-  Calculation_minutes:
-    'Hoe often would you like the calculation to be performed?',
-  Every: 'Every', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 24 hours etc.
-  minutes_unit: 'min | min', // singular | plural
-  hours_unit: 'hour | hours', // singular | plural
-  Calculation_minutes_short: 'How often is it calculated?', // for alert rule overview table header
-  Alert_on_occurences_short: 'When do you receive the alert?', // for alert rule overview table header
-  Disable_alert_for_this_hive: 'Disable alert for this hive',
-  Alert_disabled_for_this_hive: 'Alert is disabled for this hive',
-  disabled_for_hive: 'has been disabled for hive', // [alert] has been disabled for the following hive
-  Alert_disabled: 'Alert disabled',
 }
 
 export default translations

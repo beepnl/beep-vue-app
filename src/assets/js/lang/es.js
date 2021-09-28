@@ -765,7 +765,7 @@ const translations = {
   Add_member: 'Agregar miembro',
   alert_rule_deleted: 'La regla de alerta ha sido eliminada',
 
-  /* TO BE TRANSLATED FOR 3.1 */
+  /* TO BE TRANSLATED FOR v3 */
   new_or_edited_but_not_saved_sensor_defs_warning:
     'N.B.: sensor definitions will only be saved or added after clicking the green check icon at the end of the sensor definition row in the table.',
   delete_sensordef: 'Delete sensor definition',
@@ -779,6 +779,15 @@ const translations = {
   alert_rule_created: 'New alert rule has been created',
   select_all: 'Select all',
   During: 'During', // context: 'During 2 days', or 'During 1 hour', to notify the period during which the same alert has been triggered (each evaluation) in a row
+  Calculation_minutes:
+    'Hoe often would you like the calculation to be performed?',
+  Every: 'Every', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 24 hours etc.
+  Calculation_minutes_short: 'How often is it calculated?', // for alert rule overview table header
+  Alert_on_occurences_short: 'When do you receive the alert?', // for alert rule overview table header
+  Disable_alert_for_this_hive: 'Disable alert for this hive',
+  Alert_disabled_for_this_hive: 'Alert is disabled for this hive',
+  disabled_for_hive: 'has been disabled for hive', // [alert] has been disabled for the following hive
+  Alert_disabled: 'Alert disabled',
 
   // For soon to be launched new log data import page
   Log_data_import: 'Import log data',
@@ -797,17 +806,6 @@ const translations = {
     'Here you can find the support article on downloading log data with the BEEP base app.',
   import_log_data_support_url:
     'https://beepsupport.freshdesk.com/es/support/solutions/articles/60000697129-descargar-datos-de-base-de-beep-a-trav%C3%A9s-de-bluetooth',
-  Calculation_minutes:
-    'Hoe often would you like the calculation to be performed?',
-  Every: 'Every', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 24 hours etc.
-  minutes_unit: 'min | min', // singular | plural
-  hours_unit: 'hour | hours', // singular | plural
-  Calculation_minutes_short: 'How often is it calculated?', // for alert rule overview table header
-  Alert_on_occurences_short: 'When do you receive the alert?', // for alert rule overview table header
-  Disable_alert_for_this_hive: 'Disable alert for this hive',
-  Alert_disabled_for_this_hive: 'Alert is disabled for this hive',
-  disabled_for_hive: 'has been disabled for hive', // [alert] has been disabled for the following hive
-  Alert_disabled: 'Alert disabled',
 }
 
 export default translations
