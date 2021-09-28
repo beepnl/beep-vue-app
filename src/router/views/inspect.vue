@@ -600,8 +600,10 @@ export default {
       },
       set(value) {
         if (value === false) {
+          this.setBulkInspection(false)
           this.selectedHives = []
         } else {
+          this.setBulkInspection(true)
           this.selectedHives = []
           this.selectedHiveSet.hives.map((hive) => {
             if (hive.editable || hive.owner) {

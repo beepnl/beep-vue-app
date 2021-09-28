@@ -215,9 +215,9 @@ export default {
   data() {
     return {
       colonySize: null,
-      maxBroodLayers: 2,
+      maxBroodLayers: 5,
       broodLayersForCalculation: 0,
-      maxFrames: 12,
+      maxFrames: 20,
       framesForCalculation: 0,
       assetsUrl:
         process.env.VUE_APP_ASSETS_URL ||
@@ -228,9 +228,15 @@ export default {
     ...mapGetters('inspections', ['bulkInspection']),
     ...mapGetters('hives', ['activeHive']),
   },
+  watch: {
+    activeHive() {
+      if (this.activeHive !== null) {
+        this.setInputNumbers()
+      }
+    },
+  },
   created() {
-    this.maxBroodLayers = this.countLayers('brood')
-    this.maxFrames = this.activeHive.layers[0].framecount
+    this.setInputNumbers()
   },
   methods: {
     calculateTpaColonySize() {
@@ -302,6 +308,10 @@ export default {
       } else if (item.name !== 'colony_size') {
         return 'col-xs-12 col-sm-6 col-md-3'
       }
+    },
+    setInputNumbers() {
+      this.broodLayersForCalculation = this.countLayers('brood')
+      this.framesForCalculation = this.activeHive.layers[0].framecount
     },
   },
 }

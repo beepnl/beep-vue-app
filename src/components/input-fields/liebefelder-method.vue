@@ -288,7 +288,7 @@ export default {
     return {
       colonySize: null,
       maxBroodLayers: 2,
-      maxHoneyLayers: 1,
+      maxHoneyLayers: 2,
       broodLayersForCalculation: null,
       honeyLayersForCalculation: null,
       maxFrames: 12,
@@ -315,18 +315,15 @@ export default {
       return sortedChildren
     },
   },
+  watch: {
+    activeHive() {
+      if (this.activeHive !== null) {
+        this.setInputNumbers()
+      }
+    },
+  },
   created() {
-    this.maxBroodLayers =
-      this.countLayers('brood') < 2 ? this.countLayers('brood') : 2
-    this.maxHoneyLayers =
-      this.countLayers('honey') < 2 ? this.countLayers('honey') : 2
-    this.broodLayersForCalculation = this.maxBroodLayers
-    this.honeyLayersForCalculation = this.maxHoneyLayers
-    this.maxFrames =
-      this.activeHive.layers[0].framecount < 12
-        ? this.activeHive.layers[0].framecount
-        : 12
-    this.framesForCalculation = this.maxFrames
+    this.setInputNumbers()
   },
   methods: {
     calculateLiebefeldColonySize() {
@@ -376,6 +373,16 @@ export default {
     countLayers(type) {
       return this.activeHive.layers.filter((layer) => layer.type === type)
         .length
+    },
+    setInputNumbers() {
+      this.broodLayersForCalculation =
+        this.countLayers('brood') < 2 ? this.countLayers('brood') : 2
+      this.honeyLayersForCalculation =
+        this.countLayers('honey') < 2 ? this.countLayers('honey') : 2
+      this.framesForCalculation =
+        this.activeHive.layers[0].framecount < 12
+          ? this.activeHive.layers[0].framecount
+          : 12
     },
     superAndFrameFilter(item) {
       if (
