@@ -323,7 +323,9 @@ export default {
     },
   },
   created() {
-    this.setInputNumbers()
+    if (this.activeHive !== null) {
+      this.setInputNumbers()
+    }
   },
   methods: {
     calculateLiebefeldColonySize() {
