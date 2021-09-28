@@ -109,7 +109,9 @@ export default {
   data: function() {
     return {
       drawer: false,
-      assetsUrl: process.env.VUE_APP_ASSETS_URL,
+      assetsUrl:
+        process.env.VUE_APP_ASSETS_URL ||
+        process.env.VUE_APP_ASSETS_URL_FALLBACK,
     }
   },
   computed: {

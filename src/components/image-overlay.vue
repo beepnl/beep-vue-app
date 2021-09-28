@@ -48,13 +48,14 @@ export default {
       required: true,
     },
   },
-  computed: {
-    baseApiUrl() {
-      return (
+  data() {
+    return {
+      baseApiUrl:
         process.env.VUE_APP_BASE_API_URL ||
-        process.env.VUE_APP_BASE_API_URL_FALLBACK
-      )
-    },
+        process.env.VUE_APP_BASE_API_URL_FALLBACK,
+    }
+  },
+  computed: {
     imageUrl() {
       return this.thumburl.replace('/thumbs/', '/images/')
     },

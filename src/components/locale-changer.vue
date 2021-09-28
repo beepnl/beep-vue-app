@@ -47,7 +47,9 @@ export default {
   data() {
     return {
       languages: languages.languageArray,
-      assetsUrl: process.env.VUE_APP_ASSETS_URL,
+      assetsUrl:
+        process.env.VUE_APP_ASSETS_URL ||
+        process.env.VUE_APP_ASSETS_URL_FALLBACK,
     }
   },
   computed: {

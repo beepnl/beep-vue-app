@@ -80,14 +80,11 @@ export default {
     errorMessage: null,
     thumbUrl: '',
     showLoading: false,
+    baseApiUrl:
+      process.env.VUE_APP_BASE_API_URL ||
+      process.env.VUE_APP_BASE_API_URL_FALLBACK,
   }),
   computed: {
-    baseApiUrl() {
-      return (
-        process.env.VUE_APP_BASE_API_URL ||
-        process.env.VUE_APP_BASE_API_URL_FALLBACK
-      )
-    },
     fullUrl() {
       return this.thumbUrl.indexOf('https://') > -1
     },

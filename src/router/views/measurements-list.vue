@@ -488,7 +488,9 @@ export default {
         { value: 6, name: 'mdi-grid-large' },
         { value: 4, name: 'mdi-grid' },
       ],
-      assetsUrl: process.env.VUE_APP_ASSETS_URL,
+      assetsUrl:
+        process.env.VUE_APP_ASSETS_URL ||
+        process.env.VUE_APP_ASSETS_URL_FALLBACK,
     }
   },
   computed: {

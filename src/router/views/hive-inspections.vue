@@ -502,7 +502,7 @@
                   class="d-flex justify-center py-2"
                 >
                   <v-img
-                    :src="getThumbUrl(item.val)"
+                    :src="getFullUrl(item.val)"
                     class="grey lighten-2 image-thumb"
                     @click="activeImage = item.val"
                   >
@@ -603,14 +603,13 @@ export default {
       calendars: ['Google', 'Microsoft', 'Office365'],
       ready: false,
       show500Response: false,
+      baseApiUrl:
+        process.env.VUE_APP_BASE_API_URL ||
+        process.env.VUE_APP_BASE_API_URL_FALLBACK,
     }
   },
   computed: {
     ...mapGetters('hives', ['activeHive']),
-    baseApiUrl() {
-      return process.env.VUE_APP_BASE_API_URL ||
-        process.env.VUE_APP_BASE_API_URL_FALLBACK
-    },
     id() {
       return parseInt(this.$route.params.id)
     },
@@ -879,7 +878,7 @@ export default {
           return true
         })
     },
-    getThumbUrl(val) {
+    getFullUrl(val) {
       return val.indexOf('https://') > -1 ? val : this.baseApiUrl + val
     },
     gradeColor(value) {

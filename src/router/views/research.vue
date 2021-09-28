@@ -59,8 +59,8 @@
                     target="_blank"
                   >
                     <v-img
-                      :src="baseApiUrl + research.thumb_url"
-                      :lazy-src="baseApiUrl + research.thumb_url"
+                      :src="getFullUrl(research.thumb_url)"
+                      :lazy-src="getFullUrl(research.thumb_url)"
                       height="80"
                       width="80"
                       aspect-ratio="1"
@@ -410,18 +410,15 @@ export default {
       ready: false,
       showLoadingIconConsentToggle: false,
       showLoadingIcon: [],
+      baseApiUrl:
+        process.env.VUE_APP_BASE_API_URL ||
+        process.env.VUE_APP_BASE_API_URL_FALLBACK,
     }
   },
   computed: {
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('devices', ['devices']),
     ...mapGetters('groups', ['groups']),
-    baseApiUrl() {
-      return (
-        process.env.VUE_APP_BASE_API_URL ||
-        process.env.VUE_APP_BASE_API_URL_FALLBACK
-      )
-    },
     mdAndDown() {
       return this.$vuetify.breakpoint.mdAndDown
     },
@@ -563,6 +560,11 @@ export default {
         .catch((reject) => {
           return true
         })
+    },
+    getFullUrl(thumbUrl) {
+      return thumbUrl.indexOf('https://') > -1
+        ? thumbUrl
+        : this.baseApiUrl + thumbUrl
     },
     updateConsentDate(researchId, consentId, date) {
       this.showLoadingIcon.push(consentId)
