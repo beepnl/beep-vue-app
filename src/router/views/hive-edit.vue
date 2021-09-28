@@ -133,7 +133,7 @@
               />
 
               <v-select
-                v-if="!activeHive.owner"
+                v-if="!activeHive.owner && !hiveCreateMode"
                 v-model="activeHive.location"
                 class="pt-1"
                 :items="singleLocationArray"
@@ -165,10 +165,9 @@
             <div>
               <div class="beep-label" v-text="$t('Hive_order')"></div>
               <el-input-number
-                v-model="activeHive.order"
-                :precision="0"
+                :value="activeHive.order === null ? 0 : activeHive.order"
                 size="medium"
-                @change="setHiveEdited(true)"
+                @change="updateOrder($event)"
               ></el-input-number>
             </div>
           </v-col>
@@ -567,6 +566,10 @@ export default {
     },
     setHiveEdited(bool) {
       this.$store.commit('hives/setHiveEdited', bool)
+    },
+    updateOrder(value) {
+      this.activeHive.order = value
+      this.setHiveEdited(true)
     },
     validateText(value, property, maxLength) {
       if (value !== null && value.length > maxLength + 1) {

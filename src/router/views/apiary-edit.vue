@@ -519,9 +519,6 @@ export default {
       this.$store.commit('locations/setApiaryEdited', bool)
     },
     editApiary(value, property) {
-      if (value === 0) {
-        value = null
-      }
       this.activeApiary[property] = value
 
       if (property === 'hex_color') {

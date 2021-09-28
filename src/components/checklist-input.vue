@@ -376,27 +376,7 @@ export default {
       }
     },
     updateInput(value, property, name = null, input = null) {
-      // console.log('update input (change event)', value, property)
-
-      if (value === 0) {
-        value = null
-      }
-
       this.checkNameForEmit(name)
-
-      // var decimals = 0
-      // if (input === 'number_1_decimals' || input === 'square_25cm2') {
-      //   decimals = 1
-      // } else if (input === 'number_2_decimals') {
-      //   decimals = 2
-      // } else if (input === 'number_3_decimals') {
-      //   decimals = 3
-      // }
-
-      // if (value !== null) {
-      //   value = value.toFixed(decimals)
-      // }
-
       this.object[property] = value
       this.setInspectionEdited(true)
     },
@@ -408,24 +388,8 @@ export default {
         pointVal = pointVal.replace('.0.', '.')
       }
 
-      // if (val.indexOf(',') > -1) {
-      //   this.showCommaWarning = true
-      // } else {
-      //   this.showCommaWarning = false
-      // }
-
-      // console.log('input', val)
-      // console.log('saved value', pointVal)
-
-      if (val === 0) {
-        pointVal = null
-      }
       this.checkName(name)
 
-      // if (val.indexOf(',') === -1) {
-      //   this.object[property] = val
-      // this.showCommaWarning = false
-      // }
       this.object[property] = pointVal
       this.setInspectionEdited(true)
     },
