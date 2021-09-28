@@ -10,7 +10,7 @@
         >
           <img
             style="width:20px;"
-            :src="`/img/flags/${selectedLanguage}.svg`"
+            :src="assetsUrl + `/img/flags/${selectedLanguage}.svg`"
           />
           <v-icon>mdi-menu-down</v-icon>
         </v-btn>
@@ -24,7 +24,7 @@
           @click="switchLocale(language.lang)"
         >
           <v-list-item-avatar>
-            <img :src="`/img/flags/${language.lang}.svg`" />
+            <img :src="assetsUrl + `/img/flags/${language.lang}.svg`" />
           </v-list-item-avatar>
 
           <v-list-item-content>
@@ -47,6 +47,7 @@ export default {
   data() {
     return {
       languages: languages.languageArray,
+      assetsUrl: process.env.VUE_APP_ASSETS_URL,
     }
   },
   computed: {

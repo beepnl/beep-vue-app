@@ -25,7 +25,9 @@
         </ol>
         <img
           style="width:100%;"
-          src="@assets/img/inspection-top-photo-analysis-explanation.jpg"
+          :src="
+            assetsUrl + '/img/inspection-top-photo-analysis-explanation.jpg'
+          "
         />
         <p style="font-style: italic; text-align: center;"
           >Figure 1. Correct position of hive top in photograph and potential
@@ -215,6 +217,7 @@ export default {
       broodLayersForCalculation: 0,
       maxFrames: 12,
       framesForCalculation: 0,
+      assetsUrl: process.env.VUE_APP_ASSETS_URL,
     }
   },
   computed: {

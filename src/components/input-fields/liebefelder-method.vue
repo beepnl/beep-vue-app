@@ -16,7 +16,7 @@
         <h4>Liebefeld method explanation (EN)</h4>
         <div style="max-width: 40vw;" class="float-right">
           <img
-            src="@assets/img/inspection-lieberfelder-frame-overlay.png"
+            :src="assetsUrl + '/img/inspection-lieberfelder-frame-overlay.png'"
             style="width:100%;"
           />
           <p style="font-style: italic; text-align: center;"
@@ -294,6 +294,7 @@ export default {
       maxFrames: 12,
       framesForCalculation: null,
       showDescription: false,
+      assetsUrl: process.env.VUE_APP_ASSETS_URL,
     }
   },
   computed: {

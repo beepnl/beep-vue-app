@@ -417,7 +417,7 @@
           <p v-text="$t('sensors') + ' ' + $t('not_available_yet')"></p>
           <div class="text-center">
             <img
-              src="@assets/img/beep-base-small.jpg"
+              :src="assetsUrl + '/img/beep-base-small.jpg'"
               style=" width: 100%;max-width: 500px;"
             />
           </div>
@@ -488,6 +488,7 @@ export default {
         { value: 6, name: 'mdi-grid-large' },
         { value: 4, name: 'mdi-grid' },
       ],
+      assetsUrl: process.env.VUE_APP_ASSETS_URL,
     }
   },
   computed: {

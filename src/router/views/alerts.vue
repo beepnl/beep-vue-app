@@ -80,7 +80,7 @@
               }"
             >
               <img
-                src="@assets/img/BEEP-alert-rule.png"
+                :src="assetsUrl + '/img/BEEP-alert-rule.png'"
                 style="max-width: 180px;"
               />
             </router-link>
@@ -229,6 +229,7 @@ export default {
         timeout: 3000,
         text: 'notification',
       },
+      assetsUrl: process.env.VUE_APP_ASSETS_URL,
     }
   },
   computed: {

@@ -563,7 +563,7 @@
           <v-img
             class="apiary-placeholder-item apiary-placeholder-image"
             height="auto"
-            src="~@assets/img/apiary-illustration.png"
+            :src="assetsUrl + '/img/apiary-illustration.png'"
           >
           </v-img>
           <h4 class="mt-5 mb-8">{{ $t('no_apiaries_yet') }}</h4>
@@ -666,6 +666,7 @@ export default {
     showLoadingIconForId: null,
     ready: false,
     deviceIdArray: [],
+    assetsUrl: process.env.VUE_APP_ASSETS_URL,
   }),
   computed: {
     ...mapGetters('alerts', ['alerts']),

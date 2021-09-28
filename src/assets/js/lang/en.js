@@ -805,7 +805,7 @@ const translations = {
   select_all: 'Select all',
   During: 'During',
   Calculation_minutes:
-    'Hoe often would you like the calculation to be performed?',
+    'How often would you like the calculation to be performed?',
   Every: 'Every', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 24 hours etc.
   Calculation_minutes_short: 'How often is it calculated?', // for alert rule overview table header
   Alert_on_occurences_short: 'When do you receive the alert?', // for alert rule overview table header

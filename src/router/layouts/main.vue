@@ -12,7 +12,7 @@
           <router-link :to="{ name: 'home' }">
             <v-toolbar-title class="d-flex align-self-center"
               ><img
-                src="@assets/img/beep-logo-black.svg"
+                :src="assetsUrl + '/img/beep-logo-black.svg'"
                 @click="clearHiveFilters"
             /></v-toolbar-title>
           </router-link>
@@ -109,6 +109,7 @@ export default {
   data: function() {
     return {
       drawer: false,
+      assetsUrl: process.env.VUE_APP_ASSETS_URL,
     }
   },
   computed: {

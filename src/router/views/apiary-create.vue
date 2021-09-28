@@ -59,7 +59,7 @@
                     class="align-center"
                     max-height="70vh"
                     width="100%"
-                    src="~@assets/img/apiary-in-field.jpg"
+                    :src="assetsUrl + '/img/apiary-in-field.jpg'"
                   >
                   </v-img>
                 </v-col>
@@ -533,6 +533,7 @@ export default {
       newApiaryNumber: 0,
       valid: false,
       showLoadingIcon: false,
+      assetsUrl: process.env.VUE_APP_ASSETS_URL,
     }
   },
   computed: {

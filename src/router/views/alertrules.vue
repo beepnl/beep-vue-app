@@ -74,7 +74,7 @@
         <v-col>
           <div class="text-center">
             <img
-              src="@assets/img/BEEP-alert-rule.png"
+              :src="assetsUrl + '/img/BEEP-alert-rule.png'"
               style="max-width: 180px;"
             />
           </div>
@@ -313,6 +313,7 @@ export default {
         active: [],
         alert_via_email: [],
       },
+      assetsUrl: process.env.VUE_APP_ASSETS_URL,
     }
   },
   computed: {

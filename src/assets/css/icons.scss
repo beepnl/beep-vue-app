@@ -59,11 +59,11 @@
   }
 
   &-queen {
-    background-image: url('~@assets/img/icons/icn_bee.svg');
+    background-image: url($ASSETS+'/img/icons/icn_bee.svg');
     background-size: 10px;
 
     &.dark {
-      background-image: url('~@assets/img/icons/icn_bee_dark.svg');
+      background-image: url($ASSETS+'/img/icons/icn_bee_dark.svg');
       border: 1px solid $color-grey-dark !important;
     }
   }
@@ -75,7 +75,7 @@
 
   &-queen--no-outline {
     background-color: transparent;
-    background-image: url('~@assets/img/icons/icn_bee_dark.svg');
+    background-image: url($ASSETS+'/img/icons/icn_bee_dark.svg');
     background-size: 17px;
     border: none;
     border-radius: 0;
@@ -192,7 +192,7 @@
   }
 
   &-sound {
-    background-image: url('~@assets/img/icons/icn_bee.svg');
+    background-image: url($ASSETS+'/img/icons/icn_bee.svg');
     background-size: 20px;
     border: none;
     border-radius: 0;

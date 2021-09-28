@@ -94,7 +94,7 @@
           <p v-text="$t('sensors') + ' ' + $t('not_available_yet')"></p>
           <div class="text-center">
             <img
-              src="@assets/img/beep-base-small.jpg"
+              :src="assetsUrl + '/img/beep-base-small.jpg'"
               style=" width: 100%;max-width: 500px;"
             />
           </div>
@@ -149,7 +149,7 @@
                       class="mt-n1"
                     >
                       <img
-                        src="@assets/img/beep-base-small.jpg"
+                        :src="assetsUrl + '/img/beep-base-small.jpg'"
                         alt="BEEP Base"
                       />
                     </v-avatar>
@@ -704,6 +704,7 @@ export default {
       showDescription: false,
       showInfo: true,
       sensorDefEdited: false,
+      assetsUrl: process.env.VUE_APP_ASSETS_URL,
     }
   },
   computed: {
