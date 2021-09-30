@@ -729,11 +729,11 @@ const translations = {
   Select_default_alertrule: 'Kopioi oletushälytyssääntö',
   /* below, please keep all terms between [] in english: */
   alertrule_main_sentence:
-    'Haluaisin saada ilmoituksen, jos [calculation] [comparison] koskien [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Tämä laskenta suoritetaan [calculation_minutes]. ',
+    'Haluaisin saada ilmoituksen, jos [calculation] [comparison] koskien [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Tämä laskenta suoritetaan [calculation_minutes]',
   alertrule_occurences_direct_sentence:
-    'ja haluaisin saada ilmoituksen suoraan. ',
+    ', ja haluaisin saada ilmoituksen suoraan. ',
   alertrule_occurences_indirect_sentence:
-    ' mutta haluaisin saada ilmoituksen vain, jos se tapahtuu [alert_on_occurences] kertaa. ',
+    ', mutta haluaisin saada ilmoituksen vain, jos se tapahtuu [alert_on_occurences] kertaa. ',
   alertrule_exclude_months_sentence:
     'Tämä hälytys poistetaan käytöstä seuraavien kuukausien aikana: [exclude_months]. ',
   alertrule_exclude_hours_sentence:
@@ -844,7 +844,11 @@ const translations = {
   Immediately: 'Immediately',
   immediately: 'immediately',
   In_case_of_good_connection_warning:
-    'In case the BEEP base / device has a good data connection.',
+    'In case the device has a good data connection.',
+  alertrule_active_no_email_sentence:
+    ', and I open the BEEP app to see the alerts.',
+  alertrule_active_email_sentence:
+    ', and I receive alerts via email. I can also see the alerts in the BEEP app.',
 }
 
 export default translations

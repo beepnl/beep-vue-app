@@ -198,6 +198,8 @@ export default {
         replacedSentence = replacedSentence.replace('[' + key + ']', value)
       })
 
+      replacedSentence += '.' // alertrule_active_email and no_email_sentence are omitted here
+
       // if (alertRule.alert_on_occurences === 1) {
       //   replacedSentence += this.$i18n.t('alertrule_occurences_direct_sentence')
       // } else {

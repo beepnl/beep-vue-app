@@ -727,11 +727,11 @@ const translations = {
   Select_default_alertrule: 'Copy default alert rule',
   /* below, please keep all terms between [] as is: */
   alertrule_main_sentence:
-    'I would like to receive an alert if the [calculation] [comparison] of the [measurement_quantity] [comparator] [threshold_value][measurement_unit]. This calculation will be executed [calculation_minutes]. ',
+    'I would like to receive an alert if the [calculation] [comparison] of the [measurement_quantity] [comparator] [threshold_value][measurement_unit]. This calculation will be executed [calculation_minutes]',
   alertrule_occurences_direct_sentence:
-    'and I would like to receive the alert directly. ',
+    ', and I would like to receive the alert directly. ',
   alertrule_occurences_indirect_sentence:
-    ' but I would like to receive the alert only if it occurs [alert_on_occurences] times. ',
+    ', but I would like to receive the alert only if it occurs [alert_on_occurences] times. ',
   alertrule_exclude_months_sentence:
     'This alert will be deactivated during the following months: [exclude_months]. ',
   alertrule_exclude_hours_sentence:
@@ -839,7 +839,11 @@ const translations = {
   Immediately: 'Immediately',
   immediately: 'immediately',
   In_case_of_good_connection_warning:
-    'In case the BEEP base / device has a good data connection.',
+    'In case the device has a good data connection.',
+  alertrule_active_no_email_sentence:
+    ', and I open the BEEP app to see the alerts.',
+  alertrule_active_email_sentence:
+    ', and I receive alerts via email. I can also see the alerts in the BEEP app.',
 }
 
 export default translations

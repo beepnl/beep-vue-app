@@ -734,11 +734,15 @@ const translations = {
   Select_default_alertrule: 'Kopieer standaardinstelling',
   /* below, please keep all terms between [] in english: */
   alertrule_main_sentence:
-    'Ik wil een notificatie ontvangen als [calculation] [measurement_quantity] [comparison] [comparator] [threshold_value][measurement_unit]. Deze berekening wordt [calculation_minutes] uitgevoerd. ',
+    'Ik wil een notificatie ontvangen als [calculation] [measurement_quantity] [comparison] [comparator] [threshold_value][measurement_unit]. Deze berekening wordt [calculation_minutes] uitgevoerd',
+  alertrule_active_no_email_sentence:
+    ', en ik open de BEEP app om de notificaties te zien.',
+  alertrule_active_email_sentence:
+    ', en ik ontvang een notificatie email. Daarnaast zie ik de notificaties in de BEEP app.',
   alertrule_occurences_direct_sentence:
-    'en ik ontvang hier direct een notificatie van. ',
+    ', en ik ontvang hier direct een notificatie van. ',
   alertrule_occurences_indirect_sentence:
-    ' maar ik ontvang pas een notificatie wanneer dit [alert_on_occurences] keer achter elkaar is opgetreden. ',
+    ', maar ik ontvang pas een notificatie wanneer dit [alert_on_occurences] keer achter elkaar is opgetreden. ',
   alertrule_exclude_months_sentence:
     'Deze notificatie is uitgeschakeld in de maanden: [exclude_months]. ',
   alertrule_exclude_hours_sentence:
@@ -842,7 +846,7 @@ const translations = {
   Immediately: 'Direct',
   immediately: 'direct',
   In_case_of_good_connection_warning:
-    'Indien de BEEP base / het meetsysteem een goede dataconnectie heeft.',
+    'Indien het meetsysteem een goede dataconnectie heeft.',
 }
 
 export default translations

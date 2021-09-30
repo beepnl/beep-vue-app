@@ -801,11 +801,11 @@ const translations = {
   /* below, please keep all terms between [] in english: */
   /* Cyrille - 31/05 : This translation needs more context */
   alertrule_main_sentence:
-    'Je veux recevoir une alerte si la [calculation] [comparison] de [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Ce calcul sera éxécuté [calculation_minutes]. ',
+    'Je veux recevoir une alerte si la [calculation] [comparison] de [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Ce calcul sera éxécuté [calculation_minutes]',
   alertrule_occurences_direct_sentence:
-    'et je veux recevoir ces alertes directement. ',
+    ', et je veux recevoir ces alertes directement. ',
   alertrule_occurences_indirect_sentence:
-    'mais je voudrais recevoir ses alertes uniquement si elles se produisent [alert_on_occurences] fois. ',
+    ', mais je voudrais recevoir ses alertes uniquement si elles se produisent [alert_on_occurences] fois. ',
   alertrule_exclude_months_sentence:
     'Cette alerte sera désactivée pour une durée de: [exclude_months]. ',
   /* Cyrille - 31/05 : This translation needs more context */
@@ -918,7 +918,11 @@ const translations = {
   Immediately: 'Immediately',
   immediately: 'immediately',
   In_case_of_good_connection_warning:
-    'In case the BEEP base / device has a good data connection.',
+    'In case the device has a good data connection.',
+  alertrule_active_no_email_sentence:
+    ', and I open the BEEP app to see the alerts.',
+  alertrule_active_email_sentence:
+    ', and I receive alerts via email. I can also see the alerts in the BEEP app.',
 }
 
 export default translations

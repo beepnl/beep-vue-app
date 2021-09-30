@@ -697,10 +697,11 @@ const translations = {
   Select_default_alertrule: 'Copiați regula de alertă implicită',
   /* below, please keep all terms between [] in english: */
   alertrule_main_sentence:
-    'Aș dori să primesc o alertă dacă [calculation] [comparison] din [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Acest calcul va fi executat [calculation_minutes]. ',
-  alertrule_occurences_direct_sentence: 'și aș dori să primesc alerta direct. ',
+    'Aș dori să primesc o alertă dacă [calculation] [comparison] din [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Acest calcul va fi executat [calculation_minutes]',
+  alertrule_occurences_direct_sentence:
+    ', și aș dori să primesc alerta direct. ',
   alertrule_occurences_indirect_sentence:
-    ' dar aș dori să primesc alerta numai dacă apare [alert_on_occurences] ori. ',
+    ', dar aș dori să primesc alerta numai dacă apare [alert_on_occurences] ori. ',
   alertrule_exclude_months_sentence:
     'Această alertă va fi dezactivată pentru următoarele luni: [exclude_months]. ',
   alertrule_exclude_hours_sentence:
@@ -808,7 +809,11 @@ const translations = {
   Immediately: 'Immediately',
   immediately: 'immediately',
   In_case_of_good_connection_warning:
-    'In case the BEEP base / device has a good data connection.',
+    'In case the device has a good data connection.',
+  alertrule_active_no_email_sentence:
+    ', and I open the BEEP app to see the alerts.',
+  alertrule_active_email_sentence:
+    ', and I receive alerts via email. I can also see the alerts in the BEEP app.',
 }
 
 export default translations
