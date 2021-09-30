@@ -234,7 +234,7 @@
                   <div class="d-flex justify-end align-center">
                     <template v-for="(icon, n) in chartColsIcons">
                       <v-icon
-                        v-if="!smallScreen"
+                        v-if="!mdScreen"
                         :key="'icon' + n"
                         class="mr-2"
                         :color="chartCols === icon.value ? 'primary' : 'grey'"
@@ -652,7 +652,7 @@ export default {
         this.$store.commit('devices/setSelectedDeviceId', value)
       },
     },
-    smallScreen() {
+    mdScreen() {
       return this.$vuetify.breakpoint.width < 960
     },
     sortedCurrentSoundSensors() {

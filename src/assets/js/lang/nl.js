@@ -847,6 +847,8 @@ const translations = {
   immediately: 'direct',
   In_case_of_good_connection_warning:
     'Indien het meetsysteem een goede dataconnectie heeft.',
+  First_occurence: 'Eerste: ',
+  Last_occurence: 'Laatste: ',
 }
 
 export default translations

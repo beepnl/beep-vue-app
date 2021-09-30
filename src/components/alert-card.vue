@@ -38,23 +38,36 @@
           class="d-flex flex-no-wrap justify-flex-start align-start"
           style="width: 100%;"
         >
-          <v-row class="ml-0 my-0 pl-0 py-0" style="width:100%;">
+          <v-row class="ma-0 pl-0 py-0" style="width:100%;">
             <v-col
               cols="12"
-              sm="4"
-              md="5"
+              md="6"
               class="alert-details-item alert-meta d-flex flex-row justify-flex-start pa-0"
             >
               <v-row class="my-0 py-0 pr-1">
                 <v-col
                   v-if="alert.updated_at"
-                  cols="5"
-                  sm="6"
-                  md="5"
-                  class="alert-date-item d-flex flex-column align-start pa-0"
+                  cols="8"
+                  sm="5"
+                  class="alert-date-item d-flex flex-column align-start pa-0 mb-3"
                 >
+                  <div v-if="alert.count > 1">
+                    <span
+                      class="alert-date"
+                      v-text="alert.locale_date_created_at"
+                    >
+                    </span>
+                  </div>
                   <div>
-                    <span class="alert-date" v-text="alert.locale_date"> </span>
+                    <span
+                      class="alert-date"
+                      v-text="
+                        alert.count > 1
+                          ? alert.locale_date_updated_at
+                          : alert.locale_date_single_count
+                      "
+                    >
+                    </span>
                   </div>
                   <span
                     class="alert-text
@@ -62,26 +75,67 @@
                     v-text="alert.momentified"
                   >
                   </span>
+                  <!-- <div v-if="smallScreen" class="mt-2">
+                    <v-icon
+                      v-if="alert.hive_group_name"
+                      class="icon-apiary-shared ml-1 mr-2 my-0"
+                    >
+                      mdi-account-multiple
+                    </v-icon>
+                    <v-icon
+                      v-else-if="alert.location_name"
+                      class="icon-apiary-owned ml-1 mr-2 my-0"
+                    >
+                      mdi-home-analytics
+                    </v-icon>
+                    <span
+                      v-if="alert.hive_group_name || alert.location_name"
+                      class="alert-text"
+                      v-text="
+                        alert.hive_group_name
+                          ? alert.hive_group_name
+                          : alert.location_name
+                      "
+                    >
+                    </span>
+                    <span
+                      v-if="alert.hive_group_name && alert.location_name"
+                      class="beep-label"
+                      v-text="'(' + alert.location_name + ')'"
+                    >
+                    </span>
+                  </div> -->
                 </v-col>
 
                 <v-col
                   v-if="hives[alert.hive_id] !== undefined"
                   cols="3"
-                  sm="4"
-                  md="3"
-                  class="hive-icon-wrapper mt-1 ml-1 ml-md-0 ml-lg-n2 mr-1 mr-md-0 mr-lg-n2 d-flex justify-center align-start pa-0"
+                  sm="2"
+                  class="hive-icon-wrapper mt-1 ml-1 ml-md-0 ml-lg-n2 mr-1 mr-md-0 mr-lg-n2 d-flex flex-column justify-start align-center pa-0"
                 >
                   <HiveIcon
                     :hive="hives[alert.hive_id]"
                     :diary-view="true"
                   ></HiveIcon>
+                  <div
+                    v-if="smallScreen"
+                    class="d-flex flex-column text-center"
+                  >
+                    <div v-if="alert.hive_name !== null">
+                      <span class="alert-label" v-text="alert.hive_name">
+                      </span>
+                    </div>
+                    <div v-if="alert.device_name !== null">
+                      <span class="alert-label" v-text="alert.device_name">
+                      </span>
+                    </div>
+                  </div>
                 </v-col>
 
                 <v-col
                   v-else-if="alert.hive_id !== null"
                   cols="3"
-                  sm="12"
-                  md="3"
+                  md="2"
                   class="ml-1 ml-md-0 ml-lg-n2 mr-1 mr-md-0 mr-lg-n2 d-flex flex-column align-center pa-0"
                   ><span class="alert-label alert-label-break text-center"
                     ><i
@@ -92,14 +146,15 @@
                 </v-col>
 
                 <v-col
-                  cols="3"
-                  md="4"
+                  v-if="!smallScreen"
+                  cols="12"
+                  sm="4"
                   class="d-flex flex-column align-start pa-0"
                 >
                   <div v-if="alert.hive_name !== null">
                     <v-tooltip
                       v-if="
-                        alert.hive_name !== null && alert.hive_name.length >= 15
+                        alert.hive_name !== null && alert.hive_name.length >= 20
                       "
                       bottom
                       max-width="60%"
@@ -125,11 +180,11 @@
                     <span v-else class="alert-label" v-text="alert.hive_name">
                     </span>
                   </div>
-                  <div v-else-if="alert.device_name !== null">
+                  <div v-if="alert.device_name !== null">
                     <v-tooltip
                       v-if="
                         alert.device_name !== null &&
-                          alert.device_name.length >= 15
+                          alert.device_name.length >= 20
                       "
                       bottom
                       max-width="60%"
@@ -175,11 +230,11 @@
               </v-row>
             </v-col>
 
-            <v-col cols="12" sm="8" md="7" class="alert-content pa-0">
+            <v-col cols="12" md="6" class="alert-content pa-0">
               <v-row class="my-0 py-0 ml-n6 ml-sm-0 mr-sm-n4 pr-6 pr-sm-3">
                 <v-col
                   cols="12"
-                  sm="3"
+                  sm="5"
                   class="alert-details-item d-flex flex-column align-start  pa-0"
                 >
                   <div class="alert-content-item">
@@ -216,28 +271,7 @@
 
                 <v-col
                   cols="12"
-                  sm="4"
-                  class="alert-details-item d-flex flex-column align-start  pa-0"
-                >
-                  <div
-                    class="d-flex flex-no-wrap justify-flex-start align-start mr-2"
-                  >
-                    <span class="mr-1 my-0">
-                      <v-icon>
-                        mdi-function
-                      </v-icon>
-                    </span>
-                    <span
-                      class="alert-label alert-label-break"
-                      v-text="alert.alert_function"
-                    >
-                    </span>
-                  </div>
-                </v-col>
-
-                <v-col
-                  cols="12"
-                  sm="4"
+                  md="7"
                   class="alert-details-item d-flex flex-column align-start  pa-0"
                 >
                   <div
@@ -255,11 +289,52 @@
                       <div class="d-flex flex-column">
                         <div
                           class="alert-label alert-label-break"
-                          v-text="alertValueText"
+                          v-text="alert.alert_function"
                         >
                         </div>
                       </div>
                     </div>
+                  </div>
+                </v-col>
+
+                <v-col
+                  v-if="smallScreen"
+                  cols="12"
+                  md="7"
+                  class="alert-details-item d-flex flex-column align-start  pa-0"
+                >
+                  <div
+                    v-if="alert.hive_group_name || alert.location_name"
+                    class="alert-content-item"
+                  >
+                    <v-icon
+                      v-if="alert.hive_group_name"
+                      class="icon-apiary-shared color-grey mx-1"
+                    >
+                      mdi-account-multiple
+                    </v-icon>
+                    <v-icon
+                      v-else-if="alert.location_name"
+                      class="icon-apiary-owned color-grey mx-1"
+                    >
+                      mdi-home-analytics
+                    </v-icon>
+                    <span
+                      v-if="alert.hive_group_name || alert.location_name"
+                      class="alert-label"
+                      v-text="
+                        alert.hive_group_name
+                          ? alert.hive_group_name
+                          : alert.location_name
+                      "
+                    >
+                    </span>
+                    <span
+                      v-if="alert.hive_group_name && alert.location_name"
+                      class="alert-label"
+                      v-text="' (' + alert.location_name + ')'"
+                    >
+                    </span>
                   </div>
                 </v-col>
               </v-row>
@@ -408,32 +483,8 @@ export default {
           this.alertRule.exclude_hive_ids.indexOf(this.alert.hive_id) > -1)
       )
     },
-    alertValueText() {
-      // use 'times' instead of unit if calculation is cnt
-      var unit =
-        this.alertRule !== undefined
-          ? this.alertRule.calculation !== 'cnt'
-            ? this.unit
-            : this.$18n.t('times')
-          : this.unit
-
-      if (this.alert !== null) {
-        if (this.alert.alert_value !== null) {
-          if (this.alert.alert_value.indexOf('alert_rule') > -1) {
-            return this.$i18n.t(this.alert.alert_value)
-          }
-          var number = parseFloat(this.alert.alert_value)
-          if (!isNaN(number)) {
-            return number.toFixed(2) + unit
-          } else {
-            return this.alert.alert_value
-          }
-        } else {
-          return null
-        }
-      } else {
-        return null
-      }
+    smallScreen() {
+      return this.$vuetify.breakpoint.width <= 849
     },
   },
   methods: {
@@ -490,12 +541,13 @@ export default {
   .alert-label {
     font-size: 0.75rem !important;
     font-weight: 600;
-    line-height: 24px !important;
+    line-height: 20px !important;
     color: $color-grey;
     letter-spacing: 0.0333333333em !important;
     white-space: nowrap;
     @include for-phone-only {
       font-size: 0.7rem !important;
+      line-height: 10px !important;
     }
   }
   .alert-label-break {
@@ -512,27 +564,24 @@ export default {
     }
   }
   .alert-meta {
-    max-width: 275px;
+    // max-width: 275px;
     @include for-tablet-landscape-up {
       max-width: none;
     }
-    @media (max-width: 849px) {
-      margin-right: -8px;
-    }
   }
   .alert-date-item {
-    max-width: 150px;
+    // max-width: 150px;
     margin-bottom: 0;
     line-height: 1.1rem;
     @include for-phone-only {
-      max-width: 115px;
+      // max-width: 115px;
     }
   }
   .alert-date {
     margin-bottom: 0;
     font-size: 0.75rem !important;
     font-weight: 600;
-    line-height: 24px;
+    line-height: 20px;
     color: $color-grey-dark;
     letter-spacing: 0.0333333333em !important;
     white-space: nowrap;

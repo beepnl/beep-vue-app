@@ -814,6 +814,8 @@ const translations = {
     ', and I open the BEEP app to see the alerts.',
   alertrule_active_email_sentence:
     ', and I receive alerts via email. In addition, I can see the alerts in the BEEP app.',
+  First_occurence: 'First: ',
+  Last_occurence: 'Last: ',
 }
 
 export default translations
