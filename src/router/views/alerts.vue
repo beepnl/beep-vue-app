@@ -36,6 +36,7 @@
               outlined
               class="mr-3"
               color="red"
+              :small="mdScreen"
               @click="confirmDeleteAlerts"
             >
               <v-progress-circular
@@ -47,14 +48,14 @@
                 indeterminate
               />
               <v-icon v-if="!showLoadingIcon" left>mdi-delete</v-icon>
-              {{ !smallScreen ? $t('delete_all_alerts') : $t('Delete') }}</v-btn
+              {{ !mdScreen ? $t('delete_all_alerts') : $t('Delete') }}</v-btn
             >
             <v-btn
               :to="{ name: 'alertrules' }"
               tile
               outlined
               color="black"
-              :small="tinyScreen"
+              :small="mdScreen && alerts.length > 1"
             >
               <v-icon left>mdi-pencil</v-icon>
               {{ $t('alertrule_pagetitle') }}
@@ -112,6 +113,7 @@
         outlined
         class="save-button-mobile-wide mb-3"
         color="red"
+        small
         @click="confirmDeleteAlerts"
       >
         <v-progress-circular
@@ -346,11 +348,8 @@ export default {
         return false
       }
     },
-    smallScreen() {
+    mdScreen() {
       return this.$vuetify.breakpoint.width < 960
-    },
-    tinyScreen() {
-      return this.$vuetify.breakpoint.width < 373
     },
   },
   created() {

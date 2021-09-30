@@ -650,7 +650,7 @@ const translations = {
     "N.B.: i dispositivi saranno rimossi solo dopo aver premuto il bottone 'Salva e cancella' in alto a destra.",
   no_alerts: 'Nessun nuovo messaggio di allerta',
   alertrule: 'Regola messaggio allerta | Regole messaggio di allerta',
-  alertrule_pagetitle: 'Impostazioni messaggi di allerta',
+  alertrule_pagetitle: 'Regole messaggio di allerta',
   Measurement: 'Misurazione | Misurazioni',
   Calculation: 'Calcolo',
   calculation: 'calcolo',

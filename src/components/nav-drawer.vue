@@ -80,9 +80,9 @@
           </v-list>
         </div>
 
-        <div class="d-flex flex-row align-end version-number mt-n2 mr-1">
+        <div class="d-flex flex-row align-end version-number mt-n2 mr-3">
           <v-spacer></v-spacer>
-          v3.0.52
+          v3.0.53
         </div>
       </div>
     </v-navigation-drawer>

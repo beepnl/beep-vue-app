@@ -52,10 +52,7 @@
     }
     .filter-buttons.filter-buttons--has-max {
       @include for-phone-only {
-        max-width: 320px;
-      }
-      @media (max-width: 320px) {
-        max-width: 270px;
+        max-width: 200px;
       }
     }
     .v-input {
