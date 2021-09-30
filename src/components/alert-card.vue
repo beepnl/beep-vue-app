@@ -409,6 +409,14 @@ export default {
       )
     },
     alertValueText() {
+      // use 'times' instead of unit if calculation is cnt
+      var unit =
+        this.alertRule !== undefined
+          ? this.alertRule.calculation !== 'cnt'
+            ? this.unit
+            : this.$18n.t('times')
+          : this.unit
+
       if (this.alert !== null) {
         if (this.alert.alert_value !== null) {
           if (this.alert.alert_value.indexOf('alert_rule') > -1) {
@@ -416,7 +424,7 @@ export default {
           }
           var number = parseFloat(this.alert.alert_value)
           if (!isNaN(number)) {
-            return number.toFixed(2) + this.unit
+            return number.toFixed(2) + unit
           } else {
             return this.alert.alert_value
           }

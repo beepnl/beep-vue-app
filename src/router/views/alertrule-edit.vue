@@ -142,8 +142,8 @@
             ></div>
             <el-input-number
               v-model="activeAlertRule.threshold_value"
-              :step="0.1"
-              :precision="1"
+              :step="activeAlertRule.calculation === 'cnt' ? 1 : 0.1"
+              :precision="activeAlertRule.calculation === 'cnt' ? 0 : 1"
               :step-strictly="true"
               size="small"
               @change="setAlertRuleEdited(true)"
