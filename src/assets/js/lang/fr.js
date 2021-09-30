@@ -800,7 +800,7 @@ const translations = {
   /* below, please keep all terms between [] in english: */
   /* Cyrille - 31/05 : This translation needs more context */
   alertrule_main_sentence:
-    'Je veux recevoir une alerte si la [calculation] [comparison] de [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Ce calcul sera éxécuté toutes les [calculation_minutes], ',
+    'Je veux recevoir une alerte si la [calculation] [comparison] de [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Ce calcul sera éxécuté toutes les [calculation_minutes]. ',
   alertrule_occurences_direct_sentence:
     'et je veux recevoir ces alertes directement. ',
   alertrule_occurences_indirect_sentence:

@@ -728,7 +728,7 @@ const translations = {
   Select_default_alertrule: 'Kopioi oletushälytyssääntö',
   /* below, please keep all terms between [] in english: */
   alertrule_main_sentence:
-    'Haluaisin saada ilmoituksen, jos [calculation] [comparison] koskien [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Tämä laskenta suoritetaan joka [calculation_minutes], ',
+    'Haluaisin saada ilmoituksen, jos [calculation] [comparison] koskien [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Tämä laskenta suoritetaan joka [calculation_minutes]. ',
   alertrule_occurences_direct_sentence:
     'ja haluaisin saada ilmoituksen suoraan. ',
   alertrule_occurences_indirect_sentence:

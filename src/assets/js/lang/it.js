@@ -693,7 +693,7 @@ const translations = {
   Select_default_alertrule: 'Copia regola di messaggio di allerta predefinita',
   /* below, please keep all terms between [] in english: */
   alertrule_main_sentence:
-    'Vorrei ricevere messaggio di allerta se il [calculation] [comparison] del [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Questo calcolo sarà eseguito ogni [calculation_minutes], ',
+    'Vorrei ricevere messaggio di allerta se il [calculation] [comparison] del [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Questo calcolo sarà eseguito ogni [calculation_minutes]. ',
   alertrule_occurences_direct_sentence:
     'e vorrei ricevere messaggio di allerta direttamente. ',
   alertrule_occurences_indirect_sentence:

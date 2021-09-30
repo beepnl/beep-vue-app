@@ -693,7 +693,7 @@ const translations = {
   Select_default_alertrule: 'Standard-Alarmregel kopieren',
   /* below, please keep all terms between [] in english: */
   alertrule_main_sentence:
-    'Ich möchte eine Benachrichtigung erhalten, wenn die [calculation] [comparison] der [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Diese Berechnung wird alle [calculation_minutes] ausgeführt, ',
+    'Ich möchte eine Benachrichtigung erhalten, wenn die [calculation] [comparison] der [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Diese Berechnung wird alle [calculation_minutes] ausgeführt.',
   alertrule_occurences_direct_sentence:
     'und ich möchte die Benachrichtigung direkt erhalten. ',
   alertrule_occurences_indirect_sentence:

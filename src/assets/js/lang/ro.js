@@ -696,7 +696,7 @@ const translations = {
   Select_default_alertrule: 'Copiați regula de alertă implicită',
   /* below, please keep all terms between [] in english: */
   alertrule_main_sentence:
-    'Aș dori să primesc o alertă dacă [calculation] [comparison] din [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Acest calcul va fi executat la fiecare [calculation_minutes], ',
+    'Aș dori să primesc o alertă dacă [calculation] [comparison] din [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Acest calcul va fi executat la fiecare [calculation_minutes]. ',
   alertrule_occurences_direct_sentence: 'și aș dori să primesc alerta direct. ',
   alertrule_occurences_indirect_sentence:
     ' dar aș dori să primesc alerta numai dacă apare [alert_on_occurences] ori. ',

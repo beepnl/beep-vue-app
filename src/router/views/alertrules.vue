@@ -158,14 +158,8 @@
                     <th class="text-left">
                       {{ $t('Name') }}
                     </th>
-                    <!-- <th class="text-left">
-                      {{ $t('Description') }}
-                    </th> -->
-                    <th class="text-left">
+                    <th v-if="!mobile" class="text-left">
                       {{ $t('Calculation_minutes_short') }}
-                    </th>
-                    <th class="text-left">
-                      {{ $t('Alert_on_occurences_short') }}
                     </th>
                     <th class="text-left">
                       {{ $t('Actions') }}
@@ -239,7 +233,10 @@
                     <!-- <td :class="!alertRule.active ? 'td--not-active' : ''">
                       <span v-text="alertRule.description"></span>
                     </td> -->
-                    <td :class="!alertRule.active ? 'td--not-active' : ''">
+                    <td
+                      v-if="!mobile"
+                      :class="!alertRule.active ? 'td--not-active' : ''"
+                    >
                       <span
                         v-text="
                           momentHumanizeDuration(
@@ -247,16 +244,6 @@
                             'minutes',
                             // eslint-disable-next-line vue/comma-dangle
                             $t('Every') + ' '
-                          )
-                        "
-                      ></span>
-                    </td>
-                    <td :class="!alertRule.active ? 'td--not-active' : ''">
-                      <span
-                        v-text="
-                          getAlertOnOccurencesText(
-                            // eslint-disable-next-line vue/comma-dangle
-                            alertRule.alert_on_occurences
                           )
                         "
                       ></span>
@@ -451,11 +438,6 @@ export default {
         .catch((reject) => {
           return true
         })
-    },
-    getAlertOnOccurencesText(number) {
-      return number === 1
-        ? this.$i18n.t('Direct')
-        : this.$i18n.t('After') + ' ' + number + ' ' + this.$i18n.t('times')
     },
     toggleAlerts() {
       if (this.alertsEnabled) {

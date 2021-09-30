@@ -697,7 +697,7 @@ const translations = {
   Select_default_alertrule: 'Copiar regla de alerta por defecto',
   /* below, please keep all terms between [] in english: */
   alertrule_main_sentence:
-    'Me gustaría recibir una alerta si la [calculation] [comparison] de las [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Este cálculo será realizado cada [calculation_minutes], ',
+    'Me gustaría recibir una alerta si la [calculation] [comparison] de las [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Este cálculo será realizado cada [calculation_minutes]. ',
   alertrule_occurences_direct_sentence:
     'Y me gustaría recibir la alerta directamente. ',
   alertrule_occurences_indirect_sentence:

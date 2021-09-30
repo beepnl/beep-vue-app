@@ -176,7 +176,7 @@
             ></v-select>
           </v-col>
 
-          <v-col cols="12" sm="5" md="3">
+          <!-- <v-col cols="12" sm="5" md="3">
             <div class="beep-label" v-text="$t('Alert_on_occurences')"></div>
             <v-select
               v-model="activeAlertRule.alert_on_occurences"
@@ -189,7 +189,7 @@
               persistent-hint
               @input="setAlertRuleEdited(true)"
             ></v-select>
-          </v-col>
+          </v-col> -->
 
           <v-col cols="2" sm="1">
             <div class="beep-label" v-text="$t('Active')"></div>
@@ -342,19 +342,19 @@ export default {
     ...mapGetters('alerts', ['alertRules', 'alertRuleEdited']),
     ...mapGetters('devices', ['devices']),
     ...mapGetters('taxonomy', ['alertRulesList', 'sensorMeasurementsList']),
-    alertOnOccurencesItems() {
-      var occArray = []
-      for (var i = 1; i < 11; i++) {
-        occArray.push({
-          id: i,
-          label:
-            i === 1
-              ? this.$i18n.t('Direct')
-              : this.$i18n.t('After') + ' ' + i + ' ' + this.$i18n.t('times'),
-        })
-      }
-      return occArray
-    },
+    // alertOnOccurencesItems() {
+    //   var occArray = []
+    //   for (var i = 1; i < 11; i++) {
+    //     occArray.push({
+    //       id: i,
+    //       label:
+    //         i === 1
+    //           ? this.$i18n.t('Direct')
+    //           : this.$i18n.t('After') + ' ' + i + ' ' + this.$i18n.t('times'),
+    //     })
+    //   }
+    //   return occArray
+    // },
     alertruleCreateMode() {
       return this.$route.name === 'alertrule-create'
     },
@@ -601,7 +601,7 @@ export default {
             exclude_hive_ids: [],
             active: 1,
             alert_via_email: 0,
-            alert_on_occurences: 1,
+            // alert_on_occurences: 1,
           }
           // Else retrieve to-be-edited alertrule
         } else {
@@ -798,17 +798,17 @@ export default {
         replacedSentence = replacedSentence.replace('[' + key + ']', value)
       })
 
-      if (alertRule.alert_on_occurences === 1) {
-        replacedSentence += this.$i18n.t('alertrule_occurences_direct_sentence')
-      } else {
-        replacedSentence += this.$i18n.t(
-          'alertrule_occurences_indirect_sentence'
-        )
-        replacedSentence = replacedSentence.replace(
-          '[alert_on_occurences]',
-          alertRule.alert_on_occurences
-        )
-      }
+      // if (alertRule.alert_on_occurences === 1) {
+      //   replacedSentence += this.$i18n.t('alertrule_occurences_direct_sentence')
+      // } else {
+      //   replacedSentence += this.$i18n.t(
+      //     'alertrule_occurences_indirect_sentence'
+      //   )
+      //   replacedSentence = replacedSentence.replace(
+      //     '[alert_on_occurences]',
+      //     alertRule.alert_on_occurences
+      //   )
+      // }
 
       if (
         alertRule.exclude_months !== null &&
