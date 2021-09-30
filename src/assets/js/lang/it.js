@@ -760,49 +760,48 @@ const translations = {
   Add_member: 'Aggiungi membro',
   alert_rule_deleted: 'La regola messaggi di allerta è stata cancellata',
 
-  /* TO BE TRANSLATED FOR v3 */
   new_or_edited_but_not_saved_sensor_defs_warning:
-    'N.B.: sensor definitions will only be saved or added after clicking the green check icon at the end of the sensor definition row in the table.',
-  delete_sensordef: 'Delete sensor definition',
-  delete_all_alerts: 'Delete all alerts',
+    "N.B.: le definizioni del sensore saranno aggiunti o salvati solo dopo aver premuto l'icona verde in calce alla colonna",
+  delete_sensordef: 'Cancella definizione del sensore',
+  delete_all_alerts: 'Cancella tutti gli avvisi',
   delete_all_alerts_warning:
-    'Are you sure you want to delete all alerts? This cannot be undone.',
+    'Sei sicuro di voler cancellare tutti gli avvisi? Questo processo è irreversibile',
   delete_all_alerts_warning_filter_active:
-    'Are you sure you want to delete all alerts? Alerts that do not match your search term will be deleted as well. This cannot be undone.',
-  already_verified: 'I have verified my email address and would like to login',
-  password_recovery_resend_mail: 'Send new verification code',
-  alert_rule_created: 'New alert rule has been created',
-  select_all: 'Select all',
-  During: 'During', // context: 'During 2 days', or 'During 1 hour', to notify the period during which the same alert has been triggered (each evaluation) in a row
-  Calculation_minutes:
-    'How often would you like the calculation to be performed?',
-  Every: 'Every ', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 24 hours etc.
+    'Sei sicuro di voler cancellare questo avviso? Gli avvisi che non corrispondono ai tuoi criteri di ricerca saranno anche rimossi. Questo processo è irreversibile',
+  already_verified: 'Ho verificato il mio indirizzo email e vorrei accedere',
+  password_recovery_resend_mail: 'Manda nuovo codice di verifica',
+  alert_rule_created: 'Nuova regola per avviso creata',
+  select_all: 'Seleziona tutto',
+  During: 'Durante', // context: 'During 2 days', or 'During 1 hour', to notify the period during which the same alert has been triggered (each evaluation) in a row
+  Calculation_minutes: 'Con che frequenza vuoi che vengano fatti i calcoli',
+  Every: 'Ogni ', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 24 hours etc.
   every: 'ogni ',
-  Calculation_minutes_short: 'How often is it calculated?', // for alert rule overview table header
-  Alert_on_occurences_short: 'When do you receive the alert?', // for alert rule overview table header
-  Disable_alert_for_this_hive: 'Disable alert for this hive',
-  Alert_disabled_for_this_hive: 'Alert is disabled for this hive',
-  disabled_for_hive: 'has been disabled for hive', // [alert] has been disabled for the following hive
-  Alert_disabled: 'Alert disabled',
+  Calculation_minutes_short: 'Con che frequenza viene calcolato?', // for alert rule overview table header
+  Alert_on_occurences_short: 'Quando ricevi la notifica?', // for alert rule overview table header
+  Disable_alert_for_this_hive: 'Disabilita notifiche per questo alveare',
+  Alert_disabled_for_this_hive: 'Notifiche disabilitate per questo alveare',
+  disabled_for_hive: "e' stata disabilitata per alveare", // [alert] has been disabled for the following hive
+  Alert_disabled: 'Notifica disabilitata',
 
-  // For soon to be launched new log data import page
-  Log_data_import: 'Import log data',
-  Log_files: 'Log files',
-  Upload_date: 'Upload date',
-  Messages: 'Messages',
-  Log_time: 'Time logged',
-  File_size: 'File size',
-  check_log_data: 'Check log data',
-  delete_log_file: 'Delete log file',
-  commit_log_data_short: 'Import log data',
-  commit_log_data: 'Import data from this log file to the BEEP app: ',
+  // For import page
+  Log_data_import: 'Importa dati di registro',
+  Log_files: 'File di registro',
+  Upload_date: 'Carica data',
+  Messages: 'Messaggi',
+  Log_time: 'Orario registrato',
+  File_size: 'Dimensione file',
+  check_log_data: 'Verifica dati di registro',
+  delete_log_file: 'Cancella file di registro',
+  commit_log_data_short: 'Importa registro dati',
+  commit_log_data: 'Importa nella app BEEP i dati da questo file di registro',
   import_log_data_explanation:
-    "In the BEEP base app you can download log data from the internal memory of the BEEP base. Every time you download log data, the internal memory gets cleared and the data gets uploaded to the BEEP app. Below is the list of your downloaded log data. You can replace the data in the database by the data inside the downloaded log files by clicking the button 'Check log data'. This will first check how much data will be replaced inside the database, and if the time of the data in the log file is correct. You will get a confirmation box with the resulting info, and the possibility to apply or deny the replacement.",
+    "Nella app BEEPbase è possibile scaricare i dati di registro dalla memoria interna della base BEEP. Ogni volta che scarichi i dati di registro, la memoria interna viene cancellata e i dati vengono caricati sull'app BEEP. Di seguito è riportato l'elenco dei dati di registro scaricati. È possibile sostituire i dati nel database con i dati all'interno dei file di registro scaricati facendo clic sul pulsante 'Verifica dati di registro'. Questo controllerà prima quanti dati verranno sostituiti all'interno del database e se l'ora dei dati nel file di registro è corretta. Riceverai una finestra di conferma con le informazioni risultanti e la possibilità di procedere o negare la sostituzione.",
   import_log_data_url_text:
-    'Here you can find the support article on downloading log data with the BEEP base app.',
+    "Qui puoi trovare l'articolo a supporto della procedura di download dei dati diregistro con la app BEEP base",
   import_log_data_support_url:
     'https://beepsupport.freshdesk.com/it/support/solutions/articles/60000697129-scarica-i-dati-di-base-beep-tramite-bluetooth',
 
+  // TO BE TRANSLATED TERMS
   Immediately: 'Immediately',
   immediately: 'immediately',
   In_case_of_good_connection_warning:
