@@ -463,6 +463,9 @@ export default {
     flex-wrap: wrap;
     width: 100%;
     max-width: 1200px;
+    @media (max-width: 960px) {
+      max-width: 680px;
+    }
     @media (max-width: 849px) {
       max-width: 580px;
     }

@@ -404,6 +404,10 @@
   font-size: 11px !important;
 }
 
+.alerts-item .v-alert__wrapper {
+  align-items: start !important;
+}
+
 /* Treeselect */
 .vue-treeselect .vue-treeselect__control {
   background: transparent;

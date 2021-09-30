@@ -34,21 +34,16 @@
           </div>
         </template>
 
-        <div
-          class="d-flex flex-no-wrap justify-flex-start align-start"
-          style="width: 100%;"
-        >
+        <div style="width: 100%;">
           <v-row class="ma-0 pl-0 py-0" style="width:100%;">
-            <v-col
-              cols="12"
-              md="6"
-              class="alert-details-item alert-meta d-flex flex-row justify-flex-start pa-0"
-            >
-              <v-row class="my-0 py-0 pr-1">
+            <v-col cols="12" md="6" class="alert-details-item alert-meta pa-0">
+              <v-row
+                class="d-flex flex-row justify-space-between ma-0 py-0 pr-1"
+              >
                 <v-col
                   v-if="alert.updated_at"
                   cols="8"
-                  sm="5"
+                  md="5"
                   class="alert-date-item d-flex flex-column align-start pa-0 mb-3"
                 >
                   <div v-if="alert.count > 1">
@@ -75,36 +70,6 @@
                     v-text="alert.momentified"
                   >
                   </span>
-                  <!-- <div v-if="smallScreen" class="mt-2">
-                    <v-icon
-                      v-if="alert.hive_group_name"
-                      class="icon-apiary-shared ml-1 mr-2 my-0"
-                    >
-                      mdi-account-multiple
-                    </v-icon>
-                    <v-icon
-                      v-else-if="alert.location_name"
-                      class="icon-apiary-owned ml-1 mr-2 my-0"
-                    >
-                      mdi-home-analytics
-                    </v-icon>
-                    <span
-                      v-if="alert.hive_group_name || alert.location_name"
-                      class="alert-text"
-                      v-text="
-                        alert.hive_group_name
-                          ? alert.hive_group_name
-                          : alert.location_name
-                      "
-                    >
-                    </span>
-                    <span
-                      v-if="alert.hive_group_name && alert.location_name"
-                      class="beep-label"
-                      v-text="'(' + alert.location_name + ')'"
-                    >
-                    </span>
-                  </div> -->
                 </v-col>
 
                 <v-col
@@ -117,10 +82,7 @@
                     :hive="hives[alert.hive_id]"
                     :diary-view="true"
                   ></HiveIcon>
-                  <div
-                    v-if="smallScreen"
-                    class="d-flex flex-column text-center"
-                  >
+                  <div v-if="mdScreen" class="d-flex flex-column text-center">
                     <div v-if="alert.hive_name !== null">
                       <span class="alert-label" v-text="alert.hive_name">
                       </span>
@@ -146,9 +108,9 @@
                 </v-col>
 
                 <v-col
-                  v-if="!smallScreen"
+                  v-if="!mdScreen"
                   cols="12"
-                  sm="4"
+                  md="4"
                   class="d-flex flex-column align-start pa-0"
                 >
                   <div v-if="alert.hive_name !== null">
@@ -231,10 +193,10 @@
             </v-col>
 
             <v-col cols="12" md="6" class="alert-content pa-0">
-              <v-row class="my-0 py-0 ml-n6 ml-sm-0 mr-sm-n4 pr-6 pr-sm-3">
+              <v-row class="my-0 py-0 ml-n7 ml-md-0 pr-3">
                 <v-col
                   cols="12"
-                  sm="5"
+                  md="5"
                   class="alert-details-item d-flex flex-column align-start  pa-0"
                 >
                   <div class="alert-content-item">
@@ -289,7 +251,7 @@
                       <div class="d-flex flex-column">
                         <div
                           class="alert-label alert-label-break"
-                          v-text="alert.alert_function"
+                          v-text="alertFunctionText"
                         >
                         </div>
                       </div>
@@ -298,7 +260,7 @@
                 </v-col>
 
                 <v-col
-                  v-if="smallScreen"
+                  v-if="mdScreen"
                   cols="12"
                   md="7"
                   class="alert-details-item d-flex flex-column align-start  pa-0"
@@ -309,13 +271,13 @@
                   >
                     <v-icon
                       v-if="alert.hive_group_name"
-                      class="icon-apiary-shared color-grey mx-1"
+                      class="icon-apiary-shared color-grey"
                     >
                       mdi-account-multiple
                     </v-icon>
                     <v-icon
                       v-else-if="alert.location_name"
-                      class="icon-apiary-owned color-grey mx-1"
+                      class="icon-apiary-owned color-grey"
                     >
                       mdi-home-analytics
                     </v-icon>
@@ -471,6 +433,12 @@ export default {
   data: () => ({}),
   computed: {
     ...mapGetters('alerts', ['alertRules']),
+    alertFunctionText() {
+      return this.alert.alert_function.indexOf('alert_rule') > -1
+        ? this.$i18n.t(this.alert.alert_function)
+        : this.alert.alert_function
+    },
+
     alertRule() {
       return this.alertRules.filter(
         (alertRule) => alertRule.id === this.alert.alert_rule_id
@@ -483,8 +451,8 @@ export default {
           this.alertRule.exclude_hive_ids.indexOf(this.alert.hive_id) > -1)
       )
     },
-    smallScreen() {
-      return this.$vuetify.breakpoint.width <= 849
+    mdScreen() {
+      return this.$vuetify.breakpoint.width < 961
     },
   },
   methods: {
@@ -559,7 +527,7 @@ export default {
     // max-width: none;
     margin-bottom: 0;
     line-height: 1.1rem;
-    @media (max-width: 849px) {
+    @media (max-width: 960px) {
       min-width: 100%;
     }
   }
@@ -603,25 +571,25 @@ export default {
   }
 
   .alert-content {
-    margin-top: 10px !important;
-    margin-left: 10px !important;
-    @include for-tablet-portrait-up {
-      margin-left: 0 !important;
-    }
-    @media (min-width: 850px) {
-      margin-top: 0 !important;
-    }
     .alert-content-item {
       margin-bottom: 4px;
-      @media (min-width: 850px) {
+      @media (min-width: 961px) {
         margin-bottom: 0 !important;
       }
     }
   }
 
   .alert-icon {
-    min-width: 44px;
-    height: 44px;
+    min-width: 30px;
+    @include for-tablet-landscape-up {
+      min-width: 36px;
+    }
+  }
+
+  .icon-apiary-owned,
+  .icon-apiary-shared {
+    margin-right: 6px !important;
+    margin-left: 2px !important;
   }
 }
 </style>
