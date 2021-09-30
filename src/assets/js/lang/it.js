@@ -810,7 +810,7 @@ const translations = {
   alertrule_active_no_email_sentence:
     ', and I open the BEEP app to see the alerts.',
   alertrule_active_email_sentence:
-    ', and I receive alerts via email. I can also see the alerts in the BEEP app.',
+    ', and I receive alerts via email. In addition, I can see the alerts in the BEEP app.',
 }
 
 export default translations
