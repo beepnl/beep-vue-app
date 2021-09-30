@@ -132,6 +132,13 @@ export default {
         this.$router.push({
           name: localStorage.beepAlertRulesBack,
         })
+      } else if (
+        this.$route.name === 'hive-inspections' &&
+        localStorage.beepInspectionsBack !== undefined
+      ) {
+        this.$router.push({
+          name: localStorage.beepInspectionsBack,
+        })
       } else {
         this.$router.go(-1)
       }

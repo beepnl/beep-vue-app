@@ -52,6 +52,14 @@ router.beforeEach((routeTo, routeFrom, next) => {
     (routeTo.name === 'alertrule-edit' && routeFrom.name === 'alerts')
   ) {
     localStorage.beepAlertRulesBack = routeFrom.name
+  } else if (
+    // prevent endless back loop if pressing back button in inspections overview after coming from inspect view
+    // remember route from which inspections overview was initially entered
+    routeTo.name === 'hive-inspections' &&
+    routeFrom.name !== 'inspect' &&
+    routeFrom.name !== 'hive-inspect-edit'
+  ) {
+    localStorage.beepInspectionsBack = routeFrom.name
   }
 
   // Check if auth is required on this route
