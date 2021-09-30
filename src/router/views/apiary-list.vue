@@ -666,8 +666,8 @@ export default {
     showLoadingIconForId: null,
     ready: false,
     deviceIdArray: [],
-    assetsUrl: process.env.VUE_APP_ASSETS_URL ||
-        process.env.VUE_APP_ASSETS_URL_FALLBACK,
+    assetsUrl:
+      process.env.VUE_APP_ASSETS_URL || process.env.VUE_APP_ASSETS_URL_FALLBACK,
   }),
   computed: {
     ...mapGetters('alerts', ['alerts']),
@@ -1326,7 +1326,7 @@ export default {
       padding: 0 !important;
     }
     &.xl-view {
-      @include xs-only {
+      @include for-phone-only {
         flex-grow: 1 !important;
         min-width: 100%;
       }

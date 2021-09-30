@@ -37,6 +37,10 @@ export const checkAlerts = {
         })
         return true
       } catch (error) {
+        this.$store.commit('alerts/setData', {
+          prop: 'alertsLoading',
+          value: false,
+        })
         if (error.response) {
           console.log('Error: ', error.response)
         } else {
@@ -76,6 +80,10 @@ export const checkAlerts = {
           }
         }
       } else {
+        this.$store.commit('alerts/setData', {
+          prop: 'alertsLoading',
+          value: false,
+        })
         return true
       }
     },

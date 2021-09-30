@@ -8,7 +8,9 @@
               `${
                 showAlertRulePlaceholder ? 'save-button-mobile-wide' : 'mr-1'
               } d-flex ${
-                mobile ? 'justify-end' : 'justify-space-between'
+                mobile || showAlertRulePlaceholder
+                  ? 'justify-end'
+                  : 'justify-space-between'
               } align-center`
             "
             style="width: 100%;"
