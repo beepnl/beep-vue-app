@@ -9,7 +9,7 @@
           class="filter-bar d-flex flex-row justify-space-between align-center"
         >
           <div
-            class="filter-buttons filter-buttons--has-max d-flex flex-row justify-flex-start align-center"
+            class="filter-buttons filter-buttons--tiny d-flex flex-row justify-flex-start align-center"
           >
             <v-col class="pa-3">
               <v-text-field
@@ -57,7 +57,7 @@
               color="black"
               :small="mdScreen && alerts.length > 1"
             >
-              <v-icon left>mdi-pencil</v-icon>
+              <v-icon v-if="!tinyScreen" left>mdi-pencil</v-icon>
               {{ $t('alertrule_pagetitle') }}
             </v-btn>
           </v-card-actions>
@@ -360,6 +360,9 @@ export default {
     },
     mdScreen() {
       return this.$vuetify.breakpoint.width < 960
+    },
+    tinyScreen() {
+      return this.$vuetify.breakpoint.width < 350
     },
   },
   created() {
