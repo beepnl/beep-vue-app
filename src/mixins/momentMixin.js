@@ -10,6 +10,20 @@ export const momentAge = {
   },
 }
 
+export const momentDurationInHours = {
+  methods: {
+    momentDurationInHours(input, unit, prefix = '') {
+      var numberOfHours = this.$moment.duration(input, unit).asHours()
+      return (
+        prefix +
+        numberOfHours +
+        ' ' +
+        this.$i18n.tc('hour', Math.ceil(numberOfHours))
+      )
+    },
+  },
+}
+
 export const momentFullDateTime = {
   methods: {
     momentFullDateTime(date, toUtcTime = false) {

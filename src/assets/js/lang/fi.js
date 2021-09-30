@@ -386,7 +386,8 @@ const translations = {
   ozone: 'Otsoni',
 
   /* Measurements */
-  hour: 'Tunti',
+  Hour: 'Tunti',
+  hour: 'tunti | tuntia',
   day: 'Päivä',
   week: 'Viikko',
   month: 'Kuukausi',

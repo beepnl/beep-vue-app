@@ -239,7 +239,7 @@
                     >
                       <span
                         v-text="
-                          momentHumanizeDuration(
+                          momentDurationInHours(
                             alertRule.calculation_minutes,
                             'minutes',
                             // eslint-disable-next-line vue/comma-dangle
@@ -284,7 +284,7 @@ import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
-import { momentHumanizeDuration } from '@mixins/momentMixin'
+import { momentDurationInHours } from '@mixins/momentMixin'
 import { readAlertRules } from '@mixins/methodsMixin'
 
 export default {
@@ -292,7 +292,7 @@ export default {
     Confirm,
     Layout,
   },
-  mixins: [momentHumanizeDuration, readAlertRules],
+  mixins: [momentDurationInHours, readAlertRules],
   data: function() {
     return {
       ready: false,

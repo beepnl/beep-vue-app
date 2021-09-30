@@ -389,7 +389,8 @@ const translations = {
   ozone: 'Ozon',
 
   /* Measurements */
-  hour: 'Uur',
+  Hour: 'Uur',
+  hour: 'uur | uur',
   day: 'Dag',
   week: 'Week',
   month: 'Maand',
@@ -733,7 +734,7 @@ const translations = {
   Select_default_alertrule: 'Kopieer standaardinstelling',
   /* below, please keep all terms between [] in english: */
   alertrule_main_sentence:
-    'Ik wil een notificatie ontvangen als [calculation] [measurement_quantity] [comparison] [comparator] [threshold_value][measurement_unit]. Deze berekening wordt elke [calculation_minutes] uur uitgevoerd. ',
+    'Ik wil een notificatie ontvangen als [calculation] [measurement_quantity] [comparison] [comparator] [threshold_value][measurement_unit]. Deze berekening wordt elke [calculation_minutes] uitgevoerd. ',
   alertrule_occurences_direct_sentence:
     'en ik ontvang hier direct een notificatie van. ',
   alertrule_occurences_indirect_sentence:

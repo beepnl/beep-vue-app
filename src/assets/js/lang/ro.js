@@ -367,7 +367,8 @@ const translations = {
   ozone: 'Ozon',
 
   /* Measurements */
-  hour: 'Oră',
+  Hour: 'Oră',
+  hour: 'oră | ore',
   day: 'Zi',
   week: 'Săptămână',
   month: 'Lună',

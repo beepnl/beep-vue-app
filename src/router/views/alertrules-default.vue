@@ -82,6 +82,7 @@ import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
 import { ScaleTransition } from 'vue2-transitions'
+import { momentDurationInHours } from '@mixins/momentMixin'
 import { readAlertRules, readTaxonomy } from '@mixins/methodsMixin'
 
 export default {
@@ -90,7 +91,7 @@ export default {
     Layout,
     ScaleTransition,
   },
-  mixins: [readAlertRules, readTaxonomy],
+  mixins: [momentDurationInHours, readAlertRules, readTaxonomy],
   data: function() {
     return {
       alertRulesDefault: [],
@@ -99,50 +100,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('taxonomy', ['sensorMeasurementsList']),
+    ...mapGetters('taxonomy', ['alertRulesList', 'sensorMeasurementsList']),
     comparators() {
-      return [
-        {
-          short: '=',
-          full: this.$i18n.t('equal_to'),
-        },
-        {
-          short: '<',
-          full: this.$i18n.t('less_than'),
-        },
-        {
-          short: '>',
-          full: this.$i18n.t('greater_than'),
-        },
-        {
-          short: '<=',
-          full: this.$i18n.t('less_than_or_equal'),
-        },
-        {
-          short: '>=',
-          full: this.$i18n.t('greater_than_or_equal'),
-        },
-      ]
+      return this.formatFromTaxonomy(this.alertRulesList.comparators)
     },
     comparisons() {
-      return [
-        {
-          short: 'val',
-          full: this.$i18n.t('Value'),
-        },
-        {
-          short: 'dif',
-          full: this.$i18n.t('Difference'),
-        },
-        {
-          short: 'abs',
-          full: this.$i18n.t('Absolute_value'),
-        },
-        {
-          short: 'abs_dif',
-          full: this.$i18n.t('Absolute_value_of_dif'),
-        },
-      ]
+      return this.formatFromTaxonomy(this.alertRulesList.comparisons)
     },
     locale() {
       return this.$i18n.locale
@@ -209,17 +172,21 @@ export default {
         comparison: this.comparisons
           .filter((comparison) => comparison.short === alertRule.comparison)[0]
           .full.toLowerCase(),
-        measurement_quantity: measurement.pq,
-        measurement_unit: measurement.unit,
+        measurement_quantity:
+          measurement !== undefined ? measurement.label : '-',
+        measurement_unit:
+          alertRule.calculation === 'cnt'
+            ? this.$i18n.t('times')
+            : measurement !== undefined
+            ? measurement.unit
+            : '',
         comparator: this.comparators.filter(
           (comparator) => comparator.short === alertRule.comparator
         )[0].full,
         threshold_value: alertRule.threshold_value,
-        calculation_minutes: parseFloat(
-          this.$moment
-            .duration(alertRule.calculation_minutes, 'minutes')
-            .asHours()
-            .toFixed(2)
+        calculation_minutes: this.momentDurationInHours(
+          alertRule.calculation_minutes,
+          'minutes'
         ),
       }
 
@@ -227,17 +194,17 @@ export default {
         replacedSentence = replacedSentence.replace('[' + key + ']', value)
       })
 
-      if (alertRule.alert_on_occurences === 1) {
-        replacedSentence += this.$i18n.t('alertrule_occurences_direct_sentence')
-      } else {
-        replacedSentence += this.$i18n.t(
-          'alertrule_occurences_indirect_sentence'
-        )
-        replacedSentence = replacedSentence.replace(
-          '[alert_on_occurences]',
-          alertRule.alert_on_occurences
-        )
-      }
+      // if (alertRule.alert_on_occurences === 1) {
+      //   replacedSentence += this.$i18n.t('alertrule_occurences_direct_sentence')
+      // } else {
+      //   replacedSentence += this.$i18n.t(
+      //     'alertrule_occurences_indirect_sentence'
+      //   )
+      //   replacedSentence = replacedSentence.replace(
+      //     '[alert_on_occurences]',
+      //     alertRule.alert_on_occurences
+      //   )
+      // }
 
       if (alertRule.exclude_months.length > 0) {
         replacedSentence += this.$i18n.t('alertrule_exclude_months_sentence')
@@ -276,6 +243,16 @@ export default {
           })
         })
       }, 150) // wait for API to update alertrules
+    },
+    formatFromTaxonomy(array) {
+      var formattedArray = []
+      Object.entries(array).map(([key, value]) => {
+        formattedArray.push({
+          short: key,
+          full: this.$i18n.t(value),
+        })
+      })
+      return formattedArray
     },
     getText(item) {
       return item.abbreviation + ' (' + item.pq_name_unit + ')'

@@ -167,7 +167,15 @@
             <v-select
               v-model="activeAlertRule.calculation_minutes"
               :items="calculationMinutesItems"
-              :item-text="getCalculationMinutesText"
+              :item-text="
+                (item) =>
+                  momentDurationInHours(
+                    item.minutes,
+                    'minutes',
+                    // eslint-disable-next-line vue/comma-dangle
+                    $t('Every') + ' '
+                  )
+              "
               item-value="minutes"
               :placeholder="$t('Select') + '...'"
               :rules="requiredRule"
@@ -308,7 +316,7 @@ import {
   readDevicesIfNotPresent,
   readTaxonomy,
 } from '@mixins/methodsMixin'
-import { momentHumanizeDuration } from '@mixins/momentMixin'
+import { momentDurationInHours } from '@mixins/momentMixin'
 import Treeselect from '@riophae/vue-treeselect'
 
 export default {
@@ -319,7 +327,7 @@ export default {
   },
   mixins: [
     convertComma,
-    momentHumanizeDuration,
+    momentDurationInHours,
     readAlertRules,
     readDevicesIfNotPresent,
     readTaxonomy,
@@ -780,7 +788,7 @@ export default {
           measurement !== undefined ? measurement.label : '-',
         measurement_unit:
           alertRule.calculation === 'cnt'
-            ? '#'
+            ? this.$i18n.t('times')
             : measurement !== undefined
             ? measurement.unit
             : '',
@@ -788,7 +796,7 @@ export default {
           (comparator) => comparator.short === alertRule.comparator
         )[0].full,
         threshold_value: alertRule.threshold_value,
-        calculation_minutes: this.momentHumanizeDuration(
+        calculation_minutes: this.momentDurationInHours(
           alertRule.calculation_minutes,
           'minutes'
         ),
@@ -864,13 +872,6 @@ export default {
       }
 
       return replacedSentence
-    },
-    getCalculationMinutesText(item) {
-      return this.momentHumanizeDuration(
-        item.minutes,
-        'minutes',
-        this.$i18n.t('Every') + ' '
-      )
     },
     getText(item) {
       return item.label + ' (' + item.abbreviation + ')'

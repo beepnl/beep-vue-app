@@ -583,7 +583,7 @@ export default {
     },
     periods() {
       return [
-        { name: this.$i18n.t('hour'), interval: 'hour' },
+        { name: this.$i18n.t('Hour'), interval: 'hour' },
         { name: this.$i18n.t('day'), interval: 'day' },
         { name: this.$i18n.t('week'), interval: 'week' },
         { name: this.$i18n.t('month'), interval: 'month' },

@@ -383,7 +383,8 @@ const translations = {
   ozone: 'Ozone',
 
   /* Measurements */
-  hour: 'Hour',
+  Hour: 'Hour',
+  hour: 'hour | hours',
   day: 'Day',
   week: 'Week',
   month: 'Month',
