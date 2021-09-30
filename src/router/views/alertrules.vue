@@ -117,6 +117,7 @@
                   <v-btn
                     tile
                     outlined
+                    small
                     color="accent"
                     class="save-button-mobile-wide"
                     v-bind="attrs"
@@ -153,7 +154,7 @@
                       {{ $t('Active') }}
                     </th>
                     <th class="text-left">
-                      {{ $t('Alert_via_email') }}
+                      {{ mobile ? $t('email') : $t('Alert_via_email') }}
                     </th>
                     <th class="text-left">
                       {{ $t('Name') }}
@@ -239,11 +240,9 @@
                     >
                       <span
                         v-text="
-                          momentDurationInHours(
-                            alertRule.calculation_minutes,
-                            'minutes',
+                          getCalculationMinutesText(
                             // eslint-disable-next-line vue/comma-dangle
-                            $t('Every') + ' '
+                            alertRule.calculation_minutes
                           )
                         "
                       ></span>
@@ -284,7 +283,7 @@ import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
-import { momentDurationInHours } from '@mixins/momentMixin'
+import { momentHumanizeDuration } from '@mixins/momentMixin'
 import { readAlertRules } from '@mixins/methodsMixin'
 
 export default {
@@ -292,7 +291,7 @@ export default {
     Confirm,
     Layout,
   },
-  mixins: [momentDurationInHours, readAlertRules],
+  mixins: [momentHumanizeDuration, readAlertRules],
   data: function() {
     return {
       ready: false,
@@ -438,6 +437,16 @@ export default {
         .catch((reject) => {
           return true
         })
+    },
+    getCalculationMinutesText(value) {
+      return value === 0
+        ? this.$i18n.t('Immediately')
+        : this.momentHumanizeDuration(
+            value,
+            'minutes',
+            // eslint-disable-next-line vue/comma-dangle
+            this.$i18n.t('Every') + ' '
+          )
     },
     toggleAlerts() {
       if (this.alertsEnabled) {
