@@ -763,49 +763,49 @@ const translations = {
   Add_member: 'Adăugați un membru',
   alert_rule_deleted: 'Regula de alertă a fost ștearsă',
 
-  /* TO BE TRANSLATED FOR v3 */
   new_or_edited_but_not_saved_sensor_defs_warning:
-    'N.B.: sensor definitions will only be saved or added after clicking the green check icon at the end of the sensor definition row in the table.',
-  delete_sensordef: 'Delete sensor definition',
-  delete_all_alerts: 'Delete all alerts',
+    'N.B.: Definițiile senzorului vor fi salvate sau adăugate numai după ce faceți clic pe pictograma de verificare verde de la sfârșitul rândului de definiție a senzorului din tabel.',
+  delete_sensordef: 'Ștergeți definiția senzorului',
+  delete_all_alerts: 'Ștergeți toate alertele',
   delete_all_alerts_warning:
-    'Are you sure you want to delete all alerts? This cannot be undone.',
+    'Sigur doriți să ștergeți toate alertele? Această modificare nu poate fi anulată',
   delete_all_alerts_warning_filter_active:
-    'Are you sure you want to delete all alerts? Alerts that do not match your search term will be deleted as well. This cannot be undone.',
-  already_verified: 'I have verified my email address and would like to login',
-  password_recovery_resend_mail: 'Send new verification code',
-  alert_rule_created: 'New alert rule has been created',
-  select_all: 'Select all',
-  During: 'During', // context: 'During 2 days', or 'During 1 hour', to notify the period during which the same alert has been triggered (each evaluation) in a row
-  Calculation_minutes:
-    'How often would you like the calculation to be performed?',
-  Every: 'Every ', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 24 hours etc.
-  every: 'la fiecare ',
-  Calculation_minutes_short: 'How often is it calculated?', // for alert rule overview table header
-  Alert_on_occurences_short: 'When do you receive the alert?', // for alert rule overview table header
-  Disable_alert_for_this_hive: 'Disable alert for this hive',
-  Alert_disabled_for_this_hive: 'Alert is disabled for this hive',
-  disabled_for_hive: 'has been disabled for hive', // [alert] has been disabled for the following hive
-  Alert_disabled: 'Alert disabled',
+    'Sigur doriți să ștergeți toate alertele? Inclusiv alertele care nu corespund termenului  căutarii dvs. vor fi șterse. Acest lucru nu poate fi anulat.',
+  already_verified: 'Am confirmat adresa de e-mail și as dpri să ma autentific',
+  password_recovery_resend_mail: 'Trimiteți un nou cod de verificare',
+  alert_rule_created: 'Noua regulă de alertă a fost creată',
+  select_all: 'Selectați tot',
+  During: 'În decurs de',
+  Calculation_minutes: 'Cât de des ați dori să se efectueze acest calculul?',
+  Every: 'La fiecare ',
+  every: 'La fiecare ',
+  Calculation_minutes_short: 'Cât de des ete calculată?',
+  Alert_on_occurences_short: 'Când veți primi alerta?',
+  Disable_alert_for_this_hive: 'Dezactivați alerta pentru acest stup',
+  Alert_disabled_for_this_hive: 'Alerta afost dezactivată pentru acest stup',
+  disabled_for_hive: 'A fost dezactivată pentru stupul ',
+  Alert_disabled: 'Alertă dezactivată',
 
-  // For soon to be launched new log data import page
-  Log_data_import: 'Import log data',
-  Log_files: 'Log files',
-  Upload_date: 'Upload date',
-  Messages: 'Messages',
-  Log_time: 'Time logged',
-  File_size: 'File size',
-  check_log_data: 'Check log data',
-  delete_log_file: 'Delete log file',
-  commit_log_data_short: 'Import log data',
-  commit_log_data: 'Import data from this log file to the BEEP app: ',
+  // For import page
+  Log_data_import: 'Importați datele înregistrate',
+  Log_files: 'Fișierele cu date inregistrate',
+  Upload_date: 'Data de încărcare',
+  Messages: 'Mesaje',
+  Log_time: 'Timp înregistrat',
+  File_size: 'Dimensiunea fișierului',
+  check_log_data: 'Verificați datele din jurnal',
+  delete_log_file: 'Ștergeți datele din jurnal',
+  commit_log_data_short: 'Importați datele înregistrate',
+  commit_log_data:
+    'Importați datele din acest fișier tip jurnal în aplicația BEEP: ',
   import_log_data_explanation:
-    "In the BEEP base app you can download log data from the internal memory of the BEEP base. Every time you download log data, the internal memory gets cleared and the data gets uploaded to the BEEP app. Below is the list of your downloaded log data. You can replace the data in the database by the data inside the downloaded log files by clicking the button 'Check log data'. This will first check how much data will be replaced inside the database, and if the time of the data in the log file is correct. You will get a confirmation box with the resulting info, and the possibility to apply or deny the replacement.",
+    'În aplicația  BEEP puteți descărca datele jurnalului din memoria internă a bazei BEEP. De fiecare dată când descărcați datele jurnalului, memoria internă este ștearsă și datele sunt încărcate în aplicația BEEP. Mai jos este lista datelor de jurnal descărcate. Puteți înlocui datele din baza de date cu datele din fișierele tip jurnal descărcate făcând clic pe butonul „Verificare date jurnal”. Aceasta va verifica mai întâi câte date vor fi înlocuite în baza de date și dacă timpul și datele din fișierul tip jurnal este corect. Veți primi o pictogramă de confirmare cu informațiile rezultate și posibilitatea de a aplica sau de a refuza înlocuirea datelor.',
   import_log_data_url_text:
-    'Here you can find the support article on downloading log data with the BEEP base app.',
+    'Aici puteți găsi articolul de asistență despre descărcarea datelor jurnalului cu aplicația BEEP.',
   import_log_data_support_url:
     'https://beepsupport.freshdesk.com/ro/support/solutions/articles/60000697129-desc%C4%83rca%C8%9Bi-datele-de-baz%C4%83-beep-prin-bluetooth',
 
+  // TO BE TRANSLATED TERMS
   Immediately: 'Immediately',
   immediately: 'immediately',
   In_case_of_good_connection_warning:

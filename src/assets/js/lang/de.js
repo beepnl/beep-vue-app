@@ -762,49 +762,50 @@ const translations = {
   Add_member: 'Füge ein Mitglied hinzu',
   alert_rule_deleted: 'Alarmregel wurde gelöscht',
 
-  /* TO BE TRANSLATED FOR v3 */
   new_or_edited_but_not_saved_sensor_defs_warning:
-    'N.B.: sensor definitions will only be saved or added after clicking the green check icon at the end of the sensor definition row in the table.',
-  delete_sensordef: 'Delete sensor definition',
-  delete_all_alerts: 'Delete all alerts',
+    'Hinweis: Sensordefinitionen werden nur gespeichert oder hinzugefügt, wenn Sie auf das grüne Häkchensymbol am Ende der Sensordefinitionszeile in der Tabelle klicken.',
+  delete_sensordef: 'Sensordefinition löschen',
+  delete_all_alerts: 'Alle Alarme löschen',
   delete_all_alerts_warning:
-    'Are you sure you want to delete all alerts? This cannot be undone.',
+    'Bist Du sicher, dass Du alle Alarme löschen willst? Dies kann nicht rückgängig gemacht werden.',
   delete_all_alerts_warning_filter_active:
-    'Are you sure you want to delete all alerts? Alerts that do not match your search term will be deleted as well. This cannot be undone.',
-  already_verified: 'I have verified my email address and would like to login',
-  password_recovery_resend_mail: 'Send new verification code',
-  alert_rule_created: 'New alert rule has been created',
-  select_all: 'Select all',
-  During: 'During', // context: 'During 2 days', or 'During 1 hour', to notify the period during which the same alert has been triggered (each evaluation) in a row
-  Calculation_minutes:
-    'How often would you like the calculation to be performed?',
-  Every: 'Every ', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 2 days etc.
+    'Bist Du sicher, dass Du alle Alarme löschen willst? Alarme, die nicht mit Deinem Suchbegriff übereinstimmen, werden ebenfalls gelöscht. Dies kann nicht rückgängig gemacht werden.',
+  already_verified:
+    'Ich habe meine E-Mail-Adresse verifiziert und möchte mich anmelden.',
+  password_recovery_resend_mail: 'Neuen Verifizierungscode senden',
+  alert_rule_created: 'Es wurde eine neue Alarmregel erstellt',
+  select_all: 'Alle auswählen',
+  During: 'Während',
+  Calculation_minutes: 'Wie oft soll die Berechnung durchgeführt werden?',
+  Every: 'Alle ',
   every: 'alle ',
-  Calculation_minutes_short: 'How often is it calculated?', // for alert rule overview table header
-  Alert_on_occurences_short: 'When do you receive the alert?', // for alert rule overview table header
-  Disable_alert_for_this_hive: 'Disable alert for this hive',
-  Alert_disabled_for_this_hive: 'Alert is disabled for this hive',
-  disabled_for_hive: 'has been disabled for hive', // [alert] has been disabled for the following hive
-  Alert_disabled: 'Alert disabled',
+  Calculation_minutes_short: 'Wie oft wird berechnet?',
+  Alert_on_occurences_short: 'Wann erhälst Du Alarmmeldungen?',
+  Disable_alert_for_this_hive: 'Alarm für diese Beute deaktivieren',
+  Alert_disabled_for_this_hive: 'Alarm ist für diese Beute deaktiviert',
+  disabled_for_hive: 'wurde deaktiviert für die Beute',
+  Alert_disabled: 'Alarm deaktiviert',
 
-  // For soon to be launched new log data import page - less urgent
-  Log_data_import: 'Import log data',
-  Log_files: 'Log files',
-  Upload_date: 'Upload date',
-  Messages: 'Messages',
-  Log_time: 'Time logged',
-  File_size: 'File size',
-  check_log_data: 'Check log data',
-  delete_log_file: 'Delete log file',
-  commit_log_data_short: 'Import log data',
-  commit_log_data: 'Import data from this log file to the BEEP app: ',
+  // For import page
+  Log_data_import: 'Importieren von Protokolldaten',
+  Log_files: 'Protokolldateien',
+  Upload_date: 'Upload-Datum',
+  Messages: 'Nachrichten',
+  Log_time: 'Protokollierte Zeit',
+  File_size: 'Dateiengröße',
+  check_log_data: 'Protokolldaten prüfen',
+  delete_log_file: 'Protokolldaten löschen',
+  commit_log_data_short: 'Protokolldaten importieren',
+  commit_log_data:
+    'Importiere Daten aus dieser Protokolldatei in die BEEP-App: ',
   import_log_data_explanation:
-    "In the BEEP base app you can download log data from the internal memory of the BEEP base. Every time you download log data, the internal memory gets cleared and the data gets uploaded to the BEEP app. Below is the list of your downloaded log data. You can replace the data in the database by the data inside the downloaded log files by clicking the button 'Check log data'. This will first check how much data will be replaced inside the database, and if the time of the data in the log file is correct. You will get a confirmation box with the resulting info, and the possibility to apply or deny the replacement.",
+    "In der BEEP Base App kannst Du Protokolldaten aus dem internen Speicher der BEEP Base herunterladen. Jedes Mal, wenn Du Protokolldaten herunterlädst, wird der interne Speicher geleert und die Daten werden in die BEEP-App hochgeladen. Unten findest Du eine Liste der heruntergeladenen Protokolldaten. Du kannst die Daten in der Datenbank durch die Daten in den heruntergeladenen Protokolldateien ersetzen, indem Du auf die Schaltfläche 'Protokolldaten prüfen' klickst. Dadurch wird zunächst geprüft, wie viele Daten in der Datenbank ersetzt werden und ob die Zeit der Daten in der Protokolldatei korrekt ist. Du erhälst ein Bestätigungsfeld mit den entsprechenden Informationen und der Möglichkeit, die Ersetzung zu bestätigen oder abzulehnen.",
   import_log_data_url_text:
-    'Here you can find the support article on downloading log data with the BEEP base app.',
+    'Hier findest Du den Support-Artikel zum Herunterladen von Protokolldaten mit der BEEP-Basis-App.',
   import_log_data_support_url:
     'https://beepsupport.freshdesk.com/de/support/solutions/articles/60000697129-laden-sie-die-beep-basisdaten-%C3%BCber-bluetooth-herunter',
 
+  // TO BE TRANSLATED TERMS
   Immediately: 'Immediately',
   immediately: 'immediately',
   In_case_of_good_connection_warning:
