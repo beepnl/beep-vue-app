@@ -801,7 +801,7 @@ const translations = {
   /* below, please keep all terms between [] in english: */
   /* Cyrille - 31/05 : This translation needs more context */
   alertrule_main_sentence:
-    'Je veux recevoir une alerte si la [calculation] [comparison] de [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Ce calcul sera éxécuté toutes les [calculation_minutes]. ',
+    'Je veux recevoir une alerte si la [calculation] [comparison] de [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Ce calcul sera éxécuté [calculation_minutes]. ',
   alertrule_occurences_direct_sentence:
     'et je veux recevoir ces alertes directement. ',
   alertrule_occurences_indirect_sentence:
@@ -888,7 +888,8 @@ const translations = {
   During: 'During', // context: 'During 2 days', or 'During 1 hour', to notify the period during which the same alert has been triggered (each evaluation) in a row
   Calculation_minutes:
     'How often would you like the calculation to be performed?',
-  Every: 'Every', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 24 hours etc.
+  Every: 'Every ', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 24 hours etc.
+  every: 'toutes les ',
   Calculation_minutes_short: 'How often is it calculated?', // for alert rule overview table header
   Alert_on_occurences_short: 'When do you receive the alert?', // for alert rule overview table header
   Disable_alert_for_this_hive: 'Disable alert for this hive',
@@ -913,6 +914,11 @@ const translations = {
     'Here you can find the support article on downloading log data with the BEEP base app.',
   import_log_data_support_url:
     'https://beepsupport.freshdesk.com/fr/support/solutions/articles/60000697129-t%C3%A9l%C3%A9charger-les-donn%C3%A9es-de-base-beep-via-bluetooth',
+
+  Immediately: 'Immediately',
+  immediately: 'immediately',
+  In_case_of_good_connection_warning:
+    'In case the BEEP base / device has a good data connection.',
 }
 
 export default translations

@@ -694,7 +694,7 @@ const translations = {
   Select_default_alertrule: 'Standard-Alarmregel kopieren',
   /* below, please keep all terms between [] in english: */
   alertrule_main_sentence:
-    'Ich möchte eine Benachrichtigung erhalten, wenn die [calculation] [comparison] der [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Diese Berechnung wird alle [calculation_minutes] ausgeführt.',
+    'Ich möchte eine Benachrichtigung erhalten, wenn die [calculation] [comparison] der [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Diese Berechnung wird [calculation_minutes] ausgeführt.',
   alertrule_occurences_direct_sentence:
     'und ich möchte die Benachrichtigung direkt erhalten. ',
   alertrule_occurences_indirect_sentence:
@@ -778,7 +778,8 @@ const translations = {
   During: 'During', // context: 'During 2 days', or 'During 1 hour', to notify the period during which the same alert has been triggered (each evaluation) in a row
   Calculation_minutes:
     'How often would you like the calculation to be performed?',
-  Every: 'Every', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 2 days etc.
+  Every: 'Every ', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 2 days etc.
+  every: 'alle ',
   Calculation_minutes_short: 'How often is it calculated?', // for alert rule overview table header
   Alert_on_occurences_short: 'When do you receive the alert?', // for alert rule overview table header
   Disable_alert_for_this_hive: 'Disable alert for this hive',
@@ -803,6 +804,11 @@ const translations = {
     'Here you can find the support article on downloading log data with the BEEP base app.',
   import_log_data_support_url:
     'https://beepsupport.freshdesk.com/de/support/solutions/articles/60000697129-laden-sie-die-beep-basisdaten-%C3%BCber-bluetooth-herunter',
+
+  Immediately: 'Immediately',
+  immediately: 'immediately',
+  In_case_of_good_connection_warning:
+    'In case the BEEP base / device has a good data connection.',
 }
 
 export default translations

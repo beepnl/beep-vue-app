@@ -697,7 +697,7 @@ const translations = {
   Select_default_alertrule: 'Copiați regula de alertă implicită',
   /* below, please keep all terms between [] in english: */
   alertrule_main_sentence:
-    'Aș dori să primesc o alertă dacă [calculation] [comparison] din [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Acest calcul va fi executat la fiecare [calculation_minutes]. ',
+    'Aș dori să primesc o alertă dacă [calculation] [comparison] din [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Acest calcul va fi executat [calculation_minutes]. ',
   alertrule_occurences_direct_sentence: 'și aș dori să primesc alerta direct. ',
   alertrule_occurences_indirect_sentence:
     ' dar aș dori să primesc alerta numai dacă apare [alert_on_occurences] ori. ',
@@ -778,7 +778,8 @@ const translations = {
   During: 'During', // context: 'During 2 days', or 'During 1 hour', to notify the period during which the same alert has been triggered (each evaluation) in a row
   Calculation_minutes:
     'How often would you like the calculation to be performed?',
-  Every: 'Every', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 24 hours etc.
+  Every: 'Every ', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 24 hours etc.
+  every: 'la fiecare ',
   Calculation_minutes_short: 'How often is it calculated?', // for alert rule overview table header
   Alert_on_occurences_short: 'When do you receive the alert?', // for alert rule overview table header
   Disable_alert_for_this_hive: 'Disable alert for this hive',
@@ -803,6 +804,11 @@ const translations = {
     'Here you can find the support article on downloading log data with the BEEP base app.',
   import_log_data_support_url:
     'https://beepsupport.freshdesk.com/ro/support/solutions/articles/60000697129-desc%C4%83rca%C8%9Bi-datele-de-baz%C4%83-beep-prin-bluetooth',
+
+  Immediately: 'Immediately',
+  immediately: 'immediately',
+  In_case_of_good_connection_warning:
+    'In case the BEEP base / device has a good data connection.',
 }
 
 export default translations

@@ -44,6 +44,11 @@
               :class="!activeAlertRule.active ? 'color-grey-light' : 'strong'"
               >{{ alertRuleSentence(activeAlertRule) }}</p
             >
+            <div
+              v-if="activeAlertRule.calculation_minutes === 0"
+              class="beep-label mt-1"
+              v-text="'*' + $t('In_case_of_good_connection_warning')"
+            ></div>
           </v-col>
         </v-row>
         <v-row v-if="activeAlertRule">
@@ -166,22 +171,19 @@
             <div class="beep-label" v-text="$t('Calculation_minutes')"></div>
             <v-select
               v-model="activeAlertRule.calculation_minutes"
-              :items="calculationMinutesItems"
-              :item-text="
-                (item) =>
-                  momentDurationInHours(
-                    item.minutes,
-                    'minutes',
-                    // eslint-disable-next-line vue/comma-dangle
-                    $t('Every') + ' '
-                  )
-              "
-              item-value="minutes"
+              :items="calculationMinutes"
+              :item-text="(item) => getCalculationMinutesText(item.label, true)"
+              item-value="label"
               :placeholder="$t('Select') + '...'"
-              :rules="requiredRule"
               class="pt-0"
+              hide-details
               @input="setAlertRuleEdited(true)"
             ></v-select>
+            <div
+              v-if="activeAlertRule.calculation_minutes === 0"
+              class="beep-label mt-1"
+              v-text="'*' + $t('In_case_of_good_connection_warning')"
+            ></div>
           </v-col>
 
           <!-- <v-col cols="12" sm="5" md="3">
@@ -416,52 +418,20 @@ export default {
         }
       },
     },
-    calculationMinutesItems() {
-      return [
-        {
-          minutes: 15,
-        },
-        {
-          minutes: 30,
-        },
-        {
-          minutes: 60,
-        },
-        {
-          minutes: 180,
-        },
-        {
-          minutes: 360,
-        },
-        {
-          minutes: 720,
-        },
-        {
-          minutes: 1440,
-        },
-        {
-          minutes: 2880,
-        },
-      ]
+    calculationMinutes() {
+      return this.formatFromTaxonomyArray(this.alertRulesList.calc_minutes)
     },
     calculations() {
-      return this.formatFromTaxonomy(this.alertRulesList.calculations)
+      return this.formatFromTaxonomyObject(this.alertRulesList.calculations)
     },
     comparators() {
-      return this.formatFromTaxonomy(this.alertRulesList.comparators)
+      return this.formatFromTaxonomyObject(this.alertRulesList.comparators)
     },
     comparisons() {
-      return this.formatFromTaxonomy(this.alertRulesList.comparisons)
+      return this.formatFromTaxonomyObject(this.alertRulesList.comparisons)
     },
     hours() {
-      var hoursArray = []
-      for (var i = 0; i < 24; i++) {
-        hoursArray.push({
-          id: i,
-          label: i,
-        })
-      }
-      return hoursArray
+      return this.formatFromTaxonomyArray(this.alertRulesList.exclude_hours)
     },
     id() {
       return parseInt(this.$route.params.id)
@@ -600,7 +570,7 @@ export default {
             description: '',
             measurement_id: this.sortedSensorMeasurements[0].id,
             calculation: 'ave',
-            calculation_minutes: 60,
+            calculation_minutes: 0,
             comparator: '<',
             comparison: 'val',
             threshold_value: 0,
@@ -620,11 +590,7 @@ export default {
   },
   methods: {
     async createAlertRule() {
-      if (
-        this.$refs.form.validate() &&
-        !this.thresholdValueIsNaN &&
-        !this.calculationMinutesIsNaN
-      ) {
+      if (this.$refs.form.validate() && !this.thresholdValueIsNaN) {
         this.showLoadingIcon = true
         try {
           const response = await Api.postRequest(
@@ -705,11 +671,7 @@ export default {
       }
     },
     async updateAlertRule() {
-      if (
-        this.$refs.form.validate() &&
-        !this.thresholdValueIsNaN &&
-        !this.calculationMinutesIsNaN
-      ) {
+      if (this.$refs.form.validate() && !this.thresholdValueIsNaN) {
         this.showLoadingIcon = true
         try {
           const response = await Api.updateRequest(
@@ -796,9 +758,9 @@ export default {
           (comparator) => comparator.short === alertRule.comparator
         )[0].full,
         threshold_value: alertRule.threshold_value,
-        calculation_minutes: this.momentDurationInHours(
+        calculation_minutes: this.getCalculationMinutesText(
           alertRule.calculation_minutes,
-          'minutes'
+          false
         ),
       }
 
@@ -838,7 +800,13 @@ export default {
         alertRule.exclude_hours.length > 0
       ) {
         replacedSentence += this.$i18n.t('alertrule_exclude_hours_sentence')
-        var hoursString = alertRule.exclude_hours.join(', ')
+
+        var hoursArray = []
+        alertRule.exclude_hours.map((hour) => {
+          hoursArray.push(this.alertRulesList.exclude_hours[hour])
+        })
+        var hoursString = hoursArray.join(', ')
+
         replacedSentence = replacedSentence.replace(
           '[exclude_hours]',
           hoursString
@@ -873,6 +841,27 @@ export default {
 
       return replacedSentence
     },
+    getCalculationMinutesText(value, capitalsOn = false) {
+      if (capitalsOn) {
+        return value === 0
+          ? this.$i18n.t('Immediately') + '*'
+          : this.momentDurationInHours(
+              value,
+              'minutes',
+              // eslint-disable-next-line vue/comma-dangle
+              this.$i18n.t('Every') + ' '
+            )
+      } else {
+        return value === 0
+          ? this.$i18n.t('immediately') + '*'
+          : this.momentDurationInHours(
+              value,
+              'minutes',
+              // eslint-disable-next-line vue/comma-dangle
+              this.$i18n.t('every') + ' '
+            )
+      }
+    },
     getText(item) {
       return item.label + ' (' + item.abbreviation + ')'
     },
@@ -885,9 +874,19 @@ export default {
         return this.$i18n.t('edit') + '...'
       }
     },
-    formatFromTaxonomy(array) {
+    formatFromTaxonomyArray(array) {
       var formattedArray = []
-      Object.entries(array).map(([key, value]) => {
+      array.map((value, index) => {
+        formattedArray.push({
+          id: index,
+          label: value,
+        })
+      })
+      return formattedArray
+    },
+    formatFromTaxonomyObject(object) {
+      var formattedArray = []
+      Object.entries(object).map(([key, value]) => {
         formattedArray.push({
           short: key,
           full: this.$i18n.t(value),

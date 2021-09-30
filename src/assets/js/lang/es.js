@@ -698,7 +698,7 @@ const translations = {
   Select_default_alertrule: 'Copiar regla de alerta por defecto',
   /* below, please keep all terms between [] in english: */
   alertrule_main_sentence:
-    'Me gustaría recibir una alerta si la [calculation] [comparison] de las [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Este cálculo será realizado cada [calculation_minutes]. ',
+    'Me gustaría recibir una alerta si la [calculation] [comparison] de las [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Este cálculo será realizado [calculation_minutes]. ',
   alertrule_occurences_direct_sentence:
     'Y me gustaría recibir la alerta directamente. ',
   alertrule_occurences_indirect_sentence:
@@ -782,7 +782,8 @@ const translations = {
   During: 'During', // context: 'During 2 days', or 'During 1 hour', to notify the period during which the same alert has been triggered (each evaluation) in a row
   Calculation_minutes:
     'How often would you like the calculation to be performed?',
-  Every: 'Every', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 24 hours etc.
+  Every: 'Every ', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 24 hours etc.
+  every: 'cada ',
   Calculation_minutes_short: 'How often is it calculated?', // for alert rule overview table header
   Alert_on_occurences_short: 'When do you receive the alert?', // for alert rule overview table header
   Disable_alert_for_this_hive: 'Disable alert for this hive',
@@ -807,6 +808,11 @@ const translations = {
     'Here you can find the support article on downloading log data with the BEEP base app.',
   import_log_data_support_url:
     'https://beepsupport.freshdesk.com/es/support/solutions/articles/60000697129-descargar-datos-de-base-de-beep-a-trav%C3%A9s-de-bluetooth',
+
+  Immediately: 'Immediately',
+  immediately: 'immediately',
+  In_case_of_good_connection_warning:
+    'In case the BEEP base / device has a good data connection.',
 }
 
 export default translations

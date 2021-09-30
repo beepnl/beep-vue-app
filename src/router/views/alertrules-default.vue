@@ -63,6 +63,11 @@
                     <span class="alertrule-text">{{
                       alertRuleSentence(alertRule)
                     }}</span>
+                    <div
+                      v-if="alertRule.calculation_minutes === 0"
+                      class="alertrule-text mt-1"
+                      v-text="'*' + $t('In_case_of_good_connection_warning')"
+                    ></div>
                   </div>
                 </v-col>
               </v-row>
@@ -184,9 +189,8 @@ export default {
           (comparator) => comparator.short === alertRule.comparator
         )[0].full,
         threshold_value: alertRule.threshold_value,
-        calculation_minutes: this.momentDurationInHours(
-          alertRule.calculation_minutes,
-          'minutes'
+        calculation_minutes: this.getCalculationMinutesText(
+          alertRule.calculation_minutes
         ),
       }
 
@@ -220,7 +224,13 @@ export default {
 
       if (alertRule.exclude_hours.length > 0) {
         replacedSentence += this.$i18n.t('alertrule_exclude_hours_sentence')
-        var hoursString = alertRule.exclude_hours.join(', ')
+
+        var hoursArray = []
+        alertRule.exclude_hours.map((hour) => {
+          hoursArray.push(this.alertRulesList.exclude_hours[hour])
+        })
+        var hoursString = hoursArray.join(', ')
+
         replacedSentence = replacedSentence.replace(
           '[exclude_hours]',
           hoursString
@@ -253,6 +263,16 @@ export default {
         })
       })
       return formattedArray
+    },
+    getCalculationMinutesText(value) {
+      return value === 0
+        ? this.$i18n.t('immediately') + '*'
+        : this.momentDurationInHours(
+            value,
+            'minutes',
+            // eslint-disable-next-line vue/comma-dangle
+            this.$i18n.t('every') + ' '
+          )
     },
     getText(item) {
       return item.abbreviation + ' (' + item.pq_name_unit + ')'

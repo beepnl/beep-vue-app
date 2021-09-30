@@ -734,7 +734,7 @@ const translations = {
   Select_default_alertrule: 'Kopieer standaardinstelling',
   /* below, please keep all terms between [] in english: */
   alertrule_main_sentence:
-    'Ik wil een notificatie ontvangen als [calculation] [measurement_quantity] [comparison] [comparator] [threshold_value][measurement_unit]. Deze berekening wordt elke [calculation_minutes] uitgevoerd. ',
+    'Ik wil een notificatie ontvangen als [calculation] [measurement_quantity] [comparison] [comparator] [threshold_value][measurement_unit]. Deze berekening wordt [calculation_minutes] uitgevoerd. ',
   alertrule_occurences_direct_sentence:
     'en ik ontvang hier direct een notificatie van. ',
   alertrule_occurences_indirect_sentence:
@@ -813,7 +813,8 @@ const translations = {
   select_all: 'Selecteer alle',
   During: 'Gedurende',
   Calculation_minutes: 'Hoe vaak wil je de berekening uit laten voeren?',
-  Every: 'Elke', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 24 hours etc.
+  Every: 'Elke ', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 24 hours etc.
+  every: 'elke ',
   Alert_on_occurences_short: 'Wanneer ontvang je de notificatie?', // for alert rule overview table header
   Calculation_minutes_short: 'Hoe vaak berekend?', // for alert rule overview table header
   Disable_alert_for_this_hive: 'Deactiveer notificatie voor deze kast',
@@ -837,6 +838,11 @@ const translations = {
     'Lees hier het support artikel over het downloaden van log data m.b.v. de BEEP base app.',
   flashlog_support_url:
     'https://beepsupport.freshdesk.com/nl/support/solutions/articles/60000697129-beep-base-data-downloaden-met-bluetooth',
+
+  Immediately: 'Direct',
+  immediately: 'direct',
+  In_case_of_good_connection_warning:
+    'Indien de BEEP base / het meetsysteem een goede dataconnectie heeft.',
 }
 
 export default translations
