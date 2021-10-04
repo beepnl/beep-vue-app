@@ -78,6 +78,62 @@
         </v-row>
 
         <v-row v-if="activeAlertRule">
+          <v-col cols="6" sm="3">
+            <div class="beep-label" v-text="$t('Calculation_minutes')"></div>
+            <v-select
+              v-model="activeAlertRule.calculation_minutes"
+              :items="calculationMinutes"
+              :item-text="(item) => getCalculationMinutesText(item.label, true)"
+              item-value="label"
+              :placeholder="$t('Select') + '...'"
+              class="pt-0"
+              hide-details
+              @input="setAlertRuleEdited(true), checkCalculation($event)"
+            ></v-select>
+            <div
+              v-if="activeAlertRule.calculation_minutes === 0"
+              class="beep-label mt-1"
+              v-text="warningText"
+            ></div>
+          </v-col>
+
+          <!-- <v-col cols="12" sm="5" md="3">
+            <div class="beep-label" v-text="$t('Alert_on_occurences')"></div>
+            <v-select
+              v-model="activeAlertRule.alert_on_occurences"
+              :items="alertOnOccurencesItems"
+              item-text="label"
+              item-value="id"
+              :placeholder="$t('Select') + '...'"
+              :hint="$t('Alert_on_occurences_hint')"
+              class="pt-0"
+              persistent-hint
+              @input="setAlertRuleEdited(true)"
+            ></v-select>
+          </v-col> -->
+
+          <v-col cols="2" sm="1">
+            <div class="beep-label" v-text="$t('Active')"></div>
+            <v-checkbox
+              v-model="activeAlertRule.active"
+              color="accent"
+              class="mt-1"
+              @change="setAlertRuleEdited(true)"
+            ></v-checkbox>
+          </v-col>
+
+          <v-col cols="6" sm="3" md="2">
+            <div class="beep-label" v-text="$t('Alert_via_email')"></div>
+            <v-checkbox
+              v-model="activeAlertRule.alert_via_email"
+              color="accent"
+              class="mt-1"
+              @change="setAlertRuleEdited(true)"
+            ></v-checkbox>
+          </v-col>
+        </v-row>
+
+        <v-row v-if="activeAlertRule">
           <v-col cols="12" sm="6" md="3">
             <v-select
               v-model="activeAlertRule.measurement_id"
@@ -109,6 +165,11 @@
               :disabled="activeAlertRule.calculation_minutes === 0"
               @input="setAlertRuleEdited(true)"
             ></v-select>
+            <div
+              v-if="activeAlertRule.calculation_minutes === 0"
+              class="beep-label mt-n4 mb-3"
+              v-text="$t('not_relevant_for_immediate_calculation')"
+            ></div>
           </v-col>
 
           <v-col cols="12" sm="6" md="2">
@@ -164,62 +225,6 @@
                 ></div
               ></div
             >
-          </v-col>
-        </v-row>
-
-        <v-row v-if="activeAlertRule">
-          <v-col cols="6" sm="3">
-            <div class="beep-label" v-text="$t('Calculation_minutes')"></div>
-            <v-select
-              v-model="activeAlertRule.calculation_minutes"
-              :items="calculationMinutes"
-              :item-text="(item) => getCalculationMinutesText(item.label, true)"
-              item-value="label"
-              :placeholder="$t('Select') + '...'"
-              class="pt-0"
-              hide-details
-              @input="setAlertRuleEdited(true), checkCalculation($event)"
-            ></v-select>
-            <div
-              v-if="activeAlertRule.calculation_minutes === 0"
-              class="beep-label mt-1"
-              v-text="warningText"
-            ></div>
-          </v-col>
-
-          <!-- <v-col cols="12" sm="5" md="3">
-            <div class="beep-label" v-text="$t('Alert_on_occurences')"></div>
-            <v-select
-              v-model="activeAlertRule.alert_on_occurences"
-              :items="alertOnOccurencesItems"
-              item-text="label"
-              item-value="id"
-              :placeholder="$t('Select') + '...'"
-              :hint="$t('Alert_on_occurences_hint')"
-              class="pt-0"
-              persistent-hint
-              @input="setAlertRuleEdited(true)"
-            ></v-select>
-          </v-col> -->
-
-          <v-col cols="2" sm="1">
-            <div class="beep-label" v-text="$t('Active')"></div>
-            <v-checkbox
-              v-model="activeAlertRule.active"
-              color="accent"
-              class="mt-1"
-              @change="setAlertRuleEdited(true)"
-            ></v-checkbox>
-          </v-col>
-
-          <v-col cols="6" sm="3" md="2">
-            <div class="beep-label" v-text="$t('Alert_via_email')"></div>
-            <v-checkbox
-              v-model="activeAlertRule.alert_via_email"
-              color="accent"
-              class="mt-1"
-              @change="setAlertRuleEdited(true)"
-            ></v-checkbox>
           </v-col>
         </v-row>
 
@@ -613,7 +618,10 @@ export default {
     },
     warningText() {
       var warningText = '*' + this.$i18n.t('In_case_of_good_connection_warning')
-      if (this.devicesInterval !== null) {
+      if (
+        this.devicesInterval !== null &&
+        this.activeAlertRule.comparison.includes('dif')
+      ) {
         var intervalWarning =
           this.devicesInterval.length > 1
             ? this.$i18n.t('upload_interval_warning_interval_range') +

@@ -880,9 +880,10 @@ const translations = {
 
   minute: 'minuut | minuten',
   upload_interval_warning_single_interval:
-    'Let op: het upload interval van je geïncludeerde meetsysteem is | Let op: het upload interval van je geïncludeerde meetsystemen is',
+    'Let op: het upload interval van je geïncludeerde bijenkast is | Let op: het upload interval van je geïncludeerde bijenkasten is',
   upload_interval_warning_interval_range:
-    'Let op: de upload intervallen van je geïncludeerde meetsystemen variëren tussen de ',
+    'Let op: de upload intervallen van je geïncludeerde bijenkasten variëren tussen de ',
+  not_relevant_for_immediate_calculation: 'Niet relevant bij direct uitvoeren',
 }
 
 export default translations

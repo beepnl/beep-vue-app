@@ -847,9 +847,9 @@ const translations = {
 
   minute: 'minute | minutes',
   upload_interval_warning_single_interval:
-    'N.B.: the upload interval of your included device is | N.B.: the upload interval of your included devices is', // f.e.: ... 15 minutes
+    'N.B.: the upload interval of your included hive is | N.B.: the upload interval of your included hives is', // f.e.: ... 15 minutes
   upload_interval_warning_interval_range:
-    'N.B.: the upload intervals of your included devices varies between ', // f.e. ... 5 - 15 minutes
+    'N.B.: the upload intervals of your included hives vary between ', // f.e. ... 5 - 15 minutes
 }
 
 export default translations
