@@ -876,9 +876,15 @@ const translations = {
   No_measurement_data_received_in_a_set_time_period:
     'No measurement data received during a set time period',
   Sudden_weight_drop_triggers_alert_immediately:
-    'Sudden weight drop of the hive triggers an alert immediately',
+    'Sudden weight drop of the hive triggers an alert immediately. N.B.: this is based on an upload interval of 15 minutes. In case your device has a different upload interval, you should adjust the threshold value accordingly.',
   The_hive_weight_is_below_a_set_value_in_winter:
-    'Hive weight is below a set value in winter',
+    'Hive weight is below a set value (in winter)',
+
+  minute: 'minute | minutes',
+  upload_interval_warning_single_interval:
+    'N.B.: the upload interval of your included device is | N.B.: the upload interval of your included devices is', // f.e.: ... 15 minutes
+  upload_interval_warning_interval_range:
+    'N.B.: the upload intervals of your included devices varies between ', // f.e. ... 5 - 15 minutes
 }
 
 export default translations

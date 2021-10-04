@@ -874,9 +874,15 @@ const translations = {
   No_measurement_data_received_in_a_set_time_period:
     'Geen metingen ontvangen gedurende een bepaalde periode',
   Sudden_weight_drop_triggers_alert_immediately:
-    'Plotselinge gewichtsafname van de kast triggert direct een notificatie',
+    'Plotselinge gewichtsafname van de kast triggert direct een notificatie. Let op: hierbij is uitgegaan van een upload interval van 15 minuten. Wanneer jouw meetsysteem een ander upload interval heeft dien je de drempelwaarde daarop aan te passen.',
   The_hive_weight_is_below_a_set_value_in_winter:
-    'Gewicht van de kast is lager dan een bepaalde waarde, in de winter',
+    'Gewicht van de kast is lager dan een bepaalde waarde (in de winter)',
+
+  minute: 'minuut | minuten',
+  upload_interval_warning_single_interval:
+    'Let op: het upload interval van je geïncludeerde meetsysteem is | Let op: het upload interval van je geïncludeerde meetsystemen is',
+  upload_interval_warning_interval_range:
+    'Let op: de upload intervallen van je geïncludeerde meetsystemen variëren tussen de ',
 }
 
 export default translations

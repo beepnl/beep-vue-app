@@ -47,7 +47,7 @@
             <div
               v-if="activeAlertRule.calculation_minutes === 0"
               class="beep-label mt-1"
-              v-text="'*' + $t('In_case_of_good_connection_warning')"
+              v-text="warningText"
             ></div>
           </v-col>
         </v-row>
@@ -106,6 +106,7 @@
               :placeholder="`${$t('Select')} ${$t('calculation')} ...`"
               :label="$t('Calculation')"
               :rules="requiredRule"
+              :disabled="activeAlertRule.calculation_minutes === 0"
               @input="setAlertRuleEdited(true)"
             ></v-select>
           </v-col>
@@ -177,12 +178,12 @@
               :placeholder="$t('Select') + '...'"
               class="pt-0"
               hide-details
-              @input="setAlertRuleEdited(true)"
+              @input="setAlertRuleEdited(true), checkCalculation($event)"
             ></v-select>
             <div
               v-if="activeAlertRule.calculation_minutes === 0"
               class="beep-label mt-1"
-              v-text="'*' + $t('In_case_of_good_connection_warning')"
+              v-text="warningText"
             ></div>
           </v-col>
 
@@ -269,7 +270,7 @@
             <div class="d-flex justify-space-between">
               <div class="beep-label" v-html="$t('Exclude_hives')"></div>
               <v-switch
-                v-if="numberOfSortedDevices > 3"
+                v-if="numberOfSortedDevices > 2"
                 v-model="allDevicesSelected"
                 class="pt-2 mt-n4"
                 :label="$t('select_all')"
@@ -434,6 +435,37 @@ export default {
     comparisons() {
       return this.formatFromTaxonomyObject(this.alertRulesList.comparisons)
     },
+    devicesInterval() {
+      if (this.numberOfSortedDevices !== null) {
+        var intervalArray = []
+        this.devices.map((device) => {
+          if (
+            this.activeAlertRule.exclude_hive_ids.indexOf(device.hive_id) === -1
+          ) {
+            intervalArray.push(
+              device.measurement_interval_min *
+                device.measurement_transmission_ratio
+            )
+          }
+        })
+        intervalArray = intervalArray.filter((e) => e !== 0)
+        if (intervalArray.length > 0) {
+          var minMaxArray = [
+            Math.min(...intervalArray),
+            Math.max(...intervalArray),
+          ]
+          if (minMaxArray[0] === minMaxArray[1]) {
+            return [minMaxArray[0]]
+          } else {
+            return minMaxArray
+          }
+        } else {
+          return null
+        }
+      } else {
+        return null
+      }
+    },
     hours() {
       return this.formatFromTaxonomyArray(this.alertRulesList.exclude_hours)
     },
@@ -452,6 +484,12 @@ export default {
         })
       }
       return monthsArray
+    },
+    numberOfIncludedDevices() {
+      return (
+        this.numberOfSortedDevices -
+        this.activeAlertRule.exclude_hive_ids.length
+      )
     },
     numberOfSortedDevices() {
       return this.sortedDevices.reduce((acc, apiary) => {
@@ -505,9 +543,23 @@ export default {
               (apiary.label === this.$i18n.t('Unknown') &&
                 device.location_name === ''))
           ) {
-            const deviceLabel = device.hive_name
+            var deviceLabel = device.hive_name
               ? device.hive_name + ' - ' + device.name
               : device.name
+
+            const interval =
+              device.measurement_interval_min *
+              device.measurement_transmission_ratio
+            deviceLabel += interval
+              ? ' (' +
+                this.$i18n.t('measurement_interval') +
+                ': ' +
+                interval +
+                ' ' +
+                this.$i18n.tc('minute', interval) +
+                ')'
+              : ''
+
             apiary.children.push({
               id: device.hive_id,
               label: deviceLabel,
@@ -558,6 +610,27 @@ export default {
     },
     thresholdValueIsNaN() {
       return isNaN(this.activeAlertRule.threshold_value)
+    },
+    warningText() {
+      var warningText = '*' + this.$i18n.t('In_case_of_good_connection_warning')
+      if (this.devicesInterval !== null) {
+        var intervalWarning =
+          this.devicesInterval.length > 1
+            ? this.$i18n.t('upload_interval_warning_interval_range') +
+              this.devicesInterval.join(' - ') +
+              ' ' +
+              this.$i18n.tc('minute', 2)
+            : this.$i18n.tc(
+                'upload_interval_warning_single_interval',
+                this.numberOfIncludedDevices
+              ) +
+              ' ' +
+              this.devicesInterval[0] +
+              ' ' +
+              this.$i18n.tc('minute', this.devicesInterval[0])
+        warningText += ' ' + intervalWarning
+      }
+      return warningText
     },
   },
   created() {
@@ -705,6 +778,11 @@ export default {
           this.snackbar.show = true
           this.showLoadingIcon = false
         }
+      }
+    },
+    checkCalculation(calcMinValue) {
+      if (calcMinValue === 0) {
+        this.activeAlertRule.calculation = 'ave'
       }
     },
     nextRoute() {
