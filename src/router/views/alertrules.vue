@@ -378,7 +378,12 @@ export default {
         if (!response) {
           console.log('Error')
         }
-        this.readAlertRules() // update alertRules in store
+        // update alertRules in store
+        this.readAlertRules().then(() => {
+          if (this.alertRules.length === 0) {
+            this.showExplanation = true
+          }
+        })
       } catch (error) {
         if (error.response) {
           console.log('Error: ', error.response)

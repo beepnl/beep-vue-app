@@ -353,7 +353,7 @@ export default {
     },
     showAlertPlaceholder() {
       if (this.ready) {
-        return this.alertRules.length === 0
+        return this.alertRules.length === 0 && this.alerts.length === 0
       } else {
         return false
       }
