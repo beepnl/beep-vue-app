@@ -318,7 +318,10 @@ import {
   readDevicesIfNotPresent,
   readTaxonomy,
 } from '@mixins/methodsMixin'
-import { momentDurationInHours } from '@mixins/momentMixin'
+import {
+  momentDurationInHours,
+  momentHumanizeDuration,
+} from '@mixins/momentMixin'
 import Treeselect from '@riophae/vue-treeselect'
 
 export default {
@@ -330,6 +333,7 @@ export default {
   mixins: [
     convertComma,
     momentDurationInHours,
+    momentHumanizeDuration,
     readAlertRules,
     readDevicesIfNotPresent,
     readTaxonomy,
@@ -854,25 +858,28 @@ export default {
       return replacedSentence
     },
     getCalculationMinutesText(value, capitalsOn = false) {
-      if (capitalsOn) {
-        return value === 0
-          ? this.$i18n.t('Immediately') + '*'
-          : this.momentDurationInHours(
-              value,
-              'minutes',
-              // eslint-disable-next-line vue/comma-dangle
-              this.$i18n.t('Every') + ' '
-            )
-      } else {
-        return value === 0
-          ? this.$i18n.t('immediately') + '*'
-          : this.momentDurationInHours(
-              value,
-              'minutes',
-              // eslint-disable-next-line vue/comma-dangle
-              this.$i18n.t('every') + ' '
-            )
+      var immediately = 'Immediately'
+      var prefix = 'Every'
+      if (!capitalsOn) {
+        immediately = immediately.toLowerCase()
+        prefix = prefix.toLowerCase()
       }
+      return value === 0
+        ? this.$i18n.t(immediately) + '*'
+        : // humanize duration if more than 24 hours to make it more readable
+        value > 1440
+        ? this.momentHumanizeDuration(
+            value,
+            'minutes',
+            // eslint-disable-next-line vue/comma-dangle
+            this.$i18n.t(prefix)
+          )
+        : this.momentDurationInHours(
+            value,
+            'minutes',
+            // eslint-disable-next-line vue/comma-dangle
+            this.$i18n.t(prefix)
+          )
     },
     getText(item) {
       return item.label + ' (' + item.abbreviation + ')'

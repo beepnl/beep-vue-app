@@ -82,7 +82,7 @@
 
         <div class="d-flex flex-row align-end version-number mt-n2 mr-3">
           <v-spacer></v-spacer>
-          v3.0.53
+          v3.0.54
         </div>
       </div>
     </v-navigation-drawer>

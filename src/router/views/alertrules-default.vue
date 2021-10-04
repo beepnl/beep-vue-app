@@ -87,7 +87,10 @@ import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
 import { ScaleTransition } from 'vue2-transitions'
-import { momentDurationInHours } from '@mixins/momentMixin'
+import {
+  momentDurationInHours,
+  momentHumanizeDuration,
+} from '@mixins/momentMixin'
 import { readAlertRules, readTaxonomy } from '@mixins/methodsMixin'
 
 export default {
@@ -96,7 +99,12 @@ export default {
     Layout,
     ScaleTransition,
   },
-  mixins: [momentDurationInHours, readAlertRules, readTaxonomy],
+  mixins: [
+    momentDurationInHours,
+    momentHumanizeDuration,
+    readAlertRules,
+    readTaxonomy,
+  ],
   data: function() {
     return {
       alertRulesDefault: [],
@@ -178,7 +186,9 @@ export default {
           .filter((comparison) => comparison.short === alertRule.comparison)[0]
           .full.toLowerCase(),
         measurement_quantity:
-          measurement !== undefined ? measurement.label : '-',
+          measurement !== undefined
+            ? this.$i18n.t(measurement.abbreviation)
+            : '-',
         measurement_unit:
           alertRule.calculation === 'cnt'
             ? this.$i18n.t('times')
@@ -198,7 +208,7 @@ export default {
         replacedSentence = replacedSentence.replace('[' + key + ']', value)
       })
 
-      replacedSentence += '.' // alertrule_active_email and no_email_sentence are omitted here
+      replacedSentence += '. ' // alertrule_active_email and no_email_sentence are omitted here
 
       // if (alertRule.alert_on_occurences === 1) {
       //   replacedSentence += this.$i18n.t('alertrule_occurences_direct_sentence')
@@ -269,11 +279,19 @@ export default {
     getCalculationMinutesText(value) {
       return value === 0
         ? this.$i18n.t('immediately') + '*'
+        : // humanize duration if more than 24 hours to make it more readable
+        value > 1440
+        ? this.momentHumanizeDuration(
+            value,
+            'minutes',
+            // eslint-disable-next-line vue/comma-dangle
+            this.$i18n.t('every')
+          )
         : this.momentDurationInHours(
             value,
             'minutes',
             // eslint-disable-next-line vue/comma-dangle
-            this.$i18n.t('every') + ' '
+            this.$i18n.t('every')
           )
     },
     getText(item) {

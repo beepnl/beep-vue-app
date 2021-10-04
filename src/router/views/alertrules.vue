@@ -445,7 +445,7 @@ export default {
             value,
             'minutes',
             // eslint-disable-next-line vue/comma-dangle
-            this.$i18n.t('Every') + ' '
+            this.$i18n.t('Every')
           )
     },
     toggleAlerts() {
