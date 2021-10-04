@@ -52,9 +52,11 @@
                 </v-col>
                 <v-col cols="10" sm="5" md="4">
                   <div class="d-flex flex-column">
-                    <span class="alertrule-label">{{ alertRule.name }}</span>
+                    <span class="alertrule-label">{{
+                      getTranslation(alertRule.name)
+                    }}</span>
                     <span class="alertrule-text">{{
-                      alertRule.description
+                      getTranslation(alertRule.description)
                     }}</span>
                   </div>
                 </v-col>
@@ -141,6 +143,9 @@ export default {
   methods: {
     async copyAlertRule(alertRule) {
       this.showLoadingIcon = true
+      // translate alert rule name & description if translation is present. (performed here instead of after reading, to keep displayed translation reactive to locale changes)
+      alertRule.name = this.getTranslation(alertRule.name)
+      alertRule.description = this.getTranslation(alertRule.description)
       try {
         await Api.postRequest('/alert-rules', alertRule)
         this.showLoadingIcon = false
@@ -293,6 +298,12 @@ export default {
             // eslint-disable-next-line vue/comma-dangle
             this.$i18n.t('every')
           )
+    },
+    getTranslation(term) {
+      // check if translation is present, otherwise replace underscores by spaces and return untranslated
+      return this.$i18n.te(term)
+        ? this.$i18n.t(term)
+        : term.replaceAll('_', ' ')
     },
     getText(item) {
       return item.abbreviation + ' (' + item.pq_name_unit + ')'

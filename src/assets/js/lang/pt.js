@@ -844,6 +844,34 @@ const translations = {
     ', and I receive alerts via email. In addition, I can see the alerts in the BEEP app.',
   First_occurence: 'First: ',
   Last_occurence: 'Last: ',
+  // default alert rule names:
+  Hive_stability_and_theft: 'Hive stability & Theft',
+  Temperature_sensor_defect: 'Temperature sensor defect',
+  Battery_low: 'Battery voltage low',
+  Honey_harvest: 'Honey harvest',
+  Hive_temperature: 'Hive temperature low',
+  Brood_presence: 'Brood presence',
+  No_measurements: 'No measurements',
+  Swarm: 'Swarm',
+  Winter_food_supply: 'Winter food supply low',
+  // default alert rule descriptions:
+  Weight_drop_is_above_a_set_value:
+    'Weight drop of the hive is above a set value',
+  Temperature_sensor_malfunctions: 'Temperature sensor malfunctions',
+  Battery_voltage_is_below_a_set_value:
+    'Battery voltage of the device is below a set value',
+  Weight_increase_due_to_nectar_collection_comes_to_a_halt:
+    'Weight increase due to nectar collection comes to a halt',
+  Hive_temperature_drops_below_a_set_value:
+    'Hive temperature drops below a set value',
+  Temperature_in_the_brood_below_a_set_value:
+    'Temperature in the brood has dropped below a set value',
+  No_measurement_data_received_in_a_set_time_period:
+    'No measurement data received during a set time period',
+  Sudden_weight_drop_triggers_alert_immediately:
+    'Sudden weight drop of the hive triggers an alert immediately',
+  The_hive_weight_is_below_a_set_value_in_winter:
+    'Hive weight is below a set value in winter',
 }
 
 export default translations

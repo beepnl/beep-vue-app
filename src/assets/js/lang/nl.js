@@ -849,6 +849,34 @@ const translations = {
     'Indien het meetsysteem een goede dataconnectie heeft.',
   First_occurence: 'Eerste: ',
   Last_occurence: 'Laatste: ',
+  // default alert rule names:
+  Hive_stability_and_theft: 'Kast stabiliteit & diefstal',
+  Temperature_sensor_defect: 'Temperatuursensor defect',
+  Battery_low: 'Batterijspanning laag',
+  Honey_harvest: 'Honingoogst',
+  Hive_temperature: 'Kasttemperatuur laag',
+  Brood_presence: 'Aanwezigheid broed',
+  No_measurements: 'Geen metingen',
+  Swarm: 'Zwerm',
+  Winter_food_supply: 'Winter voedselvoorraad laag',
+  // default alert rule descriptions:
+  Weight_drop_is_above_a_set_value:
+    'Gewichtsafname van de kast is boven een bepaalde waarde',
+  Temperature_sensor_malfunctions: 'Temperatuursensor storingen',
+  Battery_voltage_is_below_a_set_value:
+    'Batterij voltage van het meetsysteem is lager dan een bepaalde waarde',
+  Weight_increase_due_to_nectar_collection_comes_to_a_halt:
+    'Gewichtstoename vanwege nectarverzameling is gestopt',
+  Hive_temperature_drops_below_a_set_value:
+    'Kasttemperatuur daalt tot onder een bepaalde waarde',
+  Temperature_in_the_brood_below_a_set_value:
+    'Broedtemperatuur daalt tot onder een bepaalde waarde',
+  No_measurement_data_received_in_a_set_time_period:
+    'Geen metingen ontvangen gedurende een bepaalde periode',
+  Sudden_weight_drop_triggers_alert_immediately:
+    'Plotselinge gewichtsafname van de kast triggert direct een notificatie',
+  The_hive_weight_is_below_a_set_value_in_winter:
+    'Gewicht van de kast is lager dan een bepaalde waarde, in de winter',
 }
 
 export default translations
