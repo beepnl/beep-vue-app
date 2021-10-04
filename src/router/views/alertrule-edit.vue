@@ -127,7 +127,7 @@
             <v-select
               v-model="activeAlertRule.comparator"
               :items="comparators"
-              item-text="full"
+              item-text="short"
               item-value="short"
               :label="$t('Comparator')"
               :rules="requiredRule"
@@ -760,7 +760,7 @@ export default {
             : '',
         comparator: this.comparators.filter(
           (comparator) => comparator.short === alertRule.comparator
-        )[0].full,
+        )[0].short,
         threshold_value: alertRule.threshold_value,
         calculation_minutes: this.getCalculationMinutesText(
           alertRule.calculation_minutes,
