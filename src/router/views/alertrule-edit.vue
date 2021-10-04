@@ -852,14 +852,12 @@ export default {
 
       if (alertRule.active) {
         alertRule.alert_via_email
-          ? (replacedSentence += this.$i18n.t(
-              'alertrule_active_email_sentence'
-            ))
-          : (replacedSentence += this.$i18n.t(
-              'alertrule_active_no_email_sentence'
-            ))
+          ? (replacedSentence +=
+              this.$i18n.t('alertrule_active_email_sentence') + ' ')
+          : (replacedSentence +=
+              this.$i18n.t('alertrule_active_no_email_sentence') + ' ')
       } else {
-        replacedSentence += '.'
+        replacedSentence += '. '
       }
 
       // if (alertRule.alert_on_occurences === 1) {
