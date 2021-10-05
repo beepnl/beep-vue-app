@@ -711,8 +711,8 @@ const translations = {
   Value: 'Waarde',
   Difference: 'Verschil',
   Absolute_value: 'Absolute waarde',
-  Absolute_value_of_dif: 'Verandering*',
-  Absolute_value_of_dif_expl: '*Absolute waarde van het verschil',
+  Absolute_value_of_dif: 'Verandering**',
+  Absolute_value_of_dif_explanation: '**Absolute waarde van het verschil',
   Exclude_months:
     'Deze notificatie <strong>deactiveren</strong> gedurende de volgende maanden:',
   Exclude_hours:
@@ -888,8 +888,9 @@ const translations = {
   Decrease: 'Daling',
   Every_hour: 'Elk uur',
   every_hour: 'elk uur',
-
-  // immediately weg
+  Alertrule_summary_title: 'Samenvatting',
+  Alertrule_settings_title: 'Notificatie instellingen',
+  Alertrule_exclude_title: 'Periodes en bijenkasten excluderen',
 }
 
 export default translations

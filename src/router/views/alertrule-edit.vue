@@ -35,283 +35,330 @@
       </v-toolbar>
 
       <v-container class="content-container">
-        <v-row v-if="activeAlertRule">
-          <v-col cols="12">
-            <em v-if="!activeAlertRule.active" class="red--text">{{
-              $t('alertrule_not_active')
-            }}</em>
-            <p
-              :class="!activeAlertRule.active ? 'color-grey-light' : 'strong'"
-              >{{ alertRuleSentence(activeAlertRule) }}</p
+        <div class="overline mb-2" v-text="$t('Alertrule_summary_title')"></div>
+        <v-alert
+          v-if="activeAlertRule"
+          success
+          outlined
+          :color="activeAlertRule.active ? 'accent' : 'red'"
+          class="alertrule-card mb-8"
+        >
+          <v-row>
+            <v-col cols="12">
+              <em v-if="!activeAlertRule.active" class="red--text">{{
+                $t('alertrule_not_active')
+              }}</em>
+              <p
+                :class="!activeAlertRule.active ? 'color-grey-light' : 'strong'"
+                >{{ alertRuleSentence(activeAlertRule) }}</p
+              >
+              <div
+                v-if="activeAlertRule.calculation_minutes === 0"
+                :class="
+                  'beep-label mt-0 ' +
+                    (!activeAlertRule.active
+                      ? 'color-grey-light'
+                      : 'alertrule-color-accent')
+                "
+                v-text="warningText"
+              ></div>
+              <div
+                v-if="activeAlertRule.comparison === 'abs_dif'"
+                :class="
+                  'beep-label mt-0 ' +
+                    (!activeAlertRule.active
+                      ? 'color-grey-light'
+                      : 'alertrule-color-accent')
+                "
+                v-text="$t('Absolute_value_of_dif_explanation')"
+              ></div>
+            </v-col>
+          </v-row>
+        </v-alert>
+
+        <div
+          class="overline mb-2"
+          v-text="$t('Alertrule_settings_title')"
+        ></div>
+        <div v-if="activeAlertRule" class="alertrule-card rounded-border mb-8">
+          <v-row class="d-flex justify-space-between">
+            <v-col cols="12" sm="7" lg="5" class="mobile-last">
+              <div class="beep-label" v-text="$t('Name')"></div>
+              <v-text-field
+                v-model="activeAlertRule.name"
+                class="alertrule-edit-name mb-sm-3"
+                counter="30"
+                :rules="requiredRule"
+                required
+                @input="validateText($event, 'name', 30)"
+              >
+              </v-text-field>
+            </v-col>
+
+            <v-spacer />
+
+            <v-col cols="3" sm="1" class="d-flex justify-end mobile-front">
+              <div>
+                <div class="beep-label" v-text="$t('Active')"></div>
+                <v-checkbox
+                  v-model="activeAlertRule.active"
+                  color="accent"
+                  class="mt-1"
+                  hide-details
+                  @change="setAlertRuleEdited(true)"
+                ></v-checkbox>
+              </div>
+            </v-col>
+
+            <v-col
+              cols="6"
+              sm="3"
+              md="2"
+              class="d-flex justify-end mobile-front"
             >
-            <div
-              v-if="activeAlertRule.calculation_minutes === 0"
-              class="beep-label mt-1"
-              v-text="warningText"
-            ></div>
-          </v-col>
-        </v-row>
-        <v-row v-if="activeAlertRule">
-          <v-col cols="12" sm="4" lg="5">
-            <div class="beep-label" v-text="$t('Name')"></div>
-            <v-text-field
-              v-model="activeAlertRule.name"
-              class="alertrule-edit-name mb-sm-3"
-              counter="30"
-              :rules="requiredRule"
-              required
-              @input="validateText($event, 'name', 30)"
-            >
-            </v-text-field>
-          </v-col>
+              <div>
+                <div class="beep-label" v-text="$t('Alert_via_email')"></div>
+                <v-checkbox
+                  v-model="activeAlertRule.alert_via_email"
+                  color="accent"
+                  class="mt-1"
+                  hide-details
+                  @change="setAlertRuleEdited(true)"
+                ></v-checkbox>
+              </div>
+            </v-col>
+          </v-row>
 
-          <v-col cols="12" sm="8" lg="7">
-            <div
-              :class="'beep-label' + (!mobile ? ' mb-0' : '')"
-              v-text="$t('Description')"
-            ></div>
-            <v-textarea
-              v-model="activeAlertRule.description"
-              :class="'pt-0' + (!mobile ? ' mb-sm-3 mt-0' : '')"
-              :rows="!mobile ? '1' : '2'"
-              row-height="24"
-              auto-grow
-              counter="250"
-              @input="validateText($event, 'description', 250)"
-            >
-            </v-textarea>
-          </v-col>
-        </v-row>
+          <v-row>
+            <v-col cols="12" lg="9">
+              <div
+                :class="'beep-label' + (!mobile ? ' mb-0' : '')"
+                v-text="$t('Description')"
+              ></div>
+              <v-textarea
+                v-model="activeAlertRule.description"
+                :class="'pt-0' + (!mobile ? ' mb-sm-3 mt-0' : '')"
+                :rows="!mobile ? '1' : '2'"
+                row-height="24"
+                auto-grow
+                counter="250"
+                @input="validateText($event, 'description', 250)"
+              >
+              </v-textarea>
+            </v-col>
+          </v-row>
 
-        <v-row v-if="activeAlertRule">
-          <v-col cols="12" sm="6" md="3">
-            <div
-              class="beep-label mb-n2"
-              v-text="$t('Calculation_minutes')"
-            ></div>
-            <v-select
-              v-model="activeAlertRule.calculation_minutes"
-              :items="calculationMinutes"
-              :item-text="(item) => momentHumanizeHours(item.label, true, true)"
-              item-value="label"
-              :placeholder="$t('Select') + '...'"
-              class="pt-0 mt-2"
-              hide-details
-              @input="setAlertRuleEdited(true), checkCalculation($event)"
-            ></v-select>
-            <div
-              v-if="activeAlertRule.calculation_minutes === 0"
-              class="beep-label mt-1"
-              v-text="warningText"
-            ></div>
-          </v-col>
-          <v-col cols="12" sm="6" md="2">
-            <v-select
-              v-model="activeAlertRule.measurement_id"
-              :items="sortedSensorMeasurements"
-              :item-text="getText"
-              item-value="id"
-              :placeholder="
-                `${$t('Select')} ${$tc(
-                  'measurement',
-                  // eslint-disable-next-line vue/comma-dangle
-                  1
-                )} ...`
-              "
-              :label="$tc('Measurement', 1)"
-              :rules="requiredRule"
-              @input="setAlertRuleEdited(true)"
-            ></v-select>
-          </v-col>
-
-          <v-col cols="12" sm="6" md="2">
-            <v-select
-              v-model="activeAlertRule.calculation"
-              :items="calculations"
-              item-text="full"
-              item-value="short"
-              :placeholder="`${$t('Select')} ${$t('calculation')} ...`"
-              :label="$t('Calculation')"
-              :rules="requiredRule"
-              :disabled="activeAlertRule.calculation_minutes === 0"
-              @input="setAlertRuleEdited(true)"
-            ></v-select>
-            <div
-              v-if="activeAlertRule.calculation_minutes === 0"
-              class="beep-label mt-n4 mb-3"
-              v-text="$t('not_relevant_for_immediate_calculation')"
-            ></div>
-          </v-col>
-
-          <v-col cols="12" sm="6" md="2">
-            <v-select
-              v-model="activeAlertRule.comparison"
-              :items="comparisons"
-              item-text="full"
-              item-value="short"
-              :placeholder="`${$t('Select')} ${$t('comparison')} ...`"
-              :label="$t('Comparison')"
-              :rules="requiredRule"
-              @input="setAlertRuleEdited(true)"
-            ></v-select>
-            <div
-              v-if="activeAlertRule.comparison === 'abs_dif'"
-              class="beep-label mt-n4 mb-3"
-              v-text="$t('Absolute_value_of_dif_expl')"
-            ></div>
-          </v-col>
-
-          <v-col cols="6" sm="3" md="1">
-            <v-select
-              v-model="activeAlertRule.comparator"
-              :items="comparators"
-              item-text="short"
-              item-value="short"
-              :label="$t('Comparator')"
-              :rules="requiredRule"
-              @input="setAlertRuleEdited(true)"
-            ></v-select>
-          </v-col>
-
-          <v-col cols="6" sm="3" md="2">
-            <div
-              :class="`beep-label ${thresholdValueIsNaN ? 'red--text' : ''}`"
-              v-text="$t('Threshold_value')"
-            ></div>
-            <el-input-number
-              v-model="activeAlertRule.threshold_value"
-              :step="activeAlertRule.calculation === 'cnt' ? 1 : 0.1"
-              :precision="activeAlertRule.calculation === 'cnt' ? 0 : 1"
-              :step-strictly="true"
-              size="small"
-              @change="setAlertRuleEdited(true)"
-              @input.native="
-                convertComma($event, activeAlertRule, 'threshold_value', 1),
-                  setAlertRuleEdited(true)
-              "
-            ></el-input-number>
-            <div v-if="thresholdValueIsNaN" class="v-text-field__details mt-1"
-              ><div class="v-messages theme--light error--text" role="alert"
-                ><div class="v-messages__wrapper"
-                  ><div class="v-messages__message">{{
-                    this.$i18n.t('this_field') +
-                      ' ' +
-                      this.$i18n.t('is_required')
-                  }}</div></div
-                ></div
-              ></div
-            >
-          </v-col>
-        </v-row>
-
-        <v-row v-if="activeAlertRule">
-          <!-- <v-col cols="12" sm="5" md="3">
-            <div class="beep-label" v-text="$t('Alert_on_occurences')"></div>
-            <v-select
-              v-model="activeAlertRule.alert_on_occurences"
-              :items="alertOnOccurencesItems"
-              item-text="label"
-              item-value="id"
-              :placeholder="$t('Select') + '...'"
-              :hint="$t('Alert_on_occurences_hint')"
-              class="pt-0"
-              persistent-hint
-              @input="setAlertRuleEdited(true)"
-            ></v-select>
-          </v-col> -->
-
-          <v-col cols="3" sm="1">
-            <div class="beep-label" v-text="$t('Active')"></div>
-            <v-checkbox
-              v-model="activeAlertRule.active"
-              color="accent"
-              class="mt-1"
-              @change="setAlertRuleEdited(true)"
-            ></v-checkbox>
-          </v-col>
-
-          <v-col cols="6" sm="3" md="2">
-            <div class="beep-label" v-text="$t('Alert_via_email')"></div>
-            <v-checkbox
-              v-model="activeAlertRule.alert_via_email"
-              color="accent"
-              class="mt-1"
-              @change="setAlertRuleEdited(true)"
-            ></v-checkbox>
-          </v-col>
-        </v-row>
-
-        <v-row v-if="activeAlertRule">
-          <v-col cols="12" sm="6" lg="4">
-            <div class="d-flex justify-space-between">
-              <div class="beep-label" v-html="$t('Exclude_months')"></div>
-              <v-switch
-                v-model="allMonthsSelected"
-                class="pt-2 mt-n4"
-                :label="$t('select_all')"
+          <v-row>
+            <v-col cols="12" sm="7" lg="5" class="mb-3">
+              <div class="beep-label" v-text="$t('Calculation_minutes')"></div>
+              <v-select
+                v-model="activeAlertRule.calculation_minutes"
+                :items="calculationMinutes"
+                :item-text="
+                  (item) => momentHumanizeHours(item.label, true, true)
+                "
+                item-value="label"
+                :placeholder="$t('Select') + '...'"
+                class="pt-0"
                 hide-details
-              ></v-switch>
-            </div>
-            <Treeselect
-              v-model="activeAlertRule.exclude_months"
-              class="color-red"
-              :options="months"
-              :placeholder="`${$t('Select')} ${$t('months')}`"
-              :no-results-text="`${$t('no_results')}`"
-              multiple
-              @input="setAlertRuleEdited(true)"
-            />
-          </v-col>
+                @input="setAlertRuleEdited(true), checkCalculation($event)"
+              ></v-select>
+              <div
+                v-if="activeAlertRule.calculation_minutes === 0"
+                class="beep-label mt-1"
+                v-text="warningText"
+              ></div>
+            </v-col>
+          </v-row>
 
-          <v-col cols="12" sm="6" lg="4">
-            <div class="d-flex justify-space-between">
-              <div class="beep-label" v-html="$t('Exclude_hours')"></div>
-              <v-switch
-                v-model="allHoursSelected"
-                class="pt-2 mt-n4"
-                :label="$t('select_all')"
-                hide-details
-              ></v-switch>
-            </div>
-            <Treeselect
-              v-model="activeAlertRule.exclude_hours"
-              class="color-red"
-              :options="hours"
-              :placeholder="`${$t('Select')} ${$t('hours')}`"
-              :no-results-text="`${$t('no_results')}`"
-              multiple
-              @input="setAlertRuleEdited(true)"
-            />
-          </v-col>
+          <v-row>
+            <v-col cols="12" sm="6" md="3">
+              <v-select
+                v-model="activeAlertRule.measurement_id"
+                :items="sortedSensorMeasurements"
+                :item-text="getText"
+                item-value="id"
+                :placeholder="
+                  `${$t('Select')} ${$tc(
+                    'measurement',
+                    // eslint-disable-next-line vue/comma-dangle
+                    1
+                  )} ...`
+                "
+                :label="$tc('Measurement', 1)"
+                :rules="requiredRule"
+                @input="setAlertRuleEdited(true)"
+              ></v-select>
+            </v-col>
 
-          <v-col v-if="devices.length > 1" cols="12" lg="4">
-            <div class="d-flex justify-space-between">
-              <div class="beep-label" v-html="$t('Exclude_hives')"></div>
-              <v-switch
-                v-if="numberOfSortedDevices > 2"
-                v-model="allDevicesSelected"
-                class="pt-2 mt-n4"
-                :label="$t('select_all')"
-                hide-details
-              ></v-switch>
-            </div>
-            <Treeselect
-              v-model="activeAlertRule.exclude_hive_ids"
-              class="color-red"
-              :options="sortedDevices"
-              :disable-branch-nodes="true"
-              :default-expand-level="1"
-              :placeholder="`${$t('Select')} ${$tc('hive', 2)}`"
-              :no-results-text="`${$t('no_results')}`"
-              multiple
-              @input="setAlertRuleEdited(true)"
-            />
-            <div
-              class="beep-label mt-1"
-              v-text="$t('Exclude_hives_details')"
-            ></div>
-          </v-col>
-        </v-row>
+            <v-col cols="12" sm="6" md="3">
+              <v-select
+                v-model="activeAlertRule.calculation"
+                :items="calculations"
+                item-text="full"
+                item-value="short"
+                :placeholder="`${$t('Select')} ${$t('calculation')} ...`"
+                :label="$t('Calculation')"
+                :rules="requiredRule"
+                :disabled="activeAlertRule.calculation_minutes === 0"
+                @input="setAlertRuleEdited(true)"
+              ></v-select>
+              <div
+                v-if="activeAlertRule.calculation_minutes === 0"
+                class="beep-label mt-n4 mb-3"
+                v-text="$t('not_relevant_for_immediate_calculation')"
+              ></div>
+            </v-col>
+
+            <v-col cols="12" sm="6" md="3">
+              <v-select
+                v-model="activeAlertRule.comparison"
+                :items="comparisons"
+                item-text="full"
+                item-value="short"
+                :placeholder="`${$t('Select')} ${$t('comparison')} ...`"
+                :label="$t('Comparison')"
+                :rules="requiredRule"
+                @input="setAlertRuleEdited(true)"
+              ></v-select>
+              <div
+                v-if="activeAlertRule.comparison === 'abs_dif'"
+                class="beep-label mt-n4 mb-3"
+                v-text="$t('Absolute_value_of_dif_explanation')"
+              ></div>
+            </v-col>
+
+            <v-col cols="6" sm="3" md="1">
+              <v-select
+                v-model="activeAlertRule.comparator"
+                :items="comparators"
+                item-text="short"
+                item-value="short"
+                :label="$t('Comparator')"
+                :rules="requiredRule"
+                @input="setAlertRuleEdited(true)"
+              ></v-select>
+            </v-col>
+
+            <v-col cols="6" sm="3" md="2" class="d-flex justify-start">
+              <div>
+                <div
+                  :class="
+                    `beep-label ${thresholdValueIsNaN ? 'red--text' : ''}`
+                  "
+                  v-text="$t('Threshold_value') + ' (' + measurementUnit + ')'"
+                ></div>
+                <el-input-number
+                  v-model="activeAlertRule.threshold_value"
+                  :step="activeAlertRule.calculation === 'cnt' ? 1 : 0.1"
+                  :precision="activeAlertRule.calculation === 'cnt' ? 0 : 1"
+                  :step-strictly="true"
+                  size="small"
+                  @change="setAlertRuleEdited(true)"
+                  @input.native="
+                    convertComma($event, activeAlertRule, 'threshold_value', 1),
+                      setAlertRuleEdited(true)
+                  "
+                ></el-input-number>
+                <div
+                  v-if="thresholdValueIsNaN"
+                  class="v-text-field__details mt-1"
+                  ><div class="v-messages theme--light error--text" role="alert"
+                    ><div class="v-messages__wrapper"
+                      ><div class="v-messages__message">{{
+                        this.$i18n.t('this_field') +
+                          ' ' +
+                          this.$i18n.t('is_required')
+                      }}</div></div
+                    ></div
+                  ></div
+                >
+              </div>
+              <!-- <span class="ml-1 mt-6">{{ measurementUnit }}</span> -->
+            </v-col>
+          </v-row>
+        </div>
+
+        <div class="overline mb-2" v-text="$t('Alertrule_exclude_title')"></div>
+        <div v-if="activeAlertRule" class="alertrule-card rounded-border">
+          <v-row>
+            <v-col cols="12" sm="9" md="6" class="mt-2 mb-3">
+              <div class="d-flex justify-space-between">
+                <div class="beep-label" v-html="$t('Exclude_months')"></div>
+                <v-switch
+                  v-model="allMonthsSelected"
+                  class="pt-2 mt-n4"
+                  :label="$t('select_all')"
+                  hide-details
+                ></v-switch>
+              </div>
+              <Treeselect
+                v-model="activeAlertRule.exclude_months"
+                class="color-red"
+                :options="months"
+                :placeholder="`${$t('Select')} ${$t('months')}`"
+                :no-results-text="`${$t('no_results')}`"
+                multiple
+                @input="setAlertRuleEdited(true)"
+              />
+            </v-col>
+
+            <v-col cols="12" sm="9" md="6" class="mt-2 mb-3">
+              <div class="d-flex justify-space-between">
+                <div class="beep-label" v-html="$t('Exclude_hours')"></div>
+                <v-switch
+                  v-model="allHoursSelected"
+                  class="pt-2 mt-n4"
+                  :label="$t('select_all')"
+                  hide-details
+                ></v-switch>
+              </div>
+              <Treeselect
+                v-model="activeAlertRule.exclude_hours"
+                class="color-red"
+                :options="hours"
+                :placeholder="`${$t('Select')} ${$t('hours')}`"
+                :no-results-text="`${$t('no_results')}`"
+                multiple
+                @input="setAlertRuleEdited(true)"
+              />
+            </v-col>
+
+            <v-col
+              v-if="devices.length > 1"
+              cols="12"
+              sm="9"
+              md="6"
+              class="mb-2"
+            >
+              <div class="d-flex justify-space-between">
+                <div class="beep-label" v-html="$t('Exclude_hives')"></div>
+                <v-switch
+                  v-if="numberOfSortedDevices > 2"
+                  v-model="allDevicesSelected"
+                  class="pt-2 mt-n4"
+                  :label="$t('select_all')"
+                  hide-details
+                ></v-switch>
+              </div>
+              <Treeselect
+                v-model="activeAlertRule.exclude_hive_ids"
+                class="color-red"
+                :options="sortedDevices"
+                :disable-branch-nodes="true"
+                :default-expand-level="1"
+                :placeholder="`${$t('Select')} ${$tc('hive', 2)}`"
+                :no-results-text="`${$t('no_results')}`"
+                multiple
+                @input="setAlertRuleEdited(true)"
+              />
+              <div
+                class="beep-label mt-1"
+                v-text="$t('Exclude_hives_details')"
+              ></div>
+            </v-col>
+          </v-row>
+        </div>
       </v-container>
     </v-form>
 
@@ -485,6 +532,18 @@ export default {
     },
     id() {
       return parseInt(this.$route.params.id)
+    },
+    measurement() {
+      return this.sortedSensorMeasurements.filter(
+        (measurement) => measurement.id === this.activeAlertRule.measurement_id
+      )[0]
+    },
+    measurementUnit() {
+      return this.activeAlertRule.calculation === 'cnt'
+        ? this.$i18n.t('times')
+        : this.measurement !== undefined
+        ? this.measurement.unit
+        : ''
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile
@@ -836,23 +895,14 @@ export default {
       var sentence = this.$i18n.t('alertrule_main_sentence')
       var replacedSentence = sentence
 
-      var measurement = this.sortedSensorMeasurements.filter(
-        (measurement) => measurement.id === alertRule.measurement_id
-      )[0]
-
       var replaceWith = {
         calculation: this.$i18n.t(alertRule.calculation),
         comparison: this.comparisons
           .filter((comparison) => comparison.short === alertRule.comparison)[0]
           .full.toLowerCase(),
         measurement_quantity:
-          measurement !== undefined ? measurement.label : '-',
-        measurement_unit:
-          alertRule.calculation === 'cnt'
-            ? this.$i18n.t('times')
-            : measurement !== undefined
-            ? measurement.unit
-            : '',
+          this.measurement !== undefined ? this.measurement.label : '-',
+        measurement_unit: this.measurementUnit,
         comparator: this.comparators.filter(
           (comparator) => comparator.short === alertRule.comparator
         )[0].short,
@@ -1020,6 +1070,30 @@ export default {
 </script>
 
 <style lang="scss">
+.mobile-front {
+  @include for-phone-only {
+    order: 1;
+  }
+}
+
+.mobile-last {
+  @include for-phone-only {
+    order: 2;
+  }
+}
+
+.alertrule-card {
+  max-width: 1200px;
+
+  .color-grey-light {
+    color: $color-grey-light;
+  }
+
+  .alertrule-color-accent {
+    color: $color-accent;
+  }
+}
+
 .alertrule-edit-name {
   padding-top: 0 !important;
   font-size: 1.5rem;

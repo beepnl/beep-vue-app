@@ -701,7 +701,7 @@ const translations = {
   Value: 'Valor',
   Difference: 'Diferença',
   Absolute_value: 'Valor absoluto',
-  Absolute_value_of_dif_expl: '*Valor absoluto da diferença',
+  Absolute_value_of_dif_explanation: '*Valor absoluto da diferença',
   Exclude_months:
     '<strong>Desativar</strong> este alerta durante os seguintes meses:',
   Exclude_hours:
@@ -875,6 +875,8 @@ const translations = {
     'N.B.: the data transmission interval of your included hive is | N.B.: the data transmission interval of your included hives is', // f.e.: ... 15 minutes
   upload_interval_warning_interval_range:
     'N.B.: the data transmission interval of your included hives vary between ', // f.e. ... 5 - 15 minutes
+  not_relevant_for_immediate_calculation:
+    'Not relevant for immediate calculation',
   Increase: 'Increase',
   Decrease: 'Decrease',
   Every_hour: 'Every hour',
@@ -882,6 +884,9 @@ const translations = {
   Absolute_value_of_dif: 'Change*',
   In_case_of_good_connection_warning:
     '*Immediately after a measurement is received. This is dependent on the data transmission interval and the reliability of the data connection.',
+  Alertrule_summary_title: 'Summary',
+  Alertrule_settings_title: 'Alert rule settings',
+  Alertrule_exclude_title: 'Exclude periods and hives',
 }
 
 export default translations

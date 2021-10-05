@@ -778,7 +778,7 @@ const translations = {
   Value: 'Valeur',
   Difference: 'Différence',
   Absolute_value: 'Valeur absolue',
-  Absolute_value_of_dif: 'Valeur absolue de la différence',
+  Absolute_value_of_dif_explanation: '*Valeur absolue de la différence',
   Exclude_months:
     '<strong>Désactiver</strong> cette alerte pendant ce nombre de mois:',
   /* Cyrille - 31/05 : This translation needs more context */
@@ -916,9 +916,6 @@ const translations = {
 
   // TO BE TRANSLATED TERMS
   Immediately: 'Immediately',
-  immediately: 'immediately',
-  In_case_of_good_connection_warning:
-    'In case the device has a good data connection.',
   alertrule_active_no_email_sentence:
     ', and I open the BEEP app to see the alerts.',
   alertrule_active_email_sentence:
@@ -959,6 +956,18 @@ const translations = {
     'N.B.: the upload interval of your included hive is | N.B.: the upload interval of your included hives is', // f.e.: ... 15 minutes
   upload_interval_warning_interval_range:
     'N.B.: the upload intervals of your included hives vary between ', // f.e. ... 5 - 15 minutes
+  not_relevant_for_immediate_calculation:
+    'Not relevant for immediate calculation',
+  Increase: 'Increase',
+  Decrease: 'Decrease',
+  Every_hour: 'Every hour',
+  every_hour: 'every hour',
+  Absolute_value_of_dif: 'Change*',
+  In_case_of_good_connection_warning:
+    '*Immediately after a measurement is received. This is dependent on the data transmission interval and the reliability of the data connection.',
+  Alertrule_summary_title: 'Summary',
+  Alertrule_settings_title: 'Alert rule settings',
+  Alertrule_exclude_title: 'Exclude periods and hives',
 }
 
 export default translations
