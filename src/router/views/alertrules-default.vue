@@ -68,7 +68,7 @@
                     <div
                       v-if="alertRule.calculation_minutes === 0"
                       class="alertrule-text mt-1"
-                      v-text="'*' + $t('In_case_of_good_connection_warning')"
+                      v-text="$t('In_case_of_good_connection_warning')"
                     ></div>
                   </div>
                 </v-col>
@@ -89,10 +89,7 @@ import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
 import { ScaleTransition } from 'vue2-transitions'
-import {
-  momentDurationInHours,
-  momentHumanizeDuration,
-} from '@mixins/momentMixin'
+import { momentHumanizeHours } from '@mixins/momentMixin'
 import { readAlertRules, readTaxonomy } from '@mixins/methodsMixin'
 
 export default {
@@ -101,12 +98,7 @@ export default {
     Layout,
     ScaleTransition,
   },
-  mixins: [
-    momentDurationInHours,
-    momentHumanizeDuration,
-    readAlertRules,
-    readTaxonomy,
-  ],
+  mixins: [momentHumanizeHours, readAlertRules, readTaxonomy],
   data: function() {
     return {
       alertRulesDefault: [],
@@ -204,8 +196,10 @@ export default {
           (comparator) => comparator.short === alertRule.comparator
         )[0].short,
         threshold_value: alertRule.threshold_value,
-        calculation_minutes: this.getCalculationMinutesText(
-          alertRule.calculation_minutes
+        calculation_minutes: this.momentHumanizeHours(
+          alertRule.calculation_minutes,
+          false,
+          true
         ),
       }
 
@@ -280,24 +274,6 @@ export default {
         })
       })
       return formattedArray
-    },
-    getCalculationMinutesText(value) {
-      return value === 0
-        ? this.$i18n.t('immediately') + '*'
-        : // humanize duration if more than 24 hours to make it more readable
-        value > 1440
-        ? this.momentHumanizeDuration(
-            value,
-            'minutes',
-            // eslint-disable-next-line vue/comma-dangle
-            this.$i18n.t('every')
-          )
-        : this.momentDurationInHours(
-            value,
-            'minutes',
-            // eslint-disable-next-line vue/comma-dangle
-            this.$i18n.t('every')
-          )
     },
     getTranslation(term) {
       // check if translation is present, otherwise replace underscores by spaces and return untranslated

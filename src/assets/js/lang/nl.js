@@ -711,7 +711,8 @@ const translations = {
   Value: 'Waarde',
   Difference: 'Verschil',
   Absolute_value: 'Absolute waarde',
-  Absolute_value_of_dif: 'Absolute waarde van het verschil',
+  Absolute_value_of_dif: 'Verandering*',
+  Absolute_value_of_dif_expl: '*Absolute waarde van het verschil',
   Exclude_months:
     'Deze notificatie <strong>deactiveren</strong> gedurende de volgende maanden:',
   Exclude_hours:
@@ -844,9 +845,8 @@ const translations = {
     'https://beepsupport.freshdesk.com/nl/support/solutions/articles/60000697129-beep-base-data-downloaden-met-bluetooth',
 
   Immediately: 'Direct',
-  immediately: 'direct',
   In_case_of_good_connection_warning:
-    'Indien het meetsysteem een goede dataconnectie heeft.',
+    '*Direct nadat een meting ontvangen is. Dit is afhankelijk van het datatransmissie interval en de betrouwbaarheid van de dataconnectie.',
   First_occurence: 'Eerste: ',
   Last_occurence: 'Laatste: ',
   // default alert rule names:
@@ -874,16 +874,22 @@ const translations = {
   No_measurement_data_received_in_a_set_time_period:
     'Geen metingen ontvangen gedurende een bepaalde periode',
   Sudden_weight_drop_triggers_alert_immediately:
-    'Plotselinge gewichtsafname van de kast triggert direct een notificatie. Let op: hierbij is uitgegaan van een upload interval van 15 minuten. Wanneer jouw meetsysteem een ander upload interval heeft dien je de drempelwaarde daarop aan te passen.',
+    'Plotselinge gewichtsafname van de kast triggert direct een notificatie. Let op: hierbij is uitgegaan van een datatransmissie interval van 15 minuten. Wanneer jouw meetsysteem een ander datatransmissie interval heeft dien je de drempelwaarde daarop aan te passen.',
   The_hive_weight_is_below_a_set_value_in_winter:
     'Gewicht van de kast is lager dan een bepaalde waarde (in de winter)',
 
   minute: 'minuut | minuten',
   upload_interval_warning_single_interval:
-    'Let op: het upload interval van je geïncludeerde bijenkast is | Let op: het upload interval van je geïncludeerde bijenkasten is',
+    'Let op: het datatransmissie interval van je geïncludeerde bijenkast is | Let op: het datatransmissie interval van je geïncludeerde bijenkasten is',
   upload_interval_warning_interval_range:
-    'Let op: de upload intervallen van je geïncludeerde bijenkasten variëren tussen de ',
+    'Let op: de datatransmissie intervallen van je geïncludeerde bijenkasten variëren tussen de ',
   not_relevant_for_immediate_calculation: 'Niet relevant bij direct uitvoeren',
+  Increase: 'Stijging',
+  Decrease: 'Daling',
+  Every_hour: 'Elk uur',
+  every_hour: 'elk uur',
+
+  // immediately weg
 }
 
 export default translations

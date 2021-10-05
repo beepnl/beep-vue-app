@@ -672,7 +672,7 @@ const translations = {
   Value: 'Valore',
   Difference: 'Differenza',
   Absolute_value: 'Valore assoluto',
-  Absolute_value_of_dif: 'Valore assoluto della differenza',
+  Absolute_value_of_dif_expl: '*Valore assoluto della differenza',
   Exclude_months:
     '<strong>Disattiva</strong> questo messaggio di allerta per i seguenti mesi:',
   Exclude_hours:
@@ -803,9 +803,6 @@ const translations = {
 
   // TO BE TRANSLATED TERMS
   Immediately: 'Immediately',
-  immediately: 'immediately',
-  In_case_of_good_connection_warning:
-    'In case the device has a good data connection.',
   alertrule_active_no_email_sentence:
     ', and I open the BEEP app to see the alerts.',
   alertrule_active_email_sentence:
@@ -837,15 +834,22 @@ const translations = {
   No_measurement_data_received_in_a_set_time_period:
     'No measurement data received during a set time period',
   Sudden_weight_drop_triggers_alert_immediately:
-    'Sudden weight drop of the hive triggers an alert immediately. N.B.: this is based on an upload interval of 15 minutes. In case your device has a different upload interval, you should adjust the threshold value accordingly.',
+    'Sudden weight drop of the hive triggers an alert immediately. N.B.: this is based on a data transmission interval of 15 minutes. In case your device has a different data transmission interval, you should adjust the threshold value accordingly.',
   The_hive_weight_is_below_a_set_value_in_winter:
     'Hive weight is below a set value (in winter)',
 
   minute: 'minute | minutes',
   upload_interval_warning_single_interval:
-    'N.B.: the upload interval of your included hive is | N.B.: the upload interval of your included hives is', // f.e.: ... 15 minutes
+    'N.B.: the data transmission interval of your included hive is | N.B.: the data transmission interval of your included hives is', // f.e.: ... 15 minutes
   upload_interval_warning_interval_range:
-    'N.B.: the upload intervals of your included hives vary between ', // f.e. ... 5 - 15 minutes
+    'N.B.: the data transmission interval of your included hives vary between ', // f.e. ... 5 - 15 minutes
+  Increase: 'Increase',
+  Decrease: 'Decrease',
+  Every_hour: 'Every hour',
+  every_hour: 'every hour',
+  Absolute_value_of_dif: 'Change*',
+  In_case_of_good_connection_warning:
+    '*Immediately after a measurement is received. This is dependent on the data transmission interval and the reliability of the data connection.',
 }
 
 export default translations

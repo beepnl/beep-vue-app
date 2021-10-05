@@ -187,7 +187,7 @@
                       <v-icon
                         v-if="
                           showLoadingIconById.active.indexOf(
-                            // eslint-disable-next-line vue/comma-dangle
+                            // eslint-disable vue/comma-dangle
                             alertRule.id
                           ) === -1
                         "
@@ -203,7 +203,6 @@
                       <v-progress-circular
                         v-if="
                           showLoadingIconById.alert_via_email.indexOf(
-                            // eslint-disable-next-line vue/comma-dangle
                             alertRule.id
                           ) > -1
                         "
@@ -216,7 +215,6 @@
                       <v-icon
                         v-if="
                           showLoadingIconById.alert_via_email.indexOf(
-                            // eslint-disable-next-line vue/comma-dangle
                             alertRule.id
                           ) === -1
                         "
@@ -240,9 +238,10 @@
                     >
                       <span
                         v-text="
-                          getCalculationMinutesText(
-                            // eslint-disable-next-line vue/comma-dangle
-                            alertRule.calculation_minutes
+                          momentHumanizeHours(
+                            alertRule.calculation_minutes,
+                            true,
+                            false
                           )
                         "
                       ></span>
@@ -283,7 +282,7 @@ import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
-import { momentHumanizeDuration } from '@mixins/momentMixin'
+import { momentHumanizeHours } from '@mixins/momentMixin'
 import { readAlertRules } from '@mixins/methodsMixin'
 
 export default {
@@ -291,7 +290,7 @@ export default {
     Confirm,
     Layout,
   },
-  mixins: [momentHumanizeDuration, readAlertRules],
+  mixins: [momentHumanizeHours, readAlertRules],
   data: function() {
     return {
       ready: false,
@@ -442,16 +441,6 @@ export default {
         .catch((reject) => {
           return true
         })
-    },
-    getCalculationMinutesText(value) {
-      return value === 0
-        ? this.$i18n.t('Immediately')
-        : this.momentHumanizeDuration(
-            value,
-            'minutes',
-            // eslint-disable-next-line vue/comma-dangle
-            this.$i18n.t('Every')
-          )
     },
     toggleAlerts() {
       if (this.alertsEnabled) {

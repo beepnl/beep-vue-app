@@ -66,27 +66,36 @@
           </v-col>
 
           <v-col cols="12" sm="8" lg="7">
-            <div class="beep-label" v-text="$t('Description')"></div>
-            <v-text-field
+            <div
+              :class="'beep-label' + (!mobile ? ' mb-0' : '')"
+              v-text="$t('Description')"
+            ></div>
+            <v-textarea
               v-model="activeAlertRule.description"
-              class="alertrule-edit-name mb-sm-3"
-              counter="100"
-              @input="validateText($event, 'description', 100)"
+              :class="'pt-0' + (!mobile ? ' mb-sm-3 mt-0' : '')"
+              :rows="!mobile ? '1' : '2'"
+              row-height="24"
+              auto-grow
+              counter="250"
+              @input="validateText($event, 'description', 250)"
             >
-            </v-text-field>
+            </v-textarea>
           </v-col>
         </v-row>
 
         <v-row v-if="activeAlertRule">
-          <v-col cols="6" sm="3">
-            <div class="beep-label" v-text="$t('Calculation_minutes')"></div>
+          <v-col cols="12" sm="6" md="3">
+            <div
+              class="beep-label mb-n2"
+              v-text="$t('Calculation_minutes')"
+            ></div>
             <v-select
               v-model="activeAlertRule.calculation_minutes"
               :items="calculationMinutes"
-              :item-text="(item) => getCalculationMinutesText(item.label, true)"
+              :item-text="(item) => momentHumanizeHours(item.label, true, true)"
               item-value="label"
               :placeholder="$t('Select') + '...'"
-              class="pt-0"
+              class="pt-0 mt-2"
               hide-details
               @input="setAlertRuleEdited(true), checkCalculation($event)"
             ></v-select>
@@ -96,45 +105,7 @@
               v-text="warningText"
             ></div>
           </v-col>
-
-          <!-- <v-col cols="12" sm="5" md="3">
-            <div class="beep-label" v-text="$t('Alert_on_occurences')"></div>
-            <v-select
-              v-model="activeAlertRule.alert_on_occurences"
-              :items="alertOnOccurencesItems"
-              item-text="label"
-              item-value="id"
-              :placeholder="$t('Select') + '...'"
-              :hint="$t('Alert_on_occurences_hint')"
-              class="pt-0"
-              persistent-hint
-              @input="setAlertRuleEdited(true)"
-            ></v-select>
-          </v-col> -->
-
-          <v-col cols="2" sm="1">
-            <div class="beep-label" v-text="$t('Active')"></div>
-            <v-checkbox
-              v-model="activeAlertRule.active"
-              color="accent"
-              class="mt-1"
-              @change="setAlertRuleEdited(true)"
-            ></v-checkbox>
-          </v-col>
-
-          <v-col cols="6" sm="3" md="2">
-            <div class="beep-label" v-text="$t('Alert_via_email')"></div>
-            <v-checkbox
-              v-model="activeAlertRule.alert_via_email"
-              color="accent"
-              class="mt-1"
-              @change="setAlertRuleEdited(true)"
-            ></v-checkbox>
-          </v-col>
-        </v-row>
-
-        <v-row v-if="activeAlertRule">
-          <v-col cols="12" sm="6" md="3">
+          <v-col cols="12" sm="6" md="2">
             <v-select
               v-model="activeAlertRule.measurement_id"
               :items="sortedSensorMeasurements"
@@ -153,7 +124,7 @@
             ></v-select>
           </v-col>
 
-          <v-col cols="12" sm="6" md="3">
+          <v-col cols="12" sm="6" md="2">
             <v-select
               v-model="activeAlertRule.calculation"
               :items="calculations"
@@ -183,9 +154,14 @@
               :rules="requiredRule"
               @input="setAlertRuleEdited(true)"
             ></v-select>
+            <div
+              v-if="activeAlertRule.comparison === 'abs_dif'"
+              class="beep-label mt-n4 mb-3"
+              v-text="$t('Absolute_value_of_dif_expl')"
+            ></div>
           </v-col>
 
-          <v-col cols="6" sm="3" md="2">
+          <v-col cols="6" sm="3" md="1">
             <v-select
               v-model="activeAlertRule.comparator"
               :items="comparators"
@@ -225,6 +201,43 @@
                 ></div
               ></div
             >
+          </v-col>
+        </v-row>
+
+        <v-row v-if="activeAlertRule">
+          <!-- <v-col cols="12" sm="5" md="3">
+            <div class="beep-label" v-text="$t('Alert_on_occurences')"></div>
+            <v-select
+              v-model="activeAlertRule.alert_on_occurences"
+              :items="alertOnOccurencesItems"
+              item-text="label"
+              item-value="id"
+              :placeholder="$t('Select') + '...'"
+              :hint="$t('Alert_on_occurences_hint')"
+              class="pt-0"
+              persistent-hint
+              @input="setAlertRuleEdited(true)"
+            ></v-select>
+          </v-col> -->
+
+          <v-col cols="3" sm="1">
+            <div class="beep-label" v-text="$t('Active')"></div>
+            <v-checkbox
+              v-model="activeAlertRule.active"
+              color="accent"
+              class="mt-1"
+              @change="setAlertRuleEdited(true)"
+            ></v-checkbox>
+          </v-col>
+
+          <v-col cols="6" sm="3" md="2">
+            <div class="beep-label" v-text="$t('Alert_via_email')"></div>
+            <v-checkbox
+              v-model="activeAlertRule.alert_via_email"
+              color="accent"
+              class="mt-1"
+              @change="setAlertRuleEdited(true)"
+            ></v-checkbox>
           </v-col>
         </v-row>
 
@@ -324,10 +337,7 @@ import {
   readDevicesIfNotPresent,
   readTaxonomy,
 } from '@mixins/methodsMixin'
-import {
-  momentDurationInHours,
-  momentHumanizeDuration,
-} from '@mixins/momentMixin'
+import { momentHumanizeHours } from '@mixins/momentMixin'
 import Treeselect from '@riophae/vue-treeselect'
 
 export default {
@@ -338,8 +348,7 @@ export default {
   },
   mixins: [
     convertComma,
-    momentDurationInHours,
-    momentHumanizeDuration,
+    momentHumanizeHours,
     readAlertRules,
     readDevicesIfNotPresent,
     readTaxonomy,
@@ -617,7 +626,7 @@ export default {
       return isNaN(this.activeAlertRule.threshold_value)
     },
     warningText() {
-      var warningText = '*' + this.$i18n.t('In_case_of_good_connection_warning')
+      var warningText = this.$i18n.t('In_case_of_good_connection_warning')
       if (
         this.devicesInterval !== null &&
         this.activeAlertRule.comparison.includes('dif')
@@ -848,9 +857,10 @@ export default {
           (comparator) => comparator.short === alertRule.comparator
         )[0].short,
         threshold_value: alertRule.threshold_value,
-        calculation_minutes: this.getCalculationMinutesText(
+        calculation_minutes: this.momentHumanizeHours(
           alertRule.calculation_minutes,
-          false
+          false,
+          true
         ),
       }
 
@@ -941,30 +951,6 @@ export default {
 
       return replacedSentence
     },
-    getCalculationMinutesText(value, capitalsOn = false) {
-      var immediately = 'Immediately'
-      var prefix = 'Every'
-      if (!capitalsOn) {
-        immediately = immediately.toLowerCase()
-        prefix = prefix.toLowerCase()
-      }
-      return value === 0
-        ? this.$i18n.t(immediately) + '*'
-        : // humanize duration if more than 24 hours to make it more readable
-        value > 1440
-        ? this.momentHumanizeDuration(
-            value,
-            'minutes',
-            // eslint-disable-next-line vue/comma-dangle
-            this.$i18n.t(prefix)
-          )
-        : this.momentDurationInHours(
-            value,
-            'minutes',
-            // eslint-disable-next-line vue/comma-dangle
-            this.$i18n.t(prefix)
-          )
-    },
     getText(item) {
       return item.label + ' (' + item.abbreviation + ')'
     },
@@ -1036,9 +1022,9 @@ export default {
 <style lang="scss">
 .alertrule-edit-name {
   padding-top: 0 !important;
-  font-size: 1.2rem;
-  @include for-tablet-landscape-up {
-    font-size: 1.5rem;
+  font-size: 1.5rem;
+  @include for-phone-only {
+    font-size: 1.2rem;
   }
 
   input {

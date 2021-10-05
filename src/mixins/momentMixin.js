@@ -10,20 +10,6 @@ export const momentAge = {
   },
 }
 
-export const momentDurationInHours = {
-  methods: {
-    momentDurationInHours(input, unit, prefix = '') {
-      var numberOfHours = this.$moment.duration(input, unit).asHours()
-      return (
-        prefix +
-        numberOfHours +
-        ' ' +
-        this.$i18n.tc('hour', Math.ceil(numberOfHours))
-      )
-    },
-  },
-}
-
 export const momentFullDateTime = {
   methods: {
     momentFullDateTime(date, toUtcTime = false) {
@@ -65,6 +51,60 @@ export const momentHumanizeDuration = {
           .duration(input, unit)
           .locale(this.$i18n.locale)
           .humanize()
+      )
+    },
+  },
+}
+
+export const momentHumanizeHours = {
+  methods: {
+    momentDurationInHours(input, unit, prefix = '') {
+      var numberOfHours = this.$moment.duration(input, unit).asHours()
+      return (
+        prefix +
+        numberOfHours +
+        ' ' +
+        this.$i18n.tc('hour', Math.ceil(numberOfHours))
+      )
+    },
+    momentHumanizeDuration(input, unit, prefix = '') {
+      return (
+        prefix +
+        this.$moment
+          .duration(input, unit)
+          .locale(this.$i18n.locale)
+          .humanize()
+      )
+    },
+    momentHumanizeHours(value, capitalsOn = false, asteriskOn = false) {
+      var prefix = capitalsOn
+        ? this.$i18n.t('Every')
+        : this.$i18n.t('Every').toLowerCase()
+      switch (true) {
+        case value === 0:
+          return (
+            (capitalsOn
+              ? this.$i18n.t('Immediately')
+              : this.$i18n.t('Immediately').toLowerCase()) +
+            (asteriskOn ? '*' : '')
+          )
+        case value === 60:
+          return capitalsOn
+            ? this.$i18n.t('Every_hour')
+            : this.$i18n.t('every_hour')
+        case value > 1440:
+          return this.momentHumanizeDuration(
+            value,
+            'minutes',
+            // eslint-disable-next-line vue/comma-dangle
+            prefix
+          )
+      }
+      return this.momentDurationInHours(
+        value,
+        'minutes',
+        // eslint-disable-next-line vue/comma-dangle
+        prefix
       )
     },
   },
