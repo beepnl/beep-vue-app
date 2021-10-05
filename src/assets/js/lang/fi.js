@@ -271,7 +271,8 @@ const translations = {
   Not_selected: 'Ei valittu',
   Poor: 'Huono',
   Fair: 'Kohtalainen',
-  Average: 'Keskimääräinen',
+  Average: 'Keskiarvo',
+  Average_slider: 'Keskimääräinen',
   Good: 'Hyvä',
   Excellent: 'Erinomainen',
   Low: 'Matala',
@@ -707,7 +708,7 @@ const translations = {
   Value: 'Arvo',
   Difference: 'Ero',
   Absolute_value: 'Absoluuttinen arvo',
-  Absolute_value_of_dif_explanation: '*Eron absoluuttinen arvo',
+  Absolute_value_of_dif_explanation: '**Eron absoluuttinen arvo',
   Exclude_months:
     '<strong>Poista</strong> tämä hälytys käytöstä seuraavien kuukausien aikana:',
   Exclude_hours:
@@ -879,16 +880,16 @@ const translations = {
 
   minute: 'minute | minutes',
   upload_interval_warning_single_interval:
-    'N.B.: the data transmission interval of your included hive is | N.B.: the data transmission interval of your included hives is', // f.e.: ... 15 minutes
+    'N.B.: the data transmission interval of your device is | N.B.: the data transmission interval of your devices is', // f.e.: ... 15 minutes
   upload_interval_warning_interval_range:
-    'N.B.: the data transmission interval of your included hives vary between ', // f.e. ... 5 - 15 minutes
+    'N.B.: the data transmission intervals of your devices vary between ', // f.e. ... 5 - 15 minutes
   not_relevant_for_immediate_calculation:
     'Not relevant for immediate calculation',
   Increase: 'Increase',
   Decrease: 'Decrease',
   Every_hour: 'Every hour',
   every_hour: 'every hour',
-  Absolute_value_of_dif: 'Change*',
+  Absolute_value_of_dif: 'Change',
   In_case_of_good_connection_warning:
     '*Immediately after a measurement is received. This is dependent on the data transmission interval and the reliability of the data connection.',
   Alertrule_summary_title: 'Summary',

@@ -269,6 +269,7 @@ const translations = {
   Poor: 'Poor',
   Fair: 'Fair',
   Average: 'Average',
+  Average_slider: 'Average',
   Good: 'Good',
   Excellent: 'Excellent',
   Low: 'Low',
@@ -705,7 +706,7 @@ const translations = {
   Value: 'Value',
   Difference: 'Difference',
   Absolute_value: 'Absolute value',
-  Absolute_value_of_dif_explanation: '*Absolute value of the difference',
+  Absolute_value_of_dif_explanation: '**Absolute value of the difference',
   Exclude_months:
     '<strong>Deactivate</strong> this alert during the following months:',
   Exclude_hours:
@@ -874,16 +875,16 @@ const translations = {
 
   minute: 'minute | minutes',
   upload_interval_warning_single_interval:
-    'N.B.: the data transmission interval of your included hive is | N.B.: the data transmission interval of your included hives is', // f.e.: ... 15 minutes
+    'N.B.: the data transmission interval of your device is | N.B.: the data transmission interval of your devices is', // f.e.: ... 15 minutes
   upload_interval_warning_interval_range:
-    'N.B.: the data transmission interval of your included hives vary between ', // f.e. ... 5 - 15 minutes
+    'N.B.: the data transmission intervals of your devices vary between ', // f.e. ... 5 - 15 minutes
   not_relevant_for_immediate_calculation:
     'Not relevant for immediate calculation',
   Increase: 'Increase',
   Decrease: 'Decrease',
   Every_hour: 'Every hour',
   every_hour: 'every hour',
-  Absolute_value_of_dif: 'Change*',
+  Absolute_value_of_dif: 'Change',
   In_case_of_good_connection_warning:
     '*Immediately after a measurement is received. This is dependent on the data transmission interval and the reliability of the data connection.',
   Alertrule_summary_title: 'Summary',

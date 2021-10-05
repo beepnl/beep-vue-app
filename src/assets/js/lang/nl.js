@@ -274,7 +274,8 @@ const translations = {
   Not_selected: 'Niet geselecteerd',
   Poor: 'Slecht',
   Fair: 'Matig',
-  Average: 'Gemiddeld',
+  Average: 'Gemiddelde',
+  Average_slider: 'Gemiddeld',
   Good: 'Goed',
   Excellent: 'Zeer goed',
   Low: 'Laag',
@@ -711,7 +712,7 @@ const translations = {
   Value: 'Waarde',
   Difference: 'Verschil',
   Absolute_value: 'Absolute waarde',
-  Absolute_value_of_dif: 'Verandering**',
+  Absolute_value_of_dif: 'Verandering',
   Absolute_value_of_dif_explanation: '**Absolute waarde van het verschil',
   Exclude_months:
     'Deze notificatie <strong>deactiveren</strong> gedurende de volgende maanden:',
@@ -880,9 +881,9 @@ const translations = {
 
   minute: 'minuut | minuten',
   upload_interval_warning_single_interval:
-    'Let op: het datatransmissie interval van je geïncludeerde bijenkast is | Let op: het datatransmissie interval van je geïncludeerde bijenkasten is',
+    'Let op: het datatransmissie interval van je meetsysteem is | Let op: het datatransmissie interval van je meetsystemen is',
   upload_interval_warning_interval_range:
-    'Let op: de datatransmissie intervallen van je geïncludeerde bijenkasten variëren tussen de ',
+    'Let op: de datatransmissie intervallen van je meetsystemen variëren tussen de ',
   not_relevant_for_immediate_calculation: 'Niet relevant bij direct uitvoeren',
   Increase: 'Stijging',
   Decrease: 'Daling',
@@ -890,7 +891,8 @@ const translations = {
   every_hour: 'elk uur',
   Alertrule_summary_title: 'Samenvatting',
   Alertrule_settings_title: 'Notificatie instellingen',
-  Alertrule_exclude_title: 'Periodes en bijenkasten excluderen',
+  Alertrule_exclude_title: 'Periodes en bijenkasten uitzonderen',
+  of: 'van',
 }
 
 export default translations

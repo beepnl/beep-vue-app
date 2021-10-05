@@ -36,44 +36,19 @@
 
       <v-container class="content-container">
         <div class="overline mb-2" v-text="$t('Alertrule_summary_title')"></div>
+        <em
+          v-if="activeAlertRule && !activeAlertRule.active"
+          class="red--text"
+          >{{ $t('alertrule_not_active') }}</em
+        >
         <v-alert
           v-if="activeAlertRule"
-          success
-          outlined
-          :color="activeAlertRule.active ? 'accent' : 'red'"
+          :color="activeAlertRule.active ? 'primary' : 'grey'"
           class="alertrule-card mb-8"
         >
-          <v-row>
-            <v-col cols="12">
-              <em v-if="!activeAlertRule.active" class="red--text">{{
-                $t('alertrule_not_active')
-              }}</em>
-              <p
-                :class="!activeAlertRule.active ? 'color-grey-light' : 'strong'"
-                >{{ alertRuleSentence(activeAlertRule) }}</p
-              >
-              <div
-                v-if="activeAlertRule.calculation_minutes === 0"
-                :class="
-                  'beep-label mt-0 ' +
-                    (!activeAlertRule.active
-                      ? 'color-grey-light'
-                      : 'alertrule-color-accent')
-                "
-                v-text="warningText"
-              ></div>
-              <div
-                v-if="activeAlertRule.comparison === 'abs_dif'"
-                :class="
-                  'beep-label mt-0 ' +
-                    (!activeAlertRule.active
-                      ? 'color-grey-light'
-                      : 'alertrule-color-accent')
-                "
-                v-text="$t('Absolute_value_of_dif_explanation')"
-              ></div>
-            </v-col>
-          </v-row>
+          <span :class="!activeAlertRule.active ? 'color-white' : ''">{{
+            alertRuleSentence(activeAlertRule)
+          }}</span>
         </v-alert>
 
         <div
@@ -149,7 +124,7 @@
           </v-row>
 
           <v-row>
-            <v-col cols="12" sm="7" lg="5" class="mb-3">
+            <v-col cols="12" lg="9" class="mb-3">
               <div class="beep-label" v-text="$t('Calculation_minutes')"></div>
               <v-select
                 v-model="activeAlertRule.calculation_minutes"
@@ -181,7 +156,7 @@
                 :placeholder="
                   `${$t('Select')} ${$tc(
                     'measurement',
-                    // eslint-disable-next-line vue/comma-dangle
+                    // eslint-disable vue/comma-dangle
                     1
                   )} ...`
                 "
@@ -208,13 +183,24 @@
                 class="beep-label mt-n4 mb-3"
                 v-text="$t('not_relevant_for_immediate_calculation')"
               ></div>
+              <div
+                v-else
+                class="beep-label mt-n4 mb-3"
+                v-text="
+                  momentDurationInHours(
+                    activeAlertRule.calculation_minutes,
+                    'minutes',
+                    calcPrefix
+                  )
+                "
+              ></div>
             </v-col>
 
             <v-col cols="12" sm="6" md="3">
               <v-select
                 v-model="activeAlertRule.comparison"
                 :items="comparisons"
-                item-text="full"
+                :item-text="getComparisonText"
                 item-value="short"
                 :placeholder="`${$t('Select')} ${$t('comparison')} ...`"
                 :label="$t('Comparison')"
@@ -483,6 +469,12 @@ export default {
           })
         }
       },
+    },
+    calcPrefix() {
+      var translateTerm = this.alertRulesList.calculations[
+        this.activeAlertRule.calculation
+      ]
+      return this.$i18n.t(translateTerm) + ' ' + this.$i18n.t('of') + ' '
     },
     calculationMinutes() {
       return this.formatFromTaxonomyArray(this.alertRulesList.calc_minutes)
@@ -910,7 +902,7 @@ export default {
         calculation_minutes: this.momentHumanizeHours(
           alertRule.calculation_minutes,
           false,
-          true
+          false
         ),
       }
 
@@ -1001,6 +993,9 @@ export default {
 
       return replacedSentence
     },
+    getComparisonText(item) {
+      return item.full + (item.short === 'abs_dif' ? '**' : '')
+    },
     getText(item) {
       return item.label + ' (' + item.abbreviation + ')'
     },
@@ -1085,12 +1080,8 @@ export default {
 .alertrule-card {
   max-width: 1200px;
 
-  .color-grey-light {
-    color: $color-grey-light;
-  }
-
-  .alertrule-color-accent {
-    color: $color-accent;
+  .color-white {
+    color: $color-white;
   }
 }
 
