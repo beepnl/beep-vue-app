@@ -806,59 +806,59 @@ const translations = {
   import_log_data_support_url:
     'https://beepsupport.freshdesk.com/ro/support/solutions/articles/60000697129-desc%C4%83rca%C8%9Bi-datele-de-baz%C4%83-beep-prin-bluetooth',
 
-  // TO BE TRANSLATED TERMS
-  Immediately: 'Immediately',
+  Immediately: 'Imediat',
   alertrule_active_no_email_sentence:
-    ', and I open the BEEP app to see the alerts.',
+    ', și deschid aplicația BEEP pentru a vedea alertele.',
   alertrule_active_email_sentence:
-    ', and I receive alerts via email. In addition, I can see the alerts in the BEEP app.',
-  First_occurence: 'First: ',
-  Last_occurence: 'Last: ',
-  // default alert rule names:
-  Hive_stability_and_theft: 'Hive stability & Theft',
-  Temperature_sensor_defect: 'Temperature sensor defect',
-  Battery_low: 'Battery voltage low',
-  Honey_harvest: 'Honey harvest',
-  Hive_temperature: 'Hive temperature low',
-  Brood_temperature: 'Brood presence',
-  No_measurements: 'No measurements',
-  Swarm: 'Swarm',
-  Food_supply_low: 'Food supply low',
-  // default alert rule descriptions:
+    ', și primesc alerte prin e-mail. În plus, pot vedea alertele în aplicația BEEP.',
+  First_occurence: 'Prima: ',
+  Last_occurence: 'Ultima: ',
+  /* default alert rule names: */
+  Hive_stability_and_theft: 'Stabilitate stup & furt',
+  Temperature_sensor_defect: 'Defecțiune la sezorul de temperatură',
+  Battery_low: 'Tensiunea bateriei este scăzută ',
+  Honey_harvest: 'Recoltă miere',
+  Hive_temperature: 'Temperatura stupului este scăzută ',
+  Brood_temperature: 'Temperatura puietului este scăzută ',
+  No_measurements: 'Nu sunt măsurător',
+  Swarm: 'Roire',
+  Food_supply_low: 'Rezervă de hrană scăzută',
+  /* default alert rule descriptions: */
   Weight_drop_is_above_a_set_value:
-    'Weight drop of the hive is above a set value',
-  Temperature_sensor_malfunctions: 'Temperature sensor malfunctions',
+    'Scăderea în greutate a stupului depășește valoarea stabilită ',
+  Temperature_sensor_malfunctions: 'Defecțiune la senzorul de temperatură',
   Battery_voltage_is_below_a_set_value:
-    'Battery voltage of the device is below a set value',
+    'Tensiunea la bateria dispozitivului este sub o valoare setată ',
   Weight_increase_due_to_nectar_collection_comes_to_a_halt:
-    'Weight increase due to nectar collection comes to a halt',
+    'Creșterea în greutate datorită colectării nectarului s-a oprit ',
   Hive_temperature_drops_below_a_set_value:
-    'Hive temperature drops below a set value',
+    'Temperatura stupului a scăzut sub o valoarea setată ',
   Temperature_in_the_brood_below_a_set_value:
-    'Temperature in the brood has dropped below a set value',
+    'Temperatura puietului a scăzut sub o valoarea setată',
   No_measurement_data_received_in_a_set_time_period:
-    'No measurement data received during a set time period',
+    'Nu s-au primit date de măsurare în perioada de timp setată ',
   Sudden_weight_drop_triggers_alert_immediately:
-    'Sudden weight drop of the hive triggers an alert immediately. N.B.: this is based on a data transmission interval of 15 minutes. In case your device has a different data transmission interval, you should adjust the threshold value accordingly.',
-  The_hive_weight_is_below_a_set_value: 'Hive weight is below a set value',
+    'Scăderea bruscă a greutății stupului declanșează imediat o alertă. N.B.: aceasta se bazează pe un interval de transmitere a datelor de 15 minute. În cazul în care dispozitivul dvs. are un interval diferit de transmitere a datelor, ar trebui să ajustați valoarea pragului în consecință.',
+  The_hive_weight_is_below_a_set_value:
+    'Greutatea stupului este sub valoarea stabilită',
 
-  minute: 'minute | minutes',
+  minute: 'minut | minute',
   upload_interval_warning_single_interval:
-    'N.B.: the data transmission interval of your device is | N.B.: the data transmission interval of your devices is', // f.e.: ... 15 minutes
+    'N.B.: intervalul de transmitere a datelor al dispozitivului dvs. este | NB: intervalul de transmitere a datelor al dispozitivelor dvs. este ', // context: f.e.: ... 15 minutes
   upload_interval_warning_interval_range:
-    'N.B.: the data transmission intervals of your devices vary between ', // f.e. ... 5 - 15 minutes
+    'N.B.: intervalele de transmitere a datelor ale dispozitivelor dvs. variază între ',
   not_relevant_for_immediate_calculation:
-    'Not relevant for immediate calculation',
-  Increase: 'Increase',
-  Decrease: 'Decrease',
-  Every_hour: 'Every hour',
-  every_hour: 'every hour',
-  Absolute_value_of_dif: 'Change',
+    'Nu este relevant pentru calcularea imediată ',
+  Increase: 'Creștere',
+  Decrease: 'Scădere',
+  Every_hour: 'Fiecare oră',
+  every_hour: 'fiecare oră',
+  Absolute_value_of_dif: 'Diferență',
   In_case_of_good_connection_warning:
-    '*Immediately after a measurement is received. This is dependent on the data transmission interval and the reliability of the data connection.',
-  Alertrule_summary_title: 'Summary',
-  Alertrule_settings_title: 'Alert rule settings',
-  Alertrule_exclude_title: 'Exclude periods and hives',
+    '*Imediat după primirea unei măsurători. Acest lucru depinde de intervalul de transmitere a datelor și de fiabilitatea conexiunii de date.',
+  Alertrule_summary_title: 'Summar',
+  Alertrule_settings_title: 'Setările regulii de alertă ',
+  Alertrule_exclude_title: 'Excludeți perioade și stupi ',
   of: 'de',
 }
 
