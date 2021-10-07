@@ -816,10 +816,10 @@ const translations = {
   Battery_low: 'Battery voltage low',
   Honey_harvest: 'Honey harvest',
   Hive_temperature: 'Hive temperature low',
-  Brood_presence: 'Brood presence',
+  Brood_temperature: 'Brood presence',
   No_measurements: 'No measurements',
   Swarm: 'Swarm',
-  Winter_food_supply: 'Winter food supply low',
+  Food_supply_low: 'Food supply low',
   // default alert rule descriptions:
   Weight_drop_is_above_a_set_value:
     'Weight drop of the hive is above a set value',
@@ -836,8 +836,7 @@ const translations = {
     'No measurement data received during a set time period',
   Sudden_weight_drop_triggers_alert_immediately:
     'Sudden weight drop of the hive triggers an alert immediately. N.B.: this is based on a data transmission interval of 15 minutes. In case your device has a different data transmission interval, you should adjust the threshold value accordingly.',
-  The_hive_weight_is_below_a_set_value_in_winter:
-    'Hive weight is below a set value (in winter)',
+  The_hive_weight_is_below_a_set_value: 'Hive weight is below a set value',
 
   minute: 'minute | minutes',
   upload_interval_warning_single_interval:
@@ -856,6 +855,7 @@ const translations = {
   Alertrule_summary_title: 'Summary',
   Alertrule_settings_title: 'Alert rule settings',
   Alertrule_exclude_title: 'Exclude periods and hives',
+  of: 'di',
 }
 
 export default translations

@@ -834,60 +834,60 @@ const translations = {
   import_log_data_support_url:
     'https://beepsupport.freshdesk.com/pt-PT/support/solutions/articles/60000697129-baixe-os-dados-da-base-do-beep-por-bluetooth',
 
-  // TO BE TRANSLATED TERMS
-  Immediately: 'Immediately',
+  Immediately: 'Imediatamente',
   alertrule_active_no_email_sentence:
-    ', and I open the BEEP app to see the alerts.',
+    ', e eu inicio a aplicação BEEP para ver os alertas.',
   alertrule_active_email_sentence:
-    ', and I receive alerts via email. In addition, I can see the alerts in the BEEP app.',
-  First_occurence: 'First: ',
-  Last_occurence: 'Last: ',
+    ', e eu recebo os alertas por e-mail. Adicionalmente, eu posso ver os alertas na aplicação BEEP.',
+  First_occurence: 'Primeira: ',
+  Last_occurence: 'Ultima: ',
   // default alert rule names:
-  Hive_stability_and_theft: 'Hive stability & Theft',
+  Hive_stability_and_theft: 'Estabilidade da colmeia e roubos',
   Temperature_sensor_defect: 'Temperature sensor defect',
-  Battery_low: 'Battery voltage low',
-  Honey_harvest: 'Honey harvest',
-  Hive_temperature: 'Hive temperature low',
-  Brood_presence: 'Brood presence',
-  No_measurements: 'No measurements',
-  Swarm: 'Swarm',
-  Winter_food_supply: 'Winter food supply low',
+  Battery_low: 'Baixa voltagem de bateria',
+  Honey_harvest: 'Colheitade mel',
+  Hive_temperature: 'Baixa temperatura da colmeia',
+  Brood_temperature: 'Baixa temperatura do ninho',
+  No_measurements: 'Sem medições',
+  Swarm: 'Enxameamento',
+  Food_supply_low: 'Baixas reservas de comida',
   // default alert rule descriptions:
   Weight_drop_is_above_a_set_value:
-    'Weight drop of the hive is above a set value',
-  Temperature_sensor_malfunctions: 'Temperature sensor malfunctions',
+    'Queda do peso da colmeia acima do valor definido',
+  Temperature_sensor_malfunctions: 'Mau funcionamento do sensor de temperatura',
   Battery_voltage_is_below_a_set_value:
-    'Battery voltage of the device is below a set value',
+    'Voltagem de bateria abaixo do valor definido',
   Weight_increase_due_to_nectar_collection_comes_to_a_halt:
-    'Weight increase due to nectar collection comes to a halt',
+    'O aumento do peso relacionado com a colheita de néctar estagnou',
   Hive_temperature_drops_below_a_set_value:
-    'Hive temperature drops below a set value',
+    'Queda da temperatura da colmeia para valor abaixo do definido',
   Temperature_in_the_brood_below_a_set_value:
-    'Temperature in the brood has dropped below a set value',
+    'Queda da temperatura do ninho para valor abaixo do definido',
   No_measurement_data_received_in_a_set_time_period:
-    'No measurement data received during a set time period',
+    'Nenhum dado de medição recebido durante um período de tempo definido',
   Sudden_weight_drop_triggers_alert_immediately:
-    'Sudden weight drop of the hive triggers an alert immediately. N.B.: this is based on a data transmission interval of 15 minutes. In case your device has a different data transmission interval, you should adjust the threshold value accordingly.',
-  The_hive_weight_is_below_a_set_value_in_winter:
-    'Hive weight is below a set value (in winter)',
+    'Queda súbita do peso da colmeia ativa imediatamente um alerta. Nota: isto é baseado em intervalos de transmissão de dados de 15 minutos. Caso o seu dispositivo tenha um intervalo de transmissão de dados diferente, deverá ajustar o valor do limite de forma adequada.',
+  The_hive_weight_is_below_a_set_value:
+    'Peso da colmeia abaixo do valor definido',
 
-  minute: 'minute | minutes',
+  minute: 'minuto | minutos',
   upload_interval_warning_single_interval:
-    'N.B.: the data transmission interval of your device is | N.B.: the data transmission interval of your devices is', // f.e.: ... 15 minutes
+    'Nota: o intervalo de transmissão de dados do seu dispositivo é | Nota: o intervalo de transmissão de dados dos seus dispositivos é', // f.e.: ... 15 minutes
   upload_interval_warning_interval_range:
-    'N.B.: the data transmission intervals of your devices vary between ', // f.e. ... 5 - 15 minutes
+    'Nota: os intervalos de transmissão de dados dos seus dispositivos variam entre ', // f.e. ... 5 - 15 minutes
   not_relevant_for_immediate_calculation:
-    'Not relevant for immediate calculation',
-  Increase: 'Increase',
-  Decrease: 'Decrease',
-  Every_hour: 'Every hour',
-  every_hour: 'every hour',
-  Absolute_value_of_dif: 'Change',
+    'Não é relevante para cálculo imediato',
+  Increase: 'Aumento',
+  Decrease: 'Diminuição',
+  Every_hour: 'A cada hora',
+  every_hour: 'a cada hora',
+  Absolute_value_of_dif: 'Diferença',
   In_case_of_good_connection_warning:
-    '*Immediately after a measurement is received. This is dependent on the data transmission interval and the reliability of the data connection.',
-  Alertrule_summary_title: 'Summary',
-  Alertrule_settings_title: 'Alert rule settings',
-  Alertrule_exclude_title: 'Exclude periods and hives',
+    '*Imediatamente após uma medição ser recebida. Isto está dependente do intervalo de transmissão de dados e da fiabilidade da conexão de dados.',
+  Alertrule_summary_title: 'Resumo',
+  Alertrule_settings_title: 'Definições das regras de alerta',
+  Alertrule_exclude_title: 'Excluir períodos e colmeias',
+  of: 'de',
 }
 
 export default translations

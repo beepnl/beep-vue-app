@@ -856,10 +856,10 @@ const translations = {
   Battery_low: 'Batterijspanning laag',
   Honey_harvest: 'Honingoogst',
   Hive_temperature: 'Kasttemperatuur laag',
-  Brood_presence: 'Aanwezigheid broed',
+  Brood_temperature: 'Aanwezigheid broed',
   No_measurements: 'Geen metingen',
   Swarm: 'Zwerm',
-  Winter_food_supply: 'Winter voedselvoorraad laag',
+  Food_supply_low: 'Winter voedselvoorraad laag',
   // default alert rule descriptions:
   Weight_drop_is_above_a_set_value:
     'Gewichtsafname van de kast is boven een bepaalde waarde',
@@ -876,7 +876,7 @@ const translations = {
     'Geen metingen ontvangen gedurende een bepaalde periode',
   Sudden_weight_drop_triggers_alert_immediately:
     'Plotselinge gewichtsafname van de kast triggert direct een notificatie. Let op: hierbij is uitgegaan van een datatransmissie interval van 15 minuten. Wanneer jouw meetsysteem een ander datatransmissie interval heeft dien je de drempelwaarde daarop aan te passen.',
-  The_hive_weight_is_below_a_set_value_in_winter:
+  The_hive_weight_is_below_a_set_value:
     'Gewicht van de kast is lager dan een bepaalde waarde (in de winter)',
 
   minute: 'minuut | minuten',
