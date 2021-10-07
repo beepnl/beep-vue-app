@@ -20,7 +20,7 @@
                     search !== null ? 'v-input--is-focused primary--text' : ''
                   } filter-text-field`
                 "
-                :height="mobile ? '30px' : '36px'"
+                :height="smallScreen ? '30px' : '36px'"
                 clearable
                 outlined
                 dense
@@ -87,9 +87,8 @@
 
           <v-card-actions v-if="activeHive.editable || activeHive.owner">
             <v-btn
-              v-if="!mobile"
+              v-if="!smallScreen"
               :to="{ name: 'inspect', query: { hiveId: id } }"
-              medium
               tile
               outlined
               color="black"
@@ -98,7 +97,7 @@
               {{ $t('New_inspection') }}
             </v-btn>
             <router-link
-              v-if="mobile"
+              v-if="smallScreen"
               :to="{ name: 'inspect', query: { hiveId: id } }"
             >
               <v-icon dark color="accent">mdi-plus-circle</v-icon></router-link
@@ -157,7 +156,7 @@
                     </a>
                   </div>
                   <strong class="d-flex justify-center">{{
-                    mobile
+                    smallScreen
                       ? inspection.created_at_day_month
                       : inspection.created_at_locale_date
                   }}</strong>
@@ -315,7 +314,7 @@
                         }`
                       "
                       v-text="
-                        mobile
+                        smallScreen
                           ? inspection.reminder_date_day_month
                           : inspection.reminder_date_locale_date
                       "
@@ -453,11 +452,11 @@
                       ><v-icon
                         v-for="star in [0, 1, 2, 3, 4]"
                         :key="star + 1"
-                        :x-small="mobile"
+                        :x-small="smallScreen"
                         :class="
                           star < item.val
                             ? 'color-accent'
-                            : mobile
+                            : smallScreen
                             ? 'd-none'
                             : 'color-grey-medium'
                         "
@@ -780,8 +779,8 @@ export default {
         })
       return matchedItemsByDate
     },
-    mobile() {
-      return this.$vuetify.breakpoint.mobile
+    smallScreen() {
+      return this.$vuetify.breakpoint.width < 700
     },
     scoreAmountOptions() {
       return {

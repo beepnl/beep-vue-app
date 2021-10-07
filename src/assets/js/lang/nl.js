@@ -856,7 +856,7 @@ const translations = {
   Battery_low: 'Batterijspanning laag',
   Honey_harvest: 'Honingoogst',
   Hive_temperature: 'Kasttemperatuur laag',
-  Brood_temperature: 'Aanwezigheid broed',
+  Brood_temperature: 'Broedtemperatuur laag',
   No_measurements: 'Geen metingen',
   Swarm: 'Zwerm',
   Food_supply_low: 'Winter voedselvoorraad laag',

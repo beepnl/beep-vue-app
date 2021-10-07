@@ -3,8 +3,8 @@
     <v-container>
       <div class="overline mb-1 primary--text"
         ><span class="lowercase">v</span>
-        <span v-if="dutch">3.0.57 (07-10-2021) - Huidige versie</span>
-        <span v-if="!dutch">3.0.57 (10-07-2021) - Current version</span>
+        <span v-if="dutch">3.0.58 (07-10-2021) - Huidige versie</span>
+        <span v-if="!dutch">3.0.58 (10-07-2021) - Current version</span>
       </div>
       <div v-if="!dutch" class="rounded-border primary-border mb-4">
         <p class="mb-3">
@@ -293,11 +293,6 @@
                 neutral,
                 <v-icon class="color-grey inline-icon">mdi-emoticon-sad</v-icon>
                 bad).
-              </li>
-              <li
-                >Scrollable: scroll all the way to the bottom of the table to
-                use the horizontal scroll bar. On mobile, you can scoll by
-                swiping.
               </li>
             </ul>
           </li>
@@ -779,11 +774,6 @@
                 neutraal,
                 <v-icon class="color-grey inline-icon">mdi-emoticon-sad</v-icon>
                 slecht).
-              </li>
-              <li
-                >Scrollbaar: scroll helemaal naar onderen om de horizontale
-                scrollbar te gebruiken. Op mobiel kan er gescrolld worden door
-                te swipen.
               </li>
             </ul>
           </li>

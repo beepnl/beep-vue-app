@@ -22,7 +22,7 @@
       <h4
         v-if="mView"
         class="hive-name truncate mb-3"
-        style="max-width: 118px;"
+        style="max-width: 112px;"
         v-text="hive.name"
       >
       </h4>
