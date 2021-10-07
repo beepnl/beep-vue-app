@@ -19,30 +19,36 @@
       class="ml-0 mt-0 mb-3 d-flex justify-space-between align-start"
       style="width: 100%;"
     >
-      <h4
-        v-if="mView"
-        class="hive-name truncate mb-3"
-        style="max-width: 112px;"
-        v-text="hive.name"
-      >
-      </h4>
-      <div v-if="xlView" class="d-flex flex-row">
-        <h4 class="hive-name truncate mb-3" style="max-width: 205px;">
-          {{ hive.name }}
-          <span
-            v-if="hiveSet.users && hiveSet.users.length"
-            class="caption hive-name-caption"
-            v-text="` (${hive.location})`"
-          >
-          </span>
+      <v-col cols="11" class="pa-0">
+        <h4
+          v-if="mView"
+          class="hive-name truncate mb-3"
+          style="max-width: 120px;"
+          v-text="hive.name"
+        >
         </h4>
-      </div>
-      <v-icon
-        small
-        class="color-black mr-n2"
-        @click="showHiveMenu($event, true)"
-        >mdi-dots-vertical</v-icon
-      >
+        <div v-if="xlView" class="d-flex flex-row">
+          <h4 class="hive-name truncate mb-3" style="max-width: 250px;">
+            {{ hive.name }}
+            <span
+              v-if="hiveSet.users && hiveSet.users.length"
+              class="caption hive-name-caption"
+              v-text="` (${hive.location})`"
+            >
+            </span>
+          </h4>
+        </div>
+      </v-col>
+      <v-col cols="1" class="pa-0">
+        <div class="d-flex justify-end">
+          <v-icon
+            small
+            class="color-black mr-n2 mt-0"
+            @click="showHiveMenu($event, true)"
+            >mdi-dots-vertical</v-icon
+          >
+        </div>
+      </v-col>
     </v-row>
 
     <div class="hive-details d-flex flex-no-wrap justify-flex-start align-end">
