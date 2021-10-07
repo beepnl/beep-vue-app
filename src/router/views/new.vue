@@ -3,8 +3,8 @@
     <v-container>
       <div class="overline mb-1 primary--text"
         ><span class="lowercase">v</span>
-        <span v-if="dutch">3.0.56 (04-10-2021) - Huidige versie</span>
-        <span v-if="!dutch">3.0.56 (10-04-2021) - Current version</span>
+        <span v-if="dutch">3.0.57 (07-10-2021) - Huidige versie</span>
+        <span v-if="!dutch">3.0.57 (10-07-2021) - Current version</span>
       </div>
       <div v-if="!dutch" class="rounded-border primary-border mb-4">
         <p class="mb-3">
@@ -89,7 +89,12 @@
               </li>
               <li
                 >Hive menu: click on a hive to edit it, edit the queen, create
-                an inspection or view inspections.</li
+                an inspection or view inspections. This menu can also be opened
+                via the
+                <v-icon small class="inline-icon">mdi-dots-vertical</v-icon>
+                icon on each hive card in the
+                <v-icon class="inline-icon">mdi-size-m</v-icon> and
+                <v-icon class="inline-icon">mdi-size-xl</v-icon> view.</li
               >
               <li
                 >Collaboration groups: are shown in the
@@ -289,6 +294,11 @@
                 <v-icon class="color-grey inline-icon">mdi-emoticon-sad</v-icon>
                 bad).
               </li>
+              <li
+                >Scrollable: scroll all the way to the bottom of the table to
+                use the horizontal scroll bar. On mobile, you can scoll by
+                swiping.
+              </li>
             </ul>
           </li>
           <li class="new-block">
@@ -354,8 +364,9 @@
                 right.</li
               >
               <li
-                >Alert menu: click on an alert item to edit alert rule or delete
-                alert.</li
+                >Alert menu: click on an alert item to edit alert rule, view the
+                associated data, deactivate the alert for the concerned hive, or
+                delete the alert.</li
               >
             </ul>
           </li>
@@ -371,14 +382,14 @@
             because of swarming.
             <ul>
               <li
-                >Sentence at the top 'translates' the rule into plain
+                >Summary at the top 'translates' the rule into plain
                 language.</li
               >
               <li
                 >By default, an alert rule will apply to all months, hours of
                 day and hives (that are connected to a device). The alert rule
                 can be deactivated for specified months, hours and hives (see
-                bottom three input fields).</li
+                bottom section).</li
               >
               <li
                 ><router-link :to="{ name: 'alertrules-default' }"
@@ -390,6 +401,14 @@
                 desired.</li
               >
             </ul>
+            <a
+              href="https://beepsupport.freshdesk.com/en/support/solutions/articles/60000706484"
+              target="_blank"
+              ><v-icon class="support-icon" small color="accent"
+                >mdi-arrow-right</v-icon
+              >
+              BEEP support article on setting alerts</a
+            >
           </li>
           <li class="new-block">
             <strong>Where to find? - Menu changes</strong>
@@ -545,7 +564,11 @@
               </li>
               <li
                 >Kast menu: klik op een kast om deze aan te passen, de moer een
-                te passen een inspectie te maken of inspecties te bekijken.</li
+                te passen een inspectie te maken of inspecties te bekijken. Dit
+                menu kan ook geopend worden d.m.v. het
+                <v-icon small class="inline-icon">mdi-dots-vertical</v-icon>
+                icoon in de <v-icon class="inline-icon">mdi-size-m</v-icon> en
+                <v-icon class="inline-icon">mdi-size-xl</v-icon> layout.</li
               >
               <li
                 >Samenwerkingsgroepen: worden getoond in het
@@ -757,6 +780,11 @@
                 <v-icon class="color-grey inline-icon">mdi-emoticon-sad</v-icon>
                 slecht).
               </li>
+              <li
+                >Scrollbaar: scroll helemaal naar onderen om de horizontale
+                scrollbar te gebruiken. Op mobiel kan er gescrolld worden door
+                te swipen.
+              </li>
             </ul>
           </li>
           <li class="new-block">
@@ -827,8 +855,9 @@
               >
               <li
                 >Notificatie menu: klik op een notificatie om de
-                notificatie-instelling aan te passen of de notificatie te
-                verwijderen.</li
+                notificatie-instelling aan te passen, de bijbehorende metingen
+                te bekijken, de notificatie te deactiveren voor de betreffende
+                kast, of de notificatie te verwijderen.</li
               >
             </ul>
           </li>
@@ -844,13 +873,14 @@
             plotselinge gewichtsafname vanwege een zwerm.
             <ul>
               <li
-                >De zin bovenaan 'vertaalt' de instelling naar gewone taal.</li
+                >De samenvatting bovenaan 'vertaalt' de instelling naar gewone
+                taal.</li
               >
               <li
                 >De instelling is standaard van toepassing op alle maanden, uren
                 van de dag en kasten (die verbonden zijn met een meetsysteem).
-                Je kan deze deactiveren voor bepaalde maanden, uren en kasten (
-                zie de laatste drie velden van het formulier).</li
+                Je kan deze deactiveren voor bepaalde maanden, uren en kasten
+                (zie de laatste sectie van het formulier).</li
               >
               <li
                 ><router-link :to="{ name: 'alertrules-default' }"
@@ -862,6 +892,14 @@
                 zijn, kunnen ze naar eigen behoefte aangepast worden.</li
               >
             </ul>
+            <a
+              href="https://beepsupport.freshdesk.com/en/support/solutions/articles/60000706484"
+              target="_blank"
+              ><v-icon class="support-icon" small color="accent"
+                >mdi-arrow-right</v-icon
+              >
+              BEEP support artikel over het instellen van alerts</a
+            >
           </li>
           <li class="new-block">
             <strong>Waar is alles te vinden? - Menu aanpassingen</strong>
