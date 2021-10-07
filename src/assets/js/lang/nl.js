@@ -877,7 +877,7 @@ const translations = {
   Sudden_weight_drop_triggers_alert_immediately:
     'Plotselinge gewichtsafname van de kast triggert direct een notificatie. Let op: hierbij is uitgegaan van een datatransmissie interval van 15 minuten. Wanneer jouw meetsysteem een ander datatransmissie interval heeft dien je de drempelwaarde daarop aan te passen.',
   The_hive_weight_is_below_a_set_value:
-    'Gewicht van de kast is lager dan een bepaalde waarde (in de winter)',
+    'Gewicht van de kast is lager dan een bepaalde waarde',
 
   minute: 'minuut | minuten',
   upload_interval_warning_single_interval:
