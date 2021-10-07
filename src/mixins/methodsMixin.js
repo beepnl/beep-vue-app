@@ -67,11 +67,11 @@ export const checkAlerts = {
         !this.alertsChecked
       ) {
         try {
-          const response = await Api.readRequest('/alerts')
           this.$store.commit('alerts/setData', {
             prop: 'alertsChecked',
             value: true,
           })
+          const response = await Api.readRequest('/alerts')
           this.$store.commit('alerts/setData', {
             prop: 'alerts',
             value: response.data.alerts,
