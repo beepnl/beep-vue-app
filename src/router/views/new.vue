@@ -3,8 +3,8 @@
     <v-container>
       <div class="overline mb-1 primary--text"
         ><span class="lowercase">v</span>
-        <span v-if="dutch">3.0.58 (07-10-2021) - Huidige versie</span>
-        <span v-if="!dutch">3.0.58 (10-07-2021) - Current version</span>
+        <span v-if="dutch">3.0.59 (07-10-2021) - Huidige versie</span>
+        <span v-if="!dutch">3.0.59 (10-07-2021) - Current version</span>
       </div>
       <div v-if="!dutch" class="rounded-border primary-border mb-4">
         <p class="mb-3">
@@ -396,9 +396,7 @@
                 desired.</li
               >
             </ul>
-            <a
-              href="https://beepsupport.freshdesk.com/en/support/solutions/articles/60000706484"
-              target="_blank"
+            <a :href="$t('alerts_support_url')" target="_blank"
               ><v-icon class="support-icon" small color="accent"
                 >mdi-arrow-right</v-icon
               >
@@ -882,9 +880,7 @@
                 zijn, kunnen ze naar eigen behoefte aangepast worden.</li
               >
             </ul>
-            <a
-              href="https://beepsupport.freshdesk.com/en/support/solutions/articles/60000706484"
-              target="_blank"
+            <a :href="$t('alerts_support_url')" target="_blank"
               ><v-icon class="support-icon" small color="accent"
                 >mdi-arrow-right</v-icon
               >

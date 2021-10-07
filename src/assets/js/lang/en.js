@@ -763,8 +763,7 @@ const translations = {
     'If you own a BEEP base or another device you can set alerts, such that you will receive an alert when the measurement data meets certain requirements. For example, a sudden drop in weight because of swarming. Alerts will be shown in this app, you can choose to receive them via email as well.',
   alert_explanation_2:
     'To get you started there are a few default alert rules you can use (and adapt to your own needs). In addition, you can create your own alert rules.',
-  alertrules_url_text:
-    "Go to 'Alert settings' to create your first alert rule.",
+  alertrules_url_text: "Go to 'Alert settings' to create your first alert rule",
   Apiary_management: 'Apiary management',
   Move: 'Move',
   Current_apiary: 'Current apiary',
@@ -850,7 +849,7 @@ const translations = {
   Battery_low: 'Battery voltage low',
   Honey_harvest: 'Honey harvest',
   Hive_temperature: 'Hive temperature low',
-  Brood_temperature: 'Brood presence',
+  Brood_temperature: 'Brood temperature low',
   No_measurements: 'No measurements',
   Swarm: 'Swarm',
   Food_supply_low: 'Food supply low',
@@ -890,6 +889,10 @@ const translations = {
   Alertrule_settings_title: 'Alert rule settings',
   Alertrule_exclude_title: 'Exclude periods and hives',
   of: 'of',
+
+  alerts_url_text: 'Read the support article on setting alerts',
+  alerts_support_url:
+    'https://beepsupport.freshdesk.com/nl/support/solutions/articles/60000706484-alerts',
 }
 
 export default translations

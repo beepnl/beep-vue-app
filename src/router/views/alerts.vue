@@ -87,21 +87,27 @@
             </router-link>
           </div>
           <p class="beep-label"
-            ><em
-              >{{
-                $t('alert_explanation_1') +
-                  ' ' +
-                  $t('alert_explanation_2') +
-                  ''
-              }}<router-link
-                :to="{
-                  name: 'alertrules',
-                }"
-              >
-                {{ $t('alertrules_url_text') }}
-              </router-link></em
-            ></p
+            ><em>{{
+              $t('alert_explanation_1') + ' ' + $t('alert_explanation_2') + ''
+            }}</em></p
           >
+          <div class="float-right">
+            <div class="d-flex flex-column">
+              <a :href="$t('alerts_support_url')" target="_blank"
+                ><v-icon small color="accent">mdi-arrow-right</v-icon
+                >{{ $t('alerts_url_text') }}</a
+              >
+              <div>
+                <router-link
+                  :to="{
+                    name: 'alertrules',
+                  }"
+                  ><v-icon small color="accent">mdi-arrow-right</v-icon
+                  >{{ $t('alertrules_url_text') }}</router-link
+                >
+              </div>
+            </div>
+          </div>
         </v-col>
       </v-row>
     </v-container>

@@ -776,7 +776,7 @@ const translations = {
   alert_explanation_2:
     'Om je op weg te helpen zijn er een aantal standaardinstellingen die je kan gebruiken (en aanpassen naar eigen behoefte). Je kan ook zelf een nieuwe notificatie-instelling maken.',
   alertrules_url_text:
-    "Ga naar 'notificaties beheren' om je eerste notificatie in te stellen.",
+    "Ga naar 'notificaties beheren' om je eerste notificatie in te stellen",
   Apiary_management: 'Bijenstand management',
   Move: 'Verplaats',
   Current_apiary: 'Huidige bijenstand',
@@ -893,6 +893,11 @@ const translations = {
   Alertrule_settings_title: 'Notificatie instellingen',
   Alertrule_exclude_title: 'Periodes en bijenkasten uitzonderen',
   of: 'van',
+
+  alerts_url_text:
+    'Lees hier het support artikel over het instellen van alerts',
+  alerts_support_url:
+    'https://beepsupport.freshdesk.com/nl/support/solutions/articles/60000706484-notificaties',
 }
 
 export default translations

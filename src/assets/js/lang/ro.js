@@ -735,7 +735,7 @@ const translations = {
   alert_explanation_2:
     'Pentru a putea începe, există câteva reguli implicite de alertă pe care le puteți utiliza (și adapta la propriile nevoi). În plus, vă puteți crea propriile reguli de alertă.',
   alertrules_url_text:
-    'Accesați „Setări de alertă” pentru a crea prima regulă de alertă.',
+    'Accesați „Setări de alertă” pentru a crea prima regulă de alertă',
   Apiary_management: 'Managementul stupinei',
   Move: 'Mutați',
   Current_apiary: 'Stupina actuală',
@@ -860,6 +860,10 @@ const translations = {
   Alertrule_settings_title: 'Setările regulii de alertă ',
   Alertrule_exclude_title: 'Excludeți perioade și stupi ',
   of: 'de',
+
+  alerts_url_text: 'Citiți articolul de asistență privind setarea alertelor',
+  alerts_support_url:
+    'https://beepsupport.freshdesk.com/ro/support/solutions/articles/60000706484-alerte',
 }
 
 export default translations

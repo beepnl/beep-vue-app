@@ -768,7 +768,7 @@ const translations = {
   alert_explanation_2:
     'Voit käyttää valmiita oletusvaroitussääntöjä, ja mukauttaa niitä omiin tarpeisiisi. Lisäksi voit luoda omia hälytyssääntöjä.',
   alertrules_url_text:
-    'Luo ensimmäinen hälytyssääntö siirtymällä kohtaan Hälytysasetukset.',
+    'Luo ensimmäinen hälytyssääntö siirtymällä kohtaan Hälytysasetukset',
   Apiary_management: 'Mehiläistarhan hallinta',
   Move: 'Siirrä',
   Current_apiary: 'Nykyinen mehiläistarha',
@@ -895,6 +895,10 @@ const translations = {
   Alertrule_settings_title: 'Alert rule settings',
   Alertrule_exclude_title: 'Exclude periods and hives',
   of: '', // better to omit in Finnish
+
+  alerts_url_text: 'Lue tukiartikkelin hälytysten asettamisesta',
+  alerts_support_url:
+    'https://beepsupport.freshdesk.com/fi/support/solutions/articles/60000706484-h%C3%A4lytykset',
 }
 
 export default translations

@@ -731,7 +731,7 @@ const translations = {
   alert_explanation_2:
     'Per iniziare ci sono già impostazioni per alcuni messaggi di allerta che puoi usare (e adattare ai tuoi bisogni). In aggiunta, puoi creare le tue regole per nuovi messaggi di allerta.',
   alertrules_url_text:
-    "Vai a'Impostazioni messaggi di allerta' per creare la tua prima regola per messaggi di allerta.",
+    "Vai a'Impostazioni messaggi di allerta' per creare la tua prima regola per messaggi di allerta",
   Apiary_management: 'Gestione apiario',
   Move: 'Muovi',
   Current_apiary: 'Apiario attuale',
@@ -856,6 +856,10 @@ const translations = {
   Alertrule_settings_title: 'Alert rule settings',
   Alertrule_exclude_title: 'Exclude periods and hives',
   of: 'di',
+
+  alerts_url_text: "Leggi l'articolo a supporto sull'impostazione degli avvisi",
+  alerts_support_url:
+    'https://beepsupport.freshdesk.com/it/support/solutions/articles/60000706484-avvisi',
 }
 
 export default translations

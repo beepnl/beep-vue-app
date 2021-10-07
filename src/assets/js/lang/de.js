@@ -733,7 +733,7 @@ const translations = {
   alert_explanation_2:
     'Für den Anfang gibt es ein paar Standard-Alarmregeln, die Du verwenden (und an Deine eigenen Bedürfnisse anpassen) kannst. Außerdem kannst Du Deine eigenen Alarmregeln erstellen.',
   alertrules_url_text:
-    'Gehe zu "Alarmeinstellungen", um Deine erste Alarmregel anzulegen.',
+    'Gehe zu "Alarmeinstellungen", um Deine erste Alarmregel anzulegen',
   Apiary_management: 'Bienenstand-Management',
   Move: 'Verschieben',
   Current_apiary: 'Aktueller Bienenstand',
@@ -860,6 +860,10 @@ const translations = {
   Alertrule_settings_title: 'Einstellungen der Alarmregeln',
   Alertrule_exclude_title: 'Zeitperioden und Beuten ausschließen',
   of: 'von',
+
+  alerts_url_text: 'Lesen Sie den Support-Artikel zum Einstellen von Alarme',
+  alerts_support_url:
+    'https://beepsupport.freshdesk.com/de/support/solutions/articles/60000706484-benachrichtigungen',
 }
 
 export default translations

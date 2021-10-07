@@ -101,9 +101,15 @@
               class="d-flex justify-start align-start"
             >
               <p :class="`beep-label mb-2 ${mobile ? 'mb-n2' : 'mt-n6'}`">
-                <em>{{
-                  $t('alert_explanation_1') + ' ' + $t('alert_explanation_2')
-                }}</em>
+                <em
+                  >{{
+                    $t('alert_explanation_1') + ' ' + $t('alert_explanation_2')
+                  }}
+                  <a :href="$t('alerts_support_url')" target="_blank"
+                    ><v-icon small color="accent">mdi-arrow-right</v-icon
+                    >{{ $t('alerts_url_text') }}</a
+                  ></em
+                >
               </p>
             </v-col>
             <v-col

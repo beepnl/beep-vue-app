@@ -841,7 +841,7 @@ const translations = {
   alert_explanation_2:
     'Pour démarrer, vous pouvez utiliser plusieurs alertes préconfigurées (et les adapter à vos besoins). Vous pouvez également créer vos propres alertes.',
   alertrules_url_text:
-    'Aller dans "réglages d\'alerte" pour créer votre propre règle.',
+    'Aller dans "réglages d\'alerte" pour créer votre propre règle',
   Apiary_management: 'Gestion du rucher',
   Move: 'Déplacer',
   Current_apiary: 'Rucher actuel',
@@ -969,6 +969,10 @@ const translations = {
   Alertrule_settings_title: 'Alert rule settings',
   Alertrule_exclude_title: 'Exclude periods and hives',
   of: 'de',
+
+  alerts_url_text: "Lire l'explication sur la configuration des alertes",
+  alerts_support_url:
+    'https://beepsupport.freshdesk.com/nl/support/solutions/articles/60000706484-alerts',
 }
 
 export default translations
