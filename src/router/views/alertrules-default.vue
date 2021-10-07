@@ -60,16 +60,17 @@
                     }}</span>
                   </div>
                 </v-col>
-                <v-col v-if="alertRule" cols="12" sm="6" md="7">
+                <v-col
+                  v-if="alertRule"
+                  cols="12"
+                  sm="6"
+                  md="7"
+                  class="pt-0 pa-sm-2"
+                >
                   <div class="d-flex flex-column">
                     <span class="alertrule-text">{{
                       alertRuleSentence(alertRule)
                     }}</span>
-                    <div
-                      v-if="alertRule.calculation_minutes === 0"
-                      class="alertrule-text mt-1"
-                      v-text="$t('In_case_of_good_connection_warning')"
-                    ></div>
                   </div>
                 </v-col>
               </v-row>
@@ -199,7 +200,7 @@ export default {
         calculation_minutes: this.momentHumanizeHours(
           alertRule.calculation_minutes,
           false,
-          true
+          false
         ),
       }
 
@@ -299,39 +300,20 @@ export default {
 
 .alertrule-label {
   margin-bottom: 8px;
-  font-size: 0.75rem !important;
+  font-size: 0.875rem !important;
   font-weight: 600;
   color: $color-grey;
   letter-spacing: 0.0333333333em !important;
   @include for-phone-only {
-    font-size: 0.7rem !important;
+    font-size: 0.75rem !important;
   }
 }
 
 .alertrule-text {
-  font-size: 0.75rem !important;
+  font-size: 0.8125rem !important;
   color: rgba(0, 0, 0, 0.87);
-  @include for-tablet-portrait-up {
-    font-size: 0.7rem !important;
-  }
-}
-
-.alertrules-title-row {
-  line-height: 1.2rem !important;
   @include for-phone-only {
-    line-height: 1rem !important;
-  }
-  &--border-bottom {
-    border-bottom: 1px solid $color-grey-light;
-  }
-}
-
-.alertrule-table {
-  input {
-    font-size: 14px !important;
-    @include for-phone-only {
-      font-size: 12px !important;
-    }
+    font-size: 0.75rem !important;
   }
 }
 </style>
