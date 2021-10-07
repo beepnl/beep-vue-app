@@ -7,7 +7,7 @@
         prominent
         dense
         :color="
-          alert.alert_value.indexOf('alert_rule') > -1
+          alert.alert_function.indexOf('alert_rule') > -1
             ? 'primary'
             : alertRuleNotActive
             ? 'grey'
@@ -237,7 +237,7 @@
                   class="alert-details-item d-flex flex-column align-start  pa-0"
                 >
                   <div
-                    v-if="alert.alert_value !== null"
+                    v-if="alert.alert_function !== null"
                     class="alert-content-item"
                   >
                     <div
@@ -372,7 +372,8 @@
         <v-list-item
           v-else-if="
             alertRule !== undefined &&
-              alertRule.exclude_hive_ids.indexOf(alert.hive_id) === -1
+              alertRule.exclude_hive_ids.indexOf(alert.hive_id) === -1 &&
+              alert.alert_function.indexOf('alert_rule') === -1
           "
           @click="disableAlertForHive"
         >
