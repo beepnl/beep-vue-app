@@ -132,9 +132,11 @@
                   :key="a"
                   class="tdc"
                 >
-                  <div class="inspection-actions d-flex justify-center">
+                  <div
+                    v-if="inspection.owner || activeHive.owner"
+                    class="inspection-actions d-flex justify-center"
+                  >
                     <router-link
-                      v-if="inspection.owner || activeHive.owner"
                       :to="{
                         name: 'hive-inspect-edit',
                         params: { id: id, inspection: inspection.id },
@@ -146,7 +148,6 @@
                       >
                     </router-link>
                     <a
-                      v-if="inspection.owner || activeHive.owner"
                       class="icon-button delete"
                       @click="confirmDeleteInspection(inspection)"
                     >
