@@ -375,7 +375,9 @@
 
                   <span v-if="item.type === 'options'">{{ item.val }}</span>
                   <span v-if="item.type === 'select'">{{ item.val }}</span>
-                  <span v-if="item.type === 'text'">{{ item.val }}</span>
+                  <span v-if="item.type === 'text'" class="notes">{{
+                    item.val
+                  }}</span>
 
                   <span
                     v-if="item.type === 'sample_code'"
