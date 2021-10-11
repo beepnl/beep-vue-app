@@ -889,7 +889,7 @@ const translations = {
   Alertrule_exclude_title: 'Excluir períodos e colmeias',
   of: 'de',
 
-  alerts_url_text: 'Leia o artigo de suporte sobre a configuração de alertas',
+  alerts_url_text: 'Leia o artigo de suporte sobre alertas',
   alerts_support_url:
     'https://beepsupport.freshdesk.com/pt-PT/support/solutions/articles/60000706484-alertas',
 }

@@ -857,7 +857,7 @@ const translations = {
   Alertrule_exclude_title: 'Exclude periods and hives',
   of: 'di',
 
-  alerts_url_text: "Leggi l'articolo a supporto sull'impostazione degli avvisi",
+  alerts_url_text: "Leggi l'articolo di supporto sugli avvisi",
   alerts_support_url:
     'https://beepsupport.freshdesk.com/it/support/solutions/articles/60000706484-avvisi',
 }

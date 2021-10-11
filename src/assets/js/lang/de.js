@@ -861,7 +861,7 @@ const translations = {
   Alertrule_exclude_title: 'Zeitperioden und Beuten ausschließen',
   of: 'von',
 
-  alerts_url_text: 'Lesen Sie den Support-Artikel zum Einstellen von Alarme',
+  alerts_url_text: 'Lesen Sie den Support-Artikel über Alarme',
   alerts_support_url:
     'https://beepsupport.freshdesk.com/de/support/solutions/articles/60000706484-benachrichtigungen',
 }

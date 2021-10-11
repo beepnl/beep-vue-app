@@ -896,7 +896,7 @@ const translations = {
   Alertrule_exclude_title: 'Exclude periods and hives',
   of: '', // better to omit in Finnish
 
-  alerts_url_text: 'Lue tukiartikkelin hälytysten asettamisesta',
+  alerts_url_text: 'Lue tukiartikkeli hälytyksistä',
   alerts_support_url:
     'https://beepsupport.freshdesk.com/fi/support/solutions/articles/60000706484-h%C3%A4lytykset',
 }

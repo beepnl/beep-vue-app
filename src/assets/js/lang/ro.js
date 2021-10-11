@@ -861,7 +861,7 @@ const translations = {
   Alertrule_exclude_title: 'Excludeți perioade și stupi ',
   of: 'de',
 
-  alerts_url_text: 'Citiți articolul de asistență privind setarea alertelor',
+  alerts_url_text: 'Citiți articolul de asistență despre alerte',
   alerts_support_url:
     'https://beepsupport.freshdesk.com/ro/support/solutions/articles/60000706484-alerte',
 }
