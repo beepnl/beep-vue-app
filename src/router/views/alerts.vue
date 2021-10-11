@@ -240,6 +240,8 @@ export default {
       assetsUrl:
         process.env.VUE_APP_ASSETS_URL ||
         process.env.VUE_APP_ASSETS_URL_FALLBACK,
+      alertTimer: 0,
+      alertInterval: 120000,
     }
   },
   computed: {
@@ -377,9 +379,13 @@ export default {
       this.readApiariesAndGroupsIfNotPresent().then(() => {
         this.checkAlertRulesAndAlerts().then(() => {
           this.ready = true
+          this.alertTimer = setInterval(this.readAlerts, this.alertInterval)
         })
       })
     })
+  },
+  beforeDestroy() {
+    this.stopTimer()
   },
   methods: {
     async deleteAlert(id) {
@@ -441,6 +447,10 @@ export default {
       return this.sensorMeasurementsList.filter(
         (measurementType) => measurementType.id === measurementId
       )[0].unit
+    },
+    stopTimer() {
+      clearInterval(this.alertTimer)
+      this.alertTimer = 0
     },
   },
 }

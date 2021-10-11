@@ -668,6 +668,8 @@ export default {
     deviceIdArray: [],
     assetsUrl:
       process.env.VUE_APP_ASSETS_URL || process.env.VUE_APP_ASSETS_URL_FALLBACK,
+    alertTimer: 0,
+    alertInterval: 120000,
   }),
   computed: {
     ...mapGetters('alerts', ['alerts']),
@@ -1004,7 +1006,11 @@ export default {
       } else {
         this.ready = true
       }
+      this.alertTimer = setInterval(this.readAlerts, this.alertInterval)
     })
+  },
+  beforeDestroy() {
+    this.stopTimer()
   },
   methods: {
     async checkToken(token, groupId, groupName) {
@@ -1235,6 +1241,10 @@ export default {
         )
       })
       return sortedHives
+    },
+    stopTimer() {
+      clearInterval(this.alertTimer)
+      this.alertTimer = 0
     },
     toggleGrid(view) {
       if (view === 'xlView') {
