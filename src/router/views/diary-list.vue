@@ -46,7 +46,7 @@
                       : 'icon-apiary-shared'
                   } mr-2`
                 "
-                @click="toggleFilterByGroup, (count = paginationItems)"
+                @click="toggleFilterByGroup"
               >
                 {{
                   filterByGroupStatus === 'owned'
@@ -60,10 +60,7 @@
                     filterByAttention ? 'red--text' : 'color-grey-filter'
                   } mr-2`
                 "
-                @click="
-                  ;(filterByAttention = !filterByAttention),
-                    (count = paginationItems)
-                "
+                @click="filterByAttention = !filterByAttention"
               >
                 mdi-clipboard-alert-outline
               </v-icon>
@@ -71,10 +68,7 @@
                 :class="
                   `${filterByReminder ? 'red--text' : 'color-grey-filter'} mr-2`
                 "
-                @click="
-                  ;(filterByReminder = !filterByReminder),
-                    (count = paginationItems)
-                "
+                @click="filterByReminder = !filterByReminder"
               >
                 mdi-calendar-clock
               </v-icon>
@@ -86,7 +80,7 @@
                       : 'color-grey-filter'
                   } mr-2`
                 "
-                @click=";(filterByImpression = 3), (count = paginationItems)"
+                @click="filterByImpression = 3"
               >
                 mdi-emoticon-happy
               </v-icon>
@@ -98,7 +92,7 @@
                       : 'color-grey-filter'
                   } mr-2`
                 "
-                @click=";(filterByImpression = 2), (count = paginationItems)"
+                @click="filterByImpression = 2"
               >
                 mdi-emoticon-neutral
               </v-icon>
@@ -110,7 +104,7 @@
                       : 'color-grey-filter'
                   } mr-2`
                 "
-                @click=";(filterByImpression = 1), (count = paginationItems)"
+                @click="filterByImpression = 1"
               >
                 mdi-emoticon-sad
               </v-icon>
@@ -233,7 +227,7 @@ export default {
           prop: 'diarySearch',
           value,
         })
-        this.count = this.paginationItems
+        this.resetInfiniteScroll()
       },
     },
     filterByAttention: {
@@ -245,6 +239,7 @@ export default {
           filter: 'diaryFilterByAttention',
           value,
         })
+        this.resetInfiniteScroll()
       },
     },
     filterByGroupStatus: {
@@ -256,6 +251,7 @@ export default {
           filter: 'diaryFilterByGroup',
           value,
         })
+        this.resetInfiniteScroll()
       },
     },
     filterByImpression: {
@@ -264,6 +260,7 @@ export default {
       },
       set(value) {
         this.$store.commit('inspections/setFilterByImpression', value)
+        this.resetInfiniteScroll()
       },
     },
     filterByReminder: {
@@ -275,6 +272,7 @@ export default {
           filter: 'diaryFilterByReminder',
           value,
         })
+        this.resetInfiniteScroll()
       },
     },
     hives() {
@@ -554,6 +552,11 @@ export default {
         this.count += 1
       }
       this.loading = false
+    },
+    resetInfiniteScroll() {
+      // reset count to initial amount for mugen scroll component to work properly + scroll back to top
+      this.count = this.paginationItems
+      window.scrollTo(0, 0)
     },
   },
 }
