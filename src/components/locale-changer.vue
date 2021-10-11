@@ -64,7 +64,9 @@ export default {
       this.$i18n.locale = this.userLocale
       localStorage.beepLocale = this.userLocale
     } else {
-      this.$i18n.locale = languages.checkBrowserLanguage()
+      var newLocale = languages.checkBrowserLanguage()
+      this.$i18n.locale = newLocale
+      this.switchLocale(newLocale)
     }
     Settings.defaultLocale = this.$i18n.locale // for hive-inspect vue-datetime picker
   },
