@@ -589,7 +589,7 @@ const translations = {
   new_apiary: 'New apiary',
   delete_group: 'Delete group',
   edit_group: 'Edit group',
-  new_group: 'New group',
+  new_group: 'New collaboration group',
   verification_code: 'verification code',
   limit_exceeded: 'Limit has been reached, try again later',
   confirm_email_title: 'Confirm your email',

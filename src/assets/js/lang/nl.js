@@ -595,7 +595,7 @@ const translations = {
   new_apiary: 'Nieuwe bijenstand',
   delete_group: 'Wis groep',
   edit_group: 'Bewerk groep',
-  new_group: 'Nieuwe groep',
+  new_group: 'Nieuwe samenwerkingsgroep',
   verification_code: 'verificatiecode',
   limit_exceeded: 'Limiet is bereikt, probeer later opnieuw',
   confirm_email_title: 'Bevestig e-mailadres',
