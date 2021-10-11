@@ -164,9 +164,11 @@ export default {
     colorPicker: {
       get() {
         if (this.currentLayer) {
-          return this.currentLayer.color
+          return this.currentLayer.color !== null
+            ? this.currentLayer.color
+            : '#F8B133'
         } else {
-          return this.hive.color
+          return this.hive.color !== null ? this.hive.color : '#F8B133'
         }
       },
       set(value) {
@@ -272,7 +274,8 @@ export default {
       this.overlayLayerColor = true
       this.currentLayer = layer
       this.layerColorPreview = true
-      this.layerColorPickerValue = layer.color
+      this.layerColorPickerValue =
+        layer.color !== null ? layer.color : '#F8B133'
     },
     setApiaryEdited(bool) {
       this.$store.commit('locations/setApiaryEdited', bool)

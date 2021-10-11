@@ -246,7 +246,7 @@ export default {
     colorPicker: {
       get() {
         if (this.hive) {
-          return this.hive.color
+          return this.hive.color !== null ? this.hive.color : '#F8B133'
         } else {
           return ''
         }
