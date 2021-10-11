@@ -46,7 +46,7 @@
                       : 'icon-apiary-shared'
                   } mr-2`
                 "
-                @click="toggleFilterByGroup"
+                @click="toggleFilterByGroup, (count = paginationItems)"
               >
                 {{
                   filterByGroupStatus === 'owned'
@@ -60,7 +60,10 @@
                     filterByAttention ? 'red--text' : 'color-grey-filter'
                   } mr-2`
                 "
-                @click="filterByAttention = !filterByAttention"
+                @click="
+                  ;(filterByAttention = !filterByAttention),
+                    (count = paginationItems)
+                "
               >
                 mdi-clipboard-alert-outline
               </v-icon>
@@ -68,7 +71,10 @@
                 :class="
                   `${filterByReminder ? 'red--text' : 'color-grey-filter'} mr-2`
                 "
-                @click="filterByReminder = !filterByReminder"
+                @click="
+                  ;(filterByReminder = !filterByReminder),
+                    (count = paginationItems)
+                "
               >
                 mdi-calendar-clock
               </v-icon>
@@ -80,7 +86,7 @@
                       : 'color-grey-filter'
                   } mr-2`
                 "
-                @click="filterByImpression = 3"
+                @click=";(filterByImpression = 3), (count = paginationItems)"
               >
                 mdi-emoticon-happy
               </v-icon>
@@ -92,7 +98,7 @@
                       : 'color-grey-filter'
                   } mr-2`
                 "
-                @click="filterByImpression = 2"
+                @click=";(filterByImpression = 2), (count = paginationItems)"
               >
                 mdi-emoticon-neutral
               </v-icon>
@@ -104,7 +110,7 @@
                       : 'color-grey-filter'
                   } mr-2`
                 "
-                @click="filterByImpression = 1"
+                @click=";(filterByImpression = 1), (count = paginationItems)"
               >
                 mdi-emoticon-sad
               </v-icon>
@@ -140,7 +146,7 @@
           class="diary-item-transition-wrapper"
         >
           <v-col
-            v-for="(inspection, j) in filteredInspections"
+            v-for="(inspection, j) in filteredInspectionsToShow"
             :key="j"
             sm="auto"
             class="diary-item"
@@ -154,6 +160,8 @@
           </v-col>
         </ScaleTransition>
       </v-row>
+      <MugenScroll :handler="fetchData" :should-handle="!loading">
+      </MugenScroll>
       <v-row v-if="!showDiaryPlaceholder && filteredInspections.length === 0">
         <v-col sm="auto" :cols="12">
           {{ $t('no_results') }}
@@ -184,6 +192,7 @@ import {
   toggleFilterByGroup,
 } from '@mixins/methodsMixin'
 import { ScaleTransition } from 'vue2-transitions'
+import MugenScroll from 'vue-mugen-scroll'
 
 export default {
   components: {
@@ -191,6 +200,7 @@ export default {
     DiaryCard,
     Layout,
     ScaleTransition,
+    MugenScroll,
   },
   mixins: [
     checkAlerts,
@@ -205,6 +215,9 @@ export default {
   data: function() {
     return {
       ready: false,
+      loading: false,
+      count: 0,
+      paginationItems: 16,
     }
   },
   computed: {
@@ -220,6 +233,7 @@ export default {
           prop: 'diarySearch',
           value,
         })
+        this.count = this.paginationItems
       },
     },
     filterByAttention: {
@@ -443,6 +457,9 @@ export default {
         (x) => x !== undefined
       )
     },
+    filteredInspectionsToShow() {
+      return this.filteredInspections.slice(0, this.count)
+    },
     locale() {
       return this.$i18n.locale
     },
@@ -530,6 +547,13 @@ export default {
         .catch((reject) => {
           return true
         })
+    },
+    fetchData() {
+      this.loading = true
+      for (var i = 0; i < this.paginationItems; i++) {
+        this.count += 1
+      }
+      this.loading = false
     },
   },
 }
