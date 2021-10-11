@@ -211,13 +211,16 @@ export default {
       ready: false,
       loading: false,
       count: 0,
-      paginationItems: 16,
     }
   },
   computed: {
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
     ...mapGetters('inspections', ['generalInspections']),
+    paginationItems() {
+      // overestimation of how many inspection items fit in clients window
+      return Math.ceil(window.innerHeight / 70)
+    },
     diarySearch: {
       get() {
         return this.$store.getters['inspections/diarySearch']
