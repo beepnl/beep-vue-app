@@ -1226,7 +1226,7 @@ export default {
           (a.order === null) - (b.order === null) ||
           +(a.order > b.order) ||
           -(a.order < b.order) ||
-          (a.order === b.order
+          (a.order === b.order && a.name !== null && b.name !== null
             ? a.name.localeCompare(b.name, undefined, {
                 numeric: true,
                 sensitivity: 'base',
