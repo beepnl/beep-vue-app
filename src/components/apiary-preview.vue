@@ -86,7 +86,7 @@ export default {
     height: 100%;
     padding: 0 8px;
     margin-bottom: 3px;
-    border-bottom: 1px solid green !important;
+    border-bottom: 1px solid #666 !important;
   }
   &.has-queen-excluder {
     .hive-icon-layers {

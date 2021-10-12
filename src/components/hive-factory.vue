@@ -317,7 +317,7 @@ export default {
 <style lang="scss" scoped>
 .hive-icon {
   padding: 0 16px;
-  border-bottom: 1px solid green !important;
+  border-bottom: 1px solid #666 !important;
   border-radius: 2px 2px 0 0;
 }
 
