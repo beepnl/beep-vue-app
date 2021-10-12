@@ -56,6 +56,8 @@
               <draggable
                 v-model="hiveLayers"
                 :group="{ name: 'layers', pull: 'sort' }"
+                delay="100"
+                delay-on-touch-only="true"
               >
                 <v-sheet
                   v-for="layer in hiveLayers"

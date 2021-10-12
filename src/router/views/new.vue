@@ -14,7 +14,8 @@
             ><v-icon class="support-icon" small color="accent"
               >mdi-arrow-right</v-icon
             >
-            BEEP support article on app v3 (including screenshots)</a
+            To view the BEEP support article on app v3 (including screenshots)
+            click here</a
           >
         </p>
         <ul>
@@ -483,7 +484,8 @@
             ><v-icon class="support-icon" small color="accent"
               >mdi-arrow-right</v-icon
             >
-            BEEP support artikel over app v3 (inclusief screenshots)</a
+            Bekijk het BEEP support artikel over app v3 (inclusief screenshots)
+            hier</a
           >
         </p>
         <ul>
