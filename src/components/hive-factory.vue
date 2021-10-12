@@ -64,7 +64,6 @@
                   :class="[`layer ${layer.type}-layer`]"
                   :width="`${hiveWidth(hive)}px`"
                   @click.native="openOverlay(layer)"
-                  @touchstart="openOverlay(layer)"
                 >
                 </v-sheet>
               </draggable>
@@ -158,6 +157,7 @@ export default {
       layerColorPickerValue: '',
       layerColorPreview: false,
       showInfo: false,
+      fallbackColor: '#F8B133',
     }
   },
   computed: {
@@ -166,9 +166,9 @@ export default {
         if (this.currentLayer) {
           return this.currentLayer.color !== null
             ? this.currentLayer.color
-            : '#F8B133'
+            : this.fallbackColor
         } else {
-          return this.hive.color !== null ? this.hive.color : '#F8B133'
+          return this.hive.color !== null ? this.hive.color : this.fallbackColor
         }
       },
       set(value) {
@@ -212,7 +212,7 @@ export default {
       } else if (this.hive.color !== null && !this.colorPreview) {
         return this.hive.color
       } else {
-        return '#F8B133'
+        return this.fallbackColor
       }
     },
     cloneLayer({ key, order, color, type, framecount, newLayer }) {
@@ -275,7 +275,7 @@ export default {
       this.currentLayer = layer
       this.layerColorPreview = true
       this.layerColorPickerValue =
-        layer.color !== null ? layer.color : '#F8B133'
+        layer.color !== null ? layer.color : this.fallbackColor
     },
     setApiaryEdited(bool) {
       this.$store.commit('locations/setApiaryEdited', bool)
