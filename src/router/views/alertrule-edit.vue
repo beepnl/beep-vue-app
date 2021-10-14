@@ -72,7 +72,7 @@
 
             <v-spacer />
 
-            <v-col cols="3" sm="1" class="d-flex justify-end mobile-front">
+            <div class="float-right mt-3 mr-3">
               <div>
                 <div class="beep-label" v-text="$t('Active')"></div>
                 <v-checkbox
@@ -83,14 +83,9 @@
                   @change="setAlertRuleEdited(true)"
                 ></v-checkbox>
               </div>
-            </v-col>
+            </div>
 
-            <v-col
-              cols="6"
-              sm="3"
-              md="2"
-              class="d-flex justify-end mobile-front"
-            >
+            <div class="float-right mt-3 mr-3">
               <div>
                 <div class="beep-label" v-text="$t('Alert_via_email')"></div>
                 <v-checkbox
@@ -101,7 +96,7 @@
                   @change="setAlertRuleEdited(true)"
                 ></v-checkbox>
               </div>
-            </v-col>
+            </div>
           </v-row>
 
           <v-row>
@@ -1065,12 +1060,6 @@ export default {
 </script>
 
 <style lang="scss">
-.mobile-front {
-  @include for-phone-only {
-    order: 1;
-  }
-}
-
 .mobile-last {
   @include for-phone-only {
     order: 2;

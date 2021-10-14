@@ -210,17 +210,13 @@ export default {
     return {
       ready: false,
       loading: false,
-      count: 0,
+      scrollCount: 0,
     }
   },
   computed: {
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
     ...mapGetters('inspections', ['generalInspections']),
-    paginationItems() {
-      // overestimation of how many inspection items fit in clients window
-      return Math.ceil(window.innerHeight / 70)
-    },
     diarySearch: {
       get() {
         return this.$store.getters['inspections/diarySearch']
@@ -459,13 +455,17 @@ export default {
       )
     },
     filteredInspectionsToShow() {
-      return this.filteredInspections.slice(0, this.count)
+      return this.filteredInspections.slice(0, this.scrollCount)
     },
     locale() {
       return this.$i18n.locale
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile
+    },
+    paginationItems() {
+      // overestimation of how many inspection items fit in clients window
+      return Math.ceil(window.innerHeight / 70)
     },
     showDiaryPlaceholder() {
       return (
@@ -552,13 +552,13 @@ export default {
     fetchData() {
       this.loading = true
       for (var i = 0; i < this.paginationItems; i++) {
-        this.count += 1
+        this.scrollCount += 1
       }
       this.loading = false
     },
     resetInfiniteScroll() {
-      // reset count to initial amount for mugen scroll component to work properly + scroll back to top
-      this.count = this.paginationItems
+      // reset scrollCount to initial amount for mugen scroll component to work properly + scroll back to top
+      this.scrollCount = this.paginationItems
       window.scrollTo(0, 0)
     },
   },

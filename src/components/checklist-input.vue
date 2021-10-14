@@ -94,35 +94,27 @@
       @input.native="convertComma($event, item.name, 0)"
     ></el-input-number>
 
-    <div
+    <el-input-number
       v-if="
         item.input === 'number_1_decimals' ||
           item.input === 'number_2_decimals' ||
           item.input === 'square_25cm2'
       "
-      class="d-flex flex-column"
-    >
-      <el-input-number
-        :value="object[item.id] === null ? 0 : object[item.id]"
-        :class="showCommaWarning ? 'comma-warning' : ''"
-        :step="item.input === 'number_2_decimals' ? 0.01 : 0.1"
-        :precision="item.input === 'number_2_decimals' ? 2 : 1"
-        :disabled="disabled"
-        size="medium"
-        @change="updateInput($event, item.id, item.name, item.input)"
-        @input.native="
-          convertComma(
-            $event,
-            item.name,
-            // eslint-disable-next-line vue/comma-dangle
-            item.input === 'number_2_decimals' ? 2 : 1
-          )
-        "
-      ></el-input-number>
-      <span v-if="showCommaWarning" class="red--text font-small"
-        >Use point as decimal separator (comma not allowed)</span
-      >
-    </div>
+      :value="object[item.id] === null ? 0 : object[item.id]"
+      :step="item.input === 'number_2_decimals' ? 0.01 : 0.1"
+      :precision="item.input === 'number_2_decimals' ? 2 : 1"
+      :disabled="disabled"
+      size="medium"
+      @change="updateInput($event, item.id, item.name, item.input)"
+      @input.native="
+        convertComma(
+          $event,
+          item.name,
+          // eslint-disable-next-line vue/comma-dangle
+          item.input === 'number_2_decimals' ? 2 : 1
+        )
+      "
+    ></el-input-number>
 
     <el-input-number
       v-if="item.input === 'number_3_decimals'"
@@ -303,7 +295,6 @@ export default {
   },
   data() {
     return {
-      showCommaWarning: false,
       savedNrOfDecimals: 0,
     }
   },
