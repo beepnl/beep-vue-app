@@ -253,6 +253,9 @@ export default [
     component: () => import('@views/measurements-list.vue'), // no lazyLoadView in order to be able to use beforeDestroy hook to clearInterval for lastSensorValues API call when navigating away
   },
   {
+    meta: {
+      authRequired: true,
+    },
     path: '/new',
     name: 'new',
     component: () => lazyLoadView(import('@views/new.vue')),
