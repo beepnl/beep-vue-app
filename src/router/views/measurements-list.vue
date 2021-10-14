@@ -155,7 +155,7 @@
                   <div class="d-flex flex-wrap justify-center mt-5 mt-sm-7">
                     <vue-ellipse-progress
                       v-for="(sensorData, index) in currentLastSensorValues"
-                      :key="sensorData + index"
+                      :key="sensorData.name + index"
                       class="mr-2"
                       :progress="
                         calculateProgress(
@@ -275,7 +275,7 @@
                 </v-col>
               </v-row>
               <v-row v-if="measurementData !== null" class="charts mt-6">
-                <v-col v-if="weatherSensorsPresent" cols="12">
+                <v-col v-if="weatherSensorsPresent" cols="12" :md="chartCols">
                   <div
                     v-if="selectedDevice"
                     class="overline mt-0 mt-sm-3 mb-3 text-center"
@@ -290,46 +290,45 @@
                         : $t('weather') + ' @ ' + selectedDevice.location_name
                     "
                   ></div>
-                  <v-row class="my-0">
-                    <v-col cols="12" :md="chartCols">
-                      <chartist
-                        :class="
-                          `${interval} ${'modulo-' + moduloNr} mb-4 mb-sm-6`
-                        "
-                        ratio="ct-chart"
-                        type="Line"
-                        :data="
-                          chartDataMultipleSeries(currentWeatherSensors, true)
-                        "
-                        :options="
-                          chartOptions('', false, currentWeatherSensors)
-                        "
-                      >
-                      </chartist>
-                    </v-col>
-                  </v-row>
-                </v-col>
-                <v-col v-if="sensorsPresent" cols="12" class="mb-6">
-                  <div
-                    class="overline mt-0 mt-sm-3 mb-3 text-center"
-                    v-text="
-                      measurementData.resolution
-                        ? $tc('measurement', 2) +
-                          ' (' +
-                          $t('measurement_interval') +
-                          ': ' +
-                          measurementData.resolution +
-                          ')'
-                        : $tc('measurement', 2)
-                    "
-                  ></div>
-                  <v-row class="my-0">
-                    <v-col
-                      v-for="(sensor, index) in currentSensors"
-                      :key="index"
-                      cols="12"
-                      :md="chartCols"
+                  <div>
+                    <chartist
+                      :class="
+                        `${interval} ${'modulo-' + moduloNr} mb-4 mb-sm-6`
+                      "
+                      ratio="ct-chart"
+                      type="Line"
+                      :data="
+                        chartDataMultipleSeries(currentWeatherSensors, true)
+                      "
+                      :options="chartOptions('', false, currentWeatherSensors)"
                     >
+                    </chartist>
+                  </div>
+                </v-col>
+                <template v-if="sensorsPresent">
+                  <v-col
+                    v-for="(sensor, index) in currentSensors"
+                    :key="'sensor' + index"
+                    cols="12"
+                    class="mb-6"
+                    :md="chartCols"
+                  >
+                    <div
+                      v-if="index === 0"
+                      class="overline mt-0 mt-sm-3 mb-3 text-center"
+                      v-text="
+                        measurementData.resolution
+                          ? $tc('measurement', 2) +
+                            ' (' +
+                            $t('measurement_interval') +
+                            ': ' +
+                            measurementData.resolution +
+                            ')'
+                          : $tc('measurement', 2)
+                      "
+                    ></div>
+                    <div v-else class="header-filler my-3"></div>
+                    <div>
                       <chartist
                         :class="
                           `${interval} ${'modulo-' + moduloNr} mb-4 mb-sm-6`
@@ -344,42 +343,47 @@
                         "
                       >
                       </chartist>
-                    </v-col>
-                  </v-row>
-                </v-col>
-                <v-col v-if="soundSensorsPresent" cols="12" class="mb-6">
+                    </div>
+                  </v-col>
+                </template>
+                <v-col
+                  v-if="soundSensorsPresent"
+                  cols="12"
+                  class="mb-6"
+                  :md="chartCols"
+                >
                   <div
                     class="overline mt-0 mt-sm-3 mb-3 text-center"
                     v-text="$t('Sound_measurements')"
                   ></div>
-                  <v-row class="my-0">
-                    <v-col cols="12" :md="chartCols">
-                      <MeasurementsChartHeatmap
-                        :data="measurementsForHeatmap"
-                        :max-value="maxSoundSensorValue"
-                        :y-axis="sortedCurrentSoundSensors"
-                        :modulo-number="moduloNr"
-                        :interval="interval"
-                      >
-                      </MeasurementsChartHeatmap>
-                    </v-col>
-                  </v-row>
-                </v-col>
-                <v-col v-if="debugSensorsPresent" cols="12" class="mb-sm-4">
-                  <div
-                    class="overline mt-n4 mt-sm-3 mb-3 text-center"
-                    v-text="
-                      $tc('device', 1) + ' ' + $t('info').toLocaleLowerCase()
-                    "
-                  ></div>
-                  <v-row>
-                    <v-col
-                      v-for="(sensor, index) in currentDebugSensors"
-                      :key="index"
-                      cols="12"
-                      :md="chartCols"
-                      class="pt-lg-0"
+                  <div>
+                    <MeasurementsChartHeatmap
+                      :data="measurementsForHeatmap"
+                      :max-value="maxSoundSensorValue"
+                      :y-axis="sortedCurrentSoundSensors"
+                      :modulo-number="moduloNr"
+                      :interval="interval"
                     >
+                    </MeasurementsChartHeatmap>
+                  </div>
+                </v-col>
+                <template v-if="debugSensorsPresent">
+                  <v-col
+                    v-for="(sensor, index) in currentDebugSensors"
+                    :key="'debug' + index"
+                    cols="12"
+                    class="mb-sm-4"
+                    :md="chartCols"
+                  >
+                    <div
+                      v-if="index === 0"
+                      class="overline mt-n4 mt-sm-3 mb-3 text-center"
+                      v-text="
+                        $tc('device', 1) + ' ' + $t('info').toLocaleLowerCase()
+                      "
+                    ></div>
+                    <div v-else class="header-filler my-3"></div>
+                    <div>
                       <chartist
                         :class="
                           `${interval} ${'modulo-' + moduloNr} mt-n2 mt-sm-3`
@@ -394,9 +398,9 @@
                         "
                       >
                       </chartist>
-                    </v-col>
-                  </v-row>
-                </v-col>
+                    </div>
+                  </v-col>
+                </template>
               </v-row>
             </v-card-text>
           </SlideYUpTransition>
@@ -1447,5 +1451,9 @@ export default {
 
 .chartist-tooltip-value {
   display: none !important;
+}
+
+.header-filler {
+  height: 32px;
 }
 </style>
