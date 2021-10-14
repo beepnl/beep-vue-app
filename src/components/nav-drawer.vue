@@ -80,7 +80,7 @@
           </v-list>
         </div>
 
-        <div class="version-number ml-2">
+        <div class="version-number">
           <v-spacer></v-spacer>
           v3.0.66
         </div>
@@ -199,6 +199,7 @@ export default {
   height: 100vh !important;
 }
 .version-number {
+  margin-left: 72px;
   font-size: 11px !important;
 }
 </style>
