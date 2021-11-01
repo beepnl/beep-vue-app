@@ -399,22 +399,6 @@ const translations = {
   approve_policy:
     'Du hast die aktuellen Nutzungsbedingungen noch nicht erfüllt.',
 
-  /* weight calibration settings */
-  calibrate_weight: 'Kalibriere Gewicht',
-  calibrate_explanation:
-    'Stelle das Gewicht der Sensoren auf 0 ein, indem Du den aktuellen Messwert subtrahierst.',
-  set_as_zero_value: 'Setze diese Werte als 0 Werte',
-  set_weight_factor: 'Definiere den Gewichtsfaktor',
-  own_weight_kg: 'Wie hoch ist Dein Eigengewicht in kg??',
-  start_calibration:
-    'Trete nun auf die Waage und drücke die Taste unten, um den Gewichtsfaktor festzulegen. Verteile Dein Gewicht gleichmäßig.',
-  currently_there_is: 'Da ist ein Gewicht von',
-  nothing: 'nichts',
-  on_the_scale: 'auf der Skala',
-  calibration_started:
-    'Kalibrierung gestartet... Warte auf die nächste Messung.',
-  calibration_ended: 'Kalibrierung erfolgreich!',
-
   /* General items */
   server_down:
     'Die App ist aufgrund von Wartungsarbeiten nicht verfügbar. Bitte versuche es später erneut',

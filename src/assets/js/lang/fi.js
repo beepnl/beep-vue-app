@@ -424,22 +424,6 @@ const translations = {
   policy_version: 'beep_terms_2018_05_25_avg_v1',
   approve_policy: 'Et ole vielä hyväksynyt viimeisimpiä käyttöehtoja',
 
-  /* weight calibration settings */
-  calibrate_weight: 'Kalibroi paino',
-  calibrate_explanation:
-    'Nollaa anturipaino vähentämällä nykyinen mittausarvo.',
-  set_as_zero_value: 'Aseta nämä arvot 0 arvoiksi',
-  set_weight_factor: 'Määritä painokerroin',
-  own_weight_kg: 'Mikä on oma painosi kiloina?',
-  start_calibration:
-    'Astu nyt vaaalle ja paina alla olevaa nappia määritelläksesi painokertoimen. Jaa painosi tasaisesti.',
-  currently_there_is: 'Paino on',
-  nothing: 'ei mitään',
-  on_the_scale: 'vaaalla',
-  calibration_started:
-    'Kalibrointi aloitettu... Odota kunnes seuraava mittaus tulee voimaan.',
-  calibration_ended: 'Kalibrointi onnistui!',
-
   /* General items */
   server_down:
     'Sovellus ei ole käytössä huoltotöiden takia. Yritä myöhemmin uudelleen',

@@ -37,7 +37,6 @@ const translations = {
   Clear: 'Clear',
   Close: 'Close',
   firstDay: 1,
-  format: 'dddd d mmmm yyyy',
 
   /* main */
   Website: 'Website',
@@ -48,13 +47,8 @@ const translations = {
   Diagnostic_info: 'Diagnostic information (in case of a bug):%0D%0A',
   back: 'Back',
   menu: 'Menu',
-  lighting: 'Lighting',
-  camera: 'Camera',
   weather: 'Weather',
   sensors: 'Devices',
-
-  no_valid_authentication: 'No valid authentication data received',
-  succesfully_saved: 'Succesfully saved',
 
   switch_language: 'Switch language',
   Delete: 'Delete',
@@ -85,7 +79,7 @@ const translations = {
   empty_fields: 'Please fill in all the fields',
   match_passwords: 'Passwords do not match',
 
-  succesfully_registered: 'You are succesfully registered.',
+  succesfully_registered: 'You are successfully registered.',
   authentication_failed: 'Failed to authenticate',
 
   no_valid_input_received: 'Data could not be saved, no valid input received.',
@@ -113,8 +107,6 @@ const translations = {
 
   apply: 'Apply',
   Cancel: 'Cancel',
-  automatic: 'Automatic',
-  manually: 'Manual',
   on: 'On',
   off: 'Off',
 
@@ -137,9 +129,6 @@ const translations = {
   save_and_return: 'Save and return',
 
   logout: 'Log out',
-  logout_title: 'Log out as ',
-  logout_now: 'Do you realy want to log out now?',
-  member_since: 'BEEPing since',
 
   /* password recovery */
   password_recovery_title: 'Forgot your password?',
@@ -165,17 +154,9 @@ const translations = {
   confirm_new_password: 'Confirm new password',
 
   go_to_dashboard: 'Go to my dashboard',
-
-  /* overview */
-  overview_title: 'Overview',
-  overview: 'Overview',
   color: 'Color',
-  state: 'On/off',
-  connection_state: 'Connection status',
 
   /* hives */
-  locations_title: 'BEEP',
-  hives_title: 'BEEP',
   Hive: 'Hive | Hives',
   hive: 'hive | hives',
   Location: 'Apiary | Apiaries',
@@ -194,7 +175,6 @@ const translations = {
   New_inspection: 'New inspection',
   Edit_inspection: 'Edit inspection',
   Actions: 'Actions',
-  Conditions: 'Conditions (inspected)',
   edit: 'Edit',
   Hive_layer_amount: 'Number of layers',
   Bee_race: 'Bee race',
@@ -211,7 +191,6 @@ const translations = {
   action: 'Action',
   reminder: 'Remember',
   remind_date: 'Notification date',
-
   overall: 'Overall',
   positive_impression: 'Total impression',
   needs_attention: 'Needs attention',
@@ -219,15 +198,10 @@ const translations = {
   notes_for_next_inspection:
     'Short note for next inspection (visible on overview)',
   Not_implemented_yet: 'This item is not implemented yet',
-  save_input_first: 'Do you want to save your input first?',
 
   /* dashboard */
-  dashboard_title: 'Dashboard',
-  dashboard: 'Dashboard',
-  measurementsError: 'Cannot load measurements, check network connection',
   last_measurement: 'Last measurement',
   at: 'at',
-  measurement_system: 'BEEP measurement system',
   no_data: 'No data available',
   no_chart_data: 'No chart data for the selected period',
 
@@ -255,13 +229,10 @@ const translations = {
   queen: 'queen',
 
   settings_title: 'Settings',
-  settings_description: 'Settings of the sensors',
   Settings: 'Settings',
   settings: 'settings',
 
   sensors_title: 'Device settings',
-  sensors_description: 'Devices status and registration',
-  // sensors: 'Devices',
   sensor: 'Device',
 
   Select: 'Select',
@@ -373,7 +344,6 @@ const translations = {
   outsideTemperature: 'Outside temperature',
   apparentTemperature: 'Apparent temperature',
   dewPoint: 'Dew point',
-  // humidity: 'Humidity',
   pressure: 'Air pressure',
   windSpeed: 'Wind speed',
   windGust: 'Wind gust',
@@ -392,16 +362,9 @@ const translations = {
   year: 'Year',
 
   /* settings */
-  could_not_load_settings: 'Settings could not be loaded',
   offline: 'No connection',
-  remote: 'Remote',
-  connected: 'Direct',
-
   yes: 'Yes',
   no: 'No',
-
-  footer_text: 'Open source beekeeping',
-  beep_foundation: 'the BEEP foundation',
 
   Checklist: 'Checklist | Checklists',
   checklist: 'checklist | checklists',
@@ -421,23 +384,6 @@ const translations = {
   policy_version: 'beep_terms_2018_05_25_avg_v1',
   approve_policy: 'You did not yet comply with the latest terms of service.',
 
-  /* weight calibration settings */
-  calibrate_weight: 'Calibrate weight',
-  current_offset_is: 'Current zero value is',
-  calibrate_explanation:
-    'Set the weight of the sensors to 0 by subtracting the current measurement value.',
-  set_as_zero_value: 'Set these values as 0 values',
-  set_weight_factor: 'Define weight factor',
-  own_weight_kg: 'What is your own weight in kg?',
-  start_calibration:
-    'Now step on the scale, and press the button below to define the weight factor. Distribute your weight equally.',
-  currently_there_is: 'There is a weight of',
-  nothing: 'nothing',
-  on_the_scale: 'on the scale',
-  calibration_started:
-    'Calibration started... Wait for the next measurement to take effect.',
-  calibration_ended: 'Calibration succeeded!',
-
   /* General items */
   server_down:
     'The app is unavailable due to maintenance work, please try again later',
@@ -445,9 +391,7 @@ const translations = {
   sort_on: 'Sort on',
   Whats_new: 'New!',
   Manual: 'Manual',
-
   Site_title: 'BEEP | Bee monitor',
-
   could_not_create_user:
     'User cannot be created at this moment. Sorry for the inconvenience, please try again later.',
   email_verified: 'Your email address has been verified.',
@@ -494,14 +438,7 @@ const translations = {
   created: 'created',
   group_detached: 'Successfully left the group',
   group_activated: 'Group invitation accepted',
-  group_explanation_1:
-    '1. Create a new cooperation group with a clear title, and an optional description',
-  group_explanation_2: '2. Invite other BEEP users on their BEEP email address',
-  group_explanation_3:
-    '3. Share specific hives to be viewed by others, of to cooperate on',
-  Filter_and_sort_on: 'Filter and sort on:',
 
-  /* TO BE TRANSLATED */
   /* New translations v2.2.0 */
   roofed: 'Does the apiary have a roof?',
   info: 'Info',

@@ -428,22 +428,6 @@ const translations = {
   approve_policy:
     'Je hebt nog geen akkoord gegeven op de aangepaste gebruikersvoorwaarden.',
 
-  /* weight calibration settings */
-  calibrate_weight: 'Gewicht calibreren',
-  current_offset_is: 'Huidige nulwaarde is',
-  calibrate_explanation:
-    'Gewicht van de sensoren bij de volgende meting op 0 zetten door de huidige waarde ervanaf te trekken.',
-  set_as_zero_value: 'Stel deze waarde(n) in als 0-waarde(n)',
-  set_weight_factor: 'Gewichtsfactor bepalen',
-  own_weight_kg: 'Wat is je eigen gewicht in kg?',
-  start_calibration:
-    'Stap nu op de weegschaal en druk de onderstaande knop in zodra je er op staat. Verdeel je gewicht gelijkmatig.',
-  currently_there_is: 'Er staat nu',
-  nothing: 'niets',
-  on_the_scale: 'op de weegschaal',
-  calibration_started: 'Calibratie gestart... Wacht op de volgende meting.',
-  calibration_ended: 'Calibratie geslaagd!',
-
   /* General items */
   server_down:
     'De app is tijdelijk niet beschikbaar door onderhoud, probeer het later opnieuw',

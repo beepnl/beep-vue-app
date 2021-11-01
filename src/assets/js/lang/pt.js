@@ -424,22 +424,6 @@ const translations = {
   policy_version: 'beep_terms_2018_05_25_avg_v1',
   approve_policy: 'Você ainda não cumpriu com os últimos termos de serviço.',
 
-  /* weight calibration settings */
-  calibrate_weight: 'Calibrar peso',
-  calibrate_explanation:
-    'Defina o peso dos sensores para 0 subtraindo o valor atual da medição.',
-  set_as_zero_value: 'D efina esses valores como 0',
-  set_weight_factor: 'Definir fator de peso',
-  own_weight_kg: 'Qual é o seu próprio peso em kg?',
-  start_calibration:
-    'Agora, pise na balança e pressione o botão abaixo para definir o fator de peso. Distribua seu peso igualmente.',
-  currently_there_is: 'Há um peso de',
-  nothing: 'nada',
-  on_the_scale: 'Na balança',
-  calibration_started:
-    'A calibração iniciou... Aguarde que a próxima medição entre em vigor.',
-  calibration_ended: 'Calibração bem sucedida!',
-
   /* General items */
   server_down:
     'A app está indisponível devido a trabalhos de manutenção. Tente novamente mais tarde',

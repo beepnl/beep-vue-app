@@ -481,24 +481,6 @@ const translations = {
   Whats_new: 'Nouveau!',
   Manual: 'Manuel (EN)',
 
-  /* weight calibration settings */
-  calibrate_weight: 'Étalonner le poids',
-  calibrate_explanation:
-    'Réglez le poids des capteurs à 0 en soustrayant la valeur de mesure actuelle',
-  set_as_zero_value: 'Définissez ces valeurs en tant que valeurs 0',
-  set_weight_factor: 'Définissez le facteur de poids',
-  /* Cyrille - 31/05 : Translation updated */
-  own_weight_kg: 'Quel est votre propre poids ? (en kg)',
-  start_calibration:
-    'Maintenant, marchez sur la balance et appuyez sur le bouton ci-dessous pour définir le facteur de poids. Répartissez votre poids également',
-  currently_there_is: 'Il y a un poids de',
-  /* Cyrille - 31/05 : Translation updated */
-  nothing: '0 kg',
-  on_the_scale: 'sur la balance',
-  calibration_started:
-    "L'étalonnage a commencé... Attendez la prochaine mesure",
-  /* Cyrille - 31/05 : Translation updated */
-  calibration_ended: "L'étalonnage est terminé !",
   Site_title: 'BEEP | Moniteur abeille',
   /* Cyrille - 31/05 : Translation updated */
   could_not_create_user:
@@ -915,59 +897,58 @@ const translations = {
   import_log_data_support_url:
     'https://beepsupport.freshdesk.com/fr/support/solutions/articles/60000697129-t%C3%A9l%C3%A9charger-les-donn%C3%A9es-de-base-beep-via-bluetooth',
 
-  // TO BE TRANSLATED TERMS
-  Immediately: 'Immediately',
+  Immediately: 'Immédiatement',
   alertrule_active_no_email_sentence:
-    ', and I open the BEEP app to see the alerts.',
+    ", et j'ouvre l'app BEEP pour voir les alertes",
   alertrule_active_email_sentence:
-    ', and I receive alerts via email. In addition, I can see the alerts in the BEEP app.',
-  First_occurence: 'First: ',
-  Last_occurence: 'Last: ',
-  // default alert rule names:
-  Hive_stability_and_theft: 'Hive stability & Theft',
-  Temperature_sensor_defect: 'Temperature sensor defect',
-  Battery_low: 'Battery voltage low',
-  Honey_harvest: 'Honey harvest',
-  Hive_temperature: 'Hive temperature low',
-  Brood_temperature: 'Brood presence',
-  No_measurements: 'No measurements',
-  Swarm: 'Swarm',
-  Food_supply_low: 'Food supply low',
-  // default alert rule descriptions:
+    ", et je reçois les alertes par email. De plus, je peux voir les alertes dans l'app BEEP.",
+  First_occurence: 'Premier: ',
+  Last_occurence: 'Dernier: ',
+  /* default alert rule names: */
+  Hive_stability_and_theft: 'Stabilité de la ruche et vol',
+  Temperature_sensor_defect: 'Defaut de la sonde de température',
+  Battery_low: 'Batterie faible',
+  Honey_harvest: 'Recolte de miel',
+  Hive_temperature: 'Température de la ruche basse',
+  Brood_temperature: 'Temperature du couvain basse',
+  No_measurements: 'Pas de mesures',
+  Swarm: 'Essaimage',
+  Food_supply_low: 'Reserves de nourriture faible',
+  /* default alert rule descriptions: */
   Weight_drop_is_above_a_set_value:
-    'Weight drop of the hive is above a set value',
-  Temperature_sensor_malfunctions: 'Temperature sensor malfunctions',
+    'La perte de poids de la ruche est au dessus du seuil',
+  Temperature_sensor_malfunctions: 'La sonde de température fonctionne mal',
   Battery_voltage_is_below_a_set_value:
-    'Battery voltage of the device is below a set value',
+    'La charge de la batterie est en deça de la valeur définie',
   Weight_increase_due_to_nectar_collection_comes_to_a_halt:
-    'Weight increase due to nectar collection comes to a halt',
+    "L'augmentation du poids, dûe à l'entrée de nectar s'est arrêtée",
   Hive_temperature_drops_below_a_set_value:
-    'Hive temperature drops below a set value',
+    'La température de la ruche passe sous la valeur définie',
   Temperature_in_the_brood_below_a_set_value:
-    'Temperature in the brood has dropped below a set value',
+    'La température du couvain passe sous la valeur définie',
   No_measurement_data_received_in_a_set_time_period:
-    'No measurement data received during a set time period',
+    'Aucune mesure reçue pendant la période définie',
   Sudden_weight_drop_triggers_alert_immediately:
-    'Sudden weight drop of the hive triggers an alert immediately. N.B.: this is based on a data transmission interval of 15 minutes. In case your device has a different data transmission interval, you should adjust the threshold value accordingly.',
-  The_hive_weight_is_below_a_set_value: 'Hive weight is below a set value',
+    "Une chute soudaine du poids déclenche immédiatement une alerte. N.B.: L'alerte est basée sur une transmission de données toutes les 15 minutes. Si votre appareil transmet à un intervalle difféerent, vous devriez ajuster le seuil de déclenchement.",
+  The_hive_weight_is_below_a_set_value:
+    'Le poids de la ruche est inférieur à la valeur définie.',
 
   minute: 'minute | minutes',
   upload_interval_warning_single_interval:
-    'N.B.: the data transmission interval of your device is | N.B.: the data transmission interval of your devices is', // f.e.: ... 15 minutes
+    "N.B.: L'intervalle de transmission de données est de | N.B.: L'intervalle de transmission de votre appareil est de",
   upload_interval_warning_interval_range:
-    'N.B.: the data transmission intervals of your devices vary between ', // f.e. ... 5 - 15 minutes
-  not_relevant_for_immediate_calculation:
-    'Not relevant for immediate calculation',
-  Increase: 'Increase',
-  Decrease: 'Decrease',
-  Every_hour: 'Every hour',
-  every_hour: 'every hour',
-  Absolute_value_of_dif: 'Change',
+    "N.B.: L'intervalle de transmission de vos appareils varie entre ",
+  not_relevant_for_immediate_calculation: 'Non pertinent pour calcul immédiat',
+  Increase: 'Augmentation',
+  Decrease: 'Diminution',
+  Every_hour: 'Toutes les heures',
+  every_hour: 'toutes les heures',
+  Absolute_value_of_dif: 'Changement',
   In_case_of_good_connection_warning:
-    '*Immediately after a measurement is received. This is dependent on the data transmission interval and the reliability of the data connection.',
-  Alertrule_summary_title: 'Summary',
-  Alertrule_settings_title: 'Alert rule settings',
-  Alertrule_exclude_title: 'Exclude periods and hives',
+    "*Immédiatement après qu'une mesure est reçue. Cela dépend de l'intervalle de transmission et de la solidité de la connexion au réseau mobile.",
+  Alertrule_summary_title: 'Résumé',
+  Alertrule_settings_title: "Paramètre des règles d'alerte",
+  Alertrule_exclude_title: 'Exclure périodes et ruches',
   of: 'de',
 
   alerts_url_text: "Lire l'article d'assistance sur les alertes",

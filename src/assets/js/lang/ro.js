@@ -402,22 +402,6 @@ const translations = {
   approve_policy:
     'Nu v-ați dat încă acordul pentru ultimii termeni și condiții.',
 
-  /* weight calibration settings */
-  calibrate_weight: 'Calibrați greutatea',
-  calibrate_explanation:
-    'Setați greutatea senzorilor la 0 scăzând valoarea măsurată curentă.',
-  set_as_zero_value: 'Setați aceste valori ca valoare 0.',
-  set_weight_factor: 'Definiți factorul de greutate',
-  own_weight_kg: 'Care este greutatea proprie în Kg?',
-  start_calibration:
-    'Acum, urcațivă pe cântar și apăsați butonul de mai jos pentru a defini factorul greutate. Distribuiți greutatea în mod egal.',
-  currently_there_is: 'există o greutate de',
-  nothing: 'nimic',
-  on_the_scale: 'pe cântar',
-  calibration_started:
-    'Calibrarea a început... Vă rugăm așteptați ca măsuratoarea următoare să intre în vigoare.',
-  calibration_ended: 'Calibrarea a reușit!',
-
   /* General items */
   server_down:
     'Aplicația nu este disponibilă din cauza lucrărilor de întreținere, vă rugăm încercați din nou mai târziu.',
