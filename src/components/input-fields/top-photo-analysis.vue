@@ -13,7 +13,7 @@
     <!-- <div :class="`rounded-border ${bulkInspection ? 'input-disabled' : ''}`"> -->
     <v-card outlined class="pa-3">
       <div class="border-bottom">
-        <h4>Top Photo Aanalysis protocol (EN)</h4>
+        <h4>Top Photo Analysis protocol (EN)</h4>
         <ol>
           <li>Blow a puff of smoke into the hive from below.</li>
           <li
