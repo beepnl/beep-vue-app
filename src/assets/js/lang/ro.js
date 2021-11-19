@@ -1,6 +1,6 @@
-/*
- * BEEP - Translations
- * Author: Pim van Gennip (pim@iconize.nl), Alex Giurgiu
+ /*
+ * BEEP - Translations - VUE app v3 (Q4 2021)
+ * Author: Julia Buysing Damsté (julia@beep.nl) and Alex Giurgiu
  *
  */
 const translations = {

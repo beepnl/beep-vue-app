@@ -1,6 +1,15 @@
 # BEEP Vue app + Legacy API
 
-## Installation
+# Installation
+## Installation without Docker
+
+- Install NodeJs and NPM
+- npm ci
+- npm run build
+- serve /dist folder
+
+
+## Installation with Docker
 
 ### Prerequisites
 
@@ -19,7 +28,7 @@ first run.
 
 - docker-compose up
 
-## Development
+# Development
 
 This repository is for the web app of BEEP. In order to create a consistent
 development experience we use
@@ -36,7 +45,7 @@ OR before running the container:
 
 - docker run -it --rm -v \$PWD:/var/app -w /var/app node:lts npm install
 
-### Running the app locally
+## Running the app locally
 
 To compile and run the server, run the dev task:
 
@@ -50,16 +59,16 @@ OR:
 
 - Open the app on localhost:8080
 
-### Hot reload
+## Hot reload
 
 To fix hot reload when running in a Docker container:
 [Hot reload in docker](https://daten-und-bass.io/blog/enabling-hot-reloading-with-vuejs-and-vue-cli-in-docker/)
 
-## Deployment
+# Deployment
 
 Upon committing to master, this UI is automatically queued for deployment.
 
-## Self hosting
+# Self hosting
 
 - Generate your own google maps Api key via the google cloud platform
 - Either: update the .env.production file using .env.production.example as a template. Add your google maps key to the .env.production file as VUE_APP_GOOGLE_MAPS_KEY (N.B. do not expose this env file / the api key in a public repo)
