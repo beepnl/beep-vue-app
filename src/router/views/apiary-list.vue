@@ -586,6 +586,7 @@
         <SlideYUpTransition :duration="300">
           <div v-if="!hideHiveSet(hiveSet)" :key="'HiveSet' + hiveSet.id">
             <ScaleTransition
+              v-if="!dragHivesMode"
               :duration="300"
               group
               class="hive-item-transition-wrapper"
@@ -613,6 +614,36 @@
                 </v-col>
               </template>
             </ScaleTransition>
+            <draggable
+              v-if="dragHivesMode"
+              :list="sortedHives(hiveSet.hives)"
+              :disabled="!dragHivesMode"
+              :move="checkMove"
+              delay="100"
+              delay-on-touch-only="true"
+              class="d-flex"
+              @change="moved"
+            >
+              <div
+                v-for="hive in sortedHives(hiveSet.hives)"
+                :key="'Hive ' + hive.id"
+                :class="
+                  `hive-item ${xlView ? 'xl-view' : ''} ${
+                    xsView ? 'xs-view' : ''
+                  }`
+                "
+              >
+                <HiveCard
+                  :key="`${hive.id}`"
+                  :hive="hive"
+                  :hive-set="hiveSet"
+                  :alerts="alertsPerHive(hive.id)"
+                  :xl-view="xlView"
+                  :m-view="mView"
+                  :xs-view="xsView"
+                ></HiveCard>
+              </div>
+            </draggable>
           </div>
         </SlideYUpTransition>
       </v-row>
@@ -685,6 +716,7 @@
 <script>
 import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
+import draggable from 'vuedraggable'
 import HiveCard from '@components/hive-card.vue'
 import Layout from '@layouts/main.vue'
 import { mapGetters } from 'vuex'
@@ -705,6 +737,7 @@ import { ScaleTransition, SlideYUpTransition } from 'vue2-transitions'
 export default {
   components: {
     Confirm,
+    draggable,
     HiveCard,
     Layout,
     ScaleTransition,
@@ -1217,6 +1250,17 @@ export default {
       } else {
         return []
       }
+    },
+    checkMove: function(e) {
+      console.log('check move')
+      // console.log('check move', e)
+      // console.log('Future index: ' + e.draggedContext.futureIndex)
+      // e.draggedContext.element.order = e.draggedContext.futureIndex
+    },
+    moved: function(e) {
+      // console.log(e.moved.element.name, e.moved.element.order, e.moved.newIndex)
+      e.moved.element.order = e.moved.newIndex
+      // e.moved.element.name = 'Verplaatst'
     },
     confirmDeleteApiary(hiveSet) {
       const warningMessage =
