@@ -187,6 +187,35 @@
             <h4 v-text="$tc('Invitation', 1) + ': ' + invitation.name"></h4>
           </div>
           <div>
+            <!-- <v-btn
+              v-if="!mobile"
+              tile
+              outlined
+              class="red--text mb-1 mr-2"
+              :disabled="showLoadingIconForId === invitation.id"
+              @click="
+                checkToken(
+                  invitation.token,
+                  invitation.id,
+                  invitation.name,
+                  // eslint-disable-next-line vue/comma-dangle
+                  true
+                )
+              "
+            >
+              <v-progress-circular
+                v-if="showLoadingIconForId === invitation.id"
+                class="ml-n1 mr-2"
+                size="18"
+                width="2"
+                color="disabled"
+                indeterminate
+              />
+              <v-icon v-if="showLoadingIconForId !== invitation.id" left
+                >mdi-close</v-icon
+              >
+              {{ $t('Decline') }}
+            </v-btn> -->
             <v-btn
               v-if="!mobile"
               tile
@@ -1051,12 +1080,13 @@ export default {
     this.stopTimer()
   },
   methods: {
-    async checkToken(token, groupId, groupName) {
+    async checkToken(token, groupId, groupName, decline = false) {
       this.showLoadingIconForId = groupId
       try {
         const response = await Api.postRequest('/groups/checktoken', {
           group_id: groupId,
           token: token,
+          // accept: !decline,
         })
         if (!response) {
           this.snackbar.text = this.$i18n.t('something_wrong')
