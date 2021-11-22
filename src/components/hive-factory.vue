@@ -53,7 +53,12 @@
               class="hive-icon d-flex flex-column justify-center align-center white--text text--small my-3"
               height="auto"
             >
-              <div class="hive-icon-layers">
+              <div
+                :class="
+                  'hive-icon-layers' +
+                    (hiveLayers.length === 0 ? ' hive-icon-layers--empty' : '')
+                "
+              >
                 <draggable
                   v-model="hiveLayers"
                   :group="{ name: 'layers', pull: 'sort' }"
@@ -162,6 +167,7 @@ export default {
       layerColorPreview: false,
       showInfo: false,
       fallbackColor: '#F8B133',
+      frameCount: 10,
     }
   },
   computed: {
@@ -240,7 +246,14 @@ export default {
             (layer) => !(layer.id === layerId || layer.key === layerKey)
           )
           this.hive.layers = remainingLayers
-          this.hive.frames = this.hive.layers[0].framecount
+          this.hive.frames =
+            remainingLayers.length > 0
+              ? this.hive.layers[0].framecount
+              : this.frameCount
+          if (this.hive.layers.length === 1) {
+            this.frameCount = this.hive.layers[0].framecount
+            this.$emit('update-defaultframecount', this.frameCount)
+          }
           this.setHiveEdited(true)
           this.setApiaryEdited(true)
 
@@ -259,7 +272,10 @@ export default {
           order: 0,
           color: this.hive.color,
           type: layerType[n],
-          framecount: this.hive.layers[0].framecount,
+          framecount:
+            this.hive.layers.length > 0
+              ? this.hive.layers[0].framecount
+              : this.frameCount,
           newLayer: true,
         }
       }
@@ -269,7 +285,9 @@ export default {
       return this.hive.layers.some((layer) => layer.type === type)
     },
     hiveWidth: function(hive) {
-      return hive.layers[0].framecount * 7 // 6
+      return hive.layers.length > 0
+        ? hive.layers[0].framecount * 7
+        : this.frameCount * 7
     },
     layerTypeText(layer) {
       return this.$i18n.tc('Hive_' + layer.type + '_layer', 1)
@@ -295,7 +313,10 @@ export default {
         (layer) => layer.id === layerId || layer.key === layerKey
       )
       this.hive.layers[layerIndex].color = this.layerColorPickerValue
-      this.hive.frames = this.hive.layers[0].framecount
+      this.hive.frames =
+        this.hive.layers.length > 0
+          ? this.hive.layers[0].framecount
+          : this.frameCount
       this.setHiveEdited(true)
       this.setApiaryEdited(true)
 
@@ -308,7 +329,10 @@ export default {
         i--
       })
       this.hive.layers = layers
-      this.hive.frames = this.hive.layers[0].framecount
+      this.hive.frames =
+        this.hive.layers.length > 0
+          ? this.hive.layers[0].framecount
+          : this.frameCount
       this.setHiveEdited(true)
       this.setApiaryEdited(true)
     },
@@ -460,5 +484,9 @@ export default {
 }
 .filler {
   padding: 0;
+}
+
+.hive-icon-layers--empty {
+  min-width: 70px;
 }
 </style>

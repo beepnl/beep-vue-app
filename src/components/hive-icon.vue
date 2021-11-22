@@ -10,7 +10,13 @@
     height="auto"
     @click="showHiveMenu($event)"
   >
-    <div class="hive-icon-layers" :style="`${showHive ? 'z-index: 6;' : ''}`">
+    <div
+      :class="
+        'hive-icon-layers' +
+          (hive.layers.length === 0 ? ' hive-icon-layers--empty' : '')
+      "
+      :style="`${showHive ? 'z-index: 6;' : ''}`"
+    >
       <v-sheet
         v-for="(layer, l) in orderedLayers(hive)"
         :key="l"
@@ -97,6 +103,9 @@ export default {
   .hive-icon-layers {
     width: 100%;
     height: 100%;
+  }
+  .hive-icon-layers--empty {
+    min-width: 20px; // empty hive
   }
   &.xs-view {
     margin-right: 0 !important;
