@@ -278,11 +278,19 @@
                             :location="
                               `${activeHive.location} - ${activeHive.name}`
                             "
-                            :start="new Date(inspection.reminder_date)"
-                            :end="new Date(inspection.reminder_date + 1)"
+                            :start="
+                              new Date(
+                                // eslint-disable vue/comma-dangle
+                                inspection.reminder_date.replace(/-/g, '/')
+                              )
+                            "
+                            :end="
+                              getNextDay(
+                                inspection.reminder_date.replace(/-/g, '/')
+                              )
+                            "
                             :details="
                               `BEEP app ${$tc('Inspection', 1)} @ ${
-                                // eslint-disable-next-line vue/comma-dangle
                                 inspection.created_at_locale_date
                               }`
                             "
@@ -895,6 +903,11 @@ export default {
     },
     getFullUrl(val) {
       return val.indexOf('https://') > -1 ? val : this.baseApiUrl + val
+    },
+    getNextDay(date) {
+      var today = new Date(date)
+      var tomorrow = new Date(today.setDate(today.getDate() + 1))
+      return tomorrow
     },
     gradeColor(value) {
       if (value === 0) return '#CCC'
