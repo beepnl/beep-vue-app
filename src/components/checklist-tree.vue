@@ -33,6 +33,8 @@
           :allow-drop="allowDrop"
           :filter-node-method="filterNode"
           @check-change="updateCategories"
+          @node-drop="nodeDrop"
+          @node-drag-start="nodeDragStart"
         >
         </el-tree>
       </el-form-item>
@@ -63,6 +65,7 @@ export default {
         label: 'text',
       },
       filterText: '',
+      categoryIds: [],
     }
   },
   computed: {
@@ -95,10 +98,21 @@ export default {
       if (!value) return true
       return data.text.toLowerCase().indexOf(value.toLowerCase()) !== -1
     },
+    nodeDragStart(dragNode, event) {
+      // get categoryIds array when dragging started
+      this.categoryIds = this.$refs.tree.getCheckedKeys()
+    },
+    nodeDrop(dragNode, dropNode, dropType, event) {
+      // select correct nodes (long version: set categoryIds array like when dragging started (if not, dragged node will be deselected), then automatically the order of ids in the array will correspond to new ('after drag') node order)
+      this.$refs.tree.setCheckedKeys(this.categoryIds)
+      // get re-ordered array of selected nodes (in correct 'after drop' order) and update it
+      this.categoryIds = this.$refs.tree.getCheckedKeys()
+      this.$emit('update-categories', this.categoryIds)
+    },
     updateCategories(node, selected, subtree) {
       this.checkChildren(node, selected)
-      const categoryIds = this.$refs.tree.getCheckedKeys()
-      this.$emit('update-categories', categoryIds)
+      this.categoryIds = this.$refs.tree.getCheckedKeys()
+      this.$emit('update-categories', this.categoryIds)
     },
   },
 }
