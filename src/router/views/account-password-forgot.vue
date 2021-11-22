@@ -45,7 +45,7 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text type="submit" :disabled="!valid">{{
+          <v-btn text type="submit">{{
             $t('password_recovery_send_mail')
           }}</v-btn>
         </v-card-actions>
