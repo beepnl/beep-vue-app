@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row class="hive-factory-wrapper my-0">
-      <v-col cols="12" sm="7" md="12">
+      <v-col cols="12" sm="10" md="12">
         <div class="beep-label">
           {{ $t('drag_layers') }}
           <v-icon
@@ -48,29 +48,31 @@
             </draggable>
           </div>
 
-          <v-sheet
-            class="hive-icon d-flex flex-column justify-center align-center white--text text--small my-3"
-            height="auto"
-          >
-            <div class="hive-icon-layers">
-              <draggable
-                v-model="hiveLayers"
-                :group="{ name: 'layers', pull: 'sort' }"
-                delay="100"
-                delay-on-touch-only="true"
-              >
-                <v-sheet
-                  v-for="layer in hiveLayers"
-                  :key="layer.id !== undefined ? layer.id : layer.key"
-                  :color="checkColor(layer)"
-                  :class="[`layer ${layer.type}-layer`]"
-                  :width="`${hiveWidth(hive)}px`"
-                  @click.native="openOverlay(layer)"
+          <div class="d-flex justify-center" style="width: 100%;">
+            <v-sheet
+              class="hive-icon d-flex flex-column justify-center align-center white--text text--small my-3"
+              height="auto"
+            >
+              <div class="hive-icon-layers">
+                <draggable
+                  v-model="hiveLayers"
+                  :group="{ name: 'layers', pull: 'sort' }"
+                  delay="100"
+                  delay-on-touch-only="true"
                 >
-                </v-sheet>
-              </draggable>
-            </div>
-          </v-sheet>
+                  <v-sheet
+                    v-for="layer in hiveLayers"
+                    :key="layer.id !== undefined ? layer.id : layer.key"
+                    :color="checkColor(layer)"
+                    :class="[`layer ${layer.type}-layer`]"
+                    :width="`${hiveWidth(hive)}px`"
+                    @click.native="openOverlay(layer)"
+                  >
+                  </v-sheet>
+                </draggable>
+              </div>
+            </v-sheet>
+          </div>
 
           <v-overlay :value="overlayLayerColor">
             <v-toolbar class="hive-color-picker-toolbar" dense light flat>

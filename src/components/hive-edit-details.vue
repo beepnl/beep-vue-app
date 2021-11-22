@@ -34,7 +34,7 @@
                   v-if="hive && hive.layers"
                   v-model="hive.layers[0].framecount"
                   :min="1"
-                  :max="20"
+                  :max="24"
                   :step="1"
                   :precision="0"
                   size="medium"

@@ -217,7 +217,7 @@ export default {
       colonySize: null,
       maxBroodLayers: 5,
       broodLayersForCalculation: 0,
-      maxFrames: 20,
+      maxFrames: 24,
       framesForCalculation: 0,
       assetsUrl:
         process.env.VUE_APP_ASSETS_URL ||
