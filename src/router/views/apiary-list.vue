@@ -119,6 +119,14 @@
               >
                 mdi-bell
               </v-icon>
+              <v-icon
+                :class="
+                  `ml-1 ${dragHivesMode ? 'color-accent' : 'color-grey-filter'}`
+                "
+                @click="dragHivesMode = !dragHivesMode"
+              >
+                mdi-pencil
+              </v-icon>
             </v-card-actions>
           </div>
           <v-card-actions class="view-buttons mr-0">
@@ -737,6 +745,17 @@ export default {
     ...mapGetters('devices', ['devices']),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups', 'invitations']),
+    dragHivesMode: {
+      get() {
+        return this.$store.getters['locations/dragHivesMode']
+      },
+      set(value) {
+        this.$store.commit('locations/setData', {
+          prop: 'dragHivesMode',
+          value,
+        })
+      },
+    },
     filterByAlert: {
       get() {
         return this.$store.getters['locations/hiveFilterByAlert']

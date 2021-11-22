@@ -15,6 +15,7 @@ export const state = {
   hiveFilterByGroup: 'off',
   hiveFilterByImpression: [],
   hiveFilterByReminder: false,
+  dragHivesMode: false,
 }
 export const getters = {
   ...resource.getters,
@@ -48,6 +49,9 @@ export const getters = {
   hiveSearch: (state) => {
     return state.hiveSearch
   },
+  dragHivesMode: (state) => {
+    return state.dragHivesMode
+  },
 }
 export const mutations = {
   ...resource.mutations,
@@ -80,6 +84,7 @@ export const mutations = {
     state.hiveFilterByGroup = 'off'
     state.hiveFilterByImpression = []
     state.hiveFilterByReminder = false
+    state.dragHivesMode = false
   },
   resetState: function(state) {
     state.apiaries = []
@@ -92,6 +97,7 @@ export const mutations = {
     state.hiveFilterByGroup = 'off'
     state.hiveFilterByImpression = []
     state.hiveFilterByReminder = false
+    state.dragHivesMode = false
   },
 }
 export const actions = {
