@@ -201,6 +201,9 @@ export default {
         return value
       },
     },
+    mobile() {
+      return this.$vuetify.breakpoint.mobile
+    },
   },
   methods: {
     cancelColorPicker() {
@@ -285,9 +288,15 @@ export default {
       return this.hive.layers.some((layer) => layer.type === type)
     },
     hiveWidth: function(hive) {
-      return hive.layers.length > 0
-        ? hive.layers[0].framecount * 7
-        : this.frameCount * 7
+      if (this.mobile) {
+        return hive.layers.length > 0
+          ? hive.layers[0].framecount * 6
+          : this.frameCount * 6
+      } else {
+        return hive.layers.length > 0
+          ? hive.layers[0].framecount * 7
+          : this.frameCount * 7
+      }
     },
     layerTypeText(layer) {
       return this.$i18n.tc('Hive_' + layer.type + '_layer', 1)
