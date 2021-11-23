@@ -624,6 +624,7 @@ export default {
   @include for-phone-only {
     padding: 10px;
     font-size: 0.8125rem !important;
+    overflow: hidden;
   }
   &.xs-view {
     padding: 0 !important;

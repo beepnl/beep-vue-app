@@ -123,14 +123,14 @@
           </div>
           <v-card-actions class="view-buttons mr-0">
             <v-icon
-              :class="`${xsView ? 'color-accent' : ''} mr-sm-2`"
+              :class="`${xsView ? 'color-accent' : ''} mr-sm-1`"
               @click="toggleGrid('xsView')"
             >
               mdi-size-xs
             </v-icon>
             <v-icon
               v-if="!mobile"
-              :class="`${mView ? 'color-accent' : ''} mr-2`"
+              :class="`${mView ? 'color-accent' : ''} mr-1`"
               @click="toggleGrid('mView')"
             >
               mdi-size-m
@@ -337,42 +337,46 @@
             style="width: 100%;"
           >
             <div class="d-flex justify-start align-center">
-              <v-icon
-                v-if="hiveSet.users && hiveSet.users.length"
-                class="icon-apiary-shared ml-1 mr-2 my-0"
-                :style="
-                  `background-color: ${hiveSet.hex_color}; border-color: ${hiveSet.hex_color};`
-                "
-              >
-                mdi-account-multiple
-              </v-icon>
-              <v-icon
-                v-else
-                class="icon-apiary-owned ml-1 mr-2 my-0"
-                :style="
-                  `background-color: ${
-                    hiveSet.hex_color ? hiveSet.hex_color : ''
-                  }; border-color: ${
-                    hiveSet.hex_color ? hiveSet.hex_color : ''
-                  };`
-                "
-              >
-                mdi-home-analytics
-              </v-icon>
+              <div :class="mobile ? 'd-flex flex-column' : ''">
+                <div class="d-flex justify-start align-center">
+                  <v-icon
+                    v-if="hiveSet.users && hiveSet.users.length"
+                    class="icon-apiary-shared ml-1 mr-2 my-0"
+                    :style="
+                      `background-color: ${hiveSet.hex_color}; border-color: ${hiveSet.hex_color};`
+                    "
+                  >
+                    mdi-account-multiple
+                  </v-icon>
+                  <v-icon
+                    v-else
+                    class="icon-apiary-owned ml-1 mr-2 my-0"
+                    :style="
+                      `background-color: ${
+                        hiveSet.hex_color ? hiveSet.hex_color : ''
+                      }; border-color: ${
+                        hiveSet.hex_color ? hiveSet.hex_color : ''
+                      };`
+                    "
+                  >
+                    mdi-home-analytics
+                  </v-icon>
 
-              <h4 v-text="hiveSet.name"></h4>
-              <pre
-                v-if="xlView && hiveSet.users && hiveSet.users.length"
-                class="caption hive-set-caption"
-                v-text="
-                  ` (${hiveSet.users.length} ${$tc(
-                    'member',
-                    // eslint-disable-next-line vue/comma-dangle
-                    hiveSet.users.length
-                  )})`
-                "
-              >
-              </pre>
+                  <h4 v-text="hiveSet.name"></h4>
+                </div>
+                <pre
+                  v-if="xlView && hiveSet.users && hiveSet.users.length"
+                  :class="'caption hive-set-caption' + (mobile ? ' ml-7' : '')"
+                  v-text="
+                    ` (${hiveSet.users.length} ${$tc(
+                      'member',
+                      // eslint-disable-next-line vue/comma-dangle
+                      hiveSet.users.length
+                    )})`
+                  "
+                >
+                </pre>
+              </div>
 
               <v-menu>
                 <template v-slot:activator="{ on, attrs }">
@@ -586,7 +590,11 @@
           </div>
         </div>
         <SlideYUpTransition :duration="300">
-          <div v-if="!hideHiveSet(hiveSet)" :key="'HiveSet' + hiveSet.id">
+          <div
+            v-if="!hideHiveSet(hiveSet)"
+            :key="'HiveSet' + hiveSet.id"
+            style="width: 100%;"
+          >
             <ScaleTransition
               :duration="300"
               group
