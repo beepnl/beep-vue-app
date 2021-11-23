@@ -187,60 +187,69 @@
             <h4 v-text="$tc('Invitation', 1) + ': ' + invitation.name"></h4>
           </div>
           <div>
-            <!-- <v-btn
+            <v-btn
               v-if="!mobile"
               tile
               outlined
               class="red--text mb-1 mr-2"
-              :disabled="showLoadingIconForId === invitation.id"
-              @click="
-                checkToken(
-                  invitation.token,
-                  invitation.id,
-                  invitation.name,
-                  // eslint-disable-next-line vue/comma-dangle
-                  true
-                )
-              "
+              :disabled="invitationButtonsDisabled(invitation.id)"
+              @click="confirmDeclineInvitation(invitation)"
             >
               <v-progress-circular
-                v-if="showLoadingIconForId === invitation.id"
+                v-if="showLoadingIcon(invitation.id, true)"
                 class="ml-n1 mr-2"
                 size="18"
                 width="2"
                 color="disabled"
                 indeterminate
               />
-              <v-icon v-if="showLoadingIconForId !== invitation.id" left
+              <v-icon v-if="!showLoadingIcon(invitation.id, true)" left
                 >mdi-close</v-icon
               >
               {{ $t('Decline') }}
-            </v-btn> -->
+            </v-btn>
+            <v-progress-circular
+              v-if="showLoadingIcon(invitation.id, true) && mobile"
+              class="invitation-loading-icon mb-1 mr-2"
+              size="18"
+              width="2"
+              color="disabled"
+              indeterminate
+            />
+            <v-icon
+              v-if="!showLoadingIcon(invitation.id, true) && mobile"
+              dark
+              :disabled="invitationButtonsDisabled(invitation.id)"
+              class="red--text mb-1 mr-2"
+              @click="confirmDeclineInvitation(invitation)"
+            >
+              mdi-close</v-icon
+            >
             <v-btn
               v-if="!mobile"
               tile
               outlined
               class="green--text mb-1"
-              :disabled="showLoadingIconForId === invitation.id"
+              :disabled="invitationButtonsDisabled(invitation.id)"
               @click="
                 checkToken(invitation.token, invitation.id, invitation.name)
               "
             >
               <v-progress-circular
-                v-if="showLoadingIconForId === invitation.id"
+                v-if="showLoadingIcon(invitation.id, false)"
                 class="ml-n1 mr-2"
                 size="18"
                 width="2"
                 color="disabled"
                 indeterminate
               />
-              <v-icon v-if="showLoadingIconForId !== invitation.id" left
+              <v-icon v-if="!showLoadingIcon(invitation.id, false)" left
                 >mdi-check</v-icon
               >
               {{ $t('Accept') }}
             </v-btn>
             <v-progress-circular
-              v-if="showLoadingIconForId === invitation.id && mobile"
+              v-if="showLoadingIcon(invitation.id, false) && mobile"
               class="invitation-loading-icon mb-1"
               size="18"
               width="2"
@@ -248,8 +257,9 @@
               indeterminate
             />
             <v-icon
-              v-if="showLoadingIconForId !== invitation.id && mobile"
+              v-if="!showLoadingIcon(invitation.id, false) && mobile"
               dark
+              :disabled="invitationButtonsDisabled(invitation.id)"
               class="green--text mb-1"
               @click="
                 checkToken(invitation.token, invitation.id, invitation.name)
@@ -722,7 +732,8 @@ export default {
     mView: false,
     xsView: false,
     settings: [],
-    showLoadingIconForId: null,
+    showAcceptLoadingIconById: [],
+    showDeclineLoadingIconById: [],
     ready: false,
     deviceIdArray: [],
     assetsUrl:
@@ -1081,30 +1092,36 @@ export default {
   },
   methods: {
     async checkToken(token, groupId, groupName, decline = false) {
-      this.showLoadingIconForId = groupId
+      if (decline) {
+        this.showDeclineLoadingIconById.push(groupId)
+      } else {
+        this.showAcceptLoadingIconById.push(groupId)
+      }
       try {
         const response = await Api.postRequest('/groups/checktoken', {
           group_id: groupId,
           token: token,
-          // accept: !decline,
+          decline,
         })
         if (!response) {
           this.snackbar.text = this.$i18n.t('something_wrong')
           this.snackbar.show = true
-          this.showLoadingIconForId = null
+          this.stopLoadingIcon(groupId, decline)
         }
         this.snackbar.text = this.$i18n.t('Invitation_accepted')
         this.snackbar.show = true
         setTimeout(() => {
           this.readDevices().then(() => {
             this.readApiariesAndGroups().then(() => {
-              this.hiveSearch = groupName
-              this.showLoadingIconForId = null
+              this.stopLoadingIcon(groupId, decline)
+              if (!decline) {
+                this.hiveSearch = groupName
+              }
             })
           })
         }, 300) // wait for API to update groups
       } catch (error) {
-        this.showLoadingIconForId = null
+        this.stopLoadingIcon(groupId, decline)
         this.handleError(error)
       }
     },
@@ -1199,6 +1216,27 @@ export default {
         return []
       }
     },
+    confirmDeclineInvitation(invitation) {
+      this.$refs.confirm
+        .open(
+          this.$i18n.t('Decline_invitation'),
+          this.$i18n.t('Decline_invitation_sure'),
+          {
+            color: 'red',
+          }
+        )
+        .then((confirm) => {
+          this.checkToken(
+            invitation.token,
+            invitation.id,
+            invitation.name,
+            true
+          )
+        })
+        .catch((reject) => {
+          return true
+        })
+    },
     confirmDeleteApiary(hiveSet) {
       const warningMessage =
         hiveSet.hives.length > 0 ? this.$i18n.t('first_remove_hives') : null
@@ -1271,6 +1309,13 @@ export default {
         return []
       }
     },
+    invitationButtonsDisabled(invitationId) {
+      return (
+        this.showDeclineLoadingIconById
+          .concat(this.showAcceptLoadingIconById)
+          .indexOf(invitationId) > -1
+      )
+    },
     handleError(error) {
       if (error.response) {
         console.log('Error: ', error.response)
@@ -1314,6 +1359,24 @@ export default {
         )
       })
       return sortedHives
+    },
+    showLoadingIcon(invitationId, decline) {
+      return decline
+        ? this.showDeclineLoadingIconById.indexOf(invitationId) > -1
+        : this.showAcceptLoadingIconById.indexOf(invitationId) > -1
+    },
+    stopLoadingIcon(groupId, decline) {
+      if (decline) {
+        this.showDeclineLoadingIconById.splice(
+          this.showDeclineLoadingIconById.indexOf(groupId),
+          1
+        )
+      } else {
+        this.showAcceptLoadingIconById.splice(
+          this.showAcceptLoadingIconById.indexOf(groupId),
+          1
+        )
+      }
     },
     stopTimer() {
       clearInterval(this.alertTimer)

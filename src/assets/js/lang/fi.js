@@ -479,6 +479,7 @@ const translations = {
   created: 'Luotu',
   group_detached: 'Poistuit ryhmästä onnistuneesti',
   group_activated: 'Ryhmäkutsu hyväksytty',
+  group_declined: 'Ryhmäkutsu hylätty',
   group_explanation_1:
     '1. Luo uusi yhteistyöryhmä, jolla on selkeä otsikko ja valinnainen kuvaus',
   group_explanation_2: '2. Kutsu muita BEEP käyttäjiä sähköpostilla',
@@ -883,6 +884,10 @@ const translations = {
   alerts_url_text: 'Lue tukiartikkeli hälytyksistä',
   alerts_support_url:
     'https://beepsupport.freshdesk.com/fi/support/solutions/articles/60000706484-h%C3%A4lytykset',
+
+  Decline: 'Hylkää',
+  Decline_invitation: 'Hylkää kutsu',
+  Decline_invitation_sure: 'Oletko varma, että haluat hylätä ryhmäkutsun?',
 }
 
 export default translations
