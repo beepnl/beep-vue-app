@@ -621,8 +621,8 @@
               :move="checkMove"
               delay="100"
               delay-on-touch-only="true"
-              class="d-flex"
-              @change="moved"
+              class="d-flex flex-wrap"
+              @change="moved($event, hiveSet)"
             >
               <div
                 v-for="hive in sortedHives(hiveSet.hives)"
@@ -1222,6 +1222,29 @@ export default {
         this.handleError(error)
       }
     },
+    async updateHiveOrder(hive, newOrder) {
+      hive.order = newOrder
+      console.log('update hive order', hive.id, newOrder)
+      try {
+        const response = await Api.updateRequest('/hives/', hive.id, hive)
+        if (!response) {
+          this.snackbar.text = this.$i18n.t('not_saved_error')
+          this.snackbar.show = true
+        }
+        return true
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+          const msg = error.response.data.message
+          this.snackbar.text = msg
+        } else {
+          console.log('Error: ', error)
+          this.snackbar.text = this.$i18n.t('something_wrong')
+        }
+        this.snackbar.show = true
+        return false
+      }
+    },
     addDates(hive) {
       if (hive.last_inspection_date !== null) {
         hive.last_inspection_date_moment_from_now = this.momentFromNow(
@@ -1252,15 +1275,40 @@ export default {
       }
     },
     checkMove: function(e) {
-      console.log('check move')
+      console.log('check move', e.draggedContext.futureIndex)
       // console.log('check move', e)
       // console.log('Future index: ' + e.draggedContext.futureIndex)
       // e.draggedContext.element.order = e.draggedContext.futureIndex
     },
-    moved: function(e) {
+    moved: function(e, hiveSet) {
       // console.log(e.moved.element.name, e.moved.element.order, e.moved.newIndex)
-      e.moved.element.order = e.moved.newIndex
-      // e.moved.element.name = 'Verplaatst'
+      const newIndex = e.moved.newIndex
+      // console.log('moved', e, hiveSet)
+      // console.log('moved', newIndex)
+      // temp set new order as newOrder prop
+      this.sortedHives(hiveSet.hives).map((hive, index) => {
+        if (e.moved.element.id === hive.id) {
+          console.log('new index for', hive.id, hive.name, newIndex)
+          // hive.name += ' NEW' + newIndex // for debug
+          hive.newOrder = newIndex
+        } else if (index < newIndex && hive.order === null) {
+          // hive.name += ' ' + index // for debug
+          hive.newOrder = index
+        } else if (index >= newIndex && hive.order !== null) {
+          // hive.name += ' ' + (index + 1) // for debug
+          hive.newOrder = index + 1
+        }
+      })
+      // save each hive
+      hiveSet.hives.map((hive) => {
+        if (hive.newOrder !== undefined) {
+          this.updateHiveOrder(hive, hive.newOrder)
+        }
+      })
+      // reload apiaries
+      setTimeout(() => {
+        this.readApiariesAndGroups()
+      }, 50) // wait for API to update locations/hives
     },
     confirmDeleteApiary(hiveSet) {
       const warningMessage =
