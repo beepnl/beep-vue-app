@@ -187,7 +187,7 @@
             <h4 v-text="$tc('Invitation', 1) + ': ' + invitation.name"></h4>
           </div>
           <div>
-            <v-btn
+            <!-- <v-btn
               v-if="!mobile"
               tile
               outlined
@@ -207,8 +207,8 @@
                 >mdi-close</v-icon
               >
               {{ $t('Decline') }}
-            </v-btn>
-            <v-progress-circular
+            </v-btn> -->
+            <!-- <v-progress-circular
               v-if="showLoadingIcon(invitation.id, true) && mobile"
               class="invitation-loading-icon mb-1 mr-2"
               size="18"
@@ -224,7 +224,7 @@
               @click="confirmDeclineInvitation(invitation)"
             >
               mdi-close</v-icon
-            >
+            > -->
             <v-btn
               v-if="!mobile"
               tile
