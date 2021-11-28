@@ -454,6 +454,7 @@ const translations = {
   created: 'creat',
   group_detached: 'Grupul a fost părăsit cu succes',
   group_activated: 'Invitația în grup a fost acceptată.',
+  group_declined: 'Invitația în grup a fost refuzată',
   group_explanation_1:
     '1. Creați un nou grup de colaborare cu un titlu clar și o descriere opțională',
   group_explanation_2:
@@ -848,6 +849,10 @@ const translations = {
   alerts_url_text: 'Citiți articolul de asistență despre alerte',
   alerts_support_url:
     'https://beepsupport.freshdesk.com/ro/support/solutions/articles/60000706484-alerte',
+
+  Decline: 'Declin',
+  Decline_invitation: 'Refuza invitația',
+  Decline_invitation_sure: 'Sigur doriți să refuzați invitația în grup?',
 }
 
 export default translations

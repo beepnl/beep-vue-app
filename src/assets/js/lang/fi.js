@@ -479,6 +479,7 @@ const translations = {
   created: 'Luotu',
   group_detached: 'Poistuit ryhmästä onnistuneesti',
   group_activated: 'Ryhmäkutsu hyväksytty',
+  group_declined: 'Ryhmäkutsu hylätty',
   group_explanation_1:
     '1. Luo uusi yhteistyöryhmä, jolla on selkeä otsikko ja valinnainen kuvaus',
   group_explanation_2: '2. Kutsu muita BEEP käyttäjiä sähköpostilla',
@@ -826,63 +827,67 @@ const translations = {
     'https://beepsupport.freshdesk.com/fi/support/solutions/articles/60000697129-lataa-beep-perustiedot-bluetoothin-kautta',
 
   // TO BE TRANSLATED TERMS
-  Immediately: 'Immediately',
+  Immediately: 'Välittömästi',
   alertrule_active_no_email_sentence:
-    ', and I open the BEEP app to see the alerts.',
+    ', ja avaan BEEp soveluksen nähdäkseni hälytykset.',
   alertrule_active_email_sentence:
-    ', and I receive alerts via email. In addition, I can see the alerts in the BEEP app.',
-  First_occurence: 'First: ',
-  Last_occurence: 'Last: ',
+    ', ja vastaanotan hälytykset sähköpostiin. Lisäksi näen hälytykset BEEP sovelluksessa.',
+  First_occurence: 'Ensimmäinen: ',
+  Last_occurence: 'Viimeinen: ',
   // default alert rule names:
-  Hive_stability_and_theft: 'Hive stability & Theft',
-  Temperature_sensor_defect: 'Temperature sensor defect',
-  Battery_low: 'Battery voltage low',
-  Honey_harvest: 'Honey harvest',
-  Hive_temperature: 'Hive temperature low',
-  Brood_temperature: 'Brood presence',
-  No_measurements: 'No measurements',
-  Swarm: 'Swarm',
-  Food_supply_low: 'Food supply low',
+  Hive_stability_and_theft: 'Pesän vakaus & varkaukden esto',
+  Temperature_sensor_defect: 'Lämpötila-anturin vika',
+  Battery_low: 'Akun jännite alhainen',
+  Honey_harvest: 'Hunaja sato',
+  Hive_temperature: 'Pesän lämpötila alhainen',
+  Brood_temperature: 'Pesässä sikiöitä',
+  No_measurements: 'Ei mittauksia',
+  Swarm: 'Parvi',
+  Food_supply_low: 'Vähän ruokaa',
   // default alert rule descriptions:
   Weight_drop_is_above_a_set_value:
-    'Weight drop of the hive is above a set value',
-  Temperature_sensor_malfunctions: 'Temperature sensor malfunctions',
+    'Pesän painon pudotus ylittää asetetun arvon',
+  Temperature_sensor_malfunctions: 'Lämpötila-anturin toimintahäiriö',
   Battery_voltage_is_below_a_set_value:
-    'Battery voltage of the device is below a set value',
+    'Laitteen akun jännite on alle asetetun arvon',
   Weight_increase_due_to_nectar_collection_comes_to_a_halt:
-    'Weight increase due to nectar collection comes to a halt',
+    'Medenkeräyksestä johtuva painonnousu pysähtyy',
   Hive_temperature_drops_below_a_set_value:
-    'Hive temperature drops below a set value',
+    'Pesän lämpötila laskee alle asetetun arvon',
   Temperature_in_the_brood_below_a_set_value:
-    'Temperature in the brood has dropped below a set value',
+    'Lämpötila sikiöintialassa on laskenut alle asetetun arvon',
   No_measurement_data_received_in_a_set_time_period:
-    'No measurement data received during a set time period',
+    'Mittaustietoja ei vastaanotettu määritetyn ajanjakson aikana',
   Sudden_weight_drop_triggers_alert_immediately:
-    'Sudden weight drop of the hive triggers an alert immediately. N.B.: this is based on a data transmission interval of 15 minutes. In case your device has a different data transmission interval, you should adjust the threshold value accordingly.',
-  The_hive_weight_is_below_a_set_value: 'Hive weight is below a set value',
+    'Äkillinen pesän painon pudotus laukaisee hälytyksen välittömästi. HUOM: tämä perustuu 15 minuutin tiedonsiirtoväliin. Jos laitteessasi on eri tiedonsiirtoväli, sinun tulee säätää kynnysarvoa vastaavasti.',
+  The_hive_weight_is_below_a_set_value: 'Pesän paino on alle asetetun arvon',
 
-  minute: 'minute | minutes',
+  minute: 'minuutti | minuutit',
   upload_interval_warning_single_interval:
-    'N.B.: the data transmission interval of your device is | N.B.: the data transmission interval of your devices is', // f.e.: ... 15 minutes
+    'HUOM: laitteesi tiedonsiirtoväli on | HUOM: laitteidesi tiedonsiirtoväli on', // f.e.: ... 15 minutes
   upload_interval_warning_interval_range:
-    'N.B.: the data transmission intervals of your devices vary between ', // f.e. ... 5 - 15 minutes
+    'HUOM: laitteidesi tiedonsiirtovälit vaihtelevat välillä ', // f.e. ... 5 - 15 minutes
   not_relevant_for_immediate_calculation:
-    'Not relevant for immediate calculation',
-  Increase: 'Increase',
-  Decrease: 'Decrease',
-  Every_hour: 'Every hour',
-  every_hour: 'every hour',
-  Absolute_value_of_dif: 'Change',
+    'Ei merkitystä välittömässä laskennassa',
+  Increase: 'Nousu',
+  Decrease: 'Lasku',
+  Every_hour: 'Joka tunti',
+  every_hour: 'joka tunti',
+  Absolute_value_of_dif: 'Muutos',
   In_case_of_good_connection_warning:
-    '*Immediately after a measurement is received. This is dependent on the data transmission interval and the reliability of the data connection.',
-  Alertrule_summary_title: 'Summary',
-  Alertrule_settings_title: 'Alert rule settings',
-  Alertrule_exclude_title: 'Exclude periods and hives',
+    '*Välittömästi mittauksen vastaanottamisen jälkeen. Tämä riippuu tiedonsiirtovälistä ja datayhteyden luotettavuudesta.',
+  Alertrule_summary_title: 'Yhteenveto',
+  Alertrule_settings_title: 'Hälytysten asetukset',
+  Alertrule_exclude_title: 'Sulje pois ajanjaksot ja pesät',
   of: '', // better to omit in Finnish
 
   alerts_url_text: 'Lue tukiartikkeli hälytyksistä',
   alerts_support_url:
     'https://beepsupport.freshdesk.com/fi/support/solutions/articles/60000706484-h%C3%A4lytykset',
+
+  Decline: 'Hylkää',
+  Decline_invitation: 'Hylkää kutsu',
+  Decline_invitation_sure: 'Oletko varma, että haluat hylätä ryhmäkutsun?',
 }
 
 export default translations

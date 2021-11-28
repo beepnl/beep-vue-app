@@ -452,6 +452,7 @@ const translations = {
   created: 'erstellt',
   group_detached: 'Die Gruppe erfolgreich verlassen',
   group_activated: 'Gruppeneinladung angenommen',
+  group_declined: 'Gruppeneinladung abgelehnt',
   group_explanation_1:
     '1. Erstellen Sie eine neue Kooperationsgruppe mit einem eindeutigen Titel und einer optionalen Beschreibung.',
   group_explanation_2:
@@ -848,6 +849,11 @@ const translations = {
   alerts_url_text: 'Lesen Sie den Support-Artikel über Alarme',
   alerts_support_url:
     'https://beepsupport.freshdesk.com/de/support/solutions/articles/60000706484-benachrichtigungen',
+
+  Decline: 'Ablehnen',
+  Decline_invitation: 'Einladung ablehnen',
+  Decline_invitation_sure:
+    'Möchten Sie die Gruppeneinladung wirklich ablehnen?',
 }
 
 export default translations

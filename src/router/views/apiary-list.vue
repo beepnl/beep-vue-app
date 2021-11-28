@@ -123,14 +123,14 @@
           </div>
           <v-card-actions class="view-buttons mr-0">
             <v-icon
-              :class="`${xsView ? 'color-accent' : ''} mr-sm-2`"
+              :class="`${xsView ? 'color-accent' : ''} mr-sm-1`"
               @click="toggleGrid('xsView')"
             >
               mdi-size-xs
             </v-icon>
             <v-icon
               v-if="!mobile"
-              :class="`${mView ? 'color-accent' : ''} mr-2`"
+              :class="`${mView ? 'color-accent' : ''} mr-1`"
               @click="toggleGrid('mView')"
             >
               mdi-size-m
@@ -187,31 +187,69 @@
             <h4 v-text="$tc('Invitation', 1) + ': ' + invitation.name"></h4>
           </div>
           <div>
-            <v-btn
+            <!-- <v-btn
               v-if="!mobile"
               tile
               outlined
-              class="green--text mb-1"
-              :disabled="showLoadingIconForId === invitation.id"
-              @click="
-                checkToken(invitation.token, invitation.id, invitation.name)
-              "
+              class="red--text mb-1 mr-2"
+              :disabled="invitationButtonsDisabled(invitation.id)"
+              @click="confirmDeclineInvitation(invitation)"
             >
               <v-progress-circular
-                v-if="showLoadingIconForId === invitation.id"
+                v-if="showLoadingIcon(invitation.id, true)"
                 class="ml-n1 mr-2"
                 size="18"
                 width="2"
                 color="disabled"
                 indeterminate
               />
-              <v-icon v-if="showLoadingIconForId !== invitation.id" left
+              <v-icon v-if="!showLoadingIcon(invitation.id, true)" left
+                >mdi-close</v-icon
+              >
+              {{ $t('Decline') }}
+            </v-btn> -->
+            <!-- <v-progress-circular
+              v-if="showLoadingIcon(invitation.id, true) && mobile"
+              class="invitation-loading-icon mb-1 mr-2"
+              size="18"
+              width="2"
+              color="disabled"
+              indeterminate
+            />
+            <v-icon
+              v-if="!showLoadingIcon(invitation.id, true) && mobile"
+              dark
+              :disabled="invitationButtonsDisabled(invitation.id)"
+              class="red--text mb-1 mr-2"
+              @click="confirmDeclineInvitation(invitation)"
+            >
+              mdi-close</v-icon
+            > -->
+            <v-btn
+              v-if="!mobile"
+              tile
+              outlined
+              class="green--text mb-1"
+              :disabled="invitationButtonsDisabled(invitation.id)"
+              @click="
+                checkToken(invitation.token, invitation.id, invitation.name)
+              "
+            >
+              <v-progress-circular
+                v-if="showLoadingIcon(invitation.id, false)"
+                class="ml-n1 mr-2"
+                size="18"
+                width="2"
+                color="disabled"
+                indeterminate
+              />
+              <v-icon v-if="!showLoadingIcon(invitation.id, false)" left
                 >mdi-check</v-icon
               >
               {{ $t('Accept') }}
             </v-btn>
             <v-progress-circular
-              v-if="showLoadingIconForId === invitation.id && mobile"
+              v-if="showLoadingIcon(invitation.id, false) && mobile"
               class="invitation-loading-icon mb-1"
               size="18"
               width="2"
@@ -219,8 +257,9 @@
               indeterminate
             />
             <v-icon
-              v-if="showLoadingIconForId !== invitation.id && mobile"
+              v-if="!showLoadingIcon(invitation.id, false) && mobile"
               dark
+              :disabled="invitationButtonsDisabled(invitation.id)"
               class="green--text mb-1"
               @click="
                 checkToken(invitation.token, invitation.id, invitation.name)
@@ -298,42 +337,46 @@
             style="width: 100%;"
           >
             <div class="d-flex justify-start align-center">
-              <v-icon
-                v-if="hiveSet.users && hiveSet.users.length"
-                class="icon-apiary-shared ml-1 mr-2 my-0"
-                :style="
-                  `background-color: ${hiveSet.hex_color}; border-color: ${hiveSet.hex_color};`
-                "
-              >
-                mdi-account-multiple
-              </v-icon>
-              <v-icon
-                v-else
-                class="icon-apiary-owned ml-1 mr-2 my-0"
-                :style="
-                  `background-color: ${
-                    hiveSet.hex_color ? hiveSet.hex_color : ''
-                  }; border-color: ${
-                    hiveSet.hex_color ? hiveSet.hex_color : ''
-                  };`
-                "
-              >
-                mdi-home-analytics
-              </v-icon>
+              <div :class="mobile ? 'd-flex flex-column' : ''">
+                <div class="d-flex justify-start align-center">
+                  <v-icon
+                    v-if="hiveSet.users && hiveSet.users.length"
+                    class="icon-apiary-shared ml-1 mr-2 my-0"
+                    :style="
+                      `background-color: ${hiveSet.hex_color}; border-color: ${hiveSet.hex_color};`
+                    "
+                  >
+                    mdi-account-multiple
+                  </v-icon>
+                  <v-icon
+                    v-else
+                    class="icon-apiary-owned ml-1 mr-2 my-0"
+                    :style="
+                      `background-color: ${
+                        hiveSet.hex_color ? hiveSet.hex_color : ''
+                      }; border-color: ${
+                        hiveSet.hex_color ? hiveSet.hex_color : ''
+                      };`
+                    "
+                  >
+                    mdi-home-analytics
+                  </v-icon>
 
-              <h4 v-text="hiveSet.name"></h4>
-              <pre
-                v-if="xlView && hiveSet.users && hiveSet.users.length"
-                class="caption hive-set-caption"
-                v-text="
-                  ` (${hiveSet.users.length} ${$tc(
-                    'member',
-                    // eslint-disable-next-line vue/comma-dangle
-                    hiveSet.users.length
-                  )})`
-                "
-              >
-              </pre>
+                  <h4 v-text="hiveSet.name"></h4>
+                </div>
+                <pre
+                  v-if="xlView && hiveSet.users && hiveSet.users.length"
+                  :class="'caption hive-set-caption' + (mobile ? ' ml-7' : '')"
+                  v-text="
+                    ` (${hiveSet.users.length} ${$tc(
+                      'member',
+                      // eslint-disable-next-line vue/comma-dangle
+                      hiveSet.users.length
+                    )})`
+                  "
+                >
+                </pre>
+              </div>
 
               <v-menu>
                 <template v-slot:activator="{ on, attrs }">
@@ -547,7 +590,11 @@
           </div>
         </div>
         <SlideYUpTransition :duration="300">
-          <div v-if="!hideHiveSet(hiveSet)" :key="'HiveSet' + hiveSet.id">
+          <div
+            v-if="!hideHiveSet(hiveSet)"
+            :key="'HiveSet' + hiveSet.id"
+            style="width: 100%;"
+          >
             <ScaleTransition
               :duration="300"
               group
@@ -693,7 +740,8 @@ export default {
     mView: false,
     xsView: false,
     settings: [],
-    showLoadingIconForId: null,
+    showAcceptLoadingIconById: [],
+    showDeclineLoadingIconById: [],
     ready: false,
     deviceIdArray: [],
     assetsUrl:
@@ -1051,30 +1099,37 @@ export default {
     this.stopTimer()
   },
   methods: {
-    async checkToken(token, groupId, groupName) {
-      this.showLoadingIconForId = groupId
+    async checkToken(token, groupId, groupName, decline = false) {
+      if (decline) {
+        this.showDeclineLoadingIconById.push(groupId)
+      } else {
+        this.showAcceptLoadingIconById.push(groupId)
+      }
       try {
         const response = await Api.postRequest('/groups/checktoken', {
           group_id: groupId,
           token: token,
+          decline,
         })
         if (!response) {
           this.snackbar.text = this.$i18n.t('something_wrong')
           this.snackbar.show = true
-          this.showLoadingIconForId = null
+          this.stopLoadingIcon(groupId, decline)
         }
         this.snackbar.text = this.$i18n.t('Invitation_accepted')
         this.snackbar.show = true
         setTimeout(() => {
           this.readDevices().then(() => {
             this.readApiariesAndGroups().then(() => {
-              this.hiveSearch = groupName
-              this.showLoadingIconForId = null
+              this.stopLoadingIcon(groupId, decline)
+              if (!decline) {
+                this.hiveSearch = groupName
+              }
             })
           })
         }, 300) // wait for API to update groups
       } catch (error) {
-        this.showLoadingIconForId = null
+        this.stopLoadingIcon(groupId, decline)
         this.handleError(error)
       }
     },
@@ -1169,6 +1224,27 @@ export default {
         return []
       }
     },
+    confirmDeclineInvitation(invitation) {
+      this.$refs.confirm
+        .open(
+          this.$i18n.t('Decline_invitation'),
+          this.$i18n.t('Decline_invitation_sure'),
+          {
+            color: 'red',
+          }
+        )
+        .then((confirm) => {
+          this.checkToken(
+            invitation.token,
+            invitation.id,
+            invitation.name,
+            true
+          )
+        })
+        .catch((reject) => {
+          return true
+        })
+    },
     confirmDeleteApiary(hiveSet) {
       const warningMessage =
         hiveSet.hives.length > 0 ? this.$i18n.t('first_remove_hives') : null
@@ -1241,6 +1317,13 @@ export default {
         return []
       }
     },
+    invitationButtonsDisabled(invitationId) {
+      return (
+        this.showDeclineLoadingIconById
+          .concat(this.showAcceptLoadingIconById)
+          .indexOf(invitationId) > -1
+      )
+    },
     handleError(error) {
       if (error.response) {
         console.log('Error: ', error.response)
@@ -1284,6 +1367,24 @@ export default {
         )
       })
       return sortedHives
+    },
+    showLoadingIcon(invitationId, decline) {
+      return decline
+        ? this.showDeclineLoadingIconById.indexOf(invitationId) > -1
+        : this.showAcceptLoadingIconById.indexOf(invitationId) > -1
+    },
+    stopLoadingIcon(groupId, decline) {
+      if (decline) {
+        this.showDeclineLoadingIconById.splice(
+          this.showDeclineLoadingIconById.indexOf(groupId),
+          1
+        )
+      } else {
+        this.showAcceptLoadingIconById.splice(
+          this.showAcceptLoadingIconById.indexOf(groupId),
+          1
+        )
+      }
     },
     stopTimer() {
       clearInterval(this.alertTimer)

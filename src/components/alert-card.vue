@@ -76,7 +76,7 @@
                   v-if="hives[alert.hive_id] !== undefined"
                   cols="3"
                   sm="2"
-                  class="hive-icon-wrapper mt-1 ml-1 ml-md-0 ml-lg-n2 mr-1 mr-md-0 mr-lg-n2 d-flex flex-column justify-start align-center pa-0"
+                  class="hive-icon-wrapper mt-1 ml-1 ml-md-0 ml-lg-n2 mr-1 mr-md-0 mr-lg-n2 d-flex flex-column justify-end align-center pa-0"
                 >
                   <HiveIcon
                     :hive="hives[alert.hive_id]"

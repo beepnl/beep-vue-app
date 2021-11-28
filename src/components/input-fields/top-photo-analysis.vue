@@ -13,7 +13,7 @@
     <!-- <div :class="`rounded-border ${bulkInspection ? 'input-disabled' : ''}`"> -->
     <v-card outlined class="pa-3">
       <div class="border-bottom">
-        <h4>Top Photo Aanalysis protocol (EN)</h4>
+        <h4>Top Photo Analysis protocol (EN)</h4>
         <ol>
           <li>Blow a puff of smoke into the hive from below.</li>
           <li
@@ -217,7 +217,7 @@ export default {
       colonySize: null,
       maxBroodLayers: 5,
       broodLayersForCalculation: 0,
-      maxFrames: 20,
+      maxFrames: 24,
       framesForCalculation: 0,
       assetsUrl:
         process.env.VUE_APP_ASSETS_URL ||

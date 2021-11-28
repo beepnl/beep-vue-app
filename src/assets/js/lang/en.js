@@ -438,6 +438,7 @@ const translations = {
   created: 'created',
   group_detached: 'Successfully left the group',
   group_activated: 'Group invitation accepted',
+  group_declined: 'Group invitation declined',
 
   /* New translations v2.2.0 */
   roofed: 'Does the apiary have a roof?',
@@ -830,6 +831,11 @@ const translations = {
   alerts_url_text: 'Read the support article about alerts',
   alerts_support_url:
     'https://beepsupport.freshdesk.com/nl/support/solutions/articles/60000706484-alerts',
+
+  Decline: 'Decline',
+  Decline_invitation: 'Decline invitation',
+  Decline_invitation_sure:
+    'Are you sure you would like to decline the group invitation?',
 }
 
 export default translations

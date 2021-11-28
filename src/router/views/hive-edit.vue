@@ -487,7 +487,10 @@ export default {
     async updateHive() {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
-        this.activeHive.frames = this.activeHive.layers[0].framecount
+        this.activeHive.frames =
+          this.activeHive.layers.length > 0
+            ? this.activeHive.layers[0].framecount
+            : 10
         try {
           const response = await Api.updateRequest(
             '/hives/',

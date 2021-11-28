@@ -32,11 +32,16 @@
                 <div class="beep-label" v-text="`${$t('Hive_frames')}`"></div>
                 <el-input-number
                   v-if="hive && hive.layers"
-                  v-model="hive.layers[0].framecount"
+                  :value="
+                    hive.layers.length > 0
+                      ? hive.layers[0].framecount
+                      : defaultFrameCount
+                  "
                   :min="1"
-                  :max="20"
+                  :max="24"
                   :step="1"
                   :precision="0"
+                  :disabled="hive.layers.length === 0"
                   size="medium"
                   @change="
                     updateHiveLayers(
@@ -90,6 +95,7 @@
               :hive="hive"
               :color-preview="colorPreview"
               :color-picker-value="colorPickerValue"
+              @update-defaultframecount="defaultFrameCount = $event"
             ></HiveFactory>
           </v-col>
 
@@ -236,6 +242,7 @@ export default {
       colorPreview: false,
       colorPickerValue: '',
       ready: false,
+      defaultFrameCount: 10,
     }
   },
   computed: {

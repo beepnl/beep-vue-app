@@ -451,6 +451,8 @@ const translations = {
   created: 'creado',
   group_detached: 'Salió con éxito del grupo',
   group_activated: 'Invitación de grupo aceptada',
+  group_declined: 'Invitación de grupo rechazada',
+
   group_explanation_1:
     '1. Crear un nuevo grupo de cooperación con un título y una descripción opcional',
   group_explanation_2:
@@ -852,6 +854,11 @@ const translations = {
   alerts_url_text: 'Lea el artículo de soporte sobre alertas',
   alerts_support_url:
     'https://beepsupport.freshdesk.com/es/support/solutions/articles/60000706484-alertas',
+
+  Decline: 'Rechazar',
+  Decline_invitation: 'Rechazar invitación',
+  Decline_invitation_sure:
+    '¿Estás seguro de que deseas rechazar la invitación grupal?',
 }
 
 export default translations

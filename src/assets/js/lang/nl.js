@@ -484,6 +484,7 @@ const translations = {
   created: 'aangemakt',
   group_detached: 'Succesvol uit de groep gestapt',
   group_activated: 'Groepsuitnodiging geaccepteerd',
+  group_declined: 'Groupsuitnodiging afgewezen',
   group_explanation_1:
     '1. Maak een nieuwe samenwerkingsgroep aan met een duidelijke titel en evt. beschrijving',
   group_explanation_2:
@@ -882,6 +883,10 @@ const translations = {
     'Lees hier het support artikel over het instellen van alerts',
   alerts_support_url:
     'https://beepsupport.freshdesk.com/nl/support/solutions/articles/60000706484-notificaties',
+
+  Decline: 'Afwijzen',
+  Decline_invitation: 'Uitnodiging afwijzen',
+  Decline_invitation_sure: 'Weet je zeker dat je de uitnodiging wilt afwijzen?',
 }
 
 export default translations
