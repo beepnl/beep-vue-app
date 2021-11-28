@@ -14,7 +14,7 @@
       :class="
         'hive-icon-layers' +
           (hive.layers.length === 0 ? ' hive-icon-layers--empty' : '') +
-          (dragHivesMode ? ' wobble' : '')
+          (dragHivesMode && draggable ? ' wobble' : '')
       "
       :style="`${showHive ? 'z-index: 6;' : ''}`"
     >
@@ -47,6 +47,10 @@ export default {
       default: false,
     },
     showHive: {
+      type: Boolean,
+      default: false,
+    },
+    draggable: {
       type: Boolean,
       default: false,
     },

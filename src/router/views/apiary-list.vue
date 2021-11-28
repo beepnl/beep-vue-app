@@ -617,7 +617,7 @@
             <draggable
               v-if="dragHivesMode"
               :list="sortedHives(hiveSet.hives)"
-              :disabled="!dragHivesMode"
+              :disabled="!dragHivesMode || (hiveSet.users && !hiveSet.admin)"
               :move="checkMove"
               delay="100"
               delay-on-touch-only="true"

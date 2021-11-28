@@ -104,6 +104,7 @@
         <HiveIcon
           :hive="hive"
           :show-hive="showMenu"
+          :draggable="(hiveSet.users && hiveSet.admin) || !hiveSet.users"
           @show-hive-menu="showHiveMenu($event)"
         ></HiveIcon>
 
