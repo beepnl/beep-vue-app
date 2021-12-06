@@ -8,7 +8,7 @@
           <div
             class="filter-buttons filter-buttons--has-max d-flex flex-row justify-flex-start align-center"
           >
-            <v-col class="pa-3">
+            <v-col :class="tinyScreen ? 'px-2 py-3' : 'pa-3'">
               <v-text-field
                 v-model="hiveSearch"
                 :label="`${$t('Search')}`"
@@ -95,7 +95,7 @@
                     filterByImpression.includes(1)
                       ? 'red--text'
                       : 'color-grey-filter'
-                  } mr-2`
+                  } ${tinyScreen ? 'mr-1' : 'mr-2'}`
                 "
                 @click="filterByImpression = 1"
               >
@@ -121,7 +121,9 @@
               </v-icon>
               <v-icon
                 :class="
-                  `ml-1 ${dragHivesMode ? 'color-accent' : 'color-grey-filter'}`
+                  `ml-sm-1 ${
+                    dragHivesMode ? 'color-accent' : 'color-grey-filter'
+                  }`
                 "
                 @click="dragHivesMode = !dragHivesMode"
               >
@@ -130,24 +132,28 @@
             </v-card-actions>
           </div>
           <v-card-actions class="view-buttons mr-0">
-            <v-icon
-              :class="`${xsView ? 'color-accent' : ''} mr-sm-2`"
-              @click="toggleGrid('xsView')"
-            >
-              mdi-size-xs
-            </v-icon>
-            <v-icon
-              v-if="!mobile"
-              :class="`${mView ? 'color-accent' : ''} mr-2`"
-              @click="toggleGrid('mView')"
-            >
-              mdi-size-m
-            </v-icon>
-            <v-icon
-              :class="`${xlView ? 'color-accent' : ''}`"
-              @click="toggleGrid('xlView')"
-            >
-              mdi-size-xl
+            <div v-if="!mobile">
+              <v-icon
+                :class="`${xsView ? 'color-accent' : ''} mr-sm-2`"
+                @click="toggleGrid('xsView')"
+              >
+                mdi-size-xs
+              </v-icon>
+              <v-icon
+                :class="`${mView ? 'color-accent' : ''} mr-2`"
+                @click="toggleGrid('mView')"
+              >
+                mdi-size-m
+              </v-icon>
+              <v-icon
+                :class="`${xlView ? 'color-accent' : ''}`"
+                @click="toggleGrid('xlView')"
+              >
+                mdi-size-xl
+              </v-icon>
+            </div>
+            <v-icon v-else @click="toggleGrid(xsView ? 'xlView' : 'xsView')">
+              {{ xsView ? 'mdi-size-xl' : 'mdi-size-xs' }}
             </v-icon>
           </v-card-actions>
         </v-row>
@@ -591,7 +597,7 @@
               group
               class="hive-item-transition-wrapper"
             >
-              <template v-for="hive in sortedHives(hiveSet.hives)">
+              <template v-for="hive in hiveSet.hives">
                 <v-col
                   :key="'Hive ' + hive.id"
                   sm="auto"
@@ -616,8 +622,9 @@
             </ScaleTransition>
             <draggable
               v-if="dragHivesMode"
-              :list="sortedHives(hiveSet.hives)"
+              :list="hiveSet.hives"
               :disabled="!dragHivesMode || (hiveSet.users && !hiveSet.admin)"
+              group="Test"
               :move="checkMove"
               delay="100"
               delay-on-touch-only="true"
@@ -625,7 +632,7 @@
               @change="moved($event, hiveSet)"
             >
               <div
-                v-for="hive in sortedHives(hiveSet.hives)"
+                v-for="hive in hiveSet.hives"
                 :key="'Hive ' + hive.id"
                 :class="
                   `hive-item ${xlView ? 'xl-view' : ''} ${
@@ -727,9 +734,11 @@ import {
 } from '@mixins/momentMixin'
 import {
   checkAlerts,
+  readApiaries,
   readApiariesAndGroups,
   readDevices,
   readGeneralInspections,
+  readGroups,
   toggleFilterByGroup,
 } from '@mixins/methodsMixin'
 import { ScaleTransition, SlideYUpTransition } from 'vue2-transitions'
@@ -748,9 +757,11 @@ export default {
     momentFromNow,
     momentify,
     momentifyDayMonth,
+    readApiaries,
     readApiariesAndGroups,
     readDevices,
     readGeneralInspections,
+    readGroups,
     toggleFilterByGroup,
   ],
   data: () => ({
@@ -1149,7 +1160,7 @@ export default {
         this.snackbar.show = true
         setTimeout(() => {
           this.readDevices().then(() => {
-            this.readApiariesAndGroups().then(() => {
+            this.readGroups().then(() => {
               this.hiveSearch = groupName
               this.showLoadingIconForId = null
             })
@@ -1184,7 +1195,7 @@ export default {
           this.snackbar.show = true
         }
         setTimeout(() => {
-          this.readApiariesAndGroups()
+          this.readGroups()
           this.readGeneralInspections()
         }, 100) // wait for API to update locations/hives
       } catch (error) {
@@ -1199,7 +1210,7 @@ export default {
           this.snackbar.show = true
         }
         setTimeout(() => {
-          this.readApiariesAndGroups()
+          this.readGroups()
           this.readGeneralInspections()
         }, 100) // wait for API to update locations/hives
       } catch (error) {
@@ -1222,15 +1233,84 @@ export default {
         this.handleError(error)
       }
     },
-    async updateHiveOrder(hive, newOrder) {
-      hive.order = newOrder
-      console.log('update hive order', hive.id, newOrder)
+    async updateGroup(group) {
+      // console.log('update Group', group.name)
+      group.hives_editable = group.hives
+        .filter((hive) => hive.editable === true)
+        .map((hive) => {
+          return hive.id
+        })
+      group.hives_selected = group.hives.map((hive) => {
+        return hive.id
+      })
       try {
-        const response = await Api.updateRequest('/hives/', hive.id, hive)
+        const response = await Api.updateRequest('/groups/', group.id, group)
+        if (!response) {
+          this.errorMessage =
+            this.$i18n.t('Error') + ': ' + this.$i18n.t('not_saved_error')
+        }
+        setTimeout(() => {
+          return this.readGroups()
+        }, 50) // wait for API to update groups and for user to read success message
+      } catch (error) {
+        if (error.response) {
+          const msg = error.response.data.error
+          this.errorMessage = msg
+          console.log(error.response)
+        } else {
+          this.errorMessage = this.$i18n.t('empty_fields')
+          console.log('Error: ', error)
+        }
+      }
+    },
+    async updateHiveOrder(hive, newOrder) {
+      var updatedHive = { ...hive }
+      updatedHive.order = newOrder
+      updatedHive.frames = updatedHive.layers.length
+        ? updatedHive.layers[0].framecount
+        : 10
+      // console.log('update hive order', updatedHive.id, newOrder)
+      try {
+        const response = await Api.updateRequest(
+          '/hives/',
+          updatedHive.id,
+          updatedHive
+        )
         if (!response) {
           this.snackbar.text = this.$i18n.t('not_saved_error')
           this.snackbar.show = true
         }
+        return true
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+          const msg = error.response.data.message
+          this.snackbar.text = msg
+        } else {
+          console.log('Error: ', error)
+          this.snackbar.text = this.$i18n.t('something_wrong')
+        }
+        this.snackbar.show = true
+        return false
+      }
+    },
+    async updateHivesOrder(hives) {
+      try {
+        await Promise.all(
+          hives.map(async (hive) => {
+            // if hive order has changed, update hive
+            if (
+              hive.updated ||
+              (hive.newOrder !== undefined && hive.order !== hive.newOrder)
+            ) {
+              await this.updateHiveOrder(hive, hive.newOrder)
+            }
+            // return true
+          })
+        )
+        setTimeout(() => {
+          this.readApiaries()
+        }, 50) // wait for API to update locations/hives
         return true
       } catch (error) {
         if (error.response) {
@@ -1275,40 +1355,71 @@ export default {
       }
     },
     checkMove: function(e) {
-      console.log('check move', e.draggedContext.futureIndex)
-      // console.log('check move', e)
-      // console.log('Future index: ' + e.draggedContext.futureIndex)
+      // console.log('check move', e.draggedContext.futureIndex)
       // e.draggedContext.element.order = e.draggedContext.futureIndex
     },
     moved: function(e, hiveSet) {
+      if (!hiveSet.users) {
+        if (e.moved !== undefined) {
+          // console.log('moved', e.moved.element.name, 'to', hiveSet.name, 'to index', e.moved.newIndex)
+          const newIndex = e.moved.newIndex
+          hiveSet.hives.map((hive, index) => {
+            if (e.moved.element.id === hive.id) {
+              // console.log('new index for', hive.id, hive.name, newIndex)
+              hive.newOrder = newIndex
+            } else if (
+              index < newIndex ||
+              (index >= newIndex && hive.order !== null)
+            ) {
+              hive.newOrder = index
+            }
+          })
+        } else if (e.added !== undefined) {
+          // console.log('added',e.added.element.name,'to',hiveSet.name,'to index',e.added.newIndex)
+          const newIndex = e.added.newIndex
+          hiveSet.hives.map((hive, index) => {
+            if (e.added.element.id === hive.id) {
+              // console.log('new index & hiveset for', hive.id, hive.name, newIndex)
+              hive.location = hiveSet.name
+              hive.location_id = hiveSet.id
+              hive.newOrder = newIndex
+              hive.updated = true
+            } else if (
+              index < newIndex ||
+              (hive.order !== null && hive.order >= newIndex)
+            ) {
+              hive.newOrder = index
+            }
+          })
+        } else if (e.removed !== undefined) {
+          // console.log('removed',e.removed.element.name,'from',hiveSet.name,'from index',e.removed.oldIndex)
+          const oldIndex = e.removed.oldIndex
+          hiveSet.hives.map((hive, index) => {
+            if (hive.order !== null && hive.order >= oldIndex) {
+              hive.newOrder = hive.order - 1
+            }
+          })
+        }
+        this.updateHivesOrder(hiveSet.hives)
+      } else {
+        this.updateGroup(hiveSet)
+      }
+      // console.log(e, hiveSet.id)
       // console.log(e.moved.element.name, e.moved.element.order, e.moved.newIndex)
-      const newIndex = e.moved.newIndex
-      // console.log('moved', e, hiveSet)
-      // console.log('moved', newIndex)
-      // temp set new order as newOrder prop
-      this.sortedHives(hiveSet.hives).map((hive, index) => {
-        if (e.moved.element.id === hive.id) {
-          console.log('new index for', hive.id, hive.name, newIndex)
-          // hive.name += ' NEW' + newIndex // for debug
-          hive.newOrder = newIndex
-        } else if (index < newIndex && hive.order === null) {
-          // hive.name += ' ' + index // for debug
-          hive.newOrder = index
-        } else if (index >= newIndex && hive.order !== null) {
-          // hive.name += ' ' + (index + 1) // for debug
-          hive.newOrder = index + 1
-        }
-      })
-      // save each hive
-      hiveSet.hives.map((hive) => {
-        if (hive.newOrder !== undefined) {
-          this.updateHiveOrder(hive, hive.newOrder)
-        }
-      })
-      // reload apiaries
-      setTimeout(() => {
-        this.readApiariesAndGroups()
-      }, 50) // wait for API to update locations/hives
+      // const newIndex = e.moved.newIndex
+      // // temp set new order as newOrder prop
+      // // this.sortedHives(hiveSet.hives).map((hive, index) => {
+      // hiveSet.hives.map((hive, index) => {
+      //   if (e.moved.element.id === hive.id) {
+      //     console.log('new index for', hive.id, hive.name, newIndex)
+      //     hive.newOrder = newIndex
+      //   } else if (index < newIndex) {
+      //     hive.newOrder = index
+      //   } else if (index >= newIndex && hive.order !== null) {
+      //     hive.newOrder = index + 1
+      //   }
+      // })
+      // this.updateHivesOrder(hiveSet.hives)
     },
     confirmDeleteApiary(hiveSet) {
       const warningMessage =
@@ -1423,6 +1534,19 @@ export default {
               })
             : 0)
         )
+        // var aOrder = a.newOrder !== undefined ? a.newOrder : a.order
+        // var bOrder = b.newOrder !== undefined ? b.newOrder : b.order
+        // return (
+        //   (aOrder === null) - (bOrder === null) ||
+        //   +(aOrder > bOrder) ||
+        //   -(aOrder < bOrder) ||
+        //   (aOrder === bOrder && a.name !== null && b.name !== null
+        //     ? a.name.localeCompare(b.name, undefined, {
+        //         numeric: true,
+        //         sensitivity: 'base',
+        //       })
+        //     : 0)
+        // )
       })
       return sortedHives
     },
@@ -1538,6 +1662,11 @@ export default {
     }
   }
 }
+
+// .sortable-drag {
+//   position: inherit;
+//   background-color: green;
+// }
 
 .invitation-loading-icon {
   margin-top: 6px;

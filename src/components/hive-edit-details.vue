@@ -356,7 +356,9 @@ export default {
         value = event
       }
       this.hive[property] = value
-      this.hive.frames = this.hive.layers[0].framecount
+      this.hive.frames = this.hive.layers.length
+        ? this.hive.layers[0].framecount
+        : this.defaultFrameCount
       this.setHiveEdited(true)
       this.setApiaryEdited(true)
     },
@@ -364,7 +366,9 @@ export default {
       this.hive.layers.forEach((layer) => {
         layer[property] = value
       })
-      this.hive.frames = this.hive.layers[0].framecount
+      this.hive.frames = this.hive.layers.length
+        ? this.hive.layers[0].framecount
+        : this.defaultFrameCount
       this.setHiveEdited(true)
       this.setApiaryEdited(true)
       if (property === 'color') {
