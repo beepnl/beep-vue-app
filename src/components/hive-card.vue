@@ -52,7 +52,12 @@
     </v-row>
 
     <div class="hive-details d-flex flex-no-wrap justify-flex-start align-end">
-      <div class="hive-icon-wrapper d-flex flex-column align-center">
+      <div
+        :class="
+          'hive-icon-wrapper d-flex flex-column align-center ' +
+            (!draggable(hiveSet) ? 'not-draggable' : '')
+        "
+      >
         <div
           v-if="xsView"
           :class="
@@ -104,7 +109,7 @@
         <HiveIcon
           :hive="hive"
           :show-hive="showMenu"
-          :draggable="(hiveSet.users && hiveSet.admin) || !hiveSet.users"
+          :draggable="draggable(hiveSet)"
           @show-hive-menu="showHiveMenu($event)"
         ></HiveIcon>
 
@@ -569,6 +574,9 @@ export default {
     confirmDeleteHive(hive) {
       this.$emit('confirm-delete-hive', hive)
     },
+    draggable(hiveSet) {
+      return (hiveSet.users && hiveSet.admin) || !hiveSet.users
+    },
     hasLayer(type) {
       return this.hive.layers.some((layer) => layer.type === type)
     },
@@ -650,6 +658,9 @@ export default {
 
     .hive-icon-wrapper {
       cursor: pointer;
+      &.not-draggable {
+        cursor: not-allowed;
+      }
     }
 
     .hive-details-item {

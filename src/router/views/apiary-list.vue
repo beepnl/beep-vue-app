@@ -623,12 +623,11 @@
             <draggable
               v-if="dragHivesMode"
               :list="hiveSet.hives"
-              :disabled="!dragHivesMode || (hiveSet.users && !hiveSet.admin)"
+              :disabled="!dragHivesMode || !draggable(hiveSet)"
               group="Test"
-              :move="checkMove"
               delay="100"
               delay-on-touch-only="true"
-              class="d-flex flex-wrap"
+              class="draggable-hive-item-wrapper"
               @change="moved($event, hiveSet)"
             >
               <div
@@ -1354,9 +1353,8 @@ export default {
         return []
       }
     },
-    checkMove: function(e) {
-      // console.log('check move', e.draggedContext.futureIndex)
-      // e.draggedContext.element.order = e.draggedContext.futureIndex
+    draggable(hiveSet) {
+      return (hiveSet.users && hiveSet.admin) || !hiveSet.users
     },
     moved: function(e, hiveSet) {
       if (!hiveSet.users) {
@@ -1641,7 +1639,8 @@ export default {
       font-weight: 600;
     }
   }
-  .hive-item-transition-wrapper {
+  .hive-item-transition-wrapper,
+  .draggable-hive-item-wrapper {
     display: flex;
     flex-wrap: wrap;
     @include for-phone-only {

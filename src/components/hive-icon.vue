@@ -179,45 +179,31 @@ export default {
 }
 
 .wobble {
-  animation: wobble 1s infinite;
+  animation: wobble 0.3s infinite;
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
 }
+
 @keyframes wobble {
-  0%,
+  0% {
+    -webkit-transform: translateX(0%);
+    transform: translateX(0%);
+  }
+
+  33% {
+    -webkit-transform: rotate(calc(-2deg));
+    transform: rotate(calc(-2deg));
+  }
+
+  66% {
+    -webkit-transform: rotate(calc(2deg));
+    transform: rotate(calc(2deg));
+  }
+
   100% {
     -webkit-transform: translateX(0%);
     transform: translateX(0%);
-    -webkit-transform-origin: 50% 50%;
-    transform-origin: 50% 50%;
-  }
-
-  15% {
-    -webkit-transform: translateX(-4px) rotate(-1deg);
-    transform: translateX(-4px) rotate(-1deg);
-  }
-
-  30% {
-    -webkit-transform: translateX(calc(4px / 2)) rotate(1deg);
-    transform: translateX(calc(4px / 2)) rotate(1deg);
-  }
-
-  45% {
-    -webkit-transform: translateX(calc(-4px / 2)) rotate(calc(-1deg / 1.8));
-    transform: translateX(calc(-4px / 2)) rotate(calc(-1deg / 1.8));
-  }
-
-  60% {
-    -webkit-transform: translateX(calc(4px / 3.3)) rotate(calc(1deg / 3));
-    transform: translateX(calc(4px / 3.3)) rotate(calc(1deg / 3));
-  }
-
-  75% {
-    -webkit-transform: translateX(calc(-4px / 3.3)) rotate(calc(-1deg / 5));
-    transform: translateX(calc(-4px / 3.3)) rotate(calc(-1deg / 5));
-  }
-
-  90% {
-    -webkit-transform: translateX(calc(4px / 2)) rotate(1deg);
-    transform: translateX(calc(4px / 2)) rotate(1deg);
   }
 }
 </style>
