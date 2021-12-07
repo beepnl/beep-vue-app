@@ -27,8 +27,11 @@ export const mutations = {
   setGroupEdited: function(state, bool) {
     state.groupEdited = bool
   },
-  setGroups: function(state, payload) {
-    state.groups = payload
+  setGroups: function(state, groups) {
+    groups.map((group) => {
+      group.hives = sortedHives(group.hives)
+    })
+    state.groups = groups
   },
   setInvitations: function(state, payload) {
     state.invitations = payload
@@ -41,4 +44,27 @@ export const mutations = {
 }
 export const actions = {
   ...resource.actions,
+}
+
+// ===
+// Private helpers
+// ===
+
+function sortedHives(hives) {
+  const sortedHives = hives.slice().sort(function(a, b) {
+    // order = null comes last
+    // if order is equal, sort by name with number sensitivity (10 comes after 2 instead of 1)
+    return (
+      (a.order === null) - (b.order === null) ||
+      +(a.order > b.order) ||
+      -(a.order < b.order) ||
+      (a.order === b.order && a.name !== null && b.name !== null
+        ? a.name.localeCompare(b.name, undefined, {
+            numeric: true,
+            sensitivity: 'base',
+          })
+        : 0)
+    )
+  })
+  return sortedHives
 }

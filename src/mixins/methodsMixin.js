@@ -227,10 +227,6 @@ export const readApiaries = {
     async readApiaries() {
       try {
         const responseApiaries = await Api.readRequest('/locations')
-        responseApiaries.data.locations.map((location) => {
-          location.hives = this.sortedHives(location.hives)
-        })
-
         this.$store.commit(
           'locations/setApiaries',
           responseApiaries.data.locations
@@ -244,24 +240,6 @@ export const readApiaries = {
         }
       }
     },
-    sortedHives(hives) {
-      const sortedHives = hives.slice().sort(function(a, b) {
-        // order = null comes last
-        // if order is equal, sort by name with number sensitivity (10 comes after 2 instead of 1)
-        return (
-          (a.order === null) - (b.order === null) ||
-          +(a.order > b.order) ||
-          -(a.order < b.order) ||
-          (a.order === b.order && a.name !== null && b.name !== null
-            ? a.name.localeCompare(b.name, undefined, {
-                numeric: true,
-                sensitivity: 'base',
-              })
-            : 0)
-        )
-      })
-      return sortedHives
-    },
   },
 }
 
@@ -271,12 +249,6 @@ export const readApiariesAndGroups = {
       try {
         const responseApiaries = await Api.readRequest('/locations')
         const responseGroups = await Api.readRequest('/groups')
-        responseApiaries.data.locations.map((location) => {
-          location.hives = this.sortedHives(location.hives)
-        })
-        responseGroups.data.groups.map((group) => {
-          group.hives = this.sortedHives(group.hives)
-        })
 
         this.$store.commit(
           'locations/setApiaries',
@@ -296,24 +268,6 @@ export const readApiariesAndGroups = {
         }
       }
     },
-    sortedHives(hives) {
-      const sortedHives = hives.slice().sort(function(a, b) {
-        // order = null comes last
-        // if order is equal, sort by name with number sensitivity (10 comes after 2 instead of 1)
-        return (
-          (a.order === null) - (b.order === null) ||
-          +(a.order > b.order) ||
-          -(a.order < b.order) ||
-          (a.order === b.order && a.name !== null && b.name !== null
-            ? a.name.localeCompare(b.name, undefined, {
-                numeric: true,
-                sensitivity: 'base',
-              })
-            : 0)
-        )
-      })
-      return sortedHives
-    },
   },
 }
 
@@ -325,12 +279,6 @@ export const readApiariesAndGroupsIfNotPresent = {
         try {
           const responseApiaries = await Api.readRequest('/locations')
           const responseGroups = await Api.readRequest('/groups')
-          responseApiaries.data.locations.map((location) => {
-            location.hives = this.sortedHives(location.hives)
-          })
-          responseGroups.data.groups.map((group) => {
-            group.hives = this.sortedHives(group.hives)
-          })
 
           this.$store.commit(
             'locations/setApiaries',
@@ -352,24 +300,6 @@ export const readApiariesAndGroupsIfNotPresent = {
       } else {
         return true
       }
-    },
-    sortedHives(hives) {
-      const sortedHives = hives.slice().sort(function(a, b) {
-        // order = null comes last
-        // if order is equal, sort by name with number sensitivity (10 comes after 2 instead of 1)
-        return (
-          (a.order === null) - (b.order === null) ||
-          +(a.order > b.order) ||
-          -(a.order < b.order) ||
-          (a.order === b.order && a.name !== null && b.name !== null
-            ? a.name.localeCompare(b.name, undefined, {
-                numeric: true,
-                sensitivity: 'base',
-              })
-            : 0)
-        )
-      })
-      return sortedHives
     },
   },
 }
@@ -477,9 +407,6 @@ export const readGroups = {
     async readGroups() {
       try {
         const responseGroups = await Api.readRequest('/groups')
-        responseGroups.data.groups.map((group) => {
-          group.hives = this.sortedHives(group.hives)
-        })
 
         this.$store.commit('groups/setGroups', responseGroups.data.groups)
         this.$store.commit(
@@ -494,24 +421,6 @@ export const readGroups = {
           console.log('Error: ', error)
         }
       }
-    },
-    sortedHives(hives) {
-      const sortedHives = hives.slice().sort(function(a, b) {
-        // order = null comes last
-        // if order is equal, sort by name with number sensitivity (10 comes after 2 instead of 1)
-        return (
-          (a.order === null) - (b.order === null) ||
-          +(a.order > b.order) ||
-          -(a.order < b.order) ||
-          (a.order === b.order && a.name !== null && b.name !== null
-            ? a.name.localeCompare(b.name, undefined, {
-                numeric: true,
-                sensitivity: 'base',
-              })
-            : 0)
-        )
-      })
-      return sortedHives
     },
   },
 }

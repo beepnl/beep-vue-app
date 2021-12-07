@@ -624,7 +624,7 @@
               v-if="dragHivesMode"
               :list="hiveSet.hives"
               :disabled="!dragHivesMode || !draggable(hiveSet)"
-              group="Test"
+              :group="hiveSet.users ? 'draggble-group' : 'draggable-apiary'"
               delay="100"
               delay-on-touch-only="true"
               class="draggable-hive-item-wrapper"
