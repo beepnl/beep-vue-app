@@ -1517,37 +1517,6 @@ export default {
         query: { search: searchTerm },
       })
     },
-    sortedHives(hives) {
-      const sortedHives = hives.slice().sort(function(a, b) {
-        // order = null comes last
-        // if order is equal, sort by name with number sensitivity (10 comes after 2 instead of 1)
-        return (
-          (a.order === null) - (b.order === null) ||
-          +(a.order > b.order) ||
-          -(a.order < b.order) ||
-          (a.order === b.order && a.name !== null && b.name !== null
-            ? a.name.localeCompare(b.name, undefined, {
-                numeric: true,
-                sensitivity: 'base',
-              })
-            : 0)
-        )
-        // var aOrder = a.newOrder !== undefined ? a.newOrder : a.order
-        // var bOrder = b.newOrder !== undefined ? b.newOrder : b.order
-        // return (
-        //   (aOrder === null) - (bOrder === null) ||
-        //   +(aOrder > bOrder) ||
-        //   -(aOrder < bOrder) ||
-        //   (aOrder === bOrder && a.name !== null && b.name !== null
-        //     ? a.name.localeCompare(b.name, undefined, {
-        //         numeric: true,
-        //         sensitivity: 'base',
-        //       })
-        //     : 0)
-        // )
-      })
-      return sortedHives
-    },
     stopTimer() {
       clearInterval(this.alertTimer)
       this.alertTimer = 0

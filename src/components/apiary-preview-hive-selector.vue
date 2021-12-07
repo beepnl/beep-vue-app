@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex align-end apiary-preview">
     <div
-      v-for="(hive, j) in sortedHives"
+      v-for="(hive, j) in hives"
       :key="j"
       class="hive-icon-wrapper d-flex flex-column align-center"
       @click="selectHive(hive.id)"
@@ -102,26 +102,6 @@ export default {
       type: Boolean,
       default: false,
       required: false,
-    },
-  },
-  computed: {
-    sortedHives() {
-      const sortedHives = this.hives.slice().sort(function(a, b) {
-        // order = null comes last
-        // if order is equal, sort by name with number sensitivity (10 comes after 2 instead of 1)
-        return (
-          (a.order === null) - (b.order === null) ||
-          +(a.order > b.order) ||
-          -(a.order < b.order) ||
-          (a.order === b.order && a.name !== null && b.name !== null
-            ? a.name.localeCompare(b.name, undefined, {
-                numeric: true,
-                sensitivity: 'base',
-              })
-            : 0)
-        )
-      })
-      return sortedHives
     },
   },
   methods: {

@@ -57,7 +57,7 @@ export const mutations = {
   ...resource.mutations,
   setApiaries: function(state, apiaries) {
     apiaries.map((apiary) => {
-      apiary.hives = sortedHives(apiary.hives)
+      apiary.hives = sortHives(apiary.hives)
     })
     state.apiaries = apiaries
   },
@@ -111,7 +111,7 @@ export const actions = {
 // Private helpers
 // ===
 
-function sortedHives(hives) {
+function sortHives(hives) {
   const sortedHives = hives.slice().sort(function(a, b) {
     // order = null comes last
     // if order is equal, sort by name with number sensitivity (10 comes after 2 instead of 1)
