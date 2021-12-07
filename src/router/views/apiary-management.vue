@@ -122,7 +122,7 @@ import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
-import { readGeneralInspections } from '@mixins/methodsMixin'
+import { readApiaries, readGeneralInspections } from '@mixins/methodsMixin'
 import Treeselect from '@riophae/vue-treeselect'
 
 export default {
@@ -132,7 +132,7 @@ export default {
     Layout,
     Treeselect,
   },
-  mixins: [readGeneralInspections],
+  mixins: [readApiaries, readGeneralInspections],
   data: function() {
     return {
       normalizerApiary(node) {
@@ -222,19 +222,6 @@ export default {
     }
   },
   methods: {
-    async readApiaries() {
-      try {
-        const response = await Api.readRequest('/locations')
-        this.$store.commit('locations/setApiaries', response.data.locations)
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log(error.response)
-        } else {
-          console.log('Error: ', error)
-        }
-      }
-    },
     async updateHive(hive) {
       try {
         const response = await Api.updateRequest('/hives/', hive.id, hive)
