@@ -399,6 +399,22 @@ const translations = {
   approve_policy:
     'Du hast die aktuellen Nutzungsbedingungen noch nicht erfüllt.',
 
+  /* weight calibration settings */
+  calibrate_weight: 'Kalibriere Gewicht',
+  calibrate_explanation:
+    'Stelle das Gewicht der Sensoren auf 0 ein, indem Du den aktuellen Messwert subtrahierst.',
+  set_as_zero_value: 'Setze diese Werte als 0 Werte',
+  set_weight_factor: 'Definiere den Gewichtsfaktor',
+  own_weight_kg: 'Wie hoch ist Dein Eigengewicht in kg??',
+  start_calibration:
+    'Trete nun auf die Waage und drücke die Taste unten, um den Gewichtsfaktor festzulegen. Verteile Dein Gewicht gleichmäßig.',
+  currently_there_is: 'Da ist ein Gewicht von',
+  nothing: 'nichts',
+  on_the_scale: 'auf der Skala',
+  calibration_started:
+    'Kalibrierung gestartet... Warte auf die nächste Messung.',
+  calibration_ended: 'Kalibrierung erfolgreich!',
+
   /* General items */
   server_down:
     'Die App ist aufgrund von Wartungsarbeiten nicht verfügbar. Bitte versuche es später erneut',
@@ -481,7 +497,7 @@ const translations = {
   Consent_can_only_be_set: 'Die Genehmigung kann eingestellt werden für',
   earlier: 'frühere',
   later: 'spätere',
-  new_apiary_explanation: 'Lege eine neue Beute in 4 Schritten an',
+  new_apiary_explanation: 'Lege einen neuen Bienenstand in 4 Schritten an',
   start_here: 'Zum starten hier klicken',
   optional: 'optional',
   dimensions: 'Dimensionen',
@@ -570,9 +586,9 @@ const translations = {
   unsaved_changes: 'Ungesicherte Änderungen',
   save_changes:
     'Bist Du sicher, dass Du diese Seite verlassen möchtest? Alle Änderungen werden verloren gehen.',
-  no_apiaries_yet: 'Du hast bisher keine Beute',
+  no_apiaries_yet: 'Du hast bisher keine Bienenstände',
   need_help: 'Brauchst Du Hilfe?',
-  Apiary_color: 'Beutenfarbe',
+  Apiary_color: 'Bienenstandfarbe',
   Set_notification_date: 'Benachrichtigungsdatum festlegen',
   remove_image: 'Lösche Foto',
   Total_colony_size: 'Größe des Bienenvolks',
@@ -719,7 +735,7 @@ const translations = {
     'Für den Anfang gibt es ein paar Standard-Alarmregeln, die Du verwenden (und an Deine eigenen Bedürfnisse anpassen) kannst. Außerdem kannst Du Deine eigenen Alarmregeln erstellen.',
   alertrules_url_text:
     'Gehe zu "Alarmeinstellungen", um Deine erste Alarmregel anzulegen',
-  Apiary_management: 'Bienenstand-Management',
+  Apiary_management: 'Bienenstand-Verwaltung',
   Move: 'Verschieben',
   Current_apiary: 'Aktueller Bienenstand',
   sensor_key: 'Eindeutige Gerätekennung',
