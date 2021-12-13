@@ -38,7 +38,12 @@
             </div>
           </v-row>
           <v-row class="d-flex flex-row justify-center align-center">
-            <div v-for="period in periods.slice(-2)" :key="period.interval">
+            <v-col
+              v-for="period in periods.slice(-2)"
+              :key="period.interval"
+              cols="6"
+              class="pa-0 d-flex justify-center"
+            >
               <v-btn
                 :class="
                   `grey--text ${
@@ -51,7 +56,7 @@
               >
                 {{ period.name }}
               </v-btn>
-            </div>
+            </v-col>
           </v-row>
         </div>
       </v-container>
@@ -1511,9 +1516,9 @@ export default {
 }
 
 .measurements-content {
-  margin-top: 40px;
-  @media (max-width: 374px) {
-    margin-top: 65px;
+  margin-top: 58px;
+  @include for-tablet-landscape-up {
+    margin-top: 40px;
   }
 }
 .ep-legend--value {
