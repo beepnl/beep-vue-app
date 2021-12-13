@@ -628,7 +628,7 @@
               delay="100"
               delay-on-touch-only="true"
               class="draggable-hive-item-wrapper"
-              @change="moved($event, hiveSet)"
+              @change="dropped($event, hiveSet)"
             >
               <div
                 v-for="hive in hiveSet.hives"
@@ -1356,8 +1356,9 @@ export default {
     draggable(hiveSet) {
       return (hiveSet.users && hiveSet.admin) || !hiveSet.users
     },
-    moved: function(e, hiveSet) {
+    dropped: function(e, hiveSet) {
       if (!hiveSet.users) {
+        // if hive is moved within an apiary or between apiaries, update the order of all hives whose order has changed
         if (e.moved !== undefined) {
           // console.log('moved', e.moved.element.name, 'to', hiveSet.name, 'to index', e.moved.newIndex)
           const newIndex = e.moved.newIndex
@@ -1400,24 +1401,16 @@ export default {
         }
         this.updateHivesOrder(hiveSet.hives)
       } else {
-        this.updateGroup(hiveSet)
+        // if hive is only moved within the group, do not save it (as order property is not relevant for a group). Just re-order group to its initial state + provide feedback to user that moving does not alter order
+        if (e.moved === undefined) {
+          this.updateGroup(hiveSet)
+        } else {
+          this.snackbar.text =
+            'Hive cannot change order within a collaboration group'
+          this.snackbar.show = true
+          this.$store.commit('groups/setGroups', this.groups)
+        }
       }
-      // console.log(e, hiveSet.id)
-      // console.log(e.moved.element.name, e.moved.element.order, e.moved.newIndex)
-      // const newIndex = e.moved.newIndex
-      // // temp set new order as newOrder prop
-      // // this.sortedHives(hiveSet.hives).map((hive, index) => {
-      // hiveSet.hives.map((hive, index) => {
-      //   if (e.moved.element.id === hive.id) {
-      //     console.log('new index for', hive.id, hive.name, newIndex)
-      //     hive.newOrder = newIndex
-      //   } else if (index < newIndex) {
-      //     hive.newOrder = index
-      //   } else if (index >= newIndex && hive.order !== null) {
-      //     hive.newOrder = index + 1
-      //   }
-      // })
-      // this.updateHivesOrder(hiveSet.hives)
     },
     confirmDeleteApiary(hiveSet) {
       const warningMessage =
