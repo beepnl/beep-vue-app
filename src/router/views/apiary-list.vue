@@ -1353,6 +1353,13 @@ export default {
         return []
       }
     },
+    // checkMove(e) {
+    //   console.log(
+    //     e.draggedContext.element,
+    //     e.relatedContext.element,
+    //     e.relatedContext.list
+    //   )
+    // },
     draggable(hiveSet) {
       return (hiveSet.users && hiveSet.admin) || !hiveSet.users
     },
