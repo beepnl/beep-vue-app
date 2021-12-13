@@ -1,6 +1,6 @@
 /*
- * BEEP - Translations
- * Author: Pim van Gennip (pim@iconize.nl), Alex Giurgiu
+ * BEEP - Translations - VUE app v3 (Q4 2021)
+ * Author: Julia BD (julia@beep.nl) & Alex Giurgiu
  *
  */
 const translations = {
