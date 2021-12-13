@@ -55,7 +55,7 @@
       <div
         :class="
           'hive-icon-wrapper d-flex flex-column align-center ' +
-            (!draggable(hiveSet, hive) ? 'not-draggable' : '')
+            (!draggable(hiveSet) ? 'not-draggable' : '')
         "
       >
         <div
@@ -109,7 +109,7 @@
         <HiveIcon
           :hive="hive"
           :show-hive="showMenu"
-          :draggable="draggable(hiveSet, hive)"
+          :draggable="draggable(hiveSet)"
           @show-hive-menu="showHiveMenu($event)"
         ></HiveIcon>
 
@@ -574,8 +574,8 @@ export default {
     confirmDeleteHive(hive) {
       this.$emit('confirm-delete-hive', hive)
     },
-    draggable(hiveSet, hive) {
-      return (hiveSet.users && hive.owner) || !hiveSet.users
+    draggable(hiveSet) {
+      return !hiveSet.users
     },
     hasLayer(type) {
       return this.hive.layers.some((layer) => layer.type === type)
