@@ -164,11 +164,11 @@
       v-model="object[item.id]"
       class="inspection-text-area"
       :placeholder="item.trans[locale] || item.name"
-      counter="250"
+      counter="2500"
       rows="1"
       auto-grow
       clearable
-      @input="validateText($event, item.id, 250)"
+      @input="validateText($event, item.id, 2500)"
     ></v-textarea>
 
     <smileRating
