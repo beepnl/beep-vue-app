@@ -312,11 +312,11 @@
                           v-if="activeInspection"
                           v-model="activeInspection.notes"
                           :label="`${$t('notes')}`"
-                          counter="250"
+                          counter="2500"
                           rows="1"
                           auto-grow
                           clearable
-                          @input="validateText($event, 'notes', 250)"
+                          @input="validateText($event, 'notes', 2500)"
                         ></v-textarea>
                       </v-col>
                     </v-row>
