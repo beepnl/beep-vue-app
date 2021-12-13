@@ -888,6 +888,12 @@ const translations = {
   Decline: 'Hylkää',
   Decline_invitation: 'Hylkää kutsu',
   Decline_invitation_sure: 'Oletko varma, että haluat hylätä ryhmäkutsun?',
+
+  /* New translations v3.1 */
+  selection: 'selection',
+  selection_placeholder: 'Select a period',
+  data_zoom: 'Data zoom',
+  data_zoom_ok: 'Would you like to zoom in on the data of ',
 }
 
 export default translations

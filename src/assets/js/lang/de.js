@@ -870,6 +870,12 @@ const translations = {
   Decline_invitation: 'Einladung ablehnen',
   Decline_invitation_sure:
     'Möchten Sie die Gruppeneinladung wirklich ablehnen?',
+
+  /* New translations v3.1 */
+  selection: 'selection',
+  selection_placeholder: 'Select a period',
+  data_zoom: 'Data zoom',
+  data_zoom_ok: 'Would you like to zoom in on the data of ',
 }
 
 export default translations
