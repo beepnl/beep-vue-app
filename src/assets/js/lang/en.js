@@ -761,10 +761,6 @@ const translations = {
   Messages: 'Messages',
   Log_time: 'Time logged',
   File_size: 'File size',
-  check_flashlog: 'Check log data',
-  delete_flashlog: 'Delete log file',
-  commit_flashlog_short: 'Import log data',
-  commit_flashlog: 'Import data from this log file to the BEEP app: ',
   check_log_data: 'Check log data', // Check_flashlog
   delete_log_file: 'Delete log file', // Delete_flashlog
   commit_log_data_short: 'Import log data', // commit_flashlog_short

@@ -273,7 +273,7 @@ export default {
       return [
         (v) =>
           !!v ||
-          this.$i18n.t('the field') +
+          this.$i18n.t('the_field') +
             ' "' +
             this.$i18n.t('Name') +
             '" ' +

@@ -33,7 +33,7 @@
         <v-col v-if="flashLogs.length > 0" cols="12">
           <div class="mb-2">
             <div class="overline mt-0 mt-sm-3">
-              {{ $t('Flashlogs') }}
+              {{ $t('Log_files') }}
               <v-icon
                 class="mdi mdi-information ml-1 icon-info cursor-pointer"
                 dark
@@ -45,10 +45,12 @@
 
             <p v-if="showInfo" class="info-text">
               <em
-                >{{ $t('flashlog_explanation') + ' '
-                }}<a :href="$t('flashlog_support_url')" target="_blank">{{
-                  $t('flashlog_url_text')
-                }}</a></em
+                >{{ $t('import_log_data_explanation') + ' '
+                }}<a
+                  :href="$t('import_log_data_support_url')"
+                  target="_blank"
+                  >{{ $t('import_log_data_url_text') }}</a
+                ></em
               >
             </p>
           </div>
@@ -157,7 +159,7 @@
                             left
                             >mdi-check</v-icon
                           >
-                          {{ $t('check_flashlog') }}</v-btn
+                          {{ $t('check_log_data') }}</v-btn
                         >
 
                         <v-tooltip
@@ -196,9 +198,9 @@
         <v-col v-if="flashLogs.length === 0" cols="12">
           <span>
             <em
-              >{{ $t('flashlog_explanation') + ' '
-              }}<a :href="$t('flashlog_support_url')" target="_blank">{{
-                $t('flashlog_url_text')
+              >{{ $t('import_log_data_explanation') + ' '
+              }}<a :href="$t('import_log_data__support_url')" target="_blank">{{
+                $t('import_log_data__url_text')
               }}</a></em
             >
           </span>
@@ -368,10 +370,10 @@ export default {
     confirmCommitFlashLog(flashLog) {
       this.$refs.confirm
         .open(
-          this.$i18n.t('commit_flashlog_short') +
+          this.$i18n.t('commit_log_data_short') +
             ' - ' +
             this.hiveName(flashLog.hive_id),
-          this.$i18n.t('commit_flashlog') +
+          this.$i18n.t('commit_log_data') +
             ' "' +
             this.hiveName(flashLog.hive_id) +
             ' - ' +
@@ -392,10 +394,10 @@ export default {
     confirmDeleteFlashLog(flashLog) {
       this.$refs.confirm
         .open(
-          this.$i18n.t('delete_flashlog') +
+          this.$i18n.t('delete_log_file') +
             ' - ' +
             this.hiveName(flashLog.hive_id),
-          this.$i18n.t('delete_flashlog') +
+          this.$i18n.t('delete_log_file') +
             ' "' +
             this.hiveName(flashLog.hive_id) +
             ' - ' +
