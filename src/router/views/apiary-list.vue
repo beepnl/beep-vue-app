@@ -403,7 +403,7 @@
 
                       <v-list-item-content>
                         <v-list-item-title
-                          v-text="$t('edit') + ' ' + $tc('location', 1)"
+                          v-text="$t('edit_apiary')"
                         ></v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
@@ -504,7 +504,7 @@
 
                       <v-list-item-content>
                         <v-list-item-title
-                          v-text="$t('edit') + ' ' + $tc('group', 1)"
+                          v-text="$t('edit_group')"
                         ></v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>

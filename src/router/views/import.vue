@@ -199,8 +199,8 @@
           <span>
             <em
               >{{ $t('import_log_data_explanation') + ' '
-              }}<a :href="$t('import_log_data__support_url')" target="_blank">{{
-                $t('import_log_data__url_text')
+              }}<a :href="$t('import_log_data_support_url')" target="_blank">{{
+                $t('import_log_data_url_text')
               }}</a></em
             >
           </span>
