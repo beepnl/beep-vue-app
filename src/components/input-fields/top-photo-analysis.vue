@@ -13,7 +13,7 @@
     <!-- <div :class="`rounded-border ${bulkInspection ? 'input-disabled' : ''}`"> -->
     <v-card outlined class="pa-3">
       <div class="border-bottom">
-        <h4>Top Photo Aanalysis protocol (EN)</h4>
+        <h4>Top Photo Analysis protocol (EN)</h4>
         <ol>
           <li>Blow a puff of smoke into the hive from below.</li>
           <li
@@ -25,7 +25,9 @@
         </ol>
         <img
           style="width:100%;"
-          src="@assets/img/inspection-top-photo-analysis-explanation.jpg"
+          :src="
+            assetsUrl + '/img/inspection-top-photo-analysis-explanation.jpg'
+          "
         />
         <p style="font-style: italic; text-align: center;"
           >Figure 1. Correct position of hive top in photograph and potential
@@ -82,11 +84,10 @@
             <v-row>
               <v-col cols="12">
                 <div class="beep-label" v-text="`${$t('fr_width_cm')}`"></div>
-                <p
-                  v-if="!activeHive.fr_width_cm"
-                  style=" font-weight: bold;color:red;"
-                  >{{ $t('fr_width_cm') }} N/A!</p
-                >
+                <p v-if="!activeHive.fr_width_cm" class="red--text"
+                  >{{ $t('fr_width_cm') }} N/A!
+                </p>
+
                 <p
                   v-if="
                     activeHive.fr_width_cm &&
@@ -95,15 +96,16 @@
                   style=" font-weight: bold;color:red;"
                   >0 cm</p
                 >
-                <p v-else>{{ activeHive.fr_width_cm }} cm</p>
+                <p v-else-if="activeHive.fr_width_cm"
+                  >{{ activeHive.fr_width_cm }} cm</p
+                >
               </v-col>
               <v-col cols="12">
                 <div class="beep-label" v-text="`${$t('fr_height_cm')}`"></div>
-                <p
-                  v-if="!activeHive.fr_height_cm"
-                  style=" font-weight: bold;color:red;"
-                  >{{ $t('fr_height_cm') }} N/A!</p
-                >
+                <p v-if="!activeHive.fr_height_cm" class="red--text"
+                  >{{ $t('fr_height_cm') }} N/A!
+                </p>
+
                 <p
                   v-if="
                     activeHive.fr_height_cm &&
@@ -112,7 +114,9 @@
                   style=" font-weight: bold;color:red;"
                   >0 cm</p
                 >
-                <p v-else>{{ activeHive.fr_height_cm }} cm</p>
+                <p v-else-if="activeHive.fr_height_cm"
+                  >{{ activeHive.fr_height_cm }} cm</p
+                >
               </v-col>
             </v-row>
           </v-col>
@@ -211,19 +215,30 @@ export default {
   data() {
     return {
       colonySize: null,
-      maxBroodLayers: 2,
+      maxBroodLayers: 5,
       broodLayersForCalculation: 0,
-      maxFrames: 12,
+      maxFrames: 24,
       framesForCalculation: 0,
+      assetsUrl:
+        process.env.VUE_APP_ASSETS_URL ||
+        process.env.VUE_APP_ASSETS_URL_FALLBACK,
     }
   },
   computed: {
     ...mapGetters('inspections', ['bulkInspection']),
     ...mapGetters('hives', ['activeHive']),
   },
+  watch: {
+    activeHive() {
+      if (this.activeHive !== null) {
+        this.setInputNumbers()
+      }
+    },
+  },
   created() {
-    this.maxBroodLayers = this.countLayers('brood')
-    this.maxFrames = this.activeHive.layers[0].framecount
+    if (this.activeHive !== null) {
+      this.setInputNumbers()
+    }
   },
   methods: {
     calculateTpaColonySize() {
@@ -295,6 +310,10 @@ export default {
       } else if (item.name !== 'colony_size') {
         return 'col-xs-12 col-sm-6 col-md-3'
       }
+    },
+    setInputNumbers() {
+      this.broodLayersForCalculation = this.countLayers('brood')
+      this.framesForCalculation = this.activeHive.layers[0].framecount
     },
   },
 }

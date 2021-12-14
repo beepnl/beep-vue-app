@@ -12,10 +12,17 @@ export const momentAge = {
 
 export const momentFullDateTime = {
   methods: {
-    momentFullDateTime(date) {
-      return this.$moment(date)
-        .locale(this.$i18n.locale)
-        .format('YYYY-MM-DD HH:mm:ss')
+    momentFullDateTime(date, toUtcTime = false) {
+      // return this.$moment(date)
+      //   .locale(this.$i18n.locale)
+      //   .format('YYYY-MM-DD HH:mm:ss')
+      var time = null
+      if (toUtcTime) {
+        time = this.$moment.utc(date)
+      } else {
+        time = this.$moment(date)
+      }
+      return time.locale(this.$i18n.locale).format('YYYY-MM-DD HH:mm:ss')
     },
   },
 }
@@ -31,6 +38,74 @@ export const momentFromNow = {
       }
       const moment = inLocalTime.locale(this.$i18n.locale).fromNow()
       return moment.charAt(0).toUpperCase() + moment.slice(1)
+    },
+  },
+}
+
+export const momentHumanizeDuration = {
+  methods: {
+    momentHumanizeDuration(input, unit, prefix = '') {
+      return (
+        prefix +
+        this.$moment
+          .duration(input, unit)
+          .locale(this.$i18n.locale)
+          .humanize()
+      )
+    },
+  },
+}
+
+export const momentHumanizeHours = {
+  methods: {
+    momentDurationInHours(input, unit, prefix = '') {
+      var numberOfHours = this.$moment.duration(input, unit).asHours()
+      return (
+        prefix +
+        numberOfHours +
+        ' ' +
+        this.$i18n.tc('hour', Math.ceil(numberOfHours))
+      )
+    },
+    momentHumanizeDuration(input, unit, prefix = '') {
+      return (
+        prefix +
+        this.$moment
+          .duration(input, unit)
+          .locale(this.$i18n.locale)
+          .humanize()
+      )
+    },
+    momentHumanizeHours(value, capitalsOn = false, asteriskOn = false) {
+      var prefix = capitalsOn
+        ? this.$i18n.t('Every')
+        : this.$i18n.t('Every').toLowerCase()
+      switch (true) {
+        case value === 0:
+          return (
+            (capitalsOn
+              ? this.$i18n.t('Immediately')
+              : this.$i18n.t('Immediately').toLowerCase()) +
+            (asteriskOn ? '*' : '')
+          )
+        case value === 60:
+          return capitalsOn
+            ? this.$i18n.t('Every_hour')
+            : this.$i18n.t('every_hour')
+        case value > 1440:
+          return this.momentHumanizeDuration(
+            value,
+            'minutes',
+            // eslint-disable-next-line vue/comma-dangle
+            prefix
+          )
+      }
+      return this.momentDurationInHours(
+        value,
+        'minutes',
+        // eslint-disable-next-line vue/comma-dangle
+        prefix
+      )
     },
   },
 }

@@ -312,11 +312,11 @@
                           v-if="activeInspection"
                           v-model="activeInspection.notes"
                           :label="`${$t('notes')}`"
-                          counter="250"
+                          counter="2500"
                           rows="1"
                           auto-grow
                           clearable
-                          @input="validateText($event, 'notes', 250)"
+                          @input="validateText($event, 'notes', 2500)"
                         ></v-textarea>
                       </v-col>
                     </v-row>
@@ -600,8 +600,10 @@ export default {
       },
       set(value) {
         if (value === false) {
+          this.setBulkInspection(false)
           this.selectedHives = []
         } else {
+          this.setBulkInspection(true)
           this.selectedHives = []
           this.selectedHiveSet.hives.map((hive) => {
             if (hive.editable || hive.owner) {

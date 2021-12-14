@@ -1,6 +1,6 @@
 /*
- * BEEP - Translations
- * Author: Pim van Gennip (pim@iconize.nl)
+ * BEEP - Translations - VUE app v3 (Q4 2021)
+ * Author: Julia BD (julia@beep.nl)
  *
  */
 const translations = {
@@ -271,7 +271,8 @@ const translations = {
   Not_selected: 'Ei valittu',
   Poor: 'Huono',
   Fair: 'Kohtalainen',
-  Average: 'Keskimääräinen',
+  Average: 'Keskiarvo',
+  Average_slider: 'Keskimääräinen',
   Good: 'Hyvä',
   Excellent: 'Erinomainen',
   Low: 'Matala',
@@ -386,7 +387,8 @@ const translations = {
   ozone: 'Otsoni',
 
   /* Measurements */
-  hour: 'Tunti',
+  Hour: 'Tunti',
+  hour: 'tunti | tuntia',
   day: 'Päivä',
   week: 'Viikko',
   month: 'Kuukausi',
@@ -421,22 +423,6 @@ const translations = {
   policy_url: 'https://beep.nl/terms-of-service',
   policy_version: 'beep_terms_2018_05_25_avg_v1',
   approve_policy: 'Et ole vielä hyväksynyt viimeisimpiä käyttöehtoja',
-
-  /* weight calibration settings */
-  calibrate_weight: 'Kalibroi paino',
-  calibrate_explanation:
-    'Nollaa anturipaino vähentämällä nykyinen mittausarvo.',
-  set_as_zero_value: 'Aseta nämä arvot 0 arvoiksi',
-  set_weight_factor: 'Määritä painokerroin',
-  own_weight_kg: 'Mikä on oma painosi kiloina?',
-  start_calibration:
-    'Astu nyt vaaalle ja paina alla olevaa nappia määritelläksesi painokertoimen. Jaa painosi tasaisesti.',
-  currently_there_is: 'Paino on',
-  nothing: 'ei mitään',
-  on_the_scale: 'vaaalla',
-  calibration_started:
-    'Kalibrointi aloitettu... Odota kunnes seuraava mittaus tulee voimaan.',
-  calibration_ended: 'Kalibrointi onnistui!',
 
   /* General items */
   server_down:
@@ -493,6 +479,7 @@ const translations = {
   created: 'Luotu',
   group_detached: 'Poistuit ryhmästä onnistuneesti',
   group_activated: 'Ryhmäkutsu hyväksytty',
+  group_declined: 'Ryhmäkutsu hylätty',
   group_explanation_1:
     '1. Luo uusi yhteistyöryhmä, jolla on selkeä otsikko ja valinnainen kuvaus',
   group_explanation_2: '2. Kutsu muita BEEP käyttäjiä sähköpostilla',
@@ -688,7 +675,6 @@ const translations = {
   Measurement: 'Mittaus | Mittaukset',
   Calculation: 'Laskeminen',
   calculation: 'laskeminen',
-  Calculation_minutes: 'Laske per x minuuttia',
   Alert_on_occurences: 'Milloin haluaisit saada tämän ilmoituksen?',
   Alert_on_occurences_hint:
     'Heti vai vasta sen jälkeen, kun se on tapahtunut x kertaa?',
@@ -707,7 +693,7 @@ const translations = {
   Value: 'Arvo',
   Difference: 'Ero',
   Absolute_value: 'Absoluuttinen arvo',
-  Absolute_value_of_dif: 'Eron absoluuttinen arvo',
+  Absolute_value_of_dif_explanation: '**Eron absoluuttinen arvo',
   Exclude_months:
     '<strong>Poista</strong> tämä hälytys käytöstä seuraavien kuukausien aikana:',
   Exclude_hours:
@@ -729,11 +715,11 @@ const translations = {
   Select_default_alertrule: 'Kopioi oletushälytyssääntö',
   /* below, please keep all terms between [] in english: */
   alertrule_main_sentence:
-    'Haluaisin saada ilmoituksen, jos [calculation] [comparison] koskien [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Tämä laskenta suoritetaan joka  [calculation_minutes] tunti, ',
+    'Haluaisin saada ilmoituksen, jos [calculation] [comparison] koskien [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Tämä laskenta suoritetaan [calculation_minutes]',
   alertrule_occurences_direct_sentence:
-    'ja haluaisin saada ilmoituksen suoraan. ',
+    ', ja haluaisin saada ilmoituksen suoraan. ',
   alertrule_occurences_indirect_sentence:
-    ' mutta haluaisin saada ilmoituksen vain, jos se tapahtuu [alert_on_occurences] kertaa. ',
+    ', mutta haluaisin saada ilmoituksen vain, jos se tapahtuu [alert_on_occurences] kertaa. ',
   alertrule_exclude_months_sentence:
     'Tämä hälytys poistetaan käytöstä seuraavien kuukausien aikana: [exclude_months]. ',
   alertrule_exclude_hours_sentence:
@@ -767,7 +753,7 @@ const translations = {
   alert_explanation_2:
     'Voit käyttää valmiita oletusvaroitussääntöjä, ja mukauttaa niitä omiin tarpeisiisi. Lisäksi voit luoda omia hälytyssääntöjä.',
   alertrules_url_text:
-    'Luo ensimmäinen hälytyssääntö siirtymällä kohtaan Hälytysasetukset.',
+    'Luo ensimmäinen hälytyssääntö siirtymällä kohtaan Hälytysasetukset',
   Apiary_management: 'Mehiläistarhan hallinta',
   Move: 'Siirrä',
   Current_apiary: 'Nykyinen mehiläistarha',
@@ -776,7 +762,6 @@ const translations = {
     'Näiden asetusten muokkaaminen manuaalisesti on pois käytöstä.',
   Address_placeholder: 'Numero, kadun nimi, kaupunki',
   first_create_apiary: 'Luo ensin mehiläistarha',
-  alertrule_deleted: 'Hälytyssääntö on poistettu',
   Unknown: 'Tuntematon',
   unknown: 'tuntematon',
   research_warning:
@@ -797,18 +782,112 @@ const translations = {
   Add_apiary: 'Lisää mehiläistarha',
   Add_sensor_definition: 'Lisää anturin määritelmä',
   Add_member: 'Lisää jäsen',
+  alert_rule_deleted: 'Hälytyssääntö on poistettu',
 
-  /* TO BE TRANSLATED FOR 3.1 */
-  new_but_not_saved_sensor_defs_warning:
-    'N.B.: sensor definitions will only be added after clicking the green check icon at the end of the sensor definition row in the table.',
-  delete_sensordef: 'Delete sensor definition',
-  delete_all_alerts: 'Delete all alerts',
+  new_or_edited_but_not_saved_sensor_defs_warning:
+    'Huomaa: Anturimääritykset tallennetaan tai lisätään vasta sen jälkeen, kun olet napsauttanut taulukon anturimääritysrivin lopussa olevaa vihreää valintamerkkiä.',
+  delete_sensordef: 'Poista anturin määritykset',
+  delete_all_alerts: 'Poista kaikki hälytykset',
   delete_all_alerts_warning:
-    'Are you sure you want to delete all alerts? This cannot be undone.',
+    'Haluatko varmasti poistaa kaikki hälytykset? Tätä ei voi peruuttaa.',
   delete_all_alerts_warning_filter_active:
-    'Are you sure you want to delete all alerts? Alerts that do not match your search term will be deleted as well. This cannot be undone.',
-  already_verified: 'I have verified my email address and would like to login',
-  password_recovery_resend_mail: 'Send new verification code',
+    'Haluatko varmasti poistaa kaikki hälytykset? Myös hälytykset, jotka eivät vastaa hakutermiäsi, poistetaan. Tätä ei voi peruuttaa.',
+  already_verified:
+    'Olen vahvistanut sähköpostiosoitteeni ja haluaisin kirjautua sisään',
+  password_recovery_resend_mail: 'Lähetä uusi vahvistuskoodi',
+  alert_rule_created: 'Uusi hälytyssääntö on luotu',
+  select_all: 'Valitse kaikki',
+  During: '', // Ajalta but doesn't make sense in Finnish?
+  Calculation_minutes: 'Kuinka usein haluat suorittaa laskennan?',
+  Every: 'Joka ',
+  every: 'joka ',
+  Calculation_minutes_short: 'Kuinka usein lasketaan?',
+  Alert_on_occurences_short: 'Milloin saat hälytyksen?',
+  Disable_alert_for_this_hive: 'Poista hälytys tästä pesästä',
+  Alert_disabled_for_this_hive: 'Hälytys on poistettu käytöstä tässä pesässä',
+  disabled_for_hive: 'on poistettu pesästä',
+  Alert_disabled: 'Hälytys poistettu',
+
+  /* For import page */
+  Log_data_import: 'Tuo lokitiedot ',
+  Log_files: 'Lokitiedostot',
+  Upload_date: 'Latauspäivä',
+  Messages: 'Viestit',
+  Log_time: 'Kirjaamisaika',
+  File_size: 'Tiedoston koko',
+  check_log_data: 'Tarkista lokitiedot',
+  delete_log_file: 'Poista lokitiedosto',
+  commit_log_data_short: 'Tuo lokitiedot',
+  commit_log_data: 'Tuo tiedot tästä lokitiedostosta BEEP -sovellukseen:',
+  import_log_data_explanation:
+    'BEEP -alustan sovelluksessa voit ladata lokitietoja BEEP -vaaka-alustan sisäisestä muistista. Aina kun lataat lokitietoja, sisäinen muisti tyhjennetään ja tiedot ladataan BEEP -sovellukseen. Alla on luettelo ladatuista lokitiedoista. Voit korvata tietokannan tiedot ladatuissa lokitiedostoissa olevilla tiedoilla napsauttamalla painiketta Tarkista lokitiedot. Tämä tarkistaa ensin, kuinka paljon tietoja korvataan tietokannan sisällä ja onko lokitiedoston tietojen aika oikea. Saat vahvistusruudun tuloksena tiedoista ja mahdollisuuden vahvistaa tai kieltää korvaaminen.',
+  import_log_data_url_text:
+    'Täältä löydät tukiartikkelin lokitietojen lataamisesta BEEP -alustan sovelluksen avulla.',
+  import_log_data_support_url:
+    'https://beepsupport.freshdesk.com/fi/support/solutions/articles/60000697129-lataa-beep-perustiedot-bluetoothin-kautta',
+
+  // TO BE TRANSLATED TERMS
+  Immediately: 'Välittömästi',
+  alertrule_active_no_email_sentence:
+    ', ja avaan BEEp soveluksen nähdäkseni hälytykset.',
+  alertrule_active_email_sentence:
+    ', ja vastaanotan hälytykset sähköpostiin. Lisäksi näen hälytykset BEEP sovelluksessa.',
+  First_occurence: 'Ensimmäinen: ',
+  Last_occurence: 'Viimeinen: ',
+  // default alert rule names:
+  Hive_stability_and_theft: 'Pesän vakaus & varkaukden esto',
+  Temperature_sensor_defect: 'Lämpötila-anturin vika',
+  Battery_low: 'Akun jännite alhainen',
+  Honey_harvest: 'Hunaja sato',
+  Hive_temperature: 'Pesän lämpötila alhainen',
+  Brood_temperature: 'Pesässä sikiöitä',
+  No_measurements: 'Ei mittauksia',
+  Swarm: 'Parvi',
+  Food_supply_low: 'Vähän ruokaa',
+  // default alert rule descriptions:
+  Weight_drop_is_above_a_set_value:
+    'Pesän painon pudotus ylittää asetetun arvon',
+  Temperature_sensor_malfunctions: 'Lämpötila-anturin toimintahäiriö',
+  Battery_voltage_is_below_a_set_value:
+    'Laitteen akun jännite on alle asetetun arvon',
+  Weight_increase_due_to_nectar_collection_comes_to_a_halt:
+    'Medenkeräyksestä johtuva painonnousu pysähtyy',
+  Hive_temperature_drops_below_a_set_value:
+    'Pesän lämpötila laskee alle asetetun arvon',
+  Temperature_in_the_brood_below_a_set_value:
+    'Lämpötila sikiöintialassa on laskenut alle asetetun arvon',
+  No_measurement_data_received_in_a_set_time_period:
+    'Mittaustietoja ei vastaanotettu määritetyn ajanjakson aikana',
+  Sudden_weight_drop_triggers_alert_immediately:
+    'Äkillinen pesän painon pudotus laukaisee hälytyksen välittömästi. HUOM: tämä perustuu 15 minuutin tiedonsiirtoväliin. Jos laitteessasi on eri tiedonsiirtoväli, sinun tulee säätää kynnysarvoa vastaavasti.',
+  The_hive_weight_is_below_a_set_value: 'Pesän paino on alle asetetun arvon',
+
+  minute: 'minuutti | minuutit',
+  upload_interval_warning_single_interval:
+    'HUOM: laitteesi tiedonsiirtoväli on | HUOM: laitteidesi tiedonsiirtoväli on', // f.e.: ... 15 minutes
+  upload_interval_warning_interval_range:
+    'HUOM: laitteidesi tiedonsiirtovälit vaihtelevat välillä ', // f.e. ... 5 - 15 minutes
+  not_relevant_for_immediate_calculation:
+    'Ei merkitystä välittömässä laskennassa',
+  Increase: 'Nousu',
+  Decrease: 'Lasku',
+  Every_hour: 'Joka tunti',
+  every_hour: 'joka tunti',
+  Absolute_value_of_dif: 'Muutos',
+  In_case_of_good_connection_warning:
+    '*Välittömästi mittauksen vastaanottamisen jälkeen. Tämä riippuu tiedonsiirtovälistä ja datayhteyden luotettavuudesta.',
+  Alertrule_summary_title: 'Yhteenveto',
+  Alertrule_settings_title: 'Hälytysten asetukset',
+  Alertrule_exclude_title: 'Sulje pois ajanjaksot ja pesät',
+  of: '', // better to omit in Finnish
+
+  alerts_url_text: 'Lue tukiartikkeli hälytyksistä',
+  alerts_support_url:
+    'https://beepsupport.freshdesk.com/fi/support/solutions/articles/60000706484-h%C3%A4lytykset',
+
+  Decline: 'Hylkää',
+  Decline_invitation: 'Hylkää kutsu',
+  Decline_invitation_sure: 'Oletko varma, että haluat hylätä ryhmäkutsun?',
 }
 
 export default translations

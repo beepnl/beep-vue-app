@@ -1,6 +1,6 @@
 /*
- * BEEP - Translations
- * Author: Pim van Gennip (pim@iconize.nl)
+ * BEEP - Translations - VUE app v3 (Q4 2021)
+ * Author: Julia BD (julia@beep.nl)
  *
  */
 const translations = {
@@ -253,6 +253,7 @@ const translations = {
   Poor: 'Pobre',
   Fair: 'Justo',
   Average: 'Promedio',
+  Average_slider: 'Promedio',
   Good: 'Bueno',
   Excellent: 'Excelente',
   Low: 'Bajo',
@@ -366,7 +367,8 @@ const translations = {
   ozone: 'Ozono',
 
   /* Medidas */
-  hour: 'Horas',
+  Hour: 'Horas',
+  hour: 'hora | horas',
   day: 'Día',
   week: 'Semana',
   month: 'Mes',
@@ -397,22 +399,6 @@ const translations = {
   policy_url: 'https://beep.nl/terms-of-service',
   policy_version: 'beep_terms_2018_05_25_avg_v1',
   approve_policy: 'Usted aún no ha aceptado los términos del servicio.',
-
-  /* Ajustes de calibración de peso */
-  calibrate_weight: 'Calibrar peso',
-  calibrate_explanation:
-    'Establecer el peso de los sensores en 0 restando el valor de la medición actual.',
-  set_as_zero_value: 'Establecer estos valores como valores 0',
-  set_weight_factor: 'Definir factor de peso',
-  own_weight_kg: '¿Cuál es su propio peso en kg?',
-  start_calibration:
-    'Ahora pise la pesa y presione el botón de abajo para definir el factor de peso. Distribuya su peso por igual.',
-  currently_there_is: 'Hay un peso de',
-  nothing: 'nada',
-  on_the_scale: 'sobre la pesa',
-  calibration_started:
-    'La calibración comenzó... Espere a que la próxima medición surta efecto.',
-  calibration_ended: '¡La calibración tuvo éxito!',
 
   /* Elementos generales */
   server_down:
@@ -465,6 +451,8 @@ const translations = {
   created: 'creado',
   group_detached: 'Salió con éxito del grupo',
   group_activated: 'Invitación de grupo aceptada',
+  group_declined: 'Invitación de grupo rechazada',
+
   group_explanation_1:
     '1. Crear un nuevo grupo de cooperación con un título y una descripción opcional',
   group_explanation_2:
@@ -656,7 +644,6 @@ const translations = {
   Measurement: 'Medición | Mediciones',
   Calculation: 'Cálculo',
   calculation: 'cálculo',
-  Calculation_minutes: 'Calcular por x número de minutos',
   Alert_on_occurences: 'Cuando le gustaría recibir esta alerta?',
   Alert_on_occurences_hint:
     'Directamente, o solo después que este haya ocurrido un x número de veces?',
@@ -675,7 +662,7 @@ const translations = {
   Value: 'Valor',
   Difference: 'Diferencia',
   Absolute_value: 'Valor absoluto',
-  Absolute_value_of_dif: 'Valor absoluto de la diferencia',
+  Absolute_value_of_dif_explanation: '**Valor absoluto de la diferencia',
   Exclude_months:
     '<strong>Desactivar</strong> esta alerta durante los siguientes meses:',
   Exclude_hours:
@@ -698,11 +685,11 @@ const translations = {
   Select_default_alertrule: 'Copiar regla de alerta por defecto',
   /* below, please keep all terms between [] in english: */
   alertrule_main_sentence:
-    'Me gustaría recibir una alerta si la [calculation] [comparison] de las [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Este cálculo será realizado cada [calculation_minutes] horass, ',
+    'Me gustaría recibir una alerta si la [calculation] [comparison] de las [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Este cálculo será realizado [calculation_minutes]',
   alertrule_occurences_direct_sentence:
-    'Y me gustaría recibir la alerta directamente. ',
+    ', Y me gustaría recibir la alerta directamente. ',
   alertrule_occurences_indirect_sentence:
-    'pero me gustaría recibir la alerta solo si ocurre [alert_on_occurences] veces. ',
+    ', pero me gustaría recibir la alerta solo si ocurre [alert_on_occurences] veces. ',
   alertrule_exclude_months_sentence:
     'Esta alerta será desactivada durante los siguientes meses: [exclude_months]. ',
   alertrule_exclude_hours_sentence:
@@ -745,7 +732,6 @@ const translations = {
   disabled_settings: 'La edición manual de estos ajustes ha sido inhabilitada.',
   Address_placeholder: 'Número, Nombre de calle, Ciudad',
   first_create_apiary: 'primero, crear un apiario',
-  alertrule_deleted: 'La regla de alerta ha sido eliminada',
   Unknown: 'Desconocido',
   unknown: 'desconocido',
   research_warning:
@@ -765,18 +751,114 @@ const translations = {
   Add_apiary: 'Agregar apiario',
   Add_sensor_definition: 'Agregar definición de sensor',
   Add_member: 'Agregar miembro',
+  alert_rule_deleted: 'La regla de alerta ha sido eliminada',
 
-  /* TO BE TRANSLATED FOR 3.1 */
-  new_but_not_saved_sensor_defs_warning:
-    'N.B.: sensor definitions will only be added after clicking the green check icon at the end of the sensor definition row in the table.',
-  delete_sensordef: 'Delete sensor definition',
-  delete_all_alerts: 'Delete all alerts',
+  new_or_edited_but_not_saved_sensor_defs_warning:
+    'Nota: las definiciones de sensor solo serán guardadas o agregadas luego de hacer clic en el icono de verificación verde al final de la fila de definición de sensor en la tabla.',
+  delete_sensordef: 'Eliminar la definición del sensor',
+  delete_all_alerts: 'Eliminar todas las alertas',
   delete_all_alerts_warning:
-    'Are you sure you want to delete all alerts? This cannot be undone.',
+    '¿Está seguro que desea borrar todas las alertas? Esto no se puede deshacer.',
   delete_all_alerts_warning_filter_active:
-    'Are you sure you want to delete all alerts? Alerts that do not match your search term will be deleted as well. This cannot be undone.',
-  already_verified: 'I have verified my email address and would like to login',
-  password_recovery_resend_mail: 'Send new verification code',
+    '¿Está seguro que desea eliminar todas las alertas? También se eliminarán las alertas que no coincidan con su término de búsqueda. Esto no se puede deshacer.',
+  already_verified:
+    'Yo he verificado mi dirección de correo electrónico y me gustaría iniciar sesión',
+  password_recovery_resend_mail: 'Enviar nuevo código de verificación',
+  alert_rule_created: 'Nueba regla de alerta ha sido creada',
+  select_all: 'Seleccionar todos',
+  During: 'Durante',
+  Calculation_minutes:
+    '¿Con qué frecuencia le gustaría que el cálculo fuera realizado?',
+  Every: 'Cada ',
+  every: 'cada ',
+  Calculation_minutes_short: '¿Con qué frecuencia es calculada?',
+  Alert_on_occurences_short: '¿Cuándo recibes la alerta?',
+  Disable_alert_for_this_hive: 'Deshabilitar alerta para esta colmena',
+  Alert_disabled_for_this_hive: 'Alerta está deshabilitada para esta colmena',
+  disabled_for_hive: 'ha sido deshabilitada para la colmena',
+  Alert_disabled: 'Alerta deshabilitada',
+
+  /* for import page */
+  Log_data_import: 'Importar datos de registro',
+  Log_files: 'Archivos de registro',
+  Upload_date: 'Actualizar fecha',
+  Messages: 'Mensajes',
+  Log_time: 'Tiempo registrado',
+  File_size: 'Tamaño del archivo',
+  check_log_data: 'Chequear datos de registro',
+  delete_log_file: 'Eliminar archivo de registro',
+  commit_log_data_short: 'Importar datos de registro',
+  commit_log_data:
+    'Importar datos desde este archivo de registro hacia la aplicación BEEP',
+  import_log_data_explanation:
+    'En la aplicación de la base BEEP Usted puede descargar datos de registro desde la memoria interna de la base BEEP. Cada vez que Usted descargue datos de registro, la memoria interna es desocupada and los datos son cargados a la aplicación BEEP. Abajo está la lista de su registro de datos descargados. Usted puede reemplazar los datos en la base de datos dentro de los archivos de datos descargados haciendo click en el botón ´Chequear datos de registro`. Esto chequeará cuantos datos serán reeemplazados al interior de la base de datos, y si el tiempo de los datos en archivo registro es correcto. Usted recibirá una carpeta de confirmación con la información resultante, y la posibilidad de aplicar o negar el reemplazo.',
+  import_log_data_url_text:
+    'Aquí Usted puede encontrar el artículo de apoyo sobre descargar datos de registro con la aplicación de la base BEEP.',
+  import_log_data_support_url:
+    'https://beepsupport.freshdesk.com/es/support/solutions/articles/60000697129-descargar-datos-de-base-de-beep-a-trav%C3%A9s-de-bluetooth',
+
+  Immediately: 'Immediately',
+  alertrule_active_no_email_sentence:
+    ', and I open the BEEP app to see the alerts.',
+  alertrule_active_email_sentence:
+    ', and I receive alerts via email. In addition, I can see the alerts in the BEEP app.',
+  First_occurence: 'First: ',
+  Last_occurence: 'Last: ',
+  // default alert rule names:
+  Hive_stability_and_theft: 'Hive stability & Theft',
+  Temperature_sensor_defect: 'Temperature sensor defect',
+  Battery_low: 'Battery voltage low',
+  Honey_harvest: 'Honey harvest',
+  Hive_temperature: 'Hive temperature low',
+  Brood_temperature: 'Brood presence',
+  No_measurements: 'No measurements',
+  Swarm: 'Swarm',
+  Food_supply_low: 'Food supply low',
+  // default alert rule descriptions:
+  Weight_drop_is_above_a_set_value:
+    'Weight drop of the hive is above a set value',
+  Temperature_sensor_malfunctions: 'Temperature sensor malfunctions',
+  Battery_voltage_is_below_a_set_value:
+    'Battery voltage of the device is below a set value',
+  Weight_increase_due_to_nectar_collection_comes_to_a_halt:
+    'Weight increase due to nectar collection comes to a halt',
+  Hive_temperature_drops_below_a_set_value:
+    'Hive temperature drops below a set value',
+  Temperature_in_the_brood_below_a_set_value:
+    'Temperature in the brood has dropped below a set value',
+  No_measurement_data_received_in_a_set_time_period:
+    'No measurement data received during a set time period',
+  Sudden_weight_drop_triggers_alert_immediately:
+    'Sudden weight drop of the hive triggers an alert immediately. N.B.: this is based on a data transmission interval of 15 minutes. In case your device has a different data transmission interval, you should adjust the threshold value accordingly.',
+  The_hive_weight_is_below_a_set_value: 'Hive weight is below a set value',
+
+  minute: 'minute | minutes',
+  upload_interval_warning_single_interval:
+    'N.B.: the data transmission interval of your device is | N.B.: the data transmission interval of your devices is', // f.e.: ... 15 minutes
+  upload_interval_warning_interval_range:
+    'N.B.: the data transmission intervals of your devices vary between ', // f.e. ... 5 - 15 minutes
+  not_relevant_for_immediate_calculation:
+    'Not relevant for immediate calculation',
+  Increase: 'Increase',
+  Decrease: 'Decrease',
+  Every_hour: 'Every hour',
+  every_hour: 'every hour',
+  Absolute_value_of_dif: 'Change',
+  In_case_of_good_connection_warning:
+    '*Immediately after a measurement is received. This is dependent on the data transmission interval and the reliability of the data connection.',
+  Alertrule_summary_title: 'Summary',
+  Alertrule_settings_title: 'Alert rule settings',
+  Alertrule_exclude_title: 'Exclude periods and hives',
+  of: 'de',
+
+  alerts_url_text: 'Lea el artículo de soporte sobre alertas',
+  alerts_support_url:
+    'https://beepsupport.freshdesk.com/es/support/solutions/articles/60000706484-alertas',
+
+  Decline: 'Rechazar',
+  Decline_invitation: 'Rechazar invitación',
+  Decline_invitation_sure:
+    '¿Estás seguro de que deseas rechazar la invitación grupal?',
 }
 
 export default translations

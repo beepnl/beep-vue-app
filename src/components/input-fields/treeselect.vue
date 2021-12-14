@@ -7,6 +7,7 @@
       :placeholder="`${$t('Select') + ' ' + (item.trans[locale] || item.name)}`"
       :no-results-text="`${$t('no_results')}`"
       :default-expand-level="1"
+      :disable-branch-nodes="true"
       search-nested
       @input="setInspectionEdited(true)"
     />

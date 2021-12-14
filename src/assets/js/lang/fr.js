@@ -1,6 +1,6 @@
 /*
- * BEEP - Translations
- * Author: Pim van Gennip (pim@iconize.nl) & Cyrille Duverne (cyrille.duverne@gmail.com)
+ * BEEP - Translations - VUE app v3 (Q4 2021)
+ * Author: Julia BD (julia@beep.nl) & Cyrille Duverne (cyrille.duverne@gmail.com)
  *
  */
 const translations = {
@@ -287,6 +287,7 @@ const translations = {
   /* Cyrille - 31/05 : Translation updated */
   Fair: 'Suffisante',
   Average: 'Moyenne',
+  Average_slider: 'Moyenne',
   /* Cyrille - 31/05 : Translation updated */
   Good: 'Bonne',
   /* Cyrille - 31/05 : Translation updated */
@@ -430,7 +431,8 @@ const translations = {
   ozone: 'Ozone',
 
   /* Measurements */
-  hour: 'Heure',
+  Hour: 'Heure',
+  hour: 'heure | heures',
   day: 'Jour',
   week: 'Semaine',
   month: 'Mois',
@@ -479,24 +481,6 @@ const translations = {
   Whats_new: 'Nouveau!',
   Manual: 'Manuel (EN)',
 
-  /* weight calibration settings */
-  calibrate_weight: 'Étalonner le poids',
-  calibrate_explanation:
-    'Réglez le poids des capteurs à 0 en soustrayant la valeur de mesure actuelle',
-  set_as_zero_value: 'Définissez ces valeurs en tant que valeurs 0',
-  set_weight_factor: 'Définissez le facteur de poids',
-  /* Cyrille - 31/05 : Translation updated */
-  own_weight_kg: 'Quel est votre propre poids ? (en kg)',
-  start_calibration:
-    'Maintenant, marchez sur la balance et appuyez sur le bouton ci-dessous pour définir le facteur de poids. Répartissez votre poids également',
-  currently_there_is: 'Il y a un poids de',
-  /* Cyrille - 31/05 : Translation updated */
-  nothing: '0 kg',
-  on_the_scale: 'sur la balance',
-  calibration_started:
-    "L'étalonnage a commencé... Attendez la prochaine mesure",
-  /* Cyrille - 31/05 : Translation updated */
-  calibration_ended: "L'étalonnage est terminé !",
   Site_title: 'BEEP | Moniteur abeille',
   /* Cyrille - 31/05 : Translation updated */
   could_not_create_user:
@@ -546,6 +530,7 @@ const translations = {
   created: 'créé',
   group_detached: 'A quitté le groupe avec succès',
   group_activated: 'Invitation de groupe acceptée',
+  group_declined: 'Invitation de groupe refusée',
   /* Cyrille - 31/05 : Translation updated */
   group_explanation_1:
     '1. Créer un nouveau groupe de coopération avec un titre clair et une description',
@@ -757,7 +742,6 @@ const translations = {
   Calculation: 'Calcul',
   /* Cyrille - 31/05 : This translation needs more context */
   calculation: 'calcul',
-  Calculation_minutes: 'Calculer toutes les x minutes',
   Alert_on_occurences: 'Quand voulez-vous recevoir les alertes?',
   Alert_on_occurences_hint:
     'Directement, ou uniquement si elles arrivent x fois?',
@@ -778,11 +762,14 @@ const translations = {
   Value: 'Valeur',
   Difference: 'Différence',
   Absolute_value: 'Valeur absolue',
-  Absolute_value_of_dif: 'Valeur absolue de la différence',
-  Exclude_months: '<strong>Désactiver</strong> cette alerte pendant ce nombre de mois:',
+  Absolute_value_of_dif_explanation: '**Valeur absolue de la différence',
+  Exclude_months:
+    '<strong>Désactiver</strong> cette alerte pendant ce nombre de mois:',
   /* Cyrille - 31/05 : This translation needs more context */
-  Exclude_hours: '<strong>Désactiver</strong> cette alerte pendant les heures suivantes:',
-  Exclude_hives: '<strong>Désactiver</strong> cette alerte pour les ruches suivantes:',
+  Exclude_hours:
+    '<strong>Désactiver</strong> cette alerte pendant les heures suivantes:',
+  Exclude_hives:
+    '<strong>Désactiver</strong> cette alerte pour les ruches suivantes:',
   Exclude_hives_details:
     "N.B. Par défaut, ces alertes seront éxécutées pour toutes les ruches équipées d'un appareil.",
   months: 'mois',
@@ -798,11 +785,11 @@ const translations = {
   /* below, please keep all terms between [] in english: */
   /* Cyrille - 31/05 : This translation needs more context */
   alertrule_main_sentence:
-    'Je veux recevoir une alerte si la [calculation] [comparison] de [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Ce calcul sera éxécuté toutes les [calculation_minutes] heures, ',
+    'Je veux recevoir une alerte si la [calculation] [comparison] de [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Ce calcul sera éxécuté [calculation_minutes]',
   alertrule_occurences_direct_sentence:
-    'et je veux recevoir ces alertes directement. ',
+    ', et je veux recevoir ces alertes directement. ',
   alertrule_occurences_indirect_sentence:
-    'mais je voudrais recevoir ses alertes uniquement si elles se produisent [alert_on_occurences] fois. ',
+    ', mais je voudrais recevoir ses alertes uniquement si elles se produisent [alert_on_occurences] fois. ',
   alertrule_exclude_months_sentence:
     'Cette alerte sera désactivée pour une durée de: [exclude_months]. ',
   /* Cyrille - 31/05 : This translation needs more context */
@@ -837,7 +824,7 @@ const translations = {
   alert_explanation_2:
     'Pour démarrer, vous pouvez utiliser plusieurs alertes préconfigurées (et les adapter à vos besoins). Vous pouvez également créer vos propres alertes.',
   alertrules_url_text:
-    'Aller dans "réglages d\'alerte" pour créer votre propre règle.',
+    'Aller dans "réglages d\'alerte" pour créer votre propre règle',
   Apiary_management: 'Gestion du rucher',
   Move: 'Déplacer',
   Current_apiary: 'Rucher actuel',
@@ -846,7 +833,6 @@ const translations = {
     'La modification manuelle de ces paramètres est désactivée.',
   Address_placeholder: 'Numéro, nom de rue, ville',
   first_create_apiary: "Tour d'abord, créer un rucher",
-  alertrule_deleted: "La règle d'alerte à été désactivée",
   /* Cyrille - 31/05 : This translation needs more context */
   Unknown: 'Inconnu',
   /* Cyrille - 31/05 : This translation needs more context */
@@ -868,18 +854,112 @@ const translations = {
   Add_apiary: 'Ajouter rucher',
   Add_sensor_definition: 'Ajouter définition de capteur',
   Add_member: 'Ajouter membre',
+  alert_rule_deleted: "La règle d'alerte à été désactivée",
 
-  /* TO BE TRANSLATED FOR 3.1 */
-  new_but_not_saved_sensor_defs_warning:
-    'N.B.: sensor definitions will only be added after clicking the green check icon at the end of the sensor definition row in the table.',
-  delete_sensordef: 'Delete sensor definition',
-  delete_all_alerts: 'Delete all alerts',
+  new_or_edited_but_not_saved_sensor_defs_warning:
+    "N.B. : les définitions de capteur ne seront sauvegardées ou ajoutées qu'après avoir cliqué sur l'icone cochée verte au bout de la ligne de définition du capteur.",
+  delete_sensordef: 'Supprimer définition de capteur',
+  delete_all_alerts: 'Supprimer toutes les alertes',
   delete_all_alerts_warning:
-    'Are you sure you want to delete all alerts? This cannot be undone.',
+    'Êtes vous sûr de vouloir supprimer toutes les alertes? Cette action est irréversible.',
   delete_all_alerts_warning_filter_active:
-    'Are you sure you want to delete all alerts? Alerts that do not match your search term will be deleted as well. This cannot be undone.',
-  already_verified: 'I have verified my email address and would like to login',
-  password_recovery_resend_mail: 'Send new verification code',
+    'Êtes vous sûr de vouloir supprimer toutes les alertes? Les alertes, qui ne correspondent pas à votre critère de recherche, seront également supprimées. Cette action est irréversible.',
+  already_verified: "J'ai confirmé mon adresse mail, je veux m'identifier",
+  password_recovery_resend_mail: 'Envoyer un nouveau code de vérification',
+  alert_rule_created: "La nouvelle règle d'alerte a été créée",
+  select_all: 'Tout sélectionner',
+  During: 'Pendant',
+  Calculation_minutes: 'A quelle fréquence voulez vous éxécuter le calcul ?',
+  Every: 'Chaque ',
+  every: 'chaque ',
+  Calculation_minutes_short: 'Fréquence de calcul',
+  Alert_on_occurences_short: "Quand recevez vous l'alerte ?",
+  Disable_alert_for_this_hive: "Désactiver l'alerte pour cette ruche",
+  Alert_disabled_for_this_hive: "L'alerte est désactivée pour cette ruche",
+  disabled_for_hive: 'a été désactivé pour la ruche suivante',
+  Alert_disabled: 'Alerte désactivée',
+
+  /* For import page */
+  Log_data_import: 'Importer les données de log',
+  Log_files: 'Fichiers de log',
+  Upload_date: 'Télécharger les dates',
+  Messages: 'Messages',
+  Log_time: 'Horaire enregistré',
+  File_size: 'Taille du fichier',
+  check_log_data: 'Vérification des données de log',
+  delete_log_file: 'Supprimer le fichier de log',
+  commit_log_data_short: 'Importer les données de log',
+  commit_log_data:
+    "Importer les données de ce fichier de log vers l'application BEEP",
+  import_log_data_explanation:
+    "Dans l'application de base BEEP, vous pouvez télécharger les données de log à partir de la mémoire de la base BEEP. Chaque fois que vous téléchargez des données de log, la mémoire interne est effacée et les données sont téléchargées vers l'application BEEP. Vous trouverez ci-dessous la liste de vos données de log téléchargées. Vous pouvez remplacer les données de la base de données par les données contenues dans les fichiers de log téléchargés en cliquant sur le bouton « Vérifier les données de log ». Cela vérifiera d'abord combien de données seront remplacées dans la base de données et si l'heure des données dans le fichier de log est correcte. Vous recevrez une demande de confirmation avec les informations résultantes et la possibilité d'appliquer ou de refuser le remplacement. ",
+  import_log_data_url_text:
+    "Vous trouverez ici l'explication du téléchargement de données de log vers l'application BEEP.",
+  import_log_data_support_url:
+    'https://beepsupport.freshdesk.com/fr/support/solutions/articles/60000697129-t%C3%A9l%C3%A9charger-les-donn%C3%A9es-de-base-beep-via-bluetooth',
+
+  Immediately: 'Immédiatement',
+  alertrule_active_no_email_sentence:
+    ", et j'ouvre l'app BEEP pour voir les alertes",
+  alertrule_active_email_sentence:
+    ", et je reçois les alertes par email. De plus, je peux voir les alertes dans l'app BEEP.",
+  First_occurence: 'Premier: ',
+  Last_occurence: 'Dernier: ',
+  /* default alert rule names: */
+  Hive_stability_and_theft: 'Stabilité de la ruche et vol',
+  Temperature_sensor_defect: 'Defaut de la sonde de température',
+  Battery_low: 'Batterie faible',
+  Honey_harvest: 'Recolte de miel',
+  Hive_temperature: 'Température de la ruche basse',
+  Brood_temperature: 'Temperature du couvain basse',
+  No_measurements: 'Pas de mesures',
+  Swarm: 'Essaimage',
+  Food_supply_low: 'Reserves de nourriture faible',
+  /* default alert rule descriptions: */
+  Weight_drop_is_above_a_set_value:
+    'La perte de poids de la ruche est au dessus du seuil',
+  Temperature_sensor_malfunctions: 'La sonde de température fonctionne mal',
+  Battery_voltage_is_below_a_set_value:
+    'La charge de la batterie est en deça de la valeur définie',
+  Weight_increase_due_to_nectar_collection_comes_to_a_halt:
+    "L'augmentation du poids, dûe à l'entrée de nectar s'est arrêtée",
+  Hive_temperature_drops_below_a_set_value:
+    'La température de la ruche passe sous la valeur définie',
+  Temperature_in_the_brood_below_a_set_value:
+    'La température du couvain passe sous la valeur définie',
+  No_measurement_data_received_in_a_set_time_period:
+    'Aucune mesure reçue pendant la période définie',
+  Sudden_weight_drop_triggers_alert_immediately:
+    "Une chute soudaine du poids déclenche immédiatement une alerte. N.B.: L'alerte est basée sur une transmission de données toutes les 15 minutes. Si votre appareil transmet à un intervalle difféerent, vous devriez ajuster le seuil de déclenchement.",
+  The_hive_weight_is_below_a_set_value:
+    'Le poids de la ruche est inférieur à la valeur définie.',
+
+  minute: 'minute | minutes',
+  upload_interval_warning_single_interval:
+    "N.B.: L'intervalle de transmission de données est de | N.B.: L'intervalle de transmission de votre appareil est de",
+  upload_interval_warning_interval_range:
+    "N.B.: L'intervalle de transmission de vos appareils varie entre ",
+  not_relevant_for_immediate_calculation: 'Non pertinent pour calcul immédiat',
+  Increase: 'Augmentation',
+  Decrease: 'Diminution',
+  Every_hour: 'Toutes les heures',
+  every_hour: 'toutes les heures',
+  Absolute_value_of_dif: 'Changement',
+  In_case_of_good_connection_warning:
+    "*Immédiatement après qu'une mesure est reçue. Cela dépend de l'intervalle de transmission et de la solidité de la connexion au réseau mobile.",
+  Alertrule_summary_title: 'Résumé',
+  Alertrule_settings_title: "Paramètre des règles d'alerte",
+  Alertrule_exclude_title: 'Exclure périodes et ruches',
+  of: 'de',
+
+  alerts_url_text: "Lire l'article d'assistance sur les alertes",
+  alerts_support_url:
+    'https://beepsupport.freshdesk.com/nl/support/solutions/articles/60000706484-alerts',
+
+  Decline: 'Refuser',
+  Decline_invitation: "Refuser l'invitation",
+  Decline_invitation_sure:
+    "Êtes-vous sûr de vouloir refuser l'invitation de groupe ?",
 }
 
 export default translations

@@ -3,7 +3,8 @@ import axios from 'axios'
 import store from '@state/store'
 
 const instance = axios.create({
-  baseURL: process.env.VUE_APP_API_URL,
+  baseURL:
+    process.env.VUE_APP_API_URL || process.env.VUE_APP_BASE_API_URL_FALLBACK,
 })
 
 // On 401 error, reset user and redirect to login

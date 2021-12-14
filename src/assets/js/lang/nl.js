@@ -1,6 +1,6 @@
 /*
- * BEEP - Translations
- * Author: Pim van Gennip (pim@iconize.nl)
+ * BEEP - Translations - VUE app v3 (Q4 2021)
+ * Author: Julia BD (julia@beep.nl)
  *
  */
 const translations = {
@@ -274,7 +274,8 @@ const translations = {
   Not_selected: 'Niet geselecteerd',
   Poor: 'Slecht',
   Fair: 'Matig',
-  Average: 'Gemiddeld',
+  Average: 'Gemiddelde',
+  Average_slider: 'Gemiddeld',
   Good: 'Goed',
   Excellent: 'Zeer goed',
   Low: 'Laag',
@@ -318,7 +319,7 @@ const translations = {
   weight_kg_corrected: 'Gewicht (corr)',
   weight_combined_kg: 'Gewicht combi',
   bat_volt: 'Batterij',
-  bv: 'Batterij',
+  bv: 'Batterij voltage',
   sound_fanning_4days: 'Vent 4d bijen',
   s_fan_4: 'Vent 4d bijen',
   sound_fanning_6days: 'Vent 6d bijen',
@@ -389,7 +390,8 @@ const translations = {
   ozone: 'Ozon',
 
   /* Measurements */
-  hour: 'Uur',
+  Hour: 'Uur',
+  hour: 'uur | uur',
   day: 'Dag',
   week: 'Week',
   month: 'Maand',
@@ -425,22 +427,6 @@ const translations = {
   policy_version: 'beep_terms_2018_05_25_avg_v1',
   approve_policy:
     'Je hebt nog geen akkoord gegeven op de aangepaste gebruikersvoorwaarden.',
-
-  /* weight calibration settings */
-  calibrate_weight: 'Gewicht calibreren',
-  current_offset_is: 'Huidige nulwaarde is',
-  calibrate_explanation:
-    'Gewicht van de sensoren bij de volgende meting op 0 zetten door de huidige waarde ervanaf te trekken.',
-  set_as_zero_value: 'Stel deze waarde(n) in als 0-waarde(n)',
-  set_weight_factor: 'Gewichtsfactor bepalen',
-  own_weight_kg: 'Wat is je eigen gewicht in kg?',
-  start_calibration:
-    'Stap nu op de weegschaal en druk de onderstaande knop in zodra je er op staat. Verdeel je gewicht gelijkmatig.',
-  currently_there_is: 'Er staat nu',
-  nothing: 'niets',
-  on_the_scale: 'op de weegschaal',
-  calibration_started: 'Calibratie gestart... Wacht op de volgende meting.',
-  calibration_ended: 'Calibratie geslaagd!',
 
   /* General items */
   server_down:
@@ -498,6 +484,7 @@ const translations = {
   created: 'aangemakt',
   group_detached: 'Succesvol uit de groep gestapt',
   group_activated: 'Groepsuitnodiging geaccepteerd',
+  group_declined: 'Groupsuitnodiging afgewezen',
   group_explanation_1:
     '1. Maak een nieuwe samenwerkingsgroep aan met een duidelijke titel en evt. beschrijving',
   group_explanation_2:
@@ -593,7 +580,7 @@ const translations = {
   new_apiary: 'Nieuwe bijenstand',
   delete_group: 'Wis groep',
   edit_group: 'Bewerk groep',
-  new_group: 'Nieuwe groep',
+  new_group: 'Nieuwe samenwerkingsgroep',
   verification_code: 'verificatiecode',
   limit_exceeded: 'Limiet is bereikt, probeer later opnieuw',
   confirm_email_title: 'Bevestig e-mailadres',
@@ -692,7 +679,6 @@ const translations = {
   Measurement: 'Meting | Metingen',
   Calculation: 'Berekening',
   calculation: 'berekening',
-  Calculation_minutes: 'Bereken per x aantal minuten',
   Alert_on_occurences: 'Wanneer wil je deze notificatie ontvangen?',
   Alert_on_occurences_hint:
     'Direct, of pas nadat deze een x aantal keer is opgetreden?',
@@ -711,7 +697,8 @@ const translations = {
   Value: 'Waarde',
   Difference: 'Verschil',
   Absolute_value: 'Absolute waarde',
-  Absolute_value_of_dif: 'Absolute waarde van het verschil',
+  Absolute_value_of_dif: 'Verandering',
+  Absolute_value_of_dif_explanation: '**Absolute waarde van het verschil',
   Exclude_months:
     'Deze notificatie <strong>deactiveren</strong> gedurende de volgende maanden:',
   Exclude_hours:
@@ -734,22 +721,26 @@ const translations = {
   Select_default_alertrule: 'Kopieer standaardinstelling',
   /* below, please keep all terms between [] in english: */
   alertrule_main_sentence:
-    'Ik wil een notificatie ontvangen als [calculation] [comparison] van de/het [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Deze berekening wordt elke [calculation_minutes] uur uitgevoerd, ',
+    'Ik wil een notificatie ontvangen als [calculation] [measurement_quantity] [comparison] [comparator] [threshold_value][measurement_unit]. Deze berekening wordt [calculation_minutes] uitgevoerd',
+  alertrule_active_no_email_sentence:
+    ', en ik open de BEEP app om de notificaties te zien.',
+  alertrule_active_email_sentence:
+    ', en ik ontvang een notificatie email. Daarnaast zie ik de notificaties in de BEEP app.',
   alertrule_occurences_direct_sentence:
-    'en ik ontvang hier direct een notificatie van. ',
+    ', en ik ontvang hier direct een notificatie van. ',
   alertrule_occurences_indirect_sentence:
-    ' maar ik ontvang pas een notificatie wanneer dit [alert_on_occurences] keer achter elkaar is opgetreden. ',
+    ', maar ik ontvang pas een notificatie wanneer dit [alert_on_occurences] keer achter elkaar is opgetreden. ',
   alertrule_exclude_months_sentence:
     'Deze notificatie is uitgeschakeld in de maanden: [exclude_months]. ',
   alertrule_exclude_hours_sentence:
     'Deze notificatie is uitgeschakeld tijdens de uren: [exclude_hours]. ',
   alertrule_exclude_hives_sentence:
     'Deze notificatie is uitgeschakeld voor deze bijenkasten: [exclude_hive_ids].',
-  min: 'de/het minimum',
-  max: 'de/het maximum',
-  ave: 'de/het gemiddelde',
-  der: 'de afgeleide van de/het',
-  cnt: 'de telling van de/het',
+  min: 'minimum',
+  max: 'maximum',
+  ave: 'gemiddelde',
+  der: 'de afgeleide van',
+  cnt: 'het aantal keer voorkomen van',
   equal_to: 'gelijk is aan',
   less_than: 'minder is dan',
   greater_than: 'meer is dan',
@@ -770,7 +761,7 @@ const translations = {
   alert_explanation_2:
     'Om je op weg te helpen zijn er een aantal standaardinstellingen die je kan gebruiken (en aanpassen naar eigen behoefte). Je kan ook zelf een nieuwe notificatie-instelling maken.',
   alertrules_url_text:
-    "Ga naar 'notificaties beheren' om je eerste notificatie in te stellen.",
+    "Ga naar 'notificaties beheren' om je eerste notificatie in te stellen",
   Apiary_management: 'Bijenstand management',
   Move: 'Verplaats',
   Current_apiary: 'Huidige bijenstand',
@@ -778,7 +769,6 @@ const translations = {
   disabled_settings: 'Je kunt deze instellingen niet handmatig aanpassen.',
   Address_placeholder: 'Straatnaam huisnummer, Stad',
   first_create_apiary: 'Maak eerst een bijenstand',
-  alertrule_deleted: 'Notificatie-instelling is verwijderd',
   Unknown: 'Onbekend',
   unknown: 'onbekend',
   research_warning:
@@ -799,8 +789,8 @@ const translations = {
   Add_sensor_definition: 'Toevoegen sensordefinitie',
   Add_member: 'Toevoegen groepslid',
 
-  new_but_not_saved_sensor_defs_warning:
-    'Let op: sensor definities worden pas definitief toegevoegd wanneer je op het groene vink icoon klikt, aan het einde van de sensor definitie rij in de tabel.',
+  new_or_edited_but_not_saved_sensor_defs_warning:
+    'Let op: sensor definities worden pas opgeslagen of definitief toegevoegd wanneer je op het groene vink icoon klikt, aan het einde van de sensor definitie rij in de tabel.',
   delete_sensordef: 'Verwijder sensordefinitie',
   delete_all_alerts: 'Verwijder alle notificaties',
   delete_all_alerts_warning:
@@ -812,22 +802,92 @@ const translations = {
   alert_rule_created: 'Nieuwe notificatie ingesteld',
   alert_rule_deleted: 'Notificatie-instelling verwijderd',
   deactivate_for_all_hives: 'Deactiveer notificatie voor alle bijenkasten',
+  select_all: 'Selecteer alle',
+  During: 'Gedurende',
+  Calculation_minutes: 'Hoe vaak wil je de berekening uit laten voeren?',
+  Every: 'Elke ', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 24 hours etc.
+  every: 'elke ',
+  Alert_on_occurences_short: 'Wanneer ontvang je de notificatie?', // for alert rule overview table header
+  Calculation_minutes_short: 'Hoe vaak berekend?', // for alert rule overview table header
+  Disable_alert_for_this_hive: 'Deactiveer notificatie voor deze kast',
+  Alert_disabled_for_this_hive: 'Notificatie gedeactiveerd voor deze kast',
+  disabled_for_hive: 'gedeactiveerd voor kast', // [alert] has been disabled for the following hive
+  Alert_disabled: 'Notificatie gedeactiveerd',
+
   Log_data_import: 'Log data importeren',
-  Flashlogs: 'Logbestanden',
+  Log_files: 'Logbestanden',
   Upload_date: 'Upload datum',
   Messages: 'Berichten',
   Log_time: 'Tijd gelogd',
   File_size: 'Bestandsgrootte',
-  check_flashlog: 'Check log data',
-  delete_flashlog: 'Verwijder logbestand',
-  commit_flashlog_short: 'Importeer log data',
-  commit_flashlog: 'Importeer data van dit logbestand naar de BEEP app: ',
-  flashlog_explanation:
+  check_log_data: 'Check log data',
+  delete_log_file: 'Verwijder logbestand',
+  commit_log_data_short: 'Importeer log data',
+  commit_log_data: 'Importeer data van dit logbestand naar de BEEP app: ',
+  import_log_data_explanation:
     "In de BEEP base app kan je log data downloaden van het interne geheugen van de BEEP base. Steeds als je log data downloadt, wordt het interne geheugen gewist en de data geüpload naar de BEEP app. Hieronder vind je de lijst met jouw gedownloade log data. Je kan de data in de database vervangen door de data uit de gedownloade logbestanden door op de knop 'Check log data' te klikken. Er zal dan eerst gecheckt worden hoeveel data in de database vervangen zal worden, en of de tijd van de data uit het logbestand klopt. Je ziet dan een pop-up waarin het resultaat van de check vermeld staat, waarbij je kan kiezen om het vervangen van de data toe te passen ('Ok') of te annuleren.",
-  flashlog_url_text:
+  import_log_data_url_text:
     'Lees hier het support artikel over het downloaden van log data m.b.v. de BEEP base app.',
-  flashlog_support_url:
+  import_log_data_support_url:
     'https://beepsupport.freshdesk.com/nl/support/solutions/articles/60000697129-beep-base-data-downloaden-met-bluetooth',
+
+  Immediately: 'Direct',
+  In_case_of_good_connection_warning:
+    '*Direct nadat een meting ontvangen is. Dit is afhankelijk van het datatransmissie interval en de betrouwbaarheid van de dataconnectie.',
+  First_occurence: 'Eerste: ',
+  Last_occurence: 'Laatste: ',
+  // default alert rule names:
+  Hive_stability_and_theft: 'Kast stabiliteit & diefstal',
+  Temperature_sensor_defect: 'Temperatuursensor defect',
+  Battery_low: 'Batterijspanning laag',
+  Honey_harvest: 'Honingoogst',
+  Hive_temperature: 'Kasttemperatuur laag',
+  Brood_temperature: 'Broedtemperatuur laag',
+  No_measurements: 'Geen metingen',
+  Swarm: 'Zwerm',
+  Food_supply_low: 'Winter voedselvoorraad laag',
+  // default alert rule descriptions:
+  Weight_drop_is_above_a_set_value:
+    'Gewichtsafname van de kast is boven een bepaalde waarde',
+  Temperature_sensor_malfunctions: 'Temperatuursensor storingen',
+  Battery_voltage_is_below_a_set_value:
+    'Batterij voltage van het meetsysteem is lager dan een bepaalde waarde',
+  Weight_increase_due_to_nectar_collection_comes_to_a_halt:
+    'Gewichtstoename vanwege nectarverzameling is gestopt',
+  Hive_temperature_drops_below_a_set_value:
+    'Kasttemperatuur daalt tot onder een bepaalde waarde',
+  Temperature_in_the_brood_below_a_set_value:
+    'Broedtemperatuur daalt tot onder een bepaalde waarde',
+  No_measurement_data_received_in_a_set_time_period:
+    'Geen metingen ontvangen gedurende een bepaalde periode',
+  Sudden_weight_drop_triggers_alert_immediately:
+    'Plotselinge gewichtsafname van de kast triggert direct een notificatie. Let op: hierbij is uitgegaan van een datatransmissie interval van 15 minuten. Wanneer jouw meetsysteem een ander datatransmissie interval heeft dien je de drempelwaarde daarop aan te passen.',
+  The_hive_weight_is_below_a_set_value:
+    'Gewicht van de kast is lager dan een bepaalde waarde',
+
+  minute: 'minuut | minuten',
+  upload_interval_warning_single_interval:
+    'Let op: het datatransmissie interval van je meetsysteem is | Let op: het datatransmissie interval van je meetsystemen is',
+  upload_interval_warning_interval_range:
+    'Let op: de datatransmissie intervallen van je meetsystemen variëren tussen de ',
+  not_relevant_for_immediate_calculation: 'Niet relevant bij direct uitvoeren',
+  Increase: 'Stijging',
+  Decrease: 'Daling',
+  Every_hour: 'Elk uur',
+  every_hour: 'elk uur',
+  Alertrule_summary_title: 'Samenvatting',
+  Alertrule_settings_title: 'Notificatie instellingen',
+  Alertrule_exclude_title: 'Periodes en bijenkasten uitzonderen',
+  of: 'van',
+
+  alerts_url_text:
+    'Lees hier het support artikel over het instellen van alerts',
+  alerts_support_url:
+    'https://beepsupport.freshdesk.com/nl/support/solutions/articles/60000706484-notificaties',
+
+  Decline: 'Afwijzen',
+  Decline_invitation: 'Uitnodiging afwijzen',
+  Decline_invitation_sure: 'Weet je zeker dat je de uitnodiging wilt afwijzen?',
 }
 
 export default translations

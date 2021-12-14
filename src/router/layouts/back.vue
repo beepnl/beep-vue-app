@@ -85,7 +85,6 @@ export default {
           icon: 'mdi-home-analytics',
           title: this.$i18n.t('Home'),
           route: 'home',
-          authRequired: true,
         },
       ]
     },
@@ -132,6 +131,13 @@ export default {
       ) {
         this.$router.push({
           name: localStorage.beepAlertRulesBack,
+        })
+      } else if (
+        this.$route.name === 'hive-inspections' &&
+        localStorage.beepInspectionsBack !== undefined
+      ) {
+        this.$router.push({
+          name: localStorage.beepInspectionsBack,
         })
       } else {
         this.$router.go(-1)

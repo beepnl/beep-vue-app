@@ -52,13 +52,21 @@
                 </v-col>
                 <v-col cols="10" sm="5" md="4">
                   <div class="d-flex flex-column">
-                    <span class="alertrule-label">{{ alertRule.name }}</span>
+                    <span class="alertrule-label">{{
+                      getTranslation(alertRule.name)
+                    }}</span>
                     <span class="alertrule-text">{{
-                      alertRule.description
+                      getTranslation(alertRule.description)
                     }}</span>
                   </div>
                 </v-col>
-                <v-col v-if="alertRule" cols="12" sm="6" md="7">
+                <v-col
+                  v-if="alertRule"
+                  cols="12"
+                  sm="6"
+                  md="7"
+                  class="pt-0 pa-sm-2"
+                >
                   <div class="d-flex flex-column">
                     <span class="alertrule-text">{{
                       alertRuleSentence(alertRule)
@@ -82,6 +90,7 @@ import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
 import { ScaleTransition } from 'vue2-transitions'
+import { momentHumanizeHours } from '@mixins/momentMixin'
 import { readAlertRules, readTaxonomy } from '@mixins/methodsMixin'
 
 export default {
@@ -90,7 +99,7 @@ export default {
     Layout,
     ScaleTransition,
   },
-  mixins: [readAlertRules, readTaxonomy],
+  mixins: [momentHumanizeHours, readAlertRules, readTaxonomy],
   data: function() {
     return {
       alertRulesDefault: [],
@@ -99,50 +108,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('taxonomy', ['sensorMeasurementsList']),
+    ...mapGetters('taxonomy', ['alertRulesList', 'sensorMeasurementsList']),
     comparators() {
-      return [
-        {
-          short: '=',
-          full: this.$i18n.t('equal_to'),
-        },
-        {
-          short: '<',
-          full: this.$i18n.t('less_than'),
-        },
-        {
-          short: '>',
-          full: this.$i18n.t('greater_than'),
-        },
-        {
-          short: '<=',
-          full: this.$i18n.t('less_than_or_equal'),
-        },
-        {
-          short: '>=',
-          full: this.$i18n.t('greater_than_or_equal'),
-        },
-      ]
+      return this.formatFromTaxonomy(this.alertRulesList.comparators)
     },
     comparisons() {
-      return [
-        {
-          short: 'val',
-          full: this.$i18n.t('Value'),
-        },
-        {
-          short: 'dif',
-          full: this.$i18n.t('Difference'),
-        },
-        {
-          short: 'abs',
-          full: this.$i18n.t('Absolute_value'),
-        },
-        {
-          short: 'abs_dif',
-          full: this.$i18n.t('Absolute_value_of_dif'),
-        },
-      ]
+      return this.formatFromTaxonomy(this.alertRulesList.comparisons)
     },
     locale() {
       return this.$i18n.locale
@@ -165,6 +136,9 @@ export default {
   methods: {
     async copyAlertRule(alertRule) {
       this.showLoadingIcon = true
+      // translate alert rule name & description if translation is present. (performed here instead of after reading, to keep displayed translation reactive to locale changes)
+      alertRule.name = this.getTranslation(alertRule.name)
+      alertRule.description = this.getTranslation(alertRule.description)
       try {
         await Api.postRequest('/alert-rules', alertRule)
         this.showLoadingIcon = false
@@ -209,17 +183,24 @@ export default {
         comparison: this.comparisons
           .filter((comparison) => comparison.short === alertRule.comparison)[0]
           .full.toLowerCase(),
-        measurement_quantity: measurement.pq,
-        measurement_unit: measurement.unit,
+        measurement_quantity:
+          measurement !== undefined
+            ? this.$i18n.t(measurement.abbreviation)
+            : '-',
+        measurement_unit:
+          alertRule.calculation === 'cnt'
+            ? this.$i18n.t('times')
+            : measurement !== undefined
+            ? measurement.unit
+            : '',
         comparator: this.comparators.filter(
           (comparator) => comparator.short === alertRule.comparator
-        )[0].full,
+        )[0].short,
         threshold_value: alertRule.threshold_value,
-        calculation_minutes: parseFloat(
-          this.$moment
-            .duration(alertRule.calculation_minutes, 'minutes')
-            .asHours()
-            .toFixed(2)
+        calculation_minutes: this.momentHumanizeHours(
+          alertRule.calculation_minutes,
+          false,
+          false
         ),
       }
 
@@ -227,17 +208,19 @@ export default {
         replacedSentence = replacedSentence.replace('[' + key + ']', value)
       })
 
-      if (alertRule.alert_on_occurences === 1) {
-        replacedSentence += this.$i18n.t('alertrule_occurences_direct_sentence')
-      } else {
-        replacedSentence += this.$i18n.t(
-          'alertrule_occurences_indirect_sentence'
-        )
-        replacedSentence = replacedSentence.replace(
-          '[alert_on_occurences]',
-          alertRule.alert_on_occurences
-        )
-      }
+      replacedSentence += '. ' // alertrule_active_email and no_email_sentence are omitted here
+
+      // if (alertRule.alert_on_occurences === 1) {
+      //   replacedSentence += this.$i18n.t('alertrule_occurences_direct_sentence')
+      // } else {
+      //   replacedSentence += this.$i18n.t(
+      //     'alertrule_occurences_indirect_sentence'
+      //   )
+      //   replacedSentence = replacedSentence.replace(
+      //     '[alert_on_occurences]',
+      //     alertRule.alert_on_occurences
+      //   )
+      // }
 
       if (alertRule.exclude_months.length > 0) {
         replacedSentence += this.$i18n.t('alertrule_exclude_months_sentence')
@@ -253,7 +236,13 @@ export default {
 
       if (alertRule.exclude_hours.length > 0) {
         replacedSentence += this.$i18n.t('alertrule_exclude_hours_sentence')
-        var hoursString = alertRule.exclude_hours.join(', ')
+
+        var hoursArray = []
+        alertRule.exclude_hours.map((hour) => {
+          hoursArray.push(this.alertRulesList.exclude_hours[hour])
+        })
+        var hoursString = hoursArray.join(', ')
+
         replacedSentence = replacedSentence.replace(
           '[exclude_hours]',
           hoursString
@@ -277,6 +266,22 @@ export default {
         })
       }, 150) // wait for API to update alertrules
     },
+    formatFromTaxonomy(array) {
+      var formattedArray = []
+      Object.entries(array).map(([key, value]) => {
+        formattedArray.push({
+          short: key,
+          full: this.$i18n.t(value),
+        })
+      })
+      return formattedArray
+    },
+    getTranslation(term) {
+      // check if translation is present, otherwise replace underscores by spaces and return untranslated
+      return this.$i18n.te(term)
+        ? this.$i18n.t(term)
+        : term.replaceAll('_', ' ')
+    },
     getText(item) {
       return item.abbreviation + ' (' + item.pq_name_unit + ')'
     },
@@ -295,39 +300,20 @@ export default {
 
 .alertrule-label {
   margin-bottom: 8px;
-  font-size: 0.75rem !important;
+  font-size: 0.875rem !important;
   font-weight: 600;
   color: $color-grey;
   letter-spacing: 0.0333333333em !important;
   @include for-phone-only {
-    font-size: 0.7rem !important;
+    font-size: 0.75rem !important;
   }
 }
 
 .alertrule-text {
-  font-size: 0.75rem !important;
+  font-size: 0.8125rem !important;
   color: rgba(0, 0, 0, 0.87);
-  @include for-tablet-portrait-up {
-    font-size: 0.7rem !important;
-  }
-}
-
-.alertrules-title-row {
-  line-height: 1.2rem !important;
   @include for-phone-only {
-    line-height: 1rem !important;
-  }
-  &--border-bottom {
-    border-bottom: 1px solid $color-grey-light;
-  }
-}
-
-.alertrule-table {
-  input {
-    font-size: 14px !important;
-    @include for-phone-only {
-      font-size: 12px !important;
-    }
+    font-size: 0.75rem !important;
   }
 }
 </style>

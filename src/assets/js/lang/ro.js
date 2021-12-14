@@ -1,6 +1,6 @@
 /*
- * BEEP - Translations
- * Author: Pim van Gennip (pim@iconize.nl), Alex Giurgiu
+ * BEEP - Translations - VUE app v3 (Q4 2021)
+ * Author: Julia BD (julia@beep.nl) & Alex Giurgiu
  *
  */
 const translations = {
@@ -252,7 +252,8 @@ const translations = {
   Not_selected: 'Nu a fost selectat',
   Poor: 'Slab',
   Fair: 'Potrivit',
-  Average: 'Mediu',
+  Average: 'Medie',
+  Average_slider: 'Mediu',
   Good: 'Bine',
   Excellent: 'Excelent',
   Low: 'Scăzut',
@@ -367,7 +368,8 @@ const translations = {
   ozone: 'Ozon',
 
   /* Measurements */
-  hour: 'Oră',
+  Hour: 'Oră',
+  hour: 'oră | ore',
   day: 'Zi',
   week: 'Săptămână',
   month: 'Lună',
@@ -399,22 +401,6 @@ const translations = {
   policy_version: 'beep_terms_2018_05_25_avg_v1',
   approve_policy:
     'Nu v-ați dat încă acordul pentru ultimii termeni și condiții.',
-
-  /* weight calibration settings */
-  calibrate_weight: 'Calibrați greutatea',
-  calibrate_explanation:
-    'Setați greutatea senzorilor la 0 scăzând valoarea măsurată curentă.',
-  set_as_zero_value: 'Setați aceste valori ca valoare 0.',
-  set_weight_factor: 'Definiți factorul de greutate',
-  own_weight_kg: 'Care este greutatea proprie în Kg?',
-  start_calibration:
-    'Acum, urcațivă pe cântar și apăsați butonul de mai jos pentru a defini factorul greutate. Distribuiți greutatea în mod egal.',
-  currently_there_is: 'există o greutate de',
-  nothing: 'nimic',
-  on_the_scale: 'pe cântar',
-  calibration_started:
-    'Calibrarea a început... Vă rugăm așteptați ca măsuratoarea următoare să intre în vigoare.',
-  calibration_ended: 'Calibrarea a reușit!',
 
   /* General items */
   server_down:
@@ -468,6 +454,7 @@ const translations = {
   created: 'creat',
   group_detached: 'Grupul a fost părăsit cu succes',
   group_activated: 'Invitația în grup a fost acceptată.',
+  group_declined: 'Invitația în grup a fost refuzată',
   group_explanation_1:
     '1. Creați un nou grup de colaborare cu un titlu clar și o descriere opțională',
   group_explanation_2:
@@ -657,7 +644,6 @@ const translations = {
   Measurement: 'Măsurătoare | Măsurători',
   Calculation: 'Calcul',
   calculation: 'calcul',
-  Calculation_minutes: 'Calculați per x număr de minute',
   Alert_on_occurences: 'Când doriți să primiți această alertă?',
   Alert_on_occurences_hint: 'Direct sau numai după ce a avut loc de x ori?',
   Direct: 'Direct',
@@ -675,7 +661,7 @@ const translations = {
   Value: 'Valoare',
   Difference: 'Diferență',
   Absolute_value: 'Valoare absolută',
-  Absolute_value_of_dif: 'Valoarea absolută a diferenței',
+  Absolute_value_of_dif_explanation: '**Valoarea absolută a diferenței',
   Exclude_months:
     '<strong>Dezactivați</strong> această alertă în timpul următoarelor luni:',
   Exclude_hours:
@@ -697,10 +683,11 @@ const translations = {
   Select_default_alertrule: 'Copiați regula de alertă implicită',
   /* below, please keep all terms between [] in english: */
   alertrule_main_sentence:
-    'Aș dori să primesc o alertă dacă [calculation] [comparison] din [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Acest calcul va fi executat la fiecare [calculation_minutes] ore, ',
-  alertrule_occurences_direct_sentence: 'și aș dori să primesc alerta direct. ',
+    'Aș dori să primesc o alertă dacă [calculation] [comparison] din [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Acest calcul va fi executat [calculation_minutes]',
+  alertrule_occurences_direct_sentence:
+    ', și aș dori să primesc alerta direct. ',
   alertrule_occurences_indirect_sentence:
-    ' dar aș dori să primesc alerta numai dacă apare [alert_on_occurences] ori. ',
+    ', dar aș dori să primesc alerta numai dacă apare [alert_on_occurences] ori. ',
   alertrule_exclude_months_sentence:
     'Această alertă va fi dezactivată pentru următoarele luni: [exclude_months]. ',
   alertrule_exclude_hours_sentence:
@@ -733,7 +720,7 @@ const translations = {
   alert_explanation_2:
     'Pentru a putea începe, există câteva reguli implicite de alertă pe care le puteți utiliza (și adapta la propriile nevoi). În plus, vă puteți crea propriile reguli de alertă.',
   alertrules_url_text:
-    'Accesați „Setări de alertă” pentru a crea prima regulă de alertă.',
+    'Accesați „Setări de alertă” pentru a crea prima regulă de alertă',
   Apiary_management: 'Managementul stupinei',
   Move: 'Mutați',
   Current_apiary: 'Stupina actuală',
@@ -741,7 +728,6 @@ const translations = {
   disabled_settings: 'Editarea manuală a acestor setări este dezactivată.',
   Address_placeholder: 'Număr, Nume stradă, Oraș',
   first_create_apiary: 'Mai întâi, creați o stupină',
-  alertrule_deleted: 'Regula de alertă a fost ștearsă',
   Unknown: 'Necunoscut',
   unknown: 'necunoscut',
   research_warning:
@@ -761,18 +747,112 @@ const translations = {
   Add_apiary: 'Adăugați o stupină',
   Add_sensor_definition: 'Adăugați definiția senzorului',
   Add_member: 'Adăugați un membru',
+  alert_rule_deleted: 'Regula de alertă a fost ștearsă',
 
-  /* TO BE TRANSLATED FOR 3.1 */
-  new_but_not_saved_sensor_defs_warning:
-    'N.B.: sensor definitions will only be added after clicking the green check icon at the end of the sensor definition row in the table.',
-  delete_sensordef: 'Delete sensor definition',
-  delete_all_alerts: 'Delete all alerts',
+  new_or_edited_but_not_saved_sensor_defs_warning:
+    'N.B.: Definițiile senzorului vor fi salvate sau adăugate numai după ce faceți clic pe pictograma de verificare verde de la sfârșitul rândului de definiție a senzorului din tabel.',
+  delete_sensordef: 'Ștergeți definiția senzorului',
+  delete_all_alerts: 'Ștergeți toate alertele',
   delete_all_alerts_warning:
-    'Are you sure you want to delete all alerts? This cannot be undone.',
+    'Sigur doriți să ștergeți toate alertele? Această modificare nu poate fi anulată',
   delete_all_alerts_warning_filter_active:
-    'Are you sure you want to delete all alerts? Alerts that do not match your search term will be deleted as well. This cannot be undone.',
-  already_verified: 'I have verified my email address and would like to login',
-  password_recovery_resend_mail: 'Send new verification code',
+    'Sigur doriți să ștergeți toate alertele? Inclusiv alertele care nu corespund termenului  căutarii dvs. vor fi șterse. Acest lucru nu poate fi anulat.',
+  already_verified: 'Am confirmat adresa de e-mail și as dpri să ma autentific',
+  password_recovery_resend_mail: 'Trimiteți un nou cod de verificare',
+  alert_rule_created: 'Noua regulă de alertă a fost creată',
+  select_all: 'Selectați tot',
+  During: 'În decurs de',
+  Calculation_minutes: 'Cât de des ați dori să se efectueze acest calculul?',
+  Every: 'La fiecare ',
+  every: 'La fiecare ',
+  Calculation_minutes_short: 'Cât de des ete calculată?',
+  Alert_on_occurences_short: 'Când veți primi alerta?',
+  Disable_alert_for_this_hive: 'Dezactivați alerta pentru acest stup',
+  Alert_disabled_for_this_hive: 'Alerta afost dezactivată pentru acest stup',
+  disabled_for_hive: 'A fost dezactivată pentru stupul ',
+  Alert_disabled: 'Alertă dezactivată',
+
+  // For import page
+  Log_data_import: 'Importați datele înregistrate',
+  Log_files: 'Fișierele cu date inregistrate',
+  Upload_date: 'Data de încărcare',
+  Messages: 'Mesaje',
+  Log_time: 'Timp înregistrat',
+  File_size: 'Dimensiunea fișierului',
+  check_log_data: 'Verificați datele din jurnal',
+  delete_log_file: 'Ștergeți datele din jurnal',
+  commit_log_data_short: 'Importați datele înregistrate',
+  commit_log_data:
+    'Importați datele din acest fișier tip jurnal în aplicația BEEP: ',
+  import_log_data_explanation:
+    'În aplicația  BEEP puteți descărca datele jurnalului din memoria internă a bazei BEEP. De fiecare dată când descărcați datele jurnalului, memoria internă este ștearsă și datele sunt încărcate în aplicația BEEP. Mai jos este lista datelor de jurnal descărcate. Puteți înlocui datele din baza de date cu datele din fișierele tip jurnal descărcate făcând clic pe butonul „Verificare date jurnal”. Aceasta va verifica mai întâi câte date vor fi înlocuite în baza de date și dacă timpul și datele din fișierul tip jurnal este corect. Veți primi o pictogramă de confirmare cu informațiile rezultate și posibilitatea de a aplica sau de a refuza înlocuirea datelor.',
+  import_log_data_url_text:
+    'Aici puteți găsi articolul de asistență despre descărcarea datelor jurnalului cu aplicația BEEP.',
+  import_log_data_support_url:
+    'https://beepsupport.freshdesk.com/ro/support/solutions/articles/60000697129-desc%C4%83rca%C8%9Bi-datele-de-baz%C4%83-beep-prin-bluetooth',
+
+  Immediately: 'Imediat',
+  alertrule_active_no_email_sentence:
+    ', și deschid aplicația BEEP pentru a vedea alertele.',
+  alertrule_active_email_sentence:
+    ', și primesc alerte prin e-mail. În plus, pot vedea alertele în aplicația BEEP.',
+  First_occurence: 'Prima: ',
+  Last_occurence: 'Ultima: ',
+  /* default alert rule names: */
+  Hive_stability_and_theft: 'Stabilitate stup & furt',
+  Temperature_sensor_defect: 'Defecțiune la sezorul de temperatură',
+  Battery_low: 'Tensiunea bateriei este scăzută ',
+  Honey_harvest: 'Recoltă miere',
+  Hive_temperature: 'Temperatura stupului este scăzută ',
+  Brood_temperature: 'Temperatura puietului este scăzută ',
+  No_measurements: 'Nu sunt măsurător',
+  Swarm: 'Roire',
+  Food_supply_low: 'Rezervă de hrană scăzută',
+  /* default alert rule descriptions: */
+  Weight_drop_is_above_a_set_value:
+    'Scăderea în greutate a stupului depășește valoarea stabilită ',
+  Temperature_sensor_malfunctions: 'Defecțiune la senzorul de temperatură',
+  Battery_voltage_is_below_a_set_value:
+    'Tensiunea la bateria dispozitivului este sub o valoare setată ',
+  Weight_increase_due_to_nectar_collection_comes_to_a_halt:
+    'Creșterea în greutate datorită colectării nectarului s-a oprit ',
+  Hive_temperature_drops_below_a_set_value:
+    'Temperatura stupului a scăzut sub o valoarea setată ',
+  Temperature_in_the_brood_below_a_set_value:
+    'Temperatura puietului a scăzut sub o valoarea setată',
+  No_measurement_data_received_in_a_set_time_period:
+    'Nu s-au primit date de măsurare în perioada de timp setată ',
+  Sudden_weight_drop_triggers_alert_immediately:
+    'Scăderea bruscă a greutății stupului declanșează imediat o alertă. N.B.: aceasta se bazează pe un interval de transmitere a datelor de 15 minute. În cazul în care dispozitivul dvs. are un interval diferit de transmitere a datelor, ar trebui să ajustați valoarea pragului în consecință.',
+  The_hive_weight_is_below_a_set_value:
+    'Greutatea stupului este sub valoarea stabilită',
+
+  minute: 'minut | minute',
+  upload_interval_warning_single_interval:
+    'N.B.: intervalul de transmitere a datelor al dispozitivului dvs. este | NB: intervalul de transmitere a datelor al dispozitivelor dvs. este ', // context: f.e.: ... 15 minutes
+  upload_interval_warning_interval_range:
+    'N.B.: intervalele de transmitere a datelor ale dispozitivelor dvs. variază între ',
+  not_relevant_for_immediate_calculation:
+    'Nu este relevant pentru calcularea imediată ',
+  Increase: 'Creștere',
+  Decrease: 'Scădere',
+  Every_hour: 'Fiecare oră',
+  every_hour: 'fiecare oră',
+  Absolute_value_of_dif: 'Diferență',
+  In_case_of_good_connection_warning:
+    '*Imediat după primirea unei măsurători. Acest lucru depinde de intervalul de transmitere a datelor și de fiabilitatea conexiunii de date.',
+  Alertrule_summary_title: 'Summar',
+  Alertrule_settings_title: 'Setările regulii de alertă ',
+  Alertrule_exclude_title: 'Excludeți perioade și stupi ',
+  of: 'de',
+
+  alerts_url_text: 'Citiți articolul de asistență despre alerte',
+  alerts_support_url:
+    'https://beepsupport.freshdesk.com/ro/support/solutions/articles/60000706484-alerte',
+
+  Decline: 'Declin',
+  Decline_invitation: 'Refuza invitația',
+  Decline_invitation_sure: 'Sigur doriți să refuzați invitația în grup?',
 }
 
 export default translations

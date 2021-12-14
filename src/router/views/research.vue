@@ -59,8 +59,8 @@
                     target="_blank"
                   >
                     <v-img
-                      :src="baseApiUrl + research.thumb_url"
-                      :lazy-src="baseApiUrl + research.thumb_url"
+                      :src="getFullUrl(research.thumb_url)"
+                      :lazy-src="getFullUrl(research.thumb_url)"
                       height="80"
                       width="80"
                       aspect-ratio="1"
@@ -384,11 +384,7 @@ import Confirm from '@components/confirm.vue'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
 import Layout from '@layouts/back.vue'
-import {
-  momentify,
-  momentISO8601,
-  momentFullDateTime,
-} from '@mixins/momentMixin'
+import { momentify, momentFullDateTime } from '@mixins/momentMixin'
 import { mapGetters } from 'vuex'
 import {
   readApiariesAndGroups,
@@ -403,7 +399,6 @@ export default {
   },
   mixins: [
     momentify,
-    momentISO8601,
     momentFullDateTime,
     readApiariesAndGroups,
     readDevicesIfNotPresent,
@@ -415,15 +410,15 @@ export default {
       ready: false,
       showLoadingIconConsentToggle: false,
       showLoadingIcon: [],
+      baseApiUrl:
+        process.env.VUE_APP_BASE_API_URL ||
+        process.env.VUE_APP_BASE_API_URL_FALLBACK,
     }
   },
   computed: {
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('devices', ['devices']),
     ...mapGetters('groups', ['groups']),
-    baseApiUrl() {
-      return process.env.VUE_APP_BASE_API_URL
-    },
     mdAndDown() {
       return this.$vuetify.breakpoint.mdAndDown
     },
@@ -484,9 +479,11 @@ export default {
         researchProjects.map((researchProject) => {
           if (researchProject.consent_history.length > 0) {
             researchProject.consent_history.map((chItem) => {
-              chItem.updated_at = this.momentISO8601(
+              chItem.updated_at = this.momentify(
                 // required for datetimepicker v-model to work
-                chItem.updated_at
+                chItem.updated_at,
+                true,
+                null
               )
             })
           }
@@ -549,7 +546,7 @@ export default {
             ' ' +
             this.$i18n.t('Consent').toLocaleLowerCase() +
             ': ' +
-            this.momentify(chItem.updated_at) +
+            this.momentify(chItem.updated_at, true) +
             ' "' +
             this.$i18n.t('consent_no') +
             '"?',
@@ -564,9 +561,14 @@ export default {
           return true
         })
     },
+    getFullUrl(thumbUrl) {
+      return thumbUrl.indexOf('https://') > -1
+        ? thumbUrl
+        : this.baseApiUrl + thumbUrl
+    },
     updateConsentDate(researchId, consentId, date) {
       this.showLoadingIcon.push(consentId)
-      var formattedDate = this.momentFullDateTime(date)
+      var formattedDate = this.momentFullDateTime(date, true)
       this.editedCHItems.splice(this.editedCHItems.indexOf(consentId), 1)
       console.log('Update consent: ', consentId, formattedDate)
       this.updateDate(researchId, consentId, formattedDate)

@@ -28,7 +28,6 @@
                 exact
                 :to="!item.external ? { name: item.route } : ''"
                 :target="item.external ? '_blank' : '_self'"
-                :disabled="item.authRequired && !loggedIn"
                 @click="checkRoute(item.route)"
               >
                 <v-list-item-avatar>
@@ -54,7 +53,6 @@
                 :to="!item.external ? { name: item.route } : ''"
                 :href="item.external ? item.route : ''"
                 :target="item.external ? '_blank' : '_self'"
-                :disabled="item.authRequired && !loggedIn"
                 @click="checkRoute(item.route)"
               >
                 <v-list-item-avatar>
@@ -75,7 +73,7 @@
               <v-divider v-else-if="item.divider" :key="`d-${i}`"></v-divider>
             </template>
 
-            <v-list-item :disabled="!loggedIn" @click="signOut">
+            <v-list-item @click="signOut">
               <v-list-item-avatar>
                 <v-icon color="accent">mdi-logout-variant</v-icon>
               </v-list-item-avatar>
@@ -86,9 +84,9 @@
           </v-list>
         </div>
 
-        <div class="d-flex flex-row align-end version-number mt-n2 mr-1">
+        <div class="version-number">
           <v-spacer></v-spacer>
-          v3.0.43
+          v3.0.73
         </div>
       </div>
     </v-navigation-drawer>
@@ -132,49 +130,42 @@ export default {
           icon: 'mdi-account',
           title: this.$i18n.t('Profile'),
           route: 'profile',
-          authRequired: true,
           beepBaseRequired: false,
         },
         {
           icon: 'icon-sensors--no-outline',
           title: this.$i18n.tc('device', 2),
           route: 'devices',
-          authRequired: true,
           beepBaseRequired: false,
         },
         {
           icon: 'mdi-bell',
           title: this.$i18n.t('alertrule_pagetitle'),
           route: 'alertrules',
-          authRequired: true,
           beepBaseRequired: false,
         },
         {
           icon: 'mdi-cloud-download',
           title: this.$i18n.t('Data_export'),
           route: 'export',
-          authRequired: true,
           beepBaseRequired: false,
         },
         {
           icon: 'icon-beep-base',
           title: this.$i18n.t('Log_data_import'),
           route: 'import',
-          authRequired: true,
           beepBaseRequired: true,
         },
         {
           icon: 'mdi-format-list-checks',
           title: this.$i18n.tc('Checklist_template', 2),
           route: 'checklists',
-          authRequired: true,
           beepBaseRequired: false,
         },
         {
           icon: 'mdi-school',
           title: this.$i18n.t('research'),
           route: 'research',
-          authRequired: true,
           beepBaseRequired: false,
         },
         {
@@ -184,14 +175,12 @@ export default {
           icon: 'mdi-comment-question-outline',
           title: this.$i18n.t('Support'),
           route: 'support',
-          authRequired: true,
           beepBaseRequired: false,
         },
         {
           icon: 'mdi-new-box',
           title: this.$i18n.t('Whats_new'),
           route: 'new',
-          authRequired: false,
           beepBaseRequired: false,
         },
         {
@@ -202,7 +191,6 @@ export default {
             this.locale === 'nl'
               ? 'https://beep.nl'
               : 'https://beep.nl/home-english',
-          authRequired: false,
           beepBaseRequired: false,
         },
         {
@@ -221,9 +209,6 @@ export default {
     },
     locale() {
       return this.$i18n.locale
-    },
-    loggedIn() {
-      return this.$store.getters['auth/loggedIn']
     },
   },
   created() {
@@ -250,6 +235,7 @@ export default {
   height: 100vh !important;
 }
 .version-number {
+  margin-left: 72px;
   font-size: 11px !important;
 }
 </style>

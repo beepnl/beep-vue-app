@@ -8,6 +8,7 @@ export const state = {
   alertRuleEdited: false,
   alertRules: [],
   alertRulesChecked: false,
+  alertsChecked: false,
   alerts: [],
   alertsLoading: false,
 }
@@ -24,6 +25,9 @@ export const getters = {
   },
   alertRulesChecked: (state) => {
     return state.alertRulesChecked
+  },
+  alertsChecked: (state) => {
+    return state.alertsChecked
   },
   alerts: (state) => {
     return state.alerts || []
@@ -42,6 +46,7 @@ export const mutations = {
     state.activeAlertRule = null
     state.alertRules = []
     state.alertRulesChecked = false
+    state.alertsChecked = false
     state.alerts = []
     state.alertsLoading = false
   },

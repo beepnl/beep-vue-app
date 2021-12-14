@@ -3,10 +3,15 @@ import { mapGetters } from 'vuex'
 
 export const checkAlerts = {
   computed: {
-    ...mapGetters('alerts', ['alertRules', 'alertRulesChecked']),
+    ...mapGetters('alerts', [
+      'alertRules',
+      'alertRulesChecked',
+      'alerts',
+      'alertsChecked',
+    ]),
   },
   methods: {
-    // check whether alertrules have been read, if not do so, then only read alerts if alert rules present
+    // check whether alertrules & alerts have been read, if not do so, then only read alerts if alert rules OR alerts are present
     async checkAlertRulesAndAlerts() {
       this.$store.commit('alerts/setData', {
         prop: 'alertsLoading',
@@ -37,8 +42,18 @@ export const checkAlerts = {
         })
         return true
       } catch (error) {
+        this.$store.commit('alerts/setData', {
+          prop: 'alertsLoading',
+          value: false,
+        })
         if (error.response) {
           console.log('Error: ', error.response)
+          if (error.response.status === 404) {
+            this.$store.commit('alerts/setData', {
+              prop: 'alertRules',
+              value: [],
+            })
+          }
         } else {
           console.log('Error: ', error)
         }
@@ -46,8 +61,16 @@ export const checkAlerts = {
     },
     // only read alerts if alert rules present
     async readAlerts() {
-      if (this.alertRulesChecked && this.alertRules.length > 0) {
+      if (
+        (this.alertRulesChecked &&
+          (this.alertRules.length > 0 || this.alerts.length > 0)) ||
+        !this.alertsChecked
+      ) {
         try {
+          this.$store.commit('alerts/setData', {
+            prop: 'alertsChecked',
+            value: true,
+          })
           const response = await Api.readRequest('/alerts')
           this.$store.commit('alerts/setData', {
             prop: 'alerts',
@@ -76,6 +99,10 @@ export const checkAlerts = {
           }
         }
       } else {
+        this.$store.commit('alerts/setData', {
+          prop: 'alertsLoading',
+          value: false,
+        })
         return true
       }
     },
@@ -181,6 +208,12 @@ export const readAlertRules = {
       } catch (error) {
         if (error.response) {
           console.log('Error: ', error.response)
+          if (error.response.status === 404) {
+            this.$store.commit('alerts/setData', {
+              prop: 'alertRules',
+              value: [],
+            })
+          }
         } else {
           console.log('Error: ', error)
         }

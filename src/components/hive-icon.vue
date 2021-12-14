@@ -10,7 +10,13 @@
     height="auto"
     @click="showHiveMenu($event)"
   >
-    <div class="hive-icon-layers" :style="`${showHive ? 'z-index: 6;' : ''}`">
+    <div
+      :class="
+        'hive-icon-layers' +
+          (hive.layers.length === 0 ? ' hive-icon-layers--empty' : '')
+      "
+      :style="`${showHive ? 'z-index: 6;' : ''}`"
+    >
       <v-sheet
         v-for="(layer, l) in orderedLayers(hive)"
         :key="l"
@@ -67,10 +73,14 @@ export default {
       return this.hive.layers.some((layer) => layer.type === type)
     },
     hiveWidth: function(hive) {
-      if (this.xsView || this.diaryView) {
-        return hive.layers[0].framecount * 3.5
+      if (hive.layers.length > 0) {
+        if (this.xsView || this.diaryView) {
+          return hive.layers[0].framecount * 3.5
+        } else {
+          return hive.layers[0].framecount * 6
+        }
       } else {
-        return hive.layers[0].framecount * 6
+        return 20
       }
     },
     showHiveMenu(event) {
@@ -86,7 +96,7 @@ export default {
   padding: 0 8px;
   margin-bottom: 3px;
   background-color: transparent !important;
-  border-bottom: 1px solid green !important;
+  border-bottom: 1px solid #666 !important;
   border-radius: 2px 2px 0 0;
   .honey-layer {
     height: 18px;
@@ -97,6 +107,9 @@ export default {
   .hive-icon-layers {
     width: 100%;
     height: 100%;
+  }
+  .hive-icon-layers--empty {
+    min-width: 20px; // empty hive
   }
   &.xs-view {
     margin-right: 0 !important;

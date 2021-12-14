@@ -1,6 +1,6 @@
 /*
- * BEEP - Translations
- * Author: Pim van Gennip (pim@iconize.nl)
+ * BEEP - Translations - VUE app v3 (Q4 2021)
+ * Author: Julia BD (julia@beep.nl)
  *
  */
 const translations = {
@@ -252,6 +252,7 @@ const translations = {
   Poor: 'Arm',
   Fair: 'Fair',
   Average: 'Durchschnitt',
+  Average_slider: 'Durchschnitt',
   Good: 'Gut',
   Excellent: 'Excellent',
   Low: 'Tief',
@@ -364,7 +365,8 @@ const translations = {
   ozone: 'Ozon',
 
   /* Measurements */
-  hour: 'Stunde',
+  Hour: 'Stunde',
+  hour: 'Stunde | Stunden',
   day: 'Tag',
   week: 'Woche',
   month: 'Monat',
@@ -466,6 +468,7 @@ const translations = {
   created: 'erstellt',
   group_detached: 'Die Gruppe erfolgreich verlassen',
   group_activated: 'Gruppeneinladung angenommen',
+  group_declined: 'Gruppeneinladung abgelehnt',
   group_explanation_1:
     '1. Erstellen Sie eine neue Kooperationsgruppe mit einem eindeutigen Titel und einer optionalen Beschreibung.',
   group_explanation_2:
@@ -494,7 +497,7 @@ const translations = {
   Consent_can_only_be_set: 'Die Genehmigung kann eingestellt werden für',
   earlier: 'frühere',
   later: 'spätere',
-  new_apiary_explanation: 'Lege eine neue Beute in 4 Schritten an',
+  new_apiary_explanation: 'Lege einen neuen Bienenstand in 4 Schritten an',
   start_here: 'Zum starten hier klicken',
   optional: 'optional',
   dimensions: 'Dimensionen',
@@ -583,9 +586,9 @@ const translations = {
   unsaved_changes: 'Ungesicherte Änderungen',
   save_changes:
     'Bist Du sicher, dass Du diese Seite verlassen möchtest? Alle Änderungen werden verloren gehen.',
-  no_apiaries_yet: 'Du hast bisher keine Beute',
+  no_apiaries_yet: 'Du hast bisher keine Bienenstände',
   need_help: 'Brauchst Du Hilfe?',
-  Apiary_color: 'Beutenfarbe',
+  Apiary_color: 'Bienenstandfarbe',
   Set_notification_date: 'Benachrichtigungsdatum festlegen',
   remove_image: 'Lösche Foto',
   Total_colony_size: 'Größe des Bienenvolks',
@@ -653,7 +656,6 @@ const translations = {
   Measurement: 'Messung | Messungen',
   Calculation: 'Berechnung',
   calculation: 'Berechnung',
-  Calculation_minutes: 'Berechne pro x Minuten',
   Alert_on_occurences: 'Wann möchtest Du diese Benachrichtigung erhalten?',
   Alert_on_occurences_hint:
     'Direkt, oder erst nachdem es x-mal aufgetreten ist?',
@@ -672,7 +674,7 @@ const translations = {
   Value: 'Wert',
   Difference: 'Differenz',
   Absolute_value: 'Absolutwert',
-  Absolute_value_of_dif: 'Absolutwert der Differenz',
+  Absolute_value_of_dif_explanation: '**Absolutwert der Differenz',
   Exclude_months:
     '<strong>Deaktiviere</strong> diesen Alarm während der folgenden Monate:',
   Exclude_hours:
@@ -694,11 +696,11 @@ const translations = {
   Select_default_alertrule: 'Standard-Alarmregel kopieren',
   /* below, please keep all terms between [] in english: */
   alertrule_main_sentence:
-    'Ich möchte eine Benachrichtigung erhalten, wenn die [calculation] [comparison] der [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Diese Berechnung wird alle [calculation_minutes] Stunden ausgeführt, ',
+    'Ich möchte eine Benachrichtigung erhalten, wenn die [calculation] [comparison] der [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Diese Berechnung wird [calculation_minutes] ausgeführt',
   alertrule_occurences_direct_sentence:
-    'und ich möchte die Benachrichtigung direkt erhalten. ',
+    ', und ich möchte die Benachrichtigung direkt erhalten. ',
   alertrule_occurences_indirect_sentence:
-    ' aber ich möchte den Alarm nur erhalten, wenn er [alert_on_occurences] mal auftritt. ',
+    ', aber ich möchte den Alarm nur erhalten, wenn er [alert_on_occurences] mal auftritt. ',
   alertrule_exclude_months_sentence:
     'Dieser Alarm wird in den folgenden Monaten deaktiviert: [exclude_months]. ',
   alertrule_exclude_hours_sentence:
@@ -732,8 +734,8 @@ const translations = {
   alert_explanation_2:
     'Für den Anfang gibt es ein paar Standard-Alarmregeln, die Du verwenden (und an Deine eigenen Bedürfnisse anpassen) kannst. Außerdem kannst Du Deine eigenen Alarmregeln erstellen.',
   alertrules_url_text:
-    'Gehe zu "Alarmeinstellungen", um Deine erste Alarmregel anzulegen.',
-  Apiary_management: 'Bienenstand-Management',
+    'Gehe zu "Alarmeinstellungen", um Deine erste Alarmregel anzulegen',
+  Apiary_management: 'Bienenstand-Verwaltung',
   Move: 'Verschieben',
   Current_apiary: 'Aktueller Bienenstand',
   sensor_key: 'Eindeutige Gerätekennung',
@@ -741,7 +743,6 @@ const translations = {
     'Die manuelle Bearbeitung dieser Einstellungen ist deaktiviert.',
   Address_placeholder: 'Nummer, Straßenname, Stadt',
   first_create_apiary: 'Lege zuerst einen Bienenstand an',
-  alertrule_deleted: 'Alarmregel wurde gelöscht',
   Unknown: 'Unbekannt',
   unknown: 'unbekannt',
   research_warning:
@@ -761,18 +762,114 @@ const translations = {
   Add_apiary: 'Füge einen Bienenstand hinzu',
   Add_sensor_definition: 'Füge eine Sensordefinition hinzu',
   Add_member: 'Füge ein Mitglied hinzu',
+  alert_rule_deleted: 'Alarmregel wurde gelöscht',
 
-  /* TO BE TRANSLATED FOR 3.1 */
-  new_but_not_saved_sensor_defs_warning:
-    'N.B.: sensor definitions will only be added after clicking the green check icon at the end of the sensor definition row in the table.',
-  delete_sensordef: 'Delete sensor definition',
-  delete_all_alerts: 'Delete all alerts',
+  new_or_edited_but_not_saved_sensor_defs_warning:
+    'Hinweis: Sensordefinitionen werden nur gespeichert oder hinzugefügt, wenn Sie auf das grüne Häkchensymbol am Ende der Sensordefinitionszeile in der Tabelle klicken.',
+  delete_sensordef: 'Sensordefinition löschen',
+  delete_all_alerts: 'Alle Alarme löschen',
   delete_all_alerts_warning:
-    'Are you sure you want to delete all alerts? This cannot be undone.',
+    'Bist Du sicher, dass Du alle Alarme löschen willst? Dies kann nicht rückgängig gemacht werden.',
   delete_all_alerts_warning_filter_active:
-    'Are you sure you want to delete all alerts? Alerts that do not match your search term will be deleted as well. This cannot be undone.',
-  already_verified: 'I have verified my email address and would like to login',
-  password_recovery_resend_mail: 'Send new verification code',
+    'Bist Du sicher, dass Du alle Alarme löschen willst? Alarme, die nicht mit Deinem Suchbegriff übereinstimmen, werden ebenfalls gelöscht. Dies kann nicht rückgängig gemacht werden.',
+  already_verified:
+    'Ich habe meine E-Mail-Adresse verifiziert und möchte mich anmelden.',
+  password_recovery_resend_mail: 'Neuen Verifizierungscode senden',
+  alert_rule_created: 'Es wurde eine neue Alarmregel erstellt',
+  select_all: 'Alle auswählen',
+  During: 'Während',
+  Calculation_minutes: 'Wie oft soll die Berechnung durchgeführt werden?',
+  Every: 'Alle ',
+  every: 'alle ',
+  Calculation_minutes_short: 'Wie oft wird berechnet?',
+  Alert_on_occurences_short: 'Wann erhälst Du Alarmmeldungen?',
+  Disable_alert_for_this_hive: 'Alarm für diese Beute deaktivieren',
+  Alert_disabled_for_this_hive: 'Alarm ist für diese Beute deaktiviert',
+  disabled_for_hive: 'wurde deaktiviert für die Beute',
+  Alert_disabled: 'Alarm deaktiviert',
+
+  // For import page
+  Log_data_import: 'Importieren von Protokolldaten',
+  Log_files: 'Protokolldateien',
+  Upload_date: 'Upload-Datum',
+  Messages: 'Nachrichten',
+  Log_time: 'Protokollierte Zeit',
+  File_size: 'Dateiengröße',
+  check_log_data: 'Protokolldaten prüfen',
+  delete_log_file: 'Protokolldaten löschen',
+  commit_log_data_short: 'Protokolldaten importieren',
+  commit_log_data:
+    'Importiere Daten aus dieser Protokolldatei in die BEEP-App: ',
+  import_log_data_explanation:
+    "In der BEEP Base App kannst Du Protokolldaten aus dem internen Speicher der BEEP Base herunterladen. Jedes Mal, wenn Du Protokolldaten herunterlädst, wird der interne Speicher geleert und die Daten werden in die BEEP-App hochgeladen. Unten findest Du eine Liste der heruntergeladenen Protokolldaten. Du kannst die Daten in der Datenbank durch die Daten in den heruntergeladenen Protokolldateien ersetzen, indem Du auf die Schaltfläche 'Protokolldaten prüfen' klickst. Dadurch wird zunächst geprüft, wie viele Daten in der Datenbank ersetzt werden und ob die Zeit der Daten in der Protokolldatei korrekt ist. Du erhälst ein Bestätigungsfeld mit den entsprechenden Informationen und der Möglichkeit, die Ersetzung zu bestätigen oder abzulehnen.",
+  import_log_data_url_text:
+    'Hier findest Du den Support-Artikel zum Herunterladen von Protokolldaten mit der BEEP-Basis-App.',
+  import_log_data_support_url:
+    'https://beepsupport.freshdesk.com/de/support/solutions/articles/60000697129-laden-sie-die-beep-basisdaten-%C3%BCber-bluetooth-herunter',
+
+  Immediately: 'Sofort',
+  alertrule_active_no_email_sentence:
+    ', und BEEP-App öffnen, um die Alarme zu sehen.',
+  alertrule_active_email_sentence:
+    ', und ich erhalte Alarmmeldungen per E-Mail. Außerdem kann ich die Alarme in der BEEP-App sehen.',
+  First_occurence: 'Erstes: ',
+  Last_occurence: 'Letztes: ',
+  /* default alert rule names: */
+  Hive_stability_and_theft: 'Beutenstabilität & Diebstahl',
+  Temperature_sensor_defect: 'Defekt des Temperatursensors',
+  Battery_low: 'Batteriespannung zu niedrig',
+  Honey_harvest: 'Honigernte',
+  Hive_temperature: 'Niedrige Bienenstocktemperatur',
+  Brood_temperature: 'Niedrige Bruttemperatur',
+  No_measurements: 'Keine Messungen',
+  Swarm: 'Schwarm',
+  Food_supply_low: 'Wenig Futter',
+  /* default alert rule descriptions: */
+  Weight_drop_is_above_a_set_value:
+    'Der Gewichtsverlust der Beute liegt über einem bestimmten Wert',
+  Temperature_sensor_malfunctions: 'Fehlfunktionen des Temperatursensors',
+  Battery_voltage_is_below_a_set_value:
+    'Die Batteriespannung liegt unter einem bestimmten Wert',
+  Weight_increase_due_to_nectar_collection_comes_to_a_halt:
+    'Gewichtszunahme durch Nektareintrag stagniert',
+  Hive_temperature_drops_below_a_set_value:
+    'Die Temperatur in der Beute fällt unter einen bestimmten Wert',
+  Temperature_in_the_brood_below_a_set_value:
+    'Die Bruttemperatur fällt unter einen bestimmten Wert',
+  No_measurement_data_received_in_a_set_time_period:
+    'Keine Messdaten während eines bestimmten Zeitraums empfangen',
+  Sudden_weight_drop_triggers_alert_immediately:
+    'Ein plötzlicher Gewichtsverlust des Bienenstocks löst sofort einen Alarm aus. N.B.: Dies basiert auf einem Datenübertragungsintervall von 15 Minuten. Falls Ihr Gerät ein anderes Datenübertragungsintervall hat, sollten Sie den Schwellenwert entsprechend anpassen.',
+  The_hive_weight_is_below_a_set_value:
+    'Das Beutengewicht liegt unter einem bestimmten Wert',
+
+  minute: 'Minute | Minuten',
+  upload_interval_warning_single_interval:
+    'Hinweis: das Datenübertragungsintervall Ihres Geräts ist | Hinweis: das Datenübertragungsintervall Ihrer Geräte ist',
+  upload_interval_warning_interval_range:
+    'Hinweis: Die Datenübertragungsintervalle Ihrer Geräte variieren zwischen ',
+  not_relevant_for_immediate_calculation:
+    'Für die unmittelbare Berechnung nicht relevant',
+  Increase: 'Erhöhung',
+  Decrease: 'Rückgang',
+  Every_hour: 'Jede Stunde',
+  every_hour: 'jede Stunde',
+  Absolute_value_of_dif: 'Differenz',
+  In_case_of_good_connection_warning:
+    '*Unmittelbar nach dem Empfang einer Messung. Dies ist abhängig vom Datenübertragungsintervall und der Zuverlässigkeit der Datenverbindung.',
+  Alertrule_summary_title: 'Zusammenfassung',
+  Alertrule_settings_title: 'Einstellungen der Alarmregeln',
+  Alertrule_exclude_title: 'Zeitperioden und Beuten ausschließen',
+  of: 'von',
+
+  alerts_url_text: 'Lesen Sie den Support-Artikel über Alarme',
+  alerts_support_url:
+    'https://beepsupport.freshdesk.com/de/support/solutions/articles/60000706484-benachrichtigungen',
+
+  Decline: 'Ablehnen',
+  Decline_invitation: 'Einladung ablehnen',
+  Decline_invitation_sure:
+    'Möchten Sie die Gruppeneinladung wirklich ablehnen?',
 }
 
 export default translations

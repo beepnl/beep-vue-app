@@ -8,7 +8,9 @@
               `${
                 showAlertRulePlaceholder ? 'save-button-mobile-wide' : 'mr-1'
               } d-flex ${
-                mobile ? 'justify-end' : 'justify-space-between'
+                mobile || showAlertRulePlaceholder
+                  ? 'justify-end'
+                  : 'justify-space-between'
               } align-center`
             "
             style="width: 100%;"
@@ -74,7 +76,7 @@
         <v-col>
           <div class="text-center">
             <img
-              src="@assets/img/BEEP-alert-rule.png"
+              :src="assetsUrl + '/img/BEEP-alert-rule.png'"
               style="max-width: 180px;"
             />
           </div>
@@ -99,9 +101,15 @@
               class="d-flex justify-start align-start"
             >
               <p :class="`beep-label mb-2 ${mobile ? 'mb-n2' : 'mt-n6'}`">
-                <em>{{
-                  $t('alert_explanation_1') + ' ' + $t('alert_explanation_2')
-                }}</em>
+                <em
+                  >{{
+                    $t('alert_explanation_1') + ' ' + $t('alert_explanation_2')
+                  }}
+                  <a :href="$t('alerts_support_url')" target="_blank"
+                    ><v-icon small color="accent">mdi-arrow-right</v-icon
+                    >{{ $t('alerts_url_text') }}</a
+                  ></em
+                >
               </p>
             </v-col>
             <v-col
@@ -115,6 +123,7 @@
                   <v-btn
                     tile
                     outlined
+                    small
                     color="accent"
                     class="save-button-mobile-wide"
                     v-bind="attrs"
@@ -151,13 +160,13 @@
                       {{ $t('Active') }}
                     </th>
                     <th class="text-left">
-                      {{ $t('Alert_via_email') }}
+                      {{ mobile ? $t('email') : $t('Alert_via_email') }}
                     </th>
                     <th class="text-left">
                       {{ $t('Name') }}
                     </th>
-                    <th class="text-left">
-                      {{ $t('Description') }}
+                    <th v-if="!mobile" class="text-left">
+                      {{ $t('Calculation_minutes_short') }}
                     </th>
                     <th class="text-left">
                       {{ $t('Actions') }}
@@ -184,7 +193,7 @@
                       <v-icon
                         v-if="
                           showLoadingIconById.active.indexOf(
-                            // eslint-disable-next-line vue/comma-dangle
+                            // eslint-disable vue/comma-dangle
                             alertRule.id
                           ) === -1
                         "
@@ -200,7 +209,6 @@
                       <v-progress-circular
                         v-if="
                           showLoadingIconById.alert_via_email.indexOf(
-                            // eslint-disable-next-line vue/comma-dangle
                             alertRule.id
                           ) > -1
                         "
@@ -213,7 +221,6 @@
                       <v-icon
                         v-if="
                           showLoadingIconById.alert_via_email.indexOf(
-                            // eslint-disable-next-line vue/comma-dangle
                             alertRule.id
                           ) === -1
                         "
@@ -228,8 +235,22 @@
                     <td :class="!alertRule.active ? 'td--not-active' : ''">
                       <span v-text="alertRule.name"></span>
                     </td>
-                    <td :class="!alertRule.active ? 'td--not-active' : ''">
+                    <!-- <td :class="!alertRule.active ? 'td--not-active' : ''">
                       <span v-text="alertRule.description"></span>
+                    </td> -->
+                    <td
+                      v-if="!mobile"
+                      :class="!alertRule.active ? 'td--not-active' : ''"
+                    >
+                      <span
+                        v-text="
+                          momentHumanizeHours(
+                            alertRule.calculation_minutes,
+                            true,
+                            false
+                          )
+                        "
+                      ></span>
                     </td>
                     <td :class="!alertRule.active ? 'td--not-active' : ''">
                       <router-link
@@ -267,6 +288,7 @@ import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
+import { momentHumanizeHours } from '@mixins/momentMixin'
 import { readAlertRules } from '@mixins/methodsMixin'
 
 export default {
@@ -274,7 +296,7 @@ export default {
     Confirm,
     Layout,
   },
-  mixins: [readAlertRules],
+  mixins: [momentHumanizeHours, readAlertRules],
   data: function() {
     return {
       ready: false,
@@ -284,6 +306,9 @@ export default {
         active: [],
         alert_via_email: [],
       },
+      assetsUrl:
+        process.env.VUE_APP_ASSETS_URL ||
+        process.env.VUE_APP_ASSETS_URL_FALLBACK,
     }
   },
   computed: {
@@ -358,7 +383,12 @@ export default {
         if (!response) {
           console.log('Error')
         }
-        this.readAlertRules() // update alertRules in store
+        // update alertRules in store
+        this.readAlertRules().then(() => {
+          if (this.alertRules.length === 0) {
+            this.showExplanation = true
+          }
+        })
       } catch (error) {
         if (error.response) {
           console.log('Error: ', error.response)
@@ -405,8 +435,7 @@ export default {
           this.$i18n.t('delete_alertrule') +
             ' (' +
             alertRule.name +
-            ' - ' +
-            alertRule.description +
+            (alertRule.description ? ' - ' + alertRule.description : '') +
             ')?',
           {
             color: 'red',

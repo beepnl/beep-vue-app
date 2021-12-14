@@ -12,7 +12,7 @@
           ><img
             v-cloak
             class="account-logo ml-n1"
-            src="@assets/img/beep-icon-logo.svg"
+            :src="assetsUrl + '/img/beep-icon-logo.svg'"
         /></a>
       </div>
       <v-card-title class="account-title mb-n2">{{ title }}</v-card-title>
@@ -29,6 +29,13 @@ export default {
       required: false,
       default: '',
     },
+  },
+  data() {
+    return {
+      assetsUrl:
+        process.env.VUE_APP_ASSETS_URL ||
+        process.env.VUE_APP_ASSETS_URL_FALLBACK,
+    }
   },
   computed: {
     mobile() {
@@ -71,7 +78,7 @@ export default {
   position: absolute;
   width: 20px;
   height: 20px;
-  background-image: url('~@assets/img/icons/icn_bee_dark.svg');
+  background-image: url($ASSETS+'/img/icons/icn_bee_dark.svg');
 }
 #bee1 {
   animation: beeAnimation1 11s linear infinite, rotateBee1 11s linear infinite;

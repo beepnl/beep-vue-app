@@ -3,8 +3,8 @@
     <v-container>
       <div class="overline mb-1 primary--text"
         ><span class="lowercase">v</span>
-        <span v-if="dutch">3.0.43 (23-09-2021) - Huidige versie</span>
-        <span v-if="!dutch">3.0.43 (23-09-2021) - Current version</span>
+        <span v-if="dutch">3.0.73 (13-12-2021) - Huidige versie</span>
+        <span v-if="!dutch">3.0.73 (12-13-2021) - Current version</span>
       </div>
       <div v-if="!dutch" class="rounded-border primary-border mb-4">
         <p class="mb-3">
@@ -14,7 +14,8 @@
             ><v-icon class="support-icon" small color="accent"
               >mdi-arrow-right</v-icon
             >
-            BEEP support article on app v3 (including screenshots)</a
+            To view the BEEP support article on app v3 (including screenshots)
+            click here</a
           >
         </p>
         <ul>
@@ -25,17 +26,17 @@
             >
             <ul>
               <li
-                >Searchable: by hive / apiary / group / queen name, location
-                (address, country code), latest inspection (notes, reminder
-                text, reminder date, time ago), hive type, hive id (adding
-                'id=', f.e.: 'id=99') and (queen) bee race.</li
+                >Searchable: by hive / apiary / collaboration group / queen
+                name, location (address, country code), latest inspection
+                (notes, reminder text, reminder date, time ago), hive type, hive
+                id (adding 'id=', f.e.: 'id=99') and (queen) bee race.</li
               >
               <li
                 >Filterable: by
                 <v-icon class="icon-apiary-shared color-grey inline-icon"
                   >mdi-account-multiple</v-icon
                 >
-                group (if any, toggle between groups
+                collaboration group (if any, toggle between collaboration groups
                 <v-icon class="icon-apiary-shared color-primary inline-icon"
                   >mdi-account-multiple</v-icon
                 >
@@ -89,7 +90,12 @@
               </li>
               <li
                 >Hive menu: click on a hive to edit it, edit the queen, create
-                an inspection or view inspections.</li
+                an inspection or view inspections. This menu can also be opened
+                via the
+                <v-icon small class="inline-icon">mdi-dots-vertical</v-icon>
+                icon on each hive card in the
+                <v-icon class="inline-icon">mdi-size-m</v-icon> and
+                <v-icon class="inline-icon">mdi-size-xl</v-icon> view.</li
               >
               <li
                 >Collaboration groups: are shown in the
@@ -98,20 +104,21 @@
                 <v-icon class="icon-apiary-shared color-grey inline-icon"
                   >mdi-account-multiple</v-icon
                 >
-                group filter at the top bar once <em>only</em> groups will be
-                shown (filter button only visible if you are a member of any
-                collaboration group). Or start a new group via the 'Quick action
-                menu' (see below).</li
+                collaboration group filter at the top bar once
+                <em>only</em> collaboration groups will be shown (filter button
+                only visible if you are a member of any collaboration group). Or
+                start a new collaboration group via the 'Quick action menu' (see
+                below).</li
               >
               <li
-                >Apiary / group menu: click on the
+                >Apiary / collaboration group menu: click on the
                 <v-icon small class="color-grey-light inline-icon"
                   >mdi-cog</v-icon
                 >
-                icon next to the apiary / group name to edit apiary or group
-                properties (f.e. sharing hives), create a bulk inspection or
-                view inspections. And for apiary menu only: to add a new hive or
-                move hives (see below).</li
+                icon next to the apiary / collaboration group name to edit
+                apiary or collaboration group properties (f.e. sharing hives),
+                create a bulk inspection or view inspections. And for apiary
+                menu only: to add a new hive or move hives (see below).</li
               >
               <li
                 >Move hives: move multiple hives to another apiary at once by
@@ -164,23 +171,23 @@
                 <ul>
                   <li
                     >Either start a new collaboration group via the 'Quick
-                    action menu' (see below) -> 'New group'.</li
+                    action menu' (see below) -> 'New collaboration group'.</li
                   >
                   <li>
                     Or share a hive with an existing collaboration group (if you
-                    have any) via the menu of that particular group. Groups can
-                    be found in the
+                    have any) via the menu of that particular group.
+                    Collaboration groups can be found in the
                     <router-link :to="{ name: 'home' }">Hives</router-link>
-                    overview, or shown exclusively by clicking the group filter
-                    (<v-icon class="icon-apiary-shared color-grey"
+                    overview, or shown exclusively by clicking the collaboration
+                    group filter (<v-icon class="icon-apiary-shared color-grey"
                       >mdi-account-multiple</v-icon
                     >
                     icon) once. Then click on the
                     <v-icon small class="color-grey-light inline-icon"
                       >mdi-cog</v-icon
                     >
-                    icon next to the group name -> 'Edit collaboration group' to
-                    share your hive.</li
+                    icon next to the collaboration group name -> 'Edit
+                    collaboration group' to share your hive.</li
                   >
                 </ul>
               </li>
@@ -189,8 +196,8 @@
                 <ul>
                   <li
                     >Move multiple hives to another apiary at once by selecting
-                    'Move hives' from the apiary menu (see 'Apiary / group menu'
-                    above).</li
+                    'Move hives' from the apiary menu (see 'Apiary /
+                    collaboration group menu' above).</li
                   >
                   <li
                     >For a single hive: change the apiary and/or order within an
@@ -210,16 +217,16 @@
             >
             <ul>
               <li
-                >Searchable: by date, time ago, hive / apiary / group name,
-                notes, reminder text, reminder date and inspection id (adding
-                'id=', f.e.: 'id=99').</li
+                >Searchable: by date, time ago, hive / apiary / collaboration
+                group name, notes, reminder text, reminder date and inspection
+                id (adding 'id=', f.e.: 'id=99').</li
               >
               <li
                 >Filterable: by
                 <v-icon class="icon-apiary-shared color-grey inline-icon"
                   >mdi-account-multiple</v-icon
                 >
-                group (if any, toggle between groups
+                collaboration group (if any, toggle between collaboration groups
                 <v-icon class="icon-apiary-shared color-primary inline-icon"
                   >mdi-account-multiple</v-icon
                 >
@@ -298,10 +305,11 @@
             >
             <ul>
               <li
-                >Bulk inspection: inspect multiple hives per apiary / group at
-                once by selecting the hives you want to include. The inspection
-                will be saved for each hive individually, such that it can later
-                be retrieved (and edited / deleted) per hive.</li
+                >Bulk inspection: inspect multiple hives per apiary /
+                collaboration group at once by selecting the hives you want to
+                include. The inspection will be saved for each hive
+                individually, such that it can later be retrieved (and edited /
+                deleted) per hive.</li
               >
             </ul>
           </li>
@@ -334,8 +342,8 @@
             overview, you can choose to receive them via email as well.
             <ul>
               <li
-                >Searchable: by date, time ago, hive / apiary / group name,
-                alert rule name, function and value.</li
+                >Searchable: by date, time ago, hive / apiary / collaboration
+                group name, alert rule name, function and value.</li
               >
               <li
                 ><router-link :to="{ name: 'alertrules' }"
@@ -354,8 +362,9 @@
                 right.</li
               >
               <li
-                >Alert menu: click on an alert item to edit alert rule or delete
-                alert.</li
+                >Alert menu: click on an alert item to edit alert rule, view the
+                associated data, deactivate the alert for the concerned hive, or
+                delete the alert.</li
               >
             </ul>
           </li>
@@ -371,14 +380,14 @@
             because of swarming.
             <ul>
               <li
-                >Sentence at the top 'translates' the rule into plain
+                >Summary at the top 'translates' the rule into plain
                 language.</li
               >
               <li
                 >By default, an alert rule will apply to all months, hours of
                 day and hives (that are connected to a device). The alert rule
                 can be deactivated for specified months, hours and hives (see
-                bottom three input fields).</li
+                bottom section).</li
               >
               <li
                 ><router-link :to="{ name: 'alertrules-default' }"
@@ -390,14 +399,20 @@
                 desired.</li
               >
             </ul>
+            <a :href="$t('alerts_support_url')" target="_blank"
+              ><v-icon class="support-icon" small color="accent"
+                >mdi-arrow-right</v-icon
+              >
+              BEEP support article on setting alerts</a
+            >
           </li>
           <li class="new-block">
             <strong>Where to find? - Menu changes</strong>
             <ul>
               <li
                 ><strong>Quick action menu</strong> - Create a new inspection,
-                new hive, new apiary, new group or new alert rule by clicking
-                the
+                new hive, new apiary, new collaboration group or new alert rule
+                by clicking the
                 <v-icon class="color-black inline-icon"
                   >mdi-plus-circle-outline</v-icon
                 >
@@ -423,12 +438,12 @@
                 ><strong>Collaboration groups</strong> are now directly visible
                 in the
                 <router-link :to="{ name: 'home' }">Hives</router-link>
-                overview. Via the group filter (<v-icon
+                overview. Via the collaboration group filter (<v-icon
                   class="icon-apiary-shared color-grey"
                   >mdi-account-multiple</v-icon
                 >
-                icon) groups will be shown exclusively (first in row after
-                search field, only visible if you are a member of any
+                icon) collaboration groups will be shown exclusively (first in
+                row after search field, only visible if you are a member of any
                 collaboration group).</li
               >
               <li
@@ -469,7 +484,8 @@
             ><v-icon class="support-icon" small color="accent"
               >mdi-arrow-right</v-icon
             >
-            BEEP support artikel over app v3 (inclusief screenshots)</a
+            Bekijk het BEEP support artikel over app v3 (inclusief screenshots)
+            hier</a
           >
         </p>
         <ul>
@@ -481,18 +497,19 @@
             >
             <ul>
               <li>
-                Zoekbaar: op bijenkast / bijenstand / groep / moer naam, locatie
-                (adres, landcode), laatste inspectie (notitie, herinnering,
-                herinneringsdatum, tijd geleden), kasttype, kast id (door 'id='
-                toe te voegen, bijv: 'id=99') en bijenras (als gespecificeerd
-                bij de moer, in het Engels).</li
+                Zoekbaar: op bijenkast / bijenstand / samenwerkingsgroep / moer
+                naam, locatie (adres, landcode), laatste inspectie (notitie,
+                herinnering, herinneringsdatum, tijd geleden), kasttype, kast id
+                (door 'id=' toe te voegen, bijv: 'id=99') en bijenras (als
+                gespecificeerd bij de moer, in het Engels).</li
               >
               <li>
                 Filterbaar: op
                 <v-icon class="icon-apiary-shared color-grey inline-icon"
                   >mdi-account-multiple</v-icon
                 >
-                groep (als aanwezig, switch tussen groepen
+                samenwerkingsgroep (als aanwezig, switch tussen
+                samenwerkingsgroepen
                 <v-icon class="icon-apiary-shared color-primary inline-icon"
                   >mdi-account-multiple</v-icon
                 >
@@ -545,7 +562,11 @@
               </li>
               <li
                 >Kast menu: klik op een kast om deze aan te passen, de moer een
-                te passen een inspectie te maken of inspecties te bekijken.</li
+                te passen een inspectie te maken of inspecties te bekijken. Dit
+                menu kan ook geopend worden d.m.v. het
+                <v-icon small class="inline-icon">mdi-dots-vertical</v-icon>
+                icoon in de <v-icon class="inline-icon">mdi-size-m</v-icon> en
+                <v-icon class="inline-icon">mdi-size-xl</v-icon> layout.</li
               >
               <li
                 >Samenwerkingsgroepen: worden getoond in het
@@ -554,20 +575,21 @@
                 <v-icon class="icon-apiary-shared color-grey inline-icon"
                   >mdi-account-multiple</v-icon
                 >
-                groepsfilter in de filterbalk bovenaan om <em>alleen</em> jouw
-                groepen te tonen (de groepsfilter is alleen zichtbaar als je lid
-                bent van tenminste één samenwerkingsgroep). Of start een nieuwe
-                groep via het 'Snelle actie menu' (zie onder).</li
+                samenwerkingsgroepsfilter in de filterbalk bovenaan om
+                <em>alleen</em> jouw samenwerkingsgroepen te tonen (de
+                samenwerkingsgroepsfilter is alleen zichtbaar als je lid bent
+                van tenminste één samenwerkingsgroep). Of start een nieuwe
+                samenwerkingsgroep via het 'Snelle actie menu' (zie onder).</li
               >
               <li
-                >Bijenstand / groep menu: klik op het
+                >Bijenstand / samenwerkingsgroep menu: klik op het
                 <v-icon small class="color-grey-light inline-icon"
                   >mdi-cog</v-icon
                 >
-                icoon naast de bijenstand / groep naam om deze aan te passen,
-                een bulk inspectie te maken of inspecties te bekijken. En alleen
-                voor het bijenstand menu: voeg een nieuwe kast toe of verplaats
-                kasten (zie onder).</li
+                icoon naast de bijenstand / samenwerkingsgroep naam om deze aan
+                te passen, een bulk inspectie te maken of inspecties te
+                bekijken. En alleen voor het bijenstand menu: voeg een nieuwe
+                kast toe of verplaats kasten (zie onder).</li
               >
               <li
                 >Verplaats bijenkasten: verplaats meerdere kasten in één keer
@@ -633,11 +655,11 @@
                   >
                   <li
                     >Of deel een kast met een bestaande samenwerkingsgroep via
-                    het menu van de betreffende groep. Groepen worden getoond in
-                    het
+                    het menu van de betreffende groep. Samenwerkingsgroepen
+                    worden getoond in het
                     <router-link :to="{ name: 'home' }">Kasten</router-link>
                     overzicht, of kunnen <em>exclusief</em> getoond worden door
-                    eenmaal de groepsfilter aan te klikken (<v-icon
+                    eenmaal de samenwerkingsgroepsfilter aan te klikken (<v-icon
                       class="icon-apiary-shared color-grey"
                       >mdi-account-multiple</v-icon
                     >
@@ -645,8 +667,8 @@
                     <v-icon small class="color-grey-light inline-icon"
                       >mdi-cog</v-icon
                     >
-                    icoon naast de groepsnaam -> 'Aanpassen samenwerkingsgroep'
-                    om je kast te delen.</li
+                    icoon naast de samenwerkingsgroepsnaam -> 'Aanpassen
+                    samenwerkingsgroep' om je kast te delen.</li
                   >
                 </ul>
               </li>
@@ -656,7 +678,8 @@
                   <li
                     >Verplaats meerdere kasten in één keer naar een andere
                     bijenstand door 'Verplaats bijenkasten' te selecteren in het
-                    bijenstand menu (zie 'Bijenstand / groep menu' boven).</li
+                    bijenstand menu (zie 'Bijenstand / samenwerkingsgroep menu'
+                    boven).</li
                   >
                   <li
                     >Voor een enkele kast: verander de bijenstand en/of volgorde
@@ -677,15 +700,16 @@
             <ul>
               <li
                 >Zoekbaar: op datum, tijd geleden, bijenkast / bijenstand /
-                groep naam, notitie, herinnering, herinneringsdatum en inspectie
-                id (door 'id=' toe te voegen, bijv: 'id=99').</li
+                samenwerkingsgroep naam, notitie, herinnering, herinneringsdatum
+                en inspectie id (door 'id=' toe te voegen, bijv: 'id=99').</li
               >
               <li>
                 Filterbaar: op
                 <v-icon class="icon-apiary-shared color-grey inline-icon"
                   >mdi-account-multiple</v-icon
                 >
-                groep (als aanwezig, switch tussen groepen
+                samenwerkingsgroep (als aanwezig, switch tussen
+                samenwerkingsgroepen
                 <v-icon class="icon-apiary-shared color-primary inline-icon"
                   >mdi-account-multiple</v-icon
                 >
@@ -767,9 +791,9 @@
             <ul>
               <li
                 >Bulk inspectie: inspecteer meerdere kasten per bijenstand /
-                groep in één keer door de kasten te selecteren die je mee wilt
-                nemen in je inspectie. Per kast wordt de inspectie apart
-                opgeslagen, zodat deze later per kast terug te vinden (en
+                samenwerkingsgroep in één keer door de kasten te selecteren die
+                je mee wilt nemen in je inspectie. Per kast wordt de inspectie
+                apart opgeslagen, zodat deze later per kast terug te vinden (en
                 aanpasbaar / verwijderbaar) is.</li
               >
             </ul>
@@ -804,8 +828,9 @@
             daarnaast kan je ervoor kiezen om ze per e-mail te ontvangen.
             <ul>
               <li>
-                Zoekbaar: op datum, tijd geleden, bijenkast / bijenstand / groep
-                naam, notificatie naam, functie en waarde.</li
+                Zoekbaar: op datum, tijd geleden, bijenkast / bijenstand /
+                samenwerkingsgroep naam, notificatie naam, functie en
+                waarde.</li
               >
               <li
                 ><router-link :to="{ name: 'alertrules' }"
@@ -827,8 +852,9 @@
               >
               <li
                 >Notificatie menu: klik op een notificatie om de
-                notificatie-instelling aan te passen of de notificatie te
-                verwijderen.</li
+                notificatie-instelling aan te passen, de bijbehorende metingen
+                te bekijken, de notificatie te deactiveren voor de betreffende
+                kast, of de notificatie te verwijderen.</li
               >
             </ul>
           </li>
@@ -844,13 +870,14 @@
             plotselinge gewichtsafname vanwege een zwerm.
             <ul>
               <li
-                >De zin bovenaan 'vertaalt' de instelling naar gewone taal.</li
+                >De samenvatting bovenaan 'vertaalt' de instelling naar gewone
+                taal.</li
               >
               <li
                 >De instelling is standaard van toepassing op alle maanden, uren
                 van de dag en kasten (die verbonden zijn met een meetsysteem).
-                Je kan deze deactiveren voor bepaalde maanden, uren en kasten (
-                zie de laatste drie velden van het formulier).</li
+                Je kan deze deactiveren voor bepaalde maanden, uren en kasten
+                (zie de laatste sectie van het formulier).</li
               >
               <li
                 ><router-link :to="{ name: 'alertrules-default' }"
@@ -862,14 +889,20 @@
                 zijn, kunnen ze naar eigen behoefte aangepast worden.</li
               >
             </ul>
+            <a :href="$t('alerts_support_url')" target="_blank"
+              ><v-icon class="support-icon" small color="accent"
+                >mdi-arrow-right</v-icon
+              >
+              BEEP support artikel over het instellen van alerts</a
+            >
           </li>
           <li class="new-block">
             <strong>Waar is alles te vinden? - Menu aanpassingen</strong>
             <ul>
               <li
                 ><strong>Snelle actie menu</strong> - Maak direct een nieuwe
-                inspectie, nieuwe kast, nieuwe bijenstand, nieuwe groep of
-                nieuwe notificatie-instelling door op de
+                inspectie, nieuwe kast, nieuwe bijenstand, nieuwe
+                samenwerkingsgroep of nieuwe notificatie-instelling door op de
                 <v-icon class="color-black inline-icon"
                   >mdi-plus-circle-outline</v-icon
                 >
@@ -896,13 +929,13 @@
                 ><strong>Samenwerkingsgroepen</strong> zijn nu direct zichtbaar
                 in het
                 <router-link :to="{ name: 'home' }">Kasten</router-link>
-                overzicht. Via de groepsfilter (<v-icon
+                overzicht. Via de samenwerkingsgroepsfilter (<v-icon
                   class="icon-apiary-shared color-grey"
                   >mdi-account-multiple</v-icon
                 >
-                icoon) kunnen groepen exclusief getoond worden (eerste in de rij
-                na het zoekveld, alleen zichtbaar als je lid bent van tenminste
-                één samenwerkingsgroep).</li
+                icoon) kunnen samenwerkingsgroepen exclusief getoond worden
+                (eerste in de rij na het zoekveld, alleen zichtbaar als je lid
+                bent van tenminste één samenwerkingsgroep).</li
               >
               <li
                 ><router-link :to="{ name: 'devices' }"

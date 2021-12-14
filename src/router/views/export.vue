@@ -255,13 +255,13 @@ export default {
       showDataLoadingIcon: false,
       showDeviceDataLoadingIcon: false,
       ready: false,
+      baseApiUrl:
+        process.env.VUE_APP_BASE_API_URL ||
+        process.env.VUE_APP_BASE_API_URL_FALLBACK,
     }
   },
   computed: {
     ...mapGetters('devices', ['devices']),
-    baseApiUrl() {
-      return process.env.VUE_APP_BASE_API_URL
-    },
     dataAvailable() {
       return this.measurementTypes !== null
         ? Object.keys(this.measurementTypes).length > 0

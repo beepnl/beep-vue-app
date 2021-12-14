@@ -404,6 +404,10 @@
   font-size: 11px !important;
 }
 
+.alerts-item .v-alert__wrapper {
+  align-items: start !important;
+}
+
 /* Treeselect */
 .vue-treeselect .vue-treeselect__control {
   background: transparent;
@@ -431,6 +435,18 @@
 .vue-treeselect__checkbox--checked {
   background: $color-primary !important;
   border-color: $color-primary !important;
+}
+
+.vue-treeselect.color-red {
+  .vue-treeselect__multi-value-item,
+  .vue-treeselect__value-remove {
+    color: $color-red !important;
+    background: $color-red-light !important;
+  }
+  .vue-treeselect__checkbox--checked {
+    background: $color-red !important;
+    border-color: $color-red !important;
+  }
 }
 
 /* Vue Datetime */

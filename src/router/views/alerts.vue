@@ -9,7 +9,7 @@
           class="filter-bar d-flex flex-row justify-space-between align-center"
         >
           <div
-            class="filter-buttons filter-buttons--has-max d-flex flex-row justify-flex-start align-center"
+            class="filter-buttons filter-buttons--tiny d-flex flex-row justify-flex-start align-center"
           >
             <v-col class="pa-3">
               <v-text-field
@@ -36,6 +36,7 @@
               outlined
               class="mr-3"
               color="red"
+              :small="mdScreen"
               @click="confirmDeleteAlerts"
             >
               <v-progress-circular
@@ -47,16 +48,16 @@
                 indeterminate
               />
               <v-icon v-if="!showLoadingIcon" left>mdi-delete</v-icon>
-              {{ !smallScreen ? $t('delete_all_alerts') : $t('Delete') }}</v-btn
+              {{ !mdScreen ? $t('delete_all_alerts') : $t('Delete') }}</v-btn
             >
             <v-btn
               :to="{ name: 'alertrules' }"
               tile
               outlined
               color="black"
-              :small="tinyScreen"
+              :small="mdScreen && alerts.length > 1"
             >
-              <v-icon left>mdi-pencil</v-icon>
+              <v-icon v-if="!tinyScreen" left>mdi-pencil</v-icon>
               {{ $t('alertrule_pagetitle') }}
             </v-btn>
           </v-card-actions>
@@ -80,27 +81,33 @@
               }"
             >
               <img
-                src="@assets/img/BEEP-alert-rule.png"
+                :src="assetsUrl + '/img/BEEP-alert-rule.png'"
                 style="max-width: 180px;"
               />
             </router-link>
           </div>
           <p class="beep-label"
-            ><em
-              >{{
-                $t('alert_explanation_1') +
-                  ' ' +
-                  $t('alert_explanation_2') +
-                  ''
-              }}<router-link
-                :to="{
-                  name: 'alertrules',
-                }"
-              >
-                {{ $t('alertrules_url_text') }}
-              </router-link></em
-            ></p
+            ><em>{{
+              $t('alert_explanation_1') + ' ' + $t('alert_explanation_2') + ''
+            }}</em></p
           >
+          <div class="float-right">
+            <div class="d-flex flex-column">
+              <a :href="$t('alerts_support_url')" target="_blank"
+                ><v-icon small color="accent">mdi-arrow-right</v-icon
+                >{{ $t('alerts_url_text') }}</a
+              >
+              <div>
+                <router-link
+                  :to="{
+                    name: 'alertrules',
+                  }"
+                  ><v-icon small color="accent">mdi-arrow-right</v-icon
+                  >{{ $t('alertrules_url_text') }}</router-link
+                >
+              </div>
+            </div>
+          </div>
         </v-col>
       </v-row>
     </v-container>
@@ -112,6 +119,7 @@
         outlined
         class="save-button-mobile-wide mb-3"
         color="red"
+        small
         @click="confirmDeleteAlerts"
       >
         <v-progress-circular
@@ -154,6 +162,8 @@
             <AlertCard
               :alert="alert"
               :hives="hives"
+              :unit="getUnit(alert.measurement_id)"
+              @show-snackbar=";(snackbar.text = $event), (snackbar.show = true)"
               @delete-alert="deleteAlert($event)"
             ></AlertCard>
           </v-col>
@@ -166,6 +176,14 @@
         </v-col>
       </v-row>
     </v-container>
+
+    <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
+      {{ snackbar.text }}
+      <v-btn color="accent" text @click="snackbar.show = false">
+        {{ $t('Close') }}
+      </v-btn>
+    </v-snackbar>
+
     <Confirm ref="confirm"></Confirm>
   </Layout>
 </template>
@@ -176,10 +194,15 @@ import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/main.vue'
 import { mapGetters } from 'vuex'
-import { momentFromNow, momentify } from '@mixins/momentMixin'
+import {
+  momentFromNow,
+  momentHumanizeDuration,
+  momentify,
+} from '@mixins/momentMixin'
 import {
   checkAlerts,
   readApiariesAndGroupsIfNotPresent,
+  readTaxonomy,
 } from '@mixins/methodsMixin'
 import { ScaleTransition } from 'vue2-transitions'
 
@@ -193,8 +216,10 @@ export default {
   mixins: [
     checkAlerts,
     momentFromNow,
+    momentHumanizeDuration,
     momentify,
     readApiariesAndGroupsIfNotPresent,
+    readTaxonomy,
   ],
   data: function() {
     return {
@@ -207,25 +232,47 @@ export default {
         alert_via_email: [],
       },
       showLoadingIcon: false,
+      snackbar: {
+        show: false,
+        timeout: 3000,
+        text: 'notification',
+      },
+      assetsUrl:
+        process.env.VUE_APP_ASSETS_URL ||
+        process.env.VUE_APP_ASSETS_URL_FALLBACK,
+      alertTimer: 0,
+      alertInterval: 120000,
     }
   },
   computed: {
     ...mapGetters('alerts', ['alertRules', 'alerts', 'alertsLoading']),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
+    ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     alertsWithRuleDetails() {
       var alertsWithRuleDetails = this.alerts
       alertsWithRuleDetails.map((alert) => {
-        alert.locale_date = this.momentify(alert.updated_at, true, 'llll')
+        alert.locale_date_created_at =
+          this.$i18n.t('First_occurence') +
+          this.momentify(alert.created_at, true, 'llll')
+        alert.locale_date_updated_at =
+          this.$i18n.t('Last_occurence') +
+          this.momentify(alert.updated_at, true, 'llll')
+        alert.locale_date_single_count = this.momentify(
+          alert.updated_at,
+          true,
+          'llll'
+        )
 
         if (alert.count > 1) {
           var createdMoment = this.$moment(alert.created_at)
           var updatedMoment = this.$moment(alert.updated_at)
-          var period = updatedMoment.diff(createdMoment, 'hours')
-          alert.momentified = this.$moment
-            .duration(period, 'hours')
-            .locale(this.$i18n.locale)
-            .humanize()
+          var period = updatedMoment.diff(createdMoment, 'seconds')
+          alert.momentified = this.momentHumanizeDuration(
+            period,
+            'seconds',
+            this.$i18n.t('During') + ' '
+          )
         } else {
           alert.momentified = this.momentFromNow(alert.updated_at, true)
         }
@@ -314,25 +361,31 @@ export default {
     },
     showAlertPlaceholder() {
       if (this.ready) {
-        return this.alertRules.length === 0
+        return this.alertRules.length === 0 && this.alerts.length === 0
       } else {
         return false
       }
     },
-    smallScreen() {
+    mdScreen() {
       return this.$vuetify.breakpoint.width < 960
     },
     tinyScreen() {
-      return this.$vuetify.breakpoint.width < 373
+      return this.$vuetify.breakpoint.width < 350
     },
   },
   created() {
     this.search = this.$route.query.search || null
-    this.readApiariesAndGroupsIfNotPresent().then(() => {
-      this.checkAlertRulesAndAlerts().then(() => {
-        this.ready = true
+    this.readTaxonomy().then(() => {
+      this.readApiariesAndGroupsIfNotPresent().then(() => {
+        this.checkAlertRulesAndAlerts().then(() => {
+          this.ready = true
+          this.alertTimer = setInterval(this.readAlerts, this.alertInterval)
+        })
       })
     })
+  },
+  beforeDestroy() {
+    this.stopTimer()
   },
   methods: {
     async deleteAlert(id) {
@@ -390,6 +443,15 @@ export default {
           return true
         })
     },
+    getUnit(measurementId) {
+      return this.sensorMeasurementsList.filter(
+        (measurementType) => measurementType.id === measurementId
+      )[0].unit
+    },
+    stopTimer() {
+      clearInterval(this.alertTimer)
+      this.alertTimer = 0
+    },
   },
 }
 </script>
@@ -420,6 +482,9 @@ export default {
     flex-wrap: wrap;
     width: 100%;
     max-width: 1200px;
+    @media (max-width: 960px) {
+      max-width: 680px;
+    }
     @media (max-width: 849px) {
       max-width: 580px;
     }

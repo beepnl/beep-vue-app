@@ -166,7 +166,7 @@ export default {
         } else if (i === 1) {
           ticksArray.push(this.$i18n.t('Poor'))
         } else if (i === 5) {
-          ticksArray.push(this.$i18n.t('Average'))
+          ticksArray.push(this.$i18n.t('Average_slider'))
         } else if (i === 10) {
           ticksArray.push(this.$i18n.t('Excellent'))
         } else {

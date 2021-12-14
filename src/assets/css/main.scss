@@ -52,12 +52,21 @@
     }
     .filter-buttons.filter-buttons--has-max {
       @include for-phone-only {
-        max-width: 320px;
-      }
-      @media (max-width: 320px) {
-        max-width: 270px;
+        max-width: 200px;
       }
     }
+    .filter-buttons.filter-buttons--tiny {
+      @include for-phone-only {
+        max-width: 200px;
+      }
+      @media (max-width: 400px) {
+        max-width: 100px;
+      }
+      @media (max-width: 320px) {
+        max-width: 70px;
+      }
+    }
+
     .v-input {
       &:not(.v-input--switch) {
         background-color: $color-white;

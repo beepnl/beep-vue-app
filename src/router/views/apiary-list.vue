@@ -123,14 +123,14 @@
           </div>
           <v-card-actions class="view-buttons mr-0">
             <v-icon
-              :class="`${xsView ? 'color-accent' : ''} mr-sm-2`"
+              :class="`${xsView ? 'color-accent' : ''} mr-sm-1`"
               @click="toggleGrid('xsView')"
             >
               mdi-size-xs
             </v-icon>
             <v-icon
               v-if="!mobile"
-              :class="`${mView ? 'color-accent' : ''} mr-2`"
+              :class="`${mView ? 'color-accent' : ''} mr-1`"
               @click="toggleGrid('mView')"
             >
               mdi-size-m
@@ -187,31 +187,69 @@
             <h4 v-text="$tc('Invitation', 1) + ': ' + invitation.name"></h4>
           </div>
           <div>
-            <v-btn
+            <!-- <v-btn
               v-if="!mobile"
               tile
               outlined
-              class="green--text mb-1"
-              :disabled="showLoadingIconForId === invitation.id"
-              @click="
-                checkToken(invitation.token, invitation.id, invitation.name)
-              "
+              class="red--text mb-1 mr-2"
+              :disabled="invitationButtonsDisabled(invitation.id)"
+              @click="confirmDeclineInvitation(invitation)"
             >
               <v-progress-circular
-                v-if="showLoadingIconForId === invitation.id"
+                v-if="showLoadingIcon(invitation.id, true)"
                 class="ml-n1 mr-2"
                 size="18"
                 width="2"
                 color="disabled"
                 indeterminate
               />
-              <v-icon v-if="showLoadingIconForId !== invitation.id" left
+              <v-icon v-if="!showLoadingIcon(invitation.id, true)" left
+                >mdi-close</v-icon
+              >
+              {{ $t('Decline') }}
+            </v-btn> -->
+            <!-- <v-progress-circular
+              v-if="showLoadingIcon(invitation.id, true) && mobile"
+              class="invitation-loading-icon mb-1 mr-2"
+              size="18"
+              width="2"
+              color="disabled"
+              indeterminate
+            />
+            <v-icon
+              v-if="!showLoadingIcon(invitation.id, true) && mobile"
+              dark
+              :disabled="invitationButtonsDisabled(invitation.id)"
+              class="red--text mb-1 mr-2"
+              @click="confirmDeclineInvitation(invitation)"
+            >
+              mdi-close</v-icon
+            > -->
+            <v-btn
+              v-if="!mobile"
+              tile
+              outlined
+              class="green--text mb-1"
+              :disabled="invitationButtonsDisabled(invitation.id)"
+              @click="
+                checkToken(invitation.token, invitation.id, invitation.name)
+              "
+            >
+              <v-progress-circular
+                v-if="showLoadingIcon(invitation.id, false)"
+                class="ml-n1 mr-2"
+                size="18"
+                width="2"
+                color="disabled"
+                indeterminate
+              />
+              <v-icon v-if="!showLoadingIcon(invitation.id, false)" left
                 >mdi-check</v-icon
               >
               {{ $t('Accept') }}
             </v-btn>
             <v-progress-circular
-              v-if="showLoadingIconForId === invitation.id && mobile"
+              v-if="showLoadingIcon(invitation.id, false) && mobile"
               class="invitation-loading-icon mb-1"
               size="18"
               width="2"
@@ -219,8 +257,9 @@
               indeterminate
             />
             <v-icon
-              v-if="showLoadingIconForId !== invitation.id && mobile"
+              v-if="!showLoadingIcon(invitation.id, false) && mobile"
               dark
+              :disabled="invitationButtonsDisabled(invitation.id)"
               class="green--text mb-1"
               @click="
                 checkToken(invitation.token, invitation.id, invitation.name)
@@ -293,262 +332,299 @@
             }; border-color: ${hiveSet.hex_color ? hiveSet.hex_color : ''};`
           "
         >
-          <v-icon
-            v-if="hiveSet.users && hiveSet.users.length"
-            class="icon-apiary-shared ml-1 mr-2 my-0"
-            :style="
-              `background-color: ${hiveSet.hex_color}; border-color: ${hiveSet.hex_color};`
-            "
+          <div
+            class="d-flex justify-space-between align-end"
+            style="width: 100%;"
           >
-            mdi-account-multiple
-          </v-icon>
-          <v-icon
-            v-else
-            class="icon-apiary-owned ml-1 mr-2 my-0"
-            :style="
-              `background-color: ${
-                hiveSet.hex_color ? hiveSet.hex_color : ''
-              }; border-color: ${hiveSet.hex_color ? hiveSet.hex_color : ''};`
-            "
-          >
-            mdi-home-analytics
-          </v-icon>
+            <div class="d-flex justify-start align-center">
+              <div :class="mobile ? 'd-flex flex-column' : ''">
+                <div class="d-flex justify-start align-center">
+                  <v-icon
+                    v-if="hiveSet.users && hiveSet.users.length"
+                    class="icon-apiary-shared ml-1 mr-2 my-0"
+                    :style="
+                      `background-color: ${hiveSet.hex_color}; border-color: ${hiveSet.hex_color};`
+                    "
+                  >
+                    mdi-account-multiple
+                  </v-icon>
+                  <v-icon
+                    v-else
+                    class="icon-apiary-owned ml-1 mr-2 my-0"
+                    :style="
+                      `background-color: ${
+                        hiveSet.hex_color ? hiveSet.hex_color : ''
+                      }; border-color: ${
+                        hiveSet.hex_color ? hiveSet.hex_color : ''
+                      };`
+                    "
+                  >
+                    mdi-home-analytics
+                  </v-icon>
 
-          <h4 v-text="hiveSet.name"></h4>
-          <pre
-            v-if="xlView && hiveSet.users && hiveSet.users.length"
-            class="caption hive-set-caption"
-            v-text="
-              ` (${hiveSet.users.length} ${$tc(
-                'member',
-                // eslint-disable-next-line vue/comma-dangle
-                hiveSet.users.length
-              )})`
-            "
-          >
-          </pre>
+                  <h4 v-text="hiveSet.name"></h4>
+                </div>
+                <pre
+                  v-if="xlView && hiveSet.users && hiveSet.users.length"
+                  :class="'caption hive-set-caption' + (mobile ? ' ml-7' : '')"
+                  v-text="
+                    ` (${hiveSet.users.length} ${$tc(
+                      'member',
+                      // eslint-disable-next-line vue/comma-dangle
+                      hiveSet.users.length
+                    )})`
+                  "
+                >
+                </pre>
+              </div>
 
-          <v-menu>
-            <template v-slot:activator="{ on, attrs }">
+              <v-menu>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-icon
+                    small
+                    class="color-grey-light ml-2"
+                    v-bind="attrs"
+                    v-on="on"
+                    >mdi-cog</v-icon
+                  >
+                </template>
+
+                <v-list v-if="!hiveSet.users" dense>
+                  <v-list-item-group>
+                    <v-list-item
+                      :to="{
+                        name: 'apiary-edit',
+                        params: { id: hiveSet.id },
+                      }"
+                    >
+                      <v-list-item-icon class="mr-3">
+                        <v-icon>mdi-home-edit</v-icon>
+                      </v-list-item-icon>
+
+                      <v-list-item-content>
+                        <v-list-item-title
+                          v-text="$t('edit') + ' ' + $tc('location', 1)"
+                        ></v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item
+                      :to="{
+                        name: 'inspect',
+                        query: { apiaryId: hiveSet.id },
+                      }"
+                    >
+                      <v-list-item-icon class="mr-3">
+                        <v-icon>mdi-file-document-edit-outline</v-icon>
+                      </v-list-item-icon>
+
+                      <v-list-item-content>
+                        <v-list-item-title
+                          v-text="$t('New_inspection')"
+                        ></v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item
+                      @click="setDiaryGroupFilterAndGo(hiveSet.name)"
+                    >
+                      <v-list-item-icon class="mr-3">
+                        <v-icon>mdi-magnify</v-icon>
+                      </v-list-item-icon>
+
+                      <v-list-item-content>
+                        <v-list-item-title
+                          v-text="$t('view') + ' ' + $tc('inspection', 2)"
+                        ></v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item
+                      :to="{
+                        name: 'hive-create',
+                        query: { locationId: hiveSet.id },
+                      }"
+                    >
+                      <v-list-item-icon class="mr-3">
+                        <v-icon>mdi-archive</v-icon>
+                      </v-list-item-icon>
+
+                      <v-list-item-content>
+                        <v-list-item-title
+                          v-text="$t('New_hive')"
+                        ></v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item
+                      :to="{
+                        name: 'apiary-management',
+                        params: { id: hiveSet.id },
+                      }"
+                    >
+                      <v-list-item-icon class="mr-3">
+                        <v-icon>mdi-home-export-outline</v-icon>
+                      </v-list-item-icon>
+
+                      <v-list-item-content>
+                        <v-list-item-title
+                          v-text="$t('Move') + ' ' + $tc('hive', 2)"
+                        ></v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list-item-group>
+
+                  <v-divider v-if="hiveSet.owner" class="my-1"></v-divider>
+
+                  <v-list-item-group>
+                    <v-list-item
+                      v-if="hiveSet.owner"
+                      @click="confirmDeleteApiary(hiveSet)"
+                    >
+                      <v-list-item-icon class="mr-3">
+                        <v-icon class="red--text">mdi-delete</v-icon>
+                      </v-list-item-icon>
+
+                      <v-list-item-content>
+                        <v-list-item-title class="red--text">{{
+                          $t('remove_apiary')
+                        }}</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list-item-group>
+                </v-list>
+
+                <v-list v-if="hiveSet.users" dense>
+                  <v-list-item-group>
+                    <v-list-item
+                      :to="{
+                        name: 'group-edit',
+                        params: { id: hiveSet.id },
+                      }"
+                    >
+                      <v-list-item-icon class="mr-3">
+                        <v-icon>mdi-account-multiple-plus</v-icon>
+                      </v-list-item-icon>
+
+                      <v-list-item-content>
+                        <v-list-item-title
+                          v-text="$t('edit') + ' ' + $tc('group', 1)"
+                        ></v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list-item-group>
+
+                  <v-list-item
+                    v-if="hiveSet.hasEditableHive"
+                    :to="{
+                      name: 'inspect',
+                      query: { groupId: hiveSet.id },
+                    }"
+                  >
+                    <v-list-item-icon class="mr-3">
+                      <v-icon>mdi-file-document-edit-outline</v-icon>
+                    </v-list-item-icon>
+
+                    <v-list-item-content>
+                      <v-list-item-title
+                        v-text="$t('New_inspection')"
+                      ></v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+
+                  <v-list-item @click="setDiaryGroupFilterAndGo(hiveSet.name)">
+                    <v-list-item-icon class="mr-3">
+                      <v-icon>mdi-magnify</v-icon>
+                    </v-list-item-icon>
+
+                    <v-list-item-content>
+                      <v-list-item-title
+                        v-text="$t('view') + ' ' + $tc('inspection', 2)"
+                      ></v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+
+                  <v-divider class="my-1"></v-divider>
+
+                  <v-list-item-group>
+                    <v-list-item
+                      v-if="hiveSet.creator"
+                      @click="confirmDeleteGroup(hiveSet)"
+                    >
+                      <v-list-item-icon class="mr-3">
+                        <v-icon class="red--text">mdi-delete</v-icon>
+                      </v-list-item-icon>
+
+                      <v-list-item-content>
+                        <v-list-item-title class="red--text">{{
+                          $t('remove_group_short')
+                        }}</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+
+                    <v-list-item
+                      v-if="!hiveSet.creator"
+                      @click="confirmDetachGroup(hiveSet)"
+                    >
+                      <v-list-item-icon class="mr-3">
+                        <v-icon class="red--text">mdi-delete</v-icon>
+                      </v-list-item-icon>
+
+                      <v-list-item-content>
+                        <v-list-item-title class="red--text">{{
+                          $t('Detach_from_group')
+                        }}</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list-item-group>
+                </v-list>
+              </v-menu>
+            </div>
+
+            <span class="text-right ml-2">
               <v-icon
-                small
-                class="color-grey-light ml-2"
-                v-bind="attrs"
-                v-on="on"
-                >mdi-cog</v-icon
+                :style="
+                  `color: ${hiveSet.hex_color ? hiveSet.hex_color : '#f29100'};`
+                "
+                :class="hideHiveSet(hiveSet) ? 'mdi-plus' : 'mdi-minus'"
+                @click="toggleHiveSet(hiveSet)"
+                >mdi-minus</v-icon
               >
-            </template>
-
-            <v-list v-if="!hiveSet.users" dense>
-              <v-list-item-group>
-                <v-list-item
-                  :to="{
-                    name: 'apiary-edit',
-                    params: { id: hiveSet.id },
-                  }"
-                >
-                  <v-list-item-icon class="mr-3">
-                    <v-icon>mdi-home-edit</v-icon>
-                  </v-list-item-icon>
-
-                  <v-list-item-content>
-                    <v-list-item-title
-                      v-text="$t('edit') + ' ' + $tc('location', 1)"
-                    ></v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-list-item
-                  :to="{
-                    name: 'inspect',
-                    query: { apiaryId: hiveSet.id },
-                  }"
-                >
-                  <v-list-item-icon class="mr-3">
-                    <v-icon>mdi-file-document-edit-outline</v-icon>
-                  </v-list-item-icon>
-
-                  <v-list-item-content>
-                    <v-list-item-title
-                      v-text="$t('New_inspection')"
-                    ></v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-list-item @click="setDiaryGroupFilterAndGo(hiveSet.name)">
-                  <v-list-item-icon class="mr-3">
-                    <v-icon>mdi-magnify</v-icon>
-                  </v-list-item-icon>
-
-                  <v-list-item-content>
-                    <v-list-item-title
-                      v-text="$t('view') + ' ' + $tc('inspection', 2)"
-                    ></v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-list-item
-                  :to="{
-                    name: 'hive-create',
-                    query: { locationId: hiveSet.id },
-                  }"
-                >
-                  <v-list-item-icon class="mr-3">
-                    <v-icon>mdi-archive</v-icon>
-                  </v-list-item-icon>
-
-                  <v-list-item-content>
-                    <v-list-item-title
-                      v-text="$t('New_hive')"
-                    ></v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-                <v-list-item
-                  :to="{
-                    name: 'apiary-management',
-                    params: { id: hiveSet.id },
-                  }"
-                >
-                  <v-list-item-icon class="mr-3">
-                    <v-icon>mdi-home-export-outline</v-icon>
-                  </v-list-item-icon>
-
-                  <v-list-item-content>
-                    <v-list-item-title
-                      v-text="$t('Move') + ' ' + $tc('hive', 2)"
-                    ></v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list-item-group>
-
-              <v-divider v-if="hiveSet.owner" class="my-1"></v-divider>
-
-              <v-list-item-group>
-                <v-list-item
-                  v-if="hiveSet.owner"
-                  @click="confirmDeleteApiary(hiveSet)"
-                >
-                  <v-list-item-icon class="mr-3">
-                    <v-icon class="red--text">mdi-delete</v-icon>
-                  </v-list-item-icon>
-
-                  <v-list-item-content>
-                    <v-list-item-title class="red--text">{{
-                      $t('remove_apiary')
-                    }}</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list-item-group>
-            </v-list>
-
-            <v-list v-if="hiveSet.users" dense>
-              <v-list-item-group>
-                <v-list-item
-                  :to="{
-                    name: 'group-edit',
-                    params: { id: hiveSet.id },
-                  }"
-                >
-                  <v-list-item-icon class="mr-3">
-                    <v-icon>mdi-account-multiple-plus</v-icon>
-                  </v-list-item-icon>
-
-                  <v-list-item-content>
-                    <v-list-item-title
-                      v-text="$t('edit') + ' ' + $tc('group', 1)"
-                    ></v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list-item-group>
-
-              <v-list-item
-                v-if="hiveSet.hasEditableHive"
-                :to="{
-                  name: 'inspect',
-                  query: { groupId: hiveSet.id },
-                }"
-              >
-                <v-list-item-icon class="mr-3">
-                  <v-icon>mdi-file-document-edit-outline</v-icon>
-                </v-list-item-icon>
-
-                <v-list-item-content>
-                  <v-list-item-title
-                    v-text="$t('New_inspection')"
-                  ></v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-
-              <v-list-item @click="setDiaryGroupFilterAndGo(hiveSet.name)">
-                <v-list-item-icon class="mr-3">
-                  <v-icon>mdi-magnify</v-icon>
-                </v-list-item-icon>
-
-                <v-list-item-content>
-                  <v-list-item-title
-                    v-text="$t('view') + ' ' + $tc('inspection', 2)"
-                  ></v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-
-              <v-divider class="my-1"></v-divider>
-
-              <v-list-item-group>
-                <v-list-item
-                  v-if="hiveSet.creator"
-                  @click="confirmDeleteGroup(hiveSet)"
-                >
-                  <v-list-item-icon class="mr-3">
-                    <v-icon class="red--text">mdi-delete</v-icon>
-                  </v-list-item-icon>
-
-                  <v-list-item-content>
-                    <v-list-item-title class="red--text">{{
-                      $t('remove_group_short')
-                    }}</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-
-                <v-list-item
-                  v-if="!hiveSet.creator"
-                  @click="confirmDetachGroup(hiveSet)"
-                >
-                  <v-list-item-icon class="mr-3">
-                    <v-icon class="red--text">mdi-delete</v-icon>
-                  </v-list-item-icon>
-
-                  <v-list-item-content>
-                    <v-list-item-title class="red--text">{{
-                      $t('Detach_from_group')
-                    }}</v-list-item-title>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list-item-group>
-            </v-list>
-          </v-menu>
+            </span>
+          </div>
         </div>
-        <ScaleTransition
-          :duration="300"
-          group
-          class="hive-item-transition-wrapper"
-        >
-          <v-col
-            v-for="hive in sortedHives(hiveSet.hives)"
-            :key="'Hive ' + hive.id"
-            sm="auto"
-            :class="
-              `hive-item ${xlView ? 'xl-view' : ''} ${xsView ? 'xs-view' : ''}`
-            "
+        <SlideYUpTransition :duration="300">
+          <div
+            v-if="!hideHiveSet(hiveSet)"
+            :key="'HiveSet' + hiveSet.id"
+            style="width: 100%;"
           >
-            <HiveCard
-              :key="`${hive.id}`"
-              :hive="hive"
-              :hive-set="hiveSet"
-              :alerts="alertsPerHive(hive.id)"
-              :xl-view="xlView"
-              :m-view="mView"
-              :xs-view="xsView"
-              @confirm-delete-hive="confirmDeleteHive($event)"
-            ></HiveCard>
-          </v-col>
-        </ScaleTransition>
+            <ScaleTransition
+              :duration="300"
+              group
+              class="hive-item-transition-wrapper"
+            >
+              <template v-for="hive in sortedHives(hiveSet.hives)">
+                <v-col
+                  :key="'Hive ' + hive.id"
+                  sm="auto"
+                  :class="
+                    `hive-item ${xlView ? 'xl-view' : ''} ${
+                      xsView ? 'xs-view' : ''
+                    }`
+                  "
+                >
+                  <HiveCard
+                    :key="`${hive.id}`"
+                    :hive="hive"
+                    :hive-set="hiveSet"
+                    :alerts="alertsPerHive(hive.id)"
+                    :xl-view="xlView"
+                    :m-view="mView"
+                    :xs-view="xsView"
+                    @confirm-delete-hive="confirmDeleteHive($event)"
+                  ></HiveCard>
+                </v-col>
+              </template>
+            </ScaleTransition>
+          </div>
+        </SlideYUpTransition>
       </v-row>
 
       <div
@@ -563,7 +639,7 @@
           <v-img
             class="apiary-placeholder-item apiary-placeholder-image"
             height="auto"
-            src="~@assets/img/apiary-illustration.png"
+            :src="assetsUrl + '/img/apiary-illustration.png'"
           >
           </v-img>
           <h4 class="mt-5 mb-8">{{ $t('no_apiaries_yet') }}</h4>
@@ -634,7 +710,7 @@ import {
   readGeneralInspections,
   toggleFilterByGroup,
 } from '@mixins/methodsMixin'
-import { ScaleTransition } from 'vue2-transitions'
+import { ScaleTransition, SlideYUpTransition } from 'vue2-transitions'
 
 export default {
   components: {
@@ -642,6 +718,7 @@ export default {
     HiveCard,
     Layout,
     ScaleTransition,
+    SlideYUpTransition,
   },
   mixins: [
     checkAlerts,
@@ -663,9 +740,16 @@ export default {
     mView: false,
     xsView: false,
     settings: [],
-    showLoadingIconForId: null,
+    showAcceptLoadingIconById: [],
+    showDeclineLoadingIconById: [],
     ready: false,
     deviceIdArray: [],
+    assetsUrl:
+      process.env.VUE_APP_ASSETS_URL || process.env.VUE_APP_ASSETS_URL_FALLBACK,
+    alertTimer: 0,
+    alertInterval: 120000,
+    hiddenApiaries: [],
+    hiddenGroups: [],
   }),
   computed: {
     ...mapGetters('alerts', ['alerts']),
@@ -985,6 +1069,12 @@ export default {
     }
   },
   created() {
+    if (localStorage.beepHiddenApiaries) {
+      this.hiddenApiaries = JSON.parse(localStorage.beepHiddenApiaries)
+    }
+    if (localStorage.beepHiddenGroups) {
+      this.hiddenGroups = JSON.parse(localStorage.beepHiddenGroups)
+    }
     // set query search term as hiveSearch only if no stored hiveSearch is present
     if (
       this.hiveSearch === null &&
@@ -1002,33 +1092,44 @@ export default {
       } else {
         this.ready = true
       }
+      this.alertTimer = setInterval(this.readAlerts, this.alertInterval)
     })
   },
+  beforeDestroy() {
+    this.stopTimer()
+  },
   methods: {
-    async checkToken(token, groupId, groupName) {
-      this.showLoadingIconForId = groupId
+    async checkToken(token, groupId, groupName, decline = false) {
+      if (decline) {
+        this.showDeclineLoadingIconById.push(groupId)
+      } else {
+        this.showAcceptLoadingIconById.push(groupId)
+      }
       try {
         const response = await Api.postRequest('/groups/checktoken', {
           group_id: groupId,
           token: token,
+          decline,
         })
         if (!response) {
           this.snackbar.text = this.$i18n.t('something_wrong')
           this.snackbar.show = true
-          this.showLoadingIconForId = null
+          this.stopLoadingIcon(groupId, decline)
         }
         this.snackbar.text = this.$i18n.t('Invitation_accepted')
         this.snackbar.show = true
         setTimeout(() => {
           this.readDevices().then(() => {
             this.readApiariesAndGroups().then(() => {
-              this.hiveSearch = groupName
-              this.showLoadingIconForId = null
+              this.stopLoadingIcon(groupId, decline)
+              if (!decline) {
+                this.hiveSearch = groupName
+              }
             })
           })
         }, 300) // wait for API to update groups
       } catch (error) {
-        this.showLoadingIconForId = null
+        this.stopLoadingIcon(groupId, decline)
         this.handleError(error)
       }
     },
@@ -1123,6 +1224,27 @@ export default {
         return []
       }
     },
+    confirmDeclineInvitation(invitation) {
+      this.$refs.confirm
+        .open(
+          this.$i18n.t('Decline_invitation'),
+          this.$i18n.t('Decline_invitation_sure'),
+          {
+            color: 'red',
+          }
+        )
+        .then((confirm) => {
+          this.checkToken(
+            invitation.token,
+            invitation.id,
+            invitation.name,
+            true
+          )
+        })
+        .catch((reject) => {
+          return true
+        })
+    },
     confirmDeleteApiary(hiveSet) {
       const warningMessage =
         hiveSet.hives.length > 0 ? this.$i18n.t('first_remove_hives') : null
@@ -1195,6 +1317,13 @@ export default {
         return []
       }
     },
+    invitationButtonsDisabled(invitationId) {
+      return (
+        this.showDeclineLoadingIconById
+          .concat(this.showAcceptLoadingIconById)
+          .indexOf(invitationId) > -1
+      )
+    },
     handleError(error) {
       if (error.response) {
         console.log('Error: ', error.response)
@@ -1205,6 +1334,11 @@ export default {
         this.snackbar.text = this.$i18n.t('something_wrong')
       }
       this.snackbar.show = true
+    },
+    hideHiveSet(hiveSet) {
+      return !hiveSet.users
+        ? this.hiddenApiaries.includes(hiveSet.id)
+        : this.hiddenGroups.includes(hiveSet.id)
     },
     setDiaryGroupFilterAndGo(searchTerm) {
       this.$store.commit('inspections/setFilter', {
@@ -1224,7 +1358,7 @@ export default {
           (a.order === null) - (b.order === null) ||
           +(a.order > b.order) ||
           -(a.order < b.order) ||
-          (a.order === b.order
+          (a.order === b.order && a.name !== null && b.name !== null
             ? a.name.localeCompare(b.name, undefined, {
                 numeric: true,
                 sensitivity: 'base',
@@ -1233,6 +1367,28 @@ export default {
         )
       })
       return sortedHives
+    },
+    showLoadingIcon(invitationId, decline) {
+      return decline
+        ? this.showDeclineLoadingIconById.indexOf(invitationId) > -1
+        : this.showAcceptLoadingIconById.indexOf(invitationId) > -1
+    },
+    stopLoadingIcon(groupId, decline) {
+      if (decline) {
+        this.showDeclineLoadingIconById.splice(
+          this.showDeclineLoadingIconById.indexOf(groupId),
+          1
+        )
+      } else {
+        this.showAcceptLoadingIconById.splice(
+          this.showAcceptLoadingIconById.indexOf(groupId),
+          1
+        )
+      }
+    },
+    stopTimer() {
+      clearInterval(this.alertTimer)
+      this.alertTimer = 0
     },
     toggleGrid(view) {
       if (view === 'xlView') {
@@ -1258,6 +1414,17 @@ export default {
         this.mView = false
       }
       this.$store.commit('locations/setHiveView', view)
+    },
+    toggleHiveSet(hiveSet) {
+      var toggleArray = !hiveSet.users ? this.hiddenApiaries : this.hiddenGroups
+      if (toggleArray.includes(hiveSet.id)) {
+        toggleArray.splice(toggleArray.indexOf(hiveSet.id), 1)
+      } else {
+        toggleArray.push(hiveSet.id)
+      }
+      !hiveSet.users
+        ? (localStorage.beepHiddenApiaries = JSON.stringify(toggleArray))
+        : (localStorage.beepHiddenGroups = JSON.stringify(toggleArray))
     },
   },
 }
@@ -1324,7 +1491,7 @@ export default {
       padding: 0 !important;
     }
     &.xl-view {
-      @include xs-only {
+      @include for-phone-only {
         flex-grow: 1 !important;
         min-width: 100%;
       }

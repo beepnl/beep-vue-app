@@ -16,7 +16,7 @@
         <h4>Liebefeld method explanation (EN)</h4>
         <div style="max-width: 40vw;" class="float-right">
           <img
-            src="@assets/img/inspection-lieberfelder-frame-overlay.png"
+            :src="assetsUrl + '/img/inspection-lieberfelder-frame-overlay.png'"
             style="width:100%;"
           />
           <p style="font-style: italic; text-align: center;"
@@ -288,12 +288,15 @@ export default {
     return {
       colonySize: null,
       maxBroodLayers: 2,
-      maxHoneyLayers: 1,
+      maxHoneyLayers: 2,
       broodLayersForCalculation: null,
       honeyLayersForCalculation: null,
       maxFrames: 12,
       framesForCalculation: null,
       showDescription: false,
+      assetsUrl:
+        process.env.VUE_APP_ASSETS_URL ||
+        process.env.VUE_APP_ASSETS_URL_FALLBACK,
     }
   },
   computed: {
@@ -312,18 +315,17 @@ export default {
       return sortedChildren
     },
   },
+  watch: {
+    activeHive() {
+      if (this.activeHive !== null) {
+        this.setInputNumbers()
+      }
+    },
+  },
   created() {
-    this.maxBroodLayers =
-      this.countLayers('brood') < 2 ? this.countLayers('brood') : 2
-    this.maxHoneyLayers =
-      this.countLayers('honey') < 2 ? this.countLayers('honey') : 2
-    this.broodLayersForCalculation = this.maxBroodLayers
-    this.honeyLayersForCalculation = this.maxHoneyLayers
-    this.maxFrames =
-      this.activeHive.layers[0].framecount < 12
-        ? this.activeHive.layers[0].framecount
-        : 12
-    this.framesForCalculation = this.maxFrames
+    if (this.activeHive !== null) {
+      this.setInputNumbers()
+    }
   },
   methods: {
     calculateLiebefeldColonySize() {
@@ -373,6 +375,16 @@ export default {
     countLayers(type) {
       return this.activeHive.layers.filter((layer) => layer.type === type)
         .length
+    },
+    setInputNumbers() {
+      this.broodLayersForCalculation =
+        this.countLayers('brood') < 2 ? this.countLayers('brood') : 2
+      this.honeyLayersForCalculation =
+        this.countLayers('honey') < 2 ? this.countLayers('honey') : 2
+      this.framesForCalculation =
+        this.activeHive.layers[0].framecount < 12
+          ? this.activeHive.layers[0].framecount
+          : 12
     },
     superAndFrameFilter(item) {
       if (

@@ -57,5 +57,12 @@ To fix hot reload when running in a Docker container:
 
 ## Deployment
 
-The production build of this UI is deployed to an AWS CloudFront CDN. Upon
-committing to master, this UI is automatically queued for deployment.
+Upon committing to master, this UI is automatically queued for deployment.
+
+## Self hosting
+
+- Generate your own google maps Api key via the google cloud platform
+- Either: update the .env.production file using .env.production.example as a template. Add your google maps key to the .env.production file as VUE_APP_GOOGLE_MAPS_KEY (N.B. do not expose this env file / the api key in a public repo)
+- OR: add an .env file to your server and list all the non-fallback env vars from .env.production.example (including your VUE_APP_GOOGLE_MAPS_KEY) there.
+- npm run build (N.B. if you use a server .env file (see above), this command must be run on the server)
+- deploy dist directory on your server

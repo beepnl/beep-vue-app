@@ -140,7 +140,7 @@
           class="diary-item-transition-wrapper"
         >
           <v-col
-            v-for="(inspection, j) in filteredInspections"
+            v-for="(inspection, j) in filteredInspectionsToShow"
             :key="j"
             sm="auto"
             class="diary-item"
@@ -154,6 +154,8 @@
           </v-col>
         </ScaleTransition>
       </v-row>
+      <MugenScroll :handler="fetchData" :should-handle="!loading">
+      </MugenScroll>
       <v-row v-if="!showDiaryPlaceholder && filteredInspections.length === 0">
         <v-col sm="auto" :cols="12">
           {{ $t('no_results') }}
@@ -184,6 +186,7 @@ import {
   toggleFilterByGroup,
 } from '@mixins/methodsMixin'
 import { ScaleTransition } from 'vue2-transitions'
+import MugenScroll from 'vue-mugen-scroll'
 
 export default {
   components: {
@@ -191,6 +194,7 @@ export default {
     DiaryCard,
     Layout,
     ScaleTransition,
+    MugenScroll,
   },
   mixins: [
     checkAlerts,
@@ -205,6 +209,8 @@ export default {
   data: function() {
     return {
       ready: false,
+      loading: false,
+      scrollCount: 0,
     }
   },
   computed: {
@@ -220,6 +226,7 @@ export default {
           prop: 'diarySearch',
           value,
         })
+        this.resetInfiniteScroll()
       },
     },
     filterByAttention: {
@@ -231,6 +238,7 @@ export default {
           filter: 'diaryFilterByAttention',
           value,
         })
+        this.resetInfiniteScroll()
       },
     },
     filterByGroupStatus: {
@@ -242,6 +250,7 @@ export default {
           filter: 'diaryFilterByGroup',
           value,
         })
+        this.resetInfiniteScroll()
       },
     },
     filterByImpression: {
@@ -250,6 +259,7 @@ export default {
       },
       set(value) {
         this.$store.commit('inspections/setFilterByImpression', value)
+        this.resetInfiniteScroll()
       },
     },
     filterByReminder: {
@@ -261,6 +271,7 @@ export default {
           filter: 'diaryFilterByReminder',
           value,
         })
+        this.resetInfiniteScroll()
       },
     },
     hives() {
@@ -443,11 +454,18 @@ export default {
         (x) => x !== undefined
       )
     },
+    filteredInspectionsToShow() {
+      return this.filteredInspections.slice(0, this.scrollCount)
+    },
     locale() {
       return this.$i18n.locale
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile
+    },
+    paginationItems() {
+      // overestimation of how many inspection items fit in clients window
+      return Math.ceil(window.innerHeight / 70)
     },
     showDiaryPlaceholder() {
       return (
@@ -530,6 +548,18 @@ export default {
         .catch((reject) => {
           return true
         })
+    },
+    fetchData() {
+      this.loading = true
+      for (var i = 0; i < this.paginationItems; i++) {
+        this.scrollCount += 1
+      }
+      this.loading = false
+    },
+    resetInfiniteScroll() {
+      // reset scrollCount to initial amount for mugen scroll component to work properly + scroll back to top
+      this.scrollCount = this.paginationItems
+      window.scrollTo(0, 0)
     },
   },
 }

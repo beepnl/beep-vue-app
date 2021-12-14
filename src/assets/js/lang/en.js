@@ -1,6 +1,6 @@
 /*
- * BEEP - Translations
- * Author: Pim van Gennip (pim@iconize.nl)
+ * BEEP - Translations - VUE app v3 (Q4 2021)
+ * Author: Julia BD (julia@beep.nl)
  *
  */
 const translations = {
@@ -37,7 +37,6 @@ const translations = {
   Clear: 'Clear',
   Close: 'Close',
   firstDay: 1,
-  format: 'dddd d mmmm yyyy',
 
   /* main */
   Website: 'Website',
@@ -48,13 +47,8 @@ const translations = {
   Diagnostic_info: 'Diagnostic information (in case of a bug):%0D%0A',
   back: 'Back',
   menu: 'Menu',
-  lighting: 'Lighting',
-  camera: 'Camera',
   weather: 'Weather',
   sensors: 'Devices',
-
-  no_valid_authentication: 'No valid authentication data received',
-  succesfully_saved: 'Succesfully saved',
 
   switch_language: 'Switch language',
   Delete: 'Delete',
@@ -85,7 +79,7 @@ const translations = {
   empty_fields: 'Please fill in all the fields',
   match_passwords: 'Passwords do not match',
 
-  succesfully_registered: 'You are succesfully registered.',
+  succesfully_registered: 'You are successfully registered.',
   authentication_failed: 'Failed to authenticate',
 
   no_valid_input_received: 'Data could not be saved, no valid input received.',
@@ -113,8 +107,6 @@ const translations = {
 
   apply: 'Apply',
   Cancel: 'Cancel',
-  automatic: 'Automatic',
-  manually: 'Manual',
   on: 'On',
   off: 'Off',
 
@@ -137,9 +129,6 @@ const translations = {
   save_and_return: 'Save and return',
 
   logout: 'Log out',
-  logout_title: 'Log out as ',
-  logout_now: 'Do you realy want to log out now?',
-  member_since: 'BEEPing since',
 
   /* password recovery */
   password_recovery_title: 'Forgot your password?',
@@ -165,17 +154,9 @@ const translations = {
   confirm_new_password: 'Confirm new password',
 
   go_to_dashboard: 'Go to my dashboard',
-
-  /* overview */
-  overview_title: 'Overview',
-  overview: 'Overview',
   color: 'Color',
-  state: 'On/off',
-  connection_state: 'Connection status',
 
   /* hives */
-  locations_title: 'BEEP',
-  hives_title: 'BEEP',
   Hive: 'Hive | Hives',
   hive: 'hive | hives',
   Location: 'Apiary | Apiaries',
@@ -194,7 +175,6 @@ const translations = {
   New_inspection: 'New inspection',
   Edit_inspection: 'Edit inspection',
   Actions: 'Actions',
-  Conditions: 'Conditions (inspected)',
   edit: 'Edit',
   Hive_layer_amount: 'Number of layers',
   Bee_race: 'Bee race',
@@ -211,7 +191,6 @@ const translations = {
   action: 'Action',
   reminder: 'Remember',
   remind_date: 'Notification date',
-
   overall: 'Overall',
   positive_impression: 'Total impression',
   needs_attention: 'Needs attention',
@@ -219,15 +198,10 @@ const translations = {
   notes_for_next_inspection:
     'Short note for next inspection (visible on overview)',
   Not_implemented_yet: 'This item is not implemented yet',
-  save_input_first: 'Do you want to save your input first?',
 
   /* dashboard */
-  dashboard_title: 'Dashboard',
-  dashboard: 'Dashboard',
-  measurementsError: 'Cannot load measurements, check network connection',
   last_measurement: 'Last measurement',
   at: 'at',
-  measurement_system: 'BEEP measurement system',
   no_data: 'No data available',
   no_chart_data: 'No chart data for the selected period',
 
@@ -255,13 +229,10 @@ const translations = {
   queen: 'queen',
 
   settings_title: 'Settings',
-  settings_description: 'Settings of the sensors',
   Settings: 'Settings',
   settings: 'settings',
 
   sensors_title: 'Device settings',
-  sensors_description: 'Devices status and registration',
-  // sensors: 'Devices',
   sensor: 'Device',
 
   Select: 'Select',
@@ -269,6 +240,7 @@ const translations = {
   Poor: 'Poor',
   Fair: 'Fair',
   Average: 'Average',
+  Average_slider: 'Average',
   Good: 'Good',
   Excellent: 'Excellent',
   Low: 'Low',
@@ -312,7 +284,7 @@ const translations = {
   weight_kg_corrected: 'Weight (corr)',
   weight_combined_kg: 'Weight combi',
   bat_volt: 'Battery',
-  bv: 'Battery',
+  bv: 'Battery voltage',
   sound_fanning_4days: 'Fan 4d bees',
   s_fan_4: 'Fan 4d bees',
   sound_fanning_6days: 'Fan 6d bees',
@@ -372,7 +344,6 @@ const translations = {
   outsideTemperature: 'Outside temperature',
   apparentTemperature: 'Apparent temperature',
   dewPoint: 'Dew point',
-  // humidity: 'Humidity',
   pressure: 'Air pressure',
   windSpeed: 'Wind speed',
   windGust: 'Wind gust',
@@ -383,23 +354,17 @@ const translations = {
   ozone: 'Ozone',
 
   /* Measurements */
-  hour: 'Hour',
+  Hour: 'Hour',
+  hour: 'hour | hours',
   day: 'Day',
   week: 'Week',
   month: 'Month',
   year: 'Year',
 
   /* settings */
-  could_not_load_settings: 'Settings could not be loaded',
   offline: 'No connection',
-  remote: 'Remote',
-  connected: 'Direct',
-
   yes: 'Yes',
   no: 'No',
-
-  footer_text: 'Open source beekeeping',
-  beep_foundation: 'the BEEP foundation',
 
   Checklist: 'Checklist | Checklists',
   checklist: 'checklist | checklists',
@@ -410,7 +375,7 @@ const translations = {
   /* user */
   Data_export: 'Data export',
   Export_your_data:
-    'Export all data that is in your BEEP account and send an email cointaining the data as an Excel file. The Excel file has different tabs containing your personal, hive, location, and inspection data.',
+    'Export all data that is in your BEEP account and send an email containing the data as an Excel file. The Excel file has different tabs containing your personal, hive, location, and inspection data.',
 
   Terms_of_use: 'Terms of service',
   accept_policy:
@@ -419,23 +384,6 @@ const translations = {
   policy_version: 'beep_terms_2018_05_25_avg_v1',
   approve_policy: 'You did not yet comply with the latest terms of service.',
 
-  /* weight calibration settings */
-  calibrate_weight: 'Calibrate weight',
-  current_offset_is: 'Current zero value is',
-  calibrate_explanation:
-    'Set the weight of the sensors to 0 by subtracting the current measurement value.',
-  set_as_zero_value: 'Set these values as 0 values',
-  set_weight_factor: 'Define weight factor',
-  own_weight_kg: 'What is your own weight in kg?',
-  start_calibration:
-    'Now step on the scale, and press the button below to define the weight factor. Distribute your weight equally.',
-  currently_there_is: 'There is a weight of',
-  nothing: 'nothing',
-  on_the_scale: 'on the scale',
-  calibration_started:
-    'Calibration started... Wait for the next measurement to take effect.',
-  calibration_ended: 'Calibration succeeded!',
-
   /* General items */
   server_down:
     'The app is unavailable due to maintenance work, please try again later',
@@ -443,9 +391,7 @@ const translations = {
   sort_on: 'Sort on',
   Whats_new: 'New!',
   Manual: 'Manual',
-
   Site_title: 'BEEP | Bee monitor',
-
   could_not_create_user:
     'User cannot be created at this moment. Sorry for the inconvenience, please try again later.',
   email_verified: 'Your email address has been verified.',
@@ -492,14 +438,8 @@ const translations = {
   created: 'created',
   group_detached: 'Successfully left the group',
   group_activated: 'Group invitation accepted',
-  group_explanation_1:
-    '1. Create a new cooperation group with a clear title, and an optional description',
-  group_explanation_2: '2. Invite other BEEP users on their BEEP email address',
-  group_explanation_3:
-    '3. Share specific hives to be viewed by others, of to cooperate on',
-  Filter_and_sort_on: 'Filter and sort on:',
+  group_declined: 'Group invitation declined',
 
-  /* TO BE TRANSLATED */
   /* New translations v2.2.0 */
   roofed: 'Does the apiary have a roof?',
   info: 'Info',
@@ -587,7 +527,7 @@ const translations = {
   new_apiary: 'New apiary',
   delete_group: 'Delete group',
   edit_group: 'Edit group',
-  new_group: 'New group',
+  new_group: 'New collaboration group',
   verification_code: 'verification code',
   limit_exceeded: 'Limit has been reached, try again later',
   confirm_email_title: 'Confirm your email',
@@ -686,7 +626,6 @@ const translations = {
   Measurement: 'Measurement | Measurements',
   Calculation: 'Calculation',
   calculation: 'calculation',
-  Calculation_minutes: 'Calculate per x number of minutes',
   Alert_on_occurences: 'When would you like to receive this alert?',
   Alert_on_occurences_hint:
     'Directly, or only after it has occurred an x number of times?',
@@ -705,7 +644,7 @@ const translations = {
   Value: 'Value',
   Difference: 'Difference',
   Absolute_value: 'Absolute value',
-  Absolute_value_of_dif: 'Absolute value of the difference',
+  Absolute_value_of_dif_explanation: '**Absolute value of the difference',
   Exclude_months:
     '<strong>Deactivate</strong> this alert during the following months:',
   Exclude_hours:
@@ -727,11 +666,11 @@ const translations = {
   Select_default_alertrule: 'Copy default alert rule',
   /* below, please keep all terms between [] as is: */
   alertrule_main_sentence:
-    'I would like to receive an alert if the [calculation] [comparison] of the [measurement_quantity] [comparator] [threshold_value][measurement_unit]. This calculation will be executed every [calculation_minutes] hours, ',
+    'I would like to receive an alert if the [calculation] [comparison] of the [measurement_quantity] [comparator] [threshold_value][measurement_unit]. This calculation will be executed [calculation_minutes]',
   alertrule_occurences_direct_sentence:
-    'and I would like to receive the alert directly. ',
+    ', and I would like to receive the alert directly. ',
   alertrule_occurences_indirect_sentence:
-    ' but I would like to receive the alert only if it occurs [alert_on_occurences] times. ',
+    ', but I would like to receive the alert only if it occurs [alert_on_occurences] times. ',
   alertrule_exclude_months_sentence:
     'This alert will be deactivated during the following months: [exclude_months]. ',
   alertrule_exclude_hours_sentence:
@@ -762,8 +701,7 @@ const translations = {
     'If you own a BEEP base or another device you can set alerts, such that you will receive an alert when the measurement data meets certain requirements. For example, a sudden drop in weight because of swarming. Alerts will be shown in this app, you can choose to receive them via email as well.',
   alert_explanation_2:
     'To get you started there are a few default alert rules you can use (and adapt to your own needs). In addition, you can create your own alert rules.',
-  alertrules_url_text:
-    "Go to 'Alert settings' to create your first alert rule.",
+  alertrules_url_text: "Go to 'Alert settings' to create your first alert rule",
   Apiary_management: 'Apiary management',
   Move: 'Move',
   Current_apiary: 'Current apiary',
@@ -771,7 +709,6 @@ const translations = {
   disabled_settings: 'Manually editing these settings is disabled.',
   Address_placeholder: 'Number, Street name, City',
   first_create_apiary: 'First, create an apiary',
-  alertrule_deleted: 'Alert rule has been deleted',
   Unknown: 'Unknown',
   unknown: 'unknown',
   research_warning:
@@ -792,8 +729,8 @@ const translations = {
   Add_sensor_definition: 'Add sensor definition',
   Add_member: 'Add member',
 
-  new_but_not_saved_sensor_defs_warning:
-    'N.B.: sensor definitions will only be added after clicking the green check icon at the end of the sensor definition row in the table.',
+  new_or_edited_but_not_saved_sensor_defs_warning:
+    'N.B.: sensor definitions will only be saved or added after clicking the green check icon at the end of the sensor definition row in the table.',
   delete_sensordef: 'Delete sensor definition',
   delete_all_alerts: 'Delete all alerts',
   delete_all_alerts_warning:
@@ -805,8 +742,21 @@ const translations = {
   alert_rule_created: 'New alert rule has been created',
   alert_rule_deleted: 'Alert rule has been deleted',
   deactivate_for_all_hives: 'Deactivate alert for all hives',
+  select_all: 'Select all',
+  During: 'During',
+  Calculation_minutes:
+    'How often would you like the calculation to be performed?',
+  Every: 'Every ', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 24 hours etc.
+  every: 'every ',
+  Calculation_minutes_short: 'How often is it calculated?', // for alert rule overview table header
+  Alert_on_occurences_short: 'When do you receive the alert?', // for alert rule overview table header
+  Disable_alert_for_this_hive: 'Disable alert for this hive',
+  Alert_disabled_for_this_hive: 'Alert is disabled for this hive',
+  disabled_for_hive: 'has been disabled for hive', // [alert] has been disabled for the following hive
+  Alert_disabled: 'Alert disabled',
+
   Log_data_import: 'Import log data',
-  Flashlogs: 'Log files',
+  Log_files: 'Log files', // Flashlogs
   Upload_date: 'Upload date',
   Messages: 'Messages',
   Log_time: 'Time logged',
@@ -815,12 +765,82 @@ const translations = {
   delete_flashlog: 'Delete log file',
   commit_flashlog_short: 'Import log data',
   commit_flashlog: 'Import data from this log file to the BEEP app: ',
-  flashlog_explanation:
+  check_log_data: 'Check log data', // Check_flashlog
+  delete_log_file: 'Delete log file', // Delete_flashlog
+  commit_log_data_short: 'Import log data', // commit_flashlog_short
+  commit_log_data: 'Import data from this log file to the BEEP app: ', // commit_flashlog
+  // flashlog_explanation
+  import_log_data_explanation:
     "In the BEEP base app you can download log data from the internal memory of the BEEP base. Every time you download log data, the internal memory gets cleared and the data gets uploaded to the BEEP app. Below is the list of your downloaded log data. You can replace the data in the database by the data inside the downloaded log files by clicking the button 'Check log data'. This will first check how much data will be replaced inside the database, and if the time of the data in the log file is correct. You will get a confirmation box with the resulting info, and the possibility to apply or deny the replacement.",
-  flashlog_url_text:
+  // flashlog_url_text
+  import_log_data_url_text:
     'Here you can find the support article on downloading log data with the BEEP base app.',
-  flashlog_support_url:
+  // flashlog_support_url
+  import_log_data_support_url:
     'https://beepsupport.freshdesk.com/en/support/solutions/articles/60000697129-download-beep-base-data-through-bluetooth',
+
+  Immediately: 'Immediately',
+  alertrule_active_no_email_sentence:
+    ', and I open the BEEP app to see the alerts.',
+  alertrule_active_email_sentence:
+    ', and I receive alerts via email. In addition, I can see the alerts in the BEEP app.',
+  First_occurence: 'First: ',
+  Last_occurence: 'Last: ',
+  // default alert rule names:
+  Hive_stability_and_theft: 'Hive stability & Theft',
+  Temperature_sensor_defect: 'Temperature sensor defect',
+  Battery_low: 'Battery voltage low',
+  Honey_harvest: 'Honey harvest',
+  Hive_temperature: 'Hive temperature low',
+  Brood_temperature: 'Brood temperature low',
+  No_measurements: 'No measurements',
+  Swarm: 'Swarm',
+  Food_supply_low: 'Food supply low',
+  // default alert rule descriptions:
+  Weight_drop_is_above_a_set_value:
+    'Weight drop of the hive is above a set value',
+  Temperature_sensor_malfunctions: 'Temperature sensor malfunctions',
+  Battery_voltage_is_below_a_set_value:
+    'Battery voltage of the device is below a set value',
+  Weight_increase_due_to_nectar_collection_comes_to_a_halt:
+    'Weight increase due to nectar collection comes to a halt',
+  Hive_temperature_drops_below_a_set_value:
+    'Hive temperature drops below a set value',
+  Temperature_in_the_brood_below_a_set_value:
+    'Temperature in the brood has dropped below a set value',
+  No_measurement_data_received_in_a_set_time_period:
+    'No measurement data received during a set time period',
+  Sudden_weight_drop_triggers_alert_immediately:
+    'Sudden weight drop of the hive triggers an alert immediately. N.B.: this is based on a data transmission interval of 15 minutes. In case your device has a different data transmission interval, you should adjust the threshold value accordingly.',
+  The_hive_weight_is_below_a_set_value: 'Hive weight is below a set value',
+
+  minute: 'minute | minutes',
+  upload_interval_warning_single_interval:
+    'N.B.: the data transmission interval of your device is | N.B.: the data transmission interval of your devices is', // f.e.: ... 15 minutes
+  upload_interval_warning_interval_range:
+    'N.B.: the data transmission intervals of your devices vary between ', // f.e. ... 5 - 15 minutes
+  not_relevant_for_immediate_calculation:
+    'Not relevant for immediate calculation',
+  Increase: 'Increase',
+  Decrease: 'Decrease',
+  Every_hour: 'Every hour',
+  every_hour: 'every hour',
+  Absolute_value_of_dif: 'Change', // context: 'Change' is an easier to understand word than 'the absolute value of the difference' between 2 values.
+  In_case_of_good_connection_warning:
+    '*Immediately after a measurement is received. This is dependent on the data transmission interval and the reliability of the data connection.',
+  Alertrule_summary_title: 'Summary',
+  Alertrule_settings_title: 'Alert rule settings',
+  Alertrule_exclude_title: 'Exclude periods and hives',
+  of: 'of',
+
+  alerts_url_text: 'Read the support article about alerts',
+  alerts_support_url:
+    'https://beepsupport.freshdesk.com/nl/support/solutions/articles/60000706484-alerts',
+
+  Decline: 'Decline',
+  Decline_invitation: 'Decline invitation',
+  Decline_invitation_sure:
+    'Are you sure you would like to decline the group invitation?',
 }
 
 export default translations

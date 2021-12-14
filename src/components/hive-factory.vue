@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row class="hive-factory-wrapper my-0">
-      <v-col cols="12" sm="7" md="12">
+      <v-col cols="12" sm="10" md="12">
         <div class="beep-label">
           {{ $t('drag_layers') }}
           <v-icon
@@ -48,28 +48,36 @@
             </draggable>
           </div>
 
-          <v-sheet
-            class="hive-icon d-flex flex-column justify-center align-center white--text text--small my-3"
-            height="auto"
-          >
-            <div class="hive-icon-layers">
-              <draggable
-                v-model="hiveLayers"
-                :group="{ name: 'layers', pull: 'sort' }"
+          <div class="d-flex justify-center" style="width: 100%;">
+            <v-sheet
+              class="hive-icon d-flex flex-column justify-center align-center white--text text--small my-3"
+              height="auto"
+            >
+              <div
+                :class="
+                  'hive-icon-layers' +
+                    (hiveLayers.length === 0 ? ' hive-icon-layers--empty' : '')
+                "
               >
-                <v-sheet
-                  v-for="layer in hiveLayers"
-                  :key="layer.id !== undefined ? layer.id : layer.key"
-                  :color="checkColor(layer)"
-                  :class="[`layer ${layer.type}-layer`]"
-                  :width="`${hiveWidth(hive)}px`"
-                  @click.native="openOverlay(layer)"
-                  @touchstart="openOverlay(layer)"
+                <draggable
+                  v-model="hiveLayers"
+                  :group="{ name: 'layers', pull: 'sort' }"
+                  delay="100"
+                  delay-on-touch-only="true"
                 >
-                </v-sheet>
-              </draggable>
-            </div>
-          </v-sheet>
+                  <v-sheet
+                    v-for="layer in hiveLayers"
+                    :key="layer.id !== undefined ? layer.id : layer.key"
+                    :color="checkColor(layer)"
+                    :class="[`layer ${layer.type}-layer`]"
+                    :width="`${hiveWidth(hive)}px`"
+                    @click.native="openOverlay(layer)"
+                  >
+                  </v-sheet>
+                </draggable>
+              </div>
+            </v-sheet>
+          </div>
 
           <v-overlay :value="overlayLayerColor">
             <v-toolbar class="hive-color-picker-toolbar" dense light flat>
@@ -158,15 +166,19 @@ export default {
       layerColorPickerValue: '',
       layerColorPreview: false,
       showInfo: false,
+      fallbackColor: '#F8B133',
+      frameCount: 10,
     }
   },
   computed: {
     colorPicker: {
       get() {
         if (this.currentLayer) {
-          return this.currentLayer.color
+          return this.currentLayer.color !== null
+            ? this.currentLayer.color
+            : this.fallbackColor
         } else {
-          return this.hive.color
+          return this.hive.color !== null ? this.hive.color : this.fallbackColor
         }
       },
       set(value) {
@@ -189,6 +201,9 @@ export default {
         return value
       },
     },
+    mobile() {
+      return this.$vuetify.breakpoint.mobile
+    },
   },
   methods: {
     cancelColorPicker() {
@@ -210,7 +225,7 @@ export default {
       } else if (this.hive.color !== null && !this.colorPreview) {
         return this.hive.color
       } else {
-        return '#F8B133'
+        return this.fallbackColor
       }
     },
     cloneLayer({ key, order, color, type, framecount, newLayer }) {
@@ -234,7 +249,14 @@ export default {
             (layer) => !(layer.id === layerId || layer.key === layerKey)
           )
           this.hive.layers = remainingLayers
-          this.hive.frames = this.hive.layers[0].framecount
+          this.hive.frames =
+            remainingLayers.length > 0
+              ? this.hive.layers[0].framecount
+              : this.frameCount
+          if (this.hive.layers.length === 1) {
+            this.frameCount = this.hive.layers[0].framecount
+            this.$emit('update-defaultframecount', this.frameCount)
+          }
           this.setHiveEdited(true)
           this.setApiaryEdited(true)
 
@@ -253,7 +275,10 @@ export default {
           order: 0,
           color: this.hive.color,
           type: layerType[n],
-          framecount: this.hive.layers[0].framecount,
+          framecount:
+            this.hive.layers.length > 0
+              ? this.hive.layers[0].framecount
+              : this.frameCount,
           newLayer: true,
         }
       }
@@ -263,7 +288,15 @@ export default {
       return this.hive.layers.some((layer) => layer.type === type)
     },
     hiveWidth: function(hive) {
-      return hive.layers[0].framecount * 7 // 6
+      if (this.mobile) {
+        return hive.layers.length > 0
+          ? hive.layers[0].framecount * 6
+          : this.frameCount * 6
+      } else {
+        return hive.layers.length > 0
+          ? hive.layers[0].framecount * 7
+          : this.frameCount * 7
+      }
     },
     layerTypeText(layer) {
       return this.$i18n.tc('Hive_' + layer.type + '_layer', 1)
@@ -272,7 +305,8 @@ export default {
       this.overlayLayerColor = true
       this.currentLayer = layer
       this.layerColorPreview = true
-      this.layerColorPickerValue = layer.color
+      this.layerColorPickerValue =
+        layer.color !== null ? layer.color : this.fallbackColor
     },
     setApiaryEdited(bool) {
       this.$store.commit('locations/setApiaryEdited', bool)
@@ -288,7 +322,10 @@ export default {
         (layer) => layer.id === layerId || layer.key === layerKey
       )
       this.hive.layers[layerIndex].color = this.layerColorPickerValue
-      this.hive.frames = this.hive.layers[0].framecount
+      this.hive.frames =
+        this.hive.layers.length > 0
+          ? this.hive.layers[0].framecount
+          : this.frameCount
       this.setHiveEdited(true)
       this.setApiaryEdited(true)
 
@@ -301,7 +338,10 @@ export default {
         i--
       })
       this.hive.layers = layers
-      this.hive.frames = this.hive.layers[0].framecount
+      this.hive.frames =
+        this.hive.layers.length > 0
+          ? this.hive.layers[0].framecount
+          : this.frameCount
       this.setHiveEdited(true)
       this.setApiaryEdited(true)
     },
@@ -312,7 +352,7 @@ export default {
 <style lang="scss" scoped>
 .hive-icon {
   padding: 0 16px;
-  border-bottom: 1px solid green !important;
+  border-bottom: 1px solid #666 !important;
   border-radius: 2px 2px 0 0;
 }
 
@@ -453,5 +493,9 @@ export default {
 }
 .filler {
   padding: 0;
+}
+
+.hive-icon-layers--empty {
+  min-width: 70px;
 }
 </style>

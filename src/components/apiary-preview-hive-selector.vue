@@ -29,7 +29,12 @@
         "
         height="auto"
       >
-        <div class="hive-icon-layers">
+        <div
+          :class="
+            'hive-icon-layers' +
+              (hive.layers.length === 0 ? ' hive-icon-layers--empty' : '')
+          "
+        >
           <div
             :class="
               `selectable-wrapper ${
@@ -108,7 +113,7 @@ export default {
           (a.order === null) - (b.order === null) ||
           +(a.order > b.order) ||
           -(a.order < b.order) ||
-          (a.order === b.order
+          (a.order === b.order && a.name !== null && b.name !== null
             ? a.name.localeCompare(b.name, undefined, {
                 numeric: true,
                 sensitivity: 'base',
@@ -124,7 +129,7 @@ export default {
       return hive.layers.some((layer) => layer.type === type)
     },
     hiveWidth: function(hive) {
-      return hive.layers[0].framecount * 3.5
+      return hive.layers.length > 0 ? hive.layers[0].framecount * 3.5 : 20
     },
     selectHive(id) {
       this.$emit('select-hive', id)
@@ -158,7 +163,10 @@ export default {
     height: 100%;
     padding: 0 10px;
     margin-bottom: 3px;
-    border-bottom: 1px solid green !important;
+    border-bottom: 1px solid #666 !important;
+  }
+  .hive-icon-layers--empty {
+    padding: 0 20px;
   }
   &.has-queen-excluder {
     .hive-icon-layers {

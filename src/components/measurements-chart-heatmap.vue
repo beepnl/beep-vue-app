@@ -301,4 +301,12 @@ export default {
 .td-border {
   border-left: 1px solid rgb(0, 0, 0, 0.1);
 }
+
+tbody .tr--heatmap:last-child .td--heatmap {
+  border-bottom: 1px solid rgb(0, 0, 0, 0.1);
+}
+
+tbody .tr--heatmap:first-child .td--heatmap {
+  border-top: 1px solid rgb(0, 0, 0, 0.1);
+}
 </style>

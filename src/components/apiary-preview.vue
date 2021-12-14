@@ -10,7 +10,12 @@
       "
       height="auto"
     >
-      <div class="hive-icon-layers">
+      <div
+        :class="
+          'hive-icon-layers' +
+            (hive.layers.length === 0 ? ' hive-icon-layers--empty' : '')
+        "
+      >
         <v-sheet
           v-for="(layer, l) in orderedLayers(hive)"
           :key="l"
@@ -63,7 +68,7 @@ export default {
       return hive.layers.some((layer) => layer.type === type)
     },
     hiveWidth: function(hive) {
-      return hive.layers[0].framecount * 6
+      return hive.layers.length > 0 ? hive.layers[0].framecount * 6 : 16
     },
   },
 }
@@ -86,7 +91,10 @@ export default {
     height: 100%;
     padding: 0 8px;
     margin-bottom: 3px;
-    border-bottom: 1px solid green !important;
+    border-bottom: 1px solid #666 !important;
+  }
+  .hive-icon-layers--empty {
+    padding: 0 16px;
   }
   &.has-queen-excluder {
     .hive-icon-layers {

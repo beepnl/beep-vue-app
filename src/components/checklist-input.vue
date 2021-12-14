@@ -94,35 +94,27 @@
       @input.native="convertComma($event, item.name, 0)"
     ></el-input-number>
 
-    <div
+    <el-input-number
       v-if="
         item.input === 'number_1_decimals' ||
           item.input === 'number_2_decimals' ||
           item.input === 'square_25cm2'
       "
-      class="d-flex flex-column"
-    >
-      <el-input-number
-        :value="object[item.id] === null ? 0 : object[item.id]"
-        :class="showCommaWarning ? 'comma-warning' : ''"
-        :step="item.input === 'number_2_decimals' ? 0.01 : 0.1"
-        :precision="item.input === 'number_2_decimals' ? 2 : 1"
-        :disabled="disabled"
-        size="medium"
-        @change="updateInput($event, item.id, item.name, item.input)"
-        @input.native="
-          convertComma(
-            $event,
-            item.name,
-            // eslint-disable-next-line vue/comma-dangle
-            item.input === 'number_2_decimals' ? 2 : 1
-          )
-        "
-      ></el-input-number>
-      <span v-if="showCommaWarning" class="red--text font-small"
-        >Use point as decimal separator (comma not allowed)</span
-      >
-    </div>
+      :value="object[item.id] === null ? 0 : object[item.id]"
+      :step="item.input === 'number_2_decimals' ? 0.01 : 0.1"
+      :precision="item.input === 'number_2_decimals' ? 2 : 1"
+      :disabled="disabled"
+      size="medium"
+      @change="updateInput($event, item.id, item.name, item.input)"
+      @input.native="
+        convertComma(
+          $event,
+          item.name,
+          // eslint-disable-next-line vue/comma-dangle
+          item.input === 'number_2_decimals' ? 2 : 1
+        )
+      "
+    ></el-input-number>
 
     <el-input-number
       v-if="item.input === 'number_3_decimals'"
@@ -172,11 +164,11 @@
       v-model="object[item.id]"
       class="inspection-text-area"
       :placeholder="item.trans[locale] || item.name"
-      counter="250"
+      counter="2500"
       rows="1"
       auto-grow
       clearable
-      @input="validateText($event, item.id, 250)"
+      @input="validateText($event, item.id, 2500)"
     ></v-textarea>
 
     <smileRating
@@ -303,7 +295,6 @@ export default {
   },
   data() {
     return {
-      showCommaWarning: false,
       savedNrOfDecimals: 0,
     }
   },
@@ -376,27 +367,7 @@ export default {
       }
     },
     updateInput(value, property, name = null, input = null) {
-      // console.log('update input (change event)', value, property)
-
-      if (value === 0) {
-        value = null
-      }
-
       this.checkNameForEmit(name)
-
-      // var decimals = 0
-      // if (input === 'number_1_decimals' || input === 'square_25cm2') {
-      //   decimals = 1
-      // } else if (input === 'number_2_decimals') {
-      //   decimals = 2
-      // } else if (input === 'number_3_decimals') {
-      //   decimals = 3
-      // }
-
-      // if (value !== null) {
-      //   value = value.toFixed(decimals)
-      // }
-
       this.object[property] = value
       this.setInspectionEdited(true)
     },
@@ -408,24 +379,8 @@ export default {
         pointVal = pointVal.replace('.0.', '.')
       }
 
-      // if (val.indexOf(',') > -1) {
-      //   this.showCommaWarning = true
-      // } else {
-      //   this.showCommaWarning = false
-      // }
-
-      // console.log('input', val)
-      // console.log('saved value', pointVal)
-
-      if (val === 0) {
-        pointVal = null
-      }
       this.checkName(name)
 
-      // if (val.indexOf(',') === -1) {
-      //   this.object[property] = val
-      // this.showCommaWarning = false
-      // }
       this.object[property] = pointVal
       this.setInspectionEdited(true)
     },
