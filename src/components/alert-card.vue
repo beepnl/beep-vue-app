@@ -9,7 +9,7 @@
         :color="
           alert.alert_function.indexOf('alert_rule') > -1
             ? 'primary'
-            : alertRuleNotActive
+            : alertRuleNotActive || alertRule === undefined
             ? 'grey'
             : 'red'
         "
@@ -328,6 +328,19 @@
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
+
+        <v-list-item v-else-if="alertRule === undefined" disabled>
+          <v-list-item-icon class="mr-3">
+            <v-icon>mdi-bell</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>{{
+              $t('alert_rule_deleted')
+            }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
         <v-list-item
           v-if="alert.device_id !== null"
           :to="{

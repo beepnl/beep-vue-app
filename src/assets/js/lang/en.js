@@ -662,6 +662,8 @@ const translations = {
   deactivate_for_all_hives: 'Deactivate alert for all hives',
   select_all: 'Select all',
   During: 'During',
+  Every: 'Every ', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 24 hours etc.
+  every: 'every ',
   Calculation_minutes:
     'How often would you like the calculation to be performed?',
   Calculation_minutes_short: 'How often is it calculated?', // for alert rule overview table header

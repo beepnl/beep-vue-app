@@ -77,9 +77,7 @@ export const momentHumanizeHours = {
       )
     },
     momentHumanizeHours(value, capitalsOn = false, asteriskOn = false) {
-      var prefix = capitalsOn
-        ? this.$i18n.t('Every')
-        : this.$i18n.t('Every').toLowerCase()
+      var prefix = capitalsOn ? this.$i18n.t('Every') : this.$i18n.t('every')
       switch (true) {
         case value === 0:
           return (
