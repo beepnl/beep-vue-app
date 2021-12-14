@@ -336,16 +336,9 @@ const translations = {
   year: 'Jaar',
 
   /* settings */
-  could_not_load_settings: 'De instellingen konden niet worden geladen',
   offline: 'Geen verbinding',
-  remote: 'Op afstand',
-  connected: 'Direct',
-
   yes: 'Ja',
   no: 'Nee',
-
-  footer_text: 'Open source bijenmonitor',
-  beep_foundation: 'Stichting BEEP',
 
   Checklist: 'Kastkaart | Kastkaarten',
   checklist: 'kastkaart | kastkaarten',
