@@ -764,7 +764,6 @@ const translations = {
   During: 'În decurs de',
   Calculation_minutes: 'Cât de des ați dori să se efectueze acest calculul?',
   Every: 'La fiecare ',
-  every: 'La fiecare ',
   Calculation_minutes_short: 'Cât de des ete calculată?',
   Alert_on_occurences_short: 'Când veți primi alerta?',
   Disable_alert_for_this_hive: 'Dezactivați alerta pentru acest stup',

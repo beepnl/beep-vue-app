@@ -871,7 +871,6 @@ const translations = {
   During: 'Pendant',
   Calculation_minutes: 'A quelle fréquence voulez vous éxécuter le calcul ?',
   Every: 'Chaque ',
-  every: 'chaque ',
   Calculation_minutes_short: 'Fréquence de calcul',
   Alert_on_occurences_short: "Quand recevez vous l'alerte ?",
   Disable_alert_for_this_hive: "Désactiver l'alerte pour cette ruche",

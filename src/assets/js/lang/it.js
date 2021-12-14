@@ -761,7 +761,6 @@ const translations = {
   During: 'Durante', // context: 'During 2 days', or 'During 1 hour', to notify the period during which the same alert has been triggered (each evaluation) in a row
   Calculation_minutes: 'Con che frequenza vuoi che vengano fatti i calcoli',
   Every: 'Ogni ', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 24 hours etc.
-  every: 'ogni ',
   Calculation_minutes_short: 'Con che frequenza viene calcolato?', // for alert rule overview table header
   Alert_on_occurences_short: 'Quando ricevi la notifica?', // for alert rule overview table header
   Disable_alert_for_this_hive: 'Disabilita notifiche per questo alveare',

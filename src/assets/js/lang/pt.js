@@ -792,7 +792,6 @@ const translations = {
   Calculation_minutes:
     'Com que frequência gostaria que o cálculo fosse executado?',
   Every: 'A cada ',
-  every: 'a cada ',
   Calculation_minutes_short: 'Com que frequência é calculado?',
   Alert_on_occurences_short: 'Quando recebe o alerta?',
   Disable_alert_for_this_hive: 'Desativar alerta para esta colmeia.',

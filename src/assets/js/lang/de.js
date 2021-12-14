@@ -780,7 +780,6 @@ const translations = {
   During: 'Während',
   Calculation_minutes: 'Wie oft soll die Berechnung durchgeführt werden?',
   Every: 'Alle ',
-  every: 'alle ',
   Calculation_minutes_short: 'Wie oft wird berechnet?',
   Alert_on_occurences_short: 'Wann erhälst Du Alarmmeldungen?',
   Disable_alert_for_this_hive: 'Alarm für diese Beute deaktivieren',

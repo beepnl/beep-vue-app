@@ -698,7 +698,6 @@ const translations = {
   select_all: 'Selecteer alle',
   During: 'Gedurende',
   Every: 'Elke ', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 24 hours etc.
-  every: 'elke ',
   Calculation_minutes: 'Hoe vaak wil je de berekening uit laten voeren?',
   Calculation_minutes_short: 'Hoe vaak berekend?', // for alert rule overview table header
   Disable_alert_for_this_hive: 'Deactiveer notificatie voor deze kast',

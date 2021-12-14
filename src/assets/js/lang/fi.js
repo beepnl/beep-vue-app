@@ -800,7 +800,6 @@ const translations = {
   During: '', // Ajalta but doesn't make sense in Finnish?
   Calculation_minutes: 'Kuinka usein haluat suorittaa laskennan?',
   Every: 'Joka ',
-  every: 'joka ',
   Calculation_minutes_short: 'Kuinka usein lasketaan?',
   Alert_on_occurences_short: 'Milloin saat hälytyksen?',
   Disable_alert_for_this_hive: 'Poista hälytys tästä pesästä',
