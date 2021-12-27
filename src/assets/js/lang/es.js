@@ -858,6 +858,12 @@ const translations = {
   Decline_invitation: 'Rechazar invitación',
   Decline_invitation_sure:
     '¿Estás seguro de que deseas rechazar la invitación grupal?',
+
+  /* New translations v3.1 */
+  selection: 'selection',
+  selection_placeholder: 'Select a period',
+  data_zoom: 'Data zoom',
+  data_zoom_ok: 'Would you like to zoom in on the data of ',
 }
 
 export default translations

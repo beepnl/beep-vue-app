@@ -24,10 +24,10 @@
     return function beep(chart) {
       chart.on('draw', function(data) {
         if (data.type === 'point') {
-          // data.element._node.onclick = function() {
-          //   var date = data.axisX.options.ticks[data.index]
-          //   options.onClick(date)
-          // }
+          data.element._node.onclick = function() {
+            var date = data.axisX.options.ticks[data.index]
+            options.onClick(date)
+          }
           data.element.attr({
             style: 'stroke: ' + data.series.color + ';',
           })
