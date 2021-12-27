@@ -187,11 +187,12 @@
             <h4 v-text="$tc('Invitation', 1) + ': ' + invitation.name"></h4>
           </div>
           <div>
-            <!-- <v-btn
+            <v-btn
               v-if="!mobile"
               tile
               outlined
-              class="red--text mb-1 mr-2"
+              class="mb-1 mr-2"
+              color="red"
               :disabled="invitationButtonsDisabled(invitation.id)"
               @click="confirmDeclineInvitation(invitation)"
             >
@@ -207,8 +208,8 @@
                 >mdi-close</v-icon
               >
               {{ $t('Decline') }}
-            </v-btn> -->
-            <!-- <v-progress-circular
+            </v-btn>
+            <v-progress-circular
               v-if="showLoadingIcon(invitation.id, true) && mobile"
               class="invitation-loading-icon mb-1 mr-2"
               size="18"
@@ -220,11 +221,12 @@
               v-if="!showLoadingIcon(invitation.id, true) && mobile"
               dark
               :disabled="invitationButtonsDisabled(invitation.id)"
-              class="red--text mb-1 mr-2"
+              class="mb-1 mr-2"
+              color="red"
               @click="confirmDeclineInvitation(invitation)"
             >
               mdi-close</v-icon
-            > -->
+            >
             <v-btn
               v-if="!mobile"
               tile
@@ -1116,7 +1118,7 @@ export default {
           this.snackbar.show = true
           this.stopLoadingIcon(groupId, decline)
         }
-        this.snackbar.text = this.$i18n.t('Invitation_accepted')
+        this.snackbar.text = this.$i18n.t(response.data.message)
         this.snackbar.show = true
         setTimeout(() => {
           this.readDevices().then(() => {

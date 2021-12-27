@@ -255,8 +255,14 @@
                         ></v-text-field>
                       </td>
                       <td>
-                        <span v-if="user.accepted === null">{{
-                          momentify(user.invited, true)
+                        <span
+                          v-if="
+                            user.accepted === null && user.declined === null
+                          "
+                          >{{ momentify(user.invited, true) }}</span
+                        >
+                        <span v-else-if="user.declined !== null">{{
+                          $t('group_declined')
                         }}</span>
                       </td>
                       <td>
