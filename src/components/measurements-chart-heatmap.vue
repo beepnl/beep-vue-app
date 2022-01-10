@@ -200,6 +200,14 @@ export default {
 .tr--heatmap {
   height: 13px !important;
   max-height: 13px !important;
+  td:nth-child(2) {
+    border-left: 1px solid #afafaf !important;
+  }
+  &:last-child {
+    .td--heatmap {
+      border-bottom: 1px solid #afafaf !important;
+    }
+  }
 }
 
 .tf--heatmap-label,
@@ -300,10 +308,6 @@ export default {
 
 .td-border {
   border-left: 1px solid rgb(0, 0, 0, 0.1);
-}
-
-tbody .tr--heatmap:last-child .td--heatmap {
-  border-bottom: 1px solid rgb(0, 0, 0, 0.1);
 }
 
 tbody .tr--heatmap:first-child .td--heatmap {
