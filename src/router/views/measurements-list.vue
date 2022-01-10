@@ -304,11 +304,7 @@
           </SlideYUpTransition>
         </v-card>
 
-        <v-card
-          v-if="lastSensorDate && !noPeriodData && measurementData !== null"
-          outlined
-          class="mt-3 mb-3"
-        >
+        <v-card v-if="lastSensorDate" outlined class="mt-3 mb-3">
           <v-card-title
             :class="
               `measurements-card-title ${
