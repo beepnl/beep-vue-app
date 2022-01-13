@@ -150,12 +150,12 @@ export default {
           route: 'export',
           beepBaseRequired: false,
         },
-        // {
-        //   icon: 'icon-beep-base',
-        //   title: this.$i18n.t('Log_data_import'),
-        //   route: 'import',
-        //   beepBaseRequired: true,
-        // },
+        {
+          icon: 'icon-beep-base',
+          title: this.$i18n.t('Log_data_import'),
+          route: 'import',
+          beepBaseRequired: true,
+        },
         {
           icon: 'mdi-format-list-checks',
           title: this.$i18n.tc('Checklist_template', 2),

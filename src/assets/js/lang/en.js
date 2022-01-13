@@ -759,6 +759,13 @@ const translations = {
   selection_placeholder: 'Select a period',
   data_zoom: 'Data zoom',
   data_zoom_ok: 'Would you like to zoom in on the data of ',
+
+  Length: 'Length: ',
+  match: 'match | matches',
+  Matches_found: 'Matches found',
+  Firmware_version: 'Firmware version: ',
+  Interval: 'Interval: ',
+  View_data: 'View data',
 }
 
 export default translations

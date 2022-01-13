@@ -61,6 +61,9 @@
                 <thead>
                   <tr>
                     <th class="text-left">
+                      ID
+                    </th>
+                    <th class="text-left">
                       {{ $t('Upload_date') }}
                     </th>
                     <th class="text-left">
@@ -87,17 +90,23 @@
                   <tr
                     v-for="(flashLog, index) in flashLogs"
                     :key="index"
-                    :class="flashLog.delete === true ? 'flashlog-delete' : ''"
+                    :class="
+                      (flashLog.id === currentLogId
+                        ? 'flashlog-selected'
+                        : '') +
+                        (flashLog.delete === true ? 'flashlog-delete' : '')
+                    "
                   >
+                    <td>
+                      <span v-text="flashLog.id"></span>
+                    </td>
                     <td>
                       <span
                         v-text="momentify(flashLog.created_at, true)"
                       ></span>
                     </td>
                     <td>
-                      <span
-                        v-text="findDeviceById(flashLog.device_id).name"
-                      ></span>
+                      <span v-text="deviceNameById(flashLog.device_id)"></span>
                     </td>
                     <td>
                       <span v-text="hiveName(flashLog.hive_id)"></span>
@@ -154,6 +163,7 @@
                           />
                           <v-icon
                             v-if="
+                              // eslint-disable vue/comma-dangle
                               showLoadingIconById.indexOf(flashLog.id) === -1
                             "
                             left
@@ -205,6 +215,142 @@
             >
           </span>
         </v-col>
+        <v-col v-if="currentLog" cols="12">
+          <div
+            class="overline mt-0 mt-sm-3 mb-3"
+            v-text="currentLogHeader"
+          ></div>
+          <div>
+            <template v-for="(log, i) in currentLog.log">
+              <v-card
+                :key="'log' + i"
+                :class="
+                  'log-panel mb-3 ' +
+                    (log.matches !== undefined ? 'log-panel--matches' : '')
+                "
+                :disabled="log.no_matches !== undefined"
+                outlined
+              >
+                <v-card-text>
+                  <v-row :class="mobile ? 'font-small' : ''">
+                    <v-col cols="6" sm="3" lg="2">
+                      {{ momentify(log.db_time, true) }}
+                    </v-col>
+                    <v-col cols="6" sm="5" lg="3">
+                      {{ lengthText(log) }}
+                    </v-col>
+                    <v-col v-if="lgAndUp" cols="2">
+                      {{ $t('Firmware_version') + log.fw_version }}
+                    </v-col>
+                    <v-col v-if="lgAndUp" cols="1">
+                      {{ $t('Interval') + log.interval_min }}
+                    </v-col>
+                    <v-col sm="4" lg="2">
+                      {{
+                        log.no_matches !== undefined
+                          ? log.no_matches.message
+                          : log.matches !== undefined
+                          ? $t('Matches_found')
+                          : ''
+                      }}
+                    </v-col>
+                    <v-col
+                      v-if="log.matches !== undefined"
+                      sm="12"
+                      lg="2"
+                      class="d-flex justify-end"
+                    >
+                      <v-btn
+                        tile
+                        outlined
+                        color="black"
+                        :disabled="showBlockLoadingIcon"
+                        @click.prevent="checkBlockData(currentLogId, log.block)"
+                      >
+                        <v-progress-circular
+                          v-if="showBlockLoadingIcon"
+                          class="ml-n1 mr-2"
+                          size="18"
+                          width="2"
+                          color="disabled"
+                          indeterminate
+                        />
+                        <v-icon v-if="!showBlockLoadingIcon" left
+                          >mdi-chart-line</v-icon
+                        >
+                        {{ $t('View_data') }}
+                      </v-btn>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+                <!-- <v-expansion-panel-content v-if="log.matches">
+                  <div
+                    v-for="(match, index) in log.matches.matches"
+                    :key="'match' + index"
+                  >
+                    {{ match }}
+                  </div>
+                </v-expansion-panel-content> -->
+              </v-card>
+            </template>
+          </div>
+          <!-- <v-expansion-panels multiple>
+            <template v-for="(log, i) in currentLog.log">
+              <v-expansion-panel
+                :key="'log' + i"
+                :class="
+                  'log-panel ' +
+                    (log.matches !== undefined ? 'log-panel--matches' : '')
+                "
+                :disabled="log.no_matches !== undefined"
+              >
+                <v-expansion-panel-header>
+                  <v-row no-gutters>
+                    <v-col
+                      cols="6"
+                      sm="3"
+                      lg="2"
+                      :class="mobile ? 'font-small' : ''"
+                    >
+                      {{ momentify(log.db_time, true) }}
+                    </v-col>
+                    <v-col
+                      cols="6"
+                      sm="5"
+                      lg="3"
+                      :class="mobile ? 'font-small' : ''"
+                    >
+                      {{ lengthText(log) }}
+                    </v-col>
+                    <v-col v-if="lgAndUp" cols="2">
+                      {{ $t('Firmware_version') + log.fw_version }}
+                    </v-col>
+                    <v-col v-if="lgAndUp" cols="2">
+                      {{ $t('Interval') + log.interval_min }}
+                    </v-col>
+                    <v-col sm="4" lg="3" :class="mobile ? 'font-small' : ''">
+                      {{
+                        log.no_matches !== undefined
+                          ? log.no_matches.message
+                          : log.matches !== undefined
+                          ? $t('Matches_found')
+                          : ''
+                      }}
+                    </v-col>
+                  </v-row>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content v-if="log.matches">
+                  <div
+                    v-for="(match, index) in log.matches.matches"
+                    :key="'match' + index"
+                  >
+                    {{ match }}
+                  </div>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </template>
+          </v-expansion-panels> -->
+        </v-col>
       </v-row>
     </v-container>
 
@@ -217,7 +363,7 @@ import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
-import { momentify } from '@mixins/momentMixin'
+import { momentHumanizeDuration, momentify } from '@mixins/momentMixin'
 import { readApiariesAndGroupsIfNotPresent } from '@mixins/methodsMixin'
 
 export default {
@@ -225,7 +371,11 @@ export default {
     Confirm,
     Layout,
   },
-  mixins: [momentify, readApiariesAndGroupsIfNotPresent],
+  mixins: [
+    momentHumanizeDuration,
+    momentify,
+    readApiariesAndGroupsIfNotPresent,
+  ],
   data() {
     return {
       errorMessage: null,
@@ -236,12 +386,32 @@ export default {
       commitMessage: null,
       showCommitMessage: false,
       showInfo: false,
+      currentLogId: null,
+      currentLog: null,
+      blockData: null,
+      showBlockLoadingIcon: false,
     }
   },
   computed: {
     ...mapGetters('devices', ['devices']),
     ...mapGetters('groups', ['groups']),
     ...mapGetters('locations', ['apiaries']),
+    currentLogHeader() {
+      return this.currentLog !== null
+        ? 'Log ID: ' +
+            this.currentLogId +
+            ', Time match: ' +
+            this.currentLog.time_percentage +
+            ', Weight match: ' +
+            this.currentLog.weight_percentage +
+            ', On/off blocks: ' +
+            this.currentLog.log.length +
+            ', Lines: ' +
+            this.currentLog.lines_received +
+            ', Messages: ' +
+            this.currentLog.records_flashlog
+        : ''
+    },
     hives() {
       const ownHivesArray = []
       this.apiaries.forEach((apiary) => {
@@ -268,6 +438,9 @@ export default {
         }
       }
       return uniqueHives
+    },
+    lgAndUp() {
+      return this.$vuetify.breakpoint.lgAndUp
     },
     locale() {
       return this.$i18n.locale
@@ -302,24 +475,45 @@ export default {
         }
       }
     },
+    async checkBlockData(flashLogId, blockId) {
+      this.showBlockLoadingIcon = true
+      try {
+        const response = await Api.readRequest(
+          '/flashlogs/' + flashLogId + '?block_id=' + blockId
+        )
+        this.showBlockLoadingIcon = false
+        this.blockData = response.data
+      } catch (error) {
+        this.showBlockLoadingIcon = false
+        if (error.response) {
+          console.log(error.response)
+          const msg = error.response.data.message
+          this.errorMessage = this.$i18n.t(msg)
+        } else {
+          console.log('Error: ', error)
+          this.errorMessage = this.$i18n.t('something_wrong')
+        }
+      }
+    },
     async checkFlashLog(flashLog) {
       this.clearMessages()
       this.showLoadingIconById.push(flashLog.id)
       try {
-        const response = await Api.postRequest(
-          '/flashlogs/' + flashLog.id + '/try'
-        )
-        this.tryMessage = response.message || 'try not yet implemented' // TODO: remove fallback
+        const response = await Api.readRequest('/flashlogs/' + flashLog.id)
         this.showLoadingIconById.splice(
           this.showLoadingIconById.indexOf(flashLog.id),
           1
         )
-        this.confirmCommitFlashLog(flashLog)
+        this.currentLog = response.data
+        this.currentLogId = flashLog.id
+        // this.confirmCommitFlashLog(flashLog)
       } catch (error) {
         this.showLoadingIconById.splice(
           this.showLoadingIconById.indexOf(flashLog.id),
           1
         )
+        this.currentLog = null
+        this.currentLogId = null
         if (error.response) {
           console.log(error.response)
           const msg = error.response.data.message
@@ -335,7 +529,8 @@ export default {
         const response = await Api.postRequest(
           '/flashlogs/' + flashLog.id + '/commit'
         )
-        this.commitMessage = response.message || 'commit not yet implemented' // TODO: remove fallback
+        this.commitMessage =
+          response.data.message || 'commit not yet implemented' // TODO: remove fallback
         this.showCommitMessage = true
       } catch (error) {
         if (error.response) {
@@ -414,13 +609,27 @@ export default {
           return true
         })
     },
-    findDeviceById(id) {
-      return this.devices.filter((device) => device.id === id)[0]
+    deviceNameById(id) {
+      const deviceByIdArray = this.devices.filter((device) => device.id === id)
+      return deviceByIdArray.length > 0 ? deviceByIdArray[0].name : null
     },
     hiveName(hiveId) {
-      return this.hives[hiveId]
+      return this.hives[hiveId] !== undefined && this.hives[hiveId] !== null
         ? this.hives[hiveId].name
         : this.$i18n.tc('Hive_short', 1) + ' ' + this.$i18n.t('unknown')
+    },
+    lengthText(log) {
+      return (
+        this.momentHumanizeDuration(
+          log.duration_hours,
+          'hours',
+          this.$i18n.t('Length')
+        ) +
+        ', ' +
+        this.$i18n.t('Messages') +
+        ': ' +
+        (log.end_i - log.start_i).toString()
+      )
     },
   },
 }
@@ -432,5 +641,16 @@ export default {
 }
 .flashlog-delete {
   background-color: rgba(255, 0, 0, 0.2);
+}
+.flashlog-selected {
+  background-color: $color-orange-light;
+}
+.log-panel {
+  &.log-panel--matches {
+    background-color: $color-orange-medium;
+  }
+  &[aria-expanded='true'] {
+    height: auto !important;
+  }
 }
 </style>

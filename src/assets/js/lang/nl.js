@@ -785,6 +785,12 @@ const translations = {
   selection_placeholder: 'Selecteer een periode',
   data_zoom: 'Data inzoomen',
   data_zoom_ok: 'Wil je inzoomen naar de data van ',
+  Length: 'Lengte: ',
+  match: 'match | matches',
+  Matches_found: 'Matches gevonden',
+  Firmware_version: 'Firmware versie: ',
+  Interval: 'Interval: ',
+  View_data: 'Bekijk data',
 }
 
 export default translations
