@@ -26,7 +26,7 @@
             particular day or hour (depending on which level you are). When
             clicking 'OK', the data is then reloaded for that day or hour</li
           >
-          <!-- <li
+          <li
             >Alerts:
             <router-link :to="{ name: 'alertrule-create' }">
               option to create alert rules for non-default
@@ -34,12 +34,13 @@
             >
             At the 'measurements' input field you can now switch on 'Show all'
             to view and select all (non-weather) measurements.</li
-          > -->
+          >
           <li
             >Collaborate: option to decline a collaboration group invitation
             when viewing the invite in the BEEP app. Group admins will be able
             to see this in the collaboration group overview.</li
           >
+          <li>Bugfixes: small fixes for issues received as feedback</li>
         </ul>
       </div>
 
