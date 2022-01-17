@@ -583,7 +583,7 @@
                 meetsysteem (BEEP base of anders) aanwezig,
                 <v-icon class="color-grey inline-icon">mdi-bell</v-icon>
                 notificaties aanwezig.<br />
-                N.B.: afhankelijk van schermgrootte zullen sommige filters niet
+                N.B. afhankelijk van schermgrootte zullen sommige filters niet
                 zichtbaar zijn om ruimte te besparen. Filters worden onthouden
                 gedurende de browsersessie. Door te klikken op het BEEP logo in
                 de linkerbovenhoek van het scherm worden alle filters
@@ -673,7 +673,7 @@
                 Pas kast aan: bijenkasten kunnen aangepast worden door op de
                 kast te klikken in het
                 <router-link :to="{ name: 'home' }">Kasten</router-link>
-                overzicht wat het kast menu opent → 'Aanpassen kast'. N.B.:
+                overzicht wat het kast menu opent → 'Aanpassen kast'. N.B.
                 alleen eigen kasten en gedeelde kasten met aanpasrechten zijn
                 aanpasbaar.</li
               >
@@ -778,7 +778,7 @@
                 neutraal,
                 <v-icon class="color-grey inline-icon">mdi-emoticon-sad</v-icon>
                 slecht).<br />
-                N.B.: Filters worden onthouden gedurende de browsersessie.
+                N.B. Filters worden onthouden gedurende de browsersessie.
               </li>
               <li
                 >Inspectie menu: klik op een inspectie om deze te bekijken (in

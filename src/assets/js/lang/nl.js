@@ -786,6 +786,8 @@ const translations = {
   data_zoom_ok: 'Wil je inzoomen op de data van ',
   data_zoom_out_ok: 'Wil je uitzoomen naar de data van ',
   show_all: 'Toon alle',
+  only_active_if_measurement_present:
+    '*N.B. Notificaties worden alleen geactiveerd wanneer de geselecteerde meting door je BEEP base / meetsysteem gemeten wordt',
 }
 
 export default translations

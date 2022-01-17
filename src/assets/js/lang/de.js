@@ -838,7 +838,7 @@ const translations = {
   No_measurement_data_received_in_a_set_time_period:
     'Keine Messdaten während eines bestimmten Zeitraums empfangen',
   Sudden_weight_drop_triggers_alert_immediately:
-    'Ein plötzlicher Gewichtsverlust des Bienenstocks löst sofort einen Alarm aus. N.B.: Dies basiert auf einem Datenübertragungsintervall von 15 Minuten. Falls Ihr Gerät ein anderes Datenübertragungsintervall hat, sollten Sie den Schwellenwert entsprechend anpassen.',
+    'Ein plötzlicher Gewichtsverlust des Bienenstocks löst sofort einen Alarm aus. N.B. Dies basiert auf einem Datenübertragungsintervall von 15 Minuten. Falls Ihr Gerät ein anderes Datenübertragungsintervall hat, sollten Sie den Schwellenwert entsprechend anpassen.',
   The_hive_weight_is_below_a_set_value:
     'Das Beutengewicht liegt unter einem bestimmten Wert',
 
@@ -876,6 +876,8 @@ const translations = {
   data_zoom_ok: 'Would you like to zoom in on the data of ',
   data_zoom_out_ok: 'Would you like to zoom out to the data of ',
   show_all: 'Show all',
+  only_active_if_measurement_present:
+    '*N.B. the alert rule will only be active if the selected measurement is measured by your BEEP base / device',
 }
 
 export default translations

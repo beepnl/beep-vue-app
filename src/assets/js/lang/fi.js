@@ -894,6 +894,8 @@ const translations = {
   data_zoom_ok: 'Would you like to zoom in on the data of ',
   data_zoom_out_ok: 'Would you like to zoom out to the data of ',
   show_all: 'Show all',
+  only_active_if_measurement_present:
+    '*N.B. the alert rule will only be active if the selected measurement is measured by your BEEP base / device',
 }
 
 export default translations

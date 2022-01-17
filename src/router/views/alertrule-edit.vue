@@ -148,7 +148,7 @@
                 <v-switch
                   v-model="showAllMeasurements"
                   class="pt-2 mt-n3"
-                  :label="$t('show_all')"
+                  :label="$t('show_all') + (showAllMeasurements ? '*' : '')"
                   hide-details
                 ></v-switch>
               </div>
@@ -172,6 +172,11 @@
                 :rules="requiredRule"
                 @input="setAlertRuleEdited(true)"
               ></v-select>
+              <div
+                v-if="showAllMeasurements"
+                class="beep-label mt-n4 mb-3"
+                v-text="$t('only_active_if_measurement_present')"
+              ></div>
             </v-col>
 
             <v-col cols="12" sm="6" md="3">

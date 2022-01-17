@@ -733,7 +733,7 @@ const translations = {
   save_bulkinspection_confirm:
     "Etes-vous sûr de vouloir sauuvegarder l'inspection pour toutes ces ruches en meme temps?",
   deleted_but_not_saved_devices_warning:
-    'N.B.: Les appareils seront supprimés après avoir cliqué sur "Sauvergarder et supprimer" dans le coin supérieur droit de l\'écran.',
+    'N.B. Les appareils seront supprimés après avoir cliqué sur "Sauvergarder et supprimer" dans le coin supérieur droit de l\'écran.',
   no_alerts: 'Pas de nouvelles alertes',
   alertrule: "règle d'alerte | règles d'alerte",
   alertrule_pagetitle: "Réglages d'alertes",
@@ -929,15 +929,15 @@ const translations = {
   No_measurement_data_received_in_a_set_time_period:
     'Aucune mesure reçue pendant la période définie',
   Sudden_weight_drop_triggers_alert_immediately:
-    "Une chute soudaine du poids déclenche immédiatement une alerte. N.B.: L'alerte est basée sur une transmission de données toutes les 15 minutes. Si votre appareil transmet à un intervalle difféerent, vous devriez ajuster le seuil de déclenchement.",
+    "Une chute soudaine du poids déclenche immédiatement une alerte. N.B. L'alerte est basée sur une transmission de données toutes les 15 minutes. Si votre appareil transmet à un intervalle difféerent, vous devriez ajuster le seuil de déclenchement.",
   The_hive_weight_is_below_a_set_value:
     'Le poids de la ruche est inférieur à la valeur définie.',
 
   minute: 'minute | minutes',
   upload_interval_warning_single_interval:
-    "N.B.: L'intervalle de transmission de données est de | N.B.: L'intervalle de transmission de votre appareil est de",
+    "N.B. L'intervalle de transmission de données est de | N.B. L'intervalle de transmission de votre appareil est de",
   upload_interval_warning_interval_range:
-    "N.B.: L'intervalle de transmission de vos appareils varie entre ",
+    "N.B. L'intervalle de transmission de vos appareils varie entre ",
   not_relevant_for_immediate_calculation: 'Non pertinent pour calcul immédiat',
   Increase: 'Augmentation',
   Decrease: 'Diminution',
@@ -966,6 +966,8 @@ const translations = {
   data_zoom_ok: 'Would you like to zoom in on the data of ',
   data_zoom_out_ok: 'Would you like to zoom out to the data of ',
   show_all: 'Show all',
+  only_active_if_measurement_present:
+    '*N.B. the alert rule will only be active if the selected measurement is measured by your BEEP base / device',
 }
 
 export default translations
