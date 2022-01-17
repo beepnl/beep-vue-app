@@ -42,7 +42,7 @@ module.exports = {
     //   key: fs.readFileSync('./localhost.key'),
     //   cert: fs.readFileSync('./localhost.crt'),
     // },
-    public: 'http://localhost:8080/',
+    public: 'http://localhost:8083/',
   },
   publicPath: '/',
 }
