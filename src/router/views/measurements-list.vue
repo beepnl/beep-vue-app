@@ -247,56 +247,57 @@
               <v-row>
                 <v-col v-if="currentLastSensorValues.length > 0" cols="12">
                   <div class="d-flex flex-wrap justify-center mt-5 mt-sm-7">
-                    <vue-ellipse-progress
-                      v-for="(sensorData, index) in currentLastSensorValues"
-                      :key="sensorData.name + index"
-                      class="mr-2"
-                      :progress="
-                        calculateProgress(
-                          SENSOR_MIN[sensorData.name],
-                          SENSOR_MAX[sensorData.name],
-                          // eslint-disable-next-line vue/comma-dangle
-                          sensorData.value
-                        )
-                      "
-                      :legend-value="sensorData.value"
-                      :color="
-                        sensorData.value < SENSOR_LOW[sensorData.name]
-                          ? '#ffcc66'
-                          : sensorData.value > SENSOR_HIGH[sensorData.name]
-                          ? '#f00'
-                          : '#417505'
-                      "
-                      :size="mobile ? 75 : 100"
-                      empty-color="#eee"
-                      :thickness="4"
-                      :empty-thickness="3"
-                      half
-                      :angle="0"
-                    >
-                      <template v-slot="{ counterTick }">
-                        <v-sheet
-                          :class="
-                            `beep-icon beep-icon-${sensorData.name} mt-3 mb-n1 mt-sm-1 mb-sm-n1`
-                          "
-                        ></v-sheet>
-                        <div
-                          :style="
-                            `color: #242424;
+                    <template v-for="sensorData in currentLastSensorValues">
+                      <vue-ellipse-progress
+                        :key="sensorData.name + sensorData.value"
+                        class="mr-2"
+                        :progress="
+                          calculateProgress(
+                            SENSOR_MIN[sensorData.name],
+                            SENSOR_MAX[sensorData.name],
+                            // eslint-disable-next-line vue/comma-dangle
+                            sensorData.value
+                          )
+                        "
+                        :legend-value="sensorData.value"
+                        :color="
+                          sensorData.value < SENSOR_LOW[sensorData.name]
+                            ? '#ffcc66'
+                            : sensorData.value > SENSOR_HIGH[sensorData.name]
+                            ? '#f00'
+                            : '#417505'
+                        "
+                        :size="mobile ? 75 : 100"
+                        empty-color="#eee"
+                        :thickness="4"
+                        :empty-thickness="3"
+                        half
+                        :angle="0"
+                      >
+                        <template v-slot="{ counterTick }">
+                          <v-sheet
+                            :class="
+                              `beep-icon beep-icon-${sensorData.name} mt-3 mb-n1 mt-sm-1 mb-sm-n1`
+                            "
+                          ></v-sheet>
+                          <div
+                            :style="
+                              `color: #242424;
                   font-size: ${mobile ? '14px' : '16px'}
                   ;`
-                          "
-                        >
-                          {{ counterTick.currentValue
-                          }}<span style="font-size: 0.75rem;">{{
-                            SENSOR_UNITS[sensorData.name]
-                          }}</span></div
-                        >
-                        <div class="gauge-label">{{
-                          $t(SENSOR_NAMES[sensorData.name])
-                        }}</div>
-                      </template>
-                    </vue-ellipse-progress>
+                            "
+                          >
+                            {{ counterTick.currentValue
+                            }}<span style="font-size: 0.75rem;">{{
+                              SENSOR_UNITS[sensorData.name]
+                            }}</span></div
+                          >
+                          <div class="gauge-label">{{
+                            $t(SENSOR_NAMES[sensorData.name])
+                          }}</div>
+                        </template>
+                      </vue-ellipse-progress>
+                    </template>
                   </div>
                 </v-col>
               </v-row>
