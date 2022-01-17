@@ -19,6 +19,14 @@
               {{ period.name }}
             </v-btn>
           </div>
+          <v-switch
+            v-model="relativeInterval"
+            :label="`${$t('Relative_startpoint')}`"
+            class="pt-0 mt-0"
+            :disabled="interval === 'selection'"
+            dense
+            hide-details
+          ></v-switch>
         </v-row>
         <div v-if="smAndDown" class="period-bar">
           <v-row class="d-flex flex-row justify-space-between align-center">
@@ -37,11 +45,12 @@
               </v-btn>
             </div>
           </v-row>
-          <v-row class="d-flex flex-row justify-center align-center">
+          <v-row class="d-flex flex-row justify-space-around align-center">
             <v-col
               v-for="period in periods.slice(-2)"
               :key="period.interval"
-              cols="6"
+              cols="3"
+              sm="4"
               class="pa-0 d-flex justify-center"
             >
               <v-btn
@@ -56,6 +65,18 @@
               >
                 {{ period.name }}
               </v-btn>
+            </v-col>
+            <v-col cols="6" sm="4" class="pa-0">
+              <div class="d-flex justify-center">
+                <v-switch
+                  v-model="relativeInterval"
+                  :label="`${$t('Relative_startpoint')}`"
+                  class="pt-0 mt-0"
+                  :disabled="interval === 'selection'"
+                  dense
+                  hide-details
+                ></v-switch>
+              </div>
             </v-col>
           </v-row>
         </div>
@@ -611,6 +632,7 @@ export default {
       dateFormat: 'YYYY-MM-DD HH:mm:ss',
       periodStart: null,
       periodEnd: null,
+      relativeInterval: false,
     }
   },
   computed: {
@@ -743,36 +765,6 @@ export default {
           this.$i18n.t('end_date') + ' ' + this.$i18n.t('not_filled'), // don't allow start date only
       ]
     },
-    // periodTitle() {
-    //   var p = this.interval
-    //   var d = p + 's'
-    //   var i = this.timeIndex
-    //   var startTimeFormat = this.timeFormat
-    //   var endTimeFormat = this.timeFormat
-
-    //   if (p === 'hour') {
-    //     endTimeFormat = 'HH:mm'
-    //     startTimeFormat += ' ' + endTimeFormat
-    //   } else if (p === 'day') {
-    //     endTimeFormat = null
-    //   } else if (p === 'week') {
-    //     p = 'isoweek'
-    //   }
-
-    //   var ep = p
-
-    //   var pStaTime = this.$moment()
-    //     .subtract(i, d)
-    //     .startOf(p)
-    //   var pEndTime = this.$moment()
-    //     .subtract(i, d)
-    //     .endOf(ep)
-
-    //   var s = pStaTime.locale(this.locale).format(startTimeFormat)
-    //   var e = pEndTime.locale(this.locale).format(endTimeFormat)
-
-    //   return s + '' + (endTimeFormat !== null ? ' - ' + e : '')
-    // },
     resolutionNr() {
       return this.measurementData !== null
         ? parseInt(this.measurementData.resolution.slice(0, -1))
@@ -901,6 +893,9 @@ export default {
         this.formatMeasurementData(temp)
       }, 10)
     },
+    relativeInterval() {
+      this.loadData()
+    },
   },
   created() {
     this.readTaxonomy()
@@ -1014,7 +1009,9 @@ export default {
             '&timezone=' +
             this.timeZone +
             (start !== null ? '&start=' + start + ' 00:00' : '') +
-            (end !== null ? '&end=' + end + ' 23:59' : '')
+            (end !== null ? '&end=' + end + ' 23:59' : '') +
+            '&relative_interval=' +
+            (this.relativeInterval ? '1' : '0')
         )
         this.formatMeasurementData(response.data)
         return true
@@ -1319,37 +1316,6 @@ export default {
         this.loadData()
       }
     },
-    // setPeriodTitle() {
-    //   var p = this.interval
-    //   var d = p + 's'
-    //   var i = this.timeIndex
-    //   var startTimeFormat = this.timeFormat
-    //   var endTimeFormat = this.timeFormat
-
-    //   if (p === 'hour') {
-    //     endTimeFormat = 'HH:mm'
-    //     startTimeFormat += ' ' + endTimeFormat
-    //   } else if (p === 'day') {
-    //     endTimeFormat = null
-    //   } else if (p === 'week') {
-    //     p = 'isoweek'
-    //   }
-
-    //   var ep = p
-
-    //   var pStaTime = this.$moment()
-    //     .subtract(i, d)
-    //     .startOf(p)
-    //   var pEndTime = this.$moment()
-    //     .subtract(i, d)
-    //     .endOf(ep)
-
-    //   var s = pStaTime.locale(this.locale).format(startTimeFormat)
-    //   var e = pEndTime.locale(this.locale).format(endTimeFormat)
-
-    //   this.periodTitle = s + '' + (endTimeFormat !== null ? ' - ' + e : '')
-    //   this.selectedDate = pStaTime.format('YYYY-MM-DD')
-    // },
     setPeriodTitle() {
       var p = this.interval
       var d = p + 's'
@@ -1366,19 +1332,26 @@ export default {
           endTimeFormat = 'HH:mm'
           startTimeFormat += ' ' + endTimeFormat
         } else if (p === 'day') {
-          endTimeFormat = null
+          !this.relativeInterval
+            ? (endTimeFormat = null)
+            : (endTimeFormat = this.timeFormat)
         } else if (p === 'week') {
-          p = 'isoweek'
+          !this.relativeInterval ? (p = 'isoweek') : (p = 'week')
         }
 
         var ep = p
 
-        this.periodStart = this.$moment()
-          .subtract(i, d)
-          .startOf(p)
-        this.periodEnd = this.$moment()
-          .subtract(i, d)
-          .endOf(ep)
+        if (!this.relativeInterval) {
+          this.periodStart = this.$moment()
+            .subtract(i, d)
+            .startOf(p)
+          this.periodEnd = this.$moment()
+            .subtract(i, d)
+            .endOf(ep)
+        } else {
+          this.periodStart = this.$moment().subtract(i + 1, d)
+          this.periodEnd = this.$moment().subtract(i, d)
+        }
 
         var formatStart = this.momentFormat(this.periodStart, startTimeFormat)
         var formatEnd = this.momentFormat(this.periodEnd, endTimeFormat)

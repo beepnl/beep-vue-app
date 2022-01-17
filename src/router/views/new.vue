@@ -14,7 +14,20 @@
               data.</router-link
             >
             You can select your own start and end date via the 'selection'
-            button in the light yellow top bar</li
+            button in the light yellow top bar.</li
+          >
+          <li
+            >Measurements:
+            <router-link :to="{ name: 'measurements' }">
+              option to enable relative start point when selecting a data
+              period.</router-link
+            >
+            By switching on 'Relative start' in the light yellow top bar, all
+            periods (except custom selection) are shown as relative durations,
+            until now/today. F.e. On Tuesday Jan 18: selecting 'week' with
+            'Relative start' results in: Tuesday Jan 11 - Tuesday Jan 18,
+            whereas a default week ('Relative start' disabled) would show:
+            'Monday Jan 10 - Sunday Jan 16'.</li
           >
           <li
             >Measurements:
@@ -24,7 +37,7 @@
             When clicking a data point on a chart, a pop up screen appears
             asking whether you would like to zoom in on the data of that
             particular day or hour (depending on which level you are). When
-            clicking 'OK', the data is then reloaded for that day or hour</li
+            clicking 'OK', the data is then reloaded for that day or hour.</li
           >
           <li
             >Alerts:
