@@ -877,16 +877,16 @@ const translations = {
   alerts_support_url:
     'https://beepsupport.freshdesk.com/pt-PT/support/solutions/articles/60000706484-alertas',
 
+  /* New translations v3.0.74 */
   Decline: 'Recusar',
   Decline_invitation: 'Recusar convite',
   Decline_invitation_sure:
     'Tem certeza de que deseja recusar o convite para o grupo?',
-
-  /* New translations v3.1 */
   selection: 'selection',
   selection_placeholder: 'Select a period',
   data_zoom: 'Data zoom',
   data_zoom_ok: 'Would you like to zoom in on the data of ',
+  show_all: 'Show all',
 }
 
 export default translations

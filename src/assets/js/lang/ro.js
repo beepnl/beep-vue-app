@@ -849,15 +849,15 @@ const translations = {
   alerts_support_url:
     'https://beepsupport.freshdesk.com/ro/support/solutions/articles/60000706484-alerte',
 
+  /* New translations v3.0.74 */
   Decline: 'Declin',
   Decline_invitation: 'Refuza invitația',
   Decline_invitation_sure: 'Sigur doriți să refuzați invitația în grup?',
-
-  /* New translations v3.1 */
   selection: 'selection',
   selection_placeholder: 'Select a period',
   data_zoom: 'Data zoom',
   data_zoom_ok: 'Would you like to zoom in on the data of ',
+  show_all: 'Show all',
 }
 
 export default translations

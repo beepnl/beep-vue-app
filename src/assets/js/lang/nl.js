@@ -776,15 +776,15 @@ const translations = {
   alerts_support_url:
     'https://beepsupport.freshdesk.com/nl/support/solutions/articles/60000706484-notificaties',
 
+  /* New translations v3.0.74 */
   Decline: 'Afwijzen',
   Decline_invitation: 'Uitnodiging afwijzen',
   Decline_invitation_sure: 'Weet je zeker dat je de uitnodiging wilt afwijzen?',
-
-  /* New translations v3.1 */
   selection: 'Selectie',
   selection_placeholder: 'Selecteer een periode',
   data_zoom: 'Data inzoomen',
   data_zoom_ok: 'Wil je inzoomen naar de data van ',
+  show_all: 'Toon alle',
 }
 
 export default translations

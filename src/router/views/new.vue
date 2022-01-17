@@ -1,10 +1,52 @@
 <template>
   <Layout :title="$t('Whats_new')">
     <v-container>
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>3.0.74 (17-04-2020) - Current
+        version</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li
+            >Measurements:
+            <router-link :to="{ name: 'measurements' }">
+              option to select a custom period when viewing your
+              data.</router-link
+            >
+            You can select your own start and end date via the 'selection'
+            button in the light yellow top bar</li
+          >
+          <li
+            >Measurements:
+            <router-link :to="{ name: 'measurements' }">
+              ability to zoom in via data charts.</router-link
+            >
+            When clicking a data point on a chart, a pop up screen appears
+            asking whether you would like to zoom in on the data of that
+            particular day or hour (depending on which level you are). When
+            clicking 'OK', the data is then reloaded for that day or hour</li
+          >
+          <!-- <li
+            >Alerts:
+            <router-link :to="{ name: 'alertrule-create' }">
+              option to create alert rules for non-default
+              measurements.</router-link
+            >
+            At the 'measurements' input field you can now switch on 'Show all'
+            to view and select all (non-weather) measurements.</li
+          > -->
+          <li
+            >Collaborate: option to decline a collaboration group invitation
+            when viewing the invite in the BEEP app. Group admins will be able
+            to see this in the collaboration group overview.</li
+          >
+        </ul>
+      </div>
+
       <div class="overline mb-1 primary--text"
         ><span class="lowercase">v</span>
-        <span v-if="dutch">3.0.73 (13-12-2021) - Huidige versie</span>
-        <span v-if="!dutch">3.0.73 (12-13-2021) - Current version</span>
+        <span v-if="dutch">3.0.73 (13-12-2021) - Release v3</span>
+        <span v-if="!dutch">3.0.73 (13-12-2021) - Release v3</span>
       </div>
       <div v-if="!dutch" class="rounded-border primary-border mb-4">
         <p class="mb-3">

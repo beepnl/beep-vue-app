@@ -884,15 +884,15 @@ const translations = {
   alerts_support_url:
     'https://beepsupport.freshdesk.com/fi/support/solutions/articles/60000706484-h%C3%A4lytykset',
 
+  /* New translations v3.0.74 */
   Decline: 'Hylkää',
   Decline_invitation: 'Hylkää kutsu',
   Decline_invitation_sure: 'Oletko varma, että haluat hylätä ryhmäkutsun?',
-
-  /* New translations v3.1 */
   selection: 'selection',
   selection_placeholder: 'Select a period',
   data_zoom: 'Data zoom',
   data_zoom_ok: 'Would you like to zoom in on the data of ',
+  show_all: 'Show all',
 }
 
 export default translations
