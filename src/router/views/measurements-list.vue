@@ -672,7 +672,11 @@ export default {
     moduloNr() {
       switch (this.interval) {
         case 'hour':
-          return 1 * this.moduloFactor
+          if (this.resolutionUnit === 'm' && this.resolutionNr === 1) {
+            return 2 * this.moduloFactor
+          } else {
+            return 1 * this.moduloFactor
+          }
         case 'week':
           if (this.resolutionUnit === 'm' && this.resolutionNr !== null) {
             if (this.resolutionNr < 720) {
@@ -1150,7 +1154,9 @@ export default {
           }),
           self.$chartist.plugins.beep({
             onClick: function(date) {
-              self.setPeriodToDate(date)
+              if (self.interval !== 'hour') {
+                self.setPeriodToDate(date)
+              }
             },
           }),
           self.$chartist.plugins.legendBeep(),
@@ -1603,9 +1609,12 @@ export default {
     }
   }
 
+  .ct-chart:not(.hour) .ct-series .ct-point {
+    cursor: pointer;
+  }
+
   .ct-series {
     .ct-point {
-      cursor: pointer;
       stroke-width: 6px !important;
       @include for-phone-only {
         stroke-width: 4px !important;
