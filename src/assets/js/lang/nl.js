@@ -783,7 +783,8 @@ const translations = {
   selection: 'Selectie',
   selection_placeholder: 'Selecteer een periode',
   data_zoom: 'Data inzoomen',
-  data_zoom_ok: 'Wil je inzoomen naar de data van ',
+  data_zoom_ok: 'Wil je inzoomen op de data van ',
+  data_zoom_out_ok: 'Wil je uitzoomen naar de data van ',
   show_all: 'Toon alle',
 }
 

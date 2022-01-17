@@ -1154,9 +1154,7 @@ export default {
           }),
           self.$chartist.plugins.beep({
             onClick: function(date) {
-              if (self.interval !== 'hour') {
-                self.setPeriodToDate(date)
-              }
+              self.setPeriodToDate(date)
             },
           }),
           self.$chartist.plugins.legendBeep(),
@@ -1401,7 +1399,11 @@ export default {
       this.$refs.confirm
         .open(
           this.$i18n.t('data_zoom'),
-          this.$i18n.t('data_zoom_ok') + this.momentFormat(date, format) + '?',
+          (this.interval !== 'hour'
+            ? this.$i18n.t('data_zoom_ok')
+            : this.$i18n.t('data_zoom_out_ok')) +
+            this.momentFormat(date, format) +
+            '?',
           {
             color: 'primary',
           }
@@ -1609,12 +1611,9 @@ export default {
     }
   }
 
-  .ct-chart:not(.hour) .ct-series .ct-point {
-    cursor: pointer;
-  }
-
   .ct-series {
     .ct-point {
+      cursor: pointer;
       stroke-width: 6px !important;
       @include for-phone-only {
         stroke-width: 4px !important;
