@@ -133,9 +133,11 @@
                         v-text="
                           (flashLog.log_size_bytes / 1024 / 1024).toFixed(2) +
                             'MB (' +
-                            (flashLog.bytes_received /
-                              flashLog.log_size_bytes) *
-                              100 +
+                            (
+                              (flashLog.bytes_received /
+                                flashLog.log_size_bytes) *
+                              100
+                            ).toFixed(1) +
                             '%)'
                         "
                       ></span>
