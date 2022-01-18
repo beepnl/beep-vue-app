@@ -24,10 +24,11 @@
             >
             By switching on 'Relative start' in the light yellow top bar, all
             periods (except custom selection) are shown as relative durations,
-            until now/today. F.e. On Tuesday Jan 18: selecting 'week' with
-            'Relative start' results in: Tuesday Jan 11 - Tuesday Jan 18,
-            whereas a default week ('Relative start' disabled) would show:
-            'Monday Jan 10 - Sunday Jan 16'.</li
+            until now/today. F.e. if today is a Tuesday and 'Relative start' is
+            enabled together with the 'week' interval, this results in viewing
+            data from the last 7 days (Tuesday (last week) to Tuesday (today)),
+            whereas 'Relative start' disabled would show data from a default
+            week, Monday to Sunday.</li
           >
           <li
             >Measurements:
