@@ -55,6 +55,31 @@
             </p>
           </div>
 
+          <div>
+            <v-spacer></v-spacer>
+            <v-slider
+              v-model="matchProps"
+              track-color="#b0b0b0"
+              min="5"
+              max="12"
+              step="1"
+            >
+              <template v-slot:thumb-label="props">
+                {{ props.value }}
+              </template>
+              <template v-slot:append>
+                <v-text-field
+                  v-model="matchProps"
+                  class="mt-0 pt-0"
+                  hide-details
+                  single-line
+                  type="number"
+                  style="width: 40px"
+                ></v-text-field>
+              </template>
+            </v-slider>
+          </div>
+
           <div class="rounded-border">
             <v-simple-table class="v-data-table--smallfont" dense>
               <template v-slot>
@@ -262,26 +287,6 @@
                       lg="2"
                       class="d-flex justify-end"
                     >
-                      <!-- <v-btn
-                        tile
-                        outlined
-                        color="black"
-                        :disabled="showBlockLoadingIcon"
-                        @click.prevent="checkBlockData(currentLogId, log.block)"
-                      >
-                        <v-progress-circular
-                          v-if="showBlockLoadingIcon"
-                          class="ml-n1 mr-2"
-                          size="18"
-                          width="2"
-                          color="disabled"
-                          indeterminate
-                        />
-                        <v-icon v-if="!showBlockLoadingIcon" left
-                          >mdi-chart-line</v-icon
-                        >
-                        {{ $t('View_data') }}
-                      </v-btn> -->
                       <router-link
                         :to="{
                           name: `flashlog`,
@@ -297,73 +302,9 @@
                     </v-col>
                   </v-row>
                 </v-card-text>
-                <!-- <v-expansion-panel-content v-if="log.matches">
-                  <div
-                    v-for="(match, index) in log.matches.matches"
-                    :key="'match' + index"
-                  >
-                    {{ match }}
-                  </div>
-                </v-expansion-panel-content> -->
               </v-card>
             </template>
           </div>
-          <!-- <v-expansion-panels multiple>
-            <template v-for="(log, i) in currentLog.log">
-              <v-expansion-panel
-                :key="'log' + i"
-                :class="
-                  'log-panel ' +
-                    (log.matches !== undefined ? 'log-panel--matches' : '')
-                "
-                :disabled="log.no_matches !== undefined"
-              >
-                <v-expansion-panel-header>
-                  <v-row no-gutters>
-                    <v-col
-                      cols="6"
-                      sm="3"
-                      lg="2"
-                      :class="mobile ? 'font-small' : ''"
-                    >
-                      {{ momentify(log.db_time, true) }}
-                    </v-col>
-                    <v-col
-                      cols="6"
-                      sm="5"
-                      lg="3"
-                      :class="mobile ? 'font-small' : ''"
-                    >
-                      {{ lengthText(log) }}
-                    </v-col>
-                    <v-col v-if="lgAndUp" cols="2">
-                      {{ $t('Firmware_version') + log.fw_version }}
-                    </v-col>
-                    <v-col v-if="lgAndUp" cols="2">
-                      {{ $t('Interval') + log.interval_min }}
-                    </v-col>
-                    <v-col sm="4" lg="3" :class="mobile ? 'font-small' : ''">
-                      {{
-                        log.no_matches !== undefined
-                          ? log.no_matches.message
-                          : log.matches !== undefined
-                          ? $t('Matches_found')
-                          : ''
-                      }}
-                    </v-col>
-                  </v-row>
-                </v-expansion-panel-header>
-                <v-expansion-panel-content v-if="log.matches">
-                  <div
-                    v-for="(match, index) in log.matches.matches"
-                    :key="'match' + index"
-                  >
-                    {{ match }}
-                  </div>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-            </template>
-          </v-expansion-panels> -->
         </v-col>
       </v-row>
     </v-container>
@@ -402,8 +343,7 @@ export default {
       showInfo: false,
       currentLogId: null,
       currentLog: null,
-      // blockData: null,
-      // showBlockLoadingIcon: false,
+      matchProps: 8,
     }
   },
   computed: {
@@ -489,36 +429,15 @@ export default {
         }
       }
     },
-    // async checkBlockData(flashLogId, blockId) {
-    //   this.showBlockLoadingIcon = true
-    //   try {
-    //     const response = await Api.readRequest(
-    //       '/flashlogs/' +
-    //         flashLogId +
-    //         '?block_id=' +
-    //         blockId +
-    //         '?data_minutes=240'
-    //     )
-    //     this.showBlockLoadingIcon = false
-    //     this.blockData = response.data
-    //   } catch (error) {
-    //     this.showBlockLoadingIcon = false
-    //     if (error.response) {
-    //       console.log(error.response)
-    //       const msg = error.response.data.message
-    //       this.errorMessage = this.$i18n.t(msg)
-    //     } else {
-    //       console.log('Error: ', error)
-    //       this.errorMessage = this.$i18n.t('something_wrong')
-    //     }
-    //   }
-    // },
     async checkFlashLog(flashLog) {
       this.clearMessages()
       this.showLoadingIconById.push(flashLog.id)
       try {
         const response = await Api.readRequest(
-          '/flashlogs/' + flashLog.id
+          '/flashlogs/' +
+            flashLog.id +
+            '?from_cache=0&match_props=' +
+            this.matchProps
           // '?from_cache=0&matches_min=5&match_props=12&db_records=80'
         )
         this.showLoadingIconById.splice(
