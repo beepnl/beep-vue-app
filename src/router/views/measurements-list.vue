@@ -633,7 +633,6 @@ export default {
       dateFormat: 'YYYY-MM-DD HH:mm:ss',
       periodStart: null,
       periodEnd: null,
-      relativeInterval: true,
     }
   },
   computed: {
@@ -753,6 +752,18 @@ export default {
         { name: this.$i18n.t('year'), interval: 'year' },
         { name: this.$i18n.t('selection'), interval: 'selection' },
       ]
+    },
+    relativeInterval: {
+      get() {
+        if (localStorage.beepRelativeInterval) {
+          return localStorage.beepRelativeInterval === 'true'
+        } else {
+          return true
+        }
+      },
+      set(value) {
+        localStorage.beepRelativeInterval = value
+      },
     },
     requiredRules() {
       var laterEndDate = true
