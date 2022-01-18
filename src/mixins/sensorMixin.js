@@ -2,6 +2,11 @@ export const sensorMixin = {
   data() {
     return {
       SENSOR_COLOR: {
+        w_v: 'orchid',
+        vcc: 'orchid',
+        bat_perc: 'orchid',
+        weight_sensor_amount: 'orchid',
+        ds18b20_sensor_amount: 'orchid',
         t: 'palevioletred',
         // Measured Temperature (degrees Celsius) (displayed in main screen at temp icon)
         h: 'midnightblue',

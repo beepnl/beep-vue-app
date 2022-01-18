@@ -783,7 +783,6 @@ const translations = {
   selection: 'Selectie',
   selection_placeholder: 'Selecteer een periode',
   data_zoom: 'Data inzoomen',
-<<<<<<< HEAD
   data_zoom_ok: 'Wil je inzoomen naar de data van ',
   Length: 'Lengte: ',
   match: 'match | matches',
@@ -791,14 +790,11 @@ const translations = {
   Firmware_version: 'Firmware versie: ',
   Interval: 'Interval: ',
   View_data: 'Bekijk data',
-=======
-  data_zoom_ok: 'Wil je inzoomen op de data van ',
   data_zoom_out_ok: 'Wil je uitzoomen naar de data van ',
   show_all: 'Toon alle',
   only_active_if_measurement_present:
     '*N.B. Notificaties worden alleen geactiveerd wanneer de geselecteerde meting door je BEEP base / meetsysteem gemeten wordt',
   Relative_startpoint: 'Relatief',
->>>>>>> dev
 }
 
 export default translations

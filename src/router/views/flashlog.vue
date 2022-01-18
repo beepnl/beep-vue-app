@@ -151,35 +151,84 @@ export default {
 
       if (typeof this.dummyDataShort.flashlog !== 'undefined') {
         dbMts.map((sensorName, index) => {
-          if (!sensorName.includes('time')) {
+          if (sensorName.indexOf('time') === -1) {
+            data.series.push({
+              // color: '#' + this.findMeasurementType(sensorName).hex_color,
+              color: 'silver',
+              name: 'database ' + sensorName,
+              data: [],
+              source: 'database',
+              abbr: sensorName,
+            })
+          }
+        })
+
+        flMts.map((sensorName, index) => {
+          if (
+            sensorName.indexOf('fft') === -1 &&
+            sensorName.indexOf('time') === -1 &&
+            sensorName.indexOf('minute') === -1 &&
+            sensorName !== 'beep_base' &&
+            sensorName !== 'port' &&
+            sensorName !== 'i' &&
+            sensorName !== 'w_v'
+          ) {
             data.series.push({
               // color: '#' + this.findMeasurementType(sensorName).hex_color,
               color: this.SENSOR_COLOR[sensorName],
-              name: sensorName,
+              name: 'flashlog ' + sensorName,
               data: [],
+              source: 'flashlog',
+              abbr: sensorName,
             })
           }
         })
 
         this.dummyDataShort.flashlog.map((measurement, index) => {
           data.labels.push(measurement.time)
-          data.series.map((serie, index) => {
-            var currentSensor = serie.name
-            if (measurement[currentSensor] !== undefined) {
-              serie.data.push({
-                meta:
-                  this.momentFormat(measurement.time, 'llll') +
-                  '<br>' +
-                  this.$i18n.t(currentSensor) +
-                  ': ' +
-                  (measurement[currentSensor] !== null
-                    ? measurement[currentSensor].toFixed(1)
-                    : measurement[currentSensor]) +
-                  this.findMeasurementType(currentSensor).unit,
-                value: measurement[currentSensor],
-              })
-            }
-          })
+          data.series
+            .filter((serie) => serie.source === 'flashlog')
+            .map((serie, index) => {
+              var currentSensor = serie.abbr
+              if (measurement[currentSensor] !== undefined) {
+                serie.data.push({
+                  meta:
+                    this.momentFormat(measurement.time, 'llll') +
+                    '<br>' +
+                    this.$i18n.t(currentSensor) +
+                    ': ' +
+                    measurement[currentSensor],
+                  // +
+                  // this.findMeasurementType(currentSensor).unit,
+                  value: measurement[currentSensor],
+                })
+              }
+            })
+        })
+
+        this.dummyDataShort.database.map((measurement, index) => {
+          // data.labels.push(measurement.time)
+          var timePoint = this.dummyDataShort.flashlog[index].time
+          data.series
+            .filter((serie) => serie.source === 'database')
+            .map((serie, index) => {
+              var currentSensor = serie.abbr
+              if (measurement[currentSensor] !== undefined) {
+                console.log(currentSensor, measurement[currentSensor])
+                serie.data.push({
+                  meta:
+                    this.momentFormat(timePoint, 'llll') +
+                    '<br>' +
+                    this.$i18n.t(currentSensor) +
+                    ': ' +
+                    (measurement[currentSensor] !== null
+                      ? measurement[currentSensor].toFixed(1)
+                      : measurement[currentSensor]) +
+                    this.findMeasurementType(currentSensor).unit,
+                  value: measurement[currentSensor],
+                })
+              }
+            })
         })
       }
 
@@ -239,7 +288,7 @@ export default {
       var mT = this.sensorMeasurementsList.filter(
         (measurementType) => measurementType.abbreviation === abbr
       )[0]
-      console.log(mT.abbreviation, mT.hex_color)
+      // console.log(mT.abbreviation, mT.hex_color)
       return mT
     },
     formatFlashlogData(blockData) {

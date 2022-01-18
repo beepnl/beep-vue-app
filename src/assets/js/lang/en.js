@@ -758,7 +758,6 @@ const translations = {
   selection_placeholder: 'Select a period',
   data_zoom: 'Data zoom',
   data_zoom_ok: 'Would you like to zoom in on the data of ',
-<<<<<<< HEAD
 
   Length: 'Length: ',
   match: 'match | matches',
@@ -766,13 +765,11 @@ const translations = {
   Firmware_version: 'Firmware version: ',
   Interval: 'Interval: ',
   View_data: 'View data',
-=======
   data_zoom_out_ok: 'Would you like to zoom out to the data of ',
   show_all: 'Show all',
   only_active_if_measurement_present:
     '*N.B. the alert rule will only be active if the selected measurement is measured by your BEEP base / device',
   Relative_startpoint: 'Relative',
->>>>>>> dev
 }
 
 export default translations
