@@ -36,8 +36,8 @@
 </template>
 
 <script>
-import { dummyDataShort } from '@assets/js/dummy.js'
-// import Api from '@api/Api'
+// import { dummyDataShort } from '@assets/js/dummy.js'
+import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
@@ -64,13 +64,13 @@ export default {
       blockData: null,
       databaseMeasurements: [],
       flashlogMeasurements: [],
-      dummyDataShort,
+      // dummyDataShort,
     }
   },
   computed: {
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     blockId() {
-      return parseInt(this.$route.query.blockId) || null
+      return parseInt(this.$route.query.blockId)
     },
     flashLogId() {
       return parseInt(this.$route.params.id)
@@ -84,22 +84,22 @@ export default {
   },
   created() {
     this.readTaxonomy().then(() => {
-      this.checkBlockData(this.flashLogId, this.blockId)
+      this.checkBlockData()
     })
   },
   methods: {
-    async checkBlockData(flashLogId, blockId) {
+    async checkBlockData() {
       this.loading = true
       try {
-        // const response = await Api.readRequest(
-        //   '/flashlogs/' +
-        //     flashLogId +
-        //     '?block_id=' +
-        //     blockId +
-        //     '?data_minutes=240' // TODO: remove / tweak?
-        // )
-        // this.blockData = response.data
-        this.formatFlashlogData(dummyDataShort)
+        const response = await Api.readRequest(
+          '/flashlogs/' +
+            this.flashLogId +
+            '?block_id=' +
+            this.blockId +
+            '&data_minutes=240' // TODO: remove / tweak?
+        )
+        this.blockData = response.data
+        this.formatFlashlogData(this.blockData)
       } catch (error) {
         this.loading = false
         if (error.response) {
@@ -118,38 +118,7 @@ export default {
         series: [],
       }
 
-      // if (typeof this.dummyDataShort.database !== 'undefined') {
-      //   Object.keys(dbMts)
-      //     .sort()
-      //     .map((sensorName, index) => {
-      //       data.series.push({
-      //         color: '#bbbbbb',
-      //         name: sensorName,
-      //         data: [],
-      //       })
-      //     })
-
-      //   this.dummyDataShort.database.map((measurement, index) => {
-      //     data.labels.push(measurement.time)
-      //     data.series.map((serie, index) => {
-      //       var currentSensor = dbMts[serie.name]
-      //       serie.data.push({
-      //         meta:
-      //           this.momentFormat(measurement.time, 'llll') +
-      //           '<br>' +
-      //           serie.name +
-      //           ': ' +
-      //           (measurement[currentSensor] !== null
-      //             ? measurement[currentSensor].toFixed(1)
-      //             : measurement[currentSensor]) +
-      //           'unit',
-      //         value: measurement[currentSensor],
-      //       })
-      //     })
-      //   })
-      // }
-
-      if (typeof this.dummyDataShort.flashlog !== 'undefined') {
+      if (typeof this.blockData.flashlog !== 'undefined') {
         dbMts.map((sensorName, index) => {
           if (sensorName.indexOf('time') === -1) {
             data.series.push({
@@ -186,7 +155,7 @@ export default {
           }
         })
 
-        this.dummyDataShort.flashlog.map((measurement, index) => {
+        this.blockData.flashlog.map((measurement, index) => {
           data.labels.push(measurement.time)
           data.series
             .filter((serie) => serie.source === 'flashlog')
@@ -208,9 +177,9 @@ export default {
             })
         })
 
-        this.dummyDataShort.database.map((measurement, index) => {
+        this.blockData.database.map((measurement, index) => {
           // data.labels.push(measurement.time)
-          var timePoint = this.dummyDataShort.flashlog[index].time
+          var timePoint = this.blockData.flashlog[index].time
           data.series
             .filter((serie) => serie.source === 'database')
             .map((serie, index) => {
