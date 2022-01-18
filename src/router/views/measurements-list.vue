@@ -177,6 +177,7 @@
                 range
                 no-title
                 scrollable
+                @change="checkDateOrder($event)"
               >
                 <v-spacer></v-spacer>
                 <v-btn text color="secondary" @click="menu = false">
@@ -660,7 +661,10 @@ export default {
     measurementsForHeatmap() {
       // remove first value for month and year interval (belongs to previous month/year) (can't be skipped in v-for loop as v-if is not possible there)
       var data = this.measurementData.measurements
-      if (this.interval === 'month' || this.interval === 'year') {
+      if (
+        (this.interval === 'month' || this.interval === 'year') &&
+        !this.relativeInterval
+      ) {
         data = data.slice(1)
         return data
       } else {
@@ -1067,13 +1071,12 @@ export default {
       if (typeof this.measurementData.measurements !== 'undefined') {
         this.measurementData.measurements.map((measurement, index) => {
           if (
-            ((this.interval === 'month' ||
-              this.interval === 'year' ||
-              this.interval === 'selection') &&
-              index !== 0) || // skip first value for month and year interval (belongs to previous month/year)
             this.interval === 'hour' ||
             this.interval === 'day' ||
-            this.interval === 'week'
+            this.interval === 'week' ||
+            // skip first value for month and year interval (belongs to previous month/year) except when it's a relative interval
+            index !== 0 ||
+            this.relativeInterval
           ) {
             data.labels.push(measurement.time)
             data.series[0].data.push({
@@ -1110,11 +1113,12 @@ export default {
       if (typeof this.measurementData.measurements !== 'undefined') {
         this.measurementData.measurements.map((measurement, index) => {
           if (
-            ((this.interval === 'month' || this.interval === 'year') &&
-              index !== 0) || // skip first value for month and year interval (belongs to previous month/year)
             this.interval === 'hour' ||
             this.interval === 'day' ||
-            this.interval === 'week'
+            this.interval === 'week' ||
+            // skip first value for month and year interval (belongs to previous month/year) except when it's a relative interval
+            index !== 0 ||
+            this.relativeInterval
           ) {
             data.labels.push(measurement.time)
             data.series.map((serie, index) => {
@@ -1191,6 +1195,11 @@ export default {
             }
           },
         },
+      }
+    },
+    checkDateOrder(dates) {
+      if (dates[1] < dates[0]) {
+        this.dates = [dates[1], dates[0]]
       }
     },
     formatMeasurementData(measurementData) {
