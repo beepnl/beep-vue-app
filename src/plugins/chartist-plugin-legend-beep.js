@@ -28,6 +28,7 @@
     clickable: true,
     onClick: null,
     position: 'top',
+    simpleToggle: true,
   }
 
   Chartist.plugins = Chartist.plugins || {}
@@ -206,37 +207,39 @@
           })
           var removedSeriesIndex = removedSeries.indexOf(clickedSeriesIndex)
 
-          if (removedSeriesIndex > -1 && removedSeries.length === 1) {
-            // if clicked series is the only inactive series, make all series active again
-            removedSeries = []
-            clickedSeries.classList.remove('inactive')
-          } else if (removedSeriesIndex > -1 || removedSeries.length === 0) {
-            // if clicked series is inactive, or all series are active
-            // make clicked series active and all other series inactive
-            removedSeries = otherSeriesIndexArray
-            otherSeries.forEach(function(item) {
-              item.classList.add('inactive')
-            })
-            clickedSeries.classList.remove('inactive')
-          } else {
-            // if clicked series is active, make it inactive and all other series active
-            removedSeries = [clickedSeriesIndex]
-            clickedSeries.classList.add('inactive')
-            otherSeries.forEach(function(item) {
-              item.classList.remove('inactive')
-            })
+          if (!options.simpleToggle) {
+            if (removedSeriesIndex > -1 && removedSeries.length === 1) {
+              // if clicked series is the only inactive series, make all series active again
+              removedSeries = []
+              clickedSeries.classList.remove('inactive')
+            } else if (removedSeriesIndex > -1 || removedSeries.length === 0) {
+              // if clicked series is inactive, or all series are active
+              // make clicked series active and all other series inactive
+              removedSeries = otherSeriesIndexArray
+              otherSeries.forEach(function(item) {
+                item.classList.add('inactive')
+              })
+              clickedSeries.classList.remove('inactive')
+            } else {
+              // if clicked series is active, make it inactive and all other series active
+              removedSeries = [clickedSeriesIndex]
+              clickedSeries.classList.add('inactive')
+              otherSeries.forEach(function(item) {
+                item.classList.remove('inactive')
+              })
+            }
+          } else if (options.simpleToggle) {
+            // Alternative simple toggle:
+            if (removedSeriesIndex > -1) {
+              // if clicked series is inactive, make it active
+              removedSeries.splice(removedSeriesIndex, 1)
+              clickedSeries.classList.remove('inactive')
+            } else {
+              // if clicked series is active, make it inactive
+              removedSeries.push(clickedSeriesIndex)
+              clickedSeries.classList.add('inactive')
+            }
           }
-
-          // Alternative simple toggle:
-          // if (removedSeriesIndex > -1) {
-          //   // if clicked series is inactive, make it active
-          //   removedSeries.splice(removedSeriesIndex, 1)
-          //   clickedSeries.classList.remove('inactive')
-          // } else {
-          //   // if clicked series is active, make it inactive
-          //   removedSeries.push(clickedSeriesIndex)
-          //   clickedSeries.classList.add('inactive')
-          // }
 
           // Reset the series to original and remove each series that
           // is still removed again, to remain index order.

@@ -262,7 +262,7 @@
                       lg="2"
                       class="d-flex justify-end"
                     >
-                      <v-btn
+                      <!-- <v-btn
                         tile
                         outlined
                         color="black"
@@ -281,7 +281,19 @@
                           >mdi-chart-line</v-icon
                         >
                         {{ $t('View_data') }}
-                      </v-btn>
+                      </v-btn> -->
+                      <router-link
+                        :to="{
+                          name: `flashlog`,
+                          params: { id: currentLogId },
+                          query: { blockId: log.block },
+                        }"
+                      >
+                        <v-btn tile outlined color="black">
+                          <v-icon left>mdi-chart-line</v-icon>
+                          {{ $t('View_data') }}
+                        </v-btn>
+                      </router-link>
                     </v-col>
                   </v-row>
                 </v-card-text>
@@ -390,8 +402,8 @@ export default {
       showInfo: false,
       currentLogId: null,
       currentLog: null,
-      blockData: null,
-      showBlockLoadingIcon: false,
+      // blockData: null,
+      // showBlockLoadingIcon: false,
     }
   },
   computed: {
@@ -477,31 +489,39 @@ export default {
         }
       }
     },
-    async checkBlockData(flashLogId, blockId) {
-      this.showBlockLoadingIcon = true
-      try {
-        const response = await Api.readRequest(
-          '/flashlogs/' + flashLogId + '?block_id=' + blockId
-        )
-        this.showBlockLoadingIcon = false
-        this.blockData = response.data
-      } catch (error) {
-        this.showBlockLoadingIcon = false
-        if (error.response) {
-          console.log(error.response)
-          const msg = error.response.data.message
-          this.errorMessage = this.$i18n.t(msg)
-        } else {
-          console.log('Error: ', error)
-          this.errorMessage = this.$i18n.t('something_wrong')
-        }
-      }
-    },
+    // async checkBlockData(flashLogId, blockId) {
+    //   this.showBlockLoadingIcon = true
+    //   try {
+    //     const response = await Api.readRequest(
+    //       '/flashlogs/' +
+    //         flashLogId +
+    //         '?block_id=' +
+    //         blockId +
+    //         '?data_minutes=240'
+    //     )
+    //     this.showBlockLoadingIcon = false
+    //     this.blockData = response.data
+    //   } catch (error) {
+    //     this.showBlockLoadingIcon = false
+    //     if (error.response) {
+    //       console.log(error.response)
+    //       const msg = error.response.data.message
+    //       this.errorMessage = this.$i18n.t(msg)
+    //     } else {
+    //       console.log('Error: ', error)
+    //       this.errorMessage = this.$i18n.t('something_wrong')
+    //     }
+    //   }
+    // },
     async checkFlashLog(flashLog) {
       this.clearMessages()
       this.showLoadingIconById.push(flashLog.id)
       try {
-        const response = await Api.readRequest('/flashlogs/' + flashLog.id)
+        const response = await Api.readRequest(
+          '/flashlogs/' +
+            flashLog.id +
+            '?from_cache=0&matches_min=5&match_props=12&db_records=80'
+        )
         this.showLoadingIconById.splice(
           this.showLoadingIconById.indexOf(flashLog.id),
           1

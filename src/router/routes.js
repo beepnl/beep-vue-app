@@ -176,6 +176,14 @@ export default [
     meta: {
       authRequired: true,
     },
+    path: '/flashlog/:id',
+    name: 'flashlog',
+    component: () => lazyLoadView(import('@views/flashlog.vue')),
+  },
+  {
+    meta: {
+      authRequired: true,
+    },
     path: '/import',
     name: 'import',
     component: () => lazyLoadView(import('@views/import.vue')),
