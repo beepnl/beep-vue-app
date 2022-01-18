@@ -512,7 +512,7 @@ const translations = {
   Output: 'Output',
   Last: 'Ultimul',
   Export_sensor_data:
-    'Exportați toate datele/ dispozitiv cu cea mai mare rezoluție posibilă ca fișier .csv pe care îl puteți deschide în Excel sau SPSS. N.B.: Datele privind data și ora din coloana „timp” sunt în format GMT, formatat după standardul de dată-oră RFC 3339.',
+    'Exportați toate datele/ dispozitiv cu cea mai mare rezoluție posibilă ca fișier .csv pe care îl puteți deschide în Excel sau SPSS. N.B. Datele privind data și ora din coloana „timp” sunt în format GMT, formatat după standardul de dată-oră RFC 3339.',
   CSV_export_separator: 'separator de coloane de date format CSV',
   Selected_date: 'Perioada de timp selectată',
   Sensor_measurements: 'Măsurători senzori',
@@ -637,7 +637,7 @@ const translations = {
   save_bulkinspection_confirm:
     'Are you sure that you want to save this inspection for multiple hives at the same time?',
   deleted_but_not_saved_devices_warning:
-    'N.B.: dispozitivele vor fi eliminate numai după ce faceți clic pe butonul „Salvați și ștergeți” din colțul din dreapta sus.',
+    'N.B. dispozitivele vor fi eliminate numai după ce faceți clic pe butonul „Salvați și ștergeți” din colțul din dreapta sus.',
   no_alerts: 'Nu sunt alerte noi',
   alertrule: 'regulă alertă| reguli alerte',
   alertrule_pagetitle: 'Setări alertă',
@@ -750,7 +750,7 @@ const translations = {
   alert_rule_deleted: 'Regula de alertă a fost ștearsă',
 
   new_or_edited_but_not_saved_sensor_defs_warning:
-    'N.B.: Definițiile senzorului vor fi salvate sau adăugate numai după ce faceți clic pe pictograma de verificare verde de la sfârșitul rândului de definiție a senzorului din tabel.',
+    'N.B. Definițiile senzorului vor fi salvate sau adăugate numai după ce faceți clic pe pictograma de verificare verde de la sfârșitul rândului de definiție a senzorului din tabel.',
   delete_sensordef: 'Ștergeți definiția senzorului',
   delete_all_alerts: 'Ștergeți toate alertele',
   delete_all_alerts_warning:
@@ -822,15 +822,15 @@ const translations = {
   No_measurement_data_received_in_a_set_time_period:
     'Nu s-au primit date de măsurare în perioada de timp setată ',
   Sudden_weight_drop_triggers_alert_immediately:
-    'Scăderea bruscă a greutății stupului declanșează imediat o alertă. N.B.: aceasta se bazează pe un interval de transmitere a datelor de 15 minute. În cazul în care dispozitivul dvs. are un interval diferit de transmitere a datelor, ar trebui să ajustați valoarea pragului în consecință.',
+    'Scăderea bruscă a greutății stupului declanșează imediat o alertă. N.B. aceasta se bazează pe un interval de transmitere a datelor de 15 minute. În cazul în care dispozitivul dvs. are un interval diferit de transmitere a datelor, ar trebui să ajustați valoarea pragului în consecință.',
   The_hive_weight_is_below_a_set_value:
     'Greutatea stupului este sub valoarea stabilită',
 
   minute: 'minut | minute',
   upload_interval_warning_single_interval:
-    'N.B.: intervalul de transmitere a datelor al dispozitivului dvs. este | NB: intervalul de transmitere a datelor al dispozitivelor dvs. este ', // context: f.e.: ... 15 minutes
+    'N.B. intervalul de transmitere a datelor al dispozitivului dvs. este | NB: intervalul de transmitere a datelor al dispozitivelor dvs. este ', // context: f.e.: ... 15 minutes
   upload_interval_warning_interval_range:
-    'N.B.: intervalele de transmitere a datelor ale dispozitivelor dvs. variază între ',
+    'N.B. intervalele de transmitere a datelor ale dispozitivelor dvs. variază între ',
   not_relevant_for_immediate_calculation:
     'Nu este relevant pentru calcularea imediată ',
   Increase: 'Creștere',
@@ -849,15 +849,19 @@ const translations = {
   alerts_support_url:
     'https://beepsupport.freshdesk.com/ro/support/solutions/articles/60000706484-alerte',
 
+  /* New translations v3.0.74 */
   Decline: 'Declin',
   Decline_invitation: 'Refuza invitația',
   Decline_invitation_sure: 'Sigur doriți să refuzați invitația în grup?',
-
-  /* New translations v3.1 */
   selection: 'selection',
   selection_placeholder: 'Select a period',
   data_zoom: 'Data zoom',
   data_zoom_ok: 'Would you like to zoom in on the data of ',
+  data_zoom_out_ok: 'Would you like to zoom out to the data of ',
+  show_all: 'Show all',
+  only_active_if_measurement_present:
+    '*N.B. the alert rule will only be active if the selected measurement is measured by your BEEP base / device',
+  Relative_startpoint: 'Relative',
 }
 
 export default translations

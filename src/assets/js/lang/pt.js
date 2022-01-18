@@ -662,7 +662,7 @@ const translations = {
   save_bulkinspection_confirm:
     'Tem a certeza que quer salvar esta inspeção para múltiplas colmeias ao mesmo tempo?',
   deleted_but_not_saved_devices_warning:
-    "N.B.: os aparelhos serão apenas removidos após clicar no botão 'Salvar e apagar', no canto superior direito",
+    "N.B. os aparelhos serão apenas removidos após clicar no botão 'Salvar e apagar', no canto superior direito",
   no_alerts: 'Sem novos alertas',
   alertrule: 'Regra de alerta | Regras de alerta',
   alertrule_pagetitle: 'Configurações de alerta',
@@ -877,16 +877,20 @@ const translations = {
   alerts_support_url:
     'https://beepsupport.freshdesk.com/pt-PT/support/solutions/articles/60000706484-alertas',
 
+  /* New translations v3.0.74 */
   Decline: 'Recusar',
   Decline_invitation: 'Recusar convite',
   Decline_invitation_sure:
     'Tem certeza de que deseja recusar o convite para o grupo?',
-
-  /* New translations v3.1 */
   selection: 'selection',
   selection_placeholder: 'Select a period',
   data_zoom: 'Data zoom',
   data_zoom_ok: 'Would you like to zoom in on the data of ',
+  data_zoom_out_ok: 'Would you like to zoom out to the data of ',
+  show_all: 'Show all',
+  only_active_if_measurement_present:
+    '*N.B. the alert rule will only be active if the selected measurement is measured by your BEEP base / device',
+  Relative_startpoint: 'Relative',
 }
 
 export default translations

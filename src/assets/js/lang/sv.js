@@ -618,7 +618,7 @@ const translations = {
   save_bulkinspection_confirm:
     'Are you sure that you want to save this inspection for multiple hives at the same time?',
   deleted_but_not_saved_devices_warning:
-    "N.B.: devices will only be removed after clicking the 'Save and delete' button in the top right corner.",
+    "N.B. devices will only be removed after clicking the 'Save and delete' button in the top right corner.",
   no_alerts: 'No new alerts',
   alertrule: 'alert rule | alert rules',
   alertrule_pagetitle: 'Alert settings',
@@ -730,7 +730,7 @@ const translations = {
 
   alert_rule_deleted: 'Alert rule has been deleted',
   new_or_edited_but_not_saved_sensor_defs_warning:
-    'N.B.: sensor definitions will only be saved or added after clicking the green check icon at the end of the sensor definition row in the table.',
+    'N.B. sensor definitions will only be saved or added after clicking the green check icon at the end of the sensor definition row in the table.',
   delete_sensordef: 'Delete sensor definition',
   delete_all_alerts: 'Delete all alerts',
   delete_all_alerts_warning:
@@ -805,14 +805,14 @@ const translations = {
   No_measurement_data_received_in_a_set_time_period:
     'No measurement data received during a set time period',
   Sudden_weight_drop_triggers_alert_immediately:
-    'Sudden weight drop of the hive triggers an alert immediately. N.B.: this is based on a data transmission interval of 15 minutes. In case your device has a different data transmission interval, you should adjust the threshold value accordingly.',
+    'Sudden weight drop of the hive triggers an alert immediately. N.B. this is based on a data transmission interval of 15 minutes. In case your device has a different data transmission interval, you should adjust the threshold value accordingly.',
   The_hive_weight_is_below_a_set_value: 'Hive weight is below a set value',
 
   minute: 'minute | minutes',
   upload_interval_warning_single_interval:
-    'N.B.: the data transmission interval of your device is | N.B.: the data transmission interval of your devices is', // f.e.: ... 15 minutes
+    'N.B. the data transmission interval of your device is | N.B. the data transmission interval of your devices is', // f.e.: ... 15 minutes
   upload_interval_warning_interval_range:
-    'N.B.: the data transmission intervals of your devices vary between ', // f.e. ... 5 - 15 minutes
+    'N.B. the data transmission intervals of your devices vary between ', // f.e. ... 5 - 15 minutes
   not_relevant_for_immediate_calculation:
     'Not relevant for immediate calculation',
   Increase: 'Increase',
@@ -830,6 +830,21 @@ const translations = {
   alerts_url_text: 'Read the support article about alerts',
   alerts_support_url:
     'https://beepsupport.freshdesk.com/nl/support/solutions/articles/60000706484-alerts',
+
+  /* New translations v3.0.74 */
+  Decline: 'Decline',
+  Decline_invitation: 'Decline invitation',
+  Decline_invitation_sure:
+    'Are you sure you would like to decline the group invitation?',
+  selection: 'selection',
+  selection_placeholder: 'Select a period',
+  data_zoom: 'Data zoom',
+  data_zoom_ok: 'Would you like to zoom in on the data of ',
+  data_zoom_out_ok: 'Would you like to zoom out to the data of ',
+  show_all: 'Show all',
+  only_active_if_measurement_present:
+    '*N.B. the alert rule will only be active if the selected measurement is measured by your BEEP base / device',
+  Relative_startpoint: 'Relative',
 }
 
 export default translations

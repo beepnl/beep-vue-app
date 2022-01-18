@@ -633,7 +633,7 @@ const translations = {
   save_bulkinspection_confirm:
     'Sicuro di voler salvare questa visita per più alveari contemporaneamente?',
   deleted_but_not_saved_devices_warning:
-    "N.B.: i dispositivi saranno rimossi solo dopo aver premuto il bottone 'Salva e cancella' in alto a destra.",
+    "N.B. i dispositivi saranno rimossi solo dopo aver premuto il bottone 'Salva e cancella' in alto a destra.",
   no_alerts: 'Nessun nuovo messaggio di allerta',
   alertrule: 'Regola messaggio allerta | Regole messaggio di allerta',
   alertrule_pagetitle: 'Regole messaggio di allerta',
@@ -747,7 +747,7 @@ const translations = {
   alert_rule_deleted: 'La regola messaggi di allerta è stata cancellata',
 
   new_or_edited_but_not_saved_sensor_defs_warning:
-    "N.B.: le definizioni del sensore saranno aggiunti o salvati solo dopo aver premuto l'icona verde in calce alla colonna",
+    "N.B. le definizioni del sensore saranno aggiunti o salvati solo dopo aver premuto l'icona verde in calce alla colonna",
   delete_sensordef: 'Cancella definizione del sensore',
   delete_all_alerts: 'Cancella tutti gli avvisi',
   delete_all_alerts_warning:
@@ -818,15 +818,15 @@ const translations = {
   No_measurement_data_received_in_a_set_time_period:
     'Nessun dato di misurazione ricevuto durante il periodo impostato',
   Sudden_weight_drop_triggers_alert_immediately:
-    "Improvvise perdite di peso attivano immediatamente un allarme. N.B.: questo basandosi su un intervallo di trasmissione di 15 minuti. Se il tuo dispositivo è impostato con un differente intervallo di trasmissione dei dati, dovresti correggere di conseguenza il valore soglia collegato all'attivazione dell'allarme.",
+    "Improvvise perdite di peso attivano immediatamente un allarme. N.B. questo basandosi su un intervallo di trasmissione di 15 minuti. Se il tuo dispositivo è impostato con un differente intervallo di trasmissione dei dati, dovresti correggere di conseguenza il valore soglia collegato all'attivazione dell'allarme.",
   The_hive_weight_is_below_a_set_value:
     "Il peso dell'alveare è inferiore al valore impostato",
 
   minute: 'minuto | minuti',
   upload_interval_warning_single_interval:
-    "N.B.: l'intervallo di trasmissione dei dati impostato per il tuo dispositivo è | N.B.:  l'intervallo di trasmissione dei dati dei tuoi dispositivi è  ",
+    "N.B. l'intervallo di trasmissione dei dati impostato per il tuo dispositivo è | N.B.  l'intervallo di trasmissione dei dati dei tuoi dispositivi è  ",
   upload_interval_warning_interval_range:
-    " N.B.:  l'intervallo di trasmissione dei dati dei tuoi dispositivi varia tra ",
+    " N.B.  l'intervallo di trasmissione dei dati dei tuoi dispositivi varia tra ",
   not_relevant_for_immediate_calculation:
     'Non rilevante per il calcolo immediato',
   Increase: 'Aumenta',
@@ -845,15 +845,19 @@ const translations = {
   alerts_support_url:
     'https://beepsupport.freshdesk.com/it/support/solutions/articles/60000706484-avvisi',
 
+  /* New translations v3.0.74 */
   Decline: 'Rifiuta',
   Decline_invitation: 'Rifiuta invito',
   Decline_invitation_sure: "Sei sicuro di voler rifiutare l'invito al gruppo?",
-
-  /* New translations v3.1 */
   selection: 'selection',
   selection_placeholder: 'Select a period',
   data_zoom: 'Data zoom',
   data_zoom_ok: 'Would you like to zoom in on the data of ',
+  data_zoom_out_ok: 'Would you like to zoom out to the data of ',
+  show_all: 'Show all',
+  only_active_if_measurement_present:
+    '*N.B. the alert rule will only be active if the selected measurement is measured by your BEEP base / device',
+  Relative_startpoint: 'Relative',
 }
 
 export default translations

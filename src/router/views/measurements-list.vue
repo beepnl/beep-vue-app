@@ -19,6 +19,14 @@
               {{ period.name }}
             </v-btn>
           </div>
+          <v-switch
+            v-model="relativeInterval"
+            :label="`${$t('Relative_startpoint')}`"
+            class="pt-0 mt-0"
+            :disabled="interval === 'selection'"
+            dense
+            hide-details
+          ></v-switch>
         </v-row>
         <div v-if="smAndDown" class="period-bar">
           <v-row class="d-flex flex-row justify-space-between align-center">
@@ -37,11 +45,12 @@
               </v-btn>
             </div>
           </v-row>
-          <v-row class="d-flex flex-row justify-center align-center">
+          <v-row class="d-flex flex-row justify-space-around align-center">
             <v-col
               v-for="period in periods.slice(-2)"
               :key="period.interval"
-              cols="6"
+              cols="3"
+              sm="4"
               class="pa-0 d-flex justify-center"
             >
               <v-btn
@@ -56,6 +65,18 @@
               >
                 {{ period.name }}
               </v-btn>
+            </v-col>
+            <v-col cols="5" sm="4" class="pa-0">
+              <div class="d-flex justify-center">
+                <v-switch
+                  v-model="relativeInterval"
+                  :label="`${$t('Relative_startpoint')}`"
+                  class="pt-0 mt-0"
+                  :disabled="interval === 'selection'"
+                  dense
+                  hide-details
+                ></v-switch>
+              </div>
             </v-col>
           </v-row>
         </div>
@@ -156,6 +177,7 @@
                 range
                 no-title
                 scrollable
+                @change="checkDateOrder($event)"
               >
                 <v-spacer></v-spacer>
                 <v-btn text color="secondary" @click="menu = false">
@@ -247,56 +269,57 @@
               <v-row>
                 <v-col v-if="currentLastSensorValues.length > 0" cols="12">
                   <div class="d-flex flex-wrap justify-center mt-5 mt-sm-7">
-                    <vue-ellipse-progress
-                      v-for="(sensorData, index) in currentLastSensorValues"
-                      :key="sensorData.name + index"
-                      class="mr-2"
-                      :progress="
-                        calculateProgress(
-                          SENSOR_MIN[sensorData.name],
-                          SENSOR_MAX[sensorData.name],
-                          // eslint-disable-next-line vue/comma-dangle
-                          sensorData.value
-                        )
-                      "
-                      :legend-value="sensorData.value"
-                      :color="
-                        sensorData.value < SENSOR_LOW[sensorData.name]
-                          ? '#ffcc66'
-                          : sensorData.value > SENSOR_HIGH[sensorData.name]
-                          ? '#f00'
-                          : '#417505'
-                      "
-                      :size="mobile ? 75 : 100"
-                      empty-color="#eee"
-                      :thickness="4"
-                      :empty-thickness="3"
-                      half
-                      :angle="0"
-                    >
-                      <template v-slot="{ counterTick }">
-                        <v-sheet
-                          :class="
-                            `beep-icon beep-icon-${sensorData.name} mt-3 mb-n1 mt-sm-1 mb-sm-n1`
-                          "
-                        ></v-sheet>
-                        <div
-                          :style="
-                            `color: #242424;
+                    <template v-for="sensorData in currentLastSensorValues">
+                      <vue-ellipse-progress
+                        :key="sensorData.name + sensorData.value"
+                        class="mr-2"
+                        :progress="
+                          calculateProgress(
+                            SENSOR_MIN[sensorData.name],
+                            SENSOR_MAX[sensorData.name],
+                            // eslint-disable-next-line vue/comma-dangle
+                            sensorData.value
+                          )
+                        "
+                        :legend-value="sensorData.value"
+                        :color="
+                          sensorData.value < SENSOR_LOW[sensorData.name]
+                            ? '#ffcc66'
+                            : sensorData.value > SENSOR_HIGH[sensorData.name]
+                            ? '#f00'
+                            : '#417505'
+                        "
+                        :size="mobile ? 75 : 100"
+                        empty-color="#eee"
+                        :thickness="4"
+                        :empty-thickness="3"
+                        half
+                        :angle="0"
+                      >
+                        <template v-slot="{ counterTick }">
+                          <v-sheet
+                            :class="
+                              `beep-icon beep-icon-${sensorData.name} mt-3 mb-n1 mt-sm-1 mb-sm-n1`
+                            "
+                          ></v-sheet>
+                          <div
+                            :style="
+                              `color: #242424;
                   font-size: ${mobile ? '14px' : '16px'}
                   ;`
-                          "
-                        >
-                          {{ counterTick.currentValue
-                          }}<span style="font-size: 0.75rem;">{{
-                            SENSOR_UNITS[sensorData.name]
-                          }}</span></div
-                        >
-                        <div class="gauge-label">{{
-                          $t(SENSOR_NAMES[sensorData.name])
-                        }}</div>
-                      </template>
-                    </vue-ellipse-progress>
+                            "
+                          >
+                            {{ counterTick.currentValue
+                            }}<span style="font-size: 0.75rem;">{{
+                              SENSOR_UNITS[sensorData.name]
+                            }}</span></div
+                          >
+                          <div class="gauge-label">{{
+                            $t(SENSOR_NAMES[sensorData.name])
+                          }}</div>
+                        </template>
+                      </vue-ellipse-progress>
+                    </template>
                   </div>
                 </v-col>
               </v-row>
@@ -610,6 +633,7 @@ export default {
       dateFormat: 'YYYY-MM-DD HH:mm:ss',
       periodStart: null,
       periodEnd: null,
+      relativeInterval: true,
     }
   },
   computed: {
@@ -637,7 +661,10 @@ export default {
     measurementsForHeatmap() {
       // remove first value for month and year interval (belongs to previous month/year) (can't be skipped in v-for loop as v-if is not possible there)
       var data = this.measurementData.measurements
-      if (this.interval === 'month' || this.interval === 'year') {
+      if (
+        (this.interval === 'month' || this.interval === 'year') &&
+        !this.relativeInterval
+      ) {
         data = data.slice(1)
         return data
       } else {
@@ -672,7 +699,11 @@ export default {
     moduloNr() {
       switch (this.interval) {
         case 'hour':
-          return 1 * this.moduloFactor
+          if (this.resolutionUnit === 'm' && this.resolutionNr === 1) {
+            return 2 * this.moduloFactor
+          } else {
+            return 1 * this.moduloFactor
+          }
         case 'week':
           if (this.resolutionUnit === 'm' && this.resolutionNr !== null) {
             if (this.resolutionNr < 720) {
@@ -738,36 +769,6 @@ export default {
           this.$i18n.t('end_date') + ' ' + this.$i18n.t('not_filled'), // don't allow start date only
       ]
     },
-    // periodTitle() {
-    //   var p = this.interval
-    //   var d = p + 's'
-    //   var i = this.timeIndex
-    //   var startTimeFormat = this.timeFormat
-    //   var endTimeFormat = this.timeFormat
-
-    //   if (p === 'hour') {
-    //     endTimeFormat = 'HH:mm'
-    //     startTimeFormat += ' ' + endTimeFormat
-    //   } else if (p === 'day') {
-    //     endTimeFormat = null
-    //   } else if (p === 'week') {
-    //     p = 'isoweek'
-    //   }
-
-    //   var ep = p
-
-    //   var pStaTime = this.$moment()
-    //     .subtract(i, d)
-    //     .startOf(p)
-    //   var pEndTime = this.$moment()
-    //     .subtract(i, d)
-    //     .endOf(ep)
-
-    //   var s = pStaTime.locale(this.locale).format(startTimeFormat)
-    //   var e = pEndTime.locale(this.locale).format(endTimeFormat)
-
-    //   return s + '' + (endTimeFormat !== null ? ' - ' + e : '')
-    // },
     resolutionNr() {
       return this.measurementData !== null
         ? parseInt(this.measurementData.resolution.slice(0, -1))
@@ -896,6 +897,9 @@ export default {
         this.formatMeasurementData(temp)
       }, 10)
     },
+    relativeInterval() {
+      this.loadData()
+    },
   },
   created() {
     this.readTaxonomy()
@@ -1009,7 +1013,9 @@ export default {
             '&timezone=' +
             this.timeZone +
             (start !== null ? '&start=' + start + ' 00:00' : '') +
-            (end !== null ? '&end=' + end + ' 23:59' : '')
+            (end !== null ? '&end=' + end + ' 23:59' : '') +
+            '&relative_interval=' +
+            (this.relativeInterval ? '1' : '0')
         )
         this.formatMeasurementData(response.data)
         return true
@@ -1065,13 +1071,12 @@ export default {
       if (typeof this.measurementData.measurements !== 'undefined') {
         this.measurementData.measurements.map((measurement, index) => {
           if (
-            ((this.interval === 'month' ||
-              this.interval === 'year' ||
-              this.interval === 'selection') &&
-              index !== 0) || // skip first value for month and year interval (belongs to previous month/year)
             this.interval === 'hour' ||
             this.interval === 'day' ||
-            this.interval === 'week'
+            this.interval === 'week' ||
+            // skip first value for month and year interval (belongs to previous month/year) except when it's a relative interval
+            index !== 0 ||
+            this.relativeInterval
           ) {
             data.labels.push(measurement.time)
             data.series[0].data.push({
@@ -1108,11 +1113,12 @@ export default {
       if (typeof this.measurementData.measurements !== 'undefined') {
         this.measurementData.measurements.map((measurement, index) => {
           if (
-            ((this.interval === 'month' || this.interval === 'year') &&
-              index !== 0) || // skip first value for month and year interval (belongs to previous month/year)
             this.interval === 'hour' ||
             this.interval === 'day' ||
-            this.interval === 'week'
+            this.interval === 'week' ||
+            // skip first value for month and year interval (belongs to previous month/year) except when it's a relative interval
+            index !== 0 ||
+            this.relativeInterval
           ) {
             data.labels.push(measurement.time)
             data.series.map((serie, index) => {
@@ -1191,6 +1197,11 @@ export default {
             }
           },
         },
+      }
+    },
+    checkDateOrder(dates) {
+      if (dates[1] < dates[0]) {
+        this.dates = [dates[1], dates[0]]
       }
     },
     formatMeasurementData(measurementData) {
@@ -1316,37 +1327,6 @@ export default {
         this.loadData()
       }
     },
-    // setPeriodTitle() {
-    //   var p = this.interval
-    //   var d = p + 's'
-    //   var i = this.timeIndex
-    //   var startTimeFormat = this.timeFormat
-    //   var endTimeFormat = this.timeFormat
-
-    //   if (p === 'hour') {
-    //     endTimeFormat = 'HH:mm'
-    //     startTimeFormat += ' ' + endTimeFormat
-    //   } else if (p === 'day') {
-    //     endTimeFormat = null
-    //   } else if (p === 'week') {
-    //     p = 'isoweek'
-    //   }
-
-    //   var ep = p
-
-    //   var pStaTime = this.$moment()
-    //     .subtract(i, d)
-    //     .startOf(p)
-    //   var pEndTime = this.$moment()
-    //     .subtract(i, d)
-    //     .endOf(ep)
-
-    //   var s = pStaTime.locale(this.locale).format(startTimeFormat)
-    //   var e = pEndTime.locale(this.locale).format(endTimeFormat)
-
-    //   this.periodTitle = s + '' + (endTimeFormat !== null ? ' - ' + e : '')
-    //   this.selectedDate = pStaTime.format('YYYY-MM-DD')
-    // },
     setPeriodTitle() {
       var p = this.interval
       var d = p + 's'
@@ -1363,19 +1343,26 @@ export default {
           endTimeFormat = 'HH:mm'
           startTimeFormat += ' ' + endTimeFormat
         } else if (p === 'day') {
-          endTimeFormat = null
+          !this.relativeInterval
+            ? (endTimeFormat = null)
+            : (endTimeFormat = this.timeFormat)
         } else if (p === 'week') {
-          p = 'isoweek'
+          !this.relativeInterval ? (p = 'isoweek') : (p = 'week')
         }
 
         var ep = p
 
-        this.periodStart = this.$moment()
-          .subtract(i, d)
-          .startOf(p)
-        this.periodEnd = this.$moment()
-          .subtract(i, d)
-          .endOf(ep)
+        if (!this.relativeInterval) {
+          this.periodStart = this.$moment()
+            .subtract(i, d)
+            .startOf(p)
+          this.periodEnd = this.$moment()
+            .subtract(i, d)
+            .endOf(ep)
+        } else {
+          this.periodStart = this.$moment().subtract(i + 1, d)
+          this.periodEnd = this.$moment().subtract(i, d)
+        }
 
         var formatStart = this.momentFormat(this.periodStart, startTimeFormat)
         var formatEnd = this.momentFormat(this.periodEnd, endTimeFormat)
@@ -1397,7 +1384,11 @@ export default {
       this.$refs.confirm
         .open(
           this.$i18n.t('data_zoom'),
-          this.$i18n.t('data_zoom_ok') + this.momentFormat(date, format) + '?',
+          (this.interval !== 'hour'
+            ? this.$i18n.t('data_zoom_ok')
+            : this.$i18n.t('data_zoom_out_ok')) +
+            this.momentFormat(date, format) +
+            '?',
           {
             color: 'primary',
           }

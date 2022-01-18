@@ -143,9 +143,22 @@
 
           <v-row>
             <v-col cols="12" sm="6" md="3">
+              <div class="d-flex justify-space-between">
+                <div class="beep-label" v-html="$tc('Measurement', 1)"></div>
+                <v-switch
+                  v-model="showAllMeasurements"
+                  class="pt-2 mt-n3"
+                  :label="$t('show_all') + (showAllMeasurements ? '*' : '')"
+                  hide-details
+                ></v-switch>
+              </div>
               <v-select
                 v-model="activeAlertRule.measurement_id"
-                :items="sortedSensorMeasurements"
+                :items="
+                  showAllMeasurements
+                    ? allSensorMeasurements
+                    : defaultSensorMeasurements
+                "
                 :item-text="getText"
                 item-value="id"
                 :placeholder="
@@ -155,10 +168,15 @@
                     1
                   )} ...`
                 "
-                :label="$tc('Measurement', 1)"
+                class="pt-0 mt-n1"
                 :rules="requiredRule"
                 @input="setAlertRuleEdited(true)"
               ></v-select>
+              <div
+                v-if="showAllMeasurements"
+                class="beep-label mt-n4 mb-3"
+                v-text="$t('only_active_if_measurement_present')"
+              ></div>
             </v-col>
 
             <v-col cols="12" sm="6" md="3">
@@ -393,6 +411,7 @@ export default {
       showLoadingIcon: false,
       newAlertRuleNumber: 1,
       newAlertRuleLocation: null,
+      showAllMeasurements: false,
     }
   },
   computed: {
@@ -465,6 +484,33 @@ export default {
         }
       },
     },
+    allSensorMeasurements() {
+      var measurementTypes = this.sensorMeasurementsList
+
+      // check if measurement type is NOT a weather measurement and if translation exists, otherwise don't display the measurement type
+      measurementTypes = measurementTypes.filter(
+        (measurementType) =>
+          measurementType.weather === 0 &&
+          this.$i18n.te(measurementType.abbreviation) === true
+      )
+
+      // add translation as label property
+      measurementTypes.map((measurementType) => {
+        measurementType.label = this.$i18n.t(measurementType.abbreviation)
+      })
+
+      // sort by label
+      var sortedSMs = measurementTypes.slice().sort(function(a, b) {
+        if (a.label.toLowerCase() > b.label.toLowerCase()) {
+          return 1
+        }
+        if (b.label.toLowerCase() > a.label.toLowerCase()) {
+          return -1
+        }
+        return 0
+      })
+      return sortedSMs
+    },
     calcPrefix() {
       var translateTerm = this.alertRulesList.calculations[
         this.activeAlertRule.calculation
@@ -521,7 +567,7 @@ export default {
       return parseInt(this.$route.params.id)
     },
     measurement() {
-      return this.sortedSensorMeasurements.filter(
+      return this.allSensorMeasurements.filter(
         (measurement) => measurement.id === this.activeAlertRule.measurement_id
       )[0]
     },
@@ -641,32 +687,11 @@ export default {
       })
       return uniqueApiaries
     },
-    sortedSensorMeasurements() {
-      var measurementTypes = this.sensorMeasurementsList
-
-      // check if measurement type should be shown in alerts and if translation exists, if not don't display the measurement type
-      measurementTypes = measurementTypes.filter(
-        (measurementType) =>
-          measurementType.show_in_alerts &&
-          this.$i18n.te(measurementType.abbreviation) === true
+    defaultSensorMeasurements() {
+      // check if measurement type is a default measurement type for creating alert rules
+      return this.allSensorMeasurements.filter(
+        (measurementType) => measurementType.show_in_alerts
       )
-
-      // add translation as label property
-      measurementTypes.map((measurementType) => {
-        measurementType.label = this.$i18n.t(measurementType.abbreviation)
-      })
-
-      // sort by label
-      var sortedSMs = measurementTypes.slice().sort(function(a, b) {
-        if (a.label.toLowerCase() > b.label.toLowerCase()) {
-          return 1
-        }
-        if (b.label.toLowerCase() > a.label.toLowerCase()) {
-          return -1
-        }
-        return 0
-      })
-      return sortedSMs
     },
     thresholdValueIsNaN() {
       return isNaN(this.activeAlertRule.threshold_value)
@@ -708,7 +733,7 @@ export default {
               ' ' +
               (this.alertRules.length + 1),
             description: '',
-            measurement_id: this.sortedSensorMeasurements[0].id,
+            measurement_id: this.defaultSensorMeasurements[0].id,
             calculation: 'ave',
             calculation_minutes: 0,
             comparator: '<',
@@ -1039,6 +1064,14 @@ export default {
           name: '404',
           params: { resource: 'alertrule' },
         })
+      } else {
+        if (
+          !this.defaultSensorMeasurements.some(
+            (el) => el.id === this.activeAlertRule.measurement_id
+          )
+        ) {
+          this.showAllMeasurements = true
+        }
       }
       this.setAlertRuleEdited(false)
     },

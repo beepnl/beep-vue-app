@@ -1,10 +1,66 @@
 <template>
   <Layout :title="$t('Whats_new')">
     <v-container>
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>3.0.74 (17-04-2020) - Current
+        version</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li
+            >Measurements:
+            <router-link :to="{ name: 'measurements' }">
+              option to select a custom period when viewing your
+              data.</router-link
+            >
+            You can select your own start and end date via the 'selection'
+            button in the light yellow top bar.</li
+          >
+          <li
+            >Measurements:
+            <router-link :to="{ name: 'measurements' }">
+              option to enable relative data period.</router-link
+            >
+            By switching on 'Relative' in the light yellow top bar, all periods
+            (except custom selection) are shown as relative durations, until
+            now/today. F.e. if today is a Tuesday and 'Relative' is enabled
+            together with the 'week' interval, this results in viewing data from
+            the last 7 days (Tuesday (last week) to Tuesday (today)), whereas
+            'Relative' disabled would show data from a default week, Monday to
+            Sunday.</li
+          >
+          <li
+            >Measurements:
+            <router-link :to="{ name: 'measurements' }">
+              ability to zoom in via data charts.</router-link
+            >
+            When clicking a data point on a chart, a pop up screen appears
+            asking whether you would like to zoom in on the data of that
+            particular day or hour (depending on which level you are). When
+            clicking 'OK', the data is then reloaded for that day or hour.</li
+          >
+          <li
+            >Alerts:
+            <router-link :to="{ name: 'alertrule-create' }">
+              option to create alert rules for non-default
+              measurements.</router-link
+            >
+            At the 'measurements' input field you can now switch on 'Show all'
+            to view and select all (non-weather) measurements.</li
+          >
+          <li
+            >Collaborate: option to decline a collaboration group invitation
+            when viewing the invite in the BEEP app. Group admins will be able
+            to see this in the collaboration group overview.</li
+          >
+          <li>Bugfixes: small fixes for issues received as feedback</li>
+        </ul>
+      </div>
+
       <div class="overline mb-1 primary--text"
         ><span class="lowercase">v</span>
-        <span v-if="dutch">3.0.73 (13-12-2021) - Huidige versie</span>
-        <span v-if="!dutch">3.0.73 (12-13-2021) - Current version</span>
+        <span v-if="dutch">3.0.73 (13-12-2021) - Release v3</span>
+        <span v-if="!dutch">3.0.73 (13-12-2021) - Release v3</span>
       </div>
       <div v-if="!dutch" class="rounded-border primary-border mb-4">
         <p class="mb-3">
@@ -540,7 +596,7 @@
                 meetsysteem (BEEP base of anders) aanwezig,
                 <v-icon class="color-grey inline-icon">mdi-bell</v-icon>
                 notificaties aanwezig.<br />
-                N.B.: afhankelijk van schermgrootte zullen sommige filters niet
+                N.B. afhankelijk van schermgrootte zullen sommige filters niet
                 zichtbaar zijn om ruimte te besparen. Filters worden onthouden
                 gedurende de browsersessie. Door te klikken op het BEEP logo in
                 de linkerbovenhoek van het scherm worden alle filters
@@ -630,7 +686,7 @@
                 Pas kast aan: bijenkasten kunnen aangepast worden door op de
                 kast te klikken in het
                 <router-link :to="{ name: 'home' }">Kasten</router-link>
-                overzicht wat het kast menu opent → 'Aanpassen kast'. N.B.:
+                overzicht wat het kast menu opent → 'Aanpassen kast'. N.B.
                 alleen eigen kasten en gedeelde kasten met aanpasrechten zijn
                 aanpasbaar.</li
               >
@@ -735,7 +791,7 @@
                 neutraal,
                 <v-icon class="color-grey inline-icon">mdi-emoticon-sad</v-icon>
                 slecht).<br />
-                N.B.: Filters worden onthouden gedurende de browsersessie.
+                N.B. Filters worden onthouden gedurende de browsersessie.
               </li>
               <li
                 >Inspectie menu: klik op een inspectie om deze te bekijken (in

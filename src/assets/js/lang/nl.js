@@ -776,14 +776,14 @@ const translations = {
   alerts_support_url:
     'https://beepsupport.freshdesk.com/nl/support/solutions/articles/60000706484-notificaties',
 
+  /* New translations v3.0.74 */
   Decline: 'Afwijzen',
   Decline_invitation: 'Uitnodiging afwijzen',
   Decline_invitation_sure: 'Weet je zeker dat je de uitnodiging wilt afwijzen?',
-
-  /* New translations v3.1 */
   selection: 'Selectie',
   selection_placeholder: 'Selecteer een periode',
   data_zoom: 'Data inzoomen',
+<<<<<<< HEAD
   data_zoom_ok: 'Wil je inzoomen naar de data van ',
   Length: 'Lengte: ',
   match: 'match | matches',
@@ -791,6 +791,14 @@ const translations = {
   Firmware_version: 'Firmware versie: ',
   Interval: 'Interval: ',
   View_data: 'Bekijk data',
+=======
+  data_zoom_ok: 'Wil je inzoomen op de data van ',
+  data_zoom_out_ok: 'Wil je uitzoomen naar de data van ',
+  show_all: 'Toon alle',
+  only_active_if_measurement_present:
+    '*N.B. Notificaties worden alleen geactiveerd wanneer de geselecteerde meting door je BEEP base / meetsysteem gemeten wordt',
+  Relative_startpoint: 'Relatief',
+>>>>>>> dev
 }
 
 export default translations

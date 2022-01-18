@@ -828,14 +828,14 @@ const translations = {
   No_measurement_data_received_in_a_set_time_period:
     'No measurement data received during a set time period',
   Sudden_weight_drop_triggers_alert_immediately:
-    'Sudden weight drop of the hive triggers an alert immediately. N.B.: this is based on a data transmission interval of 15 minutes. In case your device has a different data transmission interval, you should adjust the threshold value accordingly.',
+    'Sudden weight drop of the hive triggers an alert immediately. N.B. this is based on a data transmission interval of 15 minutes. In case your device has a different data transmission interval, you should adjust the threshold value accordingly.',
   The_hive_weight_is_below_a_set_value: 'Hive weight is below a set value',
 
   minute: 'minute | minutes',
   upload_interval_warning_single_interval:
-    'N.B.: the data transmission interval of your device is | N.B.: the data transmission interval of your devices is', // f.e.: ... 15 minutes
+    'N.B. the data transmission interval of your device is | N.B. the data transmission interval of your devices is', // f.e.: ... 15 minutes
   upload_interval_warning_interval_range:
-    'N.B.: the data transmission intervals of your devices vary between ', // f.e. ... 5 - 15 minutes
+    'N.B. the data transmission intervals of your devices vary between ', // f.e. ... 5 - 15 minutes
   not_relevant_for_immediate_calculation:
     'Not relevant for immediate calculation',
   Increase: 'Increase',
@@ -854,16 +854,20 @@ const translations = {
   alerts_support_url:
     'https://beepsupport.freshdesk.com/es/support/solutions/articles/60000706484-alertas',
 
+  /* New translations v3.0.74 */
   Decline: 'Rechazar',
   Decline_invitation: 'Rechazar invitación',
   Decline_invitation_sure:
     '¿Estás seguro de que deseas rechazar la invitación grupal?',
-
-  /* New translations v3.1 */
   selection: 'selection',
   selection_placeholder: 'Select a period',
   data_zoom: 'Data zoom',
   data_zoom_ok: 'Would you like to zoom in on the data of ',
+  data_zoom_out_ok: 'Would you like to zoom out to the data of ',
+  show_all: 'Show all',
+  only_active_if_measurement_present:
+    '*N.B. the alert rule will only be active if the selected measurement is measured by your BEEP base / device',
+  Relative_startpoint: 'Relative',
 }
 
 export default translations

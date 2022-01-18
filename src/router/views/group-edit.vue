@@ -257,13 +257,21 @@
                       <td>
                         <span
                           v-if="
-                            user.accepted === null && user.declined === null
+                            user.declined !== undefined &&
+                              user.declined === null &&
+                              user.invited !== undefined &&
+                              user.invited !== null
                           "
                           >{{ momentify(user.invited, true) }}</span
                         >
-                        <span v-else-if="user.declined !== null">{{
-                          $t('group_declined')
-                        }}</span>
+                        <span
+                          v-else-if="
+                            user.declined !== undefined &&
+                              user.declined !== null &&
+                              !user.creator
+                          "
+                          >{{ $t('group_declined') }}</span
+                        >
                       </td>
                       <td>
                         <v-checkbox
