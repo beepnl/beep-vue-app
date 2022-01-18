@@ -788,7 +788,7 @@ const translations = {
   show_all: 'Toon alle',
   only_active_if_measurement_present:
     '*N.B. Notificaties worden alleen geactiveerd wanneer de geselecteerde meting door je BEEP base / meetsysteem gemeten wordt',
-  Relative_startpoint: 'Relatieve start',
+  Relative_startpoint: 'Relatief',
 }
 
 export default translations

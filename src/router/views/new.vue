@@ -19,16 +19,15 @@
           <li
             >Measurements:
             <router-link :to="{ name: 'measurements' }">
-              option to enable relative start point when selecting a data
-              period.</router-link
+              option to enable relative data period.</router-link
             >
-            By switching on 'Relative start' in the light yellow top bar, all
-            periods (except custom selection) are shown as relative durations,
-            until now/today. F.e. if today is a Tuesday and 'Relative start' is
-            enabled together with the 'week' interval, this results in viewing
-            data from the last 7 days (Tuesday (last week) to Tuesday (today)),
-            whereas 'Relative start' disabled would show data from a default
-            week, Monday to Sunday.</li
+            By switching on 'Relative' in the light yellow top bar, all periods
+            (except custom selection) are shown as relative durations, until
+            now/today. F.e. if today is a Tuesday and 'Relative' is enabled
+            together with the 'week' interval, this results in viewing data from
+            the last 7 days (Tuesday (last week) to Tuesday (today)), whereas
+            'Relative' disabled would show data from a default week, Monday to
+            Sunday.</li
           >
           <li
             >Measurements:

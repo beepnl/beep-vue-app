@@ -66,7 +66,7 @@
                 {{ period.name }}
               </v-btn>
             </v-col>
-            <v-col cols="6" sm="4" class="pa-0">
+            <v-col cols="5" sm="4" class="pa-0">
               <div class="d-flex justify-center">
                 <v-switch
                   v-model="relativeInterval"
@@ -632,7 +632,7 @@ export default {
       dateFormat: 'YYYY-MM-DD HH:mm:ss',
       periodStart: null,
       periodEnd: null,
-      relativeInterval: false,
+      relativeInterval: true,
     }
   },
   computed: {

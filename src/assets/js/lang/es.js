@@ -867,7 +867,7 @@ const translations = {
   show_all: 'Show all',
   only_active_if_measurement_present:
     '*N.B. the alert rule will only be active if the selected measurement is measured by your BEEP base / device',
-  Relative_startpoint: 'Relative start',
+  Relative_startpoint: 'Relative',
 }
 
 export default translations
