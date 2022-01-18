@@ -159,6 +159,7 @@ export default {
               data: [],
               source: 'database',
               abbr: sensorName,
+              className: sensorName,
             })
           }
         })
@@ -180,6 +181,7 @@ export default {
               data: [],
               source: 'flashlog',
               abbr: sensorName,
+              className: sensorName,
             })
           }
         })
@@ -214,7 +216,7 @@ export default {
             .map((serie, index) => {
               var currentSensor = serie.abbr
               if (measurement[currentSensor] !== undefined) {
-                console.log(currentSensor, measurement[currentSensor])
+                // console.log(currentSensor, measurement[currentSensor])
                 serie.data.push({
                   meta:
                     this.momentFormat(timePoint, 'llll') +
@@ -250,6 +252,8 @@ export default {
           self.$chartist.plugins.beep(),
           self.$chartist.plugins.legendBeep({
             simpleToggle: true,
+            inactiveByDefault: true,
+            activeClasses: ['bv'],
           }),
           // self.$chartist.plugins.ctPointLabels({
           //   labelOffset: {

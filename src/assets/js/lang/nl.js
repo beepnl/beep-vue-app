@@ -795,6 +795,11 @@ const translations = {
   only_active_if_measurement_present:
     '*N.B. Notificaties worden alleen geactiveerd wanneer de geselecteerde meting door je BEEP base / meetsysteem gemeten wordt',
   Relative_startpoint: 'Relatief',
+
+  vcc: 'vcc',
+  bat_perc: 'battery percentage',
+  weight_sensor_amount: 'weight sensor amount',
+  ds18b20_sensor_amount: 'ds18b20 sensor amount',
 }
 
 export default translations

@@ -518,9 +518,8 @@ export default {
       this.showLoadingIconById.push(flashLog.id)
       try {
         const response = await Api.readRequest(
-          '/flashlogs/' +
-            flashLog.id +
-            '?from_cache=0&matches_min=5&match_props=12&db_records=80'
+          '/flashlogs/' + flashLog.id
+          // '?from_cache=0&matches_min=5&match_props=12&db_records=80'
         )
         this.showLoadingIconById.splice(
           this.showLoadingIconById.indexOf(flashLog.id),

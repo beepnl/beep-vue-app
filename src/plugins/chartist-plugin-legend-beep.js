@@ -29,6 +29,8 @@
     onClick: null,
     position: 'top',
     simpleToggle: true,
+    inactiveByDefault: true,
+    activeClasses: [],
   }
 
   Chartist.plugins = Chartist.plugins || {}
@@ -131,7 +133,7 @@
         var li = document.createElement('li')
         var div = document.createElement('div')
         var span = document.createElement('span')
-        li.className = 'ct-series-' + i
+        li.className = 'ct-series-' + i + ' ' + chart.data.series[i].className
         div.className = 'ct-legend-square'
         // Append specific class to a legend element, if viable classes are given
         if (classNamesViable) {
@@ -157,6 +159,45 @@
         li.appendChild(span)
         legendElement.appendChild(li)
       })
+
+      if (options.inactiveByDefault) {
+        var allSeries = Array.prototype.slice.call(legendElement.childNodes)
+        allSeries.forEach(function(item) {
+          // TODO: add abbr classname to ct-series-i
+          var overlap =
+            options.activeClasses.length > 0
+              ? options.activeClasses.filter(function(e) {
+                  return item.classList.value.indexOf(e) > -1
+                })
+              : []
+          if (overlap.length === 0) {
+            item.classList.add('inactive')
+            removedSeries.push(parseInt(item.getAttribute('data-legend')))
+          }
+        })
+
+        // Reset the series to original and remove each series that
+        // is still removed again, to remain index order.
+        var seriesCopy = originalSeries.slice(0)
+        if (useLabels) {
+          var labelsCopy = originalLabels.slice(0)
+        }
+
+        // Reverse sort the removedSeries to prevent removing the wrong index.
+        removedSeries.sort(compareNumbers).reverse()
+
+        removedSeries.forEach(function(series) {
+          seriesCopy.splice(series, 1)
+          if (useLabels) {
+            labelsCopy.splice(series, 1)
+          }
+        })
+
+        chart.data.series = seriesCopy
+        if (useLabels) {
+          chart.data.labels = labelsCopy
+        }
+      }
 
       chart.on('created', function(data) {
         // Append the legend element to the DOM
@@ -197,17 +238,21 @@
           var clickedSeriesIndex = parseInt(
             clickedSeries.getAttribute('data-legend')
           )
-          var otherSeries = Array.prototype.slice.call(legendElement.childNodes)
-          otherSeries.splice(clickedSeriesIndex, 1)
-          var otherSeriesIndexArray = []
-          otherSeries.forEach(function(item) {
-            otherSeriesIndexArray.push(
-              parseInt(item.getAttribute('data-legend'))
-            )
-          })
+
           var removedSeriesIndex = removedSeries.indexOf(clickedSeriesIndex)
 
           if (!options.simpleToggle) {
+            var otherSeries = Array.prototype.slice.call(
+              legendElement.childNodes
+            )
+            otherSeries.splice(clickedSeriesIndex, 1)
+            var otherSeriesIndexArray = []
+            otherSeries.forEach(function(item) {
+              otherSeriesIndexArray.push(
+                parseInt(item.getAttribute('data-legend'))
+              )
+            })
+
             if (removedSeriesIndex > -1 && removedSeries.length === 1) {
               // if clicked series is the only inactive series, make all series active again
               removedSeries = []

@@ -1172,6 +1172,7 @@ export default {
           }),
           self.$chartist.plugins.legendBeep({
             simpleToggle: false,
+            inactiveByDefault: false,
           }),
           self.$chartist.plugins.ctPointLabels({
             labelOffset: {
