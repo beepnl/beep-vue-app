@@ -60,7 +60,7 @@
             <v-progress-circular color="primary" size="50" indeterminate />
           </div>
           <div v-else-if="blockData !== null" class="charts">
-            <div class="py-3">
+            <div class="pt-0 pt-sm-2 pb-3">
               <div
                 class="overline mt-0 mb-3 text-center"
                 v-text="'Flashlog'"
@@ -88,7 +88,7 @@
               >
               </chartist>
 
-              <v-row class="pt-6">
+              <v-row class="pt-8">
                 <v-col cols="12">
                   <div class="d-flex justify-space-between">
                     <v-btn
