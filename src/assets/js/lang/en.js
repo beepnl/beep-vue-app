@@ -778,6 +778,8 @@ const translations = {
   no_admin: 'You must be an admin to view this page',
   view_next_week: 'View next week',
   view_prev_week: 'View previous week',
+  view_next_week_short: 'Next week',
+  view_prev_week_short: 'Previous week',
   import_block_data_short: 'Import block data',
 }
 

@@ -803,6 +803,8 @@ const translations = {
   no_admin: 'Je moet beheerder zijn om deze pagina te kunnen bekijken',
   view_next_week: 'Bekijk volgende week',
   view_prev_week: 'Bekijk vorige week',
+  view_next_week_short: 'Volgende week',
+  view_prev_week_short: 'Vorige week',
   import_block_data_short: 'Importeer blok data',
 }
 

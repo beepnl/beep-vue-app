@@ -108,7 +108,11 @@
                         indeterminate
                       />
                       <v-icon v-if="!loading" left>mdi-chevron-left</v-icon>
-                      {{ $t('view_prev_week') }}</v-btn
+                      {{
+                        mobile
+                          ? $t('view_prev_week_short')
+                          : $t('view_prev_week')
+                      }}</v-btn
                     >
                     <v-spacer />
                     <v-btn
@@ -127,9 +131,13 @@
                         color="disabled"
                         indeterminate
                       />
-                      <v-icon v-if="!loading" left>mdi-chevron-right</v-icon>
-                      {{ $t('view_next_week') }}</v-btn
-                    >
+                      {{
+                        mobile
+                          ? $t('view_next_week_short')
+                          : $t('view_next_week')
+                      }}
+                      <v-icon v-if="!loading" right>mdi-chevron-right</v-icon>
+                    </v-btn>
                   </div>
                 </v-col>
               </v-row>
@@ -433,5 +441,8 @@ export default {
 <style lang="scss" scoped>
 .loading-wrapper {
   height: 90vh;
+  @include for-phone-only {
+    height: 80vh;
+  }
 }
 </style>
