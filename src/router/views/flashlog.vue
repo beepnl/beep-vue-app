@@ -7,7 +7,7 @@
         outlined
         color="black"
         class="save-button-mobile-wide mr-1"
-        :disabled="showLoadingIcon"
+        :disabled="showLoadingIcon || !ready || blockData === null"
         @click.prevent="confirmImportBlockData"
       >
         <v-progress-circular
