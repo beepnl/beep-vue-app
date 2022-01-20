@@ -5,6 +5,7 @@
   color: $color-grey-dark !important;
   background-color: rgba(255, 160, 0, 0.87) !important;
   border-radius: 4px;
+  z-index: 6;
   &::before {
     margin-left: -5px !important;
     border: 5px solid transparent !important;

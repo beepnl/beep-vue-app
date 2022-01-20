@@ -60,7 +60,7 @@
             <v-progress-circular color="primary" size="50" indeterminate />
           </div>
           <div v-else-if="blockData !== null" class="charts">
-            <div class="pb-3">
+            <div class="py-3">
               <div
                 class="overline mt-0 mb-3 text-center"
                 v-text="'Flashlog'"
@@ -311,12 +311,7 @@ export default {
             var currentSensor = serie.className
             if (measurement[currentSensor] !== undefined) {
               serie.data.push({
-                meta:
-                  this.momentFormat(measurement.time, 'llll') +
-                  '<br>' +
-                  this.$i18n.t(currentSensor) +
-                  ': ' +
-                  measurement[currentSensor],
+                meta: this.getMetaText(measurement, currentSensor, data.series),
                 // +
                 // this.findMeasurementType(currentSensor).unit,
                 value: measurement[currentSensor],
@@ -325,6 +320,10 @@ export default {
           })
         })
       }
+
+      data.series.map((serie) => {
+        serie.name = serie.name.replace(/^0/, '') // remove first zero for legend legibility (esp with sound sensor s_bin_201_402 and further)
+      })
 
       return data
     },
@@ -389,29 +388,6 @@ export default {
       return mT
     },
     formatFlashlogData(blockData) {
-      // this.databaseMeasurements = []
-      // this.flashlogMeasurements = []
-
-      // if (blockData.database && blockData.database.length > 0) {
-      //   this.databaseMeasurements = Object.keys(
-      //     blockData.database.reduce(function(result, obj) {
-      //       return Object.assign(result, obj)
-      //     }, {})
-      //   ).sort()
-      // }
-
-      // if (blockData.flashlog && blockData.flashlog.length > 0) {
-      //   this.flashlogMeasurements = Object.keys(
-      //     blockData.flashlog.reduce(function(result, obj) {
-      //       return Object.assign(result, obj)
-      //     }, {})
-      //   ).sort()
-      // } else {
-      //   this.noChartData = true
-      // }
-      // this.loading = false
-      // this.ready = true
-
       this.measurements = {}
 
       this.dataSets.map((dataSet) => {
@@ -426,6 +402,30 @@ export default {
 
       this.loading = false
       this.ready = true
+    },
+    getMetaText(measurement, currentSensor, dataSeries) {
+      var otherMeasurements = ''
+      dataSeries.map((dataSerie, index) => {
+        if (
+          dataSerie.className !== currentSensor &&
+          measurement[dataSerie.className] !== null
+        ) {
+          otherMeasurements +=
+            dataSerie.name +
+            ': ' +
+            measurement[dataSerie.className] +
+            (index !== dataSeries.length - 1 ? '<br>' : '')
+        }
+      })
+      return (
+        this.momentFormat(measurement.time, 'llll') +
+        '<br>' +
+        this.$i18n.t(currentSensor) +
+        ': ' +
+        measurement[currentSensor] +
+        '<br>' +
+        otherMeasurements
+      )
     },
   },
 }
