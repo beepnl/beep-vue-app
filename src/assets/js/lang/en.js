@@ -771,10 +771,6 @@ const translations = {
     '*N.B. the alert rule will only be active if the selected measurement is measured by your BEEP base / device',
   Relative_startpoint: 'Relative',
 
-  vcc: 'vcc',
-  bat_perc: 'battery percentage',
-  weight_sensor_amount: 'weight sensor amount',
-  ds18b20_sensor_amount: 'ds18b20 sensor amount',
   Log_data: 'Log data',
   Flashlog: 'Flashlog',
   Block: 'Block',

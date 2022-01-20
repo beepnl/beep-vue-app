@@ -149,7 +149,6 @@
 </template>
 
 <script>
-// import { dummyDataShort } from '@assets/js/dummy.js'
 import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
