@@ -22,7 +22,7 @@ export const getters = {
     return (state.currentUser && state.currentUser.id) || null
   },
   userIsAdmin: function(state) {
-    return (state.currentUser && state.currentUser.admin) || true // TODO: false if undefined!
+    return (state.currentUser && state.currentUser.admin) || false
   },
   userLocale: function(state) {
     return (state.currentUser && state.currentUser.locale) || null
