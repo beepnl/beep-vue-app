@@ -811,8 +811,8 @@ const translations = {
   commit_log_data_short: 'Importar dados registados',
   commit_log_data:
     'Importar dados deste ficheiro de registo para a aplicação BEEP',
-  import_log_data_explanation:
-    "Na aplicação da base BEEP pode fazer download dos dados registados a partir da memória interna da base BEEP. Cada vez que fizer download dos dados registados, a memória interna será apagada e será feito o upload dos dados na aplicação BEEP. Abaixo encontra-se a sua lista de download de dados registados. Pode substituir os dados na base de dados pelos dados contidos nos ficheiros de registo descarregados clicando no botão 'Verificar dados registados'. Isto verificará primeiro a quantidade de dados que será substituída na base de dados, e se a hora dos dados no ficheiro de registo se encontra correto. Receberá uma caixa de confirmação com as informações e a possibilidade de aplicar ou rejeitar a substituição.",
+  // import_log_data_explanation:
+  //   "Na aplicação da base BEEP pode fazer download dos dados registados a partir da memória interna da base BEEP. Cada vez que fizer download dos dados registados, a memória interna será apagada e será feito o upload dos dados na aplicação BEEP. Abaixo encontra-se a sua lista de download de dados registados. Pode substituir os dados na base de dados pelos dados contidos nos ficheiros de registo descarregados clicando no botão 'Verificar dados registados'. Isto verificará primeiro a quantidade de dados que será substituída na base de dados, e se a hora dos dados no ficheiro de registo se encontra correto. Receberá uma caixa de confirmação com as informações e a possibilidade de aplicar ou rejeitar a substituição.",
   import_log_data_url_text:
     'Aqui poderá encontrar o artigo de suporte em como fazer download dos dados registados com a aplicação da base BEEP',
   import_log_data_support_url:
@@ -891,6 +891,16 @@ const translations = {
   only_active_if_measurement_present:
     '*N.B. the alert rule will only be active if the selected measurement is measured by your BEEP base / device',
   Relative_startpoint: 'Relative',
+
+  vcc: 'vcc',
+  bat_perc: 'battery percentage',
+  weight_sensor_amount: 'weight sensor amount',
+  ds18b20_sensor_amount: 'ds18b20 sensor amount',
+  Log_data: 'Log data',
+  Flashlog: 'Flashlog',
+  Block: 'Block',
+  import_log_data_explanation:
+    "In the BEEP base app you can download log data from the internal memory of the BEEP base. Every time you download log data, the internal memory gets cleared and the data gets uploaded to the BEEP app. Below is the list of your downloaded log data. You can replace the data in the database by the data inside the downloaded log files by clicking the button 'Check log data'. As a result of this check you will see blocks of data that may or may not contain matches. Per block that has matches you can view the data and choose to replace the data from the database by the data from the log file.",
 }
 
 export default translations

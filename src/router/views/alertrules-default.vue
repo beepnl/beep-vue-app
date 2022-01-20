@@ -1,6 +1,6 @@
 <template>
   <Layout :title="$tc('alertrule_default', 2)">
-    <v-toolbar class="save-bar" dense light>
+    <v-toolbar class="save-bar save-bar--back" dense light>
       <v-spacer></v-spacer>
       <v-btn
         tile
@@ -35,7 +35,7 @@
       </div>
     </v-container>
 
-    <v-container v-if="ready" class="alertrules-default-content">
+    <v-container v-if="ready" class="back-content">
       <v-row v-if="alertRulesDefault.length > 0" dense>
         <ScaleTransition :duration="500" group style="width:100%;">
           <v-col
@@ -290,14 +290,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.save-bar {
-  margin-top: 0 !important;
-}
-
-.alertrules-default-content {
-  margin-top: 56px;
-}
-
 .alertrule-label {
   margin-bottom: 8px;
   font-size: 0.875rem !important;

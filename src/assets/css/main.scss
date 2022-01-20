@@ -236,6 +236,14 @@
   background-color: $color-orange-light !important;
   border-bottom: 1px solid #fff5e2 !important;
   box-shadow: none !important;
+
+  &.save-bar--back {
+    margin-top: 0px;
+  }
+}
+
+.back-content {
+  margin-top: 56px;
 }
 
 .save-button-mobile-wide {
@@ -356,15 +364,13 @@
   .ct-series {
     .ct-point {
       cursor: pointer;
-      stroke-width: 6px !important;
+      stroke-width: 5px !important;
       @include for-phone-only {
         stroke-width: 4px !important;
       }
     }
     .ct-line {
-      @include for-phone-only {
-        stroke-width: 3px !important;
-      }
+      stroke-width: 3px !important;
     }
     .ct-label:not(:last-child) {
       display: none;

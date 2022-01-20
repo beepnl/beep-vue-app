@@ -799,8 +799,8 @@ const translations = {
   commit_log_data_short: 'Protokolldaten importieren',
   commit_log_data:
     'Importiere Daten aus dieser Protokolldatei in die BEEP-App: ',
-  import_log_data_explanation:
-    "In der BEEP Base App kannst Du Protokolldaten aus dem internen Speicher der BEEP Base herunterladen. Jedes Mal, wenn Du Protokolldaten herunterlädst, wird der interne Speicher geleert und die Daten werden in die BEEP-App hochgeladen. Unten findest Du eine Liste der heruntergeladenen Protokolldaten. Du kannst die Daten in der Datenbank durch die Daten in den heruntergeladenen Protokolldateien ersetzen, indem Du auf die Schaltfläche 'Protokolldaten prüfen' klickst. Dadurch wird zunächst geprüft, wie viele Daten in der Datenbank ersetzt werden und ob die Zeit der Daten in der Protokolldatei korrekt ist. Du erhälst ein Bestätigungsfeld mit den entsprechenden Informationen und der Möglichkeit, die Ersetzung zu bestätigen oder abzulehnen.",
+  // import_log_data_explanation:
+  //   "In der BEEP Base App kannst Du Protokolldaten aus dem internen Speicher der BEEP Base herunterladen. Jedes Mal, wenn Du Protokolldaten herunterlädst, wird der interne Speicher geleert und die Daten werden in die BEEP-App hochgeladen. Unten findest Du eine Liste der heruntergeladenen Protokolldaten. Du kannst die Daten in der Datenbank durch die Daten in den heruntergeladenen Protokolldateien ersetzen, indem Du auf die Schaltfläche 'Protokolldaten prüfen' klickst. Dadurch wird zunächst geprüft, wie viele Daten in der Datenbank ersetzt werden und ob die Zeit der Daten in der Protokolldatei korrekt ist. Du erhälst ein Bestätigungsfeld mit den entsprechenden Informationen und der Möglichkeit, die Ersetzung zu bestätigen oder abzulehnen.",
   import_log_data_url_text:
     'Hier findest Du den Support-Artikel zum Herunterladen von Protokolldaten mit der BEEP-Basis-App.',
   import_log_data_support_url:
@@ -879,6 +879,16 @@ const translations = {
   only_active_if_measurement_present:
     '*N.B. the alert rule will only be active if the selected measurement is measured by your BEEP base / device',
   Relative_startpoint: 'Relative',
+
+  vcc: 'vcc',
+  bat_perc: 'battery percentage',
+  weight_sensor_amount: 'weight sensor amount',
+  ds18b20_sensor_amount: 'ds18b20 sensor amount',
+  Log_data: 'Log data',
+  Flashlog: 'Flashlog',
+  Block: 'Block',
+  import_log_data_explanation:
+    "In the BEEP base app you can download log data from the internal memory of the BEEP base. Every time you download log data, the internal memory gets cleared and the data gets uploaded to the BEEP app. Below is the list of your downloaded log data. You can replace the data in the database by the data inside the downloaded log files by clicking the button 'Check log data'. As a result of this check you will see blocks of data that may or may not contain matches. Per block that has matches you can view the data and choose to replace the data from the database by the data from the log file.",
 }
 
 export default translations

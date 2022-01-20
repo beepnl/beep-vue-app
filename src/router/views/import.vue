@@ -1,22 +1,7 @@
 <template>
   <Layout :title="$t('Log_data_import')">
     <v-container v-if="ready">
-      <v-row>
-        <v-col v-if="showCommitMessage" cols="12">
-          <v-alert
-            v-model="showCommitMessage"
-            text
-            prominent
-            dense
-            dismissible
-            type="success"
-            color="green"
-            class="mt-3 mb-n4"
-          >
-            {{ commitMessage }}
-          </v-alert>
-        </v-col>
-
+      <v-row v-if="userIsAdmin">
         <v-col v-if="errorMessage" cols="12">
           <v-alert
             text
@@ -31,54 +16,48 @@
         </v-col>
 
         <v-col v-if="flashLogs.length > 0" cols="12">
-          <div class="mb-2">
-            <div class="overline mt-0 mt-sm-3">
-              {{ $t('Log_files') }}
-              <v-icon
-                class="mdi mdi-information ml-1 icon-info cursor-pointer"
-                dark
-                small
-                color="accent"
-                @click="showInfo = !showInfo"
-              ></v-icon>
+          <div class="d-flex justify-space-between align-end">
+            <div class="mb-2">
+              <div class="overline mt-0 mt-sm-3">
+                {{ $t('Log_files') }}
+                <v-icon
+                  class="mdi mdi-information ml-1 icon-info cursor-pointer"
+                  dark
+                  small
+                  color="accent"
+                  @click="showInfo = !showInfo"
+                ></v-icon>
+              </div>
             </div>
-
-            <p v-if="showInfo" class="info-text">
-              <em
-                >{{ $t('import_log_data_explanation') + ' '
-                }}<a
-                  :href="$t('import_log_data_support_url')"
-                  target="_blank"
-                  >{{ $t('import_log_data_url_text') }}</a
-                ></em
-              >
-            </p>
-          </div>
-
-          <div>
             <v-spacer></v-spacer>
-            <v-slider
-              v-model="matchProps"
-              track-color="#b0b0b0"
-              min="5"
-              max="12"
-              step="1"
-            >
-              <template v-slot:thumb-label="props">
-                {{ props.value }}
-              </template>
-              <template v-slot:append>
-                <v-text-field
-                  v-model="matchProps"
-                  class="mt-0 pt-0"
-                  hide-details
-                  single-line
-                  type="number"
-                  style="width: 40px"
-                ></v-text-field>
-              </template>
-            </v-slider>
+            <div v-if="!mobile">
+              <div
+                class="beep-label"
+                v-text="$t('Nr_of_match_props') + matchProps"
+              ></div>
+              <v-slider
+                v-model="matchProps"
+                class="slider--default"
+                track-color="#b0b0b0"
+                min="5"
+                max="12"
+                step="1"
+                :tick-labels="['5', '6', '7', '8', '9', '10', '11', '12']"
+                ticks="always"
+                tick-size="4"
+              >
+              </v-slider>
+            </div>
           </div>
+
+          <p v-if="showInfo" class="info-text">
+            <em
+              >{{ $t('import_log_data_explanation') + ' '
+              }}<a :href="$t('import_log_data_support_url')" target="_blank">{{
+                $t('import_log_data_url_text')
+              }}</a></em
+            >
+          </p>
 
           <div class="rounded-border">
             <v-simple-table class="v-data-table--smallfont" dense>
@@ -231,6 +210,25 @@
               </template>
             </v-simple-table>
           </div>
+
+          <div v-if="mobile" class="mt-2">
+            <div
+              class="beep-label"
+              v-text="$t('Nr_of_match_props') + matchProps"
+            ></div>
+            <v-slider
+              v-model="matchProps"
+              class="slider--default"
+              track-color="#b0b0b0"
+              min="5"
+              max="12"
+              step="1"
+              :tick-labels="['5', '6', '7', '8', '9', '10', '11', '12']"
+              ticks="always"
+              tick-size="4"
+            >
+            </v-slider>
+          </div>
         </v-col>
         <v-col v-if="flashLogs.length === 0" cols="12">
           <span>
@@ -260,10 +258,10 @@
               >
                 <v-card-text>
                   <v-row :class="mobile ? 'font-small' : ''">
-                    <v-col cols="6" sm="3" lg="2">
-                      {{ momentify(log.db_time, true) }}
+                    <v-col cols="4" sm="3" lg="1">
+                      {{ $t('Block') + ': ' + log.block }}
                     </v-col>
-                    <v-col cols="6" sm="5" lg="3">
+                    <v-col cols="8" sm="5" lg="4">
                       {{ lengthText(log) }}
                     </v-col>
                     <v-col v-if="lgAndUp" cols="2">
@@ -281,30 +279,32 @@
                           : ''
                       }}
                     </v-col>
-                    <v-col
-                      v-if="log.matches !== undefined"
-                      sm="12"
-                      lg="2"
-                      class="d-flex justify-end"
-                    >
-                      <router-link
-                        :to="{
-                          name: `flashlog`,
-                          params: { id: currentLogId },
-                          query: { blockId: log.block },
-                        }"
-                      >
-                        <v-btn tile outlined color="black">
-                          <v-icon left>mdi-chart-line</v-icon>
-                          {{ $t('View_data') }}
-                        </v-btn>
-                      </router-link>
+                    <v-col v-if="log.matches !== undefined" sm="12" lg="2">
+                      <div class="d-flex justify-end">
+                        <router-link
+                          :to="{
+                            name: `flashlog`,
+                            params: { id: currentLogId },
+                            query: { blockId: log.block },
+                          }"
+                        >
+                          <v-btn tile outlined color="black">
+                            <v-icon left>mdi-chart-line</v-icon>
+                            {{ $t('View_data') }}
+                          </v-btn>
+                        </router-link>
+                      </div>
                     </v-col>
                   </v-row>
                 </v-card-text>
               </v-card>
             </template>
           </div>
+        </v-col>
+      </v-row>
+      <v-row v-else>
+        <v-col cols="12" class="text-center my-10">
+          {{ $t('no_admin') }}
         </v-col>
       </v-row>
     </v-container>
@@ -337,16 +337,14 @@ export default {
       showLoadingIconById: [],
       ready: false,
       flashLogs: [],
-      tryMessage: null,
-      commitMessage: null,
-      showCommitMessage: false,
       showInfo: false,
       currentLogId: null,
       currentLog: null,
-      matchProps: 8,
+      matchProps: 9,
     }
   },
   computed: {
+    ...mapGetters('auth', ['userIsAdmin']),
     ...mapGetters('devices', ['devices']),
     ...mapGetters('groups', ['groups']),
     ...mapGetters('locations', ['apiaries']),
@@ -412,7 +410,7 @@ export default {
   },
   methods: {
     async deleteFlashLog(id) {
-      this.clearMessages()
+      this.errorMessage = null
       try {
         await Api.deleteRequest('/flashlogs/', id)
         setTimeout(() => {
@@ -430,15 +428,12 @@ export default {
       }
     },
     async checkFlashLog(flashLog) {
-      this.clearMessages()
+      this.currentLog = null
+      this.errorMessage = null
       this.showLoadingIconById.push(flashLog.id)
       try {
         const response = await Api.readRequest(
-          '/flashlogs/' +
-            flashLog.id +
-            '?from_cache=0&match_props=' +
-            this.matchProps
-          // '?from_cache=0&matches_min=5&match_props=12&db_records=80'
+          '/flashlogs/' + flashLog.id + '?match_props=' + this.matchProps
         )
         this.showLoadingIconById.splice(
           this.showLoadingIconById.indexOf(flashLog.id),
@@ -464,25 +459,6 @@ export default {
         }
       }
     },
-    async commitFlashLog(flashLog) {
-      try {
-        const response = await Api.postRequest(
-          '/flashlogs/' + flashLog.id + '/commit'
-        )
-        this.commitMessage =
-          response.data.message || 'commit not yet implemented' // TODO: remove fallback
-        this.showCommitMessage = true
-      } catch (error) {
-        if (error.response) {
-          console.log(error.response)
-          const msg = error.response.data.message
-          this.errorMessage = this.$i18n.t(msg)
-        } else {
-          console.log('Error: ', error)
-          this.errorMessage = this.$i18n.t('something_wrong')
-        }
-      }
-    },
     async readFlashLogs() {
       try {
         const response = await Api.readRequest('/flashlogs')
@@ -495,36 +471,6 @@ export default {
           console.log('Error: ', error)
         }
       }
-    },
-    clearMessages() {
-      this.tryMessage = null
-      this.commitMessage = null
-      this.showCommitMessage = false
-      this.errorMessage = null
-    },
-    confirmCommitFlashLog(flashLog) {
-      this.$refs.confirm
-        .open(
-          this.$i18n.t('commit_log_data_short') +
-            ' - ' +
-            this.hiveName(flashLog.hive_id),
-          this.$i18n.t('commit_log_data') +
-            ' "' +
-            this.hiveName(flashLog.hive_id) +
-            ' - ' +
-            this.momentify(flashLog.created_at, true) +
-            '"?',
-          {
-            color: 'red',
-          },
-          this.tryMessage
-        )
-        .then((confirm) => {
-          this.commitFlashLog(flashLog.id)
-        })
-        .catch((reject) => {
-          return true
-        })
     },
     confirmDeleteFlashLog(flashLog) {
       this.$refs.confirm
