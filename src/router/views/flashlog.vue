@@ -1,31 +1,57 @@
 <template>
-  <Layout :title="$t('Log_data_import')">
+  <Layout :title="pageTitle">
     <v-container>
       <v-row>
         <v-col cols="12">
-          <v-progress-circular
+          <div
             v-if="loading"
-            color="primary"
-            size="50"
-            indeterminate
-          />
-          <div v-else class="charts">
+            class="d-flex align-center justify-center loading-wrapper"
+          >
+            <v-progress-circular color="primary" size="50" indeterminate />
+          </div>
+          <div v-else-if="blockData !== null" class="charts">
             <!-- <span>{{ databaseMeasurements }}</span>
             <span>{{ flashlogMeasurements }}</span> -->
-            <chartist
-              :class="`mb-4 mb-sm-6`"
-              ratio="ct-chart"
-              type="Line"
-              :data="
-                chartDataMultipleSeries(
-                  databaseMeasurements,
-                  // eslint-disable vue/comma-dangle
-                  flashlogMeasurements
-                )
-              "
-              :options="chartOptions('')"
-            >
-            </chartist>
+            <div class="pb-3">
+              <div
+                class="overline mt-0 mb-3 text-center"
+                v-text="'Flashlog'"
+              ></div>
+              <chartist
+                :class="'modulo-' + moduloNr + ' mb-8 mb-sm-12'"
+                ratio="ct-chart"
+                type="Line"
+                :data="
+                  chartDataMultipleSeries(
+                    // eslint-disable vue/comma-dangle
+                    flashlogMeasurements,
+                    true
+                  )
+                "
+                :options="chartOptions('')"
+              >
+              </chartist>
+            </div>
+            <div class="py-3">
+              <div
+                class="overline mt-0 mb-3 text-center"
+                v-text="'Database'"
+              ></div>
+              <chartist
+                :class="'modulo-' + moduloNr + ' mb-8 mb-sm-12'"
+                ratio="ct-chart"
+                type="Line"
+                :data="
+                  chartDataMultipleSeries(
+                    databaseMeasurements,
+                    false
+                    // eslint-disable vue/comma-dangle
+                  )
+                "
+                :options="chartOptions('')"
+              >
+              </chartist>
+            </div>
           </div>
         </v-col>
       </v-row>
@@ -65,6 +91,7 @@ export default {
       databaseMeasurements: [],
       flashlogMeasurements: [],
       // dummyDataShort,
+      moduloNr: 100,
     }
   },
   computed: {
@@ -81,6 +108,18 @@ export default {
     mobile() {
       return this.$vuetify.breakpoint.mobile
     },
+    pageTitle() {
+      return (
+        (!this.mobile ? this.$i18n.t('Log_data') + ' - ' : '') +
+        this.$i18n.t('Flashlog') +
+        ' ' +
+        this.flashLogId +
+        ' - ' +
+        this.$i18n.t('Block') +
+        ' ' +
+        this.blockId
+      )
+    },
   },
   created() {
     this.readTaxonomy().then(() => {
@@ -92,13 +131,17 @@ export default {
       this.loading = true
       try {
         const response = await Api.readRequest(
-          '/flashlogs/' +
-            this.flashLogId +
-            '?block_id=' +
-            this.blockId +
-            '&data_minutes=240' // TODO: remove / tweak?
+          '/flashlogs/' + this.flashLogId + '?block_id=' + this.blockId
+          // '&data_minutes=240' // TODO: remove / tweak?
         )
         this.blockData = response.data
+
+        if (this.blockData.flashlog.length) {
+          var entries = this.blockData.flashlog.length
+          this.moduloNr =
+            entries > 2000 ? 100 : entries > 1000 ? 36 : entries > 500 ? 12 : 1
+        }
+
         this.formatFlashlogData(this.blockData)
       } catch (error) {
         this.loading = false
@@ -112,28 +155,14 @@ export default {
         }
       }
     },
-    chartDataMultipleSeries(dbMts, flMts) {
+    chartDataMultipleSeries(Mts, useFlashlog = false) {
       var data = {
         labels: [],
         series: [],
       }
 
-      if (typeof this.blockData.flashlog !== 'undefined') {
-        dbMts.map((sensorName, index) => {
-          if (sensorName.indexOf('time') === -1) {
-            data.series.push({
-              // color: '#' + this.findMeasurementType(sensorName).hex_color,
-              color: 'silver',
-              name: 'database ' + sensorName,
-              data: [],
-              source: 'database',
-              abbr: sensorName,
-              className: sensorName,
-            })
-          }
-        })
-
-        flMts.map((sensorName, index) => {
+      if (typeof Mts !== 'undefined') {
+        Mts.map((sensorName, index) => {
           if (
             sensorName.indexOf('fft') === -1 &&
             sensorName.indexOf('time') === -1 &&
@@ -146,61 +175,59 @@ export default {
             data.series.push({
               // color: '#' + this.findMeasurementType(sensorName).hex_color,
               color: this.SENSOR_COLOR[sensorName],
-              name: 'flashlog ' + sensorName,
+              name: sensorName,
               data: [],
-              source: 'flashlog',
-              abbr: sensorName,
               className: sensorName,
             })
           }
         })
 
-        this.blockData.flashlog.map((measurement, index) => {
+        var dataSet = useFlashlog ? 'flashlog' : 'database'
+
+        this.blockData[dataSet].map((measurement, index) => {
           data.labels.push(measurement.time)
-          data.series
-            .filter((serie) => serie.source === 'flashlog')
-            .map((serie, index) => {
-              var currentSensor = serie.abbr
-              if (measurement[currentSensor] !== undefined) {
-                serie.data.push({
-                  meta:
-                    this.momentFormat(measurement.time, 'llll') +
-                    '<br>' +
-                    this.$i18n.t(currentSensor) +
-                    ': ' +
-                    measurement[currentSensor],
-                  // +
-                  // this.findMeasurementType(currentSensor).unit,
-                  value: measurement[currentSensor],
-                })
-              }
-            })
+          data.series.map((serie, index) => {
+            var currentSensor = serie.name
+            if (measurement[currentSensor] !== undefined) {
+              serie.data.push({
+                meta:
+                  this.momentFormat(measurement.time, 'llll') +
+                  '<br>' +
+                  this.$i18n.t(currentSensor) +
+                  ': ' +
+                  measurement[currentSensor],
+                // +
+                // this.findMeasurementType(currentSensor).unit,
+                value: measurement[currentSensor],
+              })
+            }
+          })
         })
 
-        this.blockData.database.map((measurement, index) => {
-          // data.labels.push(measurement.time)
-          var timePoint = this.blockData.flashlog[index].time
-          data.series
-            .filter((serie) => serie.source === 'database')
-            .map((serie, index) => {
-              var currentSensor = serie.abbr
-              if (measurement[currentSensor] !== undefined) {
-                // console.log(currentSensor, measurement[currentSensor])
-                serie.data.push({
-                  meta:
-                    this.momentFormat(timePoint, 'llll') +
-                    '<br>' +
-                    this.$i18n.t(currentSensor) +
-                    ': ' +
-                    (measurement[currentSensor] !== null
-                      ? measurement[currentSensor].toFixed(1)
-                      : measurement[currentSensor]) +
-                    this.findMeasurementType(currentSensor).unit,
-                  value: measurement[currentSensor],
-                })
-              }
-            })
-        })
+        // this.blockData.database.map((measurement, index) => {
+        //   // data.labels.push(measurement.time)
+        //   var timePoint = this.blockData.flashlog[index].time
+        //   data.series
+        //     .filter((serie) => serie.source === 'database')
+        //     .map((serie, index) => {
+        //       var currentSensor = serie.abbr
+        //       if (measurement[currentSensor] !== undefined) {
+        //         // console.log(currentSensor, measurement[currentSensor])
+        //         serie.data.push({
+        //           meta:
+        //             this.momentFormat(timePoint, 'llll') +
+        //             '<br>' +
+        //             this.$i18n.t(currentSensor) +
+        //             ': ' +
+        //             (measurement[currentSensor] !== null
+        //               ? measurement[currentSensor].toFixed(1)
+        //               : measurement[currentSensor]) +
+        //             this.findMeasurementType(currentSensor).unit,
+        //           value: measurement[currentSensor],
+        //         })
+        //       }
+        //     })
+        // })
       }
 
       data.series.map((serie) => {
@@ -212,7 +239,7 @@ export default {
       const self = this
       return {
         fullWidth: true,
-        height: '800px',
+        height: '400px',
         plugins: [
           this.$chartist.plugins.tooltip({
             class: 'beep-tooltip',
@@ -252,7 +279,11 @@ export default {
         axisX: {
           showGrid: true,
           labelInterpolationFnc(value, index) {
-            return self.momentFormat(value, 'llll')
+            if (index % self.moduloNr === 0) {
+              return self.momentFormat(value, 'llll')
+            } else {
+              return ''
+            }
           },
         },
       }
@@ -300,4 +331,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.loading-wrapper {
+  height: 90vh;
+}
+</style>

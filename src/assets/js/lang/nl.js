@@ -800,6 +800,9 @@ const translations = {
   bat_perc: 'battery percentage',
   weight_sensor_amount: 'weight sensor amount',
   ds18b20_sensor_amount: 'ds18b20 sensor amount',
+  Log_data: 'Log data',
+  Flashlog: 'Flashlog',
+  Block: 'Blok',
 }
 
 export default translations

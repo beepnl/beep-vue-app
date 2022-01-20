@@ -342,6 +342,9 @@
     &.modulo-60 .ct-grids .ct-grid.ct-horizontal:not(:nth-child(60n + 1)) {
       stroke: none !important;
     }
+    &.modulo-100 .ct-grids .ct-grid.ct-horizontal:not(:nth-child(100n + 1)) {
+      stroke: none !important;
+    }
     &.modulo-120 .ct-grids .ct-grid.ct-horizontal:not(:nth-child(120n + 1)) {
       stroke: none !important;
     }
