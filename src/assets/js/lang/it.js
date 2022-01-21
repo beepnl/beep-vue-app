@@ -779,8 +779,8 @@ const translations = {
   delete_log_file: 'Cancella file di registro',
   commit_log_data_short: 'Importa registro dati',
   commit_log_data: 'Importa nella app BEEP i dati da questo file di registro',
-  import_log_data_explanation:
-    "Nella app BEEPbase è possibile scaricare i dati di registro dalla memoria interna della base BEEP. Ogni volta che scarichi i dati di registro, la memoria interna viene cancellata e i dati vengono caricati sull'app BEEP. Di seguito è riportato l'elenco dei dati di registro scaricati. È possibile sostituire i dati nel database con i dati all'interno dei file di registro scaricati facendo clic sul pulsante 'Verifica dati di registro'. Questo controllerà prima quanti dati verranno sostituiti all'interno del database e se l'ora dei dati nel file di registro è corretta. Riceverai una finestra di conferma con le informazioni risultanti e la possibilità di procedere o negare la sostituzione.",
+  // import_log_data_explanation:
+  //   "Nella app BEEPbase è possibile scaricare i dati di registro dalla memoria interna della base BEEP. Ogni volta che scarichi i dati di registro, la memoria interna viene cancellata e i dati vengono caricati sull'app BEEP. Di seguito è riportato l'elenco dei dati di registro scaricati. È possibile sostituire i dati nel database con i dati all'interno dei file di registro scaricati facendo clic sul pulsante 'Verifica dati di registro'. Questo controllerà prima quanti dati verranno sostituiti all'interno del database e se l'ora dei dati nel file di registro è corretta. Riceverai una finestra di conferma con le informazioni risultanti e la possibilità di procedere o negare la sostituzione.",
   import_log_data_url_text:
     "Qui puoi trovare l'articolo a supporto della procedura di download dei dati diregistro con la app BEEP base",
   import_log_data_support_url:
@@ -858,6 +858,19 @@ const translations = {
   only_active_if_measurement_present:
     '*N.B. the alert rule will only be active if the selected measurement is measured by your BEEP base / device',
   Relative_startpoint: 'Relative',
+
+  Log_data: 'Log data',
+  Flashlog: 'Flashlog',
+  Block: 'Block',
+  Nr_of_match_props: 'Number of identical values per match: ',
+  no_admin: 'You must be an admin to view this page',
+  view_next_week: 'View next week',
+  view_prev_week: 'View previous week',
+  view_next_week_short: 'Next week',
+  view_prev_week_short: 'Previous week',
+  import_block_data_short: 'Import block data',
+  import_log_data_explanation:
+    "In the BEEP base app you can download log data from the internal memory of the BEEP base. Every time you download log data, the internal memory gets cleared and the data gets uploaded to the BEEP app. Below is the list of your downloaded log data. You can replace the data in the database by the data inside the downloaded log files by clicking the button 'Check log data'. As a result of this check you will see blocks of data that may or may not contain matches. Per block that has matches you can view the data and choose to replace the data from the database by the data from the log file.",
 }
 
 export default translations

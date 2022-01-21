@@ -716,7 +716,7 @@ const translations = {
   commit_log_data_short: 'Importeer log data',
   commit_log_data: 'Importeer data van dit logbestand naar de BEEP app: ',
   import_log_data_explanation:
-    "In de BEEP base app kan je log data downloaden van het interne geheugen van de BEEP base. Steeds als je log data downloadt, wordt het interne geheugen gewist en de data geüpload naar de BEEP app. Hieronder vind je de lijst met jouw gedownloade log data. Je kan de data in de database vervangen door de data uit de gedownloade logbestanden door op de knop 'Check log data' te klikken. Er zal dan eerst gecheckt worden hoeveel data in de database vervangen zal worden, en of de tijd van de data uit het logbestand klopt. Je ziet dan een pop-up waarin het resultaat van de check vermeld staat, waarbij je kan kiezen om het vervangen van de data toe te passen ('Ok') of te annuleren.",
+    "In de BEEP base app kan je log data downloaden van het interne geheugen van de BEEP base. Steeds als je log data downloadt, wordt het interne geheugen gewist en de data geüpload naar de BEEP app. Hieronder vind je de lijst met jouw gedownloade log data. Je kan de data in de database vervangen door de data uit de gedownloade logbestanden door op de knop 'Check log data' te klikken. Als resultaat van de check zie je dan blokken data die al dan niet matches hebben opgeleverd, waarbij je per blok met matches de data kan bekijken en kan kiezen om de data in de database te vervangen door die uit het logbestand.",
   import_log_data_url_text:
     'Lees hier het support artikel over het downloaden van log data m.b.v. de BEEP base app.',
   import_log_data_support_url:
@@ -783,12 +783,29 @@ const translations = {
   selection: 'Selectie',
   selection_placeholder: 'Selecteer een periode',
   data_zoom: 'Data inzoomen',
-  data_zoom_ok: 'Wil je inzoomen op de data van ',
+  data_zoom_ok: 'Wil je inzoomen naar de data van ',
+  Length: 'Lengte: ',
+  match: 'match | matches',
+  Matches_found: 'Matches gevonden',
+  Firmware_version: 'Firmware versie: ',
+  Interval: 'Interval: ',
+  View_data: 'Bekijk data',
   data_zoom_out_ok: 'Wil je uitzoomen naar de data van ',
   show_all: 'Toon alle',
   only_active_if_measurement_present:
     '*N.B. Notificaties worden alleen geactiveerd wanneer de geselecteerde meting door je BEEP base / meetsysteem gemeten wordt',
   Relative_startpoint: 'Relatief',
+
+  Log_data: 'Log data',
+  Flashlog: 'Flashlog',
+  Block: 'Blok',
+  Nr_of_match_props: 'Aantal gelijke waardes per match: ',
+  no_admin: 'Je moet beheerder zijn om deze pagina te kunnen bekijken',
+  view_next_week: 'Bekijk volgende week',
+  view_prev_week: 'Bekijk vorige week',
+  view_next_week_short: 'Volgende week',
+  view_prev_week_short: 'Vorige week',
+  import_block_data_short: 'Importeer blok data',
 }
 
 export default translations

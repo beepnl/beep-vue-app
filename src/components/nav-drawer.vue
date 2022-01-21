@@ -46,7 +46,8 @@
                 v-if="
                   item.title &&
                     ((item.beepBaseRequired && hasBeepBase) ||
-                      !item.beepBaseRequired)
+                      !item.beepBaseRequired) &&
+                    ((item.adminRequired && userIsAdmin) || !item.adminRequired)
                 "
                 :key="i"
                 exact
@@ -86,7 +87,7 @@
 
         <div class="version-number">
           <v-spacer></v-spacer>
-          v3.0.75
+          v3.0.76
         </div>
       </div>
     </v-navigation-drawer>
@@ -111,6 +112,7 @@ export default {
     },
   },
   computed: {
+    ...mapGetters('auth', ['userIsAdmin']),
     ...mapGetters('devices', ['devices', 'devicesPresent']),
     hasBeepBase() {
       if (this.devices.length > 0) {
@@ -131,42 +133,49 @@ export default {
           title: this.$i18n.t('Profile'),
           route: 'profile',
           beepBaseRequired: false,
+          adminRequired: false,
         },
         {
           icon: 'icon-sensors--no-outline',
           title: this.$i18n.tc('device', 2),
           route: 'devices',
           beepBaseRequired: false,
+          adminRequired: false,
         },
         {
           icon: 'mdi-bell',
           title: this.$i18n.t('alertrule_pagetitle'),
           route: 'alertrules',
           beepBaseRequired: false,
+          adminRequired: false,
         },
         {
           icon: 'mdi-cloud-download',
           title: this.$i18n.t('Data_export'),
           route: 'export',
           beepBaseRequired: false,
+          adminRequired: false,
         },
-        // {
-        //   icon: 'icon-beep-base',
-        //   title: this.$i18n.t('Log_data_import'),
-        //   route: 'import',
-        //   beepBaseRequired: true,
-        // },
+        {
+          icon: 'icon-beep-base',
+          title: this.$i18n.t('Log_data_import'),
+          route: 'import',
+          beepBaseRequired: true,
+          adminRequired: true,
+        },
         {
           icon: 'mdi-format-list-checks',
           title: this.$i18n.tc('Checklist_template', 2),
           route: 'checklists',
           beepBaseRequired: false,
+          adminRequired: false,
         },
         {
           icon: 'mdi-school',
           title: this.$i18n.t('research'),
           route: 'research',
           beepBaseRequired: false,
+          adminRequired: false,
         },
         {
           divider: true,
@@ -176,12 +185,14 @@ export default {
           title: this.$i18n.t('Support'),
           route: 'support',
           beepBaseRequired: false,
+          adminRequired: false,
         },
         {
           icon: 'mdi-new-box',
           title: this.$i18n.t('Whats_new'),
           route: 'new',
           beepBaseRequired: false,
+          adminRequired: false,
         },
         {
           icon: 'mdi-information-outline',
@@ -192,6 +203,7 @@ export default {
               ? 'https://beep.nl'
               : 'https://beep.nl/home-english',
           beepBaseRequired: false,
+          adminRequired: false,
         },
         {
           divider: true,

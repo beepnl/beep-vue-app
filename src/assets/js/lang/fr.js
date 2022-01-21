@@ -890,8 +890,8 @@ const translations = {
   commit_log_data_short: 'Importer les données de log',
   commit_log_data:
     "Importer les données de ce fichier de log vers l'application BEEP",
-  import_log_data_explanation:
-    "Dans l'application de base BEEP, vous pouvez télécharger les données de log à partir de la mémoire de la base BEEP. Chaque fois que vous téléchargez des données de log, la mémoire interne est effacée et les données sont téléchargées vers l'application BEEP. Vous trouverez ci-dessous la liste de vos données de log téléchargées. Vous pouvez remplacer les données de la base de données par les données contenues dans les fichiers de log téléchargés en cliquant sur le bouton « Vérifier les données de log ». Cela vérifiera d'abord combien de données seront remplacées dans la base de données et si l'heure des données dans le fichier de log est correcte. Vous recevrez une demande de confirmation avec les informations résultantes et la possibilité d'appliquer ou de refuser le remplacement. ",
+  // import_log_data_explanation:
+  //   "Dans l'application de base BEEP, vous pouvez télécharger les données de log à partir de la mémoire de la base BEEP. Chaque fois que vous téléchargez des données de log, la mémoire interne est effacée et les données sont téléchargées vers l'application BEEP. Vous trouverez ci-dessous la liste de vos données de log téléchargées. Vous pouvez remplacer les données de la base de données par les données contenues dans les fichiers de log téléchargés en cliquant sur le bouton « Vérifier les données de log ». Cela vérifiera d'abord combien de données seront remplacées dans la base de données et si l'heure des données dans le fichier de log est correcte. Vous recevrez une demande de confirmation avec les informations résultantes et la possibilité d'appliquer ou de refuser le remplacement. ",
   import_log_data_url_text:
     "Vous trouverez ici l'explication du téléchargement de données de log vers l'application BEEP.",
   import_log_data_support_url:
@@ -969,6 +969,19 @@ const translations = {
   only_active_if_measurement_present:
     '*N.B. the alert rule will only be active if the selected measurement is measured by your BEEP base / device',
   Relative_startpoint: 'Relative',
+
+  Log_data: 'Log data',
+  Flashlog: 'Flashlog',
+  Block: 'Block',
+  Nr_of_match_props: 'Number of identical values per match: ',
+  no_admin: 'You must be an admin to view this page',
+  view_next_week: 'View next week',
+  view_prev_week: 'View previous week',
+  view_next_week_short: 'Next week',
+  view_prev_week_short: 'Previous week',
+  import_block_data_short: 'Import block data',
+  import_log_data_explanation:
+    "In the BEEP base app you can download log data from the internal memory of the BEEP base. Every time you download log data, the internal memory gets cleared and the data gets uploaded to the BEEP app. Below is the list of your downloaded log data. You can replace the data in the database by the data inside the downloaded log files by clicking the button 'Check log data'. As a result of this check you will see blocks of data that may or may not contain matches. Per block that has matches you can view the data and choose to replace the data from the database by the data from the log file.",
 }
 
 export default translations

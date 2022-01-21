@@ -783,8 +783,8 @@ const translations = {
   commit_log_data_short: 'Importați datele înregistrate',
   commit_log_data:
     'Importați datele din acest fișier tip jurnal în aplicația BEEP: ',
-  import_log_data_explanation:
-    'În aplicația  BEEP puteți descărca datele jurnalului din memoria internă a bazei BEEP. De fiecare dată când descărcați datele jurnalului, memoria internă este ștearsă și datele sunt încărcate în aplicația BEEP. Mai jos este lista datelor de jurnal descărcate. Puteți înlocui datele din baza de date cu datele din fișierele tip jurnal descărcate făcând clic pe butonul „Verificare date jurnal”. Aceasta va verifica mai întâi câte date vor fi înlocuite în baza de date și dacă timpul și datele din fișierul tip jurnal este corect. Veți primi o pictogramă de confirmare cu informațiile rezultate și posibilitatea de a aplica sau de a refuza înlocuirea datelor.',
+  // import_log_data_explanation:
+  //   'În aplicația  BEEP puteți descărca datele jurnalului din memoria internă a bazei BEEP. De fiecare dată când descărcați datele jurnalului, memoria internă este ștearsă și datele sunt încărcate în aplicația BEEP. Mai jos este lista datelor de jurnal descărcate. Puteți înlocui datele din baza de date cu datele din fișierele tip jurnal descărcate făcând clic pe butonul „Verificare date jurnal”. Aceasta va verifica mai întâi câte date vor fi înlocuite în baza de date și dacă timpul și datele din fișierul tip jurnal este corect. Veți primi o pictogramă de confirmare cu informațiile rezultate și posibilitatea de a aplica sau de a refuza înlocuirea datelor.',
   import_log_data_url_text:
     'Aici puteți găsi articolul de asistență despre descărcarea datelor jurnalului cu aplicația BEEP.',
   import_log_data_support_url:
@@ -862,6 +862,19 @@ const translations = {
   only_active_if_measurement_present:
     '*N.B. the alert rule will only be active if the selected measurement is measured by your BEEP base / device',
   Relative_startpoint: 'Relative',
+
+  Log_data: 'Log data',
+  Flashlog: 'Flashlog',
+  Block: 'Block',
+  Nr_of_match_props: 'Number of identical values per match: ',
+  no_admin: 'You must be an admin to view this page',
+  view_next_week: 'View next week',
+  view_prev_week: 'View previous week',
+  view_next_week_short: 'Next week',
+  view_prev_week_short: 'Previous week',
+  import_block_data_short: 'Import block data',
+  import_log_data_explanation:
+    "In the BEEP base app you can download log data from the internal memory of the BEEP base. Every time you download log data, the internal memory gets cleared and the data gets uploaded to the BEEP app. Below is the list of your downloaded log data. You can replace the data in the database by the data inside the downloaded log files by clicking the button 'Check log data'. As a result of this check you will see blocks of data that may or may not contain matches. Per block that has matches you can view the data and choose to replace the data from the database by the data from the log file.",
 }
 
 export default translations

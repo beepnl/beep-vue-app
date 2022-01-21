@@ -28,6 +28,9 @@
     clickable: true,
     onClick: null,
     position: 'top',
+    simpleToggle: true,
+    inactiveByDefault: true,
+    activeClasses: [],
   }
 
   Chartist.plugins = Chartist.plugins || {}
@@ -130,7 +133,7 @@
         var li = document.createElement('li')
         var div = document.createElement('div')
         var span = document.createElement('span')
-        li.className = 'ct-series-' + i
+        li.className = 'ct-series-' + i + ' ' + chart.data.series[i].className
         div.className = 'ct-legend-square'
         // Append specific class to a legend element, if viable classes are given
         if (classNamesViable) {
@@ -156,6 +159,45 @@
         li.appendChild(span)
         legendElement.appendChild(li)
       })
+
+      if (options.inactiveByDefault) {
+        var allSeries = Array.prototype.slice.call(legendElement.childNodes)
+        allSeries.forEach(function(item) {
+          // TODO: add abbr classname to ct-series-i
+          var overlap =
+            options.activeClasses.length > 0
+              ? options.activeClasses.filter(function(e) {
+                  return item.classList.value.indexOf(e) > -1
+                })
+              : []
+          if (overlap.length === 0) {
+            item.classList.add('inactive')
+            removedSeries.push(parseInt(item.getAttribute('data-legend')))
+          }
+        })
+
+        // Reset the series to original and remove each series that
+        // is still removed again, to remain index order.
+        var seriesCopy = originalSeries.slice(0)
+        if (useLabels) {
+          var labelsCopy = originalLabels.slice(0)
+        }
+
+        // Reverse sort the removedSeries to prevent removing the wrong index.
+        removedSeries.sort(compareNumbers).reverse()
+
+        removedSeries.forEach(function(series) {
+          seriesCopy.splice(series, 1)
+          if (useLabels) {
+            labelsCopy.splice(series, 1)
+          }
+        })
+
+        chart.data.series = seriesCopy
+        if (useLabels) {
+          chart.data.labels = labelsCopy
+        }
+      }
 
       chart.on('created', function(data) {
         // Append the legend element to the DOM
@@ -196,47 +238,53 @@
           var clickedSeriesIndex = parseInt(
             clickedSeries.getAttribute('data-legend')
           )
-          var otherSeries = Array.prototype.slice.call(legendElement.childNodes)
-          otherSeries.splice(clickedSeriesIndex, 1)
-          var otherSeriesIndexArray = []
-          otherSeries.forEach(function(item) {
-            otherSeriesIndexArray.push(
-              parseInt(item.getAttribute('data-legend'))
-            )
-          })
+
           var removedSeriesIndex = removedSeries.indexOf(clickedSeriesIndex)
 
-          if (removedSeriesIndex > -1 && removedSeries.length === 1) {
-            // if clicked series is the only inactive series, make all series active again
-            removedSeries = []
-            clickedSeries.classList.remove('inactive')
-          } else if (removedSeriesIndex > -1 || removedSeries.length === 0) {
-            // if clicked series is inactive, or all series are active
-            // make clicked series active and all other series inactive
-            removedSeries = otherSeriesIndexArray
+          if (!options.simpleToggle) {
+            var otherSeries = Array.prototype.slice.call(
+              legendElement.childNodes
+            )
+            otherSeries.splice(clickedSeriesIndex, 1)
+            var otherSeriesIndexArray = []
             otherSeries.forEach(function(item) {
-              item.classList.add('inactive')
+              otherSeriesIndexArray.push(
+                parseInt(item.getAttribute('data-legend'))
+              )
             })
-            clickedSeries.classList.remove('inactive')
-          } else {
-            // if clicked series is active, make it inactive and all other series active
-            removedSeries = [clickedSeriesIndex]
-            clickedSeries.classList.add('inactive')
-            otherSeries.forEach(function(item) {
-              item.classList.remove('inactive')
-            })
-          }
 
-          // Alternative simple toggle:
-          // if (removedSeriesIndex > -1) {
-          //   // if clicked series is inactive, make it active
-          //   removedSeries.splice(removedSeriesIndex, 1)
-          //   clickedSeries.classList.remove('inactive')
-          // } else {
-          //   // if clicked series is active, make it inactive
-          //   removedSeries.push(clickedSeriesIndex)
-          //   clickedSeries.classList.add('inactive')
-          // }
+            if (removedSeriesIndex > -1 && removedSeries.length === 1) {
+              // if clicked series is the only inactive series, make all series active again
+              removedSeries = []
+              clickedSeries.classList.remove('inactive')
+            } else if (removedSeriesIndex > -1 || removedSeries.length === 0) {
+              // if clicked series is inactive, or all series are active
+              // make clicked series active and all other series inactive
+              removedSeries = otherSeriesIndexArray
+              otherSeries.forEach(function(item) {
+                item.classList.add('inactive')
+              })
+              clickedSeries.classList.remove('inactive')
+            } else {
+              // if clicked series is active, make it inactive and all other series active
+              removedSeries = [clickedSeriesIndex]
+              clickedSeries.classList.add('inactive')
+              otherSeries.forEach(function(item) {
+                item.classList.remove('inactive')
+              })
+            }
+          } else if (options.simpleToggle) {
+            // Alternative simple toggle:
+            if (removedSeriesIndex > -1) {
+              // if clicked series is inactive, make it active
+              removedSeries.splice(removedSeriesIndex, 1)
+              clickedSeries.classList.remove('inactive')
+            } else {
+              // if clicked series is active, make it inactive
+              removedSeries.push(clickedSeriesIndex)
+              clickedSeries.classList.add('inactive')
+            }
+          }
 
           // Reset the series to original and remove each series that
           // is still removed again, to remain index order.
