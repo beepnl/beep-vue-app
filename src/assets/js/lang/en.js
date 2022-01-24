@@ -783,6 +783,7 @@ const translations = {
   import_block_data_short: 'Import block data',
   no_flashlog_data: 'No log data',
   no_flashlog_file: 'No log file',
+  no_device: 'No device',
   data_not_stored: 'Data not stored',
   no_flashlog_found: 'No log file found',
   Size: 'Size',

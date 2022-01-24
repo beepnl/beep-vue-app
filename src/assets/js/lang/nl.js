@@ -808,6 +808,7 @@ const translations = {
   import_block_data_short: 'Importeer blok data',
   no_flashlog_data: 'Geen log data',
   no_flashlog_file: 'Geen logbestand',
+  no_device: 'Geen meetsysteem',
   data_not_stored: 'Data niet opgeslagen',
   no_flashlog_found: 'Geen logbestand gevonden',
   Size: 'Grootte',

@@ -1,6 +1,11 @@
 <template>
   <Layout :title="$t('Log_data_import')">
-    <v-toolbar v-if="!mobile" class="save-bar save-bar--back" dense light>
+    <v-toolbar
+      v-if="!mobile && userIsAdmin"
+      class="save-bar save-bar--back"
+      dense
+      light
+    >
       <v-spacer></v-spacer>
       <div class="beep-label" v-text="$t('Nr_of_match_props')"></div>
       <v-slider
