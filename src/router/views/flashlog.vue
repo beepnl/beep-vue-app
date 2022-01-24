@@ -305,7 +305,7 @@ export default {
             data.series.push({
               // color: '#' + this.findMeasurementType(sensorName).hex_color,
               color: this.SENSOR_COLOR[sensorName],
-              name: this.SENSOR_NAMES[sensorName],
+              name: this.$i18n.t(sensorName),
               data: [],
               className: sensorName,
             })
@@ -420,7 +420,9 @@ export default {
           otherMeasurements +=
             dataSerie.name +
             ': ' +
-            measurement[dataSerie.className] +
+            (dataSerie.className.indexOf('weight_kg') > -1
+              ? measurement[dataSerie.className].toFixed(3)
+              : measurement[dataSerie.className]) +
             (index !== dataSeries.length - 1 ? '<br>' : '')
         }
       })
