@@ -119,17 +119,7 @@
               </template>
 
               <template v-slot:[`item.bytes_received`]="{ item }">
-                <span
-                  v-text="
-                    (item.log_size_bytes / 1024 / 1024).toFixed(2) +
-                      'MB (' +
-                      (
-                        (item.bytes_received / item.log_size_bytes) *
-                        100
-                      ).toFixed(1) +
-                      '%)'
-                  "
-                ></span>
+                <span v-text="fileSizeText(item)"></span>
               </template>
 
               <template v-slot:[`item.actions`]="{ item }">
@@ -392,6 +382,10 @@ export default {
       return this.currentLog !== null
         ? 'Log ID: ' +
             this.currentLogId +
+            ', ' +
+            this.$i18n.tc('device', 1) +
+            ': ' +
+            this.currentLog.device +
             ', Time match: ' +
             this.currentLog.time_percentage +
             ', Weight match: ' +
@@ -511,6 +505,17 @@ export default {
         .catch((reject) => {
           return true
         })
+    },
+    fileSizeText(item) {
+      var nrOfMB = (item.bytes_received / 1024 / 1024).toFixed(2)
+      return (
+        nrOfMB +
+        'MB (' +
+        (item.log_size_bytes !== null
+          ? ((item.bytes_received / item.log_size_bytes) * 100).toFixed(1) + '%'
+          : this.$i18n.t('unknown')) +
+        ')'
+      )
     },
     matchesText(log) {
       var nrOfMatches = Object.keys(log.matches.matches).length
