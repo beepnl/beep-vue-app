@@ -787,8 +787,8 @@ const translations = {
   Length: 'Lengte: ',
   match: 'match | matches',
   Matches_found: 'Matches gevonden',
-  Firmware_version: 'Firmware versie: ',
-  Interval: 'Interval: ',
+  Firmware_version: 'Firmware versie',
+  Interval: 'Interval',
   View_data: 'Bekijk data',
   data_zoom_out_ok: 'Wil je uitzoomen naar de data van ',
   show_all: 'Toon alle',
@@ -810,6 +810,10 @@ const translations = {
   no_flashlog_file: 'Geen logbestand',
   data_not_stored: 'Data niet opgeslagen',
   no_flashlog_found: 'Geen logbestand gevonden',
+  Size: 'Grootte',
+  Match: 'Match | Matches',
+  Missing_data: 'Ontbrekende data',
+  not_yet_in_db: 'nog niet in DB',
 }
 
 export default translations

@@ -240,85 +240,65 @@
             >
           </span>
         </v-col>
+
         <v-col v-if="currentLog" cols="12">
           <div
             class="overline mt-0 mt-sm-3 mb-3"
             v-text="currentLogHeader"
           ></div>
-          <div>
-            <template v-for="(log, i) in currentLog.log">
-              <v-card
-                :key="'log' + i"
-                :class="
-                  'log-panel mb-3 ' +
-                    (log.matches !== undefined ? 'log-panel--matches' : '')
-                "
-                :disabled="log.no_matches !== undefined"
-                outlined
-              >
-                <v-card-text>
-                  <v-row>
-                    <v-col cols="6" sm="2" md="1">
-                      {{ $t('Block') + ': ' + log.block }}
-                    </v-col>
-                    <v-col cols="6" sm="2" lg="1">
-                      {{
-                        log.no_matches !== undefined
-                          ? log.no_matches.message
-                          : log.matches !== undefined
-                          ? $t('Matches_found')
-                          : ''
-                      }}
-                    </v-col>
-                    <v-col cols="6" sm="3">
-                      {{ lengthText(log) }}
-                    </v-col>
-                    <v-col cols="6" sm="2" md="3">
-                      {{
-                        momentify(
-                          log.time_start,
-                          true,
-                          smAndDown ? 'll' : 'lll'
-                        ) +
-                          ' - ' +
-                          momentify(
-                            log.time_end,
-                            true,
-                            smAndDown ? 'll' : 'lll'
-                          )
-                      }}
-                    </v-col>
-                    <v-col v-if="lgAndUp" cols="1">
-                      {{ $t('Firmware_version') + log.fw_version }}
-                    </v-col>
-                    <v-col v-if="lgAndUp" cols="1">
-                      {{ $t('Interval') + log.interval_min }}
-                    </v-col>
-                    <v-col
-                      v-if="log.matches !== undefined"
-                      cols="12"
-                      sm="3"
-                      lg="2"
-                    >
-                      <div class="d-flex justify-end">
-                        <router-link
-                          :to="{
-                            name: `flashlog`,
-                            params: { id: currentLogId },
-                            query: { blockId: log.block },
-                          }"
-                        >
-                          <v-btn :small="smAndDown" tile outlined color="black">
-                            <v-icon left>mdi-chart-line</v-icon>
-                            {{ $t('View_data') }}
-                          </v-btn>
-                        </router-link>
-                      </div>
-                    </v-col>
-                  </v-row>
-                </v-card-text>
-              </v-card>
-            </template>
+
+          <div class="rounded-border">
+            <v-data-table
+              :headers="logDataHeaders"
+              :items="currentLog.log"
+              :items-per-page="5"
+              :item-class="rowClass"
+              :search="logDataSearch"
+              :no-data-text="$t('no_data_text')"
+              :no-results-text="$t('no_results_text')"
+              multi-sort
+              class="elevation-0"
+            >
+              <template v-slot:[`item.matches`]="{ item }">
+                <span
+                  v-text="
+                    // eslint-disable vue/no-v-html
+                    matchesText(item)
+                  "
+                ></span>
+              </template>
+
+              <template v-slot:[`item.duration_hours`]="{ item }">
+                <span v-html="sizeText(item)"></span>
+              </template>
+
+              <template v-slot:[`item.dbCount`]="{ item }">
+                <span
+                  v-if="item.matches !== undefined"
+                  v-html="missingDataText(item)"
+                ></span>
+              </template>
+
+              <template v-slot:[`item.time_end`]="{ item }">
+                <span v-html="periodText(item)"></span>
+              </template>
+
+              <template v-slot:[`item.actions`]="{ item }">
+                <router-link
+                  v-if="item.matches !== undefined"
+                  :to="{
+                    name: `flashlog`,
+                    params: { id: currentLogId },
+                    query: { blockId: item.block },
+                  }"
+                >
+                  <v-btn :small="smAndDown" tile outlined color="black">
+                    <v-icon left>mdi-chart-line</v-icon>
+                    {{ $t('View_data') }}
+                  </v-btn>
+                </router-link>
+              </template>
+            </v-data-table>
           </div>
         </v-col>
       </v-row>
@@ -361,6 +341,32 @@ export default {
       currentLogId: null,
       currentLog: null,
       matchProps: 9,
+      logDataSearch: null,
+      logDataHeaders: [
+        { text: this.$i18n.t('Block'), value: 'block' },
+        { text: this.$i18n.tc('Match', 2), value: 'matches' },
+        {
+          text: this.$i18n.t('Size'),
+          value: 'duration_hours',
+        },
+        {
+          text: this.$i18n.t('Missing_data'),
+          value: 'dbCount',
+        },
+        {
+          text: this.$i18n.t('period'),
+          value: 'time_end',
+        },
+        {
+          text: this.$i18n.t('Firmware_version'),
+          value: 'fw_version',
+        },
+        {
+          text: this.$i18n.t('Interval') + ' (min)',
+          value: 'interval_min',
+        },
+        { text: this.$i18n.t('Actions'), sortable: false, value: 'actions' },
+      ],
     }
   },
   computed: {
@@ -530,14 +536,62 @@ export default {
         ? this.hives[hiveId].name
         : this.$i18n.tc('Hive_short', 1) + ' ' + this.$i18n.t('unknown')
     },
-    lengthText(log) {
+    matchesText(log) {
+      var nrOfMatches = 0
+      if (log.matches !== undefined) {
+        nrOfMatches = Object.keys(log.matches.matches).length
+      }
+
+      return log.no_matches !== undefined
+        ? log.no_matches.message
+        : log.matches !== undefined
+        ? this.$i18n.t('Matches_found') + ': ' + nrOfMatches
+        : ''
+    },
+    missingDataText(log) {
+      var ptNotInDb = this.percentageNotInDB(log)
+      return (
+        ptNotInDb +
+        '% ' +
+        this.$i18n.t('not_yet_in_db') +
+        '<br>' +
+        // this.momentHumanizeDuration(
+        //   log.duration_hours * (ptNotInDb / 100),
+        //   'hours',
+        //   this.$i18n.t('Length')
+        // )
+        '(' +
+        this.momentHumanizeDuration(
+          log.duration_hours * (ptNotInDb / 100),
+          'hours'
+        ) +
+        ')'
+      )
+    },
+    percentageNotInDB(log) {
+      return (100 * (1 - log.dbCount / log.setCount)).toFixed(1)
+    },
+    periodText(log) {
+      return (
+        this.momentify(log.time_start, true, this.smAndDown ? 'll' : 'lll') +
+        ' -<br>' +
+        this.momentify(log.time_end, true, this.smAndDown ? 'll' : 'lll')
+      )
+    },
+    rowClass(item) {
+      return item.matches === undefined
+        ? 'no-match-block'
+        : 'match-block ' +
+            (this.percentageNotInDB(item) > 10 ? 'much-missing' : 'few-missing')
+    },
+    sizeText(log) {
       return (
         this.momentHumanizeDuration(
           log.duration_hours,
           'hours',
           this.$i18n.t('Length')
         ) +
-        ', ' +
+        '<br>' +
         this.$i18n.t('Messages') +
         ': ' +
         (log.end_i - log.start_i).toString()
@@ -547,7 +601,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .progress-icon {
   margin-left: 6px;
 }
@@ -557,12 +611,16 @@ export default {
 .flashlog-selected {
   background-color: $color-orange-light;
 }
-.log-panel {
-  &.log-panel--matches {
-    background-color: $color-orange-medium;
+.match-block {
+  background-color: $color-orange-medium !important;
+  &.much-missing {
+    color: $color-green !important;
   }
-  &[aria-expanded='true'] {
-    height: auto !important;
+  &.few-missing {
+    color: $color-red !important;
   }
+}
+.no-match-block {
+  color: $color-grey-medium !important;
 }
 </style>

@@ -887,6 +887,13 @@ const translations = {
   data_zoom: 'Data zoom',
   data_zoom_ok: 'Would you like to zoom in on the data of ',
   data_zoom_out_ok: 'Would you like to zoom out to the data of ',
+
+  Length: 'Length: ',
+  match: 'match | matches',
+  Matches_found: 'Matches found',
+  Firmware_version: 'Firmware version',
+  Interval: 'Interval',
+  View_data: 'View data',
   show_all: 'Show all',
   only_active_if_measurement_present:
     '*N.B. the alert rule will only be active if the selected measurement is measured by your BEEP base / device',
@@ -908,6 +915,9 @@ const translations = {
   no_flashlog_file: 'No log file',
   data_not_stored: 'Data not stored',
   no_flashlog_found: 'No log file found',
+  Match: 'Match | Matches',
+  Missing_data: 'Missing data',
+  not_yet_in_db: 'not yet in DB',
 }
 
 export default translations
