@@ -206,16 +206,16 @@
           </span>
         </v-col>
 
-        <v-col v-if="currentLog" cols="12">
+        <v-col v-if="selectedFlashLog" ref="log-data" cols="12">
           <div
             class="overline primary--text mt-0 mt-sm-3 mb-3"
-            v-text="currentLogHeader"
+            v-text="selectedFlashLogHeader"
           ></div>
 
           <div class="rounded-border primary-border">
             <v-data-table
               :headers="logDataHeaders"
-              :items="currentLog.log"
+              :items="selectedFlashLog.log"
               :items-per-page="5"
               :item-class="rowClassLogData"
               :no-data-text="$t('no_data')"
@@ -268,7 +268,7 @@
                   v-if="item.matches !== undefined"
                   :to="{
                     name: `flashlog`,
-                    params: { id: currentLogId },
+                    params: { id: selectedFlashLog.flashlog_id },
                     query: { blockId: item.block },
                   }"
                 >
@@ -318,8 +318,6 @@ export default {
       ready: false,
       flashLogs: [],
       showInfo: false,
-      currentLogId: null,
-      currentLog: null,
       matchProps: 9,
       logDataHeaders: [
         { text: this.$i18n.t('Block'), value: 'block' },
@@ -378,24 +376,35 @@ export default {
     ...mapGetters('auth', ['userIsAdmin']),
     ...mapGetters('groups', ['groups']),
     ...mapGetters('locations', ['apiaries']),
-    currentLogHeader() {
-      return this.currentLog !== null
+    selectedFlashLog: {
+      get() {
+        return this.$store.getters['devices/selectedFlashLog']
+      },
+      set(value) {
+        this.$store.commit('devices/setData', {
+          prop: 'selectedFlashLog',
+          value,
+        })
+      },
+    },
+    selectedFlashLogHeader() {
+      return this.selectedFlashLog !== null
         ? 'Log ID: ' +
-            this.currentLogId +
+            this.selectedFlashLog.flashlog_id +
             ', ' +
             this.$i18n.tc('device', 1) +
             ': ' +
-            this.currentLog.device +
+            this.selectedFlashLog.device +
             ', Time match: ' +
-            this.currentLog.time_percentage +
+            this.selectedFlashLog.time_percentage +
             ', Weight match: ' +
-            this.currentLog.weight_percentage +
+            this.selectedFlashLog.weight_percentage +
             ', On/off blocks: ' +
-            this.currentLog.log.length +
+            this.selectedFlashLog.log.length +
             ', Lines: ' +
-            this.currentLog.lines_received +
+            this.selectedFlashLog.lines_received +
             ', Messages: ' +
-            this.currentLog.records_flashlog
+            this.selectedFlashLog.records_flashlog
         : ''
     },
     lgAndUp() {
@@ -438,7 +447,7 @@ export default {
       }
     },
     async checkFlashLog(flashLog) {
-      this.currentLog = null
+      this.selectedFlashLog = null
       this.errorMessage = null
       this.showLoadingIconById.push(flashLog.id)
       try {
@@ -449,16 +458,18 @@ export default {
           this.showLoadingIconById.indexOf(flashLog.id),
           1
         )
-        this.currentLog = response.data
-        this.currentLogId = flashLog.id
+        this.selectedFlashLog = response.data
+        setTimeout(() => {
+          this.scrollTo('log-data')
+        }, 100)
         // this.confirmCommitFlashLog(flashLog)
       } catch (error) {
         this.showLoadingIconById.splice(
           this.showLoadingIconById.indexOf(flashLog.id),
           1
         )
-        this.currentLog = null
-        this.currentLogId = null
+        this.selectedFlashLog = null
+        this.selectedFlashLog.flashlog_id = null
         if (error.response) {
           console.log(error.response)
           const msg = error.response.data.error
@@ -569,9 +580,17 @@ export default {
             (this.percentageNotInDB(item) > 10 ? 'much-missing' : 'few-missing')
     },
     rowClassLogFile(item) {
-      return item.id === this.currentLogId
+      return this.selectedFlashLog !== null &&
+        item.id === this.selectedFlashLog.flashlog_id
         ? 'flashlog-selected'
         : '' + (item.delete === true ? 'flashlog-delete' : '')
+    },
+    scrollTo(refName) {
+      var element = this.$refs[refName]
+      var offset = this.mobile ? 54 : 60
+      var top = element.offsetTop
+
+      window.scrollTo(0, top - offset)
     },
     sizeText(log) {
       return (
