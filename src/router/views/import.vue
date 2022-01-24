@@ -211,7 +211,7 @@
             </v-simple-table>
           </div>
 
-          <div v-if="mobile" class="mt-2">
+          <div v-if="mobile" class="mt-4 mt-sm-2">
             <div
               class="beep-label"
               v-text="$t('Nr_of_match_props') + matchProps"
@@ -257,20 +257,11 @@
                 outlined
               >
                 <v-card-text>
-                  <v-row :class="mobile ? 'font-small' : ''">
-                    <v-col cols="4" sm="3" lg="1">
+                  <v-row>
+                    <v-col cols="6" sm="2" md="1">
                       {{ $t('Block') + ': ' + log.block }}
                     </v-col>
-                    <v-col cols="8" sm="5" lg="4">
-                      {{ lengthText(log) }}
-                    </v-col>
-                    <v-col v-if="lgAndUp" cols="2">
-                      {{ $t('Firmware_version') + log.fw_version }}
-                    </v-col>
-                    <v-col v-if="lgAndUp" cols="1">
-                      {{ $t('Interval') + log.interval_min }}
-                    </v-col>
-                    <v-col sm="4" lg="2">
+                    <v-col cols="6" sm="2" lg="1">
                       {{
                         log.no_matches !== undefined
                           ? log.no_matches.message
@@ -279,7 +270,36 @@
                           : ''
                       }}
                     </v-col>
-                    <v-col v-if="log.matches !== undefined" sm="12" lg="2">
+                    <v-col cols="6" sm="3">
+                      {{ lengthText(log) }}
+                    </v-col>
+                    <v-col cols="6" sm="2" md="3">
+                      {{
+                        momentify(
+                          log.time_start,
+                          true,
+                          smAndDown ? 'll' : 'lll'
+                        ) +
+                          ' - ' +
+                          momentify(
+                            log.time_end,
+                            true,
+                            smAndDown ? 'll' : 'lll'
+                          )
+                      }}
+                    </v-col>
+                    <v-col v-if="lgAndUp" cols="1">
+                      {{ $t('Firmware_version') + log.fw_version }}
+                    </v-col>
+                    <v-col v-if="lgAndUp" cols="1">
+                      {{ $t('Interval') + log.interval_min }}
+                    </v-col>
+                    <v-col
+                      v-if="log.matches !== undefined"
+                      cols="12"
+                      sm="3"
+                      lg="2"
+                    >
                       <div class="d-flex justify-end">
                         <router-link
                           :to="{
@@ -288,7 +308,7 @@
                             query: { blockId: log.block },
                           }"
                         >
-                          <v-btn tile outlined color="black">
+                          <v-btn :small="smAndDown" tile outlined color="black">
                             <v-icon left>mdi-chart-line</v-icon>
                             {{ $t('View_data') }}
                           </v-btn>
@@ -399,6 +419,9 @@ export default {
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile
+    },
+    smAndDown() {
+      return this.$vuetify.breakpoint.smAndDown
     },
   },
   created() {
