@@ -153,7 +153,7 @@
                           small
                           outlined
                           class="mr-1"
-                          color="primary"
+                          color="accent"
                           :disabled="
                             showLoadingIconById.indexOf(flashLog.id) > -1
                           "
@@ -243,29 +243,41 @@
 
         <v-col v-if="currentLog" cols="12">
           <div
-            class="overline mt-0 mt-sm-3 mb-3"
+            class="overline primary--text mt-0 mt-sm-3 mb-3"
             v-text="currentLogHeader"
           ></div>
 
-          <div class="rounded-border">
+          <div class="rounded-border primary-border">
             <v-data-table
               :headers="logDataHeaders"
               :items="currentLog.log"
               :items-per-page="5"
               :item-class="rowClass"
-              :search="logDataSearch"
-              :no-data-text="$t('no_data_text')"
-              :no-results-text="$t('no_results_text')"
+              :no-data-text="$t('no_data')"
+              :no-results-text="$t('no_results')"
               multi-sort
               class="elevation-0"
             >
               <template v-slot:[`item.matches`]="{ item }">
                 <span
+                  v-if="
+                    item.matches === undefined && item.no_matches !== undefined
+                  "
                   v-text="
                     // eslint-disable vue/no-v-html
-                    matchesText(item)
+                    item.no_matches.message
                   "
                 ></span>
+                <v-tooltip
+                  v-if="item.matches !== undefined"
+                  top
+                  :max-width="mobile ? '350px' : ''"
+                >
+                  <template v-slot:activator="{ on }">
+                    <span v-on="on" v-text="matchesText(item)"></span>
+                  </template>
+                  <span v-html="matchesTooltip(item)"></span>
+                </v-tooltip>
               </template>
 
               <template v-slot:[`item.duration_hours`]="{ item }">
@@ -280,7 +292,10 @@
               </template>
 
               <template v-slot:[`item.time_end`]="{ item }">
-                <span v-html="periodText(item)"></span>
+                <span
+                  v-if="item.matches !== undefined"
+                  v-html="periodText(item)"
+                ></span>
               </template>
 
               <template v-slot:[`item.actions`]="{ item }">
@@ -292,7 +307,7 @@
                     query: { blockId: item.block },
                   }"
                 >
-                  <v-btn :small="smAndDown" tile outlined color="black">
+                  <v-btn :small="smAndDown" tile outlined color="accent">
                     <v-icon left>mdi-chart-line</v-icon>
                     {{ $t('View_data') }}
                   </v-btn>
@@ -341,7 +356,6 @@ export default {
       currentLogId: null,
       currentLog: null,
       matchProps: 9,
-      logDataSearch: null,
       logDataHeaders: [
         { text: this.$i18n.t('Block'), value: 'block' },
         { text: this.$i18n.tc('Match', 2), value: 'matches' },
@@ -537,16 +551,24 @@ export default {
         : this.$i18n.tc('Hive_short', 1) + ' ' + this.$i18n.t('unknown')
     },
     matchesText(log) {
-      var nrOfMatches = 0
-      if (log.matches !== undefined) {
-        nrOfMatches = Object.keys(log.matches.matches).length
-      }
-
-      return log.no_matches !== undefined
-        ? log.no_matches.message
-        : log.matches !== undefined
-        ? this.$i18n.t('Matches_found') + ': ' + nrOfMatches
-        : ''
+      var nrOfMatches = Object.keys(log.matches.matches).length
+      return this.$i18n.t('Matches_found') + ': ' + nrOfMatches
+    },
+    matchesTooltip(log) {
+      var tooltipText = ''
+      Object.entries(log.matches.matches).map(([key, value]) => {
+        var content = ''
+        Object.entries(value).map(([contentKey, contentValue]) => {
+          if (
+            contentKey !== 'flashlog_index' &&
+            contentKey !== 'minute_interval'
+          ) {
+            content += contentKey + ': ' + contentValue + ', '
+          }
+        })
+        tooltipText += key + ': ' + content + '<br><br>'
+      })
+      return tooltipText
     },
     missingDataText(log) {
       var ptNotInDb = this.percentageNotInDB(log)
@@ -555,11 +577,6 @@ export default {
         '% ' +
         this.$i18n.t('not_yet_in_db') +
         '<br>' +
-        // this.momentHumanizeDuration(
-        //   log.duration_hours * (ptNotInDb / 100),
-        //   'hours',
-        //   this.$i18n.t('Length')
-        // )
         '(' +
         this.momentHumanizeDuration(
           log.duration_hours * (ptNotInDb / 100),
@@ -612,7 +629,7 @@ export default {
   background-color: $color-orange-light;
 }
 .match-block {
-  background-color: $color-orange-medium !important;
+  // background-color: $color-orange-medium !important;
   &.much-missing {
     color: $color-green !important;
   }
