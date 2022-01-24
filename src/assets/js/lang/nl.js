@@ -716,7 +716,7 @@ const translations = {
   commit_log_data_short: 'Importeer log data',
   commit_log_data: 'Importeer data van dit logbestand naar de BEEP app: ',
   import_log_data_explanation:
-    "In de BEEP base app kan je log data downloaden van het interne geheugen van de BEEP base. Steeds als je log data downloadt, wordt het interne geheugen gewist en de data geüpload naar de BEEP app. Hieronder vind je de lijst met jouw gedownloade log data. Je kan de data in de database vervangen door de data uit de gedownloade logbestanden door op de knop 'Check log data' te klikken. Als resultaat van de check zie je dan blokken data die al dan niet matches hebben opgeleverd, waarbij je per blok met matches de data kan bekijken en kan kiezen om de data in de database te vervangen door die uit het logbestand.",
+    "In de BEEP base app kan je log data downloaden van het interne geheugen van de BEEP base. Steeds als je log data downloadt, wordt het interne geheugen gewist en de data geüpload naar de BEEP app. Hieronder vind je de lijst met jouw gedownloade log data. Je kan de log data bekijken door op de knop 'Check log data' te klikken. Als resultaat van de check zie je dan blokken data die al dan niet matches hebben opgeleverd met de data in de database. Per blok met matches kan je de log data en de database data onder elkaar in een grafiek bekijken, en ervoor kiezen om de data in de database aan te vullen met die uit het logbestand.",
   import_log_data_url_text:
     'Lees hier het support artikel over het downloaden van log data m.b.v. de BEEP base app.',
   import_log_data_support_url:
