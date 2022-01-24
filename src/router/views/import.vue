@@ -1,6 +1,24 @@
 <template>
   <Layout :title="$t('Log_data_import')">
-    <v-container v-if="ready">
+    <v-toolbar v-if="!mobile" class="save-bar save-bar--back" dense light>
+      <v-spacer></v-spacer>
+      <div class="beep-label" v-text="$t('Nr_of_match_props')"></div>
+      <v-slider
+        v-model="matchProps"
+        class="slider--default"
+        track-color="#b0b0b0"
+        min="5"
+        max="12"
+        step="1"
+        :tick-labels="['5', '6', '7', '8', '9', '10', '11', '12']"
+        ticks="always"
+        tick-size="4"
+        style="max-width: 200px;"
+      >
+      </v-slider>
+    </v-toolbar>
+
+    <v-container v-if="ready" :class="mobile ? '' : 'back-content'">
       <v-row v-if="userIsAdmin">
         <v-col v-if="errorMessage" cols="12">
           <v-alert
@@ -28,25 +46,6 @@
                   @click="showInfo = !showInfo"
                 ></v-icon>
               </div>
-            </div>
-            <v-spacer></v-spacer>
-            <div v-if="!mobile">
-              <div
-                class="beep-label"
-                v-text="$t('Nr_of_match_props') + matchProps"
-              ></div>
-              <v-slider
-                v-model="matchProps"
-                class="slider--default"
-                track-color="#b0b0b0"
-                min="5"
-                max="12"
-                step="1"
-                :tick-labels="['5', '6', '7', '8', '9', '10', '11', '12']"
-                ticks="always"
-                tick-size="4"
-              >
-              </v-slider>
             </div>
           </div>
 
