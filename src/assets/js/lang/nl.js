@@ -806,6 +806,10 @@ const translations = {
   view_next_week_short: 'Volgende week',
   view_prev_week_short: 'Vorige week',
   import_block_data_short: 'Importeer blok data',
+  no_flashlog_data: 'Geen log data',
+  no_flashlog_file: 'Geen logbestand',
+  data_not_stored: 'Data niet opgeslagen',
+  no_flashlog_found: 'Geen logbestand gevonden',
 }
 
 export default translations

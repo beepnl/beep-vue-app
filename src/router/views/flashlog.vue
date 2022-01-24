@@ -255,7 +255,7 @@ export default {
         this.loading = false
         if (error.response) {
           console.log(error.response)
-          const msg = error.response.data.message
+          const msg = error.response.data.error
           this.errorMessage = this.$i18n.t(msg)
         } else {
           console.log('Error: ', error)
@@ -277,7 +277,7 @@ export default {
         this.showLoadingIcon = false
         if (error.response) {
           console.log(error.response)
-          const msg = error.response.data.message
+          const msg = error.response.data.error
           this.errorMessage = this.$i18n.t(msg)
         } else {
           console.log('Error: ', error)
@@ -369,6 +369,7 @@ export default {
       }
     },
     clearMessages() {
+      this.showCommitMessage = false
       this.commitMessage = null
       this.errorMessage = null
     },

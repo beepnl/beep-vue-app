@@ -781,6 +781,10 @@ const translations = {
   view_next_week_short: 'Next week',
   view_prev_week_short: 'Previous week',
   import_block_data_short: 'Import block data',
+  no_flashlog_data: 'No log data',
+  no_flashlog_file: 'No log file',
+  data_not_stored: 'Data not stored',
+  no_flashlog_found: 'No log file found',
 }
 
 export default translations

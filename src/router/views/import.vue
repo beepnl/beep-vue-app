@@ -442,7 +442,7 @@ export default {
       } catch (error) {
         if (error.response) {
           console.log(error.response)
-          const msg = error.response.data.message
+          const msg = error.response.data.error
           this.errorMessage = this.$i18n.t(msg)
         } else {
           console.log('Error: ', error)
@@ -474,7 +474,7 @@ export default {
         this.currentLogId = null
         if (error.response) {
           console.log(error.response)
-          const msg = error.response.data.message
+          const msg = error.response.data.error
           this.errorMessage = this.$i18n.t(msg)
         } else {
           console.log('Error: ', error)
@@ -489,9 +489,12 @@ export default {
         return true
       } catch (error) {
         if (error.response) {
-          console.log('Error: ', error.response)
+          console.log(error.response)
+          const msg = error.response.data.error
+          this.errorMessage = this.$i18n.t(msg)
         } else {
           console.log('Error: ', error)
+          this.errorMessage = this.$i18n.t('something_wrong')
         }
       }
     },
