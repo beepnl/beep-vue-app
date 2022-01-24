@@ -60,87 +60,69 @@
             <v-progress-circular color="primary" size="50" indeterminate />
           </div>
           <div v-else-if="blockData !== null" class="charts">
-            <div class="pt-0 pt-sm-2 pb-3">
+            <template v-for="(dataSet, index) in dataSets">
               <div
-                class="overline mt-0 mb-3 text-center"
-                v-text="'Flashlog'"
-              ></div>
-              <chartist
-                :class="'modulo-' + moduloNr + ' mb-8 mb-sm-12'"
-                ratio="ct-chart"
-                type="Line"
-                :data="chartDataMultipleSeries('flashlog')"
-                :options="chartOptions('')"
+                v-if="measurements[dataSet] !== undefined"
+                :key="'dataSet' + index"
+                class="pt-0 pt-sm-2 pb-5"
               >
-              </chartist>
-            </div>
-            <div class="py-3">
-              <div
-                class="overline mt-0 mb-3 text-center"
-                v-text="'Database'"
-              ></div>
-              <chartist
-                :class="'modulo-' + moduloNr + ' mb-8 mb-sm-12'"
-                ratio="ct-chart"
-                type="Line"
-                :data="chartDataMultipleSeries('database')"
-                :options="chartOptions('')"
-              >
-              </chartist>
+                <div
+                  class="overline mt-0 mb-3 text-center"
+                  v-text="dataSet"
+                ></div>
+                <chartist
+                  :class="'modulo-' + moduloNr + ' mb-8 mb-sm-12'"
+                  ratio="ct-chart"
+                  type="Line"
+                  :data="chartDataMultipleSeries(dataSet)"
+                  :options="chartOptions()"
+                >
+                </chartist>
+              </div>
+            </template>
 
-              <v-row class="pt-8">
-                <v-col cols="12">
-                  <div class="d-flex justify-space-between">
-                    <v-btn
-                      v-if="blockDataIndex !== 0"
-                      tile
-                      outlined
-                      color="accent"
-                      :disabled="loading"
-                      @click="changeBlockDataIndex(blockDataIndex - 1)"
-                    >
-                      <v-progress-circular
-                        v-if="loading"
-                        class="ml-n1 mr-2"
-                        size="18"
-                        width="2"
-                        color="disabled"
-                        indeterminate
-                      />
-                      <v-icon v-if="!loading" left>mdi-chevron-left</v-icon>
-                      {{
-                        mobile
-                          ? $t('view_prev_week_short')
-                          : $t('view_prev_week')
-                      }}</v-btn
-                    >
-                    <v-spacer />
-                    <v-btn
-                      v-if="blockDataIndex !== blockData.block_data_index_max"
-                      tile
-                      outlined
-                      color="accent"
-                      :disabled="loading"
-                      @click="changeBlockDataIndex(blockDataIndex + 1)"
-                    >
-                      <v-progress-circular
-                        v-if="loading"
-                        class="ml-n1 mr-2"
-                        size="18"
-                        width="2"
-                        color="disabled"
-                        indeterminate
-                      />
-                      {{
-                        mobile
-                          ? $t('view_next_week_short')
-                          : $t('view_next_week')
-                      }}
-                      <v-icon v-if="!loading" right>mdi-chevron-right</v-icon>
-                    </v-btn>
-                  </div>
-                </v-col>
-              </v-row>
+            <div class="mt-6 d-flex justify-space-between" style="width:100%">
+              <v-btn
+                v-if="blockDataIndex !== 0"
+                tile
+                outlined
+                color="accent"
+                :disabled="loading"
+                @click="changeBlockDataIndex(blockDataIndex - 1)"
+              >
+                <v-progress-circular
+                  v-if="loading"
+                  class="ml-n1 mr-2"
+                  size="18"
+                  width="2"
+                  color="disabled"
+                  indeterminate
+                />
+                <v-icon v-if="!loading" left>mdi-chevron-left</v-icon>
+                {{
+                  mobile ? $t('view_prev_week_short') : $t('view_prev_week')
+                }}</v-btn
+              >
+              <v-spacer />
+              <v-btn
+                v-if="blockDataIndex !== blockData.block_data_index_max"
+                tile
+                outlined
+                color="accent"
+                :disabled="loading"
+                @click="changeBlockDataIndex(blockDataIndex + 1)"
+              >
+                <v-progress-circular
+                  v-if="loading"
+                  class="ml-n1 mr-2"
+                  size="18"
+                  width="2"
+                  color="disabled"
+                  indeterminate
+                />
+                {{ mobile ? $t('view_next_week_short') : $t('view_next_week') }}
+                <v-icon v-if="!loading" right>mdi-chevron-right</v-icon>
+              </v-btn>
             </div>
           </div>
         </v-col>
@@ -189,7 +171,7 @@ export default {
       commitMessage: '',
       showCommitMessage: false,
       showLoadingIcon: false,
-      dataSets: ['database', 'flashlog'],
+      dataSets: ['flashlog', 'database'],
     }
   },
   computed: {
@@ -334,7 +316,7 @@ export default {
 
       return data
     },
-    chartOptions(unit = '') {
+    chartOptions() {
       const self = this
       return {
         fullWidth: true,
@@ -416,7 +398,8 @@ export default {
       dataSeries.map((dataSerie, index) => {
         if (
           dataSerie.className !== currentSensor &&
-          measurement[dataSerie.className] !== null
+          measurement[dataSerie.className] !== null &&
+          measurement[dataSerie.className] !== undefined
         ) {
           otherMeasurements +=
             dataSerie.name +
