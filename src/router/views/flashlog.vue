@@ -1,6 +1,19 @@
 <template>
   <Layout :title="pageTitle">
     <v-toolbar class="save-bar save-bar--back" dense light>
+      <v-btn
+        v-if="!smAndDown && blockData !== null && blockDataIndex !== 0"
+        tile
+        outlined
+        color="accent"
+        :disabled="loading"
+        @click="changeBlockDataIndex(blockDataIndex - 1)"
+      >
+        <v-icon left>mdi-chevron-left</v-icon>
+        {{
+          mdAndDown ? $t('view_prev_week_short') : $t('view_prev_week')
+        }}</v-btn
+      >
       <v-spacer></v-spacer>
       <v-btn
         tile
@@ -21,9 +34,57 @@
         <v-icon v-if="!showLoadingIcon" left>mdi-import</v-icon>
         {{ $t('import_block_data_short') }}
       </v-btn>
+      <v-btn
+        v-if="
+          !smAndDown &&
+            blockData !== null &&
+            blockDataIndex !== blockData.block_data_index_max
+        "
+        tile
+        outlined
+        color="accent"
+        :disabled="loading"
+        @click="changeBlockDataIndex(blockDataIndex + 1)"
+      >
+        {{ mdAndDown ? $t('view_next_week_short') : $t('view_next_week') }}
+        <v-icon right>mdi-chevron-right</v-icon>
+      </v-btn>
     </v-toolbar>
 
     <v-container class="back-content">
+      <div
+        v-if="smAndDown && userIsAdmin"
+        class="mt-n2 mb-4 d-flex justify-space-between"
+        style="width:100%"
+      >
+        <v-btn
+          v-if="blockData !== null && blockDataIndex !== 0"
+          tile
+          outlined
+          color="accent"
+          :disabled="loading"
+          @click="changeBlockDataIndex(blockDataIndex - 1)"
+        >
+          <v-icon left>mdi-chevron-left</v-icon>
+          {{ $t('view_prev_week_short') }}</v-btn
+        >
+        <v-spacer />
+        <v-btn
+          v-if="
+            blockData !== null &&
+              blockDataIndex !== blockData.block_data_index_max
+          "
+          tile
+          outlined
+          color="accent"
+          :disabled="loading"
+          @click="changeBlockDataIndex(blockDataIndex + 1)"
+        >
+          {{ $t('view_next_week_short') }}
+          <v-icon right>mdi-chevron-right</v-icon>
+        </v-btn>
+      </div>
+
       <v-row v-if="userIsAdmin">
         <v-col v-if="showCommitMessage" cols="12">
           <v-alert
@@ -52,6 +113,7 @@
             {{ errorMessage }}
           </v-alert>
         </v-col>
+
         <v-col cols="12">
           <div
             v-if="!ready || blockData === null"
@@ -59,12 +121,13 @@
           >
             <v-progress-circular color="primary" size="50" indeterminate />
           </div>
-          <div v-else-if="blockData !== null" class="charts">
+
+          <div v-if="blockData !== null" class="charts">
             <template v-for="(dataSet, index) in dataSets">
               <div
                 v-if="measurements[dataSet] !== undefined"
                 :key="'dataSet' + index"
-                class="pt-0 pt-sm-2 pb-5"
+                class="pt-0 pb-5"
               >
                 <div
                   class="overline mt-0 mb-3 text-center"
@@ -80,49 +143,25 @@
                 </chartist>
               </div>
             </template>
-
-            <div class="mt-6 d-flex justify-space-between" style="width:100%">
-              <v-btn
-                v-if="blockDataIndex !== 0"
-                tile
-                outlined
-                color="accent"
-                :disabled="loading"
-                @click="changeBlockDataIndex(blockDataIndex - 1)"
-              >
-                <v-progress-circular
-                  v-if="loading"
-                  class="ml-n1 mr-2"
-                  size="18"
-                  width="2"
-                  color="disabled"
-                  indeterminate
-                />
-                <v-icon v-if="!loading" left>mdi-chevron-left</v-icon>
-                {{
-                  mobile ? $t('view_prev_week_short') : $t('view_prev_week')
-                }}</v-btn
-              >
-              <v-spacer />
-              <v-btn
-                v-if="blockDataIndex !== blockData.block_data_index_max"
-                tile
-                outlined
-                color="accent"
-                :disabled="loading"
-                @click="changeBlockDataIndex(blockDataIndex + 1)"
-              >
-                <v-progress-circular
-                  v-if="loading"
-                  class="ml-n1 mr-2"
-                  size="18"
-                  width="2"
-                  color="disabled"
-                  indeterminate
-                />
-                {{ mobile ? $t('view_next_week_short') : $t('view_next_week') }}
-                <v-icon v-if="!loading" right>mdi-chevron-right</v-icon>
-              </v-btn>
+            <div class="d-flex flex-column mt-3">
+              <span
+                class="beep-label"
+                v-text="
+                  $t('Match_percentage') +
+                    ': ' +
+                    blockData.block_data_match_percentage
+                "
+              ></span>
+              <span
+                class="beep-label"
+                v-text="
+                  $t('Sec_diff') +
+                    ': ' +
+                    (blockData.block_data_flashlog_sec_diff !== null
+                      ? blockData.block_data_flashlog_sec_diff.toFixed(1)
+                      : $t('unknown'))
+                "
+              ></span>
             </div>
           </div>
         </v-col>
@@ -197,13 +236,24 @@ export default {
         this.blockId
       )
     },
+    mdAndDown() {
+      return this.$vuetify.breakpoint.mdAndDown
+    },
     mobile() {
       return this.$vuetify.breakpoint.mobile
     },
     pageTitle() {
       return (
-        (!this.mobile ? this.$i18n.t('Log_data') + ' - ' : '') + this.logDetails
+        (!this.mobile
+          ? this.$i18n.t('Log_data') +
+            ' - ' +
+            (this.blockData !== null ? this.blockData.device_name + ' - ' : '')
+          : '') + this.logDetails
       )
+    },
+
+    smAndDown() {
+      return this.$vuetify.breakpoint.smAndDown
     },
   },
   created() {
@@ -320,7 +370,7 @@ export default {
       const self = this
       return {
         fullWidth: true,
-        height: '400px',
+        height: '300px',
         plugins: [
           this.$chartist.plugins.tooltip({
             class: 'beep-tooltip',
@@ -359,7 +409,12 @@ export default {
       this.$refs.confirm
         .open(
           this.$i18n.t('import_block_data_short'),
-          this.$i18n.t('commit_log_data') + ' "' + this.logDetails + '"?',
+          this.$i18n.t('commit_block_data') +
+            ' "' +
+            this.blockData.device_name +
+            ' - ' +
+            this.logDetails +
+            '"?',
           {
             color: 'red',
           }

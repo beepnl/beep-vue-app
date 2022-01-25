@@ -772,9 +772,9 @@ const translations = {
   Relative_startpoint: 'Relative',
 
   Log_data: 'Log data',
-  Flashlog: 'Flashlog',
+  Flashlog: 'Log',
   Block: 'Block',
-  Nr_of_match_props: 'Number of identical values per match: ',
+  Nr_of_match_props: 'Number of identical values per match',
   no_admin: 'You must be an admin to view this page',
   view_next_week: 'View next week',
   view_prev_week: 'View previous week',
@@ -790,6 +790,11 @@ const translations = {
   Match: 'Match | Matches',
   Missing_data: 'Missing data',
   not_yet_in_db: 'not yet in DB',
+  From_cache: 'From cache',
+  Match_percentage: 'Match percentage',
+  Sec_diff: 'Time difference (sec)',
+  commit_block_data:
+    'Supplement BEEP app data with data from this log data block: ',
 }
 
 export default translations

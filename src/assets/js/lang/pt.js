@@ -899,18 +899,18 @@ const translations = {
     '*N.B. the alert rule will only be active if the selected measurement is measured by your BEEP base / device',
   Relative_startpoint: 'Relative',
 
+  import_log_data_explanation:
+    "In the BEEP base app you can download log data from the internal memory of the BEEP base. Every time you download log data, the internal memory gets cleared and the data gets uploaded to the BEEP app. Below is the list of your downloaded log data. You can view the log data by clicking the button 'Check log data'. As a result of this check you will see blocks of data that may or may not contain matches with the database data. For each block that contains matches you can view the log data and database data in a chart, and choose to supplement the data in the database with the log data.",
   Log_data: 'Log data',
-  Flashlog: 'Flashlog',
+  Flashlog: 'Log',
   Block: 'Block',
-  Nr_of_match_props: 'Number of identical values per match: ',
+  Nr_of_match_props: 'Number of identical values per match',
   no_admin: 'You must be an admin to view this page',
   view_next_week: 'View next week',
   view_prev_week: 'View previous week',
   view_next_week_short: 'Next week',
   view_prev_week_short: 'Previous week',
   import_block_data_short: 'Import block data',
-  import_log_data_explanation:
-    "In the BEEP base app you can download log data from the internal memory of the BEEP base. Every time you download log data, the internal memory gets cleared and the data gets uploaded to the BEEP app. Below is the list of your downloaded log data. You can view the log data by clicking the button 'Check log data'. As a result of this check you will see blocks of data that may or may not contain matches with the database data. For each block that contains matches you can view the log data and database data in a chart, and choose to supplement the data in the database with the log data.",
   no_flashlog_data: 'No log data',
   no_flashlog_file: 'No log file',
   no_device: 'No device',
@@ -919,6 +919,11 @@ const translations = {
   Match: 'Match | Matches',
   Missing_data: 'Missing data',
   not_yet_in_db: 'not yet in DB',
+  From_cache: 'From cache',
+  Match_percentage: 'Match percentage',
+  Sec_diff: 'Time difference (sec)',
+  commit_block_data:
+    'Supplement BEEP app data with data from this log data block: ',
 }
 
 export default translations

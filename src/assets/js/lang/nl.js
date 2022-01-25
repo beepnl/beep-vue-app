@@ -797,9 +797,9 @@ const translations = {
   Relative_startpoint: 'Relatief',
 
   Log_data: 'Log data',
-  Flashlog: 'Flashlog',
+  Flashlog: 'Log',
   Block: 'Blok',
-  Nr_of_match_props: 'Aantal gelijke waardes per match: ',
+  Nr_of_match_props: 'Aantal gelijke waardes per match',
   no_admin: 'Je moet beheerder zijn om deze pagina te kunnen bekijken',
   view_next_week: 'Bekijk volgende week',
   view_prev_week: 'Bekijk vorige week',
@@ -815,6 +815,11 @@ const translations = {
   Match: 'Match | Matches',
   Missing_data: 'Ontbrekende data',
   not_yet_in_db: 'nog niet in DB',
+  From_cache: 'Gebruik cache',
+  Match_percentage: 'Percentage matches',
+  Sec_diff: 'Tijdsverschil (sec)',
+  commit_block_data:
+    'Vul data in de BEEP app aan met data uit dit blok van de log data: ',
 }
 
 export default translations

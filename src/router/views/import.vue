@@ -7,7 +7,14 @@
       light
     >
       <v-spacer></v-spacer>
-      <div class="beep-label" v-text="$t('Nr_of_match_props')"></div>
+      <div class="beep-label mr-1" v-text="$t('From_cache') + ': '"></div>
+      <v-switch
+        v-model="fromCache"
+        class="pt-0 mt-0 mr-2"
+        dense
+        hide-details
+      ></v-switch>
+      <div class="beep-label" v-text="$t('Nr_of_match_props') + ': '"></div>
       <v-slider
         v-model="matchProps"
         class="slider--default"
@@ -176,25 +183,34 @@
             </v-data-table>
           </div>
 
-          <div v-if="mobile" class="mt-4 mt-sm-2">
-            <div
-              class="beep-label"
-              v-text="$t('Nr_of_match_props') + matchProps"
-            ></div>
-            <v-slider
-              v-model="matchProps"
-              class="slider--default"
-              track-color="#b0b0b0"
-              min="5"
-              max="12"
-              step="1"
-              :tick-labels="['5', '6', '7', '8', '9', '10', '11', '12']"
-              ticks="always"
-              tick-size="4"
-            >
-            </v-slider>
+          <div v-if="mobile" class="mt-4 mt-sm-2 d-flex flex-row">
+            <div class="mr-6">
+              <div class="beep-label ml-1 mb-4" v-text="$t('From_cache')"></div>
+              <v-switch
+                v-model="fromCache"
+                class="pt-0 mt-0"
+                dense
+                hide-details
+              ></v-switch>
+            </div>
+            <div>
+              <div class="beep-label" v-text="$t('Nr_of_match_props')"></div>
+              <v-slider
+                v-model="matchProps"
+                class="slider--default"
+                track-color="#b0b0b0"
+                min="5"
+                max="12"
+                step="1"
+                :tick-labels="['5', '6', '7', '8', '9', '10', '11', '12']"
+                ticks="always"
+                tick-size="4"
+              >
+              </v-slider>
+            </div>
           </div>
         </v-col>
+
         <v-col v-if="flashLogs.length === 0" cols="12">
           <span>
             <em
@@ -370,6 +386,7 @@ export default {
         },
         { text: this.$i18n.t('Actions'), sortable: false, value: 'actions' },
       ],
+      fromCache: true,
     }
   },
   computed: {
@@ -394,7 +411,7 @@ export default {
             ', ' +
             this.$i18n.tc('device', 1) +
             ': ' +
-            this.selectedFlashLog.device +
+            this.selectedFlashLog.device_name +
             ', Time match: ' +
             this.selectedFlashLog.time_percentage +
             ', Weight match: ' +
@@ -452,7 +469,12 @@ export default {
       this.showLoadingIconById.push(flashLog.id)
       try {
         const response = await Api.readRequest(
-          '/flashlogs/' + flashLog.id + '?match_props=' + this.matchProps
+          '/flashlogs/' +
+            flashLog.id +
+            '?match_props=' +
+            this.matchProps +
+            '&from_cache=' +
+            (this.fromCache ? '1' : '0')
         )
         this.showLoadingIconById.splice(
           this.showLoadingIconById.indexOf(flashLog.id),
