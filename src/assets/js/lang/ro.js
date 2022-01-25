@@ -891,8 +891,8 @@ const translations = {
   Missing_data: 'Missing data',
   not_yet_in_db: 'not yet in DB',
   From_cache: 'From cache',
-  Match_percentage: 'Match percentage',
-  Sec_diff: 'Time difference (sec)',
+  Time_diff: 'ΔTime',
+  seconds_short: 'sec',
   commit_block_data:
     'Supplement BEEP app data with data from this log data block: ',
 }

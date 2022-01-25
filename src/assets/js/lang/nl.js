@@ -816,8 +816,8 @@ const translations = {
   Missing_data: 'Ontbrekende data',
   not_yet_in_db: 'nog niet in DB',
   From_cache: 'Gebruik cache',
-  Match_percentage: 'Percentage matches',
-  Sec_diff: 'Tijdsverschil (sec)',
+  Time_diff: 'ΔTijd',
+  seconds_short: 'sec',
   commit_block_data:
     'Vul data in de BEEP app aan met data uit dit blok van de log data: ',
 }

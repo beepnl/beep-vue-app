@@ -1,8 +1,8 @@
 <template>
   <Layout :title="pageTitle">
-    <v-toolbar class="save-bar save-bar--back" dense light>
+    <v-toolbar v-if="userIsAdmin" class="save-bar save-bar--back" dense light>
       <v-btn
-        v-if="!smAndDown && blockData !== null && blockDataIndex !== 0"
+        v-if="!mobile && blockDataIndex !== 0"
         tile
         outlined
         color="accent"
@@ -14,32 +14,49 @@
           mdAndDown ? $t('view_prev_week_short') : $t('view_prev_week')
         }}</v-btn
       >
+      <v-icon
+        v-if="mobile && blockDataIndex !== 0"
+        x-large
+        dark
+        color="accent"
+        class="ml-n2"
+        :disabled="loading"
+        @click="changeBlockDataIndex(blockDataIndex - 1)"
+        >mdi-chevron-left</v-icon
+      >
+      <div v-if="blockData !== null" class="d-flex flex-column ml-3 mt-1">
+        <span
+          :class="
+            'beep-label ' +
+              (blockData.block_data_match_percentage >= 99
+                ? 'green--text'
+                : 'red--text')
+          "
+          v-text="
+            $tc('Match', 2) + ': ' + blockData.block_data_match_percentage + '%'
+          "
+        ></span>
+        <span
+          :class="
+            'beep-label ' +
+              (Math.abs(blockData.block_data_flashlog_sec_diff) >= 60 ||
+              blockData.block_data_flashlog_sec_diff === null
+                ? 'red--text'
+                : 'green--text')
+          "
+          v-text="
+            $t('Time_diff') +
+              ': ' +
+              (blockData.block_data_flashlog_sec_diff !== null
+                ? blockData.block_data_flashlog_sec_diff.toFixed(1) +
+                  $t('seconds_short')
+                : $t('unknown'))
+          "
+        ></span>
+      </div>
       <v-spacer></v-spacer>
       <v-btn
-        tile
-        outlined
-        color="black"
-        class="save-button-mobile-wide mr-1"
-        :disabled="showLoadingIcon || !ready || blockData === null"
-        @click.prevent="confirmImportBlockData"
-      >
-        <v-progress-circular
-          v-if="showLoadingIcon"
-          class="ml-n1 mr-2"
-          size="18"
-          width="2"
-          color="disabled"
-          indeterminate
-        />
-        <v-icon v-if="!showLoadingIcon" left>mdi-import</v-icon>
-        {{ $t('import_block_data_short') }}
-      </v-btn>
-      <v-btn
-        v-if="
-          !smAndDown &&
-            blockData !== null &&
-            blockDataIndex !== blockData.block_data_index_max
-        "
+        v-if="!mobile && notFinalIndex"
         tile
         outlined
         color="accent"
@@ -49,42 +66,19 @@
         {{ mdAndDown ? $t('view_next_week_short') : $t('view_next_week') }}
         <v-icon right>mdi-chevron-right</v-icon>
       </v-btn>
+      <v-icon
+        v-if="mobile && notFinalIndex"
+        x-large
+        dark
+        color="accent"
+        class="mr-n2"
+        :disabled="loading"
+        @click="changeBlockDataIndex(blockDataIndex + 1)"
+        >mdi-chevron-right</v-icon
+      >
     </v-toolbar>
 
     <v-container class="back-content">
-      <div
-        v-if="smAndDown && userIsAdmin"
-        class="mt-n2 mb-4 d-flex justify-space-between"
-        style="width:100%"
-      >
-        <v-btn
-          v-if="blockData !== null && blockDataIndex !== 0"
-          tile
-          outlined
-          color="accent"
-          :disabled="loading"
-          @click="changeBlockDataIndex(blockDataIndex - 1)"
-        >
-          <v-icon left>mdi-chevron-left</v-icon>
-          {{ $t('view_prev_week_short') }}</v-btn
-        >
-        <v-spacer />
-        <v-btn
-          v-if="
-            blockData !== null &&
-              blockDataIndex !== blockData.block_data_index_max
-          "
-          tile
-          outlined
-          color="accent"
-          :disabled="loading"
-          @click="changeBlockDataIndex(blockDataIndex + 1)"
-        >
-          {{ $t('view_next_week_short') }}
-          <v-icon right>mdi-chevron-right</v-icon>
-        </v-btn>
-      </div>
-
       <v-row v-if="userIsAdmin">
         <v-col v-if="showCommitMessage" cols="12">
           <v-alert
@@ -114,7 +108,7 @@
           </v-alert>
         </v-col>
 
-        <v-col cols="12">
+        <v-col cols="12" class="py-0 py-sm-3">
           <div
             v-if="!ready || blockData === null"
             class="d-flex align-center justify-center loading-wrapper"
@@ -143,29 +137,33 @@
                 </chartist>
               </div>
             </template>
-            <div class="d-flex flex-column mt-3">
-              <span
-                class="beep-label"
-                v-text="
-                  $t('Match_percentage') +
-                    ': ' +
-                    blockData.block_data_match_percentage
-                "
-              ></span>
-              <span
-                class="beep-label"
-                v-text="
-                  $t('Sec_diff') +
-                    ': ' +
-                    (blockData.block_data_flashlog_sec_diff !== null
-                      ? blockData.block_data_flashlog_sec_diff.toFixed(1)
-                      : $t('unknown'))
-                "
-              ></span>
-            </div>
+          </div>
+
+          <div class="mt-4 d-flex justify-space-between" style="width:100%">
+            <v-spacer />
+            <v-btn
+              tile
+              outlined
+              color="black"
+              class="save-button-mobile-wide mr-1"
+              :disabled="showLoadingIcon || !ready || blockData === null"
+              @click.prevent="confirmImportBlockData"
+            >
+              <v-progress-circular
+                v-if="showLoadingIcon"
+                class="ml-n1 mr-2"
+                size="18"
+                width="2"
+                color="disabled"
+                indeterminate
+              />
+              <v-icon v-if="!showLoadingIcon" left>mdi-import</v-icon>
+              {{ $t('import_block_data_short') }}
+            </v-btn>
           </div>
         </v-col>
       </v-row>
+
       <v-row v-else>
         <v-col cols="12" class="text-center my-10">
           {{ $t('no_admin') }}
@@ -241,6 +239,13 @@ export default {
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile
+    },
+    notFinalIndex() {
+      return (
+        (this.blockData !== null &&
+          this.blockDataIndex !== this.blockData.block_data_index_max) ||
+        this.blockData === null
+      )
     },
     pageTitle() {
       return (
@@ -370,7 +375,7 @@ export default {
       const self = this
       return {
         fullWidth: true,
-        height: '300px',
+        height: '250px',
         plugins: [
           this.$chartist.plugins.tooltip({
             class: 'beep-tooltip',
