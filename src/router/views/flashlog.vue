@@ -5,14 +5,12 @@
         v-if="!mobile && blockDataIndex !== 0"
         tile
         outlined
-        color="accent"
+        color="black"
         :disabled="loading"
         @click="changeBlockDataIndex(blockDataIndex - 1)"
       >
         <v-icon left>mdi-chevron-left</v-icon>
-        {{
-          mdAndDown ? $t('view_prev_week_short') : $t('view_prev_week')
-        }}</v-btn
+        {{ $t('prev_week') }}</v-btn
       >
       <v-icon
         v-if="mobile && blockDataIndex !== 0"
@@ -24,11 +22,15 @@
         @click="changeBlockDataIndex(blockDataIndex - 1)"
         >mdi-chevron-left</v-icon
       >
-      <div v-if="blockData !== null" class="d-flex flex-column ml-3 mt-1">
+      <v-spacer></v-spacer>
+      <div
+        v-if="blockData !== null"
+        class="d-flex flex-row overline font-weight-bold"
+      >
         <span
           :class="
-            'beep-label ' +
-              (blockData.block_data_match_percentage >= 99
+            'mr-3 ' +
+              (blockData.block_data_match_percentage >= thresholdMatches
                 ? 'green--text'
                 : 'red--text')
           "
@@ -38,18 +40,17 @@
         ></span>
         <span
           :class="
-            'beep-label ' +
-              (Math.abs(blockData.block_data_flashlog_sec_diff) >= 60 ||
-              blockData.block_data_flashlog_sec_diff === null
-                ? 'red--text'
-                : 'green--text')
+            Math.abs(blockData.block_data_flashlog_sec_diff) >=
+              thresholdSecDiff ||
+            blockData.block_data_flashlog_sec_diff === null
+              ? 'red--text'
+              : 'green--text'
           "
           v-text="
             $t('Time_diff') +
               ': ' +
               (blockData.block_data_flashlog_sec_diff !== null
-                ? blockData.block_data_flashlog_sec_diff.toFixed(1) +
-                  $t('seconds_short')
+                ? blockData.block_data_flashlog_sec_diff + $t('seconds_short')
                 : $t('unknown'))
           "
         ></span>
@@ -59,11 +60,11 @@
         v-if="!mobile && notFinalIndex"
         tile
         outlined
-        color="accent"
+        color="black"
         :disabled="loading"
         @click="changeBlockDataIndex(blockDataIndex + 1)"
       >
-        {{ mdAndDown ? $t('view_next_week_short') : $t('view_next_week') }}
+        {{ $t('next_week') }}
         <v-icon right>mdi-chevron-right</v-icon>
       </v-btn>
       <v-icon
@@ -118,16 +119,13 @@
 
           <div v-if="blockData !== null" class="charts">
             <template v-for="(dataSet, index) in dataSets">
-              <div
-                v-if="measurements[dataSet] !== undefined"
-                :key="'dataSet' + index"
-                class="pt-0 pb-5"
-              >
+              <div :key="'dataSet' + index" class="pt-0 pb-5">
                 <div
                   class="overline mt-0 mb-3 text-center"
                   v-text="dataSet"
                 ></div>
                 <chartist
+                  v-if="measurements[dataSet] !== undefined"
                   :class="'modulo-' + moduloNr + ' mb-8 mb-sm-12'"
                   ratio="ct-chart"
                   type="Line"
@@ -135,18 +133,25 @@
                   :options="chartOptions()"
                 >
                 </chartist>
+                <div v-else class="text-center my-12">
+                  {{ $t('no_chart_data') }}
+                </div>
               </div>
             </template>
           </div>
 
-          <div class="mt-4 d-flex justify-space-between" style="width:100%">
-            <v-spacer />
+          <div class="my-4 d-flex justify-end" style="width:100%">
             <v-btn
               tile
               outlined
-              color="black"
+              color="accent"
               class="save-button-mobile-wide mr-1"
-              :disabled="showLoadingIcon || !ready || blockData === null"
+              :disabled="
+                showLoadingIcon ||
+                  !ready ||
+                  blockData === null ||
+                  importDisabled
+              "
               @click.prevent="confirmImportBlockData"
             >
               <v-progress-circular
@@ -209,6 +214,8 @@ export default {
       showCommitMessage: false,
       showLoadingIcon: false,
       dataSets: ['flashlog', 'database'],
+      thresholdSecDiff: 60,
+      thresholdMatches: 99,
     }
   },
   computed: {
@@ -219,6 +226,14 @@ export default {
     },
     flashLogId() {
       return parseInt(this.$route.params.id)
+    },
+    importDisabled() {
+      return (
+        Math.abs(this.blockData.block_data_flashlog_sec_diff) >=
+          this.thresholdSecDiff ||
+        this.blockData.block_data_flashlog_sec_diff === null ||
+        this.blockData.block_data_match_percentage < this.thresholdMatches
+      )
     },
     locale() {
       return this.$i18n.locale
@@ -233,9 +248,6 @@ export default {
         ' ' +
         this.blockId
       )
-    },
-    mdAndDown() {
-      return this.$vuetify.breakpoint.mdAndDown
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile
