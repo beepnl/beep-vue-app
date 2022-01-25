@@ -716,7 +716,7 @@ const translations = {
   commit_log_data_short: 'Importeer log data',
   commit_log_data: 'Importeer data van dit logbestand naar de BEEP app: ',
   import_log_data_explanation:
-    "In de BEEP base app kan je log data downloaden van het interne geheugen van de BEEP base. Steeds als je log data downloadt, wordt het interne geheugen gewist en de data geüpload naar de BEEP app. Hieronder vind je de lijst met jouw gedownloade log data. Je kan de data in de database vervangen door de data uit de gedownloade logbestanden door op de knop 'Check log data' te klikken. Als resultaat van de check zie je dan blokken data die al dan niet matches hebben opgeleverd, waarbij je per blok met matches de data kan bekijken en kan kiezen om de data in de database te vervangen door die uit het logbestand.",
+    "In de BEEP base app kan je log data downloaden van het interne geheugen van de BEEP base. Steeds als je log data downloadt, wordt het interne geheugen gewist en de data geüpload naar de BEEP app. Hieronder vind je de lijst met jouw gedownloade log data. Je kan de log data bekijken door op de knop 'Check log data' te klikken. Als resultaat van de check zie je dan blokken data die al dan niet matches hebben opgeleverd met de data in de database. Per blok met matches kan je de log data en de database data onder elkaar in een grafiek bekijken, en ervoor kiezen om de data in de database aan te vullen met die uit het logbestand.",
   import_log_data_url_text:
     'Lees hier het support artikel over het downloaden van log data m.b.v. de BEEP base app.',
   import_log_data_support_url:
@@ -787,8 +787,8 @@ const translations = {
   Length: 'Lengte: ',
   match: 'match | matches',
   Matches_found: 'Matches gevonden',
-  Firmware_version: 'Firmware versie: ',
-  Interval: 'Interval: ',
+  Firmware_version: 'Firmware versie',
+  Interval: 'Interval',
   View_data: 'Bekijk data',
   data_zoom_out_ok: 'Wil je uitzoomen naar de data van ',
   show_all: 'Toon alle',
@@ -797,15 +797,27 @@ const translations = {
   Relative_startpoint: 'Relatief',
 
   Log_data: 'Log data',
-  Flashlog: 'Flashlog',
+  Flashlog: 'Log',
   Block: 'Blok',
-  Nr_of_match_props: 'Aantal gelijke waardes per match: ',
+  Nr_of_match_props: 'Aantal gelijke waardes per match',
   no_admin: 'Je moet beheerder zijn om deze pagina te kunnen bekijken',
-  view_next_week: 'Bekijk volgende week',
-  view_prev_week: 'Bekijk vorige week',
-  view_next_week_short: 'Volgende week',
-  view_prev_week_short: 'Vorige week',
+  next_week: 'Volgende week',
+  prev_week: 'Vorige week',
   import_block_data_short: 'Importeer blok data',
+  no_flashlog_data: 'Geen log data',
+  no_flashlog_file: 'Geen logbestand',
+  no_device: 'Geen meetsysteem',
+  data_not_stored: 'Data niet opgeslagen',
+  no_flashlog_found: 'Geen logbestand gevonden',
+  Size: 'Grootte',
+  Match: 'Match | Matches',
+  Missing_data: 'Ontbrekende data',
+  not_yet_in_db: 'nog niet in DB',
+  From_cache: 'Gebruik cache',
+  Time_diff: 'ΔTijd',
+  seconds_short: 'sec',
+  commit_block_data:
+    'Vul data in de BEEP app aan met data uit dit blok van de log data: ',
 }
 
 export default translations

@@ -1,26 +1,82 @@
 <template>
   <Layout :title="pageTitle">
-    <v-toolbar class="save-bar save-bar--back" dense light>
-      <v-spacer></v-spacer>
+    <v-toolbar v-if="userIsAdmin" class="save-bar save-bar--back" dense light>
       <v-btn
+        v-if="!mobile && blockDataIndex !== 0"
         tile
         outlined
         color="black"
-        class="save-button-mobile-wide mr-1"
-        :disabled="showLoadingIcon || !ready || blockData === null"
-        @click.prevent="confirmImportBlockData"
+        :disabled="loading"
+        @click="changeBlockDataIndex(blockDataIndex - 1)"
       >
-        <v-progress-circular
-          v-if="showLoadingIcon"
-          class="ml-n1 mr-2"
-          size="18"
-          width="2"
-          color="disabled"
-          indeterminate
-        />
-        <v-icon v-if="!showLoadingIcon" left>mdi-import</v-icon>
-        {{ $t('import_block_data_short') }}
+        <v-icon left>mdi-chevron-left</v-icon>
+        {{ $t('prev_week') }}</v-btn
+      >
+      <v-icon
+        v-if="mobile && blockDataIndex !== 0"
+        x-large
+        dark
+        color="accent"
+        class="ml-n2"
+        :disabled="loading"
+        @click="changeBlockDataIndex(blockDataIndex - 1)"
+        >mdi-chevron-left</v-icon
+      >
+      <v-spacer></v-spacer>
+      <div
+        v-if="blockData !== null"
+        class="d-flex flex-row overline font-weight-bold"
+      >
+        <span
+          :class="
+            'mr-3 ' +
+              (blockData.block_data_match_percentage >= thresholdMatches
+                ? 'green--text'
+                : 'red--text')
+          "
+          v-text="
+            $tc('Match', 2) + ': ' + blockData.block_data_match_percentage + '%'
+          "
+        ></span>
+        <span
+          :class="
+            Math.abs(blockData.block_data_flashlog_sec_diff) >=
+              thresholdSecDiff ||
+            blockData.block_data_flashlog_sec_diff === null
+              ? 'red--text'
+              : 'green--text'
+          "
+          v-text="
+            $t('Time_diff') +
+              ': ' +
+              (blockData.block_data_flashlog_sec_diff !== null
+                ? blockData.block_data_flashlog_sec_diff + $t('seconds_short')
+                : $t('unknown'))
+          "
+        ></span>
+      </div>
+      <v-spacer></v-spacer>
+      <v-btn
+        v-if="!mobile && notFinalIndex"
+        tile
+        outlined
+        color="black"
+        :disabled="loading"
+        @click="changeBlockDataIndex(blockDataIndex + 1)"
+      >
+        {{ $t('next_week') }}
+        <v-icon right>mdi-chevron-right</v-icon>
       </v-btn>
+      <v-icon
+        v-if="mobile && notFinalIndex"
+        x-large
+        dark
+        color="accent"
+        class="mr-n2"
+        :disabled="loading"
+        @click="changeBlockDataIndex(blockDataIndex + 1)"
+        >mdi-chevron-right</v-icon
+      >
     </v-toolbar>
 
     <v-container class="back-content">
@@ -52,99 +108,67 @@
             {{ errorMessage }}
           </v-alert>
         </v-col>
-        <v-col cols="12">
+
+        <v-col cols="12" class="py-0 py-sm-3">
           <div
             v-if="!ready || blockData === null"
             class="d-flex align-center justify-center loading-wrapper"
           >
             <v-progress-circular color="primary" size="50" indeterminate />
           </div>
-          <div v-else-if="blockData !== null" class="charts">
-            <div class="pt-0 pt-sm-2 pb-3">
-              <div
-                class="overline mt-0 mb-3 text-center"
-                v-text="'Flashlog'"
-              ></div>
-              <chartist
-                :class="'modulo-' + moduloNr + ' mb-8 mb-sm-12'"
-                ratio="ct-chart"
-                type="Line"
-                :data="chartDataMultipleSeries('flashlog')"
-                :options="chartOptions('')"
-              >
-              </chartist>
-            </div>
-            <div class="py-3">
-              <div
-                class="overline mt-0 mb-3 text-center"
-                v-text="'Database'"
-              ></div>
-              <chartist
-                :class="'modulo-' + moduloNr + ' mb-8 mb-sm-12'"
-                ratio="ct-chart"
-                type="Line"
-                :data="chartDataMultipleSeries('database')"
-                :options="chartOptions('')"
-              >
-              </chartist>
 
-              <v-row class="pt-8">
-                <v-col cols="12">
-                  <div class="d-flex justify-space-between">
-                    <v-btn
-                      v-if="blockDataIndex !== 0"
-                      tile
-                      outlined
-                      color="accent"
-                      :disabled="loading"
-                      @click="changeBlockDataIndex(blockDataIndex - 1)"
-                    >
-                      <v-progress-circular
-                        v-if="loading"
-                        class="ml-n1 mr-2"
-                        size="18"
-                        width="2"
-                        color="disabled"
-                        indeterminate
-                      />
-                      <v-icon v-if="!loading" left>mdi-chevron-left</v-icon>
-                      {{
-                        mobile
-                          ? $t('view_prev_week_short')
-                          : $t('view_prev_week')
-                      }}</v-btn
-                    >
-                    <v-spacer />
-                    <v-btn
-                      v-if="blockDataIndex !== blockData.block_data_index_max"
-                      tile
-                      outlined
-                      color="accent"
-                      :disabled="loading"
-                      @click="changeBlockDataIndex(blockDataIndex + 1)"
-                    >
-                      <v-progress-circular
-                        v-if="loading"
-                        class="ml-n1 mr-2"
-                        size="18"
-                        width="2"
-                        color="disabled"
-                        indeterminate
-                      />
-                      {{
-                        mobile
-                          ? $t('view_next_week_short')
-                          : $t('view_next_week')
-                      }}
-                      <v-icon v-if="!loading" right>mdi-chevron-right</v-icon>
-                    </v-btn>
-                  </div>
-                </v-col>
-              </v-row>
-            </div>
+          <div v-if="blockData !== null" class="charts">
+            <template v-for="(dataSet, index) in dataSets">
+              <div :key="'dataSet' + index" class="pt-0 pb-5">
+                <div
+                  class="overline mt-0 mb-3 text-center"
+                  v-text="dataSet"
+                ></div>
+                <chartist
+                  v-if="measurements[dataSet] !== undefined"
+                  :class="'modulo-' + moduloNr + ' mb-8 mb-sm-12'"
+                  ratio="ct-chart"
+                  type="Line"
+                  :data="chartDataMultipleSeries(dataSet)"
+                  :options="chartOptions()"
+                >
+                </chartist>
+                <div v-else class="text-center my-12">
+                  {{ $t('no_chart_data') }}
+                </div>
+              </div>
+            </template>
+          </div>
+
+          <div class="my-4 d-flex justify-end" style="width:100%">
+            <v-btn
+              tile
+              outlined
+              color="accent"
+              class="save-button-mobile-wide mr-1"
+              :disabled="
+                showLoadingIcon ||
+                  !ready ||
+                  blockData === null ||
+                  importDisabled
+              "
+              @click.prevent="confirmImportBlockData"
+            >
+              <v-progress-circular
+                v-if="showLoadingIcon"
+                class="ml-n1 mr-2"
+                size="18"
+                width="2"
+                color="disabled"
+                indeterminate
+              />
+              <v-icon v-if="!showLoadingIcon" left>mdi-import</v-icon>
+              {{ $t('import_block_data_short') }}
+            </v-btn>
           </div>
         </v-col>
       </v-row>
+
       <v-row v-else>
         <v-col cols="12" class="text-center my-10">
           {{ $t('no_admin') }}
@@ -189,7 +213,9 @@ export default {
       commitMessage: '',
       showCommitMessage: false,
       showLoadingIcon: false,
-      dataSets: ['database', 'flashlog'],
+      dataSets: ['flashlog', 'database'],
+      thresholdSecDiff: 60,
+      thresholdMatches: 99,
     }
   },
   computed: {
@@ -200,6 +226,14 @@ export default {
     },
     flashLogId() {
       return parseInt(this.$route.params.id)
+    },
+    importDisabled() {
+      return (
+        Math.abs(this.blockData.block_data_flashlog_sec_diff) >=
+          this.thresholdSecDiff ||
+        this.blockData.block_data_flashlog_sec_diff === null ||
+        this.blockData.block_data_match_percentage < this.thresholdMatches
+      )
     },
     locale() {
       return this.$i18n.locale
@@ -218,10 +252,25 @@ export default {
     mobile() {
       return this.$vuetify.breakpoint.mobile
     },
+    notFinalIndex() {
+      return (
+        (this.blockData !== null &&
+          this.blockDataIndex !== this.blockData.block_data_index_max) ||
+        this.blockData === null
+      )
+    },
     pageTitle() {
       return (
-        (!this.mobile ? this.$i18n.t('Log_data') + ' - ' : '') + this.logDetails
+        (!this.mobile
+          ? this.$i18n.t('Log_data') +
+            ' - ' +
+            (this.blockData !== null ? this.blockData.device_name + ' - ' : '')
+          : '') + this.logDetails
       )
+    },
+
+    smAndDown() {
+      return this.$vuetify.breakpoint.smAndDown
     },
   },
   created() {
@@ -255,7 +304,7 @@ export default {
         this.loading = false
         if (error.response) {
           console.log(error.response)
-          const msg = error.response.data.message
+          const msg = error.response.data.error
           this.errorMessage = this.$i18n.t(msg)
         } else {
           console.log('Error: ', error)
@@ -277,7 +326,7 @@ export default {
         this.showLoadingIcon = false
         if (error.response) {
           console.log(error.response)
-          const msg = error.response.data.message
+          const msg = error.response.data.error
           this.errorMessage = this.$i18n.t(msg)
         } else {
           console.log('Error: ', error)
@@ -305,7 +354,7 @@ export default {
             data.series.push({
               // color: '#' + this.findMeasurementType(sensorName).hex_color,
               color: this.SENSOR_COLOR[sensorName],
-              name: this.SENSOR_NAMES[sensorName],
+              name: this.$i18n.t(sensorName),
               data: [],
               className: sensorName,
             })
@@ -334,11 +383,11 @@ export default {
 
       return data
     },
-    chartOptions(unit = '') {
+    chartOptions() {
       const self = this
       return {
         fullWidth: true,
-        height: '400px',
+        height: '250px',
         plugins: [
           this.$chartist.plugins.tooltip({
             class: 'beep-tooltip',
@@ -369,6 +418,7 @@ export default {
       }
     },
     clearMessages() {
+      this.showCommitMessage = false
       this.commitMessage = null
       this.errorMessage = null
     },
@@ -376,7 +426,12 @@ export default {
       this.$refs.confirm
         .open(
           this.$i18n.t('import_block_data_short'),
-          this.$i18n.t('commit_log_data') + ' "' + this.logDetails + '"?',
+          this.$i18n.t('commit_block_data') +
+            ' "' +
+            this.blockData.device_name +
+            ' - ' +
+            this.logDetails +
+            '"?',
           {
             color: 'red',
           }
@@ -415,12 +470,15 @@ export default {
       dataSeries.map((dataSerie, index) => {
         if (
           dataSerie.className !== currentSensor &&
-          measurement[dataSerie.className] !== null
+          measurement[dataSerie.className] !== null &&
+          measurement[dataSerie.className] !== undefined
         ) {
           otherMeasurements +=
             dataSerie.name +
             ': ' +
-            measurement[dataSerie.className] +
+            (dataSerie.className.indexOf('weight_kg') > -1
+              ? measurement[dataSerie.className].toFixed(3)
+              : measurement[dataSerie.className]) +
             (index !== dataSeries.length - 1 ? '<br>' : '')
         }
       })

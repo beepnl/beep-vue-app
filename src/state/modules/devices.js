@@ -10,6 +10,7 @@ export const state = {
   devices: [],
   devicesPresent: true,
   selectedDeviceId: null,
+  selectedFlashLog: null,
 }
 export const getters = {
   ...resource.getters,
@@ -21,6 +22,9 @@ export const getters = {
   },
   selectedDeviceId: (state) => {
     return state.selectedDeviceId
+  },
+  selectedFlashLog: (state) => {
+    return state.selectedFlashLog
   },
 }
 export const mutations = {
@@ -35,6 +39,7 @@ export const mutations = {
     state.devices = []
     state.devicesPresent = true
     state.selectedDeviceId = null
+    state.selectedFlashLog = null
   },
 }
 export const actions = {
