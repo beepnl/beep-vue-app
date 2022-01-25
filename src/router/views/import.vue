@@ -138,7 +138,7 @@
                     class="mr-1"
                     color="accent"
                     :disabled="showLoadingIconById.indexOf(item.id) > -1"
-                    @click="checkFlashLog(item)"
+                    @click="checkFlashLog(item.id)"
                   >
                     <v-progress-circular
                       v-if="showLoadingIconById.indexOf(item.id) > -1"
@@ -281,7 +281,7 @@
 
               <template v-slot:[`item.actions`]="{ item }">
                 <router-link
-                  v-if="item.matches !== undefined"
+                  v-if="item.matches !== undefined && selectedFlashLog !== null"
                   :to="{
                     name: `flashlog`,
                     params: { id: selectedFlashLog.flashlog_id },
@@ -440,6 +440,15 @@ export default {
   created() {
     this.readApiariesAndGroupsIfNotPresent().then(() => {
       this.readFlashLogs().then(() => {
+        if (
+          localStorage.beepPreviousRoute === 'flashlog' &&
+          this.selectedFlashLog !== null
+        ) {
+          // update flashlog result if coming from the flashlog view & flashlog has previously been selected (= saved in store)
+          this.checkFlashLog(this.selectedFlashLog.flashlog_id)
+        } else {
+          this.selectedFlashLog = null
+        }
         this.ready = true
       })
     })
@@ -463,21 +472,21 @@ export default {
         }
       }
     },
-    async checkFlashLog(flashLog) {
+    async checkFlashLog(flashLogId) {
       this.selectedFlashLog = null
       this.errorMessage = null
-      this.showLoadingIconById.push(flashLog.id)
+      this.showLoadingIconById.push(flashLogId)
       try {
         const response = await Api.readRequest(
           '/flashlogs/' +
-            flashLog.id +
+            flashLogId +
             '?match_props=' +
             this.matchProps +
             '&from_cache=' +
             (this.fromCache ? '1' : '0')
         )
         this.showLoadingIconById.splice(
-          this.showLoadingIconById.indexOf(flashLog.id),
+          this.showLoadingIconById.indexOf(flashLogId),
           1
         )
         this.selectedFlashLog = response.data
@@ -487,11 +496,10 @@ export default {
         // this.confirmCommitFlashLog(flashLog)
       } catch (error) {
         this.showLoadingIconById.splice(
-          this.showLoadingIconById.indexOf(flashLog.id),
+          this.showLoadingIconById.indexOf(flashLogId),
           1
         )
         this.selectedFlashLog = null
-        this.selectedFlashLog.flashlog_id = null
         if (error.response) {
           console.log(error.response)
           const msg = error.response.data.error

@@ -2,7 +2,7 @@
   <Layout :title="pageTitle">
     <v-toolbar v-if="userIsAdmin" class="save-bar save-bar--back" dense light>
       <v-btn
-        v-if="!mobile && blockDataIndex !== 0"
+        v-if="!mobile && blockDataIndex !== 0 && !noMatches"
         tile
         outlined
         color="black"
@@ -13,7 +13,7 @@
         {{ $t('prev_week') }}</v-btn
       >
       <v-icon
-        v-if="mobile && blockDataIndex !== 0"
+        v-if="mobile && blockDataIndex !== 0 && !noMatches"
         x-large
         dark
         color="accent"
@@ -57,7 +57,7 @@
       </div>
       <v-spacer></v-spacer>
       <v-btn
-        v-if="!mobile && notFinalIndex"
+        v-if="!mobile && notFinalIndex && !noMatches"
         tile
         outlined
         color="black"
@@ -68,7 +68,7 @@
         <v-icon right>mdi-chevron-right</v-icon>
       </v-btn>
       <v-icon
-        v-if="mobile && notFinalIndex"
+        v-if="mobile && notFinalIndex && !noMatches"
         x-large
         dark
         color="accent"
@@ -111,7 +111,7 @@
 
         <v-col cols="12" class="py-0 py-sm-3">
           <div
-            v-if="!ready || blockData === null"
+            v-if="loading"
             class="d-flex align-center justify-center loading-wrapper"
           >
             <v-progress-circular color="primary" size="50" indeterminate />
@@ -119,7 +119,7 @@
 
           <div v-if="blockData !== null" class="charts">
             <template v-for="(dataSet, index) in dataSets">
-              <div :key="'dataSet' + index" class="pt-0 pb-5">
+              <div :key="'dataSet' + index" class="pt-0 pb-6">
                 <div
                   class="overline mt-0 mb-3 text-center"
                   v-text="dataSet"
@@ -133,7 +133,7 @@
                   :options="chartOptions()"
                 >
                 </chartist>
-                <div v-else class="text-center my-12">
+                <div v-else class="text-center my-8">
                   {{ $t('no_chart_data') }}
                 </div>
               </div>
@@ -142,16 +142,12 @@
 
           <div class="my-4 d-flex justify-end" style="width:100%">
             <v-btn
+              v-if="blockData !== null"
               tile
               outlined
               color="accent"
               class="save-button-mobile-wide mr-1"
-              :disabled="
-                showLoadingIcon ||
-                  !ready ||
-                  blockData === null ||
-                  importDisabled
-              "
+              :disabled="showLoadingIcon || loading || importDisabled"
               @click.prevent="confirmImportBlockData"
             >
               <v-progress-circular
@@ -202,13 +198,11 @@ export default {
   mixins: [momentFormat, readTaxonomy, sensorMixin],
   data() {
     return {
-      ready: false,
       loading: false,
       noChartData: false,
       blockData: null,
       errorMessage: null,
       measurements: {},
-      moduloNr: 100,
       blockDataIndex: 0,
       commitMessage: '',
       showCommitMessage: false,
@@ -216,6 +210,7 @@ export default {
       dataSets: ['flashlog', 'database'],
       thresholdSecDiff: 60,
       thresholdMatches: 99,
+      deviceName: null,
     }
   },
   computed: {
@@ -252,6 +247,25 @@ export default {
     mobile() {
       return this.$vuetify.breakpoint.mobile
     },
+    moduloNr() {
+      if (this.blockData.flashlog.length) {
+        var entries = this.blockData.flashlog.length
+        return entries > 2000
+          ? 100
+          : entries > 1000
+          ? 36
+          : entries > 500
+          ? 12
+          : 6
+      } else {
+        return 100
+      }
+    },
+    noMatches() {
+      return this.errorMessage !== null
+        ? this.errorMessage.indexOf('no_matches') > -1
+        : false
+    },
     notFinalIndex() {
       return (
         (this.blockData !== null &&
@@ -264,7 +278,7 @@ export default {
         (!this.mobile
           ? this.$i18n.t('Log_data') +
             ' - ' +
-            (this.blockData !== null ? this.blockData.device_name + ' - ' : '')
+            (this.deviceName !== null ? this.deviceName + ' - ' : '')
           : '') + this.logDetails
       )
     },
@@ -280,6 +294,7 @@ export default {
   },
   methods: {
     async checkBlockData(changeIndex = false) {
+      this.clearMessages()
       this.loading = true
       this.blockData = null
       try {
@@ -292,20 +307,15 @@ export default {
         )
         this.blockData = response.data
         this.blockDataIndex = response.data.block_data_index
-
-        if (this.blockData.flashlog.length) {
-          var entries = this.blockData.flashlog.length
-          this.moduloNr =
-            entries > 2000 ? 100 : entries > 1000 ? 36 : entries > 500 ? 12 : 1
-        }
+        this.deviceName = response.data.device_name
 
         this.formatFlashlogData(this.blockData)
       } catch (error) {
         this.loading = false
         if (error.response) {
           console.log(error.response)
-          const msg = error.response.data.error
-          this.errorMessage = this.$i18n.t(msg)
+          this.deviceName = error.response.data.device_name
+          this.errorMessage = this.$i18n.t(error.response.data.error)
         } else {
           console.log('Error: ', error)
           this.errorMessage = this.$i18n.t('something_wrong')
@@ -326,8 +336,7 @@ export default {
         this.showLoadingIcon = false
         if (error.response) {
           console.log(error.response)
-          const msg = error.response.data.error
-          this.errorMessage = this.$i18n.t(msg)
+          this.errorMessage = this.$i18n.t(error.response.data.error)
         } else {
           console.log('Error: ', error)
           this.errorMessage = this.$i18n.t('something_wrong')
@@ -428,8 +437,7 @@ export default {
           this.$i18n.t('import_block_data_short'),
           this.$i18n.t('commit_block_data') +
             ' "' +
-            this.blockData.device_name +
-            ' - ' +
+            (this.deviceName !== null ? this.deviceName + ' - ' : '') +
             this.logDetails +
             '"?',
           {
@@ -463,7 +471,6 @@ export default {
       })
 
       this.loading = false
-      this.ready = true
     },
     getMetaText(measurement, currentSensor, dataSeries) {
       var otherMeasurements = ''
