@@ -32,6 +32,19 @@
 
     <v-container v-if="ready" :class="mobile ? '' : 'back-content'">
       <v-row v-if="userIsAdmin">
+        <v-col v-if="importMessage !== null" cols="12">
+          <v-alert
+            text
+            prominent
+            dense
+            type="success"
+            color="green"
+            class="mt-3 mb-n4"
+          >
+            {{ importSentence }}
+          </v-alert>
+        </v-col>
+
         <v-col v-if="errorMessage" cols="12">
           <v-alert
             text
@@ -74,7 +87,7 @@
             <v-data-table
               :headers="logFileHeaders"
               :items="flashLogs"
-              :items-per-page="mobile ? 1 : 10"
+              :items-per-page="mobile ? 1 : 5"
               :item-class="rowClassLogFile"
               :search="logFileSearch"
               :no-data-text="$t('no_data')"
@@ -327,6 +340,13 @@ export default {
     momentify,
     readApiariesAndGroupsIfNotPresent,
   ],
+  props: {
+    importMessage: {
+      type: Object,
+      default: null,
+      required: false,
+    },
+  },
   data() {
     return {
       errorMessage: null,
@@ -393,6 +413,26 @@ export default {
     ...mapGetters('auth', ['userIsAdmin']),
     ...mapGetters('groups', ['groups']),
     ...mapGetters('locations', ['apiaries']),
+    importSentence() {
+      return this.importMessage !== null
+        ? 'Data imported for Log ' +
+            this.importMessage.flashlog_id +
+            ' - ' +
+            this.importMessage.device_name +
+            ' - ' +
+            this.$i18n.t('Block') +
+            ' ' +
+            this.importMessage.block_id +
+            '. ' +
+            this.$i18n.t('persisted_measurements') +
+            ': ' +
+            this.importMessage.persisted_measurements +
+            ', ' +
+            this.$i18n.t('persisted_days') +
+            ': ' +
+            this.importMessage.persisted_days
+        : ''
+    },
     selectedFlashLog: {
       get() {
         return this.$store.getters['devices/selectedFlashLog']
@@ -442,9 +482,10 @@ export default {
       this.readFlashLogs().then(() => {
         if (
           localStorage.beepPreviousRoute === 'flashlog' &&
-          this.selectedFlashLog !== null
+          this.selectedFlashLog !== null &&
+          this.importMessage === null
         ) {
-          // update flashlog result if coming from the flashlog view & flashlog has previously been selected (= saved in store)
+          // update flashlog result if coming from the flashlog view & flashlog has previously been selected (= saved in store) and has not just been imported
           this.checkFlashLog(this.selectedFlashLog.flashlog_id)
         } else {
           this.selectedFlashLog = null
@@ -455,7 +496,7 @@ export default {
   },
   methods: {
     async deleteFlashLog(id) {
-      this.errorMessage = null
+      this.clearMessages()
       try {
         await Api.deleteRequest('/flashlogs/', id)
         setTimeout(() => {
@@ -473,8 +514,8 @@ export default {
       }
     },
     async checkFlashLog(flashLogId) {
+      this.clearMessages()
       this.selectedFlashLog = null
-      this.errorMessage = null
       this.showLoadingIconById.push(flashLogId)
       try {
         const response = await Api.readRequest(
@@ -546,6 +587,10 @@ export default {
         .catch((reject) => {
           return true
         })
+    },
+    clearMessages() {
+      this.importMessage = null
+      this.errorMessage = null
     },
     fileSizeText(item) {
       var nrOfMB = (item.bytes_received / 1024 / 1024).toFixed(2)

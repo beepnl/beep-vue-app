@@ -793,6 +793,8 @@ const translations = {
   seconds_short: 'sec',
   commit_block_data:
     'Supplement BEEP app data with data from this log data block: ',
+  persisted_measurements: 'Persisted measurements',
+  persisted_days: 'Persisted days',
 }
 
 export default translations

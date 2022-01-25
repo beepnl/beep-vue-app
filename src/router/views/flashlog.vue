@@ -81,21 +81,6 @@
 
     <v-container class="back-content">
       <v-row v-if="userIsAdmin">
-        <v-col v-if="showCommitMessage" cols="12">
-          <v-alert
-            v-model="showCommitMessage"
-            text
-            prominent
-            dense
-            dismissible
-            type="success"
-            color="green"
-            class="mt-3 mb-n4"
-          >
-            {{ commitMessage }}
-          </v-alert>
-        </v-col>
-
         <v-col v-if="errorMessage" cols="12">
           <v-alert
             text
@@ -204,8 +189,6 @@ export default {
       errorMessage: null,
       measurements: {},
       blockDataIndex: 0,
-      commitMessage: '',
-      showCommitMessage: false,
       showLoadingIcon: false,
       dataSets: ['flashlog', 'database'],
       thresholdSecDiff: 60,
@@ -329,9 +312,14 @@ export default {
         const response = await Api.postRequest(
           '/flashlogs/' + this.flashLogId + '?block_id=' + this.blockId
         )
-        this.commitMessage = response.data.message
-        this.showCommitMessage = true
+        var importMessage = response.data
         this.showLoadingIcon = false
+        return this.$router.push({
+          name: 'import',
+          params: {
+            importMessage,
+          },
+        })
       } catch (error) {
         this.showLoadingIcon = false
         if (error.response) {
@@ -427,8 +415,6 @@ export default {
       }
     },
     clearMessages() {
-      this.showCommitMessage = false
-      this.commitMessage = null
       this.errorMessage = null
     },
     confirmImportBlockData() {
