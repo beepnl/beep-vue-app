@@ -8,7 +8,7 @@
       <div class="rounded-border mb-4">
         <ul>
           <li
-            >Measurements:
+            >Data:
             <router-link :to="{ name: 'measurements' }">
               option to select a custom period when viewing your
               data.</router-link
@@ -17,7 +17,7 @@
             button in the light yellow top bar.</li
           >
           <li
-            >Measurements:
+            >Data:
             <router-link :to="{ name: 'measurements' }">
               option to enable relative data period.</router-link
             >
@@ -30,7 +30,7 @@
             Sunday.</li
           >
           <li
-            >Measurements:
+            >Data:
             <router-link :to="{ name: 'measurements' }">
               ability to zoom in via data charts.</router-link
             >
@@ -45,8 +45,8 @@
               option to create alert rules for non-default
               measurements.</router-link
             >
-            At the 'measurements' input field you can now switch on 'Show all'
-            to view and select all (non-weather) measurements.</li
+            At the 'Measurement' input field you can now switch on 'Show all' to
+            view and select all (non-weather) measurements.</li
           >
           <li
             >Collaborate: option to decline a collaboration group invitation
