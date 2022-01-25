@@ -186,6 +186,9 @@ export default [
     },
     path: '/import',
     name: 'import',
+    props: (route) => ({
+      importMessage: route.params.importMessage,
+    }),
     component: () => lazyLoadView(import('@views/import.vue')),
   },
   {

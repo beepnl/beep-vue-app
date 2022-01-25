@@ -818,6 +818,8 @@ const translations = {
   seconds_short: 'sec',
   commit_block_data:
     'Vul data in de BEEP app aan met data uit dit blok van de log data: ',
+  persisted_measurements: 'Aangevulde metingen',
+  persisted_days: 'Aangevulde dagen',
 }
 
 export default translations
