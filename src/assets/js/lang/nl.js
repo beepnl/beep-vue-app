@@ -820,6 +820,8 @@ const translations = {
     'Vul data in de BEEP app aan met data uit dit blok van de log data: ',
   persisted_measurements: 'Aangevulde metingen',
   persisted_days: 'Aangevulde dagen',
+  no_data_stored: 'Geen data opgeslagen',
+  data_stored_for_log: 'Data opgeslagen voor Log ',
 }
 
 export default translations
