@@ -319,7 +319,7 @@ const translations = {
   light: 'Ensoleillement',
   l: 'Ensoleillement',
   water: 'Eau',
-  w: 'Eau',
+  w: 'Poids (ancien)',
   humidity: 'Humidité',
   h: 'Humidité',
   air_pressure: 'Pression atmosphérique',

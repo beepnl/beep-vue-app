@@ -281,7 +281,7 @@ const translations = {
   light: 'Sonnenlicht',
   l: 'Sonnenlicht',
   water: 'Wasser',
-  w: 'Wasser',
+  w: 'Gewicht (alt)',
   humidity: 'Feuchtigkeit',
   h: 'Feuchtigkeit',
   air_pressure: 'Luftdruck',

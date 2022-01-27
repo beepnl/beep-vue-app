@@ -301,7 +301,7 @@ const translations = {
   light: 'Luz solar',
   l: 'Luz solar',
   water: 'Água',
-  w: 'Água',
+  w: 'Peso (antigo)',
   humidity: 'Humidade',
   h: 'Humidade',
   air_pressure: 'Pressão atmosférica',

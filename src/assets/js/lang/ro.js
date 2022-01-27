@@ -282,7 +282,7 @@ const translations = {
   light: 'Lumina (soarelui)',
   l: 'Lumina (soarelui)',
   water: 'Apă',
-  w: 'Apă',
+  w: 'Greutate (vechi)',
   humidity: 'Umiditate',
   h: 'Umiditate',
   air_pressure: 'Presiune atmosferică',

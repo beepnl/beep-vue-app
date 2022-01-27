@@ -280,7 +280,7 @@ const translations = {
   light: 'Irraggiamento solare',
   l: 'Irraggiamento solare',
   water: 'Acqua',
-  w: 'Acqua',
+  w: 'Peso (vechhio)',
   humidity: 'Umidità',
   h: 'Umidità',
   air_pressure: 'Pressione atmosferica',

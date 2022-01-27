@@ -301,7 +301,7 @@ const translations = {
   light: 'Auringonvalo',
   l: 'Auringonvalo',
   water: 'Vesi',
-  w: 'Vesi',
+  w: 'Paino (vanha)',
   humidity: 'Kosteus',
   h: 'Kosteus',
   air_pressure: 'Ilmanpaine',

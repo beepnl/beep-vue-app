@@ -242,7 +242,7 @@ const translations = {
   l: 'Zonlicht',
   light: 'Zonlicht',
   water: 'Water',
-  w: 'Water',
+  w: 'Gewicht (oud)',
   humidity: 'Luchtvochtigheid',
   h: 'Luchtvochtigheid',
   air_pressure: 'Luchtdruk',
