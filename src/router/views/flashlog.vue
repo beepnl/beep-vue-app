@@ -1,8 +1,19 @@
 <template>
   <Layout :title="pageTitle">
     <v-toolbar v-if="userIsAdmin" class="save-bar save-bar--back" dense light>
+      <v-icon
+        v-if="!noMatches"
+        :large="mobile"
+        :small="!mobile"
+        dark
+        :color="mobile ? 'accent' : 'black'"
+        class="ml-n1 mr-1"
+        :disabled="loading || blockDataIndex === 0"
+        @click="changeBlockDataIndex(0)"
+        >mdi-chevron-double-left</v-icon
+      >
       <v-btn
-        v-if="!mobile && blockDataIndex !== 0 && !noMatches"
+        v-if="!mobile && !noMatches && blockDataIndex !== 0"
         tile
         outlined
         color="black"
@@ -13,19 +24,21 @@
         {{ $t('prev_week') }}</v-btn
       >
       <v-icon
-        v-if="mobile && blockDataIndex !== 0 && !noMatches"
-        x-large
+        v-if="mobile && !noMatches"
+        large
         dark
         color="accent"
         class="ml-n2"
-        :disabled="loading"
+        :disabled="loading || blockDataIndex === 0"
         @click="changeBlockDataIndex(blockDataIndex - 1)"
         >mdi-chevron-left</v-icon
       >
       <v-spacer></v-spacer>
       <div
         v-if="blockData !== null"
-        class="d-flex flex-row overline font-weight-bold"
+        :class="
+          'd-flex flex-row font-weight-bold' + (mobile ? '' : ' overline')
+        "
       >
         <span
           :class="
@@ -57,7 +70,7 @@
       </div>
       <v-spacer></v-spacer>
       <v-btn
-        v-if="!mobile && notFinalIndex && !noMatches"
+        v-if="!mobile && !noMatches && !finalIndex"
         tile
         outlined
         color="black"
@@ -68,14 +81,25 @@
         <v-icon right>mdi-chevron-right</v-icon>
       </v-btn>
       <v-icon
-        v-if="mobile && notFinalIndex && !noMatches"
-        x-large
+        v-if="mobile && !noMatches"
+        large
         dark
         color="accent"
         class="mr-n2"
-        :disabled="loading"
+        :disabled="loading || finalIndex"
         @click="changeBlockDataIndex(blockDataIndex + 1)"
         >mdi-chevron-right</v-icon
+      >
+      <v-icon
+        v-if="!noMatches"
+        :large="mobile"
+        :small="!mobile"
+        dark
+        :color="mobile ? 'accent' : 'black'"
+        class="mr-n1 ml-1"
+        :disabled="loading || finalIndex"
+        @click="changeBlockDataIndex(blockData.block_data_index_max)"
+        >mdi-chevron-double-right</v-icon
       >
     </v-toolbar>
 
@@ -202,6 +226,13 @@ export default {
     blockId() {
       return parseInt(this.$route.query.blockId)
     },
+    finalIndex() {
+      return (
+        (this.blockData !== null &&
+          this.blockDataIndex === this.blockData.block_data_index_max) ||
+        this.blockData === null
+      )
+    },
     flashLogId() {
       return parseInt(this.$route.params.id)
     },
@@ -248,13 +279,6 @@ export default {
       return this.errorMessage !== null
         ? this.errorMessage.indexOf('no_matches') > -1
         : false
-    },
-    notFinalIndex() {
-      return (
-        (this.blockData !== null &&
-          this.blockDataIndex !== this.blockData.block_data_index_max) ||
-        this.blockData === null
-      )
     },
     pageTitle() {
       return (

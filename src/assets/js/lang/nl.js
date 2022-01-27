@@ -725,8 +725,8 @@ const translations = {
   Immediately: 'Direct',
   In_case_of_good_connection_warning:
     '*Direct nadat een meting ontvangen is. Dit is afhankelijk van het datatransmissie interval en de betrouwbaarheid van de dataconnectie.',
-  First_occurence: 'Eerste: ',
-  Last_occurence: 'Laatste: ',
+  First_occurence: 'Eerste',
+  Last_occurence: 'Laatste',
   // default alert rule names:
   Hive_stability_and_theft: 'Kast stabiliteit & diefstal',
   Temperature_sensor_defect: 'Temperatuursensor defect',

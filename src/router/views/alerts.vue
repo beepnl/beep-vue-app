@@ -254,9 +254,11 @@ export default {
       alertsWithRuleDetails.map((alert) => {
         alert.locale_date_created_at =
           this.$i18n.t('First_occurence') +
+          ': ' +
           this.momentify(alert.created_at, true, 'llll')
         alert.locale_date_updated_at =
           this.$i18n.t('Last_occurence') +
+          ': ' +
           this.momentify(alert.updated_at, true, 'llll')
         alert.locale_date_single_count = this.momentify(
           alert.updated_at,

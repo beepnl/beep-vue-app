@@ -831,8 +831,8 @@ const translations = {
     ', ja avaan BEEp soveluksen nähdäkseni hälytykset.',
   alertrule_active_email_sentence:
     ', ja vastaanotan hälytykset sähköpostiin. Lisäksi näen hälytykset BEEP sovelluksessa.',
-  First_occurence: 'Ensimmäinen: ',
-  Last_occurence: 'Viimeinen: ',
+  First_occurence: 'Ensimmäinen',
+  Last_occurence: 'Viimeinen',
   // default alert rule names:
   Hive_stability_and_theft: 'Pesän vakaus & varkaukden esto',
   Temperature_sensor_defect: 'Lämpötila-anturin vika',

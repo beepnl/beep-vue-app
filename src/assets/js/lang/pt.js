@@ -823,8 +823,8 @@ const translations = {
     ', e eu inicio a aplicação BEEP para ver os alertas.',
   alertrule_active_email_sentence:
     ', e eu recebo os alertas por e-mail. Adicionalmente, eu posso ver os alertas na aplicação BEEP.',
-  First_occurence: 'Primeira: ',
-  Last_occurence: 'Ultima: ',
+  First_occurence: 'Primeira',
+  Last_occurence: 'Ultima',
   // default alert rule names:
   Hive_stability_and_theft: 'Estabilidade da colmeia e roubos',
   Temperature_sensor_defect: 'Temperature sensor defect',
