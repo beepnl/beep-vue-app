@@ -1059,12 +1059,21 @@ export default {
         return ((value - min) / (max - min)) * 100
       }
     },
-    calculateTimeIndex(previousPeriod, period, date = null) {
+    calculateTimeIndex(period, date, zoom = false, from = null) {
       var newPeriodIndex = 0
       var todayEnd = this.$moment().endOf(period)
       var endOfPeriod = this.$moment.parseZone(date, this.photoParseFormat)
       var periodDiff = todayEnd.diff(endOfPeriod, period + 's')
       if (!isNaN(periodDiff)) newPeriodIndex = periodDiff
+      if (!zoom && period === 'hour') newPeriodIndex -= 12
+      if (!zoom && period === 'day')
+        from !== 'hour'
+          ? this.relativeInterval
+            ? (newPeriodIndex -= 4)
+            : (newPeriodIndex -= 3)
+          : this.relativeInterval
+          ? (newPeriodIndex -= 1)
+          : (newPeriodIndex -= 0)
 
       return !isNaN(newPeriodIndex) && newPeriodIndex > 0 ? newPeriodIndex : 0
     },
@@ -1413,7 +1422,7 @@ export default {
           }
         )
         .then((confirm) => {
-          this.timeIndex = this.calculateTimeIndex(this.interval, period, date)
+          this.timeIndex = this.calculateTimeIndex(period, date, true)
           this.interval = period
           this.loadData()
         })
@@ -1431,11 +1440,19 @@ export default {
       return true
     },
     setPeriodInterval(interval, modulonr) {
+      var prevInterval = this.interval
       this.interval = interval
       if (interval === 'selection' && this.dates.length === 0) {
         this.noPeriodData = true
       } else {
-        this.timeIndex = 0
+        // change period around the same date instead of resetting to timeIndex 0
+        if (this.timeIndex !== 0)
+          this.timeIndex = this.calculateTimeIndex(
+            interval,
+            this.selectedDate,
+            false,
+            prevInterval
+          )
         this.loadData()
       }
     },
