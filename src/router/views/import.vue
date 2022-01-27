@@ -281,7 +281,7 @@
                   <v-toolbar class="hive-color-picker-toolbar" dense light flat>
                     <div
                       class="hive-color-picker-title ml-1"
-                      v-text="matchesText(item)"
+                      v-text="matchesHeader(item)"
                     ></div>
                     <v-spacer></v-spacer>
                     <v-toolbar-items>
@@ -655,6 +655,18 @@ export default {
         }
       })
       return text
+    },
+    matchesHeader(log) {
+      return (
+        this.matchesText(log) +
+        ' (Log ' +
+        this.selectedFlashLog.flashlog_id +
+        ', ' +
+        this.$i18n.t('Block') +
+        ' ' +
+        log.block +
+        ')'
+      )
     },
     matchesText(log) {
       var nrOfMatches = Object.keys(log.matches.matches).length
