@@ -1,6 +1,6 @@
 <template>
   <Layout :title="pageTitle">
-    <v-toolbar v-if="userIsAdmin" class="save-bar save-bar--back" dense light>
+    <v-toolbar class="save-bar save-bar--back" dense light>
       <v-icon
         v-if="!noMatches"
         :large="mobile"
@@ -104,7 +104,7 @@
     </v-toolbar>
 
     <v-container class="back-content">
-      <v-row v-if="userIsAdmin">
+      <v-row>
         <v-col v-if="errorMessage" cols="12">
           <v-alert
             text
@@ -173,12 +173,6 @@
           </div>
         </v-col>
       </v-row>
-
-      <v-row v-else>
-        <v-col cols="12" class="text-center my-10">
-          {{ $t('no_admin') }}
-        </v-col>
-      </v-row>
     </v-container>
 
     <Confirm ref="confirm"></Confirm>
@@ -221,7 +215,6 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('auth', ['userIsAdmin']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     blockId() {
       return parseInt(this.$route.query.blockId)

@@ -1,7 +1,7 @@
 <template>
   <Layout :title="$t('Log_data_import')">
     <v-toolbar
-      v-if="!mobile && userIsAdmin"
+      v-if="!mobile && flashLogs.length > 0"
       class="save-bar save-bar--back"
       dense
       light
@@ -31,7 +31,7 @@
     </v-toolbar>
 
     <v-container v-if="ready" :class="mobile ? '' : 'back-content'">
-      <v-row v-if="userIsAdmin">
+      <v-row>
         <v-col v-if="importMessage" cols="12">
           <v-alert
             text
@@ -342,11 +342,6 @@
           </div>
         </v-col>
       </v-row>
-      <v-row v-else>
-        <v-col cols="12" class="text-center my-10">
-          {{ $t('no_admin') }}
-        </v-col>
-      </v-row>
     </v-container>
 
     <Confirm ref="confirm"></Confirm>
@@ -447,7 +442,6 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('auth', ['userIsAdmin']),
     ...mapGetters('groups', ['groups']),
     ...mapGetters('locations', ['apiaries']),
     importSentence() {
