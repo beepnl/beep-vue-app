@@ -32,7 +32,7 @@
 
     <v-container v-if="ready" :class="mobile ? '' : 'back-content'">
       <v-row v-if="userIsAdmin">
-        <v-col v-if="importMessage !== null" cols="12">
+        <v-col v-if="importMessage" cols="12">
           <v-alert
             text
             prominent
@@ -235,7 +235,11 @@
           </span>
         </v-col>
 
-        <v-col v-if="selectedFlashLog" ref="log-data" cols="12">
+        <v-col
+          v-if="selectedFlashLog && selectedFlashLog.log !== undefined"
+          ref="log-data"
+          cols="12"
+        >
           <div
             class="overline primary--text mt-0 mt-sm-3 mb-3"
             v-text="selectedFlashLogHeader"
@@ -414,8 +418,8 @@ export default {
     ...mapGetters('groups', ['groups']),
     ...mapGetters('locations', ['apiaries']),
     importSentence() {
-      return this.importMessage !== null
-        ? 'Data imported for Log ' +
+      return this.importMessage !== null && this.importMessage.data_stored
+        ? this.$i18n.t('data_stored_for_log') +
             this.importMessage.flashlog_id +
             ' - ' +
             this.importMessage.device_name +
@@ -431,7 +435,9 @@ export default {
             this.$i18n.t('persisted_days') +
             ': ' +
             this.importMessage.persisted_days
-        : ''
+        : this.$i18n.t('no_data_stored') +
+            '. ' +
+            JSON.stringify(this.importMessage)
     },
     selectedFlashLog: {
       get() {
@@ -445,7 +451,8 @@ export default {
       },
     },
     selectedFlashLogHeader() {
-      return this.selectedFlashLog !== null
+      return this.selectedFlashLog !== null &&
+        this.selectedFlashLog.log !== undefined
         ? 'Log ID: ' +
             this.selectedFlashLog.flashlog_id +
             ', ' +
@@ -531,10 +538,14 @@ export default {
           1
         )
         this.selectedFlashLog = response.data
-        setTimeout(() => {
-          this.scrollTo('log-data')
-        }, 100)
-        // this.confirmCommitFlashLog(flashLog)
+
+        if (this.selectedFlashLog.log !== undefined) {
+          setTimeout(() => {
+            this.scrollTo('log-data')
+          }, 100)
+        } else {
+          this.errorMessage = this.$i18n.t('no_flashlog_data')
+        }
       } catch (error) {
         this.showLoadingIconById.splice(
           this.showLoadingIconById.indexOf(flashLogId),

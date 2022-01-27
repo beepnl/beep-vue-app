@@ -391,6 +391,10 @@
     text-align: center;
     list-style: none;
 
+    @include for-phone-only {
+      font-size: 13px;
+    }
+
     li {
       position: relative !important;
       display: inline-block;
