@@ -282,7 +282,7 @@ const translations = {
   light: 'Lumina (soarelui)',
   l: 'Lumina (soarelui)',
   water: 'Apă',
-  w: 'Apă',
+  w: 'Greutate (vechi)',
   humidity: 'Umiditate',
   h: 'Umiditate',
   air_pressure: 'Presiune atmosferică',
@@ -795,8 +795,8 @@ const translations = {
     ', și deschid aplicația BEEP pentru a vedea alertele.',
   alertrule_active_email_sentence:
     ', și primesc alerte prin e-mail. În plus, pot vedea alertele în aplicația BEEP.',
-  First_occurence: 'Prima: ',
-  Last_occurence: 'Ultima: ',
+  First_occurence: 'Prima',
+  Last_occurence: 'Ultima',
   /* default alert rule names: */
   Hive_stability_and_theft: 'Stabilitate stup & furt',
   Temperature_sensor_defect: 'Defecțiune la sezorul de temperatură',

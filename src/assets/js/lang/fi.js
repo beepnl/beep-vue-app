@@ -301,7 +301,7 @@ const translations = {
   light: 'Auringonvalo',
   l: 'Auringonvalo',
   water: 'Vesi',
-  w: 'Vesi',
+  w: 'Paino (vanha)',
   humidity: 'Kosteus',
   h: 'Kosteus',
   air_pressure: 'Ilmanpaine',
@@ -831,8 +831,8 @@ const translations = {
     ', ja avaan BEEp soveluksen nähdäkseni hälytykset.',
   alertrule_active_email_sentence:
     ', ja vastaanotan hälytykset sähköpostiin. Lisäksi näen hälytykset BEEP sovelluksessa.',
-  First_occurence: 'Ensimmäinen: ',
-  Last_occurence: 'Viimeinen: ',
+  First_occurence: 'Ensimmäinen',
+  Last_occurence: 'Viimeinen',
   // default alert rule names:
   Hive_stability_and_theft: 'Pesän vakaus & varkaukden esto',
   Temperature_sensor_defect: 'Lämpötila-anturin vika',

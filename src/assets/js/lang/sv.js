@@ -269,7 +269,7 @@ const translations = {
   light: 'Sunlight',
   l: 'Sunlight',
   water: 'Water',
-  w: 'Water',
+  w: 'Weight (old)',
   humidity: 'Humidity',
   h: 'Humidity',
   air_pressure: 'Air pressure',
@@ -778,8 +778,8 @@ const translations = {
     ', and I open the BEEP app to see the alerts.',
   alertrule_active_email_sentence:
     ', and I receive alerts via email. In addition, I can see the alerts in the BEEP app.',
-  First_occurence: 'First: ',
-  Last_occurence: 'Last: ',
+  First_occurence: 'First',
+  Last_occurence: 'Last',
   // default alert rule names:
   Hive_stability_and_theft: 'Hive stability & Theft',
   Temperature_sensor_defect: 'Temperature sensor defect',

@@ -280,7 +280,7 @@ const translations = {
   light: 'Irraggiamento solare',
   l: 'Irraggiamento solare',
   water: 'Acqua',
-  w: 'Acqua',
+  w: 'Peso (vechhio)',
   humidity: 'Umidità',
   h: 'Umidità',
   air_pressure: 'Pressione atmosferica',
@@ -791,8 +791,8 @@ const translations = {
     ', ed apro la app BEEP per vedere le notifiche.',
   alertrule_active_email_sentence:
     ', e ricevo le notifiche via email. Inoltre, posso vedere le notifiche nella app BEEP.',
-  First_occurence: 'Prima: ',
-  Last_occurence: 'Ultima: ',
+  First_occurence: 'Prima',
+  Last_occurence: 'Ultima',
   /* default alert rule names: */
   Hive_stability_and_theft: "Stabilità dell' Alveare & Furti",
   Temperature_sensor_defect: 'Problema al sensore di temperatura',

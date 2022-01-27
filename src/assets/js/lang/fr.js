@@ -319,7 +319,7 @@ const translations = {
   light: 'Ensoleillement',
   l: 'Ensoleillement',
   water: 'Eau',
-  w: 'Eau',
+  w: 'Poids (ancien)',
   humidity: 'Humidité',
   h: 'Humidité',
   air_pressure: 'Pression atmosphérique',
@@ -902,8 +902,8 @@ const translations = {
     ", et j'ouvre l'app BEEP pour voir les alertes",
   alertrule_active_email_sentence:
     ", et je reçois les alertes par email. De plus, je peux voir les alertes dans l'app BEEP.",
-  First_occurence: 'Premier: ',
-  Last_occurence: 'Dernier: ',
+  First_occurence: 'Premier',
+  Last_occurence: 'Dernier',
   /* default alert rule names: */
   Hive_stability_and_theft: 'Stabilité de la ruche et vol',
   Temperature_sensor_defect: 'Defaut de la sonde de température',
