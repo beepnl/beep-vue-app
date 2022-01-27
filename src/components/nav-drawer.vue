@@ -87,7 +87,7 @@
 
         <div class="version-number">
           <v-spacer></v-spacer>
-          v3.0.79
+          v3.0.80
         </div>
       </div>
     </v-navigation-drawer>

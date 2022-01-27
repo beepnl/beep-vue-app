@@ -401,6 +401,11 @@ export default {
           value: 'log_messages',
         },
         {
+          text: this.$i18n.t('persisted_measurements'),
+          value: 'persisted_measurements',
+        },
+
+        {
           text: this.$i18n.t('Log_time'),
           value: 'log_has_timestamps',
         },
