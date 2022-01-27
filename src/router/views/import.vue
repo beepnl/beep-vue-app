@@ -266,16 +266,43 @@
                     item.no_matches.message
                   "
                 ></span>
-                <v-tooltip
+                <span
                   v-if="item.matches !== undefined"
-                  top
-                  :max-width="mobile ? '350px' : ''"
+                  class="cursor-pointer"
+                  @click="matchesOverlay = item.block"
+                  v-text="matchesText(item)"
+                ></span>
+
+                <v-overlay
+                  v-if="
+                    item.matches !== undefined && item.block === matchesOverlay
+                  "
                 >
-                  <template v-slot:activator="{ on }">
-                    <span v-on="on" v-text="matchesText(item)"></span>
-                  </template>
-                  <span v-html="matchesTooltip(item)"></span>
-                </v-tooltip>
+                  <v-toolbar class="hive-color-picker-toolbar" dense light flat>
+                    <div
+                      class="hive-color-picker-title ml-1"
+                      v-text="matchesText(item)"
+                    ></div>
+                    <v-spacer></v-spacer>
+                    <v-toolbar-items>
+                      <v-icon class="mr-1" @click="matchesOverlay = null"
+                        >mdi-close</v-icon
+                      >
+                    </v-toolbar-items>
+                  </v-toolbar>
+                  <v-container class="matches-container">
+                    <v-row>
+                      <v-col
+                        v-for="(match, i) in item.matches.matches"
+                        :key="'match ' + i"
+                        :cols="mobile ? 6 : 3"
+                        class="text-left"
+                      >
+                        <span v-text="matchText(match, i)"></span>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-overlay>
               </template>
 
               <template v-slot:[`item.duration_hours`]="{ item }">
@@ -416,6 +443,7 @@ export default {
         { text: this.$i18n.t('Actions'), sortable: false, value: 'actions' },
       ],
       fromCache: true,
+      matchesOverlay: null,
     }
   },
   computed: {
@@ -619,25 +647,18 @@ export default {
         ')'
       )
     },
+    matchText(match, index) {
+      var text = index + ': '
+      Object.entries(match).map(([key, value]) => {
+        if (key !== 'flashlog_index' && key !== 'minute_interval') {
+          text += key + ': ' + value + ', '
+        }
+      })
+      return text
+    },
     matchesText(log) {
       var nrOfMatches = Object.keys(log.matches.matches).length
       return this.$i18n.t('Matches_found') + ': ' + nrOfMatches
-    },
-    matchesTooltip(log) {
-      var tooltipText = ''
-      Object.entries(log.matches.matches).map(([key, value]) => {
-        var content = ''
-        Object.entries(value).map(([contentKey, contentValue]) => {
-          if (
-            contentKey !== 'flashlog_index' &&
-            contentKey !== 'minute_interval'
-          ) {
-            content += contentKey + ': ' + contentValue + ', '
-          }
-        })
-        tooltipText += key + ': ' + content + '<br><br>'
-      })
-      return tooltipText
     },
     missingDataText(log) {
       var ptNotInDb = this.percentageNotInDB(log)
@@ -721,5 +742,17 @@ export default {
 }
 .no-match-block {
   color: $color-grey-medium !important;
+}
+.matches-container {
+  font-size: 0.7rem;
+  line-height: 1;
+  max-width: 95vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  color: $color-black;
+  background-color: $color-white;
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 4px;
+  margin-top: -4px;
 }
 </style>
