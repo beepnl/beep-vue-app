@@ -30,7 +30,12 @@
     position: 'top',
     simpleToggle: true,
     inactiveByDefault: true,
-    activeClasses: [],
+    dataSet: '',
+    // take these as default and update as different measurements are selected (below)
+    activeClasses: {
+      flashlog: ['t_0', 't_i'],
+      database: ['t_0', 't_i'],
+    },
   }
 
   Chartist.plugins = Chartist.plugins || {}
@@ -165,8 +170,10 @@
         allSeries.forEach(function(item) {
           // TODO: add abbr classname to ct-series-i
           var overlap =
-            options.activeClasses.length > 0
-              ? options.activeClasses.filter(function(e) {
+            defaultOptions.activeClasses[options.dataSet].length > 0
+              ? defaultOptions.activeClasses[options.dataSet].filter(function(
+                  e
+                ) {
                   return item.classList.value.indexOf(e) > -1
                 })
               : []
@@ -274,15 +281,26 @@
               })
             }
           } else if (options.simpleToggle) {
+            // for updating activeClasses and keep the rest inactive
+            var className = originalSeries[clickedSeriesIndex].className
             // Alternative simple toggle:
             if (removedSeriesIndex > -1) {
               // if clicked series is inactive, make it active
               removedSeries.splice(removedSeriesIndex, 1)
               clickedSeries.classList.remove('inactive')
+              // add to activeClasses
+              defaultOptions.activeClasses[options.dataSet].push(className)
             } else {
               // if clicked series is active, make it inactive
               removedSeries.push(clickedSeriesIndex)
               clickedSeries.classList.add('inactive')
+              // remove from activeClasses
+              defaultOptions.activeClasses[options.dataSet].splice(
+                defaultOptions.activeClasses[options.dataSet].indexOf(
+                  className
+                ),
+                1
+              )
             }
           }
 

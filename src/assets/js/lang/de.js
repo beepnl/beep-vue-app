@@ -914,6 +914,7 @@ const translations = {
   persisted_days: 'Persisted days',
   no_data_stored: 'No data stored',
   data_stored_for_log: 'Data stored for Log ',
+  Fill_holes: 'Fill holes (connect all data points)',
 }
 
 export default translations
