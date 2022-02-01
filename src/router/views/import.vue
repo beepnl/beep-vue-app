@@ -85,7 +85,7 @@
 
           <div class="rounded-border">
             <v-data-table
-              :headers="logFileHeaders"
+              :headers="userIsAdmin ? logFileHeadersAdmin : logFileHeaders"
               :items="flashLogs"
               :items-per-page="mobile ? 1 : 5"
               :item-class="rowClassLogFile"
@@ -426,7 +426,6 @@ export default {
           text: this.$i18n.t('persisted_measurements'),
           value: 'persisted_measurements',
         },
-
         {
           text: this.$i18n.t('Log_time'),
           value: 'log_has_timestamps',
@@ -442,6 +441,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('auth', ['userIsAdmin']),
     ...mapGetters('groups', ['groups']),
     ...mapGetters('locations', ['apiaries']),
     importSentence() {
@@ -465,6 +465,15 @@ export default {
         : this.$i18n.t('no_data_stored') +
             '. ' +
             JSON.stringify(this.importMessage)
+    },
+    logFileHeadersAdmin() {
+      const userNameColumn = {
+        text: this.$i18n.t('username'),
+        value: 'user_name',
+      }
+      const newHeaderArray = this.logFileHeaders.slice()
+      newHeaderArray.splice(4, 0, userNameColumn)
+      return newHeaderArray
     },
     selectedFlashLog: {
       get() {

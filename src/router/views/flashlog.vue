@@ -3,17 +3,19 @@
     <v-toolbar class="save-bar save-bar--back" dense light>
       <v-icon
         v-if="!noMatches"
-        :large="mobile"
-        :small="!mobile"
+        :large="smAndDown"
+        :small="!smAndDown"
         dark
-        :color="mobile ? 'accent' : 'black'"
+        :color="smAndDown ? 'accent' : 'black'"
         class="ml-n1 mr-1"
         :disabled="loading || blockDataIndex === 0"
         @click="changeBlockDataIndex(0)"
         >mdi-chevron-double-left</v-icon
       >
       <v-btn
-        v-if="!mobile && !noMatches && blockDataIndex !== 0"
+        v-if="
+          !smAndDown && !noMatches && blockDataIndex !== 0 && blockData !== null
+        "
         tile
         outlined
         color="black"
@@ -24,7 +26,7 @@
         {{ $t('prev_week') }}</v-btn
       >
       <v-icon
-        v-if="mobile && !noMatches"
+        v-if="smAndDown && !noMatches"
         large
         dark
         color="accent"
@@ -37,7 +39,7 @@
       <div
         v-if="blockData !== null"
         :class="
-          'd-flex flex-row font-weight-bold' + (mobile ? '' : ' overline')
+          'd-flex flex-row font-weight-bold' + (smAndDown ? '' : ' overline')
         "
       >
         <span
@@ -70,7 +72,7 @@
       </div>
       <v-spacer></v-spacer>
       <v-btn
-        v-if="!mobile && !noMatches && !finalIndex"
+        v-if="!smAndDown && !noMatches && !finalIndex"
         tile
         outlined
         color="black"
@@ -81,7 +83,7 @@
         <v-icon right>mdi-chevron-right</v-icon>
       </v-btn>
       <v-icon
-        v-if="mobile && !noMatches"
+        v-if="smAndDown && !noMatches"
         large
         dark
         color="accent"
@@ -92,10 +94,10 @@
       >
       <v-icon
         v-if="!noMatches"
-        :large="mobile"
-        :small="!mobile"
+        :large="smAndDown"
+        :small="!smAndDown"
         dark
-        :color="mobile ? 'accent' : 'black'"
+        :color="smAndDown ? 'accent' : 'black'"
         class="mr-n1 ml-1"
         :disabled="loading || finalIndex"
         @click="changeBlockDataIndex(blockData.block_data_index_max)"
@@ -139,7 +141,7 @@
                   ratio="ct-chart"
                   type="Line"
                   :data="chartDataMultipleSeries(dataSet)"
-                  :options="chartOptions()"
+                  :options="chartOptions(dataSet)"
                 >
                 </chartist>
                 <div v-else class="text-center my-8">
@@ -149,28 +151,40 @@
             </template>
           </div>
 
-          <div class="my-4 d-flex justify-end" style="width:100%">
-            <v-btn
-              v-if="blockData !== null"
-              tile
-              outlined
-              color="accent"
-              class="save-button-mobile-wide mr-1"
-              :disabled="showLoadingIcon || loading || importDisabled"
-              @click.prevent="confirmImportBlockData"
-            >
-              <v-progress-circular
-                v-if="showLoadingIcon"
-                class="ml-n1 mr-2"
-                size="18"
-                width="2"
-                color="disabled"
-                indeterminate
-              />
-              <v-icon v-if="!showLoadingIcon" left>mdi-import</v-icon>
-              {{ $t('import_block_data_short') }}
-            </v-btn>
-          </div>
+          <v-row v-if="blockData !== null" class="my-4">
+            <v-col cols="12" sm="6">
+              <div>
+                <div class="beep-label" v-text="$t('Fill_holes') + ': '"></div>
+                <v-switch
+                  v-model="fillHoles"
+                  class="pt-0 mt-0 mr-2"
+                  dense
+                  hide-details
+                ></v-switch>
+              </div>
+            </v-col>
+            <v-col cols="12" sm="6" class="d-flex justify-end">
+              <v-btn
+                tile
+                outlined
+                color="accent"
+                class="save-button-mobile-wide mr-1"
+                :disabled="showLoadingIcon || loading || importDisabled"
+                @click.prevent="confirmImportBlockData"
+              >
+                <v-progress-circular
+                  v-if="showLoadingIcon"
+                  class="ml-n1 mr-2"
+                  size="18"
+                  width="2"
+                  color="disabled"
+                  indeterminate
+                />
+                <v-icon v-if="!showLoadingIcon" left>mdi-import</v-icon>
+                {{ $t('import_block_data_short') }}
+              </v-btn>
+            </v-col>
+          </v-row>
         </v-col>
       </v-row>
     </v-container>
@@ -209,9 +223,10 @@ export default {
       blockDataIndex: 0,
       showLoadingIcon: false,
       dataSets: ['flashlog', 'database'],
-      thresholdSecDiff: 60,
+      thresholdSecDiff: 120,
       thresholdMatches: 99,
       deviceName: null,
+      fillHoles: true,
     }
   },
   computed: {
@@ -287,6 +302,11 @@ export default {
       return this.$vuetify.breakpoint.smAndDown
     },
   },
+  watch: {
+    fillHoles() {
+      this.checkBlockData()
+    },
+  },
   created() {
     this.readTaxonomy().then(() => {
       this.checkBlockData()
@@ -358,7 +378,10 @@ export default {
         series: [],
       }
 
-      if (typeof this.measurements[dataSet] !== 'undefined') {
+      if (
+        typeof this.measurements[dataSet] !== 'undefined' &&
+        this.blockData !== null
+      ) {
         this.measurements[dataSet].map((sensorName, index) => {
           if (
             sensorName.indexOf('time') === -1 &&
@@ -397,7 +420,7 @@ export default {
 
       return data
     },
-    chartOptions() {
+    chartOptions(dataSet) {
       const self = this
       return {
         fullWidth: true,
@@ -409,15 +432,16 @@ export default {
           }),
           self.$chartist.plugins.beep(),
           self.$chartist.plugins.legendBeep({
+            dataSet,
             simpleToggle: true,
             inactiveByDefault: true,
-            activeClasses: ['t_i', 't_0'],
+            // N.B. active classes are now set inside legendBeep plugin for smooth performance
           }),
         ],
         showPoint: true,
         lineSmooth: self.$chartist.Interpolation.simple({
           divisor: 10,
-          fillHoles: true,
+          fillHoles: self.fillHoles,
         }),
         axisX: {
           showGrid: true,

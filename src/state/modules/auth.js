@@ -21,9 +21,9 @@ export const getters = {
   userId: function(state) {
     return (state.currentUser && state.currentUser.id) || null
   },
-  // userIsAdmin: function(state) {
-  //   return (state.currentUser && state.currentUser.admin) || false
-  // },
+  userIsAdmin: function(state) {
+    return (state.currentUser && state.currentUser.admin) || false
+  },
   userLocale: function(state) {
     return (state.currentUser && state.currentUser.locale) || null
   },

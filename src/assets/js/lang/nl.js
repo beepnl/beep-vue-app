@@ -822,6 +822,7 @@ const translations = {
   persisted_days: 'Aangevulde dagen',
   no_data_stored: 'Geen data opgeslagen',
   data_stored_for_log: 'Data opgeslagen voor Log ',
+  Fill_holes: 'Vul gaten (verbind alle punten in de grafiek)',
 }
 
 export default translations
