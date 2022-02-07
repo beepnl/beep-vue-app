@@ -291,7 +291,7 @@ export default {
     },
     selectedDeviceId: {
       get() {
-        return this.$store.getters['devices/selectedDeviceId']
+        return parseInt(this.$store.getters['devices/selectedDeviceId'])
       },
       set(value) {
         this.$store.commit('devices/setSelectedDeviceId', parseInt(value))

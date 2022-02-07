@@ -418,9 +418,6 @@
                         : $t('weather') + ' @ ' + selectedDevice.location_name
                     "
                   ></div>
-                  <div v-else class="header-filler my-3"
-                    ><span v-text="selectedDevice.id"></span
-                  ></div>
                   <div>
                     <chartist
                       :class="
@@ -821,7 +818,7 @@ export default {
     },
     selectedDeviceId: {
       get() {
-        return this.$store.getters['devices/selectedDeviceId']
+        return parseInt(this.$store.getters['devices/selectedDeviceId'])
       },
       set(value) {
         this.$store.commit('devices/setSelectedDeviceId', value)
