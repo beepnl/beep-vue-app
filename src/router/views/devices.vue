@@ -515,7 +515,9 @@
                                   "
                                   class="mt-2 mb-n5"
                                   solo
-                                  @input="sensorDefEdited = true"
+                                  @input="
+                                    selectInputMeasurementId(sensorDef, $event)
+                                  "
                                 ></v-select>
                               </td>
                               <td class="td--small">
@@ -1022,6 +1024,10 @@ export default {
       if (device.sensor_definitions[sensorDefIndex] !== 'undefined') {
         device.sensor_definitions.splice(sensorDefIndex, 1)
       }
+    },
+    selectInputMeasurementId(sensorDef, $event) {
+      sensorDef.output_measurement_id = $event
+      this.sensorDefEdited = true
     },
     sortedSensorDefinitions(sensordefs) {
       // sort sensor_definitions: newly added first (if multiple new: sory by name), then first by output_abbr then input_abbr then updated_at
