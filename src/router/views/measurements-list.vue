@@ -327,7 +327,11 @@
           </SlideYUpTransition>
         </v-card>
 
-        <v-card v-if="lastSensorDate" outlined class="mt-3 mb-3">
+        <v-card
+          v-if="(measurementData !== null && !noPeriodData) || loadingData"
+          outlined
+          class="mt-3 mb-3"
+        >
           <v-card-title
             :class="
               `measurements-card-title ${
@@ -377,7 +381,7 @@
             <v-card-text v-if="showMeasurements">
               <v-row>
                 <v-col
-                  v-if="measurementData === null && !noChartData"
+                  v-if="loadingData"
                   class="d-flex align-center justify-center my-16"
                   cols="12"
                 >
@@ -391,7 +395,14 @@
                   {{ $t('no_chart_data') }}
                 </v-col>
               </v-row>
-              <v-row v-if="measurementData !== null" class="charts mt-6">
+              <v-row
+                v-if="
+                  measurementData !== null &&
+                    measurementData.measurements &&
+                    measurementData.measurements.length > 0
+                "
+                class="charts mt-6"
+              >
                 <v-col v-if="weatherSensorsPresent" cols="12" :md="chartCols">
                   <div
                     v-if="selectedDevice"
@@ -527,7 +538,7 @@
             v-if="
               ready &&
                 (measurementData === null || noPeriodData) &&
-                !lastSensorDate
+                !loadingData
             "
             cols="12"
             class="text-center my-10"
@@ -633,6 +644,7 @@ export default {
       dateFormat: 'YYYY-MM-DD HH:mm:ss',
       periodStart: null,
       periodEnd: null,
+      loadingData: false,
     }
   },
   computed: {
@@ -1016,6 +1028,7 @@ export default {
         interval === 'hour' || interval === 'selection' ? null : interval
       this.noChartData = false
       this.noPeriodData = false
+      this.loadingData = true
       this.measurementData = null // needed to let chartist redraw charts after interval switch, otherwise there's a bug in chartist-plugin-legend where old data is loaded after legend click see https://github.com/CodeYellowBV/chartist-plugin-legend/issues/48
       try {
         const response = await Api.readRequest(
@@ -1037,6 +1050,7 @@ export default {
         this.formatMeasurementData(response.data)
         return true
       } catch (error) {
+        this.loadingData = false
         if (error.response) {
           console.log(error.response)
           if (error.response.status === 500) {
@@ -1273,6 +1287,7 @@ export default {
       } else {
         this.noChartData = true
       }
+      this.loadingData = false
     },
     invalidDates(dates) {
       return (
