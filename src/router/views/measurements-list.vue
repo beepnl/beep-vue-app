@@ -20,7 +20,7 @@
             </v-btn>
           </div>
           <v-switch
-            v-model="setRelativeInterval"
+            v-model="relativeInterval"
             :label="`${$t('Relative_startpoint')}`"
             class="pt-0 mt-0"
             :disabled="interval === 'selection'"
@@ -69,7 +69,7 @@
             <v-col cols="5" sm="4" class="pa-0">
               <div class="d-flex justify-center">
                 <v-switch
-                  v-model="setRelativeInterval"
+                  v-model="relativeInterval"
                   :label="`${$t('Relative_startpoint')}`"
                   class="pt-0 mt-0"
                   :disabled="interval === 'selection'"
@@ -327,7 +327,11 @@
           </SlideYUpTransition>
         </v-card>
 
-        <v-card v-if="lastSensorDate" outlined class="mt-3 mb-3">
+        <v-card
+          v-if="(measurementData !== null && !noPeriodData) || loadingData"
+          outlined
+          class="mt-3 mb-3"
+        >
           <v-card-title
             :class="
               `measurements-card-title ${
@@ -377,7 +381,7 @@
             <v-card-text v-if="showMeasurements">
               <v-row>
                 <v-col
-                  v-if="measurementData === null && !noChartData"
+                  v-if="loadingData"
                   class="d-flex align-center justify-center my-16"
                   cols="12"
                 >
@@ -391,7 +395,14 @@
                   {{ $t('no_chart_data') }}
                 </v-col>
               </v-row>
-              <v-row v-if="measurementData !== null" class="charts mt-6">
+              <v-row
+                v-if="
+                  measurementData !== null &&
+                    measurementData.measurements &&
+                    measurementData.measurements.length > 0
+                "
+                class="charts mt-6"
+              >
                 <v-col v-if="weatherSensorsPresent" cols="12" :md="chartCols">
                   <div
                     v-if="selectedDevice"
@@ -527,7 +538,7 @@
             v-if="
               ready &&
                 (measurementData === null || noPeriodData) &&
-                !lastSensorDate
+                !loadingData
             "
             cols="12"
             class="text-center my-10"
@@ -633,7 +644,7 @@ export default {
       dateFormat: 'YYYY-MM-DD HH:mm:ss',
       periodStart: null,
       periodEnd: null,
-      relativeInterval: true,
+      loadingData: false,
     }
   },
   computed: {
@@ -754,7 +765,7 @@ export default {
         { name: this.$i18n.t('selection'), interval: 'selection' },
       ]
     },
-    setRelativeInterval: {
+    relativeInterval: {
       get() {
         if (localStorage.beepRelativeInterval) {
           return localStorage.beepRelativeInterval === 'true'
@@ -764,7 +775,6 @@ export default {
       },
       set(value) {
         localStorage.beepRelativeInterval = value
-        this.relativeInterval = value
       },
     },
     requiredRules() {
@@ -808,10 +818,11 @@ export default {
     },
     selectedDeviceId: {
       get() {
-        return this.$store.getters['devices/selectedDeviceId']
+        return parseInt(this.$store.getters['devices/selectedDeviceId'])
       },
       set(value) {
         this.$store.commit('devices/setSelectedDeviceId', value)
+        localStorage.beepSelectedDeviceId = value
       },
     },
     smAndDown() {
@@ -914,13 +925,12 @@ export default {
       this.loadData()
     },
   },
-  mounted() {
-    if (localStorage.beepRelativeInterval) {
-      this.relativeInterval = localStorage.beepRelativeInterval === 'true'
-    }
-  },
   created() {
     this.readTaxonomy()
+    // if selected device id is saved in localStorage, use it
+    if (localStorage.beepSelectedDeviceId) {
+      this.selectedDeviceId = localStorage.beepSelectedDeviceId
+    }
     if (localStorage.beepChartCols) {
       this.chartCols = parseInt(localStorage.beepChartCols)
     }
@@ -997,6 +1007,7 @@ export default {
           this.lastSensorDate = response.data.time
           return true
         } catch (error) {
+          this.stopTimer()
           if (error.response) {
             console.log(error.response)
             if (error.response.status === 500) {
@@ -1017,6 +1028,7 @@ export default {
         interval === 'hour' || interval === 'selection' ? null : interval
       this.noChartData = false
       this.noPeriodData = false
+      this.loadingData = true
       this.measurementData = null // needed to let chartist redraw charts after interval switch, otherwise there's a bug in chartist-plugin-legend where old data is loaded after legend click see https://github.com/CodeYellowBV/chartist-plugin-legend/issues/48
       try {
         const response = await Api.readRequest(
@@ -1038,6 +1050,7 @@ export default {
         this.formatMeasurementData(response.data)
         return true
       } catch (error) {
+        this.loadingData = false
         if (error.response) {
           console.log(error.response)
           if (error.response.status === 500) {
@@ -1274,6 +1287,7 @@ export default {
       } else {
         this.noChartData = true
       }
+      this.loadingData = false
     },
     invalidDates(dates) {
       return (

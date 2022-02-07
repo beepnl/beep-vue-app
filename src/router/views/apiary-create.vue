@@ -533,7 +533,8 @@ export default {
       newApiaryNumber: 0,
       valid: false,
       showLoadingIcon: false,
-      assetsUrl: process.env.VUE_APP_ASSETS_URL ||
+      assetsUrl:
+        process.env.VUE_APP_ASSETS_URL ||
         process.env.VUE_APP_ASSETS_URL_FALLBACK,
     }
   },
