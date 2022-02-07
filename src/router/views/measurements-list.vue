@@ -560,6 +560,11 @@
           <div>{{ $t('beep_base_explanation') }}</div>
         </v-col>
       </v-row>
+      <v-row v-else>
+        <v-col cols="12">
+          <div>{{ selectedDevice }}</div>
+        </v-col>
+      </v-row>
     </v-container>
 
     <Confirm ref="confirm"></Confirm>
@@ -926,11 +931,11 @@ export default {
     },
   },
   created() {
+    this.readTaxonomy()
     // if selected device id is saved in localStorage, use it
     if (localStorage.beepSelectedDeviceId) {
       this.selectedDeviceId = localStorage.beepSelectedDeviceId
     }
-    this.readTaxonomy()
     if (localStorage.beepChartCols) {
       this.chartCols = parseInt(localStorage.beepChartCols)
     }
