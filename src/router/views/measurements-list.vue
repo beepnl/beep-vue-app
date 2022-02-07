@@ -418,6 +418,9 @@
                         : $t('weather') + ' @ ' + selectedDevice.location_name
                     "
                   ></div>
+                  <div v-else class="header-filler my-3"
+                    ><span v-text="selectedDevice.id"></span
+                  ></div>
                   <div>
                     <chartist
                       :class="
@@ -558,11 +561,6 @@
             />
           </div>
           <div>{{ $t('beep_base_explanation') }}</div>
-        </v-col>
-      </v-row>
-      <v-row v-else>
-        <v-col cols="12">
-          <div>{{ selectedDevice }}</div>
         </v-col>
       </v-row>
     </v-container>
