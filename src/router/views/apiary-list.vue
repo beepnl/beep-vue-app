@@ -339,7 +339,11 @@
             style="width: 100%;"
           >
             <div class="d-flex justify-start align-center">
-              <div :class="mobile ? 'd-flex flex-column' : ''">
+              <div
+                :class="
+                  'd-flex ' + (mobile ? 'flex-column' : 'flex-row align-center')
+                "
+              >
                 <div class="d-flex justify-start align-center">
                   <v-icon
                     v-if="hiveSet.users && hiveSet.users.length"
@@ -750,6 +754,8 @@ export default {
       process.env.VUE_APP_ASSETS_URL || process.env.VUE_APP_ASSETS_URL_FALLBACK,
     alertTimer: 0,
     alertInterval: 120000,
+    deviceTimer: 0,
+    deviceInterval: 600000,
     hiddenApiaries: [],
     hiddenGroups: [],
   }),
@@ -1049,6 +1055,9 @@ export default {
     tinyScreen() {
       return this.$vuetify.breakpoint.width < 373
     },
+    today() {
+      return new Date()
+    },
   },
   mounted() {
     if (localStorage.xlView) {
@@ -1085,6 +1094,9 @@ export default {
     ) {
       this.hiveSearch = this.$route.query.search
     }
+    this.readDevices().then(() => {
+      this.deviceTimer = setInterval(this.readDevices, this.deviceInterval)
+    })
     this.checkAlertRulesAndAlerts().then(() => {
       if (this.apiaries.length === 0 && this.groups.length === 0) {
         // in case user is freshly logged in or in case of hard refresh
@@ -1098,7 +1110,7 @@ export default {
     })
   },
   beforeDestroy() {
-    this.stopTimer()
+    this.stopTimers()
   },
   methods: {
     async checkToken(token, groupId, groupName, decline = false) {
@@ -1198,6 +1210,7 @@ export default {
       }
     },
     addDates(hive) {
+      // add converted dates as hive props to make them searchable by all visible properties
       if (hive.last_inspection_date !== null) {
         hive.last_inspection_date_moment_from_now = this.momentFromNow(
           hive.last_inspection_date
@@ -1218,6 +1231,19 @@ export default {
         hive.reminder_date_day_month = null
         hive.reminder_date_locale_date = null
       }
+      var device =
+        hive.sensors.length !== 0 ? this.findDeviceById(hive.sensors[0]) : null
+      if (device !== null) {
+        var isToday = this.$moment
+          .utc(device.last_message_received)
+          .isSame(this.today, 'day')
+      }
+      hive.last_message_received_legible_date =
+        device === null
+          ? null
+          : isToday
+          ? this.momentFromNow(device.last_message_received, true)
+          : this.momentify(device.last_message_received, true)
     },
     alertsPerHive(hiveId) {
       if (this.alerts.filter((alert) => alert.hive_id === hiveId).length > 0) {
@@ -1326,6 +1352,13 @@ export default {
           .indexOf(invitationId) > -1
       )
     },
+    findDeviceById(id) {
+      return (
+        this.devices.filter((device) => {
+          return device.id === id
+        })[0] || null
+      )
+    },
     handleError(error) {
       if (error.response) {
         console.log('Error: ', error.response)
@@ -1388,9 +1421,11 @@ export default {
         )
       }
     },
-    stopTimer() {
+    stopTimers() {
       clearInterval(this.alertTimer)
       this.alertTimer = 0
+      clearInterval(this.deviceTimer)
+      this.deviceTimer = 0
     },
     toggleGrid(view) {
       if (view === 'xlView') {
