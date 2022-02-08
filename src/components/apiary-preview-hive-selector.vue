@@ -195,6 +195,7 @@ export default {
       display: block;
       width: inherit;
       height: inherit;
+      min-height: 2px;
       margin-top: -1px;
       margin-left: -1px;
       content: '';
@@ -248,6 +249,19 @@ export default {
     content: '\F0046';
   }
 }
+
+.queen_excluder-layer,
+.feeding_box-layer {
+  &.--not-editable {
+    &::before {
+      margin-right: -1px;
+    }
+    &::after {
+      color: #bbbbbb;
+    }
+  }
+}
+
 .hive-caption {
   height: 54px;
   line-height: 0.9rem;
