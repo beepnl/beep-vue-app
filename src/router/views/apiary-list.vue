@@ -339,7 +339,11 @@
             style="width: 100%;"
           >
             <div class="d-flex justify-start align-center">
-              <div :class="mobile ? 'd-flex flex-column' : ''">
+              <div
+                :class="
+                  'd-flex ' + (mobile ? 'flex-column' : 'flex-row align-center')
+                "
+              >
                 <div class="d-flex justify-start align-center">
                   <v-icon
                     v-if="hiveSet.users && hiveSet.users.length"
