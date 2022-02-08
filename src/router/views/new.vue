@@ -2,11 +2,19 @@
   <Layout :title="$t('Whats_new')">
     <v-container>
       <div class="overline mb-1"
-        ><span class="lowercase">v</span>3.0.82 (07-02-2022) - Current
+        ><span class="lowercase">v</span>3.0.82 (08-02-2022) - Current
         version</div
       >
       <div class="rounded-border mb-4">
         <ul>
+          <li
+            >Hives:
+            <router-link :to="{ name: 'home' }">
+              show when your BEEP base / device sent its last data</router-link
+            >
+            in<v-icon class="inline-icon">mdi-size-xl</v-icon>view. Only for
+            users with a BEEP base or other device.</li
+          >
           <li>Bugfixes: small fixes for issues received as feedback</li>
         </ul>
       </div>
