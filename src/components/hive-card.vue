@@ -342,6 +342,10 @@
               </v-sheet>
             </div>
           </router-link>
+          <span
+            v-if="xlView"
+            v-text="hive.last_message_received_legible_date"
+          ></span>
         </div>
         <div
           v-if="hive.queen !== null"
