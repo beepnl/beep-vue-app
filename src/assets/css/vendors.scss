@@ -358,6 +358,11 @@
       max-width: 130px !important;
     }
   }
+
+  .table-heatmap .v-data-table__wrapper {
+    width: 100%;
+  }
+
   .v-data-table__wrapper > table > tbody > tr > td,
   .v-data-table__wrapper > table > thead > tr > th {
     @include for-phone-only {
