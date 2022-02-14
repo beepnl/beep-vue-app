@@ -268,8 +268,8 @@ export default {
 
 .td--heatmap-label {
   width: 5px !important; // is rendered as 72px, but setting it wider will only add to 72
-  min-width: 5px !important; // is rendered as 72px, but setting it wider will only add to 72
-  max-width: 5px !important; // is rendered as 72px, but setting it wider will only add to 72
+  min-width: 72px !important;
+  max-width: 72px !important;
   height: 13px !important;
   padding: 0 8px 0 0 !important;
   overflow: hidden;

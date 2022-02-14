@@ -359,10 +359,6 @@
     }
   }
 
-  .table-heatmap .v-data-table__wrapper {
-    width: 100%;
-  }
-
   .v-data-table__wrapper > table > tbody > tr > td,
   .v-data-table__wrapper > table > thead > tr > th {
     @include for-phone-only {
@@ -384,13 +380,17 @@
   }
 }
 
-.v-data-table.v-data-table--dense.table--heatmap
+.v-data-table.v-data-table--dense.table-heatmap
   > .v-data-table__wrapper
   > table
   > tbody
   > tr
   > td {
   height: 13px !important;
+}
+
+.v-data-table.table-heatmap .v-data-table__wrapper {
+  width: 100%;
 }
 
 .v-navigation-drawer {
