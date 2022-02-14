@@ -775,7 +775,7 @@ export default {
         }
       },
       set(value) {
-        localStorage.beepRelativeInterval = value
+        localStorage.beepRelativeInterval = value.toString()
         this.relativeInterval = value
       },
     },
@@ -931,6 +931,9 @@ export default {
     this.readTaxonomy()
     if (localStorage.beepChartCols) {
       this.chartCols = parseInt(localStorage.beepChartCols)
+    }
+    if (localStorage.beepRelativeInterval) {
+      this.relativeInterval = localStorage.beepRelativeInterval === 'true'
     }
     this.preselectedDate = this.$route.query.date || null
     this.preselectedDeviceId = parseInt(this.$route.params.id) || null

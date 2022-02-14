@@ -1246,11 +1246,7 @@ export default {
           : this.momentify(device.last_message_received, true)
     },
     alertsPerHive(hiveId) {
-      if (this.alerts.filter((alert) => alert.hive_id === hiveId).length > 0) {
-        return this.alerts.filter((alert) => alert.hive_id === hiveId)
-      } else {
-        return []
-      }
+      return this.alerts.filter((alert) => alert.hive_id === hiveId)
     },
     confirmDeclineInvitation(invitation) {
       this.$refs.confirm
