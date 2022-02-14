@@ -369,7 +369,7 @@ const translations = {
   /* Medidas */
   Hour: 'Horas',
   hour: 'hora | horas',
-  day: 'Día',
+  day: 'día | días',
   week: 'Semana',
   month: 'Mes',
   year: 'Año',

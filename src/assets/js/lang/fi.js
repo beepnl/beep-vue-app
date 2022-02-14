@@ -389,7 +389,7 @@ const translations = {
   /* Measurements */
   Hour: 'Tunti',
   hour: 'tunti | tuntia',
-  day: 'Päivä',
+  day: 'päivä | päivää',
   week: 'Viikko',
   month: 'Kuukausi',
   year: 'Vuosi',

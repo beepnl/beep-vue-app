@@ -432,7 +432,7 @@ export default {
           }),
           self.$chartist.plugins.beep(),
           self.$chartist.plugins.legendBeep({
-            dataSet,
+            dataSet: dataSet,
             simpleToggle: true,
             inactiveByDefault: true,
             // N.B. active classes are now set inside legendBeep plugin for smooth performance

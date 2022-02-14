@@ -10,6 +10,21 @@ export const momentAge = {
   },
 }
 
+export const momentDurationDays = {
+  methods: {
+    momentDurationDays(input, unit, prefix = '') {
+      const durationInDays = this.$moment
+        .duration(input, unit)
+        .asDays()
+        .toFixed(0)
+
+      return (
+        prefix + durationInDays + ' ' + this.$i18n.tc('day', durationInDays)
+      )
+    },
+  },
+}
+
 export const momentFormat = {
   methods: {
     momentFormat(date, format) {

@@ -330,7 +330,7 @@ const translations = {
   /* Measurements */
   Hour: 'Uur',
   hour: 'uur | uur',
-  day: 'Dag',
+  day: 'dag | dagen',
   week: 'Week',
   month: 'Maand',
   year: 'Jaar',

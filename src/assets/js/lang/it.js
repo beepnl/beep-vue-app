@@ -368,7 +368,7 @@ const translations = {
   /* Measurements */
   Hour: 'Ora',
   hour: 'ora | ore',
-  day: 'Giorno',
+  day: 'giorno | giorni',
   week: 'Settimana',
   month: 'Mese',
   year: 'Anno',

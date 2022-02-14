@@ -370,7 +370,7 @@ const translations = {
   /* Measurements */
   Hour: 'Oră',
   hour: 'oră | ore',
-  day: 'Zi',
+  day: 'zi | zile',
   week: 'Săptămână',
   month: 'Lună',
   year: 'An',
