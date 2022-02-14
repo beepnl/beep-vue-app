@@ -95,7 +95,7 @@ const translations = {
   remove_hive: 'Supprimer la ruche',
   /* Cyrille - 31/05 : Translation updated */
   remove_inspection: "Supprimer l'inspection",
-  Error: 'Erreur',
+  Error: 'Erreur | Erreurs',
   Warning: 'Attention',
   /* Cyrille - 31/05 : Translation updated */
   first_remove_hives:

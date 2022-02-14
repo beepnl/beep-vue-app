@@ -39,36 +39,56 @@
       <div
         v-if="blockData !== null"
         :class="
-          'd-flex flex-row font-weight-bold' + (smAndDown ? '' : ' overline')
+          'font-weight-bold ' +
+            (smAndDown ? 'd-flex flex-column font-small' : 'overline')
         "
       >
-        <span
-          :class="
-            'mr-3 ' +
-              (blockData.block_data_match_percentage >= thresholdMatches
-                ? 'green--text'
-                : 'red--text')
-          "
-          v-text="
-            $tc('Match', 2) + ': ' + blockData.block_data_match_percentage + '%'
-          "
-        ></span>
-        <span
-          :class="
-            Math.abs(blockData.block_data_flashlog_sec_diff) >=
-              thresholdSecDiff ||
-            blockData.block_data_flashlog_sec_diff === null
-              ? 'red--text'
-              : 'green--text'
-          "
-          v-text="
-            $t('Time_diff') +
-              ': ' +
-              (blockData.block_data_flashlog_sec_diff !== null
-                ? blockData.block_data_flashlog_sec_diff + $t('seconds_short')
-                : $t('unknown'))
-          "
-        ></span>
+        <div class="d-flex flex-row">
+          <span
+            :class="
+              'mr-3 ' +
+                (blockData.block_data_match_percentage >= thresholdMatches
+                  ? 'green--text'
+                  : 'red--text')
+            "
+            v-text="
+              $tc('Match', 2) +
+                ': ' +
+                blockData.block_data_match_percentage +
+                '%'
+            "
+          ></span>
+          <span
+            v-if="!smAndDown && blockData.block_data_match_errors !== ''"
+            class="mr-3 red--text"
+            v-text="$tc('Error', 2) + ': ' + blockData.block_data_match_errors"
+          ></span>
+          <span
+            :class="
+              Math.abs(blockData.block_data_flashlog_sec_diff) >=
+                thresholdSecDiff ||
+              blockData.block_data_flashlog_sec_diff === null
+                ? 'red--text'
+                : 'green--text'
+            "
+            v-text="
+              $t('Time_diff') +
+                ': ' +
+                (blockData.block_data_flashlog_sec_diff !== null
+                  ? blockData.block_data_flashlog_sec_diff + $t('seconds_short')
+                  : $t('unknown'))
+            "
+          ></span>
+        </div>
+        <div
+          v-if="smAndDown && blockData.block_data_match_errors !== ''"
+          class="d-flex flex-row"
+        >
+          <span
+            class="mr-3 red--text"
+            v-text="$tc('Error', 2) + ': ' + blockData.block_data_match_errors"
+          ></span>
+        </div>
       </div>
       <v-spacer></v-spacer>
       <v-btn

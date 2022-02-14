@@ -76,7 +76,7 @@ const translations = {
   remove_hive: 'Verwijder kast',
   remove_inspection: 'Verwijder inspectie',
 
-  Error: 'Fout',
+  Error: 'Fout | Fouten',
   first_remove_hives:
     'Let op: er zijn nog kasten op deze bijenstand aanwezig. U kunt specifieke kasten (en hun inspecties) bewaren door ze eerst te verplaatsen naar een andere bijenstand. Als u doorgaat met verwijderen, verwijdert u ALLE kasten en inspecties die op deze locatie aanwezig zijn.',
 

@@ -317,7 +317,7 @@ export default {
             checklistUpdate
           )
           if (!response) {
-            this.errorMessage = this.$i18n.t('Error')
+            this.errorMessage = this.$i18n.tc('Error', 1)
             this.showLoadingIcon = false
           }
           setTimeout(() => {
@@ -360,7 +360,7 @@ export default {
             this.errorMessage = this.$i18n.t(msg)
           } else {
             console.log(error)
-            this.errorMessage = this.$i18n.t('Error')
+            this.errorMessage = this.$i18n.tc('Error', 1)
           }
         }
       }

@@ -246,7 +246,7 @@ export default {
         })
         if (!response) {
           this.errors.push({
-            errorMessage: this.$i18n.t('Error'),
+            errorMessage: this.$i18n.tc('Error', 1),
           })
           this.showDeleteLoadingIcon = false
         }
@@ -269,7 +269,7 @@ export default {
           })
         } else {
           this.errors.push({
-            errorMessage: this.$i18n.t('Error'),
+            errorMessage: this.$i18n.tc('Error', 1),
           })
         }
       }
@@ -317,7 +317,7 @@ export default {
             })
           } else {
             this.errors.push({
-              errorMessage: this.$i18n.t('Error'),
+              errorMessage: this.$i18n.tc('Error', 1),
             })
           }
         }

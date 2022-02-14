@@ -88,7 +88,7 @@ const translations = {
   remove_apiary: 'Rimuovi apiario',
   remove_hive: 'Rimuovi alveare',
   remove_inspection: 'Rimuovi visita',
-  Error: 'Errore',
+  Error: 'Errore | Errori',
   Warning: 'Attenzione',
   first_remove_hives:
     'Attenzione: ci sono ancora alveari in questo apiario. Puoi salvare alveari specifici (e le loro visita) spostandoli prima in un altro apiario. Se continui, cancellerai TUTTI gli alveari e dati di visite per questa località.',

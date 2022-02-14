@@ -96,7 +96,7 @@ const translations = {
   remove_hive: 'Remover colmeia',
   remove_inspection: 'Remover inspeção',
 
-  Error: 'Erro',
+  Error: 'Erro | Erros',
   Warning: 'Aviso',
   first_remove_hives:
     'Atenção: ainda há colmeias neste apiário. Pode salvar colmeias específicas (e suas inspeções) movendo-as primeiro para outro apiário. Se continuar com a eliminação, excluirá TODAS as colmeias e inspeções presentes neste local.',

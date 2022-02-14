@@ -87,7 +87,7 @@ const translations = {
   remove_apiary: 'Eliminați stupina',
   remove_hive: 'Eliminare stup',
   remove_inspection: 'Eliminați inspecția',
-  Error: 'Eroare',
+  Error: 'Eroare | Erori',
   Warning: 'Advertisment',
   first_remove_hives:
     'Atenție încă există stupi în această stupină. Puteți salva stupi specifici (și inspecțiile lor) prin mutarea acestora într-o altă stupină. Dacă veți continua cu ștergerea, vor fi șterse toate inspecțiile și toți stupii din prezenta locație.',

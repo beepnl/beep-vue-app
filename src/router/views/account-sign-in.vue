@@ -7,8 +7,15 @@
       @submit.prevent="login"
     >
       <v-card-text>
-        <v-alert v-if="msg || resentVerification" type="success" text prominent dense color="green">
-           {{ resentVerification ? $t('email_verification_resent') : $t(msg) }}
+        <v-alert
+          v-if="msg || resentVerification"
+          type="success"
+          text
+          prominent
+          dense
+          color="green"
+        >
+          {{ resentVerification ? $t('email_verification_resent') : $t(msg) }}
         </v-alert>
         <v-alert
           v-for="error in errors"
@@ -134,7 +141,7 @@ export default {
           })
         } else {
           this.errors.push({
-            errorMessage: this.$i18n.t('Error'),
+            errorMessage: this.$i18n.tc('Error', 1),
           })
         }
       }

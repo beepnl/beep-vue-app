@@ -559,7 +559,7 @@ export default {
           })
         } else if (response.data.errors.token) {
           this.errorMessage =
-            this.$i18n.t('Error') + ': ' + response.data.errors.token
+            this.$i18n.tc('Error', 1) + ': ' + response.data.errors.token
           this.showGroupDetails = false
         } else if (!response) {
           this.$router.push({ name: '404', params: { resource: 'Invitation' } })
@@ -579,7 +579,7 @@ export default {
           const response = await Api.postRequest('/groups', this.activeGroup)
           if (!response) {
             this.errorMessage =
-              this.$i18n.t('Error') + ': ' + this.$i18n.t('not_saved_error')
+              this.$i18n.tc('Error', 1) + ': ' + this.$i18n.t('not_saved_error')
             this.showLoadingIcon = false
           }
           setTimeout(() => {
@@ -596,7 +596,7 @@ export default {
         } catch (error) {
           this.errorMessage =
             error.status === 422
-              ? this.$i18n.t('Error') +
+              ? this.$i18n.tc('Error', 1) +
                 ': ' +
                 Object.values(error.message).join(', ')
               : this.$i18n.t('empty_fields') + '.'
@@ -738,7 +738,7 @@ export default {
           )
           if (!response) {
             this.errorMessage =
-              this.$i18n.t('Error') + ': ' + this.$i18n.t('not_saved_error')
+              this.$i18n.tc('Error', 1) + ': ' + this.$i18n.t('not_saved_error')
           }
           this.successMessage = response.data.message
           this.showSuccessMessage = true

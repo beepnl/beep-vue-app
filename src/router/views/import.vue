@@ -37,8 +37,8 @@
             text
             prominent
             dense
-            type="success"
-            color="green"
+            :type="importMessage.data_stored ? 'success' : 'error'"
+            :color="importMessage.data_stored ? 'green' : 'red'"
             class="mt-3 mb-n4"
           >
             {{ importSentence }}

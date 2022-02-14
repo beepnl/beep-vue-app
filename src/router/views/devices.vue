@@ -825,7 +825,7 @@ export default {
         )
         if (!response) {
           this.errorMessage =
-            this.$i18n.t('Error') + ': ' + this.$i18n.t('not_saved_error')
+            this.$i18n.tc('Error', 1) + ': ' + this.$i18n.t('not_saved_error')
           this.showLoadingIcon = false
         }
         this.getDevicesForList().then(() => {
@@ -842,7 +842,7 @@ export default {
           const msg = error.response.data.message
           this.errorMessage = this.$i18n.t(msg)
         } else {
-          this.errorMessage = this.$i18n.t('Error')
+          this.errorMessage = this.$i18n.tc('Error', 1)
         }
       }
     },
@@ -870,7 +870,7 @@ export default {
         }
         if (!response) {
           this.errorMessage =
-            this.$i18n.t('Error') + ': ' + this.$i18n.t('not_saved_error')
+            this.$i18n.tc('Error', 1) + ': ' + this.$i18n.t('not_saved_error')
           this.showLoadingIconById.splice(
             this.showLoadingIconById.indexOf(sensorDef.id),
             1
@@ -894,7 +894,7 @@ export default {
           const msg = error.response.data.message
           this.errorMessage = this.$i18n.t(msg)
         } else {
-          this.errorMessage = this.$i18n.t('Error')
+          this.errorMessage = this.$i18n.tc('Error', 1)
         }
       }
     },

@@ -88,7 +88,7 @@ const translations = {
   remove_apiary: 'Eliminar apiario',
   remove_hive: 'Eliminar colmena',
   remove_inspection: 'Eliminar inspección',
-  Error: 'Error',
+  Error: 'Error | Errores',
   Warning: 'Advertencia',
   first_remove_hives:
     'Atención: Aun hay colmenas en este apiario. Usted puede guardar colmenas específicas (y sus inspecciones) trasladándolas primero a otro apiario. Si continúa con la eliminación, eliminará TODAS las colmenas e inspecciones presentes en esta ubicación.',

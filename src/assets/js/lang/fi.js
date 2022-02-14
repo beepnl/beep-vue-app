@@ -95,7 +95,7 @@ const translations = {
   remove_hive: 'Poista pesä',
   remove_inspection: 'Poista pesätarkastus',
 
-  Error: 'Virhe',
+  Error: 'Virhe | Virheitä',
   Warning: 'Varoitus',
   first_remove_hives:
     'Huomio: tällä tarhalla on vielä pesiä. Voit tallentaa haluamasi pesät (ja niiden tarkastukset) siirtämällä ne ensin toiseen mehiläistarhaan. Jos jatkat poistamista, poistat KAIKKI tämän tarhapaikan pesät ja niiden tarkastukset.',

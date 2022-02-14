@@ -87,7 +87,7 @@ const translations = {
   remove_apiary: 'Entferne Bienenstand',
   remove_hive: 'Entferne Beute',
   remove_inspection: 'Entferne Durchsicht',
-  Error: 'Fehler',
+  Error: 'Fehler | Fehler',
   Warning: 'Warnung',
   first_remove_hives:
     'Da sind bereits Beuten an diesem Ort. Der Ort kann gelöscht werden, wenn alle Beuten an einen anderen Ort transferiert oder gelöscht wurden.',

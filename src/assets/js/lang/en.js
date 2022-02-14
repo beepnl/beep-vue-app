@@ -75,7 +75,7 @@ const translations = {
   remove_hive: 'Remove hive',
   remove_inspection: 'Remove inspection',
 
-  Error: 'Error',
+  Error: 'Error | Errors',
   first_remove_hives:
     'Attention: there are still hives at this apiary. You can save specific hives (and their inspections) by first moving them to another apiary. If you continue with the deletion, you will delete ALL hives and inspections present at this location.',
 
