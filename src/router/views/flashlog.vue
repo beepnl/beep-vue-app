@@ -249,6 +249,7 @@ export default {
       errorMessage: null,
       measurements: {},
       blockDataIndex: 0,
+      blockDataIndexMax: 0,
       showLoadingIcon: false,
       dataSets: ['flashlog', 'database'],
       thresholdSecDiff: 120,
@@ -261,11 +262,6 @@ export default {
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     blockId() {
       return parseInt(this.$route.query.blockId)
-    },
-    blockDataIndexMax() {
-      return this.blockData !== null
-        ? this.blockData.block_data_index_max
-        : null
     },
     finalIndex() {
       return (
@@ -354,7 +350,9 @@ export default {
   },
   created() {
     this.readTaxonomy().then(() => {
-      this.checkBlockData()
+      this.checkBlockData().then(() => {
+        this.blockDataIndexMax = this.blockData.block_data_index_max
+      })
     })
   },
   methods: {
