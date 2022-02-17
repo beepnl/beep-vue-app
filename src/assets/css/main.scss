@@ -306,6 +306,7 @@
   .ct-label.ct-vertical.ct-end {
     margin-left: -5px;
   }
+
   .ct-chart {
     &.modulo-2 .ct-grids .ct-grid.ct-horizontal:not(:nth-child(2n + 1)) {
       stroke: none !important;
@@ -350,6 +351,9 @@
       stroke: none !important;
     }
     &.modulo-60 .ct-grids .ct-grid.ct-horizontal:not(:nth-child(60n + 1)) {
+      stroke: none !important;
+    }
+    &.modulo-72 .ct-grids .ct-grid.ct-horizontal:not(:nth-child(72n + 1)) {
       stroke: none !important;
     }
     &.modulo-100 .ct-grids .ct-grid.ct-horizontal:not(:nth-child(100n + 1)) {

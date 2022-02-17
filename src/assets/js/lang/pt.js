@@ -591,6 +591,7 @@ const translations = {
   overrides_layer_colors: 'substitui as cores das camadas',
   drag_layers: 'Arraste as camadas para configurar a colmeia',
   page: 'página | páginas',
+  Page: 'Página | Páginas',
   not_found: 'não encontrado',
   sorry: 'Desculpe',
   delete_layer: 'Apagar camada',

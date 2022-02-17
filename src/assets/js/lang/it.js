@@ -563,6 +563,7 @@ const translations = {
   overrides_layer_colors: 'annulla i colori degli strati',
   drag_layers: "Trascina i pezzi per configurare l'alveare",
   page: 'pagina | pagine',
+  Page: 'Pagina | Pagine',
   not_found: 'non trovato',
   sorry: 'Spiacente',
   delete_layer: 'Cancella strato',

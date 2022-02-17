@@ -120,13 +120,21 @@
         :color="smAndDown ? 'accent' : 'black'"
         class="mr-n1 ml-1"
         :disabled="loading || finalIndex"
-        @click="changeBlockDataIndex(blockData.block_data_index_max)"
+        @click="changeBlockDataIndex(blockDataIndexMax)"
         >mdi-chevron-double-right</v-icon
       >
     </v-toolbar>
 
     <v-container class="back-content">
       <v-row>
+        <v-col cols="12" class="py-0">
+          <span
+            class="float-right mt-n1 font-small"
+            v-text="paginationText"
+          ></span>
+        </v-col>
+      </v-row>
+      <v-row class="my-0">
         <v-col v-if="errorMessage" cols="12">
           <v-alert
             text
@@ -254,10 +262,15 @@ export default {
     blockId() {
       return parseInt(this.$route.query.blockId)
     },
+    blockDataIndexMax() {
+      return this.blockData !== null
+        ? this.blockData.block_data_index_max
+        : null
+    },
     finalIndex() {
       return (
         (this.blockData !== null &&
-          this.blockDataIndex === this.blockData.block_data_index_max) ||
+          this.blockDataIndex === this.blockDataIndexMax) ||
         this.blockData === null
       )
     },
@@ -295,7 +308,9 @@ export default {
         return entries > 2000
           ? 100
           : entries > 1000
-          ? 36
+          ? this.mobile
+            ? 72
+            : 36
           : entries > 500
           ? 12
           : 6
@@ -317,7 +332,17 @@ export default {
           : '') + this.logDetails
       )
     },
-
+    paginationText() {
+      return (
+        this.$i18n.tc('Page', 1) +
+        ' ' +
+        this.blockDataIndex +
+        ' ' +
+        this.$i18n.t('of') +
+        ' ' +
+        this.blockDataIndexMax
+      )
+    },
     smAndDown() {
       return this.$vuetify.breakpoint.smAndDown
     },

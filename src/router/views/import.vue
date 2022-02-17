@@ -89,7 +89,7 @@
               :items="flashLogs"
               :items-per-page="mobile ? 1 : 5"
               :item-class="rowClassLogFile"
-              :search="logFileSearch"
+              :search="logSearch"
               :no-data-text="$t('no_data')"
               :no-results-text="$t('no_results')"
               multi-sort
@@ -97,7 +97,7 @@
             >
               <template v-slot:top>
                 <v-text-field
-                  v-model="logFileSearch"
+                  v-model="logSearch"
                   :label="$t('Search')"
                   class="mx-1 mx-sm-4"
                 ></v-text-field>
@@ -241,7 +241,7 @@
           cols="12"
         >
           <div
-            class="overline primary--text mt-0 mt-sm-3 mb-3"
+            class="overline mt-0 mt-sm-3 mb-3"
             v-text="selectedFlashLogHeader"
           ></div>
 
@@ -403,7 +403,6 @@ export default {
         },
         { text: this.$i18n.t('Actions'), sortable: false, value: 'actions' },
       ],
-      logFileSearch: null,
       logFileHeaders: [
         { text: 'ID', value: 'id' },
         { text: this.$i18n.t('Upload_date'), value: 'created_at' },
@@ -471,6 +470,17 @@ export default {
       const newHeaderArray = this.logFileHeaders.slice()
       newHeaderArray.splice(4, 0, userNameColumn)
       return newHeaderArray
+    },
+    logSearch: {
+      get() {
+        return this.$store.getters['devices/logSearch']
+      },
+      set(value) {
+        this.$store.commit('devices/setData', {
+          prop: 'logSearch',
+          value,
+        })
+      },
     },
     selectedFlashLog: {
       get() {
@@ -675,15 +685,14 @@ export default {
     missingDataText(log) {
       var ptNotInDb = this.percentageNotInDB(log)
       return (
-        ptNotInDb +
-        '% ' +
-        this.$i18n.t('not_yet_in_db') +
-        '<br>' +
-        '(' +
         this.momentDurationDays(
           log.duration_hours * (ptNotInDb / 100),
           'hours'
         ) +
+        '<br>(' +
+        ptNotInDb +
+        '% ' +
+        this.$i18n.t('not_yet_in_db') +
         ')'
       )
     },
@@ -701,7 +710,7 @@ export default {
       return item.matches === undefined
         ? 'no-match-block'
         : 'match-block ' +
-            (this.percentageNotInDB(item) > 10 ? 'much-missing' : 'few-missing')
+            (this.percentageNotInDB(item) < 50 ? 'green--text' : 'red--text')
     },
     rowClassLogFile(item) {
       return this.selectedFlashLog !== null &&
@@ -742,15 +751,6 @@ export default {
 }
 .flashlog-selected {
   background-color: $color-orange-light;
-}
-.match-block {
-  // background-color: $color-orange-medium !important;
-  &.much-missing {
-    color: $color-green !important;
-  }
-  &.few-missing {
-    color: $color-red !important;
-  }
 }
 .no-match-block {
   color: $color-grey-medium !important;

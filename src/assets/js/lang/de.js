@@ -577,6 +577,7 @@ const translations = {
   overrides_layer_colors: 'überschreibt Zargenfarbe',
   drag_layers: 'Zur Konfiguration der Beute - Elemente ziehen',
   page: 'Seite | Seiten',
+  Page: 'Seite | Seiten',
   not_found: 'nicht gefunden',
   sorry: 'Entschuldigung',
   delete_layer: 'Lösche Zarge',

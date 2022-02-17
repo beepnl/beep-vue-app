@@ -655,6 +655,7 @@ const translations = {
   overrides_layer_colors: 'Remplacer la couleur des cadres',
   drag_layers: 'Glisser des cadres pour configurer la ruche',
   page: 'page | pages',
+  Page: 'Page | Pages',
   not_found: 'introuvable',
   sorry: 'désolé',
   delete_layer: 'Supprimer le cadre',

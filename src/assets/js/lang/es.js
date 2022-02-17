@@ -563,6 +563,7 @@ const translations = {
   overrides_layer_colors: 'anula los colores de las capas',
   drag_layers: 'Arrastrar capas para configurar colmenas',
   page: 'page | páginas',
+  Page: 'Page | Páginas',
   not_found: 'no encontrado',
   sorry: 'lo siento',
   delete_layer: 'eliminar capa',

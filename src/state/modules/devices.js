@@ -11,6 +11,7 @@ export const state = {
   devicesPresent: true,
   selectedDeviceId: null,
   selectedFlashLog: null,
+  logSearch: null,
 }
 export const getters = {
   ...resource.getters,
@@ -26,6 +27,9 @@ export const getters = {
   selectedFlashLog: (state) => {
     return state.selectedFlashLog
   },
+  logSearch: (state) => {
+    return state.logSearch
+  },
 }
 export const mutations = {
   ...resource.mutations,
@@ -40,6 +44,7 @@ export const mutations = {
     state.devicesPresent = true
     state.selectedDeviceId = null
     state.selectedFlashLog = null
+    state.logSearch = null
   },
 }
 export const actions = {

@@ -478,6 +478,7 @@ const translations = {
   Hive_feeding_box_layer: 'Feeding box | Feeding boxes',
   drag_layers: 'Drag layers to configure hive',
   page: 'page | pages',
+  Page: 'Page | Pages',
   not_found: 'not found',
   sorry: 'Sorry',
   delete_layer: 'Delete layer',

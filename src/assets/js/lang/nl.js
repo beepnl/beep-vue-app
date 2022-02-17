@@ -506,6 +506,7 @@ const translations = {
   Hive_feeding_box_layer: 'Voederbak | Voederbakken',
   drag_layers: 'Versleep kamers om bijenkast te configureren',
   page: "pagina | pagina's",
+  Page: "Pagina | Pagina's",
   not_found: 'niet gevonden',
   sorry: 'Sorry',
   delete_layer: 'Verwijder laag',

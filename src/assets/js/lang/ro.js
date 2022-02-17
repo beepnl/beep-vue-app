@@ -565,6 +565,7 @@ const translations = {
   overrides_layer_colors: 'anulează culorile stratului',
   drag_layers: 'Trageți straturile pentru a configura stupul',
   page: 'pagina | pagini',
+  Page: 'Pagina | Pagini',
   not_found: 'nu a fost găsit',
   sorry: 'Ne pare rău.',
   delete_layer: 'Ștergeți strat',

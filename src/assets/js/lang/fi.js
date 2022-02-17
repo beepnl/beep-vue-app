@@ -597,6 +597,7 @@ const translations = {
   overrides_layer_colors: 'Korvaa osastojen värit',
   drag_layers: 'Lisää osastoja vetämällä',
   page: 'sivu | sivut',
+  Page: 'Sivu | Sivut',
   not_found: 'ei löydetty',
   sorry: 'Pahoittelut',
   delete_layer: 'Poista osasto',

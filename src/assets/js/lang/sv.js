@@ -548,6 +548,7 @@ const translations = {
   overrides_layer_colors: 'overrides layer colors',
   drag_layers: 'Drag layers to configure hive',
   page: 'page | pages',
+  Page: 'Page | Pages',
   not_found: 'not found',
   sorry: 'Sorry',
   delete_layer: 'Delete layer',
