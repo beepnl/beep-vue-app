@@ -17,20 +17,26 @@
       </template>
 
       <v-list>
-        <v-list-item
-          v-for="language in languages"
-          :key="language.title"
-          :value="language"
-          @click="switchLocale(language.lang)"
-        >
-          <v-list-item-avatar>
-            <img :src="assetsUrl + `/img/flags/${language.lang}.svg`" />
-          </v-list-item-avatar>
+        <template v-for="language in languages">
+          <v-list-item
+            v-if="
+              (language.lang === 'sv' &&
+                userEmail === 'jmlindell4u@gmail.com') || // temp show sv only to translator for double checking terms
+                language.lang !== 'sv'
+            "
+            :key="language.title"
+            :value="language"
+            @click="switchLocale(language.lang)"
+          >
+            <v-list-item-avatar>
+              <img :src="assetsUrl + `/img/flags/${language.lang}.svg`" />
+            </v-list-item-avatar>
 
-          <v-list-item-content>
-            <v-list-item-title v-text="language.title"></v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+            <v-list-item-content>
+              <v-list-item-title v-text="language.title"></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </template>
       </v-list>
     </v-menu>
   </span>
