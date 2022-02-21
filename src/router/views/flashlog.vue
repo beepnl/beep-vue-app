@@ -129,6 +129,7 @@
       <v-row>
         <v-col cols="12" class="py-0">
           <span
+            v-if="!loading"
             class="float-right mt-n1 font-small"
             v-text="paginationText"
           ></span>
@@ -156,7 +157,7 @@
             <v-progress-circular color="primary" size="50" indeterminate />
           </div>
 
-          <div v-if="blockData !== null" class="charts">
+          <div v-if="!loading && blockData !== null" class="charts">
             <template v-for="(dataSet, index) in dataSets">
               <div :key="'dataSet' + index" class="pt-0 pb-6">
                 <div
@@ -179,7 +180,7 @@
             </template>
           </div>
 
-          <v-row v-if="blockData !== null" class="my-4">
+          <v-row v-if="!loading && blockData !== null" class="my-4">
             <v-col cols="12" sm="6">
               <div>
                 <div class="beep-label" v-text="$t('Fill_holes') + ': '"></div>
@@ -332,11 +333,11 @@ export default {
       return (
         this.$i18n.tc('Page', 1) +
         ' ' +
-        this.blockDataIndex +
+        (this.blockDataIndex + 1) +
         ' ' +
         this.$i18n.t('of') +
         ' ' +
-        this.blockDataIndexMax
+        (this.blockDataIndexMax + 1)
       )
     },
     smAndDown() {
@@ -388,12 +389,14 @@ export default {
     async importBlockData() {
       this.clearMessages()
       this.showLoadingIcon = true
+      this.loading = true
       try {
         const response = await Api.postRequest(
           '/flashlogs/' + this.flashLogId + '?block_id=' + this.blockId
         )
         var importMessage = response.data
         this.showLoadingIcon = false
+        this.loading = false
         return this.$router.push({
           name: 'import',
           params: {
@@ -402,6 +405,7 @@ export default {
         })
       } catch (error) {
         this.showLoadingIcon = false
+        this.loading = false
         if (error.response) {
           console.log(error.response)
           this.errorMessage = this.$i18n.t(error.response.data.error)

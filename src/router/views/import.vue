@@ -249,7 +249,6 @@
             <v-data-table
               :headers="logDataHeaders"
               :items="selectedFlashLog.log"
-              :items-per-page="5"
               :item-class="rowClassLogData"
               :no-data-text="$t('no_data')"
               :no-results-text="$t('no_results')"
@@ -388,6 +387,8 @@ export default {
         {
           text: this.$i18n.t('Missing_data'),
           value: 'dbCount',
+          sort: (a, b) =>
+            this.percentageNotInDB(a) < this.percentageNotInDB(b) ? -1 : 1,
         },
         {
           text: this.$i18n.t('period'),
@@ -697,7 +698,20 @@ export default {
       )
     },
     percentageNotInDB(log) {
-      return (100 * (1 - log.dbCount / log.setCount)).toFixed(1)
+      if (
+        log.dbCount !== undefined &&
+        log.dbCount !== null &&
+        log.setCount !== undefined &&
+        log.setCount !== null
+      ) {
+        var ptNotInDb = (100 * (1 - log.dbCount / log.setCount)).toFixed(1)
+        // ptNotinDb can be max 100 and min 0
+        if (ptNotInDb > 100) ptNotInDb = 100
+        if (ptNotInDb < 0) ptNotInDb = 0
+        return ptNotInDb
+      } else {
+        return null
+      }
     },
     periodText(log) {
       return (
