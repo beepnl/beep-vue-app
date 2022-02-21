@@ -549,8 +549,11 @@
                 ><router-link :to="{ name: 'devices' }">Devices</router-link>,
                 <router-link :to="{ name: 'export' }">Data export</router-link>,
                 <router-link :to="{ name: 'research' }">Research</router-link>,
-                <router-link :to="{ name: 'support' }">Helpdesk</router-link>,
-                <router-link :to="{ name: 'new' }">New!</router-link> and
+                <a
+                  href="https://beepsupport.freshdesk.com/en/support/solutions"
+                  target="_blank"
+                  >Support</a
+                >, <router-link :to="{ name: 'new' }">New!</router-link> and
                 <a href="https://beep.nl/home-english" target="_blank"
                   >BEEP website</a
                 >
@@ -1044,8 +1047,11 @@
                   >Data exporteren</router-link
                 >,
                 <router-link :to="{ name: 'research' }">Onderzoek</router-link>,
-                <router-link :to="{ name: 'support' }">Helpdesk</router-link>,
-                <router-link :to="{ name: 'new' }">Nieuw!</router-link> en
+                <a
+                  href="https://beepsupport.freshdesk.com/nl/support/solutions"
+                  target="_blank"
+                  >Support</a
+                >, <router-link :to="{ name: 'new' }">Nieuw!</router-link> en
                 <a href="https://beep.nl/" target="_blank">BEEP website</a>
                 zijn verhuisd naar het
                 <v-icon class="color-black inline-icon">mdi-menu</v-icon> menu
@@ -1130,11 +1136,8 @@
           >
           <!-- <li>Photos: ability to add images to inspections<a ng-click="switchMenu($event, true, '/images')">and view all images</a></li> -->
           <li
-            >Helpdesk:
-            <router-link :to="{ name: 'support' }">
-              search the knowledge base for help, or file a support ticket
-              directly from the app</router-link
-            ></li
+            >Helpdesk: search the knowledge base for help, or file a support
+            ticket directly from the app</li
           >
           <li
             >Weather:
