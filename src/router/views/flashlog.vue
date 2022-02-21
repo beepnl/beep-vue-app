@@ -244,7 +244,7 @@ export default {
   mixins: [momentFormat, readTaxonomy, sensorMixin],
   data() {
     return {
-      loading: false,
+      loading: true,
       noChartData: false,
       blockData: null,
       errorMessage: null,
