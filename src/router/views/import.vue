@@ -104,7 +104,9 @@
               </template>
 
               <template v-slot:[`item.created_at`]="{ item }">
-                <span v-text="momentify(item.created_at, true)"></span>
+                <span
+                  v-text="momentify(item.created_at, true, dateFormatLong)"
+                ></span>
               </template>
 
               <template v-slot:[`item.device_name`]="{ item }">
@@ -372,67 +374,12 @@ export default {
     return {
       errorMessage: null,
       dateFormat: 'YYYY-MM-DD',
+      dateFormatLong: 'YYYY-MM-DD HH:mm:ss',
       showLoadingIconById: [],
       ready: false,
       flashLogs: [],
       showInfo: false,
       matchProps: 9,
-      logDataHeaders: [
-        { text: this.$i18n.t('Block'), value: 'block' },
-        { text: this.$i18n.tc('Match', 2), value: 'matches' },
-        {
-          text: this.$i18n.t('Size'),
-          value: 'duration_hours',
-        },
-        {
-          text: this.$i18n.t('Missing_data'),
-          value: 'dbCount',
-          sort: (a, b) =>
-            this.percentageNotInDB(a) < this.percentageNotInDB(b) ? -1 : 1,
-        },
-        {
-          text: this.$i18n.t('period'),
-          value: 'time_end',
-        },
-        {
-          text: this.$i18n.t('Firmware_version'),
-          value: 'fw_version',
-        },
-        {
-          text: this.$i18n.t('Interval') + ' (min)',
-          value: 'interval_min',
-        },
-        { text: this.$i18n.t('Actions'), sortable: false, value: 'actions' },
-      ],
-      logFileHeaders: [
-        { text: 'ID', value: 'id' },
-        { text: this.$i18n.t('Upload_date'), value: 'created_at' },
-        {
-          text: this.$i18n.tc('device', 1),
-          value: 'device_name',
-        },
-        {
-          text: this.$i18n.tc('Hive', 1),
-          value: 'hive_name',
-        },
-        {
-          text: this.$i18n.t('Messages'),
-          value: 'log_messages',
-        },
-        {
-          text: this.$i18n.t('persisted_measurements'),
-          value: 'persisted_measurements',
-        },
-        {
-          text: this.$i18n.t('Log_time'),
-          value: 'log_has_timestamps',
-        },
-        {
-          text: this.$i18n.t('File_size'),
-          value: 'bytes_received',
-        },
-        { text: this.$i18n.t('Actions'), sortable: false, value: 'actions' },
-      ],
       fromCache: true,
       matchesOverlay: null,
     }
@@ -462,6 +409,66 @@ export default {
         : this.$i18n.t('no_data_stored') +
             '. ' +
             JSON.stringify(this.importMessage)
+    },
+    logDataHeaders() {
+      return [
+        { text: this.$i18n.t('Block'), value: 'block' },
+        { text: this.$i18n.tc('Match', 2), value: 'matches' },
+        {
+          text: this.$i18n.t('Size'),
+          value: 'duration_hours',
+        },
+        {
+          text: this.$i18n.t('Missing_data'),
+          value: 'dbCount',
+          sort: (a, b) =>
+            this.percentageNotInDB(a) < this.percentageNotInDB(b) ? -1 : 1,
+        },
+        {
+          text: this.$i18n.t('period'),
+          value: 'time_end',
+        },
+        {
+          text: this.$i18n.t('Firmware_version'),
+          value: 'fw_version',
+        },
+        {
+          text: this.$i18n.t('Interval') + ' (min)',
+          value: 'interval_min',
+        },
+        { text: this.$i18n.t('Actions'), sortable: false, value: 'actions' },
+      ]
+    },
+    logFileHeaders() {
+      return [
+        { text: 'ID', value: 'id' },
+        { text: this.$i18n.t('Upload_date'), value: 'created_at' },
+        {
+          text: this.$i18n.tc('device', 1),
+          value: 'device_name',
+        },
+        {
+          text: this.$i18n.tc('Hive', 1),
+          value: 'hive_name',
+        },
+        {
+          text: this.$i18n.t('Messages'),
+          value: 'log_messages',
+        },
+        {
+          text: this.$i18n.t('persisted_measurements'),
+          value: 'persisted_measurements',
+        },
+        {
+          text: this.$i18n.t('Log_time'),
+          value: 'log_has_timestamps',
+        },
+        {
+          text: this.$i18n.t('File_size'),
+          value: 'bytes_received',
+        },
+        { text: this.$i18n.t('Actions'), sortable: false, value: 'actions' },
+      ]
     },
     logFileHeadersAdmin() {
       const userNameColumn = {
@@ -630,7 +637,7 @@ export default {
             ' "' +
             flashLog.hive_name +
             ' - ' +
-            this.momentify(flashLog.created_at, true) +
+            this.momentify(flashLog.created_at, true, this.dateFormatLong) +
             '"?',
           {
             color: 'red',
