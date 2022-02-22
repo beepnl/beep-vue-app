@@ -824,6 +824,14 @@ const translations = {
   no_data_stored: 'Geen data opgeslagen',
   data_stored_for_log: 'Data opgeslagen voor Log ',
   Fill_holes: 'Vul gaten (verbind alle punten in de grafiek)',
+
+  undo_import: 'Importeren ongedaan maken',
+  undo_block_import_exp:
+    'Weet je zeker dat je de eerder geïmporteerde data van dit blok uit de database wil verwijderen?',
+  data_deleted: 'Data verwijderd',
+  data_not_deleted: 'Data niet verwijderd',
+  deleted_measurements: 'Verwijderde metingen',
+  deleted_days: 'verwijderde dagen',
 }
 
 export default translations

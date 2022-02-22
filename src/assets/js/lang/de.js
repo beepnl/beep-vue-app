@@ -916,6 +916,13 @@ const translations = {
   no_data_stored: 'No data stored',
   data_stored_for_log: 'Data stored for Log ',
   Fill_holes: 'Fill holes (connect all data points)',
+  undo_import: 'Undo import',
+  undo_block_import_exp:
+    'Are you sure that you want to delete the previously imported data from this block from the database?',
+  data_deleted: 'Data deleted',
+  data_not_deleted: 'Data not deleted',
+  deleted_measurements: 'Deleted measurements',
+  deleted_days: 'deleted days',
 }
 
 export default translations

@@ -129,7 +129,7 @@
       <v-row>
         <v-col cols="12" class="py-0">
           <span
-            v-if="!loading"
+            v-if="!loading && blockData !== null"
             class="float-right mt-n1 font-small"
             v-text="paginationText"
           ></span>
