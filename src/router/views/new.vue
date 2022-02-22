@@ -25,7 +25,10 @@
                 present</li
               >
               <li>Show all blocks at once instead of paginated per 5</li>
-              <li>Table tweaks to improve legibility</li>
+              <li
+                >Table tweaks: show 'BEEP base memory emptied' instead of 'Time
+                logged' and add 'Data imported' to block data table</li
+              >
               <li>In flashlog vs. database comparison view: add pagination</li>
             </ul>
           </li>
