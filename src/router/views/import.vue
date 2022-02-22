@@ -138,15 +138,15 @@
                 ></span>
               </template>
 
-              <template v-slot:[`item.log_has_timestamps`]="{ item }">
+              <template v-slot:[`item.log_erased`]="{ item }">
                 <v-sheet
-                  v-if="item.log_has_timestamps === 1"
+                  v-if="item.log_erased === 1"
                   class="beep-icon beep-icon-text color-green text-center"
                 >
                   {{ $t('yes') }}
                 </v-sheet>
                 <v-sheet
-                  v-if="item.log_has_timestamps === 0"
+                  v-if="item.log_erased === 0"
                   class="beep-icon beep-icon-text color-red text-center"
                 >
                   {{ $t('no') }}
@@ -270,6 +270,18 @@
               multi-sort
               class="elevation-0"
             >
+              <template v-slot:[`item.data_imported`]="{ item }">
+                <v-icon
+                  v-if="
+                    selectedFlashLog.persisted_block_ids !== undefined &&
+                      selectedFlashLog.persisted_block_ids.indexOf(item.block) >
+                        -1
+                  "
+                  class="green--text"
+                  >mdi-checkbox-marked-circle</v-icon
+                >
+              </template>
+
               <template v-slot:[`item.matches`]="{ item }">
                 <span
                   v-if="
@@ -358,7 +370,12 @@
                   </v-btn>
                 </router-link>
                 <v-btn
-                  v-if="percentageNotInDB(item) === 0"
+                  v-if="
+                    selectedFlashLog !== null &&
+                      selectedFlashLog.persisted_block_ids !== undefined &&
+                      selectedFlashLog.persisted_block_ids.indexOf(item.block) >
+                        -1
+                  "
                   tile
                   small
                   outlined
@@ -473,6 +490,17 @@ export default {
     logDataHeaders() {
       return [
         { text: this.$i18n.t('Block'), value: 'block' },
+        {
+          text: this.$i18n.t('Data_imported'),
+          value: 'data_imported',
+          sort: (a, b) =>
+            this.selectedFlashLog.persisted_block_ids !== undefined
+              ? this.selectedFlashLog.persisted_block_ids.indexOf(a.block) <
+                this.selectedFlashLog.persisted_block_ids.indexOf(b.block)
+                ? -1
+                : 1
+              : null,
+        },
         { text: this.$i18n.tc('Match', 2), value: 'matches' },
         {
           text: this.$i18n.t('Size'),
@@ -520,8 +548,8 @@ export default {
           value: 'persisted_measurements',
         },
         {
-          text: this.$i18n.t('Log_time'),
-          value: 'log_has_timestamps',
+          text: this.$i18n.t('Memory_erased'),
+          value: 'log_erased',
         },
         {
           text: this.$i18n.t('File_size'),
