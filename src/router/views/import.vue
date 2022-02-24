@@ -273,9 +273,10 @@
               <template v-slot:[`item.data_imported`]="{ item }">
                 <v-icon
                   v-if="
-                    selectedFlashLog.persisted_block_ids !== undefined &&
-                      selectedFlashLog.persisted_block_ids.indexOf(item.block) >
-                        -1
+                    selectedFlashLog.persisted_block_ids_array !== undefined &&
+                      selectedFlashLog.persisted_block_ids_array.indexOf(
+                        item.block
+                      ) > -1
                   "
                   class="green--text"
                   >mdi-checkbox-marked-circle</v-icon
@@ -372,9 +373,11 @@
                 <v-btn
                   v-if="
                     selectedFlashLog !== null &&
-                      selectedFlashLog.persisted_block_ids !== undefined &&
-                      selectedFlashLog.persisted_block_ids.indexOf(item.block) >
-                        -1
+                      selectedFlashLog.persisted_block_ids_array !==
+                        undefined &&
+                      selectedFlashLog.persisted_block_ids_array.indexOf(
+                        item.block
+                      ) > -1
                   "
                   tile
                   small
@@ -494,9 +497,11 @@ export default {
           text: this.$i18n.t('Data_imported'),
           value: 'data_imported',
           sort: (a, b) =>
-            this.selectedFlashLog.persisted_block_ids !== undefined
-              ? this.selectedFlashLog.persisted_block_ids.indexOf(a.block) <
-                this.selectedFlashLog.persisted_block_ids.indexOf(b.block)
+            this.selectedFlashLog.persisted_block_ids_array !== undefined
+              ? this.selectedFlashLog.persisted_block_ids_array.indexOf(
+                  a.block
+                ) <
+                this.selectedFlashLog.persisted_block_ids_array.indexOf(b.block)
                 ? -1
                 : 1
               : null,
