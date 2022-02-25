@@ -2,8 +2,41 @@
   <Layout :title="$t('Whats_new')">
     <v-container>
       <div class="overline mb-1"
-        ><span class="lowercase">v</span>3.0.86 (22-02-2022) - Current
+        ><span class="lowercase">v</span>3.0.87 (22-02-2022) - Current
         version</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>
+            Import:
+            <router-link :to="{ name: 'import' }">
+              several improvements (only for users with a BEEP
+              base)</router-link
+            >, such as:
+            <ul>
+              <li
+                >Option to undo imported block data ('undo import' button is
+                shown in table (result of 'check log data'), for each block that
+                has been imported). This removes imported data from the
+                database, for that particular block.</li
+              >
+              <li
+                >Option to 'view data' for each block, even if no matches are
+                present</li
+              >
+              <li>Show all blocks at once instead of paginated per 5</li>
+              <li
+                >Table tweaks: show 'BEEP base memory emptied' instead of 'Time
+                logged' and add 'Data imported' to block data table</li
+              >
+              <li>In flashlog vs. database comparison view: add pagination</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>3.0.86 (22-02-2022)</div
       >
       <div class="rounded-border mb-4">
         <ul>

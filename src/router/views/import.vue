@@ -45,6 +45,19 @@
           </v-alert>
         </v-col>
 
+        <v-col v-if="undoMessage" cols="12">
+          <v-alert
+            text
+            prominent
+            dense
+            :type="undoMessage.data_deleted ? 'success' : 'error'"
+            :color="undoMessage.data_deleted ? 'green' : 'red'"
+            class="mt-3 mb-n4"
+          >
+            {{ undoSentence }}
+          </v-alert>
+        </v-col>
+
         <v-col v-if="errorMessage" cols="12">
           <v-alert
             text
@@ -125,15 +138,15 @@
                 ></span>
               </template>
 
-              <template v-slot:[`item.log_has_timestamps`]="{ item }">
+              <template v-slot:[`item.log_erased`]="{ item }">
                 <v-sheet
-                  v-if="item.log_has_timestamps === 1"
+                  v-if="item.log_erased === 1"
                   class="beep-icon beep-icon-text color-green text-center"
                 >
                   {{ $t('yes') }}
                 </v-sheet>
                 <v-sheet
-                  v-if="item.log_has_timestamps === 0"
+                  v-if="item.log_erased === 0"
                   class="beep-icon beep-icon-text color-red text-center"
                 >
                   {{ $t('no') }}
@@ -257,6 +270,19 @@
               multi-sort
               class="elevation-0"
             >
+              <template v-slot:[`item.data_imported`]="{ item }">
+                <v-icon
+                  v-if="
+                    selectedFlashLog.persisted_block_ids_array !== undefined &&
+                      selectedFlashLog.persisted_block_ids_array.indexOf(
+                        item.block
+                      ) > -1
+                  "
+                  class="green--text"
+                  >mdi-checkbox-marked-circle</v-icon
+                >
+              </template>
+
               <template v-slot:[`item.matches`]="{ item }">
                 <span
                   v-if="
@@ -326,18 +352,64 @@
 
               <template v-slot:[`item.actions`]="{ item }">
                 <router-link
-                  v-if="item.matches !== undefined && selectedFlashLog !== null"
+                  v-if="selectedFlashLog !== null"
                   :to="{
                     name: `flashlog`,
                     params: { id: selectedFlashLog.flashlog_id },
                     query: { blockId: item.block },
                   }"
                 >
-                  <v-btn :small="smAndDown" tile outlined color="accent">
+                  <v-btn
+                    small
+                    tile
+                    outlined
+                    class="mr-1 mb-1"
+                    :color="item.matches === undefined ? 'grey' : 'accent'"
+                  >
                     <v-icon left>mdi-chart-line</v-icon>
                     {{ $t('View_data') }}
                   </v-btn>
                 </router-link>
+                <v-btn
+                  v-if="
+                    selectedFlashLog !== null &&
+                      selectedFlashLog.persisted_block_ids_array !==
+                        undefined &&
+                      selectedFlashLog.persisted_block_ids_array.indexOf(
+                        item.block
+                      ) > -1
+                  "
+                  tile
+                  small
+                  outlined
+                  color="red"
+                  class="mb-1"
+                  :disabled="showUndoLoadingIconById.indexOf(item.block) > -1"
+                  @click="
+                    confirmUndoBlockImport(
+                      selectedFlashLog.flashlog_id,
+                      item.block
+                    )
+                  "
+                >
+                  <v-progress-circular
+                    v-if="showUndoLoadingIconById.indexOf(item.block) > -1"
+                    class="ml-n1 mr-2"
+                    size="18"
+                    width="2"
+                    color="disabled"
+                    indeterminate
+                  />
+                  <v-icon
+                    v-if="
+                      // eslint-disable vue/comma-dangle
+                      showUndoLoadingIconById.indexOf(item.block) === -1
+                    "
+                    left
+                    >mdi-refresh</v-icon
+                  >
+                  {{ $t('undo_import') }}</v-btn
+                >
               </template>
             </v-data-table>
           </div>
@@ -373,9 +445,11 @@ export default {
   data() {
     return {
       errorMessage: null,
+      undoMessage: null,
       dateFormat: 'YYYY-MM-DD',
       dateFormatLong: 'YYYY-MM-DD HH:mm:ss',
       showLoadingIconById: [],
+      showUndoLoadingIconById: [],
       ready: false,
       flashLogs: [],
       showInfo: false,
@@ -410,9 +484,28 @@ export default {
             '. ' +
             JSON.stringify(this.importMessage)
     },
+    lgAndUp() {
+      return this.$vuetify.breakpoint.lgAndUp
+    },
+    locale() {
+      return this.$i18n.locale
+    },
     logDataHeaders() {
       return [
         { text: this.$i18n.t('Block'), value: 'block' },
+        {
+          text: this.$i18n.t('Data_imported'),
+          value: 'data_imported',
+          sort: (a, b) =>
+            this.selectedFlashLog.persisted_block_ids_array !== undefined
+              ? this.selectedFlashLog.persisted_block_ids_array.indexOf(
+                  a.block
+                ) <
+                this.selectedFlashLog.persisted_block_ids_array.indexOf(b.block)
+                ? -1
+                : 1
+              : null,
+        },
         { text: this.$i18n.tc('Match', 2), value: 'matches' },
         {
           text: this.$i18n.t('Size'),
@@ -460,8 +553,8 @@ export default {
           value: 'persisted_measurements',
         },
         {
-          text: this.$i18n.t('Log_time'),
-          value: 'log_has_timestamps',
+          text: this.$i18n.t('Memory_erased'),
+          value: 'log_erased',
         },
         {
           text: this.$i18n.t('File_size'),
@@ -489,6 +582,9 @@ export default {
           value,
         })
       },
+    },
+    mobile() {
+      return this.$vuetify.breakpoint.mobile
     },
     selectedFlashLog: {
       get() {
@@ -522,17 +618,23 @@ export default {
             this.selectedFlashLog.records_flashlog
         : ''
     },
-    lgAndUp() {
-      return this.$vuetify.breakpoint.lgAndUp
-    },
-    locale() {
-      return this.$i18n.locale
-    },
-    mobile() {
-      return this.$vuetify.breakpoint.mobile
-    },
     smAndDown() {
       return this.$vuetify.breakpoint.smAndDown
+    },
+    undoSentence() {
+      return this.undoMessage !== null && this.undoMessage.data_deleted
+        ? this.$i18n.t('data_deleted') +
+            '. ' +
+            this.$i18n.t('deleted_measurements') +
+            ': ' +
+            this.undoMessage.deleted_measurements +
+            ', ' +
+            this.$i18n.t('deleted_days') +
+            ': ' +
+            this.undoMessage.deleted_days
+        : this.$i18n.t('data_not_deleted') +
+            '. ' +
+            JSON.stringify(this.undoMessage)
     },
   },
   created() {
@@ -553,6 +655,35 @@ export default {
     })
   },
   methods: {
+    async undoBlockImport(flashLogId, blockId) {
+      this.clearMessages()
+      this.showUndoLoadingIconById.push(blockId)
+      try {
+        const response = await Api.deleteRequest(
+          '/flashlogs/' + flashLogId + '?block_id=' + blockId
+        )
+        this.undoMessage = response.data
+        this.showUndoLoadingIconById.splice(
+          this.showUndoLoadingIconById.indexOf(blockId),
+          1
+        )
+        setTimeout(() => {
+          this.readFlashLogs()
+        }, 100)
+      } catch (error) {
+        this.showUndoLoadingIconById.splice(
+          this.showUndoLoadingIconById.indexOf(blockId),
+          1
+        )
+        if (error.response) {
+          console.log(error.response)
+          this.errorMessage = this.$i18n.t(error.response.data.error)
+        } else {
+          console.log('Error: ', error)
+          this.errorMessage = this.$i18n.t('something_wrong')
+        }
+      }
+    },
     async deleteFlashLog(id) {
       this.clearMessages()
       try {
@@ -629,6 +760,26 @@ export default {
         }
       }
     },
+    confirmUndoBlockImport(flashLogId, blockId) {
+      this.$refs.confirm
+        .open(
+          this.$i18n.t('undo_import'),
+          this.$i18n.t('Block') +
+            ' ' +
+            blockId +
+            ' - ' +
+            this.$i18n.t('undo_block_import_exp'),
+          {
+            color: 'red',
+          }
+        )
+        .then((confirm) => {
+          this.undoBlockImport(flashLogId, blockId)
+        })
+        .catch((reject) => {
+          return true
+        })
+    },
     confirmDeleteFlashLog(flashLog) {
       this.$refs.confirm
         .open(
@@ -652,6 +803,7 @@ export default {
     },
     clearMessages() {
       this.importMessage = null
+      this.undoMessage = null
       this.errorMessage = null
     },
     fileSizeText(item) {
