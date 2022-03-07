@@ -75,7 +75,7 @@
         v-if="activeInspection && selectedChecklist !== null && ready"
         class="content-container"
       >
-        <v-row>
+        <v-row class="mb-3">
           <v-col cols="12" md="4">
             <v-row>
               <v-col cols="12" sm="7" md="12">

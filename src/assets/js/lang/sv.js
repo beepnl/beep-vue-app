@@ -89,7 +89,7 @@ const translations = {
   remove_hive: 'Ta bort kupa',
   remove_inspection: 'Ta bort inspektion',
 
-  Error: 'Fel | Fel',
+  Error: 'Error | Errors',
   Warning: 'Varning',
   first_remove_hives:
     'Obs: Det finns fortfarande kupor I denna bigård. Du kan spara specifika kupor (och deras inspektioner) genom att först flytta dem till en annan bigård. Om du fortsätter radera kommer du att radera samtliga kupor och inspektioner på denna lokal.',
@@ -540,7 +540,7 @@ const translations = {
   Support: 'Support',
   no_inspections: 'Lägg till första inspektionen',
   no_results: 'Inga resultat',
-  Hive_brood_layer: 'Yngellåda/lager | Yngellådor/lager',
+  Hive_brood_layer: 'Yngellåda | Yngellådor',
   Hive_honey_layer: 'Skattlåda | Skattlådor',
   Hive_queen_excluder_layer: 'Spärrgaller | Spärrgaller',
   Hive_feeding_box_layer: 'Foderlåda| Foderlådor',
@@ -611,7 +611,7 @@ const translations = {
   research_consent: 'Forskningssamtycke',
   checklist_types: 'Personligt,deld,forskning',
   edit_hive_checklist_no_touch:
-    'Klicka I/klicka bort I boxarna I listan nedan för att lägga till/ta bort variabler från din kup checklista. Du kan också vecka ut/veckla in och dra och släppa variabler i checklistan för att få dem i en ordning som som passar dina behov (obs. Funkar inte på enhet med touchscreen).',
+    'Klicka I/klicka bort I boxarna I listan nedan för att lägga till/ta bort variabler från din kup checklista. Du kan också visa/dölja och dra och släppa variabler i checklistan för att få dem i en ordning som som passar dina behov (obs. Funkar inte på enhet med touchscreen).',
   edit_hive_checklist_touch:
     'Klicka I/klicka bort boxarna I listan nedan för att lägga till/ta bort variabler från din kupchecklista. Att ändra ordningen på dina variabler är endast möjligt på en desktop dator.',
   input_not_possible_for_bulkinspection:

@@ -2,8 +2,19 @@
   <Layout :title="$t('Whats_new')">
     <v-container>
       <div class="overline mb-1"
-        ><span class="lowercase">v</span>3.0.87 (22-02-2022) - Current
+        ><span class="lowercase">v</span>3.0.88 (07-03-2022) - Current
         version</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>
+            Swedish language has been added
+          </li>
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>3.0.87 (22-02-2022)</div
       >
       <div class="rounded-border mb-4">
         <ul>

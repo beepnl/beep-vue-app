@@ -19,11 +19,6 @@
       <v-list>
         <template v-for="language in languages">
           <v-list-item
-            v-if="
-              (language.lang === 'sv' &&
-                userEmail === 'jmlindell4u@gmail.com') || // temp show sv only to translator for double checking terms
-                language.lang !== 'sv'
-            "
             :key="language.title"
             :value="language"
             @click="switchLocale(language.lang)"

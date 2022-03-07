@@ -263,7 +263,7 @@ export default {
 }
 
 .hive-caption {
-  height: 54px;
+  height: 45px;
   line-height: 0.9rem;
   color: $color-grey-dark;
   text-align: center;
