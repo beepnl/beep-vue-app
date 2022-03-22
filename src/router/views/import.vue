@@ -271,14 +271,7 @@
               class="elevation-0"
             >
               <template v-slot:[`item.data_imported`]="{ item }">
-                <v-icon
-                  v-if="
-                    selectedFlashLog.persisted_block_ids_array !== undefined &&
-                      selectedFlashLog.persisted_block_ids_array.indexOf(
-                        item.block
-                      ) > -1
-                  "
-                  class="green--text"
+                <v-icon v-if="item.data_imported" class="green--text"
                   >mdi-checkbox-marked-circle</v-icon
                 >
               </template>
@@ -336,7 +329,7 @@
                 <span v-html="sizeText(item)"></span>
               </template>
 
-              <template v-slot:[`item.dbCount`]="{ item }">
+              <template v-slot:[`item.missing_data`]="{ item }">
                 <span
                   v-if="item.matches !== undefined"
                   v-html="missingDataText(item)"
@@ -496,15 +489,6 @@ export default {
         {
           text: this.$i18n.t('Data_imported'),
           value: 'data_imported',
-          sort: (a, b) =>
-            this.selectedFlashLog.persisted_block_ids_array !== undefined
-              ? this.selectedFlashLog.persisted_block_ids_array.indexOf(
-                  a.block
-                ) <
-                this.selectedFlashLog.persisted_block_ids_array.indexOf(b.block)
-                ? -1
-                : 1
-              : null,
         },
         { text: this.$i18n.tc('Match', 2), value: 'matches' },
         {
@@ -513,9 +497,7 @@ export default {
         },
         {
           text: this.$i18n.t('Missing_data'),
-          value: 'dbCount',
-          sort: (a, b) =>
-            this.percentageNotInDB(a) < this.percentageNotInDB(b) ? -1 : 1,
+          value: 'missing_data',
         },
         {
           text: this.$i18n.t('period'),
@@ -648,6 +630,9 @@ export default {
           // update flashlog result if coming from the flashlog view & flashlog has previously been selected (= saved in store) and has not just been imported
           this.checkFlashLog(this.selectedFlashLog.flashlog_id)
         } else {
+          if (this.importMessage !== null) {
+            this.logSearch = this.importMessage.flashlog_id // make persisted log item remain on top of table
+          }
           this.selectedFlashLog = null
         }
         this.ready = true
@@ -722,6 +707,15 @@ export default {
         this.selectedFlashLog = response.data
 
         if (this.selectedFlashLog.log !== undefined) {
+          this.selectedFlashLog.log.map((item) => {
+            // set extra properties here to enable column sort for these columns
+            item.data_imported =
+              this.selectedFlashLog.persisted_block_ids_array !== undefined &&
+              this.selectedFlashLog.persisted_block_ids_array.indexOf(
+                item.block
+              ) > -1
+            item.missing_data = this.percentageNotInDB(item)
+          })
           setTimeout(() => {
             this.scrollTo('log-data')
           }, 100)
