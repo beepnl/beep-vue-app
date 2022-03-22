@@ -404,6 +404,55 @@
                   {{ $t('undo_import') }}</v-btn
                 >
               </template>
+
+              <template v-slot:[`item.export`]="{ item }">
+                <v-tooltip
+                  v-if="selectedFlashLog !== null && item.matches !== undefined"
+                  open-delay="500"
+                  bottom
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-icon
+                      dark
+                      color="accent"
+                      class="mr-2"
+                      v-on="on"
+                      @click="
+                        exportBlockData(
+                          selectedFlashLog.flashlog_id,
+                          item.block,
+                          true
+                        )
+                      "
+                      >mdi-file-export</v-icon
+                    >
+                  </template>
+                  <span>{{ $t('Export_as_csv') }}</span>
+                </v-tooltip>
+
+                <v-tooltip
+                  v-if="selectedFlashLog !== null && item.matches !== undefined"
+                  open-delay="500"
+                  bottom
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-icon
+                      dark
+                      color="accent"
+                      v-on="on"
+                      @click="
+                        exportBlockData(
+                          selectedFlashLog.flashlog_id,
+                          item.block,
+                          false
+                        )
+                      "
+                      >mdi-download</v-icon
+                    >
+                  </template>
+                  <span>{{ $t('Export_as_json') }}</span>
+                </v-tooltip>
+              </template>
             </v-data-table>
           </div>
         </v-col>
@@ -449,6 +498,9 @@ export default {
       matchProps: 9,
       fromCache: true,
       matchesOverlay: null,
+      baseApiUrl:
+        process.env.VUE_APP_BASE_API_URL ||
+        process.env.VUE_APP_BASE_API_URL_FALLBACK,
     }
   },
   computed: {
@@ -512,6 +564,7 @@ export default {
           value: 'interval_min',
         },
         { text: this.$i18n.t('Actions'), sortable: false, value: 'actions' },
+        { text: this.$i18n.t('Export'), sortable: false, value: 'export' },
       ]
     },
     logFileHeaders() {
@@ -640,6 +693,44 @@ export default {
     })
   },
   methods: {
+    async exportBlockData(flashLogId, blockId, csvFormat = false) {
+      this.clearMessages()
+      try {
+        const response = await Api.readRequest(
+          '/flashlogs/' +
+            flashLogId +
+            '?block_id=' +
+            blockId +
+            (csvFormat ? '&csv=1' : '&json=1')
+        )
+        if (response.status === -1) {
+          this.errorMessage = this.$i18n.t('too_much_data')
+        }
+        if (csvFormat) {
+          const responseLink = response.data.link
+          const csvLink =
+            responseLink.indexOf('https://') > -1
+              ? responseLink
+              : this.baseApiUrl + responseLink
+          // trick to download returned csv link (doesn't work via v-btn because it has already been clicked)
+          var link = document.createElement('a')
+          link.href = csvLink
+          link.setAttribute('download', csvLink)
+          document.body.appendChild(link)
+          link.click()
+        } else {
+          // TODO: handle json response
+        }
+        if (response.status === 200) {
+          this.showSuccessMessage = true
+          this.successMessage = this.$i18n.t('export_file_saved')
+        }
+        return response
+      } catch (error) {
+        console.log('Error: ', error)
+        this.errorMessage = this.$i18n.t('no_data')
+      }
+    },
     async undoBlockImport(flashLogId, blockId) {
       this.clearMessages()
       this.showUndoLoadingIconById.push(blockId)

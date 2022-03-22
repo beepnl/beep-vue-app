@@ -834,6 +834,9 @@ const translations = {
   deleted_measurements: 'Verwijderde metingen',
   deleted_days: 'verwijderde dagen',
   Memory_erased: 'Geheugen BEEP base geleegd',
+  Export: 'Export',
+  Export_as_json: 'Exporteer als JSON data',
+  Export_as_csv: 'Exporteer als .csv bestand',
 }
 
 export default translations
