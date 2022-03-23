@@ -258,9 +258,7 @@
           <v-container class="overline mt-0 mt-sm-3 mb-3">
             <v-row cols="12">
               <v-col v-text="selectedFlashLogHeader"></v-col>
-              <v-col>
-                <v-spacer></v-spacer>
-              </v-col>
+              <v-spacer></v-spacer>
               <v-col>
                 <template>
                   <v-tooltip
