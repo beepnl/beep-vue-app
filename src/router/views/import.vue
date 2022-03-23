@@ -407,7 +407,7 @@
 
               <template v-slot:[`item.export`]="{ item }">
                 <v-tooltip
-                  v-if="selectedFlashLog !== null && item.matches !== undefined"
+                  v-if="selectedFlashLog !== null"
                   open-delay="500"
                   bottom
                 >
@@ -431,7 +431,7 @@
                 </v-tooltip>
 
                 <v-tooltip
-                  v-if="selectedFlashLog !== null && item.matches !== undefined"
+                  v-if="selectedFlashLog !== null"
                   open-delay="500"
                   bottom
                 >
