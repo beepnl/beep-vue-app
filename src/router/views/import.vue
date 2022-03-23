@@ -258,7 +258,56 @@
           <div
             class="overline mt-0 mt-sm-3 mb-3"
             v-text="selectedFlashLogHeader"
-          ></div>
+          >
+            <template>
+              <v-tooltip
+                v-if="selectedFlashLog !== null"
+                open-delay="500"
+                bottom
+              >
+                <template v-slot:activator="{ on }">
+                  <v-icon
+                    dark
+                    color="accent"
+                    class="mr-2"
+                    v-on="on"
+                    @click="
+                      exportBlockData(
+                        selectedFlashLog.flashlog_id,
+                        '',
+                        true
+                      )
+                    "
+                    >mdi-file-export</v-icon
+                  >
+                </template>
+                <span>{{ $t('Export_as_csv') }}</span>
+              </v-tooltip>
+
+              <v-tooltip
+                v-if="selectedFlashLog !== null"
+                open-delay="500"
+                bottom
+              >
+                <template v-slot:activator="{ on }">
+                  <v-icon
+                    dark
+                    color="accent"
+                    v-on="on"
+                    @click="
+                      exportBlockData(
+                        selectedFlashLog.flashlog_id,
+                        '',
+                        false
+                      )
+                    "
+                    >mdi-download</v-icon
+                  >
+                </template>
+                <span>{{ $t('Export_as_json') }}</span>
+              </v-tooltip>
+            </template>
+          </div>
 
           <div class="rounded-border primary-border">
             <v-data-table
@@ -638,14 +687,12 @@ export default {
         ? 'Log ID: ' +
             this.selectedFlashLog.flashlog_id +
             ', ' +
-            this.$i18n.tc('device', 1) +
-            ': ' +
             this.selectedFlashLog.device_name +
-            ', Time match: ' +
+            ', Time: ' +
             this.selectedFlashLog.time_percentage +
-            ', Weight match: ' +
+            ', Weight: ' +
             this.selectedFlashLog.weight_percentage +
-            ', On/off blocks: ' +
+            ', Blocks: ' +
             this.selectedFlashLog.log.length +
             ', Lines: ' +
             this.selectedFlashLog.lines_received +
@@ -693,7 +740,7 @@ export default {
     })
   },
   methods: {
-    async exportBlockData(flashLogId, blockId, csvFormat = false) {
+    async exportBlockData(flashLogId, blockId = '', csvFormat = false) {
       this.clearMessages()
       try {
         const response = await Api.readRequest(
