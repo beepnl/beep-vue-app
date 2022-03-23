@@ -255,62 +255,59 @@
           ref="log-data"
           cols="12"
         >
-          <v-container class="overline mt-0 mt-sm-3 mb-3">
-            <v-row cols="12">
-              <v-col v-text="selectedFlashLogHeader"></v-col>
-              <v-spacer></v-spacer>
-              <v-col>
-                <template>
-                  <v-tooltip
-                    v-if="selectedFlashLog !== null"
-                    open-delay="500"
-                    bottom
-                  >
-                    <template v-slot:activator="{ on }">
-                      <v-icon
-                        dark
-                        color="accent"
-                        class="mr-2"
-                        v-on="on"
-                        @click="
-                          exportBlockData(
-                            selectedFlashLog.flashlog_id,
-                            '',
-                            true
-                          )
-                        "
-                        >mdi-file-export</v-icon
-                      >
-                    </template>
-                    <span>{{ $t('Export_as_csv') }}</span>
-                  </v-tooltip>
+          <div class="overline mt-0 mt-sm-3 mb-3">
+            <span v-text="selectedFlashLogHeader"></span>
+            <span>
+              <template>
+                <v-tooltip
+                  v-if="selectedFlashLog !== null"
+                  open-delay="500"
+                  bottom
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-icon
+                      dark
+                      color="accent"
+                      class="mr-2"
+                      v-on="on"
+                      @click="
+                        exportBlockData(
+                          selectedFlashLog.flashlog_id,
+                          '',
+                          true
+                        )
+                      "
+                      >mdi-file-export</v-icon
+                    >
+                  </template>
+                  <span>{{ $t('Export_as_csv') }}</span>
+                </v-tooltip>
 
-                  <v-tooltip
-                    v-if="selectedFlashLog !== null"
-                    open-delay="500"
-                    bottom
-                  >
-                    <template v-slot:activator="{ on }">
-                      <v-icon
-                        dark
-                        color="accent"
-                        v-on="on"
-                        @click="
-                          exportBlockData(
-                            selectedFlashLog.flashlog_id,
-                            '',
-                            false
-                          )
-                        "
-                        >mdi-download</v-icon
-                      >
-                    </template>
-                    <span>{{ $t('Export_as_json') }}</span>
-                  </v-tooltip>
-                </template>
-              </v-col>
-            </v-row>
-          </v-container>
+                <v-tooltip
+                  v-if="selectedFlashLog !== null"
+                  open-delay="500"
+                  bottom
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-icon
+                      dark
+                      color="accent"
+                      v-on="on"
+                      @click="
+                        exportBlockData(
+                          selectedFlashLog.flashlog_id,
+                          '',
+                          false
+                        )
+                      "
+                      >mdi-download</v-icon
+                    >
+                  </template>
+                  <span>{{ $t('Export_as_json') }}</span>
+                </v-tooltip>
+              </template>
+            </span>
+          </div>
 
           <div class="rounded-border primary-border">
             <v-data-table
