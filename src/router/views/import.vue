@@ -271,14 +271,7 @@
               class="elevation-0"
             >
               <template v-slot:[`item.data_imported`]="{ item }">
-                <v-icon
-                  v-if="
-                    selectedFlashLog.persisted_block_ids_array !== undefined &&
-                      selectedFlashLog.persisted_block_ids_array.indexOf(
-                        item.block
-                      ) > -1
-                  "
-                  class="green--text"
+                <v-icon v-if="item.data_imported" class="green--text"
                   >mdi-checkbox-marked-circle</v-icon
                 >
               </template>
@@ -336,7 +329,7 @@
                 <span v-html="sizeText(item)"></span>
               </template>
 
-              <template v-slot:[`item.dbCount`]="{ item }">
+              <template v-slot:[`item.missing_data`]="{ item }">
                 <span
                   v-if="item.matches !== undefined"
                   v-html="missingDataText(item)"
@@ -411,6 +404,55 @@
                   {{ $t('undo_import') }}</v-btn
                 >
               </template>
+
+              <template v-slot:[`item.export`]="{ item }">
+                <v-tooltip
+                  v-if="selectedFlashLog !== null"
+                  open-delay="500"
+                  bottom
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-icon
+                      dark
+                      color="accent"
+                      class="mr-2"
+                      v-on="on"
+                      @click="
+                        exportBlockData(
+                          selectedFlashLog.flashlog_id,
+                          item.block,
+                          true
+                        )
+                      "
+                      >mdi-file-export</v-icon
+                    >
+                  </template>
+                  <span>{{ $t('Export_as_csv') }}</span>
+                </v-tooltip>
+
+                <v-tooltip
+                  v-if="selectedFlashLog !== null"
+                  open-delay="500"
+                  bottom
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-icon
+                      dark
+                      color="accent"
+                      v-on="on"
+                      @click="
+                        exportBlockData(
+                          selectedFlashLog.flashlog_id,
+                          item.block,
+                          false
+                        )
+                      "
+                      >mdi-download</v-icon
+                    >
+                  </template>
+                  <span>{{ $t('Export_as_json') }}</span>
+                </v-tooltip>
+              </template>
             </v-data-table>
           </div>
         </v-col>
@@ -456,6 +498,9 @@ export default {
       matchProps: 9,
       fromCache: true,
       matchesOverlay: null,
+      baseApiUrl:
+        process.env.VUE_APP_BASE_API_URL ||
+        process.env.VUE_APP_BASE_API_URL_FALLBACK,
     }
   },
   computed: {
@@ -496,15 +541,6 @@ export default {
         {
           text: this.$i18n.t('Data_imported'),
           value: 'data_imported',
-          sort: (a, b) =>
-            this.selectedFlashLog.persisted_block_ids_array !== undefined
-              ? this.selectedFlashLog.persisted_block_ids_array.indexOf(
-                  a.block
-                ) <
-                this.selectedFlashLog.persisted_block_ids_array.indexOf(b.block)
-                ? -1
-                : 1
-              : null,
         },
         { text: this.$i18n.tc('Match', 2), value: 'matches' },
         {
@@ -513,9 +549,7 @@ export default {
         },
         {
           text: this.$i18n.t('Missing_data'),
-          value: 'dbCount',
-          sort: (a, b) =>
-            this.percentageNotInDB(a) < this.percentageNotInDB(b) ? -1 : 1,
+          value: 'missing_data',
         },
         {
           text: this.$i18n.t('period'),
@@ -530,6 +564,7 @@ export default {
           value: 'interval_min',
         },
         { text: this.$i18n.t('Actions'), sortable: false, value: 'actions' },
+        { text: this.$i18n.t('Export'), sortable: false, value: 'export' },
       ]
     },
     logFileHeaders() {
@@ -648,6 +683,9 @@ export default {
           // update flashlog result if coming from the flashlog view & flashlog has previously been selected (= saved in store) and has not just been imported
           this.checkFlashLog(this.selectedFlashLog.flashlog_id)
         } else {
+          if (this.importMessage !== null) {
+            this.logSearch = this.importMessage.flashlog_id // make persisted log item remain on top of table
+          }
           this.selectedFlashLog = null
         }
         this.ready = true
@@ -655,6 +693,42 @@ export default {
     })
   },
   methods: {
+    async exportBlockData(flashLogId, blockId, csvFormat = false) {
+      this.clearMessages()
+      try {
+        const response = await Api.readRequest(
+          '/flashlogs/' +
+            flashLogId +
+            '?block_id=' +
+            blockId +
+            (csvFormat ? '&csv=1' : '&json=1')
+        )
+        if (response.status === -1) {
+          this.errorMessage = this.$i18n.t('too_much_data')
+        }
+        
+        const responseLink = response.data.link
+        const csvLink =
+          responseLink.indexOf('https://') > -1
+            ? responseLink
+            : this.baseApiUrl + responseLink
+        // trick to download returned csv link (doesn't work via v-btn because it has already been clicked)
+        var link = document.createElement('a')
+        link.href = csvLink
+        link.setAttribute('download', csvLink)
+        document.body.appendChild(link)
+        link.click()
+        
+        if (response.status === 200) {
+          this.showSuccessMessage = true
+          this.successMessage = this.$i18n.t('export_file_saved')
+        }
+        return response
+      } catch (error) {
+        console.log('Error: ', error)
+        this.errorMessage = this.$i18n.t('no_data')
+      }
+    },
     async undoBlockImport(flashLogId, blockId) {
       this.clearMessages()
       this.showUndoLoadingIconById.push(blockId)
@@ -722,6 +796,15 @@ export default {
         this.selectedFlashLog = response.data
 
         if (this.selectedFlashLog.log !== undefined) {
+          this.selectedFlashLog.log.map((item) => {
+            // set extra properties here to enable column sort for these columns
+            item.data_imported =
+              this.selectedFlashLog.persisted_block_ids_array !== undefined &&
+              this.selectedFlashLog.persisted_block_ids_array.indexOf(
+                item.block
+              ) > -1
+            item.missing_data = this.percentageNotInDB(item)
+          })
           setTimeout(() => {
             this.scrollTo('log-data')
           }, 100)
