@@ -706,21 +706,19 @@ export default {
         if (response.status === -1) {
           this.errorMessage = this.$i18n.t('too_much_data')
         }
-        if (csvFormat) {
-          const responseLink = response.data.link
-          const csvLink =
-            responseLink.indexOf('https://') > -1
-              ? responseLink
-              : this.baseApiUrl + responseLink
-          // trick to download returned csv link (doesn't work via v-btn because it has already been clicked)
-          var link = document.createElement('a')
-          link.href = csvLink
-          link.setAttribute('download', csvLink)
-          document.body.appendChild(link)
-          link.click()
-        } else {
-          // TODO: handle json response
-        }
+        
+        const responseLink = response.data.link
+        const csvLink =
+          responseLink.indexOf('https://') > -1
+            ? responseLink
+            : this.baseApiUrl + responseLink
+        // trick to download returned csv link (doesn't work via v-btn because it has already been clicked)
+        var link = document.createElement('a')
+        link.href = csvLink
+        link.setAttribute('download', csvLink)
+        document.body.appendChild(link)
+        link.click()
+        
         if (response.status === 200) {
           this.showSuccessMessage = true
           this.successMessage = this.$i18n.t('export_file_saved')
