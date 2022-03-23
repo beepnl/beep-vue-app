@@ -255,11 +255,13 @@
           ref="log-data"
           cols="12"
         >
-          <div class="overline mt-0 mt-sm-3 mb-3">
+          <v-container class="overline mt-0 mt-sm-3 mb-3">
             <v-row cols="12">
-              <v-card v-text="selectedFlashLogHeader"></v-card>
-              <v-spacer></v-spacer>
-              <v-card>
+              <v-col v-text="selectedFlashLogHeader"></v-col>
+              <v-col>
+                <v-spacer></v-spacer>
+              </v-col>
+              <v-col>
                 <template>
                   <v-tooltip
                     v-if="selectedFlashLog !== null"
@@ -308,9 +310,9 @@
                     <span>{{ $t('Export_as_json') }}</span>
                   </v-tooltip>
                 </template>
-              </v-card>
+              </v-col>
             </v-row>
-          </div>
+          </v-container>
 
           <div class="rounded-border primary-border">
             <v-data-table
