@@ -947,6 +947,8 @@ const translations = {
   Export: 'Export',
   Export_as_json: 'Export as JSON data',
   Export_as_csv: 'Export as .csv file',
+  Export_full_json: 'Export full JSON',
+  Export_full_csv: 'Export full .csv',
 }
 
 export default translations

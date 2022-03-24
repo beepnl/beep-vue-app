@@ -250,63 +250,100 @@
           </span>
         </v-col>
 
+        <v-col v-if="successMessage" cols="12">
+          <v-alert
+            text
+            prominent
+            dense
+            type="success"
+            color="green"
+            class="mt-3 mb-n4"
+          >
+            {{ successMessage }}
+          </v-alert>
+        </v-col>
+
         <v-col
           v-if="selectedFlashLog && selectedFlashLog.log !== undefined"
           ref="log-data"
           cols="12"
         >
-          <div class="overline mt-0 mt-sm-3 mb-3">
+          <div
+            class="overline mt-0 mt-sm-3 mb-3 d-flex justify-space-between align-center"
+          >
             <span v-text="selectedFlashLogHeader"></span>
-            <span>
-              <template>
-                <v-tooltip
-                  v-if="selectedFlashLog !== null"
-                  open-delay="500"
-                  bottom
-                >
-                  <template v-slot:activator="{ on }">
-                    <v-icon
-                      dark
-                      color="accent"
-                      class="mr-2"
-                      v-on="on"
-                      @click="
-                        exportBlockData(
-                          selectedFlashLog.flashlog_id,
-                          '',
-                          true
-                        )
-                      "
-                      >mdi-file-export</v-icon
-                    >
-                  </template>
-                  <span>{{ $t('Export_as_csv') }}</span>
-                </v-tooltip>
+            <v-spacer />
+            <div v-if="selectedFlashLog !== null" class="d-flex align-right">
+              <v-tooltip v-if="lgAndUp" open-delay="500" bottom>
+                <template v-slot:activator="{ on }">
+                  <v-btn
+                    small
+                    tile
+                    outlined
+                    color="accent"
+                    class="mx-2"
+                    v-on="on"
+                    @click="
+                      exportBlockData(selectedFlashLog.flashlog_id, '', true)
+                    "
+                  >
+                    <v-icon left>mdi-file-export</v-icon>
+                    {{ $t('Export_full_csv') }}
+                  </v-btn>
+                </template>
+                <span>{{ $t('Export_as_csv') }}</span>
+              </v-tooltip>
 
-                <v-tooltip
-                  v-if="selectedFlashLog !== null"
-                  open-delay="500"
-                  bottom
-                >
-                  <template v-slot:activator="{ on }">
-                    <v-icon
-                      dark
-                      color="accent"
-                      v-on="on"
-                      @click="
-                        exportBlockData(
-                          selectedFlashLog.flashlog_id,
-                          '',
-                          false
-                        )
-                      "
-                      >mdi-download</v-icon
-                    >
-                  </template>
-                  <span>{{ $t('Export_as_json') }}</span>
-                </v-tooltip>
-              </template>
-            </span>
+              <v-tooltip v-if="lgAndUp" open-delay="500" bottom>
+                <template v-slot:activator="{ on }">
+                  <v-btn
+                    small
+                    tile
+                    outlined
+                    color="accent"
+                    v-on="on"
+                    @click="
+                      exportBlockData(selectedFlashLog.flashlog_id, '', false)
+                    "
+                  >
+                    <v-icon left>mdi-download</v-icon>
+                    {{ $t('Export_full_json') }}
+                  </v-btn>
+                </template>
+                <span>{{ $t('Export_as_json') }}</span>
+              </v-tooltip>
+
+              <v-tooltip v-if="!lgAndUp" open-delay="500" bottom>
+                <template v-slot:activator="{ on }">
+                  <v-icon
+                    dark
+                    color="accent"
+                    class="mx-2"
+                    v-on="on"
+                    @click="
+                      exportBlockData(selectedFlashLog.flashlog_id, '', true)
+                    "
+                    >mdi-file-export</v-icon
+                  >
+                </template>
+                <span>{{ $t('Export_as_csv') }}</span>
+              </v-tooltip>
+
+              <v-tooltip v-if="!lgAndUp" open-delay="500" bottom>
+                <template v-slot:activator="{ on }">
+                  <v-icon
+                    dark
+                    color="accent"
+                    v-on="on"
+                    @click="
+                      exportBlockData(selectedFlashLog.flashlog_id, '', false)
+                    "
+                    >mdi-download</v-icon
+                  >
+                </template>
+                <span>{{ $t('Export_as_json') }}</span>
+              </v-tooltip>
+            </div>
           </div>
 
           <div class="rounded-border primary-border">
@@ -536,6 +573,7 @@ export default {
   data() {
     return {
       errorMessage: null,
+      successMessage: null,
       undoMessage: null,
       dateFormat: 'YYYY-MM-DD',
       dateFormatLong: 'YYYY-MM-DD HH:mm:ss',
@@ -753,8 +791,9 @@ export default {
         if (response.status === -1) {
           this.errorMessage = this.$i18n.t('too_much_data')
         }
-        
+
         const responseLink = response.data.link
+        console.log(responseLink)
         const csvLink =
           responseLink.indexOf('https://') > -1
             ? responseLink
@@ -762,12 +801,12 @@ export default {
         // trick to download returned csv link (doesn't work via v-btn because it has already been clicked)
         var link = document.createElement('a')
         link.href = csvLink
+        link.setAttribute('target', '_blank')
         link.setAttribute('download', csvLink)
         document.body.appendChild(link)
         link.click()
-        
+
         if (response.status === 200) {
-          this.showSuccessMessage = true
           this.successMessage = this.$i18n.t('export_file_saved')
         }
         return response
@@ -935,6 +974,7 @@ export default {
       this.importMessage = null
       this.undoMessage = null
       this.errorMessage = null
+      this.successMessage = null
     },
     fileSizeText(item) {
       var nrOfMB = (item.bytes_received / 1024 / 1024).toFixed(2)
