@@ -26,6 +26,7 @@
             :disabled="interval === 'selection'"
             dense
             hide-details
+            @change="loadData(false)"
           ></v-switch>
         </v-row>
         <div v-if="smAndDown" class="period-bar">
@@ -75,6 +76,7 @@
                   :disabled="interval === 'selection'"
                   dense
                   hide-details
+                  @change="loadData(false)"
                 ></v-switch>
               </div>
             </v-col>
@@ -97,6 +99,10 @@
             <span class="period-title">{{ periodTitle }}</span>
 
             <v-dialog
+              v-if="
+                interval !== 'year' ||
+                  (interval === 'year' && !relativeInterval)
+              "
               ref="dialog"
               v-model="modal"
               :return-value.sync="selectedDate"
@@ -768,11 +774,7 @@ export default {
     },
     setRelativeInterval: {
       get() {
-        if (localStorage.beepRelativeInterval) {
-          return localStorage.beepRelativeInterval === 'true'
-        } else {
-          return true
-        }
+        return this.relativeInterval
       },
       set(value) {
         localStorage.beepRelativeInterval = value.toString()
@@ -922,9 +924,6 @@ export default {
       setTimeout(() => {
         this.formatMeasurementData(temp)
       }, 10)
-    },
-    relativeInterval() {
-      this.loadData(false)
     },
   },
   created() {
