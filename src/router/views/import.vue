@@ -793,7 +793,6 @@ export default {
         }
 
         const responseLink = response.data.link
-        console.log(responseLink)
         const csvLink =
           responseLink.indexOf('https://') > -1
             ? responseLink

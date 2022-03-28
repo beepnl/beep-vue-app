@@ -573,8 +573,6 @@ export default {
     async createGroup() {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
-        console.log('create Group')
-        console.log(this.activeGroup)
         try {
           const response = await Api.postRequest('/groups', this.activeGroup)
           if (!response) {
@@ -594,14 +592,16 @@ export default {
             })
           }, 50) // wait for API to update groups
         } catch (error) {
-          this.errorMessage =
-            error.status === 422
-              ? this.$i18n.tc('Error', 1) +
-                ': ' +
-                Object.values(error.message).join(', ')
-              : this.$i18n.t('empty_fields') + '.'
-          console.log('Error: ', this.errorMessage)
-          this.showLoadingIcon = false
+          if (error.response) {
+            const msg = error.response.data.error
+            this.errorMessage = msg
+            this.showLoadingIcon = false
+            console.log(error.response)
+          } else {
+            this.errorMessage = this.$i18n.t('empty_fields')
+            this.showLoadingIcon = false
+            console.log('Error: ', error)
+          }
         }
       }
     },
@@ -720,8 +720,6 @@ export default {
     async updateGroup() {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
-        console.log('update Group')
-        console.log(this.activeGroup)
         var group = {
           description: this.activeGroup.description,
           hex_color: this.activeGroup.hex_color,
