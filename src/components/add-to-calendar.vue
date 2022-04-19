@@ -102,7 +102,7 @@ export default {
 
         Office365: {
           url:
-            'https://outlook.office.com/owa/?path=/calendar/action/compose&rru=addevent',
+            'https://outlook.office.com/calendar/0/deeplink/compose?path=/calendar/action/compose&rru=addevent',
           parameters(title, location, details, start, end) {
             return {
               subject: title,
@@ -129,8 +129,8 @@ export default {
         this.formatString(this.title),
         this.formatString(this.location),
         this.formatString(this.details),
-        this.formatDate(this.start),
-        this.formatDate(this.end)
+        this.formatDate(this.start, calendar),
+        this.formatDate(this.end, calendar)
       )
 
       for (const key in parameters) {
@@ -146,8 +146,12 @@ export default {
       return encodeURIComponent(string).replace(/%20/g, '+')
     },
 
-    formatDate(date) {
-      return date ? date.toISOString().replace(/-|:|\.\d+/g, '') : null
+    formatDate(date, calendar) {
+      return !date
+        ? null
+        : calendar === 'Google'
+        ? date.toISOString().replace(/-|:|\.\d+/g, '')
+        : date.toISOString()
     },
 
     goTo(url) {
