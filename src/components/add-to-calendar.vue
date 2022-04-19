@@ -151,7 +151,7 @@ export default {
         ? null
         : calendar === 'Google'
         ? date.toISOString().replace(/-|:|\.\d+/g, '')
-        : date.toISOString()
+        : date.toISOString().replace('.000', '')
     },
 
     goTo(url) {
