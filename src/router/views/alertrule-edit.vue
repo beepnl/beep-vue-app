@@ -612,7 +612,10 @@ export default {
     sortedDevices() {
       var apiaryArray = []
       this.devices.map((device, index) => {
-        if (device.hive_id !== null) {
+        if (
+          device.hive_id !== null &&
+          device.hive_name !== '' // this means device is not connected to an (existing) hive
+        ) {
           // exclude devices without coupled hive id because hive id is required value for exclude_hive_ids array
           apiaryArray.push({
             id: -(index + 1), // random because it has to have an id for Treeselect but won't be used later
@@ -645,6 +648,7 @@ export default {
         uniqueApiaries.map((apiary) => {
           if (
             device.hive_id !== null &&
+            device.hive_name !== '' && // this means device is not connected to an (existing) hive
             (apiary.label === device.location_name ||
               (apiary.label === this.$i18n.t('Unknown') &&
                 device.location_name === ''))
