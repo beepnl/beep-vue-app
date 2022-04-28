@@ -212,3 +212,11 @@ export const momentLastDigitOfYear = {
     },
   },
 }
+
+export const timeZone = {
+  computed: {
+    timeZone() {
+      return this.$moment.tz.guess()
+    },
+  },
+}

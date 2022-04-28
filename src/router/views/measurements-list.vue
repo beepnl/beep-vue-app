@@ -585,7 +585,7 @@ import {
   readDevicesIfNotPresent,
   readTaxonomy,
 } from '@mixins/methodsMixin'
-import { momentFormat } from '@mixins/momentMixin'
+import { momentFormat, timeZone } from '@mixins/momentMixin'
 import { sensorMixin } from '@mixins/sensorMixin'
 import { SlideYUpTransition } from 'vue2-transitions'
 import '@plugins/chartist-plugin-beep.js'
@@ -608,6 +608,7 @@ export default {
     readDevicesIfNotPresent,
     readTaxonomy,
     sensorMixin,
+    timeZone,
   ],
   data() {
     return {
@@ -669,9 +670,6 @@ export default {
       } else {
         return this.$i18n.t('selection_placeholder')
       }
-    },
-    timeZone() {
-      return this.$moment.tz.guess()
     },
     locale() {
       return this.$i18n.locale

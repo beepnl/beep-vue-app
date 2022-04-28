@@ -209,6 +209,7 @@ import {
   readDevices,
   readGeneralInspections,
 } from '@mixins/methodsMixin'
+import { timeZone } from '@mixins/momentMixin'
 import Treeselect from '@riophae/vue-treeselect'
 
 export default {
@@ -224,6 +225,7 @@ export default {
     readApiariesAndGroupsIfNotPresent,
     readDevices,
     readGeneralInspections,
+    timeZone,
   ],
   data: function() {
     return {
@@ -386,7 +388,10 @@ export default {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
         try {
-          const response = await Api.postRequest('/hives', this.activeHive)
+          const response = await Api.postRequest(
+            '/hives' + '?timezone=' + this.timeZone,
+            this.activeHive
+          )
           if (!response) {
             this.snackbar.text = this.$i18n.t('not_saved_error')
             this.snackbar.show = true
@@ -494,7 +499,7 @@ export default {
         try {
           const response = await Api.updateRequest(
             '/hives/',
-            this.activeHive.id,
+            this.activeHive.id + '?timezone=' + this.timeZone,
             this.activeHive
           )
           if (!response) {
