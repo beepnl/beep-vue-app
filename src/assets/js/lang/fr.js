@@ -202,8 +202,8 @@ const translations = {
   Actions: 'Actions',
   Conditions: 'Conditions (inspectées)',
   edit: 'Modifier',
-  // Hive_brood_layers: 'Cadre de couvain',
-  // Hive_honey_layers: 'Cadre de miel',
+  // Hive_brood_layers: 'Corps',
+  // Hive_honey_layers: 'Hausse',
   /* Cyrille - 31/05 : Translation updated */
   Hive_layer_amount: "Nombre d'éléments",
   /* Cyrille - 31/05 : Translation updated */
@@ -222,7 +222,7 @@ const translations = {
   reminder: 'Rappel',
   remind_date: 'Date de rappel',
   overall: "Dans l'ensemble",
-  positive_impression: 'Impression totale',
+  positive_impression: 'Impression générale',
   needs_attention: "Besoin d'attention",
   notes: 'Notes',
   notes_for_next_inspection:
@@ -1021,6 +1021,11 @@ const translations = {
   Export_as_csv: 'Export as .csv file',
   Export_full_json: 'Export full JSON',
   Export_full_csv: 'Export full .csv',
+
+  Now: 'Now',
+  input_only_possible_when_date_present:
+    "Please select a 'date of inspection' first (above), to enable the inspection form. Click 'Now' to fill in the current date and time.",
+  select_inspection_date: 'Select date of inspection',
 }
 
 export default translations

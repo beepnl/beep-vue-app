@@ -839,6 +839,11 @@ const translations = {
   Export_as_csv: 'Exporteer als .csv bestand',
   Export_full_json: 'Exporteer volledige JSON',
   Export_full_csv: 'Exporteer volledige .csv',
+
+  Now: 'Nu',
+  input_only_possible_when_date_present:
+    "Vul a.u.b. een inspectiedatum in (hierboven), om het inspectieformulier te activeren. Klik op 'Nu' om de huidige datum en tijd in te vullen.",
+  select_inspection_date: 'Selecteer inspectiedatum',
 }
 
 export default translations

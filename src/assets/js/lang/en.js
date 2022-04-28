@@ -814,6 +814,11 @@ const translations = {
   Export_as_csv: 'Export as .csv file',
   Export_full_json: 'Export full JSON',
   Export_full_csv: 'Export full .csv',
+
+  Now: 'Now',
+  input_only_possible_when_date_present:
+    "Please select a 'date of inspection' first (above), to enable the inspection form. Click 'Now' to fill in the current date and time.",
+  select_inspection_date: 'Select date of inspection',
 }
 
 export default translations

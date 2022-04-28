@@ -460,6 +460,10 @@
   cursor: pointer;
 }
 
+.inspection-date .vdatetime-input {
+  width: 350px;
+}
+
 .vdatetime.green--text {
   .vdatetime-input {
     color: $color-green;

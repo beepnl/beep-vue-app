@@ -54,7 +54,8 @@
           :disabled="
             !valid ||
               (selectedHives && selectedHives.length === 0) ||
-              showLoadingIcon
+              showLoadingIcon ||
+              !inspectionDatePresent
           "
           @click.prevent="confirmSaveInspection"
         >
@@ -137,17 +138,22 @@
               <v-icon dark color="accent" class="mr-2"
                 >mdi-calendar-edit</v-icon
               >
-              <div>
-                <div
-                  class="beep-label"
-                  v-text="`${$t('Date_of_inspection')}`"
-                ></div>
+              <div class="inspection-date">
+                <div class="beep-label">
+                  <span v-text="$t('Date_of_inspection')"></span>
+                  <span
+                    class="ml-3 font-weight-bold accent--text cursor-pointer"
+                    @click="inspectionDate = getNow()"
+                    v-text="$t('Now')"
+                  ></span>
+                </div>
                 <Datetime
                   v-if="activeInspection"
                   v-model="inspectionDate"
                   type="datetime"
                   class="color-accent"
                   :max-datetime="endOfToday"
+                  :placeholder="$t('select_inspection_date')"
                 >
                   <template slot="button-cancel">
                     <v-btn text color="accent">{{ $t('Cancel') }}</v-btn>
@@ -190,6 +196,19 @@
               <v-icon left>mdi-pencil</v-icon>
               {{ $t('edit') + ' ' + $tc('checklist', 1) }}
             </v-btn>
+          </v-col>
+
+          <v-col cols="12">
+            <v-alert
+              v-if="!inspectionDatePresent"
+              type="error"
+              text
+              prominent
+              dense
+              color="accent"
+            >
+              {{ $t('input_only_possible_when_date_present') }}
+            </v-alert>
           </v-col>
         </v-row>
 
@@ -247,6 +266,15 @@
               </v-row>
             </v-card-text>
           </SlideYUpTransition>
+          <v-overlay
+            :absolute="true"
+            :value="!inspectionDatePresent"
+            :opacity="0.5"
+            color="white"
+            z-index="3"
+            class="input-disabled-overlay"
+          >
+          </v-overlay>
         </v-card>
 
         <!-- General inspection items -->
@@ -322,6 +350,15 @@
                     </v-row>
                   </div>
                 </v-col>
+                <v-overlay
+                  :absolute="true"
+                  :value="!inspectionDatePresent"
+                  :opacity="0.5"
+                  color="white"
+                  z-index="3"
+                  class="input-disabled-overlay"
+                >
+                </v-overlay>
               </v-row>
 
               <v-row class="sub-inspection-wrapper my-0">
@@ -556,7 +593,10 @@ export default {
           typeof this.activeInspection.created_at !== 'undefined'
         ) {
           return this.momentISO8601(this.activeInspection.created_at)
-        } else if (this.activeInspection) {
+        } else if (
+          this.activeInspection &&
+          this.activeInspection.date !== null
+        ) {
           return this.momentISO8601(this.activeInspection.date)
         } else {
           return ''
@@ -567,6 +607,9 @@ export default {
         this.activeInspection.date = date
         this.setActiveInspectionDate(date)
       },
+    },
+    inspectionDatePresent() {
+      return this.inspectionDate !== 'Invalid date'
     },
     locale() {
       return this.$i18n.locale
@@ -725,9 +768,8 @@ export default {
       })
       // Else make an empty inspection object
     } else {
-      var now = this.momentISO8601(new Date())
       this.activeInspection = {
-        date: now,
+        date: null,
         impression: null,
         attention: null,
         notes: null,
@@ -737,7 +779,6 @@ export default {
         hive_ids: this.selectedHives, // TODO: fix for only 1 hiveId
         items: {},
       }
-      this.setActiveInspectionDate(now)
       this.readChecklistsIfNotPresent().then(() => {
         if (this.preSelectedChecklistId !== null) {
           this.getChecklistById(this.preSelectedChecklistId)
@@ -1011,6 +1052,9 @@ export default {
       } else {
         this.selectInitialHiveSet()
       }
+    },
+    getNow() {
+      this.momentISO8601(new Date())
     },
     selectApiary(id) {
       this.selectedHives = []
