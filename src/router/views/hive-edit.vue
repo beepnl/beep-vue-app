@@ -204,6 +204,7 @@ import { mapGetters } from 'vuex'
 import Layout from '@layouts/back.vue'
 import QueenEditDetails from '@components/queen-edit-details.vue'
 import {
+  checkAlerts,
   readApiariesAndGroups,
   readApiariesAndGroupsIfNotPresent,
   readDevices,
@@ -221,6 +222,7 @@ export default {
     Treeselect,
   },
   mixins: [
+    checkAlerts,
     readApiariesAndGroups,
     readApiariesAndGroupsIfNotPresent,
     readDevices,
@@ -435,7 +437,8 @@ export default {
           return this.readApiariesAndGroups().then(() => {
             this.readGeneralInspections() // update inspections to exclude those from deleted hive
             this.readDevices() // update devices to remove deleted hives coupled to devices
-            this.$store.commit('locations/setData', {
+            this.checkAlertRules() // update alert rules if present (or not checked yet)
+            this.this.$store.commit('locations/setData', {
               prop: 'hiveFilterByGroup',
               value: 'off',
             })

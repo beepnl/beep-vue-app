@@ -1204,6 +1204,7 @@ export default {
           this.readApiariesAndGroups()
           this.readGeneralInspections()
           this.readDevices()
+          this.checkAlertRules() // update alert rules if present (or not checked yet)
         }, 100) // wait for API to update locations/hives
       } catch (error) {
         this.handleError(error)
