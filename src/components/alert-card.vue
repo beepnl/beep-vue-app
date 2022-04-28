@@ -13,7 +13,7 @@
             ? 'grey'
             : 'red'
         "
-        class="alert-card cursor-pointer mb-0"
+        class="alert-card cursor-pointer mb-0 pa-2 pa-sm-3"
         outlined
         v-on="menu"
       >
@@ -38,7 +38,7 @@
           <v-row class="ma-0 pl-0 py-0" style="width:100%;">
             <v-col cols="12" md="6" class="alert-details-item alert-meta pa-0">
               <v-row
-                class="d-flex flex-row justify-space-between ma-0 py-0 pr-1"
+                class="d-flex flex-row justify-space-between align-start ma-0 py-0 pr-1"
               >
                 <v-col
                   v-if="alert.updated_at"
@@ -74,20 +74,26 @@
 
                 <v-col
                   v-if="hives[alert.hive_id] !== undefined"
-                  cols="3"
-                  sm="2"
-                  class="hive-icon-wrapper mt-1 ml-1 ml-md-0 ml-lg-n2 mr-1 mr-md-0 mr-lg-n2 d-flex flex-column justify-end align-center pa-0"
+                  cols="4"
+                  sm="3"
+                  md="2"
+                  class="hive-icon-wrapper mt-1 ml-lg-n2 mr-lg-n2 d-flex flex-column justify-end align-center pa-0"
+                  style="width: 100%;"
                 >
                   <HiveIcon
                     :hive="hives[alert.hive_id]"
                     :diary-view="true"
                   ></HiveIcon>
-                  <div v-if="mdScreen" class="d-flex flex-column text-center">
-                    <div v-if="alert.hive_name !== null">
+                  <div
+                    v-if="mdScreen"
+                    class="d-flex flex-column text-center"
+                    style="width: 100%;"
+                  >
+                    <div v-if="alert.hive_name !== null" class="truncate-xs">
                       <span class="alert-label" v-text="alert.hive_name">
                       </span>
                     </div>
-                    <div v-if="alert.device_name !== null">
+                    <div v-if="alert.device_name !== null" class="truncate-xs">
                       <span class="alert-label" v-text="alert.device_name">
                       </span>
                     </div>

@@ -22,13 +22,13 @@
       <v-col cols="11" class="pa-0">
         <h4
           v-if="mView"
-          class="hive-name truncate mb-3"
+          class="hive-name truncate-md mb-3"
           style="max-width: 120px;"
           v-text="hive.name"
         >
         </h4>
         <div v-if="xlView" class="d-flex flex-row">
-          <h4 class="hive-name truncate mb-3" style="max-width: 250px;">
+          <h4 class="hive-name truncate-md mb-3" style="max-width: 250px;">
             {{ hive.name }}
             <span
               v-if="hiveSet.users && hiveSet.users.length"
@@ -322,7 +322,7 @@
           </div>
           <span
             v-if="xlView"
-            class="truncate"
+            class="truncate-md"
             style="max-width: 224px;"
             v-text="alertRuleNamesText"
           ></span>
@@ -446,7 +446,7 @@
           </div>
           <span
             v-if="hive.notes && xlView"
-            class="truncate"
+            class="truncate-md"
             style="max-width: 224px;"
             v-text="hive.notes"
           >
@@ -496,7 +496,7 @@
           </span>
           <span
             v-if="hive.reminder && xlView"
-            class="truncate"
+            class="truncate-md"
             style="max-width: 164px;"
             v-text="hive.reminder"
           >

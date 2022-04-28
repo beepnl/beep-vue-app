@@ -268,8 +268,16 @@
   }
 }
 
-.truncate {
+.truncate-md {
   @include for-tablet-portrait-up {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.truncate-xs {
+  @include for-phone-only {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
