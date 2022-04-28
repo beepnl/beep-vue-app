@@ -40,16 +40,12 @@
                   <HiveIcon :hive="hive" :diary-view="true"></HiveIcon>
                 </v-col>
 
-                <v-col
-                  v-else
-                  cols="5"
-                  class="d-flex flex-row justify-center align-start"
-                >
-                  <span class="diary-inspection-date text-center">
-                    <i
-                      >{{ $tc('Hive_short', 1) }}<br />
-                      {{ $t('unknown') }}
-                    </i>
+                <v-col v-else cols="5" class="d-flex flex-row justify-center">
+                  <span
+                    class="diary-inspection-date d-flex flex-column text-center font-italic"
+                  >
+                    <span>{{ $tc('Hive_short', 1) }}</span>
+                    <span>{{ $t('unknown') }}</span>
                   </span>
                 </v-col>
 
@@ -383,7 +379,7 @@ export default {
     hive: {
       type: Object,
       default: null,
-      required: true,
+      required: false,
     },
   },
   computed: {
