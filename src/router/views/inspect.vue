@@ -616,6 +616,7 @@ export default {
       return (
         (this.inspectionDate === 'Invalid date' ||
           this.inspectionDate === '') &&
+        this.selectedChecklist !== null &&
         !this.selectedChecklist.owner
       )
     },
