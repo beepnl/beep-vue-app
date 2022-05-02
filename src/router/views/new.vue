@@ -2,8 +2,24 @@
   <Layout :title="$t('Whats_new')">
     <v-container>
       <div class="overline mb-1"
-        ><span class="lowercase">v</span>3.0.92 (28-04-2022) - Current
+        ><span class="lowercase">v</span>3.0.93 (02-05-2022) - Current
         version</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>Norsk bockmål language has been added</li>
+          <li
+            >Inspect:
+            <router-link :to="{ name: 'inspect' }"
+              >remember new inspection data while editing checklist</router-link
+            ></li
+          >
+          <li>Bugfixes: small fixes for issues received as feedback</li>
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>3.0.92 (28-04-2022)</div
       >
       <div class="rounded-border mb-4">
         <ul>
