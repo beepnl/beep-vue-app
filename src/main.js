@@ -4,12 +4,15 @@ import store from '@state/store'
 import vuetify from '@plugins/vuetify'
 import VueI18n from 'vue-i18n'
 import de from '@assets/js/lang/de'
+// import el from '@assets/js/lang/el'
 import en from '@assets/js/lang/en'
 import es from '@assets/js/lang/es'
 import fi from '@assets/js/lang/fi'
 import fr from '@assets/js/lang/fr'
 import it from '@assets/js/lang/it'
+import nb from '@assets/js/lang/nb'
 import nl from '@assets/js/lang/nl'
+// import pl from '@assets/js/lang/pl'
 import pt from '@assets/js/lang/pt'
 import ro from '@assets/js/lang/ro'
 import sv from '@assets/js/lang/sv'
@@ -43,12 +46,15 @@ const i18n = new VueI18n({
   locale: languages.checkBrowserLanguage() || 'en',
   messages: {
     de,
+    // el,
     en,
     es,
     fi,
     fr,
     it,
+    nb,
     nl,
+    // pl,
     pt,
     ro,
     sv,
