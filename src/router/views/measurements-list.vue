@@ -583,14 +583,21 @@ import 'chartist/dist/chartist.min.css'
 import {
   checkAlerts,
   readDevicesIfNotPresent,
+  readGeneralInspectionsIfNotPresent,
   readTaxonomy,
 } from '@mixins/methodsMixin'
-import { momentFormat, timeZone } from '@mixins/momentMixin'
+import {
+  momentifyDayMonth,
+  momentFormat,
+  momentFromNow,
+  timeZone,
+} from '@mixins/momentMixin'
 import { sensorMixin } from '@mixins/sensorMixin'
 import { SlideYUpTransition } from 'vue2-transitions'
 import '@plugins/chartist-plugin-beep.js'
 import '@plugins/chartist-plugin-legend-beep.js'
 import 'chartist-plugin-pointlabels'
+import '@plugins/chartist-plugin-targetlines.js'
 import 'chartist-plugin-tooltips-updated'
 import 'chartist-plugin-tooltips-updated/dist/chartist-plugin-tooltip.css'
 
@@ -604,8 +611,11 @@ export default {
   },
   mixins: [
     checkAlerts,
+    momentifyDayMonth,
     momentFormat,
+    momentFromNow,
     readDevicesIfNotPresent,
+    readGeneralInspectionsIfNotPresent,
     readTaxonomy,
     sensorMixin,
     timeZone,
@@ -618,6 +628,7 @@ export default {
       interval: 'day',
       timeIndex: 0,
       timeFormat: 'ddd D MMM YYYY',
+      dateTimeFormat: 'YYYY-MM-DD HH:mm:ss',
       currentWeatherSensors: {},
       currentSensors: [],
       currentSoundSensors: {},
@@ -635,7 +646,6 @@ export default {
       selectedDate: '',
       modal: false,
       periodTitle: null,
-      preselectedDate: null,
       preselectedDeviceId: null,
       chartCols: 6,
       chartColsIcons: [
@@ -657,6 +667,7 @@ export default {
   },
   computed: {
     ...mapGetters('devices', ['devices']),
+    ...mapGetters('inspections', ['generalInspections']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     dateRangeText() {
       if (this.dates.length > 0) {
@@ -670,6 +681,90 @@ export default {
       } else {
         return this.$i18n.t('selection_placeholder')
       }
+    },
+    inspectionsWithDates() {
+      if (this.generalInspections.length > 0) {
+        var inspectionsWithDates = this.generalInspections
+        inspectionsWithDates.map((inspection) => {
+          inspection.created_at_locale_date = this.momentFormat(
+            inspection.created_at,
+            'lll'
+          )
+          inspection.created_at_moment_from_now = this.momentFromNow(
+            inspection.created_at
+          )
+          inspection.reminder_date_locale_date = this.momentFormat(
+            inspection.reminder_date,
+            'lll'
+          )
+          inspection.reminder_date_day_month = this.momentifyDayMonth(
+            inspection.reminder_date
+          )
+        })
+        return inspectionsWithDates
+      } else {
+        return []
+      }
+    },
+    inspectionsForCharts() {
+      var inspectionsForChartsArray = []
+      var timeArray = this.measurementData.measurements.map((measurement) => {
+        return measurement.time
+      })
+      var totalDataPointsInPeriod = timeArray.length
+
+      if (totalDataPointsInPeriod > 0) {
+        var momentTimeArray = timeArray.map((time) => {
+          return this.$moment(time)
+        })
+
+        // for each inspection, find its position on the current chart
+        this.inspectionsForPeriod.map((inspection) => {
+          var inspectionDateInUtc = this.$moment(inspection.created_at)
+            .tz(this.timeZone)
+            .utc()
+
+          var closestTime = momentTimeArray.reduce((prev, curr) => {
+            return Math.abs(curr - inspectionDateInUtc) <
+              Math.abs(prev - inspectionDateInUtc)
+              ? curr
+              : prev
+          })
+
+          var closestIndex = timeArray.findIndex(
+            (time) =>
+              time === closestTime.utc().format('YYYY-MM-DD[T]HH:mm:ss[Z]')
+          )
+
+          // console.log(closestTime, closestIndex)
+
+          // var inspectionTimestamp = inspectionDateInUtc.valueOf()
+
+          // and add position and meta data for chartist plugin targetlines
+          var inspectionForChart = {
+            id: inspection.id,
+            closestIndex,
+            // xValue: inspectionTimestamp,
+            date: this.momentFormat(inspection.created_at, 'llll'),
+            text: inspection.notes,
+          }
+
+          inspectionsForChartsArray.push(inspectionForChart)
+        })
+      }
+
+      return inspectionsForChartsArray
+    },
+    inspectionsForPeriod() {
+      var inspections = []
+      if (this.selectedDevice.hive_id !== null) {
+        inspections = this.inspectionsWithDates.filter(
+          (inspection) =>
+            inspection.hive_id === this.selectedDevice.hive_id &&
+            this.inspectionWithinPeriod(inspection)
+        )
+      }
+      return inspections
     },
     locale() {
       return this.$i18n.locale
@@ -833,6 +928,21 @@ export default {
     mdScreen() {
       return this.$vuetify.breakpoint.width < 960
     },
+    queriedDate() {
+      return this.$route.query.date || null
+    },
+    queriedInterval() {
+      return this.$route.query.interval || null
+    },
+    queriedTimeIndex() {
+      return parseInt(this.$route.query.timeIndex) || 0
+    },
+    queriedStart() {
+      return this.$route.query.start || null
+    },
+    queriedEnd() {
+      return this.$route.query.end || null
+    },
     sortedCurrentSoundSensors() {
       var sorted = Object.keys(this.currentSoundSensors)
         .sort(function(a, b) {
@@ -932,7 +1042,6 @@ export default {
     if (localStorage.beepRelativeInterval) {
       this.relativeInterval = localStorage.beepRelativeInterval === 'true'
     }
-    this.preselectedDate = this.$route.query.date || null
     this.preselectedDeviceId = parseInt(this.$route.params.id) || null
     // if selected device id is saved in localStorage, and there is no preselected device id, use it
     if (
@@ -948,18 +1057,28 @@ export default {
     this.readDevicesIfNotPresent()
       .then(() => {
         if (
-          this.preselectedDate !== null &&
-          this.preselectedDate.length === 10 &&
+          this.queriedDate !== null &&
+          this.queriedDate.length === 10 &&
           !isNaN(this.preselectedDeviceId)
         ) {
-          this.selectDate(this.preselectedDate)
+          this.selectDate(this.queriedDate)
         } else if (this.devices.length > 0) {
+          if (this.queriedInterval) {
+            this.interval = this.queriedInterval
+            this.timeIndex = this.queriedTimeIndex
+            this.dates =
+              this.queriedStart && this.queriedEnd
+                ? [this.queriedStart, this.queriedEnd]
+                : []
+          }
+
           this.setInitialDeviceIdAndLoadData()
         }
       })
       .then(() => {
         this.ready = true
       })
+    this.readGeneralInspectionsIfNotPresent()
   },
   beforeDestroy() {
     if (this.timer > 0) {
@@ -1228,6 +1347,12 @@ export default {
               }
             },
           }),
+          self.$chartist.plugins.ctTargetLines({
+            inspections: self.inspectionsForCharts,
+            onClick: function(inspectionId, inspectionDate) {
+              self.confirmViewInspection(inspectionId, inspectionDate)
+            },
+          }),
         ],
         showPoint: true,
         lineSmooth: self.$chartist.Interpolation.simple({
@@ -1250,6 +1375,37 @@ export default {
       if (dates[1] < dates[0]) {
         this.dates = [dates[1], dates[0]]
       }
+    },
+    confirmViewInspection(inspectionId, inspectionDate) {
+      this.$refs.confirm
+        .open(
+          this.$i18n.t('view') + ' ' + this.$i18n.tc('inspection', 1),
+          this.$i18n.t('View_inspection_confirm') + inspectionDate + '?',
+          {
+            color: 'primary',
+          }
+        )
+        .then((confirm) => {
+          var query = {
+            search: 'id=' + inspectionId.toString(),
+            interval: this.interval,
+          }
+          if (this.interval === 'selection' && this.dates.length > 0) {
+            query.start = this.dates[0]
+            query.end = this.dates[1]
+          } else {
+            query.timeIndex = this.timeIndex
+          }
+
+          return this.$router.push({
+            name: 'hive-inspections',
+            params: { id: this.selectedDevice.hive_id },
+            query,
+          })
+        })
+        .catch((reject) => {
+          return true
+        })
     },
     formatMeasurementData(measurementData) {
       if (
@@ -1294,6 +1450,12 @@ export default {
         this.noChartData = true
       }
       this.loadingData = false
+    },
+    inspectionWithinPeriod(inspection) {
+      return (
+        inspection.created_at < this.periodEnd.format(this.dateTimeFormat) &&
+        inspection.created_at > this.periodStart.format(this.dateTimeFormat)
+      )
     },
     invalidDates(dates) {
       return (

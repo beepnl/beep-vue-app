@@ -183,6 +183,7 @@ import {
   readApiariesAndGroups,
   readApiariesAndGroupsIfNotPresent,
   readGeneralInspections,
+  readGeneralInspectionsIfNotPresent,
   toggleFilterByGroup,
 } from '@mixins/methodsMixin'
 import { ScaleTransition } from 'vue2-transitions'
@@ -204,6 +205,7 @@ export default {
     readApiariesAndGroups,
     readApiariesAndGroupsIfNotPresent,
     readGeneralInspections,
+    readGeneralInspectionsIfNotPresent,
     toggleFilterByGroup,
   ],
   data: function() {
@@ -509,23 +511,6 @@ export default {
         } else {
           console.log('Error: ', error)
         }
-      }
-    },
-    async readGeneralInspectionsIfNotPresent() {
-      if (this.generalInspections.length === 0) {
-        try {
-          const response = await Api.readRequest('/inspections')
-          this.$store.commit('inspections/setGeneralInspections', response.data)
-          return true
-        } catch (error) {
-          if (error.response) {
-            console.log('Error: ', error.response)
-          } else {
-            console.log('Error: ', error)
-          }
-        }
-      } else {
-        return true
       }
     },
     confirmDeleteInspection(inspection) {

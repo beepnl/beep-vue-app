@@ -67,6 +67,11 @@ export default {
       default: '',
       required: false,
     },
+    query: {
+      type: Object,
+      default: null,
+      required: false,
+    },
   },
   data: function() {
     return {
@@ -138,6 +143,7 @@ export default {
       ) {
         this.$router.push({
           name: localStorage.beepInspectionsBack,
+          query: this.query,
         })
       } else {
         this.$router.go(-1)

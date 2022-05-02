@@ -2,6 +2,7 @@
   <Layout
     v-if="activeHive"
     :title="`${$tc('Inspection', 2)} ${activeHive.name}`"
+    :query="passOnQuery"
   >
     <div class="filter-bar-wrapper filter-bar-inspections">
       <v-container class="filter-container">
@@ -789,6 +790,14 @@ export default {
           }
         })
       return matchedItemsByDate
+    },
+    passOnQuery() {
+      var queries = this.$route.query
+      if ('interval' in queries) {
+        return queries
+      } else {
+        return null
+      }
     },
     smallScreen() {
       return this.$vuetify.breakpoint.width < 700

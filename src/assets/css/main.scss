@@ -445,6 +445,15 @@
       margin: 0;
     }
   }
+
+  .ct-target-line-inspection {
+    cursor: pointer;
+    stroke: $color-primary;
+    stroke-dasharray: 5px;
+    stroke-linecap: unset;
+    stroke-width: 3px;
+    shape-rendering: crispEdges;
+  }
 }
 
 .chartist-tooltip-value {

@@ -844,6 +844,8 @@ const translations = {
   input_only_possible_when_date_present:
     "Vul a.u.b. een inspectiedatum in (hierboven), om het inspectieformulier te activeren. Klik op 'Nu' om de huidige datum en tijd in te vullen.",
   select_inspection_date: 'Selecteer inspectiedatum',
+
+  View_inspection_confirm: 'Wil je de inspectie bekijken van: ',
 }
 
 export default translations

@@ -388,6 +388,28 @@ export const readGeneralInspections = {
   },
 }
 
+export const readGeneralInspectionsIfNotPresent = {
+  methods: {
+    async readGeneralInspectionsIfNotPresent() {
+      if (this.generalInspections.length === 0) {
+        try {
+          const response = await Api.readRequest('/inspections')
+          this.$store.commit('inspections/setGeneralInspections', response.data)
+          return true
+        } catch (error) {
+          if (error.response) {
+            console.log('Error: ', error.response)
+          } else {
+            console.log('Error: ', error)
+          }
+        }
+      } else {
+        return true
+      }
+    },
+  },
+}
+
 export const readTaxonomy = {
   methods: {
     async readTaxonomy() {
