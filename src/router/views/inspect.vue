@@ -781,7 +781,7 @@ export default {
         // Else make an empty inspection object
       } else {
         this.activeInspection = {
-          date: this.getNow(),
+          date: null,
           impression: null,
           attention: null,
           notes: null,
@@ -807,6 +807,8 @@ export default {
               itemsObject[categoryId] = null
             })
             this.activeInspection.items = itemsObject
+            if (this.selectedChecklist.owner)
+              this.activeInspection.date = this.getNow()
           }
         })
       }
