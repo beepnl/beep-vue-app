@@ -497,6 +497,10 @@
                       :y-axis="sortedCurrentSoundSensors"
                       :modulo-number="moduloNr"
                       :interval="interval"
+                      :inspections-for-charts="inspectionsForCharts"
+                      @view-inspection="
+                        confirmViewInspection($event.id, $event.date)
+                      "
                     >
                     </MeasurementsChartHeatmap>
                   </div>
@@ -736,6 +740,8 @@ export default {
               time === closestTime.utc().format('YYYY-MM-DD[T]HH:mm:ss[Z]')
           )
 
+          // var position = closestIndex / totalDataPointsInPeriod
+
           // console.log(closestTime, closestIndex)
 
           // var inspectionTimestamp = inspectionDateInUtc.valueOf()
@@ -744,6 +750,7 @@ export default {
           var inspectionForChart = {
             id: inspection.id,
             closestIndex,
+            // position,
             // xValue: inspectionTimestamp,
             date: this.momentFormat(inspection.created_at, 'llll'),
             text: inspection.notes,
