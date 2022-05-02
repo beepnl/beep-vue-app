@@ -41,7 +41,7 @@
           outlined
           class="mr-3"
           color="accent"
-          @click="confirmEditChecklist"
+          @click="editChecklist"
         >
           <v-icon left>mdi-pencil</v-icon>
           {{ $t('edit') + ' ' + $tc('checklist', 1) }}
@@ -55,7 +55,7 @@
             !valid ||
               (selectedHives && selectedHives.length === 0) ||
               showLoadingIcon ||
-              !inspectionDatePresent
+              forceInspectionDate
           "
           @click.prevent="confirmSaveInspection"
         >
@@ -142,6 +142,7 @@
                 <div class="beep-label">
                   <span v-text="$t('Date_of_inspection')"></span>
                   <span
+                    v-if="forceInspectionDate"
                     class="ml-3 font-weight-bold accent--text cursor-pointer"
                     @click="inspectionDate = getNow()"
                     v-text="$t('Now')"
@@ -153,7 +154,9 @@
                   type="datetime"
                   class="color-accent"
                   :max-datetime="endOfToday"
-                  :placeholder="$t('select_inspection_date')"
+                  :placeholder="
+                    forceInspectionDate ? $t('select_inspection_date') : null
+                  "
                 >
                   <template slot="button-cancel">
                     <v-btn text color="accent">{{ $t('Cancel') }}</v-btn>
@@ -191,7 +194,7 @@
               outlined
               class="save-button-mobile-wide"
               color="accent"
-              @click="confirmEditChecklist"
+              @click="editChecklist"
             >
               <v-icon left>mdi-pencil</v-icon>
               {{ $t('edit') + ' ' + $tc('checklist', 1) }}
@@ -200,7 +203,7 @@
 
           <v-col cols="12">
             <v-alert
-              v-if="!inspectionDatePresent"
+              v-if="forceInspectionDate"
               type="error"
               text
               prominent
@@ -268,7 +271,7 @@
           </SlideYUpTransition>
           <v-overlay
             :absolute="true"
-            :value="!inspectionDatePresent"
+            :value="forceInspectionDate"
             :opacity="0.5"
             color="white"
             z-index="3"
@@ -352,7 +355,7 @@
                 </v-col>
                 <v-overlay
                   :absolute="true"
-                  :value="!inspectionDatePresent"
+                  :value="forceInspectionDate"
                   :opacity="0.5"
                   color="white"
                   z-index="3"
@@ -538,6 +541,7 @@ export default {
       'checklists',
       'inspectionEdited',
       'bulkInspection',
+      'tempSavedInspection',
     ]),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
@@ -608,8 +612,12 @@ export default {
         this.setActiveInspectionDate(date)
       },
     },
-    inspectionDatePresent() {
-      return this.inspectionDate !== 'Invalid date'
+    forceInspectionDate() {
+      return (
+        (this.inspectionDate === 'Invalid date' ||
+          this.inspectionDate === '') &&
+        !this.selectedChecklist.owner
+      )
     },
     locale() {
       return this.$i18n.locale
@@ -752,52 +760,58 @@ export default {
     } else {
       this.getHiveSet()
     }
-    // If hive-inspect-edit route is used, retrieve to-be-edited inspection
-    if (this.inspectionId !== null) {
-      this.getInspection(this.inspectionId).then((response) => {
-        this.activeInspection = response
-        this.setActiveInspectionDate(response.date)
-        this.preSelectedChecklistId
-          ? this.getChecklistById(this.preSelectedChecklistId)
-          : this.getChecklistById(this.activeInspection.checklist_id)
-        this.readChecklistsIfNotPresent()
-        this.$store.commit(
-          'inspections/setSelectedInspectionId',
-          this.inspectionId
-        )
-      })
-      // Else make an empty inspection object
+
+    if (
+      localStorage.beepPreviousRoute !== undefined &&
+      localStorage.beepPreviousRoute === 'checklist' &&
+      this.tempSavedInspection !== null
+    ) {
+      console.log('temp saved inspection', this.tempSavedInspection)
+      this.activeInspection = { ...this.tempSavedInspection }
+      this.initInspection()
     } else {
-      this.activeInspection = {
-        date: null,
-        impression: null,
-        attention: null,
-        notes: null,
-        reminder_date: null,
-        reminder: null,
-        checklist_id: null,
-        hive_ids: this.selectedHives, // TODO: fix for only 1 hiveId
-        items: {},
-      }
-      this.readChecklistsIfNotPresent().then(() => {
-        if (this.preSelectedChecklistId !== null) {
-          this.getChecklistById(this.preSelectedChecklistId)
-        } else if (this.lastSelectedChecklist !== null) {
-          this.getChecklistById(this.lastSelectedChecklist.id)
-        } else {
-          this.selectedChecklistId = this.checklist.id
-          this.selectedChecklist = this.checklist
-          this.lastSelectedChecklist = this.checklist
-          this.activeInspection.checklist_id = this.selectedChecklistId
-          var itemsObject = {}
-          this.selectedChecklist.category_ids.map((categoryId) => {
-            // TODO: what if category ids is empty?
-            itemsObject[categoryId] = null
-          })
-          this.activeInspection.items = itemsObject
+      this.setTempSavedInspection(null)
+
+      // If hive-inspect-edit route is used, retrieve to-be-edited inspection
+      if (this.inspectionId !== null) {
+        this.getInspection(this.inspectionId).then((response) => {
+          this.activeInspection = response
+          this.initInspection()
+        })
+        // Else make an empty inspection object
+      } else {
+        this.activeInspection = {
+          date: this.getNow(),
+          impression: null,
+          attention: null,
+          notes: null,
+          reminder_date: null,
+          reminder: null,
+          checklist_id: null,
+          hive_ids: this.selectedHives, // TODO: fix for only 1 hiveId
+          items: {},
         }
-      })
+        this.readChecklistsIfNotPresent().then(() => {
+          if (this.preSelectedChecklistId !== null) {
+            this.getChecklistById(this.preSelectedChecklistId)
+          } else if (this.lastSelectedChecklist !== null) {
+            this.getChecklistById(this.lastSelectedChecklist.id)
+          } else {
+            this.selectedChecklistId = this.checklist.id
+            this.selectedChecklist = this.checklist
+            this.lastSelectedChecklist = this.checklist
+            this.activeInspection.checklist_id = this.selectedChecklistId
+            var itemsObject = {}
+            this.selectedChecklist.category_ids.map((categoryId) => {
+              // TODO: what if category ids is empty?
+              itemsObject[categoryId] = null
+            })
+            this.activeInspection.items = itemsObject
+          }
+        })
+      }
     }
+
     this.setInspectionEdited(false)
     this.setBulkInspection(this.selectedHives.length > 1)
     this.ready = true
@@ -871,12 +885,16 @@ export default {
             }
           })
           // For a new inspection, transfer values that have been filled in already for the old checklist to the newly selected checklist
+          // and set date to current date only if checklist is owned, otherwise trigger forceInspectionDate mode (disable form until inspection date has been actively selected)
         } else {
           Object.entries(this.activeInspection.items).map(([key, value]) => {
             if (value !== null) {
               itemsObject[key] = value
             }
           })
+          this.activeInspection.date = !this.selectedChecklist.owner
+            ? null
+            : this.getNow()
         }
         this.activeInspection.items = itemsObject
         this.activeInspection.checklist_id = this.selectedChecklistId
@@ -1001,27 +1019,11 @@ export default {
     clearDiaryFilters() {
       this.$store.commit('inspections/clearFilters')
     },
-    confirmEditChecklist(id) {
-      if (this.inspectionEdited || this.selectedHives !== this.editableHives) {
-        this.$refs.confirm
-          .open(
-            this.$i18n.t('edit') + ' ' + this.$i18n.tc('checklist', 1),
-            this.selectedHives === this.editableHives
-              ? this.$i18n.t('edit_checklist_confirm')
-              : this.$i18n.t('edit_checklist_confirm_deselectedhives'),
-            {
-              color: 'red',
-            }
-          )
-          .then((confirm) => {
-            this.$router.push(this.checklistLink)
-          })
-          .catch((reject) => {
-            return true
-          })
-      } else {
-        this.$router.push(this.checklistLink)
-      }
+    editChecklist(id) {
+      if (this.selectedHiveSetId)
+        this.activeInspection.hive_ids = this.selectedHives
+      this.setTempSavedInspection(this.activeInspection)
+      this.$router.push(this.checklistLink)
     },
     confirmSaveInspection() {
       if (this.bulkInspection) {
@@ -1055,6 +1057,25 @@ export default {
     },
     getNow() {
       this.momentISO8601(new Date())
+    },
+    initInspection() {
+      this.setActiveInspectionDate(this.activeInspection.date)
+      this.preSelectedChecklistId
+        ? this.getChecklistById(this.preSelectedChecklistId)
+        : this.getChecklistById(this.activeInspection.checklist_id)
+      this.readChecklistsIfNotPresent()
+
+      if (
+        this.activeInspection.hive_ids !== null &&
+        this.activeInspection.hive_ids !== undefined
+      ) {
+        this.selectedHivess = this.activeInspection.hive_ids
+      }
+
+      this.$store.commit(
+        'inspections/setSelectedInspectionId',
+        this.inspectionId
+      )
     },
     selectApiary(id) {
       this.selectedHives = []
@@ -1178,8 +1199,18 @@ export default {
         value: bool,
       })
     },
+    setTempSavedInspection(inspection) {
+      this.$store.commit('inspections/setData', {
+        prop: 'tempSavedInspection',
+        value: inspection,
+      })
+    },
     switchChecklist(id) {
-      if (this.inspectionId !== null || this.inspectionEdited) {
+      if (
+        this.inspectionId !== null ||
+        this.inspectionEdited ||
+        this.tempSavedInspection
+      ) {
         this.$refs.confirm
           .open(
             this.$i18n.t('Select') + ' ' + this.$i18n.tc('checklist', 1),
