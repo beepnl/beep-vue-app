@@ -1081,23 +1081,28 @@ export default {
         return ((value - min) / (max - min)) * 100
       }
     },
-    calculateTimeIndex(period, date, zoom = false, from = null) {
-      var newPeriodIndex = 0
-      var todayEnd = this.$moment().endOf(period)
-      var endOfPeriod = this.$moment.parseZone(date, this.photoParseFormat)
-      var periodDiff = todayEnd.diff(endOfPeriod, period + 's')
-      if (!isNaN(periodDiff)) newPeriodIndex = periodDiff
-      if (!zoom && period === 'hour') newPeriodIndex -= 12
-      if (!zoom && period === 'day')
-        from !== 'hour'
-          ? this.relativeInterval
-            ? (newPeriodIndex -= 4)
-            : (newPeriodIndex -= 3)
-          : this.relativeInterval
-          ? (newPeriodIndex -= 1)
-          : (newPeriodIndex -= 0)
+    calculateTimeIndex(newPeriod, startDate, zoom = false, fromPeriod = null) {
+      var todayEnd = this.$moment().endOf(newPeriod)
 
-      return !isNaN(newPeriodIndex) && newPeriodIndex > 0 ? newPeriodIndex : 0
+      var endOfPeriod = this.$moment(startDate).endOf(fromPeriod)
+
+      var halfPeriodInDays = 0
+
+      if (fromPeriod === 'week' || fromPeriod === 'month')
+        halfPeriodInDays = Math.floor(
+          Math.abs(this.$moment(startDate).diff(endOfPeriod, 'days')) / 2
+        )
+      else if (fromPeriod === 'year') halfPeriodInDays = 182
+
+      var middleDatePeriod = endOfPeriod.subtract(halfPeriodInDays, 'days')
+
+      var newIndex = todayEnd.diff(middleDatePeriod, newPeriod + 's')
+
+      if (this.relativeInterval && !zoom) newIndex -= 1
+
+      if (!zoom && newPeriod === 'hour') newIndex += 10
+
+      return !isNaN(newIndex) && newIndex > 0 ? newIndex : 0
     },
     chartDataSingleSeries(quantity, unit) {
       var data = {
@@ -1470,14 +1475,18 @@ export default {
       if (interval === 'selection' && this.dates.length === 0) {
         this.noPeriodData = true
       } else {
-        // change period around the same date instead of resetting to timeIndex 0
-        if (this.timeIndex !== 0)
+        if (prevInterval === interval) {
+          // set index to 0 if if clicked interval is same as already selected
+          this.timeIndex = 0
+        } else if (this.timeIndex !== 0) {
+          // change period around the same date instead of resetting to timeIndex 0
           this.timeIndex = this.calculateTimeIndex(
             interval,
             this.selectedDate,
             false,
             prevInterval
           )
+        }
         this.loadData()
       }
     },
