@@ -1214,7 +1214,7 @@ export default {
             },
           }),
           self.$chartist.plugins.legendBeep({
-            simpleToggle: false,
+            simpleToggle: true,
             inactiveByDefault: false,
           }),
           self.$chartist.plugins.ctPointLabels({
