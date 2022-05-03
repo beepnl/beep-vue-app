@@ -116,6 +116,9 @@
               </template>
               <v-date-picker
                 v-model="selectedDate"
+                :type="
+                  interval === 'year' || interval === 'month' ? 'month' : 'date'
+                "
                 :first-day-of-week="1"
                 :locale="locale"
                 no-title
