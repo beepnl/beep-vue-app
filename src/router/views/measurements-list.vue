@@ -85,6 +85,155 @@
       </v-container>
     </div>
 
+    <v-app-bar
+      v-if="!hideScrollBar && ready && !noChartData"
+      fixed
+      inverted-scroll
+      :dense="smAndDown"
+      class="sticky-header"
+    >
+      <v-row>
+        <v-col
+          v-if="devices.length > 0 && interval !== 'selection'"
+          cols="12"
+          class="pa-0"
+        >
+          <div class="d-flex align-center justify-center">
+            <v-icon class="color-grey-dark" @click="setTimeIndex(1)">
+              mdi-chevron-left
+            </v-icon>
+
+            <span class="period-title">{{ periodTitle }}</span>
+
+            <v-dialog
+              v-if="
+                interval !== 'year' ||
+                  (interval === 'year' && !relativeInterval)
+              "
+              ref="dialog"
+              v-model="modalSticky"
+              :return-value.sync="selectedDate"
+              persistent
+              width="290px"
+            >
+              <template v-slot:activator="{ on }">
+                <v-icon small class="color-grey-light ml-1" v-on="on">
+                  mdi-pencil
+                </v-icon>
+              </template>
+              <v-date-picker
+                v-model="selectedDate"
+                :type="
+                  interval === 'year' || interval === 'month' ? 'month' : 'date'
+                "
+                :first-day-of-week="1"
+                :locale="locale"
+                no-title
+                scrollable
+              >
+                <v-spacer></v-spacer>
+                <v-btn text color="secondary" @click="modalSticky = false">
+                  {{ $t('Cancel') }}
+                </v-btn>
+                <v-btn
+                  text
+                  color="secondary"
+                  @click="
+                    $refs.dialog.save(selectedDate), selectDate(selectedDate)
+                  "
+                >
+                  {{ $t('ok') }}
+                </v-btn>
+              </v-date-picker>
+            </v-dialog>
+
+            <v-icon
+              v-if="timeIndex !== 0"
+              class="color-grey-dark"
+              @click="setTimeIndex(-1)"
+            >
+              mdi-chevron-right
+            </v-icon>
+          </div>
+        </v-col>
+
+        <v-col
+          v-if="interval === 'selection'"
+          cols="12"
+          sm="4"
+          md="3"
+          class="pa-0"
+        >
+          <div class="d-flex align-center justify-center mr-3 mr-sm-0">
+            <v-menu
+              ref="menu"
+              v-model="menuSticky"
+              :close-on-content-click="false"
+              :return-value.sync="dates"
+              transition="scale-transition"
+              offset-y
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="dateRangeText"
+                  :rules="requiredRules"
+                  :label="$t('period')"
+                  prepend-icon="mdi-calendar"
+                  class="date-picker"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                v-model="dates"
+                :first-day-of-week="1"
+                :locale="locale"
+                range
+                no-title
+                scrollable
+                @change="checkDateOrder($event)"
+              >
+                <v-spacer></v-spacer>
+                <v-btn text color="secondary" @click="menuSticky = false">
+                  {{ $t('Cancel') }}
+                </v-btn>
+                <v-btn
+                  :disabled="invalidDates(dates)"
+                  text
+                  color="secondary"
+                  @click="$refs.menuSticky.save(dates), loadData()"
+                >
+                  {{ $t('ok') }}
+                </v-btn>
+              </v-date-picker>
+            </v-menu>
+          </div>
+        </v-col>
+
+        <v-col
+          v-if="interval !== 'selection'"
+          cols="12"
+          :class="
+            'd-flex align-center justify-center pa-0 ' +
+              (mobile ? 'pt-1' : 'pt-2')
+          "
+        >
+          <span
+            class="beep-label mb-0"
+            v-text="selectedDevice.hive_name + ' - ' + selectedDevice.name"
+          >
+          </span>
+        </v-col>
+      </v-row>
+      <div v-if="mobile" class="float-right mr-n1">
+        <v-icon class="grey--text" @click="hideScrollBar = true">
+          mdi-close
+        </v-icon>
+      </div>
+    </v-app-bar>
+
     <v-container
       v-if="ready"
       :class="devices.length > 0 ? 'measurements-content' : ''"
@@ -153,9 +302,7 @@
         <v-col
           v-if="interval === 'selection'"
           cols="12"
-          sm="4"
-          md="3"
-          :class="mobile ? 'py-0' : 'mx-auto'"
+          :class="mobile ? 'pa-0' : ''"
         >
           <div class="d-flex align-center justify-center mr-3 mr-sm-0">
             <v-menu
@@ -175,6 +322,7 @@
                   prepend-icon="mdi-calendar"
                   class="date-picker"
                   readonly
+                  :hide-details="menuSticky"
                   v-bind="attrs"
                   v-on="on"
                 ></v-text-field>
@@ -637,6 +785,7 @@ export default {
       timer: 0,
       selectedDate: '',
       modal: false,
+      modalSticky: false,
       periodTitle: null,
       preselectedDate: null,
       preselectedDeviceId: null,
@@ -650,12 +799,14 @@ export default {
         process.env.VUE_APP_ASSETS_URL ||
         process.env.VUE_APP_ASSETS_URL_FALLBACK,
       menu: false,
+      menuSticky: false,
       dates: [],
       dateFormat: 'YYYY-MM-DD HH:mm:ss',
       periodStart: null,
       periodEnd: null,
       loadingData: false,
       relativeInterval: true,
+      hideScrollBar: false,
     }
   },
   computed: {
@@ -700,6 +851,9 @@ export default {
       )
       return Math.max(...allSoundSensorValues)
     },
+    mdScreen() {
+      return this.$vuetify.breakpoint.width < 960
+    },
     mobile() {
       return this.$vuetify.breakpoint.mobile
     },
@@ -714,7 +868,6 @@ export default {
       }
       return 1
     },
-
     moduloNr() {
       switch (this.interval) {
         case 'hour':
@@ -833,9 +986,6 @@ export default {
     smAndDown() {
       return this.$vuetify.breakpoint.smAndDown
     },
-    mdScreen() {
-      return this.$vuetify.breakpoint.width < 960
-    },
     sortedCurrentSoundSensors() {
       var sorted = Object.keys(this.currentSoundSensors)
         .sort(function(a, b) {
@@ -915,6 +1065,9 @@ export default {
         apiary.children = sortedChildren
       })
       return uniqueApiaries
+    },
+    touchDevice() {
+      return window.matchMedia('(hover: none)').matches
     },
   },
   watch: {
@@ -1516,11 +1669,11 @@ export default {
 .period-bar-wrapper {
   position: fixed;
   top: 100px;
-  z-index: 1;
+  z-index: 2;
   width: 100%;
   margin-top: -4px;
   background-color: $color-orange-light;
-  border-bottom: 1px solid #fff5e2;
+  border-bottom: 1px solid $color-orange-border;
   .period-container {
     padding-right: 80px;
     padding-left: 80px;
@@ -1592,5 +1745,18 @@ export default {
 
 .date-picker {
   max-width: 300px;
+}
+
+.sticky-header {
+  top: 153px !important;
+  z-index: 1 !important;
+  background-color: $color-orange-light !important;
+  border-bottom: 1px solid $color-orange-border;
+  @include for-phone-only {
+    top: 148px !important;
+  }
+  @include for-desktop-up {
+    top: 130px !important;
+  }
 }
 </style>
