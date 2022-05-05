@@ -92,141 +92,24 @@
       :dense="smAndDown"
       class="sticky-header"
     >
-      <v-row>
-        <v-col
-          v-if="devices.length > 0 && interval !== 'selection'"
-          cols="12"
-          class="pa-0"
-        >
-          <div class="d-flex align-center justify-center">
-            <v-icon class="color-grey-dark" @click="setTimeIndex(1)">
-              mdi-chevron-left
-            </v-icon>
+      <MeasurementsDateSelection
+        :interval="interval"
+        :period-title="periodTitle"
+        :relative-interval="relativeInterval"
+        :selected-date="selectedDate"
+        :time-index="timeIndex"
+        :dates="dates"
+        :date-range-text="dateRangeText"
+        :sticky="true"
+        :selected-device-title="
+          selectedDevice.hive_name + ' - ' + selectedDevice.name
+        "
+        @load-data="loadData"
+        @save-dates="dates = $event"
+        @set-time-index="setTimeIndex($event)"
+        @select-date="selectDate($event)"
+      />
 
-            <span class="period-title">{{ periodTitle }}</span>
-
-            <v-dialog
-              v-if="
-                interval !== 'year' ||
-                  (interval === 'year' && !relativeInterval)
-              "
-              ref="dialog"
-              v-model="modalSticky"
-              :return-value.sync="selectedDate"
-              persistent
-              width="290px"
-            >
-              <template v-slot:activator="{ on }">
-                <v-icon small class="color-grey-light ml-1" v-on="on">
-                  mdi-pencil
-                </v-icon>
-              </template>
-              <v-date-picker
-                v-model="selectedDate"
-                :type="
-                  interval === 'year' || interval === 'month' ? 'month' : 'date'
-                "
-                :first-day-of-week="1"
-                :locale="locale"
-                no-title
-                scrollable
-              >
-                <v-spacer></v-spacer>
-                <v-btn text color="secondary" @click="modalSticky = false">
-                  {{ $t('Cancel') }}
-                </v-btn>
-                <v-btn
-                  text
-                  color="secondary"
-                  @click="
-                    $refs.dialog.save(selectedDate), selectDate(selectedDate)
-                  "
-                >
-                  {{ $t('ok') }}
-                </v-btn>
-              </v-date-picker>
-            </v-dialog>
-
-            <v-icon
-              v-if="timeIndex !== 0"
-              class="color-grey-dark"
-              @click="setTimeIndex(-1)"
-            >
-              mdi-chevron-right
-            </v-icon>
-          </div>
-        </v-col>
-
-        <v-col
-          v-if="interval === 'selection'"
-          cols="12"
-          sm="4"
-          md="3"
-          class="pa-0"
-        >
-          <div class="d-flex align-center justify-center mr-3 mr-sm-0">
-            <v-menu
-              ref="menu"
-              v-model="menuSticky"
-              :close-on-content-click="false"
-              :return-value.sync="dates"
-              transition="scale-transition"
-              offset-y
-              min-width="290px"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  v-model="dateRangeText"
-                  :rules="requiredRules"
-                  :label="$t('period')"
-                  prepend-icon="mdi-calendar"
-                  class="date-picker"
-                  readonly
-                  v-bind="attrs"
-                  v-on="on"
-                ></v-text-field>
-              </template>
-              <v-date-picker
-                v-model="dates"
-                :first-day-of-week="1"
-                :locale="locale"
-                range
-                no-title
-                scrollable
-                @change="checkDateOrder($event)"
-              >
-                <v-spacer></v-spacer>
-                <v-btn text color="secondary" @click="menuSticky = false">
-                  {{ $t('Cancel') }}
-                </v-btn>
-                <v-btn
-                  :disabled="invalidDates(dates)"
-                  text
-                  color="secondary"
-                  @click="$refs.menuSticky.save(dates), loadData()"
-                >
-                  {{ $t('ok') }}
-                </v-btn>
-              </v-date-picker>
-            </v-menu>
-          </div>
-        </v-col>
-
-        <v-col
-          v-if="interval !== 'selection'"
-          cols="12"
-          :class="
-            'd-flex align-center justify-center pa-0 ' +
-              (mobile ? 'pt-1' : 'pt-2')
-          "
-        >
-          <span
-            class="beep-label mb-0"
-            v-text="selectedDevice.hive_name + ' - ' + selectedDevice.name"
-          >
-          </span>
-        </v-col>
-      </v-row>
       <div v-if="mobile" class="float-right mr-n1">
         <v-icon class="grey--text" @click="hideScrollBar = true">
           mdi-close
@@ -238,121 +121,21 @@
       v-if="ready"
       :class="devices.length > 0 ? 'measurements-content' : ''"
     >
-      <v-row>
-        <v-col v-if="devices.length > 0 && interval !== 'selection'" cols="12">
-          <div class="d-flex align-center justify-center">
-            <v-icon class="color-grey-dark" @click="setTimeIndex(1)">
-              mdi-chevron-left
-            </v-icon>
+      <MeasurementsDateSelection
+        :interval="interval"
+        :period-title="periodTitle"
+        :relative-interval="relativeInterval"
+        :selected-date="selectedDate"
+        :time-index="timeIndex"
+        :dates="dates"
+        :date-range-text="dateRangeText"
+        @load-data="loadData"
+        @save-dates="dates = $event"
+        @set-time-index="setTimeIndex($event)"
+        @select-date="selectDate($event)"
+      />
 
-            <span class="period-title">{{ periodTitle }}</span>
-
-            <v-dialog
-              v-if="
-                interval !== 'year' ||
-                  (interval === 'year' && !relativeInterval)
-              "
-              ref="dialog"
-              v-model="modal"
-              :return-value.sync="selectedDate"
-              persistent
-              width="290px"
-            >
-              <template v-slot:activator="{ on }">
-                <v-icon small class="color-grey-light ml-1" v-on="on">
-                  mdi-pencil
-                </v-icon>
-              </template>
-              <v-date-picker
-                v-model="selectedDate"
-                :type="
-                  interval === 'year' || interval === 'month' ? 'month' : 'date'
-                "
-                :first-day-of-week="1"
-                :locale="locale"
-                no-title
-                scrollable
-              >
-                <v-spacer></v-spacer>
-                <v-btn text color="secondary" @click="modal = false">
-                  {{ $t('Cancel') }}
-                </v-btn>
-                <v-btn
-                  text
-                  color="secondary"
-                  @click="
-                    $refs.dialog.save(selectedDate), selectDate(selectedDate)
-                  "
-                >
-                  {{ $t('ok') }}
-                </v-btn>
-              </v-date-picker>
-            </v-dialog>
-
-            <v-icon
-              v-if="timeIndex !== 0"
-              class="color-grey-dark"
-              @click="setTimeIndex(-1)"
-            >
-              mdi-chevron-right
-            </v-icon>
-          </div>
-        </v-col>
-
-        <v-col
-          v-if="interval === 'selection'"
-          cols="12"
-          :class="mobile ? 'pa-0' : ''"
-        >
-          <div class="d-flex align-center justify-center mr-3 mr-sm-0">
-            <v-menu
-              ref="menu"
-              v-model="menu"
-              :close-on-content-click="false"
-              :return-value.sync="dates"
-              transition="scale-transition"
-              offset-y
-              min-width="290px"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  v-model="dateRangeText"
-                  :rules="requiredRules"
-                  :label="$t('period')"
-                  prepend-icon="mdi-calendar"
-                  class="date-picker"
-                  readonly
-                  :hide-details="menuSticky"
-                  v-bind="attrs"
-                  v-on="on"
-                ></v-text-field>
-              </template>
-              <v-date-picker
-                v-model="dates"
-                :first-day-of-week="1"
-                :locale="locale"
-                range
-                no-title
-                scrollable
-                @change="checkDateOrder($event)"
-              >
-                <v-spacer></v-spacer>
-                <v-btn text color="secondary" @click="menu = false">
-                  {{ $t('Cancel') }}
-                </v-btn>
-                <v-btn
-                  :disabled="invalidDates(dates)"
-                  text
-                  color="secondary"
-                  @click="$refs.menu.save(dates), loadData()"
-                >
-                  {{ $t('ok') }}
-                </v-btn>
-              </v-date-picker>
-            </v-menu>
-          </div>
-        </v-col>
-
+      <v-row class="my-0">
         <v-col class="d-flex justify-space-between" cols="12">
           <Treeselect
             v-if="devices.length > 0"
@@ -729,6 +512,7 @@ import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/main.vue'
 import { mapGetters } from 'vuex'
 import MeasurementsChartHeatmap from '@components/measurements-chart-heatmap.vue'
+import MeasurementsDateSelection from '@components/measurements-date-selection.vue'
 import Treeselect from '@riophae/vue-treeselect'
 import 'chartist/dist/chartist.min.css'
 import {
@@ -750,6 +534,7 @@ export default {
     Confirm,
     Layout,
     MeasurementsChartHeatmap,
+    MeasurementsDateSelection,
     SlideYUpTransition,
     Treeselect,
   },
@@ -784,8 +569,6 @@ export default {
       ready: false,
       timer: 0,
       selectedDate: '',
-      modal: false,
-      modalSticky: false,
       periodTitle: null,
       preselectedDate: null,
       preselectedDeviceId: null,
@@ -798,8 +581,6 @@ export default {
       assetsUrl:
         process.env.VUE_APP_ASSETS_URL ||
         process.env.VUE_APP_ASSETS_URL_FALLBACK,
-      menu: false,
-      menuSticky: false,
       dates: [],
       dateFormat: 'YYYY-MM-DD HH:mm:ss',
       periodStart: null,
@@ -934,21 +715,6 @@ export default {
         localStorage.beepRelativeInterval = value.toString()
         this.relativeInterval = value
       },
-    },
-    requiredRules() {
-      var laterEndDate = true
-      this.dates.length === 2 && this.dates[0] > this.dates[1]
-        ? (laterEndDate = false)
-        : (laterEndDate = true)
-      return [
-        (v) => laterEndDate || this.$i18n.t('later_end_start'), // don't allow start date later than end date
-        (v) =>
-          this.dates[0] !== this.dates[1] ||
-          this.$i18n.t('different_end_start'), // don't allow end date identical to start date
-        (v) =>
-          this.dates.length > 1 ||
-          this.$i18n.t('end_date') + ' ' + this.$i18n.t('not_filled'), // don't allow start date only
-      ]
     },
     resolutionNr() {
       return this.measurementData !== null
@@ -1407,11 +1173,6 @@ export default {
         },
       }
     },
-    checkDateOrder(dates) {
-      if (dates[1] < dates[0]) {
-        this.dates = [dates[1], dates[0]]
-      }
-    },
     formatMeasurementData(measurementData) {
       if (
         measurementData &&
@@ -1455,13 +1216,6 @@ export default {
         this.noChartData = true
       }
       this.loadingData = false
-    },
-    invalidDates(dates) {
-      return (
-        (dates.length === 2 && dates[0] > dates[1]) ||
-        dates[0] === dates[1] ||
-        dates.length === 1
-      )
     },
     loadData(loadLastSensorValues = true) {
       if (loadLastSensorValues) {
@@ -1755,7 +1509,7 @@ export default {
   @include for-phone-only {
     top: 148px !important;
   }
-  @include for-desktop-up {
+  @include for-tablet-landscape-up {
     top: 130px !important;
   }
 }
