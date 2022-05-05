@@ -701,6 +701,15 @@ export default {
         { name: this.$i18n.t('selection'), interval: 'selection' },
       ]
     },
+    queriedChartCols() {
+      var queriedValue = parseInt(this.$route.query.chartCols)
+      var valid =
+        queriedValue === 12 || queriedValue === 6 || queriedValue === 4
+      return valid ? queriedValue : null
+    },
+    queriedRelativeInterval() {
+      return this.$route.query.relativeInterval || null
+    },
     setRelativeInterval: {
       get() {
         return this.relativeInterval
@@ -848,8 +857,13 @@ export default {
     if (localStorage.beepChartCols) {
       this.chartCols = parseInt(localStorage.beepChartCols)
     }
-    if (localStorage.beepRelativeInterval) {
+    if (this.queriedRelativeInterval) {
+      this.relativeInterval = this.queriedRelativeInterval === 'true'
+    } else if (localStorage.beepRelativeInterval) {
       this.relativeInterval = localStorage.beepRelativeInterval === 'true'
+    }
+    if (this.queriedChartCols) {
+      this.chartCols = this.queriedChartCols
     }
     this.preselectedDate = this.$route.query.date || null
     this.preselectedDeviceId = parseInt(this.$route.params.id) || null
