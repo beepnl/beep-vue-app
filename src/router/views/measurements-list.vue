@@ -101,9 +101,7 @@
         :dates="dates"
         :date-range-text="dateRangeText"
         :sticky="true"
-        :selected-device-title="
-          selectedDevice.hive_name + ' - ' + selectedDevice.name
-        "
+        :selected-device-title="selectedDeviceTitle"
         @load-data="loadData"
         @save-dates="dates = $event"
         @set-time-index="setTimeIndex($event)"
@@ -284,11 +282,7 @@
                 <div class="d-flex justify-space-between align-center">
                   <span>{{
                     selectedDevice && !mobile
-                      ? $tc('Measurement', 2) +
-                        ': ' +
-                        selectedDevice.hive_name +
-                        ' - ' +
-                        selectedDevice.name
+                      ? $tc('Measurement', 2) + ': ' + selectedDeviceTitle
                       : $tc('Measurement', 2)
                   }}</span>
                   <v-spacer></v-spacer>
@@ -748,6 +742,9 @@ export default {
         this.$store.commit('devices/setSelectedDeviceId', value)
         localStorage.beepSelectedDeviceId = value
       },
+    },
+    selectedDeviceTitle() {
+      return this.selectedDevice.hive_name + ' - ' + this.selectedDevice.name
     },
     smAndDown() {
       return this.$vuetify.breakpoint.smAndDown
