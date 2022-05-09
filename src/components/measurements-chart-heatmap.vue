@@ -66,9 +66,7 @@
                 v-for="(measurement, i) in data"
                 :key="'measurement ' + i"
                 :class="
-                  `td--heatmap ${i % moduloNumber === 0 ? 'td-border' : ''} ${
-                    inspectionIndexes.indexOf(i) > -1 ? 'cursor-pointer' : ''
-                  }`
+                  `td--heatmap ${i % moduloNumber === 0 ? 'td-border' : ''}`
                 "
                 :style="
                   `background-color: ${calculateHeatmapColor(
@@ -76,29 +74,28 @@
                     measurement[soundSensor]
                   )}`
                 "
-                @click="
-                  inspectionIndexes.indexOf(i) > -1 ? viewInspection(i) : null
-                "
               >
                 <span
                   v-if="inspectionIndexes.indexOf(i) > -1"
                   class="inspection-line"
+                  @click="viewInspection(i)"
                 >
+                  <!-- <v-hover v-slot="{ hover }">
+                    <span class="beep-tooltip" v-on="hover"
+                      >{{ getInspectionByIndex(i).date }} <br />{{
+                        getInspectionByIndex(i).text
+                      }}
+                    </span>
+                  </v-hover> -->
                 </span>
 
                 <span
                   v-if="measurement[soundSensor] !== null"
                   class="hover-overlay"
                 ></span>
+
                 <span
-                  v-if="inspectionIndexes.indexOf(i) > -1"
-                  class="beep-tooltip"
-                  >{{ getInspectionByIndex(i).date }} <br />{{
-                    getInspectionByIndex(i).text
-                  }}
-                </span>
-                <span
-                  v-else-if="measurement[soundSensor] !== null"
+                  v-if="measurement[soundSensor] !== null"
                   class="beep-tooltip"
                   >{{ momentAll(measurement.time) }}<br />{{ index }}:
                   {{ displayValue(measurement[soundSensor]) }}</span
