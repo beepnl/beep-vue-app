@@ -33,29 +33,18 @@ const translations = {
     'Nov',
     'Dec',
   ],
-  Today: 'Today',
-  Clear: 'Clear',
   Close: 'Close',
-  firstDay: 1,
 
   /* main */
   Website: 'Website',
-  Feedback: 'Feedback',
-  Feedback_mail_header: 'BEEP app feedback',
-  Feedback_mail_body:
-    'Dear BEEP foundation,%0D%0A%0D%0AHereby my feedback about the BEEP app.%0D%0A%0D%0AI discovered this:%0D%0A%0D%0AJust before that happened, i did:%0D%0A%0D%0AThe screen was looking like (please include a screenshot):%0D%0A%0D%0A%0D%0A%0D%0A',
-  Diagnostic_info: 'Diagnostic information (in case of a bug):%0D%0A',
-  back: 'Back',
   menu: 'Menu',
   weather: 'Weather',
   sensors: 'Devices',
 
-  switch_language: 'Switch language',
   Delete: 'Delete',
   Search: 'Search...',
 
   /* user error messages */
-  User: 'User',
   User_data: 'User data',
   user_data: 'user data',
   updated: 'updated',
@@ -82,71 +71,49 @@ const translations = {
   succesfully_registered: 'You are successfully registered.',
   authentication_failed: 'Failed to authenticate',
 
-  no_valid_input_received: 'Data could not be saved, no valid input received.',
-
-  remove_all_settings: 'Remove all settings',
   remove_apiary: 'Remove apiary',
   remove_hive: 'Remove hive',
   remove_inspection: 'Remove inspection',
 
   Error: 'Error | Errors',
-  Warning: 'Warning',
   first_remove_hives:
     'Attention: there are still hives at this apiary. You can save specific hives (and their inspections) by first moving them to another apiary. If you continue with the deletion, you will delete ALL hives and inspections present at this location.',
 
   Date: 'Date',
   ok: 'Ok',
-  previous: 'Previous',
-  prev: 'previous',
-  next: 'Next',
   add: 'Add',
   create_new: 'Create new',
-  New: 'New',
 
-  warning: 'Warning',
-
-  apply: 'Apply',
   Cancel: 'Cancel',
-  on: 'On',
-  off: 'Off',
 
   /* login */
   login_title: 'Login',
   login: 'Login',
-  back_to_login: 'Back to login',
   forgot_password: 'Forgot your password?',
 
   username: 'Username',
   password: 'Password',
   confirm_password: 'Confirm password',
   email: 'E-mail',
-  token: 'Code',
 
   create_login_question: 'No account yet? Register as a new user',
   create_login: 'Register as a new user',
   create_login_summary: 'Create a new user account',
   save: 'Save',
-  save_and_return: 'Save and return',
 
   logout: 'Log out',
 
   /* password recovery */
   password_recovery_title: 'Forgot your password?',
   password_recovery_remembered: 'Oh, now I remembered my password again!',
-  password_recovery_user: 'User information',
   password_recovery_send_mail: 'Send verification code',
   password_recovery_code_not_received: 'Code not received within 5 minutes?',
   password_recovery_enter_code:
     'Already got a verification code? Enter it here',
-  password_recovery_reset_title: 'Enter a new password',
   password_recovery_reset_password: 'Change password',
   password_recovery_reminder_success:
     'An email has been sent. Click the link in your email to reset your password for this account.',
-  password_recovery_reminder_summary:
-    'Enter your email address. You will receive an email with a link to change your password in the next step.',
 
-  password_recovery_reset_summary:
-    'Use the code that you received to set a new password for your account',
   password_recovery_reset_success:
     'You password is successfully changed, and you are logged in.',
 
@@ -165,21 +132,14 @@ const translations = {
   name: 'name',
   Type: 'Type',
   type: 'type',
-  Layer: 'Layer',
-  layer: 'layer',
-  brood: 'Brood',
-  honey: 'Honey',
-  inspect: 'Inspect',
   inspection: 'inspection | inspections',
   Inspection: 'Inspection | Inspections',
   New_inspection: 'New inspection',
   Edit_inspection: 'Edit inspection',
   Actions: 'Actions',
   edit: 'Edit',
-  Hive_layer_amount: 'Number of layers',
   Bee_race: 'Bee race',
   Birth_date: 'Birth date',
-  Color: 'Color',
   Queen_colored: 'Queen marked',
   Queen_clipped: 'Queen clipped',
   Queen_fertilized: 'Queen fertilized',
@@ -188,7 +148,6 @@ const translations = {
 
   /* Hive check items */
   Date_of_inspection: 'Date of inspection',
-  action: 'Action',
   reminder: 'Remember',
   remind_date: 'Notification date',
   overall: 'Overall',
@@ -201,7 +160,6 @@ const translations = {
 
   /* dashboard */
   last_measurement: 'Last measurement',
-  at: 'at',
   no_data: 'No data available',
   no_chart_data: 'No chart data for the selected period',
 
@@ -217,7 +175,6 @@ const translations = {
   Number: 'No.',
   Postal_code: 'Postal code',
   Description: 'Description',
-  Hive_settings: 'Hive settings',
   Hive_amount: 'Number of hives',
   Hive_prefix: 'Hive name prefix (before numer)',
   Hive_number_offset: 'Start number hives',
@@ -232,11 +189,7 @@ const translations = {
   Settings: 'Settings',
   settings: 'settings',
 
-  sensors_title: 'Device settings',
-  sensor: 'Device',
-
   Select: 'Select',
-  Not_selected: 'Not selected',
   Poor: 'Poor',
   Fair: 'Fair',
   Average: 'Average',
@@ -369,31 +322,23 @@ const translations = {
   Checklist: 'Checklist | Checklists',
   checklist: 'checklist | checklists',
   Checklist_items: 'Checklist items',
-  edit_hive_checklist:
-    'Check/uncheck the boxes in the list below to add/remove items from your hive checklist. You can also unfold/fold and drag/drop the items to re-order them to your own style.',
 
   /* user */
   Data_export: 'Data export',
   Export_your_data:
     'Export all data that is in your BEEP account and send an email containing the data as an Excel file. The Excel file has different tabs containing your personal, hive, location, and inspection data.',
 
-  Terms_of_use: 'Terms of service',
   accept_policy:
     'I accept the BEEP terms of service, that are compatible with the new European privacy law',
   policy_url: 'https://beep.nl/terms-of-service',
   policy_version: 'beep_terms_2018_05_25_avg_v1',
-  approve_policy: 'You did not yet comply with the latest terms of service.',
 
   /* General items */
   server_down:
     'The app is unavailable due to maintenance work, please try again later',
   add_to_calendar: 'Add to calendar',
-  sort_on: 'Sort on',
   Whats_new: 'New!',
-  Manual: 'Manual',
   Site_title: 'BEEP | Bee monitor',
-  could_not_create_user:
-    'User cannot be created at this moment. Sorry for the inconvenience, please try again later.',
   email_verified: 'Your email address has been verified.',
   email_not_verified: 'Your email address has not yet been verified.',
   email_new_verification:
@@ -410,18 +355,14 @@ const translations = {
   the_field: 'The',
   is_required: 'is required',
 
-  No_groups: 'No groups available',
   not_available_yet:
     'not yet available. Click on the button in the upper right corner to add one.',
-  Users: 'Users',
   member: 'member | members',
   Member: 'Group member | Group members',
-  Invite: 'Invite',
   Invited: 'Invited',
   Invitation: 'Invitation | Invitations',
   Admin: 'Administrator',
   Creator: 'Group owner',
-  Collaborate: 'Collaborate',
   Group: 'Collaboration group | Collaboration groups',
   group: 'collaboration group | collaboration groups',
   group_short: 'group | groups',
@@ -438,6 +379,7 @@ const translations = {
   created: 'created',
   group_detached: 'Successfully left the group',
   group_activated: 'Group invitation accepted',
+  group_declined: 'Group invitation declined',
 
   /* New translations v2.2.0 */
   roofed: 'Does the apiary have a roof?',
@@ -446,7 +388,6 @@ const translations = {
   research: 'Research',
   start_date: 'Start date',
   end_date: 'End date',
-  purpose: 'Research purpose',
   institution: 'Research institution',
   type_of_data_used: 'Data usage',
   link: 'Link',
@@ -482,7 +423,6 @@ const translations = {
   Hive_short: 'Hive | Hives',
 
   Image: 'Image | Images',
-  Size: 'Size',
   preview: 'preview',
 
   Inside: 'Measures inside',
@@ -495,7 +435,6 @@ const translations = {
   Export_sensor_data:
     "Export all data per device in the highest possible resolution as a .csv file that you can open in Excel, or SPSS. NB: The date time data in the 'time' column is in GMT time, formatted by the RFC 3339 date-time standard.",
   CSV_export_separator: 'CSV data column separator',
-  Selected_date: 'Selected time span',
   Sensor_measurements: 'Sensor measurements',
   too_much_data:
     'Too much data to process, please select fewer Sensor measurements, or reduce the timespan between start and end date.',
@@ -511,24 +450,17 @@ const translations = {
   from_weather_service: 'from weather service',
 
   /* New translations v3 */
-  click_hives_to_filter: 'Click hives to filter',
-  for: 'for',
   last_visit: 'Last visit',
-  apiary_details: 'Apiary details',
-  group_details: 'Group details',
   diary: 'Diary',
   data: 'Data',
   photo: 'photo | photos',
   add_checklist: 'Add checklist',
   add_hive: 'Add hive',
-  delete_apiary: 'Delete apiary',
   edit_apiary: 'Edit apiary',
   new_apiary: 'New apiary',
-  delete_group: 'Delete group',
-  edit_group: 'Edit group',
+  edit_group: 'Edit collaboration group',
   new_group: 'New collaboration group',
   verification_code: 'verification code',
-  limit_exceeded: 'Limit has been reached, try again later',
   confirm_email_title: 'Confirm your email',
   confirm_email_summary:
     "You've received a verification code in your email. Enter it below to verify your email adress",
@@ -536,7 +468,6 @@ const translations = {
   Profile: 'Profile',
   Checklist_template: 'Checklist template | Checklist templates',
   Help: 'Help',
-  Privacy: 'Privacy',
   FAQ: 'FAQ',
   Support: 'Support',
   no_inspections: 'Add first inspection',
@@ -545,7 +476,6 @@ const translations = {
   Hive_honey_layer: 'Honey layer | Honey layers',
   Hive_queen_excluder_layer: 'Queen excluder | Queen excluders',
   Hive_feeding_box_layer: 'Feeding box | Feeding boxes',
-  overrides_layer_colors: 'overrides layer colors',
   drag_layers: 'Drag layers to configure hive',
   page: 'page | pages',
   Page: 'Page | Pages',
@@ -565,12 +495,9 @@ const translations = {
   remove_image: 'Remove image',
   Total_colony_size: 'Total colony size',
   bee: 'bee | bees',
-  with_bees: 'with bees',
   change_checklist_confirm:
     'Are you sure you want to select a different checklist? Values of already filled in fields will be kept.',
   view: 'View',
-  share: 'Share',
-  edit_details: 'Edit details',
   remove_queen: 'Remove queen',
   remove_group_short: 'Remove collaboration group',
   device: 'Device | Devices',
@@ -608,8 +535,6 @@ const translations = {
   user_not_edited:
     'User data has not been edited. Possibly the user data is identical to the user data already in the database, or one or more fields are not correctly filled in. Please check your data and try again.',
   user_not_deleted: 'Something went wrong, user has not been deleted.',
-  research_consent: 'Research consent',
-  checklist_types: 'Personal, shared, research',
   edit_hive_checklist_no_touch:
     'Check/uncheck the boxes in the list below to add/remove items from your hive checklist. You can also unfold/fold and drag/drop the items to re-order them to your own style (N.B. this is not possible on a touchscreen device).',
   edit_hive_checklist_touch:
@@ -626,9 +551,6 @@ const translations = {
   Measurement: 'Measurement | Measurements',
   Calculation: 'Calculation',
   calculation: 'calculation',
-  Alert_on_occurences: 'When would you like to receive this alert?',
-  Alert_on_occurences_hint:
-    'Directly, or only after it has occurred an x number of times?',
   Direct: 'Directly',
   After: 'After ',
   times: ' times',
@@ -658,7 +580,6 @@ const translations = {
   delete_alertrule: 'Delete alert rule',
   Active: 'Active',
   Alert_via_email: 'Alert via email',
-  Webhook_url: 'Webhook url',
   this_field: 'This field',
   alertrule_default: 'Default alert rule | Default alert rules',
   copy: 'Copy',
@@ -669,8 +590,6 @@ const translations = {
     'I would like to receive an alert if the [calculation] [comparison] of the [measurement_quantity] [comparator] [threshold_value][measurement_unit]. This calculation will be executed [calculation_minutes]',
   alertrule_occurences_direct_sentence:
     ', and I would like to receive the alert directly. ',
-  alertrule_occurences_indirect_sentence:
-    ', but I would like to receive the alert only if it occurs [alert_on_occurences] times. ',
   alertrule_exclude_months_sentence:
     'This alert will be deactivated during the following months: [exclude_months]. ',
   alertrule_exclude_hours_sentence:
@@ -729,7 +648,6 @@ const translations = {
   Add_sensor_definition: 'Add sensor definition',
   Add_member: 'Add member',
 
-  alert_rule_deleted: 'Alert rule has been deleted',
   new_or_edited_but_not_saved_sensor_defs_warning:
     'N.B. sensor definitions will only be saved or added after clicking the green check icon at the end of the sensor definition row in the table.',
   delete_sensordef: 'Delete sensor definition',
@@ -741,14 +659,14 @@ const translations = {
   already_verified: 'I have verified my email address and would like to login',
   password_recovery_resend_mail: 'Send new verification code',
   alert_rule_created: 'New alert rule has been created',
+  alert_rule_deleted: 'Alert rule has been deleted',
+  deactivate_for_all_hives: 'Deactivate alert for all hives',
   select_all: 'Select all',
   During: 'During',
+  Every: 'Every ', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 24 hours etc.
   Calculation_minutes:
     'How often would you like the calculation to be performed?',
-  Every: 'Every ', // context: how often would you like the alert rule calculation to be performed? -> every 15 min, ..., every 24 hours etc.
-  every: 'every ',
   Calculation_minutes_short: 'How often is it calculated?', // for alert rule overview table header
-  Alert_on_occurences_short: 'When do you receive the alert?', // for alert rule overview table header
   Disable_alert_for_this_hive: 'Disable alert for this hive',
   Alert_disabled_for_this_hive: 'Alert is disabled for this hive',
   disabled_for_hive: 'has been disabled for hive', // [alert] has been disabled for the following hive
@@ -765,8 +683,9 @@ const translations = {
   commit_log_data_short: 'Import log data', // commit_flashlog_short
   commit_log_data: 'Import data from this log file to the BEEP app: ', // commit_flashlog
   // flashlog_explanation
-  // import_log_data_explanation:
-  //   "In the BEEP base app you can download log data from the internal memory of the BEEP base. Every time you download log data, the internal memory gets cleared and the data gets uploaded to the BEEP app. Below is the list of your downloaded log data. You can replace the data in the database by the data inside the downloaded log files by clicking the button 'Check log data'. As a result of this check you will see blocks of data that may or may not contain matches. Per block that has matches you can view the data and choose to replace the data from the database by the data from the log file.", // flashlog_url_text
+  import_log_data_explanation:
+    "In the BEEP base app you can download log data from the internal memory of the BEEP base. Every time you download log data, the internal memory gets cleared and the data gets uploaded to the BEEP app. Below is the list of your downloaded log data. You can view the log data by clicking the button 'Check log data'. As a result of this check you will see blocks of data that may or may not contain matches with the database data. For each block that contains matches you can view the log data and database data in a chart, and choose to supplement the data in the database with the log data.",
+  // flashlog_url_text
   import_log_data_url_text:
     'Here you can find the support article on downloading log data with the BEEP base app.',
   // flashlog_support_url
@@ -853,8 +772,6 @@ const translations = {
     '*N.B. the alert rule will only be active if the selected measurement is measured by your BEEP base / device. BEEP bases do not measure weather data.',
   Relative_startpoint: 'Relative',
 
-  import_log_data_explanation:
-    "In the BEEP base app you can download log data from the internal memory of the BEEP base. Every time you download log data, the internal memory gets cleared and the data gets uploaded to the BEEP app. Below is the list of your downloaded log data. You can view the log data by clicking the button 'Check log data'. As a result of this check you will see blocks of data that may or may not contain matches with the database data. For each block that contains matches you can view the log data and database data in a chart, and choose to supplement the data in the database with the log data.",
   Log_data: 'Log data',
   Flashlog: 'Log',
   Block: 'Block',
@@ -868,6 +785,7 @@ const translations = {
   no_device: 'No device',
   data_not_stored: 'Data not stored',
   no_flashlog_found: 'No log file found',
+  Size: 'Size',
   Match: 'Match | Matches',
   Missing_data: 'Missing data',
   not_yet_in_db: 'not yet in DB',
@@ -903,6 +821,10 @@ const translations = {
   select_inspection_date: 'Select date of inspection',
 
   View_inspection_confirm: 'Would you like to view the inspection of: ',
+  Translations: 'Translations',
+  translation_exp:
+    'To become a translator, please request a translator account via support@beep.nl. If you would like to update translations, please download the .js file below and email the updated file to support@beep.nl. Thank you for your effort!',
+  unpublished_exp: 'Translations that are yet unpublished:',
 }
 
 export default translations

@@ -76,7 +76,7 @@
 
 <script>
 import Api from '@api/Api'
-import languages from '@assets/js/lang/languages'
+import languages from '@assets/js/languages'
 import Layout from '@layouts/account.vue'
 
 export default {

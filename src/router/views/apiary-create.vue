@@ -803,7 +803,7 @@ export default {
     padding: 4px 0;
     margin-top: 48px;
     background-color: $color-orange-light !important;
-    border-bottom: 1px solid #fff5e2 !important;
+    border-bottom: 1px solid $color-orange-border !important;
     @include for-tablet-landscape-up {
       padding: 8px 12px;
     }

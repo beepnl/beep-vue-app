@@ -304,6 +304,14 @@ export default [
     name: 'queen-edit',
     component: () => lazyLoadView(import('@views/hive-edit.vue')),
   },
+  {
+    meta: {
+      authRequired: true,
+    },
+    path: '/translations',
+    name: 'translations',
+    component: () => lazyLoadView(import('@views/translations.vue')),
+  },
 ]
 
 // Lazy-loads view components, but with better UX. A loading view

@@ -66,7 +66,9 @@
                 v-for="(measurement, i) in data"
                 :key="'measurement ' + i"
                 :class="
-                  `td--heatmap ${i % moduloNumber === 0 ? 'td-border' : ''}`
+                  `td--heatmap ${i % moduloNumber === 0 ? 'td-border' : ''} ${
+                    inspectionIndexes.indexOf(i) > -1 ? 'cursor-pointer' : ''
+                  }`
                 "
                 :style="
                   `background-color: ${calculateHeatmapColor(
@@ -74,12 +76,15 @@
                     measurement[soundSensor]
                   )}`
                 "
+                @click="
+                  inspectionIndexes.indexOf(i) > -1 ? viewInspection(i) : null
+                "
               >
                 <span
                   v-if="inspectionIndexes.indexOf(i) > -1"
                   class="inspection-line"
-                  @click="viewInspection(i)"
-                ></span>
+                >
+                </span>
 
                 <span
                   v-if="measurement[soundSensor] !== null"
@@ -266,13 +271,12 @@ export default {
   max-width: 8px !important;
   height: 13px !important;
   padding: 0 !important;
-  cursor: auto !important;
+  cursor: auto;
   .beep-tooltip,
   .hover-overlay {
     display: none;
   }
   &:hover {
-    cursor: pointer;
     .hover-overlay {
       display: block;
       width: 100%;
