@@ -31,7 +31,8 @@
   }
 }
 
-.v-btn.color-black > .v-btn__content .v-icon {
+.v-btn.color-black > .v-btn__content .v-icon,
+.v-btn .color-black {
   color: $color-black;
 }
 

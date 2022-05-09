@@ -39,7 +39,7 @@
 
 <script>
 import Api from '@api/Api'
-import languages from '@assets/js/lang/languages'
+import languages from '@assets/js/languages'
 import { Settings } from 'luxon' // for hive-inspect vue-datetime picker
 import { mapGetters } from 'vuex'
 

@@ -900,6 +900,10 @@ const translations = {
   input_only_possible_when_date_present:
     "Please select a 'date of inspection' first (above), to enable the inspection form. Click 'Now' to fill in the current date and time.",
   select_inspection_date: 'Select date of inspection',
+  Translations: 'Translations',
+  translation_exp:
+    'To become a translator, please request a translator account via support@beep.nl. If you would like to update translations, please download the .js file below and email the updated file to support@beep.nl. Thank you for your effort!',
+  unpublished_exp: 'Translations that are yet unpublished:',
 }
 
 export default translations

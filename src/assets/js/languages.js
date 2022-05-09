@@ -13,6 +13,11 @@ const languages = {
     { lang: 'es', title: 'Spanish' },
     { lang: 'fi', title: 'Suomi' },
     { lang: 'sv', title: 'Svenska' },
+  ],
+  unpublishedLanguageArray: [
+    { lang: 'bg', title: 'Български' },
+    { lang: 'el', title: 'Ελληνικά' },
+    { lang: 'pl', title: 'Polski' },
     // { lang: 'en-US', title: 'English US' },
   ],
   checkBrowserLanguage() {
