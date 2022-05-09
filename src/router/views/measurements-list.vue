@@ -971,11 +971,13 @@ export default {
   },
   created() {
     this.readTaxonomy()
-    if (localStorage.beepChartCols) {
+    if (this.queriedChartCols) {
+      this.chartCols = this.queriedChartCols
+    } else if (localStorage.beepChartCols) {
       this.chartCols = parseInt(localStorage.beepChartCols)
     }
     if (this.queriedRelativeInterval) {
-      this.relativeInterval = this.queriedRelativeInterval === 'true'
+      this.relativeInterval = this.queriedRelativeInterval === true
     } else if (localStorage.beepRelativeInterval) {
       this.relativeInterval = localStorage.beepRelativeInterval === 'true'
     }
@@ -1331,6 +1333,8 @@ export default {
           var query = {
             search: 'id=' + inspectionId.toString(),
             interval: this.interval,
+            relativeInterval: this.relativeInterval,
+            chartCols: this.chartCols,
           }
           if (this.interval === 'selection' && this.dates.length > 0) {
             query.start = this.dates[0]
