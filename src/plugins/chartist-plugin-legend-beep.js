@@ -248,11 +248,10 @@
 
           var removedSeriesIndex = removedSeries.indexOf(clickedSeriesIndex)
 
+          var otherSeries = Array.prototype.slice.call(legendElement.childNodes)
+          otherSeries.splice(clickedSeriesIndex, 1)
+
           if (!options.simpleToggle) {
-            var otherSeries = Array.prototype.slice.call(
-              legendElement.childNodes
-            )
-            otherSeries.splice(clickedSeriesIndex, 1)
             var otherSeriesIndexArray = []
             otherSeries.forEach(function(item) {
               otherSeriesIndexArray.push(
@@ -308,8 +307,8 @@
               // if clicked series is inactive, make it active
               removedSeries.splice(removedSeriesIndex, 1)
               clickedSeries.classList.remove('inactive')
-            } else {
-              // if clicked series is active, make it inactive
+            } else if (otherSeries.length > 0) {
+              // if clicked series is active AND part of multiple series make it inactive
               removedSeries.push(clickedSeriesIndex)
               clickedSeries.classList.add('inactive')
             }

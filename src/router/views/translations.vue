@@ -58,7 +58,6 @@
 <script>
 import Layout from '@layouts/back.vue'
 import languages from '@assets/js/languages'
-// import en from '@assets/js/lang/en'
 
 export default {
   components: {
