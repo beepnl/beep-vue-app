@@ -2,8 +2,41 @@
   <Layout :title="$t('Whats_new')">
     <v-container>
       <div class="overline mb-1"
-        ><span class="lowercase">v</span>3.0.94 (02-05-2022) - Current
+        ><span class="lowercase">v</span>3.0.95 (09-05-2022) - Current
         version</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li
+            >Data:
+            <router-link :to="{ name: 'measurements' }">
+              several improvements</router-link
+            >, such as:
+            <ul>
+              <li
+                >Show inspections on charts as vertical lines & view inspection
+                when line is clicked</li
+              >
+              <li>Enable simple on/off toggle when chart has multiple lines</li>
+              <li
+                >Enable url queries for interval, timeIndex, date, start, end,
+                relativeInterval & chartCols</li
+              >
+              <li
+                >Show sticky date selection header when scrolling down to view
+                charts</li
+              >
+              <li
+                >Intuitive period browsing: jump to/from the middle of the
+                previous interval when selecting a new interval</li
+              >
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>3.0.94 (02-05-2022)</div
       >
       <div class="rounded-border mb-4">
         <ul>
