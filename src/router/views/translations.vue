@@ -17,7 +17,7 @@
               :class="!mobile ? 'd-flex justify-start' : ''"
             >
               <v-btn
-                :min-width="!smAndDown ? '330px' : !mobile ? '300px' : '100%'"
+                :min-width="!smAndDown ? '350px' : !mobile ? '300px' : '100%'"
                 outlined
                 tile
                 :small="smAndDown && !mobile"
@@ -38,7 +38,7 @@
                 ></a>
               </v-btn>
               <v-btn
-                :min-width="!smAndDown ? '300px' : !mobile ? '240px' : '100%'"
+                :min-width="!smAndDown ? '350px' : !mobile ? '240px' : '100%'"
                 :href="'/js/lang/' + language.lang + '.js'"
                 target="_blank"
                 outlined

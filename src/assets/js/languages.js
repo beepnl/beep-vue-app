@@ -4,7 +4,7 @@ const languages = {
     { lang: 'de', title: 'Deutsch' },
     { lang: 'en', title: 'English' },
     { lang: 'fr', title: 'Français' },
-    // { lang: 'el', title: 'Ελληνικά' },
+    { lang: 'el', title: 'Ελληνικά' },
     { lang: 'it', title: 'Italiano' },
     { lang: 'nb', title: 'Norsk bokmål' },
     // { lang: 'pl', title: 'Polski' },
@@ -16,7 +16,6 @@ const languages = {
   ],
   unpublishedLanguageArray: [
     { lang: 'bg', title: 'Български' },
-    { lang: 'el', title: 'Ελληνικά' },
     { lang: 'pl', title: 'Polski' },
     // { lang: 'en-US', title: 'English US' },
   ],

@@ -4,7 +4,7 @@ import store from '@state/store'
 import vuetify from '@plugins/vuetify'
 import VueI18n from 'vue-i18n'
 import de from '@public/js/lang/de'
-// import el from '@public/js/lang/el'
+import el from '@public/js/lang/el'
 import en from '@public/js/lang/en'
 import es from '@public/js/lang/es'
 import fi from '@public/js/lang/fi'
@@ -46,7 +46,7 @@ const i18n = new VueI18n({
   locale: languages.checkBrowserLanguage() || 'en',
   messages: {
     de,
-    // el,
+    el,
     en,
     es,
     fi,
