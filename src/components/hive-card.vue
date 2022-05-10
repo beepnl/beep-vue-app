@@ -444,9 +444,25 @@
               <v-sheet class="beep-icon beep-icon-note color-grey"> </v-sheet>
             </router-link>
           </div>
+          <v-tooltip
+            v-if="!mobile && hive.notes && hive.notes.length > 33 && xlView"
+            bottom
+            max-width="60%"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <span
+                v-bind="attrs"
+                class="truncate-md"
+                style="max-width: 224px;"
+                v-on="on"
+                v-text="hive.notes"
+              >
+              </span>
+            </template>
+            <span v-text="hive.notes"> </span>
+          </v-tooltip>
           <span
-            v-if="hive.notes && xlView"
-            class="truncate-md"
+            v-if="hive.notes && (mobile || hive.notes.length <= 33) && xlView"
             style="max-width: 224px;"
             v-text="hive.notes"
           >
@@ -566,6 +582,9 @@ export default {
         }
       })
       return uniqueAlertRuleNames.join(', ')
+    },
+    mobile() {
+      return this.$vuetify.breakpoint.mobile
     },
   },
   methods: {
