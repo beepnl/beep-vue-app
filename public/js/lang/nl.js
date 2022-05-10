@@ -844,12 +844,14 @@ const translations = {
   input_only_possible_when_date_present:
     "Vul a.u.b. een inspectiedatum in (hierboven), om het inspectieformulier te activeren. Klik op 'Nu' om de huidige datum en tijd in te vullen.",
   select_inspection_date: 'Selecteer inspectiedatum',
-
   View_inspection_confirm: 'Wil je de inspectie bekijken van: ',
+
+ /* Translations page */
   Translations: 'Vertalingen',
   translation_exp:
     'Vraag een vertaler account aan via support@beep.nl om een vertaler te worden. Als je een vertaling wilt updaten, download dan hieronder het betreffende .js bestand en mail het geüpdatete bestand naar support@beep.nl. Bedankt voor de moeite!',
   unpublished_exp: 'Vertalingen die nog ongepubliceerd zijn:',
+  as_plain_text: 'als platte tekst',
 }
 
 export default translations

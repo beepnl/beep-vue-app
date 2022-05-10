@@ -1,53 +1,60 @@
 <template>
   <Layout :title="$t('Translations')">
     <v-container>
-      <v-row class="my=0">
+      <v-row
+        v-for="(section, s) in sections"
+        :key="'section ' + s"
+        class="my=0"
+      >
         <v-col cols="12">
-          <p class="mt-3">{{ $t('translation_exp') }} </p>
+          <p class="mt-3">{{ $t(section.header) }} </p>
         </v-col>
-        <v-col cols="12" sm="8" md="4">
+        <v-col cols="12" sm="10" md="5">
           <div class="d-flex flex-column">
-            <v-btn
-              v-for="(language, i) in languages"
+            <div
+              v-for="(language, i) in section.languages"
               :key="i"
-              outlined
-              tile
-              class="mb-3"
+              :class="!mobile ? 'd-flex justify-start' : ''"
             >
-              <a
-                class="color-black"
-                :href="'./js/lang/' + language.lang + '.js'"
-                download
+              <v-btn
+                :min-width="!smAndDown ? '330px' : !mobile ? '300px' : '100%'"
+                outlined
+                tile
+                :small="smAndDown && !mobile"
+                class="mb-3"
+              >
+                <a
+                  class="color-black"
+                  :href="'./js/lang/' + language.lang + '.js'"
+                  download
+                  v-text="
+                    $t('download') +
+                      ' ' +
+                      language.lang +
+                      '.js (' +
+                      language.title +
+                      ')'
+                  "
+                ></a>
+              </v-btn>
+              <v-btn
+                :min-width="!smAndDown ? '300px' : !mobile ? '240px' : '100%'"
+                :href="'/js/lang/' + language.lang + '.js'"
+                target="_blank"
+                outlined
+                tile
+                class="ml-0 ml-sm-3 mb-3"
+                color="accent"
+                :small="smAndDown && !mobile"
                 v-text="
-                  'Download ' + language.lang + '.js (' + language.title + ')'
+                  (!smAndDown || mobile ? $t('view') + ' ' : '') +
+                    language.lang +
+                    '.js ' +
+                    $t('as_plain_text')
                 "
-              ></a>
-            </v-btn>
-          </div>
-        </v-col>
-      </v-row>
-      <v-row class="my=0">
-        <v-col cols="12">
-          <p class="mt-3">{{ $t('unpublished_exp') }} </p>
-        </v-col>
-        <v-col cols="12" sm="8" md="4">
-          <div class="d-flex flex-column">
-            <v-btn
-              v-for="(language, i) in unpublished"
-              :key="i"
-              outlined
-              tile
-              class="mb-3"
-            >
-              <a
-                class="color-black"
-                :href="'./js/lang/' + language.lang + '.js'"
-                download
-                v-text="
-                  'Download ' + language.lang + '.js (' + language.title + ')'
-                "
-              ></a>
-            </v-btn>
+              >
+              </v-btn>
+            </div>
           </div>
         </v-col>
       </v-row>
@@ -65,9 +72,25 @@ export default {
   },
   data() {
     return {
-      languages: languages.languageArray,
-      unpublished: languages.unpublishedLanguageArray,
+      sections: [
+        {
+          header: 'translation_exp',
+          languages: languages.languageArray,
+        },
+        {
+          header: 'unpublished_exp',
+          languages: languages.unpublishedLanguageArray,
+        },
+      ],
     }
+  },
+  computed: {
+    mobile() {
+      return this.$vuetify.breakpoint.mobile
+    },
+    smAndDown() {
+      return this.$vuetify.breakpoint.smAndDown
+    },
   },
 }
 </script>
