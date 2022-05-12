@@ -465,7 +465,11 @@ import {
   readApiariesAndGroups,
   readGeneralInspections,
 } from '@mixins/methodsMixin'
-import { momentFormat, momentFullDateTime, momentISO8601 } from '@mixins/momentMixin'
+import {
+  momentFormat,
+  momentFullDateTime,
+  momentISO8601,
+} from '@mixins/momentMixin'
 import { SlideYUpTransition } from 'vue2-transitions'
 import smileRating from '@components/input-fields/smile-rating.vue'
 import Treeselect from '@riophae/vue-treeselect'
@@ -619,7 +623,7 @@ export default {
         (this.inspectionDate === 'Invalid date' ||
           this.inspectionDate === '') &&
         this.selectedChecklist !== null &&
-        this.selectedChecklist.researches.includes('B-GOOD')
+        this.selectedChecklist.researches.join().includes('B-GOOD')
       )
     },
     locale() {
