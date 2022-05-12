@@ -55,7 +55,8 @@
             !valid ||
               (selectedHives && selectedHives.length === 0) ||
               showLoadingIcon ||
-              forceInspectionDate
+              forceInspectionDate ||
+              inspectionDate === 'Invalid date'
           "
           @click.prevent="confirmSaveInspection"
         >
@@ -142,7 +143,9 @@
                 <div class="beep-label">
                   <span v-text="$t('Date_of_inspection')"></span>
                   <span
-                    v-if="forceInspectionDate"
+                    v-if="
+                      forceInspectionDate || inspectionDate === 'Invalid date'
+                    "
                     class="ml-3 font-weight-bold accent--text cursor-pointer"
                     @click="inspectionDate = getNow()"
                     v-text="$t('Now')"
@@ -155,7 +158,9 @@
                   class="color-accent"
                   :max-datetime="endOfToday"
                   :placeholder="
-                    forceInspectionDate ? $t('select_inspection_date') : null
+                    forceInspectionDate || inspectionDate === 'Invalid date'
+                      ? $t('select_inspection_date')
+                      : null
                   "
                 >
                   <template slot="button-cancel">
