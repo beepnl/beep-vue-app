@@ -856,6 +856,13 @@ const translations = {
     'Vraag een vertaler account aan via support@beep.nl om een vertaler te worden. Als je een vertaling wilt updaten, download dan hieronder het betreffende .js bestand en mail het geüpdatete bestand naar support@beep.nl. Bedankt voor de moeite!',
   unpublished_exp: 'Vertalingen die nog ongepubliceerd zijn:',
   as_plain_text: 'als platte tekst',
+
+  /* Checklists page */
+  new_checklist: 'Nieuwe kastkaart',
+  duplicate: 'Dupliceer',
+  delete_checklist: 'Verwijder kastkaart',
+  delete_checklist_confirm:
+    'Weet je zeker dat je deze kastkaart wilt verwijderen? Dit kan niet ongedaan gemaakt worden. Kastkaart: "',
 }
 
 export default translations
