@@ -2,8 +2,26 @@
   <Layout :title="$t('Whats_new')">
     <v-container>
       <div class="overline mb-1"
-        ><span class="lowercase">v</span>3.0.98 (12-05-2022) - Current
+        ><span class="lowercase">v</span>3.0.99 (16-05-2022) - Current
         version</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li
+            ><router-link :to="{ name: 'alerts' }">Alerts:</router-link> option
+            to delete only selected alerts
+          </li>
+          <li
+            >Rename 'Alert settings' page title to
+            <router-link :to="{ name: 'alertrules' }">
+              Alert rules</router-link
+            ></li
+          >
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>3.0.98 (12-05-2022)</div
       >
       <div class="rounded-border mb-4">
         <ul>
@@ -598,7 +616,7 @@
               >
               <li
                 ><router-link :to="{ name: 'alertrules' }"
-                  >Alert settings</router-link
+                  >Alert rules</router-link
                 >
                 - To get you started there are a few
                 <router-link :to="{ name: 'alertrules-default' }"
@@ -718,7 +736,7 @@
                 <v-icon class="color-black inline-icon">mdi-menu</v-icon> menu
                 (top right):
                 <router-link :to="{ name: 'alertrules' }"
-                  >Alert settings</router-link
+                  >Alert rules</router-link
                 >
                 and
                 <router-link :to="{ name: 'checklists' }"
@@ -1088,7 +1106,7 @@
               >
               <li
                 ><router-link :to="{ name: 'alertrules' }"
-                  >Notificaties beheren</router-link
+                  >Notificatie-instellingen</router-link
                 >
                 - Om je op weg te helpen zijn er een aantal
                 <router-link :to="{ name: 'alertrules-default' }"
@@ -1214,7 +1232,7 @@
                 <v-icon class="color-black inline-icon">mdi-menu</v-icon> menu
                 (rechtsboven):
                 <router-link :to="{ name: 'alertrules' }"
-                  >Notificaties beheren</router-link
+                  >Notificatie-instellingen</router-link
                 >
                 en
                 <router-link :to="{ name: 'checklists' }"
