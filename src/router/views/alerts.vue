@@ -11,7 +11,14 @@
           <div
             class="filter-buttons filter-buttons--tiny d-flex flex-row justify-flex-start align-center"
           >
-            <v-col class="pa-3">
+            <v-col class="pa-3 d-flex justify-start">
+              <v-checkbox
+                :value="allChecked"
+                class="ma-0"
+                hide-details
+                @change="toggleAll"
+              />
+
               <v-text-field
                 v-if="!showAlertPlaceholder"
                 v-model="search"
@@ -31,34 +38,42 @@
           </div>
           <v-card-actions class="pl-0 mr-1">
             <v-btn
-              v-if="alerts.length > 1 && !mobile"
+              v-if="!mobile && selectedAlerts.length > 0"
               tile
               outlined
               class="mr-3"
               color="red"
               :small="mdScreen"
+              :disabled="showLoadingIcon"
               @click="confirmDeleteAlerts"
             >
               <v-progress-circular
                 v-if="showLoadingIcon"
-                class="ml-n1 mr-2"
+                class="mr-2"
                 size="18"
                 width="2"
                 color="disabled"
                 indeterminate
               />
               <v-icon v-if="!showLoadingIcon" left>mdi-delete</v-icon>
-              {{ !mdScreen ? $t('delete_all_alerts') : $t('Delete') }}</v-btn
+              {{
+                !mdScreen
+                  ? allChecked
+                    ? $t('delete_all_alerts')
+                    : $tc('delete_selected_alert', selectedAlerts.length)
+                  : $t('Delete')
+              }}</v-btn
             >
             <v-btn
+              v-if="!mobile"
               :to="{ name: 'alertrules' }"
               tile
               outlined
               color="black"
-              :small="mdScreen && alerts.length > 1"
+              :small="mdScreen"
             >
-              <v-icon v-if="!tinyScreen" left>mdi-pencil</v-icon>
-              {{ $t('alertrule_pagetitle') }}
+              <v-icon v-if="!tinyScreen" left>mdi-cog</v-icon>
+              {{ $tc('alertrule', 2) }}
             </v-btn>
           </v-card-actions>
         </v-row>
@@ -114,24 +129,42 @@
 
     <v-container v-if="!showAlertPlaceholder && ready" class="alerts-content">
       <v-btn
-        v-if="alerts.length > 1 && mobile"
+        v-if="mobile"
+        :to="{ name: 'alertrules' }"
+        tile
+        outlined
+        color="black"
+        small
+        class="save-button-mobile-wide mb-3"
+      >
+        <v-icon v-if="!tinyScreen" left>mdi-cog</v-icon>
+        {{ $tc('alertrule', 2) }}
+      </v-btn>
+
+      <v-btn
+        v-if="mobile && selectedAlerts.length > 0"
         tile
         outlined
         class="save-button-mobile-wide mb-3"
         color="red"
         small
+        :disabled="showLoadingIcon"
         @click="confirmDeleteAlerts"
       >
         <v-progress-circular
           v-if="showLoadingIcon"
-          class="ml-n1 mr-2"
+          class="mr-2"
           size="18"
           width="2"
           color="disabled"
           indeterminate
         />
         <v-icon v-if="!showLoadingIcon" left>mdi-delete</v-icon>
-        {{ $t('delete_all_alerts') }}</v-btn
+        {{
+          allChecked
+            ? $t('delete_all_alerts')
+            : $tc('delete_selected_alert', selectedAlerts.length)
+        }}</v-btn
       >
 
       <v-alert
@@ -156,15 +189,27 @@
             v-for="(alert, j) in filteredAlerts"
             :key="j"
             sm="auto"
-            class="alerts-item"
+            class="d-flex justify-start align-center alerts-item"
             dense
           >
+            <v-checkbox
+              v-if="!mobile"
+              :value="isSelected(alert.id)"
+              class="ma-0 pa-0"
+              dense
+              color="primary"
+              :ripple="false"
+              hide-details
+              @change="toggleCheckbox(alert.id)"
+            />
             <AlertCard
               :alert="alert"
               :hives="hives"
+              :is-selected="isSelected(alert.id)"
               :unit="getUnit(alert.measurement_id)"
               @show-snackbar=";(snackbar.text = $event), (snackbar.show = true)"
               @delete-alert="deleteAlert($event)"
+              @toggle-checkbox="toggleCheckbox($event)"
             ></AlertCard>
           </v-col>
         </ScaleTransition>
@@ -242,6 +287,7 @@ export default {
         process.env.VUE_APP_ASSETS_URL_FALLBACK,
       alertTimer: 0,
       alertInterval: 120000,
+      selectedAlerts: [],
     }
   },
   computed: {
@@ -299,6 +345,9 @@ export default {
         return 0
       })
       return sortedAlerts
+    },
+    allChecked() {
+      return this.selectedAlerts.length === this.alerts.length
     },
     filteredAlerts() {
       var textFilteredAlerts = []
@@ -391,13 +440,17 @@ export default {
   },
   methods: {
     async deleteAlert(id) {
+      this.showLoadingIcon = true
       try {
         const response = await Api.deleteRequest('/alerts/', id)
         if (!response) {
           console.log('Error')
         }
-        this.readAlerts() // update alerts in store
+        this.readAlerts().then(() => {
+          this.showLoadingIcon = false
+        }) // update alerts in store
       } catch (error) {
+        this.showLoadingIcon = false
         if (error.response) {
           console.log('Error: ', error.response)
         } else {
@@ -405,10 +458,11 @@ export default {
         }
       }
     },
-    async deleteAllAlerts() {
+    async deleteAllAlerts(deleteSelected = false) {
       this.showLoadingIcon = true
+      var payload = deleteSelected ? { alert_ids: this.selectedAlerts } : null
       try {
-        const response = await Api.deleteRequest('/alerts/', 'all')
+        const response = await Api.deleteRequest('/alerts/', 'all', payload)
         if (!response) {
           console.log('Error')
         }
@@ -426,12 +480,22 @@ export default {
     },
     confirmDeleteAlerts() {
       const warningMessage =
-        this.search !== null && this.search !== ''
+        this.allChecked && this.search !== null && this.search !== ''
           ? this.$i18n.t('delete_all_alerts_warning_filter_active')
-          : this.$i18n.t('delete_all_alerts_warning')
+          : this.allChecked
+          ? this.$i18n.t('delete_all_alerts_warning')
+          : this.$i18n.tc(
+              'delete_selected_alerts_warning',
+              this.selectedAlerts.length
+            )
       this.$refs.confirm
         .open(
-          this.$i18n.t('delete_all_alerts'),
+          this.allChecked
+            ? this.$i18n.t('delete_all_alerts')
+            : this.$i18n.tc(
+                'delete_selected_alert',
+                this.selectedAlerts.length
+              ),
           null,
           {
             color: 'red',
@@ -439,7 +503,11 @@ export default {
           warningMessage
         )
         .then((confirm) => {
-          this.deleteAllAlerts()
+          this.allChecked
+            ? this.deleteAllAlerts()
+            : this.selectedAlerts.length === 1
+            ? this.deleteAlert(this.selectedAlerts[0])
+            : this.deleteAllAlerts(true)
         })
         .catch((reject) => {
           return true
@@ -450,9 +518,26 @@ export default {
         (measurementType) => measurementType.id === measurementId
       )[0].unit
     },
+    isSelected(alertId) {
+      return this.selectedAlerts.indexOf(alertId) > -1
+    },
     stopTimer() {
       clearInterval(this.alertTimer)
       this.alertTimer = 0
+    },
+    toggleAll() {
+      if (!this.allChecked) {
+        this.selectedAlerts = this.alerts.map((alert) => alert.id)
+      } else {
+        this.selectedAlerts = []
+      }
+    },
+    toggleCheckbox(alertId) {
+      if (this.selectedAlerts.indexOf(alertId) === -1) {
+        this.selectedAlerts.push(alertId)
+      } else {
+        this.selectedAlerts.splice(this.selectedAlerts.indexOf(alertId), 1)
+      }
     },
   },
 }

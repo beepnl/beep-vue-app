@@ -169,7 +169,7 @@ const translations = {
   Country: 'Land',
   City: 'By',
   Address: 'Address',
-  Lattitude: 'Breddegrad',
+  latitude: 'Breddegrad',
   Longitude: 'Lengdegrad',
   Street: 'Gate',
   Number: 'Nr.',
@@ -547,7 +547,7 @@ const translations = {
     "N.B. enheter vil bare bli fjernet etter å ha klikket på 'Lagre og slett'-knappen øverst til høyre.",
   no_alerts: 'Ingen nye varsler',
   alertrule: 'varslingsregel | varslingsregler',
-  alertrule_pagetitle: 'Varslingsinnstillinger',
+  Alertrule: 'Varslingsregel | Varslingsregler',
   Measurement: 'Måling | Målinger',
   Calculation: 'Beregning',
   calculation: 'beregning',
@@ -658,6 +658,9 @@ const translations = {
     'Er du sikker på at du vil slette alle varsler? Dette kan ikke angres.',
   delete_all_alerts_warning_filter_active:
     'Er du sikker på at du vil slette alle varsler? Varsler som ikke samsvarer med søkeordet ditt vil også bli slettet. Dette kan ikke angres.',
+  delete_selected_alert: 'Delete selected alert | Delete selected alerts', // to be translated
+  delete_selected_alerts_warning:
+    'Are you sure you want to delete the selected alert? This cannot be undone. | Are you sure you want to delete the selected alerts? This cannot be undone.', // to be translated
   already_verified:
     'Jeg har bekreftet e-postadressen min og vil gjerne logge inn',
   password_recovery_resend_mail: 'Send ny bekreftelseskode',

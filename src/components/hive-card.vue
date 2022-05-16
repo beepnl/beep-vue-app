@@ -448,6 +448,7 @@
             v-if="!mobile && hive.notes && hive.notes.length > 33 && xlView"
             bottom
             max-width="60%"
+            open-delay="800"
           >
             <template v-slot:activator="{ on, attrs }">
               <span

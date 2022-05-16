@@ -241,7 +241,7 @@ const translations = {
   Country: 'Maa',
   City: 'Kaupunki',
   Address: 'Osoite',
-  Lattitude: 'Leveysaste',
+  latitude: 'Leveysaste',
   Longitude: 'Pituusaste',
   Street: 'Katu',
   Number: 'Numero',
@@ -671,8 +671,8 @@ const translations = {
   deleted_but_not_saved_devices_warning:
     'Huomaa: laitteet poistetaan vasta napsauttamalla Tallenna ja poista -painiketta oikeassa yläkulmassa.',
   no_alerts: 'Ei uusia ilmoituksia',
-  alertrule: 'Hälytyssääntö | Hälytyssäännöt',
-  alertrule_pagetitle: 'Hälytysasetukset',
+  alertrule: 'hälytyssääntö | hälytyssäännöt',
+  Alertrule: 'Hälytyssääntö | Hälytyssäännöt',
   Measurement: 'Mittaus | Mittaukset',
   Calculation: 'Laskeminen',
   calculation: 'laskeminen',
@@ -793,6 +793,9 @@ const translations = {
     'Haluatko varmasti poistaa kaikki hälytykset? Tätä ei voi peruuttaa.',
   delete_all_alerts_warning_filter_active:
     'Haluatko varmasti poistaa kaikki hälytykset? Myös hälytykset, jotka eivät vastaa hakutermiäsi, poistetaan. Tätä ei voi peruuttaa.',
+  delete_selected_alert: 'Delete selected alert | Delete selected alerts', // to be translated
+  delete_selected_alerts_warning:
+    'Are you sure you want to delete the selected alert? This cannot be undone. | Are you sure you want to delete the selected alerts? This cannot be undone.', // to be translated
   already_verified:
     'Olen vahvistanut sähköpostiosoitteeni ja haluaisin kirjautua sisään',
   password_recovery_resend_mail: 'Lähetä uusi vahvistuskoodi',

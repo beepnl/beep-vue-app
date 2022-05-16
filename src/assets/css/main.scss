@@ -87,8 +87,10 @@
       &:not(.v-input--switch) {
         background-color: $color-white;
       }
-      @include for-phone-only {
-        min-width: 80px;
+      &:not(.v-input--checkbox) {
+        @include for-phone-only {
+          min-width: 100px;
+        }
       }
       &.v-text-field.v-text-field--outlined input {
         text-overflow: ellipsis;

@@ -15,26 +15,38 @@
         "
         class="alert-card cursor-pointer mb-0 pa-2 pa-sm-3"
         outlined
-        v-on="menu"
+        v-on="!mobile ? menu : null"
       >
         <template v-slot:prepend>
-          <div class="alert-icon d-flex align-center">
-            <v-badge
-              v-if="alert.count > 1"
-              :offset-x="alert.count > 9 ? '23' : '20'"
-              offset-y="20"
-              color="transparent"
-              :content="alert.count > 99 ? '99' : alert.count"
-            >
-              <v-icon color="red">mdi-bell</v-icon>
-            </v-badge>
-            <v-icon v-else color="red">
-              mdi-bell
-            </v-icon>
+          <div class="d-flex flex-column justify-start align-center">
+            <v-checkbox
+              v-if="mobile"
+              :value="isSelected"
+              class="ma-0 pt-0"
+              dense
+              :ripple="false"
+              hide-details
+              @change="toggleCheckbox(alert.id)"
+            />
+
+            <div class="alert-icon d-flex align-center">
+              <v-badge
+                v-if="alert.count > 1"
+                :offset-x="alert.count > 9 ? '23' : '20'"
+                offset-y="20"
+                color="transparent"
+                :content="alert.count > 99 ? '99' : alert.count"
+              >
+                <v-icon color="red">mdi-bell</v-icon>
+              </v-badge>
+              <v-icon v-else color="red">
+                mdi-bell
+              </v-icon>
+            </div>
           </div>
         </template>
 
-        <div style="width: 100%;">
+        <div style="width: 100%;" v-on="mobile ? menu : null">
           <v-row class="ma-0 pl-0 py-0" style="width:100%;">
             <v-col cols="12" md="6" class="alert-details-item alert-meta pa-0">
               <v-row
@@ -449,6 +461,11 @@ export default {
       default: '',
       required: false,
     },
+    isSelected: {
+      type: Boolean,
+      default: false,
+      required: true,
+    },
   },
   data: () => ({}),
   computed: {
@@ -473,6 +490,9 @@ export default {
     },
     mdScreen() {
       return this.$vuetify.breakpoint.width < 961
+    },
+    mobile() {
+      return this.$vuetify.breakpoint.mobile
     },
   },
   methods: {
@@ -512,6 +532,9 @@ export default {
     deleteAlert(id) {
       this.$emit('delete-alert', id)
     },
+    toggleCheckbox(id) {
+      this.$emit('toggle-checkbox', id)
+    },
   },
 }
 </script>
@@ -519,6 +542,7 @@ export default {
 <style lang="scss" scoped>
 .alert-card {
   height: 100%;
+  min-width: 100%;
   padding: 10px;
   font-size: 0.8125rem !important;
 
@@ -600,7 +624,7 @@ export default {
   }
 
   .alert-icon {
-    min-width: 30px;
+    min-width: 32px;
     @include for-tablet-landscape-up {
       min-width: 36px;
     }

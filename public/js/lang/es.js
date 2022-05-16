@@ -224,7 +224,7 @@ const translations = {
   Country: 'País',
   City: 'Ciudad',
   Address: 'Dirección',
-  Lattitude: 'Latitud',
+  latitude: 'Latitud',
   Longitude: 'Longitud',
   Street: 'Calle',
   Number: 'Nro.',
@@ -641,7 +641,7 @@ const translations = {
     "N. B.: dispositivos serán solo removidos luego de hacer en click en el botón 'Guardar y eliminar' en lado superior derecho.",
   no_alerts: 'sin alerta',
   alertrule: 'regla de alerta | reglas de alerta',
-  alertrule_pagetitle: 'Ajustes de alerta',
+  Alertrule: 'Regla de alerta | Reglas de alerta',
   Measurement: 'Medición | Mediciones',
   Calculation: 'Cálculo',
   calculation: 'cálculo',
@@ -762,6 +762,9 @@ const translations = {
     '¿Está seguro que desea borrar todas las alertas? Esto no se puede deshacer.',
   delete_all_alerts_warning_filter_active:
     '¿Está seguro que desea eliminar todas las alertas? También se eliminarán las alertas que no coincidan con su término de búsqueda. Esto no se puede deshacer.',
+  delete_selected_alert: 'Delete selected alert | Delete selected alerts', // to be translated
+  delete_selected_alerts_warning:
+    'Are you sure you want to delete the selected alert? This cannot be undone. | Are you sure you want to delete the selected alerts? This cannot be undone.', // to be translated
   already_verified:
     'Yo he verificado mi dirección de correo electrónico y me gustaría iniciar sesión',
   password_recovery_resend_mail: 'Enviar nuevo código de verificación',

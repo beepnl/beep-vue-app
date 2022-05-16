@@ -188,7 +188,7 @@ const translations = {
   Country: 'Land',
   City: 'Stad',
   Address: 'Adres',
-  Lattitude: 'Breedtegraad',
+  latitude: 'Breedtegraad',
   Longitude: 'Lengtegraad',
   Street: 'Straat',
   Number: 'Nr.',
@@ -575,7 +575,7 @@ const translations = {
     "Let op: meetsystemen worden pas definitief verwijderd wanneer je op de 'Opslaan en verwijderen' knop klikt, rechtsboven.",
   no_alerts: 'Geen nieuwe notificaties',
   alertrule: 'notificatie-instelling | notificatie-instellingen',
-  alertrule_pagetitle: 'Notificaties beheren',
+  Alertrule: 'Notificatie-instelling | Notificatie-instellingen',
   Measurement: 'Meting | Metingen',
   Calculation: 'Berekening',
   calculation: 'berekening',
@@ -691,6 +691,10 @@ const translations = {
     'Weet u zeker dat u alle notificaties wilt verwijderen? Dit kan niet ongedaan gemaakt worden.',
   delete_all_alerts_warning_filter_active:
     'Weet u zeker dat u alle notificaties wilt verwijderen? Ook notificaties die niet aan je zoekterm voldoen zullen verwijderd worden. Dit kan niet ongedaan gemaakt worden.',
+  delete_selected_alert:
+    'Wis geselecteerde notificatie | Wis geselecteerde notificaties',
+  delete_selected_alerts_warning:
+    'Weet u zeker dat u de geselecteerde notificatie wilt verwijderen? Dit kan niet ongedaan gemaakt worden. | Weet u zeker dat u de geselecteerde notificaties wilt verwijderen? Dit kan niet ongedaan gemaakt worden.',
   already_verified: 'Ik heb mijn e-mailadres gevalideerd en wil graag inloggen',
   password_recovery_resend_mail: 'Verstuur code opnieuw',
   alert_rule_created: 'Nieuwe notificatie ingesteld',
@@ -846,7 +850,7 @@ const translations = {
   select_inspection_date: 'Selecteer inspectiedatum',
   View_inspection_confirm: 'Wil je de inspectie bekijken van: ',
 
- /* Translations page */
+  /* Translations page */
   Translations: 'Vertalingen',
   translation_exp:
     'Vraag een vertaler account aan via support@beep.nl om een vertaler te worden. Als je een vertaling wilt updaten, download dan hieronder het betreffende .js bestand en mail het geüpdatete bestand naar support@beep.nl. Bedankt voor de moeite!',

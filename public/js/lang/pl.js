@@ -169,7 +169,7 @@ const translations = {
   Country: 'Country',
   City: 'City',
   Address: 'Address',
-  Lattitude: 'Lattitude',
+  latitude: 'latitude',
   Longitude: 'Longitude',
   Street: 'Street',
   Number: 'No.',
@@ -256,7 +256,7 @@ const translations = {
   t_i: 'Temp. inside',
   rssi: 'Signal strength',
   snr: 'Signal noise',
-  lat: 'Lattitude',
+  lat: 'latitude',
   lon: 'Longitude',
   Sound_measurements: 'Sound measurements',
   Sensor_info: 'Sensor info',
@@ -547,7 +547,7 @@ const translations = {
     "N.B. devices will only be removed after clicking the 'Save and delete' button in the top right corner.",
   no_alerts: 'No new alerts',
   alertrule: 'alert rule | alert rules',
-  alertrule_pagetitle: 'Alert settings',
+  Alertrule: 'Alert rule | Alert rules',
   Measurement: 'Measurement | Measurements',
   Calculation: 'Calculation',
   calculation: 'calculation',
@@ -656,6 +656,9 @@ const translations = {
     'Are you sure you want to delete all alerts? This cannot be undone.',
   delete_all_alerts_warning_filter_active:
     'Are you sure you want to delete all alerts? Alerts that do not match your search term will be deleted as well. This cannot be undone.',
+  delete_selected_alert: 'Delete selected alert | Delete selected alerts', // to be translated
+  delete_selected_alerts_warning:
+    'Are you sure you want to delete the selected alert? This cannot be undone. | Are you sure you want to delete the selected alerts? This cannot be undone.', // to be translated
   already_verified: 'I have verified my email address and would like to login',
   password_recovery_resend_mail: 'Send new verification code',
   alert_rule_created: 'New alert rule has been created',

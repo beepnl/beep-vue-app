@@ -210,7 +210,7 @@ const translations = {
   Country: 'Land',
   City: 'Stad',
   Address: 'Adress',
-  Lattitude: 'Lattitude',
+  latitude: 'latitude',
   Longitude: 'Longitude',
   Street: 'gata',
   Number: 'Nr.',
@@ -622,7 +622,7 @@ const translations = {
     "N.B.: enheter kommer enbart att tas bort efter att man klickat på 'Spara och ta bort' knappen i övre högra hörnet.",
   no_alerts: 'Inga nya varningar',
   alertrule: 'varnings regelalert rule | varnings regler',
-  alertrule_pagetitle: 'Varnings inställningar',
+  Alertrule: 'Varnings regelalert rule | Varnings regler',
   Measurement: 'Mätning | Mätningar',
   Calculation: 'Beräkning',
   calculation: 'beräkning',
@@ -739,6 +739,9 @@ const translations = {
     'Är du säker på att du vill radera alla varningar? De kan inte återställas.',
   delete_all_alerts_warning_filter_active:
     'Är du säker på att du vill radera alla varningar? Även varningar som INTE matchar din sökning kommer att raderas. De kan inte återställas.',
+  delete_selected_alert: 'Delete selected alert | Delete selected alerts', // to be translated
+  delete_selected_alerts_warning:
+    'Are you sure you want to delete the selected alert? This cannot be undone. | Are you sure you want to delete the selected alerts? This cannot be undone.', // to be translated
   already_verified:
     'Jag har verifierat min email adress och skulle vilja logga in',
   password_recovery_resend_mail: 'Skicka en ny verifikationskod',

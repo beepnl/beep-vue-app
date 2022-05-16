@@ -224,7 +224,7 @@ const translations = {
   Country: 'Țară',
   City: 'Oraș',
   Address: 'Adresă',
-  Lattitude: 'Latitudine',
+  latitude: 'Latitudine',
   Longitude: 'Longitudine',
   Street: 'Stradă',
   Number: 'Nr.',
@@ -640,8 +640,8 @@ const translations = {
   deleted_but_not_saved_devices_warning:
     'N.B. dispozitivele vor fi eliminate numai după ce faceți clic pe butonul „Salvați și ștergeți” din colțul din dreapta sus.',
   no_alerts: 'Nu sunt alerte noi',
-  alertrule: 'regulă alertă| reguli alerte',
-  alertrule_pagetitle: 'Setări alertă',
+  alertrule: 'regulă alertă | reguli alerte',
+  Alertrule: 'Regulă alertă | Reguli alerte',
   Measurement: 'Măsurătoare | Măsurători',
   Calculation: 'Calcul',
   calculation: 'calcul',
@@ -758,6 +758,9 @@ const translations = {
     'Sigur doriți să ștergeți toate alertele? Această modificare nu poate fi anulată',
   delete_all_alerts_warning_filter_active:
     'Sigur doriți să ștergeți toate alertele? Inclusiv alertele care nu corespund termenului  căutarii dvs. vor fi șterse. Acest lucru nu poate fi anulat.',
+  delete_selected_alert: 'Delete selected alert | Delete selected alerts', // to be translated
+  delete_selected_alerts_warning:
+    'Are you sure you want to delete the selected alert? This cannot be undone. | Are you sure you want to delete the selected alerts? This cannot be undone.', // to be translated
   already_verified: 'Am confirmat adresa de e-mail și as dpri să ma autentific',
   password_recovery_resend_mail: 'Trimiteți un nou cod de verificare',
   alert_rule_created: 'Noua regulă de alertă a fost creată',

@@ -140,7 +140,7 @@ export default {
         },
         {
           icon: 'mdi-bell',
-          title: this.$i18n.t('alertrule_pagetitle'),
+          title: this.$i18n.tc('Alertrule', 2),
           route: 'alertrules',
           beepBaseRequired: false,
         },

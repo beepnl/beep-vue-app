@@ -223,7 +223,7 @@ const translations = {
   Country: 'Nazione',
   City: 'Città',
   Address: 'Indirizzo',
-  Lattitude: 'Latitudine',
+  latitude: 'Latitudine',
   Longitude: 'Longitudine',
   Street: 'Via',
   Number: 'N.',
@@ -636,8 +636,8 @@ const translations = {
   deleted_but_not_saved_devices_warning:
     "N.B. i dispositivi saranno rimossi solo dopo aver premuto il bottone 'Salva e cancella' in alto a destra.",
   no_alerts: 'Nessun nuovo messaggio di allerta',
-  alertrule: 'Regola messaggio allerta | Regole messaggio di allerta',
-  alertrule_pagetitle: 'Regole messaggio di allerta',
+  alertrule: 'regola messaggio allerta | regole messaggio di allerta',
+  Alertrule: 'Regola messaggio allerta | Regole messaggio di allerta',
   Measurement: 'Misurazione | Misurazioni',
   Calculation: 'Calcolo',
   calculation: 'calcolo',
@@ -755,6 +755,9 @@ const translations = {
     'Sei sicuro di voler cancellare tutti gli avvisi? Questo processo è irreversibile',
   delete_all_alerts_warning_filter_active:
     'Sei sicuro di voler cancellare questo avviso? Gli avvisi che non corrispondono ai tuoi criteri di ricerca saranno anche rimossi. Questo processo è irreversibile',
+  delete_selected_alert: 'Delete selected alert | Delete selected alerts', // to be translated
+  delete_selected_alerts_warning:
+    'Are you sure you want to delete the selected alert? This cannot be undone. | Are you sure you want to delete the selected alerts? This cannot be undone.', // to be translated
   already_verified: 'Ho verificato il mio indirizzo email e vorrei accedere',
   password_recovery_resend_mail: 'Manda nuovo codice di verifica',
   alert_rule_created: 'Nuova regola per avviso creata',

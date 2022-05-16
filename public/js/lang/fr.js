@@ -250,7 +250,7 @@ const translations = {
   City: 'Ville',
   Address: 'Adresse',
   /* Cyrille - 31/05 : Translation updated */
-  Lattitude: 'Latitude',
+  latitude: 'Latitude',
   Longitude: 'Longitude',
   Street: 'Rue',
   /* Cyrille - 31/05 : Translation updated */
@@ -737,7 +737,7 @@ const translations = {
     'N.B. Les appareils seront supprimés après avoir cliqué sur "Sauvergarder et supprimer" dans le coin supérieur droit de l\'écran.',
   no_alerts: 'Pas de nouvelles alertes',
   alertrule: "règle d'alerte | règles d'alerte",
-  alertrule_pagetitle: "Réglages d'alertes",
+  Alertrule: "Règle d'alerte | Règles d'alerte",
   Measurement: 'Mesure | Mesures',
   /* Cyrille - 31/05 : This translation needs more context */
   Calculation: 'Calcul',
@@ -865,6 +865,9 @@ const translations = {
     'Êtes vous sûr de vouloir supprimer toutes les alertes? Cette action est irréversible.',
   delete_all_alerts_warning_filter_active:
     'Êtes vous sûr de vouloir supprimer toutes les alertes? Les alertes, qui ne correspondent pas à votre critère de recherche, seront également supprimées. Cette action est irréversible.',
+  delete_selected_alert: 'Delete selected alert | Delete selected alerts', // to be translated
+  delete_selected_alerts_warning:
+    'Are you sure you want to delete the selected alert? This cannot be undone. | Are you sure you want to delete the selected alerts? This cannot be undone.', // to be translated
   already_verified: "J'ai confirmé mon adresse mail, je veux m'identifier",
   password_recovery_resend_mail: 'Envoyer un nouveau code de vérification',
   alert_rule_created: "La nouvelle règle d'alerte a été créée",

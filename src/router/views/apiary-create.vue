@@ -252,7 +252,7 @@
                       <v-col cols="6" sm="4">
                         <div
                           class="beep-label"
-                          v-text="`${$t('Lattitude')}`"
+                          v-text="`${$t('latitude')}`"
                         ></div>
                         <el-input-number
                           v-if="newHive"

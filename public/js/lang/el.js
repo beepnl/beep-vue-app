@@ -214,7 +214,7 @@ const translations = {
   Country: 'Χώρα',
   City: 'Πόλη',
   Address: 'Διεύθυνση',
-  Lattitude: 'Γεωγραφικό πλάτος',
+  latitude: 'Γεωγραφικό πλάτος',
   Longitude: 'Γεωγραφικό μήκος',
   Street: 'Οδός',
   Number: 'Αρ.',
@@ -629,7 +629,7 @@ const translations = {
     "Σημείωση: Οι συσκευές θα αφαιρεθούν μόνο αφού κάνετε κλικ στο κουμπί 'Αποθήκευση και διαγραφή' στην επάνω δεξιά γωνία.",
   no_alerts: 'Δεν υπάρχουν νέες ειδοποιήσεις',
   alertrule: 'κανόνας ειδοποίησης | κανόνες ειδοποίησης',
-  alertrule_pagetitle: 'Ρυθμίσεις εισοποιήσεων',
+  Alertrule: 'Κανόνας ειδοποίησης | Κανόνες ειδοποίησης',
   Measurement: 'Μέτρηση | Μετρήσεις',
   Calculation: 'Υπολογισμός',
   calculation: 'υπολογισμός',
@@ -748,6 +748,9 @@ const translations = {
     'Είστε βέβαιοι ότι θέλετε να διαγράψετε όλες τις ειδοποιήσεις; Αυτό δεν μπορεί να αναιρεθεί.',
   delete_all_alerts_warning_filter_active:
     'Είστε βέβαιοι ότι θέλετε να διαγράψετε όλες τις ειδοποιήσεις; Οι ειδοποιήσεις που δεν ταιριάζουν με τον όρο αναζήτησής σας θα διαγραφούν επίσης. Αυτό δεν μπορεί να αναιρεθεί.',
+  delete_selected_alert: 'Delete selected alert | Delete selected alerts', // to be translated
+  delete_selected_alerts_warning:
+    'Are you sure you want to delete the selected alert? This cannot be undone. | Are you sure you want to delete the selected alerts? This cannot be undone.', // to be translated
   already_verified:
     'Έχω επαληθεύσει τη διεύθυνση email μου και θα ήθελα να συνδεθώ',
   password_recovery_resend_mail: 'Αποστολή νέου κωδικού επαλήθευσης',

@@ -223,7 +223,7 @@ const translations = {
   Country: 'Land',
   City: 'Stadt',
   Address: 'Addresse',
-  Lattitude: 'Lattitude',
+  latitude: 'latitude',
   Longitude: 'Longitude',
   Street: 'Straße',
   Number: 'Hausnummer.',
@@ -653,7 +653,7 @@ const translations = {
     'Hinweis: Geräte werden erst entfernt, nachdem Du auf die Schaltfläche "Speichern und löschen" in der rechten oberen Ecke geklickt hast.',
   no_alerts: 'Kein neuer Alarm',
   alertrule: 'Alarmregel | Alarmregeln',
-  alertrule_pagetitle: 'Alarmeinstellungen',
+  Alertrule: 'Alarmregel | Alarmregeln',
   Measurement: 'Messung | Messungen',
   Calculation: 'Berechnung',
   calculation: 'Berechnung',
@@ -773,6 +773,9 @@ const translations = {
     'Bist Du sicher, dass Du alle Alarme löschen willst? Dies kann nicht rückgängig gemacht werden.',
   delete_all_alerts_warning_filter_active:
     'Bist Du sicher, dass Du alle Alarme löschen willst? Alarme, die nicht mit Deinem Suchbegriff übereinstimmen, werden ebenfalls gelöscht. Dies kann nicht rückgängig gemacht werden.',
+  delete_selected_alert: 'Delete selected alert | Delete selected alerts', // to be translated
+  delete_selected_alerts_warning:
+    'Are you sure you want to delete the selected alert? This cannot be undone. | Are you sure you want to delete the selected alerts? This cannot be undone.', // to be translated
   already_verified:
     'Ich habe meine E-Mail-Adresse verifiziert und möchte mich anmelden.',
   password_recovery_resend_mail: 'Neuen Verifizierungscode senden',
