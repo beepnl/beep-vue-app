@@ -4,7 +4,7 @@
       `${
         checklistsPage
           ? this.$i18n.tc('Checklist_template', 2)
-          : $t('edit') + ' ' + $tc('checklist', 1)
+          : $t('Edit_checklist')
       }`
     "
     :edited="checklistEdited"

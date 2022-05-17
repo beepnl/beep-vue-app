@@ -102,19 +102,10 @@ const translations = {
     "Attention : il y a encore des ruches associées à ce rucher. Vous pouvez enregistrer des ruches spécifiques (et leurs inspections) en les déplaçant d'abord vers un autre rucher. Si vous poursuivez, vous supprimerez TOUTES les ruches et les inspections présentes à cet emplacement",
   Date: 'Date',
   ok: 'Ok',
-  previous: 'Précédent',
   prev: 'précédent',
   next: 'Suivant',
   add: 'Ajouter',
-  create_new: 'Créer un nouveau',
-  New: 'Nouveau',
-  warning: 'Attention',
-  apply: 'Appliquer',
   Cancel: 'Annuler',
-  automatic: 'Automatique',
-  manually: 'Manuel',
-  on: 'On',
-  off: 'Off',
 
   /* login */
   login_title: 'Connectez-vous',
@@ -1044,6 +1035,21 @@ const translations = {
   delete_checklist: 'Delete checklist',
   delete_checklist_confirm:
     'Are you sure you want to delete this checklist? This cannot be undone. Checklist: "',
+
+  /* Menu items */
+  View_measurements: 'Afficher les mesures',
+  View_inspection: "Voir l'inspection | Voir les inspections",
+  View_alert: "Afficher l'alerte | Afficher les alertes",
+
+  Edit_alertrule: "Modifier la règle d'alerte",
+  Edit_hive: 'Modifier la ruche',
+  Edit_queen: 'Modifier la reine',
+  Edit_apiary: 'Modifier le rucher',
+  Edit_group: 'Modifier le groupe de collaboration',
+  Edit_group_short: 'Modifier le groupe',
+  Edit_checklist: 'Modifier la liste de contrôle',
+  Edit_devices: 'Modifier les appareils',
+  Edit_consent: 'Modifier le consentement',
 }
 
 export default translations

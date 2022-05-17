@@ -94,19 +94,10 @@ const translations = {
     'Atención: Aun hay colmenas en este apiario. Usted puede guardar colmenas específicas (y sus inspecciones) trasladándolas primero a otro apiario. Si continúa con la eliminación, eliminará TODAS las colmenas e inspecciones presentes en esta ubicación.',
   Date: 'Fecha',
   ok: 'Ok',
-  previous: 'Anterior',
   prev: 'anterior',
   next: 'Siguiente',
   add: 'Agregar',
-  create_new: 'Crear nuevo',
-  New: 'Nuevo',
-  warning: 'Advertencia',
-  apply: 'Aplicar',
   Cancel: 'Cancelar',
-  automatic: 'Automático',
-  manually: 'Manual',
-  on: 'Encendido',
-  off: 'Apagado',
 
   /* inicio de sesión */
   login_title: 'Iniciar sesión',
@@ -943,6 +934,21 @@ const translations = {
   delete_checklist: 'Delete checklist',
   delete_checklist_confirm:
     'Are you sure you want to delete this checklist? This cannot be undone. Checklist: "',
+
+  /* Menu items */
+  View_measurements: 'Ver mediciones',
+  View_inspection: 'Ver inspección | Ver inspecciones',
+  View_alert: 'Ver alerta | Ver alertas',
+
+  Edit_alertrule: 'Editar regla de alerta',
+  Edit_hive: 'Editar colmena',
+  Edit_queen: 'Editar reina',
+  Edit_apiary: 'Editar apiario',
+  Edit_group: 'Editar grupo de colaboración',
+  Edit_group_short: 'Editar grupo',
+  Edit_checklist: 'Editar lista de verificación',
+  Edit_devices: 'Editar dispositivos',
+  Edit_consent: 'Editar consentimiento',
 }
 
 export default translations

@@ -1,5 +1,5 @@
 <template>
-  <Layout :title="`${$t('create_new')} ${$tc('location', 1)}`">
+  <Layout :title="$t('new_apiary')">
     <v-form ref="form" v-model="valid">
       <v-tabs
         v-model="activeTab"

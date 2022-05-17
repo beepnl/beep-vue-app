@@ -94,19 +94,10 @@ const translations = {
     'Attenzione: ci sono ancora alveari in questo apiario. Puoi salvare alveari specifici (e le loro visita) spostandoli prima in un altro apiario. Se continui, cancellerai TUTTI gli alveari e dati di visite per questa località.',
   Date: 'Data',
   ok: 'Ok',
-  previous: 'Precedente',
   prev: 'precedente',
   next: 'Prossimo',
   add: 'Aggiungi',
-  create_new: 'Crea nuovo',
-  New: 'Nuovo',
-  warning: 'Attenzione',
-  apply: 'Applica',
   Cancel: 'Cancella',
-  automatic: 'Automatico',
-  manually: 'Manuale',
-  on: 'On',
-  off: 'Off',
 
   /* login */
   login_title: 'Accedi',
@@ -613,7 +604,7 @@ const translations = {
   select_all_editable_hives: 'Seleziona tutti gli alveari modificabili',
   Alert: 'Allerta | Allerte',
   alert: 'allerta | allerte',
-  remove_alert: 'Rimuovi i messaggi di allerta',
+  remove_alert: 'Rimuovi i messaggio allerta',
   alerts_enabled: 'Abilita i messaggi di allerta',
   alerts_disabled: 'Disbilita i messaggi di allerta',
   edit_checklist_confirm:
@@ -933,6 +924,21 @@ const translations = {
   delete_checklist: 'Delete checklist',
   delete_checklist_confirm:
     'Are you sure you want to delete this checklist? This cannot be undone. Checklist: "',
+
+  /* Menu items */
+  View_measurements: 'Visualizza misurazioni',
+  View_inspection: 'Visualizza visita | Visualizza visite',
+  View_alert: 'Visualizza messaggio allerta | Visualizza messaggi di allerta',
+
+  Edit_alertrule: 'Modifica regola messaggio allerta',
+  Edit_hive: 'Modifica alveare',
+  Edit_queen: 'Modifica regina',
+  Edit_apiary: 'Modifica apiario',
+  Edit_group: 'Modifica gruppo di collaborazione',
+  Edit_group_short: 'Modifica gruppo',
+  Edit_checklist: 'Modifica lista di controllo',
+  Edit_devices: 'Modifica dispositivi',
+  Edit_consent: 'Modifica consenso',
 }
 
 export default translations

@@ -1025,9 +1025,9 @@ export default {
     },
     getTitle() {
       if (this.alertruleCreateMode) {
-        return this.$i18n.t('create_new') + ' ' + this.$i18n.tc('alertrule', 1)
+        return this.$i18n.t('New_alertrule')
       } else if (this.activeAlertRule !== null) {
-        return this.$i18n.t('edit') + ' ' + this.$i18n.tc('alertrule', 1)
+        return this.$i18n.t('Edit_alertrule')
       } else {
         return this.$i18n.t('edit') + '...'
       }

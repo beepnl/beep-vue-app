@@ -81,9 +81,9 @@ const translations = {
 
   Date: 'Dato',
   ok: 'Ok',
+  prev: 'previous', // to be translated
+  next: 'Next', // to be translated
   add: 'Legg til ',
-  create_new: 'Opprett ny',
-
   Cancel: 'Avbryt',
 
   /* login */
@@ -839,6 +839,21 @@ const translations = {
   delete_checklist: 'Delete checklist',
   delete_checklist_confirm:
     'Are you sure you want to delete this checklist? This cannot be undone. Checklist: "',
+
+  /* Menu items */
+  View_measurements: 'Se målinger',
+  View_inspection: 'Se inspeksjon | Se inspeksjoner',
+  View_alert: 'Se varsel | Se varsler',
+
+  Edit_alertrule: 'Rediger varslingsregel',
+  Edit_hive: 'Rediger bikube',
+  Edit_queen: 'Rediger dronning',
+  Edit_apiary: 'Rediger bigård',
+  Edit_group: 'Rediger samarbeidsgruppe',
+  Edit_group_short: 'Rediger gruppe',
+  Edit_checklist: 'Rediger sjekkliste',
+  Edit_devices: 'Rediger enheter',
+  Edit_consent: 'Rediger samtykke',
 }
 
 export default translations

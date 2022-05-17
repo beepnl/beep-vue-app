@@ -816,19 +816,27 @@ export default {
       this.setGroupEdited(true)
     },
     getTitle() {
-      var group = this.mobile
-        ? this.$i18n.tc('group_short', 1)
-        : this.$i18n.tc('group', 1)
       var addName = ''
       if (this.activeGroup && !this.createMode && !this.activeGroup.admin) {
         addName = ' - ' + this.activeGroup.name
       }
       if (this.createMode) {
-        return this.$i18n.t('create_new') + ' ' + group
+        return this.$i18n.t('new_group')
       } else if (this.acceptMode) {
-        return this.$i18n.tc('Invitation', 1) + ' ' + group + addName
+        return (
+          this.$i18n.tc('Invitation', 1) +
+          ' ' +
+          (this.mobile
+            ? this.$i18n.tc('group_short', 1)
+            : this.$i18n.tc('group', 1)) +
+          addName
+        )
       } else {
-        return this.$i18n.t('edit') + ' ' + group + addName
+        return (
+          (this.mobile
+            ? this.$i18n.t('Edit_group_short')
+            : this.$i18n.t('Edit_group')) + addName
+        )
       }
     },
     saveGroup() {

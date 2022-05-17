@@ -44,7 +44,7 @@
           @click="editChecklist"
         >
           <v-icon left>mdi-pencil</v-icon>
-          {{ $t('edit') + ' ' + $tc('checklist', 1) }}
+          {{ $t('Edit_checklist') }}
         </v-btn>
         <v-btn
           tile
@@ -202,7 +202,7 @@
               @click="editChecklist"
             >
               <v-icon left>mdi-pencil</v-icon>
-              {{ $t('edit') + ' ' + $tc('checklist', 1) }}
+              {{ $t('Edit_checklist') }}
             </v-btn>
           </v-col>
 

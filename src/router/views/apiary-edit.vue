@@ -1,5 +1,5 @@
 <template>
-  <Layout :title="`${$t('edit')} ${$tc('location', 1)}`">
+  <Layout :title="$t('Edit_apiary')">
     <h1
       v-if="
         activeApiary &&

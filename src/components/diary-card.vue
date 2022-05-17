@@ -310,9 +310,9 @@
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title
-              >{{ $t('view') }} {{ $tc('inspection', 1) }}</v-list-item-title
-            >
+            <v-list-item-title>{{
+              $tc('View_inspection', 1)
+            }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item

@@ -93,19 +93,10 @@ const translations = {
     'Atenție încă există stupi în această stupină. Puteți salva stupi specifici (și inspecțiile lor) prin mutarea acestora într-o altă stupină. Dacă veți continua cu ștergerea, vor fi șterse toate inspecțiile și toți stupii din prezenta locație.',
   Date: 'Data',
   ok: 'Ok',
-  previous: 'Anterior',
   prev: 'anterior',
   next: 'Următorul',
   add: 'Adăugați',
-  create_new: 'Creați un nou',
-  New: 'Nou',
-  warning: 'Advertisment',
-  apply: 'Aplicați',
   Cancel: 'Anulați',
-  automatic: 'Automat',
-  manually: 'Manual',
-  on: 'Pornit',
-  off: 'Oprit',
 
   /* login */
   login_title: 'Autentificare',
@@ -239,7 +230,7 @@ const translations = {
   Hive_frames: 'Rame pe strat',
   Hive_color: 'Culoarea stupului',
   Queen: 'Matcă',
-  queen: 'Matcă',
+  queen: 'matcă',
   settings_title: 'Setări',
   settings_description: 'Setări ale senzorilor',
   Settings: 'Setări',
@@ -937,6 +928,21 @@ const translations = {
   delete_checklist: 'Delete checklist',
   delete_checklist_confirm:
     'Are you sure you want to delete this checklist? This cannot be undone. Checklist: "',
+
+  /* Menu items */
+  View_measurements: 'Vedeți măsurători',
+  View_inspection: 'Vizualizați inspecția | Vedeți inspecțiile',
+  View_alert: 'Vedeți alerta | Vezi alerte',
+
+  Edit_alertrule: 'Editați regula de alertă',
+  Edit_hive: 'Editați stupul',
+  Edit_queen: 'Editează matcă',
+  Edit_apiary: 'Editați stupina',
+  Edit_group: 'Editați grupul de colaborare',
+  Edit_group_short: 'Editați grupul',
+  Edit_checklist: 'Editați lista de verificare',
+  Edit_devices: 'Editați dispozitive',
+  Edit_consent: 'Editați consimțământul',
 }
 
 export default translations

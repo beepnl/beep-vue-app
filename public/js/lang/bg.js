@@ -96,19 +96,10 @@ const translations = {
 
   Date: 'Date',
   ok: 'Ok',
-  previous: 'Previous',
   prev: 'previous',
   next: 'Next',
   add: 'Add',
-  create_new: 'Create new',
-  New: 'New',
-
-  warning: 'Warning',
-
-  apply: 'Apply',
   Cancel: 'Cancel',
-  on: 'On',
-  off: 'Off',
 
   /* login */
   login_title: 'Login',
@@ -919,6 +910,21 @@ const translations = {
   delete_checklist: 'Delete checklist',
   delete_checklist_confirm:
     'Are you sure you want to delete this checklist? This cannot be undone. Checklist: "',
+
+  /* Menu items */
+  View_measurements: 'View measurements',
+  View_inspection: 'View inspection | View inspections',
+  View_alert: 'View alert | View alerts',
+
+  Edit_alertrule: 'Edit alert rule',
+  Edit_hive: 'Edit hive',
+  Edit_queen: 'Edit queen',
+  Edit_apiary: 'Edit apiary',
+  Edit_group: 'Edit collaboration group',
+  Edit_group_short: 'Edit group',
+  Edit_checklist: 'Edit checklist',
+  Edit_devices: 'Edit devices',
+  Edit_consent: 'Edit consent',
 }
 
 export default translations

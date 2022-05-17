@@ -156,10 +156,9 @@
                   </v-list-item-icon>
 
                   <v-list-item-content>
-                    <v-list-item-title
-                      >{{ $t('view') }}
-                      {{ $tc('inspection', 2) }}</v-list-item-title
-                    >
+                    <v-list-item-title>{{
+                      $tc('View_inspection', 2)
+                    }}</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
                 <v-list-item
@@ -174,10 +173,9 @@
                   </v-list-item-icon>
 
                   <v-list-item-content>
-                    <v-list-item-title
-                      >{{ $t('view') }}
-                      {{ $tc('alert', alerts.length) }}</v-list-item-title
-                    >
+                    <v-list-item-title>{{
+                      $tc('View_alert', alerts.length)
+                    }}</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
                 <v-list-item
@@ -196,10 +194,9 @@
                   </v-list-item-icon>
 
                   <v-list-item-content>
-                    <v-list-item-title
-                      >{{ $t('view') }}
-                      {{ $tc('measurement', 2) }}</v-list-item-title
-                    >
+                    <v-list-item-title>{{
+                      $t('View_measurements')
+                    }}</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
               </v-list-item-group>
@@ -222,9 +219,7 @@
                   </v-list-item-icon>
 
                   <v-list-item-content>
-                    <v-list-item-title
-                      >{{ $t('edit') }} {{ $tc('hive', 1) }}</v-list-item-title
-                    >
+                    <v-list-item-title>{{ $t('Edit_hive') }}</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
 
@@ -245,9 +240,9 @@
                   </v-list-item-icon>
 
                   <v-list-item-content>
-                    <v-list-item-title
-                      >{{ $t('edit') }} {{ $t('queen') }}</v-list-item-title
-                    >
+                    <v-list-item-title>{{
+                      $t('Edit_queen')
+                    }}</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
               </v-list-item-group>

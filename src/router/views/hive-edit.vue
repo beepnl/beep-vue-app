@@ -547,20 +547,18 @@ export default {
     },
     getTitle() {
       if (this.hiveCreateMode) {
-        return this.$i18n.t('create_new') + ' ' + this.$i18n.tc('hive', 1)
+        return this.$i18n.t('New_hive')
       } else if (this.queenEditMode && this.activeHive !== null) {
         const queenName = this.activeHive.queen.name || ''
         return (
-          this.$i18n.t('edit') +
-          ' ' +
-          this.$i18n.t('queen') +
+          this.$i18n.t('Edit_queen') +
           ' ' +
           queenName +
           ' - ' +
           this.activeHive.name
         )
       } else if (this.activeHive !== null) {
-        return this.$i18n.t('edit') + ' ' + this.$i18n.tc('hive', 1)
+        return this.$i18n.t('Edit_hive')
       } else {
         return this.$i18n.t('edit') + '...'
       }

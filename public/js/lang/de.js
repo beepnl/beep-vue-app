@@ -93,19 +93,10 @@ const translations = {
     'Da sind bereits Beuten an diesem Ort. Der Ort kann gelöscht werden, wenn alle Beuten an einen anderen Ort transferiert oder gelöscht wurden.',
   Date: 'Datum',
   ok: 'Ok',
-  previous: 'Vorherige',
   prev: 'vorherige',
   next: 'Nächste',
   add: 'hinzufügen',
-  create_new: 'Neu anlegen:',
-  New: 'Neu',
-  warning: 'Warnung',
-  apply: 'Bestätigen',
   Cancel: 'Abbrechen',
-  automatic: 'Automatisch',
-  manually: 'Manuel',
-  on: 'An',
-  off: 'Aus',
 
   /* login */
   login_title: 'Login',
@@ -954,6 +945,21 @@ const translations = {
   delete_checklist: 'Delete checklist',
   delete_checklist_confirm:
     'Are you sure you want to delete this checklist? This cannot be undone. Checklist: "',
+
+  /* Menu items */
+  View_measurements: 'Messungen ansehen',
+  View_inspection: 'Inspektion ansehen | Inspektionen ansehen',
+  View_alert: 'Alarm ansehen | Alarme ansehen',
+
+  Edit_alertrule: 'Alarmregel bearbeiten',
+  Edit_hive: 'Beute bearbeiten',
+  Edit_queen: 'Königin bearbeiten',
+  Edit_apiary: 'Bienenstand bearbeiten',
+  Edit_group: 'Kollaborationsgruppe bearbeiten',
+  Edit_group_short: 'Gruppe bearbeiten',
+  Edit_checklist: 'Stockkarte bearbeiten',
+  Edit_devices: 'Geräte bearbeiten',
+  Edit_consent: 'Genehmigung bearbeiten',
 }
 
 export default translations

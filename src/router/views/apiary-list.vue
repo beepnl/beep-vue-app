@@ -438,7 +438,7 @@
 
                       <v-list-item-content>
                         <v-list-item-title
-                          v-text="$t('view') + ' ' + $tc('inspection', 2)"
+                          v-text="$tc('View_inspection', 2)"
                         ></v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
@@ -541,7 +541,7 @@
 
                     <v-list-item-content>
                       <v-list-item-title
-                        v-text="$t('view') + ' ' + $tc('inspection', 2)"
+                        v-text="$tc('View_inspection', 2)"
                       ></v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>

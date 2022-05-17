@@ -338,9 +338,7 @@
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title
-              >{{ $t('edit') + ' ' + $tc('alertrule', 1) }}
-            </v-list-item-title>
+            <v-list-item-title>{{ $t('Edit_alertrule') }} </v-list-item-title>
             <v-list-item-subtitle>
               {{ alert.alert_rule_name }}
             </v-list-item-subtitle>
@@ -378,9 +376,7 @@
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title
-              >{{ $t('view') }} {{ $tc('measurement', 2) }}</v-list-item-title
-            >
+            <v-list-item-title>{{ $t('View_measurements') }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
@@ -542,7 +538,7 @@ export default {
 <style lang="scss" scoped>
 .alert-card {
   height: 100%;
-  min-width: 100%;
+  min-width: calc(100% - 32px);
   padding: 10px;
   font-size: 0.8125rem !important;
 

@@ -175,9 +175,7 @@
                     <v-col class="research-item-col" cols="5" sm="4">
                       <span
                         class="research-property"
-                        v-text="
-                          $t('edit') + ' ' + $t('Consent').toLocaleLowerCase()
-                        "
+                        v-text="$t('Edit_consent')"
                       ></span>
                     </v-col>
                     <v-col class="research-item-col" cols="7" sm="8">

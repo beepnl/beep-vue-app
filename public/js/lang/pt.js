@@ -103,21 +103,10 @@ const translations = {
 
   Date: 'Data',
   ok: 'Ok',
-  previous: 'Anterior',
   prev: 'anterior',
   next: 'Próximo',
   add: 'Adicionar',
-  create_new: 'Criar novo',
-  New: 'Novo',
-
-  warning: 'Aviso',
-
-  apply: 'Aplicar',
   Cancel: 'Cancelar',
-  automatic: 'Automático',
-  manually: 'Manual',
-  on: 'On',
-  off: 'Off',
 
   /* login */
   login_title: 'Login',
@@ -966,6 +955,21 @@ const translations = {
   delete_checklist: 'Delete checklist',
   delete_checklist_confirm:
     'Are you sure you want to delete this checklist? This cannot be undone. Checklist: "',
+
+  /* Menu items */
+  View_measurements: 'Ver medidas',
+  View_inspection: 'Ver inspeção | Ver inspeções',
+  View_alert: 'Ver alerta | Ver alertas',
+
+  Edit_alertrule: 'Editar regra de alerta',
+  Edit_hive: 'Editar colmeia',
+  Edit_queen: 'Editar rainha',
+  Edit_apiary: 'Editar apiário',
+  Edit_group: 'Editar grupo de colaboração',
+  Edit_group_short: 'Editar grupo',
+  Edit_checklist: 'Editar lista de verificação',
+  Edit_devices: 'Editar aparelhos',
+  Edit_consent: 'Editar consentimento',
 }
 
 export default translations

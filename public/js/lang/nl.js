@@ -82,11 +82,10 @@ const translations = {
 
   Date: 'Datum',
   ok: 'Ok',
+  prev: 'vorige',
+  next: 'volgende',
   add: 'Toevoegen',
-  create_new: 'Maak een nieuwe',
-
   Cancel: 'Annuleren',
-  automatic: 'Automatisch',
 
   /* login */
   login_title: 'Inloggen',
@@ -863,6 +862,21 @@ const translations = {
   delete_checklist: 'Verwijder kastkaart',
   delete_checklist_confirm:
     'Weet je zeker dat je deze kastkaart wilt verwijderen? Dit kan niet ongedaan gemaakt worden. Kastkaart: "',
+
+  /* Menu items */
+  View_measurements: 'Bekijk metingen',
+  View_inspection: 'Bekijk inspectie | Bekijk inspecties',
+  View_alert: 'Bekijk notificatie | Bekijk notificaties',
+
+  Edit_alertrule: 'Aanpassen notificatie-instelling',
+  Edit_hive: 'Aanpassen kast',
+  Edit_queen: 'Aanpassen moer',
+  Edit_apiary: 'Aanpassen bijenstand',
+  Edit_group: 'Aanpassen samenwerkingsgroep',
+  Edit_group_short: 'Aanpassen groep',
+  Edit_checklist: 'Aanpassen kastkaart',
+  Edit_devices: 'Aanpassen meetsystemen',
+  Edit_consent: 'Aanpassen toestemming',
 }
 
 export default translations

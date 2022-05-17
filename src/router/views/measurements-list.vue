@@ -157,11 +157,7 @@
             color="accent"
           >
             <v-icon :left="!mobile">mdi-pencil</v-icon>
-            {{
-              mobile && devices.length > 0
-                ? ''
-                : $t('edit') + ' ' + $tc('device', 2)
-            }}
+            {{ mobile && devices.length > 0 ? '' : $t('Edit_devices') }}
           </v-btn>
         </v-col>
       </v-row>
@@ -1323,7 +1319,7 @@ export default {
     confirmViewInspection(inspectionId, inspectionDate) {
       this.$refs.confirm
         .open(
-          this.$i18n.t('view') + ' ' + this.$i18n.tc('inspection', 1),
+          this.$i18n.tc('View_inspection', 1),
           this.$i18n.t('View_inspection_confirm') + inspectionDate + '?',
           {
             color: 'primary',

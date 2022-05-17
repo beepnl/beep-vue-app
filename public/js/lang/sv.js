@@ -96,19 +96,10 @@ const translations = {
 
   Date: 'Datum',
   ok: 'Ok',
-  previous: 'Föregående',
   prev: 'föregående',
   next: 'Nästa',
   add: 'Lägg till',
-  create_new: 'Skapa ny',
-  New: 'Ny',
-
-  warning: 'Varning',
-
-  apply: 'Tillämpa',
   Cancel: 'Upphäv',
-  on: 'På',
-  off: 'Av',
 
   /* login */
   login_title: 'Login',
@@ -918,6 +909,21 @@ const translations = {
   delete_checklist: 'Delete checklist',
   delete_checklist_confirm:
     'Are you sure you want to delete this checklist? This cannot be undone. Checklist: "',
+
+  /* Menu items */
+  View_measurements: 'Visa mätvärden',
+  View_inspection: 'Visa inspektion | Se inspektioner',
+  View_alert: 'Visa varning | Visa varningar',
+
+  Edit_alertrule: 'Redigera varningsregel',
+  Edit_hive: 'Redigera kupan',
+  Edit_queen: 'Redigera drottning',
+  Edit_apiary: 'Redigera bigård',
+  Edit_group: 'Redigera samarbetsgrupp',
+  Edit_group_short: 'Redigera grupp',
+  Edit_checklist: 'Redigera checklista',
+  Edit_devices: 'Redigera enheter',
+  Edit_consent: 'Redigera samtycke',
 }
 
 export default translations

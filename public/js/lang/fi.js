@@ -102,21 +102,10 @@ const translations = {
 
   Date: 'Päivämäärä',
   ok: 'Ok',
-  previous: 'Edellinen',
   prev: 'edellinen',
   next: 'Seuraava',
   add: 'Lisää',
-  create_new: 'Lisää uusi',
-  New: 'Uusi',
-
-  warning: 'Varoitus',
-
-  apply: 'Ota käyttöön',
   Cancel: 'Peruuta',
-  automatic: 'Automaattinen',
-  manually: 'Manuaalinen',
-  on: 'On',
-  off: 'Off',
 
   /* login */
   login_title: 'Kirjaudu',
@@ -972,6 +961,21 @@ const translations = {
   delete_checklist: 'Delete checklist',
   delete_checklist_confirm:
     'Are you sure you want to delete this checklist? This cannot be undone. Checklist: "',
+
+  /* Menu items */
+  View_measurements: 'Näytä mittaukset',
+  View_inspection: 'Näytä tarkastus | Katso tarkastukset',
+  View_alert: 'Näytä hälytys | Näytä hälytykset',
+
+  Edit_alertrule: 'Muokkaa hälytyssääntöä',
+  Edit_hive: 'Muokkaa pesää',
+  Edit_queen: 'Muokkaa emo',
+  Edit_apiary: 'Muokkaa mehiläista',
+  Edit_group: 'Muokkaa yhteistyöryhmää',
+  Edit_group_short: 'Muokkaa ryhmää',
+  Edit_checklist: 'Muokkaa tarkistuslistaa',
+  Edit_devices: 'Muokkaa laitteita',
+  Edit_consent: 'Muokkaa suostumusta',
 }
 
 export default translations
