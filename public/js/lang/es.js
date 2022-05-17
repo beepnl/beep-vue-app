@@ -936,6 +936,13 @@ const translations = {
     'To become a translator, please request a translator account via support@beep.nl. If you would like to update translations, please download the .js file below and email the updated file to support@beep.nl. Thank you for your effort!',
   unpublished_exp: 'Translations that are yet unpublished:',
   as_plain_text: 'as plain text',
+
+  /* Checklists page */
+  new_checklist: 'New checklist',
+  duplicate: 'Duplicate',
+  delete_checklist: 'Delete checklist',
+  delete_checklist_confirm:
+    'Are you sure you want to delete this checklist? This cannot be undone. Checklist: "',
 }
 
 export default translations

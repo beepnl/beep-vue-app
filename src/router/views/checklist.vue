@@ -29,7 +29,7 @@
       ref="form"
       v-model="valid"
       @submit.prevent="
-        activeChecklist.id !== undefined ? updateChecklist : createChecklist
+        activeChecklist.id !== undefined ? updateChecklist() : createChecklist()
       "
     >
       <v-toolbar class="save-bar" dense light>
@@ -299,7 +299,9 @@ export default {
   },
   watch: {
     locale() {
-      this.readChecklistAndTaxonomy(this.selectedChecklistId)
+      if (this.ready) {
+        this.readChecklistAndTaxonomy(this.selectedChecklistId)
+      }
     },
   },
   created() {

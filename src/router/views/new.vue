@@ -2,11 +2,15 @@
   <Layout :title="$t('Whats_new')">
     <v-container>
       <div class="overline mb-1"
-        ><span class="lowercase">v</span>3.0.99 (16-05-2022) - Current
+        ><span class="lowercase">v</span>3.0.99 (17-05-2022) - Current
         version</div
       >
       <div class="rounded-border mb-4">
         <ul>
+          <li
+            ><router-link :to="{ name: 'checklists' }">Checklists:</router-link>
+            create your own checklist (from scratch or start with a duplicate)
+          </li>
           <li
             ><router-link :to="{ name: 'alerts' }">Alerts:</router-link> option
             to delete only selected alerts
