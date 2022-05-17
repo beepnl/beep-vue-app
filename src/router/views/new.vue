@@ -21,6 +21,7 @@
               Alert rules</router-link
             ></li
           >
+          <li>Improve translations to accomodate grammatical conjugations</li>
         </ul>
       </div>
 
