@@ -1083,7 +1083,7 @@ export default {
         this.activeInspection.hive_ids !== null &&
         this.activeInspection.hive_ids !== undefined
       ) {
-        this.selectedHivess = this.activeInspection.hive_ids
+        this.selectedHives = this.activeInspection.hive_ids
       }
 
       this.$store.commit(
