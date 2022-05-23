@@ -2,17 +2,8 @@
   <Layout :title="$t('Whats_new')">
     <v-container>
       <div class="overline mb-1"
-        ><span class="lowercase">v</span>3.0.100 (23-05-2022) - Current
+        ><span class="lowercase">v</span>3.0.99 (23-05-2022) - Current
         version</div
-      >
-      <div class="rounded-border mb-4">
-        <ul>
-          <li>Bugfixes: small fixes for issues received as feedback</li>
-        </ul>
-      </div>
-
-      <div class="overline mb-1"
-        ><span class="lowercase">v</span>3.0.99 (17-05-2022)</div
       >
       <div class="rounded-border mb-4">
         <ul>
@@ -31,6 +22,7 @@
             ></li
           >
           <li>Improve translations to accomodate grammatical conjugations</li>
+          <li>Bugfixes: small fixes for issues received as feedback</li>
         </ul>
       </div>
 
