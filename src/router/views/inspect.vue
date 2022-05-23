@@ -907,9 +907,11 @@ export default {
               itemsObject[key] = value
             }
           })
-          this.activeInspection.date = !this.selectedChecklist.owner
-            ? null
-            : this.getNow()
+          if (this.tempSavedInspection === null) {
+            this.activeInspection.date = !this.selectedChecklist.owner
+              ? null
+              : this.getNow()
+          }
         }
         this.activeInspection.items = itemsObject
         this.activeInspection.checklist_id = this.selectedChecklistId
