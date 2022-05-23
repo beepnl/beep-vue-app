@@ -319,6 +319,7 @@ export default {
   },
   methods: {
     async createChecklist(duplicate = false) {
+      this.showLoadingIcon = true
       var categoryIds = null
       if (this.activeChecklist.category_ids.length > 0) {
         categoryIds = this.activeChecklist.category_ids.join(',')
@@ -336,8 +337,10 @@ export default {
         this.readChecklists().then(() => {
           this.selectedChecklistId = this.checklist.id
           this.readChecklistAndTaxonomy(this.selectedChecklistId)
+          this.showLoadingIcon = false
         })
       } catch (error) {
+        this.showLoadingIcon = false
         if (error.response) {
           console.log(error.response)
           const msg = error.response.data.message
@@ -356,8 +359,8 @@ export default {
           console.log('Error')
         }
         this.readChecklists().then(() => {
-          this.selectedChecklistId = null
-          this.activeChecklist = null
+          this.selectedChecklistId = this.checklist.id
+          this.readChecklistAndTaxonomy(this.selectedChecklistId)
           this.showDeleteLoadingIcon = false
         })
       } catch (error) {
