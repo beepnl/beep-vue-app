@@ -44,6 +44,11 @@
                 width="290px"
               >
                 <template v-slot:activator="{ on, attrs }">
+                  <span
+                    class="beep-label mt-1 font-weight-bold accent--text cursor-pointer float-right"
+                    @click="queenBirthDate = getNow()"
+                    v-text="$t('Now')"
+                  ></span>
                   <v-text-field
                     v-model="queenBirthDate"
                     :label="
@@ -251,7 +256,7 @@ export default {
         if (this.queen && this.queen.created_at !== null) {
           return this.momentifyRemoveTime(this.queen.created_at)
         } else {
-          return this.$moment().format('YYYY-MM-DD')
+          return ''
         }
       },
       set(value) {
@@ -310,6 +315,9 @@ export default {
       this.useQueenMarkColor = false
       this.modal = false
       this.queenColor = this.queen.color
+    },
+    getNow() {
+      return this.$moment().format('YYYY-MM-DD')
     },
     selectLocale(array) {
       if (array.length) {
