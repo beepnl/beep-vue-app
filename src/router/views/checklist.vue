@@ -334,9 +334,9 @@ export default {
         if (!response) {
           this.errorMessage = this.$i18n.tc('Error', 1)
         }
+        this.selectedChecklistId = response.data.id
         this.readChecklists().then(() => {
-          this.selectedChecklistId = this.checklist.id
-          this.readChecklistAndTaxonomy(this.selectedChecklistId)
+          this.readChecklistAndTaxonomy(response.data.id)
           this.showLoadingIcon = false
         })
       } catch (error) {
