@@ -286,7 +286,7 @@
                               )
                             "
                             :end="
-                              getNextDay(
+                              getNextHour(
                                 inspection.reminder_date.replace(/-/g, '/')
                               )
                             "
@@ -913,10 +913,10 @@ export default {
     getFullUrl(val) {
       return val.indexOf('https://') > -1 ? val : this.baseApiUrl + val
     },
-    getNextDay(date) {
+    getNextHour(date) {
       var today = new Date(date)
-      var tomorrow = new Date(today.setDate(today.getDate() + 1))
-      return tomorrow
+      var nextHour = new Date(today.setHours(today.getHours() + 1))
+      return nextHour
     },
     gradeColor(value) {
       if (value === 0) return '#CCC'
