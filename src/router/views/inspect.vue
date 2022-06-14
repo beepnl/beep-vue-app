@@ -908,9 +908,14 @@ export default {
             }
           })
           if (this.tempSavedInspection === null) {
-            this.activeInspection.date = !this.selectedChecklist.owner
-              ? null
-              : this.getNow()
+            if (!this.selectedChecklist.owner) {
+              this.activeInspection.date = null
+            } else if (
+              this.selectedChecklist.owner &&
+              this.activeInspection.date === null
+            ) {
+              this.activeInspection.date = this.getNow()
+            }
           }
         }
         this.activeInspection.items = itemsObject
