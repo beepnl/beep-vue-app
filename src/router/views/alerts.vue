@@ -540,7 +540,9 @@ export default {
       if (!this.allFilteredChecked) {
         this.selectedAlerts = this.filteredAlerts.map((alert) => alert.id)
       } else {
-        this.selectedAlerts = []
+        this.filteredAlerts.map((alert) => {
+          this.selectedAlerts.splice(this.selectedAlerts.indexOf(alert.id), 1)
+        })
       }
     },
     toggleCheckbox(alertId) {
