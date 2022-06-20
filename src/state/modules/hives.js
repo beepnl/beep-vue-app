@@ -9,7 +9,7 @@ export const state = {
   hivesObject: {},
   hiveTags: [
     {
-      id: '01',
+      tag: '01',
       url: {
         name: 'home',
         query: {
@@ -20,7 +20,7 @@ export const state = {
       description: 'Show hive card in overview',
     },
     {
-      id: '02',
+      tag: '02',
       url: {
         name: 'inspect',
         query: {
@@ -31,7 +31,7 @@ export const state = {
       description: 'Create a new inspection',
     },
     {
-      id: '03',
+      tag: '03',
       url: {
         name: 'hive-inspections',
         params: {
@@ -42,7 +42,7 @@ export const state = {
       description: 'View inspections',
     },
     {
-      id: '04',
+      tag: '04',
       url: {
         name: 'hive-edit',
         params: {
@@ -53,7 +53,7 @@ export const state = {
       description: 'Edit hive configuration',
     },
     {
-      id: '05',
+      tag: '05',
       url: {
         name: 'measurements-id',
         params: {
@@ -64,6 +64,7 @@ export const state = {
       description: 'View measurements',
     },
   ],
+  hiveTagEdited: false,
 }
 export const getters = {
   ...resource.getters,
@@ -82,6 +83,9 @@ export const getters = {
   hiveTags: (state) => {
     return state.hiveTags
   },
+  hiveTagEdited: (state) => {
+    return state.hiveTagEdited
+  },
 }
 export const mutations = {
   ...resource.mutations,
@@ -97,6 +101,9 @@ export const mutations = {
   resetState: function(state) {
     state.hiveEdited = false
     state.activeHive = null
+    // state.hiveTags = []
+    state.hivesObject = {}
+    state.hiveTagEdited = false
   },
 }
 export const actions = {

@@ -60,7 +60,7 @@
                         </v-icon>
                         <span
                           class="hivetag-id text-center"
-                          v-text="hiveTag.id"
+                          v-text="hiveTag.tag"
                         ></span>
                       </div>
                     </td>
@@ -88,7 +88,7 @@
                       <router-link
                         :to="{
                           name: 'hivetag-edit',
-                          params: { id: hiveTag.id },
+                          params: { tag: hiveTag.tag },
                         }"
                       >
                         <v-icon dark color="accent">mdi-pencil</v-icon>
@@ -151,10 +151,10 @@ export default {
     // },
     sortedHiveTags() {
       const sortedHiveTags = this.hiveTags.slice().sort(function(a, b) {
-        if (a.id.toLowerCase() > b.id.toLowerCase()) {
+        if (a.tag.toLowerCase() > b.tag.toLowerCase()) {
           return 1
         }
-        if (b.id.toLowerCase() > a.id.toLowerCase()) {
+        if (b.tag.toLowerCase() > a.tag.toLowerCase()) {
           return -1
         }
         return 0
@@ -205,7 +205,7 @@ export default {
           this.$i18n.t('delete_hivetag'),
           this.$i18n.t('delete_hivetag') +
             ' (' +
-            hiveTag.id +
+            hiveTag.tag +
             (hiveTag.description ? ' - ' + hiveTag.description : '') +
             ')?',
           {
@@ -213,7 +213,7 @@ export default {
           }
         )
         .then((confirm) => {
-          this.deleteHiveTag(hiveTag.id)
+          this.deleteHiveTag(hiveTag.tag)
         })
         .catch((reject) => {
           return true

@@ -861,6 +861,9 @@ const translations = {
   qrcode: 'QR Code | QR Codes',
   Download_hivetags: 'Download hive tag pdf',
   delete_hivetag: 'Delete hive tag',
+  Select_hive: 'Select a hive',
+  Select_hive_for_hivetag_exp:
+    'Which hive would you like to select? Select one hive, with which you would like to execute the action below.',
 }
 
 export default translations
