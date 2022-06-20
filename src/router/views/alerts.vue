@@ -13,10 +13,10 @@
           >
             <v-col class="pa-3 d-flex justify-start">
               <v-checkbox
-                :value="allChecked"
+                :value="allFilteredChecked"
                 class="ma-0"
                 hide-details
-                @change="toggleAll"
+                @change="toggleAllFiltered"
               />
 
               <v-text-field
@@ -194,7 +194,7 @@
           >
             <v-checkbox
               v-if="!mobile"
-              :value="isSelected(alert.id)"
+              :input-value="isSelected(alert.id)"
               class="ma-0 pa-0"
               dense
               color="primary"
@@ -205,7 +205,7 @@
             <AlertCard
               :alert="alert"
               :hives="hives"
-              :is-selected="isSelected(alert.id)"
+              :is-selected="mobile ? isSelected(alert.id) : null"
               :unit="getUnit(alert.measurement_id)"
               @show-snackbar=";(snackbar.text = $event), (snackbar.show = true)"
               @delete-alert="deleteAlert($event)"
@@ -348,6 +348,12 @@ export default {
     },
     allChecked() {
       return this.selectedAlerts.length === this.alerts.length
+    },
+    allFilteredChecked() {
+      return (
+        this.filteredAlerts.filter((alert) => !this.isSelected(alert.id))
+          .length === 0
+      )
     },
     filteredAlerts() {
       var textFilteredAlerts = []
@@ -496,7 +502,12 @@ export default {
                 'delete_selected_alert',
                 this.selectedAlerts.length
               ),
-          null,
+          this.allChecked
+            ? this.$i18n.t('delete_all_alerts')
+            : this.$i18n.tc(
+                'delete_selected_alert',
+                this.selectedAlerts.length
+              ),
           {
             color: 'red',
           },
@@ -525,9 +536,9 @@ export default {
       clearInterval(this.alertTimer)
       this.alertTimer = 0
     },
-    toggleAll() {
-      if (!this.allChecked) {
-        this.selectedAlerts = this.alerts.map((alert) => alert.id)
+    toggleAllFiltered() {
+      if (!this.allFilteredChecked) {
+        this.selectedAlerts = this.filteredAlerts.map((alert) => alert.id)
       } else {
         this.selectedAlerts = []
       }

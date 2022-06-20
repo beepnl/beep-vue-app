@@ -21,7 +21,7 @@
           <div class="d-flex flex-column justify-start align-center">
             <v-checkbox
               v-if="mobile"
-              :value="isSelected"
+              :input-value="isSelected"
               class="ma-0 pt-0"
               dense
               :ripple="false"
@@ -460,7 +460,7 @@ export default {
     isSelected: {
       type: Boolean,
       default: false,
-      required: true,
+      required: false,
     },
   },
   data: () => ({}),

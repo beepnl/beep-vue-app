@@ -508,9 +508,6 @@ export default {
         }
       }
     },
-    checkIfItemIsNotOwned(item) {
-      return item.owner === false
-    },
     confirmDeleteChecklist() {
       this.$refs.confirm
         .open(
