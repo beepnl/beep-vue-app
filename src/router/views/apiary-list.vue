@@ -764,6 +764,7 @@ export default {
     ...mapGetters('devices', ['devices']),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups', 'invitations']),
+    ...mapGetters('hives', ['hiveTags']),
     filterByAlert: {
       get() {
         return this.$store.getters['locations/hiveFilterByAlert']
@@ -1080,6 +1081,17 @@ export default {
     }
   },
   created() {
+    if (this.$route.query.hive_index !== undefined) {
+      var filteredHiveTags = this.hiveTags.filter(
+        (hiveTag) => hiveTag.id === this.$route.query.hive_index
+      )
+      var hiveTag = filteredHiveTags.length === 0 ? null : filteredHiveTags[0]
+      if (hiveTag) {
+        this.$router.push(hiveTag.url)
+      } else {
+        console.log('no hive tag found for ', this.$route.query.hive_index)
+      }
+    }
     if (localStorage.beepHiddenApiaries) {
       this.hiddenApiaries = JSON.parse(localStorage.beepHiddenApiaries)
     }
