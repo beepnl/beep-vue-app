@@ -204,7 +204,7 @@
             />
             <AlertCard
               :alert="alert"
-              :hives="hives"
+              :hives="hivesObject"
               :is-selected="mobile ? isSelected(alert.id) : null"
               :unit="getUnit(alert.measurement_id)"
               @show-snackbar=";(snackbar.text = $event), (snackbar.show = true)"
@@ -294,6 +294,7 @@ export default {
     ...mapGetters('alerts', ['alertRules', 'alerts', 'alertsLoading']),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
+    ...mapGetters('hives', ['hivesObject']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     alertsWithRuleDetails() {
       var alertsWithRuleDetails = this.alerts
@@ -327,10 +328,10 @@ export default {
 
         var hiveGroupName = null
         if (
-          this.hives[alert.hive_id] !== undefined &&
-          this.hives[alert.hive_id].group_name !== undefined
+          this.hivesObject[alert.hive_id] !== undefined &&
+          this.hivesObject[alert.hive_id].group_name !== undefined
         ) {
-          hiveGroupName = this.hives[alert.hive_id].group_name
+          hiveGroupName = this.hivesObject[alert.hive_id].group_name
         }
         alert.hive_group_name = hiveGroupName
       })
@@ -393,36 +394,6 @@ export default {
     },
     filteredAlertsIds() {
       return this.filteredAlerts.map((alert) => alert.id)
-    },
-    hives() {
-      const ownHivesArray = []
-      this.apiaries.forEach((apiary) => {
-        apiary.hives.forEach((hive) => {
-          hive.label = hive.name
-          ownHivesArray.push(hive)
-        })
-      })
-
-      const sharedHivesArray = []
-      this.groups.forEach((group) => {
-        group.hives.forEach((hive) => {
-          hive.label = hive.name
-          hive.group_name = group.name
-          sharedHivesArray.push(hive)
-        })
-      })
-
-      const allHives = ownHivesArray.concat(sharedHivesArray)
-
-      var uniqueHives = {}
-      const map = new Map()
-      for (const item of allHives) {
-        if (!map.has(item.id)) {
-          map.set(item.id, true) // set any value to Map
-          uniqueHives[item.id] = item
-        }
-      }
-      return uniqueHives
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile

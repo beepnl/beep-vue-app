@@ -50,7 +50,7 @@
                 </v-col>
 
                 <v-col cols="7" class="d-flex flex-column align-start">
-                  <div class="diary-label">
+                  <div class="name-label">
                     {{ inspection.hive_name }}
                     <small
                       v-if="
@@ -107,7 +107,7 @@
                         </v-icon>
                       </div>
                       <span
-                        class="diary-label hide-md"
+                        class="name-label hide-md"
                         v-text="`${$t('needs_attention')}`"
                       >
                       </span>
@@ -160,13 +160,13 @@
                       </div>
                       <span
                         v-if="!inspection.impression"
-                        class="diary-label"
+                        class="name-label"
                         v-text="`${$t('notes')}`"
                       >
                       </span>
                       <span
                         v-else
-                        class="diary-label"
+                        class="name-label"
                         v-text="`${$t('positive_impression')}`"
                       >
                       </span>
@@ -252,7 +252,7 @@
                       </span>
                       <span
                         v-if="!inspection.reminder_date"
-                        class="diary-label"
+                        class="name-label"
                         v-text="`${$t('reminder')}`"
                       >
                       </span>
@@ -412,22 +412,7 @@ export default {
     max-width: 24px !important;
     height: 24px !important;
   }
-  .diary-label {
-    width: 100%;
-    overflow: hidden;
-    font-size: 0.75rem !important;
-    font-weight: 600;
-    line-height: 24px !important;
-    color: $color-grey;
-    text-overflow: ellipsis;
-    letter-spacing: 0.0333333333em !important;
-    white-space: nowrap;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    @include for-phone-only {
-      font-size: 0.7rem !important;
-    }
-  }
+
   .diary-details-item {
     min-width: 28px;
     max-width: none;

@@ -6,6 +6,7 @@ export const state = {
   ...resource.state,
   hiveEdited: false,
   activeHive: null,
+  hivesObject: {},
   hiveTags: [
     {
       id: '01',
@@ -72,6 +73,9 @@ export const getters = {
   hives: (state) => {
     return state.data.hives || []
   },
+  hivesObject: (state) => {
+    return state.hivesObject
+  },
   hiveEdited: (state) => {
     return state.hiveEdited
   },
@@ -81,6 +85,9 @@ export const getters = {
 }
 export const mutations = {
   ...resource.mutations,
+  setData: function(state, payload) {
+    state[payload.prop] = payload.value
+  },
   setHiveEdited: function(state, bool) {
     state.hiveEdited = bool
   },

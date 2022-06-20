@@ -28,28 +28,9 @@
       </div>
     </v-container>
 
-    <v-container class="hivetags-content">
+    <v-container v-if="ready" class="hivetags-content">
       <v-row>
         <v-col cols="12">
-          <v-row>
-            <v-col
-              v-if="mobile"
-              cols="12"
-              xl="3"
-              class="d-flex justify-end align-end mb-3"
-            >
-              <v-btn
-                tile
-                outlined
-                color="black"
-                class="save-button-mobile-wide"
-                @click="downloadHiveTags"
-              >
-                <v-icon left>mdi-download</v-icon>
-                {{ $t('Download_hivetags') }}
-              </v-btn>
-            </v-col>
-          </v-row>
           <div class="rounded-border">
             <v-simple-table class="v-data-table--smallfont">
               <template v-slot>
@@ -58,7 +39,7 @@
                     <th class="text-left">
                       {{ $tc('qrcode', 1) }}
                     </th>
-                    <th class="text-left">
+                    <th :class="mobile ? 'text-center' : 'text-left'">
                       {{ $tc('Hive', 1) }}
                     </th>
                     <th class="text-left">
@@ -72,13 +53,31 @@
                 </thead>
                 <tbody>
                   <tr v-for="(hiveTag, index) in sortedHiveTags" :key="index">
-                    <td class="d-flex align-center">
-                      <v-icon class="hivetag-icon" large>mdi-qrcode </v-icon>
-                      <span class="hivetag-id" v-text="hiveTag.id"></span>
+                    <td>
+                      <div class="d-flex align-center">
+                        <v-icon class="hivetag-icon" :size="mobile ? 36 : 60"
+                          >mdi-qrcode
+                        </v-icon>
+                        <span
+                          class="hivetag-id text-center"
+                          v-text="hiveTag.id"
+                        ></span>
+                      </div>
                     </td>
                     <td>
-                      <span v-text="hiveTag.hive_id"></span>
-                      <!-- <HiveIcon :hive="hive" :diary-view="true"></HiveIcon> -->
+                      <!-- <span v-text="hiveTag.hive_id"></span> -->
+                      <div
+                        class="hive-icon-wrapper d-flex flex-column justify-center align-center mt-3 mb-1"
+                      >
+                        <HiveIcon
+                          :hive="hivesObject[hiveTag.hive_id]"
+                          :diary-view="true"
+                        ></HiveIcon>
+                        <span
+                          class="name-label"
+                          v-text="hivesObject[hiveTag.hive_id].name"
+                        ></span>
+                      </div>
                     </td>
                     <td>
                       <router-link :to="hiveTag.url">
@@ -119,17 +118,19 @@
 <script>
 import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
-// import HiveIcon from '@components/hive-icon.vue'
+import HiveIcon from '@components/hive-icon.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
+import { readApiariesAndGroupsIfNotPresent } from '@mixins/methodsMixin'
 // import { readHiveTags } from '@mixins/methodsMixin'
 
 export default {
   components: {
     Confirm,
-    // HiveIcon,
+    HiveIcon,
     Layout,
   },
+  mixins: [readApiariesAndGroupsIfNotPresent],
   // mixins: [readHiveTags],
   data: function() {
     return {
@@ -139,7 +140,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('hives', ['hiveTags']),
+    ...mapGetters('hives', ['hivesObject', 'hiveTags']),
+    ...mapGetters('locations', ['apiaries']),
+    ...mapGetters('groups', ['groups']),
     mobile() {
       return this.$vuetify.breakpoint.mobile
     },
@@ -160,6 +163,9 @@ export default {
     },
   },
   created() {
+    this.readApiariesAndGroupsIfNotPresent().then(() => {
+      this.ready = true
+    })
     // if (this.hiveTags.length === 0) {
     //   this.readHiveTags().then(() => {
     //     if (this.hiveTags.length === 0) {
@@ -168,7 +174,7 @@ export default {
     //     this.ready = true
     //   })
     // } else {
-    this.ready = true
+    // this.ready = true
     // }
   },
   methods: {
@@ -237,7 +243,7 @@ export default {
 .hivetags-content {
   margin-top: 75px;
   @include for-phone-only {
-    margin-top: 40px;
+    margin-top: 50px;
   }
 }
 
@@ -258,13 +264,25 @@ export default {
 }
 
 .hivetag-id {
-  font-size: 19px;
+  font-size: 35px;
   font-weight: bold;
   color: $color-accent;
   z-index: 1;
-  margin-left: -29px;
+  margin-left: -60px;
+  width: 60px;
+  @include for-phone-only {
+    font-size: 19px;
+    margin-left: -36px;
+    width: 36px;
+  }
 }
 
+.hive-icon-wrapper {
+  max-width: 200px;
+  @include for-phone-only {
+    max-width: 100px;
+  }
+}
 // .td--not-active {
 //   opacity: 0.5;
 // }

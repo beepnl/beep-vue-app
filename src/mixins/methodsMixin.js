@@ -246,6 +246,10 @@ export const readApiariesAndGroups = {
           'groups/setInvitations',
           responseGroups.data.invitations
         )
+        this.setHivesObject(
+          responseApiaries.data.locations,
+          responseGroups.data.groups
+        )
         return true
       } catch (error) {
         if (error.response) {
@@ -254,6 +258,40 @@ export const readApiariesAndGroups = {
           console.log('Error: ', error)
         }
       }
+    },
+    setHivesObject(apiaries, groups) {
+      const ownHivesArray = []
+      apiaries.forEach((apiary) => {
+        apiary.hives.forEach((hive) => {
+          hive.label = hive.name
+          ownHivesArray.push(hive)
+        })
+      })
+
+      const sharedHivesArray = []
+      groups.forEach((group) => {
+        group.hives.forEach((hive) => {
+          hive.label = hive.name
+          hive.group_name = group.name
+          sharedHivesArray.push(hive)
+        })
+      })
+
+      const allHives = ownHivesArray.concat(sharedHivesArray)
+
+      var uniqueHives = {}
+      const map = new Map()
+      for (const item of allHives) {
+        if (!map.has(item.id)) {
+          map.set(item.id, true) // set any value to Map
+          uniqueHives[item.id] = item
+        }
+      }
+
+      this.$store.commit('hives/setData', {
+        prop: 'hivesObject',
+        value: uniqueHives,
+      })
     },
   },
 }
@@ -275,6 +313,10 @@ export const readApiariesAndGroupsIfNotPresent = {
             'groups/setInvitations',
             responseGroups.data.invitations
           )
+          this.setHivesObject(
+            responseApiaries.data.locations,
+            responseGroups.data.groups
+          )
           return true
         } catch (error) {
           if (error.response) {
@@ -286,6 +328,40 @@ export const readApiariesAndGroupsIfNotPresent = {
       } else {
         return true
       }
+    },
+    setHivesObject(apiaries, groups) {
+      const ownHivesArray = []
+      apiaries.forEach((apiary) => {
+        apiary.hives.forEach((hive) => {
+          hive.label = hive.name
+          ownHivesArray.push(hive)
+        })
+      })
+
+      const sharedHivesArray = []
+      groups.forEach((group) => {
+        group.hives.forEach((hive) => {
+          hive.label = hive.name
+          hive.group_name = group.name
+          sharedHivesArray.push(hive)
+        })
+      })
+
+      const allHives = ownHivesArray.concat(sharedHivesArray)
+
+      var uniqueHives = {}
+      const map = new Map()
+      for (const item of allHives) {
+        if (!map.has(item.id)) {
+          map.set(item.id, true) // set any value to Map
+          uniqueHives[item.id] = item
+        }
+      }
+
+      this.$store.commit('hives/setData', {
+        prop: 'hivesObject',
+        value: uniqueHives,
+      })
     },
   },
 }
