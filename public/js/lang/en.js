@@ -476,6 +476,7 @@ const translations = {
   Hive_honey_layer: 'Honey layer | Honey layers',
   Hive_queen_excluder_layer: 'Queen excluder | Queen excluders',
   Hive_feeding_box_layer: 'Feeding box | Feeding boxes',
+  overrides_layer_colors: 'overrides layer colors',
   drag_layers: 'Drag layers to configure hive',
   page: 'page | pages',
   Page: 'Page | Pages',
