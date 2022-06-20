@@ -86,7 +86,7 @@
               <p
                 v-text="
                   queen
-                    ? momentAge(queen.created_at)
+                    ? momentAge(queen.birth_date)
                     : `0` + ` ${$t('years_old')}`
                 "
               >
@@ -243,8 +243,8 @@ export default {
       }
     },
     queenMarkColor() {
-      if (this.queen && this.queen.created_at) {
-        const lastDigit = this.momentLastDigitOfYear(this.queen.created_at)
+      if (this.queen && this.queen.birth_date) {
+        const lastDigit = this.momentLastDigitOfYear(this.queen.birth_date)
         return this.queen_colors[lastDigit]
       } else {
         const lastDigit = this.momentLastDigitOfYear(new Date())
@@ -253,14 +253,14 @@ export default {
     },
     queenBirthDate: {
       get() {
-        if (this.queen && this.queen.created_at !== null) {
-          return this.momentifyRemoveTime(this.queen.created_at)
+        if (this.queen && this.queen.birth_date !== null) {
+          return this.momentifyRemoveTime(this.queen.birth_date)
         } else {
           return ''
         }
       },
       set(value) {
-        this.updateQueen(value, 'created_at')
+        this.updateQueen(value, 'birth_date')
       },
     },
     queenClipped: {
@@ -358,7 +358,7 @@ export default {
       if (property === 'name' && value !== null && value.length > 31) {
         value = value.substring(0, 30)
       }
-      if (property === 'created_at') {
+      if (property === 'birth_date') {
         this.useQueenMarkColor = true
       } else if (property === 'color') {
         this.useQueenMarkColor = false

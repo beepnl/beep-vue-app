@@ -476,6 +476,7 @@ const translations = {
   Hive_honey_layer: 'Skattekasse | Skattekasse ',
   Hive_queen_excluder_layer: 'Dronninggitter | Dronninggittere',
   Hive_feeding_box_layer: 'Forkar | Forkar',
+  overrides_layer_colors: 'overrides layer colors', // to be translated
   drag_layers: 'Dra lagene for å konfigurere bikuben',
   page: 'side | sider',
   Page: 'Side | Sider',

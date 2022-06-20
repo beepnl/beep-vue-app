@@ -503,6 +503,7 @@ const translations = {
   Hive_honey_layer: 'Honingkamer | Honingkamers',
   Hive_queen_excluder_layer: 'Koninginnenrooster | Koninginnenroosters',
   Hive_feeding_box_layer: 'Voederbak | Voederbakken',
+  overrides_layer_colors: 'overschrijft kamerkleuren',
   drag_layers: 'Versleep kamers om bijenkast te configureren',
   page: "pagina | pagina's",
   Page: "Pagina | Pagina's",

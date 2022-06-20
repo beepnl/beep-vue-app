@@ -244,6 +244,7 @@ export default {
       },
       activeHive: null,
       emptyQueen: {
+        birth_date: null,
         clipped: null,
         color: null,
         created_at: null,
