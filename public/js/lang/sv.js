@@ -734,7 +734,7 @@ const translations = {
   delete_selected_alerts_warning:
     'Are you sure you want to delete the selected alert? This cannot be undone. | Are you sure you want to delete the selected alerts? This cannot be undone.', // to be translated
   delete_selected_alerts_invisible_checked_warning:
-    'Please note: there are selected alerts that do not match your search term, those will be deleted as well.', // to be translated
+    'Please note: the selected alert does not match your search term. | Please note: there are selected alerts that do not match your search term, those will be deleted as well.', // to be translated
   already_verified:
     'Jag har verifierat min email adress och skulle vilja logga in',
   password_recovery_resend_mail: 'Skicka en ny verifikationskod',

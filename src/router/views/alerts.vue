@@ -505,7 +505,11 @@ export default {
               this.selectedAlerts.length
             ) +
             (this.invisibleChecked
-              ? this.$i18n.t('delete_selected_alerts_invisible_checked_warning')
+              ? ' ' +
+                this.$i18n.tc(
+                  'delete_selected_alerts_invisible_checked_warning',
+                  this.selectedAlerts.length
+                )
               : '')
       this.$refs.confirm
         .open(
@@ -554,7 +558,11 @@ export default {
     },
     toggleAllFiltered() {
       if (!this.allFilteredChecked) {
-        this.selectedAlerts = this.filteredAlertsIds
+        this.filteredAlerts.map((alert) => {
+          if (!this.isSelected(alert.id)) {
+            this.selectedAlerts.push(alert.id)
+          }
+        })
       } else {
         this.filteredAlerts.map((alert) => {
           this.selectedAlerts.splice(this.selectedAlerts.indexOf(alert.id), 1)
@@ -562,7 +570,7 @@ export default {
       }
     },
     toggleCheckbox(alertId) {
-      if (this.selectedAlerts.indexOf(alertId) === -1) {
+      if (!this.isSelected(alertId)) {
         this.selectedAlerts.push(alertId)
       } else {
         this.selectedAlerts.splice(this.selectedAlerts.indexOf(alertId), 1)

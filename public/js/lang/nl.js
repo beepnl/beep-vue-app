@@ -695,7 +695,7 @@ const translations = {
   delete_selected_alerts_warning:
     'Weet u zeker dat u de geselecteerde notificatie wilt verwijderen? Dit kan niet ongedaan gemaakt worden. | Weet u zeker dat u de geselecteerde notificaties wilt verwijderen? Dit kan niet ongedaan gemaakt worden.',
   delete_selected_alerts_invisible_checked_warning:
-    'N.B.: er zijn geselecteerde notificaties die niet aan je zoekterm voldoen, deze zullen ook verwijderd worden.',
+    'N.B.: de geselecteerde notificatie voldoet niet aan je zoekterm. | N.B.: er zijn geselecteerde notificaties die niet aan je zoekterm voldoen, deze zullen ook verwijderd worden.',
   already_verified: 'Ik heb mijn e-mailadres gevalideerd en wil graag inloggen',
   password_recovery_resend_mail: 'Verstuur code opnieuw',
   alert_rule_created: 'Nieuwe notificatie ingesteld',

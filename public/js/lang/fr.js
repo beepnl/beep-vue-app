@@ -860,7 +860,7 @@ const translations = {
   delete_selected_alerts_warning:
     'Are you sure you want to delete the selected alert? This cannot be undone. | Are you sure you want to delete the selected alerts? This cannot be undone.', // to be translated
   delete_selected_alerts_invisible_checked_warning:
-    'Please note: there are selected alerts that do not match your search term, those will be deleted as well.', // to be translated
+    'Please note: the selected alert does not match your search term. | Please note: there are selected alerts that do not match your search term, those will be deleted as well.', // to be translated
   already_verified: "J'ai confirmé mon adresse mail, je veux m'identifier",
   password_recovery_resend_mail: 'Envoyer un nouveau code de vérification',
   alert_rule_created: "La nouvelle règle d'alerte a été créée",
