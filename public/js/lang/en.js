@@ -854,6 +854,12 @@ const translations = {
   Edit_checklist: 'Edit checklist',
   Edit_devices: 'Edit devices',
   Edit_consent: 'Edit consent',
+  Edit_hivetag: 'Edit hive tag',
+
+  Hivetag: 'Hive tag | Hive tags',
+  qrcode: 'QR Code | QR Codes',
+  Download_hivetags: 'Download hive tag pdf',
+  delete_hivetag: 'Delete hive tag',
 }
 
 export default translations

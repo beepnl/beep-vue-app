@@ -10,6 +10,17 @@ export const state = {
     {
       id: '01',
       url: {
+        name: 'home',
+        query: {
+          search: 'id=609',
+        },
+      },
+      hive_id: 609,
+      description: 'Show hive card in overview',
+    },
+    {
+      id: '02',
+      url: {
         name: 'inspect',
         query: {
           hive_id: 609,
@@ -17,6 +28,39 @@ export const state = {
       },
       hive_id: 609,
       description: 'Create a new inspection',
+    },
+    {
+      id: '03',
+      url: {
+        name: 'hive-inspections',
+        params: {
+          id: 609,
+        },
+      },
+      hive_id: 609,
+      description: 'View inspections',
+    },
+    {
+      id: '04',
+      url: {
+        name: 'hive-edit',
+        params: {
+          id: 609,
+        },
+      },
+      hive_id: 609,
+      description: 'Edit hive configuration',
+    },
+    {
+      id: '05',
+      url: {
+        name: 'measurements-id',
+        params: {
+          id: 299,
+        },
+      },
+      hive_id: 609,
+      description: 'View measurements',
     },
   ],
 }

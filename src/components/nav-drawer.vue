@@ -163,6 +163,12 @@ export default {
           beepBaseRequired: false,
         },
         {
+          icon: 'mdi-qrcode',
+          title: this.$i18n.tc('Hivetag', 2),
+          route: 'hivetags',
+          beepBaseRequired: false,
+        },
+        {
           icon: 'mdi-school',
           title: this.$i18n.t('research'),
           route: 'research',

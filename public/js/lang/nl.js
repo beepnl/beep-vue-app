@@ -879,6 +879,12 @@ const translations = {
   Edit_checklist: 'Aanpassen kastkaart',
   Edit_devices: 'Aanpassen meetsystemen',
   Edit_consent: 'Aanpassen toestemming',
+  Edit_hivetag: 'Aanpassen hive tag',
+
+  Hivetag: 'Hive tag | Hive tags',
+  qrcode: 'QR Code | QR Codes',
+  Download_hivetags: 'Download hive tags pdf',
+  delete_hivetag: 'Verwijder hive tag',
 }
 
 export default translations
