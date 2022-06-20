@@ -355,6 +355,13 @@ export default {
           .length === 0
       )
     },
+    invisibleChecked() {
+      return (
+        this.alerts.filter(
+          (alert) => this.isSelected(alert.id) && !this.isFiltered(alert.id)
+        ).length > 0
+      )
+    },
     filteredAlerts() {
       var textFilteredAlerts = []
       if (this.search === null) {
@@ -382,6 +389,9 @@ export default {
         })
       }
       return textFilteredAlerts.filter((x) => x !== undefined)
+    },
+    filteredAlertsIds() {
+      return this.filteredAlerts.map((alert) => alert.id)
     },
     hives() {
       const ownHivesArray = []
@@ -493,7 +503,10 @@ export default {
           : this.$i18n.tc(
               'delete_selected_alerts_warning',
               this.selectedAlerts.length
-            )
+            ) +
+            (this.invisibleChecked
+              ? this.$i18n.t('delete_selected_alerts_invisible_checked_warning')
+              : '')
       this.$refs.confirm
         .open(
           this.allChecked
@@ -529,6 +542,9 @@ export default {
         (measurementType) => measurementType.id === measurementId
       )[0].unit
     },
+    isFiltered(alertId) {
+      return this.filteredAlertsIds.indexOf(alertId) > -1
+    },
     isSelected(alertId) {
       return this.selectedAlerts.indexOf(alertId) > -1
     },
@@ -538,7 +554,7 @@ export default {
     },
     toggleAllFiltered() {
       if (!this.allFilteredChecked) {
-        this.selectedAlerts = this.filteredAlerts.map((alert) => alert.id)
+        this.selectedAlerts = this.filteredAlertsIds
       } else {
         this.filteredAlerts.map((alert) => {
           this.selectedAlerts.splice(this.selectedAlerts.indexOf(alert.id), 1)
