@@ -13,7 +13,7 @@
           >
             <v-col class="pa-3 d-flex justify-start">
               <v-checkbox
-                :value="allFilteredChecked"
+                :input-value="allFilteredChecked"
                 class="ma-0"
                 hide-details
                 @change="toggleAllFiltered"
@@ -351,6 +351,7 @@ export default {
     },
     allFilteredChecked() {
       return (
+        this.filteredAlerts.length !== 0 &&
         this.filteredAlerts.filter((alert) => !this.isSelected(alert.id))
           .length === 0
       )
