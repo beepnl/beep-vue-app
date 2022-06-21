@@ -96,57 +96,64 @@ export default {
   },
   methods: {
     back: function() {
-      if (
-        ((this.$route.name === 'apiary-create' ||
-          this.$route.name === 'apiary-edit' ||
-          this.$route.name === 'apiary-management') &&
-          this.apiaryEdited) ||
-        ((this.$route.name === 'group-create' ||
-          this.$route.name === 'group-edit') &&
-          this.groupEdited) ||
-        (this.$route.name === 'hive-edit' && this.hiveEdited) ||
-        (this.$route.name === 'inspect' && this.inspectionEdited) ||
-        (this.$route.name === 'alertrule-edit' && this.alertRuleEdited) ||
-        ((this.$route.name === 'checklist' ||
-          this.$route.name === 'research' ||
-          this.$route.name === 'devices') &&
-          this.edited)
-      ) {
-        this.$refs.confirm
-          .open(
-            this.$i18n.t('unsaved_changes'),
-            this.$i18n.t('save_changes'),
-            {
-              color: 'red',
-            },
-            this.warningMessage
-          )
-          .then((confirm) => {
-            this.$router.go(-1)
-          })
-          .catch((reject) => {
-            return true
-          })
-        // in alertrules view don't return to edit or copy alertrule view if that was previous route but go to route previous to first entering alertrules view
-        // (or to alerts if alertrule-edit was visited directly from there)
-      } else if (
-        localStorage.beepPreviousRoute === 'alertrule-edit' ||
-        localStorage.beepPreviousRoute === 'alertrule-create' ||
-        localStorage.beepPreviousRoute === 'alertrules-default'
-      ) {
+      // remove hive_index query if it was present for the previous route, to prevent endless redirect loop
+      if (localStorage.beepPreviousQueryHiveIndex !== 'undefined') {
         this.$router.push({
-          name: localStorage.beepAlertRulesBack,
-        })
-      } else if (
-        this.$route.name === 'hive-inspections' &&
-        localStorage.beepInspectionsBack !== undefined
-      ) {
-        this.$router.push({
-          name: localStorage.beepInspectionsBack,
-          query: this.query,
+          name: localStorage.beepPreviousRoute,
         })
       } else {
-        this.$router.go(-1)
+        if (
+          ((this.$route.name === 'apiary-create' ||
+            this.$route.name === 'apiary-edit' ||
+            this.$route.name === 'apiary-management') &&
+            this.apiaryEdited) ||
+          ((this.$route.name === 'group-create' ||
+            this.$route.name === 'group-edit') &&
+            this.groupEdited) ||
+          (this.$route.name === 'hive-edit' && this.hiveEdited) ||
+          (this.$route.name === 'inspect' && this.inspectionEdited) ||
+          (this.$route.name === 'alertrule-edit' && this.alertRuleEdited) ||
+          ((this.$route.name === 'checklist' ||
+            this.$route.name === 'research' ||
+            this.$route.name === 'devices') &&
+            this.edited)
+        ) {
+          this.$refs.confirm
+            .open(
+              this.$i18n.t('unsaved_changes'),
+              this.$i18n.t('save_changes'),
+              {
+                color: 'red',
+              },
+              this.warningMessage
+            )
+            .then((confirm) => {
+              this.$router.go(-1)
+            })
+            .catch((reject) => {
+              return true
+            })
+          // in alertrules view don't return to edit or copy alertrule view if that was previous route but go to route previous to first entering alertrules view
+          // (or to alerts if alertrule-edit was visited directly from there)
+        } else if (
+          localStorage.beepPreviousRoute === 'alertrule-edit' ||
+          localStorage.beepPreviousRoute === 'alertrule-create' ||
+          localStorage.beepPreviousRoute === 'alertrules-default'
+        ) {
+          this.$router.push({
+            name: localStorage.beepAlertRulesBack,
+          })
+        } else if (
+          this.$route.name === 'hive-inspections' &&
+          localStorage.beepInspectionsBack !== undefined
+        ) {
+          this.$router.push({
+            name: localStorage.beepInspectionsBack,
+            query: this.query,
+          })
+        } else {
+          this.$router.go(-1)
+        }
       }
     },
   },
