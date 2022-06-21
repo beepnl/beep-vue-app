@@ -169,7 +169,7 @@ const translations = {
   Inspection: 'Visita | Visite',
   New_inspection: 'Nuova visita',
   Edit_inspection: 'Modifica visita',
-  Actions: 'Azioni',
+  Action: 'Azione | Azioni',
   Conditions: 'Condizioni (visitate)',
   edit: 'Modifica',
   Hive_layer_amount: 'Totale scomparti',

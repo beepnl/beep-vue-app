@@ -170,7 +170,7 @@ const translations = {
   Inspection: 'Durchsicht | Durchsichten',
   New_inspection: 'Neue Durchsicht',
   Edit_inspection: 'Bearbeite Durchsicht',
-  Actions: 'Bearbeitungen',
+  Action: 'Bearbeitung | Bearbeitungen',
   Conditions: 'Bedingungen (geprüft)',
   edit: 'Bearbeite',
   Hive_layer_amount: 'Zargenanzahl',

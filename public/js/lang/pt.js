@@ -184,7 +184,7 @@ const translations = {
   Inspection: 'Inspeção | Inspeções',
   New_inspection: 'Nova inspeção',
   Edit_inspection: 'Editar inspeção',
-  Actions: 'Ações',
+  Action: 'Ação | Ações',
   Conditions: 'Condições (inspecionada)',
   edit: 'Edição',
   Hive_layer_amount: 'Quantidade de alças',

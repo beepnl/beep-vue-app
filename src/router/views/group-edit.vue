@@ -225,7 +225,7 @@
                         {{ $t('Type') }} {{ $tc('member', 1) }}
                       </th>
                       <th class="text-center">
-                        {{ $t('Actions') }}
+                        {{ $tc('Action', 2) }}
                       </th>
                     </tr>
                   </thead>
@@ -345,7 +345,7 @@
                 ></div>
                 <div v-for="(apiary, i) in filteredApiaries" :key="i">
                   <div
-                    class="apiary-title d-flex flex-row justify-flex-start align-center"
+                    class="hive-set-title d-flex flex-row justify-flex-start align-center"
                     :style="
                       `color: ${
                         apiary.hex_color ? apiary.hex_color : ''
@@ -892,44 +892,31 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.group-edit {
-  .group-edit-name {
-    padding-top: 12px;
-    font-size: 1.6rem;
-    @include for-tablet-landscape-up {
-      font-size: 2rem;
-    }
+<style lang="scss" scoped>
+.group-edit-name {
+  padding-top: 12px;
+  font-size: 1.6rem;
+  @include for-tablet-landscape-up {
+    font-size: 2rem;
+  }
 
-    &.v-text-field input {
-      min-height: 45px !important;
-    }
+  &.v-text-field input {
+    min-height: 45px !important;
   }
-  .apiary-title {
-    width: 100%;
-    padding-bottom: 4px;
-    margin: 6px 0 16px;
-    color: $color-primary;
-    border-bottom: 1px solid $color-primary;
-    @include for-phone-only {
-      padding-bottom: 2px;
-      margin: 4px 0 10px;
-    }
+}
+.group-color {
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.3) !important;
+}
+.user-label {
+  font-size: 14px;
+  @include for-phone-only {
+    font-size: 12px;
   }
-  .group-color {
-    width: 35px;
-    height: 35px;
-    cursor: pointer;
-    border: 1px solid rgba(0, 0, 0, 0.3) !important;
-  }
-  .user-label {
-    font-size: 14px;
-    @include for-phone-only {
-      font-size: 12px;
-    }
-  }
-  .user-delete {
-    background-color: rgba(255, 0, 0, 0.2);
-  }
+}
+.user-delete {
+  background-color: rgba(255, 0, 0, 0.2);
 }
 </style>

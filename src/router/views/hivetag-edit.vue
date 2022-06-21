@@ -33,7 +33,7 @@
         </v-btn>
       </v-toolbar>
 
-      <v-container class="group-edit content-container">
+      <v-container class="content-container">
         <v-row v-if="errorMessage">
           <v-col cols="12">
             <v-alert text prominent dense type="error" color="red">
@@ -58,8 +58,79 @@
         </v-row>
 
         <v-row v-if="hiveTag">
-          <v-col cols="12">
+          <v-col cols="12" sm="6" md="3">
+            <div class="overline mb-3">{{ $tc('Hivetag', 1) }}</div>
+            <div
+              class="beep-label mb-3"
+              v-text="$t('Qrcode_exp1') + hiveTag.tag + $t('Qrcode_exp2')"
+            ></div>
+            <div class="hivetag-wrapper">
+              <div
+                class="rounded-border d-flex align-center justify-center pa-0"
+              >
+                <qrCodeIcon :text="hiveTag.tag" :x-large="true" />
+              </div>
+            </div>
+            <div class="beep-label my-3" v-text="$t('Qrcode_note')"></div>
+          </v-col>
+
+          <v-col cols="12" sm="6" md="3">
+            <div class="overline mb-3">{{ $t('Select_hivetag_option') }}</div>
+            <div
+              class="beep-label mb-3"
+              v-text="$t('Select_hivetag_option_exp')"
+            ></div>
+            <div class="rounded-border">
+              <v-simple-table>
+                <template v-slot>
+                  <tbody>
+                    <tr
+                      v-for="(hiveTagOption, index) in hiveTagOptions"
+                      :key="index"
+                      :class="
+                        hiveTagOption.id === selectedOptionId
+                          ? 'tr--active'
+                          : ''
+                      "
+                    >
+                      <!-- <td>
+                        <div class="d-flex align-center">
+
+                        </div>
+                      </td> -->
+                      <td>
+                        <div class="d-flex align-center justify-start">
+                          <v-checkbox
+                            class="mr-2"
+                            :input-value="hiveTagOption.id === selectedOptionId"
+                            @click="selectHiveTagOption(hiveTagOption)"
+                          ></v-checkbox>
+                          <router-link
+                            v-if="hiveTag.hive_id !== null"
+                            :to="hiveTagOption.routerLink"
+                          >
+                            <span v-text="hiveTagOption.description"></span>
+                          </router-link>
+                          <span
+                            v-else
+                            v-text="hiveTagOption.description"
+                          ></span>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </template>
+              </v-simple-table>
+            </div>
+          </v-col>
+
+          <v-col cols="12" md="6" class="my-3 mt-md-0">
             <div class="overline mb-3">{{ $t('Select_hive') }}</div>
+            <div
+              v-if="!showApiaryPlaceholder"
+              class="beep-label mb-3"
+              v-text="$t('Select_hive_for_hivetag_exp')"
+            ></div>
             <div class="rounded-border">
               <div
                 v-if="showApiaryPlaceholder"
@@ -82,13 +153,9 @@
                 </router-link>
               </div>
               <div v-if="!showApiaryPlaceholder">
-                <div
-                  class="beep-label mt-1 mb-3 mb-sm-4"
-                  v-text="$t('Select_hive_for_hivetag_exp')"
-                ></div>
                 <div v-for="(hiveSet, i) in sortedHiveSets" :key="i">
                   <div
-                    class="apiary-title d-flex flex-row justify-flex-start align-center"
+                    class="hive-set-title d-flex flex-row justify-flex-start align-center"
                     :style="
                       `color: ${
                         hiveSet.hex_color ? hiveSet.hex_color : ''
@@ -157,12 +224,14 @@ import Confirm from '@components/confirm.vue'
 import { mapGetters } from 'vuex'
 import Layout from '@layouts/back.vue'
 import { readApiariesAndGroupsIfNotPresent } from '@mixins/methodsMixin'
+import qrCodeIcon from '@components/qrcode-icon.vue'
 
 export default {
   components: {
     ApiaryPreviewHiveSelector,
     Confirm,
     Layout,
+    qrCodeIcon,
   },
   mixins: [readApiariesAndGroupsIfNotPresent],
   data: function() {
@@ -181,6 +250,7 @@ export default {
       token: null,
       successMessage: null,
       hiveTag: null,
+      selectedOptionId: null,
     }
   },
   computed: {
@@ -215,15 +285,70 @@ export default {
     hiveSets() {
       return this.apiaries.concat(this.groups)
     },
+    hiveTagOptions() {
+      return [
+        {
+          id: 1,
+          routerLink: {
+            name: 'home',
+            query: {
+              search: 'id=' + this.hiveTag.hive_id,
+            },
+          },
+          description: this.$i18n.t('Hivetag_hive_in_overview'),
+        },
+        {
+          id: 2,
+          routerLink: {
+            name: 'inspect',
+            query: {
+              hive_id: this.hiveTag.hive_id,
+            },
+          },
+          description: this.$i18n.t('Hivetag_new_inspection'),
+        },
+        {
+          id: 3,
+          routerLink: {
+            name: 'hive-inspections',
+            params: {
+              id: this.hiveTag.hive_id,
+            },
+          },
+          description: this.$i18n.tc('View_inspection', 2),
+        },
+        {
+          id: 4,
+          routerLink: {
+            name: 'hive-edit',
+            params: {
+              id: this.hiveTag.hive_id,
+            },
+          },
+          description: this.$i18n.t('Hivetag_edit_hive'),
+        },
+        // {
+        //   id: 5,
+        //   routerLink: {
+        //     name: 'measurements-id',
+        //     params: {
+        //       id: 299, // TODO: get device_id
+        //     },
+        //   },
+        //   description: this.$i18n.t('View_measurements'),
+        // },
+      ]
+    },
     mobile() {
       return this.$vuetify.breakpoint.mobile
     },
     showApiaryPlaceholder() {
-      return this.apiaries.length === 0
+      return this.hiveSets.length === 0
     },
     sortedHiveSets() {
       const sortedHiveSets = this.hiveSets
         .slice()
+        .filter((hiveSet) => hiveSet.hives.length > 0)
         .sort(function(a, b) {
           if (a.name > b.name) {
             return 1
@@ -253,10 +378,11 @@ export default {
   },
   created() {
     this.readApiariesAndGroupsIfNotPresent().then((response) => {
-      var filteredHiveTags = this.hiveTags
-        .slice()
-        .filter((hiveTag) => hiveTag.tag === this.tag)
-      this.hiveTag = filteredHiveTags.length === 0 ? null : filteredHiveTags[0]
+      var filteredHiveTags = this.hiveTags.filter(
+        (hiveTag) => hiveTag.tag === this.tag
+      )
+      this.hiveTag =
+        filteredHiveTags.length === 0 ? null : { ...filteredHiveTags[0] }
 
       // If Group-create route is used, make empty Group object
       // if (this.createMode) {
@@ -508,6 +634,11 @@ export default {
       this.hiveTag.hive_id = id
       this.setHiveTagEdited(true)
     },
+    selectHiveTagOption(option) {
+      this.selectedOptionId = option.id
+      this.hiveTag.router_link = option.routerLink
+      this.hiveTag.description = option.description
+    },
     setHiveTagEdited(bool) {
       this.$store.commit('hives/setData', {
         prop: 'hiveTagEdited',
@@ -518,44 +649,15 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.group-edit {
-  .group-edit-name {
-    padding-top: 12px;
-    font-size: 1.6rem;
-    @include for-tablet-landscape-up {
-      font-size: 2rem;
-    }
+<style lang="scss" scoped>
+.hivetag-wrapper {
+  width: 180px;
+  @include for-phone-only {
+    width: 135px;
+  }
+}
 
-    &.v-text-field input {
-      min-height: 45px !important;
-    }
-  }
-  .apiary-title {
-    width: 100%;
-    padding-bottom: 4px;
-    margin: 6px 0 16px;
-    color: $color-primary;
-    border-bottom: 1px solid $color-primary;
-    @include for-phone-only {
-      padding-bottom: 2px;
-      margin: 4px 0 10px;
-    }
-  }
-  .group-color {
-    width: 35px;
-    height: 35px;
-    cursor: pointer;
-    border: 1px solid rgba(0, 0, 0, 0.3) !important;
-  }
-  .user-label {
-    font-size: 14px;
-    @include for-phone-only {
-      font-size: 12px;
-    }
-  }
-  .user-delete {
-    background-color: rgba(255, 0, 0, 0.2);
-  }
+.tr--active {
+  background-color: $color-orange-light;
 }
 </style>

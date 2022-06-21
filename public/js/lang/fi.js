@@ -183,7 +183,7 @@ const translations = {
   Inspection: 'Tarkastus | Tarkastukset',
   New_inspection: 'Uusi tarkastus',
   Edit_inspection: 'Muokkaa tarkastusta',
-  Actions: 'Toimenpiteet',
+  Action: 'Toiminta | Toimenpiteet',
   Conditions: 'Olosuhteet (tarkastettu)',
   edit: 'Muokkaa',
   // Hive_brood_layers: 'Sikiö osastot',

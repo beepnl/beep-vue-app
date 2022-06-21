@@ -165,7 +165,7 @@ const translations = {
   Inspection: 'Inspection | Inspections',
   New_inspection: 'New inspection',
   Edit_inspection: 'Edit inspection',
-  Actions: 'Actions',
+  Action: 'Action | Actions',
   edit: 'Edit',
   Hive_layer_amount: 'Number of layers',
   Bee_race: 'Bee race',

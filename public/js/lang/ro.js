@@ -169,7 +169,7 @@ const translations = {
   Inspection: 'Inspecție | Inspecții',
   New_inspection: 'Inspecție nouă',
   Edit_inspection: 'Editați inspecția',
-  Actions: 'Actiune',
+  Action: 'Acțiune | Acțiuni',
   Conditions: 'Condiții(inspectate)',
   edit: 'Editare',
   // Hive_brood_layers: 'Straturi cu puiet',

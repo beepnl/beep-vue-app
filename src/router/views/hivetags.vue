@@ -1,5 +1,5 @@
 <template>
-  <Layout :title="this.$i18n.tc('Hivetag', 2)">
+  <Layout :title="$tc('Hivetag', 2)">
     <div v-if="ready" class="filter-bar-wrapper">
       <v-container class="filter-container">
         <v-row class="filter-bar d-flex align-center">
@@ -31,8 +31,9 @@
     <v-container v-if="ready" class="hivetags-content">
       <v-row>
         <v-col cols="12">
+          <div class="overline mb-3">{{ $tc('Hivetag', 2) }}</div>
           <div class="rounded-border">
-            <v-simple-table class="v-data-table--smallfont">
+            <v-simple-table>
               <template v-slot>
                 <thead>
                   <tr>
@@ -43,10 +44,10 @@
                       {{ $tc('Hive', 1) }}
                     </th>
                     <th class="text-left">
-                      {{ $t('Description') }}
+                      {{ $tc('Action', 1) }}
                     </th>
                     <th class="text-left">
-                      {{ $t('Actions') }}
+                      {{ $t('edit') }}
                     </th>
                     <th></th>
                   </tr>
@@ -54,15 +55,7 @@
                 <tbody>
                   <tr v-for="(hiveTag, index) in sortedHiveTags" :key="index">
                     <td>
-                      <div class="d-flex align-center">
-                        <v-icon class="hivetag-icon" :size="mobile ? 36 : 60"
-                          >mdi-qrcode
-                        </v-icon>
-                        <span
-                          class="hivetag-id text-center"
-                          v-text="hiveTag.tag"
-                        ></span>
-                      </div>
+                      <qrCodeIcon :text="hiveTag.tag" />
                     </td>
                     <td>
                       <!-- <span v-text="hiveTag.hive_id"></span> -->
@@ -122,6 +115,7 @@ import HiveIcon from '@components/hive-icon.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
 import { readApiariesAndGroupsIfNotPresent } from '@mixins/methodsMixin'
+import qrCodeIcon from '@components/qrcode-icon.vue'
 // import { readHiveTags } from '@mixins/methodsMixin'
 
 export default {
@@ -129,6 +123,7 @@ export default {
     Confirm,
     HiveIcon,
     Layout,
+    qrCodeIcon,
   },
   mixins: [readApiariesAndGroupsIfNotPresent],
   // mixins: [readHiveTags],
@@ -254,26 +249,6 @@ export default {
   }
   &--border-bottom {
     border-bottom: 1px solid $color-grey-light;
-  }
-}
-
-.hivetag-icon {
-  z-index: 0;
-  color: $color-beige !important;
-  caret-color: $color-beige !important;
-}
-
-.hivetag-id {
-  font-size: 35px;
-  font-weight: bold;
-  color: $color-accent;
-  z-index: 1;
-  margin-left: -60px;
-  width: 60px;
-  @include for-phone-only {
-    font-size: 19px;
-    margin-left: -36px;
-    width: 36px;
   }
 }
 

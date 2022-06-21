@@ -136,7 +136,7 @@ const translations = {
   Inspection: 'Inspeksjon | Inspeksjoner',
   New_inspection: 'Ny inspeksjon',
   Edit_inspection: 'Rediger inspeksjon',
-  Actions: 'Handlinger',
+  Action: 'Handling | Handlinger',
   edit: 'Rediger',
   Bee_race: 'Bi rase',
   Birth_date: 'Fødselsdato',

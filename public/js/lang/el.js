@@ -168,7 +168,7 @@ const translations = {
   Inspection: 'Επιθεώρηση | Επιθεωρήσεις',
   New_inspection: 'Νέα επιθεώρηση',
   Edit_inspection: 'Επεξεργασία επιθεώρησης',
-  Actions: 'Ενέργειες',
+  Action: 'Ενέργεια | Ενέργειες',
   edit: 'Επεξεργασία',
   Hive_layer_amount: 'Number of layers',
   Bee_race: 'Bee race',

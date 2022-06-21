@@ -150,7 +150,7 @@ const translations = {
   Inspection: 'Inspectie | Inspecties',
   New_inspection: 'Nieuwe inspectie',
   Edit_inspection: 'Inspectie aanpassen',
-  Actions: 'Acties',
+  Action: 'Actie | Acties',
   Conditions: 'Bevindingen (geïnspecteerd)',
   edit: 'Aanpassen',
   Bee_race: 'Bijenras',
@@ -884,11 +884,21 @@ const translations = {
 
   Hivetag: 'Hive tag | Hive tags',
   qrcode: 'QR Code | QR Codes',
+  Qrcode_exp1: "Plak de hive tag met cijfer '",
+  Qrcode_exp2: "' op een bijenkast.",
+  Qrcode_note:
+    'N.B. Bovenstaande QR code komt niet overeen met de daadwerkelijke hive tag, deze is slechts als voorbeeld bedoeld.',
   Download_hivetags: 'Download hive tags pdf',
   delete_hivetag: 'Verwijder hive tag',
   Select_hive: 'Selecteer een bijenkast',
   Select_hive_for_hivetag_exp:
-    'Welke bijenkast wil je selecteren? Selecteer één bijenkast waarmee je de onderstaande actie wilt uitvoeren.',
+    'Voor welke bijenkast wil je de actie uitvoeren? Selecteer één bijenkast.',
+  Select_hivetag_option: 'Selecteer een actie',
+  Select_hivetag_option_exp:
+    'Welke actie wil je uitvoeren wanneer je de hive tag scant?',
+  Hivetag_hive_in_overview: 'Toon bijenkast in het kastenoverzicht',
+  Hivetag_new_inspection: 'Maak een nieuwe inspectie aan',
+  Hivetag_edit_hive: 'Pas kastconfiguratie aan',
 }
 
 export default translations

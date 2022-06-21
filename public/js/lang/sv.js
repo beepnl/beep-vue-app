@@ -164,7 +164,7 @@ const translations = {
   Inspection: 'Inspektion | Inspektioner',
   New_inspection: 'Ny inspektion',
   Edit_inspection: 'Redigera inspektion',
-  Actions: 'Åtgärder',
+  Action: 'Handling | Åtgärder',
   edit: 'Redigera',
   Hive_layer_amount: 'Antal lådor',
   Bee_race: 'Biras',

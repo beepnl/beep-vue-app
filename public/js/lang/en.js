@@ -136,7 +136,7 @@ const translations = {
   Inspection: 'Inspection | Inspections',
   New_inspection: 'New inspection',
   Edit_inspection: 'Edit inspection',
-  Actions: 'Actions',
+  Action: 'Action | Actions',
   edit: 'Edit',
   Bee_race: 'Bee race',
   Birth_date: 'Birth date',
@@ -859,11 +859,21 @@ const translations = {
 
   Hivetag: 'Hive tag | Hive tags',
   qrcode: 'QR Code | QR Codes',
+  Qrcode_exp1: "Attach the hive tag with number '",
+  Qrcode_exp2: "' to a hive.",
+  Qrcode_note:
+    'Please note: the above QR code is not the actual hive tag, it is only meant as an example.',
   Download_hivetags: 'Download hive tag pdf',
   delete_hivetag: 'Delete hive tag',
   Select_hive: 'Select a hive',
   Select_hive_for_hivetag_exp:
-    'Which hive would you like to select? Select one hive, with which you would like to execute the action below.',
+    'For which hive would you like to perform the action? Select one hive.',
+  Select_hivetag_option: 'Select an action',
+  Select_hivetag_option_exp:
+    'Which action would you plike to perform, after scanning the QR code?',
+  Hivetag_hive_in_overview: 'Show hive in hives overview',
+  Hivetag_new_inspection: 'Create a new inspection',
+  Hivetag_edit_hive: 'Edit hive configuration',
 }
 
 export default translations

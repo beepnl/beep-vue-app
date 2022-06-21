@@ -190,7 +190,7 @@ const translations = {
   Inspection: 'Inspection | Inspections',
   New_inspection: 'Nouvelle inspection',
   Edit_inspection: "Modifier l'inspection",
-  Actions: 'Actions',
+  Action: 'Action | Actions',
   Conditions: 'Conditions (inspectées)',
   edit: 'Modifier',
   // Hive_brood_layers: 'Corps',

@@ -1509,20 +1509,7 @@ export default {
   &:last-child {
     margin-bottom: 10px;
   }
-  .hive-set-title {
-    width: 100%;
-    padding-bottom: 4px;
-    margin: 10px 0 16px;
-    color: $color-accent;
-    border-bottom: 1px solid $color-accent;
-    @include for-phone-only {
-      padding-bottom: 2px;
-      margin: 8px 0 10px;
-    }
-    .hive-set-caption {
-      font-weight: 600;
-    }
-  }
+
   .hive-item-transition-wrapper {
     display: flex;
     flex-wrap: wrap;

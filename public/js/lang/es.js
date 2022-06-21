@@ -169,7 +169,7 @@ const translations = {
   Inspection: 'Inspección | Inspecciones',
   New_inspection: 'Nueva Inspección',
   Edit_inspection: 'Editar inspección',
-  Actions: 'Acciones',
+  Action: 'Acción | Acciones',
   Conditions: 'Condiciones (inspeccionado)',
   edit: 'Editar',
   Hive_layer_amount: 'Cantidad de capas en la colmena',
