@@ -1092,7 +1092,10 @@ export default {
         if (hiveTag) {
           this.$router.push(hiveTag.router_link)
         } else {
-          console.log('no hive tag found for ', this.$route.query.hive_index) // TODO: redirect to hivetag-create!
+          this.$router.push({
+            name: 'hivetag-create-id',
+            id: this.$route.query.hive_index,
+          })
         }
       })
     }

@@ -253,7 +253,10 @@ export default {
     ...mapGetters('hives', ['hiveTagEdited', 'hiveTags', 'tempSavedHiveTag']),
     ...mapGetters('locations', ['apiaries']),
     createMode() {
-      return this.$route.name === 'hivetag-create'
+      return (
+        this.$route.name === 'hivetag-create' ||
+        this.$route.name === 'hivetag-create-id'
+      )
     },
     getTitle() {
       return (
@@ -353,12 +356,11 @@ export default {
       return this.$vuetify.breakpoint.mdAndUp
     },
     tag() {
-      return this.$route.params.id
+      return this.$route.params.id || null
     },
   },
   created() {
     this.readApiariesAndGroupsIfNotPresent().then((response) => {
-      // console.log(this.tempSavedHiveTag)
       if (
         this.tempSavedHiveTag !== null &&
         this.tag === this.tempSavedHiveTag.tag
@@ -366,7 +368,7 @@ export default {
         this.hiveTag = { ...this.tempSavedHiveTag }
         if (this.hiveTag.optionId !== undefined)
           this.selectedOptionId = this.hiveTag.optionId
-      } else {
+      } else if (!this.createMode) {
         this.setTempSavedHiveTag(null)
 
         var filteredHiveTags = this.hiveTags.filter(
@@ -376,32 +378,22 @@ export default {
           filteredHiveTags.length === 0 ? null : { ...filteredHiveTags[0] }
       }
 
-      // If Group-create route is used, make empty Group object
-      // if (this.createMode) {
-      //   if (this.groups.length > 0) {
-      //     this.newGroupNumber = this.groups.length + 1
-      //   }
-      //   this.hiveTag = {
-      //     hex_color: '#F8B133',
-      //     name: this.$i18n.tc('Group', 1) + ' ' + this.newGroupNumber,
-      //     description: '',
-      //     hives_selected: [],
-      //     hives_editable: [],
-      //     users: [
-      //       {
-      //         name: this.userName,
-      //         email: this.userEmail,
-      //         admin: true,
-      //         creator: true,
-      //         invited: null,
-      //       },
-      //     ],
-      //   }
-      //   this.showGroupDetails = true
-      // } else {
-      //   this.readGroup()
-      //   this.showGroupDetails = true
-      // }
+      // If hivetag-create route is used, make empty hiveTag object
+      else if (this.createMode) {
+        this.setTempSavedHiveTag(null)
+        this.hiveTag = {
+          tag: this.tag,
+          description: '',
+          optionId: null,
+          routerLink: null,
+          hive_id: null,
+        }
+
+        if (this.tag === null && this.hiveTags.length > 0) {
+          // TODO: get first unused number
+          // this.newHiveTagNumber =
+        }
+      }
     })
     this.setHiveTagEdited(false)
   },

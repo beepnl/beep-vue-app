@@ -102,7 +102,7 @@
                       </div>
                     </td>
                     <td>
-                      <router-link :to="hiveTag.url">
+                      <router-link :to="hiveTag.router_link">
                         <span v-text="hiveTag.description"></span>
                       </router-link>
                     </td>
