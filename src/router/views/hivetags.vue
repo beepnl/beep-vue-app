@@ -81,7 +81,7 @@
                       <router-link
                         :to="{
                           name: 'hivetag-edit',
-                          params: { tag: hiveTag.tag },
+                          params: { id: hiveTag.tag },
                         }"
                       >
                         <v-icon dark color="accent">mdi-pencil</v-icon>

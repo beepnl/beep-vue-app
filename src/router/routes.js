@@ -200,7 +200,7 @@ export default [
     meta: {
       authRequired: true,
     },
-    path: '/hivetags/:tag/edit',
+    path: '/hivetags/:id/edit',
     name: 'hivetag-edit',
     component: () => lazyLoadView(import('@views/hivetag-edit.vue')),
   },

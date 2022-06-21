@@ -93,11 +93,6 @@
                           : ''
                       "
                     >
-                      <!-- <td>
-                        <div class="d-flex align-center">
-
-                        </div>
-                      </td> -->
                       <td>
                         <div class="d-flex align-center justify-start">
                           <v-checkbox
@@ -255,26 +250,11 @@ export default {
   },
   computed: {
     ...mapGetters('groups', ['groups']),
-    ...mapGetters('hives', ['hiveTagEdited', 'hiveTags']),
+    ...mapGetters('hives', ['hiveTagEdited', 'hiveTags', 'tempSavedHiveTag']),
     ...mapGetters('locations', ['apiaries']),
     createMode() {
       return this.$route.name === 'hivetag-create'
     },
-    // filteredApiaries() {
-    //   const sortedAndFilledApiaries = this.apiaries
-    //     .slice()
-    //     .sort(function(a, b) {
-    //       if (a.name > b.name) {
-    //         return 1
-    //       }
-    //       if (b.name > a.name) {
-    //         return -1
-    //       }
-    //       return 0
-    //     })
-    //     .filter((x) => x.hives.length > 0)
-    //   return sortedAndFilledApiaries
-    // },
     getTitle() {
       return (
         this.$i18n.t('Edit_hivetag') +
@@ -302,7 +282,7 @@ export default {
           routerLink: {
             name: 'inspect',
             query: {
-              hive_id: this.hiveTag.hive_id,
+              hiveId: this.hiveTag.hive_id,
             },
           },
           description: this.$i18n.t('Hivetag_new_inspection'),
@@ -373,16 +353,28 @@ export default {
       return this.$vuetify.breakpoint.mdAndUp
     },
     tag() {
-      return this.$route.params.tag
+      return this.$route.params.id
     },
   },
   created() {
     this.readApiariesAndGroupsIfNotPresent().then((response) => {
-      var filteredHiveTags = this.hiveTags.filter(
-        (hiveTag) => hiveTag.tag === this.tag
-      )
-      this.hiveTag =
-        filteredHiveTags.length === 0 ? null : { ...filteredHiveTags[0] }
+      // console.log(this.tempSavedHiveTag)
+      if (
+        this.tempSavedHiveTag !== null &&
+        this.tag === this.tempSavedHiveTag.tag
+      ) {
+        this.hiveTag = { ...this.tempSavedHiveTag }
+        if (this.hiveTag.optionId !== undefined)
+          this.selectedOptionId = this.hiveTag.optionId
+      } else {
+        this.setTempSavedHiveTag(null)
+
+        var filteredHiveTags = this.hiveTags.filter(
+          (hiveTag) => hiveTag.tag === this.tag
+        )
+        this.hiveTag =
+          filteredHiveTags.length === 0 ? null : { ...filteredHiveTags[0] }
+      }
 
       // If Group-create route is used, make empty Group object
       // if (this.createMode) {
@@ -406,17 +398,6 @@ export default {
       //     ],
       //   }
       //   this.showGroupDetails = true
-      //   // Else retrieve to-be-edited Group
-      // } else if (this.acceptMode) {
-      //   this.token = this.$route.params.token || null
-      //   if (this.token) {
-      //     this.checkToken(this.token, this.id).then(() => {
-      //       if (this.errorMessage === null) {
-      //         this.readGroup()
-      //         this.showGroupDetails = true
-      //       }
-      //     })
-      //   }
       // } else {
       //   this.readGroup()
       //   this.showGroupDetails = true
@@ -638,11 +619,22 @@ export default {
       this.selectedOptionId = option.id
       this.hiveTag.router_link = option.routerLink
       this.hiveTag.description = option.description
+      this.hiveTag.optionId = option.id
+      this.setHiveTagEdited(true)
     },
     setHiveTagEdited(bool) {
       this.$store.commit('hives/setData', {
         prop: 'hiveTagEdited',
         value: bool,
+      })
+      if (bool === true) {
+        this.setTempSavedHiveTag(this.hiveTag)
+      }
+    },
+    setTempSavedHiveTag(hivetag) {
+      this.$store.commit('hives/setData', {
+        prop: 'tempSavedHiveTag',
+        value: hivetag,
       })
     },
   },

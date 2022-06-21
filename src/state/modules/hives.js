@@ -65,6 +65,7 @@ export const state = {
     },
   ],
   hiveTagEdited: false,
+  tempSavedHiveTag: null,
 }
 export const getters = {
   ...resource.getters,
@@ -86,6 +87,9 @@ export const getters = {
   hiveTagEdited: (state) => {
     return state.hiveTagEdited
   },
+  tempSavedHiveTag: (state) => {
+    return state.tempSavedHiveTag
+  },
 }
 export const mutations = {
   ...resource.mutations,
@@ -104,6 +108,7 @@ export const mutations = {
     // state.hiveTags = []
     state.hivesObject = {}
     state.hiveTagEdited = false
+    state.tempSavedHiveTag = null
   },
 }
 export const actions = {
