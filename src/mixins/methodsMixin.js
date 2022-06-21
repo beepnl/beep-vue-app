@@ -200,6 +200,65 @@ export const convertComma = {
   },
 }
 
+export const deleteHiveTag = {
+  methods: {
+    async deleteHiveTag(hiveTag) {
+      try {
+        const response = await Api.deleteRequest('/hive-tags/', hiveTag.tag)
+        if (!response) {
+          this.snackbar.text = this.$i18n.t('something_wrong')
+          this.snackbar.show = true
+        }
+        setTimeout(() => {
+          return this.readHiveTags().then(() => {
+            if (this.$router.name !== 'hivetags') {
+              this.$router.push({
+                name: 'hivetags',
+              })
+            } else {
+              if (this.hiveTags.length === 0) {
+                this.showExplanation = true
+              }
+            }
+          })
+        }, 50) // wait for API to update hive tags
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+          const msg = error.response.data.message
+          this.snackbar.text = msg
+        } else {
+          console.log('Error: ', error)
+          this.snackbar.text = this.$i18n.t('something_wrong')
+        }
+        this.snackbar.show = true
+      }
+    },
+    confirmDeleteHiveTag(hiveTag) {
+      this.$refs.confirm
+        .open(
+          this.$i18n.t('Delete_hivetag'),
+          this.$i18n.t('Delete_hivetag') +
+            ' (' +
+            hiveTag.tag +
+            (hiveTag.description
+              ? ' - ' + this.$i18n.t(hiveTag.description)
+              : '') +
+            ')?',
+          {
+            color: 'red',
+          }
+        )
+        .then((confirm) => {
+          this.deleteHiveTag(hiveTag)
+        })
+        .catch((reject) => {
+          return true
+        })
+    },
+  },
+}
+
 export const orderedLayers = {
   methods: {
     orderedLayers: function(hive) {

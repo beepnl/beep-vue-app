@@ -4,7 +4,7 @@
       <v-toolbar v-if="hiveTag" class="save-bar" dense light>
         <v-spacer></v-spacer>
         <v-icon
-          v-if="hiveTag && !createMode && !tabletLandscapeUp"
+          v-if="hiveTag && !createMode"
           dark
           class="mr-4"
           color="red"
@@ -232,6 +232,7 @@ import { mapGetters } from 'vuex'
 import Layout from '@layouts/back.vue'
 import {
   checkHiveTags,
+  deleteHiveTag,
   readApiariesAndGroupsIfNotPresent,
 } from '@mixins/methodsMixin'
 import qrCodeIcon from '@components/qrcode-icon.vue'
@@ -243,7 +244,7 @@ export default {
     Layout,
     qrCodeIcon,
   },
-  mixins: [checkHiveTags, readApiariesAndGroupsIfNotPresent],
+  mixins: [checkHiveTags, deleteHiveTag, readApiariesAndGroupsIfNotPresent],
   data: function() {
     return {
       snackbar: {
@@ -425,6 +426,9 @@ export default {
         )
         this.hiveTag =
           filteredHiveTags.length === 0 ? null : { ...filteredHiveTags[0] }
+        this.selectedOptionId = this.hiveTagOptions.filter(
+          (option) => option.description === this.hiveTag.description
+        )[0].id
       }
 
       // If hivetag-create route is used, make empty hiveTag object
@@ -464,7 +468,7 @@ export default {
                 name: 'hivetags',
               })
             })
-          }, 50) // wait for API to update groups
+          }, 50) // wait for API to update hive tags
         } catch (error) {
           if (error.response) {
             const msg = error.response.data.error
@@ -478,159 +482,40 @@ export default {
         }
       }
     },
-    async deleteHiveTag() {
-      console.log('delete hive tag') // TODO
-      // try {
-      //   const response = await Api.deleteRequest(
-      //     '/groups/',
-      //     this.hiveTag.id
-      //   )
-      //   if (!response) {
-      //     this.snackbar.text = this.$i18n.t('something_wrong')
-      //     this.snackbar.show = true
-      //   }
-      //   setTimeout(() => {
-      //     return this.readGroups().then(() => {
-      //       this.$router.push({
-      //         name: 'home',
-      //       })
-      //     })
-      //   }, 50) // wait for API to update groups
-      // } catch (error) {
-      //   if (error.response) {
-      //     console.log('Error: ', error.response)
-      //     const msg = error.response.data.message
-      //     this.snackbar.text = msg
-      //   } else {
-      //     console.log('Error: ', error)
-      //     this.snackbar.text = this.$i18n.t('something_wrong')
-      //   }
-      //   this.snackbar.show = true
-      // }
-    },
-    // async readGroup() {
-    //   try {
-    //     const response = await Api.readRequest('/groups/', this.id)
-    //     if (response.data.length === 0) {
-    //       this.$router.push({ name: '404', params: { resource: 'group' } })
-    //     }
-    //     var group = response.data
-    //     // eslint-disable-next-line camelcase
-    //     var hives_selected = []
-    //     // eslint-disable-next-line camelcase
-    //     var hives_editable = []
-    //     if (typeof group.hives !== 'undefined' && group.hives.length > 0) {
-    //       group.hives.map((hive) => {
-    //         if (hive.editable) {
-    //           hives_editable.push(hive.id)
-    //         }
-    //         hives_selected.push(hive.id)
-    //       })
-    //     }
-    //     // eslint-disable-next-line camelcase
-    //     group.hives_selected = hives_selected
-    //     // eslint-disable-next-line camelcase
-    //     group.hives_editable = hives_editable
-    //     var usersWithDeleteProp = group.users // otherwise Vue can't track the 'delete' property
-    //     usersWithDeleteProp.map((user) => {
-    //       user.delete = false
-    //     })
-    //     group.users = usersWithDeleteProp
-
-    //     this.hiveTag = group
-    //     return true
-    //   } catch (error) {
-    //     if (error.response) {
-    //       console.log(error.response)
-    //     } else {
-    //       console.log('Error: ', error)
-    //     }
-    //     this.$router.push({ name: '404', params: { resource: 'group' } })
-    //   }
-    // },
-    // async readGroups() {
-    //   try {
-    //     const response = await Api.readRequest('/groups')
-    //     this.$store.commit('groups/setGroups', response.data.groups)
-    //     this.$store.commit('groups/setInvitations', response.data.invitations)
-    //     return true
-    //   } catch (error) {
-    //     if (error.response) {
-    //       console.log(error.response)
-    //     } else {
-    //       console.log('Error: ', error)
-    //     }
-    //   }
-    // },
     async updateHiveTag() {
       if (this.$refs.form.validate()) {
-        console.log('update hive tag') // TODO
-        // this.showLoadingIcon = true
-        // var group = {
-        //   description: this.hiveTag.description,
-        //   hex_color: this.hiveTag.hex_color,
-        //   hives_editable: this.hiveTag.hives_editable,
-        //   hives_selected: this.hiveTag.hives_selected,
-        //   name: this.hiveTag.name,
-        //   users: this.hiveTag.users,
-        // }
-        // try {
-        //   const response = await Api.updateRequest(
-        //     '/groups/',
-        //     this.hiveTag.id,
-        //     group
-        //   )
-        //   if (!response) {
-        //     this.errorMessage =
-        //       this.$i18n.tc('Error', 1) + ': ' + this.$i18n.t('not_saved_error')
-        //   }
-        //   this.successMessage = response.data.message
-        //   this.showSuccessMessage = true
-        //   setTimeout(() => {
-        //     return this.readGroups().then(() => {
-        //       this.$store.commit('locations/setData', {
-        //         prop: 'hiveSearch',
-        //         value: this.hiveTag.name, // set search term via store instead of query to overrule possible stored search terms
-        //       })
-        //       this.showLoadingIcon = false
-        //       this.$router.push({
-        //         name: 'home',
-        //       })
-        //     })
-        //   }, 800) // wait for API to update groups and for user to read success message
-        // } catch (error) {
-        //   if (error.response) {
-        //     const msg = error.response.data.error
-        //     this.errorMessage = msg
-        //     this.showLoadingIcon = false
-        //     console.log(error.response)
-        //   } else {
-        //     this.errorMessage = this.$i18n.t('empty_fields')
-        //     this.showLoadingIcon = false
-        //     console.log('Error: ', error)
-        //   }
-        // }
-      }
-    },
-    confirmDeleteHiveTag(hiveTag) {
-      this.$refs.confirm
-        .open(
-          this.$i18n.t('Delete_hivetag'),
-          this.$i18n.t('Delete_hivetag') +
-            ' (' +
-            hiveTag.id +
-            (hiveTag.description ? ' - ' + hiveTag.description : '') +
-            ')?',
-          {
-            color: 'red',
+        this.showLoadingIcon = true
+        try {
+          const response = await Api.updateRequest(
+            '/hive-tags/',
+            this.hiveTag.tag,
+            this.hiveTag
+          )
+          if (!response) {
+            this.errorMessage =
+              this.$i18n.tc('Error', 1) + ': ' + this.$i18n.t('not_saved_error')
           }
-        )
-        .then((confirm) => {
-          this.deleteHiveTag(hiveTag.id)
-        })
-        .catch((reject) => {
-          return true
-        })
+          this.successMessage = response.data.message
+          this.showSuccessMessage = true
+          setTimeout(() => {
+            return this.readHiveTags().then(() => {
+              this.$router.push({
+                name: 'hivetags',
+              })
+            })
+          }, 50) // wait for API to update hive tags
+        } catch (error) {
+          if (error.response) {
+            const msg = error.response.data.error
+            this.errorMessage = msg
+            this.showLoadingIcon = false
+            console.log(error.response)
+          } else {
+            this.showLoadingIcon = false
+            console.log('Error: ', error)
+          }
+        }
+      }
     },
     getEditableHives(hiveSet) {
       return hiveSet.hives.map((hive) => hive.id)
@@ -657,7 +542,7 @@ export default {
       this.selectedOptionId = option.id
       this.hiveTag.router_link = option.routerLink
       this.hiveTag.description = option.description
-      // this.hiveTag.optionId = option.id
+      this.hiveTag.optionId = option.id
       this.setHiveTagEdited(true)
     },
     setHiveTagEdited(bool) {

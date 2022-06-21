@@ -170,13 +170,14 @@
 </template>
 
 <script>
-import Api from '@api/Api'
+// import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import HiveIcon from '@components/hive-icon.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
 import {
   checkHiveTags,
+  deleteHiveTag,
   readApiariesAndGroupsIfNotPresent,
 } from '@mixins/methodsMixin'
 import qrCodeIcon from '@components/qrcode-icon.vue'
@@ -188,7 +189,7 @@ export default {
     Layout,
     qrCodeIcon,
   },
-  mixins: [checkHiveTags, readApiariesAndGroupsIfNotPresent],
+  mixins: [checkHiveTags, deleteHiveTag, readApiariesAndGroupsIfNotPresent],
   data: function() {
     return {
       ready: false,
@@ -231,49 +232,6 @@ export default {
     })
   },
   methods: {
-    async deleteHiveTag(id) {
-      console.log('Deleting hive tag ', id)
-      try {
-        const response = await Api.deleteRequest('/hive-tags/', id)
-        if (!response) {
-          console.log('Error')
-        }
-        //  update hiveTags in store
-        this.readHiveTags().then(() => {
-          if (this.hiveTags.length === 0) {
-            this.showExplanation = true
-          }
-        })
-      } catch (error) {
-        if (error.response) {
-          console.log('Error: ', error.response)
-        } else {
-          console.log('Error: ', error)
-        }
-      }
-    },
-    confirmDeleteHiveTag(hiveTag) {
-      this.$refs.confirm
-        .open(
-          this.$i18n.t('Delete_hivetag'),
-          this.$i18n.t('Delete_hivetag') +
-            ' (' +
-            hiveTag.tag +
-            (hiveTag.description
-              ? ' - ' + this.$i18n.t(hiveTag.description)
-              : '') +
-            ')?',
-          {
-            color: 'red',
-          }
-        )
-        .then((confirm) => {
-          this.deleteHiveTag(hiveTag.tag)
-        })
-        .catch((reject) => {
-          return true
-        })
-    },
     downloadHiveTags() {
       // TODO
       console.log('download hive tags')
