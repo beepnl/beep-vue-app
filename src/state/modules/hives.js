@@ -7,63 +7,8 @@ export const state = {
   hiveEdited: false,
   activeHive: null,
   hivesObject: {},
-  hiveTags: [
-    {
-      tag: '01',
-      url: {
-        name: 'home',
-        query: {
-          search: 'id=609',
-        },
-      },
-      hive_id: 609,
-      description: 'Show hive card in overview',
-    },
-    {
-      tag: '02',
-      url: {
-        name: 'inspect',
-        query: {
-          hive_id: 609,
-        },
-      },
-      hive_id: 609,
-      description: 'Create a new inspection',
-    },
-    {
-      tag: '03',
-      url: {
-        name: 'hive-inspections',
-        params: {
-          id: 609,
-        },
-      },
-      hive_id: 609,
-      description: 'View inspections',
-    },
-    {
-      tag: '04',
-      url: {
-        name: 'hive-edit',
-        params: {
-          id: 609,
-        },
-      },
-      hive_id: 609,
-      description: 'Edit hive configuration',
-    },
-    {
-      tag: '05',
-      url: {
-        name: 'measurements-id',
-        params: {
-          id: 299,
-        },
-      },
-      hive_id: 609,
-      description: 'View measurements',
-    },
-  ],
+  hiveTags: [],
+  hiveTagsChecked: false,
   hiveTagEdited: false,
   tempSavedHiveTag: null,
 }
@@ -83,6 +28,9 @@ export const getters = {
   },
   hiveTags: (state) => {
     return state.hiveTags
+  },
+  hiveTagsChecked: (state) => {
+    return state.hiveTagsChecked
   },
   hiveTagEdited: (state) => {
     return state.hiveTagEdited
@@ -105,7 +53,8 @@ export const mutations = {
   resetState: function(state) {
     state.hiveEdited = false
     state.activeHive = null
-    // state.hiveTags = []
+    state.hiveTags = []
+    state.hiveTagsChecked = false
     state.hivesObject = {}
     state.hiveTagEdited = false
     state.tempSavedHiveTag = null

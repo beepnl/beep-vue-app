@@ -858,6 +858,9 @@ const translations = {
   Edit_hivetag: 'Edit hive tag',
 
   Hivetag: 'Hive tag | Hive tags',
+  Hivetag_exp:
+    "‘Hive tags’ are QR codes you can attach to a hive, and for which you can set an action that will be performed as soon as you scan the hive tag. An 'action' refers to actions in the BEEP app, such as creating a new inspection for the relevant hive. Once the hive tag has been set up, you only need to scan the QR code with your smartphone, and a new inspection will be automatically created. You can print the hive tags yourself, by ",
+  Hivetag_download_text: 'downloading this pdf.',
   qrcode: 'QR Code | QR Codes',
   Qrcode_exp1: "Attach the hive tag with number '",
   Qrcode_exp2: "' to a hive.",

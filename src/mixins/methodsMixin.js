@@ -118,6 +118,46 @@ export const checkAlerts = {
   },
 }
 
+export const checkHiveTags = {
+  computed: {
+    ...mapGetters('hives', ['hiveTags', 'hiveTagsChecked']),
+  },
+  methods: {
+    // only read hive tags when they are not checked yet
+    async checkHiveTags() {
+      if (!this.hiveTagsChecked) {
+        this.readHiveTags()
+      }
+    },
+    async readHiveTags() {
+      try {
+        this.$store.commit('hives/setData', {
+          prop: 'hiveTagsChecked',
+          value: true,
+        })
+        const response = await Api.readRequest('/hive-tags')
+        this.$store.commit('hives/setData', {
+          prop: 'hiveTags',
+          value: response.data,
+        })
+        return true
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+          if (error.response.status === 404) {
+            this.$store.commit('hives/setData', {
+              prop: 'hiveTags',
+              value: [],
+            })
+          }
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
+  },
+}
+
 export const convertComma = {
   // method for el-input-number with 1 or more decimals
   methods: {

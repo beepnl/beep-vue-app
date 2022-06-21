@@ -711,6 +711,7 @@ import {
 } from '@mixins/momentMixin'
 import {
   checkAlerts,
+  checkHiveTags,
   readApiariesAndGroups,
   readDevices,
   readGeneralInspections,
@@ -728,6 +729,7 @@ export default {
   },
   mixins: [
     checkAlerts,
+    checkHiveTags,
     momentFromNow,
     momentify,
     momentifyDayMonth,
@@ -1082,15 +1084,17 @@ export default {
   },
   created() {
     if (this.$route.query.hive_index !== undefined) {
-      var filteredHiveTags = this.hiveTags.filter(
-        (hiveTag) => hiveTag.id === this.$route.query.hive_index
-      )
-      var hiveTag = filteredHiveTags.length === 0 ? null : filteredHiveTags[0]
-      if (hiveTag) {
-        this.$router.push(hiveTag.url)
-      } else {
-        console.log('no hive tag found for ', this.$route.query.hive_index)
-      }
+      this.checkHiveTags().then(() => {
+        var filteredHiveTags = this.hiveTags.filter(
+          (hiveTag) => hiveTag.id === this.$route.query.hive_index
+        )
+        var hiveTag = filteredHiveTags.length === 0 ? null : filteredHiveTags[0]
+        if (hiveTag) {
+          this.$router.push(hiveTag.router_link)
+        } else {
+          console.log('no hive tag found for ', this.$route.query.hive_index) // TODO: redirect to hivetag-create!
+        }
+      })
     }
     if (localStorage.beepHiddenApiaries) {
       this.hiddenApiaries = JSON.parse(localStorage.beepHiddenApiaries)

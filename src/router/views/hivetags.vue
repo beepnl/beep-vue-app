@@ -30,8 +30,37 @@
 
     <v-container v-if="ready" class="hivetags-content">
       <v-row>
-        <v-col cols="12">
-          <div class="overline mb-3">{{ $tc('Hivetag', 2) }}</div>
+        <div
+          v-if="!showHiveTagPlaceholder"
+          class="d-flex justify-start align-center"
+        >
+          <div class="overline mb-3">{{ $tc('Hivetag', 1) }}</div>
+          <v-icon
+            class="mdi mdi-information icon-info cursor-pointer mb-3 ml-2"
+            dark
+            small
+            :color="showExplanation ? 'accent' : 'grey'"
+            @click="showExplanation = !showExplanation"
+          ></v-icon>
+        </div>
+        <v-col
+          v-if="showExplanation"
+          cols="12"
+          xl="9"
+          class="d-flex justify-start align-start"
+        >
+          <p :class="`beep-label mb-2 ${mobile ? 'mb-n2' : 'mt-n6'}`">
+            <em
+              >{{ $t('Hivetag_exp') }}
+              <a href="#" target="_blank">{{ $t('Hivetag_download_text') }}</a>
+              <!-- <a :href="$t('Hivetag_support_url')" target="_blank"
+                    ><v-icon small color="accent">mdi-arrow-right</v-icon
+                    >{{ $t('Hivetags_url_text') }}</a
+                  > -->
+            </em>
+          </p>
+        </v-col>
+        <v-col v-if="!showHiveTagPlaceholder" cols="12">
           <div class="rounded-border">
             <v-simple-table>
               <template v-slot>
@@ -104,6 +133,16 @@
       </v-row>
     </v-container>
 
+    <!-- <v-container v-if="ready && showHiveTagPlaceholder" class="mt-12">
+      <v-row>
+        <v-col>
+          <div class="text-center">
+            <span v-text="$t('Hivetag_exp')"></span>
+          </div>
+        </v-col>
+      </v-row>
+    </v-container> -->
+
     <Confirm ref="confirm"></Confirm>
   </Layout>
 </template>
@@ -114,9 +153,11 @@ import Confirm from '@components/confirm.vue'
 import HiveIcon from '@components/hive-icon.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
-import { readApiariesAndGroupsIfNotPresent } from '@mixins/methodsMixin'
+import {
+  checkHiveTags,
+  readApiariesAndGroupsIfNotPresent,
+} from '@mixins/methodsMixin'
 import qrCodeIcon from '@components/qrcode-icon.vue'
-// import { readHiveTags } from '@mixins/methodsMixin'
 
 export default {
   components: {
@@ -125,13 +166,13 @@ export default {
     Layout,
     qrCodeIcon,
   },
-  mixins: [readApiariesAndGroupsIfNotPresent],
-  // mixins: [readHiveTags],
+  mixins: [checkHiveTags, readApiariesAndGroupsIfNotPresent],
   data: function() {
     return {
       ready: false,
       errors: [],
       showLoadingIconById: [],
+      showExplanation: false,
     }
   },
   computed: {
@@ -141,9 +182,9 @@ export default {
     mobile() {
       return this.$vuetify.breakpoint.mobile
     },
-    // showHiveTagPlaceholder() {
-    //   return this.hiveTags.length === 0
-    // },
+    showHiveTagPlaceholder() {
+      return this.hiveTags.length === 0
+    },
     sortedHiveTags() {
       const sortedHiveTags = this.hiveTags.slice().sort(function(a, b) {
         if (a.tag.toLowerCase() > b.tag.toLowerCase()) {
@@ -159,18 +200,13 @@ export default {
   },
   created() {
     this.readApiariesAndGroupsIfNotPresent().then(() => {
-      this.ready = true
+      this.checkHiveTags().then(() => {
+        if (this.hiveTags.length === 0) {
+          this.showExplanation = true
+        }
+        this.ready = true
+      })
     })
-    // if (this.hiveTags.length === 0) {
-    //   this.readHiveTags().then(() => {
-    //     if (this.hiveTags.length === 0) {
-    //       this.showExplanation = true
-    //     }
-    //     this.ready = true
-    //   })
-    // } else {
-    // this.ready = true
-    // }
   },
   methods: {
     async deleteHiveTag(id) {
@@ -180,12 +216,12 @@ export default {
         if (!response) {
           console.log('Error')
         }
-        // update hiveTags in store
-        // this.readHiveTags().then(() => {
-        //   if (this.hiveTags.length === 0) {
-        //     this.showExplanation = true
-        //   }
-        // })
+        //  update hiveTags in store
+        this.readHiveTags().then(() => {
+          if (this.hiveTags.length === 0) {
+            this.showExplanation = true
+          }
+        })
       } catch (error) {
         if (error.response) {
           console.log('Error: ', error.response)
