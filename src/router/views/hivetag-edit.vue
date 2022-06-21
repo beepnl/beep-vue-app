@@ -18,7 +18,7 @@
           color="black"
           :class="`mr-1 ${createMode ? 'save-button-mobile-wide' : ''}`"
           type="submit"
-          :disabled="!valid || showLoadingIcon"
+          :disabled="!valid || hiveTagNotValid || showLoadingIcon"
         >
           <v-progress-circular
             v-if="showLoadingIcon"
@@ -60,18 +60,30 @@
         <v-row v-if="hiveTag">
           <v-col cols="12" sm="6" md="3">
             <div class="overline mb-3">{{ $tc('Hivetag', 1) }}</div>
-            <div
-              class="beep-label mb-3"
-              v-text="$t('Qrcode_exp1') + hiveTag.tag + $t('Qrcode_exp2')"
-            ></div>
-            <div class="hivetag-wrapper">
+
+            <v-select
+              v-if="createMode && tag === null"
+              v-model="hiveTag.tag"
+              :items="possibleHiveTags"
+              :placeholder="$t('Select_hivetag_number') + '...'"
+              class="mb-3 pt-0"
+              hide-details
+            ></v-select>
+
+            <div v-if="hiveTag.tag !== null">
               <div
-                class="rounded-border d-flex align-center justify-center pa-0"
-              >
-                <qrCodeIcon :text="hiveTag.tag" :x-large="true" />
+                class="beep-label mb-3"
+                v-text="$t('Qrcode_exp1') + hiveTag.tag + $t('Qrcode_exp2')"
+              ></div>
+              <div class="hivetag-wrapper">
+                <div
+                  class="rounded-border d-flex align-center justify-center pa-0"
+                >
+                  <qrCodeIcon :text="hiveTag.tag" :x-large="true" />
+                </div>
               </div>
+              <div class="beep-label my-3" v-text="$t('Qrcode_note')"></div>
             </div>
-            <div class="beep-label my-3" v-text="$t('Qrcode_note')"></div>
           </v-col>
 
           <v-col cols="12" sm="6" md="3">
@@ -104,11 +116,11 @@
                             v-if="hiveTag.hive_id !== null"
                             :to="hiveTagOption.routerLink"
                           >
-                            <span v-text="hiveTagOption.description"></span>
+                            <span v-text="$t(hiveTagOption.description)"></span>
                           </router-link>
                           <span
                             v-else
-                            v-text="hiveTagOption.description"
+                            v-text="$t(hiveTagOption.description)"
                           ></span>
                         </div>
                       </td>
@@ -213,12 +225,15 @@
 </template>
 
 <script>
-// import Api from '@api/Api'
+import Api from '@api/Api'
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 import Confirm from '@components/confirm.vue'
 import { mapGetters } from 'vuex'
 import Layout from '@layouts/back.vue'
-import { readApiariesAndGroupsIfNotPresent } from '@mixins/methodsMixin'
+import {
+  checkHiveTags,
+  readApiariesAndGroupsIfNotPresent,
+} from '@mixins/methodsMixin'
 import qrCodeIcon from '@components/qrcode-icon.vue'
 
 export default {
@@ -228,7 +243,7 @@ export default {
     Layout,
     qrCodeIcon,
   },
-  mixins: [readApiariesAndGroupsIfNotPresent],
+  mixins: [checkHiveTags, readApiariesAndGroupsIfNotPresent],
   data: function() {
     return {
       snackbar: {
@@ -260,13 +275,25 @@ export default {
     },
     getTitle() {
       return (
-        this.$i18n.t('Edit_hivetag') +
-        ' ' +
-        (this.hiveTag !== null ? this.hiveTag.tag : '')
+        (this.createMode
+          ? this.$i18n.t('Add_hivetag')
+          : this.$i18n.t('Edit_hivetag')) +
+        (' ' +
+          (this.hiveTag !== null && this.hiveTag.tag !== null
+            ? this.hiveTag.tag
+            : ''))
       )
     },
     hiveSets() {
       return this.apiaries.concat(this.groups)
+    },
+    hiveTagNotValid() {
+      return (
+        this.hiveTag === null ||
+        this.hiveTag.tag === null ||
+        this.hiveTag.hive_id === null ||
+        this.hiveTag.router_link === null
+      )
     },
     hiveTagOptions() {
       return [
@@ -278,7 +305,7 @@ export default {
               search: 'id=' + this.hiveTag.hive_id,
             },
           },
-          description: this.$i18n.t('Hivetag_hive_in_overview'),
+          description: 'Hivetag_hive_in_overview',
         },
         {
           id: 2,
@@ -288,7 +315,7 @@ export default {
               hiveId: this.hiveTag.hive_id,
             },
           },
-          description: this.$i18n.t('Hivetag_new_inspection'),
+          description: 'Hivetag_new_inspection',
         },
         {
           id: 3,
@@ -298,7 +325,7 @@ export default {
               id: this.hiveTag.hive_id,
             },
           },
-          description: this.$i18n.tc('View_inspection', 2),
+          description: 'Hivetag_view_inspections',
         },
         {
           id: 4,
@@ -308,7 +335,7 @@ export default {
               id: this.hiveTag.hive_id,
             },
           },
-          description: this.$i18n.t('Hivetag_edit_hive'),
+          description: 'Hivetag_edit_hive',
         },
         // {
         //   id: 5,
@@ -324,6 +351,27 @@ export default {
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile
+    },
+    possibleHiveTags() {
+      var possibleHiveTags = []
+      for (var i = 1; i < 41; i++) {
+        possibleHiveTags.push((i < 10 ? '0' : '') + i.toString())
+      }
+
+      const existingHiveTags = this.hiveTags.map((hiveTag) => hiveTag.tag)
+
+      possibleHiveTags = possibleHiveTags.filter(
+        (el) => !existingHiveTags.includes(el)
+      )
+
+      return possibleHiveTags
+    },
+    selectedOption() {
+      return this.selectedOptionId !== null
+        ? this.hiveTagOptions.filter(
+            (option) => option.id === this.selectedOptionId
+          )[0]
+        : null
     },
     showApiaryPlaceholder() {
       return this.hiveSets.length === 0
@@ -360,6 +408,7 @@ export default {
     },
   },
   created() {
+    this.checkHiveTags()
     this.readApiariesAndGroupsIfNotPresent().then((response) => {
       if (
         this.tempSavedHiveTag !== null &&
@@ -384,55 +433,51 @@ export default {
         this.hiveTag = {
           tag: this.tag,
           description: '',
-          optionId: null,
-          routerLink: null,
+          router_link: null,
           hive_id: null,
         }
 
-        if (this.tag === null && this.hiveTags.length > 0) {
-          // TODO: get first unused number
-          // this.newHiveTagNumber =
-        }
+        // if (this.tag === null && this.hiveTags.length > 0) {
+        //   this.hiveTag.tag = this.possibleHiveTags[0]
+        // }
       }
     })
     this.setHiveTagEdited(false)
   },
   methods: {
-    // async createGroup() {
-    //   if (this.$refs.form.validate()) {
-    //     this.showLoadingIcon = true
-    //     try {
-    //       const response = await Api.postRequest('/groups', this.hiveTag)
-    //       if (!response) {
-    //         this.errorMessage =
-    //           this.$i18n.tc('Error', 1) + ': ' + this.$i18n.t('not_saved_error')
-    //         this.showLoadingIcon = false
-    //       }
-    //       setTimeout(() => {
-    //         return this.readGroups().then(() => {
-    //           this.$store.commit('locations/setData', {
-    //             prop: 'hiveSearch',
-    //             value: this.hiveTag.name, // set search term via store instead of query to overrule possible stored search terms
-    //           })
-    //           this.$router.push({
-    //             name: 'home',
-    //           })
-    //         })
-    //       }, 50) // wait for API to update groups
-    //     } catch (error) {
-    //       if (error.response) {
-    //         const msg = error.response.data.error
-    //         this.errorMessage = msg
-    //         this.showLoadingIcon = false
-    //         console.log(error.response)
-    //       } else {
-    //         this.errorMessage = this.$i18n.t('empty_fields')
-    //         this.showLoadingIcon = false
-    //         console.log('Error: ', error)
-    //       }
-    //     }
-    //   }
-    // },
+    async createHiveTag() {
+      if (this.$refs.form.validate()) {
+        this.showLoadingIcon = true
+        try {
+          const response = await Api.postRequest('/hive-tags', this.hiveTag)
+          if (!response) {
+            this.errorMessage =
+              this.$i18n.tc('Error', 1) + ': ' + this.$i18n.t('not_saved_error')
+            this.showLoadingIcon = false
+          }
+          setTimeout(() => {
+            return this.readHiveTags().then(() => {
+              // this.$router.push({
+              //   name: 'home',
+              // })
+              this.$router.push({
+                name: 'hivetags',
+              })
+            })
+          }, 50) // wait for API to update groups
+        } catch (error) {
+          if (error.response) {
+            const msg = error.response.data.error
+            this.errorMessage = msg
+            this.showLoadingIcon = false
+            console.log(error.response)
+          } else {
+            this.showLoadingIcon = false
+            console.log('Error: ', error)
+          }
+        }
+      }
+    },
     async deleteHiveTag() {
       console.log('delete hive tag') // TODO
       // try {
@@ -570,8 +615,8 @@ export default {
     confirmDeleteHiveTag(hiveTag) {
       this.$refs.confirm
         .open(
-          this.$i18n.t('delete_hivetag'),
-          this.$i18n.t('delete_hivetag') +
+          this.$i18n.t('Delete_hivetag'),
+          this.$i18n.t('Delete_hivetag') +
             ' (' +
             hiveTag.id +
             (hiveTag.description ? ' - ' + hiveTag.description : '') +
@@ -605,13 +650,14 @@ export default {
     },
     selectHive(id) {
       this.hiveTag.hive_id = id
+      this.hiveTag.router_link = this.selectedOption.routerLink // re-set router link as it is now filled with a (different) hive id
       this.setHiveTagEdited(true)
     },
     selectHiveTagOption(option) {
       this.selectedOptionId = option.id
       this.hiveTag.router_link = option.routerLink
       this.hiveTag.description = option.description
-      this.hiveTag.optionId = option.id
+      // this.hiveTag.optionId = option.id
       this.setHiveTagEdited(true)
     },
     setHiveTagEdited(bool) {

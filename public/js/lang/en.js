@@ -867,7 +867,9 @@ const translations = {
   Qrcode_note:
     'Please note: the above QR code is not the actual hive tag, it is only meant as an example.',
   Download_hivetags: 'Download hive tag pdf',
-  delete_hivetag: 'Delete hive tag',
+  Delete_hivetag: 'Delete hive tag',
+  Add_hivetag: 'Add hive tag',
+  Select_hivetag_number: 'Select a hive tag number',
   Select_hive: 'Select a hive',
   Select_hive_for_hivetag_exp:
     'For which hive would you like to perform the action? Select one hive.',
@@ -877,6 +879,7 @@ const translations = {
   Hivetag_hive_in_overview: 'Show hive in hives overview',
   Hivetag_new_inspection: 'Create a new inspection',
   Hivetag_edit_hive: 'Edit hive configuration',
+  Hivetag_view_inspections: 'View inspections',
 }
 
 export default translations

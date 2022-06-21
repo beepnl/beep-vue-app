@@ -126,7 +126,9 @@ export const checkHiveTags = {
     // only read hive tags when they are not checked yet
     async checkHiveTags() {
       if (!this.hiveTagsChecked) {
-        this.readHiveTags()
+        this.readHiveTags().then(() => {
+          return true
+        })
       }
     },
     async readHiveTags() {

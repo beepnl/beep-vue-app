@@ -8,14 +8,25 @@
             style="width: 100%;"
           >
             <v-btn
+              v-if="!mobile"
               tile
               outlined
-              color="black"
-              class="save-button-mobile-wide"
+              color="accent"
+              class="mr-3"
               @click="downloadHiveTags"
             >
               <v-icon left>mdi-download</v-icon>
               {{ $t('Download_hivetags') }}
+            </v-btn>
+            <v-btn
+              :to="{ name: 'hivetag-create' }"
+              tile
+              outlined
+              color="black"
+              class="save-button-mobile-wide"
+            >
+              <v-icon left>mdi-plus</v-icon>
+              {{ $t('Add_hivetag') }}
             </v-btn>
           </v-card-actions>
         </v-row>
@@ -28,13 +39,24 @@
       </div>
     </v-container>
 
-    <v-container v-if="ready" class="hivetags-content">
+    <v-container v-if="ready" class="content-container">
+      <v-btn
+        v-if="mobile"
+        tile
+        outlined
+        color="accent"
+        class="save-button-mobile-wide mb-6"
+        @click="downloadHiveTags"
+      >
+        <v-icon left>mdi-download</v-icon>
+        {{ $t('Download_hivetags') }}
+      </v-btn>
       <v-row>
         <div
           v-if="!showHiveTagPlaceholder"
-          class="d-flex justify-start align-center"
+          class="d-flex justify-start align-center ml-3"
         >
-          <div class="overline mb-3">{{ $tc('Hivetag', 1) }}</div>
+          <div class="overline mb-3">{{ $tc('Hivetag', 2) }}</div>
           <v-icon
             class="mdi mdi-information icon-info cursor-pointer mb-3 ml-2"
             dark
@@ -47,9 +69,9 @@
           v-if="showExplanation"
           cols="12"
           xl="9"
-          class="d-flex justify-start align-start"
+          class="d-flex justify-start align-start mb-n2 mt-n6"
         >
-          <p :class="`beep-label mb-2 ${mobile ? 'mb-n2' : 'mt-n6'}`">
+          <p class="beep-label">
             <em
               >{{ $t('Hivetag_exp') }}
               <a href="#" target="_blank">{{ $t('Hivetag_download_text') }}</a>
@@ -60,7 +82,7 @@
             </em>
           </p>
         </v-col>
-        <v-col v-if="!showHiveTagPlaceholder" cols="12">
+        <v-col v-if="!showHiveTagPlaceholder" cols="12" class="pt-0">
           <div class="rounded-border">
             <v-simple-table>
               <template v-slot>
@@ -96,14 +118,14 @@
                           :diary-view="true"
                         ></HiveIcon>
                         <span
-                          class="name-label"
+                          class="name-label text-center"
                           v-text="hivesObject[hiveTag.hive_id].name"
                         ></span>
                       </div>
                     </td>
                     <td>
                       <router-link :to="hiveTag.router_link">
-                        <span v-text="hiveTag.description"></span>
+                        <span v-text="$t(hiveTag.description)"></span>
                       </router-link>
                     </td>
                     <td>
@@ -199,8 +221,8 @@ export default {
     },
   },
   created() {
-    this.readApiariesAndGroupsIfNotPresent().then(() => {
-      this.checkHiveTags().then(() => {
+    this.checkHiveTags().then(() => {
+      this.readApiariesAndGroupsIfNotPresent().then(() => {
         if (this.hiveTags.length === 0) {
           this.showExplanation = true
         }
@@ -233,11 +255,13 @@ export default {
     confirmDeleteHiveTag(hiveTag) {
       this.$refs.confirm
         .open(
-          this.$i18n.t('delete_hivetag'),
-          this.$i18n.t('delete_hivetag') +
+          this.$i18n.t('Delete_hivetag'),
+          this.$i18n.t('Delete_hivetag') +
             ' (' +
             hiveTag.tag +
-            (hiveTag.description ? ' - ' + hiveTag.description : '') +
+            (hiveTag.description
+              ? ' - ' + this.$i18n.t(hiveTag.description)
+              : '') +
             ')?',
           {
             color: 'red',
@@ -271,13 +295,6 @@ export default {
   }
 }
 
-.hivetags-content {
-  margin-top: 75px;
-  @include for-phone-only {
-    margin-top: 50px;
-  }
-}
-
 .hivetags-title-row {
   line-height: 1.2rem !important;
   @include for-phone-only {
@@ -289,7 +306,7 @@ export default {
 }
 
 .hive-icon-wrapper {
-  max-width: 200px;
+  max-width: 130px;
   @include for-phone-only {
     max-width: 100px;
   }

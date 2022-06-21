@@ -887,12 +887,14 @@ const translations = {
     '‘Hive tags’ zijn QR codes die je op een bijenkast kan plakken, en waarvoor je een actie kunt instellen die uitgevoerd wordt zodra je de hive tag scant. Met ‘actie’ worden handelingen in de BEEP app bedoeld, zoals bijvoorbeeld het aanmaken van een nieuwe inspectie voor de betreffende kast. Zodra de hive tag is ingesteld, hoef je in het vervolg alleen de QR code te scannen met je smartphone, en dan zal er automatisch een nieuwe inspectie worden aangemaakt. De hive tags kan je zelf printen, door ',
   Hivetag_download_text: 'deze pdf te downloaden.',
   qrcode: 'QR Code | QR Codes',
-  Qrcode_exp1: "Plak de hive tag met cijfer '",
+  Qrcode_exp1: "Plak de hive tag met nummer '",
   Qrcode_exp2: "' op een bijenkast.",
   Qrcode_note:
     'N.B. Bovenstaande QR code komt niet overeen met de daadwerkelijke hive tag, deze is slechts als voorbeeld bedoeld.',
   Download_hivetags: 'Download hive tags pdf',
-  delete_hivetag: 'Verwijder hive tag',
+  Delete_hivetag: 'Verwijder hive tag',
+  Select_hivetag_number: 'Selecteer een hive tag nummer',
+  Add_hivetag: 'Voeg hive tag toe',
   Select_hive: 'Selecteer een bijenkast',
   Select_hive_for_hivetag_exp:
     'Voor welke bijenkast wil je de actie uitvoeren? Selecteer één bijenkast.',
@@ -902,6 +904,7 @@ const translations = {
   Hivetag_hive_in_overview: 'Toon bijenkast in het kastenoverzicht',
   Hivetag_new_inspection: 'Maak een nieuwe inspectie aan',
   Hivetag_edit_hive: 'Pas kastconfiguratie aan',
+  Hivetag_view_inspections: 'Bekijk inspecties',
 }
 
 export default translations
