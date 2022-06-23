@@ -13,7 +13,8 @@
               outlined
               color="accent"
               class="mr-3"
-              @click="downloadHiveTags"
+              :href="assetsUrl + pdfPath"
+              target="_blank"
             >
               <v-icon left>mdi-download</v-icon>
               {{ $t('Download_hivetags') }}
@@ -50,7 +51,8 @@
             color="accent"
             small
             class="save-button-mobile-wide mb-3"
-            @click="downloadHiveTags"
+            :href="assetsUrl + pdfPath"
+            target="_blank"
           >
             <v-icon left>mdi-download</v-icon>
             {{ $t('Download_hivetags') }}
@@ -72,7 +74,7 @@
             <p class="beep-label">
               <em
                 >{{ $t('Hivetag_exp') }}
-                <a href="#" target="_blank">{{
+                <a :href="assetsUrl + pdfPath" target="_blank">{{
                   $t('Hivetag_download_text')
                 }}</a>
                 <!-- <a :href="$t('Hivetag_support_url')" target="_blank"
@@ -204,6 +206,10 @@ export default {
       errors: [],
       showLoadingIconById: [],
       showExplanation: false,
+      assetsUrl:
+        process.env.VUE_APP_ASSETS_URL ||
+        process.env.VUE_APP_ASSETS_URL_FALLBACK,
+      pdfPath: '/img/beep-hivetags-A6.pdf',
     }
   },
   computed: {
@@ -244,10 +250,6 @@ export default {
     })
   },
   methods: {
-    downloadHiveTags() {
-      // TODO
-      console.log('download hive tags')
-    },
     getDescription(actionId) {
       return this.$i18n.t(this.hiveTagActionDescriptions[actionId])
     },
