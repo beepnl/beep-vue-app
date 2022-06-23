@@ -97,12 +97,6 @@
                   <tbody>
                     <template v-for="(hiveTagAction, index) in hiveTagActions">
                       <tr
-                        v-if="
-                          !hiveTagAction.deviceRequired ||
-                            (hiveTagAction.deviceRequired &&
-                              selectedHive !== null &&
-                              selectedHive.sensors.length > 0)
-                        "
                         :key="index"
                         :class="
                           hiveTagAction.id === hiveTag.action_id
@@ -114,13 +108,17 @@
                           <div class="d-flex align-center justify-start">
                             <v-checkbox
                               class="mr-2"
+                              :disabled="!enableAction(hiveTagAction)"
                               :input-value="
                                 hiveTagAction.id === hiveTag.action_id
                               "
                               @change="selectAction(hiveTagAction, $event)"
                             ></v-checkbox>
                             <router-link
-                              v-if="hiveTag.hive_id !== null"
+                              v-if="
+                                hiveTag.hive_id !== null &&
+                                  enableAction(hiveTagAction)
+                              "
                               :to="hiveTagAction.routerLink"
                             >
                               <span
@@ -129,6 +127,9 @@
                             </router-link>
                             <span
                               v-else
+                              :class="
+                                !enableAction(hiveTagAction) ? 'color-grey' : ''
+                              "
                               v-text="$t(hiveTagAction.description)"
                             ></span>
                           </div>
@@ -322,6 +323,7 @@ export default {
           },
           description: this.hiveTagActionDescriptions[1],
           deviceRequired: false,
+          editableHiveRequired: false,
         },
         {
           id: 2,
@@ -333,6 +335,7 @@ export default {
           },
           description: this.hiveTagActionDescriptions[2],
           deviceRequired: false,
+          editableHiveRequired: true,
         },
         {
           id: 3,
@@ -344,6 +347,7 @@ export default {
           },
           description: this.hiveTagActionDescriptions[3],
           deviceRequired: false,
+          editableHiveRequired: false,
         },
         {
           id: 4,
@@ -355,6 +359,7 @@ export default {
           },
           description: this.hiveTagActionDescriptions[4],
           deviceRequired: false,
+          editableHiveRequired: true,
         },
         {
           id: 5,
@@ -370,6 +375,7 @@ export default {
           },
           description: this.hiveTagActionDescriptions[5],
           deviceRequired: true,
+          editableHiveRequired: false,
         },
       ]
     },
@@ -539,14 +545,36 @@ export default {
         }
       }
     },
+    enableAction(hiveTagAction) {
+      return (
+        this.selectedHive === null ||
+        ((!hiveTagAction.deviceRequired ||
+          (hiveTagAction.deviceRequired &&
+            this.selectedHive !== null &&
+            this.selectedHive.sensors.length > 0)) &&
+          (!hiveTagAction.editableHiveRequired ||
+            (hiveTagAction.editableHiveRequired &&
+              this.selectedHive !== null &&
+              (this.selectedHive.editable || this.selectedHive.owner))))
+      )
+    },
     getEditableHives(hiveSet) {
-      return hiveSet.hives.map((hive) => hive.id)
-      //       group.hives.map((hive) => {
-      //   if (hive.editable || hive.owner) {
-      //     this.selectedHives.push(hive.id)
-      //     this.editableHives.push(hive.id)
-      //   }
-      // }) // TODO: show only editable hives if inspect route is selected??
+      // var allHives = hiveSet.hives.map((hive) => hive.id)
+      if (this.selectedAction !== null) {
+        if (this.selectedAction.deviceRequired) {
+          return hiveSet.hives
+            .filter((hive) => hive.sensors.length > 0)
+            .map((hive) => hive.id)
+        } else if (this.selectedAction.editableHiveRequired && hiveSet.users) {
+          return hiveSet.hives
+            .filter((hive) => hive.editable || hive.owner)
+            .map((hive) => hive.id)
+        } else {
+          return hiveSet.hives.map((hive) => hive.id)
+        }
+      } else {
+        return hiveSet.hives.map((hive) => hive.id)
+      }
     },
     saveHiveTag() {
       if (this.createMode) {
@@ -556,7 +584,7 @@ export default {
       }
     },
     selectHive(id) {
-      this.hiveTag.hive_id = id
+      this.hiveTag.hive_id = this.hiveTag.hive_id !== id ? id : null
       this.hiveTag.router_link = this.selectedAction.routerLink // re-set router link as it is now filled with a (different) hive id
       this.setHiveTagEdited(true)
     },
