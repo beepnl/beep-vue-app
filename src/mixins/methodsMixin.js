@@ -118,19 +118,11 @@ export const checkAlerts = {
   },
 }
 
-export const checkHiveTags = {
+export const readHiveTags = {
   computed: {
     ...mapGetters('hives', ['hiveTags', 'hiveTagsChecked']),
   },
   methods: {
-    // only read hive tags when they are not checked yet
-    async checkHiveTags() {
-      if (!this.hiveTagsChecked) {
-        this.readHiveTags().then(() => {
-          return true
-        })
-      }
-    },
     async readHiveTags() {
       try {
         this.$store.commit('hives/setData', {
@@ -142,7 +134,7 @@ export const checkHiveTags = {
           prop: 'hiveTags',
           value: response.data,
         })
-        return true
+        return response.data
       } catch (error) {
         if (error.response) {
           console.log('Error: ', error.response)
@@ -155,6 +147,37 @@ export const checkHiveTags = {
         } else {
           console.log('Error: ', error)
         }
+      }
+    },
+    // only read hive tags when they are not checked yet
+    async readHiveTagsIfNotChecked() {
+      if (!this.hiveTagsChecked) {
+        try {
+          this.$store.commit('hives/setData', {
+            prop: 'hiveTagsChecked',
+            value: true,
+          })
+          const response = await Api.readRequest('/hive-tags')
+          this.$store.commit('hives/setData', {
+            prop: 'hiveTags',
+            value: response.data,
+          })
+          return response.data
+        } catch (error) {
+          if (error.response) {
+            console.log('Error: ', error.response)
+            if (error.response.status === 404) {
+              this.$store.commit('hives/setData', {
+                prop: 'hiveTags',
+                value: [],
+              })
+            }
+          } else {
+            console.log('Error: ', error)
+          }
+        }
+      } else {
+        return true
       }
     },
   },

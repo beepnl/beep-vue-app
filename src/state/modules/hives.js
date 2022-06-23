@@ -7,6 +7,13 @@ export const state = {
   hiveEdited: false,
   activeHive: null,
   hivesObject: {},
+  hiveTagActionDescriptions: {
+    1: 'Hivetag_hive_in_overview',
+    2: 'Hivetag_new_inspection',
+    3: 'Hivetag_view_inspections',
+    4: 'Hivetag_view_inspections',
+    5: 'View_measurements',
+  },
   hiveTags: [],
   hiveTagsChecked: false,
   hiveTagEdited: false,
@@ -25,6 +32,9 @@ export const getters = {
   },
   hiveEdited: (state) => {
     return state.hiveEdited
+  },
+  hiveTagActionDescriptions: (state) => {
+    return state.hiveTagActionDescriptions
   },
   hiveTags: (state) => {
     return state.hiveTags

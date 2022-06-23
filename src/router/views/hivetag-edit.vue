@@ -87,20 +87,20 @@
           </v-col>
 
           <v-col cols="12" sm="6" md="3">
-            <div class="overline mb-3">{{ $t('Select_hivetag_option') }}</div>
+            <div class="overline mb-3">{{ $t('Select_hivetag_action') }}</div>
             <div
               class="beep-label mb-3"
-              v-text="$t('Select_hivetag_option_exp')"
+              v-text="$t('Select_hivetag_action_exp')"
             ></div>
             <div class="rounded-border">
               <v-simple-table>
                 <template v-slot>
                   <tbody>
                     <tr
-                      v-for="(hiveTagOption, index) in hiveTagOptions"
+                      v-for="(hiveTagAction, index) in hiveTagActions"
                       :key="index"
                       :class="
-                        hiveTagOption.id === selectedOptionId
+                        hiveTagAction.id === hiveTag.action_id
                           ? 'tr--active'
                           : ''
                       "
@@ -109,18 +109,20 @@
                         <div class="d-flex align-center justify-start">
                           <v-checkbox
                             class="mr-2"
-                            :input-value="hiveTagOption.id === selectedOptionId"
-                            @click="selectHiveTagOption(hiveTagOption)"
+                            :input-value="
+                              hiveTagAction.id === hiveTag.action_id
+                            "
+                            @click="selectHiveTagAction(hiveTagAction)"
                           ></v-checkbox>
                           <router-link
                             v-if="hiveTag.hive_id !== null"
-                            :to="hiveTagOption.routerLink"
+                            :to="hiveTagAction.routerLink"
                           >
-                            <span v-text="$t(hiveTagOption.description)"></span>
+                            <span v-text="$t(hiveTagAction.description)"></span>
                           </router-link>
                           <span
                             v-else
-                            v-text="$t(hiveTagOption.description)"
+                            v-text="$t(hiveTagAction.description)"
                           ></span>
                         </div>
                       </td>
@@ -231,9 +233,9 @@ import Confirm from '@components/confirm.vue'
 import { mapGetters } from 'vuex'
 import Layout from '@layouts/back.vue'
 import {
-  checkHiveTags,
   deleteHiveTag,
   readApiariesAndGroupsIfNotPresent,
+  readHiveTags,
 } from '@mixins/methodsMixin'
 import qrCodeIcon from '@components/qrcode-icon.vue'
 
@@ -244,7 +246,7 @@ export default {
     Layout,
     qrCodeIcon,
   },
-  mixins: [checkHiveTags, deleteHiveTag, readApiariesAndGroupsIfNotPresent],
+  mixins: [deleteHiveTag, readApiariesAndGroupsIfNotPresent, readHiveTags],
   data: function() {
     return {
       snackbar: {
@@ -261,12 +263,16 @@ export default {
       token: null,
       successMessage: null,
       hiveTag: null,
-      selectedOptionId: null,
     }
   },
   computed: {
     ...mapGetters('groups', ['groups']),
-    ...mapGetters('hives', ['hiveTagEdited', 'hiveTags', 'tempSavedHiveTag']),
+    ...mapGetters('hives', [
+      'hiveTagActionDescriptions',
+      'hiveTagEdited',
+      'hiveTags',
+      'tempSavedHiveTag',
+    ]),
     ...mapGetters('locations', ['apiaries']),
     createMode() {
       return (
@@ -296,7 +302,7 @@ export default {
         this.hiveTag.router_link === null
       )
     },
-    hiveTagOptions() {
+    hiveTagActions() {
       return [
         {
           id: 1,
@@ -306,7 +312,7 @@ export default {
               search: 'id=' + this.hiveTag.hive_id,
             },
           },
-          description: 'Hivetag_hive_in_overview',
+          description: this.hiveTagActionDescriptions[1],
         },
         {
           id: 2,
@@ -316,7 +322,7 @@ export default {
               hiveId: this.hiveTag.hive_id,
             },
           },
-          description: 'Hivetag_new_inspection',
+          description: this.hiveTagActionDescriptions[2],
         },
         {
           id: 3,
@@ -326,7 +332,7 @@ export default {
               id: this.hiveTag.hive_id,
             },
           },
-          description: 'Hivetag_view_inspections',
+          description: this.hiveTagActionDescriptions[3],
         },
         {
           id: 4,
@@ -336,7 +342,7 @@ export default {
               id: this.hiveTag.hive_id,
             },
           },
-          description: 'Hivetag_edit_hive',
+          description: this.hiveTagActionDescriptions[4],
         },
         // {
         //   id: 5,
@@ -346,7 +352,7 @@ export default {
         //       id: 299, // TODO: get device_id
         //     },
         //   },
-        //   description: this.$i18n.t('View_measurements'),
+        //   description: this.hiveTagActionDescriptions[5],
         // },
       ]
     },
@@ -367,10 +373,10 @@ export default {
 
       return possibleHiveTags
     },
-    selectedOption() {
-      return this.selectedOptionId !== null
-        ? this.hiveTagOptions.filter(
-            (option) => option.id === this.selectedOptionId
+    selectedAction() {
+      return this.hiveTag !== null && this.hiveTag.action_id !== null
+        ? this.hiveTagActions.filter(
+            (action) => action.id === this.hiveTag.action_id
           )[0]
         : null
     },
@@ -409,42 +415,38 @@ export default {
     },
   },
   created() {
-    this.checkHiveTags()
-    this.readApiariesAndGroupsIfNotPresent().then((response) => {
-      if (
-        this.tempSavedHiveTag !== null &&
-        this.tag === this.tempSavedHiveTag.tag
-      ) {
-        this.hiveTag = { ...this.tempSavedHiveTag }
-        if (this.hiveTag.optionId !== undefined)
-          this.selectedOptionId = this.hiveTag.optionId
-      } else if (!this.createMode) {
-        this.setTempSavedHiveTag(null)
+    this.readHiveTagsIfNotChecked().then((response) => {
+      this.readApiariesAndGroupsIfNotPresent().then((response) => {
+        if (
+          this.tempSavedHiveTag !== null &&
+          this.tag === this.tempSavedHiveTag.tag
+        ) {
+          this.hiveTag = { ...this.tempSavedHiveTag }
+        } else if (!this.createMode) {
+          this.setTempSavedHiveTag(null)
 
-        var filteredHiveTags = this.hiveTags.filter(
-          (hiveTag) => hiveTag.tag === this.tag
-        )
-        this.hiveTag =
-          filteredHiveTags.length === 0 ? null : { ...filteredHiveTags[0] }
-        this.selectedOptionId = this.hiveTagOptions.filter(
-          (option) => option.description === this.hiveTag.description
-        )[0].id
-      }
-
-      // If hivetag-create route is used, make empty hiveTag object
-      else if (this.createMode) {
-        this.setTempSavedHiveTag(null)
-        this.hiveTag = {
-          tag: this.tag,
-          description: '',
-          router_link: null,
-          hive_id: null,
+          var filteredHiveTags = this.hiveTags.filter(
+            (hiveTag) => hiveTag.tag === this.tag
+          )
+          this.hiveTag =
+            filteredHiveTags.length === 0 ? null : { ...filteredHiveTags[0] }
         }
 
-        // if (this.tag === null && this.hiveTags.length > 0) {
-        //   this.hiveTag.tag = this.possibleHiveTags[0]
-        // }
-      }
+        // If hivetag-create route is used, make empty hiveTag object
+        else if (this.createMode) {
+          this.setTempSavedHiveTag(null)
+          this.hiveTag = {
+            tag: this.tag,
+            router_link: null,
+            hive_id: null,
+            action_id: null,
+          }
+
+          // if (this.tag === null && this.hiveTags.length > 0) {
+          //   this.hiveTag.tag = this.possibleHiveTags[0]
+          // }
+        }
+      })
     })
     this.setHiveTagEdited(false)
   },
@@ -535,14 +537,12 @@ export default {
     },
     selectHive(id) {
       this.hiveTag.hive_id = id
-      this.hiveTag.router_link = this.selectedOption.routerLink // re-set router link as it is now filled with a (different) hive id
+      this.hiveTag.router_link = this.selectedAction.routerLink // re-set router link as it is now filled with a (different) hive id
       this.setHiveTagEdited(true)
     },
-    selectHiveTagOption(option) {
-      this.selectedOptionId = option.id
-      this.hiveTag.router_link = option.routerLink
-      this.hiveTag.description = option.description
-      this.hiveTag.optionId = option.id
+    selectHiveTagAction(action) {
+      this.hiveTag.router_link = action.routerLink
+      this.hiveTag.action_id = action.id
       this.setHiveTagEdited(true)
     },
     setHiveTagEdited(bool) {

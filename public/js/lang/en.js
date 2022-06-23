@@ -873,8 +873,8 @@ const translations = {
   Select_hive: 'Select a hive',
   Select_hive_for_hivetag_exp:
     'For which hive would you like to perform the action? Select one hive.',
-  Select_hivetag_option: 'Select an action',
-  Select_hivetag_option_exp:
+  Select_hivetag_action: 'Select an action',
+  Select_hivetag_action_exp:
     'Which action would you plike to perform, after scanning the QR code?',
   Hivetag_hive_in_overview: 'Show hive in hives overview',
   Hivetag_new_inspection: 'Create a new inspection',

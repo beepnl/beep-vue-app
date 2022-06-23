@@ -711,10 +711,10 @@ import {
 } from '@mixins/momentMixin'
 import {
   checkAlerts,
-  checkHiveTags,
   readApiariesAndGroups,
   readDevices,
   readGeneralInspections,
+  readHiveTags,
   toggleFilterByGroup,
 } from '@mixins/methodsMixin'
 import { ScaleTransition, SlideYUpTransition } from 'vue2-transitions'
@@ -729,13 +729,13 @@ export default {
   },
   mixins: [
     checkAlerts,
-    checkHiveTags,
     momentFromNow,
     momentify,
     momentifyDayMonth,
     readApiariesAndGroups,
     readDevices,
     readGeneralInspections,
+    readHiveTags,
     toggleFilterByGroup,
   ],
   data: () => ({
@@ -1084,19 +1084,8 @@ export default {
   },
   created() {
     if (this.$route.query.hive_index !== undefined) {
-      this.checkHiveTags().then(() => {
-        var filteredHiveTags = this.hiveTags.filter(
-          (hiveTag) => hiveTag.id === this.$route.query.hive_index
-        )
-        var hiveTag = filteredHiveTags.length === 0 ? null : filteredHiveTags[0]
-        if (hiveTag) {
-          this.$router.push(hiveTag.router_link)
-        } else {
-          this.$router.push({
-            name: 'hivetag-create-id',
-            id: this.$route.query.hive_index,
-          })
-        }
+      this.readHiveTagsIfNotChecked().then((hivetags) => {
+        this.hiveTagRedirect(hivetags)
       })
     }
     if (localStorage.beepHiddenApiaries) {
@@ -1390,6 +1379,23 @@ export default {
       return !hiveSet.users
         ? this.hiddenApiaries.includes(hiveSet.id)
         : this.hiddenGroups.includes(hiveSet.id)
+    },
+    hiveTagRedirect(hivetags) {
+      var filteredHiveTags = hivetags.filter(
+        (hiveTag) => hiveTag.tag === this.$route.query.hive_index
+      )
+      var hiveTag = filteredHiveTags.length === 0 ? null : filteredHiveTags[0]
+
+      if (hiveTag) {
+        this.$router.push(hiveTag.router_link)
+      } else {
+        this.$router.push({
+          name: 'hivetag-create-id',
+          params: {
+            id: this.$route.query.hive_index,
+          },
+        })
+      }
     },
     setDiaryGroupFilterAndGo(searchTerm) {
       this.$store.commit('inspections/setFilter', {

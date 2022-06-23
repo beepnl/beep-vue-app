@@ -898,8 +898,8 @@ const translations = {
   Select_hive: 'Selecteer een bijenkast',
   Select_hive_for_hivetag_exp:
     'Voor welke bijenkast wil je de actie uitvoeren? Selecteer één bijenkast.',
-  Select_hivetag_option: 'Selecteer een actie',
-  Select_hivetag_option_exp:
+  Select_hivetag_action: 'Selecteer een actie',
+  Select_hivetag_action_exp:
     'Welke actie wil je uitvoeren wanneer je de hive tag scant?',
   Hivetag_hive_in_overview: 'Toon bijenkast in het kastenoverzicht',
   Hivetag_new_inspection: 'Maak een nieuwe inspectie aan',

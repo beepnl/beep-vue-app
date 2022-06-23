@@ -125,7 +125,7 @@
                     </td>
                     <td>
                       <router-link :to="hiveTag.router_link">
-                        <span v-text="$t(hiveTag.description)"></span>
+                        <span v-text="getDescription(hiveTag.action_id)"></span>
                       </router-link>
                     </td>
                     <td>
@@ -176,9 +176,9 @@ import HiveIcon from '@components/hive-icon.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
 import {
-  checkHiveTags,
   deleteHiveTag,
   readApiariesAndGroupsIfNotPresent,
+  readHiveTags,
 } from '@mixins/methodsMixin'
 import qrCodeIcon from '@components/qrcode-icon.vue'
 
@@ -189,7 +189,7 @@ export default {
     Layout,
     qrCodeIcon,
   },
-  mixins: [checkHiveTags, deleteHiveTag, readApiariesAndGroupsIfNotPresent],
+  mixins: [deleteHiveTag, readApiariesAndGroupsIfNotPresent, readHiveTags],
   data: function() {
     return {
       ready: false,
@@ -199,7 +199,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('hives', ['hivesObject', 'hiveTags']),
+    ...mapGetters('hives', [
+      'hivesObject',
+      'hiveTagActionDescriptions',
+      'hiveTags',
+    ]),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
     mobile() {
@@ -222,7 +226,7 @@ export default {
     },
   },
   created() {
-    this.checkHiveTags().then(() => {
+    this.readHiveTagsIfNotChecked().then(() => {
       this.readApiariesAndGroupsIfNotPresent().then(() => {
         if (this.hiveTags.length === 0) {
           this.showExplanation = true
@@ -235,6 +239,9 @@ export default {
     downloadHiveTags() {
       // TODO
       console.log('download hive tags')
+    },
+    getDescription(actionId) {
+      return this.$i18n.t(this.hiveTagActionDescriptions[actionId])
     },
   },
 }
