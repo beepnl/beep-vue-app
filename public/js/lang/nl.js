@@ -883,9 +883,11 @@ const translations = {
   Edit_hivetag: 'Aanpassen hive tag',
 
   Hivetag: 'Hive tag | Hive tags',
-  Hivetag_exp:
+  Hivetag_exp_1:
     '‘Hive tags’ zijn QR codes die je op een bijenkast kan plakken, en waarvoor je een actie kunt instellen die uitgevoerd wordt zodra je de hive tag scant. Met ‘actie’ worden handelingen in de BEEP app bedoeld, zoals bijvoorbeeld het aanmaken van een nieuwe inspectie voor de betreffende kast. Zodra de hive tag is ingesteld, hoef je in het vervolg alleen de QR code te scannen met je smartphone, en dan zal er automatisch een nieuwe inspectie worden aangemaakt. De hive tags kan je zelf printen, door ',
   Hivetag_download_text: 'deze pdf te downloaden.',
+  Hivetag_exp_2:
+    ' Scan een hive tag om aan de slag te gaan, er zal automatisch een pagina openen waar je de actie in kunt stellen indien dat nog niet gebeurd is.',
   qrcode: 'QR Code | QR Codes',
   Qrcode_exp1: "Plak de hive tag met nummer '",
   Qrcode_exp2: "' op een bijenkast.",

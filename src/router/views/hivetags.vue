@@ -73,10 +73,11 @@
           <div v-if="showExplanation" class="d-flex justify-start align-start">
             <p class="beep-label">
               <em
-                >{{ $t('Hivetag_exp') }}
+                >{{ $t('Hivetag_exp_1') }}
                 <a :href="assetsUrl + pdfPath" target="_blank">{{
                   $t('Hivetag_download_text')
-                }}</a>
+                }}</a
+                >{{ $t('Hivetag_exp_2') }}
                 <!-- <a :href="$t('Hivetag_support_url')" target="_blank"
                     ><v-icon small color="accent">mdi-arrow-right</v-icon
                     >{{ $t('Hivetags_url_text') }}</a
@@ -164,16 +165,6 @@
         </v-col>
       </v-row>
     </v-container>
-
-    <!-- <v-container v-if="ready && showHiveTagPlaceholder" class="mt-12">
-      <v-row>
-        <v-col>
-          <div class="text-center">
-            <span v-text="$t('Hivetag_exp')"></span>
-          </div>
-        </v-col>
-      </v-row>
-    </v-container> -->
 
     <Confirm ref="confirm"></Confirm>
   </Layout>
@@ -293,7 +284,4 @@ export default {
     max-width: 100px;
   }
 }
-// .td--not-active {
-//   opacity: 0.5;
-// }
 </style>
