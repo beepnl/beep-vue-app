@@ -8,7 +8,13 @@
           dark
           class="mr-4"
           color="red"
-          @click="confirmDeleteHiveTag(hiveTag)"
+          @click="
+            confirmDeleteHiveTag(
+              hiveTag,
+              // eslint-disable vue/comma-dangle
+              hivesObject[hiveTag.hive_id].name
+            )
+          "
           >mdi-delete</v-icon
         >
 
@@ -38,21 +44,6 @@
           <v-col cols="12">
             <v-alert text prominent dense type="error" color="red">
               {{ errorMessage }}
-            </v-alert>
-          </v-col>
-        </v-row>
-        <v-row v-if="showSuccessMessage">
-          <v-col cols="12">
-            <v-alert
-              v-model="showSuccessMessage"
-              text
-              prominent
-              dense
-              dismissible
-              type="success"
-              color="green"
-            >
-              {{ successMessage }}
             </v-alert>
           </v-col>
         </v-row>
@@ -260,10 +251,8 @@ export default {
       showLoadingIcon: false,
       newGroupNumber: 1,
       overlay: false,
-      showSuccessMessage: false,
       errorMessage: null,
       token: null,
-      successMessage: null,
       hiveTag: null,
     }
   },
@@ -273,6 +262,7 @@ export default {
       'hiveTagActionDescriptions',
       'hiveTagEdited',
       'hiveTags',
+      'hivesObject',
       'tempSavedHiveTag',
     ]),
     ...mapGetters('locations', ['apiaries']),
@@ -500,8 +490,6 @@ export default {
             this.errorMessage =
               this.$i18n.tc('Error', 1) + ': ' + this.$i18n.t('not_saved_error')
           }
-          this.successMessage = response.data.message
-          this.showSuccessMessage = true
           setTimeout(() => {
             return this.readHiveTags().then(() => {
               this.$router.push({

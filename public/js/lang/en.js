@@ -868,6 +868,7 @@ const translations = {
     'Please note: the above QR code is not the actual hive tag, it is only meant as an example.',
   Download_hivetags: 'Download hive tag pdf',
   Delete_hivetag: 'Delete hive tag',
+  for_hive: 'for hive "',
   Add_hivetag: 'Add hive tag',
   Select_hivetag_number: 'Select a hive tag number',
   Select_hive: 'Select a hive',

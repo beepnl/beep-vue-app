@@ -224,6 +224,7 @@ export const convertComma = {
 }
 
 export const deleteHiveTag = {
+  ...mapGetters('hives', ['hiveTagActionDescriptions']),
   methods: {
     async deleteHiveTag(hiveTag) {
       try {
@@ -234,7 +235,7 @@ export const deleteHiveTag = {
         }
         setTimeout(() => {
           return this.readHiveTags().then(() => {
-            if (this.$router.name !== 'hivetags') {
+            if (this.$route.name !== 'hivetags') {
               this.$router.push({
                 name: 'hivetags',
               })
@@ -257,15 +258,17 @@ export const deleteHiveTag = {
         this.snackbar.show = true
       }
     },
-    confirmDeleteHiveTag(hiveTag) {
+    confirmDeleteHiveTag(hiveTag, hiveName) {
+      var description = this.hiveTagActionDescriptions[hiveTag.action_id]
       this.$refs.confirm
         .open(
           this.$i18n.t('Delete_hivetag'),
           this.$i18n.t('Delete_hivetag') +
             ' (' +
             hiveTag.tag +
-            (hiveTag.description
-              ? ' - ' + this.$i18n.t(hiveTag.description)
+            (description ? ' - ' + this.$i18n.t(description) : '') +
+            (hiveName
+              ? ' - ' + this.$i18n.t('for_hive') + hiveName + '"'
               : '') +
             ')?',
           {

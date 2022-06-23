@@ -2,7 +2,7 @@
   <div class="d-flex align-center">
     <v-icon
       class="qrcode-icon"
-      :size="xLarge ? (mobile ? 150 : 200) : mobile ? 36 : 60"
+      :size="xLarge ? (mobile ? 150 : 200) : mobile ? 40 : 60"
       >mdi-qrcode
     </v-icon>
     <span
@@ -53,9 +53,9 @@ export default {
     width: 200px;
   }
   @include for-phone-only {
-    font-size: 19px;
-    margin-left: -36px;
-    width: 36px;
+    font-size: 23px;
+    margin-left: -40px;
+    width: 40px;
     &.--xlarge {
       font-size: 82px;
       margin-left: -150px;

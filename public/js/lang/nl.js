@@ -893,6 +893,7 @@ const translations = {
     'N.B. Bovenstaande QR code komt niet overeen met de daadwerkelijke hive tag, deze is slechts als voorbeeld bedoeld.',
   Download_hivetags: 'Download hive tags pdf',
   Delete_hivetag: 'Verwijder hive tag',
+  for_hive: 'voor bijenkast "',
   Select_hivetag_number: 'Selecteer een hive tag nummer',
   Add_hivetag: 'Voeg hive tag toe',
   Select_hive: 'Selecteer een bijenkast',

@@ -23,6 +23,7 @@
               tile
               outlined
               color="black"
+              :small="mobile"
               class="save-button-mobile-wide"
             >
               <v-icon left>mdi-plus</v-icon>
@@ -39,49 +40,50 @@
       </div>
     </v-container>
 
-    <v-container v-if="ready" class="content-container">
-      <v-btn
-        v-if="mobile"
-        tile
-        outlined
-        color="accent"
-        class="save-button-mobile-wide mb-6"
-        @click="downloadHiveTags"
-      >
-        <v-icon left>mdi-download</v-icon>
-        {{ $t('Download_hivetags') }}
-      </v-btn>
+    <v-container v-if="ready" class="hivetags-content">
       <v-row>
-        <div
-          v-if="!showHiveTagPlaceholder"
-          class="d-flex justify-start align-center ml-3"
-        >
-          <div class="overline mb-3">{{ $tc('Hivetag', 2) }}</div>
-          <v-icon
-            class="mdi mdi-information icon-info cursor-pointer mb-3 ml-2"
-            dark
+        <v-col class="pb-2">
+          <v-btn
+            v-if="mobile"
+            tile
+            outlined
+            color="accent"
             small
-            :color="showExplanation ? 'accent' : 'grey'"
-            @click="showExplanation = !showExplanation"
-          ></v-icon>
-        </div>
-        <v-col
-          v-if="showExplanation"
-          cols="12"
-          xl="9"
-          class="d-flex justify-start align-start mb-n2 mt-n6"
-        >
-          <p class="beep-label">
-            <em
-              >{{ $t('Hivetag_exp') }}
-              <a href="#" target="_blank">{{ $t('Hivetag_download_text') }}</a>
-              <!-- <a :href="$t('Hivetag_support_url')" target="_blank"
+            class="save-button-mobile-wide mb-3"
+            @click="downloadHiveTags"
+          >
+            <v-icon left>mdi-download</v-icon>
+            {{ $t('Download_hivetags') }}
+          </v-btn>
+          <div
+            v-if="!showHiveTagPlaceholder"
+            class="d-flex justify-start align-center"
+          >
+            <div class="overline ">{{ $tc('Hivetag', 2) }}</div>
+            <v-icon
+              class="mdi mdi-information icon-info cursor-pointer  ml-2"
+              dark
+              small
+              :color="showExplanation ? 'accent' : 'grey'"
+              @click="showExplanation = !showExplanation"
+            ></v-icon>
+          </div>
+          <div v-if="showExplanation" class="d-flex justify-start align-start">
+            <p class="beep-label">
+              <em
+                >{{ $t('Hivetag_exp') }}
+                <a href="#" target="_blank">{{
+                  $t('Hivetag_download_text')
+                }}</a>
+                <!-- <a :href="$t('Hivetag_support_url')" target="_blank"
                     ><v-icon small color="accent">mdi-arrow-right</v-icon
                     >{{ $t('Hivetags_url_text') }}</a
                   > -->
-            </em>
-          </p>
+              </em>
+            </p>
+          </div>
         </v-col>
+
         <v-col v-if="!showHiveTagPlaceholder" cols="12" class="pt-0">
           <div class="rounded-border">
             <v-simple-table>
@@ -142,7 +144,13 @@
                       <v-icon
                         dark
                         color="red"
-                        @click="confirmDeleteHiveTag(hiveTag)"
+                        @click="
+                          confirmDeleteHiveTag(
+                            hiveTag,
+                            // eslint-disable vue/comma-dangle
+                            hivesObject[hiveTag.hive_id].name
+                          )
+                        "
                         >mdi-delete</v-icon
                       >
                     </td>
@@ -257,6 +265,13 @@ export default {
     .v-input--selection-controls {
       margin-top: 0;
     }
+  }
+}
+
+.hivetags-content {
+  margin-top: 50px;
+  @include for-phone-only {
+    margin-top: 45px;
   }
 }
 
