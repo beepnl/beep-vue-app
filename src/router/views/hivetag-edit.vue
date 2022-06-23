@@ -53,13 +53,19 @@
             <div class="overline mb-3">{{ '1. ' + $tc('Hivetag', 1) }}</div>
 
             <v-select
-              v-if="createMode && tag === null"
+              v-if="createMode && tag === null && possibleHiveTags.length > 0"
               v-model="hiveTag.tag"
               :items="possibleHiveTags"
               :placeholder="$t('Select_hivetag_number') + '...'"
               class="mb-3 pt-0"
               hide-details
             ></v-select>
+
+            <div
+              v-if="possibleHiveTags.length === 0"
+              class="beep-label red--text mb-3"
+              v-text="$t('No_hivetags_left')"
+            ></div>
 
             <div v-if="hiveTag.tag !== null">
               <div

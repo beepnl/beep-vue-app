@@ -906,6 +906,8 @@ const translations = {
   Hivetag_new_inspection: 'Maak een nieuwe inspectie aan',
   Hivetag_edit_hive: 'Pas kastconfiguratie aan',
   Hivetag_view_inspections: 'Bekijk inspecties',
+  No_hivetags_left:
+    'Alle hive tags zijn momenteel in gebruik. Verwijder een bestaande hive tag om een nieuwe toe te kunnen voegen, of pas deze aan.',
 }
 
 export default translations
