@@ -59,7 +59,7 @@
 
         <v-row v-if="hiveTag">
           <v-col cols="12" sm="6" md="3">
-            <div class="overline mb-3">{{ $tc('Hivetag', 1) }}</div>
+            <div class="overline mb-3">{{ '1. ' + $tc('Hivetag', 1) }}</div>
 
             <v-select
               v-if="createMode && tag === null"
@@ -87,7 +87,9 @@
           </v-col>
 
           <v-col cols="12" sm="6" md="3">
-            <div class="overline mb-3">{{ $t('Select_hivetag_action') }}</div>
+            <div class="overline mb-3">{{
+              '2. ' + $t('Select_hivetag_action')
+            }}</div>
             <div
               class="beep-label mb-3"
               v-text="$t('Select_hivetag_action_exp')"
@@ -112,7 +114,7 @@
                             :input-value="
                               hiveTagAction.id === hiveTag.action_id
                             "
-                            @click="selectHiveTagAction(hiveTagAction)"
+                            @change="selectAction(hiveTagAction, $event)"
                           ></v-checkbox>
                           <router-link
                             v-if="hiveTag.hive_id !== null"
@@ -134,7 +136,7 @@
           </v-col>
 
           <v-col cols="12" md="6" class="my-3 mt-md-0">
-            <div class="overline mb-3">{{ $t('Select_hive') }}</div>
+            <div class="overline mb-3">{{ '3. ' + $t('Select_hive') }}</div>
             <div
               v-if="!showApiaryPlaceholder"
               class="beep-label mb-3"
@@ -299,7 +301,8 @@ export default {
         this.hiveTag === null ||
         this.hiveTag.tag === null ||
         this.hiveTag.hive_id === null ||
-        this.hiveTag.router_link === null
+        this.hiveTag.router_link === null ||
+        this.hiveTag.action_id === null
       )
     },
     hiveTagActions() {
@@ -540,9 +543,9 @@ export default {
       this.hiveTag.router_link = this.selectedAction.routerLink // re-set router link as it is now filled with a (different) hive id
       this.setHiveTagEdited(true)
     },
-    selectHiveTagAction(action) {
-      this.hiveTag.router_link = action.routerLink
-      this.hiveTag.action_id = action.id
+    selectAction(action, selected) {
+      this.hiveTag.router_link = selected ? action.routerLink : null
+      this.hiveTag.action_id = selected ? action.id : null
       this.setHiveTagEdited(true)
     },
     setHiveTagEdited(bool) {

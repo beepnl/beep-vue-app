@@ -11,7 +11,7 @@ export const state = {
     1: 'Hivetag_hive_in_overview',
     2: 'Hivetag_new_inspection',
     3: 'Hivetag_view_inspections',
-    4: 'Hivetag_view_inspections',
+    4: 'Hivetag_edit_hive',
     5: 'View_measurements',
   },
   hiveTags: [],
