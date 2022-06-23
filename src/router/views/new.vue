@@ -2,7 +2,7 @@
   <Layout :title="$t('Whats_new')">
     <v-container>
       <div class="overline mb-1"
-        ><span class="lowercase">v</span>3.0.99 (31-05-2022) - Current
+        ><span class="lowercase">v</span>3.0.99 (23-06-2022) - Current
         version</div
       >
       <div class="rounded-border mb-4">
@@ -13,7 +13,11 @@
           </li>
           <li
             ><router-link :to="{ name: 'alerts' }">Alerts:</router-link> option
-            to delete only selected alerts
+            to delete only selected alerts, multiple at once
+          </li>
+          <li
+            ><router-link :to="{ name: 'queen-edit' }">Queen:</router-link>
+            option to leave birth date field blank
           </li>
           <li
             >Rename 'Alert settings' page title to
@@ -23,7 +27,7 @@
           >
           <li
             >Bugfixes: small fixes for issues received as feedback + improve
-            menu translations to fix grammar issue</li
+            menu translations</li
           >
         </ul>
       </div>
