@@ -45,7 +45,7 @@
               <v-list-item
                 v-if="
                   item.title &&
-                    ((item.beepBaseRequired && hasBeepBase) ||
+                    ((item.beepBaseRequired && userHasBeepBase) ||
                       !item.beepBaseRequired)
                 "
                 :key="i"
@@ -112,15 +112,6 @@ export default {
   },
   computed: {
     ...mapGetters('devices', ['devices', 'devicesPresent']),
-    hasBeepBase() {
-      if (this.devices.length > 0) {
-        return (
-          this.devices.filter((device) => device.type === 'beep').length > 0
-        )
-      } else {
-        return false
-      }
-    },
     currentRoute() {
       return this.$route.name
     },
@@ -219,6 +210,15 @@ export default {
       set(value) {
         this.$emit('update-drawer-value', value)
       },
+    },
+    userHasBeepBase() {
+      if (this.devices.length > 0) {
+        return (
+          this.devices.filter((device) => device.type === 'beep').length > 0
+        )
+      } else {
+        return false
+      }
     },
     locale() {
       return this.$i18n.locale

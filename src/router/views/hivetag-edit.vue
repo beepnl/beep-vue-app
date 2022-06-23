@@ -12,7 +12,7 @@
             confirmDeleteHiveTag(
               hiveTag,
               // eslint-disable vue/comma-dangle
-              hivesObject[hiveTag.hive_id].name
+              selectedHive.name
             )
           "
           >mdi-delete</v-icon
@@ -95,37 +95,46 @@
               <v-simple-table>
                 <template v-slot>
                   <tbody>
-                    <tr
-                      v-for="(hiveTagAction, index) in hiveTagActions"
-                      :key="index"
-                      :class="
-                        hiveTagAction.id === hiveTag.action_id
-                          ? 'tr--active'
-                          : ''
-                      "
-                    >
-                      <td>
-                        <div class="d-flex align-center justify-start">
-                          <v-checkbox
-                            class="mr-2"
-                            :input-value="
-                              hiveTagAction.id === hiveTag.action_id
-                            "
-                            @change="selectAction(hiveTagAction, $event)"
-                          ></v-checkbox>
-                          <router-link
-                            v-if="hiveTag.hive_id !== null"
-                            :to="hiveTagAction.routerLink"
-                          >
-                            <span v-text="$t(hiveTagAction.description)"></span>
-                          </router-link>
-                          <span
-                            v-else
-                            v-text="$t(hiveTagAction.description)"
-                          ></span>
-                        </div>
-                      </td>
-                    </tr>
+                    <template v-for="(hiveTagAction, index) in hiveTagActions">
+                      <tr
+                        v-if="
+                          !hiveTagAction.deviceRequired ||
+                            (hiveTagAction.deviceRequired &&
+                              selectedHive !== null &&
+                              selectedHive.sensors.length > 0)
+                        "
+                        :key="index"
+                        :class="
+                          hiveTagAction.id === hiveTag.action_id
+                            ? 'tr--active'
+                            : ''
+                        "
+                      >
+                        <td>
+                          <div class="d-flex align-center justify-start">
+                            <v-checkbox
+                              class="mr-2"
+                              :input-value="
+                                hiveTagAction.id === hiveTag.action_id
+                              "
+                              @change="selectAction(hiveTagAction, $event)"
+                            ></v-checkbox>
+                            <router-link
+                              v-if="hiveTag.hive_id !== null"
+                              :to="hiveTagAction.routerLink"
+                            >
+                              <span
+                                v-text="$t(hiveTagAction.description)"
+                              ></span>
+                            </router-link>
+                            <span
+                              v-else
+                              v-text="$t(hiveTagAction.description)"
+                            ></span>
+                          </div>
+                        </td>
+                      </tr>
+                    </template>
                   </tbody>
                 </template>
               </v-simple-table>
@@ -312,6 +321,7 @@ export default {
             },
           },
           description: this.hiveTagActionDescriptions[1],
+          deviceRequired: false,
         },
         {
           id: 2,
@@ -322,6 +332,7 @@ export default {
             },
           },
           description: this.hiveTagActionDescriptions[2],
+          deviceRequired: false,
         },
         {
           id: 3,
@@ -332,6 +343,7 @@ export default {
             },
           },
           description: this.hiveTagActionDescriptions[3],
+          deviceRequired: false,
         },
         {
           id: 4,
@@ -342,17 +354,23 @@ export default {
             },
           },
           description: this.hiveTagActionDescriptions[4],
+          deviceRequired: false,
         },
-        // {
-        //   id: 5,
-        //   routerLink: {
-        //     name: 'measurements-id',
-        //     params: {
-        //       id: 299, // TODO: get device_id
-        //     },
-        //   },
-        //   description: this.hiveTagActionDescriptions[5],
-        // },
+        {
+          id: 5,
+          routerLink: {
+            name: 'measurements-id',
+            params: {
+              id:
+                this.selectedHive !== null &&
+                this.selectedHive.sensors.length > 0
+                  ? this.selectedHive.sensors[0]
+                  : null,
+            },
+          },
+          description: this.hiveTagActionDescriptions[5],
+          deviceRequired: true,
+        },
       ]
     },
     mobile() {
@@ -377,6 +395,11 @@ export default {
         ? this.hiveTagActions.filter(
             (action) => action.id === this.hiveTag.action_id
           )[0]
+        : null
+    },
+    selectedHive() {
+      return this.hiveTag.hive_id !== null
+        ? this.hivesObject[this.hiveTag.hive_id]
         : null
     },
     showApiaryPlaceholder() {
