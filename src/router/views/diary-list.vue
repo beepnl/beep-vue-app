@@ -148,7 +148,7 @@
           >
             <DiaryCard
               :inspection="inspection"
-              :hive="hives[inspection.hive_id]"
+              :hive="hivesObject[inspection.hive_id]"
               @confirm-delete-inspection="confirmDeleteInspection($event)"
             ></DiaryCard>
           </v-col>
@@ -218,6 +218,7 @@ export default {
   computed: {
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
+    ...mapGetters('hives', ['hivesObject']),
     ...mapGetters('inspections', ['generalInspections']),
     diarySearch: {
       get() {
@@ -276,34 +277,6 @@ export default {
         this.resetInfiniteScroll()
       },
     },
-    hives() {
-      const ownHivesArray = []
-      this.apiaries.forEach((apiary) => {
-        apiary.hives.forEach((hive) => {
-          ownHivesArray.push(hive)
-        })
-      })
-
-      const sharedHivesArray = []
-      this.groups.forEach((group) => {
-        group.hives.forEach((hive) => {
-          hive.group_name = group.name
-          sharedHivesArray.push(hive)
-        })
-      })
-
-      const allHives = ownHivesArray.concat(sharedHivesArray)
-
-      var uniqueHives = {}
-      const map = new Map()
-      for (const item of allHives) {
-        if (!map.has(item.id)) {
-          map.set(item.id, true) // set any value to Map
-          uniqueHives[item.id] = item
-        }
-      }
-      return uniqueHives
-    },
     // make inspections filterable by hive name and location
     inspectionsWithDatesAndHiveDetails() {
       if (this.generalInspections.length > 0) {
@@ -325,19 +298,20 @@ export default {
                 inspection.reminder_date
               ))
             : (inspection.reminder_date_day_month = null)
-          if (this.hives[inspection.hive_id] !== undefined) {
-            const name = this.hives[inspection.hive_id].name
-            const location = this.hives[inspection.hive_id].location
+          if (this.hivesObject[inspection.hive_id] !== undefined) {
+            const name = this.hivesObject[inspection.hive_id].name
+            const location = this.hivesObject[inspection.hive_id].location
             inspection.hive_name = name
             inspection.hive_location = location
-            var groupName = this.hives[inspection.hive_id].group_name || null
+            var groupName =
+              this.hivesObject[inspection.hive_id].group_name || null
             const isOwnedAndInGroup =
-              this.hives[inspection.hive_id].group_ids.length > 0 &&
+              this.hivesObject[inspection.hive_id].group_ids.length > 0 &&
               groupName === null
             if (isOwnedAndInGroup) {
               inspection.owned_and_group = true
               var groupNamesArray = []
-              this.hives[inspection.hive_id].group_ids.map((groupId) => {
+              this.hivesObject[inspection.hive_id].group_ids.map((groupId) => {
                 groupNamesArray.push(
                   this.groups.filter((group) => group.id === groupId)[0].name
                 )

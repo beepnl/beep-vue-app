@@ -714,6 +714,7 @@ import {
   readApiariesAndGroups,
   readDevices,
   readGeneralInspections,
+  readHiveTags,
   toggleFilterByGroup,
 } from '@mixins/methodsMixin'
 import { ScaleTransition, SlideYUpTransition } from 'vue2-transitions'
@@ -734,6 +735,7 @@ export default {
     readApiariesAndGroups,
     readDevices,
     readGeneralInspections,
+    readHiveTags,
     toggleFilterByGroup,
   ],
   data: () => ({
@@ -764,6 +766,7 @@ export default {
     ...mapGetters('devices', ['devices']),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups', 'invitations']),
+    ...mapGetters('hives', ['hiveTags']),
     filterByAlert: {
       get() {
         return this.$store.getters['locations/hiveFilterByAlert']
@@ -1080,6 +1083,11 @@ export default {
     }
   },
   created() {
+    if (this.$route.query.hive_index !== undefined) {
+      this.readHiveTagsIfNotChecked().then((hivetags) => {
+        this.hiveTagRedirect(hivetags)
+      })
+    }
     if (localStorage.beepHiddenApiaries) {
       this.hiddenApiaries = JSON.parse(localStorage.beepHiddenApiaries)
     }
@@ -1372,6 +1380,23 @@ export default {
         ? this.hiddenApiaries.includes(hiveSet.id)
         : this.hiddenGroups.includes(hiveSet.id)
     },
+    hiveTagRedirect(hivetags) {
+      var filteredHiveTags = hivetags.filter(
+        (hiveTag) => hiveTag.tag === this.$route.query.hive_index
+      )
+      var hiveTag = filteredHiveTags.length === 0 ? null : filteredHiveTags[0]
+
+      if (hiveTag) {
+        this.$router.push(hiveTag.router_link)
+      } else {
+        this.$router.push({
+          name: 'hivetag-create-id',
+          params: {
+            id: this.$route.query.hive_index,
+          },
+        })
+      }
+    },
     setDiaryGroupFilterAndGo(searchTerm) {
       this.$store.commit('inspections/setFilter', {
         filter: 'diaryFilterByGroup',
@@ -1497,20 +1522,7 @@ export default {
   &:last-child {
     margin-bottom: 10px;
   }
-  .hive-set-title {
-    width: 100%;
-    padding-bottom: 4px;
-    margin: 10px 0 16px;
-    color: $color-accent;
-    border-bottom: 1px solid $color-accent;
-    @include for-phone-only {
-      padding-bottom: 2px;
-      margin: 8px 0 10px;
-    }
-    .hive-set-caption {
-      font-weight: 600;
-    }
-  }
+
   .hive-item-transition-wrapper {
     display: flex;
     flex-wrap: wrap;

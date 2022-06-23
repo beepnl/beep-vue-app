@@ -184,6 +184,38 @@ export default [
     meta: {
       authRequired: true,
     },
+    path: '/hivetags',
+    name: 'hivetags',
+    component: () => lazyLoadView(import('@views/hivetags.vue')),
+  },
+  {
+    meta: {
+      authRequired: true,
+    },
+    path: '/hivetags/create',
+    name: 'hivetag-create',
+    component: () => lazyLoadView(import('@views/hivetag-edit.vue')),
+  },
+  {
+    meta: {
+      authRequired: true,
+    },
+    path: '/hivetags/:id/create',
+    name: 'hivetag-create-id',
+    component: () => lazyLoadView(import('@views/hivetag-edit.vue')),
+  },
+  {
+    meta: {
+      authRequired: true,
+    },
+    path: '/hivetags/:id/edit',
+    name: 'hivetag-edit',
+    component: () => lazyLoadView(import('@views/hivetag-edit.vue')),
+  },
+  {
+    meta: {
+      authRequired: true,
+    },
     path: '/import',
     name: 'import',
     props: (route) => ({

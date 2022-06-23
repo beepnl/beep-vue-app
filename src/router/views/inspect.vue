@@ -191,10 +191,14 @@
             />
           </v-col>
 
-          <v-col class="d-flex" cols="12" sm="4">
+          <v-col
+            v-if="selectedChecklist && selectedChecklist.owner && mobile"
+            class="d-flex"
+            cols="12"
+            sm="4"
+          >
             <v-spacer></v-spacer>
             <v-btn
-              v-if="selectedChecklist && selectedChecklist.owner && mobile"
               tile
               outlined
               class="save-button-mobile-wide"
@@ -206,10 +210,10 @@
             </v-btn>
           </v-col>
 
-          <v-col cols="12">
+          <v-col v-if="forceInspectionDate" cols="12">
             <v-alert
-              v-if="forceInspectionDate"
               type="error"
+              class="mb-0"
               text
               prominent
               dense

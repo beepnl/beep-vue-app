@@ -140,7 +140,9 @@
               <template slot="label"
                 ><span class="checkbox-label"
                   >{{ $t('accept_policy_1')
-                  }}<a :href="$t('policy_url')">{{ $t('terms_of_use') }}</a
+                  }}<a :href="$t('policy_url')" target="_blank" @click.stop>{{
+                    $t('terms_of_use')
+                  }}</a
                   >{{ $t('accept_policy_2') }}
                 </span></template
               >

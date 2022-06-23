@@ -169,7 +169,7 @@
                       {{ $t('Calculation_minutes_short') }}
                     </th>
                     <th class="text-left">
-                      {{ $t('Actions') }}
+                      {{ $tc('Action', 2) }}
                     </th>
                     <th></th>
                   </tr>
