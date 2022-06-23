@@ -15,10 +15,7 @@
             ><router-link :to="{ name: 'alerts' }">Alerts:</router-link> option
             to delete only selected alerts, multiple at once
           </li>
-          <li
-            ><router-link :to="{ name: 'queen-edit' }">Queen:</router-link>
-            option to leave birth date field blank
-          </li>
+          <li>Queen: option to leave birth date field blank </li>
           <li
             >Rename 'Alert settings' page title to
             <router-link :to="{ name: 'alertrules' }">
