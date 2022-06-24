@@ -2,8 +2,23 @@
   <Layout :title="$t('Whats_new')">
     <v-container>
       <div class="overline mb-1"
-        ><span class="lowercase">v</span>3.0.99 (23-06-2022) - Current
+        ><span class="lowercase">v</span>3.0.100 (24-06-2022) - Current
         version</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li
+            ><router-link :to="{ name: 'hivetags' }">Hive tags:</router-link>
+            you can now stick downloadable "hive tags" (QR codes) to your hives
+            to set up actions that will will be performed as soon as you scan
+            the hive tag with your smartphone. For example: if you scan a hive
+            tag, a new inspection will be automatically created.</li
+          >
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>3.0.99 (23-06-2022)</div
       >
       <div class="rounded-border mb-4">
         <ul>

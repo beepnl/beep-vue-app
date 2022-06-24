@@ -145,6 +145,7 @@ router.beforeResolve(async (routeTo, routeFrom, next) => {
 router.afterEach((routeTo, routeFrom) => {
   localStorage.beepNextRoute = routeTo.name
   localStorage.beepPreviousRoute = routeFrom.name
+  localStorage.beepPreviousQueryHiveIndex = routeFrom.query.hive_index
 })
 
 export default router

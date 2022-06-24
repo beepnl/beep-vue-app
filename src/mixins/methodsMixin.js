@@ -118,6 +118,71 @@ export const checkAlerts = {
   },
 }
 
+export const readHiveTags = {
+  computed: {
+    ...mapGetters('hives', ['hiveTags', 'hiveTagsChecked']),
+  },
+  methods: {
+    async readHiveTags() {
+      try {
+        this.$store.commit('hives/setData', {
+          prop: 'hiveTagsChecked',
+          value: true,
+        })
+        const response = await Api.readRequest('/hive-tags')
+        this.$store.commit('hives/setData', {
+          prop: 'hiveTags',
+          value: response.data,
+        })
+        return response.data
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+          if (error.response.status === 404) {
+            this.$store.commit('hives/setData', {
+              prop: 'hiveTags',
+              value: [],
+            })
+          }
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
+    // only read hive tags when they are not checked yet
+    async readHiveTagsIfNotChecked() {
+      if (!this.hiveTagsChecked) {
+        try {
+          this.$store.commit('hives/setData', {
+            prop: 'hiveTagsChecked',
+            value: true,
+          })
+          const response = await Api.readRequest('/hive-tags')
+          this.$store.commit('hives/setData', {
+            prop: 'hiveTags',
+            value: response.data,
+          })
+          return response.data
+        } catch (error) {
+          if (error.response) {
+            console.log('Error: ', error.response)
+            if (error.response.status === 404) {
+              this.$store.commit('hives/setData', {
+                prop: 'hiveTags',
+                value: [],
+              })
+            }
+          } else {
+            console.log('Error: ', error)
+          }
+        }
+      } else {
+        return true
+      }
+    },
+  },
+}
+
 export const convertComma = {
   // method for el-input-number with 1 or more decimals
   methods: {
@@ -154,6 +219,68 @@ export const convertComma = {
         object.coordinate_lon = value
         object.lat = object.coordinate_lat
       }
+    },
+  },
+}
+
+export const deleteHiveTag = {
+  ...mapGetters('hives', ['hiveTagActionDescriptions']),
+  methods: {
+    async deleteHiveTag(hiveTag) {
+      try {
+        const response = await Api.deleteRequest('/hive-tags/', hiveTag.tag)
+        if (!response) {
+          this.snackbar.text = this.$i18n.t('something_wrong')
+          this.snackbar.show = true
+        }
+        setTimeout(() => {
+          return this.readHiveTags().then(() => {
+            if (this.$route.name !== 'hivetags') {
+              this.$router.push({
+                name: 'hivetags',
+              })
+            } else {
+              if (this.hiveTags.length === 0) {
+                this.showExplanation = true
+              }
+            }
+          })
+        }, 50) // wait for API to update hive tags
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+          const msg = error.response.data.message
+          this.snackbar.text = msg
+        } else {
+          console.log('Error: ', error)
+          this.snackbar.text = this.$i18n.t('something_wrong')
+        }
+        this.snackbar.show = true
+      }
+    },
+    confirmDeleteHiveTag(hiveTag, hiveName) {
+      var description = this.hiveTagActionDescriptions[hiveTag.action_id]
+      this.$refs.confirm
+        .open(
+          this.$i18n.t('Delete_hivetag'),
+          this.$i18n.t('Delete_hivetag') +
+            ' (' +
+            hiveTag.tag +
+            (description ? ' - ' + this.$i18n.t(description) : '') +
+            (hiveName
+              ? ' - ' + this.$i18n.t('for_hive') + hiveName + '"'
+              : '') +
+            ')?',
+          {
+            color: 'red',
+          }
+        )
+        .then((confirm) => {
+          this.deleteHiveTag(hiveTag)
+        })
+        .catch((reject) => {
+          return true
+        })
     },
   },
 }
@@ -246,6 +373,10 @@ export const readApiariesAndGroups = {
           'groups/setInvitations',
           responseGroups.data.invitations
         )
+        this.setHivesObject(
+          responseApiaries.data.locations,
+          responseGroups.data.groups
+        )
         return true
       } catch (error) {
         if (error.response) {
@@ -254,6 +385,40 @@ export const readApiariesAndGroups = {
           console.log('Error: ', error)
         }
       }
+    },
+    setHivesObject(apiaries, groups) {
+      const ownHivesArray = []
+      apiaries.forEach((apiary) => {
+        apiary.hives.forEach((hive) => {
+          hive.label = hive.name
+          ownHivesArray.push(hive)
+        })
+      })
+
+      const sharedHivesArray = []
+      groups.forEach((group) => {
+        group.hives.forEach((hive) => {
+          hive.label = hive.name
+          hive.group_name = group.name
+          sharedHivesArray.push(hive)
+        })
+      })
+
+      const allHives = ownHivesArray.concat(sharedHivesArray)
+
+      var uniqueHives = {}
+      const map = new Map()
+      for (const item of allHives) {
+        if (!map.has(item.id)) {
+          map.set(item.id, true) // set any value to Map
+          uniqueHives[item.id] = item
+        }
+      }
+
+      this.$store.commit('hives/setData', {
+        prop: 'hivesObject',
+        value: uniqueHives,
+      })
     },
   },
 }
@@ -275,6 +440,10 @@ export const readApiariesAndGroupsIfNotPresent = {
             'groups/setInvitations',
             responseGroups.data.invitations
           )
+          this.setHivesObject(
+            responseApiaries.data.locations,
+            responseGroups.data.groups
+          )
           return true
         } catch (error) {
           if (error.response) {
@@ -286,6 +455,40 @@ export const readApiariesAndGroupsIfNotPresent = {
       } else {
         return true
       }
+    },
+    setHivesObject(apiaries, groups) {
+      const ownHivesArray = []
+      apiaries.forEach((apiary) => {
+        apiary.hives.forEach((hive) => {
+          hive.label = hive.name
+          ownHivesArray.push(hive)
+        })
+      })
+
+      const sharedHivesArray = []
+      groups.forEach((group) => {
+        group.hives.forEach((hive) => {
+          hive.label = hive.name
+          hive.group_name = group.name
+          sharedHivesArray.push(hive)
+        })
+      })
+
+      const allHives = ownHivesArray.concat(sharedHivesArray)
+
+      var uniqueHives = {}
+      const map = new Map()
+      for (const item of allHives) {
+        if (!map.has(item.id)) {
+          map.set(item.id, true) // set any value to Map
+          uniqueHives[item.id] = item
+        }
+      }
+
+      this.$store.commit('hives/setData', {
+        prop: 'hivesObject',
+        value: uniqueHives,
+      })
     },
   },
 }

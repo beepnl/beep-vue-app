@@ -23,6 +23,23 @@ a {
   line-height: 1.5;
 }
 
+.name-label {
+  width: 100%;
+  overflow: hidden;
+  font-size: 0.75rem !important;
+  font-weight: 600;
+  line-height: 24px !important;
+  color: $color-grey;
+  text-overflow: ellipsis;
+  letter-spacing: 0.0333333333em !important;
+  white-space: nowrap;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  @include for-phone-only {
+    font-size: 0.7rem !important;
+  }
+}
+
 .unauthorized-title {
   padding-top: 40px;
   text-align: center;

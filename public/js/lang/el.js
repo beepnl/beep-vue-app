@@ -168,7 +168,7 @@ const translations = {
   Inspection: 'Επιθεώρηση | Επιθεωρήσεις',
   New_inspection: 'Νέα επιθεώρηση',
   Edit_inspection: 'Επεξεργασία επιθεώρησης',
-  Actions: 'Ενέργειες',
+  Action: 'Ενέργεια | Ενέργειες',
   edit: 'Επεξεργασία',
   Hive_layer_amount: 'Number of layers',
   Bee_race: 'Bee race',
@@ -939,6 +939,36 @@ const translations = {
   Edit_checklist: 'Επεξεργασία λίστας ελέγχου',
   Edit_devices: 'Επεξεργασία συσκευών',
   Edit_consent: 'Επεξεργασία συγκατάθεσης',
+  Edit_hivetag: 'Edit hive tag',
+
+  Hivetag: 'Hive tag | Hive tags',
+  Hivetag_exp_1:
+    "‘Hive tags’ are QR codes you can attach to a hive, and for which you can set an action that will be performed as soon as you scan the hive tag. An 'action' refers to actions in the BEEP app, such as creating a new inspection for the relevant hive. Once the hive tag has been set up, you only need to scan the QR code with your smartphone, and a new inspection will be automatically created. You can print the hive tags yourself, by ",
+  Hivetag_download_text: 'downloading this pdf.',
+  Hivetag_exp_2:
+    ' Just scan a hive tag to get started, you will be taken to the setup page automatically if no action has been set yet.',
+  qrcode: 'QR Code | QR Codes',
+  Qrcode_exp1: "Attach the hive tag with number '",
+  Qrcode_exp2: "' to a hive.",
+  Qrcode_note:
+    'Please note: the above QR code is not the actual hive tag, it is only meant as an example.',
+  Download_hivetags: 'Download hive tag pdf',
+  Delete_hivetag: 'Delete hive tag',
+  for_hive: 'for hive "',
+  Add_hivetag: 'Add hive tag',
+  Select_hivetag_number: 'Select a hive tag number',
+  Select_hive: 'Select a hive',
+  Select_hive_for_hivetag_exp:
+    'For which hive would you like to perform the action? Select one hive.',
+  Select_hivetag_action: 'Select an action',
+  Select_hivetag_action_exp:
+    'Which action would you plike to perform, after scanning the QR code?',
+  Hivetag_hive_in_overview: 'Show hive in hives overview',
+  Hivetag_new_inspection: 'Create a new inspection',
+  Hivetag_edit_hive: 'Edit hive configuration',
+  Hivetag_view_inspections: 'View inspections',
+  No_hivetags_left:
+    'All hive tags are currently in use. Remove an existing hive tag in order to add a new one, or modify it.',
 }
 
 export default translations
