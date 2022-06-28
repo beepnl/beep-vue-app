@@ -14,7 +14,6 @@ export const state = {
   checklists: [],
   inspectionEdited: false,
   selectedInspectionId: null,
-  lastSelectedChecklist: null,
   bulkInspection: false,
   diarySearch: null,
   activeInspectionDate: null,
@@ -48,9 +47,6 @@ export const getters = {
   },
   selectedInspectionId: (state) => {
     return state.selectedInspectionId
-  },
-  lastSelectedChecklist: (state) => {
-    return state.lastSelectedChecklist
   },
   bulkInspection: (state) => {
     return state.bulkInspection
@@ -113,7 +109,6 @@ export const mutations = {
     state.checklists = []
     state.inspectionEdited = false
     state.selectedInspectionId = null
-    state.lastSelectedChecklist = null
     state.bulkInspection = false
     state.diarySearch = null
     state.activeInspectionDate = null

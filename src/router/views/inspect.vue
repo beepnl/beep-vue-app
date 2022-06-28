@@ -681,15 +681,12 @@ export default {
         }
       },
     },
-    lastSelectedChecklist: {
+    lastSelectedChecklistId: {
       get() {
-        return this.$store.getters['inspections/lastSelectedChecklist']
+        return localStorage.beepLastSelectedChecklistId
       },
       set(value) {
-        this.$store.commit('inspections/setData', {
-          prop: 'lastSelectedChecklist',
-          value,
-        })
+        localStorage.beepLastSelectedChecklistId = value
       },
     },
     sortedHiveSets() {
@@ -811,12 +808,15 @@ export default {
         this.readChecklistsIfNotPresent().then(() => {
           if (this.preSelectedChecklistId !== null) {
             this.getChecklistById(this.preSelectedChecklistId)
-          } else if (this.lastSelectedChecklist !== null) {
-            this.getChecklistById(this.lastSelectedChecklist.id)
+          } else if (
+            this.lastSelectedChecklistId !== undefined &&
+            this.lastSelectedChecklistId !== null
+          ) {
+            this.getChecklistById(this.lastSelectedChecklistId)
           } else {
             this.selectedChecklistId = this.checklist.id
             this.selectedChecklist = this.checklist
-            this.lastSelectedChecklist = this.checklist
+            this.lastSelectedChecklistId = this.checklist.id
             this.activeInspection.checklist_id = this.selectedChecklistId
             var itemsObject = {}
             this.selectedChecklist.category_ids.map((categoryId) => {
@@ -864,7 +864,7 @@ export default {
         const response = await Api.readRequest('/inspections/lists?id=', id)
         this.selectedChecklist = response.data.checklist
         this.selectedChecklistId = response.data.checklist.id
-        this.lastSelectedChecklist = response.data.checklist
+        this.lastSelectedChecklistId = response.data.checklist.id
 
         if (
           this.selectedChecklist !== null &&
