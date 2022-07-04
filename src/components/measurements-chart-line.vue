@@ -175,7 +175,7 @@ export default {
           tooltip: {
             padding: 8,
             displayColors: false,
-            backgroundColor: 'rgba(137, 163, 194, 0.9)',
+            backgroundColor: 'rgba(242, 145, 0, 0.87)',
             titleColor: '#242424',
             bodyColor: '#242424',
             bodyFont: {

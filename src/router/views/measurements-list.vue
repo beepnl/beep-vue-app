@@ -382,7 +382,6 @@
                     v-for="(sensor, index) in currentSensors"
                     :key="'sensor' + index"
                     cols="12"
-                    class="mb-6"
                     :md="chartCols"
                   >
                     <div
@@ -462,7 +461,6 @@
                     v-for="(sensor, index) in currentDebugSensors"
                     :key="'debug' + index"
                     cols="12"
-                    class="mb-sm-4"
                     :md="chartCols"
                   >
                     <div
