@@ -360,7 +360,7 @@ tbody .tr--heatmap:first-child .td--heatmap {
   display: block;
   width: 3px;
   height: 60%;
-  background-color: $color-primary !important;
-  opacity: 0.5;
+  background-color: $color-accent !important;
+  opacity: 0.87;
 }
 </style>

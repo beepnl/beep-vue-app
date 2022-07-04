@@ -349,7 +349,7 @@
                     "
                   ></div>
                   <div>
-                    <chartist
+                    <!-- <chartist
                       :class="
                         `${interval} ${'modulo-' + moduloNr} mb-4 mb-sm-6`
                       "
@@ -360,7 +360,21 @@
                       "
                       :options="chartOptions('', false, currentWeatherSensors)"
                     >
-                    </chartist>
+                    </chartist> -->
+
+                    <MeasurementsChartLine
+                      :chart-data="chartjsDataSeries(currentWeatherSensors)"
+                      :interval="interval"
+                      :start-time="periodStart"
+                      :end-time="periodEnd"
+                      :chart-id="'chart-weather'"
+                      :inspections-for-charts="inspectionsForCharts"
+                      @confirm-view-inspection="
+                        confirmViewInspection($event.id, $event.date)
+                      "
+                      @set-period-to-date="setPeriodToDate($event)"
+                    >
+                    </MeasurementsChartLine>
                   </div>
                 </v-col>
                 <template v-if="sensorsPresent">
@@ -403,7 +417,7 @@
                       </chartist> -->
 
                       <MeasurementsChartLine
-                        :chart-data="chartjsDataSeries(sensor)"
+                        :chart-data="chartjsDataSeries([sensor])"
                         :interval="interval"
                         :start-time="periodStart"
                         :end-time="periodEnd"
@@ -460,7 +474,7 @@
                     ></div>
                     <div v-else class="header-filler my-3"></div>
                     <div>
-                      <chartist
+                      <!-- <chartist
                         :class="
                           `${interval} ${'modulo-' + moduloNr} mt-n2 mt-sm-3`
                         "
@@ -473,7 +487,20 @@
                           chartOptions(SENSOR_UNITS[sensor], true, sensor)
                         "
                       >
-                      </chartist>
+                      </chartist> -->
+                      <MeasurementsChartLine
+                        :chart-data="chartjsDataSeries([sensor])"
+                        :interval="interval"
+                        :start-time="periodStart"
+                        :end-time="periodEnd"
+                        :chart-id="'chart-debug-' + index"
+                        :inspections-for-charts="inspectionsForCharts"
+                        @confirm-view-inspection="
+                          confirmViewInspection($event.id, $event.date)
+                        "
+                        @set-period-to-date="setPeriodToDate($event)"
+                      >
+                      </MeasurementsChartLine>
                     </div>
                   </v-col>
                 </template>
@@ -575,7 +602,7 @@ export default {
       timeIndex: 0,
       timeFormat: 'ddd D MMM YYYY',
       dateTimeFormat: 'YYYY-MM-DD HH:mm:ss',
-      currentWeatherSensors: {},
+      currentWeatherSensors: [],
       currentSensors: [],
       currentSoundSensors: {},
       currentDebugSensors: [],
@@ -1169,33 +1196,34 @@ export default {
 
       return !isNaN(newIndex) && newIndex > 0 ? newIndex : 0
     },
-    chartjsDataSeries(quantity) {
-      var mT = this.getSensorMeasurement(quantity)
+    chartjsDataSeries(quantities) {
       var data = {
         labels: [],
         datasets: [],
       }
       // var sensorArray = this.getMeasurementTypesPresent(chartGroup.id)
-      // sensorArray.map((sensor, index) => {
-      var sensorName =
-        this.measurementData.sensorDefinitions[quantity] &&
-        this.measurementData.sensorDefinitions[quantity].name !== null
-          ? this.measurementData.sensorDefinitions[quantity].name
-          : this.$i18n.t(quantity)
-      var sensorLabel = sensorName + ' (' + mT.unit + ')'
+      quantities.map((quantity, index) => {
+        var mT = this.getSensorMeasurement(quantity)
 
-      data.datasets.push({
-        id: mT.id,
-        fill: false,
-        borderColor: '#' + mT.hex_color,
-        backgroundColor: '#' + mT.hex_color,
-        borderRadius: 2,
-        label: sensorLabel.replace(/^0/, ''),
-        name: sensorName,
-        unit: mT.unit,
-        data: [],
+        var sensorName =
+          this.measurementData.sensorDefinitions[quantity] &&
+          this.measurementData.sensorDefinitions[quantity].name !== null
+            ? this.measurementData.sensorDefinitions[quantity].name
+            : this.$i18n.t(quantity)
+        var sensorLabel = sensorName + ' (' + mT.unit + ')'
+
+        data.datasets.push({
+          id: mT.id,
+          fill: false,
+          borderColor: '#' + mT.hex_color,
+          backgroundColor: '#' + mT.hex_color,
+          borderRadius: 2,
+          label: sensorLabel.replace(/^0/, ''),
+          name: sensorName,
+          unit: mT.unit,
+          data: [],
+        })
       })
-      // })
       if (
         typeof this.measurementData.measurements !== 'undefined' &&
         this.measurementData.measurements.length > 0
@@ -1212,30 +1240,18 @@ export default {
             this.relativeInterval
             // && index < this.measurementData.measurements.length - 3
           ) {
-            // data.datasets.map((dataset, index) => {
-            //   var currentSensor = sensorArray.filter(
-            //     (sensor) => sensor.id === dataset.id
-            //   )[0]
-            //   if (
-            //     measurement[currentSensor.abbreviation] !== null &&
-            //     typeof measurement[currentSensor.abbreviation] === 'number'
-            //   ) {
-            //     dataset.data.push({
-            //       x: measurement.time,
-            //       y: measurement[currentSensor.abbreviation],
-            //     })
-            //   }
-            // })
-
-            if (
-              measurement[quantity] !== null &&
-              typeof measurement[quantity] === 'number'
-            ) {
-              data.datasets[0].data.push({
-                x: measurement.time,
-                y: measurement[quantity],
-              })
-            }
+            data.datasets.map((dataset, index) => {
+              var quantity = quantities[index]
+              if (
+                measurement[quantity] !== null &&
+                typeof measurement[quantity] === 'number'
+              ) {
+                dataset.data.push({
+                  x: measurement.time,
+                  y: measurement[quantity],
+                })
+              }
+            })
           }
         })
       }
@@ -1443,7 +1459,7 @@ export default {
         measurementData.measurements.length > 0
       ) {
         this.measurementData = measurementData
-        this.currentWeatherSensors = {}
+        this.currentWeatherSensors = []
         this.currentSensors = []
         this.currentSoundSensors = {}
         this.currentDebugSensors = []
@@ -1453,11 +1469,11 @@ export default {
         this.debugSensorsPresent = false
         Object.keys(this.measurementData.measurements[0]).map((quantity) => {
           if (this.WEATHER.indexOf(quantity) > -1) {
-            var weatherSensorName = this.SENSOR_NAMES[quantity]
-            var weatherSensorUnit = this.SENSOR_UNITS[quantity]
-            weatherSensorName =
-              this.$i18n.t(weatherSensorName) + ' (' + weatherSensorUnit + ')'
-            this.currentWeatherSensors[weatherSensorName] = quantity
+            // var weatherSensorName = this.SENSOR_NAMES[quantity]
+            // var weatherSensorUnit = this.SENSOR_UNITS[quantity]
+            // weatherSensorName =
+            //   this.$i18n.t(weatherSensorName) + ' (' + weatherSensorUnit + ')'
+            this.currentWeatherSensors.push(quantity)
             this.weatherSensorsPresent = true
           } else if (this.SENSORS.indexOf(quantity) > -1) {
             this.currentSensors.push(quantity)

@@ -22,7 +22,7 @@ import {
 } from 'chart.js'
 import 'chartjs-adapter-moment'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
-// import annotationPlugin from 'chartjs-plugin-annotation'
+import annotationPlugin from 'chartjs-plugin-annotation'
 
 ChartJS.register(
   LineElement,
@@ -31,8 +31,8 @@ ChartJS.register(
   TimeSeriesScale,
   Legend,
   Tooltip,
-  ChartDataLabels
-  // annotationPlugin
+  ChartDataLabels,
+  annotationPlugin
 )
 
 export default {
@@ -144,6 +144,10 @@ export default {
           },
         },
         plugins: {
+          annotation: {
+            drawTime: 'beforeDatasetsDraw',
+            annotations: this.inspectionsForLineCharts,
+          },
           datalabels: {
             anchor: 'end',
             align: 'top',
@@ -226,16 +230,16 @@ export default {
           mode: 'vertical',
           xMin: chartjsDate,
           xMax: chartjsDate,
-          borderColor: '#89a3c2',
+          borderColor: '#f29100',
           borderWidth: 2,
-          borderDash: [3, 2],
+          borderDash: [6, 4],
           label: {
             content:
               inspection.text !== null && inspection.text.length > 25
                 ? inspection.text.substring(0, 25) + '...'
                 : inspection.text,
             enabled: false,
-            backgroundColor: 'rgba(137, 163, 194, 0.87)',
+            backgroundColor: 'rgba(242, 145, 0, 0.87)',
             drawTime: 'afterDatasetsDraw',
             borderRadius: 4,
             color: '#242424',
