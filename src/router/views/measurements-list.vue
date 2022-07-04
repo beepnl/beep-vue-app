@@ -387,7 +387,7 @@
                     ></div>
                     <div v-else class="header-filler my-3"></div>
                     <div>
-                      <chartist
+                      <!-- <chartist
                         :class="
                           `${interval} ${'modulo-' + moduloNr} mb-4 mb-sm-6`
                         "
@@ -400,7 +400,21 @@
                           chartOptions(SENSOR_UNITS[sensor], false, sensor)
                         "
                       >
-                      </chartist>
+                      </chartist> -->
+
+                      <MeasurementsChartLine
+                        :chart-data="chartjsDataSeries(sensor)"
+                        :interval="interval"
+                        :start-time="periodStart"
+                        :end-time="periodEnd"
+                        :chart-id="'chart-sensor-' + index"
+                        :inspections-for-charts="inspectionsForCharts"
+                        @confirm-view-inspection="
+                          confirmViewInspection($event.id, $event.date)
+                        "
+                        @set-period-to-date="setPeriodToDate($event)"
+                      >
+                      </MeasurementsChartLine>
                     </div>
                   </v-col>
                 </template>
@@ -506,6 +520,7 @@ import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/main.vue'
 import { mapGetters } from 'vuex'
 import MeasurementsChartHeatmap from '@components/measurements-chart-heatmap.vue'
+import MeasurementsChartLine from '@components/measurements-chart-line.vue'
 import MeasurementsDateSelection from '@components/measurements-date-selection.vue'
 import Treeselect from '@riophae/vue-treeselect'
 import 'chartist/dist/chartist.min.css'
@@ -535,6 +550,7 @@ export default {
     Confirm,
     Layout,
     MeasurementsChartHeatmap,
+    MeasurementsChartLine,
     MeasurementsDateSelection,
     SlideYUpTransition,
     Treeselect,
@@ -669,14 +685,14 @@ export default {
 
           // console.log(closestTime, closestIndex)
 
-          // var inspectionTimestamp = inspectionDateInUtc.valueOf()
+          var inspectionTimestamp = inspectionDateInUtc.valueOf()
 
           // and add position and meta data for chartist plugin targetlines
           var inspectionForChart = {
             id: inspection.id,
             closestIndex,
             // position,
-            // xValue: inspectionTimestamp,
+            xValue: inspectionTimestamp,
             date: this.momentFormat(inspection.created_at, 'llll'),
             text: inspection.notes,
           }
@@ -1031,9 +1047,7 @@ export default {
           this.currentLastSensorValues = []
           const allLastSensorValues = response.data
           Object.entries(allLastSensorValues).map(([key, value]) => {
-            var mT = this.sensorMeasurementsList.filter(
-              (measurementType) => measurementType.abbreviation === key
-            )[0]
+            var mT = this.getSensorMeasurement(key)
             if (value !== null && key === 'weight_kg') {
               const roundedValue = Math.round(value * 1e4) / 1e4
               this.currentLastSensorValues.push({
@@ -1154,6 +1168,79 @@ export default {
       if (!zoom && newPeriod === 'hour') newIndex += 10
 
       return !isNaN(newIndex) && newIndex > 0 ? newIndex : 0
+    },
+    chartjsDataSeries(quantity) {
+      var mT = this.getSensorMeasurement(quantity)
+      var data = {
+        labels: [],
+        datasets: [],
+      }
+      // var sensorArray = this.getMeasurementTypesPresent(chartGroup.id)
+      // sensorArray.map((sensor, index) => {
+      var sensorName =
+        this.measurementData.sensorDefinitions[quantity] &&
+        this.measurementData.sensorDefinitions[quantity].name !== null
+          ? this.measurementData.sensorDefinitions[quantity].name
+          : this.$i18n.t(quantity)
+      var sensorLabel = sensorName + ' (' + mT.unit + ')'
+
+      data.datasets.push({
+        id: mT.id,
+        fill: false,
+        borderColor: '#' + mT.hex_color,
+        backgroundColor: '#' + mT.hex_color,
+        borderRadius: 2,
+        label: sensorLabel.replace(/^0/, ''),
+        name: sensorName,
+        unit: mT.unit,
+        data: [],
+      })
+      // })
+      if (
+        typeof this.measurementData.measurements !== 'undefined' &&
+        this.measurementData.measurements.length > 0
+      ) {
+        this.measurementData.measurements.map((measurement, index) => {
+          if (
+            (!this.relativeInterval &&
+              (this.interval === 'hour' ||
+                this.interval === 'day' ||
+                this.interval === 'week' ||
+                this.interval === 'year' ||
+                // skip first value for month or selection interval (belongs to previous month/day) except when it's a relative interval
+                index !== 0)) ||
+            this.relativeInterval
+            // && index < this.measurementData.measurements.length - 3
+          ) {
+            // data.datasets.map((dataset, index) => {
+            //   var currentSensor = sensorArray.filter(
+            //     (sensor) => sensor.id === dataset.id
+            //   )[0]
+            //   if (
+            //     measurement[currentSensor.abbreviation] !== null &&
+            //     typeof measurement[currentSensor.abbreviation] === 'number'
+            //   ) {
+            //     dataset.data.push({
+            //       x: measurement.time,
+            //       y: measurement[currentSensor.abbreviation],
+            //     })
+            //   }
+            // })
+
+            if (
+              measurement[quantity] !== null &&
+              typeof measurement[quantity] === 'number'
+            ) {
+              data.datasets[0].data.push({
+                x: measurement.time,
+                y: measurement[quantity],
+              })
+            }
+          }
+        })
+      }
+
+      return data
     },
     chartDataSingleSeries(quantity, unit) {
       var data = {
@@ -1392,6 +1479,12 @@ export default {
         this.noChartData = true
       }
       this.loadingData = false
+    },
+    getSensorMeasurement(abbr) {
+      var smFilter = this.sensorMeasurementsList.filter(
+        (measurementType) => measurementType.abbreviation === abbr
+      )
+      return smFilter.length > 0 ? smFilter[0] : null
     },
     inspectionWithinPeriod(inspection) {
       return (
