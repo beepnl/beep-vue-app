@@ -92,53 +92,38 @@
               v-text="$t('Select_hivetag_action_exp')"
             ></div>
             <div class="rounded-border">
-              <v-simple-table>
-                <template v-slot>
-                  <tbody>
-                    <template v-for="(hiveTagAction, index) in hiveTagActions">
-                      <tr
-                        :key="index"
-                        :class="
-                          hiveTagAction.id === hiveTag.action_id
-                            ? 'tr--active'
-                            : ''
-                        "
-                      >
-                        <td>
-                          <div class="d-flex align-center justify-start">
-                            <v-checkbox
-                              class="mr-2"
-                              :disabled="!enableAction(hiveTagAction)"
-                              :input-value="
-                                hiveTagAction.id === hiveTag.action_id
-                              "
-                              @change="selectAction(hiveTagAction, $event)"
-                            ></v-checkbox>
-                            <router-link
-                              v-if="
-                                hiveTag.hive_id !== null &&
-                                  enableAction(hiveTagAction)
-                              "
-                              :to="hiveTagAction.routerLink"
-                            >
-                              <span
-                                v-text="$t(hiveTagAction.description)"
-                              ></span>
-                            </router-link>
-                            <span
-                              v-else
-                              :class="
-                                !enableAction(hiveTagAction) ? 'color-grey' : ''
-                              "
-                              v-text="$t(hiveTagAction.description)"
-                            ></span>
-                          </div>
-                        </td>
-                      </tr>
-                    </template>
-                  </tbody>
+              <v-radio-group
+                :value="hiveTag.action_id"
+                hide-details
+                class="mt-0"
+                @change="selectAction($event)"
+              >
+                <template v-for="(hiveTagAction, index) in hiveTagActions">
+                  <div
+                    :key="index"
+                    class="d-flex align-center justify-start mb-1"
+                  >
+                    <v-radio
+                      class="mt-2"
+                      :disabled="!enableAction(hiveTagAction)"
+                      :value="hiveTagAction.id"
+                    ></v-radio>
+                    <router-link
+                      v-if="
+                        hiveTag.hive_id !== null && enableAction(hiveTagAction)
+                      "
+                      :to="hiveTagAction.routerLink"
+                    >
+                      <span v-text="$t(hiveTagAction.description)"></span>
+                    </router-link>
+                    <span
+                      v-else
+                      :class="!enableAction(hiveTagAction) ? 'color-grey' : ''"
+                      v-text="$t(hiveTagAction.description)"
+                    ></span>
+                  </div>
                 </template>
-              </v-simple-table>
+              </v-radio-group>
             </div>
           </v-col>
 
@@ -588,9 +573,9 @@ export default {
       this.hiveTag.router_link = this.selectedAction.routerLink // re-set router link as it is now filled with a (different) hive id
       this.setHiveTagEdited(true)
     },
-    selectAction(action, selected) {
-      this.hiveTag.router_link = selected ? action.routerLink : null
-      this.hiveTag.action_id = selected ? action.id : null
+    selectAction(actionId) {
+      this.hiveTag.action_id = actionId
+      this.hiveTag.router_link = this.selectedAction.routerLink
       this.setHiveTagEdited(true)
     },
     setHiveTagEdited(bool) {

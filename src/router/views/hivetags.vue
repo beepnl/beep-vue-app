@@ -135,6 +135,7 @@
                     </td>
                     <td>
                       <router-link
+                        class="mr-1 mr-sm-2 mr-md-3"
                         :to="{
                           name: 'hivetag-edit',
                           params: { id: hiveTag.tag },
@@ -142,8 +143,6 @@
                       >
                         <v-icon dark color="accent">mdi-pencil</v-icon>
                       </router-link>
-                    </td>
-                    <td>
                       <v-icon
                         dark
                         color="red"
