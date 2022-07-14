@@ -2,8 +2,24 @@
   <Layout :title="$t('Whats_new')">
     <v-container>
       <div class="overline mb-1"
-        ><span class="lowercase">v</span>3.0.100 (24-06-2022) - Current
+        ><span class="lowercase">v</span>3.0.101 (14-07-2022) - Current
         version</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li
+            >Inspect:
+            <router-link :to="{ name: 'inspect' }"
+              >remember last selected checklist when creating a new
+              inspection</router-link
+            ></li
+          >
+          <li>Bugfixes: small fixes for issues received as feedback</li>
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>3.0.100 (24-06-2022)</div
       >
       <div class="rounded-border mb-4">
         <ul>
