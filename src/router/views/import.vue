@@ -650,7 +650,7 @@ export default {
           text: this.$i18n.t('Interval') + ' (min)',
           value: 'interval_min',
         },
-        { text: this.$i18n.t('Actions'), sortable: false, value: 'actions' },
+        { text: this.$i18n.tc('Action', 2), sortable: false, value: 'actions' },
         { text: this.$i18n.t('Export'), sortable: false, value: 'export' },
       ]
     },
@@ -682,7 +682,7 @@ export default {
           text: this.$i18n.t('File_size'),
           value: 'bytes_received',
         },
-        { text: this.$i18n.t('Actions'), sortable: false, value: 'actions' },
+        { text: this.$i18n.tc('Action', 2), sortable: false, value: 'actions' },
       ]
     },
     logFileHeadersAdmin() {
@@ -769,7 +769,7 @@ export default {
           this.checkFlashLog(this.selectedFlashLog.flashlog_id)
         } else {
           if (this.importMessage !== null) {
-            this.logSearch = this.importMessage.flashlog_id // make persisted log item remain on top of table
+            this.logSearch = this.importMessage.flashlog_id.toString() // make persisted log item remain on top of table
           }
           this.selectedFlashLog = null
         }
