@@ -142,13 +142,17 @@ export default {
             from: 'transparent',
           },
         },
+        layout: {
+          padding: {
+            right: 24,
+          },
+        },
         plugins: {
           annotation: {
             drawTime: 'beforeDatasetsDraw',
             annotations: this.inspectionsForLineCharts,
           },
           datalabels: {
-            anchor: 'end',
             align: 'top',
             formatter: function(value, context) {
               return value.y.toFixed(1) + ' ' + context.dataset.unit

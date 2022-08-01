@@ -163,7 +163,7 @@
       </v-row>
 
       <div v-if="devices.length > 0">
-        <v-card v-if="lastSensorDate" outlined class="mt-3">
+        <v-card v-if="lastSensorDate" outlined class="mt-3 mb-6">
           <v-card-title
             :class="
               `measurements-card-title ${
@@ -331,7 +331,7 @@
                     measurementData.measurements &&
                     measurementData.measurements.length > 0
                 "
-                class="charts mt-6"
+                class="charts mt-6 mb-2"
               >
                 <v-col v-if="weatherSensorsPresent" cols="12" :md="chartCols">
                   <div
@@ -398,7 +398,10 @@
                           : $tc('measurement', 2)
                       "
                     ></div>
-                    <div v-else class="header-filler my-3"></div>
+                    <div
+                      v-else-if="chartCols !== 12"
+                      class="header-filler my-3"
+                    ></div>
                     <div>
                       <!-- <chartist
                         :class="
@@ -470,7 +473,10 @@
                         $tc('device', 1) + ' ' + $t('info').toLocaleLowerCase()
                       "
                     ></div>
-                    <div v-else class="header-filler my-3"></div>
+                    <div
+                      v-else-if="chartCols !== 12"
+                      class="header-filler my-3"
+                    ></div>
                     <div>
                       <!-- <chartist
                         :class="
@@ -1204,25 +1210,32 @@ export default {
       quantities.map((quantity, index) => {
         var mT = this.getSensorMeasurement(quantity)
 
-        var sensorName =
-          this.measurementData.sensorDefinitions[quantity] &&
-          this.measurementData.sensorDefinitions[quantity].name !== null
-            ? this.measurementData.sensorDefinitions[quantity].name
-            : this.$i18n.t(quantity)
-        var sensorLabel = sensorName + ' (' + mT.unit + ')'
+        if (mT.show_in_charts === 1) {
+          var sensorName =
+            this.measurementData.sensorDefinitions[quantity] &&
+            this.measurementData.sensorDefinitions[quantity].name !== null
+              ? this.measurementData.sensorDefinitions[quantity].name
+              : this.$i18n.t(quantity)
+          var sensorLabel =
+            sensorName +
+            (mT.unit !== '-' && mT.unit !== '' && mT.unit !== null
+              ? ' (' + mT.unit + ')'
+              : '')
 
-        data.datasets.push({
-          id: mT.id,
-          fill: false,
-          borderColor: '#' + mT.hex_color,
-          backgroundColor: '#' + mT.hex_color,
-          borderRadius: 2,
-          label: sensorLabel.replace(/^0/, ''),
-          name: sensorName,
-          unit: mT.unit,
-          data: [],
-        })
+          data.datasets.push({
+            id: mT.id,
+            fill: false,
+            borderColor: '#' + mT.hex_color,
+            backgroundColor: '#' + mT.hex_color,
+            borderRadius: 2,
+            label: sensorLabel.replace(/^0/, ''),
+            name: sensorName,
+            unit: mT.unit !== '-' && mT.unit !== null ? mT.unit : '',
+            data: [],
+          })
+        }
       })
+
       if (
         typeof this.measurementData.measurements !== 'undefined' &&
         this.measurementData.measurements.length > 0

@@ -234,6 +234,7 @@ export default {
 .table-heatmap {
   font-size: 0.7rem !important;
   line-height: 13px !important;
+  padding-right: 24px;
   @include for-phone-only {
     font-size: 0.6rem !important;
   }

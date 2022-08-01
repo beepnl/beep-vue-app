@@ -448,24 +448,31 @@ export default {
           ) {
             var mT = this.getSensorMeasurement(quantity)
 
-            var sensorName = this.$i18n.t(quantity)
-            var sensorLabel = sensorName + ' (' + mT.unit + ')'
+            if (mT.show_in_charts === 1) {
+              var sensorName = this.$i18n.t(quantity)
+              var sensorLabel =
+                sensorName +
+                (mT.unit !== '-' && mT.unit !== '' && mT.unit !== null
+                  ? ' (' + mT.unit + ')'
+                  : '')
 
-            data.datasets.push({
-              id: mT.id,
-              fill: false,
-              borderColor: '#' + mT.hex_color,
-              backgroundColor: '#' + mT.hex_color,
-              borderRadius: 2,
-              label: sensorLabel.replace(/^0/, ''),
-              name: sensorName,
-              abbr: mT.abbreviation,
-              unit: mT.unit,
-              data: [],
-              hidden:
-                this.shownMeasurements[dataSet].indexOf(mT.abbreviation) === -1,
-              spanGaps: this.fillHoles,
-            })
+              data.datasets.push({
+                id: mT.id,
+                fill: false,
+                borderColor: '#' + mT.hex_color,
+                backgroundColor: '#' + mT.hex_color,
+                borderRadius: 2,
+                label: sensorLabel.replace(/^0/, ''),
+                name: sensorName,
+                abbr: mT.abbreviation,
+                unit: mT.unit !== '-' && mT.unit !== null ? mT.unit : '',
+                data: [],
+                hidden:
+                  this.shownMeasurements[dataSet].indexOf(mT.abbreviation) ===
+                  -1,
+                spanGaps: this.fillHoles,
+              })
+            }
           }
         })
 
