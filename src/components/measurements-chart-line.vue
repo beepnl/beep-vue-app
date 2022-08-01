@@ -154,6 +154,9 @@ export default {
           },
           datalabels: {
             align: 'top',
+            padding: {
+              bottom: 1,
+            },
             formatter: function(value, context) {
               return value.y.toFixed(1) + ' ' + context.dataset.unit
             },

@@ -264,7 +264,7 @@
         <v-card
           v-if="(measurementData !== null && !noPeriodData) || loadingData"
           outlined
-          class="mt-3 mb-3"
+          class="mt-3 mb-6"
         >
           <v-card-title
             :class="
@@ -349,19 +349,6 @@
                     "
                   ></div>
                   <div>
-                    <!-- <chartist
-                      :class="
-                        `${interval} ${'modulo-' + moduloNr} mb-4 mb-sm-6`
-                      "
-                      ratio="ct-chart"
-                      type="Line"
-                      :data="
-                        chartDataMultipleSeries(currentWeatherSensors, true)
-                      "
-                      :options="chartOptions('', false, currentWeatherSensors)"
-                    >
-                    </chartist> -->
-
                     <MeasurementsChartLine
                       :chart-data="chartjsDataSeries(currentWeatherSensors)"
                       :interval="interval"
@@ -403,21 +390,6 @@
                       class="header-filler my-3"
                     ></div>
                     <div>
-                      <!-- <chartist
-                        :class="
-                          `${interval} ${'modulo-' + moduloNr} mb-4 mb-sm-6`
-                        "
-                        :ratio="`ct-chart ct-series-${index}`"
-                        type="Line"
-                        :data="
-                          chartDataSingleSeries(sensor, SENSOR_UNITS[sensor])
-                        "
-                        :options="
-                          chartOptions(SENSOR_UNITS[sensor], false, sensor)
-                        "
-                      >
-                      </chartist> -->
-
                       <MeasurementsChartLine
                         :chart-data="chartjsDataSeries([sensor])"
                         :interval="interval"
@@ -478,20 +450,6 @@
                       class="header-filler my-3"
                     ></div>
                     <div>
-                      <!-- <chartist
-                        :class="
-                          `${interval} ${'modulo-' + moduloNr} mt-n2 mt-sm-3`
-                        "
-                        :ratio="`ct-chart ct-chart-debug ct-chart-${index}`"
-                        type="Line"
-                        :data="
-                          chartDataSingleSeries(sensor, SENSOR_UNITS[sensor])
-                        "
-                        :options="
-                          chartOptions(SENSOR_UNITS[sensor], true, sensor)
-                        "
-                      >
-                      </chartist> -->
                       <MeasurementsChartLine
                         :chart-data="chartjsDataSeries([sensor])"
                         :interval="interval"
@@ -554,7 +512,6 @@ import MeasurementsChartHeatmap from '@components/measurements-chart-heatmap.vue
 import MeasurementsChartLine from '@components/measurements-chart-line.vue'
 import MeasurementsDateSelection from '@components/measurements-date-selection.vue'
 import Treeselect from '@riophae/vue-treeselect'
-import 'chartist/dist/chartist.min.css'
 import {
   checkAlerts,
   readDevicesIfNotPresent,
@@ -569,12 +526,6 @@ import {
 } from '@mixins/momentMixin'
 import { sensorMixin } from '@mixins/sensorMixin'
 import { SlideYUpTransition } from 'vue2-transitions'
-import '@plugins/chartist-plugin-beep.js'
-import '@plugins/chartist-plugin-legend-beep.js'
-import 'chartist-plugin-pointlabels'
-import '@plugins/chartist-plugin-targetlines.js'
-import 'chartist-plugin-tooltips-updated'
-import 'chartist-plugin-tooltips-updated/dist/chartist-plugin-tooltip.css'
 
 export default {
   components: {
@@ -712,17 +663,12 @@ export default {
               time === closestTime.utc().format('YYYY-MM-DD[T]HH:mm:ss[Z]')
           )
 
-          // var position = closestIndex / totalDataPointsInPeriod
-
-          // console.log(closestTime, closestIndex)
-
           var inspectionTimestamp = inspectionDateInUtc.valueOf()
 
-          // and add position and meta data for chartist plugin targetlines
+          // and add position and meta data for charts
           var inspectionForChart = {
             id: inspection.id,
             closestIndex,
-            // position,
             xValue: inspectionTimestamp,
             date: this.momentFormat(inspection.created_at, 'llll'),
             text: inspection.notes,
@@ -1135,7 +1081,7 @@ export default {
       this.noChartData = false
       this.noPeriodData = false
       this.loadingData = true
-      this.measurementData = null // needed to let chartist redraw charts after interval switch, otherwise there's a bug in chartist-plugin-legend where old data is loaded after legend click see https://github.com/CodeYellowBV/chartist-plugin-legend/issues/48
+      this.measurementData = null // needed to let chartjs redraw charts after interval switch
       try {
         const response = await Api.readRequest(
           '/sensors/measurements?id=' +
@@ -1269,162 +1215,6 @@ export default {
       }
 
       return data
-    },
-    chartDataSingleSeries(quantity, unit) {
-      var data = {
-        labels: [],
-        series: [
-          {
-            color: this.SENSOR_COLOR[quantity],
-            name:
-              this.measurementData.sensorDefinitions[quantity] &&
-              this.measurementData.sensorDefinitions[quantity].name !== null
-                ? this.measurementData.sensorDefinitions[quantity].name +
-                  ' (' +
-                  unit +
-                  ')'
-                : this.$i18n.t(quantity) + ' (' + unit + ')',
-            data: [],
-          },
-        ],
-      }
-      if (typeof this.measurementData.measurements !== 'undefined') {
-        this.measurementData.measurements.map((measurement, index) => {
-          if (
-            this.interval === 'hour' ||
-            this.interval === 'day' ||
-            this.interval === 'week' ||
-            // skip first value for month and year interval (belongs to previous month/year) except when it's a relative interval
-            index !== 0 ||
-            this.relativeInterval
-          ) {
-            data.labels.push(measurement.time)
-            data.series[0].data.push({
-              meta:
-                this.momentFormat(measurement.time, 'llll') +
-                '<br>' +
-                this.$i18n.t(quantity) +
-                ': ' +
-                (measurement[quantity] !== null
-                  ? measurement[quantity].toFixed(2)
-                  : measurement[quantity]) +
-                unit,
-              value: measurement[quantity],
-            })
-          }
-        })
-      }
-      return data
-    },
-    chartDataMultipleSeries(sensorObject, weather = false) {
-      var data = {
-        labels: [],
-        series: [],
-      }
-      Object.keys(sensorObject)
-        .sort()
-        .map((sensorName, index) => {
-          data.series.push({
-            color: this.SENSOR_COLOR[sensorObject[sensorName]],
-            name: sensorName,
-            data: [],
-          })
-        })
-      if (typeof this.measurementData.measurements !== 'undefined') {
-        this.measurementData.measurements.map((measurement, index) => {
-          if (
-            this.interval === 'hour' ||
-            this.interval === 'day' ||
-            this.interval === 'week' ||
-            // skip first value for month and year interval (belongs to previous month/year) except when it's a relative interval
-            index !== 0 ||
-            this.relativeInterval
-          ) {
-            data.labels.push(measurement.time)
-            data.series.map((serie, index) => {
-              var currentSensor = sensorObject[serie.name]
-              serie.data.push({
-                meta:
-                  this.momentFormat(measurement.time, 'llll') +
-                  '<br>' +
-                  (weather ? this.$i18n.t(currentSensor) : serie.name) +
-                  ': ' +
-                  (measurement[currentSensor] !== null
-                    ? measurement[currentSensor].toFixed(1)
-                    : measurement[currentSensor]) +
-                  this.SENSOR_UNITS[currentSensor],
-                value: measurement[currentSensor],
-              })
-            })
-          }
-        })
-      }
-      data.series.map((serie) => {
-        serie.name = serie.name.replace(/^0/, '') // remove first zero for legend legibility (esp with sound sensor s_bin_201_402 and further)
-      })
-      return data
-    },
-    chartOptions(unit = '', low = false, sensor) {
-      const self = this
-      return {
-        fullWidth: true,
-        height: low ? '150px' : '220px',
-        plugins: [
-          this.$chartist.plugins.tooltip({
-            class: 'beep-tooltip',
-            metaIsHTML: true,
-          }),
-          self.$chartist.plugins.beep({
-            onClick: function(date) {
-              self.setPeriodToDate(date)
-            },
-          }),
-          self.$chartist.plugins.legendBeep({
-            simpleToggle: true,
-            inactiveByDefault: false,
-          }),
-          self.$chartist.plugins.ctPointLabels({
-            labelOffset: {
-              x: 7,
-              y: 0,
-            },
-            textAnchor: 'start',
-            labelInterpolationFnc(value) {
-              if (
-                typeof value !== 'undefined' &&
-                (unit === 'kg' || unit === 'mbar')
-              ) {
-                return value.toFixed(2) + ' ' + unit
-              } else if (typeof value !== 'undefined') {
-                return value.toFixed(1) + ' ' + unit
-              } else {
-                return '-'
-              }
-            },
-          }),
-          self.$chartist.plugins.ctTargetLines({
-            inspections: self.inspectionsForCharts,
-            onClick: function(inspectionId, inspectionDate) {
-              self.confirmViewInspection(inspectionId, inspectionDate)
-            },
-          }),
-        ],
-        showPoint: true,
-        lineSmooth: self.$chartist.Interpolation.simple({
-          divisor: 10,
-          fillHoles: true,
-        }),
-        axisX: {
-          showGrid: true,
-          labelInterpolationFnc(value, index) {
-            if (index % self.moduloNr === 0) {
-              return self.momentFromISO8601(value)
-            } else {
-              return ''
-            }
-          },
-        },
-      }
     },
     checkDateOrder(dates) {
       if (dates[1] < dates[0]) {

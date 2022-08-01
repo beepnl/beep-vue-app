@@ -236,11 +236,6 @@ import { mapGetters } from 'vuex'
 import { momentFormat } from '@mixins/momentMixin'
 import { readTaxonomy } from '@mixins/methodsMixin'
 import { sensorMixin } from '@mixins/sensorMixin'
-import 'chartist/dist/chartist.min.css'
-import '@plugins/chartist-plugin-beep.js'
-import '@plugins/chartist-plugin-legend-beep.js'
-import 'chartist-plugin-tooltips-updated'
-import 'chartist-plugin-tooltips-updated/dist/chartist-plugin-tooltip.css'
 
 export default {
   components: {
@@ -309,22 +304,6 @@ export default {
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile
-    },
-    moduloNr() {
-      if (this.blockData.flashlog.length) {
-        var entries = this.blockData.flashlog.length
-        return entries > 2000
-          ? 100
-          : entries > 1000
-          ? this.mobile
-            ? 72
-            : 36
-          : entries > 500
-          ? 12
-          : 6
-      } else {
-        return 100
-      }
     },
     noMatches() {
       return this.errorMessage !== null
