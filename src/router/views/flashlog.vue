@@ -164,15 +164,20 @@
                   class="overline mt-0 mb-3 text-center"
                   v-text="dataSet"
                 ></div>
-                <chartist
+                <MeasurementsChartLine
                   v-if="measurements[dataSet] !== undefined"
-                  :class="'modulo-' + moduloNr + ' mb-8 mb-sm-12'"
-                  ratio="ct-chart"
-                  type="Line"
-                  :data="chartDataMultipleSeries(dataSet)"
-                  :options="chartOptions(dataSet)"
+                  :chart-data="chartjsDataSeries(dataSet)"
+                  :interval="'week'"
+                  :location="'flashlog'"
+                  :start-time="getPeriod(dataSet, 'start')"
+                  :end-time="getPeriod(dataSet, 'end')"
+                  :chart-id="'chart-' + dataSet"
+                  @legend-clicked="
+                    toggleMeasurement($event.abbr, $event.hidden, dataSet)
+                  "
                 >
-                </chartist>
+                </MeasurementsChartLine>
+
                 <div v-else class="text-center my-8">
                   {{ $t('no_chart_data') }}
                 </div>
@@ -226,6 +231,7 @@
 import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
+import MeasurementsChartLine from '@components/measurements-chart-line.vue'
 import { mapGetters } from 'vuex'
 import { momentFormat } from '@mixins/momentMixin'
 import { readTaxonomy } from '@mixins/methodsMixin'
@@ -240,6 +246,7 @@ export default {
   components: {
     Confirm,
     Layout,
+    MeasurementsChartLine,
   },
   mixins: [momentFormat, readTaxonomy, sensorMixin],
   data() {
@@ -257,6 +264,10 @@ export default {
       thresholdMatches: 99,
       deviceName: null,
       fillHoles: true,
+      shownMeasurements: {
+        flashlog: ['t_0', 't_i'],
+        database: ['t_0', 't_i'],
+      },
     }
   },
   computed: {
@@ -419,88 +430,62 @@ export default {
       this.blockDataIndex = newIndex
       this.checkBlockData(true)
     },
-    chartDataMultipleSeries(dataSet) {
+    chartjsDataSeries(dataSet) {
       var data = {
         labels: [],
-        series: [],
+        datasets: [],
       }
 
       if (
         typeof this.measurements[dataSet] !== 'undefined' &&
         this.blockData !== null
       ) {
-        this.measurements[dataSet].map((sensorName, index) => {
+        this.measurements[dataSet].map((quantity, index) => {
           if (
-            sensorName.indexOf('time') === -1 &&
-            sensorName.indexOf('minute') === -1 &&
-            sensorName !== 'i'
+            quantity.indexOf('time') === -1 &&
+            quantity.indexOf('minute') === -1 &&
+            quantity !== 'i'
           ) {
-            data.series.push({
-              // color: '#' + this.findMeasurementType(sensorName).hex_color,
-              color: this.SENSOR_COLOR[sensorName],
-              name: this.$i18n.t(sensorName),
+            var mT = this.getSensorMeasurement(quantity)
+
+            var sensorName = this.$i18n.t(quantity)
+            var sensorLabel = sensorName + ' (' + mT.unit + ')'
+
+            data.datasets.push({
+              id: mT.id,
+              fill: false,
+              borderColor: '#' + mT.hex_color,
+              backgroundColor: '#' + mT.hex_color,
+              borderRadius: 2,
+              label: sensorLabel.replace(/^0/, ''),
+              name: sensorName,
+              abbr: mT.abbreviation,
+              unit: mT.unit,
               data: [],
-              className: sensorName,
+              hidden:
+                this.shownMeasurements[dataSet].indexOf(mT.abbreviation) === -1,
+              spanGaps: this.fillHoles,
             })
           }
         })
 
         this.blockData[dataSet].map((measurement, index) => {
-          data.labels.push(measurement.time)
-          data.series.map((serie, index) => {
-            var currentSensor = serie.className
-            if (measurement[currentSensor] !== undefined) {
-              serie.data.push({
-                meta: this.getMetaText(measurement, currentSensor, data.series),
-                // +
-                // this.findMeasurementType(currentSensor).unit,
-                value: measurement[currentSensor],
+          data.datasets.map((dataset, index) => {
+            var quantity = this.measurements[dataSet][index]
+            if (
+              measurement[quantity] !== null &&
+              typeof measurement[quantity] === 'number'
+            ) {
+              dataset.data.push({
+                x: measurement.time,
+                y: measurement[quantity],
               })
             }
           })
         })
       }
 
-      data.series.map((serie) => {
-        serie.name = serie.name.replace(/^0/, '') // remove first zero for legend legibility (esp with sound sensor s_bin_201_402 and further)
-      })
-
       return data
-    },
-    chartOptions(dataSet) {
-      const self = this
-      return {
-        fullWidth: true,
-        height: '250px',
-        plugins: [
-          this.$chartist.plugins.tooltip({
-            class: 'beep-tooltip',
-            metaIsHTML: true,
-          }),
-          self.$chartist.plugins.beep(),
-          self.$chartist.plugins.legendBeep({
-            dataSet: dataSet,
-            simpleToggle: true,
-            inactiveByDefault: true,
-            // N.B. active classes are now set inside legendBeep plugin for smooth performance
-          }),
-        ],
-        showPoint: true,
-        lineSmooth: self.$chartist.Interpolation.simple({
-          divisor: 10,
-          fillHoles: self.fillHoles,
-        }),
-        axisX: {
-          showGrid: true,
-          labelInterpolationFnc(value, index) {
-            if (index % self.moduloNr === 0) {
-              return self.momentFormat(value, 'llll')
-            } else {
-              return ''
-            }
-          },
-        },
-      }
     },
     clearMessages() {
       this.errorMessage = null
@@ -525,12 +510,6 @@ export default {
           return true
         })
     },
-    findMeasurementType(abbr) {
-      var mT = this.sensorMeasurementsList.filter(
-        (measurementType) => measurementType.abbreviation === abbr
-      )[0]
-      return mT
-    },
     formatFlashlogData(blockData) {
       this.measurements = {}
 
@@ -546,32 +525,31 @@ export default {
 
       this.loading = false
     },
-    getMetaText(measurement, currentSensor, dataSeries) {
-      var otherMeasurements = ''
-      dataSeries.map((dataSerie, index) => {
-        if (
-          dataSerie.className !== currentSensor &&
-          measurement[dataSerie.className] !== null &&
-          measurement[dataSerie.className] !== undefined
-        ) {
-          otherMeasurements +=
-            dataSerie.name +
-            ': ' +
-            (dataSerie.className.indexOf('weight_kg') > -1
-              ? measurement[dataSerie.className].toFixed(3)
-              : measurement[dataSerie.className]) +
-            (index !== dataSeries.length - 1 ? '<br>' : '')
-        }
-      })
-      return (
-        this.momentFormat(measurement.time, 'llll') +
-        '<br>' +
-        this.$i18n.t(currentSensor) +
-        ': ' +
-        measurement[currentSensor] +
-        '<br>' +
-        otherMeasurements
+    getSensorMeasurement(abbr) {
+      var smFilter = this.sensorMeasurementsList.filter(
+        (measurementType) => measurementType.abbreviation === abbr
       )
+      return smFilter.length > 0 ? smFilter[0] : null
+    },
+    getPeriod(dataSet, startOrEnd) {
+      const index =
+        startOrEnd === 'start' ? 0 : this.blockData[dataSet].length - 1
+      return this.$moment.utc(this.blockData[dataSet][index].time)
+    },
+    toggleMeasurement(abbr, hidden, dataSet) {
+      // add measurement abbreviation to list of showMeasurements per dataset, if it was hidden when clicked
+      if (hidden === true && !this.shownMeasurements.dataSet.includes(abbr)) {
+        this.shownMeasurements.dataSet.push(abbr)
+        // otherwise remove it from that list
+      } else if (
+        hidden === false &&
+        this.shownMeasurements.dataSet.includes(abbr)
+      ) {
+        this.shownMeasurements.splice(
+          this.shownMeasurements.dataSet.indexOf(abbr),
+          1
+        )
+      }
     },
   },
 }

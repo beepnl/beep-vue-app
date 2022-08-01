@@ -1082,6 +1082,7 @@ export default {
             } else if (
               value !== null &&
               mT !== undefined &&
+              mT !== null &&
               mT.show_in_dials === 1
             ) {
               this.currentLastSensorValues.push({ value: value, name: key })

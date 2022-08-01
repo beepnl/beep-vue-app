@@ -55,6 +55,10 @@ export default {
       default: 'day',
       type: String,
     },
+    location: {
+      type: String,
+      default: '',
+    },
     startTime: {
       type: Object,
       default: () => {},
@@ -74,11 +78,6 @@ export default {
       fontSize: 12,
       chartParseFmt: 'YYYY-MM-DD[T]HH:mm:ssZ',
       tooltipFormat: 'llll',
-      displayFormats: {
-        day: 'D MMM',
-        hour: 'ddd H[u]',
-        minute: 'LT',
-      },
       intervalToUnit: {
         year: null,
         selection: null,
@@ -155,7 +154,10 @@ export default {
               return value.y.toFixed(1) + ' ' + context.dataset.unit
             },
             display: function(context) {
-              return context.dataIndex === context.dataset.data.length - 1
+              return (
+                self.location !== 'flashlog' &&
+                context.dataIndex === context.dataset.data.length - 1
+              )
             },
           },
           legend: {
@@ -171,6 +173,7 @@ export default {
                 size: 14,
               },
             },
+            onClick: this.legendClickHandler,
           },
           tooltip: {
             padding: 8,
@@ -213,6 +216,13 @@ export default {
               : 'pointer'
           }
         },
+      }
+    },
+    displayFormats() {
+      return {
+        day: 'D MMM',
+        hour: this.location !== 'flashlog' ? 'ddd H[u]' : 'llll',
+        minute: 'LT',
       }
     },
     inspectionsForLineCharts() {
@@ -278,6 +288,20 @@ export default {
   methods: {
     confirmViewInspection(id, date) {
       this.$emit('confirm-view-inspection', { id, date })
+    },
+    legendClickHandler(e, legendItem, legend) {
+      // for regular data charts use default legend click handler
+      if (this.location !== 'flashlog') {
+        const defaultLegendClickHandler =
+          ChartJS.defaults.plugins.legend.onClick
+        defaultLegendClickHandler(e, legendItem, legend)
+        // for flashlog charts use custom handler that stores clicked legends across different pages
+      } else {
+        const hidden = legendItem.hidden
+        const dataset = legend.chart.data.datasets[legendItem.datasetIndex]
+        const abbr = dataset.abbr
+        this.$emit('legend-clicked', { abbr, hidden })
+      }
     },
     roundDec(num, dec) {
       return Math.round(num * Math.pow(10, dec)) / Math.pow(10, dec)
