@@ -264,7 +264,8 @@ export default {
         return this.queen.clipped === 1
       },
       set(value) {
-        this.updateQueen(value, 'clipped')
+        var setValue = value === true ? 1 : 0
+        this.updateQueen(setValue, 'clipped')
       },
     },
     queenColor: {
@@ -284,7 +285,8 @@ export default {
         return this.queen.fertilized === 1
       },
       set(value) {
-        this.updateQueen(value, 'fertilized')
+        var setValue = value === true ? 1 : 0
+        this.updateQueen(setValue, 'fertilized')
       },
     },
     showQueenColorPicker: {
