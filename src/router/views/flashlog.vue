@@ -524,15 +524,15 @@ export default {
     },
     toggleMeasurement(abbr, hidden, dataSet) {
       // add measurement abbreviation to list of showMeasurements per dataset, if it was hidden when clicked
-      if (hidden === true && !this.shownMeasurements.dataSet.includes(abbr)) {
-        this.shownMeasurements.dataSet.push(abbr)
+      if (hidden === true && !this.shownMeasurements[dataSet].includes(abbr)) {
+        this.shownMeasurements[dataSet].push(abbr)
         // otherwise remove it from that list
       } else if (
         hidden === false &&
-        this.shownMeasurements.dataSet.includes(abbr)
+        this.shownMeasurements[dataSet].includes(abbr)
       ) {
-        this.shownMeasurements.splice(
-          this.shownMeasurements.dataSet.indexOf(abbr),
+        this.shownMeasurements[dataSet].splice(
+          this.shownMeasurements[dataSet].indexOf(abbr),
           1
         )
       }
