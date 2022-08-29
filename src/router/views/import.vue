@@ -376,6 +376,7 @@
 
               <v-progress-circular
                 v-if="!lgAndUp && showExportLoadingById.indexOf('csv') > -1"
+                class="mx-2"
                 size="18"
                 width="2"
                 color="accent"
@@ -408,6 +409,7 @@
 
               <v-progress-circular
                 v-if="!lgAndUp && showExportLoadingById.indexOf('json') > -1"
+                class="ml-1"
                 size="18"
                 width="2"
                 color="accent"
@@ -910,7 +912,6 @@ export default {
               : this.baseApiUrl + responseLink
           // trick to download returned csv link (doesn't work via v-btn because it has already been clicked)
           link.href = csvLink
-          link.setAttribute('target', '_blank')
           link.setAttribute('download', csvLink)
         } else {
           var dataStr =
@@ -920,6 +921,7 @@ export default {
           link.setAttribute('download', 'export.json')
         }
 
+        link.setAttribute('target', '_blank')
         document.body.appendChild(link)
         link.click()
 
