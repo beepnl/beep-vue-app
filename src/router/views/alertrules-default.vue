@@ -251,12 +251,16 @@ export default {
 
       return replacedSentence
     },
-    copySelectedAlertRules() {
-      this.alertRulesDefault.map((alertRuleDefault) => {
-        if (alertRuleDefault.selected) {
-          this.copyAlertRule(alertRuleDefault)
-        }
-      })
+    async copySelectedAlertRules() {
+      await Promise.all(
+        this.alertRulesDefault.map(async (alertRuleDefault) => {
+          if (alertRuleDefault.selected) {
+            await this.copyAlertRule(alertRuleDefault)
+            return true
+          }
+        })
+      )
+
       this.showLoadingIcon = false
       setTimeout(() => {
         return this.readAlertRules().then(() => {

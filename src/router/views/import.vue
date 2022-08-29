@@ -282,12 +282,30 @@
                     outlined
                     color="accent"
                     class="mx-2"
+                    :disabled="showExportLoadingById.indexOf('csv') > -1"
                     v-on="on"
                     @click="
-                      exportBlockData(selectedFlashLog.flashlog_id, '', true)
+                      exportBlockData(
+                        selectedFlashLog.flashlog_id,
+                        '',
+                        true,
+                        'csv'
+                      )
                     "
                   >
-                    <v-icon left>mdi-file-export</v-icon>
+                    <v-progress-circular
+                      v-if="showExportLoadingById.indexOf('csv') > -1"
+                      class="ml-n1 mr-2"
+                      size="18"
+                      width="2"
+                      color="disabled"
+                      indeterminate
+                    />
+                    <v-icon
+                      v-if="showExportLoadingById.indexOf('csv') === -1"
+                      left
+                      >mdi-file-export</v-icon
+                    >
                     {{ $t('Export_full_csv') }}
                   </v-btn>
                 </template>
@@ -301,19 +319,41 @@
                     tile
                     outlined
                     color="accent"
+                    :disabled="showExportLoadingById.indexOf('json') > -1"
                     v-on="on"
                     @click="
-                      exportBlockData(selectedFlashLog.flashlog_id, '', false)
+                      exportBlockData(
+                        selectedFlashLog.flashlog_id,
+                        '',
+                        false,
+                        'json'
+                      )
                     "
                   >
-                    <v-icon left>mdi-download</v-icon>
+                    <v-progress-circular
+                      v-if="showExportLoadingById.indexOf('json') > -1"
+                      class="ml-n1 mr-2"
+                      size="18"
+                      width="2"
+                      color="disabled"
+                      indeterminate
+                    />
+                    <v-icon
+                      v-if="showExportLoadingById.indexOf('json') === -1"
+                      left
+                      >mdi-download</v-icon
+                    >
                     {{ $t('Export_full_json') }}
                   </v-btn>
                 </template>
                 <span>{{ $t('Export_as_json') }}</span>
               </v-tooltip>
 
-              <v-tooltip v-if="!lgAndUp" open-delay="500" bottom>
+              <v-tooltip
+                v-if="!lgAndUp && showExportLoadingById.indexOf('csv') === -1"
+                open-delay="500"
+                bottom
+              >
                 <template v-slot:activator="{ on }">
                   <v-icon
                     dark
@@ -321,7 +361,12 @@
                     class="mx-2"
                     v-on="on"
                     @click="
-                      exportBlockData(selectedFlashLog.flashlog_id, '', true)
+                      exportBlockData(
+                        selectedFlashLog.flashlog_id,
+                        '',
+                        true,
+                        'csv'
+                      )
                     "
                     >mdi-file-export</v-icon
                   >
@@ -329,20 +374,45 @@
                 <span>{{ $t('Export_as_csv') }}</span>
               </v-tooltip>
 
-              <v-tooltip v-if="!lgAndUp" open-delay="500" bottom>
+              <v-progress-circular
+                v-if="!lgAndUp && showExportLoadingById.indexOf('csv') > -1"
+                size="18"
+                width="2"
+                color="accent"
+                indeterminate
+              />
+
+              <v-tooltip
+                v-if="!lgAndUp && showExportLoadingById.indexOf('json') === -1"
+                open-delay="500"
+                bottom
+              >
                 <template v-slot:activator="{ on }">
                   <v-icon
                     dark
                     color="accent"
                     v-on="on"
                     @click="
-                      exportBlockData(selectedFlashLog.flashlog_id, '', false)
+                      exportBlockData(
+                        selectedFlashLog.flashlog_id,
+                        '',
+                        false,
+                        'json'
+                      )
                     "
                     >mdi-download</v-icon
                   >
                 </template>
                 <span>{{ $t('Export_as_json') }}</span>
               </v-tooltip>
+
+              <v-progress-circular
+                v-if="!lgAndUp && showExportLoadingById.indexOf('json') > -1"
+                size="18"
+                width="2"
+                color="accent"
+                indeterminate
+              />
             </div>
           </div>
 
@@ -493,7 +563,10 @@
 
               <template v-slot:[`item.export`]="{ item }">
                 <v-tooltip
-                  v-if="selectedFlashLog !== null"
+                  v-if="
+                    selectedFlashLog !== null &&
+                      showExportLoadingById.indexOf('csv-' + item.block) === -1
+                  "
                   open-delay="500"
                   bottom
                 >
@@ -507,7 +580,8 @@
                         exportBlockData(
                           selectedFlashLog.flashlog_id,
                           item.block,
-                          true
+                          true,
+                          'csv-' + item.block
                         )
                       "
                       >mdi-file-export</v-icon
@@ -516,8 +590,23 @@
                   <span>{{ $t('Export_as_csv') }}</span>
                 </v-tooltip>
 
+                <v-progress-circular
+                  v-if="
+                    selectedFlashLog !== null &&
+                      showExportLoadingById.indexOf('csv-' + item.block) > -1
+                  "
+                  class="mr-2"
+                  size="18"
+                  width="2"
+                  color="accent"
+                  indeterminate
+                />
+
                 <v-tooltip
-                  v-if="selectedFlashLog !== null"
+                  v-if="
+                    selectedFlashLog !== null &&
+                      showExportLoadingById.indexOf('json-' + item.block) === -1
+                  "
                   open-delay="500"
                   bottom
                 >
@@ -530,7 +619,8 @@
                         exportBlockData(
                           selectedFlashLog.flashlog_id,
                           item.block,
-                          false
+                          false,
+                          'json-' + item.block
                         )
                       "
                       >mdi-download</v-icon
@@ -538,6 +628,17 @@
                   </template>
                   <span>{{ $t('Export_as_json') }}</span>
                 </v-tooltip>
+
+                <v-progress-circular
+                  v-if="
+                    selectedFlashLog !== null &&
+                      showExportLoadingById.indexOf('json-' + item.block) > -1
+                  "
+                  size="18"
+                  width="2"
+                  color="accent"
+                  indeterminate
+                />
               </template>
             </v-data-table>
           </div>
@@ -579,6 +680,7 @@ export default {
       dateFormatLong: 'YYYY-MM-DD HH:mm:ss',
       showLoadingIconById: [],
       showUndoLoadingIconById: [],
+      showExportLoadingById: [],
       ready: false,
       flashLogs: [],
       showInfo: false,
@@ -778,8 +880,14 @@ export default {
     })
   },
   methods: {
-    async exportBlockData(flashLogId, blockId = '', csvFormat = false) {
+    async exportBlockData(
+      flashLogId,
+      blockId = '',
+      csvFormat = false,
+      loadingId
+    ) {
       this.clearMessages()
+      this.showExportLoadingById.push(loadingId)
       try {
         const response = await Api.readRequest(
           '/flashlogs/' +
@@ -792,24 +900,44 @@ export default {
           this.errorMessage = this.$i18n.t('too_much_data')
         }
 
-        const responseLink = response.data.link
-        const csvLink =
-          responseLink.indexOf('https://') > -1
-            ? responseLink
-            : this.baseApiUrl + responseLink
-        // trick to download returned csv link (doesn't work via v-btn because it has already been clicked)
         var link = document.createElement('a')
-        link.href = csvLink
-        link.setAttribute('target', '_blank')
-        link.setAttribute('download', csvLink)
+
+        if (csvFormat) {
+          const responseLink = response.data.link
+          const csvLink =
+            responseLink.indexOf('https://') > -1
+              ? responseLink
+              : this.baseApiUrl + responseLink
+          // trick to download returned csv link (doesn't work via v-btn because it has already been clicked)
+          link.href = csvLink
+          link.setAttribute('target', '_blank')
+          link.setAttribute('download', csvLink)
+        } else {
+          var dataStr =
+            'data:text/json;charset=utf-8,' +
+            encodeURIComponent(JSON.stringify(response.data))
+          link.setAttribute('href', dataStr)
+          link.setAttribute('download', 'export.json')
+        }
+
         document.body.appendChild(link)
         link.click()
 
         if (response.status === 200) {
           this.successMessage = this.$i18n.t('export_file_saved')
         }
+
+        this.showExportLoadingById.splice(
+          this.showExportLoadingById.indexOf(loadingId),
+          1
+        )
+
         return response
       } catch (error) {
+        this.showExportLoadingById.splice(
+          this.showExportLoadingById.indexOf(loadingId),
+          1
+        )
         console.log('Error: ', error)
         this.errorMessage = this.$i18n.t('no_data')
       }

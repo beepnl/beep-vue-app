@@ -380,7 +380,7 @@
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
-      <v-divider v-if="alert.alert_rule_name !== null" class="my-1"></v-divider>
+      <v-divider class="my-1"></v-divider>
 
       <v-list-item-group>
         <v-list-item v-if="alertRuleNotActive" disabled>
