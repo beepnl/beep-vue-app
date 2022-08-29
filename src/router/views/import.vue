@@ -906,9 +906,14 @@ export default {
 
         var link = document.createElement('a')
         var fileName =
-          'export_log_' +
+          'beep-base-log-export-user-' +
+          this.selectedFlashLog.user_id +
+          '-' +
+          this.selectedFlashLog.device_name +
+          '-log-file-' +
           flashLogId +
-          (blockId === '' ? '_all' : '_block_' + blockId)
+          (blockId === '' ? '-all-data' : '-block-' + blockId)
+        fileName = fileName.replace(' ', '')
 
         if (csvFormat) {
           var hrefStr = 'data:text/csv;charset=utf-8,' + response.data
@@ -951,7 +956,8 @@ export default {
       this.showUndoLoadingIconById.push(blockId)
       try {
         const response = await Api.deleteRequest(
-          '/flashlogs/' + flashLogId + '?block_id=' + blockId
+          '/flashlogs/' + flashLogId + '?block_id=',
+          blockId
         )
         this.undoMessage = response.data
         this.showUndoLoadingIconById.splice(
