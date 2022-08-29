@@ -610,7 +610,7 @@ const translations = {
   alertrule_not_active:
     "Dette varselet er deaktivert. Du kan aktivere den ved å merke av i 'Aktiv'-boksen og lagre denne varslingsregelen.",
   export_email_sent: 'E-post med Excel-fil er sendt',
-  export_file_saved: 'Excel-filen er lagret i nedlastingsmappen',
+  excel_file_saved: 'Excel-filen er lagret i nedlastingsmappen',
   Updated_at: 'Oppdatert kl.',
   Not_yet_saved: 'Ikke lagret ennå',
   add_own_device: 'legge til egen enhet',
@@ -822,6 +822,8 @@ const translations = {
   Export_as_csv: 'Eksporter som .csv-fil',
   Export_full_json: 'Eksporter full JSON',
   Export_full_csv: 'Eksporter full .csv',
+  Export_file_being_saved:
+    'Export file will be saved in your Downloads folder - wait a moment please',
 
   Now: 'Now',
   input_only_possible_when_date_present:

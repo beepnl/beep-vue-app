@@ -643,7 +643,7 @@ const translations = {
   alertrule_not_active:
     "Deze notificatie is uitgeschakeld. Je kunt deze weer activeren door 'Actief' aan te vinken en de notificatie-instelling op te slaan.",
   export_email_sent: 'E-mail met Excel bestand is verzonden',
-  export_file_saved: 'Excel bestand is opgeslagen in je Downloads map',
+  excel_file_saved: 'Excel bestand is opgeslagen in je Downloads map',
   Updated_at: 'Aangepast op',
   Not_yet_saved: 'Nog niet opgeslagen',
   add_own_device: 'Voeg eigen meetsysteem toe',
@@ -845,6 +845,8 @@ const translations = {
   Export_as_csv: 'Exporteer als .csv bestand',
   Export_full_json: 'Exporteer volledige JSON',
   Export_full_csv: 'Exporteer volledige .csv',
+  Export_file_being_saved:
+    'Export bestand wordt opgeslagen in je Downloads map - een moment geduld a.u.b.',
 
   Now: 'Nu',
   input_only_possible_when_date_present:

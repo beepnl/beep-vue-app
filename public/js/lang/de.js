@@ -712,7 +712,7 @@ const translations = {
   alertrule_not_active:
     'Dieser Alarm wurde deaktiviert. Du kannst ihn aktivieren, indem Du das Kontrollkästchen "Aktiv" aktivierst und diese Alarmregel speicherst.',
   export_email_sent: 'Es wurde eine Email mit Excelfile versandt',
-  export_file_saved:
+  excel_file_saved:
     'Die Excel-Datei wurde in Deinem Download-Ordner gespeichert',
   Updated_at: 'Upgedatet am',
   Not_yet_saved: 'Bisher nicht gespeichert',
@@ -927,6 +927,8 @@ const translations = {
   Export_as_csv: 'Export as .csv file',
   Export_full_json: 'Export full JSON',
   Export_full_csv: 'Export full .csv',
+  Export_file_being_saved:
+    'Export file will be saved in your Downloads folder - wait a moment please',
 
   Now: 'Now',
   input_only_possible_when_date_present:

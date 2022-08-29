@@ -729,7 +729,7 @@ const translations = {
   alertrule_not_active:
     "Tämä hälytys on poistettu käytöstä. Voit aktivoida sen valitsemalla 'Aktiivinen' -ruudun ja tallentamalla tämän hälytyssäännön.",
   export_email_sent: 'Sähköposti Excel-tiedostolla on lähetetty',
-  export_file_saved: 'Excel-tiedosto on tallennettu Lataukset-kansioon',
+  excel_file_saved: 'Excel-tiedosto on tallennettu Lataukset-kansioon',
   Updated_at: 'Päivitetty',
   Not_yet_saved: 'Ei vielä tallennettu',
   beep_base_explanation:
@@ -943,6 +943,8 @@ const translations = {
   Export_as_csv: 'Export as .csv file',
   Export_full_json: 'Export full JSON',
   Export_full_csv: 'Export full .csv',
+  Export_file_being_saved:
+    'Export file will be saved in your Downloads folder - wait a moment please',
 
   Now: 'Now',
   input_only_possible_when_date_present:

@@ -250,13 +250,13 @@
           </span>
         </v-col>
 
-        <v-col v-if="successMessage" cols="12">
+        <v-col v-if="showSuccessMessage" cols="12">
           <v-alert
             text
             prominent
             dense
-            type="success"
-            color="green"
+            type="info"
+            color="accent"
             class="mt-3 mb-n4"
           >
             {{ successMessage }}
@@ -376,8 +376,8 @@
 
               <v-progress-circular
                 v-if="!lgAndUp && showExportLoadingById.indexOf('csv') > -1"
-                class="mx-2"
-                size="18"
+                class="ml-2 mr-3"
+                size="19"
                 width="2"
                 color="accent"
                 indeterminate
@@ -410,7 +410,7 @@
               <v-progress-circular
                 v-if="!lgAndUp && showExportLoadingById.indexOf('json') > -1"
                 class="ml-1"
-                size="18"
+                size="19"
                 width="2"
                 color="accent"
                 indeterminate
@@ -597,8 +597,8 @@
                     selectedFlashLog !== null &&
                       showExportLoadingById.indexOf('csv-' + item.block) > -1
                   "
-                  class="mr-2"
-                  size="18"
+                  class="mr-3"
+                  size="19"
                   width="2"
                   color="accent"
                   indeterminate
@@ -636,7 +636,8 @@
                     selectedFlashLog !== null &&
                       showExportLoadingById.indexOf('json-' + item.block) > -1
                   "
-                  size="18"
+                  class="ml-1"
+                  size="19"
                   width="2"
                   color="accent"
                   indeterminate
@@ -677,6 +678,7 @@ export default {
     return {
       errorMessage: null,
       successMessage: null,
+      showSuccessMessage: false,
       undoMessage: null,
       dateFormat: 'YYYY-MM-DD',
       dateFormatLong: 'YYYY-MM-DD HH:mm:ss',
@@ -903,37 +905,37 @@ export default {
         }
 
         var link = document.createElement('a')
+        var fileName =
+          'export_log_' +
+          flashLogId +
+          (blockId === '' ? '_all' : '_block_' + blockId)
 
         if (csvFormat) {
-          const responseLink = response.data.link
-          const csvLink =
-            responseLink.indexOf('https://') > -1
-              ? responseLink
-              : this.baseApiUrl + responseLink
-          // trick to download returned csv link (doesn't work via v-btn because it has already been clicked)
-          link.href = csvLink
-          link.setAttribute('download', csvLink)
+          var hrefStr = 'data:text/csv;charset=utf-8,' + response.data
         } else {
-          var dataStr =
+          hrefStr =
             'data:text/json;charset=utf-8,' +
             encodeURIComponent(JSON.stringify(response.data))
-          link.setAttribute('href', dataStr)
-          link.setAttribute('download', 'export.json')
         }
 
         link.setAttribute('target', '_blank')
+        link.setAttribute('href', hrefStr)
+        link.setAttribute('download', fileName + (csvFormat ? '.csv' : '.json'))
         document.body.appendChild(link)
         link.click()
-
-        if (response.status === 200) {
-          this.successMessage = this.$i18n.t('export_file_saved')
-        }
 
         this.showExportLoadingById.splice(
           this.showExportLoadingById.indexOf(loadingId),
           1
         )
 
+        if (response.status === 200) {
+          this.successMessage = this.$i18n.t('Export_file_being_saved')
+          this.showSuccessMessage = true
+          setTimeout(() => {
+            this.showSuccessMessage = false
+          }, 5000) // wait for file to be saved by user
+        }
         return response
       } catch (error) {
         this.showExportLoadingById.splice(

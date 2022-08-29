@@ -723,7 +723,7 @@ const translations = {
   alertrule_not_active:
     "Este alerta foi desativado. Pode ativá-lo clicando na caixa 'Ativo', e salvando esta regra de alerta.",
   export_email_sent: 'Foi enviado um email com o ficheiro Excel',
-  export_file_saved: 'O ficheiro Excel foi salvo na sua pasta de Downloads',
+  excel_file_saved: 'O ficheiro Excel foi salvo na sua pasta de Downloads',
   Updated_at: 'Atualizado a',
   Not_yet_saved: 'Ainda não foi salvo',
   add_own_device: 'Adicionar aparelho próprio',
@@ -937,6 +937,8 @@ const translations = {
   Export_as_csv: 'Export as .csv file',
   Export_full_json: 'Export full JSON',
   Export_full_csv: 'Export full .csv',
+  Export_file_being_saved:
+    'Export file will be saved in your Downloads folder - wait a moment please',
 
   Now: 'Now',
   input_only_possible_when_date_present:

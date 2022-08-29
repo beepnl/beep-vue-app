@@ -431,7 +431,7 @@ export default {
         link.click()
         if (response.status === 200) {
           this.showSuccessMessage = true
-          this.successMessage = this.$i18n.t('export_file_saved')
+          this.successMessage = this.$i18n.t('excel_file_saved')
         }
         return response
       } catch (error) {

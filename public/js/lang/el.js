@@ -688,7 +688,7 @@ const translations = {
   alertrule_not_active:
     'Αυτή η ειδοποίηση έχει απενεργοποιηθεί. Μπορείτε να το ενεργοποιήσετε επιλέγοντας το πλαίσιο «Ενεργό» και αποθηκεύοντας αυτόν τον κανόνα ειδοποίησης.',
   export_email_sent: 'Έχει σταλεί email με αρχείο Excel',
-  export_file_saved: 'Το αρχείο Excel έχει αποθηκευτεί στον φάκελο "Λήψεις".',
+  excel_file_saved: 'Το αρχείο Excel έχει αποθηκευτεί στον φάκελο "Λήψεις".',
   Updated_at: 'Ενημερώθηκε στις',
   Not_yet_saved: 'Δεν έχει αποθηκευτεί ακόμη',
   add_own_device: 'Προσθήκη δικής σας συσκευής',
@@ -904,6 +904,8 @@ const translations = {
   Export_as_csv: 'Εξαγωγή ως .csv αρχείο',
   Export_full_json: 'Εξαγωγή πλήρες JSON',
   Export_full_csv: 'Εξαγωγή πλήρες .csv',
+  Export_file_being_saved:
+    'Export file will be saved in your Downloads folder - wait a moment please',
 
   Now: 'Τώρα',
   input_only_possible_when_date_present:

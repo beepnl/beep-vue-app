@@ -699,7 +699,7 @@ const translations = {
   alertrule_not_active:
     'Această alertă a fost dezactivată. O puteți activa bifând caseta „Activați” și salvând această regulă de alertă.',
   export_email_sent: 'A fost trimis un e-mail cu fișier Excel',
-  export_file_saved: 'Fișierul Excel a fost salvat în folderul Descărcări',
+  excel_file_saved: 'Fișierul Excel a fost salvat în folderul Descărcări',
   Updated_at: 'Actualizat la',
   Not_yet_saved: 'Nu a fost încă salvat',
   add_own_device: 'Adăugați propriul dispozitiv',
@@ -910,6 +910,8 @@ const translations = {
   Export_as_csv: 'Export as .csv file',
   Export_full_json: 'Export full JSON',
   Export_full_csv: 'Export full .csv',
+  Export_file_being_saved:
+    'Export file will be saved in your Downloads folder - wait a moment please',
 
   Now: 'Now',
   input_only_possible_when_date_present:

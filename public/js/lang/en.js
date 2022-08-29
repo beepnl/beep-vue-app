@@ -610,7 +610,7 @@ const translations = {
   alertrule_not_active:
     "This alert has been deactivated. You can activate it by checking the 'Active' box and saving this alert rule.",
   export_email_sent: 'Email with Excel file has been sent',
-  export_file_saved: 'Excel file has been saved in your Downloads folder',
+  excel_file_saved: 'Excel file has been saved in your Downloads folder',
   Updated_at: 'Updated at',
   Not_yet_saved: 'Not yet saved',
   add_own_device: 'Add own device',
@@ -820,6 +820,8 @@ const translations = {
   Export_as_csv: 'Export as .csv file',
   Export_full_json: 'Export full JSON',
   Export_full_csv: 'Export full .csv',
+  Export_file_being_saved:
+    'Export file will be saved in your Downloads folder - wait a moment please',
 
   Now: 'Now',
   input_only_possible_when_date_present:
@@ -861,7 +863,8 @@ const translations = {
   Hivetag_exp_1:
     "‘Hive tags’ are QR codes you can attach to a hive, and for which you can set an action that will be performed as soon as you scan the hive tag. An 'action' refers to actions in the BEEP app, such as creating a new inspection for the relevant hive. Once the hive tag has been set up, you only need to scan the QR code with your smartphone, and a new inspection will be automatically created. You can print the hive tags yourself, by ",
   Hivetag_download_text: 'downloading this pdf.',
-  Hivetag_exp_2: ' Just scan a hive tag to get started, you will be taken to the setup page automatically if no action has been set yet.',
+  Hivetag_exp_2:
+    ' Just scan a hive tag to get started, you will be taken to the setup page automatically if no action has been set yet.',
   qrcode: 'QR Code | QR Codes',
   Qrcode_exp1: "Attach the hive tag with number '",
   Qrcode_exp2: "' to a hive.",

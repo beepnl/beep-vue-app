@@ -681,7 +681,7 @@ const translations = {
   alertrule_not_active:
     'Denna varning har deaktiverats. Du kan aktivera den genom att klicka I Aktiv boxen och spara denna varningsregel.',
   export_email_sent: 'Ett email med Excel fil har skickats',
-  export_file_saved: 'En Excel fil har sparats I din download folder',
+  excel_file_saved: 'En Excel fil har sparats I din download folder',
   Updated_at: 'Uppdaterad vid',
   Not_yet_saved: 'Ännu inte sparad',
   add_own_device: 'Lägg till egen enhet',
@@ -891,6 +891,8 @@ const translations = {
   Export_as_csv: 'Export as .csv file',
   Export_full_json: 'Export full JSON',
   Export_full_csv: 'Export full .csv',
+  Export_file_being_saved:
+    'Export file will be saved in your Downloads folder - wait a moment please',
 
   Now: 'Now',
   input_only_possible_when_date_present:
