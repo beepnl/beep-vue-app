@@ -45,19 +45,6 @@
           </v-alert>
         </v-col>
 
-        <v-col v-if="undoMessage" cols="12">
-          <v-alert
-            text
-            prominent
-            dense
-            :type="undoMessage.data_deleted ? 'success' : 'error'"
-            :color="undoMessage.data_deleted ? 'green' : 'red'"
-            class="mt-3 mb-n4"
-          >
-            {{ undoSentence }}
-          </v-alert>
-        </v-col>
-
         <v-col v-if="errorMessage" cols="12">
           <v-alert
             text
@@ -248,6 +235,19 @@
               }}</a></em
             >
           </span>
+        </v-col>
+
+        <v-col v-if="undoMessage" cols="12">
+          <v-alert
+            text
+            prominent
+            dense
+            :type="undoMessage.data_deleted ? 'success' : 'error'"
+            :color="undoMessage.data_deleted ? 'green' : 'red'"
+            class="mt-3 mb-n4 break-all"
+          >
+            {{ undoSentence }}
+          </v-alert>
         </v-col>
 
         <v-col v-if="showSuccessMessage" cols="12">
@@ -860,7 +860,8 @@ export default {
             this.undoMessage.deleted_days
         : this.$i18n.t('data_not_deleted') +
             '. ' +
-            JSON.stringify(this.undoMessage)
+            JSON.stringify(this.undoMessage).substr(0, 1000) +
+            ' ... '
     },
   },
   created() {
