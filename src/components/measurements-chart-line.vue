@@ -140,12 +140,14 @@ export default {
           line: { borderWidth: this.mobile ? 2 : 3 },
         },
         animation: {
+          duration: 200,
           colors: {
             type: 'color',
             duration: 200,
             from: 'transparent',
           },
         },
+        // animation: false,
         layout: {
           padding: {
             right: 24,
@@ -220,7 +222,10 @@ export default {
           }
         },
         onHover: (event, chartElement) => {
-          if (event.native.target.style !== undefined) {
+          if (
+            self.location !== 'flashlog' &&
+            event.native.target.style !== undefined
+          ) {
             event.native.target.style.cursor = chartElement[0]
               ? self.interval === 'hour'
                 ? 'zoom-out'
@@ -314,6 +319,7 @@ export default {
         const hidden = legendItem.hidden
         const dataset = legend.chart.data.datasets[legendItem.datasetIndex]
         const abbr = dataset.abbr
+        console.log('legend-clicked', { abbr, hidden })
         this.$emit('legend-clicked', { abbr, hidden })
       }
     },

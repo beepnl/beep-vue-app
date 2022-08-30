@@ -23,7 +23,7 @@
         @click="changeBlockDataIndex(blockDataIndex - 1)"
       >
         <v-icon left>mdi-chevron-left</v-icon>
-        {{ $t('prev_week') }}</v-btn
+        {{ $t('prev') }}</v-btn
       >
       <v-icon
         v-if="smAndDown && !noMatches"
@@ -75,7 +75,9 @@
               $t('Time_diff') +
                 ': ' +
                 (blockData.block_data_flashlog_sec_diff !== null
-                  ? blockData.block_data_flashlog_sec_diff + $t('seconds_short')
+                  ? blockData.block_data_flashlog_sec_diff +
+                    ' ' +
+                    $t('seconds_short')
                   : $t('unknown'))
             "
           ></span>
@@ -99,7 +101,7 @@
         :disabled="loading"
         @click="changeBlockDataIndex(blockDataIndex + 1)"
       >
-        {{ $t('next_week') }}
+        {{ $t('next') }}
         <v-icon right>mdi-chevron-right</v-icon>
       </v-btn>
       <v-icon
@@ -169,8 +171,8 @@
                   :chart-data="chartjsDataSeries(dataSet)"
                   :interval="'week'"
                   :location="'flashlog'"
-                  :start-time="getPeriod(dataSet, 'start')"
-                  :end-time="getPeriod(dataSet, 'end')"
+                  :start-time="getPeriod('flashlog', 'start')"
+                  :end-time="getPeriod('flashlog', 'end')"
                   :chart-id="'chart-' + dataSet"
                   size="large"
                   @legend-clicked="
@@ -259,7 +261,7 @@ export default {
       thresholdSecDiff: 120,
       thresholdMatches: 99,
       deviceName: null,
-      fillHoles: true,
+      fillHoles: false,
       shownMeasurements: {
         flashlog: ['t_0', 't_i'],
         database: ['t_0', 't_i'],
@@ -411,6 +413,8 @@ export default {
       this.checkBlockData(true)
     },
     chartjsDataSeries(dataSet) {
+      console.log('preparing chart data for ', dataSet)
+
       var data = {
         labels: [],
         datasets: [],
@@ -459,15 +463,15 @@ export default {
         this.blockData[dataSet].map((measurement, index) => {
           data.datasets.map((dataset, i) => {
             var quantity = dataset.abbr
-            if (
-              measurement[quantity] !== null &&
-              typeof measurement[quantity] === 'number'
-            ) {
-              dataset.data.push({
-                x: measurement.time,
-                y: measurement[quantity],
-              })
-            }
+            // if (
+            //   measurement[quantity] !== null &&
+            //   typeof measurement[quantity] === 'number'
+            // ) {
+            dataset.data.push({
+              x: measurement.time,
+              y: measurement[quantity],
+            })
+            // }
           })
         })
       }
@@ -524,6 +528,7 @@ export default {
       return this.$moment.utc(this.blockData[dataSet][index].time)
     },
     toggleMeasurement(abbr, hidden, dataSet) {
+      console.log('clicked', abbr, hidden, dataSet)
       // add measurement abbreviation to list of showMeasurements per dataset, if it was hidden when clicked
       if (hidden === true && !this.shownMeasurements[dataSet].includes(abbr)) {
         this.shownMeasurements[dataSet].push(abbr)

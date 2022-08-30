@@ -448,7 +448,7 @@
                   v-if="item.matches !== undefined"
                   class="cursor-pointer"
                   @click="matchesOverlay = item.block"
-                  v-text="matchesText(item)"
+                  v-text="$t('Matches_found')"
                 ></span>
 
                 <v-overlay
@@ -1136,8 +1136,11 @@ export default {
       return text
     },
     matchesHeader(log) {
+      var nrOfMatches = Object.keys(log.matches.matches).length
       return (
-        this.matchesText(log) +
+        this.$i18n.t('Matches_found') +
+        ': ' +
+        nrOfMatches +
         ' (Log ' +
         this.selectedFlashLog.flashlog_id +
         ', ' +
@@ -1146,10 +1149,6 @@ export default {
         log.block +
         ')'
       )
-    },
-    matchesText(log) {
-      var nrOfMatches = Object.keys(log.matches.matches).length
-      return this.$i18n.t('Matches_found') + ': ' + nrOfMatches
     },
     missingDataText(log) {
       var ptNotInDb = this.percentageNotInDB(log)

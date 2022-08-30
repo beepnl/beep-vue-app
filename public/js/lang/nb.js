@@ -786,8 +786,6 @@ const translations = {
   Block: 'Blokkere',
   Nr_of_match_props: 'Antall identiske verdier per treff',
   no_admin: 'Du må være administrator for å se denne siden',
-  next_week: 'Neste uke',
-  prev_week: 'Forrige uke',
   import_block_data_short: 'Importer blokkdata',
   no_flashlog_data: 'Ingen loggdata',
   no_flashlog_file: 'Ingen loggfil',

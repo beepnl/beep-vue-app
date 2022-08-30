@@ -808,8 +808,6 @@ const translations = {
   Block: 'Blok',
   Nr_of_match_props: 'Aantal gelijke waardes per match',
   no_admin: 'Je moet beheerder zijn om deze pagina te kunnen bekijken',
-  next_week: 'Volgende week',
-  prev_week: 'Vorige week',
   import_block_data_short: 'Importeer blok data',
   no_flashlog_data: 'Geen log data',
   no_flashlog_file: 'Geen logbestand',
