@@ -878,6 +878,7 @@ export default {
         } else {
           if (this.importMessage !== null) {
             this.logSearch = this.importMessage.flashlog_id.toString() // make persisted log item remain on top of table
+            this.reCheckFlashLog(this.importMessage.flashlog_id)
           }
           this.selectedFlashLog = null
         }
@@ -966,9 +967,7 @@ export default {
           this.showUndoLoadingIconById.indexOf(blockId),
           1
         )
-        setTimeout(() => {
-          this.readFlashLogs()
-        }, 100)
+        this.reCheckFlashLog(flashLogId)
       } catch (error) {
         this.showUndoLoadingIconById.splice(
           this.showUndoLoadingIconById.indexOf(blockId),
@@ -1001,8 +1000,10 @@ export default {
         }
       }
     },
-    async checkFlashLog(flashLogId) {
-      this.clearMessages()
+    async checkFlashLog(flashLogId, keepMessages = false) {
+      if (!keepMessages) {
+        this.clearMessages()
+      }
       this.selectedFlashLog = null
       this.showLoadingIconById.push(flashLogId)
       try {
@@ -1186,6 +1187,13 @@ export default {
         ' - ' +
         this.momentify(log.time_end, true, this.dateFormat)
       )
+    },
+    reCheckFlashLog(flashLogId) {
+      this.fromCache = false
+      setTimeout(() => {
+        this.readFlashLogs()
+        this.checkFlashLog(flashLogId, true)
+      }, 500)
     },
     rowClassLogData(item) {
       return item.matches === undefined
