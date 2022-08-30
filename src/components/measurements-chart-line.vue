@@ -161,6 +161,9 @@ export default {
             padding: {
               bottom: 1,
             },
+            color: '#242424',
+            backgroundColor: 'rgba(255,255,255,0.7)',
+            borderRadius: 4,
             formatter: function(value, context) {
               return value.y.toFixed(1) + ' ' + context.dataset.unit
             },

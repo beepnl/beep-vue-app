@@ -66,7 +66,9 @@
                 v-for="(measurement, i) in data"
                 :key="'measurement ' + i"
                 :class="
-                  `td--heatmap ${i % moduloNumber === 0 ? 'td-border' : ''}`
+                  `td--heatmap ${i % moduloNumber === 0 ? 'td-border' : ''} ${
+                    interval === 'hour' ? '--zoom-out' : ''
+                  }`
                 "
                 :style="
                   `background-color: ${calculateHeatmapColor(
@@ -74,6 +76,7 @@
                     measurement[soundSensor]
                   )}`
                 "
+                @click="setPeriodToDate(measurement.time)"
               >
                 <span
                   v-if="inspectionIndexes.indexOf(i) > -1"
@@ -209,6 +212,9 @@ export default {
           .replace(' ' + currentYear, '') // Remove year hardcoded per language, currently no other way to get rid of year whilst keeping localized time
       }
     },
+    setPeriodToDate(date) {
+      this.$emit('set-period-to-date', date)
+    },
     viewInspection(index) {
       var inspection = this.getInspectionByIndex(index)
       this.$emit('view-inspection', {
@@ -269,10 +275,13 @@ export default {
   max-width: 8px !important;
   height: 13px !important;
   padding: 0 !important;
-  cursor: auto;
+  cursor: zoom-in;
   .beep-tooltip,
   .hover-overlay {
     display: none;
+  }
+  &.--zoom-out {
+    cursor: zoom-out;
   }
   &:hover {
     .hover-overlay {

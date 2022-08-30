@@ -427,6 +427,7 @@
                       @view-inspection="
                         confirmViewInspection($event.id, $event.date)
                       "
+                      @set-period-to-date="setPeriodToDate($event)"
                     >
                     </MeasurementsChartHeatmap>
                   </div>
@@ -1445,28 +1446,10 @@ export default {
           period = 'hour'
         else period = 'day'
       }
-      var format = period === 'hour' ? 'lll' : 'll'
 
-      this.$refs.confirm
-        .open(
-          this.$i18n.t('data_zoom'),
-          (this.interval !== 'hour'
-            ? this.$i18n.t('data_zoom_ok')
-            : this.$i18n.t('data_zoom_out_ok')) +
-            this.momentFormat(date, format) +
-            '?',
-          {
-            color: 'primary',
-          }
-        )
-        .then((confirm) => {
-          this.timeIndex = this.calculateTimeIndex(period, date, true)
-          this.interval = period
-          this.loadData()
-        })
-        .catch((reject) => {
-          return true
-        })
+      this.timeIndex = this.calculateTimeIndex(period, date, true)
+      this.interval = period
+      this.loadData()
     },
     setInitialDeviceIdAndLoadData() {
       if (this.$route.name === 'measurements-id') {
