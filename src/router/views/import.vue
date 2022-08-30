@@ -848,6 +848,7 @@ export default {
       return this.$vuetify.breakpoint.smAndDown
     },
     undoSentence() {
+      var stringifiedMessage = JSON.stringify(this.undoMessage)
       return this.undoMessage !== null && this.undoMessage.data_deleted
         ? this.$i18n.t('data_deleted') +
             '. ' +
@@ -860,8 +861,8 @@ export default {
             this.undoMessage.deleted_days
         : this.$i18n.t('data_not_deleted') +
             '. ' +
-            JSON.stringify(this.undoMessage).substr(0, 1000) +
-            ' ... '
+            stringifiedMessage.substr(0, 1000) +
+            (stringifiedMessage.length > 1000 ? ' ... ' : '')
     },
   },
   created() {

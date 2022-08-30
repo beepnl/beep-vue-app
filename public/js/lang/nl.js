@@ -847,6 +847,8 @@ const translations = {
   Export_full_csv: 'Exporteer volledige .csv',
   Export_file_being_saved:
     'Export bestand wordt opgeslagen in je Downloads map - een moment geduld a.u.b.',
+  no_data_deleted_because_no_matches_found:
+    'Geen data verwijderd omdat er geen matches gevonden zijn',
 
   Now: 'Nu',
   input_only_possible_when_date_present:

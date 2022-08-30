@@ -5,7 +5,7 @@
     :chart-data="chartData"
     :chart-id="chartId"
     :plugins="plugins"
-    :class="'chartjs-wrapper'"
+    :class="'chartjs-wrapper' + (size === 'large' ? '--large' : '')"
   />
 </template>
 
@@ -66,6 +66,10 @@ export default {
     endTime: {
       type: Object,
       default: () => {},
+    },
+    size: {
+      type: String,
+      default: 'default',
     },
     plugins: {
       type: Object,
@@ -330,6 +334,21 @@ export default {
     height: 64mm;
     width: 190mm;
     margin-top: 3mm;
+  }
+}
+
+.chartjs-wrapper--large {
+  // max-height: 246px;
+  height: 400px;
+  width: 100%;
+  &.print {
+    // max-height: 64mm;
+    height: 84mm;
+    width: 190mm;
+    margin-top: 3mm;
+  }
+  @include for-phone-only {
+    height: 500px;
   }
 }
 </style>

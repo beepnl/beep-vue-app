@@ -929,6 +929,8 @@ const translations = {
   Export_full_csv: 'Export full .csv',
   Export_file_being_saved:
     'Export file will be saved in your Downloads folder - wait a moment please',
+  no_data_deleted_because_no_matches_found:
+    'No data deleted because no matches were found',
 
   Now: 'Now',
   input_only_possible_when_date_present:

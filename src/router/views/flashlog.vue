@@ -172,6 +172,7 @@
                   :start-time="getPeriod(dataSet, 'start')"
                   :end-time="getPeriod(dataSet, 'end')"
                   :chart-id="'chart-' + dataSet"
+                  size="large"
                   @legend-clicked="
                     toggleMeasurement($event.abbr, $event.hidden, dataSet)
                   "
@@ -456,8 +457,8 @@ export default {
         })
 
         this.blockData[dataSet].map((measurement, index) => {
-          data.datasets.map((dataset, index) => {
-            var quantity = this.measurements[dataSet][index]
+          data.datasets.map((dataset, i) => {
+            var quantity = dataset.abbr
             if (
               measurement[quantity] !== null &&
               typeof measurement[quantity] === 'number'

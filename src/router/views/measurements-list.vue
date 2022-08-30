@@ -1170,6 +1170,7 @@ export default {
 
           data.datasets.push({
             id: mT.id,
+            abbr: mT.abbreviation,
             fill: false,
             borderColor: '#' + mT.hex_color,
             backgroundColor: '#' + mT.hex_color,
@@ -1199,7 +1200,7 @@ export default {
             // && index < this.measurementData.measurements.length - 3
           ) {
             data.datasets.map((dataset, index) => {
-              var quantity = quantities[index]
+              var quantity = dataset.abbr
               if (
                 measurement[quantity] !== null &&
                 typeof measurement[quantity] === 'number'
