@@ -170,13 +170,18 @@
                   v-if="measurements[dataSet] !== undefined"
                   :chart-data="chartjsDataSeries(dataSet)"
                   :interval="'week'"
-                  :location="'flashlog'"
-                  :start-time="getPeriod('flashlog', 'start')"
-                  :end-time="getPeriod('flashlog', 'end')"
+                  location="flashlog"
+                  :start-time="getMoment(blockData.start_date)"
+                  :end-time="getMoment(blockData.end_date)"
                   :chart-id="'chart-' + dataSet"
                   size="large"
                   @legend-clicked="
-                    toggleMeasurement($event.abbr, $event.hidden, dataSet)
+                    toggleMeasurement(
+                      $event.abbr,
+                      $event.hidden,
+                      // eslint-disable-next-line vue/comma-dangle
+                      dataSet
+                    )
                   "
                 >
                 </MeasurementsChartLine>
@@ -413,8 +418,6 @@ export default {
       this.checkBlockData(true)
     },
     chartjsDataSeries(dataSet) {
-      console.log('preparing chart data for ', dataSet)
-
       var data = {
         labels: [],
         datasets: [],
@@ -522,13 +525,10 @@ export default {
       )
       return smFilter.length > 0 ? smFilter[0] : null
     },
-    getPeriod(dataSet, startOrEnd) {
-      const index =
-        startOrEnd === 'start' ? 0 : this.blockData[dataSet].length - 1
-      return this.$moment.utc(this.blockData[dataSet][index].time)
+    getMoment(date) {
+      return this.$moment.utc(date)
     },
     toggleMeasurement(abbr, hidden, dataSet) {
-      console.log('clicked', abbr, hidden, dataSet)
       // add measurement abbreviation to list of showMeasurements per dataset, if it was hidden when clicked
       if (hidden === true && !this.shownMeasurements[dataSet].includes(abbr)) {
         this.shownMeasurements[dataSet].push(abbr)

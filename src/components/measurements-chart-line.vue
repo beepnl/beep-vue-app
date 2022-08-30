@@ -309,17 +309,16 @@ export default {
       this.$emit('confirm-view-inspection', { id, date })
     },
     legendClickHandler(e, legendItem, legend) {
+      const defaultLegendClickHandler = ChartJS.defaults.plugins.legend.onClick
       // for regular data charts use default legend click handler
       if (this.location !== 'flashlog') {
-        const defaultLegendClickHandler =
-          ChartJS.defaults.plugins.legend.onClick
         defaultLegendClickHandler(e, legendItem, legend)
-        // for flashlog charts use custom handler that stores clicked legends across different pages
+        // for flashlog charts use additional custom handler that stores clicked legends across different pages
       } else {
         const hidden = legendItem.hidden
         const dataset = legend.chart.data.datasets[legendItem.datasetIndex]
         const abbr = dataset.abbr
-        console.log('legend-clicked', { abbr, hidden })
+        defaultLegendClickHandler(e, legendItem, legend)
         this.$emit('legend-clicked', { abbr, hidden })
       }
     },
