@@ -190,6 +190,16 @@ export default {
               },
             },
             onClick: this.legendClickHandler,
+            onHover: function(e, legendItem, legend) {
+              if (e.native.target.style !== undefined) {
+                e.native.target.style.cursor = 'pointer'
+              }
+            },
+            onLeave: function(e, legendItem, legend) {
+              if (e.native.target.style !== undefined) {
+                e.native.target.style.cursor = 'default'
+              }
+            },
           },
           tooltip: {
             padding: 8,
