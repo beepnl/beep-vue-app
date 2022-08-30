@@ -141,13 +141,14 @@ export default {
         },
         animation: {
           duration: 200,
+        },
+        animations: {
           colors: {
             type: 'color',
             duration: 200,
             from: 'transparent',
           },
         },
-        // animation: false,
         layout: {
           padding: {
             right: 24,
@@ -191,8 +192,11 @@ export default {
             },
             onClick: this.legendClickHandler,
             onHover: function(e, legendItem, legend) {
-              if (e.native.target.style !== undefined) {
-                e.native.target.style.cursor = 'pointer'
+              const multipleLines = legend.chart.data.datasets.length > 1
+              if (multipleLines) {
+                if (e.native.target.style !== undefined) {
+                  e.native.target.style.cursor = 'pointer'
+                }
               }
             },
             onLeave: function(e, legendItem, legend) {
@@ -320,16 +324,20 @@ export default {
     },
     legendClickHandler(e, legendItem, legend) {
       const defaultLegendClickHandler = ChartJS.defaults.plugins.legend.onClick
-      // for regular data charts use default legend click handler
-      if (this.location !== 'flashlog') {
-        defaultLegendClickHandler(e, legendItem, legend)
-        // for flashlog charts use additional custom handler that stores clicked legends across different pages
-      } else {
-        const hidden = legendItem.hidden
-        const dataset = legend.chart.data.datasets[legendItem.datasetIndex]
-        const abbr = dataset.abbr
-        defaultLegendClickHandler(e, legendItem, legend)
-        this.$emit('legend-clicked', { abbr, hidden })
+      const multipleLines = legend.chart.data.datasets.length > 1
+      // legend only clickable if chart has multiple lines / datasets
+      if (multipleLines) {
+        // for regular data charts use default legend click handler
+        if (this.location !== 'flashlog') {
+          defaultLegendClickHandler(e, legendItem, legend)
+          // for flashlog charts use additional custom handler that stores clicked legends across different pages
+        } else {
+          const hidden = legendItem.hidden
+          const dataset = legend.chart.data.datasets[legendItem.datasetIndex]
+          const abbr = dataset.abbr
+          defaultLegendClickHandler(e, legendItem, legend)
+          this.$emit('legend-clicked', { abbr, hidden })
+        }
       }
     },
     roundDec(num, dec) {
