@@ -127,25 +127,32 @@
       >
     </v-toolbar>
 
-    <v-container class="back-content">
-      <v-row
-        class="period-bar d-flex flex-wrap justify-space-between align-center"
-      >
-        <div v-for="period in periods" :key="period.minutes">
-          <v-btn
-            :class="
-              `grey--text ${
-                period.minutes === dataMinutes ? 'accent--text' : ''
-              }`
-            "
-            text
-            @click="setPeriodDataMinutes(period.minutes)"
+    <div class="period-bar-wrapper">
+      <v-container class="period-container">
+        <v-row class="period-bar">
+          <v-col
+            cols="12"
+            class="d-flex flex-wrap justify-space-between align-center pa-0"
           >
-            {{ period.name }}
-          </v-btn>
-        </div>
-      </v-row>
+            <div v-for="period in periods" :key="period.minutes">
+              <v-btn
+                :class="
+                  `grey--text ${
+                    period.minutes === currentMinutes ? 'accent--text' : ''
+                  }`
+                "
+                text
+                @click="setPeriodDataMinutes(period.minutes)"
+              >
+                {{ period.name }}
+              </v-btn>
+            </div>
+          </v-col>
+        </v-row>
+      </v-container>
+    </div>
 
+    <v-container class="flashlog-content">
       <v-row>
         <v-col cols="12" class="py-0">
           <v-slider
@@ -302,7 +309,7 @@ export default {
         flashlog: ['t_0', 't_i'],
         database: ['t_0', 't_i'],
       },
-      dataMinutes: 1440,
+      currentMinutes: 1440,
     }
   },
   computed: {
@@ -405,7 +412,7 @@ export default {
             this.blockId +
             (changeIndex ? '&block_data_index=' + this.blockDataIndex : '') +
             '&data_minutes=' +
-            this.dataMinutes
+            this.currentMinutes
         )
         this.blockData = response.data
         this.blockDataIndex = response.data.block_data_index
@@ -574,8 +581,15 @@ export default {
     getMoment(date) {
       return this.$moment.utc(date)
     },
-    setPeriodDataMinutes(minutes) {
-      this.dataMinutes = minutes
+    setPeriodDataMinutes(newMinutes) {
+      // calculate new block data index
+      var currentIndexPerc = this.blockDataIndex / this.blockDataIndexMax
+      var newMaxIndex =
+        (this.blockDataIndexMax * this.currentMinutes) / newMinutes
+      var newIndex = Math.floor(currentIndexPerc * newMaxIndex)
+
+      this.blockDataIndex = newIndex
+      this.currentMinutes = newMinutes
       this.checkBlockData(true)
     },
     toggleMeasurement(abbr, hidden, dataSet) {
@@ -598,6 +612,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.flashlog-content {
+  margin-top: 90px;
+}
+
 .loading-wrapper {
   height: 90vh;
   @include for-phone-only {

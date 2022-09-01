@@ -1504,31 +1504,6 @@ export default {
 </script>
 
 <style lang="scss">
-.period-bar-wrapper {
-  position: fixed;
-  top: 100px;
-  z-index: 2;
-  width: 100%;
-  margin-top: -4px;
-  background-color: $color-orange-light;
-  border-bottom: 1px solid $color-orange-border;
-  .period-container {
-    padding-right: 80px;
-    padding-left: 80px;
-    @include for-phone-only {
-      padding: 10px;
-    }
-  }
-  .period-bar {
-    margin-top: -10px;
-    margin-bottom: -10px;
-    @include for-tablet-portrait-up {
-      margin-top: -12px;
-      margin-bottom: -12px;
-    }
-  }
-}
-
 .period-title {
   margin-top: 1px;
   margin-left: 2px;
