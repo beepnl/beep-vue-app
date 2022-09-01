@@ -183,7 +183,7 @@ export default {
     displayFormats() {
       return {
         day: 'D MMM',
-        hour: this.location !== 'flashlog' ? 'ddd H[u]' : 'llll',
+        hour: this.location !== 'flashlog' ? 'ddd H:mm' : 'llll',
         minute: 'LT',
       }
     },
