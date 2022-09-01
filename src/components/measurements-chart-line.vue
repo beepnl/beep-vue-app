@@ -154,81 +154,10 @@ export default {
             right: 24,
           },
         },
-        plugins: {
-          annotation: {
-            drawTime: 'beforeDatasetsDraw',
-            annotations: this.inspectionsForLineCharts,
-          },
-          datalabels: {
-            align: 'top',
-            padding: {
-              bottom: 1,
-            },
-            color: '#242424',
-            backgroundColor: 'rgba(255,255,255,0.7)',
-            borderRadius: 4,
-            formatter: function(value, context) {
-              return value.y.toFixed(1) + ' ' + context.dataset.unit
-            },
-            display: function(context) {
-              return (
-                self.location !== 'flashlog' &&
-                context.dataIndex === context.dataset.data.length - 1
-              )
-            },
-          },
-          legend: {
-            display: true,
-            position: 'top',
-            labels: {
-              boxWidth: 11,
-              boxHeight: 11,
-              fillStyle: '#242424',
-              fullWidth: !this.mobile,
-              color: '#242424',
-              font: {
-                size: 14,
-              },
-            },
-            onClick: this.legendClickHandler,
-            onHover: function(e, legendItem, legend) {
-              const multipleLines = legend.chart.data.datasets.length > 1
-              if (multipleLines) {
-                if (e.native.target.style !== undefined) {
-                  e.native.target.style.cursor = 'pointer'
-                }
-              }
-            },
-            onLeave: function(e, legendItem, legend) {
-              if (e.native.target.style !== undefined) {
-                e.native.target.style.cursor = 'default'
-              }
-            },
-          },
-          tooltip: {
-            padding: 8,
-            displayColors: false,
-            backgroundColor: 'rgba(242, 145, 0, 0.87)',
-            titleColor: '#242424',
-            bodyColor: '#242424',
-            bodyFont: {
-              weight: 'bold',
-            },
-            callbacks: {
-              label: function(context) {
-                const name = context.dataset.name || ''
-                const unit = context.dataset.unit || ''
-                var label = ''
-
-                if (context.parsed.y !== null) {
-                  label =
-                    name + ': ' + self.roundDec(context.parsed.y, 1) + unit
-                }
-                return label
-              },
-            },
-          },
-        },
+        plugins:
+          self.location === 'flashlog'
+            ? self.pluginsFlashlog
+            : self.pluginsDefault,
         onClick: function(event, chartElement) {
           if (chartElement.length > 0) {
             const item = chartElement[0]
@@ -308,6 +237,90 @@ export default {
     },
     locale() {
       return this.$i18n.locale
+    },
+    pluginsDefault() {
+      const self = this
+      return {
+        annotation: {
+          drawTime: 'beforeDatasetsDraw',
+          annotations: self.inspectionsForLineCharts,
+        },
+        datalabels: {
+          align: 'top',
+          padding: {
+            bottom: 1,
+          },
+          color: '#242424',
+          backgroundColor: 'rgba(255,255,255,0.7)',
+          borderRadius: 4,
+          formatter: function(value, context) {
+            return value.y.toFixed(1) + ' ' + context.dataset.unit
+          },
+          display: function(context) {
+            return (
+              self.location !== 'flashlog' &&
+              context.dataIndex === context.dataset.data.length - 1
+            )
+          },
+        },
+        legend: {
+          display: true,
+          position: 'top',
+          labels: {
+            boxWidth: 11,
+            boxHeight: 11,
+            fillStyle: '#242424',
+            fullWidth: !this.mobile,
+            color: '#242424',
+            font: {
+              size: 14,
+            },
+          },
+          onClick: this.legendClickHandler,
+          onHover: function(e, legendItem, legend) {
+            const multipleLines = legend.chart.data.datasets.length > 1
+            if (multipleLines) {
+              if (e.native.target.style !== undefined) {
+                e.native.target.style.cursor = 'pointer'
+              }
+            }
+          },
+          onLeave: function(e, legendItem, legend) {
+            if (e.native.target.style !== undefined) {
+              e.native.target.style.cursor = 'default'
+            }
+          },
+        },
+        tooltip: {
+          padding: 8,
+          displayColors: false,
+          backgroundColor: 'rgba(242, 145, 0, 0.87)',
+          titleColor: '#242424',
+          bodyColor: '#242424',
+          bodyFont: {
+            weight: 'bold',
+          },
+          callbacks: {
+            label: function(context) {
+              const name = context.dataset.name || ''
+              const unit = context.dataset.unit || ''
+              var label = ''
+
+              if (context.parsed.y !== null) {
+                label = name + ': ' + this.roundDec(context.parsed.y, 1) + unit
+              }
+              return label
+            },
+          },
+        },
+      }
+    },
+    pluginsFlashlog() {
+      // remove annotation plugin for flashlog page as it is not used and causes an issue where multiple charts on one page won't be reactive
+      // see to paragraph https://vue-chartjs.org/guide/#chartjs-plugin-annotation (only for Vue 2)
+      const plugins = { ...this.pluginsDefault }
+      delete plugins.annotation
+      return plugins
     },
   },
   watch: {

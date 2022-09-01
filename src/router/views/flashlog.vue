@@ -154,7 +154,7 @@
 
     <v-container class="flashlog-content">
       <v-row>
-        <v-col cols="12" class="py-0">
+        <v-col cols="12" class="py-0 mb-1">
           <v-slider
             v-if="!loading && blockData !== null && blockDataIndexMax !== 0"
             v-model="blockDataIndex"
@@ -190,16 +190,19 @@
         </v-col>
 
         <v-col cols="12" class="py-0 pt-sm-3">
-          <div
-            v-if="loading"
-            class="d-flex align-center justify-center loading-wrapper"
+          <v-overlay
+            :absolute="true"
+            :value="loading"
+            :opacity="0.5"
+            color="white"
+            z-index="3"
           >
             <v-progress-circular color="primary" size="50" indeterminate />
-          </div>
+          </v-overlay>
 
-          <div v-if="!loading && blockData !== null" class="charts">
+          <div class="charts">
             <template v-for="(dataSet, index) in dataSets">
-              <div :key="'dataSet' + index" class="pt-0 pb-5">
+              <div :key="'dataSet' + index" class="chart-wrapper pt-0 pb-5">
                 <div
                   class="overline mt-0 mb-2 text-center"
                   v-text="dataSet"
@@ -224,14 +227,17 @@
                 >
                 </MeasurementsChartLine>
 
-                <div v-else class="text-center my-8">
+                <div
+                  v-if="!loading && measurements[dataSet] === undefined"
+                  class="text-center my-8"
+                >
                   {{ $t('no_chart_data') }}
                 </div>
               </div>
             </template>
           </div>
 
-          <v-row v-if="!loading && blockData !== null" class="mt-4">
+          <v-row v-if="blockData !== null" class="mt-4">
             <v-col cols="12" sm="6">
               <div>
                 <div class="beep-label" v-text="$t('Fill_holes') + ': '"></div>
@@ -403,7 +409,8 @@ export default {
     async checkBlockData(changeIndex = false) {
       this.clearMessages()
       this.loading = true
-      this.blockData = null
+      // this.blockData = null commented out because annotation plugin is disabled for the flashlog view which makes multiple charts reactive again
+      // see https://vue-chartjs.org/guide/#chartjs-plugin-annotation
       try {
         const response = await Api.readRequest(
           '/flashlogs/' +
@@ -616,10 +623,10 @@ export default {
   margin-top: 90px;
 }
 
-.loading-wrapper {
-  height: 90vh;
+.chart-wrapper {
+  min-height: 400px;
   @include for-phone-only {
-    height: 80vh;
+    min-height: 200px;
   }
 }
 </style>
