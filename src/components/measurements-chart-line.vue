@@ -365,13 +365,16 @@ export default {
 
 .chartjs-wrapper--large {
   // max-height: 246px;
-  height: 400px;
+  height: 300px;
   width: 100%;
   &.print {
     // max-height: 64mm;
     height: 84mm;
     width: 190mm;
     margin-top: 3mm;
+  }
+  @include for-big-desktop-up {
+    height: 400px;
   }
   @include for-phone-only {
     height: 500px;

@@ -130,11 +130,24 @@
     <v-container class="back-content">
       <v-row>
         <v-col cols="12" class="py-0">
-          <span
-            v-if="!loading && blockData !== null"
-            class="float-right mt-n1 font-small"
-            v-text="paginationText"
-          ></span>
+          <v-slider
+            v-if="!loading && blockData !== null && blockDataIndexMax !== 0"
+            v-model="blockDataIndex"
+            class="slider--large d-flex align-center"
+            color="accent"
+            track-color="accent"
+            :max="blockDataIndexMax"
+            hide-details
+            @change="checkBlockDataWithDelay(true)"
+          >
+            <template v-slot:append>
+              <span
+                class="font-small"
+                style="width: 110px;"
+                v-text="paginationText"
+              ></span>
+            </template>
+          </v-slider>
         </v-col>
       </v-row>
       <v-row class="my-0">
@@ -151,7 +164,7 @@
           </v-alert>
         </v-col>
 
-        <v-col cols="12" class="py-0 py-sm-3">
+        <v-col cols="12" class="py-0 pt-sm-3">
           <div
             v-if="loading"
             class="d-flex align-center justify-center loading-wrapper"
@@ -161,9 +174,9 @@
 
           <div v-if="!loading && blockData !== null" class="charts">
             <template v-for="(dataSet, index) in dataSets">
-              <div :key="'dataSet' + index" class="pt-0 pb-6">
+              <div :key="'dataSet' + index" class="pt-0 pb-5">
                 <div
-                  class="overline mt-0 mb-3 text-center"
+                  class="overline mt-0 mb-2 text-center"
                   v-text="dataSet"
                 ></div>
                 <MeasurementsChartLine
@@ -193,7 +206,7 @@
             </template>
           </div>
 
-          <v-row v-if="!loading && blockData !== null" class="my-4">
+          <v-row v-if="!loading && blockData !== null" class="mt-4">
             <v-col cols="12" sm="6">
               <div>
                 <div class="beep-label" v-text="$t('Fill_holes') + ': '"></div>
@@ -480,6 +493,11 @@ export default {
       }
 
       return data
+    },
+    checkBlockDataWithDelay(bool) {
+      setTimeout(() => {
+        return this.checkBlockData(bool)
+      }, 1000) // wait for slider to respond
     },
     clearMessages() {
       this.errorMessage = null

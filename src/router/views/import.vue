@@ -1189,7 +1189,7 @@ export default {
       )
     },
     reCheckFlashLog(flashLogId) {
-      this.fromCache = false
+      // check flashlog after (undo) importing data again to display correct values in the table
       setTimeout(() => {
         this.readFlashLogs()
         this.checkFlashLog(flashLogId, true)
