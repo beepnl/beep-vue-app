@@ -128,6 +128,24 @@
     </v-toolbar>
 
     <v-container class="back-content">
+      <v-row
+        class="period-bar d-flex flex-wrap justify-space-between align-center"
+      >
+        <div v-for="period in periods" :key="period.minutes">
+          <v-btn
+            :class="
+              `grey--text ${
+                period.minutes === dataMinutes ? 'accent--text' : ''
+              }`
+            "
+            text
+            @click="setPeriodDataMinutes(period.minutes)"
+          >
+            {{ period.name }}
+          </v-btn>
+        </div>
+      </v-row>
+
       <v-row>
         <v-col cols="12" class="py-0">
           <v-slider
@@ -284,6 +302,7 @@ export default {
         flashlog: ['t_0', 't_i'],
         database: ['t_0', 't_i'],
       },
+      dataMinutes: 1440,
     }
   },
   computed: {
@@ -351,20 +370,26 @@ export default {
         (this.blockDataIndexMax + 1)
       )
     },
+    periods() {
+      return [
+        { name: this.$i18n.tc('day', 1), minutes: 1440 },
+        { name: this.$i18n.t('week'), minutes: 10080 },
+        { name: this.$i18n.t('month'), minutes: 43200 },
+        { name: this.$i18n.t('year'), minutes: 525600 },
+      ]
+    },
     smAndDown() {
       return this.$vuetify.breakpoint.smAndDown
     },
   },
   watch: {
     fillHoles() {
-      this.checkBlockData()
+      this.checkBlockData(true)
     },
   },
   created() {
     this.readTaxonomy().then(() => {
-      this.checkBlockData().then(() => {
-        this.blockDataIndexMax = this.blockData.block_data_index_max
-      })
+      this.checkBlockData()
     })
   },
   methods: {
@@ -378,10 +403,13 @@ export default {
             this.flashLogId +
             '?block_id=' +
             this.blockId +
-            (changeIndex ? '&block_data_index=' + this.blockDataIndex : '')
+            (changeIndex ? '&block_data_index=' + this.blockDataIndex : '') +
+            '&data_minutes=' +
+            this.dataMinutes
         )
         this.blockData = response.data
         this.blockDataIndex = response.data.block_data_index
+        this.blockDataIndexMax = this.blockData.block_data_index_max
         this.deviceName = response.data.device_name
 
         this.formatFlashlogData(this.blockData)
@@ -545,6 +573,10 @@ export default {
     },
     getMoment(date) {
       return this.$moment.utc(date)
+    },
+    setPeriodDataMinutes(minutes) {
+      this.dataMinutes = minutes
+      this.checkBlockData(true)
     },
     toggleMeasurement(abbr, hidden, dataSet) {
       // add measurement abbreviation to list of showMeasurements per dataset, if it was hidden when clicked
