@@ -257,11 +257,7 @@ export default {
       }
     },
     getHiveIds(hives) {
-      var hiveIds = []
-      hives.map((hive) => {
-        hiveIds.push(hive.id)
-      })
-      return hiveIds
+      return hives.map((hive) => hive.id)
     },
     selectAllHives() {
       this.selectedHiveIds = this.getHiveIds(this.selectedApiary.hives)

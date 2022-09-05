@@ -276,7 +276,7 @@ export default {
               size: 14,
             },
           },
-          onClick: this.legendClickHandler,
+          onClick: self.legendClickHandler,
           onHover: function(e, legendItem, legend) {
             const multipleLines = legend.chart.data.datasets.length > 1
             if (multipleLines) {
@@ -307,7 +307,7 @@ export default {
               var label = ''
 
               if (context.parsed.y !== null) {
-                label = name + ': ' + this.roundDec(context.parsed.y, 1) + unit
+                label = name + ': ' + self.roundDec(context.parsed.y, 1) + unit
               }
               return label
             },

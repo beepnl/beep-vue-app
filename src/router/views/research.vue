@@ -188,9 +188,7 @@
                             research.consent ? 'red--text' : 'green--text'
                           } research-consent-button`
                         "
-                        @click="
-                          consentToggle(research.id, research.consent ? 0 : 1)
-                        "
+                        @click="consentToggle(research, !research.consent)"
                       >
                         <v-progress-circular
                           v-if="showLoadingIconConsentToggle"
@@ -231,7 +229,7 @@
                   </v-row>
 
                   <v-row
-                    v-for="chItem in research.consent_history"
+                    v-for="(chItem, index) in research.consent_history"
                     :key="chItem.id"
                   >
                     <v-col class="research-item-col" cols="12" md="6" xl="5">
@@ -357,6 +355,13 @@
                         @click="confirmDeleteNoConsent(research.id, chItem)"
                         >mdi-delete</v-icon
                       >
+                      <v-icon
+                        v-if="chItem.consent === 1 && index === 0"
+                        class="green--text ml-1 cursor-pointer"
+                        size="20"
+                        @click="consentToggle(research, true)"
+                        >mdi-pencil</v-icon
+                      >
                     </v-col>
                   </v-row>
                 </v-col>
@@ -372,12 +377,107 @@
       </div>
     </v-container>
 
+    <v-overlay v-if="selectedResearch !== null" :value="selectHivesOverlay">
+      <div style="border-radius: 4px">
+        <v-container class="select-hives-container">
+          <v-row>
+            <v-col cols="12">
+              <div class="d-flex justify-space-between align-center mb-3">
+                <div
+                  class="overline"
+                  v-text="
+                    selectedResearch.name +
+                      ' - ' +
+                      $t('Select_hives_for_consent')
+                  "
+                ></div>
+                <div class="d-flex">
+                  <v-btn
+                    light
+                    outlined
+                    tile
+                    :disabled="selectedHiveIds.length === 0"
+                    color="accent"
+                    @click="submitConsentToggle(selectedResearch.id, 1)"
+                    >{{ $t('ok') }}</v-btn
+                  >
+                  <v-btn
+                    class="ml-3"
+                    outlined
+                    tile
+                    color="red"
+                    @click="selectHivesOverlay = false"
+                    >{{ $t('Cancel') }}</v-btn
+                  >
+                </div>
+              </div>
+              <div class="rounded-border">
+                <div>
+                  <div
+                    class="d-flex justify-space-between align-center mb-3 mb-sm-4"
+                  >
+                    <div
+                      class="beep-label mt-1"
+                      v-text="$t('Select_hives_for_consent_exp')"
+                    ></div>
+                    <v-switch
+                      v-model="allHivesSelected"
+                      class="mt-0"
+                      light
+                      :label="$t('select_all')"
+                      hide-details
+                    />
+                  </div>
+                  <div v-for="(apiary, i) in apiaries" :key="i">
+                    <div
+                      class="hive-set-title d-flex flex-row justify-flex-start align-center"
+                      :style="
+                        `color: ${
+                          apiary.hex_color ? apiary.hex_color : ''
+                        }; border-color: ${
+                          apiary.hex_color ? apiary.hex_color : ''
+                        };`
+                      "
+                    >
+                      <v-icon
+                        class="icon-apiary-owned ml-1 mr-2 my-0"
+                        :style="
+                          `background-color: ${
+                            apiary.hex_color ? apiary.hex_color : ''
+                          }; border-color: ${
+                            apiary.hex_color ? apiary.hex_color : ''
+                          };`
+                        "
+                      >
+                        mdi-home-analytics
+                      </v-icon>
+                      <h4 v-text="apiary.name"></h4>
+                    </div>
+
+                    <ApiaryPreviewHiveSelector
+                      class="mb-3"
+                      :hives="apiary.hives"
+                      :hives-selected="selectedHiveIds"
+                      :hives-editable="getHiveIds(apiary.hives)"
+                      :inspection-mode="true"
+                      @select-hive="selectHive($event)"
+                    ></ApiaryPreviewHiveSelector>
+                  </div>
+                </div>
+              </div>
+            </v-col>
+          </v-row>
+        </v-container>
+      </div>
+    </v-overlay>
+
     <Confirm ref="confirm"></Confirm>
   </Layout>
 </template>
 
 <script>
 import Api from '@api/Api'
+import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 import Confirm from '@components/confirm.vue'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
@@ -391,6 +491,7 @@ import {
 
 export default {
   components: {
+    ApiaryPreviewHiveSelector,
     Confirm,
     Datetime,
     Layout,
@@ -411,12 +512,33 @@ export default {
       baseApiUrl:
         process.env.VUE_APP_BASE_API_URL ||
         process.env.VUE_APP_BASE_API_URL_FALLBACK,
+      selectHivesOverlay: false,
+      selectedHiveIds: [],
+      selectedResearch: null,
     }
   },
   computed: {
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('devices', ['devices']),
     ...mapGetters('groups', ['groups']),
+    allHiveIds() {
+      return this.apiaries.reduce((acc, apiary) => {
+        acc = acc.concat(this.getHiveIds(apiary.hives))
+        return acc
+      }, [])
+    },
+    allHivesSelected: {
+      get() {
+        return this.selectedHiveIds.length === this.allHiveIds.length
+      },
+      set(value) {
+        if (value === false) {
+          this.selectedHiveIds = []
+        } else {
+          this.selectedHiveIds = this.allHiveIds
+        }
+      },
+    },
     mdAndDown() {
       return this.$vuetify.breakpoint.mdAndDown
     },
@@ -492,7 +614,12 @@ export default {
         console.log('Error: ', error)
       }
     },
-    async consentToggle(id, consent) {
+    async submitConsentToggle(id, consent) {
+      if (consent === 1) {
+        console.log(id, this.selectedHiveIds)
+        // TODO: add selectedHiveIds to API call
+        this.selectHivesOverlay = false
+      }
       this.showLoadingIconConsentToggle = true
       try {
         if (consent) {
@@ -559,10 +686,30 @@ export default {
           return true
         })
     },
+    consentToggle(research, showSelectHivesOverlay) {
+      if (research.consent && !showSelectHivesOverlay) {
+        // if changing to do NOT consent, simply submit that skipping the hive selection
+        this.submitConsentToggle(research.id, 0)
+      } else {
+        this.selectedResearch = research
+        this.selectedHiveIds = [] // TODO: research.hive_ids, check if it exists, otherwise allHiveIds??
+        this.selectHivesOverlay = true
+      }
+    },
     getFullUrl(thumbUrl) {
       return thumbUrl.indexOf('https://') > -1
         ? thumbUrl
         : this.baseApiUrl + thumbUrl
+    },
+    getHiveIds(hives) {
+      return hives.map((hive) => hive.id)
+    },
+    selectHive(id) {
+      if (!this.selectedHiveIds.includes(id)) {
+        this.selectedHiveIds.push(id)
+      } else {
+        this.selectedHiveIds.splice(this.selectedHiveIds.indexOf(id), 1)
+      }
     },
     updateConsentDate(researchId, consentId, date) {
       this.showLoadingIcon.push(consentId)
@@ -622,5 +769,12 @@ export default {
       line-height: 20px;
     }
   }
+}
+.select-hives-container {
+  background-color: $color-white;
+  color: $color-grey-dark;
+  border-radius: 4px;
+  max-height: 75vh;
+  overflow: auto;
 }
 </style>

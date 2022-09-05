@@ -959,6 +959,10 @@ const translations = {
   Hivetag_view_inspections: 'View inspections',
   No_hivetags_left:
     'All hive tags are currently in use. Remove an existing hive tag in order to add a new one, or modify it.',
+
+  Select_hives_for_consent: 'Select hives for consent',
+  Select_hives_for_consent_exp:
+    'Select the hives whose data you want to share with this research',
 }
 
 export default translations
