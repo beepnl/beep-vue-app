@@ -156,12 +156,13 @@
       <v-row>
         <v-col cols="12" class="py-0 mb-1">
           <v-slider
-            v-if="!loading && blockData !== null && blockDataIndexMax !== 0"
+            v-show="!loading && blockData !== null && blockDataIndexMax !== 0"
             v-model="blockDataIndex"
             class="slider--large d-flex align-center"
             color="accent"
             track-color="accent"
             :max="blockDataIndexMax"
+            validate-on-blur
             hide-details
             @change="checkBlockDataWithDelay(true)"
           >
@@ -539,7 +540,7 @@ export default {
     checkBlockDataWithDelay(bool) {
       setTimeout(() => {
         return this.checkBlockData(bool)
-      }, 1000) // wait for slider to respond
+      }, 200) // wait for user to read slider value
     },
     clearMessages() {
       this.errorMessage = null
