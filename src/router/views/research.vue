@@ -787,16 +787,15 @@ export default {
   background-color: $color-white;
   color: $color-grey-dark;
   border-radius: 4px;
-  // max-height: 75vh;
   max-width: 90vw !important;
   overflow: hidden;
   .apiary-wrapper {
-    height: 60vh; // 800px;
+    height: 60vh; // NB max-height looks better for small number of apiaries, but does not work with scroller
     overflow: hidden;
   }
   .scroller {
     overflow: auto;
-    height: calc(100% - 44px); // 756px;
+    height: calc(100% - 44px);
   }
 }
 </style>
