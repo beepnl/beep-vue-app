@@ -995,6 +995,8 @@ const translations = {
   Hivetag_view_inspections: 'View inspections',
   No_hivetags_left:
     'All hive tags are currently in use. Remove an existing hive tag in order to add a new one, or modify it.',
+
+  View_alert_confirm: 'Would you like to view the alert "',
 }
 
 export default translations
