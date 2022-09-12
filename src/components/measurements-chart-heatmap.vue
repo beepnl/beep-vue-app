@@ -56,6 +56,50 @@
           </tfoot>
           <tbody>
             <tr
+              v-for="(alert, a) in alertsForCharts"
+              :key="'alert' + a"
+              class="tr--heatmap"
+            >
+              <td class="td--heatmap-label --alert">{{
+                alert.alert_rule_name
+              }}</td>
+
+              <template v-for="(measurement, ai) in data">
+                <td
+                  :key="'alert-td-' + ai"
+                  :class="
+                    `td--heatmap --pointer ${
+                      ai % moduloNumber === 0 ? 'td-border' : ''
+                    } `
+                  "
+                  :style="`background-color: ${getAlertColor(alert, ai)};`"
+                  @click.stop="confirmViewAlert(alert)"
+                >
+                  <span
+                    v-if="inspectionIndexes.indexOf(ai) > -1"
+                    class="inspection-line --alert"
+                    @click.stop="confirmViewInspection(ai)"
+                  ></span>
+
+                  <!-- <span
+                    v-if="inspectionIndexes.indexOf(ai) > -1"
+                    class="beep-tooltip heatmap-tooltip"
+                    >{{ getInspectionByIndex(ai).date }} <br />{{
+                      getInspectionText(ai)
+                    }}
+                  </span> -->
+
+                  <span
+                    v-if="isAlertIndex(alert, ai)"
+                    class="beep-tooltip heatmap-tooltip"
+                    >{{ alert.alert_rule_name }} <br />{{
+                      alert.alert_function
+                    }}
+                  </span>
+                </td>
+              </template>
+            </tr>
+            <tr
               v-for="(soundSensor, index) in yAxis"
               :key="soundSensor + index"
               class="tr--heatmap"
@@ -81,7 +125,7 @@
                 <span
                   v-if="inspectionIndexes.indexOf(i) > -1"
                   class="inspection-line"
-                  @click="viewInspection(i)"
+                  @click.stop="confirmViewInspection(i)"
                 >
                   <!-- <v-hover v-slot="{ hover }">
                     <span class="beep-tooltip" v-on="hover"
@@ -119,6 +163,11 @@ export default {
       type: Array,
       default: () => [],
       required: true,
+    },
+    alertsForCharts: {
+      type: Array,
+      default: () => [],
+      required: false,
     },
     inspectionsForCharts: {
       type: Array,
@@ -171,10 +220,20 @@ export default {
     displayValue(input) {
       return Math.round(input) !== input ? input.toFixed(2) : input
     },
+    getAlertColor(alert, index) {
+      if (this.isAlertIndex(alert, index)) {
+        return 'rgba(255, 0, 29, 0.15)'
+      } else {
+        return 'transparent'
+      }
+    },
     getInspectionByIndex(index) {
       return this.inspectionsForCharts.find(
         (inspection) => inspection.closestIndex === index
       )
+    },
+    isAlertIndex(alert, index) {
+      return index >= alert.closestIndexStart && index <= alert.closestIndexEnd
     },
     momentAll(date) {
       return this.$moment(date)
@@ -215,9 +274,12 @@ export default {
     setPeriodToDate(date) {
       this.$emit('set-period-to-date', date)
     },
-    viewInspection(index) {
+    confirmViewAlert(alert) {
+      this.$emit('confirm-view-alert', alert)
+    },
+    confirmViewInspection(index) {
       var inspection = this.getInspectionByIndex(index)
-      this.$emit('view-inspection', {
+      this.$emit('confirm-view-inspection', {
         id: inspection.id,
         date: inspection.date,
       })
@@ -283,6 +345,9 @@ export default {
   &.--zoom-out {
     cursor: zoom-out;
   }
+  &.--pointer {
+    cursor: pointer;
+  }
   &:hover {
     .hover-overlay {
       display: block;
@@ -335,6 +400,12 @@ export default {
     font-size: 0.55rem !important;
     text-overflow: ellipsis;
   }
+  &.--alert {
+    font-size: 10px !important;
+    color: $color-red !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 .tf--heatmap-label {
@@ -372,5 +443,9 @@ tbody .tr--heatmap:first-child .td--heatmap {
   height: 60%;
   background-color: $color-accent !important;
   opacity: 0.87;
+
+  &.--alert {
+    margin-top: 0px;
+  }
 }
 </style>

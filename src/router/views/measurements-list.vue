@@ -429,8 +429,12 @@
                       :y-axis="sortedCurrentSoundSensors"
                       :modulo-number="moduloNr"
                       :interval="interval"
+                      :alerts-for-charts="
+                        alertsForCharts(Object.values(currentSoundSensors))
+                      "
                       :inspections-for-charts="inspectionsForCharts"
-                      @view-inspection="
+                      @confirm-view-alert="confirmViewAlert($event)"
+                      @confirm-view-inspection="
                         confirmViewInspection($event.id, $event.date)
                       "
                       @set-period-to-date="setPeriodToDate($event)"
@@ -1162,6 +1166,7 @@ export default {
     },
     alertsForCharts(sensorArray) {
       var alertsForCharts = this.alertsForDeviceAndPeriod.filter((alert) =>
+        // DEBUG MOGE: alert.measurement_id === 20
         sensorArray.includes(
           this.getSensorMeasurementAbbrById(alert.measurement_id)
         )
