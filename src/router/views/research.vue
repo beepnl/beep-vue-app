@@ -382,16 +382,22 @@
         <v-container class="select-hives-container">
           <v-row>
             <v-col cols="12">
-              <div class="d-flex justify-space-between align-center mb-3">
+              <div
+                :class="
+                  'd-flex justify-space-between align-center ' +
+                    (mobile ? 'flex-column-reverse mb-1' : 'mb-3')
+                "
+              >
                 <div
-                  class="overline"
+                  class="overline d-flex"
+                  style="width: 100%;"
                   v-text="
                     selectedResearch.name +
                       ' - ' +
                       $t('Select_hives_for_consent')
                   "
                 ></div>
-                <div class="d-flex">
+                <div class="d-flex justify-end" style="width: 100%;">
                   <v-btn
                     light
                     outlined
@@ -411,13 +417,13 @@
                   >
                 </div>
               </div>
-              <div class="rounded-border">
-                <div>
+              <div class="rounded-border apiary-wrapper">
+                <div style="height: 100%;">
                   <div
                     class="d-flex justify-space-between align-center mb-3 mb-sm-4"
                   >
                     <div
-                      class="beep-label mt-1"
+                      class="beep-label mt-1 mr-3"
                       v-text="$t('Select_hives_for_consent_exp')"
                     ></div>
                     <v-switch
@@ -428,40 +434,44 @@
                       hide-details
                     />
                   </div>
-                  <div v-for="(apiary, i) in apiaries" :key="i">
-                    <div
-                      class="hive-set-title d-flex flex-row justify-flex-start align-center"
-                      :style="
-                        `color: ${
-                          apiary.hex_color ? apiary.hex_color : ''
-                        }; border-color: ${
-                          apiary.hex_color ? apiary.hex_color : ''
-                        };`
-                      "
-                    >
-                      <v-icon
-                        class="icon-apiary-owned ml-1 mr-2 my-0"
-                        :style="
-                          `background-color: ${
-                            apiary.hex_color ? apiary.hex_color : ''
-                          }; border-color: ${
-                            apiary.hex_color ? apiary.hex_color : ''
-                          };`
-                        "
-                      >
-                        mdi-home-analytics
-                      </v-icon>
-                      <h4 v-text="apiary.name"></h4>
-                    </div>
+                  <div style="height: 100%;">
+                    <div class="scroller">
+                      <div v-for="(apiary, i) in apiaries" :key="i">
+                        <div
+                          class="hive-set-title d-flex flex-row justify-flex-start align-center"
+                          :style="
+                            `color: ${
+                              apiary.hex_color ? apiary.hex_color : ''
+                            }; border-color: ${
+                              apiary.hex_color ? apiary.hex_color : ''
+                            };`
+                          "
+                        >
+                          <v-icon
+                            class="icon-apiary-owned ml-1 mr-2 my-0"
+                            :style="
+                              `background-color: ${
+                                apiary.hex_color ? apiary.hex_color : ''
+                              }; border-color: ${
+                                apiary.hex_color ? apiary.hex_color : ''
+                              };`
+                            "
+                          >
+                            mdi-home-analytics
+                          </v-icon>
+                          <h4 v-text="apiary.name"></h4>
+                        </div>
 
-                    <ApiaryPreviewHiveSelector
-                      class="mb-3"
-                      :hives="apiary.hives"
-                      :hives-selected="selectedHiveIds"
-                      :hives-editable="getHiveIds(apiary.hives)"
-                      :inspection-mode="true"
-                      @select-hive="selectHive($event)"
-                    ></ApiaryPreviewHiveSelector>
+                        <ApiaryPreviewHiveSelector
+                          class="mb-3 mr-3"
+                          :hives="apiary.hives"
+                          :hives-selected="selectedHiveIds"
+                          :hives-editable="getHiveIds(apiary.hives)"
+                          :inspection-mode="true"
+                          @select-hive="selectHive($event)"
+                        ></ApiaryPreviewHiveSelector>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -541,6 +551,9 @@ export default {
     },
     mdAndDown() {
       return this.$vuetify.breakpoint.mdAndDown
+    },
+    mobile() {
+      return this.$vuetify.breakpoint.mobile
     },
     numberOfDevices() {
       return this.devices.length
@@ -774,7 +787,16 @@ export default {
   background-color: $color-white;
   color: $color-grey-dark;
   border-radius: 4px;
-  max-height: 75vh;
-  overflow: auto;
+  // max-height: 75vh;
+  max-width: 90vw !important;
+  overflow: hidden;
+  .apiary-wrapper {
+    height: 60vh; // 800px;
+    overflow: hidden;
+  }
+  .scroller {
+    overflow: auto;
+    height: calc(100% - 44px); // 756px;
+  }
 }
 </style>
