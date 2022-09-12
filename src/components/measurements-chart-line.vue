@@ -246,7 +246,7 @@ export default {
           annotations: self.inspectionsForLineCharts,
         },
         datalabels: {
-          align: 'top',
+          align: 'end',
           padding: {
             bottom: 1,
           },
