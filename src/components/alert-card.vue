@@ -363,7 +363,7 @@
             name: 'measurements-id',
             params: { id: alert.device_id },
             query: {
-              date: alert.updated_at.substr(0, 10),
+              date: momentFormat(alert.updated_at, 'YYYY-MM-DD'),
             },
           }"
         >
@@ -433,6 +433,7 @@
 <script>
 import Api from '@api/Api'
 import HiveIcon from '@components/hive-icon.vue'
+import { momentFormat } from '@mixins/momentMixin'
 import { mapGetters } from 'vuex'
 import { readAlertRules } from '@mixins/methodsMixin'
 
@@ -440,7 +441,7 @@ export default {
   components: {
     HiveIcon,
   },
-  mixins: [readAlertRules],
+  mixins: [momentFormat, readAlertRules],
   props: {
     alert: {
       type: Object,
