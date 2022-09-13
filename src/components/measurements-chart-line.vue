@@ -98,6 +98,7 @@ export default {
       },
       hoverInspection: 0,
       hoverAlert: 0,
+      hoverLine: false,
     }
   },
   computed: {
@@ -136,7 +137,10 @@ export default {
             self.hoverAlert--
           },
           click({ chart, element }, event) {
-            self.confirmViewAlert(alert)
+            // only fire this if chart line is not hovered (because then zoom action takes prevalence)
+            if (!self.hoverLine) {
+              self.confirmViewAlert(alert)
+            }
           },
         }
       })
@@ -217,6 +221,10 @@ export default {
             self.location !== 'flashlog' &&
             event.native.target.style !== undefined
           ) {
+            // keep track of whether chart line is hovered, because if that is the case (hoverLine === true) the other click events (confirmViewAlert, confirmViewInspection) should not be fired
+            // if line is hovered, just zoom in or out, do not fire other events
+            self.hoverLine = chartElement[0]
+
             event.native.target.style.cursor = chartElement[0]
               ? self.interval === 'hour'
                 ? 'zoom-out'
@@ -276,7 +284,10 @@ export default {
             self.hoverInspection--
           },
           click({ chart, element }, event) {
-            self.confirmViewInspection(inspection.id, inspection.date)
+            // only fire this if chart line is not hovered (because then zoom action takes prevalence)
+            if (!self.hoverLine) {
+              self.confirmViewInspection(inspection.id, inspection.date)
+            }
           },
         }
       })

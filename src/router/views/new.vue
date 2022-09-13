@@ -2,11 +2,25 @@
   <Layout :title="$t('Whats_new')">
     <v-container>
       <div class="overline mb-1"
-        ><span class="lowercase">v</span>3.0.103 (29-08-2022) - Current
+        ><span class="lowercase">v</span>3.0.103 (13-09-2022) - Current
         version</div
       >
       <div class="rounded-border mb-4">
         <ul>
+          <li
+            >Data:
+            <router-link :to="{ name: 'measurements' }">
+              several improvements</router-link
+            >, such as:
+            <ul>
+              <li
+                >Show alerts on charts as vertical lines (or if the alert was
+                triggered for a longer duration: as a period marked in red) &
+                view alert when the alert line / marked period is clicked</li
+              >
+              <li>Updated charts layout</li>
+            </ul>
+          </li>
           <li>Bugfixes: small fixes for issues received as feedback</li>
         </ul>
       </div>
