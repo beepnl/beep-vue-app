@@ -912,6 +912,8 @@ const translations = {
   Hivetag_view_inspections: 'Bekijk inspecties',
   No_hivetags_left:
     'Alle hive tags zijn momenteel in gebruik. Verwijder een bestaande hive tag om een nieuwe toe te kunnen voegen, of pas deze aan.',
+
+  View_alert_confirm: 'Wil je de notificatie bekijken "',
 }
 
 export default translations

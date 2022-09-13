@@ -46,6 +46,11 @@ export default {
       type: String,
       default: '',
     },
+    alertsForCharts: {
+      type: Array,
+      default: () => [],
+      required: false,
+    },
     inspectionsForCharts: {
       type: Array,
       default: () => [],
@@ -92,9 +97,52 @@ export default {
         hour: 'minute',
       },
       hoverInspection: 0,
+      hoverAlert: 0,
     }
   },
   computed: {
+    alertsForLineCharts() {
+      const self = this
+
+      var alertsForLineCharts = {}
+
+      this.alertsForCharts.map((alert, index) => {
+        alertsForLineCharts['alert' + index] = {
+          type: 'box',
+          xMin: alert.min,
+          xMax: alert.max,
+          borderWidth: 1,
+          backgroundColor: 'rgba(255, 0, 29, 0.05)',
+          borderColor: 'rgba(255, 0, 29, 0.8)',
+          borderDash: [3, 2],
+
+          label: {
+            content: alert.alert_rule_name,
+            enabled: true,
+            backgroundColor: 'rgba(255, 0, 29, 0.5)',
+            drawTime: 'afterDatasetsDraw',
+            borderRadius: 4,
+            color: '#ff001d',
+            position: 'start',
+            font: {
+              size: this.mobile ? this.fontSizeMob : this.fontSize,
+              weight: 400,
+            },
+          },
+          enter({ chart, element }, event) {
+            self.hoverAlert++
+          },
+          leave({ chart, element }, event) {
+            self.hoverAlert--
+          },
+          click({ chart, element }, event) {
+            self.confirmViewAlert(alert)
+          },
+        }
+      })
+
+      return alertsForLineCharts
+    },
     chartOptions() {
       const self = this
       return {
@@ -173,7 +221,7 @@ export default {
               ? self.interval === 'hour'
                 ? 'zoom-out'
                 : 'zoom-in'
-              : self.hoverInspection === 0
+              : self.hoverInspection === 0 && self.hoverAlert === 0
               ? 'default'
               : 'pointer'
           }
@@ -243,7 +291,10 @@ export default {
       return {
         annotation: {
           drawTime: 'beforeDatasetsDraw',
-          annotations: self.inspectionsForLineCharts,
+          annotations: Object.assign(
+            self.inspectionsForLineCharts,
+            self.alertsForLineCharts
+          ),
         },
         datalabels: {
           align: 'end',
@@ -332,6 +383,9 @@ export default {
     this.$moment.locale(this.locale)
   },
   methods: {
+    confirmViewAlert(alert) {
+      this.$emit('confirm-view-alert', alert)
+    },
     confirmViewInspection(id, date) {
       this.$emit('confirm-view-inspection', { id, date })
     },
