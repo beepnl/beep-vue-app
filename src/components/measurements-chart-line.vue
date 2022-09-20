@@ -198,11 +198,11 @@ export default {
         },
         elements: {
           point: {
-            radius: this.mobile ? 0.5 : 1,
-            borderWidth: this.mobile ? 0 : 2,
+            radius: 1,
+            borderWidth: 2,
             pointHoverBorderWidth: 2,
           },
-          line: { borderWidth: this.mobile ? 2 : 3 },
+          line: { borderWidth: this.mobile ? 1 : 2 },
         },
         animation: {
           duration: 200,
