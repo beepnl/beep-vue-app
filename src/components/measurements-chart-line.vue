@@ -97,7 +97,7 @@ export default {
         hour: 'minute',
       },
       hoverInspection: 0,
-      hoverAlert: 0,
+      hoverAlert: false,
       hoverLine: false,
     }
   },
@@ -108,33 +108,46 @@ export default {
       var alertsForLineCharts = {}
 
       this.alertsForCharts.map((alert, index) => {
+        // when alert is triggered at a single moment instead of over a longer period
+        // display it as a line instead of box such that the label can be shown as a tooltip on hover, similar to the inspection lines
+        var isLine = alert.min === alert.max
+
         alertsForLineCharts['alert' + index] = {
-          type: 'box',
+          type: isLine ? 'line' : 'box',
           xMin: alert.min,
           xMax: alert.max,
-          borderWidth: 1,
+          borderWidth: 2,
           backgroundColor: 'rgba(255, 0, 29, 0.05)',
-          borderColor: 'rgba(255, 0, 29, 0.8)',
+          borderColor: 'rgba(255, 0, 29, 0.5)',
           borderDash: [3, 2],
+          drawTime: 'afterDatasetsDraw',
 
           label: {
             content: alert.alert_rule_name,
-            enabled: true,
-            backgroundColor: 'rgba(255, 0, 29, 0.5)',
-            drawTime: 'afterDatasetsDraw',
+            enabled: !isLine,
+            drawTime: isLine ? 'afterDatasetsDraw' : 'beforeDatasetsDraw',
+            color: isLine ? '#242424' : '#ff001d',
             borderRadius: 4,
-            color: '#ff001d',
             position: 'start',
+            backgroundColor: !isLine ? 'transparent' : 'rgba(255, 0, 29, 0.8)',
             font: {
               size: this.mobile ? this.fontSizeMob : this.fontSize,
-              weight: 400,
+              weight: isLine ? 600 : 400,
             },
           },
           enter({ chart, element }, event) {
-            self.hoverAlert++
+            if (isLine) {
+              element.options.label.enabled = true
+              chart.draw()
+            }
+            self.hoverAlert = true
           },
           leave({ chart, element }, event) {
-            self.hoverAlert--
+            if (isLine) {
+              element.options.label.enabled = false
+              chart.draw()
+            }
+            self.hoverAlert = false
           },
           click({ chart, element }, event) {
             // only fire this if chart line is not hovered (because then zoom action takes prevalence)
@@ -229,7 +242,7 @@ export default {
               ? self.interval === 'hour'
                 ? 'zoom-out'
                 : 'zoom-in'
-              : self.hoverInspection === 0 && self.hoverAlert === 0
+              : self.hoverInspection === 0 && !self.hoverAlert
               ? 'default'
               : 'pointer'
           }
@@ -301,7 +314,7 @@ export default {
       const self = this
       return {
         annotation: {
-          drawTime: 'beforeDatasetsDraw',
+          drawTime: 'afterDatasetsDraw',
           annotations: Object.assign(
             self.inspectionsForLineCharts,
             self.alertsForLineCharts

@@ -1711,6 +1711,9 @@ export default {
 
 .header-filler {
   height: 32px;
+  @include for-phone-only {
+    display: none;
+  }
 }
 
 .date-picker {
