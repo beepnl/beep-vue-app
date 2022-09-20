@@ -68,12 +68,13 @@
                 <td
                   :key="'alert-td-' + ai"
                   :class="
-                    `td--heatmap --pointer ${
-                      ai % moduloNumber === 0 ? 'td-border' : ''
-                    } `
+                    `td--heatmap ${
+                      isAlertIndex(alert, ai) ? '--pointer' : '--default'
+                    }
+                     ${ai % moduloNumber === 0 ? 'td-border' : ''} `
                   "
                   :style="`background-color: ${getAlertColor(alert, ai)};`"
-                  @click.stop="confirmViewAlert(alert)"
+                  @click.stop="confirmViewAlert(alert, ai)"
                 >
                   <span
                     v-if="inspectionIndexes.indexOf(ai) > -1"
@@ -93,7 +94,7 @@
                     v-if="isAlertIndex(alert, ai)"
                     class="beep-tooltip heatmap-tooltip"
                     >{{ alert.alert_rule_name }} <br />{{
-                      alert.alert_function
+                      findAlertInfo(alert, ai).alert_function
                     }}
                   </span>
                 </td>
@@ -203,7 +204,9 @@ export default {
       // for each alert with the same alert_rule_id, add closest start and end indexes as sets to the indexes prop
       // now the alerts have been merged such that all alerts with the same alert_rule_id are shown on the same row, instead of a separate row for each separate alert
       this.alertsForCharts.map((alert, index) => {
-        var alertIndexes = {
+        var alertInfo = {
+          id: alert.id,
+          alert_function: alert.alert_function,
           closestIndexEnd: alert.closestIndexEnd,
           closestIndexStart: alert.closestIndexStart,
         }
@@ -211,9 +214,9 @@ export default {
           (mergedAlert) => mergedAlert.alert_rule_id === alert.alert_rule_id
         )
         if (mergedAlert.length > 0) {
-          mergedAlert[0].indexes.push(alertIndexes)
+          mergedAlert[0].indexes.push(alertInfo)
         } else {
-          alert.indexes = [alertIndexes]
+          alert.indexes = [alertInfo]
           mergedAlerts.push(alert)
         }
       })
@@ -244,8 +247,15 @@ export default {
     displayValue(input) {
       return Math.round(input) !== input ? input.toFixed(2) : input
     },
-    getAlertColor(alert, index) {
-      if (this.isAlertIndex(alert, index)) {
+    findAlertInfo(mergedAlert, index) {
+      return mergedAlert.indexes.filter(
+        (indexSet) =>
+          index >= indexSet.closestIndexStart &&
+          index <= indexSet.closestIndexEnd
+      )[0]
+    },
+    getAlertColor(mergedAlert, index) {
+      if (this.isAlertIndex(mergedAlert, index)) {
         return 'rgba(255, 0, 29, 0.15)'
       } else {
         return 'transparent'
@@ -256,10 +266,10 @@ export default {
         (inspection) => inspection.closestIndex === index
       )
     },
-    isAlertIndex(alert, index) {
+    isAlertIndex(mergedAlert, index) {
       // is there a set of start and end alert indexes within which the current index falls
       return (
-        alert.indexes.filter(
+        mergedAlert.indexes.filter(
           (indexSet) =>
             index >= indexSet.closestIndexStart &&
             index <= indexSet.closestIndexEnd
@@ -305,8 +315,14 @@ export default {
     setPeriodToDate(date) {
       this.$emit('set-period-to-date', date)
     },
-    confirmViewAlert(alert) {
-      this.$emit('confirm-view-alert', alert)
+    confirmViewAlert(mergedAlert, index) {
+      if (this.isAlertIndex(mergedAlert, index)) {
+        var alertId = this.findAlertInfo(mergedAlert, index).id
+        var alert = this.alertsForCharts.filter(
+          (alert) => alert.id === alertId
+        )[0]
+        this.$emit('confirm-view-alert', alert)
+      }
     },
     confirmViewInspection(index) {
       var inspection = this.getInspectionByIndex(index)
@@ -378,6 +394,9 @@ export default {
   }
   &.--pointer {
     cursor: pointer;
+  }
+  &.--default {
+    cursor: default;
   }
   &:hover {
     .hover-overlay {
