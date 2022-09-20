@@ -624,10 +624,10 @@ export default {
       alertsForDeviceAndPeriod.map((alert) => {
         alert.min = !this.dateWithinPeriod(alert, 'created_at')
           ? this.periodStart.format(this.dateTimeFormat)
-          : alert.created_at
+          : this.momentFormatUtcToLocal(alert.created_at, this.dateTimeFormat)
         alert.max = !this.dateWithinPeriod(alert, 'updated_at')
           ? this.periodEnd.format(this.dateTimeFormat)
-          : alert.updated_at
+          : this.momentFormatUtcToLocal(alert.updated_at, this.dateTimeFormat)
       })
 
       return alertsForDeviceAndPeriod
@@ -1185,12 +1185,10 @@ export default {
               : prev
           })
 
-          var closestIndexStart =
-            this.timeArray.findIndex(
-              (time) =>
-                time ===
-                closestTimeStart.utc().format('YYYY-MM-DD[T]HH:mm:ss[Z]')
-            ) - 1
+          var closestIndexStart = this.timeArray.findIndex(
+            (time) =>
+              time === closestTimeStart.utc().format('YYYY-MM-DD[T]HH:mm:ss[Z]')
+          )
 
           var closestIndexEnd = closestIndexStart
 
@@ -1202,12 +1200,10 @@ export default {
                 : prev
             })
 
-            closestIndexEnd =
-              this.timeArray.findIndex(
-                (time) =>
-                  time ===
-                  closestTimeEnd.utc().format('YYYY-MM-DD[T]HH:mm:ss[Z]')
-              ) - 1
+            closestIndexEnd = this.timeArray.findIndex(
+              (time) =>
+                time === closestTimeEnd.utc().format('YYYY-MM-DD[T]HH:mm:ss[Z]')
+            )
           }
 
           // and add position and meta data for chart components
