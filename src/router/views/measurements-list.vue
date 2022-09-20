@@ -491,7 +491,7 @@
                 !loadingData
             "
             cols="12"
-            class="text-center my-10"
+            class="text-center my-10 no-print"
           >
             {{ noPeriodData ? $t('selection_placeholder') : $t('no_data') }}
           </v-col>
@@ -1604,9 +1604,30 @@ export default {
         else period = 'day'
       }
 
-      this.timeIndex = this.calculateTimeIndex(period, date, true)
-      this.interval = period
-      this.loadData()
+      if (this.touchDevice) {
+        var format = period === 'hour' ? 'lll' : 'll'
+
+        this.$refs.confirm
+          .open(
+            this.$i18n.t('data_zoom'),
+            (this.interval !== 'hour'
+              ? this.$i18n.t('data_zoom_ok')
+              : this.$i18n.t('data_zoom_out_ok')) +
+              this.momentFormat(date, format) +
+              '?',
+            {
+              color: 'primary',
+            }
+          )
+          .then((confirm) => {
+            this.zoomTo(period, date)
+          })
+          .catch((reject) => {
+            return true
+          })
+      } else {
+        this.zoomTo(period, date)
+      }
     },
     setInitialDeviceIdAndLoadData() {
       if (this.$route.name === 'measurements-id') {
@@ -1655,6 +1676,11 @@ export default {
     updateChartCols(value) {
       this.chartCols = value
       localStorage.beepChartCols = value
+    },
+    zoomTo(period, date) {
+      this.timeIndex = this.calculateTimeIndex(period, date, true)
+      this.interval = period
+      this.loadData()
     },
   },
 }
