@@ -56,7 +56,7 @@
           </tfoot>
           <tbody>
             <tr
-              v-for="(alert, a) in alertsForCharts"
+              v-for="(alert, a) in alertsForChartsMerged"
               :key="'alert' + a"
               class="tr--heatmap"
             >
@@ -196,6 +196,30 @@ export default {
     },
   },
   computed: {
+    alertsForChartsMerged() {
+      var mergedAlerts = []
+
+      // create an array with one alert for each alert_rule_id that is present in the current alertsForCharts
+      // for each alert with the same alert_rule_id, add closest start and end indexes as sets to the indexes prop
+      // now the alerts have been merged such that all alerts with the same alert_rule_id are shown on the same row, instead of a separate row for each separate alert
+      this.alertsForCharts.map((alert, index) => {
+        var alertIndexes = {
+          closestIndexEnd: alert.closestIndexEnd,
+          closestIndexStart: alert.closestIndexStart,
+        }
+        var mergedAlert = mergedAlerts.filter(
+          (mergedAlert) => mergedAlert.alert_rule_id === alert.alert_rule_id
+        )
+        if (mergedAlert.length > 0) {
+          mergedAlert[0].indexes.push(alertIndexes)
+        } else {
+          alert.indexes = [alertIndexes]
+          mergedAlerts.push(alert)
+        }
+      })
+
+      return mergedAlerts
+    },
     inspectionIndexes() {
       if (this.inspectionsForCharts.length > 0) {
         return this.inspectionsForCharts.map((inspection) => {
@@ -233,7 +257,14 @@ export default {
       )
     },
     isAlertIndex(alert, index) {
-      return index >= alert.closestIndexStart && index <= alert.closestIndexEnd
+      // is there a set of start and end alert indexes within which the current index falls
+      return (
+        alert.indexes.filter(
+          (indexSet) =>
+            index >= indexSet.closestIndexStart &&
+            index <= indexSet.closestIndexEnd
+        ).length > 0
+      )
     },
     momentAll(date) {
       return this.$moment(date)
