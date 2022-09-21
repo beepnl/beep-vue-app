@@ -350,7 +350,9 @@
                   ></div>
                   <div>
                     <MeasurementsChartLine
-                      :chart-data="chartjsDataSeries(currentWeatherSensors)"
+                      :chart-data="
+                        chartjsDataSeries(currentWeatherSensors, true)
+                      "
                       :interval="interval"
                       :start-time="periodStart"
                       :end-time="periodEnd"
@@ -1247,7 +1249,7 @@ export default {
 
       return !isNaN(newIndex) && newIndex > 0 ? newIndex : 0
     },
-    chartjsDataSeries(quantities) {
+    chartjsDataSeries(quantities, weather = false) {
       var data = {
         labels: [],
         datasets: [],
@@ -1279,6 +1281,7 @@ export default {
             name: sensorName,
             unit: mT.unit !== '-' && mT.unit !== null ? mT.unit : '',
             data: [],
+            spanGaps: weather, // false,
           })
         }
       })
@@ -1301,15 +1304,15 @@ export default {
           ) {
             data.datasets.map((dataset, index) => {
               var quantity = dataset.abbr
-              if (
-                measurement[quantity] !== null &&
-                typeof measurement[quantity] === 'number'
-              ) {
-                dataset.data.push({
-                  x: measurement.time,
-                  y: measurement[quantity],
-                })
-              }
+              // if (
+              //   measurement[quantity] !== null &&
+              //   typeof measurement[quantity] === 'number'
+              // ) {
+              dataset.data.push({
+                x: measurement.time,
+                y: measurement[quantity],
+              })
+              // }
             })
           }
         })

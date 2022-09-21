@@ -198,11 +198,11 @@ export default {
         },
         elements: {
           point: {
-            radius: 1,
+            radius: this.mobile ? 1 : 1.5,
             borderWidth: 2,
             pointHoverBorderWidth: 2,
           },
-          line: { borderWidth: this.mobile ? 1 : 2 },
+          line: { borderWidth: this.mobile ? 2 : 2.5 },
         },
         animation: {
           duration: 200,
@@ -230,6 +230,13 @@ export default {
           }
         },
         onHover: (event, chartElement) => {
+          if (event.type === 'touchstart') {
+            // if line is touched on touch device instead of clicked
+            if (chartElement.length > 0) {
+              const item = chartElement[0]
+              self.setPeriodToDate(item.element.$context.raw.x)
+            }
+          }
           if (
             self.location !== 'flashlog' &&
             event.native.target.style !== undefined
@@ -309,6 +316,9 @@ export default {
     },
     locale() {
       return this.$i18n.locale
+    },
+    mobile() {
+      return this.$vuetify.breakpoint.mobile
     },
     pluginsDefault() {
       const self = this
