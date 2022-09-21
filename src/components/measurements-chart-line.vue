@@ -200,7 +200,8 @@ export default {
           point: {
             radius: this.mobile ? 1 : 1.5,
             borderWidth: 2,
-            pointHoverBorderWidth: 2,
+            hitRadius: this.touchDevice ? 20 : 1,
+            hoverRadius: 5,
           },
           line: { borderWidth: this.mobile ? 2 : 2.5 },
         },
@@ -230,13 +231,6 @@ export default {
           }
         },
         onHover: (event, chartElement) => {
-          if (event.type === 'touchstart') {
-            // if line is touched on touch device instead of clicked
-            if (chartElement.length > 0) {
-              const item = chartElement[0]
-              self.setPeriodToDate(item.element.$context.raw.x)
-            }
-          }
           if (
             self.location !== 'flashlog' &&
             event.native.target.style !== undefined
@@ -406,6 +400,9 @@ export default {
       const plugins = { ...this.pluginsDefault }
       delete plugins.annotation
       return plugins
+    },
+    touchDevice() {
+      return window.matchMedia('(hover: none)').matches
     },
   },
   watch: {
