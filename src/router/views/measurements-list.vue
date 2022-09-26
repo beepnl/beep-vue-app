@@ -1281,7 +1281,8 @@ export default {
             name: sensorName,
             unit: mT.unit !== '-' && mT.unit !== null ? mT.unit : '',
             data: [],
-            spanGaps: weather, // false,
+            spanGaps:
+              weather || this.interval === 'hour' || this.interval === 'day', // false,
           })
         }
       })
