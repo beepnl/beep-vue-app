@@ -26,7 +26,7 @@
             :disabled="interval === 'selection'"
             dense
             hide-details
-            @change="loadData(false)"
+            @change="loadData(false, false)"
           ></v-switch>
         </v-row>
         <div v-if="smAndDown" class="period-bar">
@@ -76,7 +76,7 @@
                   :disabled="interval === 'selection'"
                   dense
                   hide-details
-                  @change="loadData(false)"
+                  @change="loadData(false, false)"
                 ></v-switch>
               </div>
             </v-col>
@@ -493,7 +493,7 @@
                 !loadingData
             "
             cols="12"
-            class="text-center my-10 no-print"
+            class="text-center my-10"
           >
             {{ noPeriodData ? $t('selection_placeholder') : $t('no_data') }}
           </v-col>
@@ -567,6 +567,7 @@ export default {
   ],
   data() {
     return {
+      initLocale: 'nl',
       lastSensorDate: null,
       measurementData: {},
       noPeriodData: false,
@@ -611,6 +612,7 @@ export default {
   },
   computed: {
     ...mapGetters('alerts', ['alerts']),
+    ...mapGetters('auth', ['userLocale']),
     ...mapGetters('devices', ['devices']),
     ...mapGetters('inspections', ['generalInspections']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
@@ -996,15 +998,14 @@ export default {
   },
   watch: {
     locale() {
-      this.setPeriodTitle() // translate period title
-      const temp = this.measurementData
-      this.measurementData = null // charts are redrawn when measurementData is null
-      setTimeout(() => {
-        this.formatMeasurementData(temp)
-      }, 10)
+      if (this.locale !== this.initLocale) {
+        this.redrawCharts(false)
+        this.setPeriodTitle() // translate period title
+      }
     },
   },
   created() {
+    this.initLocale = this.userLocale
     this.readTaxonomy()
     if (this.queriedChartCols !== null) {
       this.chartCols = this.queriedChartCols
@@ -1258,6 +1259,10 @@ export default {
       quantities.map((quantity, index) => {
         var mT = this.getSensorMeasurement(quantity)
 
+        if (mT === null || mT === undefined) {
+          console.log('mT not found ', quantity)
+        }
+
         if (mT.show_in_charts === 1) {
           var sensorName =
             this.measurementData.sensorDefinitions[quantity] &&
@@ -1476,12 +1481,14 @@ export default {
         dates.length === 1
       )
     },
-    loadData(loadLastSensorValues = true) {
+    loadData(loadLastSensorValues = true, skipTitle = false) {
       if (loadLastSensorValues) {
         this.loadLastSensorValuesTimer()
       }
       this.sensorMeasurementRequest(this.interval)
-      this.setPeriodTitle()
+      if (!skipTitle) {
+        this.setPeriodTitle()
+      }
     },
     loadLastSensorValuesTimer() {
       if (
@@ -1526,6 +1533,19 @@ export default {
           .replace(currentYearEsPt, '')
           .replace(' ' + currentYear, '') // Remove year hardcoded per language, currently no other way to get rid of year whilst keeping localized time
       }
+    },
+    redrawCharts(seamless = true) {
+      const temp = this.measurementData
+      if (!seamless) {
+        this.resetCharts()
+      }
+      setTimeout(() => {
+        this.formatMeasurementData(temp)
+      }, 10)
+    },
+    resetCharts() {
+      this.loadingData = true
+      this.measurementData = null // charts are redrawn when measurementData is null
     },
     selectDate(date) {
       var p = this.interval
@@ -1660,8 +1680,16 @@ export default {
       }
     },
     setTimeIndex(offset) {
+      this.resetCharts() // show loading icon instead of still try to render charts
+      var timeIndexWhenClicked = this.timeIndex
       this.timeIndex += offset
-      this.loadData()
+      this.setPeriodTitle()
+      setTimeout(() => {
+        // only load data when user is done clicking through periods, so when intended timeIndex has been reached
+        if (timeIndexWhenClicked + offset === this.timeIndex) {
+          this.loadData(true, true)
+        }
+      }, 600)
     },
     startTimer() {
       this.stopTimer()
