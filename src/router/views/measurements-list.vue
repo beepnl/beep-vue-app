@@ -1261,9 +1261,7 @@ export default {
 
         if (mT === null || mT === undefined) {
           console.log('mT not found ', quantity)
-        }
-
-        if (mT.show_in_charts === 1) {
+        } else if (mT.show_in_charts === 1) {
           var sensorName =
             this.measurementData.sensorDefinitions[quantity] &&
             this.measurementData.sensorDefinitions[quantity].name !== null

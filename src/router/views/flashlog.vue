@@ -313,8 +313,8 @@ export default {
       deviceName: null,
       fillHoles: false,
       shownMeasurements: {
-        flashlog: ['t_0', 't_i'],
-        database: ['t_0', 't_i'],
+        flashlog: ['t_0', 't_i', 't_1', 'weight_kg'],
+        database: ['t_0', 't_i', 't_1', 'weight_kg'],
       },
       currentMinutes: 1440,
     }
@@ -491,7 +491,9 @@ export default {
           ) {
             var mT = this.getSensorMeasurement(quantity)
 
-            if (mT.show_in_charts === 1) {
+            if (mT === null || mT === undefined) {
+              console.log('mT not found ', quantity)
+            } else if (mT.show_in_charts === 1) {
               var sensorName = this.$i18n.t(quantity)
               var sensorLabel =
                 sensorName +
