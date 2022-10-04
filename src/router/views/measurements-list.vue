@@ -1,5 +1,13 @@
 <template>
   <Layout>
+    <v-container v-if="!ready">
+      <div class="loading">
+        <Transition appear>
+          <v-progress-circular size="50" color="primary" indeterminate />
+        </Transition>
+      </div>
+    </v-container>
+
     <div v-if="devices.length > 0 && ready" class="period-bar-wrapper">
       <v-container class="period-container">
         <v-row
@@ -117,7 +125,10 @@
 
     <v-container
       v-if="ready"
-      :class="devices.length > 0 ? 'measurements-content' : ''"
+      :class="
+        (devices.length > 0 ? 'measurements-content' : '') +
+          (touchDevice ? ' --touch-device' : '')
+      "
     >
       <MeasurementsDateSelection
         :interval="interval"
@@ -1749,6 +1760,13 @@ export default {
   margin-top: 58px;
   @include for-tablet-landscape-up {
     margin-top: 40px;
+  }
+  &.--touch-device {
+    user-select: none; // prevent text selection on mobile drag on chart
+    -webkit-touch-callout: none; // Safari
+    -webkit-user-select: none; // Chrome
+    -moz-user-select: none; // Firefox
+    -ms-user-select: none; // Internet Explorer/Edge
   }
 }
 .ep-legend--value {

@@ -83,8 +83,10 @@ export default {
   },
   data() {
     return {
-      fontSizeMob: 10,
+      fontSizeMob: 11,
       fontSize: 12,
+      boxSizeMob: 10,
+      boxSize: 11,
       chartParseFmt: 'YYYY-MM-DD[T]HH:mm:ssZ',
       tooltipFormat: 'llll',
       intervalToUnit: {
@@ -164,6 +166,7 @@ export default {
       const self = this
       return {
         // responsive: true,
+        // clip: 5, enable when using annotation boxes
         maintainAspectRatio: false,
         events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
         scales: {
@@ -176,7 +179,9 @@ export default {
               color: '#242424',
               source: 'auto',
               autoSkip: true,
-              fontSize: this.mobile ? this.fontSizeMob : this.fontSize,
+              font: {
+                size: this.mobile ? this.fontSizeMob : this.fontSize,
+              },
             },
             time: {
               unit: this.intervalToUnit[this.interval],
@@ -189,7 +194,9 @@ export default {
           y: {
             ticks: {
               color: '#242424',
-              fontSize: this.mobile ? this.fontSizeMob : this.fontSize,
+              font: {
+                size: this.mobile ? this.fontSizeMob : this.fontSize,
+              },
             },
           },
           title: {
@@ -200,10 +207,13 @@ export default {
           point: {
             radius: this.mobile ? 1 : 1.5,
             borderWidth: 2,
-            hitRadius: this.touchDevice ? 20 : 1,
+            hitRadius: this.touchDevice ? 20 : 3,
             hoverRadius: 5,
           },
-          line: { borderWidth: this.mobile ? 2 : 2.5 },
+          line: {
+            borderWidth: this.mobile ? 2 : 2.5,
+            borderJoinStyle: 'round',
+          },
         },
         animation: {
           duration: 200,
@@ -332,6 +342,9 @@ export default {
           color: '#242424',
           backgroundColor: 'rgba(255,255,255,0.7)',
           borderRadius: 4,
+          font: {
+            size: this.mobile ? this.fontSizeMob : this.fontSize,
+          },
           formatter: function(value, context) {
             return value.y.toFixed(1) + ' ' + context.dataset.unit
           },
@@ -346,13 +359,13 @@ export default {
           display: true,
           position: 'top',
           labels: {
-            boxWidth: 11,
-            boxHeight: 11,
+            boxWidth: this.mobile ? this.boxSizeMob : this.boxSize,
+            boxHeight: this.mobile ? this.boxSizeMob : this.boxSize,
             fillStyle: '#242424',
             fullWidth: !this.mobile,
             color: '#242424',
             font: {
-              size: 14,
+              size: this.mobile ? this.fontSizeMob : this.fontSize,
             },
           },
           onClick: self.legendClickHandler,

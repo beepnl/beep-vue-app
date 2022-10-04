@@ -55,7 +55,7 @@
         </v-dialog>
 
         <v-icon
-          :class="timeIndex === 0 ? 'color-white' : 'color-grey-dark'"
+          :class="timeIndex === 0 ? 'color-transparent' : 'color-grey-dark'"
           :disabled="timeIndex === 0"
           @click="setTimeIndex(-1)"
         >
