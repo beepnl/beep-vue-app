@@ -65,12 +65,12 @@ export default {
       default: '',
     },
     startTime: {
-      type: Object,
-      default: () => {},
+      type: String,
+      default: '',
     },
     endTime: {
-      type: Object,
-      default: () => {},
+      type: String,
+      default: '',
     },
     size: {
       type: String,
@@ -173,8 +173,8 @@ export default {
           x: {
             type: 'time',
             display: true,
-            suggestedMin: this.startTime,
-            suggestedMax: this.endTime,
+            min: this.startTime,
+            max: this.endTime,
             ticks: {
               color: '#242424',
               source: 'auto',

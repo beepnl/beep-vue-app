@@ -365,8 +365,8 @@
                         chartjsDataSeries(currentWeatherSensors, true)
                       "
                       :interval="interval"
-                      :start-time="periodStart"
-                      :end-time="periodEnd"
+                              :start-time="periodStartString"
+                              :end-time="periodEndString"
                       :chart-id="'chart-weather'"
                       :alerts-for-charts="
                         alertsForCharts(currentWeatherSensors)
@@ -410,8 +410,8 @@
                       <MeasurementsChartLine
                         :chart-data="chartjsDataSeries([sensor])"
                         :interval="interval"
-                        :start-time="periodStart"
-                        :end-time="periodEnd"
+                              :start-time="periodStartString"
+                              :end-time="periodEndString"
                         :chart-id="'chart-sensor-' + index"
                         :alerts-for-charts="alertsForCharts([sensor])"
                         :inspections-for-charts="inspectionsForCharts"
@@ -477,8 +477,8 @@
                       <MeasurementsChartLine
                         :chart-data="chartjsDataSeries([sensor])"
                         :interval="interval"
-                        :start-time="periodStart"
-                        :end-time="periodEnd"
+                              :start-time="periodStartString"
+                              :end-time="periodEndString"
                         :chart-id="'chart-debug-' + index"
                         :alerts-for-charts="alertsForCharts([sensor])"
                         :inspections-for-charts="inspectionsForCharts"
@@ -638,10 +638,10 @@ export default {
 
       alertsForDeviceAndPeriod.map((alert) => {
         alert.min = !this.dateWithinPeriod(alert, 'created_at')
-          ? this.periodStart.format(this.dateTimeFormat)
+          ? this.periodStartString
           : this.momentFormatUtcToLocal(alert.created_at, this.dateTimeFormat)
         alert.max = !this.dateWithinPeriod(alert, 'updated_at')
-          ? this.periodEnd.format(this.dateTimeFormat)
+          ? this.periodEndString
           : this.momentFormatUtcToLocal(alert.updated_at, this.dateTimeFormat)
       })
 
@@ -843,6 +843,12 @@ export default {
         { name: this.$i18n.t('year'), interval: 'year' },
         { name: this.$i18n.t('selection'), interval: 'selection' },
       ]
+    },
+        periodEndString() {
+      return this.periodEnd.format(this.dateTimeFormat)
+    },
+    periodStartString() {
+      return this.periodStart.format(this.dateTimeFormat)
     },
     queriedChartCols() {
       var queriedValue = parseInt(this.$route.query.chartCols)
@@ -1467,8 +1473,8 @@ export default {
         (created !== updated && this.dateWithinPeriod(alert, 'updated_at'))
       const alertLongerThanPeriod =
         created !== updated &&
-        created <= this.periodStart.format(this.dateTimeFormat) &&
-        updated >= this.periodEnd.format(this.dateTimeFormat)
+        created <= this.periodStartString &&
+        updated >= this.periodEndString
 
       return periodLongerThanAlert || alertLongerThanPeriod
     },
@@ -1479,8 +1485,8 @@ export default {
         this.dateTimeFormat
       )
       return (
-        date <= this.periodEnd.format(this.dateTimeFormat) &&
-        date >= this.periodStart.format(this.dateTimeFormat)
+        date <= this.periodEndString &&
+        date >= this.periodStartString
       )
     },
     invalidDates(dates) {
@@ -1491,13 +1497,13 @@ export default {
       )
     },
     loadData(loadLastSensorValues = true, skipTitle = false) {
+      if (!skipTitle) {
+        this.setPeriodTitle()
+      }
       if (loadLastSensorValues) {
         this.loadLastSensorValuesTimer()
       }
       this.sensorMeasurementRequest(this.interval)
-      if (!skipTitle) {
-        this.setPeriodTitle()
-      }
     },
     loadLastSensorValuesTimer() {
       if (
