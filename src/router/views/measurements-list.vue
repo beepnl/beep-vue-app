@@ -365,8 +365,8 @@
                         chartjsDataSeries(currentWeatherSensors, true)
                       "
                       :interval="interval"
-                              :start-time="periodStartString"
-                              :end-time="periodEndString"
+                      :start-time="periodStartString"
+                      :end-time="periodEndString"
                       :chart-id="'chart-weather'"
                       :alerts-for-charts="
                         alertsForCharts(currentWeatherSensors)
@@ -410,8 +410,8 @@
                       <MeasurementsChartLine
                         :chart-data="chartjsDataSeries([sensor])"
                         :interval="interval"
-                              :start-time="periodStartString"
-                              :end-time="periodEndString"
+                        :start-time="periodStartString"
+                        :end-time="periodEndString"
                         :chart-id="'chart-sensor-' + index"
                         :alerts-for-charts="alertsForCharts([sensor])"
                         :inspections-for-charts="inspectionsForCharts"
@@ -477,8 +477,8 @@
                       <MeasurementsChartLine
                         :chart-data="chartjsDataSeries([sensor])"
                         :interval="interval"
-                              :start-time="periodStartString"
-                              :end-time="periodEndString"
+                        :start-time="periodStartString"
+                        :end-time="periodEndString"
                         :chart-id="'chart-debug-' + index"
                         :alerts-for-charts="alertsForCharts([sensor])"
                         :inspections-for-charts="inspectionsForCharts"
@@ -844,7 +844,7 @@ export default {
         { name: this.$i18n.t('selection'), interval: 'selection' },
       ]
     },
-        periodEndString() {
+    periodEndString() {
       return this.periodEnd.format(this.dateTimeFormat)
     },
     periodStartString() {
@@ -1325,15 +1325,15 @@ export default {
           ) {
             data.datasets.map((dataset, index) => {
               var quantity = dataset.abbr
-              // if (
-              //   measurement[quantity] !== null &&
-              //   typeof measurement[quantity] === 'number'
-              // ) {
-              dataset.data.push({
-                x: measurement.time,
-                y: measurement[quantity],
-              })
-              // }
+              if (
+                measurement[quantity] !== null && // do not push null values, otherwise datalabels plugin won't work
+                typeof measurement[quantity] === 'number'
+              ) {
+                dataset.data.push({
+                  x: measurement.time,
+                  y: measurement[quantity],
+                })
+              }
             })
           }
         })
@@ -1484,10 +1484,7 @@ export default {
         item[dateProp],
         this.dateTimeFormat
       )
-      return (
-        date <= this.periodEndString &&
-        date >= this.periodStartString
-      )
+      return date <= this.periodEndString && date >= this.periodStartString
     },
     invalidDates(dates) {
       return (
