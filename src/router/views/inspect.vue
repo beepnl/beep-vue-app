@@ -57,7 +57,7 @@
               showLoadingIcon ||
               forceInspectionDate ||
               inspectionDate === 'Invalid date' ||
-              activeInspection.date === null
+              (activeInspection && activeInspection.date === null)
           "
           @click.prevent="confirmSaveInspection"
         >

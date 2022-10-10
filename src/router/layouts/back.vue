@@ -128,32 +128,33 @@ export default {
               this.warningMessage
             )
             .then((confirm) => {
-              this.$router.go(-1)
+              this.navigateBackIntuitively()
             })
             .catch((reject) => {
               return true
             })
-          // in alertrules view don't return to edit or copy alertrule view if that was previous route but go to route previous to first entering alertrules view
-          // (or to alerts if alertrule-edit was visited directly from there)
-        } else if (
-          localStorage.beepPreviousRoute === 'alertrule-edit' ||
-          localStorage.beepPreviousRoute === 'alertrule-create' ||
-          localStorage.beepPreviousRoute === 'alertrules-default'
-        ) {
+        } else if (this.$route.name === 'hive-inspections') {
           this.$router.push({
-            name: localStorage.beepAlertRulesBack,
-          })
-        } else if (
-          this.$route.name === 'hive-inspections' &&
-          localStorage.beepInspectionsBack !== undefined
-        ) {
-          this.$router.push({
-            name: localStorage.beepInspectionsBack,
-            query: this.query,
+            name: localStorage.beepPreviousTab,
+            query: this.query, // forward query if present
           })
         } else {
-          this.$router.go(-1)
+          this.navigateBackIntuitively()
         }
+      }
+    },
+    navigateBackIntuitively() {
+      // if in nav menu page (with depth 1), go back to previous tab that was opened on the home page (1 level up), instead of previous page
+      if (
+        this.$route.meta.depth === 1 &&
+        localStorage.beepPreviousTab !== undefined
+      ) {
+        this.$router.push({
+          name: localStorage.beepPreviousTab,
+        })
+      } else {
+        // if in deeper nested page (with depth 2 or more, or undefined), go back to previous page
+        this.$router.go(-1)
       }
     },
   },

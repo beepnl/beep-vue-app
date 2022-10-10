@@ -10,6 +10,7 @@ export default [
       email: route.query.email,
     }),
     meta: {
+      depth: 1,
       beforeResolve(routeTo, routeFrom, next) {
         // If the user is already logged in
         if (store.getters['auth/loggedIn']) {
@@ -62,6 +63,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 0,
     },
     path: '/alerts',
     name: 'alerts',
@@ -70,6 +72,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 1,
     },
     path: '/alertrules',
     name: 'alertrules',
@@ -78,6 +81,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 2,
     },
     path: '/alertrules/create',
     name: 'alertrule-create',
@@ -86,6 +90,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 2,
     },
     path: '/alertrules/:id/edit',
     name: 'alertrule-edit',
@@ -94,6 +99,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 2,
     },
     path: '/alertrules/default',
     name: 'alertrules-default',
@@ -102,6 +108,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 0,
     },
     path: '/',
     alias: '/apiaries',
@@ -111,6 +118,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 2,
     },
     path: '/apiaries/create',
     name: 'apiary-create',
@@ -119,6 +127,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 2,
     },
     path: '/apiaries/:id/edit',
     name: 'apiary-edit',
@@ -127,6 +136,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 2,
     },
     path: '/apiaries/:id/management',
     name: 'apiary-management',
@@ -135,6 +145,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 2,
     },
     path: '/checklist/:id/edit',
     name: 'checklist',
@@ -143,6 +154,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 1,
     },
     path: '/checklists/',
     name: 'checklists',
@@ -151,6 +163,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 1,
     },
     path: '/devices',
     name: 'devices',
@@ -159,6 +172,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 0,
     },
     path: '/diary',
     name: 'diary',
@@ -167,6 +181,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 1,
     },
     path: '/export',
     name: 'export',
@@ -175,6 +190,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 2,
     },
     path: '/flashlog/:id',
     name: 'flashlog',
@@ -183,6 +199,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 1,
     },
     path: '/hivetags',
     name: 'hivetags',
@@ -191,6 +208,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 2,
     },
     path: '/hivetags/create',
     name: 'hivetag-create',
@@ -199,6 +217,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 2,
     },
     path: '/hivetags/:id/create',
     name: 'hivetag-create-id',
@@ -207,6 +226,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 2,
     },
     path: '/hivetags/:id/edit',
     name: 'hivetag-edit',
@@ -215,6 +235,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 1,
     },
     path: '/import',
     name: 'import',
@@ -226,6 +247,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 2,
     },
     path: '/groups/create',
     name: 'group-create',
@@ -234,6 +256,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 2,
     },
     path: '/groups/:id/edit',
     name: 'group-edit',
@@ -242,6 +265,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 2,
     },
     path: '/groups/:id/token/:token',
     name: 'group-accept',
@@ -250,6 +274,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 2,
     },
     path: '/hives/create',
     name: 'hive-create',
@@ -258,6 +283,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 2,
     },
     path: '/hives/:id/edit',
     name: 'hive-edit',
@@ -266,6 +292,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 2,
     },
     path: '/hives/:id/inspections/:inspection',
     name: 'hive-inspect-edit',
@@ -274,6 +301,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 1,
     },
     path: '/hives/:id/inspections/',
     name: 'hive-inspections',
@@ -282,6 +310,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 1,
     },
     path: '/inspect',
     name: 'inspect',
@@ -290,6 +319,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 0,
     },
     path: '/measurements',
     name: 'measurements',
@@ -298,6 +328,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 0,
     },
     path: '/measurements/:id',
     name: 'measurements-id',
@@ -306,6 +337,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 1,
     },
     path: '/new',
     name: 'new',
@@ -314,6 +346,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 1,
     },
     path: '/profile',
     name: 'profile',
@@ -323,6 +356,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 1,
     },
     path: '/research',
     name: 'research',
@@ -331,6 +365,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 2,
     },
     path: '/hives/:id/edit',
     name: 'queen-edit',
@@ -339,6 +374,7 @@ export default [
   {
     meta: {
       authRequired: true,
+      depth: 2,
     },
     path: '/translations',
     name: 'translations',
