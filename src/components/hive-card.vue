@@ -669,6 +669,7 @@ export default {
 
     .hive-icon-wrapper {
       cursor: pointer;
+      margin-bottom: 3px;
     }
 
     .hive-details-item {

@@ -89,25 +89,32 @@
                   cols="4"
                   sm="3"
                   md="2"
-                  class="hive-icon-wrapper mt-1 ml-lg-n2 mr-lg-n2 d-flex flex-column justify-end align-center pa-0"
+                  class="mx-lg-n2 pa-0 pt-1"
                   style="width: 100%;"
                 >
-                  <HiveIcon
-                    :hive="hives[alert.hive_id]"
-                    :diary-view="true"
-                  ></HiveIcon>
                   <div
-                    v-if="mdScreen"
-                    class="d-flex flex-column text-center"
-                    style="width: 100%;"
+                    class="hive-icon-wrapper d-flex flex-column justify-end align-center"
                   >
-                    <div v-if="alert.hive_name !== null" class="truncate-xs">
-                      <span class="alert-label" v-text="alert.hive_name">
-                      </span>
-                    </div>
-                    <div v-if="alert.device_name !== null" class="truncate-xs">
-                      <span class="alert-label" v-text="alert.device_name">
-                      </span>
+                    <HiveIcon
+                      :hive="hives[alert.hive_id]"
+                      :diary-view="true"
+                    ></HiveIcon>
+                    <div
+                      v-if="mdScreen"
+                      class="d-flex flex-column text-center"
+                      style="width: 100%;"
+                    >
+                      <div v-if="alert.hive_name !== null" class="truncate-xs">
+                        <span class="alert-label" v-text="alert.hive_name">
+                        </span>
+                      </div>
+                      <div
+                        v-if="alert.device_name !== null"
+                        class="truncate-xs"
+                      >
+                        <span class="alert-label" v-text="alert.device_name">
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </v-col>

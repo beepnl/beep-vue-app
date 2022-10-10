@@ -94,7 +94,6 @@ export default {
 .hive-icon {
   position: relative;
   padding: 0 8px;
-  margin-bottom: 3px;
   background-color: transparent !important;
   border-bottom: 1px solid #666 !important;
   border-radius: 2px 2px 0 0;
