@@ -29,7 +29,7 @@
                 :append-outer-icon="search ? 'mdi-magnify' : ''"
                 clear-icon="mdi-close"
                 type="text"
-                @click:append-outer="readAllInspectionsForHiveId"
+                @click:append-outer="readInspectionsForHiveId"
                 @click:clear="clearSearch"
               ></v-text-field>
             </v-col>
@@ -40,7 +40,10 @@
                     filterByAttention ? 'red--text' : 'color-grey-filter'
                   } mr-2`
                 "
-                @click="filterByAttention = !filterByAttention"
+                @click="
+                  ;(filterByAttention = !filterByAttention),
+                    readInspectionsForHiveId
+                "
               >
                 mdi-clipboard-alert-outline
               </v-icon>
@@ -48,7 +51,10 @@
                 :class="
                   `${filterByReminder ? 'red--text' : 'color-grey-filter'} mr-2`
                 "
-                @click="filterByReminder = !filterByReminder"
+                @click="
+                  ;(filterByReminder = !filterByReminder),
+                    readInspectionsForHiveId
+                "
               >
                 mdi-calendar-clock
               </v-icon>
@@ -92,13 +98,15 @@
               <div class="d-flex align-center mr-3 ml-n2 ml-sm-0">
                 <v-icon
                   :class="
-                    (search
+                    (search || filters
                     ? searchPageIndex === 0
                     : pageIndex === 0)
                       ? 'color-transparent'
                       : 'color-grey-dark'
                   "
-                  :disabled="search ? searchPageIndex === 0 : pageIndex === 0"
+                  :disabled="
+                    search || filters ? searchPageIndex === 0 : pageIndex === 0
+                  "
                   @click="setPageIndex(-1)"
                 >
                   mdi-chevron-left
@@ -107,7 +115,7 @@
                   class="font-small"
                   v-text="
                     (!mobile ? $tc('Page', 1) + ' ' : '') +
-                      (search !== null ? searchPageIndex + 1 : pageIndex + 1)
+                      (search || filters ? searchPageIndex + 1 : pageIndex + 1)
                   "
                 ></span>
                 <v-icon
@@ -695,6 +703,31 @@ export default {
       })
       return inspectionsWithDates
     },
+    filters() {
+      if (
+        this.filterByAttention ||
+        this.filterByReminder ||
+        this.filterByImpression.length > 0
+      ) {
+        var parameters = [
+          this.filterByAttention ? 'attention=1' : null,
+          this.filterByReminder ? 'reminder=1' : null,
+          this.filterByImpression.length > 0
+            ? 'impression=' + this.filterByImpression
+            : null,
+        ]
+        return (
+          (this.search !== null ? '&' : '?') +
+          parameters
+            .filter((p) => {
+              return p !== null
+            })
+            .join('&')
+        )
+      } else {
+        return null
+      }
+    },
     // filteredInspectionsWithUndefined() {
     //   var textFilteredInspections = []
     //   if (this.search === null) {
@@ -861,7 +894,7 @@ export default {
   },
   watch: {
     locale() {
-      this.readAllInspectionsForHiveId()
+      this.readInspectionsForHiveId()
     },
   },
   created() {
@@ -869,7 +902,7 @@ export default {
     this.getActiveHive(this.id).then((hive) => {
       this.$store.commit('hives/setActiveHive', hive)
     })
-    this.readAllInspectionsForHiveId().then(() => {
+    this.readInspectionsForHiveId().then(() => {
       this.ready = true
     })
   },
@@ -881,7 +914,7 @@ export default {
           this.snackbar.text = this.$i18n.t('something_wrong')
           this.snackbar.show = true
         }
-        this.readAllInspectionsForHiveId()
+        this.readInspectionsForHiveId()
         this.readGeneralInspections() // update generalInspections in store for diary-list
         this.readApiariesAndGroups() // update apiaries and groups so the latest inspection will be displayed at apiary-list
       } catch (error) {
@@ -913,14 +946,14 @@ export default {
         this.$router.push({ name: '404', params: { resource: 'hive' } })
       }
     },
-    async readAllInspectionsForHiveId() {
+    async readInspectionsForHiveId() {
       try {
         const response = await Api.readRequest(
           '/inspections/hive/' +
             this.id +
-            (this.search !== null
-              ? '?search=' +
-                this.search +
+            (this.search || this.filters
+              ? (this.search ? '?search=' + this.search : '') +
+                (this.filters ? this.filters : '') +
                 (this.searchPageIndex !== 0
                   ? '&index=' + this.searchPageIndex
                   : '')
@@ -942,7 +975,7 @@ export default {
     clearSearch() {
       this.search = null
       this.searchPageIndex = 0
-      this.readAllInspectionsForHiveId()
+      this.readInspectionsForHiveId()
     },
     confirmDeleteInspection(inspection) {
       this.$refs.confirm
@@ -1005,12 +1038,12 @@ export default {
       return '#F8B133'
     },
     setPageIndex(value) {
-      if (this.search === null) {
+      if (this.search === null && this.filters === null) {
         this.pageIndex += value
       } else {
         this.searchPageIndex += value
       }
-      this.readAllInspectionsForHiveId()
+      this.readInspectionsForHiveId()
     },
     updateFilterByImpression(number) {
       if (this.filterByImpression.includes(number)) {
@@ -1021,6 +1054,7 @@ export default {
       } else {
         this.filterByImpression.push(number)
       }
+      this.readInspectionsForHiveId()
     },
   },
 }
