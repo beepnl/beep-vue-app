@@ -12,7 +12,7 @@
           <div
             class="filter-buttons filter-buttons--has-max d-flex flex-row justify-flex-start align-center"
           >
-            <v-col class="pa-3">
+            <v-col class="pa-3 pr-1 pr-sm-2">
               <v-text-field
                 v-model="search"
                 :label="`${$t('Search')}`"
@@ -26,6 +26,11 @@
                 outlined
                 dense
                 hide-details
+                :append-outer-icon="search ? 'mdi-magnify' : ''"
+                clear-icon="mdi-close"
+                type="text"
+                @click:append-outer="readAllInspectionsForHiveId"
+                @click:clear="clearSearch"
               ></v-text-field>
             </v-col>
             <v-card-actions class="pl-0">
@@ -83,6 +88,35 @@
               >
                 mdi-emoticon-sad
               </v-icon>
+
+              <div class="d-flex align-center mr-3 ml-n2 ml-sm-0">
+                <v-icon
+                  :class="
+                    (search
+                    ? searchPageIndex === 0
+                    : pageIndex === 0)
+                      ? 'color-transparent'
+                      : 'color-grey-dark'
+                  "
+                  :disabled="search ? searchPageIndex === 0 : pageIndex === 0"
+                  @click="setPageIndex(-1)"
+                >
+                  mdi-chevron-left
+                </v-icon>
+                <span
+                  class="font-small"
+                  v-text="
+                    (!mobile ? $tc('Page', 1) + ' ' : '') +
+                      (search !== null ? searchPageIndex + 1 : pageIndex + 1)
+                  "
+                ></span>
+                <v-icon
+                  v-if="inspectionsWithDates.length === 5"
+                  @click="setPageIndex(1)"
+                >
+                  mdi-chevron-right
+                </v-icon>
+              </div>
             </v-card-actions>
           </div>
 
@@ -117,7 +151,7 @@
     <div v-if="ready" class="hive-inspections-content">
       <div
         v-if="
-          inspections.inspections !== undefined && filteredInspections.length
+          inspections.inspections !== undefined && inspectionsWithDates.length
         "
         class="hive-inspections-view-box"
       >
@@ -129,7 +163,7 @@
                   ><strong>{{ $tc('Inspection', 2) }}</strong></th
                 >
                 <th
-                  v-for="(inspection, a) in filteredInspections"
+                  v-for="(inspection, a) in inspectionsWithDates"
                   :key="a"
                   class="tdc"
                 >
@@ -171,7 +205,7 @@
               <tr>
                 <td class="tdr">{{ $t('positive_impression') }}</td>
                 <td
-                  v-for="(inspection, b) in filteredInspections"
+                  v-for="(inspection, b) in inspectionsWithDates"
                   :key="b"
                   class="tdc"
                 >
@@ -201,7 +235,7 @@
               <tr>
                 <td class="tdr">{{ $t('needs_attention') }}</td>
                 <td
-                  v-for="(inspection, c) in filteredInspections"
+                  v-for="(inspection, c) in inspectionsWithDates"
                   :key="c"
                   class="tdc"
                 >
@@ -227,7 +261,7 @@
               <tr>
                 <td class="tdr">{{ $t('notes') }}</td>
                 <td
-                  v-for="(inspection, d) in filteredInspections"
+                  v-for="(inspection, d) in inspectionsWithDates"
                   :key="d"
                   class="tdc"
                 >
@@ -244,7 +278,7 @@
               <tr>
                 <td class="tdr">{{ $t('reminder') }}</td>
                 <td
-                  v-for="(inspection, e) in filteredInspections"
+                  v-for="(inspection, e) in inspectionsWithDates"
                   :key="e"
                   class="tdc"
                 >
@@ -308,7 +342,7 @@
               <tr>
                 <td class="tdr">{{ $t('remind_date') }}</td>
                 <td
-                  v-for="(inspection, f) in filteredInspections"
+                  v-for="(inspection, f) in inspectionsWithDates"
                   :key="f"
                   class="tdc"
                 >
@@ -365,7 +399,7 @@
 
                 <td
                   v-if="itemByDate.items === null"
-                  :colspan="filteredInspections.length + 1"
+                  :colspan="inspectionsWithDates.length + 1"
                   class="header expandable-header"
                   @click="toggleCategory(itemByDate.name)"
                 ></td>
@@ -551,7 +585,7 @@
       <v-container
         v-if="
           (inspections.inspections !== undefined &&
-            !filteredInspections.length) ||
+            !inspectionsWithDates.length) ||
             show500Response
         "
       >
@@ -630,6 +664,8 @@ export default {
       baseApiUrl:
         process.env.VUE_APP_BASE_API_URL ||
         process.env.VUE_APP_BASE_API_URL_FALLBACK,
+      pageIndex: 0,
+      searchPageIndex: 0,
     }
   },
   computed: {
@@ -659,95 +695,96 @@ export default {
       })
       return inspectionsWithDates
     },
-    filteredInspectionsWithUndefined() {
-      var textFilteredInspections = []
-      if (this.search === null) {
-        textFilteredInspections = this.inspectionsWithDates
-      } else {
-        textFilteredInspections = this.inspectionsWithDates.map(
-          (inspection) => {
-            const inspectionMatch = Object.entries(inspection).some(
-              ([key, value]) => {
-                if (
-                  value !== null &&
-                  typeof value === 'string' &&
-                  this.search.substring(0, 3) !== 'id=' &&
-                  key !== ('created_at' || 'reminder_date')
-                ) {
-                  return value.toLowerCase().includes(this.search.toLowerCase())
-                } else if (
-                  key === 'id' &&
-                  this.search.substring(0, 3) === 'id='
-                ) {
-                  return (
-                    value.toString() ===
-                    this.search.substring(3, this.search.length)
-                  )
-                }
-              }
-            )
-            if (inspectionMatch) {
-              return inspection
-            }
-          }
-        )
-      }
+    // filteredInspectionsWithUndefined() {
+    //   var textFilteredInspections = []
+    //   if (this.search === null) {
+    //     textFilteredInspections = this.inspectionsWithDates
+    //   } else {
+    //     textFilteredInspections = this.inspectionsWithDates.map(
+    //       (inspection) => {
+    //         const inspectionMatch = Object.entries(inspection).some(
+    //           ([key, value]) => {
+    //             if (
+    //               value !== null &&
+    //               typeof value === 'string' &&
+    //               this.search.substring(0, 3) !== 'id=' &&
+    //               key !== ('created_at' || 'reminder_date')
+    //             ) {
+    //               return value.toLowerCase().includes(this.search.toLowerCase())
+    //             } else if (
+    //               key === 'id' &&
+    //               this.search.substring(0, 3) === 'id='
+    //             ) {
+    //               return (
+    //                 value.toString() ===
+    //                 this.search.substring(3, this.search.length)
+    //               )
+    //             }
+    //           }
+    //         )
+    //         if (inspectionMatch) {
+    //           return inspection
+    //         }
+    //       }
+    //     )
+    //   }
 
-      var propertyFilteredInspections = textFilteredInspections
-        .map((inspection) => {
-          if (this.filterByAttention) {
-            if (
-              typeof inspection !== 'undefined' &&
-              inspection.attention === 1
-            ) {
-              return inspection
-            } else {
-              return 'undefined'
-            }
-          } else {
-            return inspection
-          }
-        })
-        .map((inspection) => {
-          if (this.filterByReminder) {
-            if (
-              typeof inspection !== 'undefined' &&
-              (inspection.reminder !== null ||
-                inspection.reminder_date !== null)
-            ) {
-              return inspection
-            } else {
-              return 'undefined'
-            }
-          } else {
-            return inspection
-          }
-        })
-        .map((inspection) => {
-          if (this.filterByImpression.length > 0) {
-            if (
-              typeof inspection !== 'undefined' &&
-              this.filterByImpression.includes(inspection.impression)
-            ) {
-              return inspection
-            } else {
-              return 'undefined'
-            }
-          } else {
-            return inspection
-          }
-        })
+    //   var propertyFilteredInspections = textFilteredInspections
+    //     .map((inspection) => {
+    //       if (this.filterByAttention) {
+    //         if (
+    //           typeof inspection !== 'undefined' &&
+    //           inspection.attention === 1
+    //         ) {
+    //           return inspection
+    //         } else {
+    //           return 'undefined'
+    //         }
+    //       } else {
+    //         return inspection
+    //       }
+    //     })
+    //     .map((inspection) => {
+    //       if (this.filterByReminder) {
+    //         if (
+    //           typeof inspection !== 'undefined' &&
+    //           (inspection.reminder !== null ||
+    //             inspection.reminder_date !== null)
+    //         ) {
+    //           return inspection
+    //         } else {
+    //           return 'undefined'
+    //         }
+    //       } else {
+    //         return inspection
+    //       }
+    //     })
+    //     .map((inspection) => {
+    //       if (this.filterByImpression.length > 0) {
+    //         if (
+    //           typeof inspection !== 'undefined' &&
+    //           this.filterByImpression.includes(inspection.impression)
+    //         ) {
+    //           return inspection
+    //         } else {
+    //           return 'undefined'
+    //         }
+    //       } else {
+    //         return inspection
+    //       }
+    //     })
 
-      return propertyFilteredInspections
-    },
-    filteredInspections() {
-      return this.filteredInspectionsWithUndefined.filter(
-        (x) => x !== 'undefined' && typeof x !== 'undefined'
-      )
-    },
+    //   return propertyFilteredInspections
+    // },
+    // filteredInspections() {
+    //   return this.filteredInspectionsWithUndefined.filter(
+    //     (x) => x !== 'undefined' && typeof x !== 'undefined'
+    //   )
+    // },
     inspectionIndexes() {
       var inspectionIndexes = []
-      this.filteredInspectionsWithUndefined.map((inspection, i) => {
+      // this.filteredInspectionsWithUndefined.map((inspection, i) => {
+      this.inspectionsWithDates.map((inspection, i) => {
         if (inspection !== 'undefined' && typeof inspection !== 'undefined') {
           inspectionIndexes.push(i)
         }
@@ -790,6 +827,9 @@ export default {
           }
         })
       return matchedItemsByDate
+    },
+    mobile() {
+      return this.$vuetify.breakpoint.mobile
     },
     passOnQuery() {
       var queries = this.$route.query
@@ -875,7 +915,17 @@ export default {
     },
     async readAllInspectionsForHiveId() {
       try {
-        const response = await Api.readRequest('/inspections/hive/', this.id)
+        const response = await Api.readRequest(
+          '/inspections/hive/' +
+            this.id +
+            (this.search !== null
+              ? '?search=' +
+                this.search +
+                (this.searchPageIndex !== 0
+                  ? '&index=' + this.searchPageIndex
+                  : '')
+              : '?index=' + this.pageIndex)
+        )
         this.inspections = response.data
         return true
       } catch (error) {
@@ -888,6 +938,11 @@ export default {
           console.log('Error: ', error)
         }
       }
+    },
+    clearSearch() {
+      this.search = null
+      this.searchPageIndex = 0
+      this.readAllInspectionsForHiveId()
     },
     confirmDeleteInspection(inspection) {
       this.$refs.confirm
@@ -948,6 +1003,14 @@ export default {
       if (value === '3') return '#243D80'
       if (value === '4') return '#069518'
       return '#F8B133'
+    },
+    setPageIndex(value) {
+      if (this.search === null) {
+        this.pageIndex += value
+      } else {
+        this.searchPageIndex += value
+      }
+      this.readAllInspectionsForHiveId()
     },
     updateFilterByImpression(number) {
       if (this.filterByImpression.includes(number)) {
