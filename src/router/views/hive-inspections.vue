@@ -31,6 +31,7 @@
                 type="text"
                 @click:append-outer="readInspectionsForHiveId"
                 @click:clear="clearSearch"
+                @keydown.enter.prevent="readInspectionsForHiveId"
               ></v-text-field>
             </v-col>
             <v-card-actions class="pl-0">
@@ -99,13 +100,13 @@
                 <v-icon
                   :class="
                     (search || filters
-                    ? searchPageIndex === 0
-                    : pageIndex === 0)
+                    ? searchPageIndex === 1
+                    : pageIndex === 1)
                       ? 'color-transparent'
                       : 'color-grey-dark'
                   "
                   :disabled="
-                    search || filters ? searchPageIndex === 0 : pageIndex === 0
+                    search || filters ? searchPageIndex === 1 : pageIndex === 1
                   "
                   @click="setPageIndex(-1)"
                 >
@@ -115,13 +116,11 @@
                   class="font-small"
                   v-text="
                     (!mobile ? $tc('Page', 1) + ' ' : '') +
-                      (search || filters ? searchPageIndex + 1 : pageIndex + 1)
+                      (search || filters ? searchPageIndex : pageIndex) +
+                      (!mobile ? $t('of') + ' ' + lastPage : '')
                   "
                 ></span>
-                <v-icon
-                  v-if="inspectionsWithDates.length === 5"
-                  @click="setPageIndex(1)"
-                >
+                <v-icon v-if="!isLastPage" @click="setPageIndex(1)">
                   mdi-chevron-right
                 </v-icon>
               </div>
@@ -603,7 +602,7 @@
               show500Response
                 ? $t('something_wrong')
                 : (activeHive.editable || activeHive.owner) &&
-                  inspections.inspections.length === 0
+                  inspections.inspections.data.length === 0
                 ? $tc('Inspection', 2) + ' ' + $t('not_available_yet')
                 : $t('no_results')
             }}
@@ -672,8 +671,8 @@ export default {
       baseApiUrl:
         process.env.VUE_APP_BASE_API_URL ||
         process.env.VUE_APP_BASE_API_URL_FALLBACK,
-      pageIndex: 0,
-      searchPageIndex: 0,
+      pageIndex: 1,
+      searchPageIndex: 1,
     }
   },
   computed: {
@@ -682,25 +681,31 @@ export default {
       return parseInt(this.$route.params.id)
     },
     inspectionsWithDates() {
-      var inspectionsWithDates = this.inspections.inspections
-      inspectionsWithDates.map((inspection) => {
-        inspection.created_at_locale_date = this.momentify(
-          inspection.created_at
-        )
-        inspection.created_at_day_month = this.momentifyDayMonth(
-          inspection.created_at
-        )
-        inspection.reminder_date !== null
-          ? (inspection.reminder_date_locale_date = this.momentify(
-              inspection.reminder_date
-            ))
-          : (inspection.reminder_date_locale_date = null)
-        inspection.reminder_date !== null
-          ? (inspection.reminder_date_day_month = this.momentifyDayMonth(
-              inspection.reminder_date
-            ))
-          : (inspection.reminder_date_day_month = null)
-      })
+      var inspectionsWithDates = []
+      if (
+        this.inspections.inspections !== undefined &&
+        this.inspections.inspections.data.length > 0
+      ) {
+        inspectionsWithDates = this.inspections.inspections.data
+        inspectionsWithDates.map((inspection) => {
+          inspection.created_at_locale_date = this.momentify(
+            inspection.created_at
+          )
+          inspection.created_at_day_month = this.momentifyDayMonth(
+            inspection.created_at
+          )
+          inspection.reminder_date !== null
+            ? (inspection.reminder_date_locale_date = this.momentify(
+                inspection.reminder_date
+              ))
+            : (inspection.reminder_date_locale_date = null)
+          inspection.reminder_date !== null
+            ? (inspection.reminder_date_day_month = this.momentifyDayMonth(
+                inspection.reminder_date
+              ))
+            : (inspection.reminder_date_day_month = null)
+        })
+      }
       return inspectionsWithDates
     },
     filters() {
@@ -823,6 +828,19 @@ export default {
         }
       })
       return inspectionIndexes
+    },
+    isLastPage() {
+      return (
+        this.inspectionsWithDates.length > 0 &&
+        (this.filters
+          ? this.searchPageIndex === this.lastPage
+          : this.pageIndex === this.lastPage)
+      )
+    },
+    lastPage() {
+      return this.inspectionsWithDates.length > 0
+        ? this.inspections.inspections.last_page
+        : '?'
     },
     locale() {
       return this.$i18n.locale
@@ -947,17 +965,25 @@ export default {
       }
     },
     async readInspectionsForHiveId() {
+      var searchSpecific =
+        this.search !== null && this.search.indexOf('=') > -1
+          ? this.search
+          : null
       try {
         const response = await Api.readRequest(
           '/inspections/hive/' +
             this.id +
             (this.search || this.filters
-              ? (this.search ? '?search=' + this.search : '') +
+              ? (searchSpecific !== null
+                  ? '?' + searchSpecific
+                  : this.search
+                  ? '?search=' + this.search
+                  : '') +
                 (this.filters ? this.filters : '') +
                 (this.searchPageIndex !== 0
-                  ? '&index=' + this.searchPageIndex
+                  ? '&page=' + this.searchPageIndex
                   : '')
-              : '?index=' + this.pageIndex)
+              : '?page=' + this.pageIndex)
         )
         this.inspections = response.data
         return true
@@ -974,7 +1000,7 @@ export default {
     },
     clearSearch() {
       this.search = null
-      this.searchPageIndex = 0
+      this.searchPageIndex = 1
       this.readInspectionsForHiveId()
     },
     confirmDeleteInspection(inspection) {
