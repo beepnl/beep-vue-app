@@ -98,28 +98,13 @@
 
               <div class="d-flex align-center mr-3 ml-n2 ml-sm-0">
                 <v-icon
-                  :class="
-                    (search || filters
-                    ? searchPageIndex === 1
-                    : pageIndex === 1)
-                      ? 'color-transparent'
-                      : 'color-grey-dark'
-                  "
-                  :disabled="
-                    search || filters ? searchPageIndex === 1 : pageIndex === 1
-                  "
+                  :class="isFirstPage ? 'color-transparent' : 'color-grey-dark'"
+                  :disabled="isFirstPage"
                   @click="setPageIndex(-1)"
                 >
                   mdi-chevron-left
                 </v-icon>
-                <span
-                  class="font-small"
-                  v-text="
-                    (!mobile ? $tc('Page', 1) + ' ' : '') +
-                      (search || filters ? searchPageIndex : pageIndex) +
-                      (!mobile ? $t('of') + ' ' + lastPage : '')
-                  "
-                ></span>
+                <span class="font-small" v-text="pageText"></span>
                 <v-icon v-if="!isLastPage" @click="setPageIndex(1)">
                   mdi-chevron-right
                 </v-icon>
@@ -829,6 +814,11 @@ export default {
       })
       return inspectionIndexes
     },
+    isFirstPage() {
+      return this.search || this.filters
+        ? this.searchPageIndex === 1
+        : this.pageIndex === 1
+    },
     isLastPage() {
       return (
         this.inspectionsWithDates.length > 0 &&
@@ -881,6 +871,13 @@ export default {
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile
+    },
+    pageText() {
+      return (
+        (!this.mobile ? this.$i18n.tc('Page', 1) + ' ' : '') +
+        (this.search || this.filters ? this.searchPageIndex : this.pageIndex) +
+        (!this.mobile ? ' ' + this.$i18n.t('of') + ' ' + this.lastPage : '')
+      )
     },
     passOnQuery() {
       var queries = this.$route.query
