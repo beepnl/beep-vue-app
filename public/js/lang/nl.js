@@ -914,6 +914,13 @@ const translations = {
     'Alle hive tags zijn momenteel in gebruik. Verwijder een bestaande hive tag om een nieuwe toe te kunnen voegen, of pas deze aan.',
 
   View_alert_confirm: 'Wil je de notificatie bekijken "',
+
+  /* iOS device prompt for adding BEEP app to home screen */
+  pwa_title: 'Sneller naar BEEP?',
+  pwa_body:
+    'Voeg BEEP toe aan je beginscherm om het als web app en op volledig scherm te gebruiken.',
+  pwa_share_button_label: '1. Tik op het deel-icoon in de menubalk onderin.',
+  pwa_addhome_button_label: "2. Tik op 'Zet op beginscherm'",
 }
 
 export default translations
