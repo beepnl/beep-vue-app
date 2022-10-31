@@ -980,6 +980,13 @@ const translations = {
     'All hive tags are currently in use. Remove an existing hive tag in order to add a new one, or modify it.',
 
   View_alert_confirm: 'Would you like to view the alert "',
+
+  /* iOS device prompt for adding BEEP app to home screen */
+  pwa_title: 'Quicker access to BEEP?',
+  pwa_body:
+    'Add BEEP to your home screen to use it as a web app and in full screen.',
+  pwa_share_button_label: '1. Tap the share icon in the menu bar below.',
+  pwa_addhome_button_label: "2. Tap 'Add to home'.",
 }
 
 export default translations
