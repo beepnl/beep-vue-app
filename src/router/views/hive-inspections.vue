@@ -809,6 +809,9 @@ export default {
         return null
       }
     },
+    searchOrFilter() {
+      return this.search !== null || this.filters !== null
+    },
     smallScreen() {
       return this.$vuetify.breakpoint.width < 700
     },
@@ -901,7 +904,7 @@ export default {
                   ? '?search=' + this.search
                   : '') +
                 (this.filters ? this.filters : '') +
-                (this.searchPageIndex !== 0
+                (this.searchPageIndex !== 1
                   ? '&page=' + this.searchPageIndex
                   : '')
               : '?page=' + this.pageIndex)
@@ -993,9 +996,6 @@ export default {
       if (value === '3') return '#243D80'
       if (value === '4') return '#069518'
       return '#F8B133'
-    },
-    searchOrFilter() {
-      return this.search !== null || this.filters !== null
     },
     setPageIndex(value) {
       if (!this.searchOrFilter) {
