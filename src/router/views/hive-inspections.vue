@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/comma-dangle -->
 <template>
   <Layout
     v-if="activeHive"
@@ -143,7 +144,9 @@
     <div v-if="ready && !loadingInspections" class="hive-inspections-content">
       <div
         v-if="
-          inspections.inspections !== undefined && inspectionsWithDates.length
+          !noResults &&
+            inspections.inspections !== undefined &&
+            inspectionsData.length
         "
         class="hive-inspections-view-box"
       >
@@ -155,7 +158,7 @@
                   ><strong>{{ $tc('Inspection', 2) }}</strong></th
                 >
                 <th
-                  v-for="(inspection, a) in inspectionsWithDates"
+                  v-for="(inspection, a) in inspectionsData"
                   :key="a"
                   class="tdc"
                 >
@@ -185,8 +188,8 @@
                   </div>
                   <strong class="d-flex justify-center">{{
                     smallScreen
-                      ? inspection.created_at_day_month
-                      : inspection.created_at_locale_date
+                      ? momentFormat(inspection.created_at, 'll')
+                      : momentify(inspection.created_at)
                   }}</strong>
                 </th>
                 <th class="filler"></th>
@@ -197,7 +200,7 @@
               <tr>
                 <td class="tdr">{{ $t('positive_impression') }}</td>
                 <td
-                  v-for="(inspection, b) in inspectionsWithDates"
+                  v-for="(inspection, b) in inspectionsData"
                   :key="b"
                   class="tdc"
                 >
@@ -227,7 +230,7 @@
               <tr>
                 <td class="tdr">{{ $t('needs_attention') }}</td>
                 <td
-                  v-for="(inspection, c) in inspectionsWithDates"
+                  v-for="(inspection, c) in inspectionsData"
                   :key="c"
                   class="tdc"
                 >
@@ -253,7 +256,7 @@
               <tr>
                 <td class="tdr">{{ $t('notes') }}</td>
                 <td
-                  v-for="(inspection, d) in inspectionsWithDates"
+                  v-for="(inspection, d) in inspectionsData"
                   :key="d"
                   class="tdc"
                 >
@@ -270,7 +273,7 @@
               <tr>
                 <td class="tdr">{{ $t('reminder') }}</td>
                 <td
-                  v-for="(inspection, e) in inspectionsWithDates"
+                  v-for="(inspection, e) in inspectionsData"
                   :key="e"
                   class="tdc"
                 >
@@ -307,7 +310,6 @@
                             "
                             :start="
                               new Date(
-                                // eslint-disable vue/comma-dangle
                                 inspection.reminder_date.replace(/-/g, '/')
                               )
                             "
@@ -317,9 +319,9 @@
                               )
                             "
                             :details="
-                              `BEEP app ${$tc('Inspection', 1)} @ ${
-                                inspection.created_at_locale_date
-                              }`
+                              `BEEP app ${$tc('Inspection', 1)} @ ${momentify(
+                                inspection.created_at
+                              )}`
                             "
                             :calendar="calendarItem"
                           ></AddToCalendar>
@@ -334,7 +336,7 @@
               <tr>
                 <td class="tdr">{{ $t('remind_date') }}</td>
                 <td
-                  v-for="(inspection, f) in inspectionsWithDates"
+                  v-for="(inspection, f) in inspectionsData"
                   :key="f"
                   class="tdc"
                 >
@@ -351,8 +353,8 @@
                       "
                       v-text="
                         smallScreen
-                          ? inspection.reminder_date_day_month
-                          : inspection.reminder_date_locale_date
+                          ? momentFormat(inspection.reminder_date, 'll')
+                          : momentify(inspection.reminder_date)
                       "
                     ></span>
                   </div>
@@ -391,7 +393,7 @@
 
                 <td
                   v-if="itemByDate.items === null"
-                  :colspan="inspectionsWithDates.length + 1"
+                  :colspan="inspectionsData.length + 1"
                   class="header expandable-header"
                   @click="toggleCategory(itemByDate.name)"
                 ></td>
@@ -519,7 +521,6 @@
                     v-if="item.type === 'score_amount'"
                     :style="
                       `color: ${scoreAmountColor(
-                        // eslint-disable-next-line vue/comma-dangle
                         item.value
                       )}; font-weight: bold;`
                     "
@@ -574,21 +575,13 @@
           </table>
         </div>
       </div>
-      <v-container
-        v-if="
-          (inspections.inspections !== undefined &&
-            !inspectionsWithDates.length) ||
-            show500Response
-        "
-      >
+      <v-container v-if="noResults">
         <v-row>
           <v-col sm="auto" :cols="12">
             {{
               show500Response
                 ? $t('something_wrong')
-                : (activeHive.editable || activeHive.owner) &&
-                  !searchOrFilter &&
-                  inspections.inspections.data.length === 0
+                : noInspections
                 ? $tc('Inspection', 2) + ' ' + $t('not_available_yet')
                 : $t('no_results')
             }}
@@ -619,7 +612,7 @@ import {
   readApiariesAndGroups,
   readGeneralInspections,
 } from '@mixins/methodsMixin'
-import { momentify, momentifyDayMonth } from '@mixins/momentMixin'
+import { momentify, momentFormat } from '@mixins/momentMixin'
 import AddToCalendar from '@components/add-to-calendar.vue'
 
 export default {
@@ -632,7 +625,7 @@ export default {
   },
   mixins: [
     momentify,
-    momentifyDayMonth,
+    momentFormat,
     readApiariesAndGroups,
     readGeneralInspections,
   ],
@@ -667,33 +660,10 @@ export default {
     id() {
       return parseInt(this.$route.params.id)
     },
-    inspectionsWithDates() {
-      var inspectionsWithDates = []
-      if (
-        this.inspections.inspections !== undefined &&
-        this.inspections.inspections.data.length > 0
-      ) {
-        inspectionsWithDates = this.inspections.inspections.data
-        inspectionsWithDates.map((inspection) => {
-          inspection.created_at_locale_date = this.momentify(
-            inspection.created_at
-          )
-          inspection.created_at_day_month = this.momentifyDayMonth(
-            inspection.created_at
-          )
-          inspection.reminder_date !== null
-            ? (inspection.reminder_date_locale_date = this.momentify(
-                inspection.reminder_date
-              ))
-            : (inspection.reminder_date_locale_date = null)
-          inspection.reminder_date !== null
-            ? (inspection.reminder_date_day_month = this.momentifyDayMonth(
-                inspection.reminder_date
-              ))
-            : (inspection.reminder_date_day_month = null)
-        })
-      }
-      return inspectionsWithDates
+    inspectionsData() {
+      return this.inspections.inspections !== undefined
+        ? this.inspections.inspections.data
+        : []
     },
     filters() {
       if (
@@ -729,7 +699,7 @@ export default {
     inspectionIndexes() {
       var inspectionIndexes = []
       // this.filteredInspectionsWithUndefined.map((inspection, i) => {
-      this.inspectionsWithDates.map((inspection, i) => {
+      this.inspectionsData.map((inspection, i) => {
         if (inspection !== 'undefined' && typeof inspection !== 'undefined') {
           inspectionIndexes.push(i)
         }
@@ -743,14 +713,14 @@ export default {
     },
     isLastPage() {
       return (
-        this.inspectionsWithDates.length > 0 &&
+        this.inspectionsData.length > 0 &&
         (this.searchOrFilter
           ? this.searchPageIndex === this.lastPage
           : this.pageIndex === this.lastPage)
       )
     },
     lastPage() {
-      return this.inspectionsWithDates.length > 0
+      return this.inspectionsData.length > 0
         ? this.inspections.inspections.last_page
         : null
     },
@@ -793,6 +763,21 @@ export default {
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile
+    },
+    noInspections() {
+      return (
+        (this.activeHive.editable || this.activeHive.owner) &&
+        !this.searchOrFilter &&
+        this.inspections.inspections !== undefined &&
+        this.inspections.inspections.data.length === 0
+      )
+    },
+    noResults() {
+      return (
+        this.noInspections ||
+        (this.searchOrFilter && this.inspectionsData.length === 0) ||
+        this.show500Response
+      )
     },
     pageText() {
       return (
@@ -888,6 +873,7 @@ export default {
     },
     async readInspectionsForHiveId() {
       this.loadingInspections = true
+      this.show500Response = false
 
       var searchSpecific =
         this.search !== null && this.search.indexOf('=') > -1
@@ -937,7 +923,7 @@ export default {
             ' (' +
             this.$i18n.t('Date').toLocaleLowerCase() +
             ': ' +
-            inspection.created_at_locale_date +
+            this.momentify(inspection.created_at) +
             ')?',
           {
             color: 'red',
