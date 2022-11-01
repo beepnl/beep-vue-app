@@ -587,7 +587,7 @@
               show500Response
                 ? $t('something_wrong')
                 : (activeHive.editable || activeHive.owner) &&
-                  !filters &&
+                  !searchOrFilter &&
                   inspections.inspections.data.length === 0
                 ? $tc('Inspection', 2) + ' ' + $t('not_available_yet')
                 : $t('no_results')
@@ -737,14 +737,14 @@ export default {
       return inspectionIndexes
     },
     isFirstPage() {
-      return this.search || this.filters
+      return this.searchOrFilter
         ? this.searchPageIndex === 1
         : this.pageIndex === 1
     },
     isLastPage() {
       return (
         this.inspectionsWithDates.length > 0 &&
-        (this.filters
+        (this.searchOrFilter
           ? this.searchPageIndex === this.lastPage
           : this.pageIndex === this.lastPage)
       )
@@ -797,7 +797,7 @@ export default {
     pageText() {
       return (
         (!this.mobile ? this.$i18n.tc('Page', 1) + ' ' : '') +
-        (this.search || this.filters ? this.searchPageIndex : this.pageIndex) +
+        (this.searchOrFilter ? this.searchPageIndex : this.pageIndex) +
         (!this.mobile ? ' ' + this.$i18n.t('of') + ' ' + this.lastPage : '')
       )
     },
@@ -894,7 +894,7 @@ export default {
         const response = await Api.readRequest(
           '/inspections/hive/' +
             this.id +
-            (this.search || this.filters
+            (this.searchOrFilter
               ? (searchSpecific !== null
                   ? '?' + searchSpecific
                   : this.search
@@ -994,8 +994,11 @@ export default {
       if (value === '4') return '#069518'
       return '#F8B133'
     },
+    searchOrFilter() {
+      return this.search !== null || this.filters !== null
+    },
     setPageIndex(value) {
-      if (this.search === null && this.filters === null) {
+      if (!this.searchOrFilter) {
         this.pageIndex += value
       } else {
         this.searchPageIndex += value
