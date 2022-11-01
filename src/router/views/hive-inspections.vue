@@ -131,13 +131,16 @@
       </v-container>
     </div>
 
-    <v-container v-if="!ready" class="hive-inspections-content">
+    <v-container
+      v-if="!ready || loadingInspections"
+      class="hive-inspections-content"
+    >
       <div class="loading">
         <v-progress-circular size="50" color="primary" indeterminate />
       </div>
     </v-container>
 
-    <div v-if="ready" class="hive-inspections-content">
+    <div v-if="ready && !loadingInspections" class="hive-inspections-content">
       <div
         v-if="
           inspections.inspections !== undefined && inspectionsWithDates.length
@@ -656,6 +659,7 @@ export default {
         process.env.VUE_APP_BASE_API_URL_FALLBACK,
       pageIndex: 1,
       searchPageIndex: 1,
+      loadingInspections: false,
     }
   },
   computed: {
@@ -880,6 +884,8 @@ export default {
       }
     },
     async readInspectionsForHiveId() {
+      this.loadingInspections = true
+
       var searchSpecific =
         this.search !== null && this.search.indexOf('=') > -1
           ? this.search
@@ -901,8 +907,10 @@ export default {
               : '?page=' + this.pageIndex)
         )
         this.inspections = response.data
+        this.loadingInspections = false
         return true
       } catch (error) {
+        this.loadingInspections = false
         if (error.response) {
           console.log('Error: ', error.response)
           if (error.response.status === 500) {
