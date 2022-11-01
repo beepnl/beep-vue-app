@@ -41,10 +41,7 @@
                     filterByAttention ? 'red--text' : 'color-grey-filter'
                   } mr-2`
                 "
-                @click="
-                  ;(filterByAttention = !filterByAttention),
-                    readInspectionsForHiveId
-                "
+                @click="toggleFilterByAttention"
               >
                 mdi-clipboard-alert-outline
               </v-icon>
@@ -52,10 +49,7 @@
                 :class="
                   `${filterByReminder ? 'red--text' : 'color-grey-filter'} mr-2`
                 "
-                @click="
-                  ;(filterByReminder = !filterByReminder),
-                    readInspectionsForHiveId
-                "
+                @click="toggleFilterByReminder"
               >
                 mdi-calendar-clock
               </v-icon>
@@ -96,7 +90,10 @@
                 mdi-emoticon-sad
               </v-icon>
 
-              <div class="d-flex align-center mr-3 ml-n2 ml-sm-0">
+              <div
+                v-if="hasPages"
+                class="d-flex align-center mr-3 ml-n2 ml-sm-0"
+              >
                 <v-icon
                   :class="isFirstPage ? 'color-transparent' : 'color-grey-dark'"
                   :disabled="isFirstPage"
@@ -587,6 +584,7 @@
               show500Response
                 ? $t('something_wrong')
                 : (activeHive.editable || activeHive.owner) &&
+                  !filters &&
                   inspections.inspections.data.length === 0
                 ? $tc('Inspection', 2) + ' ' + $t('not_available_yet')
                 : $t('no_results')
@@ -718,92 +716,12 @@ export default {
         return null
       }
     },
-    // filteredInspectionsWithUndefined() {
-    //   var textFilteredInspections = []
-    //   if (this.search === null) {
-    //     textFilteredInspections = this.inspectionsWithDates
-    //   } else {
-    //     textFilteredInspections = this.inspectionsWithDates.map(
-    //       (inspection) => {
-    //         const inspectionMatch = Object.entries(inspection).some(
-    //           ([key, value]) => {
-    //             if (
-    //               value !== null &&
-    //               typeof value === 'string' &&
-    //               this.search.substring(0, 3) !== 'id=' &&
-    //               key !== ('created_at' || 'reminder_date')
-    //             ) {
-    //               return value.toLowerCase().includes(this.search.toLowerCase())
-    //             } else if (
-    //               key === 'id' &&
-    //               this.search.substring(0, 3) === 'id='
-    //             ) {
-    //               return (
-    //                 value.toString() ===
-    //                 this.search.substring(3, this.search.length)
-    //               )
-    //             }
-    //           }
-    //         )
-    //         if (inspectionMatch) {
-    //           return inspection
-    //         }
-    //       }
-    //     )
-    //   }
-
-    //   var propertyFilteredInspections = textFilteredInspections
-    //     .map((inspection) => {
-    //       if (this.filterByAttention) {
-    //         if (
-    //           typeof inspection !== 'undefined' &&
-    //           inspection.attention === 1
-    //         ) {
-    //           return inspection
-    //         } else {
-    //           return 'undefined'
-    //         }
-    //       } else {
-    //         return inspection
-    //       }
-    //     })
-    //     .map((inspection) => {
-    //       if (this.filterByReminder) {
-    //         if (
-    //           typeof inspection !== 'undefined' &&
-    //           (inspection.reminder !== null ||
-    //             inspection.reminder_date !== null)
-    //         ) {
-    //           return inspection
-    //         } else {
-    //           return 'undefined'
-    //         }
-    //       } else {
-    //         return inspection
-    //       }
-    //     })
-    //     .map((inspection) => {
-    //       if (this.filterByImpression.length > 0) {
-    //         if (
-    //           typeof inspection !== 'undefined' &&
-    //           this.filterByImpression.includes(inspection.impression)
-    //         ) {
-    //           return inspection
-    //         } else {
-    //           return 'undefined'
-    //         }
-    //       } else {
-    //         return inspection
-    //       }
-    //     })
-
-    //   return propertyFilteredInspections
-    // },
-    // filteredInspections() {
-    //   return this.filteredInspectionsWithUndefined.filter(
-    //     (x) => x !== 'undefined' && typeof x !== 'undefined'
-    //   )
-    // },
+    hasPages() {
+      return (
+        this.inspections.inspections !== undefined &&
+        this.inspections.inspections.total !== 0
+      )
+    },
     inspectionIndexes() {
       var inspectionIndexes = []
       // this.filteredInspectionsWithUndefined.map((inspection, i) => {
@@ -830,7 +748,7 @@ export default {
     lastPage() {
       return this.inspectionsWithDates.length > 0
         ? this.inspections.inspections.last_page
-        : '?'
+        : null
     },
     locale() {
       return this.$i18n.locale
@@ -1043,6 +961,14 @@ export default {
       } else {
         this.hiddenCategories.push(string)
       }
+    },
+    toggleFilterByAttention() {
+      this.filterByAttention = !this.filterByAttention
+      this.readInspectionsForHiveId()
+    },
+    toggleFilterByReminder() {
+      this.filterByReminder = !this.filterByReminder
+      this.readInspectionsForHiveId()
     },
     scoreAmountColor(value) {
       if (value === '0') return '#CCC'
