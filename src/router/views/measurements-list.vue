@@ -1325,15 +1325,15 @@ export default {
           ) {
             data.datasets.map((dataset, index) => {
               var quantity = dataset.abbr
-              if (
-                measurement[quantity] !== null && // do not push null values, otherwise datalabels plugin won't work
-                typeof measurement[quantity] === 'number'
-              ) {
-                dataset.data.push({
-                  x: measurement.time,
-                  y: measurement[quantity],
-                })
-              }
+              // if (
+              //   measurement[quantity] !== null && // previously this was enabled (do not push null values, otherwise datalabels plugin won't work) but now disabled again to make spanGaps work + added workaround for datalabels plugin
+              //   typeof measurement[quantity] === 'number'
+              // ) {
+              dataset.data.push({
+                x: measurement.time,
+                y: measurement[quantity],
+              })
+              // }
             })
           }
         })

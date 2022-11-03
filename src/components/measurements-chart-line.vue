@@ -349,10 +349,18 @@ export default {
             return value.y.toFixed(1) + ' ' + context.dataset.unit
           },
           display: function(context) {
-            return (
-              self.location !== 'flashlog' &&
-              context.dataIndex === context.dataset.data.length - 1
-            )
+            var isFinalValue = false
+            // check if datapoint has value, whether all datapoints after that are null
+            // in that case current datapoint is the final value and should be displayed as a datalabel
+            // (only pushing non-null datapoints to dataset is not an option because spanGaps won't work then)
+            if (context.dataset.data[context.dataIndex] !== null) {
+              isFinalValue =
+                context.dataset.data.filter(
+                  (item, index) => index > context.dataIndex && item.y !== null
+                ).length === 0
+            }
+
+            return self.location !== 'flashlog' && isFinalValue
           },
         },
         legend: {
