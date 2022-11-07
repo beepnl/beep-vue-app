@@ -96,14 +96,22 @@
                 class="d-flex align-center mr-3 ml-n2 ml-sm-0"
               >
                 <v-icon
-                  :class="isFirstPage ? 'color-transparent' : 'color-grey-dark'"
+                  :class="
+                    isFirstPage ? 'color-transparent' : 'color-grey-filter'
+                  "
                   :disabled="isFirstPage"
+                  size="26"
                   @click="setPageIndex(-1)"
                 >
                   mdi-chevron-left
                 </v-icon>
-                <span class="font-small" v-text="pageText"></span>
-                <v-icon v-if="!isLastPage" @click="setPageIndex(1)">
+                <span class="pagination-text" v-text="paginationText"></span>
+                <v-icon
+                  v-if="!isLastPage"
+                  class="color-grey-filter"
+                  size="26"
+                  @click="setPageIndex(1)"
+                >
                   mdi-chevron-right
                 </v-icon>
               </div>
@@ -693,18 +701,8 @@ export default {
     hasPages() {
       return (
         this.inspections.inspections !== undefined &&
-        this.inspections.inspections.total !== 0
+        this.inspections.inspections.total > 1
       )
-    },
-    inspectionIndexes() {
-      var inspectionIndexes = []
-      // this.filteredInspectionsWithUndefined.map((inspection, i) => {
-      this.inspectionsData.map((inspection, i) => {
-        if (inspection !== 'undefined' && typeof inspection !== 'undefined') {
-          inspectionIndexes.push(i)
-        }
-      })
-      return inspectionIndexes
     },
     isFirstPage() {
       return this.searchOrFilter
@@ -744,13 +742,11 @@ export default {
           if (itemByDate.items !== null) {
             return {
               ...itemByDate,
-              items: itemByDate.items.reduce((acc, item, index) => {
-                if (this.inspectionIndexes.includes(index)) {
-                  if (typeof item === 'object') {
-                    acc.push(item)
-                  } else {
-                    acc.push('')
-                  }
+              items: itemByDate.items.reduce((acc, item) => {
+                if (typeof item === 'object') {
+                  acc.push(item)
+                } else {
+                  acc.push('')
                 }
                 return acc
               }, []),
@@ -779,7 +775,7 @@ export default {
         this.show500Response
       )
     },
-    pageText() {
+    paginationText() {
       return (
         (!this.mobile ? this.$i18n.tc('Page', 1) + ' ' : '') +
         (this.searchOrFilter ? this.searchPageIndex : this.pageIndex) +
@@ -1012,6 +1008,15 @@ export default {
   max-width: 100vw;
 }
 
+.pagination-text {
+  font-size: 13px;
+  margin-bottom: 2px;
+  @include for-phone-only {
+    font-size: 15px;
+    margin-bottom: 0px;
+  }
+}
+
 .hive-inspections-content {
   max-width: 100vw;
   margin-top: 61px;
@@ -1044,7 +1049,7 @@ export default {
       display: block;
       max-height: calc(100vh - 190px);
       overflow-x: visible;
-      overflow-y: auto;
+      // overflow-y: auto;
       @include for-phone-only {
         max-height: calc(100vh - 160px);
       }
