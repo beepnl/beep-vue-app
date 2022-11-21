@@ -980,6 +980,9 @@ const translations = {
     'Add BEEP to your home screen to use it as a web app and in full screen. You will stay signed in after signing in once.',
   pwa_share_button_label: '1. Tap the share icon in the menu bar below.',
   pwa_addhome_button_label: "2. Tap 'Add to home'.",
+
+  Colony: 'Colony | Colonies',
+  Dashboard: 'Dashboard',
 }
 
 export default translations

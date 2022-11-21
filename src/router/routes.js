@@ -165,6 +165,15 @@ export default [
       authRequired: true,
       depth: 1,
     },
+    path: '/dashboard',
+    name: 'dashboard',
+    component: () => lazyLoadView(import('@views/dashboard.vue')),
+  },
+  {
+    meta: {
+      authRequired: true,
+      depth: 1,
+    },
     path: '/devices',
     name: 'devices',
     component: () => lazyLoadView(import('@views/devices.vue')),
