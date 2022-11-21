@@ -928,6 +928,7 @@ const translations = {
   Note: 'Notitie',
   no_chart_data_past_week:
     'Geen sensordata beschikbaar voor de afgelopen 7 dagen',
+  outsideTemperature: 'Buitentemperatuur',
 }
 
 export default translations

@@ -989,6 +989,7 @@ const translations = {
   Last_check: 'Last check-up',
   Note: 'Note',
   no_chart_data_past_week: 'No chart data available for the past 7 days',
+  outsideTemperature: 'Outside temperature',
 }
 
 export default translations

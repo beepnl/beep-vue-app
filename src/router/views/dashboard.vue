@@ -118,14 +118,19 @@
         </v-row>
         <template v-if="sensorsPresent">
           <v-col
-            v-for="(sensor, index) in currentSensors"
+            v-for="(sensorSet, index) in currentSensors"
             :key="'sensor' + index"
             cols="12"
           >
+            <div
+              v-if="measurementData !== null && sensorSet.values.length > 0"
+              class="text-h6 overline roboto-condensed my-2"
+              v-text="$t(sensorSet.name)"
+            ></div>
             <div>
               <MeasurementsChartLine
                 v-if="measurementData !== null"
-                :chart-data="chartjsDataSeries([sensor])"
+                :chart-data="chartjsDataSeries(sensorSet.values)"
                 :interval="'week'"
                 :start-time="periodStartString"
                 :end-time="periodEndString"
@@ -174,7 +179,8 @@ export default {
       noChartData: false,
       loadingData: true,
       measurementData: {},
-      currentSensors: [],
+      tempSensors: [],
+      weightSensors: [],
       sensorsPresent: false,
       dateTimeFormat: 'YYYY-MM-DD HH:mm:ss',
     }
@@ -182,6 +188,12 @@ export default {
   computed: {
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
+    currentSensors() {
+      return [
+        { name: 'temperature', values: this.tempSensors },
+        { name: 'weight', values: this.weightSensors },
+      ]
+    },
     selectedApiary() {
       return this.apiaries.length > 0 ? this.apiaries[0] : null
     },
@@ -274,12 +286,12 @@ export default {
       quantities.map((quantity, index) => {
         var mT = this.getSensorMeasurement(quantity)
 
-        if (mT === null || mT === undefined) {
-          console.log('mT not found ', quantity)
-        } else if (mT.show_in_charts === 1) {
+        if (mT.show_in_charts === 1) {
           var sensorName =
-            this.measurementData.sensorDefinitions[quantity] &&
-            this.measurementData.sensorDefinitions[quantity].name !== null
+            quantity === 'temperature'
+              ? this.$i18n.t('outsideTemperature')
+              : this.measurementData.sensorDefinitions[quantity] &&
+                this.measurementData.sensorDefinitions[quantity].name !== null
               ? this.measurementData.sensorDefinitions[quantity].name
               : this.$i18n.t(quantity)
           var sensorLabel =
@@ -292,8 +304,10 @@ export default {
             id: mT.id,
             abbr: mT.abbreviation,
             fill: false,
-            borderColor: '#' + mT.hex_color,
-            backgroundColor: '#' + mT.hex_color,
+            borderColor:
+              quantity === 'temperature' ? '#242424' : '#' + mT.hex_color,
+            backgroundColor:
+              quantity === 'temperature' ? '#242424' : '#' + mT.hex_color,
             borderRadius: 2,
             label: sensorLabel.replace(/^0/, ''),
             name: sensorName,
@@ -328,11 +342,15 @@ export default {
         measurementData.measurements.length > 0
       ) {
         this.measurementData = measurementData
-        this.currentSensors = []
+        this.tempSensors = []
+        this.weightSensors = []
         this.sensorsPresent = false
         Object.keys(this.measurementData.measurements[0]).map((quantity) => {
-          if (this.DASHBOARD_SENSORS.indexOf(quantity) > -1) {
-            this.currentSensors.push(quantity)
+          if (this.DASHBOARD_TEMP_SENSORS.indexOf(quantity) > -1) {
+            this.tempSensors.push(quantity)
+            this.sensorsPresent = true
+          } else if (this.DASHBOARD_WEIGHT_SENSORS.indexOf(quantity) > -1) {
+            this.weightSensors.push(quantity)
             this.sensorsPresent = true
           }
         })
@@ -439,8 +457,8 @@ export default {
 
 #map {
   margin: 6px 0;
-  height: 300px;
-  width: 300px;
+  height: 330px;
+  width: 330px;
   background: $color-primary;
   border: 4px solid $color-primary;
 }

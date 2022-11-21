@@ -124,9 +124,9 @@ export const sensorMixin = {
         't_8',
         't_9',
       ], // not actuators
-      DASHBOARD_SENSORS: [
-        'weight_kg_corrected',
-        'weight_kg',
+      DASHBOARD_TEMP_SENSORS: [
+        'temperature',
+        't',
         't_i',
         't_0',
         't_1',
@@ -138,7 +138,8 @@ export const sensorMixin = {
         't_7',
         't_8',
         't_9',
-      ], // not actuators
+      ],
+      DASHBOARD_WEIGHT_SENSORS: ['weight_kg_corrected', 'weight_kg'],
       SOUND: [
         's_fan_4',
         's_fan_6',
