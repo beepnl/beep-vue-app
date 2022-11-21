@@ -25,19 +25,28 @@
           </v-icon>
         </div>
 
+        <div v-if="dashboardMode" class="hive-in-dashboard">
+          <div v-if="hive.sensors.length > 0" class="my-0">
+            <v-sheet
+              class="beep-icon beep-icon-sensors--no-outline color-green"
+            ></v-sheet>
+          </div>
+        </div>
+
         <v-sheet
           :class="
             `hive-icon hive-icon-preview d-flex flex-column justify-center align-center white--text text--small mr-1 ${
               hasLayer(hive, 'queen_excluder') ? 'has-queen-excluder' : ''
-            } ${hasLayer(hive, 'feeding_box') ? 'has-feeding-box' : ''}`
+            } ${hasLayer(hive, 'feeding_box') ? 'has-feeding-box' : ''} ${
+              dashboardMode ? ' --dashboard' : ''
+            }`
           "
           height="auto"
         >
           <div
             :class="
               'hive-icon-layers' +
-                (hive.layers.length === 0 ? ' hive-icon-layers--empty' : '') +
-                (dashboardMode ? ' --dashboard' : '')
+                (hive.layers.length === 0 ? ' hive-icon-layers--empty' : '')
             "
           >
             <div
@@ -171,6 +180,7 @@ export default {
   margin-bottom: 0 !important;
   border-bottom: 0 !important;
   border-radius: 2px 2px 0 0;
+  background: transparent;
   .hive-icon-layers {
     width: auto;
     height: 100%;
@@ -227,21 +237,20 @@ export default {
   }
 }
 
-.hive-icon-wrapper {
-  background: transparent;
-}
-
-.hive-icon-layers.--dashboard {
-  padding: 5px 10px;
-  border-bottom: 0 !important;
-  .layer {
-    &:last-child {
-      border: 1px solid rgba(0, 0, 0, 0.3) !important;
+.hive-icon-preview.--dashboard {
+  margin-top: -5px;
+  .hive-icon-layers {
+    padding: 5px 10px;
+    border-bottom: 0 !important;
+    .layer {
+      &:last-child {
+        border: 1px solid rgba(0, 0, 0, 0.3) !important;
+      }
     }
-  }
-  // border-bottom: 1px solid #bbb !important;
-  .selectable-wrapper.--selected {
-    box-shadow: 0 0 0 5px yellow !important;
+    // border-bottom: 1px solid #bbb !important;
+    .selectable-wrapper.--selected {
+      box-shadow: 0 0 0 5px yellow !important;
+    }
   }
 }
 

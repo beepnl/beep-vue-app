@@ -60,7 +60,7 @@
         ></div>
         <div
           v-if="ready && selectedHive"
-          class="dashboard-inspection rounded-border primary-border"
+          class="dashboard-inspection rounded-border"
         >
           <v-row v-if="selectedHive.last_inspection_date">
             <v-col cols="5"
@@ -95,30 +95,74 @@
         </div>
       </v-col>
 
-      <v-col class="dashboard-section" cols="12">
+      <v-col
+        v-if="ready && selectedHive.sensors.length !== 0"
+        class="dashboard-section"
+        cols="12"
+      >
         <div
           class="text-h4 text-md-h2 dashboard-section-title"
           v-text="$tc('Measurement', 2)"
         ></div>
+        <v-row>
+          <v-col
+            v-if="loadingData"
+            class="d-flex align-center justify-center my-16"
+            cols="12"
+          >
+            <v-progress-circular color="primary" size="50" indeterminate />
+          </v-col>
+          <v-col v-if="noChartData || !sensorsPresent" cols="12" class="my-4">
+            {{ $t('no_chart_data_past_week') }}
+          </v-col>
+        </v-row>
+        <template v-if="sensorsPresent">
+          <v-col
+            v-for="(sensor, index) in currentSensors"
+            :key="'sensor' + index"
+            cols="12"
+          >
+            <div>
+              <MeasurementsChartLine
+                v-if="measurementData !== null"
+                :chart-data="chartjsDataSeries([sensor])"
+                :interval="'week'"
+                :start-time="periodStartString"
+                :end-time="periodEndString"
+                :chart-id="'chart-dashboard-' + index"
+              >
+              </MeasurementsChartLine>
+            </div>
+          </v-col>
+        </template>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-// import Api from '@api/Api'
+import Api from '@api/Api'
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 import MapMarker from '@components/map-marker.vue'
+import MeasurementsChartLine from '@components/measurements-chart-line.vue'
 import { mapGetters } from 'vuex'
-import { readApiariesAndGroups } from '@mixins/methodsMixin'
-import { momentFromNow } from '@mixins/momentMixin'
+import { readApiariesAndGroups, readTaxonomy } from '@mixins/methodsMixin'
+import { momentFromNow, timeZone } from '@mixins/momentMixin'
+import { sensorMixin } from '@mixins/sensorMixin'
 
 export default {
   components: {
     ApiaryPreviewHiveSelector,
     MapMarker,
+    MeasurementsChartLine,
   },
-  mixins: [momentFromNow, readApiariesAndGroups],
+  mixins: [
+    momentFromNow,
+    readApiariesAndGroups,
+    readTaxonomy,
+    sensorMixin,
+    timeZone,
+  ],
   data: function() {
     return {
       assetsUrl:
@@ -127,10 +171,17 @@ export default {
       ready: false,
       map: null,
       selectedHive: null,
+      noChartData: false,
+      loadingData: true,
+      measurementData: {},
+      currentSensors: [],
+      sensorsPresent: false,
+      dateTimeFormat: 'YYYY-MM-DD HH:mm:ss',
     }
   },
   computed: {
     ...mapGetters('locations', ['apiaries']),
+    ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     selectedApiary() {
       return this.apiaries.length > 0 ? this.apiaries[0] : null
     },
@@ -149,6 +200,14 @@ export default {
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile
+    },
+    periodEndString() {
+      return this.$moment().format(this.dateTimeFormat)
+    },
+    periodStartString() {
+      return this.$moment()
+        .subtract(1, 'weeks')
+        .format(this.dateTimeFormat)
     },
     selectedHiveIds() {
       return this.selectedHive ? [this.selectedHive.id] : []
@@ -170,12 +229,118 @@ export default {
     },
   },
   created() {
-    this.readApiariesAndGroups().then(() => {
-      this.selectedHive = this.selectedApiary.hives[0]
-      this.ready = true
+    this.readTaxonomy().then(() => {
+      this.readApiariesAndGroups().then(() => {
+        this.selectedHive = this.selectedApiary.hives[0]
+        this.sensorMeasurementRequest().then(() => {
+          this.ready = true
+        })
+      })
     })
   },
   methods: {
+    async sensorMeasurementRequest() {
+      this.noChartData = false
+      this.loadingData = true
+      this.measurementData = null // needed to let chartjs redraw charts after interval switch
+      try {
+        const response = await Api.readRequest(
+          '/sensors/measurements?id=' +
+            this.selectedHive.sensors[0] +
+            '&interval=week&index=0&timeGroup=week&timezone=' +
+            this.timeZone +
+            '&relative_interval=1'
+        )
+        this.formatMeasurementData(response.data)
+        return true
+      } catch (error) {
+        this.loadingData = false
+        if (error.response) {
+          console.log(error.response)
+          if (error.response.status === 500) {
+            this.noChartData = true
+          }
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
+    chartjsDataSeries(quantities) {
+      var data = {
+        labels: [],
+        datasets: [],
+      }
+      // var sensorArray = this.getMeasurementTypesPresent(chartGroup.id)
+      quantities.map((quantity, index) => {
+        var mT = this.getSensorMeasurement(quantity)
+
+        if (mT === null || mT === undefined) {
+          console.log('mT not found ', quantity)
+        } else if (mT.show_in_charts === 1) {
+          var sensorName =
+            this.measurementData.sensorDefinitions[quantity] &&
+            this.measurementData.sensorDefinitions[quantity].name !== null
+              ? this.measurementData.sensorDefinitions[quantity].name
+              : this.$i18n.t(quantity)
+          var sensorLabel =
+            sensorName +
+            (mT.unit !== '-' && mT.unit !== '' && mT.unit !== null
+              ? ' (' + mT.unit + ')'
+              : '')
+
+          data.datasets.push({
+            id: mT.id,
+            abbr: mT.abbreviation,
+            fill: false,
+            borderColor: '#' + mT.hex_color,
+            backgroundColor: '#' + mT.hex_color,
+            borderRadius: 2,
+            label: sensorLabel.replace(/^0/, ''),
+            name: sensorName,
+            unit: mT.unit !== '-' && mT.unit !== null ? mT.unit : '',
+            data: [],
+            spanGaps: false,
+          })
+        }
+      })
+
+      if (
+        typeof this.measurementData.measurements !== 'undefined' &&
+        this.measurementData.measurements.length > 0
+      ) {
+        this.measurementData.measurements.map((measurement, index) => {
+          data.datasets.map((dataset, index) => {
+            var quantity = dataset.abbr
+            dataset.data.push({
+              x: measurement.time,
+              y: measurement[quantity],
+            })
+          })
+        })
+      }
+
+      return data
+    },
+    formatMeasurementData(measurementData) {
+      if (
+        measurementData &&
+        measurementData.measurements &&
+        measurementData.measurements.length > 0
+      ) {
+        this.measurementData = measurementData
+        this.currentSensors = []
+        this.sensorsPresent = false
+        Object.keys(this.measurementData.measurements[0]).map((quantity) => {
+          if (this.DASHBOARD_SENSORS.indexOf(quantity) > -1) {
+            this.currentSensors.push(quantity)
+            this.sensorsPresent = true
+          }
+        })
+      } else {
+        this.noChartData = true
+      }
+      this.loadingData = false
+    },
     getMap(callback) {
       const self = this
       function checkForMap() {
@@ -184,10 +349,17 @@ export default {
       }
       checkForMap()
     },
+    getSensorMeasurement(abbr) {
+      var smFilter = this.sensorMeasurementsList.filter(
+        (measurementType) => measurementType.abbreviation === abbr
+      )
+      return smFilter.length > 0 ? smFilter[0] : null
+    },
     selectHive(id) {
       this.selectedHive = this.selectedApiary.hives.filter(
         (hive) => hive.id === id
       )[0]
+      this.sensorMeasurementRequest()
     },
   },
 }

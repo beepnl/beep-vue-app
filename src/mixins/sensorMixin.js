@@ -124,6 +124,21 @@ export const sensorMixin = {
         't_8',
         't_9',
       ], // not actuators
+      DASHBOARD_SENSORS: [
+        'weight_kg_corrected',
+        'weight_kg',
+        't_i',
+        't_0',
+        't_1',
+        't_2',
+        't_3',
+        't_4',
+        't_5',
+        't_6',
+        't_7',
+        't_8',
+        't_9',
+      ], // not actuators
       SOUND: [
         's_fan_4',
         's_fan_6',

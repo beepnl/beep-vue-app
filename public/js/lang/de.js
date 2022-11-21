@@ -1009,6 +1009,7 @@ const translations = {
   Dashboard: 'Dashboard',
   Last_check: 'Last check-up',
   Note: 'Note',
+  no_chart_data_past_week: 'No chart data available for the past 7 days',
 }
 
 export default translations
