@@ -22,15 +22,15 @@
           class="text-h4 text-md-h2 dashboard-section-title"
           v-text="$tc('Location', 1)"
         ></div>
-        <div class="d-flex flex-column align-center">
-          <div
-            v-if="ready"
-            class="text-h4 color-accent overline roboto-condensed mt-2"
-            v-text="selectedApiary.name"
-          ></div>
+        <div class="d-flex flex-column align-center mt-2">
           <div id="map" ref="map">
             <MapMarker :lat="lat" :lng="lng" />
           </div>
+          <div
+            v-if="ready"
+            class="text-h4 color-accent overline roboto-condensed mt-1"
+            v-text="selectedApiary.name"
+          ></div>
         </div>
       </v-col>
 
@@ -39,11 +39,17 @@
           class="text-h4 text-md-h2 dashboard-section-title"
           v-text="$tc('Colony', 2)"
         ></div>
-        <div v-if="ready" class="d-flex justify-center">
+        <div v-if="ready" class="d-flex flex-column align-center">
           <ApiaryPreviewHiveSelector
             :hives="selectedApiary.hives"
+            :hives-selected="selectedHiveIds"
+            :dashboard-mode="true"
             @select-hive="selectHive($event)"
           ></ApiaryPreviewHiveSelector>
+          <div
+            class="text-h4 color-accent overline roboto-condensed mt-2"
+            v-text="selectedHive.name"
+          ></div>
         </div>
       </v-col>
 
@@ -52,6 +58,41 @@
           class="text-h4 text-md-h2 dashboard-section-title"
           v-text="$tc('Inspection', 1)"
         ></div>
+        <div
+          v-if="ready && selectedHive"
+          class="dashboard-inspection rounded-border primary-border"
+        >
+          <v-row v-if="selectedHive.last_inspection_date">
+            <v-col cols="5"
+              ><span v-text="$t('Last_check') + ' : '"></span
+            ></v-col>
+            <v-col cols="7"
+              ><span
+                v-text="momentFromNow(selectedHive.last_inspection_date)"
+              ></span
+            ></v-col>
+          </v-row>
+          <v-row v-if="selectedHive.impression">
+            <v-col cols="5"
+              ><span v-text="$t('positive_impression') + ' : '"></span
+            ></v-col>
+            <v-col cols="7">
+              <v-icon v-if="selectedHive.impression === 1" class="red--text">
+                mdi-emoticon-sad
+              </v-icon>
+              <v-icon v-if="selectedHive.impression === 3" class="green--text">
+                mdi-emoticon-happy
+              </v-icon>
+              <v-icon v-if="selectedHive.impression === 2" class="orange--text">
+                mdi-emoticon-neutral
+              </v-icon>
+            </v-col>
+          </v-row>
+          <v-row v-if="selectedHive.notes">
+            <v-col cols="5"><span v-text="$t('Note') + ' : '"></span></v-col>
+            <v-col cols="7"><span v-text="selectedHive.notes"></span></v-col>
+          </v-row>
+        </div>
       </v-col>
 
       <v-col class="dashboard-section" cols="12">
@@ -69,10 +110,7 @@
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 import MapMarker from '@components/map-marker.vue'
 import { mapGetters } from 'vuex'
-import {
-  readApiariesAndGroups,
-  readGeneralInspections,
-} from '@mixins/methodsMixin'
+import { readApiariesAndGroups } from '@mixins/methodsMixin'
 import { momentFromNow } from '@mixins/momentMixin'
 
 export default {
@@ -80,7 +118,7 @@ export default {
     ApiaryPreviewHiveSelector,
     MapMarker,
   },
-  mixins: [momentFromNow, readApiariesAndGroups, readGeneralInspections],
+  mixins: [momentFromNow, readApiariesAndGroups],
   data: function() {
     return {
       assetsUrl:
@@ -88,6 +126,7 @@ export default {
         process.env.VUE_APP_ASSETS_URL_FALLBACK,
       ready: false,
       map: null,
+      selectedHive: null,
     }
   },
   computed: {
@@ -111,6 +150,9 @@ export default {
     mobile() {
       return this.$vuetify.breakpoint.mobile
     },
+    selectedHiveIds() {
+      return this.selectedHive ? [this.selectedHive.id] : []
+    },
     touchDevice() {
       return window.matchMedia('(hover: none)').matches
     },
@@ -129,6 +171,7 @@ export default {
   },
   created() {
     this.readApiariesAndGroups().then(() => {
+      this.selectedHive = this.selectedApiary.hives[0]
       this.ready = true
     })
   },
@@ -142,7 +185,9 @@ export default {
       checkForMap()
     },
     selectHive(id) {
-      console.log('hive selected', id)
+      this.selectedHive = this.selectedApiary.hives.filter(
+        (hive) => hive.id === id
+      )[0]
     },
   },
 }
@@ -151,11 +196,13 @@ export default {
 <style lang="scss" scoped>
 .dashboard-container {
   color: $color-grey-dark;
-  margin-top: 30px;
+  margin-top: 20px;
+  padding: 20px;
 
   @include for-tablet-landscape-up {
     margin-top: 60px;
     max-width: 60% !important;
+    padding: 12px;
   }
 }
 
@@ -175,7 +222,10 @@ export default {
 
 .dashboard-section {
   text-align: center !important;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
+  @include for-tablet-landscape-up {
+    margin-bottom: 40px;
+  }
 }
 
 .dashboard-section-title {
@@ -183,6 +233,10 @@ export default {
   justify-content: center;
   align-items: center;
   margin-bottom: 30px;
+
+  @include for-tablet-landscape-up {
+    margin-bottom: 40px;
+  }
 
   &::before,
   &::after {
@@ -217,5 +271,9 @@ export default {
   width: 300px;
   background: $color-primary;
   border: 4px solid $color-primary;
+}
+
+.dashboard-inspection {
+  text-align: left !important;
 }
 </style>

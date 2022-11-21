@@ -1,74 +1,82 @@
 <template>
-  <div class="d-flex align-end apiary-preview">
-    <div
-      v-for="(hive, j) in sortedHives"
-      :key="j"
-      class="hive-icon-wrapper d-flex flex-column align-center"
-      @click="selectHive(hive.id)"
-    >
-      <div v-if="groupMode" class="hive-in-group">
-        <v-icon v-if="hivesEditable.includes(hive.id)" class="green--text">
-          mdi-pencil-circle
-        </v-icon>
-        <v-icon v-else-if="hivesSelected.includes(hive.id)" class="green--text">
-          mdi-eye-circle
-        </v-icon>
-      </div>
-
-      <div v-if="inspectionMode" class="hive-in-inspection">
-        <v-icon v-if="hivesSelected.includes(hive.id)" class="green--text">
-          mdi-check-circle
-        </v-icon>
-      </div>
-
-      <v-sheet
-        :class="
-          `hive-icon hive-icon-preview d-flex flex-column justify-center align-center white--text text--small mr-1 ${
-            hasLayer(hive, 'queen_excluder') ? 'has-queen-excluder' : ''
-          } ${hasLayer(hive, 'feeding_box') ? 'has-feeding-box' : ''}`
-        "
-        height="auto"
+  <div>
+    <div class="d-flex align-end apiary-preview">
+      <div
+        v-for="(hive, j) in sortedHives"
+        :key="j"
+        class="hive-icon-wrapper d-flex flex-column align-center"
+        @click="selectHive(hive.id)"
       >
-        <div
+        <div v-if="groupMode" class="hive-in-group">
+          <v-icon v-if="hivesEditable.includes(hive.id)" class="green--text">
+            mdi-pencil-circle
+          </v-icon>
+          <v-icon
+            v-else-if="hivesSelected.includes(hive.id)"
+            class="green--text"
+          >
+            mdi-eye-circle
+          </v-icon>
+        </div>
+
+        <div v-if="inspectionMode" class="hive-in-inspection">
+          <v-icon v-if="hivesSelected.includes(hive.id)" class="green--text">
+            mdi-check-circle
+          </v-icon>
+        </div>
+
+        <v-sheet
           :class="
-            'hive-icon-layers' +
-              (hive.layers.length === 0 ? ' hive-icon-layers--empty' : '')
+            `hive-icon hive-icon-preview d-flex flex-column justify-center align-center white--text text--small mr-1 ${
+              hasLayer(hive, 'queen_excluder') ? 'has-queen-excluder' : ''
+            } ${hasLayer(hive, 'feeding_box') ? 'has-feeding-box' : ''}`
           "
+          height="auto"
         >
           <div
             :class="
-              `selectable-wrapper ${
-                hivesSelected.includes(hive.id) ? '--selected' : ''
-              } ${
-                inspectionMode && hivesEditable.indexOf(hive.id) === -1
-                  ? '--not-editable'
-                  : ''
-              }`
+              'hive-icon-layers' +
+                (hive.layers.length === 0 ? ' hive-icon-layers--empty' : '') +
+                (dashboardMode ? ' --dashboard' : '')
             "
           >
-            <v-sheet
-              v-for="(layer, l) in orderedLayers(hive)"
-              :key="l"
-              :class="[
-                `layer ${layer.type}-layer ${
+            <div
+              :class="
+                `selectable-wrapper ${
+                  hivesSelected.includes(hive.id) ? '--selected' : ''
+                } ${
                   inspectionMode && hivesEditable.indexOf(hive.id) === -1
                     ? '--not-editable'
                     : ''
-                }`,
-              ]"
-              :width="`${hiveWidth(hive)}px`"
-              :color="layer.color"
+                }`
+              "
             >
-            </v-sheet>
+              <v-sheet
+                v-for="(layer, l) in orderedLayers(hive)"
+                :key="l"
+                :class="[
+                  `layer ${layer.type}-layer ${
+                    inspectionMode && hivesEditable.indexOf(hive.id) === -1
+                      ? '--not-editable'
+                      : ''
+                  }`,
+                ]"
+                :width="`${hiveWidth(hive)}px`"
+                :color="layer.color"
+              >
+              </v-sheet>
+            </div>
           </div>
-        </div>
-        <span
-          :style="`width: ${hiveWidth(hive) + 16}px;`"
-          class="hive-caption caption"
-          >{{ hive.name }}</span
-        >
-      </v-sheet>
+          <span
+            v-if="!dashboardMode"
+            :style="`width: ${hiveWidth(hive) + 16}px;`"
+            class="hive-caption caption"
+            >{{ hive.name }}</span
+          >
+        </v-sheet>
+      </div>
     </div>
+    <div v-if="dashboardMode" class="dashboard-line"></div>
   </div>
 </template>
 
@@ -99,6 +107,11 @@ export default {
       required: false,
     },
     inspectionMode: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
+    dashboardMode: {
       type: Boolean,
       default: false,
       required: false,
@@ -212,6 +225,31 @@ export default {
   &.--not-editable {
     cursor: not-allowed;
   }
+}
+
+.hive-icon-wrapper {
+  background: transparent;
+}
+
+.hive-icon-layers.--dashboard {
+  padding: 5px 10px;
+  border-bottom: 0 !important;
+  .layer {
+    &:last-child {
+      border: 1px solid rgba(0, 0, 0, 0.3) !important;
+    }
+  }
+  // border-bottom: 1px solid #bbb !important;
+  .selectable-wrapper.--selected {
+    box-shadow: 0 0 0 5px yellow !important;
+  }
+}
+
+.dashboard-line {
+  margin-top: -6px;
+  max-width: 100%;
+  height: 1px;
+  background-color: #bbb;
 }
 
 .honey-layer {

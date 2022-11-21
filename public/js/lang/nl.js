@@ -924,6 +924,8 @@ const translations = {
 
   Colony: 'Volk | Volken',
   Dashboard: 'Dashboard',
+  Last_check: 'Laatste controle',
+  Note: 'Notitie',
 }
 
 export default translations

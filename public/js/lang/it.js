@@ -986,6 +986,8 @@ const translations = {
 
   Colony: 'Colony | Colonies',
   Dashboard: 'Dashboard',
+  Last_check: 'Last check-up',
+  Note: 'Note',
 }
 
 export default translations
