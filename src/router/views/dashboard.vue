@@ -90,7 +90,7 @@
             </div>
             <div
               :class="
-                'dashboard-inspection mt-1 mx-3 ' +
+                'dashboard-inspection dashboard-text-small mt-1 mx-3 ' +
                   (landscapeMode ? '--landscape' : 'rounded-border')
               "
             >
@@ -182,13 +182,16 @@
                   </MeasurementsChartLine>
                   <div class="d-flex flex-wrap mx-8">
                     <template v-for="(exampleChart, i) in sensorSet.examples">
-                      <div :key="'ex-' + i" class="d-flex align-center my-2">
+                      <div
+                        :key="'ex-' + i"
+                        class="example-chart d-flex align-center my-2"
+                      >
                         <img
-                          class="example-chart"
+                          class="example-img"
                           src="~@assets/img/icons/Grafiek_1.svg"
                         />
                         <span
-                          class="example-text ml-1 ml-sm-2 mr-3 mr-sm-6"
+                          class="dashboard-text-small ml-1 ml-sm-2 mr-3 mr-sm-6"
                           v-text="
                             $t(sensorSet.name + '_example_chart_' + (i + 1))
                           "
@@ -507,6 +510,14 @@ export default {
   }
 }
 
+.dashboard-text-small {
+  font-family: 'Roboto Condensed', 'Roboto', sans-serif !important;
+  text-transform: uppercase;
+  text-align: left;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
 .dashboard-logo {
   @include for-tablet-landscape-up {
     height: 68px;
@@ -522,8 +533,10 @@ export default {
 }
 
 .dashboard-inspection {
+  width: 40%;
   text-align: left !important;
   &.--landscape {
+    width: 100%;
     padding: 50px 10% 0;
   }
 }
@@ -537,17 +550,12 @@ export default {
 }
 
 .example-chart {
-  height: 50px;
-  width: 50px;
+  max-width: 225px;
 }
 
-.example-text {
-  font-family: 'Roboto Condensed', 'Roboto', sans-serif !important;
-  text-transform: uppercase;
-  text-align: left;
-  font-weight: 500;
-  font-size: 1rem;
-  max-width: 150px;
+.example-img {
+  height: 50px;
+  width: 50px;
 }
 
 .hide-landscape {
