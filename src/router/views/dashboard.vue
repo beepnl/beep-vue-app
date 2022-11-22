@@ -43,8 +43,16 @@
         </v-col>
 
         <v-col
+          v-if="!ready"
+          class="d-flex align-center justify-center dashboard-loading --landscape"
+          cols="12"
+        >
+          <v-progress-circular color="primary" size="50" indeterminate />
+        </v-col>
+
+        <v-col
           :cols="landscapeMode ? '4' : '12'"
-          :class="landscapeMode ? 'landscape-section --left' : ''"
+          :class="ready && landscapeMode ? 'landscape-section --left' : ''"
         >
           <DashboardSection
             :class="landscapeMode ? 'hide-landscape' : 'show-portrait'"
@@ -495,7 +503,6 @@ export default {
       })
     },
     nextHive() {
-      console.log('next hive')
       this.currentHiveIndex += 1
       if (this.currentHiveIndex >= this.sortedHives.length)
         this.currentHiveIndex = 0
@@ -546,7 +553,13 @@ export default {
       this.hiveTimerPaused = !this.hiveTimerPaused
       if (this.hiveTimerPaused) {
         this.stopTimer('hive')
+        if (this.selectedHive.sensors.length > 0) {
+          this.startTimer('data') // if hive rotation is paused and current hive has device, check data every hour
+        }
       } else {
+        if (this.selectedHive.sensors.length > 0) {
+          this.stopTimer('data')
+        }
         this.nextHive()
         this.startTimer('hive')
       }
