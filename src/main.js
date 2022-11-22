@@ -23,6 +23,7 @@ import vueCountryRegionSelect from 'vue-country-region-select'
 import './plugins/element.js'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import VueEllipseProgress from 'vue-ellipse-progress'
+import { ResizeObserver as Polyfill } from '@juggle/resize-observer'
 
 import App from './app.vue'
 
@@ -38,6 +39,11 @@ Vue.config.productionTip = process.env.NODE_ENV === 'production'
 if (process.env.VUE_APP_TEST === 'e2e') {
   // Ensure tests fail when Vue emits an error.
   Vue.config.errorHandler = window.Cypress.cy.onUncaughtException
+}
+
+// fix chartjs bug for older devices + better resize reactivity
+if (typeof window !== 'undefined') {
+  window.ResizeObserver = window.ResizeObserver || Polyfill
 }
 
 const i18n = new VueI18n({

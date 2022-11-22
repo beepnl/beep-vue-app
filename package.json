@@ -28,6 +28,7 @@
     "test:unit:watch": "yarn test:unit --watch --notify --notifyMode change"
   },
   "dependencies": {
+    "@juggle/resize-observer": "^3.4.0",
     "@riophae/vue-treeselect": "^0.4.0",
     "axios": "^0.21.4",
     "axios-actions": "^4.0.2",
