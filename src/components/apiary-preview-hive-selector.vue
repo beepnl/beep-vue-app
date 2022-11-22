@@ -26,7 +26,10 @@
         </div>
 
         <div v-if="dashboardMode" class="hive-in-dashboard">
-          <div v-if="hive.sensors.length > 0" class="my-0">
+          <div
+            v-if="hive.sensors.length > 0"
+            :class="largeSize ? 'my-1' : 'my-0'"
+          >
             <v-sheet
               class="beep-icon beep-icon-sensors--no-outline color-green"
             ></v-sheet>
