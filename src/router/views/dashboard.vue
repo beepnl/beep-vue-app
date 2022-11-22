@@ -41,7 +41,7 @@
 
         <v-col
           :cols="landscapeMode ? '4' : '12'"
-          :class="landscapeMode ? 'background-section' : ''"
+          :class="landscapeMode ? 'landscape-section --left' : ''"
         >
           <DashboardSection
             :class="landscapeMode ? 'hide-landscape' : 'show-portrait'"
@@ -139,7 +139,10 @@
           </DashboardSection>
         </v-col>
 
-        <v-col :cols="landscapeMode ? '8' : '12'">
+        <v-col
+          :cols="landscapeMode ? '8' : '12'"
+          :class="landscapeMode ? 'landscape-section --right' : ''"
+        >
           <DashboardSection
             v-if="ready && selectedHive && selectedHive.sensors.length !== 0"
             :title="$tc('Measurement', 2)"
@@ -448,9 +451,15 @@ export default {
   }
 }
 
-.background-section {
-  background-color: $color-orange-medium;
-  border-radius: 8px;
+.landscape-section {
+  padding: 20px;
+  @include for-tablet-landscape-up {
+    padding: 60px 60px 0;
+  }
+  &.--left {
+    background-color: $color-orange-medium;
+    border-radius: 8px;
+  }
 }
 
 .dashboard-header {
@@ -495,7 +504,8 @@ export default {
 .dashboard-inspection {
   text-align: left !important;
   &.--landscape {
-    padding: 0 10%;
+    padding: 50px 10% 0;
+    margin-bottom: 60px;
   }
 }
 
