@@ -931,9 +931,9 @@ const translations = {
   outsideTemperature: 'Buitentemperatuur',
 
   weight_example_chart_1: 'Bijen verzamelen nectar',
-  weight_example_chart_2: 'De kast is vergroot',
-  weight_example_chart_3: 'Bijen gebruiken hun voedselvoorrad',
-  weight_example_chart_4: 'Een zwerm!',
+  weight_example_chart_2: 'Bijen gebruiken hun voedselvoorrad',
+  weight_example_chart_3: 'Een zwerm!',
+  weight_example_chart_4: 'De kast is vergroot',
   t_example_chart_1: '34°C: gezond broednest',
   t_example_chart_2: '< 33°C: geen broednest',
 }

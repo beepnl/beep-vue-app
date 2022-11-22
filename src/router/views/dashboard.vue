@@ -81,7 +81,7 @@
           >
             <div v-if="!landscapeMode" style="width: 100%;">
               <span
-                class="dashboard-text"
+                class="dashboard-text mb-2"
                 v-text="
                   $t('Last_check') +
                     ': ' +
@@ -91,8 +91,8 @@
             </div>
             <div
               :class="
-                'dashboard-inspection dashboard-text-small mt-1 mx-3 ' +
-                  (landscapeMode ? '--landscape' : 'rounded-border')
+                'dashboard-inspection dashboard-text-small mt-2 mx-3 ' +
+                  (landscapeMode ? '--landscape' : 'funky-border')
               "
             >
               <v-row v-if="landscapeMode">
@@ -174,7 +174,7 @@
                 ></div>
                 <div
                   :class="
-                    'chart-wrapper ' + (!landscapeMode ? '--portrait' : '')
+                    'chart-wrapper mb-2 ' + (!landscapeMode ? '--portrait' : '')
                   "
                 >
                   <div :class="!landscapeMode ? 'chart-left' : ''">
@@ -200,7 +200,14 @@
                       >
                         <img
                           class="example-img"
-                          src="~@assets/img/icons/Grafiek_1.svg"
+                          :src="
+                            assetsUrl +
+                              '/img/chart_' +
+                              sensorSet.name +
+                              '_' +
+                              (i + 1) +
+                              '.svg'
+                          "
                         />
                         <span
                           class="dashboard-text-small ml-1 ml-sm-2 mr-3 mr-sm-6"
@@ -498,7 +505,7 @@ export default {
     background-color: $color-orange-medium;
     // border-radius: 12px; // plain
     // border-radius: 96% 4% 92% 8% / 1% 92% 8% 99%; // left-tilted
-    border-radius: 4% 96% 6% 94% / 96% 1% 99% 4%; // right-tilted
+    border-radius: 4% 96% 4% 96% / 97% 1% 99% 3%; // right-tilted
   }
 }
 
@@ -559,8 +566,14 @@ export default {
   }
   &.--landscape {
     width: 100%;
-    padding: 50px 10% 0;
+    padding: 50px 35px 0;
   }
+}
+
+.funky-border {
+  padding: 12px 14px;
+  background-color: $color-grey-lightest;
+  border-radius: 2% 98% 2% 98% / 98% 1% 99% 2%;
 }
 
 .dashboard-loading {
