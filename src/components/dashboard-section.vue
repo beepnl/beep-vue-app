@@ -34,6 +34,16 @@ export default {
       return this.$vuetify.breakpoint.mobile
     },
   },
+  methods: {
+    getMap(callback) {
+      const parent = this.$parent
+      function checkForMap() {
+        if (parent.ready && parent.map) callback(parent.map)
+        else setTimeout(checkForMap, 200)
+      }
+      checkForMap()
+    },
+  },
 }
 </script>
 

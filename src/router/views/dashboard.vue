@@ -38,40 +38,44 @@
         </v-col>
 
         <DashboardSection :title="$tc('Location', 1)">
+          <div
+            v-if="ready"
+            class="dashboard-text"
+            v-text="selectedApiary.name"
+          ></div>
           <div id="map" ref="map">
             <MapMarker :lat="lat" :lng="lng" />
           </div>
-          <div
-            v-if="ready"
-            class="text-h4 color-accent overline roboto-condensed mt-1"
-            v-text="selectedApiary.name"
-          ></div>
         </DashboardSection>
 
-        <DashboardSection :title="$tc('Colony', 2)">
-          <div v-if="ready" class="d-flex flex-column align-center">
+        <DashboardSection v-if="ready" :title="$tc('Colony', 2)">
+          <div class="d-flex flex-column align-center">
+            <div class="dashboard-text" v-text="selectedHive.name"></div>
             <ApiaryPreviewHiveSelector
               :hives="selectedApiary.hives"
               :hives-selected="selectedHiveIds"
               :dashboard-mode="true"
               @select-hive="selectHive($event)"
             ></ApiaryPreviewHiveSelector>
-            <div
-              class="text-h4 color-accent overline roboto-condensed mt-2"
-              v-text="selectedHive.name"
-            ></div>
           </div>
         </DashboardSection>
 
         <DashboardSection
-          v-if="ready && selectedHive.last_inspection_date"
+          v-if="ready && selectedHive && selectedHive.last_inspection_date"
           :title="$tc('Inspection', 1)"
         >
-          <div
-            v-if="ready && selectedHive"
-            class="dashboard-inspection rounded-border"
-          >
-            <v-row>
+          <div style="width: 100%;">
+            <span
+              class="dashboard-text"
+              v-text="
+                $t('Last_check') +
+                  ': ' +
+                  momentFromNow(selectedHive.last_inspection_date)
+              "
+            ></span>
+          </div>
+          <div class="dashboard-inspection rounded-border mt-1">
+            <!-- <v-row>
               <v-col cols="5"
                 ><span v-text="$t('Last_check') + ' : '"></span
               ></v-col>
@@ -80,10 +84,10 @@
                   v-text="momentFromNow(selectedHive.last_inspection_date)"
                 ></span
               ></v-col>
-            </v-row>
+            </v-row> -->
             <v-row v-if="selectedHive.impression">
               <v-col cols="5"
-                ><span v-text="$t('positive_impression') + ' : '"></span
+                ><span v-text="$t('positive_impression') + ': '"></span
               ></v-col>
               <v-col cols="7">
                 <v-icon v-if="selectedHive.impression === 1" class="red--text">
@@ -104,42 +108,38 @@
               </v-col>
             </v-row>
             <v-row v-if="selectedHive.notes">
-              <v-col cols="5"><span v-text="$t('Note') + ' : '"></span></v-col>
+              <v-col cols="5"><span v-text="$t('Note') + ': '"></span></v-col>
               <v-col cols="7"><span v-text="selectedHive.notes"></span></v-col>
             </v-row>
           </div>
         </DashboardSection>
 
         <DashboardSection
-          v-if="ready && selectedHive.sensors.length !== 0"
+          v-if="ready && selectedHive && selectedHive.sensors.length !== 0"
           :title="$tc('Measurement', 2)"
         >
-          <v-row>
+          <v-col
+            v-if="loadingData"
+            class="d-flex align-center justify-center my-16"
+            cols="12"
+          >
+            <v-progress-circular color="primary" size="50" indeterminate />
+          </v-col>
+          <v-col v-if="noChartData || !sensorsPresent" cols="12" class="my-4">
+            {{ $t('no_chart_data_past_week') }}
+          </v-col>
+          <template v-for="(sensorSet, index) in currentSensors">
             <v-col
-              v-if="loadingData"
-              class="d-flex align-center justify-center my-16"
-              cols="12"
-            >
-              <v-progress-circular color="primary" size="50" indeterminate />
-            </v-col>
-            <v-col v-if="noChartData || !sensorsPresent" cols="12" class="my-4">
-              {{ $t('no_chart_data_past_week') }}
-            </v-col>
-          </v-row>
-          <template v-if="sensorsPresent">
-            <v-col
-              v-for="(sensorSet, index) in currentSensors"
+              v-if="measurementData !== null && sensorSet.values.length > 0"
               :key="'sensor' + index"
               cols="12"
             >
               <div
-                v-if="measurementData !== null && sensorSet.values.length > 0"
-                class="text-h6 overline roboto-condensed my-2"
+                class="dashboard-text mt-n3 mb-1"
                 v-text="$t(sensorSet.name)"
               ></div>
               <div>
                 <MeasurementsChartLine
-                  v-if="measurementData !== null && sensorSet.values.length > 0"
                   :chart-data="chartjsDataSeries(sensorSet.values)"
                   :interval="'week'"
                   :start-time="periodStartString"
@@ -207,7 +207,7 @@ export default {
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     currentSensors() {
       return [
-        { name: 'temperature', values: this.tempSensors },
+        { name: 't', values: this.tempSensors },
         { name: 'weight', values: this.weightSensors },
       ]
     },
@@ -376,14 +376,6 @@ export default {
       }
       this.loadingData = false
     },
-    getMap(callback) {
-      const self = this
-      function checkForMap() {
-        if (self.ready && self.map) callback(self.map)
-        else setTimeout(checkForMap, 200)
-      }
-      checkForMap()
-    },
     getSensorMeasurement(abbr) {
       var smFilter = this.sensorMeasurementsList.filter(
         (measurementType) => measurementType.abbreviation === abbr
@@ -407,7 +399,7 @@ export default {
 
 .dashboard-container {
   color: $color-grey-dark;
-  padding: 0px 20px 20px;
+  padding: 0px 10px 36px;
 
   @include for-tablet-landscape-up {
     max-width: 60% !important;
@@ -422,6 +414,23 @@ export default {
   }
 }
 
+.dashboard-text {
+  font-family: 'Roboto Condensed', 'Roboto', sans-serif !important;
+  text-transform: uppercase;
+  color: $color-accent;
+  font-size: 1.9rem !important;
+  font-weight: 400;
+  line-height: 2.3rem;
+  letter-spacing: 0.0075em !important;
+  margin-bottom: 10px;
+
+  @include for-phone-only {
+    font-size: 1.5rem !important;
+    line-height: 1.8rem;
+    letter-spacing: 0.005em !important;
+  }
+}
+
 .dashboard-logo {
   @include for-tablet-landscape-up {
     height: 68px;
@@ -430,7 +439,6 @@ export default {
 }
 
 #map {
-  margin: 6px 0;
   height: 330px;
   width: 330px;
   background: $color-primary;
