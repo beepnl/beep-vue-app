@@ -11,6 +11,9 @@
             'mdi-phone-rotate-' + (!landscapeMode ? 'landscape' : 'portrait')
           }}
         </v-icon>
+        <v-icon class="color-grey-filter mr-4" @click="toggleHiveTimer">
+          {{ 'mdi-' + (hiveTimerPaused ? 'play' : 'pause') }}
+        </v-icon>
       </div>
       <v-icon
         :class="showControls ? 'color-grey-filter' : 'color-grey-light'"
@@ -272,6 +275,12 @@ export default {
       dateTimeFormat: 'YYYY-MM-DD HH:mm:ss',
       showControls: false,
       landscapeMode: true,
+      hiveTimer: 0,
+      hiveIntervalMinutes: 0.5,
+      dataTimer: 0,
+      dataIntervalMinutes: 60,
+      hiveTimerPaused: false,
+      currentHiveIndex: -1,
     }
   },
   computed: {
@@ -285,6 +294,30 @@ export default {
     },
     selectedApiary() {
       return this.apiaries.length > 0 ? this.apiaries[0] : null
+    },
+    sortedHives() {
+      if (this.selectedApiary) {
+        const sortedHives = this.selectedApiary.hives
+          .slice()
+          .sort(function(a, b) {
+            // order = null comes last
+            // if order is equal, sort by name with number sensitivity (10 comes after 2 instead of 1)
+            return (
+              (a.order === null) - (b.order === null) ||
+              +(a.order > b.order) ||
+              -(a.order < b.order) ||
+              (a.order === b.order && a.name !== null && b.name !== null
+                ? a.name.localeCompare(b.name, undefined, {
+                    numeric: true,
+                    sensitivity: 'base',
+                  })
+                : 0)
+            )
+          })
+        return sortedHives
+      } else {
+        return []
+      }
     },
     lat() {
       return this.selectedApiary !== null
@@ -328,12 +361,13 @@ export default {
   created() {
     this.readTaxonomy().then(() => {
       this.readApiariesAndGroups().then(() => {
-        this.selectedHive = this.selectedApiary.hives[0]
-        this.sensorMeasurementRequest().then(() => {
-          this.ready = true
-        })
+        this.nextHive()
+        this.startTimer('hive')
       })
     })
+  },
+  beforeDestroy() {
+    this.stopAllTimers()
   },
   methods: {
     async sensorMeasurementRequest() {
@@ -460,11 +494,62 @@ export default {
         zoom: 9,
       })
     },
+    nextHive() {
+      console.log('next hive')
+      this.currentHiveIndex += 1
+      if (this.currentHiveIndex >= this.sortedHives.length)
+        this.currentHiveIndex = 0
+      this.selectHive(this.sortedHives[this.currentHiveIndex].id)
+    },
     selectHive(id) {
-      this.selectedHive = this.selectedApiary.hives.filter(
+      this.currentHiveIndex = this.sortedHives.findIndex(
         (hive) => hive.id === id
-      )[0]
-      this.sensorMeasurementRequest()
+      )
+      this.selectedHive = this.sortedHives[this.currentHiveIndex]
+      this.sensorMeasurementRequest().then(() => {
+        this.ready = true
+      })
+    },
+    startTimer(timer) {
+      this.stopTimer(timer)
+      // only start status timer if sensor has status and research is active, otherwise no need to keep updating status
+      if (timer === 'hive' && !this.hiveTimerPaused) {
+        this.hiveTimer = setInterval(
+          this.nextHive,
+          this.hiveIntervalMinutes * 60 * 1000
+        )
+      } else if (
+        timer === 'data' &&
+        this.selectedHive &&
+        this.selectedHive.sensors.length !== 0
+      ) {
+        this.dataTimer = setInterval(
+          this.sensorMeasurementRequest,
+          this.dataIntervalMinutes * 60 * 1000
+        )
+      }
+    },
+    stopAllTimers() {
+      this.stopTimer('hive')
+      this.stopTimer('data')
+    },
+    stopTimer(timer) {
+      if (timer === 'hive' && this.hiveTimer > 0) {
+        clearInterval(this.hiveTimer)
+        this.hiveTimer = 0
+      } else if (timer === 'data' && this.dataTimer > 0) {
+        clearInterval(this.dataTimer)
+        this.dataTimer = 0
+      }
+    },
+    toggleHiveTimer() {
+      this.hiveTimerPaused = !this.hiveTimerPaused
+      if (this.hiveTimerPaused) {
+        this.stopTimer('hive')
+      } else {
+        this.nextHive()
+        this.startTimer('hive')
+      }
     },
   },
 }

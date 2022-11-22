@@ -26,10 +26,7 @@
         </div>
 
         <div v-if="dashboardMode" class="hive-in-dashboard">
-          <div
-            v-if="hive.sensors.length > 0"
-            :class="largeSize ? 'my-1' : 'my-0'"
-          >
+          <div v-if="hive.sensors.length > 0" class="my-0">
             <v-sheet
               class="beep-icon beep-icon-sensors--no-outline color-green"
             ></v-sheet>
@@ -337,8 +334,9 @@ export default {
 }
 
 .hive-icon-preview.--large {
+  margin-top: -3px;
   .hive-icon-layers {
-    padding: 5px 11px 7px;
+    padding: 7px 11px;
     .selectable-wrapper.--selected {
       box-shadow: 0 0 0 7px yellow !important;
     }
@@ -347,7 +345,7 @@ export default {
     height: 18px !important;
   }
   .brood-layer {
-    height: 30px !important;
+    height: 32px !important;
   }
   .queen_excluder-layer,
   .feeding_box-layer {
