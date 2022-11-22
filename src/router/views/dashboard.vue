@@ -68,6 +68,7 @@
                 :hives="selectedApiary.hives"
                 :hives-selected="selectedHiveIds"
                 :dashboard-mode="true"
+                :large-size="!smallScreen"
                 @select-hive="selectHive($event)"
               ></ApiaryPreviewHiveSelector>
             </div>
@@ -304,6 +305,9 @@ export default {
     },
     selectedHiveIds() {
       return this.selectedHive ? [this.selectedHive.id] : []
+    },
+    smallScreen() {
+      return this.$vuetify.breakpoint.width < 700
     },
     touchDevice() {
       return window.matchMedia('(hover: none)').matches
