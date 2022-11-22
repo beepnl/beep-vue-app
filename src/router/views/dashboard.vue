@@ -288,7 +288,8 @@ export default {
       dataTimer: 0,
       dataIntervalMinutes: 60,
       hiveTimerPaused: false,
-      currentHiveIndex: -1,
+      currentHiveIndex: 0,
+      currentHiveWithDataIndex: -1,
     }
   },
   computed: {
@@ -326,6 +327,9 @@ export default {
       } else {
         return []
       }
+    },
+    sortedHivesWithData() {
+      return this.sortedHives.filter((hive) => hive.sensors.length > 0)
     },
     lat() {
       return this.selectedApiary !== null
@@ -369,7 +373,7 @@ export default {
   created() {
     this.readTaxonomy().then(() => {
       this.readApiariesAndGroups().then(() => {
-        this.nextHive()
+        this.nextHiveWithData()
         this.startTimer('hive')
       })
     })
@@ -502,11 +506,17 @@ export default {
         zoom: 9,
       })
     },
-    nextHive() {
-      this.currentHiveIndex += 1
-      if (this.currentHiveIndex >= this.sortedHives.length)
-        this.currentHiveIndex = 0
-      this.selectHive(this.sortedHives[this.currentHiveIndex].id)
+    nextHiveWithData() {
+      this.currentHiveWithDataIndex += 1
+      if (this.currentHiveWithDataIndex >= this.sortedHivesWithData.length)
+        this.currentHiveWithDataIndex = 0
+      this.selectHive(
+        this.sortedHivesWithData[this.currentHiveWithDataIndex].id
+      )
+      // fallback if no hives with data present
+      if (this.sortedHivesWithData.length === 0) {
+        this.selectHive(this.sortedHives[this.currentHiveIndex + 1].id)
+      }
     },
     selectHive(id) {
       this.currentHiveIndex = this.sortedHives.findIndex(
@@ -522,7 +532,7 @@ export default {
       // only start status timer if sensor has status and research is active, otherwise no need to keep updating status
       if (timer === 'hive' && !this.hiveTimerPaused) {
         this.hiveTimer = setInterval(
-          this.nextHive,
+          this.nextHiveWithData,
           this.hiveIntervalMinutes * 60 * 1000
         )
       } else if (
@@ -560,7 +570,7 @@ export default {
         if (this.selectedHive.sensors.length > 0) {
           this.stopTimer('data')
         }
-        this.nextHive()
+        this.nextHiveWithData()
         this.startTimer('hive')
       }
     },
