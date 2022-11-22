@@ -185,7 +185,7 @@
                       <div :key="'ex-' + i" class="d-flex align-center my-2">
                         <img
                           class="example-chart"
-                          :src="assetsUrl + '/img/Grafiek_1.svg'"
+                          src="~@assets/img/icons/Grafiek_1.svg"
                         />
                         <span
                           class="example-text ml-1 ml-sm-2 mr-3 mr-sm-6"
