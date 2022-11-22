@@ -79,7 +79,9 @@
                 :hives="selectedApiary.hives"
                 :hives-selected="selectedHiveIds"
                 :dashboard-mode="true"
-                :large-size="!smallScreen"
+                :large-size="
+                  !smallScreen && (!landscapeMode || sortedHives.length < 7)
+                "
                 @select-hive="selectHive($event)"
               ></ApiaryPreviewHiveSelector>
             </div>
@@ -288,7 +290,7 @@ export default {
       dataTimer: 0,
       dataIntervalMinutes: 60,
       hiveTimerPaused: false,
-      currentHiveIndex: 0,
+      currentHiveIndex: -1,
       currentHiveWithDataIndex: -1,
     }
   },
@@ -302,7 +304,7 @@ export default {
       ]
     },
     selectedApiary() {
-      return this.apiaries.length > 0 ? this.apiaries[0] : null
+      return this.apiaries.length > 0 ? this.apiaries[0] : null // TODO: replace dummy data
     },
     sortedHives() {
       if (this.selectedApiary) {
@@ -507,15 +509,16 @@ export default {
       })
     },
     nextHiveWithData() {
-      this.currentHiveWithDataIndex += 1
-      if (this.currentHiveWithDataIndex >= this.sortedHivesWithData.length)
-        this.currentHiveWithDataIndex = 0
-      this.selectHive(
-        this.sortedHivesWithData[this.currentHiveWithDataIndex].id
-      )
       // fallback if no hives with data present
       if (this.sortedHivesWithData.length === 0) {
         this.selectHive(this.sortedHives[this.currentHiveIndex + 1].id)
+      } else {
+        this.currentHiveWithDataIndex += 1
+        if (this.currentHiveWithDataIndex >= this.sortedHivesWithData.length)
+          this.currentHiveWithDataIndex = 0
+        this.selectHive(
+          this.sortedHivesWithData[this.currentHiveWithDataIndex].id
+        )
       }
     },
     selectHive(id) {

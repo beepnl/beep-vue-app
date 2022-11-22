@@ -202,12 +202,12 @@ export default {
   .hive-icon-layers--empty {
     padding: 0 20px;
   }
-  &.has-queen-excluder {
+  &:not(.--dashboard).has-queen-excluder {
     .hive-icon-layers {
       padding: 0 14px !important;
     }
   }
-  &.has-feeding-box {
+  &:not(.--dashboard).has-feeding-box {
     margin-top: 12px !important;
   }
 }
@@ -326,6 +326,12 @@ export default {
         border: 1px solid rgba(0, 0, 0, 0.3) !important;
       }
     }
+    .queen_excluder-layer,
+    .feeding_box-layer {
+      &::after {
+        content: none;
+      }
+    }
     // border-bottom: 1px solid #bbb !important;
     .selectable-wrapper.--selected {
       box-shadow: 0 0 0 5px yellow !important;
@@ -349,7 +355,7 @@ export default {
   }
   .queen_excluder-layer,
   .feeding_box-layer {
-    height: 8px;
+    height: 6px;
   }
 }
 </style>
