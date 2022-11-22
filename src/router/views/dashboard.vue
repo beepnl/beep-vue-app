@@ -171,16 +171,27 @@
                   class="dashboard-text mt-n3 mb-1"
                   v-text="$t(sensorSet.name)"
                 ></div>
-                <div>
-                  <MeasurementsChartLine
-                    :chart-data="chartjsDataSeries(sensorSet.values)"
-                    :interval="'week'"
-                    :start-time="periodStartString"
-                    :end-time="periodEndString"
-                    :chart-id="'chart-dashboard-' + index"
+                <div
+                  :class="
+                    'chart-wrapper ' + (!landscapeMode ? '--portrait' : '')
+                  "
+                >
+                  <div :class="!landscapeMode ? 'chart-left' : ''">
+                    <MeasurementsChartLine
+                      :chart-data="chartjsDataSeries(sensorSet.values)"
+                      :interval="'week'"
+                      :start-time="periodStartString"
+                      :end-time="periodEndString"
+                      :chart-id="'chart-dashboard-' + index"
+                    >
+                    </MeasurementsChartLine>
+                  </div>
+                  <div
+                    :class="
+                      'd-flex flex-wrap mx-sm-8 ' +
+                        (!landscapeMode ? 'chart-right' : '')
+                    "
                   >
-                  </MeasurementsChartLine>
-                  <div class="d-flex flex-wrap mx-8">
                     <template v-for="(exampleChart, i) in sensorSet.examples">
                       <div
                         :key="'ex-' + i"
@@ -516,6 +527,9 @@ export default {
   text-align: left;
   font-weight: 500;
   font-size: 1rem;
+  @include for-phone-only {
+    font-size: 0.85rem;
+  }
 }
 
 .dashboard-logo {
@@ -533,8 +547,10 @@ export default {
 }
 
 .dashboard-inspection {
-  width: 40%;
   text-align: left !important;
+  @include for-tablet-landscape-up {
+    width: 40%;
+  }
   &.--landscape {
     width: 100%;
     padding: 50px 10% 0;
@@ -549,8 +565,33 @@ export default {
   }
 }
 
+// .chart-wrapper.--portrait {
+//   display: block;
+//   @include for-desktop-up {
+//     display: flex;
+//   }
+// }
+
+// .chart-left {
+//   min-width: 100%;
+//   @include for-desktop-up {
+//     min-width: 70%;
+//   }
+// }
+
+// .chart-right {
+//   min-width: 100%;
+//   @include for-desktop-up {
+//     flex-direction: column !important;
+//     min-width: 30%;
+//   }
+// }
+
 .example-chart {
   max-width: 225px;
+  @include for-phone-only {
+    width: 165px;
+  }
 }
 
 .example-img {
