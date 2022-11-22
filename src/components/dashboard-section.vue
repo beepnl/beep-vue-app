@@ -1,13 +1,14 @@
 <template>
-  <v-col class="dashboard-section" :cols="cols">
+  <div class="dashboard-section">
     <div
+      v-if="!landscapeMode"
       class="text-h4 text-md-h2 dashboard-section-title"
       v-text="title"
     ></div>
     <div class="d-flex flex-column align-center mt-2">
       <slot></slot>
     </div>
-  </v-col>
+  </div>
 </template>
 
 <script>
@@ -17,11 +18,6 @@ export default {
       type: String,
       required: false,
       default: '',
-    },
-    cols: {
-      type: Number,
-      required: false,
-      default: 12,
     },
     landscapeMode: {
       type: Boolean,
@@ -49,7 +45,7 @@ export default {
 
 <style lang="scss" scoped>
 .dashboard-section {
-  text-align: center !important;
+  text-align: center;
   margin-bottom: 20px;
   @include for-tablet-landscape-up {
     margin-bottom: 40px;
