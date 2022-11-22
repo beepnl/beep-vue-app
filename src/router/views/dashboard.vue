@@ -1,28 +1,43 @@
 <template>
-  <v-container class="dashboard-container">
-    <v-row>
-      <v-col cols="12" class="mb-6">
-        <div class="d-flex justify-center align-center dashboard-header">
-          <div class="d-flex align-self-center"
-            ><img
-              class="dashboard-logo"
-              :src="assetsUrl + '/img/beep-icon-logo.svg'"
-            />
+  <div>
+    <div class="d-flex justify-end dashboard-controls my-2 mx-4">
+      <div v-if="showControls" class="d-flex">
+        <LocaleChanger></LocaleChanger>
+        <v-icon
+          class="color-grey-filter ml-2 mr-4"
+          @click="landscapeMode = !landscapeMode"
+        >
+          {{
+            'mdi-phone-rotate-' + (!landscapeMode ? 'landscape' : 'portrait')
+          }}
+        </v-icon>
+      </div>
+      <v-icon
+        :class="showControls ? 'color-grey-filter' : 'color-grey-light'"
+        @click="showControls = !showControls"
+      >
+        {{ showControls ? 'mdi-cog' : 'mdi-cog-off' }}
+      </v-icon>
+    </div>
+    <v-container class="dashboard-container">
+      <v-row>
+        <v-col cols="12" class="mb-6">
+          <div class="d-flex justify-center align-center dashboard-header">
+            <div class="d-flex align-self-center"
+              ><img
+                class="dashboard-logo"
+                :src="assetsUrl + '/img/beep-icon-logo.svg'"
+              />
+            </div>
+
+            <div
+              class="text-h3 text-md-h2 dashboard-title overline roboto-condensed"
+              v-text="$t('Dashboard')"
+            ></div>
           </div>
+        </v-col>
 
-          <div
-            class="text-h3 text-md-h2 dashboard-title overline roboto-condensed"
-            v-text="$t('Dashboard')"
-          ></div>
-        </div>
-      </v-col>
-
-      <v-col class="dashboard-section" cols="12">
-        <div
-          class="text-h4 text-md-h2 dashboard-section-title"
-          v-text="$tc('Location', 1)"
-        ></div>
-        <div class="d-flex flex-column align-center mt-2">
+        <DashboardSection :title="$tc('Location', 1)">
           <div id="map" ref="map">
             <MapMarker :lat="lat" :lng="lng" />
           </div>
@@ -31,123 +46,121 @@
             class="text-h4 color-accent overline roboto-condensed mt-1"
             v-text="selectedApiary.name"
           ></div>
-        </div>
-      </v-col>
+        </DashboardSection>
 
-      <v-col class="dashboard-section" cols="12">
-        <div
-          class="text-h4 text-md-h2 dashboard-section-title"
-          v-text="$tc('Colony', 2)"
-        ></div>
-        <div v-if="ready" class="d-flex flex-column align-center">
-          <ApiaryPreviewHiveSelector
-            :hives="selectedApiary.hives"
-            :hives-selected="selectedHiveIds"
-            :dashboard-mode="true"
-            @select-hive="selectHive($event)"
-          ></ApiaryPreviewHiveSelector>
-          <div
-            class="text-h4 color-accent overline roboto-condensed mt-2"
-            v-text="selectedHive.name"
-          ></div>
-        </div>
-      </v-col>
+        <DashboardSection :title="$tc('Colony', 2)">
+          <div v-if="ready" class="d-flex flex-column align-center">
+            <ApiaryPreviewHiveSelector
+              :hives="selectedApiary.hives"
+              :hives-selected="selectedHiveIds"
+              :dashboard-mode="true"
+              @select-hive="selectHive($event)"
+            ></ApiaryPreviewHiveSelector>
+            <div
+              class="text-h4 color-accent overline roboto-condensed mt-2"
+              v-text="selectedHive.name"
+            ></div>
+          </div>
+        </DashboardSection>
 
-      <v-col class="dashboard-section" cols="12">
-        <div
-          class="text-h4 text-md-h2 dashboard-section-title"
-          v-text="$tc('Inspection', 1)"
-        ></div>
-        <div
-          v-if="ready && selectedHive"
-          class="dashboard-inspection rounded-border"
+        <DashboardSection
+          v-if="ready && selectedHive.last_inspection_date"
+          :title="$tc('Inspection', 1)"
         >
-          <v-row v-if="selectedHive.last_inspection_date">
-            <v-col cols="5"
-              ><span v-text="$t('Last_check') + ' : '"></span
-            ></v-col>
-            <v-col cols="7"
-              ><span
-                v-text="momentFromNow(selectedHive.last_inspection_date)"
-              ></span
-            ></v-col>
-          </v-row>
-          <v-row v-if="selectedHive.impression">
-            <v-col cols="5"
-              ><span v-text="$t('positive_impression') + ' : '"></span
-            ></v-col>
-            <v-col cols="7">
-              <v-icon v-if="selectedHive.impression === 1" class="red--text">
-                mdi-emoticon-sad
-              </v-icon>
-              <v-icon v-if="selectedHive.impression === 3" class="green--text">
-                mdi-emoticon-happy
-              </v-icon>
-              <v-icon v-if="selectedHive.impression === 2" class="orange--text">
-                mdi-emoticon-neutral
-              </v-icon>
+          <div
+            v-if="ready && selectedHive"
+            class="dashboard-inspection rounded-border"
+          >
+            <v-row>
+              <v-col cols="5"
+                ><span v-text="$t('Last_check') + ' : '"></span
+              ></v-col>
+              <v-col cols="7"
+                ><span
+                  v-text="momentFromNow(selectedHive.last_inspection_date)"
+                ></span
+              ></v-col>
+            </v-row>
+            <v-row v-if="selectedHive.impression">
+              <v-col cols="5"
+                ><span v-text="$t('positive_impression') + ' : '"></span
+              ></v-col>
+              <v-col cols="7">
+                <v-icon v-if="selectedHive.impression === 1" class="red--text">
+                  mdi-emoticon-sad
+                </v-icon>
+                <v-icon
+                  v-if="selectedHive.impression === 3"
+                  class="green--text"
+                >
+                  mdi-emoticon-happy
+                </v-icon>
+                <v-icon
+                  v-if="selectedHive.impression === 2"
+                  class="orange--text"
+                >
+                  mdi-emoticon-neutral
+                </v-icon>
+              </v-col>
+            </v-row>
+            <v-row v-if="selectedHive.notes">
+              <v-col cols="5"><span v-text="$t('Note') + ' : '"></span></v-col>
+              <v-col cols="7"><span v-text="selectedHive.notes"></span></v-col>
+            </v-row>
+          </div>
+        </DashboardSection>
+
+        <DashboardSection
+          v-if="ready && selectedHive.sensors.length !== 0"
+          :title="$tc('Measurement', 2)"
+        >
+          <v-row>
+            <v-col
+              v-if="loadingData"
+              class="d-flex align-center justify-center my-16"
+              cols="12"
+            >
+              <v-progress-circular color="primary" size="50" indeterminate />
+            </v-col>
+            <v-col v-if="noChartData || !sensorsPresent" cols="12" class="my-4">
+              {{ $t('no_chart_data_past_week') }}
             </v-col>
           </v-row>
-          <v-row v-if="selectedHive.notes">
-            <v-col cols="5"><span v-text="$t('Note') + ' : '"></span></v-col>
-            <v-col cols="7"><span v-text="selectedHive.notes"></span></v-col>
-          </v-row>
-        </div>
-      </v-col>
-
-      <v-col
-        v-if="ready && selectedHive.sensors.length !== 0"
-        class="dashboard-section"
-        cols="12"
-      >
-        <div
-          class="text-h4 text-md-h2 dashboard-section-title"
-          v-text="$tc('Measurement', 2)"
-        ></div>
-        <v-row>
-          <v-col
-            v-if="loadingData"
-            class="d-flex align-center justify-center my-16"
-            cols="12"
-          >
-            <v-progress-circular color="primary" size="50" indeterminate />
-          </v-col>
-          <v-col v-if="noChartData || !sensorsPresent" cols="12" class="my-4">
-            {{ $t('no_chart_data_past_week') }}
-          </v-col>
-        </v-row>
-        <template v-if="sensorsPresent">
-          <v-col
-            v-for="(sensorSet, index) in currentSensors"
-            :key="'sensor' + index"
-            cols="12"
-          >
-            <div
-              v-if="measurementData !== null && sensorSet.values.length > 0"
-              class="text-h6 overline roboto-condensed my-2"
-              v-text="$t(sensorSet.name)"
-            ></div>
-            <div>
-              <MeasurementsChartLine
-                v-if="measurementData !== null"
-                :chart-data="chartjsDataSeries(sensorSet.values)"
-                :interval="'week'"
-                :start-time="periodStartString"
-                :end-time="periodEndString"
-                :chart-id="'chart-dashboard-' + index"
-              >
-              </MeasurementsChartLine>
-            </div>
-          </v-col>
-        </template>
-      </v-col>
-    </v-row>
-  </v-container>
+          <template v-if="sensorsPresent">
+            <v-col
+              v-for="(sensorSet, index) in currentSensors"
+              :key="'sensor' + index"
+              cols="12"
+            >
+              <div
+                v-if="measurementData !== null && sensorSet.values.length > 0"
+                class="text-h6 overline roboto-condensed my-2"
+                v-text="$t(sensorSet.name)"
+              ></div>
+              <div>
+                <MeasurementsChartLine
+                  v-if="measurementData !== null && sensorSet.values.length > 0"
+                  :chart-data="chartjsDataSeries(sensorSet.values)"
+                  :interval="'week'"
+                  :start-time="periodStartString"
+                  :end-time="periodEndString"
+                  :chart-id="'chart-dashboard-' + index"
+                >
+                </MeasurementsChartLine>
+              </div>
+            </v-col>
+          </template>
+        </DashboardSection>
+      </v-row>
+    </v-container>
+  </div>
 </template>
 
 <script>
 import Api from '@api/Api'
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
+import DashboardSection from '@components/dashboard-section.vue'
+import LocaleChanger from '@components/locale-changer.vue'
 import MapMarker from '@components/map-marker.vue'
 import MeasurementsChartLine from '@components/measurements-chart-line.vue'
 import { mapGetters } from 'vuex'
@@ -158,6 +171,8 @@ import { sensorMixin } from '@mixins/sensorMixin'
 export default {
   components: {
     ApiaryPreviewHiveSelector,
+    DashboardSection,
+    LocaleChanger,
     MapMarker,
     MeasurementsChartLine,
   },
@@ -183,6 +198,8 @@ export default {
       weightSensors: [],
       sensorsPresent: false,
       dateTimeFormat: 'YYYY-MM-DD HH:mm:ss',
+      showControls: false,
+      landscapeMode: false,
     }
   },
   computed: {
@@ -384,15 +401,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.dashboard-controls {
+  height: 36px;
+}
+
 .dashboard-container {
   color: $color-grey-dark;
-  margin-top: 20px;
-  padding: 20px;
+  padding: 0px 20px 20px;
 
   @include for-tablet-landscape-up {
-    margin-top: 60px;
     max-width: 60% !important;
-    padding: 12px;
+    padding: 50px 12px 72px;
   }
 }
 
@@ -407,51 +426,6 @@ export default {
   @include for-tablet-landscape-up {
     height: 68px;
     margin-top: -4px;
-  }
-}
-
-.dashboard-section {
-  text-align: center !important;
-  margin-bottom: 20px;
-  @include for-tablet-landscape-up {
-    margin-bottom: 40px;
-  }
-}
-
-.dashboard-section-title {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 30px;
-
-  @include for-tablet-landscape-up {
-    margin-bottom: 40px;
-  }
-
-  &::before,
-  &::after {
-    content: '';
-    display: block;
-    height: 1px;
-    min-width: 18vw;
-  }
-
-  &::before {
-    background: linear-gradient(to right, #fff, rgba(36, 36, 36, 0.7));
-    // background: linear-gradient(to right, #fff, rgba(242, 145, 0, 0.7));
-    margin-right: 12px;
-    @include for-tablet-landscape-up {
-      margin-right: 24px;
-    }
-  }
-
-  &::after {
-    background: linear-gradient(to left, #fff, rgba(36, 36, 36, 0.7));
-    // background: linear-gradient(to left, #fff, rgba(242, 145, 0, 0.7));
-    margin-left: 12px;
-    @include for-tablet-landscape-up {
-      margin-left: 24px;
-    }
   }
 }
 
