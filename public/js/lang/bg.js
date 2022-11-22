@@ -975,6 +975,13 @@ const translations = {
   Last_check: 'Last check-up',
   Note: 'Note',
   no_chart_data_past_week: 'No chart data available for the past 7 days',
+
+  weight_example_chart_1: 'Bees are collecting nectar',
+  weight_example_chart_2: 'The hive has been enlarged',
+  weight_example_chart_3: 'Bees use their food supply',
+  weight_example_chart_4: 'A swarm!',
+  t_example_chart_1: '34°C: healthy brood',
+  t_example_chart_2: '< 33°C: no brood',
 }
 
 export default translations

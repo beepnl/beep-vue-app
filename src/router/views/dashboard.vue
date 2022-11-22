@@ -22,7 +22,7 @@
     <v-container
       :class="'dashboard-container' + (landscapeMode ? ' --landscape' : '')"
     >
-      <v-row>
+      <v-row :class="'dashboard-row' + (landscapeMode ? ' --landscape' : '')">
         <v-col cols="12" class="mb-6">
           <div class="d-flex justify-center align-center dashboard-header">
             <div class="d-flex align-self-center"
@@ -90,7 +90,7 @@
             </div>
             <div
               :class="
-                'dashboard-inspection mt-1 ' +
+                'dashboard-inspection mt-1 mx-3 ' +
                   (landscapeMode ? '--landscape' : 'rounded-border')
               "
             >
@@ -180,6 +180,22 @@
                     :chart-id="'chart-dashboard-' + index"
                   >
                   </MeasurementsChartLine>
+                  <div class="d-flex flex-wrap mx-8">
+                    <template v-for="(exampleChart, i) in sensorSet.examples">
+                      <div :key="'ex-' + i" class="d-flex align-center my-2">
+                        <img
+                          class="example-chart"
+                          :src="assetsUrl + '/img/Grafiek_1.svg'"
+                        />
+                        <span
+                          class="example-text ml-1 ml-sm-2 mr-3 mr-sm-6"
+                          v-text="
+                            $t(sensorSet.name + '_example_chart_' + (i + 1))
+                          "
+                        ></span>
+                      </div>
+                    </template>
+                  </div>
                 </div>
               </v-col>
             </template>
@@ -241,8 +257,8 @@ export default {
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     currentSensors() {
       return [
-        { name: 't', values: this.tempSensors },
-        { name: 'weight', values: this.weightSensors },
+        { name: 't', values: this.tempSensors, examples: 2 },
+        { name: 'weight', values: this.weightSensors, examples: 4 },
       ]
     },
     selectedApiary() {
@@ -451,10 +467,14 @@ export default {
   }
 }
 
+.dashboard-row.--landscape {
+  align-items: flex-start;
+}
+
 .landscape-section {
   padding: 20px;
   @include for-tablet-landscape-up {
-    padding: 60px 60px 0;
+    padding: 60px;
   }
   &.--left {
     background-color: $color-orange-medium;
@@ -505,7 +525,6 @@ export default {
   text-align: left !important;
   &.--landscape {
     padding: 50px 10% 0;
-    margin-bottom: 60px;
   }
 }
 
@@ -515,6 +534,20 @@ export default {
   &.--landscape {
     margin: 100px auto;
   }
+}
+
+.example-chart {
+  height: 50px;
+  width: 50px;
+}
+
+.example-text {
+  font-family: 'Roboto Condensed', 'Roboto', sans-serif !important;
+  text-transform: uppercase;
+  text-align: left;
+  font-weight: 500;
+  font-size: 1rem;
+  max-width: 150px;
 }
 
 .hide-landscape {
