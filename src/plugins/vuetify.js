@@ -13,12 +13,17 @@ export default new Vuetify({
     iconfont: 'mdi',
   },
   theme: {
+    dark: false,
     themes: {
       options: { minifyTheme },
       light: {
         primary: '#F8B133',
         secondary: colors.black,
         accent: '#f29100',
+      },
+      dark: {
+        primary: '#F8B133',
+        background: colors.black,
       },
     },
   },

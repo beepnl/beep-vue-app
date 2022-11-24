@@ -3,8 +3,11 @@
     <div class="d-flex justify-end dashboard-controls my-2 mx-4">
       <div v-if="showControls" class="d-flex">
         <LocaleChanger></LocaleChanger>
+        <v-icon class="color-grey-filter ml-2 mr-4" @click="toggleDarkMode">
+          mdi-theme-light-dark
+        </v-icon>
         <v-icon
-          class="color-grey-filter ml-2 mr-4"
+          class="color-grey-filter mr-4"
           @click="landscapeMode = !landscapeMode"
         >
           {{
@@ -292,6 +295,7 @@ export default {
       hiveTimerPaused: false,
       currentHiveIndex: -1,
       currentHiveWithDataIndex: -1,
+      darkMode: false,
     }
   },
   computed: {
@@ -574,6 +578,17 @@ export default {
       } else if (timer === 'data' && this.dataTimer > 0) {
         clearInterval(this.dataTimer)
         this.dataTimer = 0
+      }
+    },
+    toggleDarkMode() {
+      if (!this.darkMode) {
+        this.darkMode = true
+        this.$vuetify.theme.dark = true
+        localStorage.setItem('beepdashboardDarkMode', true)
+      } else if (this.darkMode) {
+        this.darkMode = false
+        this.$vuetify.theme.dark = false
+        localStorage.setItem('beepdashboardDarkMode', false)
       }
     },
     toggleHiveTimer() {
