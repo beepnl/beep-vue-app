@@ -361,7 +361,7 @@ export default {
       return this.selectedHive ? [this.selectedHive.id] : []
     },
     smallScreen() {
-      return this.$vuetify.breakpoint.width < 700
+      return this.$vuetify.breakpoint.width < 960
     },
     touchDevice() {
       return window.matchMedia('(hover: none)').matches
@@ -373,6 +373,9 @@ export default {
     },
   },
   created() {
+    if (this.smallScreen) {
+      this.landscapeMode = false
+    }
     this.readTaxonomy().then(() => {
       this.readApiariesAndGroups().then(() => {
         this.nextHiveWithData()
