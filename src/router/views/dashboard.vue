@@ -61,7 +61,7 @@
             <div
               v-if="ready"
               class="dashboard-text"
-              v-text="selectedApiary.name"
+              v-text="selectedLocation.name"
             ></div>
             <div id="map" ref="map">
               <MapMarker :lat="lat" :lng="lng" />
@@ -76,7 +76,7 @@
             <div class="d-flex flex-column align-center">
               <div class="dashboard-text" v-text="selectedHive.name"></div>
               <ApiaryPreviewHiveSelector
-                :hives="selectedApiary.hives"
+                :hives="selectedGroup.hives"
                 :hives-selected="selectedHiveIds"
                 :dashboard-mode="true"
                 :large-size="
@@ -295,6 +295,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('groups', ['groups']),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     currentSensors() {
@@ -303,12 +304,22 @@ export default {
         { name: 'weight', values: this.weightSensors, examples: 4 },
       ]
     },
-    selectedApiary() {
-      return this.apiaries.length > 0 ? this.apiaries[0] : null // TODO: replace dummy data
+    selectedGroup() {
+      return this.groups.length > 0 ? this.groups[7] : null // TODO: replace dummy data
+    },
+    selectedLocation() {
+      if (this.selectedHive) {
+        var findApiary = this.apiaries.filter(
+          (apiary) => apiary.id === this.selectedHive.location_id
+        )
+        return findApiary.length > 0 ? findApiary[0] : null
+      } else {
+        return null
+      }
     },
     sortedHives() {
-      if (this.selectedApiary) {
-        const sortedHives = this.selectedApiary.hives
+      if (this.selectedGroup) {
+        const sortedHives = this.selectedGroup.hives
           .slice()
           .sort(function(a, b) {
             // order = null comes last
@@ -334,13 +345,13 @@ export default {
       return this.sortedHives.filter((hive) => hive.sensors.length > 0)
     },
     lat() {
-      return this.selectedApiary !== null
-        ? this.selectedApiary.coordinate_lat
+      return this.selectedLocation !== null
+        ? this.selectedLocation.coordinate_lat
         : -25.344
     },
     lng() {
-      return this.selectedApiary !== null
-        ? this.selectedApiary.coordinate_lon
+      return this.selectedLocation !== null
+        ? this.selectedLocation.coordinate_lon
         : 131.036
     },
     locale() {
@@ -368,7 +379,7 @@ export default {
     },
   },
   watch: {
-    selectedApiary() {
+    selectedLocation() {
       this.initMap()
     },
   },
