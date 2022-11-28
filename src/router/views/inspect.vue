@@ -445,6 +445,44 @@
       </v-container>
     </v-form>
 
+    <!-- <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
+      <symbol id="checkmark" viewBox="0 0 24 24">
+        <path
+          stroke-linecap="round"
+          stroke-miterlimit="10"
+          fill="none"
+          d="M22.9 3.7l-15.2 16.6-6.6-7.1"
+        ></path>
+      </symbol>
+    </svg> -->
+
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      x="0mm"
+      y="0mm"
+      width="210mm"
+      height="297mm"
+    >
+      <!-- <defs>
+        <style>
+          .svg-text {
+            fill: green;
+          }
+        </style>
+      </defs> -->
+      <rect width="100%" height="100%" fill="#ffedc5" />
+      <text x="10mm" y="15mm" class="svg-header">
+        {{ $t('overall') }}
+      </text>
+      <text x="10mm" y="22mm" class="svg-up">
+        {{ $t('positive_impression') }}
+      </text>
+
+      <svgSmileRating :x="10" :y="32" :label="$t('positive_impression')" />
+
+      <svgYesNoRating :x="65" :y="32" :label="$t('needs_attention')" />
+    </svg>
+
     <v-container v-if="!ready">
       <div class="loading">
         <v-progress-circular size="50" color="primary" indeterminate />
@@ -485,6 +523,10 @@ import smileRating from '@components/input-fields/smile-rating.vue'
 import Treeselect from '@riophae/vue-treeselect'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 
+// import svgCheckbox from '@/src/components/svg/svg-checkbox.vue'
+import svgYesNoRating from '@/src/components/svg/svg-yes-no-rating.vue'
+import svgSmileRating from '@/src/components/svg/svg-smile-rating.vue'
+
 export default {
   components: {
     ApiaryPreviewHiveSelector,
@@ -496,6 +538,9 @@ export default {
     smileRating,
     yesNoRating,
     Treeselect,
+    // svgCheckbox,
+    svgYesNoRating,
+    svgSmileRating,
   },
   mixins: [
     momentFormat,

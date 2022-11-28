@@ -1,0 +1,19 @@
+.svg-text,
+.svg-label {
+  font: 5mm Helvetica, Arial, sans-serif;
+  fill: black;
+}
+
+.svg-header {
+  font: 6mm Helvetica, Arial, sans-serif;
+  text-decoration: underline;
+}
+
+.svg-up {
+  font: 4mm Helvetica, Arial, sans-serif;
+  text-transform: uppercase;
+}
+
+.f-color-grey {
+  fill: $color-grey;
+}
