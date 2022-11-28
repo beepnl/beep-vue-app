@@ -1,6 +1,5 @@
 <template>
   <g>
-    10 32
     <text :x="x + 'mm'" :y="y + 'mm'" class="svg-label">
       {{ label }}
     </text>
@@ -55,11 +54,11 @@ export default {
   },
   props: {
     x: {
-      type: String,
+      type: Number,
       required: true,
     },
     y: {
-      type: String,
+      type: Number,
       required: true,
     },
     label: {

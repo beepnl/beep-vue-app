@@ -24,11 +24,11 @@ export default {
   },
   props: {
     x: {
-      type: String,
+      type: Number,
       required: true,
     },
     y: {
-      type: String,
+      type: Number,
       required: true,
     },
     label: {

@@ -445,17 +445,6 @@
       </v-container>
     </v-form>
 
-    <!-- <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
-      <symbol id="checkmark" viewBox="0 0 24 24">
-        <path
-          stroke-linecap="round"
-          stroke-miterlimit="10"
-          fill="none"
-          d="M22.9 3.7l-15.2 16.6-6.6-7.1"
-        ></path>
-      </symbol>
-    </svg> -->
-
     <svg
       xmlns="http://www.w3.org/2000/svg"
       x="0mm"
@@ -463,24 +452,38 @@
       width="210mm"
       height="297mm"
     >
-      <!-- <defs>
-        <style>
-          .svg-text {
-            fill: green;
-          }
-        </style>
-      </defs> -->
       <rect width="100%" height="100%" fill="#ffedc5" />
-      <text x="10mm" y="15mm" class="svg-header">
-        {{ $t('overall') }}
-      </text>
-      <text x="10mm" y="22mm" class="svg-up">
-        {{ $t('positive_impression') }}
+
+      <text x="9mm" y="15mm">
+        <tspan class="svg-header">{{ $t('overall') }}</tspan>
+        -
+        <tspan class="svg-up">{{ $t('positive_impression') }}</tspan>
       </text>
 
-      <svgSmileRating :x="10" :y="32" :label="$t('positive_impression')" />
+      <svgSmileRating :x="10" :y="24" :label="$t('positive_impression')" />
 
-      <svgYesNoRating :x="65" :y="32" :label="$t('needs_attention')" />
+      <svgYesNoRating :x="55" :y="24" :label="$t('needs_attention')" />
+
+      <svgTextBox :x="115" :y="24" :label="$t('notes')" />
+
+      <text x="9mm" y="64mm">
+        <tspan class="svg-header">{{ $t('overall') }}</tspan>
+        -
+        <tspan class="svg-up">Test</tspan>
+      </text>
+
+      <svgStarRating :x="10" :y="73" :label="'Star test'" />
+
+      <svgSelect
+        :x="55"
+        :y="73"
+        :label="'Select test'"
+        :items="
+          selectedChecklist.categories[0].children[0].children[0].children
+        "
+      />
+
+      <svgNumber :x="115" :y="73" :label="'Number test'" :decimals="0" />
     </svg>
 
     <v-container v-if="!ready">
@@ -524,8 +527,12 @@ import Treeselect from '@riophae/vue-treeselect'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 
 // import svgCheckbox from '@/src/components/svg/svg-checkbox.vue'
-import svgYesNoRating from '@/src/components/svg/svg-yes-no-rating.vue'
+import svgNumber from '@/src/components/svg/svg-number.vue'
+import svgSelect from '@/src/components/svg/svg-select.vue'
 import svgSmileRating from '@/src/components/svg/svg-smile-rating.vue'
+import svgStarRating from '@/src/components/svg/svg-star-rating.vue'
+import svgTextBox from '@/src/components/svg/svg-text-box.vue'
+import svgYesNoRating from '@/src/components/svg/svg-yes-no-rating.vue'
 
 export default {
   components: {
@@ -539,8 +546,12 @@ export default {
     yesNoRating,
     Treeselect,
     // svgCheckbox,
-    svgYesNoRating,
+    svgNumber,
+    svgSelect,
     svgSmileRating,
+    svgStarRating,
+    svgTextBox,
+    svgYesNoRating,
   },
   mixins: [
     momentFormat,

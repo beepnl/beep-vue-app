@@ -6,7 +6,7 @@
     height="4mm"
     stroke="black"
     fill="transparent"
-    stroke-width="2"
+    stroke-width="1"
   />
 </template>
 
