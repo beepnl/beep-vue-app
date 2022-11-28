@@ -1,7 +1,12 @@
 .svg-text,
 .svg-label {
   font: 5mm Helvetica, Arial, sans-serif;
-  fill: black;
+  fill: $color-grey-dark;
+}
+
+.svg-text-small {
+  font: 3mm Helvetica, Arial, sans-serif;
+  fill: $color-grey-dark;
 }
 
 .svg-header {

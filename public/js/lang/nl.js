@@ -327,9 +327,11 @@ const translations = {
   ozone: 'Ozon',
 
   /* Measurements */
-  Hour: 'Uur',
+  Hour: 'Uur | Uren',
   hour: 'uur | uur',
   day: 'dag | dagen',
+  Day: 'Dag | Dagen',
+  Minute: 'Minuut | Minuten',
   week: 'Week',
   month: 'Maand',
   year: 'Jaar',

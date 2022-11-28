@@ -475,6 +475,7 @@
       <svgStarRating :x="10" :y="73" :label="'Star test'" />
 
       <svgSelect
+        v-if="selectedChecklist"
         :x="55"
         :y="73"
         :label="'Select test'"
@@ -484,6 +485,17 @@
       />
 
       <svgNumber :x="115" :y="73" :label="'Number test'" :decimals="0" />
+
+      <svgNumber
+        :x="150"
+        :y="73"
+        :label="'NumberDecimals test'"
+        :decimals="2"
+      />
+
+      <svgDate :x="10" :y="105" :label="'Date test'" />
+
+      <svgDate :x="78" :y="105" :label="'Datetime test'" :time="true" />
     </svg>
 
     <v-container v-if="!ready">
@@ -527,6 +539,7 @@ import Treeselect from '@riophae/vue-treeselect'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 
 // import svgCheckbox from '@/src/components/svg/svg-checkbox.vue'
+import svgDate from '@/src/components/svg/svg-date.vue'
 import svgNumber from '@/src/components/svg/svg-number.vue'
 import svgSelect from '@/src/components/svg/svg-select.vue'
 import svgSmileRating from '@/src/components/svg/svg-smile-rating.vue'
@@ -546,6 +559,7 @@ export default {
     yesNoRating,
     Treeselect,
     // svgCheckbox,
+    svgDate,
     svgNumber,
     svgSelect,
     svgSmileRating,
