@@ -454,52 +454,63 @@
     >
       <rect width="100%" height="100%" fill="#ffedc5" />
 
-      <text x="9mm" y="15mm">
+      <svgText :x="10" :y="12" :label="$tc('Location', 1)" :line="true" />
+
+      <svgText :x="57" :y="12" :label="$tc('Hive', 1)" :line="true" />
+
+      <svgDate
+        :x="108"
+        :y="12"
+        :label="$t('Date_of_inspection')"
+        :time="true"
+      />
+
+      <text x="9mm" y="35mm">
         <tspan class="svg-header">{{ $t('overall') }}</tspan>
         -
         <tspan class="svg-up">{{ $t('positive_impression') }}</tspan>
       </text>
 
-      <svgSmileRating :x="10" :y="24" :label="$t('positive_impression')" />
+      <svgSmileRating :x="10" :y="44" :label="$t('positive_impression')" />
 
-      <svgYesNoRating :x="55" :y="24" :label="$t('needs_attention')" />
+      <svgYesNoRating :x="57" :y="44" :label="$t('needs_attention')" />
 
-      <svgTextBox :x="115" :y="24" :label="$t('notes')" />
+      <svgText :x="108" :y="44" :label="$t('notes')" />
 
-      <text x="9mm" y="64mm">
+      <text x="9mm" y="84mm">
         <tspan class="svg-header">{{ $t('overall') }}</tspan>
         -
         <tspan class="svg-up">Test</tspan>
       </text>
 
-      <svgStarRating :x="10" :y="73" :label="'Star test'" />
+      <svgStarRating :x="10" :y="93" :label="'Star test'" />
 
       <svgSelect
         v-if="selectedChecklist"
-        :x="55"
-        :y="73"
+        :x="57"
+        :y="93"
         :label="'Select test'"
         :items="
           selectedChecklist.categories[0].children[0].children[0].children
         "
       />
 
-      <svgNumber :x="115" :y="73" :label="'Number test'" :decimals="0" />
+      <svgNumber :x="108" :y="93" :label="'Number test'" :decimals="0" />
 
       <svgNumber
         :x="150"
-        :y="73"
+        :y="93"
         :label="'NumberDecimals test'"
         :decimals="2"
       />
 
-      <svgDate :x="10" :y="105" :label="'Date test'" />
+      <svgDate :x="10" :y="125" :label="'Date test'" />
 
-      <svgDate :x="78" :y="105" :label="'Datetime test'" :time="true" />
+      <svgDate :x="78" :y="125" :label="'Datetime test'" :time="true" />
 
       <svgNumber
         :x="10"
-        :y="135"
+        :y="155"
         :label="'NumberPercentage test'"
         :fields="3"
         :append="'%'"
@@ -508,7 +519,7 @@
 
       <svgNumber
         :x="78"
-        :y="135"
+        :y="155"
         :label="'NumberDegrees test'"
         :fields="3"
         :append="'°'"
@@ -517,7 +528,7 @@
 
       <svgNumber
         :x="150"
-        :y="135"
+        :y="155"
         :label="'Grade test'"
         :fields="2"
         :info="'Grade between 0 and 10'"
@@ -526,16 +537,26 @@
 
       <svgSelect
         :x="10"
-        :y="165"
+        :y="185"
         :label="'Slider score quality test'"
         :score-quality="true"
       />
 
       <svgSelect
         :x="78"
-        :y="165"
+        :y="185"
         :label="'Slider score amount test'"
         :score-amount="true"
+      />
+
+      <svgSelect
+        v-if="selectedChecklist"
+        :x="150"
+        :y="185"
+        :label="'Nested select test'"
+        :items="
+          selectedChecklist.categories[0].children[0].children[1].children
+        "
       />
     </svg>
 
@@ -585,7 +606,7 @@ import svgNumber from '@/src/components/svg/svg-number.vue'
 import svgSelect from '@/src/components/svg/svg-select.vue'
 import svgSmileRating from '@/src/components/svg/svg-smile-rating.vue'
 import svgStarRating from '@/src/components/svg/svg-star-rating.vue'
-import svgTextBox from '@/src/components/svg/svg-text-box.vue'
+import svgText from '@/src/components/svg/svg-text.vue'
 import svgYesNoRating from '@/src/components/svg/svg-yes-no-rating.vue'
 
 export default {
@@ -605,7 +626,7 @@ export default {
     svgSelect,
     svgSmileRating,
     svgStarRating,
-    svgTextBox,
+    svgText,
     svgYesNoRating,
   },
   mixins: [
