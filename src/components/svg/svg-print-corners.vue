@@ -1,8 +1,8 @@
 <template>
   <g>
     <line
-      x1="10mm"
-      x2="20mm"
+      x1="8mm"
+      x2="18mm"
       y1="10mm"
       y2="10mm"
       stroke="black"
@@ -11,15 +11,15 @@
     <line
       x1="10mm"
       x2="10mm"
-      y1="10mm"
-      y2="20mm"
+      y1="8mm"
+      y2="18mm"
       stroke="black"
       stroke-width="1"
     />
 
     <line
-      x1="190mm"
-      x2="200mm"
+      x1="192mm"
+      x2="202mm"
       y1="10mm"
       y2="10mm"
       stroke="black"
@@ -28,15 +28,15 @@
     <line
       x1="200mm"
       x2="200mm"
-      y1="10mm"
-      y2="20mm"
+      y1="8mm"
+      y2="18mm"
       stroke="black"
       stroke-width="1"
     />
 
     <line
-      x1="10mm"
-      x2="20mm"
+      x1="8mm"
+      x2="18mm"
       y1="287mm"
       y2="287mm"
       stroke="black"
@@ -45,15 +45,15 @@
     <line
       x1="10mm"
       x2="10mm"
-      y1="277mm"
-      y2="287mm"
+      y1="279mm"
+      y2="289mm"
       stroke="black"
       stroke-width="1"
     />
 
     <line
-      x1="190mm"
-      x2="200mm"
+      x1="192mm"
+      x2="202mm"
       y1="287mm"
       y2="287mm"
       stroke="black"
@@ -62,8 +62,8 @@
     <line
       x1="200mm"
       x2="200mm"
-      y1="277mm"
-      y2="287mm"
+      y1="279mm"
+      y2="289mm"
       stroke="black"
       stroke-width="1"
     />
