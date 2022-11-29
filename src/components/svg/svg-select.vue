@@ -3,11 +3,40 @@
     <text :x="x + 'mm'" :y="y + 'mm'" class="svg-label">
       {{ label }}
     </text>
-    <g v-for="(item, index) in items" :key="'item-' + index">
-      <svgCheckbox :x="x + 'mm'" :y="y + 3 + index * 7 + 'mm'" />
-      <text :x="x + 6 + 'mm'" :y="y + 6 + index * 7 + 'mm'" class="svg-up">
-        {{ itemText(item) }}
-      </text>
+    <g v-if="!presetItems">
+      <template v-for="(item, index) in items">
+        <svgCheckbox
+          :key="'item-' + index"
+          :x="x + 'mm'"
+          :y="y + 3 + index * 7 + 'mm'"
+        />
+        <text
+          :key="'text-' + index"
+          :x="x + 6 + 'mm'"
+          :y="y + 6 + index * 7 + 'mm'"
+          class="svg-up"
+        >
+          {{ itemText(item) }}
+        </text>
+      </template>
+    </g>
+
+    <g v-else>
+      <template v-for="(item, index) in presetItems">
+        <svgCheckbox
+          :key="'item-' + index"
+          :x="x + 'mm'"
+          :y="y + 3 + index * 7 + 'mm'"
+        />
+        <text
+          :key="'text-' + index"
+          :x="x + 6 + 'mm'"
+          :y="y + 6 + index * 7 + 'mm'"
+          class="svg-up"
+        >
+          {{ item }}
+        </text>
+      </template>
     </g>
   </g>
 </template>
@@ -34,12 +63,46 @@ export default {
     },
     items: {
       type: Array,
-      required: true,
+      required: false,
+      default: null,
+    },
+    scoreAmount: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    scoreQuality: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
   },
   computed: {
     locale() {
       return this.$i18n.locale
+    },
+    presetItems() {
+      return this.scoreAmount
+        ? this.scoreAmountItems
+        : this.scoreQuality
+        ? this.scoreQualityItems
+        : false
+    },
+    scoreAmountItems() {
+      return [
+        this.$i18n.t('Low'),
+        this.$i18n.t('Medium'),
+        this.$i18n.t('High'),
+        this.$i18n.t('Extreme'),
+      ]
+    },
+    scoreQualityItems() {
+      return [
+        this.$i18n.t('Poor'),
+        this.$i18n.t('Fair'),
+        this.$i18n.t('Good'),
+        this.$i18n.t('Excellent'),
+      ]
     },
   },
   methods: {

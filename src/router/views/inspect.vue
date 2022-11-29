@@ -496,6 +496,47 @@
       <svgDate :x="10" :y="105" :label="'Date test'" />
 
       <svgDate :x="78" :y="105" :label="'Datetime test'" :time="true" />
+
+      <svgNumber
+        :x="10"
+        :y="135"
+        :label="'NumberPercentage test'"
+        :fields="3"
+        :append="'%'"
+        :info="'Percentage between 0 and 100'"
+      />
+
+      <svgNumber
+        :x="78"
+        :y="135"
+        :label="'NumberDegrees test'"
+        :fields="3"
+        :append="'°'"
+        :info="'Number of degrees between -180° and 180°'"
+      />
+
+      <svgNumber
+        :x="150"
+        :y="135"
+        :label="'Grade test'"
+        :fields="2"
+        :info="'Grade between 0 and 10'"
+        :info-extra="'(01 = Poor, 05 = Average, 10 = Excellent)'"
+      />
+
+      <svgSelect
+        :x="10"
+        :y="165"
+        :label="'Slider score quality test'"
+        :score-quality="true"
+      />
+
+      <svgSelect
+        :x="78"
+        :y="165"
+        :label="'Slider score amount test'"
+        :score-amount="true"
+      />
     </svg>
 
     <v-container v-if="!ready">
