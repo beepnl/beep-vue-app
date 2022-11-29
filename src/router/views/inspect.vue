@@ -487,36 +487,35 @@
       </svg:style>
       <rect width="100%" height="100%" fill="#ffedc5" />
 
-      <svgText :x="10" :y="12" :label="$tc('Location', 1)" :line="true" />
+      <svgPrintCorners />
 
-      <svgText :x="57" :y="12" :label="$tc('Hive', 1)" :line="true" />
+      <svgText :x="15" :y="17" :label="$tc('Location', 1)" :line="true" />
+
+      <svgText :x="57" :y="17" :label="$tc('Hive', 1)" :line="true" />
 
       <svgDate
         :x="108"
-        :y="12"
+        :y="17"
         :label="$t('Date_of_inspection')"
         :time="true"
       />
 
-      <text x="9mm" y="35mm">
-        <tspan class="svg-header">{{ $t('overall') }}</tspan>
-        -
-        <tspan class="svg-text">{{ $t('positive_impression') }}</tspan>
-      </text>
+      <svgHeader
+        :x="15"
+        :y="38"
+        :header="$t('overall')"
+        :sub-header="$t('positive_impression')"
+      />
 
-      <svgSmileRating :x="10" :y="44" :label="$t('positive_impression')" />
+      <svgSmileRating :x="15" :y="44" :label="$t('positive_impression')" />
 
       <svgYesNoRating :x="57" :y="44" :label="$t('needs_attention')" />
 
       <svgText :x="108" :y="44" :label="$t('notes')" />
 
-      <text x="9mm" y="84mm">
-        <tspan class="svg-header">{{ $t('overall') }}</tspan>
-        -
-        <tspan class="svg-text">Test</tspan>
-      </text>
+      <svgHeader :x="15" :y="84" :header="$t('overall')" :sub-header="'Test'" />
 
-      <svgSelect :x="10" :y="93" :label="'Star test'" :stars="true" />
+      <svgSelect :x="15" :y="93" :label="'Star test'" :stars="true" />
 
       <svgSelect
         v-if="selectedChecklist"
@@ -537,12 +536,12 @@
         :decimals="2"
       />
 
-      <svgDate :x="10" :y="132" :label="'Date test'" />
+      <svgDate :x="15" :y="132" :label="'Date test'" />
 
       <svgDate :x="78" :y="132" :label="'Datetime test'" :time="true" />
 
       <svgNumber
-        :x="10"
+        :x="15"
         :y="155"
         :label="'NumberPercentage test'"
         :fields="3"
@@ -568,7 +567,7 @@
       />
 
       <svgSelect
-        :x="10"
+        :x="15"
         :y="185"
         :label="'Slider score quality test'"
         :score-quality="true"
@@ -634,7 +633,9 @@ import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 
 // import svgCheckbox from '@/src/components/svg/svg-checkbox.vue'
 import svgDate from '@/src/components/svg/svg-date.vue'
+import svgHeader from '@/src/components/svg/svg-header.vue'
 import svgNumber from '@/src/components/svg/svg-number.vue'
+import svgPrintCorners from '@/src/components/svg/svg-print-corners.vue'
 import svgSelect from '@/src/components/svg/svg-select.vue'
 import svgSmileRating from '@/src/components/svg/svg-smile-rating.vue'
 import svgGradeRating from '@/src/components/svg/svg-grade-rating.vue'
@@ -654,7 +655,9 @@ export default {
     Treeselect,
     // svgCheckbox,
     svgDate,
+    svgHeader,
     svgNumber,
+    svgPrintCorners,
     svgSelect,
     svgSmileRating,
     svgGradeRating,
