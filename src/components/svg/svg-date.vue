@@ -13,16 +13,16 @@
       </text>
       <text
         v-if="!item.first"
-        :x="x + item.offset - 3 + 'mm'"
+        :x="x + item.offset - 2 + 'mm'"
         :y="y + 10 + 'mm'"
-        width="6mm"
+        width="3mm"
         class="svg-text"
       >
         -
       </text>
       <g v-for="field in item.fields" :key="item.title + '-f-' + field">
         <svgNumberBox
-          :x="x + item.offset + (field - 1) * 7 + 'mm'"
+          :x="x + item.offset + (field - 1) * 5 + 'mm'"
           :y="y + 5 + 'mm'"
         />
       </g>
@@ -38,16 +38,16 @@
         </text>
         <text
           v-if="!item.first"
-          :x="x + item.offset - 3 + 'mm'"
+          :x="x + item.offset - 2 + 'mm'"
           :y="y + 10 + 'mm'"
-          width="6mm"
+          width="3mm"
           class="svg-text"
         >
           :
         </text>
         <g v-for="field in item.fields" :key="item.title + '-h-' + field">
           <svgNumberBox
-            :x="x + item.offset + (field - 1) * 7 + 'mm'"
+            :x="x + item.offset + (field - 1) * 5 + 'mm'"
             :y="y + 5 + 'mm'"
           />
         </g>
@@ -97,12 +97,12 @@ export default {
         {
           title: this.$i18n.t('month'),
           fields: 2,
-          offset: 31,
+          offset: 23,
         },
         {
           title: this.$i18n.tc('Day', 1),
           fields: 2,
-          offset: 48,
+          offset: 36,
         },
       ]
     },
@@ -111,13 +111,13 @@ export default {
         {
           title: this.$i18n.tc('Hour', 2) + ' (24)',
           fields: 2,
-          offset: 65,
+          offset: 50,
           first: true,
         },
         {
           title: this.$i18n.tc('Minute', 2),
           fields: 2,
-          offset: 82,
+          offset: 63,
         },
       ]
     },
