@@ -4,17 +4,18 @@
       {{ label }}
     </text>
     <g v-if="!presetItems">
-      <template v-for="(item, index) in items">
+      <template v-for="(item, index) in flattenedItems">
         <svgCheckbox
+          v-if="!item.hasChildren"
           :key="'item-' + index"
-          :x="x + 'mm'"
+          :x="x + item.depth * 5 + 'mm'"
           :y="y + 3 + index * 7 + 'mm'"
         />
         <text
           :key="'text-' + index"
-          :x="x + 6 + 'mm'"
+          :x="x + item.depth * 5 + (!item.hasChildren ? 6 : 0) + 'mm'"
           :y="y + 6 + index * 7 + 'mm'"
-          class="svg-up"
+          class="svg-input-text"
         >
           {{ itemText(item) }}
         </text>
@@ -32,7 +33,7 @@
           :key="'text-' + index"
           :x="x + 6 + 'mm'"
           :y="y + 6 + index * 7 + 'mm'"
-          class="svg-up"
+          class="svg-input-text"
         >
           {{ item }}
         </text>
@@ -81,6 +82,9 @@ export default {
     locale() {
       return this.$i18n.locale
     },
+    flattenedItems() {
+      return this.items !== null ? this.flattenItems(this.items) : []
+    },
     presetItems() {
       return this.scoreAmount
         ? this.scoreAmountItems
@@ -106,6 +110,18 @@ export default {
     },
   },
   methods: {
+    flattenItems(data, depth = 0) {
+      return data.reduce((r, { children, trans, name }) => {
+        const obj = { trans, name, depth, hasChildren: children.length > 0 }
+        r.push(obj)
+
+        if (children.length) {
+          r.push(...this.flattenItems(children, depth + 1))
+        }
+
+        return r
+      }, [])
+    },
     itemText(item) {
       return item.trans !== null && item.trans[this.locale] !== undefined
         ? item.trans[this.locale]

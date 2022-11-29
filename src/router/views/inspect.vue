@@ -501,7 +501,7 @@
       <text x="9mm" y="35mm">
         <tspan class="svg-header">{{ $t('overall') }}</tspan>
         -
-        <tspan class="svg-input-text">{{ $t('positive_impression') }}</tspan>
+        <tspan class="svg-text">{{ $t('positive_impression') }}</tspan>
       </text>
 
       <svgSmileRating :x="10" :y="44" :label="$t('positive_impression')" />
@@ -513,7 +513,7 @@
       <text x="9mm" y="84mm">
         <tspan class="svg-header">{{ $t('overall') }}</tspan>
         -
-        <tspan class="svg-input-text">Test</tspan>
+        <tspan class="svg-text">Test</tspan>
       </text>
 
       <svgStarRating :x="10" :y="93" :label="'Star test'" />
