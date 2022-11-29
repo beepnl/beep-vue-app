@@ -923,6 +923,8 @@ const translations = {
     'Voeg BEEP toe aan je beginscherm om het als web app en op volledig scherm te gebruiken. Je blijft dan ingelogd na de eerste keer inloggen.',
   pwa_share_button_label: '1. Tik op het deel-icoon in de menubalk onderin.',
   pwa_addhome_button_label: "2. Tik op 'Zet op beginscherm'",
+
+  star: 'ster | sterren',
 }
 
 export default translations

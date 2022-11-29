@@ -9,12 +9,12 @@
           v-if="!item.hasChildren"
           :key="'item-' + index"
           :x="x + item.depth * 5 + 'mm'"
-          :y="y + 3 + index * 7 + 'mm'"
+          :y="y + 3 + index * 6 + 'mm'"
         />
         <text
           :key="'text-' + index"
           :x="x + item.depth * 5 + (!item.hasChildren ? 6 : 0) + 'mm'"
-          :y="y + 6 + index * 7 + 'mm'"
+          :y="y + 6 + index * 6 + 'mm'"
           class="svg-input-text"
         >
           {{ itemText(item) }}
@@ -27,12 +27,12 @@
         <svgCheckbox
           :key="'item-' + index"
           :x="x + 'mm'"
-          :y="y + 3 + index * 7 + 'mm'"
+          :y="y + 3 + index * 6 + 'mm'"
         />
         <text
           :key="'text-' + index"
           :x="x + 6 + 'mm'"
-          :y="y + 6 + index * 7 + 'mm'"
+          :y="y + 6 + index * 6 + 'mm'"
           class="svg-input-text"
         >
           {{ item }}
@@ -77,6 +77,11 @@ export default {
       required: false,
       default: false,
     },
+    stars: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   computed: {
     locale() {
@@ -90,6 +95,8 @@ export default {
         ? this.scoreAmountItems
         : this.scoreQuality
         ? this.scoreQualityItems
+        : this.stars
+        ? this.starItems
         : false
     },
     scoreAmountItems() {
@@ -107,6 +114,13 @@ export default {
         this.$i18n.t('Good'),
         this.$i18n.t('Excellent'),
       ]
+    },
+    starItems() {
+      var starArray = []
+      for (var i = 1; i <= 5; i++) {
+        starArray.push(i + ' ' + this.$i18n.tc('star', i))
+      }
+      return starArray
     },
   },
   methods: {

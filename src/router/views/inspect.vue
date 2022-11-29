@@ -516,7 +516,7 @@
         <tspan class="svg-text">Test</tspan>
       </text>
 
-      <svgStarRating :x="10" :y="93" :label="'Star test'" />
+      <svgSelect :x="10" :y="93" :label="'Star test'" :stars="true" />
 
       <svgSelect
         v-if="selectedChecklist"
@@ -537,13 +537,13 @@
         :decimals="2"
       />
 
-      <svgDate :x="10" :y="122" :label="'Date test'" />
+      <svgDate :x="10" :y="132" :label="'Date test'" />
 
-      <svgDate :x="78" :y="122" :label="'Datetime test'" :time="true" />
+      <svgDate :x="78" :y="132" :label="'Datetime test'" :time="true" />
 
       <svgNumber
         :x="10"
-        :y="145"
+        :y="155"
         :label="'NumberPercentage test'"
         :fields="3"
         :append="'%'"
@@ -552,32 +552,31 @@
 
       <svgNumber
         :x="78"
-        :y="145"
+        :y="155"
         :label="'NumberDegrees test'"
         :fields="3"
         :append="'°'"
         :info="'Number of degrees between -180° and 180°'"
       />
 
-      <svgNumber
+      <svgGradeRating
         :x="150"
-        :y="145"
+        :y="155"
         :label="'Grade test'"
-        :fields="2"
-        :info="'Grade between 0 and 10'"
-        :info-extra="'(01 = Poor, 05 = Average, 10 = Excellent)'"
+        :info="'Grade between 1 and 10'"
+        :info-extra="'(1 = Poor, 5 = Average, 10 = Excellent)'"
       />
 
       <svgSelect
         :x="10"
-        :y="175"
+        :y="185"
         :label="'Slider score quality test'"
         :score-quality="true"
       />
 
       <svgSelect
         :x="78"
-        :y="175"
+        :y="185"
         :label="'Slider score amount test'"
         :score-amount="true"
       />
@@ -585,7 +584,7 @@
       <svgSelect
         v-if="selectedChecklist"
         :x="150"
-        :y="175"
+        :y="185"
         :label="'Nested select test'"
         :items="
           selectedChecklist.categories[0].children[0].children[1].children
@@ -638,7 +637,7 @@ import svgDate from '@/src/components/svg/svg-date.vue'
 import svgNumber from '@/src/components/svg/svg-number.vue'
 import svgSelect from '@/src/components/svg/svg-select.vue'
 import svgSmileRating from '@/src/components/svg/svg-smile-rating.vue'
-import svgStarRating from '@/src/components/svg/svg-star-rating.vue'
+import svgGradeRating from '@/src/components/svg/svg-grade-rating.vue'
 import svgText from '@/src/components/svg/svg-text.vue'
 import svgYesNoRating from '@/src/components/svg/svg-yes-no-rating.vue'
 
@@ -658,7 +657,7 @@ export default {
     svgNumber,
     svgSelect,
     svgSmileRating,
-    svgStarRating,
+    svgGradeRating,
     svgText,
     svgYesNoRating,
   },
