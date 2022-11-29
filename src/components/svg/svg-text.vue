@@ -15,13 +15,24 @@
       stroke-width="1"
     />
 
-    <line
+    <!-- <line
       v-if="line"
       :x1="x + 'mm'"
       :x2="x + 45 + 'mm'"
       :y1="y + 8 + 'mm'"
       :y2="y + 8 + 'mm'"
       stroke="black"
+      stroke-width="1"
+    /> -->
+
+    <rect
+      v-if="line"
+      :x="x + 'mm'"
+      :y="y + 2 + 'mm'"
+      width="45mm"
+      height="11mm"
+      stroke="black"
+      fill="transparent"
       stroke-width="1"
     />
   </g>

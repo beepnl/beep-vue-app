@@ -4,12 +4,12 @@
       {{ label }}
     </text>
     <svgCheckbox :x="x + 'mm'" :y="y + 3 + 'mm'" />
-    <text :x="x + 6 + 'mm'" :y="y + 7 + 'mm'" class="svg-up">
+    <text :x="x + 6 + 'mm'" :y="y + 7 + 'mm'" class="svg-input-text">
       {{ $t('yes') }}
     </text>
 
     <svgCheckbox :x="x + 18 + 'mm'" :y="y + 3 + 'mm'" />
-    <text :x="x + 24 + 'mm'" :y="y + 7 + 'mm'" class="svg-up">
+    <text :x="x + 24 + 'mm'" :y="y + 7 + 'mm'" class="svg-input-text">
       {{ $t('no') }}
     </text>
   </g>

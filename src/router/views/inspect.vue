@@ -446,12 +446,45 @@
     </v-form>
 
     <svg
+      class="ma-8"
       xmlns="http://www.w3.org/2000/svg"
       x="0mm"
       y="0mm"
       width="210mm"
       height="297mm"
     >
+      <svg:style type="text/css">
+                <![CDATA[
+                    .svg-text,
+        .svg-label {
+          font: 4mm Helvetica, Arial, sans-serif;
+          fill: $color-grey-dark;
+        }
+
+        .svg-text-small {
+          font: 3mm Helvetica, Arial, sans-serif;
+          fill: $color-grey-dark;
+        }
+
+        .svg-header {
+          font: 4mm Helvetica, Arial, sans-serif;
+          text-decoration: underline;
+        }
+
+        .svg-input-text {
+          font: 3mm Helvetica, Arial, sans-serif;
+        }
+
+        .svg-append {
+          font: 6mm Helvetica, Arial, sans-serif;
+          fill: $color-grey-dark;
+        }
+
+        .f-color-grey {
+          fill: $color-grey;
+        }
+                ]]>
+      </svg:style>
       <rect width="100%" height="100%" fill="#ffedc5" />
 
       <svgText :x="10" :y="12" :label="$tc('Location', 1)" :line="true" />
@@ -468,7 +501,7 @@
       <text x="9mm" y="35mm">
         <tspan class="svg-header">{{ $t('overall') }}</tspan>
         -
-        <tspan class="svg-up">{{ $t('positive_impression') }}</tspan>
+        <tspan class="svg-input-text">{{ $t('positive_impression') }}</tspan>
       </text>
 
       <svgSmileRating :x="10" :y="44" :label="$t('positive_impression')" />
@@ -480,7 +513,7 @@
       <text x="9mm" y="84mm">
         <tspan class="svg-header">{{ $t('overall') }}</tspan>
         -
-        <tspan class="svg-up">Test</tspan>
+        <tspan class="svg-input-text">Test</tspan>
       </text>
 
       <svgStarRating :x="10" :y="93" :label="'Star test'" />
@@ -504,13 +537,13 @@
         :decimals="2"
       />
 
-      <svgDate :x="10" :y="125" :label="'Date test'" />
+      <svgDate :x="10" :y="122" :label="'Date test'" />
 
-      <svgDate :x="78" :y="125" :label="'Datetime test'" :time="true" />
+      <svgDate :x="78" :y="122" :label="'Datetime test'" :time="true" />
 
       <svgNumber
         :x="10"
-        :y="155"
+        :y="145"
         :label="'NumberPercentage test'"
         :fields="3"
         :append="'%'"
@@ -519,7 +552,7 @@
 
       <svgNumber
         :x="78"
-        :y="155"
+        :y="145"
         :label="'NumberDegrees test'"
         :fields="3"
         :append="'°'"
@@ -528,7 +561,7 @@
 
       <svgNumber
         :x="150"
-        :y="155"
+        :y="145"
         :label="'Grade test'"
         :fields="2"
         :info="'Grade between 0 and 10'"
@@ -537,14 +570,14 @@
 
       <svgSelect
         :x="10"
-        :y="185"
+        :y="175"
         :label="'Slider score quality test'"
         :score-quality="true"
       />
 
       <svgSelect
         :x="78"
-        :y="185"
+        :y="175"
         :label="'Slider score amount test'"
         :score-amount="true"
       />
@@ -552,7 +585,7 @@
       <svgSelect
         v-if="selectedChecklist"
         :x="150"
-        :y="185"
+        :y="175"
         :label="'Nested select test'"
         :items="
           selectedChecklist.categories[0].children[0].children[1].children
