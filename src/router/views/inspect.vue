@@ -462,11 +462,12 @@
       x="0mm"
       y="0mm"
       width="210mm"
-      height="297mm"
+      height="594mm"
     >
       <rect v-if="!printMode" width="100%" height="100%" fill="#ffedc5" />
 
-      <svgPrintCorners />
+      <svgPrintCorners :pageNumber="1" />
+      <svgPrintCorners :pageNumber="2" />
 
       <svgText :x="15" :y="17" :label="$tc('Location', 1)" :line="true" />
 
@@ -586,11 +587,20 @@
 
       <svgNumber
         :x="15"
-        :y="220"
+        :y="228"
         :label="'NumberNegative test'"
         :prepend="'_'"
         :info="'Negative number (below 0)'"
       />
+
+      <svgSelect
+        :x="15"
+        :y="258"
+        :label="'Slider score amount test'"
+        :score-amount="true"
+      />
+
+      <svgSelect :x="15" :y="315" :label="'Page 2 test'" :stars="true" />
     </svg>
 
     <v-container v-if="!ready">

@@ -1,71 +1,115 @@
 <template>
   <g>
-    <line
-      x1="8mm"
-      x2="18mm"
-      y1="10mm"
-      y2="10mm"
-      stroke="black"
-      stroke-width="1"
-    />
-    <line
-      x1="10mm"
-      x2="10mm"
-      y1="8mm"
-      y2="18mm"
-      stroke="black"
-      stroke-width="1"
-    />
+    <g class="A">
+      <line
+        :x1="xAC + 'mm'"
+        :x2="xAC + cornerSize + 'mm'"
+        :y1="yAB + 'mm'"
+        :y2="yAB + 'mm'"
+        stroke="black"
+        stroke-width="1"
+      />
+      <line
+        :x1="xAC + 'mm'"
+        :x2="xAC + 'mm'"
+        :y1="yAB + 'mm'"
+        :y2="yAB + cornerSize + 'mm'"
+        stroke="black"
+        stroke-width="1"
+      />
+    </g>
 
-    <line
-      x1="192mm"
-      x2="202mm"
-      y1="10mm"
-      y2="10mm"
-      stroke="black"
-      stroke-width="1"
-    />
-    <line
-      x1="200mm"
-      x2="200mm"
-      y1="8mm"
-      y2="18mm"
-      stroke="black"
-      stroke-width="1"
-    />
+    <g class="B">
+      <line
+        :x1="xBD - cornerSize + 'mm'"
+        :x2="xBD + 'mm'"
+        :y1="yAB + 'mm'"
+        :y2="yAB + 'mm'"
+        stroke="black"
+        stroke-width="1"
+      />
+      <line
+        :x1="xBD + 'mm'"
+        :x2="xBD + 'mm'"
+        :y1="yAB + 'mm'"
+        :y2="yAB + cornerSize + 'mm'"
+        stroke="black"
+        stroke-width="1"
+      />
+    </g>
 
-    <line
-      x1="8mm"
-      x2="18mm"
-      y1="287mm"
-      y2="287mm"
-      stroke="black"
-      stroke-width="1"
-    />
-    <line
-      x1="10mm"
-      x2="10mm"
-      y1="279mm"
-      y2="289mm"
-      stroke="black"
-      stroke-width="1"
-    />
+    <g class="C">
+      <line
+        :x1="xAC + 'mm'"
+        :x2="xAC + cornerSize + 'mm'"
+        :y1="yCD + 'mm'"
+        :y2="yCD + 'mm'"
+        stroke="black"
+        stroke-width="1"
+      />
+      <line
+        :x1="xAC + 'mm'"
+        :x2="xAC + 'mm'"
+        :y1="yCD - cornerSize + 'mm'"
+        :y2="yCD + 'mm'"
+        stroke="black"
+        stroke-width="1"
+      />
+    </g>
 
-    <line
-      x1="192mm"
-      x2="202mm"
-      y1="287mm"
-      y2="287mm"
-      stroke="black"
-      stroke-width="1"
-    />
-    <line
-      x1="200mm"
-      x2="200mm"
-      y1="279mm"
-      y2="289mm"
-      stroke="black"
-      stroke-width="1"
-    />
+    <g class="D">
+      <line
+        :x1="xBD - cornerSize + 'mm'"
+        :x2="xBD + 'mm'"
+        :y1="yCD + 'mm'"
+        :y2="yCD + 'mm'"
+        stroke="black"
+        stroke-width="1"
+      />
+      <line
+        :x1="xBD + 'mm'"
+        :x2="xBD + 'mm'"
+        :y1="yCD - cornerSize + 'mm'"
+        :y2="yCD + 'mm'"
+        stroke="black"
+        stroke-width="1"
+      />
+    </g>
   </g>
 </template>
+
+<script>
+export default {
+  props: {
+    pageNumber: {
+      type: Number,
+      required: true,
+      default: 1,
+    },
+  },
+  data() {
+    return {
+      pageHeight: 297,
+      pageWidth: 210,
+      cornerSize: 10,
+    }
+  },
+  computed: {
+    height() {
+      return (this.pageNumber - 1) * this.pageHeight
+    },
+    xAC() {
+      return this.cornerSize
+    },
+    xBD() {
+      return this.pageWidth - this.cornerSize
+    },
+    yAB() {
+      return this.height + this.cornerSize
+    },
+    yCD() {
+      return this.height + this.pageHeight - this.cornerSize
+    },
+  },
+}
+</script>
