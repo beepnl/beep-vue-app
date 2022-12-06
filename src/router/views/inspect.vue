@@ -32,7 +32,12 @@
       }}
     </h1>
 
-    <v-form v-else-if="ready && !hiveNotEditable" ref="form" v-model="valid">
+    <v-form
+      v-else-if="ready && !hiveNotEditable"
+      ref="form"
+      v-model="valid"
+      class="no-print"
+    >
       <v-toolbar v-if="ready" class="save-bar zindex4" dense light>
         <v-spacer></v-spacer>
         <v-btn
@@ -445,47 +450,21 @@
       </v-container>
     </v-form>
 
+    <div class="ma-6 no-print">
+      <v-icon color="primary" @click="print">
+        mdi-printer
+      </v-icon>
+    </div>
+
     <svg
-      class="ma-8"
+      :class="!printMode ? 'ma-8' : ''"
       xmlns="http://www.w3.org/2000/svg"
       x="0mm"
       y="0mm"
       width="210mm"
       height="297mm"
     >
-      <svg:style type="text/css">
-                <![CDATA[
-                    .svg-text,
-        .svg-label {
-          font: 4mm Helvetica, Arial, sans-serif;
-          fill: $color-grey-dark;
-        }
-
-        .svg-text-small {
-          font: 3mm Helvetica, Arial, sans-serif;
-          fill: $color-grey-dark;
-        }
-
-        .svg-header {
-          font: 4mm Helvetica, Arial, sans-serif;
-          text-decoration: underline;
-        }
-
-        .svg-input-text {
-          font: 3mm Helvetica, Arial, sans-serif;
-        }
-
-        .svg-append {
-          font: 6mm Helvetica, Arial, sans-serif;
-          fill: $color-grey-dark;
-        }
-
-        .f-color-grey {
-          fill: $color-grey;
-        }
-                ]]>
-      </svg:style>
-      <rect width="100%" height="100%" fill="#ffedc5" />
+      <rect v-if="!printMode" width="100%" height="100%" fill="#ffedc5" />
 
       <svgPrintCorners />
 
@@ -716,6 +695,7 @@ export default {
       isApiary: true,
       hiveSetId: null,
       dateFormat: 'YYYY-MM-DD HH:mm:ss',
+      printMode: false,
     }
   },
   computed: {
@@ -1275,6 +1255,13 @@ export default {
         'inspections/setSelectedInspectionId',
         this.inspectionId
       )
+    },
+    print() {
+      this.printMode = true
+      setTimeout(() => {
+        window.print()
+        this.printMode = false
+      }, 500)
     },
     selectApiary(id) {
       this.selectedHives = []

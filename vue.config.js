@@ -31,7 +31,7 @@ module.exports = {
     sourceMap: false,
     loaderOptions: {
       scss: {
-        prependData: `$ASSETS: '${process.env.VUE_APP_ASSETS_URL}'; @import "~@assets/css/mixins.scss"; @import "~@assets/css/variables.scss"; @import "~@assets/css/main.scss"; @import "~@assets/css/icons.scss"; @import "~@assets/css/typography.scss"; @import "~@assets/css/grid.scss"; @import "~@assets/css/vendors.scss"; @import "~@assets/css/svg.scss";`,
+        prependData: `$ASSETS: '${process.env.VUE_APP_ASSETS_URL}'; @import "~@assets/css/mixins.scss"; @import "~@assets/css/variables.scss"; @import "~@assets/css/main.scss"; @import "~@assets/css/icons.scss"; @import "~@assets/css/typography.scss"; @import "~@assets/css/grid.scss"; @import "~@assets/css/vendors.scss"; @import "~@assets/css/print.scss";`,
       },
     },
   },

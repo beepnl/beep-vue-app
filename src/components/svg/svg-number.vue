@@ -1,6 +1,6 @@
 <template>
   <g>
-    <text :x="x + 'mm'" :y="y + 'mm'" class="svg-label">
+    <text :x="x + 'mm'" :y="y + 'mm'" :style="svgLabel">
       {{ label }}
     </text>
 
@@ -18,7 +18,7 @@
         v-if="append"
         :x="x + textFieldWidth + 1 + 'mm'"
         :y="y + 9 + 'mm'"
-        class="svg-append"
+        :style="svgAppend"
       >
         {{ append }}
       </text>
@@ -48,14 +48,14 @@
     </g>
 
     <g v-if="info">
-      <text :x="x + 'mm'" :y="y + 15 + 'mm'" class="svg-text-small">
+      <text :x="x + 'mm'" :y="y + 15 + 'mm'" :style="svgTextSmall">
         {{ info }}
       </text>
       <text
         v-if="infoExtra"
         :x="x + 'mm'"
         :y="y + 19 + 'mm'"
-        class="svg-text-small"
+        :style="svgTextSmall"
       >
         {{ infoExtra }}
       </text>
@@ -65,11 +65,13 @@
 
 <script>
 import svgNumberBox from '@/src/components/svg/svg-number-box.vue'
+import { svgStyles } from '@mixins/svgMixin'
 
 export default {
   components: {
     svgNumberBox,
   },
+  mixins: [svgStyles],
   props: {
     x: {
       type: Number,

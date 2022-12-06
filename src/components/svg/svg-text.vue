@@ -1,6 +1,6 @@
 <template>
   <g>
-    <text :x="x + 'mm'" :y="y + 'mm'" class="svg-label">
+    <text :x="x + 'mm'" :y="y + 'mm'" :style="svgLabel">
       {{ label }}
     </text>
 
@@ -39,7 +39,10 @@
 </template>
 
 <script>
+import { svgStyles } from '@mixins/svgMixin'
+
 export default {
+  mixins: [svgStyles],
   props: {
     x: {
       type: Number,

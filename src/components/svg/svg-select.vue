@@ -1,6 +1,6 @@
 <template>
   <g>
-    <text :x="x + 'mm'" :y="y + 'mm'" class="svg-label">
+    <text :x="x + 'mm'" :y="y + 'mm'" :style="svgLabel">
       {{ label }}
     </text>
     <g v-if="!presetItems && flattenedItems.length <= 6">
@@ -15,7 +15,7 @@
           :key="'text-' + index"
           :x="x + item.depth * 5 + (!item.hasChildren ? 6 : 0) + 'mm'"
           :y="y + 6 + index * 6 + 'mm'"
-          class="svg-input-text"
+          :style="svgInputText"
         >
           {{ itemText(item) }}
         </text>
@@ -32,10 +32,10 @@
         fill="transparent"
         stroke-width="1"
       />
-      <text :x="x + 'mm'" :y="y + 18 + 'mm'" class="svg-text-small">
+      <text :x="x + 'mm'" :y="y + 18 + 'mm'" :style="svgTextSmall">
         {{ $t('Too_many_items_exp_1') }}
       </text>
-      <text :x="x + 'mm'" :y="y + 22 + 'mm'" class="svg-text-small">
+      <text :x="x + 'mm'" :y="y + 22 + 'mm'" :style="svgTextSmall">
         {{ $t('Too_many_items_exp_2') }}
       </text>
     </g>
@@ -51,7 +51,7 @@
           :key="'text-' + index"
           :x="x + 6 + 'mm'"
           :y="y + 6 + index * 6 + 'mm'"
-          class="svg-input-text"
+          :style="svgInputText"
         >
           {{ item }}
         </text>
@@ -62,11 +62,13 @@
 
 <script>
 import svgCheckbox from '@/src/components/svg/svg-checkbox.vue'
+import { svgStyles } from '@mixins/svgMixin'
 
 export default {
   components: {
     svgCheckbox,
   },
+  mixins: [svgStyles],
   props: {
     x: {
       type: Number,

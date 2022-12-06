@@ -1,15 +1,18 @@
 <template>
   <g>
     <text :x="x + 'mm'" :y="y + 'mm'">
-      <tspan class="svg-header">{{ header }}</tspan>
+      <tspan :style="svgHeader">{{ header }}</tspan>
       -
-      <tspan class="svg-text">{{ subHeader }}</tspan>
+      <tspan :style="svgText">{{ subHeader }}</tspan>
     </text>
   </g>
 </template>
 
 <script>
+import { svgStyles } from '@mixins/svgMixin'
+
 export default {
+  mixins: [svgStyles],
   props: {
     x: {
       type: Number,

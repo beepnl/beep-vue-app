@@ -6,7 +6,7 @@
       background-color="#000"
       color="primary"
       dense
-      class="zindex4"
+      class="zindex4 no-print"
     >
       <slot name="icon">
         <v-btn icon @click="back">

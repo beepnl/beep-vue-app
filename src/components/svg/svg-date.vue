@@ -1,14 +1,10 @@
 <template>
   <g>
-    <text :x="x + 'mm'" :y="y + 'mm'" class="svg-label">
+    <text :x="x + 'mm'" :y="y + 'mm'" :style="svgLabel">
       {{ label }}
     </text>
     <g v-for="(item, index) in dateFormat" :key="item.title + index">
-      <text
-        :x="x + item.offset + 'mm'"
-        :y="y + 4 + 'mm'"
-        class="svg-text-small"
-      >
+      <text :x="x + item.offset + 'mm'" :y="y + 4 + 'mm'" :style="svgTextSmall">
         {{ item.title }}
       </text>
       <text
@@ -16,7 +12,7 @@
         :x="x + item.offset - 2 + 'mm'"
         :y="y + 10 + 'mm'"
         width="3mm"
-        class="svg-text"
+        :style="svgText"
       >
         -
       </text>
@@ -32,7 +28,7 @@
         <text
           :x="x + item.offset + 'mm'"
           :y="y + 4 + 'mm'"
-          class="svg-text-small"
+          :style="svgTextSmall"
         >
           {{ item.title }}
         </text>
@@ -41,7 +37,7 @@
           :x="x + item.offset - 2 + 'mm'"
           :y="y + 10 + 'mm'"
           width="3mm"
-          class="svg-text"
+          :style="svgText"
         >
           :
         </text>
@@ -58,11 +54,13 @@
 
 <script>
 import svgNumberBox from '@/src/components/svg/svg-number-box.vue'
+import { svgStyles } from '@mixins/svgMixin'
 
 export default {
   components: {
     svgNumberBox,
   },
+  mixins: [svgStyles],
   props: {
     x: {
       type: Number,
