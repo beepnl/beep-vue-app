@@ -496,7 +496,7 @@
 
       <svgSelect :x="15" :y="93" :label="'Star test'" :stars="true" />
 
-      <svgSelect
+      <!-- <svgSelect
         v-if="selectedChecklist"
         :x="57"
         :y="93"
@@ -504,6 +504,21 @@
         :items="
           selectedChecklist.categories[0].children[0].children[0].children
         "
+      /> -->
+
+      <svgInput
+        v-if="selectedChecklist"
+        :next-x="57"
+        :next-y="93"
+        :item="{
+          input: 'select',
+          trans: {
+            en: 'English test',
+          },
+          name: 'Select test',
+          children:
+            selectedChecklist.categories[0].children[0].children[0].children,
+        }"
       />
 
       <svgNumber :x="108" :y="93" :label="'Number test'" :decimals="0" />
@@ -542,7 +557,7 @@
         :y="155"
         :label="'Grade test'"
         :info="'Grade between 1 and 10'"
-        :info-extra="'(1 = Poor, 5 = Average, 10 = Excellent)'"
+        :info-extra="'(1 = Poor, 10 = Excellent)'"
       />
 
       <svgSelect
@@ -567,6 +582,14 @@
         :items="
           selectedChecklist.categories[0].children[0].children[1].children
         "
+      />
+
+      <svgNumber
+        :x="15"
+        :y="220"
+        :label="'NumberNegative test'"
+        :prepend="'_'"
+        :info="'Negative number (below 0)'"
       />
     </svg>
 
@@ -620,6 +643,7 @@ import svgSmileRating from '@/src/components/svg/svg-smile-rating.vue'
 import svgGradeRating from '@/src/components/svg/svg-grade-rating.vue'
 import svgText from '@/src/components/svg/svg-text.vue'
 import svgYesNoRating from '@/src/components/svg/svg-yes-no-rating.vue'
+import svgInput from '@/src/components/svg/svg-input.vue'
 
 export default {
   components: {
@@ -642,6 +666,7 @@ export default {
     svgGradeRating,
     svgText,
     svgYesNoRating,
+    svgInput,
   },
   mixins: [
     momentFormat,

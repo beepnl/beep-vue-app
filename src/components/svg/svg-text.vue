@@ -4,8 +4,27 @@
       {{ label }}
     </text>
 
+    <line
+      v-if="inputTypeNotPresent"
+      :x1="x + 'mm'"
+      :x2="x + 35 + 'mm'"
+      :y1="y + 11 + 'mm'"
+      :y2="y + 11 + 'mm'"
+      stroke="black"
+      stroke-width="1"
+    />
+
+    <text
+      v-if="inputTypeNotPresent"
+      :x="x + 'mm'"
+      :y="y + 15 + 'mm'"
+      :style="svgTextSmall"
+    >
+      {{ $t('Not_implemented_yet') }}
+    </text>
+
     <rect
-      v-if="!line"
+      v-else-if="!line"
       :x="x + 'mm'"
       :y="y + 2 + 'mm'"
       :width="width"
@@ -15,18 +34,8 @@
       stroke-width="1"
     />
 
-    <!-- <line
-      v-if="line"
-      :x1="x + 'mm'"
-      :x2="x + 45 + 'mm'"
-      :y1="y + 8 + 'mm'"
-      :y2="y + 8 + 'mm'"
-      stroke="black"
-      stroke-width="1"
-    /> -->
-
     <rect
-      v-if="line"
+      v-else-if="line"
       :x="x + 'mm'"
       :y="y + 2 + 'mm'"
       width="42mm"
@@ -67,6 +76,11 @@ export default {
       default: '30mm',
     },
     line: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    inputTypeNotPresent: {
       type: Boolean,
       required: false,
       default: false,

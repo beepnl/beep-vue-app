@@ -4,9 +4,13 @@
       {{ label }}
     </text>
 
+    <text v-if="prepend" :x="x + 'mm'" :y="y + 6 + 'mm'" :style="svgAppend">
+      {{ prepend }}
+    </text>
+
     <g v-if="decimals === 0">
       <rect
-        :x="x + 'mm'"
+        :x="x + prependOffset + 'mm'"
         :y="y + 3 + 'mm'"
         :width="textFieldWidth + 'mm'"
         height="8mm"
@@ -16,7 +20,7 @@
       />
       <text
         v-if="append"
-        :x="x + textFieldWidth + 1 + 'mm'"
+        :x="x + prependOffset + textFieldWidth + 1 + 'mm'"
         :y="y + 9 + 'mm'"
         :style="svgAppend"
       >
@@ -110,6 +114,11 @@ export default {
       required: false,
       default: null,
     },
+    prepend: {
+      type: String,
+      required: false,
+      default: null,
+    },
   },
   data() {
     return {
@@ -119,6 +128,9 @@ export default {
   computed: {
     fieldOffset() {
       return this.fields * 5
+    },
+    prependOffset() {
+      return this.prepend ? 5 : 0
     },
   },
 }
