@@ -3,9 +3,50 @@
     <text :x="x + 'mm'" :y="y + 'mm'" class="svg-label">
       {{ label }}
     </text>
-    <g v-for="field in fields" :key="field + 1">
-      <svgNumberBox :x="x + (field - 1) * 5 + 'mm'" :y="y + 3 + 'mm'" />
+
+    <g v-if="decimals === 0">
+      <rect
+        :x="x + 'mm'"
+        :y="y + 3 + 'mm'"
+        :width="textFieldWidth + 'mm'"
+        height="8mm"
+        stroke="black"
+        fill="transparent"
+        stroke-width="1"
+      />
+      <text
+        v-if="append"
+        :x="x + textFieldWidth + 1 + 'mm'"
+        :y="y + 9 + 'mm'"
+        class="svg-append"
+      >
+        {{ append }}
+      </text>
     </g>
+
+    <g v-else-if="decimals > 0">
+      <svgNumberBox
+        v-for="field in fields"
+        :key="field + 1"
+        :x="x + (field - 1) * 5 + 'mm'"
+        :y="y + 3 + 'mm'"
+      />
+
+      <circle
+        :cx="x + fieldOffset + 1 + 'mm'"
+        :cy="y + 10 + 'mm'"
+        r="2"
+        fill="black"
+      />
+
+      <svgNumberBox
+        v-for="decimal in decimals"
+        :key="'d-' + decimal"
+        :x="x + fieldOffset + 2 + (decimal - 1) * 5 + 'mm'"
+        :y="y + 3 + 'mm'"
+      />
+    </g>
+
     <g v-if="info">
       <text :x="x + 'mm'" :y="y + 15 + 'mm'" class="svg-text-small">
         {{ info }}
@@ -17,32 +58,6 @@
         class="svg-text-small"
       >
         {{ infoExtra }}
-      </text>
-    </g>
-
-    <g v-if="decimals > 0">
-      <circle
-        :cx="x + fieldOffset + 1 + 'mm'"
-        :cy="y + 10 + 'mm'"
-        r="2"
-        fill="black"
-      />
-
-      <g v-for="decimal in decimals" :key="'d-' + decimal">
-        <svgNumberBox
-          :x="x + fieldOffset + 2 + (decimal - 1) * 5 + 'mm'"
-          :y="y + 3 + 'mm'"
-        />
-      </g>
-    </g>
-
-    <g v-else-if="append">
-      <text
-        :x="x + fieldOffset + 1 + 'mm'"
-        :y="y + 9 + 'mm'"
-        class="svg-append"
-      >
-        {{ append }}
       </text>
     </g>
   </g>
@@ -93,6 +108,11 @@ export default {
       required: false,
       default: null,
     },
+  },
+  data() {
+    return {
+      textFieldWidth: 25,
+    }
   },
   computed: {
     fieldOffset() {
