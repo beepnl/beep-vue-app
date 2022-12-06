@@ -35,6 +35,14 @@
       </v-list-item>
     </v-list> -->
 
+    <svgHeader
+      v-if="item.input === 'label'"
+      :x="nextX"
+      :y="nextY"
+      :header="label"
+      :sub-header="item.description"
+    />
+
     <svgSelect
       v-if="item.input === 'select' || item.input === 'options'"
       :x="nextX"
@@ -220,6 +228,7 @@ import svgDate from '@components/svg/svg-date.vue'
 // import sampleCode from '@components/svg/sample-code.vue'
 // import selectHiveOrApiary from '@components/svg/select-hive-or-apiary.vue'
 import svgGradeRating from '@components/svg/svg-grade-rating.vue'
+import svgHeader from '@components/svg/svg-header.vue'
 import svgNumber from '@components/svg/svg-number.vue'
 import svgSelect from '@components/svg/svg-select.vue'
 import svgSmileRating from '@components/svg/svg-smile-rating.vue'
@@ -236,6 +245,7 @@ export default {
     // sampleCode,
     // selectHiveOrApiary,
     svgGradeRating,
+    svgHeader,
     svgNumber,
     svgSelect,
     svgSmileRating,

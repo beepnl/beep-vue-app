@@ -456,7 +456,7 @@
       </v-icon>
     </div>
 
-    <svg
+    <!-- <svg
       :class="!printMode ? 'ma-8' : ''"
       xmlns="http://www.w3.org/2000/svg"
       x="0mm"
@@ -496,16 +496,6 @@
       <svgHeader :x="15" :y="84" :header="$t('overall')" :sub-header="'Test'" />
 
       <svgSelect :x="15" :y="93" :label="'Star test'" :stars="true" />
-
-      <!-- <svgSelect
-        v-if="selectedChecklist"
-        :x="57"
-        :y="93"
-        :label="'Select test'"
-        :items="
-          selectedChecklist.categories[0].children[0].children[0].children
-        "
-      /> -->
 
       <svgInput
         v-if="selectedChecklist"
@@ -601,6 +591,53 @@
       />
 
       <svgSelect :x="15" :y="315" :label="'Page 2 test'" :stars="true" />
+    </svg> -->
+
+    <svg
+      :class="!printMode ? 'ma-8' : ''"
+      xmlns="http://www.w3.org/2000/svg"
+      x="0mm"
+      y="0mm"
+      width="210mm"
+      height="594mm"
+    >
+      <rect v-if="!printMode" width="100%" height="100%" fill="#ffedc5" />
+
+      <svgPrintCorners :pageNumber="1" />
+      <svgPrintCorners :pageNumber="2" />
+
+      <svgText :x="15" :y="17" :label="$tc('Location', 1)" :line="true" />
+
+      <svgText :x="57" :y="17" :label="$tc('Hive', 1)" :line="true" />
+
+      <svgDate
+        :x="108"
+        :y="17"
+        :label="$t('Date_of_inspection')"
+        :time="true"
+      />
+
+      <svgHeader
+        :x="15"
+        :y="38"
+        :header="testCategory.trans[locale] || testCategory.name"
+      />
+
+      <g
+        v-for="(category, catIndex) in testCategory.children"
+        :key="catIndex"
+        cols="12"
+      >
+        <svgFieldset :category="category" />
+      </g>
+
+      <!-- <g
+        v-for="(item, index) in testCategory"
+        :key="'svg-input-' + index"
+        cols="12"
+      >
+        <svgInput :next-x="15" :next-y="17" :item="item" />
+      </g> -->
     </svg>
 
     <v-container v-if="!ready">
@@ -646,14 +683,15 @@ import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 // import svgCheckbox from '@/src/components/svg/svg-checkbox.vue'
 import svgDate from '@/src/components/svg/svg-date.vue'
 import svgHeader from '@/src/components/svg/svg-header.vue'
-import svgNumber from '@/src/components/svg/svg-number.vue'
+// import svgNumber from '@/src/components/svg/svg-number.vue'
 import svgPrintCorners from '@/src/components/svg/svg-print-corners.vue'
-import svgSelect from '@/src/components/svg/svg-select.vue'
-import svgSmileRating from '@/src/components/svg/svg-smile-rating.vue'
-import svgGradeRating from '@/src/components/svg/svg-grade-rating.vue'
+// import svgSelect from '@/src/components/svg/svg-select.vue'
+// import svgSmileRating from '@/src/components/svg/svg-smile-rating.vue'
+// import svgGradeRating from '@/src/components/svg/svg-grade-rating.vue'
 import svgText from '@/src/components/svg/svg-text.vue'
-import svgYesNoRating from '@/src/components/svg/svg-yes-no-rating.vue'
-import svgInput from '@/src/components/svg/svg-input.vue'
+// import svgYesNoRating from '@/src/components/svg/svg-yes-no-rating.vue'
+// import svgInput from '@/src/components/svg/svg-input.vue'
+import svgFieldset from '@/src/components/svg/svg-fieldset.vue'
 
 export default {
   components: {
@@ -669,14 +707,15 @@ export default {
     // svgCheckbox,
     svgDate,
     svgHeader,
-    svgNumber,
+    // svgNumber,
     svgPrintCorners,
-    svgSelect,
-    svgSmileRating,
-    svgGradeRating,
+    // svgSelect,
+    // svgSmileRating,
+    // svgGradeRating,
     svgText,
-    svgYesNoRating,
-    svgInput,
+    // svgYesNoRating,
+    // svgInput,
+    svgFieldset,
   },
   mixins: [
     momentFormat,
@@ -925,6 +964,9 @@ export default {
         })
       }
       return treeselectArray
+    },
+    testCategory() {
+      return this.selectedChecklist ? this.selectedChecklist.categories[3] : {}
     },
     treeselectLabel() {
       var label = ''

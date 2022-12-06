@@ -18,6 +18,8 @@ export const state = {
   diarySearch: null,
   activeInspectionDate: null,
   tempSavedInspection: null,
+  svgItemCounter: 0,
+  svgColumnCounter: 0,
 }
 export const getters = {
   ...resource.getters,
@@ -60,6 +62,12 @@ export const getters = {
   tempSavedInspection: (state) => {
     return state.tempSavedInspection
   },
+  svgItemCounter: (state) => {
+    return state.svgItemCounter
+  },
+  svgColumnCounter: (state) => {
+    return state.svgColumnCounter
+  },
 }
 export const mutations = {
   ...resource.mutations,
@@ -93,6 +101,12 @@ export const mutations = {
   setData: function(state, payload) {
     state[payload.prop] = payload.value
   },
+  setItemCounter: function(state, payload) {
+    state.svgItemCounter = payload
+  },
+  setColumnCounter: function(state, payload) {
+    state.svgColumnCounter = payload
+  },
   clearFilters: function(state) {
     state.diaryFilterByAttention = false
     state.diaryFilterByGroup = 'off'
@@ -113,6 +127,8 @@ export const mutations = {
     state.diarySearch = null
     state.activeInspectionDate = null
     state.tempSavedInspection = null
+    state.svgItemCounter = 0
+    state.svgColumnCounter = 0
   },
 }
 export const actions = {
