@@ -3,7 +3,7 @@
     <text :x="x + 'mm'" :y="y + 'mm'" class="svg-label">
       {{ label }}
     </text>
-    <g v-if="!presetItems">
+    <g v-if="!presetItems && flattenedItems.length <= 6">
       <template v-for="(item, index) in flattenedItems">
         <svgCheckbox
           v-if="!item.hasChildren"
@@ -20,6 +20,24 @@
           {{ itemText(item) }}
         </text>
       </template>
+    </g>
+
+    <g v-else-if="!presetItems && flattenedItems.length > 6">
+      <rect
+        :x="x + 'mm'"
+        :y="y + 3 + 'mm'"
+        width="42mm"
+        height="11mm"
+        stroke="black"
+        fill="transparent"
+        stroke-width="1"
+      />
+      <text :x="x + 'mm'" :y="y + 18 + 'mm'" class="svg-text-small">
+        {{ $t('Too_many_items_exp_1') }}
+      </text>
+      <text :x="x + 'mm'" :y="y + 22 + 'mm'" class="svg-text-small">
+        {{ $t('Too_many_items_exp_2') }}
+      </text>
     </g>
 
     <g v-else>

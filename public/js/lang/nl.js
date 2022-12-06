@@ -925,6 +925,8 @@ const translations = {
   pwa_addhome_button_label: "2. Tik op 'Zet op beginscherm'",
 
   star: 'ster | sterren',
+  Too_many_items_exp_1: 'Er zijn teveel opties om te printen,',
+  Too_many_items_exp_2: 'vul hier je eigen antwoord in',
 }
 
 export default translations

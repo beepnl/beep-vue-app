@@ -901,6 +901,8 @@ const translations = {
   pwa_addhome_button_label: "2. Tap 'Add to home'.",
 
   star: 'star | stars',
+  Too_many_items_exp_1: 'There are too many options to print,',
+  Too_many_items_exp_2: 'fill in your own answer here.',
 }
 
 export default translations

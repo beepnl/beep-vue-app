@@ -29,7 +29,7 @@
       v-if="line"
       :x="x + 'mm'"
       :y="y + 2 + 'mm'"
-      width="45mm"
+      width="42mm"
       height="11mm"
       stroke="black"
       fill="transparent"
