@@ -25,17 +25,22 @@ export default {
   },
   mixins: [svgStyles],
   props: {
-    x: {
-      type: Number,
+    position: {
+      type: Object,
       required: true,
     },
-    y: {
-      type: Number,
-      required: true,
-    },
+
     label: {
       type: String,
       required: true,
+    },
+  },
+  computed: {
+    x() {
+      return this.position ? this.position.x : null
+    },
+    y() {
+      return this.position ? this.position.y : null
     },
   },
 }

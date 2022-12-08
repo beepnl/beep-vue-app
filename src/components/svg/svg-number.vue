@@ -77,14 +77,11 @@ export default {
   },
   mixins: [svgStyles],
   props: {
-    x: {
-      type: Number,
+    position: {
+      type: Object,
       required: true,
     },
-    y: {
-      type: Number,
-      required: true,
-    },
+
     fields: {
       type: Number,
       required: false,
@@ -131,6 +128,12 @@ export default {
     },
     prependOffset() {
       return this.prepend ? 5 : 0
+    },
+    x() {
+      return this.position ? this.position.x : null
+    },
+    y() {
+      return this.position ? this.position.y : null
     },
   },
 }

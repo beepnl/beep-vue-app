@@ -606,29 +606,34 @@
       <svgPrintCorners :pageNumber="1" />
       <svgPrintCorners :pageNumber="2" />
 
-      <svgText :x="15" :y="17" :label="$tc('Location', 1)" :line="true" />
+      <svgText
+        :position="{ x: 15, y: 17 }"
+        :label="$tc('Location', 1)"
+        :line="true"
+      />
 
-      <svgText :x="57" :y="17" :label="$tc('Hive', 1)" :line="true" />
+      <svgText
+        :position="{ x: 60, y: 17 }"
+        :label="$tc('Hive', 1)"
+        :line="true"
+      />
 
       <svgDate
-        :x="108"
-        :y="17"
+        :position="{ x: 105, y: 17 }"
         :label="$t('Date_of_inspection')"
         :time="true"
       />
 
       <svgHeader
-        :x="15"
-        :y="38"
+        v-if="testCategory"
+        :position="{ x: 15, y: 38 }"
         :header="testCategory.trans[locale] || testCategory.name"
       />
 
-      <g
-        v-for="(category, catIndex) in testCategory.children"
-        :key="catIndex"
-        cols="12"
-      >
-        <svgFieldset :category="category" />
+      <g v-if="testCategory" cols="12">
+        <template v-for="(category, catIndex) in testCategory.children">
+          <svgFieldset :key="catIndex" :category="category" />
+        </template>
       </g>
 
       <!-- <g
@@ -966,7 +971,9 @@ export default {
       return treeselectArray
     },
     testCategory() {
-      return this.selectedChecklist ? this.selectedChecklist.categories[3] : {}
+      return this.selectedChecklist
+        ? this.selectedChecklist.categories[3]
+        : null
     },
     treeselectLabel() {
       var label = ''

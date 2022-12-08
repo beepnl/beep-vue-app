@@ -38,7 +38,7 @@
       v-else-if="line"
       :x="x + 'mm'"
       :y="y + 2 + 'mm'"
-      width="42mm"
+      :width="width"
       height="11mm"
       stroke="black"
       fill="transparent"
@@ -53,14 +53,11 @@ import { svgStyles } from '@mixins/svgMixin'
 export default {
   mixins: [svgStyles],
   props: {
-    x: {
-      type: Number,
+    position: {
+      type: Object,
       required: true,
     },
-    y: {
-      type: Number,
-      required: true,
-    },
+
     label: {
       type: String,
       required: true,
@@ -68,7 +65,7 @@ export default {
     width: {
       type: String,
       required: false,
-      default: '80mm',
+      default: '42mm',
     },
     height: {
       type: String,
@@ -84,6 +81,14 @@ export default {
       type: Boolean,
       required: false,
       default: false,
+    },
+  },
+  computed: {
+    x() {
+      return this.position ? this.position.x : null
+    },
+    y() {
+      return this.position ? this.position.y : null
     },
   },
 }

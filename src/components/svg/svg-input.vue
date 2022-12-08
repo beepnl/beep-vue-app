@@ -37,51 +37,45 @@
 
     <svgHeader
       v-if="item.input === 'label'"
-      :x="nextX"
-      :y="nextY"
+      :position="position"
       :header="label"
       :sub-header="item.description"
     />
 
     <svgSelect
       v-if="item.input === 'select' || item.input === 'options'"
-      :x="nextX"
-      :y="nextY"
-      :label="label"
+      :position="position"
+      :label="header + label"
       :items="item.children"
     />
 
     <svgDate
       v-if="item.input === 'date'"
-      :x="nextX"
-      :y="nextY"
-      :label="label"
+      :position="position"
+      :label="header + label"
       :time="true"
     />
 
     <svgGradeRating
       v-if="item.input === 'grade'"
-      :x="nextX"
-      :y="nextY"
-      :label="label"
+      :position="position"
+      :label="header + label"
       :info="'Grade between 1 and 10'"
       :info-extra="'(1 = Poor, 10 = Excellent)'"
     />
 
     <svgNumber
       v-if="item.input === 'number_percentage'"
-      :x="nextX"
-      :y="nextY"
-      :label="label"
+      :position="position"
+      :label="header + label"
       :append="'%'"
       :info="'Percentage between 0 and 100'"
     />
 
     <svgNumber
       v-if="item.input === 'number_degrees'"
-      :x="nextX"
-      :y="nextY"
-      :label="label"
+      :position="position"
+      :label="header + label"
       :append="'°'"
       :info="'Number of degrees between -180° and 180°'"
     />
@@ -93,9 +87,8 @@
           item.input === 'number_positive' ||
           item.input === 'slider'
       "
-      :x="nextX"
-      :y="nextY"
-      :label="label"
+      :position="position"
+      :label="header + label"
     />
 
     <svgNumber
@@ -105,9 +98,8 @@
           item.input === 'square_25cm2' ||
           item.input === 'number_3_decimals'
       "
-      :x="nextX"
-      :y="nextY"
-      :label="label"
+      :position="position"
+      :label="header + label"
       :decimals="
         item.input === 'number_2_decimals'
           ? 2
@@ -119,50 +111,44 @@
 
     <svgNumber
       v-if="item.input === 'number_negative'"
-      :x="nextX"
-      :y="nextY"
-      :label="label"
+      :position="position"
+      :label="header + label"
       :prepend="'_'"
       :info="'Negative number (below 0)'"
     />
 
     <svgSelect
       v-if="item.input === 'score_amount'"
-      :x="nextX"
-      :y="nextY"
-      :label="label"
+      :position="position"
+      :label="header + label"
       :score-amount="true"
     />
 
     <svgSelect
       v-if="item.input === 'score_quality'"
-      :x="nextX"
-      :y="nextY"
-      :label="label"
+      :position="position"
+      :label="header + label"
       :score-quality="true"
     />
 
     <svgSelect
       v-if="item.input === 'score'"
-      :x="nextX"
-      :y="nextY"
-      :label="label"
+      :position="position"
+      :label="header + label"
       :stars="true"
     />
 
     <svgText
       v-if="item.input === 'text'"
-      :x="nextX"
-      :y="nextY"
-      :label="label"
+      :position="position"
+      :label="header + label"
       :line="false"
     />
 
     <svgSmileRating
       v-if="item.input === 'smileys_3'"
-      :x="nextX"
-      :y="nextY"
-      :label="label"
+      :position="position"
+      :label="header + label"
     />
 
     <svgYesNoRating
@@ -171,9 +157,8 @@
           item.input === 'boolean_yes_red' ||
           item.input === 'list_item'
       "
-      :x="nextX"
-      :y="nextY"
-      :label="label"
+      :position="position"
+      :label="header + label"
     />
 
     <SvgFieldset
@@ -214,8 +199,7 @@
           item.input !== 'list_item' &&
           item.input !== 'date'
       "
-      :x="nextX"
-      :y="nextY"
+      :position="position"
       :label="label + ' (' + item.input + ')'"
       :input-type-not-present="true"
     />
@@ -258,14 +242,24 @@ export default {
       default: null,
       required: true,
     },
-    nextX: {
-      type: Number,
+    header: {
+      type: String,
+      default: '',
+      required: false,
+    },
+    position: {
+      type: Object,
+      default: null,
       required: true,
     },
-    nextY: {
-      type: Number,
-      required: true,
-    },
+    // nextX: {
+    //   type: Number,
+    //   required: true,
+    // },
+    // nextY: {
+    //   type: Number,
+    //   required: true,
+    // },
   },
   computed: {
     label() {

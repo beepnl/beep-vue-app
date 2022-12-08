@@ -70,14 +70,11 @@ export default {
   },
   mixins: [svgStyles],
   props: {
-    x: {
-      type: Number,
+    position: {
+      type: Object,
       required: true,
     },
-    y: {
-      type: Number,
-      required: true,
-    },
+
     label: {
       type: String,
       required: true,
@@ -141,6 +138,12 @@ export default {
         starArray.push(i + ' ' + this.$i18n.tc('star', i))
       }
       return starArray
+    },
+    x() {
+      return this.position ? this.position.x : null
+    },
+    y() {
+      return this.position ? this.position.y : null
     },
   },
   methods: {

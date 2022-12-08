@@ -26,7 +26,7 @@ export const svgStyles = {
       return this.fontSizeSmall + this.fontFamily + this.textColor
     },
     svgLabel() {
-      return this.fontSize + this.fontFamily + this.textColor
+      return this.fontSizeSmall + this.fontFamily + this.textColor
     },
     svgText() {
       return this.fontSize + this.fontFamily + this.textColor
