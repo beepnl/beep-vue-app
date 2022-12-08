@@ -18,7 +18,7 @@
       </text>
       <g v-for="field in item.fields" :key="item.title + '-f-' + field">
         <svgNumberBox
-          :x="x + item.offset + (field - 1) * 5 + 'mm'"
+          :x="x + item.offset + (field - 1) * numberBoxWidth + 'mm'"
           :y="y + 5 + 'mm'"
         />
       </g>
@@ -26,16 +26,16 @@
     <g v-if="time">
       <g v-for="(item, index) in timeFormat" :key="item.title + index">
         <text
-          :x="x + item.offset + 'mm'"
-          :y="y + 4 + 'mm'"
+          :x="x + timeXOffset(item) + 'mm'"
+          :y="y + timeYOffset + 4 + 'mm'"
           :style="svgTextSmall"
         >
           {{ item.title }}
         </text>
         <text
           v-if="!item.first"
-          :x="x + item.offset - 2 + 'mm'"
-          :y="y + 10 + 'mm'"
+          :x="x + timeXOffset(item) - 2 + 'mm'"
+          :y="y + timeYOffset + 10 + 'mm'"
           width="3mm"
           :style="svgText"
         >
@@ -43,8 +43,8 @@
         </text>
         <g v-for="field in item.fields" :key="item.title + '-h-' + field">
           <svgNumberBox
-            :x="x + item.offset + (field - 1) * 5 + 'mm'"
-            :y="y + 5 + 'mm'"
+            :x="x + timeXOffset(item) + (field - 1) * numberBoxWidth + 'mm'"
+            :y="y + timeYOffset + 5 + 'mm'"
           />
         </g>
       </g>
@@ -75,6 +75,17 @@ export default {
       required: false,
       default: false,
     },
+    columns: {
+      type: Number,
+      required: false,
+      default: 2,
+    },
+  },
+  data() {
+    return {
+      numberBoxWidth: 4.7,
+      spaceWidth: 3,
+    }
   },
   computed: {
     dateFormat() {
@@ -88,35 +99,47 @@ export default {
         {
           title: this.$i18n.t('month'),
           fields: 2,
-          offset: 23,
+          offset: 4 * this.numberBoxWidth + this.spaceWidth,
         },
         {
           title: this.$i18n.tc('Day', 1),
           fields: 2,
-          offset: 36,
+          offset: 6 * this.numberBoxWidth + 2 * this.spaceWidth,
         },
       ]
     },
     timeFormat() {
       return [
         {
-          title: this.$i18n.tc('Hour', 2) + ' (24)',
+          title: this.$i18n.tc('Hour_short', 2) + ' (24)',
           fields: 2,
-          offset: 50,
+          offset: 8 * this.numberBoxWidth + 3 * this.spaceWidth,
           first: true,
+          index: 0,
         },
         {
           title: this.$i18n.tc('Minute', 2),
           fields: 2,
-          offset: 63,
+          offset: 10 * this.numberBoxWidth + 4 * this.spaceWidth,
+          index: 1,
         },
       ]
+    },
+    timeYOffset() {
+      return this.columns === 1 ? 13 : 0
     },
     x() {
       return this.position ? this.position.x : null
     },
     y() {
       return this.position ? this.position.y : null
+    },
+  },
+  methods: {
+    timeXOffset(item) {
+      return this.columns === 1
+        ? item.index * 2 * this.numberBoxWidth + item.index * this.spaceWidth
+        : item.offset
     },
   },
 }

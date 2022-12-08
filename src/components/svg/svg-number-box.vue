@@ -2,7 +2,7 @@
   <rect
     :x="x"
     :y="y"
-    width="5mm"
+    width="4.7mm"
     height="8mm"
     stroke="black"
     fill="transparent"

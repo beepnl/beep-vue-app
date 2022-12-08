@@ -54,6 +54,7 @@
       :position="position"
       :label="labelWithHeader"
       :time="true"
+      :columns="1"
     />
 
     <svgGradeRating

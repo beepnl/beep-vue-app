@@ -4,7 +4,7 @@ export const svgStyles = {
       colorGrey: '#606060; ',
       colorGreyDark: '#242424; ',
       fontSize: 'font: 4mm ',
-      fontSizeSmall: 'font: 3mm ',
+      fontSizeSmall: 'font: 2.8mm ',
       fontSizeLarge: 'font: 6mm ',
       fontFamily: 'Helvetica, Arial, sans-serif; ',
     }

@@ -32,7 +32,7 @@
       <svgNumberBox
         v-for="field in fields"
         :key="field + 1"
-        :x="x + (field - 1) * 5 + 'mm'"
+        :x="x + (field - 1) * numberBoxWidth + 'mm'"
         :y="y + 3 + 'mm'"
       />
 
@@ -46,7 +46,7 @@
       <svgNumberBox
         v-for="decimal in decimals"
         :key="'d-' + decimal"
-        :x="x + fieldOffset + 2 + (decimal - 1) * 5 + 'mm'"
+        :x="x + fieldOffset + 2 + (decimal - 1) * numberBoxWidth + 'mm'"
         :y="y + 3 + 'mm'"
       />
     </g>
@@ -81,7 +81,6 @@ export default {
       type: Object,
       required: true,
     },
-
     fields: {
       type: Number,
       required: false,
@@ -120,11 +119,12 @@ export default {
   data() {
     return {
       textFieldWidth: 25,
+      numberBoxWidth: 4.7,
     }
   },
   computed: {
     fieldOffset() {
-      return this.fields * 5
+      return this.fields * this.numberBoxWidth
     },
     prependOffset() {
       return this.prepend ? 5 : 0

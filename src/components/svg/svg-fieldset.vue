@@ -15,13 +15,7 @@
         :sub-header="category.description"
       /> -->
 
-      <g
-        v-if="
-          category.children.length > 0 &&
-            category.name !== 'liebefelder_method' &&
-            category.name !== 'top_photo_analysis'
-        "
-      >
+      <g v-if="category.children.length > 0">
         <g v-for="(item, index) in category.children" :key="index">
           <SvgInput
             v-if="item.input !== 'label'"
