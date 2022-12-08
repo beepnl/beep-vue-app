@@ -16,7 +16,7 @@
         height="8mm"
         stroke="black"
         fill="transparent"
-        stroke-width="1"
+        stroke-width="0.5"
       />
       <text
         v-if="append"
@@ -119,7 +119,7 @@ export default {
   data() {
     return {
       textFieldWidth: 25,
-      numberBoxWidth: 4.7,
+      numberBoxWidth: 4.65,
     }
   },
   computed: {

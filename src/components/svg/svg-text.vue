@@ -11,7 +11,7 @@
       :y1="y + 11 + 'mm'"
       :y2="y + 11 + 'mm'"
       stroke="black"
-      stroke-width="1"
+      stroke-width="0.5"
     />
 
     <text
@@ -31,7 +31,7 @@
       :height="height"
       stroke="black"
       fill="transparent"
-      stroke-width="1"
+      stroke-width="0.5"
     />
 
     <rect
@@ -42,7 +42,7 @@
       height="11mm"
       stroke="black"
       fill="transparent"
-      stroke-width="1"
+      stroke-width="0.5"
     />
   </g>
 </template>

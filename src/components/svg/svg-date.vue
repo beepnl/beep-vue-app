@@ -83,7 +83,7 @@ export default {
   },
   data() {
     return {
-      numberBoxWidth: 4.7,
+      numberBoxWidth: 4.65,
       spaceWidth: 3,
     }
   },

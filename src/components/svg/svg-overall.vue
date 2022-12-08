@@ -43,6 +43,15 @@
       :height="'22mm'"
       :label="$t('reminder')"
     />
+
+    <line
+      :x1="x - 3 + 'mm'"
+      :x2="x + 186 + 'mm'"
+      :y1="y + 76 + 'mm'"
+      :y2="y + 76 + 'mm'"
+      stroke="black"
+      stroke-width="0.5"
+    />
   </g>
 </template>
 

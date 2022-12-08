@@ -20,7 +20,7 @@ export const svgStyles = {
       return this.fontSizeLarge + this.fontFamily + this.textColor
     },
     svgHeader() {
-      return this.fontSize + this.fontFamily + 'text-decoration: underline;'
+      return this.fontSize + this.fontFamily + 'font-weight: 600;'
     },
     svgInputText() {
       return this.fontSizeSmall + this.fontFamily + this.textColor
