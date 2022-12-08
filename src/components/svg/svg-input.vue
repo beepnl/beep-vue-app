@@ -1,39 +1,11 @@
 <template>
   <g>
-    <!-- <selectHiveOrApiary
-      v-if="item.input === 'select_hive' || item.input === 'select_location'"
-      :object="object"
-      :item="item"
-    ></selectHiveOrApiary> -->
-
     <!-- <imageUploader
       v-if="item.input === 'image'"
       :object="object"
       :item="item"
       :input-disabled="disabled"
     ></imageUploader> -->
-
-    <!-- <v-list v-if="item.input === 'list'" class="inspection-checkbox-list">
-      <v-list-item
-        v-for="(listItem, index) in item.children"
-        :key="index"
-        class="inspection-list-item"
-        @click.capture.stop="toggleSelect(listItem, item.id)"
-      >
-        <v-list-item-action>
-          <v-checkbox
-            v-model="selectedArray"
-            multiple
-            :value="listItem.id.toString()"
-          />
-        </v-list-item-action>
-        <v-list-item-content>
-          <v-list-item-title>{{
-            listItem.trans[locale] || listItem.name
-          }}</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-    </v-list> -->
 
     <svgHeader
       v-if="item.input === 'label'"
@@ -151,7 +123,7 @@
     />
 
     <svgText
-      v-if="item.input === 'select_hive'"
+      v-if="item.input === 'select_hive' || item.input === 'select_location'"
       :position="position"
       :label="labelWithHeader"
       :line="true"
@@ -200,7 +172,8 @@
           item.input !== 'list' &&
           item.input !== 'list_item' &&
           item.input !== 'date' &&
-          item.input !== 'select_hive'
+          item.input !== 'select_hive' &&
+          item.input !== 'select_location'
       "
       :position="position"
       :label="label + ' (' + item.input + ')'"
@@ -213,7 +186,6 @@
 import svgDate from '@components/svg/svg-date.vue'
 // import imageUploader from '@components/svg/image-uploader.vue'
 // import sampleCode from '@components/svg/sample-code.vue'
-// import selectHiveOrApiary from '@components/svg/select-hive-or-apiary.vue'
 import svgGradeRating from '@components/svg/svg-grade-rating.vue'
 import svgHeader from '@components/svg/svg-header.vue'
 import svgNumber from '@components/svg/svg-number.vue'
@@ -230,7 +202,6 @@ export default {
     // imageUploader,
     // labelWithDescription,
     // sampleCode,
-    // selectHiveOrApiary,
     svgGradeRating,
     svgHeader,
     svgNumber,

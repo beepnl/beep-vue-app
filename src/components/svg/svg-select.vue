@@ -32,7 +32,7 @@
         height="11mm"
         stroke="black"
         fill="transparent"
-        stroke-width="1"
+        stroke-width="0.5"
       />
       <text :x="x + 'mm'" :y="y + 18 + 'mm'" :style="svgTextSmall">
         {{ $t('Too_many_items_exp_1') }}

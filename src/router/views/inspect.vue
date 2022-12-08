@@ -599,9 +599,10 @@
       x="0mm"
       y="0mm"
       width="210mm"
+      fill="#ffffff"
       :height="svgPageNr * 297 + 'mm'"
     >
-      <rect v-if="!printMode" width="100%" height="100%" fill="#ffedc5" />
+      <!-- <rect v-if="!printMode" width="100%" height="100%" fill="#ffedc5" /> -->
 
       <g v-for="pageNr in svgPageNr" :key="'page' + pageNr">
         <svgPrintCorners :pageNumber="pageNr" />
@@ -609,14 +610,30 @@
 
       <svgOverall :position="{ x: 15, y: 16 }" />
 
+      <svgDivider :y="92" />
+
       <svgHeader
-        v-if="testCategory"
+        v-if="testCategory1"
         :position="{ x: 15, y: 98 }"
-        :header="testCategory.trans[locale] || testCategory.name"
+        :header="testCategory1.trans[locale] || testCategory1.name"
       />
 
-      <g v-if="testCategory" cols="12">
-        <template v-for="(category, catIndex) in testCategory.children">
+      <g v-if="testCategory1" cols="12">
+        <template v-for="(category, catIndex) in testCategory1.children">
+          <svgFieldset :key="catIndex" :category="category" />
+        </template>
+      </g>
+
+      <svgDivider :y="415" />
+
+      <svgHeader
+        v-if="testCategory2"
+        :position="{ x: 15, y: 421 }"
+        :header="testCategory2.trans[locale] || testCategory2.name"
+      />
+
+      <g v-if="testCategory2" cols="12">
+        <template v-for="(category, catIndex) in testCategory2.children">
           <svgFieldset :key="catIndex" :category="category" />
         </template>
       </g>
@@ -664,6 +681,7 @@ import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 
 // import svgCheckbox from '@/src/components/svg/svg-checkbox.vue'
 // import svgDate from '@/src/components/svg/svg-date.vue'
+import svgDivider from '@/src/components/svg/svg-divider.vue'
 import svgHeader from '@/src/components/svg/svg-header.vue'
 // import svgNumber from '@/src/components/svg/svg-number.vue'
 import svgOverall from '@/src/components/svg/svg-overall.vue'
@@ -689,6 +707,7 @@ export default {
     Treeselect,
     // svgCheckbox,
     // svgDate,
+    svgDivider,
     svgHeader,
     // svgNumber,
     svgOverall,
@@ -950,9 +969,14 @@ export default {
       }
       return treeselectArray
     },
-    testCategory() {
+    testCategory1() {
       return this.selectedChecklist
-        ? this.selectedChecklist.categories[2]
+        ? this.selectedChecklist.categories[0]
+        : null
+    },
+    testCategory2() {
+      return this.selectedChecklist
+        ? this.selectedChecklist.categories[3]
         : null
     },
     treeselectLabel() {

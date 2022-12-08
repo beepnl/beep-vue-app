@@ -93,7 +93,7 @@ export default {
       return rH.toFixed(1)
     },
     yMax() {
-      return this.yMargin + (this.rowsPerPage - 1) * this.rowHeight + 1
+      return this.yMargin + (this.rowsPerPage - 1) * this.rowHeight - 1
     },
   },
   methods: {
@@ -127,7 +127,7 @@ export default {
         })
 
         if (
-          y % this.pageHeight > this.yMax &&
+          Math.floor(y) % this.pageHeight >= this.yMax &&
           columnCounter === this.columnsPerRow
         ) {
           // go to next page
