@@ -43,7 +43,11 @@
     />
 
     <svgSelect
-      v-if="item.input === 'select' || item.input === 'options'"
+      v-if="
+        item.input === 'select' ||
+          item.input === 'options' ||
+          item.input === 'list'
+      "
       :position="position"
       :label="labelWithHeader"
       :items="item.children"
@@ -146,6 +150,13 @@
       :line="false"
     />
 
+    <svgText
+      v-if="item.input === 'select_hive'"
+      :position="position"
+      :label="labelWithHeader"
+      :line="true"
+    />
+
     <svgSmileRating
       v-if="item.input === 'smileys_3'"
       :position="position"
@@ -186,8 +197,10 @@
           item.input !== 'date' &&
           item.input !== 'select' &&
           item.input !== 'options' &&
+          item.input !== 'list' &&
           item.input !== 'list_item' &&
-          item.input !== 'date'
+          item.input !== 'date' &&
+          item.input !== 'select_hive'
       "
       :position="position"
       :label="label + ' (' + item.input + ')'"

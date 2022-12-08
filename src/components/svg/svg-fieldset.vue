@@ -1,70 +1,41 @@
 <template>
   <g>
-    <g
-      v-if="
-        category.children.length > 0 &&
-          (category.input === 'label' ||
-            (category.input !== 'list' &&
-              category.input !== 'select' &&
-              category.input !== 'options'))
-      "
-    >
-      <!-- <svgHeader
-        :position="calcXY('header', category.id)"
-        :header="label"
-        :sub-header="category.description"
-      /> -->
-
-      <g v-if="category.children.length > 0">
-        <g v-for="(item, index) in category.children" :key="index">
-          <SvgInput
-            v-if="item.input !== 'label'"
-            :position="calcXY('1', item.id)"
-            :header="label"
-            :item="item"
-          ></SvgInput>
-          <g
-            v-if="
-              item.children.length > 0 &&
-                (item.input === 'boolean' ||
-                  item.input === 'boolean_yes_red' ||
-                  item.input === 'list_item')
-            "
-          >
-            <template v-for="child in item.children">
-              <SvgInput
-                :key="'c' + child.id"
-                :position="calcXY('4', child.id)"
-                :header="getHeader(item)"
-                :item="child"
-              ></SvgInput>
-            </template>
-          </g>
-
-          <SvgFieldset
-            v-else-if="item.input === 'label'"
-            :category="item"
-          ></SvgFieldset>
+    <g v-if="category.children.length > 0">
+      <g v-for="(item, index) in category.children" :key="index">
+        <SvgInput
+          v-if="item.input !== 'label'"
+          :position="calcXY(item.id)"
+          :header="label"
+          :item="item"
+        ></SvgInput>
+        <g
+          v-if="
+            item.children.length > 0 &&
+              (item.input === 'boolean' ||
+                item.input === 'boolean_yes_red' ||
+                item.input === 'list_item')
+          "
+        >
+          <template v-for="child in item.children">
+            <SvgInput
+              :key="'c' + child.id"
+              :position="calcXY(child.id)"
+              :header="getHeader(item)"
+              :item="child"
+            ></SvgInput>
+          </template>
         </g>
-      </g>
 
-      <SvgInput
-        v-if="category.children.length === 0"
-        :position="calcXY('2', category.id)"
-        :header="label"
-        :item="category"
-      ></SvgInput>
+        <SvgFieldset
+          v-else-if="item.input === 'label'"
+          :category="item"
+        ></SvgFieldset>
+      </g>
     </g>
 
     <SvgInput
-      v-if="
-        category.input !== 'label' &&
-          (category.children.length === 0 ||
-            category.input === 'list' ||
-            category.input === 'select' ||
-            category.input === 'options')
-      "
-      :position="calcXY('3', category.id)"
+      v-if="category.children.length === 0"
+      :position="calcXY(category.id)"
       :header="label"
       :item="category"
     ></SvgInput>
@@ -129,7 +100,7 @@ export default {
     getHeader(item) {
       return item.trans[this.locale] || item.name
     },
-    calcXY(log = null, id) {
+    calcXY(id) {
       if (this.svgPositionSet[id] === undefined) {
         var itemCounter = this.svgItemCounter + 1
         var columnCounter =
@@ -167,11 +138,9 @@ export default {
         // console.log(
         //   'XY',
         //   itemCounter,
-        //   // rowCounter,
         //   x,
         //   y,
         //   // this.category.name,
-        //   log
         // )
         return { x, y }
       } else {

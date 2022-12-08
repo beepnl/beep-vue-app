@@ -33,7 +33,7 @@
 
     <svgDate
       :position="{ x, y: y + 49 }"
-      :label="$t('reminder') + ' - ' + $t('remind_date')"
+      :label="$t('remind_date')"
       :time="true"
     />
 
@@ -41,7 +41,7 @@
       :position="{ x: x + 90, y: y + 49 }"
       :width="'84mm'"
       :height="'22mm'"
-      :label="$t('reminder')"
+      :label="$t('notes_for_next_inspection')"
     />
 
     <line
