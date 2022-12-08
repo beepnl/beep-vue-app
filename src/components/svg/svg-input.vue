@@ -45,21 +45,21 @@
     <svgSelect
       v-if="item.input === 'select' || item.input === 'options'"
       :position="position"
-      :label="header + label"
+      :label="(header !== label ? header + ': ' : '') + label"
       :items="item.children"
     />
 
     <svgDate
       v-if="item.input === 'date'"
       :position="position"
-      :label="header + label"
+      :label="(header !== label ? header + ': ' : '') + label"
       :time="true"
     />
 
     <svgGradeRating
       v-if="item.input === 'grade'"
       :position="position"
-      :label="header + label"
+      :label="(header !== label ? header + ': ' : '') + label"
       :info="'Grade between 1 and 10'"
       :info-extra="'(1 = Poor, 10 = Excellent)'"
     />
@@ -67,7 +67,7 @@
     <svgNumber
       v-if="item.input === 'number_percentage'"
       :position="position"
-      :label="header + label"
+      :label="(header !== label ? header + ': ' : '') + label"
       :append="'%'"
       :info="'Percentage between 0 and 100'"
     />
@@ -75,7 +75,7 @@
     <svgNumber
       v-if="item.input === 'number_degrees'"
       :position="position"
-      :label="header + label"
+      :label="(header !== label ? header + ': ' : '') + label"
       :append="'°'"
       :info="'Number of degrees between -180° and 180°'"
     />
@@ -88,7 +88,7 @@
           item.input === 'slider'
       "
       :position="position"
-      :label="header + label"
+      :label="(header !== label ? header + ': ' : '') + label"
     />
 
     <svgNumber
@@ -99,7 +99,7 @@
           item.input === 'number_3_decimals'
       "
       :position="position"
-      :label="header + label"
+      :label="(header !== label ? header + ': ' : '') + label"
       :decimals="
         item.input === 'number_2_decimals'
           ? 2
@@ -112,7 +112,7 @@
     <svgNumber
       v-if="item.input === 'number_negative'"
       :position="position"
-      :label="header + label"
+      :label="(header !== label ? header + ': ' : '') + label"
       :prepend="'_'"
       :info="'Negative number (below 0)'"
     />
@@ -120,35 +120,35 @@
     <svgSelect
       v-if="item.input === 'score_amount'"
       :position="position"
-      :label="header + label"
+      :label="(header !== label ? header + ': ' : '') + label"
       :score-amount="true"
     />
 
     <svgSelect
       v-if="item.input === 'score_quality'"
       :position="position"
-      :label="header + label"
+      :label="(header !== label ? header + ': ' : '') + label"
       :score-quality="true"
     />
 
     <svgSelect
       v-if="item.input === 'score'"
       :position="position"
-      :label="header + label"
+      :label="(header !== label ? header + ': ' : '') + label"
       :stars="true"
     />
 
     <svgText
       v-if="item.input === 'text'"
       :position="position"
-      :label="header + label"
+      :label="(header !== label ? header + ': ' : '') + label"
       :line="false"
     />
 
     <svgSmileRating
       v-if="item.input === 'smileys_3'"
       :position="position"
-      :label="header + label"
+      :label="(header !== label ? header + ': ' : '') + label"
     />
 
     <svgYesNoRating
@@ -158,19 +158,18 @@
           item.input === 'list_item'
       "
       :position="position"
-      :label="header + label"
+      :label="(header !== label ? header + ': ' : '') + label"
     />
 
-    <SvgFieldset
+    <!-- <SvgFieldset
       v-if="
         item.children.length > 0 &&
           (item.input === 'boolean' ||
             item.input === 'boolean_yes_red' ||
             item.input === 'list_item')
       "
-      class="mt-6"
       :category="item"
-    />
+    /> -->
 
     <svgText
       v-if="
@@ -222,7 +221,7 @@ import svgYesNoRating from '@components/svg/svg-yes-no-rating.vue'
 export default {
   name: 'SvgInput',
   components: {
-    SvgFieldset: () => import('@components/svg/svg-fieldset.vue'), // needed to fix Vue recursive component error
+    // SvgFieldset: () => import('@components/svg/svg-fieldset.vue'), // needed to fix Vue recursive component error
     svgDate,
     // imageUploader,
     // labelWithDescription,

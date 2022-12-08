@@ -8,13 +8,15 @@
         <svgCheckbox
           v-if="!item.hasChildren"
           :key="'item-' + index"
-          :x="x + item.depth * 5 + 'mm'"
-          :y="y + 3 + index * 6 + 'mm'"
+          :x="x + item.depth * checkBoxSpace + 'mm'"
+          :y="y + 3 + index * checkBoxSpace + 'mm'"
         />
         <text
           :key="'text-' + index"
-          :x="x + item.depth * 5 + (!item.hasChildren ? 6 : 0) + 'mm'"
-          :y="y + 6 + index * 6 + 'mm'"
+          :x="
+            x + item.depth * checkBoxSpace + (!item.hasChildren ? 6 : 0) + 'mm'
+          "
+          :y="y + 6 + index * checkBoxSpace + 'mm'"
           :style="svgInputText"
         >
           {{ itemText(item) }}
@@ -45,12 +47,12 @@
         <svgCheckbox
           :key="'item-' + index"
           :x="x + 'mm'"
-          :y="y + 3 + index * 6 + 'mm'"
+          :y="y + 3 + index * checkBoxSpace + 'mm'"
         />
         <text
           :key="'text-' + index"
-          :x="x + 6 + 'mm'"
-          :y="y + 6 + index * 6 + 'mm'"
+          :x="x + checkBoxSpace + 'mm'"
+          :y="y + 6 + index * checkBoxSpace + 'mm'"
           :style="svgInputText"
         >
           {{ item }}
@@ -99,6 +101,9 @@ export default {
       required: false,
       default: false,
     },
+  },
+  data() {
+    return { checkBoxSpace: 5 }
   },
   computed: {
     locale() {

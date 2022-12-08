@@ -20,6 +20,7 @@ export const state = {
   tempSavedInspection: null,
   svgItemCounter: 0,
   svgColumnCounter: 0,
+  svgPageNr: 1,
   svgPositionSet: {},
 }
 export const getters = {
@@ -69,6 +70,9 @@ export const getters = {
   svgColumnCounter: (state) => {
     return state.svgColumnCounter
   },
+  svgPageNr: (state) => {
+    return state.svgPageNr
+  },
   svgPositionSet: (state) => {
     return state.svgPositionSet
   },
@@ -111,6 +115,9 @@ export const mutations = {
   setColumnCounter: function(state, payload) {
     state.svgColumnCounter = payload
   },
+  setPageNr: function(state, payload) {
+    state.svgPageNr = payload
+  },
   setPosition: function(state, payload) {
     state.svgPositionSet[payload.id] = { x: payload.x, y: payload.y }
   },
@@ -136,6 +143,7 @@ export const mutations = {
     state.tempSavedInspection = null
     state.svgItemCounter = 0
     state.svgColumnCounter = 0
+    state.svgPageNr = 1
     state.svgPositionSet = {}
   },
 }

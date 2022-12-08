@@ -70,7 +70,7 @@ export default {
     height: {
       type: String,
       required: false,
-      default: '30mm',
+      default: '29.5mm',
     },
     line: {
       type: Boolean,

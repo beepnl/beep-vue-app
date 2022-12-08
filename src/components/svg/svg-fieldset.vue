@@ -15,16 +15,40 @@
         :sub-header="category.description"
       /> -->
 
-      <g v-if="category.children.length > 0">
+      <g
+        v-if="
+          category.children.length > 0 &&
+            category.name !== 'liebefelder_method' &&
+            category.name !== 'top_photo_analysis'
+        "
+      >
         <g v-for="(item, index) in category.children" :key="index">
           <SvgInput
             v-if="item.input !== 'label'"
             :position="calcXY('1', item.id)"
-            :header="label + ': '"
+            :header="label"
             :item="item"
           ></SvgInput>
+          <g
+            v-if="
+              item.children.length > 0 &&
+                (item.input === 'boolean' ||
+                  item.input === 'boolean_yes_red' ||
+                  item.input === 'list_item')
+            "
+          >
+            <template v-for="child in item.children">
+              <SvgInput
+                :key="'c' + child.id"
+                :position="calcXY('4', child.id)"
+                :header="getHeader(item)"
+                :item="child"
+              ></SvgInput>
+            </template>
+          </g>
+
           <SvgFieldset
-            v-if="item.input === 'label'"
+            v-else-if="item.input === 'label'"
             :category="item"
           ></SvgFieldset>
         </g>
@@ -33,7 +57,7 @@
       <SvgInput
         v-if="category.children.length === 0"
         :position="calcXY('2', category.id)"
-        :header="label + ': '"
+        :header="label"
         :item="category"
       ></SvgInput>
     </g>
@@ -47,7 +71,7 @@
             category.input === 'options')
       "
       :position="calcXY('3', category.id)"
-      :header="label + ': '"
+      :header="label"
       :item="category"
     ></SvgInput>
   </g>
@@ -74,14 +98,13 @@ export default {
   },
   data() {
     return {
-      xStart: 15,
-      xWidth: 45,
-      yStart: 44,
-      yHeight: 44,
-      yMax: 281,
-      pageNr: 1,
-      pageHeight: 297,
       columnsPerRow: 4,
+      rowsPerPage: 7,
+      xMargin: 15,
+      yStart: 103,
+      yMargin: 16,
+      pageHeight: 297,
+      pageWidth: 210,
     }
   },
   computed: {
@@ -89,51 +112,29 @@ export default {
       'svgItemCounter',
       'svgColumnCounter',
       'svgPositionSet',
+      'svgPageNr',
     ]),
+    columnWidth() {
+      return (this.pageWidth - 2 * this.xMargin) / 4
+    },
     label() {
-      return this.category.trans[this.locale] || this.category.name
+      return this.getHeader(this.category)
     },
     locale() {
       return this.$i18n.locale
     },
-    // rowCounter() {
-    //   return Math.ceil(this.svgItemCounter / 4)
-    // },
-  },
-  created() {
-    console.log('created ', this.category.id)
+    rowHeight() {
+      var rH = (this.pageHeight - 2 * this.yMargin) / this.rowsPerPage
+      return rH.toFixed(1)
+    },
+    yMax() {
+      return this.yMargin + (this.rowsPerPage - 1) * this.rowHeight + 1
+    },
   },
   methods: {
-    // calcX(log = null) {
-    //   if (this.svgPositionSet[this.category.id] === undefined) {
-    //     var itemCounter = this.svgItemCounter + 1
-    //     var columnCounter =
-    //       this.svgColumnCounter >= 4 ? 1 : this.svgColumnCounter + 1
-    //     var newX = this.xStart + (columnCounter - 1) * this.xWidth
-    //     this.$store.commit('inspections/setItemCounter', itemCounter)
-    //     this.$store.commit('inspections/setColumnCounter', columnCounter)
-    //     var newY = this.calcY('hi')
-    //     this.$store.commit('inspections/setPosition', {
-    //       id: this.category.id,
-    //       x: newX,
-    //       y: newY,
-    //     })
-    //     console.log('X', itemCounter, columnCounter, newX, this.category.name)
-    //     return newX
-    //   } else {
-    //     return this.svgPositionSet[this.category.id].x
-    //   }
-    // },
-    // calcY(log = null) {
-    //   if (this.svgPositionSet[this.category.id] === undefined) {
-    //     var newY = this.yStart + (this.rowCounter - 1) * this.yHeight
-    //     console.log('Y', this.rowCounter, newY, this.category.name)
-    //     console.log(log)
-    //     return newY
-    //   } else {
-    //     return this.svgPositionSet[this.category.id].y
-    //   }
-    // },
+    getHeader(item) {
+      return item.trans[this.locale] || item.name
+    },
     calcXY(log = null, id) {
       if (this.svgPositionSet[id] === undefined) {
         var itemCounter = this.svgItemCounter + 1
@@ -146,8 +147,11 @@ export default {
             ? 1
             : Math.ceil(itemCounter / this.columnsPerRow)
 
-        var x = this.xStart + (columnCounter - 1) * this.xWidth
-        var y = this.yStart + (rowCounter - 1) * this.yHeight
+        var x = this.xMargin + (columnCounter - 1) * this.columnWidth
+        var y =
+          (this.svgPageNr === 1 ? this.yStart : this.yMargin) +
+          (this.svgPageNr - 1) * this.pageHeight +
+          (rowCounter - 1) * this.rowHeight
 
         this.$store.commit('inspections/setItemCounter', itemCounter)
         this.$store.commit('inspections/setColumnCounter', columnCounter)
@@ -156,15 +160,25 @@ export default {
           x,
           y,
         })
-        console.log(
-          'XY',
-          itemCounter,
-          // rowCounter,
-          // newX,
-          // newY,
-          this.category.name,
-          log
-        )
+
+        if (
+          y % this.pageHeight > this.yMax &&
+          columnCounter === this.columnsPerRow
+        ) {
+          // go to next page
+          this.$store.commit('inspections/setPageNr', this.svgPageNr + 1)
+          this.$store.commit('inspections/setItemCounter', 0)
+        }
+
+        // console.log(
+        //   'XY',
+        //   itemCounter,
+        //   // rowCounter,
+        //   x,
+        //   y,
+        //   // this.category.name,
+        //   log
+        // )
         return { x, y }
       } else {
         return this.svgPositionSet[id]

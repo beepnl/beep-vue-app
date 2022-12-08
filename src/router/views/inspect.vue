@@ -599,34 +599,19 @@
       x="0mm"
       y="0mm"
       width="210mm"
-      height="594mm"
+      :height="svgPageNr * 297 + 'mm'"
     >
       <rect v-if="!printMode" width="100%" height="100%" fill="#ffedc5" />
 
-      <svgPrintCorners :pageNumber="1" />
-      <svgPrintCorners :pageNumber="2" />
+      <g v-for="pageNr in svgPageNr" :key="'page' + pageNr">
+        <svgPrintCorners :pageNumber="pageNr" />
+      </g>
 
-      <svgText
-        :position="{ x: 15, y: 17 }"
-        :label="$tc('Location', 1)"
-        :line="true"
-      />
-
-      <svgText
-        :position="{ x: 60, y: 17 }"
-        :label="$tc('Hive', 1)"
-        :line="true"
-      />
-
-      <svgDate
-        :position="{ x: 105, y: 17 }"
-        :label="$t('Date_of_inspection')"
-        :time="true"
-      />
+      <svgOverall :position="{ x: 15, y: 16 }" />
 
       <svgHeader
         v-if="testCategory"
-        :position="{ x: 15, y: 38 }"
+        :position="{ x: 15, y: 98 }"
         :header="testCategory.trans[locale] || testCategory.name"
       />
 
@@ -635,14 +620,6 @@
           <svgFieldset :key="catIndex" :category="category" />
         </template>
       </g>
-
-      <!-- <g
-        v-for="(item, index) in testCategory"
-        :key="'svg-input-' + index"
-        cols="12"
-      >
-        <svgInput :next-x="15" :next-y="17" :item="item" />
-      </g> -->
     </svg>
 
     <v-container v-if="!ready">
@@ -686,14 +663,15 @@ import Treeselect from '@riophae/vue-treeselect'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 
 // import svgCheckbox from '@/src/components/svg/svg-checkbox.vue'
-import svgDate from '@/src/components/svg/svg-date.vue'
+// import svgDate from '@/src/components/svg/svg-date.vue'
 import svgHeader from '@/src/components/svg/svg-header.vue'
 // import svgNumber from '@/src/components/svg/svg-number.vue'
+import svgOverall from '@/src/components/svg/svg-overall.vue'
 import svgPrintCorners from '@/src/components/svg/svg-print-corners.vue'
 // import svgSelect from '@/src/components/svg/svg-select.vue'
 // import svgSmileRating from '@/src/components/svg/svg-smile-rating.vue'
 // import svgGradeRating from '@/src/components/svg/svg-grade-rating.vue'
-import svgText from '@/src/components/svg/svg-text.vue'
+// import svgText from '@/src/components/svg/svg-text.vue'
 // import svgYesNoRating from '@/src/components/svg/svg-yes-no-rating.vue'
 // import svgInput from '@/src/components/svg/svg-input.vue'
 import svgFieldset from '@/src/components/svg/svg-fieldset.vue'
@@ -710,14 +688,15 @@ export default {
     yesNoRating,
     Treeselect,
     // svgCheckbox,
-    svgDate,
+    // svgDate,
     svgHeader,
     // svgNumber,
+    svgOverall,
     svgPrintCorners,
     // svgSelect,
     // svgSmileRating,
     // svgGradeRating,
-    svgText,
+    // svgText,
     // svgYesNoRating,
     // svgInput,
     svgFieldset,
@@ -784,6 +763,7 @@ export default {
       'inspectionEdited',
       'bulkInspection',
       'tempSavedInspection',
+      'svgPageNr',
     ]),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),

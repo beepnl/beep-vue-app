@@ -2,8 +2,8 @@
   <rect
     :x="x"
     :y="y"
-    width="4mm"
-    height="4mm"
+    width="3.5mm"
+    height="3.5mm"
     stroke="black"
     fill="transparent"
     stroke-width="1"

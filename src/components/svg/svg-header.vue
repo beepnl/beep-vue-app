@@ -2,8 +2,7 @@
   <g>
     <text :x="x + 'mm'" :y="y + 'mm'">
       <tspan :style="svgHeader">{{ header }}</tspan>
-      -
-      <tspan :style="svgText">{{ subHeader }}</tspan>
+      <tspan v-if="subHeader" :style="svgText">{{ ' - ' + subHeader }}</tspan>
     </text>
   </g>
 </template>
@@ -18,7 +17,6 @@ export default {
       type: Object,
       required: true,
     },
-
     header: {
       type: String,
       required: true,
