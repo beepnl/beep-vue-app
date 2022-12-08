@@ -3,7 +3,7 @@
     <text :x="x + 'mm'" :y="y + 'mm'" :style="svgLabel">
       {{ label }}
     </text>
-    <g v-if="!presetItems && flattenedItems.length <= 6">
+    <g v-if="items && flattenedItems.length <= 6">
       <template v-for="(item, index) in flattenedItems">
         <svgCheckbox
           v-if="!item.hasChildren"
@@ -24,7 +24,7 @@
       </template>
     </g>
 
-    <g v-else-if="!presetItems && flattenedItems.length > 6">
+    <g v-else-if="flattenedItems.length > 6">
       <rect
         :x="x + 'mm'"
         :y="y + 3 + 'mm'"
@@ -40,6 +40,31 @@
       <text :x="x + 'mm'" :y="y + 22 + 'mm'" :style="svgTextSmall">
         {{ $t('Too_many_items_exp_2') }}
       </text>
+    </g>
+
+    <g v-else-if="starRating">
+      <template v-for="(stars, index) in maxStars">
+        <svgCheckbox
+          :key="'stc-' + stars"
+          :x="x + 'mm'"
+          :y="y + 3 + index * checkBoxSpace + 'mm'"
+        />
+        <template v-for="star in stars">
+          <svg
+            :key="'sc' + index + star"
+            :x="x + star * 5.2 + 'mm'"
+            :y="y + 2 + index * checkBoxSpace + 'mm'"
+            width="5mm"
+            height="5mm"
+            viewBox="0 0 24 24"
+          >
+            <path
+              :style="fillColorGrey"
+              d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"
+            />
+          </svg>
+        </template>
+      </template>
     </g>
 
     <g v-else>
@@ -96,14 +121,17 @@ export default {
       required: false,
       default: false,
     },
-    stars: {
+    starRating: {
       type: Boolean,
       required: false,
       default: false,
     },
   },
   data() {
-    return { checkBoxSpace: 5 }
+    return {
+      checkBoxSpace: 5,
+      maxStars: 5,
+    }
   },
   computed: {
     locale() {
@@ -117,8 +145,6 @@ export default {
         ? this.scoreAmountItems
         : this.scoreQuality
         ? this.scoreQualityItems
-        : this.stars
-        ? this.starItems
         : false
     },
     scoreAmountItems() {
@@ -136,13 +162,6 @@ export default {
         this.$i18n.t('Good'),
         this.$i18n.t('Excellent'),
       ]
-    },
-    starItems() {
-      var starArray = []
-      for (var i = 1; i <= 5; i++) {
-        starArray.push(i + ' ' + this.$i18n.tc('star', i))
-      }
-      return starArray
     },
     x() {
       return this.position ? this.position.x : null

@@ -952,7 +952,7 @@ export default {
     },
     testCategory() {
       return this.selectedChecklist
-        ? this.selectedChecklist.categories[3]
+        ? this.selectedChecklist.categories[0]
         : null
     },
     treeselectLabel() {

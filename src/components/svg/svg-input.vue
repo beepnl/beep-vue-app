@@ -45,21 +45,21 @@
     <svgSelect
       v-if="item.input === 'select' || item.input === 'options'"
       :position="position"
-      :label="(header !== label ? header + ': ' : '') + label"
+      :label="labelWithHeader"
       :items="item.children"
     />
 
     <svgDate
       v-if="item.input === 'date'"
       :position="position"
-      :label="(header !== label ? header + ': ' : '') + label"
+      :label="labelWithHeader"
       :time="true"
     />
 
     <svgGradeRating
       v-if="item.input === 'grade'"
       :position="position"
-      :label="(header !== label ? header + ': ' : '') + label"
+      :label="labelWithHeader"
       :info="'Grade between 1 and 10'"
       :info-extra="'(1 = Poor, 10 = Excellent)'"
     />
@@ -67,7 +67,7 @@
     <svgNumber
       v-if="item.input === 'number_percentage'"
       :position="position"
-      :label="(header !== label ? header + ': ' : '') + label"
+      :label="labelWithHeader"
       :append="'%'"
       :info="'Percentage between 0 and 100'"
     />
@@ -75,7 +75,7 @@
     <svgNumber
       v-if="item.input === 'number_degrees'"
       :position="position"
-      :label="(header !== label ? header + ': ' : '') + label"
+      :label="labelWithHeader"
       :append="'°'"
       :info="'Number of degrees between -180° and 180°'"
     />
@@ -88,7 +88,7 @@
           item.input === 'slider'
       "
       :position="position"
-      :label="(header !== label ? header + ': ' : '') + label"
+      :label="labelWithHeader"
     />
 
     <svgNumber
@@ -99,7 +99,7 @@
           item.input === 'number_3_decimals'
       "
       :position="position"
-      :label="(header !== label ? header + ': ' : '') + label"
+      :label="labelWithHeader"
       :decimals="
         item.input === 'number_2_decimals'
           ? 2
@@ -112,7 +112,7 @@
     <svgNumber
       v-if="item.input === 'number_negative'"
       :position="position"
-      :label="(header !== label ? header + ': ' : '') + label"
+      :label="labelWithHeader"
       :prepend="'_'"
       :info="'Negative number (below 0)'"
     />
@@ -120,35 +120,35 @@
     <svgSelect
       v-if="item.input === 'score_amount'"
       :position="position"
-      :label="(header !== label ? header + ': ' : '') + label"
+      :label="labelWithHeader"
       :score-amount="true"
     />
 
     <svgSelect
       v-if="item.input === 'score_quality'"
       :position="position"
-      :label="(header !== label ? header + ': ' : '') + label"
+      :label="labelWithHeader"
       :score-quality="true"
     />
 
     <svgSelect
       v-if="item.input === 'score'"
       :position="position"
-      :label="(header !== label ? header + ': ' : '') + label"
-      :stars="true"
+      :label="labelWithHeader"
+      :star-rating="true"
     />
 
     <svgText
       v-if="item.input === 'text'"
       :position="position"
-      :label="(header !== label ? header + ': ' : '') + label"
+      :label="labelWithHeader"
       :line="false"
     />
 
     <svgSmileRating
       v-if="item.input === 'smileys_3'"
       :position="position"
-      :label="(header !== label ? header + ': ' : '') + label"
+      :label="labelWithHeader"
     />
 
     <svgYesNoRating
@@ -158,18 +158,8 @@
           item.input === 'list_item'
       "
       :position="position"
-      :label="(header !== label ? header + ': ' : '') + label"
+      :label="labelWithHeader"
     />
-
-    <!-- <SvgFieldset
-      v-if="
-        item.children.length > 0 &&
-          (item.input === 'boolean' ||
-            item.input === 'boolean_yes_red' ||
-            item.input === 'list_item')
-      "
-      :category="item"
-    /> -->
 
     <svgText
       v-if="
@@ -251,18 +241,13 @@ export default {
       default: null,
       required: true,
     },
-    // nextX: {
-    //   type: Number,
-    //   required: true,
-    // },
-    // nextY: {
-    //   type: Number,
-    //   required: true,
-    // },
   },
   computed: {
     label() {
       return this.item.trans[this.locale] || this.item.name
+    },
+    labelWithHeader() {
+      return (this.header !== this.label ? this.header + ': ' : '') + this.label
     },
     locale() {
       return this.$i18n.locale

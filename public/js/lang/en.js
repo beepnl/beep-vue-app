@@ -900,7 +900,6 @@ const translations = {
   pwa_share_button_label: '1. Tap the share icon in the menu bar below.',
   pwa_addhome_button_label: "2. Tap 'Add to home'.",
 
-  star: 'star | stars',
   Too_many_items_exp_1: 'There are too many options to',
   Too_many_items_exp_2: 'print, fill in your own answer',
 }
