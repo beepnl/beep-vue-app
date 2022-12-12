@@ -971,12 +971,12 @@ export default {
     },
     testCategory1() {
       return this.selectedChecklist
-        ? this.selectedChecklist.categories[0]
+        ? this.selectedChecklist.categories[2]
         : null
     },
     testCategory2() {
       return this.selectedChecklist
-        ? this.selectedChecklist.categories[3]
+        ? this.selectedChecklist.categories[1]
         : null
     },
     treeselectLabel() {

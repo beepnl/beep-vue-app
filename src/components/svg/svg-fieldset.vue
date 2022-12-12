@@ -5,7 +5,7 @@
         <SvgInput
           v-if="item.input !== 'label'"
           :position="calcXY(item.id)"
-          :header="label"
+          :header="label + ' ' + calcHeight(item)"
           :item="item"
         ></SvgInput>
         <g
@@ -20,7 +20,7 @@
             <SvgInput
               :key="'c' + child.id"
               :position="calcXY(child.id)"
-              :header="getHeader(item)"
+              :header="getHeader(item) + ' ' + calcHeight(child)"
               :item="child"
             ></SvgInput>
           </template>
@@ -36,7 +36,7 @@
     <SvgInput
       v-if="category.children.length === 0"
       :position="calcXY(category.id)"
-      :header="label"
+      :header="label + ' ' + calcHeight(category)"
       :item="category"
     ></SvgInput>
   </g>
@@ -70,6 +70,18 @@ export default {
       yMargin: 16,
       pageHeight: 297,
       pageWidth: 210,
+      inputHeight: {
+        label: 6,
+        select_item: 5,
+        date: 32,
+        grade: 27,
+        number_info: 22,
+        number: 17,
+        boolean: 13,
+        text: 37,
+        text_line: 19,
+        smileys_3: 21,
+      },
     }
   },
   computed: {
@@ -99,6 +111,45 @@ export default {
   methods: {
     getHeader(item) {
       return item.trans[this.locale] || item.name
+    },
+    calcHeight(item) {
+      switch (true) {
+        case item.input.includes('select_'):
+          return this.inputHeight.text_line
+        case item.input.includes('boolean') || item.input === 'list_item':
+          return this.inputHeight.boolean
+        case item.input === 'number_percentage' ||
+          item.input === 'number_degrees' ||
+          item.input === 'number_negative':
+          return this.inputHeight.number_info
+        case item.input.includes('number') || item.input.includes('square'):
+          return this.inputHeight.number
+        case item.input === 'select' ||
+          item.input === 'options' ||
+          item.input === 'list':
+          return this.calcSelectHeight(item.children.length)
+        case item.input === 'score_amount' || item.input === 'score_quality':
+          return this.calcSelectHeight(4)
+        case item.input === 'score':
+          return this.calcSelectHeight(5)
+        case item.input === 'label' ||
+          item.input === 'date' ||
+          item.input === 'grade' ||
+          item.input === 'text' ||
+          item.input === 'smileys_3':
+          return this.inputHeight[item.input]
+      }
+      // else: not yet implemented
+      return this.inputHeight.number_info
+    },
+    calcSelectHeight(children) {
+      var height = 10
+      if (children > 6) {
+        height = this.inputHeight.date // 29
+      } else {
+        height = children * this.inputHeight.select_item + 7
+      }
+      return height
     },
     calcXY(id) {
       if (this.svgPositionSet[id] === undefined) {
