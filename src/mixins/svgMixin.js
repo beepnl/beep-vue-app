@@ -3,7 +3,7 @@ export const svgStyles = {
     return {
       colorGrey: '#606060; ',
       colorGreyDark: '#242424; ',
-      fontSize: 'font: 4mm ',
+      fontSize: 'font: 3.8mm ',
       fontSizeHeader: 'font: 600 4mm ',
       fontSizeSmall: 'font: 2.8mm ',
       fontSizeLarge: 'font: 6mm ',

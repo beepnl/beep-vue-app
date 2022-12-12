@@ -5,13 +5,13 @@
     </text>
     <g v-for="grade in 10" :key="'g' + grade">
       <text
-        :x="x + (grade - 1) * 5 + (grade !== 10 ? 1 : 0) + 'mm'"
+        :x="x + (grade - 1) * 4.5 + (grade !== 10 ? 0.5 : -0.5) + 'mm'"
         :y="y + 5 + 'mm'"
         :style="svgText"
       >
         {{ grade }}
       </text>
-      <svgCheckbox :x="x + (grade - 1) * 5 + 'mm'" :y="y + 6 + 'mm'" />
+      <svgCheckbox :x="x + (grade - 1) * 4.5 + 'mm'" :y="y + 6 + 'mm'" />
     </g>
     <g v-if="info">
       <text :x="x + 'mm'" :y="y + 15 + 'mm'" :style="svgTextSmall">
