@@ -37,8 +37,8 @@
       v-if="item.input === 'grade'"
       :position="position"
       :label="labelWithHeader"
-      :info="'Grade between 1 and 10'"
-      :info-extra="'(1 = Poor, 10 = Excellent)'"
+      :info="$t('Grade_exp_1')"
+      :info-extra="$t('Grade_exp_2')"
     />
 
     <svgNumber
@@ -46,7 +46,7 @@
       :position="position"
       :label="labelWithHeader"
       :append="'%'"
-      :info="'Percentage between 0 and 100'"
+      :info="$t('Percentage_exp')"
     />
 
     <svgNumber
@@ -54,7 +54,7 @@
       :position="position"
       :label="labelWithHeader"
       :append="'°'"
-      :info="'Number of degrees between -180° and 180°'"
+      :info="$t('Degrees_exp')"
     />
 
     <svgNumber
@@ -91,7 +91,7 @@
       :position="position"
       :label="labelWithHeader"
       :prepend="'_'"
-      :info="'Negative number (below 0)'"
+      :info="$t('Negative_exp')"
     />
 
     <svgSelect

@@ -328,11 +328,8 @@ const translations = {
 
   /* Measurements */
   Hour: 'Uur',
-  Hour_short: 'Uur | Uur',
   hour: 'uur | uur',
   day: 'dag | dagen',
-  Day: 'Dag | Dagen',
-  Minute: 'Minuut | Minuten',
   week: 'Week',
   month: 'Maand',
   year: 'Jaar',
@@ -925,6 +922,15 @@ const translations = {
   pwa_share_button_label: '1. Tik op het deel-icoon in de menubalk onderin.',
   pwa_addhome_button_label: "2. Tik op 'Zet op beginscherm'",
 
+  /* offline inspection sheet */
+  Hour_short: 'Uur | Uur',
+  Day: 'Dag | Dagen',
+  Minute: 'Minuut | Minuten',
+  Percentage_exp: 'Percentage tussen 0 en 100',
+  Grade_exp_1: 'Cijfer tussen 1 en 10',
+  Grade_exp_2: '(1 = Slecht, 10 = Uitstekend)',
+  Degrees_exp: 'Aantal graden tussen -180° en 180°',
+  Negative_exp: 'Negatief getal (lager dan 0)',
   Too_many_items_exp_1: 'Er zijn teveel opties om te printen,',
   Too_many_items_exp_2: 'vul hier je eigen antwoord in',
 }
