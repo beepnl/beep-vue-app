@@ -232,7 +232,11 @@ export default {
       return this.item.trans[this.locale] || this.item.name
     },
     labelWithHeader() {
-      return (this.header !== this.label ? this.header + ': ' : '') + this.label
+      return (
+        (this.header !== '' && this.header !== this.label
+          ? this.header + ': '
+          : '') + this.label
+      )
     },
     locale() {
       return this.$i18n.locale

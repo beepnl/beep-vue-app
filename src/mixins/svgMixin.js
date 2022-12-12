@@ -5,6 +5,7 @@ export const svgStyles = {
       colorGreyDark: '#242424; ',
       fontSize: 'font: 3.8mm ',
       fontSizeHeader: 'font: 600 4mm ',
+      fontSizeHeaderSmall: 'font: 600 2.8mm ',
       fontSizeSmall: 'font: 2.8mm ',
       fontSizeLarge: 'font: 6mm ',
       fontFamily: 'Helvetica, Arial, sans-serif; ',
@@ -22,6 +23,9 @@ export const svgStyles = {
     },
     svgHeader() {
       return this.fontSizeHeader + this.fontFamily + this.textColor
+    },
+    svgHeaderSmall() {
+      return this.fontSizeHeaderSmall + this.fontFamily + this.textColor
     },
     svgInputText() {
       return this.fontSizeSmall + this.fontFamily + this.textColor

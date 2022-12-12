@@ -1,7 +1,7 @@
 <template>
   <g>
     <text :x="x + 'mm'" :y="y + 'mm'">
-      <tspan :style="svgHeader">{{ header }}</tspan>
+      <tspan :style="small ? svgHeaderSmall : svgHeader">{{ header }}</tspan>
       <tspan v-if="subHeader" :style="svgText">{{ ' - ' + subHeader }}</tspan>
     </text>
   </g>
@@ -20,6 +20,11 @@ export default {
     header: {
       type: String,
       required: true,
+    },
+    small: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
     subHeader: {
       type: String,

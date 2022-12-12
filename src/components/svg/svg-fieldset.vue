@@ -9,6 +9,13 @@
               category.input !== 'options'))
       "
     >
+      <svgHeader
+        v-if="category.input === 'label'"
+        :position="calcXY(category, true)"
+        :header="getHeader(category)"
+        :small="true"
+      />
+
       <g v-if="category.children.length > 0">
         <g v-for="(item, index) in category.children" :key="index">
           <SvgInput
@@ -29,7 +36,7 @@
               <SvgInput
                 :key="'c' + child.id"
                 :position="calcXY(child)"
-                :header="getHeader(item)"
+                :header="getHeader(item, child)"
                 :item="child"
               ></SvgInput>
             </template>
@@ -68,11 +75,13 @@
 <script>
 import { mapGetters } from 'vuex'
 import SvgInput from '@components/svg/svg-input.vue'
+import svgHeader from '@components/svg/svg-header.vue'
 
 export default {
   name: 'SvgFieldset',
   components: {
     SvgFieldset: () => import('@components/svg/svg-fieldset.vue'), // needed to fix Vue recursive component error
+    svgHeader,
     SvgInput,
   },
   props: {
@@ -92,7 +101,7 @@ export default {
       pageWidth: 210,
       maxRowHeight: 40,
       inputHeight: {
-        label: 8,
+        label: 4,
         select_item: 5,
         date: 32,
         grade: 27,
@@ -118,7 +127,7 @@ export default {
       return (this.pageWidth - 2 * this.xMargin) / 4
     },
     label() {
-      return this.getHeader(this.category)
+      return '' // this.getHeader(this.category)
     },
     locale() {
       return this.$i18n.locale
@@ -128,8 +137,10 @@ export default {
     },
   },
   methods: {
-    getHeader(item) {
-      return item.trans[this.locale] || item.name
+    getHeader(item, child = null) {
+      return child === null || child.parent_id === item.id
+        ? item.trans[this.locale] || item.name
+        : ''
     },
     calcHeight(item) {
       switch (true) {
@@ -171,7 +182,7 @@ export default {
       }
       return height
     },
-    calcXY(item) {
+    calcXY(item, fullRowHeight = false) {
       if (this.svgPositionSet[item.id] === undefined) {
         var itemCounter = this.svgItemCounter + 1
         var itemHeight = this.calcHeight(item)
@@ -179,10 +190,13 @@ export default {
           // init row height as first item height
           this.$store.commit('inspections/setRowHeight', itemHeight)
         }
-        if (this.svgColumnCounter >= this.columnsPerRow) {
+        if (fullRowHeight || this.svgColumnCounter >= this.columnsPerRow) {
           var columnCounter = 1
           // for new row, set Y (height so far) as previous Y + row height of previous row
-          this.$store.commit('inspections/setY', this.svgY + this.svgRowHeight)
+          this.$store.commit(
+            'inspections/setY',
+            this.svgY + this.svgRowHeight - (fullRowHeight ? 1 : 0)
+          )
           // reset row height to current item height for new row
           this.$store.commit('inspections/setRowHeight', itemHeight)
         } else {
@@ -208,6 +222,10 @@ export default {
         //     y
         //   )
         // }
+
+        if (fullRowHeight) {
+          columnCounter = this.columnsPerRow
+        }
 
         this.$store.commit('inspections/setItemCounter', itemCounter)
         this.$store.commit('inspections/setColumnCounter', columnCounter)
