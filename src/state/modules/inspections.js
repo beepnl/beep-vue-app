@@ -165,8 +165,9 @@ export const mutations = {
 }
 export const actions = {
   ...resource.actions,
-  nextPageNr: function({ state, commit }) {
+  nextPage: function({ state, commit }) {
     commit('setPageNr', state.svgPageNr + 1)
+    commit('setColumnCounter', 0)
     commit('setItemCounter', 0)
     commit('setRowHeight', 0)
     commit('setY', 0)

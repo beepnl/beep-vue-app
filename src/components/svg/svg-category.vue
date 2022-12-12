@@ -99,10 +99,7 @@ export default {
 
         if (Math.floor(y) % this.pageHeight >= this.yMax) {
           // go to next page
-          this.$store.commit('inspections/setPageNr', this.svgPageNr + 1)
-          this.$store.commit('inspections/setItemCounter', 0)
-          this.$store.commit('inspections/setRowHeight', 0)
-          this.$store.commit('inspections/setY', 0)
+          this.$store.dispatch('inspections/nextPage')
         }
 
         return { x, y }

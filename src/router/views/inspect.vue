@@ -456,143 +456,6 @@
       </v-icon>
     </div>
 
-    <!-- <svg
-      :class="!printMode ? 'ma-8' : ''"
-      xmlns="http://www.w3.org/2000/svg"
-      x="0mm"
-      y="0mm"
-      width="210mm"
-      height="594mm"
-    >
-      <rect v-if="!printMode" width="100%" height="100%" fill="#ffedc5" />
-
-      <svgPrintCorners :pageNumber="1" />
-      <svgPrintCorners :pageNumber="2" />
-
-      <svgText :x="15" :y="17" :label="$tc('Location', 1)" :line="true" />
-
-      <svgText :x="57" :y="17" :label="$tc('Hive', 1)" :line="true" />
-
-      <svgDate
-        :x="108"
-        :y="17"
-        :label="$t('Date_of_inspection')"
-        :time="true"
-      />
-
-      <svgHeader
-        :x="15"
-        :y="38"
-        :header="$t('overall')"
-        :sub-header="$t('positive_impression')"
-      />
-
-      <svgSmileRating :x="15" :y="44" :label="$t('positive_impression')" />
-
-      <svgYesNoRating :x="57" :y="44" :label="$t('needs_attention')" />
-
-      <svgText :x="108" :y="44" :label="$t('notes')" />
-
-      <svgHeader :x="15" :y="84" :header="$t('overall')" :sub-header="'Test'" />
-
-      <svgSelect :x="15" :y="93" :label="'Star test'" :stars="true" />
-
-      <svgInput
-        v-if="selectedChecklist"
-        :next-x="57"
-        :next-y="93"
-        :item="{
-          input: 'select',
-          trans: {
-            en: 'English test',
-          },
-          name: 'Select test',
-          children:
-            selectedChecklist.categories[0].children[0].children[0].children,
-        }"
-      />
-
-      <svgNumber :x="108" :y="93" :label="'Number test'" :decimals="0" />
-
-      <svgNumber
-        :x="150"
-        :y="93"
-        :label="'NumberDecimals test'"
-        :decimals="2"
-      />
-
-      <svgDate :x="15" :y="132" :label="'Date test'" />
-
-      <svgDate :x="78" :y="132" :label="'Datetime test'" :time="true" />
-
-      <svgNumber
-        :x="15"
-        :y="155"
-        :label="'NumberPercentage test'"
-        :fields="3"
-        :append="'%'"
-        :info="'Percentage between 0 and 100'"
-      />
-
-      <svgNumber
-        :x="78"
-        :y="155"
-        :label="'NumberDegrees test'"
-        :fields="3"
-        :append="'°'"
-        :info="'Number of degrees between -180° and 180°'"
-      />
-
-      <svgGradeRating
-        :x="150"
-        :y="155"
-        :label="'Grade test'"
-        :info="'Grade between 1 and 10'"
-        :info-extra="'(1 = Poor, 10 = Excellent)'"
-      />
-
-      <svgSelect
-        :x="15"
-        :y="185"
-        :label="'Slider score quality test'"
-        :score-quality="true"
-      />
-
-      <svgSelect
-        :x="78"
-        :y="185"
-        :label="'Slider score amount test'"
-        :score-amount="true"
-      />
-
-      <svgSelect
-        v-if="selectedChecklist"
-        :x="150"
-        :y="185"
-        :label="'Nested select test'"
-        :items="
-          selectedChecklist.categories[0].children[0].children[1].children
-        "
-      />
-
-      <svgNumber
-        :x="15"
-        :y="228"
-        :label="'NumberNegative test'"
-        :prepend="'_'"
-        :info="'Negative number (below 0)'"
-      />
-
-      <svgSelect
-        :x="15"
-        :y="258"
-        :label="'Slider score amount test'"
-        :score-amount="true"
-      />
-
-      <svgSelect :x="15" :y="315" :label="'Page 2 test'" :stars="true" />
-    </svg> -->
-
     <svg
       :class="!printMode ? 'ma-8' : ''"
       xmlns="http://www.w3.org/2000/svg"
@@ -615,40 +478,6 @@
           <svgCategory :key="catIndex" :category="category" />
         </template>
       </g>
-
-      <!-- <g v-if="selectedChecklist" cols="12">
-        <template v-for="(category, catIndex) in selectedChecklist.categories">
-          <svgFieldset :key="catIndex" :category="category" />
-        </template>
-      </g> -->
-
-      <!-- <svgDivider :y="92" />
-
-      <svgHeader
-        v-if="testCategory1"
-        :position="{ x: 15, y: 98 }"
-        :header="testCategory1.trans[locale] || testCategory1.name"
-      />
-
-      <g v-if="testCategory1" cols="12">
-        <template v-for="(category, catIndex) in testCategory1.children">
-          <svgFieldset :key="catIndex" :category="category" />
-        </template>
-      </g> -->
-
-      <!-- <svgDivider :y="(svgPageNr - 1) * 297 + svgY + 5" />
-
-      <svgHeader
-        v-if="testCategory2"
-        :position="{ x: 15, y: (svgPageNr - 1) * 297 + svgY + 11 }"
-        :header="testCategory2.trans[locale] || testCategory2.name"
-      />
-
-      <g v-if="testCategory2" cols="12">
-        <template v-for="(category, catIndex) in testCategory2.children">
-          <svgFieldset :key="catIndex" :category="category" />
-        </template>
-      </g> -->
     </svg>
 
     <v-container v-if="!ready">
@@ -691,21 +520,9 @@ import smileRating from '@components/input-fields/smile-rating.vue'
 import Treeselect from '@riophae/vue-treeselect'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 
-// import svgCheckbox from '@/src/components/svg/svg-checkbox.vue'
-// import svgDate from '@/src/components/svg/svg-date.vue'
 import svgCategory from '@/src/components/svg/svg-category.vue'
-// import svgDivider from '@/src/components/svg/svg-divider.vue'
-// import svgHeader from '@/src/components/svg/svg-header.vue'
-// import svgNumber from '@/src/components/svg/svg-number.vue'
 import svgOverall from '@/src/components/svg/svg-overall.vue'
 import svgPrintCorners from '@/src/components/svg/svg-print-corners.vue'
-// import svgSelect from '@/src/components/svg/svg-select.vue'
-// import svgSmileRating from '@/src/components/svg/svg-smile-rating.vue'
-// import svgGradeRating from '@/src/components/svg/svg-grade-rating.vue'
-// import svgText from '@/src/components/svg/svg-text.vue'
-// import svgYesNoRating from '@/src/components/svg/svg-yes-no-rating.vue'
-// import svgInput from '@/src/components/svg/svg-input.vue'
-// import svgFieldset from '@/src/components/svg/svg-fieldset.vue'
 
 export default {
   components: {
@@ -718,21 +535,9 @@ export default {
     smileRating,
     yesNoRating,
     Treeselect,
-    // svgCheckbox,
-    // svgDate,
     svgCategory,
-    // svgDivider,
-    // svgHeader,
-    // svgNumber,
     svgOverall,
     svgPrintCorners,
-    // svgSelect,
-    // svgSmileRating,
-    // svgGradeRating,
-    // svgText,
-    // svgYesNoRating,
-    // svgInput,
-    // svgFieldset,
   },
   mixins: [
     momentFormat,
