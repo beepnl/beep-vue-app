@@ -22,6 +22,8 @@ export const state = {
   svgColumnCounter: 0,
   svgPageNr: 1,
   svgPositionSet: {},
+  svgRowHeight: 38,
+  svgY: 0,
 }
 export const getters = {
   ...resource.getters,
@@ -76,6 +78,12 @@ export const getters = {
   svgPositionSet: (state) => {
     return state.svgPositionSet
   },
+  svgRowHeight: (state) => {
+    return state.svgRowHeight
+  },
+  svgY: (state) => {
+    return state.svgY
+  },
 }
 export const mutations = {
   ...resource.mutations,
@@ -115,11 +123,17 @@ export const mutations = {
   setColumnCounter: function(state, payload) {
     state.svgColumnCounter = payload
   },
+  setRowHeight: function(state, payload) {
+    state.svgRowHeight = payload
+  },
   setPageNr: function(state, payload) {
     state.svgPageNr = payload
   },
   setPosition: function(state, payload) {
     state.svgPositionSet[payload.id] = { x: payload.x, y: payload.y }
+  },
+  setY: function(state, payload) {
+    state.svgY = payload
   },
   clearFilters: function(state) {
     state.diaryFilterByAttention = false
@@ -145,8 +159,16 @@ export const mutations = {
     state.svgColumnCounter = 0
     state.svgPageNr = 1
     state.svgPositionSet = {}
+    state.svgRowHeight = 38
+    state.svgY = 0
   },
 }
 export const actions = {
   ...resource.actions,
+  nextPageNr: function({ state, commit }) {
+    commit('setPageNr', state.svgPageNr + 1)
+    commit('setItemCounter', 0)
+    commit('setRowHeight', 0)
+    commit('setY', 0)
+  },
 }

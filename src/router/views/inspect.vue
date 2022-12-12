@@ -610,7 +610,19 @@
 
       <svgOverall :position="{ x: 15, y: 16 }" />
 
-      <svgDivider :y="92" />
+      <g v-if="selectedChecklist" cols="12">
+        <template v-for="(category, catIndex) in selectedChecklist.categories">
+          <svgCategory :key="catIndex" :category="category" />
+        </template>
+      </g>
+
+      <!-- <g v-if="selectedChecklist" cols="12">
+        <template v-for="(category, catIndex) in selectedChecklist.categories">
+          <svgFieldset :key="catIndex" :category="category" />
+        </template>
+      </g> -->
+
+      <!-- <svgDivider :y="92" />
 
       <svgHeader
         v-if="testCategory1"
@@ -622,13 +634,13 @@
         <template v-for="(category, catIndex) in testCategory1.children">
           <svgFieldset :key="catIndex" :category="category" />
         </template>
-      </g>
+      </g> -->
 
-      <svgDivider :y="415" />
+      <!-- <svgDivider :y="(svgPageNr - 1) * 297 + svgY + 5" />
 
       <svgHeader
         v-if="testCategory2"
-        :position="{ x: 15, y: 421 }"
+        :position="{ x: 15, y: (svgPageNr - 1) * 297 + svgY + 11 }"
         :header="testCategory2.trans[locale] || testCategory2.name"
       />
 
@@ -636,7 +648,7 @@
         <template v-for="(category, catIndex) in testCategory2.children">
           <svgFieldset :key="catIndex" :category="category" />
         </template>
-      </g>
+      </g> -->
     </svg>
 
     <v-container v-if="!ready">
@@ -681,8 +693,9 @@ import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 
 // import svgCheckbox from '@/src/components/svg/svg-checkbox.vue'
 // import svgDate from '@/src/components/svg/svg-date.vue'
-import svgDivider from '@/src/components/svg/svg-divider.vue'
-import svgHeader from '@/src/components/svg/svg-header.vue'
+import svgCategory from '@/src/components/svg/svg-category.vue'
+// import svgDivider from '@/src/components/svg/svg-divider.vue'
+// import svgHeader from '@/src/components/svg/svg-header.vue'
 // import svgNumber from '@/src/components/svg/svg-number.vue'
 import svgOverall from '@/src/components/svg/svg-overall.vue'
 import svgPrintCorners from '@/src/components/svg/svg-print-corners.vue'
@@ -692,7 +705,7 @@ import svgPrintCorners from '@/src/components/svg/svg-print-corners.vue'
 // import svgText from '@/src/components/svg/svg-text.vue'
 // import svgYesNoRating from '@/src/components/svg/svg-yes-no-rating.vue'
 // import svgInput from '@/src/components/svg/svg-input.vue'
-import svgFieldset from '@/src/components/svg/svg-fieldset.vue'
+// import svgFieldset from '@/src/components/svg/svg-fieldset.vue'
 
 export default {
   components: {
@@ -707,8 +720,9 @@ export default {
     Treeselect,
     // svgCheckbox,
     // svgDate,
-    svgDivider,
-    svgHeader,
+    svgCategory,
+    // svgDivider,
+    // svgHeader,
     // svgNumber,
     svgOverall,
     svgPrintCorners,
@@ -718,7 +732,7 @@ export default {
     // svgText,
     // svgYesNoRating,
     // svgInput,
-    svgFieldset,
+    // svgFieldset,
   },
   mixins: [
     momentFormat,
@@ -783,6 +797,7 @@ export default {
       'bulkInspection',
       'tempSavedInspection',
       'svgPageNr',
+      'svgY',
     ]),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
@@ -971,7 +986,7 @@ export default {
     },
     testCategory1() {
       return this.selectedChecklist
-        ? this.selectedChecklist.categories[2]
+        ? this.selectedChecklist.categories[3]
         : null
     },
     testCategory2() {
