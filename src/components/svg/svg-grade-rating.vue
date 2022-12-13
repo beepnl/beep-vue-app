@@ -14,13 +14,13 @@
       <svgCheckbox :x="x + (grade - 1) * 4.5 + 'mm'" :y="y + 6 + 'mm'" />
     </g>
     <g v-if="info">
-      <text :x="x + 'mm'" :y="y + 15 + 'mm'" :style="svgTextSmall">
+      <text :x="x + 'mm'" :y="y + 14 + 'mm'" :style="svgTextSmall">
         {{ info }}
       </text>
       <text
         v-if="infoExtra"
         :x="x + 'mm'"
-        :y="y + 19 + 'mm'"
+        :y="y + 17.5 + 'mm'"
         :style="svgTextSmall"
       >
         {{ infoExtra }}

@@ -3,20 +3,20 @@
     <text :x="x + 'mm'" :y="y + 'mm'" :style="svgLabel">
       {{ label }}
     </text>
-    <g v-if="items && flattenedItems.length <= 6">
+    <g v-if="items && flattenedItems.length <= 5">
       <template v-for="(item, index) in flattenedItems">
         <svgCheckbox
           v-if="!item.hasChildren"
           :key="'item-' + index"
           :x="x + item.depth * checkBoxSpace + 'mm'"
-          :y="y + 3 + index * checkBoxSpace + 'mm'"
+          :y="y + 2 + index * checkBoxSpace + 'mm'"
         />
         <text
           :key="'text-' + index"
           :x="
             x + item.depth * checkBoxSpace + (!item.hasChildren ? 6 : 0) + 'mm'
           "
-          :y="y + 6 + index * checkBoxSpace + 'mm'"
+          :y="y + 5 + index * checkBoxSpace + 'mm'"
           :style="svgInputText"
         >
           {{ itemText(item) }}
@@ -24,20 +24,20 @@
       </template>
     </g>
 
-    <g v-else-if="flattenedItems.length > 6">
+    <g v-else-if="flattenedItems.length > 5">
       <rect
         :x="x + 'mm'"
-        :y="y + 3 + 'mm'"
-        width="42mm"
+        :y="y + 2 + 'mm'"
+        width="43mm"
         height="11mm"
         stroke="black"
         fill="transparent"
         stroke-width="0.5"
       />
-      <text :x="x + 'mm'" :y="y + 18 + 'mm'" :style="svgTextSmall">
+      <text :x="x + 'mm'" :y="y + 17 + 'mm'" :style="svgTextSmall">
         {{ $t('Too_many_items_exp_1') }}
       </text>
-      <text :x="x + 'mm'" :y="y + 22 + 'mm'" :style="svgTextSmall">
+      <text :x="x + 'mm'" :y="y + 20.5 + 'mm'" :style="svgTextSmall">
         {{ $t('Too_many_items_exp_2') }}
       </text>
     </g>
@@ -47,13 +47,13 @@
         <svgCheckbox
           :key="'stc-' + stars"
           :x="x + 'mm'"
-          :y="y + 3 + index * checkBoxSpace + 'mm'"
+          :y="y + 2 + index * checkBoxSpace + 'mm'"
         />
         <template v-for="star in stars">
           <svg
             :key="'sc' + index + star"
             :x="x + star * 5.2 + 'mm'"
-            :y="y + 2 + index * checkBoxSpace + 'mm'"
+            :y="y + 1 + index * checkBoxSpace + 'mm'"
             width="5mm"
             height="5mm"
             viewBox="0 0 24 24"
@@ -73,12 +73,12 @@
         <svgCheckbox
           :key="'item-' + index"
           :x="x + 'mm'"
-          :y="y + 3 + index * checkBoxSpace + 'mm'"
+          :y="y + 2 + index * checkBoxSpace + 'mm'"
         />
         <text
           :key="'text-' + index"
           :x="x + checkBoxSpace + 'mm'"
-          :y="y + 6 + index * checkBoxSpace + 'mm'"
+          :y="y + 5 + index * checkBoxSpace + 'mm'"
           :style="svgInputText"
         >
           {{ item }}

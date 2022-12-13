@@ -4,14 +4,14 @@
       {{ label }}
     </text>
 
-    <text v-if="prepend" :x="x + 'mm'" :y="y + 6 + 'mm'" :style="svgAppend">
+    <text v-if="prepend" :x="x + 'mm'" :y="y + 5 + 'mm'" :style="svgAppend">
       {{ prepend }}
     </text>
 
     <g v-if="decimals === 0">
       <rect
         :x="x + prependOffset + 'mm'"
-        :y="y + 3 + 'mm'"
+        :y="y + 2 + 'mm'"
         :width="textFieldWidth + 'mm'"
         height="8mm"
         stroke="black"
@@ -21,7 +21,7 @@
       <text
         v-if="append"
         :x="x + prependOffset + textFieldWidth + 1 + 'mm'"
-        :y="y + 9 + 'mm'"
+        :y="y + 8 + 'mm'"
         :style="svgAppend"
       >
         {{ append }}
@@ -33,12 +33,12 @@
         v-for="field in fields"
         :key="field + 1"
         :x="x + (field - 1) * numberBoxWidth + 'mm'"
-        :y="y + 3 + 'mm'"
+        :y="y + 2 + 'mm'"
       />
 
       <circle
         :cx="x + fieldOffset + 1 + 'mm'"
-        :cy="y + 10 + 'mm'"
+        :cy="y + 9 + 'mm'"
         r="2"
         fill="black"
       />
@@ -47,18 +47,18 @@
         v-for="decimal in decimals"
         :key="'d-' + decimal"
         :x="x + fieldOffset + 2 + (decimal - 1) * numberBoxWidth + 'mm'"
-        :y="y + 3 + 'mm'"
+        :y="y + 2 + 'mm'"
       />
     </g>
 
     <g v-if="info">
-      <text :x="x + 'mm'" :y="y + 15 + 'mm'" :style="svgTextSmall">
+      <text :x="x + 'mm'" :y="y + 14 + 'mm'" :style="svgTextSmall">
         {{ info }}
       </text>
       <text
         v-if="infoExtra"
         :x="x + 'mm'"
-        :y="y + 19 + 'mm'"
+        :y="y + 18 + 'mm'"
         :style="svgTextSmall"
       >
         {{ infoExtra }}

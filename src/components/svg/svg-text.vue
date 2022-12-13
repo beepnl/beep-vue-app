@@ -7,9 +7,9 @@
     <line
       v-if="inputTypeNotPresent"
       :x1="x + 'mm'"
-      :x2="x + 35 + 'mm'"
-      :y1="y + 11 + 'mm'"
-      :y2="y + 11 + 'mm'"
+      :x2="x + 43 + 'mm'"
+      :y1="y + 10 + 'mm'"
+      :y2="y + 10 + 'mm'"
       stroke="black"
       stroke-width="0.5"
     />
@@ -17,7 +17,7 @@
     <text
       v-if="inputTypeNotPresent"
       :x="x + 'mm'"
-      :y="y + 15 + 'mm'"
+      :y="y + 14 + 'mm'"
       :style="svgTextSmall"
     >
       {{ $t('Not_implemented_yet') }}
@@ -65,12 +65,12 @@ export default {
     width: {
       type: String,
       required: false,
-      default: '42mm',
+      default: '43mm',
     },
     height: {
       type: String,
       required: false,
-      default: '29.5mm',
+      default: '27mm',
     },
     line: {
       type: Boolean,

@@ -471,7 +471,7 @@
         <svgPrintCorners :pageNumber="pageNr" />
       </g>
 
-      <svgOverall :position="{ x: 15, y: 16 }" />
+      <svgOverall :position="{ x: 13, y: 15 }" />
 
       <g v-if="selectedChecklist" cols="12">
         <template v-for="(category, catIndex) in selectedChecklist.categories">

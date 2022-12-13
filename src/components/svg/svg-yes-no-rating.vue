@@ -3,13 +3,13 @@
     <text :x="x + 'mm'" :y="y + 'mm'" :style="svgLabel">
       {{ label }}
     </text>
-    <svgCheckbox :x="x + 'mm'" :y="y + 3 + 'mm'" />
-    <text :x="x + 5 + 'mm'" :y="y + 6 + 'mm'" :style="svgInputText">
+    <svgCheckbox :x="x + 'mm'" :y="y + 2 + 'mm'" />
+    <text :x="x + 5 + 'mm'" :y="y + 5 + 'mm'" :style="svgInputText">
       {{ $t('yes') }}
     </text>
 
-    <svgCheckbox :x="x + 17 + 'mm'" :y="y + 3 + 'mm'" />
-    <text :x="x + 22 + 'mm'" :y="y + 6 + 'mm'" :style="svgInputText">
+    <svgCheckbox :x="x + 17 + 'mm'" :y="y + 2 + 'mm'" />
+    <text :x="x + 22 + 'mm'" :y="y + 5 + 'mm'" :style="svgInputText">
       {{ $t('no') }}
     </text>
   </g>

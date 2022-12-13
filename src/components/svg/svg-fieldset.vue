@@ -94,9 +94,9 @@ export default {
   data() {
     return {
       columnsPerRow: 4,
-      xMargin: 15,
-      yStart: 91,
-      yMargin: 16,
+      xMargin: 13,
+      yStart: 89,
+      yMargin: 15,
       pageHeight: 297,
       pageWidth: 210,
       maxRowHeight: 40,
@@ -104,11 +104,11 @@ export default {
         label: 4,
         select_item: 5,
         date: 32,
-        grade: 27,
-        number_info: 22,
-        number: 19,
-        boolean: 13,
-        text: 38,
+        grade: 23,
+        number_info: 21,
+        number: 16.5,
+        boolean: 12,
+        text: 35,
         text_line: 19,
         smileys_3: 21,
       },
@@ -133,7 +133,7 @@ export default {
       return this.$i18n.locale
     },
     yMax() {
-      return this.pageHeight - this.yMargin - this.maxRowHeight - 1
+      return this.pageHeight - this.yMargin - this.maxRowHeight
     },
   },
   methods: {
@@ -175,14 +175,14 @@ export default {
     },
     calcSelectHeight(children) {
       var height = 10
-      if (children > 6) {
-        height = this.inputHeight.date // 29
+      if (children > 5) {
+        height = this.inputHeight.grade + this.inputHeight.label // 27
       } else {
         height = children * this.inputHeight.select_item + 8
       }
       return height
     },
-    calcXY(item, fullRowHeight = false) {
+    calcXY(item, fullRowItem = false) {
       if (this.svgPositionSet[item.id] === undefined) {
         var itemCounter = this.svgItemCounter + 1
         var itemHeight = this.calcHeight(item)
@@ -190,12 +190,12 @@ export default {
           // init row height as first item height
           this.$store.commit('inspections/setRowHeight', itemHeight)
         }
-        if (fullRowHeight || this.svgColumnCounter >= this.columnsPerRow) {
+        if (fullRowItem || this.svgColumnCounter >= this.columnsPerRow) {
           var columnCounter = 1
           // for new row, set Y (height so far) as previous Y + row height of previous row
           this.$store.commit(
             'inspections/setY',
-            this.svgY + this.svgRowHeight - (fullRowHeight ? 1 : 0)
+            this.svgY + this.svgRowHeight - (fullRowItem ? 1 : 0)
           )
           // reset row height to current item height for new row
           this.$store.commit('inspections/setRowHeight', itemHeight)
@@ -213,18 +213,15 @@ export default {
           (this.svgPageNr - 1) * this.pageHeight +
           this.svgY
 
-        // if (columnCounter === 4) {
-        //   console.log(
-        //     this.svgPageNr,
-        //     itemHeight,
-        //     this.svgRowHeight,
-        //     this.svgY,
-        //     y
-        //   )
-        // }
-
-        if (fullRowHeight) {
+        if (fullRowItem) {
           columnCounter = this.columnsPerRow
+          if (y % this.pageHeight >= this.yMax) {
+            // push item to next page if the next row does not fit on current page
+            this.$store.dispatch('inspections/nextPage')
+            y = this.yMargin + (this.svgPageNr - 1) * this.pageHeight
+            itemCounter = 1
+            this.$store.commit('inspections/setRowHeight', itemHeight)
+          }
         }
 
         this.$store.commit('inspections/setItemCounter', itemCounter)
@@ -236,10 +233,11 @@ export default {
         })
 
         if (
-          Math.floor(y) % this.pageHeight >= this.yMax &&
+          !fullRowItem &&
+          y % this.pageHeight >= this.yMax &&
           columnCounter === this.columnsPerRow
         ) {
-          // go to next page
+          // go to next page (for next row)
           this.$store.dispatch('inspections/nextPage')
         }
 

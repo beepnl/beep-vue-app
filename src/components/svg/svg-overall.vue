@@ -3,13 +3,13 @@
     <svgText :position="{ x, y }" :label="$tc('Location', 1)" :line="true" />
 
     <svgText
-      :position="{ x: x + 45, y }"
+      :position="{ x: x + 46, y }"
       :label="$tc('Hive', 1)"
       :line="true"
     />
 
     <svgDate
-      :position="{ x: x + 90, y }"
+      :position="{ x: x + 92, y }"
       :label="$t('Date_of_inspection')"
       :time="true"
     />
@@ -20,12 +20,12 @@
     />
 
     <svgYesNoRating
-      :position="{ x: x + 45, y: y + 19 }"
+      :position="{ x: x + 46, y: y + 19 }"
       :label="$t('needs_attention')"
     />
 
     <svgText
-      :position="{ x: x + 90, y: y + 19 }"
+      :position="{ x: x + 92, y: y + 19 }"
       :width="'84mm'"
       :height="'22mm'"
       :label="$t('notes')"
@@ -38,7 +38,7 @@
     />
 
     <svgText
-      :position="{ x: x + 90, y: y + 49 }"
+      :position="{ x: x + 92, y: y + 49 }"
       :width="'84mm'"
       :height="'22mm'"
       :label="$t('notes_for_next_inspection')"
