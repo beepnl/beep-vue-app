@@ -9,10 +9,7 @@
         >
           mdi-theme-light-dark
         </v-icon>
-        <v-icon
-          class="color-grey-filter mr-4"
-          @click="landscapeMode = !landscapeMode"
-        >
+        <v-icon class="color-grey-filter mr-4" @click="toggleLandscapeMode">
           {{
             'mdi-phone-rotate-' + (!landscapeMode ? 'landscape' : 'portrait')
           }}
@@ -32,11 +29,11 @@
       :class="'dashboard-container' + (landscapeMode ? ' --landscape' : '')"
     >
       <v-row :class="'dashboard-row' + (landscapeMode ? ' --landscape' : '')">
-        <v-col cols="12" class="mb-6">
+        <v-col cols="12">
           <div
             :class="
               'dashboard-header d-flex align-center justify-' +
-                (landscapeMode ? 'left' : 'center')
+                (landscapeMode ? 'left' : 'center mb-6')
             "
           >
             <div class="d-flex align-self-center"
@@ -85,7 +82,7 @@
               class="dashboard-text"
               v-text="selectedLocation.name"
             ></div>
-            <div id="map" ref="map">
+            <div id="map" ref="map" class="map">
               <MapMarker :lat="lat" :lng="lng" />
             </div>
           </DashboardSection>
@@ -110,7 +107,7 @@
           </DashboardSection>
 
           <DashboardSection
-            v-if="ready && selectedHive && selectedHive.last_inspection_date"
+            v-if="selectedHive && selectedHive.last_inspection_date"
             :title="$tc('Inspection', 1)"
             :landscape-mode="landscapeMode"
           >
@@ -132,6 +129,14 @@
               "
             >
               <v-row v-if="landscapeMode">
+                <v-col cols="5"
+                  ><span v-text="$tc('Location', 1) + ' : '"></span
+                ></v-col>
+                <v-col cols="7">
+                  <div id="map" ref="map" class="map --landscape">
+                    <MapMarker :lat="lat" :lng="lng" />
+                  </div>
+                </v-col>
                 <v-col cols="5"
                   ><span v-text="$t('Last_check') + ' : '"></span
                 ></v-col>
@@ -404,6 +409,11 @@ export default {
     },
   },
   watch: {
+    ready() {
+      if (this.ready && this.selectedLocation) {
+        this.initMap()
+      }
+    },
     selectedLocation() {
       this.initMap()
     },
@@ -552,6 +562,8 @@ export default {
       return smFilter.length > 0 ? smFilter[0] : null
     },
     initMap() {
+      // var refMap = this.landscapeMode ? this.$refs.mapL : this.$refs.mapP
+      // this.map = new window.google.maps.Map(refMap, {
       this.map = new window.google.maps.Map(this.$refs.map, {
         center: {
           lat: this.lat,
@@ -643,6 +655,12 @@ export default {
         this.startTimer('hive')
       }
     },
+    toggleLandscapeMode() {
+      this.landscapeMode = !this.landscapeMode
+      setTimeout(() => {
+        this.initMap()
+      }, 50)
+    },
   },
 }
 </script>
@@ -663,7 +681,7 @@ export default {
   &.--landscape {
     @include for-tablet-landscape-up {
       max-width: 100% !important;
-      padding: 30px 60px 52px;
+      padding: 0 60px 52px;
     }
   }
 }
@@ -678,7 +696,7 @@ export default {
 .dashboard-row.--landscape {
   align-items: flex-start;
   .dashboard-header {
-    margin-bottom: 40px !important;
+    margin-bottom: 30px !important;
   }
   .dashboard-logo {
     @include for-tablet-landscape-up {
@@ -727,9 +745,11 @@ export default {
 .landscape-section {
   padding: 20px;
   @include for-tablet-landscape-up {
-    padding: 60px;
+    padding: 40px 60px;
   }
   &.--left {
+    max-width: 35vw !important;
+    height: 35vw !important;
     background-color: $color-orange-medium;
     // border-radius: 12px; // plain
     // border-radius: 96% 4% 92% 8% / 1% 92% 8% 99%; // left-tilted
@@ -742,13 +762,21 @@ export default {
       }
     }
   }
+  &.--right {
+    max-width: 55vw !important;
+    margin-left: 4vw;
+  }
 }
 
-#map {
+.map {
   height: 330px;
   width: 330px;
   background: $color-primary;
   border: 4px solid $color-primary;
+  &.--landscape {
+    height: 10vw;
+    width: 10vw;
+  }
 }
 
 .dashboard-inspection {
@@ -758,7 +786,7 @@ export default {
   }
   &.--landscape {
     width: 100%;
-    padding: 50px 35px 0;
+    padding: 0 35px 0;
   }
 }
 
