@@ -26,7 +26,7 @@
 
     <svgText
       :position="{ x: x + 92, y: y + 19 }"
-      :width="'84mm'"
+      :width="'89mm'"
       :height="'22mm'"
       :label="$t('notes')"
     />
@@ -39,7 +39,7 @@
 
     <svgText
       :position="{ x: x + 92, y: y + 49 }"
-      :width="'84mm'"
+      :width="'89mm'"
       :height="'22mm'"
       :label="$t('notes_for_next_inspection')"
     />
