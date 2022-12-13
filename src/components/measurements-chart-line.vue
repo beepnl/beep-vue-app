@@ -98,7 +98,7 @@ export default {
         selection: null,
         research: null,
         month: 'day',
-        week: 'hour',
+        week: this.location === 'dashboard' ? 'day' : 'hour',
         day: 'hour',
         hour: 'minute',
       },

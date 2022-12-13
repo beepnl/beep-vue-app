@@ -107,7 +107,7 @@
           </DashboardSection>
 
           <DashboardSection
-            v-if="selectedHive && selectedHive.last_inspection_date"
+            v-if="ready && selectedHive && selectedHive.last_inspection_date"
             :title="$tc('Inspection', 1)"
             :landscape-mode="landscapeMode"
           >
@@ -225,6 +225,7 @@
                       :start-time="periodStartString"
                       :end-time="periodEndString"
                       :chart-id="'chart-dashboard-' + index"
+                      :location="'dashboard'"
                       :dark-mode="darkMode"
                     >
                     </MeasurementsChartLine>
@@ -564,14 +565,16 @@ export default {
     initMap() {
       // var refMap = this.landscapeMode ? this.$refs.mapL : this.$refs.mapP
       // this.map = new window.google.maps.Map(refMap, {
-      this.map = new window.google.maps.Map(this.$refs.map, {
-        center: {
-          lat: this.lat,
-          lng: this.lng,
-        },
-        fullscreenControl: false,
-        zoom: 9,
-      })
+      setTimeout(() => {
+        this.map = new window.google.maps.Map(this.$refs.map, {
+          center: {
+            lat: this.lat,
+            lng: this.lng,
+          },
+          fullscreenControl: false,
+          zoom: 9,
+        })
+      }, 100)
     },
     nextHiveWithData() {
       // fallback if no hives with data present
@@ -657,9 +660,7 @@ export default {
     },
     toggleLandscapeMode() {
       this.landscapeMode = !this.landscapeMode
-      setTimeout(() => {
-        this.initMap()
-      }, 50)
+      this.initMap()
     },
   },
 }
