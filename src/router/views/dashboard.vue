@@ -33,7 +33,12 @@
     >
       <v-row :class="'dashboard-row' + (landscapeMode ? ' --landscape' : '')">
         <v-col cols="12" class="mb-6">
-          <div class="d-flex justify-center align-center dashboard-header">
+          <div
+            :class="
+              'dashboard-header d-flex align-center justify-' +
+                (landscapeMode ? 'left' : 'center')
+            "
+          >
             <div class="d-flex align-self-center"
               ><img
                 class="dashboard-logo"
@@ -47,7 +52,10 @@
             </div>
 
             <div
-              class="text-h3 text-md-h2 dashboard-title overline roboto-condensed"
+              :class="
+                'text-h3 dashboard-title overline roboto-condensed' +
+                  (!landscapeMode ? ' text-md-h2' : ' font-weight-light')
+              "
               v-text="$t('Dashboard')"
             ></div>
           </div>
@@ -660,8 +668,24 @@ export default {
   }
 }
 
+.dashboard-logo {
+  @include for-tablet-landscape-up {
+    height: 68px;
+    margin-top: -4px;
+  }
+}
+
 .dashboard-row.--landscape {
   align-items: flex-start;
+  .dashboard-header {
+    margin-bottom: 40px !important;
+  }
+  .dashboard-logo {
+    @include for-tablet-landscape-up {
+      height: 52px;
+      margin-top: -1px;
+    }
+  }
 }
 
 .dashboard-header {
@@ -697,13 +721,6 @@ export default {
   font-size: 1rem;
   @include for-phone-only {
     font-size: 0.85rem;
-  }
-}
-
-.dashboard-logo {
-  @include for-tablet-landscape-up {
-    height: 68px;
-    margin-top: -4px;
   }
 }
 
