@@ -46,6 +46,10 @@ export default {
       type: String,
       default: '',
     },
+    darkMode: {
+      type: Boolean,
+      default: false,
+    },
     alertsForCharts: {
       type: Array,
       default: () => [],
@@ -176,7 +180,7 @@ export default {
             min: this.startTime,
             max: this.endTime,
             ticks: {
-              color: '#242424',
+              color: self.darkMode ? '#e0e0e0' : '#242424',
               source: 'auto',
               autoSkip: true,
               font: {
@@ -190,13 +194,19 @@ export default {
               tooltipFormat: this.tooltipFormat,
               displayFormats: this.displayFormats,
             },
+            grid: {
+              color: self.darkMode ? '#808080' : ChartJS.defaults.borderColor,
+            },
           },
           y: {
             ticks: {
-              color: '#242424',
+              color: self.darkMode ? '#e0e0e0' : '#242424',
               font: {
                 size: this.mobile ? this.fontSizeMob : this.fontSize,
               },
+            },
+            grid: {
+              color: self.darkMode ? '#808080' : ChartJS.defaults.borderColor,
             },
           },
           title: {
@@ -339,8 +349,10 @@ export default {
           padding: {
             bottom: 1,
           },
-          color: '#242424',
-          backgroundColor: 'rgba(255,255,255,0.7)',
+          color: self.darkMode ? '#e0e0e0' : '#242424',
+          backgroundColor: self.darkMode
+            ? 'rgba(0,0,0,0.7)'
+            : 'rgba(255,255,255,0.7)',
           borderRadius: 4,
           font: {
             size: this.mobile ? this.fontSizeMob : this.fontSize,
@@ -369,9 +381,9 @@ export default {
           labels: {
             boxWidth: this.mobile ? this.boxSizeMob : this.boxSize,
             boxHeight: this.mobile ? this.boxSizeMob : this.boxSize,
-            fillStyle: '#242424',
+            fillStyle: this.darkMode ? '#e0e0e0' : '#242424',
             fullWidth: !this.mobile,
-            color: '#242424',
+            color: this.darkMode ? '#e0e0e0' : '#242424',
             font: {
               size: this.mobile ? this.fontSizeMob : this.fontSize,
             },

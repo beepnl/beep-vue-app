@@ -3,7 +3,10 @@
     <div class="d-flex justify-end dashboard-controls my-2 mx-4">
       <div v-if="showControls" class="d-flex">
         <LocaleChanger></LocaleChanger>
-        <v-icon class="color-grey-filter ml-2 mr-4" @click="toggleDarkMode">
+        <v-icon
+          class="color-grey-filter ml-2 mr-4"
+          @click="toggleDarkMode(darkMode)"
+        >
           mdi-theme-light-dark
         </v-icon>
         <v-icon
@@ -34,7 +37,12 @@
             <div class="d-flex align-self-center"
               ><img
                 class="dashboard-logo"
-                :src="assetsUrl + '/img/beep-icon-logo.svg'"
+                :src="
+                  assetsUrl +
+                    '/img/beep-icon-logo' +
+                    (darkMode ? '-white-text' : '') +
+                    '.svg'
+                "
               />
             </div>
 
@@ -55,7 +63,10 @@
 
         <v-col
           :cols="landscapeMode ? '4' : '12'"
-          :class="ready && landscapeMode ? 'landscape-section --left' : ''"
+          :class="
+            (ready && landscapeMode ? 'landscape-section --left' : '') +
+              (darkMode ? ' sticky-dark-mode' : '')
+          "
         >
           <DashboardSection
             :class="landscapeMode ? 'hide-landscape' : 'show-portrait'"
@@ -108,7 +119,8 @@
             <div
               :class="
                 'dashboard-inspection dashboard-text-small mt-2 mx-3 ' +
-                  (landscapeMode ? '--landscape' : 'funky-border')
+                  (landscapeMode ? '--landscape' : 'funky-border') +
+                  (darkMode ? ' sticky-dark-mode' : '')
               "
             >
               <v-row v-if="landscapeMode">
@@ -200,6 +212,7 @@
                       :start-time="periodStartString"
                       :end-time="periodEndString"
                       :chart-id="'chart-dashboard-' + index"
+                      :dark-mode="darkMode"
                     >
                     </MeasurementsChartLine>
                   </div>
@@ -295,7 +308,7 @@ export default {
       hiveTimerPaused: false,
       currentHiveIndex: -1,
       currentHiveWithDataIndex: -1,
-      darkMode: false,
+      darkMode: true,
     }
   },
   computed: {
@@ -387,6 +400,11 @@ export default {
       this.initMap()
     },
   },
+  mounted() {
+    if (localStorage.beepdashboardDarkMode) {
+      this.darkMode = localStorage.beepdashboardDarkMode === 'true'
+    }
+  },
   created() {
     if (this.smallScreen) {
       this.landscapeMode = false
@@ -456,9 +474,17 @@ export default {
             abbr: mT.abbreviation,
             fill: false,
             borderColor:
-              quantity === 'temperature' ? '#242424' : '#' + mT.hex_color,
+              quantity === 'temperature'
+                ? this.darkMode
+                  ? '#ff701e'
+                  : '#242424'
+                : '#' + mT.hex_color,
             backgroundColor:
-              quantity === 'temperature' ? '#242424' : '#' + mT.hex_color,
+              quantity === 'temperature'
+                ? this.darkMode
+                  ? '#ff701e'
+                  : '#242424'
+                : '#' + mT.hex_color,
             borderRadius: 2,
             label: sensorLabel.replace(/^0/, ''),
             name: sensorName,
@@ -539,6 +565,13 @@ export default {
         )
       }
     },
+    redrawCharts() {
+      const temp = this.measurementData
+      this.measurementData = null
+      setTimeout(() => {
+        this.formatMeasurementData(temp)
+      }, 10)
+    },
     selectHive(id) {
       this.currentHiveIndex = this.sortedHives.findIndex(
         (hive) => hive.id === id
@@ -580,16 +613,11 @@ export default {
         this.dataTimer = 0
       }
     },
-    toggleDarkMode() {
-      if (!this.darkMode) {
-        this.darkMode = true
-        this.$vuetify.theme.dark = true
-        localStorage.setItem('beepdashboardDarkMode', true)
-      } else if (this.darkMode) {
-        this.darkMode = false
-        this.$vuetify.theme.dark = false
-        localStorage.setItem('beepdashboardDarkMode', false)
-      }
+    toggleDarkMode(darkMode) {
+      this.darkMode = !darkMode
+      this.$vuetify.theme.dark = !darkMode
+      localStorage.setItem('beepdashboardDarkMode', !darkMode)
+      this.redrawCharts()
     },
     toggleHiveTimer() {
       this.hiveTimerPaused = !this.hiveTimerPaused
@@ -616,7 +644,6 @@ export default {
 }
 
 .dashboard-container {
-  color: $color-grey-dark;
   padding: 0px 10px 36px;
 
   @include for-tablet-landscape-up {
@@ -634,19 +661,6 @@ export default {
 
 .dashboard-row.--landscape {
   align-items: flex-start;
-}
-
-.landscape-section {
-  padding: 20px;
-  @include for-tablet-landscape-up {
-    padding: 60px;
-  }
-  &.--left {
-    background-color: $color-orange-medium;
-    // border-radius: 12px; // plain
-    // border-radius: 96% 4% 92% 8% / 1% 92% 8% 99%; // left-tilted
-    border-radius: 4% 96% 4% 96% / 97% 1% 99% 3%; // right-tilted
-  }
 }
 
 .dashboard-header {
@@ -692,6 +706,26 @@ export default {
   }
 }
 
+.landscape-section {
+  padding: 20px;
+  @include for-tablet-landscape-up {
+    padding: 60px;
+  }
+  &.--left {
+    background-color: $color-orange-medium;
+    // border-radius: 12px; // plain
+    // border-radius: 96% 4% 92% 8% / 1% 92% 8% 99%; // left-tilted
+    border-radius: 4% 96% 4% 96% / 97% 1% 99% 3%; // right-tilted
+    &.sticky-dark-mode {
+      background-color: $color-accent;
+      .dashboard-text,
+      .dashboard-text-small {
+        color: $color-grey-dark;
+      }
+    }
+  }
+}
+
 #map {
   height: 330px;
   width: 330px;
@@ -714,6 +748,11 @@ export default {
   padding: 12px 14px;
   background-color: $color-grey-lightest;
   border-radius: 2% 98% 2% 98% / 98% 1% 99% 2%;
+
+  &.sticky-dark-mode {
+    background-color: $color-accent;
+    color: $color-grey-dark;
+  }
 }
 
 .dashboard-loading {
