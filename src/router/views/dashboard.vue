@@ -697,7 +697,7 @@ export default {
 .dashboard-row.--landscape {
   align-items: flex-start;
   .dashboard-header {
-    margin-bottom: 30px !important;
+    margin-bottom: 10px !important;
   }
   .dashboard-logo {
     @include for-tablet-landscape-up {
@@ -745,16 +745,17 @@ export default {
 
 .landscape-section {
   padding: 20px;
-  @include for-tablet-landscape-up {
-    padding: 40px 60px;
-  }
   &.--left {
+    margin-top: 30px;
     max-width: 35vw !important;
     height: 35vw !important;
     background-color: $color-orange-medium;
     // border-radius: 12px; // plain
     // border-radius: 96% 4% 92% 8% / 1% 92% 8% 99%; // left-tilted
     border-radius: 4% 96% 4% 96% / 97% 1% 99% 3%; // right-tilted
+    @include for-tablet-landscape-up {
+      padding: 2vw 3vw; // 40px 60px;
+    }
     &.sticky-dark-mode {
       background-color: $color-accent;
       .dashboard-text,
@@ -764,8 +765,8 @@ export default {
     }
   }
   &.--right {
-    max-width: 55vw !important;
-    margin-left: 4vw;
+    max-width: 50vw !important;
+    margin-left: 7vw;
   }
 }
 
