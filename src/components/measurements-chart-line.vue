@@ -105,6 +105,9 @@ export default {
       hoverInspection: 0,
       hoverAlert: false,
       hoverLine: false,
+      darkModecolor: '#e0e0e0',
+      darkModeGridcolor: '#808080',
+      defaultcolor: '#242424',
     }
   },
   computed: {
@@ -180,7 +183,7 @@ export default {
             min: this.startTime,
             max: this.endTime,
             ticks: {
-              color: self.darkMode ? '#e0e0e0' : '#242424',
+              color: self.modeColor,
               source: 'auto',
               autoSkip: true,
               font: {
@@ -195,18 +198,18 @@ export default {
               displayFormats: this.displayFormats,
             },
             grid: {
-              color: self.darkMode ? '#808080' : ChartJS.defaults.borderColor,
+              color: self.gridColor,
             },
           },
           y: {
             ticks: {
-              color: self.darkMode ? '#e0e0e0' : '#242424',
+              color: self.modeColor,
               font: {
                 size: this.mobile ? this.fontSizeMob : this.fontSize,
               },
             },
             grid: {
-              color: self.darkMode ? '#808080' : ChartJS.defaults.borderColor,
+              color: self.gridColor,
             },
           },
           title: {
@@ -277,6 +280,11 @@ export default {
         minute: 'LT',
       }
     },
+    gridColor() {
+      return this.darkMode
+        ? this.darkModeGridcolor
+        : ChartJS.defaults.borderColor
+    },
     inspectionsForLineCharts() {
       const self = this
 
@@ -334,6 +342,9 @@ export default {
     mobile() {
       return this.$vuetify.breakpoint.mobile
     },
+    modeColor() {
+      return this.darkMode ? this.darkModecolor : this.defaultcolor
+    },
     pluginsDefault() {
       const self = this
       return {
@@ -349,7 +360,7 @@ export default {
           padding: {
             bottom: 1,
           },
-          color: self.darkMode ? '#e0e0e0' : '#242424',
+          color: self.modeColor,
           backgroundColor: self.darkMode
             ? 'rgba(0,0,0,0.7)'
             : 'rgba(255,255,255,0.7)',
@@ -381,9 +392,9 @@ export default {
           labels: {
             boxWidth: this.mobile ? this.boxSizeMob : this.boxSize,
             boxHeight: this.mobile ? this.boxSizeMob : this.boxSize,
-            fillStyle: this.darkMode ? '#e0e0e0' : '#242424',
+            fillStyle: this.modeColor,
             fullWidth: !this.mobile,
-            color: this.darkMode ? '#e0e0e0' : '#242424',
+            color: this.modeColor,
             font: {
               size: this.mobile ? this.fontSizeMob : this.fontSize,
             },

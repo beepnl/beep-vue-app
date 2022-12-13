@@ -403,6 +403,7 @@ export default {
   mounted() {
     if (localStorage.beepdashboardDarkMode) {
       this.darkMode = localStorage.beepdashboardDarkMode === 'true'
+      this.$vuetify.theme.dark = this.darkMode
     }
   },
   created() {
@@ -616,7 +617,7 @@ export default {
     toggleDarkMode(darkMode) {
       this.darkMode = !darkMode
       this.$vuetify.theme.dark = !darkMode
-      localStorage.setItem('beepdashboardDarkMode', !darkMode)
+      localStorage.beepdashboardDarkMode = !darkMode
       this.redrawCharts()
     },
     toggleHiveTimer() {
