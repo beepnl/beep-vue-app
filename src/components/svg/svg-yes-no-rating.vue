@@ -1,5 +1,5 @@
 <template>
-  <g>
+  <g :page-y="position.pageY + 'mm'" :category-id="position.id">
     <text :x="x + 'mm'" :y="y + 'mm'" :style="svgLabel">
       {{ label }}
     </text>
@@ -29,7 +29,6 @@ export default {
       type: Object,
       required: true,
     },
-
     label: {
       type: String,
       required: true,

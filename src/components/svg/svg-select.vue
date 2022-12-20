@@ -1,9 +1,9 @@
 <template>
-  <g>
+  <g :page-y="position.pageY + 'mm'" :category-id="position.id">
     <text :x="x + 'mm'" :y="y + 'mm'" :style="svgLabel">
       {{ label }}
     </text>
-    <g v-if="items && flattenedItems.length <= 5">
+    <g v-if="items && flattenedItems.length <= maxNrOfItems">
       <template v-for="(item, index) in flattenedItems">
         <svgCheckbox
           v-if="!item.hasChildren"
@@ -24,7 +24,7 @@
       </template>
     </g>
 
-    <g v-else-if="flattenedItems.length > 5">
+    <g v-else-if="flattenedItems.length > maxNrOfItems">
       <rect
         :x="x + 'mm'"
         :y="y + 2 + 'mm'"
@@ -132,6 +132,7 @@ export default {
     return {
       checkBoxSpace: 5,
       maxStars: 5,
+      maxNrOfItems: 10,
     }
   },
   computed: {

@@ -130,7 +130,12 @@ export const mutations = {
     state.svgPageNr = payload
   },
   setPosition: function(state, payload) {
-    state.svgPositionSet[payload.id] = { x: payload.x, y: payload.y }
+    state.svgPositionSet[payload.id] = {
+      x: payload.x,
+      y: payload.y,
+      pageY: payload.pageY,
+      id: payload.id,
+    }
   },
   setY: function(state, payload) {
     state.svgY = payload

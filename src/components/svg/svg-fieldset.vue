@@ -112,6 +112,7 @@ export default {
         text_line: 19,
         smileys_3: 21,
       },
+      maxNrOfItems: 10,
     }
   },
   computed: {
@@ -175,7 +176,7 @@ export default {
     },
     calcSelectHeight(children) {
       var height = 10
-      if (children > 5) {
+      if (children > this.maxNrOfItems) {
         height = this.inputHeight.grade + this.inputHeight.label // 27
       } else {
         height = children * this.inputHeight.select_item + 8
@@ -224,24 +225,28 @@ export default {
           }
         }
 
+        var pageY =
+          (this.svgPageNr === 1 ? this.yStart : this.yMargin) + this.svgY
+
         this.$store.commit('inspections/setItemCounter', itemCounter)
         this.$store.commit('inspections/setColumnCounter', columnCounter)
         this.$store.commit('inspections/setPosition', {
           id: item.id,
           x,
           y,
+          pageY,
         })
 
         if (
           !fullRowItem &&
-          y % this.pageHeight >= this.yMax &&
-          columnCounter === this.columnsPerRow
+          y % this.pageHeight >= this.yMax
+          // && columnCounter === this.columnsPerRow
         ) {
           // go to next page (for next row)
           this.$store.dispatch('inspections/nextPage')
         }
 
-        return { x, y }
+        return { x, y, pageY: this.svgY }
       } else {
         return this.svgPositionSet[item.id]
       }

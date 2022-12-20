@@ -2,7 +2,7 @@
   <g>
     <svgDivider
       v-if="category.parent_id === null"
-      :y="calcRowXY(category).y - 5"
+      :y="calcRowXY(category).y - 4"
     />
 
     <svgHeader
