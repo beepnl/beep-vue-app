@@ -916,6 +916,14 @@ const translations = {
   Select_hives_for_consent: 'Selecteer bijenkasten voor toestemming',
   Select_hives_for_consent_exp:
     'Selecteer de bijenkasten waarvan je de data wilt delen met dit onderzoek',
+  View_alert_confirm: 'Wil je de notificatie bekijken "',
+
+  /* iOS device prompt for adding BEEP app to home screen */
+  pwa_title: 'BEEP als app gebruiken?',
+  pwa_body:
+    'Voeg BEEP toe aan je beginscherm om het als web app en op volledig scherm te gebruiken. Je blijft dan ingelogd na de eerste keer inloggen.',
+  pwa_share_button_label: '1. Tik op het deel-icoon in de menubalk onderin.',
+  pwa_addhome_button_label: "2. Tik op 'Zet op beginscherm'",
 }
 
 export default translations

@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/comma-dangle -->
 <template>
   <Layout
     v-if="activeHive"
@@ -12,7 +13,7 @@
           <div
             class="filter-buttons filter-buttons--has-max d-flex flex-row justify-flex-start align-center"
           >
-            <v-col class="pa-3">
+            <v-col class="pa-3 pr-1 pr-sm-2">
               <v-text-field
                 v-model="search"
                 :label="`${$t('Search')}`"
@@ -26,6 +27,12 @@
                 outlined
                 dense
                 hide-details
+                :append-outer-icon="search ? 'mdi-magnify' : ''"
+                clear-icon="mdi-close"
+                type="text"
+                @click:append-outer="readInspectionsForHiveId"
+                @click:clear="clearSearch"
+                @keydown.enter.prevent="readInspectionsForHiveId"
               ></v-text-field>
             </v-col>
             <v-card-actions class="pl-0">
@@ -35,7 +42,7 @@
                     filterByAttention ? 'red--text' : 'color-grey-filter'
                   } mr-2`
                 "
-                @click="filterByAttention = !filterByAttention"
+                @click="toggleFilterByAttention"
               >
                 mdi-clipboard-alert-outline
               </v-icon>
@@ -43,7 +50,7 @@
                 :class="
                   `${filterByReminder ? 'red--text' : 'color-grey-filter'} mr-2`
                 "
-                @click="filterByReminder = !filterByReminder"
+                @click="toggleFilterByReminder"
               >
                 mdi-calendar-clock
               </v-icon>
@@ -83,6 +90,31 @@
               >
                 mdi-emoticon-sad
               </v-icon>
+
+              <div
+                v-if="hasPages"
+                class="d-flex align-center mr-3 ml-n2 ml-sm-0"
+              >
+                <v-icon
+                  :class="
+                    isFirstPage ? 'color-transparent' : 'color-grey-filter'
+                  "
+                  :disabled="isFirstPage"
+                  size="26"
+                  @click="setPageIndex(-1)"
+                >
+                  mdi-chevron-left
+                </v-icon>
+                <span class="pagination-text" v-text="paginationText"></span>
+                <v-icon
+                  v-if="!isLastPage"
+                  class="color-grey-filter"
+                  size="26"
+                  @click="setPageIndex(1)"
+                >
+                  mdi-chevron-right
+                </v-icon>
+              </div>
             </v-card-actions>
           </div>
 
@@ -108,16 +140,21 @@
       </v-container>
     </div>
 
-    <v-container v-if="!ready" class="hive-inspections-content">
+    <v-container
+      v-if="!ready || loadingInspections"
+      class="hive-inspections-content"
+    >
       <div class="loading">
         <v-progress-circular size="50" color="primary" indeterminate />
       </div>
     </v-container>
 
-    <div v-if="ready" class="hive-inspections-content">
+    <div v-if="ready && !loadingInspections" class="hive-inspections-content">
       <div
         v-if="
-          inspections.inspections !== undefined && filteredInspections.length
+          !noResults &&
+            inspections.inspections !== undefined &&
+            inspectionsData.length
         "
         class="hive-inspections-view-box"
       >
@@ -129,7 +166,7 @@
                   ><strong>{{ $tc('Inspection', 2) }}</strong></th
                 >
                 <th
-                  v-for="(inspection, a) in filteredInspections"
+                  v-for="(inspection, a) in inspectionsData"
                   :key="a"
                   class="tdc"
                 >
@@ -159,8 +196,8 @@
                   </div>
                   <strong class="d-flex justify-center">{{
                     smallScreen
-                      ? inspection.created_at_day_month
-                      : inspection.created_at_locale_date
+                      ? momentFormat(inspection.created_at, 'll')
+                      : momentify(inspection.created_at)
                   }}</strong>
                 </th>
                 <th class="filler"></th>
@@ -171,7 +208,7 @@
               <tr>
                 <td class="tdr">{{ $t('positive_impression') }}</td>
                 <td
-                  v-for="(inspection, b) in filteredInspections"
+                  v-for="(inspection, b) in inspectionsData"
                   :key="b"
                   class="tdc"
                 >
@@ -201,7 +238,7 @@
               <tr>
                 <td class="tdr">{{ $t('needs_attention') }}</td>
                 <td
-                  v-for="(inspection, c) in filteredInspections"
+                  v-for="(inspection, c) in inspectionsData"
                   :key="c"
                   class="tdc"
                 >
@@ -227,7 +264,7 @@
               <tr>
                 <td class="tdr">{{ $t('notes') }}</td>
                 <td
-                  v-for="(inspection, d) in filteredInspections"
+                  v-for="(inspection, d) in inspectionsData"
                   :key="d"
                   class="tdc"
                 >
@@ -244,7 +281,7 @@
               <tr>
                 <td class="tdr">{{ $t('reminder') }}</td>
                 <td
-                  v-for="(inspection, e) in filteredInspections"
+                  v-for="(inspection, e) in inspectionsData"
                   :key="e"
                   class="tdc"
                 >
@@ -281,7 +318,6 @@
                             "
                             :start="
                               new Date(
-                                // eslint-disable vue/comma-dangle
                                 inspection.reminder_date.replace(/-/g, '/')
                               )
                             "
@@ -291,9 +327,9 @@
                               )
                             "
                             :details="
-                              `BEEP app ${$tc('Inspection', 1)} @ ${
-                                inspection.created_at_locale_date
-                              }`
+                              `BEEP app ${$tc('Inspection', 1)} @ ${momentify(
+                                inspection.created_at
+                              )}`
                             "
                             :calendar="calendarItem"
                           ></AddToCalendar>
@@ -308,7 +344,7 @@
               <tr>
                 <td class="tdr">{{ $t('remind_date') }}</td>
                 <td
-                  v-for="(inspection, f) in filteredInspections"
+                  v-for="(inspection, f) in inspectionsData"
                   :key="f"
                   class="tdc"
                 >
@@ -325,8 +361,8 @@
                       "
                       v-text="
                         smallScreen
-                          ? inspection.reminder_date_day_month
-                          : inspection.reminder_date_locale_date
+                          ? momentFormat(inspection.reminder_date, 'll')
+                          : momentify(inspection.reminder_date)
                       "
                     ></span>
                   </div>
@@ -365,7 +401,7 @@
 
                 <td
                   v-if="itemByDate.items === null"
-                  :colspan="filteredInspections.length + 1"
+                  :colspan="inspectionsData.length + 1"
                   class="header expandable-header"
                   @click="toggleCategory(itemByDate.name)"
                 ></td>
@@ -493,7 +529,6 @@
                     v-if="item.type === 'score_amount'"
                     :style="
                       `color: ${scoreAmountColor(
-                        // eslint-disable-next-line vue/comma-dangle
                         item.value
                       )}; font-weight: bold;`
                     "
@@ -548,20 +583,13 @@
           </table>
         </div>
       </div>
-      <v-container
-        v-if="
-          (inspections.inspections !== undefined &&
-            !filteredInspections.length) ||
-            show500Response
-        "
-      >
+      <v-container v-if="noResults">
         <v-row>
           <v-col sm="auto" :cols="12">
             {{
               show500Response
                 ? $t('something_wrong')
-                : (activeHive.editable || activeHive.owner) &&
-                  inspections.inspections.length === 0
+                : noInspections
                 ? $tc('Inspection', 2) + ' ' + $t('not_available_yet')
                 : $t('no_results')
             }}
@@ -592,7 +620,7 @@ import {
   readApiariesAndGroups,
   readGeneralInspections,
 } from '@mixins/methodsMixin'
-import { momentify, momentifyDayMonth } from '@mixins/momentMixin'
+import { momentify, momentFormat } from '@mixins/momentMixin'
 import AddToCalendar from '@components/add-to-calendar.vue'
 
 export default {
@@ -605,7 +633,7 @@ export default {
   },
   mixins: [
     momentify,
-    momentifyDayMonth,
+    momentFormat,
     readApiariesAndGroups,
     readGeneralInspections,
   ],
@@ -630,6 +658,9 @@ export default {
       baseApiUrl:
         process.env.VUE_APP_BASE_API_URL ||
         process.env.VUE_APP_BASE_API_URL_FALLBACK,
+      pageIndex: 1,
+      searchPageIndex: 1,
+      loadingInspections: false,
     }
   },
   computed: {
@@ -637,122 +668,59 @@ export default {
     id() {
       return parseInt(this.$route.params.id)
     },
-    inspectionsWithDates() {
-      var inspectionsWithDates = this.inspections.inspections
-      inspectionsWithDates.map((inspection) => {
-        inspection.created_at_locale_date = this.momentify(
-          inspection.created_at
-        )
-        inspection.created_at_day_month = this.momentifyDayMonth(
-          inspection.created_at
-        )
-        inspection.reminder_date !== null
-          ? (inspection.reminder_date_locale_date = this.momentify(
-              inspection.reminder_date
-            ))
-          : (inspection.reminder_date_locale_date = null)
-        inspection.reminder_date !== null
-          ? (inspection.reminder_date_day_month = this.momentifyDayMonth(
-              inspection.reminder_date
-            ))
-          : (inspection.reminder_date_day_month = null)
-      })
-      return inspectionsWithDates
+    inspectionsData() {
+      return this.inspections.inspections !== undefined
+        ? this.inspections.inspections.data
+        : []
     },
-    filteredInspectionsWithUndefined() {
-      var textFilteredInspections = []
-      if (this.search === null) {
-        textFilteredInspections = this.inspectionsWithDates
+    filters() {
+      if (
+        this.filterByAttention ||
+        this.filterByReminder ||
+        this.filterByImpression.length > 0
+      ) {
+        var parameters = [
+          this.filterByAttention ? 'attention=1' : null,
+          this.filterByReminder ? 'reminder=1' : null,
+          this.filterByImpression.length > 0
+            ? 'impression=' + this.filterByImpression
+            : null,
+        ]
+        return (
+          (this.search !== null ? '&' : '?') +
+          parameters
+            .filter((p) => {
+              return p !== null
+            })
+            .join('&')
+        )
       } else {
-        textFilteredInspections = this.inspectionsWithDates.map(
-          (inspection) => {
-            const inspectionMatch = Object.entries(inspection).some(
-              ([key, value]) => {
-                if (
-                  value !== null &&
-                  typeof value === 'string' &&
-                  this.search.substring(0, 3) !== 'id=' &&
-                  key !== ('created_at' || 'reminder_date')
-                ) {
-                  return value.toLowerCase().includes(this.search.toLowerCase())
-                } else if (
-                  key === 'id' &&
-                  this.search.substring(0, 3) === 'id='
-                ) {
-                  return (
-                    value.toString() ===
-                    this.search.substring(3, this.search.length)
-                  )
-                }
-              }
-            )
-            if (inspectionMatch) {
-              return inspection
-            }
-          }
-        )
+        return null
       }
-
-      var propertyFilteredInspections = textFilteredInspections
-        .map((inspection) => {
-          if (this.filterByAttention) {
-            if (
-              typeof inspection !== 'undefined' &&
-              inspection.attention === 1
-            ) {
-              return inspection
-            } else {
-              return 'undefined'
-            }
-          } else {
-            return inspection
-          }
-        })
-        .map((inspection) => {
-          if (this.filterByReminder) {
-            if (
-              typeof inspection !== 'undefined' &&
-              (inspection.reminder !== null ||
-                inspection.reminder_date !== null)
-            ) {
-              return inspection
-            } else {
-              return 'undefined'
-            }
-          } else {
-            return inspection
-          }
-        })
-        .map((inspection) => {
-          if (this.filterByImpression.length > 0) {
-            if (
-              typeof inspection !== 'undefined' &&
-              this.filterByImpression.includes(inspection.impression)
-            ) {
-              return inspection
-            } else {
-              return 'undefined'
-            }
-          } else {
-            return inspection
-          }
-        })
-
-      return propertyFilteredInspections
     },
-    filteredInspections() {
-      return this.filteredInspectionsWithUndefined.filter(
-        (x) => x !== 'undefined' && typeof x !== 'undefined'
+    hasPages() {
+      return (
+        this.inspections.inspections !== undefined &&
+        this.inspections.inspections.total > 1
       )
     },
-    inspectionIndexes() {
-      var inspectionIndexes = []
-      this.filteredInspectionsWithUndefined.map((inspection, i) => {
-        if (inspection !== 'undefined' && typeof inspection !== 'undefined') {
-          inspectionIndexes.push(i)
-        }
-      })
-      return inspectionIndexes
+    isFirstPage() {
+      return this.searchOrFilter
+        ? this.searchPageIndex === 1
+        : this.pageIndex === 1
+    },
+    isLastPage() {
+      return (
+        this.inspectionsData.length > 0 &&
+        (this.searchOrFilter
+          ? this.searchPageIndex === this.lastPage
+          : this.pageIndex === this.lastPage)
+      )
+    },
+    lastPage() {
+      return this.inspectionsData.length > 0
+        ? this.inspections.inspections.last_page
+        : null
     },
     locale() {
       return this.$i18n.locale
@@ -774,13 +742,11 @@ export default {
           if (itemByDate.items !== null) {
             return {
               ...itemByDate,
-              items: itemByDate.items.reduce((acc, item, index) => {
-                if (this.inspectionIndexes.includes(index)) {
-                  if (typeof item === 'object') {
-                    acc.push(item)
-                  } else {
-                    acc.push('')
-                  }
+              items: itemByDate.items.reduce((acc, item) => {
+                if (typeof item === 'object') {
+                  acc.push(item)
+                } else {
+                  acc.push('')
                 }
                 return acc
               }, []),
@@ -791,6 +757,31 @@ export default {
         })
       return matchedItemsByDate
     },
+    mobile() {
+      return this.$vuetify.breakpoint.mobile
+    },
+    noInspections() {
+      return (
+        (this.activeHive.editable || this.activeHive.owner) &&
+        !this.searchOrFilter &&
+        this.inspections.inspections !== undefined &&
+        this.inspections.inspections.data.length === 0
+      )
+    },
+    noResults() {
+      return (
+        this.noInspections ||
+        (this.searchOrFilter && this.inspectionsData.length === 0) ||
+        this.show500Response
+      )
+    },
+    paginationText() {
+      return (
+        (!this.mobile ? this.$i18n.tc('Page', 1) + ' ' : '') +
+        (this.searchOrFilter ? this.searchPageIndex : this.pageIndex) +
+        (!this.mobile ? ' ' + this.$i18n.t('of') + ' ' + this.lastPage : '')
+      )
+    },
     passOnQuery() {
       var queries = this.$route.query
       if ('interval' in queries) {
@@ -798,6 +789,9 @@ export default {
       } else {
         return null
       }
+    },
+    searchOrFilter() {
+      return this.search !== null || this.filters !== null
     },
     smallScreen() {
       return this.$vuetify.breakpoint.width < 700
@@ -821,7 +815,7 @@ export default {
   },
   watch: {
     locale() {
-      this.readAllInspectionsForHiveId()
+      this.readInspectionsForHiveId()
     },
   },
   created() {
@@ -829,7 +823,7 @@ export default {
     this.getActiveHive(this.id).then((hive) => {
       this.$store.commit('hives/setActiveHive', hive)
     })
-    this.readAllInspectionsForHiveId().then(() => {
+    this.readInspectionsForHiveId().then(() => {
       this.ready = true
     })
   },
@@ -841,7 +835,7 @@ export default {
           this.snackbar.text = this.$i18n.t('something_wrong')
           this.snackbar.show = true
         }
-        this.readAllInspectionsForHiveId()
+        this.readInspectionsForHiveId()
         this.readGeneralInspections() // update generalInspections in store for diary-list
         this.readApiariesAndGroups() // update apiaries and groups so the latest inspection will be displayed at apiary-list
       } catch (error) {
@@ -873,12 +867,35 @@ export default {
         this.$router.push({ name: '404', params: { resource: 'hive' } })
       }
     },
-    async readAllInspectionsForHiveId() {
+    async readInspectionsForHiveId() {
+      this.loadingInspections = true
+      this.show500Response = false
+
+      var searchSpecific =
+        this.search !== null && this.search.indexOf('=') > -1
+          ? this.search
+          : null
       try {
-        const response = await Api.readRequest('/inspections/hive/', this.id)
+        const response = await Api.readRequest(
+          '/inspections/hive/' +
+            this.id +
+            (this.searchOrFilter
+              ? (searchSpecific !== null
+                  ? '?' + searchSpecific
+                  : this.search
+                  ? '?search=' + this.search
+                  : '') +
+                (this.filters ? this.filters : '') +
+                (this.searchPageIndex !== 1
+                  ? '&page=' + this.searchPageIndex
+                  : '')
+              : '?page=' + this.pageIndex)
+        )
         this.inspections = response.data
+        this.loadingInspections = false
         return true
       } catch (error) {
+        this.loadingInspections = false
         if (error.response) {
           console.log('Error: ', error.response)
           if (error.response.status === 500) {
@@ -889,6 +906,11 @@ export default {
         }
       }
     },
+    clearSearch() {
+      this.search = null
+      this.searchPageIndex = 1
+      this.readInspectionsForHiveId()
+    },
     confirmDeleteInspection(inspection) {
       this.$refs.confirm
         .open(
@@ -897,7 +919,7 @@ export default {
             ' (' +
             this.$i18n.t('Date').toLocaleLowerCase() +
             ': ' +
-            inspection.created_at_locale_date +
+            this.momentify(inspection.created_at) +
             ')?',
           {
             color: 'red',
@@ -933,6 +955,14 @@ export default {
         this.hiddenCategories.push(string)
       }
     },
+    toggleFilterByAttention() {
+      this.filterByAttention = !this.filterByAttention
+      this.readInspectionsForHiveId()
+    },
+    toggleFilterByReminder() {
+      this.filterByReminder = !this.filterByReminder
+      this.readInspectionsForHiveId()
+    },
     scoreAmountColor(value) {
       if (value === '0') return '#CCC'
       if (value === '1') return '#069518'
@@ -949,6 +979,14 @@ export default {
       if (value === '4') return '#069518'
       return '#F8B133'
     },
+    setPageIndex(value) {
+      if (!this.searchOrFilter) {
+        this.pageIndex += value
+      } else {
+        this.searchPageIndex += value
+      }
+      this.readInspectionsForHiveId()
+    },
     updateFilterByImpression(number) {
       if (this.filterByImpression.includes(number)) {
         this.filterByImpression.splice(
@@ -958,6 +996,7 @@ export default {
       } else {
         this.filterByImpression.push(number)
       }
+      this.readInspectionsForHiveId()
     },
   },
 }
@@ -967,6 +1006,15 @@ export default {
 .filter-bar-inspections {
   top: 52px;
   max-width: 100vw;
+}
+
+.pagination-text {
+  font-size: 13px;
+  margin-bottom: 2px;
+  @include for-phone-only {
+    font-size: 15px;
+    margin-bottom: 0px;
+  }
 }
 
 .hive-inspections-content {
@@ -1001,7 +1049,7 @@ export default {
       display: block;
       max-height: calc(100vh - 190px);
       overflow-x: visible;
-      overflow-y: auto;
+      // overflow-y: auto;
       @include for-phone-only {
         max-height: calc(100vh - 160px);
       }

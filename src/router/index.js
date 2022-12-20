@@ -40,28 +40,6 @@ router.beforeEach((routeTo, routeFrom, next) => {
   //   NProgress.start()
   // }
 
-  // make sure alertrules back button does not go back to edit/create or copy alertrule view
-  if (
-    // remember route from which alertrules view is initially entered
-    (routeFrom.name !== 'alertrule-edit' &&
-      routeFrom.name !== 'alertrule-create' &&
-      routeFrom.name !== 'alertrules-default' &&
-      routeFrom.name !== 'alertrules' &&
-      routeTo.name === 'alertrules') ||
-    // if alertrule is edited directly from alerts view, make alertrules back button refer to alerts view
-    (routeTo.name === 'alertrule-edit' && routeFrom.name === 'alerts')
-  ) {
-    localStorage.beepAlertRulesBack = routeFrom.name
-  } else if (
-    // prevent endless back loop if pressing back button in inspections overview after coming from inspect view
-    // remember route from which inspections overview was initially entered
-    routeTo.name === 'hive-inspections' &&
-    routeFrom.name !== 'inspect' &&
-    routeFrom.name !== 'hive-inspect-edit'
-  ) {
-    localStorage.beepInspectionsBack = routeFrom.name
-  }
-
   // Check if auth is required on this route
   // (including nested routes).
   const authRequired = routeTo.matched.some((route) => route.meta.authRequired)
@@ -143,9 +121,12 @@ router.beforeResolve(async (routeTo, routeFrom, next) => {
 
 // When each route is finished evaluating store previous route name
 router.afterEach((routeTo, routeFrom) => {
-  localStorage.beepNextRoute = routeTo.name
   localStorage.beepPreviousRoute = routeFrom.name
   localStorage.beepPreviousQueryHiveIndex = routeFrom.query.hive_index
+  // if navigating away from home / one of the other home tabs, remember it in order to return when back button is hit in a page with depth 1
+  if (routeFrom.meta.depth === 0) {
+    localStorage.beepPreviousTab = routeFrom.name
+  }
 })
 
 export default router

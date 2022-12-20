@@ -1,5 +1,13 @@
 <template>
   <Layout>
+    <v-container v-if="!ready">
+      <div class="loading">
+        <Transition appear>
+          <v-progress-circular size="50" color="primary" indeterminate />
+        </Transition>
+      </div>
+    </v-container>
+
     <div v-if="devices.length > 0 && ready" class="period-bar-wrapper">
       <v-container class="period-container">
         <v-row
@@ -26,7 +34,7 @@
             :disabled="interval === 'selection'"
             dense
             hide-details
-            @change="loadData(false)"
+            @change="loadData(false, false)"
           ></v-switch>
         </v-row>
         <div v-if="smAndDown" class="period-bar">
@@ -76,7 +84,7 @@
                   :disabled="interval === 'selection'"
                   dense
                   hide-details
-                  @change="loadData(false)"
+                  @change="loadData(false, false)"
                 ></v-switch>
               </div>
             </v-col>
@@ -117,7 +125,10 @@
 
     <v-container
       v-if="ready"
-      :class="devices.length > 0 ? 'measurements-content' : ''"
+      :class="
+        (devices.length > 0 ? 'measurements-content' : '') +
+          (touchDevice ? ' --touch-device' : '')
+      "
     >
       <MeasurementsDateSelection
         :interval="interval"
@@ -350,12 +361,18 @@
                   ></div>
                   <div>
                     <MeasurementsChartLine
-                      :chart-data="chartjsDataSeries(currentWeatherSensors)"
+                      :chart-data="
+                        chartjsDataSeries(currentWeatherSensors, true)
+                      "
                       :interval="interval"
-                      :start-time="periodStart"
-                      :end-time="periodEnd"
+                      :start-time="periodStartString"
+                      :end-time="periodEndString"
                       :chart-id="'chart-weather'"
+                      :alerts-for-charts="
+                        alertsForCharts(currentWeatherSensors)
+                      "
                       :inspections-for-charts="inspectionsForCharts"
+                      @confirm-view-alert="confirmViewAlert($event)"
                       @confirm-view-inspection="
                         confirmViewInspection($event.id, $event.date)
                       "
@@ -393,10 +410,12 @@
                       <MeasurementsChartLine
                         :chart-data="chartjsDataSeries([sensor])"
                         :interval="interval"
-                        :start-time="periodStart"
-                        :end-time="periodEnd"
+                        :start-time="periodStartString"
+                        :end-time="periodEndString"
                         :chart-id="'chart-sensor-' + index"
+                        :alerts-for-charts="alertsForCharts([sensor])"
                         :inspections-for-charts="inspectionsForCharts"
+                        @confirm-view-alert="confirmViewAlert($event)"
                         @confirm-view-inspection="
                           confirmViewInspection($event.id, $event.date)
                         "
@@ -423,8 +442,12 @@
                       :y-axis="sortedCurrentSoundSensors"
                       :modulo-number="moduloNr"
                       :interval="interval"
+                      :alerts-for-charts="
+                        alertsForCharts(Object.values(currentSoundSensors))
+                      "
                       :inspections-for-charts="inspectionsForCharts"
-                      @view-inspection="
+                      @confirm-view-alert="confirmViewAlert($event)"
+                      @confirm-view-inspection="
                         confirmViewInspection($event.id, $event.date)
                       "
                       @set-period-to-date="setPeriodToDate($event)"
@@ -454,10 +477,12 @@
                       <MeasurementsChartLine
                         :chart-data="chartjsDataSeries([sensor])"
                         :interval="interval"
-                        :start-time="periodStart"
-                        :end-time="periodEnd"
+                        :start-time="periodStartString"
+                        :end-time="periodEndString"
                         :chart-id="'chart-debug-' + index"
+                        :alerts-for-charts="alertsForCharts([sensor])"
                         :inspections-for-charts="inspectionsForCharts"
+                        @confirm-view-alert="confirmViewAlert($event)"
                         @confirm-view-inspection="
                           confirmViewInspection($event.id, $event.date)
                         "
@@ -522,6 +547,7 @@ import {
 import {
   momentifyDayMonth,
   momentFormat,
+  momentFormatUtcToLocal,
   momentFromNow,
   timeZone,
 } from '@mixins/momentMixin'
@@ -542,6 +568,7 @@ export default {
     checkAlerts,
     momentifyDayMonth,
     momentFormat,
+    momentFormatUtcToLocal,
     momentFromNow,
     readDevicesIfNotPresent,
     readGeneralInspectionsIfNotPresent,
@@ -551,6 +578,7 @@ export default {
   ],
   data() {
     return {
+      initLocale: 'nl',
       lastSensorDate: null,
       measurementData: {},
       noPeriodData: false,
@@ -594,9 +622,31 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('alerts', ['alerts']),
+    ...mapGetters('auth', ['userLocale']),
     ...mapGetters('devices', ['devices']),
     ...mapGetters('inspections', ['generalInspections']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
+    alertsForDeviceAndPeriod() {
+      var alertsForDevice = [...this.alerts].filter(
+        (alert) => alert.device_id === this.selectedDeviceId
+      )
+
+      var alertsForDeviceAndPeriod = alertsForDevice.filter((alert) =>
+        this.alertInPeriod(alert)
+      )
+
+      alertsForDeviceAndPeriod.map((alert) => {
+        alert.min = !this.dateWithinPeriod(alert, 'created_at')
+          ? this.periodStartString
+          : this.momentFormatUtcToLocal(alert.created_at, this.dateTimeFormat)
+        alert.max = !this.dateWithinPeriod(alert, 'updated_at')
+          ? this.periodEndString
+          : this.momentFormatUtcToLocal(alert.updated_at, this.dateTimeFormat)
+      })
+
+      return alertsForDeviceAndPeriod
+    },
     dateRangeText() {
       if (this.dates.length > 0) {
         var momentDates = [
@@ -636,30 +686,22 @@ export default {
     },
     inspectionsForCharts() {
       var inspectionsForChartsArray = []
-      var timeArray = this.measurementData.measurements.map((measurement) => {
-        return measurement.time
-      })
-      var totalDataPointsInPeriod = timeArray.length
 
-      if (totalDataPointsInPeriod > 0) {
-        var momentTimeArray = timeArray.map((time) => {
-          return this.$moment(time)
-        })
-
+      if (this.timeArray.length > 0) {
         // for each inspection, find its position on the current chart
         this.inspectionsForPeriod.map((inspection) => {
           var inspectionDateInUtc = this.$moment(inspection.created_at)
             .tz(this.timeZone)
             .utc()
 
-          var closestTime = momentTimeArray.reduce((prev, curr) => {
+          var closestTime = this.momentTimeArray.reduce((prev, curr) => {
             return Math.abs(curr - inspectionDateInUtc) <
               Math.abs(prev - inspectionDateInUtc)
               ? curr
               : prev
           })
 
-          var closestIndex = timeArray.findIndex(
+          var closestIndex = this.timeArray.findIndex(
             (time) =>
               time === closestTime.utc().format('YYYY-MM-DD[T]HH:mm:ss[Z]')
           )
@@ -687,7 +729,7 @@ export default {
         inspections = this.inspectionsWithDates.filter(
           (inspection) =>
             inspection.hive_id === this.selectedDevice.hive_id &&
-            this.inspectionWithinPeriod(inspection)
+            this.dateWithinPeriod(inspection, 'created_at')
         )
       }
       return inspections
@@ -783,6 +825,15 @@ export default {
       }
       return 6 * this.moduloFactor
     },
+    momentTimeArray() {
+      if (this.timeArray.length > 0) {
+        return this.timeArray.map((time) => {
+          return this.$moment(time)
+        })
+      } else {
+        return []
+      }
+    },
     periods() {
       return [
         { name: this.$i18n.t('Hour'), interval: 'hour' },
@@ -792,6 +843,12 @@ export default {
         { name: this.$i18n.t('year'), interval: 'year' },
         { name: this.$i18n.t('selection'), interval: 'selection' },
       ]
+    },
+    periodEndString() {
+      return this.periodEnd.format(this.dateTimeFormat)
+    },
+    periodStartString() {
+      return this.periodStart.format(this.dateTimeFormat)
     },
     queriedChartCols() {
       var queriedValue = parseInt(this.$route.query.chartCols)
@@ -803,7 +860,7 @@ export default {
       return this.$route.query.date || null
     },
     queriedInterval() {
-      return this.$route.query.interval || null
+      return this.$route.query.interval
     },
     queriedTimeIndex() {
       return parseInt(this.$route.query.timeIndex) || 0
@@ -815,7 +872,7 @@ export default {
       return this.$route.query.end || null
     },
     queriedRelativeInterval() {
-      return this.$route.query.relativeInterval || null
+      return this.$route.query.relativeInterval
     },
     setRelativeInterval: {
       get() {
@@ -945,31 +1002,37 @@ export default {
       })
       return uniqueApiaries
     },
+    timeArray() {
+      return this.measurementData !== null
+        ? this.measurementData.measurements.map(
+            (measurement) => measurement.time
+          )
+        : []
+    },
     touchDevice() {
       return window.matchMedia('(hover: none)').matches
     },
   },
   watch: {
     locale() {
-      this.setPeriodTitle() // translate period title
-      const temp = this.measurementData
-      this.measurementData = null // charts are redrawn when measurementData is null
-      setTimeout(() => {
-        this.formatMeasurementData(temp)
-      }, 10)
+      if (this.locale !== this.initLocale) {
+        this.redrawCharts(false)
+        this.setPeriodTitle() // translate period title
+      }
     },
   },
   created() {
+    this.initLocale = this.userLocale
     this.readTaxonomy()
-    if (this.queriedChartCols) {
+    if (this.queriedChartCols !== null) {
       this.chartCols = this.queriedChartCols
     } else if (localStorage.beepChartCols) {
       this.chartCols = parseInt(localStorage.beepChartCols)
     }
-    if (this.queriedRelativeInterval) {
-      this.relativeInterval = this.queriedRelativeInterval === true
+    if (this.queriedRelativeInterval !== undefined) {
+      this.relativeInterval = this.queriedRelativeInterval === 'true'
     } else if (localStorage.beepRelativeInterval) {
-      this.relativeInterval = localStorage.beepRelativeInterval === 'true'
+      this.setRelativeInterval = localStorage.beepRelativeInterval === 'true'
     }
     this.preselectedDeviceId = parseInt(this.$route.params.id) || null
     // if selected device id is saved in localStorage, and there is no preselected device id, use it
@@ -981,33 +1044,36 @@ export default {
     } else if (this.preselectedDeviceId !== null) {
       this.selectedDeviceId = this.preselectedDeviceId
     }
-    this.checkAlertRulesAndAlerts() // for alerts-tab badge
     this.stopTimer()
-    this.readDevicesIfNotPresent()
+    this.checkAlertRulesAndAlerts() // for alerts-tab badge AND alert-lines
       .then(() => {
-        if (
-          this.queriedDate !== null &&
-          this.queriedDate.length === 10 &&
-          !isNaN(this.preselectedDeviceId)
-        ) {
-          this.selectDate(this.queriedDate)
-        } else if (this.devices.length > 0) {
-          if (this.queriedInterval) {
-            this.interval = this.queriedInterval
-            this.timeIndex = this.queriedTimeIndex
-            this.dates =
-              this.queriedStart && this.queriedEnd
-                ? [this.queriedStart, this.queriedEnd]
-                : []
-          }
+        this.readGeneralInspectionsIfNotPresent().then(() => {
+          this.readDevicesIfNotPresent()
+            .then(() => {
+              if (
+                this.queriedDate !== null &&
+                this.queriedDate.length === 10 &&
+                !isNaN(this.preselectedDeviceId)
+              ) {
+                this.selectDate(this.queriedDate)
+              } else if (this.devices.length > 0) {
+                if (this.queriedInterval !== undefined) {
+                  this.interval = this.queriedInterval
+                  this.timeIndex = this.queriedTimeIndex
+                  this.dates =
+                    this.queriedStart && this.queriedEnd
+                      ? [this.queriedStart, this.queriedEnd]
+                      : []
+                }
 
-          this.setInitialDeviceIdAndLoadData()
-        }
+                this.setInitialDeviceIdAndLoadData()
+              }
+            })
+            .then(() => {
+              this.ready = true
+            })
+        })
       })
-      .then(() => {
-        this.ready = true
-      })
-    this.readGeneralInspectionsIfNotPresent()
   },
   beforeDestroy() {
     if (this.timer > 0) {
@@ -1118,6 +1184,59 @@ export default {
         }
       }
     },
+    alertsForCharts(sensorArray) {
+      var alertsForCharts = this.alertsForDeviceAndPeriod.filter((alert) =>
+        // DEBUG MOGE: alert.measurement_id === 20
+        sensorArray.includes(
+          this.getSensorMeasurementAbbrById(alert.measurement_id)
+        )
+      )
+
+      if (this.timeArray.length > 0) {
+        // for each alert, find its position on the current chart
+        alertsForCharts.map((alert) => {
+          var alertMinMoment = this.$moment(alert.min)
+          var alertMaxMoment = this.$moment(alert.max)
+
+          var closestTimeStart = this.momentTimeArray.reduce((prev, curr) => {
+            return Math.abs(curr - alertMinMoment) <
+              Math.abs(prev - alertMinMoment)
+              ? curr
+              : prev
+          })
+
+          var closestIndexStart = this.timeArray.findIndex(
+            (time) =>
+              time === closestTimeStart.utc().format('YYYY-MM-DD[T]HH:mm:ss[Z]')
+          )
+
+          var closestIndexEnd = closestIndexStart
+
+          if (alert.min !== alert.max) {
+            var closestTimeEnd = this.momentTimeArray.reduce((prev, curr) => {
+              return Math.abs(curr - alertMaxMoment) <
+                Math.abs(prev - alertMaxMoment)
+                ? curr
+                : prev
+            })
+
+            closestIndexEnd = this.timeArray.findIndex(
+              (time) =>
+                time === closestTimeEnd.utc().format('YYYY-MM-DD[T]HH:mm:ss[Z]')
+            )
+          }
+
+          // and add position and meta data for chart components
+          Object.assign(alert, {
+            closestIndexStart,
+            closestIndexEnd,
+            date: this.momentFormatUtcToLocal(alert.created_at, 'lll'),
+          })
+        })
+      }
+
+      return alertsForCharts
+    },
     calculateProgress(min, max, value) {
       if (value > max) {
         return 100
@@ -1148,7 +1267,7 @@ export default {
 
       return !isNaN(newIndex) && newIndex > 0 ? newIndex : 0
     },
-    chartjsDataSeries(quantities) {
+    chartjsDataSeries(quantities, weather = false) {
       var data = {
         labels: [],
         datasets: [],
@@ -1157,7 +1276,9 @@ export default {
       quantities.map((quantity, index) => {
         var mT = this.getSensorMeasurement(quantity)
 
-        if (mT.show_in_charts === 1) {
+        if (mT === null || mT === undefined) {
+          console.log('mT not found ', quantity)
+        } else if (mT.show_in_charts === 1) {
           var sensorName =
             this.measurementData.sensorDefinitions[quantity] &&
             this.measurementData.sensorDefinitions[quantity].name !== null
@@ -1180,6 +1301,8 @@ export default {
             name: sensorName,
             unit: mT.unit !== '-' && mT.unit !== null ? mT.unit : '',
             data: [],
+            spanGaps:
+              weather || this.interval === 'hour' || this.interval === 'day', // false,
           })
         }
       })
@@ -1202,15 +1325,15 @@ export default {
           ) {
             data.datasets.map((dataset, index) => {
               var quantity = dataset.abbr
-              if (
-                measurement[quantity] !== null &&
-                typeof measurement[quantity] === 'number'
-              ) {
-                dataset.data.push({
-                  x: measurement.time,
-                  y: measurement[quantity],
-                })
-              }
+              // if (
+              //   measurement[quantity] !== null && // previously this was enabled (do not push null values, otherwise datalabels plugin won't work) but now disabled again to make spanGaps work + added workaround for datalabels plugin
+              //   typeof measurement[quantity] === 'number'
+              // ) {
+              dataset.data.push({
+                x: measurement.time,
+                y: measurement[quantity],
+              })
+              // }
             })
           }
         })
@@ -1222,6 +1345,29 @@ export default {
       if (dates[1] < dates[0]) {
         this.dates = [dates[1], dates[0]]
       }
+    },
+    confirmViewAlert(alert) {
+      // TODO: finetune message, add date?
+      this.$refs.confirm
+        .open(
+          this.$i18n.t('view') + ' ' + this.$i18n.tc('alert', 1),
+          this.$i18n.t('View_alert_confirm') + alert.alert_rule_name + '"?',
+          {
+            color: 'red',
+          },
+          alert.alert_rule_name + ' (' + alert.alert_function + ')'
+        )
+        .then((confirm) => {
+          return this.$router.push({
+            name: 'alerts',
+            query: {
+              search: alert.date,
+            },
+          })
+        })
+        .catch((reject) => {
+          return true
+        })
     },
     confirmViewInspection(inspectionId, inspectionDate) {
       this.$refs.confirm
@@ -1306,11 +1452,39 @@ export default {
       )
       return smFilter.length > 0 ? smFilter[0] : null
     },
-    inspectionWithinPeriod(inspection) {
-      return (
-        inspection.created_at < this.periodEnd.format(this.dateTimeFormat) &&
-        inspection.created_at > this.periodStart.format(this.dateTimeFormat)
+    getSensorMeasurementAbbrById(id) {
+      var smFilter = this.sensorMeasurementsList.filter(
+        (measurementType) => measurementType.id === id
       )
+      return smFilter.length > 0 ? smFilter[0].abbreviation : null
+    },
+    alertInPeriod(alert) {
+      const created = this.momentFormatUtcToLocal(
+        alert.created_at,
+        this.dateTimeFormat
+      )
+      const updated = this.momentFormatUtcToLocal(
+        alert.updated_at,
+        this.dateTimeFormat
+      )
+
+      const periodLongerThanAlert =
+        this.dateWithinPeriod(alert, 'created_at') ||
+        (created !== updated && this.dateWithinPeriod(alert, 'updated_at'))
+      const alertLongerThanPeriod =
+        created !== updated &&
+        created <= this.periodStartString &&
+        updated >= this.periodEndString
+
+      return periodLongerThanAlert || alertLongerThanPeriod
+    },
+
+    dateWithinPeriod(item, dateProp) {
+      const date = this.momentFormatUtcToLocal(
+        item[dateProp],
+        this.dateTimeFormat
+      )
+      return date <= this.periodEndString && date >= this.periodStartString
     },
     invalidDates(dates) {
       return (
@@ -1319,12 +1493,14 @@ export default {
         dates.length === 1
       )
     },
-    loadData(loadLastSensorValues = true) {
+    loadData(loadLastSensorValues = true, skipTitle = false) {
+      if (!skipTitle) {
+        this.setPeriodTitle()
+      }
       if (loadLastSensorValues) {
         this.loadLastSensorValuesTimer()
       }
       this.sensorMeasurementRequest(this.interval)
-      this.setPeriodTitle()
     },
     loadLastSensorValuesTimer() {
       if (
@@ -1369,6 +1545,19 @@ export default {
           .replace(currentYearEsPt, '')
           .replace(' ' + currentYear, '') // Remove year hardcoded per language, currently no other way to get rid of year whilst keeping localized time
       }
+    },
+    redrawCharts(seamless = true) {
+      const temp = this.measurementData
+      if (!seamless) {
+        this.resetCharts()
+      }
+      setTimeout(() => {
+        this.formatMeasurementData(temp)
+      }, 10)
+    },
+    resetCharts() {
+      this.loadingData = true
+      this.measurementData = null // charts are redrawn when measurementData is null
     },
     selectDate(date) {
       var p = this.interval
@@ -1447,9 +1636,30 @@ export default {
         else period = 'day'
       }
 
-      this.timeIndex = this.calculateTimeIndex(period, date, true)
-      this.interval = period
-      this.loadData()
+      if (this.touchDevice) {
+        var format = period === 'hour' ? 'lll' : 'll'
+
+        this.$refs.confirm
+          .open(
+            this.$i18n.t('data_zoom'),
+            (this.interval !== 'hour'
+              ? this.$i18n.t('data_zoom_ok')
+              : this.$i18n.t('data_zoom_out_ok')) +
+              this.momentFormat(date, format) +
+              '?',
+            {
+              color: 'primary',
+            }
+          )
+          .then((confirm) => {
+            this.zoomTo(period, date)
+          })
+          .catch((reject) => {
+            return true
+          })
+      } else {
+        this.zoomTo(period, date)
+      }
     },
     setInitialDeviceIdAndLoadData() {
       if (this.$route.name === 'measurements-id') {
@@ -1482,8 +1692,16 @@ export default {
       }
     },
     setTimeIndex(offset) {
+      this.resetCharts() // show loading icon instead of still try to render charts
+      var timeIndexWhenClicked = this.timeIndex
       this.timeIndex += offset
-      this.loadData()
+      this.setPeriodTitle()
+      setTimeout(() => {
+        // only load data when user is done clicking through periods, so when intended timeIndex has been reached
+        if (timeIndexWhenClicked + offset === this.timeIndex) {
+          this.loadData(true, true)
+        }
+      }, 600)
     },
     startTimer() {
       this.stopTimer()
@@ -1498,6 +1716,11 @@ export default {
     updateChartCols(value) {
       this.chartCols = value
       localStorage.beepChartCols = value
+    },
+    zoomTo(period, date) {
+      this.timeIndex = this.calculateTimeIndex(period, date, true)
+      this.interval = period
+      this.loadData()
     },
   },
 }
@@ -1541,6 +1764,13 @@ export default {
   @include for-tablet-landscape-up {
     margin-top: 40px;
   }
+  &.--touch-device {
+    user-select: none; // prevent text selection on mobile drag on chart
+    -webkit-touch-callout: none; // Safari
+    -webkit-user-select: none; // Chrome
+    -moz-user-select: none; // Firefox
+    -ms-user-select: none; // Internet Explorer/Edge
+  }
 }
 .ep-legend--value {
   margin-top: -24px !important;
@@ -1554,6 +1784,9 @@ export default {
 
 .header-filler {
   height: 32px;
+  @include for-phone-only {
+    display: none;
+  }
 }
 
 .date-picker {

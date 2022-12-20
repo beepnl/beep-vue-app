@@ -56,7 +56,8 @@
               (selectedHives && selectedHives.length === 0) ||
               showLoadingIcon ||
               forceInspectionDate ||
-              inspectionDate === 'Invalid date'
+              inspectionDate === 'Invalid date' ||
+              (activeInspection && activeInspection.date === null)
           "
           @click.prevent="confirmSaveInspection"
         >
@@ -623,7 +624,6 @@ export default {
       },
       set(value) {
         var date = this.momentFullDateTime(value)
-        this.activeInspection.date = date
         this.setActiveInspectionDate(date)
       },
     },
@@ -824,8 +824,9 @@ export default {
               itemsObject[categoryId] = null
             })
             this.activeInspection.items = itemsObject
-            if (this.selectedChecklist.owner)
-              this.activeInspection.date = this.getNow()
+            if (this.selectedChecklist.owner) {
+              this.setActiveInspectionDate()
+            }
           }
         })
       }
@@ -859,7 +860,7 @@ export default {
         }
       }
     },
-    async getChecklistById(id) {
+    async getChecklistById(id, switchChecklistExistingInspection = false) {
       try {
         const response = await Api.readRequest('/inspections/lists?id=', id)
         this.selectedChecklist = response.data.checklist
@@ -911,14 +912,19 @@ export default {
               itemsObject[key] = value
             }
           })
-          if (this.tempSavedInspection === null) {
+          if (
+            !switchChecklistExistingInspection &&
+            this.tempSavedInspection === null
+          ) {
+            // force user to actively select inspection date when checklist is not owned and it is not present yet
             if (!this.selectedChecklist.owner) {
               this.activeInspection.date = null
             } else if (
               this.selectedChecklist.owner &&
-              this.activeInspection.date === null
+              (this.activeInspection.date === null ||
+                this.inspectionDate === 'Invalid date')
             ) {
-              this.activeInspection.date = this.getNow()
+              this.setActiveInspectionDate()
             }
           }
         }
@@ -1213,7 +1219,9 @@ export default {
         this.$store.commit('hives/setActiveHive', null)
       }
     },
-    setActiveInspectionDate(date) {
+    setActiveInspectionDate(setDate = null) {
+      var date = setDate === null ? this.getNow() : setDate
+      this.activeInspection.date = date
       this.$store.commit('inspections/setData', {
         prop: 'activeInspectionDate',
         value: date,
@@ -1246,7 +1254,8 @@ export default {
             }
           )
           .then((confirm) => {
-            this.getChecklistById(id)
+            // do not change date when switching checklist for an existing (temp saved or regular) inspection
+            this.getChecklistById(id, true)
           })
           .catch((reject) => {
             return true

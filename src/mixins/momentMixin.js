@@ -29,16 +29,24 @@ export const momentFormat = {
   methods: {
     momentFormat(date, format) {
       if (date !== null) {
-        return (
-          this.$moment(date)
-            // .utc(date) // date is in utc, will be converted to users timezone
-            // .local() // date is in utc, will be converted to users timezone
-            .locale(this.$i18n.locale)
-            .format(format)
-        )
+        return this.$moment(date)
+          .locale(this.$i18n.locale)
+          .format(format)
       } else {
         return null
       }
+    },
+  },
+}
+
+export const momentFormatUtcToLocal = {
+  methods: {
+    momentFormatUtcToLocal(date, format) {
+      return this.$moment
+        .utc(date) // date is in utc, will be converted to users timezone
+        .local() // date is in utc, will be converted to users timezone
+        .locale(this.$i18n.locale)
+        .format(format)
     },
   },
 }

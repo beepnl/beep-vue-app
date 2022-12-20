@@ -55,8 +55,8 @@
         </v-dialog>
 
         <v-icon
-          v-if="timeIndex !== 0"
-          class="color-grey-dark"
+          :class="timeIndex === 0 ? 'color-transparent' : 'color-grey-dark'"
+          :disabled="timeIndex === 0"
           @click="setTimeIndex(-1)"
         >
           mdi-chevron-right

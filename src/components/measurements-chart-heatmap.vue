@@ -56,6 +56,51 @@
           </tfoot>
           <tbody>
             <tr
+              v-for="(alert, a) in alertsForChartsMerged"
+              :key="'alert' + a"
+              class="tr--heatmap"
+            >
+              <td class="td--heatmap-label --alert">{{
+                alert.alert_rule_name
+              }}</td>
+
+              <template v-for="(measurement, ai) in data">
+                <td
+                  :key="'alert-td-' + ai"
+                  :class="
+                    `td--heatmap ${
+                      isAlertIndex(alert, ai) ? '--pointer' : '--default'
+                    }
+                     ${ai % moduloNumber === 0 ? 'td-border' : ''} `
+                  "
+                  :style="`background-color: ${getAlertColor(alert, ai)};`"
+                  @click.stop="confirmViewAlert(alert, ai)"
+                >
+                  <span
+                    v-if="inspectionIndexes.indexOf(ai) > -1"
+                    class="inspection-line --alert"
+                    @click.stop="confirmViewInspection(ai)"
+                  ></span>
+
+                  <!-- <span
+                    v-if="inspectionIndexes.indexOf(ai) > -1"
+                    class="beep-tooltip heatmap-tooltip"
+                    >{{ getInspectionByIndex(ai).date }} <br />{{
+                      getInspectionText(ai)
+                    }}
+                  </span> -->
+
+                  <span
+                    v-if="isAlertIndex(alert, ai)"
+                    class="beep-tooltip heatmap-tooltip"
+                    >{{ alert.alert_rule_name }} <br />{{
+                      findAlertInfo(alert, ai).alert_function
+                    }}
+                  </span>
+                </td>
+              </template>
+            </tr>
+            <tr
               v-for="(soundSensor, index) in yAxis"
               :key="soundSensor + index"
               class="tr--heatmap"
@@ -81,7 +126,7 @@
                 <span
                   v-if="inspectionIndexes.indexOf(i) > -1"
                   class="inspection-line"
-                  @click="viewInspection(i)"
+                  @click.stop="confirmViewInspection(i)"
                 >
                   <!-- <v-hover v-slot="{ hover }">
                     <span class="beep-tooltip" v-on="hover"
@@ -120,6 +165,11 @@ export default {
       default: () => [],
       required: true,
     },
+    alertsForCharts: {
+      type: Array,
+      default: () => [],
+      required: false,
+    },
     inspectionsForCharts: {
       type: Array,
       default: () => [],
@@ -147,6 +197,32 @@ export default {
     },
   },
   computed: {
+    alertsForChartsMerged() {
+      var mergedAlerts = []
+
+      // create an array with one alert for each alert_rule_id that is present in the current alertsForCharts
+      // for each alert with the same alert_rule_id, add closest start and end indexes as sets to the indexes prop
+      // now the alerts have been merged such that all alerts with the same alert_rule_id are shown on the same row, instead of a separate row for each separate alert
+      this.alertsForCharts.map((alert, index) => {
+        var alertInfo = {
+          id: alert.id,
+          alert_function: alert.alert_function,
+          closestIndexEnd: alert.closestIndexEnd,
+          closestIndexStart: alert.closestIndexStart,
+        }
+        var mergedAlert = mergedAlerts.filter(
+          (mergedAlert) => mergedAlert.alert_rule_id === alert.alert_rule_id
+        )
+        if (mergedAlert.length > 0) {
+          mergedAlert[0].indexes.push(alertInfo)
+        } else {
+          alert.indexes = [alertInfo]
+          mergedAlerts.push(alert)
+        }
+      })
+
+      return mergedAlerts
+    },
     inspectionIndexes() {
       if (this.inspectionsForCharts.length > 0) {
         return this.inspectionsForCharts.map((inspection) => {
@@ -171,9 +247,33 @@ export default {
     displayValue(input) {
       return Math.round(input) !== input ? input.toFixed(2) : input
     },
+    findAlertInfo(mergedAlert, index) {
+      return mergedAlert.indexes.filter(
+        (indexSet) =>
+          index >= indexSet.closestIndexStart &&
+          index <= indexSet.closestIndexEnd
+      )[0]
+    },
+    getAlertColor(mergedAlert, index) {
+      if (this.isAlertIndex(mergedAlert, index)) {
+        return 'rgba(255, 0, 29, 0.15)'
+      } else {
+        return 'transparent'
+      }
+    },
     getInspectionByIndex(index) {
       return this.inspectionsForCharts.find(
         (inspection) => inspection.closestIndex === index
+      )
+    },
+    isAlertIndex(mergedAlert, index) {
+      // is there a set of start and end alert indexes within which the current index falls
+      return (
+        mergedAlert.indexes.filter(
+          (indexSet) =>
+            index >= indexSet.closestIndexStart &&
+            index <= indexSet.closestIndexEnd
+        ).length > 0
       )
     },
     momentAll(date) {
@@ -215,9 +315,18 @@ export default {
     setPeriodToDate(date) {
       this.$emit('set-period-to-date', date)
     },
-    viewInspection(index) {
+    confirmViewAlert(mergedAlert, index) {
+      if (this.isAlertIndex(mergedAlert, index)) {
+        var alertId = this.findAlertInfo(mergedAlert, index).id
+        var alert = this.alertsForCharts.filter(
+          (alert) => alert.id === alertId
+        )[0]
+        this.$emit('confirm-view-alert', alert)
+      }
+    },
+    confirmViewInspection(index) {
       var inspection = this.getInspectionByIndex(index)
-      this.$emit('view-inspection', {
+      this.$emit('confirm-view-inspection', {
         id: inspection.id,
         date: inspection.date,
       })
@@ -283,6 +392,12 @@ export default {
   &.--zoom-out {
     cursor: zoom-out;
   }
+  &.--pointer {
+    cursor: pointer;
+  }
+  &.--default {
+    cursor: default;
+  }
   &:hover {
     .hover-overlay {
       display: block;
@@ -335,6 +450,12 @@ export default {
     font-size: 0.55rem !important;
     text-overflow: ellipsis;
   }
+  &.--alert {
+    font-size: 10px !important;
+    color: $color-red !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 .tf--heatmap-label {
@@ -372,5 +493,9 @@ tbody .tr--heatmap:first-child .td--heatmap {
   height: 60%;
   background-color: $color-accent !important;
   opacity: 0.87;
+
+  &.--alert {
+    margin-top: 0px;
+  }
 }
 </style>

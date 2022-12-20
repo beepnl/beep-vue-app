@@ -88,7 +88,7 @@
     }
 
     .v-input {
-      &:not(.v-input--switch) {
+      &:not(.v-input--switch) .v-input__control {
         background-color: $color-white;
       }
       &:not(.v-input--checkbox) {
@@ -100,6 +100,12 @@
         text-overflow: ellipsis;
         @include for-phone-only {
           font-size: 14px;
+        }
+      }
+      &.v-text-field.filter-text-field.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo).v-text-field--outlined
+        .v-input__append-outer {
+        @include for-phone-only {
+          margin-top: 2px !important;
         }
       }
       &.v-text-field.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo).v-text-field--outlined {
@@ -130,7 +136,7 @@
         .v-input__slot {
           @include for-phone-only {
             .v-text-field__slot {
-              min-width: 63px;
+              min-width: 53px;
               height: 30px !important;
             }
           }

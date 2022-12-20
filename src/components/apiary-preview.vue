@@ -90,7 +90,6 @@ export default {
     width: 100%;
     height: 100%;
     padding: 0 8px;
-    margin-bottom: 3px;
     border-bottom: 1px solid #666 !important;
   }
   .hive-icon-layers--empty {
@@ -156,6 +155,7 @@ export default {
 .hive-caption {
   z-index: 1;
   max-width: 64px;
+  margin-top: 3px;
   min-height: 30px;
   line-height: 0.9rem;
   color: $color-grey-dark;

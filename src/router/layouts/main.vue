@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/attribute-hyphenation -->
 <template>
   <div>
     <v-app-bar app light background-color="#000" color="primary" dense>
@@ -73,6 +74,15 @@
     <v-main>
       <slot></slot>
     </v-main>
+
+    <PWAPrompt
+      :timesToShow="2"
+      :copyTitle="$t('pwa_title')"
+      :copyBody="$t('pwa_body')"
+      :copyShareButtonLabel="$t('pwa_share_button_label')"
+      :copyAddHomeButtonLabel="$t('pwa_addhome_button_label')"
+      :copyClosePrompt="$t('Cancel')"
+    />
   </div>
 </template>
 
@@ -87,12 +97,14 @@ import {
   readDevicesIfNotPresent,
   readGeneralInspections,
 } from '@mixins/methodsMixin'
+import PWAPrompt from 'vue2-ios-pwa-prompt'
 
 export default {
   components: {
     LocaleChanger,
     NavDrawer,
     PlusMenu,
+    PWAPrompt,
   },
   mixins: [
     checkAlerts,

@@ -66,6 +66,10 @@
   display: none !important;
 }
 
+.theme--light.v-icon.v-icon--disabled.color-transparent {
+  color: transparent !important;
+}
+
 .v-text-field--outlined fieldset {
   border-color: $color-grey-light;
 }
