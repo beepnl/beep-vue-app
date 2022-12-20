@@ -8,7 +8,10 @@
             <p>{{ $t('research_explanation_p1') }}</p>
             <p>{{ $t('research_explanation_p2') }}</p>
             <p class="mb-0"
-              ><i>{{ $t('research_info') }}</i></p
+              ><i>{{
+                /* eslint-disable vue/comma-dangle */
+                $t('research_info')
+              }}</i></p
             >
           </v-col>
         </v-row>
@@ -191,14 +194,14 @@
                         @click="consentToggle(research, !research.consent)"
                       >
                         <v-progress-circular
-                          v-if="showLoadingIconConsentToggle"
+                          v-if="showCTLoadingIcon.indexOf(research.id) > -1"
                           :class="`ml-n1 ${mdAndDown ? 'mr-3' : 'mr-2'}`"
                           :size="mdAndDown ? 14 : 18"
                           width="2"
                           indeterminate
                         />
                         <v-icon
-                          v-if="!showLoadingIconConsentToggle"
+                          v-if="showCTLoadingIcon.indexOf(research.id) === -1"
                           left
                           :small="mdAndDown"
                           >{{
@@ -422,7 +425,7 @@ export default {
       researchProjects: [],
       editedCHItems: [],
       ready: false,
-      showLoadingIconConsentToggle: false,
+      showCTLoadingIcon: [],
       showLoadingIcon: [],
       baseApiUrl:
         process.env.VUE_APP_BASE_API_URL ||
@@ -515,11 +518,11 @@ export default {
     },
     async submitConsentToggle(id, consent) {
       if (consent === 1) {
-        console.log(id, this.selectedHiveIds)
+        console.log(id, consent)
         // TODO: add selectedHiveIds to API call
         this.selectHivesOverlay = false
       }
-      this.showLoadingIconConsentToggle = true
+      this.setCTLoadingIcon(id, true)
       try {
         if (consent) {
           await Api.postRequest('/research/' + id + '/add_consent')
@@ -528,10 +531,11 @@ export default {
         }
         this.readChecklists() // update checklists with or without research checklists
         this.readResearchProjects().then(() => {
-          this.showLoadingIconConsentToggle = false
+          this.setCTLoadingIcon(id, false)
         })
         return true
       } catch (error) {
+        this.setCTLoadingIcon(id, false)
         console.log('Error: ', error)
       }
     },
@@ -599,6 +603,13 @@ export default {
       return thumbUrl.indexOf('https://') > -1
         ? thumbUrl
         : this.baseApiUrl + thumbUrl
+    },
+    setCTLoadingIcon(id, bool) {
+      if (!bool) {
+        this.showCTLoadingIcon.splice(this.showCTLoadingIcon.indexOf(id), 1)
+      } else {
+        this.showCTLoadingIcon.push(id)
+      }
     },
     updateConsentDate(researchId, consentId, date) {
       this.showLoadingIcon.push(consentId)
