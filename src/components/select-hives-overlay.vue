@@ -151,16 +151,22 @@ export default {
         }
       },
     },
+    // selectedConsentId() {
+    //   return this.selectedConsent ? this.selectedConsent.id : 99
+    // },
     mobile() {
       return this.$vuetify.breakpoint.mobile
     },
   },
   watch: {
-    selectedConsent() {
+    overlay() {
+      // TODO: fix first time opening overlay this is not triggered
       // if consent already exists, use consent_hive_ids if present, otherwise all hive ids. For new consent, deselect all hives
       this.selectedHiveIds = this.selectedConsent
-        ? this.selectedConsent.consent_hive_ids
+        ? this.selectedConsent.consent_hive_ids !== null
           ? this.selectedConsent.consent_hive_ids
+              .split(',')
+              .map((item) => parseInt(item))
           : [...this.allHiveIds]
         : []
     },
@@ -180,7 +186,11 @@ export default {
       }
     },
     submitConsentToggle(id, consent) {
-      this.$emit('submit-consent-toggle', { id, consent })
+      this.$emit('submit-consent-toggle', {
+        id,
+        consent,
+        hiveIds: this.selectedHiveIds,
+      })
     },
   },
 }

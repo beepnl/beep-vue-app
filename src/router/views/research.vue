@@ -386,7 +386,9 @@
       :selected-research="selectedResearch"
       :selected-consent="selectedConsent"
       @close-overlay="selectHivesOverlay = false"
-      @submit-consent-toggle="submitConsentToggle($event.id, $event.consent)"
+      @submit-consent-toggle="
+        submitConsentToggle($event.id, $event.consent, $event.hiveIds)
+      "
     />
 
     <Confirm ref="confirm"></Confirm>
@@ -516,7 +518,7 @@ export default {
         console.log('Error: ', error)
       }
     },
-    async submitConsentToggle(id, consent) {
+    async submitConsentToggle(id, consent, hiveIds = null) {
       if (consent === 1) {
         console.log(id, consent)
         // TODO: add selectedHiveIds to API call
@@ -525,7 +527,14 @@ export default {
       this.setCTLoadingIcon(id, true)
       try {
         if (consent) {
-          await Api.postRequest('/research/' + id + '/add_consent')
+          await Api.postRequest(
+            '/research/' + id + '/add_consent',
+            hiveIds
+              ? {
+                  hive_ids: hiveIds,
+                }
+              : null
+          )
         } else {
           await Api.postRequest('/research/' + id + '/remove_consent')
         }
