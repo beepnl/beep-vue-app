@@ -229,7 +229,10 @@ export default {
   },
   computed: {
     label() {
-      return this.item.trans[this.locale] || this.item.name
+      return (
+        (this.item.trans[this.locale] || this.item.name) +
+        (this.item.unit !== null ? ' (' + this.item.unit + ')' : '')
+      )
     },
     labelWithHeader() {
       return (

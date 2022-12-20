@@ -7,7 +7,7 @@ export const svgStyles = {
       fontSizeHeader: 'font: 600 4mm ',
       fontSizeHeaderSmall: 'font: 600 2.8mm ',
       fontSizeSmall: 'font: 2.8mm ',
-      fontSizeLarge: 'font: 6mm ',
+      fontSizeLarge: 'font: 5mm ',
       fontFamily: 'Helvetica, Arial, sans-serif; ',
     }
   },
