@@ -359,7 +359,7 @@
                         v-if="chItem.consent === 1 && index === 0"
                         class="green--text ml-1 cursor-pointer"
                         size="20"
-                        @click="consentToggle(research, true)"
+                        @click="consentToggle(research, true, chItem)"
                         >mdi-pencil</v-icon
                       >
                     </v-col>
@@ -389,7 +389,7 @@
                 "
               >
                 <div
-                  class="overline d-flex"
+                  class="overline d-flex mr-3 consent-overline"
                   style="width: 100%;"
                   v-text="
                     selectedResearch.name +
@@ -397,7 +397,7 @@
                       $t('Select_hives_for_consent')
                   "
                 ></div>
-                <div class="d-flex justify-end" style="width: 100%;">
+                <div class="d-flex justify-end consent-buttons">
                   <v-btn
                     light
                     outlined
@@ -545,7 +545,7 @@ export default {
         if (value === false) {
           this.selectedHiveIds = []
         } else {
-          this.selectedHiveIds = this.allHiveIds
+          this.selectedHiveIds = [...this.allHiveIds]
         }
       },
     },
@@ -699,13 +699,18 @@ export default {
           return true
         })
     },
-    consentToggle(research, showSelectHivesOverlay) {
+    consentToggle(research, showSelectHivesOverlay, consent = null) {
       if (research.consent && !showSelectHivesOverlay) {
         // if changing to do NOT consent, simply submit that skipping the hive selection
         this.submitConsentToggle(research.id, 0)
       } else {
         this.selectedResearch = research
-        this.selectedHiveIds = [] // TODO: research.hive_ids, check if it exists, otherwise allHiveIds??
+        // if consent already exists, use consent_hive_ids if present, otherwise all hive ids. For new consent, deselect all hives
+        this.selectedHiveIds = consent
+          ? consent.consent_hive_ids
+            ? consent.consent_hive_ids
+            : [...this.allHiveIds]
+          : []
         this.selectHivesOverlay = true
       }
     },
@@ -796,6 +801,20 @@ export default {
   .scroller {
     overflow: auto;
     height: calc(100% - 44px);
+  }
+}
+
+.consent-buttons {
+  @include for-phone-only {
+    width: 100%;
+  }
+}
+
+.consent-overline {
+  line-height: 1.5rem;
+  @include for-phone-only {
+    margin-bottom: 2px;
+    margin-top: 3px;
   }
 }
 </style>
