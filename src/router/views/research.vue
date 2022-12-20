@@ -377,109 +377,14 @@
       </div>
     </v-container>
 
-    <v-overlay v-if="selectedResearch !== null" :value="selectHivesOverlay">
-      <div style="border-radius: 4px">
-        <v-container class="select-hives-container">
-          <v-row>
-            <v-col cols="12">
-              <div
-                :class="
-                  'd-flex justify-space-between align-center ' +
-                    (mobile ? 'flex-column-reverse mb-1' : 'mb-3')
-                "
-              >
-                <div
-                  class="overline d-flex mr-3 consent-overline"
-                  style="width: 100%;"
-                  v-text="
-                    selectedResearch.name +
-                      ' - ' +
-                      $t('Select_hives_for_consent')
-                  "
-                ></div>
-                <div class="d-flex justify-end consent-buttons">
-                  <v-btn
-                    light
-                    outlined
-                    tile
-                    :disabled="selectedHiveIds.length === 0"
-                    color="accent"
-                    @click="submitConsentToggle(selectedResearch.id, 1)"
-                    >{{ $t('ok') }}</v-btn
-                  >
-                  <v-btn
-                    class="ml-3"
-                    outlined
-                    tile
-                    color="red"
-                    @click="selectHivesOverlay = false"
-                    >{{ $t('Cancel') }}</v-btn
-                  >
-                </div>
-              </div>
-              <div class="rounded-border apiary-wrapper">
-                <div style="height: 100%;">
-                  <div
-                    class="d-flex justify-space-between align-center mb-3 mb-sm-4"
-                  >
-                    <div
-                      class="beep-label mt-1 mr-3"
-                      v-text="$t('Select_hives_for_consent_exp')"
-                    ></div>
-                    <v-switch
-                      v-model="allHivesSelected"
-                      class="mt-0"
-                      light
-                      :label="$t('select_all')"
-                      hide-details
-                    />
-                  </div>
-                  <div style="height: 100%;">
-                    <div class="scroller">
-                      <div v-for="(apiary, i) in apiaries" :key="i">
-                        <div
-                          class="hive-set-title d-flex flex-row justify-flex-start align-center"
-                          :style="
-                            `color: ${
-                              apiary.hex_color ? apiary.hex_color : ''
-                            }; border-color: ${
-                              apiary.hex_color ? apiary.hex_color : ''
-                            };`
-                          "
-                        >
-                          <v-icon
-                            class="icon-apiary-owned ml-1 mr-2 my-0"
-                            :style="
-                              `background-color: ${
-                                apiary.hex_color ? apiary.hex_color : ''
-                              }; border-color: ${
-                                apiary.hex_color ? apiary.hex_color : ''
-                              };`
-                            "
-                          >
-                            mdi-home-analytics
-                          </v-icon>
-                          <h4 v-text="apiary.name"></h4>
-                        </div>
-
-                        <ApiaryPreviewHiveSelector
-                          class="mb-3 mr-3"
-                          :hives="apiary.hives"
-                          :hives-selected="selectedHiveIds"
-                          :hives-editable="getHiveIds(apiary.hives)"
-                          :inspection-mode="true"
-                          @select-hive="selectHive($event)"
-                        ></ApiaryPreviewHiveSelector>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </v-col>
-          </v-row>
-        </v-container>
-      </div>
-    </v-overlay>
+    <SelectHivesOverlay
+      v-if="selectedResearch !== null"
+      :overlay="selectHivesOverlay"
+      :selected-research="selectedResearch"
+      :selected-consent="selectedConsent"
+      @close-overlay="selectHivesOverlay = false"
+      @submit-consent-toggle="submitConsentToggle($event.id, $event.consent)"
+    />
 
     <Confirm ref="confirm"></Confirm>
   </Layout>
@@ -487,11 +392,11 @@
 
 <script>
 import Api from '@api/Api'
-import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 import Confirm from '@components/confirm.vue'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
 import Layout from '@layouts/back.vue'
+import SelectHivesOverlay from '@components/select-hives-overlay.vue'
 import { momentify, momentFullDateTime } from '@mixins/momentMixin'
 import { mapGetters } from 'vuex'
 import {
@@ -501,10 +406,10 @@ import {
 
 export default {
   components: {
-    ApiaryPreviewHiveSelector,
     Confirm,
     Datetime,
     Layout,
+    SelectHivesOverlay,
   },
   mixins: [
     momentify,
@@ -523,7 +428,6 @@ export default {
         process.env.VUE_APP_BASE_API_URL ||
         process.env.VUE_APP_BASE_API_URL_FALLBACK,
       selectHivesOverlay: false,
-      selectedHiveIds: [],
       selectedResearch: null,
     }
   },
@@ -531,24 +435,6 @@ export default {
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('devices', ['devices']),
     ...mapGetters('groups', ['groups']),
-    allHiveIds() {
-      return this.apiaries.reduce((acc, apiary) => {
-        acc = acc.concat(this.getHiveIds(apiary.hives))
-        return acc
-      }, [])
-    },
-    allHivesSelected: {
-      get() {
-        return this.selectedHiveIds.length === this.allHiveIds.length
-      },
-      set(value) {
-        if (value === false) {
-          this.selectedHiveIds = []
-        } else {
-          this.selectedHiveIds = [...this.allHiveIds]
-        }
-      },
-    },
     mdAndDown() {
       return this.$vuetify.breakpoint.mdAndDown
     },
@@ -705,12 +591,7 @@ export default {
         this.submitConsentToggle(research.id, 0)
       } else {
         this.selectedResearch = research
-        // if consent already exists, use consent_hive_ids if present, otherwise all hive ids. For new consent, deselect all hives
-        this.selectedHiveIds = consent
-          ? consent.consent_hive_ids
-            ? consent.consent_hive_ids
-            : [...this.allHiveIds]
-          : []
+        this.selectedConsent = consent
         this.selectHivesOverlay = true
       }
     },
@@ -718,16 +599,6 @@ export default {
       return thumbUrl.indexOf('https://') > -1
         ? thumbUrl
         : this.baseApiUrl + thumbUrl
-    },
-    getHiveIds(hives) {
-      return hives.map((hive) => hive.id)
-    },
-    selectHive(id) {
-      if (!this.selectedHiveIds.includes(id)) {
-        this.selectedHiveIds.push(id)
-      } else {
-        this.selectedHiveIds.splice(this.selectedHiveIds.indexOf(id), 1)
-      }
     },
     updateConsentDate(researchId, consentId, date) {
       this.showLoadingIcon.push(consentId)
@@ -786,35 +657,6 @@ export default {
       padding: 3px 0;
       line-height: 20px;
     }
-  }
-}
-.select-hives-container {
-  background-color: $color-white;
-  color: $color-grey-dark;
-  border-radius: 4px;
-  max-width: 90vw !important;
-  overflow: hidden;
-  .apiary-wrapper {
-    height: 60vh; // NB max-height looks better for small number of apiaries, but does not work with scroller
-    overflow: hidden;
-  }
-  .scroller {
-    overflow: auto;
-    height: calc(100% - 44px);
-  }
-}
-
-.consent-buttons {
-  @include for-phone-only {
-    width: 100%;
-  }
-}
-
-.consent-overline {
-  line-height: 1.5rem;
-  @include for-phone-only {
-    margin-bottom: 2px;
-    margin-top: 3px;
   }
 }
 </style>
