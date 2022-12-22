@@ -520,8 +520,6 @@ export default {
     },
     async submitConsentToggle(id, consent, hiveIds = null) {
       if (consent === 1) {
-        console.log(id, consent)
-        // TODO: add selectedHiveIds to API call
         this.selectHivesOverlay = false
       }
       this.setCTLoadingIcon(id, true)

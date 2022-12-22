@@ -23,9 +23,11 @@
                   outlined
                   tile
                   :disabled="selectedHiveIds.length === 0"
-                  color="accent"
+                  color="black"
                   @click="submitConsentToggle(selectedResearch.id, 1)"
-                  >{{ $t('ok') }}</v-btn
+                >
+                  <v-icon left>mdi-check</v-icon>
+                  {{ $t('save') }}</v-btn
                 >
                 <v-btn
                   class="ml-3"
@@ -151,16 +153,28 @@ export default {
         }
       },
     },
-    // selectedConsentId() {
-    //   return this.selectedConsent ? this.selectedConsent.id : 99
-    // },
     mobile() {
       return this.$vuetify.breakpoint.mobile
     },
   },
   watch: {
-    overlay() {
-      // TODO: fix first time opening overlay this is not triggered
+    selectedConsent() {
+      // update selected hive ids when consent is different
+      this.initSelectedHiveIds()
+    },
+  },
+  created() {
+    // init selected hive ids the first time overlay is opened
+    this.initSelectedHiveIds()
+  },
+  methods: {
+    closeOverlay() {
+      this.$emit('close-overlay')
+    },
+    getHiveIds(hives) {
+      return hives.map((hive) => hive.id)
+    },
+    initSelectedHiveIds() {
       // if consent already exists, use consent_hive_ids if present, otherwise all hive ids. For new consent, deselect all hives
       this.selectedHiveIds = this.selectedConsent
         ? this.selectedConsent.consent_hive_ids !== null
@@ -169,14 +183,6 @@ export default {
               .map((item) => parseInt(item))
           : [...this.allHiveIds]
         : []
-    },
-  },
-  methods: {
-    closeOverlay() {
-      this.$emit('close-overlay')
-    },
-    getHiveIds(hives) {
-      return hives.map((hive) => hive.id)
     },
     selectHive(id) {
       if (!this.selectedHiveIds.includes(id)) {
