@@ -38,7 +38,7 @@
                 class="dashboard-logo"
                 :src="
                   assetsUrl +
-                    '/img/beep-icon-logo' +
+                    '/img/dashboard/beep-icon-logo' +
                     (darkMode ? '-white-text' : '') +
                     '.svg'
                 "
@@ -249,10 +249,11 @@
                           class="example-img"
                           :src="
                             assetsUrl +
-                              '/img/chart_' +
+                              '/img/dashboard/chart_' +
                               sensorSet.name +
                               '_' +
                               (i + 1) +
+                              (darkMode ? '_dark' : '') +
                               '.svg'
                           "
                         />
