@@ -92,7 +92,8 @@
             <div
               :class="
                 'd-flex flex-column align-center hives-wrapper ' +
-                  (landscapeMode ? '--landscape' : '--portrait')
+                  (landscapeMode ? '--landscape' : '--portrait') +
+                  (darkMode ? ' --dark' : '')
               "
             >
               <div class="dashboard-text" v-text="selectedHive.name"></div>
@@ -858,25 +859,35 @@ export default {
 
 .hives-wrapper {
   position: relative;
-  top: -400px;
-  margin-bottom: -400px;
+  top: -500px;
+  margin-bottom: -500px;
 
   &::before {
     content: '';
     position: relative;
-    height: 400px;
-    top: 350px;
+    height: 500px;
+    top: 400px;
     z-index: 999;
   }
 
-  &.--landscape::before {
-    width: calc(100% - 200px);
-    box-shadow: inset 0px 0px 25px 30px #f29100;
+  &.--landscape {
+    &::before {
+      width: calc(100% - 200px);
+      box-shadow: inset 0px 0px 22px 35px $color-orange-medium;
+    }
+    &.--dark::before {
+      box-shadow: inset 0px 0px 22px 35px $color-accent;
+    }
   }
 
-  &.--portrait::before {
-    width: 100%;
-    box-shadow: inset 0px 0px 25px 30px $color-black;
+  &.--portrait {
+    &::before {
+      width: 100%;
+      box-shadow: inset 0px 0px 35px 60px $color-white;
+    }
+    &.--dark::before {
+      box-shadow: inset 0px 0px 35px 60px $color-black;
+    }
   }
 }
 </style>
