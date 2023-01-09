@@ -862,6 +862,7 @@ export default {
   position: relative;
   top: -500px;
   margin-bottom: -500px;
+  width: 100%;
 
   &::before {
     content: '';
@@ -869,11 +870,11 @@ export default {
     height: 500px;
     top: 400px;
     z-index: 999;
+    width: 100%;
   }
 
   &.--landscape {
     &::before {
-      width: calc(100% - 200px);
       box-shadow: inset 0px 0px 22px 35px $color-orange-medium;
     }
     &.--dark::before {
@@ -883,7 +884,6 @@ export default {
 
   &.--portrait {
     &::before {
-      width: 100%;
       box-shadow: inset 0px 0px 35px 60px $color-white;
     }
     &.--dark::before {
