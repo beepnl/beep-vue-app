@@ -183,7 +183,7 @@
 
         <v-row
           v-if="
-            (showGroupDetails && activeGroup && createMode) ||
+            (!dashboardMode && showGroupDetails && activeGroup && createMode) ||
               (showGroupDetails &&
                 activeGroup &&
                 !createMode &&
@@ -447,6 +447,12 @@ export default {
     createMode() {
       return this.$route.name === 'group-create'
     },
+    dashboardMode() {
+      return (
+        this.$route.name === 'dashboard-create' ||
+        this.$route.query.dashboardMode === 'true'
+      )
+    },
     acceptMode() {
       return this.$route.name === 'group-accept'
     },
@@ -523,6 +529,15 @@ export default {
         }
         this.showGroupDetails = true
         // Else retrieve to-be-edited Group
+      } else if (this.dashboardMode) {
+        this.activeGroup = {
+          hex_color: '#F8B133',
+          name: this.$i18n.t('Dashboard'),
+          description: '',
+          hives_selected: [],
+        }
+        this.showGroupDetails = true
+        // Else retrieve to-be-edited Group
       } else if (this.acceptMode) {
         this.token = this.$route.params.token || null
         if (this.token) {
@@ -569,6 +584,9 @@ export default {
         console.log('Error: ', error)
         this.$router.push({ name: '404', params: { resource: 'Invitation' } })
       }
+    },
+    async createDashboard() {
+      console.log('TODO', 'create dashboard')
     },
     async createGroup() {
       if (this.$refs.form.validate()) {
@@ -817,11 +835,18 @@ export default {
     },
     getTitle() {
       var addName = ''
-      if (this.activeGroup && !this.createMode && !this.activeGroup.admin) {
+      if (
+        this.activeGroup &&
+        !this.createMode &&
+        !this.activeGroup.admin &&
+        !this.dashboardMode
+      ) {
         addName = ' - ' + this.activeGroup.name
       }
       if (this.createMode) {
         return this.$i18n.t('new_group')
+      } else if (this.dashboardMode) {
+        return this.$i18n.t('New_dashboard')
       } else if (this.acceptMode) {
         return (
           this.$i18n.tc('Invitation', 1) +
@@ -842,6 +867,8 @@ export default {
     saveGroup() {
       if (this.createMode) {
         this.createGroup()
+      } else if (this.dashboardMode) {
+        this.createDashboard()
       } else {
         this.updateGroup()
       }

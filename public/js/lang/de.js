@@ -1014,6 +1014,7 @@ const translations = {
   Note: 'Note',
   no_chart_data_past_week: 'No chart data available for the past 7 days',
 
+  New_dashboard: 'New dashboard',
   weight_example_chart_1: 'Bees are collecting nectar',
   weight_example_chart_2: 'Bees use their food supply',
   weight_example_chart_3: 'A swarm!',

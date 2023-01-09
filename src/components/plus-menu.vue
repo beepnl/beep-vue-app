@@ -58,6 +58,11 @@ export default {
             route: 'group-create',
           },
           {
+            icon: 'mdi-monitor-dashboard',
+            title: this.$i18n.t('New_dashboard'),
+            route: 'dashboard-create',
+          },
+          {
             icon: 'mdi-bell',
             title: this.$i18n.t('New_alertrule'),
             route: 'alertrule-create',

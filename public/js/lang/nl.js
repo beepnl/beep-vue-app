@@ -933,6 +933,7 @@ const translations = {
     'Geen sensordata beschikbaar voor de afgelopen 7 dagen',
   outsideTemperature: 'Buitentemperatuur',
 
+  New_dashboard: 'Nieuw dashboard',
   weight_example_chart_1: 'Bijen verzamelen nectar',
   weight_example_chart_2: 'Bijen gebruiken hun voedselvoorrad',
   weight_example_chart_3: 'Een zwerm!',
