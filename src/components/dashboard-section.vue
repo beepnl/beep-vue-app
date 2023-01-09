@@ -5,7 +5,7 @@
       class="text-h4 text-md-h2 dashboard-section-title"
       v-text="title"
     ></div>
-    <div class="d-flex flex-column align-center mt-2">
+    <div class="d-flex flex-column align-center mt-2 dashboard-section-content">
       <slot></slot>
     </div>
   </div>
@@ -87,5 +87,10 @@ export default {
       margin-left: 24px;
     }
   }
+}
+
+.dashboard-section-content {
+  overflow: hidden;
+  width: 100%;
 }
 </style>

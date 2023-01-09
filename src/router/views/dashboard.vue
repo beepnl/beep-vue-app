@@ -18,10 +18,7 @@
           {{ 'mdi-' + (hiveTimerPaused ? 'play' : 'pause') }}
         </v-icon>
       </div>
-      <v-icon
-        :class="showControls ? 'color-grey-filter' : 'color-grey-light'"
-        @click="showControls = !showControls"
-      >
+      <v-icon class="color-grey-filter" @click="showControls = !showControls">
         {{ showControls ? 'mdi-cog' : 'mdi-cog-off' }}
       </v-icon>
     </div>
@@ -92,9 +89,15 @@
             :title="$tc('Colony', 2)"
             :landscape-mode="landscapeMode"
           >
-            <div class="d-flex flex-column align-center">
+            <div
+              :class="
+                'd-flex flex-column align-center hives-wrapper ' +
+                  (landscapeMode ? '--landscape' : '--portrait')
+              "
+            >
               <div class="dashboard-text" v-text="selectedHive.name"></div>
               <ApiaryPreviewHiveSelector
+                class="mb-2"
                 :hives="selectedGroup.hives"
                 :hives-selected="selectedHiveIds"
                 :dashboard-mode="true"
@@ -851,5 +854,29 @@ export default {
 
 .show-portrait {
   display: block;
+}
+
+.hives-wrapper {
+  position: relative;
+  top: -400px;
+  margin-bottom: -400px;
+
+  &::before {
+    content: '';
+    position: relative;
+    height: 400px;
+    top: 350px;
+    z-index: 999;
+  }
+
+  &.--landscape::before {
+    width: calc(100% - 200px);
+    box-shadow: inset 0px 0px 25px 30px #f29100;
+  }
+
+  &.--portrait::before {
+    width: 100%;
+    box-shadow: inset 0px 0px 25px 30px $color-black;
+  }
 }
 </style>

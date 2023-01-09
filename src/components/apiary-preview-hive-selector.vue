@@ -34,6 +34,7 @@
         </div>
 
         <v-sheet
+          light
           :class="
             `hive-icon hive-icon-preview d-flex flex-column justify-center align-center white--text text--small mr-1 ${
               hasLayer(hive, 'queen_excluder') ? 'has-queen-excluder' : ''
