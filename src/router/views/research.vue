@@ -8,7 +8,10 @@
             <p>{{ $t('research_explanation_p1') }}</p>
             <p>{{ $t('research_explanation_p2') }}</p>
             <p class="mb-0"
-              ><i>{{ $t('research_info') }}</i></p
+              ><i>{{
+                /* eslint-disable vue/comma-dangle */
+                $t('research_info')
+              }}</i></p
             >
           </v-col>
         </v-row>
@@ -188,19 +191,17 @@
                             research.consent ? 'red--text' : 'green--text'
                           } research-consent-button`
                         "
-                        @click="
-                          consentToggle(research.id, research.consent ? 0 : 1)
-                        "
+                        @click="consentToggle(research, !research.consent)"
                       >
                         <v-progress-circular
-                          v-if="showLoadingIconConsentToggle"
+                          v-if="showCTLoadingIcon.indexOf(research.id) > -1"
                           :class="`ml-n1 ${mdAndDown ? 'mr-3' : 'mr-2'}`"
                           :size="mdAndDown ? 14 : 18"
                           width="2"
                           indeterminate
                         />
                         <v-icon
-                          v-if="!showLoadingIconConsentToggle"
+                          v-if="showCTLoadingIcon.indexOf(research.id) === -1"
                           left
                           :small="mdAndDown"
                           >{{
@@ -231,7 +232,7 @@
                   </v-row>
 
                   <v-row
-                    v-for="chItem in research.consent_history"
+                    v-for="(chItem, index) in research.consent_history"
                     :key="chItem.id"
                   >
                     <v-col class="research-item-col" cols="12" md="6" xl="5">
@@ -357,6 +358,13 @@
                         @click="confirmDeleteNoConsent(research.id, chItem)"
                         >mdi-delete</v-icon
                       >
+                      <v-icon
+                        v-if="chItem.consent === 1 && index === 0"
+                        class="green--text ml-1 cursor-pointer"
+                        size="20"
+                        @click="consentToggle(research, true, chItem)"
+                        >mdi-pencil</v-icon
+                      >
                     </v-col>
                   </v-row>
                 </v-col>
@@ -372,6 +380,17 @@
       </div>
     </v-container>
 
+    <SelectHivesOverlay
+      v-if="selectedResearch !== null"
+      :overlay="selectHivesOverlay"
+      :selected-research="selectedResearch"
+      :selected-consent="selectedConsent"
+      @close-overlay="selectHivesOverlay = false"
+      @submit-consent-toggle="
+        submitConsentToggle($event.id, $event.consent, $event.hiveIds)
+      "
+    />
+
     <Confirm ref="confirm"></Confirm>
   </Layout>
 </template>
@@ -382,6 +401,7 @@ import Confirm from '@components/confirm.vue'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
 import Layout from '@layouts/back.vue'
+import SelectHivesOverlay from '@components/select-hives-overlay.vue'
 import { momentify, momentFullDateTime } from '@mixins/momentMixin'
 import { mapGetters } from 'vuex'
 import {
@@ -394,6 +414,7 @@ export default {
     Confirm,
     Datetime,
     Layout,
+    SelectHivesOverlay,
   },
   mixins: [
     momentify,
@@ -406,11 +427,13 @@ export default {
       researchProjects: [],
       editedCHItems: [],
       ready: false,
-      showLoadingIconConsentToggle: false,
+      showCTLoadingIcon: [],
       showLoadingIcon: [],
       baseApiUrl:
         process.env.VUE_APP_BASE_API_URL ||
         process.env.VUE_APP_BASE_API_URL_FALLBACK,
+      selectHivesOverlay: false,
+      selectedResearch: null,
     }
   },
   computed: {
@@ -419,6 +442,9 @@ export default {
     ...mapGetters('groups', ['groups']),
     mdAndDown() {
       return this.$vuetify.breakpoint.mdAndDown
+    },
+    mobile() {
+      return this.$vuetify.breakpoint.mobile
     },
     numberOfDevices() {
       return this.devices.length
@@ -492,20 +518,31 @@ export default {
         console.log('Error: ', error)
       }
     },
-    async consentToggle(id, consent) {
-      this.showLoadingIconConsentToggle = true
+    async submitConsentToggle(id, consent, hiveIds = null) {
+      if (consent === 1) {
+        this.selectHivesOverlay = false
+      }
+      this.setCTLoadingIcon(id, true)
       try {
         if (consent) {
-          await Api.postRequest('/research/' + id + '/add_consent')
+          await Api.postRequest(
+            '/research/' + id + '/add_consent',
+            hiveIds
+              ? {
+                  hive_ids: hiveIds,
+                }
+              : null
+          )
         } else {
           await Api.postRequest('/research/' + id + '/remove_consent')
         }
         this.readChecklists() // update checklists with or without research checklists
         this.readResearchProjects().then(() => {
-          this.showLoadingIconConsentToggle = false
+          this.setCTLoadingIcon(id, false)
         })
         return true
       } catch (error) {
+        this.setCTLoadingIcon(id, false)
         console.log('Error: ', error)
       }
     },
@@ -559,10 +596,27 @@ export default {
           return true
         })
     },
+    consentToggle(research, showSelectHivesOverlay, consent = null) {
+      if (research.consent && !showSelectHivesOverlay) {
+        // if changing to do NOT consent, simply submit that skipping the hive selection
+        this.submitConsentToggle(research.id, 0)
+      } else {
+        this.selectedResearch = research
+        this.selectedConsent = consent
+        this.selectHivesOverlay = true
+      }
+    },
     getFullUrl(thumbUrl) {
       return thumbUrl.indexOf('https://') > -1
         ? thumbUrl
         : this.baseApiUrl + thumbUrl
+    },
+    setCTLoadingIcon(id, bool) {
+      if (!bool) {
+        this.showCTLoadingIcon.splice(this.showCTLoadingIcon.indexOf(id), 1)
+      } else {
+        this.showCTLoadingIcon.push(id)
+      }
     },
     updateConsentDate(researchId, consentId, date) {
       this.showLoadingIcon.push(consentId)

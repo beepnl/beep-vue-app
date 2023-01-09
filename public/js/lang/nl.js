@@ -913,6 +913,9 @@ const translations = {
   No_hivetags_left:
     'Alle hive tags zijn momenteel in gebruik. Verwijder een bestaande hive tag om een nieuwe toe te kunnen voegen, of pas deze aan.',
 
+  Select_hives_for_consent: 'Selecteer bijenkasten voor toestemming',
+  Select_hives_for_consent_exp:
+    'Selecteer de bijenkasten waarvan je de data wilt delen met dit onderzoek',
   View_alert_confirm: 'Wil je de notificatie bekijken "',
 
   /* iOS device prompt for adding BEEP app to home screen */
