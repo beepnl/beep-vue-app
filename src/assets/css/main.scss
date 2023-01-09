@@ -230,6 +230,13 @@
   white-space: pre-wrap;
 }
 
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .loading {
   display: flex;
   flex-direction: column;

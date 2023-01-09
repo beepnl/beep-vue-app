@@ -64,7 +64,8 @@
         </v-col>
 
         <v-col
-          :cols="landscapeMode ? '4' : '12'"
+          :cols="landscapeMode ? '6' : '12'"
+          :md="landscapeMode ? '4' : '12'"
           :class="
             (ready && landscapeMode ? 'landscape-section --left' : '') +
               (darkMode ? ' sticky-dark-mode' : '')
@@ -75,7 +76,7 @@
             :title="$tc('Location', 1)"
           >
             <div
-              v-if="ready"
+              v-if="ready && selectedLocation"
               class="dashboard-text"
               v-text="selectedLocation.name"
             ></div>
@@ -133,28 +134,31 @@
               "
             >
               <v-row v-if="landscapeMode">
-                <v-col cols="5"
+                <v-col cols="5" class="px-1 pt-0 pb-1 pa-xl-3"
                   ><span v-text="$tc('Location', 1) + ' : '"></span
                 ></v-col>
-                <v-col cols="7">
+                <v-col cols="7" class="px-1 pt-1 pb-1 pa-xl-3">
                   <div id="map" ref="map" class="map --landscape">
                     <MapMarker :lat="lat" :lng="lng" />
                   </div>
                 </v-col>
-                <v-col cols="5"
+                <v-col cols="5" class="pa-1 pa-xl-3"
                   ><span v-text="$t('Last_check') + ' : '"></span
                 ></v-col>
-                <v-col cols="7"
+                <v-col cols="7" class="pa-1 pa-xl-3"
                   ><span
                     v-text="momentFromNow(selectedHive.last_inspection_date)"
                   ></span
                 ></v-col>
               </v-row>
-              <v-row v-if="selectedHive.impression">
-                <v-col cols="5"
+              <v-row
+                v-if="selectedHive.impression"
+                :class="!landscapeMode ? 'pa-3' : ''"
+              >
+                <v-col cols="5" class="pa-1 pa-xl-3"
                   ><span v-text="$t('positive_impression') + ': '"></span
                 ></v-col>
-                <v-col cols="7">
+                <v-col cols="7" class="pa-1 pa-xl-3">
                   <v-icon
                     v-if="selectedHive.impression === 1"
                     class="red--text"
@@ -175,10 +179,15 @@
                   </v-icon>
                 </v-col>
               </v-row>
-              <v-row v-if="selectedHive.notes">
-                <v-col cols="5"><span v-text="$t('Note') + ': '"></span></v-col>
-                <v-col cols="7"
-                  ><span v-text="selectedHive.notes"></span
+              <v-row
+                v-if="selectedHive.notes"
+                :class="!landscapeMode ? 'pa-3' : ''"
+              >
+                <v-col cols="5" class="pa-1 pa-xl-3"
+                  ><span v-text="$t('Note') + ': '"></span
+                ></v-col>
+                <v-col cols="7" class="pa-1 pb-2 pa-xl-3"
+                  ><span class="line-clamp-3" v-text="selectedHive.notes"></span
                 ></v-col>
               </v-row>
             </div>
@@ -186,7 +195,8 @@
         </v-col>
 
         <v-col
-          :cols="landscapeMode ? '8' : '12'"
+          :cols="landscapeMode ? '6' : '12'"
+          :md="landscapeMode ? '8' : '12'"
           :class="landscapeMode ? 'landscape-section --right' : ''"
         >
           <DashboardSection
@@ -742,9 +752,15 @@ export default {
   text-transform: uppercase;
   text-align: left;
   font-weight: 500;
-  font-size: 1rem;
-  @include for-phone-only {
+  font-size: 0.8rem;
+  @include for-tablet-landscape-up {
     font-size: 0.85rem;
+  }
+  @include for-desktop-up {
+    font-size: 0.9rem;
+  }
+  @include for-big-desktop-up {
+    font-size: 1rem;
   }
 }
 
@@ -752,14 +768,28 @@ export default {
   padding: 20px;
   &.--left {
     margin-top: 30px;
-    max-width: 35vw !important;
-    height: 35vw !important;
+    max-width: 80vw !important;
+    height: 80vw !important;
+    padding: 3vw; // 40px 60px;
+    margin: 3vw auto;
     background-color: $color-orange-medium;
     // border-radius: 12px; // plain
     // border-radius: 96% 4% 92% 8% / 1% 92% 8% 99%; // left-tilted
     border-radius: 4% 96% 4% 96% / 97% 1% 99% 3%; // right-tilted
+    @include for-tablet-portrait-up {
+      max-width: 44vw !important;
+      height: 55vw !important;
+      padding: 2vw;
+      margin: 0 0 0 3vw;
+    }
     @include for-tablet-landscape-up {
-      padding: 2vw 3vw; // 40px 60px;
+      max-width: 40vw !important;
+      height: 44vw !important;
+      margin: 0;
+    }
+    @include for-desktop-up {
+      max-width: 35vw !important;
+      height: 36vw !important;
     }
     &.sticky-dark-mode {
       background-color: $color-accent;
@@ -770,8 +800,16 @@ export default {
     }
   }
   &.--right {
-    max-width: 50vw !important;
-    margin-left: 7vw;
+    max-width: 95vw !important;
+    margin: 3vw auto;
+    @include for-tablet-portrait-up {
+      max-width: 44vw !important;
+      margin: 0 0 0 2vw;
+    }
+    @include for-desktop-up {
+      max-width: 50vw !important;
+      margin: 0 0 0 6vw;
+    }
   }
 }
 
@@ -781,8 +819,10 @@ export default {
   background: $color-primary;
   border: 4px solid $color-primary;
   &.--landscape {
-    height: 10vw;
-    width: 10vw;
+    height: 9vw;
+    width: 9vw;
+    min-height: 100px;
+    min-width: 100px;
   }
 }
 
@@ -793,7 +833,10 @@ export default {
   }
   &.--landscape {
     width: 100%;
-    padding: 0 35px 0;
+    padding: 0 25px 0;
+    @include for-desktop-up {
+      padding: 0 35px 0;
+    }
   }
 }
 
