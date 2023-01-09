@@ -5,16 +5,22 @@
         <LocaleChanger></LocaleChanger>
         <v-icon
           class="color-grey-filter ml-2 mr-4"
-          @click="toggleDarkMode(darkMode)"
+          @click="toggleDarkMode(!darkMode)"
         >
           mdi-theme-light-dark
         </v-icon>
-        <v-icon class="color-grey-filter mr-4" @click="toggleLandscapeMode">
+        <v-icon
+          class="color-grey-filter mr-4"
+          @click="toggleLandscapeMode(!landscapeMode)"
+        >
           {{
             'mdi-phone-rotate-' + (!landscapeMode ? 'landscape' : 'portrait')
           }}
         </v-icon>
-        <v-icon class="color-grey-filter mr-4" @click="toggleHiveTimer">
+        <v-icon
+          class="color-grey-filter mr-4"
+          @click="toggleHiveTimer(!hiveTimerPaused)"
+        >
           {{ 'mdi-' + (hiveTimerPaused ? 'play' : 'pause') }}
         </v-icon>
       </div>
@@ -435,10 +441,7 @@ export default {
     },
   },
   mounted() {
-    if (localStorage.beepdashboardDarkMode) {
-      this.darkMode = localStorage.beepdashboardDarkMode === 'true'
-      this.$vuetify.theme.dark = this.darkMode
-    }
+    this.checkLocalStorage()
   },
   created() {
     if (this.smallScreen) {
@@ -547,6 +550,19 @@ export default {
 
       return data
     },
+    checkLocalStorage() {
+      if (localStorage.beepdashboardDarkMode) {
+        this.darkMode = localStorage.beepdashboardDarkMode === 'true'
+        this.$vuetify.theme.dark = this.darkMode
+      }
+      if (localStorage.beepdashboardHiveTimerPaused) {
+        this.hiveTimerPaused =
+          localStorage.beepdashboardHiveTimerPaused === 'true'
+      }
+      if (localStorage.beepdashboardLandscapeMode) {
+        this.landscapeMode = localStorage.beepdashboardLandscapeMode === 'true'
+      }
+    },
     formatMeasurementData(measurementData) {
       if (
         measurementData &&
@@ -652,14 +668,15 @@ export default {
         this.dataTimer = 0
       }
     },
-    toggleDarkMode(darkMode) {
-      this.darkMode = !darkMode
-      this.$vuetify.theme.dark = !darkMode
-      localStorage.beepdashboardDarkMode = !darkMode
+    toggleDarkMode(bool) {
+      this.darkMode = bool
+      this.$vuetify.theme.dark = bool
+      localStorage.beepdashboardDarkMode = bool
       this.redrawCharts()
     },
-    toggleHiveTimer() {
-      this.hiveTimerPaused = !this.hiveTimerPaused
+    toggleHiveTimer(bool) {
+      localStorage.beepdashboardHiveTimerPaused = bool
+      this.hiveTimerPaused = bool
       if (this.hiveTimerPaused) {
         this.stopTimer('hive')
         if (this.selectedHive.sensors.length > 0) {
@@ -673,8 +690,9 @@ export default {
         this.startTimer('hive')
       }
     },
-    toggleLandscapeMode() {
-      this.landscapeMode = !this.landscapeMode
+    toggleLandscapeMode(bool) {
+      localStorage.beepdashboardLandscapeMode = bool
+      this.landscapeMode = bool
       this.initMap()
     },
   },
