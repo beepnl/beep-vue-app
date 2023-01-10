@@ -1073,7 +1073,7 @@ const translations = {
   for_hive: 'for hive "',
   Add_hivetag: 'Add hive tag',
   Select_hivetag_number: 'Select a hive tag number',
-  Select_hive: 'Select a hive',
+  Select_hive: 'Select a hive | Select hives',
   Select_hive_for_hivetag_exp:
     'For which hive would you like to perform the action? Select one hive.',
   Select_hivetag_action: 'Select an action',
@@ -1111,6 +1111,16 @@ const translations = {
   weight_example_chart_4: 'The hive has been enlarged',
   t_example_chart_1: '34°C: healthy brood',
   t_example_chart_2: '< 33°C: no brood',
+  Select_hives_for_dashboard_exp:
+    'Which hives would you like to show in this dashboard? Select multiple hives (up to 10) for optimal effect. For hives with a device, temperature and weight data will be shown (if present). Only owned hives can be selected.',
+  Max_hives_warning: 'The maximum number of hives has been reached',
+  Dashboard_name_exp:
+    "Name will be displayed as a header. Default name is 'Dashboard' (if no name is provided).",
+  Dashboard_description_exp:
+    'Please note: this description will not be shown on the dashboard. It can be used to store extra information, f.e. for whom this dashboard is intended',
+  Pace: 'Pace (seconds)',
+  Pace_exp:
+    'Pace at which each hive is shown (on rotation). Default pace is 30 seconds (if no pace is provided).',
 }
 
 export default translations

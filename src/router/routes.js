@@ -174,9 +174,18 @@ export default [
       authRequired: true,
       depth: 2,
     },
-    path: '/groups/create?dashboardMode=true',
+    path: '/dashboards/create',
     name: 'dashboard-create',
-    component: () => lazyLoadView(import('@views/group-edit.vue')),
+    component: () => lazyLoadView(import('@views/dashboard-edit.vue')),
+  },
+  {
+    meta: {
+      authRequired: true,
+      depth: 2,
+    },
+    path: '/dashboards/:id/edit',
+    name: 'dashboard-edit',
+    component: () => lazyLoadView(import('@views/dashboard-edit.vue')),
   },
   {
     meta: {

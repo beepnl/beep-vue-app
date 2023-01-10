@@ -900,7 +900,7 @@ const translations = {
   for_hive: 'voor bijenkast "',
   Select_hivetag_number: 'Selecteer een hive tag nummer',
   Add_hivetag: 'Voeg hive tag toe',
-  Select_hive: 'Selecteer een bijenkast',
+  Select_hive: 'Selecteer een bijenkast | Selecteer bijenkasten',
   Select_hive_for_hivetag_exp:
     'Voor welke bijenkast wil je de actie uitvoeren? Selecteer één bijenkast.',
   Select_hivetag_action: 'Selecteer een actie',
@@ -940,6 +940,16 @@ const translations = {
   weight_example_chart_4: 'De kast is vergroot',
   t_example_chart_1: '34°C: gezond broednest',
   t_example_chart_2: '< 33°C: geen broednest',
+  Select_hives_for_dashboard_exp:
+    'Welke bijenkasten wil je tonen in dit dashboard? Selecteer meerdere kasten (maximaal 10) voor het beste resultaat. Bij kasten met een meetsysteem zal ook temperatuur- en gewichtsdata worden weergegeven, indien aanwezig. Alleen eigen kasten mogen geselecteerd worden.',
+  Max_hives_warning: 'Het maximum aantal bijenkasten is bereikt',
+  Dashboard_name_exp:
+    "De naam zal getoond worden als een header. Als er geen naam wordt opgegeven zal de naam 'Dashboard' gebruikt worden",
+  Dashboard_description_exp:
+    'N.B. Deze beschrijving zal niet getoond worden op het dashboard. Hier kan je extra informatie kwijt voor jezelf, bijvoorbeeld voor wie / wat dit dashboard bestemd is.',
+  Pace: 'Tempo (sec)',
+  Pace_exp:
+    'Aantal seconden dat elke bijenkast getoond wordt. Standaard wordt elke kast 30 seconden getoond (als er geen tempo wordt opgegeven).',
 }
 
 export default translations

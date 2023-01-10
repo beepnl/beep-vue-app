@@ -25,10 +25,18 @@
           </v-icon>
         </div>
 
-        <div v-if="dashboardMode" class="hive-in-dashboard">
+        <div
+          v-if="dashboardMode || dashboardEditMode"
+          class="hive-in-dashboard"
+        >
           <div v-if="hive.sensors.length > 0" class="my-0">
             <v-sheet
-              class="beep-icon beep-icon-sensors--no-outline color-green"
+              :class="
+                'beep-icon beep-icon-sensors--no-outline' +
+                  (dashboardEditMode && hivesEditable.indexOf(hive.id) === -1
+                    ? ''
+                    : ' color-green')
+              "
             ></v-sheet>
           </div>
         </div>
@@ -125,6 +133,11 @@ export default {
       required: false,
     },
     dashboardMode: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
+    dashboardEditMode: {
       type: Boolean,
       default: false,
       required: false,

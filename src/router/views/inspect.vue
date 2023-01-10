@@ -1171,8 +1171,8 @@ export default {
         } else {
           this.selectedHives.splice(this.selectedHives.indexOf(id), 1)
         }
+        this.setInspectionEdited(true)
       }
-      this.setInspectionEdited(true)
       this.setBulkInspection(this.selectedHives.length > 1)
     },
     selectFirstHiveSetFromList() {
