@@ -49,7 +49,7 @@
         </v-row>
 
         <v-row v-if="dashboard">
-          <v-col cols="12" md="6" xl="4">
+          <v-col cols="12" md="6" xl="5">
             <div class="overline mb-3">{{ '1. ' + $tc('Select_hive', 2) }}</div>
             <div v-if="!showApiaryPlaceholder" class="beep-label mb-3">
               <span v-text="$t('Select_hives_for_dashboard_exp')"></span>
@@ -138,7 +138,7 @@
             <div class="overline mb-3">{{ '2. ' + $t('Settings') }}</div>
 
             <v-row>
-              <v-col cols="12" sm="8">
+              <v-col cols="12" sm="8" xl="7">
                 <v-text-field
                   v-if="dashboard"
                   v-model="dashboard.name"
@@ -152,7 +152,7 @@
                 </v-text-field>
               </v-col>
 
-              <v-col cols="12" sm="10" lg="8">
+              <v-col cols="12" sm="10" xl="9">
                 <v-text-field
                   v-if="dashboard"
                   v-model="dashboard.description"
@@ -178,6 +178,36 @@
                   @input="setDashboardEdited(true)"
                 >
                 </v-text-field>
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <v-col cols="12" sm="8" md="5">
+                <div
+                  class="beep-label mt-5"
+                  v-text="$t('Show_inspections')"
+                ></div>
+                <yesNoRating
+                  v-if="dashboard"
+                  :object="dashboard"
+                  property="show_inspections"
+                ></yesNoRating>
+                <div
+                  class="beep-label"
+                  v-text="$t('Show_inspections_exp')"
+                ></div>
+              </v-col>
+              <v-col cols="12" sm="8" md="5">
+                <div
+                  class="beep-label mt-5"
+                  v-text="$t('Show_all_hives')"
+                ></div>
+                <yesNoRating
+                  v-if="dashboard"
+                  :object="dashboard"
+                  property="show_all"
+                ></yesNoRating>
+                <div class="beep-label" v-text="$t('Show_all_hives_exp')"></div>
               </v-col>
             </v-row>
           </v-col>
@@ -246,6 +276,7 @@ import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.
 import Confirm from '@components/confirm.vue'
 import { mapGetters } from 'vuex'
 import Layout from '@layouts/back.vue'
+import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 import {
   // deleteDashboard,
   readApiariesAndGroupsIfNotPresent,
@@ -257,6 +288,7 @@ export default {
     ApiaryPreviewHiveSelector,
     Confirm,
     Layout,
+    yesNoRating,
   },
   mixins: [readApiariesAndGroupsIfNotPresent],
   data: function() {
@@ -360,6 +392,8 @@ export default {
           speed: null,
           hive_ids: [],
           interval: null,
+          show_inspections: true,
+          show_all: false,
         }
       }
     })

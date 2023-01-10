@@ -941,15 +941,21 @@ const translations = {
   t_example_chart_1: '34°C: gezond broednest',
   t_example_chart_2: '< 33°C: geen broednest',
   Select_hives_for_dashboard_exp:
-    'Welke bijenkasten wil je tonen in dit dashboard? Selecteer meerdere kasten (maximaal 10) voor het beste resultaat. Bij kasten met een meetsysteem zal ook temperatuur- en gewichtsdata worden weergegeven, indien aanwezig. Alleen eigen kasten mogen geselecteerd worden.',
+    'Welke bijenkasten wil je tonen in dit dashboard? Selecteer meerdere kasten (maximaal 10) voor het beste resultaat. Bij kasten met een meetsysteem zal ook temperatuur- en gewichtsdata worden weergegeven, indien aanwezig. Alleen eigen kasten kunnen geselecteerd worden.',
   Max_hives_warning: 'Het maximum aantal bijenkasten is bereikt',
   Dashboard_name_exp:
-    "De naam zal getoond worden als een header. Als er geen naam wordt opgegeven zal de naam 'Dashboard' gebruikt worden",
+    "De naam zal getoond worden in de header. Standaard is 'Dashboard' (als dit veld leeg wordt gelaten).",
   Dashboard_description_exp:
-    'N.B. Deze beschrijving zal niet getoond worden op het dashboard. Hier kan je extra informatie kwijt voor jezelf, bijvoorbeeld voor wie / wat dit dashboard bestemd is.',
+    'N.B. Deze beschrijving zal niet getoond worden op het dashboard. Hier kan je extra informatie kwijt, bijvoorbeeld voor wie / wat dit dashboard bestemd is.',
   Pace: 'Tempo (sec)',
   Pace_exp:
-    'Aantal seconden dat elke bijenkast getoond wordt. Standaard wordt elke kast 30 seconden getoond (als er geen tempo wordt opgegeven).',
+    'Aantal seconden dat elke bijenkast getoond wordt. Standaard is 30 seconden (als dit veld leeg wordt gelaten).',
+  Show_inspections: 'Toon inspecties',
+  Show_inspections_exp:
+    'Toon per bijenkast de laatste inspectie (datum, totaalindruk en notitie).',
+  Show_all_hives: 'Toon alle bijenkasten',
+  Show_all_hives_exp:
+    'Toon data (locatie, laatste inspectie, metingen) van alle geselecteerde bijenkasten (JA), of alleen van bijenkasten met meetsysteem (NEE, aanbevolen optie)',
 }
 
 export default translations
