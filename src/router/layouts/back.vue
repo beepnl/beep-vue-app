@@ -80,7 +80,7 @@ export default {
   },
   computed: {
     ...mapGetters('alerts', ['alertRuleEdited']),
-    ...mapGetters('groups', ['groupEdited']),
+    ...mapGetters('groups', ['groupEdited', 'dashboardEdited']),
     ...mapGetters('hives', ['hiveEdited']),
     ...mapGetters('inspections', ['inspectionEdited']),
     ...mapGetters('locations', ['apiaryEdited']),
@@ -116,7 +116,10 @@ export default {
           ((this.$route.name === 'checklist' ||
             this.$route.name === 'research' ||
             this.$route.name === 'devices') &&
-            this.edited)
+            this.edited) ||
+          ((this.$route.name === 'dashboard-create' ||
+            this.$route.name === 'dashboard-edit') &&
+            this.dashboardEdited)
         ) {
           this.$refs.confirm
             .open(
