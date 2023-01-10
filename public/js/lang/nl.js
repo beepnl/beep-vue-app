@@ -941,7 +941,7 @@ const translations = {
   t_example_chart_1: '34°C: gezond broednest',
   t_example_chart_2: '< 33°C: geen broednest',
   Select_hives_for_dashboard_exp:
-    'Welke bijenkasten wil je tonen in dit dashboard? Selecteer meerdere kasten (maximaal 10) voor het beste resultaat. Bij kasten met een meetsysteem zal ook temperatuur- en gewichtsdata worden weergegeven, indien aanwezig. Alleen eigen kasten kunnen geselecteerd worden.',
+    'Welke bijenkasten wil je tonen in dit dashboard? Selecteer meerdere kasten (maximaal 12) voor het beste resultaat. Bij kasten met een meetsysteem zal ook temperatuur- en gewichtsdata worden weergegeven, indien aanwezig. Alleen eigen kasten kunnen geselecteerd worden.',
   Max_hives_warning: 'Het maximum aantal bijenkasten is bereikt',
   Dashboard_name_exp:
     "De naam zal getoond worden in de header. Standaard is 'Dashboard' (als dit veld leeg wordt gelaten).",

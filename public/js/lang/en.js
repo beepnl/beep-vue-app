@@ -915,7 +915,7 @@ const translations = {
   t_example_chart_1: '34°C: healthy brood',
   t_example_chart_2: '< 33°C: no brood',
   Select_hives_for_dashboard_exp:
-    'Which hives would you like to show in this dashboard? Select multiple hives (up to 10) for optimal effect. For hives with a device, temperature and weight data will be shown (if present). Only owned hives can be selected.',
+    'Which hives would you like to show in this dashboard? Select multiple hives (up to 12) for optimal effect. For hives with a device, temperature and weight data will be shown (if present). Only owned hives can be selected.',
   Max_hives_warning: 'The maximum number of hives has been reached',
   Dashboard_name_exp:
     "Name will be displayed in the header. Default name is 'Dashboard' (if no name is provided).",

@@ -24,7 +24,7 @@
           {{ 'mdi-' + (hiveTimerPaused ? 'play' : 'pause') }}
         </v-icon>
       </div>
-      <v-icon class="color-grey-filter" @click="showControls = !showControls">
+      <v-icon class="color-grey-filter" @click="toggleShowControls">
         {{ showControls ? 'mdi-cog' : 'mdi-cog-off' }}
       </v-icon>
     </div>
@@ -32,7 +32,7 @@
       :class="'dashboard-container' + (landscapeMode ? ' --landscape' : '')"
     >
       <v-row :class="'dashboard-row' + (landscapeMode ? ' --landscape' : '')">
-        <v-col cols="12">
+        <v-col cols="12" :class="tvAndUp ? 'mb-6' : ''">
           <div
             :class="
               'dashboard-header d-flex align-center justify-' +
@@ -86,9 +86,7 @@
               class="dashboard-text"
               v-text="selectedLocation.name"
             ></div>
-            <div id="map" ref="map" class="map">
-              <MapMarker :lat="lat" :lng="lng" />
-            </div>
+            <div id="map" ref="map" class="map"> </div>
           </DashboardSection>
 
           <DashboardSection
@@ -139,14 +137,12 @@
                   (darkMode ? ' sticky-dark-mode' : '')
               "
             >
-              <v-row v-if="landscapeMode">
+              <v-row v-if="landscapeMode" :class="tvAndUp ? 'mt-6' : ''">
                 <v-col cols="5" class="px-1 pt-0 pb-1 pa-xl-3"
                   ><span v-text="$tc('Location', 1) + ' : '"></span
                 ></v-col>
                 <v-col cols="7" class="px-1 pt-1 pb-1 pa-xl-3">
-                  <div id="map" ref="map" class="map --landscape">
-                    <MapMarker :lat="lat" :lng="lng" />
-                  </div>
+                  <div id="map" ref="map" class="map --landscape"> </div>
                 </v-col>
                 <v-col cols="5" class="pa-1 pa-xl-3"
                   ><span v-text="$t('Last_check') + ' : '"></span
@@ -297,7 +293,6 @@ import Api from '@api/Api'
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 import DashboardSection from '@components/dashboard-section.vue'
 import LocaleChanger from '@components/locale-changer.vue'
-import MapMarker from '@components/map-marker.vue'
 import MeasurementsChartLine from '@components/measurements-chart-line.vue'
 import { mapGetters } from 'vuex'
 import { readApiariesAndGroups, readTaxonomy } from '@mixins/methodsMixin'
@@ -309,7 +304,6 @@ export default {
     ApiaryPreviewHiveSelector,
     DashboardSection,
     LocaleChanger,
-    MapMarker,
     MeasurementsChartLine,
   },
   mixins: [
@@ -326,6 +320,7 @@ export default {
         process.env.VUE_APP_ASSETS_URL_FALLBACK,
       ready: false,
       map: null,
+      marker: null,
       selectedHive: null,
       noChartData: false,
       loadingData: true,
@@ -426,8 +421,20 @@ export default {
     smallScreen() {
       return this.$vuetify.breakpoint.width < 960
     },
-    touchDevice() {
-      return window.matchMedia('(hover: none)').matches
+    svgMarker() {
+      return {
+        path:
+          'M12,3L2,12H5V20H19V12H22M9,18H7V12H9M13,18H11V10H13M17,18H15V14H17',
+        fillColor: '#f29100',
+        fillOpacity: 0.9,
+        strokeWeight: 0,
+        rotation: 0,
+        scale: 3,
+        anchor: new window.google.maps.Point(12, 12),
+      }
+    },
+    tvAndUp() {
+      return this.$vuetify.breakpoint.width >= 2200
     },
   },
   watch: {
@@ -604,6 +611,18 @@ export default {
           },
           fullscreenControl: false,
           zoom: 9,
+          mapTypeControl: false,
+          mapTypeControlOptions: {
+            style: window.google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+          },
+          streetViewControl: false,
+          zoomControl: false,
+        })
+
+        this.marker = new window.google.maps.Marker({
+          position: { lat: this.lat, lng: this.lng },
+          icon: this.svgMarker,
+          map: this.map,
         })
       }, 100)
     },
@@ -695,6 +714,9 @@ export default {
       this.landscapeMode = bool
       this.initMap()
     },
+    toggleShowControls() {
+      this.showControls = !this.showControls
+    },
   },
 }
 </script>
@@ -778,7 +800,10 @@ export default {
     font-size: 0.9rem;
   }
   @include for-big-desktop-up {
-    font-size: 1rem;
+    font-size: 1.2rem;
+  }
+  @include for-tv-up {
+    font-size: 1.5rem;
   }
 }
 
@@ -808,6 +833,11 @@ export default {
     @include for-desktop-up {
       max-width: 35vw !important;
       height: 36vw !important;
+    }
+    @include for-tv-up {
+      max-width: 33vw !important;
+      height: 33vw !important;
+      padding: 2.5vw;
     }
     &.sticky-dark-mode {
       background-color: $color-accent;

@@ -303,7 +303,7 @@ export default {
       errorMessage: null,
       dashboard: null,
       showMaxWarning: false,
-      maxNrOfHives: 10,
+      maxNrOfHives: 12,
     }
   },
   computed: {
