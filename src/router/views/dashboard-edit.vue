@@ -134,16 +134,16 @@
             </div>
           </v-col>
 
-          <v-col cols="12" md="6" xl="4">
+          <v-col v-if="dashboard" cols="12" md="6" xl="4">
             <div class="overline mb-3">{{ '2. ' + $t('Settings') }}</div>
 
             <v-row>
               <v-col cols="12" sm="8" xl="7">
                 <v-text-field
-                  v-if="dashboard"
                   v-model="dashboard.name"
-                  :label="$t('Name')"
-                  :hint="$t('Dashboard_name_exp')"
+                  :label="$t('Title')"
+                  :placeholder="'Dashboard'"
+                  :hint="$t('Dashboard_title_exp')"
                   persistent-hint
                   counter="30"
                   required
@@ -154,7 +154,6 @@
 
               <v-col cols="12" sm="10" xl="9">
                 <v-text-field
-                  v-if="dashboard"
                   v-model="dashboard.description"
                   :label="$t('Description')"
                   :hint="$t('Dashboard_description_exp')"
@@ -167,28 +166,50 @@
               </v-col>
 
               <v-col cols="12" sm="8" md="6">
-                <v-text-field
-                  v-if="dashboard"
+                <v-select
                   v-model="dashboard.speed"
+                  :items="speedOptions"
                   :label="$t('Pace')"
-                  :hint="$t('Pace_exp')"
+                  :placeholder="$t('Select') + '...'"
+                  :hint="$t('Dashboard_pace_exp')"
                   persistent-hint
-                  type="number"
-                  required
+                  class="mt-5"
                   @input="setDashboardEdited(true)"
-                >
-                </v-text-field>
+                ></v-select>
               </v-col>
             </v-row>
 
             <v-row>
+              <v-col cols="12" sm="5">
+                <v-select
+                  v-model="dashboard.interval"
+                  :items="intervalOptions"
+                  :label="$t('Interval')"
+                  :item-text="getTranslation"
+                  item-value="label"
+                  :placeholder="$t('Select') + '...'"
+                  :hint="$t('Dashboard_interval_exp')"
+                  persistent-hint
+                  class="my-3"
+                  @input="setDashboardEdited(true)"
+                ></v-select>
+              </v-col>
+            </v-row>
+
+            <MeasurementsDateSelection
+              v-if="dashboard.interval === 'selection'"
+              :interval="'selection'"
+              :relative-interval="false"
+              :show-as-column="8"
+              :dates="dates"
+              :date-range-text="dateRangeText"
+              @save-dates="dates = $event"
+            />
+
+            <v-row :class="dashboard.interval !== 'selection' ? 'mt-5' : ''">
               <v-col cols="12" sm="8" md="5">
-                <div
-                  class="beep-label mt-5"
-                  v-text="$t('Show_inspections')"
-                ></div>
+                <div class="beep-label" v-text="$t('Show_inspections')"></div>
                 <yesNoRating
-                  v-if="dashboard"
                   :object="dashboard"
                   property="show_inspections"
                 ></yesNoRating>
@@ -198,12 +219,8 @@
                 ></div>
               </v-col>
               <v-col cols="12" sm="8" md="5">
-                <div
-                  class="beep-label mt-5"
-                  v-text="$t('Show_all_hives')"
-                ></div>
+                <div class="beep-label" v-text="$t('Show_all_hives')"></div>
                 <yesNoRating
-                  v-if="dashboard"
                   :object="dashboard"
                   property="show_all"
                 ></yesNoRating>
@@ -211,50 +228,6 @@
               </v-col>
             </v-row>
           </v-col>
-
-          <!-- <v-col cols="12" sm="6" md="3">
-            <div class="overline mb-3">{{
-              '2. ' + $t('Select_dashboard_action')
-            }}</div>
-            <div
-              class="beep-label mb-3"
-              v-text="$t('Select_dashboard_action_exp')"
-            ></div>
-            <div class="rounded-border">
-              <v-radio-group
-                :value="dashboard.action_id"
-                hide-details
-                class="mt-0"
-                @change="selectAction($event)"
-              >
-                <template v-for="(dashboardAction, index) in dashboardActions">
-                  <div
-                    :key="index"
-                    class="d-flex align-center justify-start mb-1"
-                  >
-                    <v-radio
-                      class="mt-2"
-                      :disabled="!enableAction(dashboardAction)"
-                      :value="dashboardAction.id"
-                    ></v-radio>
-                    <router-link
-                      v-if="
-                        dashboard.hive_id !== null && enableAction(dashboardAction)
-                      "
-                      :to="dashboardAction.routerLink"
-                    >
-                      <span v-text="$t(dashboardAction.description)"></span>
-                    </router-link>
-                    <span
-                      v-else
-                      :class="!enableAction(dashboardAction) ? 'color-grey' : ''"
-                      v-text="$t(dashboardAction.description)"
-                    ></span>
-                  </div>
-                </template>
-              </v-radio-group>
-            </div>
-          </v-col> -->
         </v-row>
       </v-container>
     </v-form>
@@ -276,21 +249,24 @@ import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.
 import Confirm from '@components/confirm.vue'
 import { mapGetters } from 'vuex'
 import Layout from '@layouts/back.vue'
+import MeasurementsDateSelection from '@components/measurements-date-selection.vue'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 import {
   // deleteDashboard,
   readApiariesAndGroupsIfNotPresent,
   // readDashboards,
 } from '@mixins/methodsMixin'
+import { momentFormat } from '@mixins/momentMixin'
 
 export default {
   components: {
     ApiaryPreviewHiveSelector,
     Confirm,
     Layout,
+    MeasurementsDateSelection,
     yesNoRating,
   },
-  mixins: [readApiariesAndGroupsIfNotPresent],
+  mixins: [momentFormat, readApiariesAndGroupsIfNotPresent],
   data: function() {
     return {
       snackbar: {
@@ -304,6 +280,16 @@ export default {
       dashboard: null,
       showMaxWarning: false,
       maxNrOfHives: 12,
+      speedOptions: [15, 30, 45, 60, 90, 120, 300],
+      intervalOptions: [
+        { id: 1, label: 'Hour' },
+        { id: 2, label: 'Day' },
+        { id: 3, label: 'week' },
+        { id: 4, label: 'month' },
+        { id: 5, label: 'year' },
+        { id: 6, label: 'selection' },
+      ],
+      dates: [],
     }
   },
   computed: {
@@ -321,6 +307,19 @@ export default {
         this.dashboard.hive_ids.length === 0
         // || this.dashboard.show_inspections === null
       )
+    },
+    dateRangeText() {
+      if (this.dates.length > 0) {
+        var momentDates = [
+          this.momentFormat(this.dates[0], 'll'),
+          this.dates[1] !== undefined
+            ? this.momentFormat(this.dates[1], 'll')
+            : '',
+        ]
+        return momentDates.join(' - ')
+      } else {
+        return this.$i18n.t('selection_placeholder')
+      }
     },
     getTitle() {
       return (
@@ -389,9 +388,9 @@ export default {
           id: null,
           name: null,
           description: null,
-          speed: null,
+          speed: 30,
           hive_ids: [],
-          interval: null,
+          interval: 'week',
           show_inspections: true,
           show_all: false,
         }
@@ -471,6 +470,9 @@ export default {
     },
     getOwnedHives(hiveSet) {
       return hiveSet.hives.filter((hive) => hive.owner).map((hive) => hive.id)
+    },
+    getTranslation(item) {
+      return this.$i18n.t(item.label)
     },
     saveDashboard() {
       if (this.createMode) {

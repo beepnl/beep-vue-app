@@ -329,6 +329,7 @@ const translations = {
   /* Measurements */
   Hour: 'Uur',
   hour: 'uur | uur',
+  Day: 'Dag',
   day: 'dag | dagen',
   week: 'Week',
   month: 'Maand',
@@ -943,19 +944,21 @@ const translations = {
   Select_hives_for_dashboard_exp:
     'Welke bijenkasten wil je tonen in dit dashboard? Selecteer meerdere kasten (maximaal 12) voor het beste resultaat. Bij kasten met een meetsysteem zal ook temperatuur- en gewichtsdata worden weergegeven, indien aanwezig. Alleen eigen kasten kunnen geselecteerd worden.',
   Max_hives_warning: 'Het maximum aantal bijenkasten is bereikt',
-  Dashboard_name_exp:
-    "De naam zal getoond worden in de header. Standaard is 'Dashboard' (als dit veld leeg wordt gelaten).",
+  Title: 'Titel',
+  Dashboard_title_exp:
+    "Standaard is 'Dashboard' (als dit veld leeg wordt gelaten).",
   Dashboard_description_exp:
-    'N.B. Deze beschrijving zal niet getoond worden op het dashboard. Hier kan je extra informatie kwijt, bijvoorbeeld voor wie / wat dit dashboard bestemd is.',
-  Pace: 'Tempo (sec)',
-  Pace_exp:
-    'Aantal seconden dat elke bijenkast getoond wordt. Standaard is 30 seconden (als dit veld leeg wordt gelaten).',
+    'N.B. Deze beschrijving zal niet getoond worden op het dashboard. Hier kan je extra informatie kwijt, bijv. waarvoor dit dashboard bestemd is.',
+  Pace: 'Snelheid (sec)',
+  Dashboard_pace_exp: 'Aantal seconden dat elke bijenkast getoond wordt',
+  Dashboard_interval_exp:
+    'Toon metingen van de/het afgelopen uur/dag/week/maand/jaar of een zelfgekozen periode',
   Show_inspections: 'Toon inspecties',
   Show_inspections_exp:
     'Toon per bijenkast de laatste inspectie (datum, totaalindruk en notitie).',
-  Show_all_hives: 'Toon alle bijenkasten',
+  Show_all_hives: 'Toon details van alle bijenkasten',
   Show_all_hives_exp:
-    'Toon data (locatie, laatste inspectie, metingen) van alle geselecteerde bijenkasten (JA), of alleen van bijenkasten met meetsysteem (NEE, aanbevolen optie)',
+    'Toon details (locatie, laatste inspectie, metingen) van alle geselecteerde bijenkasten (JA), of alleen van bijenkasten met meetsysteem (NEE, aanbevolen optie)',
 }
 
 export default translations

@@ -360,6 +360,7 @@ const translations = {
   /* Medidas */
   Hour: 'Horas',
   hour: 'hora | horas',
+  Day: 'Día',
   day: 'día | días',
   week: 'Semana',
   month: 'Mes',
@@ -1012,19 +1013,20 @@ const translations = {
   Select_hives_for_dashboard_exp:
     'Which hives would you like to show in this dashboard? Select multiple hives (up to 12) for optimal effect. For hives with a device, temperature and weight data will be shown (if present). Only owned hives can be selected.',
   Max_hives_warning: 'The maximum number of hives has been reached',
-  Dashboard_name_exp:
-    "Name will be displayed in the header. Default name is 'Dashboard' (if no name is provided).",
+  Title: 'Title',
+  Dashboard_title_exp: "Default title is 'Dashboard' (if none is provided).",
   Dashboard_description_exp:
     'Please note: this description will not be shown on the dashboard. It can be used to store extra information, f.e. for whom this dashboard is intended',
   Pace: 'Pace (seconds)',
-  Pace_exp:
-    'Pace at which each hive is shown (on rotation). Default pace is 30 seconds (if no pace is provided).',
+  Dashboard_pace_exp: 'Pace at which each hive is shown (on rotation)',
+  Dashboard_interval_exp:
+    'Show measurement data from the previous hour/day/week/month/year or a custom period',
   Show_inspections: 'Show inspections',
   Show_inspections_exp:
     'Show the most recent inspection (date, overall impression and note).',
-  Show_all_hives: 'Show all hives',
+  Show_all_hives: 'Show details for all hives',
   Show_all_hives_exp:
-    'Show data (location, last inspection, measurements) for all selected hives (YES), or only for hives with a device (NO, recommended option)',
+    'Show details (location, last inspection, measurement data) for all selected hives (YES), or only for hives with a device (NO, recommended option)',
 }
 
 export default translations
