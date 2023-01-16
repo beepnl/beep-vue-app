@@ -933,7 +933,17 @@ const translations = {
   no_chart_data_hive: 'Geen sensordata beschikbaar voor deze bijenkast',
   outsideTemperature: 'Buitentemperatuur',
 
+  id: 'ID',
+  code: 'code',
+  id_is_required: 'ID is verplicht',
+  code_is_required: 'Code is verplicht',
+  create_dashboard_question:
+    'Nog geen dashboard? Creëer een dashboard via de BEEP app',
   New_dashboard: 'Nieuw dashboard',
+  Delete_dashboard: 'Verwijder dashboard',
+  Logout_dashboard: 'Uitloggen',
+  Logout_dashboard_check:
+    'Weet je zeker dat je wilt uitloggen / van dashboard wilt veranderen?',
   weight_example_chart_1: 'Bijen verzamelen nectar',
   weight_example_chart_2: 'Bijen gebruiken hun voedselvoorrad',
   weight_example_chart_3: 'Een zwerm!',

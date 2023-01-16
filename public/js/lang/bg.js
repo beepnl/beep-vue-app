@@ -980,7 +980,16 @@ const translations = {
   Note: 'Note',
   no_chart_data_hive: 'No chart data available for this hive',
 
+  id: 'id',
+  code: 'code',
+  id_is_required: 'ID is verplicht',
+  code_is_required: 'Code is verplicht',
+  create_dashboard_question: 'No dashboard yet? Create one via the BEEP app',
   New_dashboard: 'New dashboard',
+  Delete_dashboard: 'Delete dashboard',
+  Logout_dashboard: 'Sign out',
+  Logout_dashboard_check:
+    'Are you sure you want to sign out / switch dashboard?',
   weight_example_chart_1: 'Bees are collecting nectar',
   weight_example_chart_2: 'Bees use their food supply',
   weight_example_chart_3: 'A swarm!',

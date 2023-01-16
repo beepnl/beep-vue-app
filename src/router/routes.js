@@ -165,9 +165,14 @@ export default [
       authRequired: true,
       depth: 1,
     },
-    path: '/dashboard',
+    path: '/dashboard/:id',
     name: 'dashboard',
     component: () => lazyLoadView(import('@views/dashboard.vue')),
+  },
+  {
+    path: '/dashboard/sign-in',
+    name: 'dashboard-sign-in',
+    component: () => lazyLoadView(import('@views/dashboard-sign-in.vue')),
   },
   {
     meta: {

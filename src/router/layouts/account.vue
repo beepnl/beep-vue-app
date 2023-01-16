@@ -1,10 +1,12 @@
 <template>
   <div>
     <div id="beeBox">
-      <div id="bee1" :class="mobile ? 'bee--mobile' : ''"></div>
-      <div id="bee2" :class="mobile ? 'bee--mobile' : ''"></div>
-      <div id="bee3" :class="mobile ? 'bee--mobile' : ''"></div>
-      <div id="bee4" :class="mobile ? 'bee--mobile' : ''"></div>
+      <div
+        v-for="bee in nrOfBees"
+        :id="'bee' + bee"
+        :key="'b' + bee"
+        :class="(mobile ? 'bee--mobile' : '') + (darkMode ? ' bee--light' : '')"
+      ></div>
     </div>
     <v-card class="account-card d-flex flex-column align-center">
       <div class="mt-4">
@@ -12,7 +14,12 @@
           ><img
             v-cloak
             class="account-logo ml-n1"
-            :src="assetsUrl + '/img/beep-icon-logo.svg'"
+            :src="
+              assetsUrl +
+                '/img/beep-icon-logo' +
+                (darkMode ? '-white-text' : '') +
+                '.svg'
+            "
         /></a>
       </div>
       <v-card-title class="account-title mb-n2">{{ title }}</v-card-title>
@@ -29,18 +36,27 @@ export default {
       required: false,
       default: '',
     },
+    darkMode: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   data() {
     return {
       assetsUrl:
         process.env.VUE_APP_ASSETS_URL ||
         process.env.VUE_APP_ASSETS_URL_FALLBACK,
+      nrOfBees: 4,
     }
   },
   computed: {
     mobile() {
       return this.$vuetify.breakpoint.mobile
     },
+  },
+  created() {
+    this.$vuetify.theme.dark = this.darkMode
   },
 }
 </script>
@@ -79,6 +95,9 @@ export default {
   width: 20px;
   height: 20px;
   background-image: url($ASSETS+'/img/icons/icn_bee_dark.svg');
+  &.bee--light {
+    background-image: url($ASSETS+'/img/icons/icn_bee.svg');
+  }
 }
 #bee1 {
   animation: beeAnimation1 11s linear infinite, rotateBee1 11s linear infinite;

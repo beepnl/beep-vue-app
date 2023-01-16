@@ -23,6 +23,9 @@
         >
           {{ 'mdi-' + (hiveTimerPaused ? 'play' : 'pause') }}
         </v-icon>
+        <v-icon class="color-grey-filter mr-4" @click="dashboardSignOut"
+          >mdi-logout</v-icon
+        >
       </div>
       <v-icon class="color-grey-filter" @click="toggleShowControls">
         {{ showControls ? 'mdi-cog' : 'mdi-cog-off' }}
@@ -312,12 +315,15 @@
         </v-col>
       </v-row>
     </v-container>
+
+    <Confirm ref="confirm"></Confirm>
   </div>
 </template>
 
 <script>
 import Api from '@api/Api'
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
+import Confirm from '@components/confirm.vue'
 import DashboardSection from '@components/dashboard-section.vue'
 import LocaleChanger from '@components/locale-changer.vue'
 import MeasurementsChartLine from '@components/measurements-chart-line.vue'
@@ -329,6 +335,7 @@ import { sensorMixin } from '@mixins/sensorMixin'
 export default {
   components: {
     ApiaryPreviewHiveSelector,
+    Confirm,
     DashboardSection,
     LocaleChanger,
     MeasurementsChartLine,
@@ -366,6 +373,7 @@ export default {
       currentHiveIndex: -1,
       currentHiveWithDataIndex: -1,
       darkMode: true,
+      dashboardCode: null,
     }
   },
   computed: {
@@ -384,6 +392,9 @@ export default {
         { name: 't', values: this.tempSensors, examples: 2 },
         { name: 'weight', values: this.weightSensors, examples: 4 },
       ]
+    },
+    dashboardId() {
+      return parseInt(this.$route.params.id)
     },
     selectedGroup() {
       return this.groups.length > 0 ? this.groups[7] : null // TODO: replace dummy data
@@ -603,6 +614,37 @@ export default {
       if (localStorage.beepdashboardLandscapeMode) {
         this.landscapeMode = localStorage.beepdashboardLandscapeMode === 'true'
       }
+      if (this.$route.query.code) {
+        // if code is queries overwrite localstorage code
+        localStorage.beepdashboardCode = this.$route.query.code
+        this.dashboardCode = this.$route.query.code
+      } else if (localStorage.beepdashboardCode) {
+        // else use local storage code
+        this.dashboardCode = localStorage.beepdashboardCode
+      } else {
+        // else login is required
+        this.$router.push({ name: 'dashboard-sign-in' })
+      }
+    },
+    dashboardSignOut() {
+      this.$refs.confirm
+        .open(
+          this.$i18n.t('Logout_dashboard'),
+          this.$i18n.t('Logout_dashboard_check'),
+          {
+            color: 'red',
+          }
+        )
+        .then((confirm) => {
+          // this.$store
+          //   .dispatch('auth/signOut')
+          //   .then(() =>
+          this.$router.push({ name: 'dashboard-sign-in' })
+          // )
+        })
+        .catch((reject) => {
+          return true
+        })
     },
     formatMeasurementData(measurementData) {
       if (
@@ -1002,7 +1044,7 @@ export default {
     position: relative;
     height: 500px;
     top: 400px;
-    z-index: 999;
+    z-index: 5;
     width: 100%;
   }
 
