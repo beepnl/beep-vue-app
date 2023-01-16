@@ -980,10 +980,8 @@ const translations = {
   Note: 'Note',
   no_chart_data_hive: 'No chart data available for this hive',
 
-  id: 'id',
   Code: 'Code',
-  id_is_required: 'ID is verplicht',
-  code_is_required: 'Code is verplicht',
+
   create_dashboard_question: 'No dashboard yet? Create one via the BEEP app',
   New_dashboard: 'New dashboard',
   Edit_dashboard: 'Edit dashboard',

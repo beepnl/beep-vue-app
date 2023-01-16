@@ -9,11 +9,23 @@
       ></div>
     </div>
     <v-card class="account-card d-flex flex-column align-center">
-      <div class="mt-4">
+      <div v-if="!dashboardMode" class="mt-4">
         <a href="/"
           ><img
             v-cloak
             class="account-logo ml-n1"
+            :src="assetsUrl + '/img/beep-icon-logo.svg'"
+        /></a>
+      </div>
+
+      <div
+        v-if="dashboardMode"
+        class="my-4 d-flex flex-column align-center justify-center"
+      >
+        <a href="/"
+          ><img
+            v-cloak
+            class="dashboard-logo ml-n1"
             :src="
               assetsUrl +
                 '/img/beep-icon-logo' +
@@ -21,6 +33,10 @@
                 '.svg'
             "
         /></a>
+        <div
+          class="text-h3 overline roboto-condensed font-weight-light"
+          v-text="$tc('Dashboard', 1)"
+        ></div>
       </div>
       <v-card-title class="account-title mb-n2">{{ title }}</v-card-title>
       <slot></slot>
@@ -36,7 +52,7 @@ export default {
       required: false,
       default: '',
     },
-    darkMode: {
+    dashboardMode: {
       type: Boolean,
       required: false,
       default: false,
@@ -48,6 +64,7 @@ export default {
         process.env.VUE_APP_ASSETS_URL ||
         process.env.VUE_APP_ASSETS_URL_FALLBACK,
       nrOfBees: 4,
+      darkMode: false,
     }
   },
   computed: {
@@ -56,6 +73,9 @@ export default {
     },
   },
   created() {
+    if (this.dashboardMode) {
+      this.darkMode = true
+    }
     this.$vuetify.theme.dark = this.darkMode
   },
 }
@@ -74,6 +94,11 @@ export default {
 .account-logo {
   width: 300px;
 }
+
+.dashboard-logo {
+  width: 400px;
+}
+
 .account-title {
   width: 100%;
   font-size: 18px;

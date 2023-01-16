@@ -933,10 +933,8 @@ const translations = {
   no_chart_data_hive: 'Geen sensordata beschikbaar voor deze bijenkast',
   outsideTemperature: 'Buitentemperatuur',
 
-  id: 'ID',
   Code: 'Code',
-  id_is_required: 'ID is verplicht',
-  code_is_required: 'Code is verplicht',
+
   create_dashboard_question:
     'Nog geen dashboard? Creëer een dashboard via de BEEP app',
   New_dashboard: 'Nieuw dashboard',

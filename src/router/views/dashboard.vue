@@ -393,9 +393,6 @@ export default {
         { name: 'weight', values: this.weightSensors, examples: 4 },
       ]
     },
-    dashboardId() {
-      return parseInt(this.$route.params.id)
-    },
     selectedGroup() {
       return this.groups.length > 0 ? this.groups[7] : null // TODO: replace dummy data
     },
@@ -614,10 +611,10 @@ export default {
       if (localStorage.beepdashboardLandscapeMode) {
         this.landscapeMode = localStorage.beepdashboardLandscapeMode === 'true'
       }
-      if (this.$route.query.code) {
-        // if code is queries overwrite localstorage code
-        localStorage.beepdashboardCode = this.$route.query.code
-        this.dashboardCode = this.$route.query.code
+      if (this.$route.params.id) {
+        // if code is in url overwrite localstorage code
+        localStorage.beepdashboardCode = this.$route.params.id
+        this.dashboardCode = this.$route.params.id
       } else if (localStorage.beepdashboardCode) {
         // else use local storage code
         this.dashboardCode = localStorage.beepdashboardCode

@@ -1,11 +1,6 @@
 <template>
-  <Layout :title="$t('login_title')" :dark-mode="darkMode">
-    <v-form
-      ref="form"
-      v-model="valid"
-      style="width: 100%"
-      @submit.prevent="login"
-    >
+  <Layout :title="$t('Code')" :dashboard-mode="true">
+    <v-form ref="form" style="width: 100%" @submit.prevent="login">
       <v-card-text>
         <v-alert v-if="msg" type="success" text prominent dense color="green">
           {{ $t(msg) }}
@@ -21,41 +16,21 @@
         >
           {{ error.errorMessage }}
         </v-alert>
-        <v-text-field
-          v-model="credentials.id"
-          :class="fieldErrors.id ? 'error--text' : ''"
-          :label="`${$t('id')}`"
-          type="id"
-          :rules="[(v) => !!v || signinRules.id_required]"
-          autocomplete="on"
-        ></v-text-field>
-        <v-text-field
-          v-model="credentials.code"
-          :class="fieldErrors.code ? 'error--text' : ''"
-          :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-          :type="show ? 'text' : 'password'"
-          :label="$t('Code')"
-          :rules="[(v) => !!v || signinRules.code_required]"
-          autocomplete="off"
-          @click:append="show = !show"
-        ></v-text-field>
-        <!-- <router-link
-          :to="{
-            name: 'code-forgot',
-            query: { id: credentials.id },
-          }"
-        >
-          {{ $t('forgot_code') }}
-        </router-link> -->
-        <v-spacer></v-spacer>
-        <a :href="'https://app.beep.nl/dashboard/create'">
-          {{ $t('create_dashboard_question') }}
-        </a>
+
+        <v-otp-input v-model="credentials.code"></v-otp-input>
       </v-card-text>
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn text type="submit">{{ $t('login') }}</v-btn>
+        <v-btn :disabled="!validCode" text type="submit">{{
+          $t('login')
+        }}</v-btn>
+      </v-card-actions>
+
+      <v-card-actions class="pa-3">
+        <a :href="'https://app.beep.nl/dashboard/create'">
+          {{ $t('create_dashboard_question') }}
+        </a>
       </v-card-actions>
     </v-form>
   </Layout>
@@ -69,7 +44,7 @@ import Layout from '@layouts/account.vue'
 export default {
   components: { Layout },
   props: {
-    id: {
+    code: {
       type: String,
       default: '',
     },
@@ -81,25 +56,19 @@ export default {
   data() {
     return {
       credentials: {
-        id: this.id || '',
-        code: '',
+        code: this.code || '',
       },
       errors: [],
-      show: true,
-      valid: false,
       fieldErrors: {
-        id: false,
         code: false,
       },
+      codeLength: 6,
       darkMode: true, // TODO enable lightMode if coming from light mode dashboard / stored in local storage?
     }
   },
   computed: {
-    signinRules: function() {
-      return {
-        id_required: this.$i18n.t('id_is_required'),
-        code_required: this.$i18n.t('code_is_required'),
-      }
+    validCode() {
+      return this.credentials.code.length === this.codeLength
     },
   },
   created() {
@@ -115,8 +84,7 @@ export default {
       if (this.$refs.form.validate()) {
         this.$router.push({
           name: 'dashboard',
-          params: { id: this.credentials.id },
-          query: { code: this.credentials.code },
+          params: { id: this.credentials.code },
         })
         // TODO
         //   this.clearErrors()
@@ -160,7 +128,6 @@ export default {
     },
     clearErrors() {
       this.errors = []
-      this.fieldErrors.id = false
       this.fieldErrors.code = false
     },
   },
