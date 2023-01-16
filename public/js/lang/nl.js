@@ -930,8 +930,7 @@ const translations = {
   Dashboard: 'Dashboard',
   Last_check: 'Laatste controle',
   Note: 'Notitie',
-  no_chart_data_past_week:
-    'Geen sensordata beschikbaar voor de afgelopen 7 dagen',
+  no_chart_data_hive: 'Geen sensordata beschikbaar voor deze bijenkast',
   outsideTemperature: 'Buitentemperatuur',
 
   New_dashboard: 'Nieuw dashboard',

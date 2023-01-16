@@ -86,7 +86,14 @@
               class="dashboard-text"
               v-text="selectedLocation.name"
             ></div>
-            <div id="map" ref="map" class="map"> </div>
+            <div
+              id="map"
+              ref="map"
+              :class="
+                'map ' + (ready && !coordinatesPresent ? '--hide' : '--loading')
+              "
+            >
+            </div>
           </DashboardSection>
 
           <DashboardSection
@@ -142,7 +149,23 @@
                   ><span v-text="$tc('Location', 1) + ' : '"></span
                 ></v-col>
                 <v-col cols="7" class="px-1 pt-1 pb-1 pa-xl-3">
-                  <div id="map" ref="map" class="map --landscape"> </div>
+                  <div
+                    id="map"
+                    ref="map"
+                    :class="
+                      'map ' +
+                        (ready && coordinatesPresent
+                          ? '--landscape'
+                          : ready
+                          ? '--hide'
+                          : '--loading')
+                    "
+                  >
+                  </div>
+                  <span
+                    v-if="ready && selectedLocation && !coordinatesPresent"
+                    v-text="selectedLocation.name"
+                  ></span>
                 </v-col>
                 <v-col cols="5" class="pa-1 pa-xl-3"
                   ><span v-text="$t('Last_check') + ' : '"></span
@@ -216,8 +239,12 @@
             >
               <v-progress-circular color="primary" size="50" indeterminate />
             </v-col>
-            <v-col v-if="noChartData || !sensorsPresent" cols="12" class="my-4">
-              {{ $t('no_chart_data_past_week') }}
+            <v-col
+              v-if="(noChartData || !sensorsPresent) && !loadingData"
+              cols="12"
+              class="my-4"
+            >
+              {{ $t('no_chart_data_hive') }}
             </v-col>
             <template v-for="(sensorSet, index) in currentSensors">
               <v-col
@@ -345,6 +372,13 @@ export default {
     ...mapGetters('groups', ['groups']),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
+    coordinatesPresent() {
+      return (
+        this.selectedLocation &&
+        this.selectedLocation.coordinate_lat &&
+        this.selectedLocation.coordinate_lon
+      )
+    },
     currentSensors() {
       return [
         { name: 't', values: this.tempSensors, examples: 2 },
@@ -862,6 +896,7 @@ export default {
 }
 
 .map {
+  display: flex;
   height: 330px;
   width: 330px;
   background: $color-primary;
@@ -871,6 +906,13 @@ export default {
     width: 9vw;
     min-height: 100px;
     min-width: 100px;
+  }
+  &.--loading {
+    height: 1px;
+    width: 1px;
+  }
+  &.--hide {
+    display: none;
   }
 }
 
