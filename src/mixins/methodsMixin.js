@@ -258,7 +258,8 @@ export const deleteDashboard = {
           this.$i18n.t('Delete_dashboard'),
           this.$i18n.t('Delete_dashboard') +
             ' (' +
-            dashboard.name +
+            dashboard.id +
+            (dashboard.name ? ' - ' + dashboard.name : '') +
             (dashboard.description ? ' - ' + dashboard.description : '') +
             ')?',
           {

@@ -287,7 +287,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('groups', ['groups']),
+    ...mapGetters('groups', ['dashboards', 'groups']),
     ...mapGetters('hives', ['hivesObject']),
     ...mapGetters('locations', ['apiaries']),
     createMode() {
@@ -320,9 +320,7 @@ export default {
         (this.createMode
           ? this.$i18n.t('New_dashboard')
           : this.$i18n.t('Edit_dashboard')) +
-        (this.dashboard !== null && this.dashboard.name !== null
-          ? ' - ' + this.dashboard.name
-          : '')
+        (this.dashboard !== null ? ' - ' + this.dashboard.id : '')
       )
     },
     hiveSets() {

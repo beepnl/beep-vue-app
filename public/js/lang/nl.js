@@ -927,19 +927,20 @@ const translations = {
   pwa_addhome_button_label: "2. Tik op 'Zet op beginscherm'",
 
   Colony: 'Volk | Volken',
-  Dashboard: 'Dashboard',
+  Dashboard: 'Dashboard | Dashboards',
   Last_check: 'Laatste controle',
   Note: 'Notitie',
   no_chart_data_hive: 'Geen sensordata beschikbaar voor deze bijenkast',
   outsideTemperature: 'Buitentemperatuur',
 
   id: 'ID',
-  code: 'code',
+  Code: 'Code',
   id_is_required: 'ID is verplicht',
   code_is_required: 'Code is verplicht',
   create_dashboard_question:
     'Nog geen dashboard? Creëer een dashboard via de BEEP app',
   New_dashboard: 'Nieuw dashboard',
+  Edit_dashboard: 'Edit dashboard',
   Delete_dashboard: 'Verwijder dashboard',
   Logout_dashboard: 'Uitloggen',
   Logout_dashboard_check:

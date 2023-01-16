@@ -60,7 +60,7 @@ export default {
           {
             icon: 'mdi-monitor-dashboard',
             title: this.$i18n.t('New_dashboard'),
-            route: 'dashboard-create',
+            route: 'dashboard-create', // TODO: check if user has permission
           },
           {
             icon: 'mdi-bell',

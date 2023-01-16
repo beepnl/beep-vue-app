@@ -66,7 +66,7 @@
                   inspectionMode && hivesEditable.indexOf(hive.id) === -1
                     ? '--not-editable'
                     : ''
-                }`
+                } ${notClickable ? '--not-clickable' : ''}`
               "
             >
               <v-sheet
@@ -143,6 +143,11 @@ export default {
       required: false,
     },
     largeSize: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
+    notClickable: {
       type: Boolean,
       default: false,
       required: false,
@@ -260,6 +265,9 @@ export default {
   }
   &.--not-editable {
     cursor: not-allowed;
+  }
+  &.--not-clickable {
+    cursor: auto;
   }
 }
 

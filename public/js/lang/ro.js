@@ -993,17 +993,18 @@ const translations = {
   pwa_addhome_button_label: "2. Tap 'Add to home'.",
 
   Colony: 'Colony | Colonies',
-  Dashboard: 'Dashboard',
+  Dashboard: 'Dashboard | Dashboards',
   Last_check: 'Last check-up',
   Note: 'Note',
   no_chart_data_hive: 'No chart data available for this hive',
 
   id: 'id',
-  code: 'code',
+  Code: 'Code',
   id_is_required: 'ID is verplicht',
   code_is_required: 'Code is verplicht',
   create_dashboard_question: 'No dashboard yet? Create one via the BEEP app',
   New_dashboard: 'New dashboard',
+  Edit_dashboard: 'Edit dashboard',
   Delete_dashboard: 'Delete dashboard',
   Logout_dashboard: 'Sign out',
   Logout_dashboard_check:

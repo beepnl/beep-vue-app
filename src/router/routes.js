@@ -170,6 +170,15 @@ export default [
     component: () => lazyLoadView(import('@views/dashboard.vue')),
   },
   {
+    meta: {
+      authRequired: true,
+      depth: 1,
+    },
+    path: '/dashboards/',
+    name: 'dashboards',
+    component: () => lazyLoadView(import('@views/dashboards.vue')),
+  },
+  {
     path: '/dashboard/sign-in',
     name: 'dashboard-sign-in',
     component: () => lazyLoadView(import('@views/dashboard-sign-in.vue')),

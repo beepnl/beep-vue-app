@@ -59,7 +59,7 @@
                 'text-h3 dashboard-title overline roboto-condensed' +
                   (!landscapeMode ? ' text-md-h2' : ' font-weight-light')
               "
-              v-text="$t('Dashboard')"
+              v-text="$tc('Dashboard', 1)"
             ></div>
           </div>
         </v-col>

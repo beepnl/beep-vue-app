@@ -7,6 +7,28 @@ const resource = createResource({ path: 'groups' })
 export const state = {
   ...resource.state,
   dashboardEdited: false,
+  dashboards: [
+    {
+      id: '1c987',
+      name: 'Overhorst',
+      description: 'Test dashboard',
+      speed: 60,
+      interval: 'day',
+      show_inspections: true,
+      show_all: false,
+      hive_ids: [151, 121, 122, 231, 273],
+    },
+    {
+      id: '32Gf6',
+      name: 'Dashboard',
+      description: 'Test dashboard 2 met default settings',
+      speed: 30,
+      interval: 'week',
+      show_inspections: false,
+      show_all: false,
+      hive_ids: [151, 121, 122, 231, 273, 250, 478, 476, 422, 158, 438, 437],
+    },
+  ],
   groups: [],
   groupEdited: false,
   invitations: [],
@@ -15,6 +37,9 @@ export const getters = {
   ...resource.getters,
   dashboardEdited: (state) => {
     return state.dashboardEdited
+  },
+  dashboards: (state) => {
+    return state.dashboards
   },
   groups: (state) => {
     return state.groups || []

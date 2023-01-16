@@ -46,7 +46,9 @@
                 v-if="
                   item.title &&
                     ((item.beepBaseRequired && userHasBeepBase) ||
-                      !item.beepBaseRequired)
+                      !item.beepBaseRequired) &&
+                    ((item.permissionRequired && userHasPermission) ||
+                      !item.permissionRequired)
                 "
                 :key="i"
                 exact
@@ -160,6 +162,13 @@ export default {
           beepBaseRequired: false,
         },
         {
+          icon: 'mdi-monitor-dashboard',
+          title: this.$i18n.tc('Dashboard', 2),
+          route: 'dashboards',
+          beepBaseRequired: false,
+          permissionRequired: true,
+        },
+        {
           icon: 'mdi-school',
           title: this.$i18n.t('research'),
           route: 'research',
@@ -219,6 +228,9 @@ export default {
       } else {
         return false
       }
+    },
+    userHasPermission() {
+      return true // TODO add user permission check
     },
     locale() {
       return this.$i18n.locale
