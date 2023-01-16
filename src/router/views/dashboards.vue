@@ -36,7 +36,7 @@
             v-if="!showDashboardPlaceholder"
             class="d-flex justify-start align-center"
           >
-            <div class="overline ">{{ $tc('Hivetag', 2) }}</div>
+            <div class="overline ">{{ $tc('Dashboard', 2) }}</div>
             <v-icon
               class="mdi mdi-information icon-info cursor-pointer  ml-2"
               dark
@@ -88,7 +88,7 @@
                           params: { id: dashboard.id },
                         }"
                       >
-                        <span v-text="dashboard.id"></span>
+                        <span class="overline" v-text="dashboard.id"></span>
                       </router-link>
                     </td>
                     <td>
@@ -102,7 +102,7 @@
                       ></ApiaryPreviewHiveSelector>
                     </td>
                     <td>
-                      <span v-text="dashboard.name"></span>
+                      <span class="overline" v-text="dashboard.name"></span>
                     </td>
                     <td>
                       <span v-text="dashboard.description"></span>
@@ -181,10 +181,10 @@ export default {
     },
     sortedDashboards() {
       const sortedDashboards = this.dashboards.slice().sort(function(a, b) {
-        if (a.id.toLowerCase() > b.id.toLowerCase()) {
+        if (a.name.toLowerCase() > b.name.toLowerCase()) {
           return 1
         }
-        if (b.id.toLowerCase() > a.id.toLowerCase()) {
+        if (b.name.toLowerCase() > a.name.toLowerCase()) {
           return -1
         }
         return 0
