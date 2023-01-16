@@ -8,13 +8,7 @@
           dark
           class="mr-4"
           color="red"
-          @click="
-            confirmDeleteDashboard(
-              dashboard,
-              // eslint-disable vue/comma-dangle
-              dashboard.name
-            )
-          "
+          @click="confirmDeleteDashboard(dashboard)"
           >mdi-delete</v-icon
         >
 
@@ -252,7 +246,7 @@ import Layout from '@layouts/back.vue'
 import MeasurementsDateSelection from '@components/measurements-date-selection.vue'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 import {
-  // deleteDashboard,
+  deleteDashboard,
   readApiariesAndGroupsIfNotPresent,
   // readDashboards,
 } from '@mixins/methodsMixin'
@@ -266,7 +260,7 @@ export default {
     MeasurementsDateSelection,
     yesNoRating,
   },
-  mixins: [momentFormat, readApiariesAndGroupsIfNotPresent],
+  mixins: [deleteDashboard, momentFormat, readApiariesAndGroupsIfNotPresent],
   data: function() {
     return {
       snackbar: {
@@ -420,7 +414,7 @@ export default {
         //         name: 'dashboards',
         //       })
         //     })
-        //   }, 50) // wait for API to update hive ids
+        //   }, 50) // wait for API to update dashboards
         // } catch (error) {
         //   if (error.response) {
         //     const msg = error.response.data.error
@@ -454,7 +448,7 @@ export default {
         //         name: 'dashboards',
         //       })
         //     })
-        //   }, 50) // wait for API to update hive ids
+        //   }, 50) // wait for API to update dashboards
         // } catch (error) {
         //   if (error.response) {
         //     const msg = error.response.data.error

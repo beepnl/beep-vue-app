@@ -223,6 +223,58 @@ export const convertComma = {
   },
 }
 
+export const deleteDashboard = {
+  methods: {
+    async deleteDashboard(dashboard) {
+      console.log('TODO delete dashboard', this.dashboard.id)
+      // try {
+      //   const response = await Api.deleteRequest('/dashboards/', dashboard.id)
+      //   if (!response) {
+      //     this.snackbar.text = this.$i18n.t('something_wrong')
+      //     this.snackbar.show = true
+      //   }
+      //   //   setTimeout(() => {
+      //   //     return this.readDashboards().then(() => {
+      //   //       this.$router.push({
+      //   //         name: 'dashboards',
+      //   //       })
+      //   //     })
+      //   //   }, 50) // wait for API to update dashboards
+      // } catch (error) {
+      //   if (error.response) {
+      //     console.log('Error: ', error.response)
+      //     const msg = error.response.data.message
+      //     this.snackbar.text = msg
+      //   } else {
+      //     console.log('Error: ', error)
+      //     this.snackbar.text = this.$i18n.t('something_wrong')
+      //   }
+      //   this.snackbar.show = true
+      // }
+    },
+    confirmDeleteDashboard(dashboard) {
+      this.$refs.confirm
+        .open(
+          this.$i18n.t('Delete_dashboard'),
+          this.$i18n.t('Delete_dashboard') +
+            ' (' +
+            dashboard.name +
+            (dashboard.description ? ' - ' + dashboard.description : '') +
+            ')?',
+          {
+            color: 'red',
+          }
+        )
+        .then((confirm) => {
+          this.deleteDashboard(dashboard)
+        })
+        .catch((reject) => {
+          return true
+        })
+    },
+  },
+}
+
 export const deleteHiveTag = {
   ...mapGetters('hives', ['hiveTagActionDescriptions']),
   methods: {
