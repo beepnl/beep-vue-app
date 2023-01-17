@@ -22,6 +22,7 @@ import { mapGetters } from 'vuex'
 import svgDivider from '@/src/components/svg/svg-divider.vue'
 import svgFieldset from '@/src/components/svg/svg-fieldset.vue'
 import svgHeader from '@components/svg/svg-header.vue'
+import { svgData } from '@mixins/svgMixin'
 
 export default {
   components: {
@@ -29,24 +30,13 @@ export default {
     svgFieldset,
     svgHeader,
   },
+  mixins: [svgData],
   props: {
     category: {
       type: Object,
       default: null,
       required: true,
     },
-  },
-  data() {
-    return {
-      columnsPerRow: 4,
-      xMargin: 13,
-      yStart: 89,
-      yMargin: 15,
-      pageHeight: 297,
-      pageWidth: 210,
-      maxRowHeight: 41,
-      headerHeight: 6.5,
-    }
   },
   computed: {
     ...mapGetters('inspections', [

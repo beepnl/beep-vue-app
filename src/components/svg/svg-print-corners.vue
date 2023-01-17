@@ -7,7 +7,7 @@
         :y1="yAB + 'mm'"
         :y2="yAB + 'mm'"
         stroke="black"
-        stroke-width="1"
+        :stroke-width="strokeWidthCorners"
       />
       <line
         :x1="xAC + 'mm'"
@@ -15,7 +15,7 @@
         :y1="yAB + 'mm'"
         :y2="yAB + cornerSize + 'mm'"
         stroke="black"
-        stroke-width="1"
+        :stroke-width="strokeWidthCorners"
       />
     </g>
 
@@ -26,7 +26,7 @@
         :y1="yAB + 'mm'"
         :y2="yAB + 'mm'"
         stroke="black"
-        stroke-width="1"
+        :stroke-width="strokeWidthCorners"
       />
       <line
         :x1="xBD + 'mm'"
@@ -34,7 +34,7 @@
         :y1="yAB + 'mm'"
         :y2="yAB + cornerSize + 'mm'"
         stroke="black"
-        stroke-width="1"
+        :stroke-width="strokeWidthCorners"
       />
     </g>
 
@@ -45,7 +45,7 @@
         :y1="yCD + 'mm'"
         :y2="yCD + 'mm'"
         stroke="black"
-        stroke-width="1"
+        :stroke-width="strokeWidthCorners"
       />
       <line
         :x1="xAC + 'mm'"
@@ -53,7 +53,7 @@
         :y1="yCD - cornerSize + 'mm'"
         :y2="yCD + 'mm'"
         stroke="black"
-        stroke-width="1"
+        :stroke-width="strokeWidthCorners"
       />
     </g>
 
@@ -64,7 +64,7 @@
         :y1="yCD + 'mm'"
         :y2="yCD + 'mm'"
         stroke="black"
-        stroke-width="1"
+        :stroke-width="strokeWidthCorners"
       />
       <line
         :x1="xBD + 'mm'"
@@ -72,27 +72,23 @@
         :y1="yCD - cornerSize + 'mm'"
         :y2="yCD + 'mm'"
         stroke="black"
-        stroke-width="1"
+        :stroke-width="strokeWidthCorners"
       />
     </g>
   </g>
 </template>
 
 <script>
+import { svgData } from '@mixins/svgMixin'
+
 export default {
+  mixins: [svgData],
   props: {
     pageNumber: {
       type: Number,
       required: true,
       default: 1,
     },
-  },
-  data() {
-    return {
-      pageHeight: 297,
-      pageWidth: 210,
-      cornerSize: 10,
-    }
   },
   computed: {
     height() {

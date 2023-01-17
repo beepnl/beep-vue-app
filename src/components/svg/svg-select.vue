@@ -32,7 +32,7 @@
         height="11mm"
         stroke="black"
         fill="transparent"
-        stroke-width="0.5"
+        :stroke-width="strokeWidth"
       />
       <text :x="x + 'mm'" :y="y + 17 + 'mm'" :style="svgTextSmall">
         {{ $t('Too_many_items_exp_1') }}
@@ -90,13 +90,13 @@
 
 <script>
 import svgCheckbox from '@/src/components/svg/svg-checkbox.vue'
-import { svgStyles } from '@mixins/svgMixin'
+import { svgData, svgStyles } from '@mixins/svgMixin'
 
 export default {
   components: {
     svgCheckbox,
   },
-  mixins: [svgStyles],
+  mixins: [svgData, svgStyles],
   props: {
     position: {
       type: Object,
@@ -127,13 +127,6 @@ export default {
       required: false,
       default: false,
     },
-  },
-  data() {
-    return {
-      checkBoxSpace: 5,
-      maxStars: 5,
-      maxNrOfItems: 10,
-    }
   },
   computed: {
     locale() {

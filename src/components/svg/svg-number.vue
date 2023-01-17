@@ -16,7 +16,7 @@
         height="8mm"
         stroke="black"
         fill="transparent"
-        stroke-width="0.5"
+        :stroke-width="strokeWidth"
       />
       <text
         v-if="append"
@@ -69,13 +69,13 @@
 
 <script>
 import svgNumberBox from '@/src/components/svg/svg-number-box.vue'
-import { svgStyles } from '@mixins/svgMixin'
+import { svgData, svgStyles } from '@mixins/svgMixin'
 
 export default {
   components: {
     svgNumberBox,
   },
-  mixins: [svgStyles],
+  mixins: [svgData, svgStyles],
   props: {
     position: {
       type: Object,
@@ -115,12 +115,6 @@ export default {
       required: false,
       default: null,
     },
-  },
-  data() {
-    return {
-      textFieldWidth: 25,
-      numberBoxWidth: 4.65,
-    }
   },
   computed: {
     fieldOffset() {

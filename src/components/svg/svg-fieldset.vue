@@ -76,6 +76,7 @@
 import { mapGetters } from 'vuex'
 import SvgInput from '@components/svg/svg-input.vue'
 import svgHeader from '@components/svg/svg-header.vue'
+import { svgData } from '@mixins/svgMixin'
 
 export default {
   name: 'SvgFieldset',
@@ -84,36 +85,13 @@ export default {
     svgHeader,
     SvgInput,
   },
+  mixins: [svgData],
   props: {
     category: {
       type: Object,
       default: null,
       required: true,
     },
-  },
-  data() {
-    return {
-      columnsPerRow: 4,
-      xMargin: 13,
-      yStart: 89,
-      yMargin: 15,
-      pageHeight: 297,
-      pageWidth: 210,
-      maxRowHeight: 40,
-      inputHeight: {
-        label: 4,
-        select_item: 5,
-        date: 32,
-        grade: 23,
-        number_info: 21,
-        number: 16.5,
-        boolean: 12,
-        text: 35,
-        text_line: 19,
-        smileys_3: 21,
-      },
-      maxNrOfItems: 10,
-    }
   },
   computed: {
     ...mapGetters('inspections', [

@@ -11,7 +11,7 @@
       :y1="y + 10 + 'mm'"
       :y2="y + 10 + 'mm'"
       stroke="black"
-      stroke-width="0.5"
+      :stroke-width="strokeWidth"
     />
 
     <text
@@ -31,7 +31,7 @@
       :height="height"
       stroke="black"
       fill="transparent"
-      stroke-width="0.5"
+      :stroke-width="strokeWidth"
     />
 
     <rect
@@ -42,16 +42,16 @@
       height="11mm"
       stroke="black"
       fill="transparent"
-      stroke-width="0.5"
+      :stroke-width="strokeWidth"
     />
   </g>
 </template>
 
 <script>
-import { svgStyles } from '@mixins/svgMixin'
+import { svgData, svgStyles } from '@mixins/svgMixin'
 
 export default {
-  mixins: [svgStyles],
+  mixins: [svgData, svgStyles],
   props: {
     position: {
       type: Object,

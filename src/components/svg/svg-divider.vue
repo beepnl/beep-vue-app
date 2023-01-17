@@ -5,12 +5,15 @@
     :y1="y + 'mm'"
     :y2="y + 'mm'"
     stroke="black"
-    stroke-width="0.5"
+    :stroke-width="strokeWidth"
   />
 </template>
 
 <script>
+import { svgData } from '@mixins/svgMixin'
+
 export default {
+  mixins: [svgData],
   props: {
     y: {
       type: Number,

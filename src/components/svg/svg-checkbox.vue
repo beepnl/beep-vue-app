@@ -2,16 +2,19 @@
   <rect
     :x="x"
     :y="y"
-    width="3.5mm"
-    height="3.5mm"
+    :width="checkBoxSize + 'mm'"
+    :height="checkBoxSize + 'mm'"
     stroke="black"
     fill="transparent"
-    stroke-width="0.5"
+    :stroke-width="strokeWidth"
   />
 </template>
 
 <script>
+import { svgData } from '@mixins/svgMixin'
+
 export default {
+  mixins: [svgData],
   props: {
     x: {
       type: String,

@@ -1,3 +1,41 @@
+export const svgData = {
+  data() {
+    return {
+      columnsPerRow: 4,
+      xMargin: 13,
+      yStart: 89,
+      yMargin: 15,
+      pageHeight: 297,
+      pageWidth: 210,
+      maxRowHeight: 40, // 41
+      headerHeight: 6.5,
+      numberBoxWidth: 4.65,
+      numberBoxHeight: 8,
+      spaceWidth: 3,
+      inputHeight: {
+        label: 4,
+        select_item: 5,
+        date: 32,
+        grade: 23,
+        number_info: 21,
+        number: 16.5,
+        boolean: 12,
+        text: 35,
+        text_line: 19,
+        smileys_3: 21,
+      },
+      maxNrOfItems: 10,
+      textFieldWidth: 25,
+      cornerSize: 10,
+      checkBoxSize: 3.5,
+      checkBoxSpace: 5,
+      maxStars: 5,
+      strokeWidth: 0.5,
+      strokeWidthCorners: 1,
+    }
+  },
+}
+
 export const svgStyles = {
   data() {
     return {

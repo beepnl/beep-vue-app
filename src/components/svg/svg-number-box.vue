@@ -2,16 +2,19 @@
   <rect
     :x="x"
     :y="y"
-    width="4.7mm"
-    height="8mm"
+    :width="numberBoxWidth + 'mm'"
+    :height="numberBoxHeight + 'mm'"
     stroke="black"
     fill="transparent"
-    stroke-width="0.5"
+    :stroke-width="strokeWidth"
   />
 </template>
 
 <script>
+import { svgData } from '@mixins/svgMixin'
+
 export default {
+  mixins: [svgData],
   props: {
     x: {
       type: String,

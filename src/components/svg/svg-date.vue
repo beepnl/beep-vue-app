@@ -54,13 +54,13 @@
 
 <script>
 import svgNumberBox from '@/src/components/svg/svg-number-box.vue'
-import { svgStyles } from '@mixins/svgMixin'
+import { svgData, svgStyles } from '@mixins/svgMixin'
 
 export default {
   components: {
     svgNumberBox,
   },
-  mixins: [svgStyles],
+  mixins: [svgData, svgStyles],
   props: {
     position: {
       type: Object,
@@ -80,12 +80,6 @@ export default {
       required: false,
       default: 2,
     },
-  },
-  data() {
-    return {
-      numberBoxWidth: 4.65,
-      spaceWidth: 3,
-    }
   },
   computed: {
     dateFormat() {
