@@ -87,9 +87,22 @@
                           name: 'dashboard',
                           params: { id: dashboard.id },
                         }"
+                        target="_blank"
                       >
+                        <v-icon size="18" class="mr-1" color="accent"
+                          >mdi-link</v-icon
+                        >
                         <span class="overline" v-text="dashboard.id"></span>
                       </router-link>
+
+                      <v-tooltip bottom max-width="60%">
+                        <template v-slot:activator="{ on }">
+                          <v-icon small class="ml-2" v-on="on" @click="copyUrl"
+                            >mdi-content-copy</v-icon
+                          >
+                        </template>
+                        <span v-text="$t('Copy_url')"> </span>
+                      </v-tooltip>
                     </td>
                     <td>
                       <ApiaryPreviewHiveSelector
@@ -203,6 +216,10 @@ export default {
     // })
   },
   methods: {
+    copyUrl(id) {
+      var copyText = 'https://app.beep.nl/dashboard/' + id // TODO get url via env settings
+      navigator.clipboard.writeText(copyText)
+    },
     getHives(dashboard) {
       var hivesArray = []
       dashboard.hive_ids.map((hiveId) => {

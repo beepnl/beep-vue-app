@@ -128,97 +128,143 @@
             </div>
           </v-col>
 
-          <v-col v-if="dashboard" cols="12" md="6" xl="4">
+          <v-col cols="12" md="6">
             <div class="overline mb-3">{{ '2. ' + $t('Settings') }}</div>
 
             <v-row>
-              <v-col cols="12" sm="8" xl="7">
-                <v-text-field
-                  v-model="dashboard.name"
-                  :label="$t('Title')"
-                  :placeholder="'Dashboard'"
-                  :hint="$t('Dashboard_title_exp')"
-                  persistent-hint
-                  counter="30"
-                  required
-                  @input="setDashboardEdited(true)"
+              <v-col cols="12" xl="9">
+                <v-row>
+                  <v-col cols="12" sm="8" xl="8">
+                    <v-text-field
+                      v-model="dashboard.name"
+                      :label="$t('Title')"
+                      :placeholder="'Dashboard'"
+                      :hint="$t('Dashboard_title_exp')"
+                      persistent-hint
+                      counter="30"
+                      required
+                      @input="validateText($event, 'name', 30)"
+                    >
+                    </v-text-field>
+                  </v-col>
+
+                  <v-col cols="12" sm="10">
+                    <v-text-field
+                      v-model="dashboard.description"
+                      :label="$t('Description')"
+                      :hint="$t('Dashboard_description_exp')"
+                      persistent-hint
+                      counter="60"
+                      required
+                      @input="validateText($event, 'description', 60)"
+                    >
+                    </v-text-field>
+                  </v-col>
+
+                  <v-col cols="12" sm="8" md="6">
+                    <v-select
+                      v-model="dashboard.speed"
+                      :items="speedOptions"
+                      :label="$t('Pace')"
+                      :placeholder="$t('Select') + '...'"
+                      :hint="$t('Dashboard_pace_exp')"
+                      persistent-hint
+                      class="mt-5"
+                      @input="setDashboardEdited(true)"
+                    ></v-select>
+                  </v-col>
+                </v-row>
+
+                <v-row>
+                  <v-col cols="12" sm="5">
+                    <v-select
+                      v-model="dashboard.interval"
+                      :items="intervalOptions"
+                      :label="$t('Interval')"
+                      :item-text="getTranslation"
+                      item-value="label"
+                      :placeholder="$t('Select') + '...'"
+                      :hint="$t('Dashboard_interval_exp')"
+                      persistent-hint
+                      class="my-3"
+                      @input="setDashboardEdited(true)"
+                    ></v-select>
+                  </v-col>
+                </v-row>
+
+                <MeasurementsDateSelection
+                  v-if="dashboard.interval === 'selection'"
+                  :interval="'selection'"
+                  :relative-interval="false"
+                  :show-as-column="8"
+                  :dates="dates"
+                  :date-range-text="dateRangeText"
+                  @save-dates="dates = $event"
+                />
+
+                <v-row
+                  :class="dashboard.interval !== 'selection' ? 'mt-5' : ''"
                 >
-                </v-text-field>
+                  <v-col cols="12" sm="8" md="6">
+                    <div
+                      class="beep-label"
+                      v-text="$t('Show_inspections')"
+                    ></div>
+                    <yesNoRating
+                      :object="dashboard"
+                      property="show_inspections"
+                    ></yesNoRating>
+                    <div
+                      class="beep-label"
+                      v-text="$t('Show_inspections_exp')"
+                    ></div>
+                  </v-col>
+                  <v-col cols="12" sm="8" md="6">
+                    <div class="beep-label" v-text="$t('Show_all_hives')"></div>
+                    <yesNoRating
+                      :object="dashboard"
+                      property="show_all"
+                    ></yesNoRating>
+                    <div
+                      class="beep-label"
+                      v-text="$t('Show_all_hives_exp')"
+                    ></div>
+                  </v-col>
+                </v-row>
               </v-col>
 
-              <v-col cols="12" sm="10" xl="9">
-                <v-text-field
-                  v-model="dashboard.description"
-                  :label="$t('Description')"
-                  :hint="$t('Dashboard_description_exp')"
-                  persistent-hint
-                  counter="60"
-                  required
-                  @input="setDashboardEdited(true)"
-                >
-                </v-text-field>
-              </v-col>
+              <v-col
+                v-if="!createMode"
+                cols="12"
+                xl="3"
+                :class="xlScreen ? 'mt-n11' : 'mt-6'"
+              >
+                <div class="overline mb-3">{{
+                  '3. ' + $t('Preview_share')
+                }}</div>
 
-              <v-col cols="12" sm="8" md="6">
-                <v-select
-                  v-model="dashboard.speed"
-                  :items="speedOptions"
-                  :label="$t('Pace')"
-                  :placeholder="$t('Select') + '...'"
-                  :hint="$t('Dashboard_pace_exp')"
-                  persistent-hint
-                  class="mt-5"
-                  @input="setDashboardEdited(true)"
-                ></v-select>
-              </v-col>
-            </v-row>
+                <v-row>
+                  <v-col cols="12">
+                    <div class="beep-label" v-text="$t('Code')"></div>
+                    <router-link
+                      :to="{
+                        name: 'dashboard',
+                        params: { id: dashboard.id },
+                      }"
+                      target="_blank"
+                    >
+                      <v-icon class="mr-2" color="accent">mdi-link</v-icon>
+                      <span class="overline" v-text="dashboard.id"></span>
+                    </router-link>
+                  </v-col>
 
-            <v-row>
-              <v-col cols="12" sm="5">
-                <v-select
-                  v-model="dashboard.interval"
-                  :items="intervalOptions"
-                  :label="$t('Interval')"
-                  :item-text="getTranslation"
-                  item-value="label"
-                  :placeholder="$t('Select') + '...'"
-                  :hint="$t('Dashboard_interval_exp')"
-                  persistent-hint
-                  class="my-3"
-                  @input="setDashboardEdited(true)"
-                ></v-select>
-              </v-col>
-            </v-row>
-
-            <MeasurementsDateSelection
-              v-if="dashboard.interval === 'selection'"
-              :interval="'selection'"
-              :relative-interval="false"
-              :show-as-column="8"
-              :dates="dates"
-              :date-range-text="dateRangeText"
-              @save-dates="dates = $event"
-            />
-
-            <v-row :class="dashboard.interval !== 'selection' ? 'mt-5' : ''">
-              <v-col cols="12" sm="8" md="5">
-                <div class="beep-label" v-text="$t('Show_inspections')"></div>
-                <yesNoRating
-                  :object="dashboard"
-                  property="show_inspections"
-                ></yesNoRating>
-                <div
-                  class="beep-label"
-                  v-text="$t('Show_inspections_exp')"
-                ></div>
-              </v-col>
-              <v-col cols="12" sm="8" md="5">
-                <div class="beep-label" v-text="$t('Show_all_hives')"></div>
-                <yesNoRating
-                  :object="dashboard"
-                  property="show_all"
-                ></yesNoRating>
-                <div class="beep-label" v-text="$t('Show_all_hives_exp')"></div>
+                  <v-col cols="12">
+                    <v-btn tile outlined color="black" @click="copyUrl">
+                      <v-icon left>mdi-content-copy</v-icon>
+                      {{ $t('Copy_url') }}
+                    </v-btn>
+                  </v-col>
+                </v-row>
               </v-col>
             </v-row>
           </v-col>
@@ -316,12 +362,10 @@ export default {
       }
     },
     getTitle() {
-      return (
-        (this.createMode
-          ? this.$i18n.t('New_dashboard')
-          : this.$i18n.t('Edit_dashboard')) +
-        (this.dashboard !== null ? ' - ' + this.dashboard.id : '')
-      )
+      return this.createMode
+        ? this.$i18n.t('New_dashboard')
+        : this.$i18n.t('Edit_dashboard') +
+            (this.dashboard !== null ? ' - ' + this.dashboard.id : '')
     },
     hiveSets() {
       return this.apiaries.concat(this.groups)
@@ -361,6 +405,9 @@ export default {
     },
     tabletLandscapeUp() {
       return this.$vuetify.breakpoint.mdAndUp
+    },
+    xlScreen() {
+      return this.$vuetify.breakpoint.xl
     },
   },
   created() {
@@ -460,6 +507,10 @@ export default {
         // }
       }
     },
+    copyUrl() {
+      var copyText = 'https://app.beep.nl/dashboard/' + this.dashboard.id // TODO get url via env settings
+      navigator.clipboard.writeText(copyText)
+    },
     getOwnedHives(hiveSet) {
       return hiveSet.hives.filter((hive) => hive.owner).map((hive) => hive.id)
     },
@@ -497,6 +548,13 @@ export default {
         prop: 'dashboardEdited', // TODO
         value: bool,
       })
+    },
+    validateText(value, property, maxLength) {
+      if (value !== null && value.length > maxLength + 1) {
+        value = value.substring(0, maxLength)
+        this.dashboard[property] = value
+      }
+      this.setDashboardEdited(true)
     },
   },
 }

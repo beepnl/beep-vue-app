@@ -943,6 +943,7 @@ const translations = {
   Logout_dashboard: 'Uitloggen',
   Logout_dashboard_check:
     'Weet je zeker dat je wilt uitloggen / van dashboard wilt veranderen?',
+
   weight_example_chart_1: 'Bijen verzamelen nectar',
   weight_example_chart_2: 'Bijen gebruiken hun voedselvoorrad',
   weight_example_chart_3: 'Een zwerm!',
@@ -967,6 +968,8 @@ const translations = {
   Show_all_hives: 'Toon details van alle bijenkasten',
   Show_all_hives_exp:
     'Toon details (locatie, laatste inspectie, metingen) van alle geselecteerde bijenkasten (JA), of alleen van bijenkasten met meetsysteem (NEE, aanbevolen optie)',
+  Preview_share: 'Preview & deel',
+  Copy_url: 'Kopieer url',
 }
 
 export default translations

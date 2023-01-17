@@ -1063,6 +1063,8 @@ const translations = {
   Show_all_hives: 'Show details for all hives',
   Show_all_hives_exp:
     'Show details (location, last inspection, measurement data) for all selected hives (YES), or only for hives with a device (NO, recommended option)',
+  Preview_share: 'Preview & share',
+  Copy_url: 'Copy url',
   outsideTemperature: 'Outside temperature',
 }
 
