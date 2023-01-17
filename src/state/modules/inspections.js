@@ -167,6 +167,14 @@ export const mutations = {
     state.svgRowHeight = 38
     state.svgY = 0
   },
+  resetSvgStates: function(state) {
+    state.svgItemCounter = 0
+    state.svgColumnCounter = 0
+    state.svgPageNr = 1
+    state.svgPositionSet = {}
+    state.svgRowHeight = 38
+    state.svgY = 0
+  },
 }
 export const actions = {
   ...resource.actions,

@@ -886,7 +886,7 @@ const translations = {
 
   Hivetag: 'Hive tag | Hive tags',
   Hivetag_exp_1:
-    '‘Hive tags’ zijn QR codes die je op een bijenkast kan plakken, en waarvoor je een actie kunt instellen die uitgevoerd wordt zodra je de hive tag scant. Met ‘actie’ worden handelingen in de BEEP app bedoeld, zoals bijvoorbeeld het aanmaken van een nieuwe inspectie voor de betreffende kast. Zodra de hive tag is ingesteld, hoef je in het vervolg alleen de QR code te scannen met je smartphone, en dan zal er automatisch een nieuwe inspectie worden aangemaakt. De hive tags kan je zelf printen, door ',
+    "'Hive tags' zijn QR codes die je op een bijenkast kan plakken, en waarvoor je een actie kunt instellen die uitgevoerd wordt zodra je de hive tag scant. Met 'actie' worden handelingen in de BEEP app bedoeld, zoals bijvoorbeeld het aanmaken van een nieuwe inspectie voor de betreffende kast. Zodra de hive tag is ingesteld, hoef je in het vervolg alleen de QR code te scannen met je smartphone, en dan zal er automatisch een nieuwe inspectie worden aangemaakt. De hive tags kan je zelf printen, door ",
   Hivetag_download_text: 'deze pdf te downloaden.',
   Hivetag_exp_2:
     ' Scan een hive tag om aan de slag te gaan, er zal automatisch een pagina openen waar je de actie in kunt stellen indien dat nog niet gebeurd is.',
@@ -933,6 +933,14 @@ const translations = {
   Negative_exp: 'Negatief getal (lager dan 0)',
   Too_many_items_exp_1: 'Er zijn teveel opties om te printen,',
   Too_many_items_exp_2: 'vul hier je eigen antwoord in',
+
+  /* offline inspection page */
+  Print: 'Print',
+  Offline_inspection: 'Offline inspectie',
+  Offline_inspection_exp:
+    "Print de inspectielijst (zie knop bovenaan), vul deze handmatig in. Maak van elke bladzijde een foto en upload deze foto's op een later moment via de 'Upload' knop",
+  Online_inspection: 'Online inspectie',
+  Select_inspection_mode: 'Selecteer inspectiemodus',
 }
 
 export default translations

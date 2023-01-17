@@ -909,6 +909,14 @@ const translations = {
   Negative_exp: 'Negative number (below 0)',
   Too_many_items_exp_1: 'There are too many options to',
   Too_many_items_exp_2: 'print, fill in your own answer',
+
+  /* offline inspection page */
+  Print: 'Print',
+  Offline_inspection: 'Offline inspection',
+  Offline_inspection_exp:
+    "Print the checklist (via button at the top right), fill it in manually. Take a picture of every page and upload these pictures later via the 'Upload' button.",
+  Online_inspection: 'Online inspection',
+  Select_inspection_mode: 'Select inspection mode',
 }
 
 export default translations
