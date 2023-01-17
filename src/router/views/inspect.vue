@@ -239,7 +239,11 @@
               class="beep-label mt-n3 mt-sm-0"
               v-text="$t('Select_inspection_mode')"
             ></div>
-            <Treeselect v-model="selectedMode" :options="selectModes" />
+            <Treeselect
+              v-model="selectedMode"
+              :options="selectModes"
+              @input="switchMode($event)"
+            />
             <p v-if="offlineMode" class="info-text mt-1">
               <em>{{ $t('Offline_inspection_exp') }}</em>
             </p>
@@ -739,6 +743,7 @@ export default {
     },
     forceInspectionDate() {
       return (
+        !this.offlineMode && // forced inspection date not relevant for offline mode
         (this.inspectionDate === 'Invalid date' ||
           this.inspectionDate === '') &&
         this.selectedChecklist !== null &&
@@ -1406,6 +1411,13 @@ export default {
       } else {
         this.getChecklistById(id)
       }
+    },
+    switchMode(mode) {
+      console.log('switch mode', mode)
+      // if (mode === 'Offline') {
+      //   this.svgReady = false
+      // }
+      // TODO toggle svgReady back to true when done rendering
     },
     toggleCategory(index) {
       this.$set(

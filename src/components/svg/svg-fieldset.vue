@@ -73,10 +73,10 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+// import { mapGetters } from 'vuex'
 import SvgInput from '@components/svg/svg-input.vue'
 import svgHeader from '@components/svg/svg-header.vue'
-import { svgData } from '@mixins/svgMixin'
+import { svgComputed, svgData } from '@mixins/svgMixin'
 
 export default {
   name: 'SvgFieldset',
@@ -85,7 +85,7 @@ export default {
     svgHeader,
     SvgInput,
   },
-  mixins: [svgData],
+  mixins: [svgComputed, svgData],
   props: {
     category: {
       type: Object,
@@ -94,25 +94,8 @@ export default {
     },
   },
   computed: {
-    ...mapGetters('inspections', [
-      'svgItemCounter',
-      'svgColumnCounter',
-      'svgPageNr',
-      'svgPositionSet',
-      'svgRowHeight',
-      'svgY',
-    ]),
-    columnWidth() {
-      return (this.pageWidth - 2 * this.xMargin) / 4
-    },
     label() {
       return '' // this.getHeader(this.category)
-    },
-    locale() {
-      return this.$i18n.locale
-    },
-    yMax() {
-      return this.pageHeight - this.yMargin - this.maxRowHeight
     },
   },
   methods: {
@@ -221,6 +204,7 @@ export default {
           // && columnCounter === this.columnsPerRow
         ) {
           // go to next page (for next row)
+          console.log(y, y / this.pageHeight, this.svgPageNr)
           this.$store.dispatch('inspections/nextPage')
         }
 

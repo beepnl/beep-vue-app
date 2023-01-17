@@ -18,11 +18,10 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import svgDivider from '@/src/components/svg/svg-divider.vue'
 import svgFieldset from '@/src/components/svg/svg-fieldset.vue'
 import svgHeader from '@components/svg/svg-header.vue'
-import { svgData } from '@mixins/svgMixin'
+import { svgComputed, svgData } from '@mixins/svgMixin'
 
 export default {
   components: {
@@ -30,31 +29,12 @@ export default {
     svgFieldset,
     svgHeader,
   },
-  mixins: [svgData],
+  mixins: [svgComputed, svgData],
   props: {
     category: {
       type: Object,
       default: null,
       required: true,
-    },
-  },
-  computed: {
-    ...mapGetters('inspections', [
-      'svgItemCounter',
-      'svgColumnCounter',
-      'svgPageNr',
-      'svgPositionSet',
-      'svgRowHeight',
-      'svgY',
-    ]),
-    columnWidth() {
-      return (this.pageWidth - 2 * this.xMargin) / 4
-    },
-    locale() {
-      return this.$i18n.locale
-    },
-    yMax() {
-      return this.pageHeight - this.yMargin - this.maxRowHeight
     },
   },
   methods: {

@@ -1,3 +1,34 @@
+import { mapGetters } from 'vuex'
+
+export const svgComputed = {
+  computed: {
+    ...mapGetters('inspections', [
+      'svgItemCounter',
+      'svgColumnCounter',
+      'svgPageNr',
+      'svgPositionSet',
+      'svgRowHeight',
+      'svgY',
+    ]),
+    absoluteY() {
+      return (
+        (this.svgPageNr === 1 ? this.yStart : this.yMargin) +
+        (this.svgPageNr - 1) * this.pageHeight +
+        this.svgY
+      )
+    },
+    columnWidth() {
+      return (this.pageWidth - 2 * this.xMargin) / 4
+    },
+    locale() {
+      return this.$i18n.locale
+    },
+    yMax() {
+      return this.pageHeight - this.yMargin - this.maxRowHeight
+    },
+  },
+}
+
 export const svgData = {
   data() {
     return {
