@@ -1,8 +1,7 @@
 <template>
   <g :page-y="position.pageY + 'mm'" :category-id="position.id">
-    <text :x="x + 'mm'" :y="y + 'mm'" :style="svgLabel">
-      {{ label }}
-    </text>
+    <svgLabel :x="x" :y="y" :label="label" />
+
     <g v-for="(item, index) in dateFormat" :key="item.title + index">
       <text :x="x + item.offset + 'mm'" :y="y + 4 + 'mm'" :style="svgTextSmall">
         {{ item.title }}
@@ -53,11 +52,13 @@
 </template>
 
 <script>
+import svgLabel from '@/src/components/svg/svg-label.vue'
 import svgNumberBox from '@/src/components/svg/svg-number-box.vue'
 import { svgData, svgStyles } from '@mixins/svgMixin'
 
 export default {
   components: {
+    svgLabel,
     svgNumberBox,
   },
   mixins: [svgData, svgStyles],

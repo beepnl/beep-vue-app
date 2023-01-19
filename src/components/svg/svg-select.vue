@@ -1,8 +1,7 @@
 <template>
   <g :page-y="position.pageY + 'mm'" :category-id="position.id">
-    <text :x="x + 'mm'" :y="y + 'mm'" :style="svgLabel">
-      {{ label }}
-    </text>
+    <svgLabel :x="x" :y="y" :label="label" />
+
     <g v-if="items && flattenedItems.length <= maxNrOfItems">
       <template v-for="(item, index) in flattenedItems">
         <svgCheckbox
@@ -90,11 +89,13 @@
 
 <script>
 import svgCheckbox from '@/src/components/svg/svg-checkbox.vue'
+import svgLabel from '@/src/components/svg/svg-label.vue'
 import { svgData, svgStyles } from '@mixins/svgMixin'
 
 export default {
   components: {
     svgCheckbox,
+    svgLabel,
   },
   mixins: [svgData, svgStyles],
   props: {
@@ -102,7 +103,6 @@ export default {
       type: Object,
       required: true,
     },
-
     label: {
       type: String,
       required: true,
@@ -179,9 +179,12 @@ export default {
       }, [])
     },
     itemText(item) {
-      return item.trans !== null && item.trans[this.locale] !== undefined
-        ? item.trans[this.locale]
-        : item.name
+      var text =
+        item.trans !== null && item.trans[this.locale] !== undefined
+          ? item.trans[this.locale]
+          : item.name
+      var maxLength = this.maxItemLength - item.depth * 4
+      return text.substring(0, maxLength)
     },
   },
 }

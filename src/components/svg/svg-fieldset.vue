@@ -128,6 +128,7 @@ export default {
         case item.input === 'label' ||
           item.input === 'date' ||
           item.input === 'grade' ||
+          item.input === 'image' ||
           item.input === 'text' ||
           item.input === 'smileys_3':
           return this.inputHeight[item.input]

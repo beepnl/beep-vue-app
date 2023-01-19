@@ -1,8 +1,7 @@
 <template>
   <g :page-y="position.pageY + 'mm'" :category-id="position.id">
-    <text :x="x + 'mm'" :y="y + 'mm'" :style="svgLabel">
-      {{ label }}
-    </text>
+    <svgLabel :x="x" :y="y" :label="label" />
+
     <g v-for="grade in 10" :key="'g' + grade">
       <text
         :x="x + (grade - 1) * 4.5 + (grade !== 10 ? 0.5 : -0.5) + 'mm'"
@@ -31,11 +30,13 @@
 
 <script>
 import svgCheckbox from '@/src/components/svg/svg-checkbox.vue'
+import svgLabel from '@/src/components/svg/svg-label.vue'
 import { svgStyles } from '@mixins/svgMixin'
 
 export default {
   components: {
     svgCheckbox,
+    svgLabel,
   },
   mixins: [svgStyles],
   props: {
@@ -43,7 +44,6 @@ export default {
       type: Object,
       required: true,
     },
-
     label: {
       type: String,
       required: true,

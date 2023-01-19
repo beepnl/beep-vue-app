@@ -1,8 +1,7 @@
 <template>
   <g :page-y="position.pageY + 'mm'" :category-id="position.id">
-    <text :x="x + 'mm'" :y="y + 'mm'" :style="svgLabel">
-      {{ label }}
-    </text>
+    <svgLabel :x="x" :y="y" :label="label" />
+
     <svgCheckbox :x="x + 'mm'" :y="y + 2 + 'mm'" />
     <text :x="x + 5 + 'mm'" :y="y + 5 + 'mm'" :style="svgInputText">
       {{ $t('yes') }}
@@ -17,11 +16,13 @@
 
 <script>
 import svgCheckbox from '@/src/components/svg/svg-checkbox.vue'
+import svgLabel from '@/src/components/svg/svg-label.vue'
 import { svgStyles } from '@mixins/svgMixin'
 
 export default {
   components: {
     svgCheckbox,
+    svgLabel,
   },
   mixins: [svgStyles],
   props: {

@@ -1,8 +1,6 @@
 <template>
   <g :page-y="position.pageY + 'mm'" :category-id="position.id">
-    <text :x="x + 'mm'" :y="y + 'mm'" :style="svgLabel">
-      {{ label }}
-    </text>
+    <svgLabel :x="x" :y="y" :label="label" />
 
     <text v-if="textOnly" :x="x + 'mm'" :y="y + 5 + 'mm'" :style="svgTextSmall">
       {{ extraText1 }}
@@ -61,9 +59,13 @@
 </template>
 
 <script>
+import svgLabel from '@/src/components/svg/svg-label.vue'
 import { svgData, svgStyles } from '@mixins/svgMixin'
 
 export default {
+  components: {
+    svgLabel,
+  },
   mixins: [svgData, svgStyles],
   props: {
     position: {
