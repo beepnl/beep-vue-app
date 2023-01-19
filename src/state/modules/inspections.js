@@ -20,6 +20,7 @@ export const state = {
   tempSavedInspection: null,
   svgItemCounter: 0,
   svgColumnCounter: 0,
+  svgMaxPageNr: null,
   svgPageNr: 1,
   svgPositionSet: {},
   svgRowHeight: 38,
@@ -71,6 +72,9 @@ export const getters = {
   },
   svgColumnCounter: (state) => {
     return state.svgColumnCounter
+  },
+  svgMaxPageNr: (state) => {
+    return state.svgMaxPageNr
   },
   svgPageNr: (state) => {
     return state.svgPageNr
@@ -166,6 +170,7 @@ export const mutations = {
     state.svgPositionSet = {}
     state.svgRowHeight = 38
     state.svgY = 0
+    state.svgMaxPageNr = null
   },
   resetSvgStates: function(state) {
     state.svgItemCounter = 0
@@ -174,6 +179,7 @@ export const mutations = {
     state.svgPositionSet = {}
     state.svgRowHeight = 38
     state.svgY = 0
+    state.svgMaxPageNr = null
   },
 }
 export const actions = {

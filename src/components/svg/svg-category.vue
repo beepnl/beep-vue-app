@@ -37,6 +37,23 @@ export default {
       required: true,
     },
   },
+  watch: {
+    svgPageNr() {
+      // if page nr is too high (i.e. if nextPage was called but no items are printed afterwards, such that the svg contains 1 empty page)
+      // set the max page nr as pagenr - 1 (in the svg the last page will then be omitted)
+      if (
+        (this.absoluteY - this.maxRowHeight) / this.pageHeight <
+        this.svgPageNr - 1
+      ) {
+        setTimeout(() => {
+          this.$store.commit('inspections/setData', {
+            prop: 'svgMaxPageNr',
+            value: this.svgPageNr - 1,
+          })
+        }, 50) // wait for svg to finish rendering
+      }
+    },
+  },
   methods: {
     getHeader(item) {
       return item.trans[this.locale] || item.name

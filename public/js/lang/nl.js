@@ -938,7 +938,7 @@ const translations = {
   Print: 'Print',
   Offline_inspection: 'Offline inspectie',
   Offline_inspection_exp:
-    "Print de inspectielijst (zie knop bovenaan), vul deze handmatig in. Maak van elke bladzijde een foto en upload deze foto's op een later moment via de 'Upload' knop",
+    "Print de inspectielijst (zie knop bovenaan), vul deze handmatig in. Upload foto's hiervan op een later moment via de 'Upload offline inspectie' pagina",
   Online_inspection: 'Online inspectie',
   Select_inspection_mode: 'Selecteer inspectiemodus',
 }

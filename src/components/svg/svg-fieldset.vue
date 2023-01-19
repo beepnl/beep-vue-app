@@ -204,7 +204,6 @@ export default {
           // && columnCounter === this.columnsPerRow
         ) {
           // go to next page (for next row)
-          console.log(y, y / this.pageHeight, this.svgPageNr)
           this.$store.dispatch('inspections/nextPage')
         }
 

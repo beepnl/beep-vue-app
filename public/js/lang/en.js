@@ -914,7 +914,7 @@ const translations = {
   Print: 'Print',
   Offline_inspection: 'Offline inspection',
   Offline_inspection_exp:
-    "Print the checklist (via button at the top right), fill it in manually. Take a picture of every page and upload these pictures later via the 'Upload' button.",
+    "Print the checklist (via button at the top right), fill it in manually. Upload pictures of your inspection later via the 'Upload offline inspection' page.",
   Online_inspection: 'Online inspection',
   Select_inspection_mode: 'Select inspection mode',
 }

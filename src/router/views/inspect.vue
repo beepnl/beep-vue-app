@@ -509,7 +509,7 @@
       </v-container>
     </v-form>
 
-    <v-row v-if="offlineMode && svgReady">
+    <v-row v-if="offlineMode && svgReady" class="ma-0">
       <!-- <div class="ma-6 no-print">
         <v-icon color="primary" @click="print">
           mdi-printer
@@ -523,12 +523,15 @@
         y="0mm"
         width="210mm"
         fill="#ffffff"
-        :height="svgPageNr * 297 + 'mm'"
+        :height="calcSvgHeight"
       >
-        <!-- <rect v-if="!printMode" width="100%" height="100%" fill="#ffedc5" /> -->
+        <rect v-if="!printMode" width="100%" height="100%" fill="#fff4dd" />
 
         <g v-for="pageNr in svgPageNr" :key="'page' + pageNr">
-          <svgPrintCorners :pageNumber="pageNr" />
+          <svgPrintCorners
+            v-if="svgMaxPageNr === null || pageNr <= svgMaxPageNr"
+            :pageNumber="pageNr"
+          />
         </g>
 
         <svgOverall :position="{ x: 13, y: 15 }" />
@@ -670,6 +673,7 @@ export default {
       'inspectionEdited',
       'bulkInspection',
       'tempSavedInspection',
+      'svgMaxPageNr',
       'svgPageNr',
       'svgY',
     ]),
@@ -677,6 +681,11 @@ export default {
     ...mapGetters('groups', ['groups']),
     apiaryId() {
       return this.$route.query.apiaryId || null
+    },
+    calcSvgHeight() {
+      var removePage =
+        this.svgMaxPageNr && this.svgPageNr > this.svgMaxPageNr ? 1 : 0
+      return (this.svgPageNr - removePage) * 297 + 'mm'
     },
     checklistLink() {
       var query = {}
@@ -1386,8 +1395,9 @@ export default {
     switchChecklist(id) {
       if (this.offlineMode) {
         this.svgReady = false
-        this.$store.commit('inspections/resetSvgStates')
       }
+      this.$store.commit('inspections/resetSvgStates')
+
       if (
         this.inspectionId !== null ||
         this.inspectionEdited ||
@@ -1413,7 +1423,6 @@ export default {
       }
     },
     switchMode(mode) {
-      console.log('switch mode', mode)
       // if (mode === 'Offline') {
       //   this.svgReady = false
       // }
