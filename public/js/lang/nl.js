@@ -935,12 +935,18 @@ const translations = {
   Too_many_items_exp_2: 'vul hier je eigen antwoord in',
   Image_placeholder_1: 'Foto kan later toegevoegd worden',
   Image_placeholder_2: 'via de BEEP app (optioneel)',
+  Too_long_list_present:
+    'Lijst van opties te lang om weer te geven in de offline kastkaart voor het item:',
+  Too_long_list_present_fix_1:
+    'Indien mogelijk, verminder het aantal keuzemogelijkheden tot maximaal',
+  Too_long_list_present_fix_2:
+    "via de 'Aanpassen kastkaart' knop. Of vul het juiste antwoord handmatig in.",
 
   /* offline inspection page */
   Print: 'Print',
   Offline_inspection: 'Offline inspectie',
   Offline_inspection_exp:
-    "Print de inspectielijst (zie knop bovenaan), vul deze handmatig in. Upload foto's hiervan op een later moment via de 'Upload offline inspectie' pagina",
+    "Print de inspectielijst (zie knop bovenaan), vul deze handmatig in. Upload foto's hiervan op een later moment via de 'Upload offline inspectie' pagina. De foto's worden vervolgens automatisch uitgelezen en opgeslagen als een normale inspectie.",
   Online_inspection: 'Online inspectie',
   Select_inspection_mode: 'Selecteer inspectiemodus',
 }

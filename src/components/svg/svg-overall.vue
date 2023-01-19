@@ -28,6 +28,7 @@
       :position="{ x: x + 92, y: y + 19 }"
       :width="'89mm'"
       :height="'22mm'"
+      :double-width="true"
       :label="$t('notes')"
     />
 
@@ -41,6 +42,7 @@
       :position="{ x: x + 92, y: y + 49 }"
       :width="'89mm'"
       :height="'22mm'"
+      :double-width="true"
       :label="$t('notes_for_next_inspection')"
     />
   </g>

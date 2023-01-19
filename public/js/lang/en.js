@@ -911,12 +911,17 @@ const translations = {
   Too_many_items_exp_2: 'print, fill in your own answer',
   Image_placeholder_1: 'This picture can be added later',
   Image_placeholder_2: 'via the BEEP app (optional)',
+  Too_long_list_present:
+    'List of options too long to display on the offline checklist for the item:',
+  Too_long_list_present_fix_1: 'If possible, decrease the number of options to',
+  Too_long_list_present_fix_2:
+    "or less, via the 'Edit checklist' button. Or fill in the correct answer manually.",
 
   /* offline inspection page */
   Print: 'Print',
   Offline_inspection: 'Offline inspection',
   Offline_inspection_exp:
-    "Print the checklist (via button at the top right), fill it in manually. Upload pictures of your inspection later via the 'Upload offline inspection' page.",
+    "Print the checklist (via button at the top right), fill it in manually. Upload pictures of your inspection later via the 'Upload offline inspection' page. The pictures will then be automatically parsed and saved as an inspection.",
   Online_inspection: 'Online inspection',
   Select_inspection_mode: 'Select inspection mode',
 }

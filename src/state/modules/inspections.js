@@ -25,6 +25,7 @@ export const state = {
   svgPositionSet: {},
   svgRowHeight: 38,
   svgY: 0,
+  svgWarnings: [],
 }
 export const getters = {
   ...resource.getters,
@@ -88,9 +89,15 @@ export const getters = {
   svgY: (state) => {
     return state.svgY
   },
+  svgWarnings: (state) => {
+    return state.svgWarnings
+  },
 }
 export const mutations = {
   ...resource.mutations,
+  addWarning: function(state, payload) {
+    state.svgWarnings.push(payload)
+  },
   setChecklist: function(state, payload) {
     state.checklist = payload
   },
@@ -171,6 +178,7 @@ export const mutations = {
     state.svgRowHeight = 38
     state.svgY = 0
     state.svgMaxPageNr = null
+    state.svgWarnings = []
   },
   resetSvgStates: function(state) {
     state.svgItemCounter = 0
@@ -180,6 +188,7 @@ export const mutations = {
     state.svgRowHeight = 38
     state.svgY = 0
     state.svgMaxPageNr = null
+    state.svgWarnings = []
   },
 }
 export const actions = {

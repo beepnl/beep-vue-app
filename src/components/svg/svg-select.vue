@@ -165,7 +165,25 @@ export default {
       return this.position ? this.position.y : null
     },
   },
+  created() {
+    this.checkListLengthWarning()
+  },
   methods: {
+    checkListLengthWarning() {
+      if (this.flattenedItems.length > this.maxNrOfItems) {
+        var warning =
+          this.$i18n.t('Too_long_list_present') +
+          ' "' +
+          this.label +
+          '". ' +
+          this.$i18n.t('Too_long_list_present_fix_1') +
+          ' ' +
+          this.maxNrOfItems +
+          ' ' +
+          this.$i18n.t('Too_long_list_present_fix_2')
+        this.$store.commit('inspections/addWarning', warning)
+      }
+    },
     flattenItems(data, depth = 0) {
       return data.reduce((r, { children, trans, name }) => {
         const obj = { trans, name, depth, hasChildren: children.length > 0 }

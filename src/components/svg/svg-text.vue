@@ -1,6 +1,10 @@
 <template>
   <g :page-y="position.pageY + 'mm'" :category-id="position.id">
-    <svgLabel :x="x" :y="y" :label="label" />
+    <svgLabel v-if="!doubleWidth" :x="x" :y="y" :label="label" />
+
+    <text v-if="doubleWidth" :x="x + 'mm'" :y="y + 'mm'" :style="svgLabel">
+      {{ label }}
+    </text>
 
     <text v-if="textOnly" :x="x + 'mm'" :y="y + 5 + 'mm'" :style="svgTextSmall">
       {{ extraText1 }}
@@ -75,6 +79,11 @@ export default {
     label: {
       type: String,
       required: true,
+    },
+    doubleWidth: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
     width: {
       type: String,

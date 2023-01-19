@@ -515,35 +515,54 @@
           mdi-printer
         </v-icon>
       </div> -->
+      <v-col v-if="svgWarnings.length > 0 && !printMode" cols="12">
+        <v-row :justify="'center'">
+          <v-col cols="12" class="svg-warnings no-print">
+            <v-alert
+              v-for="(warning, index) in svgWarnings"
+              :key="warning + index"
+              type="error"
+              text
+              prominent
+              dense
+              dismissible
+              color="red"
+            >
+              {{ warning }}
+            </v-alert>
+          </v-col>
+        </v-row>
+      </v-col>
 
-      <svg
-        :class="!printMode ? 'mx-auto my-2' : ''"
-        xmlns="http://www.w3.org/2000/svg"
-        x="0mm"
-        y="0mm"
-        width="210mm"
-        fill="#ffffff"
-        :height="calcSvgHeight"
-      >
-        <rect v-if="!printMode" width="100%" height="100%" fill="#fff4dd" />
+      <v-col cols="12" :class="!printMode ? 'd-flex justify-center' : ''">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          x="0mm"
+          y="0mm"
+          width="210mm"
+          fill="#ffffff"
+          :height="calcSvgHeight"
+        >
+          <rect v-if="!printMode" width="100%" height="100%" fill="#fff4dd" />
 
-        <g v-for="pageNr in svgPageNr" :key="'page' + pageNr">
-          <svgPrintCorners
-            v-if="svgMaxPageNr === null || pageNr <= svgMaxPageNr"
-            :pageNumber="pageNr"
-          />
-        </g>
+          <g v-for="pageNr in svgPageNr" :key="'page' + pageNr">
+            <svgPrintCorners
+              v-if="svgMaxPageNr === null || pageNr <= svgMaxPageNr"
+              :pageNumber="pageNr"
+            />
+          </g>
 
-        <svgOverall :position="{ x: 13, y: 15 }" />
+          <svgOverall :position="{ x: 13, y: 15 }" />
 
-        <g v-if="selectedChecklist" cols="12">
-          <template
-            v-for="(category, catIndex) in selectedChecklist.categories"
-          >
-            <svgCategory :key="catIndex" :category="category" />
-          </template>
-        </g>
-      </svg>
+          <g v-if="selectedChecklist" cols="12">
+            <template
+              v-for="(category, catIndex) in selectedChecklist.categories"
+            >
+              <svgCategory :key="catIndex" :category="category" />
+            </template>
+          </g>
+        </svg>
+      </v-col>
     </v-row>
 
     <v-container v-if="!ready || !svgReady">
@@ -676,6 +695,7 @@ export default {
       'svgMaxPageNr',
       'svgPageNr',
       'svgY',
+      'svgWarnings',
     ]),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
@@ -1424,6 +1444,7 @@ export default {
       }
     },
     switchMode(mode) {
+      this.$store.commit('inspections/resetSvgStates')
       // if (mode === 'Offline') {
       //   this.svgReady = false
       // }
@@ -1465,5 +1486,9 @@ export default {
   &.hive-inspect-card-title--border-bottom {
     border-bottom: 1px solid $color-grey-light;
   }
+}
+.svg-warnings {
+  max-width: 210mm;
+  padding: 0;
 }
 </style>
