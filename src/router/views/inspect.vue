@@ -738,7 +738,8 @@ export default {
           return this.momentISO8601(this.activeInspection.created_at)
         } else if (
           this.activeInspection &&
-          this.activeInspection.date !== null
+          this.activeInspection.date !== null &&
+          this.activeInspection.date !== 'Invalid date'
         ) {
           return this.momentISO8601(this.activeInspection.date)
         } else {
