@@ -4,6 +4,19 @@
       {{ label }}
     </text>
 
+    <text v-if="textOnly" :x="x + 'mm'" :y="y + 5 + 'mm'" :style="svgTextSmall">
+      {{ extraText1 }}
+    </text>
+
+    <text
+      v-if="textOnly"
+      :x="x + 'mm'"
+      :y="y + 8.5 + 'mm'"
+      :style="svgTextSmall"
+    >
+      {{ extraText2 }}
+    </text>
+
     <line
       v-if="inputTypeNotPresent"
       :x1="x + 'mm'"
@@ -24,7 +37,7 @@
     </text>
 
     <rect
-      v-else-if="!line"
+      v-else-if="!line && !textOnly"
       :x="x + 'mm'"
       :y="y + 2 + 'mm'"
       :width="width"
@@ -35,7 +48,7 @@
     />
 
     <rect
-      v-else-if="line"
+      v-else-if="line && !textOnly"
       :x="x + 'mm'"
       :y="y + 2 + 'mm'"
       :width="width"
@@ -80,6 +93,21 @@ export default {
       type: Boolean,
       required: false,
       default: false,
+    },
+    textOnly: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    extraText1: {
+      type: String,
+      required: false,
+      default: '',
+    },
+    extraText2: {
+      type: String,
+      required: false,
+      default: '',
     },
   },
   computed: {

@@ -909,6 +909,8 @@ const translations = {
   Negative_exp: 'Negative number (below 0)',
   Too_many_items_exp_1: 'There are too many options to',
   Too_many_items_exp_2: 'print, fill in your own answer',
+  Image_placeholder_1: 'This picture can be added later',
+  Image_placeholder_2: 'via the BEEP app (optional)',
 
   /* offline inspection page */
   Print: 'Print',

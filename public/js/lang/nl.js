@@ -933,6 +933,8 @@ const translations = {
   Negative_exp: 'Negatief getal (lager dan 0)',
   Too_many_items_exp_1: 'Er zijn teveel opties om te printen,',
   Too_many_items_exp_2: 'vul hier je eigen antwoord in',
+  Image_placeholder_1: 'Foto kan later toegevoegd worden',
+  Image_placeholder_2: 'via de BEEP app (optioneel)',
 
   /* offline inspection page */
   Print: 'Print',

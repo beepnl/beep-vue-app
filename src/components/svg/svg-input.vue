@@ -146,6 +146,15 @@
     />
 
     <svgText
+      v-if="item.input === 'image'"
+      :label="label"
+      :text-only="true"
+      :extra-text1="$t('Image_placeholder_1')"
+      :extra-text2="$t('Image_placeholder_2')"
+      :position="position"
+    />
+
+    <svgText
       v-if="
         item.input !== 'boolean' &&
           item.input !== 'boolean_yes_red' &&
@@ -173,7 +182,8 @@
           item.input !== 'list_item' &&
           item.input !== 'date' &&
           item.input !== 'select_hive' &&
-          item.input !== 'select_location'
+          item.input !== 'select_location' &&
+          item.input !== 'image'
       "
       :position="position"
       :label="label + ' (' + item.input + ')'"
