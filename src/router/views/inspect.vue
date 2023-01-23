@@ -240,7 +240,7 @@
               v-text="$t('Select_inspection_mode')"
             ></div>
             <Treeselect
-              v-model="selectedMode"
+              v-model="setSelectedMode"
               :options="selectModes"
               @input="switchMode($event)"
             />
@@ -517,8 +517,10 @@
 
     <div v-if="offlineMode && svgReady">
       <OfflineInspection
+        v-if="selectedChecklist"
         :selected-checklist="selectedChecklist"
         :print-mode="printMode"
+        @updated="svgReady = true"
       />
     </div>
 
@@ -557,10 +559,6 @@ import smileRating from '@components/input-fields/smile-rating.vue'
 import Treeselect from '@riophae/vue-treeselect'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 
-// import svgCategory from '@/src/components/svg/svg-category.vue'
-// import svgOverall from '@/src/components/svg/svg-overall.vue'
-// import svgPrintCorners from '@/src/components/svg/svg-print-corners.vue'
-
 export default {
   components: {
     ApiaryPreviewHiveSelector,
@@ -573,9 +571,6 @@ export default {
     smileRating,
     yesNoRating,
     Treeselect,
-    // svgCategory,
-    // svgOverall,
-    // svgPrintCorners,
   },
   mixins: [
     momentFormat,
@@ -645,21 +640,12 @@ export default {
       'inspectionEdited',
       'bulkInspection',
       'tempSavedInspection',
-      // 'svgMaxPageNr',
-      // 'svgPageNr',
-      // 'svgY',
-      // 'svgWarnings',
     ]),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
     apiaryId() {
       return this.$route.query.apiaryId || null
     },
-    // calcSvgHeight() {
-    //   var removePage =
-    //     this.svgMaxPageNr && this.svgPageNr > this.svgMaxPageNr ? 1 : 0
-    //   return (this.svgPageNr - removePage) * 297 + 'mm'
-    // },
     checklistLink() {
       var query = {}
       // pass current apiary or group id (even if user has switched from initially (pre)selected apiary or group)
@@ -761,6 +747,15 @@ export default {
         } else {
           this.activeInspection.reminder_date = null
         }
+      },
+    },
+    setSelectedMode: {
+      get() {
+        return this.selectedMode
+      },
+      set(value) {
+        localStorage.beepSelectedInspectionMode = value
+        this.selectedMode = value
       },
     },
     allHivesSelected: {
@@ -874,6 +869,10 @@ export default {
       })
     } else {
       this.getHiveSet()
+    }
+
+    if (localStorage.beepSelectedInspectionMode) {
+      this.setSelectedMode = localStorage.beepSelectedInspectionMode
     }
 
     if (

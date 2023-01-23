@@ -39,7 +39,7 @@
 
         <svgOverall :position="{ x: 13, y: 15 }" />
 
-        <g v-if="selectedChecklist">
+        <g>
           <template
             v-for="(category, catIndex) in selectedChecklist.categories"
           >
@@ -92,9 +92,9 @@ export default {
       return this.svgPageNr
     },
   },
-  // updated() {
-  //   this.$emit('updated')
-  // },
+  updated() {
+    this.$emit('updated')
+  },
 }
 </script>
 
