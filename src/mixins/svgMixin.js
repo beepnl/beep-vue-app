@@ -36,7 +36,7 @@ export const svgData = {
       xMargin: 13,
       yStart: 89,
       yMargin: 15,
-      pageHeight: 297,
+      pageHeight: 296.82,
       pageWidth: 210,
       maxRowHeight: 40, // 41
       headerHeight: 6.5,

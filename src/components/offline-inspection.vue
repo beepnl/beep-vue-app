@@ -19,7 +19,7 @@
       </v-row>
     </v-col>
 
-    <v-col cols="12" :class="!printMode ? 'd-flex justify-center' : ''">
+    <v-col cols="12" :class="!printMode ? 'd-flex justify-center' : 'pa-0'">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         x="0mm"

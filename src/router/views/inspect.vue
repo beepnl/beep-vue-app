@@ -515,14 +515,14 @@
       </div>
     </v-container>
 
-    <div v-if="offlineMode && svgReady">
+    <template v-if="offlineMode && svgReady">
       <OfflineInspection
         v-if="selectedChecklist"
         :selected-checklist="selectedChecklist"
         :print-mode="printMode"
         @updated="svgReady = true"
       />
-    </div>
+    </template>
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
