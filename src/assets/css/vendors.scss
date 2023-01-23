@@ -460,6 +460,10 @@
   }
 }
 
+.vue-treeselect--disabled {
+  cursor: not-allowed !important;
+}
+
 /* Vue Datetime */
 .vdatetime-input {
   color: $color-primary;

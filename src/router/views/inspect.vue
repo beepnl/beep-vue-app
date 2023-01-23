@@ -120,6 +120,7 @@
                   :placeholder="treeselectLabel"
                   :no-results-text="`${$t('no_results')}`"
                   :disable-branch-nodes="true"
+                  :disabled="offlineMode"
                   :default-expand-level="1"
                   @input="selectHiveSet($event)"
                 />
@@ -140,6 +141,7 @@
                         : $t('select_all_hives')
                     }`
                   "
+                  :disabled="offlineMode"
                   hide-details
                 ></v-switch>
               </v-col>
@@ -152,8 +154,8 @@
                 selectedHiveSet && editableHives && editableHives.length > 0
               "
               :hives="selectedHiveSet.hives"
-              :hives-selected="selectedHives"
-              :hives-editable="editableHives"
+              :hives-selected="offlineMode ? [] : selectedHives"
+              :hives-editable="offlineMode ? [] : editableHives"
               :inspection-mode="true"
               @select-hive="selectHive($event)"
             ></ApiaryPreviewHiveSelector>
@@ -183,6 +185,7 @@
                   v-model="inspectionDate"
                   type="datetime"
                   class="color-accent"
+                  :disabled="offlineMode"
                   :max-datetime="endOfToday"
                   :placeholder="
                     forceInspectionDate || inspectionDate === 'Invalid date'
