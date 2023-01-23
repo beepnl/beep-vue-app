@@ -509,67 +509,18 @@
       </v-container>
     </v-form>
 
-    <v-row v-if="offlineMode && svgReady" class="ma-0">
-      <!-- <div class="ma-6 no-print">
-        <v-icon color="primary" @click="print">
-          mdi-printer
-        </v-icon>
-      </div> -->
-      <v-col v-if="svgWarnings.length > 0 && !printMode" cols="12">
-        <v-row :justify="'center'">
-          <v-col cols="12" class="svg-warnings no-print">
-            <v-alert
-              v-for="(warning, index) in svgWarnings"
-              :key="warning + index"
-              type="error"
-              text
-              prominent
-              dense
-              dismissible
-              color="red"
-            >
-              {{ warning }}
-            </v-alert>
-          </v-col>
-        </v-row>
-      </v-col>
-
-      <v-col cols="12" :class="!printMode ? 'd-flex justify-center' : ''">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          x="0mm"
-          y="0mm"
-          width="210mm"
-          fill="#ffffff"
-          :height="calcSvgHeight"
-        >
-          <rect v-if="!printMode" width="100%" height="100%" fill="#fff4dd" />
-
-          <g v-for="pageNr in svgPageNr" :key="'page' + pageNr">
-            <svgPrintCorners
-              v-if="svgMaxPageNr === null || pageNr <= svgMaxPageNr"
-              :pageNumber="pageNr"
-            />
-          </g>
-
-          <svgOverall :position="{ x: 13, y: 15 }" />
-
-          <g v-if="selectedChecklist" cols="12">
-            <template
-              v-for="(category, catIndex) in selectedChecklist.categories"
-            >
-              <svgCategory :key="catIndex" :category="category" />
-            </template>
-          </g>
-        </svg>
-      </v-col>
-    </v-row>
-
     <v-container v-if="!ready || !svgReady">
       <div class="loading">
         <v-progress-circular size="50" color="primary" indeterminate />
       </div>
     </v-container>
+
+    <div v-if="offlineMode && svgReady">
+      <OfflineInspection
+        :selected-checklist="selectedChecklist"
+        :print-mode="printMode"
+      />
+    </div>
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
@@ -600,14 +551,15 @@ import {
   momentFullDateTime,
   momentISO8601,
 } from '@mixins/momentMixin'
+import OfflineInspection from '@components/offline-inspection.vue'
 import { SlideYUpTransition } from 'vue2-transitions'
 import smileRating from '@components/input-fields/smile-rating.vue'
 import Treeselect from '@riophae/vue-treeselect'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 
-import svgCategory from '@/src/components/svg/svg-category.vue'
-import svgOverall from '@/src/components/svg/svg-overall.vue'
-import svgPrintCorners from '@/src/components/svg/svg-print-corners.vue'
+// import svgCategory from '@/src/components/svg/svg-category.vue'
+// import svgOverall from '@/src/components/svg/svg-overall.vue'
+// import svgPrintCorners from '@/src/components/svg/svg-print-corners.vue'
 
 export default {
   components: {
@@ -616,13 +568,14 @@ export default {
     Confirm,
     Datetime,
     Layout,
+    OfflineInspection,
     SlideYUpTransition,
     smileRating,
     yesNoRating,
     Treeselect,
-    svgCategory,
-    svgOverall,
-    svgPrintCorners,
+    // svgCategory,
+    // svgOverall,
+    // svgPrintCorners,
   },
   mixins: [
     momentFormat,
@@ -692,21 +645,21 @@ export default {
       'inspectionEdited',
       'bulkInspection',
       'tempSavedInspection',
-      'svgMaxPageNr',
-      'svgPageNr',
-      'svgY',
-      'svgWarnings',
+      // 'svgMaxPageNr',
+      // 'svgPageNr',
+      // 'svgY',
+      // 'svgWarnings',
     ]),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
     apiaryId() {
       return this.$route.query.apiaryId || null
     },
-    calcSvgHeight() {
-      var removePage =
-        this.svgMaxPageNr && this.svgPageNr > this.svgMaxPageNr ? 1 : 0
-      return (this.svgPageNr - removePage) * 297 + 'mm'
-    },
+    // calcSvgHeight() {
+    //   var removePage =
+    //     this.svgMaxPageNr && this.svgPageNr > this.svgMaxPageNr ? 1 : 0
+    //   return (this.svgPageNr - removePage) * 297 + 'mm'
+    // },
     checklistLink() {
       var query = {}
       // pass current apiary or group id (even if user has switched from initially (pre)selected apiary or group)
@@ -891,16 +844,6 @@ export default {
         })
       }
       return treeselectArray
-    },
-    testCategory1() {
-      return this.selectedChecklist
-        ? this.selectedChecklist.categories[3]
-        : null
-    },
-    testCategory2() {
-      return this.selectedChecklist
-        ? this.selectedChecklist.categories[1]
-        : null
     },
     treeselectLabel() {
       var label = ''
@@ -1448,7 +1391,6 @@ export default {
       // if (mode === 'Offline') {
       //   this.svgReady = false
       // }
-      // TODO toggle svgReady back to true when done rendering
     },
     toggleCategory(index) {
       this.$set(
@@ -1486,9 +1428,5 @@ export default {
   &.hive-inspect-card-title--border-bottom {
     border-bottom: 1px solid $color-grey-light;
   }
-}
-.svg-warnings {
-  max-width: 210mm;
-  padding: 0;
 }
 </style>
