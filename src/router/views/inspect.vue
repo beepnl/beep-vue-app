@@ -1365,9 +1365,10 @@ export default {
       this.$store.commit('inspections/resetSvgStates')
 
       if (
-        this.inspectionId !== null ||
-        this.inspectionEdited ||
-        this.tempSavedInspection
+        !this.offlineMode &&
+        (this.inspectionId !== null ||
+          this.inspectionEdited ||
+          this.tempSavedInspection)
       ) {
         this.$refs.confirm
           .open(
