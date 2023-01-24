@@ -646,6 +646,25 @@ export default {
     ]),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
+    allHivesSelected: {
+      get() {
+        return this.selectedHives.length === this.editableHives.length
+      },
+      set(value) {
+        if (value === false) {
+          this.setBulkInspection(false)
+          this.selectedHives = []
+        } else {
+          this.setBulkInspection(true)
+          this.selectedHives = []
+          this.selectedHiveSet.hives.map((hive) => {
+            if (hive.editable || hive.owner) {
+              this.selectedHives.push(hive.id)
+            }
+          })
+        }
+      },
+    },
     apiaryId() {
       return this.$route.query.apiaryId || null
     },
@@ -675,6 +694,16 @@ export default {
         .endOf('day')
         .format()
     },
+    forceInspectionDate() {
+      return (
+        !this.offlineMode && // forced inspection date not relevant for offline mode
+        (this.inspectionDate === 'Invalid date' ||
+          this.inspectionDate === '') &&
+        this.selectedChecklist !== null &&
+        this.selectedChecklist.researches !== undefined &&
+        this.selectedChecklist.researches.join().includes('B-GOOD')
+      )
+    },
     groupId() {
       return this.$route.query.groupId || null
     },
@@ -684,12 +713,6 @@ export default {
         parseInt(this.$route.params.id) ||
         null
       )
-    },
-    inspectionId() {
-      return parseInt(this.$route.params.inspection) || null
-    },
-    preSelectedChecklistId() {
-      return parseInt(this.$route.query.checklistId) || null
     },
     inspectionDate: {
       get() {
@@ -713,15 +736,16 @@ export default {
         this.setActiveInspectionDate(date)
       },
     },
-    forceInspectionDate() {
-      return (
-        !this.offlineMode && // forced inspection date not relevant for offline mode
-        (this.inspectionDate === 'Invalid date' ||
-          this.inspectionDate === '') &&
-        this.selectedChecklist !== null &&
-        this.selectedChecklist.researches !== undefined &&
-        this.selectedChecklist.researches.join().includes('B-GOOD')
-      )
+    inspectionId() {
+      return parseInt(this.$route.params.inspection) || null
+    },
+    lastSelectedChecklistId: {
+      get() {
+        return localStorage.beepLastSelectedChecklistId
+      },
+      set(value) {
+        localStorage.beepLastSelectedChecklistId = value
+      },
     },
     locale() {
       return this.$i18n.locale
@@ -731,6 +755,9 @@ export default {
     },
     offlineMode() {
       return this.selectedMode === 'Offline'
+    },
+    preSelectedChecklistId() {
+      return parseInt(this.$route.query.checklistId) || null
     },
     reminderDate: {
       get() {
@@ -759,33 +786,6 @@ export default {
       set(value) {
         localStorage.beepSelectedInspectionMode = value
         this.selectedMode = value
-      },
-    },
-    allHivesSelected: {
-      get() {
-        return this.selectedHives.length === this.editableHives.length
-      },
-      set(value) {
-        if (value === false) {
-          this.setBulkInspection(false)
-          this.selectedHives = []
-        } else {
-          this.setBulkInspection(true)
-          this.selectedHives = []
-          this.selectedHiveSet.hives.map((hive) => {
-            if (hive.editable || hive.owner) {
-              this.selectedHives.push(hive.id)
-            }
-          })
-        }
-      },
-    },
-    lastSelectedChecklistId: {
-      get() {
-        return localStorage.beepLastSelectedChecklistId
-      },
-      set(value) {
-        localStorage.beepLastSelectedChecklistId = value
       },
     },
     sortedHiveSets() {
@@ -1163,12 +1163,6 @@ export default {
     clearDiaryFilters() {
       this.$store.commit('inspections/clearFilters')
     },
-    editChecklist(id) {
-      if (this.selectedHiveSetId)
-        this.activeInspection.hive_ids = this.selectedHives
-      this.setTempSavedInspection(this.activeInspection)
-      this.$router.push(this.checklistLink)
-    },
     confirmSaveInspection() {
       if (this.bulkInspection) {
         this.$refs.confirm
@@ -1188,6 +1182,12 @@ export default {
       } else {
         this.saveInspection()
       }
+    },
+    editChecklist(id) {
+      if (this.selectedHiveSetId)
+        this.activeInspection.hive_ids = this.selectedHives
+      this.setTempSavedInspection(this.activeInspection)
+      this.$router.push(this.checklistLink)
     },
     getHiveSet() {
       if (this.apiaries.length === 0 && this.groups.length === 0) {
