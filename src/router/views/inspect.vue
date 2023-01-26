@@ -286,7 +286,7 @@
         </v-row>
 
         <!-- Inspection items from checklist -->
-        <div v-if="!offlineMode">
+        <div v-if="!(offlineMode || svgLoading)">
           <v-card
             v-for="(mainCategory, index) in selectedChecklist.categories"
             :key="index"
@@ -512,7 +512,7 @@
       </v-container>
     </v-form>
 
-    <v-container v-if="!ready || !svgReady">
+    <v-container v-if="!ready || !svgReady || svgLoading">
       <div class="loading">
         <v-progress-circular size="50" color="primary" indeterminate />
       </div>
@@ -523,7 +523,7 @@
         v-if="selectedChecklist"
         :selected-checklist="selectedChecklist"
         :print-mode="printMode"
-        @updated="svgReady = true"
+        @updated="svgLoading = false"
       />
     </template>
 
@@ -624,6 +624,7 @@ export default {
       valid: false,
       ready: false,
       svgReady: false,
+      svgLoading: false,
       selectedHiveSetId: null,
       selectedHiveSet: null,
       selectedHives: [],
@@ -1391,9 +1392,9 @@ export default {
     },
     switchMode(mode) {
       this.$store.commit('inspections/resetSvgStates')
-      // if (mode === 'Offline') {
-      //   this.svgReady = false
-      // }
+      if (mode === 'Offline') {
+        this.svgLoading = true
+      }
     },
     toggleCategory(index) {
       this.$set(
