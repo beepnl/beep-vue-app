@@ -220,19 +220,14 @@
                         class="mr-2"
                         :progress="
                           calculateProgress(
-                            SENSOR_MIN[sensorData.name],
-                            SENSOR_MAX[sensorData.name],
-                            // eslint-disable-next-line vue/comma-dangle
+                            sensorData.name,
+                            // eslint-disable vue/comma-dangle
                             sensorData.value
                           )
                         "
                         :legend-value="sensorData.value"
                         :color="
-                          sensorData.value < SENSOR_LOW[sensorData.name]
-                            ? '#ffcc66'
-                            : sensorData.value > SENSOR_HIGH[sensorData.name]
-                            ? '#f00'
-                            : '#417505'
+                          getProgressColor(sensorData.name, sensorData.value)
                         "
                         :size="mobile ? 75 : 100"
                         empty-color="#eee"
@@ -1237,7 +1232,11 @@ export default {
 
       return alertsForCharts
     },
-    calculateProgress(min, max, value) {
+    calculateProgress(name, value) {
+      // get different target values for bv sensor if device is not beep
+      var sensorName = this.getSensorName(name)
+      var min = this.SENSOR_MIN[sensorName]
+      var max = this.SENSOR_MAX[sensorName]
       if (value > max) {
         return 100
       } else {
@@ -1446,6 +1445,13 @@ export default {
       }
       this.loadingData = false
     },
+    getProgressColor(name, value) {
+      // get different target values for bv sensor if device is not beep
+      var sensorName = this.getSensorName(name)
+      var low = this.SENSOR_LOW[sensorName]
+      var high = this.SENSOR_HIGH[sensorName]
+      return value < low ? '#ffcc66' : value > high ? '#f00' : '#417505'
+    },
     getSensorMeasurement(abbr) {
       var smFilter = this.sensorMeasurementsList.filter(
         (measurementType) => measurementType.abbreviation === abbr
@@ -1457,6 +1463,13 @@ export default {
         (measurementType) => measurementType.id === id
       )
       return smFilter.length > 0 ? smFilter[0].abbreviation : null
+    },
+    getSensorName(name) {
+      return name === 'bv' &&
+        this.selectedDevice &&
+        this.selectedDevice.type !== 'beep'
+        ? 'bv_notbeep'
+        : name
     },
     alertInPeriod(alert) {
       const created = this.momentFormatUtcToLocal(
