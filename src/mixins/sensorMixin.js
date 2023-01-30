@@ -245,7 +245,7 @@ export const sensorMixin = {
         ozone: 'ozone',
       },
       SENSOR_MIN: {
-        t: -10,
+        t: 0,
         t_i: 0,
         t_0: 0,
         t_1: 0,
@@ -278,7 +278,7 @@ export const sensorMixin = {
         lon: 0,
       },
       SENSOR_LOW: {
-        t: 0,
+        t: 33,
         t_i: 33,
         t_0: 33,
         t_1: 33,
@@ -311,7 +311,7 @@ export const sensorMixin = {
         lon: 0,
       },
       SENSOR_HIGH: {
-        t: 30,
+        t: 37,
         t_i: 37,
         t_0: 37,
         t_1: 37,
