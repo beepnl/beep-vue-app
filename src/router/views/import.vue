@@ -423,6 +423,8 @@
               :headers="logDataHeaders"
               :items="selectedFlashLog.log"
               :item-class="rowClassLogData"
+              :sort-by="'missing_data'"
+              :sort-desc="true"
               :no-data-text="$t('no_data')"
               :no-results-text="$t('no_results')"
               multi-sort

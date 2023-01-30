@@ -317,6 +317,7 @@ export default {
         database: ['t_0', 't_i', 't_1', 'weight_kg'],
       },
       currentMinutes: 1440,
+      dateTimeFormat: 'YYYY-MM-DD HH:mm:ss',
     }
   },
   computed: {
@@ -589,7 +590,7 @@ export default {
       return smFilter.length > 0 ? smFilter[0] : null
     },
     getMoment(date) {
-      return this.$moment.utc(date)
+      return this.$moment.utc(date).format(this.dateTimeFormat)
     },
     setPeriodDataMinutes(newMinutes) {
       // calculate new block data index
