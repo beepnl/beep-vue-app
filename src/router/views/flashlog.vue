@@ -206,15 +206,15 @@
               <div :key="'dataSet' + index" class="chart-wrapper pt-0 pb-5">
                 <div
                   class="overline mt-0 mb-2 text-center"
-                  v-text="dataSet"
+                  v-text="dataSet + nrOfMeasurementsText(dataSet)"
                 ></div>
                 <MeasurementsChartLine
                   v-if="measurements[dataSet] !== undefined"
                   :chart-data="chartjsDataSeries(dataSet)"
                   :interval="'week'"
                   location="flashlog"
-                  :start-time="getMoment(blockData.start_date)"
-                  :end-time="getMoment(blockData.end_date)"
+                  :start-time="getString(blockData.start_date)"
+                  :end-time="getString(blockData.end_date)"
                   :chart-id="'chart-' + dataSet"
                   size="large"
                   @legend-clicked="
@@ -286,7 +286,7 @@ import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
 import MeasurementsChartLine from '@components/measurements-chart-line.vue'
 import { mapGetters } from 'vuex'
-import { momentFormat } from '@mixins/momentMixin'
+import { momentFormatUtcToLocal } from '@mixins/momentMixin'
 import { readTaxonomy } from '@mixins/methodsMixin'
 import { sensorMixin } from '@mixins/sensorMixin'
 
@@ -296,7 +296,7 @@ export default {
     Layout,
     MeasurementsChartLine,
   },
-  mixins: [momentFormat, readTaxonomy, sensorMixin],
+  mixins: [momentFormatUtcToLocal, readTaxonomy, sensorMixin],
   data() {
     return {
       loading: true,
@@ -568,6 +568,9 @@ export default {
           return true
         })
     },
+    countMeasurements(dataRecords) {
+      return dataRecords.reduce((acc, d) => acc + Object.keys(d).length, 0)
+    },
     formatFlashlogData(blockData) {
       this.measurements = {}
 
@@ -589,8 +592,17 @@ export default {
       )
       return smFilter.length > 0 ? smFilter[0] : null
     },
-    getMoment(date) {
-      return this.$moment.utc(date).format(this.dateTimeFormat)
+    getString(date) {
+      return this.momentFormatUtcToLocal(date, this.dateTimeFormat)
+    },
+    nrOfMeasurementsText(dataSet) {
+      return this.blockData !== null
+        ? ' (' +
+          this.$i18n.t('nr_of_measurements') +
+          ': ' +
+          this.countMeasurements(this.blockData[dataSet]) + // or just nr of records? this.blockData[dataSet].length
+            ')'
+        : ''
     },
     setPeriodDataMinutes(newMinutes) {
       // calculate new block data index

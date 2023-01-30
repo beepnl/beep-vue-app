@@ -847,6 +847,7 @@ const translations = {
     'Export bestand wordt opgeslagen in je Downloads map - een moment geduld a.u.b.',
   no_data_deleted_because_no_matches_found:
     'Geen data verwijderd omdat er geen matches gevonden zijn',
+  nr_of_measurements: 'aantal metingen',
 
   Now: 'Nu',
   input_only_possible_when_date_present:
