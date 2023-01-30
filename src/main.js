@@ -23,6 +23,7 @@ import vueCountryRegionSelect from 'vue-country-region-select'
 import './plugins/element.js'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import VueEllipseProgress from 'vue-ellipse-progress'
+import { ResizeObserver as Polyfill } from '@juggle/resize-observer'
 
 import App from './app.vue'
 
@@ -60,6 +61,10 @@ const i18n = new VueI18n({
     // add 4-letter code like: 'en-US': enUS, (can only be imported without dash, as enUS)
   },
 })
+
+if (typeof window !== 'undefined') {
+  window.ResizeObserver = window.ResizeObserver || Polyfill
+}
 
 new Vue({
   router,
