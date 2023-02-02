@@ -169,9 +169,13 @@
                       ></span>
                     </v-col>
                     <v-col class="research-item-col" cols="7" sm="8">
-                      <strong>{{
-                        research.consent ? $t('consent_yes') : $t('consent_no')
-                      }}</strong>
+                      <strong>
+                        <v-icon>{{
+                          research.consent
+                            ? 'mdi-check green--text'
+                            : 'mdi-close red--text'
+                        }}</v-icon>
+                      </strong>
                     </v-col>
                   </v-row>
                   <v-row>
