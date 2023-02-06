@@ -130,6 +130,17 @@
       </div>
       <!-- <span class="ml-1 mt-6">{{ measurementUnit }}</span> -->
     </v-col>
+
+    <v-col v-if="notFinalFormula" cols="12" class="pt-0 mt-n4">
+      <v-btn-toggle v-model="formula.logical" rounded dense>
+        <v-btn value="and">
+          {{ $t('and') }}
+        </v-btn>
+        <v-btn value="or">
+          {{ $t('or') }}
+        </v-btn>
+      </v-btn-toggle>
+    </v-col>
   </v-row>
 </template>
 
@@ -156,9 +167,9 @@ export default {
       default: null,
       required: false,
     },
-    multipleFormulas: {
-      type: Boolean,
-      default: false,
+    nrOfFormulas: {
+      type: Number,
+      default: null,
       required: false,
     },
   },
@@ -224,6 +235,12 @@ export default {
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile
+    },
+    multipleFormulas() {
+      return this.nrOfFormulas > 1
+    },
+    notFinalFormula() {
+      return this.index !== this.nrOfFormulas - 1
     },
     requiredRule: function() {
       return [

@@ -65,22 +65,32 @@
             {{ $t('alertrule_main_sentence_1') + ': ' }}
             <br />
             <template v-for="(formula, j) in activeAlertRule.formulas">
-              <v-btn
-                :key="'l' + j"
-                class="mr-2 mb-2 cursor-default"
-                fab
-                small
-                light
-                color="accent"
-              >
-                <v-icon dark>
-                  {{ getLetter(j) }}
-                </v-icon>
-              </v-btn>
-              <span :key="'sp' + j">
-                {{ alertRuleFormulaSentence(formula) }}
-              </span>
-              <br :key="'br' + j" />
+              <div :key="'f_' + j">
+                <v-btn
+                  class="mr-2 mb-2 cursor-default"
+                  fab
+                  small
+                  light
+                  color="accent"
+                >
+                  <v-icon dark>
+                    {{ getLetter(j) }}
+                  </v-icon>
+                </v-btn>
+                <span>
+                  {{ alertRuleFormulaSentence(formula) }}
+                </span>
+                <br />
+                <div
+                  v-if="formula.logical && notFinalFormula(j)"
+                  class="ml-3 mb-1"
+                >
+                  <span>
+                    {{ $t(formula.logical) }}
+                  </span>
+                  <br />
+                </div>
+              </div>
             </template>
             {{
               alertRuleActiveSentence(activeAlertRule) +
@@ -184,7 +194,7 @@
             :key="'f' + i"
             :formula="formula"
             :index="i"
-            :multiple-formulas="multipleFormulas"
+            :nr-of-formulas="activeAlertRule.formulas.length"
             :calculation-minutes="activeAlertRule.calculation_minutes"
           />
 
@@ -195,7 +205,7 @@
                 tile
                 outlined
                 color="accent"
-                @click="addFormula"
+                @click="addFormula(0)"
               >
                 <v-icon left>mdi-plus</v-icon>
                 {{ $t('Add_formula') }}
@@ -346,6 +356,7 @@ export default {
         comparator: '<',
         comparison: 'val',
         threshold_value: 0,
+        logical: null,
       },
     }
   },
@@ -761,7 +772,8 @@ export default {
         }
       }
     },
-    addFormula() {
+    addFormula(index) {
+      this.activeAlertRule.formulas[index].logical = 'and'
       this.activeAlertRule.formulas.push({ ...this.newFormula })
     },
     checkAlertRuleFormulas() {
@@ -970,6 +982,9 @@ export default {
         : this.measurement(formula) !== undefined
         ? this.measurement(formula).unit
         : ''
+    },
+    notFinalFormula(index) {
+      return index !== this.activeAlertRule.formulas.length - 1
     },
     saveAlertRule() {
       if (this.alertruleCreateMode) {

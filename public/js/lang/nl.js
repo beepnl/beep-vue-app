@@ -549,6 +549,7 @@ const translations = {
   sensordef_info:
     "Een sensordefinitie is bedoeld om de sensorwaarde van een inkomende 'ruwe' sensorwaarde om te zetten in een waarde volgens een grootheid en eenheid (bijv. w_v = 1098273 => weight_kg = 62,400 kg) of om een sensor te calibreren (bijv. t_0 = 15.3 °C => t_0 = 15.8 °C). Dit kan worden gedaan door een 'offset' en een 'multiplier' in te stellen. De in- en uitgaande waarde blijft gelijk als als offset '0' en als multiplier '1' wordt ingesteld. De BEEP base app (uit de App Store) zal deze correct voor je instellen als je de BEEP base voor het eerst configureert.",
   or: 'of',
+  and: 'en',
   select_all_hives: 'Selecteer alle bijenkasten',
   select_all_editable_hives: 'Selecteer alle aanpasbare bijenkasten',
   Alert: 'Notificatie | Notificaties',

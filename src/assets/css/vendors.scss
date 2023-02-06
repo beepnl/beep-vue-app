@@ -53,6 +53,15 @@
   color: inherit;
 }
 
+.theme--light.v-item-group.v-btn-toggle {
+  color: $color-grey-medium;
+
+  .v-item--active {
+    color: $color-accent !important;
+    background-color: $color-orange-light !important;
+  }
+}
+
 .theme--light.v-input--is-disabled input,
 .theme--light.v-input--is-disabled textarea {
   @include for-phone-only {
