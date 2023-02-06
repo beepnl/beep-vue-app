@@ -97,8 +97,23 @@ export const momentHumanizeDuration = {
   },
 }
 
-export const momentHumanizeHours = {
+export const momentHumanize = {
   methods: {
+    humanizeDays(days, capitalizeFirst = false) {
+      if (days !== undefined) {
+        var sentence =
+          days >= 0 ? this.$i18n.t('Future_days') : this.$i18n.t('Past_days')
+        sentence = sentence.replace(
+          '[nr_of_days]',
+          this.momentHumanizeDuration(days, 'days')
+        )
+        return capitalizeFirst
+          ? sentence[0].toUpperCase() + sentence.substring(1)
+          : sentence
+      } else {
+        return ''
+      }
+    },
     momentDurationInHours(input, unit, prefix = '') {
       var numberOfHours = this.$moment.duration(input, unit).asHours()
       return (

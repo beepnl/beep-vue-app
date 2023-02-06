@@ -288,7 +288,7 @@ import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
-import { momentHumanizeHours } from '@mixins/momentMixin'
+import { momentHumanize } from '@mixins/momentMixin'
 import { readAlertRules } from '@mixins/methodsMixin'
 
 export default {
@@ -296,7 +296,7 @@ export default {
     Confirm,
     Layout,
   },
-  mixins: [momentHumanizeHours, readAlertRules],
+  mixins: [momentHumanize, readAlertRules],
   data: function() {
     return {
       ready: false,

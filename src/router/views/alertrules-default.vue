@@ -90,7 +90,7 @@ import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
 import { ScaleTransition } from 'vue2-transitions'
-import { momentHumanizeHours } from '@mixins/momentMixin'
+import { momentHumanize } from '@mixins/momentMixin'
 import { readAlertRules, readTaxonomy } from '@mixins/methodsMixin'
 
 export default {
@@ -99,7 +99,7 @@ export default {
     Layout,
     ScaleTransition,
   },
-  mixins: [momentHumanizeHours, readAlertRules, readTaxonomy],
+  mixins: [momentHumanize, readAlertRules, readTaxonomy],
   data: function() {
     return {
       alertRulesDefault: [],

@@ -167,7 +167,7 @@
           </v-row>
 
           <v-row>
-            <v-col cols="12" lg="9" class="mb-3">
+            <v-col cols="12" lg="9" class="mb-4 mb-md-8">
               <div class="beep-label" v-text="$t('Calculation_minutes')"></div>
               <v-select
                 v-model="activeAlertRule.calculation_minutes"
@@ -324,7 +324,7 @@ import {
   readDevicesIfNotPresent,
   readTaxonomy,
 } from '@mixins/methodsMixin'
-import { momentHumanizeHours } from '@mixins/momentMixin'
+import { momentHumanize } from '@mixins/momentMixin'
 import Treeselect from '@riophae/vue-treeselect'
 
 export default {
@@ -337,7 +337,7 @@ export default {
   },
   mixins: [
     convertComma,
-    momentHumanizeHours,
+    momentHumanize,
     readAlertRules,
     readDevicesIfNotPresent,
     readTaxonomy,
@@ -362,6 +362,7 @@ export default {
         comparison: 'val',
         threshold_value: 0,
         logical: null,
+        period: -7,
       },
     }
   },
@@ -906,7 +907,9 @@ export default {
       return sentence
     },
     alertRuleFormulaSentence(formula) {
-      var sentence = this.$i18n.t('alertrule_main_sentence_2')
+      var sentence = this.hasPeriod(formula)
+        ? this.$i18n.t('alertrule_main_sentence_2_with_period')
+        : this.$i18n.t('alertrule_main_sentence_2')
 
       var measurement = this.measurement(formula)
 
@@ -924,6 +927,10 @@ export default {
         threshold_value: formula.threshold_value,
       }
 
+      if (this.hasPeriod(formula)) {
+        replaceWith.period = this.humanizeDays(formula.period)
+      }
+
       Object.entries(replaceWith).map(([key, value]) => {
         sentence = sentence.replace('[' + key + ']', value)
       })
@@ -934,19 +941,6 @@ export default {
     },
     deleteFormula(index) {
       this.activeAlertRule.formulas.splice(index, 1)
-    },
-    getLetter(index) {
-      var letters = ['A', 'B', 'C', 'D']
-      return letters[index]
-    },
-    getTitle() {
-      if (this.alertruleCreateMode) {
-        return this.$i18n.t('New_alertrule')
-      } else if (this.activeAlertRule !== null) {
-        return this.$i18n.t('Edit_alertrule')
-      } else {
-        return this.$i18n.t('edit') + '...'
-      }
     },
     formatFromTaxonomyArray(array) {
       var formattedArray = []
@@ -967,6 +961,22 @@ export default {
         })
       })
       return formattedArray
+    },
+    getLetter(index) {
+      var letters = ['A', 'B', 'C', 'D']
+      return letters[index]
+    },
+    getTitle() {
+      if (this.alertruleCreateMode) {
+        return this.$i18n.t('New_alertrule')
+      } else if (this.activeAlertRule !== null) {
+        return this.$i18n.t('Edit_alertrule')
+      } else {
+        return this.$i18n.t('edit') + '...'
+      }
+    },
+    hasPeriod(formula) {
+      return formula.period !== undefined && formula.period !== null
     },
     measurement(formula) {
       return this.sensorMeasurementsList.filter(
@@ -1058,7 +1068,7 @@ export default {
 }
 
 .alertrule-card {
-  max-width: 1200px;
+  max-width: 1300px;
 
   .color-white {
     color: $color-white;

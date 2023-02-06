@@ -27,7 +27,7 @@
               </v-btn>
             </div>
           </v-col>
-          <v-col cols="12" sm="6" md="3">
+          <v-col cols="12" sm="6" md="2">
             <div class="d-flex justify-space-between">
               <div
                 class="beep-label mb-0 mt-3px"
@@ -67,7 +67,7 @@
             ></div>
           </v-col>
 
-          <v-col cols="12" sm="6" md="3">
+          <v-col cols="12" sm="6" md="2">
             <v-select
               v-model="formula.calculation"
               :items="calculations"
@@ -111,6 +111,32 @@
             ></div>
           </v-col>
 
+          <v-col cols="6" sm="3" md="2" xl="1" class="d-flex justify-start">
+            <div class="mt-3px">
+              <div
+                class="beep-label"
+                v-text="$t('period') + ' (' + $tc('day', 2) + ')'"
+              ></div>
+              <el-input-number
+                v-model="formula.period"
+                :step="1"
+                :step-strictly="true"
+                size="small"
+                @change="setAlertRuleEdited(true)"
+                @input.native="setAlertRuleEdited(true)"
+              ></el-input-number>
+              <div class="v-text-field__details mt-1"
+                ><div class="v-messages theme--light" role="alert"
+                  ><div class="v-messages__wrapper"
+                    ><div class="v-messages__message">{{
+                      humanizeDays(formula.period, true)
+                    }}</div></div
+                  ></div
+                ></div
+              >
+            </div>
+          </v-col>
+
           <v-col cols="6" sm="3" md="1">
             <v-select
               v-model="formula.comparator"
@@ -123,7 +149,7 @@
             ></v-select>
           </v-col>
 
-          <v-col cols="6" sm="3" md="2" class="d-flex justify-start">
+          <v-col cols="6" sm="3" md="2" xl="1" class="d-flex justify-start">
             <div class="mt-3px">
               <div
                 :class="`beep-label ${thresholdValueIsNaN ? 'red--text' : ''}`"
@@ -160,7 +186,7 @@
 
     <v-row v-if="notFinalFormula" class="text-center">
       <v-col cols="12" class="ml-1 mb-n1">
-        <v-btn-toggle v-model="formula.logical" mandatory dense>
+        <v-btn-toggle v-model="formula.logical" mandatory borderless dense>
           <v-btn value="and">
             {{ $t('and') }}
           </v-btn>
@@ -174,12 +200,12 @@
 </template>
 
 <script>
-import { momentHumanizeHours } from '@mixins/momentMixin'
+import { momentHumanize } from '@mixins/momentMixin'
 import { mapGetters } from 'vuex'
 import { convertComma } from '@mixins/methodsMixin'
 
 export default {
-  mixins: [convertComma, momentHumanizeHours],
+  mixins: [convertComma, momentHumanize],
   props: {
     formula: {
       type: Object,
@@ -210,10 +236,9 @@ export default {
     allSensorMeasurements() {
       var measurementTypes = this.sensorMeasurementsList
 
-      // check if measurement type is NOT a weather measurement and if translation exists, otherwise don't display the measurement type
+      // check if translation exists, otherwise don't display the measurement type (note: measurement CAN be weather type now)
       measurementTypes = measurementTypes.filter(
         (measurementType) =>
-          measurementType.weather === 0 &&
           this.$i18n.te(measurementType.abbreviation) === true
       )
 
