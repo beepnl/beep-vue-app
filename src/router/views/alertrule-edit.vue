@@ -189,14 +189,17 @@
             </v-col>
           </v-row>
 
-          <AlertruleEditFormula
-            v-for="(formula, i) in activeAlertRule.formulas"
-            :key="'f' + i"
-            :formula="formula"
-            :index="i"
-            :nr-of-formulas="activeAlertRule.formulas.length"
-            :calculation-minutes="activeAlertRule.calculation_minutes"
-          />
+          <ZoomCenterTransition :duration="300" group>
+            <AlertruleEditFormula
+              v-for="(formula, i) in activeAlertRule.formulas"
+              :key="'f' + i"
+              :formula="formula"
+              :index="i"
+              :nr-of-formulas="activeAlertRule.formulas.length"
+              :calculation-minutes="activeAlertRule.calculation_minutes"
+              @delete-formula="deleteFormula($event)"
+            />
+          </ZoomCenterTransition>
 
           <v-row v-if="!multipleFormulas">
             <v-col>
@@ -314,6 +317,7 @@ import AlertruleEditFormula from '@components/alertrule-edit-formula.vue'
 import Confirm from '@components/confirm.vue'
 import { mapGetters } from 'vuex'
 import Layout from '@layouts/back.vue'
+import { ZoomCenterTransition } from 'vue2-transitions'
 import {
   convertComma,
   readAlertRules,
@@ -328,6 +332,7 @@ export default {
     AlertruleEditFormula,
     Confirm,
     Layout,
+    ZoomCenterTransition,
     Treeselect,
   },
   mixins: [
@@ -794,17 +799,6 @@ export default {
         this.activeAlertRule.calculation = 'ave'
       }
     },
-    nextRoute() {
-      if (localStorage.beepPreviousRoute === 'alerts') {
-        this.$router.push({
-          name: 'alerts',
-        })
-      } else {
-        this.$router.push({
-          name: 'alertrules',
-        })
-      }
-    },
     confirmDeleteAlertRule() {
       this.$refs.confirm
         .open(
@@ -938,6 +932,9 @@ export default {
 
       return sentence
     },
+    deleteFormula(index) {
+      this.activeAlertRule.formulas.splice(index, 1)
+    },
     getLetter(index) {
       var letters = ['A', 'B', 'C', 'D']
       return letters[index]
@@ -982,6 +979,17 @@ export default {
         : this.measurement(formula) !== undefined
         ? this.measurement(formula).unit
         : ''
+    },
+    nextRoute() {
+      if (localStorage.beepPreviousRoute === 'alerts') {
+        this.$router.push({
+          name: 'alerts',
+        })
+      } else {
+        this.$router.push({
+          name: 'alertrules',
+        })
+      }
     },
     notFinalFormula(index) {
       return index !== this.activeAlertRule.formulas.length - 1
