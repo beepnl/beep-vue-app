@@ -141,139 +141,23 @@
             </v-col>
           </v-row>
 
-          <v-row>
-            <v-col cols="12" sm="6" md="3">
-              <div class="d-flex justify-space-between">
-                <div class="beep-label" v-html="$tc('Measurement', 1)"></div>
-                <v-switch
-                  v-model="showAllMeasurements"
-                  class="pt-2 mt-n3"
-                  :label="$t('show_all') + (showAllMeasurements ? '*' : '')"
-                  hide-details
-                ></v-switch>
-              </div>
-              <v-select
-                v-model="activeAlertRule.measurement_id"
-                :items="
-                  showAllMeasurements
-                    ? allSensorMeasurements
-                    : defaultSensorMeasurements
-                "
-                :item-text="getText"
-                item-value="id"
-                :placeholder="
-                  `${$t('Select')} ${$tc(
-                    'measurement',
-                    // eslint-disable vue/comma-dangle
-                    1
-                  )} ...`
-                "
-                class="pt-0 mt-n1"
-                :rules="requiredRule"
-                @input="setAlertRuleEdited(true)"
-              ></v-select>
-              <div
-                v-if="showAllMeasurements"
-                class="beep-label mt-n4 mb-3"
-                v-text="$t('only_active_if_measurement_present')"
-              ></div>
-            </v-col>
+          <AlertruleEditFormula
+            v-for="(formula, i) in activeAlertRule.formulas"
+            :key="'f' + i"
+            :formula="formula"
+            :calculation-minutes="activeAlertRule.calculation_minutes"
+          />
 
-            <v-col cols="12" sm="6" md="3">
-              <v-select
-                v-model="activeAlertRule.calculation"
-                :items="calculations"
-                item-text="full"
-                item-value="short"
-                :placeholder="`${$t('Select')} ${$t('calculation')} ...`"
-                :label="$t('Calculation')"
-                :rules="requiredRule"
-                :disabled="activeAlertRule.calculation_minutes === 0"
-                @input="setAlertRuleEdited(true)"
-              ></v-select>
-              <div
-                v-if="activeAlertRule.calculation_minutes === 0"
-                class="beep-label mt-n4 mb-3"
-                v-text="$t('not_relevant_for_immediate_calculation')"
-              ></div>
-              <div
-                v-else
-                class="beep-label mt-n4 mb-3"
-                v-text="
-                  momentDurationInHours(
-                    activeAlertRule.calculation_minutes,
-                    'minutes',
-                    calcPrefix
-                  )
-                "
-              ></div>
-            </v-col>
-
-            <v-col cols="12" sm="6" md="3">
-              <v-select
-                v-model="activeAlertRule.comparison"
-                :items="comparisons"
-                :item-text="getComparisonText"
-                item-value="short"
-                :placeholder="`${$t('Select')} ${$t('comparison')} ...`"
-                :label="$t('Comparison')"
-                :rules="requiredRule"
-                @input="setAlertRuleEdited(true)"
-              ></v-select>
-              <div
-                v-if="activeAlertRule.comparison === 'abs_dif'"
-                class="beep-label mt-n4 mb-3"
-                v-text="$t('Absolute_value_of_dif_explanation')"
-              ></div>
-            </v-col>
-
-            <v-col cols="6" sm="3" md="1">
-              <v-select
-                v-model="activeAlertRule.comparator"
-                :items="comparators"
-                item-text="short"
-                item-value="short"
-                :label="$t('Comparator')"
-                :rules="requiredRule"
-                @input="setAlertRuleEdited(true)"
-              ></v-select>
-            </v-col>
-
-            <v-col cols="6" sm="3" md="2" class="d-flex justify-start">
-              <div>
-                <div
-                  :class="
-                    `beep-label ${thresholdValueIsNaN ? 'red--text' : ''}`
-                  "
-                  v-text="$t('Threshold_value') + ' (' + measurementUnit + ')'"
-                ></div>
-                <el-input-number
-                  v-model="activeAlertRule.threshold_value"
-                  :step="activeAlertRule.calculation === 'cnt' ? 1 : 0.1"
-                  :precision="activeAlertRule.calculation === 'cnt' ? 0 : 1"
-                  :step-strictly="true"
-                  size="small"
-                  @change="setAlertRuleEdited(true)"
-                  @input.native="
-                    convertComma($event, activeAlertRule, 'threshold_value', 1),
-                      setAlertRuleEdited(true)
-                  "
-                ></el-input-number>
-                <div
-                  v-if="thresholdValueIsNaN"
-                  class="v-text-field__details mt-1"
-                  ><div class="v-messages theme--light error--text" role="alert"
-                    ><div class="v-messages__wrapper"
-                      ><div class="v-messages__message">{{
-                        this.$i18n.t('this_field') +
-                          ' ' +
-                          this.$i18n.t('is_required')
-                      }}</div></div
-                    ></div
-                  ></div
-                >
-              </div>
-              <!-- <span class="ml-1 mt-6">{{ measurementUnit }}</span> -->
+          <v-row
+            v-if="
+              activeAlertRule.formulas && activeAlertRule.formulas.length <= 1
+            "
+          >
+            <v-col>
+              <v-btn medium tile outlined color="accent" @click="addFormula">
+                <v-icon left>mdi-plus</v-icon>
+                {{ $t('Add_formula') }}
+              </v-btn>
             </v-col>
           </v-row>
         </div>
@@ -374,6 +258,7 @@
 
 <script>
 import Api from '@api/Api'
+import AlertruleEditFormula from '@components/alertrule-edit-formula.vue'
 import Confirm from '@components/confirm.vue'
 import { mapGetters } from 'vuex'
 import Layout from '@layouts/back.vue'
@@ -388,6 +273,7 @@ import Treeselect from '@riophae/vue-treeselect'
 
 export default {
   components: {
+    AlertruleEditFormula,
     Confirm,
     Layout,
     Treeselect,
@@ -412,6 +298,13 @@ export default {
       newAlertRuleNumber: 1,
       newAlertRuleLocation: null,
       showAllMeasurements: false,
+      newFormula: {
+        measurement_id: 6, // TODO get via this.defaultSensorMeasurements[0].id,
+        calculation: 'ave',
+        comparator: '<',
+        comparison: 'val',
+        threshold_value: 0,
+      },
     }
   },
   computed: {
@@ -484,50 +377,14 @@ export default {
         }
       },
     },
-    allSensorMeasurements() {
-      var measurementTypes = this.sensorMeasurementsList
-
-      // check if measurement type is NOT a weather measurement and if translation exists, otherwise don't display the measurement type
-      measurementTypes = measurementTypes.filter(
-        (measurementType) =>
-          measurementType.weather === 0 &&
-          this.$i18n.te(measurementType.abbreviation) === true
-      )
-
-      // add translation as label property
-      measurementTypes.map((measurementType) => {
-        measurementType.label = this.$i18n.t(measurementType.abbreviation)
-      })
-
-      // sort by label
-      var sortedSMs = measurementTypes.slice().sort(function(a, b) {
-        if (a.label.toLowerCase() > b.label.toLowerCase()) {
-          return 1
-        }
-        if (b.label.toLowerCase() > a.label.toLowerCase()) {
-          return -1
-        }
-        return 0
-      })
-      return sortedSMs
-    },
-    calcPrefix() {
-      var translateTerm = this.alertRulesList.calculations[
-        this.activeAlertRule.calculation
-      ]
-      return this.$i18n.t(translateTerm) + ' ' + this.$i18n.t('of') + ' '
-    },
     calculationMinutes() {
       return this.formatFromTaxonomyArray(this.alertRulesList.calc_minutes)
     },
-    calculations() {
-      return this.formatFromTaxonomyObject(this.alertRulesList.calculations)
-    },
-    comparators() {
-      return this.formatFromTaxonomyObject(this.alertRulesList.comparators)
-    },
-    comparisons() {
-      return this.formatFromTaxonomyObject(this.alertRulesList.comparisons)
+    defaultSensorMeasurements() {
+      // check if measurement type is a default measurement type for creating alert rules
+      return this.sensorMeasurementsList.filter(
+        (measurementType) => measurementType.show_in_alerts
+      )
     },
     devicesInterval() {
       if (this.numberOfSortedDevices !== null) {
@@ -565,18 +422,6 @@ export default {
     },
     id() {
       return parseInt(this.$route.params.id)
-    },
-    measurement() {
-      return this.allSensorMeasurements.filter(
-        (measurement) => measurement.id === this.activeAlertRule.measurement_id
-      )[0]
-    },
-    measurementUnit() {
-      return this.activeAlertRule.calculation === 'cnt'
-        ? this.$i18n.t('times')
-        : this.measurement !== undefined
-        ? this.measurement.unit
-        : ''
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile
@@ -691,20 +536,11 @@ export default {
       })
       return uniqueApiaries
     },
-    defaultSensorMeasurements() {
-      // check if measurement type is a default measurement type for creating alert rules
-      return this.allSensorMeasurements.filter(
-        (measurementType) => measurementType.show_in_alerts
-      )
-    },
-    thresholdValueIsNaN() {
-      return isNaN(this.activeAlertRule.threshold_value)
-    },
     warningText() {
       var warningText = this.$i18n.t('In_case_of_good_connection_warning')
       if (
-        this.devicesInterval !== null &&
-        this.activeAlertRule.comparison.includes('dif')
+        this.devicesInterval !== null
+        // && this.activeAlertRule.comparison.includes('dif') // TODO: filter if any of the subformulas contain dif
       ) {
         var intervalWarning =
           this.devicesInterval.length > 1
@@ -737,12 +573,12 @@ export default {
               ' ' +
               (this.alertRules.length + 1),
             description: '',
-            measurement_id: this.defaultSensorMeasurements[0].id,
-            calculation: 'ave',
+            formulas: [
+              {
+                ...this.newFormula,
+              },
+            ],
             calculation_minutes: 0,
-            comparator: '<',
-            comparison: 'val',
-            threshold_value: 0,
             exclude_months: [],
             exclude_hours: [],
             exclude_hive_ids: [],
@@ -751,6 +587,7 @@ export default {
             // alert_on_occurences: 1,
           }
           // Else retrieve to-be-edited alertrule
+          // TODO: convert formula props to formulas array
         } else {
           this.setActiveAlertRule(this.id)
         }
@@ -761,11 +598,9 @@ export default {
     async createAlertRule() {
       if (this.$refs.form.validate() && !this.thresholdValueIsNaN) {
         this.showLoadingIcon = true
+        var alertRule = this.checkAlertRuleFormulas()
         try {
-          const response = await Api.postRequest(
-            '/alert-rules',
-            this.activeAlertRule
-          )
+          const response = await Api.postRequest('/alert-rules', alertRule)
           if (!response) {
             this.snackbar.text = this.$i18n.t('not_saved_error')
             this.snackbar.show = true
@@ -842,11 +677,12 @@ export default {
     async updateAlertRule() {
       if (this.$refs.form.validate() && !this.thresholdValueIsNaN) {
         this.showLoadingIcon = true
+        var alertRule = this.checkAlertRuleFormulas()
         try {
           const response = await Api.updateRequest(
             '/alert-rules/',
-            this.activeAlertRule.id,
-            this.activeAlertRule
+            alertRule.id,
+            alertRule
           )
           if (!response) {
             this.snackbar.text = this.$i18n.t('not_saved_error')
@@ -870,6 +706,22 @@ export default {
           this.snackbar.show = true
           this.showLoadingIcon = false
         }
+      }
+    },
+    addFormula() {
+      this.activeAlertRule.formulas.push({ ...this.newFormula })
+    },
+    checkAlertRuleFormulas() {
+      if (this.activeAlertRule.formulas.length === 1) {
+        // if there is only 1 formula, add props directly to alert rule instead of nested inside formulas array
+        var alertrule = Object.assign(
+          this.activeAlertRule,
+          this.activeAlertRule.formulas[0]
+        )
+        delete alertrule.formulas
+        return alertrule
+      } else {
+        return this.activeAlertRule
       }
     },
     checkCalculation(calcMinValue) {
@@ -911,24 +763,26 @@ export default {
       var sentence = this.$i18n.t('alertrule_main_sentence')
       var replacedSentence = sentence
 
-      var replaceWith = {
-        calculation: this.$i18n.t(alertRule.calculation),
-        comparison: this.comparisons
-          .filter((comparison) => comparison.short === alertRule.comparison)[0]
-          .full.toLowerCase(),
-        measurement_quantity:
-          this.measurement !== undefined ? this.measurement.label : '-',
-        measurement_unit: this.measurementUnit,
-        comparator: this.comparators.filter(
-          (comparator) => comparator.short === alertRule.comparator
-        )[0].short,
-        threshold_value: alertRule.threshold_value,
-        calculation_minutes: this.momentHumanizeHours(
-          alertRule.calculation_minutes,
-          false,
-          false
-        ),
-      }
+      // var replaceWith = {
+      //   calculation: this.$i18n.t(alertRule.calculation),
+      //   comparison: this.comparisons
+      //     .filter((comparison) => comparison.short === alertRule.comparison)[0]
+      //     .full.toLowerCase(),
+      //   measurement_quantity:
+      //     this.measurement !== undefined ? this.measurement.label : '-',
+      //   measurement_unit: this.measurementUnit,
+      //   comparator: this.comparators.filter(
+      //     (comparator) => comparator.short === alertRule.comparator
+      //   )[0].short,
+      //   threshold_value: alertRule.threshold_value,
+      //   calculation_minutes: this.momentHumanizeHours(
+      //     alertRule.calculation_minutes,
+      //     false,
+      //     false
+      //   ),
+      // }
+
+      var replaceWith = sentence // TODO get formula sentence via formula component
 
       Object.entries(replaceWith).map(([key, value]) => {
         replacedSentence = replacedSentence.replace('[' + key + ']', value)
@@ -1017,12 +871,6 @@ export default {
 
       return replacedSentence
     },
-    getComparisonText(item) {
-      return item.full + (item.short === 'abs_dif' ? '**' : '')
-    },
-    getText(item) {
-      return item.label + ' (' + item.abbreviation + ')'
-    },
     getTitle() {
       if (this.alertruleCreateMode) {
         return this.$i18n.t('New_alertrule')
@@ -1042,16 +890,6 @@ export default {
       })
       return formattedArray
     },
-    formatFromTaxonomyObject(object) {
-      var formattedArray = []
-      Object.entries(object).map(([key, value]) => {
-        formattedArray.push({
-          short: key,
-          full: this.$i18n.t(value),
-        })
-      })
-      return formattedArray
-    },
     saveAlertRule() {
       if (this.alertruleCreateMode) {
         this.createAlertRule()
@@ -1060,10 +898,10 @@ export default {
       }
     },
     setActiveAlertRule(id) {
-      this.activeAlertRule = {
+      var alertRule = {
         ...this.alertRules.filter((alertRule) => alertRule.id === id)[0],
       }
-      if (this.activeAlertRule === undefined) {
+      if (alertRule === undefined) {
         this.$router.push({
           name: '404',
           params: { resource: 'alertrule' },
@@ -1071,12 +909,23 @@ export default {
       } else {
         if (
           !this.defaultSensorMeasurements.some(
-            (el) => el.id === this.activeAlertRule.measurement_id
+            (el) => el.id === alertRule.measurement_id
           )
         ) {
           this.showAllMeasurements = true
         }
+        if (alertRule.formulas === undefined) {
+          var formula = {}
+          Object.keys(this.newFormula).map((prop) => {
+            formula[prop] = alertRule[prop]
+          })
+
+          Object.assign(alertRule, {
+            formulas: [formula],
+          })
+        }
       }
+      this.activeAlertRule = alertRule
       this.setAlertRuleEdited(false)
     },
     setAlertRuleEdited(bool) {
