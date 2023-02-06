@@ -616,8 +616,11 @@ const translations = {
   Home: 'Home',
   Select_default_alertrule: 'Kopieer standaardinstelling',
   /* below, please keep all terms between [] in english: */
-  alertrule_main_sentence:
-    'Ik wil een notificatie ontvangen als [calculation] [measurement_quantity] [comparison] [comparator] [threshold_value][measurement_unit]. Deze berekening wordt [calculation_minutes] uitgevoerd',
+  alertrule_main_sentence_1: 'Ik wil een notificatie ontvangen als ',
+  alertrule_main_sentence_2:
+    '[calculation] [measurement_quantity] [comparison] [comparator] [threshold_value][measurement_unit]',
+  alertrule_active_sentence:
+    'Deze berekening wordt [calculation_minutes] uitgevoerd',
   alertrule_active_no_email_sentence:
     ', en ik open de BEEP app om de notificaties te zien.',
   alertrule_active_email_sentence:
@@ -656,6 +659,7 @@ const translations = {
     'Om je op weg te helpen zijn er een aantal standaardinstellingen die je kan gebruiken (en aanpassen naar eigen behoefte). Je kan ook zelf een nieuwe notificatie-instelling maken.',
   alertrules_url_text:
     "Ga naar 'notificaties beheren' om je eerste notificatie in te stellen",
+  Add_formula: 'Voeg formule toe',
   Apiary_management: 'Bijenstand management',
   Move: 'Verplaats',
   Current_apiary: 'Huidige bijenstand',

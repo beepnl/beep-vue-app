@@ -622,6 +622,7 @@ const translations = {
   alert_explanation_2:
     'To get you started there are a few default alert rules you can use (and adapt to your own needs). In addition, you can create your own alert rules.',
   alertrules_url_text: "Go to 'Alert settings' to create your first alert rule",
+  Add_formula: 'Add formula',
   Apiary_management: 'Apiary management',
   Move: 'Move',
   Current_apiary: 'Current apiary',

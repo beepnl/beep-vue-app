@@ -46,9 +46,47 @@
           :color="activeAlertRule.active ? 'primary' : 'grey'"
           class="alertrule-card mb-8"
         >
-          <span :class="!activeAlertRule.active ? 'color-white' : ''">{{
-            alertRuleSentence(activeAlertRule)
-          }}</span>
+          <span
+            v-if="!multipleFormulas"
+            :class="!activeAlertRule.active ? 'color-white' : ''"
+          >
+            {{
+              $t('alertrule_main_sentence_1') +
+                alertRuleFormulaSentence(activeAlertRule.formulas[0]) +
+                alertRuleActiveSentence(activeAlertRule) +
+                alertRuleExclusionSentence(activeAlertRule)
+            }}</span
+          >
+
+          <div
+            v-if="multipleFormulas"
+            :class="!activeAlertRule.active ? 'color-white' : ''"
+          >
+            {{ $t('alertrule_main_sentence_1') + ': ' }}
+            <br />
+            <template v-for="(formula, j) in activeAlertRule.formulas">
+              <v-btn
+                :key="'l' + j"
+                class="mr-2 mb-2 cursor-default"
+                fab
+                small
+                light
+                color="accent"
+              >
+                <v-icon dark>
+                  {{ getLetter(j) }}
+                </v-icon>
+              </v-btn>
+              <span :key="'sp' + j">
+                {{ alertRuleFormulaSentence(formula) }}
+              </span>
+              <br :key="'br' + j" />
+            </template>
+            {{
+              alertRuleActiveSentence(activeAlertRule) +
+                alertRuleExclusionSentence(activeAlertRule)
+            }}</div
+          >
         </v-alert>
 
         <div
@@ -145,16 +183,20 @@
             v-for="(formula, i) in activeAlertRule.formulas"
             :key="'f' + i"
             :formula="formula"
+            :index="i"
+            :multiple-formulas="multipleFormulas"
             :calculation-minutes="activeAlertRule.calculation_minutes"
           />
 
-          <v-row
-            v-if="
-              activeAlertRule.formulas && activeAlertRule.formulas.length <= 1
-            "
-          >
+          <v-row v-if="!multipleFormulas">
             <v-col>
-              <v-btn medium tile outlined color="accent" @click="addFormula">
+              <v-btn
+                class="float-right"
+                tile
+                outlined
+                color="accent"
+                @click="addFormula"
+              >
                 <v-icon left>mdi-plus</v-icon>
                 {{ $t('Add_formula') }}
               </v-btn>
@@ -380,6 +422,12 @@ export default {
     calculationMinutes() {
       return this.formatFromTaxonomyArray(this.alertRulesList.calc_minutes)
     },
+    comparators() {
+      return this.formatFromTaxonomyObject(this.alertRulesList.comparators)
+    },
+    comparisons() {
+      return this.formatFromTaxonomyObject(this.alertRulesList.comparisons)
+    },
     defaultSensorMeasurements() {
       // check if measurement type is a default measurement type for creating alert rules
       return this.sensorMeasurementsList.filter(
@@ -435,6 +483,12 @@ export default {
         })
       }
       return monthsArray
+    },
+    multipleFormulas() {
+      return (
+        this.activeAlertRule.formulas &&
+        this.activeAlertRule.formulas.length > 1
+      )
     },
     numberOfIncludedDevices() {
       return (
@@ -587,7 +641,6 @@ export default {
             // alert_on_occurences: 1,
           }
           // Else retrieve to-be-edited alertrule
-          // TODO: convert formula props to formulas array
         } else {
           this.setActiveAlertRule(this.id)
         }
@@ -759,77 +812,59 @@ export default {
           return true
         })
     },
-    alertRuleSentence(alertRule) {
-      var sentence = this.$i18n.t('alertrule_main_sentence')
-      var replacedSentence = sentence
+    alertRuleActiveSentence(alertRule) {
+      var sentence = this.$i18n.t('alertrule_active_sentence')
 
-      // var replaceWith = {
-      //   calculation: this.$i18n.t(alertRule.calculation),
-      //   comparison: this.comparisons
-      //     .filter((comparison) => comparison.short === alertRule.comparison)[0]
-      //     .full.toLowerCase(),
-      //   measurement_quantity:
-      //     this.measurement !== undefined ? this.measurement.label : '-',
-      //   measurement_unit: this.measurementUnit,
-      //   comparator: this.comparators.filter(
-      //     (comparator) => comparator.short === alertRule.comparator
-      //   )[0].short,
-      //   threshold_value: alertRule.threshold_value,
-      //   calculation_minutes: this.momentHumanizeHours(
-      //     alertRule.calculation_minutes,
-      //     false,
-      //     false
-      //   ),
-      // }
+      var calculationMinutes = this.momentHumanizeHours(
+        alertRule.calculation_minutes,
+        false,
+        false
+      )
 
-      var replaceWith = sentence // TODO get formula sentence via formula component
-
-      Object.entries(replaceWith).map(([key, value]) => {
-        replacedSentence = replacedSentence.replace('[' + key + ']', value)
-      })
+      sentence = sentence.replace('[calculation_minutes]', calculationMinutes)
 
       if (alertRule.active) {
         alertRule.alert_via_email
-          ? (replacedSentence +=
-              this.$i18n.t('alertrule_active_email_sentence') + ' ')
-          : (replacedSentence +=
+          ? (sentence += this.$i18n.t('alertrule_active_email_sentence') + ' ')
+          : (sentence +=
               this.$i18n.t('alertrule_active_no_email_sentence') + ' ')
       } else {
-        replacedSentence += '. '
+        sentence += '. '
       }
 
       // if (alertRule.alert_on_occurences === 1) {
-      //   replacedSentence += this.$i18n.t('alertrule_occurences_direct_sentence')
+      //   sentence += this.$i18n.t('alertrule_occurences_direct_sentence')
       // } else {
-      //   replacedSentence += this.$i18n.t(
+      //   sentence += this.$i18n.t(
       //     'alertrule_occurences_indirect_sentence'
       //   )
-      //   replacedSentence = replacedSentence.replace(
+      //   sentence = sentence.replace(
       //     '[alert_on_occurences]',
       //     alertRule.alert_on_occurences
       //   )
       // }
 
+      return sentence
+    },
+    alertRuleExclusionSentence(alertRule) {
+      var sentence = ''
       if (
         alertRule.exclude_months !== null &&
         alertRule.exclude_months.length > 0
       ) {
-        replacedSentence += this.$i18n.t('alertrule_exclude_months_sentence')
+        sentence += this.$i18n.t('alertrule_exclude_months_sentence')
         var monthsArray = []
         alertRule.exclude_months.map((month) => {
           monthsArray.push(this.$i18n.t('monthsFull')[month - 1])
         })
-        replacedSentence = replacedSentence.replace(
-          '[exclude_months]',
-          monthsArray.join(', ')
-        )
+        sentence = sentence.replace('[exclude_months]', monthsArray.join(', '))
       }
 
       if (
         alertRule.exclude_hours !== null &&
         alertRule.exclude_hours.length > 0
       ) {
-        replacedSentence += this.$i18n.t('alertrule_exclude_hours_sentence')
+        sentence += this.$i18n.t('alertrule_exclude_hours_sentence')
 
         var hoursArray = []
         alertRule.exclude_hours.map((hour) => {
@@ -837,17 +872,14 @@ export default {
         })
         var hoursString = hoursArray.join(', ')
 
-        replacedSentence = replacedSentence.replace(
-          '[exclude_hours]',
-          hoursString
-        )
+        sentence = sentence.replace('[exclude_hours]', hoursString)
       }
 
       if (
         alertRule.exclude_hive_ids !== null &&
         alertRule.exclude_hive_ids.length > 0
       ) {
-        replacedSentence += this.$i18n.t('alertrule_exclude_hives_sentence')
+        sentence += this.$i18n.t('alertrule_exclude_hives_sentence')
         var hivesArray = []
         alertRule.exclude_hive_ids.map((hiveId) => {
           var hiveName = hiveId + ' (' + this.$i18n.t('unknown') + ')'
@@ -863,13 +895,40 @@ export default {
           }
           hivesArray.push(hiveName)
         })
-        replacedSentence = replacedSentence.replace(
-          '[exclude_hive_ids]',
-          hivesArray.join(', ')
-        )
+        sentence = sentence.replace('[exclude_hive_ids]', hivesArray.join(', '))
+      }
+      return sentence
+    },
+    alertRuleFormulaSentence(formula) {
+      var sentence = this.$i18n.t('alertrule_main_sentence_2')
+
+      var measurement = this.measurement(formula)
+
+      var replaceWith = {
+        calculation: this.$i18n.t(formula.calculation),
+        comparison: this.comparisons
+          .filter((comparison) => comparison.short === formula.comparison)[0]
+          .full.toLowerCase(),
+        measurement_quantity:
+          measurement !== undefined ? measurement.label : '-',
+        measurement_unit: this.measurementUnit(formula),
+        comparator: this.comparators.filter(
+          (comparator) => comparator.short === formula.comparator
+        )[0].short,
+        threshold_value: formula.threshold_value,
       }
 
-      return replacedSentence
+      Object.entries(replaceWith).map(([key, value]) => {
+        sentence = sentence.replace('[' + key + ']', value)
+      })
+
+      sentence += '. '
+
+      return sentence
+    },
+    getLetter(index) {
+      var letters = ['A', 'B', 'C', 'D']
+      return letters[index]
     },
     getTitle() {
       if (this.alertruleCreateMode) {
@@ -889,6 +948,28 @@ export default {
         })
       })
       return formattedArray
+    },
+    formatFromTaxonomyObject(object) {
+      var formattedArray = []
+      Object.entries(object).map(([key, value]) => {
+        formattedArray.push({
+          short: key,
+          full: this.$i18n.t(value),
+        })
+      })
+      return formattedArray
+    },
+    measurement(formula) {
+      return this.sensorMeasurementsList.filter(
+        (measurement) => measurement.id === formula.measurement_id
+      )[0]
+    },
+    measurementUnit(formula) {
+      return formula.calculation === 'cnt'
+        ? this.$i18n.t('times')
+        : this.measurement(formula) !== undefined
+        ? this.measurement(formula).unit
+        : ''
     },
     saveAlertRule() {
       if (this.alertruleCreateMode) {
@@ -914,6 +995,7 @@ export default {
         ) {
           this.showAllMeasurements = true
         }
+        // if alertrule has a single formula, convert the formula props to formulas array
         if (alertRule.formulas === undefined) {
           var formula = {}
           Object.keys(this.newFormula).map((prop) => {

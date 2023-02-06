@@ -1,5 +1,12 @@
 <template>
   <v-row>
+    <v-col v-if="multipleFormulas" cols="6" sm="1" md="1">
+      <v-btn class="mx-2 cursor-default" fab small dark color="accent">
+        <v-icon dark>
+          {{ getLetter(index) }}
+        </v-icon>
+      </v-btn>
+    </v-col>
     <v-col cols="12" sm="6" md="3">
       <div class="d-flex justify-space-between">
         <div class="beep-label" v-html="$tc('Measurement', 1)"></div>
@@ -63,7 +70,7 @@
       ></div>
     </v-col>
 
-    <v-col cols="12" sm="6" md="3">
+    <v-col cols="12" sm="5" md="2">
       <v-select
         v-model="formula.comparison"
         :items="comparisons"
@@ -144,6 +151,16 @@ export default {
       default: null,
       required: false,
     },
+    index: {
+      type: Number,
+      default: null,
+      required: false,
+    },
+    multipleFormulas: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
   },
   data: () => ({
     showAllMeasurements: false,
@@ -198,11 +215,6 @@ export default {
         (measurementType) => measurementType.show_in_alerts
       )
     },
-    measurement() {
-      return this.allSensorMeasurements.filter(
-        (measurement) => measurement.id === this.formula.measurement_id
-      )[0]
-    },
     measurementUnit() {
       return this.formula.calculation === 'cnt'
         ? this.$i18n.t('times')
@@ -236,6 +248,10 @@ export default {
     },
     getComparisonText(item) {
       return item.full + (item.short === 'abs_dif' ? '**' : '')
+    },
+    getLetter(index) {
+      var letters = ['A', 'B', 'C', 'D']
+      return letters[index]
     },
     getText(item) {
       return item.label + ' (' + item.abbreviation + ')'
