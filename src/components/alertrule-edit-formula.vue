@@ -1,10 +1,7 @@
 <template>
   <div class="mb-4">
-    <v-row class="mx-1">
-      <v-col
-        cols="12"
-        :class="multipleFormulas ? 'rounded-border primary-border' : ''"
-      >
+    <v-row class="mx-0">
+      <v-col cols="12" class="rounded-border accent-border">
         <v-icon
           v-if="multipleFormulas"
           class="accent--text float-right mr-n1"
@@ -76,11 +73,11 @@
               :placeholder="`${$t('Select')} ${$t('calculation')} ...`"
               :label="$t('Calculation')"
               :rules="requiredRule"
-              :disabled="calculationMinutes === 0"
+              :disabled="calculationMinutesValue === 0"
               @input="setAlertRuleEdited(true)"
             ></v-select>
             <div
-              v-if="calculationMinutes === 0"
+              v-if="calculationMinutesValue === 0"
               class="beep-label mt-n4 mb-3"
               v-text="$t('not_relevant_for_immediate_calculation')"
             ></div>
@@ -88,7 +85,11 @@
               v-else
               class="beep-label mt-n4 mb-3"
               v-text="
-                momentDurationInHours(calculationMinutes, 'minutes', calcPrefix)
+                momentDurationInHours(
+                  calculationMinutesValue,
+                  'minutes',
+                  calcPrefix
+                )
               "
             ></div>
           </v-col>
@@ -120,20 +121,13 @@
               <el-input-number
                 v-model="formula.period"
                 :step="1"
-                :step-strictly="true"
                 size="small"
                 @change="setAlertRuleEdited(true)"
                 @input.native="setAlertRuleEdited(true)"
               ></el-input-number>
-              <div class="v-text-field__details mt-1"
-                ><div class="v-messages theme--light" role="alert"
-                  ><div class="v-messages__wrapper"
-                    ><div class="v-messages__message">{{
-                      humanizeDays(formula.period, true)
-                    }}</div></div
-                  ></div
-                ></div
-              >
+              <div class="beep-label mt-1 mb-3"
+                >{{ humanizeDays(formula.period, true) }}
+              </div>
             </div>
           </v-col>
 
@@ -202,17 +196,17 @@
 <script>
 import { momentHumanize } from '@mixins/momentMixin'
 import { mapGetters } from 'vuex'
-import { convertComma } from '@mixins/methodsMixin'
+import { alertRuleEditHelpers, convertComma } from '@mixins/methodsMixin'
 
 export default {
-  mixins: [convertComma, momentHumanize],
+  mixins: [alertRuleEditHelpers, convertComma, momentHumanize],
   props: {
     formula: {
       type: Object,
       default: null,
       required: true,
     },
-    calculationMinutes: {
+    calculationMinutesValue: {
       type: Number,
       default: null,
       required: false,
@@ -232,56 +226,15 @@ export default {
     showAllMeasurements: false,
   }),
   computed: {
-    ...mapGetters('taxonomy', ['alertRulesList', 'sensorMeasurementsList']),
-    allSensorMeasurements() {
-      var measurementTypes = this.sensorMeasurementsList
-
-      // check if translation exists, otherwise don't display the measurement type (note: measurement CAN be weather type now)
-      measurementTypes = measurementTypes.filter(
-        (measurementType) =>
-          this.$i18n.te(measurementType.abbreviation) === true
-      )
-
-      // add translation as label property
-      measurementTypes.map((measurementType) => {
-        measurementType.label = this.$i18n.t(measurementType.abbreviation)
-      })
-
-      // sort by label
-      var sortedSMs = measurementTypes.slice().sort(function(a, b) {
-        if (a.label.toLowerCase() > b.label.toLowerCase()) {
-          return 1
-        }
-        if (b.label.toLowerCase() > a.label.toLowerCase()) {
-          return -1
-        }
-        return 0
-      })
-      return sortedSMs
-    },
+    ...mapGetters('taxonomy', ['alertRulesList']),
     calcPrefix() {
       var translateTerm = this.alertRulesList.calculations[
         this.formula.calculation
       ]
       return this.$i18n.t(translateTerm) + ' ' + this.$i18n.t('of') + ' '
     },
-    calculations() {
-      return this.formatFromTaxonomyObject(this.alertRulesList.calculations)
-    },
-    comparators() {
-      return this.formatFromTaxonomyObject(this.alertRulesList.comparators)
-    },
-    comparisons() {
-      return this.formatFromTaxonomyObject(this.alertRulesList.comparisons)
-    },
-    defaultSensorMeasurements() {
-      // check if measurement type is a default measurement type for creating alert rules
-      return this.allSensorMeasurements.filter(
-        (measurementType) => measurementType.show_in_alerts
-      )
-    },
     measurement() {
-      return this.sensorMeasurementsList.filter(
+      return this.allSensorMeasurements.filter(
         (measurement) => measurement.id === this.formula.measurement_id
       )[0]
     },
@@ -301,12 +254,6 @@ export default {
     notFinalFormula() {
       return this.index !== this.nrOfFormulas - 1
     },
-    requiredRule: function() {
-      return [
-        (v) =>
-          !!v || this.$i18n.t('this_field') + ' ' + this.$i18n.t('is_required'),
-      ]
-    },
     thresholdValueIsNaN() {
       return isNaN(this.formula.threshold_value)
     },
@@ -315,31 +262,11 @@ export default {
     deleteFormula(index) {
       this.$emit('delete-formula', index)
     },
-    formatFromTaxonomyObject(object) {
-      var formattedArray = []
-      Object.entries(object).map(([key, value]) => {
-        formattedArray.push({
-          short: key,
-          full: this.$i18n.t(value),
-        })
-      })
-      return formattedArray
-    },
     getComparisonText(item) {
       return item.full + (item.short === 'abs_dif' ? '**' : '')
     },
-    getLetter(index) {
-      var letters = ['A', 'B', 'C', 'D']
-      return letters[index]
-    },
     getText(item) {
       return item.label + ' (' + item.abbreviation + ')'
-    },
-    setAlertRuleEdited(bool) {
-      this.$store.commit('alerts/setData', {
-        prop: 'alertRuleEdited',
-        value: bool,
-      })
     },
   },
 }

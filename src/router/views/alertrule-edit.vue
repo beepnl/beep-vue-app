@@ -196,7 +196,7 @@
               :formula="formula"
               :index="i"
               :nr-of-formulas="activeAlertRule.formulas.length"
-              :calculation-minutes="activeAlertRule.calculation_minutes"
+              :calculation-minutes-value="activeAlertRule.calculation_minutes"
               @delete-formula="deleteFormula($event)"
             />
           </ZoomCenterTransition>
@@ -319,6 +319,7 @@ import { mapGetters } from 'vuex'
 import Layout from '@layouts/back.vue'
 import { ZoomCenterTransition } from 'vue2-transitions'
 import {
+  alertRuleEditHelpers,
   convertComma,
   readAlertRules,
   readDevicesIfNotPresent,
@@ -336,6 +337,7 @@ export default {
     Treeselect,
   },
   mixins: [
+    alertRuleEditHelpers,
     convertComma,
     momentHumanize,
     readAlertRules,
@@ -369,7 +371,7 @@ export default {
   computed: {
     ...mapGetters('alerts', ['alertRules', 'alertRuleEdited']),
     ...mapGetters('devices', ['devices']),
-    ...mapGetters('taxonomy', ['alertRulesList', 'sensorMeasurementsList']),
+    ...mapGetters('taxonomy', ['alertRulesList']),
     // alertOnOccurencesItems() {
     //   var occArray = []
     //   for (var i = 1; i < 11; i++) {
@@ -436,21 +438,6 @@ export default {
         }
       },
     },
-    calculationMinutes() {
-      return this.formatFromTaxonomyArray(this.alertRulesList.calc_minutes)
-    },
-    comparators() {
-      return this.formatFromTaxonomyObject(this.alertRulesList.comparators)
-    },
-    comparisons() {
-      return this.formatFromTaxonomyObject(this.alertRulesList.comparisons)
-    },
-    defaultSensorMeasurements() {
-      // check if measurement type is a default measurement type for creating alert rules
-      return this.sensorMeasurementsList.filter(
-        (measurementType) => measurementType.show_in_alerts
-      )
-    },
     devicesInterval() {
       if (this.numberOfSortedDevices !== null) {
         var intervalArray = []
@@ -481,9 +468,6 @@ export default {
       } else {
         return null
       }
-    },
-    hours() {
-      return this.formatFromTaxonomyArray(this.alertRulesList.exclude_hours)
     },
     id() {
       return parseInt(this.$route.params.id)
@@ -518,12 +502,6 @@ export default {
         acc += apiary.children.length
         return acc
       }, 0)
-    },
-    requiredRule: function() {
-      return [
-        (v) =>
-          !!v || this.$i18n.t('this_field') + ' ' + this.$i18n.t('is_required'),
-      ]
     },
     sortedDevices() {
       var apiaryArray = []
@@ -942,30 +920,6 @@ export default {
     deleteFormula(index) {
       this.activeAlertRule.formulas.splice(index, 1)
     },
-    formatFromTaxonomyArray(array) {
-      var formattedArray = []
-      array.map((value, index) => {
-        formattedArray.push({
-          id: index,
-          label: value,
-        })
-      })
-      return formattedArray
-    },
-    formatFromTaxonomyObject(object) {
-      var formattedArray = []
-      Object.entries(object).map(([key, value]) => {
-        formattedArray.push({
-          short: key,
-          full: this.$i18n.t(value),
-        })
-      })
-      return formattedArray
-    },
-    getLetter(index) {
-      var letters = ['A', 'B', 'C', 'D']
-      return letters[index]
-    },
     getTitle() {
       if (this.alertruleCreateMode) {
         return this.$i18n.t('New_alertrule')
@@ -979,7 +933,7 @@ export default {
       return formula.period !== undefined && formula.period !== null
     },
     measurement(formula) {
-      return this.sensorMeasurementsList.filter(
+      return this.allSensorMeasurements.filter(
         (measurement) => measurement.id === formula.measurement_id
       )[0]
     },
@@ -1042,12 +996,6 @@ export default {
       }
       this.activeAlertRule = alertRule
       this.setAlertRuleEdited(false)
-    },
-    setAlertRuleEdited(bool) {
-      this.$store.commit('alerts/setData', {
-        prop: 'alertRuleEdited',
-        value: bool,
-      })
     },
     validateText(value, property, maxLength) {
       if (value !== null && value.length > maxLength + 1) {

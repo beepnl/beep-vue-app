@@ -1,6 +1,97 @@
 import Api from '@api/Api'
 import { mapGetters } from 'vuex'
 
+export const alertRuleEditHelpers = {
+  computed: {
+    ...mapGetters('taxonomy', ['alertRulesList', 'sensorMeasurementsList']),
+    allSensorMeasurements() {
+      var measurementTypes = this.sensorMeasurementsList
+
+      // check if translation exists, otherwise don't display the measurement type (note: measurement CAN be weather type now)
+      measurementTypes = measurementTypes.filter(
+        (measurementType) =>
+          this.$i18n.te(measurementType.abbreviation) === true
+      )
+
+      // add translation as label property
+      measurementTypes.map((measurementType) => {
+        measurementType.label = this.$i18n.t(measurementType.abbreviation)
+      })
+
+      // sort by label
+      var sortedSMs = measurementTypes.slice().sort(function(a, b) {
+        if (a.label.toLowerCase() > b.label.toLowerCase()) {
+          return 1
+        }
+        if (b.label.toLowerCase() > a.label.toLowerCase()) {
+          return -1
+        }
+        return 0
+      })
+      return sortedSMs
+    },
+    calculationMinutes() {
+      return this.formatFromTaxonomyArray(this.alertRulesList.calc_minutes)
+    },
+    calculations() {
+      return this.formatFromTaxonomyObject(this.alertRulesList.calculations)
+    },
+    comparators() {
+      return this.formatFromTaxonomyObject(this.alertRulesList.comparators)
+    },
+    comparisons() {
+      return this.formatFromTaxonomyObject(this.alertRulesList.comparisons)
+    },
+    defaultSensorMeasurements() {
+      // check if measurement type is a default measurement type for creating alert rules
+      return this.allSensorMeasurements.filter(
+        (measurementType) => measurementType.show_in_alerts
+      )
+    },
+    hours() {
+      return this.formatFromTaxonomyArray(this.alertRulesList.exclude_hours)
+    },
+    requiredRule() {
+      return [
+        (v) =>
+          !!v || this.$i18n.t('this_field') + ' ' + this.$i18n.t('is_required'),
+      ]
+    },
+  },
+  methods: {
+    formatFromTaxonomyArray(array) {
+      var formattedArray = []
+      array.map((value, index) => {
+        formattedArray.push({
+          id: index,
+          label: value,
+        })
+      })
+      return formattedArray
+    },
+    formatFromTaxonomyObject(object) {
+      var formattedArray = []
+      Object.entries(object).map(([key, value]) => {
+        formattedArray.push({
+          short: key,
+          full: this.$i18n.t(value),
+        })
+      })
+      return formattedArray
+    },
+    getLetter(index) {
+      var letters = ['A', 'B', 'C', 'D']
+      return letters[index]
+    },
+    setAlertRuleEdited(bool) {
+      this.$store.commit('alerts/setData', {
+        prop: 'alertRuleEdited',
+        value: bool,
+      })
+    },
+  },
+}
+
 export const checkAlerts = {
   computed: {
     ...mapGetters('alerts', [

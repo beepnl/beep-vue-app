@@ -621,7 +621,7 @@ const translations = {
   alertrule_main_sentence_2:
     '[calculation] [measurement_quantity] [comparison] [comparator] [threshold_value][measurement_unit]',
   alertrule_main_sentence_2_with_period:
-    '[calculation] [measurement_quantity] [comparison] over de [period] [comparator] [threshold_value][measurement_unit]',
+    '[calculation] [measurement_quantity] [comparison] [period] [comparator] [threshold_value][measurement_unit]',
   alertrule_active_sentence:
     'Deze berekening wordt [calculation_minutes] uitgevoerd',
   alertrule_active_no_email_sentence:
@@ -636,8 +636,8 @@ const translations = {
     'Deze notificatie is uitgeschakeld tijdens de uren: [exclude_hours]. ',
   alertrule_exclude_hives_sentence:
     'Deze notificatie is uitgeschakeld voor deze bijenkasten: [exclude_hive_ids].',
-  Past_days: 'afgelopen [nr_of_days]',
-  Future_days: 'aankomende [nr_of_days]',
+  Past_days: 'over de afgelopen [nr_of_days]',
+  Future_days: 'over de aankomende [nr_of_days]',
   min: 'minimum',
   max: 'maximum',
   ave: 'gemiddelde',
