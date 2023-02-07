@@ -11,20 +11,25 @@
         <v-row>
           <v-col
             v-if="multipleFormulas"
-            class="d-flex align-center"
-            cols="6"
+            :class="'d-flex ' + (mobile ? 'align-start' : 'align-center')"
+            cols="2"
             sm="1"
-            md="1"
           >
-            <div class="d-flex align-center">
-              <v-btn class="mx-1 cursor-default" fab small dark color="accent">
+            <div>
+              <v-btn
+                class="ml-n2 mr-sm-3 mx-md-1 cursor-default"
+                fab
+                small
+                dark
+                color="accent"
+              >
                 <v-icon dark>
                   {{ getLetter(index) }}
                 </v-icon>
               </v-btn>
             </div>
           </v-col>
-          <v-col cols="12" sm="6" md="2">
+          <v-col cols="10" sm="8" md="2">
             <div class="d-flex justify-space-between">
               <div
                 class="beep-label mb-0 mt-3px"
@@ -64,7 +69,7 @@
             ></div>
           </v-col>
 
-          <v-col cols="12" sm="6" md="2">
+          <v-col cols="6" sm="4" md="2">
             <v-select
               v-model="formula.calculation"
               :items="calculations"
@@ -94,7 +99,7 @@
             ></div>
           </v-col>
 
-          <v-col cols="12" sm="5" md="2">
+          <v-col cols="6" sm="4" md="2">
             <v-select
               v-model="formula.comparison"
               :items="comparisons"
@@ -112,7 +117,7 @@
             ></div>
           </v-col>
 
-          <v-col cols="6" sm="3" md="2" xl="1" class="d-flex justify-start">
+          <v-col cols="12" sm="4" md="2" xl="1" class="d-flex justify-start">
             <div class="mt-3px">
               <div
                 class="beep-label"
@@ -131,7 +136,7 @@
             </div>
           </v-col>
 
-          <v-col cols="6" sm="3" md="1">
+          <v-col cols="6" sm="4" md="1">
             <v-select
               v-model="formula.comparator"
               :items="comparators"
@@ -143,7 +148,7 @@
             ></v-select>
           </v-col>
 
-          <v-col cols="6" sm="3" md="2" xl="1" class="d-flex justify-start">
+          <v-col cols="6" sm="4" md="2" xl="1" class="d-flex justify-start">
             <div class="mt-3px">
               <div
                 :class="`beep-label ${thresholdValueIsNaN ? 'red--text' : ''}`"
