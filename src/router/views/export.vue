@@ -641,7 +641,7 @@ export default {
         .format('ll')
     },
     setInitialDeviceId() {
-      if (this.selectedDeviceId === null && this.devices.length > 0) {
+      if (isNaN(this.selectedDeviceId) && this.devices.length > 0) {
         this.selectedDeviceId = this.devices[0].id
       }
     },
