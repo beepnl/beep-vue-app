@@ -76,7 +76,7 @@
                 :href="csvLink"
                 target="_blank"
               >
-                <v-icon left>mdi-download</v-icon>{{ $t('Open_csv') }}</v-btn
+                <v-icon left>mdi-export</v-icon>{{ $t('Open_csv') }}</v-btn
               >
             </div>
           </v-col>
@@ -219,6 +219,9 @@
             <v-col class="d-flex justify-space-between" cols="12">
               <v-spacer></v-spacer>
               <v-btn
+                v-if="
+                  !(csvDeviceDataLink && browserDoesNotSupportDownloadTrick)
+                "
                 :disabled="
                   !dataAvailable ||
                     dates[0] === dates[1] ||
@@ -242,6 +245,17 @@
                 <v-icon v-if="!showDeviceDataLoadingIcon" left
                   >mdi-download</v-icon
                 >{{ $t('download') + ' ' + $t('Sensor_measurements') }}</v-btn
+              >
+              <v-btn
+                v-if="csvDeviceDataLink && browserDoesNotSupportDownloadTrick"
+                tile
+                outlined
+                color="accent"
+                class="mt-3 mt-sm-0 ml-sm-3 save-button-mobile-wide"
+                :href="csvDeviceDataLink"
+                target="_blank"
+              >
+                <v-icon left>mdi-export</v-icon>{{ $t('Open_csv') }}</v-btn
               >
             </v-col>
           </v-row>
@@ -311,6 +325,7 @@ export default {
       includeGroupData: false,
       includeSensorData: false,
       csvLink: null,
+      csvDeviceDataLink: null,
     }
   },
   computed: {
@@ -483,7 +498,13 @@ export default {
         this.showEmailLoadingIcon = false
         this.showDownloadLoadingIcon = false
 
-        if (response.data.link) this.csvLink = response.data.link
+        if (response.data.link) {
+          const responseLink = response.data.link
+          this.csvLink =
+            responseLink.indexOf('https://') > -1
+              ? responseLink
+              : this.baseApiUrl + responseLink
+        }
 
         // trick to download returned csv link (doesn't work via v-btn because it has already been clicked)
         // does not work for safari
@@ -493,6 +514,10 @@ export default {
           aLink.setAttribute('download', this.csvLink)
           document.body.appendChild(aLink)
           aLink.click()
+          if (response.status === 200) {
+            this.showSuccessMessage = true
+            this.successMessage = this.$i18n.t('excel_file_saved')
+          }
         } else if (response.data.email === 1) {
           this.showSuccessMessage = true
           this.successMessage = this.$i18n.t('export_email_sent')
@@ -507,6 +532,7 @@ export default {
     },
     async exportDeviceData() {
       this.errorMessage = null
+      this.csvDeviceDataLink = null
       this.showDeviceDataLoadingIcon = true
       var payload = {
         device_id: this.selectedDeviceId,
@@ -523,16 +549,19 @@ export default {
           this.errorMessage = this.$i18n.t('too_much_data')
         }
         const responseLink = response.data.link
-        const csvLink =
+        this.csvDeviceDataLink =
           responseLink.indexOf('https://') > -1
             ? responseLink
             : this.baseApiUrl + responseLink
         // trick to download returned csv link (doesn't work via v-btn because it has already been clicked)
-        var link = document.createElement('a')
-        link.href = csvLink
-        link.setAttribute('download', csvLink)
-        document.body.appendChild(link)
-        link.click()
+        // does not work for safari
+        if (!this.browserDoesNotSupportDownloadTrick) {
+          var link = document.createElement('a')
+          link.href = this.csvDeviceDataLink
+          link.setAttribute('download', this.csvDeviceDataLink)
+          document.body.appendChild(link)
+          link.click()
+        }
         if (response.status === 200) {
           this.showSuccessMessage = true
           this.successMessage = this.$i18n.t('excel_file_saved')
