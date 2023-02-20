@@ -2,8 +2,31 @@
   <Layout :title="$t('Whats_new')">
     <v-container>
       <div class="overline mb-1"
-        ><span class="lowercase">v</span>3.1.1 (20-02-2023) - Current
+        ><span class="lowercase">v</span>3.1.2 (20-02-2023) - Current
         version</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li
+            ><router-link :to="{ name: 'export' }">Data export:</router-link>
+            Excel export has been updated with several options:
+            <ul>
+              <li>add collaboration group data to export file</li>
+              <li
+                >add (file links to) measurement data and weather data to export
+                file</li
+              >
+              <li
+                >download export file directly (in addition to the email
+                option)</li
+              >
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>3.1.1 (20-02-2023)</div
       >
       <div class="rounded-border mb-4">
         <ul>

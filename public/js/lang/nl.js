@@ -350,7 +350,7 @@ const translations = {
   Email_export: 'Email CSV',
   Download_csv: 'Download CSV',
   Open_csv: 'Open CSV',
-  Include_group_data: 'Voeg groepsdata toe aan export',
+  Include_group_data: 'Voeg samenwerkingsgroepsdata toe aan export',
   Include_sensor_data:
     'Voeg links naar bestanden met sensordata toe aan export',
 
