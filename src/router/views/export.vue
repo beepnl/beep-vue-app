@@ -7,29 +7,78 @@
           <v-col cols="12">
             <p v-text="$t('Export_your_data')"></p>
           </v-col>
+          <v-col cols="12">
+            <v-checkbox
+              v-model="includeGroupData"
+              :label="$t('Include_group_data')"
+              class="mt-1 mr-6"
+              hide-details
+            ></v-checkbox>
+            <v-checkbox
+              v-model="includeSensorData"
+              :label="$t('Include_sensor_data')"
+              class="mt-1"
+              hide-details
+            ></v-checkbox>
+          </v-col>
         </v-row>
         <v-row>
           <v-col class="d-flex justify-space-between" cols="12">
             <v-spacer></v-spacer>
-            <v-btn
-              tile
-              outlined
-              color="accent"
-              class="save-button-mobile-wide"
-              :disabled="showDataLoadingIcon"
-              @click="exportData"
-            >
-              <v-progress-circular
-                v-if="showDataLoadingIcon"
-                class="ml-n1 mr-2"
-                size="18"
-                width="2"
-                color="disabled"
-                indeterminate
-              />
-              <v-icon v-if="!showDataLoadingIcon" left>mdi-download</v-icon
-              >{{ $t('Data_export') }}</v-btn
-            >
+            <div>
+              <v-btn
+                tile
+                outlined
+                color="accent"
+                class="save-button-mobile-wide"
+                :disabled="showEmailLoadingIcon"
+                @click="exportData(0)"
+              >
+                <v-progress-circular
+                  v-if="showEmailLoadingIcon"
+                  class="ml-n1 mr-2"
+                  size="18"
+                  width="2"
+                  color="disabled"
+                  indeterminate
+                />
+                <v-icon v-if="!showEmailLoadingIcon" left
+                  >mdi-email-outline</v-icon
+                >{{ $t('Email_export') }}</v-btn
+              >
+              <v-btn
+                v-if="!(csvLink && browserDoesNotSupportDownloadTrick)"
+                tile
+                outlined
+                color="accent"
+                :disabled="showDownloadLoadingIcon"
+                class="mt-3 mt-sm-0 ml-sm-3 save-button-mobile-wide"
+                @click="exportData(1)"
+              >
+                <v-progress-circular
+                  v-if="showDownloadLoadingIcon"
+                  class="ml-n1 mr-2"
+                  size="18"
+                  width="2"
+                  color="disabled"
+                  indeterminate
+                />
+                <v-icon v-if="!showDownloadLoadingIcon" left
+                  >mdi-download</v-icon
+                >{{ $t('Download_csv') }}</v-btn
+              >
+              <v-btn
+                v-if="csvLink && browserDoesNotSupportDownloadTrick"
+                tile
+                outlined
+                color="accent"
+                class="mt-3 mt-sm-0 ml-sm-3 save-button-mobile-wide"
+                :href="csvLink"
+                target="_blank"
+              >
+                <v-icon left>mdi-download</v-icon>{{ $t('Open_csv') }}</v-btn
+              >
+            </div>
           </v-col>
         </v-row>
       </div>
@@ -252,16 +301,49 @@ export default {
       errorMessage: null,
       successMessage: null,
       showSuccessMessage: false,
-      showDataLoadingIcon: false,
+      showEmailLoadingIcon: false,
+      showDownloadLoadingIcon: false,
       showDeviceDataLoadingIcon: false,
       ready: false,
       baseApiUrl:
         process.env.VUE_APP_BASE_API_URL ||
         process.env.VUE_APP_BASE_API_URL_FALLBACK,
+      includeGroupData: false,
+      includeSensorData: false,
+      csvLink: null,
     }
   },
   computed: {
     ...mapGetters('devices', ['devices']),
+    browser() {
+      var test = function(regexp) {
+        return regexp.test(window.navigator.userAgent)
+      }
+      switch (true) {
+        case test(/edg/i):
+          return 'Microsoft Edge'
+        case test(/trident/i):
+          return 'Microsoft Internet Explorer'
+        case test(/firefox|fxios/i):
+          return 'Mozilla Firefox'
+        case test(/opr\//i):
+          return 'Opera'
+        case test(/ucbrowser/i):
+          return 'UC Browser'
+        case test(/samsungbrowser/i):
+          return 'Samsung Browser'
+        case test(/chrome|chromium|crios/i):
+          return 'Google Chrome'
+        case test(/safari/i):
+          return 'Apple Safari'
+        default:
+          return 'Other'
+      }
+      // return navigator.userAgent
+    },
+    browserDoesNotSupportDownloadTrick() {
+      return this.browser === 'Apple Safari'
+    },
     dataAvailable() {
       return this.measurementTypes !== null
         ? Object.keys(this.measurementTypes).length > 0
@@ -383,14 +465,35 @@ export default {
       })
   },
   methods: {
-    async exportData() {
+    async exportData(link = 0) {
       this.errorMessage = null
-      this.showDataLoadingIcon = true
+      this.csvLink = null
+      this.showEmailLoadingIcon = link === 0
+      this.showDownloadLoadingIcon = link === 1
       this.showSuccessMessage = false
       try {
-        const response = await Api.readRequest('/export')
-        this.showDataLoadingIcon = false
-        if (response.data.file) {
+        const response = await Api.readRequest(
+          '/export?groupdata=' +
+            (this.includeGroupData ? '1' : '0') +
+            '&sensordata=' +
+            (this.includeSensorData ? '1' : '0') +
+            '&link=' +
+            link
+        )
+        this.showEmailLoadingIcon = false
+        this.showDownloadLoadingIcon = false
+
+        if (response.data.link) this.csvLink = response.data.link
+
+        // trick to download returned csv link (doesn't work via v-btn because it has already been clicked)
+        // does not work for safari
+        if (response.data.link && !this.browserDoesNotSupportDownloadTrick) {
+          var aLink = document.createElement('a')
+          aLink.href = this.csvLink
+          aLink.setAttribute('download', this.csvLink)
+          document.body.appendChild(aLink)
+          aLink.click()
+        } else if (response.data.email === 1) {
           this.showSuccessMessage = true
           this.successMessage = this.$i18n.t('export_email_sent')
         }
@@ -398,7 +501,8 @@ export default {
       } catch (error) {
         console.log('Error: ', error)
         this.errorMessage = this.$i18n.t('no_data')
-        this.showDataLoadingIcon = false
+        this.showEmailLoadingIcon = false
+        this.showDownloadLoadingIcon = false
       }
     },
     async exportDeviceData() {

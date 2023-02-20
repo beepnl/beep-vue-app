@@ -382,7 +382,13 @@ const translations = {
   /* user */
   Data_export: 'Esporta i dati',
   Export_your_data:
-    'Esporta tutti i dati del tuo account BEEP e invia una e-mail con allegati i dati in formato Excel. Il file Excel ha vari fogli di lavoro, contenenti i tuoi dati personali, alveari, posizioni e visite.',
+    "Esporta tutti i dati del tuo account BEEP e invia una e-mail con allegati i dati in formato Excel (OR download the Excel file via the 'Download CSV' button). Il file Excel ha vari fogli di lavoro, contenenti i tuoi dati personali, alveari, posizioni e visite.",
+  Email_export: 'Email CSV',
+  Download_csv: 'Download CSV',
+  Open_csv: 'Open CSV',
+  Include_group_data: 'Add collaboration group data to export',
+  Include_sensor_data: 'Add measurement data file links to export',
+
   Terms_of_use: 'Condizioni di servizio',
   accept_policy:
     'Accetto le condizioni di servizio proposte da BEEP, che sono compatibili con la normativa Europea vigente in materia di Privacy',

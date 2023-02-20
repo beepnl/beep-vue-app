@@ -327,7 +327,12 @@ const translations = {
   /* user */
   Data_export: 'Data export',
   Export_your_data:
-    'Export all data that is in your BEEP account and send an email containing the data as an Excel file. The Excel file has different tabs containing your personal, hive, location, and inspection data.',
+    'Export all data that is in your BEEP account and send an email containing the data as an Excel file OR download the Excel file here. The Excel file has different tabs containing your personal, hive, location, and inspection data.',
+  Email_export: 'Email CSV',
+  Download_csv: 'Download CSV',
+  Open_csv: 'Open CSV',
+  Include_group_data: 'Add collaboration group data to export',
+  Include_sensor_data: 'Add measurement data file links to export',
 
   accept_policy:
     'I accept the BEEP terms of service, that are compatible with the new European privacy law',

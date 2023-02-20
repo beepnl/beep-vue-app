@@ -369,7 +369,12 @@ const translations = {
   /* user */
   Data_export: 'Εξαγωγή δεδομένων',
   Export_your_data:
-    'Εξαγάγετε όλα τα δεδομένα που βρίσκονται στον λογαριασμό BEEP και στείλτε ένα email που περιέχει τα δεδομένα ως αρχείο Excel. Το αρχείο Excel έχει διαφορετικές καρτέλες που περιέχουν προσωπικά δεδομένα, δεδομένα κυψέλης, τοποθεσίας και επιθεώρησης.',
+    "Εξαγάγετε όλα τα δεδομένα που βρίσκονται στον λογαριασμό BEEP και στείλτε ένα email που περιέχει τα δεδομένα ως αρχείο Excel (OR download the Excel file via the 'Download CSV' button). Το αρχείο Excel έχει διαφορετικές καρτέλες που περιέχουν προσωπικά δεδομένα, δεδομένα κυψέλης, τοποθεσίας και επιθεώρησης.",
+  Email_export: 'Email CSV',
+  Download_csv: 'Download CSV',
+  Open_csv: 'Open CSV',
+  Include_group_data: 'Add collaboration group data to export',
+  Include_sensor_data: 'Add measurement data file links to export',
 
   Terms_of_use: 'Όροι χρήσης',
   accept_policy:
