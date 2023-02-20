@@ -523,7 +523,7 @@
                     {{ $t('View_data') }}
                   </v-btn>
                 </router-link>
-                <v-btn
+                <!-- <v-btn
                   v-if="
                     selectedFlashLog !== null &&
                       selectedFlashLog.persisted_block_ids_array !==
@@ -562,7 +562,7 @@
                     >mdi-refresh</v-icon
                   >
                   {{ $t('undo_import') }}</v-btn
-                >
+                > -->
               </template>
 
               <template v-slot:[`item.export`]="{ item }">

@@ -326,7 +326,12 @@ const translations = {
   /* user */
   Data_export: 'Data eksport',
   Export_your_data:
-    'Eksporter alle data som er i BEEP-kontoen din og send en e-post som inneholder dataene som en Excel-fil. Excel-filen har forskjellige faner som inneholder dine personlige data, bikube, plassering og inspeksjons data.',
+    "Eksporter alle data som er i BEEP-kontoen din og send en e-post som inneholder dataene som en Excel-fil (OR download the Excel file via the 'Download CSV' button). Excel-filen har forskjellige faner som inneholder dine personlige data, bikube, plassering og inspeksjons data.",
+  Email_export: 'Email CSV',
+  Download_csv: 'Download CSV',
+  Open_csv: 'Open CSV',
+  Include_group_data: 'Add collaboration group data to export',
+  Include_sensor_data: 'Add measurement data file links to export',
 
   accept_policy:
     'Jeg godtar BEEP-vilkårene for bruk, som er kompatible med den nye europeiske personvernloven',
@@ -505,7 +510,7 @@ const translations = {
   click_date_to_edit: 'Klikk på dato for å redigere.',
   accept_policy_1: 'Jeg godtar BEEP ',
   accept_policy_2: ', som er kompatible med den nye europeiske personvernloven',
-  terms_of_use: 'vilkår for bruk',
+  terms_of_use: 'Vilkår for bruk',
   invalid_password:
     'Passord må inneholde minst 8 tegn, en liten bokstav, en stor bokstav, ett tall og ett spesialtegn (\\]{}()?\\-"!@#%&/\\,><\':; |_~`)',
   sensor_definition: 'sensordefinisjon | sensordefinisjoner',

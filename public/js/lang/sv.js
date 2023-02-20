@@ -365,7 +365,12 @@ const translations = {
   /* user */
   Data_export: 'Data export',
   Export_your_data:
-    'Exportera alla data som finns på ditt BEEP konto och skicka ett mail med en Excelfil som innehåller alla data. Excelfilen har olika flikar olika för typer av data (personuppgifter, kupa, plats, och inspektionsdata).',
+    "Exportera alla data som finns på ditt BEEP konto och skicka ett mail med en Excelfil som innehåller alla data (OR download the Excel file via the 'Download CSV' button). Excelfilen har olika flikar olika för typer av data (personuppgifter, kupa, plats, och inspektionsdata).",
+  Email_export: 'Email CSV',
+  Download_csv: 'Download CSV',
+  Open_csv: 'Open CSV',
+  Include_group_data: 'Add collaboration group data to export',
+  Include_sensor_data: 'Add measurement data file links to export',
 
   Terms_of_use: 'Användaravtal',
   accept_policy:

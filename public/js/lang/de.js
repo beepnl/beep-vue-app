@@ -381,8 +381,14 @@ const translations = {
   /* user */
   Data_export: 'Daten Export',
   Export_your_data:
-    'Exportiere alle Daten aus Deinem Account per Email (Exceldatei).',
+    "Exportiere alle Daten aus Deinem Account per Email (Exceldatei) (OR download the Excel file via the 'Download CSV' button).",
   Terms_of_use: 'Nutzungsbedingungen',
+  Email_export: 'Email CSV',
+  Download_csv: 'Download CSV',
+  Open_csv: 'Open CSV',
+  Include_group_data: 'Add collaboration group data to export',
+  Include_sensor_data: 'Add measurement data file links to export',
+
   accept_policy:
     'Ich akzeptiere die BEEP-Nutzungsbedingungen, die mit dem neuen europäischen Datenschutzgesetz vereinbar sind',
   policy_url: 'https://beep.nl/terms-of-service',

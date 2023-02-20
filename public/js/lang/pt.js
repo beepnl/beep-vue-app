@@ -404,7 +404,12 @@ const translations = {
   /* user */
   Data_export: 'Exportação de dados',
   Export_your_data:
-    'Exportar todos os dados que estão na sua conta BEEP e enviar um email contendo os dados como um ficheiro Excel. O ficheiro Excel possui seções diferentes que contêm os seus dados pessoais, das colmeias, de localização e de inspeção.',
+    "Exportar todos os dados que estão na sua conta BEEP e enviar um email contendo os dados como um ficheiro Excel (OR download the Excel file via the 'Download CSV' button). O ficheiro Excel possui seções diferentes que contêm os seus dados pessoais, das colmeias, de localização e de inspeção.",
+  Email_export: 'Email CSV',
+  Download_csv: 'Download CSV',
+  Open_csv: 'Open CSV',
+  Include_group_data: 'Add collaboration group data to export',
+  Include_sensor_data: 'Add measurement data file links to export',
 
   Terms_of_use: 'Termos de serviço',
   accept_policy:

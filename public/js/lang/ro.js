@@ -384,7 +384,13 @@ const translations = {
   /* user */
   Data_export: 'Exportarea datelor',
   Export_your_data:
-    'Exportați toate datele din contul dvs. BEEP și trimiteți un e-mail care conține datele într-un fișier Excel. Fișierul va avea file diferite care conțin datele dvs. personale despre stup, locație și inspecție. ',
+    "Exportați toate datele din contul dvs. BEEP și trimiteți un e-mail care conține datele într-un fișier Excel (OR download the Excel file via the 'Download CSV' button). Fișierul va avea file diferite care conțin datele dvs. personale despre stup, locație și inspecție. ",
+  Email_export: 'Email CSV',
+  Download_csv: 'Download CSV',
+  Open_csv: 'Open CSV',
+  Include_group_data: 'Add collaboration group data to export',
+  Include_sensor_data: 'Add measurement data file links to export',
+
   Terms_of_use: 'Termenii serviciului',
   accept_policy:
     'Accept termenii serviciului BEEP, care sunt compatibili cu noua lege Europeană privind confidențialitatea datelor.',
