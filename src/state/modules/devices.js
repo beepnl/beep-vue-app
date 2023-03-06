@@ -8,7 +8,7 @@ const resource = createResource({ path: 'devices' })
 export const state = {
   ...resource.state,
   devices: [],
-  devicesPresent: true,
+  devicesChecked: false,
   selectedDeviceId: null,
   selectedFlashLog: null,
   logSearch: null,
@@ -18,8 +18,8 @@ export const getters = {
   devices: (state) => {
     return state.devices
   },
-  devicesPresent: (state) => {
-    return state.devicesPresent
+  devicesChecked: (state) => {
+    return state.devicesChecked
   },
   selectedDeviceId: (state) => {
     return state.selectedDeviceId
@@ -41,7 +41,7 @@ export const mutations = {
   },
   resetState: function(state) {
     state.devices = []
-    state.devicesPresent = true
+    state.devicesChecked = false
     state.selectedDeviceId = null
     state.selectedFlashLog = null
     state.logSearch = null

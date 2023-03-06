@@ -656,7 +656,6 @@ import { momentify } from '@mixins/momentMixin'
 import {
   convertComma,
   readApiariesAndGroups,
-  readDevices,
   readGeneralInspections,
   readTaxonomy,
 } from '@mixins/methodsMixin'
@@ -676,7 +675,6 @@ export default {
     convertComma,
     momentify,
     readApiariesAndGroups,
-    readDevices,
     readGeneralInspections,
     readTaxonomy,
   ],
@@ -775,15 +773,20 @@ export default {
     })
   },
   methods: {
-    async getDevicesForList() {
+    async getDevicesForList(save = false) {
       try {
+        this.$store.commit('devices/setData', {
+          prop: 'devicesChecked',
+          value: true,
+        })
+
         const response = await Api.readRequest('/devices')
         var devices = response.data
 
-        if (devices.length > 0) {
+        if (save) {
           this.$store.commit('devices/setData', {
-            prop: 'devicesPresent',
-            value: true,
+            prop: 'devices',
+            value: devices,
           })
         }
 
@@ -803,16 +806,7 @@ export default {
         // NB don't commit these devices to store as they contain extra delete property which will yield vuex mutation errors later
         return true
       } catch (error) {
-        if (error.response) {
-          if (error.response.data === 'no_devices_found') {
-            this.$store.commit('devices/setData', {
-              prop: 'devicesPresent',
-              value: false,
-            })
-          }
-        } else {
-          console.log('Error: ', error)
-        }
+        console.log('Error: ', error)
       }
     },
     async saveDevices() {
@@ -828,8 +822,7 @@ export default {
             this.$i18n.tc('Error', 1) + ': ' + this.$i18n.t('not_saved_error')
           this.showLoadingIcon = false
         }
-        this.getDevicesForList().then(() => {
-          this.readDevices()
+        this.getDevicesForList(true).then(() => {
           this.showLoadingIcon = false
         })
         this.readGeneralInspections()

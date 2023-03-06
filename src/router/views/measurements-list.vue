@@ -535,7 +535,7 @@ import MeasurementsDateSelection from '@components/measurements-date-selection.v
 import Treeselect from '@riophae/vue-treeselect'
 import {
   checkAlerts,
-  readDevicesIfNotPresent,
+  readDevicesIfNotChecked,
   readGeneralInspectionsIfNotPresent,
   readTaxonomy,
 } from '@mixins/methodsMixin'
@@ -565,7 +565,7 @@ export default {
     momentFormat,
     momentFormatUtcToLocal,
     momentFromNow,
-    readDevicesIfNotPresent,
+    readDevicesIfNotChecked,
     readGeneralInspectionsIfNotPresent,
     readTaxonomy,
     sensorMixin,
@@ -1018,7 +1018,6 @@ export default {
   },
   created() {
     this.initLocale = this.userLocale
-    this.readTaxonomy()
     if (this.queriedChartCols !== null) {
       this.chartCols = this.queriedChartCols
     } else if (localStorage.beepChartCols) {
@@ -1040,35 +1039,37 @@ export default {
       this.selectedDeviceId = this.preselectedDeviceId
     }
     this.stopTimer()
-    this.checkAlertRulesAndAlerts() // for alerts-tab badge AND alert-lines
-      .then(() => {
-        this.readGeneralInspectionsIfNotPresent().then(() => {
-          this.readDevicesIfNotPresent()
-            .then(() => {
-              if (
-                this.queriedDate !== null &&
-                this.queriedDate.length === 10 &&
-                !isNaN(this.preselectedDeviceId)
-              ) {
-                this.selectDate(this.queriedDate)
-              } else if (this.devices.length > 0) {
-                if (this.queriedInterval !== undefined) {
-                  this.interval = this.queriedInterval
-                  this.timeIndex = this.queriedTimeIndex
-                  this.dates =
-                    this.queriedStart && this.queriedEnd
-                      ? [this.queriedStart, this.queriedEnd]
-                      : []
-                }
+    this.readTaxonomy().then(() => {
+      this.checkAlertRulesAndAlerts() // for alerts-tab badge AND alert-lines
+        .then(() => {
+          this.readGeneralInspectionsIfNotPresent().then(() => {
+            this.readDevicesIfNotChecked()
+              .then(() => {
+                if (
+                  this.queriedDate !== null &&
+                  this.queriedDate.length === 10 &&
+                  !isNaN(this.preselectedDeviceId)
+                ) {
+                  this.selectDate(this.queriedDate)
+                } else if (this.devices.length > 0) {
+                  if (this.queriedInterval !== undefined) {
+                    this.interval = this.queriedInterval
+                    this.timeIndex = this.queriedTimeIndex
+                    this.dates =
+                      this.queriedStart && this.queriedEnd
+                        ? [this.queriedStart, this.queriedEnd]
+                        : []
+                  }
 
-                this.setInitialDeviceIdAndLoadData()
-              }
-            })
-            .then(() => {
-              this.ready = true
-            })
+                  this.setInitialDeviceIdAndLoadData()
+                }
+              })
+              .then(() => {
+                this.ready = true
+              })
+          })
         })
-      })
+    })
   },
   beforeDestroy() {
     if (this.timer > 0) {

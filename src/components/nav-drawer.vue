@@ -95,10 +95,10 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { readDevicesIfNotPresent } from '@mixins/methodsMixin'
+import { readDevicesIfNotChecked } from '@mixins/methodsMixin'
 
 export default {
-  mixins: [readDevicesIfNotPresent],
+  mixins: [readDevicesIfNotChecked],
   props: {
     menuItems: {
       type: Array,
@@ -111,7 +111,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters('devices', ['devices', 'devicesPresent']),
+    ...mapGetters('devices', ['devices']),
     currentRoute() {
       return this.$route.name
     },
@@ -225,7 +225,7 @@ export default {
     },
   },
   created() {
-    this.readDevicesIfNotPresent()
+    this.readDevicesIfNotChecked()
   },
   methods: {
     checkRoute(routeName) {
