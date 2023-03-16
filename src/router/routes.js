@@ -160,15 +160,15 @@ export default [
     name: 'checklists',
     component: () => lazyLoadView(import('@views/checklist.vue')),
   },
-  {
-    meta: {
-      authRequired: true,
-      depth: 1,
-    },
-    path: '/dashboard/:id',
-    name: 'dashboard',
-    component: () => lazyLoadView(import('@views/dashboard.vue')),
-  },
+  // {
+  //   meta: {
+  //     authRequired: true,
+  //     depth: 1,
+  //   },
+  //   path: '/dashboard/:id',
+  //   name: 'dashboard',
+  //   component: () => lazyLoadView(import('@views/dashboard.vue')),
+  // },
   {
     meta: {
       authRequired: true,
@@ -178,11 +178,11 @@ export default [
     name: 'dashboards',
     component: () => lazyLoadView(import('@views/dashboards.vue')),
   },
-  {
-    path: '/dashboard/sign-in',
-    name: 'dashboard-sign-in',
-    component: () => lazyLoadView(import('@views/dashboard-sign-in.vue')),
-  },
+  // {
+  //   path: '/dashboard/sign-in',
+  //   name: 'dashboard-sign-in',
+  //   component: () => lazyLoadView(import('@views/dashboard-sign-in.vue')),
+  // },
   {
     meta: {
       authRequired: true,

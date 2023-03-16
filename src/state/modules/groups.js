@@ -11,7 +11,7 @@ export const state = {
     {
       id: '1c987',
       name: 'Overhorst',
-      description: 'Test dashboard',
+      description: 'Test dashboard 1',
       speed: 60,
       interval: 'day',
       show_inspections: true,
@@ -21,7 +21,7 @@ export const state = {
     {
       id: '32Gf6',
       name: 'Dashboard',
-      description: 'Test dashboard 2 met default settings',
+      description: 'Test dashboard 2 with default settings',
       speed: 30,
       interval: 'week',
       show_inspections: false,

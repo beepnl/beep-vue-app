@@ -365,7 +365,7 @@ export default {
       return this.createMode
         ? this.$i18n.t('New_dashboard')
         : this.$i18n.t('Edit_dashboard') +
-            (this.dashboard !== null ? ' - ' + this.dashboard.id : '')
+            (this.dashboard !== null ? ' - ' + this.dashboard.name : '')
     },
     hiveSets() {
       return this.apiaries.concat(this.groups)
