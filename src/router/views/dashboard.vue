@@ -93,7 +93,12 @@
               id="map"
               ref="map"
               :class="
-                'map ' + (ready && !coordinatesPresent ? '--hide' : '--loading')
+                'map ' +
+                  (ready && coordinatesPresent
+                    ? '--portrait'
+                    : ready
+                    ? '--hide'
+                    : '--loading')
               "
             >
             </div>
@@ -149,7 +154,7 @@
             >
               <v-row v-if="landscapeMode" :class="tvAndUp ? 'mt-6' : ''">
                 <v-col cols="5" class="px-1 pt-0 pb-1 pa-xl-3"
-                  ><span v-text="$tc('Location', 1) + ' : '"></span
+                  ><span v-text="$tc('Location', 1) + ': '"></span
                 ></v-col>
                 <v-col cols="7" class="px-1 pt-1 pb-1 pa-xl-3">
                   <div
@@ -171,7 +176,7 @@
                   ></span>
                 </v-col>
                 <v-col cols="5" class="pa-1 pa-xl-3"
-                  ><span v-text="$t('Last_check') + ' : '"></span
+                  ><span v-text="$t('Last_check') + ': '"></span
                 ></v-col>
                 <v-col cols="7" class="pa-1 pa-xl-3"
                   ><span
@@ -488,6 +493,9 @@ export default {
     selectedLocation() {
       this.initMap()
     },
+    landscapeMode() {
+      this.initMap()
+    },
   },
   mounted() {
     this.checkLocalStorage()
@@ -785,7 +793,6 @@ export default {
     toggleLandscapeMode(bool) {
       localStorage.beepdashboardLandscapeMode = bool
       this.landscapeMode = bool
-      this.initMap()
     },
     toggleShowControls() {
       this.showControls = !this.showControls
@@ -940,7 +947,8 @@ export default {
   width: 330px;
   background: $color-primary;
   border: 4px solid $color-primary;
-  &.--landscape {
+  &.--landscape,
+  &.--portrait {
     height: 9vw;
     width: 9vw;
     min-height: 100px;
