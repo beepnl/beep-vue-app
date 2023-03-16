@@ -147,8 +147,10 @@
             </div>
             <div
               :class="
-                'dashboard-inspection dashboard-text-small mt-2 mx-3 ' +
-                  (landscapeMode ? '--landscape' : 'funky-border') +
+                'dashboard-inspection dashboard-text-small mb-lg-2 mx-3 ' +
+                  (landscapeMode
+                    ? '--landscape mt-0'
+                    : '--portrait funky-border mt-3') +
                   (darkMode ? ' sticky-dark-mode' : '')
               "
             >
@@ -402,6 +404,9 @@ export default {
         { name: 'weight', values: this.weightSensors, examples: 4 },
       ]
     },
+    desktopAndUp() {
+      return this.$vuetify.breakpoint.width >= 1200
+    },
     selectedGroup() {
       return this.groups.length > 0 ? this.groups[7] : null // TODO: replace dummy data
     },
@@ -500,8 +505,9 @@ export default {
     landscapeMode() {
       this.initMap()
     },
-    mobile() {
-      this.toggleLandscapeMode(false)
+    desktopAndUp() {
+      console.log('watch desktop size')
+      this.toggleLandscapeMode(this.desktopAndUp)
     },
   },
   mounted() {
@@ -849,10 +855,6 @@ export default {
   }
 }
 
-.dashboard-sticky-row {
-  margin-top: 2%;
-}
-
 .dashboard-header {
   flex-direction: column;
   @include for-tablet-landscape-up {
@@ -883,19 +885,19 @@ export default {
   text-transform: uppercase;
   text-align: left;
   font-weight: 500;
-  font-size: 0.8rem;
+  // font-size: 0.8rem;
   @include for-tablet-landscape-up {
-    font-size: 0.85rem;
+    font-size: 120%;
   }
   @include for-desktop-up {
-    font-size: 0.9rem;
+    font-size: 100%;
   }
   @include for-big-desktop-up {
-    font-size: 1.2rem;
+    font-size: 150%;
   }
-  @include for-tv-up {
-    font-size: 1.5rem;
-  }
+  // @include for-tv-up {
+  //   font-size: 1.5rem;
+  // }
 }
 
 .landscape-section {
@@ -937,6 +939,15 @@ export default {
       .dashboard-text-small {
         color: $color-white; // $color-grey-dark;
       }
+    }
+    .dashboard-section {
+      margin-bottom: 6px;
+      @include for-big-desktop-up {
+        margin-bottom: 40px;
+      }
+    }
+    .dashboard-sticky-row {
+      margin-top: 2%;
     }
   }
   &.--right {
@@ -991,12 +1002,10 @@ export default {
 
 .funky-border {
   padding: 12px 14px;
-  background-color: $color-grey-lightest;
+  background-color: #8e5000; // $color-grey-lightest;
   border-radius: 2% 98% 2% 98% / 98% 1% 99% 2%;
-
-  &.sticky-dark-mode {
-    background-color: $color-accent;
-    color: $color-grey-dark;
+  &.dashboard-text-small {
+    font-size: 110%;
   }
 }
 
