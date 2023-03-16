@@ -152,7 +152,7 @@
                   (darkMode ? ' sticky-dark-mode' : '')
               "
             >
-              <v-row v-if="landscapeMode" :class="tvAndUp ? 'mt-6' : ''">
+              <v-row v-if="landscapeMode" class="dashboard-sticky-row">
                 <v-col cols="5" class="px-1 pt-0 pb-1 pa-xl-3"
                   ><span v-text="$tc('Location', 1) + ': '"></span
                 ></v-col>
@@ -186,7 +186,9 @@
               </v-row>
               <v-row
                 v-if="selectedHive.impression"
-                :class="!landscapeMode ? 'pa-3' : ''"
+                :class="
+                  'dashboard-sticky-row ' + (!landscapeMode ? 'pa-3' : '')
+                "
               >
                 <v-col cols="5" class="pa-1 pa-xl-3"
                   ><span v-text="$t('positive_impression') + ': '"></span
@@ -214,7 +216,9 @@
               </v-row>
               <v-row
                 v-if="selectedHive.notes"
-                :class="!landscapeMode ? 'pa-3' : ''"
+                :class="
+                  'dashboard-sticky-row ' + (!landscapeMode ? 'pa-3' : '')
+                "
               >
                 <v-col cols="5" class="pa-1 pa-xl-3"
                   ><span v-text="$t('Note') + ': '"></span
@@ -495,6 +499,9 @@ export default {
     },
     landscapeMode() {
       this.initMap()
+    },
+    mobile() {
+      this.toggleLandscapeMode(false)
     },
   },
   mounted() {
@@ -842,6 +849,10 @@ export default {
   }
 }
 
+.dashboard-sticky-row {
+  margin-top: 2%;
+}
+
 .dashboard-header {
   flex-direction: column;
   @include for-tablet-landscape-up {
@@ -918,12 +929,13 @@ export default {
       max-width: 33vw !important;
       height: 33vw !important;
       padding: 2.5vw;
+      margin-left: 40px;
     }
     &.sticky-dark-mode {
-      background-color: $color-accent;
+      background-color: #8e5000; // $color-accent;
       .dashboard-text,
       .dashboard-text-small {
-        color: $color-grey-dark;
+        color: $color-white; // $color-grey-dark;
       }
     }
   }
@@ -1058,7 +1070,7 @@ export default {
       box-shadow: inset 0px 0px 22px 35px $color-orange-medium;
     }
     &.--dark::before {
-      box-shadow: inset 0px 0px 22px 35px $color-accent;
+      box-shadow: inset 0px 0px 22px 35px #8e5000; // $color-accent;
     }
   }
 
