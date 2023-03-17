@@ -43,7 +43,7 @@ Instead run npm calls inside the container:
 
 OR before running the container:
 
-- docker run -it --rm -v \$PWD:/var/app -w /var/app node:lts npm install
+- docker run -it --rm -v \$PWD:/var/app -w /var/app node:14.17.5 npm install
 
 ## Running the app locally
 
