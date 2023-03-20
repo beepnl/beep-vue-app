@@ -1,6 +1,7 @@
 <template>
   <rect
     data-type="checkbox"
+    :data-category-id="categoryId"
     :data-parent-category-id="parentId"
     :return-value="returnValue"
     :x="x"
@@ -26,6 +27,11 @@ export default {
     y: {
       type: String,
       required: true,
+    },
+    categoryId: {
+      type: Number,
+      required: false,
+      default: null,
     },
     parentId: {
       type: [String, Number],

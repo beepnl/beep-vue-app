@@ -11,6 +11,7 @@
           :x="x + item.depth * checkBoxSpace + 'mm'"
           :y="y + 2 + index * checkBoxSpace + 'mm'"
           :return-value="item.id"
+          :category-id="item.id"
           :parent-id="item.parent_id"
         />
         <text

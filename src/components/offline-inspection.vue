@@ -98,7 +98,7 @@ export default {
       return (this.svgPageNr - removePage) * this.pageHeight + 'mm'
     },
     now() {
-      return this.$moment().format('YYYY-MM-DD HH:mm')
+      return this.$moment.utc().format('YYYY-MM-DD HH:mm')
     },
     pages() {
       return this.svgPageNr

@@ -101,8 +101,10 @@
       </v-toolbar>
 
       <v-container
-        v-if="activeInspection && selectedChecklist !== null && ready"
-        class="content-container"
+        v-if="
+          !printMode && activeInspection && selectedChecklist !== null && ready
+        "
+        class="content-container no-print"
       >
         <v-row class="mb-3 no-print">
           <v-col cols="12" md="4">
