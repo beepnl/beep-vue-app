@@ -28,6 +28,7 @@
         fill="#ffffff"
         :height="calcSvgHeight"
         :data-app-version="appVersion"
+        :data-checklist-id="selectedChecklist.id"
         :data-svg-created="now"
         :data-user-locale="userLocale"
       >
