@@ -1,13 +1,23 @@
 <template>
-  <g :page-y="position.pageY + 'mm'" :category-id="position.id">
+  <g :page-y="position.pageY + 'mm'" :data-category-id="position.id">
     <svgLabel :x="x" :y="y" :label="label" />
 
-    <svgCheckbox :x="x + 'mm'" :y="y + 2 + 'mm'" />
+    <svgCheckbox
+      :x="x + 'mm'"
+      :y="y + 2 + 'mm'"
+      :return-value="1"
+      :parent-id="position.id"
+    />
     <text :x="x + 5 + 'mm'" :y="y + 5 + 'mm'" :style="svgInputText">
       {{ $t('yes') }}
     </text>
 
-    <svgCheckbox :x="x + 17 + 'mm'" :y="y + 2 + 'mm'" />
+    <svgCheckbox
+      :x="x + 17 + 'mm'"
+      :y="y + 2 + 'mm'"
+      :return-value="2"
+      :parent-id="position.id"
+    />
     <text :x="x + 22 + 'mm'" :y="y + 5 + 'mm'" :style="svgInputText">
       {{ $t('no') }}
     </text>

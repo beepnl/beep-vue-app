@@ -1,5 +1,8 @@
 <template>
   <rect
+    data-type="checkbox"
+    :data-parent-category-id="parentId"
+    :return-value="returnValue"
     :x="x"
     :y="y"
     :width="checkBoxSize + 'mm'"
@@ -23,6 +26,16 @@ export default {
     y: {
       type: String,
       required: true,
+    },
+    parentId: {
+      type: [String, Number],
+      required: false,
+      default: '',
+    },
+    returnValue: {
+      type: [String, Number],
+      required: false,
+      default: '',
     },
   },
 }

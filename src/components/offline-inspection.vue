@@ -27,6 +27,8 @@
         :width="pageWidth + 'mm'"
         fill="#ffffff"
         :height="calcSvgHeight"
+        :data-svg-created="now"
+        :data-locale="userLocale"
       >
         <rect v-if="!printMode" width="100%" height="100%" fill="#fff4dd" />
 
@@ -77,6 +79,7 @@ export default {
     },
   },
   computed: {
+    ...mapGetters('auth', ['userLocale']),
     ...mapGetters('inspections', [
       'svgMaxPageNr',
       'svgPageNr',
@@ -87,6 +90,9 @@ export default {
       var removePage =
         this.svgMaxPageNr && this.svgPageNr > this.svgMaxPageNr ? 1 : 0
       return (this.svgPageNr - removePage) * this.pageHeight + 'mm'
+    },
+    now() {
+      return this.$moment().format('YYYY-MM-DD HH:mm')
     },
     pages() {
       return this.svgPageNr

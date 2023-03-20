@@ -1,5 +1,5 @@
 <template>
-  <g :page-y="position.pageY + 'mm'" :category-id="position.id">
+  <g :page-y="position.pageY + 'mm'" :data-category-id="position.id">
     <svgLabel v-if="!doubleWidth" :x="x" :y="y" :label="label" />
 
     <text v-if="doubleWidth" :x="x + 'mm'" :y="y + 'mm'" :style="svgLabel">
@@ -21,6 +21,7 @@
 
     <line
       v-if="inputTypeNotPresent"
+      data-type="text"
       :x1="x + 'mm'"
       :x2="x + 43 + 'mm'"
       :y1="y + 10 + 'mm'"
@@ -40,6 +41,7 @@
 
     <rect
       v-else-if="!line && !textOnly"
+      data-type="text"
       :x="x + 'mm'"
       :y="y + 2 + 'mm'"
       :width="width"
@@ -51,6 +53,7 @@
 
     <rect
       v-else-if="line && !textOnly"
+      data-type="text"
       :x="x + 'mm'"
       :y="y + 2 + 'mm'"
       :width="width"

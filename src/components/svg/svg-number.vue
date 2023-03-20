@@ -1,5 +1,5 @@
 <template>
-  <g :page-y="position.pageY + 'mm'" :category-id="position.id">
+  <g :page-y="position.pageY + 'mm'" :data-category-id="position.id">
     <svgLabel :x="x" :y="y" :label="label" />
 
     <text v-if="prepend" :x="x + 'mm'" :y="y + 5 + 'mm'" :style="svgAppend">
@@ -8,6 +8,7 @@
 
     <g v-if="decimals === 0">
       <rect
+        data-type="number"
         :x="x + prependOffset + 'mm'"
         :y="y + 2 + 'mm'"
         :width="textFieldWidth + 'mm'"

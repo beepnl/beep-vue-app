@@ -1,31 +1,35 @@
 <template>
   <g>
-    <svgText :position="{ x, y }" :label="$tc('Location', 1)" :line="true" />
+    <svgText
+      :position="{ id: 'location', pageY: y, x, y }"
+      :label="$tc('Location', 1)"
+      :line="true"
+    />
 
     <svgText
-      :position="{ x: x + 46, y }"
+      :position="{ id: 'hive', pageY: y, x: x + 46, y }"
       :label="$tc('Hive', 1)"
       :line="true"
     />
 
     <svgDate
-      :position="{ x: x + 92, y }"
+      :position="{ id: 'inspection_date', pageY: y, x: x + 92, y }"
       :label="$t('Date_of_inspection')"
       :time="true"
     />
 
     <svgSmileRating
-      :position="{ x, y: y + 19 }"
+      :position="{ id: 'impression', pageY: y + 19, x, y: y + 19 }"
       :label="$t('positive_impression')"
     />
 
     <svgYesNoRating
-      :position="{ x: x + 46, y: y + 19 }"
+      :position="{ id: 'attention', pageY: y + 19, x: x + 46, y: y + 19 }"
       :label="$t('needs_attention')"
     />
 
     <svgText
-      :position="{ x: x + 92, y: y + 19 }"
+      :position="{ id: 'notes', pageY: y + 19, x: x + 92, y: y + 19 }"
       :width="'89mm'"
       :height="'22mm'"
       :double-width="true"
@@ -33,13 +37,13 @@
     />
 
     <svgDate
-      :position="{ x, y: y + 49 }"
+      :position="{ id: 'reminder_date', pageY: y + 49, x, y: y + 49 }"
       :label="$t('remind_date')"
       :time="true"
     />
 
     <svgText
-      :position="{ x: x + 92, y: y + 49 }"
+      :position="{ id: 'reminder', pageY: y + 49, x: x + 92, y: y + 49 }"
       :width="'89mm'"
       :height="'22mm'"
       :double-width="true"

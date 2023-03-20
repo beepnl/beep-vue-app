@@ -1,5 +1,5 @@
 <template>
-  <g>
+  <g :page-y="position.pageY + 'mm'" :data-category-id="position.id">
     <text :x="x + 'mm'" :y="y + 'mm'">
       <tspan :style="small ? svgHeaderSmall : svgHeader">{{ header }}</tspan>
       <tspan v-if="subHeader" :style="svgText">{{ ' - ' + subHeader }}</tspan>

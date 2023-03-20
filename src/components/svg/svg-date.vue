@@ -1,5 +1,5 @@
 <template>
-  <g :page-y="position.pageY + 'mm'" :category-id="position.id">
+  <g :page-y="position.pageY + 'mm'" :data-category-id="position.id">
     <svgLabel :x="x" :y="y" :label="label" />
 
     <g v-for="(item, index) in dateFormat" :key="item.title + index">

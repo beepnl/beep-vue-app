@@ -1,5 +1,5 @@
 <template>
-  <g :page-y="position.pageY + 'mm'" :category-id="position.id">
+  <g :page-y="position.pageY + 'mm'" :data-category-id="position.id">
     <svgLabel :x="x" :y="y" :label="label" />
 
     <g v-for="grade in 10" :key="'g' + grade">
@@ -10,7 +10,12 @@
       >
         {{ grade }}
       </text>
-      <svgCheckbox :x="x + (grade - 1) * 4.5 + 'mm'" :y="y + 6 + 'mm'" />
+      <svgCheckbox
+        :x="x + (grade - 1) * 4.5 + 'mm'"
+        :y="y + 6 + 'mm'"
+        :return-value="grade"
+        :parent-id="position.id"
+      />
     </g>
     <g v-if="info">
       <text :x="x + 'mm'" :y="y + 14 + 'mm'" :style="svgTextSmall">

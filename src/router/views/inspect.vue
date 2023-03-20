@@ -245,6 +245,7 @@
             <Treeselect
               v-model="setSelectedMode"
               :options="selectModes"
+              :clearable="false"
               @input="switchMode($event)"
             />
             <p v-if="offlineMode" class="info-text mt-1">

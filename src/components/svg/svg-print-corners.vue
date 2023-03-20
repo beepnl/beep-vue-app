@@ -1,6 +1,6 @@
 <template>
   <g>
-    <g class="A">
+    <g class="A" data-type-mark="top-left">
       <line
         :x1="xAC + 'mm'"
         :x2="xAC + cornerSize + 'mm'"
@@ -19,7 +19,7 @@
       />
     </g>
 
-    <g class="B">
+    <g class="B" data-type-mark="top-right">
       <line
         :x1="xBD - cornerSize + 'mm'"
         :x2="xBD + 'mm'"
@@ -38,7 +38,7 @@
       />
     </g>
 
-    <g class="C">
+    <g class="C" data-type-mark="bottom-left">
       <line
         :x1="xAC + 'mm'"
         :x2="xAC + cornerSize + 'mm'"
@@ -57,7 +57,7 @@
       />
     </g>
 
-    <g class="D">
+    <g class="D" data-type-mark="bottom-right">
       <line
         :x1="xBD - cornerSize + 'mm'"
         :x2="xBD + 'mm'"

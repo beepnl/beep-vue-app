@@ -1,5 +1,6 @@
+<!-- eslint-disable camelcase -->
 <template>
-  <g :page-y="position.pageY + 'mm'" :category-id="position.id">
+  <g :page-y="position.pageY + 'mm'" :data-category-id="position.id">
     <svgLabel :x="x" :y="y" :label="label" />
 
     <g v-if="items && flattenedItems.length <= maxNrOfItems">
@@ -9,6 +10,8 @@
           :key="'item-' + index"
           :x="x + item.depth * checkBoxSpace + 'mm'"
           :y="y + 2 + index * checkBoxSpace + 'mm'"
+          :return-value="item.id"
+          :parent-id="item.parent_id"
         />
         <text
           :key="'text-' + index"
@@ -25,6 +28,7 @@
 
     <g v-else-if="flattenedItems.length > maxNrOfItems">
       <rect
+        data-type="text"
         :x="x + 'mm'"
         :y="y + 2 + 'mm'"
         width="43mm"
@@ -46,6 +50,8 @@
         <svgCheckbox
           :key="'stc-' + stars"
           :x="x + 'mm'"
+          :return-value="stars"
+          :parent-id="position.id"
           :y="y + 2 + index * checkBoxSpace + 'mm'"
         />
         <template v-for="star in stars">
@@ -73,6 +79,8 @@
           :key="'item-' + index"
           :x="x + 'mm'"
           :y="y + 2 + index * checkBoxSpace + 'mm'"
+          :return-value="index + 1"
+          :parent-id="position.id"
         />
         <text
           :key="'text-' + index"
@@ -185,8 +193,16 @@ export default {
       }
     },
     flattenItems(data, depth = 0) {
-      return data.reduce((r, { children, trans, name }) => {
-        const obj = { trans, name, depth, hasChildren: children.length > 0 }
+      // eslint-disable-next-line camelcase
+      return data.reduce((r, { children, id, parent_id, trans, name }) => {
+        const obj = {
+          id,
+          parent_id,
+          trans,
+          name,
+          depth,
+          hasChildren: children.length > 0,
+        }
         r.push(obj)
 
         if (children.length) {

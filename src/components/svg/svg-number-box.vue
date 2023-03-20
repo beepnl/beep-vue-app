@@ -1,5 +1,6 @@
 <template>
   <rect
+    data-type="single-digit"
     :x="x"
     :y="y"
     :width="numberBoxWidth + 'mm'"
