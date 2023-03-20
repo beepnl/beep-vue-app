@@ -27,8 +27,9 @@
         :width="pageWidth + 'mm'"
         fill="#ffffff"
         :height="calcSvgHeight"
+        :data-app-version="appVersion"
         :data-svg-created="now"
-        :data-locale="userLocale"
+        :data-user-locale="userLocale"
       >
         <rect v-if="!printMode" width="100%" height="100%" fill="#fff4dd" />
 
@@ -77,6 +78,11 @@ export default {
       type: Boolean,
       default: false,
     },
+  },
+  data() {
+    return {
+      appVersion: process.env.VUE_APP_VERSION,
+    }
   },
   computed: {
     ...mapGetters('auth', ['userLocale']),

@@ -86,7 +86,7 @@
 
         <div class="version-number">
           <v-spacer></v-spacer>
-          v3.1
+          <span v-text="'v' + appVersion"></span>
         </div>
       </div>
     </v-navigation-drawer>
@@ -109,6 +109,11 @@ export default {
       default: false,
       required: true,
     },
+  },
+  data() {
+    return {
+      appVersion: process.env.VUE_APP_VERSION,
+    }
   },
   computed: {
     ...mapGetters('devices', ['devices', 'devicesPresent']),
