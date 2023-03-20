@@ -173,6 +173,60 @@
         </v-col>
       </v-row>
 
+      <v-row class="mb-3">
+        <v-col cols="12" md="4">
+          <v-row>
+            <v-col cols="12" sm="7" md="12">
+              <div
+                class="beep-label mt-n3 mt-sm-0"
+                v-text="treeselectLabel"
+              ></div>
+              <Treeselect
+                v-if="sortedHiveSets && sortedHiveSets.length > 0"
+                v-model="selectedHiveSetId"
+                :options="sortedHiveSets"
+                :normalizer="normalizerHiveSets"
+                :placeholder="treeselectLabel"
+                :no-results-text="`${$t('no_results')}`"
+                :disable-branch-nodes="true"
+                :default-expand-level="1"
+                @input="selectHiveSet($event)"
+              />
+            </v-col>
+            <v-col
+              cols="12"
+              sm="5"
+              md="12"
+              class="py-0 py-sm-3 mb-n2 mb-sm-0 mt-sm-3 mt-md-0 hives-switch d-flex align-center"
+            >
+              <v-switch
+                v-if="selectedHiveSet"
+                v-model="allHivesSelected"
+                :label="
+                  `${
+                    selectedHiveSet.users
+                      ? $t('select_all_editable_hives')
+                      : $t('select_all_hives')
+                  }`
+                "
+                hide-details
+              ></v-switch>
+            </v-col>
+          </v-row>
+        </v-col>
+
+        <v-col cols="12" md="7" class="mb-n3 mb-sm-0">
+          <ApiaryPreviewHiveSelector
+            v-if="selectedHiveSet && editableHives && editableHives.length > 0"
+            :hives="selectedHiveSet.hives"
+            :hives-selected="selectedHives"
+            :hives-editable="editableHives"
+            :inspection-mode="true"
+            @select-hive="selectHive($event)"
+          ></ApiaryPreviewHiveSelector>
+        </v-col>
+      </v-row>
+
       <div v-if="devices.length > 0">
         <v-card v-if="lastSensorDate" outlined class="mt-3 mb-6">
           <v-card-title
@@ -420,6 +474,48 @@
                     </div>
                   </v-col>
                 </template>
+
+                <template v-if="sensorsPresent">
+                  <v-col
+                    v-for="(sensor, index) in currentSensors"
+                    :key="'sensor' + index"
+                    cols="12"
+                    :md="chartCols"
+                  >
+                    <div
+                      v-if="index === 0"
+                      class="overline mt-0 mt-sm-3 mb-3 text-center"
+                      v-text="
+                        measurementData.resolution
+                          ? $tc('measurement', 2) +
+                            ' (' +
+                            $t('measurement_interval') +
+                            ': ' +
+                            measurementData.resolution +
+                            ')'
+                          : $tc('measurement', 2)
+                      "
+                    ></div>
+                    <div
+                      v-else-if="chartCols !== 12"
+                      class="header-filler my-3"
+                    ></div>
+                    <div>
+                      <MeasurementsChartBar
+                        :chart-data="chartjsDataSeries([sensor])"
+                        :interval="interval"
+                        :start-time="periodStartString"
+                        :end-time="periodEndString"
+                        :chart-id="'chart-sensor-' + index"
+                        :alerts-for-charts="alertsForCharts([sensor])"
+                        @confirm-view-alert="confirmViewAlert($event)"
+                        @set-period-to-date="setPeriodToDate($event)"
+                      >
+                      </MeasurementsChartBar>
+                    </div>
+                  </v-col>
+                </template>
+
                 <v-col
                   v-if="soundSensorsPresent"
                   cols="12"
@@ -529,8 +625,10 @@ import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/main.vue'
 import { mapGetters } from 'vuex'
+import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 import MeasurementsChartHeatmap from '@components/measurements-chart-heatmap.vue'
 import MeasurementsChartLine from '@components/measurements-chart-line.vue'
+import MeasurementsChartBar from '@components/measurements-chart-bar.vue'
 import MeasurementsDateSelection from '@components/measurements-date-selection.vue'
 import Treeselect from '@riophae/vue-treeselect'
 import {
@@ -538,6 +636,7 @@ import {
   readDevicesIfNotPresent,
   readGeneralInspectionsIfNotPresent,
   readTaxonomy,
+  readApiariesAndGroups,
 } from '@mixins/methodsMixin'
 import {
   momentifyDayMonth,
@@ -551,10 +650,12 @@ import { SlideYUpTransition } from 'vue2-transitions'
 
 export default {
   components: {
+    ApiaryPreviewHiveSelector,
     Confirm,
     Layout,
     MeasurementsChartHeatmap,
     MeasurementsChartLine,
+    MeasurementsChartBar,
     MeasurementsDateSelection,
     SlideYUpTransition,
     Treeselect,
@@ -567,6 +668,7 @@ export default {
     momentFromNow,
     readDevicesIfNotPresent,
     readGeneralInspectionsIfNotPresent,
+    readApiariesAndGroups,
     readTaxonomy,
     sensorMixin,
     timeZone,
@@ -598,6 +700,10 @@ export default {
       selectedDate: '',
       periodTitle: null,
       preselectedDeviceId: null,
+      selectedHiveSetId: null,
+      selectedHiveSet: null,
+      selectedHives: [],
+      editableHives: [],
       chartCols: 6,
       chartColsIcons: [
         { value: 12, name: 'mdi-format-align-justify' },
@@ -614,6 +720,13 @@ export default {
       loadingData: false,
       relativeInterval: true,
       hideScrollBar: false,
+      normalizerHiveSets(node) {
+        return {
+          id: node.treeselectId,
+          label: node.name,
+          isDisabled: node.noEditableHives,
+        }
+      },
     }
   },
   computed: {
@@ -622,6 +735,78 @@ export default {
     ...mapGetters('devices', ['devices']),
     ...mapGetters('inspections', ['generalInspections']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
+    ...mapGetters('groups', ['groups']),
+    ...mapGetters('locations', ['apiaries']),
+    sortedHiveSets() {
+      var treeselectArray = []
+      if (this.apiaries && this.apiaries.length > 0) {
+        var treeselectApiaries = this.apiaries
+        treeselectApiaries.map((apiary) => {
+          apiary.treeselectId = parseInt('1' + apiary.id.toString())
+        })
+        var sortedTreeselectApiaries = treeselectApiaries
+          .slice()
+          .sort(function(a, b) {
+            if (a.name > b.name) {
+              return 1
+            }
+            if (b.name > a.name) {
+              return -1
+            }
+            return 0
+          })
+
+        treeselectArray.push({
+          treeselectId: -1,
+          name: this.$i18n.tc('Location', 2),
+          children: sortedTreeselectApiaries,
+        })
+      }
+      if (this.groups && this.groups.length > 0) {
+        var treeselectGroups = this.groups
+        treeselectGroups.map((group) => {
+          // groups with no editable hives will be disabled in the treeselect component
+          group.noEditableHives =
+            group.hives.filter((hive) => {
+              return hive.editable || hive.owner
+            }).length === 0
+          group.treeselectId = parseInt('2' + group.id.toString())
+        })
+        var sortedTreeselectGroups = treeselectGroups
+          .slice()
+          .sort(function(a, b) {
+            if (a.name > b.name) {
+              return 1
+            }
+            if (b.name > a.name) {
+              return -1
+            }
+            return 0
+          })
+
+        treeselectArray.push({
+          treeselectId: -2,
+          name: this.$i18n.tc('Group', 2),
+          children: sortedTreeselectGroups,
+        })
+      }
+      return treeselectArray
+    },
+    treeselectLabel() {
+      var label = ''
+      if (this.apiaries.length > 0) {
+        label =
+          this.$i18n.t('Select') +
+          ' ' +
+          this.$i18n.tc('location', 1) +
+          (this.groups.length > 0
+            ? ' ' + this.$i18n.t('or') + ' ' + this.$i18n.tc('group', 1)
+            : '')
+      } else if (this.groups.length > 0) {
+        label = this.$i18n.t('Select') + ' ' + this.$i18n.tc('group', 1)
+      }
+      return label
+    },
     alertsForDeviceAndPeriod() {
       var alertsForDevice = [...this.alerts].filter(
         (alert) => alert.device_id === this.selectedDeviceId
@@ -902,6 +1087,20 @@ export default {
         })[0] || null
       )
     },
+    selectedGroup() {
+      return (
+        this.groups.filter((group) => {
+          return group.id === this.selectedGroupId
+        })[0] || null
+      )
+    },
+    selectedApiary() {
+      return (
+        this.apiaries.filter((apiary) => {
+          return apiary.id === this.selectedApiaryId
+        })[0] || null
+      )
+    },
     selectedDeviceId: {
       get() {
         return parseInt(this.$store.getters['devices/selectedDeviceId'])
@@ -909,6 +1108,24 @@ export default {
       set(value) {
         this.$store.commit('devices/setSelectedDeviceId', value)
         localStorage.beepSelectedDeviceId = value
+      },
+    },
+    selectedGroupId: {
+      get() {
+        return parseInt(this.$store.getters['groups/selectedGroupId'])
+      },
+      set(value) {
+        this.$store.commit('groups/setSelectedGroupId', value)
+        localStorage.beepSelectedGroupId = value
+      },
+    },
+    selectedApiaryId: {
+      get() {
+        return parseInt(this.$store.getters['apiaries/selectedApiaryId'])
+      },
+      set(value) {
+        this.$store.commit('apiaries/selectedApiaryId', value)
+        localStorage.beepSelectedApiaryId = value
       },
     },
     selectedDeviceTitle() {
@@ -939,6 +1156,9 @@ export default {
           {}
         )
       return sorted
+    },
+    sortedGroups() {
+      return this.groups
     },
     sortedDevices() {
       var apiaryArray = []
@@ -1017,6 +1237,10 @@ export default {
     },
   },
   created() {
+    if (this.apiaries.length === 0 && this.groups.length === 0) {
+      // in case view is opened directly without loggin in (via localstorage) or in case of hard refresh
+      this.readApiariesAndGroups()
+    }
     this.initLocale = this.userLocale
     this.readTaxonomy()
     if (this.queriedChartCols !== null) {
@@ -1077,6 +1301,117 @@ export default {
     }
   },
   methods: {
+    selectHiveSet(id) {
+      var stringId = id.toString()
+      this.isApiary = parseInt(stringId.substring(0, 1)) === 1
+      this.hiveSetId = parseInt(stringId.substring(1, stringId.length + 1))
+      this.isApiary
+        ? this.selectApiary(this.hiveSetId)
+        : this.selectGroup(this.hiveSetId)
+    },
+    selectApiary(id) {
+      this.selectedHives = []
+      this.editableHives = []
+      const apiary = this.apiaries.filter((apiary) => {
+        return apiary.id === id
+      })[0]
+      if (apiary) {
+        apiary.hives.map((hive) => {
+          this.selectedHives.push(hive.id)
+          this.editableHives.push(hive.id)
+        })
+        // only when selecting the apiary from the queried hive Id, select just that hive
+        if (this.hiveId && apiary.id === this.activeHive.location_id) {
+          this.selectedHives = [this.hiveId]
+        }
+        this.selectedHiveSet = apiary
+        this.setBulkInspection(this.selectedHives.length > 1)
+        // If apiary id doesn't exist return 404
+      } else {
+        this.$router.push({
+          name: '404',
+          params: { resource: 'location' },
+        })
+      }
+    },
+    selectGroup(id) {
+      this.selectedHives = []
+      this.editableHives = []
+      const group = this.groups.filter((group) => {
+        return group.id === id
+      })[0]
+      if (group) {
+        group.hives.map((hive) => {
+          if (hive.editable || hive.owner) {
+            this.selectedHives.push(hive.id)
+            this.editableHives.push(hive.id)
+          }
+        })
+        // only when selecting a group containing the queried hive Id, select just that hive
+        if (this.hiveId && this.activeHive.group_ids.includes(group.id)) {
+          // if hiveId is specified, only select it if editable
+          if (this.editableHives.includes(this.hiveId)) {
+            this.selectedHives = [this.hiveId]
+          }
+        }
+        this.selectedHiveSet = group
+        this.setBulkInspection(this.selectedHives.length > 1)
+        // If group id doesn't exist return 404
+      } else {
+        this.$router.push({
+          name: '404',
+          params: { resource: 'group' },
+        })
+      }
+    },
+    selectHive(id) {
+      if (this.editableHives.includes(id)) {
+        if (!this.selectedHives.includes(id)) {
+          this.selectedHives.push(id)
+        } else {
+          this.selectedHives.splice(this.selectedHives.indexOf(id), 1)
+        }
+      }
+      this.setInspectionEdited(true)
+      this.setBulkInspection(this.selectedHives.length > 1)
+    },
+    selectFirstHiveSetFromList() {
+      this.selectedHiveSetId = this.sortedHiveSets[0].children[0].treeselectId
+      this.selectHiveSet(this.selectedHiveSetId)
+    },
+    selectInitialHiveSet() {
+      if (this.apiaryId) {
+        this.selectedHiveSetId = parseInt('1' + this.apiaryId) // add '1' to id to distinguish apiaries from groups when id is selected in treeselect component
+        this.selectApiary(parseInt(this.apiaryId))
+      } else if (this.groupId) {
+        this.selectedHiveSetId = parseInt('2' + this.groupId) // add '2' to id to distinguish groups from apiaries when id is selected in treeselect component
+        this.selectGroup(parseInt(this.groupId))
+      } else if (this.hiveId) {
+        // if no apiary or group id is specified, select apiary if owner is true, else select group
+        if (this.activeHive.owner) {
+          const apiaryId = this.activeHive.location_id
+          this.selectedHiveSetId = parseInt('1' + apiaryId) // add '1' to id to distinguish apiaries from groups when id is selected in treeselect component
+          this.selectApiary(parseInt(apiaryId))
+        } else {
+          const groupId = this.activeHive.group_ids[0]
+          this.selectedHiveSetId = parseInt('2' + groupId) // add '2' to id to distinguish groups from apiaries when id is selected in treeselect component
+          this.selectGroup(parseInt(groupId))
+        }
+      } else {
+        this.selectFirstHiveSetFromList()
+      }
+    },
+
+    getHiveSet() {
+      if (this.apiaries.length === 0 && this.groups.length === 0) {
+        // if apiaries and groups are not in store, in case view is opened directly without loggin in (via localstorage)
+        this.readApiariesAndGroups().then(() => {
+          this.selectInitialHiveSet()
+        })
+      } else {
+        this.selectInitialHiveSet()
+      }
+    },
     async loadLastSensorValuesFunc() {
       if (this.selectedDeviceId) {
         try {
