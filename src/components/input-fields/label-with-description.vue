@@ -13,6 +13,16 @@
           @click="showDescription = !showDescription"
         ></v-icon
       ></a>
+      <v-icon
+        v-if="parseMode && parsedImage"
+        class="ml-1"
+        dark
+        small
+        color="red"
+        @click="showImage = !showImage"
+      >
+        {{ showImage ? 'mdi-eye' : 'mdi-eye-off' }}
+      </v-icon>
     </div>
 
     <p v-if="showDescription" class="info-text">
@@ -20,6 +30,10 @@
       <a v-if="item.source !== null" :href="item.source" target="_blank">{{
         item.source
       }}</a>
+    </p>
+
+    <p v-if="showImage" class="info-text">
+      <img :src="parsedImage" style="max-width: 100%;" />
     </p>
   </div>
 </template>
@@ -36,10 +50,21 @@ export default {
       default: 'en',
       required: false,
     },
+    parsedImage: {
+      type: String,
+      default: null,
+      required: false,
+    },
+    parseMode: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
   },
   data: function() {
     return {
       showDescription: false,
+      showImage: false,
     }
   },
 }

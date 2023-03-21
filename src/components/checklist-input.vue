@@ -4,6 +4,8 @@
       v-if="item.input !== 'date'"
       :item="item"
       :locale="locale"
+      :parse-mode="parseMode"
+      :parsed-image="parsedImage"
     ></labelWithDescription>
 
     <selectHiveOrApiary
@@ -325,6 +327,11 @@ export default {
       } else {
         return null
       }
+    },
+    parsedImage() {
+      return this.parsedAnswer && this.parsedAnswer.image !== undefined
+        ? this.parsedAnswer.image[0] // TODO: check if array length is ever > 1?
+        : null
     },
   },
   created() {
