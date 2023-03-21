@@ -24,7 +24,7 @@
         v-for="(listItem, index) in item.children"
         :key="index"
         class="inspection-list-item"
-        @click.capture.stop="toggleSelect(listItem, item.id)"
+        @click.capture.stop="toggleSelect(listItem.id, item.id)"
       >
         <v-list-item-action>
           <v-checkbox
@@ -247,6 +247,7 @@
 <script>
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
+import dummyOutput from '@components/svg/scan_results_dummy.json'
 import imageUploader from '@components/input-fields/image-uploader.vue'
 import sampleCode from '@components/input-fields/sample-code.vue'
 import selectHiveOrApiary from '@components/input-fields/select-hive-or-apiary.vue'
@@ -292,6 +293,11 @@ export default {
       default: false,
       required: false,
     },
+    parseMode: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   data() {
     return {
@@ -308,6 +314,35 @@ export default {
       }
       return []
     },
+    parsedAnswer() {
+      if (this.parseMode) {
+        var returnedItems = dummyOutput.filter(
+          (answer) =>
+            answer.question_id !== undefined &&
+            answer.question_id === this.item.id
+        )
+        return returnedItems.length > 0 ? returnedItems[0] : null
+      } else {
+        return null
+      }
+    },
+  },
+  created() {
+    if (this.parsedAnswer) {
+      // console.log('parsed ', this.parsedAnswer.value, this.item.id)
+      if (this.item.input === 'list') {
+        this.parsedAnswer.value.map((answer) => {
+          this.toggleSelect(answer, this.item.id)
+        })
+      } else {
+        this.updateInput(
+          this.parsedAnswer.value[0], // TODO: check if array is always length 1
+          this.item.id,
+          this.item.name,
+          this.item.input
+        )
+      }
+    }
   },
   methods: {
     convertComma(event, name = null, precision = 1) {
@@ -344,15 +379,15 @@ export default {
       }
       this.setInspectionEdited(true)
     },
-    toggleSelect(listItem, listId) {
+    toggleSelect(listItemId, listId) {
       var selectedArray = []
       if (typeof this.object[listId] === 'string') {
         selectedArray = this.object[listId].split(',')
       }
-      if (selectedArray.indexOf(listItem.id + '') > -1) {
-        selectedArray.splice(selectedArray.indexOf(listItem.id), 1)
+      if (selectedArray.indexOf(listItemId + '') > -1) {
+        selectedArray.splice(selectedArray.indexOf(listItemId), 1)
       } else {
-        selectedArray.push(listItem.id + '')
+        selectedArray.push(listItemId + '')
       }
       var selectedArrayToString = selectedArray.join(',')
       this.object[listId] = selectedArrayToString

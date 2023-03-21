@@ -239,20 +239,26 @@
                   : $t('Online_inspection')
               }}
             </v-btn> -->
-
-            <div
-              class="beep-label mt-n3 mt-sm-0"
-              v-text="$t('Select_inspection_mode')"
-            ></div>
-            <Treeselect
-              v-model="setSelectedMode"
-              :options="selectModes"
-              :clearable="false"
-              @input="switchMode($event)"
-            />
-            <p v-if="offlineMode" class="info-text mt-1">
-              <em>{{ $t('Offline_inspection_exp') }}</em>
-            </p>
+            <div class="d-flex justify-start align-center">
+              <div class="d-flex flex-column">
+                <div
+                  class="beep-label mt-n3 mt-sm-0"
+                  v-text="$t('Select_inspection_mode')"
+                ></div>
+                <Treeselect
+                  v-model="setSelectedMode"
+                  :options="selectModes"
+                  :clearable="false"
+                  @input="switchMode($event)"
+                />
+                <p v-if="offlineMode" class="info-text mt-1">
+                  <em>{{ $t('Offline_inspection_exp') }}</em>
+                </p>
+              </div>
+              <!-- <v-icon color="primary" @click="parseOutput"
+                >mdi-arrow-u-down-left</v-icon
+              > -->
+            </div>
           </v-col>
 
           <v-col
@@ -340,6 +346,7 @@
                       :object="activeInspection.items"
                       :category="category"
                       :locale="locale"
+                      :parse-mode="parseMode"
                     ></checklistFieldset>
                   </v-col>
                 </v-row>
@@ -548,6 +555,7 @@ import checklistFieldset from '@components/checklist-fieldset.vue'
 import Confirm from '@components/confirm.vue'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
+import dummyOutput from '@components/svg/scan_results_dummy.json'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
 import {
@@ -760,8 +768,13 @@ export default {
     offlineMode() {
       return this.selectedMode === 'Offline'
     },
+    parseMode() {
+      return this.$route.query.mode === 'parse'
+    },
     preSelectedChecklistId() {
-      return parseInt(this.$route.query.checklistId) || null
+      return this.parseMode
+        ? dummyOutput[0].checklist_id
+        : parseInt(this.$route.query.checklistId) || null
     },
     reminderDate: {
       get() {
@@ -982,7 +995,7 @@ export default {
           const numberOfCategories = this.selectedChecklist.categories.length
           this.showCategoriesByIndex = []
           for (var i = 0; i < numberOfCategories; i++) {
-            this.showCategoriesByIndex.push(false)
+            this.showCategoriesByIndex.push(this.parseMode)
           }
         }
 
@@ -1225,6 +1238,9 @@ export default {
         this.inspectionId
       )
     },
+    // parseOutput() {
+    //   console.log(dummyOutput)
+    // },
     print() {
       this.printMode = true
       setTimeout(() => {
