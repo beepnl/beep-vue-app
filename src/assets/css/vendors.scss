@@ -450,7 +450,8 @@
 
 .vue-treeselect.color-red {
   .vue-treeselect__multi-value-item,
-  .vue-treeselect__value-remove {
+  .vue-treeselect__value-remove,
+  &.vue-treeselect--single {
     color: $color-red !important;
     background: $color-red-light !important;
   }

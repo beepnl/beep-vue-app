@@ -6,6 +6,7 @@
       :locale="locale"
       :parse-mode="parseMode"
       :parsed-image="parsedImage"
+      :check-answer="checkAnswer && object[item.id] === null"
     ></labelWithDescription>
 
     <selectHiveOrApiary
@@ -62,6 +63,7 @@
       :object="object"
       :item="item"
       :locale="locale"
+      :check-answer="checkAnswer && object[item.id] === null"
     ></treeselect>
 
     <dateTimePicker
@@ -304,6 +306,7 @@ export default {
   data() {
     return {
       savedNrOfDecimals: 0,
+      checkAnswer: false,
     }
   },
   computed: {
@@ -341,6 +344,12 @@ export default {
         this.parsedAnswer.value.map((answer) => {
           this.toggleSelect(answer, this.item.id)
         })
+      } else if (
+        this.item.input === 'select' &&
+        isNaN(parseInt(this.parsedAnswer.value[0]))
+      ) {
+        // in case answer is not a category id but a string (written text) instead, let the user check it instead of filling it in automatically
+        this.checkAnswer = true
       } else {
         this.updateInput(
           this.parsedAnswer.value[0], // TODO: check if array is always length 1

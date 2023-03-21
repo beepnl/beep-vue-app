@@ -73,11 +73,22 @@ export default {
       default: null,
       required: false,
     },
+    checkAnswer: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
   },
   data: function() {
     return {
       showDescription: false,
       showImage: false,
+    }
+  },
+  created() {
+    // if answer needs to be actively checked in order to be filled in, always show image by default
+    if (this.checkAnswer) {
+      this.showImage = true
     }
   },
 }
