@@ -399,10 +399,11 @@
                     <div class="sub-inspection-details rounded-border">
                       <v-row>
                         <v-col cols="12" sm="4">
-                          <div
-                            class="beep-label"
-                            v-text="`${$t('positive_impression')}`"
-                          ></div>
+                          <labelWithDescription
+                            :plain-text="$t('positive_impression')"
+                            :parse-mode="parseMode"
+                            :parsed-image="parsedImages['impression']"
+                          ></labelWithDescription>
                           <smileRating
                             v-if="activeInspection"
                             :object="activeInspection"
@@ -410,10 +411,11 @@
                           ></smileRating>
                         </v-col>
                         <v-col cols="12" sm="4">
-                          <div
-                            class="beep-label"
-                            v-text="`${$t('needs_attention')}`"
-                          ></div>
+                          <labelWithDescription
+                            :plain-text="$t('needs_attention')"
+                            :parse-mode="parseMode"
+                            :parsed-image="parsedImages['attention']"
+                          ></labelWithDescription>
                           <yesNoRating
                             v-if="activeInspection"
                             :object="activeInspection"
@@ -422,10 +424,16 @@
                           ></yesNoRating>
                         </v-col>
                         <v-col cols="12">
+                          <labelWithDescription
+                            :plain-text="$t('notes')"
+                            :parse-mode="parseMode"
+                            :parsed-image="parsedImages['notes']"
+                          ></labelWithDescription>
                           <v-textarea
                             v-if="activeInspection"
                             v-model="activeInspection.notes"
-                            :label="`${$t('notes')}`"
+                            class="pt-0"
+                            :placeholder="`${$t('notes')}`"
                             counter="2500"
                             rows="1"
                             auto-grow
@@ -463,10 +471,11 @@
                               >mdi-calendar-clock</v-icon
                             >
                             <div>
-                              <div
-                                class="beep-label"
-                                v-text="`${$t('remind_date')}`"
-                              ></div>
+                              <labelWithDescription
+                                :plain-text="$t('remind_date')"
+                                :parse-mode="parseMode"
+                                :parsed-image="parsedImages['reminder_date']"
+                              ></labelWithDescription>
                               <Datetime
                                 v-if="activeInspection"
                                 v-model="reminderDate"
@@ -499,10 +508,15 @@
                           </div>
                         </v-col>
                         <v-col cols="12" sm="8">
+                          <labelWithDescription
+                            :plain-text="$t('reminder')"
+                            :parse-mode="parseMode"
+                            :parsed-image="parsedImages['reminder']"
+                          ></labelWithDescription>
                           <v-textarea
                             v-if="activeInspection"
                             v-model="activeInspection.reminder"
-                            :label="`${$t('reminder')}`"
+                            class="pt-0"
                             :placeholder="`${$t('notes_for_next_inspection')}`"
                             rows="1"
                             auto-grow
@@ -556,6 +570,7 @@ import Confirm from '@components/confirm.vue'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
 import dummyOutput from '@components/svg/scan_results_dummy.json'
+import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
 import {
@@ -579,6 +594,7 @@ export default {
     checklistFieldset,
     Confirm,
     Datetime,
+    labelWithDescription,
     Layout,
     OfflineInspection,
     SlideYUpTransition,
@@ -646,6 +662,15 @@ export default {
       hiveSetId: null,
       dateFormat: 'YYYY-MM-DD HH:mm:ss',
       printMode: false,
+      overallInspectionProps: [
+        'date',
+        'impression',
+        'attention',
+        'notes',
+        'reminder_date',
+        'reminder',
+      ],
+      parsedImages: {},
     }
   },
   computed: {
@@ -925,6 +950,11 @@ export default {
           hive_ids: this.selectedHives, // TODO: fix for only 1 hiveId
           items: {},
         }
+
+        if (this.parseMode) {
+          this.getParsedOverallAnswers()
+        }
+
         this.readChecklistsIfNotPresent().then(() => {
           if (this.preSelectedChecklistId !== null) {
             this.getChecklistById(this.preSelectedChecklistId)
@@ -1218,6 +1248,24 @@ export default {
     },
     getNow() {
       return this.momentFormat(new Date(), this.dateFormat)
+    },
+    getParsedAnswer(id) {
+      var returnedItems = dummyOutput.filter(
+        (answer) =>
+          answer.question_id !== undefined && answer.question_id === id
+      )
+      return returnedItems.length > 0 ? returnedItems[0] : null
+    },
+    getParsedOverallAnswers() {
+      this.overallInspectionProps.map((prop) => {
+        var answer = this.getParsedAnswer(prop)
+        this.activeInspection[prop] =
+          answer && answer.value !== undefined ? answer.value[0] : null // TODO: what if array has length > 1?
+        this.parsedImages[prop] =
+          answer && answer.image !== undefined
+            ? answer.image[0] // TODO: check if array length is ever > 1?
+            : null
+      })
     },
     initInspection() {
       this.setActiveInspectionDate(this.activeInspection.date)

@@ -1,10 +1,17 @@
 <template>
   <div>
     <div class="beep-label">
-      {{ item.trans[locale] || item.name
-      }}{{ item.unit !== null ? ' (' + item.unit + ')' : '' }}
-      {{ item.required === 1 ? '*' : '' }}
-      <a v-if="item.description !== null || item.source !== null"
+      <span
+        v-text="
+          plainText
+            ? plainText
+            : (item.trans[locale] || item.name) +
+              (item.unit !== null ? ' (' + item.unit + ')' : '') +
+              (item.required === 1 ? '*' : '')
+        "
+      ></span>
+      <a
+        v-if="!plainText && (item.description !== null || item.source !== null)"
         ><v-icon
           class="mdi mdi-information ml-1 icon-info"
           dark
@@ -43,7 +50,8 @@ export default {
   props: {
     item: {
       type: Object,
-      required: true,
+      required: false,
+      default: () => {},
     },
     locale: {
       type: String,
@@ -58,6 +66,11 @@ export default {
     parseMode: {
       type: Boolean,
       default: false,
+      required: false,
+    },
+    plainText: {
+      type: String,
+      default: null,
       required: false,
     },
   },

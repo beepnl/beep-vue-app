@@ -13,7 +13,7 @@
     />
 
     <svgDate
-      :position="{ id: 'inspection_date', pageY: y, x: x + 92, y }"
+      :position="{ id: 'date', pageY: y, x: x + 92, y }"
       :label="$t('Date_of_inspection')"
       :time="true"
     />
