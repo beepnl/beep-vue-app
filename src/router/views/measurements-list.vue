@@ -202,13 +202,7 @@
               <v-switch
                 v-if="selectedHiveSet"
                 v-model="allHivesSelected"
-                :label="
-                  `${
-                    selectedHiveSet.users
-                      ? $t('select_all_editable_hives')
-                      : $t('select_all_hives')
-                  }`
-                "
+                :label="$t('select_all_hives')"
                 hide-details
               ></v-switch>
             </v-col>
@@ -224,6 +218,7 @@
             :inspection-mode="true"
             @select-hive="selectHive($event)"
           ></ApiaryPreviewHiveSelector>
+          {{ selectedHives }}
         </v-col>
       </v-row>
 
@@ -737,6 +732,22 @@ export default {
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     ...mapGetters('groups', ['groups']),
     ...mapGetters('locations', ['apiaries']),
+    allHivesSelected: {
+      get() {
+        return this.selectedHives.length === this.selectedHiveSet.hives.length
+      },
+      set(value) {
+        if (value === false) {
+          this.selectedHives = []
+        } else {
+          this.selectedHives = []
+          this.selectedHiveSet.hives.map((hive) => {
+            this.selectedHives.push(hive.id)
+          })
+        }
+      },
+    },
+
     sortedHiveSets() {
       var treeselectArray = []
       if (this.apiaries && this.apiaries.length > 0) {
