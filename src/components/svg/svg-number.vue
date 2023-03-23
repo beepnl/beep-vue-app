@@ -12,7 +12,6 @@
         :data-parent-category-id="position.id"
         :x="x + prependOffset + 'mm'"
         :y="y + 2 + 'mm'"
-        :parent-id="position.id"
         :width="textFieldWidth + 'mm'"
         height="8mm"
         stroke="black"

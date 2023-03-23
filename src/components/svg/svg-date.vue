@@ -19,7 +19,7 @@
         <svgNumberBox
           :x="x + item.offset + (field - 1) * numberBoxWidth + 'mm'"
           :y="y + 5 + 'mm'"
-          :category-id="'date'"
+          :category-id="'date-field'"
           :parent-id="position.id"
         />
       </g>

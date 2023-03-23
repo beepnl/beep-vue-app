@@ -28,11 +28,14 @@
         fill="#ffffff"
         :height="calcSvgHeight"
         :data-app-version="appVersion"
-        :data-checklist-id="selectedChecklist.id"
-        :data-svg-created="now"
-        :data-user-locale="userLocale"
       >
         <rect v-if="!printMode" width="100%" height="100%" fill="#fff4dd" />
+
+        <g>
+          <text x="10mm" y="8.5mm" :style="svgTextSmall">
+            {{ selectedChecklist.name + ' (' + now + ') v' + appVersion }}
+          </text>
+        </g>
 
         <g v-for="pageNr in pages" :key="'page' + pageNr">
           <svgPrintCorners
@@ -57,7 +60,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { svgData } from '@mixins/svgMixin'
+import { svgData, svgStyles } from '@mixins/svgMixin'
 import svgCategory from '@/src/components/svg/svg-category.vue'
 import svgOverall from '@/src/components/svg/svg-overall.vue'
 import svgPrintCorners from '@/src/components/svg/svg-print-corners.vue'
@@ -68,7 +71,7 @@ export default {
     svgOverall,
     svgPrintCorners,
   },
-  mixins: [svgData],
+  mixins: [svgData, svgStyles],
   props: {
     selectedChecklist: {
       type: Object,
@@ -86,7 +89,6 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('auth', ['userLocale']),
     ...mapGetters('inspections', [
       'svgMaxPageNr',
       'svgPageNr',

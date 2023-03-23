@@ -28,7 +28,7 @@ export default {
       required: true,
     },
     categoryId: {
-      type: Number,
+      type: [String, Number],
       required: false,
       default: null,
     },

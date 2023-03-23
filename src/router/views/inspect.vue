@@ -952,6 +952,7 @@ export default {
         }
 
         if (this.parseMode) {
+          this.setSelectedMode = 'Online'
           this.getParsedOverallAnswers()
         }
 
