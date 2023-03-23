@@ -5,7 +5,7 @@
         v-text="
           plainText
             ? plainText
-            : (item.trans[locale] || item.name) +
+            : getText(item) +
               (item.unit !== null ? ' (' + item.unit + ')' : '') +
               (item.required === 1 ? '*' : '')
         "
@@ -21,14 +21,14 @@
         ></v-icon
       ></a>
       <v-icon
-        v-if="parseMode && parsedImage"
+        v-if="parseMode && parsedImages.length > 0"
         class="ml-1"
         dark
         small
         color="red"
-        @click="showImage = !showImage"
+        @click="showImages = !showImages"
       >
-        {{ showImage ? 'mdi-eye' : 'mdi-eye-off' }}
+        {{ showImages ? 'mdi-eye' : 'mdi-eye-off' }}
       </v-icon>
     </div>
 
@@ -39,9 +39,30 @@
       }}</a>
     </p>
 
-    <p v-if="showImage" class="info-text">
-      <img :src="parsedImage" style="max-width: 100%;" />
-    </p>
+    <div
+      v-if="showImages && parsedItems.length > 0"
+      class="info-text d-flex flex-column"
+    >
+      <div v-for="(image, j) in parsedImages" :key="'i' + j" class="d-flex">
+        <img :src="image" style="max-width: 20px; max-height: 20px;" />
+        <span
+          v-if="parsedItems.length >= j + 1"
+          class="ml-1"
+          v-text="getText(parsedItems[j])"
+        ></span>
+      </div>
+    </div>
+
+    <div v-else-if="showImages" class="info-text">
+      <img
+        v-for="(image, j) in parsedImages"
+        :key="'i' + j"
+        :src="image"
+        :style="
+          parsedImages.length > 1 ? 'max-width: 20px;' : 'max-width: 100%;'
+        "
+      />
+    </div>
   </div>
 </template>
 
@@ -58,9 +79,14 @@ export default {
       default: 'en',
       required: false,
     },
-    parsedImage: {
-      type: String,
-      default: null,
+    parsedItems: {
+      type: Array,
+      default: () => [],
+      required: false,
+    },
+    parsedImages: {
+      type: Array,
+      default: () => [],
       required: false,
     },
     parseMode: {
@@ -82,14 +108,19 @@ export default {
   data: function() {
     return {
       showDescription: false,
-      showImage: false,
+      showImages: false,
     }
   },
   created() {
     // if answer needs to be actively checked in order to be filled in, always show image by default
     if (this.checkAnswer) {
-      this.showImage = true
+      this.showImages = true
     }
+  },
+  methods: {
+    getText(item) {
+      return item.trans[this.locale] || item.name
+    },
   },
 }
 </script>

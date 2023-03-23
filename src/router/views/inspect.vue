@@ -402,7 +402,7 @@
                           <labelWithDescription
                             :plain-text="$t('positive_impression')"
                             :parse-mode="parseMode"
-                            :parsed-image="parsedImages['impression']"
+                            :parsed-images="parsedImages['impression']"
                           ></labelWithDescription>
                           <smileRating
                             v-if="activeInspection"
@@ -414,7 +414,7 @@
                           <labelWithDescription
                             :plain-text="$t('needs_attention')"
                             :parse-mode="parseMode"
-                            :parsed-image="parsedImages['attention']"
+                            :parsed-images="parsedImages['attention']"
                           ></labelWithDescription>
                           <yesNoRating
                             v-if="activeInspection"
@@ -427,7 +427,7 @@
                           <labelWithDescription
                             :plain-text="$t('notes')"
                             :parse-mode="parseMode"
-                            :parsed-image="parsedImages['notes']"
+                            :parsed-images="parsedImages['notes']"
                           ></labelWithDescription>
                           <v-textarea
                             v-if="activeInspection"
@@ -474,7 +474,7 @@
                               <labelWithDescription
                                 :plain-text="$t('remind_date')"
                                 :parse-mode="parseMode"
-                                :parsed-image="parsedImages['reminder_date']"
+                                :parsed-images="parsedImages['reminder_date']"
                               ></labelWithDescription>
                               <Datetime
                                 v-if="activeInspection"
@@ -511,7 +511,7 @@
                           <labelWithDescription
                             :plain-text="$t('reminder')"
                             :parse-mode="parseMode"
-                            :parsed-image="parsedImages['reminder']"
+                            :parsed-images="parsedImages['reminder']"
                           ></labelWithDescription>
                           <v-textarea
                             v-if="activeInspection"
@@ -569,7 +569,7 @@ import checklistFieldset from '@components/checklist-fieldset.vue'
 import Confirm from '@components/confirm.vue'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
-import dummyOutput from '@components/svg/scan_results_dummy.json'
+import dummyOutput from '@components/svg/test_4_dummy.json'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
@@ -798,7 +798,7 @@ export default {
     },
     preSelectedChecklistId() {
       return this.parseMode
-        ? dummyOutput[0].checklist_id
+        ? dummyOutput[0].checklist_id // TODO: get checklist_id from JSON
         : parseInt(this.$route.query.checklistId) || null
     },
     reminderDate: {
@@ -1253,19 +1253,29 @@ export default {
     getParsedAnswer(id) {
       var returnedItems = dummyOutput.filter(
         (answer) =>
-          answer.question_id !== undefined && answer.question_id === id
+          answer.data_parent_category_id !== undefined &&
+          answer.data_parent_category_id === id
       )
       return returnedItems.length > 0 ? returnedItems[0] : null
     },
     getParsedOverallAnswers() {
       this.overallInspectionProps.map((prop) => {
         var answer = this.getParsedAnswer(prop)
-        this.activeInspection[prop] =
-          answer && answer.value !== undefined ? answer.value[0] : null // TODO: what if array has length > 1?
+        var value = null
+        if (answer && answer.value !== undefined) {
+          if (prop === 'impression' || prop === 'attention') {
+            var checkboxIndex = answer.value.findIndex((value) => value === 1)
+            value = checkboxIndex + 1
+          } else {
+            value = answer.value[0] // TODO: fix this for date prop
+          }
+        }
+        this.activeInspection[prop] = value
+        // TODO: convert array (of all checkboxes 0s and 1s for example) to the actual answer
         this.parsedImages[prop] =
           answer && answer.image !== undefined
-            ? answer.image[0] // TODO: check if array length is ever > 1?
-            : null
+            ? answer.image // TODO: check if array length is ever > 1?
+            : []
       })
     },
     initInspection() {
