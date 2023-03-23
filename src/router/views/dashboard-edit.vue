@@ -475,36 +475,35 @@ export default {
     },
     async updateDashboard() {
       if (this.$refs.form.validate()) {
-        console.log('TODO update dashboard', this.dashboard)
-        // this.showLoadingIcon = true
-        // try {
-        //   const response = await Api.updateRequest(
-        //     '/dashboards/',
-        //     this.dashboard.id,
-        //     this.dashboard
-        //   )
-        //   if (!response) {
-        //     this.errorMessage =
-        //       this.$i18n.tc('Error', 1) + ': ' + this.$i18n.t('not_saved_error')
-        //   }
-        //   setTimeout(() => {
-        //     return this.readDashboards().then(() => {
-        //       this.$router.push({
-        //         name: 'dashboards',
-        //       })
-        //     })
-        //   }, 50) // wait for API to update dashboards
-        // } catch (error) {
-        //   if (error.response) {
-        //     const msg = error.response.data.error
-        //     this.errorMessage = msg
-        //     this.showLoadingIcon = false
-        //     console.log(error.response)
-        //   } else {
-        //     this.showLoadingIcon = false
-        //     console.log('Error: ', error)
-        //   }
-        // }
+        this.showLoadingIcon = true
+        try {
+          const response = await Api.updateRequest(
+            '/dashboardgroups/',
+            this.dashboard.code,
+            this.dashboard
+          )
+          if (!response) {
+            this.errorMessage =
+              this.$i18n.tc('Error', 1) + ': ' + this.$i18n.t('not_saved_error')
+          }
+          setTimeout(() => {
+            return this.readDashboardGroups().then(() => {
+              this.$router.push({
+                name: 'dashboards',
+              })
+            })
+          }, 50) // wait for API to update dashboards
+        } catch (error) {
+          if (error.response) {
+            const msg = error.response.data.error
+            this.errorMessage = msg
+            this.showLoadingIcon = false
+            console.log(error.response)
+          } else {
+            this.showLoadingIcon = false
+            console.log('Error: ', error)
+          }
+        }
       }
     },
     copyUrl() {
