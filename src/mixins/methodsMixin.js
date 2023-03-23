@@ -546,6 +546,27 @@ export const readApiariesAndGroupsIfNotPresent = {
   },
 }
 
+export const readDashboardGroup = {
+  methods: {
+    async readDashboardGroup(code) {
+      try {
+        const response = await Api.readRequest('/dashboardgroups/', code)
+        this.$store.commit('groups/setData', {
+          prop: 'dashboardGroup',
+          value: response.data,
+        })
+        return true
+      } catch (error) {
+        if (error.response) {
+          console.log(error.response)
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
+  },
+}
+
 export const readDevices = {
   methods: {
     async readDevices() {

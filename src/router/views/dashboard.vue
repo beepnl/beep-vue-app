@@ -339,7 +339,11 @@ import DashboardSection from '@components/dashboard-section.vue'
 import LocaleChanger from '@components/locale-changer.vue'
 import MeasurementsChartLine from '@components/measurements-chart-line.vue'
 import { mapGetters } from 'vuex'
-import { readApiariesAndGroups, readTaxonomy } from '@mixins/methodsMixin'
+import {
+  readApiariesAndGroups,
+  readDashboardGroup,
+  readTaxonomy,
+} from '@mixins/methodsMixin'
 import { momentFromNow, timeZone } from '@mixins/momentMixin'
 import { sensorMixin } from '@mixins/sensorMixin'
 
@@ -354,6 +358,7 @@ export default {
   mixins: [
     momentFromNow,
     readApiariesAndGroups,
+    readDashboardGroup,
     readTaxonomy,
     sensorMixin,
     timeZone,
@@ -391,6 +396,9 @@ export default {
     ...mapGetters('groups', ['groups']),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
+    code() {
+      return this.$route.params.id
+    },
     coordinatesPresent() {
       return (
         this.selectedLocation &&
@@ -510,17 +518,19 @@ export default {
       this.toggleLandscapeMode(this.desktopAndUp)
     },
   },
-  mounted() {
-    this.checkLocalStorage()
-  },
+  mounted() {},
   created() {
     if (this.smallScreen) {
       this.landscapeMode = false
     }
+    this.checkLocalStorage()
+
     this.readTaxonomy().then(() => {
       this.readApiariesAndGroups().then(() => {
-        this.nextHiveWithData()
-        this.startTimer('hive')
+        this.readDashboardGroup(this.dashboardCode).then(() => {
+          this.nextHiveWithData()
+          this.startTimer('hive')
+        })
       })
     })
   },
@@ -632,10 +642,10 @@ export default {
       if (localStorage.beepdashboardLandscapeMode) {
         this.landscapeMode = localStorage.beepdashboardLandscapeMode === 'true'
       }
-      if (this.$route.params.id) {
+      if (this.code) {
         // if code is in url overwrite localstorage code
-        localStorage.beepdashboardCode = this.$route.params.id
-        this.dashboardCode = this.$route.params.id
+        localStorage.beepdashboardCode = this.code
+        this.dashboardCode = this.code
       } else if (localStorage.beepdashboardCode) {
         // else use local storage code
         this.dashboardCode = localStorage.beepdashboardCode
