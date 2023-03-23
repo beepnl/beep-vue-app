@@ -335,7 +335,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('groups', ['dashboards', 'groups']),
+    ...mapGetters('groups', ['dashboardGroups', 'groups']),
     ...mapGetters('hives', ['hivesObject']),
     ...mapGetters('locations', ['apiaries']),
     code() {
@@ -413,30 +413,32 @@ export default {
     },
   },
   created() {
-    // this.readDashboards().then((response) => { TODO
-    this.readApiariesAndGroupsIfNotPresent().then((response) => {
-      if (!this.createMode) {
-        var filteredDashboards = this.dashboards.filter(
-          (dashboard) => dashboard.code === this.code
-        )
-        this.dashboard =
-          filteredDashboards.length === 0 ? null : { ...filteredDashboards[0] }
-      }
-
-      // If dashboard-create route is used, make empty dashboard object
-      else if (this.createMode) {
-        this.dashboard = {
-          name: null,
-          description: null,
-          speed: 30,
-          hive_ids: [],
-          interval: 'week',
-          show_inspections: true,
-          show_all: false,
+    this.readDashboardGroupsIfNotChecked().then((response) => {
+      this.readApiariesAndGroupsIfNotPresent().then((response) => {
+        if (!this.createMode) {
+          var filteredDashboards = this.dashboardGroups.filter(
+            (dashboard) => dashboard.code === this.code
+          )
+          this.dashboard =
+            filteredDashboards.length === 0
+              ? null
+              : { ...filteredDashboards[0] }
         }
-      }
+
+        // If dashboard-create route is used, make empty dashboard object
+        else if (this.createMode) {
+          this.dashboard = {
+            name: null,
+            description: null,
+            speed: 30,
+            hive_ids: [],
+            interval: 'week',
+            show_inspections: true,
+            show_all: false,
+          }
+        }
+      })
     })
-    // })
     this.setDashboardEdited(false)
   },
   methods: {
