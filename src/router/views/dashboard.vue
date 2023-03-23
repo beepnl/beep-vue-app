@@ -344,7 +344,7 @@ import DashboardSection from '@components/dashboard-section.vue'
 import LocaleChanger from '@components/locale-changer.vue'
 import MeasurementsChartLine from '@components/measurements-chart-line.vue'
 import { mapGetters } from 'vuex'
-import { readDashboard, readTaxonomy } from '@mixins/methodsMixin'
+import { readDashboard } from '@mixins/methodsMixin'
 import { momentFromNow, timeZone } from '@mixins/momentMixin'
 import { sensorMixin } from '@mixins/sensorMixin'
 
@@ -356,7 +356,7 @@ export default {
     LocaleChanger,
     MeasurementsChartLine,
   },
-  mixins: [momentFromNow, readDashboard, readTaxonomy, sensorMixin, timeZone],
+  mixins: [momentFromNow, readDashboard, sensorMixin, timeZone],
   data: function() {
     return {
       assetsUrl:
@@ -387,8 +387,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('groups', ['dashboard']),
-    ...mapGetters('taxonomy', ['sensorMeasurementsList']),
+    ...mapGetters('groups', ['dashboard', 'dashboardHiveData']),
     code() {
       return this.$route.params.id
     },
@@ -433,6 +432,9 @@ export default {
       return this.selectedHive && this.selectedHive.location_name
         ? this.selectedHive.location_name
         : null
+    },
+    sensorMeasurementsList() {
+      return this.dashboard.sensormeasurements
     },
     periodEndString() {
       return this.$moment().format(this.dateTimeFormat)
@@ -488,11 +490,9 @@ export default {
     }
     this.checkLocalStorage()
 
-    this.readTaxonomy().then(() => {
-      this.readDashboard(this.dashboardCode).then(() => {
-        this.nextHiveWithData()
-        this.startTimer('hive')
-      })
+    this.readDashboard(this.dashboardCode).then(() => {
+      this.nextHiveWithData()
+      this.startTimer('hive')
     })
   },
   beforeDestroy() {
@@ -714,9 +714,11 @@ export default {
         (hive) => hive.id === id
       )
       this.selectedHive = this.dashboardHives[this.currentHiveIndex]
-      this.sensorMeasurementRequest().then(() => {
-        this.ready = true
-      })
+      this.readDashboardHive(this.dashboardCode, this.selectedHive.id).then(
+        () => {
+          this.ready = true
+        }
+      )
     },
     startTimer(timer) {
       this.stopTimer(timer)

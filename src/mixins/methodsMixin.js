@@ -564,6 +564,25 @@ export const readDashboard = {
         }
       }
     },
+    async readDashboardHive(code, hiveId) {
+      try {
+        const response = await Api.readRequest(
+          '/dashboard/',
+          code + '?hive_id=' + hiveId
+        )
+        this.$store.commit('groups/setData', {
+          prop: 'dashboardHiveData',
+          value: response.data,
+        })
+        return true
+      } catch (error) {
+        if (error.response) {
+          console.log(error.response)
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
   },
 }
 
