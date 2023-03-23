@@ -19,6 +19,8 @@
         <svgNumberBox
           :x="x + item.offset + (field - 1) * numberBoxWidth + 'mm'"
           :y="y + 5 + 'mm'"
+          :category-id="'date'"
+          :parent-id="position.id"
         />
       </g>
     </g>
@@ -44,6 +46,8 @@
           <svgNumberBox
             :x="x + timeXOffset(item) + (field - 1) * numberBoxWidth + 'mm'"
             :y="y + timeYOffset + 5 + 'mm'"
+            :category-id="'time'"
+            :parent-id="position.id"
           />
         </g>
       </g>

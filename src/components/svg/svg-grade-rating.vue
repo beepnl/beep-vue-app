@@ -13,7 +13,7 @@
       <svgCheckbox
         :x="x + (grade - 1) * 4.5 + 'mm'"
         :y="y + 6 + 'mm'"
-        :return-value="grade"
+        :category-id="'grade'"
         :parent-id="position.id"
       />
     </g>

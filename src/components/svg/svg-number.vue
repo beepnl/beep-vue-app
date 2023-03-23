@@ -9,8 +9,10 @@
     <g v-if="decimals === 0">
       <rect
         data-type="number"
+        :data-parent-category-id="position.id"
         :x="x + prependOffset + 'mm'"
         :y="y + 2 + 'mm'"
+        :parent-id="position.id"
         :width="textFieldWidth + 'mm'"
         height="8mm"
         stroke="black"
@@ -33,6 +35,8 @@
         :key="field + 1"
         :x="x + (field - 1) * numberBoxWidth + 'mm'"
         :y="y + 2 + 'mm'"
+        :category-id="'number'"
+        :parent-id="position.id"
       />
 
       <circle
@@ -47,6 +51,8 @@
         :key="'d-' + decimal"
         :x="x + fieldOffset + 2 + (decimal - 1) * numberBoxWidth + 'mm'"
         :y="y + 2 + 'mm'"
+        :category-id="'decimals'"
+        :parent-id="position.id"
       />
     </g>
 

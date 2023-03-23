@@ -10,7 +10,6 @@
           :key="'item-' + index"
           :x="x + item.depth * checkBoxSpace + 'mm'"
           :y="y + 2 + index * checkBoxSpace + 'mm'"
-          :return-value="item.id"
           :category-id="item.id"
           :parent-id="item.parent_id"
         />
@@ -30,6 +29,7 @@
     <g v-else-if="flattenedItems.length > maxNrOfItems">
       <rect
         data-type="text"
+        :data-parent-category-id="position.id"
         :x="x + 'mm'"
         :y="y + 2 + 'mm'"
         width="43mm"
@@ -51,7 +51,7 @@
         <svgCheckbox
           :key="'stc-' + stars"
           :x="x + 'mm'"
-          :return-value="stars"
+          :category-id="'stars'"
           :parent-id="position.id"
           :y="y + 2 + index * checkBoxSpace + 'mm'"
         />
@@ -80,7 +80,7 @@
           :key="'item-' + index"
           :x="x + 'mm'"
           :y="y + 2 + index * checkBoxSpace + 'mm'"
-          :return-value="index + 1"
+          :category-id="'score'"
           :parent-id="position.id"
         />
         <text

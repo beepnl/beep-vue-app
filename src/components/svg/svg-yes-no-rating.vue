@@ -5,7 +5,7 @@
     <svgCheckbox
       :x="x + 'mm'"
       :y="y + 2 + 'mm'"
-      :return-value="1"
+      :category-id="'boolean'"
       :parent-id="position.id"
     />
     <text :x="x + 5 + 'mm'" :y="y + 5 + 'mm'" :style="svgInputText">
@@ -15,7 +15,7 @@
     <svgCheckbox
       :x="x + 17 + 'mm'"
       :y="y + 2 + 'mm'"
-      :return-value="2"
+      :category-id="'boolean'"
       :parent-id="position.id"
     />
     <text :x="x + 22 + 'mm'" :y="y + 5 + 'mm'" :style="svgInputText">

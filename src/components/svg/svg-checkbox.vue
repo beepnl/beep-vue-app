@@ -3,7 +3,6 @@
     data-type="checkbox"
     :data-category-id="categoryId"
     :data-parent-category-id="parentId"
-    :return-value="returnValue"
     :x="x"
     :y="y"
     :width="checkBoxSize + 'mm'"
@@ -34,11 +33,6 @@ export default {
       default: null,
     },
     parentId: {
-      type: [String, Number],
-      required: false,
-      default: '',
-    },
-    returnValue: {
       type: [String, Number],
       required: false,
       default: '',

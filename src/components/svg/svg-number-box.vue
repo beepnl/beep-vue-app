@@ -3,6 +3,8 @@
     data-type="single-digit"
     :x="x"
     :y="y"
+    :data-category-id="categoryId"
+    :data-parent-category-id="parentId"
     :width="numberBoxWidth + 'mm'"
     :height="numberBoxHeight + 'mm'"
     stroke="black"
@@ -24,6 +26,16 @@ export default {
     y: {
       type: String,
       required: true,
+    },
+    categoryId: {
+      type: Number,
+      required: false,
+      default: null,
+    },
+    parentId: {
+      type: [String, Number],
+      required: false,
+      default: '',
     },
   },
 }

@@ -17,7 +17,7 @@
     <svgCheckbox
       :x="x + 1 + 'mm'"
       :y="y + 9 + 'mm'"
-      :return-value="1"
+      :category-id="'smile'"
       :parent-id="position.id"
     />
     <svg
@@ -35,7 +35,7 @@
     <svgCheckbox
       :x="x + 9.5 + 'mm'"
       :y="y + 9 + 'mm'"
-      :return-value="2"
+      :category-id="'smile'"
       :parent-id="position.id"
     />
     <svg
@@ -53,7 +53,7 @@
     <svgCheckbox
       :x="x + 18 + 'mm'"
       :y="y + 9 + 'mm'"
-      :return-value="3"
+      :category-id="'smile'"
       :parent-id="position.id"
     />
   </g>
