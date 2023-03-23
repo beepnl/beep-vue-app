@@ -225,49 +225,49 @@ export const convertComma = {
 
 export const deleteDashboard = {
   methods: {
-    async deleteDashboard(dashboard) {
-      console.log('TODO delete dashboard', this.dashboard.id)
-      // try {
-      //   const response = await Api.deleteRequest('/dashboards/', dashboard.id)
-      //   if (!response) {
-      //     this.snackbar.text = this.$i18n.t('something_wrong')
-      //     this.snackbar.show = true
-      //   }
-      //   //   setTimeout(() => {
-      //   //     return this.readDashboards().then(() => {
-      //   //       this.$router.push({
-      //   //         name: 'dashboards',
-      //   //       })
-      //   //     })
-      //   //   }, 50) // wait for API to update dashboards
-      // } catch (error) {
-      //   if (error.response) {
-      //     console.log('Error: ', error.response)
-      //     const msg = error.response.data.message
-      //     this.snackbar.text = msg
-      //   } else {
-      //     console.log('Error: ', error)
-      //     this.snackbar.text = this.$i18n.t('something_wrong')
-      //   }
-      //   this.snackbar.show = true
-      // }
+    async deleteDashboard(dashboardGroup) {
+      try {
+        const response = await Api.deleteRequest(
+          '/dashboardgroups/',
+          dashboardGroup.code
+        )
+        if (!response) {
+          this.snackbar.text = this.$i18n.t('something_wrong')
+          this.snackbar.show = true
+        }
+        setTimeout(() => {
+          return this.readDashboardGroups()
+        }, 50) // wait for API to update dashboards
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+          const msg = error.response.data.message
+          this.snackbar.text = msg
+        } else {
+          console.log('Error: ', error)
+          this.snackbar.text = this.$i18n.t('something_wrong')
+        }
+        this.snackbar.show = true
+      }
     },
-    confirmDeleteDashboard(dashboard) {
+    confirmDeleteDashboard(dashboardGroup) {
       this.$refs.confirm
         .open(
           this.$i18n.t('Delete_dashboard'),
           this.$i18n.t('Delete_dashboard') +
             ' (' +
-            dashboard.id +
-            (dashboard.name ? ' - ' + dashboard.name : '') +
-            (dashboard.description ? ' - ' + dashboard.description : '') +
+            dashboardGroup.code +
+            (dashboardGroup.name ? ' - ' + dashboardGroup.name : '') +
+            (dashboardGroup.description
+              ? ' - ' + dashboardGroup.description
+              : '') +
             ')?',
           {
             color: 'red',
           }
         )
         .then((confirm) => {
-          this.deleteDashboard(dashboard)
+          this.deleteDashboard(dashboardGroup)
         })
         .catch((reject) => {
           return true
@@ -542,6 +542,58 @@ export const readApiariesAndGroupsIfNotPresent = {
         prop: 'hivesObject',
         value: uniqueHives,
       })
+    },
+  },
+}
+
+export const readDashboardGroups = {
+  computed: {
+    ...mapGetters('groups', ['dashboardGroupsChecked']),
+  },
+  methods: {
+    async readDashboardGroups() {
+      try {
+        this.$store.commit('groups/setData', {
+          prop: 'dashboardGroupsChecked',
+          value: true,
+        })
+        const response = await Api.readRequest('/dashboardgroups')
+        this.$store.commit('groups/setData', {
+          prop: 'dashboardGroups',
+          value: response.data,
+        })
+        return true
+      } catch (error) {
+        if (error.response) {
+          console.log(error.response)
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
+    async readDashboardGroupsIfNotChecked() {
+      if (!this.dashboardGroupsChecked) {
+        try {
+          this.$store.commit('groups/setData', {
+            prop: 'dashboardGroupsChecked',
+            value: true,
+          })
+          const response = await Api.readRequest('/dashboardgroups')
+          this.$store.commit('groups/setData', {
+            prop: 'dashboardGroups',
+            value: response.data,
+          })
+          return true
+        } catch (error) {
+          if (error.response) {
+            console.log(error.response)
+          } else {
+            console.log('Error: ', error)
+          }
+        }
+      } else {
+        return true
+      }
     },
   },
 }

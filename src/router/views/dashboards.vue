@@ -78,26 +78,28 @@
                 </thead>
                 <tbody>
                   <tr
-                    v-for="(dashboard, index) in sortedDashboards"
+                    v-for="(dashboardGroup, index) in sortedDashboardGroups"
                     :key="index"
                   >
                     <td>
-                      <router-link
-                        :to="{
-                          name: 'dashboard',
-                          params: { id: dashboard.id },
-                        }"
+                      <a
+                        :href="dashboardUrl + dashboardGroup.code"
                         target="_blank"
                       >
-                        <v-icon size="18" class="mr-1" color="accent"
-                          >mdi-link</v-icon
-                        >
-                        <span class="overline" v-text="dashboard.id"></span>
-                      </router-link>
+                        <v-icon class="mr-2" color="accent">mdi-link</v-icon>
+                        <span
+                          class="overline"
+                          v-text="dashboardGroup.code"
+                        ></span>
+                      </a>
 
                       <v-tooltip bottom max-width="60%">
                         <template v-slot:activator="{ on }">
-                          <v-icon small class="ml-2" v-on="on" @click="copyUrl"
+                          <v-icon
+                            small
+                            class="ml-2"
+                            v-on="on"
+                            @click="copyUrl(dashboardGroup.code)"
                             >mdi-content-copy</v-icon
                           >
                         </template>
@@ -107,25 +109,28 @@
                     <td>
                       <ApiaryPreviewHiveSelector
                         class="mt-4 mb-3"
-                        :hives="getHives(dashboard)"
+                        :hives="getHives(dashboardGroup)"
                         :hives-selected="[]"
-                        :hives-editable="dashboard.hive_ids"
+                        :hives-editable="dashboardGroup.hive_ids"
                         :dashboard-edit-mode="true"
                         :not-clickable="true"
                       ></ApiaryPreviewHiveSelector>
                     </td>
                     <td>
-                      <span class="overline" v-text="dashboard.name"></span>
+                      <span
+                        class="overline"
+                        v-text="dashboardGroup.name"
+                      ></span>
                     </td>
                     <td>
-                      <span v-text="dashboard.description"></span>
+                      <span v-text="dashboardGroup.description"></span>
                     </td>
                     <td>
                       <router-link
                         class="mr-1 mr-sm-2 mr-md-3"
                         :to="{
                           name: 'dashboard-edit',
-                          params: { id: dashboard.id },
+                          params: { id: dashboardGroup.code },
                         }"
                       >
                         <v-icon dark color="accent">mdi-pencil</v-icon>
@@ -133,7 +138,7 @@
                       <v-icon
                         dark
                         color="red"
-                        @click="confirmDeleteDashboard(dashboard)"
+                        @click="confirmDeleteDashboard(dashboardGroup)"
                         >mdi-delete</v-icon
                       >
                     </td>
@@ -160,7 +165,7 @@ import { mapGetters } from 'vuex'
 import {
   deleteDashboard,
   readApiariesAndGroupsIfNotPresent,
-  // readDashboards,
+  readDashboardGroups,
 } from '@mixins/methodsMixin'
 
 export default {
@@ -170,9 +175,16 @@ export default {
     // HiveIcon,
     Layout,
   },
-  mixins: [deleteDashboard, readApiariesAndGroupsIfNotPresent],
+  mixins: [
+    deleteDashboard,
+    readApiariesAndGroupsIfNotPresent,
+    readDashboardGroups,
+  ],
   data: function() {
     return {
+      dashboardUrl:
+        process.env.VUE_APP_DASHBOARD_URL ||
+        process.env.VUE_APP_DASHBOARD_URL_FALLBACK,
       ready: false,
       errors: [],
       showLoadingIconById: [],
@@ -183,46 +195,49 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('groups', ['dashboards', 'groups']),
+    ...mapGetters('groups', ['dashboardGroups', 'groups']),
     ...mapGetters('hives', ['hivesObject']),
     ...mapGetters('locations', ['apiaries']),
     mobile() {
       return this.$vuetify.breakpoint.mobile
     },
     showDashboardPlaceholder() {
-      return this.dashboards.length === 0
+      return this.dashboardGroups.length === 0
     },
-    sortedDashboards() {
-      const sortedDashboards = this.dashboards.slice().sort(function(a, b) {
-        if (a.name.toLowerCase() > b.name.toLowerCase()) {
-          return 1
-        }
-        if (b.name.toLowerCase() > a.name.toLowerCase()) {
-          return -1
-        }
-        return 0
-      })
-      return sortedDashboards
+    sortedDashboardGroups() {
+      const sortedDashboardGroups = this.dashboardGroups
+        .slice()
+        .sort(function(a, b) {
+          if (a.name.toLowerCase() > b.name.toLowerCase()) {
+            return 1
+          }
+          if (b.name.toLowerCase() > a.name.toLowerCase()) {
+            return -1
+          }
+          return 0
+        })
+      return sortedDashboardGroups
     },
   },
   created() {
-    // this.readDashboardsIfNotChecked().then(() => {
-    this.readApiariesAndGroupsIfNotPresent().then(() => {
-      if (this.dashboards.length === 0) {
-        this.showExplanation = true
-      }
-      this.ready = true
+    this.readDashboardGroupsIfNotChecked().then(() => {
+      // get hivesObject
+      this.readApiariesAndGroupsIfNotPresent().then(() => {
+        if (this.dashboardGroups.length === 0) {
+          this.showExplanation = true
+        }
+        this.ready = true
+      })
     })
-    // })
   },
   methods: {
-    copyUrl(id) {
-      var copyText = 'https://app.beep.nl/dashboard/' + id // TODO get url via env settings
+    copyUrl(code) {
+      var copyText = this.dashboardUrl + code // TODO get url via env settings
       navigator.clipboard.writeText(copyText)
     },
-    getHives(dashboard) {
+    getHives(dashboardGroup) {
       var hivesArray = []
-      dashboard.hive_ids.map((hiveId) => {
+      dashboardGroup.hive_ids.map((hiveId) => {
         hivesArray.push(this.hivesObject[hiveId])
       })
       return hivesArray

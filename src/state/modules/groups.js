@@ -7,28 +7,8 @@ const resource = createResource({ path: 'groups' })
 export const state = {
   ...resource.state,
   dashboardEdited: false,
-  dashboards: [
-    {
-      id: '1c987',
-      name: 'Overhorst',
-      description: 'Test dashboard 1',
-      speed: 60,
-      interval: 'day',
-      show_inspections: true,
-      show_all: false,
-      hive_ids: [151, 121, 122, 231, 273],
-    },
-    {
-      id: '32Gf6',
-      name: 'Dashboard',
-      description: 'Test dashboard 2 with default settings',
-      speed: 30,
-      interval: 'week',
-      show_inspections: false,
-      show_all: false,
-      hive_ids: [151, 121, 122, 231, 273, 250, 478, 476, 422, 158, 438, 437],
-    },
-  ],
+  dashboardGroups: [],
+  dashboardGroupsChecked: false,
   groups: [],
   groupEdited: false,
   invitations: [],
@@ -40,6 +20,12 @@ export const getters = {
   },
   dashboards: (state) => {
     return state.dashboards
+  },
+  dashboardGroups: (state) => {
+    return state.dashboardGroups || []
+  },
+  dashboardGroupsChecked: (state) => {
+    return state.dashboardGroupsChecked
   },
   groups: (state) => {
     return state.groups || []
@@ -67,6 +53,8 @@ export const mutations = {
   },
   resetState: function(state) {
     state.dashboardEdited = false
+    state.dashboardGroups = []
+    state.dashboardGroupsChecked = false
     state.groups = []
     state.groupEdited = false
     state.invitations = []
