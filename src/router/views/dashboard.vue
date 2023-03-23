@@ -85,9 +85,9 @@
             :title="$tc('Location', 1)"
           >
             <div
-              v-if="ready && selectedLocation"
+              v-if="ready && selectedLocationName"
               class="dashboard-text"
-              v-text="selectedLocation.name"
+              v-text="selectedLocationName"
             ></div>
             <div
               id="map"
@@ -119,11 +119,11 @@
               <div class="dashboard-text" v-text="selectedHive.name"></div>
               <ApiaryPreviewHiveSelector
                 class="mb-2"
-                :hives="selectedGroup.hives"
+                :hives="dashboardHives"
                 :hives-selected="selectedHiveIds"
                 :dashboard-mode="true"
                 :large-size="
-                  !smallScreen && (!landscapeMode || sortedHives.length < 7)
+                  !smallScreen && (!landscapeMode || dashboardHives.length < 7)
                 "
                 @select-hive="selectHive($event)"
               ></ApiaryPreviewHiveSelector>
@@ -173,8 +173,8 @@
                   >
                   </div>
                   <span
-                    v-if="ready && selectedLocation && !coordinatesPresent"
-                    v-text="selectedLocation.name"
+                    v-if="ready && selectedLocationName && !coordinatesPresent"
+                    v-text="selectedLocationName"
                   ></span>
                 </v-col>
                 <v-col cols="5" class="pa-1 pa-xl-3"
@@ -239,7 +239,12 @@
           :class="landscapeMode ? 'landscape-section --right' : ''"
         >
           <DashboardSection
-            v-if="ready && selectedHive && selectedHive.sensors.length !== 0"
+            v-if="
+              ready &&
+                selectedHive &&
+                selectedHive.sensors &&
+                selectedHive.sensors.length !== 0
+            "
             :title="$tc('Measurement', 2)"
             :landscape-mode="landscapeMode"
           >
@@ -332,18 +337,14 @@
 </template>
 
 <script>
-import Api from '@api/Api'
+// import Api from '@api/Api'
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 import Confirm from '@components/confirm.vue'
 import DashboardSection from '@components/dashboard-section.vue'
 import LocaleChanger from '@components/locale-changer.vue'
 import MeasurementsChartLine from '@components/measurements-chart-line.vue'
 import { mapGetters } from 'vuex'
-import {
-  readApiariesAndGroups,
-  readDashboardGroup,
-  readTaxonomy,
-} from '@mixins/methodsMixin'
+import { readDashboard, readTaxonomy } from '@mixins/methodsMixin'
 import { momentFromNow, timeZone } from '@mixins/momentMixin'
 import { sensorMixin } from '@mixins/sensorMixin'
 
@@ -355,14 +356,7 @@ export default {
     LocaleChanger,
     MeasurementsChartLine,
   },
-  mixins: [
-    momentFromNow,
-    readApiariesAndGroups,
-    readDashboardGroup,
-    readTaxonomy,
-    sensorMixin,
-    timeZone,
-  ],
+  mixins: [momentFromNow, readDashboard, readTaxonomy, sensorMixin, timeZone],
   data: function() {
     return {
       assetsUrl:
@@ -382,8 +376,8 @@ export default {
       showControls: false,
       landscapeMode: true,
       hiveTimer: 0,
-      hiveIntervalMinutes: 0.5,
       dataTimer: 0,
+      dashboardTimer: 0,
       dataIntervalMinutes: 60,
       hiveTimerPaused: false,
       currentHiveIndex: -1,
@@ -393,17 +387,16 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('groups', ['groups']),
-    ...mapGetters('locations', ['apiaries']),
+    ...mapGetters('groups', ['dashboard']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     code() {
       return this.$route.params.id
     },
     coordinatesPresent() {
       return (
-        this.selectedLocation &&
-        this.selectedLocation.coordinate_lat &&
-        this.selectedLocation.coordinate_lon
+        this.selectedHive &&
+        this.selectedHive.lat !== null &&
+        this.selectedHive.lon !== null
       )
     },
     currentSensors() {
@@ -412,64 +405,34 @@ export default {
         { name: 'weight', values: this.weightSensors, examples: 4 },
       ]
     },
+    dashboardHives() {
+      return this.dashboard.hives
+    },
     desktopAndUp() {
       return this.$vuetify.breakpoint.width >= 1200
     },
-    selectedGroup() {
-      return this.groups.length > 0 ? this.groups[7] : null // TODO: replace dummy data
+    hiveIntervalSeconds() {
+      return this.dashboard.speed
     },
-    selectedLocation() {
-      if (this.selectedHive) {
-        var findApiary = this.apiaries.filter(
-          (apiary) => apiary.id === this.selectedHive.location_id
-        )
-        return findApiary.length > 0 ? findApiary[0] : null
-      } else {
-        return null
-      }
-    },
-    sortedHives() {
-      if (this.selectedGroup) {
-        const sortedHives = this.selectedGroup.hives
-          .slice()
-          .sort(function(a, b) {
-            // order = null comes last
-            // if order is equal, sort by name with number sensitivity (10 comes after 2 instead of 1)
-            return (
-              (a.order === null) - (b.order === null) ||
-              +(a.order > b.order) ||
-              -(a.order < b.order) ||
-              (a.order === b.order && a.name !== null && b.name !== null
-                ? a.name.localeCompare(b.name, undefined, {
-                    numeric: true,
-                    sensitivity: 'base',
-                  })
-                : 0)
-            )
-          })
-        return sortedHives
-      } else {
-        return []
-      }
-    },
-    sortedHivesWithData() {
-      return this.sortedHives.filter((hive) => hive.sensors.length > 0)
+    hivesWithData() {
+      return this.dashboardHives.filter((hive) => hive.device_online) // TODO enable sensors prop when present: hive.sensors.length > 0)
     },
     lat() {
-      return this.selectedLocation !== null
-        ? this.selectedLocation.coordinate_lat
-        : -25.344
+      return this.selectedHive !== null ? this.selectedHive.lat : -25.344
     },
     lng() {
-      return this.selectedLocation !== null
-        ? this.selectedLocation.coordinate_lon
-        : 131.036
+      return this.selectedHive !== null ? this.selectedHive.lon : 131.036
     },
     locale() {
       return this.$i18n.locale
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile
+    },
+    selectedLocationName() {
+      return this.selectedHive && this.selectedHive.location_name
+        ? this.selectedHive.location_name
+        : null
     },
     periodEndString() {
       return this.$moment().format(this.dateTimeFormat)
@@ -503,11 +466,11 @@ export default {
   },
   watch: {
     ready() {
-      if (this.ready && this.selectedLocation) {
+      if (this.ready && this.coordinatesPresent) {
         this.initMap()
       }
     },
-    selectedLocation() {
+    selectedLocationName() {
       this.initMap()
     },
     landscapeMode() {
@@ -526,11 +489,9 @@ export default {
     this.checkLocalStorage()
 
     this.readTaxonomy().then(() => {
-      this.readApiariesAndGroups().then(() => {
-        this.readDashboardGroup(this.dashboardCode).then(() => {
-          this.nextHiveWithData()
-          this.startTimer('hive')
-        })
+      this.readDashboard(this.dashboardCode).then(() => {
+        this.nextHiveWithData()
+        this.startTimer('hive')
       })
     })
   },
@@ -539,30 +500,30 @@ export default {
   },
   methods: {
     async sensorMeasurementRequest() {
-      this.noChartData = false
-      this.loadingData = true
-      this.measurementData = null // needed to let chartjs redraw charts after interval switch
-      try {
-        const response = await Api.readRequest(
-          '/sensors/measurements?id=' +
-            this.selectedHive.sensors[0] +
-            '&interval=week&index=0&timeGroup=week&timezone=' +
-            this.timeZone +
-            '&relative_interval=1'
-        )
-        this.formatMeasurementData(response.data)
-        return true
-      } catch (error) {
-        this.loadingData = false
-        if (error.response) {
-          console.log(error.response)
-          if (error.response.status === 500) {
-            this.noChartData = true
-          }
-        } else {
-          console.log('Error: ', error)
-        }
-      }
+      // this.noChartData = false
+      // this.loadingData = true
+      // this.measurementData = null // needed to let chartjs redraw charts after interval switch
+      // try {
+      //   const response = await Api.readRequest(
+      //     '/sensors/measurements?id=' +
+      //       this.selectedHive.sensors[0] +
+      //       '&interval=week&index=0&timeGroup=week&timezone=' +
+      //       this.timeZone +
+      //       '&relative_interval=1'
+      //   )
+      //   this.formatMeasurementData(response.data)
+      //   return true
+      // } catch (error) {
+      //   this.loadingData = false
+      //   if (error.response) {
+      //     console.log(error.response)
+      //     if (error.response.status === 500) {
+      //       this.noChartData = true
+      //     }
+      //   } else {
+      //     console.log('Error: ', error)
+      //   }
+      // }
     },
     chartjsDataSeries(quantities) {
       var data = {
@@ -732,15 +693,13 @@ export default {
     },
     nextHiveWithData() {
       // fallback if no hives with data present
-      if (this.sortedHivesWithData.length === 0) {
-        this.selectHive(this.sortedHives[this.currentHiveIndex + 1].id)
+      if (this.hivesWithData.length === 0) {
+        this.selectHive(this.dashboardHives[this.currentHiveIndex + 1].id)
       } else {
         this.currentHiveWithDataIndex += 1
-        if (this.currentHiveWithDataIndex >= this.sortedHivesWithData.length)
+        if (this.currentHiveWithDataIndex >= this.hivesWithData.length)
           this.currentHiveWithDataIndex = 0
-        this.selectHive(
-          this.sortedHivesWithData[this.currentHiveWithDataIndex].id
-        )
+        this.selectHive(this.hivesWithData[this.currentHiveWithDataIndex].id)
       }
     },
     redrawCharts() {
@@ -751,10 +710,10 @@ export default {
       }, 10)
     },
     selectHive(id) {
-      this.currentHiveIndex = this.sortedHives.findIndex(
+      this.currentHiveIndex = this.dashboardHives.findIndex(
         (hive) => hive.id === id
       )
-      this.selectedHive = this.sortedHives[this.currentHiveIndex]
+      this.selectedHive = this.dashboardHives[this.currentHiveIndex]
       this.sensorMeasurementRequest().then(() => {
         this.ready = true
       })
@@ -765,7 +724,7 @@ export default {
       if (timer === 'hive' && !this.hiveTimerPaused) {
         this.hiveTimer = setInterval(
           this.nextHiveWithData,
-          this.hiveIntervalMinutes * 60 * 1000
+          this.hiveIntervalSeconds * 1000
         )
       } else if (
         timer === 'data' &&
@@ -774,6 +733,10 @@ export default {
       ) {
         this.dataTimer = setInterval(
           this.sensorMeasurementRequest,
+          this.dataIntervalMinutes * 60 * 1000
+        )
+        this.dashboardTimer = setInterval(
+          this.readDashboard,
           this.dataIntervalMinutes * 60 * 1000
         )
       }
@@ -788,7 +751,9 @@ export default {
         this.hiveTimer = 0
       } else if (timer === 'data' && this.dataTimer > 0) {
         clearInterval(this.dataTimer)
+        clearInterval(this.dashboardTimer)
         this.dataTimer = 0
+        this.dashboardTimer = 0
       }
     },
     toggleDarkMode(bool) {
@@ -803,7 +768,7 @@ export default {
       if (this.hiveTimerPaused) {
         this.stopTimer('hive')
         if (this.selectedHive.sensors.length > 0) {
-          this.startTimer('data') // if hive rotation is paused and current hive has device, check data every hour
+          this.startTimer('data') // if hive rotation is paused and current hive has device, check data every hour TODO check if this interval is ok?
         }
       } else {
         if (this.selectedHive.sensors.length > 0) {

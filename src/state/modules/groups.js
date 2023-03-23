@@ -7,7 +7,7 @@ const resource = createResource({ path: 'groups' })
 export const state = {
   ...resource.state,
   dashboardEdited: false,
-  dashboardGroup: {},
+  dashboard: {},
   groups: [],
   groupEdited: false,
   invitations: [],
@@ -17,8 +17,8 @@ export const getters = {
   dashboardEdited: (state) => {
     return state.dashboardEdited
   },
-  dashboardGroup: (state) => {
-    return state.dashboardGroup
+  dashboard: (state) => {
+    return state.dashboard
   },
   groups: (state) => {
     return state.groups || []
@@ -46,7 +46,7 @@ export const mutations = {
   },
   resetState: function(state) {
     state.dashboardEdited = false
-    state.dashboardGroup = {}
+    state.dashboard = {}
     state.groups = []
     state.groupEdited = false
     state.invitations = []

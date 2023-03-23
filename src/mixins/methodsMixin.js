@@ -546,13 +546,13 @@ export const readApiariesAndGroupsIfNotPresent = {
   },
 }
 
-export const readDashboardGroup = {
+export const readDashboard = {
   methods: {
-    async readDashboardGroup(code) {
+    async readDashboard(code) {
       try {
-        const response = await Api.readRequest('/dashboardgroups/', code)
+        const response = await Api.readRequest('/dashboard/', code)
         this.$store.commit('groups/setData', {
-          prop: 'dashboardGroup',
+          prop: 'dashboard',
           value: response.data,
         })
         return true
