@@ -55,44 +55,62 @@ export default {
   },
   computed: {
     ...mapGetters('auth', ['userLocale', 'userEmail']),
+    dashboardMode() {
+      return this.$route.name === 'dashboard'
+    },
     selectedLanguage() {
       return this.$i18n.locale
     },
   },
   created() {
-    // if locale is saved in database, use it
-    if (this.userLocale !== null) {
-      this.$i18n.locale = this.userLocale
-      localStorage.beepLocale = this.userLocale
-    } else {
-      var newLocale = languages.checkBrowserLanguage()
-      this.$i18n.locale = newLocale
-      this.switchLocale(newLocale)
+    // for dashboard app, locale is initiated elsewhere (in dashboard.vue created), as locale changer is hidden there by default
+    if (!this.dashboardMode) {
+      // if locale is saved in database, use it
+      if (this.userLocale !== null) {
+        this.$i18n.locale = this.userLocale
+        localStorage.beepLocale = this.userLocale
+      } else {
+        var newLocale = languages.checkBrowserLanguage()
+        this.$i18n.locale = newLocale
+        this.switchLocale(newLocale)
+      }
+      Settings.defaultLocale = this.$i18n.locale // for hive-inspect vue-datetime picker
     }
-    Settings.defaultLocale = this.$i18n.locale // for hive-inspect vue-datetime picker
   },
   methods: {
     async switchLocale(locale) {
-      const email = this.userEmail
-      try {
-        const response = await Api.updateRequest('/userlocale', '', {
-          email,
-          locale,
-        })
-        if (!response) {
-          console.log('error')
+      // for dashboard app users (who are not signed in) do not try to change the userlocale in database because not applicable
+      if (!this.dashboardMode) {
+        const email = this.userEmail
+        try {
+          const response = await Api.updateRequest('/userlocale', '', {
+            email,
+            locale,
+          })
+          if (!response) {
+            console.log('error')
+          }
+          this.$store.commit('auth/SET_CURRENT_USER', response.data)
+          this.updateLocale(locale)
+        } catch (error) {
+          if (error.response) {
+            console.log(error.response)
+          } else {
+            console.log('Error: ', error)
+          }
         }
-        this.$store.commit('auth/SET_CURRENT_USER', response.data)
-        this.$i18n.locale = locale
-        console.log(locale)
-        Settings.defaultLocale = locale // for hive-inspect vue-datetime picker
+      } else {
+        this.updateLocale(locale)
+      }
+    },
+    updateLocale(locale) {
+      this.$i18n.locale = locale
+      console.log(locale)
+      Settings.defaultLocale = locale // for hive-inspect vue-datetime picker
+      if (this.dashboardMode) {
+        localStorage.beepdashboardLocale = locale // remember language for sign-in
+      } else {
         localStorage.beepLocale = locale // remember language for sign-in
-      } catch (error) {
-        if (error.response) {
-          console.log(error.response)
-        } else {
-          console.log('Error: ', error)
-        }
       }
     },
   },

@@ -351,6 +351,7 @@
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 import Confirm from '@components/confirm.vue'
 import DashboardSection from '@components/dashboard-section.vue'
+import languages from '@assets/js/languages'
 import LocaleChanger from '@components/locale-changer.vue'
 import MeasurementsChartLine from '@components/measurements-chart-line.vue'
 import { mapGetters } from 'vuex'
@@ -370,6 +371,7 @@ export default {
   data: function() {
     return {
       selectedHive: null,
+      languages: languages.languageArray,
       assetsUrl:
         process.env.VUE_APP_ASSETS_URL ||
         process.env.VUE_APP_ASSETS_URL_FALLBACK,
@@ -581,6 +583,12 @@ export default {
       return data
     },
     checkLocalStorage() {
+      if (localStorage.beepdashboardLocale) {
+        this.$i18n.locale = localStorage.beepdashboardLocale
+      } else {
+        this.$i18n.locale = languages.checkBrowserLanguage()
+      }
+
       if (localStorage.beepdashboardDarkMode) {
         this.darkMode = localStorage.beepdashboardDarkMode === 'true'
         this.$vuetify.theme.dark = this.darkMode
