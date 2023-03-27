@@ -142,6 +142,11 @@ export default {
       default: false,
       required: false,
     },
+    disableSortHives: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
     largeSize: {
       type: Boolean,
       default: false,
@@ -155,7 +160,7 @@ export default {
   },
   computed: {
     sortedHives() {
-      if (!this.dashboardMode) {
+      if (!this.disableSortHives) {
         const sortedHives = this.hives.slice().sort(function(a, b) {
           // order = null comes last
           // if order is equal, sort by name with number sensitivity (10 comes after 2 instead of 1)

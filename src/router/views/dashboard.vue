@@ -11,7 +11,7 @@
         </v-icon>
         <v-icon
           class="color-grey-filter mr-4"
-          @click="toggleLandscapeMode(!landscapeMode)"
+          @click="setLandscapeMode = !landscapeMode"
         >
           {{
             'mdi-phone-rotate-' + (!landscapeMode ? 'landscape' : 'portrait')
@@ -59,7 +59,7 @@
                 'text-h3 dashboard-title overline roboto-condensed' +
                   (!landscapeMode ? ' text-md-h2' : ' font-weight-light')
               "
-              v-text="$tc('Dashboard', 1)"
+              v-text="dashboard.name ? dashboard.name : $tc('Dashboard', 1)"
             ></div>
           </div>
         </v-col>
@@ -125,6 +125,7 @@
                 :hives="dashboardHives"
                 :hives-selected="selectedHiveIds"
                 :dashboard-mode="true"
+                :disable-sort-hives="true"
                 :large-size="
                   !smallScreen && (!landscapeMode || dashboardHives.length < 7)
                 "
@@ -386,7 +387,6 @@ export default {
       sensorsPresent: false,
       dateTimeFormat: 'YYYY-MM-DD HH:mm:ss',
       showControls: false,
-      landscapeMode: true,
       hiveTimer: 0,
       dataTimer: 0,
       dashboardTimer: 0,
@@ -399,7 +399,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('dashboard', ['dashboard']),
+    ...mapGetters('dashboard', ['dashboard', 'landscapeMode']),
     code() {
       return this.$route.params.id
     },
@@ -463,6 +463,18 @@ export default {
     sensorMeasurementsList() {
       return this.dashboard ? this.dashboard.sensormeasurements : []
     },
+    setLandscapeMode: {
+      get() {
+        return this.landscapeMode
+      },
+      set(value) {
+        localStorage.beepdashboardLandscapeMode = value.toString()
+        this.$store.commit('dashboard/setData', {
+          prop: 'landscapeMode',
+          value,
+        })
+      },
+    },
     showInspections() {
       return (
         this.dashboard.show_inspections === 1 &&
@@ -507,13 +519,13 @@ export default {
     },
     desktopAndUp() {
       console.log('watch desktop size')
-      this.toggleLandscapeMode(this.desktopAndUp)
+      this.setLandscapeMode = this.desktopAndUp
     },
   },
   mounted() {},
   created() {
     if (this.smallScreen) {
-      this.landscapeMode = false
+      this.setLandscapeMode = false
     }
     this.checkLocalStorage()
 
@@ -608,7 +620,8 @@ export default {
           localStorage.beepdashboardHiveTimerPaused === 'true'
       }
       if (localStorage.beepdashboardLandscapeMode) {
-        this.landscapeMode = localStorage.beepdashboardLandscapeMode === 'true'
+        this.setLandscapeMode =
+          localStorage.beepdashboardLandscapeMode === 'true'
       }
       if (this.code) {
         // if code is in url overwrite localstorage code
@@ -781,10 +794,6 @@ export default {
         this.nextHiveWithData()
         this.startTimer('hive')
       }
-    },
-    toggleLandscapeMode(bool) {
-      localStorage.beepdashboardLandscapeMode = bool
-      this.landscapeMode = bool
     },
     toggleShowControls() {
       this.showControls = !this.showControls
@@ -971,6 +980,9 @@ export default {
 .dashboard-inspection {
   text-align: left !important;
   @include for-tablet-landscape-up {
+    width: 50%;
+  }
+  @include for-big-desktop-up {
     width: 40%;
   }
   &.--landscape {

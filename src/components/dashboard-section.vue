@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   props: {
     title: {
@@ -19,13 +21,9 @@ export default {
       required: false,
       default: '',
     },
-    landscapeMode: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
   },
   computed: {
+    ...mapGetters('dashboard', ['landscapeMode']),
     mobile() {
       return this.$vuetify.breakpoint.mobile
     },

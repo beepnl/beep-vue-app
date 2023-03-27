@@ -1,3 +1,9 @@
+html {
+  @include for-big-desktop-up {
+    overflow: hidden;
+  }
+}
+
 .beep-tooltip {
   font-family: 'Roboto', sans-serif !important;
   font-size: 0.8rem;
