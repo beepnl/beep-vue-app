@@ -984,10 +984,13 @@ export default {
 
 .funky-border {
   padding: 12px 14px;
-  background-color: #8e5000; // $color-grey-lightest;
+  background-color: $color-orange-medium;
   border-radius: 2% 98% 2% 98% / 98% 1% 99% 2%;
   &.dashboard-text-small {
     font-size: 110%;
+  }
+  &.sticky-dark-mode {
+    background-color: #8e5000;
   }
 }
 

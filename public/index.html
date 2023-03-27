@@ -109,7 +109,15 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css"
     />
-    <script src="https://maps.google.com/maps/api/js?key=<%= VUE_APP_GOOGLE_MAPS_KEY %>"></script>
+    <script>
+      function initMap() {
+        console.log('init map') // obligatory callback
+      }
+    </script>
+    <script
+      defer
+      src="https://maps.google.com/maps/api/js?libraries=places&key=<%= VUE_APP_GOOGLE_MAPS_KEY %>&callback=initMap"
+    ></script>
   </head>
   <body>
     <noscript>
