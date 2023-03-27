@@ -116,7 +116,10 @@
                   (darkMode ? ' --dark' : '')
               "
             >
-              <div class="dashboard-text" v-text="selectedHive.name"></div>
+              <div
+                class="dashboard-text"
+                v-text="selectedHiveDetails.name"
+              ></div>
               <ApiaryPreviewHiveSelector
                 class="mb-2"
                 :hives="dashboardHives"
@@ -131,7 +134,9 @@
           </DashboardSection>
 
           <DashboardSection
-            v-if="ready && selectedHive && selectedHive.last_inspection_date"
+            v-if="
+              ready && selectedHive && selectedHiveDetails.last_inspection_date
+            "
             :title="$tc('Inspection', 1)"
             :landscape-mode="landscapeMode"
           >
@@ -141,7 +146,7 @@
                 v-text="
                   $t('Last_check') +
                     ': ' +
-                    momentFromNow(selectedHive.last_inspection_date)
+                    momentFromNow(selectedHiveDetails.last_inspection_date)
                 "
               ></span>
             </div>
@@ -182,12 +187,14 @@
                 ></v-col>
                 <v-col cols="7" class="pa-1 pa-xl-3"
                   ><span
-                    v-text="momentFromNow(selectedHive.last_inspection_date)"
+                    v-text="
+                      momentFromNow(selectedHiveDetails.last_inspection_date)
+                    "
                   ></span
                 ></v-col>
               </v-row>
               <v-row
-                v-if="selectedHive.impression"
+                v-if="selectedHiveDetails.impression"
                 :class="
                   'dashboard-sticky-row ' + (!landscapeMode ? 'pa-3' : '')
                 "
@@ -197,19 +204,19 @@
                 ></v-col>
                 <v-col cols="7" class="pa-1 pa-xl-3">
                   <v-icon
-                    v-if="selectedHive.impression === 1"
+                    v-if="selectedHiveDetails.impression === 1"
                     class="red--text"
                   >
                     mdi-emoticon-sad
                   </v-icon>
                   <v-icon
-                    v-if="selectedHive.impression === 3"
+                    v-if="selectedHiveDetails.impression === 3"
                     class="green--text"
                   >
                     mdi-emoticon-happy
                   </v-icon>
                   <v-icon
-                    v-if="selectedHive.impression === 2"
+                    v-if="selectedHiveDetails.impression === 2"
                     class="orange--text"
                   >
                     mdi-emoticon-neutral
@@ -217,7 +224,7 @@
                 </v-col>
               </v-row>
               <v-row
-                v-if="selectedHive.notes"
+                v-if="selectedHiveDetails.notes"
                 :class="
                   'dashboard-sticky-row ' + (!landscapeMode ? 'pa-3' : '')
                 "
@@ -226,7 +233,10 @@
                   ><span v-text="$t('Note') + ': '"></span
                 ></v-col>
                 <v-col cols="7" class="pa-1 pb-2 pa-xl-3"
-                  ><span class="line-clamp-3" v-text="selectedHive.notes"></span
+                  ><span
+                    class="line-clamp-3"
+                    v-text="selectedHiveDetails.notes"
+                  ></span
                 ></v-col>
               </v-row>
             </div>
@@ -242,8 +252,8 @@
             v-if="
               ready &&
                 selectedHive &&
-                selectedHive.sensors &&
-                selectedHive.sensors.length !== 0
+                selectedHiveDetails.sensors &&
+                selectedHiveDetails.sensors.length !== 0
             "
             :title="$tc('Measurement', 2)"
             :landscape-mode="landscapeMode"
@@ -359,13 +369,13 @@ export default {
   mixins: [momentFromNow, readDashboard, sensorMixin, timeZone],
   data: function() {
     return {
+      selectedHive: null,
       assetsUrl:
         process.env.VUE_APP_ASSETS_URL ||
         process.env.VUE_APP_ASSETS_URL_FALLBACK,
       ready: false,
       map: null,
       marker: null,
-      selectedHive: null,
       noChartData: false,
       loadingData: true,
       measurementData: {},
@@ -387,16 +397,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('groups', ['dashboard', 'dashboardHiveData']),
+    ...mapGetters('dashboard', ['dashboard']),
     code() {
       return this.$route.params.id
     },
     coordinatesPresent() {
-      return (
-        this.selectedHive &&
-        this.selectedHive.lat !== null &&
-        this.selectedHive.lon !== null
-      )
+      return this.selectedHive && this.lat !== null && this.lng !== null
     },
     currentSensors() {
       return [
@@ -414,27 +420,19 @@ export default {
       return this.dashboard.speed
     },
     hivesWithData() {
-      return this.dashboardHives.filter((hive) => hive.device_online) // TODO enable sensors prop when present: hive.sensors.length > 0)
+      return this.dashboardHives.filter((hive) => hive.sensors.length > 0)
     },
     lat() {
-      return this.selectedHive !== null ? this.selectedHive.lat : -25.344
+      return this.selectedHive !== null ? this.selectedHiveDetails.lat : null
     },
     lng() {
-      return this.selectedHive !== null ? this.selectedHive.lon : 131.036
+      return this.selectedHive !== null ? this.selectedHiveDetails.lon : null
     },
     locale() {
       return this.$i18n.locale
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile
-    },
-    selectedLocationName() {
-      return this.selectedHive && this.selectedHive.location_name
-        ? this.selectedHive.location_name
-        : null
-    },
-    sensorMeasurementsList() {
-      return this.dashboard.sensormeasurements
     },
     periodEndString() {
       return this.$moment().format(this.dateTimeFormat)
@@ -444,8 +442,21 @@ export default {
         .subtract(1, 'weeks')
         .format(this.dateTimeFormat)
     },
+    selectedHiveDetails() {
+      return this.selectedHive ? this.selectedHive.hives[0] : {}
+    },
     selectedHiveIds() {
-      return this.selectedHive ? [this.selectedHive.id] : []
+      return this.selectedHive ? [this.selectedHiveDetails.id] : []
+    },
+    selectedLocationName() {
+      return this.selectedHive &&
+        this.selectedHiveDetails &&
+        this.selectedHiveDetails.location_name
+        ? this.selectedHiveDetails.location_name
+        : null
+    },
+    sensorMeasurementsList() {
+      return this.dashboard ? this.dashboard.sensormeasurements : []
     },
     smallScreen() {
       return this.$vuetify.breakpoint.width < 960
@@ -473,10 +484,14 @@ export default {
       }
     },
     selectedLocationName() {
-      this.initMap()
+      if (this.coordinatesPresent) {
+        this.initMap()
+      }
     },
     landscapeMode() {
-      this.initMap()
+      if (this.coordinatesPresent) {
+        this.initMap()
+      }
     },
     desktopAndUp() {
       console.log('watch desktop size')
@@ -499,32 +514,6 @@ export default {
     this.stopAllTimers()
   },
   methods: {
-    async sensorMeasurementRequest() {
-      // this.noChartData = false
-      // this.loadingData = true
-      // this.measurementData = null // needed to let chartjs redraw charts after interval switch
-      // try {
-      //   const response = await Api.readRequest(
-      //     '/sensors/measurements?id=' +
-      //       this.selectedHive.sensors[0] +
-      //       '&interval=week&index=0&timeGroup=week&timezone=' +
-      //       this.timeZone +
-      //       '&relative_interval=1'
-      //   )
-      //   this.formatMeasurementData(response.data)
-      //   return true
-      // } catch (error) {
-      //   this.loadingData = false
-      //   if (error.response) {
-      //     console.log(error.response)
-      //     if (error.response.status === 500) {
-      //       this.noChartData = true
-      //     }
-      //   } else {
-      //     console.log('Error: ', error)
-      //   }
-      // }
-    },
     chartjsDataSeries(quantities) {
       var data = {
         labels: [],
@@ -710,15 +699,10 @@ export default {
       }, 10)
     },
     selectHive(id) {
-      this.currentHiveIndex = this.dashboardHives.findIndex(
-        (hive) => hive.id === id
-      )
-      this.selectedHive = this.dashboardHives[this.currentHiveIndex]
-      this.readDashboardHive(this.dashboardCode, this.selectedHive.id).then(
-        () => {
-          this.ready = true
-        }
-      )
+      this.readDashboardHive(this.dashboardCode, id).then((response) => {
+        // this.formatMeasurementData(response.data.measurements) TODO: enable when data is returned in call
+        this.ready = true
+      })
     },
     startTimer(timer) {
       this.stopTimer(timer)
@@ -731,7 +715,7 @@ export default {
       } else if (
         timer === 'data' &&
         this.selectedHive &&
-        this.selectedHive.sensors.length !== 0
+        this.selectedHiveDetails.sensors.length !== 0
       ) {
         this.dataTimer = setInterval(
           this.sensorMeasurementRequest,
@@ -769,11 +753,11 @@ export default {
       this.hiveTimerPaused = bool
       if (this.hiveTimerPaused) {
         this.stopTimer('hive')
-        if (this.selectedHive.sensors.length > 0) {
+        if (this.selectedHiveDetails.sensors.length > 0) {
           this.startTimer('data') // if hive rotation is paused and current hive has device, check data every hour TODO check if this interval is ok?
         }
       } else {
-        if (this.selectedHive.sensors.length > 0) {
+        if (this.selectedHiveDetails.sensors.length > 0) {
           this.stopTimer('data')
         }
         this.nextHiveWithData()
@@ -870,6 +854,9 @@ export default {
     font-size: 100%;
   }
   @include for-big-desktop-up {
+    font-size: 135%;
+  }
+  @include for-tv-up {
     font-size: 150%;
   }
   // @include for-tv-up {

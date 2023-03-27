@@ -155,22 +155,26 @@ export default {
   },
   computed: {
     sortedHives() {
-      const sortedHives = this.hives.slice().sort(function(a, b) {
-        // order = null comes last
-        // if order is equal, sort by name with number sensitivity (10 comes after 2 instead of 1)
-        return (
-          (a.order === null) - (b.order === null) ||
-          +(a.order > b.order) ||
-          -(a.order < b.order) ||
-          (a.order === b.order && a.name !== null && b.name !== null
-            ? a.name.localeCompare(b.name, undefined, {
-                numeric: true,
-                sensitivity: 'base',
-              })
-            : 0)
-        )
-      })
-      return sortedHives
+      if (!this.dashboardMode) {
+        const sortedHives = this.hives.slice().sort(function(a, b) {
+          // order = null comes last
+          // if order is equal, sort by name with number sensitivity (10 comes after 2 instead of 1)
+          return (
+            (a.order === null) - (b.order === null) ||
+            +(a.order > b.order) ||
+            -(a.order < b.order) ||
+            (a.order === b.order && a.name !== null && b.name !== null
+              ? a.name.localeCompare(b.name, undefined, {
+                  numeric: true,
+                  sensitivity: 'base',
+                })
+              : 0)
+          )
+        })
+        return sortedHives
+      } else {
+        return this.hives
+      }
     },
   },
   methods: {
@@ -275,7 +279,7 @@ export default {
   margin-top: -6px;
   max-width: 100%;
   height: 1px;
-  background-color: #bbb;
+  background-color: #888;
   &.--large {
     margin-top: -7px;
   }

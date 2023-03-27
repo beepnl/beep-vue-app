@@ -8,7 +8,6 @@ export const state = {
   ...resource.state,
   dashboardEdited: false,
   dashboard: {},
-  dashboardHiveData: [],
   groups: [],
   groupEdited: false,
   invitations: [],
@@ -20,9 +19,6 @@ export const getters = {
   },
   dashboard: (state) => {
     return state.dashboard
-  },
-  dashboardHiveData: (state) => {
-    return state.dashboardHiveData
   },
   groups: (state) => {
     return state.groups || []
@@ -51,7 +47,6 @@ export const mutations = {
   resetState: function(state) {
     state.dashboardEdited = false
     state.dashboard = {}
-    state.dashboardHiveData = []
     state.groups = []
     state.groupEdited = false
     state.invitations = []

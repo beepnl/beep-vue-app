@@ -551,7 +551,7 @@ export const readDashboard = {
     async readDashboard(code) {
       try {
         const response = await Api.readRequest('/dashboard/', code)
-        this.$store.commit('groups/setData', {
+        this.$store.commit('dashboard/setData', {
           prop: 'dashboard',
           value: response.data,
         })
@@ -570,11 +570,8 @@ export const readDashboard = {
           '/dashboard/',
           code + '?hive_id=' + hiveId
         )
-        this.$store.commit('groups/setData', {
-          prop: 'dashboardHiveData',
-          value: response.data,
-        })
-        return true
+        this.selectedHive = response.data
+        return response
       } catch (error) {
         if (error.response) {
           console.log(error.response)
