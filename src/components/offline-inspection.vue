@@ -4,8 +4,8 @@
       <v-row :justify="'center'">
         <v-col cols="12" class="svg-warnings no-print">
           <v-alert
-            v-for="(warning, index) in svgWarnings"
-            :key="warning + index"
+            v-for="(svgWarning, index) in svgWarnings"
+            :key="'w-' + index"
             type="error"
             text
             prominent
@@ -13,7 +13,7 @@
             dismissible
             color="red"
           >
-            {{ warning }}
+            {{ svgWarning.warning }}
           </v-alert>
         </v-col>
       </v-row>

@@ -96,7 +96,21 @@ export const getters = {
 export const mutations = {
   ...resource.mutations,
   addWarning: function(state, payload) {
-    state.svgWarnings.push(payload)
+    var warningPresent =
+      state.svgWarnings.filter((warning) => {
+        return warning.id === payload.id
+      }).length > 0
+    if (!warningPresent) {
+      state.svgWarnings.push(payload)
+    }
+  },
+  removeWarning: function(state, payload) {
+    var warningIndex = state.svgWarnings.findIndex(
+      (warning) => warning.id === payload
+    )
+    if (warningIndex > -1) {
+      state.svgWarnings.splice(warningIndex, 1)
+    }
   },
   setChecklist: function(state, payload) {
     state.checklist = payload

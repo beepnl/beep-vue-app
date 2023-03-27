@@ -190,7 +190,12 @@ export default {
           this.maxNrOfItems +
           ' ' +
           this.$i18n.t('Too_long_list_present_fix_2')
-        this.$store.commit('inspections/addWarning', warning)
+        this.$store.commit('inspections/addWarning', {
+          id: this.position.id,
+          warning,
+        })
+      } else {
+        this.$store.commit('inspections/removeWarning', this.position.id)
       }
     },
     flattenItems(data, depth = 0) {
