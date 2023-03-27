@@ -113,6 +113,7 @@
                         :hives-selected="[]"
                         :hives-editable="dashboardGroup.hive_ids"
                         :dashboard-edit-mode="true"
+                        :disable-sort-hives="true"
                         :not-clickable="true"
                       ></ApiaryPreviewHiveSelector>
                     </td>
