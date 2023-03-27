@@ -717,8 +717,8 @@ export default {
       }, 10)
     },
     selectHive(id) {
-      this.readDashboardHive(this.dashboardCode, id).then((response) => {
-        // this.formatMeasurementData(response.data.measurements) TODO: enable when data is returned in call
+      this.readDashboardHive(this.dashboardCode, id).then(() => {
+        this.formatMeasurementData(this.selectedHiveDetails)
         this.ready = true
       })
     },
