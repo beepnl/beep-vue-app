@@ -559,6 +559,9 @@ export const readDashboard = {
       } catch (error) {
         if (error.response) {
           console.log(error.response)
+          if (error.response.status === 404 || error.response.status === 422) {
+            this.$router.push({ name: 'dashboard-sign-in' })
+          }
         } else {
           console.log('Error: ', error)
         }
