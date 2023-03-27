@@ -390,7 +390,8 @@ export default {
       hiveTimer: 0,
       dataTimer: 0,
       dashboardTimer: 0,
-      dataIntervalMinutes: 60,
+      dataIntervalMinutes: 0.1, // TODO 10
+      dashboardIntervalMinutes: 60,
       hiveTimerPaused: false,
       currentHiveIndex: -1,
       currentHiveWithDataIndex: -1,
@@ -529,9 +530,10 @@ export default {
     }
     this.checkLocalStorage()
 
-    this.readDashboard(this.dashboardCode).then(() => {
+    this.readDashboard().then(() => {
       this.nextHiveWithData()
       this.startTimer('hive')
+      this.startTimer('dashboard')
     })
   },
   beforeDestroy() {
@@ -749,18 +751,23 @@ export default {
         this.selectedHiveDetails.sensors.length !== 0
       ) {
         this.dataTimer = setInterval(
-          this.sensorMeasurementRequest,
+          this.readDashboardHive(
+            this.dashboardCode,
+            this.selectedHiveDetails.id
+          ),
           this.dataIntervalMinutes * 60 * 1000
         )
+      } else if (timer === 'dashboard') {
         this.dashboardTimer = setInterval(
           this.readDashboard,
-          this.dataIntervalMinutes * 60 * 1000
+          this.dashboardIntervalMinutes * 60 * 1000
         )
       }
     },
     stopAllTimers() {
       this.stopTimer('hive')
       this.stopTimer('data')
+      this.stopTimer('dashboard')
     },
     stopTimer(timer) {
       if (timer === 'hive' && this.hiveTimer > 0) {
@@ -768,8 +775,9 @@ export default {
         this.hiveTimer = 0
       } else if (timer === 'data' && this.dataTimer > 0) {
         clearInterval(this.dataTimer)
-        clearInterval(this.dashboardTimer)
         this.dataTimer = 0
+      } else if (timer === 'dashboard') {
+        clearInterval(this.dashboardTimer)
         this.dashboardTimer = 0
       }
     },
