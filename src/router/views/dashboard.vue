@@ -135,12 +135,12 @@
 
           <DashboardSection
             v-if="
-              ready && selectedHive && selectedHiveDetails.last_inspection_date
+              ready && selectedHive && (showInspections || selectedLocationName)
             "
             :title="$tc('Inspection', 1)"
             :landscape-mode="landscapeMode"
           >
-            <div v-if="!landscapeMode" style="width: 100%;">
+            <div v-if="!landscapeMode && showInspections" style="width: 100%;">
               <span
                 class="dashboard-text mb-2"
                 v-text="
@@ -182,10 +182,10 @@
                     v-text="selectedLocationName"
                   ></span>
                 </v-col>
-                <v-col cols="5" class="pa-1 pa-xl-3"
+                <v-col v-if="showInspections" cols="5" class="pa-1 pa-xl-3"
                   ><span v-text="$t('Last_check') + ': '"></span
                 ></v-col>
-                <v-col cols="7" class="pa-1 pa-xl-3"
+                <v-col v-if="showInspections" cols="7" class="pa-1 pa-xl-3"
                   ><span
                     v-text="
                       momentFromNow(selectedHiveDetails.last_inspection_date)
@@ -194,7 +194,7 @@
                 ></v-col>
               </v-row>
               <v-row
-                v-if="selectedHiveDetails.impression"
+                v-if="showInspections && selectedHiveDetails.impression"
                 :class="
                   'dashboard-sticky-row ' + (!landscapeMode ? 'pa-3' : '')
                 "
@@ -224,7 +224,7 @@
                 </v-col>
               </v-row>
               <v-row
-                v-if="selectedHiveDetails.notes"
+                v-if="showInspections && selectedHiveDetails.notes"
                 :class="
                   'dashboard-sticky-row ' + (!landscapeMode ? 'pa-3' : '')
                 "
@@ -422,7 +422,10 @@ export default {
       return this.dashboard.speed
     },
     hivesWithData() {
-      return this.dashboardHives.filter((hive) => hive.sensors.length > 0)
+      // if show all is false (default), only enable hives with (possible) measurement data to be selected, otherwise all hives will be selected
+      return this.dashboard.show_all === 0
+        ? this.dashboardHives.filter((hive) => hive.sensors.length > 0)
+        : this.dashboardHives
     },
     lat() {
       return this.selectedHive !== null ? this.selectedHiveDetails.lat : null
@@ -459,6 +462,13 @@ export default {
     },
     sensorMeasurementsList() {
       return this.dashboard ? this.dashboard.sensormeasurements : []
+    },
+    showInspections() {
+      return (
+        this.dashboard.show_inspections === 1 &&
+        this.selectedHive &&
+        this.selectedHiveDetails.last_inspection_date !== null
+      )
     },
     smallScreen() {
       return this.$vuetify.breakpoint.width < 960
