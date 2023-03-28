@@ -601,7 +601,7 @@ export default {
           return {
             name: 'hive-inspections',
             params: { id: this.hive.id },
-            query: { search: this.hive.last_inspection_date_locale_date },
+            query: { search: this.hive.last_inspection_date },
           }
         }
       } else {

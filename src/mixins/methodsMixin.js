@@ -601,17 +601,16 @@ export const readDashboardGroups = {
 export const readDevices = {
   methods: {
     async readDevices() {
-      // devicesPresent boolean prevents unnecessary API calls to read devices when user has none
+      // devicesChecked boolean prevents unnecessary API calls to read devices when they have been checked already (but possibly response not stored yet)
       try {
+        this.$store.commit('devices/setData', {
+          prop: 'devicesChecked',
+          value: true,
+        })
         const response = await Api.readRequest('/devices')
-        const devicesPresent = response.data.length > 0
         this.$store.commit('devices/setData', {
           prop: 'devices',
           value: response.data,
-        })
-        this.$store.commit('devices/setData', {
-          prop: 'devicesPresent',
-          value: devicesPresent,
         })
         return true
       } catch (error) {
@@ -622,10 +621,6 @@ export const readDevices = {
               prop: 'devices',
               value: [],
             })
-            this.$store.commit('devices/setData', {
-              prop: 'devicesPresent',
-              value: false,
-            })
           }
         } else {
           console.log('Error: ', error)
@@ -635,23 +630,22 @@ export const readDevices = {
   },
 }
 
-export const readDevicesIfNotPresent = {
+export const readDevicesIfNotChecked = {
   methods: {
-    async readDevicesIfNotPresent() {
-      // devicesPresent boolean prevents unnecessary API calls to read devices when user has none
-      const devicesPresent = this.$store.getters['devices/devicesPresent']
+    async readDevicesIfNotChecked() {
+      // devicesChecked boolean prevents unnecessary API calls to read devices when they have been checked already (but possibly response not stored yet)
+      const devicesChecked = this.$store.getters['devices/devicesChecked']
 
-      if (devicesPresent && this.devices.length === 0) {
+      if (!devicesChecked) {
         try {
+          this.$store.commit('devices/setData', {
+            prop: 'devicesChecked',
+            value: true,
+          })
           const response = await Api.readRequest('/devices')
-          const devicesPresent = response.data.length > 0
           this.$store.commit('devices/setData', {
             prop: 'devices',
             value: response.data,
-          })
-          this.$store.commit('devices/setData', {
-            prop: 'devicesPresent',
-            value: devicesPresent,
           })
           return true
         } catch (error) {
@@ -661,10 +655,6 @@ export const readDevicesIfNotPresent = {
               this.$store.commit('devices/setData', {
                 prop: 'devices',
                 value: [],
-              })
-              this.$store.commit('devices/setData', {
-                prop: 'devicesPresent',
-                value: false,
               })
             }
           } else {

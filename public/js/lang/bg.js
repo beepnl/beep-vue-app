@@ -347,7 +347,6 @@ const translations = {
   /* Measurements */
   Hour: 'Hour',
   hour: 'hour | hours',
-  Day: 'Day',
   day: 'day | days',
   week: 'Week',
   month: 'Month',
@@ -367,7 +366,12 @@ const translations = {
   /* user */
   Data_export: 'Data export',
   Export_your_data:
-    'Export all data that is in your BEEP account and send an email containing the data as an Excel file. The Excel file has different tabs containing your personal, hive, location, and inspection data.',
+    'Export all data that is in your BEEP account and send an email containing the data as an Excel file OR download the Excel file here. The Excel file has different tabs containing your personal, hive, location, and inspection data.',
+  Email_export: 'Email CSV',
+  Download_csv: 'Download CSV',
+  Open_csv: 'Open CSV',
+  Include_group_data: 'Add collaboration group data to export',
+  Include_sensor_data: 'Add measurement data file links to export',
 
   Terms_of_use: 'Terms of service',
   accept_policy:
@@ -896,6 +900,7 @@ const translations = {
     'Export file will be saved in your Downloads folder - wait a moment please',
   no_data_deleted_because_no_matches_found:
     'No data deleted because no matches were found',
+  nr_of_measurements: 'number of measurements',
 
   Now: 'Now',
   input_only_possible_when_date_present:
@@ -1014,6 +1019,17 @@ const translations = {
     'Show details (location, last inspection, measurement data) for all selected hives (YES), or only for hives with a device (NO, recommended option)',
   Preview_share: 'Preview & share',
   Copy_url: 'Copy url',
+  /* offline inspection sheet */
+  Hour_short: 'Hr | Hrs',
+  Day: 'Day | Days',
+  Minute: 'Minute | Minutes',
+  Percentage_exp: 'Percentage between 0 and 100',
+  Grade_exp_1: 'Grade between 1 and 10',
+  Grade_exp_2: '(1 = Poor, 10 = Excellent)',
+  Degrees_exp: 'Number of degrees between -180° and 180°',
+  Negative_exp: 'Negative number (below 0)',
+  Too_many_items_exp_1: 'There are too many options to',
+  Too_many_items_exp_2: 'print, fill in your own answer',
 }
 
 export default translations

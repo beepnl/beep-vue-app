@@ -11,7 +11,10 @@
           <div
             class="filter-buttons filter-buttons--tiny d-flex flex-row justify-flex-start align-center"
           >
-            <v-col class="pa-3 d-flex justify-start">
+            <v-col
+              v-if="!showAlertPlaceholder"
+              class="pa-3 d-flex justify-start"
+            >
               <v-checkbox
                 :input-value="allFilteredChecked"
                 class="ma-0"
@@ -20,7 +23,6 @@
               />
 
               <v-text-field
-                v-if="!showAlertPlaceholder"
                 v-model="search"
                 :label="`${$t('Search')}`"
                 :class="

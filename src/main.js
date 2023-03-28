@@ -67,6 +67,10 @@ const i18n = new VueI18n({
   },
 })
 
+if (typeof window !== 'undefined') {
+  window.ResizeObserver = window.ResizeObserver || Polyfill
+}
+
 new Vue({
   router,
   store,

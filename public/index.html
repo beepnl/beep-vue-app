@@ -98,10 +98,6 @@
 
     <title>BEEP</title>
     <link
-      href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,500,700"
-      rel="stylesheet"
-    />
-    <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900"
     />
@@ -109,7 +105,6 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css"
     />
-    <script src="https://maps.google.com/maps/api/js?key=<%= VUE_APP_GOOGLE_MAPS_KEY %>"></script>
   </head>
   <body>
     <noscript>
@@ -118,6 +113,15 @@
         Please enable it to continue.</strong
       >
     </noscript>
+    <script>
+      function initMap() {
+        console.log('init map') // obligatory callback
+      }
+    </script>
+    <script
+      defer
+      src="https://maps.google.com/maps/api/js?libraries=places&key=<%= VUE_APP_GOOGLE_MAPS_KEY %>&callback=initMap"
+    ></script>
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>

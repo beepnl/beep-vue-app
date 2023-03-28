@@ -309,7 +309,6 @@ const translations = {
   /* Measurements */
   Hour: 'Hour',
   hour: 'hour | hours',
-  Day: 'Day',
   day: 'day | days',
   week: 'Week',
   month: 'Month',
@@ -327,7 +326,12 @@ const translations = {
   /* user */
   Data_export: 'Data export',
   Export_your_data:
-    'Export all data that is in your BEEP account and send an email containing the data as an Excel file. The Excel file has different tabs containing your personal, hive, location, and inspection data.',
+    'Export all data that is in your BEEP account and send an email containing the data as an Excel file OR download the Excel file here. The Excel file has different tabs containing your personal, hive, location, and inspection data.',
+  Email_export: 'Email CSV',
+  Download_csv: 'Download CSV',
+  Open_csv: 'Open CSV',
+  Include_group_data: 'Add collaboration group data to export',
+  Include_sensor_data: 'Add measurement data file links to export',
 
   accept_policy:
     'I accept the BEEP terms of service, that are compatible with the new European privacy law',
@@ -824,6 +828,7 @@ const translations = {
     'Export file will be saved in your Downloads folder - wait a moment please',
   no_data_deleted_because_no_matches_found:
     'No data deleted because no matches were found',
+  nr_of_measurements: 'number of measurements',
 
   Now: 'Now',
   input_only_possible_when_date_present:
@@ -942,6 +947,32 @@ const translations = {
     'Show details (location, last inspection, measurement data) for all selected hives (YES), or only for hives with a device (NO, recommended option)',
   Preview_share: 'Preview & share',
   Copy_url: 'Copy url',
+  /* offline inspection sheet */
+  Hour_short: 'Hr | Hrs',
+  Day: 'Day | Days',
+  Minute: 'Minute | Minutes',
+  Percentage_exp: 'Percentage between 0 and 100',
+  Grade_exp_1: 'Grade between 1 and 10',
+  Grade_exp_2: '(1 = Poor, 10 = Excellent)',
+  Degrees_exp: 'Number of degrees between -180° and 180°',
+  Negative_exp: 'Negative number (below 0)',
+  Too_many_items_exp_1: 'There are too many options to',
+  Too_many_items_exp_2: 'print, fill in your own answer',
+  Image_placeholder_1: 'This picture can be added later',
+  Image_placeholder_2: 'via the BEEP app (optional)',
+  Too_long_list_present:
+    'List of options too long to display on the offline checklist for the item:',
+  Too_long_list_present_fix_1: 'If possible, decrease the number of options to',
+  Too_long_list_present_fix_2:
+    "or less, via the 'Edit checklist' button. Or fill in the correct answer manually.",
+
+  /* offline inspection page */
+  Print: 'Print',
+  Offline_inspection: 'Offline inspection',
+  Offline_inspection_exp:
+    "Print the checklist (via button at the top right), fill it in manually. Upload pictures of your inspection later via the 'Upload offline inspection' page. The pictures will then be automatically parsed and saved as an inspection.",
+  Online_inspection: 'Online inspection',
+  Select_inspection_mode: 'Select inspection mode',
 }
 
 export default translations

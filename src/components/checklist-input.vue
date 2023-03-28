@@ -4,6 +4,10 @@
       v-if="item.input !== 'date'"
       :item="item"
       :locale="locale"
+      :parse-mode="parseMode"
+      :parsed-images="parsedImages"
+      :parsed-items="parsedItems"
+      :check-answer="checkAnswer && object[item.id] === null"
     ></labelWithDescription>
 
     <selectHiveOrApiary
@@ -24,7 +28,7 @@
         v-for="(listItem, index) in item.children"
         :key="index"
         class="inspection-list-item"
-        @click.capture.stop="toggleSelect(listItem, item.id)"
+        @click.capture.stop="toggleSelect(listItem.id, item.id)"
       >
         <v-list-item-action>
           <v-checkbox
@@ -60,6 +64,7 @@
       :object="object"
       :item="item"
       :locale="locale"
+      :check-answer="checkAnswer && object[item.id] === null"
     ></treeselect>
 
     <dateTimePicker
@@ -247,6 +252,7 @@
 <script>
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
+import dummyOutput from '@components/svg/test_4_dummy.json'
 import imageUploader from '@components/input-fields/image-uploader.vue'
 import sampleCode from '@components/input-fields/sample-code.vue'
 import selectHiveOrApiary from '@components/input-fields/select-hive-or-apiary.vue'
@@ -255,6 +261,7 @@ import smileRating from '@components/input-fields/smile-rating.vue'
 import starRating from '@components/input-fields/star-rating.vue'
 import treeselect from '@components/input-fields/treeselect.vue'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
+import { svgData } from '@mixins/svgMixin'
 
 export default {
   name: 'ChecklistInput',
@@ -271,6 +278,7 @@ export default {
     treeselect,
     yesNoRating,
   },
+  mixins: [svgData],
   props: {
     item: {
       type: Object,
@@ -292,13 +300,38 @@ export default {
       default: false,
       required: false,
     },
+    parseMode: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   data() {
     return {
       savedNrOfDecimals: 0,
+      checkAnswer: false,
     }
   },
   computed: {
+    flattenedItems() {
+      return this.item.children !== null
+        ? this.flattenItems([...this.item.children])
+        : []
+    },
+    isSelectIdItem() {
+      return (
+        this.item.input === 'select' ||
+        this.item.input === 'list' ||
+        this.item.input === 'options'
+      )
+    },
+    parsedItems() {
+      return this.parsedAnswer &&
+        this.parsedAnswer.data_type === 'checkbox' &&
+        this.flattenedItems.length <= this.maxNrOfItems
+        ? this.flattenedItems
+        : []
+    },
     // for v-model of 'list' checkbox an array of value is needed instead of a string
     selectedArray() {
       if (this.item.input === 'list') {
@@ -308,6 +341,53 @@ export default {
       }
       return []
     },
+    parsedAnswer() {
+      if (this.parseMode) {
+        var returnedItems = dummyOutput.filter(
+          (answer) =>
+            answer.data_parent_category_id !== undefined &&
+            answer.data_parent_category_id === this.item.id
+        )
+        return returnedItems.length > 0 ? returnedItems[0] : null
+      } else {
+        return null
+      }
+    },
+    parsedImages() {
+      return this.parsedAnswer && this.parsedAnswer.image !== undefined
+        ? this.parsedAnswer.image
+        : []
+    },
+  },
+  created() {
+    if (this.parsedAnswer) {
+      // console.log('parsed ', this.parsedAnswer.value, this.item.id)
+      if (this.item.input === 'list') {
+        this.parsedAnswer.value.map((answer) => {
+          this.toggleSelect(answer, this.item.id)
+        })
+      } else if (
+        this.item.input === 'select' &&
+        isNaN(parseInt(this.parsedAnswer.value[0]))
+      ) {
+        // in case answer is not a category id but a string (written text) instead, let the user check it instead of filling it in automatically
+        this.checkAnswer = true
+      } else {
+        var checkboxIndex = this.parsedAnswer.value.findIndex(
+          (value) => value === 1
+        )
+        var value = this.isSelectIdItem
+          ? this.flattenedItems[checkboxIndex].id
+          : checkboxIndex + 1
+
+        this.updateInput(
+          value, // this.flattenedItems[checkboxIndex].id, // this.parsedAnswer.value[0], // TODO: check if array is always length 1
+          this.item.id,
+          this.item.name,
+          this.item.input
+        )
+      }
+    }
   },
   methods: {
     convertComma(event, name = null, precision = 1) {
@@ -333,6 +413,25 @@ export default {
       this.checkNameForEmit(name)
       this.setInspectionEdited(true)
     },
+    flattenItems(data, depth = 0) {
+      // eslint-disable-next-line camelcase
+      return data.reduce((r, { children, id, trans, name }) => {
+        const obj = {
+          id,
+          trans,
+          name,
+          depth,
+          hasChildren: children.length > 0,
+        }
+        r.push(obj)
+
+        if (children.length) {
+          r.push(...this.flattenItems([...children], depth + 1))
+        }
+
+        return r
+      }, [])
+    },
     setInspectionEdited(bool) {
       this.$store.commit('inspections/setInspectionEdited', bool)
     },
@@ -344,15 +443,15 @@ export default {
       }
       this.setInspectionEdited(true)
     },
-    toggleSelect(listItem, listId) {
+    toggleSelect(listItemId, listId) {
       var selectedArray = []
       if (typeof this.object[listId] === 'string') {
         selectedArray = this.object[listId].split(',')
       }
-      if (selectedArray.indexOf(listItem.id + '') > -1) {
-        selectedArray.splice(selectedArray.indexOf(listItem.id), 1)
+      if (selectedArray.indexOf(listItemId + '') > -1) {
+        selectedArray.splice(selectedArray.indexOf(listItemId), 1)
       } else {
-        selectedArray.push(listItem.id + '')
+        selectedArray.push(listItemId + '')
       }
       var selectedArrayToString = selectedArray.join(',')
       this.object[listId] = selectedArrayToString

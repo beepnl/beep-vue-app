@@ -360,7 +360,6 @@ const translations = {
   /* Medidas */
   Hour: 'Horas',
   hour: 'hora | horas',
-  Day: 'Día',
   day: 'día | días',
   week: 'Semana',
   month: 'Mes',
@@ -384,8 +383,14 @@ const translations = {
   /* usuario */
   Data_export: 'Exportación de datos',
   Export_your_data:
-    'Exportar todos los datos que se encuentran en su cuenta de BEEP y enviar un correo electrónico que contenga los datos como un archivo de Excel. El archivo de Excel tiene diferentes pestañas que contienen sus datos personales, colmena, ubicación y datos de inspección.',
+    "Exportar todos los datos que se encuentran en su cuenta de BEEP y enviar un correo electrónico que contenga los datos como un archivo de Excel (OR download the Excel file via the 'Download CSV' button). El archivo de Excel tiene diferentes pestañas que contienen sus datos personales, colmena, ubicación y datos de inspección.",
   Terms_of_use: 'Términos del servicio',
+  Email_export: 'Email CSV',
+  Download_csv: 'Download CSV',
+  Open_csv: 'Open CSV',
+  Include_group_data: 'Add collaboration group data to export',
+  Include_sensor_data: 'Add measurement data file links to export',
+
   accept_policy:
     'Acepto las condiciones del servicio BEEP, las cuales son compatibles con la nueva ley europea de privacidad',
   policy_url: 'https://beep.nl/terms-of-service',
@@ -919,6 +924,7 @@ const translations = {
     'Export file will be saved in your Downloads folder - wait a moment please',
   no_data_deleted_because_no_matches_found:
     'No data deleted because no matches were found',
+  nr_of_measurements: 'number of measurements',
 
   Now: 'Now',
   input_only_possible_when_date_present:
@@ -1037,6 +1043,17 @@ const translations = {
     'Show details (location, last inspection, measurement data) for all selected hives (YES), or only for hives with a device (NO, recommended option)',
   Preview_share: 'Preview & share',
   Copy_url: 'Copy url',
+  /* offline inspection sheet */
+  Hour_short: 'Hr | Hrs',
+  Day: 'Día | Días',
+  Minute: 'Minute | Minutes',
+  Percentage_exp: 'Percentage between 0 and 100',
+  Grade_exp_1: 'Grade between 1 and 10',
+  Grade_exp_2: '(1 = Poor, 10 = Excellent)',
+  Degrees_exp: 'Number of degrees between -180° and 180°',
+  Negative_exp: 'Negative number (below 0)',
+  Too_many_items_exp_1: 'There are too many options to',
+  Too_many_items_exp_2: 'print, fill in your own answer',
 }
 
 export default translations
