@@ -28,7 +28,7 @@
         >
       </div>
       <v-icon class="color-grey-filter" @click="toggleShowControls">
-        {{ showControls ? 'mdi-cog' : 'mdi-cog-off' }}
+        {{ showControls ? 'mdi-cog' : 'mdi-cog-outline' }}
       </v-icon>
     </div>
     <v-container
@@ -615,8 +615,8 @@ export default {
 
       if (localStorage.beepdashboardDarkMode) {
         this.darkMode = localStorage.beepdashboardDarkMode === 'true'
-        this.$vuetify.theme.dark = this.darkMode
       }
+      this.$vuetify.theme.dark = this.darkMode
       if (localStorage.beepdashboardHiveTimerPaused) {
         this.hiveTimerPaused =
           localStorage.beepdashboardHiveTimerPaused === 'true'
@@ -1093,7 +1093,7 @@ export default {
       box-shadow: inset 0px 0px 35px 60px $color-white;
     }
     &.--dark::before {
-      box-shadow: inset 0px 0px 35px 60px $color-black;
+      box-shadow: inset 0px 0px 35px 60px #121212;
     }
   }
 }

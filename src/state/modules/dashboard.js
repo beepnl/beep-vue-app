@@ -7,7 +7,7 @@ const resource = createResource({ path: 'dashboard' })
 export const state = {
   ...resource.state,
   dashboard: {},
-  landscapeMode: false,
+  landscapeMode: true,
 }
 export const getters = {
   ...resource.getters,
@@ -25,7 +25,7 @@ export const mutations = {
   },
   resetState: function(state) {
     state.dashboard = {}
-    state.landscapeMode = false
+    state.landscapeMode = true
   },
 }
 export const actions = {
