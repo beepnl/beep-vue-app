@@ -10,6 +10,7 @@
       <v-list>
         <template v-for="(item, index) in plusItems">
           <v-list-item
+            v-if="item.show"
             :key="`i-${index}`"
             :to="item.route ? { name: item.route } : null"
             exact
@@ -33,65 +34,47 @@ import { mapGetters } from 'vuex'
 
 export default {
   computed: {
+    ...mapGetters('auth', ['permissions']),
     ...mapGetters('devices', ['devices']),
     plusItems() {
-      if (this.devices.length > 0) {
-        return [
-          {
-            icon: 'mdi-file-document-edit-outline',
-            title: this.$i18n.t('New_inspection'),
-            route: 'inspect',
-          },
-          {
-            icon: 'mdi-archive',
-            title: this.$i18n.t('New_hive'),
-            route: 'hive-create',
-          },
-          {
-            icon: 'mdi-home-analytics',
-            title: this.$i18n.t('new_apiary'),
-            route: 'apiary-create',
-          },
-          {
-            icon: 'mdi-account-multiple',
-            title: this.$i18n.t('new_group'),
-            route: 'group-create',
-          },
-          {
-            icon: 'mdi-monitor-dashboard',
-            title: this.$i18n.t('New_dashboard'),
-            route: 'dashboard-create', // TODO: check if user has permission
-          },
-          {
-            icon: 'mdi-bell',
-            title: this.$i18n.t('New_alertrule'),
-            route: 'alertrule-create',
-          },
-        ]
-      } else {
-        return [
-          {
-            icon: 'mdi-file-document-edit-outline',
-            title: this.$i18n.t('New_inspection'),
-            route: 'inspect',
-          },
-          {
-            icon: 'mdi-archive',
-            title: this.$i18n.t('New_hive'),
-            route: 'hive-create',
-          },
-          {
-            icon: 'mdi-home-analytics',
-            title: this.$i18n.t('new_apiary'),
-            route: 'apiary-create',
-          },
-          {
-            icon: 'mdi-account-multiple',
-            title: this.$i18n.t('new_group'),
-            route: 'group-create',
-          },
-        ]
-      }
+      return [
+        {
+          icon: 'mdi-file-document-edit-outline',
+          title: this.$i18n.t('New_inspection'),
+          route: 'inspect',
+          show: true,
+        },
+        {
+          icon: 'mdi-archive',
+          title: this.$i18n.t('New_hive'),
+          route: 'hive-create',
+          show: true,
+        },
+        {
+          icon: 'mdi-home-analytics',
+          title: this.$i18n.t('new_apiary'),
+          route: 'apiary-create',
+          show: true,
+        },
+        {
+          icon: 'mdi-account-multiple',
+          title: this.$i18n.t('new_group'),
+          route: 'group-create',
+          show: true,
+        },
+        {
+          icon: 'mdi-monitor-dashboard',
+          title: this.$i18n.t('New_dashboard'),
+          route: 'dashboard-create',
+          show: this.permissions.includes('dashboard'),
+        },
+        {
+          icon: 'mdi-bell',
+          title: this.$i18n.t('New_alertrule'),
+          route: 'alertrule-create',
+          show: this.devices.length > 0,
+        },
+      ]
     },
   },
   methods: {},
