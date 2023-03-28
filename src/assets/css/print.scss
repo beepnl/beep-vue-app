@@ -1,0 +1,42 @@
+.print-only {
+  display: none;
+}
+
+@media print {
+  @page {
+    size: 210mm 297mm;
+    padding: 0;
+    margin: 0;
+  }
+
+  html,
+  body {
+    float: none;
+    width: 210mm;
+    height: 297mm;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  // div {
+  //   border: 1px green solid;
+  // }
+
+  *,
+  ::after,
+  ::before {
+    color: inherit !important;
+    background: inherit !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+}

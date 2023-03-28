@@ -893,7 +893,7 @@ const translations = {
 
   Hivetag: 'Hive tag | Hive tags',
   Hivetag_exp_1:
-    '‘Hive tags’ zijn QR codes die je op een bijenkast kan plakken, en waarvoor je een actie kunt instellen die uitgevoerd wordt zodra je de hive tag scant. Met ‘actie’ worden handelingen in de BEEP app bedoeld, zoals bijvoorbeeld het aanmaken van een nieuwe inspectie voor de betreffende kast. Zodra de hive tag is ingesteld, hoef je in het vervolg alleen de QR code te scannen met je smartphone, en dan zal er automatisch een nieuwe inspectie worden aangemaakt. De hive tags kan je zelf printen, door ',
+    "'Hive tags' zijn QR codes die je op een bijenkast kan plakken, en waarvoor je een actie kunt instellen die uitgevoerd wordt zodra je de hive tag scant. Met 'actie' worden handelingen in de BEEP app bedoeld, zoals bijvoorbeeld het aanmaken van een nieuwe inspectie voor de betreffende kast. Zodra de hive tag is ingesteld, hoef je in het vervolg alleen de QR code te scannen met je smartphone, en dan zal er automatisch een nieuwe inspectie worden aangemaakt. De hive tags kan je zelf printen, door ",
   Hivetag_download_text: 'deze pdf te downloaden.',
   Hivetag_exp_2:
     ' Scan een hive tag om aan de slag te gaan, er zal automatisch een pagina openen waar je de actie in kunt stellen indien dat nog niet gebeurd is.',
@@ -931,6 +931,34 @@ const translations = {
     'Voeg BEEP toe aan je beginscherm om het als web app en op volledig scherm te gebruiken. Je blijft dan ingelogd na de eerste keer inloggen.',
   pwa_share_button_label: '1. Tik op het deel-icoon in de menubalk onderin.',
   pwa_addhome_button_label: "2. Tik op 'Zet op beginscherm'",
+
+  /* offline inspection sheet */
+  Hour_short: 'Uur | Uur',
+  Day: 'Dag | Dagen',
+  Minute: 'Minuut | Minuten',
+  Percentage_exp: 'Percentage tussen 0 en 100',
+  Grade_exp_1: 'Cijfer tussen 1 en 10',
+  Grade_exp_2: '(1 = Slecht, 10 = Uitstekend)',
+  Degrees_exp: 'Aantal graden tussen -180° en 180°',
+  Negative_exp: 'Negatief getal (lager dan 0)',
+  Too_many_items_exp_1: 'Er zijn teveel opties om te printen,',
+  Too_many_items_exp_2: 'vul hier je eigen antwoord in',
+  Image_placeholder_1: 'Foto kan later toegevoegd worden',
+  Image_placeholder_2: 'via de BEEP app (optioneel)',
+  Too_long_list_present:
+    'Lijst van opties te lang om weer te geven in de offline kastkaart voor het item:',
+  Too_long_list_present_fix_1:
+    'Indien mogelijk, verminder het aantal keuzemogelijkheden tot maximaal',
+  Too_long_list_present_fix_2:
+    "via de 'Aanpassen kastkaart' knop. Of vul het juiste antwoord handmatig in.",
+
+  /* offline inspection page */
+  Print: 'Print',
+  Offline_inspection: 'Offline inspectie',
+  Offline_inspection_exp:
+    "Print de inspectielijst (zie knop bovenaan), vul deze handmatig in. Upload foto's hiervan op een later moment via de 'Upload offline inspectie' pagina. De foto's worden vervolgens automatisch uitgelezen en opgeslagen als een normale inspectie.",
+  Online_inspection: 'Online inspectie',
+  Select_inspection_mode: 'Selecteer inspectiemodus',
 }
 
 export default translations

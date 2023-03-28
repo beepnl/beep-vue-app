@@ -86,7 +86,7 @@
 
         <div class="version-number">
           <v-spacer></v-spacer>
-          v3.2
+          <span v-text="'v' + appVersion"></span>
         </div>
       </div>
     </v-navigation-drawer>
@@ -95,10 +95,10 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { readDevicesIfNotChecked } from '@mixins/methodsMixin'
+import { readDevicesIfNotPresent } from '@mixins/methodsMixin'
 
 export default {
-  mixins: [readDevicesIfNotChecked],
+  mixins: [readDevicesIfNotPresent],
   props: {
     menuItems: {
       type: Array,
@@ -110,8 +110,13 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      appVersion: process.env.VUE_APP_VERSION,
+    }
+  },
   computed: {
-    ...mapGetters('devices', ['devices']),
+    ...mapGetters('devices', ['devices', 'devicesPresent']),
     currentRoute() {
       return this.$route.name
     },
@@ -225,7 +230,7 @@ export default {
     },
   },
   created() {
-    this.readDevicesIfNotChecked()
+    this.readDevicesIfNotPresent()
   },
   methods: {
     checkRoute(routeName) {
