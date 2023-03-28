@@ -8,6 +8,7 @@ export const state = {
   ...resource.state,
   dashboard: {},
   landscapeMode: true,
+  selectedHive: null,
 }
 export const getters = {
   ...resource.getters,
@@ -16,6 +17,9 @@ export const getters = {
   },
   landscapeMode: (state) => {
     return state.landscapeMode
+  },
+  selectedHive: (state) => {
+    return state.selectedHive
   },
 }
 export const mutations = {
@@ -26,6 +30,7 @@ export const mutations = {
   resetState: function(state) {
     state.dashboard = {}
     state.landscapeMode = true
+    state.selectedHive = null
   },
 }
 export const actions = {

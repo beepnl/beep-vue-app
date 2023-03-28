@@ -375,7 +375,6 @@ export default {
   mixins: [momentFromNow, readDashboard, sensorMixin, timeZone],
   data: function() {
     return {
-      selectedHive: null,
       languages: languages.languageArray,
       assetsUrl:
         process.env.VUE_APP_ASSETS_URL ||
@@ -394,7 +393,7 @@ export default {
       hiveTimer: 0,
       dataTimer: 0,
       dashboardTimer: 0,
-      dataIntervalMinutes: 0.1, // TODO 10
+      dataIntervalMinutes: 10,
       dashboardIntervalMinutes: 60,
       hiveTimerPaused: false,
       currentHiveIndex: -1,
@@ -404,7 +403,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('dashboard', ['dashboard', 'landscapeMode']),
+    ...mapGetters('dashboard', ['dashboard', 'landscapeMode', 'selectedHive']),
     code() {
       return this.$route.params.id
     },
@@ -765,7 +764,7 @@ export default {
       }, 10)
     },
     selectHive(id) {
-      this.readDashboardHive(this.dashboardCode, id).then(() => {
+      this.readDashboardHive(id).then(() => {
         this.formatMeasurementData(this.selectedHiveDetails)
         this.ready = true
       })
@@ -784,10 +783,7 @@ export default {
         this.selectedHiveDetails.sensors.length !== 0
       ) {
         this.dataTimer = setInterval(
-          this.readDashboardHive(
-            this.dashboardCode,
-            this.selectedHiveDetails.id
-          ),
+          this.readDashboardHive,
           this.dataIntervalMinutes * 60 * 1000
         )
       } else if (timer === 'dashboard') {

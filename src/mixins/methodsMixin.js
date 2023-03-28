@@ -547,6 +547,7 @@ export const readApiariesAndGroupsIfNotPresent = {
 }
 
 export const readDashboard = {
+  ...mapGetters('dashboard', ['selectedHive']),
   methods: {
     async readDashboard() {
       try {
@@ -570,13 +571,18 @@ export const readDashboard = {
         }
       }
     },
-    async readDashboardHive(code, hiveId) {
+    async readDashboardHive(hiveId = null) {
+      // option to call function without arguments, needed for setInterval of the data timer (when hive rotation is paused)
+      var id = hiveId !== null ? hiveId : this.selectedHive.hives[0].id
       try {
         const response = await Api.readRequest(
           '/dashboard/',
-          code + '?hive_id=' + hiveId
+          this.dashboardCode + '?hive_id=' + id
         )
-        this.selectedHive = response.data
+        this.$store.commit('dashboard/setData', {
+          prop: 'selectedHive',
+          value: response.data,
+        })
         return response
       } catch (error) {
         if (error.response) {
