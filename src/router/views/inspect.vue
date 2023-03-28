@@ -106,47 +106,7 @@
         "
         class="content-container no-print"
       >
-        <v-row class="mb-3 no-print">
-          <v-col cols="12" md="4">
-            <!-- <v-btn
-              tile
-              outlined
-              color="black"
-              @click="offlineMode = !offlineMode"
-            >
-              <v-icon left
-                >{{ !offlineMode ? 'mdi-tray-full' : 'mdi-laptop' }}
-              </v-icon>
-              {{
-                !offlineMode
-                  ? $t('Offline_inspection')
-                  : $t('Online_inspection')
-              }}
-            </v-btn> -->
-            <div class="d-flex justify-start align-center">
-              <div class="d-flex flex-column">
-                <div
-                  class="beep-label mt-n3 mt-sm-0"
-                  v-text="$t('Select_inspection_mode')"
-                ></div>
-                <Treeselect
-                  v-model="setSelectedMode"
-                  :options="selectModes"
-                  :clearable="false"
-                  @input="switchMode($event)"
-                />
-                <p v-if="offlineMode" class="info-text mt-1">
-                  <em>{{ $t('Offline_inspection_exp') }}</em>
-                </p>
-              </div>
-              <!-- <v-icon color="primary" @click="parseOutput"
-                >mdi-arrow-u-down-left</v-icon
-              > -->
-            </div>
-          </v-col>
-        </v-row>
-
-        <v-row v-if="!offlineMode" class="mb-3 no-print">
+        <v-row v-if="onlineMode" class="mb-3 no-print">
           <v-col cols="12" md="4">
             <v-row>
               <v-col cols="12" sm="7" md="12">
@@ -190,7 +150,7 @@
             </v-row>
           </v-col>
 
-          <v-col cols="12" md="7" class="mb-n3 mb-sm-0">
+          <v-col cols="12" md="5" class="mb-n3 mb-sm-0">
             <ApiaryPreviewHiveSelector
               v-if="
                 selectedHiveSet && editableHives && editableHives.length > 0
@@ -202,10 +162,17 @@
               @select-hive="selectHive($event)"
             ></ApiaryPreviewHiveSelector>
           </v-col>
+
+          <v-col cols="12" md="3" class="py-2 px-0">
+            <InspectModeSelector
+              :selected-mode="selectedMode"
+              @set-selected-mode="setSelectedMode = $event"
+            />
+          </v-col>
         </v-row>
 
-        <v-row class="my-0 no-print">
-          <v-col v-if="!offlineMode" cols="12" sm="4">
+        <v-row class="mb-3 no-print">
+          <v-col v-if="onlineMode" cols="12" sm="4">
             <div class="d-flex justify-flex-start align-center">
               <v-icon dark color="accent" class="mr-2"
                 >mdi-calendar-edit</v-icon
@@ -263,14 +230,10 @@
             />
           </v-col>
 
-          <v-col
-            v-if="selectedChecklist && selectedChecklist.owner && mobile"
-            class="d-flex"
-            cols="12"
-            sm="4"
-          >
+          <v-col class="d-flex" cols="12" sm="4">
             <v-spacer></v-spacer>
             <v-btn
+              v-if="selectedChecklist && selectedChecklist.owner && mobile"
               tile
               outlined
               class="save-button-mobile-wide"
@@ -280,6 +243,13 @@
               <v-icon left>mdi-pencil</v-icon>
               {{ $t('Edit_checklist') }}
             </v-btn>
+          </v-col>
+
+          <v-col v-if="!onlineMode" cols="12" sm="4" class="py-2 px-0">
+            <InspectModeSelector
+              :selected-mode="selectedMode"
+              @set-selected-mode="setSelectedMode = $event"
+            />
           </v-col>
 
           <v-col v-if="forceInspectionDate" cols="12">
@@ -572,6 +542,7 @@ import Confirm from '@components/confirm.vue'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
 import dummyOutput from '@components/svg/test_4_dummy.json'
+import InspectModeSelector from '@components/inspect-mode-selector.vue'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
@@ -596,6 +567,7 @@ export default {
     checklistFieldset,
     Confirm,
     Datetime,
+    InspectModeSelector,
     labelWithDescription,
     Layout,
     OfflineInspection,
@@ -794,6 +766,12 @@ export default {
     },
     offlineMode() {
       return this.selectedMode === 'Offline'
+    },
+    onlineMode() {
+      return this.selectedMode === 'Online'
+    },
+    uploadMode() {
+      return this.selectedMode === 'Upload'
     },
     parseMode() {
       return this.$route.query.mode === 'parse'

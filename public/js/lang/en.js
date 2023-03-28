@@ -970,10 +970,13 @@ const translations = {
 
   /* offline inspection page */
   Print: 'Print',
-  Offline_inspection: 'Offline inspection',
+  Offline_inspection: 'Manual inspection',
   Offline_inspection_exp:
-    "Print the checklist (via button at the top right), fill it in manually. Upload pictures of your inspection later via the 'Upload offline inspection' page. The pictures will then be automatically parsed and saved as an inspection.",
-  Online_inspection: 'Online inspection',
+    "Print the checklist, fill it in manually. Upload pictures of your inspection later via the 'Upload inspection' button. The pictures will then be automatically parsed and can be saved like a normal inspection.",
+  Online_inspection: 'Digital inspection',
+  Online_inspection_exp: 'Digital inspection exp',
+  Upload_inspection: 'Upload inspection',
+  Upload_inspection_exp: 'Upload inspection exp',
   Select_inspection_mode: 'Select inspection mode',
 }
 
