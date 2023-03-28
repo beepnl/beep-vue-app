@@ -321,7 +321,7 @@ export default {
       errorMessage: null,
       dashboard: null,
       showMaxWarning: false,
-      maxNrOfHives: 12,
+      maxNrOfHives: 10,
       speedOptions: [15, 30, 45, 60, 90, 120, 300],
       intervalOptions: [
         { id: 1, label: 'Hour' },
