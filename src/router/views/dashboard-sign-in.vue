@@ -1,5 +1,5 @@
 <template>
-  <Layout :title="$t('Code')" :dashboard-mode="true">
+  <Layout :title="$t('Code')" :dashboard-mode="true" :set-dark-mode="darkMode">
     <v-form ref="form" style="width: 100%" @submit.prevent="login">
       <v-card-text>
         <v-alert v-if="msg" type="success" text prominent dense color="green">
@@ -72,14 +72,22 @@ export default {
     },
   },
   created() {
-    // if locale is saved in localStorage, use it
-    if (localStorage.beepLocale) {
-      this.$i18n.locale = localStorage.beepLocale
-    } else {
-      this.$i18n.locale = languages.checkBrowserLanguage()
-    }
+    this.checkLocalStorage()
   },
   methods: {
+    checkLocalStorage() {
+      // if locale and darkmode is saved in localStorage, use it
+      if (localStorage.beepdashboardLocale) {
+        this.$i18n.locale = localStorage.beepdashboardLocale
+      } else {
+        this.$i18n.locale = languages.checkBrowserLanguage()
+      }
+
+      if (localStorage.beepdashboardDarkMode) {
+        this.darkMode = localStorage.beepdashboardDarkMode === 'true'
+      }
+      this.$vuetify.theme.dark = this.darkMode
+    },
     login() {
       if (this.$refs.form.validate()) {
         this.$router.push({

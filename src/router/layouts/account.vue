@@ -57,6 +57,11 @@ export default {
       required: false,
       default: false,
     },
+    setDarkMode: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   data() {
     return {
@@ -73,7 +78,7 @@ export default {
     },
   },
   created() {
-    if (this.dashboardMode) {
+    if (this.setDarkMode) {
       this.darkMode = true
     }
     this.$vuetify.theme.dark = this.darkMode
