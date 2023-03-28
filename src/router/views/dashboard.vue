@@ -434,15 +434,9 @@ export default {
     largeSizeFits() {
       var hiveWidth = 90
       var apiaryWidth = this.landscapeMode
-        ? this.stickyWidth * 0.8
+        ? this.stickyWidth * 0.78
         : this.screenSize * (this.tabletLandscapeAndUp ? 0.5 : 0.9)
       var requiredWidth = this.dashboardHives.length * hiveWidth
-      console.log(
-        'large size fits',
-        apiaryWidth,
-        requiredWidth,
-        requiredWidth <= apiaryWidth
-      )
       return requiredWidth <= apiaryWidth
     },
     lat() {

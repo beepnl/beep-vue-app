@@ -350,7 +350,7 @@ export default {
 .hive-icon-preview.--dashboard {
   margin-top: -5px;
   .hive-icon-layers {
-    padding: 5px 10px;
+    padding: 5px 6px;
     border-bottom: 0 !important;
     .layer {
       &:last-child {
@@ -367,6 +367,9 @@ export default {
     .selectable-wrapper.--selected {
       box-shadow: 0 0 0 5px yellow !important;
     }
+  }
+  &.--large .hive-icon-layers {
+    padding: 5px 9px;
   }
 }
 
