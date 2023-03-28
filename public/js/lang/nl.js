@@ -941,6 +941,8 @@ const translations = {
 
   Code: 'Code',
 
+  Dashboard_exp:
+    "Creëer een dashboard via de 'Nieuw dashboard' knop rechtsboven. U kunt vervolgens bijenkasten selecteren die u wilt tonen op een publiek dashboard dat via een aparte url (voor iedereen met de code) toegankelijk is. Bijenkasten (en hun metingen en/of laatste inspectie) worden één voor één getoond.",
   create_dashboard_question:
     'Nog geen dashboard? Creëer een dashboard via de BEEP app',
   New_dashboard: 'Nieuw dashboard',

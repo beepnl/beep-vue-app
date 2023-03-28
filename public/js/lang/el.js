@@ -998,6 +998,8 @@ const translations = {
 
   Code: 'Code',
 
+  Dashboard_exp:
+    "Create a dashboard via the 'New dashboard' button at the top right. You can then select hives that you would like to show on a public dashboard that is accessible at a separate url (for anyone with the code). Hives (and their measurements + latest inspection) will be shown one at a time.",
   create_dashboard_question: 'No dashboard yet? Create one via the BEEP app',
   New_dashboard: 'New dashboard',
   Edit_dashboard: 'Edit dashboard',
