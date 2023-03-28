@@ -106,7 +106,7 @@ export default {
 
 <style lang="scss" scoped>
 .mode-box {
-  width: 120px;
+  width: 130px;
   height: 90px;
 }
 </style>
