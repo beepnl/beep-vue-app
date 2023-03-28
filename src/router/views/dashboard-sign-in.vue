@@ -63,7 +63,7 @@ export default {
         code: false,
       },
       codeLength: 6,
-      darkMode: true, // TODO enable lightMode if coming from light mode dashboard / stored in local storage?
+      darkMode: true,
     }
   },
   computed: {
@@ -94,44 +94,6 @@ export default {
           name: 'dashboard',
           params: { id: this.credentials.code },
         })
-        // TODO
-        //   this.clearErrors()
-        //   this.$store
-        //     .dispatch('auth/signIn', this.credentials)
-        //     .then((token) => {
-        //       this.$router.push(
-        //         this.$route.query.redirectFrom || { name: 'home' }
-        //       )
-        //     })
-        //     // Redirect to the originally requested page, or to the home page
-        //     .catch((error) => {
-        //       if (error.response) {
-        //         console.log(error.response)
-        //         if (
-        //           typeof error.response.data !== 'undefined' &&
-        //           typeof error.response.data.message !== 'undefined'
-        //         ) {
-        //           var msg = error.response.data.message
-        //         } else {
-        //           msg = error.response.data
-        //         }
-        //         if (msg === 'invalid_user') {
-        //           this.fieldErrors.id = true
-        //           this.fieldErrors.code = true
-        //         } else if (msg === 'invalid_code') {
-        //           this.fieldErrors.code = true
-        //         } else if (msg.indexOf('id') > -1) {
-        //           this.fieldErrors.id = true
-        //         }
-        //         this.errors.push({
-        //           errorMessage: this.$i18n.t(msg),
-        //         })
-        //       } else {
-        //         this.errors.push({
-        //           errorMessage: this.$i18n.t('authentication_failed'),
-        //         })
-        //       }
-        //     })
       }
     },
     clearErrors() {

@@ -59,7 +59,13 @@
                 'text-h3 dashboard-title overline roboto-condensed' +
                   (!landscapeMode ? ' text-md-h2' : ' font-weight-light')
               "
-              v-text="dashboard.name ? dashboard.name : $tc('Dashboard', 1)"
+              v-text="
+                ready
+                  ? dashboard.name
+                    ? dashboard.name
+                    : $tc('Dashboard', 1)
+                  : ''
+              "
             ></div>
           </div>
         </v-col>
@@ -126,9 +132,7 @@
                 :hives-selected="selectedHiveIds"
                 :dashboard-mode="true"
                 :disable-sort-hives="true"
-                :large-size="
-                  !smallScreen && (!landscapeMode || dashboardHives.length < 7)
-                "
+                :large-size="largeSizeFits"
                 @select-hive="selectHive($event)"
               ></ApiaryPreviewHiveSelector>
             </div>
@@ -428,6 +432,20 @@ export default {
         ? this.dashboardHives.filter((hive) => hive.sensors.length > 0)
         : this.dashboardHives
     },
+    largeSizeFits() {
+      var hiveWidth = 90
+      var apiaryWidth = this.landscapeMode
+        ? this.stickyWidth * 0.8
+        : this.screenSize * (this.tabletLandscapeAndUp ? 0.5 : 0.9)
+      var requiredWidth = this.dashboardHives.length * hiveWidth
+      console.log(
+        'large size fits',
+        apiaryWidth,
+        requiredWidth,
+        requiredWidth <= apiaryWidth
+      )
+      return requiredWidth <= apiaryWidth
+    },
     lat() {
       return this.selectedHive !== null ? this.selectedHiveDetails.lat : null
     },
@@ -447,6 +465,9 @@ export default {
       return this.$moment()
         .subtract(1, 'weeks')
         .format(this.dateTimeFormat)
+    },
+    screenSize() {
+      return this.$vuetify.breakpoint.width
     },
     selectedHiveDetails() {
       return this.selectedHive ? this.selectedHive.hives[0] : {}
@@ -483,9 +504,6 @@ export default {
         this.selectedHiveDetails.last_inspection_date !== null
       )
     },
-    smallScreen() {
-      return this.$vuetify.breakpoint.width < 960
-    },
     svgMarker() {
       return {
         path:
@@ -497,6 +515,21 @@ export default {
         scale: 3,
         anchor: new window.google.maps.Point(12, 12),
       }
+    },
+    stickyWidth() {
+      var perc = this.tvAndUp
+        ? 0.33
+        : this.desktopAndUp
+        ? 0.35
+        : this.tabletLandscapeAndUp
+        ? 0.4
+        : this.screenSize >= 600
+        ? 0.44
+        : 0.8
+      return this.screenSize * perc
+    },
+    tabletLandscapeAndUp() {
+      return this.$vuetify.breakpoint.width >= 960
     },
     tvAndUp() {
       return this.$vuetify.breakpoint.width >= 2200
@@ -525,7 +558,7 @@ export default {
   },
   mounted() {},
   created() {
-    if (this.smallScreen) {
+    if (!this.desktopAndUp) {
       this.setLandscapeMode = false
     }
     this.checkLocalStorage()
@@ -793,7 +826,7 @@ export default {
       if (this.hiveTimerPaused) {
         this.stopTimer('hive')
         if (this.selectedHiveDetails.sensors.length > 0) {
-          this.startTimer('data') // if hive rotation is paused and current hive has device, check data every hour TODO check if this interval is ok?
+          this.startTimer('data') // if hive rotation is paused and current hive has device, check data every 10 minutes TODO check if this interval is ok?
         }
       } else {
         if (this.selectedHiveDetails.sensors.length > 0) {
