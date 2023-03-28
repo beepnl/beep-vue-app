@@ -108,6 +108,46 @@
       >
         <v-row class="mb-3 no-print">
           <v-col cols="12" md="4">
+            <!-- <v-btn
+              tile
+              outlined
+              color="black"
+              @click="offlineMode = !offlineMode"
+            >
+              <v-icon left
+                >{{ !offlineMode ? 'mdi-tray-full' : 'mdi-laptop' }}
+              </v-icon>
+              {{
+                !offlineMode
+                  ? $t('Offline_inspection')
+                  : $t('Online_inspection')
+              }}
+            </v-btn> -->
+            <div class="d-flex justify-start align-center">
+              <div class="d-flex flex-column">
+                <div
+                  class="beep-label mt-n3 mt-sm-0"
+                  v-text="$t('Select_inspection_mode')"
+                ></div>
+                <Treeselect
+                  v-model="setSelectedMode"
+                  :options="selectModes"
+                  :clearable="false"
+                  @input="switchMode($event)"
+                />
+                <p v-if="offlineMode" class="info-text mt-1">
+                  <em>{{ $t('Offline_inspection_exp') }}</em>
+                </p>
+              </div>
+              <!-- <v-icon color="primary" @click="parseOutput"
+                >mdi-arrow-u-down-left</v-icon
+              > -->
+            </div>
+          </v-col>
+        </v-row>
+
+        <v-row v-if="!offlineMode" class="mb-3 no-print">
+          <v-col cols="12" md="4">
             <v-row>
               <v-col cols="12" sm="7" md="12">
                 <div
@@ -165,7 +205,7 @@
         </v-row>
 
         <v-row class="my-0 no-print">
-          <v-col cols="12" sm="4">
+          <v-col v-if="!offlineMode" cols="12" sm="4">
             <div class="d-flex justify-flex-start align-center">
               <v-icon dark color="accent" class="mr-2"
                 >mdi-calendar-edit</v-icon
@@ -221,44 +261,6 @@
               :no-results-text="`${$t('no_results')}`"
               @input="switchChecklist($event)"
             />
-          </v-col>
-
-          <v-col cols="12" sm="4">
-            <!-- <v-btn
-              tile
-              outlined
-              color="black"
-              @click="offlineMode = !offlineMode"
-            >
-              <v-icon left
-                >{{ !offlineMode ? 'mdi-tray-full' : 'mdi-laptop' }}
-              </v-icon>
-              {{
-                !offlineMode
-                  ? $t('Offline_inspection')
-                  : $t('Online_inspection')
-              }}
-            </v-btn> -->
-            <div class="d-flex justify-start align-center">
-              <div class="d-flex flex-column">
-                <div
-                  class="beep-label mt-n3 mt-sm-0"
-                  v-text="$t('Select_inspection_mode')"
-                ></div>
-                <Treeselect
-                  v-model="setSelectedMode"
-                  :options="selectModes"
-                  :clearable="false"
-                  @input="switchMode($event)"
-                />
-                <p v-if="offlineMode" class="info-text mt-1">
-                  <em>{{ $t('Offline_inspection_exp') }}</em>
-                </p>
-              </div>
-              <!-- <v-icon color="primary" @click="parseOutput"
-                >mdi-arrow-u-down-left</v-icon
-              > -->
-            </div>
           </v-col>
 
           <v-col

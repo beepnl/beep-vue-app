@@ -1,7 +1,7 @@
 <template>
-  <v-row class="ma-0">
+  <v-row class="mt-3 mx-0">
     <v-col v-if="svgWarnings.length > 0 && !printMode" cols="12">
-      <v-row :justify="'center'">
+      <v-row class="mx-0">
         <v-col cols="12" class="svg-warnings no-print">
           <v-alert
             v-for="(svgWarning, index) in svgWarnings"
@@ -12,6 +12,7 @@
             dense
             dismissible
             color="red"
+            class="mb-2"
           >
             {{ svgWarning.warning }}
           </v-alert>
@@ -19,7 +20,7 @@
       </v-row>
     </v-col>
 
-    <v-col cols="12" :class="!printMode ? 'd-flex justify-center' : 'pa-0'">
+    <v-col cols="12" :class="!printMode ? '' : 'pa-0'">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         x="0mm"

@@ -208,7 +208,7 @@ export default {
           this.$store.dispatch('inspections/nextPage')
         }
 
-        return { x, y, pageY: this.svgY }
+        return { id: item.id, x, y, pageY: this.svgY }
       } else {
         return this.svgPositionSet[item.id]
       }
