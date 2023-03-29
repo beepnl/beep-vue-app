@@ -1898,6 +1898,7 @@ export default {
         labels: [],
         datasets: [],
       }
+
       // var sensorArray = this.getMeasurementTypesPresent(chartGroup.id)
       quantities.map((quantity, index) => {
         var mT = this.getSensorMeasurement(quantity)
@@ -1965,6 +1966,15 @@ export default {
           }
         })
       }
+      var otherData = []
+      quantities.map((quantity, index) => {
+        otherData.push(this.chartjsDataSeries([this.COMPARE_SENSOR[quantity]]))
+      })
+
+      otherData.map((sd) => {
+        data.labels.push(sd.labels)
+        data.datasets.push.apply(data.datasets, sd.datasets)
+      })
 
       return data
     },
