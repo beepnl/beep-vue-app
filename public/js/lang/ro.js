@@ -361,7 +361,6 @@ const translations = {
   /* Measurements */
   Hour: 'Oră',
   hour: 'oră | ore',
-  Day: 'zi',
   day: 'zi | zile',
   week: 'Săptămână',
   month: 'Lună',
@@ -385,7 +384,13 @@ const translations = {
   /* user */
   Data_export: 'Exportarea datelor',
   Export_your_data:
-    'Exportați toate datele din contul dvs. BEEP și trimiteți un e-mail care conține datele într-un fișier Excel. Fișierul va avea file diferite care conțin datele dvs. personale despre stup, locație și inspecție. ',
+    "Exportați toate datele din contul dvs. BEEP și trimiteți un e-mail care conține datele într-un fișier Excel (OR download the Excel file via the 'Download CSV' button). Fișierul va avea file diferite care conțin datele dvs. personale despre stup, locație și inspecție. ",
+  Email_export: 'Email CSV',
+  Download_csv: 'Download CSV',
+  Open_csv: 'Open CSV',
+  Include_group_data: 'Add collaboration group data to export',
+  Include_sensor_data: 'Add measurement data file links to export',
+
   Terms_of_use: 'Termenii serviciului',
   accept_policy:
     'Accept termenii serviciului BEEP, care sunt compatibili cu noua lege Europeană privind confidențialitatea datelor.',
@@ -914,6 +919,7 @@ const translations = {
     'Export file will be saved in your Downloads folder - wait a moment please',
   no_data_deleted_because_no_matches_found:
     'No data deleted because no matches were found',
+  nr_of_measurements: 'number of measurements',
 
   Now: 'Now',
   input_only_possible_when_date_present:
@@ -1000,6 +1006,8 @@ const translations = {
 
   Code: 'Code',
 
+  Dashboard_exp:
+    "Create a dashboard via the 'New dashboard' button at the top right. You can then select hives that you would like to show on a public dashboard that is accessible at a separate url (for anyone with the code). Hives (and their measurements + latest inspection) will be shown one at a time.",
   create_dashboard_question: 'No dashboard yet? Create one via the BEEP app',
   New_dashboard: 'New dashboard',
   Edit_dashboard: 'Edit dashboard',
@@ -1032,6 +1040,17 @@ const translations = {
     'Show details (location, last inspection, measurement data) for all selected hives (YES), or only for hives with a device (NO, recommended option)',
   Preview_share: 'Preview & share',
   Copy_url: 'Copy url',
+  /* offline inspection sheet */
+  Hour_short: 'Hr | Hrs',
+  Day: 'Zi | Zile',
+  Minute: 'Minute | Minutes',
+  Percentage_exp: 'Percentage between 0 and 100',
+  Grade_exp_1: 'Grade between 1 and 10',
+  Grade_exp_2: '(1 = Poor, 10 = Excellent)',
+  Degrees_exp: 'Number of degrees between -180° and 180°',
+  Negative_exp: 'Negative number (below 0)',
+  Too_many_items_exp_1: 'There are too many options to',
+  Too_many_items_exp_2: 'print, fill in your own answer',
 }
 
 export default translations

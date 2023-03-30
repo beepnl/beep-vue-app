@@ -9,6 +9,7 @@
       :default-expand-level="1"
       :disable-branch-nodes="true"
       search-nested
+      :class="checkAnswer ? 'color-red' : ''"
       @input="setInspectionEdited(true)"
     />
   </div>
@@ -32,6 +33,11 @@ export default {
       type: String,
       default: 'en',
       required: false,
+    },
+    checkAnswer: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
   },
   computed: {

@@ -32,7 +32,12 @@
       }}
     </h1>
 
-    <v-form v-else-if="ready && !hiveNotEditable" ref="form" v-model="valid">
+    <v-form
+      v-else-if="ready && !hiveNotEditable"
+      ref="form"
+      v-model="valid"
+      class="no-print"
+    >
       <v-toolbar v-if="ready" class="save-bar zindex4" dense light>
         <v-spacer></v-spacer>
         <v-btn
@@ -47,6 +52,7 @@
           {{ $t('Edit_checklist') }}
         </v-btn>
         <v-btn
+          v-if="!offlineMode"
           tile
           outlined
           color="black"
@@ -72,13 +78,35 @@
           <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
           {{ $t('save') }}
         </v-btn>
+        <v-btn
+          v-if="offlineMode"
+          tile
+          outlined
+          color="black"
+          class="save-button-mobile-wide mr-1"
+          :disabled="showLoadingIcon"
+          @click="print"
+        >
+          <v-progress-circular
+            v-if="showLoadingIcon"
+            class="ml-n1 mr-2"
+            size="18"
+            width="2"
+            color="disabled"
+            indeterminate
+          />
+          <v-icon v-if="!showLoadingIcon" left>mdi-printer</v-icon>
+          {{ $t('Print') }}
+        </v-btn>
       </v-toolbar>
 
       <v-container
-        v-if="activeInspection && selectedChecklist !== null && ready"
-        class="content-container"
+        v-if="
+          !printMode && activeInspection && selectedChecklist !== null && ready
+        "
+        class="content-container no-print"
       >
-        <v-row class="mb-3">
+        <v-row v-if="onlineMode" class="mb-3 no-print">
           <v-col cols="12" md="4">
             <v-row>
               <v-col cols="12" sm="7" md="12">
@@ -94,6 +122,7 @@
                   :placeholder="treeselectLabel"
                   :no-results-text="`${$t('no_results')}`"
                   :disable-branch-nodes="true"
+                  :disabled="offlineMode"
                   :default-expand-level="1"
                   @input="selectHiveSet($event)"
                 />
@@ -114,28 +143,36 @@
                         : $t('select_all_hives')
                     }`
                   "
+                  :disabled="offlineMode"
                   hide-details
                 ></v-switch>
               </v-col>
             </v-row>
           </v-col>
 
-          <v-col cols="12" md="7" class="mb-n3 mb-sm-0">
+          <v-col cols="12" md="5" class="mb-n3 mb-sm-0">
             <ApiaryPreviewHiveSelector
               v-if="
                 selectedHiveSet && editableHives && editableHives.length > 0
               "
               :hives="selectedHiveSet.hives"
-              :hives-selected="selectedHives"
-              :hives-editable="editableHives"
+              :hives-selected="offlineMode ? [] : selectedHives"
+              :hives-editable="offlineMode ? [] : editableHives"
               :inspection-mode="true"
               @select-hive="selectHive($event)"
             ></ApiaryPreviewHiveSelector>
           </v-col>
+
+          <v-col cols="12" md="3" class="py-2 px-0">
+            <InspectModeSelector
+              :selected-mode="selectedMode"
+              @set-selected-mode="setSelectedMode = $event"
+            />
+          </v-col>
         </v-row>
 
-        <v-row class="my-0">
-          <v-col cols="12" sm="4">
+        <v-row class="mb-3 no-print">
+          <v-col v-if="onlineMode" cols="12" sm="4">
             <div class="d-flex justify-flex-start align-center">
               <v-icon dark color="accent" class="mr-2"
                 >mdi-calendar-edit</v-icon
@@ -157,6 +194,7 @@
                   v-model="inspectionDate"
                   type="datetime"
                   class="color-accent"
+                  :disabled="offlineMode"
                   :max-datetime="endOfToday"
                   :placeholder="
                     forceInspectionDate || inspectionDate === 'Invalid date'
@@ -192,14 +230,10 @@
             />
           </v-col>
 
-          <v-col
-            v-if="selectedChecklist && selectedChecklist.owner && mobile"
-            class="d-flex"
-            cols="12"
-            sm="4"
-          >
+          <v-col class="d-flex" cols="12" sm="4">
             <v-spacer></v-spacer>
             <v-btn
+              v-if="selectedChecklist && selectedChecklist.owner && mobile"
               tile
               outlined
               class="save-button-mobile-wide"
@@ -209,6 +243,13 @@
               <v-icon left>mdi-pencil</v-icon>
               {{ $t('Edit_checklist') }}
             </v-btn>
+          </v-col>
+
+          <v-col v-if="!onlineMode" cols="12" sm="4" class="py-2 px-0">
+            <InspectModeSelector
+              :selected-mode="selectedMode"
+              @set-selected-mode="setSelectedMode = $event"
+            />
           </v-col>
 
           <v-col v-if="forceInspectionDate" cols="12">
@@ -226,230 +267,261 @@
         </v-row>
 
         <!-- Inspection items from checklist -->
-        <v-card
-          v-for="(mainCategory, index) in selectedChecklist.categories"
-          :key="index"
-          outlined
-          class="mt-3"
-        >
-          <v-card-title
-            :class="
-              `hive-inspect-card-title ${
-                showCategoriesByIndex[index]
-                  ? 'hive-inspect-card-title--border-bottom'
-                  : ''
-              } cursor-pointer`
-            "
-            @click="toggleCategory(index)"
+        <div v-if="!(offlineMode || svgLoading)">
+          <v-card
+            v-for="(mainCategory, index) in selectedChecklist.categories"
+            :key="index"
+            outlined
+            class="mt-3"
           >
-            <v-row class="my-0">
-              <v-col cols="12" class="py-0">
-                <span>{{
-                  mainCategory.trans[locale] || mainCategory.name
-                }}</span>
-                <div class="float-right">
-                  <v-icon
-                    :class="
-                      `toggle-icon mdi ${
-                        showCategoriesByIndex[index] ? 'mdi-minus' : 'mdi-plus'
-                      }`
-                    "
-                  ></v-icon>
-                </div>
-              </v-col>
-            </v-row>
-          </v-card-title>
-
-          <SlideYUpTransition :duration="150">
-            <!-- New dynamic checklist -->
-            <v-card-text v-if="showCategoriesByIndex[index] === true">
-              <v-row class="sub-inspection-wrapper my-0">
-                <v-col
-                  v-for="(category, catIndex) in mainCategory.children"
-                  :key="catIndex"
-                  cols="12"
-                >
-                  <checklistFieldset
-                    v-if="activeInspection"
-                    :object="activeInspection.items"
-                    :category="category"
-                    :locale="locale"
-                  ></checklistFieldset>
-                </v-col>
-              </v-row>
-            </v-card-text>
-          </SlideYUpTransition>
-          <v-overlay
-            :absolute="true"
-            :value="forceInspectionDate"
-            :opacity="0.5"
-            color="white"
-            z-index="3"
-            class="input-disabled-overlay"
-          >
-          </v-overlay>
-        </v-card>
-
-        <!-- General inspection items -->
-        <v-card outlined class="mt-3">
-          <v-card-title
-            :class="
-              `hive-inspect-card-title ${
-                showGeneral ? 'hive-inspect-card-title--border-bottom' : ''
-              }`
-            "
-          >
-            <v-row class="my-0">
-              <v-col cols="12" class="py-0 mt-n1">
-                <span>{{ $t('overall') }}</span>
-                <div class="float-right">
-                  <v-icon
-                    :class="
-                      `toggle-icon mdi ${
-                        showGeneral ? 'mdi-minus' : 'mdi-plus'
-                      }`
-                    "
-                    @click="showGeneral = !showGeneral"
-                  ></v-icon>
-                </div>
-              </v-col>
-            </v-row>
-          </v-card-title>
-          <SlideYUpTransition :duration="150">
-            <v-card-text v-if="showGeneral">
-              <v-row class="sub-inspection-wrapper my-0">
-                <v-col cols="12">
-                  <div
-                    class="overline mb-2"
-                    v-text="`${$t('positive_impression')}`"
-                  ></div>
-                  <div class="sub-inspection-details rounded-border">
-                    <v-row>
-                      <v-col cols="12" sm="4">
-                        <div
-                          class="beep-label"
-                          v-text="`${$t('positive_impression')}`"
-                        ></div>
-                        <smileRating
-                          v-if="activeInspection"
-                          :object="activeInspection"
-                          property="impression"
-                        ></smileRating>
-                      </v-col>
-                      <v-col cols="12" sm="4">
-                        <div
-                          class="beep-label"
-                          v-text="`${$t('needs_attention')}`"
-                        ></div>
-                        <yesNoRating
-                          v-if="activeInspection"
-                          :object="activeInspection"
-                          property="attention"
-                          :yes-red="true"
-                        ></yesNoRating>
-                      </v-col>
-                      <v-col cols="12">
-                        <v-textarea
-                          v-if="activeInspection"
-                          v-model="activeInspection.notes"
-                          :label="`${$t('notes')}`"
-                          counter="2500"
-                          rows="1"
-                          auto-grow
-                          clearable
-                          @input="validateText($event, 'notes', 2500)"
-                        ></v-textarea>
-                      </v-col>
-                    </v-row>
+            <v-card-title
+              :class="
+                `hive-inspect-card-title ${
+                  showCategoriesByIndex[index]
+                    ? 'hive-inspect-card-title--border-bottom'
+                    : ''
+                } cursor-pointer`
+              "
+              @click="toggleCategory(index)"
+            >
+              <v-row class="my-0">
+                <v-col cols="12" class="py-0">
+                  <span>{{
+                    mainCategory.trans[locale] || mainCategory.name
+                  }}</span>
+                  <div class="float-right">
+                    <v-icon
+                      :class="
+                        `toggle-icon mdi ${
+                          showCategoriesByIndex[index]
+                            ? 'mdi-minus'
+                            : 'mdi-plus'
+                        }`
+                      "
+                    ></v-icon>
                   </div>
                 </v-col>
-                <v-overlay
-                  :absolute="true"
-                  :value="forceInspectionDate"
-                  :opacity="0.5"
-                  color="white"
-                  z-index="3"
-                  class="input-disabled-overlay"
-                >
-                </v-overlay>
               </v-row>
+            </v-card-title>
 
-              <v-row class="sub-inspection-wrapper my-0">
-                <v-col cols="12">
-                  <div class="overline mb-2" v-text="`${$t('reminder')}`"></div>
-                  <div class="sub-inspection-details rounded-border">
-                    <v-row>
-                      <v-col cols="12" sm="4">
-                        <div class="d-flex justify-flex-start align-center">
-                          <v-icon
-                            class="mr-2"
-                            :color="reminderDate !== null ? 'accent' : ''"
-                            >mdi-calendar-clock</v-icon
-                          >
-                          <div>
-                            <div
-                              class="beep-label"
-                              v-text="`${$t('remind_date')}`"
-                            ></div>
-                            <Datetime
-                              v-if="activeInspection"
-                              v-model="reminderDate"
-                              :placeholder="`${$t('Set_notification_date')}`"
-                              type="datetime"
-                              class="accent--text"
+            <SlideYUpTransition :duration="150">
+              <!-- New dynamic checklist -->
+              <v-card-text v-if="showCategoriesByIndex[index] === true">
+                <v-row class="sub-inspection-wrapper my-0">
+                  <v-col
+                    v-for="(category, catIndex) in mainCategory.children"
+                    :key="catIndex"
+                    cols="12"
+                  >
+                    <checklistFieldset
+                      v-if="activeInspection"
+                      :object="activeInspection.items"
+                      :category="category"
+                      :locale="locale"
+                      :parse-mode="parseMode"
+                    ></checklistFieldset>
+                  </v-col>
+                </v-row>
+              </v-card-text>
+            </SlideYUpTransition>
+            <v-overlay
+              :absolute="true"
+              :value="forceInspectionDate"
+              :opacity="0.5"
+              color="white"
+              z-index="3"
+              class="input-disabled-overlay"
+            >
+            </v-overlay>
+          </v-card>
+
+          <!-- General inspection items -->
+          <v-card outlined class="mt-3">
+            <v-card-title
+              :class="
+                `hive-inspect-card-title ${
+                  showGeneral ? 'hive-inspect-card-title--border-bottom' : ''
+                }`
+              "
+            >
+              <v-row class="my-0">
+                <v-col cols="12" class="py-0 mt-n1">
+                  <span>{{ $t('overall') }}</span>
+                  <div class="float-right">
+                    <v-icon
+                      :class="
+                        `toggle-icon mdi ${
+                          showGeneral ? 'mdi-minus' : 'mdi-plus'
+                        }`
+                      "
+                      @click="showGeneral = !showGeneral"
+                    ></v-icon>
+                  </div>
+                </v-col>
+              </v-row>
+            </v-card-title>
+            <SlideYUpTransition :duration="150">
+              <v-card-text v-if="showGeneral">
+                <v-row class="sub-inspection-wrapper my-0">
+                  <v-col cols="12">
+                    <div
+                      class="overline mb-2"
+                      v-text="`${$t('positive_impression')}`"
+                    ></div>
+                    <div class="sub-inspection-details rounded-border">
+                      <v-row>
+                        <v-col cols="12" sm="4">
+                          <labelWithDescription
+                            :plain-text="$t('positive_impression')"
+                            :parse-mode="parseMode"
+                            :parsed-images="parsedImages['impression']"
+                          ></labelWithDescription>
+                          <smileRating
+                            v-if="activeInspection"
+                            :object="activeInspection"
+                            property="impression"
+                          ></smileRating>
+                        </v-col>
+                        <v-col cols="12" sm="4">
+                          <labelWithDescription
+                            :plain-text="$t('needs_attention')"
+                            :parse-mode="parseMode"
+                            :parsed-images="parsedImages['attention']"
+                          ></labelWithDescription>
+                          <yesNoRating
+                            v-if="activeInspection"
+                            :object="activeInspection"
+                            property="attention"
+                            :yes-red="true"
+                          ></yesNoRating>
+                        </v-col>
+                        <v-col cols="12">
+                          <labelWithDescription
+                            :plain-text="$t('notes')"
+                            :parse-mode="parseMode"
+                            :parsed-images="parsedImages['notes']"
+                          ></labelWithDescription>
+                          <v-textarea
+                            v-if="activeInspection"
+                            v-model="activeInspection.notes"
+                            class="pt-0"
+                            :placeholder="`${$t('notes')}`"
+                            counter="2500"
+                            rows="1"
+                            auto-grow
+                            clearable
+                            @input="validateText($event, 'notes', 2500)"
+                          ></v-textarea>
+                        </v-col>
+                      </v-row>
+                    </div>
+                  </v-col>
+                  <v-overlay
+                    :absolute="true"
+                    :value="forceInspectionDate"
+                    :opacity="0.5"
+                    color="white"
+                    z-index="3"
+                    class="input-disabled-overlay"
+                  >
+                  </v-overlay>
+                </v-row>
+
+                <v-row class="sub-inspection-wrapper my-0">
+                  <v-col cols="12">
+                    <div
+                      class="overline mb-2"
+                      v-text="`${$t('reminder')}`"
+                    ></div>
+                    <div class="sub-inspection-details rounded-border">
+                      <v-row>
+                        <v-col cols="12" sm="4">
+                          <div class="d-flex justify-flex-start align-center">
+                            <v-icon
+                              class="mr-2"
+                              :color="reminderDate !== null ? 'accent' : ''"
+                              >mdi-calendar-clock</v-icon
                             >
-                              <span
-                                v-if="reminderDate !== null"
-                                slot="after"
-                                class="description clear-icon"
-                                @click="clearDate"
+                            <div>
+                              <labelWithDescription
+                                :plain-text="$t('remind_date')"
+                                :parse-mode="parseMode"
+                                :parsed-images="parsedImages['reminder_date']"
+                              ></labelWithDescription>
+                              <Datetime
+                                v-if="activeInspection"
+                                v-model="reminderDate"
+                                :placeholder="`${$t('Set_notification_date')}`"
+                                type="datetime"
+                                class="accent--text"
                               >
-                                <v-icon class="mt-n1" color="accent"
-                                  >mdi-close</v-icon
-                                ></span
-                              >
-                              <template slot="button-cancel">
-                                <v-btn text color="accent">{{
-                                  $t('Cancel')
-                                }}</v-btn>
-                              </template>
-                              <template slot="button-confirm">
-                                <v-btn text color="accent">{{
-                                  $t('ok')
-                                }}</v-btn>
-                              </template>
-                            </Datetime>
+                                <span
+                                  v-if="reminderDate !== null"
+                                  slot="after"
+                                  class="description clear-icon"
+                                  @click="clearDate"
+                                >
+                                  <v-icon class="mt-n1" color="accent"
+                                    >mdi-close</v-icon
+                                  ></span
+                                >
+                                <template slot="button-cancel">
+                                  <v-btn text color="accent">{{
+                                    $t('Cancel')
+                                  }}</v-btn>
+                                </template>
+                                <template slot="button-confirm">
+                                  <v-btn text color="accent">{{
+                                    $t('ok')
+                                  }}</v-btn>
+                                </template>
+                              </Datetime>
+                            </div>
                           </div>
-                        </div>
-                      </v-col>
-                      <v-col cols="12" sm="8">
-                        <v-textarea
-                          v-if="activeInspection"
-                          v-model="activeInspection.reminder"
-                          :label="`${$t('reminder')}`"
-                          :placeholder="`${$t('notes_for_next_inspection')}`"
-                          rows="1"
-                          auto-grow
-                          clearable
-                          counter="100"
-                          @input="validateText($event, 'reminder', 100)"
-                        ></v-textarea>
-                      </v-col>
-                    </v-row>
-                  </div>
-                </v-col>
-              </v-row>
-            </v-card-text>
-          </SlideYUpTransition>
-        </v-card>
+                        </v-col>
+                        <v-col cols="12" sm="8">
+                          <labelWithDescription
+                            :plain-text="$t('reminder')"
+                            :parse-mode="parseMode"
+                            :parsed-images="parsedImages['reminder']"
+                          ></labelWithDescription>
+                          <v-textarea
+                            v-if="activeInspection"
+                            v-model="activeInspection.reminder"
+                            class="pt-0"
+                            :placeholder="`${$t('notes_for_next_inspection')}`"
+                            rows="1"
+                            auto-grow
+                            clearable
+                            counter="100"
+                            @input="validateText($event, 'reminder', 100)"
+                          ></v-textarea>
+                        </v-col>
+                      </v-row>
+                    </div>
+                  </v-col>
+                </v-row>
+              </v-card-text>
+            </SlideYUpTransition>
+          </v-card>
+        </div>
       </v-container>
     </v-form>
 
-    <v-container v-if="!ready">
+    <v-container v-if="!ready || !svgReady || svgLoading">
       <div class="loading">
         <v-progress-circular size="50" color="primary" indeterminate />
       </div>
     </v-container>
+
+    <template v-if="offlineMode && svgReady">
+      <OfflineInspection
+        v-if="selectedChecklist"
+        :selected-checklist="selectedChecklist"
+        :print-mode="printMode"
+        @updated="svgLoading = false"
+      />
+    </template>
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
@@ -469,6 +541,9 @@ import checklistFieldset from '@components/checklist-fieldset.vue'
 import Confirm from '@components/confirm.vue'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
+import dummyOutput from '@components/svg/test_4_dummy.json'
+import InspectModeSelector from '@components/inspect-mode-selector.vue'
+import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
 import {
@@ -480,6 +555,7 @@ import {
   momentFullDateTime,
   momentISO8601,
 } from '@mixins/momentMixin'
+import OfflineInspection from '@components/offline-inspection.vue'
 import { SlideYUpTransition } from 'vue2-transitions'
 import smileRating from '@components/input-fields/smile-rating.vue'
 import Treeselect from '@riophae/vue-treeselect'
@@ -491,7 +567,10 @@ export default {
     checklistFieldset,
     Confirm,
     Datetime,
+    InspectModeSelector,
+    labelWithDescription,
     Layout,
+    OfflineInspection,
     SlideYUpTransition,
     smileRating,
     yesNoRating,
@@ -527,6 +606,11 @@ export default {
               : ''),
         }
       },
+      selectModes: [
+        { id: 'Online', label: this.$i18n.t('Online_inspection') },
+        { id: 'Offline', label: this.$i18n.t('Offline_inspection') },
+      ],
+      selectedMode: 'Online',
       snackbar: {
         show: false,
         timeout: 2000,
@@ -540,6 +624,8 @@ export default {
       showLoadingIcon: false,
       valid: false,
       ready: false,
+      svgReady: false,
+      svgLoading: false,
       selectedHiveSetId: null,
       selectedHiveSet: null,
       selectedHives: [],
@@ -549,6 +635,16 @@ export default {
       isApiary: true,
       hiveSetId: null,
       dateFormat: 'YYYY-MM-DD HH:mm:ss',
+      printMode: false,
+      overallInspectionProps: [
+        'date',
+        'impression',
+        'attention',
+        'notes',
+        'reminder_date',
+        'reminder',
+      ],
+      parsedImages: {},
     }
   },
   computed: {
@@ -561,6 +657,25 @@ export default {
     ]),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
+    allHivesSelected: {
+      get() {
+        return this.selectedHives.length === this.editableHives.length
+      },
+      set(value) {
+        if (value === false) {
+          this.setBulkInspection(false)
+          this.selectedHives = []
+        } else {
+          this.setBulkInspection(true)
+          this.selectedHives = []
+          this.selectedHiveSet.hives.map((hive) => {
+            if (hive.editable || hive.owner) {
+              this.selectedHives.push(hive.id)
+            }
+          })
+        }
+      },
+    },
     apiaryId() {
       return this.$route.query.apiaryId || null
     },
@@ -590,6 +705,16 @@ export default {
         .endOf('day')
         .format()
     },
+    forceInspectionDate() {
+      return (
+        !this.offlineMode && // forced inspection date not relevant for offline mode
+        (this.inspectionDate === 'Invalid date' ||
+          this.inspectionDate === '') &&
+        this.selectedChecklist !== null &&
+        this.selectedChecklist.researches !== undefined &&
+        this.selectedChecklist.researches.join().includes('B-GOOD')
+      )
+    },
     groupId() {
       return this.$route.query.groupId || null
     },
@@ -600,12 +725,6 @@ export default {
         null
       )
     },
-    inspectionId() {
-      return parseInt(this.$route.params.inspection) || null
-    },
-    preSelectedChecklistId() {
-      return parseInt(this.$route.query.checklistId) || null
-    },
     inspectionDate: {
       get() {
         if (
@@ -615,7 +734,8 @@ export default {
           return this.momentISO8601(this.activeInspection.created_at)
         } else if (
           this.activeInspection &&
-          this.activeInspection.date !== null
+          this.activeInspection.date !== null &&
+          this.activeInspection.date !== 'Invalid date'
         ) {
           return this.momentISO8601(this.activeInspection.date)
         } else {
@@ -627,20 +747,39 @@ export default {
         this.setActiveInspectionDate(date)
       },
     },
-    forceInspectionDate() {
-      return (
-        (this.inspectionDate === 'Invalid date' ||
-          this.inspectionDate === '') &&
-        this.selectedChecklist !== null &&
-        this.selectedChecklist.researches !== undefined &&
-        this.selectedChecklist.researches.join().includes('B-GOOD')
-      )
+    inspectionId() {
+      return parseInt(this.$route.params.inspection) || null
+    },
+    lastSelectedChecklistId: {
+      get() {
+        return localStorage.beepLastSelectedChecklistId
+      },
+      set(value) {
+        localStorage.beepLastSelectedChecklistId = value
+      },
     },
     locale() {
       return this.$i18n.locale
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile
+    },
+    offlineMode() {
+      return this.selectedMode === 'Offline'
+    },
+    onlineMode() {
+      return this.selectedMode === 'Online'
+    },
+    uploadMode() {
+      return this.selectedMode === 'Upload'
+    },
+    parseMode() {
+      return this.$route.query.mode === 'parse'
+    },
+    preSelectedChecklistId() {
+      return this.parseMode
+        ? dummyOutput[0].checklist_id // TODO: get checklist_id from JSON
+        : parseInt(this.$route.query.checklistId) || null
     },
     reminderDate: {
       get() {
@@ -662,31 +801,13 @@ export default {
         }
       },
     },
-    allHivesSelected: {
+    setSelectedMode: {
       get() {
-        return this.selectedHives.length === this.editableHives.length
+        return this.selectedMode
       },
       set(value) {
-        if (value === false) {
-          this.setBulkInspection(false)
-          this.selectedHives = []
-        } else {
-          this.setBulkInspection(true)
-          this.selectedHives = []
-          this.selectedHiveSet.hives.map((hive) => {
-            if (hive.editable || hive.owner) {
-              this.selectedHives.push(hive.id)
-            }
-          })
-        }
-      },
-    },
-    lastSelectedChecklistId: {
-      get() {
-        return localStorage.beepLastSelectedChecklistId
-      },
-      set(value) {
-        localStorage.beepLastSelectedChecklistId = value
+        localStorage.beepSelectedInspectionMode = value
+        this.selectedMode = value
       },
     },
     sortedHiveSets() {
@@ -775,6 +896,10 @@ export default {
       this.getHiveSet()
     }
 
+    if (localStorage.beepSelectedInspectionMode) {
+      this.setSelectedMode = localStorage.beepSelectedInspectionMode
+    }
+
     if (
       localStorage.beepPreviousRoute !== undefined &&
       localStorage.beepPreviousRoute === 'checklist' &&
@@ -805,6 +930,12 @@ export default {
           hive_ids: this.selectedHives, // TODO: fix for only 1 hiveId
           items: {},
         }
+
+        if (this.parseMode) {
+          this.setSelectedMode = 'Online'
+          this.getParsedOverallAnswers()
+        }
+
         this.readChecklistsIfNotPresent().then(() => {
           if (this.preSelectedChecklistId !== null) {
             this.getChecklistById(this.preSelectedChecklistId)
@@ -835,6 +966,7 @@ export default {
     this.setInspectionEdited(false)
     this.setBulkInspection(this.selectedHives.length > 1)
     this.ready = true
+    this.svgReady = true
   },
   methods: {
     async getActiveHive(id) {
@@ -874,7 +1006,7 @@ export default {
           const numberOfCategories = this.selectedChecklist.categories.length
           this.showCategoriesByIndex = []
           for (var i = 0; i < numberOfCategories; i++) {
-            this.showCategoriesByIndex.push(false)
+            this.showCategoriesByIndex.push(this.parseMode)
           }
         }
 
@@ -931,8 +1063,16 @@ export default {
         this.activeInspection.items = itemsObject
         this.activeInspection.checklist_id = this.selectedChecklistId
 
+        if (this.offlineMode) {
+          this.svgReady = true
+        }
+
         return true
       } catch (error) {
+        if (this.offlineMode) {
+          this.svgReady = true
+        }
+
         if (error.response) {
           console.log('Error: ', error.response)
         } else {
@@ -1051,12 +1191,6 @@ export default {
     clearDiaryFilters() {
       this.$store.commit('inspections/clearFilters')
     },
-    editChecklist(id) {
-      if (this.selectedHiveSetId)
-        this.activeInspection.hive_ids = this.selectedHives
-      this.setTempSavedInspection(this.activeInspection)
-      this.$router.push(this.checklistLink)
-    },
     confirmSaveInspection() {
       if (this.bulkInspection) {
         this.$refs.confirm
@@ -1077,6 +1211,12 @@ export default {
         this.saveInspection()
       }
     },
+    editChecklist(id) {
+      if (this.selectedHiveSetId)
+        this.activeInspection.hive_ids = this.selectedHives
+      this.setTempSavedInspection(this.activeInspection)
+      this.$router.push(this.checklistLink)
+    },
     getHiveSet() {
       if (this.apiaries.length === 0 && this.groups.length === 0) {
         // if apiaries and groups are not in store, in case view is opened directly without loggin in (via localstorage)
@@ -1089,6 +1229,34 @@ export default {
     },
     getNow() {
       return this.momentFormat(new Date(), this.dateFormat)
+    },
+    getParsedAnswer(id) {
+      var returnedItems = dummyOutput.filter(
+        (answer) =>
+          answer.data_parent_category_id !== undefined &&
+          answer.data_parent_category_id === id
+      )
+      return returnedItems.length > 0 ? returnedItems[0] : null
+    },
+    getParsedOverallAnswers() {
+      this.overallInspectionProps.map((prop) => {
+        var answer = this.getParsedAnswer(prop)
+        var value = null
+        if (answer && answer.value !== undefined) {
+          if (prop === 'impression' || prop === 'attention') {
+            var checkboxIndex = answer.value.findIndex((value) => value === 1)
+            value = checkboxIndex + 1
+          } else {
+            value = answer.value[0] // TODO: fix this for date prop
+          }
+        }
+        this.activeInspection[prop] = value
+        // TODO: convert array (of all checkboxes 0s and 1s for example) to the actual answer
+        this.parsedImages[prop] =
+          answer && answer.image !== undefined
+            ? answer.image // TODO: check if array length is ever > 1?
+            : []
+      })
     },
     initInspection() {
       this.setActiveInspectionDate(this.activeInspection.date)
@@ -1108,6 +1276,16 @@ export default {
         'inspections/setSelectedInspectionId',
         this.inspectionId
       )
+    },
+    // parseOutput() {
+    //   console.log(dummyOutput)
+    // },
+    print() {
+      this.printMode = true
+      setTimeout(() => {
+        window.print()
+        this.printMode = false
+      }, 500)
     },
     selectApiary(id) {
       this.selectedHives = []
@@ -1240,10 +1418,16 @@ export default {
       })
     },
     switchChecklist(id) {
+      if (this.offlineMode) {
+        this.svgReady = false
+      }
+      this.$store.commit('inspections/resetSvgStates')
+
       if (
-        this.inspectionId !== null ||
-        this.inspectionEdited ||
-        this.tempSavedInspection
+        !this.offlineMode &&
+        (this.inspectionId !== null ||
+          this.inspectionEdited ||
+          this.tempSavedInspection)
       ) {
         this.$refs.confirm
           .open(
@@ -1262,6 +1446,12 @@ export default {
           })
       } else {
         this.getChecklistById(id)
+      }
+    },
+    switchMode(mode) {
+      this.$store.commit('inspections/resetSvgStates')
+      if (mode === 'Offline') {
+        this.svgLoading = true
       }
     },
     toggleCategory(index) {

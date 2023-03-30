@@ -246,16 +246,10 @@
                 <v-row>
                   <v-col cols="12">
                     <div class="beep-label" v-text="$t('Code')"></div>
-                    <router-link
-                      :to="{
-                        name: 'dashboard',
-                        params: { id: dashboard.id },
-                      }"
-                      target="_blank"
-                    >
+                    <a :href="dashboardUrl + dashboard.code" target="_blank">
                       <v-icon class="mr-2" color="accent">mdi-link</v-icon>
-                      <span class="overline" v-text="dashboard.id"></span>
-                    </router-link>
+                      <span class="overline" v-text="dashboard.code"></span>
+                    </a>
                   </v-col>
 
                   <v-col cols="12">
@@ -284,7 +278,7 @@
 </template>
 
 <script>
-// import Api from '@api/Api'
+import Api from '@api/Api'
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 import Confirm from '@components/confirm.vue'
 import { mapGetters } from 'vuex'
@@ -294,7 +288,7 @@ import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 import {
   deleteDashboard,
   readApiariesAndGroupsIfNotPresent,
-  // readDashboards,
+  readDashboardGroups,
 } from '@mixins/methodsMixin'
 import { momentFormat } from '@mixins/momentMixin'
 
@@ -306,9 +300,17 @@ export default {
     MeasurementsDateSelection,
     yesNoRating,
   },
-  mixins: [deleteDashboard, momentFormat, readApiariesAndGroupsIfNotPresent],
+  mixins: [
+    deleteDashboard,
+    momentFormat,
+    readApiariesAndGroupsIfNotPresent,
+    readDashboardGroups,
+  ],
   data: function() {
     return {
+      dashboardUrl:
+        process.env.VUE_APP_DASHBOARD_URL ||
+        process.env.VUE_APP_DASHBOARD_URL_FALLBACK,
       snackbar: {
         show: false,
         timeout: 2000,
@@ -319,7 +321,7 @@ export default {
       errorMessage: null,
       dashboard: null,
       showMaxWarning: false,
-      maxNrOfHives: 12,
+      maxNrOfHives: 10,
       speedOptions: [15, 30, 45, 60, 90, 120, 300],
       intervalOptions: [
         { id: 1, label: 'Hour' },
@@ -333,9 +335,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('groups', ['dashboards', 'groups']),
+    ...mapGetters('groups', ['dashboardGroups', 'groups']),
     ...mapGetters('hives', ['hivesObject']),
     ...mapGetters('locations', ['apiaries']),
+    code() {
+      return this.$route.params.id || null
+    },
     createMode() {
       return this.$route.name === 'dashboard-create'
     },
@@ -365,13 +370,10 @@ export default {
       return this.createMode
         ? this.$i18n.t('New_dashboard')
         : this.$i18n.t('Edit_dashboard') +
-            (this.dashboard !== null ? ' - ' + this.dashboard.id : '')
+            (this.dashboard !== null ? ' - ' + this.dashboard.name : '')
     },
     hiveSets() {
       return this.apiaries.concat(this.groups)
-    },
-    id() {
-      return this.$route.params.id || null
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile
@@ -411,104 +413,103 @@ export default {
     },
   },
   created() {
-    // this.readDashboards().then((response) => { TODO
-    this.readApiariesAndGroupsIfNotPresent().then((response) => {
-      if (!this.createMode) {
-        var filteredDashboards = this.dashboards.filter(
-          (dashboard) => dashboard.id === this.id
-        )
-        this.dashboard =
-          filteredDashboards.length === 0 ? null : { ...filteredDashboards[0] }
-      }
-
-      // If dashboard-create route is used, make empty dashboard object
-      else if (this.createMode) {
-        this.dashboard = {
-          id: null,
-          name: null,
-          description: null,
-          speed: 30,
-          hive_ids: [],
-          interval: 'week',
-          show_inspections: true,
-          show_all: false,
+    this.readDashboardGroupsIfNotChecked().then((response) => {
+      this.readApiariesAndGroupsIfNotPresent().then((response) => {
+        if (!this.createMode) {
+          var filteredDashboards = this.dashboardGroups.filter(
+            (dashboard) => dashboard.code === this.code
+          )
+          this.dashboard =
+            filteredDashboards.length === 0
+              ? null
+              : { ...filteredDashboards[0] }
         }
-      }
+
+        // If dashboard-create route is used, make empty dashboard object
+        else if (this.createMode) {
+          this.dashboard = {
+            name: null,
+            description: null,
+            speed: 30,
+            hive_ids: [],
+            interval: 'week',
+            show_inspections: true,
+            show_all: false,
+          }
+        }
+      })
     })
-    // })
     this.setDashboardEdited(false)
   },
   methods: {
     async createDashboard() {
       if (this.$refs.form.validate()) {
-        console.log('TODO create dashboard', this.dashboard)
-        // this.showLoadingIcon = true
-        // try {
-        //   const response = await Api.postRequest('/dashboards', this.dashboard)
-        //   if (!response) {
-        //     this.errorMessage =
-        //       this.$i18n.tc('Error', 1) + ': ' + this.$i18n.t('not_saved_error')
-        //     this.showLoadingIcon = false
-        //   }
-        //   setTimeout(() => {
-        //     return this.readDashboards().then(() => {
-        //       // this.$router.push({
-        //       //   name: 'home',
-        //       // })
-        //       this.$router.push({
-        //         name: 'dashboards',
-        //       })
-        //     })
-        //   }, 50) // wait for API to update dashboards
-        // } catch (error) {
-        //   if (error.response) {
-        //     const msg = error.response.data.error
-        //     this.errorMessage = msg
-        //     this.showLoadingIcon = false
-        //     console.log(error.response)
-        //   } else {
-        //     this.showLoadingIcon = false
-        //     console.log('Error: ', error)
-        //   }
-        // }
+        this.showLoadingIcon = true
+        try {
+          const response = await Api.postRequest(
+            '/dashboardgroups',
+            this.dashboard
+          )
+          if (!response) {
+            this.errorMessage =
+              this.$i18n.tc('Error', 1) + ': ' + this.$i18n.t('not_saved_error')
+            this.showLoadingIcon = false
+          }
+          setTimeout(() => {
+            return this.readDashboardGroups().then(() => {
+              this.$router.push({
+                name: 'dashboards',
+              })
+            })
+          }, 50) // wait for API to update dashboards
+        } catch (error) {
+          if (error.response) {
+            const msg = error.response.data.error
+            this.errorMessage = msg
+            this.showLoadingIcon = false
+            console.log(error.response)
+          } else {
+            this.showLoadingIcon = false
+            console.log('Error: ', error)
+          }
+        }
       }
     },
     async updateDashboard() {
       if (this.$refs.form.validate()) {
-        console.log('TODO update dashboard', this.dashboard)
-        // this.showLoadingIcon = true
-        // try {
-        //   const response = await Api.updateRequest(
-        //     '/dashboards/',
-        //     this.dashboard.id,
-        //     this.dashboard
-        //   )
-        //   if (!response) {
-        //     this.errorMessage =
-        //       this.$i18n.tc('Error', 1) + ': ' + this.$i18n.t('not_saved_error')
-        //   }
-        //   setTimeout(() => {
-        //     return this.readDashboards().then(() => {
-        //       this.$router.push({
-        //         name: 'dashboards',
-        //       })
-        //     })
-        //   }, 50) // wait for API to update dashboards
-        // } catch (error) {
-        //   if (error.response) {
-        //     const msg = error.response.data.error
-        //     this.errorMessage = msg
-        //     this.showLoadingIcon = false
-        //     console.log(error.response)
-        //   } else {
-        //     this.showLoadingIcon = false
-        //     console.log('Error: ', error)
-        //   }
-        // }
+        this.showLoadingIcon = true
+        try {
+          const response = await Api.updateRequest(
+            '/dashboardgroups/',
+            this.dashboard.id,
+            this.dashboard
+          )
+          if (!response) {
+            this.errorMessage =
+              this.$i18n.tc('Error', 1) + ': ' + this.$i18n.t('not_saved_error')
+          }
+          setTimeout(() => {
+            return this.readDashboardGroups().then(() => {
+              this.$router.push({
+                name: 'dashboards',
+              })
+            })
+          }, 50) // wait for API to update dashboards
+        } catch (error) {
+          if (error.response) {
+            const msg = error.response.data.error
+            this.errorMessage = msg
+            this.showLoadingIcon = false
+            console.log(error.response)
+          } else {
+            this.showLoadingIcon = false
+            console.log('Error: ', error)
+          }
+        }
       }
     },
     copyUrl() {
-      var copyText = 'https://app.beep.nl/dashboard/' + this.dashboard.id // TODO get url via env settings
+      var copyText = this.dashboardUrl + this.dashboard.code
       navigator.clipboard.writeText(copyText)
     },
     getOwnedHives(hiveSet) {

@@ -450,7 +450,8 @@
 
 .vue-treeselect.color-red {
   .vue-treeselect__multi-value-item,
-  .vue-treeselect__value-remove {
+  .vue-treeselect__value-remove,
+  &.vue-treeselect--single {
     color: $color-red !important;
     background: $color-red-light !important;
   }
@@ -458,6 +459,10 @@
     background: $color-red !important;
     border-color: $color-red !important;
   }
+}
+
+.vue-treeselect--disabled {
+  cursor: not-allowed !important;
 }
 
 /* Vue Datetime */
@@ -498,5 +503,19 @@
 
   .vdatetime-popup__actions__button {
     padding: 0 !important;
+  }
+}
+
+@media print {
+  .v-main {
+    display: block !important;
+    padding: 0px 0px 0px 0px !important;
+  }
+  .v-application {
+    line-height: 0 !important;
+  }
+  .v-application-wrap {
+    display: block !important;
+    min-height: 0px !important;
   }
 }

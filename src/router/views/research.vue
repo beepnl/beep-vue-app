@@ -169,9 +169,13 @@
                       ></span>
                     </v-col>
                     <v-col class="research-item-col" cols="7" sm="8">
-                      <strong>{{
-                        research.consent ? $t('consent_yes') : $t('consent_no')
-                      }}</strong>
+                      <strong>
+                        <v-icon>{{
+                          research.consent
+                            ? 'mdi-check green--text'
+                            : 'mdi-close red--text'
+                        }}</v-icon>
+                      </strong>
                     </v-col>
                   </v-row>
                   <v-row>
@@ -406,7 +410,7 @@ import { momentify, momentFullDateTime } from '@mixins/momentMixin'
 import { mapGetters } from 'vuex'
 import {
   readApiariesAndGroups,
-  readDevicesIfNotPresent,
+  readDevicesIfNotChecked,
 } from '@mixins/methodsMixin'
 
 export default {
@@ -420,7 +424,7 @@ export default {
     momentify,
     momentFullDateTime,
     readApiariesAndGroups,
-    readDevicesIfNotPresent,
+    readDevicesIfNotChecked,
   ],
   data: function() {
     return {
@@ -469,7 +473,7 @@ export default {
     },
   },
   created() {
-    this.readDevicesIfNotPresent()
+    this.readDevicesIfNotChecked()
     if (this.apiaries.length === 0 && this.groups.length === 0) {
       // in case view is opened directly without loggin in (via localstorage) or in case of hard refresh
       this.readApiariesAndGroups()

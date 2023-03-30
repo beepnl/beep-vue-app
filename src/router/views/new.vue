@@ -2,7 +2,44 @@
   <Layout :title="$t('Whats_new')">
     <v-container>
       <div class="overline mb-1"
-        ><span class="lowercase">v</span>3.1 (07-11-2022) - Current version</div
+        ><span class="lowercase">v</span>3.2 (09-03-2023) - Current version</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li
+            ><router-link :to="{ name: 'export' }">Data export:</router-link>
+            Excel export has been updated with several options:
+            <ul>
+              <li>add collaboration group data to export file</li>
+              <li
+                >add (file links to) measurement data and weather data to export
+                file</li
+              >
+              <li
+                >download export file directly (in addition to the email
+                option)</li
+              >
+            </ul>
+          </li>
+          <li>Bugfixes: small fixes for issues received as feedback</li>
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>3.1.1 (20-02-2023)</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li
+            ><router-link :to="{ name: 'research' }">Research:</router-link>
+            option to (de)select individual hives for consent
+          </li>
+          <li>Bugfixes: small fixes for issues received as feedback</li>
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>3.1 (07-11-2022)</div
       >
       <div class="rounded-border mb-4">
         <ul>

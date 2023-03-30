@@ -220,19 +220,14 @@
                         class="mr-2"
                         :progress="
                           calculateProgress(
-                            SENSOR_MIN[sensorData.name],
-                            SENSOR_MAX[sensorData.name],
-                            // eslint-disable-next-line vue/comma-dangle
+                            sensorData.name,
+                            // eslint-disable vue/comma-dangle
                             sensorData.value
                           )
                         "
                         :legend-value="sensorData.value"
                         :color="
-                          sensorData.value < SENSOR_LOW[sensorData.name]
-                            ? '#ffcc66'
-                            : sensorData.value > SENSOR_HIGH[sensorData.name]
-                            ? '#f00'
-                            : '#417505'
+                          getProgressColor(sensorData.name, sensorData.value)
                         "
                         :size="mobile ? 75 : 100"
                         empty-color="#eee"
@@ -540,7 +535,7 @@ import MeasurementsDateSelection from '@components/measurements-date-selection.v
 import Treeselect from '@riophae/vue-treeselect'
 import {
   checkAlerts,
-  readDevicesIfNotPresent,
+  readDevicesIfNotChecked,
   readGeneralInspectionsIfNotPresent,
   readTaxonomy,
 } from '@mixins/methodsMixin'
@@ -570,7 +565,7 @@ export default {
     momentFormat,
     momentFormatUtcToLocal,
     momentFromNow,
-    readDevicesIfNotPresent,
+    readDevicesIfNotChecked,
     readGeneralInspectionsIfNotPresent,
     readTaxonomy,
     sensorMixin,
@@ -1023,7 +1018,6 @@ export default {
   },
   created() {
     this.initLocale = this.userLocale
-    this.readTaxonomy()
     if (this.queriedChartCols !== null) {
       this.chartCols = this.queriedChartCols
     } else if (localStorage.beepChartCols) {
@@ -1045,35 +1039,37 @@ export default {
       this.selectedDeviceId = this.preselectedDeviceId
     }
     this.stopTimer()
-    this.checkAlertRulesAndAlerts() // for alerts-tab badge AND alert-lines
-      .then(() => {
-        this.readGeneralInspectionsIfNotPresent().then(() => {
-          this.readDevicesIfNotPresent()
-            .then(() => {
-              if (
-                this.queriedDate !== null &&
-                this.queriedDate.length === 10 &&
-                !isNaN(this.preselectedDeviceId)
-              ) {
-                this.selectDate(this.queriedDate)
-              } else if (this.devices.length > 0) {
-                if (this.queriedInterval !== undefined) {
-                  this.interval = this.queriedInterval
-                  this.timeIndex = this.queriedTimeIndex
-                  this.dates =
-                    this.queriedStart && this.queriedEnd
-                      ? [this.queriedStart, this.queriedEnd]
-                      : []
-                }
+    this.readTaxonomy().then(() => {
+      this.checkAlertRulesAndAlerts() // for alerts-tab badge AND alert-lines
+        .then(() => {
+          this.readGeneralInspectionsIfNotPresent().then(() => {
+            this.readDevicesIfNotChecked()
+              .then(() => {
+                if (
+                  this.queriedDate !== null &&
+                  this.queriedDate.length === 10 &&
+                  !isNaN(this.preselectedDeviceId)
+                ) {
+                  this.selectDate(this.queriedDate)
+                } else if (this.devices.length > 0) {
+                  if (this.queriedInterval !== undefined) {
+                    this.interval = this.queriedInterval
+                    this.timeIndex = this.queriedTimeIndex
+                    this.dates =
+                      this.queriedStart && this.queriedEnd
+                        ? [this.queriedStart, this.queriedEnd]
+                        : []
+                  }
 
-                this.setInitialDeviceIdAndLoadData()
-              }
-            })
-            .then(() => {
-              this.ready = true
-            })
+                  this.setInitialDeviceIdAndLoadData()
+                }
+              })
+              .then(() => {
+                this.ready = true
+              })
+          })
         })
-      })
+    })
   },
   beforeDestroy() {
     if (this.timer > 0) {
@@ -1237,7 +1233,11 @@ export default {
 
       return alertsForCharts
     },
-    calculateProgress(min, max, value) {
+    calculateProgress(name, value) {
+      // get different target values for bv sensor if device is not beep
+      var sensorName = this.getSensorName(name)
+      var min = this.SENSOR_MIN[sensorName]
+      var max = this.SENSOR_MAX[sensorName]
       if (value > max) {
         return 100
       } else {
@@ -1446,6 +1446,13 @@ export default {
       }
       this.loadingData = false
     },
+    getProgressColor(name, value) {
+      // get different target values for bv sensor if device is not beep
+      var sensorName = this.getSensorName(name)
+      var low = this.SENSOR_LOW[sensorName]
+      var high = this.SENSOR_HIGH[sensorName]
+      return value < low ? '#ffcc66' : value > high ? '#f00' : '#417505'
+    },
     getSensorMeasurement(abbr) {
       var smFilter = this.sensorMeasurementsList.filter(
         (measurementType) => measurementType.abbreviation === abbr
@@ -1457,6 +1464,13 @@ export default {
         (measurementType) => measurementType.id === id
       )
       return smFilter.length > 0 ? smFilter[0].abbreviation : null
+    },
+    getSensorName(name) {
+      return name === 'bv' &&
+        this.selectedDevice &&
+        this.selectedDevice.type !== 'beep'
+        ? 'bv_notbeep'
+        : name
     },
     alertInPeriod(alert) {
       const created = this.momentFormatUtcToLocal(
