@@ -967,16 +967,18 @@ const translations = {
   Too_long_list_present_fix_1: 'If possible, decrease the number of options to',
   Too_long_list_present_fix_2:
     "or less, via the 'Edit checklist' button. Or fill in the correct answer manually.",
-
-  /* offline inspection page */
   Print: 'Print',
-  Offline_inspection: 'Manual inspection',
+
+  /* inspection modes */
+  Offline_inspection: 'Paper inspection',
   Offline_inspection_exp:
-    "Print the checklist, fill it in manually. Upload pictures of your inspection later via the 'Upload inspection' button. The pictures will then be automatically parsed and can be saved like a normal inspection.",
+    "Print the checklist, fill it in manually. Upload photos of your inspection sheets later via the 'Upload inspection' button. The photos will then be automatically parsed and can be saved like a normal (digital / online) inspection.",
   Online_inspection: 'Digital inspection',
-  Online_inspection_exp: 'Digital inspection exp',
+  Online_inspection_exp:
+    'Fill in your checklist digitally (online) via your computer, tablet or smartphone, like you are used to',
   Upload_inspection: 'Upload inspection',
-  Upload_inspection_exp: 'Upload inspection exp',
+  Upload_inspection_exp:
+    'If you have completed a paper inspection, you can upload photos of your inspection sheets here. They will then be automatically parsed and can be saved like a normal (digital / online) inspection.',
   Select_inspection_mode: 'Select inspection mode',
 }
 
