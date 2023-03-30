@@ -35,7 +35,9 @@
                 'beep-icon beep-icon-sensors--no-outline' +
                   (dashboardEditMode && hivesEditable.indexOf(hive.id) === -1
                     ? ''
-                    : ' color-green')
+                    : hive.device_online === undefined || hive.device_online
+                    ? ' color-green'
+                    : ' color-grey')
               "
             ></v-sheet>
           </div>
