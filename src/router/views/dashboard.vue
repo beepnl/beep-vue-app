@@ -452,12 +452,14 @@ export default {
       return this.$vuetify.breakpoint.mobile
     },
     periodEndString() {
-      return this.$moment().format(this.dateTimeFormat)
+      return this.$moment(this.selectedHiveDetails.end).format(
+        this.dateTimeFormat
+      )
     },
     periodStartString() {
-      return this.$moment()
-        .subtract(1, 'weeks')
-        .format(this.dateTimeFormat)
+      return this.$moment(this.selectedHiveDetails.start).format(
+        this.dateTimeFormat
+      )
     },
     screenSize() {
       return this.$vuetify.breakpoint.width
@@ -758,8 +760,9 @@ export default {
       }, 10)
     },
     selectHive(id) {
-      this.readDashboardHive(id).then(() => {
-        this.formatMeasurementData(this.selectedHiveDetails)
+      console.log('select hive', id)
+      this.readDashboardHive(id).then((data) => {
+        this.formatMeasurementData(data)
         this.ready = true
       })
     },

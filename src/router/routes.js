@@ -27,12 +27,12 @@ export default [
     path: '/',
     alias: '/sign-in',
     name: 'dashboard-sign-in',
-    component: () => lazyLoadView(import('@views/dashboard-sign-in.vue')),
+    component: () => import('@views/dashboard-sign-in.vue'),
   },
   {
     path: '/:id',
     name: 'dashboard',
-    component: () => lazyLoadView(import('@views/dashboard.vue')),
+    component: () => import('@views/dashboard.vue'),
   },
   //   {
   //     path: '/password-forgot',
@@ -449,29 +449,29 @@ export default [
 //
 // component: () => import('@views/my-view')
 //
-function lazyLoadView(AsyncView) {
-  const AsyncHandler = () => ({
-    component: AsyncView,
-    // A component to use while the component is loading.
-    loading: require('@views/_loading.vue').default,
-    // Delay before showing the loading component.
-    // Default: 200 (milliseconds).
-    // Set to 1000 in order to only show this in case of network issues
-    delay: 1000,
-    // A fallback component in case the timeout is exceeded
-    // when loading the component.
-    error: require('@views/_timeout.vue').default,
-    // Time before giving up trying to load the component.
-    // Default: Infinity (milliseconds).
-    timeout: 5000,
-  })
+// function lazyLoadView(AsyncView) {
+//   const AsyncHandler = () => ({
+//     component: AsyncView,
+//     // A component to use while the component is loading.
+//     loading: require('@views/_loading.vue').default,
+//     // Delay before showing the loading component.
+//     // Default: 200 (milliseconds).
+//     // Set to 1000 in order to only show this in case of network issues
+//     delay: 1000,
+//     // A fallback component in case the timeout is exceeded
+//     // when loading the component.
+//     error: require('@views/_timeout.vue').default,
+//     // Time before giving up trying to load the component.
+//     // Default: Infinity (milliseconds).
+//     timeout: 5000,
+//   })
 
-  return Promise.resolve({
-    functional: true,
-    render(h, { data, children }) {
-      // Transparently pass any props or children
-      // to the view component.
-      return h(AsyncHandler, data, children)
-    },
-  })
-}
+//   return Promise.resolve({
+//     functional: true,
+//     render(h, { data, children }) {
+//       // Transparently pass any props or children
+//       // to the view component.
+//       return h(AsyncHandler, data, children)
+//     },
+//   })
+// }
