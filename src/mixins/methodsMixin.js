@@ -573,7 +573,7 @@ export const readDashboard = {
     },
     async readDashboardHive(hiveId = null) {
       // option to call function without arguments, needed for setInterval of the data timer (when hive rotation is paused)
-      var id = hiveId !== null ? hiveId : this.selectedHive.hives[0].id
+      var id = hiveId !== null ? hiveId : this.selectedHiveId
       try {
         const response = await Api.readRequest(
           '/dashboard/',
@@ -581,7 +581,7 @@ export const readDashboard = {
         )
         this.$store.commit('dashboard/setData', {
           prop: 'selectedHive',
-          value: response.data,
+          value: response.data.hives[0],
         })
         return response.data.hives[0]
       } catch (error) {

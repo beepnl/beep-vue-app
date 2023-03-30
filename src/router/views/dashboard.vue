@@ -122,10 +122,7 @@
                   (darkMode ? ' --dark' : '')
               "
             >
-              <div
-                class="dashboard-text"
-                v-text="selectedHiveDetails.name"
-              ></div>
+              <div class="dashboard-text" v-text="selectedHiveMeta.name"></div>
               <ApiaryPreviewHiveSelector
                 class="mb-2"
                 :hives="dashboardHives"
@@ -151,7 +148,7 @@
                 v-text="
                   $t('Last_check') +
                     ': ' +
-                    momentFromNow(selectedHiveDetails.last_inspection_date)
+                    momentFromNow(selectedHive.last_inspection_date)
                 "
               ></span>
             </div>
@@ -192,14 +189,12 @@
                 ></v-col>
                 <v-col v-if="showInspections" cols="7" class="pa-1 pa-xl-3"
                   ><span
-                    v-text="
-                      momentFromNow(selectedHiveDetails.last_inspection_date)
-                    "
+                    v-text="momentFromNow(selectedHive.last_inspection_date)"
                   ></span
                 ></v-col>
               </v-row>
               <v-row
-                v-if="showInspections && selectedHiveDetails.impression"
+                v-if="showInspections && selectedHive.impression"
                 :class="
                   'dashboard-sticky-row ' + (!landscapeMode ? 'pa-3' : '')
                 "
@@ -209,19 +204,19 @@
                 ></v-col>
                 <v-col cols="7" class="pa-1 pa-xl-3">
                   <v-icon
-                    v-if="selectedHiveDetails.impression === 1"
+                    v-if="selectedHive.impression === 1"
                     class="red--text"
                   >
                     mdi-emoticon-sad
                   </v-icon>
                   <v-icon
-                    v-if="selectedHiveDetails.impression === 3"
+                    v-if="selectedHive.impression === 3"
                     class="green--text"
                   >
                     mdi-emoticon-happy
                   </v-icon>
                   <v-icon
-                    v-if="selectedHiveDetails.impression === 2"
+                    v-if="selectedHive.impression === 2"
                     class="orange--text"
                   >
                     mdi-emoticon-neutral
@@ -229,7 +224,7 @@
                 </v-col>
               </v-row>
               <v-row
-                v-if="showInspections && selectedHiveDetails.notes"
+                v-if="showInspections && selectedHive.notes"
                 :class="
                   'dashboard-sticky-row ' + (!landscapeMode ? 'pa-3' : '')
                 "
@@ -238,10 +233,7 @@
                   ><span v-text="$t('Note') + ': '"></span
                 ></v-col>
                 <v-col cols="7" class="pa-1 pb-2 pa-xl-3"
-                  ><span
-                    class="line-clamp-3"
-                    v-text="selectedHiveDetails.notes"
-                  ></span
+                  ><span class="line-clamp-3" v-text="selectedHive.notes"></span
                 ></v-col>
               </v-row>
             </div>
@@ -257,8 +249,8 @@
             v-if="
               ready &&
                 selectedHive &&
-                selectedHiveDetails.sensors &&
-                selectedHiveDetails.sensors.length !== 0
+                selectedHiveMeta.sensors &&
+                selectedHiveMeta.sensors.length !== 0
             "
             :title="$tc('Measurement', 2)"
             :landscape-mode="landscapeMode"
@@ -400,6 +392,7 @@ export default {
       currentHiveWithDataIndex: -1,
       darkMode: true,
       dashboardCode: null,
+      selectedHiveId: null,
     }
   },
   computed: {
@@ -440,10 +433,10 @@ export default {
       return requiredWidth <= apiaryWidth
     },
     lat() {
-      return this.selectedHive !== null ? this.selectedHiveDetails.lat : null
+      return this.selectedHive !== null ? this.selectedHive.lat : null
     },
     lng() {
-      return this.selectedHive !== null ? this.selectedHiveDetails.lon : null
+      return this.selectedHive !== null ? this.selectedHive.lon : null
     },
     locale() {
       return this.$i18n.locale
@@ -452,29 +445,27 @@ export default {
       return this.$vuetify.breakpoint.mobile
     },
     periodEndString() {
-      return this.$moment(this.selectedHiveDetails.end).format(
-        this.dateTimeFormat
-      )
+      return this.$moment(this.selectedHive.end).format(this.dateTimeFormat)
     },
     periodStartString() {
-      return this.$moment(this.selectedHiveDetails.start).format(
-        this.dateTimeFormat
-      )
+      return this.$moment(this.selectedHive.start).format(this.dateTimeFormat)
     },
     screenSize() {
       return this.$vuetify.breakpoint.width
     },
-    selectedHiveDetails() {
-      return this.selectedHive ? this.selectedHive.hives[0] : {}
+    selectedHiveMeta() {
+      return this.dashboardHives.filter(
+        (hive) => hive.id === this.selectedHiveId
+      )[0]
     },
     selectedHiveIds() {
-      return this.selectedHive ? [this.selectedHiveDetails.id] : []
+      return this.selectedHive ? [this.selectedHiveId] : []
     },
     selectedLocationName() {
       return this.selectedHive &&
-        this.selectedHiveDetails &&
-        this.selectedHiveDetails.location_name
-        ? this.selectedHiveDetails.location_name
+        this.selectedHive &&
+        this.selectedHive.location_name
+        ? this.selectedHive.location_name
         : null
     },
     sensorMeasurementsList() {
@@ -496,7 +487,7 @@ export default {
       return (
         this.dashboard.show_inspections === 1 &&
         this.selectedHive &&
-        this.selectedHiveDetails.last_inspection_date !== null
+        this.selectedHive.last_inspection_date !== null
       )
     },
     svgMarker() {
@@ -688,7 +679,7 @@ export default {
     formatMeasurementData(measurementData) {
       if (
         measurementData &&
-        measurementData.measurements &&
+        measurementData.measurements !== undefined &&
         measurementData.measurements.length > 0
       ) {
         this.measurementData = measurementData
@@ -706,6 +697,7 @@ export default {
         })
       } else {
         this.noChartData = true
+        this.measurementData = null
       }
       this.loadingData = false
     },
@@ -762,6 +754,7 @@ export default {
     selectHive(id) {
       console.log('select hive', id)
       this.readDashboardHive(id).then((data) => {
+        this.selectedHiveId = id
         this.formatMeasurementData(data)
         this.ready = true
       })
@@ -777,7 +770,7 @@ export default {
       } else if (
         timer === 'data' &&
         this.selectedHive &&
-        this.selectedHiveDetails.sensors.length !== 0
+        this.selectedHiveMeta.sensors.length !== 0
       ) {
         this.dataTimer = setInterval(
           this.readDashboardHive,
@@ -818,11 +811,11 @@ export default {
       this.hiveTimerPaused = bool
       if (this.hiveTimerPaused) {
         this.stopTimer('hive')
-        if (this.selectedHiveDetails.sensors.length > 0) {
+        if (this.selectedHiveMeta.sensors.length > 0) {
           this.startTimer('data') // if hive rotation is paused and current hive has device, check data every 10 minutes TODO check if this interval is ok?
         }
       } else {
-        if (this.selectedHiveDetails.sensors.length > 0) {
+        if (this.selectedHiveMeta.sensors.length > 0) {
           this.stopTimer('data')
         }
         this.nextHiveWithData()
