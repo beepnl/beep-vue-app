@@ -686,6 +686,7 @@ export default {
         this.tempSensors = []
         this.weightSensors = []
         this.sensorsPresent = false
+        this.noChartData = false
         Object.keys(this.measurementData.measurements[0]).map((quantity) => {
           if (this.DASHBOARD_TEMP_SENSORS.indexOf(quantity) > -1) {
             this.tempSensors.push(quantity)
@@ -1096,6 +1097,7 @@ export default {
     top: 400px;
     z-index: 5;
     width: 100%;
+    pointer-events: none; // enable clicking hives with lower z-index
   }
 
   &.--landscape {
