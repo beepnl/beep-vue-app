@@ -29,13 +29,11 @@
           v-if="dashboardMode || dashboardEditMode"
           class="hive-in-dashboard"
         >
-          <div v-if="hive.sensors.length > 0" class="my-0">
+          <div v-if="hive.owner && hive.sensors.length > 0" class="my-0">
             <v-sheet
               :class="
                 'beep-icon beep-icon-sensors--no-outline' +
-                  (dashboardEditMode && hivesEditable.indexOf(hive.id) === -1
-                    ? ''
-                    : ' color-green')
+                  (dashboardEditMode ? '' : ' color-green')
               "
             ></v-sheet>
           </div>
