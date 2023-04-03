@@ -163,9 +163,9 @@
             ></ApiaryPreviewHiveSelector>
           </v-col>
 
-          <v-col cols="12" md="3" class="py-2 px-0">
+          <v-col cols="12" md="3">
             <InspectModeSelector
-              v-if="permissions.includes('offline-input')"
+              v-if="disablePermissions || permissions.includes('offline-input')"
               :selected-mode="selectedMode"
               @set-selected-mode="setSelectedMode = $event"
             />
@@ -246,9 +246,9 @@
             </v-btn>
           </v-col>
 
-          <v-col v-if="!onlineMode" cols="12" sm="4" class="py-2 px-0">
+          <v-col v-if="!onlineMode" cols="12" sm="4">
             <InspectModeSelector
-              v-if="permissions.includes('offline-input')"
+              v-if="disablePermissions || permissions.includes('offline-input')"
               :selected-mode="selectedMode"
               @set-selected-mode="setSelectedMode = $event"
             />
@@ -647,6 +647,7 @@ export default {
         'reminder',
       ],
       parsedImages: {},
+      disablePermissions: false,
     }
   },
   computed: {
