@@ -33,7 +33,7 @@ export const svgData = {
   data() {
     return {
       columnsPerRow: 4,
-      xMargin: 13,
+      xMargin: 14,
       yStart: 89,
       yMargin: 15,
       pageHeight: 296.82,
@@ -59,12 +59,12 @@ export const svgData = {
       maxNrOfItems: 10,
       maxItemLength: 29,
       textFieldWidth: 25,
-      cornerSize: 10,
+      cornerBoxSize: 6,
+      cornerMargin: 7,
       checkBoxSize: 3.5,
       checkBoxSpace: 5,
       maxStars: 5,
       strokeWidth: 0.5,
-      strokeWidthCorners: 1,
     }
   },
 }
