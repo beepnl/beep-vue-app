@@ -33,11 +33,11 @@
             <v-sheet
               :class="
                 'beep-icon beep-icon-sensors--no-outline' +
-                  (dashboardEditMode && hivesEditable.indexOf(hive.id) === -1
+                  (dashboardEditMode
                     ? ''
                     : hive.device_online === undefined || hive.device_online
                     ? ' color-green'
-                    : ' color-grey')
+                    : ' color-grey-medium')
               "
             ></v-sheet>
           </div>

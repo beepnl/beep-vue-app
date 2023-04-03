@@ -277,6 +277,7 @@
                 v-if="measurementData !== null && sensorSet.values.length > 0"
                 :key="'sensor' + index"
                 cols="12"
+                class="mb-3 mb-md-8"
               >
                 <div
                   class="dashboard-text mt-n3 mb-1"
@@ -301,14 +302,14 @@
                   </div>
                   <div
                     :class="
-                      'd-flex flex-wrap mx-sm-8 ' +
+                      'd-flex flex-wrap mx-sm-3 mt-2 ' +
                         (!landscapeMode ? 'chart-right' : '')
                     "
                   >
                     <template v-for="(exampleChart, i) in sensorSet.examples">
                       <div
                         :key="'ex-' + i"
-                        class="example-chart d-flex align-center my-2"
+                        class="example-chart d-flex align-center my-2 mr-3 mr-sm-6"
                       >
                         <img
                           class="example-img"
@@ -323,7 +324,7 @@
                           "
                         />
                         <span
-                          class="dashboard-text-small ml-1 ml-sm-2 mr-3 mr-sm-6"
+                          class="dashboard-text-chart ml-1 ml-sm-2"
                           v-text="
                             $t(sensorSet.name + '_example_chart_' + (i + 1))
                           "
@@ -861,7 +862,10 @@ export default {
 .dashboard-row.--landscape {
   align-items: flex-start;
   .dashboard-header {
-    margin-bottom: 10px !important;
+    margin-bottom: 12px !important;
+    @include for-tablet-landscape-up {
+      margin-bottom: 24px !important;
+    }
   }
   .dashboard-logo {
     @include for-tablet-landscape-up {
@@ -919,6 +923,30 @@ export default {
   // }
 }
 
+.dashboard-text-chart {
+  font-family: 'Roboto Condensed', 'Roboto', sans-serif !important;
+  text-transform: uppercase;
+  text-align: left;
+  font-weight: 400;
+  color: $color-off-white;
+  // font-size: 0.8rem;
+  @include for-tablet-landscape-up {
+    font-size: 90%;
+  }
+  @include for-desktop-up {
+    font-size: 70%;
+  }
+  @include for-big-desktop-up {
+    font-size: 105%;
+  }
+  @include for-tv-up {
+    font-size: 120%;
+  }
+  // @include for-tv-up {
+  //   font-size: 1.5rem;
+  // }
+}
+
 .landscape-section {
   padding: 20px;
   &.--left {
@@ -930,7 +958,9 @@ export default {
     background-color: $color-orange-medium;
     // border-radius: 12px; // plain
     // border-radius: 96% 4% 92% 8% / 1% 92% 8% 99%; // left-tilted
-    border-radius: 4% 96% 4% 96% / 97% 1% 99% 3%; // right-tilted
+    // border-radius: 4% 96% 4% 96% / 97% 1% 99% 3%; // right-tilted
+    border-radius: 1% 99% 2% 96% / 100% 1% 96% 3%; // sticky 1 right-tilted
+    // border-radius: 0 0 0 30px/45px;
     @include for-tablet-portrait-up {
       max-width: 44vw !important;
       height: 55vw !important;
@@ -972,12 +1002,14 @@ export default {
   &.--right {
     max-width: 95vw !important;
     margin: 3vw auto;
+    padding: 3vw 20px;
     @include for-tablet-portrait-up {
       max-width: 44vw !important;
       margin: 0 0 0 2vw;
+      padding: 2vw 20px;
     }
     @include for-desktop-up {
-      max-width: 50vw !important;
+      max-width: 55vw !important;
       margin: 0 0 0 6vw;
     }
   }
@@ -1065,7 +1097,8 @@ export default {
 // }
 
 .example-chart {
-  max-width: 225px;
+  width: calc(25% - 24px);
+  // max-width: 225px;
   @include for-phone-only {
     width: 165px;
   }
