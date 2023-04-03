@@ -165,6 +165,7 @@
 
           <v-col cols="12" md="3" class="py-2 px-0">
             <InspectModeSelector
+              v-if="permissions.includes('offline-input')"
               :selected-mode="selectedMode"
               @set-selected-mode="setSelectedMode = $event"
             />
@@ -247,6 +248,7 @@
 
           <v-col v-if="!onlineMode" cols="12" sm="4" class="py-2 px-0">
             <InspectModeSelector
+              v-if="permissions.includes('offline-input')"
               :selected-mode="selectedMode"
               @set-selected-mode="setSelectedMode = $event"
             />
@@ -648,6 +650,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('auth', ['permissions']),
     ...mapGetters('inspections', [
       'checklist',
       'checklists',

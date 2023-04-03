@@ -49,7 +49,7 @@
 export default {
   props: {
     selectedMode: {
-      type: Object,
+      type: String,
       default: null,
       required: true,
     },
