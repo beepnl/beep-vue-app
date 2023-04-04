@@ -94,7 +94,7 @@
             ></div>
             <div
               id="map"
-              ref="map"
+              ref="mapP"
               :class="
                 'map ' +
                   (ready && coordinatesPresent
@@ -152,18 +152,18 @@
               :class="
                 'dashboard-inspection dashboard-text-small mb-lg-2 mx-3 ' +
                   (landscapeMode
-                    ? '--landscape mt-0'
-                    : '--portrait funky-border mt-3')
+                    ? 'show-landscape --landscape mt-0'
+                    : 'hide-portrait --portrait funky-border mt-3')
               "
             >
-              <v-row v-if="landscapeMode" class="dashboard-sticky-row">
+              <v-row class="dashboard-sticky-row">
                 <v-col cols="5" class="px-1 pt-0 pb-1 pa-xl-3"
                   ><span v-text="$tc('Location', 1) + ': '"></span
                 ></v-col>
                 <v-col cols="7" class="px-1 pt-1 pb-1 pa-xl-3">
                   <div
                     id="map"
-                    ref="map"
+                    ref="mapL"
                     :class="
                       'map ' +
                         (ready && coordinatesPresent
@@ -520,21 +520,24 @@ export default {
   watch: {
     ready() {
       if (this.ready && this.coordinatesPresent) {
-        this.initMap()
+        setTimeout(() => {
+          return this.initMap()
+        }, 50)
       }
     },
     selectedLocationName() {
-      if (this.coordinatesPresent) {
+      if (this.ready && this.coordinatesPresent) {
         this.initMap()
       }
     },
     landscapeMode() {
       if (this.coordinatesPresent) {
-        this.initMap()
+        setTimeout(() => {
+          return this.initMap()
+        }, 50)
       }
     },
     desktopAndUp() {
-      console.log('watch desktop size')
       this.setLandscapeMode = this.desktopAndUp
     },
   },
@@ -705,10 +708,10 @@ export default {
       return smFilter.length > 0 ? smFilter[0] : null
     },
     initMap() {
-      // var refMap = this.landscapeMode ? this.$refs.mapL : this.$refs.mapP
+      var refMap = this.landscapeMode ? this.$refs.mapL : this.$refs.mapP
       // this.map = new window.google.maps.Map(refMap, {
       setTimeout(() => {
-        this.map = new window.google.maps.Map(this.$refs.map, {
+        this.map = new window.google.maps.Map(refMap, {
           center: {
             lat: this.lat,
             lng: this.lng,
@@ -749,7 +752,7 @@ export default {
       }, 10)
     },
     selectHive(id) {
-      console.log('select hive', id)
+      // console.log('select hive', id)
       this.readDashboardHive(id).then((data) => {
         this.selectedHiveId = id
         this.formatMeasurementData(data)
@@ -986,7 +989,7 @@ export default {
       padding: 2vw 20px;
     }
     @include for-desktop-up {
-      max-width: 55vw !important;
+      max-width: 50vw !important;
       margin: 0 0 0 6vw;
     }
   }
@@ -1062,11 +1065,13 @@ export default {
   width: 50px;
 }
 
-.hide-landscape {
+.hide-landscape,
+.hide-portrait {
   display: none; // instead of v-if="!landscapeMode" to initiate google map so that it can be rendered after switching to portait mode
 }
 
-.show-portrait {
+.show-portrait,
+.show-landscape {
   display: block;
 }
 
