@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="darkMode ? 'dark-mode' : ''">
     <div class="d-flex justify-end dashboard-controls my-2 mx-4">
       <div v-if="showControls" class="d-flex">
         <LocaleChanger></LocaleChanger>
@@ -81,10 +81,7 @@
         <v-col
           :cols="landscapeMode ? '6' : '12'"
           :md="landscapeMode ? '4' : '12'"
-          :class="
-            (ready && landscapeMode ? 'landscape-section --left' : '') +
-              (darkMode ? ' sticky-dark-mode' : '')
-          "
+          :class="ready && landscapeMode ? 'landscape-section --left' : ''"
         >
           <DashboardSection
             :class="landscapeMode ? 'hide-landscape' : 'show-portrait'"
@@ -118,8 +115,7 @@
             <div
               :class="
                 'd-flex flex-column align-center hives-wrapper ' +
-                  (landscapeMode ? '--landscape' : '--portrait') +
-                  (darkMode ? ' --dark' : '')
+                  (landscapeMode ? '--landscape' : '--portrait')
               "
             >
               <div class="dashboard-text" v-text="selectedHiveMeta.name"></div>
@@ -157,8 +153,7 @@
                 'dashboard-inspection dashboard-text-small mb-lg-2 mx-3 ' +
                   (landscapeMode
                     ? '--landscape mt-0'
-                    : '--portrait funky-border mt-3') +
-                  (darkMode ? ' sticky-dark-mode' : '')
+                    : '--portrait funky-border mt-3')
               "
             >
               <v-row v-if="landscapeMode" class="dashboard-sticky-row">
@@ -324,7 +319,7 @@
                           "
                         />
                         <span
-                          class="dashboard-text-chart ml-1 ml-sm-2"
+                          class="dashboard-text-small --chart ml-1 ml-sm-2"
                           v-text="
                             $t(sensorSet.name + '_example_chart_' + (i + 1))
                           "
@@ -905,7 +900,8 @@ export default {
   text-transform: uppercase;
   text-align: left;
   font-weight: 500;
-  // font-size: 0.8rem;
+  font-size: 0.8rem;
+  color: $color-grey-dark;
   @include for-tablet-landscape-up {
     font-size: 120%;
   }
@@ -918,33 +914,21 @@ export default {
   @include for-tv-up {
     font-size: 150%;
   }
-  // @include for-tv-up {
-  //   font-size: 1.5rem;
-  // }
-}
-
-.dashboard-text-chart {
-  font-family: 'Roboto Condensed', 'Roboto', sans-serif !important;
-  text-transform: uppercase;
-  text-align: left;
-  font-weight: 400;
-  color: $color-off-white;
-  // font-size: 0.8rem;
-  @include for-tablet-landscape-up {
-    font-size: 90%;
+  &.--chart {
+    font-size: 0.8rem;
+    @include for-tablet-landscape-up {
+      font-size: 90%;
+    }
+    @include for-desktop-up {
+      font-size: 70%;
+    }
+    @include for-big-desktop-up {
+      font-size: 105%;
+    }
+    @include for-tv-up {
+      font-size: 120%;
+    }
   }
-  @include for-desktop-up {
-    font-size: 70%;
-  }
-  @include for-big-desktop-up {
-    font-size: 105%;
-  }
-  @include for-tv-up {
-    font-size: 120%;
-  }
-  // @include for-tv-up {
-  //   font-size: 1.5rem;
-  // }
 }
 
 .landscape-section {
@@ -981,13 +965,6 @@ export default {
       height: 33vw !important;
       padding: 2.5vw;
       margin-left: 40px;
-    }
-    &.sticky-dark-mode {
-      background-color: #8e5000; // $color-accent;
-      .dashboard-text,
-      .dashboard-text-small {
-        color: $color-white; // $color-grey-dark;
-      }
     }
     .dashboard-section {
       margin-bottom: 6px;
@@ -1061,9 +1038,6 @@ export default {
   &.dashboard-text-small {
     font-size: 110%;
   }
-  &.sticky-dark-mode {
-    background-color: #8e5000;
-  }
 }
 
 .dashboard-loading {
@@ -1074,34 +1048,13 @@ export default {
   }
 }
 
-// .chart-wrapper.--portrait {
-//   display: block;
-//   @include for-desktop-up {
-//     display: flex;
-//   }
-// }
-
-// .chart-left {
-//   min-width: 100%;
-//   @include for-desktop-up {
-//     min-width: 70%;
-//   }
-// }
-
-// .chart-right {
-//   min-width: 100%;
-//   @include for-desktop-up {
-//     flex-direction: column !important;
-//     min-width: 30%;
-//   }
-// }
-
 .example-chart {
   width: calc(25% - 24px);
+  min-width: 148px;
   // max-width: 225px;
-  @include for-phone-only {
-    width: 165px;
-  }
+  // @include for-phone-only {
+  //   width: 165px;
+  // }
 }
 
 .example-img {
@@ -1137,17 +1090,40 @@ export default {
     &::before {
       box-shadow: inset 0px 0px 22px 35px $color-orange-medium;
     }
-    &.--dark::before {
-      box-shadow: inset 0px 0px 22px 35px #8e5000; // $color-accent;
-    }
   }
 
   &.--portrait {
     &::before {
       box-shadow: inset 0px 0px 35px 60px $color-white;
     }
-    &.--dark::before {
-      box-shadow: inset 0px 0px 35px 60px #121212;
+  }
+}
+
+.dark-mode {
+  .dashboard-text,
+  .dashboard-text-small {
+    color: $color-white;
+    &.--chart {
+      color: $color-off-white;
+    }
+  }
+
+  .landscape-section.--left,
+  .funky-border {
+    background-color: #8e5000; // $color-accent;
+  }
+
+  .hives-wrapper {
+    &.--landscape {
+      &::before {
+        box-shadow: inset 0px 0px 22px 35px #8e5000; // $color-accent;
+      }
+    }
+
+    &.--portrait {
+      &::before {
+        box-shadow: inset 0px 0px 35px 60px #121212;
+      }
     }
   }
 }
