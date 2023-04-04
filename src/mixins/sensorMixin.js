@@ -128,6 +128,7 @@ export const sensorMixin = {
       COMPARE_SENSOR: {
         mean_weight_kg: 'weight_kg',
         mean_weight_kg_noOutlier: 'weight_kg_noOutlier',
+        mean_weight_intake: 'weight_intake',
       },
       SOUND: [
         's_fan_4',
