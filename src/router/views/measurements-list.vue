@@ -211,10 +211,10 @@
 
         <v-col cols="12" md="7" class="mb-n3 mb-sm-0">
           <ApiaryPreviewHiveSelector
-            v-if="selectedHiveSet && editableHives && editableHives.length > 0"
+            v-if="selectedHiveSet && sensorHives && sensorHives.length > 0"
             :hives="selectedHiveSet.hives"
             :hives-selected="selectedHives"
-            :hives-editable="editableHives"
+            :hives-editable="sensorHives"
             :inspection-mode="true"
             @select-hive="selectHive($event)"
           ></ApiaryPreviewHiveSelector>
@@ -859,6 +859,7 @@ export default {
       selectedHiveSetId: null,
       selectedHiveSet: null,
       selectedHives: [],
+      sensorHives: [],
       chartCols: 6,
       chartColsIcons: [
         { value: 12, name: 'mdi-format-align-justify' },
@@ -896,7 +897,7 @@ export default {
     ...mapGetters('locations', ['apiaries']),
     allHivesSelected: {
       get() {
-        return this.selectedHives.length === this.selectedHiveSet.hives.length
+        return this.selectedHives.length === this.sensorHives.length
       },
       set(value) {
         if (value === false) {
@@ -904,7 +905,9 @@ export default {
         } else {
           this.selectedHives = []
           this.selectedHiveSet.hives.map((hive) => {
-            this.selectedHives.push(hive.id)
+            if (hive.sensors.length > 0) {
+              this.selectedHives.push(hive.id)
+            }
           })
         }
       },
@@ -938,11 +941,11 @@ export default {
       if (this.groups && this.groups.length > 0) {
         var treeselectGroups = this.groups
         treeselectGroups.map((group) => {
-          // groups with no editable hives will be disabled in the treeselect component
-          // group.noEditableHives =
-          //  group.hives.filter((hive) => {
-          //    return hive.editable || hive.owner
-          //  }).length === 0
+          // groups with no sensor hives will be disabled in the treeselect component
+          group.nosensorHives =
+            group.hives.filter((hive) => {
+              return hive.sensors.length > 0
+            }).length === 0
           group.treeselectId = parseInt('2' + group.id.toString())
         })
         var sortedTreeselectGroups = treeselectGroups
@@ -1485,14 +1488,16 @@ export default {
     },
     selectApiary(id) {
       this.selectedHives = []
-      this.editableHives = []
+      this.sensorHives = []
       const apiary = this.apiaries.filter((apiary) => {
         return apiary.id === id
       })[0]
       if (apiary) {
         apiary.hives.map((hive) => {
-          this.selectedHives.push(hive.id)
-          this.editableHives.push(hive.id)
+          if (hive.sensors.length > 0) {
+            this.selectedHives.push(hive.id)
+            this.sensorHives.push(hive.id)
+          }
         })
         // only when selecting the apiary from the queried hive Id, select just that hive
         if (this.hiveId && apiary.id === this.activeHive.location_id) {
@@ -1509,21 +1514,21 @@ export default {
     },
     selectGroup(id) {
       this.selectedHives = []
-      this.editableHives = []
+      this.sensorives = []
       const group = this.groups.filter((group) => {
         return group.id === id
       })[0]
       if (group) {
         group.hives.map((hive) => {
-          if (hive.editable || hive.owner) {
+          if (hive.sensors.length > 0) {
             this.selectedHives.push(hive.id)
-            this.editableHives.push(hive.id)
+            this.sensorHives.push(hive.id)
           }
         })
         // only when selecting a group containing the queried hive Id, select just that hive
         if (this.hiveId && this.activeHive.group_ids.includes(group.id)) {
-          // if hiveId is specified, only select it if editable
-          if (this.editableHives.includes(this.hiveId)) {
+          // if hiveId is specified, only select it if it has sensors
+          if (this.sensorHives.includes(this.hiveId)) {
             this.selectedHives = [this.hiveId]
           }
         }
@@ -1537,15 +1542,13 @@ export default {
       }
     },
     selectHive(id) {
-      if (this.editableHives.includes(id)) {
+      if (this.sensorHives.includes(id)) {
         if (!this.selectedHives.includes(id)) {
           this.selectedHives.push(id)
         } else {
           this.selectedHives.splice(this.selectedHives.indexOf(id), 1)
         }
       }
-      this.setInspectionEdited(true)
-      this.setBulkInspection(this.selectedHives.length > 1)
     },
     selectFirstHiveSetFromList() {
       this.selectedHiveSetId = this.sortedHiveSets[0].children[0].treeselectId
