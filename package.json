@@ -1,6 +1,6 @@
 {
   "name": "beep-ui",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "private": true,
   "scripts": {
     "build": "cross-env NODE_ENV=production vue-cli-service build",

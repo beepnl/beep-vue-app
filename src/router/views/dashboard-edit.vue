@@ -481,7 +481,7 @@ export default {
         try {
           const response = await Api.updateRequest(
             '/dashboardgroups/',
-            this.dashboard.code,
+            this.dashboard.id,
             this.dashboard
           )
           if (!response) {
