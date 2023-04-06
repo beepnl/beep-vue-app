@@ -269,7 +269,11 @@
             </v-col>
             <template v-for="(sensorSet, index) in currentSensors">
               <v-col
-                v-if="measurementData !== null && sensorSet.values.length > 0"
+                v-if="
+                  measurementData !== null &&
+                    sensorSet.values.length > 0 &&
+                    chartjsDataSeries(sensorSet.values).datasets.length > 0
+                "
                 :key="'sensor' + index"
                 cols="12"
                 class="mb-3 mb-md-8"
@@ -426,7 +430,7 @@ export default {
         ? this.stickyWidth * 0.78
         : this.screenSize * (this.tabletLandscapeAndUp ? 0.5 : 0.9)
       var requiredWidth = this.dashboardHives.length * hiveWidth
-      return requiredWidth <= apiaryWidth
+      return this.screenSize >= 1630 && requiredWidth <= apiaryWidth
     },
     lat() {
       return this.selectedHive !== null ? this.selectedHive.lat : null
@@ -705,7 +709,7 @@ export default {
       var smFilter = this.sensorMeasurementsList.filter(
         (measurementType) => measurementType.abbreviation === abbr
       )
-      return smFilter.length > 0 ? smFilter[0] : null
+      return smFilter.length > 0 ? smFilter[0] : {}
     },
     initMap() {
       var refMap = this.landscapeMode ? this.$refs.mapL : this.$refs.mapP
