@@ -1,35 +1,45 @@
 <template>
   <div :class="darkMode ? 'dark-mode' : ''">
-    <div class="d-flex justify-end dashboard-controls my-2 mx-4">
-      <div v-if="showControls" class="d-flex">
-        <LocaleChanger></LocaleChanger>
-        <v-icon
-          class="color-grey-filter ml-2 mr-4"
-          @click="toggleDarkMode(!darkMode)"
-        >
-          mdi-theme-light-dark
+    <div
+      class="d-flex justify-space-between align-center dashboard-controls my-2 mx-4"
+    >
+      <span
+        v-if="showControls"
+        class="font-small color-grey"
+        v-text="'v1.0'"
+      ></span>
+      <v-spacer />
+      <div class="d-flex justify-end">
+        <div v-if="showControls" class="d-flex">
+          <LocaleChanger></LocaleChanger>
+          <v-icon
+            class="color-grey-filter ml-2 mr-4"
+            @click="toggleDarkMode(!darkMode)"
+          >
+            mdi-theme-light-dark
+          </v-icon>
+          <v-icon
+            class="color-grey-filter mr-4"
+            @click="setLandscapeMode = !landscapeMode"
+          >
+            {{
+              'mdi-phone-rotate-' + (!landscapeMode ? 'landscape' : 'portrait')
+            }}
+          </v-icon>
+          <v-icon
+            class="color-grey-filter mr-4"
+            @click="toggleHiveTimer(!hiveTimerPaused)"
+          >
+            {{ 'mdi-' + (hiveTimerPaused ? 'play' : 'pause') }}
+          </v-icon>
+          <v-icon class="color-grey-filter mr-4" @click="dashboardSignOut"
+            >mdi-logout</v-icon
+          >
+        </div>
+        <v-icon class="color-grey-filter" @click="toggleShowControls">
+          {{ showControls ? 'mdi-cog' : 'mdi-cog-outline' }}
         </v-icon>
-        <v-icon
-          class="color-grey-filter mr-4"
-          @click="setLandscapeMode = !landscapeMode"
-        >
-          {{
-            'mdi-phone-rotate-' + (!landscapeMode ? 'landscape' : 'portrait')
-          }}
-        </v-icon>
-        <v-icon
-          class="color-grey-filter mr-4"
-          @click="toggleHiveTimer(!hiveTimerPaused)"
-        >
-          {{ 'mdi-' + (hiveTimerPaused ? 'play' : 'pause') }}
-        </v-icon>
-        <v-icon class="color-grey-filter mr-4" @click="dashboardSignOut"
-          >mdi-logout</v-icon
-        >
       </div>
-      <v-icon class="color-grey-filter" @click="toggleShowControls">
-        {{ showControls ? 'mdi-cog' : 'mdi-cog-outline' }}
-      </v-icon>
     </div>
     <v-container
       :class="'dashboard-container' + (landscapeMode ? ' --landscape' : '')"
