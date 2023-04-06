@@ -46,12 +46,7 @@
     >
       <v-row :class="'dashboard-row' + (landscapeMode ? ' --landscape' : '')">
         <v-col cols="12" :class="tvAndUp ? 'mb-6' : ''">
-          <div
-            :class="
-              'dashboard-header d-flex align-center justify-' +
-                (landscapeMode ? 'left' : 'center mb-6')
-            "
-          >
+          <div class="dashboard-header d-flex align-center justify-center mb-6">
             <div class="d-flex align-self-center"
               ><img
                 class="dashboard-logo"
@@ -377,6 +372,7 @@ export default {
   mixins: [momentFromNow, readDashboard, sensorMixin, timeZone],
   data: function() {
     return {
+      initLocale: 'nl',
       languages: languages.languageArray,
       assetsUrl:
         process.env.VUE_APP_ASSETS_URL ||
@@ -551,11 +547,16 @@ export default {
         }, 50)
       }
     },
+    locale() {
+      if (this.locale !== this.initLocale) {
+        this.redrawCharts()
+        this.initLocale = this.locale
+      }
+    },
     desktopAndUp() {
       this.setLandscapeMode = this.desktopAndUp
     },
   },
-  mounted() {},
   created() {
     if (!this.desktopAndUp) {
       this.setLandscapeMode = false
@@ -644,6 +645,8 @@ export default {
       } else {
         this.$i18n.locale = languages.checkBrowserLanguage()
       }
+
+      this.initLocale = this.$i18n.locale
 
       if (localStorage.beepdashboardDarkMode) {
         this.darkMode = localStorage.beepdashboardDarkMode === 'true'
