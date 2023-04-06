@@ -1,5 +1,7 @@
 <template>
-  <Layout :title="editMode ? $t('Edit_inspection') : $t('New_inspection')">
+  <Layout
+    :title="editMode ? $t('Edit_inspection') : $t('New_inspection') + modeText"
+  >
     <h1 v-if="hiveNotEditable" class="unauthorized-title">
       {{
         $t('sorry') +
@@ -41,7 +43,12 @@
       <v-toolbar v-if="ready" class="save-bar zindex4" dense light>
         <v-spacer></v-spacer>
         <v-btn
-          v-if="selectedChecklist && selectedChecklist.owner && !mobile"
+          v-if="
+            !uploadMode &&
+              selectedChecklist &&
+              selectedChecklist.owner &&
+              !mobile
+          "
           tile
           outlined
           class="mr-3"
@@ -52,7 +59,7 @@
           {{ $t('Edit_checklist') }}
         </v-btn>
         <v-btn
-          v-if="!offlineMode"
+          v-if="onlineMode"
           tile
           outlined
           color="black"
@@ -269,7 +276,7 @@
         </v-row>
 
         <!-- Inspection items from checklist -->
-        <div v-if="!(offlineMode || svgLoading)">
+        <div v-if="onlineMode && !svgLoading">
           <v-card
             v-for="(mainCategory, index) in selectedChecklist.categories"
             :key="index"
@@ -510,6 +517,13 @@
       </v-container>
     </v-form>
 
+    <template v-if="uploadMode">
+      <UploadInspection
+        v-if="selectedChecklist"
+        :selected-checklist="selectedChecklist"
+      />
+    </template>
+
     <v-container v-if="!ready || !svgReady || svgLoading">
       <div class="loading">
         <v-progress-circular size="50" color="primary" indeterminate />
@@ -561,6 +575,7 @@ import OfflineInspection from '@components/offline-inspection.vue'
 import { SlideYUpTransition } from 'vue2-transitions'
 import smileRating from '@components/input-fields/smile-rating.vue'
 import Treeselect from '@riophae/vue-treeselect'
+import UploadInspection from '@components/upload-inspection.vue'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 
 export default {
@@ -575,6 +590,7 @@ export default {
     OfflineInspection,
     SlideYUpTransition,
     smileRating,
+    UploadInspection,
     yesNoRating,
     Treeselect,
   },
@@ -769,6 +785,11 @@ export default {
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile
+    },
+    modeText() {
+      return this.permissions.includes('test-offline-input')
+        ? ' - ' + this.$i18n.t(this.selectedMode + '_inspection')
+        : ''
     },
     offlineMode() {
       return this.selectedMode === 'Offline'
