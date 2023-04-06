@@ -94,7 +94,7 @@
           >
             <div
               v-if="ready && selectedLocationName"
-              class="dashboard-text"
+              class="dashboard-title"
               v-text="selectedLocationName"
             ></div>
             <div
@@ -123,7 +123,11 @@
                   (landscapeMode ? '--landscape' : '--portrait')
               "
             >
-              <div class="dashboard-text" v-text="selectedHiveMeta.name"></div>
+              <div
+                class="dashboard-title line-clamp --1"
+                style="width: 86%"
+                v-text="selectedHiveMeta.name"
+              ></div>
               <ApiaryPreviewHiveSelector
                 class="mb-2"
                 :hives="dashboardHives"
@@ -145,7 +149,7 @@
           >
             <div v-if="!landscapeMode && showInspections" style="width: 100%;">
               <span
-                class="dashboard-text mb-2"
+                class="dashboard-title mb-2"
                 v-text="
                   $t('Last_check') +
                     ': ' +
@@ -233,7 +237,10 @@
                   ><span v-text="$t('Note') + ': '"></span
                 ></v-col>
                 <v-col cols="7" class="pa-1 pb-2 pa-xl-3"
-                  ><span class="line-clamp-3" v-text="selectedHive.notes"></span
+                  ><span
+                    class="line-clamp --3"
+                    v-text="selectedHive.notes"
+                  ></span
                 ></v-col>
               </v-row>
             </div>
@@ -284,7 +291,7 @@
                 class="mb-3 mb-md-8"
               >
                 <div
-                  class="dashboard-text mt-n3 mb-1"
+                  class="dashboard-title mt-n3 mb-1"
                   v-text="$t(sensorSet.name)"
                 ></div>
                 <div
@@ -897,11 +904,11 @@ export default {
   }
 }
 
-.dashboard-text {
+.dashboard-title {
   font-family: 'Roboto Condensed', 'Roboto', sans-serif !important;
   text-transform: uppercase;
   color: $color-accent;
-  font-size: 1.9rem !important;
+  font-size: 1.6rem !important;
   font-weight: 400;
   line-height: 2.3rem;
   letter-spacing: 0.0075em !important;
@@ -912,6 +919,9 @@ export default {
     font-size: 1.5rem !important;
     line-height: 1.8rem;
     letter-spacing: 0.005em !important;
+  }
+  @include for-tablet-landscape-up {
+    font-size: 1.9rem !important;
   }
 }
 
@@ -1122,7 +1132,7 @@ export default {
 }
 
 .dark-mode {
-  .dashboard-text,
+  .dashboard-title,
   .dashboard-text-small {
     color: $color-white;
     &.--chart {
