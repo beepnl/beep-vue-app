@@ -10,10 +10,10 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="overline primary--text mb-1"
         ><span class="lowercase">v</span>4.0.0 (31-03-2023) - Release v4</div
       >
-      <div v-if="!dutch" class="rounded-border mb-4">
+      <div v-if="!dutch" class="rounded-border primary-border mb-4">
         <ul>
           <li
             ><router-link :to="{ name: 'inspect' }">Inspect:</router-link>
