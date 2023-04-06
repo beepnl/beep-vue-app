@@ -1,5 +1,5 @@
 <template>
-  <Layout :title="inspectionId ? $t('Edit_inspection') : $t('New_inspection')">
+  <Layout :title="editMode ? $t('Edit_inspection') : $t('New_inspection')">
     <h1 v-if="hiveNotEditable" class="unauthorized-title">
       {{
         $t('sorry') +
@@ -14,7 +14,7 @@
 
     <h1
       v-if="
-        inspectionId &&
+        editMode &&
           activeInspection &&
           activeInspection.owner === false &&
           activeHive.owner === false
@@ -165,7 +165,7 @@
 
           <v-col cols="12" md="3">
             <InspectModeSelector
-              v-if="disablePermissions || permissions.includes('offline-input')"
+              v-if="!editMode && permissions.includes('test-offline-input')"
               :selected-mode="selectedMode"
               @set-selected-mode="setSelectedMode = $event"
             />
@@ -248,7 +248,7 @@
 
           <v-col v-if="!onlineMode" cols="12" sm="4">
             <InspectModeSelector
-              v-if="disablePermissions || permissions.includes('offline-input')"
+              v-if="!editMode && permissions.includes('test-offline-input')"
               :selected-mode="selectedMode"
               @set-selected-mode="setSelectedMode = $event"
             />
@@ -647,7 +647,6 @@ export default {
         'reminder',
       ],
       parsedImages: {},
-      disablePermissions: false,
     }
   },
   computed: {
@@ -703,6 +702,9 @@ export default {
         params: { id: this.selectedChecklistId },
         query: query,
       }
+    },
+    editMode() {
+      return this.inspectionId !== null
     },
     endOfToday() {
       return this.$moment()
