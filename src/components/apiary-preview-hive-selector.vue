@@ -50,7 +50,7 @@
               hasLayer(hive, 'queen_excluder') ? 'has-queen-excluder' : ''
             } ${hasLayer(hive, 'feeding_box') ? 'has-feeding-box' : ''} ${
               dashboardMode ? ' --dashboard' : ''
-            } ${largeSize ? ' --large' : ''}`
+            } ${size ? ' --' + size : ''}`
           "
           height="auto"
         >
@@ -98,7 +98,7 @@
     </div>
     <div
       v-if="dashboardMode"
-      :class="'dashboard-line' + (largeSize ? ' --large' : '')"
+      :class="'dashboard-line' + (size ? ' --' + size : '')"
     ></div>
   </div>
 </template>
@@ -149,9 +149,9 @@ export default {
       default: false,
       required: false,
     },
-    largeSize: {
-      type: Boolean,
-      default: false,
+    size: {
+      type: String,
+      default: null,
       required: false,
     },
     notClickable: {
@@ -189,8 +189,10 @@ export default {
       return hive.layers.some((layer) => layer.type === type)
     },
     hiveWidth: function(hive) {
-      var multiplier = this.largeSize ? 6 : 3.5
-      var placeholder = this.largeSize ? 20 : 35
+      var multiplier =
+        this.size === 'large' ? 6 : this.size === 'medium' ? 4.75 : 3.5
+      var placeholder =
+        this.size === 'large' ? 20 : this.size === 'medium' ? 25 : 35
       return hive.layers.length > 0
         ? hive.layers[0].framecount * multiplier
         : placeholder
@@ -283,12 +285,12 @@ export default {
 }
 
 .dashboard-line {
-  margin-top: -6px;
+  margin-top: -5px;
   max-width: 100%;
-  height: 1px;
-  background-color: #888;
+  height: 4px;
+  background-color: #683901;
   &.--large {
-    margin-top: -7px;
+    height: 5px;
   }
 }
 
@@ -370,28 +372,47 @@ export default {
       box-shadow: 0 0 0 5px yellow !important;
     }
   }
-  &.--large .hive-icon-layers {
-    padding: 5px 9px;
-  }
 }
 
-.hive-icon-preview.--large {
-  margin-top: -3px;
-  .hive-icon-layers {
-    padding: 7px 11px;
-    .selectable-wrapper.--selected {
-      box-shadow: 0 0 0 7px yellow !important;
+.hive-icon-preview {
+  &.--medium {
+    margin-top: -4px;
+    .hive-icon-layers {
+      padding: 5px 7px;
+      .selectable-wrapper.--selected {
+        box-shadow: 0 0 0 6px yellow !important;
+      }
+    }
+    .honey-layer {
+      height: 13.5px !important;
+    }
+    .brood-layer {
+      height: 24px !important;
+    }
+    .queen_excluder-layer,
+    .feeding_box-layer {
+      height: 5px;
     }
   }
-  .honey-layer {
-    height: 18px !important;
-  }
-  .brood-layer {
-    height: 32px !important;
-  }
-  .queen_excluder-layer,
-  .feeding_box-layer {
-    height: 6px;
+
+  &.--large {
+    margin-top: -3px;
+    .hive-icon-layers {
+      padding: 5px 9px;
+      .selectable-wrapper.--selected {
+        box-shadow: 0 0 0 7px yellow !important;
+      }
+    }
+    .honey-layer {
+      height: 18px !important;
+    }
+    .brood-layer {
+      height: 32px !important;
+    }
+    .queen_excluder-layer,
+    .feeding_box-layer {
+      height: 6px;
+    }
   }
 }
 </style>

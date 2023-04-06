@@ -495,7 +495,8 @@ export default {
 <style lang="scss">
 .chartjs-wrapper {
   // max-height: 246px;
-  height: 246px;
+  min-height: 180px;
+  height: 23vh;
   width: 100%;
   &.print {
     // max-height: 64mm;
