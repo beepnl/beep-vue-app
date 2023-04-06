@@ -45,8 +45,8 @@
     <v-container
       :class="'dashboard-container' + (landscapeMode ? ' --landscape' : '')"
     >
-      <v-row :class="desktopAndUp ? 'my-5vh' : 'my-2'">
-        <v-col cols="12" class="mb-6">
+      <v-row class="dashboard-row">
+        <v-col class="col-header" cols="12">
           <div class="dashboard-header d-flex align-center justify-center">
             <div class="d-flex align-self-center"
               ><img
@@ -83,7 +83,8 @@
         >
           <v-progress-circular color="primary" size="50" indeterminate />
         </v-col>
-        <v-col :class="landscapeMode ? 'pa-0' : ''">
+
+        <v-col :class="'col-content' + (landscapeMode ? ' pa-0' : '')">
           <v-row :class="landscapeMode ? 'd-flex justify-space-between' : ''">
             <v-col
               :cols="landscapeMode ? '6' : '12'"
@@ -896,12 +897,23 @@ export default {
   }
 
   &.--landscape {
+    height: 95vh;
+    display: flex;
+    .dashboard-row {
+      margin: auto;
+      .col-header {
+        height: 13vh;
+      }
+      .col-content {
+        height: 75vh;
+      }
+    }
     @include for-tablet-landscape-up {
       max-width: 100% !important;
       padding: 0 6vw 0;
     }
     @include for-tv-up {
-      padding: 2vw 8vw 0;
+      padding: 0 8vw 0;
     }
   }
 }
@@ -1019,7 +1031,7 @@ export default {
     @include for-tablet-portrait-up {
       max-width: 44vw !important;
       // height: 55vw !important;
-      padding: 4vh 2vw 1vh;
+      padding: 4vh 2vw 2vh;
     }
     @include for-tablet-landscape-up {
       max-width: 40vw !important;
@@ -1033,7 +1045,7 @@ export default {
     @include for-tv-up {
       max-width: 33vw !important;
       // height: 33vw !important;
-      padding: 4.5vh 2.5vw 3.5vh;
+      padding: 4.5vh 2.5vw 3.8vh;
     }
     .dashboard-section {
       margin-bottom: 12px;
@@ -1042,7 +1054,7 @@ export default {
       }
     }
     .dashboard-sticky-row {
-      margin-top: 4%;
+      margin-top: 1vh;
     }
   }
   &.--right {
@@ -1114,7 +1126,7 @@ export default {
   margin: 64px auto;
 
   &.--landscape {
-    margin: 100px auto;
+    margin: -100px auto 100px;
   }
 }
 
@@ -1171,11 +1183,6 @@ export default {
       box-shadow: inset 0px 0px 35px 60px $color-white;
     }
   }
-}
-
-.my-5vh {
-  margin-top: 5vh !important;
-  margin-bottom: 5vh !important;
 }
 
 .dark-mode {
