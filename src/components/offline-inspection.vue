@@ -39,6 +39,7 @@
             :checklistHeaderText="
               selectedChecklist.name + ' (' + now + ') v' + appVersion
             "
+            :totalPages="pages - 1"
           />
         </g>
 

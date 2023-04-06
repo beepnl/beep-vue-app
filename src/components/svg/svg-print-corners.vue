@@ -9,11 +9,11 @@
         {{ checklistHeaderText }}
       </text>
       <text
-        :x="pageWidth - (xMargin + 5) + 'mm'"
+        :x="pageWidth - (xMargin + 9) + 'mm'"
         :y="(pageNumber - 1) * pageHeight + 9 + 'mm'"
         :style="svgTextSmall"
       >
-        {{ 'p.' + pageNumber }}
+        {{ 'p.' + pageNumber + ' / ' + totalPages }}
       </text>
     </g>
 
@@ -79,6 +79,11 @@ export default {
       default: '',
     },
     pageNumber: {
+      type: Number,
+      required: true,
+      default: 1,
+    },
+    totalPages: {
       type: Number,
       required: true,
       default: 1,
