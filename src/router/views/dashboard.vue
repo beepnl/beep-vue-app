@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/comma-dangle -->
 <template>
   <div :class="darkMode ? 'dark-mode' : ''">
     <div
@@ -45,7 +46,7 @@
       :class="'dashboard-container' + (landscapeMode ? ' --landscape' : '')"
     >
       <v-row :class="'dashboard-row' + (landscapeMode ? ' --landscape' : '')">
-        <v-col cols="12" :class="tvAndUp ? 'mb-6' : ''">
+        <v-col cols="12">
           <div class="dashboard-header d-flex align-center justify-center mb-6">
             <div class="d-flex align-self-center"
               ><img
@@ -83,271 +84,304 @@
           <v-progress-circular color="primary" size="50" indeterminate />
         </v-col>
 
-        <v-col
-          :cols="landscapeMode ? '6' : '12'"
-          :md="landscapeMode ? '4' : '12'"
-          :class="ready && landscapeMode ? 'landscape-section --left' : ''"
-        >
-          <DashboardSection
-            :class="landscapeMode ? 'hide-landscape' : 'show-portrait'"
-            :title="$tc('Location', 1)"
-          >
-            <div
-              v-if="ready && selectedLocationName"
-              class="dashboard-title"
-              v-text="selectedLocationName"
-            ></div>
-            <div
-              id="map"
-              ref="mapP"
-              :class="
-                'map ' +
-                  (ready && coordinatesPresent
-                    ? '--portrait'
-                    : ready
-                    ? '--hide'
-                    : '--loading')
-              "
-            >
-            </div>
-          </DashboardSection>
-
-          <DashboardSection
-            v-if="ready"
-            :title="$tc('Colony', 2)"
-            :landscape-mode="landscapeMode"
-          >
-            <div
-              :class="
-                'd-flex flex-column align-center hives-wrapper ' +
-                  (landscapeMode ? '--landscape' : '--portrait')
-              "
-            >
-              <div
-                class="dashboard-title line-clamp --1"
-                style="width: 86%"
-                v-text="selectedHiveMeta.name"
-              ></div>
-              <ApiaryPreviewHiveSelector
-                class="mb-2"
-                :hives="dashboardHives"
-                :hives-selected="selectedHiveIds"
-                :dashboard-mode="true"
-                :disable-sort-hives="true"
-                :large-size="largeSizeFits"
-                @select-hive="selectHive($event)"
-              ></ApiaryPreviewHiveSelector>
-            </div>
-          </DashboardSection>
-
-          <DashboardSection
-            v-if="
-              ready && selectedHive && (showInspections || selectedLocationName)
-            "
-            :title="$tc('Inspection', 1)"
-            :landscape-mode="landscapeMode"
-          >
-            <div v-if="!landscapeMode && showInspections" style="width: 100%;">
-              <span
-                class="dashboard-title mb-2"
-                v-text="
-                  $t('Last_check') +
-                    ': ' +
-                    momentFromNow(selectedHive.last_inspection_date)
+        <v-row :class="desktopAndUp ? 'my-6' : 'my-2'">
+          <v-col :class="landscapeMode ? 'pa-0' : ''">
+            <v-row :class="landscapeMode ? 'd-flex justify-space-between' : ''">
+              <v-col
+                :cols="landscapeMode ? '6' : '12'"
+                :md="landscapeMode ? '5' : '12'"
+                :class="
+                  ready && landscapeMode ? 'landscape-section --left' : ''
                 "
-              ></span>
-            </div>
-            <div
-              :class="
-                'dashboard-inspection dashboard-text-small mb-lg-2 mx-3 ' +
-                  (landscapeMode
-                    ? 'show-landscape --landscape mt-0'
-                    : 'hide-portrait --portrait funky-border mt-3')
-              "
-            >
-              <v-row class="dashboard-sticky-row">
-                <v-col cols="5" class="px-1 pt-0 pb-1 pa-xl-3"
-                  ><span v-text="$tc('Location', 1) + ': '"></span
-                ></v-col>
-                <v-col cols="7" class="px-1 pt-1 pb-1 pa-xl-3">
+              >
+                <DashboardSection
+                  :class="landscapeMode ? 'hide-landscape' : 'show-portrait'"
+                  :title="$tc('Location', 1)"
+                >
+                  <div
+                    v-if="ready && selectedLocationName"
+                    class="dashboard-title"
+                    v-text="selectedLocationName"
+                  ></div>
                   <div
                     id="map"
-                    ref="mapL"
+                    ref="mapP"
                     :class="
                       'map ' +
                         (ready && coordinatesPresent
-                          ? '--landscape'
+                          ? '--portrait'
                           : ready
                           ? '--hide'
                           : '--loading')
                     "
                   >
                   </div>
-                  <span
-                    v-if="ready && selectedLocationName && !coordinatesPresent"
-                    v-text="selectedLocationName"
-                  ></span>
-                </v-col>
-                <v-col v-if="showInspections" cols="5" class="pa-1 pa-xl-3"
-                  ><span v-text="$t('Last_check') + ': '"></span
-                ></v-col>
-                <v-col v-if="showInspections" cols="7" class="pa-1 pa-xl-3"
-                  ><span
-                    v-text="momentFromNow(selectedHive.last_inspection_date)"
-                  ></span
-                ></v-col>
-              </v-row>
-              <v-row
-                v-if="showInspections && selectedHive.impression"
-                :class="
-                  'dashboard-sticky-row ' + (!landscapeMode ? 'pa-3' : '')
-                "
-              >
-                <v-col cols="5" class="pa-1 pa-xl-3"
-                  ><span v-text="$t('positive_impression') + ': '"></span
-                ></v-col>
-                <v-col cols="7" class="pa-1 pa-xl-3">
-                  <v-icon
-                    v-if="selectedHive.impression === 1"
-                    class="red--text"
-                  >
-                    mdi-emoticon-sad
-                  </v-icon>
-                  <v-icon
-                    v-if="selectedHive.impression === 3"
-                    class="green--text"
-                  >
-                    mdi-emoticon-happy
-                  </v-icon>
-                  <v-icon
-                    v-if="selectedHive.impression === 2"
-                    class="orange--text"
-                  >
-                    mdi-emoticon-neutral
-                  </v-icon>
-                </v-col>
-              </v-row>
-              <v-row
-                v-if="showInspections && selectedHive.notes"
-                :class="
-                  'dashboard-sticky-row ' + (!landscapeMode ? 'pa-3' : '')
-                "
-              >
-                <v-col cols="5" class="pa-1 pa-xl-3"
-                  ><span v-text="$t('Note') + ': '"></span
-                ></v-col>
-                <v-col cols="7" class="pa-1 pb-2 pa-xl-3"
-                  ><span
-                    class="line-clamp --3"
-                    v-text="selectedHive.notes"
-                  ></span
-                ></v-col>
-              </v-row>
-            </div>
-          </DashboardSection>
-        </v-col>
+                </DashboardSection>
 
-        <v-col
-          :cols="landscapeMode ? '6' : '12'"
-          :md="landscapeMode ? '8' : '12'"
-          :class="landscapeMode ? 'landscape-section --right' : ''"
-        >
-          <DashboardSection
-            v-if="
-              ready &&
-                selectedHive &&
-                selectedHiveMeta.sensors &&
-                selectedHiveMeta.sensors.length !== 0
-            "
-            :title="$tc('Measurement', 2)"
-            :landscape-mode="landscapeMode"
-          >
-            <v-col
-              v-if="loadingData"
-              :class="
-                'd-flex align-center justify-center dashboard-loading ' +
-                  (landscapeMode ? '--landscape' : '')
-              "
-              cols="12"
-            >
-              <v-progress-circular color="primary" size="50" indeterminate />
-            </v-col>
-            <v-col
-              v-if="(noChartData || !sensorsPresent) && !loadingData"
-              cols="12"
-              class="my-4"
-            >
-              {{ $t('no_chart_data_hive') }}
-            </v-col>
-            <template v-for="(sensorSet, index) in currentSensors">
-              <v-col
-                v-if="
-                  measurementData !== null &&
-                    sensorSet.values.length > 0 &&
-                    chartjsDataSeries(sensorSet.values).datasets.length > 0
-                "
-                :key="'sensor' + index"
-                cols="12"
-                class="mb-3 mb-md-8"
-              >
-                <div
-                  class="dashboard-title mt-n3 mb-1"
-                  v-text="$t(sensorSet.name)"
-                ></div>
-                <div
-                  :class="
-                    'chart-wrapper mb-2 ' + (!landscapeMode ? '--portrait' : '')
-                  "
+                <DashboardSection
+                  v-if="ready"
+                  :title="$tc('Colony', 2)"
+                  :landscape-mode="landscapeMode"
                 >
-                  <div :class="!landscapeMode ? 'chart-left' : ''">
-                    <MeasurementsChartLine
-                      :chart-data="chartjsDataSeries(sensorSet.values)"
-                      :interval="'week'"
-                      :start-time="periodStartString"
-                      :end-time="periodEndString"
-                      :chart-id="'chart-dashboard-' + index"
-                      :location="'dashboard'"
-                      :dark-mode="darkMode"
-                    >
-                    </MeasurementsChartLine>
+                  <div
+                    :class="
+                      'd-flex flex-column align-center hives-wrapper ' +
+                        (landscapeMode ? '--landscape' : '--portrait')
+                    "
+                  >
+                    <div
+                      class="dashboard-title line-clamp --1"
+                      style="width: 86%"
+                      v-text="selectedHiveMeta.name"
+                    ></div>
+                    <ApiaryPreviewHiveSelector
+                      class="mb-2"
+                      :hives="dashboardHives"
+                      :hives-selected="selectedHiveIds"
+                      :dashboard-mode="true"
+                      :disable-sort-hives="true"
+                      :large-size="largeSizeFits"
+                      @select-hive="selectHive($event)"
+                    ></ApiaryPreviewHiveSelector>
+                  </div>
+                </DashboardSection>
+
+                <DashboardSection
+                  v-if="
+                    ready &&
+                      selectedHive &&
+                      (showInspections || selectedLocationName)
+                  "
+                  :title="$tc('Inspection', 1)"
+                  :landscape-mode="landscapeMode"
+                >
+                  <div
+                    v-if="!landscapeMode && showInspections"
+                    style="width: 100%;"
+                  >
+                    <span
+                      class="dashboard-title mb-2"
+                      v-text="
+                        $t('Last_check') +
+                          ': ' +
+                          momentFromNow(selectedHive.last_inspection_date)
+                      "
+                    ></span>
                   </div>
                   <div
                     :class="
-                      'd-flex flex-wrap mx-sm-3 mt-2 ' +
-                        (!landscapeMode ? 'chart-right' : '')
+                      'dashboard-inspection dashboard-text-small ' +
+                        (landscapeMode
+                          ? '--landscape'
+                          : '--portrait round-border ma-6 mt-3 pa-6')
                     "
                   >
-                    <template v-for="(exampleChart, i) in sensorSet.examples">
-                      <div
-                        :key="'ex-' + i"
-                        class="example-chart d-flex align-center my-2 mr-3 mr-sm-6"
-                      >
-                        <img
-                          class="example-img"
-                          :src="
-                            assetsUrl +
-                              '/img/dashboard/chart_' +
-                              sensorSet.name +
-                              '_' +
-                              (i + 1) +
-                              (darkMode ? '_dark' : '') +
-                              '.svg'
+                    <v-row v-if="landscapeMode" class="dashboard-sticky-row">
+                      <v-col cols="5" class="hive-prop pa-3 pl-0"
+                        ><span v-text="$tc('Location', 1) + ': '"></span
+                      ></v-col>
+                      <v-col cols="7" class="py-3 px-0">
+                        <div
+                          id="map"
+                          ref="mapL"
+                          :class="
+                            'map ' +
+                              (ready && coordinatesPresent
+                                ? '--landscape'
+                                : ready
+                                ? '--hide'
+                                : '--loading')
                           "
-                        />
+                        >
+                        </div>
                         <span
-                          class="dashboard-text-small --chart ml-1 ml-sm-2"
-                          v-text="
-                            $t(sensorSet.name + '_example_chart_' + (i + 1))
+                          v-if="
+                            ready && selectedLocationName && !coordinatesPresent
                           "
+                          v-text="selectedLocationName"
                         ></span>
-                      </div>
-                    </template>
+                      </v-col>
+                      <v-col
+                        v-if="showInspections"
+                        cols="5"
+                        class="hive-prop pa-3 pl-0"
+                        ><span v-text="$t('Last_check') + ': '"></span
+                      ></v-col>
+                      <v-col v-if="showInspections" cols="7" class="py-3 px-0"
+                        ><span
+                          v-text="
+                            momentFromNow(selectedHive.last_inspection_date)
+                          "
+                        ></span
+                      ></v-col>
+                    </v-row>
+                    <v-row
+                      v-if="showInspections && selectedHive.impression"
+                      :class="
+                        'dashboard-sticky-row ' + (!landscapeMode ? 'pa-3' : '')
+                      "
+                    >
+                      <v-col cols="5" class="hive-prop pa-3 pl-0"
+                        ><span v-text="$t('positive_impression') + ': '"></span
+                      ></v-col>
+                      <v-col cols="7" class="py-3 px-0">
+                        <v-icon
+                          v-if="selectedHive.impression === 1"
+                          class="red--text"
+                        >
+                          mdi-emoticon-sad
+                        </v-icon>
+                        <v-icon
+                          v-if="selectedHive.impression === 3"
+                          class="green--text"
+                        >
+                          mdi-emoticon-happy
+                        </v-icon>
+                        <v-icon
+                          v-if="selectedHive.impression === 2"
+                          class="orange--text"
+                        >
+                          mdi-emoticon-neutral
+                        </v-icon>
+                      </v-col>
+                    </v-row>
+                    <v-row
+                      v-if="showInspections && selectedHive.notes"
+                      :class="
+                        'dashboard-sticky-row ' + (!landscapeMode ? 'pa-3' : '')
+                      "
+                    >
+                      <v-col cols="5" class="hive-prop pa-3 pl-0"
+                        ><span v-text="$t('Note') + ': '"></span
+                      ></v-col>
+                      <v-col cols="7" class="py-3 pl-0"
+                        ><span
+                          class="line-clamp --3"
+                          v-text="selectedHive.notes"
+                        ></span
+                      ></v-col>
+                    </v-row>
                   </div>
-                </div>
+                </DashboardSection>
               </v-col>
-            </template>
-          </DashboardSection>
-        </v-col>
+
+              <v-col
+                :cols="landscapeMode ? '6' : '12'"
+                :md="landscapeMode ? '7' : '12'"
+                :class="landscapeMode ? 'landscape-section --right' : ''"
+              >
+                <DashboardSection
+                  v-if="
+                    ready &&
+                      selectedHive &&
+                      selectedHiveMeta.sensors &&
+                      selectedHiveMeta.sensors.length !== 0
+                  "
+                  :title="$tc('Measurement', 2)"
+                  :landscape-mode="landscapeMode"
+                  :class="landscapeMode ? 'mb-0' : ''"
+                >
+                  <v-col
+                    v-if="loadingData"
+                    :class="
+                      'd-flex align-center justify-center dashboard-loading ' +
+                        (landscapeMode ? '--landscape' : '')
+                    "
+                    cols="12"
+                  >
+                    <v-progress-circular
+                      color="primary"
+                      size="50"
+                      indeterminate
+                    />
+                  </v-col>
+                  <v-col
+                    v-if="(noChartData || !sensorsPresent) && !loadingData"
+                    cols="12"
+                    class="my-4"
+                  >
+                    {{ $t('no_chart_data_hive') }}
+                  </v-col>
+                  <template v-for="(sensorSet, index) in currentSensors">
+                    <v-col
+                      v-if="
+                        measurementData !== null &&
+                          sensorSet.values.length > 0 &&
+                          chartjsDataSeries(sensorSet.values).datasets.length >
+                            0
+                      "
+                      :key="'sensor' + index"
+                      cols="12"
+                      :class="
+                        'dashboard-chart' + (landscapeMode ? ' pa-0' : '')
+                      "
+                    >
+                      <div
+                        class="dashboard-title mb-1"
+                        v-text="$t(sensorSet.name)"
+                      ></div>
+                      <div
+                        :class="
+                          'chart-wrapper ' +
+                            (!landscapeMode ? '--portrait' : '')
+                        "
+                      >
+                        <div :class="!landscapeMode ? 'chart-left' : ''">
+                          <MeasurementsChartLine
+                            :chart-data="chartjsDataSeries(sensorSet.values)"
+                            :interval="'week'"
+                            :start-time="periodStartString"
+                            :end-time="periodEndString"
+                            :chart-id="'chart-dashboard-' + index"
+                            :location="'dashboard'"
+                            :dark-mode="darkMode"
+                          >
+                          </MeasurementsChartLine>
+                        </div>
+                        <div
+                          :class="
+                            'd-flex flex-wrap mx-sm-3 mt-2 ' +
+                              (!landscapeMode ? 'chart-right' : '')
+                          "
+                        >
+                          <template
+                            v-for="(exampleChart, i) in sensorSet.examples"
+                          >
+                            <div
+                              :key="'ex-' + i"
+                              class="example-chart d-flex align-center my-2 mr-3 mr-sm-6"
+                            >
+                              <img
+                                class="example-img"
+                                :src="
+                                  assetsUrl +
+                                    '/img/dashboard/chart_' +
+                                    sensorSet.name +
+                                    '_' +
+                                    (i + 1) +
+                                    (darkMode ? '_dark' : '') +
+                                    '.svg'
+                                "
+                              />
+                              <span
+                                class="dashboard-text-small --chart ml-1 ml-sm-2"
+                                v-text="
+                                  $t(
+                                    sensorSet.name + '_example_chart_' + (i + 1)
+                                  )
+                                "
+                              ></span>
+                            </div>
+                          </template>
+                        </div>
+                      </div>
+                    </v-col>
+                  </template>
+                </DashboardSection>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
       </v-row>
     </v-container>
 
@@ -869,7 +903,10 @@ export default {
   &.--landscape {
     @include for-tablet-landscape-up {
       max-width: 100% !important;
-      padding: 0 60px 52px;
+      padding: 0 6vw 0;
+    }
+    @include for-tv-up {
+      padding: 2vw 8vw 0;
     }
   }
 }
@@ -882,7 +919,6 @@ export default {
 }
 
 .dashboard-row.--landscape {
-  align-items: flex-start;
   .dashboard-header {
     margin-bottom: 12px !important;
     @include for-tablet-landscape-up {
@@ -909,7 +945,7 @@ export default {
   text-transform: uppercase;
   color: $color-accent;
   font-size: 1.6rem !important;
-  font-weight: 400;
+  font-weight: 300;
   line-height: 2.3rem;
   letter-spacing: 0.0075em !important;
   margin-bottom: 10px;
@@ -929,7 +965,7 @@ export default {
   font-family: 'Roboto Condensed', 'Roboto', sans-serif !important;
   text-transform: uppercase;
   text-align: left;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 0.8rem;
   color: $color-grey-dark;
   @include for-tablet-landscape-up {
@@ -966,35 +1002,32 @@ export default {
   &.--left {
     margin-top: 30px;
     max-width: 80vw !important;
-    height: 80vw !important;
-    padding: 3vw; // 40px 60px;
+    // height: 80vw !important;
+    padding: 3vw;
     margin: 3vw auto;
     background-color: $color-orange-medium;
-    // border-radius: 12px; // plain
     // border-radius: 96% 4% 92% 8% / 1% 92% 8% 99%; // left-tilted
     // border-radius: 4% 96% 4% 96% / 97% 1% 99% 3%; // right-tilted
-    border-radius: 1% 99% 2% 96% / 100% 1% 96% 3%; // sticky 1 right-tilted
-    // border-radius: 0 0 0 30px/45px;
+    // border-radius: 1% 99% 2% 96% / 100% 1% 96% 3%; // latest
+    border-radius: 24px;
     @include for-tablet-portrait-up {
       max-width: 44vw !important;
-      height: 55vw !important;
+      // height: 55vw !important;
       padding: 2vw;
-      margin: 0 0 0 3vw;
     }
     @include for-tablet-landscape-up {
       max-width: 40vw !important;
-      height: 44vw !important;
+      // height: 44vw !important;
       margin: 0;
     }
     @include for-desktop-up {
-      max-width: 35vw !important;
-      height: 36vw !important;
+      max-width: 38vw !important;
+      // height: 36vw !important;
     }
     @include for-tv-up {
       max-width: 33vw !important;
-      height: 33vw !important;
+      // height: 33vw !important;
       padding: 2.5vw;
-      margin-left: 40px;
     }
     .dashboard-section {
       margin-bottom: 6px;
@@ -1008,16 +1041,12 @@ export default {
   }
   &.--right {
     max-width: 95vw !important;
-    margin: 3vw auto;
-    padding: 3vw 20px;
+    padding: 0; // 2vw 0 0;
     @include for-tablet-portrait-up {
       max-width: 44vw !important;
-      margin: 0 0 0 2vw;
-      padding: 2vw 20px;
     }
     @include for-desktop-up {
       max-width: 50vw !important;
-      margin: 0 0 0 6vw;
     }
   }
 }
@@ -1047,27 +1076,32 @@ export default {
 .dashboard-inspection {
   text-align: left !important;
   @include for-tablet-landscape-up {
-    width: 50%;
+    width: 60%;
   }
   @include for-big-desktop-up {
-    width: 40%;
+    width: 50%;
   }
   &.--landscape {
     width: 100%;
-    padding: 0 25px 0;
-    @include for-desktop-up {
-      padding: 0 35px 0;
-    }
+    // padding: 0 25px 0;
+    // @include for-desktop-up {
+    //   padding: 0 35px 0;
+    // }
   }
 }
 
-.funky-border {
+.round-border {
   padding: 12px 14px;
   background-color: $color-orange-medium;
-  border-radius: 2% 98% 2% 98% / 98% 1% 99% 2%;
+  // border-radius: 2% 98% 2% 98% / 98% 1% 99% 2%;
+  border-radius: 24px;
   &.dashboard-text-small {
     font-size: 110%;
   }
+}
+
+.hive-prop {
+  text-align: right;
 }
 
 .dashboard-loading {
@@ -1076,6 +1110,10 @@ export default {
   &.--landscape {
     margin: 100px auto;
   }
+}
+
+.dashboard-chart:first-child {
+  margin-bottom: 40px !important;
 }
 
 .example-chart {
@@ -1092,13 +1130,11 @@ export default {
   width: 50px;
 }
 
-.hide-landscape,
-.hide-portrait {
+.hide-landscape {
   display: none; // instead of v-if="!landscapeMode" to initiate google map so that it can be rendered after switching to portait mode
 }
 
-.show-portrait,
-.show-landscape {
+.show-portrait {
   display: block;
 }
 
@@ -1141,7 +1177,7 @@ export default {
   }
 
   .landscape-section.--left,
-  .funky-border {
+  .round-border {
     background-color: #8e5000; // $color-accent;
   }
 
