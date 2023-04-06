@@ -181,8 +181,8 @@
                       v-model="dashboard.interval"
                       :items="intervalOptions"
                       :label="$t('Interval')"
-                      :item-text="getTranslation"
-                      item-value="label"
+                      item-text="label"
+                      item-value="id"
                       :placeholder="$t('Select') + '...'"
                       :hint="$t('Dashboard_interval_exp')"
                       persistent-hint
@@ -324,12 +324,12 @@ export default {
       maxNrOfHives: 10,
       speedOptions: [15, 30, 45, 60, 90, 120, 300],
       intervalOptions: [
-        { id: 1, label: 'Hour' },
-        { id: 2, label: 'Day' },
-        { id: 3, label: 'week' },
-        { id: 4, label: 'month' },
-        { id: 5, label: 'year' },
-        { id: 6, label: 'selection' },
+        { id: 'hour', label: this.$i18n.t('Hour') },
+        { id: 'day', label: this.$i18n.tc('Day', 1) },
+        { id: 'week', label: this.$i18n.t('week') },
+        { id: 'month', label: this.$i18n.t('month') },
+        { id: 'year', label: this.$i18n.t('year') },
+        // { id: 'selection', label: this.$i18n.t('selection') }, TODO: temp disabled because not implemented in api yet
       ],
       dates: [],
     }
@@ -514,9 +514,6 @@ export default {
     },
     getOwnedHives(hiveSet) {
       return hiveSet.hives.filter((hive) => hive.owner).map((hive) => hive.id)
-    },
-    getTranslation(item) {
-      return this.$i18n.t(item.label)
     },
     saveDashboard() {
       if (this.createMode) {
