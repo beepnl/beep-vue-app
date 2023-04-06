@@ -1,5 +1,5 @@
 <template>
-  <v-row class="mt-3 mx-0">
+  <v-row :class="printMode ? 'ma-0' : 'mt-3 mx-0'">
     <v-col v-if="svgWarnings.length > 0 && !printMode" cols="12">
       <v-row class="mx-0">
         <v-col cols="12" class="svg-warnings no-print">
