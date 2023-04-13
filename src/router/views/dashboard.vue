@@ -178,11 +178,15 @@
                       ><span v-text="$tc('Location', 1) + ': '"></span
                     ></v-col>
                     <v-col cols="7" class="py-3 px-0">
+                      <span
+                        v-if="ready && selectedLocationName"
+                        v-text="selectedLocationName"
+                      ></span>
                       <div
                         id="map"
                         ref="mapL"
                         :class="
-                          'map ' +
+                          'mt-2 map ' +
                             (ready && coordinatesPresent
                               ? '--landscape'
                               : ready
@@ -191,12 +195,6 @@
                         "
                       >
                       </div>
-                      <span
-                        v-if="
-                          ready && selectedLocationName && !coordinatesPresent
-                        "
-                        v-text="selectedLocationName"
-                      ></span>
                     </v-col>
                     <v-col
                       v-if="showInspections"
