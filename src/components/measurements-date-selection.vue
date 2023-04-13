@@ -67,9 +67,11 @@
     <v-col
       v-if="interval === 'selection'"
       cols="12"
-      sm="4"
-      md="3"
-      :class="'mx-auto ' + (sticky || mobile ? 'pa-0' : '')"
+      :sm="showAsColumn > 0 ? showAsColumn : 4"
+      :md="showAsColumn > 0 ? showAsColumn : 3"
+      :class="
+        (showAsColumn > 0 ? '' : 'mx-auto ') + (sticky || mobile ? 'pa-0' : '')
+      "
     >
       <div
         :class="
@@ -181,10 +183,15 @@ export default {
       default: () => [],
       required: false,
     },
+    showAsColumn: {
+      type: Number,
+      default: 0,
+      required: false,
+    },
     timeIndex: {
       type: Number,
       default: 0,
-      required: true,
+      required: false,
     },
   },
   data() {

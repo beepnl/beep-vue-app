@@ -380,7 +380,7 @@ import Layout from '@layouts/back.vue'
 import {
   convertComma,
   readAlertRules,
-  readDevicesIfNotPresent,
+  readDevicesIfNotChecked,
   readTaxonomy,
 } from '@mixins/methodsMixin'
 import { momentHumanizeHours } from '@mixins/momentMixin'
@@ -396,7 +396,7 @@ export default {
     convertComma,
     momentHumanizeHours,
     readAlertRules,
-    readDevicesIfNotPresent,
+    readDevicesIfNotChecked,
     readTaxonomy,
   ],
   data: function() {
@@ -726,7 +726,7 @@ export default {
     },
   },
   created() {
-    this.readDevicesIfNotPresent()
+    this.readDevicesIfNotChecked()
     this.readAlertRulesIfNotPresent().then(() => {
       this.readTaxonomy().then(() => {
         // If alertrule-create route is used, make empty alertrule object

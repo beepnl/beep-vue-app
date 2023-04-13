@@ -46,6 +46,10 @@ export default {
       type: String,
       default: '',
     },
+    darkMode: {
+      type: Boolean,
+      default: false,
+    },
     alertsForCharts: {
       type: Array,
       default: () => [],
@@ -94,13 +98,16 @@ export default {
         selection: null,
         research: null,
         month: 'day',
-        week: 'hour',
+        week: this.location === 'dashboard' ? 'day' : 'hour',
         day: 'hour',
         hour: 'minute',
       },
       hoverInspection: 0,
       hoverAlert: false,
       hoverLine: false,
+      darkModecolor: '#e0e0e0',
+      darkModeGridcolor: '#808080',
+      defaultcolor: '#242424',
     }
   },
   computed: {
@@ -176,7 +183,7 @@ export default {
             min: this.startTime,
             max: this.endTime,
             ticks: {
-              color: '#242424',
+              color: self.modeColor,
               source: 'auto',
               autoSkip: true,
               font: {
@@ -190,13 +197,19 @@ export default {
               tooltipFormat: this.tooltipFormat,
               displayFormats: this.displayFormats,
             },
+            grid: {
+              color: self.gridColor,
+            },
           },
           y: {
             ticks: {
-              color: '#242424',
+              color: self.modeColor,
               font: {
                 size: this.mobile ? this.fontSizeMob : this.fontSize,
               },
+            },
+            grid: {
+              color: self.gridColor,
             },
           },
           title: {
@@ -267,6 +280,11 @@ export default {
         minute: 'LT',
       }
     },
+    gridColor() {
+      return this.darkMode
+        ? this.darkModeGridcolor
+        : ChartJS.defaults.borderColor
+    },
     inspectionsForLineCharts() {
       const self = this
 
@@ -324,6 +342,9 @@ export default {
     mobile() {
       return this.$vuetify.breakpoint.mobile
     },
+    modeColor() {
+      return this.darkMode ? this.darkModecolor : this.defaultcolor
+    },
     pluginsDefault() {
       const self = this
       return {
@@ -339,8 +360,10 @@ export default {
           padding: {
             bottom: 1,
           },
-          color: '#242424',
-          backgroundColor: 'rgba(255,255,255,0.7)',
+          color: self.modeColor,
+          backgroundColor: self.darkMode
+            ? 'rgba(0,0,0,0.7)'
+            : 'rgba(255,255,255,0.7)',
           borderRadius: 4,
           font: {
             size: this.mobile ? this.fontSizeMob : this.fontSize,
@@ -369,9 +392,9 @@ export default {
           labels: {
             boxWidth: this.mobile ? this.boxSizeMob : this.boxSize,
             boxHeight: this.mobile ? this.boxSizeMob : this.boxSize,
-            fillStyle: '#242424',
+            fillStyle: this.modeColor,
             fullWidth: !this.mobile,
-            color: '#242424',
+            color: this.modeColor,
             font: {
               size: this.mobile ? this.fontSizeMob : this.fontSize,
             },

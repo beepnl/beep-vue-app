@@ -223,6 +223,59 @@ export const convertComma = {
   },
 }
 
+export const deleteDashboard = {
+  methods: {
+    async deleteDashboard(dashboardGroup) {
+      try {
+        const response = await Api.deleteRequest(
+          '/dashboardgroups/',
+          dashboardGroup.code
+        )
+        if (!response) {
+          this.snackbar.text = this.$i18n.t('something_wrong')
+          this.snackbar.show = true
+        }
+        setTimeout(() => {
+          return this.readDashboardGroups()
+        }, 50) // wait for API to update dashboards
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+          const msg = error.response.data.message
+          this.snackbar.text = msg
+        } else {
+          console.log('Error: ', error)
+          this.snackbar.text = this.$i18n.t('something_wrong')
+        }
+        this.snackbar.show = true
+      }
+    },
+    confirmDeleteDashboard(dashboardGroup) {
+      this.$refs.confirm
+        .open(
+          this.$i18n.t('Delete_dashboard'),
+          this.$i18n.t('Delete_dashboard') +
+            ' (' +
+            dashboardGroup.code +
+            (dashboardGroup.name ? ' - ' + dashboardGroup.name : '') +
+            (dashboardGroup.description
+              ? ' - ' + dashboardGroup.description
+              : '') +
+            ')?',
+          {
+            color: 'red',
+          }
+        )
+        .then((confirm) => {
+          this.deleteDashboard(dashboardGroup)
+        })
+        .catch((reject) => {
+          return true
+        })
+    },
+  },
+}
+
 export const deleteHiveTag = {
   ...mapGetters('hives', ['hiveTagActionDescriptions']),
   methods: {
@@ -493,20 +546,71 @@ export const readApiariesAndGroupsIfNotPresent = {
   },
 }
 
+export const readDashboardGroups = {
+  computed: {
+    ...mapGetters('groups', ['dashboardGroupsChecked']),
+  },
+  methods: {
+    async readDashboardGroups() {
+      try {
+        this.$store.commit('groups/setData', {
+          prop: 'dashboardGroupsChecked',
+          value: true,
+        })
+        const response = await Api.readRequest('/dashboardgroups')
+        this.$store.commit('groups/setData', {
+          prop: 'dashboardGroups',
+          value: response.data,
+        })
+        return true
+      } catch (error) {
+        if (error.response) {
+          console.log(error.response)
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
+    async readDashboardGroupsIfNotChecked() {
+      if (!this.dashboardGroupsChecked) {
+        try {
+          this.$store.commit('groups/setData', {
+            prop: 'dashboardGroupsChecked',
+            value: true,
+          })
+          const response = await Api.readRequest('/dashboardgroups')
+          this.$store.commit('groups/setData', {
+            prop: 'dashboardGroups',
+            value: response.data,
+          })
+          return true
+        } catch (error) {
+          if (error.response) {
+            console.log(error.response)
+          } else {
+            console.log('Error: ', error)
+          }
+        }
+      } else {
+        return true
+      }
+    },
+  },
+}
+
 export const readDevices = {
   methods: {
     async readDevices() {
-      // devicesPresent boolean prevents unnecessary API calls to read devices when user has none
+      // devicesChecked boolean prevents unnecessary API calls to read devices when they have been checked already (but possibly response not stored yet)
       try {
+        this.$store.commit('devices/setData', {
+          prop: 'devicesChecked',
+          value: true,
+        })
         const response = await Api.readRequest('/devices')
-        const devicesPresent = response.data.length > 0
         this.$store.commit('devices/setData', {
           prop: 'devices',
           value: response.data,
-        })
-        this.$store.commit('devices/setData', {
-          prop: 'devicesPresent',
-          value: devicesPresent,
         })
         return true
       } catch (error) {
@@ -517,10 +621,6 @@ export const readDevices = {
               prop: 'devices',
               value: [],
             })
-            this.$store.commit('devices/setData', {
-              prop: 'devicesPresent',
-              value: false,
-            })
           }
         } else {
           console.log('Error: ', error)
@@ -530,23 +630,22 @@ export const readDevices = {
   },
 }
 
-export const readDevicesIfNotPresent = {
+export const readDevicesIfNotChecked = {
   methods: {
-    async readDevicesIfNotPresent() {
-      // devicesPresent boolean prevents unnecessary API calls to read devices when user has none
-      const devicesPresent = this.$store.getters['devices/devicesPresent']
+    async readDevicesIfNotChecked() {
+      // devicesChecked boolean prevents unnecessary API calls to read devices when they have been checked already (but possibly response not stored yet)
+      const devicesChecked = this.$store.getters['devices/devicesChecked']
 
-      if (devicesPresent && this.devices.length === 0) {
+      if (!devicesChecked) {
         try {
+          this.$store.commit('devices/setData', {
+            prop: 'devicesChecked',
+            value: true,
+          })
           const response = await Api.readRequest('/devices')
-          const devicesPresent = response.data.length > 0
           this.$store.commit('devices/setData', {
             prop: 'devices',
             value: response.data,
-          })
-          this.$store.commit('devices/setData', {
-            prop: 'devicesPresent',
-            value: devicesPresent,
           })
           return true
         } catch (error) {
@@ -556,10 +655,6 @@ export const readDevicesIfNotPresent = {
               this.$store.commit('devices/setData', {
                 prop: 'devices',
                 value: [],
-              })
-              this.$store.commit('devices/setData', {
-                prop: 'devicesPresent',
-                value: false,
               })
             }
           } else {

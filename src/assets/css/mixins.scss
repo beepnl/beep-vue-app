@@ -29,3 +29,9 @@
     @content;
   }
 }
+
+@mixin for-tv-up {
+  @media (min-width: 2200px) {
+    @content;
+  }
+}

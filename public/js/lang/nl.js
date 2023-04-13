@@ -346,7 +346,13 @@ const translations = {
   /* user */
   Data_export: 'Data exporteren',
   Export_your_data:
-    'Exporteer alle data die is opgeslagen in je BEEP account en verstuur deze in een e-mail met als bijlage een Excel (.xslx) bestand. Het bestand heeft meerdere tabbladen met daarop je persoonlijke-, bijenstand-, kast- en inspectiegegevens.',
+    'Exporteer alle data die is opgeslagen in je BEEP account en verstuur deze in een e-mail met als bijlage een Excel (.xslx) bestand OF download dit bestand hier. Het bestand heeft meerdere tabbladen met daarop je persoonlijke-, bijenstand-, kast- en inspectiegegevens.',
+  Email_export: 'Email CSV',
+  Download_csv: 'Download CSV',
+  Open_csv: 'Open CSV',
+  Include_group_data: 'Voeg samenwerkingsgroepsdata toe aan export',
+  Include_sensor_data:
+    'Voeg links naar bestanden met sensordata toe aan export',
 
   accept_policy:
     'Ik accepteer de BEEP servicevoorwaarden, die in lijn zijn met de nieuwe Europese privacywetgeving',
@@ -887,7 +893,7 @@ const translations = {
 
   Hivetag: 'Hive tag | Hive tags',
   Hivetag_exp_1:
-    '‘Hive tags’ zijn QR codes die je op een bijenkast kan plakken, en waarvoor je een actie kunt instellen die uitgevoerd wordt zodra je de hive tag scant. Met ‘actie’ worden handelingen in de BEEP app bedoeld, zoals bijvoorbeeld het aanmaken van een nieuwe inspectie voor de betreffende kast. Zodra de hive tag is ingesteld, hoef je in het vervolg alleen de QR code te scannen met je smartphone, en dan zal er automatisch een nieuwe inspectie worden aangemaakt. De hive tags kan je zelf printen, door ',
+    "'Hive tags' zijn QR codes die je op een bijenkast kan plakken, en waarvoor je een actie kunt instellen die uitgevoerd wordt zodra je de hive tag scant. Met 'actie' worden handelingen in de BEEP app bedoeld, zoals bijvoorbeeld het aanmaken van een nieuwe inspectie voor de betreffende kast. Zodra de hive tag is ingesteld, hoef je in het vervolg alleen de QR code te scannen met je smartphone, en dan zal er automatisch een nieuwe inspectie worden aangemaakt. De hive tags kan je zelf printen, door ",
   Hivetag_download_text: 'deze pdf te downloaden.',
   Hivetag_exp_2:
     ' Scan een hive tag om aan de slag te gaan, er zal automatisch een pagina openen waar je de actie in kunt stellen indien dat nog niet gebeurd is.',
@@ -901,7 +907,7 @@ const translations = {
   for_hive: 'voor bijenkast "',
   Select_hivetag_number: 'Selecteer een hive tag nummer',
   Add_hivetag: 'Voeg hive tag toe',
-  Select_hive: 'Selecteer een bijenkast',
+  Select_hive: 'Selecteer een bijenkast | Selecteer bijenkasten',
   Select_hive_for_hivetag_exp:
     'Voor welke bijenkast wil je de actie uitvoeren? Selecteer één bijenkast.',
   Select_hivetag_action: 'Selecteer een actie',
@@ -925,6 +931,86 @@ const translations = {
     'Voeg BEEP toe aan je beginscherm om het als web app en op volledig scherm te gebruiken. Je blijft dan ingelogd na de eerste keer inloggen.',
   pwa_share_button_label: '1. Tik op het deel-icoon in de menubalk onderin.',
   pwa_addhome_button_label: "2. Tik op 'Zet op beginscherm'",
+
+  Colony: 'Volk | Volken',
+  Dashboard: 'Dashboard | Dashboards',
+  Last_check: 'Laatste controle',
+  Note: 'Notitie',
+  no_chart_data_hive: 'Geen sensordata beschikbaar voor deze bijenkast',
+  outsideTemperature: 'Buitentemperatuur',
+
+  Code: 'Code',
+
+  Dashboard_exp:
+    "Creëer een dashboard via de 'Nieuw dashboard' knop rechtsboven. U kunt vervolgens bijenkasten selecteren die u wilt tonen op een publiek dashboard dat via een aparte url (voor iedereen met de code) toegankelijk is. Bijenkasten (en hun metingen en/of laatste inspectie) worden één voor één getoond.",
+  create_dashboard_question:
+    'Nog geen dashboard? Creëer een dashboard via de BEEP app',
+  New_dashboard: 'Nieuw dashboard',
+  Edit_dashboard: 'Edit dashboard',
+  Delete_dashboard: 'Verwijder dashboard',
+  Logout_dashboard: 'Uitloggen',
+  Logout_dashboard_check:
+    'Weet je zeker dat je wilt uitloggen / van dashboard wilt veranderen?',
+
+  weight_example_chart_1: 'Bijen verzamelen nectar',
+  weight_example_chart_2: 'Bijen gebruiken hun voedselvoorrad',
+  weight_example_chart_3: 'Een zwerm!',
+  weight_example_chart_4: 'De kast is vergroot',
+  t_example_chart_1: '34°C: gezond broednest',
+  t_example_chart_2: '< 33°C: geen broednest',
+  Select_hives_for_dashboard_exp:
+    'Welke bijenkasten wil je tonen in dit dashboard? Selecteer meerdere kasten (maximaal 12) voor het beste resultaat. Bij kasten met een meetsysteem zal ook temperatuur- en gewichtsdata worden weergegeven, indien aanwezig. Alleen eigen kasten kunnen geselecteerd worden.',
+  Max_hives_warning: 'Het maximum aantal bijenkasten is bereikt',
+  Title: 'Titel',
+  Dashboard_title_exp:
+    "Standaard is 'Dashboard' (als dit veld leeg wordt gelaten).",
+  Dashboard_description_exp:
+    'N.B. Deze beschrijving zal niet getoond worden op het dashboard. Hier kan je extra informatie kwijt, bijv. waarvoor dit dashboard bestemd is.',
+  Pace: 'Snelheid (sec)',
+  Dashboard_pace_exp: 'Aantal seconden dat elke bijenkast getoond wordt',
+  Dashboard_interval_exp:
+    'Toon metingen van de/het afgelopen uur/dag/week/maand/jaar of een zelfgekozen periode',
+  Show_inspections: 'Toon inspecties',
+  Show_inspections_exp:
+    'Toon per bijenkast de laatste inspectie (datum, totaalindruk en notitie).',
+  Show_all_hives: 'Toon details van alle bijenkasten',
+  Show_all_hives_exp:
+    'Toon details (locatie, laatste inspectie, metingen) van alle geselecteerde bijenkasten (JA), of alleen van bijenkasten met meetsysteem (NEE, aanbevolen optie)',
+  Preview_share: 'Preview & deel',
+  Copy_url: 'Kopieer url',
+  /* offline inspection sheet */
+  Hour_short: 'Uur | Uur',
+  Day: 'Dag | Dagen',
+  Minute: 'Minuut | Minuten',
+  Percentage_exp: 'Percentage tussen 0 en 100',
+  Grade_exp_1: 'Cijfer tussen 1 en 10',
+  Grade_exp_2: '(1 = Slecht, 10 = Uitstekend)',
+  Degrees_exp: 'Aantal graden tussen -180° en 180°',
+  Negative_exp: 'Negatief getal (lager dan 0)',
+  Too_many_items_exp_1: 'Er zijn teveel opties om te printen,',
+  Too_many_items_exp_2: 'vul hier je eigen antwoord in',
+  Image_placeholder_1: 'Foto kan later toegevoegd worden',
+  Image_placeholder_2: 'via de BEEP app (optioneel)',
+  Too_long_list_present:
+    'Lijst van opties te lang om weer te geven in de offline kastkaart voor het item:',
+  Too_long_list_present_fix_1:
+    'Indien mogelijk, verminder het aantal keuzemogelijkheden tot maximaal',
+  Too_long_list_present_fix_2:
+    "via de 'Aanpassen kastkaart' knop. Of vul het juiste antwoord handmatig in.",
+
+  /* offline inspection page */
+  Print: 'Print',
+  Offline_inspection: 'Papieren inspectie',
+  Offline_inspection_exp:
+    "Print de kastkaart, vul deze handmatig in. Upload foto's hiervan op een later moment via de 'Upload inspectie' knop. De foto's worden vervolgens automatisch uitgelezen en het resultaat kan dan worden geverifiëerd en opgeslagen als een normale (digitale / online) inspectie.",
+  Online_inspection: 'Digitale inspectie',
+  Online_inspection_exp:
+    'Vul de kastkaart digitaal (online) in via uw computer, tablet of smartphone, zoals u gewend bent',
+  Upload_inspection: 'Upload inspectie',
+  Upload_inspection_exp:
+    "Wanneer u een papieren inspectie heeft gedaan, kunt u hier foto's daarvan uploaden. Deze worden vervolgens automatisch uitgelezen en het resultaat kan dan worden geverifiëerd en opgeslagen als een normale (digitale / online) inspectie.",
+
+  Select_inspection_mode: 'Selecteer inspectiemodus',
 }
 
 export default translations

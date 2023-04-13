@@ -1,75 +1,101 @@
 <template>
-  <div class="d-flex align-end apiary-preview">
-    <div
-      v-for="(hive, j) in sortedHives"
-      :key="j"
-      class="hive-icon-wrapper d-flex flex-column align-center"
-      @click="selectHive(hive.id)"
-    >
-      <div v-if="groupMode" class="hive-in-group">
-        <v-icon v-if="hivesEditable.includes(hive.id)" class="green--text">
-          mdi-pencil-circle
-        </v-icon>
-        <v-icon v-else-if="hivesSelected.includes(hive.id)" class="green--text">
-          mdi-eye-circle
-        </v-icon>
-      </div>
-
-      <div v-if="inspectionMode" class="hive-in-inspection">
-        <v-icon v-if="hivesSelected.includes(hive.id)" class="green--text">
-          mdi-check-circle
-        </v-icon>
-      </div>
-
-      <v-sheet
-        light
-        :class="
-          `hive-icon hive-icon-preview d-flex flex-column justify-center align-center white--text text--small mr-1 ${
-            hasLayer(hive, 'queen_excluder') ? 'has-queen-excluder' : ''
-          } ${hasLayer(hive, 'feeding_box') ? 'has-feeding-box' : ''}`
-        "
-        height="auto"
+  <div>
+    <div class="d-flex align-end apiary-preview">
+      <div
+        v-for="(hive, j) in sortedHives"
+        :key="j"
+        class="hive-icon-wrapper d-flex flex-column align-center"
+        @click="selectHive(hive.id)"
       >
+        <div v-if="groupMode" class="hive-in-group">
+          <v-icon v-if="hivesEditable.includes(hive.id)" class="green--text">
+            mdi-pencil-circle
+          </v-icon>
+          <v-icon
+            v-else-if="hivesSelected.includes(hive.id)"
+            class="green--text"
+          >
+            mdi-eye-circle
+          </v-icon>
+        </div>
+
+        <div v-if="inspectionMode" class="hive-in-inspection">
+          <v-icon v-if="hivesSelected.includes(hive.id)" class="green--text">
+            mdi-check-circle
+          </v-icon>
+        </div>
+
         <div
+          v-if="dashboardMode || dashboardEditMode"
+          class="hive-in-dashboard"
+        >
+          <div v-if="hive.owner && hive.sensors.length > 0" class="my-0">
+            <v-sheet
+              :class="
+                'beep-icon beep-icon-sensors--no-outline' +
+                  (dashboardEditMode ? '' : ' color-green')
+              "
+            ></v-sheet>
+          </div>
+        </div>
+
+        <v-sheet
+          light
           :class="
-            'hive-icon-layers' +
-              (hive.layers.length === 0 ? ' hive-icon-layers--empty' : '')
+            `hive-icon hive-icon-preview d-flex flex-column justify-center align-center white--text text--small mr-1 ${
+              hasLayer(hive, 'queen_excluder') ? 'has-queen-excluder' : ''
+            } ${hasLayer(hive, 'feeding_box') ? 'has-feeding-box' : ''} ${
+              dashboardMode ? ' --dashboard' : ''
+            } ${largeSize ? ' --large' : ''}`
           "
+          height="auto"
         >
           <div
             :class="
-              `selectable-wrapper ${
-                hivesSelected.includes(hive.id) ? '--selected' : ''
-              } ${
-                inspectionMode && hivesEditable.indexOf(hive.id) === -1
-                  ? '--not-editable'
-                  : ''
-              }`
+              'hive-icon-layers' +
+                (hive.layers.length === 0 ? ' hive-icon-layers--empty' : '')
             "
           >
-            <v-sheet
-              v-for="(layer, l) in orderedLayers(hive)"
-              :key="l"
-              :class="[
-                `layer ${layer.type}-layer ${
+            <div
+              :class="
+                `selectable-wrapper ${
+                  hivesSelected.includes(hive.id) ? '--selected' : ''
+                } ${
                   inspectionMode && hivesEditable.indexOf(hive.id) === -1
                     ? '--not-editable'
                     : ''
-                }`,
-              ]"
-              :width="`${hiveWidth(hive)}px`"
-              :color="layer.color"
+                } ${notClickable ? '--not-clickable' : ''}`
+              "
             >
-            </v-sheet>
+              <v-sheet
+                v-for="(layer, l) in orderedLayers(hive)"
+                :key="l"
+                :class="[
+                  `layer ${layer.type}-layer ${
+                    inspectionMode && hivesEditable.indexOf(hive.id) === -1
+                      ? '--not-editable'
+                      : ''
+                  }`,
+                ]"
+                :width="`${hiveWidth(hive)}px`"
+                :color="layer.color"
+              >
+              </v-sheet>
+            </div>
           </div>
-        </div>
-        <span
-          :style="`width: ${hiveWidth(hive) + 16}px;`"
-          class="hive-caption caption"
-          >{{ hive.name }}</span
-        >
-      </v-sheet>
+          <span
+            v-if="!dashboardMode"
+            :style="`width: ${hiveWidth(hive) + 16}px;`"
+            class="hive-caption caption"
+            >{{ hive.name }}</span
+          >
+        </v-sheet>
+      </div>
     </div>
+    <div
+      v-if="dashboardMode"
+      :class="'dashboard-line' + (largeSize ? ' --large' : '')"
+    ></div>
   </div>
 </template>
 
@@ -104,25 +130,54 @@ export default {
       default: false,
       required: false,
     },
+    dashboardMode: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
+    dashboardEditMode: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
+    disableSortHives: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
+    largeSize: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
+    notClickable: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
   },
   computed: {
     sortedHives() {
-      const sortedHives = this.hives.slice().sort(function(a, b) {
-        // order = null comes last
-        // if order is equal, sort by name with number sensitivity (10 comes after 2 instead of 1)
-        return (
-          (a.order === null) - (b.order === null) ||
-          +(a.order > b.order) ||
-          -(a.order < b.order) ||
-          (a.order === b.order && a.name !== null && b.name !== null
-            ? a.name.localeCompare(b.name, undefined, {
-                numeric: true,
-                sensitivity: 'base',
-              })
-            : 0)
-        )
-      })
-      return sortedHives
+      if (!this.disableSortHives) {
+        const sortedHives = this.hives.slice().sort(function(a, b) {
+          // order = null comes last
+          // if order is equal, sort by name with number sensitivity (10 comes after 2 instead of 1)
+          return (
+            (a.order === null) - (b.order === null) ||
+            +(a.order > b.order) ||
+            -(a.order < b.order) ||
+            (a.order === b.order && a.name !== null && b.name !== null
+              ? a.name.localeCompare(b.name, undefined, {
+                  numeric: true,
+                  sensitivity: 'base',
+                })
+              : 0)
+          )
+        })
+        return sortedHives
+      } else {
+        return this.hives
+      }
     },
   },
   methods: {
@@ -130,7 +185,11 @@ export default {
       return hive.layers.some((layer) => layer.type === type)
     },
     hiveWidth: function(hive) {
-      return hive.layers.length > 0 ? hive.layers[0].framecount * 3.5 : 20
+      var multiplier = this.largeSize ? 6 : 3.5
+      var placeholder = this.largeSize ? 20 : 35
+      return hive.layers.length > 0
+        ? hive.layers[0].framecount * multiplier
+        : placeholder
     },
     selectHive(id) {
       this.$emit('select-hive', id)
@@ -159,6 +218,7 @@ export default {
   margin-bottom: 0 !important;
   border-bottom: 0 !important;
   border-radius: 2px 2px 0 0;
+  background: transparent;
   .hive-icon-layers {
     width: auto;
     height: 100%;
@@ -168,12 +228,12 @@ export default {
   .hive-icon-layers--empty {
     padding: 0 20px;
   }
-  &.has-queen-excluder {
+  &:not(.--dashboard).has-queen-excluder {
     .hive-icon-layers {
       padding: 0 14px !important;
     }
   }
-  &.has-feeding-box {
+  &:not(.--dashboard).has-feeding-box {
     margin-top: 12px !important;
   }
 }
@@ -212,6 +272,19 @@ export default {
   }
   &.--not-editable {
     cursor: not-allowed;
+  }
+  &.--not-clickable {
+    cursor: auto;
+  }
+}
+
+.dashboard-line {
+  margin-top: -6px;
+  max-width: 100%;
+  height: 1px;
+  background-color: #bbb;
+  &.--large {
+    margin-top: -7px;
   }
 }
 
@@ -270,5 +343,48 @@ export default {
   text-align: center;
   text-overflow: ellipsis;
   word-break: break-word;
+}
+
+.hive-icon-preview.--dashboard {
+  margin-top: -5px;
+  .hive-icon-layers {
+    padding: 5px 10px;
+    border-bottom: 0 !important;
+    .layer {
+      &:last-child {
+        border: 1px solid rgba(0, 0, 0, 0.3) !important;
+      }
+    }
+    .queen_excluder-layer,
+    .feeding_box-layer {
+      &::after {
+        content: none;
+      }
+    }
+    // border-bottom: 1px solid #bbb !important;
+    .selectable-wrapper.--selected {
+      box-shadow: 0 0 0 5px yellow !important;
+    }
+  }
+}
+
+.hive-icon-preview.--large {
+  margin-top: -3px;
+  .hive-icon-layers {
+    padding: 7px 11px;
+    .selectable-wrapper.--selected {
+      box-shadow: 0 0 0 7px yellow !important;
+    }
+  }
+  .honey-layer {
+    height: 18px !important;
+  }
+  .brood-layer {
+    height: 32px !important;
+  }
+  .queen_excluder-layer,
+  .feeding_box-layer {
+    height: 6px;
+  }
 }
 </style>

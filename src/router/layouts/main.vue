@@ -94,7 +94,7 @@ import PlusMenu from '@components/plus-menu.vue'
 import {
   checkAlerts,
   readApiariesAndGroups,
-  readDevicesIfNotPresent,
+  readDevicesIfNotChecked,
   readGeneralInspections,
 } from '@mixins/methodsMixin'
 import PWAPrompt from 'vue2-ios-pwa-prompt'
@@ -109,7 +109,7 @@ export default {
   mixins: [
     checkAlerts,
     readApiariesAndGroups,
-    readDevicesIfNotPresent,
+    readDevicesIfNotChecked,
     readGeneralInspections,
   ],
   props: {
@@ -182,7 +182,7 @@ export default {
     },
   },
   created() {
-    this.readDevicesIfNotPresent()
+    this.readDevicesIfNotChecked()
   },
   methods: {
     reloadData(route) {

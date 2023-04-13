@@ -41,6 +41,11 @@ if (process.env.VUE_APP_TEST === 'e2e') {
   Vue.config.errorHandler = window.Cypress.cy.onUncaughtException
 }
 
+// fix chartjs bug for older devices + better resize reactivity
+if (typeof window !== 'undefined') {
+  window.ResizeObserver = window.ResizeObserver || Polyfill
+}
+
 const i18n = new VueI18n({
   // legacy: true,
   locale: languages.checkBrowserLanguage() || 'en',

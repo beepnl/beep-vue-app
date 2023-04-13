@@ -365,7 +365,12 @@ const translations = {
   /* user */
   Data_export: 'Data export',
   Export_your_data:
-    'Exportera alla data som finns på ditt BEEP konto och skicka ett mail med en Excelfil som innehåller alla data. Excelfilen har olika flikar olika för typer av data (personuppgifter, kupa, plats, och inspektionsdata).',
+    "Exportera alla data som finns på ditt BEEP konto och skicka ett mail med en Excelfil som innehåller alla data (OR download the Excel file via the 'Download CSV' button). Excelfilen har olika flikar olika för typer av data (personuppgifter, kupa, plats, och inspektionsdata).",
+  Email_export: 'Email CSV',
+  Download_csv: 'Download CSV',
+  Open_csv: 'Open CSV',
+  Include_group_data: 'Add collaboration group data to export',
+  Include_sensor_data: 'Add measurement data file links to export',
 
   Terms_of_use: 'Användaravtal',
   accept_policy:
@@ -948,7 +953,7 @@ const translations = {
   for_hive: 'for hive "',
   Add_hivetag: 'Add hive tag',
   Select_hivetag_number: 'Select a hive tag number',
-  Select_hive: 'Select a hive',
+  Select_hive: 'Select a hive | Select hives',
   Select_hive_for_hivetag_exp:
     'For which hive would you like to perform the action? Select one hive.',
   Select_hivetag_action: 'Select an action',
@@ -972,6 +977,80 @@ const translations = {
     'Add BEEP to your home screen to use it as a web app and in full screen. You will stay signed in after signing in once.',
   pwa_share_button_label: '1. Tap the share icon in the menu bar below.',
   pwa_addhome_button_label: "2. Tap 'Add to home'.",
+
+  Colony: 'Colony | Colonies',
+  Dashboard: 'Dashboard | Dashboards',
+  Last_check: 'Last check-up',
+  Note: 'Note',
+  no_chart_data_hive: 'No chart data available for this hive',
+
+  Code: 'Code',
+
+  Dashboard_exp:
+    "Create a dashboard via the 'New dashboard' button at the top right. You can then select hives that you would like to show on a public dashboard that is accessible at a separate url (for anyone with the code). Hives (and their measurements + latest inspection) will be shown one at a time.",
+  create_dashboard_question: 'No dashboard yet? Create one via the BEEP app',
+  New_dashboard: 'New dashboard',
+  Edit_dashboard: 'Edit dashboard',
+  Delete_dashboard: 'Delete dashboard',
+  Logout_dashboard: 'Sign out',
+  Logout_dashboard_check:
+    'Are you sure you want to sign out / switch dashboard?',
+  weight_example_chart_1: 'Bees are collecting nectar',
+  weight_example_chart_2: 'Bees use their food supply',
+  weight_example_chart_3: 'A swarm!',
+  weight_example_chart_4: 'The hive has been enlarged',
+  t_example_chart_1: '34°C: healthy brood',
+  t_example_chart_2: '< 33°C: no brood',
+  Select_hives_for_dashboard_exp:
+    'Which hives would you like to show in this dashboard? Select multiple hives (up to 12) for optimal effect. For hives with a device, temperature and weight data will be shown (if present). Only owned hives can be selected.',
+  Max_hives_warning: 'The maximum number of hives has been reached',
+  Title: 'Title',
+  Dashboard_title_exp: "Default title is 'Dashboard' (if none is provided).",
+  Dashboard_description_exp:
+    'Please note: this description will not be shown on the dashboard. It can be used to store extra information, f.e. for whom this dashboard is intended',
+  Pace: 'Pace (seconds)',
+  Dashboard_pace_exp: 'Pace at which each hive is shown (on rotation)',
+  Dashboard_interval_exp:
+    'Show measurement data from the previous hour/day/week/month/year or a custom period',
+  Show_inspections: 'Show inspections',
+  Show_inspections_exp:
+    'Show the most recent inspection (date, overall impression and note).',
+  Show_all_hives: 'Show details for all hives',
+  Show_all_hives_exp:
+    'Show details (location, last inspection, measurement data) for all selected hives (YES), or only for hives with a device (NO, recommended option)',
+  Preview_share: 'Preview & share',
+  Copy_url: 'Copy url',
+  /* offline inspection sheet */
+  Hour_short: 'Hr | Hrs',
+  Day: 'Dag | Dagar',
+  Minute: 'Minute | Minutes',
+  Percentage_exp: 'Percentage between 0 and 100',
+  Grade_exp_1: 'Grade between 1 and 10',
+  Grade_exp_2: '(1 = Poor, 10 = Excellent)',
+  Degrees_exp: 'Number of degrees between -180° and 180°',
+  Negative_exp: 'Negative number (below 0)',
+  Too_many_items_exp_1: 'There are too many options to',
+  Too_many_items_exp_2: 'print, fill in your own answer',
+  Image_placeholder_1: 'This picture can be added later',
+  Image_placeholder_2: 'via the BEEP app (optional)',
+  Too_long_list_present:
+    'List of options too long to display on the offline checklist for the item:',
+  Too_long_list_present_fix_1: 'If possible, decrease the number of options to',
+  Too_long_list_present_fix_2:
+    "or less, via the 'Edit checklist' button. Or fill in the correct answer manually.",
+  Print: 'Print',
+
+  /* inspection modes */
+  Offline_inspection: 'Paper inspection',
+  Offline_inspection_exp:
+    "Print the checklist, fill it in manually. Upload photos of your inspection sheets later via the 'Upload inspection' button. The photos will then be automatically parsed and can be verified and saved like a normal (digital / online) inspection.",
+  Online_inspection: 'Digital inspection',
+  Online_inspection_exp:
+    'Fill in your checklist digitally (online) via your computer, tablet or smartphone, like you are used to',
+  Upload_inspection: 'Upload inspection',
+  Upload_inspection_exp:
+    'If you have completed a paper inspection, you can upload photos of your inspection sheets here. They will then be automatically parsed and can be verified and saved like a normal (digital / online) inspection.',
+  Select_inspection_mode: 'Select inspection mode',
 }
 
 export default translations

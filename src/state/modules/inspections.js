@@ -18,6 +18,14 @@ export const state = {
   diarySearch: null,
   activeInspectionDate: null,
   tempSavedInspection: null,
+  svgItemCounter: 0,
+  svgColumnCounter: 0,
+  svgMaxPageNr: null,
+  svgPageNr: 1,
+  svgPositionSet: {},
+  svgRowHeight: 38,
+  svgY: 0,
+  svgWarnings: [],
 }
 export const getters = {
   ...resource.getters,
@@ -60,9 +68,50 @@ export const getters = {
   tempSavedInspection: (state) => {
     return state.tempSavedInspection
   },
+  svgItemCounter: (state) => {
+    return state.svgItemCounter
+  },
+  svgColumnCounter: (state) => {
+    return state.svgColumnCounter
+  },
+  svgMaxPageNr: (state) => {
+    return state.svgMaxPageNr
+  },
+  svgPageNr: (state) => {
+    return state.svgPageNr
+  },
+  svgPositionSet: (state) => {
+    return state.svgPositionSet
+  },
+  svgRowHeight: (state) => {
+    return state.svgRowHeight
+  },
+  svgY: (state) => {
+    return state.svgY
+  },
+  svgWarnings: (state) => {
+    return state.svgWarnings
+  },
 }
 export const mutations = {
   ...resource.mutations,
+  addWarning: function(state, payload) {
+    var warningPresent =
+      state.svgWarnings.filter((warning) => {
+        return warning.id === payload.id
+      }).length > 0
+    if (!warningPresent) {
+      state.svgWarnings.push(payload)
+    }
+  },
+  removeWarning: function(state, payload) {
+    var warningIndex = state.svgWarnings.findIndex(
+      (warning) => warning.id === payload
+    )
+    if (warningIndex > -1) {
+      state.svgWarnings.splice(warningIndex, 1)
+    }
+  },
   setChecklist: function(state, payload) {
     state.checklist = payload
   },
@@ -93,6 +142,29 @@ export const mutations = {
   setData: function(state, payload) {
     state[payload.prop] = payload.value
   },
+  setItemCounter: function(state, payload) {
+    state.svgItemCounter = payload
+  },
+  setColumnCounter: function(state, payload) {
+    state.svgColumnCounter = payload
+  },
+  setRowHeight: function(state, payload) {
+    state.svgRowHeight = payload
+  },
+  setPageNr: function(state, payload) {
+    state.svgPageNr = payload
+  },
+  setPosition: function(state, payload) {
+    state.svgPositionSet[payload.id] = {
+      x: payload.x,
+      y: payload.y,
+      pageY: payload.pageY,
+      id: payload.id,
+    }
+  },
+  setY: function(state, payload) {
+    state.svgY = payload
+  },
   clearFilters: function(state) {
     state.diaryFilterByAttention = false
     state.diaryFilterByGroup = 'off'
@@ -113,8 +185,33 @@ export const mutations = {
     state.diarySearch = null
     state.activeInspectionDate = null
     state.tempSavedInspection = null
+    state.svgItemCounter = 0
+    state.svgColumnCounter = 0
+    state.svgPageNr = 1
+    state.svgPositionSet = {}
+    state.svgRowHeight = 38
+    state.svgY = 0
+    state.svgMaxPageNr = null
+    state.svgWarnings = []
+  },
+  resetSvgStates: function(state) {
+    state.svgItemCounter = 0
+    state.svgColumnCounter = 0
+    state.svgPageNr = 1
+    state.svgPositionSet = {}
+    state.svgRowHeight = 38
+    state.svgY = 0
+    state.svgMaxPageNr = null
+    state.svgWarnings = []
   },
 }
 export const actions = {
   ...resource.actions,
+  nextPage: function({ state, commit }) {
+    commit('setPageNr', state.svgPageNr + 1)
+    commit('setColumnCounter', 0)
+    commit('setItemCounter', 0)
+    commit('setRowHeight', 0)
+    commit('setY', 0)
+  },
 }

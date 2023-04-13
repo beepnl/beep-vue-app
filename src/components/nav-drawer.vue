@@ -43,11 +43,7 @@
 
             <template v-for="(item, i) in settingItems">
               <v-list-item
-                v-if="
-                  item.title &&
-                    ((item.beepBaseRequired && userHasBeepBase) ||
-                      !item.beepBaseRequired)
-                "
+                v-if="item.title && item.show"
                 :key="i"
                 exact
                 :to="!item.external ? { name: item.route } : ''"
@@ -86,7 +82,7 @@
 
         <div class="version-number">
           <v-spacer></v-spacer>
-          v3.1.1
+          <span v-text="'v' + appVersion"></span>
         </div>
       </div>
     </v-navigation-drawer>
@@ -95,10 +91,10 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { readDevicesIfNotPresent } from '@mixins/methodsMixin'
+import { readDevicesIfNotChecked } from '@mixins/methodsMixin'
 
 export default {
-  mixins: [readDevicesIfNotPresent],
+  mixins: [readDevicesIfNotChecked],
   props: {
     menuItems: {
       type: Array,
@@ -110,7 +106,13 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      appVersion: process.env.VUE_APP_VERSION,
+    }
+  },
   computed: {
+    ...mapGetters('auth', ['permissions']),
     ...mapGetters('devices', ['devices', 'devicesPresent']),
     currentRoute() {
       return this.$route.name
@@ -121,49 +123,55 @@ export default {
           icon: 'mdi-account',
           title: this.$i18n.t('Profile'),
           route: 'profile',
-          beepBaseRequired: false,
+          show: true,
         },
         {
           icon: 'icon-sensors--no-outline',
           title: this.$i18n.tc('device', 2),
           route: 'devices',
-          beepBaseRequired: false,
+          show: true,
         },
         {
           icon: 'mdi-bell',
           title: this.$i18n.tc('Alertrule', 2),
           route: 'alertrules',
-          beepBaseRequired: false,
+          show: true,
         },
         {
           icon: 'mdi-cloud-download',
           title: this.$i18n.t('Data_export'),
           route: 'export',
-          beepBaseRequired: false,
+          show: true,
         },
         {
           icon: 'icon-beep-base',
           title: this.$i18n.t('Log_data_import'),
           route: 'import',
-          beepBaseRequired: true,
+          show: this.userHasBeepBase,
         },
         {
           icon: 'mdi-format-list-checks',
           title: this.$i18n.tc('Checklist_template', 2),
           route: 'checklists',
-          beepBaseRequired: false,
+          show: true,
         },
         {
           icon: 'mdi-qrcode',
           title: this.$i18n.tc('Hivetag', 2),
           route: 'hivetags',
-          beepBaseRequired: false,
+          show: true,
+        },
+        {
+          icon: 'mdi-monitor-dashboard',
+          title: this.$i18n.tc('Dashboard', 2),
+          route: 'dashboards',
+          show: this.permissions.includes('dashboard'),
         },
         {
           icon: 'mdi-school',
           title: this.$i18n.t('research'),
           route: 'research',
-          beepBaseRequired: false,
+          show: true,
         },
         {
           divider: true,
@@ -179,13 +187,13 @@ export default {
                 (this.locale === 'pt' ? '-PT' : '') +
                 '/support/solutions'
               : 'https://beepsupport.freshdesk.com/en/support/solutions',
-          beepBaseRequired: false,
+          show: true,
         },
         {
           icon: 'mdi-new-box',
           title: this.$i18n.t('Whats_new'),
           route: 'new',
-          beepBaseRequired: false,
+          show: true,
         },
         {
           icon: 'mdi-information-outline',
@@ -195,7 +203,7 @@ export default {
             this.locale === 'nl'
               ? 'https://beep.nl'
               : 'https://beep.nl/home-english',
-          beepBaseRequired: false,
+          show: true,
         },
         {
           divider: true,
@@ -225,7 +233,7 @@ export default {
     },
   },
   created() {
-    this.readDevicesIfNotPresent()
+    this.readDevicesIfNotChecked()
   },
   methods: {
     checkRoute(routeName) {

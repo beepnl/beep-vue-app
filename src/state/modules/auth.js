@@ -15,6 +15,9 @@ export const getters = {
   currentUser: function(state) {
     return state.currentUser || null
   },
+  permissions: function(state) {
+    return (state.currentUser && state.currentUser.permissions) || []
+  },
   userEmail: function(state) {
     return (state.currentUser && state.currentUser.email) || null
   },
