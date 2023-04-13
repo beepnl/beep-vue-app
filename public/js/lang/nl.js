@@ -1011,6 +1011,10 @@ const translations = {
     "Wanneer u een papieren inspectie heeft gedaan, kunt u hier foto's daarvan uploaden. Deze worden vervolgens automatisch uitgelezen en het resultaat kan dan worden geverifiëerd en opgeslagen als een normale (digitale / online) inspectie.",
 
   Select_inspection_mode: 'Selecteer inspectiemodus',
+
+  /* Compare module */
+  Load: 'Laden',
+  Compare: 'Vergelijk',
 }
 
 export default translations

@@ -1063,6 +1063,10 @@ const translations = {
   Upload_inspection_exp:
     'If you have completed a paper inspection, you can upload photos of your inspection sheets here. They will then be automatically parsed and can be verified and saved like a normal (digital / online) inspection.',
   Select_inspection_mode: 'Select inspection mode',
+
+  /* Compare module */
+  Load: 'Laden',
+  Compare: 'Vergelijk',
 }
 
 export default translations

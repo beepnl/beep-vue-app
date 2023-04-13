@@ -173,73 +173,6 @@
         </v-col>
       </v-row>
 
-      <v-row class="mb-3">
-        <v-col cols="12" md="4">
-          <v-row>
-            <v-col cols="12" sm="7" md="12">
-              <div
-                class="beep-label mt-n3 mt-sm-0"
-                v-text="treeselectLabel"
-              ></div>
-              <Treeselect
-                v-if="sortedHiveSets && sortedHiveSets.length > 0"
-                v-model="selectedHiveSetId"
-                :options="sortedHiveSets"
-                :normalizer="normalizerHiveSets"
-                :placeholder="treeselectLabel"
-                :no-results-text="`${$t('no_results')}`"
-                :disable-branch-nodes="true"
-                :default-expand-level="1"
-                @input="selectHiveSet($event)"
-              />
-            </v-col>
-            <v-col
-              cols="12"
-              sm="5"
-              md="12"
-              class="py-0 py-sm-3 mb-n2 mb-sm-0 mt-sm-3 mt-md-0 hives-switch d-flex align-center"
-            >
-              <v-switch
-                v-if="selectedHiveSet"
-                v-model="allHivesSelected"
-                :label="$t('select_all_hives')"
-                hide-details
-              ></v-switch>
-            </v-col>
-          </v-row>
-        </v-col>
-
-        <v-col cols="12" md="7" class="mb-n3 mb-sm-0">
-          <ApiaryPreviewHiveSelector
-            v-if="selectedHiveSet && sensorHives && sensorHives.length > 0"
-            :hives="selectedHiveSet.hives"
-            :hives-selected="selectedHives"
-            :hives-editable="sensorHives"
-            :inspection-mode="true"
-            @select-hive="selectHive($event)"
-          ></ApiaryPreviewHiveSelector>
-          {{ selectedHives }}
-          <v-btn
-            tile
-            outlined
-            color="black"
-            class="save-button-mobile-wide"
-            @click.prevent="loadCompareData"
-          >
-            <v-progress-circular
-              v-if="showLoadingIcon"
-              class="ml-n1 mr-2"
-              size="18"
-              width="2"
-              color="disabled"
-              indeterminate
-            />
-            <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
-            {{ $t('load') }}
-          </v-btn>
-        </v-col>
-      </v-row>
-
       <div v-if="devices.length > 0">
         <v-card v-if="lastSensorDate" outlined class="mt-3 mb-6">
           <v-card-title
@@ -562,9 +495,11 @@
 
         <v-card
           v-if="
-            ((measurementData !== null) & (compareMeasurementData !== null) &&
-              !noPeriodData) ||
-              loadingCompareData
+            permissions.includes('hive-compare') &&
+              (((measurementData !== null) &
+                (compareMeasurementData !== null) &&
+                !noPeriodData) ||
+                loadingCompareData)
           "
           outlined
           class="mt-3 mb-6"
@@ -620,6 +555,72 @@
 
           <SlideYUpTransition :duration="150">
             <v-card-text v-if="showCompareMeasurements">
+              <v-row class="my-6">
+                <v-col cols="12" md="4">
+                  <v-row>
+                    <v-col cols="12" sm="7" md="12">
+                      <div class="beep-label" v-text="treeselectLabel"></div>
+                      <Treeselect
+                        v-if="sortedHiveSets && sortedHiveSets.length > 0"
+                        v-model="selectedHiveSetId"
+                        :options="sortedHiveSets"
+                        :normalizer="normalizerHiveSets"
+                        :placeholder="treeselectLabel"
+                        :no-results-text="`${$t('no_results')}`"
+                        :disable-branch-nodes="true"
+                        :default-expand-level="1"
+                        @input="selectHiveSet($event)"
+                      />
+                    </v-col>
+                    <v-col
+                      cols="12"
+                      sm="5"
+                      md="12"
+                      class="py-0 py-sm-3 mb-n2 mb-sm-0 mt-sm-3 mt-md-0 hives-switch d-flex align-center"
+                    >
+                      <v-switch
+                        v-if="selectedHiveSet"
+                        v-model="allHivesSelected"
+                        :label="$t('select_all_hives')"
+                        hide-details
+                      ></v-switch>
+                    </v-col>
+                  </v-row>
+                </v-col>
+
+                <v-col cols="12" md="7" class="mb-n3 mb-sm-0">
+                  <ApiaryPreviewHiveSelector
+                    v-if="
+                      selectedHiveSet && sensorHives && sensorHives.length > 0
+                    "
+                    :hives="selectedHiveSet.hives"
+                    :hives-selected="selectedHives"
+                    :hives-editable="sensorHives"
+                    :inspection-mode="true"
+                    @select-hive="selectHive($event)"
+                  ></ApiaryPreviewHiveSelector>
+                  {{ selectedHives }}
+                  <v-btn
+                    tile
+                    outlined
+                    color="black"
+                    class="save-button-mobile-wide"
+                    @click.prevent="loadCompareData"
+                  >
+                    <v-progress-circular
+                      v-if="showLoadingIcon"
+                      class="ml-n1 mr-2"
+                      size="18"
+                      width="2"
+                      color="disabled"
+                      indeterminate
+                    />
+                    <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
+                    {{ $t('Load') }}
+                  </v-btn>
+                </v-col>
+              </v-row>
+
               <v-row>
                 <v-col
                   v-if="loadingCompareData"
@@ -889,7 +890,7 @@ export default {
   },
   computed: {
     ...mapGetters('alerts', ['alerts']),
-    ...mapGetters('auth', ['userLocale']),
+    ...mapGetters('auth', ['permissions', 'userLocale']),
     ...mapGetters('devices', ['devices']),
     ...mapGetters('inspections', ['generalInspections']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
