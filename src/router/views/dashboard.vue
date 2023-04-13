@@ -784,6 +784,7 @@ export default {
           position: { lat: this.lat, lng: this.lng },
           icon: this.svgMarker,
           map: this.map,
+          cursor: 'grab',
         })
       }, 100)
     },
