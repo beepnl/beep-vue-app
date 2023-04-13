@@ -1,4 +1,4 @@
-FROM node:lts as ui-dev
+FROM node:14.17.5 as ui-dev
 
 WORKDIR /app
 
@@ -13,8 +13,8 @@ ENTRYPOINT ["docker-entrypoint.sh"]
 
 CMD ["vue", "ui", "--host",  "0.0.0.0", "--headless"]
 
-FROM node:lts as ui-builder
+FROM node:14.17.5 as ui-builder
 
 COPY . /app
 WORKDIR /app
-RUN npm install && npm run build
+RUN npm install -g npm@6.14.14 && npm run build

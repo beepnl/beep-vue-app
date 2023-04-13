@@ -1,13 +1,13 @@
 # BEEP Vue app + Legacy API
 
 # Installation
+
 ## Installation without Docker
 
 - Install NodeJs and NPM
 - npm ci
 - npm run build
 - serve /dist folder
-
 
 ## Installation with Docker
 
@@ -21,7 +21,7 @@ first run.
 ### First install
 
 - cd dir (to directory where this repo is cloned/pulled)
-- docker run -it --rm -v \$PWD:/var/app -w /var/app node:lts npm install
+- docker run -it --rm -v \$PWD:/var/app -w /var/app node:14.17.5 npm install
 - docker-compose build --no-cache
 
 ### Running the container (after first install)
@@ -43,7 +43,7 @@ Instead run npm calls inside the container:
 
 OR before running the container:
 
-- docker run -it --rm -v \$PWD:/var/app -w /var/app node:lts npm install
+- docker run -it --rm -v \$PWD:/var/app -w /var/app node:14.17.5 npm install
 
 ## Running the app locally
 

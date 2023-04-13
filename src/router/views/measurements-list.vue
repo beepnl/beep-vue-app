@@ -173,6 +173,73 @@
         </v-col>
       </v-row>
 
+      <v-row class="mb-3">
+        <v-col cols="12" md="4">
+          <v-row>
+            <v-col cols="12" sm="7" md="12">
+              <div
+                class="beep-label mt-n3 mt-sm-0"
+                v-text="treeselectLabel"
+              ></div>
+              <Treeselect
+                v-if="sortedHiveSets && sortedHiveSets.length > 0"
+                v-model="selectedHiveSetId"
+                :options="sortedHiveSets"
+                :normalizer="normalizerHiveSets"
+                :placeholder="treeselectLabel"
+                :no-results-text="`${$t('no_results')}`"
+                :disable-branch-nodes="true"
+                :default-expand-level="1"
+                @input="selectHiveSet($event)"
+              />
+            </v-col>
+            <v-col
+              cols="12"
+              sm="5"
+              md="12"
+              class="py-0 py-sm-3 mb-n2 mb-sm-0 mt-sm-3 mt-md-0 hives-switch d-flex align-center"
+            >
+              <v-switch
+                v-if="selectedHiveSet"
+                v-model="allHivesSelected"
+                :label="$t('select_all_hives')"
+                hide-details
+              ></v-switch>
+            </v-col>
+          </v-row>
+        </v-col>
+
+        <v-col cols="12" md="7" class="mb-n3 mb-sm-0">
+          <ApiaryPreviewHiveSelector
+            v-if="selectedHiveSet && sensorHives && sensorHives.length > 0"
+            :hives="selectedHiveSet.hives"
+            :hives-selected="selectedHives"
+            :hives-editable="sensorHives"
+            :inspection-mode="true"
+            @select-hive="selectHive($event)"
+          ></ApiaryPreviewHiveSelector>
+          {{ selectedHives }}
+          <v-btn
+            tile
+            outlined
+            color="black"
+            class="save-button-mobile-wide"
+            @click.prevent="loadCompareData"
+          >
+            <v-progress-circular
+              v-if="showLoadingIcon"
+              class="ml-n1 mr-2"
+              size="18"
+              width="2"
+              color="disabled"
+              indeterminate
+            />
+            <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
+            {{ $t('load') }}
+          </v-btn>
+        </v-col>
+      </v-row>
+
       <div v-if="devices.length > 0">
         <v-card v-if="lastSensorDate" outlined class="mt-3 mb-6">
           <v-card-title
@@ -420,6 +487,7 @@
                     </div>
                   </v-col>
                 </template>
+
                 <v-col
                   v-if="soundSensorsPresent"
                   cols="12"
@@ -491,12 +559,191 @@
             </v-card-text>
           </SlideYUpTransition>
         </v-card>
+
+        <v-card
+          v-if="
+            ((measurementData !== null) & (compareMeasurementData !== null) &&
+              !noPeriodData) ||
+              loadingCompareData
+          "
+          outlined
+          class="mt-3 mb-6"
+        >
+          <v-card-title
+            :class="
+              `measurements-card-title ${
+                showCompareMeasurements
+                  ? 'measurements-card-title--border-bottom'
+                  : ''
+              }`
+            "
+          >
+            <v-row>
+              <v-col cols="12" class="my-0">
+                <div class="d-flex justify-space-between align-center">
+                  <span>{{
+                    selectedDevice && selectedHiveSet && !mobile
+                      ? $tc('Compare', 2) +
+                        ': ' +
+                        selectedDeviceTitle +
+                        ' and ' +
+                        selectedHiveSet.name
+                      : $tc('Compare', 2)
+                  }}</span>
+                  <v-spacer></v-spacer>
+                  <div class="d-flex justify-end align-center">
+                    <template v-for="(icon, n) in chartColsIcons">
+                      <v-icon
+                        v-if="!mdScreen"
+                        :key="'icon' + n"
+                        class="mr-2"
+                        :color="chartCols === icon.value ? 'primary' : 'grey'"
+                        @click="updateChartCols(icon.value)"
+                        >{{ icon.name }}</v-icon
+                      >
+                    </template>
+                    <v-icon
+                      :class="
+                        `toggle-icon mdi ${
+                          showCompareMeasurements ? 'mdi-minus' : 'mdi-plus'
+                        }`
+                      "
+                      @click="
+                        showCompareMeasurements = !showCompareMeasurements
+                      "
+                    ></v-icon>
+                  </div>
+                </div>
+              </v-col>
+            </v-row>
+          </v-card-title>
+
+          <SlideYUpTransition :duration="150">
+            <v-card-text v-if="showCompareMeasurements">
+              <v-row>
+                <v-col
+                  v-if="loadingCompareData"
+                  class="d-flex align-center justify-center my-16"
+                  cols="12"
+                >
+                  <v-progress-circular
+                    color="primary"
+                    size="50"
+                    indeterminate
+                  />
+                </v-col>
+                <v-col
+                  v-if="noCompareChartData"
+                  cols="12"
+                  class="text-center my-16"
+                >
+                  {{ $t('no_chart_data') }}
+                </v-col>
+              </v-row>
+              <v-row
+                v-if="
+                  compareMeasurementData !== null &&
+                    compareMeasurementData.measurements &&
+                    compareMeasurementData.measurements.length > 0
+                "
+                class="charts mt-6 mb-2"
+              >
+                <template v-if="compareSensorsPresent">
+                  <v-col
+                    v-for="(sensor, index) in currentCompareSensors"
+                    :key="'sensor' + index"
+                    cols="12"
+                    :md="chartCols"
+                  >
+                    <div
+                      v-if="index === 0"
+                      class="overline mt-0 mt-sm-3 mb-3 text-center"
+                      v-text="
+                        compareMeasurementData.resolution
+                          ? $tc('measurement', 2) +
+                            ' (' +
+                            $t('measurement_interval') +
+                            ': ' +
+                            compareMeasurementData.resolution +
+                            ')'
+                          : $tc('measurement', 2)
+                      "
+                    ></div>
+                    <div
+                      v-else-if="chartCols !== 12"
+                      class="header-filler my-3"
+                    ></div>
+                    <div>
+                      <MeasurementsChartLine
+                        :chart-data="chartjsCompareDataSeries([sensor])"
+                        :interval="interval"
+                        :start-time="periodStartString"
+                        :end-time="periodEndString"
+                        :chart-id="'chart-compare-sensor-' + index"
+                        :alerts-for-charts="alertsForCharts([sensor])"
+                        :inspections-for-charts="inspectionsForCharts"
+                        @confirm-view-alert="confirmViewAlert($event)"
+                        @confirm-view-inspection="
+                          confirmViewInspection($event.id, $event.date)
+                        "
+                        @set-period-to-date="setPeriodToDate($event)"
+                      >
+                      </MeasurementsChartLine>
+                    </div>
+                  </v-col>
+                </template>
+
+                <template v-if="compareSensorsPresent">
+                  <v-col
+                    v-for="(sensor, index) in currentCompareSensors"
+                    :key="'sensorbar' + index"
+                    cols="12"
+                    :md="chartCols"
+                  >
+                    <div
+                      v-if="index === 0"
+                      class="overline mt-0 mt-sm-3 mb-3 text-center"
+                      v-text="
+                        compareMeasurementData.resolution
+                          ? $tc('measurement', 2) +
+                            ' (' +
+                            $t('measurement_interval') +
+                            ': ' +
+                            compareMeasurementData.resolution +
+                            ')'
+                          : $tc('measurement', 2)
+                      "
+                    ></div>
+                    <div
+                      v-else-if="chartCols !== 12"
+                      class="header-filler my-3"
+                    ></div>
+                    <div>
+                      <MeasurementsChartBar
+                        :chart-data="chartjsCompareDataSeries([sensor])"
+                        :interval="interval"
+                        :start-time="periodStartString"
+                        :end-time="periodEndString"
+                        :chart-id="'chart-compare-sensor-barchart-' + index"
+                        :alerts-for-charts="alertsForCharts([sensor])"
+                        @confirm-view-alert="confirmViewAlert($event)"
+                        @set-period-to-date="setPeriodToDate($event)"
+                      >
+                      </MeasurementsChartBar>
+                    </div>
+                  </v-col>
+                </template>
+              </v-row>
+            </v-card-text>
+          </SlideYUpTransition>
+        </v-card>
+
         <v-row class="text-row">
           <v-col
             v-if="
               ready &&
-                (measurementData === null || noPeriodData) &&
-                !loadingData
+                (compareMeasurementData === null || noPeriodData) &&
+                !loadingCompareData
             "
             cols="12"
             class="text-center my-10"
@@ -529,8 +776,10 @@ import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/main.vue'
 import { mapGetters } from 'vuex'
+import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 import MeasurementsChartHeatmap from '@components/measurements-chart-heatmap.vue'
 import MeasurementsChartLine from '@components/measurements-chart-line.vue'
+import MeasurementsChartBar from '@components/measurements-chart-bar.vue'
 import MeasurementsDateSelection from '@components/measurements-date-selection.vue'
 import Treeselect from '@riophae/vue-treeselect'
 import {
@@ -538,6 +787,7 @@ import {
   readDevicesIfNotChecked,
   readGeneralInspectionsIfNotPresent,
   readTaxonomy,
+  readApiariesAndGroups,
 } from '@mixins/methodsMixin'
 import {
   momentifyDayMonth,
@@ -551,10 +801,12 @@ import { SlideYUpTransition } from 'vue2-transitions'
 
 export default {
   components: {
+    ApiaryPreviewHiveSelector,
     Confirm,
     Layout,
     MeasurementsChartHeatmap,
     MeasurementsChartLine,
+    MeasurementsChartBar,
     MeasurementsDateSelection,
     SlideYUpTransition,
     Treeselect,
@@ -567,6 +819,7 @@ export default {
     momentFromNow,
     readDevicesIfNotChecked,
     readGeneralInspectionsIfNotPresent,
+    readApiariesAndGroups,
     readTaxonomy,
     sensorMixin,
     timeZone,
@@ -576,6 +829,7 @@ export default {
       initLocale: 'nl',
       lastSensorDate: null,
       measurementData: {},
+      compareMeasurementData: {},
       noPeriodData: false,
       interval: 'day',
       timeIndex: 0,
@@ -583,21 +837,29 @@ export default {
       dateTimeFormat: 'YYYY-MM-DD HH:mm:ss',
       currentWeatherSensors: [],
       currentSensors: [],
+      currentCompareSensors: [],
       currentSoundSensors: {},
       currentDebugSensors: [],
       weatherSensorsPresent: false,
       sensorsPresent: false,
+      compareSensorsPresent: false,
       soundSensorsPresent: false,
       debugSensorsPresent: false,
       noChartData: false,
+      noCompareChartData: false,
       currentLastSensorValues: [],
       showMeasurements: true,
+      showCompareMeasurements: true,
       showLastSensorValues: true,
       ready: false,
       timer: 0,
       selectedDate: '',
       periodTitle: null,
       preselectedDeviceId: null,
+      selectedHiveSetId: null,
+      selectedHiveSet: null,
+      selectedHives: [],
+      sensorHives: [],
       chartCols: 6,
       chartColsIcons: [
         { value: 12, name: 'mdi-format-align-justify' },
@@ -612,8 +874,17 @@ export default {
       periodStart: null,
       periodEnd: null,
       loadingData: false,
+      loadingCompareData: false,
       relativeInterval: true,
       hideScrollBar: false,
+      showLoadingIcon: false,
+      normalizerHiveSets(node) {
+        return {
+          id: node.treeselectId,
+          label: node.name,
+          isDisabled: node.noEditableHives,
+        }
+      },
     }
   },
   computed: {
@@ -622,6 +893,96 @@ export default {
     ...mapGetters('devices', ['devices']),
     ...mapGetters('inspections', ['generalInspections']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
+    ...mapGetters('groups', ['groups']),
+    ...mapGetters('locations', ['apiaries']),
+    allHivesSelected: {
+      get() {
+        return this.selectedHives.length === this.sensorHives.length
+      },
+      set(value) {
+        if (value === false) {
+          this.selectedHives = []
+        } else {
+          this.selectedHives = []
+          this.selectedHiveSet.hives.map((hive) => {
+            if (hive.sensors.length > 0) {
+              this.selectedHives.push(hive.id)
+            }
+          })
+        }
+      },
+    },
+
+    sortedHiveSets() {
+      var treeselectArray = []
+      if (this.apiaries && this.apiaries.length > 0) {
+        var treeselectApiaries = this.apiaries
+        treeselectApiaries.map((apiary) => {
+          apiary.treeselectId = parseInt('1' + apiary.id.toString())
+        })
+        var sortedTreeselectApiaries = treeselectApiaries
+          .slice()
+          .sort(function(a, b) {
+            if (a.name > b.name) {
+              return 1
+            }
+            if (b.name > a.name) {
+              return -1
+            }
+            return 0
+          })
+
+        treeselectArray.push({
+          treeselectId: -1,
+          name: this.$i18n.tc('Location', 2),
+          children: sortedTreeselectApiaries,
+        })
+      }
+      if (this.groups && this.groups.length > 0) {
+        var treeselectGroups = this.groups
+        treeselectGroups.map((group) => {
+          // groups with no sensor hives will be disabled in the treeselect component
+          group.nosensorHives =
+            group.hives.filter((hive) => {
+              return hive.sensors.length > 0
+            }).length === 0
+          group.treeselectId = parseInt('2' + group.id.toString())
+        })
+        var sortedTreeselectGroups = treeselectGroups
+          .slice()
+          .sort(function(a, b) {
+            if (a.name > b.name) {
+              return 1
+            }
+            if (b.name > a.name) {
+              return -1
+            }
+            return 0
+          })
+
+        treeselectArray.push({
+          treeselectId: -2,
+          name: this.$i18n.tc('Group', 2),
+          children: sortedTreeselectGroups,
+        })
+      }
+      return treeselectArray
+    },
+    treeselectLabel() {
+      var label = ''
+      if (this.apiaries.length > 0) {
+        label =
+          this.$i18n.t('Select') +
+          ' ' +
+          this.$i18n.tc('location', 1) +
+          (this.groups.length > 0
+            ? ' ' + this.$i18n.t('or') + ' ' + this.$i18n.tc('group', 1)
+            : '')
+      } else if (this.groups.length > 0) {
+        label = this.$i18n.t('Select') + ' ' + this.$i18n.tc('group', 1)
+      }
+      return label
+    },
     alertsForDeviceAndPeriod() {
       var alertsForDevice = [...this.alerts].filter(
         (alert) => alert.device_id === this.selectedDeviceId
@@ -902,6 +1263,20 @@ export default {
         })[0] || null
       )
     },
+    selectedGroup() {
+      return (
+        this.groups.filter((group) => {
+          return group.id === this.selectedGroupId
+        })[0] || null
+      )
+    },
+    selectedApiary() {
+      return (
+        this.apiaries.filter((apiary) => {
+          return apiary.id === this.selectedApiaryId
+        })[0] || null
+      )
+    },
     selectedDeviceId: {
       get() {
         return parseInt(this.$store.getters['devices/selectedDeviceId'])
@@ -909,6 +1284,24 @@ export default {
       set(value) {
         this.$store.commit('devices/setSelectedDeviceId', value)
         localStorage.beepSelectedDeviceId = value
+      },
+    },
+    selectedGroupId: {
+      get() {
+        return parseInt(this.$store.getters['groups/selectedGroupId'])
+      },
+      set(value) {
+        this.$store.commit('groups/setSelectedGroupId', value)
+        localStorage.beepSelectedGroupId = value
+      },
+    },
+    selectedApiaryId: {
+      get() {
+        return parseInt(this.$store.getters['apiaries/selectedApiaryId'])
+      },
+      set(value) {
+        this.$store.commit('apiaries/selectedApiaryId', value)
+        localStorage.beepSelectedApiaryId = value
       },
     },
     selectedDeviceTitle() {
@@ -939,6 +1332,9 @@ export default {
           {}
         )
       return sorted
+    },
+    sortedGroups() {
+      return this.groups
     },
     sortedDevices() {
       var apiaryArray = []
@@ -1017,6 +1413,10 @@ export default {
     },
   },
   created() {
+    if (this.apiaries.length === 0 && this.groups.length === 0) {
+      // in case view is opened directly without loggin in (via localstorage) or in case of hard refresh
+      this.readApiariesAndGroups()
+    }
     this.initLocale = this.userLocale
     if (this.queriedChartCols !== null) {
       this.chartCols = this.queriedChartCols
@@ -1038,6 +1438,7 @@ export default {
     } else if (this.preselectedDeviceId !== null) {
       this.selectedDeviceId = this.preselectedDeviceId
     }
+    this.getHiveSet()
     this.stopTimer()
     this.readTaxonomy().then(() => {
       this.checkAlertRulesAndAlerts() // for alerts-tab badge AND alert-lines
@@ -1078,6 +1479,115 @@ export default {
     }
   },
   methods: {
+    selectHiveSet(id) {
+      var stringId = id.toString()
+      this.isApiary = parseInt(stringId.substring(0, 1)) === 1
+      this.hiveSetId = parseInt(stringId.substring(1, stringId.length + 1))
+      this.isApiary
+        ? this.selectApiary(this.hiveSetId)
+        : this.selectGroup(this.hiveSetId)
+    },
+    selectApiary(id) {
+      this.selectedHives = []
+      this.sensorHives = []
+      const apiary = this.apiaries.filter((apiary) => {
+        return apiary.id === id
+      })[0]
+      if (apiary) {
+        apiary.hives.map((hive) => {
+          if (hive.sensors.length > 0) {
+            this.selectedHives.push(hive.id)
+            this.sensorHives.push(hive.id)
+          }
+        })
+        // only when selecting the apiary from the queried hive Id, select just that hive
+        if (this.hiveId && apiary.id === this.activeHive.location_id) {
+          this.selectedHives = [this.hiveId]
+        }
+        this.selectedHiveSet = apiary
+        // If apiary id doesn't exist return 404
+      } else {
+        this.$router.push({
+          name: '404',
+          params: { resource: 'location' },
+        })
+      }
+    },
+    selectGroup(id) {
+      this.selectedHives = []
+      this.sensorives = []
+      const group = this.groups.filter((group) => {
+        return group.id === id
+      })[0]
+      if (group) {
+        group.hives.map((hive) => {
+          if (hive.sensors.length > 0) {
+            this.selectedHives.push(hive.id)
+            this.sensorHives.push(hive.id)
+          }
+        })
+        // only when selecting a group containing the queried hive Id, select just that hive
+        if (this.hiveId && this.activeHive.group_ids.includes(group.id)) {
+          // if hiveId is specified, only select it if it has sensors
+          if (this.sensorHives.includes(this.hiveId)) {
+            this.selectedHives = [this.hiveId]
+          }
+        }
+        this.selectedHiveSet = group
+        // If group id doesn't exist return 404
+      } else {
+        this.$router.push({
+          name: '404',
+          params: { resource: 'group' },
+        })
+      }
+    },
+    selectHive(id) {
+      if (this.sensorHives.includes(id)) {
+        if (!this.selectedHives.includes(id)) {
+          this.selectedHives.push(id)
+        } else {
+          this.selectedHives.splice(this.selectedHives.indexOf(id), 1)
+        }
+      }
+    },
+    selectFirstHiveSetFromList() {
+      this.selectedHiveSetId = this.sortedHiveSets[0].children[0].treeselectId
+      this.selectHiveSet(this.selectedHiveSetId)
+    },
+    selectInitialHiveSet() {
+      if (this.apiaryId) {
+        this.selectedHiveSetId = parseInt('1' + this.apiaryId) // add '1' to id to distinguish apiaries from groups when id is selected in treeselect component
+        this.selectApiary(parseInt(this.apiaryId))
+      } else if (this.groupId) {
+        this.selectedHiveSetId = parseInt('2' + this.groupId) // add '2' to id to distinguish groups from apiaries when id is selected in treeselect component
+        this.selectGroup(parseInt(this.groupId))
+      } else if (this.hiveId) {
+        // if no apiary or group id is specified, select apiary if owner is true, else select group
+        if (this.activeHive.owner) {
+          const apiaryId = this.activeHive.location_id
+          this.selectedHiveSetId = parseInt('1' + apiaryId) // add '1' to id to distinguish apiaries from groups when id is selected in treeselect component
+          this.selectApiary(parseInt(apiaryId))
+        } else {
+          const groupId = this.activeHive.group_ids[0]
+          this.selectedHiveSetId = parseInt('2' + groupId) // add '2' to id to distinguish groups from apiaries when id is selected in treeselect component
+          this.selectGroup(parseInt(groupId))
+        }
+      } else {
+        this.selectFirstHiveSetFromList()
+      }
+    },
+
+    getHiveSet() {
+      if (this.apiaries.length === 0 && this.groups.length === 0) {
+        // if apiaries and groups are not in store, in case view is opened directly without loggin in (via localstorage)
+        this.readApiariesAndGroups().then(() => {
+          this.selectInitialHiveSet()
+        })
+      } else {
+        this.selectInitialHiveSet()
+      }
+    },
     async loadLastSensorValuesFunc() {
       if (this.selectedDeviceId) {
         try {
@@ -1170,6 +1680,52 @@ export default {
           console.log(error.response)
           if (error.response.status === 500) {
             this.noChartData = true
+          }
+          if (error.response.status === 404 || error.response.status === 422) {
+            this.selectedDeviceId = parseInt(this.devices[0].id) // overwrite value in store with valid device id
+            this.$router.push({ name: '404', params: { resource: 'device' } })
+          }
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
+    async sensorCompareMeasurementRequest(interval) {
+      var start = interval === 'selection' ? this.dates[0] : null
+      var end = interval === 'selection' ? this.dates[1] : null
+      var timeGroup =
+        interval === 'hour' || interval === 'selection' ? null : interval
+      this.noCompareChartData = false
+      this.noPeriodData = false
+      this.loadingCompareData = true
+      this.compareMeasurementData = null // needed to let chartjs redraw charts after interval switch
+      var hivecall = this.selectedHives.join('&id[]=')
+      try {
+        const response = await Api.readRequest(
+          '/sensors/comparemeasurements?id[]=' +
+            hivecall +
+            '&interval=' +
+            interval +
+            '&index=' +
+            this.timeIndex +
+            '&timeGroup=' +
+            timeGroup +
+            '&timezone=' +
+            this.timeZone +
+            (start !== null ? '&start=' + start + ' 00:00' : '') +
+            (end !== null ? '&end=' + end + ' 23:59' : '') +
+            '&relative_interval=' +
+            (this.relativeInterval ? '1' : '0')
+        )
+        this.compareMeasurementData = response.data
+        this.formatCompareMeasurementData(response.data)
+        return true
+      } catch (error) {
+        this.loadingCompareData = false
+        if (error.response) {
+          console.log(error.response)
+          if (error.response.status === 500) {
+            this.noCompareChartData = true
           }
           if (error.response.status === 404 || error.response.status === 422) {
             this.selectedDeviceId = parseInt(this.devices[0].id) // overwrite value in store with valid device id
@@ -1341,6 +1897,91 @@ export default {
 
       return data
     },
+    chartjsCompareDataSeries(quantities, weather = false) {
+      var data = {
+        labels: [],
+        datasets: [],
+      }
+
+      // var sensorArray = this.getMeasurementTypesPresent(chartGroup.id)
+      quantities.map((quantity, index) => {
+        var mT = this.getSensorMeasurement(quantity)
+
+        if (mT === null || mT === undefined) {
+          console.log('mT not found ', quantity)
+        } else if (mT.show_in_charts === 1) {
+          var sensorName =
+            this.compareMeasurementData.sensorDefinitions[quantity] &&
+            this.compareMeasurementData.sensorDefinitions[quantity].name !==
+              null
+              ? this.compareMeasurementData.sensorDefinitions[quantity].name
+              : this.$i18n.t(quantity)
+          var sensorLabel =
+            sensorName +
+            (mT.unit !== '-' && mT.unit !== '' && mT.unit !== null
+              ? ' (' + mT.unit + ')'
+              : '')
+
+          data.datasets.push({
+            id: mT.id,
+            abbr: mT.abbreviation,
+            fill: false,
+            borderColor: '#' + mT.hex_color,
+            backgroundColor: '#' + mT.hex_color,
+            borderRadius: 2,
+            label: sensorLabel.replace(/^0/, ''),
+            name: sensorName,
+            unit: mT.unit !== '-' && mT.unit !== null ? mT.unit : '',
+            data: [],
+            spanGaps:
+              weather || this.interval === 'hour' || this.interval === 'day', // false,
+          })
+        }
+      })
+
+      if (
+        typeof this.compareMeasurementData.measurements !== 'undefined' &&
+        this.compareMeasurementData.measurements.length > 0
+      ) {
+        this.compareMeasurementData.measurements.map((measurement, index) => {
+          if (
+            (!this.relativeInterval &&
+              (this.interval === 'hour' ||
+                this.interval === 'day' ||
+                this.interval === 'week' ||
+                this.interval === 'year' ||
+                // skip first value for month or selection interval (belongs to previous month/day) except when it's a relative interval
+                index !== 0)) ||
+            this.relativeInterval
+            // && index < this.measurementData.measurements.length - 3
+          ) {
+            data.datasets.map((dataset, index) => {
+              var quantity = dataset.abbr
+              // if (
+              //   measurement[quantity] !== null && // previously this was enabled (do not push null values, otherwise datalabels plugin won't work) but now disabled again to make spanGaps work + added workaround for datalabels plugin
+              //   typeof measurement[quantity] === 'number'
+              // ) {
+              dataset.data.push({
+                x: measurement.time,
+                y: measurement[quantity],
+              })
+              // }
+            })
+          }
+        })
+      }
+      var otherData = []
+      quantities.map((quantity, index) => {
+        otherData.push(this.chartjsDataSeries([this.COMPARE_SENSOR[quantity]]))
+      })
+
+      otherData.map((sd) => {
+        data.labels.push(sd.labels)
+        data.datasets.push.apply(data.datasets, sd.datasets)
+      })
+
+      return data
+    },
     checkDateOrder(dates) {
       if (dates[1] < dates[0]) {
         this.dates = [dates[1], dates[0]]
@@ -1446,6 +2087,27 @@ export default {
       }
       this.loadingData = false
     },
+    formatCompareMeasurementData(compareMeasurementData) {
+      if (
+        compareMeasurementData &&
+        compareMeasurementData.measurements &&
+        compareMeasurementData.measurements.length > 0
+      ) {
+        this.compareMeasurementData = compareMeasurementData
+        console.log(this.compareMeasurementData)
+        Object.keys(this.compareMeasurementData.measurements[0]).map(
+          (quantity) => {
+            if (this.COMPARE.indexOf(quantity) > -1) {
+              this.currentCompareSensors.push(quantity)
+              this.compareSensorsPresent = true
+            }
+          }
+        )
+      } else {
+        this.noCompareChartData = true
+      }
+      this.loadingCompareData = false
+    },
     getProgressColor(name, value) {
       // get different target values for bv sensor if device is not beep
       var sensorName = this.getSensorName(name)
@@ -1515,6 +2177,9 @@ export default {
         this.loadLastSensorValuesTimer()
       }
       this.sensorMeasurementRequest(this.interval)
+    },
+    loadCompareData() {
+      this.sensorCompareMeasurementRequest(this.interval)
     },
     loadLastSensorValuesTimer() {
       if (
