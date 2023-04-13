@@ -256,6 +256,7 @@ export default {
         onHover: (event, chartElement) => {
           if (
             self.location !== 'flashlog' &&
+            self.location !== 'dashboard' &&
             event.native.target.style !== undefined
           ) {
             // keep track of whether chart line is hovered, because if that is the case (hoverLine === true) the other click events (confirmViewAlert, confirmViewInspection) should not be fired
