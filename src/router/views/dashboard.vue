@@ -584,7 +584,7 @@ export default {
     },
     locale() {
       if (this.locale !== this.initLocale) {
-        this.redrawCharts()
+        this.redrawCharts(this.measurementData)
         this.initLocale = this.locale
       }
     },
@@ -797,8 +797,8 @@ export default {
         this.selectHive(this.hivesWithData[this.currentHiveWithDataIndex].id)
       }
     },
-    redrawCharts() {
-      const temp = this.measurementData
+    redrawCharts(data) {
+      const temp = data
       this.measurementData = null
       setTimeout(() => {
         this.formatMeasurementData(temp)
@@ -808,7 +808,7 @@ export default {
       // console.log('select hive', id)
       this.readDashboardHive(id).then((data) => {
         this.selectedHiveId = id
-        this.formatMeasurementData(data)
+        this.redrawCharts(data)
         this.ready = true
       })
     },
@@ -857,7 +857,7 @@ export default {
       this.darkMode = bool
       this.$vuetify.theme.dark = bool
       localStorage.beepdashboardDarkMode = bool
-      this.redrawCharts()
+      this.redrawCharts(this.measurementData)
     },
     toggleHiveTimer(bool) {
       localStorage.beepdashboardHiveTimerPaused = bool
