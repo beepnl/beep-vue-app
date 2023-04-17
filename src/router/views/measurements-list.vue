@@ -2138,6 +2138,8 @@ export default {
         compareMeasurementData.measurements.length > 0
       ) {
         this.compareMeasurementData = compareMeasurementData
+        this.currentCompareSensors = []
+        this.compareSensorsPresent = false
         console.log(this.compareMeasurementData)
         Object.keys(this.compareMeasurementData.measurements[0]).map(
           (quantity) => {
