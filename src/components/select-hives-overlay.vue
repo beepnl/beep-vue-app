@@ -1,5 +1,5 @@
 <template>
-  <v-overlay v-if="selectedResearch !== null" :value="overlay">
+  <v-overlay v-if="showOverlay" :value="overlay">
     <div style="border-radius: 4px">
       <v-container class="select-hives-container">
         <v-row>
@@ -11,12 +11,14 @@
               "
             >
               <div
+                v-if="selectedResearch !== null"
                 class="overline d-flex mr-3 consent-overline"
                 style="width: 100%;"
                 v-text="
                   selectedResearch.name + ' - ' + $t('Select_hives_for_consent')
                 "
               ></div>
+              <v-spacer />
               <div class="d-flex justify-end consent-buttons">
                 <v-btn
                   light
@@ -24,7 +26,11 @@
                   tile
                   :disabled="selectedHiveIds.length === 0"
                   color="black"
-                  @click="submitConsentToggle(selectedResearch.id, 1)"
+                  @click="
+                    selectedResearch !== null
+                      ? submitConsentToggle(selectedResearch.id, 1)
+                      : selectHives()
+                  "
                 >
                   <v-icon left>mdi-check</v-icon>
                   {{ $t('save') }}</v-btn
@@ -125,7 +131,12 @@ export default {
     selectedResearch: {
       type: Object,
       default: () => null,
+      required: false,
+    },
+    showOverlay: {
+      type: Boolean,
       required: true,
+      default: false,
     },
   },
   data: function() {
@@ -160,6 +171,7 @@ export default {
   watch: {
     selectedConsent() {
       // update selected hive ids when consent is different
+      console.log('watch consent')
       this.initSelectedHiveIds()
     },
   },
@@ -190,6 +202,10 @@ export default {
       } else {
         this.selectedHiveIds.splice(this.selectedHiveIds.indexOf(id), 1)
       }
+    },
+    selectHives() {
+      this.$emit('select-hives', this.selectedHiveIds)
+      this.closeOverlay()
     },
     submitConsentToggle(id, consent) {
       this.$emit('submit-consent-toggle', {

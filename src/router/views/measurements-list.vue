@@ -556,8 +556,58 @@
           <SlideYUpTransition :duration="150">
             <v-card-text v-if="showCompareMeasurements">
               <v-row class="my-6">
-                <v-col cols="12" md="4">
-                  <v-row>
+                <v-col cols="12" class="d-flex justify-space-between flex-wrap">
+                  <v-btn
+                    tile
+                    outlined
+                    color="black"
+                    class="save-button-mobile-wide"
+                    @click.prevent="selectHivesOverlay = true"
+                  >
+                    {{ $tc('Select_hive', 2) }}
+                  </v-btn>
+                  <SelectHivesOverlay
+                    :show-overlay="selectHivesOverlay"
+                    :overlay="selectHivesOverlay"
+                    @close-overlay="selectHivesOverlay = false"
+                    @select-hives="selectedHives = $event"
+                  />
+                  <ApiaryPreviewHiveSelector
+                    v-if="selectedHives.length > 0 && selectedHives.length < 16"
+                    class="ml-5 my-4 my-sm-0"
+                    :hives="getHives(selectedHives)"
+                    :hives-selected="[]"
+                    :hives-editable="selectedHives"
+                    :dashboard-edit-mode="true"
+                    :disable-sort-hives="true"
+                    :inspection-mode="true"
+                    @select-hive="selectHive($event)"
+                  ></ApiaryPreviewHiveSelector>
+                  <span
+                    v-else
+                    class="mx-3 beep-label"
+                    v-text="selectedHives.join(', ')"
+                  ></span>
+                  <v-spacer />
+                  <v-btn
+                    tile
+                    outlined
+                    color="black"
+                    class="save-button-mobile-wide"
+                    @click.prevent="loadCompareData"
+                  >
+                    <v-progress-circular
+                      v-if="showLoadingIcon"
+                      class="ml-n1 mr-2"
+                      size="18"
+                      width="2"
+                      color="disabled"
+                      indeterminate
+                    />
+                    <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
+                    {{ $t('Load') }}
+                  </v-btn>
+                  <!-- <v-row>
                     <v-col cols="12" sm="7" md="12">
                       <div class="beep-label" v-text="treeselectLabel"></div>
                       <Treeselect
@@ -585,10 +635,8 @@
                         hide-details
                       ></v-switch>
                     </v-col>
-                  </v-row>
-                </v-col>
 
-                <v-col cols="12" md="7" class="mb-n3 mb-sm-0">
+                  <v-col cols="12" md="7" class="mb-n3 mb-sm-0">
                   <ApiaryPreviewHiveSelector
                     v-if="
                       selectedHiveSet && sensorHives && sensorHives.length > 0
@@ -600,24 +648,9 @@
                     @select-hive="selectHive($event)"
                   ></ApiaryPreviewHiveSelector>
                   {{ selectedHives }}
-                  <v-btn
-                    tile
-                    outlined
-                    color="black"
-                    class="save-button-mobile-wide"
-                    @click.prevent="loadCompareData"
-                  >
-                    <v-progress-circular
-                      v-if="showLoadingIcon"
-                      class="ml-n1 mr-2"
-                      size="18"
-                      width="2"
-                      color="disabled"
-                      indeterminate
-                    />
-                    <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
-                    {{ $t('Load') }}
-                  </v-btn>
+
+                </v-col>
+                  </v-row> -->
                 </v-col>
               </v-row>
 
@@ -782,6 +815,7 @@ import MeasurementsChartHeatmap from '@components/measurements-chart-heatmap.vue
 import MeasurementsChartLine from '@components/measurements-chart-line.vue'
 import MeasurementsChartBar from '@components/measurements-chart-bar.vue'
 import MeasurementsDateSelection from '@components/measurements-date-selection.vue'
+import SelectHivesOverlay from '@components/select-hives-overlay.vue'
 import Treeselect from '@riophae/vue-treeselect'
 import {
   checkAlerts,
@@ -809,6 +843,7 @@ export default {
     MeasurementsChartLine,
     MeasurementsChartBar,
     MeasurementsDateSelection,
+    SelectHivesOverlay,
     SlideYUpTransition,
     Treeselect,
   },
@@ -886,12 +921,14 @@ export default {
           isDisabled: node.noEditableHives,
         }
       },
+      selectHivesOverlay: false,
     }
   },
   computed: {
     ...mapGetters('alerts', ['alerts']),
     ...mapGetters('auth', ['permissions', 'userLocale']),
     ...mapGetters('devices', ['devices']),
+    ...mapGetters('hives', ['hivesObject']),
     ...mapGetters('inspections', ['generalInspections']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     ...mapGetters('groups', ['groups']),
@@ -1578,7 +1615,13 @@ export default {
         this.selectFirstHiveSetFromList()
       }
     },
-
+    getHives(hiveIds) {
+      var hivesArray = []
+      hiveIds.map((hiveId) => {
+        hivesArray.push(this.hivesObject[hiveId])
+      })
+      return hivesArray
+    },
     getHiveSet() {
       if (this.apiaries.length === 0 && this.groups.length === 0) {
         // if apiaries and groups are not in store, in case view is opened directly without loggin in (via localstorage)

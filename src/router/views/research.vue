@@ -385,7 +385,7 @@
     </v-container>
 
     <SelectHivesOverlay
-      v-if="selectedResearch !== null"
+      :show-overlay="selectedResearch !== null"
       :overlay="selectHivesOverlay"
       :selected-research="selectedResearch"
       :selected-consent="selectedConsent"
