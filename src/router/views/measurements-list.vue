@@ -569,6 +569,7 @@
                   <SelectHivesOverlay
                     :show-overlay="selectHivesOverlay"
                     :overlay="selectHivesOverlay"
+                    :compare-mode="true"
                     @close-overlay="selectHivesOverlay = false"
                     @select-hives="selectedHives = $event"
                   />
@@ -580,8 +581,7 @@
                     :hives-editable="selectedHives"
                     :dashboard-edit-mode="true"
                     :disable-sort-hives="true"
-                    :inspection-mode="true"
-                    @select-hive="selectHive($event)"
+                    :not-clickable="true"
                   ></ApiaryPreviewHiveSelector>
                   <span
                     v-else

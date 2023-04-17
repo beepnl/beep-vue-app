@@ -1015,6 +1015,9 @@ const translations = {
   /* Compare module */
   Load: 'Laden',
   Compare: 'Vergelijk',
+  Select_hives_for_compare: 'Selecteer bijenkasten om mee te vergelijken',
+  Select_hives_for_compare_exp:
+    'Selecteer de bijenkasten waarmee je de data wilt vergelijken',
 }
 
 export default translations

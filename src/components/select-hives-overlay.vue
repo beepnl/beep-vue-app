@@ -11,11 +11,14 @@
               "
             >
               <div
-                v-if="selectedResearch !== null"
                 class="overline d-flex mr-3 consent-overline"
                 style="width: 100%;"
                 v-text="
-                  selectedResearch.name + ' - ' + $t('Select_hives_for_consent')
+                  compareMode
+                    ? $t('Select_hives_for_compare')
+                    : selectedResearch.name +
+                      ' - ' +
+                      $t('Select_hives_for_consent')
                 "
               ></div>
               <v-spacer />
@@ -52,7 +55,11 @@
                 >
                   <div
                     class="beep-label mt-1 mr-3"
-                    v-text="$t('Select_hives_for_consent_exp')"
+                    v-text="
+                      compareMode
+                        ? $t('Select_hives_for_compare_exp')
+                        : $t('Select_hives_for_consent_exp')
+                    "
                   ></div>
                   <v-switch
                     v-model="allHivesSelected"
@@ -96,6 +103,7 @@
                         :hives-selected="selectedHiveIds"
                         :hives-editable="getHiveIds(apiary.hives)"
                         :inspection-mode="true"
+                        :dashboard-edit-mode="compareMode"
                         @select-hive="selectHive($event)"
                       ></ApiaryPreviewHiveSelector>
                     </div>
@@ -122,6 +130,11 @@ export default {
     overlay: {
       type: Boolean,
       required: true,
+    },
+    compareMode: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
     selectedConsent: {
       type: Object,
@@ -184,7 +197,13 @@ export default {
       this.$emit('close-overlay')
     },
     getHiveIds(hives) {
-      return hives.map((hive) => hive.id)
+      return hives.map((hive) => {
+        if (this.compareMode && hive.sensors.length > 0) {
+          return hive.id
+        } else if (!this.compareMode) {
+          return hive.id
+        }
+      })
     },
     initSelectedHiveIds() {
       // if consent already exists, use consent_hive_ids if present, otherwise all hive ids. For new consent, deselect all hives

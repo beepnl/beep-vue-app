@@ -1090,8 +1090,11 @@ const translations = {
   Select_inspection_mode: 'Select inspection mode',
 
   /* Compare module */
-  Load: 'Laden',
-  Compare: 'Vergelijk',
+  Load: 'Load',
+  Compare: 'Compare',
+  Select_hives_for_compare: 'Select hives to compare with',
+  Select_hives_for_compare_exp:
+    'Select the hives with which you would like to compare the data',
 }
 
 export default translations
