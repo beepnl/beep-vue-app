@@ -495,7 +495,7 @@
 
         <v-card
           v-if="
-            permissions.includes('hive-compare') &&
+            (userIsAdmin || permissions.includes('hive-compare')) && // TODO: remove userisadmin once permissions are working for Diren
               (((measurementData !== null) &
                 (compareMeasurementData !== null) &&
                 !noPeriodData) ||
@@ -926,7 +926,7 @@ export default {
   },
   computed: {
     ...mapGetters('alerts', ['alerts']),
-    ...mapGetters('auth', ['permissions', 'userLocale']),
+    ...mapGetters('auth', ['permissions', 'userIsAdmin', 'userLocale']),
     ...mapGetters('devices', ['devices']),
     ...mapGetters('hives', ['hivesObject']),
     ...mapGetters('inspections', ['generalInspections']),
