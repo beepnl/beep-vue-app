@@ -498,13 +498,13 @@
             userIsAdmin || permissions.includes('hive-compare') // TODO: remove userisadmin once permissions are working for Diren
           "
           :dates="dates"
-          :inspections-for-charts="inspectionsForCharts"
           :interval="interval"
           :period-end-string="periodEndString"
           :period-start-string="periodStartString"
           :relative-interval="relativeInterval"
           :selected-device-title="selectedDeviceTitle"
           :time-index="timeIndex"
+          :measurement-data="measurementData"
           @confirm-view-alert="confirmViewAlert($event)"
           @confirm-view-inspection="
             confirmViewInspection($event.id, $event.date)

@@ -112,6 +112,7 @@ export const sensorMixin = {
         'bc_tot',
         'weight_kg_corrected',
         'weight_kg',
+        'net_weight_kg',
         't_i',
         't_0',
         't_1',
@@ -124,11 +125,12 @@ export const sensorMixin = {
         't_8',
         't_9',
       ], // not actuators
-      COMPARE: ['mean_weight_kg', 'mean_weight_kg_noOutlier'], // used to compare measurements
+      COMPARE: ['mean_weight_kg', 'mean_net_weight_kg'], // used to compare measurements
       COMPARE_SENSOR: {
         mean_weight_kg: 'weight_kg',
-        mean_weight_kg_noOutlier: 'weight_kg_noOutlier',
-        mean_weight_intake: 'weight_intake',
+        mean_net_weight_kg: 'net_weight_kg',
+        // mean_weight_kg_noOutlier: 'weight_kg_noOutlier',
+        // mean_weight_intake: 'weight_intake',
       },
       DASHBOARD_TEMP_SENSORS: [
         'temperature',

@@ -109,7 +109,6 @@
               :start-time="periodStartString"
               :end-time="periodEndString"
               :chart-id="'chart-compare-sensor-' + index"
-              inspections-for-charts="inspectionsForCharts"
               @confirm-view-alert="confirmViewAlert($event)"
               @confirm-view-inspection="
                 confirmViewInspection($event.id, $event.date)
@@ -202,9 +201,9 @@ export default {
       default: () => [],
       required: false,
     },
-    inspectionsForCharts: {
-      type: Array,
-      default: () => [],
+    measurementData: {
+      type: Object,
+      default: () => {},
       required: false,
     },
     interval: {
@@ -257,6 +256,7 @@ export default {
     ...mapGetters('hives', ['hivesObject']),
     ...mapGetters('groups', ['groups']),
     ...mapGetters('locations', ['apiaries']),
+    ...mapGetters('taxonomy', ['sensorMeasurementsList']),
 
     chartCols() {
       return parseInt(localStorage[this.localVar])
@@ -291,10 +291,10 @@ export default {
       this.noPeriodData = false
       this.loadingCompareData = true
       this.compareMeasurementData = null // needed to let chartjs redraw charts after interval switch
-      var hivecall = this.selectedHives.join('&id=[]')
+      var hivecall = this.selectedHives.join('&id[]=')
       try {
         const response = await Api.readRequest(
-          '/sensors/comparemeasurements?id=[]' +
+          '/sensors/comparemeasurements?id[]=' +
             hivecall +
             '&interval=' +
             interval +
@@ -328,6 +328,12 @@ export default {
           console.log('Error: ', error)
         }
       }
+    },
+    getSensorMeasurement(abbr) {
+      var smFilter = this.sensorMeasurementsList.filter(
+        (measurementType) => measurementType.abbreviation === abbr
+      )
+      return smFilter.length > 0 ? smFilter[0] : null
     },
     chartjsCompareDataSeries(quantities, weather = false) {
       var data = {
@@ -402,15 +408,47 @@ export default {
           }
         })
       }
-      var otherData = []
-      quantities.map((quantity, index) => {
-        otherData.push(this.chartjsDataSeries([this.COMPARE_SENSOR[quantity]]))
-      })
 
-      otherData.map((sd) => {
-        data.labels.push(sd.labels)
-        data.datasets.push.apply(data.datasets, sd.datasets)
-      })
+      if (
+        typeof this.measurementData.measurements !== 'undefined' &&
+        this.measurementData.measurements.length > 0
+      ) {
+        this.measurementData.measurements.map((measurement, index) => {
+          if (
+            (!this.relativeInterval &&
+              (this.interval === 'hour' ||
+                this.interval === 'day' ||
+                this.interval === 'week' ||
+                this.interval === 'year' ||
+                // skip first value for month or selection interval (belongs to previous month/day) except when it's a relative interval
+                index !== 0)) ||
+            this.relativeInterval
+            // && index < this.measurementData.measurements.length - 3
+          ) {
+            data.datasets.map((dataset, index) => {
+              var quantity = dataset.abbr
+              // if (
+              //   measurement[quantity] !== null && // previously this was enabled (do not push null values, otherwise datalabels plugin won't work) but now disabled again to make spanGaps work + added workaround for datalabels plugin
+              //   typeof measurement[quantity] === 'number'
+              // ) {
+              dataset.data.push({
+                x: measurement.time,
+                y: measurement[quantity],
+              })
+              // }
+            })
+          }
+        })
+      }
+      // var otherData = []
+      // quantities.map((quantity, index) => {
+      //   otherData.push(this.chartjsDataSeries([this.COMPARE_SENSOR[quantity]]))
+      // })
+
+      // otherData.map((sd) => {
+      //   data.labels.push(sd.labels)
+      //   data.datasets.push.apply(data.datasets, sd.datasets)
+      // })
 
       return data
     },
