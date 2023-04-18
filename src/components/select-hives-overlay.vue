@@ -71,39 +71,50 @@
                 </div>
                 <div style="height: 100%;">
                   <div class="scroller">
-                    <div v-for="(apiary, i) in apiaries" :key="i">
+                    <div v-for="(hiveSet, i) in sortedHiveSets" :key="i">
                       <div
                         class="hive-set-title d-flex flex-row justify-flex-start align-center"
                         :style="
                           `color: ${
-                            apiary.hex_color ? apiary.hex_color : ''
+                            hiveSet.hex_color ? hiveSet.hex_color : ''
                           }; border-color: ${
-                            apiary.hex_color ? apiary.hex_color : ''
+                            hiveSet.hex_color ? hiveSet.hex_color : ''
                           };`
                         "
                       >
                         <v-icon
+                          v-if="hiveSet.users && hiveSet.users.length"
+                          class="icon-apiary-shared ml-1 mr-2 my-0"
+                          :style="
+                            `background-color: ${hiveSet.hex_color}; border-color: ${hiveSet.hex_color};`
+                          "
+                        >
+                          mdi-account-multiple
+                        </v-icon>
+                        <v-icon
+                          v-else
                           class="icon-apiary-owned ml-1 mr-2 my-0"
                           :style="
                             `background-color: ${
-                              apiary.hex_color ? apiary.hex_color : ''
+                              hiveSet.hex_color ? hiveSet.hex_color : ''
                             }; border-color: ${
-                              apiary.hex_color ? apiary.hex_color : ''
+                              hiveSet.hex_color ? hiveSet.hex_color : ''
                             };`
                           "
                         >
                           mdi-home-analytics
                         </v-icon>
-                        <h4 v-text="apiary.name"></h4>
+
+                        <h4 v-text="hiveSet.name"></h4>
                       </div>
 
                       <ApiaryPreviewHiveSelector
                         class="mb-3 mr-3"
-                        :hives="apiary.hives"
+                        :hives="hiveSet.hives"
                         :hives-selected="selectedHiveIds"
-                        :hives-editable="getHiveIds(apiary.hives)"
+                        :hives-editable="getHiveIds(hiveSet.hives)"
                         :inspection-mode="true"
-                        :dashboard-edit-mode="compareMode"
+                        :compare-mode="compareMode"
                         @select-hive="selectHive($event)"
                       ></ApiaryPreviewHiveSelector>
                     </div>
@@ -136,6 +147,11 @@ export default {
       required: false,
       default: false,
     },
+    includeGroups: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
     selectedConsent: {
       type: Object,
       default: () => null,
@@ -158,10 +174,11 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('groups', ['groups']),
     ...mapGetters('locations', ['apiaries']),
     allHiveIds() {
-      return this.apiaries.reduce((acc, apiary) => {
-        acc = acc.concat(this.getHiveIds(apiary.hives))
+      return this.sortedHiveSets.reduce((acc, hiveSet) => {
+        acc = acc.concat(this.getHiveIds(hiveSet.hives))
         return acc
       }, [])
     },
@@ -177,14 +194,42 @@ export default {
         }
       },
     },
+    hiveSets() {
+      return this.includeGroups
+        ? this.apiaries.concat(this.groups)
+        : this.apiaries
+    },
     mobile() {
       return this.$vuetify.breakpoint.mobile
+    },
+    sortedHiveSets() {
+      const sortedHiveSets = this.hiveSets
+        .slice()
+        .filter((hiveSet) => hiveSet.hives.length > 0)
+        .sort(function(a, b) {
+          if (a.name > b.name) {
+            return 1
+          }
+          if (b.name > a.name) {
+            return -1
+          }
+          return 0
+        })
+        .sort(function(a, b) {
+          if ('type' in b) {
+            return 1
+          }
+          if ('type' in a) {
+            return -1
+          }
+          return 0
+        })
+      return sortedHiveSets
     },
   },
   watch: {
     selectedConsent() {
       // update selected hive ids when consent is different
-      console.log('watch consent')
       this.initSelectedHiveIds()
     },
   },
@@ -197,13 +242,9 @@ export default {
       this.$emit('close-overlay')
     },
     getHiveIds(hives) {
-      return hives.map((hive) => {
-        if (this.compareMode && hive.sensors.length > 0) {
-          return hive.id
-        } else if (!this.compareMode) {
-          return hive.id
-        }
-      })
+      return hives
+        .filter((hive) => hive.sensors.length > 0 || !this.compareMode)
+        .map((hive) => hive.id)
     },
     initSelectedHiveIds() {
       // if consent already exists, use consent_hive_ids if present, otherwise all hive ids. For new consent, deselect all hives

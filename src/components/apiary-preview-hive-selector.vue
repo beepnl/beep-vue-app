@@ -26,14 +26,17 @@
         </div>
 
         <div
-          v-if="dashboardMode || dashboardEditMode"
+          v-if="compareMode || dashboardMode || dashboardEditMode"
           class="hive-in-dashboard"
         >
-          <div v-if="hive.owner && hive.sensors.length > 0" class="my-0">
+          <div
+            v-if="hive.sensors.length > 0 && (compareMode ? true : hive.owner)"
+            class="my-0"
+          >
             <v-sheet
               :class="
                 'beep-icon beep-icon-sensors--no-outline' +
-                  (dashboardEditMode ? '' : ' color-green')
+                  (dashboardEditMode || compareMode ? '' : ' color-green')
               "
             ></v-sheet>
           </div>
@@ -126,6 +129,11 @@ export default {
       required: false,
     },
     inspectionMode: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
+    compareMode: {
       type: Boolean,
       default: false,
       required: false,
