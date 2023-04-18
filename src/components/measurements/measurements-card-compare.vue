@@ -341,39 +341,67 @@ export default {
         datasets: [],
       }
 
-      // var sensorArray = this.getMeasurementTypesPresent(chartGroup.id)
-      quantities.map((quantity, index) => {
-        var mT = this.getSensorMeasurement(quantity)
+      quantities.map((compareQuantity, index) => {
+        var compareMt = this.getSensorMeasurement(compareQuantity)
 
-        if (mT === null || mT === undefined) {
-          console.log('mT not found ', quantity)
-        } else if (mT.show_in_charts === 1) {
-          var sensorName =
-            this.compareMeasurementData.sensorDefinitions[quantity] &&
-            this.compareMeasurementData.sensorDefinitions[quantity].name !==
-              null
-              ? this.compareMeasurementData.sensorDefinitions[quantity].name
-              : this.$i18n.t(quantity)
-          var sensorLabel =
-            sensorName +
-            (mT.unit !== '-' && mT.unit !== '' && mT.unit !== null
-              ? ' (' + mT.unit + ')'
-              : '')
-
+        if (compareMt === null || compareMt === undefined) {
+          console.log('compareMt not found ', compareQuantity)
+        } else if (compareMt.show_in_charts === 1) {
           data.datasets.push({
-            id: mT.id,
-            abbr: mT.abbreviation,
+            id: compareMt.id,
+            abbr: compareMt.abbreviation,
             fill: false,
-            borderColor: '#' + mT.hex_color,
-            backgroundColor: '#' + mT.hex_color,
+            borderColor: '#' + compareMt.hex_color,
+            backgroundColor: '#' + compareMt.hex_color,
             borderRadius: 2,
-            label: sensorLabel.replace(/^0/, ''),
-            name: sensorName,
-            unit: mT.unit !== '-' && mT.unit !== null ? mT.unit : '',
+            label: this.getSensorLabel(
+              this.compareMeasurementData.sensorDefinitions,
+              compareQuantity,
+              compareMt.unit
+            ),
+            name: this.getSensorName(
+              this.compareMeasurementData.sensorDefinitions,
+              compareQuantity
+            ),
+            unit:
+              compareMt.unit !== '-' && compareMt.unit !== null
+                ? compareMt.unit
+                : '',
             data: [],
             spanGaps:
-              weather || this.interval === 'hour' || this.interval === 'day', // false,
+              weather || this.interval === 'hour' || this.interval === 'day',
+            mtType: 'compare',
           })
+
+          var quantity = this.COMPARE_SENSOR[compareQuantity]
+          var mt = this.getSensorMeasurement()
+
+          if (mt === null || mt === undefined) {
+            console.log('mt not found ', quantity)
+          } else if (mt.show_in_charts === 1) {
+            data.datasets.push({
+              id: mt.id,
+              abbr: mt.abbreviation,
+              fill: false,
+              borderColor: '#' + mt.hex_color,
+              backgroundColor: '#' + mt.hex_color,
+              borderRadius: 2,
+              label: this.getSensorLabel(
+                this.measurementData.sensorDefinitions,
+                quantity,
+                mt.unit
+              ),
+              name: this.getSensorName(
+                this.measurementData.sensorDefinitions,
+                quantity
+              ),
+              unit: mt.unit !== '-' && mt.unit !== null ? mt.unit : '',
+              data: [],
+              spanGaps:
+                weather || this.interval === 'hour' || this.interval === 'day',
+              mtType: 'normal',
+            })
+          }
         }
       })
 
@@ -391,19 +419,16 @@ export default {
                 // skip first value for month or selection interval (belongs to previous month/day) except when it's a relative interval
                 index !== 0)) ||
             this.relativeInterval
-            // && index < this.measurementData.measurements.length - 3
           ) {
             data.datasets.map((dataset, index) => {
-              var quantity = dataset.abbr
-              // if (
-              //   measurement[quantity] !== null && // previously this was enabled (do not push null values, otherwise datalabels plugin won't work) but now disabled again to make spanGaps work + added workaround for datalabels plugin
-              //   typeof measurement[quantity] === 'number'
-              // ) {
-              dataset.data.push({
-                x: measurement.time,
-                y: measurement[quantity],
-              })
-              // }
+              if (dataset.mtType === 'compare') {
+                var compareQuantity = dataset.abbr
+
+                dataset.data.push({
+                  x: measurement.time,
+                  y: measurement[compareQuantity],
+                })
+              }
             })
           }
         })
@@ -423,19 +448,16 @@ export default {
                 // skip first value for month or selection interval (belongs to previous month/day) except when it's a relative interval
                 index !== 0)) ||
             this.relativeInterval
-            // && index < this.measurementData.measurements.length - 3
           ) {
             data.datasets.map((dataset, index) => {
-              var quantity = dataset.abbr
-              // if (
-              //   measurement[quantity] !== null && // previously this was enabled (do not push null values, otherwise datalabels plugin won't work) but now disabled again to make spanGaps work + added workaround for datalabels plugin
-              //   typeof measurement[quantity] === 'number'
-              // ) {
-              dataset.data.push({
-                x: measurement.time,
-                y: measurement[quantity],
-              })
-              // }
+              if (dataset.mtType === 'normal') {
+                var quantity = dataset.abbr
+
+                dataset.data.push({
+                  x: measurement.time,
+                  y: measurement[quantity],
+                })
+              }
             })
           }
         })
@@ -491,6 +513,18 @@ export default {
         hivesArray.push(this.hivesObject[hiveId])
       })
       return hivesArray
+    },
+    getSensorLabel(sensordefs, quantity, unit) {
+      var label =
+        this.getSensorName(sensordefs, quantity) +
+        (unit !== '-' && unit !== '' && unit !== null ? ' (' + unit + ')' : '')
+
+      return label.replace(/^0/, '')
+    },
+    getSensorName(sensordefs, quantity) {
+      return sensordefs[quantity] && sensordefs[quantity].name !== null
+        ? sensordefs[quantity].name
+        : this.$i18n.t(quantity)
     },
     loadCompareData() {
       this.sensorCompareMeasurementRequest(this.interval)
