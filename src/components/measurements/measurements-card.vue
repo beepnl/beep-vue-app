@@ -56,14 +56,24 @@ export default {
     localVar: {
       type: String,
       default: '',
-      required: true,
+      required: false,
     },
-    title: {
+    mobileTitle: {
       type: String,
       default: '',
       required: false,
     },
-    mobileTitle: {
+    openByDefault: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
+    showChartColsIcons: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
+    title: {
       type: String,
       default: '',
       required: false,
@@ -100,14 +110,23 @@ export default {
       set(value) {
         localStorage[this.localVar] = value
         this.chartCols = value
+        this.$emit('set-chart-cols', parseInt(value))
       },
     },
   },
   created() {
-    if (this.queriedChartCols !== null) {
-      this.setChartCols = this.queriedChartCols
-    } else if (localStorage[this.localVar]) {
-      this.setChartCols = parseInt(localStorage[this.localVar])
+    if (this.openByDefault) {
+      this.showCardContent = true
+    }
+
+    if (!this.showChartColsIcons) {
+      this.chartColsIcons = []
+    } else {
+      if (this.queriedChartCols !== null) {
+        this.setChartCols = this.queriedChartCols
+      } else if (localStorage[this.localVar]) {
+        this.setChartCols = parseInt(localStorage[this.localVar])
+      }
     }
   },
 }

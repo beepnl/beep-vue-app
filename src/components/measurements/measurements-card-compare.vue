@@ -3,6 +3,7 @@
     :title="$t('Compare') + ': ' + selectedDeviceTitle"
     :mobile-title="$t('Compare')"
     :local-var="localVar"
+    :show-chart-cols-icons="true"
   >
     <v-row class="my-6">
       <v-col cols="12" class="d-flex justify-space-between flex-wrap">
@@ -179,8 +180,8 @@ import Api from '@api/Api'
 import { mapGetters } from 'vuex'
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 import MeasurementsCard from '@components/measurements/measurements-card.vue'
-import MeasurementsChartLine from '@components/measurements-chart-line.vue'
-import MeasurementsChartBar from '@components/measurements-chart-bar.vue'
+import MeasurementsChartLine from '@/src/components/measurements/measurements-chart-line.vue'
+import MeasurementsChartBar from '@/src/components/measurements/measurements-chart-bar.vue'
 import SelectHivesOverlay from '@components/select-hives-overlay.vue'
 import { readApiariesAndGroups } from '@mixins/methodsMixin'
 import { timeZone } from '@mixins/momentMixin'
@@ -257,7 +258,6 @@ export default {
     ...mapGetters('groups', ['groups']),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
-
     chartCols() {
       return parseInt(localStorage[this.localVar])
     },
