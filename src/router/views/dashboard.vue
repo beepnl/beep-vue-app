@@ -980,7 +980,7 @@ export default {
 
 .dashboard-text-small {
   font-family: 'Roboto Condensed', 'Roboto', sans-serif !important;
-  text-transform: uppercase;
+  // text-transform: uppercase;
   text-align: left;
   font-weight: 400;
   font-size: 0.8rem;
@@ -1003,7 +1003,7 @@ export default {
       font-size: 90%;
     }
     @include for-desktop-up {
-      font-size: 70%;
+      font-size: 15px;
     }
     @include for-big-desktop-up {
       font-size: 105%;

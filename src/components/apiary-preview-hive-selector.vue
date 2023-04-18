@@ -96,10 +96,7 @@
         </v-sheet>
       </div>
     </div>
-    <div
-      v-if="dashboardMode"
-      :class="'dashboard-line' + (size ? ' --' + size : '')"
-    ></div>
+    <div v-if="dashboardMode" class="dashboard-line"></div>
   </div>
 </template>
 
@@ -285,13 +282,12 @@ export default {
 }
 
 .dashboard-line {
+  position: relative;
   margin-top: -5px;
   max-width: 100%;
-  height: 4px;
+  height: 5px;
   background-color: #683901;
-  &.--large {
-    height: 5px;
-  }
+  z-index: 1;
 }
 
 .honey-layer {
@@ -369,7 +365,7 @@ export default {
     }
     // border-bottom: 1px solid #bbb !important;
     .selectable-wrapper.--selected {
-      box-shadow: 0 0 0 5px yellow !important;
+      box-shadow: 0 0 5px 4px yellow !important;
     }
   }
 }
@@ -380,7 +376,7 @@ export default {
     .hive-icon-layers {
       padding: 5px 7px;
       .selectable-wrapper.--selected {
-        box-shadow: 0 0 0 6px yellow !important;
+        box-shadow: 0 0 6px 4px yellow !important;
       }
     }
     .honey-layer {
@@ -400,7 +396,7 @@ export default {
     .hive-icon-layers {
       padding: 5px 9px;
       .selectable-wrapper.--selected {
-        box-shadow: 0 0 0 7px yellow !important;
+        box-shadow: 0 0 7px 5px yellow !important;
       }
     }
     .honey-layer {

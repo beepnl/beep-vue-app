@@ -87,10 +87,10 @@ export default {
   },
   data() {
     return {
-      fontSizeMob: 11,
-      fontSize: 12,
-      boxSizeMob: 10,
-      boxSize: 11,
+      fontSizeMob: this.location === 'dashboard' ? 12 : 11,
+      fontSize: this.location === 'dashboard' ? 15 : 12,
+      boxSizeMob: this.location === 'dashboard' ? 11 : 10,
+      boxSize: this.location === 'dashboard' ? 13 : 11,
       chartParseFmt: 'YYYY-MM-DD[T]HH:mm:ssZ',
       tooltipFormat: 'llll',
       intervalToUnit: {
