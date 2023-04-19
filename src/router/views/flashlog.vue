@@ -284,7 +284,7 @@
 import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
-import MeasurementsChartLine from '@components/measurements-chart-line.vue'
+import MeasurementsChartLine from '@/src/components/measurements/measurements-chart-line.vue'
 import { mapGetters } from 'vuex'
 import { momentFormatUtcToLocal } from '@mixins/momentMixin'
 import { readTaxonomy } from '@mixins/methodsMixin'

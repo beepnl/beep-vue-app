@@ -283,7 +283,7 @@ import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.
 import Confirm from '@components/confirm.vue'
 import { mapGetters } from 'vuex'
 import Layout from '@layouts/back.vue'
-import MeasurementsDateSelection from '@components/measurements-date-selection.vue'
+import MeasurementsDateSelection from '@/src/components/measurements/measurements-date-selection.vue'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 import {
   deleteDashboard,
