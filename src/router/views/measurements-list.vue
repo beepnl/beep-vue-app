@@ -1174,7 +1174,10 @@ export default {
             (start !== null ? '&start=' + start + ' 00:00' : '') +
             (end !== null ? '&end=' + end + ' 23:59' : '') +
             '&relative_interval=' +
-            (this.relativeInterval ? '1' : '0')
+            (this.relativeInterval ? '1' : '0') +
+            (this.userIsAdmin || this.permissions.includes('hive-compare') // TODO remove user is admin when permission works for Diren
+              ? '&clean_weight=1'
+              : '')
         )
         this.formatMeasurementData(response.data)
         return true

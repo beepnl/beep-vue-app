@@ -291,10 +291,10 @@ export default {
       this.noPeriodData = false
       this.loadingCompareData = true
       this.compareMeasurementData = null // needed to let chartjs redraw charts after interval switch
-      var hivecall = this.selectedHives.join('&id[]=')
+      var hivecall = this.selectedHives.join('&hive_id[]=')
       try {
         const response = await Api.readRequest(
-          '/sensors/comparemeasurements?id[]=' +
+          '/sensors/comparemeasurements?hive_id[]=' +
             hivecall +
             '&interval=' +
             interval +
@@ -374,7 +374,7 @@ export default {
           })
 
           var quantity = this.COMPARE_SENSOR[compareQuantity]
-          var mt = this.getSensorMeasurement()
+          var mt = this.getSensorMeasurement(quantity)
 
           if (mt === null || mt === undefined) {
             console.log('mt not found ', quantity)
