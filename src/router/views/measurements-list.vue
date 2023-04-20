@@ -839,7 +839,9 @@ export default {
       },
     },
     selectedDeviceTitle() {
-      return this.selectedDevice.hive_name + ' - ' + this.selectedDevice.name
+      return this.selectedDevice !== null
+        ? this.selectedDevice.hive_name + ' - ' + this.selectedDevice.name
+        : ''
     },
     showCardCompare() {
       return (
