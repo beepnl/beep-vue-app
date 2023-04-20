@@ -269,13 +269,6 @@ export default {
       return 'beepChartCols' + this.cardName
     },
   },
-  watch: {
-    locale() {
-      if (this.locale !== this.initLocale) {
-        this.redrawCharts(false)
-      }
-    },
-  },
   created() {
     if (this.apiaries.length === 0 && this.groups.length === 0) {
       // in case view is opened directly without loggin in (via localstorage) or in case of hard refresh
@@ -580,7 +573,7 @@ export default {
         this.compareMeasurementData = compareMeasurementData
         this.currentCompareSensors = []
         this.compareSensorsPresent = false
-        console.log(this.compareMeasurementData)
+        // console.log(this.compareMeasurementData)
         Object.keys(this.compareMeasurementData.measurements[0]).map(
           (quantity) => {
             if (this.COMPARE.indexOf(quantity) > -1) {
@@ -621,11 +614,20 @@ export default {
         this.sensorCompareMeasurementRequest(this.interval)
       }
     },
-    redrawCharts() {
-      const temp = this.compareMeasurementData
-      setTimeout(() => {
-        this.formatCompareMeasurementData(temp)
-      }, 10)
+    redrawCharts(seamless = true) {
+      if (this.comparingData) {
+        const temp = this.compareMeasurementData
+        if (!seamless) {
+          this.resetCharts()
+        }
+        setTimeout(() => {
+          this.formatCompareMeasurementData(temp)
+        }, 10)
+      }
+    },
+    resetCharts() {
+      this.loadingCompareData = true
+      this.compareMeasurementData = null // charts are redrawn when compareMeasurementData is null
     },
     setPeriodToDate(date) {
       this.$emit('set-period-to-date', date)

@@ -946,6 +946,10 @@ export default {
     locale() {
       if (this.locale !== this.initLocale) {
         this.redrawCharts(false)
+        if (this.showCardCompare) {
+          // trigger redraw charts in child component whenever user is comparing data and locale has changed
+          this.$refs.cardCompare.redrawCharts(false)
+        }
         this.setPeriodTitle() // translate period title
       }
     },
@@ -1453,6 +1457,7 @@ export default {
       }
       this.sensorMeasurementRequest(this.interval)
       if (this.showCardCompare) {
+        // trigger load compare data in child component whenever user is comparing data and a new data call is required
         this.$refs.cardCompare.loadCompareData()
       }
     },
