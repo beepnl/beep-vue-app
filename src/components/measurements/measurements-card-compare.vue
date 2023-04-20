@@ -46,6 +46,7 @@
           outlined
           color="black"
           class="save-button-mobile-wide"
+          :disabled="selectedHives.length === 0"
           @click.prevent="loadCompareData(true)"
         >
           <v-progress-circular
@@ -184,7 +185,7 @@ import MeasurementsCard from '@components/measurements/measurements-card.vue'
 import MeasurementsChartLine from '@/src/components/measurements/measurements-chart-line.vue'
 import MeasurementsChartBar from '@/src/components/measurements/measurements-chart-bar.vue'
 import SelectHivesOverlay from '@components/select-hives-overlay.vue'
-import { readApiariesAndGroups } from '@mixins/methodsMixin'
+import { readApiariesAndGroupsIfNotPresent } from '@mixins/methodsMixin'
 import { timeZone } from '@mixins/momentMixin'
 import { sensorMixin } from '@mixins/sensorMixin'
 
@@ -196,7 +197,7 @@ export default {
     MeasurementsChartBar,
     SelectHivesOverlay,
   },
-  mixins: [readApiariesAndGroups, sensorMixin, timeZone],
+  mixins: [readApiariesAndGroupsIfNotPresent, sensorMixin, timeZone],
   props: {
     dates: {
       type: Array,
@@ -269,10 +270,8 @@ export default {
     },
   },
   created() {
-    if (this.apiaries.length === 0 && this.groups.length === 0) {
-      // in case view is opened directly without loggin in (via localstorage) or in case of hard refresh
-      this.readApiariesAndGroups()
-    }
+    // in case view is opened directly without loggin in (via localstorage) or in case of hard refresh
+    this.readApiariesAndGroupsIfNotPresent()
   },
   methods: {
     async sensorCompareMeasurementRequest(interval) {

@@ -174,13 +174,16 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('hives', ['hivesObject']),
     ...mapGetters('groups', ['groups']),
     ...mapGetters('locations', ['apiaries']),
     allHiveIds() {
-      return this.sortedHiveSets.reduce((acc, hiveSet) => {
+      var hiveIds = this.sortedHiveSets.reduce((acc, hiveSet) => {
         acc = acc.concat(this.getHiveIds(hiveSet.hives))
         return acc
       }, [])
+      var uniqueHiveIds = [...new Set(hiveIds)] // with both apiaries and groups hive ids can be duplicated
+      return uniqueHiveIds
     },
     allHivesSelected: {
       get() {
@@ -246,6 +249,9 @@ export default {
         .filter((hive) => hive.sensors.length > 0 || !this.compareMode)
         .map((hive) => hive.id)
     },
+    hiveHasSensors(id) {
+      return !!this.hivesObject[id] && this.hivesObject[id].sensors.length > 0
+    },
     initSelectedHiveIds() {
       // if consent already exists, use consent_hive_ids if present, otherwise all hive ids. For new consent, deselect all hives
       this.selectedHiveIds = this.selectedConsent
@@ -257,10 +263,13 @@ export default {
         : []
     },
     selectHive(id) {
-      if (!this.selectedHiveIds.includes(id)) {
-        this.selectedHiveIds.push(id)
-      } else {
-        this.selectedHiveIds.splice(this.selectedHiveIds.indexOf(id), 1)
+      if (!this.compareMode || this.hiveHasSensors(id)) {
+        // in compareMode, only hives with sensors are available for comparing measurement data and therefore selectable
+        if (!this.selectedHiveIds.includes(id)) {
+          this.selectedHiveIds.push(id)
+        } else {
+          this.selectedHiveIds.splice(this.selectedHiveIds.indexOf(id), 1)
+        }
       }
     },
     selectHives() {
