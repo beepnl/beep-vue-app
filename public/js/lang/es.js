@@ -1083,6 +1083,9 @@ const translations = {
   Select_hives_for_compare: 'Select hives to compare with',
   Select_hives_for_compare_exp:
     'Select the hives with which you would like to compare the data',
+  mean_weight_kg: 'Mean weight',
+  mean_net_weight_kg: 'Mean net weight',
+  net_weight_kg: 'Net weight',
 }
 
 export default translations

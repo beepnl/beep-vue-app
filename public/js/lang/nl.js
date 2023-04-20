@@ -1018,6 +1018,9 @@ const translations = {
   Select_hives_for_compare: 'Selecteer bijenkasten om mee te vergelijken',
   Select_hives_for_compare_exp:
     'Selecteer de bijenkasten waarmee je de data wilt vergelijken',
+  mean_weight_kg: 'Gemiddeld gewicht',
+  mean_net_weight_kg: 'Gemiddeld netto gewicht',
+  net_weight_kg: 'Netto gewicht',
 }
 
 export default translations
