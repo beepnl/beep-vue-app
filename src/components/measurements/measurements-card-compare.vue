@@ -340,13 +340,19 @@ export default {
         labels: [],
         datasets: [],
       }
+      var SDdata = {
+        labels: [],
+        datasets: [],
+      }
 
       quantities.map((compareQuantity, index) => {
         var compareMt = this.getSensorMeasurement(compareQuantity)
+        var compareSD = this.COMPARE_SD[compareQuantity]
 
         if (compareMt === null || compareMt === undefined) {
           console.log('compareMt not found ', compareQuantity)
         } else if (compareMt.show_in_charts === 1) {
+          // for data
           data.datasets.push({
             id: compareMt.id,
             abbr: compareMt.abbreviation,
@@ -367,6 +373,63 @@ export default {
               compareMt.unit !== '-' && compareMt.unit !== null
                 ? compareMt.unit
                 : '',
+            data: [],
+            spanGaps:
+              weather || this.interval === 'hour' || this.interval === 'day',
+            mtType: 'compare',
+          })
+
+          // for sd
+          SDdata.datasets.push({
+            id: compareSD,
+            abbr: compareSD + '-',
+            fill: '+1',
+            borderColor: '#' + compareMt.hex_color,
+            backgroundColor: '#' + compareMt.hex_color + '80',
+            borderRadius: 2,
+            showLine: false,
+            pointRadius: 0,
+            // label: this.getSensorLabel(
+            //   this.compareMeasurementData.sensorDefinitions,
+            //   compareQuantity,
+            //   compareMt.unit
+            // ),
+            // name: this.getSensorName(
+            //   this.compareMeasurementData.sensorDefinitions,
+            //   compareQuantity
+            // ),
+            // unit:
+            //   compareMt.unit !== '-' && compareMt.unit !== null
+            //     ? compareMt.unit
+            //     : '',
+            data: [],
+            spanGaps:
+              weather || this.interval === 'hour' || this.interval === 'day',
+            mtType: 'compare',
+          })
+
+          SDdata.datasets.push({
+            id: compareSD,
+            abbr: compareSD + '+',
+            fill: false,
+            borderColor: '#' + compareMt.hex_color,
+            backgroundColor: '#' + compareMt.hex_color,
+            borderRadius: 2,
+            showLine: false,
+            pointRadius: 0,
+            // label: this.getSensorLabel(
+            //   this.compareMeasurementData.sensorDefinitions,
+            //   compareQuantity,
+            //   compareMt.unit
+            // ),
+            // name: this.getSensorName(
+            //   this.compareMeasurementData.sensorDefinitions,
+            //   compareQuantity
+            // ),
+            // unit:
+            //   compareMt.unit !== '-' && compareMt.unit !== null
+            //     ? compareMt.unit
+            //     : '',
             data: [],
             spanGaps:
               weather || this.interval === 'hour' || this.interval === 'day',
@@ -428,6 +491,25 @@ export default {
                   x: measurement.time,
                   y: measurement[compareQuantity],
                 })
+                var compareSD = this.COMPARE_SD[compareQuantity]
+                if (compareSD !== 'undefined' && compareSD !== null) {
+                  SDdata.datasets.map((SDdataset, index) => {
+                    if (SDdataset.abbr === compareSD + '-') {
+                      SDdataset.data.push({
+                        x: measurement.time,
+                        y:
+                          measurement[compareQuantity] - measurement[compareSD],
+                      })
+                    }
+                    if (SDdataset.abbr === compareSD + '+') {
+                      SDdataset.data.push({
+                        x: measurement.time,
+                        y:
+                          measurement[compareQuantity] + measurement[compareSD],
+                      })
+                    }
+                  })
+                }
               }
             })
           }
@@ -462,6 +544,7 @@ export default {
           }
         })
       }
+
       // var otherData = []
       // quantities.map((quantity, index) => {
       //   otherData.push(this.chartjsDataSeries([this.COMPARE_SENSOR[quantity]]))
@@ -471,6 +554,9 @@ export default {
       //   data.labels.push(sd.labels)
       //   data.datasets.push.apply(data.datasets, sd.datasets)
       // })
+
+      data.labels.push.apply(data.labels, SDdata.labels)
+      data.datasets.push.apply(data.datasets, SDdata.datasets)
 
       return data
     },

@@ -132,6 +132,12 @@ export const sensorMixin = {
         // mean_weight_kg_noOutlier: 'weight_kg_noOutlier',
         // mean_weight_intake: 'weight_intake',
       },
+      COMPARE_SD: {
+        mean_weight_kg: 'sd_weight_kg',
+        mean_net_weight_kg: 'sd_net_weight_kg',
+        // mean_weight_kg_noOutlier: 'weight_kg_noOutlier',
+        // mean_weight_intake: 'weight_intake',
+      },
       DASHBOARD_TEMP_SENSORS: [
         'temperature',
         't',
