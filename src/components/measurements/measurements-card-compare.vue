@@ -85,7 +85,7 @@
       <template v-if="compareSensorsPresent">
         <v-col
           v-for="(sensor, index) in currentCompareSensors"
-          :key="'sensor' + index"
+          :key="'compare' + index"
           cols="12"
           :md="chartCols"
         >
