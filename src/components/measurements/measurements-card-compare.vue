@@ -589,12 +589,14 @@ export default {
         ? sensordefs[quantity].name
         : this.$i18n.t(quantity)
     },
-    loadCompareData(init = false) {
+    loadCompareData(init = false, interval = null) {
       if (init) {
         this.comparingData = true
       }
       if (this.comparingData) {
-        this.sensorCompareMeasurementRequest(this.interval)
+        this.sensorCompareMeasurementRequest(
+          interval !== null ? interval : this.interval
+        )
       }
     },
     redrawCharts(seamless = true) {
