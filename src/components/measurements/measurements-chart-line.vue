@@ -13,6 +13,7 @@
 import { Line as LineChart } from 'vue-chartjs/legacy'
 import {
   Chart as ChartJS,
+  Filler,
   LineElement,
   PointElement,
   LinearScale,
@@ -25,6 +26,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels'
 import annotationPlugin from 'chartjs-plugin-annotation'
 
 ChartJS.register(
+  Filler,
   LineElement,
   PointElement,
   LinearScale,
