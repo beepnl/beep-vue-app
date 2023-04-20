@@ -146,7 +146,7 @@
           <div v-else-if="chartCols !== 12" class="header-filler my-3"></div>
           <div>
             <MeasurementsChartBar
-              :chart-data="chartjsCompareDataSeries([sensor])"
+              :chart-data="chartjsCompareDataSeries([sensor], true)"
               :interval="interval"
               :start-time="periodStartString"
               :end-time="periodEndString"
@@ -328,7 +328,7 @@ export default {
       )
       return smFilter.length > 0 ? smFilter[0] : null
     },
-    chartjsCompareDataSeries(quantities, weather = false) {
+    chartjsCompareDataSeries(quantities, bar = false) {
       var data = {
         labels: [],
         datasets: [],
@@ -367,8 +367,7 @@ export default {
                 ? compareMt.unit
                 : '',
             data: [],
-            spanGaps:
-              weather || this.interval === 'hour' || this.interval === 'day',
+            spanGaps: this.interval === 'hour' || this.interval === 'day',
             mtType: 'compare',
           })
 
@@ -388,8 +387,7 @@ export default {
             name: 'mean - SD',
             unit: null,
             data: [],
-            spanGaps:
-              weather || this.interval === 'hour' || this.interval === 'day',
+            spanGaps: this.interval === 'hour' || this.interval === 'day',
             mtType: 'compare',
           })
 
@@ -408,8 +406,7 @@ export default {
             name: 'mean + SD',
             unit: null,
             data: [],
-            spanGaps:
-              weather || this.interval === 'hour' || this.interval === 'day',
+            spanGaps: this.interval === 'hour' || this.interval === 'day',
             mtType: 'compare',
           })
 
@@ -437,8 +434,7 @@ export default {
               ),
               unit: mt.unit !== '-' && mt.unit !== null ? mt.unit : '',
               data: [],
-              spanGaps:
-                weather || this.interval === 'hour' || this.interval === 'day',
+              spanGaps: this.interval === 'hour' || this.interval === 'day',
               mtType: 'normal',
             })
           }
@@ -531,6 +527,73 @@ export default {
       //   data.labels.push(sd.labels)
       //   data.datasets.push.apply(data.datasets, sd.datasets)
       // })
+      console.log('bar')
+      console.log(bar)
+      if (bar) {
+        data.datasets.map((barset, index) => {
+          console.log(barset.name)
+          var allData = barset.data
+          const perChunk = Math.floor(allData.length / 12) // items per chunk
+
+          var barData = allData.reduce((resultArray, item, index) => {
+            const chunkIndex = Math.floor(index / perChunk)
+            if (!resultArray[chunkIndex]) {
+              // save at least something
+              resultArray[chunkIndex] = [item, item]
+            }
+            if (item.y !== null && resultArray[chunkIndex][0].y === null) {
+              // save first item that is not null
+              resultArray[chunkIndex][0].y = item.y
+            }
+            if (item.y !== null) {
+              // save last item that is not null
+              resultArray[chunkIndex][1] = item
+            }
+            // if (chunkIndex === 12) {
+            //   if (!resultArray[chunkIndex]) {
+            //     // make sure there is at least something in it
+            //     resultArray[chunkIndex + 1] = { x: item.x, y: null }
+            //   }
+            //   if (item.y !== null) resultArray[chunkIndex + 1] = item // save the last item that is not null
+            // }
+
+            return resultArray
+          }, [])
+          function fillEmptySlotsWithNull(arr) {
+            return Array.from(arr, (_, i) => {
+              if (!(i in arr)) return null
+              else return arr[i]
+            })
+          }
+          barData = fillEmptySlotsWithNull(barData)
+          console.log('barData')
+          console.log(barData)
+          var barDiffData = barData.reduce((resultArray, item, index) => {
+            resultArray[index] = { x: item[0].x, y: item[1].y - item[0].y }
+            return resultArray
+          }, [])
+          // var shifted = barData.map((item) => {
+          //   return item
+          // })
+          // shifted.shift()
+          // console.log('shifted')
+          // console.log(shifted)
+          // // shifted - barData
+          // const barDiffData = shifted.map((item, index) => {
+          //   var bdy = barData[index].y
+          //   var diff = 0
+          //   if (bdy !== null) {
+          //     diff = item.y - barData[index].y
+          //   }
+          //   return { x: barData[index].x, y: diff }
+          // })
+          // console.log('barDiffData')
+          // console.log(barDiffData)
+          barset.data = barDiffData
+        })
+      }
+      console.log('datasets')
+      console.log(data.datasets)
 
       data.labels.push.apply(data.labels, SDdata.labels)
       data.datasets.push.apply(data.datasets, SDdata.datasets)
