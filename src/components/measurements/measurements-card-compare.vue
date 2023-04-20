@@ -4,6 +4,7 @@
     :mobile-title="$t('Compare')"
     :local-var="localVar"
     :show-chart-cols-icons="true"
+    @set-chart-cols="chartCols = $event"
   >
     <v-row class="my-6">
       <v-col cols="12" class="d-flex justify-space-between flex-wrap">
@@ -252,6 +253,7 @@ export default {
       cardName: 'Compare',
       ready: false,
       comparingData: false,
+      chartCols: 6,
     }
   },
   computed: {
@@ -259,9 +261,6 @@ export default {
     ...mapGetters('groups', ['groups']),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
-    chartCols() {
-      return parseInt(localStorage[this.localVar])
-    },
     locale() {
       return this.$i18n.locale
     },
