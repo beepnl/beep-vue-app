@@ -413,9 +413,8 @@
         </MeasurementsCard>
 
         <MeasurementsCardCompare
-          v-if="
-            userIsAdmin || permissions.includes('hive-compare') // TODO: remove userisadmin once permissions are working for Diren
-          "
+          v-if="showCardCompare"
+          ref="cardCompare"
           :dates="dates"
           :interval="interval"
           :period-end-string="periodEndString"
@@ -841,6 +840,13 @@ export default {
     },
     selectedDeviceTitle() {
       return this.selectedDevice.hive_name + ' - ' + this.selectedDevice.name
+    },
+    showCardCompare() {
+      return (
+        this.ready &&
+        this.devices.length > 0 &&
+        (this.userIsAdmin || this.permissions.includes('hive-compare'))
+      ) // TODO: remove userisadmin once permissions are working for Diren
     },
     smAndDown() {
       return this.$vuetify.breakpoint.smAndDown
@@ -1446,6 +1452,9 @@ export default {
         this.loadLastSensorValuesTimer()
       }
       this.sensorMeasurementRequest(this.interval)
+      if (this.showCardCompare) {
+        this.$refs.cardCompare.loadCompareData()
+      }
     },
     loadLastSensorValuesTimer() {
       if (

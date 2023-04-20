@@ -275,7 +275,7 @@ export default {
             size: this.mobile ? this.fontSizeMob : this.fontSize,
           },
           formatter: function(value, context) {
-            return value.y !== null
+            return value.y !== null && value.y !== undefined
               ? value.y.toFixed(1) + ' ' + context.dataset.unit
               : '-'
           },

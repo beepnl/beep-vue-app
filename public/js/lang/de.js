@@ -1090,11 +1090,11 @@ const translations = {
   Select_inspection_mode: 'Select inspection mode',
 
   /* Compare module */
-  Load: 'Load',
-  Compare: 'Compare',
-  Select_hives_for_compare: 'Select hives to compare with',
+  Load: 'Laden',
+  Compare: 'Vergleich',
+  Select_hives_for_compare: 'Wähle Beuten für den Vergleich',
   Select_hives_for_compare_exp:
-    'Select the hives with which you would like to compare the data',
+    'Wähle Beuten mit denen du deine Daten vergleichen möchtest',
   mean_weight_kg: 'Durchschnittliches Gewicht',
   mean_net_weight_kg: 'Durchschnittliches Nettogewicht',
   net_weight_kg: 'Nettogewicht',

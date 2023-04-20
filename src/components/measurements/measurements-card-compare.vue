@@ -45,7 +45,7 @@
           outlined
           color="black"
           class="save-button-mobile-wide"
-          @click.prevent="loadCompareData"
+          @click.prevent="loadCompareData(true)"
         >
           <v-progress-circular
             v-if="showLoadingIcon"
@@ -251,6 +251,7 @@ export default {
       selectHivesOverlay: false,
       cardName: 'Compare',
       ready: false,
+      comparingData: false,
     }
   },
   computed: {
@@ -612,8 +613,13 @@ export default {
         ? sensordefs[quantity].name
         : this.$i18n.t(quantity)
     },
-    loadCompareData() {
-      this.sensorCompareMeasurementRequest(this.interval)
+    loadCompareData(init = false) {
+      if (init) {
+        this.comparingData = true
+      }
+      if (this.comparingData) {
+        this.sensorCompareMeasurementRequest(this.interval)
+      }
     },
     redrawCharts() {
       const temp = this.compareMeasurementData
