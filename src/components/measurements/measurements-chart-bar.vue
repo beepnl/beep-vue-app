@@ -16,6 +16,7 @@ import {
   BarElement,
   PointElement,
   LinearScale,
+  CategoryScale,
   TimeSeriesScale,
   Legend,
   Tooltip,
@@ -28,6 +29,7 @@ ChartJS.register(
   BarElement,
   PointElement,
   LinearScale,
+  CategoryScale,
   TimeSeriesScale,
   Legend,
   Tooltip,
@@ -166,26 +168,39 @@ export default {
         events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
         scales: {
           x: {
-            type: 'time',
-            display: true,
-            min: this.startTime,
-            max: this.endTime,
-            ticks: {
-              color: '#242424',
-              source: 'auto',
-              autoSkip: true,
-              font: {
-                size: this.mobile ? this.fontSizeMob : this.fontSize,
-              },
+            title: {
+              display: true,
+              // text:
+              //   self.$i18n.t('Time_lag') +
+              //   ' (' +
+              //   self.$i18n.t('minutes_short') +
+              //   ')',
             },
-            time: {
-              unit: this.intervalToUnit[this.interval],
-              round: false,
-              parser: this.chartParseFmt,
-              tooltipFormat: this.tooltipFormat,
-              displayFormats: this.displayFormats,
-            },
+            // grid: {
+            //   lineWidth: (ctx) => (ctx.tick.label === 0 ? 3 : 1),
+            // },
           },
+          // x: {
+          //   type: 'time',
+          //   display: true,
+          //   min: this.startTime,
+          //   max: this.endTime,
+          //   ticks: {
+          //     color: '#242424',
+          //     source: 'auto',
+          //     autoSkip: true,
+          //     font: {
+          //       size: this.mobile ? this.fontSizeMob : this.fontSize,
+          //     },
+          //   },
+          //   time: {
+          //     unit: this.intervalToUnit[this.interval],
+          //     round: false,
+          //     parser: this.chartParseFmt,
+          //     tooltipFormat: this.tooltipFormat,
+          //     displayFormats: this.displayFormats,
+          //   },
+          // },
           y: {
             ticks: {
               color: '#242424',

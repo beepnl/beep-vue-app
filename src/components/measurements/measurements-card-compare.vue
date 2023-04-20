@@ -333,9 +333,11 @@ export default {
         labels: [],
         datasets: [],
       }
-      var SDdata = {
-        labels: [],
-        datasets: [],
+      if (!bar) {
+        var SDdata = {
+          labels: [],
+          datasets: [],
+        }
       }
 
       quantities.map((compareQuantity, index) => {
@@ -370,46 +372,46 @@ export default {
             spanGaps: this.interval === 'hour' || this.interval === 'day',
             mtType: 'compare',
           })
+          if (!bar) {
+            // for sd
+            SDdata.datasets.push({
+              id: compareSD,
+              abbr: compareSD + '-',
+              fill: '+1',
+              borderColor: '#' + compareMt.hex_color,
+              backgroundColor: '#' + compareMt.hex_color + '80',
+              borderRadius: 1,
+              borderWidth: 1,
+              hidden: true,
+              // showLine: false,
+              pointRadius: 0,
+              label: 'mean - SD',
+              name: 'mean - SD',
+              unit: null,
+              data: [],
+              spanGaps: this.interval === 'hour' || this.interval === 'day',
+              mtType: 'compare',
+            })
 
-          // for sd
-          SDdata.datasets.push({
-            id: compareSD,
-            abbr: compareSD + '-',
-            fill: '+1',
-            borderColor: '#' + compareMt.hex_color,
-            backgroundColor: '#' + compareMt.hex_color + '80',
-            borderRadius: 1,
-            borderWidth: 1,
-            hidden: true,
-            // showLine: false,
-            pointRadius: 0,
-            label: 'mean - SD',
-            name: 'mean - SD',
-            unit: null,
-            data: [],
-            spanGaps: this.interval === 'hour' || this.interval === 'day',
-            mtType: 'compare',
-          })
-
-          SDdata.datasets.push({
-            id: compareSD,
-            abbr: compareSD + '+',
-            fill: false,
-            borderColor: '#' + compareMt.hex_color,
-            backgroundColor: '#' + compareMt.hex_color,
-            borderRadius: 1,
-            borderWidth: 1,
-            hidden: true,
-            // showLine: false,
-            pointRadius: 0,
-            label: 'mean + SD',
-            name: 'mean + SD',
-            unit: null,
-            data: [],
-            spanGaps: this.interval === 'hour' || this.interval === 'day',
-            mtType: 'compare',
-          })
-
+            SDdata.datasets.push({
+              id: compareSD,
+              abbr: compareSD + '+',
+              fill: false,
+              borderColor: '#' + compareMt.hex_color,
+              backgroundColor: '#' + compareMt.hex_color,
+              borderRadius: 1,
+              borderWidth: 1,
+              hidden: true,
+              // showLine: false,
+              pointRadius: 0,
+              label: 'mean + SD',
+              name: 'mean + SD',
+              unit: null,
+              data: [],
+              spanGaps: this.interval === 'hour' || this.interval === 'day',
+              mtType: 'compare',
+            })
+          }
           var quantity = this.COMPARE_SENSOR[compareQuantity]
           var mt = this.getSensorMeasurement(quantity)
 
@@ -464,24 +466,28 @@ export default {
                   x: measurement.time,
                   y: measurement[compareQuantity],
                 })
-                var compareSD = this.COMPARE_SD[compareQuantity]
-                if (compareSD !== 'undefined' && compareSD !== null) {
-                  SDdata.datasets.map((SDdataset, index) => {
-                    if (SDdataset.abbr === compareSD + '-') {
-                      SDdataset.data.push({
-                        x: measurement.time,
-                        y:
-                          measurement[compareQuantity] - measurement[compareSD],
-                      })
-                    }
-                    if (SDdataset.abbr === compareSD + '+') {
-                      SDdataset.data.push({
-                        x: measurement.time,
-                        y:
-                          measurement[compareQuantity] + measurement[compareSD],
-                      })
-                    }
-                  })
+                if (!bar) {
+                  var compareSD = this.COMPARE_SD[compareQuantity]
+                  if (compareSD !== 'undefined' && compareSD !== null) {
+                    SDdata.datasets.map((SDdataset, index) => {
+                      if (SDdataset.abbr === compareSD + '-') {
+                        SDdataset.data.push({
+                          x: measurement.time,
+                          y:
+                            measurement[compareQuantity] -
+                            measurement[compareSD],
+                        })
+                      }
+                      if (SDdataset.abbr === compareSD + '+') {
+                        SDdataset.data.push({
+                          x: measurement.time,
+                          y:
+                            measurement[compareQuantity] +
+                            measurement[compareSD],
+                        })
+                      }
+                    })
+                  }
                 }
               }
             })
@@ -518,85 +524,43 @@ export default {
         })
       }
 
-      // var otherData = []
-      // quantities.map((quantity, index) => {
-      //   otherData.push(this.chartjsDataSeries([this.COMPARE_SENSOR[quantity]]))
-      // })
-
-      // otherData.map((sd) => {
-      //   data.labels.push(sd.labels)
-      //   data.datasets.push.apply(data.datasets, sd.datasets)
-      // })
       console.log('bar')
       console.log(bar)
       if (bar) {
         data.datasets.map((barset, index) => {
           console.log(barset.name)
           var allData = barset.data
-          const perChunk = Math.floor(allData.length / 12) // items per chunk
-
           var barData = allData.reduce((resultArray, item, index) => {
-            const chunkIndex = Math.floor(index / perChunk)
-            if (!resultArray[chunkIndex]) {
-              // save at least something
-              resultArray[chunkIndex] = [item, item]
+            if (!resultArray[0]) {
+              resultArray[0] = item // save at least something
             }
-            if (item.y !== null && resultArray[chunkIndex][0].y === null) {
+            if (item.y !== null && resultArray[0].y === null) {
               // save first item that is not null
-              resultArray[chunkIndex][0].y = item.y
+              resultArray[0].y = item.y
             }
             if (item.y !== null) {
               // save last item that is not null
-              resultArray[chunkIndex][1] = item
+              resultArray[1] = item
             }
-            // if (chunkIndex === 12) {
-            //   if (!resultArray[chunkIndex]) {
-            //     // make sure there is at least something in it
-            //     resultArray[chunkIndex + 1] = { x: item.x, y: null }
-            //   }
-            //   if (item.y !== null) resultArray[chunkIndex + 1] = item // save the last item that is not null
-            // }
-
             return resultArray
           }, [])
-          function fillEmptySlotsWithNull(arr) {
-            return Array.from(arr, (_, i) => {
-              if (!(i in arr)) return null
-              else return arr[i]
-            })
-          }
-          barData = fillEmptySlotsWithNull(barData)
-          console.log('barData')
           console.log(barData)
-          var barDiffData = barData.reduce((resultArray, item, index) => {
-            resultArray[index] = { x: item[0].x, y: item[1].y - item[0].y }
-            return resultArray
-          }, [])
-          // var shifted = barData.map((item) => {
-          //   return item
-          // })
-          // shifted.shift()
-          // console.log('shifted')
-          // console.log(shifted)
-          // // shifted - barData
-          // const barDiffData = shifted.map((item, index) => {
-          //   var bdy = barData[index].y
-          //   var diff = 0
-          //   if (bdy !== null) {
-          //     diff = item.y - barData[index].y
-          //   }
-          //   return { x: barData[index].x, y: diff }
-          // })
-          // console.log('barDiffData')
-          // console.log(barDiffData)
-          barset.data = barDiffData
+          var bdy1 = barData[0].y
+          var bdy2 = barData[1].y
+          var barDiffData = { x: this.interval, y: 0 }
+          if (bdy1 !== null && bdy2 !== null) {
+            barDiffData.y = bdy2 - bdy1
+          }
+          console.log(barDiffData)
+          barset.data = [barDiffData]
         })
       }
       console.log('datasets')
       console.log(data.datasets)
-
-      data.labels.push.apply(data.labels, SDdata.labels)
-      data.datasets.push.apply(data.datasets, SDdata.datasets)
+      if (!bar) {
+        data.labels.push.apply(data.labels, SDdata.labels)
+        data.datasets.push.apply(data.datasets, SDdata.datasets)
+      }
 
       return data
     },
