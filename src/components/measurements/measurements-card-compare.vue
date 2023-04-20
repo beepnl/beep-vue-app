@@ -379,22 +379,14 @@ export default {
             fill: '+1',
             borderColor: '#' + compareMt.hex_color,
             backgroundColor: '#' + compareMt.hex_color + '80',
-            borderRadius: 2,
-            showLine: false,
+            borderRadius: 1,
+            borderWidth: 1,
+            hidden: true,
+            // showLine: false,
             pointRadius: 0,
-            // label: this.getSensorLabel(
-            //   this.compareMeasurementData.sensorDefinitions,
-            //   compareQuantity,
-            //   compareMt.unit
-            // ),
-            // name: this.getSensorName(
-            //   this.compareMeasurementData.sensorDefinitions,
-            //   compareQuantity
-            // ),
-            // unit:
-            //   compareMt.unit !== '-' && compareMt.unit !== null
-            //     ? compareMt.unit
-            //     : '',
+            label: 'mean - SD',
+            name: 'mean - SD',
+            unit: null,
             data: [],
             spanGaps:
               weather || this.interval === 'hour' || this.interval === 'day',
@@ -407,22 +399,14 @@ export default {
             fill: false,
             borderColor: '#' + compareMt.hex_color,
             backgroundColor: '#' + compareMt.hex_color,
-            borderRadius: 2,
-            showLine: false,
+            borderRadius: 1,
+            borderWidth: 1,
+            hidden: true,
+            // showLine: false,
             pointRadius: 0,
-            // label: this.getSensorLabel(
-            //   this.compareMeasurementData.sensorDefinitions,
-            //   compareQuantity,
-            //   compareMt.unit
-            // ),
-            // name: this.getSensorName(
-            //   this.compareMeasurementData.sensorDefinitions,
-            //   compareQuantity
-            // ),
-            // unit:
-            //   compareMt.unit !== '-' && compareMt.unit !== null
-            //     ? compareMt.unit
-            //     : '',
+            label: 'mean + SD',
+            name: 'mean + SD',
+            unit: null,
             data: [],
             spanGaps:
               weather || this.interval === 'hour' || this.interval === 'day',
