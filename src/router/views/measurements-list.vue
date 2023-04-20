@@ -839,7 +839,9 @@ export default {
       },
     },
     selectedDeviceTitle() {
-      return this.selectedDevice.hive_name + ' - ' + this.selectedDevice.name
+      return this.selectedDevice !== null
+        ? this.selectedDevice.hive_name + ' - ' + this.selectedDevice.name
+        : ''
     },
     showCardCompare() {
       return (
@@ -1458,7 +1460,7 @@ export default {
       this.sensorMeasurementRequest(this.interval)
       if (this.showCardCompare) {
         // trigger load compare data in child component whenever user is comparing data and a new data call is required
-        this.$refs.cardCompare.loadCompareData()
+        this.$refs.cardCompare.loadCompareData(false, this.interval)
       }
     },
     loadLastSensorValuesTimer() {
