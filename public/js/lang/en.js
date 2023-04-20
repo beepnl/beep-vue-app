@@ -176,7 +176,7 @@ const translations = {
   Postal_code: 'Postal code',
   Description: 'Description',
   Hive_amount: 'Number of hives',
-  Hive_prefix: 'Hive name prefix (before numer)',
+  Hive_prefix: 'Hive name prefix (before number)',
   Hive_number_offset: 'Start number hives',
   Hive_type: 'Hive type',
   Hive_layers: 'Hive layers',
