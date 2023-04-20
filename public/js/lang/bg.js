@@ -210,7 +210,7 @@ const translations = {
   Description: 'Description',
   Hive_settings: 'Hive settings',
   Hive_amount: 'Number of hives',
-  Hive_prefix: 'Hive name prefix (before numer)',
+  Hive_prefix: 'Hive name prefix (before number)',
   Hive_number_offset: 'Start number hives',
   Hive_type: 'Hive type',
   Hive_layers: 'Hive layers',
