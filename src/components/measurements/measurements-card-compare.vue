@@ -133,16 +133,7 @@
           <div
             v-if="index === 0"
             class="overline mt-0 mt-sm-3 mb-3 text-center"
-            v-text="
-              compareMeasurementData.resolution
-                ? $tc('measurement', 2) +
-                  ' (' +
-                  $t('measurement_interval') +
-                  ': ' +
-                  compareMeasurementData.resolution +
-                  ')'
-                : $tc('measurement', 2)
-            "
+            v-text="$tc('overall_intake_loss')"
           ></div>
           <div v-else-if="chartCols !== 12" class="header-filler my-3"></div>
           <div>
