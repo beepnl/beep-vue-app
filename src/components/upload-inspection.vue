@@ -1,26 +1,25 @@
 <template>
   <v-row class="mx-0 mx-sm-4">
     <v-col class="d-flex flex-wrap">
-      <template v-for="pageNr in totalPages">
-        <div
-          :key="'page' + pageNr"
-          class="d-flex flex-column justify-space-between upload-page rounded-border mr-3"
-        >
-          <span
-            class="d-flex justify-end"
-            v-text="'p.' + pageNr + ' / ' + totalPages"
-          ></span>
-          <v-btn tile outlined @click="uploadPage">
-            <v-icon left>mdi-upload</v-icon>{{ 'Upload' }}
-          </v-btn>
-        </div>
+      <template v-for="(pageNr, i) in totalPages">
+        <UploadPageBlob
+          :key="'p-' + pageNr"
+          :page-nr-text="'p.' + pageNr + ' / ' + totalPages"
+          :disabled="false"
+          @set-page-blob="setPageBlob($event, i)"
+        />
       </template>
     </v-col>
   </v-row>
 </template>
 
 <script>
+import UploadPageBlob from '@components/upload-page-blob.vue'
+
 export default {
+  components: {
+    UploadPageBlob,
+  },
   props: {
     selectedChecklist: {
       type: Object,
@@ -33,18 +32,47 @@ export default {
       required: false,
     },
   },
+  data() {
+    return {
+      errorMessage: null,
+      payload: {
+        svg: '',
+        images: [],
+        settings: {
+          return_blob: ['text', 'single-digit', 'checkbox'],
+        },
+        'data-user-locale': ['en'],
+      },
+      // showLoading: [], // TODO             :loading="showLoading[i] ? 'primary' : false"
+    }
+  },
   computed: {},
   methods: {
-    uploadPage() {
-      console.log('TODO upload page function')
+    findImageIndex(pageNr) {
+      return this.payload.images.findIndex((item) => item.page === pageNr)
+    },
+    setPageBlob(blob, index) {
+      var pageNr = index + 1
+
+      var imageIndex = this.findImageIndex(pageNr)
+
+      if (imageIndex === -1) {
+        var imgJson = {
+          page: pageNr,
+          image: blob,
+        }
+
+        this.payload.images.push(imgJson)
+      } else {
+        if (blob !== null) {
+          this.payload.images[imageIndex].image = blob
+        } else {
+          this.payload.images.splice(imageIndex, 1)
+        }
+      }
     },
   },
 }
 </script>
 
-<style lang="scss" scoped>
-.upload-page {
-  width: 140px;
-  height: 198px;
-}
-</style>
+<style lang="scss" scoped></style>

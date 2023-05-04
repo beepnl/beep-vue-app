@@ -1,12 +1,5 @@
 <template>
   <g>
-    <!-- <imageUploader
-      v-if="item.input === 'image'"
-      :object="object"
-      :item="item"
-      :input-disabled="disabled"
-    ></imageUploader> -->
-
     <svgHeader
       v-if="item.input === 'label'"
       :position="position"
