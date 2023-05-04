@@ -652,7 +652,9 @@ export default {
             name: sensorName,
             unit: mT.unit !== '-' && mT.unit !== null ? mT.unit : '',
             data: [],
-            spanGaps: false,
+            spanGaps:
+              this.dashboard.interval === 'hour' ||
+              this.dashboard.interval === 'day',
           })
         }
       })
