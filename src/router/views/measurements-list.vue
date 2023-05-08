@@ -1460,7 +1460,12 @@ export default {
       this.sensorMeasurementRequest(this.interval)
       if (this.showCardCompare) {
         // trigger load compare data in child component whenever user is comparing data and a new data call is required
-        this.$refs.cardCompare.loadCompareData(false, this.interval)
+        // interval & timeIndex are passed on directly because the component props are passed on with a small delay so that does not work correctly
+        this.$refs.cardCompare.loadCompareData(
+          false,
+          this.interval,
+          this.timeIndex
+        )
       }
     },
     loadLastSensorValuesTimer() {

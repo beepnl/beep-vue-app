@@ -265,7 +265,7 @@ export default {
     this.readApiariesAndGroupsIfNotPresent()
   },
   methods: {
-    async sensorCompareMeasurementRequest(interval) {
+    async sensorCompareMeasurementRequest(interval, timeIndex) {
       var start = interval === 'selection' ? this.dates[0] : null
       var end = interval === 'selection' ? this.dates[1] : null
       var timeGroup =
@@ -282,7 +282,7 @@ export default {
             '&interval=' +
             interval +
             '&index=' +
-            this.timeIndex +
+            timeIndex +
             '&timeGroup=' +
             timeGroup +
             '&timezone=' +
@@ -606,13 +606,14 @@ export default {
         ? sensordefs[quantity].name
         : this.$i18n.t(quantity)
     },
-    loadCompareData(init = false, interval = null) {
+    loadCompareData(init = false, interval = null, timeIndex = null) {
       if (init) {
         this.comparingData = true
       }
       if (this.comparingData) {
         this.sensorCompareMeasurementRequest(
-          interval !== null ? interval : this.interval
+          interval !== null ? interval : this.interval,
+          timeIndex !== null ? timeIndex : this.timeIndex
         )
       }
     },
