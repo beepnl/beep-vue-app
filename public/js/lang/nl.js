@@ -1006,11 +1006,12 @@ const translations = {
   Online_inspection: 'Digitale inspectie',
   Online_inspection_exp:
     'Vul de kastkaart digitaal (online) in via uw computer, tablet of smartphone, zoals u gewend bent',
-  Upload_inspection: 'Upload inspectie',
+  Upload_inspection: 'Upload papieren inspectie',
   Upload_inspection_exp:
     "Wanneer u een papieren inspectie heeft gedaan, kunt u hier foto's daarvan uploaden. Deze worden vervolgens automatisch uitgelezen en het resultaat kan dan worden geverifiëerd en opgeslagen als een normale (digitale / online) inspectie.",
 
   Select_inspection_mode: 'Selecteer inspectiemodus',
+  Send_pictures: "Foto's opsturen",
 
   /* Compare module */
   Load: 'Laden',

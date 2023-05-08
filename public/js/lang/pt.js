@@ -1093,10 +1093,11 @@ const translations = {
   Online_inspection: 'Digital inspection',
   Online_inspection_exp:
     'Fill in your checklist digitally (online) via your computer, tablet or smartphone, like you are used to',
-  Upload_inspection: 'Upload inspection',
+  Upload_inspection: 'Upload paper inspection',
   Upload_inspection_exp:
     'If you have completed a paper inspection, you can upload photos of your inspection sheets here. They will then be automatically parsed and can be verified and saved like a normal (digital / online) inspection.',
   Select_inspection_mode: 'Select inspection mode',
+  Send_pictures: 'Send pictures',
 
   /* Compare module */
   Load: 'Load',

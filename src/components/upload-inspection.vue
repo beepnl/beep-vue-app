@@ -5,7 +5,7 @@
         <UploadPageBlob
           :key="'p-' + pageNr"
           :page-nr-text="'p.' + pageNr + ' / ' + totalPages"
-          :disabled="false"
+          :disabled="loading"
           @set-page-blob="setPageBlob($event, i)"
         />
       </template>
@@ -31,28 +31,41 @@ export default {
       default: 4, // TODO: remove dummy pages nr
       required: false,
     },
+    loading: {
+      type: Boolean,
+      default: false,
+      required: true,
+    },
   },
   data() {
     return {
       errorMessage: null,
-      payload: {
-        svg: '',
-        images: [],
-        settings: {
-          return_blob: ['text', 'single-digit', 'checkbox'],
-        },
-        'data-user-locale': ['en'],
-      },
       // showLoading: [], // TODO             :loading="showLoading[i] ? 'primary' : false"
     }
   },
-  computed: {},
+  computed: {
+    uploadInspectionPayload: {
+      get() {
+        return this.$store.getters['inspections/uploadInspectionPayload']
+      },
+      set(value) {
+        this.$store.commit('inspections/setData', {
+          prop: 'uploadInspectionPayload',
+          value,
+        })
+      },
+    },
+  },
   methods: {
     findImageIndex(pageNr) {
-      return this.payload.images.findIndex((item) => item.page === pageNr)
+      return this.uploadInspectionPayload.images.findIndex(
+        (item) => item.page === pageNr
+      )
     },
     setPageBlob(blob, index) {
       var pageNr = index + 1
+
+      var payload = Object.freeze(this.uploadInspectionPayload)
 
       var imageIndex = this.findImageIndex(pageNr)
 
@@ -62,14 +75,17 @@ export default {
           image: blob,
         }
 
-        this.payload.images.push(imgJson)
+        payload.images.push(imgJson)
       } else {
         if (blob !== null) {
-          this.payload.images[imageIndex].image = blob
+          payload.images[imageIndex].image = blob
+          console.log(blob)
         } else {
-          this.payload.images.splice(imageIndex, 1)
+          payload.images.splice(imageIndex, 1)
         }
       }
+
+      this.uploadInspectionPayload = payload
     },
   },
 }

@@ -26,6 +26,14 @@ export const state = {
   svgRowHeight: 38,
   svgY: 0,
   svgWarnings: [],
+  uploadInspectionPayload: {
+    svg: '',
+    images: [],
+    settings: {
+      return_blob: ['text', 'single-digit', 'checkbox'],
+    },
+    'data-user-locale': ['en'],
+  },
 }
 export const getters = {
   ...resource.getters,
@@ -91,6 +99,9 @@ export const getters = {
   },
   svgWarnings: (state) => {
     return state.svgWarnings
+  },
+  uploadInspectionPayload: (state) => {
+    return state.uploadInspectionPayload
   },
 }
 export const mutations = {
@@ -193,6 +204,14 @@ export const mutations = {
     state.svgY = 0
     state.svgMaxPageNr = null
     state.svgWarnings = []
+    state.uploadInspectionPayload = {
+      svg: '',
+      images: [],
+      settings: {
+        return_blob: ['text', 'single-digit', 'checkbox'],
+      },
+      'data-user-locale': ['en'],
+    }
   },
   resetSvgStates: function(state) {
     state.svgItemCounter = 0

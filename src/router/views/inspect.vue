@@ -105,6 +105,30 @@
           <v-icon v-if="!showLoadingIcon" left>mdi-printer</v-icon>
           {{ $t('Print') }}
         </v-btn>
+        <v-btn
+          v-if="uploadMode"
+          tile
+          outlined
+          color="black"
+          class="save-button-mobile-wide mr-1"
+          :disabled="
+            showLoadingIcon ||
+              uploadInspectionPayload.images.length !==
+                selectedSvgChecklist.pages
+          "
+          @click="uploadInspection"
+        >
+          <v-progress-circular
+            v-if="showLoadingIcon"
+            class="ml-n1 mr-2"
+            size="18"
+            width="2"
+            color="disabled"
+            indeterminate
+          />
+          <v-icon v-if="!showLoadingIcon" left>mdi-upload</v-icon>
+          {{ $t('Send_pictures') }}
+        </v-btn>
       </v-toolbar>
 
       <v-container
@@ -521,6 +545,7 @@
       <UploadInspection
         v-if="selectedChecklist"
         :selected-checklist="selectedChecklist"
+        :loading="showLoadingIcon"
       />
     </template>
 
@@ -663,6 +688,10 @@ export default {
         'reminder',
       ],
       parsedImages: {},
+      selectedSvgChecklist: {
+        pages: 1, // TODO replace dummy data by actual checklist
+      },
+      forceParseMode: false,
     }
   },
   computed: {
@@ -673,6 +702,7 @@ export default {
       'inspectionEdited',
       'bulkInspection',
       'tempSavedInspection',
+      'uploadInspectionPayload',
     ]),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
@@ -801,7 +831,7 @@ export default {
       return this.selectedMode === 'Upload'
     },
     parseMode() {
-      return this.$route.query.mode === 'parse'
+      return this.$route.query.mode === 'parse' || this.forceParseMode === true
     },
     preSelectedChecklistId() {
       return this.parseMode
@@ -1487,6 +1517,14 @@ export default {
         index,
         !this.showCategoriesByIndex[index]
       )
+    },
+    uploadInspection() {
+      console.log('TODO upload inspection', this.uploadInspectionPayload)
+
+      // https://beep-offline-data.pensoft.net/api/scanner/scan
+
+      this.forceParseMode = true // TODO finetune parse mode + where to switch it off?
+      this.setSelectedMode = 'Online'
     },
     validateText(value, property, maxLength) {
       if (value !== null && value.length > maxLength + 1) {
