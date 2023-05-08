@@ -77,7 +77,8 @@
     </v-row>
     <v-row
       v-if="
-        compareMeasurementData !== null &&
+        measurementData !== null &&
+          compareMeasurementData !== null &&
           compareMeasurementData.measurements &&
           compareMeasurementData.measurements.length > 0
       "
@@ -537,7 +538,7 @@ export default {
           console.log(barData)
           var bdy1 = barData[0].y
           var bdy2 = barData[1].y
-          var barDiffData = { x: this.interval, y: 0 }
+          var barDiffData = { x: this.$i18n.tc(this.interval, 1), y: 0 }
           if (bdy1 !== null && bdy2 !== null) {
             barDiffData.y = bdy2 - bdy1
           }
