@@ -847,8 +847,8 @@ export default {
       return (
         this.ready &&
         this.devices.length > 0 &&
-        (this.userIsAdmin || this.permissions.includes('hive-compare'))
-      ) // TODO: remove userisadmin once permissions are working for Diren
+        this.permissions.includes('hive-compare')
+      )
     },
     smAndDown() {
       return this.$vuetify.breakpoint.smAndDown
@@ -1101,9 +1101,7 @@ export default {
             (end !== null ? '&end=' + end + ' 23:59' : '') +
             '&relative_interval=' +
             (this.relativeInterval ? '1' : '0') +
-            (this.userIsAdmin || this.permissions.includes('hive-compare') // TODO remove user is admin when permission works for Diren
-              ? '&clean_weight=1'
-              : '')
+            (this.permissions.includes('hive-compare') ? '&clean_weight=1' : '')
         )
         this.formatMeasurementData(response.data)
         return true
