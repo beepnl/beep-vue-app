@@ -506,8 +506,30 @@
             v-text="hive.reminder_date_day_month"
           >
           </span>
+          <v-tooltip
+            v-if="
+              !mobile && hive.reminder && hive.reminder.length > 25 && xlView
+            "
+            bottom
+            max-width="60%"
+            open-delay="800"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <span
+                v-bind="attrs"
+                class="truncate-md"
+                style="max-width: 164px;"
+                v-on="on"
+                v-text="hive.reminder"
+              >
+              </span>
+            </template>
+            <span v-text="hive.reminder"> </span>
+          </v-tooltip>
           <span
-            v-if="hive.reminder && xlView"
+            v-if="
+              hive.reminder && (mobile || hive.reminder.length <= 25) && xlView
+            "
             class="truncate-md"
             style="max-width: 164px;"
             v-text="hive.reminder"

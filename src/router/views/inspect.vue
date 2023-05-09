@@ -953,7 +953,8 @@ export default {
       this.getHiveSet()
     }
 
-    if (localStorage.beepSelectedInspectionMode) {
+    if (localStorage.beepSelectedInspectionMode && !this.inspectionId) {
+      // set to previous mode except when editing an existing inspection
       this.setSelectedMode = localStorage.beepSelectedInspectionMode
     }
 
