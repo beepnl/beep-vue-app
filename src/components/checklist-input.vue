@@ -7,7 +7,11 @@
       :parse-mode="parseMode"
       :parsed-images="parsedImages"
       :parsed-items="parsedItems"
-      :check-answer="checkAnswer && object[item.id] === null"
+      :check-answer="
+        checkAnswer &&
+          (object[item.id] === null ||
+            (parsedAnswer && parsedAnswer.type === 'text'))
+      "
     ></labelWithDescription>
 
     <selectHiveOrApiary
@@ -64,7 +68,11 @@
       :object="object"
       :item="item"
       :locale="locale"
-      :check-answer="checkAnswer && object[item.id] === null"
+      :check-answer="
+        checkAnswer &&
+          (object[item.id] === null ||
+            (parsedAnswer && parsedAnswer.type === 'text'))
+      "
     ></treeselect>
 
     <dateTimePicker
@@ -205,6 +213,7 @@
       :locale="locale"
       :object="object"
       :nested="true"
+      :parse-mode="parseMode"
     ></ChecklistFieldset>
 
     <sampleCode
@@ -252,7 +261,7 @@
 <script>
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
-import dummyOutput from '@components/svg/test_4_dummy.json'
+import dummyOutput from '@components/svg/scan_results_kk3_complete.json' // test_4_dummy.json'
 import imageUploader from '@components/input-fields/image-uploader.vue'
 import sampleCode from '@components/input-fields/sample-code.vue'
 import selectHiveOrApiary from '@components/input-fields/select-hive-or-apiary.vue'
@@ -310,6 +319,7 @@ export default {
     return {
       savedNrOfDecimals: 0,
       checkAnswer: false,
+      booleanDefault: [1, 0],
     }
   },
   computed: {
@@ -327,7 +337,7 @@ export default {
     },
     parsedItems() {
       return this.parsedAnswer &&
-        this.parsedAnswer.data_type === 'checkbox' &&
+        this.parsedAnswer.type === 'checkbox' &&
         this.flattenedItems.length <= this.maxNrOfItems
         ? this.flattenedItems
         : []
@@ -343,20 +353,51 @@ export default {
     },
     parsedAnswer() {
       if (this.parseMode) {
-        var returnedItems = dummyOutput.filter(
-          (answer) =>
-            answer.data_parent_category_id !== undefined &&
-            answer.data_parent_category_id === this.item.id
-        )
-        return returnedItems.length > 0 ? returnedItems[0] : null
+        var returnedItems = dummyOutput.scans.map((el) => {
+          return el.scan.filter(
+            (answer) =>
+              answer.parent_category_id !== undefined &&
+              parseInt(answer.parent_category_id) === this.item.id
+          )
+        })
+
+        var answer = null
+
+        if (returnedItems.length > 0) {
+          if (returnedItems[0].length > 1) {
+            if (returnedItems[0][0].type === 'checkbox') {
+              var posAnswer = returnedItems[0].filter(
+                (answer) => answer.value[0] === 1
+              )
+              answer = posAnswer.length > 0 ? posAnswer[0] : null
+            } else {
+              answer = returnedItems[0]
+              // console.log('else array answer', answer)
+            }
+          } else {
+            answer = returnedItems[0][0]
+          }
+        }
+
+        return answer
       } else {
         return null
       }
     },
     parsedImages() {
-      return this.parsedAnswer && this.parsedAnswer.image !== undefined
-        ? this.parsedAnswer.image
-        : []
+      if (Array.isArray(this.parsedAnswer)) {
+        var imgArr = []
+        this.parsedAnswer.map((ans) => {
+          if (ans.image !== undefined) {
+            imgArr = imgArr.concat(ans.image)
+          }
+        })
+        return imgArr
+      } else {
+        return this.parsedAnswer && this.parsedAnswer.image !== undefined
+          ? this.parsedAnswer.image
+          : []
+      }
     },
   },
   created() {
@@ -368,17 +409,57 @@ export default {
         })
       } else if (
         this.item.input === 'select' &&
+        this.parsedAnswer.type !== 'checkbox' &&
         isNaN(parseInt(this.parsedAnswer.value[0]))
       ) {
         // in case answer is not a category id but a string (written text) instead, let the user check it instead of filling it in automatically
         this.checkAnswer = true
       } else {
-        var checkboxIndex = this.parsedAnswer.value.findIndex(
-          (value) => value === 1
-        )
-        var value = this.isSelectIdItem
-          ? this.flattenedItems[checkboxIndex].id
-          : checkboxIndex + 1
+        if (
+          this.item.input.indexOf('decimals') > -1 &&
+          this.parsedAnswer.length > 1
+        ) {
+          var stringAnswer = ''
+          this.parsedAnswer.map((el, i) => {
+            if (i === 1) {
+              stringAnswer += '.'
+            }
+            stringAnswer += el.value.join('')
+          })
+          var value = parseFloat(stringAnswer)
+          this.checkAnswer = true
+        } else if (this.parsedAnswer.type === 'checkbox') {
+          if (this.parsedAnswer.value.length > 1) {
+            var checkboxIndex = this.parsedAnswer.value.findIndex(
+              (value) => value === 1
+            )
+            value =
+              this.isSelectIdItem &&
+              this.flattenedItems[checkboxIndex] !== undefined
+                ? this.flattenedItems[checkboxIndex].id
+                : this.item.input === 'smileys_3'
+                ? checkboxIndex + 1
+                : this.item.input.indexOf('boolean') > -1
+                ? this.booleanDefault[checkboxIndex]
+                : null
+          } else {
+            value = this.parsedAnswer.category_id
+          }
+        } else if (
+          this.parsedAnswer.type === 'text' ||
+          this.parsedAnswer.type === 'number'
+        ) {
+          value =
+            this.parsedAnswer.value[0] === ''
+              ? null
+              : this.parsedAnswer.type === 'text'
+              ? this.parsedAnswer.value[0]
+              : parseInt(this.parsedAnswer.value[0])
+          this.checkAnswer = true
+        } else {
+          value = null
+          console.log('else input', this.item, this.parsedAnswer)
+        }
 
         this.updateInput(
           value, // this.flattenedItems[checkboxIndex].id, // this.parsedAnswer.value[0], // TODO: check if array is always length 1

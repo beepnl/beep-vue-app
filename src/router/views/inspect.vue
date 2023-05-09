@@ -111,11 +111,7 @@
           outlined
           color="black"
           class="save-button-mobile-wide mr-1"
-          :disabled="
-            showLoadingIcon ||
-              uploadInspectionPayload.images.length !==
-                selectedSvgChecklist.pages
-          "
+          :disabled="showLoadingIcon"
           @click="uploadInspection"
         >
           <v-progress-circular
@@ -432,6 +428,7 @@
                           <labelWithDescription
                             :plain-text="$t('notes')"
                             :parse-mode="parseMode"
+                            :check-answer="parsedImages['notes'].length > 0"
                             :parsed-images="parsedImages['notes']"
                           ></labelWithDescription>
                           <v-textarea
@@ -516,6 +513,7 @@
                           <labelWithDescription
                             :plain-text="$t('reminder')"
                             :parse-mode="parseMode"
+                            :check-answer="parsedImages['reminder'].length > 0"
                             :parsed-images="parsedImages['reminder']"
                           ></labelWithDescription>
                           <v-textarea
@@ -582,7 +580,7 @@ import checklistFieldset from '@components/checklist-fieldset.vue'
 import Confirm from '@components/confirm.vue'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
-import dummyOutput from '@components/svg/test_4_dummy.json'
+import dummyOutput from '@components/svg/scan_results_kk3_complete.json' // test_4_dummy.json'
 import InspectModeSelector from '@components/inspect-mode-selector.vue'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import Layout from '@layouts/back.vue'
@@ -688,10 +686,8 @@ export default {
         'reminder',
       ],
       parsedImages: {},
-      selectedSvgChecklist: {
-        pages: 1, // TODO replace dummy data by actual checklist
-      },
       forceParseMode: false,
+      booleanDefault: [1, 0],
     }
   },
   computed: {
@@ -835,7 +831,7 @@ export default {
     },
     preSelectedChecklistId() {
       return this.parseMode
-        ? dummyOutput[0].checklist_id // TODO: get checklist_id from JSON
+        ? 5033 // dummyOutput[0].checklist_id // TODO: get checklist_id from selected SVG checklist
         : parseInt(this.$route.query.checklistId) || null
     },
     reminderDate: {
@@ -991,6 +987,8 @@ export default {
 
         if (this.parseMode) {
           this.setSelectedMode = 'Online'
+          // this.selectedHiveSet = null
+          // this.allHivesSelected = false // TODO: fix
           this.getParsedOverallAnswers()
         }
 
@@ -1289,12 +1287,14 @@ export default {
       return this.momentFormat(new Date(), this.dateFormat)
     },
     getParsedAnswer(id) {
-      var returnedItems = dummyOutput.filter(
-        (answer) =>
-          answer.data_parent_category_id !== undefined &&
-          answer.data_parent_category_id === id
-      )
-      return returnedItems.length > 0 ? returnedItems[0] : null
+      var returnedItems = dummyOutput.scans.map((el) => {
+        return el.scan.filter(
+          (answer) =>
+            answer.parent_category_id !== undefined &&
+            answer.parent_category_id === id
+        )
+      })
+      return returnedItems.length > 0 ? returnedItems[0][0] : null
     },
     getParsedOverallAnswers() {
       this.overallInspectionProps.map((prop) => {
@@ -1303,7 +1303,10 @@ export default {
         if (answer && answer.value !== undefined) {
           if (prop === 'impression' || prop === 'attention') {
             var checkboxIndex = answer.value.findIndex((value) => value === 1)
-            value = checkboxIndex + 1
+            value =
+              prop === 'impression'
+                ? checkboxIndex + 1
+                : this.booleanDefault[checkboxIndex]
           } else {
             value = answer.value[0] // TODO: fix this for date prop
           }
@@ -1416,12 +1419,16 @@ export default {
       this.selectHiveSet(this.selectedHiveSetId)
     },
     selectHiveSet(id) {
-      var stringId = id.toString()
-      this.isApiary = parseInt(stringId.substring(0, 1)) === 1
-      this.hiveSetId = parseInt(stringId.substring(1, stringId.length + 1))
-      this.isApiary
-        ? this.selectApiary(this.hiveSetId)
-        : this.selectGroup(this.hiveSetId)
+      if (id !== undefined) {
+        var stringId = id.toString()
+        this.isApiary = parseInt(stringId.substring(0, 1)) === 1
+        this.hiveSetId = parseInt(stringId.substring(1, stringId.length + 1))
+        this.isApiary
+          ? this.selectApiary(this.hiveSetId)
+          : this.selectGroup(this.hiveSetId)
+      } else {
+        this.selectedHiveSet = null
+      }
     },
     selectInitialHiveSet() {
       if (this.apiaryId) {
