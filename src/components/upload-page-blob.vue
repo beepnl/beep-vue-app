@@ -4,7 +4,7 @@
       v-if="pageImage !== null"
       class="cursor-pointer float-right"
       small
-      color="accent"
+      color="red"
       @click="confirmDeleteImage"
       >mdi-close</v-icon
     >
@@ -15,7 +15,17 @@
       "
     >
       <div>
-        <span class="page-number float-right" v-text="pageNrText"></span>
+        <div class="float-right pt-2 pr-1">
+          <span class="page-number ">{{ pageNrText }}</span>
+
+          <v-icon
+            v-if="pageImageFile !== null"
+            class="float-right mt-n2 ml-n4"
+            small
+            color="green"
+            >mdi-check-circle</v-icon
+          >
+        </div>
       </div>
       <v-spacer v-if="pageImage === null" />
       <v-file-input
@@ -132,17 +142,17 @@ export default {
 .page-number {
   background-color: $color-white;
   color: #000;
-  opacity: 0.5;
-  padding: 6px;
-  margin: 6px 6px 0 0;
+  opacity: 0.8;
+  padding: 6px 8px;
+  margin: 6px 2px 0 0;
   border-radius: 4px;
-  max-width: 60px;
+  max-width: 64px;
 }
 .page-blob-preview {
   object-fit: cover;
   width: 138px;
   height: 100%; // auto;
   max-height: 196px;
-  margin-top: -42px;
+  margin-top: -32px;
 }
 </style>
