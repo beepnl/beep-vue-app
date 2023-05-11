@@ -428,7 +428,9 @@
                           <labelWithDescription
                             :plain-text="$t('notes')"
                             :parse-mode="parseMode"
-                            :check-answer="parsedImages['notes'].length > 0"
+                            :check-answer="
+                              parseMode && parsedImages['notes'].length > 0
+                            "
                             :parsed-images="parsedImages['notes']"
                           ></labelWithDescription>
                           <v-textarea
@@ -513,7 +515,9 @@
                           <labelWithDescription
                             :plain-text="$t('reminder')"
                             :parse-mode="parseMode"
-                            :check-answer="parsedImages['reminder'].length > 0"
+                            :check-answer="
+                              parseMode && parsedImages['reminder'].length > 0
+                            "
                             :parsed-images="parsedImages['reminder']"
                           ></labelWithDescription>
                           <v-textarea
@@ -677,15 +681,14 @@ export default {
       hiveSetId: null,
       dateFormat: 'YYYY-MM-DD HH:mm:ss',
       printMode: false,
-      overallInspectionProps: [
-        'date',
-        'impression',
-        'attention',
-        'notes',
-        'reminder_date',
-        'reminder',
-      ],
-      parsedImages: {},
+      parsedImages: {
+        date: [],
+        impression: [],
+        attention: [],
+        notes: [],
+        reminder_date: [],
+        reminder: [],
+      },
       forceParseMode: false,
       booleanDefault: [1, 0],
     }
@@ -827,7 +830,10 @@ export default {
       return this.selectedMode === 'Upload'
     },
     parseMode() {
-      return this.$route.query.mode === 'parse' || this.forceParseMode === true
+      return (
+        this.permissions.includes('test-offline-input') &&
+        (this.$route.query.mode === 'parse' || this.forceParseMode === true)
+      )
     },
     preSelectedChecklistId() {
       return this.parseMode
@@ -1297,7 +1303,7 @@ export default {
       return returnedItems.length > 0 ? returnedItems[0][0] : null
     },
     getParsedOverallAnswers() {
-      this.overallInspectionProps.map((prop) => {
+      Object.keys(this.parsedImages).map((prop) => {
         var answer = this.getParsedAnswer(prop)
         var value = null
         if (answer && answer.value !== undefined) {
