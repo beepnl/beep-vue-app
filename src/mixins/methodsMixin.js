@@ -229,7 +229,7 @@ export const deleteDashboard = {
       try {
         const response = await Api.deleteRequest(
           '/dashboardgroups/',
-          dashboardGroup.code
+          dashboardGroup.id
         )
         if (!response) {
           this.snackbar.text = this.$i18n.t('something_wrong')

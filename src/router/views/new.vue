@@ -2,6 +2,16 @@
   <Layout :title="$t('Whats_new')">
     <v-container>
       <div class="overline mb-1"
+        ><span class="lowercase">v</span>4.0.2 (11-04-2023) - Current
+        version</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>Bugfixes: small fixes for issues received as feedback</li>
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
         ><span class="lowercase">v</span>4.0.1 (06-04-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -32,6 +42,32 @@
             released more widely.</li
           >
           <li>Bugfixes: small fixes for issues received as feedback</li>
+        </ul>
+      </div>
+      <div v-if="dutch" class="rounded-border primary-border mb-4">
+        <ul>
+          <li
+            ><router-link :to="{ name: 'inspect' }">Inspectie:</router-link>
+            Offline gegevensinvoer: met deze gloednieuwe BEEP-functie kunnen
+            gebruikers een (aangepaste) checklist selecteren, afdrukken, de
+            observaties en acties invoeren met een pen in de bijenstal en de
+            gegevens uploaden door het papier met hun telefoon te scannen. De
+            laatste stap is het verifiëren van de gegevens.
+          </li>
+          <li
+            >BEEP-dashboard: gebruikers kunnen specifieke bijenstallen, kasten
+            en tijdschema's kiezen om op een dashboard te tonen. Het dashboard
+            is toegankelijk via een link die openbaar kan worden gedeeld met
+            anderen.
+          </li>
+          <li
+            >Deze functies zijn op aanvraag beschikbaar (info@beep.nl) totdat
+            deze op grotere schaal worden vrijgegeven.</li
+          >
+          <li
+            >Bugfixes: kleine verbeteringen en oplossingen voor problemen die we
+            van gebruikers terugkregen</li
+          >
         </ul>
       </div>
 
