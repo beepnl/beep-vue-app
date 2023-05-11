@@ -1012,6 +1012,7 @@ const translations = {
 
   Select_inspection_mode: 'Selecteer inspectiemodus',
   Send_pictures: "Foto's opsturen",
+  svg_checklist: 'geprinte kastkaart | geprinte kastkaarten',
 
   /* Compare module */
   Load: 'Laden',

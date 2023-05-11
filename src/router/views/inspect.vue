@@ -241,7 +241,7 @@
             </div>
           </v-col>
 
-          <v-col cols="12" sm="4">
+          <v-col v-if="!uploadMode" cols="12" sm="4">
             <div
               v-if="checklists !== null && checklists.length > 0"
               class="beep-label mt-n3 mt-sm-0"
@@ -255,6 +255,22 @@
               :placeholder="`${$t('Select') + ' ' + $tc('checklist', 1)}`"
               :no-results-text="`${$t('no_results')}`"
               @input="switchChecklist($event)"
+            />
+          </v-col>
+
+          <v-col v-if="uploadMode" cols="12" sm="4">
+            <div
+              v-if="checklistSvgs.length > 0"
+              class="beep-label mt-n3 mt-sm-0"
+              v-text="`${$t('Select') + ' ' + $tc('svg_checklist', 1)}`"
+            ></div>
+            <Treeselect
+              v-if="checklistSvgs.length > 0"
+              v-model="checklistSvgId"
+              :options="checklistSvgs"
+              :normalizer="normalizerChecklistSvg"
+              :placeholder="`${$t('Select') + ' ' + $tc('svg_checklist', 1)}`"
+              :no-results-text="`${$t('no_results')}`"
             />
           </v-col>
 
@@ -545,8 +561,8 @@
 
     <template v-if="uploadMode">
       <UploadInspection
-        v-if="selectedChecklist"
-        :selected-checklist="selectedChecklist"
+        v-if="selectedChecklistSvg"
+        :selected-checklist-svg="selectedChecklistSvg"
         :loading="showLoadingIcon"
       />
     </template>
@@ -561,7 +577,10 @@
       <OfflineInspection
         v-if="selectedChecklist"
         :selected-checklist="selectedChecklist"
+        :checklist-svg-already-saved="checklistSvgAlreadySaved"
+        :new-svg-name="newSvgName"
         :print-mode="printMode"
+        :total-pages="totalPages"
         @updated="svgLoading = false"
       />
     </template>
@@ -593,11 +612,7 @@ import {
   readApiariesAndGroups,
   readGeneralInspections,
 } from '@mixins/methodsMixin'
-import {
-  momentFormat,
-  momentFullDateTime,
-  momentISO8601,
-} from '@mixins/momentMixin'
+import { momentFullDateTime, momentISO8601 } from '@mixins/momentMixin'
 import OfflineInspection from '@components/offline-inspection.vue'
 import { SlideYUpTransition } from 'vue2-transitions'
 import smileRating from '@components/input-fields/smile-rating.vue'
@@ -622,7 +637,6 @@ export default {
     Treeselect,
   },
   mixins: [
-    momentFormat,
     momentFullDateTime,
     momentISO8601,
     readApiariesAndGroups,
@@ -649,6 +663,12 @@ export default {
                 node.researches[0] +
                 ')'
               : ''),
+        }
+      },
+      normalizerChecklistSvg(node) {
+        return {
+          id: node.id,
+          label: node.name,
         }
       },
       selectModes: [
@@ -680,6 +700,7 @@ export default {
       isApiary: true,
       hiveSetId: null,
       dateFormat: 'YYYY-MM-DD HH:mm:ss',
+      dateFormatSimple: 'YYYY-MM-DD HH:mm',
       printMode: false,
       parsedImages: {
         date: [],
@@ -691,6 +712,9 @@ export default {
       },
       forceParseMode: false,
       booleanDefault: [1, 0],
+      appVersion: process.env.VUE_APP_VERSION,
+      checklistSvgId: null,
+      newSvgName: null,
     }
   },
   computed: {
@@ -699,7 +723,10 @@ export default {
       'checklist',
       'checklists',
       'inspectionEdited',
+      'checklistSvgs',
       'bulkInspection',
+      'svgMaxPageNr',
+      'svgPageNr',
       'tempSavedInspection',
       'uploadInspectionPayload',
     ]),
@@ -746,6 +773,23 @@ export default {
         name: 'checklist',
         params: { id: this.selectedChecklistId },
         query: query,
+      }
+    },
+    checklistSvgAlreadySaved() {
+      if (this.checklistSvgs.length > 0) {
+        var svgsPresent = this.checklistSvgs.filter(
+          (item) => item.checklist_id === this.selectedChecklistId
+        )
+        if (svgsPresent.length > 0) {
+          var svgNewer = svgsPresent.filter(
+            (svg) => svg.created_at > this.selectedChecklist.updated_at
+          )
+          return svgNewer.length > 0 ? svgNewer[0] : null
+        } else {
+          return null
+        }
+      } else {
+        return null
       }
     },
     editMode() {
@@ -860,12 +904,23 @@ export default {
         }
       },
     },
+    selectedChecklistSvg() {
+      var findItem = this.checklistSvgs.filter(
+        (item) => item.id === this.checklistSvgId
+      )
+      return findItem.length > 0 ? findItem[0] : null
+    },
     setSelectedMode: {
       get() {
         return this.selectedMode
       },
       set(value) {
         localStorage.beepSelectedInspectionMode = value
+        if (value === 'Upload' || value === 'Offline') {
+          if (this.checklistSvgs.length === 0) {
+            this.readChecklistSvgs()
+          }
+        }
         this.selectedMode = value
       },
     },
@@ -923,6 +978,9 @@ export default {
         })
       }
       return treeselectArray
+    },
+    totalPages() {
+      return this.svgPageNr - (this.svgMaxPageNr === null ? 0 : 1)
     },
     treeselectLabel() {
       var label = ''
@@ -1031,6 +1089,42 @@ export default {
     this.svgReady = true
   },
   methods: {
+    async createChecklistSvg() {
+      // only save checklist-svg if there is none already present (which is newer than the latest version of the digital checklist)
+      if (!this.checklistSvgAlreadySaved) {
+        var svg = document.getElementById('checklist-svg').outerHTML
+        var now = this.getNow(true)
+        // pass new name to svg to make sure printed & saved checklist-svg have the same name
+        this.newSvgName =
+          this.selectedChecklist.name +
+          ' (' +
+          now +
+          ') (v' +
+          this.appVersion +
+          ')'
+        var payload = {
+          checklist_id: this.selectedChecklistId,
+          svg,
+          pages: this.totalPages,
+          name: this.newSvgName,
+          last_print: now,
+        }
+        try {
+          await Api.postRequest('/checklist-svg', payload)
+          this.readChecklistSvgs()
+        } catch (error) {
+          if (error.response) {
+            const msg = error.response.data.message
+            console.log('Error: ', error.response)
+            this.snackbar.text = msg
+          } else {
+            console.log('Error: ', error)
+            this.snackbar.text = this.$i18n.t('something_wrong')
+          }
+          this.snackbar.show = true
+        }
+      }
+    },
     async getActiveHive(id) {
       try {
         const response = await Api.readRequest('/hives/', id)
@@ -1184,6 +1278,26 @@ export default {
         return true
       }
     },
+    async readChecklistSvgs() {
+      try {
+        const response = await Api.readRequest('/checklist-svg')
+        this.$store.commit('inspections/setData', {
+          prop: 'checklistSvgs',
+          value: response.data,
+        })
+      } catch (error) {
+        if (error.response) {
+          const msg = error.response.data.message
+          console.log('Error: ', error.response)
+          this.snackbar.text = msg
+        } else {
+          console.log('Error: ', error)
+          this.snackbar.text = this.$i18n.t('something_wrong')
+        }
+        this.snackbar.show = true
+        this.showLoadingIcon = false
+      }
+    },
     async saveInspection() {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
@@ -1289,8 +1403,10 @@ export default {
         this.selectInitialHiveSet()
       }
     },
-    getNow() {
-      return this.momentFormat(new Date(), this.dateFormat)
+    getNow(simple = false) {
+      return this.$moment().format(
+        simple ? this.dateFormatSimple : this.dateFormat
+      )
     },
     getParsedAnswer(id) {
       var returnedItems = dummyOutput.scans.map((el) => {
@@ -1344,11 +1460,11 @@ export default {
         this.inspectionId
       )
     },
-    // parseOutput() {
-    //   console.log(dummyOutput)
-    // },
     print() {
       this.printMode = true
+      setTimeout(() => {
+        this.createChecklistSvg()
+      }, 100)
       setTimeout(() => {
         window.print()
         this.printMode = false

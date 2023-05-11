@@ -1,10 +1,10 @@
 <template>
   <v-row class="mx-0 mx-sm-4">
     <v-col class="d-flex flex-wrap">
-      <template v-for="(pageNr, i) in totalPages">
+      <template v-for="(pageNr, i) in selectedChecklistSvg.pages">
         <UploadPageBlob
           :key="'p-' + pageNr"
-          :page-nr-text="'p.' + pageNr + ' / ' + totalPages"
+          :page-nr-text="'p.' + pageNr + ' / ' + selectedChecklistSvg.pages"
           :disabled="loading"
           @set-page-blob="setPageBlob($event, i)"
         />
@@ -21,15 +21,10 @@ export default {
     UploadPageBlob,
   },
   props: {
-    selectedChecklist: {
+    selectedChecklistSvg: {
       type: Object,
       default: null,
       required: true,
-    },
-    totalPages: {
-      type: Number,
-      default: 4, // TODO: remove dummy pages nr
-      required: false,
     },
     loading: {
       type: Boolean,

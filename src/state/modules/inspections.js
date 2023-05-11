@@ -12,6 +12,7 @@ export const state = {
   generalInspections: [],
   checklist: {},
   checklists: [],
+  checklistSvgs: [],
   inspectionEdited: false,
   selectedInspectionId: null,
   bulkInspection: false,
@@ -42,6 +43,9 @@ export const getters = {
   },
   checklists: (state) => {
     return state.checklists || []
+  },
+  checklistSvgs: (state) => {
+    return state.checklistSvgs
   },
   diaryFilterByAttention: (state) => {
     return state.diaryFilterByAttention
@@ -190,6 +194,7 @@ export const mutations = {
     state.generalInspections = []
     state.checklist = {}
     state.checklists = []
+    state.checklistSvgs = []
     state.inspectionEdited = false
     state.selectedInspectionId = null
     state.bulkInspection = false

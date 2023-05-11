@@ -1052,6 +1052,7 @@ const translations = {
     'If you have completed a paper inspection, you can upload photos of your inspection sheets here. They will then be automatically parsed and can be verified and saved like a normal (digital / online) inspection.',
   Select_inspection_mode: 'Select inspection mode',
   Send_pictures: 'Send pictures',
+  svg_checklist: 'printed checklist | printed checklists',
 
   /* Compare module */
   Load: 'Load',

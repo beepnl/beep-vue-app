@@ -22,6 +22,7 @@
 
     <v-col cols="12" :class="!printMode ? '' : 'pa-0'">
       <svg
+        id="checklist-svg"
         xmlns="http://www.w3.org/2000/svg"
         x="0mm"
         y="0mm"
@@ -36,10 +37,8 @@
           <svgPrintCorners
             v-if="svgMaxPageNr === null || pageNr <= svgMaxPageNr"
             :pageNumber="pageNr"
-            :checklistHeaderText="
-              selectedChecklist.name + ' (' + now + ') v' + appVersion
-            "
-            :totalPages="pages - 1"
+            :checklistHeaderText="svgChecklistName"
+            :totalPages="totalPages"
           />
         </g>
 
@@ -77,9 +76,24 @@ export default {
       default: null,
       required: true,
     },
+    checklistSvgAlreadySaved: {
+      type: Object,
+      default: null,
+      required: false,
+    },
+    newSvgName: {
+      type: String,
+      default: null,
+      required: false,
+    },
     printMode: {
       type: Boolean,
       default: false,
+    },
+    totalPages: {
+      type: Number,
+      default: 1,
+      required: false,
     },
   },
   data() {
@@ -100,10 +114,22 @@ export default {
       return (this.svgPageNr - removePage) * this.pageHeight + 'mm'
     },
     now() {
-      return this.$moment.utc().format('YYYY-MM-DD HH:mm')
+      return this.$moment().format('YYYY-MM-DD HH:mm')
     },
     pages() {
       return this.svgPageNr
+    },
+    svgChecklistName() {
+      return this.checklistSvgAlreadySaved
+        ? this.checklistSvgAlreadySaved.name
+        : this.newSvgName
+        ? this.newSvgName
+        : this.selectedChecklist.name +
+          ' (' +
+          this.now +
+          ') (v' +
+          this.appVersion +
+          ')'
     },
   },
   updated() {
