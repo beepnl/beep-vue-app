@@ -7,7 +7,7 @@
       <span
         v-if="showControls"
         class="font-small color-grey"
-        v-text="'v1.3'"
+        v-text="'v1.4'"
       ></span>
       <v-spacer />
       <div class="d-flex justify-end">
