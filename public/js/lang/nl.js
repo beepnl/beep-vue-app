@@ -978,6 +978,9 @@ const translations = {
     'Toon details (locatie, laatste inspectie, metingen) van alle geselecteerde bijenkasten (JA), of alleen van bijenkasten met meetsysteem (NEE, aanbevolen optie)',
   Preview_share: 'Preview & deel',
   Copy_url: 'Kopieer url',
+  no_hive_with_data:
+    "Er kan geen data getoond worden omdat geen van de bijenkasten van dit Dashboard een meetsysteem heeft. Bovendien staat de instelling 'Toon details van alle bijenkasten' uit. Schakel deze instelling in via de BEEP app om ook details (locatie, laatste inspectie) van bijenkasten zonder meetsysteem te tonen. En/of voeg bijenkasten met meetsysteem toe aan dit Dashboard, indien u die heeft.",
+
   /* offline inspection sheet */
   Hour_short: 'Uur | Uur',
   Day: 'Dag | Dagen',

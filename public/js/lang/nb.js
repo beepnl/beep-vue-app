@@ -950,6 +950,9 @@ const translations = {
     'Show details (location, last inspection, measurement data) for all selected hives (YES), or only for hives with a device (NO, recommended option)',
   Preview_share: 'Preview & share',
   Copy_url: 'Copy url',
+  no_hive_with_data:
+    "There is no data to be shown as none of the hives included in this Dashboard has a device. Furthermore, the setting 'Show details for all hives' is currently disabled. Enable this setting via the BEEP app to show details (location, last inspection) of hives without a device. And/or add hives with devices to this Dashboard, in case you own any.",
+
   /* offline inspection sheet */
   Hour_short: 'Hr | Hrs',
   Day: 'Dag | Dager',

@@ -127,6 +127,7 @@
                   "
                 >
                   <div
+                    v-if="selectedHive"
                     class="dashboard-title line-clamp --1"
                     style="width: 86%"
                     v-text="selectedHiveMeta.name"
@@ -267,17 +268,25 @@
             >
               <DashboardSection
                 v-if="
-                  ready &&
+                  (ready &&
                     selectedHive &&
                     selectedHiveMeta.sensors &&
-                    selectedHiveMeta.sensors.length !== 0
+                    selectedHiveMeta.sensors.length !== 0) ||
+                    showNoHivesWithDataPlaceholder
                 "
                 :title="$tc('Measurement', 2)"
                 :landscape-mode="landscapeMode"
                 :class="landscapeMode ? 'mb-0' : ''"
               >
                 <v-col
-                  v-if="loadingData"
+                  v-if="showNoHivesWithDataPlaceholder"
+                  cols="12"
+                  class="my-4"
+                >
+                  {{ $t('no_hive_with_data') }}
+                </v-col>
+                <v-col
+                  v-else-if="loadingData"
                   :class="
                     'd-flex align-center justify-center dashboard-loading ' +
                       (landscapeMode ? '--landscape' : '')
@@ -428,6 +437,7 @@ export default {
       darkMode: true,
       dashboardCode: null,
       selectedHiveId: null,
+      showNoHivesWithDataPlaceholder: false,
     }
   },
   computed: {
@@ -791,8 +801,10 @@ export default {
     nextHiveWithData() {
       // fallback if no hives with data present
       if (this.hivesWithData.length === 0) {
-        this.selectHive(this.dashboardHives[this.currentHiveIndex + 1].id)
+        this.showNoHivesWithDataPlaceholder = true
+        this.selectHive(null)
       } else {
+        this.showNoHivesWithDataPlaceholder = false
         this.currentHiveWithDataIndex += 1
         if (this.currentHiveWithDataIndex >= this.hivesWithData.length)
           this.currentHiveWithDataIndex = 0
@@ -808,11 +820,15 @@ export default {
     },
     selectHive(id) {
       // console.log('select hive', id)
-      this.readDashboardHive(id).then((data) => {
-        this.selectedHiveId = id
-        this.redrawCharts(data)
+      if (id) {
+        this.readDashboardHive(id).then((data) => {
+          this.selectedHiveId = id
+          this.redrawCharts(data)
+          this.ready = true
+        })
+      } else {
         this.ready = true
-      })
+      }
     },
     startTimer(timer) {
       this.stopTimer(timer)
