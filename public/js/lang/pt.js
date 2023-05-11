@@ -1108,6 +1108,7 @@ const translations = {
   mean_weight_kg: 'Mean weight',
   mean_net_weight_kg: 'Mean net weight',
   net_weight_kg: 'Net weight',
+  overall_intake_loss: 'Overall intake/loss',
 }
 
 export default translations

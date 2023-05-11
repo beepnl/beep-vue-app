@@ -1022,6 +1022,7 @@ const translations = {
   mean_weight_kg: 'Gemiddeld gewicht',
   mean_net_weight_kg: 'Gemiddeld netto gewicht',
   net_weight_kg: 'Netto gewicht',
+  overall_intake_loss: 'Totale stijging/daling',
 }
 
 export default translations

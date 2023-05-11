@@ -1099,6 +1099,7 @@ const translations = {
   mean_weight_kg: 'Durchschnittliches Gewicht',
   mean_net_weight_kg: 'Durchschnittliches Nettogewicht',
   net_weight_kg: 'Nettogewicht',
+  overall_intake_loss: 'Gesamtzunahme/ -abnahme',
 }
 
 export default translations
