@@ -209,13 +209,12 @@ export default {
       const sortedDashboardGroups = this.dashboardGroups
         .slice()
         .sort(function(a, b) {
-          if (a.name.toLowerCase() > b.name.toLowerCase()) {
-            return 1
-          }
-          if (b.name.toLowerCase() > a.name.toLowerCase()) {
-            return -1
-          }
-          return 0
+          return a.name !== null && b.name !== null
+            ? a.name.localeCompare(b.name, undefined, {
+                numeric: true,
+                sensitivity: 'base',
+              })
+            : 0
         })
       return sortedDashboardGroups
     },
