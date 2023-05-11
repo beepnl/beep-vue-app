@@ -206,7 +206,7 @@
                 >mdi-calendar-edit</v-icon
               >
               <div class="inspection-date">
-                <div class="beep-label">
+                <div v-if="!parseMode" class="beep-label">
                   <span v-text="$t('Date_of_inspection')"></span>
                   <span
                     v-if="
@@ -217,6 +217,13 @@
                     v-text="$t('Now')"
                   ></span>
                 </div>
+                <labelWithDescription
+                  v-if="parseMode"
+                  :plain-text="$t('Date_of_inspection')"
+                  :parse-mode="true"
+                  :check-answer="true"
+                  :parsed-images="parsedImages['date']"
+                ></labelWithDescription>
                 <Datetime
                   v-if="activeInspection"
                   v-model="inspectionDate"
@@ -494,6 +501,7 @@
                               <labelWithDescription
                                 :plain-text="$t('remind_date')"
                                 :parse-mode="parseMode"
+                                :check-answer="parseMode"
                                 :parsed-images="parsedImages['reminder_date']"
                               ></labelWithDescription>
                               <Datetime
@@ -791,6 +799,9 @@ export default {
       } else {
         return null
       }
+    },
+    currentYear() {
+      return this.$moment().format('YYYY')
     },
     editMode() {
       return this.inspectionId !== null
@@ -1430,10 +1441,31 @@ export default {
                 ? checkboxIndex + 1
                 : this.booleanDefault[checkboxIndex]
           } else {
-            value = answer.value[0] // TODO: fix this for date prop
+            if (prop.indexOf('date') === -1) {
+              value = answer.value[0]
+            } else {
+              var nothingMissing = answer.value.join('').length === 8
+              var day = parseInt(answer.value.slice(6, 8).join(''))
+              var month = parseInt(answer.value.slice(4, 6).join(''))
+              var year = parseInt(answer.value.slice(0, 4).join(''))
+              var date =
+                year.toString() + '-' + month.toString() + '-' + day.toString()
+              var makesSense =
+                nothingMissing &&
+                year >= this.currentYear &&
+                year <= this.currentYear + 2 &&
+                month <= 12 &&
+                day <= 31
+
+              value = makesSense ? date : null
+            }
           }
         }
         this.activeInspection[prop] = value
+        // TODO: make sure inspection date is not set if parsed output does not make sense!
+        // if (prop === 'date') {
+        //   this.setActiveInspectionDate('')
+        // }
         // TODO: convert array (of all checkboxes 0s and 1s for example) to the actual answer
         this.parsedImages[prop] =
           answer && answer.image !== undefined
