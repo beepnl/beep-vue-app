@@ -1013,6 +1013,10 @@ const translations = {
   Select_inspection_mode: 'Selecteer inspectiemodus',
   Send_pictures: "Foto's opsturen",
   svg_checklist: 'geprinte kastkaart | geprinte kastkaarten',
+  Select_input_language: 'Selecteer taal waarin kastkaart is ingevuld',
+  Upload_images: 'Upload afbeeldingen',
+  Upload_images_exp:
+    'TODO: write bullets: use scanner, good lighting, flat surface, all 4 corner squares inside the image, double check page numbers',
 
   /* Compare module */
   Load: 'Laden',

@@ -261,7 +261,7 @@
 <script>
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
-import dummyOutput from '@components/svg/scan_results_kk3_complete.json' // test_4_dummy.json'
+// import dummyOutput from '@components/svg/scan_results_kk3_complete.json' // test_4_dummy.json' TODO remove dummy output
 import imageUploader from '@components/input-fields/image-uploader.vue'
 import sampleCode from '@components/input-fields/sample-code.vue'
 import selectHiveOrApiary from '@components/input-fields/select-hive-or-apiary.vue'
@@ -270,6 +270,7 @@ import smileRating from '@components/input-fields/smile-rating.vue'
 import starRating from '@components/input-fields/star-rating.vue'
 import treeselect from '@components/input-fields/treeselect.vue'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
+import { mapGetters } from 'vuex'
 import { svgData } from '@mixins/svgMixin'
 
 export default {
@@ -323,6 +324,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters('inspections', ['parsedOfflineInput']),
     flattenedItems() {
       return this.item.children !== null
         ? this.flattenItems([...this.item.children])
@@ -353,7 +355,7 @@ export default {
     },
     parsedAnswer() {
       if (this.parseMode) {
-        var returnedItems = dummyOutput.scans.map((el) => {
+        var returnedItems = this.parsedOfflineInput.scans.map((el) => {
           return el.scan.filter(
             (answer) =>
               answer.parent_category_id !== undefined &&

@@ -1,6 +1,11 @@
 import axios from './axios'
+import pensoft from './pensoft'
 
 class Api {
+  pensoftPostRequest(payload = null) {
+    return pensoft.post('scan', payload)
+  }
+
   postRequest(url, payload = null) {
     return axios.post(url, payload)
   }

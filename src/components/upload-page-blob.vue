@@ -1,20 +1,23 @@
 <template>
   <div>
-    <v-icon
-      v-if="pageImage !== null"
-      class="cursor-pointer float-right"
-      small
-      color="red"
-      @click="confirmDeleteImage"
-      >mdi-close</v-icon
-    >
     <div
       :class="
         (pageImage === null ? 'd-flex flex-column justify-start ' : '') +
-          'rounded-border upload-page-blob mr-4'
+          'rounded-border upload-page-blob mr-4 mb-4'
       "
     >
       <div>
+        <div class="float-left">
+          <v-icon
+            v-if="pageImage !== null"
+            class="cursor-pointer"
+            color="red"
+            size="28"
+            @click="confirmDeleteImage"
+            >mdi-close</v-icon
+          >
+        </div>
+
         <div class="float-right pt-2 pr-1">
           <span class="page-number ">{{ pageNrText }}</span>
 
@@ -131,7 +134,6 @@ export default {
   width: 140px;
   height: 198px;
   padding: 0px !important;
-  margin-left: 5px;
 }
 
 .v-input.image-uploader {

@@ -1065,6 +1065,11 @@ const translations = {
   Select_inspection_mode: 'Select inspection mode',
   Send_pictures: 'Send pictures',
   svg_checklist: 'printed checklist | printed checklists',
+  Select_input_language:
+    'Select language in which checklist has been filled in',
+  Upload_images: 'Upload images',
+  Upload_images_exp:
+    'TODO: write bullets: use scanner, good lighting, flat surface, all 4 corner squares inside the image, double check page numbers',
 
   /* Compare module */
   Load: 'Load',

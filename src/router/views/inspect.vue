@@ -111,7 +111,9 @@
           outlined
           color="black"
           class="save-button-mobile-wide mr-1"
-          :disabled="showLoadingIcon"
+          :disabled="
+            showLoadingIcon || uploadInspectionPayload.images.length < 1
+          "
           @click="uploadInspection"
         >
           <v-progress-circular
@@ -278,6 +280,7 @@
               :normalizer="normalizerChecklistSvg"
               :placeholder="`${$t('Select') + ' ' + $tc('svg_checklist', 1)}`"
               :no-results-text="`${$t('no_results')}`"
+              @input="selectChecklistSvg"
             />
           </v-col>
 
@@ -304,7 +307,7 @@
             />
           </v-col>
 
-          <v-col v-if="forceInspectionDate" cols="12">
+          <v-col v-if="onlineMode && forceInspectionDate" cols="12">
             <v-alert
               type="error"
               class="mb-0"
@@ -611,7 +614,7 @@ import checklistFieldset from '@components/checklist-fieldset.vue'
 import Confirm from '@components/confirm.vue'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
-import dummyOutput from '@components/svg/scan_results_kk3_complete.json' // test_4_dummy.json'
+// import dummyOutput from '@components/svg/scan_results_kk3_complete.json' // test_4_dummy.json'
 import InspectModeSelector from '@components/inspect-mode-selector.vue'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import Layout from '@layouts/back.vue'
@@ -728,11 +731,12 @@ export default {
   computed: {
     ...mapGetters('auth', ['permissions']),
     ...mapGetters('inspections', [
+      'bulkInspection',
       'checklist',
       'checklists',
-      'inspectionEdited',
       'checklistSvgs',
-      'bulkInspection',
+      'inspectionEdited',
+      'parsedOfflineInput',
       'svgMaxPageNr',
       'svgPageNr',
       'tempSavedInspection',
@@ -891,9 +895,7 @@ export default {
       )
     },
     preSelectedChecklistId() {
-      return this.parseMode
-        ? 5033 // dummyOutput[0].checklist_id // TODO: get checklist_id from selected SVG checklist
-        : parseInt(this.$route.query.checklistId) || null
+      return parseInt(this.$route.query.checklistId) || null
     },
     reminderDate: {
       get() {
@@ -1070,19 +1072,7 @@ export default {
           ) {
             this.getChecklistById(this.lastSelectedChecklistId)
           } else {
-            this.selectedChecklistId = this.checklist.id
-            this.selectedChecklist = this.checklist
-            this.lastSelectedChecklistId = this.checklist.id
-            this.activeInspection.checklist_id = this.selectedChecklistId
-            var itemsObject = {}
-            this.selectedChecklist.category_ids.map((categoryId) => {
-              // TODO: what if category ids is empty?
-              itemsObject[categoryId] = null
-            })
-            this.activeInspection.items = itemsObject
-            if (this.selectedChecklist.owner) {
-              this.setActiveInspectionDate()
-            }
+            this.setChecklist(this.checklist)
           }
         })
       }
@@ -1366,6 +1356,46 @@ export default {
         }
       }
     },
+    async uploadInspection() {
+      console.log(
+        'TODO finetune upload inspection',
+        this.uploadInspectionPayload
+      )
+      this.showLoadingIcon = true
+      try {
+        const response = await Api.pensoftPostRequest(
+          this.uploadInspectionPayload
+        )
+        var parsedOfflineInput = response.data
+        this.$store.commit('inspections/setData', {
+          prop: 'parsedOfflineInput',
+          value: parsedOfflineInput,
+        })
+        setTimeout(() => {
+          console.log(
+            'TODO parsedOfflineInput',
+            this.parsedOfflineInput,
+            parsedOfflineInput
+          )
+          this.forceParseMode = true // TODO finetune parse mode + where to switch it off?
+          this.selectHiveSet(null)
+          this.selectedHives = []
+          this.setSelectedMode = 'Online'
+          this.showLoadingIcon = false
+        }, 500)
+      } catch (error) {
+        if (error.response) {
+          const msg = error.response.data.message
+          console.log('Error: ', error.response)
+          this.snackbar.text = msg
+        } else {
+          console.log('Error: ', error)
+          this.snackbar.text = this.$i18n.t('something_wrong')
+        }
+        this.snackbar.show = true
+        this.showLoadingIcon = false
+      }
+    },
     clearDate() {
       this.activeInspection.reminder_date = null
     },
@@ -1414,7 +1444,7 @@ export default {
       )
     },
     getParsedAnswer(id) {
-      var returnedItems = dummyOutput.scans.map((el) => {
+      var returnedItems = this.parsedOfflineInput.scans.map((el) => {
         return el.scan.filter(
           (answer) =>
             answer.parent_category_id !== undefined &&
@@ -1521,6 +1551,13 @@ export default {
         })
       }
     },
+    selectChecklistSvg() {
+      var checklistId = this.selectedChecklistSvg.checklist_id
+      // get digital checklist in order to have it preselected when opening the parsed offline input in onlineMode later
+      if (this.selectedChecklistId !== checklistId) {
+        this.getChecklistById(checklistId)
+      }
+    },
     selectGroup(id) {
       this.selectedHives = []
       this.editableHives = []
@@ -1567,7 +1604,7 @@ export default {
       this.selectHiveSet(this.selectedHiveSetId)
     },
     selectHiveSet(id) {
-      if (id !== undefined) {
+      if (id) {
         var stringId = id.toString()
         this.isApiary = parseInt(stringId.substring(0, 1)) === 1
         this.hiveSetId = parseInt(stringId.substring(1, stringId.length + 1))
@@ -1575,6 +1612,7 @@ export default {
           ? this.selectApiary(this.hiveSetId)
           : this.selectGroup(this.hiveSetId)
       } else {
+        this.selectedHiveSetId = null
         this.selectedHiveSet = null
       }
     },
@@ -1623,6 +1661,22 @@ export default {
         prop: 'bulkInspection',
         value: bool,
       })
+    },
+    setChecklist(checklist, parseMode = false) {
+      console.log('TODO set Checklist', checklist.name, checklist)
+      this.selectedChecklistId = checklist.id
+      this.selectedChecklist = checklist
+      this.lastSelectedChecklistId = checklist.id
+      this.activeInspection.checklist_id = this.selectedChecklistId
+      var itemsObject = {}
+      this.selectedChecklist.category_ids.map((categoryId) => {
+        // TODO: what if category ids is empty?
+        itemsObject[categoryId] = null
+      })
+      this.activeInspection.items = itemsObject
+      if (this.selectedChecklist.owner && !parseMode) {
+        this.setActiveInspectionDate()
+      }
     },
     setTempSavedInspection(inspection) {
       this.$store.commit('inspections/setData', {
@@ -1673,14 +1727,6 @@ export default {
         index,
         !this.showCategoriesByIndex[index]
       )
-    },
-    uploadInspection() {
-      console.log('TODO upload inspection', this.uploadInspectionPayload)
-
-      // https://beep-offline-data.pensoft.net/api/scanner/scan
-
-      this.forceParseMode = true // TODO finetune parse mode + where to switch it off?
-      this.setSelectedMode = 'Online'
     },
     validateText(value, property, maxLength) {
       if (value !== null && value.length > maxLength + 1) {
