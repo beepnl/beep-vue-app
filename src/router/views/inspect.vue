@@ -135,6 +135,13 @@
         "
         class="content-container no-print"
       >
+        <v-row v-if="errorMessage">
+          <v-col cols="12">
+            <v-alert type="error" text prominent dense dismissible color="red">
+              {{ errorMessage }}
+            </v-alert>
+          </v-col>
+        </v-row>
         <v-row v-if="onlineMode" class="mb-3 no-print">
           <v-col cols="12" md="4">
             <v-row>
@@ -596,13 +603,6 @@
       />
     </template>
 
-    <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
-      {{ snackbar.text }}
-      <v-btn color="accent" text @click="snackbar.show = false">
-        {{ $t('Close') }}
-      </v-btn>
-    </v-snackbar>
-
     <Confirm ref="confirm"></Confirm>
   </Layout>
 </template>
@@ -687,11 +687,6 @@ export default {
         { id: 'Offline', label: this.$i18n.t('Offline_inspection') },
       ],
       selectedMode: 'Online',
-      snackbar: {
-        show: false,
-        timeout: 2000,
-        text: 'notification',
-      },
       selectedChecklist: null,
       activeInspection: null,
       selectedChecklistId: null,
@@ -726,6 +721,7 @@ export default {
       appVersion: process.env.VUE_APP_VERSION,
       checklistSvgId: null,
       newSvgName: null,
+      errorMessage: null,
     }
   },
   computed: {
@@ -1014,6 +1010,14 @@ export default {
     selectedHives() {
       this.setActiveHive()
     },
+    parseMode() {
+      if (this.parseMode) {
+        this.selectHiveSet(null)
+        this.selectedHives = []
+        this.setSelectedMode = 'Online'
+        this.getParsedOverallAnswers()
+      }
+    },
   },
   created() {
     // If hive id is specified, first check if hive is present / accessible and editable
@@ -1054,13 +1058,6 @@ export default {
           checklist_id: null,
           hive_ids: this.selectedHives, // TODO: fix for only 1 hiveId
           items: {},
-        }
-
-        if (this.parseMode) {
-          this.setSelectedMode = 'Online'
-          // this.selectedHiveSet = null
-          // this.allHivesSelected = false // TODO: fix
-          this.getParsedOverallAnswers()
         }
 
         this.readChecklistsIfNotPresent().then(() => {
@@ -1109,14 +1106,13 @@ export default {
           this.readChecklistSvgs()
         } catch (error) {
           if (error.response) {
-            const msg = error.response.data.message
             console.log('Error: ', error.response)
-            this.snackbar.text = msg
+            this.errorMessage =
+              this.$i18n.tc('Error', 1) + ': ' + error.response.data.message
           } else {
             console.log('Error: ', error)
-            this.snackbar.text = this.$i18n.t('something_wrong')
+            this.errorMessage = this.$i18n.t('something_wrong')
           }
-          this.snackbar.show = true
         }
       }
     },
@@ -1282,14 +1278,13 @@ export default {
         })
       } catch (error) {
         if (error.response) {
-          const msg = error.response.data.message
           console.log('Error: ', error.response)
-          this.snackbar.text = msg
+          this.errorMessage =
+            this.$i18n.tc('Error', 1) + ': ' + error.response.data.message
         } else {
           console.log('Error: ', error)
-          this.snackbar.text = this.$i18n.t('something_wrong')
+          this.errorMessage = this.$i18n.t('something_wrong')
         }
-        this.snackbar.show = true
         this.showLoadingIcon = false
       }
     },
@@ -1344,14 +1339,13 @@ export default {
           }, 50) // wait for API to update inspections
         } catch (error) {
           if (error.response) {
-            const msg = error.response.data.message
             console.log('Error: ', error.response)
-            this.snackbar.text = msg
+            this.errorMessage =
+              this.$i18n.tc('Error', 1) + ': ' + error.response.data.message
           } else {
             console.log('Error: ', error)
-            this.snackbar.text = this.$i18n.t('something_wrong')
+            this.errorMessage = this.$i18n.t('something_wrong')
           }
-          this.snackbar.show = true
           this.showLoadingIcon = false
         }
       }
@@ -1378,21 +1372,17 @@ export default {
             parsedOfflineInput
           )
           this.forceParseMode = true // TODO finetune parse mode + where to switch it off?
-          this.selectHiveSet(null)
-          this.selectedHives = []
-          this.setSelectedMode = 'Online'
           this.showLoadingIcon = false
         }, 500)
       } catch (error) {
         if (error.response) {
-          const msg = error.response.data.message
           console.log('Error: ', error.response)
-          this.snackbar.text = msg
+          this.errorMessage =
+            this.$i18n.tc('Error', 1) + ': ' + error.response.data.message
         } else {
           console.log('Error: ', error)
-          this.snackbar.text = this.$i18n.t('something_wrong')
+          this.errorMessage = this.$i18n.t('something_wrong')
         }
-        this.snackbar.show = true
         this.showLoadingIcon = false
       }
     },
@@ -1662,7 +1652,7 @@ export default {
         value: bool,
       })
     },
-    setChecklist(checklist, parseMode = false) {
+    setChecklist(checklist) {
       console.log('TODO set Checklist', checklist.name, checklist)
       this.selectedChecklistId = checklist.id
       this.selectedChecklist = checklist
@@ -1674,7 +1664,7 @@ export default {
         itemsObject[categoryId] = null
       })
       this.activeInspection.items = itemsObject
-      if (this.selectedChecklist.owner && !parseMode) {
+      if (this.selectedChecklist.owner) {
         this.setActiveInspectionDate()
       }
     },

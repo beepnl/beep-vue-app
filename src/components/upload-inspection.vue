@@ -7,6 +7,7 @@
         :value="uploadLanguage"
         :options="languages"
         :normalizer="normalizer"
+        :placeholder="$t('Select')"
         @input="updateLanguage($event)"
       >
         <div
@@ -58,6 +59,18 @@
         />
       </div>
     </v-col>
+    <v-overlay
+      :absolute="true"
+      :value="loading"
+      :opacity="0.5"
+      color="white"
+      z-index="3"
+      class="input-disabled-overlay"
+    >
+      <div class="loading">
+        <v-progress-circular size="50" color="primary" indeterminate />
+      </div>
+    </v-overlay>
   </v-row>
 </template>
 
@@ -86,7 +99,6 @@ export default {
   },
   data() {
     return {
-      errorMessage: null,
       uploadLanguage: null,
       languages: languages.languageArray,
       normalizer(node) {
@@ -116,8 +128,10 @@ export default {
     },
   },
   created() {
-    this.$store.commit('inspections/resetUploadInspectionPayload')
-    this.updateLanguage(this.userLocale)
+    this.$store.commit(
+      'inspections/resetUploadInspectionPayload',
+      this.userLocale
+    )
   },
   methods: {
     findImageIndex(pageNr) {
@@ -135,7 +149,9 @@ export default {
 
       var imageIndex = this.findImageIndex(pageNr)
       // jpeg gives "Invalid image geometry" error -> TODO let Pensoft add jpeg as valid mimetype
-      blob = blob.replace('data:image/jpeg', 'data:image/JPG')
+      if (blob !== null) {
+        blob = blob.replace('data:image/jpeg', 'data:image/JPG')
+      }
 
       if (imageIndex === -1) {
         var imgJson = {

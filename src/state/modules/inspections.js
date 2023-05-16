@@ -28,14 +28,7 @@ export const state = {
   svgWarnings: [],
   svgY: 0,
   tempSavedInspection: null,
-  uploadInspectionPayload: {
-    svg: '',
-    images: [],
-    settings: {
-      return_blob: ['text', 'single-digit', 'checkbox'],
-    },
-    'data-user-locale': ['en'],
-  },
+  uploadInspectionPayload: null,
 }
 export const getters = {
   ...resource.getters,
@@ -214,14 +207,7 @@ export const mutations = {
     state.svgWarnings = []
     state.svgY = 0
     state.tempSavedInspection = null
-    state.uploadInspectionPayload = {
-      svg: '',
-      images: [],
-      settings: {
-        return_blob: ['text', 'single-digit', 'checkbox'],
-      },
-      'data-user-locale': ['en'],
-    }
+    state.uploadInspectionPayload = null
   },
   resetSvgStates: function(state) {
     state.svgColumnCounter = 0
@@ -233,14 +219,14 @@ export const mutations = {
     state.svgWarnings = []
     state.svgY = 0
   },
-  resetUploadInspectionPayload: function(state) {
+  resetUploadInspectionPayload: function(state, locale) {
     state.uploadInspectionPayload = {
       svg: '',
       images: [],
       settings: {
         return_blob: ['text', 'single-digit', 'checkbox'],
       },
-      'data-user-locale': ['en'],
+      'data-user-locale': [locale],
     }
   },
 }
