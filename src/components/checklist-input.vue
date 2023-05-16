@@ -261,7 +261,7 @@
 <script>
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
-// import dummyOutput from '@components/svg/scan_results_kk3_complete.json' // test_4_dummy.json' TODO remove dummy output
+import dummyOutput from '@components/svg/scan_results_ms.json' // kk3_complete.json' // test_4_dummy.json' TODO remove dummy output
 import imageUploader from '@components/input-fields/image-uploader.vue'
 import sampleCode from '@components/input-fields/sample-code.vue'
 import selectHiveOrApiary from '@components/input-fields/select-hive-or-apiary.vue'
@@ -321,6 +321,8 @@ export default {
       savedNrOfDecimals: 0,
       checkAnswer: false,
       booleanDefault: [1, 0],
+      dummyOutput,
+      enableDummyOutput: false, // true, TODO for testing, remove later
     }
   },
   computed: {
@@ -339,6 +341,7 @@ export default {
     },
     parsedItems() {
       return this.parsedAnswer &&
+        this.parsedAnswer.category_id.indexOf('boolean') === -1 &&
         this.parsedAnswer.type === 'checkbox' &&
         this.flattenedItems.length <= this.maxNrOfItems
         ? this.flattenedItems
@@ -355,7 +358,10 @@ export default {
     },
     parsedAnswer() {
       if (this.parseMode) {
-        var returnedItems = this.parsedOfflineInput.scans.map((el) => {
+        var parsedData = this.enableDummyOutput
+          ? this.dummyOutput
+          : this.parsedOfflineInput
+        var returnedItems = parsedData.scans.map((el) => {
           return el.scan.filter(
             (answer) =>
               answer.parent_category_id !== undefined &&

@@ -3,7 +3,7 @@
     <div class="beep-label">
       <span
         v-text="
-          plainText
+          plainText !== null
             ? plainText
             : getText(item) +
               (item.unit !== null ? ' (' + item.unit + ')' : '') +
@@ -11,7 +11,10 @@
         "
       ></span>
       <a
-        v-if="!plainText && (item.description !== null || item.source !== null)"
+        v-if="
+          plainText === null &&
+            (item.description !== null || item.source !== null)
+        "
         ><v-icon
           class="mdi mdi-information ml-1 icon-info"
           dark
@@ -53,15 +56,24 @@
       </div>
     </div>
 
-    <div v-else-if="showImages" class="info-text">
-      <img
-        v-for="(image, j) in parsedImages"
-        :key="'i' + j"
-        :src="image"
-        :style="
-          parsedImages.length > 1 ? 'max-width: 20px;' : 'max-width: 100%;'
-        "
-      />
+    <div v-else-if="showImages" class="info-text d-flex align-center">
+      <template v-for="(image, j) in parsedImages">
+        <img
+          :key="'i' + j"
+          :src="image"
+          :style="
+            parsedImages.length > 1 ? 'max-width: 20px;' : 'max-width: 100%;'
+          "
+        />
+        <div v-if="parsedDate && j !== 1 && (j - 3) % 2 === 0" :key="'d' + j">
+          <div v-if="j === 7" class="mr-3"></div>
+          <div
+            v-else
+            class="date-helper"
+            v-text="j === 3 || j === 5 ? '-' : j === 9 ? ':' : ''"
+          ></div>
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -77,6 +89,11 @@ export default {
     locale: {
       type: String,
       default: 'en',
+      required: false,
+    },
+    parsedDate: {
+      type: Boolean,
+      default: false,
       required: false,
     },
     parsedItems: {
@@ -125,4 +142,9 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.date-helper {
+  text-align: center;
+  min-width: 6px;
+}
+</style>

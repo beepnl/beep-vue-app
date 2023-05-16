@@ -1111,6 +1111,8 @@ const translations = {
   Upload_images: 'Upload images',
   Upload_images_exp:
     'TODO: write bullets: use scanner, good lighting, flat surface, all 4 corner squares inside the image, double check page numbers',
+  Uploading_images_be_patient:
+    'Please wait a moment, your images are being parsed. This may take several minutes. Please do not close this window.',
 
   /* Compare module */
   Load: 'Load',

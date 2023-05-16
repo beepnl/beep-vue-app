@@ -69,6 +69,10 @@
     >
       <div class="loading">
         <v-progress-circular size="50" color="primary" indeterminate />
+        <span
+          class="mt-3 beep-label accent--text"
+          v-text="$t('Uploading_images_be_patient')"
+        ></span>
       </div>
     </v-overlay>
   </v-row>
@@ -94,7 +98,7 @@ export default {
     loading: {
       type: Boolean,
       default: false,
-      required: true,
+      required: false,
     },
   },
   data() {

@@ -151,9 +151,17 @@
             <v-row>
               <v-col cols="12" sm="7" md="12">
                 <div
+                  v-if="!parseMode"
                   class="beep-label mt-n3 mt-sm-0"
                   v-text="treeselectLabel"
                 ></div>
+                <labelWithDescription
+                  v-if="parseMode"
+                  :plain-text="treeselectLabel"
+                  :parse-mode="true"
+                  :check-answer="true"
+                  :parsed-images="parsedImages['location']"
+                ></labelWithDescription>
                 <Treeselect
                   v-if="sortedHiveSets && sortedHiveSets.length > 0"
                   v-model="selectedHiveSetId"
@@ -191,6 +199,13 @@
           </v-col>
 
           <v-col cols="12" md="5" class="mb-n3 mb-sm-0">
+            <labelWithDescription
+              v-if="parseMode"
+              :plain-text="$t('Select') + ' ' + $tc('hive', 1)"
+              :parse-mode="true"
+              :check-answer="true"
+              :parsed-images="parsedImages['hive']"
+            ></labelWithDescription>
             <ApiaryPreviewHiveSelector
               v-if="
                 selectedHiveSet && editableHives && editableHives.length > 0
@@ -233,6 +248,7 @@
                 <labelWithDescription
                   v-if="parseMode"
                   :plain-text="$t('Date_of_inspection')"
+                  :parsed-date="true"
                   :parse-mode="true"
                   :check-answer="true"
                   :parsed-images="parsedImages['date']"
@@ -245,7 +261,9 @@
                   :disabled="offlineMode"
                   :max-datetime="endOfToday"
                   :placeholder="
-                    forceInspectionDate || inspectionDate === 'Invalid date'
+                    forceInspectionDate ||
+                    inspectionDate === 'Invalid date' ||
+                    inspectionDate === ''
                       ? $t('select_inspection_date')
                       : null
                   "
@@ -514,8 +532,11 @@
                             <div>
                               <labelWithDescription
                                 :plain-text="$t('remind_date')"
+                                :parsed-date="true"
                                 :parse-mode="parseMode"
-                                :check-answer="parseMode"
+                                :check-answer="
+                                  parseMode && reminderDate !== null
+                                "
                                 :parsed-images="parsedImages['reminder_date']"
                               ></labelWithDescription>
                               <Datetime
@@ -618,7 +639,7 @@ import checklistFieldset from '@components/checklist-fieldset.vue'
 import Confirm from '@components/confirm.vue'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
-// import dummyOutput from '@components/svg/scan_results_kk3_complete.json' // test_4_dummy.json'
+import dummyOutput from '@components/svg/scan_results_ms.json' // kk3_complete.json' // test_4_dummy.json'
 import InspectModeSelector from '@components/inspect-mode-selector.vue'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import Layout from '@layouts/back.vue'
@@ -713,6 +734,8 @@ export default {
       dateFormatSimple: 'YYYY-MM-DD HH:mm',
       printMode: false,
       parsedImages: {
+        location: [],
+        hive: [],
         date: [],
         impression: [],
         attention: [],
@@ -726,6 +749,8 @@ export default {
       checklistSvgId: null,
       newSvgName: null,
       errorMessage: null,
+      dummyOutput,
+      enableDummyOutput: false, // true, TODO for testing, remove later
     }
   },
   computed: {
@@ -817,7 +842,8 @@ export default {
     },
     forceInspectionDate() {
       return (
-        !this.offlineMode && // forced inspection date not relevant for offline mode
+        !this.offlineMode &&
+        !this.parseMode && // forced inspection date not relevant for offline & parse mode
         (this.inspectionDate === 'Invalid date' ||
           this.inspectionDate === '') &&
         this.selectedChecklist !== null &&
@@ -1071,6 +1097,10 @@ export default {
       }
     }
 
+    if (this.parseMode) {
+      this.prepParseMode()
+    }
+
     this.setInspectionEdited(false)
     this.setBulkInspection(this.selectedHives.length > 1)
     this.ready = true
@@ -1195,6 +1225,7 @@ export default {
             if (!this.selectedChecklist.owner) {
               this.activeInspection.date = null
             } else if (
+              !this.parseMode &&
               this.selectedChecklist.owner &&
               (this.activeInspection.date === null ||
                 this.inspectionDate === 'Invalid date')
@@ -1347,10 +1378,6 @@ export default {
       }
     },
     async uploadInspection() {
-      console.log(
-        'TODO finetune upload inspection',
-        this.uploadInspectionPayload
-      )
       this.showLoadingIcon = true
       try {
         const response = await Api.pensoftPostRequest(
@@ -1362,17 +1389,7 @@ export default {
           value: parsedOfflineInput,
         })
         setTimeout(() => {
-          console.log(
-            'TODO parsedOfflineInput',
-            this.parsedOfflineInput,
-            parsedOfflineInput
-          )
-          this.forceParseMode = true // TODO finetune parse mode + where to switch it off?
-          this.selectHiveSet(null)
-          this.selectedHives = []
-          this.getParsedOverallAnswers()
-          this.setSelectedMode = 'Online'
-          this.showLoadingIcon = false
+          this.prepParseMode()
         }, 500)
       } catch (error) {
         if (error.response) {
@@ -1434,14 +1451,22 @@ export default {
       )
     },
     getParsedAnswer(id) {
-      var returnedItems = this.parsedOfflineInput.scans.map((el) => {
+      var parsedData = this.enableDummyOutput
+        ? this.dummyOutput
+        : this.parsedOfflineInput
+      var items = parsedData.scans.map((el) => {
         return el.scan.filter(
           (answer) =>
             answer.parent_category_id !== undefined &&
             answer.parent_category_id === id
         )
       })
-      return returnedItems.length > 0 ? returnedItems[0][0] : null
+      if (items.length > 0 && items[0].length > 1) {
+        // merge items for date type items
+        items[0][0].value = items[0][0].value.concat(items[0][1].value)
+        items[0][0].image = items[0][0].image.concat(items[0][1].image)
+      }
+      return items.length > 0 ? items[0][0] : null
     },
     getParsedOverallAnswers() {
       Object.keys(this.parsedImages).map((prop) => {
@@ -1458,28 +1483,43 @@ export default {
             if (prop.indexOf('date') === -1) {
               value = answer.value[0]
             } else {
-              var nothingMissing = answer.value.join('').length === 8
-              var day = parseInt(answer.value.slice(6, 8).join(''))
-              var month = parseInt(answer.value.slice(4, 6).join(''))
-              var year = parseInt(answer.value.slice(0, 4).join(''))
-              var date =
-                year.toString() + '-' + month.toString() + '-' + day.toString()
-              var makesSense =
-                nothingMissing &&
-                year >= this.currentYear &&
-                year <= this.currentYear + 2 &&
-                month <= 12 &&
-                day <= 31
+              var nothingMissing = answer.value.join('').length === 12
+              if (nothingMissing) {
+                var minutes = parseInt(answer.value.slice(10, 12).join(''))
+                var hour = parseInt(answer.value.slice(8, 10).join(''))
+                var day = parseInt(answer.value.slice(6, 8).join(''))
+                var month = parseInt(answer.value.slice(4, 6).join(''))
+                var year = parseInt(answer.value.slice(0, 4).join(''))
+                var date =
+                  year.toString() +
+                  '-' +
+                  month.toString() +
+                  '-' +
+                  day.toString() +
+                  ' ' +
+                  hour.toString() +
+                  ':' +
+                  minutes.toString()
+                var makesSense =
+                  nothingMissing &&
+                  year >= this.currentYear &&
+                  year <= this.currentYear + 2 &&
+                  month <= 12 &&
+                  day <= 31 &&
+                  hour <= 24 &&
+                  minutes <= 59
+              }
 
-              value = makesSense ? date : null
+              value = makesSense ? date : ''
             }
           }
         }
-        this.activeInspection[prop] = value
-        // TODO: make sure inspection date is not set if parsed output does not make sense!
-        // if (prop === 'date') {
-        //   this.setActiveInspectionDate('')
-        // }
+        if (prop.indexOf('date') > -1) {
+          this.setActiveInspectionDate(value)
+        } else if (prop !== 'location' && prop !== 'hive') {
+          this.activeInspection[prop] = value
+        }
+
         // TODO: convert array (of all checkboxes 0s and 1s for example) to the actual answer
         this.parsedImages[prop] =
           answer && answer.image !== undefined
@@ -1505,6 +1545,14 @@ export default {
         'inspections/setSelectedInspectionId',
         this.inspectionId
       )
+    },
+    prepParseMode() {
+      this.forceParseMode = true // TODO finetune parse mode + where to switch it off?
+      this.selectHiveSet(null)
+      this.selectedHives = []
+      this.getParsedOverallAnswers()
+      this.setSelectedMode = 'Online'
+      this.showLoadingIcon = false
     },
     print() {
       this.printMode = true
@@ -1653,7 +1701,6 @@ export default {
       })
     },
     setChecklist(checklist) {
-      console.log('TODO set Checklist', checklist.name, checklist)
       this.selectedChecklistId = checklist.id
       this.selectedChecklist = checklist
       this.lastSelectedChecklistId = checklist.id

@@ -224,7 +224,7 @@ export const mutations = {
       svg: '',
       images: [],
       settings: {
-        return_blob: ['text', 'single-digit', 'checkbox'],
+        return_blob: ['text', 'number', 'single-digit', 'checkbox'],
       },
       'data-user-locale': [locale],
     }

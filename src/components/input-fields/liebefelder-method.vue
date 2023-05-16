@@ -183,6 +183,7 @@
               :item="item"
               :locale="locale"
               :disabled="bulkInspection"
+              :parse-mode="parseMode"
               @calculate-liebefeld-colony-size="calculateLiebefeldColonySize"
             ></ChecklistInput>
 
@@ -227,6 +228,7 @@
                       :item="item2"
                       :locale="locale"
                       :disabled="bulkInspection"
+                      :parse-mode="parseMode"
                       @calculate-liebefeld-colony-size="
                         calculateLiebefeldColonySize
                       "
@@ -279,6 +281,11 @@ export default {
       required: false,
     },
     nested: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    parseMode: {
       type: Boolean,
       required: false,
       default: false,
