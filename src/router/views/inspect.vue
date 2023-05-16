@@ -926,7 +926,6 @@ export default {
         return this.selectedMode
       },
       set(value) {
-        localStorage.beepSelectedInspectionMode = value
         if (value === 'Upload' || value === 'Offline') {
           if (this.checklistSvgs.length === 0) {
             this.readChecklistSvgs()
@@ -1022,11 +1021,6 @@ export default {
       })
     } else {
       this.getHiveSet()
-    }
-
-    if (localStorage.beepSelectedInspectionMode && !this.inspectionId) {
-      // set to previous mode except when editing an existing inspection
-      this.setSelectedMode = localStorage.beepSelectedInspectionMode
     }
 
     if (
