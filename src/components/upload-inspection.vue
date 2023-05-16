@@ -1,7 +1,7 @@
 <template>
   <v-row class="mx-0 mx-sm-4">
     <v-col cols="12">
-      <div class="beep-label" v-text="$tc('Select_input_language')"></div>
+      <div class="beep-label" v-text="$tc('Select_input_language') + '*'"></div>
       <Treeselect
         class="lang-treeselect"
         :value="uploadLanguage"
@@ -128,6 +128,7 @@ export default {
     },
   },
   created() {
+    this.uploadLanguage = this.userLocale
     this.$store.commit(
       'inspections/resetUploadInspectionPayload',
       this.userLocale

@@ -112,7 +112,11 @@
           color="black"
           class="save-button-mobile-wide mr-1"
           :disabled="
-            showLoadingIcon || uploadInspectionPayload.images.length < 1
+            showLoadingIcon ||
+              (uploadInspectionPayload &&
+                (uploadInspectionPayload.images.length < 1 ||
+                  typeof uploadInspectionPayload['data-user-locale'][0] !==
+                    'string'))
           "
           @click="uploadInspection"
         >
@@ -1010,14 +1014,6 @@ export default {
     selectedHives() {
       this.setActiveHive()
     },
-    parseMode() {
-      if (this.parseMode) {
-        this.selectHiveSet(null)
-        this.selectedHives = []
-        this.setSelectedMode = 'Online'
-        this.getParsedOverallAnswers()
-      }
-    },
   },
   created() {
     // If hive id is specified, first check if hive is present / accessible and editable
@@ -1372,6 +1368,10 @@ export default {
             parsedOfflineInput
           )
           this.forceParseMode = true // TODO finetune parse mode + where to switch it off?
+          this.selectHiveSet(null)
+          this.selectedHives = []
+          this.getParsedOverallAnswers()
+          this.setSelectedMode = 'Online'
           this.showLoadingIcon = false
         }, 500)
       } catch (error) {
