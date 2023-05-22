@@ -178,7 +178,7 @@
       class="inspection-text-area"
       :placeholder="item.trans[locale] || item.name"
       counter="2500"
-      rows="1"
+      :rows="getEnters(object[item.id])"
       auto-grow
       clearable
       @input="validateText($event, item.id, 2500)"
@@ -322,7 +322,7 @@ export default {
       checkAnswer: false,
       booleanDefault: [1, 0],
       dummyOutput,
-      enableDummyOutput: false, // true, TODO for testing, remove later
+      enableDummyOutput: true, // true, TODO for testing, remove later
     }
   },
   computed: {
@@ -358,9 +358,10 @@ export default {
     },
     parsedAnswer() {
       if (this.parseMode) {
-        var parsedData = this.enableDummyOutput
-          ? this.dummyOutput
-          : this.parsedOfflineInput
+        var parsedData =
+          this.enableDummyOutput && this.queriedParseMode
+            ? this.dummyOutput
+            : this.parsedOfflineInput
         var returnedItems = parsedData.scans.map((el) => {
           return el.scan.filter(
             (answer) =>
@@ -406,6 +407,9 @@ export default {
           ? this.parsedAnswer.image
           : []
       }
+    },
+    queriedParseMode() {
+      return this.$route.query.mode === 'parse' // TODO remove when enableDummyOutput is removed
     },
   },
   created() {
@@ -520,6 +524,9 @@ export default {
 
         return r
       }, [])
+    },
+    getEnters(string) {
+      return string !== null ? string.match(/\n/g).length : 1
     },
     setInspectionEdited(bool) {
       this.$store.commit('inspections/setInspectionEdited', bool)

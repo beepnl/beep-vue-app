@@ -70,6 +70,7 @@
               showLoadingIcon ||
               forceInspectionDate ||
               inspectionDate === 'Invalid date' ||
+              inspectionDate === '' ||
               (activeInspection && activeInspection.date === null)
           "
           @click.prevent="confirmSaveInspection"
@@ -646,6 +647,7 @@ import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
 import {
   readApiariesAndGroups,
+  readApiariesAndGroupsIfNotPresent,
   readGeneralInspections,
 } from '@mixins/methodsMixin'
 import { momentFullDateTime, momentISO8601 } from '@mixins/momentMixin'
@@ -676,6 +678,7 @@ export default {
     momentFullDateTime,
     momentISO8601,
     readApiariesAndGroups,
+    readApiariesAndGroupsIfNotPresent,
     readGeneralInspections,
   ],
   data: function() {
@@ -750,7 +753,7 @@ export default {
       newSvgName: null,
       errorMessage: null,
       dummyOutput,
-      enableDummyOutput: false, // true, TODO for testing, remove later
+      enableDummyOutput: true, // true, TODO for testing, remove later
     }
   },
   computed: {
@@ -917,11 +920,14 @@ export default {
     parseMode() {
       return (
         this.permissions.includes('test-offline-input') &&
-        (this.$route.query.mode === 'parse' || this.forceParseMode === true)
+        (this.queriedParseMode || this.forceParseMode === true)
       )
     },
     preSelectedChecklistId() {
       return parseInt(this.$route.query.checklistId) || null
+    },
+    queriedParseMode() {
+      return this.$route.query.mode === 'parse' // TODO remove when enableDummyOutput is removed
     },
     reminderDate: {
       get() {
@@ -1043,68 +1049,66 @@ export default {
   },
   created() {
     // If hive id is specified, first check if hive is present / accessible and editable
-    if (this.hiveId !== null) {
-      this.getActiveHive(this.hiveId).then(() => {
-        this.getHiveSet()
-      })
-    } else {
-      this.getHiveSet()
-    }
+    this.getActiveHive(this.hiveId).then(() => {
+      this.readApiariesAndGroupsIfNotPresent().then(() => {
+        this.selectInitialHiveSet()
 
-    if (
-      localStorage.beepPreviousRoute !== undefined &&
-      localStorage.beepPreviousRoute === 'checklist' &&
-      this.tempSavedInspection !== null
-    ) {
-      console.log('temp saved inspection', this.tempSavedInspection)
-      this.activeInspection = { ...this.tempSavedInspection }
-      this.initInspection()
-    } else {
-      this.setTempSavedInspection(null)
-
-      // If hive-inspect-edit route is used, retrieve to-be-edited inspection
-      if (this.inspectionId !== null) {
-        this.getInspection(this.inspectionId).then((response) => {
-          this.activeInspection = response
+        if (
+          localStorage.beepPreviousRoute !== undefined &&
+          localStorage.beepPreviousRoute === 'checklist' &&
+          this.tempSavedInspection !== null
+        ) {
+          console.log('temp saved inspection', this.tempSavedInspection)
+          this.activeInspection = { ...this.tempSavedInspection }
           this.initInspection()
-        })
-        // Else make an empty inspection object
-      } else {
-        this.activeInspection = {
-          date: null,
-          impression: null,
-          attention: null,
-          notes: null,
-          reminder_date: null,
-          reminder: null,
-          checklist_id: null,
-          hive_ids: this.selectedHives, // TODO: fix for only 1 hiveId
-          items: {},
+        } else {
+          this.setTempSavedInspection(null)
+
+          // If hive-inspect-edit route is used, retrieve to-be-edited inspection
+          if (this.inspectionId !== null) {
+            this.getInspection(this.inspectionId).then((response) => {
+              this.activeInspection = response
+              this.initInspection()
+            })
+            // Else make an empty inspection object
+          } else {
+            this.activeInspection = {
+              date: null,
+              impression: null,
+              attention: null,
+              notes: null,
+              reminder_date: null,
+              reminder: null,
+              checklist_id: null,
+              hive_ids: this.selectedHives, // TODO: fix for only 1 hiveId
+              items: {},
+            }
+
+            this.readChecklistsIfNotPresent().then(() => {
+              if (this.preSelectedChecklistId !== null) {
+                this.getChecklistById(this.preSelectedChecklistId)
+              } else if (
+                this.lastSelectedChecklistId !== undefined &&
+                this.lastSelectedChecklistId !== null
+              ) {
+                this.getChecklistById(this.lastSelectedChecklistId)
+              } else {
+                this.setChecklist(this.checklist)
+              }
+            })
+          }
         }
 
-        this.readChecklistsIfNotPresent().then(() => {
-          if (this.preSelectedChecklistId !== null) {
-            this.getChecklistById(this.preSelectedChecklistId)
-          } else if (
-            this.lastSelectedChecklistId !== undefined &&
-            this.lastSelectedChecklistId !== null
-          ) {
-            this.getChecklistById(this.lastSelectedChecklistId)
-          } else {
-            this.setChecklist(this.checklist)
-          }
-        })
-      }
-    }
+        if (this.parseMode) {
+          this.prepParseMode()
+        }
 
-    if (this.parseMode) {
-      this.prepParseMode()
-    }
-
-    this.setInspectionEdited(false)
-    this.setBulkInspection(this.selectedHives.length > 1)
-    this.ready = true
-    this.svgReady = true
+        this.setInspectionEdited(false)
+        this.setBulkInspection(this.selectedHives.length > 1)
+        this.ready = true
+        this.svgReady = true
+      })
+    })
   },
   methods: {
     async createChecklistSvg() {
@@ -1143,26 +1147,30 @@ export default {
       }
     },
     async getActiveHive(id) {
-      try {
-        const response = await Api.readRequest('/hives/', id)
-        if (response.data.length === 0) {
-          this.$router.push({ name: '404', params: { resource: 'hive' } })
-        }
-        this.activeHive = response.data.hives[0]
-        this.$store.commit('hives/setActiveHive', response.data.hives[0])
-        if (!this.activeHive.editable && !this.activeHive.owner) {
-          this.hiveNotEditable = true
-        }
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log(error.response)
-          if (error.response.status === 404) {
+      if (id !== null) {
+        try {
+          const response = await Api.readRequest('/hives/', id)
+          if (response.data.length === 0) {
             this.$router.push({ name: '404', params: { resource: 'hive' } })
           }
-        } else {
-          console.log('Error: ', error)
+          this.activeHive = response.data.hives[0]
+          this.$store.commit('hives/setActiveHive', response.data.hives[0])
+          if (!this.activeHive.editable && !this.activeHive.owner) {
+            this.hiveNotEditable = true
+          }
+          return true
+        } catch (error) {
+          if (error.response) {
+            console.log(error.response)
+            if (error.response.status === 404) {
+              this.$router.push({ name: '404', params: { resource: 'hive' } })
+            }
+          } else {
+            console.log('Error: ', error)
+          }
         }
+      } else {
+        return true
       }
     },
     async getChecklistById(id, switchChecklistExistingInspection = false) {
@@ -1435,25 +1443,16 @@ export default {
       this.setTempSavedInspection(this.activeInspection)
       this.$router.push(this.checklistLink)
     },
-    getHiveSet() {
-      if (this.apiaries.length === 0 && this.groups.length === 0) {
-        // if apiaries and groups are not in store, in case view is opened directly without loggin in (via localstorage)
-        this.readApiariesAndGroups().then(() => {
-          this.selectInitialHiveSet()
-        })
-      } else {
-        this.selectInitialHiveSet()
-      }
-    },
     getNow(simple = false) {
       return this.$moment().format(
         simple ? this.dateFormatSimple : this.dateFormat
       )
     },
     getParsedAnswer(id) {
-      var parsedData = this.enableDummyOutput
-        ? this.dummyOutput
-        : this.parsedOfflineInput
+      var parsedData =
+        this.enableDummyOutput && this.queriedParseMode
+          ? this.dummyOutput
+          : this.parsedOfflineInput
       var items = parsedData.scans.map((el) => {
         return el.scan.filter(
           (answer) =>
@@ -1548,10 +1547,11 @@ export default {
     },
     prepParseMode() {
       this.forceParseMode = true // TODO finetune parse mode + where to switch it off?
-      this.selectHiveSet(null)
-      this.selectedHives = []
-      this.getParsedOverallAnswers()
       this.setSelectedMode = 'Online'
+      this.allHivesSelected = false
+      this.selectedHives = []
+      this.selectHiveSet(null)
+      this.getParsedOverallAnswers()
       this.showLoadingIcon = false
     },
     print() {
@@ -1641,7 +1641,7 @@ export default {
       this.selectedHiveSetId = this.sortedHiveSets[0].children[0].treeselectId
       this.selectHiveSet(this.selectedHiveSetId)
     },
-    selectHiveSet(id) {
+    selectHiveSet(id, loc = false) {
       if (id) {
         var stringId = id.toString()
         this.isApiary = parseInt(stringId.substring(0, 1)) === 1
