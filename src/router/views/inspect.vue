@@ -538,7 +538,8 @@
                                 :parsed-date="true"
                                 :parse-mode="parseMode"
                                 :check-answer="
-                                  parseMode && reminderDate !== null
+                                  parseMode &&
+                                    parsedImages['reminder_date'].length > 0
                                 "
                                 :parsed-images="parsedImages['reminder_date']"
                               ></labelWithDescription>
@@ -648,6 +649,7 @@ import labelWithDescription from '@components/input-fields/label-with-descriptio
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
 import {
+  parseDate,
   readApiariesAndGroups,
   readApiariesAndGroupsIfNotPresent,
   readGeneralInspections,
@@ -679,6 +681,7 @@ export default {
   mixins: [
     momentFullDateTime,
     momentISO8601,
+    parseDate,
     readApiariesAndGroups,
     readApiariesAndGroupsIfNotPresent,
     readGeneralInspections,
@@ -835,9 +838,6 @@ export default {
       } else {
         return null
       }
-    },
-    currentYear() {
-      return this.$moment().format('YYYY')
     },
     editMode() {
       return this.inspectionId !== null
@@ -1505,40 +1505,12 @@ export default {
             if (prop.indexOf('date') === -1) {
               value = answer.value[0]
             } else {
-              var nothingMissing = answer.value.join('').length === 12
-              if (nothingMissing) {
-                var minutes = parseInt(answer.value.slice(10, 12).join(''))
-                var hour = parseInt(answer.value.slice(8, 10).join(''))
-                var day = parseInt(answer.value.slice(6, 8).join(''))
-                var month = parseInt(answer.value.slice(4, 6).join(''))
-                var year = parseInt(answer.value.slice(0, 4).join(''))
-                var date =
-                  year.toString() +
-                  '-' +
-                  month.toString() +
-                  '-' +
-                  day.toString() +
-                  ' ' +
-                  hour.toString() +
-                  ':' +
-                  minutes.toString()
-                var makesSense =
-                  nothingMissing &&
-                  year >= this.currentYear &&
-                  year <= this.currentYear + 2 &&
-                  month <= 12 &&
-                  day <= 31 &&
-                  hour <= 24 &&
-                  minutes <= 59
-              }
-
-              value = makesSense ? date : ''
+              value = this.parseDate(answer.value)
             }
           }
         }
-        if (prop.indexOf('date') > -1) {
-          this.setActiveInspectionDate(value)
-        } else if (prop !== 'location' && prop !== 'hive') {
+
+        if (prop !== 'location' && prop !== 'hive') {
           this.activeInspection[prop] = value
         }
 

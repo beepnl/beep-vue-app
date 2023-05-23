@@ -7,6 +7,10 @@
       <labelWithDescription
         :item="item"
         :locale="locale"
+        :parse-mode="parseMode"
+        :parsed-images="parsedImages"
+        :parsed-items="parsedItems"
+        :check-answer="parseMode"
       ></labelWithDescription>
 
       <Datetime
@@ -58,6 +62,21 @@ export default {
     locale: {
       type: String,
       default: 'en',
+      required: false,
+    },
+    parsedItems: {
+      type: Array,
+      default: () => [],
+      required: false,
+    },
+    parsedImages: {
+      type: Array,
+      default: () => [],
+      required: false,
+    },
+    parseMode: {
+      type: Boolean,
+      default: false,
       required: false,
     },
   },

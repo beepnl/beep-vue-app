@@ -380,6 +380,38 @@ export const orderedLayers = {
   },
 }
 
+export const parseDate = {
+  computed: {
+    currentYear() {
+      return parseInt(this.$moment().format('YYYY'))
+    },
+  },
+  methods: {
+    parseDate(input) {
+      var nothingMissing = input.join('').length === 12
+      if (nothingMissing) {
+        var minutes = input.slice(10, 12).join('')
+        var hour = input.slice(8, 10).join('')
+        var day = input.slice(6, 8).join('')
+        var month = input.slice(4, 6).join('')
+        var year = input.slice(0, 4).join('')
+        var date =
+          year + '-' + month + '-' + day + ' ' + hour + ':' + minutes + ':00'
+        var makesSense =
+          nothingMissing &&
+          parseInt(year) >= this.currentYear &&
+          parseInt(year) <= this.currentYear + 2 &&
+          parseInt(month) <= 12 &&
+          parseInt(day) <= 31 &&
+          parseInt(hour) <= 24 &&
+          parseInt(minutes) <= 59
+      }
+
+      return makesSense ? date : ''
+    },
+  },
+}
+
 export const readAlertRules = {
   methods: {
     async readAlertRules() {

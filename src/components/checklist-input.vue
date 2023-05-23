@@ -80,6 +80,9 @@
       :object="object"
       :item="item"
       :locale="locale"
+      :parse-mode="parseMode"
+      :parsed-images="parsedImages"
+      :parsed-items="parsedItems"
     ></dateTimePicker>
 
     <slider
@@ -271,6 +274,7 @@ import starRating from '@components/input-fields/star-rating.vue'
 import treeselect from '@components/input-fields/treeselect.vue'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 import { mapGetters } from 'vuex'
+import { parseDate } from '@mixins/methodsMixin'
 import { svgData } from '@mixins/svgMixin'
 
 export default {
@@ -288,7 +292,7 @@ export default {
     treeselect,
     yesNoRating,
   },
-  mixins: [svgData],
+  mixins: [parseDate, svgData],
   props: {
     item: {
       type: Object,
@@ -366,6 +370,11 @@ export default {
               (answer) => answer.value[0] === 1
             )
             answer = posAnswer.length > 0 ? posAnswer[0] : null
+          } else if (this.parsedAnswerRaw[0].category_id === 'date-field') {
+            // merge items for date type items
+            answer = this.parsedAnswerRaw[0]
+            answer.value = answer.value.concat(this.parsedAnswerRaw[1].value)
+            answer.image = answer.image.concat(this.parsedAnswerRaw[1].image)
           } else {
             answer = this.parsedAnswerRaw[0]
           }
@@ -422,11 +431,12 @@ export default {
           })
         } else {
           // TODO check if this is needed
-          this.parsedAnswerRaw.map((ans) => {
-            if (ans.image !== undefined) {
-              imgArr = imgArr.concat(ans.image)
-            }
-          })
+          // this.parsedAnswerRaw.map((ans) => {
+          //   if (ans.image !== undefined) {
+          //     imgArr = imgArr.concat(ans.image)
+          //   }
+          // })
+          return this.parsedAnswer.image
         }
         return imgArr
       } else {
@@ -497,6 +507,9 @@ export default {
               : this.parsedAnswer.type === 'text'
               ? this.parsedAnswer.value[0]
               : parseInt(this.parsedAnswer.value[0])
+          this.checkAnswer = true
+        } else if (this.parsedAnswer.category_id === 'date-field') {
+          value = this.parseDate(this.parsedAnswer.value)
           this.checkAnswer = true
         } else {
           value = null
