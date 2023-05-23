@@ -1002,7 +1002,7 @@ const translations = {
   Print: 'Print',
   Offline_inspection: 'Papieren inspectie',
   Offline_inspection_exp:
-    "Print de kastkaart, vul deze handmatig in. Upload foto's hiervan op een later moment via de 'Upload inspectie' knop. De foto's worden vervolgens automatisch uitgelezen en het resultaat kan dan worden geverifiëerd en opgeslagen als een normale (digitale / online) inspectie.",
+    "Print de kastkaart, vul deze handmatig in. Upload foto's hiervan op een later moment via de 'Upload papieren inspectie' knop. De foto's worden vervolgens automatisch uitgelezen en het resultaat kan dan worden geverifiëerd en opgeslagen als een normale (digitale / online) inspectie.",
   Online_inspection: 'Digitale inspectie',
   Online_inspection_exp:
     'Vul de kastkaart digitaal (online) in via uw computer, tablet of smartphone, zoals u gewend bent',

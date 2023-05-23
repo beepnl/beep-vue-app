@@ -150,7 +150,7 @@
           </v-col>
         </v-row>
         <v-row v-if="onlineMode" class="mb-3 no-print">
-          <v-col cols="12" md="4">
+          <v-col class="mobile-2" cols="12" md="4">
             <v-row>
               <v-col cols="12" sm="7" md="12">
                 <div
@@ -201,7 +201,7 @@
             </v-row>
           </v-col>
 
-          <v-col cols="12" md="5" class="mb-n3 mb-sm-0">
+          <v-col cols="12" md="5" class="mobile-3 mb-n3 mb-sm-0">
             <labelWithDescription
               v-if="parseMode"
               :plain-text="$t('Select') + ' ' + $tc('hive', 1)"
@@ -221,7 +221,7 @@
             ></ApiaryPreviewHiveSelector>
           </v-col>
 
-          <v-col cols="12" md="3">
+          <v-col class="mobile-1 py-1 py-sm-3" cols="12" md="3">
             <InspectModeSelector
               v-if="!editMode && permissions.includes('test-offline-input')"
               :selected-mode="selectedMode"
@@ -1803,6 +1803,16 @@ export default {
   background-color: $color-orange-medium;
   &.hive-inspect-card-title--border-bottom {
     border-bottom: 1px solid $color-grey-light;
+  }
+}
+
+$orders: ('1', '2', '3');
+
+@each $o in $orders {
+  .mobile-#{$o} {
+    @include for-phone-only {
+      order: #{$o};
+    }
   }
 }
 </style>

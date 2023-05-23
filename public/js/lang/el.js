@@ -1055,7 +1055,7 @@ const translations = {
   /* inspection modes */
   Offline_inspection: 'Paper inspection',
   Offline_inspection_exp:
-    "Print the checklist, fill it in manually. Upload photos of your inspection sheets later via the 'Upload inspection' button. The photos will then be automatically parsed and can be verified and saved like a normal (digital / online) inspection.",
+    "Print the checklist, fill it in manually. Upload photos of your inspection sheets later via the 'Upload paper inspection' button. The photos will then be automatically parsed and can be verified and saved like a normal (digital / online) inspection.",
   Online_inspection: 'Digital inspection',
   Online_inspection_exp:
     'Fill in your checklist digitally (online) via your computer, tablet or smartphone, like you are used to',
