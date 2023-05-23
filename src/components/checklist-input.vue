@@ -261,7 +261,7 @@
 <script>
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
-import dummyOutput from '@components/svg/scan_results_ms.json' // kk3_complete.json' // test_4_dummy.json' TODO remove dummy output
+import dummyOutput from '@components/svg/scan_results_date.json' // kk3_complete.json' // test_4_dummy.json' TODO remove dummy output
 import imageUploader from '@components/input-fields/image-uploader.vue'
 import sampleCode from '@components/input-fields/sample-code.vue'
 import selectHiveOrApiary from '@components/input-fields/select-hive-or-apiary.vue'
@@ -407,11 +407,27 @@ export default {
     parsedImages() {
       if (Array.isArray(this.parsedAnswerRaw)) {
         var imgArr = []
-        this.parsedAnswerRaw.map((ans) => {
-          if (ans.image !== undefined) {
-            imgArr = imgArr.concat(ans.image)
-          }
-        })
+        var i = 0
+        if (this.parsedItems.length > 0) {
+          this.parsedItems.map((it, j) => {
+            if (it.hasChildren) {
+              // make sure that items without children (= headers of nested sublist) do not get a matched image
+              imgArr = imgArr.concat('')
+            } else {
+              if (this.parsedAnswerRaw[i].image !== undefined) {
+                imgArr = imgArr.concat(this.parsedAnswerRaw[i].image)
+              }
+              i++
+            }
+          })
+        } else {
+          // TODO check if this is needed
+          this.parsedAnswerRaw.map((ans) => {
+            if (ans.image !== undefined) {
+              imgArr = imgArr.concat(ans.image)
+            }
+          })
+        }
         return imgArr
       } else {
         return this.parsedAnswerRaw && this.parsedAnswerRaw.image !== undefined
@@ -466,7 +482,10 @@ export default {
                 ? this.booleanDefault[checkboxIndex]
                 : null
           } else {
-            value = this.parsedAnswer.category_id
+            value =
+              this.parsedAnswer.value[0] === 1
+                ? this.parsedAnswer.category_id
+                : null
           }
         } else if (
           this.parsedAnswer.type === 'text' ||
@@ -537,7 +556,9 @@ export default {
       }, [])
     },
     getEnters(string) {
-      return string !== null ? string.match(/\n/g).length : 1
+      return string !== null && string.indexOf('\n') > -1
+        ? string.match(/\n/g).length
+        : 1
     },
     setInspectionEdited(bool) {
       this.$store.commit('inspections/setInspectionEdited', bool)

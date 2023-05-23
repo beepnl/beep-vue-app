@@ -46,13 +46,13 @@
       v-if="showImages && parsedItems.length > 0"
       class="info-text d-flex flex-column"
     >
-      <div v-for="(image, j) in parsedImages" :key="'i' + j" class="d-flex">
-        <img :src="image" style="max-width: 20px; max-height: 20px;" />
-        <span
-          v-if="parsedItems.length >= j + 1"
-          class="ml-1"
-          v-text="getText(parsedItems[j])"
-        ></span>
+      <div v-for="(it, j) in parsedItems" :key="'i' + j" class="d-flex">
+        <img
+          v-if="!it.hasChildren"
+          :src="parsedImages[j]"
+          style="max-width: 20px; max-height: 20px;"
+        />
+        <span class="ml-1" v-text="getText(it)"></span>
       </div>
     </div>
 
