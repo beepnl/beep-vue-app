@@ -113,7 +113,8 @@
           color="black"
           class="save-button-mobile-wide mr-1"
           :disabled="
-            showLoadingIcon ||
+            !selectedChecklistSvg ||
+              showLoadingIcon ||
               (uploadInspectionPayload &&
                 (uploadInspectionPayload.images.length < 1 ||
                   typeof uploadInspectionPayload['data-user-locale'][0] !==
@@ -1397,16 +1398,20 @@ export default {
           value: parsedOfflineInput,
         })
         setTimeout(() => {
+          this.errorMessage = null
           this.prepParseMode()
         }, 500)
       } catch (error) {
+        this.errorMessage = this.$i18n.tc('Error', 1) + ': '
         if (error.response) {
           console.log('Error: ', error.response)
-          this.errorMessage =
-            this.$i18n.tc('Error', 1) + ': ' + error.response.data.message
+          var e = error.response.data
+          var msg = e.errors ? e.errors : e.message ? e.message : e
+          this.errorMessage += msg
         } else {
           console.log('Error: ', error)
-          this.errorMessage = this.$i18n.t('something_wrong')
+          msg = error.data.message ? error.data.message : error.data
+          this.errorMessage += msg // this.$i18n.t('something_wrong')
         }
         this.showLoadingIcon = false
       }
