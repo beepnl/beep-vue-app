@@ -1053,6 +1053,7 @@ export default {
   },
   created() {
     if (localStorage.beepSelectedInspectionMode === 'Offline') {
+      this.switchMode('Offline')
       this.setSelectedMode = 'Offline'
       this.storeInspectionMode('')
     }
