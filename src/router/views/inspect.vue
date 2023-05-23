@@ -1,6 +1,7 @@
 <template>
   <Layout
     :title="editMode ? $t('Edit_inspection') : $t('New_inspection') + modeText"
+    :dismiss-changes="offlineMode || uploadMode"
   >
     <h1 v-if="hiveNotEditable" class="unauthorized-title">
       {{
@@ -1410,7 +1411,11 @@ export default {
           this.errorMessage += msg
         } else {
           console.log('Error: ', error)
-          msg = error.data.message ? error.data.message : error.data
+          msg = error.data
+            ? error.data.message
+              ? error.data.message
+              : error.data
+            : error
           this.errorMessage += msg // this.$i18n.t('something_wrong')
         }
         this.showLoadingIcon = false
