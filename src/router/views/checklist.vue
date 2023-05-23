@@ -280,9 +280,6 @@ export default {
     ownedChecklists() {
       return this.checklists.filter((checklist) => checklist.owner)
     },
-    queriedMode() {
-      return this.$route.query.mode
-    },
     showDeleteButton() {
       return (
         this.activeChecklist &&
@@ -295,6 +292,9 @@ export default {
     },
     smAndDown() {
       return this.$vuetify.breakpoint.smAndDown
+    },
+    storedOfflineMode() {
+      return localStorage.beepSelectedInspectionMode === 'Offline'
     },
     touchDevice() {
       return window.matchMedia('(hover: none)').matches
@@ -475,12 +475,11 @@ export default {
                   },
                   query: { checklistId: this.selectedChecklistId },
                 })
-              } else if (this.queriedMode === 'Offline') {
+              } else if (this.storedOfflineMode) {
                 return this.$router.push({
                   name: 'inspect',
                   query: {
                     checklistId: this.selectedChecklistId,
-                    mode: 'Offline',
                   },
                 })
               } else if (this.hiveId || this.apiaryId || this.groupId) {

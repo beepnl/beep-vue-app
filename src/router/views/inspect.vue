@@ -799,21 +799,19 @@ export default {
     checklistLink() {
       var query = {}
       // pass current apiary or group id (even if user has switched from initially (pre)selected apiary or group)
-      this.offlineMode
-        ? (query = {
-            mode: 'Offline',
-          })
-        : this.isApiary
-        ? (query = {
-            hiveId: this.hiveId,
-            inspectionId: this.inspectionId,
-            apiaryId: this.hiveSetId,
-          })
-        : (query = {
-            hiveId: this.hiveId,
-            inspectionId: this.inspectionId,
-            groupId: this.hiveSetId,
-          })
+      if (!this.offlineMode) {
+        this.isApiary
+          ? (query = {
+              hiveId: this.hiveId,
+              inspectionId: this.inspectionId,
+              apiaryId: this.hiveSetId,
+            })
+          : (query = {
+              hiveId: this.hiveId,
+              inspectionId: this.inspectionId,
+              groupId: this.hiveSetId,
+            })
+      }
 
       return {
         name: 'checklist',
@@ -1054,8 +1052,9 @@ export default {
     },
   },
   created() {
-    if (this.queriedMode === 'Offline') {
+    if (localStorage.beepSelectedInspectionMode === 'Offline') {
       this.setSelectedMode = 'Offline'
+      this.storeInspectionMode('')
     }
 
     // If hive id is specified, first check if hive is present / accessible and editable
@@ -1461,6 +1460,8 @@ export default {
         this.activeInspection.hive_ids = this.selectedHives
       if (!this.offlineMode) {
         this.setTempSavedInspection(this.activeInspection)
+      } else {
+        this.storeInspectionMode('Offline')
       }
       this.$router.push(this.checklistLink)
     },
@@ -1611,10 +1612,12 @@ export default {
       }
     },
     selectChecklistSvg() {
-      var checklistId = this.selectedChecklistSvg.checklist_id
-      // get digital checklist in order to have it preselected when opening the parsed offline input in onlineMode later
-      if (this.selectedChecklistId !== checklistId) {
-        this.getChecklistById(checklistId)
+      if (this.selectedChecklistSvg) {
+        var checklistId = this.selectedChecklistSvg.checklist_id
+        // get digital checklist in order to have it preselected when opening the parsed offline input in onlineMode later
+        if (this.selectedChecklistId !== checklistId) {
+          this.getChecklistById(checklistId)
+        }
       }
     },
     selectGroup(id) {
@@ -1778,6 +1781,9 @@ export default {
       if (mode === 'Offline') {
         this.svgLoading = true
       }
+    },
+    storeInspectionMode(value) {
+      localStorage.beepSelectedInspectionMode = value
     },
     toggleCategory(index) {
       this.$set(

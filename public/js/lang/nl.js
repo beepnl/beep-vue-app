@@ -1016,7 +1016,7 @@ const translations = {
   Select_input_language: 'Selecteer taal waarin kastkaart is ingevuld',
   Upload_images: 'Upload afbeeldingen',
   Upload_images_exp:
-    'TODO: write bullets: use scanner, good lighting, flat surface, all 4 corner squares inside the image, double check page numbers',
+    'TODO: write bullets: use scanner, good lighting, flat surface, all 4 corner squares inside the image, double check page numbers, double check name + date',
   Uploading_images_be_patient:
     'Even geduld a.u.b., uw afbeeldingen worden geanalyseerd. Dit kan enkele minuten duren. Sluit dit venster niet.',
 

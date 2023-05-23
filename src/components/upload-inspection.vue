@@ -62,7 +62,7 @@
     <v-overlay
       :absolute="true"
       :value="loading"
-      :opacity="0.75"
+      :opacity="0.8"
       color="white"
       z-index="3"
       class="input-disabled-overlay"
@@ -70,7 +70,7 @@
       <div class="loading">
         <v-progress-circular size="50" color="primary" indeterminate />
         <span
-          class="ma-3 beep-label accent--text"
+          class="ma-3 accent--text"
           v-text="$t('Uploading_images_be_patient')"
         ></span>
       </div>
