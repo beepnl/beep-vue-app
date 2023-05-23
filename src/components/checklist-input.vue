@@ -261,7 +261,7 @@
 <script>
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
-import dummyOutput from '@components/svg/scan_results_ms.json' // kk3_complete.json' // test_4_dummy.json' TODO remove dummy output
+import dummyOutput from '@components/svg/scan_results_kk3_complete.json' // kk3_complete.json' // test_4_dummy.json' TODO remove dummy output
 import imageUploader from '@components/input-fields/image-uploader.vue'
 import sampleCode from '@components/input-fields/sample-code.vue'
 import selectHiveOrApiary from '@components/input-fields/select-hive-or-apiary.vue'
@@ -340,9 +340,10 @@ export default {
       )
     },
     parsedItems() {
-      return this.parsedAnswer &&
-        this.parsedAnswer.category_id.indexOf('boolean') === -1 &&
-        this.parsedAnswer.type === 'checkbox' &&
+      return this.parsedAnswerRaw &&
+        (Array.isArray(this.parsedAnswerRaw) ||
+          this.parsedAnswerRaw.category_id.indexOf('boolean') === -1) &&
+        // this.parsedAnswer.type === 'checkbox' &&
         this.flattenedItems.length <= this.maxNrOfItems
         ? this.flattenedItems
         : []
@@ -357,6 +358,24 @@ export default {
       return []
     },
     parsedAnswer() {
+      if (this.parseMode) {
+        var answer = this.parsedAnswerRaw
+        if (Array.isArray(this.parsedAnswerRaw)) {
+          if (this.parsedAnswerRaw[0].type === 'checkbox') {
+            var posAnswer = this.parsedAnswerRaw.filter(
+              (answer) => answer.value[0] === 1
+            )
+            answer = posAnswer.length > 0 ? posAnswer[0] : null
+          } else {
+            answer = this.parsedAnswerRaw[0]
+          }
+        }
+        return answer
+      } else {
+        return null
+      }
+    },
+    parsedAnswerRaw() {
       if (this.parseMode) {
         var parsedData =
           this.enableDummyOutput && this.queriedParseMode
@@ -374,15 +393,7 @@ export default {
 
         if (returnedItems.length > 0) {
           if (returnedItems[0].length > 1) {
-            if (returnedItems[0][0].type === 'checkbox') {
-              var posAnswer = returnedItems[0].filter(
-                (answer) => answer.value[0] === 1
-              )
-              answer = posAnswer.length > 0 ? posAnswer[0] : null
-            } else {
-              answer = returnedItems[0]
-              // console.log('else array answer', answer)
-            }
+            answer = returnedItems[0]
           } else {
             answer = returnedItems[0][0]
           }
@@ -394,17 +405,17 @@ export default {
       }
     },
     parsedImages() {
-      if (Array.isArray(this.parsedAnswer)) {
+      if (Array.isArray(this.parsedAnswerRaw)) {
         var imgArr = []
-        this.parsedAnswer.map((ans) => {
+        this.parsedAnswerRaw.map((ans) => {
           if (ans.image !== undefined) {
             imgArr = imgArr.concat(ans.image)
           }
         })
         return imgArr
       } else {
-        return this.parsedAnswer && this.parsedAnswer.image !== undefined
-          ? this.parsedAnswer.image
+        return this.parsedAnswerRaw && this.parsedAnswerRaw.image !== undefined
+          ? this.parsedAnswerRaw.image
           : []
       }
     },
