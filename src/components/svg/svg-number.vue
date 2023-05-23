@@ -30,7 +30,7 @@
 
     <g v-else-if="decimals > 0">
       <svgNumberBox
-        v-for="field in fields"
+        v-for="field in numberFields"
         :key="field + 1"
         :x="x + (field - 1) * numberBoxWidth + 'mm'"
         :y="y + 2 + 'mm'"
@@ -87,11 +87,6 @@ export default {
       type: Object,
       required: true,
     },
-    fields: {
-      type: Number,
-      required: false,
-      default: 3,
-    },
     label: {
       type: String,
       required: true,
@@ -124,7 +119,7 @@ export default {
   },
   computed: {
     fieldOffset() {
-      return this.fields * this.numberBoxWidth
+      return this.numberFields * this.numberBoxWidth
     },
     prependOffset() {
       return this.prepend ? 5 : 0

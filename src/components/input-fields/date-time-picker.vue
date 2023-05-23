@@ -8,6 +8,7 @@
         :item="item"
         :locale="locale"
         :parse-mode="parseMode"
+        :parsed-date="parseMode"
         :parsed-images="parsedImages"
         :parsed-items="parsedItems"
         :check-answer="parseMode"

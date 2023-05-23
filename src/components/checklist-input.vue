@@ -2,6 +2,7 @@
   <div class="inspection-item">
     <labelWithDescription
       v-if="item.input !== 'date'"
+      :precision="precision"
       :item="item"
       :locale="locale"
       :parse-mode="parseMode"
@@ -118,7 +119,7 @@
       "
       :value="object[item.id] === null ? 0 : object[item.id]"
       :step="item.input === 'number_2_decimals' ? 0.01 : 0.1"
-      :precision="item.input === 'number_2_decimals' ? 2 : 1"
+      :precision="precision"
       :disabled="disabled"
       size="medium"
       @change="updateInput($event, item.id, item.name, item.input)"
@@ -352,6 +353,17 @@ export default {
         ? this.flattenedItems
         : []
     },
+    precision() {
+      var dIndex = this.item.input.indexOf('_decimals')
+      if (dIndex > -1) {
+        var dec = parseInt(this.item.input.substr(dIndex - 1, 1))
+      } else if (this.item.input === 'square_25cm2') {
+        dec = 1
+      } else {
+        dec = 0
+      }
+      return dec
+    },
     // for v-model of 'list' checkbox an array of value is needed instead of a string
     selectedArray() {
       if (this.item.input === 'list') {
@@ -370,7 +382,10 @@ export default {
               (answer) => answer.value[0] === 1
             )
             answer = posAnswer.length > 0 ? posAnswer[0] : null
-          } else if (this.parsedAnswerRaw[0].category_id === 'date-field') {
+          } else if (
+            this.parsedAnswerRaw[0].category_id === 'date-field' ||
+            this.parsedAnswerRaw[0].type === 'single-digit'
+          ) {
             // merge items for date type items
             answer = this.parsedAnswerRaw[0]
             answer.value = answer.value.concat(this.parsedAnswerRaw[1].value)
@@ -511,6 +526,9 @@ export default {
         } else if (this.parsedAnswer.category_id === 'date-field') {
           value = this.parseDate(this.parsedAnswer.value)
           this.checkAnswer = true
+        } else if (this.parsedAnswer.type === 'single-digit') {
+          value = this.parseDigits(this.parsedAnswer.value)
+          this.checkAnswer = true
         } else {
           value = null
           console.log('else input', this.item, this.parsedAnswer)
@@ -572,6 +590,11 @@ export default {
       return string !== null && string.indexOf('\n') > -1
         ? string.match(/\n/g).length
         : 1
+    },
+    parseDigits(value) {
+      var number = value.slice(0, this.numberFields).join('')
+      var dec = value.slice(this.numberFields).join('')
+      return parseFloat(number + '.' + dec)
     },
     setInspectionEdited(bool) {
       this.$store.commit('inspections/setInspectionEdited', bool)

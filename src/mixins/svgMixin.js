@@ -42,6 +42,7 @@ export const svgData = {
       headerHeight: 6.5,
       numberBoxWidth: 4.65,
       numberBoxHeight: 8,
+      numberFields: 3,
       spaceWidth: 3,
       inputHeight: {
         label: 4,

@@ -65,11 +65,17 @@
             parsedImages.length > 1 ? 'max-width: 20px;' : 'max-width: 100%;'
           "
         />
-        <div v-if="parsedDate && j !== 1 && (j - 3) % 2 === 0" :key="'d' + j">
+        <div v-if="precision > 0 && j === 2" :key="'p' + j">
+          <div class="img-helper dot" v-text="'.'"></div>
+        </div>
+        <div
+          v-else-if="parsedDate && j !== 1 && (j - 3) % 2 === 0"
+          :key="'d' + j"
+        >
           <div v-if="j === 7" class="mr-3"></div>
           <div
             v-else
-            class="date-helper"
+            class="img-helper"
             v-text="j === 3 || j === 5 ? '-' : j === 9 ? ':' : ''"
           ></div>
         </div>
@@ -116,6 +122,11 @@ export default {
       default: null,
       required: false,
     },
+    precision: {
+      type: Number,
+      default: 0,
+      required: false,
+    },
     checkAnswer: {
       type: Boolean,
       default: false,
@@ -143,8 +154,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.date-helper {
+.img-helper {
   text-align: center;
   min-width: 6px;
+  &.dot {
+    font-weight: bold;
+    margin-top: 6px;
+  }
 }
 </style>
