@@ -642,7 +642,7 @@ import checklistFieldset from '@components/checklist-fieldset.vue'
 import Confirm from '@components/confirm.vue'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
-import dummyOutput from '@components/svg/scan_results_kk3_complete.json' // kk3_complete.json' // test_4_dummy.json'
+import dummyOutput from '@components/svg/scan_results_ms.json' // kk3_complete.json' // test_4_dummy.json'
 import InspectModeSelector from '@components/inspect-mode-selector.vue'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import Layout from '@layouts/back.vue'
@@ -799,7 +799,11 @@ export default {
     checklistLink() {
       var query = {}
       // pass current apiary or group id (even if user has switched from initially (pre)selected apiary or group)
-      this.isApiary
+      this.offlineMode
+        ? (query = {
+            mode: 'Offline',
+          })
+        : this.isApiary
         ? (query = {
             hiveId: this.hiveId,
             inspectionId: this.inspectionId,
@@ -922,14 +926,14 @@ export default {
     parseMode() {
       return (
         this.permissions.includes('test-offline-input') &&
-        (this.queriedParseMode || this.forceParseMode === true)
+        (this.queriedMode === 'parse' || this.forceParseMode === true) // TODO remove queried parse mode when enableDummyOutput is removed
       )
     },
     preSelectedChecklistId() {
       return parseInt(this.$route.query.checklistId) || null
     },
-    queriedParseMode() {
-      return this.$route.query.mode === 'parse' // TODO remove when enableDummyOutput is removed
+    queriedMode() {
+      return this.$route.query.mode
     },
     reminderDate: {
       get() {
@@ -1050,12 +1054,17 @@ export default {
     },
   },
   created() {
+    if (this.queriedMode === 'Offline') {
+      this.setSelectedMode = 'Offline'
+    }
+
     // If hive id is specified, first check if hive is present / accessible and editable
     this.getActiveHive(this.hiveId).then(() => {
       this.readApiariesAndGroupsIfNotPresent().then(() => {
         this.selectInitialHiveSet()
 
         if (
+          !this.offlineMode &&
           localStorage.beepPreviousRoute !== undefined &&
           localStorage.beepPreviousRoute === 'checklist' &&
           this.tempSavedInspection !== null
@@ -1450,7 +1459,9 @@ export default {
     editChecklist(id) {
       if (this.selectedHiveSetId)
         this.activeInspection.hive_ids = this.selectedHives
-      this.setTempSavedInspection(this.activeInspection)
+      if (!this.offlineMode) {
+        this.setTempSavedInspection(this.activeInspection)
+      }
       this.$router.push(this.checklistLink)
     },
     getNow(simple = false) {
@@ -1460,7 +1471,7 @@ export default {
     },
     getParsedAnswer(id) {
       var parsedData =
-        this.enableDummyOutput && this.queriedParseMode
+        this.enableDummyOutput && this.queriedMode === 'parse' // TODO remove when enableDummyOutput is removed
           ? this.dummyOutput
           : this.parsedOfflineInput
       var items = parsedData.scans.map((el) => {

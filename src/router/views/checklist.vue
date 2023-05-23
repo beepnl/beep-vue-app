@@ -280,6 +280,9 @@ export default {
     ownedChecklists() {
       return this.checklists.filter((checklist) => checklist.owner)
     },
+    queriedMode() {
+      return this.$route.query.mode
+    },
     showDeleteButton() {
       return (
         this.activeChecklist &&
@@ -471,6 +474,14 @@ export default {
                     inspection: this.inspectionEdit,
                   },
                   query: { checklistId: this.selectedChecklistId },
+                })
+              } else if (this.queriedMode === 'Offline') {
+                return this.$router.push({
+                  name: 'inspect',
+                  query: {
+                    checklistId: this.selectedChecklistId,
+                    mode: 'Offline',
+                  },
                 })
               } else if (this.hiveId || this.apiaryId || this.groupId) {
                 return this.$router.push({
