@@ -2,6 +2,7 @@
   <div class="inspection-item">
     <labelWithDescription
       v-if="item.input !== 'date'"
+      :precision="precision"
       :item="item"
       :locale="locale"
       :parse-mode="parseMode"
@@ -80,6 +81,9 @@
       :object="object"
       :item="item"
       :locale="locale"
+      :parse-mode="parseMode"
+      :parsed-images="parsedImages"
+      :parsed-items="parsedItems"
     ></dateTimePicker>
 
     <slider
@@ -115,7 +119,7 @@
       "
       :value="object[item.id] === null ? 0 : object[item.id]"
       :step="item.input === 'number_2_decimals' ? 0.01 : 0.1"
-      :precision="item.input === 'number_2_decimals' ? 2 : 1"
+      :precision="precision"
       :disabled="disabled"
       size="medium"
       @change="updateInput($event, item.id, item.name, item.input)"
@@ -178,7 +182,7 @@
       class="inspection-text-area"
       :placeholder="item.trans[locale] || item.name"
       counter="2500"
-      rows="1"
+      :rows="getEnters(object[item.id])"
       auto-grow
       clearable
       @input="validateText($event, item.id, 2500)"
@@ -261,7 +265,7 @@
 <script>
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
-import dummyOutput from '@components/svg/scan_results_kk3_complete.json' // test_4_dummy.json'
+import dummyOutput from '@components/svg/scan_results_date.json' // kk3_complete.json' // test_4_dummy.json' TODO remove dummy output
 import imageUploader from '@components/input-fields/image-uploader.vue'
 import sampleCode from '@components/input-fields/sample-code.vue'
 import selectHiveOrApiary from '@components/input-fields/select-hive-or-apiary.vue'
@@ -270,6 +274,8 @@ import smileRating from '@components/input-fields/smile-rating.vue'
 import starRating from '@components/input-fields/star-rating.vue'
 import treeselect from '@components/input-fields/treeselect.vue'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
+import { mapGetters } from 'vuex'
+import { parseDate } from '@mixins/methodsMixin'
 import { svgData } from '@mixins/svgMixin'
 
 export default {
@@ -287,7 +293,7 @@ export default {
     treeselect,
     yesNoRating,
   },
-  mixins: [svgData],
+  mixins: [parseDate, svgData],
   props: {
     item: {
       type: Object,
@@ -320,9 +326,12 @@ export default {
       savedNrOfDecimals: 0,
       checkAnswer: false,
       booleanDefault: [1, 0],
+      dummyOutput,
+      enableDummyOutput: true, // true, TODO for testing, remove later
     }
   },
   computed: {
+    ...mapGetters('inspections', ['parsedOfflineInput']),
     flattenedItems() {
       return this.item.children !== null
         ? this.flattenItems([...this.item.children])
@@ -336,11 +345,24 @@ export default {
       )
     },
     parsedItems() {
-      return this.parsedAnswer &&
-        this.parsedAnswer.type === 'checkbox' &&
+      return this.parsedAnswerRaw &&
+        (Array.isArray(this.parsedAnswerRaw) ||
+          this.parsedAnswerRaw.category_id.indexOf('boolean') === -1) &&
+        // this.parsedAnswer.type === 'checkbox' &&
         this.flattenedItems.length <= this.maxNrOfItems
         ? this.flattenedItems
         : []
+    },
+    precision() {
+      var dIndex = this.item.input.indexOf('_decimals')
+      if (dIndex > -1) {
+        var dec = parseInt(this.item.input.substr(dIndex - 1, 1))
+      } else if (this.item.input === 'square_25cm2') {
+        dec = 1
+      } else {
+        dec = 0
+      }
+      return dec
     },
     // for v-model of 'list' checkbox an array of value is needed instead of a string
     selectedArray() {
@@ -353,7 +375,37 @@ export default {
     },
     parsedAnswer() {
       if (this.parseMode) {
-        var returnedItems = dummyOutput.scans.map((el) => {
+        var answer = this.parsedAnswerRaw
+        if (Array.isArray(this.parsedAnswerRaw)) {
+          if (this.parsedAnswerRaw[0].type === 'checkbox') {
+            var posAnswer = this.parsedAnswerRaw.filter(
+              (answer) => answer.value[0] === 1
+            )
+            answer = posAnswer.length > 0 ? posAnswer[0] : null
+          } else if (
+            this.parsedAnswerRaw[0].category_id === 'date-field' ||
+            this.parsedAnswerRaw[0].type === 'single-digit'
+          ) {
+            // merge items for date type items
+            answer = this.parsedAnswerRaw[0]
+            answer.value = answer.value.concat(this.parsedAnswerRaw[1].value)
+            answer.image = answer.image.concat(this.parsedAnswerRaw[1].image)
+          } else {
+            answer = this.parsedAnswerRaw[0]
+          }
+        }
+        return answer
+      } else {
+        return null
+      }
+    },
+    parsedAnswerRaw() {
+      if (this.parseMode) {
+        var parsedData =
+          this.enableDummyOutput && this.queriedParseMode
+            ? this.dummyOutput
+            : this.parsedOfflineInput
+        var returnedItems = parsedData.scans.map((el) => {
           return el.scan.filter(
             (answer) =>
               answer.parent_category_id !== undefined &&
@@ -365,15 +417,7 @@ export default {
 
         if (returnedItems.length > 0) {
           if (returnedItems[0].length > 1) {
-            if (returnedItems[0][0].type === 'checkbox') {
-              var posAnswer = returnedItems[0].filter(
-                (answer) => answer.value[0] === 1
-              )
-              answer = posAnswer.length > 0 ? posAnswer[0] : null
-            } else {
-              answer = returnedItems[0]
-              // console.log('else array answer', answer)
-            }
+            answer = returnedItems[0]
           } else {
             answer = returnedItems[0][0]
           }
@@ -385,19 +429,39 @@ export default {
       }
     },
     parsedImages() {
-      if (Array.isArray(this.parsedAnswer)) {
+      if (Array.isArray(this.parsedAnswerRaw)) {
         var imgArr = []
-        this.parsedAnswer.map((ans) => {
-          if (ans.image !== undefined) {
-            imgArr = imgArr.concat(ans.image)
-          }
-        })
+        var i = 0
+        if (this.parsedItems.length > 0) {
+          this.parsedItems.map((it, j) => {
+            if (it.hasChildren) {
+              // make sure that items without children (= headers of nested sublist) do not get a matched image
+              imgArr = imgArr.concat('')
+            } else {
+              if (this.parsedAnswerRaw[i].image !== undefined) {
+                imgArr = imgArr.concat(this.parsedAnswerRaw[i].image)
+              }
+              i++
+            }
+          })
+        } else {
+          // TODO check if this is needed
+          // this.parsedAnswerRaw.map((ans) => {
+          //   if (ans.image !== undefined) {
+          //     imgArr = imgArr.concat(ans.image)
+          //   }
+          // })
+          return this.parsedAnswer.image
+        }
         return imgArr
       } else {
-        return this.parsedAnswer && this.parsedAnswer.image !== undefined
-          ? this.parsedAnswer.image
+        return this.parsedAnswerRaw && this.parsedAnswerRaw.image !== undefined
+          ? this.parsedAnswerRaw.image
           : []
       }
+    },
+    queriedParseMode() {
+      return this.$route.query.mode === 'parse' // TODO remove when enableDummyOutput is removed
     },
   },
   created() {
@@ -443,7 +507,10 @@ export default {
                 ? this.booleanDefault[checkboxIndex]
                 : null
           } else {
-            value = this.parsedAnswer.category_id
+            value =
+              this.parsedAnswer.value[0] === 1
+                ? this.parsedAnswer.category_id
+                : null
           }
         } else if (
           this.parsedAnswer.type === 'text' ||
@@ -455,6 +522,12 @@ export default {
               : this.parsedAnswer.type === 'text'
               ? this.parsedAnswer.value[0]
               : parseInt(this.parsedAnswer.value[0])
+          this.checkAnswer = true
+        } else if (this.parsedAnswer.category_id === 'date-field') {
+          value = this.parseDate(this.parsedAnswer.value)
+          this.checkAnswer = true
+        } else if (this.parsedAnswer.type === 'single-digit') {
+          value = this.parseDigits(this.parsedAnswer.value)
           this.checkAnswer = true
         } else {
           value = null
@@ -512,6 +585,16 @@ export default {
 
         return r
       }, [])
+    },
+    getEnters(string) {
+      return string !== null && string.indexOf('\n') > -1
+        ? string.match(/\n/g).length
+        : 1
+    },
+    parseDigits(value) {
+      var number = value.slice(0, this.numberFields).join('')
+      var dec = value.slice(this.numberFields).join('')
+      return parseFloat(number + '.' + dec)
     },
     setInspectionEdited(bool) {
       this.$store.commit('inspections/setInspectionEdited', bool)

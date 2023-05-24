@@ -24,27 +24,33 @@
         :key="'mode-' + b"
         :class="
           'rounded-border primary-border mode-box mb-2 d-flex flex-column align-center cursor-pointer ' +
+            (showInfo.length === 0 ? 'justify-center ' : '') +
             btn.class
         "
         @click="setSelectedMode = btn.mode"
       >
-        <span class="font-xsmall text-center"
-          >{{ btn.text
-          }}<v-icon
-            v-if="touchDevice"
-            class="mdi mdi-information ml-1 icon-info"
-            dark
-            small
-            color="accent"
-            @click.stop="toggleShowInfo(btn.mode)"
-          ></v-icon
-        ></span>
+        <div class="d-flex align-center">
+          <v-icon v-if="mobile" class="mr-2 no-print" color="accent">
+            {{ btn.icon }}
+          </v-icon>
+          <span class="font-xsmall text-center"
+            >{{ btn.text
+            }}<v-icon
+              v-if="touchDevice"
+              class="mdi mdi-information ml-1 icon-info"
+              dark
+              small
+              color="accent"
+              @click.stop="toggleShowInfo(btn.mode)"
+            ></v-icon
+          ></span>
+        </div>
         <span
           v-if="touchDevice && showInfo.includes(btn.mode)"
-          class="font-xsmall text-center"
+          class="font-xsmall text-center mt-1"
           v-text="btn.tooltip"
         ></span>
-        <v-tooltip bottom max-width="300px">
+        <v-tooltip v-if="!mobile" bottom max-width="300px">
           <template v-slot:activator="{ on }">
             <v-icon
               large
@@ -78,6 +84,9 @@ export default {
     }
   },
   computed: {
+    mobile() {
+      return this.$vuetify.breakpoint.mobile
+    },
     modeButtons() {
       return [
         {
@@ -148,6 +157,7 @@ export default {
   min-height: 90px;
   @include for-phone-only {
     width: calc(50% - 4px);
+    min-height: 50px;
   }
 }
 </style>

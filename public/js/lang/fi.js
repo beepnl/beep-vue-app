@@ -1096,7 +1096,7 @@ const translations = {
   /* inspection modes */
   Offline_inspection: 'Paper inspection',
   Offline_inspection_exp:
-    "Print the checklist, fill it in manually. Upload photos of your inspection sheets later via the 'Upload inspection' button. The photos will then be automatically parsed and can be verified and saved like a normal (digital / online) inspection.",
+    "Print the checklist, fill it in manually. Upload photos of your inspection sheets later via the 'Upload paper inspection' button. The photos will then be automatically parsed and can be verified and saved like a normal (digital / online) inspection.",
   Online_inspection: 'Digital inspection',
   Online_inspection_exp:
     'Fill in your checklist digitally (online) via your computer, tablet or smartphone, like you are used to',
@@ -1105,6 +1105,14 @@ const translations = {
     'If you have completed a paper inspection, you can upload photos of your inspection sheets here. They will then be automatically parsed and can be verified and saved like a normal (digital / online) inspection.',
   Select_inspection_mode: 'Select inspection mode',
   Send_pictures: 'Send pictures',
+  svg_checklist: 'printed checklist | printed checklists',
+  Select_input_language:
+    'Select language in which checklist has been filled in',
+  Upload_images: 'Upload images',
+  Upload_images_exp:
+    'TODO: write bullets: use scanner, good lighting, flat surface, all 4 corner squares inside the image, double check page numbers, double check name + date',
+  Uploading_images_be_patient:
+    'Please wait a moment, your images are being parsed. This may take several minutes. Please do not close this window.',
 
   /* Compare module */
   Load: 'Load',
@@ -1115,6 +1123,7 @@ const translations = {
   mean_weight_kg: 'Mean weight',
   mean_net_weight_kg: 'Mean net weight',
   net_weight_kg: 'Net weight',
+  overall_intake_loss: 'Overall intake/loss',
 }
 
 export default translations

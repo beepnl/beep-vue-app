@@ -293,6 +293,9 @@ export default {
     smAndDown() {
       return this.$vuetify.breakpoint.smAndDown
     },
+    storedOfflineMode() {
+      return localStorage.beepSelectedInspectionMode === 'Offline'
+    },
     touchDevice() {
       return window.matchMedia('(hover: none)').matches
     },
@@ -471,6 +474,13 @@ export default {
                     inspection: this.inspectionEdit,
                   },
                   query: { checklistId: this.selectedChecklistId },
+                })
+              } else if (this.storedOfflineMode) {
+                return this.$router.push({
+                  name: 'inspect',
+                  query: {
+                    checklistId: this.selectedChecklistId,
+                  },
                 })
               } else if (this.hiveId || this.apiaryId || this.groupId) {
                 return this.$router.push({

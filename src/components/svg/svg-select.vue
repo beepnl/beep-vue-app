@@ -203,7 +203,7 @@ export default {
       return data.reduce((r, { children, id, parent_id, trans, name }) => {
         const obj = {
           id,
-          parent_id,
+          parent_id: this.items[0].parent_id, // always use parent_id from highest level because otherwise parsed results for each checkbox item cannot be related back to the parent item
           trans,
           name,
           depth,

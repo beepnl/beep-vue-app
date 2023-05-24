@@ -153,6 +153,7 @@
               :item="item"
               :locale="locale"
               :disabled="bulkInspection"
+              :parse-mode="parseMode"
               @calculate-tpa-colony-size="calculateTpaColonySize"
             ></ChecklistInput>
             <ChecklistFieldset
@@ -160,6 +161,7 @@
               :object="object"
               :category="item"
               :locale="locale"
+              :parse-mode="parseMode"
             ></ChecklistFieldset>
           </div>
         </v-row>
@@ -207,6 +209,11 @@ export default {
       required: false,
     },
     nested: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    parseMode: {
       type: Boolean,
       required: false,
       default: false,

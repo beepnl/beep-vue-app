@@ -40,6 +40,7 @@
         :object="object"
         :category="category"
         :locale="locale"
+        :parse-mode="parseMode"
         :nested="nested"
       ></topPhotoAnalysis>
 
@@ -48,6 +49,7 @@
         :object="object"
         :category="category"
         :locale="locale"
+        :parse-mode="parseMode"
         :nested="nested"
       ></liebefelderMethod>
 

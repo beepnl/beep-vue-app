@@ -1,6 +1,7 @@
 <template>
   <Layout
     :title="editMode ? $t('Edit_inspection') : $t('New_inspection') + modeText"
+    :dismiss-changes="offlineMode || uploadMode"
   >
     <h1 v-if="hiveNotEditable" class="unauthorized-title">
       {{
@@ -70,6 +71,7 @@
               showLoadingIcon ||
               forceInspectionDate ||
               inspectionDate === 'Invalid date' ||
+              inspectionDate === '' ||
               (activeInspection && activeInspection.date === null)
           "
           @click.prevent="confirmSaveInspection"
@@ -111,7 +113,14 @@
           outlined
           color="black"
           class="save-button-mobile-wide mr-1"
-          :disabled="showLoadingIcon"
+          :disabled="
+            !selectedChecklistSvg ||
+              showLoadingIcon ||
+              (uploadInspectionPayload &&
+                (uploadInspectionPayload.images.length < 1 ||
+                  typeof uploadInspectionPayload['data-user-locale'][0] !==
+                    'string'))
+          "
           @click="uploadInspection"
         >
           <v-progress-circular
@@ -133,14 +142,29 @@
         "
         class="content-container no-print"
       >
+        <v-row v-if="errorMessage">
+          <v-col cols="12">
+            <v-alert type="error" text prominent dense dismissible color="red">
+              {{ errorMessage }}
+            </v-alert>
+          </v-col>
+        </v-row>
         <v-row v-if="onlineMode" class="mb-3 no-print">
-          <v-col cols="12" md="4">
+          <v-col class="mobile-2" cols="12" md="4">
             <v-row>
               <v-col cols="12" sm="7" md="12">
                 <div
+                  v-if="!parseMode"
                   class="beep-label mt-n3 mt-sm-0"
                   v-text="treeselectLabel"
                 ></div>
+                <labelWithDescription
+                  v-if="parseMode"
+                  :plain-text="treeselectLabel"
+                  :parse-mode="true"
+                  :check-answer="true"
+                  :parsed-images="parsedImages['location']"
+                ></labelWithDescription>
                 <Treeselect
                   v-if="sortedHiveSets && sortedHiveSets.length > 0"
                   v-model="selectedHiveSetId"
@@ -177,7 +201,14 @@
             </v-row>
           </v-col>
 
-          <v-col cols="12" md="5" class="mb-n3 mb-sm-0">
+          <v-col cols="12" md="5" class="mobile-3 mb-n3 mb-sm-0">
+            <labelWithDescription
+              v-if="parseMode"
+              :plain-text="$t('Select') + ' ' + $tc('hive', 1)"
+              :parse-mode="true"
+              :check-answer="true"
+              :parsed-images="parsedImages['hive']"
+            ></labelWithDescription>
             <ApiaryPreviewHiveSelector
               v-if="
                 selectedHiveSet && editableHives && editableHives.length > 0
@@ -190,7 +221,7 @@
             ></ApiaryPreviewHiveSelector>
           </v-col>
 
-          <v-col cols="12" md="3">
+          <v-col class="mobile-1 py-1 py-sm-3" cols="12" md="3">
             <InspectModeSelector
               v-if="!editMode && permissions.includes('test-offline-input')"
               :selected-mode="selectedMode"
@@ -206,7 +237,7 @@
                 >mdi-calendar-edit</v-icon
               >
               <div class="inspection-date">
-                <div class="beep-label">
+                <div v-if="!parseMode" class="beep-label">
                   <span v-text="$t('Date_of_inspection')"></span>
                   <span
                     v-if="
@@ -217,6 +248,14 @@
                     v-text="$t('Now')"
                   ></span>
                 </div>
+                <labelWithDescription
+                  v-if="parseMode"
+                  :plain-text="$t('Date_of_inspection')"
+                  :parsed-date="true"
+                  :parse-mode="true"
+                  :check-answer="true"
+                  :parsed-images="parsedImages['date']"
+                ></labelWithDescription>
                 <Datetime
                   v-if="activeInspection"
                   v-model="inspectionDate"
@@ -225,7 +264,9 @@
                   :disabled="offlineMode"
                   :max-datetime="endOfToday"
                   :placeholder="
-                    forceInspectionDate || inspectionDate === 'Invalid date'
+                    forceInspectionDate ||
+                    inspectionDate === 'Invalid date' ||
+                    inspectionDate === ''
                       ? $t('select_inspection_date')
                       : null
                   "
@@ -241,7 +282,7 @@
             </div>
           </v-col>
 
-          <v-col cols="12" sm="4">
+          <v-col v-if="!uploadMode" cols="12" sm="4">
             <div
               v-if="checklists !== null && checklists.length > 0"
               class="beep-label mt-n3 mt-sm-0"
@@ -255,6 +296,23 @@
               :placeholder="`${$t('Select') + ' ' + $tc('checklist', 1)}`"
               :no-results-text="`${$t('no_results')}`"
               @input="switchChecklist($event)"
+            />
+          </v-col>
+
+          <v-col v-if="uploadMode" cols="12" sm="4">
+            <div
+              v-if="checklistSvgs.length > 0"
+              class="beep-label mt-n3 mt-sm-0"
+              v-text="`${$t('Select') + ' ' + $tc('svg_checklist', 1)}`"
+            ></div>
+            <Treeselect
+              v-if="checklistSvgs.length > 0"
+              v-model="checklistSvgId"
+              :options="checklistSvgs"
+              :normalizer="normalizerChecklistSvg"
+              :placeholder="`${$t('Select') + ' ' + $tc('svg_checklist', 1)}`"
+              :no-results-text="`${$t('no_results')}`"
+              @input="selectChecklistSvg"
             />
           </v-col>
 
@@ -281,7 +339,7 @@
             />
           </v-col>
 
-          <v-col v-if="forceInspectionDate" cols="12">
+          <v-col v-if="onlineMode && forceInspectionDate" cols="12">
             <v-alert
               type="error"
               class="mb-0"
@@ -477,7 +535,12 @@
                             <div>
                               <labelWithDescription
                                 :plain-text="$t('remind_date')"
+                                :parsed-date="true"
                                 :parse-mode="parseMode"
+                                :check-answer="
+                                  parseMode &&
+                                    parsedImages['reminder_date'].length > 0
+                                "
                                 :parsed-images="parsedImages['reminder_date']"
                               ></labelWithDescription>
                               <Datetime
@@ -545,8 +608,8 @@
 
     <template v-if="uploadMode">
       <UploadInspection
-        v-if="selectedChecklist"
-        :selected-checklist="selectedChecklist"
+        v-if="selectedChecklistSvg"
+        :selected-checklist-svg="selectedChecklistSvg"
         :loading="showLoadingIcon"
       />
     </template>
@@ -561,17 +624,13 @@
       <OfflineInspection
         v-if="selectedChecklist"
         :selected-checklist="selectedChecklist"
+        :checklist-svg-already-saved="checklistSvgAlreadySaved"
+        :new-svg-name="newSvgName"
         :print-mode="printMode"
+        :total-pages="totalPages"
         @updated="svgLoading = false"
       />
     </template>
-
-    <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
-      {{ snackbar.text }}
-      <v-btn color="accent" text @click="snackbar.show = false">
-        {{ $t('Close') }}
-      </v-btn>
-    </v-snackbar>
 
     <Confirm ref="confirm"></Confirm>
   </Layout>
@@ -584,20 +643,18 @@ import checklistFieldset from '@components/checklist-fieldset.vue'
 import Confirm from '@components/confirm.vue'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
-import dummyOutput from '@components/svg/scan_results_kk3_complete.json' // test_4_dummy.json'
+import dummyOutput from '@components/svg/scan_results_date.json' // kk3_complete.json' // test_4_dummy.json'
 import InspectModeSelector from '@components/inspect-mode-selector.vue'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
 import {
+  parseDate,
   readApiariesAndGroups,
+  readApiariesAndGroupsIfNotPresent,
   readGeneralInspections,
 } from '@mixins/methodsMixin'
-import {
-  momentFormat,
-  momentFullDateTime,
-  momentISO8601,
-} from '@mixins/momentMixin'
+import { momentFullDateTime, momentISO8601 } from '@mixins/momentMixin'
 import OfflineInspection from '@components/offline-inspection.vue'
 import { SlideYUpTransition } from 'vue2-transitions'
 import smileRating from '@components/input-fields/smile-rating.vue'
@@ -622,10 +679,11 @@ export default {
     Treeselect,
   },
   mixins: [
-    momentFormat,
     momentFullDateTime,
     momentISO8601,
+    parseDate,
     readApiariesAndGroups,
+    readApiariesAndGroupsIfNotPresent,
     readGeneralInspections,
   ],
   data: function() {
@@ -651,16 +709,17 @@ export default {
               : ''),
         }
       },
+      normalizerChecklistSvg(node) {
+        return {
+          id: node.id,
+          label: node.name,
+        }
+      },
       selectModes: [
         { id: 'Online', label: this.$i18n.t('Online_inspection') },
         { id: 'Offline', label: this.$i18n.t('Offline_inspection') },
       ],
       selectedMode: 'Online',
-      snackbar: {
-        show: false,
-        timeout: 2000,
-        text: 'notification',
-      },
       selectedChecklist: null,
       activeInspection: null,
       selectedChecklistId: null,
@@ -680,8 +739,11 @@ export default {
       isApiary: true,
       hiveSetId: null,
       dateFormat: 'YYYY-MM-DD HH:mm:ss',
+      dateFormatSimple: 'YYYY-MM-DD HH:mm',
       printMode: false,
       parsedImages: {
+        location: [],
+        hive: [],
         date: [],
         impression: [],
         attention: [],
@@ -691,15 +753,25 @@ export default {
       },
       forceParseMode: false,
       booleanDefault: [1, 0],
+      appVersion: process.env.VUE_APP_VERSION,
+      checklistSvgId: null,
+      newSvgName: null,
+      errorMessage: null,
+      dummyOutput,
+      enableDummyOutput: true, // true, TODO for testing, remove later
     }
   },
   computed: {
     ...mapGetters('auth', ['permissions']),
     ...mapGetters('inspections', [
+      'bulkInspection',
       'checklist',
       'checklists',
+      'checklistSvgs',
       'inspectionEdited',
-      'bulkInspection',
+      'parsedOfflineInput',
+      'svgMaxPageNr',
+      'svgPageNr',
       'tempSavedInspection',
       'uploadInspectionPayload',
     ]),
@@ -730,22 +802,41 @@ export default {
     checklistLink() {
       var query = {}
       // pass current apiary or group id (even if user has switched from initially (pre)selected apiary or group)
-      this.isApiary
-        ? (query = {
-            hiveId: this.hiveId,
-            inspectionId: this.inspectionId,
-            apiaryId: this.hiveSetId,
-          })
-        : (query = {
-            hiveId: this.hiveId,
-            inspectionId: this.inspectionId,
-            groupId: this.hiveSetId,
-          })
+      if (!this.offlineMode) {
+        this.isApiary
+          ? (query = {
+              hiveId: this.hiveId,
+              inspectionId: this.inspectionId,
+              apiaryId: this.hiveSetId,
+            })
+          : (query = {
+              hiveId: this.hiveId,
+              inspectionId: this.inspectionId,
+              groupId: this.hiveSetId,
+            })
+      }
 
       return {
         name: 'checklist',
         params: { id: this.selectedChecklistId },
         query: query,
+      }
+    },
+    checklistSvgAlreadySaved() {
+      if (this.checklistSvgs.length > 0) {
+        var svgsPresent = this.checklistSvgs.filter(
+          (item) => item.checklist_id === this.selectedChecklistId
+        )
+        if (svgsPresent.length > 0) {
+          var svgNewer = svgsPresent.filter(
+            (svg) => svg.created_at > this.selectedChecklist.updated_at
+          )
+          return svgNewer.length > 0 ? svgNewer[0] : null
+        } else {
+          return null
+        }
+      } else {
+        return null
       }
     },
     editMode() {
@@ -758,7 +849,8 @@ export default {
     },
     forceInspectionDate() {
       return (
-        !this.offlineMode && // forced inspection date not relevant for offline mode
+        !this.offlineMode &&
+        !this.parseMode && // forced inspection date not relevant for offline & parse mode
         (this.inspectionDate === 'Invalid date' ||
           this.inspectionDate === '') &&
         this.selectedChecklist !== null &&
@@ -832,13 +924,14 @@ export default {
     parseMode() {
       return (
         this.permissions.includes('test-offline-input') &&
-        (this.$route.query.mode === 'parse' || this.forceParseMode === true)
+        (this.queriedMode === 'parse' || this.forceParseMode === true) // TODO remove queried parse mode when enableDummyOutput is removed
       )
     },
     preSelectedChecklistId() {
-      return this.parseMode
-        ? 5033 // dummyOutput[0].checklist_id // TODO: get checklist_id from selected SVG checklist
-        : parseInt(this.$route.query.checklistId) || null
+      return parseInt(this.$route.query.checklistId) || null
+    },
+    queriedMode() {
+      return this.$route.query.mode
     },
     reminderDate: {
       get() {
@@ -860,12 +953,22 @@ export default {
         }
       },
     },
+    selectedChecklistSvg() {
+      var findItem = this.checklistSvgs.filter(
+        (item) => item.id === this.checklistSvgId
+      )
+      return findItem.length > 0 ? findItem[0] : null
+    },
     setSelectedMode: {
       get() {
         return this.selectedMode
       },
       set(value) {
-        localStorage.beepSelectedInspectionMode = value
+        if (value === 'Upload' || value === 'Offline') {
+          if (this.checklistSvgs.length === 0) {
+            this.readChecklistSvgs()
+          }
+        }
         this.selectedMode = value
       },
     },
@@ -924,6 +1027,9 @@ export default {
       }
       return treeselectArray
     },
+    totalPages() {
+      return this.svgPageNr - (this.svgMaxPageNr === null ? 0 : 1)
+    },
     treeselectLabel() {
       var label = ''
       if (this.apiaries.length > 0) {
@@ -946,112 +1052,136 @@ export default {
     },
   },
   created() {
+    if (localStorage.beepSelectedInspectionMode === 'Offline') {
+      this.switchMode('Offline')
+      this.setSelectedMode = 'Offline'
+      this.storeInspectionMode('')
+    }
+
     // If hive id is specified, first check if hive is present / accessible and editable
-    if (this.hiveId !== null) {
-      this.getActiveHive(this.hiveId).then(() => {
-        this.getHiveSet()
-      })
-    } else {
-      this.getHiveSet()
-    }
+    this.getActiveHive(this.hiveId).then(() => {
+      this.readApiariesAndGroupsIfNotPresent().then(() => {
+        this.selectInitialHiveSet()
 
-    if (localStorage.beepSelectedInspectionMode && !this.inspectionId) {
-      // set to previous mode except when editing an existing inspection
-      this.setSelectedMode = localStorage.beepSelectedInspectionMode
-    }
-
-    if (
-      localStorage.beepPreviousRoute !== undefined &&
-      localStorage.beepPreviousRoute === 'checklist' &&
-      this.tempSavedInspection !== null
-    ) {
-      console.log('temp saved inspection', this.tempSavedInspection)
-      this.activeInspection = { ...this.tempSavedInspection }
-      this.initInspection()
-    } else {
-      this.setTempSavedInspection(null)
-
-      // If hive-inspect-edit route is used, retrieve to-be-edited inspection
-      if (this.inspectionId !== null) {
-        this.getInspection(this.inspectionId).then((response) => {
-          this.activeInspection = response
+        if (
+          !this.offlineMode &&
+          localStorage.beepPreviousRoute !== undefined &&
+          localStorage.beepPreviousRoute === 'checklist' &&
+          this.tempSavedInspection !== null
+        ) {
+          console.log('temp saved inspection', this.tempSavedInspection)
+          this.activeInspection = { ...this.tempSavedInspection }
           this.initInspection()
-        })
-        // Else make an empty inspection object
-      } else {
-        this.activeInspection = {
-          date: null,
-          impression: null,
-          attention: null,
-          notes: null,
-          reminder_date: null,
-          reminder: null,
-          checklist_id: null,
-          hive_ids: this.selectedHives, // TODO: fix for only 1 hiveId
-          items: {},
+        } else {
+          this.setTempSavedInspection(null)
+
+          // If hive-inspect-edit route is used, retrieve to-be-edited inspection
+          if (this.inspectionId !== null) {
+            this.getInspection(this.inspectionId).then((response) => {
+              this.activeInspection = response
+              this.initInspection()
+            })
+            // Else make an empty inspection object
+          } else {
+            this.activeInspection = {
+              date: null,
+              impression: null,
+              attention: null,
+              notes: null,
+              reminder_date: null,
+              reminder: null,
+              checklist_id: null,
+              hive_ids: this.selectedHives, // TODO: fix for only 1 hiveId
+              items: {},
+            }
+
+            this.readChecklistsIfNotPresent().then(() => {
+              if (this.preSelectedChecklistId !== null) {
+                this.getChecklistById(this.preSelectedChecklistId)
+              } else if (
+                this.lastSelectedChecklistId !== undefined &&
+                this.lastSelectedChecklistId !== null
+              ) {
+                this.getChecklistById(this.lastSelectedChecklistId)
+              } else {
+                this.setChecklist(this.checklist)
+              }
+            })
+          }
         }
 
         if (this.parseMode) {
-          this.setSelectedMode = 'Online'
-          // this.selectedHiveSet = null
-          // this.allHivesSelected = false // TODO: fix
-          this.getParsedOverallAnswers()
+          this.prepParseMode()
         }
 
-        this.readChecklistsIfNotPresent().then(() => {
-          if (this.preSelectedChecklistId !== null) {
-            this.getChecklistById(this.preSelectedChecklistId)
-          } else if (
-            this.lastSelectedChecklistId !== undefined &&
-            this.lastSelectedChecklistId !== null
-          ) {
-            this.getChecklistById(this.lastSelectedChecklistId)
-          } else {
-            this.selectedChecklistId = this.checklist.id
-            this.selectedChecklist = this.checklist
-            this.lastSelectedChecklistId = this.checklist.id
-            this.activeInspection.checklist_id = this.selectedChecklistId
-            var itemsObject = {}
-            this.selectedChecklist.category_ids.map((categoryId) => {
-              // TODO: what if category ids is empty?
-              itemsObject[categoryId] = null
-            })
-            this.activeInspection.items = itemsObject
-            if (this.selectedChecklist.owner) {
-              this.setActiveInspectionDate()
-            }
-          }
-        })
-      }
-    }
-
-    this.setInspectionEdited(false)
-    this.setBulkInspection(this.selectedHives.length > 1)
-    this.ready = true
-    this.svgReady = true
+        this.setInspectionEdited(false)
+        this.setBulkInspection(this.selectedHives.length > 1)
+        this.ready = true
+        this.svgReady = true
+      })
+    })
   },
   methods: {
+    async createChecklistSvg() {
+      // only save checklist-svg if there is none already present (which is newer than the latest version of the digital checklist)
+      if (!this.checklistSvgAlreadySaved) {
+        var svg = document.getElementById('checklist-svg').outerHTML
+        var now = this.getNow(true)
+        // pass new name to svg to make sure printed & saved checklist-svg have the same name
+        this.newSvgName =
+          this.selectedChecklist.name +
+          ' (' +
+          now +
+          ') (v' +
+          this.appVersion +
+          ')'
+        var payload = {
+          checklist_id: this.selectedChecklistId,
+          svg,
+          pages: this.totalPages,
+          name: this.newSvgName,
+          last_print: now,
+        }
+        try {
+          await Api.postRequest('/checklist-svg', payload)
+          this.readChecklistSvgs()
+        } catch (error) {
+          if (error.response) {
+            console.log('Error: ', error.response)
+            this.errorMessage =
+              this.$i18n.tc('Error', 1) + ': ' + error.response.data.message
+          } else {
+            console.log('Error: ', error)
+            this.errorMessage = this.$i18n.t('something_wrong')
+          }
+        }
+      }
+    },
     async getActiveHive(id) {
-      try {
-        const response = await Api.readRequest('/hives/', id)
-        if (response.data.length === 0) {
-          this.$router.push({ name: '404', params: { resource: 'hive' } })
-        }
-        this.activeHive = response.data.hives[0]
-        this.$store.commit('hives/setActiveHive', response.data.hives[0])
-        if (!this.activeHive.editable && !this.activeHive.owner) {
-          this.hiveNotEditable = true
-        }
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log(error.response)
-          if (error.response.status === 404) {
+      if (id !== null) {
+        try {
+          const response = await Api.readRequest('/hives/', id)
+          if (response.data.length === 0) {
             this.$router.push({ name: '404', params: { resource: 'hive' } })
           }
-        } else {
-          console.log('Error: ', error)
+          this.activeHive = response.data.hives[0]
+          this.$store.commit('hives/setActiveHive', response.data.hives[0])
+          if (!this.activeHive.editable && !this.activeHive.owner) {
+            this.hiveNotEditable = true
+          }
+          return true
+        } catch (error) {
+          if (error.response) {
+            console.log(error.response)
+            if (error.response.status === 404) {
+              this.$router.push({ name: '404', params: { resource: 'hive' } })
+            }
+          } else {
+            console.log('Error: ', error)
+          }
         }
+      } else {
+        return true
       }
     },
     async getChecklistById(id, switchChecklistExistingInspection = false) {
@@ -1114,6 +1244,7 @@ export default {
             if (!this.selectedChecklist.owner) {
               this.activeInspection.date = null
             } else if (
+              !this.parseMode &&
               this.selectedChecklist.owner &&
               (this.activeInspection.date === null ||
                 this.inspectionDate === 'Invalid date')
@@ -1184,6 +1315,25 @@ export default {
         return true
       }
     },
+    async readChecklistSvgs() {
+      try {
+        const response = await Api.readRequest('/checklist-svg')
+        this.$store.commit('inspections/setData', {
+          prop: 'checklistSvgs',
+          value: response.data,
+        })
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+          this.errorMessage =
+            this.$i18n.tc('Error', 1) + ': ' + error.response.data.message
+        } else {
+          console.log('Error: ', error)
+          this.errorMessage = this.$i18n.t('something_wrong')
+        }
+        this.showLoadingIcon = false
+      }
+    },
     async saveInspection() {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
@@ -1235,16 +1385,49 @@ export default {
           }, 50) // wait for API to update inspections
         } catch (error) {
           if (error.response) {
-            const msg = error.response.data.message
             console.log('Error: ', error.response)
-            this.snackbar.text = msg
+            this.errorMessage =
+              this.$i18n.tc('Error', 1) + ': ' + error.response.data.message
           } else {
             console.log('Error: ', error)
-            this.snackbar.text = this.$i18n.t('something_wrong')
+            this.errorMessage = this.$i18n.t('something_wrong')
           }
-          this.snackbar.show = true
           this.showLoadingIcon = false
         }
+      }
+    },
+    async uploadInspection() {
+      this.showLoadingIcon = true
+      try {
+        const response = await Api.pensoftPostRequest(
+          this.uploadInspectionPayload
+        )
+        var parsedOfflineInput = response.data
+        this.$store.commit('inspections/setData', {
+          prop: 'parsedOfflineInput',
+          value: parsedOfflineInput,
+        })
+        setTimeout(() => {
+          this.errorMessage = null
+          this.prepParseMode()
+        }, 500)
+      } catch (error) {
+        this.errorMessage = this.$i18n.tc('Error', 1) + ': '
+        if (error.response) {
+          console.log('Error: ', error.response)
+          var e = error.response.data
+          var msg = e.errors ? e.errors : e.message ? e.message : e
+          this.errorMessage += msg
+        } else {
+          console.log('Error: ', error)
+          msg = error.data
+            ? error.data.message
+              ? error.data.message
+              : error.data
+            : error
+          this.errorMessage += msg // this.$i18n.t('something_wrong')
+        }
+        this.showLoadingIcon = false
       }
     },
     clearDate() {
@@ -1276,31 +1459,36 @@ export default {
     editChecklist(id) {
       if (this.selectedHiveSetId)
         this.activeInspection.hive_ids = this.selectedHives
-      this.setTempSavedInspection(this.activeInspection)
+      if (!this.offlineMode) {
+        this.setTempSavedInspection(this.activeInspection)
+      } else {
+        this.storeInspectionMode('Offline')
+      }
       this.$router.push(this.checklistLink)
     },
-    getHiveSet() {
-      if (this.apiaries.length === 0 && this.groups.length === 0) {
-        // if apiaries and groups are not in store, in case view is opened directly without loggin in (via localstorage)
-        this.readApiariesAndGroups().then(() => {
-          this.selectInitialHiveSet()
-        })
-      } else {
-        this.selectInitialHiveSet()
-      }
-    },
-    getNow() {
-      return this.momentFormat(new Date(), this.dateFormat)
+    getNow(simple = false) {
+      return this.$moment().format(
+        simple ? this.dateFormatSimple : this.dateFormat
+      )
     },
     getParsedAnswer(id) {
-      var returnedItems = dummyOutput.scans.map((el) => {
+      var parsedData =
+        this.enableDummyOutput && this.queriedMode === 'parse' // TODO remove when enableDummyOutput is removed
+          ? this.dummyOutput
+          : this.parsedOfflineInput
+      var items = parsedData.scans.map((el) => {
         return el.scan.filter(
           (answer) =>
             answer.parent_category_id !== undefined &&
             answer.parent_category_id === id
         )
       })
-      return returnedItems.length > 0 ? returnedItems[0][0] : null
+      if (items.length > 0 && items[0].length > 1) {
+        // merge items for date type items
+        items[0][0].value = items[0][0].value.concat(items[0][1].value)
+        items[0][0].image = items[0][0].image.concat(items[0][1].image)
+      }
+      return items.length > 0 ? items[0][0] : null
     },
     getParsedOverallAnswers() {
       Object.keys(this.parsedImages).map((prop) => {
@@ -1314,10 +1502,18 @@ export default {
                 ? checkboxIndex + 1
                 : this.booleanDefault[checkboxIndex]
           } else {
-            value = answer.value[0] // TODO: fix this for date prop
+            if (prop.indexOf('date') === -1) {
+              value = answer.value[0]
+            } else {
+              value = this.parseDate(answer.value)
+            }
           }
         }
-        this.activeInspection[prop] = value
+
+        if (prop !== 'location' && prop !== 'hive') {
+          this.activeInspection[prop] = value
+        }
+
         // TODO: convert array (of all checkboxes 0s and 1s for example) to the actual answer
         this.parsedImages[prop] =
           answer && answer.image !== undefined
@@ -1344,11 +1540,20 @@ export default {
         this.inspectionId
       )
     },
-    // parseOutput() {
-    //   console.log(dummyOutput)
-    // },
+    prepParseMode() {
+      this.forceParseMode = true // TODO finetune parse mode + where to switch it off?
+      this.setSelectedMode = 'Online'
+      this.allHivesSelected = false
+      this.selectedHives = []
+      this.selectHiveSet(null)
+      this.getParsedOverallAnswers()
+      this.showLoadingIcon = false
+    },
     print() {
       this.printMode = true
+      setTimeout(() => {
+        this.createChecklistSvg()
+      }, 100)
       setTimeout(() => {
         window.print()
         this.printMode = false
@@ -1377,6 +1582,15 @@ export default {
           name: '404',
           params: { resource: 'location' },
         })
+      }
+    },
+    selectChecklistSvg() {
+      if (this.selectedChecklistSvg) {
+        var checklistId = this.selectedChecklistSvg.checklist_id
+        // get digital checklist in order to have it preselected when opening the parsed offline input in onlineMode later
+        if (this.selectedChecklistId !== checklistId) {
+          this.getChecklistById(checklistId)
+        }
       }
     },
     selectGroup(id) {
@@ -1424,8 +1638,8 @@ export default {
       this.selectedHiveSetId = this.sortedHiveSets[0].children[0].treeselectId
       this.selectHiveSet(this.selectedHiveSetId)
     },
-    selectHiveSet(id) {
-      if (id !== undefined) {
+    selectHiveSet(id, loc = false) {
+      if (id) {
         var stringId = id.toString()
         this.isApiary = parseInt(stringId.substring(0, 1)) === 1
         this.hiveSetId = parseInt(stringId.substring(1, stringId.length + 1))
@@ -1433,6 +1647,7 @@ export default {
           ? this.selectApiary(this.hiveSetId)
           : this.selectGroup(this.hiveSetId)
       } else {
+        this.selectedHiveSetId = null
         this.selectedHiveSet = null
       }
     },
@@ -1482,6 +1697,21 @@ export default {
         value: bool,
       })
     },
+    setChecklist(checklist) {
+      this.selectedChecklistId = checklist.id
+      this.selectedChecklist = checklist
+      this.lastSelectedChecklistId = checklist.id
+      this.activeInspection.checklist_id = this.selectedChecklistId
+      var itemsObject = {}
+      this.selectedChecklist.category_ids.map((categoryId) => {
+        // TODO: what if category ids is empty?
+        itemsObject[categoryId] = null
+      })
+      this.activeInspection.items = itemsObject
+      if (this.selectedChecklist.owner) {
+        this.setActiveInspectionDate()
+      }
+    },
     setTempSavedInspection(inspection) {
       this.$store.commit('inspections/setData', {
         prop: 'tempSavedInspection',
@@ -1525,20 +1755,15 @@ export default {
         this.svgLoading = true
       }
     },
+    storeInspectionMode(value) {
+      localStorage.beepSelectedInspectionMode = value
+    },
     toggleCategory(index) {
       this.$set(
         this.showCategoriesByIndex,
         index,
         !this.showCategoriesByIndex[index]
       )
-    },
-    uploadInspection() {
-      console.log('TODO upload inspection', this.uploadInspectionPayload)
-
-      // https://beep-offline-data.pensoft.net/api/scanner/scan
-
-      this.forceParseMode = true // TODO finetune parse mode + where to switch it off?
-      this.setSelectedMode = 'Online'
     },
     validateText(value, property, maxLength) {
       if (value !== null && value.length > maxLength + 1) {
@@ -1568,6 +1793,16 @@ export default {
   background-color: $color-orange-medium;
   &.hive-inspect-card-title--border-bottom {
     border-bottom: 1px solid $color-grey-light;
+  }
+}
+
+$orders: ('1', '2', '3');
+
+@each $o in $orders {
+  .mobile-#{$o} {
+    @include for-phone-only {
+      order: #{$o};
+    }
   }
 }
 </style>
