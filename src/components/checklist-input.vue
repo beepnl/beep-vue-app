@@ -25,25 +25,50 @@
     ></imageUploader>
 
     <v-list v-if="item.input === 'list'" class="inspection-checkbox-list">
-      <v-list-item
-        v-for="(listItem, index) in item.children"
-        :key="index"
-        class="inspection-list-item"
-        @click.capture.stop="toggleSelect(listItem.id, item.id)"
-      >
-        <v-list-item-action>
-          <v-checkbox
-            v-model="selectedArray"
-            multiple
-            :value="listItem.id.toString()"
-          />
-        </v-list-item-action>
-        <v-list-item-content>
-          <v-list-item-title>{{
-            listItem.trans[locale] || listItem.name
-          }}</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
+      <template v-for="(listItem, index) in item.children">
+        <v-list-item
+          :key="index"
+          class="inspection-list-item"
+          @click.capture.stop="toggleSelect(listItem.id, item.id)"
+        >
+          <v-list-item-action>
+            <v-checkbox
+              v-if="listItem.input === 'list_item'"
+              v-model="selectedArray"
+              multiple
+              :value="listItem.id.toString()"
+            />
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>{{
+              listItem.trans[locale] || listItem.name
+            }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <template v-if="listItem.children.length > 0">
+          <v-list-item
+            v-for="(nestedItem, n) in listItem.children"
+            :key="'nest-' + n"
+            class="inspection-list-item nested"
+            @click.capture.stop="toggleSelect(nestedItem.id, item.id)"
+          >
+            <v-list-item-action>
+              <v-checkbox
+                v-if="nestedItem.input === 'list_item'"
+                v-model="selectedArray"
+                multiple
+                :value="nestedItem.id.toString()"
+              />
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>{{
+                nestedItem.trans[locale] || nestedItem.name
+              }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </template>
+      </template>
     </v-list>
 
     <v-radio-group
@@ -257,7 +282,7 @@
 <script>
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
-import dummyOutput from '@components/svg/scan_results_date.json' // kk3_complete.json' // test_4_dummy.json' TODO remove dummy output
+import dummyOutput from '@components/svg/scan_results_list.json' // kk3_complete.json' // test_4_dummy.json' TODO remove dummy output
 import imageUploader from '@components/input-fields/image-uploader.vue'
 import sampleCode from '@components/input-fields/sample-code.vue'
 import selectHiveOrApiary from '@components/input-fields/select-hive-or-apiary.vue'
@@ -373,7 +398,12 @@ export default {
             var posAnswer = this.parsedAnswerRaw.filter(
               (answer) => answer.value[0] === 1
             )
-            answer = posAnswer.length > 0 ? posAnswer[0] : null
+            answer =
+              posAnswer.length > 0
+                ? this.item.input === 'list'
+                  ? posAnswer
+                  : posAnswer[0]
+                : null
           } else if (
             this.parsedAnswerRaw[0].category_id === 'date-field' ||
             this.parsedAnswerRaw[0].type === 'single-digit'
@@ -460,8 +490,8 @@ export default {
     if (this.parsedAnswer) {
       // console.log('parsed ', this.parsedAnswer.value, this.item.id)
       if (this.item.input === 'list') {
-        this.parsedAnswer.value.map((answer) => {
-          this.toggleSelect(answer, this.item.id)
+        this.parsedAnswer.map((answer) => {
+          this.toggleSelect(answer.category_id, this.item.id)
         })
       } else if (
         this.item.input === 'select' &&
@@ -586,10 +616,14 @@ export default {
     parseDigits(value) {
       var number = value.slice(0, this.numberFields).join('')
       var dec = value.slice(this.numberFields).join('')
-      var makesSense =
-        value[this.numberFields - number.length - 1] === '' ||
-        value[0 + number.length] === ''
-      console.log(value, number, dec, number.length, makesSense)
+      var makesSense = // check if empty single-digit number boxes are either only at the start or at the end of the fields (before the decimals) (or is completely filled in)
+        (value[this.numberFields - number.length - 1] === '' ||
+          value[0 + number.length] === '' ||
+          number.length === this.numberFields) &&
+        // + check if empty single-digit number boxes are either only at the start or at the end of the decimals (or is completely filled in)
+        (value[value.length - dec.length - 1] === '' ||
+          value[this.numberFields + dec.length] === '' ||
+          value.length - dec.length === this.numberFields)
       return makesSense ? parseFloat(number + '.' + dec) : null
     },
     setInspectionEdited(bool) {
@@ -670,6 +704,9 @@ export default {
   }
   .v-list-item__content {
     padding: 0 !important;
+  }
+  &.nested {
+    margin-left: 30px;
   }
 }
 .v-input--selection-controls.inspection-options-list {
