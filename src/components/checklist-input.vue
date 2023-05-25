@@ -282,7 +282,7 @@
 <script>
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
-import dummyOutput from '@components/svg/scan_results_date.json' // kk3_complete.json' // test_4_dummy.json' TODO remove dummy output
+import dummyOutput from '@components/svg/scan_results_list.json' // kk3_complete.json' // test_4_dummy.json' TODO remove dummy output
 import imageUploader from '@components/input-fields/image-uploader.vue'
 import sampleCode from '@components/input-fields/sample-code.vue'
 import selectHiveOrApiary from '@components/input-fields/select-hive-or-apiary.vue'
@@ -460,7 +460,10 @@ export default {
               // make sure that items without children (= headers of nested sublist) do not get a matched image
               imgArr = imgArr.concat('')
             } else {
-              if (this.parsedAnswerRaw[i].image !== undefined) {
+              if (
+                this.parsedAnswerRaw[i] !== undefined &&
+                this.parsedAnswerRaw[i].image !== undefined
+              ) {
                 imgArr = imgArr.concat(this.parsedAnswerRaw[i].image)
               }
               i++
@@ -667,7 +670,7 @@ export default {
         case 'number_percentage' || 'slider':
           return value >= 0 && value <= 100 ? value : null
         case 'number_negative':
-          return value < 0 ? value : null
+          return value <= 0 ? value : value > 0 ? -value : null
         case 'number_positive':
           return value >= 0 ? value : null
       }
