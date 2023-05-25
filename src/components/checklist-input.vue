@@ -523,7 +523,9 @@ export default {
               this.isSelectIdItem &&
               this.flattenedItems[checkboxIndex] !== undefined
                 ? this.flattenedItems[checkboxIndex].id
-                : this.item.input === 'smileys_3'
+                : this.item.input === 'smileys_3' ||
+                  this.item.input.indexOf('score') > -1 ||
+                  this.item.input === 'grade'
                 ? checkboxIndex + 1
                 : this.item.input.indexOf('boolean') > -1
                 ? this.booleanDefault[checkboxIndex]
@@ -544,6 +546,15 @@ export default {
               : this.parsedAnswer.type === 'text'
               ? this.parsedAnswer.value[0]
               : parseInt(this.parsedAnswer.value[0])
+
+          if (
+            this.parsedAnswer.type === 'number' &&
+            !isNaN(value) &&
+            this.numberHasconstraints(this.item.input)
+          ) {
+            value = this.validateNumber(value, this.item.input)
+          }
+
           this.checkAnswer = true
         } else if (this.parsedAnswer.category_id === 'date-field') {
           value = this.parseDate(this.parsedAnswer.value)
@@ -613,6 +624,9 @@ export default {
         ? string.match(/\n/g).length
         : 1
     },
+    numberHasconstraints(inputType) {
+      return inputType !== 'number' && inputType !== 'number_0_decimals' // only svgNumber items without min & max constraints
+    },
     parseDigits(value) {
       var number = value.slice(0, this.numberFields).join('')
       var dec = value.slice(this.numberFields).join('')
@@ -676,6 +690,20 @@ export default {
 
       this.object[property] = pointVal
       this.setInspectionEdited(true)
+    },
+    validateNumber(value, input) {
+      switch (input) {
+        case 'number_degrees':
+          return value >= -180 && value <= 180 ? value : null
+        case 'number_percentage' || 'slider':
+          return value >= 0 && value <= 100 ? value : null
+        case 'number_negative':
+          return value < 0 ? value : null
+        case 'number_positive':
+          return value >= 0 ? value : null
+      }
+      // else: not yet implemented
+      return value
     },
     validateText(value, id, maxLength) {
       if (value !== null && value.length > maxLength + 1) {
