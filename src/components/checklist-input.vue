@@ -282,7 +282,7 @@
 <script>
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
-import dummyOutput from '@components/svg/scan_results_list.json' // kk3_complete.json' // test_4_dummy.json' TODO remove dummy output
+import dummyOutput from '@components/svg/scan_results_kk3_complete.json' // kk3_complete.json' // test_4_dummy.json' TODO remove dummy output
 import imageUploader from '@components/input-fields/image-uploader.vue'
 import sampleCode from '@components/input-fields/sample-code.vue'
 import selectHiveOrApiary from '@components/input-fields/select-hive-or-apiary.vue'
@@ -496,12 +496,19 @@ export default {
           this.toggleSelect(answer.category_id, this.item.id)
         })
       } else {
-        if (this.parsedAnswer.type === 'checkbox') {
+        if (
+          this.item.input === 'select' &&
+          this.parsedAnswer.type !== 'checkbox' &&
+          isNaN(parseInt(this.parsedAnswer.value[0]))
+        ) {
+          // in case answer is not a category id but a string (written text) instead, let the user check it instead of filling it in automatically
+          var value = this.findCategoryId(this.parsedAnswer.value[0])
+        } else if (this.parsedAnswer.type === 'checkbox') {
           if (this.parsedAnswer.value.length > 1) {
             var checkboxIndex = this.parsedAnswer.value.findIndex(
               (value) => value === 1
             )
-            var value =
+            value =
               this.isSelectIdItem &&
               this.flattenedItems[checkboxIndex] !== undefined
                 ? this.flattenedItems[checkboxIndex].id
@@ -591,6 +598,21 @@ export default {
 
       this.checkNameForEmit(name)
       this.setInspectionEdited(true)
+    },
+    findCategoryId(input) {
+      if (typeof input === 'string') {
+        var value = input.toLowerCase()
+        var findItem = this.flattenedItems.filter(
+          (item) =>
+            item.trans &&
+            item.trans[this.locale] &&
+            item.trans[this.locale].toLowerCase() === value
+        )
+        var id = findItem.length > 0 ? findItem[0].id : null
+        return id
+      } else {
+        return null
+      }
     },
     flattenItems(data, depth = 0) {
       // eslint-disable-next-line camelcase
