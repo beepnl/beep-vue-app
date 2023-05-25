@@ -8,7 +8,7 @@
       :parse-mode="parseMode"
       :parsed-images="parsedImages"
       :parsed-items="parsedItems"
-      :check-answer="checkAnswer"
+      :check-answer="parseMode && checkAnswer"
     ></labelWithDescription>
 
     <selectHiveOrApiary
@@ -90,7 +90,7 @@
       :object="object"
       :item="item"
       :locale="locale"
-      :check-answer="checkAnswer"
+      :check-answer="parseMode && checkAnswer"
     ></treeselect>
 
     <dateTimePicker
@@ -282,7 +282,7 @@
 <script>
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
-import dummyOutput from '@components/svg/scan_results_list.json' // kk3_complete.json' // test_4_dummy.json' TODO remove dummy output
+import dummyOutput from '@components/svg/scan_results_date.json' // kk3_complete.json' // test_4_dummy.json' TODO remove dummy output
 import imageUploader from '@components/input-fields/image-uploader.vue'
 import sampleCode from '@components/input-fields/sample-code.vue'
 import selectHiveOrApiary from '@components/input-fields/select-hive-or-apiary.vue'
@@ -493,41 +493,31 @@ export default {
         this.parsedAnswer.map((answer) => {
           this.toggleSelect(answer.category_id, this.item.id)
         })
-      } else if (
-        this.item.input === 'select' &&
-        this.parsedAnswer.type !== 'checkbox' &&
-        isNaN(parseInt(this.parsedAnswer.value[0]))
-      ) {
-        // in case answer is not a category id but a string (written text) instead, let the user check it instead of filling it in automatically
-        this.checkAnswer = true
-      } else {
-        if (
-          this.item.input.indexOf('decimals') > -1 &&
-          this.parsedAnswer.length > 1
-        ) {
-          var stringAnswer = ''
-          this.parsedAnswer.map((el, i) => {
-            if (i === 1) {
-              stringAnswer += '.'
-            }
-            stringAnswer += el.value.join('')
-          })
-          var value = parseFloat(stringAnswer)
-          this.checkAnswer = true
-        } else if (this.parsedAnswer.type === 'checkbox') {
+      }
+      // else if (
+      //   this.item.input === 'select' &&
+      //   this.parsedAnswer.type !== 'checkbox' &&
+      //   isNaN(parseInt(this.parsedAnswer.value[0]))
+      // ) {
+      //   // in case answer is not a category id but a string (written text) instead, let the user check it instead of filling it in automatically
+      //   this.checkAnswer = true
+      // }
+      else {
+        if (this.parsedAnswer.type === 'checkbox') {
           if (this.parsedAnswer.value.length > 1) {
             var checkboxIndex = this.parsedAnswer.value.findIndex(
               (value) => value === 1
             )
-            value =
+            var value =
               this.isSelectIdItem &&
               this.flattenedItems[checkboxIndex] !== undefined
                 ? this.flattenedItems[checkboxIndex].id
-                : this.item.input === 'smileys_3' ||
-                  this.item.input.indexOf('score') > -1 ||
-                  this.item.input === 'grade'
+                : (this.item.input === 'smileys_3' ||
+                    this.item.input.indexOf('score') > -1 ||
+                    this.item.input === 'grade') &&
+                  checkboxIndex > -1
                 ? checkboxIndex + 1
-                : this.item.input.indexOf('boolean') > -1
+                : this.item.input.indexOf('boolean') > -1 && checkboxIndex > -1
                 ? this.booleanDefault[checkboxIndex]
                 : null
           } else {
@@ -548,23 +538,24 @@ export default {
               : parseInt(this.parsedAnswer.value[0])
 
           if (
+            value !== null &&
             this.parsedAnswer.type === 'number' &&
             !isNaN(value) &&
             this.numberHasconstraints(this.item.input)
           ) {
             value = this.validateNumber(value, this.item.input)
           }
-
-          this.checkAnswer = true
         } else if (this.parsedAnswer.category_id === 'date-field') {
           value = this.parseDate(this.parsedAnswer.value)
-          this.checkAnswer = true
         } else if (this.parsedAnswer.type === 'single-digit') {
           value = this.parseDigits(this.parsedAnswer.value)
-          this.checkAnswer = true
         } else {
           value = null
           console.log('else input', this.item, this.parsedAnswer)
+        }
+
+        if (value !== null) {
+          this.checkAnswer = true // temp always check answer if there is one -> TODO discuss later which cases are really needed
         }
 
         this.updateInput(
@@ -577,6 +568,14 @@ export default {
     }
   },
   methods: {
+    checkNameForEmit(name) {
+      if (name === 'pixels_with_bees' || name === 'pixels_total_top') {
+        this.$emit('calculate-tpa-colony-size')
+      }
+      if (name === 'bees_squares_25cm2') {
+        this.$emit('calculate-liebefeld-colony-size')
+      }
+    },
     convertComma(event, name = null, precision = 1) {
       // console.log('convert comma ', event.target.value)
       var value = event.target.value
@@ -665,33 +664,13 @@ export default {
       this.object[listId] = selectedArrayToString
       this.setInspectionEdited(true)
     },
-    checkNameForEmit(name) {
-      if (name === 'pixels_with_bees' || name === 'pixels_total_top') {
-        this.$emit('calculate-tpa-colony-size')
-      }
-      if (name === 'bees_squares_25cm2') {
-        this.$emit('calculate-liebefeld-colony-size')
-      }
-    },
     updateInput(value, property, name = null, input = null) {
       this.checkNameForEmit(name)
       this.object[property] = value
       this.setInspectionEdited(true)
     },
-    inputNative(event, property, name = null) {
-      const val = event.target.value
-
-      var pointVal = val.replace(',', '.')
-      if (pointVal.indexOf('.0.') > -1) {
-        pointVal = pointVal.replace('.0.', '.')
-      }
-
-      this.checkName(name)
-
-      this.object[property] = pointVal
-      this.setInspectionEdited(true)
-    },
     validateNumber(value, input) {
+      this.checkAnswer = true
       switch (input) {
         case 'number_degrees':
           return value >= -180 && value <= 180 ? value : null

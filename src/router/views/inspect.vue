@@ -461,6 +461,11 @@
                           <labelWithDescription
                             :plain-text="$t('positive_impression')"
                             :parse-mode="parseMode"
+                            :check-answer="
+                              activeInspection.impression !== null &&
+                                parseMode &&
+                                parsedImages['impression'].length > 0
+                            "
                             :parsed-images="parsedImages['impression']"
                           ></labelWithDescription>
                           <smileRating
@@ -473,6 +478,11 @@
                           <labelWithDescription
                             :plain-text="$t('needs_attention')"
                             :parse-mode="parseMode"
+                            :check-answer="
+                              activeInspection.attention !== null &&
+                                parseMode &&
+                                parsedImages['attention'].length > 0
+                            "
                             :parsed-images="parsedImages['attention']"
                           ></labelWithDescription>
                           <yesNoRating
@@ -487,7 +497,9 @@
                             :plain-text="$t('notes')"
                             :parse-mode="parseMode"
                             :check-answer="
-                              parseMode && parsedImages['notes'].length > 0
+                              activeInspection.notes !== null &&
+                                parseMode &&
+                                parsedImages['notes'].length > 0
                             "
                             :parsed-images="parsedImages['notes']"
                           ></labelWithDescription>
@@ -538,7 +550,8 @@
                                 :parsed-date="true"
                                 :parse-mode="parseMode"
                                 :check-answer="
-                                  parseMode &&
+                                  activeInspection['reminder_date'] !== null &&
+                                    parseMode &&
                                     parsedImages['reminder_date'].length > 0
                                 "
                                 :parsed-images="parsedImages['reminder_date']"
@@ -579,7 +592,9 @@
                             :plain-text="$t('reminder')"
                             :parse-mode="parseMode"
                             :check-answer="
-                              parseMode && parsedImages['reminder'].length > 0
+                              activeInspection['reminder'] !== null &&
+                                parseMode &&
+                                parsedImages['reminder'].length > 0
                             "
                             :parsed-images="parsedImages['reminder']"
                           ></labelWithDescription>
@@ -643,7 +658,7 @@ import checklistFieldset from '@components/checklist-fieldset.vue'
 import Confirm from '@components/confirm.vue'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
-import dummyOutput from '@components/svg/scan_results_list.json' // kk3_complete.json' // test_4_dummy.json'
+import dummyOutput from '@components/svg/scan_results_date.json' // kk3_complete.json' // test_4_dummy.json'
 import InspectModeSelector from '@components/inspect-mode-selector.vue'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import Layout from '@layouts/back.vue'
@@ -1503,7 +1518,7 @@ export default {
                 : this.booleanDefault[checkboxIndex]
           } else {
             if (prop.indexOf('date') === -1) {
-              value = answer.value[0]
+              value = answer.value[0] === '' ? null : answer.value[0]
             } else {
               value = this.parseDate(answer.value)
             }
