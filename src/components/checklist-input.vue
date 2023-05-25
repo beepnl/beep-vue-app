@@ -488,21 +488,11 @@ export default {
   },
   created() {
     if (this.parsedAnswer) {
-      // console.log('parsed ', this.parsedAnswer.value, this.item.id)
       if (this.item.input === 'list') {
         this.parsedAnswer.map((answer) => {
           this.toggleSelect(answer.category_id, this.item.id)
         })
-      }
-      // else if (
-      //   this.item.input === 'select' &&
-      //   this.parsedAnswer.type !== 'checkbox' &&
-      //   isNaN(parseInt(this.parsedAnswer.value[0]))
-      // ) {
-      //   // in case answer is not a category id but a string (written text) instead, let the user check it instead of filling it in automatically
-      //   this.checkAnswer = true
-      // }
-      else {
+      } else {
         if (this.parsedAnswer.type === 'checkbox') {
           if (this.parsedAnswer.value.length > 1) {
             var checkboxIndex = this.parsedAnswer.value.findIndex(

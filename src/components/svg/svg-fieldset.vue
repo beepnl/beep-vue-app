@@ -11,7 +11,7 @@
     >
       <svgHeader
         v-if="category.input === 'label'"
-        :position="calcXY(category, true)"
+        :position="calcXY(category, true, true)"
         :header="getHeader(category)"
         :small="true"
       />
@@ -20,7 +20,9 @@
         <g v-for="(item, index) in category.children" :key="index">
           <SvgInput
             v-if="item.input !== 'label'"
-            :position="calcXY(item)"
+            :position="
+              calcXY(item, false, index === category.children.length - 1)
+            "
             :header="label"
             :item="item"
           ></SvgInput>
@@ -32,10 +34,10 @@
                   item.input === 'list_item')
             "
           >
-            <template v-for="child in item.children">
+            <template v-for="(child, j) in item.children">
               <SvgInput
                 :key="'c' + child.id"
-                :position="calcXY(child)"
+                :position="calcXY(child, false, j === item.children.length - 1)"
                 :header="getHeader(item, child)"
                 :item="child"
               ></SvgInput>
@@ -51,7 +53,7 @@
 
       <SvgInput
         v-if="category.children.length === 0"
-        :position="calcXY(category)"
+        :position="calcXY(category, false, true)"
         :header="label"
         :item="category"
       ></SvgInput>
@@ -65,7 +67,7 @@
             category.input === 'select' ||
             category.input === 'options')
       "
-      :position="calcXY(category)"
+      :position="calcXY(category, false, true)"
       :header="label"
       :item="category"
     ></SvgInput>
@@ -145,7 +147,7 @@ export default {
       }
       return height
     },
-    calcXY(item, fullRowItem = false) {
+    calcXY(item, fullRowItem = false, lastChild = false) {
       if (this.svgPositionSet[item.id] === undefined) {
         var itemCounter = this.svgItemCounter + 1
         var itemHeight = this.calcHeight(item)
@@ -201,9 +203,11 @@ export default {
 
         if (
           !fullRowItem &&
-          y % this.pageHeight >= this.yMax
-          // && columnCounter === this.columnsPerRow
+          ((y + this.svgRowHeight) % this.pageHeight >= this.yMax ||
+            (this.svgPageNr === 1 && y + this.svgRowHeight > this.yMax)) &&
+          (lastChild || columnCounter >= this.columnsPerRow)
         ) {
+          // console.log(item.name, 'next page')
           // go to next page (for next row)
           this.$store.dispatch('inspections/nextPage')
         }
