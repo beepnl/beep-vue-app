@@ -519,7 +519,7 @@ export default {
       // console.log(bar)
       if (bar) {
         data.datasets.map((barset, index) => {
-          console.log(barset.name)
+          // console.log(barset.name)
           var allData = barset.data
           var barData = allData.reduce((resultArray, item, index) => {
             if (!resultArray[0]) {
