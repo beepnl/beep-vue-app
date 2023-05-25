@@ -8,11 +8,7 @@
       :parse-mode="parseMode"
       :parsed-images="parsedImages"
       :parsed-items="parsedItems"
-      :check-answer="
-        checkAnswer &&
-          (object[item.id] === null ||
-            (parsedAnswer && parsedAnswer.type === 'text'))
-      "
+      :check-answer="checkAnswer"
     ></labelWithDescription>
 
     <selectHiveOrApiary
@@ -69,11 +65,7 @@
       :object="object"
       :item="item"
       :locale="locale"
-      :check-answer="
-        checkAnswer &&
-          (object[item.id] === null ||
-            (parsedAnswer && parsedAnswer.type === 'text'))
-      "
+      :check-answer="checkAnswer"
     ></treeselect>
 
     <dateTimePicker
@@ -594,7 +586,11 @@ export default {
     parseDigits(value) {
       var number = value.slice(0, this.numberFields).join('')
       var dec = value.slice(this.numberFields).join('')
-      return parseFloat(number + '.' + dec)
+      var makesSense =
+        value[this.numberFields - number.length - 1] === '' ||
+        value[0 + number.length] === ''
+      console.log(value, number, dec, number.length, makesSense)
+      return makesSense ? parseFloat(number + '.' + dec) : null
     },
     setInspectionEdited(bool) {
       this.$store.commit('inspections/setInspectionEdited', bool)
