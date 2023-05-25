@@ -515,11 +515,11 @@ export default {
         })
       }
 
-      console.log('bar')
-      console.log(bar)
+      // console.log('bar')
+      // console.log(bar)
       if (bar) {
         data.datasets.map((barset, index) => {
-          console.log(barset.name)
+          // console.log(barset.name)
           var allData = barset.data
           var barData = allData.reduce((resultArray, item, index) => {
             if (!resultArray[0]) {
@@ -535,19 +535,19 @@ export default {
             }
             return resultArray
           }, [])
-          console.log(barData)
-          var bdy1 = barData[0].y
-          var bdy2 = barData[1].y
-          var barDiffData = { x: this.$i18n.tc(this.interval, 1), y: 0 }
+          // console.log(barData)
+          var bdy1 = barData[0] && barData[0].y ? barData[0].y : null
+          var bdy2 = barData[1] && barData[1].y ? barData[1].y : null
+          var barDiffData = { x: this.$i18n.tc(this.interval, 1), y: null }
           if (bdy1 !== null && bdy2 !== null) {
             barDiffData.y = bdy2 - bdy1
           }
-          console.log(barDiffData)
+          // console.log(barDiffData)
           barset.data = [barDiffData]
         })
       }
-      console.log('datasets')
-      console.log(data.datasets)
+      // console.log('datasets')
+      // console.log(data.datasets)
       if (!bar) {
         data.labels.push.apply(data.labels, SDdata.labels)
         data.datasets.push.apply(data.datasets, SDdata.datasets)
