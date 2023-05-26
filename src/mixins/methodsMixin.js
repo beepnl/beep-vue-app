@@ -388,7 +388,7 @@ export const parseDate = {
   },
   methods: {
     parseDate(input) {
-      var nothingMissing = input.join('').length === 12
+      var nothingMissing = input.length === 12
       if (nothingMissing) {
         var minutes = input.slice(10, 12).join('')
         var hour = input.slice(8, 10).join('')
@@ -407,7 +407,7 @@ export const parseDate = {
           parseInt(minutes) <= 59
       }
 
-      return makesSense ? date : ''
+      return makesSense ? date : input.length > 0 ? '' : null
     },
   },
 }

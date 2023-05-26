@@ -44,7 +44,7 @@
 
     <div
       v-if="showImages && parsedItems.length > 0"
-      class="info-text d-flex flex-column"
+      class="info-text parsed-images d-flex flex-column"
     >
       <div v-for="(it, j) in parsedItems" :key="'i' + j" class="d-flex">
         <img
@@ -56,30 +56,32 @@
       </div>
     </div>
 
-    <div v-else-if="showImages" class="info-text d-flex align-center">
-      <template v-for="(image, j) in parsedImages">
-        <img
-          :key="'i' + j"
-          :src="image"
-          :style="
-            parsedImages.length > 1 ? 'max-width: 20px;' : 'max-width: 100%;'
-          "
-        />
-        <div v-if="precision > 0 && j === 2" :key="'p' + j">
-          <div class="img-helper dot" v-text="'.'"></div>
-        </div>
-        <div
-          v-else-if="parsedDate && j !== 1 && (j - 3) % 2 === 0"
-          :key="'d' + j"
-        >
-          <div v-if="j === 7" class="mr-3"></div>
+    <div v-else-if="showImages" class="info-text parsed-images">
+      <div class="d-flex align-center">
+        <template v-for="(image, j) in parsedImages">
+          <img
+            :key="'i' + j"
+            :src="image"
+            :style="
+              parsedImages.length > 1 ? 'max-width: 20px;' : 'max-width: 100%;'
+            "
+          />
+          <div v-if="precision > 0 && j === 2" :key="'p' + j">
+            <div class="img-helper dot" v-text="'.'"></div>
+          </div>
           <div
-            v-else
-            class="img-helper"
-            v-text="j === 3 || j === 5 ? '-' : j === 9 ? ':' : ''"
-          ></div>
-        </div>
-      </template>
+            v-else-if="parsedDate && j !== 1 && (j - 3) % 2 === 0"
+            :key="'d' + j"
+          >
+            <div v-if="j === 7" class="mr-3"></div>
+            <div
+              v-else
+              class="img-helper"
+              v-text="j === 3 || j === 5 ? '-' : j === 9 ? ':' : ''"
+            ></div>
+          </div>
+        </template>
+      </div>
     </div>
   </div>
 </template>
@@ -154,6 +156,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.parsed-images {
+  position: relative;
+  display: inline-block;
+  &:before {
+    // this way width of the border is not wider than images total
+    content: '';
+    border: 1px $color-grey-light dashed;
+    border-radius: 3px;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+}
 .img-helper {
   text-align: center;
   min-width: 6px;

@@ -8,11 +8,7 @@
       :parse-mode="parseMode"
       :parsed-images="parsedImages"
       :parsed-items="parsedItems"
-      :check-answer="
-        checkAnswer &&
-          (object[item.id] === null ||
-            (parsedAnswer && parsedAnswer.type === 'text'))
-      "
+      :check-answer="parseMode && checkAnswer"
     ></labelWithDescription>
 
     <selectHiveOrApiary
@@ -29,25 +25,50 @@
     ></imageUploader>
 
     <v-list v-if="item.input === 'list'" class="inspection-checkbox-list">
-      <v-list-item
-        v-for="(listItem, index) in item.children"
-        :key="index"
-        class="inspection-list-item"
-        @click.capture.stop="toggleSelect(listItem.id, item.id)"
-      >
-        <v-list-item-action>
-          <v-checkbox
-            v-model="selectedArray"
-            multiple
-            :value="listItem.id.toString()"
-          />
-        </v-list-item-action>
-        <v-list-item-content>
-          <v-list-item-title>{{
-            listItem.trans[locale] || listItem.name
-          }}</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
+      <template v-for="(listItem, index) in item.children">
+        <v-list-item
+          :key="index"
+          class="inspection-list-item"
+          @click.capture.stop="toggleSelect(listItem.id, item.id)"
+        >
+          <v-list-item-action>
+            <v-checkbox
+              v-if="listItem.input === 'list_item'"
+              v-model="selectedArray"
+              multiple
+              :value="listItem.id.toString()"
+            />
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>{{
+              listItem.trans[locale] || listItem.name
+            }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <template v-if="listItem.children.length > 0">
+          <v-list-item
+            v-for="(nestedItem, n) in listItem.children"
+            :key="'nest-' + n"
+            class="inspection-list-item nested"
+            @click.capture.stop="toggleSelect(nestedItem.id, item.id)"
+          >
+            <v-list-item-action>
+              <v-checkbox
+                v-if="nestedItem.input === 'list_item'"
+                v-model="selectedArray"
+                multiple
+                :value="nestedItem.id.toString()"
+              />
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>{{
+                nestedItem.trans[locale] || nestedItem.name
+              }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </template>
+      </template>
     </v-list>
 
     <v-radio-group
@@ -69,11 +90,7 @@
       :object="object"
       :item="item"
       :locale="locale"
-      :check-answer="
-        checkAnswer &&
-          (object[item.id] === null ||
-            (parsedAnswer && parsedAnswer.type === 'text'))
-      "
+      :check-answer="parseMode && checkAnswer"
     ></treeselect>
 
     <dateTimePicker
@@ -265,7 +282,7 @@
 <script>
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
-import dummyOutput from '@components/svg/scan_results_date.json' // kk3_complete.json' // test_4_dummy.json' TODO remove dummy output
+import dummyOutput from '@components/svg/scan_results_kk3_complete.json' // kk3_complete.json' // test_4_dummy.json' TODO remove dummy output
 import imageUploader from '@components/input-fields/image-uploader.vue'
 import sampleCode from '@components/input-fields/sample-code.vue'
 import selectHiveOrApiary from '@components/input-fields/select-hive-or-apiary.vue'
@@ -381,7 +398,12 @@ export default {
             var posAnswer = this.parsedAnswerRaw.filter(
               (answer) => answer.value[0] === 1
             )
-            answer = posAnswer.length > 0 ? posAnswer[0] : null
+            answer =
+              posAnswer.length > 0
+                ? this.item.input === 'list'
+                  ? posAnswer
+                  : posAnswer[0]
+                : null
           } else if (
             this.parsedAnswerRaw[0].category_id === 'date-field' ||
             this.parsedAnswerRaw[0].type === 'single-digit'
@@ -438,7 +460,10 @@ export default {
               // make sure that items without children (= headers of nested sublist) do not get a matched image
               imgArr = imgArr.concat('')
             } else {
-              if (this.parsedAnswerRaw[i].image !== undefined) {
+              if (
+                this.parsedAnswerRaw[i] !== undefined &&
+                this.parsedAnswerRaw[i].image !== undefined
+              ) {
                 imgArr = imgArr.concat(this.parsedAnswerRaw[i].image)
               }
               i++
@@ -466,32 +491,18 @@ export default {
   },
   created() {
     if (this.parsedAnswer) {
-      // console.log('parsed ', this.parsedAnswer.value, this.item.id)
       if (this.item.input === 'list') {
-        this.parsedAnswer.value.map((answer) => {
-          this.toggleSelect(answer, this.item.id)
+        this.parsedAnswer.map((answer) => {
+          this.toggleSelect(answer.category_id, this.item.id)
         })
-      } else if (
-        this.item.input === 'select' &&
-        this.parsedAnswer.type !== 'checkbox' &&
-        isNaN(parseInt(this.parsedAnswer.value[0]))
-      ) {
-        // in case answer is not a category id but a string (written text) instead, let the user check it instead of filling it in automatically
-        this.checkAnswer = true
       } else {
         if (
-          this.item.input.indexOf('decimals') > -1 &&
-          this.parsedAnswer.length > 1
+          this.item.input === 'select' &&
+          this.parsedAnswer.type !== 'checkbox' &&
+          isNaN(parseInt(this.parsedAnswer.value[0]))
         ) {
-          var stringAnswer = ''
-          this.parsedAnswer.map((el, i) => {
-            if (i === 1) {
-              stringAnswer += '.'
-            }
-            stringAnswer += el.value.join('')
-          })
-          var value = parseFloat(stringAnswer)
-          this.checkAnswer = true
+          // in case answer is not a category id but a string (written text) instead, let the user check it instead of filling it in automatically
+          var value = this.findCategoryId(this.parsedAnswer.value[0])
         } else if (this.parsedAnswer.type === 'checkbox') {
           if (this.parsedAnswer.value.length > 1) {
             var checkboxIndex = this.parsedAnswer.value.findIndex(
@@ -501,9 +512,12 @@ export default {
               this.isSelectIdItem &&
               this.flattenedItems[checkboxIndex] !== undefined
                 ? this.flattenedItems[checkboxIndex].id
-                : this.item.input === 'smileys_3'
+                : (this.item.input === 'smileys_3' ||
+                    this.item.input.indexOf('score') > -1 ||
+                    this.item.input === 'grade') &&
+                  checkboxIndex > -1
                 ? checkboxIndex + 1
-                : this.item.input.indexOf('boolean') > -1
+                : this.item.input.indexOf('boolean') > -1 && checkboxIndex > -1
                 ? this.booleanDefault[checkboxIndex]
                 : null
           } else {
@@ -522,16 +536,26 @@ export default {
               : this.parsedAnswer.type === 'text'
               ? this.parsedAnswer.value[0]
               : parseInt(this.parsedAnswer.value[0])
-          this.checkAnswer = true
+
+          if (
+            value !== null &&
+            this.parsedAnswer.type === 'number' &&
+            !isNaN(value) &&
+            this.numberHasconstraints(this.item.input)
+          ) {
+            value = this.validateNumber(value, this.item.input)
+          }
         } else if (this.parsedAnswer.category_id === 'date-field') {
           value = this.parseDate(this.parsedAnswer.value)
-          this.checkAnswer = true
         } else if (this.parsedAnswer.type === 'single-digit') {
           value = this.parseDigits(this.parsedAnswer.value)
-          this.checkAnswer = true
         } else {
           value = null
           console.log('else input', this.item, this.parsedAnswer)
+        }
+
+        if (value !== null) {
+          this.checkAnswer = true // temp always check answer if there is one -> TODO discuss later which cases are really needed
         }
 
         this.updateInput(
@@ -544,6 +568,14 @@ export default {
     }
   },
   methods: {
+    checkNameForEmit(name) {
+      if (name === 'pixels_with_bees' || name === 'pixels_total_top') {
+        this.$emit('calculate-tpa-colony-size')
+      }
+      if (name === 'bees_squares_25cm2') {
+        this.$emit('calculate-liebefeld-colony-size')
+      }
+    },
     convertComma(event, name = null, precision = 1) {
       // console.log('convert comma ', event.target.value)
       var value = event.target.value
@@ -566,6 +598,21 @@ export default {
 
       this.checkNameForEmit(name)
       this.setInspectionEdited(true)
+    },
+    findCategoryId(input) {
+      if (typeof input === 'string') {
+        var value = input.toLowerCase()
+        var findItem = this.flattenedItems.filter(
+          (item) =>
+            item.trans &&
+            item.trans[this.locale] &&
+            item.trans[this.locale].toLowerCase() === value
+        )
+        var id = findItem.length > 0 ? findItem[0].id : null
+        return id
+      } else {
+        return null
+      }
     },
     flattenItems(data, depth = 0) {
       // eslint-disable-next-line camelcase
@@ -591,10 +638,21 @@ export default {
         ? string.match(/\n/g).length
         : 1
     },
+    numberHasconstraints(inputType) {
+      return inputType !== 'number' && inputType !== 'number_0_decimals' // only svgNumber items without min & max constraints
+    },
     parseDigits(value) {
       var number = value.slice(0, this.numberFields).join('')
       var dec = value.slice(this.numberFields).join('')
-      return parseFloat(number + '.' + dec)
+      var makesSense = // check if empty single-digit number boxes are either only at the start or at the end of the fields (before the decimals) (or is completely filled in)
+        (value[this.numberFields - number.length - 1] === '' ||
+          value[0 + number.length] === '' ||
+          number.length === this.numberFields) &&
+        // + check if empty single-digit number boxes are either only at the start or at the end of the decimals (or is completely filled in)
+        (value[value.length - dec.length - 1] === '' ||
+          value[this.numberFields + dec.length] === '' ||
+          value.length - dec.length === this.numberFields)
+      return makesSense ? parseFloat(number + '.' + dec) : null
     },
     setInspectionEdited(bool) {
       this.$store.commit('inspections/setInspectionEdited', bool)
@@ -621,31 +679,25 @@ export default {
       this.object[listId] = selectedArrayToString
       this.setInspectionEdited(true)
     },
-    checkNameForEmit(name) {
-      if (name === 'pixels_with_bees' || name === 'pixels_total_top') {
-        this.$emit('calculate-tpa-colony-size')
-      }
-      if (name === 'bees_squares_25cm2') {
-        this.$emit('calculate-liebefeld-colony-size')
-      }
-    },
     updateInput(value, property, name = null, input = null) {
       this.checkNameForEmit(name)
       this.object[property] = value
       this.setInspectionEdited(true)
     },
-    inputNative(event, property, name = null) {
-      const val = event.target.value
-
-      var pointVal = val.replace(',', '.')
-      if (pointVal.indexOf('.0.') > -1) {
-        pointVal = pointVal.replace('.0.', '.')
+    validateNumber(value, input) {
+      this.checkAnswer = true
+      switch (input) {
+        case 'number_degrees':
+          return value >= -180 && value <= 180 ? value : null
+        case 'number_percentage' || 'slider':
+          return value >= 0 && value <= 100 ? value : null
+        case 'number_negative':
+          return value <= 0 ? value : value > 0 ? -value : null
+        case 'number_positive':
+          return value >= 0 ? value : null
       }
-
-      this.checkName(name)
-
-      this.object[property] = pointVal
-      this.setInspectionEdited(true)
+      // else: not yet implemented
+      return value
     },
     validateText(value, id, maxLength) {
       if (value !== null && value.length > maxLength + 1) {
@@ -674,6 +726,9 @@ export default {
   }
   .v-list-item__content {
     padding: 0 !important;
+  }
+  &.nested {
+    margin-left: 30px;
   }
 }
 .v-input--selection-controls.inspection-options-list {
