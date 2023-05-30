@@ -461,6 +461,7 @@
                           <labelWithDescription
                             :plain-text="$t('positive_impression')"
                             :parse-mode="parseMode"
+                            :item="{ input: 'smileys_3' }"
                             :check-answer="
                               activeInspection.impression !== null &&
                                 parseMode &&
@@ -478,6 +479,7 @@
                           <labelWithDescription
                             :plain-text="$t('needs_attention')"
                             :parse-mode="parseMode"
+                            :item="{ input: 'boolean' }"
                             :check-answer="
                               activeInspection.attention !== null &&
                                 parseMode &&
@@ -658,7 +660,7 @@ import checklistFieldset from '@components/checklist-fieldset.vue'
 import Confirm from '@components/confirm.vue'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
-import dummyOutput from '@components/svg/scan_results_kk3_complete.json' // kk3_complete.json' // test_4_dummy.json'
+import dummyOutput from '@components/svg/scan_results_list.json' // list.json' // test_4_dummy.json'
 import InspectModeSelector from '@components/inspect-mode-selector.vue'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import Layout from '@layouts/back.vue'

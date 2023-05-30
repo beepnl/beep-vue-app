@@ -46,7 +46,11 @@
       v-if="showImages && parsedItems.length > 0"
       class="info-text parsed-images d-flex flex-column"
     >
-      <div v-for="(it, j) in parsedItems" :key="'i' + j" class="d-flex">
+      <div v-for="(it, j) in parsedItems" :key="'i' + j" class="d-flex pa-1">
+        <div
+          v-if="it.depth > 0"
+          :style="'width: ' + 20 * it.depth + 'px;'"
+        ></div>
         <img
           v-if="!it.hasChildren"
           :src="parsedImages[j]"
@@ -57,22 +61,60 @@
     </div>
 
     <div v-else-if="showImages" class="info-text parsed-images">
-      <div class="d-flex align-center">
-        <template v-for="(image, j) in parsedImages">
+      <div
+        :class="
+          'd-flex pa-1 ' +
+            (columnItems ? 'flex-column align-start' : 'align-center')
+        "
+      >
+        <div v-for="(image, j) in parsedImages" :key="'pi-' + j" class="d-flex">
+          <div v-if="gradeItem" class="d-flex flex-column align-center">
+            <div>
+              <span v-text="j + 1"></span>
+            </div>
+
+            <img :src="image" style="max-width: 20px;" />
+          </div>
+
           <img
-            :key="'i' + j"
+            v-else
             :src="image"
             :style="
               parsedImages.length > 1 ? 'max-width: 20px;' : 'max-width: 100%;'
             "
           />
-          <div v-if="precision > 0 && j === 2" :key="'p' + j">
+
+          <div
+            v-if="checkboxExtraSpace(j)"
+            :class="item.input === 'smileys_3' ? 'pr-3' : 'pr-1'"
+          >
+          </div>
+
+          <div
+            v-if="item && item.input.indexOf('boolean') > -1"
+            :class="'ml-1' + (j === 0 ? ' mr-8' : '')"
+          >
+            <span v-text="j === 0 ? $t('yes') : $t('no')"></span>
+          </div>
+
+          <div v-if="item && item.input === 'score'">
+            <v-icon
+              v-for="star in j + 1"
+              :key="star + 1"
+              class="color-grey-medium"
+              >mdi-star</v-icon
+            >
+          </div>
+
+          <div v-if="presetItems" class="ml-1">
+            <span v-text="presetItems[j]"></span>
+          </div>
+
+          <div v-if="precision > 0 && j === 2">
             <div class="img-helper dot" v-text="'.'"></div>
           </div>
-          <div
-            v-else-if="parsedDate && j !== 1 && (j - 3) % 2 === 0"
-            :key="'d' + j"
-          >
+
+          <div v-else-if="parsedDate && j !== 1 && (j - 3) % 2 === 0">
             <div v-if="j === 7" class="mr-3"></div>
             <div
               v-else
@@ -80,14 +122,17 @@
               v-text="j === 3 || j === 5 ? '-' : j === 9 ? ':' : ''"
             ></div>
           </div>
-        </template>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { svgData } from '@mixins/svgMixin'
+
 export default {
+  mixins: [svgData],
   props: {
     item: {
       type: Object,
@@ -141,6 +186,27 @@ export default {
       showImages: false,
     }
   },
+  computed: {
+    columnItems() {
+      return this.item && this.item.input.indexOf('score') > -1
+    },
+    gradeItem() {
+      return this.item && this.item.input === 'grade'
+    },
+    presetItems() {
+      return this.scoreAmount
+        ? this.scoreAmountItems
+        : this.scoreQuality
+        ? this.scoreQualityItems
+        : false
+    },
+    scoreAmount() {
+      return this.item && this.item.input === 'score_amount'
+    },
+    scoreQuality() {
+      return this.item && this.item.input === 'score_quality'
+    },
+  },
   created() {
     // if answer needs to be actively checked in order to be filled in, always show image by default
     if (this.checkAnswer) {
@@ -148,6 +214,12 @@ export default {
     }
   },
   methods: {
+    checkboxExtraSpace(index) {
+      return (
+        ((this.item && this.item.input === 'smileys_3') || this.gradeItem) &&
+        index < this.parsedImages.length - 1
+      )
+    },
     getText(item) {
       return item.trans[this.locale] || item.name
     },

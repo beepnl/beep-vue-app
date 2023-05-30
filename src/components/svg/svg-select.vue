@@ -151,22 +151,6 @@ export default {
         ? this.scoreQualityItems
         : false
     },
-    scoreAmountItems() {
-      return [
-        this.$i18n.t('Low'),
-        this.$i18n.t('Medium'),
-        this.$i18n.t('High'),
-        this.$i18n.t('Extreme'),
-      ]
-    },
-    scoreQualityItems() {
-      return [
-        this.$i18n.t('Poor'),
-        this.$i18n.t('Fair'),
-        this.$i18n.t('Good'),
-        this.$i18n.t('Excellent'),
-      ]
-    },
     x() {
       return this.position ? this.position.x : null
     },
