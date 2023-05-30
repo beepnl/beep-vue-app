@@ -41,7 +41,7 @@
           v-text="selectedHives.join(', ')"
         ></span>
         <v-spacer />
-        <v-btn
+        <!-- <v-btn
           tile
           outlined
           color="black"
@@ -59,7 +59,7 @@
           />
           <v-icon v-if="!loadingCompareData" left>mdi-check</v-icon>
           {{ $t('Load') }}
-        </v-btn>
+        </v-btn> -->
       </v-col>
     </v-row>
 
