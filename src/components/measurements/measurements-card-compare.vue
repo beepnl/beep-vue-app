@@ -46,22 +46,18 @@
           outlined
           color="black"
           class="save-button-mobile-wide"
-          :disabled="
-            selectedHives.length === 0 || showloadingIcon || loadingCompareData
-          "
+          :disabled="selectedHives.length === 0 || loadingCompareData"
           @click.prevent="loadCompareData(true)"
         >
           <v-progress-circular
-            v-if="showLoadingIcon || loadingCompareData"
+            v-if="loadingCompareData"
             class="ml-n1 mr-2"
             size="18"
             width="2"
             color="disabled"
             indeterminate
           />
-          <v-icon v-if="!showLoadingIcon && !loadingCompareData" left
-            >mdi-check</v-icon
-          >
+          <v-icon v-if="!loadingCompareData" left>mdi-check</v-icon>
           {{ $t('Load') }}
         </v-btn>
       </v-col>
@@ -234,7 +230,6 @@ export default {
       noCompareChartData: false,
       selectedHives: [],
       loadingCompareData: false,
-      showLoadingIcon: false,
       selectHivesOverlay: false,
       cardName: 'Compare',
       ready: false,
