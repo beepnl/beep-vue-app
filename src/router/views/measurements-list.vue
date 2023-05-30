@@ -243,6 +243,7 @@
           :open-by-default="true"
           :show-chart-cols-icons="true"
           @set-chart-cols="chartCols = $event"
+          @redraw-charts-compare="redrawChartsCompare"
         >
           <v-row>
             <v-col
@@ -948,10 +949,7 @@ export default {
     locale() {
       if (this.locale !== this.initLocale) {
         this.redrawCharts(false)
-        if (this.showCardCompare) {
-          // trigger redraw charts in child component whenever user is comparing data and locale has changed
-          this.$refs.cardCompare.redrawCharts(false)
-        }
+        this.redrawChartsCompare()
         this.setPeriodTitle() // translate period title
       }
     },
@@ -1518,6 +1516,11 @@ export default {
       setTimeout(() => {
         this.formatMeasurementData(temp)
       }, 10)
+    },
+    redrawChartsCompare() {
+      if (this.showCardCompare) {
+        this.$refs.cardCompare.redrawCharts(false)
+      }
     },
     resetCharts() {
       this.loadingData = true

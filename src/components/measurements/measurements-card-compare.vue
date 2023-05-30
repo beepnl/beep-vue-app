@@ -71,14 +71,20 @@
       >
         <v-progress-circular color="primary" size="50" indeterminate />
       </v-col>
-      <v-col v-if="noCompareChartData" cols="12" class="text-center my-16">
-        {{ $t('no_chart_data') }}
+      <v-col
+        v-else-if="
+          noCompareChartData || compareMeasurementData === null || noPeriodData
+        "
+        cols="12"
+        class="d-flex align-center justify-center my-16"
+      >
+        {{ noPeriodData ? $t('selection_placeholder') : $t('no_chart_data') }}
       </v-col>
     </v-row>
+
     <v-row
       v-if="
-        measurementData !== null &&
-          compareMeasurementData !== null &&
+        compareMeasurementData !== null &&
           compareMeasurementData.measurements &&
           compareMeasurementData.measurements.length > 0
       "
@@ -87,7 +93,7 @@
       <template v-if="compareSensorsPresent">
         <v-col
           v-for="(sensor, index) in currentCompareSensors"
-          :key="'compare' + index"
+          :key="'c-' + index"
           cols="12"
           :md="chartCols"
         >
@@ -112,7 +118,7 @@
               :interval="interval"
               :start-time="periodStartString"
               :end-time="periodEndString"
-              :chart-id="'chart-compare-sensor-' + index"
+              :chart-id="'compare-' + index"
               @confirm-view-alert="confirmViewAlert($event)"
               @confirm-view-inspection="
                 confirmViewInspection($event.id, $event.date)
@@ -126,13 +132,13 @@
 
       <template v-if="compareSensorsPresent">
         <v-col
-          v-for="(sensor, index) in currentCompareSensors"
-          :key="'sensorbar' + index"
+          v-for="(sensor, j) in currentCompareSensors"
+          :key="'b-' + j"
           cols="12"
           :md="chartCols"
         >
           <div
-            v-if="index === 0"
+            v-if="j === 0"
             class="overline mt-0 mt-sm-3 mb-3 text-center"
             v-text="$tc('overall_intake_loss')"
           ></div>
@@ -143,7 +149,7 @@
               :interval="interval"
               :start-time="periodStartString"
               :end-time="periodEndString"
-              :chart-id="'chart-compare-sensor-barchart-' + index"
+              :chart-id="'bar-' + j"
               @confirm-view-alert="confirmViewAlert($event)"
               @set-period-to-date="setPeriodToDate($event)"
             >
@@ -151,20 +157,6 @@
           </div>
         </v-col>
       </template>
-    </v-row>
-
-    <v-row class="text-row">
-      <v-col
-        v-if="
-          ready &&
-            (compareMeasurementData === null || noPeriodData) &&
-            !loadingCompareData
-        "
-        cols="12"
-        class="text-center my-10"
-      >
-        {{ noPeriodData ? $t('selection_placeholder') : $t('no_data') }}
-      </v-col>
     </v-row>
   </MeasurementsCard>
 </template>
