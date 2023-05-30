@@ -29,7 +29,7 @@
                     showCardContent ? 'mdi-minus' : 'mdi-plus'
                   }`
                 "
-                @click="showCardContent = !showCardContent"
+                @click="toggleShowCardContent"
               ></v-icon>
             </div>
           </div>
@@ -128,6 +128,14 @@ export default {
         this.setChartCols = parseInt(localStorage[this.localVar])
       }
     }
+  },
+  methods: {
+    toggleShowCardContent() {
+      this.showCardContent = !this.showCardContent
+      if (!this.showCardContent && this.localVar === 'beepChartCols') {
+        this.$emit('redraw-charts-compare') // workaround fix for disappearing compare charts issue when minimizing measurements card TODO: disable after refactoring / find real fix
+      }
+    },
   },
 }
 </script>

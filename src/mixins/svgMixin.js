@@ -68,6 +68,24 @@ export const svgData = {
       strokeWidth: 0.5,
     }
   },
+  computed: {
+    scoreAmountItems() {
+      return [
+        this.$i18n.t('Low'),
+        this.$i18n.t('Medium'),
+        this.$i18n.t('High'),
+        this.$i18n.t('Extreme'),
+      ]
+    },
+    scoreQualityItems() {
+      return [
+        this.$i18n.t('Poor'),
+        this.$i18n.t('Fair'),
+        this.$i18n.t('Good'),
+        this.$i18n.t('Excellent'),
+      ]
+    },
+  },
 }
 
 export const svgStyles = {

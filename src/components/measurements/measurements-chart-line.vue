@@ -182,22 +182,22 @@ export default {
           x: {
             type: 'time',
             display: true,
-            min: this.startTime,
-            max: this.endTime,
+            min: self.startTime,
+            max: self.endTime,
             ticks: {
               color: self.modeColor,
               source: 'auto',
               autoSkip: true,
               font: {
-                size: this.mobile ? this.fontSizeMob : this.fontSize,
+                size: self.mobile ? self.fontSizeMob : self.fontSize,
               },
             },
             time: {
-              unit: this.intervalToUnit[this.interval],
+              unit: self.intervalToUnit[self.interval],
               round: false,
-              parser: this.chartParseFmt,
-              tooltipFormat: this.tooltipFormat,
-              displayFormats: this.displayFormats,
+              parser: self.chartParseFmt,
+              tooltipFormat: self.tooltipFormat,
+              displayFormats: self.displayFormats,
             },
             grid: {
               color: self.gridColor,
@@ -207,7 +207,7 @@ export default {
             ticks: {
               color: self.modeColor,
               font: {
-                size: this.mobile ? this.fontSizeMob : this.fontSize,
+                size: self.mobile ? self.fontSizeMob : self.fontSize,
               },
             },
             grid: {
@@ -220,13 +220,13 @@ export default {
         },
         elements: {
           point: {
-            radius: this.mobile ? 1 : 1.5,
+            radius: self.mobile ? 1 : 1.5,
             borderWidth: 2,
-            hitRadius: this.touchDevice ? 20 : 3,
+            hitRadius: self.touchDevice ? 20 : 3,
             hoverRadius: 5,
           },
           line: {
-            borderWidth: this.mobile ? 2 : 2.5,
+            borderWidth: self.mobile ? 2 : 2.5,
             borderJoinStyle: 'round',
           },
         },

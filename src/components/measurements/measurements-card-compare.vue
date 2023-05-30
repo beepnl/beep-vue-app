@@ -23,7 +23,7 @@
           :compare-mode="true"
           :include-groups="true"
           @close-overlay="selectHivesOverlay = false"
-          @select-hives="selectedHives = $event"
+          @select-hives="selectHives($event)"
         />
         <ApiaryPreviewHiveSelector
           v-if="selectedHives.length > 0 && selectedHives.length < 16"
@@ -41,25 +41,25 @@
           v-text="selectedHives.join(', ')"
         ></span>
         <v-spacer />
-        <v-btn
+        <!-- <v-btn
           tile
           outlined
           color="black"
           class="save-button-mobile-wide"
-          :disabled="selectedHives.length === 0"
+          :disabled="selectedHives.length === 0 || loadingCompareData"
           @click.prevent="loadCompareData(true)"
         >
           <v-progress-circular
-            v-if="showLoadingIcon"
+            v-if="loadingCompareData"
             class="ml-n1 mr-2"
             size="18"
             width="2"
             color="disabled"
             indeterminate
           />
-          <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
+          <v-icon v-if="!loadingCompareData" left>mdi-check</v-icon>
           {{ $t('Load') }}
-        </v-btn>
+        </v-btn> -->
       </v-col>
     </v-row>
 
@@ -71,14 +71,18 @@
       >
         <v-progress-circular color="primary" size="50" indeterminate />
       </v-col>
-      <v-col v-if="noCompareChartData" cols="12" class="text-center my-16">
+      <v-col
+        v-else-if="noCompareChartData || compareMeasurementData === null"
+        cols="12"
+        class="d-flex align-center justify-center my-16"
+      >
         {{ $t('no_chart_data') }}
       </v-col>
     </v-row>
+
     <v-row
       v-if="
-        measurementData !== null &&
-          compareMeasurementData !== null &&
+        compareMeasurementData !== null &&
           compareMeasurementData.measurements &&
           compareMeasurementData.measurements.length > 0
       "
@@ -87,7 +91,7 @@
       <template v-if="compareSensorsPresent">
         <v-col
           v-for="(sensor, index) in currentCompareSensors"
-          :key="'compare' + index"
+          :key="'c-' + index"
           cols="12"
           :md="chartCols"
         >
@@ -112,7 +116,7 @@
               :interval="interval"
               :start-time="periodStartString"
               :end-time="periodEndString"
-              :chart-id="'chart-compare-sensor-' + index"
+              :chart-id="'compare-' + index"
               @confirm-view-alert="confirmViewAlert($event)"
               @confirm-view-inspection="
                 confirmViewInspection($event.id, $event.date)
@@ -126,13 +130,13 @@
 
       <template v-if="compareSensorsPresent">
         <v-col
-          v-for="(sensor, index) in currentCompareSensors"
-          :key="'sensorbar' + index"
+          v-for="(sensor, j) in currentCompareSensors"
+          :key="'b-' + j"
           cols="12"
           :md="chartCols"
         >
           <div
-            v-if="index === 0"
+            v-if="j === 0"
             class="overline mt-0 mt-sm-3 mb-3 text-center"
             v-text="$tc('overall_intake_loss')"
           ></div>
@@ -143,7 +147,7 @@
               :interval="interval"
               :start-time="periodStartString"
               :end-time="periodEndString"
-              :chart-id="'chart-compare-sensor-barchart-' + index"
+              :chart-id="'bar-' + j"
               @confirm-view-alert="confirmViewAlert($event)"
               @set-period-to-date="setPeriodToDate($event)"
             >
@@ -151,20 +155,6 @@
           </div>
         </v-col>
       </template>
-    </v-row>
-
-    <v-row class="text-row">
-      <v-col
-        v-if="
-          ready &&
-            (compareMeasurementData === null || noPeriodData) &&
-            !loadingCompareData
-        "
-        cols="12"
-        class="text-center my-10"
-      >
-        {{ noPeriodData ? $t('selection_placeholder') : $t('no_data') }}
-      </v-col>
     </v-row>
   </MeasurementsCard>
 </template>
@@ -238,15 +228,14 @@ export default {
       currentCompareSensors: [],
       compareSensorsPresent: false,
       noCompareChartData: false,
-      noPeriodData: false,
       selectedHives: [],
       loadingCompareData: false,
-      showLoadingIcon: false,
       selectHivesOverlay: false,
       cardName: 'Compare',
       ready: false,
       comparingData: false,
       chartCols: 6,
+      SDsigns: ['-', '+'],
     }
   },
   computed: {
@@ -272,7 +261,6 @@ export default {
       var timeGroup =
         interval === 'hour' || interval === 'selection' ? null : interval
       this.noCompareChartData = false
-      this.noPeriodData = false
       this.loadingCompareData = true
       this.compareMeasurementData = null // needed to let chartjs redraw charts after interval switch
       var hivecall = this.selectedHives.join('&hive_id[]=')
@@ -363,46 +351,32 @@ export default {
             spanGaps: this.interval === 'hour' || this.interval === 'day',
             mtType: 'compare',
           })
+
           if (!bar) {
             // for sd
-            SDdata.datasets.push({
-              id: compareSD,
-              abbr: compareSD + '-',
-              fill: '+1',
-              borderColor: '#' + compareMt.hex_color,
-              backgroundColor: '#' + compareMt.hex_color + '80',
-              borderRadius: 1,
-              borderWidth: 1,
-              hidden: true,
-              // showLine: false,
-              pointRadius: 0,
-              label: 'mean - SD',
-              name: 'mean - SD',
-              unit: null,
-              data: [],
-              spanGaps: this.interval === 'hour' || this.interval === 'day',
-              mtType: 'compare',
-            })
-
-            SDdata.datasets.push({
-              id: compareSD,
-              abbr: compareSD + '+',
-              fill: false,
-              borderColor: '#' + compareMt.hex_color,
-              backgroundColor: '#' + compareMt.hex_color,
-              borderRadius: 1,
-              borderWidth: 1,
-              hidden: true,
-              // showLine: false,
-              pointRadius: 0,
-              label: 'mean + SD',
-              name: 'mean + SD',
-              unit: null,
-              data: [],
-              spanGaps: this.interval === 'hour' || this.interval === 'day',
-              mtType: 'compare',
+            this.SDsigns.map((sign) => {
+              SDdata.datasets.push({
+                id: compareSD,
+                abbr: compareSD + sign,
+                fill: sign === '-' ? '+1' : false,
+                borderColor: '#' + compareMt.hex_color,
+                backgroundColor:
+                  '#' + compareMt.hex_color + (sign === '-' ? '80' : ''),
+                borderRadius: 1,
+                borderWidth: 1,
+                hidden: true,
+                // showLine: false,
+                pointRadius: 0,
+                label: 'mean ' + sign + ' SD',
+                name: 'mean ' + sign + ' SD',
+                unit: null,
+                data: [],
+                spanGaps: this.interval === 'hour' || this.interval === 'day',
+                mtType: 'compareSD',
+              })
             })
           }
+
           var quantity = this.COMPARE_SENSOR[compareQuantity]
           var mt = this.getSensorMeasurement(quantity)
 
@@ -457,26 +431,25 @@ export default {
                   x: measurement.time,
                   y: measurement[compareQuantity],
                 })
+
                 if (!bar) {
                   var compareSD = this.COMPARE_SD[compareQuantity]
                   if (compareSD !== 'undefined' && compareSD !== null) {
-                    SDdata.datasets.map((SDdataset, index) => {
-                      if (SDdataset.abbr === compareSD + '-') {
-                        SDdataset.data.push({
-                          x: measurement.time,
-                          y:
-                            measurement[compareQuantity] -
-                            measurement[compareSD],
-                        })
-                      }
-                      if (SDdataset.abbr === compareSD + '+') {
-                        SDdataset.data.push({
-                          x: measurement.time,
-                          y:
-                            measurement[compareQuantity] +
-                            measurement[compareSD],
-                        })
-                      }
+                    this.SDsigns.map((sign) => {
+                      var abbr = compareSD + sign
+                      var dataset = SDdata.datasets.filter(
+                        (dataset) => dataset.abbr === abbr
+                      )[0]
+
+                      dataset.data.push({
+                        x: measurement.time,
+                        y:
+                          sign === '-'
+                            ? measurement[compareQuantity] -
+                              measurement[compareSD]
+                            : measurement[compareQuantity] +
+                              measurement[compareSD],
+                      })
                     })
                   }
                 }
@@ -546,10 +519,8 @@ export default {
           barset.data = [barDiffData]
         })
       }
-      // console.log('datasets')
-      // console.log(data.datasets)
+
       if (!bar) {
-        data.labels.push.apply(data.labels, SDdata.labels)
         data.datasets.push.apply(data.datasets, SDdata.datasets)
       }
 
@@ -560,6 +531,7 @@ export default {
       this.$emit('confirm-view-alert', alert)
     },
     confirmViewInspection(inspectionId, inspectionDate) {
+      // TODO: add inspection lines to compare charts!
       this.$emit('confirm-view-inspection', {
         id: inspectionId,
         date: inspectionDate,
@@ -632,6 +604,10 @@ export default {
     resetCharts() {
       this.loadingCompareData = true
       this.compareMeasurementData = null // charts are redrawn when compareMeasurementData is null
+    },
+    selectHives(hives) {
+      this.selectedHives = hives
+      this.loadCompareData(true)
     },
     setPeriodToDate(date) {
       this.$emit('set-period-to-date', date)
