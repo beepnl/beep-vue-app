@@ -30,13 +30,13 @@
                   :disabled="selectedHiveIds.length === 0"
                   color="black"
                   @click="
-                    selectedResearch !== null
+                    researchMode
                       ? submitConsentToggle(selectedResearch.id, 1)
                       : selectHives()
                   "
                 >
                   <v-icon left>mdi-check</v-icon>
-                  {{ $t('save') }}</v-btn
+                  {{ researchMode ? $t('save') : $t('ok') }}</v-btn
                 >
                 <v-btn
                   class="ml-3"
@@ -204,6 +204,9 @@ export default {
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile
+    },
+    researchMode() {
+      return this.selectedResearch !== null
     },
     sortedHiveSets() {
       const sortedHiveSets = this.hiveSets
