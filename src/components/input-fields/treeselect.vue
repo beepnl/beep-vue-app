@@ -9,7 +9,6 @@
       :default-expand-level="1"
       :disable-branch-nodes="true"
       search-nested
-      :class="checkAnswer ? 'color-red' : ''"
       @input="setInspectionEdited(true)"
     />
   </div>

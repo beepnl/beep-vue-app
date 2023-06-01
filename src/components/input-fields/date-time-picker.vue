@@ -11,7 +11,7 @@
         :parsed-date="parseMode"
         :parsed-images="parsedImages"
         :parsed-items="parsedItems"
-        :check-answer="parseMode"
+        :check-answer="checkAnswer"
       ></labelWithDescription>
 
       <Datetime
@@ -76,6 +76,11 @@ export default {
       required: false,
     },
     parseMode: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
+    checkAnswer: {
       type: Boolean,
       default: false,
       required: false,

@@ -253,7 +253,7 @@
                   :plain-text="$t('Date_of_inspection')"
                   :parsed-date="true"
                   :parse-mode="true"
-                  :check-answer="true"
+                  :check-answer="activeInspection.date === null || invalidDate"
                   :parsed-images="parsedImages['date']"
                 ></labelWithDescription>
                 <Datetime
@@ -463,9 +463,7 @@
                             :parse-mode="parseMode"
                             :item="{ input: 'smileys_3' }"
                             :check-answer="
-                              activeInspection.impression !== null &&
-                                parseMode &&
-                                parsedImages['impression'].length > 0
+                              activeInspection.impression === null
                             "
                             :parsed-images="parsedImages['impression']"
                           ></labelWithDescription>
@@ -481,9 +479,7 @@
                             :parse-mode="parseMode"
                             :item="{ input: 'boolean' }"
                             :check-answer="
-                              activeInspection.attention !== null &&
-                                parseMode &&
-                                parsedImages['attention'].length > 0
+                              activeInspection.attention === null
                             "
                             :parsed-images="parsedImages['attention']"
                           ></labelWithDescription>
@@ -499,9 +495,7 @@
                             :plain-text="$t('notes')"
                             :parse-mode="parseMode"
                             :check-answer="
-                              activeInspection.notes !== null &&
-                                parseMode &&
-                                parsedImages['notes'].length > 0
+                              activeInspection.notes === null
                             "
                             :parsed-images="parsedImages['notes']"
                           ></labelWithDescription>
@@ -552,9 +546,7 @@
                                 :parsed-date="true"
                                 :parse-mode="parseMode"
                                 :check-answer="
-                                  activeInspection['reminder_date'] !== null &&
-                                    parseMode &&
-                                    parsedImages['reminder_date'].length > 0
+                                  reminderDate === null
                                 "
                                 :parsed-images="parsedImages['reminder_date']"
                               ></labelWithDescription>
@@ -594,9 +586,7 @@
                             :plain-text="$t('reminder')"
                             :parse-mode="parseMode"
                             :check-answer="
-                              activeInspection['reminder'] !== null &&
-                                parseMode &&
-                                parsedImages['reminder'].length > 0
+                              activeInspection['reminder'] === null
                             "
                             :parsed-images="parsedImages['reminder']"
                           ></labelWithDescription>
@@ -660,7 +650,7 @@ import checklistFieldset from '@components/checklist-fieldset.vue'
 import Confirm from '@components/confirm.vue'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
-import dummyOutput from '@components/svg/scan_results_list.json' // list.json' // test_4_dummy.json'
+import dummyOutput from '@components/svg/scan_results_kk3_complete.json' // list.json' // test_4_dummy.json'
 import InspectModeSelector from '@components/inspect-mode-selector.vue'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import Layout from '@layouts/back.vue'
@@ -868,8 +858,7 @@ export default {
       return (
         !this.offlineMode &&
         !this.parseMode && // forced inspection date not relevant for offline & parse mode
-        (this.inspectionDate === 'Invalid date' ||
-          this.inspectionDate === '') &&
+        this.invalidDate &&
         this.selectedChecklist !== null &&
         this.selectedChecklist.researches !== undefined &&
         this.selectedChecklist.researches.join().includes('B-GOOD')
@@ -909,6 +898,11 @@ export default {
     },
     inspectionId() {
       return parseInt(this.$route.params.inspection) || null
+    },
+    invalidDate() {
+      return (
+        this.inspectionDate === 'Invalid date' || this.inspectionDate === ''
+      )
     },
     lastSelectedChecklistId: {
       get() {
@@ -1565,6 +1559,12 @@ export default {
       this.selectHiveSet(null)
       this.getParsedOverallAnswers()
       this.showLoadingIcon = false
+      if (this.selectedChecklist) {
+        this.showCategoriesByIndex = []
+        for (var i = 0; i < this.selectedChecklist.categories.length; i++) {
+          this.showCategoriesByIndex.push(true)
+        }
+      }
     },
     print() {
       this.printMode = true

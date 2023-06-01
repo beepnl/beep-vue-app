@@ -8,7 +8,7 @@
       :parse-mode="parseMode"
       :parsed-images="parsedImages"
       :parsed-items="parsedItems"
-      :check-answer="parseMode && checkAnswer"
+      :check-answer="checkAnswer"
     ></labelWithDescription>
 
     <selectHiveOrApiary
@@ -90,7 +90,7 @@
       :object="object"
       :item="item"
       :locale="locale"
-      :check-answer="parseMode && checkAnswer"
+      :check-answer="checkAnswer"
     ></treeselect>
 
     <dateTimePicker
@@ -101,6 +101,7 @@
       :parse-mode="parseMode"
       :parsed-images="parsedImages"
       :parsed-items="parsedItems"
+      :check-answer="checkAnswer"
     ></dateTimePicker>
 
     <slider
@@ -282,7 +283,7 @@
 <script>
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
-import dummyOutput from '@components/svg/scan_results_list.json' // list.json' // test_4_dummy.json' TODO remove dummy output
+import dummyOutput from '@components/svg/scan_results_kk3_complete.json' // list.json' // test_4_dummy.json' TODO remove dummy output
 import imageUploader from '@components/input-fields/image-uploader.vue'
 import sampleCode from '@components/input-fields/sample-code.vue'
 import selectHiveOrApiary from '@components/input-fields/select-hive-or-apiary.vue'
@@ -341,7 +342,7 @@ export default {
   data() {
     return {
       savedNrOfDecimals: 0,
-      checkAnswer: false,
+      checkAnswer: true,
       booleanDefault: [1, 0],
       dummyOutput,
       enableDummyOutput: true, // true, TODO for testing, remove later
@@ -496,11 +497,7 @@ export default {
           this.toggleSelect(answer.category_id, this.item.id)
         })
       } else {
-        if (
-          this.item.input === 'select' &&
-          this.parsedAnswer.type !== 'checkbox' &&
-          isNaN(parseInt(this.parsedAnswer.value[0]))
-        ) {
+        if (this.item.input === 'select' && this.parsedAnswer.type === 'text') {
           // in case answer is not a category id but a string (written text) instead, let the user check it instead of filling it in automatically
           var value = this.findCategoryId(this.parsedAnswer.value[0])
         } else if (this.parsedAnswer.type === 'checkbox') {
@@ -555,7 +552,7 @@ export default {
         }
 
         if (value !== null) {
-          this.checkAnswer = true // temp always check answer if there is one -> TODO discuss later which cases are really needed
+          this.checkAnswer = false // red eye only if answer is null / could not be parsed
         }
 
         this.updateInput(
@@ -604,9 +601,9 @@ export default {
         var value = input.toLowerCase()
         var findItem = this.flattenedItems.filter(
           (item) =>
-            item.trans &&
-            item.trans[this.locale] &&
-            item.trans[this.locale].toLowerCase() === value
+            Object.values(item.trans).filter(
+              (item) => item.toLowerCase() === value
+            ).length > 0 // no strict language check
         )
         var id = findItem.length > 0 ? findItem[0].id : null
         return id
@@ -645,6 +642,8 @@ export default {
       var number = value.slice(0, this.numberFields).join('')
       var dec = value.slice(this.numberFields).join('')
       var makesSense = // check if empty single-digit number boxes are either only at the start or at the end of the fields (before the decimals) (or is completely filled in)
+        number !== '' &&
+        dec !== '' &&
         (value[this.numberFields - number.length - 1] === '' ||
           value[0 + number.length] === '' ||
           number.length === this.numberFields) &&
@@ -652,6 +651,7 @@ export default {
         (value[value.length - dec.length - 1] === '' ||
           value[this.numberFields + dec.length] === '' ||
           value.length - dec.length === this.numberFields)
+
       return makesSense ? parseFloat(number + '.' + dec) : null
     },
     setInspectionEdited(bool) {
@@ -685,7 +685,7 @@ export default {
       this.setInspectionEdited(true)
     },
     validateNumber(value, input) {
-      this.checkAnswer = true
+      this.checkAnswer = false
       switch (input) {
         case 'number_degrees':
           return value >= -180 && value <= 180 ? value : null
