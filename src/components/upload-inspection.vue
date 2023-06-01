@@ -54,7 +54,6 @@
           v-for="(pageNr, i) in selectedChecklistSvg.pages"
           :key="'p-' + pageNr"
           :page-nr-text="'p.' + pageNr + ' / ' + selectedChecklistSvg.pages"
-          :disabled="loading"
           @set-page-blob="setPageBlob($event, i)"
         />
       </div>
@@ -177,7 +176,6 @@ export default {
       this.uploadInspectionPayload = payload
     },
     updateLanguage(lang) {
-      console.log('TODO update lang', lang)
       this.uploadLanguage = lang
       var payload = { ...this.uploadInspectionPayload }
       payload['data-user-locale'] = [lang]

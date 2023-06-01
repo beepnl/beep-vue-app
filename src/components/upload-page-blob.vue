@@ -39,7 +39,6 @@
         :placeholder="'Upload'"
         prepend-icon="mdi-camera"
         :error-messages="errorMessage"
-        :disabled="disabled"
         :loading="showLoading ? 'primary' : false"
         @change="makeBlob($event)"
         @click:clear="errorMessage = null"
@@ -59,7 +58,6 @@
 
 <script>
 import Confirm from '@components/confirm.vue'
-// import imageOverlay from '@components/image-overlay.vue' // TODO nice to have: view as large overlay
 
 export default {
   components: {
@@ -69,11 +67,6 @@ export default {
     pageNrText: {
       type: String,
       required: true,
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-      required: false, // TODO disable input while sending JSON?
     },
   },
   data: () => ({

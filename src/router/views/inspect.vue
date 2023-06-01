@@ -645,7 +645,7 @@ import checklistFieldset from '@components/checklist-fieldset.vue'
 import Confirm from '@components/confirm.vue'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
-import dummyOutput from '@components/svg/scan_results_kk3_complete.json' // list.json' // test_4_dummy.json'
+import dummyOutput from '@components/svg/scan_results_ms.json' // list.json' // test_4_dummy.json'
 import InspectModeSelector from '@components/inspect-mode-selector.vue'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import Layout from '@layouts/back.vue'
@@ -1505,7 +1505,9 @@ export default {
             value =
               prop === 'impression'
                 ? checkboxIndex + 1
-                : this.booleanDefault[checkboxIndex]
+                : checkboxIndex > -1
+                ? this.booleanDefault[checkboxIndex]
+                : null
           } else {
             if (prop.indexOf('date') === -1) {
               value = answer.value[0] === '' ? null : answer.value[0]
@@ -1519,11 +1521,8 @@ export default {
           this.activeInspection[prop] = value
         }
 
-        // TODO: convert array (of all checkboxes 0s and 1s for example) to the actual answer
         this.parsedImages[prop] =
-          answer && answer.image !== undefined
-            ? answer.image // TODO: check if array length is ever > 1?
-            : []
+          answer && answer.image !== undefined ? answer.image : []
       })
     },
     initInspection() {

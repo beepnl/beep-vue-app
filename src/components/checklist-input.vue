@@ -229,7 +229,7 @@
             item.input === 'boolean_yes_red' ||
             item.input === 'list_item')
       "
-      v-show="object[item.id] === 1"
+      v-show="object[item.id] === 1 || parseMode"
       class="mt-6"
       :category="item"
       :locale="locale"
@@ -283,7 +283,7 @@
 <script>
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
-import dummyOutput from '@components/svg/scan_results_kk3_complete.json' // list.json' // test_4_dummy.json' TODO remove dummy output
+import dummyOutput from '@components/svg/scan_results_ms.json' // list.json' // test_4_dummy.json' TODO remove dummy output
 import imageUploader from '@components/input-fields/image-uploader.vue'
 import sampleCode from '@components/input-fields/sample-code.vue'
 import selectHiveOrApiary from '@components/input-fields/select-hive-or-apiary.vue'
