@@ -116,6 +116,7 @@
                     <td>
                       <!-- <span v-text="hiveTag.hive_id"></span> -->
                       <div
+                        v-if="hivesObject[hiveTag.hive_id]"
                         class="hive-icon-wrapper d-flex flex-column justify-center align-center mt-3 mb-1"
                       >
                         <HiveIcon
@@ -150,7 +151,9 @@
                           confirmDeleteHiveTag(
                             hiveTag,
                             // eslint-disable vue/comma-dangle
-                            hivesObject[hiveTag.hive_id].name
+                            hivesObject[hiveTag.hive_id]
+                              ? hivesObject[hiveTag.hive_id].name
+                              : ''
                           )
                         "
                         >mdi-delete</v-icon

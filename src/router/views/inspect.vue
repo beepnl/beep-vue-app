@@ -70,8 +70,7 @@
               (selectedHives && selectedHives.length === 0) ||
               showLoadingIcon ||
               forceInspectionDate ||
-              inspectionDate === 'Invalid date' ||
-              inspectionDate === '' ||
+              invalidDate ||
               (activeInspection && activeInspection.date === null)
           "
           @click.prevent="confirmSaveInspection"
@@ -175,6 +174,9 @@
                   :disable-branch-nodes="true"
                   :disabled="offlineMode"
                   :default-expand-level="1"
+                  :class="
+                    parseMode && selectedHiveSetId === null ? 'color-red' : ''
+                  "
                   @input="selectHiveSet($event)"
                 />
               </v-col>
@@ -240,9 +242,7 @@
                 <div v-if="!parseMode" class="beep-label">
                   <span v-text="$t('Date_of_inspection')"></span>
                   <span
-                    v-if="
-                      forceInspectionDate || inspectionDate === 'Invalid date'
-                    "
+                    v-if="forceInspectionDate || invalidDate"
                     class="ml-3 font-weight-bold accent--text cursor-pointer"
                     @click="inspectionDate = getNow()"
                     v-text="$t('Now')"
@@ -253,7 +253,7 @@
                   :plain-text="$t('Date_of_inspection')"
                   :parsed-date="true"
                   :parse-mode="true"
-                  :check-answer="true"
+                  :check-answer="activeInspection.date === null || invalidDate"
                   :parsed-images="parsedImages['date']"
                 ></labelWithDescription>
                 <Datetime
@@ -261,12 +261,15 @@
                   v-model="inspectionDate"
                   type="datetime"
                   class="color-accent"
+                  :input-style="
+                    parseMode && (activeInspection.date === null || invalidDate)
+                      ? 'background-color: #ffe5e7;'
+                      : ''
+                  "
                   :disabled="offlineMode"
                   :max-datetime="endOfToday"
                   :placeholder="
-                    forceInspectionDate ||
-                    inspectionDate === 'Invalid date' ||
-                    inspectionDate === ''
+                    forceInspectionDate || invalidDate
                       ? $t('select_inspection_date')
                       : null
                   "
@@ -462,11 +465,7 @@
                             :plain-text="$t('positive_impression')"
                             :parse-mode="parseMode"
                             :item="{ input: 'smileys_3' }"
-                            :check-answer="
-                              activeInspection.impression !== null &&
-                                parseMode &&
-                                parsedImages['impression'].length > 0
-                            "
+                            :check-answer="activeInspection.impression === null"
                             :parsed-images="parsedImages['impression']"
                           ></labelWithDescription>
                           <smileRating
@@ -480,11 +479,7 @@
                             :plain-text="$t('needs_attention')"
                             :parse-mode="parseMode"
                             :item="{ input: 'boolean' }"
-                            :check-answer="
-                              activeInspection.attention !== null &&
-                                parseMode &&
-                                parsedImages['attention'].length > 0
-                            "
+                            :check-answer="activeInspection.attention === null"
                             :parsed-images="parsedImages['attention']"
                           ></labelWithDescription>
                           <yesNoRating
@@ -498,11 +493,7 @@
                           <labelWithDescription
                             :plain-text="$t('notes')"
                             :parse-mode="parseMode"
-                            :check-answer="
-                              activeInspection.notes !== null &&
-                                parseMode &&
-                                parsedImages['notes'].length > 0
-                            "
+                            :check-answer="activeInspection.notes === null"
                             :parsed-images="parsedImages['notes']"
                           ></labelWithDescription>
                           <v-textarea
@@ -551,11 +542,7 @@
                                 :plain-text="$t('remind_date')"
                                 :parsed-date="true"
                                 :parse-mode="parseMode"
-                                :check-answer="
-                                  activeInspection['reminder_date'] !== null &&
-                                    parseMode &&
-                                    parsedImages['reminder_date'].length > 0
-                                "
+                                :check-answer="reminderDate === null"
                                 :parsed-images="parsedImages['reminder_date']"
                               ></labelWithDescription>
                               <Datetime
@@ -594,9 +581,7 @@
                             :plain-text="$t('reminder')"
                             :parse-mode="parseMode"
                             :check-answer="
-                              activeInspection['reminder'] !== null &&
-                                parseMode &&
-                                parsedImages['reminder'].length > 0
+                              activeInspection['reminder'] === null
                             "
                             :parsed-images="parsedImages['reminder']"
                           ></labelWithDescription>
@@ -660,7 +645,7 @@ import checklistFieldset from '@components/checklist-fieldset.vue'
 import Confirm from '@components/confirm.vue'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
-import dummyOutput from '@components/svg/scan_results_list.json' // list.json' // test_4_dummy.json'
+import dummyOutput from '@components/svg/scan_results_ms.json' // list.json' // test_4_dummy.json'
 import InspectModeSelector from '@components/inspect-mode-selector.vue'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import Layout from '@layouts/back.vue'
@@ -868,8 +853,7 @@ export default {
       return (
         !this.offlineMode &&
         !this.parseMode && // forced inspection date not relevant for offline & parse mode
-        (this.inspectionDate === 'Invalid date' ||
-          this.inspectionDate === '') &&
+        this.invalidDate &&
         this.selectedChecklist !== null &&
         this.selectedChecklist.researches !== undefined &&
         this.selectedChecklist.researches.join().includes('B-GOOD')
@@ -909,6 +893,11 @@ export default {
     },
     inspectionId() {
       return parseInt(this.$route.params.inspection) || null
+    },
+    invalidDate() {
+      return (
+        this.inspectionDate === 'Invalid date' || this.inspectionDate === ''
+      )
     },
     lastSelectedChecklistId: {
       get() {
@@ -1263,8 +1252,7 @@ export default {
             } else if (
               !this.parseMode &&
               this.selectedChecklist.owner &&
-              (this.activeInspection.date === null ||
-                this.inspectionDate === 'Invalid date')
+              (this.activeInspection.date === null || this.invalidDate)
             ) {
               this.setActiveInspectionDate()
             }
@@ -1517,7 +1505,9 @@ export default {
             value =
               prop === 'impression'
                 ? checkboxIndex + 1
-                : this.booleanDefault[checkboxIndex]
+                : checkboxIndex > -1
+                ? this.booleanDefault[checkboxIndex]
+                : null
           } else {
             if (prop.indexOf('date') === -1) {
               value = answer.value[0] === '' ? null : answer.value[0]
@@ -1531,11 +1521,8 @@ export default {
           this.activeInspection[prop] = value
         }
 
-        // TODO: convert array (of all checkboxes 0s and 1s for example) to the actual answer
         this.parsedImages[prop] =
-          answer && answer.image !== undefined
-            ? answer.image // TODO: check if array length is ever > 1?
-            : []
+          answer && answer.image !== undefined ? answer.image : []
       })
     },
     initInspection() {
@@ -1565,6 +1552,12 @@ export default {
       this.selectHiveSet(null)
       this.getParsedOverallAnswers()
       this.showLoadingIcon = false
+      if (this.selectedChecklist) {
+        this.showCategoriesByIndex = []
+        for (var i = 0; i < this.selectedChecklist.categories.length; i++) {
+          this.showCategoriesByIndex.push(true)
+        }
+      }
     },
     print() {
       this.printMode = true

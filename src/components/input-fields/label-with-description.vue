@@ -28,7 +28,7 @@
         class="ml-1"
         dark
         small
-        color="red"
+        :color="checkAnswer ? 'red' : 'grey'"
         @click="showImages = !showImages"
       >
         {{ showImages ? 'mdi-eye' : 'mdi-eye-off' }}
@@ -60,7 +60,10 @@
       </div>
     </div>
 
-    <div v-else-if="showImages" class="info-text parsed-images">
+    <div
+      v-else-if="showImages && parsedImages.length > 0"
+      class="info-text parsed-images"
+    >
       <div
         :class="
           'd-flex pa-1 ' +
@@ -184,6 +187,7 @@ export default {
     return {
       showDescription: false,
       showImages: false,
+      showRedEye: false,
     }
   },
   computed: {
@@ -208,8 +212,7 @@ export default {
     },
   },
   created() {
-    // if answer needs to be actively checked in order to be filled in, always show image by default
-    if (this.checkAnswer) {
+    if (this.parseMode) {
       this.showImages = true
     }
   },
