@@ -283,7 +283,7 @@
 <script>
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
-import dummyOutput from '@components/svg/scan_results_ms.json' // list.json' // test_4_dummy.json' TODO remove dummy output
+import dummyOutput from '@components/svg/scan_results_pagenrs.json' // list.json' // test_4_dummy.json' TODO remove dummy output
 import imageUploader from '@components/input-fields/image-uploader.vue'
 import sampleCode from '@components/input-fields/sample-code.vue'
 import selectHiveOrApiary from '@components/input-fields/select-hive-or-apiary.vue'
@@ -428,13 +428,15 @@ export default {
           this.enableDummyOutput && this.queriedParseMode
             ? this.dummyOutput
             : this.parsedOfflineInput
-        var returnedItems = parsedData.scans.map((el) => {
-          return el.scan.filter(
-            (answer) =>
-              answer.parent_category_id !== undefined &&
-              parseInt(answer.parent_category_id) === this.item.id
-          )
-        })
+        var returnedItems = parsedData.scans
+          .map((el) => {
+            return el.scan.filter(
+              (answer) =>
+                answer.parent_category_id !== undefined &&
+                parseInt(answer.parent_category_id) === this.item.id
+            )
+          })
+          .filter((el) => el.length > 0)
 
         var answer = null
 
