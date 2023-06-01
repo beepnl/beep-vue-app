@@ -8,6 +8,25 @@
       >
         {{ checklistHeaderText }}
       </text>
+      <rect
+        data-type="number"
+        :data-parent-category-id="'pagenr'"
+        :data-category-id="pageNumber"
+        :x="pageWidth - (xMargin + 18.8) + 'mm'"
+        :y="(pageNumber - 1) * pageHeight + 7.5 + 'mm'"
+        width="6mm"
+        height="6mm"
+        stroke="black"
+        fill="transparent"
+        :stroke-width="strokeWidth"
+      />
+      <text
+        :x="pageWidth - (xMargin + (doubleDigits ? 18 : 17)) + 'mm'"
+        :y="(pageNumber - 1) * pageHeight + 12 + 'mm'"
+        :style="svgText"
+      >
+        {{ pageNumber }}
+      </text>
       <text
         :x="pageWidth - (xMargin + 9) + 'mm'"
         :y="(pageNumber - 1) * pageHeight + 9 + 'mm'"
@@ -90,6 +109,9 @@ export default {
     },
   },
   computed: {
+    doubleDigits() {
+      return this.pageNumber.toString().length > 1
+    },
     height() {
       return (this.pageNumber - 1) * this.pageHeight
     },

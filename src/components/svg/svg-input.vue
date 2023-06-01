@@ -47,7 +47,8 @@
       :position="position"
       :label="labelWithHeader"
       :append="'°'"
-      :info="$t('Degrees_exp')"
+      :info="$t('Degrees_exp_1')"
+      :info-extra="$t('Degrees_exp_2')"
     />
 
     <svgNumber
