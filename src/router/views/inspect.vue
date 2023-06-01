@@ -70,8 +70,7 @@
               (selectedHives && selectedHives.length === 0) ||
               showLoadingIcon ||
               forceInspectionDate ||
-              inspectionDate === 'Invalid date' ||
-              inspectionDate === '' ||
+              invalidDate ||
               (activeInspection && activeInspection.date === null)
           "
           @click.prevent="confirmSaveInspection"
@@ -175,6 +174,9 @@
                   :disable-branch-nodes="true"
                   :disabled="offlineMode"
                   :default-expand-level="1"
+                  :class="
+                    parseMode && selectedHiveSetId === null ? 'color-red' : ''
+                  "
                   @input="selectHiveSet($event)"
                 />
               </v-col>
@@ -240,9 +242,7 @@
                 <div v-if="!parseMode" class="beep-label">
                   <span v-text="$t('Date_of_inspection')"></span>
                   <span
-                    v-if="
-                      forceInspectionDate || inspectionDate === 'Invalid date'
-                    "
+                    v-if="forceInspectionDate || invalidDate"
                     class="ml-3 font-weight-bold accent--text cursor-pointer"
                     @click="inspectionDate = getNow()"
                     v-text="$t('Now')"
@@ -261,12 +261,15 @@
                   v-model="inspectionDate"
                   type="datetime"
                   class="color-accent"
+                  :input-style="
+                    parseMode && (activeInspection.date === null || invalidDate)
+                      ? 'background-color: #ffe5e7;'
+                      : ''
+                  "
                   :disabled="offlineMode"
                   :max-datetime="endOfToday"
                   :placeholder="
-                    forceInspectionDate ||
-                    inspectionDate === 'Invalid date' ||
-                    inspectionDate === ''
+                    forceInspectionDate || invalidDate
                       ? $t('select_inspection_date')
                       : null
                   "
@@ -462,9 +465,7 @@
                             :plain-text="$t('positive_impression')"
                             :parse-mode="parseMode"
                             :item="{ input: 'smileys_3' }"
-                            :check-answer="
-                              activeInspection.impression === null
-                            "
+                            :check-answer="activeInspection.impression === null"
                             :parsed-images="parsedImages['impression']"
                           ></labelWithDescription>
                           <smileRating
@@ -478,9 +479,7 @@
                             :plain-text="$t('needs_attention')"
                             :parse-mode="parseMode"
                             :item="{ input: 'boolean' }"
-                            :check-answer="
-                              activeInspection.attention === null
-                            "
+                            :check-answer="activeInspection.attention === null"
                             :parsed-images="parsedImages['attention']"
                           ></labelWithDescription>
                           <yesNoRating
@@ -494,9 +493,7 @@
                           <labelWithDescription
                             :plain-text="$t('notes')"
                             :parse-mode="parseMode"
-                            :check-answer="
-                              activeInspection.notes === null
-                            "
+                            :check-answer="activeInspection.notes === null"
                             :parsed-images="parsedImages['notes']"
                           ></labelWithDescription>
                           <v-textarea
@@ -545,9 +542,7 @@
                                 :plain-text="$t('remind_date')"
                                 :parsed-date="true"
                                 :parse-mode="parseMode"
-                                :check-answer="
-                                  reminderDate === null
-                                "
+                                :check-answer="reminderDate === null"
                                 :parsed-images="parsedImages['reminder_date']"
                               ></labelWithDescription>
                               <Datetime
@@ -1257,8 +1252,7 @@ export default {
             } else if (
               !this.parseMode &&
               this.selectedChecklist.owner &&
-              (this.activeInspection.date === null ||
-                this.inspectionDate === 'Invalid date')
+              (this.activeInspection.date === null || this.invalidDate)
             ) {
               this.setActiveInspectionDate()
             }
