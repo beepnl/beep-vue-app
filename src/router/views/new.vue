@@ -21,8 +21,7 @@
       </div>
 
       <div class="overline mb-1"
-        ><span class="lowercase">v</span>4.0.3 (25-05-2023) - Current
-        version</div
+        ><span class="lowercase">v</span>4.0.3 (25-05-2023)</div
       >
       <div class="rounded-border mb-4">
         <ul>
