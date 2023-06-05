@@ -283,7 +283,7 @@
 <script>
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
-import dummyOutput from '@components/svg/scan_results_pagenrs.json' // list.json' // test_4_dummy.json' TODO remove dummy output
+import dummyOutput from '@components/svg/scan_results_no_single_digits_text.json' // list.json' // test_4_dummy.json' TODO remove dummy output
 import imageUploader from '@components/input-fields/image-uploader.vue'
 import sampleCode from '@components/input-fields/sample-code.vue'
 import selectHiveOrApiary from '@components/input-fields/select-hive-or-apiary.vue'
@@ -405,15 +405,17 @@ export default {
                   ? posAnswer
                   : posAnswer[0]
                 : null
-          } else if (
-            this.parsedAnswerRaw[0].category_id === 'date-field' ||
-            this.parsedAnswerRaw[0].type === 'single-digit'
-          ) {
-            // merge items for date type items
-            answer = this.parsedAnswerRaw[0]
-            answer.value = answer.value.concat(this.parsedAnswerRaw[1].value)
-            answer.image = answer.image.concat(this.parsedAnswerRaw[1].image)
-          } else {
+          }
+          // else if ( // TODO remove if single-digits won't be used for sure
+          //   this.parsedAnswerRaw[0].category_id === 'date-field' ||
+          //   this.parsedAnswerRaw[0].type === 'single-digit'
+          // ) {
+          //   // merge items for date type items
+          //   answer = this.parsedAnswerRaw[0]
+          //   answer.value = answer.value.concat(this.parsedAnswerRaw[1].value)
+          //   answer.image = answer.image.concat(this.parsedAnswerRaw[1].image)
+          // }
+          else {
             answer = this.parsedAnswerRaw[0]
           }
         }
@@ -525,6 +527,8 @@ export default {
                 ? this.parsedAnswer.category_id
                 : null
           }
+        } else if (this.parsedAnswer.category_id === 'date-field') {
+          value = this.parseDate(this.parsedAnswer.value[0])
         } else if (
           this.parsedAnswer.type === 'text' ||
           this.parsedAnswer.type === 'number'
@@ -534,7 +538,7 @@ export default {
               ? null
               : this.parsedAnswer.type === 'text'
               ? this.parsedAnswer.value[0]
-              : parseInt(this.parsedAnswer.value[0])
+              : parseFloat(this.parsedAnswer.value[0])
 
           if (
             value !== null &&
@@ -544,11 +548,11 @@ export default {
           ) {
             value = this.validateNumber(value, this.item.input)
           }
-        } else if (this.parsedAnswer.category_id === 'date-field') {
-          value = this.parseDate(this.parsedAnswer.value)
-        } else if (this.parsedAnswer.type === 'single-digit') {
-          value = this.parseDigits(this.parsedAnswer.value)
-        } else {
+        }
+        // else if (this.parsedAnswer.type === 'single-digit') { // TODO remove if single-digits won't be used for sure
+        //   value = this.parseDigits(this.parsedAnswer.value)
+        // }
+        else {
           value = null
           console.log('else input', this.item, this.parsedAnswer)
         }
@@ -640,22 +644,22 @@ export default {
     numberHasconstraints(inputType) {
       return inputType !== 'number' && inputType !== 'number_0_decimals' // only svgNumber items without min & max constraints
     },
-    parseDigits(value) {
-      var number = value.slice(0, this.numberFields).join('')
-      var dec = value.slice(this.numberFields).join('')
-      var makesSense = // check if empty single-digit number boxes are either only at the start or at the end of the fields (before the decimals) (or is completely filled in)
-        number !== '' &&
-        dec !== '' &&
-        (value[this.numberFields - number.length - 1] === '' ||
-          value[0 + number.length] === '' ||
-          number.length === this.numberFields) &&
-        // + check if empty single-digit number boxes are either only at the start or at the end of the decimals (or is completely filled in)
-        (value[value.length - dec.length - 1] === '' ||
-          value[this.numberFields + dec.length] === '' ||
-          value.length - dec.length === this.numberFields)
+    // parseDigits(value) { // TODO remove if single-digits won't be used for sure
+    //   var number = value.slice(0, this.numberFields).join('')
+    //   var dec = value.slice(this.numberFields).join('')
+    //   var makesSense = // check if empty single-digit number boxes are either only at the start or at the end of the fields (before the decimals) (or is completely filled in)
+    //     number !== '' &&
+    //     dec !== '' &&
+    //     (value[this.numberFields - number.length - 1] === '' ||
+    //       value[0 + number.length] === '' ||
+    //       number.length === this.numberFields) &&
+    //     // + check if empty single-digit number boxes are either only at the start or at the end of the decimals (or is completely filled in)
+    //     (value[value.length - dec.length - 1] === '' ||
+    //       value[this.numberFields + dec.length] === '' ||
+    //       value.length - dec.length === this.numberFields)
 
-      return makesSense ? parseFloat(number + '.' + dec) : null
-    },
+    //   return makesSense ? parseFloat(number + '.' + dec) : null
+    // },
     setInspectionEdited(bool) {
       this.$store.commit('inspections/setInspectionEdited', bool)
     },

@@ -32,7 +32,7 @@
         :data-parent-category-id="position.id"
         :x="x + 'mm'"
         :y="y + 2 + 'mm'"
-        width="43mm"
+        :width="maxFieldWidth + 'mm'"
         height="11mm"
         stroke="black"
         fill="transparent"

@@ -6,13 +6,14 @@
       {{ prepend }}
     </text>
 
-    <g v-if="decimals === 0">
+    <g>
       <rect
-        data-type="number"
+        :data-type="inputType === 'date' ? 'text' : 'number'"
+        :data-category-id="inputType === 'date' ? 'date-field' : ''"
         :data-parent-category-id="position.id"
         :x="x + prependOffset + 'mm'"
         :y="y + 2 + 'mm'"
-        :width="textFieldWidth + 'mm'"
+        :width="(inputType === 'date' ? maxFieldWidth : textFieldWidth) + 'mm'"
         height="8mm"
         stroke="black"
         fill="transparent"
@@ -27,8 +28,8 @@
         {{ append }}
       </text>
     </g>
-
-    <g v-else-if="decimals > 0">
+    <!--
+    <g v-else-if="decimals > 0"> //  TODO remove if single-digits won't be used for sure NB: <g> above has v-if="decimals === 0" when this is uncommented
       <svgNumberBox
         v-for="field in numberFields"
         :key="field + 1"
@@ -53,7 +54,7 @@
         :category-id="'decimals'"
         :parent-id="position.id"
       />
-    </g>
+    </g> -->
 
     <g v-if="info">
       <text :x="x + 'mm'" :y="y + 14 + 'mm'" :style="svgTextSmall">
@@ -73,13 +74,13 @@
 
 <script>
 import svgLabel from '@/src/components/svg/svg-label.vue'
-import svgNumberBox from '@/src/components/svg/svg-number-box.vue'
+// import svgNumberBox from '@/src/components/svg/svg-number-box.vue'
 import { svgData, svgStyles } from '@mixins/svgMixin'
 
 export default {
   components: {
     svgLabel,
-    svgNumberBox,
+    // svgNumberBox,
   },
   mixins: [svgData, svgStyles],
   props: {
@@ -92,7 +93,7 @@ export default {
       required: true,
     },
     decimals: {
-      type: Number,
+      type: Number, // TODO remove if single-digits won't be used for sure
       required: false,
       default: 0,
     },
@@ -111,6 +112,11 @@ export default {
       required: false,
       default: null,
     },
+    inputType: {
+      type: String,
+      required: false,
+      default: null,
+    },
     prepend: {
       type: String,
       required: false,
@@ -118,9 +124,9 @@ export default {
     },
   },
   computed: {
-    fieldOffset() {
-      return this.numberFields * this.numberBoxWidth
-    },
+    // fieldOffset() {
+    //   return this.numberFields * this.numberBoxWidth // // TODO remove if single-digits won't be used for sure
+    // },
     prependOffset() {
       return this.prepend ? 5 : 0
     },

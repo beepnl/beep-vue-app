@@ -12,10 +12,16 @@
       :line="true"
     />
 
-    <svgDate
-      :position="{ id: 'date', pageY: y, x: x + 92, y }"
+    <!-- <svgDate
+      :position="{ id: 'date', pageY: y, x: x + 92, y }"  // TODO: remove when single-digits won't be used anymore for sure
       :label="$t('Date_of_inspection')"
       :time="true"
+    /> -->
+
+    <svgNumber
+      :position="{ id: 'date', pageY: y, x: x + 92, y }"
+      :label="$t('Date_of_inspection')"
+      :input-type="'date'"
     />
 
     <svgSmileRating
@@ -30,22 +36,28 @@
 
     <svgText
       :position="{ id: 'notes', pageY: y + 19, x: x + 92, y: y + 19 }"
-      :width="'89mm'"
-      :height="'22mm'"
+      :width="89"
+      :height="22"
       :double-width="true"
       :label="$t('notes')"
     />
 
-    <svgDate
-      :position="{ id: 'reminder_date', pageY: y + 49, x, y: y + 49 }"
+    <!-- <svgDate
+      :position="{ id: 'reminder_date', pageY: y + 49, x, y: y + 49 }" // TODO: remove when single-digits won't be used anymore for sure
       :label="$t('remind_date')"
       :time="true"
+    /> -->
+
+    <svgNumber
+      :position="{ id: 'reminder_date', pageY: y + 49, x, y: y + 49 }"
+      :label="$t('remind_date')"
+      :input-type="'date'"
     />
 
     <svgText
       :position="{ id: 'reminder', pageY: y + 49, x: x + 92, y: y + 49 }"
-      :width="'89mm'"
-      :height="'22mm'"
+      :width="89"
+      :height="22"
       :double-width="true"
       :label="$t('notes_for_next_inspection')"
     />
@@ -53,14 +65,16 @@
 </template>
 
 <script>
-import svgDate from '@/src/components/svg/svg-date.vue'
+// import svgDate from '@/src/components/svg/svg-date.vue'  // TODO: remove when single-digits won't be used anymore for sure
+import svgNumber from '@/src/components/svg/svg-number.vue'
 import svgSmileRating from '@/src/components/svg/svg-smile-rating.vue'
 import svgText from '@/src/components/svg/svg-text.vue'
 import svgYesNoRating from '@/src/components/svg/svg-yes-no-rating.vue'
 
 export default {
   components: {
-    svgDate,
+    // svgDate,  // TODO: remove when single-digits won't be used anymore for sure
+    svgNumber,
     svgSmileRating,
     svgText,
     svgYesNoRating,
