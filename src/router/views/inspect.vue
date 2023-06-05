@@ -307,9 +307,13 @@
             cols="12"
             sm="4"
           >
+            <div
+              class="beep-label mt-n3 mt-sm-0"
+              v-text="$t('Parsed_pages')"
+            ></div>
             <div class="rounded-border primary-border font-weight-bold">
               <p>
-                <span v-text="'Aantal verwerkte pagina\'s: '"></span>
+                <span v-text="$t('Number_of_processed_pages')"></span>
                 <span
                   :class="
                     (offlineInputCorrectPageNrs.length > 0 ? 'green' : 'red') +
@@ -327,7 +331,7 @@
               </p>
 
               <p v-if="offlineInputIncorrectPageNrs.length > 0">
-                <span v-text="'Incorrect geuploade paginanummers: '"></span>
+                <span v-text="$t('Incorrectly_uploaded_pages')"></span>
                 <span
                   class="red--text"
                   v-text="offlineInputIncorrectPageNrs.join(', ')"
@@ -335,7 +339,11 @@
               </p>
 
               <p v-if="offlineInputMissingPages.length > 0">
-                <span v-text="'Ontbrekende paginanummers: '"></span>
+                <span
+                  v-text="
+                    $tc('Missing_page', offlineInputMissingPages.length) + ': '
+                  "
+                ></span>
                 <span
                   class="red--text"
                   v-text="offlineInputMissingPages.join(', ')"
@@ -1924,6 +1932,10 @@ export default {
   &.hive-inspect-card-title--border-bottom {
     border-bottom: 1px solid $color-grey-light;
   }
+}
+
+.inspection-date {
+  max-width: calc(100% - 24px);
 }
 
 $orders: ('1', '2', '3');
