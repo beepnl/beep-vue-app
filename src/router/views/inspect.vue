@@ -302,6 +302,48 @@
             />
           </v-col>
 
+          <v-col
+            v-if="parseMode && offlineInputPageNrs.length > 0"
+            cols="12"
+            sm="4"
+          >
+            <div class="rounded-border primary-border font-weight-bold">
+              <p>
+                <span v-text="'Aantal verwerkte pagina\'s: '"></span>
+                <span
+                  :class="
+                    (offlineInputCorrectPageNrs.length > 0 ? 'green' : 'red') +
+                      '--text'
+                  "
+                  v-text="offlineInputCorrectPageNrs.length"
+                ></span>
+                <span
+                  v-if="selectedChecklistSvg"
+                  :class="
+                    (offlineInputAllPagesParsed ? 'green' : 'red') + '--text'
+                  "
+                  v-text="' / ' + selectedChecklistSvg.pages"
+                ></span>
+              </p>
+
+              <p v-if="offlineInputIncorrectPageNrs.length > 0">
+                <span v-text="'Incorrect geuploade paginanummers: '"></span>
+                <span
+                  class="red--text"
+                  v-text="offlineInputIncorrectPageNrs.join(', ')"
+                ></span>
+              </p>
+
+              <p v-if="offlineInputMissingPages.length > 0">
+                <span v-text="'Ontbrekende paginanummers: '"></span>
+                <span
+                  class="red--text"
+                  v-text="offlineInputMissingPages.join(', ')"
+                ></span>
+              </p>
+            </div>
+          </v-col>
+
           <v-col v-if="uploadMode" cols="12" sm="4">
             <div
               v-if="checklistSvgs.length > 0"
@@ -1033,6 +1075,72 @@ export default {
       }
       return treeselectArray
     },
+    offlineInputAllPagesParsed() {
+      return this.parseMode
+        ? this.offlineInputCorrectPageNrs.length ===
+            this.selectedChecklistSvg.pages
+        : false
+    },
+    offlineInputCorrectPageNrs() {
+      if (this.parseMode) {
+        var hasPageNrs = this.offlineInputPageNrs.length > 0
+
+        var correctPageNrs = this.offlineInputPageNrs
+          .filter((item) => item.value[0].indexOf(item.category_id) > -1)
+          .map((item) => parseInt(item.category_id))
+
+        return hasPageNrs ? correctPageNrs : false
+      } else {
+        return false
+      }
+    },
+    offlineInputIncorrectPageNrs() {
+      if (this.parseMode) {
+        var hasPageNrs = this.offlineInputPageNrs.length > 0
+
+        var incorrectPageNrs = this.offlineInputPageNrs
+          .filter((item) => item.value[0].indexOf(item.category_id) === -1)
+          .map((item) => parseInt(item.category_id))
+
+        return hasPageNrs ? incorrectPageNrs : false
+      } else {
+        return false
+      }
+    },
+    offlineInputMissingPages() {
+      if (this.parseMode) {
+        var missingPages = []
+        for (var i = 1; i <= this.selectedChecklistSvg.pages; i++) {
+          if (
+            !this.offlineInputCorrectPageNrs.includes(i) &&
+            !this.offlineInputIncorrectPageNrs.includes(i)
+          ) {
+            missingPages.push(i)
+          }
+        }
+        return missingPages
+      } else {
+        return false
+      }
+    },
+    offlineInputPageNrs() {
+      if (this.parseMode) {
+        var returnedPageNrs = this.parsedOfflineInput.scans
+          .map((el) => {
+            return el.scan.filter(
+              (answer) =>
+                answer.parent_category_id !== undefined &&
+                answer.parent_category_id === 'pagenr'
+            )
+          })
+          .filter((el) => el.length > 0)
+          .map((el) => el[0])
+
+        return returnedPageNrs
+      } else {
+        return false
+      }
+    },
     totalPages() {
       return this.svgPageNr - (this.svgMaxPageNr === null ? 0 : 1)
     },
@@ -1545,6 +1653,10 @@ export default {
       )
     },
     prepParseMode() {
+      if (this.checklistSvgs.length === 0) {
+        // TODO disable when enableDummyOutput is disabled
+        this.readChecklistSvgs()
+      }
       this.forceParseMode = true // TODO finetune parse mode + where to switch it off?
       this.setSelectedMode = 'Online'
       this.allHivesSelected = false
@@ -1557,6 +1669,14 @@ export default {
         for (var i = 0; i < this.selectedChecklist.categories.length; i++) {
           this.showCategoriesByIndex.push(true)
         }
+      }
+      if (this.enableDummyOutput && this.queriedMode === 'parse') {
+        // TODO disable when enableDummyOutput is disabled
+        this.checklistSvgId = 19
+        this.$store.commit('inspections/setData', {
+          prop: 'parsedOfflineInput',
+          value: this.dummyOutput,
+        })
       }
     },
     print() {
