@@ -162,7 +162,7 @@
                   v-if="parseMode"
                   :plain-text="treeselectLabel"
                   :parse-mode="true"
-                  :check-answer="true"
+                  :check-answer="selectedHiveSetId === null"
                   :parsed-images="parsedImages['location']"
                 ></labelWithDescription>
                 <Treeselect
@@ -209,7 +209,7 @@
               v-if="parseMode"
               :plain-text="$t('Select') + ' ' + $tc('hive', 1)"
               :parse-mode="true"
-              :check-answer="true"
+              :check-answer="selectedHives.length === 0"
               :parsed-images="parsedImages['hive']"
             ></labelWithDescription>
             <ApiaryPreviewHiveSelector
@@ -220,6 +220,7 @@
               :hives-selected="offlineMode ? [] : selectedHives"
               :hives-editable="offlineMode ? [] : editableHives"
               :inspection-mode="true"
+              :mark-red="parseMode && selectedHives.length === 0"
               @select-hive="selectHive($event)"
             ></ApiaryPreviewHiveSelector>
           </v-col>
@@ -1494,6 +1495,40 @@ export default {
       }
       this.$router.push(this.checklistLink)
     },
+    findHiveSetId(input) {
+      if (typeof input === 'string') {
+        var value = input.toLowerCase()
+        var findApiary = this.apiaries.filter(
+          (ap) => ap.name.toLowerCase() === value
+        )
+        var findGroup = this.groups.filter(
+          (gr) => gr.name.toLowerCase() === value
+        )
+
+        var id =
+          findApiary.length > 0
+            ? '1' + findApiary[0].id.toString()
+            : findGroup.length > 0
+            ? '2' + findGroup[0].id.toString()
+            : null
+        return id
+      } else {
+        return null
+      }
+    },
+    findHiveId(input) {
+      if (typeof input === 'string' && this.selectedHiveSet) {
+        var value = input.toLowerCase()
+        var findHive = this.selectedHiveSet.hives.filter(
+          (hive) => hive.name.toLowerCase() === value
+        )
+
+        var id = findHive.length > 0 ? findHive[0].id : null
+        return id
+      } else {
+        return null
+      }
+    },
     getNow(simple = false) {
       return this.$moment().format(
         simple ? this.dateFormatSimple : this.dateFormat
@@ -1542,6 +1577,17 @@ export default {
 
         if (prop !== 'location' && prop !== 'hive') {
           this.activeInspection[prop] = value
+        } else if (prop === 'location') {
+          var id = this.findHiveSetId(value)
+          this.selectHiveSet(id)
+          this.selectedHiveSetId = id !== null ? parseInt(id) : null
+          this.selectedHives = []
+        } else if (prop === 'hive') {
+          var hiveId = this.findHiveId(value)
+
+          if (hiveId) {
+            this.selectHive(hiveId)
+          }
         }
 
         this.parsedImages[prop] =
@@ -1580,8 +1626,6 @@ export default {
       this.forceParseMode = true // TODO finetune parse mode + where to switch it off?
       this.setSelectedMode = 'Online'
       this.allHivesSelected = false
-      this.selectedHives = []
-      this.selectHiveSet(null)
       this.getParsedOverallAnswers()
       this.showLoadingIcon = false
       if (this.selectedChecklist) {
