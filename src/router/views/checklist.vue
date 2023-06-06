@@ -256,6 +256,9 @@ export default {
     checklistsPage() {
       return this.$route.name === 'checklists'
     },
+    checklistSvgId() {
+      return parseInt(this.$route.query.checklistSvgId) || null
+    },
     groupId() {
       return parseInt(this.$route.query.groupId) || null
     },
@@ -293,8 +296,8 @@ export default {
     smAndDown() {
       return this.$vuetify.breakpoint.smAndDown
     },
-    storedOfflineMode() {
-      return localStorage.beepSelectedInspectionMode === 'Offline'
+    storedInspectionMode() {
+      return localStorage.beepSelectedInspectionMode
     },
     touchDevice() {
       return window.matchMedia('(hover: none)').matches
@@ -475,12 +478,16 @@ export default {
                   },
                   query: { checklistId: this.selectedChecklistId },
                 })
-              } else if (this.storedOfflineMode) {
+              } else if (this.storedInspectionMode !== '') {
+                var query = {
+                  checklistId: this.selectedChecklistId,
+                }
+                if (this.storedInspectionMode === 'Parse') {
+                  query.checklistSvgId = this.checklistSvgId
+                }
                 return this.$router.push({
                   name: 'inspect',
-                  query: {
-                    checklistId: this.selectedChecklistId,
-                  },
+                  query,
                 })
               } else if (this.hiveId || this.apiaryId || this.groupId) {
                 return this.$router.push({

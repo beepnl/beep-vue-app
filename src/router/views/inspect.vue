@@ -854,18 +854,18 @@ export default {
     checklistLink() {
       var query = {}
       // pass current apiary or group id (even if user has switched from initially (pre)selected apiary or group)
-      if (!this.offlineMode) {
+      if (!this.offlineMode && this.hiveSetId) {
+        query = {
+          hiveId: this.hiveId,
+          inspectionId: this.inspectionId,
+        }
         this.isApiary
-          ? (query = {
-              hiveId: this.hiveId,
-              inspectionId: this.inspectionId,
-              apiaryId: this.hiveSetId,
-            })
-          : (query = {
-              hiveId: this.hiveId,
-              inspectionId: this.inspectionId,
-              groupId: this.hiveSetId,
-            })
+          ? (query.apiaryId = this.hiveSetId)
+          : (query.groupId = this.hiveSetId)
+      }
+
+      if (this.parseMode) {
+        query.checklistSvgId = this.checklistSvgId
       }
 
       return {
@@ -980,7 +980,9 @@ export default {
     parseMode() {
       return (
         this.permissions.includes('test-offline-input') &&
-        (this.queriedMode === 'parse' || this.forceParseMode === true) // TODO remove queried parse mode when enableDummyOutput is removed
+        (this.queriedMode === 'parse' ||
+          this.forceParseMode === true ||
+          localStorage.beepSelectedInspectionMode === 'Parse') // TODO remove queried parse mode when enableDummyOutput is removed
       )
     },
     preSelectedChecklistId() {
@@ -1085,8 +1087,9 @@ export default {
     },
     offlineInputAllPagesParsed() {
       return this.parseMode
-        ? this.offlineInputCorrectPageNrs.length ===
-            this.selectedChecklistSvg.pages
+        ? this.selectedChecklistSvg &&
+            this.offlineInputCorrectPageNrs.length ===
+              this.selectedChecklistSvg.pages
         : false
     },
     offlineInputCorrectPageNrs() {
@@ -1118,12 +1121,14 @@ export default {
     offlineInputMissingPages() {
       if (this.parseMode) {
         var missingPages = []
-        for (var i = 1; i <= this.selectedChecklistSvg.pages; i++) {
-          if (
-            !this.offlineInputCorrectPageNrs.includes(i) &&
-            !this.offlineInputIncorrectPageNrs.includes(i)
-          ) {
-            missingPages.push(i)
+        if (this.selectedChecklistSvg) {
+          for (var i = 1; i <= this.selectedChecklistSvg.pages; i++) {
+            if (
+              !this.offlineInputCorrectPageNrs.includes(i) &&
+              !this.offlineInputIncorrectPageNrs.includes(i)
+            ) {
+              missingPages.push(i)
+            }
           }
         }
         return missingPages
@@ -1580,9 +1585,11 @@ export default {
     editChecklist(id) {
       if (this.selectedHiveSetId)
         this.activeInspection.hive_ids = this.selectedHives
-      if (!this.offlineMode) {
+      if (this.parseMode) {
+        this.storeInspectionMode('Parse')
+      } else if (this.onlineMode) {
         this.setTempSavedInspection(this.activeInspection)
-      } else {
+      } else if (this.offlineMode) {
         this.storeInspectionMode('Offline')
       }
       this.$router.push(this.checklistLink)
@@ -1661,6 +1668,11 @@ export default {
       )
     },
     prepParseMode() {
+      if (this.$route.query.checklistSvgId) {
+        this.checklistSvgId = !isNaN(parseInt(this.$route.query.checklistSvgId))
+          ? parseInt(this.$route.query.checklistSvgId)
+          : null
+      }
       if (this.checklistSvgs.length === 0) {
         // TODO disable when enableDummyOutput is disabled
         this.readChecklistSvgs()
@@ -1680,12 +1692,12 @@ export default {
       }
       if (this.enableDummyOutput && this.queriedMode === 'parse') {
         // TODO disable when enableDummyOutput is disabled
-        this.checklistSvgId = 19
         this.$store.commit('inspections/setData', {
           prop: 'parsedOfflineInput',
           value: this.dummyOutput,
         })
       }
+      this.storeInspectionMode('')
     },
     print() {
       this.printMode = true
