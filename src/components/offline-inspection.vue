@@ -37,7 +37,8 @@
           <svgPrintCorners
             v-if="svgMaxPageNr === null || pageNr <= svgMaxPageNr"
             :pageNumber="pageNr"
-            :checklistHeaderText="svgChecklistName"
+            :checklist-header-text="svgChecklistName"
+            :checklist-svg-id="checklistSvgId"
             :totalPages="totalPages"
           />
         </g>
@@ -79,6 +80,11 @@ export default {
     checklistSvgAlreadySaved: {
       type: Object,
       default: null,
+      required: false,
+    },
+    checklistSvgId: {
+      type: Number,
+      default: 0,
       required: false,
     },
     newSvgName: {

@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/comma-dangle -->
 <template>
   <Layout
     :title="editMode ? $t('Edit_inspection') : $t('New_inspection') + modeText"
@@ -302,54 +303,10 @@
             />
           </v-col>
 
-          <v-col
-            v-if="parseMode && offlineInputPageNrs.length > 0"
-            cols="12"
-            sm="4"
-          >
-            <div
-              class="beep-label mt-n3 mt-sm-0"
-              v-text="$t('Parsed_pages')"
-            ></div>
-            <div class="rounded-border primary-border font-weight-bold">
-              <p>
-                <span v-text="$t('Number_of_processed_pages')"></span>
-                <span
-                  :class="
-                    (offlineInputCorrectPageNrs.length > 0 ? 'green' : 'red') +
-                      '--text'
-                  "
-                  v-text="offlineInputCorrectPageNrs.length"
-                ></span>
-                <span
-                  v-if="selectedChecklistSvg"
-                  :class="
-                    (offlineInputAllPagesParsed ? 'green' : 'red') + '--text'
-                  "
-                  v-text="' / ' + selectedChecklistSvg.pages"
-                ></span>
-              </p>
-
-              <p v-if="offlineInputIncorrectPageNrs.length > 0">
-                <span v-text="$t('Incorrectly_uploaded_pages')"></span>
-                <span
-                  class="red--text"
-                  v-text="offlineInputIncorrectPageNrs.join(', ')"
-                ></span>
-              </p>
-
-              <p v-if="offlineInputMissingPages.length > 0">
-                <span
-                  v-text="
-                    $tc('Missing_page', offlineInputMissingPages.length) + ': '
-                  "
-                ></span>
-                <span
-                  class="red--text"
-                  v-text="offlineInputMissingPages.join(', ')"
-                ></span>
-              </p>
-            </div>
+          <v-col v-if="parseMode && onlineMode" cols="12" sm="4">
+            <ParsedPages
+              :selected-checklist-svg="selectedChecklistSvg"
+            ></ParsedPages>
           </v-col>
 
           <v-col v-if="uploadMode" cols="12" sm="4">
@@ -677,6 +634,11 @@
         v-if="selectedChecklist"
         :selected-checklist="selectedChecklist"
         :checklist-svg-already-saved="checklistSvgAlreadySaved"
+        :checklist-svg-id="
+          checklistSvgAlreadySaved
+            ? checklistSvgAlreadySaved.id
+            : checklistSvgId
+        "
         :new-svg-name="newSvgName"
         :print-mode="printMode"
         :total-pages="totalPages"
@@ -708,6 +670,7 @@ import {
 } from '@mixins/methodsMixin'
 import { momentFullDateTime, momentISO8601 } from '@mixins/momentMixin'
 import OfflineInspection from '@components/offline-inspection.vue'
+import ParsedPages from '@components/parsed-pages.vue'
 import { SlideYUpTransition } from 'vue2-transitions'
 import smileRating from '@components/input-fields/smile-rating.vue'
 import Treeselect from '@riophae/vue-treeselect'
@@ -724,6 +687,7 @@ export default {
     labelWithDescription,
     Layout,
     OfflineInspection,
+    ParsedPages,
     SlideYUpTransition,
     smileRating,
     UploadInspection,
@@ -1085,75 +1049,6 @@ export default {
       }
       return treeselectArray
     },
-    offlineInputAllPagesParsed() {
-      return this.parseMode
-        ? this.selectedChecklistSvg &&
-            this.offlineInputCorrectPageNrs.length ===
-              this.selectedChecklistSvg.pages
-        : false
-    },
-    offlineInputCorrectPageNrs() {
-      if (this.parseMode) {
-        var hasPageNrs = this.offlineInputPageNrs.length > 0
-
-        var correctPageNrs = this.offlineInputPageNrs
-          .filter((item) => item.value[0].indexOf(item.category_id) > -1)
-          .map((item) => parseInt(item.category_id))
-
-        return hasPageNrs ? correctPageNrs : false
-      } else {
-        return false
-      }
-    },
-    offlineInputIncorrectPageNrs() {
-      if (this.parseMode) {
-        var hasPageNrs = this.offlineInputPageNrs.length > 0
-
-        var incorrectPageNrs = this.offlineInputPageNrs
-          .filter((item) => item.value[0].indexOf(item.category_id) === -1)
-          .map((item) => parseInt(item.category_id))
-
-        return hasPageNrs ? incorrectPageNrs : false
-      } else {
-        return false
-      }
-    },
-    offlineInputMissingPages() {
-      if (this.parseMode) {
-        var missingPages = []
-        if (this.selectedChecklistSvg) {
-          for (var i = 1; i <= this.selectedChecklistSvg.pages; i++) {
-            if (
-              !this.offlineInputCorrectPageNrs.includes(i) &&
-              !this.offlineInputIncorrectPageNrs.includes(i)
-            ) {
-              missingPages.push(i)
-            }
-          }
-        }
-        return missingPages
-      } else {
-        return false
-      }
-    },
-    offlineInputPageNrs() {
-      if (this.parseMode) {
-        var returnedPageNrs = this.parsedOfflineInput.scans
-          .map((el) => {
-            return el.scan.filter(
-              (answer) =>
-                answer.parent_category_id !== undefined &&
-                answer.parent_category_id === 'pagenr'
-            )
-          })
-          .filter((el) => el.length > 0)
-          .map((el) => el[0])
-
-        return returnedPageNrs
-      } else {
-        return false
-      }
-    },
     totalPages() {
       return this.svgPageNr - (this.svgMaxPageNr === null ? 0 : 1)
     },
@@ -1270,8 +1165,10 @@ export default {
           last_print: now,
         }
         try {
-          await Api.postRequest('/checklist-svg', payload)
+          const response = await Api.postRequest('/checklist-svg', payload)
+          var checklistSvgId = response.data.id
           this.readChecklistSvgs()
+          return checklistSvgId
         } catch (error) {
           if (error.response) {
             console.log('Error: ', error.response)
@@ -1702,12 +1599,14 @@ export default {
     print() {
       this.printMode = true
       setTimeout(() => {
-        this.createChecklistSvg()
+        this.createChecklistSvg().then((id) => {
+          this.checklistSvgId = id
+          setTimeout(() => {
+            window.print()
+            this.printMode = false
+          }, 500)
+        })
       }, 100)
-      setTimeout(() => {
-        window.print()
-        this.printMode = false
-      }, 500)
     },
     selectApiary(id) {
       this.selectedHives = []
