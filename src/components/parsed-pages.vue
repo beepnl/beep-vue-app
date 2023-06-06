@@ -3,10 +3,10 @@
   <div v-if="pageNrs.length > 0">
     <div class="beep-label mt-n3 mt-sm-0" v-text="$t('Parsed_pages')"></div>
     <div class="rounded-border primary-border font-weight-bold">
-      <div>
-        <span v-text="$t('Number_of_processed_pages')"></span>
+      <div class="d-flex align-center">
+        <span class="mr-1" v-text="$t('Number_of_processed_pages')"></span>
         <span
-          :class="(correctPageNrs.length > 0 ? 'green' : 'red') + '--text'"
+          :class="(correctPageNrs.length > 0 ? 'green' : 'red') + '--text mr-1'"
           v-text="correctPageNrs.length"
         ></span>
         <span
@@ -14,7 +14,7 @@
           :class="(allPagesParsed ? 'green' : 'red') + '--text'"
           v-text="' / ' + selectedChecklistSvg.pages"
         ></span>
-        <v-icon v-if="allPagesParsed" class="ml-1" small color="green"
+        <v-icon v-if="allPagesParsed" class="ml-1" size="18" color="green"
           >mdi-check-circle</v-icon
         >
       </div>
@@ -29,44 +29,52 @@
         <span class="red--text" v-text="missingPages.join(', ')"></span>
       </div>
 
-      <div v-if="selectedChecklistSvg.id && wrongSvgIds.length > 0">
+      <div
+        v-if="selectedChecklistSvg.id && wrongSvgIds.length > 0"
+        class="d-flex align-center"
+      >
         <span
+          class="mr-1"
           v-text="
             !svgIdsAllWrong
               ? $tc('Check_svg_id_for_page', wrongSvgIds.length) + ': '
               : $t('All_svg_ids_incorrect')
           "
         ></span>
-        <v-icon v-if="svgIdsAllWrong" class="ml-1" small color="red"
+        <v-icon v-if="svgIdsAllWrong" class="mr-1" size="18" color="red"
           >mdi-close-circle</v-icon
         >
+
         <span
           v-if="!svgIdsAllWrong"
-          class="red--text"
+          class="red--text mr-1"
           v-text="wrongSvgIds.join(', ')"
         ></span>
         <span
-          class="beep-label"
+          class="beep-label mb-0 mr-1"
           v-text="
             ' (' + $t('correct_svg_id') + ': ' + selectedChecklistSvg.id + ')'
           "
         ></span>
         <v-icon
-          class="mdi mdi-information icon-info cursor-pointer ml-1"
+          class="mdi mdi-information icon-info cursor-pointer"
           dark
           small
           :color="showExplanation ? 'accent' : 'grey'"
           @click="showExplanation = !showExplanation"
         ></v-icon>
-
-        <div v-if="showExplanation" class="beep-label">
-          <em>{{ $t('Svg_id_exp') }} </em>
-        </div>
       </div>
 
-      <div v-if="selectedChecklistSvg.id && wrongSvgIds.length === 0">
+      <div v-if="showExplanation" class="beep-label">
+        <em>{{ $t('Svg_id_exp') }} </em>
+      </div>
+
+      <div
+        v-if="selectedChecklistSvg.id && wrongSvgIds.length === 0"
+        class="d-flex align-center"
+      >
         <span v-text="$t('All_svg_ids_correct')"></span>
-        <v-icon class="ml-1" small color="green">mdi-check-circle</v-icon>
+        <v-icon class="ml-1" size="18" color="green">mdi-check-circle</v-icon>
       </div>
     </div>
   </div>
