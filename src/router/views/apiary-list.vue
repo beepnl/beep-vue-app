@@ -760,6 +760,7 @@ export default {
     deviceInterval: 600000,
     hiddenApiaries: [],
     hiddenGroups: [],
+    maxHiveTagNr: 40,
   }),
   computed: {
     ...mapGetters('alerts', ['alerts']),
@@ -986,6 +987,9 @@ export default {
 
       return propertyFilteredHiveSets
     },
+    hiveIndex() {
+      return this.$route.query.hive_index
+    },
     hiveSearch: {
       get() {
         return this.$store.getters['locations/hiveSearch']
@@ -1083,7 +1087,7 @@ export default {
     }
   },
   created() {
-    if (this.$route.query.hive_index !== undefined) {
+    if (this.hiveIndex !== undefined) {
       this.readHiveTagsIfNotChecked().then((hivetags) => {
         this.hiveTagRedirect(hivetags)
       })
@@ -1381,19 +1385,24 @@ export default {
         : this.hiddenGroups.includes(hiveSet.id)
     },
     hiveTagRedirect(hivetags) {
-      var filteredHiveTags = hivetags.filter(
-        (hiveTag) => hiveTag.tag === this.$route.query.hive_index
-      )
+      var doubleDigits = this.hiveIndex.length > 1
+      var tag = doubleDigits ? this.hiveIndex : '0' + this.hiveIndex
+      var filteredHiveTags = hivetags.filter((hiveTag) => hiveTag.tag === tag)
       var hiveTag = filteredHiveTags.length === 0 ? null : filteredHiveTags[0]
+      var tagExists = parseInt(tag) <= this.maxHiveTagNr
 
       if (hiveTag) {
         this.$router.push(hiveTag.router_link)
-      } else {
+      } else if (tagExists) {
         this.$router.push({
           name: 'hivetag-create-id',
           params: {
-            id: this.$route.query.hive_index,
+            id: tag,
           },
+        })
+      } else {
+        this.$router.push({
+          name: 'hivetags',
         })
       }
     },
