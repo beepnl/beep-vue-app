@@ -638,6 +638,8 @@
           checklistSvgAlreadySaved
             ? checklistSvgAlreadySaved.id
             : checklistSvgId
+            ? checklistSvgId
+            : ''
         "
         :new-svg-name="newSvgName"
         :print-mode="printMode"
@@ -728,7 +730,7 @@ export default {
       normalizerChecklistSvg(node) {
         return {
           id: node.id,
-          label: node.name,
+          label: node.name + ' (Print ID: ' + node.id + ')',
         }
       },
       selectModes: [
@@ -992,6 +994,7 @@ export default {
           }
         }
         this.selectedMode = value
+        this.errorMessage = null
       },
     },
     sortedHiveSets() {

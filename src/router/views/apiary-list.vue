@@ -760,7 +760,7 @@ export default {
     deviceInterval: 600000,
     hiddenApiaries: [],
     hiddenGroups: [],
-    maxHiveTagNr: 40,
+    maxHiveTagNr: 80, // TODO check actual number of possible hivetags
   }),
   computed: {
     ...mapGetters('alerts', ['alerts']),

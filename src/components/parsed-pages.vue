@@ -1,50 +1,49 @@
 <!-- eslint-disable vue/comma-dangle -->
 <template>
-  <div v-if="offlineInputPageNrs.length > 0">
+  <div v-if="pageNrs.length > 0">
     <div class="beep-label mt-n3 mt-sm-0" v-text="$t('Parsed_pages')"></div>
     <div class="rounded-border primary-border font-weight-bold">
       <div>
         <span v-text="$t('Number_of_processed_pages')"></span>
         <span
-          :class="
-            (offlineInputCorrectPageNrs.length > 0 ? 'green' : 'red') + '--text'
-          "
-          v-text="offlineInputCorrectPageNrs.length"
+          :class="(correctPageNrs.length > 0 ? 'green' : 'red') + '--text'"
+          v-text="correctPageNrs.length"
         ></span>
         <span
           v-if="selectedChecklistSvg"
-          :class="(offlineInputAllPagesParsed ? 'green' : 'red') + '--text'"
+          :class="(allPagesParsed ? 'green' : 'red') + '--text'"
           v-text="' / ' + selectedChecklistSvg.pages"
         ></span>
+        <v-icon v-if="allPagesParsed" class="ml-1" small color="green"
+          >mdi-check-circle</v-icon
+        >
       </div>
 
-      <div v-if="offlineInputIncorrectPageNrs.length > 0">
+      <div v-if="incorrectPageNrs.length > 0">
         <span v-text="$t('Incorrectly_uploaded_pages')"></span>
-        <span
-          class="red--text"
-          v-text="offlineInputIncorrectPageNrs.join(', ')"
-        ></span>
+        <span class="red--text" v-text="incorrectPageNrs.join(', ')"></span>
       </div>
 
-      <div v-if="offlineInputMissingPages.length > 0">
-        <span
-          v-text="$tc('Missing_page', offlineInputMissingPages.length) + ': '"
-        ></span>
-        <span
-          class="red--text"
-          v-text="offlineInputMissingPages.join(', ')"
-        ></span>
+      <div v-if="missingPages.length > 0">
+        <span v-text="$tc('Missing_page', missingPages.length) + ': '"></span>
+        <span class="red--text" v-text="missingPages.join(', ')"></span>
       </div>
 
-      <div v-if="selectedChecklistSvg.id && offlineInputWrongSvgIds.length > 0">
+      <div v-if="selectedChecklistSvg.id && wrongSvgIds.length > 0">
         <span
           v-text="
-            $tc('Check_svg_id_for_page', offlineInputWrongSvgIds.length) + ': '
+            !svgIdsAllWrong
+              ? $tc('Check_svg_id_for_page', wrongSvgIds.length) + ': '
+              : $t('All_svg_ids_incorrect')
           "
         ></span>
+        <v-icon v-if="svgIdsAllWrong" class="ml-1" small color="red"
+          >mdi-close-circle</v-icon
+        >
         <span
+          v-if="!svgIdsAllWrong"
           class="red--text"
-          v-text="offlineInputWrongSvgIds.join(', ')"
+          v-text="wrongSvgIds.join(', ')"
         ></span>
         <span
           class="beep-label"
@@ -63,6 +62,11 @@
         <div v-if="showExplanation" class="beep-label">
           <em>{{ $t('Svg_id_exp') }} </em>
         </div>
+      </div>
+
+      <div v-if="selectedChecklistSvg.id && wrongSvgIds.length === 0">
+        <span v-text="$t('All_svg_ids_correct')"></span>
+        <v-icon class="ml-1" small color="green">mdi-check-circle</v-icon>
       </div>
     </div>
   </div>
@@ -86,38 +90,37 @@ export default {
   },
   computed: {
     ...mapGetters('inspections', ['parsedOfflineInput']),
-    offlineInputAllPagesParsed() {
+    allPagesParsed() {
       return (
         this.selectedChecklistSvg &&
-        this.offlineInputCorrectPageNrs.length ===
-          this.selectedChecklistSvg.pages
+        this.correctPageNrs.length === this.selectedChecklistSvg.pages
       )
     },
-    offlineInputCorrectPageNrs() {
-      var hasPageNrs = this.offlineInputPageNrs.length > 0
+    correctPageNrs() {
+      var hasPageNrs = this.pageNrs.length > 0
 
-      var correctPageNrs = this.offlineInputPageNrs
+      var correctPageNrs = this.pageNrs
         .filter((item) => item.value[0].indexOf(item.category_id) > -1)
         .map((item) => parseInt(item.category_id))
 
       return hasPageNrs ? correctPageNrs : false
     },
-    offlineInputIncorrectPageNrs() {
-      var hasPageNrs = this.offlineInputPageNrs.length > 0
+    incorrectPageNrs() {
+      var hasPageNrs = this.pageNrs.length > 0
 
-      var incorrectPageNrs = this.offlineInputPageNrs
+      var incorrectPageNrs = this.pageNrs
         .filter((item) => item.value[0].indexOf(item.category_id) === -1)
         .map((item) => parseInt(item.category_id))
 
       return hasPageNrs ? incorrectPageNrs : false
     },
-    offlineInputMissingPages() {
+    missingPages() {
       var missingPages = []
       if (this.selectedChecklistSvg) {
         for (var i = 1; i <= this.selectedChecklistSvg.pages; i++) {
           if (
-            !this.offlineInputCorrectPageNrs.includes(i) &&
-            !this.offlineInputIncorrectPageNrs.includes(i)
+            !this.correctPageNrs.includes(i) &&
+            !this.incorrectPageNrs.includes(i)
           ) {
             missingPages.push(i)
           }
@@ -125,7 +128,7 @@ export default {
       }
       return missingPages
     },
-    offlineInputPageNrs() {
+    pageNrs() {
       var returnedPageNrs = this.parsedOfflineInput.scans
         .map((el) => {
           return el.scan.filter(
@@ -139,20 +142,27 @@ export default {
 
       return returnedPageNrs
     },
-    offlineInputWrongSvgIds() {
+    wrongSvgIds() {
       var pagesWrongSvgIds = []
-      this.parsedOfflineInput.scans.map((el) => {
-        return el.scan.map((answer) => {
-          if (
-            answer.parent_category_id !== undefined &&
-            answer.parent_category_id === 'svgid' &&
-            answer.value[0].indexOf(answer.category_id) === -1
-          ) {
-            pagesWrongSvgIds.push(el.page)
-          }
+      if (this.selectedChecklistSvg) {
+        this.parsedOfflineInput.scans.map((el) => {
+          return el.scan.map((answer) => {
+            if (
+              answer.parent_category_id !== undefined &&
+              answer.parent_category_id === 'svgid' &&
+              answer.value[0].indexOf(
+                this.selectedChecklistSvg.id.toString()
+              ) === -1
+            ) {
+              pagesWrongSvgIds.push(el.page)
+            }
+          })
         })
-      })
+      }
       return pagesWrongSvgIds
+    },
+    svgIdsAllWrong() {
+      return this.wrongSvgIds.length === this.pageNrs.length
     },
   },
 }
