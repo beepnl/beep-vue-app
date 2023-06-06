@@ -388,17 +388,15 @@ export const parseDate = {
   },
   methods: {
     parseDate(input) {
-      var nothingMissing = input.length === 12
-      if (nothingMissing) {
-        var minutes = input.slice(10, 12).join('')
-        var hour = input.slice(8, 10).join('')
-        var day = input.slice(6, 8).join('')
-        var month = input.slice(4, 6).join('')
-        var year = input.slice(0, 4).join('')
-        var date =
-          year + '-' + month + '-' + day + ' ' + hour + ':' + minutes + ':00'
-        var makesSense =
-          nothingMissing &&
+      var dateStr = this.$moment(input).format('YYYY-MM-DD HH:mm')
+      var makesSense = false
+      if (dateStr !== 'Invalid date') {
+        var year = dateStr.substring(0, 4)
+        var month = dateStr.substring(5, 7)
+        var day = dateStr.substring(8, 10)
+        var hour = dateStr.substring(11, 13)
+        var minutes = dateStr.substring(14, 16)
+        makesSense =
           parseInt(year) >= this.currentYear &&
           parseInt(year) <= this.currentYear + 2 &&
           parseInt(month) <= 12 &&
@@ -406,9 +404,31 @@ export const parseDate = {
           parseInt(hour) <= 24 &&
           parseInt(minutes) <= 59
       }
-
-      return makesSense ? date : input.length > 0 ? '' : null
+      var output = makesSense ? dateStr : input.length > 0 ? '' : null
+      return output
     },
+    // parseDate(input) { // TODO remove if single-digits won't be used for sure
+    //   var nothingMissing = input.length === 12
+    //   if (nothingMissing) {
+    //     var minutes = input.slice(10, 12).join('')
+    //     var hour = input.slice(8, 10).join('')
+    //     var day = input.slice(6, 8).join('')
+    //     var month = input.slice(4, 6).join('')
+    //     var year = input.slice(0, 4).join('')
+    //     var date =
+    //       year + '-' + month + '-' + day + ' ' + hour + ':' + minutes + ':00'
+    //     var makesSense =
+    //       nothingMissing &&
+    //       parseInt(year) >= this.currentYear &&
+    //       parseInt(year) <= this.currentYear + 2 &&
+    //       parseInt(month) <= 12 &&
+    //       parseInt(day) <= 31 &&
+    //       parseInt(hour) <= 24 &&
+    //       parseInt(minutes) <= 59
+    //   }
+
+    //   return makesSense ? date : input.length > 0 ? '' : null
+    // },
   },
 }
 

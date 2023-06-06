@@ -8,6 +8,32 @@
       >
         {{ checklistHeaderText }}
       </text>
+
+      <text
+        :x="pageWidth - (xMargin + 37) + 'mm'"
+        :y="(pageNumber - 1) * pageHeight + 7 + 'mm'"
+        :style="svgLabel"
+      >
+        {{ 'Print ID' }}
+      </text>
+      <rect
+        data-type="number"
+        :data-parent-category-id="'svgid'"
+        :x="pageWidth - (xMargin + 37) + 'mm'"
+        :y="(pageNumber - 1) * pageHeight + 7.5 + 'mm'"
+        width="16mm"
+        height="5mm"
+        stroke="black"
+        fill="transparent"
+        :stroke-width="strokeWidth"
+      />
+      <text
+        :x="pageWidth - (xMargin + 36) + 'mm'"
+        :y="(pageNumber - 1) * pageHeight + 11.5 + 'mm'"
+        :style="svgText"
+      >
+        {{ checklistSvgId }}
+      </text>
       <rect
         data-type="number"
         :data-parent-category-id="'pagenr'"
@@ -15,14 +41,14 @@
         :x="pageWidth - (xMargin + 18.8) + 'mm'"
         :y="(pageNumber - 1) * pageHeight + 7.5 + 'mm'"
         width="6mm"
-        height="6mm"
+        height="5mm"
         stroke="black"
         fill="transparent"
         :stroke-width="strokeWidth"
       />
       <text
         :x="pageWidth - (xMargin + (doubleDigits ? 18 : 17)) + 'mm'"
-        :y="(pageNumber - 1) * pageHeight + 12 + 'mm'"
+        :y="(pageNumber - 1) * pageHeight + 11.5 + 'mm'"
         :style="svgText"
       >
         {{ pageNumber }}
@@ -96,6 +122,11 @@ export default {
       type: String,
       required: true,
       default: '',
+    },
+    checklistSvgId: {
+      type: Number,
+      default: 0,
+      required: false,
     },
     pageNumber: {
       type: Number,

@@ -18,13 +18,13 @@
       :items="item.children"
     />
 
-    <svgDate
-      v-if="item.input === 'date'"
+    <!-- <svgDate
+      v-if="item.input === 'date'" // TODO: remove when single-digits won't be used anymore for sure
       :position="position"
       :label="labelWithHeader"
       :time="true"
       :columns="1"
-    />
+    /> -->
 
     <svgGradeRating
       v-if="item.input === 'grade'"
@@ -56,10 +56,12 @@
         item.input === 'number' ||
           item.input === 'number_0_decimals' ||
           item.input === 'number_positive' ||
-          item.input === 'slider'
+          item.input === 'slider' ||
+          item.input === 'date'
       "
       :position="position"
       :label="labelWithHeader"
+      :input-type="item.input"
     />
 
     <svgNumber
@@ -187,7 +189,7 @@
 </template>
 
 <script>
-import svgDate from '@components/svg/svg-date.vue'
+// import svgDate from '@components/svg/svg-date.vue' // TODO remove when single-digits won't be used for sure
 // import imageUploader from '@components/svg/image-uploader.vue'
 // import sampleCode from '@components/svg/sample-code.vue'
 import svgGradeRating from '@components/svg/svg-grade-rating.vue'
@@ -202,7 +204,7 @@ export default {
   name: 'SvgInput',
   components: {
     // SvgFieldset: () => import('@components/svg/svg-fieldset.vue'), // needed to fix Vue recursive component error
-    svgDate,
+    // svgDate, // TODO remove when single-digits won't be used for sure
     // imageUploader,
     // labelWithDescription,
     // sampleCode,

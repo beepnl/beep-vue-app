@@ -1061,6 +1061,17 @@ const translations = {
     'TODO: write bullets: use scanner, good lighting, flat surface, all 4 corner squares inside the image, double check page numbers, double check name + date',
   Uploading_images_be_patient:
     'Please wait a moment, your images are being parsed. This may take several minutes. Please do not close this window.',
+  Parsed_pages: 'Parsed pages',
+  Number_of_processed_pages: 'Number of parsed pages: ',
+  Incorrectly_uploaded_pages: 'Incorrectly uploaded page numbers: ',
+  Missing_page: 'Missing page number | Missing page numbers',
+  Check_svg_id_for_page:
+    'Check Print ID for page number | Check Print ID for page numbers',
+  correct_svg_id: 'correct Print ID',
+  Svg_id_exp:
+    'The Print ID can be found at the top right of the page, to the left of the page number. Upload the paper inspection again with the correct pages and/or select the correct printed checklist',
+  All_svg_ids_correct: 'Correct printed checklist has been selected',
+  All_svg_ids_incorrect: 'Incorrect printed checklist has been selected',
 
   /* Compare module */
   Load: 'Load',

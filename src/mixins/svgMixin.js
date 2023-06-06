@@ -59,6 +59,7 @@ export const svgData = {
       },
       maxNrOfItems: 10,
       maxItemLength: 29,
+      maxFieldWidth: 43,
       textFieldWidth: 25,
       cornerBoxSize: 6,
       cornerMargin: 7,

@@ -1020,6 +1020,17 @@ const translations = {
     'TODO: write bullets: use scanner, good lighting, flat surface, all 4 corner squares inside the image, double check page numbers, double check name + date',
   Uploading_images_be_patient:
     'Even geduld a.u.b., uw afbeeldingen worden geanalyseerd. Dit kan enkele minuten duren. Sluit dit venster niet.',
+  Parsed_pages: "Verwerkte pagina's",
+  Number_of_processed_pages: "Aantal verwerkte pagina's: ",
+  Incorrectly_uploaded_pages: 'Incorrect geuploade paginanummers: ',
+  Missing_page: 'Ontbrekend paginanummer | Ontbrekende paginanummers',
+  Check_svg_id_for_page:
+    'Controleer Print ID voor paginanummer | Controleer Print ID voor paginanummers',
+  correct_svg_id: 'juiste Print ID',
+  Svg_id_exp:
+    "Het Print ID vind je rechts bovenaan de pagina, links van het paginanummer. Upload de papieren inspectie opnieuw met de juiste pagina's en/of de juiste geprinte kastkaart geselecteerd.",
+  All_svg_ids_correct: 'Juiste geprinte kastkaart geselecteerd',
+  All_svg_ids_incorrect: 'Verkeerde geprinte kastkaart geselecteerd',
 
   /* Compare module */
   Load: 'Laden',

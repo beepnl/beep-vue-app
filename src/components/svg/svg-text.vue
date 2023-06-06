@@ -23,7 +23,7 @@
       v-if="inputTypeNotPresent"
       data-type="text"
       :x1="x + 'mm'"
-      :x2="x + 43 + 'mm'"
+      :x2="x + maxFieldWidth + 'mm'"
       :y1="y + 10 + 'mm'"
       :y2="y + 10 + 'mm'"
       stroke="black"
@@ -45,8 +45,8 @@
       :data-parent-category-id="position.id"
       :x="x + 'mm'"
       :y="y + 2 + 'mm'"
-      :width="width"
-      :height="height"
+      :width="(width ? width : maxFieldWidth) + 'mm'"
+      :height="height + 'mm'"
       stroke="black"
       fill="transparent"
       :stroke-width="strokeWidth"
@@ -58,7 +58,7 @@
       :data-parent-category-id="position.id"
       :x="x + 'mm'"
       :y="y + 2 + 'mm'"
-      :width="width"
+      :width="(width ? width : maxFieldWidth) + 'mm'"
       height="11mm"
       stroke="black"
       fill="transparent"
@@ -91,14 +91,14 @@ export default {
       default: false,
     },
     width: {
-      type: String,
+      type: Number,
       required: false,
-      default: '43mm',
+      default: null,
     },
     height: {
-      type: String,
+      type: Number,
       required: false,
-      default: '27mm',
+      default: 27,
     },
     line: {
       type: Boolean,

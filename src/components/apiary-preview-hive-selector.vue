@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div class="d-flex align-end apiary-preview">
+    <div
+      :class="'d-flex align-end apiary-preview' + (markRed ? ' mark-red' : '')"
+    >
       <div
         v-for="(hive, j) in sortedHives"
         :key="j"
@@ -108,31 +110,6 @@ import { orderedLayers } from '@mixins/methodsMixin'
 export default {
   mixins: [orderedLayers],
   props: {
-    hives: {
-      type: Array,
-      default: null,
-      required: true,
-    },
-    hivesEditable: {
-      type: Array,
-      default: () => [],
-      required: false,
-    },
-    hivesSelected: {
-      type: Array,
-      default: () => [],
-      required: false,
-    },
-    groupMode: {
-      type: Boolean,
-      default: false,
-      required: false,
-    },
-    inspectionMode: {
-      type: Boolean,
-      default: false,
-      required: false,
-    },
     compareMode: {
       type: Boolean,
       default: false,
@@ -153,7 +130,37 @@ export default {
       default: false,
       required: false,
     },
+    groupMode: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
+    hives: {
+      type: Array,
+      default: null,
+      required: true,
+    },
+    hivesEditable: {
+      type: Array,
+      default: () => [],
+      required: false,
+    },
+    hivesSelected: {
+      type: Array,
+      default: () => [],
+      required: false,
+    },
+    inspectionMode: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
     largeSize: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
+    markRed: {
       type: Boolean,
       default: false,
       required: false,
@@ -210,6 +217,9 @@ export default {
 .apiary-preview {
   overflow-x: auto;
   overflow-y: hidden;
+  &.mark-red {
+    background-color: $color-red-light !important;
+  }
 }
 
 .hive-in-group,

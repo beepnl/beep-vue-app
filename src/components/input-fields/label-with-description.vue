@@ -113,18 +113,18 @@
             <span v-text="presetItems[j]"></span>
           </div>
 
-          <div v-if="precision > 0 && j === 2">
+          <!-- <div v-if="precision > 0 && j === 2"> // TODO remove if single-digits won't be used for sure
             <div class="img-helper dot" v-text="'.'"></div>
-          </div>
+          </div> -->
 
-          <div v-else-if="parsedDate && j !== 1 && (j - 3) % 2 === 0">
+          <!-- <div v-else-if="parsedDate && j !== 1 && (j - 3) % 2 === 0"> // TODO remove if single-digits won't be used for sure
             <div v-if="j === 7" class="mr-3"></div>
             <div
               v-else
               class="img-helper"
               v-text="j === 3 || j === 5 ? '-' : j === 9 ? ':' : ''"
             ></div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
