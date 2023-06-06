@@ -19,7 +19,6 @@
       <rect
         data-type="number"
         :data-parent-category-id="'svgid'"
-        :data-category-id="checklistSvgId"
         :x="pageWidth - (xMargin + 37) + 'mm'"
         :y="(pageNumber - 1) * pageHeight + 7.5 + 'mm'"
         width="16mm"
