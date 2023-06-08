@@ -1,6 +1,6 @@
 {
   "name": "beep-ui",
-  "version": "4.0.6",
+  "version": "4.0.7",
   "private": true,
   "scripts": {
     "build": "cross-env NODE_ENV=production vue-cli-service build",
@@ -34,7 +34,7 @@
     "axios-actions": "^4.0.2",
     "chart.js": "^3.8.2",
     "chartjs-adapter-moment": "^1.0.0",
-    "chartjs-plugin-annotation": "^1.4.0",
+    "chartjs-plugin-annotation": "^2.2.1",
     "chartjs-plugin-datalabels": "^2.0.0",
     "core-js": "^3.9.1",
     "element-ui": "^2.15.1",

@@ -14,6 +14,7 @@ import { Line as LineChart } from 'vue-chartjs/legacy'
 import {
   Chart as ChartJS,
   Filler,
+  LineController,
   LineElement,
   PointElement,
   LinearScale,
@@ -27,6 +28,7 @@ import annotationPlugin from 'chartjs-plugin-annotation'
 
 ChartJS.register(
   Filler,
+  LineController,
   LineElement,
   PointElement,
   LinearScale,
@@ -135,11 +137,11 @@ export default {
 
           label: {
             content: alert.alert_rule_name,
-            enabled: !isLine,
+            display: !isLine,
             drawTime: isLine ? 'afterDatasetsDraw' : 'beforeDatasetsDraw',
             color: isLine ? '#242424' : '#ff001d',
             borderRadius: 4,
-            position: 'start',
+            position: isLine ? 'center' : 'start',
             backgroundColor: !isLine ? 'transparent' : 'rgba(255, 0, 29, 0.8)',
             font: {
               size: this.mobile ? this.fontSizeMob : this.fontSize,
@@ -148,17 +150,17 @@ export default {
           },
           enter({ chart, element }, event) {
             if (isLine) {
-              element.options.label.enabled = true
-              chart.draw()
+              element.label.options.display = true
             }
             self.hoverAlert = true
+            return true
           },
           leave({ chart, element }, event) {
             if (isLine) {
-              element.options.label.enabled = false
-              chart.draw()
+              element.label.options.display = false
             }
             self.hoverAlert = false
+            return true
           },
           click({ chart, element }, event) {
             // only fire this if chart line is not hovered (because then zoom action takes prevalence)
@@ -246,8 +248,8 @@ export default {
           },
         },
         plugins:
-          self.location === 'flashlog'
-            ? self.pluginsFlashlog
+          self.location === 'flashlog' || self.location === 'compare'
+            ? self.pluginsNoAnnotation
             : self.pluginsDefault,
         onClick: function(event, chartElement) {
           if (chartElement.length > 0) {
@@ -310,22 +312,22 @@ export default {
               inspection.text !== null && inspection.text.length > 25
                 ? inspection.text.substring(0, 25) + '...'
                 : inspection.text,
-            enabled: false,
+            display: false,
             backgroundColor: 'rgba(242, 145, 0, 0.87)',
             drawTime: 'afterDatasetsDraw',
             borderRadius: 4,
             color: '#242424',
-            position: 'start',
+            position: 'center',
           },
           enter({ chart, element }, event) {
-            element.options.label.enabled = true
-            chart.draw()
+            element.label.options.display = true
             self.hoverInspection++
+            return true
           },
           leave({ chart, element }, event) {
-            element.options.label.enabled = false
-            chart.draw()
+            element.label.options.display = false
             self.hoverInspection--
+            return true
           },
           click({ chart, element }, event) {
             // only fire this if chart line is not hovered (because then zoom action takes prevalence)
@@ -351,7 +353,9 @@ export default {
       const self = this
       return {
         annotation: {
-          drawTime: 'afterDatasetsDraw',
+          common: {
+            drawTime: 'afterDatasetsDraw',
+          },
           annotations: Object.assign(
             self.inspectionsForLineCharts,
             self.alertsForLineCharts
@@ -440,8 +444,8 @@ export default {
         },
       }
     },
-    pluginsFlashlog() {
-      // remove annotation plugin for flashlog page as it is not used and causes an issue where multiple charts on one page won't be reactive
+    pluginsNoAnnotation() {
+      // remove annotation plugin for flashlog page + compare card as it is not used and causes an issue where multiple charts on one page won't be reactive
       // see to paragraph https://vue-chartjs.org/guide/#chartjs-plugin-annotation (only for Vue 2)
       const plugins = { ...this.pluginsDefault }
       delete plugins.annotation
