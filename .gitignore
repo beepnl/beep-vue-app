@@ -33,6 +33,6 @@ yarn-error.log*
 *.sln
 *.sw*
 
-!.eslintrc.js
-!.prettierrc.js
-!.vuepress/config.js
+!.eslintrc.cjs
+!.prettierrc.cjs
+!.vuepress/config.cjs
