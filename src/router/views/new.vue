@@ -9,7 +9,7 @@
         <ul>
           <li>
             <router-link :to="{ name: 'measurements' }"> Data:</router-link>
-            issue where sound data was not shown for some devices has been fixed
+            fix for issue where sound data was not shown for some devices
           </li>
           <li>Bugfixes: small fixes for issues received as feedback</li>
         </ul>
