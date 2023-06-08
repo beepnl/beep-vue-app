@@ -23,7 +23,6 @@ import {
 } from 'chart.js'
 import 'chartjs-adapter-moment'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
-import annotationPlugin from 'chartjs-plugin-annotation'
 
 ChartJS.register(
   BarElement,
@@ -33,8 +32,7 @@ ChartJS.register(
   TimeSeriesScale,
   Legend,
   Tooltip,
-  ChartDataLabels,
-  annotationPlugin
+  ChartDataLabels
 )
 
 export default {
@@ -47,11 +45,6 @@ export default {
     chartId: {
       type: String,
       default: '',
-    },
-    alertsForCharts: {
-      type: Array,
-      default: () => [],
-      required: false,
     },
     interval: {
       default: 'day',
@@ -95,75 +88,12 @@ export default {
         day: 'hour',
         hour: 'minute',
       },
-      hoverInspection: 0,
-      hoverAlert: false,
-      hoverLine: false,
     }
   },
   computed: {
-    alertsForLineCharts() {
-      const self = this
-
-      var alertsForLineCharts = {}
-
-      this.alertsForCharts.map((alert, index) => {
-        // when alert is triggered at a single moment instead of over a longer period
-        // display it as a line instead of box such that the label can be shown as a tooltip on hover, similar to the inspection lines
-        var isLine = alert.min === alert.max
-
-        alertsForLineCharts['alert' + index] = {
-          type: isLine ? 'line' : 'box',
-          xMin: alert.min,
-          xMax: alert.max,
-          borderWidth: 2,
-          backgroundColor: 'rgba(255, 0, 29, 0.05)',
-          borderColor: 'rgba(255, 0, 29, 0.5)',
-          borderDash: [3, 2],
-          drawTime: 'afterDatasetsDraw',
-
-          label: {
-            content: alert.alert_rule_name,
-            enabled: !isLine,
-            drawTime: isLine ? 'afterDatasetsDraw' : 'beforeDatasetsDraw',
-            color: isLine ? '#242424' : '#ff001d',
-            borderRadius: 4,
-            position: 'start',
-            backgroundColor: !isLine ? 'transparent' : 'rgba(255, 0, 29, 0.8)',
-            font: {
-              size: this.mobile ? this.fontSizeMob : this.fontSize,
-              weight: isLine ? 600 : 400,
-            },
-          },
-          enter({ chart, element }, event) {
-            if (isLine) {
-              element.options.label.enabled = true
-              chart.draw()
-            }
-            self.hoverAlert = true
-          },
-          leave({ chart, element }, event) {
-            if (isLine) {
-              element.options.label.enabled = false
-              chart.draw()
-            }
-            self.hoverAlert = false
-          },
-          click({ chart, element }, event) {
-            // only fire this if chart line is not hovered (because then zoom action takes prevalence)
-            if (!self.hoverLine) {
-              self.confirmViewAlert(alert)
-            }
-          },
-        }
-      })
-
-      return alertsForLineCharts
-    },
     chartOptions() {
       const self = this
       return {
-        // responsive: true,
-        // clip: 5, enable when using annotation boxes
         maintainAspectRatio: false,
         events: ['mousemove', 'mouseout', 'click', 'touchstart', 'touchmove'],
         scales: {
@@ -180,27 +110,6 @@ export default {
             //   lineWidth: (ctx) => (ctx.tick.label === 0 ? 3 : 1),
             // },
           },
-          // x: {
-          //   type: 'time',
-          //   display: true,
-          //   min: this.startTime,
-          //   max: this.endTime,
-          //   ticks: {
-          //     color: '#242424',
-          //     source: 'auto',
-          //     autoSkip: true,
-          //     font: {
-          //       size: this.mobile ? this.fontSizeMob : this.fontSize,
-          //     },
-          //   },
-          //   time: {
-          //     unit: this.intervalToUnit[this.interval],
-          //     round: false,
-          //     parser: this.chartParseFmt,
-          //     tooltipFormat: this.tooltipFormat,
-          //     displayFormats: this.displayFormats,
-          //   },
-          // },
           y: {
             ticks: {
               color: '#242424',
@@ -228,34 +137,7 @@ export default {
             right: 24,
           },
         },
-        plugins:
-          self.location === 'flashlog' || self.location === 'compare'
-            ? self.pluginsNoAnnotation
-            : self.pluginsDefault,
-        onClick: function(event, chartElement) {
-          if (chartElement.length > 0) {
-            const item = chartElement[0]
-            self.setPeriodToDate(item.element.$context.raw.x)
-          }
-        },
-        onHover: (event, chartElement) => {
-          if (
-            self.location !== 'flashlog' &&
-            event.native.target.style !== undefined
-          ) {
-            // keep track of whether chart line is hovered, because if that is the case (hoverLine === true) the other click events (confirmViewAlert, confirmViewInspection) should not be fired
-            // if line is hovered, just zoom in or out, do not fire other events
-            self.hoverLine = chartElement[0]
-
-            event.native.target.style.cursor = chartElement[0]
-              ? self.interval === 'hour'
-                ? 'zoom-out'
-                : 'zoom-in'
-              : self.hoverInspection === 0 && !self.hoverAlert
-              ? 'default'
-              : 'pointer'
-          }
-        },
+        plugins: self.pluginsDefault,
       }
     },
     displayFormats() {
@@ -274,10 +156,6 @@ export default {
     pluginsDefault() {
       const self = this
       return {
-        annotation: {
-          drawTime: 'afterDatasetsDraw',
-          annotations: Object.assign(self.alertsForLineCharts),
-        },
         datalabels: {
           align: 'end',
           padding: {
@@ -361,13 +239,6 @@ export default {
         },
       }
     },
-    pluginsNoAnnotation() {
-      // remove annotation plugin for flashlog page and compare card as it is not used and causes an issue where multiple charts on one page won't be reactive
-      // see to paragraph https://vue-chartjs.org/guide/#chartjs-plugin-annotation (only for Vue 2)
-      const plugins = { ...this.pluginsDefault }
-      delete plugins.annotation
-      return plugins
-    },
     touchDevice() {
       return window.matchMedia('(hover: none)').matches
     },
@@ -381,9 +252,6 @@ export default {
     this.$moment.locale(this.locale)
   },
   methods: {
-    confirmViewAlert(alert) {
-      this.$emit('confirm-view-alert', alert)
-    },
     legendClickHandler(e, legendItem, legend) {
       const defaultLegendClickHandler = ChartJS.defaults.plugins.legend.onClick
       const multipleLines = legend.chart.data.datasets.length > 1
@@ -404,9 +272,6 @@ export default {
     },
     roundDec(num, dec) {
       return Math.round(num * Math.pow(10, dec)) / Math.pow(10, dec)
-    },
-    setPeriodToDate(date) {
-      this.$emit('set-period-to-date', date)
     },
   },
 }
