@@ -151,8 +151,6 @@
               :end-time="periodEndString"
               :chart-id="'bar-' + j"
               :location="'compare'"
-              @confirm-view-alert="confirmViewAlert($event)"
-              @set-period-to-date="setPeriodToDate($event)"
             >
             </MeasurementsChartBar>
           </div>

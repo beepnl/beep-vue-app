@@ -138,7 +138,7 @@ export default {
           label: {
             content: alert.alert_rule_name,
             display: !isLine,
-            drawTime: isLine ? 'afterDatasetsDraw' : 'beforeDatasetsDraw',
+            drawTime: isLine ? 'afterDraw' : 'beforeDatasetsDraw',
             color: isLine ? '#242424' : '#ff001d',
             borderRadius: 4,
             position: isLine ? 'center' : 'start',
@@ -314,7 +314,7 @@ export default {
                 : inspection.text,
             display: false,
             backgroundColor: 'rgba(242, 145, 0, 0.87)',
-            drawTime: 'afterDatasetsDraw',
+            drawTime: 'afterDraw',
             borderRadius: 4,
             color: '#242424',
             position: 'center',
