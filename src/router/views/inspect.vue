@@ -635,13 +635,6 @@
         v-if="selectedChecklist"
         :selected-checklist="selectedChecklist"
         :checklist-svg-already-saved="checklistSvgAlreadySaved"
-        :checklist-svg-id="
-          checklistSvgAlreadySaved
-            ? checklistSvgAlreadySaved.id
-            : checklistSvgId
-            ? checklistSvgId
-            : ''
-        "
         :new-svg-name="newSvgName"
         :print-mode="printMode"
         :total-pages="totalPages"

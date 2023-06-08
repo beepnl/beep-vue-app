@@ -243,7 +243,6 @@
           :open-by-default="true"
           :show-chart-cols-icons="true"
           @set-chart-cols="chartCols = $event"
-          @redraw-charts-compare="redrawChartsCompare"
         >
           <v-row>
             <v-col

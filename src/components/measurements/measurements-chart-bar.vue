@@ -229,8 +229,8 @@ export default {
           },
         },
         plugins:
-          self.location === 'flashlog'
-            ? self.pluginsFlashlog
+          self.location === 'flashlog' || self.location === 'compare'
+            ? self.pluginsNoAnnotation
             : self.pluginsDefault,
         onClick: function(event, chartElement) {
           if (chartElement.length > 0) {
@@ -361,8 +361,8 @@ export default {
         },
       }
     },
-    pluginsFlashlog() {
-      // remove annotation plugin for flashlog page as it is not used and causes an issue where multiple charts on one page won't be reactive
+    pluginsNoAnnotation() {
+      // remove annotation plugin for flashlog page and compare card as it is not used and causes an issue where multiple charts on one page won't be reactive
       // see to paragraph https://vue-chartjs.org/guide/#chartjs-plugin-annotation (only for Vue 2)
       const plugins = { ...this.pluginsDefault }
       delete plugins.annotation

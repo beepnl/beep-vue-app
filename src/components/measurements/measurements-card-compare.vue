@@ -82,7 +82,8 @@
 
     <v-row
       v-if="
-        compareMeasurementData !== null &&
+        measurementData !== null &&
+          compareMeasurementData !== null &&
           compareMeasurementData.measurements &&
           compareMeasurementData.measurements.length > 0
       "
@@ -117,6 +118,7 @@
               :start-time="periodStartString"
               :end-time="periodEndString"
               :chart-id="'compare-' + index"
+              :location="'compare'"
               @confirm-view-alert="confirmViewAlert($event)"
               @confirm-view-inspection="
                 confirmViewInspection($event.id, $event.date)
@@ -148,6 +150,7 @@
               :start-time="periodStartString"
               :end-time="periodEndString"
               :chart-id="'bar-' + j"
+              :location="'compare'"
               @confirm-view-alert="confirmViewAlert($event)"
               @set-period-to-date="setPeriodToDate($event)"
             >
