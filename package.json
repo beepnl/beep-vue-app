@@ -40,7 +40,7 @@
     "element-ui": "^2.15.1",
     "kind-of": ">=6.0.3",
     "lodash": "^4.17.21",
-    "luxon": "^1.26.0",
+    "luxon": "^1.28.1",
     "moment-timezone": "^0.5.35",
     "nprogress": "^0.2.0",
     "sortablejs": "^1.10.2",
