@@ -59,7 +59,7 @@ fs.writeFile(
       },
     }),
     {
-      ...import('./.prettierrc.js'),
+      ...import('./.prettierrc.cjs'),
       parser: 'json',
     }
   ),

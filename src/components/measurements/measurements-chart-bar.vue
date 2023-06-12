@@ -1,5 +1,5 @@
 <template>
-  <Bar
+  <BarChart
     ref="Bar"
     :chart-options="chartOptions"
     :chart-data="chartData"
@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { Bar } from 'vue-chartjs'
+import { Bar as BarChart } from 'vue-chartjs/legacy'
 import {
   Chart as ChartJS,
   BarElement,
@@ -36,7 +36,7 @@ ChartJS.register(
 )
 
 export default {
-  components: { Bar },
+  components: { BarChart },
   props: {
     chartData: {
       type: Object,

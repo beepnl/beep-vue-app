@@ -1,5 +1,5 @@
 <template>
-  <Line
+  <LineChart
     ref="line"
     :chart-options="chartOptions"
     :chart-data="chartData"
@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { Line } from 'vue-chartjs'
+import { Line as LineChart } from 'vue-chartjs/legacy'
 import {
   Chart as ChartJS,
   Filler,
@@ -40,8 +40,7 @@ ChartJS.register(
 )
 
 export default {
-  name: 'LineChart',
-  components: { Line },
+  components: { LineChart },
   props: {
     chartData: {
       type: Object,
@@ -249,7 +248,7 @@ export default {
           },
         },
         plugins:
-          self.location === 'flashlog' || self.location === 'compare'
+          self.location === 'flashlog'
             ? self.pluginsNoAnnotation
             : self.pluginsDefault,
         onClick: function(event, chartElement) {
