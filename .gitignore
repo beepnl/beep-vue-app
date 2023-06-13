@@ -36,3 +36,6 @@ yarn-error.log*
 !.eslintrc.cjs
 !.prettierrc.cjs
 !.vuepress/config.cjs
+!.eslintrc.js
+!.prettierrc.js
+!.vuepress/config.js
