@@ -1,6 +1,6 @@
 // const fs = require('fs')
-const appConfig = import('./public/manifest')
-process.env.VUE_APP_VERSION = import('./package.json').version
+const appConfig = require('./public/manifest')
+process.env.VUE_APP_VERSION = require('./package.json').version
 
 /** @type import('@vue/cli-service').ProjectOptions */
 module.exports = {
@@ -13,7 +13,7 @@ module.exports = {
     config.set('name', appConfig.title)
 
     // Set up all the aliases we use in our app.
-    config.resolve.alias.clear().merge(require('./aliases.config.cjs').webpack)
+    config.resolve.alias.clear().merge(require('./aliases.config').webpack)
 
     // Don't allow importing .vue files without the extension, as
     // it's necessary for some Vetur autocompletions.

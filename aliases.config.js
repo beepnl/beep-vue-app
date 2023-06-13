@@ -45,7 +45,7 @@ for (const alias in aliases) {
       ]
 }
 
-const jsconfigTemplate = require('./jsconfig.template.cjs') || {}
+const jsconfigTemplate = require('./jsconfig.template') || {}
 const jsconfigPath = path.resolve(__dirname, 'jsconfig.json')
 
 fs.writeFile(
@@ -59,7 +59,7 @@ fs.writeFile(
       },
     }),
     {
-      ...import('./.prettierrc.cjs'),
+      ...require('./.prettierrc.js'),
       parser: 'json',
     }
   ),
