@@ -124,6 +124,7 @@ export default {
         // when alert is triggered at a single moment instead of over a longer period
         // display it as a line instead of box such that the label can be shown as a tooltip on hover, similar to the inspection lines
         var isLine = alert.min === alert.max
+        var alwaysShowLabel = !isLine
 
         alertsForLineCharts['alert' + index] = {
           type: isLine ? 'line' : 'box',
@@ -137,8 +138,8 @@ export default {
 
           label: {
             content: alert.alert_rule_name,
-            display: !isLine,
-            drawTime: isLine ? 'afterDraw' : 'beforeDatasetsDraw',
+            display: alwaysShowLabel,
+            drawTime: !alwaysShowLabel ? 'afterDraw' : 'beforeDatasetsDraw',
             color: isLine ? '#242424' : '#ff001d',
             borderRadius: 4,
             position: isLine ? 'center' : 'start',
@@ -149,14 +150,14 @@ export default {
             },
           },
           enter({ chart, element }, event) {
-            if (isLine) {
+            if (!alwaysShowLabel) {
               element.label.options.display = true
             }
             self.hoverAlert = true
             return true
           },
           leave({ chart, element }, event) {
-            if (isLine) {
+            if (!alwaysShowLabel) {
               element.label.options.display = false
             }
             self.hoverAlert = false

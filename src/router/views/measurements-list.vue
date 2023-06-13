@@ -423,6 +423,7 @@
           :selected-device-title="selectedDeviceTitle"
           :time-index="timeIndex"
           :measurement-data="measurementData"
+          :inspections-for-charts="inspectionsForCharts"
           @confirm-view-alert="confirmViewAlert($event)"
           @confirm-view-inspection="
             confirmViewInspection($event.id, $event.date)
@@ -961,7 +962,7 @@ export default {
       this.chartCols = localStorage.beepChartCols
     }
     if (this.queriedRelativeInterval !== undefined) {
-      this.relativeInterval = this.queriedRelativeInterval === 'true'
+      this.setRelativeInterval = this.queriedRelativeInterval === 'true'
     } else if (localStorage.beepRelativeInterval) {
       this.setRelativeInterval = localStorage.beepRelativeInterval === 'true'
     }

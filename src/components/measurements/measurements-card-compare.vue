@@ -119,6 +119,7 @@
               :end-time="periodEndString"
               :chart-id="'compare-' + index"
               :location="'compare'"
+              :inspections-for-charts="inspectionsForCharts"
               @confirm-view-alert="confirmViewAlert($event)"
               @confirm-view-inspection="
                 confirmViewInspection($event.id, $event.date)
@@ -196,6 +197,11 @@ export default {
       type: String,
       default: 'day',
       required: true,
+    },
+    inspectionsForCharts: {
+      type: Array,
+      default: () => [],
+      required: false,
     },
     periodEndString: {
       type: String,
@@ -532,7 +538,6 @@ export default {
       this.$emit('confirm-view-alert', alert)
     },
     confirmViewInspection(inspectionId, inspectionDate) {
-      // TODO: add inspection lines to compare charts!
       this.$emit('confirm-view-inspection', {
         id: inspectionId,
         date: inspectionDate,
