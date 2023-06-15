@@ -101,10 +101,10 @@
 </template>
 
 <script>
-import { orderedLayers } from '@mixins/methodsMixin'
+import { getMaxFramecount, orderedLayers } from '@mixins/methodsMixin'
 
 export default {
-  mixins: [orderedLayers],
+  mixins: [getMaxFramecount, orderedLayers],
   props: {
     hives: {
       type: Array,
@@ -191,7 +191,7 @@ export default {
       var placeholder =
         this.size === 'large' ? 20 : this.size === 'medium' ? 25 : 35
       return hive.layers.length > 0
-        ? hive.layers[0].framecount * multiplier
+        ? this.getMaxFramecount(hive.layers) * multiplier
         : placeholder
     },
     selectHive(id) {
