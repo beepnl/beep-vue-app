@@ -1042,6 +1042,9 @@ const translations = {
   mean_net_weight_kg: 'Gemiddeld netto gewicht',
   net_weight_kg: 'Netto gewicht',
   overall_intake_loss: 'Totale stijging/daling',
+
+  /* below, please keep [pagenr] as is, it will be replaced by the pagenumber to be uploaded */
+  Upload_pagenr: 'Upload hier pagina [pagenr]',
 }
 
 export default translations

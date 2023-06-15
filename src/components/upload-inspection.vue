@@ -54,6 +54,7 @@
           v-for="(pageNr, i) in selectedChecklistSvg.pages"
           :key="'p-' + pageNr"
           :page-nr-text="'p.' + pageNr + ' / ' + selectedChecklistSvg.pages"
+          :page-nr="pageNr"
           @set-page-blob="setPageBlob($event, i)"
         />
       </div>

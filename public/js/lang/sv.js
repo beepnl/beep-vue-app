@@ -1083,6 +1083,9 @@ const translations = {
   mean_net_weight_kg: 'Mean net weight',
   net_weight_kg: 'Net weight',
   overall_intake_loss: 'Overall intake/loss',
+
+  /* below, please keep [pagenr] as is, it will be replaced by the pagenumber to be uploaded */
+  Upload_pagenr: 'Upload page [pagenr] here',
 }
 
 export default translations
