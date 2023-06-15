@@ -93,7 +93,9 @@ export default {
   }),
   computed: {
     uploadText() {
-      return this.$i18n.t('Upload_pagenr').replace('[pagenr]', this.pageNr)
+      return this.$i18n.te('Upload_pagenr')
+        ? this.$i18n.t('Upload_pagenr').replace('[pagenr]', this.pageNr)
+        : 'Upload page ' + this.pageNr + ' here'
     },
   },
   created() {},

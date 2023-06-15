@@ -1210,6 +1210,13 @@ const translations = {
   mean_net_weight_kg: 'Mean net weight',
   net_weight_kg: 'Net weight',
   overall_intake_loss: 'Overall intake/loss',
+  Compare_hives: 'Compare hives',
+  compare_hives_exp:
+    'Find out how the weight of your hive is developing compared to your other hives in the area. ',
+  compare_support_url:
+    'https://beepsupport.freshdesk.com/en/support/solutions/articles/60000921124-compare-hives-option',
+  compare_url_text:
+    'Here you can find more information on the Compare functionality',
 
   /* below, please keep [pagenr] as is, it will be replaced by the pagenumber to be uploaded */
   Upload_pagenr: 'Upload page [pagenr] here',
