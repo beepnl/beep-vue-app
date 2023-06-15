@@ -91,14 +91,14 @@
 
     <v-row>
       <v-col
-        v-if="loadingCompareData"
+        v-if="compareMeasurementData === null && loadingCompareData"
         class="d-flex align-center justify-center my-16"
         cols="12"
       >
         <v-progress-circular color="primary" size="50" indeterminate />
       </v-col>
       <v-col
-        v-else-if="noCompareChartData || compareMeasurementData === null"
+        v-else-if="noCompareChartData"
         cols="12"
         class="d-flex align-center justify-center my-16"
       >
@@ -115,6 +115,16 @@
       "
       class="charts mt-6 mb-2"
     >
+      <v-overlay
+        :absolute="true"
+        :value="loadingCompareData"
+        :opacity="0.5"
+        color="white"
+      >
+        <div class="loading">
+          <v-progress-circular size="50" color="primary" indeterminate />
+        </div>
+      </v-overlay>
       <template v-if="compareSensorsPresent">
         <v-col
           v-for="(sensor, index) in currentCompareSensors"
@@ -258,7 +268,7 @@ export default {
 
   data() {
     return {
-      compareMeasurementData: {},
+      compareMeasurementData: null,
       currentCompareSensors: [],
       compareSensorsPresent: false,
       noCompareChartData: false,
@@ -297,7 +307,6 @@ export default {
         interval === 'hour' || interval === 'selection' ? null : interval
       this.noCompareChartData = false
       this.loadingCompareData = true
-      this.compareMeasurementData = null // needed to let chartjs redraw charts after interval switch
       var hivecall = this.selectedHives.join('&hive_id[]=')
       try {
         const response = await Api.readRequest(
@@ -316,12 +325,12 @@ export default {
             '&relative_interval=' +
             (this.relativeInterval ? '1' : '0')
         )
-        this.compareMeasurementData = response.data
         this.formatCompareMeasurementData(response.data)
         this.ready = true
         return true
       } catch (error) {
         this.loadingCompareData = false
+        this.compareMeasurementData = null
         if (error.response) {
           console.log(error.response)
           if (
@@ -590,6 +599,7 @@ export default {
           }
         )
       } else {
+        this.compareMeasurementData = null
         this.noCompareChartData = true
       }
       this.loadingCompareData = false
@@ -623,21 +633,6 @@ export default {
           timeIndex !== null ? timeIndex : this.timeIndex
         )
       }
-    },
-    redrawCharts(seamless = true) {
-      if (this.comparingData) {
-        const temp = this.compareMeasurementData
-        if (!seamless) {
-          this.resetCharts()
-        }
-        setTimeout(() => {
-          this.formatCompareMeasurementData(temp)
-        }, 10)
-      }
-    },
-    resetCharts() {
-      this.loadingCompareData = true
-      this.compareMeasurementData = null // charts are redrawn when compareMeasurementData is null
     },
     selectHives(hives) {
       this.selectedHives = hives

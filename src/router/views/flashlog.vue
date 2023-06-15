@@ -411,8 +411,6 @@ export default {
     async checkBlockData(changeIndex = false) {
       this.clearMessages()
       this.loading = true
-      // this.blockData = null commented out because annotation plugin is disabled for the flashlog view which makes multiple charts reactive again
-      // see https://vue-chartjs.org/guide/#chartjs-plugin-annotation
       try {
         const response = await Api.readRequest(
           '/flashlogs/' +
