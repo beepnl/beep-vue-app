@@ -105,10 +105,10 @@
 </template>
 
 <script>
-import { orderedLayers } from '@mixins/methodsMixin'
+import { getMaxFramecount, orderedLayers } from '@mixins/methodsMixin'
 
 export default {
-  mixins: [orderedLayers],
+  mixins: [getMaxFramecount, orderedLayers],
   props: {
     compareMode: {
       type: Boolean,
@@ -203,7 +203,7 @@ export default {
       var multiplier = this.largeSize ? 6 : 3.5
       var placeholder = this.largeSize ? 20 : 35
       return hive.layers.length > 0
-        ? hive.layers[0].framecount * multiplier
+        ? this.getMaxFramecount(hive.layers) * multiplier
         : placeholder
     },
     selectHive(id) {

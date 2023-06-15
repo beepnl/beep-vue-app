@@ -31,10 +31,10 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { orderedLayers } from '@mixins/methodsMixin'
+import { getMaxFramecount, orderedLayers } from '@mixins/methodsMixin'
 
 export default {
-  mixins: [orderedLayers],
+  mixins: [getMaxFramecount, orderedLayers],
   props: {
     hive: {
       type: Object,
@@ -74,10 +74,11 @@ export default {
     },
     hiveWidth: function(hive) {
       if (hive.layers.length > 0) {
+        var maxFramecount = this.getMaxFramecount(hive.layers)
         if (this.xsView || this.diaryView) {
-          return hive.layers[0].framecount * 3.5
+          return maxFramecount * 3.5
         } else {
-          return hive.layers[0].framecount * 6
+          return maxFramecount * 6
         }
       } else {
         return 20

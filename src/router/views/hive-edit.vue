@@ -205,6 +205,7 @@ import Layout from '@layouts/back.vue'
 import QueenEditDetails from '@components/queen-edit-details.vue'
 import {
   checkAlerts,
+  getMaxFramecount,
   readApiariesAndGroups,
   readApiariesAndGroupsIfNotPresent,
   readDevices,
@@ -223,6 +224,7 @@ export default {
   },
   mixins: [
     checkAlerts,
+    getMaxFramecount,
     readApiariesAndGroups,
     readApiariesAndGroupsIfNotPresent,
     readDevices,
@@ -493,10 +495,7 @@ export default {
     async updateHive() {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
-        this.activeHive.frames =
-          this.activeHive.layers.length > 0
-            ? this.activeHive.layers[0].framecount
-            : 10
+        this.activeHive.frames = this.getMaxFramecount(this.activeHive.layers)
         try {
           const response = await Api.updateRequest(
             '/hives/',

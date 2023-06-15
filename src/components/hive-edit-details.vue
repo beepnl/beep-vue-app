@@ -34,7 +34,7 @@
                   v-if="hive && hive.layers"
                   :value="
                     hive.layers.length > 0
-                      ? hive.layers[0].framecount
+                      ? getMaxFramecount(hive.layers)
                       : defaultFrameCount
                   "
                   :min="1"
@@ -213,7 +213,11 @@
 <script>
 import HiveFactory from '@components/hive-factory.vue'
 import { mapGetters } from 'vuex'
-import { convertComma, readTaxonomy } from '@mixins/methodsMixin'
+import {
+  convertComma,
+  getMaxFramecount,
+  readTaxonomy,
+} from '@mixins/methodsMixin'
 import Treeselect from '@riophae/vue-treeselect'
 
 export default {
@@ -221,7 +225,7 @@ export default {
     HiveFactory,
     Treeselect,
   },
-  mixins: [convertComma, readTaxonomy],
+  mixins: [convertComma, getMaxFramecount, readTaxonomy],
   props: {
     hive: {
       type: Object,
@@ -356,7 +360,7 @@ export default {
         value = event
       }
       this.hive[property] = value
-      this.hive.frames = this.hive.layers[0].framecount
+      this.hive.frames = this.getMaxFramecount(this.hive.layers)
       this.setHiveEdited(true)
       this.setApiaryEdited(true)
     },
@@ -364,7 +368,7 @@ export default {
       this.hive.layers.forEach((layer) => {
         layer[property] = value
       })
-      this.hive.frames = this.hive.layers[0].framecount
+      this.hive.frames = this.getMaxFramecount(this.hive.layers)
       this.setHiveEdited(true)
       this.setApiaryEdited(true)
       if (property === 'color') {
