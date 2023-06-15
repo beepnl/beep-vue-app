@@ -33,10 +33,10 @@
 </template>
 
 <script>
-import { orderedLayers } from '@mixins/methodsMixin'
+import { getMaxFramecount, orderedLayers } from '@mixins/methodsMixin'
 
 export default {
-  mixins: [orderedLayers],
+  mixins: [getMaxFramecount, orderedLayers],
   props: {
     newHive: {
       type: Object,
@@ -68,7 +68,9 @@ export default {
       return hive.layers.some((layer) => layer.type === type)
     },
     hiveWidth: function(hive) {
-      return hive.layers.length > 0 ? hive.layers[0].framecount * 6 : 16
+      return hive.layers.length > 0
+        ? this.getMaxFramecount(hive.layers) * 6
+        : 16
     },
   },
 }

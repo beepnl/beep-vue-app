@@ -6,42 +6,67 @@
     :show-chart-cols-icons="true"
     @set-chart-cols="chartCols = $event"
   >
-    <v-row class="my-6">
-      <v-col cols="12" class="d-flex justify-space-between flex-wrap">
-        <v-btn
-          tile
-          outlined
-          color="black"
-          class="save-button-mobile-wide"
-          @click.prevent="selectHivesOverlay = true"
-        >
-          {{ $tc('Select_hive', 2) }}
-        </v-btn>
-        <SelectHivesOverlay
-          :show-overlay="selectHivesOverlay"
-          :overlay="selectHivesOverlay"
-          :compare-mode="true"
-          :include-groups="true"
-          @close-overlay="selectHivesOverlay = false"
-          @select-hives="selectHives($event)"
-        />
-        <ApiaryPreviewHiveSelector
-          v-if="selectedHives.length > 0 && selectedHives.length < 16"
-          class="ml-5 my-4 my-sm-0"
-          :hives="getHives(selectedHives)"
-          :hives-selected="[]"
-          :hives-editable="selectedHives"
-          :compare-mode="true"
-          :disable-sort-hives="true"
-          :not-clickable="true"
-        ></ApiaryPreviewHiveSelector>
-        <span
-          v-else
-          class="mx-3 beep-label"
-          v-text="selectedHives.join(', ')"
-        ></span>
-        <v-spacer />
-        <!-- <v-btn
+    <v-row class="my-4">
+      <v-col cols="12">
+        <div>
+          <div class="mb-2">
+            <div class="beep-label">
+              {{ $t('Compare_hives') }}
+              <v-icon
+                class="mdi mdi-information ml-1 icon-info cursor-pointer"
+                dark
+                small
+                :color="showInfo ? 'accent' : 'grey'"
+                @click="showInfo = !showInfo"
+              ></v-icon>
+            </div>
+          </div>
+
+          <p v-if="showInfo" class="info-text">
+            <em
+              >{{ $t('compare_hives_exp') + ' '
+              }}<a :href="$t('compare_support_url')" target="_blank">{{
+                $t('compare_url_text')
+              }}</a></em
+            >
+          </p>
+        </div>
+
+        <div class="d-flex justify-space-between flex-wrap">
+          <v-btn
+            tile
+            outlined
+            color="black"
+            class="save-button-mobile-wide"
+            @click.prevent="selectHivesOverlay = true"
+          >
+            {{ $tc('Select_hive', 2) }}
+          </v-btn>
+          <SelectHivesOverlay
+            :show-overlay="selectHivesOverlay"
+            :overlay="selectHivesOverlay"
+            :compare-mode="true"
+            :include-groups="true"
+            @close-overlay="selectHivesOverlay = false"
+            @select-hives="selectHives($event)"
+          />
+          <ApiaryPreviewHiveSelector
+            v-if="selectedHives.length > 0 && selectedHives.length < 16"
+            class="ml-5 my-4 my-sm-0"
+            :hives="getHives(selectedHives)"
+            :hives-selected="[]"
+            :hives-editable="selectedHives"
+            :compare-mode="true"
+            :disable-sort-hives="true"
+            :not-clickable="true"
+          ></ApiaryPreviewHiveSelector>
+          <span
+            v-else
+            class="mx-3 beep-label"
+            v-text="selectedHives.join(', ')"
+          ></span>
+          <v-spacer />
+          <!-- <v-btn
           tile
           outlined
           color="black"
@@ -60,6 +85,7 @@
           <v-icon v-if="!loadingCompareData" left>mdi-check</v-icon>
           {{ $t('Load') }}
         </v-btn> -->
+        </div>
       </v-col>
     </v-row>
 
@@ -119,6 +145,7 @@
               :end-time="periodEndString"
               :chart-id="'compare-' + index"
               :location="'compare'"
+              :inspections-for-charts="inspectionsForCharts"
               @confirm-view-alert="confirmViewAlert($event)"
               @confirm-view-inspection="
                 confirmViewInspection($event.id, $event.date)
@@ -197,6 +224,11 @@ export default {
       default: 'day',
       required: true,
     },
+    inspectionsForCharts: {
+      type: Array,
+      default: () => [],
+      required: false,
+    },
     periodEndString: {
       type: String,
       default: '',
@@ -223,6 +255,7 @@ export default {
       required: false,
     },
   },
+
   data() {
     return {
       compareMeasurementData: {},
@@ -237,6 +270,7 @@ export default {
       comparingData: false,
       chartCols: 6,
       SDsigns: ['-', '+'],
+      showInfo: false,
     }
   },
   computed: {
@@ -532,7 +566,6 @@ export default {
       this.$emit('confirm-view-alert', alert)
     },
     confirmViewInspection(inspectionId, inspectionDate) {
-      // TODO: add inspection lines to compare charts!
       this.$emit('confirm-view-inspection', {
         id: inspectionId,
         date: inspectionDate,

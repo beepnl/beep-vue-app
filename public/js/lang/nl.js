@@ -1042,6 +1042,15 @@ const translations = {
   mean_net_weight_kg: 'Gemiddeld netto gewicht',
   net_weight_kg: 'Netto gewicht',
   overall_intake_loss: 'Totale stijging/daling',
+  Compare_hives: 'Vergelijk bijenkasten',
+  compare_hives_exp:
+    'Bekijk hoe het gewicht van je bijenkast zich ontwikkelt, vergeleken met andere bijenkasten in de omgeving. ',
+  compare_support_url:
+    'https://beepsupport.freshdesk.com/en/support/solutions/articles/60000921124-compare-hives-option',
+  compare_url_text: 'Lees hier meer uitleg over de Vergelijk functionaliteit',
+
+  /* below, please keep [pagenr] as is, it will be replaced by the pagenumber to be uploaded */
+  Upload_pagenr: 'Upload hier pagina [pagenr]',
 }
 
 export default translations

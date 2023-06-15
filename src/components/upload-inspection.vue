@@ -54,6 +54,7 @@
           v-for="(pageNr, i) in selectedChecklistSvg.pages"
           :key="'p-' + pageNr"
           :page-nr-text="'p.' + pageNr + ' / ' + selectedChecklistSvg.pages"
+          :page-nr="pageNr"
           @set-page-blob="setPageBlob($event, i)"
         />
       </div>
@@ -152,10 +153,6 @@ export default {
       payload['data-user-locale'] = [this.uploadLanguage]
 
       var imageIndex = this.findImageIndex(pageNr)
-      // jpeg gives "Invalid image geometry" error -> TODO let Pensoft add jpeg as valid mimetype
-      if (blob !== null) {
-        blob = blob.replace('data:image/jpeg', 'data:image/JPG')
-      }
 
       if (imageIndex === -1) {
         var imgJson = {

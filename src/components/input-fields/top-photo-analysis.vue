@@ -185,6 +185,7 @@ import ChecklistInput from '@components/checklist-input.vue'
 import ChecklistFieldset from '@components/checklist-fieldset.vue'
 import HiveIcon from '@components/hive-icon.vue'
 import { mapGetters } from 'vuex'
+import { getMaxFramecount } from '@mixins/methodsMixin'
 
 export default {
   components: {
@@ -192,6 +193,7 @@ export default {
     ChecklistFieldset,
     HiveIcon,
   },
+  mixins: [getMaxFramecount],
   props: {
     category: {
       type: Object,
@@ -320,7 +322,7 @@ export default {
     },
     setInputNumbers() {
       this.broodLayersForCalculation = this.countLayers('brood')
-      this.framesForCalculation = this.activeHive.layers[0].framecount
+      this.framesForCalculation = this.getMaxFramecount(this.activeHive.layers)
     },
   },
 }

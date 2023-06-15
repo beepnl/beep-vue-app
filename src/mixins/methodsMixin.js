@@ -118,6 +118,23 @@ export const checkAlerts = {
   },
 }
 
+export const getMaxFramecount = {
+  data() {
+    return {
+      default: 10,
+    }
+  },
+  methods: {
+    getMaxFramecount(layers) {
+      var framecount =
+        layers.length > 0
+          ? Math.max(...layers.map((layer) => layer.framecount))
+          : this.default
+      return framecount
+    },
+  },
+}
+
 export const readHiveTags = {
   computed: {
     ...mapGetters('hives', ['hiveTags', 'hiveTagsChecked']),

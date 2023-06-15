@@ -1552,9 +1552,12 @@ export default {
         var value = null
         if (answer && answer.value !== undefined) {
           if (prop === 'impression' || prop === 'attention') {
+            var posAnswer = answer.value.filter((el) => el === 1)
             var checkboxIndex = answer.value.findIndex((value) => value === 1)
             value =
-              prop === 'impression'
+              posAnswer.length > 1
+                ? null // if multiple checkboxes are parsed as true, do not fill in a value and let user check via red eye
+                : prop === 'impression'
                 ? checkboxIndex + 1
                 : checkboxIndex > -1
                 ? this.booleanDefault[checkboxIndex]

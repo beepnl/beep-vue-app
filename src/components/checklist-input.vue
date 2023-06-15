@@ -561,6 +561,19 @@ export default {
           this.checkAnswer = false // red eye only if answer is null / could not be parsed
         }
 
+        if (
+          this.item.input !== 'list' &&
+          Array.isArray(this.parsedAnswerRaw) &&
+          this.parsedAnswerRaw[0].type === 'checkbox'
+        ) {
+          var posAnswer = this.parsedAnswerRaw.filter(
+            (answer) => answer.value[0] === 1
+          )
+          if (posAnswer.length > 1) {
+            this.checkAnswer = true // if multiple answers are parsed for non-list checkbox, let user check answer via red eye
+          }
+        }
+
         this.updateInput(
           value, // this.flattenedItems[checkboxIndex].id, // this.parsedAnswer.value[0], // TODO: check if array is always length 1
           this.item.id,
