@@ -802,20 +802,12 @@ export default {
         this.selectHive(this.hivesWithData[this.currentHiveWithDataIndex].id)
       }
     },
-    redrawCharts(data) {
-      const temp = data
-      this.measurementData = null
-      setTimeout(() => {
-        this.formatMeasurementData(temp)
-      }, 10)
-    },
     selectHive(id) {
       // console.log('select hive', id)
       if (id) {
         this.readDashboardHive(id).then((data) => {
           this.selectedHiveId = id
-          this.redrawCharts(data)
-          // this.formatMeasurementData(data)
+          this.formatMeasurementData(data)
           this.ready = true
         })
       } else {
@@ -867,7 +859,6 @@ export default {
       this.darkMode = bool
       this.$vuetify.theme.dark = bool
       localStorage.beepdashboardDarkMode = bool
-      // this.redrawCharts(this.measurementData)
     },
     toggleHiveTimer(bool) {
       localStorage.beepdashboardHiveTimerPaused = bool
