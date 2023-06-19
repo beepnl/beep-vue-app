@@ -7,7 +7,7 @@
       <span
         v-if="showControls"
         class="font-small color-grey"
-        v-text="'v1.5'"
+        v-text="'v1.6'"
       ></span>
       <v-spacer />
       <div class="d-flex justify-end">
@@ -286,7 +286,7 @@
                   {{ $t('no_hive_with_data') }}
                 </v-col>
                 <v-col
-                  v-else-if="loadingData"
+                  v-else-if="measurementData === null && loadingData"
                   :class="
                     'd-flex align-center justify-center dashboard-loading ' +
                       (landscapeMode ? '--landscape' : '')
@@ -410,7 +410,6 @@ export default {
   mixins: [momentFromNow, readDashboard, sensorMixin, timeZone],
   data: function() {
     return {
-      initLocale: 'nl',
       languages: languages.languageArray,
       assetsUrl:
         process.env.VUE_APP_ASSETS_URL ||
@@ -420,7 +419,7 @@ export default {
       marker: null,
       noChartData: false,
       loadingData: true,
-      measurementData: {},
+      measurementData: null,
       tempSensors: [],
       weightSensors: [],
       sensorsPresent: false,
@@ -592,12 +591,6 @@ export default {
         }, 50)
       }
     },
-    locale() {
-      if (this.locale !== this.initLocale) {
-        this.redrawCharts(this.measurementData)
-        this.initLocale = this.locale
-      }
-    },
     desktopAndUp() {
       this.setLandscapeMode = this.desktopAndUp
     },
@@ -692,8 +685,6 @@ export default {
       } else {
         this.$i18n.locale = languages.checkBrowserLanguage()
       }
-
-      this.initLocale = this.$i18n.locale
 
       if (localStorage.beepdashboardDarkMode) {
         this.darkMode = localStorage.beepdashboardDarkMode === 'true'
@@ -824,6 +815,7 @@ export default {
         this.readDashboardHive(id).then((data) => {
           this.selectedHiveId = id
           this.redrawCharts(data)
+          // this.formatMeasurementData(data)
           this.ready = true
         })
       } else {
@@ -875,7 +867,7 @@ export default {
       this.darkMode = bool
       this.$vuetify.theme.dark = bool
       localStorage.beepdashboardDarkMode = bool
-      this.redrawCharts(this.measurementData)
+      // this.redrawCharts(this.measurementData)
     },
     toggleHiveTimer(bool) {
       localStorage.beepdashboardHiveTimerPaused = bool
