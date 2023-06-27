@@ -11,6 +11,7 @@
             <router-link :to="{ name: 'measurements' }"> Data:</router-link>
             seamless charts loading due to resolved plugin issue
           </li>
+          <li>Bugfixes: small fixes for issues received as feedback</li>
         </ul>
       </div>
 

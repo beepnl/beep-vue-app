@@ -688,7 +688,10 @@ export default {
       const soundSensors = Object.values(this.currentSoundSensors)
       this.measurementsForHeatmap.map((measurement) =>
         soundSensors.map((soundSensor) => {
-          allSoundSensorValues.push(measurement[soundSensor])
+          var value = measurement[soundSensor]
+          if (value) {
+            allSoundSensorValues.push(value)
+          }
         })
       )
       return Math.max(...allSoundSensorValues)
