@@ -403,18 +403,21 @@ export default {
               SDdata.datasets.push({
                 id: compareSD,
                 abbr: compareSD + sign,
-                fill: sign === '-' ? '+1' : false,
+                fill: 0,
                 borderColor: '#' + compareMt.hex_color,
-                backgroundColor:
-                  '#' + compareMt.hex_color + (sign === '-' ? '80' : ''),
+                backgroundColor: this.lightenColor(
+                  compareMt.hex_color,
+                  8,
+                  0.15
+                ),
                 borderRadius: 1,
-                borderWidth: 1,
-                hidden: true,
+                borderWidth: 0,
+                hidden: false,
                 // showLine: false,
                 pointRadius: 0,
                 label: 'mean ' + sign + ' SD',
                 name: 'mean ' + sign + ' SD',
-                unit: null,
+                unit: '',
                 data: [],
                 spanGaps: this.interval === 'hour' || this.interval === 'day',
                 mtType: 'compareSD',
@@ -633,6 +636,20 @@ export default {
       return sensordefs[quantity] && sensordefs[quantity].name !== null
         ? sensordefs[quantity].name
         : this.$i18n.t(quantity)
+    },
+    lightenColor(color, amount, opacity = 1) {
+      const clamp = (val) => Math.min(Math.max(val, 0), 0xff)
+      // const fill = (str) => ('00' + str).slice(-2)
+
+      const num = parseInt(color, 16)
+      const red = clamp((num >> 16) + amount)
+      const green = clamp(((num >> 8) & 0x00ff) + amount)
+      const blue = clamp((num & 0x0000ff) + amount)
+
+      var newColor =
+        'rgba(' + red + ',' + green + ',' + blue + ',' + opacity + ')'
+
+      return newColor
     },
     loadCompareData(init = false, interval = null, timeIndex = null) {
       if (init) {
