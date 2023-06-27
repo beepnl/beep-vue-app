@@ -1475,7 +1475,8 @@ export default {
         this.$refs.cardCompare.loadCompareData(
           false,
           this.interval,
-          this.timeIndex
+          this.timeIndex,
+          this.relativeInterval
         )
       }
     },

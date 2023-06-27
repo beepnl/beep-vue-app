@@ -301,7 +301,11 @@ export default {
     this.readApiariesAndGroupsIfNotPresent()
   },
   methods: {
-    async sensorCompareMeasurementRequest(interval, timeIndex) {
+    async sensorCompareMeasurementRequest(
+      interval,
+      timeIndex,
+      relativeInterval
+    ) {
       var start = interval === 'selection' ? this.dates[0] : null
       var end = interval === 'selection' ? this.dates[1] : null
       var timeGroup =
@@ -324,7 +328,7 @@ export default {
             (start !== null ? '&start=' + start + ' 00:00' : '') +
             (end !== null ? '&end=' + end + ' 23:59' : '') +
             '&relative_interval=' +
-            (this.relativeInterval ? '1' : '0')
+            (relativeInterval ? '1' : '0')
         )
         this.formatCompareMeasurementData(response.data)
         this.ready = true
@@ -651,14 +655,20 @@ export default {
 
       return newColor
     },
-    loadCompareData(init = false, interval = null, timeIndex = null) {
+    loadCompareData(
+      init = false,
+      interval = null,
+      timeIndex = null,
+      relativeInterval = null
+    ) {
       if (init) {
         this.comparingData = true
       }
       if (this.comparingData) {
         this.sensorCompareMeasurementRequest(
           interval !== null ? interval : this.interval,
-          timeIndex !== null ? timeIndex : this.timeIndex
+          timeIndex !== null ? timeIndex : this.timeIndex,
+          relativeInterval !== null ? relativeInterval : this.relativeInterval
         )
       }
     },
