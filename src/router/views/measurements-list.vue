@@ -269,6 +269,7 @@
               :value="loadingData"
               :opacity="0.5"
               color="white"
+              z-index="1"
             >
               <div class="loading">
                 <v-progress-circular size="50" color="primary" indeterminate />

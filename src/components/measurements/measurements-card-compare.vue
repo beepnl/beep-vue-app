@@ -7,7 +7,7 @@
     @set-chart-cols="chartCols = $event"
   >
     <v-row class="my-4">
-      <v-col cols="12">
+      <v-col cols="12" lg="2">
         <div>
           <div class="mb-2">
             <div class="beep-label">
@@ -32,41 +32,42 @@
           </p>
         </div>
 
-        <div class="d-flex justify-space-between flex-wrap">
-          <v-btn
-            tile
-            outlined
-            color="black"
-            class="save-button-mobile-wide"
-            @click.prevent="selectHivesOverlay = true"
-          >
-            {{ $tc('Select_hive', 2) }}
-          </v-btn>
-          <SelectHivesOverlay
-            :show-overlay="selectHivesOverlay"
-            :overlay="selectHivesOverlay"
-            :compare-mode="true"
-            :include-groups="true"
-            @close-overlay="selectHivesOverlay = false"
-            @select-hives="selectHives($event)"
-          />
-          <ApiaryPreviewHiveSelector
-            v-if="selectedHives.length > 0 && selectedHives.length < 16"
-            class="ml-5 my-4 my-sm-0"
-            :hives="getHives(selectedHives)"
-            :hives-selected="[]"
-            :hives-editable="selectedHives"
-            :compare-mode="true"
-            :disable-sort-hives="true"
-            :not-clickable="true"
-          ></ApiaryPreviewHiveSelector>
-          <span
-            v-else
-            class="mx-3 beep-label"
-            v-text="selectedHives.join(', ')"
-          ></span>
-          <v-spacer />
-          <!-- <v-btn
+        <v-btn
+          tile
+          outlined
+          color="black"
+          class="save-button-mobile-wide"
+          @click.prevent="selectHivesOverlay = true"
+        >
+          {{ $tc('Select_hive', 2) }}
+        </v-btn>
+        <SelectHivesOverlay
+          :show-overlay="selectHivesOverlay"
+          :overlay="selectHivesOverlay"
+          :compare-mode="true"
+          :include-groups="true"
+          @close-overlay="selectHivesOverlay = false"
+          @select-hives="selectHives($event)"
+        />
+      </v-col>
+
+      <v-col cols="12" lg="10">
+        <ApiaryPreviewHiveSelector
+          v-if="selectedHives.length > 0 && selectedHives.length < 16"
+          class="ml-lg-5 my-4 my-sm-2 compare-hives"
+          :hives="getHives(selectedHives)"
+          :hives-selected="[]"
+          :hives-editable="selectedHives"
+          :compare-mode="true"
+          :disable-sort-hives="true"
+          :not-clickable="true"
+        ></ApiaryPreviewHiveSelector>
+        <span
+          v-else
+          class="mx-3 beep-label"
+          v-text="selectedHives.join(', ')"
+        ></span>
+        <!-- <v-btn
           tile
           outlined
           color="black"
@@ -85,7 +86,6 @@
           <v-icon v-if="!loadingCompareData" left>mdi-check</v-icon>
           {{ $t('Load') }}
         </v-btn> -->
-        </div>
       </v-col>
     </v-row>
 
@@ -120,6 +120,7 @@
         :value="loadingCompareData"
         :opacity="0.5"
         color="white"
+        z-index="1"
       >
         <div class="loading">
           <v-progress-circular size="50" color="primary" indeterminate />
@@ -644,3 +645,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.compare-hives {
+  width: 100%;
+}
+</style>
