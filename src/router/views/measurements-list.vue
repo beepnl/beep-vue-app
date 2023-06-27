@@ -1352,6 +1352,15 @@ export default {
         measurementData.measurements &&
         measurementData.measurements.length > 0
       ) {
+        measurementData.measurements.sort(function(a, b) {
+          if (a.time < b.time) {
+            return -1
+          }
+          if (a.time > b.time) {
+            return 1
+          }
+          return 0
+        })
         this.measurementData = measurementData
         this.currentWeatherSensors = []
         this.currentSensors = []

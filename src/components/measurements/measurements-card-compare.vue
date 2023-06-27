@@ -587,6 +587,16 @@ export default {
         compareMeasurementData.measurements &&
         compareMeasurementData.measurements.length > 0
       ) {
+        compareMeasurementData.measurements.sort(function(a, b) {
+          if (a.time < b.time) {
+            return -1
+          }
+          if (a.time > b.time) {
+            return 1
+          }
+          return 0
+        })
+
         this.compareMeasurementData = compareMeasurementData
         this.currentCompareSensors = []
         this.compareSensorsPresent = false
