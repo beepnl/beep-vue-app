@@ -608,14 +608,22 @@ export default {
         this.currentCompareSensors = []
         this.compareSensorsPresent = false
         // console.log(this.compareMeasurementData)
-        Object.keys(this.compareMeasurementData.measurements[0]).map(
-          (quantity) => {
+        Object.keys(this.compareMeasurementData.measurements[0])
+          .sort(function(a, b) {
+            if (a > b) {
+              return -1
+            }
+            if (a < b) {
+              return 1
+            }
+            return a < b
+          })
+          .map((quantity) => {
             if (this.COMPARE.indexOf(quantity) > -1) {
               this.currentCompareSensors.push(quantity)
               this.compareSensorsPresent = true
             }
-          }
-        )
+          })
       } else {
         this.compareMeasurementData = null
         this.noCompareChartData = true
