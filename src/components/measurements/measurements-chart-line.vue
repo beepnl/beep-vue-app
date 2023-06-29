@@ -390,7 +390,12 @@ export default {
                 ).length === 0
             }
 
-            return self.location !== 'flashlog' && isFinalValue
+            return (
+              self.location !== 'flashlog' &&
+              (self.location !== 'compare' ||
+                context.dataset.mtType !== 'compareSD') && // don't show final value datalabel for compareSD lines
+              isFinalValue
+            )
           },
         },
         legend: {

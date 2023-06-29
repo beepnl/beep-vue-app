@@ -246,7 +246,7 @@
         >
           <v-row>
             <v-col
-              v-if="loadingData"
+              v-if="measurementData === null && loadingData"
               class="d-flex align-center justify-center my-16"
               cols="12"
             >
@@ -264,6 +264,17 @@
             "
             class="charts mt-6 mb-2"
           >
+            <v-overlay
+              :absolute="true"
+              :value="loadingData"
+              :opacity="0.5"
+              color="white"
+              z-index="1"
+            >
+              <div class="loading">
+                <v-progress-circular size="50" color="primary" indeterminate />
+              </div>
+            </v-overlay>
             <v-col v-if="weatherSensorsPresent" cols="12" :md="chartCols">
               <div
                 v-if="selectedDevice"
@@ -505,7 +516,7 @@ export default {
     return {
       initLocale: 'nl',
       lastSensorDate: null,
-      measurementData: {},
+      measurementData: null,
       compareMeasurementData: {},
       noPeriodData: false,
       interval: 'day',
@@ -678,7 +689,10 @@ export default {
       const soundSensors = Object.values(this.currentSoundSensors)
       this.measurementsForHeatmap.map((measurement) =>
         soundSensors.map((soundSensor) => {
-          allSoundSensorValues.push(measurement[soundSensor])
+          var value = measurement[soundSensor]
+          if (value) {
+            allSoundSensorValues.push(value)
+          }
         })
       )
       return Math.max(...allSoundSensorValues)
@@ -945,15 +959,6 @@ export default {
       return window.matchMedia('(hover: none)').matches
     },
   },
-  watch: {
-    locale() {
-      if (this.locale !== this.initLocale) {
-        this.redrawCharts(false)
-        this.redrawChartsCompare()
-        this.setPeriodTitle() // translate period title
-      }
-    },
-  },
   created() {
     this.initLocale = this.userLocale
     if (this.queriedChartCols !== null) {
@@ -1082,7 +1087,6 @@ export default {
       this.noChartData = false
       this.noPeriodData = false
       this.loadingData = true
-      this.measurementData = null // needed to let chartjs redraw charts after interval switch
       try {
         const response = await Api.readRequest(
           '/sensors/measurements?id=' +
@@ -1105,6 +1109,7 @@ export default {
         return true
       } catch (error) {
         this.loadingData = false
+        this.measurementData = null
         if (error.response) {
           console.log(error.response)
           if (error.response.status === 500) {
@@ -1347,6 +1352,15 @@ export default {
         measurementData.measurements &&
         measurementData.measurements.length > 0
       ) {
+        measurementData.measurements.sort(function(a, b) {
+          if (a.time < b.time) {
+            return -1
+          }
+          if (a.time > b.time) {
+            return 1
+          }
+          return 0
+        })
         this.measurementData = measurementData
         this.currentWeatherSensors = []
         this.currentSensors = []
@@ -1381,6 +1395,7 @@ export default {
           }
         })
       } else {
+        this.measurementData = null
         this.noChartData = true
       }
       this.loadingData = false
@@ -1460,7 +1475,8 @@ export default {
         this.$refs.cardCompare.loadCompareData(
           false,
           this.interval,
-          this.timeIndex
+          this.timeIndex,
+          this.relativeInterval
         )
       }
     },
@@ -1507,24 +1523,6 @@ export default {
           .replace(currentYearEsPt, '')
           .replace(' ' + currentYear, '') // Remove year hardcoded per language, currently no other way to get rid of year whilst keeping localized time
       }
-    },
-    redrawCharts(seamless = true) {
-      const temp = this.measurementData
-      if (!seamless) {
-        this.resetCharts()
-      }
-      setTimeout(() => {
-        this.formatMeasurementData(temp)
-      }, 10)
-    },
-    redrawChartsCompare() {
-      if (this.showCardCompare) {
-        this.$refs.cardCompare.redrawCharts(false)
-      }
-    },
-    resetCharts() {
-      this.loadingData = true
-      this.measurementData = null // charts are redrawn when measurementData is null
     },
     selectDate(date) {
       var p = this.interval
@@ -1659,7 +1657,6 @@ export default {
       }
     },
     setTimeIndex(offset) {
-      this.resetCharts() // show loading icon instead of still try to render charts
       var timeIndexWhenClicked = this.timeIndex
       this.timeIndex += offset
       this.setPeriodTitle()

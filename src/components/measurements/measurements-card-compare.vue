@@ -7,7 +7,7 @@
     @set-chart-cols="chartCols = $event"
   >
     <v-row class="my-4">
-      <v-col cols="12">
+      <v-col cols="12" lg="2">
         <div>
           <div class="mb-2">
             <div class="beep-label">
@@ -32,41 +32,42 @@
           </p>
         </div>
 
-        <div class="d-flex justify-space-between flex-wrap">
-          <v-btn
-            tile
-            outlined
-            color="black"
-            class="save-button-mobile-wide"
-            @click.prevent="selectHivesOverlay = true"
-          >
-            {{ $tc('Select_hive', 2) }}
-          </v-btn>
-          <SelectHivesOverlay
-            :show-overlay="selectHivesOverlay"
-            :overlay="selectHivesOverlay"
-            :compare-mode="true"
-            :include-groups="true"
-            @close-overlay="selectHivesOverlay = false"
-            @select-hives="selectHives($event)"
-          />
-          <ApiaryPreviewHiveSelector
-            v-if="selectedHives.length > 0 && selectedHives.length < 16"
-            class="ml-5 my-4 my-sm-0"
-            :hives="getHives(selectedHives)"
-            :hives-selected="[]"
-            :hives-editable="selectedHives"
-            :compare-mode="true"
-            :disable-sort-hives="true"
-            :not-clickable="true"
-          ></ApiaryPreviewHiveSelector>
-          <span
-            v-else
-            class="mx-3 beep-label"
-            v-text="selectedHives.join(', ')"
-          ></span>
-          <v-spacer />
-          <!-- <v-btn
+        <v-btn
+          tile
+          outlined
+          color="black"
+          class="save-button-mobile-wide"
+          @click.prevent="selectHivesOverlay = true"
+        >
+          {{ $tc('Select_hive', 2) }}
+        </v-btn>
+        <SelectHivesOverlay
+          :show-overlay="selectHivesOverlay"
+          :overlay="selectHivesOverlay"
+          :compare-mode="true"
+          :include-groups="true"
+          @close-overlay="selectHivesOverlay = false"
+          @select-hives="selectHives($event)"
+        />
+      </v-col>
+
+      <v-col cols="12" lg="10">
+        <ApiaryPreviewHiveSelector
+          v-if="selectedHives.length > 0 && selectedHives.length < 16"
+          class="ml-lg-5 my-4 my-sm-2 compare-hives"
+          :hives="getHives(selectedHives)"
+          :hives-selected="[]"
+          :hives-editable="selectedHives"
+          :compare-mode="true"
+          :disable-sort-hives="true"
+          :not-clickable="true"
+        ></ApiaryPreviewHiveSelector>
+        <span
+          v-else
+          class="mx-3 beep-label"
+          v-text="selectedHives.join(', ')"
+        ></span>
+        <!-- <v-btn
           tile
           outlined
           color="black"
@@ -85,20 +86,19 @@
           <v-icon v-if="!loadingCompareData" left>mdi-check</v-icon>
           {{ $t('Load') }}
         </v-btn> -->
-        </div>
       </v-col>
     </v-row>
 
     <v-row>
       <v-col
-        v-if="loadingCompareData"
+        v-if="compareMeasurementData === null && loadingCompareData"
         class="d-flex align-center justify-center my-16"
         cols="12"
       >
         <v-progress-circular color="primary" size="50" indeterminate />
       </v-col>
       <v-col
-        v-else-if="noCompareChartData || compareMeasurementData === null"
+        v-else-if="noCompareChartData"
         cols="12"
         class="d-flex align-center justify-center my-16"
       >
@@ -115,6 +115,17 @@
       "
       class="charts mt-6 mb-2"
     >
+      <v-overlay
+        :absolute="true"
+        :value="loadingCompareData"
+        :opacity="0.5"
+        color="white"
+        z-index="1"
+      >
+        <div class="loading">
+          <v-progress-circular size="50" color="primary" indeterminate />
+        </div>
+      </v-overlay>
       <template v-if="compareSensorsPresent">
         <v-col
           v-for="(sensor, index) in currentCompareSensors"
@@ -258,7 +269,7 @@ export default {
 
   data() {
     return {
-      compareMeasurementData: {},
+      compareMeasurementData: null,
       currentCompareSensors: [],
       compareSensorsPresent: false,
       noCompareChartData: false,
@@ -290,14 +301,17 @@ export default {
     this.readApiariesAndGroupsIfNotPresent()
   },
   methods: {
-    async sensorCompareMeasurementRequest(interval, timeIndex) {
+    async sensorCompareMeasurementRequest(
+      interval,
+      timeIndex,
+      relativeInterval
+    ) {
       var start = interval === 'selection' ? this.dates[0] : null
       var end = interval === 'selection' ? this.dates[1] : null
       var timeGroup =
         interval === 'hour' || interval === 'selection' ? null : interval
       this.noCompareChartData = false
       this.loadingCompareData = true
-      this.compareMeasurementData = null // needed to let chartjs redraw charts after interval switch
       var hivecall = this.selectedHives.join('&hive_id[]=')
       try {
         const response = await Api.readRequest(
@@ -314,14 +328,14 @@ export default {
             (start !== null ? '&start=' + start + ' 00:00' : '') +
             (end !== null ? '&end=' + end + ' 23:59' : '') +
             '&relative_interval=' +
-            (this.relativeInterval ? '1' : '0')
+            (relativeInterval ? '1' : '0')
         )
-        this.compareMeasurementData = response.data
         this.formatCompareMeasurementData(response.data)
         this.ready = true
         return true
       } catch (error) {
         this.loadingCompareData = false
+        this.compareMeasurementData = null
         if (error.response) {
           console.log(error.response)
           if (
@@ -393,18 +407,21 @@ export default {
               SDdata.datasets.push({
                 id: compareSD,
                 abbr: compareSD + sign,
-                fill: sign === '-' ? '+1' : false,
+                fill: 0,
                 borderColor: '#' + compareMt.hex_color,
-                backgroundColor:
-                  '#' + compareMt.hex_color + (sign === '-' ? '80' : ''),
+                backgroundColor: this.lightenColor(
+                  compareMt.hex_color,
+                  8,
+                  0.15
+                ),
                 borderRadius: 1,
-                borderWidth: 1,
-                hidden: true,
+                borderWidth: 0,
+                hidden: false,
                 // showLine: false,
                 pointRadius: 0,
                 label: 'mean ' + sign + ' SD',
                 name: 'mean ' + sign + ' SD',
-                unit: null,
+                unit: '',
                 data: [],
                 spanGaps: this.interval === 'hour' || this.interval === 'day',
                 mtType: 'compareSD',
@@ -577,19 +594,38 @@ export default {
         compareMeasurementData.measurements &&
         compareMeasurementData.measurements.length > 0
       ) {
+        compareMeasurementData.measurements.sort(function(a, b) {
+          if (a.time < b.time) {
+            return -1
+          }
+          if (a.time > b.time) {
+            return 1
+          }
+          return 0
+        })
+
         this.compareMeasurementData = compareMeasurementData
         this.currentCompareSensors = []
         this.compareSensorsPresent = false
         // console.log(this.compareMeasurementData)
-        Object.keys(this.compareMeasurementData.measurements[0]).map(
-          (quantity) => {
+        Object.keys(this.compareMeasurementData.measurements[0])
+          .sort(function(a, b) {
+            if (a > b) {
+              return -1
+            }
+            if (a < b) {
+              return 1
+            }
+            return a < b
+          })
+          .map((quantity) => {
             if (this.COMPARE.indexOf(quantity) > -1) {
               this.currentCompareSensors.push(quantity)
               this.compareSensorsPresent = true
             }
-          }
-        )
+          })
       } else {
+        this.compareMeasurementData = null
         this.noCompareChartData = true
       }
       this.loadingCompareData = false
@@ -613,31 +649,36 @@ export default {
         ? sensordefs[quantity].name
         : this.$i18n.t(quantity)
     },
-    loadCompareData(init = false, interval = null, timeIndex = null) {
+    lightenColor(color, amount, opacity = 1) {
+      const clamp = (val) => Math.min(Math.max(val, 0), 0xff)
+      // const fill = (str) => ('00' + str).slice(-2)
+
+      const num = parseInt(color, 16)
+      const red = clamp((num >> 16) + amount)
+      const green = clamp(((num >> 8) & 0x00ff) + amount)
+      const blue = clamp((num & 0x0000ff) + amount)
+
+      var newColor =
+        'rgba(' + red + ',' + green + ',' + blue + ',' + opacity + ')'
+
+      return newColor
+    },
+    loadCompareData(
+      init = false,
+      interval = null,
+      timeIndex = null,
+      relativeInterval = null
+    ) {
       if (init) {
         this.comparingData = true
       }
       if (this.comparingData) {
         this.sensorCompareMeasurementRequest(
           interval !== null ? interval : this.interval,
-          timeIndex !== null ? timeIndex : this.timeIndex
+          timeIndex !== null ? timeIndex : this.timeIndex,
+          relativeInterval !== null ? relativeInterval : this.relativeInterval
         )
       }
-    },
-    redrawCharts(seamless = true) {
-      if (this.comparingData) {
-        const temp = this.compareMeasurementData
-        if (!seamless) {
-          this.resetCharts()
-        }
-        setTimeout(() => {
-          this.formatCompareMeasurementData(temp)
-        }, 10)
-      }
-    },
-    resetCharts() {
-      this.loadingCompareData = true
-      this.compareMeasurementData = null // charts are redrawn when compareMeasurementData is null
     },
     selectHives(hives) {
       this.selectedHives = hives
@@ -649,3 +690,9 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.compare-hives {
+  width: 100%;
+}
+</style>
