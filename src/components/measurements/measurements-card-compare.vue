@@ -90,7 +90,13 @@
       </v-col>
     </v-row>
 
-    <v-row class="mt-n6">
+    <v-row
+      v-if="
+        (compareMeasurementData === null && loadingCompareData) ||
+          noCompareChartData
+      "
+      class="mt-n6"
+    >
       <v-col
         v-if="compareMeasurementData === null && loadingCompareData"
         class="d-flex align-center justify-center my-12"
