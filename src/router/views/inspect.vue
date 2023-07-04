@@ -219,7 +219,11 @@
 
           <v-col class="mobile-1 py-1 py-sm-3" cols="12" md="3">
             <InspectModeSelector
-              v-if="!editMode && permissions.includes('test-offline-input')"
+              v-if="
+                !editMode &&
+                  (permissions.includes('test-offline-input') ||
+                    permissions.includes('offline-input'))
+              "
               :selected-mode="selectedMode"
               @set-selected-mode="setSelectedMode = $event"
             />
@@ -354,7 +358,11 @@
 
           <v-col v-if="!onlineMode" cols="12" sm="4">
             <InspectModeSelector
-              v-if="!editMode && permissions.includes('test-offline-input')"
+              v-if="
+                !editMode &&
+                  (permissions.includes('test-offline-input') ||
+                    permissions.includes('offline-input'))
+              "
               :selected-mode="selectedMode"
               @set-selected-mode="setSelectedMode = $event"
             />
@@ -936,7 +944,8 @@ export default {
       return this.$vuetify.breakpoint.mobile
     },
     modeText() {
-      return this.permissions.includes('test-offline-input')
+      return this.permissions.includes('test-offline-input') ||
+        this.permissions.includes('offline-input')
         ? ' - ' + this.$i18n.t(this.selectedMode + '_inspection')
         : ''
     },
@@ -951,7 +960,8 @@ export default {
     },
     parseMode() {
       return (
-        this.permissions.includes('test-offline-input') &&
+        (this.permissions.includes('test-offline-input') ||
+          this.permissions.includes('offline-input')) &&
         (this.queriedMode === 'parse' ||
           this.forceParseMode === true ||
           localStorage.beepSelectedInspectionMode === 'Parse') // TODO remove queried parse mode when enableDummyOutput is removed
