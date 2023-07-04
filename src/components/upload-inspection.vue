@@ -144,6 +144,9 @@ export default {
         (item) => item.page === pageNr
       )
     },
+    setInspectionEdited(bool) {
+      this.$store.commit('inspections/setInspectionEdited', bool)
+    },
     setPageBlob(blob, index) {
       var pageNr = index + 1
 
@@ -164,11 +167,12 @@ export default {
       } else {
         if (blob !== null) {
           payload.images[imageIndex].image = blob
-          console.log(blob)
         } else {
           payload.images.splice(imageIndex, 1)
         }
       }
+
+      this.setInspectionEdited(payload.images && payload.images.length > 0)
 
       this.uploadInspectionPayload = payload
     },

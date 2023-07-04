@@ -205,14 +205,16 @@
     .v-input__slot {
       display: flex;
       flex-direction: column;
-      cursor: pointer !important;
       height: 100% !important;
       margin-bottom: 0px;
       .v-text-field__slot {
+        border-radius: 4px;
+        border: 1px dashed $color-grey-light;
+        cursor: pointer !important;
         height: 100% !important;
         text-align: center;
         .v-file-input__text.v-file-input__text--placeholder {
-          align-items: baseline;
+          align-items: center;
         }
       }
     }

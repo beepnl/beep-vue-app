@@ -2,7 +2,7 @@
 <template>
   <Layout
     :title="editMode ? $t('Edit_inspection') : $t('New_inspection') + modeText"
-    :dismiss-changes="offlineMode || uploadMode"
+    :dismiss-changes="offlineMode"
   >
     <h1 v-if="hiveNotEditable" class="unauthorized-title">
       {{
@@ -287,7 +287,7 @@
             </div>
           </v-col>
 
-          <v-col v-if="!uploadMode" cols="12" sm="4">
+          <v-col v-if="!uploadMode" cols="12" :sm="offlineMode ? 8 : 4">
             <div
               v-if="checklists !== null && checklists.length > 0"
               class="beep-label mt-n3 mt-sm-0"
@@ -310,7 +310,7 @@
             ></ParsedPages>
           </v-col>
 
-          <v-col v-if="uploadMode" cols="12" sm="4">
+          <v-col v-if="uploadMode" cols="12" sm="8">
             <div class="d-flex justify-start align-center">
               <div
                 class="beep-label mt-n3 mt-sm-0"
@@ -345,10 +345,10 @@
             />
           </v-col>
 
-          <v-col class="d-flex" cols="12" sm="4">
+          <v-col v-if="!uploadMode && mobile" class="d-flex" cols="12" sm="4">
             <v-spacer></v-spacer>
             <v-btn
-              v-if="selectedChecklist && selectedChecklist.owner && mobile"
+              v-if="selectedChecklist && selectedChecklist.owner"
               tile
               outlined
               class="save-button-mobile-wide"
@@ -1361,9 +1361,7 @@ export default {
           prop: 'checklistSvgs',
           value: response.data,
         })
-        if (response.data.length === 0) {
-          this.showChecklistSvgExp = true
-        }
+        this.showChecklistSvgExp = response.data.length === 0
       } catch (error) {
         if (error.response) {
           console.log('Error: ', error.response)
