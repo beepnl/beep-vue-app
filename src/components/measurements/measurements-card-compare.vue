@@ -7,7 +7,7 @@
     @set-chart-cols="chartCols = $event"
   >
     <v-row class="mt-4">
-      <v-col cols="12" lg="2">
+      <v-col cols="12" sm="6" md="4" lg="2">
         <div>
           <div class="mb-2">
             <div class="beep-label">
@@ -51,28 +51,29 @@
         />
       </v-col>
 
-      <v-col cols="12" lg="10">
+      <v-col cols="12" sm="6" md="8" lg="10">
         <ApiaryPreviewHiveSelector
-          v-if="selectedHives.length > 0 && selectedHives.length < 16"
+          v-if="initSelectedHives.length > 0 && initSelectedHives.length < 16"
           class="ml-lg-5 my-4 my-sm-2 compare-hives"
-          :hives="getHives(selectedHives)"
-          :hives-selected="[]"
-          :hives-editable="selectedHives"
+          :hives="getHives(initSelectedHives)"
+          :hives-selected="selectedHives"
+          :hives-editable="initSelectedHives"
+          :inspection-mode="true"
           :compare-mode="true"
           :disable-sort-hives="true"
-          :not-clickable="true"
+          @select-hive="selectHive($event)"
         ></ApiaryPreviewHiveSelector>
         <span
-          v-else-if="selectedHives.length > 0"
+          v-else-if="initSelectedHives.length > 0"
           class="mx-3 beep-label"
-          v-text="selectedHives.join(', ')"
+          v-text="initSelectedHives.join(', ')"
         ></span>
         <!-- <v-btn
           tile
           outlined
           color="black"
           class="save-button-mobile-wide"
-          :disabled="selectedHives.length === 0 || loadingCompareData"
+          :disabled="initSelectedHives.length === 0 || loadingCompareData"
           @click.prevent="loadCompareData(true)"
         >
           <v-progress-circular
@@ -113,7 +114,7 @@
           compareMeasurementData.measurements &&
           compareMeasurementData.measurements.length > 0
       "
-      class="charts mt-n4 mt-sm-n6 mb-2"
+      class="charts mt-n4 mt-lg-n6 mb-2"
     >
       <v-overlay
         :absolute="true"
@@ -286,7 +287,7 @@ export default {
       currentCompareSensors: [],
       compareSensorsPresent: false,
       noCompareChartData: false,
-      selectedHives: [],
+      initSelectedHives: [],
       loadingCompareData: false,
       selectHivesOverlay: false,
       cardName: 'Compare',
@@ -295,6 +296,7 @@ export default {
       chartCols: 6,
       SDsigns: ['-', '+'],
       showInfo: false,
+      selectedHives: [],
     }
   },
   computed: {
@@ -672,7 +674,7 @@ export default {
         ' (' +
         (quantity.indexOf('mean_') === -1
           ? this.defaultHiveName
-          : this.$i18n.tc('selected_hive', this.selectedHives.length)) +
+          : this.$i18n.tc('selected_hive', this.initSelectedHives.length)) +
         ')'
       return trans + hive
     },
@@ -707,8 +709,17 @@ export default {
         )
       }
     },
+    selectHive(id) {
+      if (!this.selectedHives.includes(id)) {
+        this.selectedHives.push(id)
+      } else {
+        this.selectedHives.splice(this.selectedHives.indexOf(id), 1)
+      }
+      this.loadCompareData(true)
+    },
     selectHives(hives) {
-      this.selectedHives = hives
+      this.initSelectedHives = [...hives]
+      this.selectedHives = [...hives]
       this.loadCompareData(true)
     },
     setPeriodToDate(date) {
