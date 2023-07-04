@@ -311,18 +311,36 @@
           </v-col>
 
           <v-col v-if="uploadMode" cols="12" sm="4">
-            <div
-              v-if="checklistSvgs.length > 0"
-              class="beep-label mt-n3 mt-sm-0"
-              v-text="`${$t('Select') + ' ' + $tc('svg_checklist', 1)}`"
-            ></div>
+            <div class="d-flex justify-start align-center">
+              <div
+                class="beep-label mt-n3 mt-sm-0"
+                v-text="`${$t('Select') + ' ' + $tc('svg_checklist', 1)}`"
+              ></div>
+              <v-icon
+                class="mdi mdi-information icon-info cursor-pointer ml-2"
+                dark
+                small
+                :color="showChecklistSvgExp ? 'accent' : 'grey'"
+                @click="showChecklistSvgExp = !showChecklistSvgExp"
+              ></v-icon>
+            </div>
+            <p v-if="showChecklistSvgExp" class="beep-label">
+              <em
+                >{{
+                  $t(
+                    (checklistSvgs.length === 0 ? 'No_' : '') +
+                      'checklist_svg_exp'
+                  )
+                }}
+              </em>
+            </p>
             <Treeselect
-              v-if="checklistSvgs.length > 0"
               v-model="checklistSvgId"
               :options="checklistSvgs"
               :normalizer="normalizerChecklistSvg"
               :placeholder="`${$t('Select') + ' ' + $tc('svg_checklist', 1)}`"
-              :no-results-text="`${$t('no_results')}`"
+              :no-results-text="$t('no_results')"
+              :no-options-text="$t('No_checklist_svg')"
               @input="selectChecklistSvg"
             />
           </v-col>
@@ -771,6 +789,7 @@ export default {
       errorMessage: null,
       dummyOutput,
       enableDummyOutput: true, // true, TODO for testing, remove later
+      showChecklistSvgExp: false,
     }
   },
   computed: {
@@ -1342,6 +1361,9 @@ export default {
           prop: 'checklistSvgs',
           value: response.data,
         })
+        if (response.data.length === 0) {
+          this.showChecklistSvgExp = true
+        }
       } catch (error) {
         if (error.response) {
           console.log('Error: ', error.response)

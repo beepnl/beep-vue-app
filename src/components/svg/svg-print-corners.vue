@@ -124,8 +124,8 @@ export default {
       default: '',
     },
     checklistSvgId: {
-      type: Number,
-      default: null,
+      type: String,
+      default: '',
       required: false,
     },
     pageNumber: {

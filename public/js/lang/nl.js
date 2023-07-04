@@ -1031,6 +1031,11 @@ const translations = {
     "Het Print ID vind je rechts bovenaan de pagina, links van het paginanummer. Upload de papieren inspectie opnieuw met de juiste pagina's en/of de juiste geprinte kastkaart geselecteerd.",
   All_svg_ids_correct: 'Juiste geprinte kastkaart geselecteerd',
   All_svg_ids_incorrect: 'Verkeerde geprinte kastkaart geselecteerd',
+  No_checklist_svg: 'Nog geen kastkaarten geprint',
+  No_checklist_svg_exp:
+    "Voordat je een papieren inspectie kan uploaden, moet je eerst een kastkaart printen (en invullen). Ga daarom eerst naar 'Papieren inspectie', of doe de inspectie volledig digitaal via 'Digitale inspectie'.",
+  checklist_svg_exp:
+    "Selecteer hieronder een geprinte kastkaart. Let daarbij op dat de Print ID (en daarmee ook de naam) overeenkomt met de Print ID (en naam) van jouw papieren inspectie. De Print ID vind je rechtsboven elke bladzijde, de naam linksboven. N.B. Een digitale kastkaart kan onder verschillende Print IDs opgeslagen zijn als 'geprinte kastkaart', wanneer de invulvelden tussentijds gewijzigd zijn. De datum (+ het tijdstip) achter de naam duidt aan wanneer een bepaalde versie van de kastkaart voor het eerst geprint is.",
 
   /* Compare module */
   Load: 'Laden',

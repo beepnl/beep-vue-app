@@ -1199,6 +1199,11 @@ const translations = {
     'The Print ID can be found at the top right of the page, to the left of the page number. Upload the paper inspection again with the correct pages and/or select the correct printed checklist',
   All_svg_ids_correct: 'Correct printed checklist has been selected',
   All_svg_ids_incorrect: 'Incorrect printed checklist has been selected',
+  No_checklist_svg: 'No checklists have been printed yet',
+  No_checklist_svg_exp:
+    "Before uploading a paper inspection, a checklist should be printed (and filled in) first. Go to 'Paper inspection' to print your checklist, or submit a completely digital inspection via 'Digital inspection'.",
+  checklist_svg_exp:
+    "Please select a printed checklist below. Make sure that the Print ID (and hence the name) is equal to the Print ID (and name) of your paper inspection. You can find the Print ID at the top right corner of each page, the name is printed at the top left corner. Please note: a digital checklist can be saved as a 'printed checklist' under different Print IDs, if the input fields have been changed in between print sessions. The date (and time) behind the name refer to when a specific version of the checklist was printed for the first time.",
 
   /* Compare module */
   Load: 'Load',
