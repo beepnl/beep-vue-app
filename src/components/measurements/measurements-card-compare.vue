@@ -6,7 +6,7 @@
     :show-chart-cols-icons="true"
     @set-chart-cols="chartCols = $event"
   >
-    <v-row class="mt-4">
+    <v-row class="my-4">
       <v-col cols="12" sm="6" md="4" lg="2">
         <div>
           <div class="mb-2">
@@ -90,10 +90,10 @@
       </v-col>
     </v-row>
 
-    <v-row>
+    <v-row class="mt-n6">
       <v-col
         v-if="compareMeasurementData === null && loadingCompareData"
-        class="d-flex align-center justify-center my-16"
+        class="d-flex align-center justify-center my-12"
         cols="12"
       >
         <v-progress-circular color="primary" size="50" indeterminate />
@@ -114,7 +114,7 @@
           compareMeasurementData.measurements &&
           compareMeasurementData.measurements.length > 0
       "
-      class="charts mt-n4 mt-lg-n6 mb-2"
+      class="charts mt-n6 mb-2"
     >
       <v-overlay
         :absolute="true"
