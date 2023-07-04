@@ -642,7 +642,7 @@
       />
     </template>
 
-    <v-container v-if="!ready || !svgReady || svgLoading">
+    <v-container v-if="!uploadMode && (!ready || !svgReady || svgLoading)">
       <div class="loading">
         <v-progress-circular size="50" color="primary" indeterminate />
       </div>
