@@ -1123,6 +1123,7 @@ const translations = {
     'https://beepsupport.freshdesk.com/en/support/solutions/articles/60000921124-compare-hives-option',
   compare_url_text:
     'Here you can find more information on the Compare functionality',
+  selected_hive: 'selected hive | selected hives',
 
   /* below, please keep [pagenr] as is, it will be replaced by the pagenumber to be uploaded */
   Upload_pagenr: 'Upload page [pagenr] here',

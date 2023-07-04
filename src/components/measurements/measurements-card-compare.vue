@@ -6,7 +6,7 @@
     :show-chart-cols-icons="true"
     @set-chart-cols="chartCols = $event"
   >
-    <v-row class="my-4">
+    <v-row class="mt-4">
       <v-col cols="12" lg="2">
         <div>
           <div class="mb-2">
@@ -63,7 +63,7 @@
           :not-clickable="true"
         ></ApiaryPreviewHiveSelector>
         <span
-          v-else
+          v-else-if="selectedHives.length > 0"
           class="mx-3 beep-label"
           v-text="selectedHives.join(', ')"
         ></span>
@@ -113,7 +113,7 @@
           compareMeasurementData.measurements &&
           compareMeasurementData.measurements.length > 0
       "
-      class="charts mt-6 mb-2"
+      class="charts mt-n4 mt-sm-n6 mb-2"
     >
       <v-overlay
         :absolute="true"
@@ -148,6 +148,10 @@
             "
           ></div>
           <div v-else-if="chartCols !== 12" class="header-filler my-3"></div>
+          <div
+            class="overline mt-0 mt-sm-3 mb-3 text-center"
+            v-text="$t(COMPARE_SENSOR[sensor])"
+          ></div>
           <div>
             <MeasurementsChartLine
               :chart-data="chartjsCompareDataSeries([sensor])"
@@ -181,6 +185,10 @@
             v-text="$tc('overall_intake_loss')"
           ></div>
           <div v-else-if="chartCols !== 12" class="header-filler my-3"></div>
+          <div
+            class="overline mt-0 mt-sm-3 mb-3 text-center"
+            v-text="$t(COMPARE_SENSOR[sensor])"
+          ></div>
           <div>
             <MeasurementsChartBar
               :chart-data="chartjsCompareDataSeries([sensor], true)"
@@ -223,6 +231,11 @@ export default {
     dates: {
       type: Array,
       default: () => [],
+      required: false,
+    },
+    defaultHiveId: {
+      type: Number,
+      default: null,
       required: false,
     },
     measurementData: {
@@ -289,6 +302,11 @@ export default {
     ...mapGetters('groups', ['groups']),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
+    defaultHiveName() {
+      return this.hivesObject[this.defaultHiveId] !== undefined
+        ? this.hivesObject[this.defaultHiveId].name
+        : ''
+    },
     locale() {
       return this.$i18n.locale
     },
@@ -645,9 +663,18 @@ export default {
       return label.replace(/^0/, '')
     },
     getSensorName(sensordefs, quantity) {
-      return sensordefs[quantity] && sensordefs[quantity].name !== null
-        ? sensordefs[quantity].name
-        : this.$i18n.t(quantity)
+      var trans =
+        sensordefs[quantity] && sensordefs[quantity].name !== null
+          ? sensordefs[quantity].name
+          : this.$i18n.t(quantity)
+
+      var hive =
+        ' (' +
+        (quantity.indexOf('mean_') === -1
+          ? this.defaultHiveName
+          : this.$i18n.tc('selected_hive', this.selectedHives.length)) +
+        ')'
+      return trans + hive
     },
     lightenColor(color, amount, opacity = 1) {
       const clamp = (val) => Math.min(Math.max(val, 0), 0xff)

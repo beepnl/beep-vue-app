@@ -432,6 +432,7 @@
           :period-start-string="periodStartString"
           :relative-interval="relativeInterval"
           :selected-device-title="selectedDeviceTitle"
+          :default-hive-id="selectedDevice.hive_id"
           :time-index="timeIndex"
           :measurement-data="measurementData"
           :inspections-for-charts="inspectionsForCharts"
