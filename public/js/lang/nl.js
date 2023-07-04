@@ -1001,6 +1001,12 @@ const translations = {
 
   /* offline inspection page */
   Print: 'Print',
+  Print_checklist: 'Print kastkaart',
+  Print_checklist_exp: 'Zorg voor de volgende printerinstellingen:',
+  Print_checklist_exp_1: 'Papierformaat: A4',
+  Print_checklist_exp_2: 'Zonder marges',
+  Print_checklist_exp_3: 'Zwart/wit',
+  Print_checklist_exp_4: 'Enkelzijdig',
   Offline_inspection: 'Papieren inspectie',
   Offline_inspection_exp:
     "Print de kastkaart, vul deze handmatig in. Upload foto's hiervan op een later moment via de 'Upload papieren inspectie' knop. De foto's worden vervolgens automatisch uitgelezen en het resultaat kan dan worden geverifiëerd en opgeslagen als een normale (digitale / online) inspectie.",
@@ -1016,8 +1022,13 @@ const translations = {
   svg_checklist: 'geprinte kastkaart | geprinte kastkaarten',
   Select_input_language: 'Selecteer taal waarin kastkaart is ingevuld',
   Upload_images: 'Upload afbeeldingen',
-  Upload_images_exp:
-    'TODO: write bullets: use scanner, good lighting, flat surface, all 4 corner squares inside the image, double check page numbers, double check name + date',
+  Upload_images_exp: "Let bij het maken van de foto's op het volgende:",
+  Upload_images_exp_1:
+    'Komt de Print ID van elke pagina overeen met de Print ID van de hierboven geselecteerde geprinte kastkaart?',
+  Upload_images_exp_2: 'Zijn alle 4 de zwarte vierkanten in beeld?',
+  Upload_images_exp_3:
+    'Ligt het papier op een vlakke ondergrond en is het goed verlicht?',
+  Upload_images_exp_4: 'TODO: use image scanner?',
   Uploading_images_be_patient:
     'Even geduld a.u.b., uw afbeeldingen worden geanalyseerd. Dit kan enkele minuten duren. Sluit dit venster niet.',
   Parsed_pages: "Verwerkte pagina's",

@@ -968,7 +968,14 @@ const translations = {
   Too_long_list_present_fix_1: 'If possible, decrease the number of options to',
   Too_long_list_present_fix_2:
     "or less, via the 'Edit checklist' button. Or fill in the correct answer manually.",
+
   Print: 'Print',
+  Print_checklist: 'Print checklist',
+  Print_checklist_exp: 'Make sure to use the following printer settings:',
+  Print_checklist_exp_1: 'Paper format: A4',
+  Print_checklist_exp_2: 'No margins',
+  Print_checklist_exp_3: 'Black & white',
+  Print_checklist_exp_4: 'Single sided',
 
   /* inspection modes */
   Offline_inspection: 'Paper inspection',
@@ -986,8 +993,12 @@ const translations = {
   Select_input_language:
     'Select language in which checklist has been filled in',
   Upload_images: 'Upload images',
-  Upload_images_exp:
-    'TODO: write bullets: use scanner, good lighting, flat surface, all 4 corner squares inside the image, double check page numbers, double check name + date',
+  Upload_images_exp: 'Please take care of the following when taking pictures:',
+  Upload_images_exp_1:
+    'Is the Print ID of each page equal to the Print ID of the above selected printed checklist?',
+  Upload_images_exp_2: 'Are all 4 black squares in view?',
+  Upload_images_exp_3: 'Is the paper wel lit and lying on a flat surface?',
+  Upload_images_exp_4: 'TODO: use image scanner?',
   Uploading_images_be_patient:
     'Please wait a moment, your images are being parsed. This may take several minutes. Please do not close this window.',
   Parsed_pages: 'Parsed pages',

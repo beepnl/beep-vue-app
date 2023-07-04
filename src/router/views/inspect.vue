@@ -93,18 +93,10 @@
           outlined
           color="black"
           class="save-button-mobile-wide mr-1"
-          :disabled="showLoadingIcon"
-          @click="print"
+          :disabled="!svgReady || svgLoading"
+          @click="confirmPrint"
         >
-          <v-progress-circular
-            v-if="showLoadingIcon"
-            class="ml-n1 mr-2"
-            size="18"
-            width="2"
-            color="disabled"
-            indeterminate
-          />
-          <v-icon v-if="!showLoadingIcon" left>mdi-printer</v-icon>
+          <v-icon left>mdi-printer</v-icon>
           {{ $t('Print') }}
         </v-btn>
         <v-btn
@@ -790,6 +782,7 @@ export default {
       dummyOutput,
       enableDummyOutput: true, // true, TODO for testing, remove later
       showChecklistSvgExp: false,
+      printExpBullets: 4,
     }
   },
   computed: {
@@ -1394,6 +1387,7 @@ export default {
             ? (searchTerm = this.selectedHiveSet.name)
             : (searchTerm = this.activeHive.location)
           var lastHiveId = this.selectedHives[this.selectedHives.length - 1]
+          this.forceParseMode = false
           setTimeout(() => {
             return this.readApiariesAndGroups().then(() => {
               // update generalInspections in store for diary-list
@@ -1658,6 +1652,35 @@ export default {
         })
       }
       this.storeInspectionMode('')
+    },
+    confirmPrint() {
+      var bullets = ''
+      for (var n = 1; n <= this.printExpBullets; n++) {
+        bullets += '• ' + this.$i18n.t('Print_checklist_exp_' + n) + '</br>'
+      }
+      var htmlText =
+        '<p>' +
+        this.$i18n.t('Print_checklist_exp') +
+        '</p><p>' +
+        bullets +
+        '</p>'
+
+      this.$refs.confirm
+        .open(
+          this.$i18n.t('Print_checklist'),
+          htmlText,
+          {
+            color: 'red',
+          },
+          null,
+          true
+        )
+        .then((confirm) => {
+          this.print()
+        })
+        .catch((reject) => {
+          return true
+        })
     },
     print() {
       this.printMode = true

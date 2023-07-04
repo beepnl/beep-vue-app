@@ -46,10 +46,17 @@
           @click="showExplanation = !showExplanation"
         ></v-icon>
       </div>
-      <p v-if="showExplanation" class="beep-label">
-        <em>{{ $t('Upload_images_exp') }} </em>
-      </p>
-      <div class="d-flex flex-wrap">
+      <div v-if="showExplanation" class="mb-1">
+        <p class="beep-label">
+          <em>{{ $t('Upload_images_exp') }} </em>
+        </p>
+        <template v-for="item in uploadExpBullets">
+          <p :key="'ui-' + item" class="beep-label">
+            <em>{{ '• ' + $t('Upload_images_exp_' + item) }} </em>
+          </p>
+        </template>
+      </div>
+      <div class="d-flex flex-wrap mt-1">
         <UploadPageBlob
           v-for="(pageNr, i) in selectedChecklistSvg.pages"
           :key="'p-' + pageNr"
@@ -114,7 +121,8 @@ export default {
       assetsUrl:
         process.env.VUE_APP_ASSETS_URL ||
         process.env.VUE_APP_ASSETS_URL_FALLBACK,
-      showExplanation: false,
+      showExplanation: true,
+      uploadExpBullets: 4,
     }
   },
   computed: {
