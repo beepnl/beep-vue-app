@@ -418,7 +418,7 @@ export default {
           },
           onClick: self.legendClickHandler,
           onHover: function(e, legendItem, legend) {
-            if (this.multipleLines) {
+            if (self.multipleLines) {
               if (e.native.target.style !== undefined) {
                 e.native.target.style.cursor = 'pointer'
               }
