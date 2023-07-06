@@ -1001,6 +1001,12 @@ const translations = {
 
   /* offline inspection page */
   Print: 'Print',
+  Print_checklist: 'Print kastkaart',
+  Print_checklist_exp: 'Zorg voor de volgende printerinstellingen:',
+  Print_checklist_exp_1: 'Papierformaat: A4',
+  Print_checklist_exp_2: 'Zonder marges',
+  Print_checklist_exp_3: 'Zwart/wit',
+  Print_checklist_exp_4: 'Enkelzijdig',
   Offline_inspection: 'Papieren inspectie',
   Offline_inspection_exp:
     "Print de kastkaart, vul deze handmatig in. Upload foto's hiervan op een later moment via de 'Upload papieren inspectie' knop. De foto's worden vervolgens automatisch uitgelezen en het resultaat kan dan worden geverifiëerd en opgeslagen als een normale (digitale / online) inspectie.",
@@ -1016,8 +1022,13 @@ const translations = {
   svg_checklist: 'geprinte kastkaart | geprinte kastkaarten',
   Select_input_language: 'Selecteer taal waarin kastkaart is ingevuld',
   Upload_images: 'Upload afbeeldingen',
-  Upload_images_exp:
-    'TODO: write bullets: use scanner, good lighting, flat surface, all 4 corner squares inside the image, double check page numbers, double check name + date',
+  Upload_images_exp: "Let bij het maken van de foto's op het volgende:",
+  Upload_images_exp_1:
+    'Komt de Print ID van elke pagina overeen met de Print ID van de hierboven geselecteerde geprinte kastkaart?',
+  Upload_images_exp_2: 'Zijn alle 4 de zwarte vierkanten in beeld?',
+  Upload_images_exp_3:
+    'Ligt het papier op een vlakke ondergrond en is het goed verlicht?',
+  Upload_images_exp_4: 'TODO: use image scanner?',
   Uploading_images_be_patient:
     'Even geduld a.u.b., uw afbeeldingen worden geanalyseerd. Dit kan enkele minuten duren. Sluit dit venster niet.',
   Parsed_pages: "Verwerkte pagina's",
@@ -1031,6 +1042,11 @@ const translations = {
     "Het Print ID vind je rechts bovenaan de pagina, links van het paginanummer. Upload de papieren inspectie opnieuw met de juiste pagina's en/of de juiste geprinte kastkaart geselecteerd.",
   All_svg_ids_correct: 'Juiste geprinte kastkaart geselecteerd',
   All_svg_ids_incorrect: 'Verkeerde geprinte kastkaart geselecteerd',
+  No_checklist_svg: 'Nog geen kastkaarten geprint',
+  No_checklist_svg_exp:
+    "Voordat je een papieren inspectie kan uploaden, moet je eerst een kastkaart printen (en invullen). Ga daarom eerst naar 'Papieren inspectie', of doe de inspectie volledig digitaal via 'Digitale inspectie'.",
+  checklist_svg_exp:
+    "Selecteer hieronder een geprinte kastkaart. Let daarbij op dat de Print ID (en daarmee ook de naam) overeenkomt met de Print ID (en naam) van jouw papieren inspectie. De Print ID vind je rechtsboven elke bladzijde, de naam linksboven. N.B. Een digitale kastkaart kan onder verschillende Print IDs opgeslagen zijn als 'geprinte kastkaart', wanneer de inhoud gewijzigd is op het moment van printen (ten opzichte van de vorige printsessie). Aanpassingen aan een digitale kastkaart zijn dus alleen terug te zien in een geprinte kastkaart wanneer de kastkaart na de wijzigingen geprint is. De datum (+ het tijdstip) achter de naam duidt aan wanneer een bepaalde versie van de kastkaart voor het eerst geprint is.",
 
   /* Compare module */
   Load: 'Laden',
@@ -1048,6 +1064,7 @@ const translations = {
   compare_support_url:
     'https://beepsupport.freshdesk.com/en/support/solutions/articles/60000921124-compare-hives-option',
   compare_url_text: 'Lees hier meer uitleg over de Vergelijk functionaliteit',
+  selected_hive: 'geselecteerde kast | geselecteerde kasten',
 
   /* below, please keep [pagenr] as is, it will be replaced by the pagenumber to be uploaded */
   Upload_pagenr: 'Upload hier pagina [pagenr]',

@@ -132,9 +132,6 @@ export default {
       this.pageImage = null
       this.$emit('set-page-blob', null)
     },
-    // setInspectionEdited(bool) {
-    //   this.$store.commit('inspections/setInspectionEdited', bool) // TODO
-    // },
   },
 }
 </script>

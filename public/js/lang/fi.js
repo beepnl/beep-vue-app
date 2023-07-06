@@ -1092,7 +1092,14 @@ const translations = {
   Too_long_list_present_fix_1: 'If possible, decrease the number of options to',
   Too_long_list_present_fix_2:
     "or less, via the 'Edit checklist' button. Or fill in the correct answer manually.",
+
   Print: 'Print',
+  Print_checklist: 'Print checklist',
+  Print_checklist_exp: 'Make sure to use the following printer settings:',
+  Print_checklist_exp_1: 'Paper format: A4',
+  Print_checklist_exp_2: 'No margins',
+  Print_checklist_exp_3: 'Black & white',
+  Print_checklist_exp_4: 'Single sided',
 
   /* inspection modes */
   Offline_inspection: 'Paper inspection',
@@ -1110,8 +1117,12 @@ const translations = {
   Select_input_language:
     'Select language in which checklist has been filled in',
   Upload_images: 'Upload images',
-  Upload_images_exp:
-    'TODO: write bullets: use scanner, good lighting, flat surface, all 4 corner squares inside the image, double check page numbers, double check name + date',
+  Upload_images_exp: 'Please take care of the following when taking pictures:',
+  Upload_images_exp_1:
+    'Is the Print ID of each page equal to the Print ID of the above selected printed checklist?',
+  Upload_images_exp_2: 'Are all 4 black squares in view?',
+  Upload_images_exp_3: 'Is the paper wel lit and lying on a flat surface?',
+  Upload_images_exp_4: 'TODO: use image scanner?',
   Uploading_images_be_patient:
     'Please wait a moment, your images are being parsed. This may take several minutes. Please do not close this window.',
   Parsed_pages: 'Parsed pages',
@@ -1125,6 +1136,11 @@ const translations = {
     'The Print ID can be found at the top right of the page, to the left of the page number. Upload the paper inspection again with the correct pages and/or select the correct printed checklist',
   All_svg_ids_correct: 'Correct printed checklist has been selected',
   All_svg_ids_incorrect: 'Incorrect printed checklist has been selected',
+  No_checklist_svg: 'No checklists have been printed yet',
+  No_checklist_svg_exp:
+    "Before uploading a paper inspection, a checklist should be printed (and filled in) first. Go to 'Paper inspection' to print your checklist, or instead submit a completely digital inspection via 'Digital inspection'.",
+  checklist_svg_exp:
+    "Please select a printed checklist below. Make sure that the Print ID (and hence the name) is equal to the Print ID (and name) of your paper inspection. You can find the Print ID at the top right corner of each page, the name is printed at the top left corner. Please note: a digital checklist can be saved as a 'printed checklist' under different Print IDs, if any of its content has been changed in between print sessions. Edits to a digital checklist are therefore only reflected in a printed checklist if the checklist was printed after the changes were made. The date (and time) behind the name refer to when a specific version of the checklist was printed for the first time.",
 
   /* Compare module */
   Load: 'Load',
@@ -1143,6 +1159,7 @@ const translations = {
     'https://beepsupport.freshdesk.com/en/support/solutions/articles/60000921124-compare-hives-option',
   compare_url_text:
     'Here you can find more information on the Compare functionality',
+  selected_hive: 'selected hive | selected hives',
 
   /* below, please keep [pagenr] as is, it will be replaced by the pagenumber to be uploaded */
   Upload_pagenr: 'Upload page [pagenr] here',

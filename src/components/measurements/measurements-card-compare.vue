@@ -7,7 +7,7 @@
     @set-chart-cols="chartCols = $event"
   >
     <v-row class="my-4">
-      <v-col cols="12" lg="2">
+      <v-col cols="12" sm="6" md="4" lg="2">
         <div>
           <div class="mb-2">
             <div class="beep-label">
@@ -51,28 +51,29 @@
         />
       </v-col>
 
-      <v-col cols="12" lg="10">
+      <v-col cols="12" sm="6" md="8" lg="10">
         <ApiaryPreviewHiveSelector
-          v-if="selectedHives.length > 0 && selectedHives.length < 16"
+          v-if="initSelectedHives.length > 0 && initSelectedHives.length < 16"
           class="ml-lg-5 my-4 my-sm-2 compare-hives"
-          :hives="getHives(selectedHives)"
-          :hives-selected="[]"
-          :hives-editable="selectedHives"
+          :hives="getHives(initSelectedHives)"
+          :hives-selected="selectedHives"
+          :hives-editable="initSelectedHives"
+          :inspection-mode="true"
           :compare-mode="true"
           :disable-sort-hives="true"
-          :not-clickable="true"
+          @select-hive="selectHive($event)"
         ></ApiaryPreviewHiveSelector>
         <span
-          v-else
+          v-else-if="initSelectedHives.length > 0"
           class="mx-3 beep-label"
-          v-text="selectedHives.join(', ')"
+          v-text="initSelectedHives.join(', ')"
         ></span>
         <!-- <v-btn
           tile
           outlined
           color="black"
           class="save-button-mobile-wide"
-          :disabled="selectedHives.length === 0 || loadingCompareData"
+          :disabled="initSelectedHives.length === 0 || loadingCompareData"
           @click.prevent="loadCompareData(true)"
         >
           <v-progress-circular
@@ -89,10 +90,16 @@
       </v-col>
     </v-row>
 
-    <v-row>
+    <v-row
+      v-if="
+        (compareMeasurementData === null && loadingCompareData) ||
+          noCompareChartData
+      "
+      class="mt-n6"
+    >
       <v-col
         v-if="compareMeasurementData === null && loadingCompareData"
-        class="d-flex align-center justify-center my-16"
+        class="d-flex align-center justify-center my-12"
         cols="12"
       >
         <v-progress-circular color="primary" size="50" indeterminate />
@@ -113,7 +120,7 @@
           compareMeasurementData.measurements &&
           compareMeasurementData.measurements.length > 0
       "
-      class="charts mt-6 mb-2"
+      class="charts mt-n6 mb-2"
     >
       <v-overlay
         :absolute="true"
@@ -148,6 +155,10 @@
             "
           ></div>
           <div v-else-if="chartCols !== 12" class="header-filler my-3"></div>
+          <div
+            class="overline mt-0 mt-sm-3 mb-3 text-center"
+            v-text="$t(COMPARE_SENSOR[sensor])"
+          ></div>
           <div>
             <MeasurementsChartLine
               :chart-data="chartjsCompareDataSeries([sensor])"
@@ -181,6 +192,10 @@
             v-text="$tc('overall_intake_loss')"
           ></div>
           <div v-else-if="chartCols !== 12" class="header-filler my-3"></div>
+          <div
+            class="overline mt-0 mt-sm-3 mb-3 text-center"
+            v-text="$t(COMPARE_SENSOR[sensor])"
+          ></div>
           <div>
             <MeasurementsChartBar
               :chart-data="chartjsCompareDataSeries([sensor], true)"
@@ -206,7 +221,10 @@ import MeasurementsCard from '@components/measurements/measurements-card.vue'
 import MeasurementsChartLine from '@/src/components/measurements/measurements-chart-line.vue'
 import MeasurementsChartBar from '@/src/components/measurements/measurements-chart-bar.vue'
 import SelectHivesOverlay from '@components/select-hives-overlay.vue'
-import { readApiariesAndGroupsIfNotPresent } from '@mixins/methodsMixin'
+import {
+  lightenColor,
+  readApiariesAndGroupsIfNotPresent,
+} from '@mixins/methodsMixin'
 import { timeZone } from '@mixins/momentMixin'
 import { sensorMixin } from '@mixins/sensorMixin'
 
@@ -218,11 +236,21 @@ export default {
     MeasurementsChartBar,
     SelectHivesOverlay,
   },
-  mixins: [readApiariesAndGroupsIfNotPresent, sensorMixin, timeZone],
+  mixins: [
+    lightenColor,
+    readApiariesAndGroupsIfNotPresent,
+    sensorMixin,
+    timeZone,
+  ],
   props: {
     dates: {
       type: Array,
       default: () => [],
+      required: false,
+    },
+    defaultHiveId: {
+      type: Number,
+      default: null,
       required: false,
     },
     measurementData: {
@@ -273,7 +301,7 @@ export default {
       currentCompareSensors: [],
       compareSensorsPresent: false,
       noCompareChartData: false,
-      selectedHives: [],
+      initSelectedHives: [],
       loadingCompareData: false,
       selectHivesOverlay: false,
       cardName: 'Compare',
@@ -282,6 +310,7 @@ export default {
       chartCols: 6,
       SDsigns: ['-', '+'],
       showInfo: false,
+      selectedHives: [],
     }
   },
   computed: {
@@ -289,6 +318,11 @@ export default {
     ...mapGetters('groups', ['groups']),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
+    defaultHiveName() {
+      return this.hivesObject[this.defaultHiveId] !== undefined
+        ? this.hivesObject[this.defaultHiveId].name
+        : ''
+    },
     locale() {
       return this.$i18n.locale
     },
@@ -645,23 +679,18 @@ export default {
       return label.replace(/^0/, '')
     },
     getSensorName(sensordefs, quantity) {
-      return sensordefs[quantity] && sensordefs[quantity].name !== null
-        ? sensordefs[quantity].name
-        : this.$i18n.t(quantity)
-    },
-    lightenColor(color, amount, opacity = 1) {
-      const clamp = (val) => Math.min(Math.max(val, 0), 0xff)
-      // const fill = (str) => ('00' + str).slice(-2)
+      var trans =
+        sensordefs[quantity] && sensordefs[quantity].name !== null
+          ? sensordefs[quantity].name
+          : this.$i18n.t(quantity)
 
-      const num = parseInt(color, 16)
-      const red = clamp((num >> 16) + amount)
-      const green = clamp(((num >> 8) & 0x00ff) + amount)
-      const blue = clamp((num & 0x0000ff) + amount)
-
-      var newColor =
-        'rgba(' + red + ',' + green + ',' + blue + ',' + opacity + ')'
-
-      return newColor
+      var hive =
+        ' (' +
+        (quantity.indexOf('mean_') === -1
+          ? this.defaultHiveName
+          : this.$i18n.tc('selected_hive', this.initSelectedHives.length)) +
+        ')'
+      return trans + hive
     },
     loadCompareData(
       init = false,
@@ -680,8 +709,17 @@ export default {
         )
       }
     },
+    selectHive(id) {
+      if (!this.selectedHives.includes(id)) {
+        this.selectedHives.push(id)
+      } else {
+        this.selectedHives.splice(this.selectedHives.indexOf(id), 1)
+      }
+      this.loadCompareData(true)
+    },
     selectHives(hives) {
-      this.selectedHives = hives
+      this.initSelectedHives = [...hives]
+      this.selectedHives = [...hives]
       this.loadCompareData(true)
     },
     setPeriodToDate(date) {

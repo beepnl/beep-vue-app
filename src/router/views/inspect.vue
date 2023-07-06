@@ -2,7 +2,7 @@
 <template>
   <Layout
     :title="editMode ? $t('Edit_inspection') : $t('New_inspection') + modeText"
-    :dismiss-changes="offlineMode || uploadMode"
+    :dismiss-changes="offlineMode"
   >
     <h1 v-if="hiveNotEditable" class="unauthorized-title">
       {{
@@ -93,18 +93,10 @@
           outlined
           color="black"
           class="save-button-mobile-wide mr-1"
-          :disabled="showLoadingIcon"
-          @click="print"
+          :disabled="!svgReady || svgLoading"
+          @click="confirmPrint"
         >
-          <v-progress-circular
-            v-if="showLoadingIcon"
-            class="ml-n1 mr-2"
-            size="18"
-            width="2"
-            color="disabled"
-            indeterminate
-          />
-          <v-icon v-if="!showLoadingIcon" left>mdi-printer</v-icon>
+          <v-icon left>mdi-printer</v-icon>
           {{ $t('Print') }}
         </v-btn>
         <v-btn
@@ -227,7 +219,11 @@
 
           <v-col class="mobile-1 py-1 py-sm-3" cols="12" md="3">
             <InspectModeSelector
-              v-if="!editMode && permissions.includes('test-offline-input')"
+              v-if="
+                !editMode &&
+                  (permissions.includes('test-offline-input') ||
+                    permissions.includes('offline-input'))
+              "
               :selected-mode="selectedMode"
               @set-selected-mode="setSelectedMode = $event"
             />
@@ -287,7 +283,7 @@
             </div>
           </v-col>
 
-          <v-col v-if="!uploadMode" cols="12" sm="4">
+          <v-col v-if="!uploadMode" cols="12" :sm="offlineMode ? 8 : 4">
             <div
               v-if="checklists !== null && checklists.length > 0"
               class="beep-label mt-n3 mt-sm-0"
@@ -310,27 +306,45 @@
             ></ParsedPages>
           </v-col>
 
-          <v-col v-if="uploadMode" cols="12" sm="4">
-            <div
-              v-if="checklistSvgs.length > 0"
-              class="beep-label mt-n3 mt-sm-0"
-              v-text="`${$t('Select') + ' ' + $tc('svg_checklist', 1)}`"
-            ></div>
+          <v-col v-if="uploadMode" cols="12" sm="8">
+            <div class="d-flex justify-start align-center">
+              <div
+                class="beep-label mt-n3 mt-sm-0"
+                v-text="`${$t('Select') + ' ' + $tc('svg_checklist', 1)}`"
+              ></div>
+              <v-icon
+                class="mdi mdi-information icon-info cursor-pointer ml-2"
+                dark
+                small
+                :color="showChecklistSvgExp ? 'accent' : 'grey'"
+                @click="showChecklistSvgExp = !showChecklistSvgExp"
+              ></v-icon>
+            </div>
+            <p v-if="showChecklistSvgExp" class="beep-label">
+              <em
+                >{{
+                  $t(
+                    (checklistSvgs.length === 0 ? 'No_' : '') +
+                      'checklist_svg_exp'
+                  )
+                }}
+              </em>
+            </p>
             <Treeselect
-              v-if="checklistSvgs.length > 0"
               v-model="checklistSvgId"
               :options="checklistSvgs"
               :normalizer="normalizerChecklistSvg"
               :placeholder="`${$t('Select') + ' ' + $tc('svg_checklist', 1)}`"
-              :no-results-text="`${$t('no_results')}`"
+              :no-results-text="$t('no_results')"
+              :no-options-text="$t('No_checklist_svg')"
               @input="selectChecklistSvg"
             />
           </v-col>
 
-          <v-col class="d-flex" cols="12" sm="4">
+          <v-col v-if="!uploadMode && mobile" class="d-flex" cols="12" sm="4">
             <v-spacer></v-spacer>
             <v-btn
-              v-if="selectedChecklist && selectedChecklist.owner && mobile"
+              v-if="selectedChecklist && selectedChecklist.owner"
               tile
               outlined
               class="save-button-mobile-wide"
@@ -344,7 +358,11 @@
 
           <v-col v-if="!onlineMode" cols="12" sm="4">
             <InspectModeSelector
-              v-if="!editMode && permissions.includes('test-offline-input')"
+              v-if="
+                !editMode &&
+                  (permissions.includes('test-offline-input') ||
+                    permissions.includes('offline-input'))
+              "
               :selected-mode="selectedMode"
               @set-selected-mode="setSelectedMode = $event"
             />
@@ -624,7 +642,7 @@
       />
     </template>
 
-    <v-container v-if="!ready || !svgReady || svgLoading">
+    <v-container v-if="!uploadMode && (!ready || !svgReady || svgLoading)">
       <div class="loading">
         <v-progress-circular size="50" color="primary" indeterminate />
       </div>
@@ -771,6 +789,8 @@ export default {
       errorMessage: null,
       dummyOutput,
       enableDummyOutput: true, // true, TODO for testing, remove later
+      showChecklistSvgExp: false,
+      printExpBullets: 4,
     }
   },
   computed: {
@@ -924,7 +944,8 @@ export default {
       return this.$vuetify.breakpoint.mobile
     },
     modeText() {
-      return this.permissions.includes('test-offline-input')
+      return this.permissions.includes('test-offline-input') ||
+        this.permissions.includes('offline-input')
         ? ' - ' + this.$i18n.t(this.selectedMode + '_inspection')
         : ''
     },
@@ -939,7 +960,8 @@ export default {
     },
     parseMode() {
       return (
-        this.permissions.includes('test-offline-input') &&
+        (this.permissions.includes('test-offline-input') ||
+          this.permissions.includes('offline-input')) &&
         (this.queriedMode === 'parse' ||
           this.forceParseMode === true ||
           localStorage.beepSelectedInspectionMode === 'Parse') // TODO remove queried parse mode when enableDummyOutput is removed
@@ -1342,6 +1364,7 @@ export default {
           prop: 'checklistSvgs',
           value: response.data,
         })
+        this.showChecklistSvgExp = response.data.length === 0
       } catch (error) {
         if (error.response) {
           console.log('Error: ', error.response)
@@ -1374,6 +1397,7 @@ export default {
             ? (searchTerm = this.selectedHiveSet.name)
             : (searchTerm = this.activeHive.location)
           var lastHiveId = this.selectedHives[this.selectedHives.length - 1]
+          this.forceParseMode = false
           setTimeout(() => {
             return this.readApiariesAndGroups().then(() => {
               // update generalInspections in store for diary-list
@@ -1638,6 +1662,35 @@ export default {
         })
       }
       this.storeInspectionMode('')
+    },
+    confirmPrint() {
+      var bullets = ''
+      for (var n = 1; n <= this.printExpBullets; n++) {
+        bullets += '• ' + this.$i18n.t('Print_checklist_exp_' + n) + '</br>'
+      }
+      var htmlText =
+        '<p>' +
+        this.$i18n.t('Print_checklist_exp') +
+        '</p><p>' +
+        bullets +
+        '</p>'
+
+      this.$refs.confirm
+        .open(
+          this.$i18n.t('Print_checklist'),
+          htmlText,
+          {
+            color: 'red',
+          },
+          null,
+          true
+        )
+        .then((confirm) => {
+          this.print()
+        })
+        .catch((reject) => {
+          return true
+        })
     },
     print() {
       this.printMode = true

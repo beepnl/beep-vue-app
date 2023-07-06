@@ -40,9 +40,7 @@
             :checklist-header-text="svgChecklistName"
             :checklist-svg-id="
               checklistSvgAlreadySaved
-                ? checklistSvgAlreadySaved.id
-                : checklistSvgId
-                ? checklistSvgId
+                ? checklistSvgAlreadySaved.id.toString()
                 : ''
             "
             :totalPages="totalPages"

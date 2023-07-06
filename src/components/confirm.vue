@@ -15,9 +15,14 @@
         v-text="warningMessage"
       ></v-card-text>
       <v-card-text
-        v-show="!!message"
+        v-show="!!message && !messageAsHtml"
         class="pa-4"
         v-text="message"
+      ></v-card-text>
+      <v-card-text
+        v-show="!!message && messageAsHtml"
+        class="pa-4"
+        v-html="message"
       ></v-card-text>
       <v-card-actions class="pt-0">
         <v-spacer></v-spacer>
@@ -66,6 +71,7 @@ export default {
     reject: null,
     warningMessage: null,
     message: null,
+    messageAsHtml: false,
     title: null,
     options: {
       color: 'primary',
@@ -74,12 +80,19 @@ export default {
     },
   }),
   methods: {
-    open(title, message, options, warningMessage = null) {
+    open(
+      title,
+      message,
+      options,
+      warningMessage = null,
+      messageAsHtml = false
+    ) {
       this.dialog = true
       this.title = title
       this.warningMessage = warningMessage
       this.message = message
       this.options = Object.assign(this.options, options)
+      this.messageAsHtml = messageAsHtml
       return new Promise((resolve, reject) => {
         this.resolve = resolve
         this.reject = reject
