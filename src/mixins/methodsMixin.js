@@ -355,6 +355,25 @@ export const deleteHiveTag = {
   },
 }
 
+export const lightenColor = {
+  methods: {
+    lightenColor(color, amount, opacity = 1) {
+      color = color.replace('#', '')
+      const clamp = (val) => Math.min(Math.max(val, 0), 0xff)
+
+      const num = parseInt(color, 16)
+      const red = clamp((num >> 16) + amount)
+      const green = clamp(((num >> 8) & 0x00ff) + amount)
+      const blue = clamp((num & 0x0000ff) + amount)
+
+      var newColor =
+        'rgba(' + red + ',' + green + ',' + blue + ',' + opacity + ')'
+
+      return newColor
+    },
+  },
+}
+
 export const orderedLayers = {
   methods: {
     orderedLayers: function(hive) {

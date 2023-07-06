@@ -221,7 +221,10 @@ import MeasurementsCard from '@components/measurements/measurements-card.vue'
 import MeasurementsChartLine from '@/src/components/measurements/measurements-chart-line.vue'
 import MeasurementsChartBar from '@/src/components/measurements/measurements-chart-bar.vue'
 import SelectHivesOverlay from '@components/select-hives-overlay.vue'
-import { readApiariesAndGroupsIfNotPresent } from '@mixins/methodsMixin'
+import {
+  lightenColor,
+  readApiariesAndGroupsIfNotPresent,
+} from '@mixins/methodsMixin'
 import { timeZone } from '@mixins/momentMixin'
 import { sensorMixin } from '@mixins/sensorMixin'
 
@@ -233,7 +236,12 @@ export default {
     MeasurementsChartBar,
     SelectHivesOverlay,
   },
-  mixins: [readApiariesAndGroupsIfNotPresent, sensorMixin, timeZone],
+  mixins: [
+    lightenColor,
+    readApiariesAndGroupsIfNotPresent,
+    sensorMixin,
+    timeZone,
+  ],
   props: {
     dates: {
       type: Array,
@@ -683,20 +691,6 @@ export default {
           : this.$i18n.tc('selected_hive', this.initSelectedHives.length)) +
         ')'
       return trans + hive
-    },
-    lightenColor(color, amount, opacity = 1) {
-      const clamp = (val) => Math.min(Math.max(val, 0), 0xff)
-      // const fill = (str) => ('00' + str).slice(-2)
-
-      const num = parseInt(color, 16)
-      const red = clamp((num >> 16) + amount)
-      const green = clamp(((num >> 8) & 0x00ff) + amount)
-      const blue = clamp((num & 0x0000ff) + amount)
-
-      var newColor =
-        'rgba(' + red + ',' + green + ',' + blue + ',' + opacity + ')'
-
-      return newColor
     },
     loadCompareData(
       init = false,
