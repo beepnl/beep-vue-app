@@ -23,6 +23,7 @@ import {
 } from 'chart.js'
 import 'chartjs-adapter-moment'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
+import { lightenColor } from '@mixins/methodsMixin'
 
 ChartJS.register(
   BarElement,
@@ -37,6 +38,7 @@ ChartJS.register(
 
 export default {
   components: { BarChart },
+  mixins: [lightenColor],
   props: {
     chartData: {
       type: Object,
@@ -153,6 +155,9 @@ export default {
     mobile() {
       return this.$vuetify.breakpoint.mobile
     },
+    multipleBars() {
+      return this.chartData.datasets.length > 1
+    },
     pluginsDefault() {
       const self = this
       return {
@@ -200,10 +205,8 @@ export default {
               size: this.mobile ? this.fontSizeMob : this.fontSize,
             },
           },
-          onClick: self.legendClickHandler,
           onHover: function(e, legendItem, legend) {
-            const multipleLines = legend.chart.data.datasets.length > 1
-            if (multipleLines) {
+            if (this.multipleBars) {
               if (e.native.target.style !== undefined) {
                 e.native.target.style.cursor = 'pointer'
               }
@@ -216,15 +219,22 @@ export default {
           },
         },
         tooltip: {
+          mode: 'index',
+          position: 'nearest',
           padding: 8,
           displayColors: false,
-          backgroundColor: 'rgba(242, 145, 0, 0.87)',
+          backgroundColor: 'rgba(255, 231, 191, 0.90)',
           titleColor: '#242424',
           bodyColor: '#242424',
           bodyFont: {
             weight: 'bold',
           },
           callbacks: {
+            labelTextColor: function(context) {
+              return self.multipleBars
+                ? self.lightenColor(context.dataset.backgroundColor, -12, 1)
+                : '#242424'
+            },
             label: function(context) {
               const name = context.dataset.name || ''
               const unit = context.dataset.unit || ''
@@ -252,24 +262,6 @@ export default {
     this.$moment.locale(this.locale)
   },
   methods: {
-    legendClickHandler(e, legendItem, legend) {
-      const defaultLegendClickHandler = ChartJS.defaults.plugins.legend.onClick
-      const multipleLines = legend.chart.data.datasets.length > 1
-      // legend only clickable if chart has multiple lines / datasets
-      if (multipleLines) {
-        // for regular data charts use default legend click handler
-        if (this.location !== 'flashlog') {
-          defaultLegendClickHandler(e, legendItem, legend)
-          // for flashlog charts use additional custom handler that stores clicked legends across different pages
-        } else {
-          const hidden = legendItem.hidden
-          const dataset = legend.chart.data.datasets[legendItem.datasetIndex]
-          const abbr = dataset.abbr
-          defaultLegendClickHandler(e, legendItem, legend)
-          this.$emit('legend-clicked', { abbr, hidden })
-        }
-      }
-    },
     roundDec(num, dec) {
       return Math.round(num * Math.pow(10, dec)) / Math.pow(10, dec)
     },
