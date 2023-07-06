@@ -41,6 +41,8 @@
             :checklist-svg-id="
               checklistSvgAlreadySaved
                 ? checklistSvgAlreadySaved.id.toString()
+                : checklistSvgId
+                ? checklistSvgId.toString()
                 : ''
             "
             :totalPages="totalPages"
@@ -83,6 +85,11 @@ export default {
     },
     checklistSvgAlreadySaved: {
       type: Object,
+      default: null,
+      required: false,
+    },
+    checklistSvgId: {
+      type: Number,
       default: null,
       required: false,
     },
