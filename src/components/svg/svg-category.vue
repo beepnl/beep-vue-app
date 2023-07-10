@@ -42,7 +42,7 @@ export default {
       // if page nr is too high (i.e. if nextPage was called but no items are printed afterwards, such that the svg contains 1 empty page)
       // set the max page nr as pagenr - 1 (in the svg the last page will then be omitted)
       if (
-        (this.absoluteY - this.maxRowHeight) / this.pageHeight <
+        (this.absoluteY + this.maxRowHeight) / this.pageHeight <
         this.svgPageNr - 1
       ) {
         setTimeout(() => {

@@ -158,10 +158,7 @@ export default {
         if (fullRowItem || this.svgColumnCounter >= this.columnsPerRow) {
           var columnCounter = 1
           // for new row, set Y (height so far) as previous Y + row height of previous row
-          this.$store.commit(
-            'inspections/setY',
-            this.svgY + this.svgRowHeight - (fullRowItem ? 1 : 0)
-          )
+          this.$store.commit('inspections/setY', this.svgY + this.svgRowHeight)
           // reset row height to current item height for new row
           this.$store.commit('inspections/setRowHeight', itemHeight)
         } else {

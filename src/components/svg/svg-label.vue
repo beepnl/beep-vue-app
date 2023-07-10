@@ -36,7 +36,7 @@ export default {
   },
   data() {
     return {
-      maxLabelLength: 34,
+      maxLabelLength: 32,
     }
   },
 }

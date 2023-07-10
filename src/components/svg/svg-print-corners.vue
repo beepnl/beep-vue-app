@@ -18,6 +18,7 @@
       </text>
       <rect
         data-type="number"
+        data-label="Print ID"
         :data-parent-category-id="'svgid'"
         :x="pageWidth - (xMargin + 37) + 'mm'"
         :y="(pageNumber - 1) * pageHeight + 7.5 + 'mm'"
@@ -34,8 +35,16 @@
       >
         {{ checklistSvgId }}
       </text>
+      <text
+        :x="pageWidth - (xMargin + 18.8) + 'mm'"
+        :y="(pageNumber - 1) * pageHeight + 7 + 'mm'"
+        :style="svgLabel"
+      >
+        {{ 'Page' }}
+      </text>
       <rect
         data-type="number"
+        data-label="Page"
         :data-parent-category-id="'pagenr'"
         :data-category-id="pageNumber"
         :x="pageWidth - (xMargin + 18.8) + 'mm'"
