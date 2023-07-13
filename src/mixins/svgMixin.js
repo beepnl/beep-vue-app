@@ -38,14 +38,14 @@ export const svgData = {
       yMargin: 15,
       pageHeight: 296.82,
       pageWidth: 210,
-      maxRowHeight: 40, // 41
+      maxRowHeight: 42.6, // 41
       headerHeight: 6.5,
       numberBoxWidth: 4.65,
       numberBoxHeight: 8,
       numberFields: 3,
       spaceWidth: 3,
       inputHeight: {
-        label: 4,
+        label: 6.7,
         select_item: 5,
         date: 32,
         grade: 23,
@@ -96,8 +96,8 @@ export const svgStyles = {
       colorGreyDark: '#242424; ',
       fontSize: 'font: 3.8mm ',
       fontSizeHeader: 'font: 600 4mm ',
-      fontSizeHeaderSmall: 'font: 600 2.8mm ',
-      fontSizeSmall: 'font: 2.8mm ',
+      fontSizeHeaderSmall: 'font: 600 2.7mm ',
+      fontSizeSmall: 'font: 2.7mm ',
       fontSizeLarge: 'font: 5mm ',
       fontFamily: 'Helvetica, Arial, sans-serif; ',
     }

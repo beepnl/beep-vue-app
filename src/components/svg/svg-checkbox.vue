@@ -2,6 +2,7 @@
   <rect
     data-type="checkbox"
     :data-category-id="categoryId"
+    :data-label="label"
     :data-parent-category-id="parentId"
     :x="x"
     :y="y"
@@ -31,6 +32,11 @@ export default {
       type: [String, Number],
       required: false,
       default: null,
+    },
+    label: {
+      type: String,
+      required: false,
+      default: '',
     },
     parentId: {
       type: [String, Number],

@@ -11,6 +11,7 @@
           :x="x + item.depth * checkBoxSpace + 'mm'"
           :y="y + 2 + index * checkBoxSpace + 'mm'"
           :category-id="item.id"
+          :label="label"
           :parent-id="item.parent_id"
         />
         <text
@@ -29,6 +30,7 @@
     <g v-else-if="flattenedItems.length > maxNrOfItems">
       <rect
         data-type="text"
+        :data-label="label"
         :data-parent-category-id="position.id"
         :x="x + 'mm'"
         :y="y + 2 + 'mm'"
@@ -52,6 +54,7 @@
           :key="'stc-' + stars"
           :x="x + 'mm'"
           :category-id="'stars'"
+          :label="label"
           :parent-id="position.id"
           :y="y + 2 + index * checkBoxSpace + 'mm'"
         />
@@ -81,6 +84,7 @@
           :x="x + 'mm'"
           :y="y + 2 + index * checkBoxSpace + 'mm'"
           :category-id="'score'"
+          :label="label"
           :parent-id="position.id"
         />
         <text

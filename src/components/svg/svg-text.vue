@@ -42,6 +42,7 @@
     <rect
       v-else-if="!line && !textOnly"
       data-type="text"
+      :data-label="label"
       :data-parent-category-id="position.id"
       :x="x + 'mm'"
       :y="y + 2 + 'mm'"
@@ -55,6 +56,7 @@
     <rect
       v-else-if="line && !textOnly"
       data-type="text"
+      :data-label="label"
       :data-parent-category-id="position.id"
       :x="x + 'mm'"
       :y="y + 2 + 'mm'"
