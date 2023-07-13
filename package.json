@@ -94,7 +94,7 @@
     "prettier": "^1.19.1",
     "sass": "^1.32.8",
     "sass-loader": "8.0.x",
-    "stylelint": "^13.13.1",
+    "stylelint": "^15.10.1",
     "stylelint-config-css-modules": "2.2.x",
     "stylelint-config-prettier": "8.0.x",
     "stylelint-config-recess-order": "2.0.x",
