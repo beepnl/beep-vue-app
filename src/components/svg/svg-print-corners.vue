@@ -6,7 +6,7 @@
         :y="(pageNumber - 1) * pageHeight + 9 + 'mm'"
         :style="svgTextSmall"
       >
-        {{ checklistHeaderText }}
+        {{ checklistHeaderText + '  p.' + pageNumber + ' / ' + totalPages }}
       </text>
 
       <text
@@ -61,13 +61,6 @@
         :style="svgText"
       >
         {{ pageNumber }}
-      </text>
-      <text
-        :x="pageWidth - (xMargin + 9) + 'mm'"
-        :y="(pageNumber - 1) * pageHeight + 9 + 'mm'"
-        :style="svgTextSmall"
-      >
-        {{ 'p.' + pageNumber + ' / ' + totalPages }}
       </text>
     </g>
 

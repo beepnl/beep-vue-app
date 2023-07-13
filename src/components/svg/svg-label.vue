@@ -1,16 +1,20 @@
 <template>
   <g>
     <text :x="x + 'mm'" :y="y + 'mm'" :style="svgLabel">
-      {{ label.substring(0, maxLabelLength) }}
+      {{
+        label.substring(0, maxLabelLength) + label.length > maxLabelLength
+          ? '...'
+          : ''
+      }}
     </text>
-    <text
+    <!-- <text
       v-if="label.length > maxLabelLength"
       :x="x + 'mm'"
       :y="y + 2 + 'mm'"
       :style="svgLabel"
     >
       {{ label.substring(maxLabelLength) }}
-    </text>
+    </text> -->
   </g>
 </template>
 
