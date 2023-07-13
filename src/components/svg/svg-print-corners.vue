@@ -6,7 +6,7 @@
         :y="(pageNumber - 1) * pageHeight + 9 + 'mm'"
         :style="svgTextSmall"
       >
-        {{ checklistHeaderText + '  p.' + pageNumber + ' / ' + totalPages }}
+        {{ checklistHeaderText + ' - p.' + pageNumber + ' / ' + totalPages }}
       </text>
 
       <text

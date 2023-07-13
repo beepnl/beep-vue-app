@@ -2,9 +2,8 @@
   <g>
     <text :x="x + 'mm'" :y="y + 'mm'" :style="svgLabel">
       {{
-        label.substring(0, maxLabelLength) + label.length > maxLabelLength
-          ? '...'
-          : ''
+        label.substring(0, maxLabelLength) +
+          (label.length > maxLabelLength ? '...' : '')
       }}
     </text>
     <!-- <text
