@@ -210,6 +210,91 @@
         </v-col>
       </template>
     </v-row>
+
+    <v-row v-if="multipleHivesDataPresent" class="charts mt-4 mb-2">
+      <v-overlay
+        :absolute="true"
+        :value="!loadingCompareData && loadingData"
+        :opacity="0.5"
+        color="white"
+        z-index="1"
+      >
+        <div class="loading">
+          <v-progress-circular size="50" color="primary" indeterminate />
+        </div>
+      </v-overlay>
+      <template v-if="sensorsPresent">
+        <v-col
+          v-for="(sensor, index) in currentSensors"
+          :key="'mc-' + index"
+          cols="12"
+          :md="chartCols"
+        >
+          <div
+            v-if="index === 0"
+            class="overline mt-0 mt-sm-3 mb-3 text-center"
+            v-text="$t('Multiple_hives_charts')"
+          ></div>
+          <div v-else-if="chartCols !== 12" class="header-filler my-3"></div>
+          <div
+            class="overline mt-0 mt-sm-3 mb-3 text-center"
+            v-text="$t(SENSOR_NAMES[sensor])"
+          ></div>
+          <div>
+            <MeasurementsChartLine
+              :chart-data="chartjsMultipleHivesDataSeries(sensor)"
+              :interval="interval"
+              :start-time="periodStartString"
+              :end-time="periodEndString"
+              :chart-id="'mh-' + index"
+              :inspections-for-charts="inspectionsForCharts"
+              @confirm-view-alert="confirmViewAlert($event)"
+              @confirm-view-inspection="
+                confirmViewInspection($event.id, $event.date)
+              "
+              @set-period-to-date="setPeriodToDate($event)"
+            >
+            </MeasurementsChartLine>
+          </div>
+        </v-col>
+      </template>
+
+      <template v-if="debugSensorsPresent">
+        <v-col
+          v-for="(sensor, index) in currentDebugSensors"
+          :key="'mc-debug-' + index"
+          cols="12"
+          :md="chartCols"
+        >
+          <div
+            v-if="index === 0"
+            class="overline mt-0 mt-sm-3 mb-3 text-center"
+            v-text="$tc('device', 1) + ' ' + $t('info').toLocaleLowerCase()"
+          ></div>
+          <div v-else-if="chartCols !== 12" class="header-filler my-3"></div>
+          <div
+            class="overline mt-0 mt-sm-3 mb-3 text-center"
+            v-text="$t(SENSOR_NAMES[sensor])"
+          ></div>
+          <div>
+            <MeasurementsChartLine
+              :chart-data="chartjsMultipleHivesDataSeries(sensor)"
+              :interval="interval"
+              :start-time="periodStartString"
+              :end-time="periodEndString"
+              :chart-id="'mh-debug-' + index"
+              :inspections-for-charts="inspectionsForCharts"
+              @confirm-view-alert="confirmViewAlert($event)"
+              @confirm-view-inspection="
+                confirmViewInspection($event.id, $event.date)
+              "
+              @set-period-to-date="setPeriodToDate($event)"
+            >
+            </MeasurementsChartLine>
+          </div>
+        </v-col>
+      </template>
+    </v-row>
   </MeasurementsCard>
 </template>
 
@@ -311,9 +396,20 @@ export default {
       SDsigns: ['-', '+'],
       showInfo: false,
       selectedHives: [],
+      multipleHivesMeasurementData: {},
+      // noChartData: false,
+      // noPeriodData: false,
+      loadingData: false,
+      currentSensors: [],
+      // currentSoundSensors: {},
+      currentDebugSensors: [],
+      sensorsPresent: false,
+      // soundSensorsPresent: false,
+      debugSensorsPresent: false,
     }
   },
   computed: {
+    ...mapGetters('auth', ['permissions']),
     ...mapGetters('hives', ['hivesObject']),
     ...mapGetters('groups', ['groups']),
     ...mapGetters('locations', ['apiaries']),
@@ -329,12 +425,79 @@ export default {
     localVar() {
       return 'beepChartCols' + this.cardName
     },
+    multipleHivesDataPresent() {
+      return Object.keys(this.multipleHivesMeasurementData)
+    },
   },
   created() {
     // in case view is opened directly without loggin in (via localstorage) or in case of hard refresh
     this.readApiariesAndGroupsIfNotPresent()
   },
   methods: {
+    async getMultipleHivesMeasurements(interval, timeIndex, relativeInterval) {
+      this.loadingData = true
+      this.currentSensors = []
+      // this.currentSoundSensors = {}
+      this.currentDebugSensors = []
+      this.sensorsPresent = false
+      // this.soundSensorsPresent = false
+      this.debugSensorsPresent = false
+      await Promise.all(
+        this.selectedHives.map(async (hiveId) => {
+          await this.sensorMeasurementRequest(
+            interval,
+            timeIndex,
+            relativeInterval,
+            hiveId
+          )
+          return true
+        })
+      )
+      this.loadingData = false
+    },
+    async sensorMeasurementRequest(
+      interval,
+      timeIndex,
+      relativeInterval,
+      hiveId
+    ) {
+      var start = interval === 'selection' ? this.dates[0] : null
+      var end = interval === 'selection' ? this.dates[1] : null
+      var timeGroup =
+        interval === 'hour' || interval === 'selection' ? null : interval
+
+      try {
+        const response = await Api.readRequest(
+          '/sensors/measurements?hive_id=' +
+            hiveId +
+            '&interval=' +
+            interval +
+            '&index=' +
+            timeIndex +
+            '&timeGroup=' +
+            timeGroup +
+            '&timezone=' +
+            this.timeZone +
+            (start !== null ? '&start=' + start + ' 00:00' : '') +
+            (end !== null ? '&end=' + end + ' 23:59' : '') +
+            '&relative_interval=' +
+            (relativeInterval ? '1' : '0')
+        )
+        this.formatMeasurementData(response.data, hiveId)
+        return true
+      } catch (error) {
+        this.loadingData = false
+        this.multipleHivesMeasurementData = {}
+        if (error.response) {
+          console.log(error.response)
+          if (error.response.status === 500) {
+            this.noChartData = true
+          }
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
     async sensorCompareMeasurementRequest(
       interval,
       timeIndex,
@@ -382,6 +545,50 @@ export default {
         } else {
           console.log('Error: ', error)
         }
+      }
+    },
+    formatMeasurementData(measurementData, hiveId) {
+      if (
+        measurementData &&
+        measurementData.measurements &&
+        measurementData.measurements.length > 0
+      ) {
+        measurementData.measurements.sort(function(a, b) {
+          if (a.time < b.time) {
+            return -1
+          }
+          if (a.time > b.time) {
+            return 1
+          }
+          return 0
+        })
+        this.multipleHivesMeasurementData[hiveId] = measurementData
+
+        Object.keys(measurementData.measurements[0]).map((quantity) => {
+          if (
+            this.SENSORS.indexOf(quantity) > -1 &&
+            this.currentSensors.indexOf(quantity) === -1
+          ) {
+            this.currentSensors.push(quantity)
+            this.sensorsPresent = true
+            // } else if (this.SOUND.indexOf(quantity) > -1) {
+            //   var soundSensorName = measurementData.sensorDefinitions[
+            //     quantity
+            //   ]
+            //     ? measurementData.sensorDefinitions[quantity].name
+            //     : this.SENSOR_NAMES[quantity]
+            //   if (this.currentSoundSensors.indexOf(soundSensorName) === -1) {
+            //   this.currentSoundSensors[soundSensorName] = quantity
+            //   this.soundSensorsPresent = true
+            //   }
+          } else if (
+            this.DEBUG.indexOf(quantity) > -1 &&
+            this.currentDebugSensors.indexOf(quantity) === -1
+          ) {
+            this.currentDebugSensors.push(quantity)
+            this.debugSensorsPresent = true
+          }
+        })
       }
     },
     getSensorMeasurement(abbr) {
@@ -612,6 +819,71 @@ export default {
 
       return data
     },
+    chartjsMultipleHivesDataSeries(quantity) {
+      var data = {
+        labels: [],
+        datasets: [],
+      }
+
+      var mT = this.getSensorMeasurement(quantity)
+
+      if (mT === null || mT === undefined) {
+        console.log('mT not found ', quantity)
+      } else if (mT.show_in_charts === 1) {
+        this.selectedHives.map((hiveId) => {
+          var hiveData = []
+          if (
+            typeof this.multipleHivesMeasurementData[hiveId] !== 'undefined' &&
+            typeof this.multipleHivesMeasurementData[hiveId].measurements !==
+              'undefined' &&
+            this.multipleHivesMeasurementData[hiveId].measurements.length > 0
+          ) {
+            this.multipleHivesMeasurementData[hiveId].measurements.map(
+              (measurement, index) => {
+                if (
+                  (!this.relativeInterval &&
+                    (this.interval === 'hour' ||
+                      this.interval === 'day' ||
+                      this.interval === 'week' ||
+                      this.interval === 'year' ||
+                      // skip first value for month or selection interval (belongs to previous month/day) except when it's a relative interval
+                      index !== 0)) ||
+                  this.relativeInterval
+                ) {
+                  if (measurement[quantity] !== undefined) {
+                    hiveData.push({
+                      x: measurement.time,
+                      y: measurement[quantity],
+                    })
+                  }
+                }
+              }
+            )
+
+            var hiveColor =
+              this.hivesObject[hiveId].layers[0].color !== null
+                ? this.hivesObject[hiveId].layers[0].color
+                : this.fallbackColor
+
+            data.datasets.push({
+              id: mT.id + '_' + hiveId,
+              abbr: mT.abbreviation,
+              fill: false,
+              borderColor: hiveColor,
+              backgroundColor: hiveColor,
+              borderRadius: 2,
+              label: this.hivesObject[hiveId].name,
+              name: this.hivesObject[hiveId].name,
+              unit: mT.unit !== '-' && mT.unit !== null ? mT.unit : '',
+              data: hiveData,
+              spanGaps: this.interval === 'hour' || this.interval === 'day', // false,
+            })
+          }
+        })
+      }
+
+      return data
+    },
     confirmViewAlert(alert) {
       // TODO: add alert lines to compare charts!
       this.$emit('confirm-view-alert', alert)
@@ -702,11 +974,15 @@ export default {
         this.comparingData = true
       }
       if (this.comparingData) {
-        this.sensorCompareMeasurementRequest(
-          interval !== null ? interval : this.interval,
-          timeIndex !== null ? timeIndex : this.timeIndex,
+        var i = interval !== null ? interval : this.interval
+        var t = timeIndex !== null ? timeIndex : this.timeIndex
+        var r =
           relativeInterval !== null ? relativeInterval : this.relativeInterval
-        )
+
+        this.sensorCompareMeasurementRequest(i, t, r)
+        if (this.permissions.includes('multiple-hives-charts')) {
+          this.getMultipleHivesMeasurements(i, t, r)
+        }
       }
     },
     selectHive(id) {

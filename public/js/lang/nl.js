@@ -1065,6 +1065,7 @@ const translations = {
     'https://beepsupport.freshdesk.com/en/support/solutions/articles/60000921124-compare-hives-option',
   compare_url_text: 'Lees hier meer uitleg over de Vergelijk functionaliteit',
   selected_hive: 'geselecteerde kast | geselecteerde kasten',
+  Multiple_hives_charts: 'Meerdere bijenkasten in één grafiek',
 
   /* below, please keep [pagenr] as is, it will be replaced by the pagenumber to be uploaded */
   Upload_pagenr: 'Upload hier pagina [pagenr]',

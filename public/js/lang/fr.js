@@ -1234,6 +1234,7 @@ const translations = {
   compare_url_text:
     'Here you can find more information on the Compare functionality',
   selected_hive: 'selected hive | selected hives',
+  Multiple_hives_charts: 'Multiple hives in one chart',
 
   /* below, please keep [pagenr] as is, it will be replaced by the pagenumber to be uploaded */
   Upload_pagenr: 'Upload page [pagenr] here',
