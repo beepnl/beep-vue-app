@@ -211,10 +211,26 @@
       </template>
     </v-row>
 
-    <v-row v-if="multipleHivesDataPresent" class="charts mt-4 mb-2">
+    <v-row
+      v-if="
+        !(compareMeasurementData === null && loadingCompareData) &&
+          multipleHivesMeasurementData.length === 0 &&
+          loadingData
+      "
+      class="mt-3"
+    >
+      <v-col class="d-flex align-center justify-center my-12" cols="12">
+        <v-progress-circular color="primary" size="50" indeterminate />
+      </v-col>
+    </v-row>
+
+    <v-row
+      v-if="sensorsPresent || debugSensorsPresent"
+      class="charts mt-4 mb-2"
+    >
       <v-overlay
         :absolute="true"
-        :value="!loadingCompareData && loadingData"
+        :value="loadingData"
         :opacity="0.5"
         color="white"
         z-index="1"
@@ -401,11 +417,10 @@ export default {
       // noPeriodData: false,
       loadingData: false,
       currentSensors: [],
-      // currentSoundSensors: {},
       currentDebugSensors: [],
       sensorsPresent: false,
-      // soundSensorsPresent: false,
       debugSensorsPresent: false,
+      fallbackColor: '#d6d6d6',
     }
   },
   computed: {
@@ -425,9 +440,14 @@ export default {
     localVar() {
       return 'beepChartCols' + this.cardName
     },
-    multipleHivesDataPresent() {
-      return Object.keys(this.multipleHivesMeasurementData)
-    },
+    // multipleHivesDataPresent() {
+    //   return Object.keys(this.multipleHivesMeasurementData)
+    // },
+    // multipleHivesDataPresent() {
+    //   return (
+    //     this.currentSensors.length > 0 || this.currentDebugSensors.length > 0
+    //   )
+    // },
   },
   created() {
     // in case view is opened directly without loggin in (via localstorage) or in case of hard refresh
@@ -437,10 +457,8 @@ export default {
     async getMultipleHivesMeasurements(interval, timeIndex, relativeInterval) {
       this.loadingData = true
       this.currentSensors = []
-      // this.currentSoundSensors = {}
       this.currentDebugSensors = []
       this.sensorsPresent = false
-      // this.soundSensorsPresent = false
       this.debugSensorsPresent = false
       await Promise.all(
         this.selectedHives.map(async (hiveId) => {
@@ -486,13 +504,8 @@ export default {
         this.formatMeasurementData(response.data, hiveId)
         return true
       } catch (error) {
-        this.loadingData = false
-        this.multipleHivesMeasurementData = {}
         if (error.response) {
           console.log(error.response)
-          if (error.response.status === 500) {
-            this.noChartData = true
-          }
         } else {
           console.log('Error: ', error)
         }
@@ -545,50 +558,6 @@ export default {
         } else {
           console.log('Error: ', error)
         }
-      }
-    },
-    formatMeasurementData(measurementData, hiveId) {
-      if (
-        measurementData &&
-        measurementData.measurements &&
-        measurementData.measurements.length > 0
-      ) {
-        measurementData.measurements.sort(function(a, b) {
-          if (a.time < b.time) {
-            return -1
-          }
-          if (a.time > b.time) {
-            return 1
-          }
-          return 0
-        })
-        this.multipleHivesMeasurementData[hiveId] = measurementData
-
-        Object.keys(measurementData.measurements[0]).map((quantity) => {
-          if (
-            this.SENSORS.indexOf(quantity) > -1 &&
-            this.currentSensors.indexOf(quantity) === -1
-          ) {
-            this.currentSensors.push(quantity)
-            this.sensorsPresent = true
-            // } else if (this.SOUND.indexOf(quantity) > -1) {
-            //   var soundSensorName = measurementData.sensorDefinitions[
-            //     quantity
-            //   ]
-            //     ? measurementData.sensorDefinitions[quantity].name
-            //     : this.SENSOR_NAMES[quantity]
-            //   if (this.currentSoundSensors.indexOf(soundSensorName) === -1) {
-            //   this.currentSoundSensors[soundSensorName] = quantity
-            //   this.soundSensorsPresent = true
-            //   }
-          } else if (
-            this.DEBUG.indexOf(quantity) > -1 &&
-            this.currentDebugSensors.indexOf(quantity) === -1
-          ) {
-            this.currentDebugSensors.push(quantity)
-            this.debugSensorsPresent = true
-          }
-        })
       }
     },
     getSensorMeasurement(abbr) {
@@ -935,6 +904,40 @@ export default {
         this.noCompareChartData = true
       }
       this.loadingCompareData = false
+    },
+    formatMeasurementData(measurementData, hiveId) {
+      if (
+        measurementData &&
+        measurementData.measurements &&
+        measurementData.measurements.length > 0
+      ) {
+        measurementData.measurements.sort(function(a, b) {
+          if (a.time < b.time) {
+            return -1
+          }
+          if (a.time > b.time) {
+            return 1
+          }
+          return 0
+        })
+        this.multipleHivesMeasurementData[hiveId] = measurementData
+
+        Object.keys(measurementData.measurements[0]).map((quantity) => {
+          if (
+            this.SENSORS.indexOf(quantity) > -1 &&
+            this.currentSensors.indexOf(quantity) === -1
+          ) {
+            this.currentSensors.push(quantity)
+            this.sensorsPresent = true
+          } else if (
+            this.DEBUG.indexOf(quantity) > -1 &&
+            this.currentDebugSensors.indexOf(quantity) === -1
+          ) {
+            this.currentDebugSensors.push(quantity)
+            this.debugSensorsPresent = true
+          }
+        })
+      }
     },
     getHives(hiveIds) {
       var hivesArray = []
