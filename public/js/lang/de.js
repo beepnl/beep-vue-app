@@ -681,9 +681,15 @@ const translations = {
     '<strong>Deaktiviere</strong> diesen Alarm für die folgenden Bienenstöcke:',
   Exclude_hives_details:
     'Hinweis: Standardmäßig wird dieser Alarm für alle Bienenstöcke mit einem Messgerät ausgeführt.',
+  Exclude_hives_collab_group_exp:
+    ' This includes hives from your collaboration group(s). Deactivate hives for which you do not wish to receive this alert.',
+  No_hives_excluded_warning:
+    "N.B. This alert will be executed for all hives with a measurement device, including hives from your collaboration group(s). You can deactivate hives for which you do not want to receive this notification via 'Exclude periods and hives'.",
+  Save_alertrule_ok: 'Would you like to continue saving the alert rule?',
   months: 'Monate',
   hours: 'Stunden',
   delete_alertrule: 'Lösche Alarmregel',
+  create_alertrule: 'Save alert rule',
   Active: 'Aktiv',
   Alert_via_email: 'Alarm via Email',
   Webhook_url: 'Webhook URL',

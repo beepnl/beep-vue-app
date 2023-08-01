@@ -770,9 +770,15 @@ const translations = {
     '<strong>Désactiver</strong> cette alerte pour les ruches suivantes:',
   Exclude_hives_details:
     "N.B. Par défaut, ces alertes seront éxécutées pour toutes les ruches équipées d'un appareil.",
+  Exclude_hives_collab_group_exp:
+    ' This includes hives from your collaboration group(s). Deactivate hives for which you do not wish to receive this alert.',
+  No_hives_excluded_warning:
+    "N.B. This alert will be executed for all hives with a measurement device, including hives from your collaboration group(s). You can deactivate hives for which you do not want to receive this notification via 'Exclude periods and hives'.",
+  Save_alertrule_ok: 'Would you like to continue saving the alert rule?',
   months: 'mois',
   hours: 'heures',
   delete_alertrule: "Supprimer la règle d'alerte",
+  create_alertrule: 'Save alert rule',
   Active: 'Actif',
   Alert_via_email: 'Alerte par email',
   this_field: 'Ce champ',

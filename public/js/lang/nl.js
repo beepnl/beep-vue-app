@@ -610,9 +610,16 @@ const translations = {
     'Deze notificatie <strong>deactiveren</strong> voor de volgende bijenkasten:',
   Exclude_hives_details:
     'N.B. De notificatie wordt standaard voor alle bijenkasten met een meetsysteem uitgevoerd.',
+  Exclude_hives_collab_group_exp:
+    ' Dit geldt ook voor bijenkasten die onderdeel zijn van een samenwerkingsgroep waar je lid van bent. Deactiveer de kasten waarvoor je deze notificatie niet wilt ontvangen.',
+  No_hives_excluded_warning:
+    "N.B. Deze notificatie wordt uitgevoerd voor alle bijenkasten met een meetsysteem, ook voor bijenkasten uit je samenwerkingsgroep(en). Bijenkasten waarvoor je deze notificatie niet wilt ontvangen kan je deactiveren via 'Periodes en bijenkasten uitzonderen'.",
+  Save_alertrule_ok:
+    'Wilt u doorgaan met opslaan van de notificatie-instelling?',
   months: 'maanden',
   hours: 'uren',
   delete_alertrule: 'Verwijder notificatie-instelling',
+  create_alertrule: 'Opslaan notificatie-instelling',
   Active: 'Actief',
   Alert_via_email: 'Notificatie via email',
   this_field: 'Dit veld',

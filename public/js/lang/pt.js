@@ -691,9 +691,15 @@ const translations = {
     '<strong>Desativar</strong> este alerta para as seguintes colmeias:',
   Exclude_hives_details:
     'N.B. Por defeito, este alerta será executado para todas as colmeias que tenham um aparelho de medição',
+  Exclude_hives_collab_group_exp:
+    ' This includes hives from your collaboration group(s). Deactivate hives for which you do not wish to receive this alert.',
+  No_hives_excluded_warning:
+    "N.B. This alert will be executed for all hives with a measurement device, including hives from your collaboration group(s). You can deactivate hives for which you do not want to receive this notification via 'Exclude periods and hives'.",
+  Save_alertrule_ok: 'Would you like to continue saving the alert rule?',
   months: 'meses',
   hours: 'horas',
   delete_alertrule: 'Apagar regra de alerta',
+  create_alertrule: 'Save alert rule',
   Active: 'Ativo',
   Alert_via_email: 'Alerta via email',
   Webhook_url: 'url webhook (gancho web)',

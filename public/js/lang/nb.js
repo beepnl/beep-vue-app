@@ -581,9 +581,15 @@ const translations = {
     '<strong>Deactivate</strong> dette varselet for følgende bikuber:',
   Exclude_hives_details:
     'N.B. Som standard vil dette varselet bli utført for alle bikuber med en måleenhet.',
+  Exclude_hives_collab_group_exp:
+    ' This includes hives from your collaboration group(s). Deactivate hives for which you do not wish to receive this alert.',
+  No_hives_excluded_warning:
+    "N.B. This alert will be executed for all hives with a measurement device, including hives from your collaboration group(s). You can deactivate hives for which you do not want to receive this notification via 'Exclude periods and hives'.",
+  Save_alertrule_ok: 'Would you like to continue saving the alert rule?',
   months: 'måneder',
   hours: 'timer',
   delete_alertrule: 'Slett varslingsregel',
+  create_alertrule: 'Save alert rule',
   Active: 'Aktiv',
   Alert_via_email: 'Varsling via e-post',
   this_field: 'Dette Felt',

@@ -649,9 +649,15 @@ const translations = {
     '<strong>Deactivate</strong> this alert for the following hives:',
   Exclude_hives_details:
     'N.B. By default, this alert will be executed for all hives with a measurement device.',
+  Exclude_hives_collab_group_exp:
+    ' This includes hives from your collaboration group(s). Deactivate hives for which you do not wish to receive this alert.',
+  No_hives_excluded_warning:
+    "N.B. This alert will be executed for all hives with a measurement device, including hives from your collaboration group(s). You can deactivate hives for which you do not want to receive this notification via 'Exclude periods and hives'.",
+  Save_alertrule_ok: 'Would you like to continue saving the alert rule?',
   months: 'months',
   hours: 'hours',
   delete_alertrule: 'Delete alert rule',
+  create_alertrule: 'Save alert rule',
   Active: 'Active',
   Alert_via_email: 'Alert via email',
   Webhook_url: 'Webhook url',
