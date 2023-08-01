@@ -1073,6 +1073,10 @@ const translations = {
   compare_url_text: 'Lees hier meer uitleg over de Vergelijk functionaliteit',
   selected_hive: 'geselecteerde kast | geselecteerde kasten',
   Multiple_hives_charts: 'Meerdere bijenkasten in één grafiek',
+  compare_no_chart_data:
+    'Geen vergelijkingsdata beschikbaar voor de geselecteerde periode',
+  multiple_hives_no_chart_data:
+    'Geen data beschikbaar voor de geselecteerde bijenkasten voor de geselecteerde periode',
 
   /* below, please keep [pagenr] as is, it will be replaced by the pagenumber to be uploaded */
   Upload_pagenr: 'Upload hier pagina [pagenr]',

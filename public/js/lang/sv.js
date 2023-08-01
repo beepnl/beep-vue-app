@@ -1114,6 +1114,9 @@ const translations = {
     'Here you can find more information on the Compare functionality',
   selected_hive: 'selected hive | selected hives',
   Multiple_hives_charts: 'Multiple hives in one chart',
+  compare_no_chart_data: 'No compare data for the selected period',
+  multiple_hives_no_chart_data:
+    'No data for the selected hives for the selected period',
 
   /* below, please keep [pagenr] as is, it will be replaced by the pagenumber to be uploaded */
   Upload_pagenr: 'Upload page [pagenr] here',

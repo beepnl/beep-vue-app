@@ -90,6 +90,22 @@
       </v-col>
     </v-row>
 
+    <v-overlay
+      :absolute="true"
+      :value="
+        (compareMeasurementData !== null && loadingCompareData) ||
+          (loadingData && initMultiple)
+      "
+      :opacity="0.5"
+      color="white"
+      class="mt-12"
+      z-index="1"
+    >
+      <div class="loading">
+        <v-progress-circular size="50" color="primary" indeterminate />
+      </div>
+    </v-overlay>
+
     <v-row
       v-if="
         (compareMeasurementData === null && loadingCompareData) ||
@@ -109,7 +125,7 @@
         cols="12"
         class="d-flex align-center justify-center my-16"
       >
-        {{ $t('no_chart_data') }}
+        {{ $t('compare_no_chart_data') }}
       </v-col>
     </v-row>
 
@@ -122,17 +138,6 @@
       "
       class="charts mt-n6 mb-2"
     >
-      <v-overlay
-        :absolute="true"
-        :value="loadingCompareData"
-        :opacity="0.5"
-        color="white"
-        z-index="1"
-      >
-        <div class="loading">
-          <v-progress-circular size="50" color="primary" indeterminate />
-        </div>
-      </v-overlay>
       <template v-if="compareSensorsPresent">
         <v-col
           v-for="(sensor, index) in currentCompareSensors"
@@ -213,33 +218,34 @@
 
     <v-row
       v-if="
-        !(compareMeasurementData === null && loadingCompareData) &&
-          multipleHivesMeasurementData.length === 0 &&
-          loadingData
+        (!loadingCompareData && !initMultiple && loadingData) ||
+          (!loadingData && multipleHivesNoChartData)
       "
-      class="mt-3"
+      class="mt-n6"
     >
-      <v-col class="d-flex align-center justify-center my-12" cols="12">
+      <v-col
+        v-if="!loadingCompareData && !initMultiple && loadingData"
+        class="d-flex align-center justify-center my-12"
+        cols="12"
+      >
         <v-progress-circular color="primary" size="50" indeterminate />
+      </v-col>
+      <v-col
+        v-else-if="!loadingData && multipleHivesNoChartData"
+        cols="12"
+        class="d-flex align-center justify-center my-16"
+      >
+        {{ $t('multiple_hives_no_chart_data') }}
       </v-col>
     </v-row>
 
     <v-row
-      v-if="sensorsPresent || debugSensorsPresent"
+      v-if="
+        multipleHivesDataPresent && !(!loadingData && multipleHivesNoChartData)
+      "
       class="charts mt-4 mb-2"
     >
-      <v-overlay
-        :absolute="true"
-        :value="loadingData"
-        :opacity="0.5"
-        color="white"
-        z-index="1"
-      >
-        <div class="loading">
-          <v-progress-circular size="50" color="primary" indeterminate />
-        </div>
-      </v-overlay>
-      <template v-if="sensorsPresent">
+      <template v-if="currentSensors.length > 0">
         <v-col
           v-for="(sensor, index) in currentSensors"
           :key="'mc-' + index"
@@ -275,7 +281,7 @@
         </v-col>
       </template>
 
-      <template v-if="debugSensorsPresent">
+      <template v-if="currentDebugSensors.length > 0">
         <v-col
           v-for="(sensor, index) in currentDebugSensors"
           :key="'mc-debug-' + index"
@@ -403,6 +409,7 @@ export default {
       compareSensorsPresent: false,
       noCompareChartData: false,
       initSelectedHives: [],
+      initMultiple: false,
       loadingCompareData: false,
       selectHivesOverlay: false,
       cardName: 'Compare',
@@ -413,13 +420,11 @@ export default {
       showInfo: false,
       selectedHives: [],
       multipleHivesMeasurementData: {},
-      // noChartData: false,
-      // noPeriodData: false,
+      multipleHivesWithData: [],
       loadingData: false,
       currentSensors: [],
       currentDebugSensors: [],
-      sensorsPresent: false,
-      debugSensorsPresent: false,
+      multipleHivesNoChartData: false,
       fallbackColor: '#d6d6d6',
     }
   },
@@ -440,14 +445,9 @@ export default {
     localVar() {
       return 'beepChartCols' + this.cardName
     },
-    // multipleHivesDataPresent() {
-    //   return Object.keys(this.multipleHivesMeasurementData)
-    // },
-    // multipleHivesDataPresent() {
-    //   return (
-    //     this.currentSensors.length > 0 || this.currentDebugSensors.length > 0
-    //   )
-    // },
+    multipleHivesDataPresent() {
+      return this.multipleHivesWithData.length > 0 // Object.keys(this.multipleHivesMeasurementData) somehow does not work
+    },
   },
   created() {
     // in case view is opened directly without loggin in (via localstorage) or in case of hard refresh
@@ -456,10 +456,7 @@ export default {
   methods: {
     async getMultipleHivesMeasurements(interval, timeIndex, relativeInterval) {
       this.loadingData = true
-      this.currentSensors = []
-      this.currentDebugSensors = []
-      this.sensorsPresent = false
-      this.debugSensorsPresent = false
+      this.multipleHivesNoChartData = true
       await Promise.all(
         this.selectedHives.map(async (hiveId) => {
           await this.sensorMeasurementRequest(
@@ -472,6 +469,7 @@ export default {
         })
       )
       this.loadingData = false
+      this.initMultiple = true
     },
     async sensorMeasurementRequest(
       interval,
@@ -911,6 +909,7 @@ export default {
         measurementData.measurements &&
         measurementData.measurements.length > 0
       ) {
+        this.multipleHivesNoChartData = false
         measurementData.measurements.sort(function(a, b) {
           if (a.time < b.time) {
             return -1
@@ -921,6 +920,9 @@ export default {
           return 0
         })
         this.multipleHivesMeasurementData[hiveId] = measurementData
+        if (!this.multipleHivesWithData.includes(hiveId)) {
+          this.multipleHivesWithData.push(hiveId) // keep track of for which hiveId data is included, as Object.keys() does not work
+        }
 
         Object.keys(measurementData.measurements[0]).map((quantity) => {
           if (
@@ -928,15 +930,20 @@ export default {
             this.currentSensors.indexOf(quantity) === -1
           ) {
             this.currentSensors.push(quantity)
-            this.sensorsPresent = true
           } else if (
             this.DEBUG.indexOf(quantity) > -1 &&
             this.currentDebugSensors.indexOf(quantity) === -1
           ) {
             this.currentDebugSensors.push(quantity)
-            this.debugSensorsPresent = true
           }
         })
+      } else if (this.multipleHivesWithData.includes(hiveId)) {
+        // if previous data contains measurements for this hiveId, but not for the current measurements request, delete it from the data
+        delete this.multipleHivesMeasurementData[hiveId]
+        this.multipleHivesWithData.splice(
+          this.multipleHivesWithData.indexOf(hiveId),
+          1
+        )
       }
     },
     getHives(hiveIds) {
@@ -981,8 +988,9 @@ export default {
         var t = timeIndex !== null ? timeIndex : this.timeIndex
         var r =
           relativeInterval !== null ? relativeInterval : this.relativeInterval
-
-        this.sensorCompareMeasurementRequest(i, t, r)
+        if (this.permissions.includes('hive-compare')) {
+          this.sensorCompareMeasurementRequest(i, t, r)
+        }
         if (this.permissions.includes('multiple-hives-charts')) {
           this.getMultipleHivesMeasurements(i, t, r)
         }
