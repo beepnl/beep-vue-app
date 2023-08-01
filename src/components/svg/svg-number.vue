@@ -10,6 +10,7 @@
       <rect
         :data-type="inputType === 'date' ? 'text' : 'number'"
         :data-category-id="inputType === 'date' ? 'date-field' : ''"
+        :data-label="label"
         :data-parent-category-id="position.id"
         :x="x + prependOffset + 'mm'"
         :y="y + 2 + 'mm'"

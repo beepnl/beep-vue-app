@@ -653,6 +653,7 @@
         v-if="selectedChecklist"
         :selected-checklist="selectedChecklist"
         :checklist-svg-already-saved="checklistSvgAlreadySaved"
+        :checklist-svg-id="checklistSvgId"
         :new-svg-name="newSvgName"
         :print-mode="printMode"
         :total-pages="totalPages"
@@ -1865,6 +1866,7 @@ export default {
     },
     switchChecklist(id) {
       if (this.offlineMode) {
+        this.checklistSvgId = null
         this.svgReady = false
       }
       this.$store.commit('inspections/resetSvgStates')

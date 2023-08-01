@@ -665,9 +665,15 @@ const translations = {
     '<strong>Disattiva</strong> questo messaggio di allerta per i seguenti alveari:',
   Exclude_hives_details:
     'N.B. Come impostazione standard, questo messaggio di allerta sarà associato a tutti gli alveari con dispositivo per misurazioni.',
+  Exclude_hives_collab_group_exp:
+    ' This includes hives from your collaboration group(s). Deactivate hives for which you do not wish to receive this alert.',
+  No_hives_excluded_warning:
+    "N.B. This alert will be executed for all hives with a measurement device, including hives from your collaboration group(s). You can deactivate hives for which you do not want to receive this notification via 'Exclude periods and hives'.",
+  Save_alertrule_ok: 'Would you like to continue saving the alert rule?',
   months: 'mesi',
   hours: 'ore',
   delete_alertrule: 'Cancella regola messaggio di allerta',
+  create_alertrule: 'Save alert rule',
   Active: 'Attivo',
   Alert_via_email: 'Messaggio di allerta via email',
   this_field: 'Questo campo',

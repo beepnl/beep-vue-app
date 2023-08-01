@@ -649,9 +649,15 @@ const translations = {
     '&lt;stark&gt;Deaktivera&lt;/stark&gt; denna varning för följande kupor:',
   Exclude_hives_details:
     'N.B. Som standard, kommer denna varning att ges för alla kupor med mätenheter.',
+  Exclude_hives_collab_group_exp:
+    ' This includes hives from your collaboration group(s). Deactivate hives for which you do not wish to receive this alert.',
+  No_hives_excluded_warning:
+    "N.B. This alert will be executed for all hives with a measurement device, including hives from your collaboration group(s). You can deactivate hives for which you do not want to receive this notification via 'Exclude periods and hives'.",
+  Save_alertrule_ok: 'Would you like to continue saving the alert rule?',
   months: 'månader',
   hours: 'timmar',
   delete_alertrule: 'Radera varnings regel',
+  create_alertrule: 'Save alert rule',
   Active: 'Aktiv',
   Alert_via_email: 'Varna via email',
   Webhook_url: 'Webhook url',
