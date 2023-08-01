@@ -8,47 +8,65 @@
   >
     <v-row class="my-4">
       <v-col cols="12" sm="6" md="4" lg="2">
-        <div>
-          <div class="mb-2">
-            <div class="beep-label">
-              {{ $t('Compare_hives') }}
-              <v-icon
-                class="mdi mdi-information ml-1 icon-info cursor-pointer"
-                dark
-                small
-                :color="showInfo ? 'accent' : 'grey'"
-                @click="showInfo = !showInfo"
-              ></v-icon>
+        <v-row>
+          <v-col>
+            <div>
+              <div class="mb-2">
+                <div class="beep-label">
+                  {{ $t('Compare_hives') }}
+                  <v-icon
+                    class="mdi mdi-information ml-1 icon-info cursor-pointer"
+                    dark
+                    small
+                    :color="showInfo ? 'accent' : 'grey'"
+                    @click="showInfo = !showInfo"
+                  ></v-icon>
+                </div>
+              </div>
+
+              <p v-if="showInfo" class="info-text">
+                <em
+                  >{{ $t('compare_hives_exp') + ' '
+                  }}<a :href="$t('compare_support_url')" target="_blank">{{
+                    $t('compare_url_text')
+                  }}</a></em
+                >
+              </p>
             </div>
-          </div>
 
-          <p v-if="showInfo" class="info-text">
-            <em
-              >{{ $t('compare_hives_exp') + ' '
-              }}<a :href="$t('compare_support_url')" target="_blank">{{
-                $t('compare_url_text')
-              }}</a></em
+            <v-btn
+              tile
+              outlined
+              color="black"
+              class="save-button-mobile-wide"
+              @click.prevent="selectHivesOverlay = true"
             >
-          </p>
-        </div>
-
-        <v-btn
-          tile
-          outlined
-          color="black"
-          class="save-button-mobile-wide"
-          @click.prevent="selectHivesOverlay = true"
-        >
-          {{ $tc('Select_hive', 2) }}
-        </v-btn>
-        <SelectHivesOverlay
-          :show-overlay="selectHivesOverlay"
-          :overlay="selectHivesOverlay"
-          :compare-mode="true"
-          :include-groups="true"
-          @close-overlay="selectHivesOverlay = false"
-          @select-hives="selectHives($event)"
-        />
+              {{ $tc('Select_hive', 2) }}
+            </v-btn>
+            <SelectHivesOverlay
+              :show-overlay="selectHivesOverlay"
+              :overlay="selectHivesOverlay"
+              :compare-mode="true"
+              :include-groups="true"
+              @close-overlay="selectHivesOverlay = false"
+              @select-hives="selectHives($event)"
+            />
+          </v-col>
+          <v-col
+            v-if="initSelectedHives.length > 0"
+            cols="12"
+            sm="5"
+            md="12"
+            class="py-0 py-sm-3 mb-n2 mb-sm-0 mt-sm-3 mt-md-0 d-flex align-center"
+          >
+            <v-switch
+              v-model="allHivesSelected"
+              :label="$t('select_all_hives')"
+              :disabled="loadingCompareData || loadingData"
+              hide-details
+            ></v-switch>
+          </v-col>
+        </v-row>
       </v-col>
 
       <v-col cols="12" sm="6" md="8" lg="10">
@@ -131,7 +149,8 @@
 
     <v-row
       v-if="
-        measurementData !== null &&
+        selectedHives.length > 0 &&
+          measurementData !== null &&
           compareMeasurementData !== null &&
           compareMeasurementData.measurements &&
           compareMeasurementData.measurements.length > 0
@@ -241,7 +260,9 @@
 
     <v-row
       v-if="
-        multipleHivesDataPresent && !(!loadingData && multipleHivesNoChartData)
+        selectedHives.length > 0 &&
+          multipleHivesDataPresent &&
+          !(!loadingData && multipleHivesNoChartData)
       "
       class="charts mt-4 mb-2"
     >
@@ -434,6 +455,18 @@ export default {
     ...mapGetters('groups', ['groups']),
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
+    allHivesSelected: {
+      get() {
+        return this.selectedHives.length === this.initSelectedHives.length
+      },
+      set(value) {
+        if (value === false) {
+          this.selectedHives = []
+        } else {
+          this.selectedHives = [...this.initSelectedHives]
+        }
+      },
+    },
     defaultHiveName() {
       return this.hivesObject[this.defaultHiveId] !== undefined
         ? this.hivesObject[this.defaultHiveId].name
@@ -521,41 +554,45 @@ export default {
       this.noCompareChartData = false
       this.loadingCompareData = true
       var hivecall = this.selectedHives.join('&hive_id[]=')
-      try {
-        const response = await Api.readRequest(
-          '/sensors/comparemeasurements?hive_id[]=' +
-            hivecall +
-            '&interval=' +
-            interval +
-            '&index=' +
-            timeIndex +
-            '&timeGroup=' +
-            timeGroup +
-            '&timezone=' +
-            this.timeZone +
-            (start !== null ? '&start=' + start + ' 00:00' : '') +
-            (end !== null ? '&end=' + end + ' 23:59' : '') +
-            '&relative_interval=' +
-            (relativeInterval ? '1' : '0')
-        )
-        this.formatCompareMeasurementData(response.data)
-        this.ready = true
-        return true
-      } catch (error) {
-        this.loadingCompareData = false
-        this.compareMeasurementData = null
-        if (error.response) {
-          console.log(error.response)
-          if (
-            error.response.status === 500 ||
-            error.response.status === 404 ||
-            error.response.status === 422
-          ) {
-            this.noCompareChartData = true
+      if (this.selectedHives.length > 0) {
+        try {
+          const response = await Api.readRequest(
+            '/sensors/comparemeasurements?hive_id[]=' +
+              hivecall +
+              '&interval=' +
+              interval +
+              '&index=' +
+              timeIndex +
+              '&timeGroup=' +
+              timeGroup +
+              '&timezone=' +
+              this.timeZone +
+              (start !== null ? '&start=' + start + ' 00:00' : '') +
+              (end !== null ? '&end=' + end + ' 23:59' : '') +
+              '&relative_interval=' +
+              (relativeInterval ? '1' : '0')
+          )
+          this.formatCompareMeasurementData(response.data)
+          this.ready = true
+          return true
+        } catch (error) {
+          this.loadingCompareData = false
+          this.compareMeasurementData = null
+          if (error.response) {
+            console.log(error.response)
+            if (
+              error.response.status === 500 ||
+              error.response.status === 404 ||
+              error.response.status === 422
+            ) {
+              this.noCompareChartData = true
+            }
+          } else {
+            console.log('Error: ', error)
           }
-        } else {
-          console.log('Error: ', error)
         }
+      } else {
+        return true
       }
     },
     getSensorMeasurement(abbr) {
