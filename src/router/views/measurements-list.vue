@@ -536,7 +536,6 @@ export default {
       noChartData: false,
       currentLastSensorValues: [],
       showMeasurements: true,
-      showCompareMeasurements: true,
       showLastSensorValues: true,
       ready: false,
       timer: 0,

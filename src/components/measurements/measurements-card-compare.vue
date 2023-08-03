@@ -5,6 +5,7 @@
     :local-var="localVar"
     :show-chart-cols-icons="true"
     @set-chart-cols="chartCols = $event"
+    @show-card-content="toggleCardExpanded($event)"
   >
     <v-row class="my-4">
       <v-col cols="12" sm="6" md="4" lg="2">
@@ -447,6 +448,7 @@ export default {
       currentDebugSensors: [],
       multipleHivesNoChartData: false,
       fallbackColor: '#d6d6d6',
+      cardExpanded: false,
     }
   },
   computed: {
@@ -516,6 +518,7 @@ export default {
         interval === 'hour' || interval === 'selection' ? null : interval
 
       try {
+        console.log('actual multiple request')
         const response = await Api.readRequest(
           '/sensors/measurements?hive_id=' +
             hiveId +
@@ -556,6 +559,7 @@ export default {
       var hivecall = this.selectedHives.join('&hive_id[]=')
       if (this.selectedHives.length > 0) {
         try {
+          console.log('actual compare request')
           const response = await Api.readRequest(
             '/sensors/comparemeasurements?hive_id[]=' +
               hivecall +
@@ -1017,18 +1021,21 @@ export default {
       timeIndex = null,
       relativeInterval = null
     ) {
+      console.log('load compare data')
       if (init) {
         this.comparingData = true
       }
-      if (this.comparingData) {
+      if (this.comparingData && this.cardExpanded) {
         var i = interval !== null ? interval : this.interval
         var t = timeIndex !== null ? timeIndex : this.timeIndex
         var r =
           relativeInterval !== null ? relativeInterval : this.relativeInterval
         if (this.permissions.includes('hive-compare')) {
+          console.log('compare request')
           this.sensorCompareMeasurementRequest(i, t, r)
         }
         if (this.permissions.includes('multiple-hives-charts')) {
+          console.log('multiple request')
           this.getMultipleHivesMeasurements(i, t, r)
         }
       }
@@ -1048,6 +1055,12 @@ export default {
     },
     setPeriodToDate(date) {
       this.$emit('set-period-to-date', date)
+    },
+    toggleCardExpanded(bool) {
+      this.cardExpanded = bool
+      if (this.cardExpanded) {
+        this.loadCompareData()
+      }
     },
   },
 }
