@@ -156,9 +156,27 @@
           compareMeasurementData.measurements &&
           compareMeasurementData.measurements.length > 0
       "
-      class="charts mt-n6 mb-2"
+      :class="
+        'charts mt-n6 mt-sm-n3 mb-4' +
+          (multipleSections ? ' expandable-section' : '')
+      "
     >
-      <template v-if="compareSensorsPresent">
+      <div
+        v-if="multipleSections"
+        class="expandable-section-bar d-flex align-center"
+      >
+        <v-spacer />
+        <div class="overline ml-7" v-text="$t('Compare_with_mean')"></div>
+        <v-spacer />
+        <v-icon
+          class="mb-1 mr-1"
+          color="grey"
+          @click="showCompareSection = !showCompareSection"
+          >mdi-minus</v-icon
+        >
+      </div>
+
+      <template v-if="showCompareSection && compareSensorsPresent">
         <v-col
           v-for="(sensor, index) in currentCompareSensors"
           :key="'c-' + index"
@@ -166,8 +184,13 @@
           :md="chartCols"
         >
           <div
-            v-if="index === 0"
+            v-if="!multipleSections && index === 0"
             class="overline mt-0 mt-sm-3 mb-3 text-center"
+            v-text="$t('Compare_with_mean')"
+          ></div>
+          <div
+            v-if="index === 0"
+            class="overline mb-3 text-center"
             v-text="
               compareMeasurementData.resolution
                 ? $tc('measurement', 2) +
@@ -204,7 +227,7 @@
         </v-col>
       </template>
 
-      <template v-if="compareSensorsPresent">
+      <template v-if="showCompareSection && compareSensorsPresent">
         <v-col
           v-for="(sensor, j) in currentCompareSensors"
           :key="'b-' + j"
@@ -265,9 +288,28 @@
           multipleHivesDataPresent &&
           !(!loadingData && multipleHivesNoChartData)
       "
-      class="charts mt-4 mb-2"
+      :class="
+        // eslint-disable vue/comma-dangle
+        'charts mt-4 mb-2' +
+          (multipleSections ? ' expandable-section mb-4' : '')
+      "
     >
-      <template v-if="currentSensors.length > 0">
+      <div
+        v-if="multipleSections"
+        class="expandable-section-bar d-flex align-center"
+      >
+        <v-spacer />
+        <div class="overline ml-7" v-text="$t('Multiple_hives_charts')"></div>
+        <v-spacer />
+        <v-icon
+          class="mb-1 mr-1"
+          color="grey"
+          @click="showMultipleSection = !showMultipleSection"
+          >mdi-minus</v-icon
+        >
+      </div>
+
+      <template v-if="showMultipleSection && currentSensors.length > 0">
         <v-col
           v-for="(sensor, index) in currentSensors"
           :key="'mc-' + index"
@@ -275,7 +317,7 @@
           :md="chartCols"
         >
           <div
-            v-if="index === 0"
+            v-if="!multipleSections && index === 0"
             class="overline mt-0 mt-sm-3 mb-3 text-center"
             v-text="$t('Multiple_hives_charts')"
           ></div>
@@ -303,7 +345,7 @@
         </v-col>
       </template>
 
-      <template v-if="currentDebugSensors.length > 0">
+      <template v-if="showMultipleSection && currentDebugSensors.length > 0">
         <v-col
           v-for="(sensor, index) in currentDebugSensors"
           :key="'mc-debug-' + index"
@@ -449,6 +491,8 @@ export default {
       multipleHivesNoChartData: false,
       fallbackColor: '#d6d6d6',
       cardExpanded: false,
+      showCompareSection: true,
+      showMultipleSection: true,
     }
   },
   computed: {
@@ -482,6 +526,35 @@ export default {
     },
     multipleHivesDataPresent() {
       return this.multipleHivesWithData.length > 0 // Object.keys(this.multipleHivesMeasurementData) somehow does not work
+    },
+    multipleSections() {
+      return this.permissions.length > 0 // TODO adapt when permissions setup is changed
+    },
+  },
+  watch: {
+    showCompareSection() {
+      if (
+        this.showCompareSection &&
+        this.permissions.includes('hive-compare')
+      ) {
+        this.sensorCompareMeasurementRequest(
+          this.interval,
+          this.timeIndex,
+          this.relativeInterval
+        )
+      }
+    },
+    showMultipleSection() {
+      if (
+        this.showMultipleSection &&
+        this.permissions.includes('multiple-hives-charts')
+      ) {
+        this.getMultipleHivesMeasurements(
+          this.interval,
+          this.timeIndex,
+          this.relativeInterval
+        )
+      }
     },
   },
   created() {
@@ -518,7 +591,6 @@ export default {
         interval === 'hour' || interval === 'selection' ? null : interval
 
       try {
-        console.log('actual multiple request')
         const response = await Api.readRequest(
           '/sensors/measurements?hive_id=' +
             hiveId +
@@ -559,7 +631,6 @@ export default {
       var hivecall = this.selectedHives.join('&hive_id[]=')
       if (this.selectedHives.length > 0) {
         try {
-          console.log('actual compare request')
           const response = await Api.readRequest(
             '/sensors/comparemeasurements?hive_id[]=' +
               hivecall +
@@ -1021,7 +1092,6 @@ export default {
       timeIndex = null,
       relativeInterval = null
     ) {
-      console.log('load compare data')
       if (init) {
         this.comparingData = true
       }
@@ -1030,12 +1100,16 @@ export default {
         var t = timeIndex !== null ? timeIndex : this.timeIndex
         var r =
           relativeInterval !== null ? relativeInterval : this.relativeInterval
-        if (this.permissions.includes('hive-compare')) {
-          console.log('compare request')
+        if (
+          this.showCompareSection &&
+          this.permissions.includes('hive-compare')
+        ) {
           this.sensorCompareMeasurementRequest(i, t, r)
         }
-        if (this.permissions.includes('multiple-hives-charts')) {
-          console.log('multiple request')
+        if (
+          this.showMultipleSection &&
+          this.permissions.includes('multiple-hives-charts')
+        ) {
           this.getMultipleHivesMeasurements(i, t, r)
         }
       }
@@ -1069,5 +1143,17 @@ export default {
 <style lang="scss" scoped>
 .compare-hives {
   width: 100%;
+}
+
+.expandable-section-bar {
+  width: 100%;
+}
+
+.expandable-section {
+  @extend .rounded-border;
+  border: thin solid rgba(0, 0, 0, 0.12);
+  padding: 4px;
+  margin-left: 4px;
+  margin-right: 4px;
 }
 </style>

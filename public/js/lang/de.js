@@ -1142,14 +1142,15 @@ const translations = {
   net_weight_kg: 'Nettogewicht',
   overall_intake_loss: 'Gesamtzunahme/ -abnahme',
   Compare_hives: 'Compare hives',
+  Compare_with_mean: 'Compare hive weight with mean weight of other hives',
   compare_hives_exp:
-    'Find out how the weight of your hive is developing compared to your other hives in the area. ',
+    'Find out how your hive is developing compared to your other hives in the area. ',
   compare_support_url:
     'https://beepsupport.freshdesk.com/en/support/solutions/articles/60000921124-compare-hives-option',
   compare_url_text:
     'Here you can find more information on the Compare functionality',
   selected_hive: 'selected hive | selected hives',
-  Multiple_hives_charts: 'Multiple hives in one chart',
+  Multiple_hives_charts: 'Compare multiple hives in one chart',
   compare_no_chart_data: 'No compare data for the selected period',
   multiple_hives_no_chart_data:
     'No data for the selected hives for the selected period',

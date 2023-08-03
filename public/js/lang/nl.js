@@ -1066,13 +1066,15 @@ const translations = {
   net_weight_kg: 'Netto gewicht',
   overall_intake_loss: 'Totale stijging/daling',
   Compare_hives: 'Vergelijk bijenkasten',
+  Compare_with_mean:
+    'Vergelijk gewicht bijenkast met gemiddelde van andere kasten',
   compare_hives_exp:
-    'Bekijk hoe het gewicht van je bijenkast zich ontwikkelt, vergeleken met andere bijenkasten in de omgeving. ',
+    'Bekijk hoe je bijenkast zich ontwikkelt, vergeleken met andere bijenkasten in de omgeving. ',
   compare_support_url:
     'https://beepsupport.freshdesk.com/en/support/solutions/articles/60000921124-compare-hives-option',
   compare_url_text: 'Lees hier meer uitleg over de Vergelijk functionaliteit',
   selected_hive: 'geselecteerde kast | geselecteerde kasten',
-  Multiple_hives_charts: 'Meerdere bijenkasten in één grafiek',
+  Multiple_hives_charts: 'Vergelijk meerdere bijenkasten in één grafiek',
   compare_no_chart_data:
     'Geen vergelijkingsdata beschikbaar voor de geselecteerde periode',
   multiple_hives_no_chart_data:
