@@ -1079,6 +1079,9 @@ const translations = {
     'Geen vergelijkingsdata beschikbaar voor de geselecteerde periode',
   multiple_hives_no_chart_data:
     'Geen data beschikbaar voor de geselecteerde bijenkasten voor de geselecteerde periode',
+  /* below, please keep [hivename] as is, it will be replaced by the name of the hive you selected in the Data tab */
+  compare_chart_exp:
+    'Let op: [hivename] wordt niet meegenomen in de berekening van het gemiddelde gewicht. ',
 
   /* below, please keep [pagenr] as is, it will be replaced by the pagenumber to be uploaded */
   Upload_pagenr: 'Upload hier pagina [pagenr]',

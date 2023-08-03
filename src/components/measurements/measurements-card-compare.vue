@@ -203,10 +203,31 @@
             "
           ></div>
           <div v-else-if="chartCols !== 12" class="header-filler my-3"></div>
-          <div
-            class="overline mt-0 mt-sm-3 mb-3 text-center"
-            v-text="$t(COMPARE_SENSOR[sensor])"
-          ></div>
+          <div class="d-flex justify-center align-center">
+            <div
+              class="overline mt-0 mt-sm-3 mb-3 text-center"
+              v-text="$t(COMPARE_SENSOR[sensor])"
+            ></div>
+            <v-icon
+              class="mdi mdi-information ml-1 icon-info cursor-pointer"
+              dark
+              size="14"
+              :color="chartInfo.indexOf(index) > -1 ? 'accent' : 'grey'"
+              @click="toggleChartInfo(index)"
+            ></v-icon>
+          </div>
+
+          <p
+            v-if="chartInfo.indexOf(index) > -1"
+            class="text-center mt-n3 mb-1"
+          >
+            <em
+              >{{ compareChartExpText
+              }}<a :href="$t('compare_support_url')" target="_blank">{{
+                $t('compare_url_text')
+              }}</a></em
+            >
+          </p>
           <div>
             <MeasurementsChartLine
               :chart-data="chartjsCompareDataSeries([sensor])"
@@ -240,10 +261,31 @@
             v-text="$tc('overall_intake_loss')"
           ></div>
           <div v-else-if="chartCols !== 12" class="header-filler my-3"></div>
-          <div
-            class="overline mt-0 mt-sm-3 mb-3 text-center"
-            v-text="$t(COMPARE_SENSOR[sensor])"
-          ></div>
+          <div class="d-flex justify-center align-center">
+            <div
+              class="overline mt-0 mt-sm-3 mb-3 text-center"
+              v-text="$t(COMPARE_SENSOR[sensor])"
+            ></div>
+            <v-icon
+              class="mdi mdi-information ml-1 icon-info cursor-pointer"
+              dark
+              size="14"
+              :color="chartInfo.indexOf('b-' + j) > -1 ? 'accent' : 'grey'"
+              @click="toggleChartInfo('b-' + j)"
+            ></v-icon>
+          </div>
+
+          <p
+            v-if="chartInfo.indexOf('b-' + j) > -1"
+            class="text-center mt-n3 mb-1"
+          >
+            <em
+              >{{ compareChartExpText
+              }}<a :href="$t('compare_support_url')" target="_blank">{{
+                $t('compare_url_text')
+              }}</a></em
+            >
+          </p>
           <div>
             <MeasurementsChartBar
               :chart-data="chartjsCompareDataSeries([sensor], true)"
@@ -493,6 +535,7 @@ export default {
       cardExpanded: false,
       showCompareSection: true,
       showMultipleSection: true,
+      chartInfo: [],
     }
   },
   computed: {
@@ -513,10 +556,30 @@ export default {
         }
       },
     },
+    compareChartExpText() {
+      var expText = this.$i18n.te('compare_chart_exp')
+        ? this.$i18n
+            .t('compare_chart_exp')
+            .replace('[hivename]', '"' + this.defaultHiveName + '"')
+        : 'Please note: "' +
+          this.defaultHiveName +
+          '" will not be included in the mean weight calculation. '
+      return this.defaultHiveIsSelected ? expText : '' // if the default hive is selected, please include text that it will not be included in the mean calculation in the compare chart info text
+    },
+    compareHives() {
+      var selectedHives = [...this.selectedHives]
+      if (this.defaultHiveIsSelected) {
+        selectedHives.splice(selectedHives.indexOf(this.defaultHiveId), 1) // always remove default hive id from list of hive ids that are included in the sensorCompareMeasurementRequest because you don't want to included it in the mean you are comparing the default hive against
+      }
+      return selectedHives
+    },
     defaultHiveName() {
       return this.hivesObject[this.defaultHiveId] !== undefined
         ? this.hivesObject[this.defaultHiveId].name
         : ''
+    },
+    defaultHiveIsSelected() {
+      return this.selectedHives.indexOf(this.defaultHiveId) > -1
     },
     locale() {
       return this.$i18n.locale
@@ -628,7 +691,7 @@ export default {
         interval === 'hour' || interval === 'selection' ? null : interval
       this.noCompareChartData = false
       this.loadingCompareData = true
-      var hivecall = this.selectedHives.join('&hive_id[]=')
+      var hivecall = this.compareHives.join('&hive_id[]=')
       if (this.selectedHives.length > 0) {
         try {
           const response = await Api.readRequest(
@@ -1134,6 +1197,13 @@ export default {
       this.cardExpanded = bool
       if (this.cardExpanded) {
         this.loadCompareData()
+      }
+    },
+    toggleChartInfo(index) {
+      if (this.chartInfo.indexOf(index) > -1) {
+        this.chartInfo.splice(this.chartInfo.indexOf(index), 1)
+      } else {
+        this.chartInfo.push(index)
       }
     },
   },
