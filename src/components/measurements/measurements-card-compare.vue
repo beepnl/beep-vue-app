@@ -564,7 +564,7 @@ export default {
         : 'Please note: "' +
           this.defaultHiveName +
           '" will not be included in the mean weight calculation. '
-      return this.defaultHiveIsSelected ? expText : '' // if the default hive is selected, please include text that it will not be included in the mean calculation in the compare chart info text
+      return this.defaultHiveIsSelected ? expText : '' // if the default hive is selected, add text that it will not be included in the mean calculation to the compare chart info text
     },
     compareHives() {
       var selectedHives = [...this.selectedHives]
