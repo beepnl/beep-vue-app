@@ -651,7 +651,7 @@
     <template v-if="offlineMode && svgReady">
       <OfflineInspection
         v-if="selectedChecklist"
-        :selected-checklist="selectedChecklist"
+        :selected-checklist="selectedChecklistWithSuffixes"
         :checklist-svg-already-saved="checklistSvgAlreadySaved"
         :checklist-svg-id="checklistSvgId"
         :new-svg-name="newSvgName"
@@ -993,6 +993,21 @@ export default {
           this.activeInspection.reminder_date = null
         }
       },
+    },
+    selectedChecklistWithSuffixes() {
+      // add suffix to each category that has a duplicate name (because aws textract cannot deal with identical names on same page)
+      var checklist = { ...this.selectedChecklist }
+      var flattened = this.flattenItems(checklist.categories) // get array with all category names
+
+      var duplicates = [
+        ...new Set(flattened.filter((e, i, a) => a.indexOf(e) !== i)),
+      ]
+
+      checklist.categories.forEach((cat) =>
+        this.addSuffix(cat.children, duplicates)
+      )
+
+      return checklist
     },
     selectedChecklistSvg() {
       var findItem = this.checklistSvgs.filter(
@@ -1546,6 +1561,31 @@ export default {
       } else {
         return null
       }
+    },
+    addSuffix(children, allDupeNames) {
+      return children.map((child) => {
+        if (child.children.length > 0) {
+          this.addSuffix(child.children, allDupeNames)
+        }
+
+        if (allDupeNames.includes(child.name) && child.input !== 'label') {
+          child.suffix = '1'
+          return child
+        } else {
+          return child
+        }
+      })
+    },
+    flattenItems(data) {
+      return data.reduce((r, { children, name }) => {
+        r.push(name)
+
+        if (children.length) {
+          r.push(...this.flattenItems(children))
+        }
+
+        return r
+      }, [])
     },
     getNow(simple = false) {
       return this.$moment().format(

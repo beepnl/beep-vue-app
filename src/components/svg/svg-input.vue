@@ -235,10 +235,10 @@ export default {
   },
   computed: {
     label() {
-      return (
+      var label =
         (this.item.trans[this.locale] || this.item.name) +
         (this.item.unit !== null ? ' (' + this.item.unit + ')' : '')
-      )
+      return label + (this.item.suffix ? '_' + this.item.suffix : '')
     },
     labelWithHeader() {
       return (
