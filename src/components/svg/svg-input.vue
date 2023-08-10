@@ -238,14 +238,24 @@ export default {
       var label =
         (this.item.trans[this.locale] || this.item.name) +
         (this.item.unit !== null ? ' (' + this.item.unit + ')' : '')
-      return label + (this.item.suffix ? '_' + this.item.suffix : '')
+      return label
     },
     labelWithHeader() {
-      return (
-        (this.header !== '' && this.header !== this.label
-          ? this.header + ': '
-          : '') + this.label
-      )
+      const maxLabelLength = 32
+      var addHeader = this.header !== '' && this.header !== this.label
+      var labelText = (addHeader ? this.header + ': ' : '') + this.label
+      var suffix = !addHeader && this.item.suffix ? '_' + this.item.suffix : '' // only add suffix if label has no extra header (label with header is unlikely to be identical to other label with header)
+
+      var label = labelText + suffix
+
+      if (label.length > maxLabelLength) {
+        label =
+          labelText.substring(0, maxLabelLength - suffix.length) + // ensure that suffix is printed for shortened labels as well
+          suffix +
+          '...'
+      }
+
+      return label
     },
     locale() {
       return this.$i18n.locale

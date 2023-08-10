@@ -1,10 +1,7 @@
 <template>
   <g>
     <text :x="x + 'mm'" :y="y + 'mm'" :style="svgLabel">
-      {{
-        label.substring(0, maxLabelLength) +
-          (label.length > maxLabelLength ? '...' : '')
-      }}
+      {{ label }}
     </text>
     <!-- <text
       v-if="label.length > maxLabelLength"
@@ -36,11 +33,6 @@ export default {
       required: false,
       default: '',
     },
-  },
-  data() {
-    return {
-      maxLabelLength: 32,
-    }
   },
 }
 </script>

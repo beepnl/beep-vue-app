@@ -994,17 +994,27 @@ export default {
         }
       },
     },
-    selectedChecklistWithSuffixes() {
-      // add suffix to each category that has a duplicate name (because aws textract cannot deal with identical names on same page)
+    selectedChecklistDuplicateNames() {
       var checklist = { ...this.selectedChecklist }
       var flattened = this.flattenItems(checklist.categories) // get array with all category names
 
       var duplicates = [
-        ...new Set(flattened.filter((e, i, a) => a.indexOf(e) !== i)),
+        ...new Set(flattened.filter((e, i, a) => a.indexOf(e) !== i)), // get all duplicate category names
       ]
 
+      return duplicates
+    },
+    selectedChecklistWithSuffixes() {
+      // add suffix to each category that has a duplicate name (because aws textract cannot deal with identical names on same page)
+      var checklist = { ...this.selectedChecklist }
+
+      // helper when adding suffixes, to keep track of how often a suffix has been used so which number the suffix should be
+      var dupeTracker = Object.fromEntries(
+        [...this.selectedChecklistDuplicateNames].map((k) => [k, 0])
+      )
+
       checklist.categories.forEach((cat) =>
-        this.addSuffix(cat.children, duplicates)
+        this.addSuffix(cat, cat.children, dupeTracker)
       )
 
       return checklist
@@ -1562,23 +1572,29 @@ export default {
         return null
       }
     },
-    addSuffix(children, allDupeNames) {
+    addSuffix(item, children, dupeTracker) {
       return children.map((child) => {
-        if (child.children.length > 0) {
-          this.addSuffix(child.children, allDupeNames)
+        if (
+          this.selectedChecklistDuplicateNames.includes(child.name) &&
+          child.input !== 'label'
+        ) {
+          dupeTracker[child.name] += 1
+          child.suffix = dupeTracker[child.name]
         }
 
-        if (allDupeNames.includes(child.name) && child.input !== 'label') {
-          child.suffix = '1'
-          return child
-        } else {
-          return child
+        if (child.children.length > 0) {
+          this.addSuffix(child, child.children, dupeTracker)
         }
+
+        return child
       })
     },
     flattenItems(data) {
-      return data.reduce((r, { children, name }) => {
-        r.push(name)
+      return data.reduce((r, { input, children, name }) => {
+        if (input !== 'label' && input !== 'list_item') {
+          // skip labels because they don't have an svg input field
+          r.push(name)
+        }
 
         if (children.length) {
           r.push(...this.flattenItems(children))
