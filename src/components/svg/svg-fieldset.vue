@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/comma-dangle -->
 <template>
   <g>
     <g
@@ -26,6 +27,7 @@
             :header="label"
             :item="item"
           ></SvgInput>
+
           <g
             v-if="
               item.children.length > 0 &&
@@ -41,6 +43,29 @@
                 :header="getHeader(item, child)"
                 :item="child"
               ></SvgInput>
+              <g
+                v-if="
+                  child.children.length > 0 &&
+                    (child.input === 'boolean' ||
+                      child.input === 'boolean_yes_red')
+                "
+                :key="'gc' + child.id"
+              >
+                <template v-for="(nestedChild, k) in child.children">
+                  <SvgInput
+                    :key="'nc' + nestedChild.id"
+                    :position="
+                      calcXY(
+                        nestedChild,
+                        false,
+                        k === child.children.length - 1
+                      )
+                    "
+                    :header="getHeader(child, nestedChild)"
+                    :item="nestedChild"
+                  ></SvgInput>
+                </template>
+              </g>
             </template>
           </g>
 

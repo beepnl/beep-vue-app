@@ -651,7 +651,7 @@
     <template v-if="offlineMode && svgReady">
       <OfflineInspection
         v-if="selectedChecklist"
-        :selected-checklist="selectedChecklist"
+        :selected-checklist="selectedChecklistWithSuffixes"
         :checklist-svg-already-saved="checklistSvgAlreadySaved"
         :checklist-svg-id="checklistSvgId"
         :new-svg-name="newSvgName"
@@ -672,7 +672,7 @@ import checklistFieldset from '@components/checklist-fieldset.vue'
 import Confirm from '@components/confirm.vue'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
-import dummyOutput from '@components/svg/scan_results_no_single_digits_text.json' // list.json' // test_4_dummy.json'
+import dummyOutput from '@components/svg/scan_results_aws.json' // list.json' // test_4_dummy.json'
 import InspectModeSelector from '@components/inspect-mode-selector.vue'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import Layout from '@layouts/back.vue'
@@ -993,6 +993,31 @@ export default {
           this.activeInspection.reminder_date = null
         }
       },
+    },
+    selectedChecklistDuplicateNames() {
+      var checklist = { ...this.selectedChecklist }
+      var flattened = this.flattenItems(checklist.categories) // get array with all category names
+
+      var duplicates = [
+        ...new Set(flattened.filter((e, i, a) => a.indexOf(e) !== i)), // get all duplicate category names
+      ]
+
+      return duplicates
+    },
+    selectedChecklistWithSuffixes() {
+      // add suffix to each category that has a duplicate name (because aws textract cannot deal with identical names on same page)
+      var checklist = { ...this.selectedChecklist }
+
+      // helper when adding suffixes, to keep track of how often a suffix has been used so which number the suffix should be
+      var dupeTracker = Object.fromEntries(
+        [...this.selectedChecklistDuplicateNames].map((k) => [k, 0])
+      )
+
+      checklist.categories.forEach((cat) =>
+        this.addSuffix(cat, cat.children, dupeTracker)
+      )
+
+      return checklist
     },
     selectedChecklistSvg() {
       var findItem = this.checklistSvgs.filter(
@@ -1546,6 +1571,37 @@ export default {
       } else {
         return null
       }
+    },
+    addSuffix(item, children, dupeTracker) {
+      return children.map((child) => {
+        if (
+          this.selectedChecklistDuplicateNames.includes(child.name) &&
+          child.input !== 'label'
+        ) {
+          dupeTracker[child.name] += 1
+          child.suffix = dupeTracker[child.name]
+        }
+
+        if (child.children.length > 0) {
+          this.addSuffix(child, child.children, dupeTracker)
+        }
+
+        return child
+      })
+    },
+    flattenItems(data) {
+      return data.reduce((r, { input, children, name }) => {
+        if (input !== 'label' && input !== 'list_item') {
+          // skip labels because they don't have an svg input field
+          r.push(name)
+        }
+
+        if (children.length) {
+          r.push(...this.flattenItems(children))
+        }
+
+        return r
+      }, [])
     },
     getNow(simple = false) {
       return this.$moment().format(

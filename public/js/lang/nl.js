@@ -610,9 +610,16 @@ const translations = {
     'Deze notificatie <strong>deactiveren</strong> voor de volgende bijenkasten:',
   Exclude_hives_details:
     'N.B. De notificatie wordt standaard voor alle bijenkasten met een meetsysteem uitgevoerd.',
+  Exclude_hives_collab_group_exp:
+    ' Dit geldt ook voor bijenkasten die onderdeel zijn van een samenwerkingsgroep waar je lid van bent. Deactiveer de kasten waarvoor je deze notificatie niet wilt ontvangen.',
+  No_hives_excluded_warning:
+    "N.B. Deze notificatie wordt uitgevoerd voor alle bijenkasten met een meetsysteem, ook voor bijenkasten uit je samenwerkingsgroep(en). Bijenkasten waarvoor je deze notificatie niet wilt ontvangen kan je deactiveren via 'Periodes en bijenkasten uitzonderen'.",
+  Save_alertrule_ok:
+    'Wilt u doorgaan met opslaan van de notificatie-instelling?',
   months: 'maanden',
   hours: 'uren',
   delete_alertrule: 'Verwijder notificatie-instelling',
+  create_alertrule: 'Opslaan notificatie-instelling',
   Active: 'Actief',
   Alert_via_email: 'Notificatie via email',
   this_field: 'Dit veld',
@@ -1059,12 +1066,22 @@ const translations = {
   net_weight_kg: 'Netto gewicht',
   overall_intake_loss: 'Totale stijging/daling',
   Compare_hives: 'Vergelijk bijenkasten',
+  Compare_with_mean:
+    'Vergelijk gewicht bijenkast met gemiddelde van andere kasten',
   compare_hives_exp:
-    'Bekijk hoe het gewicht van je bijenkast zich ontwikkelt, vergeleken met andere bijenkasten in de omgeving. ',
+    'Bekijk hoe je bijenkast zich ontwikkelt, vergeleken met andere bijenkasten in de omgeving. ',
   compare_support_url:
     'https://beepsupport.freshdesk.com/en/support/solutions/articles/60000921124-compare-hives-option',
   compare_url_text: 'Lees hier meer uitleg over de Vergelijk functionaliteit',
   selected_hive: 'geselecteerde kast | geselecteerde kasten',
+  Multiple_hives_charts: 'Vergelijk meerdere bijenkasten in één grafiek',
+  compare_no_chart_data:
+    'Geen vergelijkingsdata beschikbaar voor de geselecteerde periode',
+  multiple_hives_no_chart_data:
+    'Geen data beschikbaar voor de geselecteerde bijenkasten voor de geselecteerde periode',
+  /* below, please keep [hivename] as is, it will be replaced by the name of the hive you selected in the Data tab */
+  compare_chart_exp:
+    'Let op: [hivename] wordt niet meegenomen in de berekening van het gemiddelde gewicht. ',
 
   /* below, please keep [pagenr] as is, it will be replaced by the pagenumber to be uploaded */
   Upload_pagenr: 'Upload hier pagina [pagenr]',

@@ -54,7 +54,7 @@
         <img
           v-if="!it.hasChildren"
           :src="parsedImages[j]"
-          style="max-width: 20px; max-height: 20px;"
+          class="parsed-checkbox"
         />
         <span class="ml-1" v-text="getText(it)"></span>
       </div>
@@ -76,15 +76,13 @@
               <span v-text="j + 1"></span>
             </div>
 
-            <img :src="image" style="max-width: 20px;" />
+            <img :src="image" class="parsed-checkbox" />
           </div>
 
           <img
             v-else
             :src="image"
-            :style="
-              parsedImages.length > 1 ? 'max-width: 20px;' : 'max-width: 100%;'
-            "
+            :class="parsedImages.length > 1 ? 'parsed-checkbox' : 'parsed-else'"
           />
 
           <div
@@ -244,6 +242,12 @@ export default {
     height: 100%;
   }
 }
+
+.parsed-checkbox {
+  width: 20px;
+  height: 20px;
+}
+
 .img-helper {
   text-align: center;
   min-width: 6px;

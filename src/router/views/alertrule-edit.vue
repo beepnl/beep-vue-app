@@ -353,7 +353,12 @@
               />
               <div
                 class="beep-label mt-1"
-                v-text="$t('Exclude_hives_details')"
+                v-text="
+                  $t('Exclude_hives_details') +
+                    (hasNonOwnedDevices
+                      ? $t('Exclude_hives_collab_group_exp')
+                      : '')
+                "
               ></div>
             </v-col>
           </v-row>
@@ -560,6 +565,9 @@ export default {
         return null
       }
     },
+    hasNonOwnedDevices() {
+      return this.devices.filter((device) => !device.owner).length > 0
+    },
     hours() {
       return this.formatFromTaxonomyArray(this.alertRulesList.exclude_hours)
     },
@@ -608,6 +616,15 @@ export default {
         (v) =>
           !!v || this.$i18n.t('this_field') + ' ' + this.$i18n.t('is_required'),
       ]
+    },
+    showCollabGroupWarning() {
+      // show confirm popup with warning that alerts are sent for non-owned hives as well, but only when saving alert rule
+      // - without any excluded hive ids (which could mean that user has missed this option)
+      // - if non-owned devices (from collaboration groups) are present
+      return (
+        this.activeAlertRule.exclude_hive_ids.length === 0 &&
+        this.hasNonOwnedDevices
+      )
     },
     sortedDevices() {
       var apiaryArray = []
@@ -888,6 +905,27 @@ export default {
         })
       }
     },
+    confirmCreateAlertRule() {
+      if (this.showCollabGroupWarning) {
+        this.$refs.confirm
+          .open(
+            this.$i18n.t('create_alertrule'),
+            this.$i18n.t('Save_alertrule_ok'),
+            {
+              color: 'red',
+            },
+            this.$i18n.t('No_hives_excluded_warning')
+          )
+          .then((confirm) => {
+            this.createAlertRule()
+          })
+          .catch((reject) => {
+            return true
+          })
+      } else {
+        this.createAlertRule()
+      }
+    },
     confirmDeleteAlertRule() {
       this.$refs.confirm
         .open(
@@ -1054,7 +1092,7 @@ export default {
     },
     saveAlertRule() {
       if (this.alertruleCreateMode) {
-        this.createAlertRule()
+        this.confirmCreateAlertRule()
       } else {
         this.updateAlertRule()
       }

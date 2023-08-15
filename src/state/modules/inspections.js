@@ -227,6 +227,7 @@ export const mutations = {
         return_blob: ['text', 'number', 'checkbox'],
       },
       'data-user-locale': [locale],
+      ocr_engine: 'aws',
     }
   },
 }

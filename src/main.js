@@ -3,6 +3,7 @@ import router from '@router'
 import store from '@state/store'
 import vuetify from '@plugins/vuetify'
 import VueI18n from 'vue-i18n'
+import cs from '@public/js/lang/cs'
 import de from '@public/js/lang/de'
 import el from '@public/js/lang/el'
 import en from '@public/js/lang/en'
@@ -50,6 +51,7 @@ const i18n = new VueI18n({
   // legacy: true,
   locale: languages.checkBrowserLanguage() || 'en',
   messages: {
+    cs,
     de,
     el,
     en,

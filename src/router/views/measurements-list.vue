@@ -269,6 +269,7 @@
               :value="loadingData"
               :opacity="0.5"
               color="white"
+              class="mt-12"
               z-index="1"
             >
               <div class="loading">
@@ -535,7 +536,6 @@ export default {
       noChartData: false,
       currentLastSensorValues: [],
       showMeasurements: true,
-      showCompareMeasurements: true,
       showLastSensorValues: true,
       ready: false,
       timer: 0,
@@ -863,7 +863,8 @@ export default {
       return (
         this.ready &&
         this.devices.length > 0 &&
-        this.permissions.includes('hive-compare')
+        (this.permissions.includes('hive-compare') ||
+          this.permissions.includes('multiple-hives-charts'))
       )
     },
     smAndDown() {

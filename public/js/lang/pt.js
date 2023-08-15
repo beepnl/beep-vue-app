@@ -691,9 +691,15 @@ const translations = {
     '<strong>Desativar</strong> este alerta para as seguintes colmeias:',
   Exclude_hives_details:
     'N.B. Por defeito, este alerta será executado para todas as colmeias que tenham um aparelho de medição',
+  Exclude_hives_collab_group_exp:
+    ' This includes hives from your collaboration group(s). Deactivate hives for which you do not wish to receive this alert.',
+  No_hives_excluded_warning:
+    "N.B. This alert will be executed for all hives with a measurement device, including hives from your collaboration group(s). You can deactivate hives for which you do not want to receive this notification via 'Exclude periods and hives'.",
+  Save_alertrule_ok: 'Would you like to continue saving the alert rule?',
   months: 'meses',
   hours: 'horas',
   delete_alertrule: 'Apagar regra de alerta',
+  create_alertrule: 'Save alert rule',
   Active: 'Ativo',
   Alert_via_email: 'Alerta via email',
   Webhook_url: 'url webhook (gancho web)',
@@ -1146,13 +1152,21 @@ const translations = {
   net_weight_kg: 'Net weight',
   overall_intake_loss: 'Overall intake/loss',
   Compare_hives: 'Compare hives',
+  Compare_with_mean: 'Compare hive weight with mean weight of other hives',
   compare_hives_exp:
-    'Find out how the weight of your hive is developing compared to your other hives in the area. ',
+    'Find out how your hive is developing compared to your other hives in the area. ',
   compare_support_url:
     'https://beepsupport.freshdesk.com/en/support/solutions/articles/60000921124-compare-hives-option',
   compare_url_text:
     'Here you can find more information on the Compare functionality',
   selected_hive: 'selected hive | selected hives',
+  Multiple_hives_charts: 'Compare multiple hives in one chart',
+  compare_no_chart_data: 'No compare data for the selected period',
+  multiple_hives_no_chart_data:
+    'No data for the selected hives for the selected period',
+  /* below, please keep [hivename] as is, it will be replaced by the name of the hive you selected in the Data tab */
+  compare_chart_exp:
+    'Please note: [hivename] will not be included in the mean weight calculation. ',
 
   /* below, please keep [pagenr] as is, it will be replaced by the pagenumber to be uploaded */
   Upload_pagenr: 'Upload page [pagenr] here',
