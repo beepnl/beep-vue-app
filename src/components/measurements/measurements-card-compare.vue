@@ -591,7 +591,10 @@ export default {
       return this.multipleHivesWithData.length > 0 // Object.keys(this.multipleHivesMeasurementData) somehow does not work
     },
     multipleSections() {
-      return this.permissions.length > 0 // TODO adapt when permissions setup is changed
+      return (
+        this.permissions.includes('multiple-hives-charts') &&
+        this.permissions.includes('hive-compare')
+      ) // TODO adapt when permissions setup is changed
     },
   },
   watch: {
