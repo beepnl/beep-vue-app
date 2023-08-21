@@ -2,8 +2,20 @@
   <Layout :title="$t('Whats_new')">
     <v-container>
       <div class="overline mb-1"
-        ><span class="lowercase">v</span>4.0.12 (15-08-2023) - Current
+        ><span class="lowercase">v</span>4.0.13 (21-08-2023) - Current
         version</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>
+            <router-link :to="{ name: 'diary' }"> Inspections:</router-link>
+            inspections are now searchable by sample code, text and date fields
+          </li>
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>4.0.12 (15-08-2023)</div
       >
       <div class="rounded-border mb-4">
         <ul>
