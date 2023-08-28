@@ -46,7 +46,7 @@
       :data-parent-category-id="position.id"
       :x="x + 'mm'"
       :y="y + 2 + 'mm'"
-      :width="(width ? width : maxFieldWidth) + 'mm'"
+      :width="(doubleWidth ? doubleFieldWidth : maxFieldWidth) + 'mm'"
       :height="height + 'mm'"
       stroke="black"
       fill="transparent"
@@ -60,8 +60,8 @@
       :data-parent-category-id="position.id"
       :x="x + 'mm'"
       :y="y + 2 + 'mm'"
-      :width="(width ? width : maxFieldWidth) + 'mm'"
-      height="11mm"
+      :width="(doubleWidth ? doubleFieldWidth : maxFieldWidth) + 'mm'"
+      height="8mm"
       stroke="black"
       fill="transparent"
       :stroke-width="strokeWidth"
@@ -91,11 +91,6 @@ export default {
       type: Boolean,
       required: false,
       default: false,
-    },
-    width: {
-      type: Number,
-      required: false,
-      default: null,
     },
     height: {
       type: Number,

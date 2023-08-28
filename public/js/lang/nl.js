@@ -1085,6 +1085,8 @@ const translations = {
 
   /* below, please keep [pagenr] as is, it will be replaced by the pagenumber to be uploaded */
   Upload_pagenr: 'Upload hier pagina [pagenr]',
+  Datetime_of_inspection: 'Inspectiedatum en -tijd',
+  remind_datetime: 'Herinneringsdatum en -tijd',
 }
 
 export default translations

@@ -20,23 +20,23 @@
 
     <svgNumber
       :position="{ id: 'date', pageY: y, x: x + 92, y }"
-      :label="$t('Date_of_inspection')"
+      :label="$t('Datetime_of_inspection')"
+      :double-width="true"
       :input-type="'date'"
     />
 
     <svgSmileRating
-      :position="{ id: 'impression', pageY: y + 19, x, y: y + 19 }"
+      :position="{ id: 'impression', pageY: y + 16, x, y: y + 16 }"
       :label="$t('positive_impression')"
     />
 
     <svgYesNoRating
-      :position="{ id: 'attention', pageY: y + 19, x: x + 46, y: y + 19 }"
+      :position="{ id: 'attention', pageY: y + 16, x: x + 46, y: y + 16 }"
       :label="$t('needs_attention')"
     />
 
     <svgText
-      :position="{ id: 'notes', pageY: y + 19, x: x + 92, y: y + 19 }"
-      :width="89"
+      :position="{ id: 'notes', pageY: y + 16, x: x + 92, y: y + 16 }"
       :height="22"
       :double-width="true"
       :label="$t('notes')"
@@ -49,14 +49,14 @@
     /> -->
 
     <svgNumber
-      :position="{ id: 'reminder_date', pageY: y + 49, x, y: y + 49 }"
-      :label="$t('remind_date')"
+      :position="{ id: 'reminder_date', pageY: y + 46, x, y: y + 46 }"
+      :label="$t('remind_datetime')"
+      :double-width="true"
       :input-type="'date'"
     />
 
     <svgText
-      :position="{ id: 'reminder', pageY: y + 49, x: x + 92, y: y + 49 }"
-      :width="89"
+      :position="{ id: 'reminder', pageY: y + 46, x: x + 92, y: y + 46 }"
       :height="22"
       :double-width="true"
       :label="$t('notes_for_next_inspection')"

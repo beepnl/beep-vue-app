@@ -14,8 +14,8 @@
         :data-parent-category-id="position.id"
         :x="x + prependOffset + 'mm'"
         :y="y + 2 + 'mm'"
-        :width="(inputType === 'date' ? maxFieldWidth : textFieldWidth) + 'mm'"
-        height="8mm"
+        :width="rectWidth + 'mm'"
+        :height="height + 'mm'"
         stroke="black"
         fill="transparent"
         :stroke-width="strokeWidth"
@@ -23,7 +23,7 @@
       <text
         v-if="append"
         :x="x + prependOffset + textFieldWidth + 1 + 'mm'"
-        :y="y + 8 + 'mm'"
+        :y="y + height + 'mm'"
         :style="svgAppend"
       >
         {{ append }}
@@ -58,13 +58,13 @@
     </g> -->
 
     <g v-if="info">
-      <text :x="x + 'mm'" :y="y + 14 + 'mm'" :style="svgTextSmall">
+      <text :x="x + 'mm'" :y="y + height + 6 + 'mm'" :style="svgTextSmall">
         {{ info }}
       </text>
       <text
         v-if="infoExtra"
         :x="x + 'mm'"
-        :y="y + 18 + 'mm'"
+        :y="y + height + 10 + 'mm'"
         :style="svgTextSmall"
       >
         {{ infoExtra }}
@@ -103,6 +103,11 @@ export default {
       required: false,
       default: null,
     },
+    doubleWidth: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
     info: {
       type: String,
       required: false,
@@ -124,12 +129,22 @@ export default {
       default: null,
     },
   },
+  data() {
+    return {
+      height: 8,
+    }
+  },
   computed: {
     // fieldOffset() {
     //   return this.numberFields * this.numberBoxWidth // // TODO remove if single-digits won't be used for sure
     // },
     prependOffset() {
       return this.prepend ? 5 : 0
+    },
+    rectWidth() {
+      var width =
+        this.inputType === 'date' ? this.maxFieldWidth : this.textFieldWidth
+      return this.doubleWidth ? this.doubleFieldWidth : width
     },
     x() {
       return this.position ? this.position.x : null
