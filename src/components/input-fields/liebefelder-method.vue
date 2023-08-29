@@ -183,6 +183,7 @@
               :item="item"
               :locale="locale"
               :disabled="bulkInspection"
+              :parse-mode="parseMode"
               @calculate-liebefeld-colony-size="calculateLiebefeldColonySize"
             ></ChecklistInput>
 
@@ -227,6 +228,7 @@
                       :item="item2"
                       :locale="locale"
                       :disabled="bulkInspection"
+                      :parse-mode="parseMode"
                       @calculate-liebefeld-colony-size="
                         calculateLiebefeldColonySize
                       "
@@ -256,12 +258,14 @@
 import ChecklistInput from '@components/checklist-input.vue'
 import HiveIcon from '@components/hive-icon.vue'
 import { mapGetters } from 'vuex'
+import { getMaxFramecount } from '@mixins/methodsMixin'
 
 export default {
   components: {
     ChecklistInput,
     HiveIcon,
   },
+  mixins: [getMaxFramecount],
   props: {
     category: {
       type: Object,
@@ -279,6 +283,11 @@ export default {
       required: false,
     },
     nested: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    parseMode: {
       type: Boolean,
       required: false,
       default: false,
@@ -381,10 +390,8 @@ export default {
         this.countLayers('brood') < 2 ? this.countLayers('brood') : 2
       this.honeyLayersForCalculation =
         this.countLayers('honey') < 2 ? this.countLayers('honey') : 2
-      this.framesForCalculation =
-        this.activeHive.layers[0].framecount < 12
-          ? this.activeHive.layers[0].framecount
-          : 12
+      var maxFramecount = this.getMaxFramecount(this.activeHive.layers)
+      this.framesForCalculation = maxFramecount < 12 ? maxFramecount : 12
     },
     superAndFrameFilter(item) {
       if (

@@ -284,7 +284,7 @@
 import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
-import MeasurementsChartLine from '@components/measurements-chart-line.vue'
+import MeasurementsChartLine from '@/src/components/measurements/measurements-chart-line.vue'
 import { mapGetters } from 'vuex'
 import { momentFormatUtcToLocal } from '@mixins/momentMixin'
 import { readTaxonomy } from '@mixins/methodsMixin'
@@ -411,8 +411,6 @@ export default {
     async checkBlockData(changeIndex = false) {
       this.clearMessages()
       this.loading = true
-      // this.blockData = null commented out because annotation plugin is disabled for the flashlog view which makes multiple charts reactive again
-      // see https://vue-chartjs.org/guide/#chartjs-plugin-annotation
       try {
         const response = await Api.readRequest(
           '/flashlogs/' +

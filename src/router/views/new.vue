@@ -2,8 +2,197 @@
   <Layout :title="$t('Whats_new')">
     <v-container>
       <div class="overline mb-1"
-        ><span class="lowercase">v</span>3.1.2 (20-02-2023) - Current
+        ><span class="lowercase">v</span>4.0.14 (28-08-2023) - Current
         version</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>Small improvements</li>
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>4.0.13 (21-08-2023)</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>
+            <router-link :to="{ name: 'diary' }"> Inspections:</router-link>
+            inspections are now searchable by sample code, text and date fields
+          </li>
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>4.0.12 (15-08-2023)</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>Czech (Čeština) language has been added</li>
+          <li>Small improvements</li>
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>4.0.11 (13-07-2023)</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>Small improvements</li>
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>4.0.10 (06-07-2023)</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>Small improvements</li>
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>4.0.9 (29-06-2023)</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>
+            <router-link :to="{ name: 'measurements' }"> Data:</router-link>
+            seamless charts loading due to resolved plugin issue
+          </li>
+          <li>Bugfixes: small fixes for issues received as feedback</li>
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>4.0.8 (15-06-2023)</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>Bugfixes: small fixes for issues received as feedback</li>
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>4.0.7 (08-06-2023)</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>
+            <router-link :to="{ name: 'measurements' }"> Data:</router-link>
+            fix for issue where sound data was not shown for some devices
+          </li>
+          <li>Bugfixes: small fixes for issues received as feedback</li>
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>4.0.6 (06-06-2023)</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>Bugfixes: small fixes for issues received as feedback</li>
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>4.0.5 (01-06-2023)</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>Bugfixes: small fixes for issues received as feedback</li>
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>4.0.4 (30-05-2023)</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>Bugfixes: small fixes for issues received as feedback</li>
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>4.0.3 (25-05-2023)</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>Bugfixes: small fixes for issues received as feedback</li>
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>4.0.2 (11-04-2023)</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>Bugfixes: small fixes for issues received as feedback</li>
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>4.0.1 (06-04-2023)</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>Bugfixes: small fixes for issues received as feedback</li>
+        </ul>
+      </div>
+
+      <div class="overline primary--text mb-1"
+        ><span class="lowercase">v</span>4.0.0 (31-03-2023) - Release v4</div
+      >
+      <div v-if="!dutch" class="rounded-border primary-border mb-4">
+        <ul>
+          <li
+            ><router-link :to="{ name: 'inspect' }">Inspect:</router-link>
+            Offline data entry: with this brand new BEEP feature users can
+            select a (customised) checklist, print is, enter the observations
+            and actions with a pen in the apiary and upload the data by scanning
+            the paper with their phone. The last step is to verify the data.
+          </li>
+          <li
+            >BEEP dashboard: users can choose specific apiaries, hives and
+            timeframes to show on a dashboard. The dashboard is accessible via a
+            link which can be share publicly with others.</li
+          >
+          <li
+            >These features are available on request (info@beep.nl) until
+            released more widely.</li
+          >
+          <li>Bugfixes: small fixes for issues received as feedback</li>
+        </ul>
+      </div>
+      <div v-if="dutch" class="rounded-border primary-border mb-4">
+        <ul>
+          <li
+            ><router-link :to="{ name: 'inspect' }">Inspectie:</router-link>
+            Offline gegevensinvoer: met deze gloednieuwe BEEP-functie kunnen
+            gebruikers een (aangepaste) checklist selecteren, afdrukken, de
+            observaties en acties invoeren met een pen in de bijenstal en de
+            gegevens uploaden door het papier met hun telefoon te scannen. De
+            laatste stap is het verifiëren van de gegevens.
+          </li>
+          <li
+            >BEEP-dashboard: gebruikers kunnen specifieke bijenstallen, kasten
+            en tijdschema's kiezen om op een dashboard te tonen. Het dashboard
+            is toegankelijk via een link die openbaar kan worden gedeeld met
+            anderen.
+          </li>
+          <li
+            >Deze functies zijn op aanvraag beschikbaar (info@beep.nl) totdat
+            deze op grotere schaal worden vrijgegeven.</li
+          >
+          <li
+            >Bugfixes: kleine verbeteringen en oplossingen voor problemen die we
+            van gebruikers terugkregen</li
+          >
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>3.2.0 (09-03-2023)</div
       >
       <div class="rounded-border mb-4">
         <ul>
@@ -22,6 +211,7 @@
               >
             </ul>
           </li>
+          <li>Bugfixes: small fixes for issues received as feedback</li>
         </ul>
       </div>
 

@@ -40,6 +40,7 @@
         :object="object"
         :category="category"
         :locale="locale"
+        :parse-mode="parseMode"
         :nested="nested"
       ></topPhotoAnalysis>
 
@@ -48,6 +49,7 @@
         :object="object"
         :category="category"
         :locale="locale"
+        :parse-mode="parseMode"
         :nested="nested"
       ></liebefelderMethod>
 
@@ -74,12 +76,14 @@
               :object="object"
               :item="item"
               :locale="locale"
+              :parse-mode="parseMode"
             ></ChecklistInput>
             <ChecklistFieldset
               v-if="item.input === 'label'"
               :object="object"
               :category="item"
               :locale="locale"
+              :parse-mode="parseMode"
             ></ChecklistFieldset>
           </div>
         </v-row>
@@ -90,6 +94,7 @@
         :object="object"
         :item="category"
         :locale="locale"
+        :parse-mode="parseMode"
       ></ChecklistInput>
     </div>
 
@@ -104,6 +109,7 @@
       :object="object"
       :item="category"
       :locale="locale"
+      :parse-mode="parseMode"
     ></ChecklistInput>
   </div>
 </template>
@@ -138,6 +144,11 @@ export default {
       required: false,
     },
     nested: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    parseMode: {
       type: Boolean,
       required: false,
       default: false,

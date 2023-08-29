@@ -3,6 +3,7 @@ import router from '@router'
 import store from '@state/store'
 import vuetify from '@plugins/vuetify'
 import VueI18n from 'vue-i18n'
+import cs from '@public/js/lang/cs'
 import de from '@public/js/lang/de'
 import el from '@public/js/lang/el'
 import en from '@public/js/lang/en'
@@ -41,10 +42,16 @@ if (process.env.VUE_APP_TEST === 'e2e') {
   Vue.config.errorHandler = window.Cypress.cy.onUncaughtException
 }
 
+// fix chartjs bug for older devices + better resize reactivity
+if (typeof window !== 'undefined') {
+  window.ResizeObserver = window.ResizeObserver || Polyfill
+}
+
 const i18n = new VueI18n({
   // legacy: true,
   locale: languages.checkBrowserLanguage() || 'en',
   messages: {
+    cs,
     de,
     el,
     en,
@@ -61,10 +68,6 @@ const i18n = new VueI18n({
     // add 4-letter code like: 'en-US': enUS, (can only be imported without dash, as enUS)
   },
 })
-
-if (typeof window !== 'undefined') {
-  window.ResizeObserver = window.ResizeObserver || Polyfill
-}
 
 new Vue({
   router,

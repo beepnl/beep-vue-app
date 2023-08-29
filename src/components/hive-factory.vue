@@ -128,7 +128,7 @@
 <script>
 import draggable from 'vuedraggable'
 import Confirm from '@components/confirm.vue'
-import { orderedLayers } from '@mixins/methodsMixin'
+import { getMaxFramecount, orderedLayers } from '@mixins/methodsMixin'
 var keyGlobal = 0
 
 export default {
@@ -136,7 +136,7 @@ export default {
     Confirm,
     draggable,
   },
-  mixins: [orderedLayers],
+  mixins: [getMaxFramecount, orderedLayers],
   props: {
     colorPreview: {
       type: Boolean,
@@ -251,10 +251,10 @@ export default {
           this.hive.layers = remainingLayers
           this.hive.frames =
             remainingLayers.length > 0
-              ? this.hive.layers[0].framecount
+              ? this.getMaxFramecount(this.hive.layers)
               : this.frameCount
           if (this.hive.layers.length === 1) {
-            this.frameCount = this.hive.layers[0].framecount
+            this.frameCount = this.getMaxFramecount(this.hive.layers)
             this.$emit('update-defaultframecount', this.frameCount)
           }
           this.setHiveEdited(true)
@@ -277,7 +277,7 @@ export default {
           type: layerType[n],
           framecount:
             this.hive.layers.length > 0
-              ? this.hive.layers[0].framecount
+              ? this.getMaxFramecount(this.hive.layers)
               : this.frameCount,
           newLayer: true,
         }
@@ -290,11 +290,11 @@ export default {
     hiveWidth: function(hive) {
       if (this.mobile) {
         return hive.layers.length > 0
-          ? hive.layers[0].framecount * 6
+          ? this.getMaxFramecount(this.hive.layers) * 6
           : this.frameCount * 6
       } else {
         return hive.layers.length > 0
-          ? hive.layers[0].framecount * 7
+          ? this.getMaxFramecount(this.hive.layers) * 7
           : this.frameCount * 7
       }
     },
@@ -324,7 +324,7 @@ export default {
       this.hive.layers[layerIndex].color = this.layerColorPickerValue
       this.hive.frames =
         this.hive.layers.length > 0
-          ? this.hive.layers[0].framecount
+          ? this.getMaxFramecount(this.hive.layers)
           : this.frameCount
       this.setHiveEdited(true)
       this.setApiaryEdited(true)
@@ -340,7 +340,7 @@ export default {
       this.hive.layers = layers
       this.hive.frames =
         this.hive.layers.length > 0
-          ? this.hive.layers[0].framecount
+          ? this.getMaxFramecount(this.hive.layers)
           : this.frameCount
       this.setHiveEdited(true)
       this.setApiaryEdited(true)

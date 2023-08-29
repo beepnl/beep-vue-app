@@ -199,6 +199,37 @@
   }
 }
 
+.v-input.v-file-input.image-uploader-page-blob {
+  width: 100%;
+  height: 100%;
+  .v-input__prepend-inner {
+    height: 130px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+  }
+  .v-input__control {
+    height: 100% !important;
+    .v-input__slot {
+      display: flex;
+      flex-direction: column;
+      height: 100% !important;
+      margin-bottom: 0px;
+      .v-text-field__slot {
+        border-radius: 4px;
+        border: 1px dashed $color-grey-light;
+        cursor: pointer !important;
+        height: 100% !important;
+        text-align: center;
+        .v-file-input__text.v-file-input__text--placeholder {
+          align-items: center;
+        }
+      }
+    }
+  }
+}
+
 .v-input {
   &.v-input--selection-controls.v-input--switch .v-input__slot > .v-label {
     font-size: 0.75rem !important;
@@ -459,7 +490,8 @@
 
 .vue-treeselect.color-red {
   .vue-treeselect__multi-value-item,
-  .vue-treeselect__value-remove {
+  .vue-treeselect__value-remove,
+  &.vue-treeselect--single {
     color: $color-red !important;
     background: $color-red-light !important;
   }
@@ -467,6 +499,10 @@
     background: $color-red !important;
     border-color: $color-red !important;
   }
+}
+
+.vue-treeselect--disabled {
+  cursor: not-allowed !important;
 }
 
 /* Vue Datetime */
@@ -507,5 +543,19 @@
 
   .vdatetime-popup__actions__button {
     padding: 0 !important;
+  }
+}
+
+@media print {
+  .v-main {
+    display: block !important;
+    padding: 0px 0px 0px 0px !important;
+  }
+  .v-application {
+    line-height: 0 !important;
+  }
+  .v-application-wrap {
+    display: block !important;
+    min-height: 0px !important;
   }
 }

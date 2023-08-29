@@ -209,6 +209,23 @@ export const checkAlerts = {
   },
 }
 
+export const getMaxFramecount = {
+  data() {
+    return {
+      default: 10,
+    }
+  },
+  methods: {
+    getMaxFramecount(layers) {
+      var framecount =
+        layers.length > 0
+          ? Math.max(...layers.map((layer) => layer.framecount))
+          : this.default
+      return framecount
+    },
+  },
+}
+
 export const readHiveTags = {
   computed: {
     ...mapGetters('hives', ['hiveTags', 'hiveTagsChecked']),
@@ -314,6 +331,59 @@ export const convertComma = {
   },
 }
 
+export const deleteDashboard = {
+  methods: {
+    async deleteDashboard(dashboardGroup) {
+      try {
+        const response = await Api.deleteRequest(
+          '/dashboardgroups/',
+          dashboardGroup.id
+        )
+        if (!response) {
+          this.snackbar.text = this.$i18n.t('something_wrong')
+          this.snackbar.show = true
+        }
+        setTimeout(() => {
+          return this.readDashboardGroups()
+        }, 50) // wait for API to update dashboards
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+          const msg = error.response.data.message
+          this.snackbar.text = msg
+        } else {
+          console.log('Error: ', error)
+          this.snackbar.text = this.$i18n.t('something_wrong')
+        }
+        this.snackbar.show = true
+      }
+    },
+    confirmDeleteDashboard(dashboardGroup) {
+      this.$refs.confirm
+        .open(
+          this.$i18n.t('Delete_dashboard'),
+          this.$i18n.t('Delete_dashboard') +
+            ' (' +
+            dashboardGroup.code +
+            (dashboardGroup.name ? ' - ' + dashboardGroup.name : '') +
+            (dashboardGroup.description
+              ? ' - ' + dashboardGroup.description
+              : '') +
+            ')?',
+          {
+            color: 'red',
+          }
+        )
+        .then((confirm) => {
+          this.deleteDashboard(dashboardGroup)
+        })
+        .catch((reject) => {
+          return true
+        })
+    },
+  },
+}
+
 export const deleteHiveTag = {
   ...mapGetters('hives', ['hiveTagActionDescriptions']),
   methods: {
@@ -376,6 +446,25 @@ export const deleteHiveTag = {
   },
 }
 
+export const lightenColor = {
+  methods: {
+    lightenColor(color, amount, opacity = 1) {
+      color = color.replace('#', '')
+      const clamp = (val) => Math.min(Math.max(val, 0), 0xff)
+
+      const num = parseInt(color, 16)
+      const red = clamp((num >> 16) + amount)
+      const green = clamp(((num >> 8) & 0x00ff) + amount)
+      const blue = clamp((num & 0x0000ff) + amount)
+
+      var newColor =
+        'rgba(' + red + ',' + green + ',' + blue + ',' + opacity + ')'
+
+      return newColor
+    },
+  },
+}
+
 export const orderedLayers = {
   methods: {
     orderedLayers: function(hive) {
@@ -415,6 +504,58 @@ export const orderedLayers = {
         })
       }
     },
+  },
+}
+
+export const parseDate = {
+  computed: {
+    currentYear() {
+      return parseInt(this.$moment().format('YYYY'))
+    },
+  },
+  methods: {
+    parseDate(input) {
+      var dateStr = this.$moment(input).format('YYYY-MM-DD HH:mm')
+      var makesSense = false
+      if (dateStr !== 'Invalid date') {
+        var year = dateStr.substring(0, 4)
+        var month = dateStr.substring(5, 7)
+        var day = dateStr.substring(8, 10)
+        var hour = dateStr.substring(11, 13)
+        var minutes = dateStr.substring(14, 16)
+        makesSense =
+          parseInt(year) >= this.currentYear &&
+          parseInt(year) <= this.currentYear + 2 &&
+          parseInt(month) <= 12 &&
+          parseInt(day) <= 31 &&
+          parseInt(hour) <= 24 &&
+          parseInt(minutes) <= 59
+      }
+      var output = makesSense ? dateStr : input.length > 0 ? '' : null
+      return output
+    },
+    // parseDate(input) { // TODO remove if single-digits won't be used for sure
+    //   var nothingMissing = input.length === 12
+    //   if (nothingMissing) {
+    //     var minutes = input.slice(10, 12).join('')
+    //     var hour = input.slice(8, 10).join('')
+    //     var day = input.slice(6, 8).join('')
+    //     var month = input.slice(4, 6).join('')
+    //     var year = input.slice(0, 4).join('')
+    //     var date =
+    //       year + '-' + month + '-' + day + ' ' + hour + ':' + minutes + ':00'
+    //     var makesSense =
+    //       nothingMissing &&
+    //       parseInt(year) >= this.currentYear &&
+    //       parseInt(year) <= this.currentYear + 2 &&
+    //       parseInt(month) <= 12 &&
+    //       parseInt(day) <= 31 &&
+    //       parseInt(hour) <= 24 &&
+    //       parseInt(minutes) <= 59
+    //   }
+
+    //   return makesSense ? date : input.length > 0 ? '' : null
+    // },
   },
 }
 
@@ -584,20 +725,71 @@ export const readApiariesAndGroupsIfNotPresent = {
   },
 }
 
+export const readDashboardGroups = {
+  computed: {
+    ...mapGetters('groups', ['dashboardGroupsChecked']),
+  },
+  methods: {
+    async readDashboardGroups() {
+      try {
+        this.$store.commit('groups/setData', {
+          prop: 'dashboardGroupsChecked',
+          value: true,
+        })
+        const response = await Api.readRequest('/dashboardgroups')
+        this.$store.commit('groups/setData', {
+          prop: 'dashboardGroups',
+          value: response.data,
+        })
+        return true
+      } catch (error) {
+        if (error.response) {
+          console.log(error.response)
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
+    async readDashboardGroupsIfNotChecked() {
+      if (!this.dashboardGroupsChecked) {
+        try {
+          this.$store.commit('groups/setData', {
+            prop: 'dashboardGroupsChecked',
+            value: true,
+          })
+          const response = await Api.readRequest('/dashboardgroups')
+          this.$store.commit('groups/setData', {
+            prop: 'dashboardGroups',
+            value: response.data,
+          })
+          return true
+        } catch (error) {
+          if (error.response) {
+            console.log(error.response)
+          } else {
+            console.log('Error: ', error)
+          }
+        }
+      } else {
+        return true
+      }
+    },
+  },
+}
+
 export const readDevices = {
   methods: {
     async readDevices() {
-      // devicesPresent boolean prevents unnecessary API calls to read devices when user has none
+      // devicesChecked boolean prevents unnecessary API calls to read devices when they have been checked already (but possibly response not stored yet)
       try {
+        this.$store.commit('devices/setData', {
+          prop: 'devicesChecked',
+          value: true,
+        })
         const response = await Api.readRequest('/devices')
-        const devicesPresent = response.data.length > 0
         this.$store.commit('devices/setData', {
           prop: 'devices',
           value: response.data,
-        })
-        this.$store.commit('devices/setData', {
-          prop: 'devicesPresent',
-          value: devicesPresent,
         })
         return true
       } catch (error) {
@@ -608,10 +800,6 @@ export const readDevices = {
               prop: 'devices',
               value: [],
             })
-            this.$store.commit('devices/setData', {
-              prop: 'devicesPresent',
-              value: false,
-            })
           }
         } else {
           console.log('Error: ', error)
@@ -621,23 +809,22 @@ export const readDevices = {
   },
 }
 
-export const readDevicesIfNotPresent = {
+export const readDevicesIfNotChecked = {
   methods: {
-    async readDevicesIfNotPresent() {
-      // devicesPresent boolean prevents unnecessary API calls to read devices when user has none
-      const devicesPresent = this.$store.getters['devices/devicesPresent']
+    async readDevicesIfNotChecked() {
+      // devicesChecked boolean prevents unnecessary API calls to read devices when they have been checked already (but possibly response not stored yet)
+      const devicesChecked = this.$store.getters['devices/devicesChecked']
 
-      if (devicesPresent && this.devices.length === 0) {
+      if (!devicesChecked) {
         try {
+          this.$store.commit('devices/setData', {
+            prop: 'devicesChecked',
+            value: true,
+          })
           const response = await Api.readRequest('/devices')
-          const devicesPresent = response.data.length > 0
           this.$store.commit('devices/setData', {
             prop: 'devices',
             value: response.data,
-          })
-          this.$store.commit('devices/setData', {
-            prop: 'devicesPresent',
-            value: devicesPresent,
           })
           return true
         } catch (error) {
@@ -647,10 +834,6 @@ export const readDevicesIfNotPresent = {
               this.$store.commit('devices/setData', {
                 prop: 'devices',
                 value: [],
-              })
-              this.$store.commit('devices/setData', {
-                prop: 'devicesPresent',
-                value: false,
               })
             }
           } else {

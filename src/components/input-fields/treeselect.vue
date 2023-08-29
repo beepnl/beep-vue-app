@@ -33,6 +33,11 @@ export default {
       default: 'en',
       required: false,
     },
+    checkAnswer: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
   computed: {
     treeSelectArray() {

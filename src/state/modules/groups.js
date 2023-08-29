@@ -6,12 +6,27 @@ const resource = createResource({ path: 'groups' })
 
 export const state = {
   ...resource.state,
+  dashboardEdited: false,
+  dashboardGroups: [],
+  dashboardGroupsChecked: false,
   groups: [],
   groupEdited: false,
   invitations: [],
 }
 export const getters = {
   ...resource.getters,
+  dashboardEdited: (state) => {
+    return state.dashboardEdited
+  },
+  dashboards: (state) => {
+    return state.dashboards
+  },
+  dashboardGroups: (state) => {
+    return state.dashboardGroups || []
+  },
+  dashboardGroupsChecked: (state) => {
+    return state.dashboardGroupsChecked
+  },
   groups: (state) => {
     return state.groups || []
   },
@@ -24,6 +39,9 @@ export const getters = {
 }
 export const mutations = {
   ...resource.mutations,
+  setData: function(state, payload) {
+    state[payload.prop] = payload.value
+  },
   setGroupEdited: function(state, bool) {
     state.groupEdited = bool
   },
@@ -34,6 +52,9 @@ export const mutations = {
     state.invitations = payload
   },
   resetState: function(state) {
+    state.dashboardEdited = false
+    state.dashboardGroups = []
+    state.dashboardGroupsChecked = false
     state.groups = []
     state.groupEdited = false
     state.invitations = []

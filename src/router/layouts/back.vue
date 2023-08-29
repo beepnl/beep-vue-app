@@ -6,7 +6,7 @@
       background-color="#000"
       color="primary"
       dense
-      class="zindex4"
+      class="zindex4 no-print"
     >
       <slot name="icon">
         <v-btn icon @click="back">
@@ -58,6 +58,11 @@ export default {
       type: String,
       default: 'Back',
     },
+    dismissChanges: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
     edited: {
       type: Boolean,
       default: false,
@@ -80,7 +85,7 @@ export default {
   },
   computed: {
     ...mapGetters('alerts', ['alertRuleEdited']),
-    ...mapGetters('groups', ['groupEdited']),
+    ...mapGetters('groups', ['groupEdited', 'dashboardEdited']),
     ...mapGetters('hives', ['hiveEdited']),
     ...mapGetters('inspections', ['inspectionEdited']),
     ...mapGetters('locations', ['apiaryEdited']),
@@ -103,20 +108,24 @@ export default {
         })
       } else {
         if (
-          ((this.$route.name === 'apiary-create' ||
+          !this.dismissChanges &&
+          (((this.$route.name === 'apiary-create' ||
             this.$route.name === 'apiary-edit' ||
             this.$route.name === 'apiary-management') &&
             this.apiaryEdited) ||
-          ((this.$route.name === 'group-create' ||
-            this.$route.name === 'group-edit') &&
-            this.groupEdited) ||
-          (this.$route.name === 'hive-edit' && this.hiveEdited) ||
-          (this.$route.name === 'inspect' && this.inspectionEdited) ||
-          (this.$route.name === 'alertrule-edit' && this.alertRuleEdited) ||
-          ((this.$route.name === 'checklist' ||
-            this.$route.name === 'research' ||
-            this.$route.name === 'devices') &&
-            this.edited)
+            ((this.$route.name === 'group-create' ||
+              this.$route.name === 'group-edit') &&
+              this.groupEdited) ||
+            (this.$route.name === 'hive-edit' && this.hiveEdited) ||
+            (this.$route.name === 'inspect' && this.inspectionEdited) ||
+            (this.$route.name === 'alertrule-edit' && this.alertRuleEdited) ||
+            ((this.$route.name === 'checklist' ||
+              this.$route.name === 'research' ||
+              this.$route.name === 'devices') &&
+              this.edited) ||
+            ((this.$route.name === 'dashboard-create' ||
+              this.$route.name === 'dashboard-edit') &&
+              this.dashboardEdited))
         ) {
           this.$refs.confirm
             .open(

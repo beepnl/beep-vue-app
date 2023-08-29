@@ -160,6 +160,47 @@ export default [
     name: 'checklists',
     component: () => lazyLoadView(import('@views/checklist.vue')),
   },
+  // {
+  //   meta: {
+  //     authRequired: true,
+  //     depth: 1,
+  //   },
+  //   path: '/dashboard/:id',
+  //   name: 'dashboard',
+  //   component: () => lazyLoadView(import('@views/dashboard.vue')),
+  // },
+  {
+    meta: {
+      authRequired: true,
+      depth: 1,
+    },
+    path: '/dashboards/',
+    name: 'dashboards',
+    component: () => lazyLoadView(import('@views/dashboards.vue')),
+  },
+  // {
+  //   path: '/dashboard/sign-in',
+  //   name: 'dashboard-sign-in',
+  //   component: () => lazyLoadView(import('@views/dashboard-sign-in.vue')),
+  // },
+  {
+    meta: {
+      authRequired: true,
+      depth: 2,
+    },
+    path: '/dashboards/create',
+    name: 'dashboard-create',
+    component: () => lazyLoadView(import('@views/dashboard-edit.vue')),
+  },
+  {
+    meta: {
+      authRequired: true,
+      depth: 2,
+    },
+    path: '/dashboards/:id/edit',
+    name: 'dashboard-edit',
+    component: () => lazyLoadView(import('@views/dashboard-edit.vue')),
+  },
   {
     meta: {
       authRequired: true,

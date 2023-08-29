@@ -344,6 +344,12 @@ export default {
                   return value
                     .toLowerCase()
                     .includes(this.diarySearch.toLowerCase())
+                } else if (key === 'searchable' && Array.isArray(value)) {
+                  return (
+                    value.filter((val) =>
+                      val.toLowerCase().includes(this.diarySearch.toLowerCase())
+                    ).length > 0
+                  )
                 } else if (
                   key === 'id' &&
                   this.diarySearch.substring(0, 3) === 'id='

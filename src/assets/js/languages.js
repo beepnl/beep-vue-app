@@ -1,6 +1,7 @@
 const languages = {
   languageArray: [
     { lang: 'nl', title: 'Nederlands' },
+    { lang: 'cs', title: 'Čeština' },
     { lang: 'de', title: 'Deutsch' },
     { lang: 'en', title: 'English' },
     { lang: 'fr', title: 'Français' },

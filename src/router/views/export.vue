@@ -269,7 +269,7 @@
 import Api from '@api/Api'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
-import { readDevicesIfNotPresent } from '@mixins/methodsMixin'
+import { readDevicesIfNotChecked } from '@mixins/methodsMixin'
 import Treeselect from '@riophae/vue-treeselect'
 
 export default {
@@ -277,7 +277,7 @@ export default {
     Layout,
     Treeselect,
   },
-  mixins: [readDevicesIfNotPresent],
+  mixins: [readDevicesIfNotChecked],
   data() {
     return {
       normalizerMeasurementTypes(node) {
@@ -468,7 +468,7 @@ export default {
     },
   },
   created() {
-    this.readDevicesIfNotPresent()
+    this.readDevicesIfNotChecked()
       .then(() => {
         this.setInitialDeviceId()
       })

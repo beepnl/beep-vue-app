@@ -153,6 +153,7 @@
               :item="item"
               :locale="locale"
               :disabled="bulkInspection"
+              :parse-mode="parseMode"
               @calculate-tpa-colony-size="calculateTpaColonySize"
             ></ChecklistInput>
             <ChecklistFieldset
@@ -160,6 +161,7 @@
               :object="object"
               :category="item"
               :locale="locale"
+              :parse-mode="parseMode"
             ></ChecklistFieldset>
           </div>
         </v-row>
@@ -183,6 +185,7 @@ import ChecklistInput from '@components/checklist-input.vue'
 import ChecklistFieldset from '@components/checklist-fieldset.vue'
 import HiveIcon from '@components/hive-icon.vue'
 import { mapGetters } from 'vuex'
+import { getMaxFramecount } from '@mixins/methodsMixin'
 
 export default {
   components: {
@@ -190,6 +193,7 @@ export default {
     ChecklistFieldset,
     HiveIcon,
   },
+  mixins: [getMaxFramecount],
   props: {
     category: {
       type: Object,
@@ -207,6 +211,11 @@ export default {
       required: false,
     },
     nested: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    parseMode: {
       type: Boolean,
       required: false,
       default: false,
@@ -313,7 +322,7 @@ export default {
     },
     setInputNumbers() {
       this.broodLayersForCalculation = this.countLayers('brood')
-      this.framesForCalculation = this.activeHive.layers[0].framecount
+      this.framesForCalculation = this.getMaxFramecount(this.activeHive.layers)
     },
   },
 }

@@ -128,7 +128,7 @@
           </v-col>
 
           <v-col cols="12" md="6" class="my-3 mt-md-0">
-            <div class="overline mb-3">{{ '3. ' + $t('Select_hive') }}</div>
+            <div class="overline mb-3">{{ '3. ' + $tc('Select_hive', 1) }}</div>
             <div
               v-if="!showApiaryPlaceholder"
               class="beep-label mb-3"
@@ -250,10 +250,7 @@ export default {
       },
       valid: false,
       showLoadingIcon: false,
-      newGroupNumber: 1,
-      overlay: false,
       errorMessage: null,
-      token: null,
       hiveTag: null,
     }
   },

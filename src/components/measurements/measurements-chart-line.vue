@@ -13,6 +13,8 @@
 import { Line as LineChart } from 'vue-chartjs/legacy'
 import {
   Chart as ChartJS,
+  Filler,
+  LineController,
   LineElement,
   PointElement,
   LinearScale,
@@ -23,8 +25,11 @@ import {
 import 'chartjs-adapter-moment'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 import annotationPlugin from 'chartjs-plugin-annotation'
+import { lightenColor } from '@mixins/methodsMixin'
 
 ChartJS.register(
+  Filler,
+  LineController,
   LineElement,
   PointElement,
   LinearScale,
@@ -37,6 +42,7 @@ ChartJS.register(
 
 export default {
   components: { LineChart },
+  mixins: [lightenColor],
   props: {
     chartData: {
       type: Object,
@@ -45,6 +51,10 @@ export default {
     chartId: {
       type: String,
       default: '',
+    },
+    darkMode: {
+      type: Boolean,
+      default: false,
     },
     alertsForCharts: {
       type: Array,
@@ -94,13 +104,16 @@ export default {
         selection: null,
         research: null,
         month: 'day',
-        week: 'hour',
+        week: this.location === 'dashboard' ? 'day' : 'hour',
         day: 'hour',
         hour: 'minute',
       },
       hoverInspection: 0,
       hoverAlert: false,
       hoverLine: false,
+      darkModecolor: '#e0e0e0',
+      darkModeGridcolor: '#808080',
+      defaultcolor: '#242424',
     }
   },
   computed: {
@@ -113,6 +126,7 @@ export default {
         // when alert is triggered at a single moment instead of over a longer period
         // display it as a line instead of box such that the label can be shown as a tooltip on hover, similar to the inspection lines
         var isLine = alert.min === alert.max
+        var alwaysShowLabel = !isLine
 
         alertsForLineCharts['alert' + index] = {
           type: isLine ? 'line' : 'box',
@@ -126,11 +140,11 @@ export default {
 
           label: {
             content: alert.alert_rule_name,
-            enabled: !isLine,
-            drawTime: isLine ? 'afterDatasetsDraw' : 'beforeDatasetsDraw',
+            display: alwaysShowLabel,
+            drawTime: !alwaysShowLabel ? 'afterDraw' : 'beforeDatasetsDraw',
             color: isLine ? '#242424' : '#ff001d',
             borderRadius: 4,
-            position: 'start',
+            position: isLine ? 'center' : 'start',
             backgroundColor: !isLine ? 'transparent' : 'rgba(255, 0, 29, 0.8)',
             font: {
               size: this.mobile ? this.fontSizeMob : this.fontSize,
@@ -138,18 +152,18 @@ export default {
             },
           },
           enter({ chart, element }, event) {
-            if (isLine) {
-              element.options.label.enabled = true
-              chart.draw()
+            if (!alwaysShowLabel) {
+              element.label.options.display = true
             }
             self.hoverAlert = true
+            return true
           },
           leave({ chart, element }, event) {
-            if (isLine) {
-              element.options.label.enabled = false
-              chart.draw()
+            if (!alwaysShowLabel) {
+              element.label.options.display = false
             }
             self.hoverAlert = false
+            return true
           },
           click({ chart, element }, event) {
             // only fire this if chart line is not hovered (because then zoom action takes prevalence)
@@ -173,30 +187,36 @@ export default {
           x: {
             type: 'time',
             display: true,
-            min: this.startTime,
-            max: this.endTime,
+            min: self.startTime,
+            max: self.endTime,
             ticks: {
-              color: '#242424',
+              color: self.modeColor,
               source: 'auto',
               autoSkip: true,
               font: {
-                size: this.mobile ? this.fontSizeMob : this.fontSize,
+                size: self.mobile ? self.fontSizeMob : self.fontSize,
               },
             },
             time: {
-              unit: this.intervalToUnit[this.interval],
+              unit: self.intervalToUnit[self.interval],
               round: false,
-              parser: this.chartParseFmt,
-              tooltipFormat: this.tooltipFormat,
-              displayFormats: this.displayFormats,
+              parser: self.chartParseFmt,
+              tooltipFormat: self.tooltipFormat,
+              displayFormats: self.displayFormats,
+            },
+            grid: {
+              color: self.gridColor,
             },
           },
           y: {
             ticks: {
-              color: '#242424',
+              color: self.modeColor,
               font: {
-                size: this.mobile ? this.fontSizeMob : this.fontSize,
+                size: self.mobile ? self.fontSizeMob : self.fontSize,
               },
+            },
+            grid: {
+              color: self.gridColor,
             },
           },
           title: {
@@ -205,13 +225,13 @@ export default {
         },
         elements: {
           point: {
-            radius: this.mobile ? 1 : 1.5,
+            radius: self.mobile ? 1 : 1.5,
             borderWidth: 2,
-            hitRadius: this.touchDevice ? 20 : 3,
+            hitRadius: self.touchDevice ? 20 : 3,
             hoverRadius: 5,
           },
           line: {
-            borderWidth: this.mobile ? 2 : 2.5,
+            borderWidth: self.mobile ? 2 : 2.5,
             borderJoinStyle: 'round',
           },
         },
@@ -232,7 +252,7 @@ export default {
         },
         plugins:
           self.location === 'flashlog'
-            ? self.pluginsFlashlog
+            ? self.pluginsNoAnnotation
             : self.pluginsDefault,
         onClick: function(event, chartElement) {
           if (chartElement.length > 0) {
@@ -267,6 +287,11 @@ export default {
         minute: 'LT',
       }
     },
+    gridColor() {
+      return this.darkMode
+        ? this.darkModeGridcolor
+        : ChartJS.defaults.borderColor
+    },
     inspectionsForLineCharts() {
       const self = this
 
@@ -290,22 +315,22 @@ export default {
               inspection.text !== null && inspection.text.length > 25
                 ? inspection.text.substring(0, 25) + '...'
                 : inspection.text,
-            enabled: false,
+            display: false,
             backgroundColor: 'rgba(242, 145, 0, 0.87)',
-            drawTime: 'afterDatasetsDraw',
+            drawTime: 'afterDraw',
             borderRadius: 4,
             color: '#242424',
-            position: 'start',
+            position: 'center',
           },
           enter({ chart, element }, event) {
-            element.options.label.enabled = true
-            chart.draw()
+            element.label.options.display = true
             self.hoverInspection++
+            return true
           },
           leave({ chart, element }, event) {
-            element.options.label.enabled = false
-            chart.draw()
+            element.label.options.display = false
             self.hoverInspection--
+            return true
           },
           click({ chart, element }, event) {
             // only fire this if chart line is not hovered (because then zoom action takes prevalence)
@@ -324,11 +349,19 @@ export default {
     mobile() {
       return this.$vuetify.breakpoint.mobile
     },
+    modeColor() {
+      return this.darkMode ? this.darkModecolor : this.defaultcolor
+    },
+    multipleLines() {
+      return this.chartData.datasets.length > 1
+    },
     pluginsDefault() {
       const self = this
       return {
         annotation: {
-          drawTime: 'afterDatasetsDraw',
+          common: {
+            drawTime: 'afterDatasetsDraw',
+          },
           annotations: Object.assign(
             self.inspectionsForLineCharts,
             self.alertsForLineCharts
@@ -339,8 +372,10 @@ export default {
           padding: {
             bottom: 1,
           },
-          color: '#242424',
-          backgroundColor: 'rgba(255,255,255,0.7)',
+          color: self.modeColor,
+          backgroundColor: self.darkMode
+            ? 'rgba(0,0,0,0.7)'
+            : 'rgba(255,255,255,0.7)',
           borderRadius: 4,
           font: {
             size: this.mobile ? this.fontSizeMob : this.fontSize,
@@ -360,7 +395,12 @@ export default {
                 ).length === 0
             }
 
-            return self.location !== 'flashlog' && isFinalValue
+            return (
+              self.location !== 'flashlog' &&
+              (self.location !== 'compare' ||
+                context.dataset.mtType !== 'compareSD') && // don't show final value datalabel for compareSD lines
+              isFinalValue
+            )
           },
         },
         legend: {
@@ -369,17 +409,16 @@ export default {
           labels: {
             boxWidth: this.mobile ? this.boxSizeMob : this.boxSize,
             boxHeight: this.mobile ? this.boxSizeMob : this.boxSize,
-            fillStyle: '#242424',
+            fillStyle: this.modeColor,
             fullWidth: !this.mobile,
-            color: '#242424',
+            color: this.modeColor,
             font: {
               size: this.mobile ? this.fontSizeMob : this.fontSize,
             },
           },
           onClick: self.legendClickHandler,
           onHover: function(e, legendItem, legend) {
-            const multipleLines = legend.chart.data.datasets.length > 1
-            if (multipleLines) {
+            if (self.multipleLines) {
               if (e.native.target.style !== undefined) {
                 e.native.target.style.cursor = 'pointer'
               }
@@ -392,15 +431,22 @@ export default {
           },
         },
         tooltip: {
+          mode: 'index',
+          position: 'nearest',
           padding: 8,
           displayColors: false,
-          backgroundColor: 'rgba(242, 145, 0, 0.87)',
+          backgroundColor: 'rgba(255, 231, 191, 0.90)',
           titleColor: '#242424',
           bodyColor: '#242424',
           bodyFont: {
             weight: 'bold',
           },
           callbacks: {
+            labelTextColor: function(context) {
+              return self.multipleLines
+                ? self.lightenColor(context.dataset.backgroundColor, -12, 1)
+                : '#242424'
+            },
             label: function(context) {
               const name = context.dataset.name || ''
               const unit = context.dataset.unit || ''
@@ -415,8 +461,8 @@ export default {
         },
       }
     },
-    pluginsFlashlog() {
-      // remove annotation plugin for flashlog page as it is not used and causes an issue where multiple charts on one page won't be reactive
+    pluginsNoAnnotation() {
+      // remove annotation plugin for flashlog page + compare card as it is not used and causes an issue where multiple charts on one page won't be reactive
       // see to paragraph https://vue-chartjs.org/guide/#chartjs-plugin-annotation (only for Vue 2)
       const plugins = { ...this.pluginsDefault }
       delete plugins.annotation
@@ -443,9 +489,8 @@ export default {
     },
     legendClickHandler(e, legendItem, legend) {
       const defaultLegendClickHandler = ChartJS.defaults.plugins.legend.onClick
-      const multipleLines = legend.chart.data.datasets.length > 1
       // legend only clickable if chart has multiple lines / datasets
-      if (multipleLines) {
+      if (this.multipleLines) {
         // for regular data charts use default legend click handler
         if (this.location !== 'flashlog') {
           defaultLegendClickHandler(e, legendItem, legend)

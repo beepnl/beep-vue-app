@@ -226,12 +226,20 @@
   }
 }
 
+input[disabled='disabled'],
 .input-disabled-overlay {
   cursor: not-allowed !important;
 }
 
 .keep-spaces {
   white-space: pre-wrap;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .loading {

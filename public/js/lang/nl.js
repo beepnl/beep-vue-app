@@ -611,9 +611,16 @@ const translations = {
     'Deze notificatie <strong>deactiveren</strong> voor de volgende bijenkasten:',
   Exclude_hives_details:
     'N.B. De notificatie wordt standaard voor alle bijenkasten met een meetsysteem uitgevoerd.',
+  Exclude_hives_collab_group_exp:
+    ' Dit geldt ook voor bijenkasten die onderdeel zijn van een samenwerkingsgroep waar je lid van bent. Deactiveer de kasten waarvoor je deze notificatie niet wilt ontvangen.',
+  No_hives_excluded_warning:
+    "N.B. Deze notificatie wordt uitgevoerd voor alle bijenkasten met een meetsysteem, ook voor bijenkasten uit je samenwerkingsgroep(en). Bijenkasten waarvoor je deze notificatie niet wilt ontvangen kan je deactiveren via 'Periodes en bijenkasten uitzonderen'.",
+  Save_alertrule_ok:
+    'Wilt u doorgaan met opslaan van de notificatie-instelling?',
   months: 'maanden',
   hours: 'uren',
   delete_alertrule: 'Verwijder notificatie-instelling',
+  create_alertrule: 'Opslaan notificatie-instelling',
   Active: 'Actief',
   Alert_via_email: 'Notificatie via email',
   this_field: 'Dit veld',
@@ -902,7 +909,7 @@ const translations = {
 
   Hivetag: 'Hive tag | Hive tags',
   Hivetag_exp_1:
-    '‘Hive tags’ zijn QR codes die je op een bijenkast kan plakken, en waarvoor je een actie kunt instellen die uitgevoerd wordt zodra je de hive tag scant. Met ‘actie’ worden handelingen in de BEEP app bedoeld, zoals bijvoorbeeld het aanmaken van een nieuwe inspectie voor de betreffende kast. Zodra de hive tag is ingesteld, hoef je in het vervolg alleen de QR code te scannen met je smartphone, en dan zal er automatisch een nieuwe inspectie worden aangemaakt. De hive tags kan je zelf printen, door ',
+    "'Hive tags' zijn QR codes die je op een bijenkast kan plakken, en waarvoor je een actie kunt instellen die uitgevoerd wordt zodra je de hive tag scant. Met 'actie' worden handelingen in de BEEP app bedoeld, zoals bijvoorbeeld het aanmaken van een nieuwe inspectie voor de betreffende kast. Zodra de hive tag is ingesteld, hoef je in het vervolg alleen de QR code te scannen met je smartphone, en dan zal er automatisch een nieuwe inspectie worden aangemaakt. De hive tags kan je zelf printen, door ",
   Hivetag_download_text: 'deze pdf te downloaden.',
   Hivetag_exp_2:
     ' Scan een hive tag om aan de slag te gaan, er zal automatisch een pagina openen waar je de actie in kunt stellen indien dat nog niet gebeurd is.',
@@ -916,7 +923,7 @@ const translations = {
   for_hive: 'voor bijenkast "',
   Select_hivetag_number: 'Selecteer een hive tag nummer',
   Add_hivetag: 'Voeg hive tag toe',
-  Select_hive: 'Selecteer een bijenkast',
+  Select_hive: 'Selecteer een bijenkast | Selecteer bijenkasten',
   Select_hive_for_hivetag_exp:
     'Voor welke bijenkast wil je de actie uitvoeren? Selecteer één bijenkast.',
   Select_hivetag_action: 'Selecteer een actie',
@@ -940,6 +947,155 @@ const translations = {
     'Voeg BEEP toe aan je beginscherm om het als web app en op volledig scherm te gebruiken. Je blijft dan ingelogd na de eerste keer inloggen.',
   pwa_share_button_label: '1. Tik op het deel-icoon in de menubalk onderin.',
   pwa_addhome_button_label: "2. Tik op 'Zet op beginscherm'",
+
+  Colony: 'Volk | Volken',
+  Dashboard: 'Dashboard | Dashboards',
+  Last_check: 'Laatste controle',
+  Note: 'Notitie',
+  no_chart_data_hive: 'Geen sensordata beschikbaar voor deze bijenkast',
+  outsideTemperature: 'Buitentemperatuur',
+
+  Code: 'Code',
+
+  Dashboard_exp:
+    "Creëer een dashboard via de 'Nieuw dashboard' knop rechtsboven. U kunt vervolgens bijenkasten selecteren die u wilt tonen op een publiek dashboard dat via een aparte url (voor iedereen met de code) toegankelijk is. Bijenkasten (en hun metingen en/of laatste inspectie) worden één voor één getoond.",
+  create_dashboard_question:
+    'Nog geen dashboard? Creëer een dashboard via de BEEP app',
+  New_dashboard: 'Nieuw dashboard',
+  Edit_dashboard: 'Edit dashboard',
+  Delete_dashboard: 'Verwijder dashboard',
+  Logout_dashboard: 'Uitloggen',
+  Logout_dashboard_check:
+    'Weet je zeker dat je wilt uitloggen / van dashboard wilt veranderen?',
+
+  weight_example_chart_1: 'Bijen verzamelen nectar',
+  weight_example_chart_2: 'Bijen gebruiken hun voedselvoorrad',
+  weight_example_chart_3: 'Een zwerm!',
+  weight_example_chart_4: 'De kast is vergroot',
+  t_example_chart_1: '34°C: gezond broednest',
+  t_example_chart_2: '< 33°C: geen broednest',
+  Select_hives_for_dashboard_exp:
+    'Welke bijenkasten wil je tonen in dit dashboard? Selecteer meerdere kasten (maximaal 12) voor het beste resultaat. Bij kasten met een meetsysteem zal ook temperatuur- en gewichtsdata worden weergegeven, indien aanwezig. Alleen eigen kasten kunnen geselecteerd worden.',
+  Max_hives_warning: 'Het maximum aantal bijenkasten is bereikt',
+  Title: 'Titel',
+  Dashboard_title_exp:
+    "Standaard is 'Dashboard' (als dit veld leeg wordt gelaten).",
+  Dashboard_description_exp:
+    'N.B. Deze beschrijving zal niet getoond worden op het dashboard. Hier kan je extra informatie kwijt, bijv. waarvoor dit dashboard bestemd is.',
+  Pace: 'Snelheid (sec)',
+  Dashboard_pace_exp: 'Aantal seconden dat elke bijenkast getoond wordt',
+  Dashboard_interval_exp:
+    'Toon metingen van de/het afgelopen uur/dag/week/maand/jaar of een zelfgekozen periode',
+  Show_inspections: 'Toon inspecties',
+  Show_inspections_exp:
+    'Toon per bijenkast de laatste inspectie (datum, totaalindruk en notitie).',
+  Show_all_hives: 'Toon details van alle bijenkasten',
+  Show_all_hives_exp:
+    'Toon details (locatie, laatste inspectie, metingen) van alle geselecteerde bijenkasten (JA), of alleen van bijenkasten met meetsysteem (NEE, aanbevolen optie)',
+  Preview_share: 'Preview & deel',
+  Copy_url: 'Kopieer url',
+  /* offline inspection sheet */
+  Hour_short: 'Uur | Uur',
+  Day: 'Dag | Dagen',
+  Minute: 'Minuut | Minuten',
+  Percentage_exp: 'Percentage tussen 0 en 100',
+  Grade_exp_1: 'Cijfer tussen 1 en 10',
+  Grade_exp_2: '(1 = Slecht, 10 = Uitstekend)',
+  Degrees_exp_1: 'Aantal graden tussen',
+  Degrees_exp_2: '-180° en 180°',
+  Negative_exp: 'Negatief getal (lager dan 0)',
+  Too_many_items_exp_1: 'Er zijn teveel opties om te printen,',
+  Too_many_items_exp_2: 'vul hier je eigen antwoord in',
+  Image_placeholder_1: 'Foto kan later toegevoegd worden',
+  Image_placeholder_2: 'via de BEEP app (optioneel)',
+  Too_long_list_present:
+    'Lijst van opties te lang om weer te geven in de offline kastkaart voor het item:',
+  Too_long_list_present_fix_1:
+    'Indien mogelijk, verminder het aantal keuzemogelijkheden tot maximaal',
+  Too_long_list_present_fix_2:
+    "via de 'Aanpassen kastkaart' knop. Of vul het juiste antwoord handmatig in.",
+
+  /* offline inspection page */
+  Print: 'Print',
+  Print_checklist: 'Print kastkaart',
+  Print_checklist_exp: 'Zorg voor de volgende printerinstellingen:',
+  Print_checklist_exp_1: 'Papierformaat: A4',
+  Print_checklist_exp_2: 'Zonder marges',
+  Print_checklist_exp_3: 'Zwart/wit',
+  Print_checklist_exp_4: 'Enkelzijdig',
+  Offline_inspection: 'Papieren inspectie',
+  Offline_inspection_exp:
+    "Print de kastkaart, vul deze handmatig in. Upload foto's hiervan op een later moment via de 'Upload papieren inspectie' knop. De foto's worden vervolgens automatisch uitgelezen en het resultaat kan dan worden geverifiëerd en opgeslagen als een normale (digitale / online) inspectie.",
+  Online_inspection: 'Digitale inspectie',
+  Online_inspection_exp:
+    'Vul de kastkaart digitaal (online) in via uw computer, tablet of smartphone, zoals u gewend bent',
+  Upload_inspection: 'Upload papieren inspectie',
+  Upload_inspection_exp:
+    "Wanneer u een papieren inspectie heeft gedaan, kunt u hier foto's daarvan uploaden. Deze worden vervolgens automatisch uitgelezen en het resultaat kan dan worden geverifiëerd en opgeslagen als een normale (digitale / online) inspectie.",
+
+  Select_inspection_mode: 'Selecteer inspectiemodus',
+  Send_pictures: "Foto's opsturen",
+  svg_checklist: 'geprinte kastkaart | geprinte kastkaarten',
+  Select_input_language: 'Selecteer taal waarin kastkaart is ingevuld',
+  Upload_images: 'Upload afbeeldingen',
+  Upload_images_exp: "Let bij het maken van de foto's op het volgende:",
+  Upload_images_exp_1:
+    'Komt de Print ID van elke pagina overeen met de Print ID van de hierboven geselecteerde geprinte kastkaart?',
+  Upload_images_exp_2: 'Zijn alle 4 de zwarte vierkanten in beeld?',
+  Upload_images_exp_3:
+    'Ligt het papier op een vlakke ondergrond en is het goed verlicht?',
+  Upload_images_exp_4: 'TODO: use image scanner?',
+  Uploading_images_be_patient:
+    'Even geduld a.u.b., uw afbeeldingen worden geanalyseerd. Dit kan enkele minuten duren. Sluit dit venster niet.',
+  Parsed_pages: "Verwerkte pagina's",
+  Number_of_processed_pages: "Aantal verwerkte pagina's: ",
+  Incorrectly_uploaded_pages: 'Incorrect geuploade paginanummers: ',
+  Missing_page: 'Ontbrekend paginanummer | Ontbrekende paginanummers',
+  Check_svg_id_for_page:
+    'Controleer Print ID voor paginanummer | Controleer Print ID voor paginanummers',
+  correct_svg_id: 'juiste Print ID',
+  Svg_id_exp:
+    "Het Print ID vind je rechts bovenaan de pagina, links van het paginanummer. Upload de papieren inspectie opnieuw met de juiste pagina's en/of de juiste geprinte kastkaart geselecteerd.",
+  All_svg_ids_correct: 'Juiste geprinte kastkaart geselecteerd',
+  All_svg_ids_incorrect: 'Verkeerde geprinte kastkaart geselecteerd',
+  No_checklist_svg: 'Nog geen kastkaarten geprint',
+  No_checklist_svg_exp:
+    "Voordat je een papieren inspectie kan uploaden, moet je eerst een kastkaart printen (en invullen). Ga daarom eerst naar 'Papieren inspectie', of doe de inspectie volledig digitaal via 'Digitale inspectie'.",
+  checklist_svg_exp:
+    "Selecteer hieronder een geprinte kastkaart. Let daarbij op dat de Print ID (en daarmee ook de naam) overeenkomt met de Print ID (en naam) van jouw papieren inspectie. De Print ID vind je rechtsboven elke bladzijde, de naam linksboven. N.B. Een digitale kastkaart kan onder verschillende Print IDs opgeslagen zijn als 'geprinte kastkaart', wanneer de inhoud gewijzigd is op het moment van printen (ten opzichte van de vorige printsessie). Aanpassingen aan een digitale kastkaart zijn dus alleen terug te zien in een geprinte kastkaart wanneer de kastkaart na de wijzigingen geprint is. De datum (+ het tijdstip) achter de naam duidt aan wanneer een bepaalde versie van de kastkaart voor het eerst geprint is.",
+
+  /* Compare module */
+  Load: 'Laden',
+  Compare: 'Vergelijk',
+  Select_hives_for_compare: 'Selecteer bijenkasten om mee te vergelijken',
+  Select_hives_for_compare_exp:
+    'Selecteer de bijenkasten waarmee je de data wilt vergelijken',
+  mean_weight_kg: 'Gemiddeld gewicht',
+  mean_net_weight_kg: 'Gemiddeld netto gewicht',
+  net_weight_kg: 'Netto gewicht',
+  overall_intake_loss: 'Totale stijging/daling',
+  Compare_hives: 'Vergelijk bijenkasten',
+  Compare_with_mean:
+    'Vergelijk gewicht bijenkast met gemiddelde van andere kasten',
+  compare_hives_exp:
+    'Bekijk hoe je bijenkast zich ontwikkelt, vergeleken met andere bijenkasten in de omgeving. ',
+  compare_support_url:
+    'https://beepsupport.freshdesk.com/en/support/solutions/articles/60000921124-compare-hives-option',
+  compare_url_text: 'Lees hier meer uitleg over de Vergelijk functionaliteit',
+  selected_hive: 'geselecteerde kast | geselecteerde kasten',
+  Multiple_hives_charts: 'Vergelijk meerdere bijenkasten in één grafiek',
+  compare_no_chart_data:
+    'Geen vergelijkingsdata beschikbaar voor de geselecteerde periode',
+  multiple_hives_no_chart_data:
+    'Geen data beschikbaar voor de geselecteerde bijenkasten voor de geselecteerde periode',
+  /* below, please keep [hivename] as is, it will be replaced by the name of the hive you selected in the Data tab */
+  compare_chart_exp:
+    'Let op: [hivename] wordt niet meegenomen in de berekening van het gemiddelde gewicht. ',
+
+  /* below, please keep [pagenr] as is, it will be replaced by the pagenumber to be uploaded */
+  Upload_pagenr: 'Upload hier pagina [pagenr]',
+  Datetime_of_inspection: 'Inspectiedatum en -tijd',
+  remind_datetime: 'Herinneringsdatum en -tijd',
 }
 
 export default translations

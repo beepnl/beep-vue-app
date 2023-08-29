@@ -292,7 +292,12 @@
               />
               <div
                 class="beep-label mt-1"
-                v-text="$t('Exclude_hives_details')"
+                v-text="
+                  $t('Exclude_hives_details') +
+                    (hasNonOwnedDevices
+                      ? $t('Exclude_hives_collab_group_exp')
+                      : '')
+                "
               ></div>
             </v-col>
           </v-row>
@@ -322,7 +327,7 @@ import {
   alertRuleEditHelpers,
   convertComma,
   readAlertRules,
-  readDevicesIfNotPresent,
+  readDevicesIfNotChecked,
   readTaxonomy,
 } from '@mixins/methodsMixin'
 import { momentHumanize } from '@mixins/momentMixin'
@@ -341,7 +346,7 @@ export default {
     convertComma,
     momentHumanize,
     readAlertRules,
-    readDevicesIfNotPresent,
+    readDevicesIfNotChecked,
     readTaxonomy,
   ],
   data: function() {
@@ -469,6 +474,12 @@ export default {
         return null
       }
     },
+    hasNonOwnedDevices() {
+      return this.devices.filter((device) => !device.owner).length > 0
+    },
+    hours() {
+      return this.formatFromTaxonomyArray(this.alertRulesList.exclude_hours)
+    },
     id() {
       return parseInt(this.$route.params.id)
     },
@@ -502,6 +513,21 @@ export default {
         acc += apiary.children.length
         return acc
       }, 0)
+    },
+    requiredRule: function() {
+      return [
+        (v) =>
+          !!v || this.$i18n.t('this_field') + ' ' + this.$i18n.t('is_required'),
+      ]
+    },
+    showCollabGroupWarning() {
+      // show confirm popup with warning that alerts are sent for non-owned hives as well, but only when saving alert rule
+      // - without any excluded hive ids (which could mean that user has missed this option)
+      // - if non-owned devices (from collaboration groups) are present
+      return (
+        this.activeAlertRule.exclude_hive_ids.length === 0 &&
+        this.hasNonOwnedDevices
+      )
     },
     sortedDevices() {
       var apiaryArray = []
@@ -611,7 +637,7 @@ export default {
     },
   },
   created() {
-    this.readDevicesIfNotPresent()
+    this.readDevicesIfNotChecked()
     this.readAlertRulesIfNotPresent().then(() => {
       this.readTaxonomy().then(() => {
         // If alertrule-create route is used, make empty alertrule object
@@ -776,6 +802,27 @@ export default {
     checkCalculation(calcMinValue) {
       if (calcMinValue === 0) {
         this.activeAlertRule.calculation = 'ave'
+      }
+    },
+    confirmCreateAlertRule() {
+      if (this.showCollabGroupWarning) {
+        this.$refs.confirm
+          .open(
+            this.$i18n.t('create_alertrule'),
+            this.$i18n.t('Save_alertrule_ok'),
+            {
+              color: 'red',
+            },
+            this.$i18n.t('No_hives_excluded_warning')
+          )
+          .then((confirm) => {
+            this.createAlertRule()
+          })
+          .catch((reject) => {
+            return true
+          })
+      } else {
+        this.createAlertRule()
       }
     },
     confirmDeleteAlertRule() {
@@ -960,7 +1007,7 @@ export default {
     },
     saveAlertRule() {
       if (this.alertruleCreateMode) {
-        this.createAlertRule()
+        this.confirmCreateAlertRule()
       } else {
         this.updateAlertRule()
       }

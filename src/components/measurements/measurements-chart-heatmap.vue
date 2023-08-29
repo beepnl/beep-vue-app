@@ -245,7 +245,11 @@ export default {
         : 'hsl(360, 100%, 100%)'
     },
     displayValue(input) {
-      return Math.round(input) !== input ? input.toFixed(2) : input
+      return input !== undefined
+        ? Math.round(input) !== input
+          ? input.toFixed(2)
+          : input
+        : '-'
     },
     findAlertInfo(mergedAlert, index) {
       return mergedAlert.indexes.filter(
