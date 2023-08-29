@@ -142,11 +142,15 @@
     />
 
     <svgText
-      v-if="item.input === 'image'"
+      v-if="item.input === 'image' || item.input === 'sample_code'"
       :label="label"
       :text-only="true"
-      :extra-text1="$t('Image_placeholder_1')"
-      :extra-text2="$t('Image_placeholder_2')"
+      :extra-text1="
+        $t((item.input === 'image' ? 'Image' : 'Samplecode') + '_placeholder_1')
+      "
+      :extra-text2="
+        $t((item.input === 'image' ? 'Image' : 'Samplecode') + '_placeholder_2')
+      "
       :position="position"
     />
 
@@ -179,7 +183,8 @@
           item.input !== 'date' &&
           item.input !== 'select_hive' &&
           item.input !== 'select_location' &&
-          item.input !== 'image'
+          item.input !== 'image' &&
+          item.input !== 'sample_code'
       "
       :position="position"
       :label="label + ' (' + item.input + ')'"
