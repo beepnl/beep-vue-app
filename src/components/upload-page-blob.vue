@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="upload-page-blob-wrapper d-flex flex-column mr-4 mb-4'">
     <div
       :class="
         (pageImage === null ? 'float-right' : 'rounded-border') +
-          ' upload-page-blob mr-4 mb-4'
+          ' upload-page-blob'
       "
     >
       <div>
@@ -33,6 +33,7 @@
 
       <v-file-input
         v-if="pageImage === null"
+        ref="fileInput"
         v-model="pageImageFile"
         class="pt-0 mt-n8 image-uploader-page-blob float-right cursor-pointer"
         accept="image/png, image/jpeg, image/bmp"
@@ -43,14 +44,13 @@
         :error-messages="errorMessage"
         :height="'100%'"
         :loading="showLoading ? 'primary' : false"
-        @change="makeBlob($event)"
+        @change="$event !== null ? makeBlob($event) : ''"
         @click:clear="errorMessage = null"
       >
         <template v-slot:prepend-inner>
           <v-icon large>mdi-camera</v-icon>
         </template>
       </v-file-input>
-
       <img
         v-if="pageImageFile !== null"
         :src="pageImage"
@@ -60,6 +60,22 @@
 
       <Confirm ref="confirm"></Confirm>
     </div>
+
+    <span v-if="errorMessage" class="hcs-label red--text mt-1">
+      {{ errorMessage }}
+    </span>
+
+    <!-- <v-alert
+      v-if="errorMessage"
+      type="error"
+      text
+      prominent
+      dense
+      color="red"
+      dismissible
+    >
+      {{ errorMessage }}
+    </v-alert> -->
   </div>
 </template>
 
@@ -101,15 +117,21 @@ export default {
   created() {},
   methods: {
     async makeBlob(img) {
-      const self = this
-      self.showLoading = true
-      var reader = new FileReader()
-      reader.onloadend = function() {
-        self.pageImage = reader.result
-        self.$emit('set-page-blob', reader.result)
-        self.showLoading = false
+      if (img.size / 1000 > 800) {
+        this.$refs.fileInput.reset() // removeBlob does not remove image name as placeholder so completely reset file input instead
+        this.errorMessage = 'Image size should be less than 800kb!'
+      } else {
+        const self = this
+        self.errorMessage = null
+        self.showLoading = true
+        var reader = new FileReader()
+        reader.onloadend = function() {
+          self.pageImage = reader.result
+          self.$emit('set-page-blob', reader.result)
+          self.showLoading = false
+        }
+        reader.readAsDataURL(img)
       }
-      reader.readAsDataURL(img)
     },
     confirmDeleteImage(id) {
       this.$refs.confirm
@@ -137,6 +159,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.upload-page-blob-wrapper {
+  width: 140px;
+}
+
 .upload-page-blob {
   width: 140px;
   height: 198px;
