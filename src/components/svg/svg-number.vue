@@ -58,13 +58,13 @@
     </g> -->
 
     <g v-if="info">
-      <text :x="x + 'mm'" :y="y + height + 6 + 'mm'" :style="svgTextSmall">
+      <text :x="x + 'mm'" :y="y + height + 5 + 'mm'" :style="svgTextSmall">
         {{ info }}
       </text>
       <text
         v-if="infoExtra"
         :x="x + 'mm'"
-        :y="y + height + 10 + 'mm'"
+        :y="y + height + 9 + 'mm'"
         :style="svgTextSmall"
       >
         {{ infoExtra }}
