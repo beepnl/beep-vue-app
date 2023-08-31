@@ -202,14 +202,14 @@
             />
           </ZoomCenterTransition>
 
-          <v-row v-if="!activeAlertRule.formulas.length <= 6">
+          <v-row v-if="activeAlertRule.formulas.length < maxNrFormulas">
             <v-col>
               <v-btn
                 class="float-right"
                 tile
                 outlined
                 color="accent"
-                @click="addFormula(0)"
+                @click="addFormula"
               >
                 <v-icon left>mdi-plus</v-icon>
                 {{ $t('Add_formula') }}
@@ -373,6 +373,7 @@ export default {
         period_minutes: 0,
         future: false,
       },
+      maxNrFormulas: 6,
     }
   },
   computed: {
@@ -475,6 +476,9 @@ export default {
       } else {
         return null
       }
+    },
+    formulasLogical() {
+      return this.activeAlertRule.formulas[0].logical || 'and'
     },
     hasNonOwnedDevices() {
       return this.devices.filter((device) => !device.owner).length > 0
@@ -787,8 +791,10 @@ export default {
         }
       }
     },
-    addFormula(index) {
-      this.activeAlertRule.formulas[index].logical = 'and'
+    addFormula() {
+      this.activeAlertRule.formulas[
+        this.nrOfFormulas - 1
+      ].logical = this.formulasLogical
       this.activeAlertRule.formulas.push({ ...this.newFormula })
     },
     checkAlertRuleFormulas() {

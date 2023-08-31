@@ -80,7 +80,7 @@ export const alertRuleEditHelpers = {
       return formattedArray
     },
     getLetter(index) {
-      var letters = ['A', 'B', 'C', 'D']
+      var letters = ['A', 'B', 'C', 'D', 'E', 'F']
       return letters[index]
     },
     setAlertRuleEdited(bool) {
