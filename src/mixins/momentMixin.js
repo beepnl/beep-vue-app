@@ -99,17 +99,16 @@ export const momentHumanizeDuration = {
 
 export const momentHumanize = {
   methods: {
-    humanizeMinutes(minutes, capitalizeFirst = false) {
+    humanizeMinutes(minutes, capitalizeFirst = false, future = false) {
       if (minutes === 0) {
         var sentence = this.$i18n.t('Zero_period_minutes')
         return capitalizeFirst
           ? sentence[0].toUpperCase() + sentence.substring(1)
           : sentence
       } else if (minutes !== undefined) {
-        sentence =
-          minutes > 0
-            ? this.$i18n.t('Future_minutes')
-            : this.$i18n.t('Past_minutes')
+        sentence = future
+          ? this.$i18n.t('Future_minutes')
+          : this.$i18n.t('Past_minutes')
         sentence = sentence.replace(
           '[nr_of_minutes]',
           this.momentHumanizeDuration(minutes, 'minutes')

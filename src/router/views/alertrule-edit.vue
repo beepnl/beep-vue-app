@@ -370,6 +370,7 @@ export default {
         threshold_value: 0,
         logical: null,
         period_minutes: 0,
+        future: false,
       },
     }
   },

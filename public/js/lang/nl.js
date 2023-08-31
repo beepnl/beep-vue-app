@@ -654,6 +654,8 @@ const translations = {
   Zero_period_minutes: 'alleen over de laatste waarde',
   Not_relevant_for_period_zero:
     "Niet relevant bij uitvoeren over alleen de laatste waarde (zie 'Periode')",
+  Period_future: 'in de toekomst',
+  Period_past: 'in het verleden',
   min: 'minimum',
   max: 'maximum',
   ave: 'gemiddelde',

@@ -29,7 +29,7 @@
               </v-btn>
             </div>
           </v-col>
-          <v-col cols="10" sm="8" md="2">
+          <v-col cols="10" sm="8" md="3">
             <div class="d-flex justify-space-between">
               <div
                 class="beep-label mb-0 mt-3px"
@@ -83,7 +83,7 @@
             ></v-select>
             <div
               v-if="formula.period_minutes === 0"
-              class="beep-label mt-n4 mb-3"
+              class="font-small mt-n4 mb-3"
               v-text="$t('Not_relevant_for_period_zero')"
             ></div>
             <!-- <div
@@ -112,13 +112,13 @@
             ></v-select>
             <div
               v-if="formula.comparison === 'abs_dif'"
-              class="beep-label mt-n4 mb-3"
+              class="font-small mt-n4 mb-3"
               v-text="$t('Absolute_value_of_dif_explanation')"
             ></div>
           </v-col>
 
-          <v-col cols="12" sm="4" md="2" xl="1" class="d-flex justify-start">
-            <div class="mt-3px">
+          <v-col cols="12" sm="4" md="2" class="d-flex justify-start">
+            <div class="d-flex flex-column mt-3px">
               <div
                 class="beep-label"
                 v-text="$t('period') + ' (' + $tc('minute', 2) + ')'"
@@ -131,8 +131,40 @@
                 @change="setPeriodMinutesEdited(true)"
                 @input.native="setPeriodMinutesEdited(true)"
               ></el-input-number>
-              <div class="beep-label mt-1 mb-3"
-                >{{ humanizeMinutes(formula.period_minutes, true) }}
+
+              <v-radio-group
+                v-if="showFutureProp"
+                v-model="formula.future"
+                :disabled="formula.period_minutes === 0"
+                class="mt-1 ml-n1"
+                dense
+              >
+                <v-radio
+                  v-for="(item, i) in futureItems"
+                  :key="'f-' + i"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                  <template v-slot:label>
+                    <span
+                      class="ml-n1 beep-label mb-0"
+                      v-text="item.label"
+                    ></span>
+                  </template>
+                </v-radio>
+              </v-radio-group>
+
+              <div
+                :class="
+                  'font-small mb-3 ' + (showFutureProp ? 'mt-n2' : 'mt-1')
+                "
+                >{{
+                  humanizeMinutes(
+                    formula.period_minutes,
+                    true,
+                    showFutureProp && formula.future
+                  )
+                }}
               </div>
             </div>
           </v-col>
@@ -240,6 +272,18 @@ export default {
       ]
       return this.$i18n.t(translateTerm) + ' ' + this.$i18n.t('of') + ' '
     },
+    futureItems() {
+      return [
+        {
+          label: this.$i18n.t('Period_past'),
+          value: false,
+        },
+        {
+          label: this.$i18n.t('Period_future'),
+          value: true,
+        },
+      ]
+    },
     measurement() {
       return this.allSensorMeasurements.filter(
         (measurement) => measurement.id === this.formula.measurement_id
@@ -265,6 +309,9 @@ export default {
       // make formula.period_minutes interpretable for watch hook
       return this.formula.period_minutes
     },
+    showFutureProp() {
+      return this.measurement.show_future === 1
+    },
     thresholdValueIsNaN() {
       return isNaN(this.formula.threshold_value)
     },
@@ -278,6 +325,7 @@ export default {
     periodMinutes() {
       if (this.periodMinutes === 0) {
         this.formula.calculation = 'ave'
+        this.formula.future = false
       }
     },
   },
