@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/camelcase -->
 <template>
   <div class="mb-4">
     <v-row class="mx-0">
@@ -123,10 +124,15 @@
 
           <v-col cols="12" sm="4" md="2" class="d-flex justify-start">
             <div class="d-flex flex-column mt-3px">
-              <div
-                class="beep-label"
-                v-text="$t('period') + ' (' + $tc('minute', 2) + ')'"
-              ></div>
+              <div class="d-flex justify-space-between">
+                <div
+                  class="beep-label"
+                  v-text="$t('period') + ' (' + $tc('minute', 2) + ')'"
+                ></div>
+                <v-icon color="accent" small @click="showPeriodOverlay = true"
+                  >mdi-calculator</v-icon
+                >
+              </div>
               <el-input-number
                 v-model="formula.period_minutes"
                 :step="1"
@@ -172,6 +178,63 @@
               </div>
             </div>
           </v-col>
+
+          <v-overlay :value="showPeriodOverlay">
+            <v-container class="minutes-calculator">
+              <v-row>
+                <v-col cols="12">
+                  <v-toolbar dense light flat>
+                    <div
+                      class="font-weight-bold mr-8"
+                      v-text="$t('Minutes_calculator')"
+                    ></div>
+                    <v-spacer></v-spacer>
+                    <v-toolbar-items>
+                      <v-icon class="mr-1" @click="showPeriodOverlay = false"
+                        >mdi-close</v-icon
+                      >
+                    </v-toolbar-items>
+                  </v-toolbar>
+
+                  <div class="d-flex flex-column pa-3">
+                    <div
+                      v-for="(period, k) in periods"
+                      :key="'p-' + k"
+                      class="d-flex align-center mb-1"
+                    >
+                      <el-input-number
+                        v-model="periodValues[period.term]"
+                        :step="1"
+                        :min="0"
+                        size="small"
+                      ></el-input-number>
+                      <div
+                        class="ml-2"
+                        v-text="$tc(period.term, periodValues[period.term])"
+                      ></div>
+                    </div>
+                  </div>
+
+                  <v-toolbar dense light flat>
+                    <div
+                      class="font-weight-bold color-accent"
+                      v-text="totalPeriodMinutes + ' ' + $tc('minute', 2)"
+                    ></div>
+                    <v-spacer></v-spacer>
+                    <v-icon
+                      class="mr-1"
+                      color="accent"
+                      @click="
+                        ;(formula.period_minutes = totalPeriodMinutes),
+                          (showPeriodOverlay = false)
+                      "
+                      >mdi-check</v-icon
+                    >
+                  </v-toolbar>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-overlay>
 
           <v-col cols="6" sm="4" md="1">
             <v-select
@@ -273,6 +336,13 @@ export default {
   data: () => ({
     showAllMeasurements: false,
     periodMinutesEdited: false,
+    showPeriodOverlay: false,
+    periodValues: {
+      hour: 0,
+      day: 0,
+      week: 0,
+      month: 0,
+    },
   }),
   computed: {
     ...mapGetters('taxonomy', ['alertRulesList']),
@@ -319,11 +389,26 @@ export default {
       // make formula.period_minutes interpretable for watch hook
       return this.formula.period_minutes
     },
+    periods() {
+      return [
+        { term: 'hour', minutes: 60 },
+        { term: 'day', minutes: 1440 },
+        { term: 'week', minutes: 10080 },
+        { term: 'month', minutes: 43200 },
+      ]
+    },
     showFutureProp() {
       return this.measurement.show_future === 1
     },
     thresholdValueIsNaN() {
       return isNaN(this.formula.threshold_value)
+    },
+    totalPeriodMinutes() {
+      var total = 0
+      this.periods.map((period) => {
+        total += period.minutes * this.periodValues[period.term]
+      })
+      return total
     },
   },
   watch: {
@@ -360,4 +445,11 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.minutes-calculator {
+  background-color: $color-white;
+  color: $color-grey-dark;
+  border-radius: 4px;
+  max-width: 90vw !important;
+}
+</style>

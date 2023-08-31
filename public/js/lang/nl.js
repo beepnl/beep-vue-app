@@ -328,10 +328,12 @@ const translations = {
 
   /* Measurements */
   Hour: 'Uur',
-  hour: 'uur | uur',
+  hour: 'uur | uren',
   day: 'dag | dagen',
-  week: 'Week',
-  month: 'Maand',
+  Week: 'Week',
+  Month: 'Maand',
+  week: 'week | weken', // To be translated
+  month: 'maand | maanden', // To be translated
   year: 'Jaar',
 
   /* settings */
@@ -657,6 +659,7 @@ const translations = {
     "Niet relevant bij uitvoeren over alleen de laatste waarde (zie 'Periode')",
   Period_future: 'in de toekomst',
   Period_past: 'in het verleden',
+  Minutes_calculator: 'Minuten rekenmachine',
   min: 'minimum',
   max: 'maximum',
   ave: 'gemiddelde',

@@ -388,8 +388,8 @@ export default {
     periods() {
       return [
         { name: this.$i18n.tc('day', 1), minutes: 1440 },
-        { name: this.$i18n.t('week'), minutes: 10080 },
-        { name: this.$i18n.t('month'), minutes: 43200 },
+        { name: this.$i18n.t('Week'), minutes: 10080 },
+        { name: this.$i18n.t('Month'), minutes: 43200 },
         { name: this.$i18n.t('year'), minutes: 525600 },
       ]
     },

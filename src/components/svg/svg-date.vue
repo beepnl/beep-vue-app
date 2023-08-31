@@ -96,7 +96,7 @@ export default {
           first: true,
         },
         {
-          title: this.$i18n.t('month'),
+          title: this.$i18n.t('Month'),
           fields: 2,
           offset: 4 * this.numberBoxWidth + this.spaceWidth,
         },

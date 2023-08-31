@@ -776,8 +776,8 @@ export default {
       return [
         { name: this.$i18n.t('Hour'), interval: 'hour' },
         { name: this.$i18n.tc('day', 1), interval: 'day' },
-        { name: this.$i18n.t('week'), interval: 'week' },
-        { name: this.$i18n.t('month'), interval: 'month' },
+        { name: this.$i18n.t('Week'), interval: 'week' },
+        { name: this.$i18n.t('Month'), interval: 'month' },
         { name: this.$i18n.t('year'), interval: 'year' },
         { name: this.$i18n.t('selection'), interval: 'selection' },
       ]

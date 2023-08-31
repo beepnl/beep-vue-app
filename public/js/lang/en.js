@@ -310,8 +310,10 @@ const translations = {
   Hour: 'Hour',
   hour: 'hour | hours',
   day: 'day | days',
-  week: 'Week',
-  month: 'Month',
+  Week: 'Week',
+  Month: 'Month',
+  week: 'week | weeks',
+  month: 'month | months',
   year: 'Year',
 
   /* settings */
@@ -620,6 +622,9 @@ const translations = {
   Zero_period_minutes: 'over the last value only',
   Not_relevant_for_period_zero:
     "Not relevant when running over the last value only (see 'Period')",
+  Period_future: 'in the future',
+  Period_past: 'in the past',
+  Minutes_calculator: 'Minute calculator',
   min: 'minimum',
   max: 'maximum',
   ave: 'average',

@@ -326,8 +326,8 @@ export default {
       intervalOptions: [
         { id: 'hour', label: this.$i18n.t('Hour') },
         { id: 'day', label: this.$i18n.tc('Day', 1) },
-        { id: 'week', label: this.$i18n.t('week') },
-        { id: 'month', label: this.$i18n.t('month') },
+        { id: 'week', label: this.$i18n.t('Week') },
+        { id: 'month', label: this.$i18n.t('Month') },
         { id: 'year', label: this.$i18n.t('year') },
         // { id: 'selection', label: this.$i18n.t('selection') }, TODO: temp disabled because not implemented in api yet
       ],

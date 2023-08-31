@@ -425,8 +425,10 @@ const translations = {
   Hour: 'Heure',
   hour: 'heure | heures',
   day: 'jour | jours',
-  week: 'Semaine',
-  month: 'Mois',
+  Week: 'Semaine',
+  Month: 'Mois',
+  week: 'week | weeks', // To be translated
+  month: 'month | months', // To be translated
   year: 'Année',
 
   /* settings */
@@ -812,6 +814,9 @@ const translations = {
   Zero_period_minutes: 'over the last value only', // To be translated
   Not_relevant_for_period_zero:
     "Not relevant when running over the last value only (see 'Period')", // To be translated
+  Period_future: 'in the future', // To be translated
+  Period_past: 'in the past', // To be translated
+  Minutes_calculator: 'Minute calculator', // To be translated
   min: 'minimum',
   max: 'maximum',
   ave: 'moyenne',

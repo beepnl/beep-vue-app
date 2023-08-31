@@ -310,8 +310,10 @@ const translations = {
   Hour: 'Time',
   hour: 'time | timer',
   day: 'dag | dager',
-  week: 'Uke',
-  month: 'Måned',
+  Week: 'Uke',
+  Month: 'Måned',
+  week: 'week | weeks', // To be translated
+  month: 'month | months', // To be translated
   year: 'År',
 
   /* settings */
@@ -619,7 +621,10 @@ const translations = {
   Future_minutes: 'over the next [nr_of_minutes]', // To be translated
   Zero_period_minutes: 'over the last value only', // To be translated
   Not_relevant_for_period_zero:
-    "Not relevant when running over the last value only (see 'Period')", // To be translated
+    "Not relevant when running over the last value only (see 'Period')",
+  Period_future: 'in the future',
+  Period_past: 'in the past',
+  Minutes_calculator: 'Minute calculator', // To be translated
   min: 'minimum',
   max: 'maksimum',
   ave: 'gjennomsnitt',
