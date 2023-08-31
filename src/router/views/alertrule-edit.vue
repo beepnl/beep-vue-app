@@ -179,7 +179,7 @@
                 :placeholder="$t('Select') + '...'"
                 class="pt-0"
                 hide-details
-                @input="setAlertRuleEdited(true), checkCalculation($event)"
+                @input="setAlertRuleEdited(true)"
               ></v-select>
               <div
                 v-if="activeAlertRule.calculation_minutes === 0"
@@ -797,11 +797,6 @@ export default {
         return alertrule
       } else {
         return this.activeAlertRule
-      }
-    },
-    checkCalculation(calcMinValue) {
-      if (calcMinValue === 0) {
-        this.activeAlertRule.calculation = 'ave'
       }
     },
     confirmCreateAlertRule() {

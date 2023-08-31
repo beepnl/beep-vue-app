@@ -261,6 +261,10 @@ export default {
     notFinalFormula() {
       return this.index !== this.nrOfFormulas - 1
     },
+    periodMinutes() {
+      // make formula.period_minutes interpretable for watch hook
+      return this.formula.period_minutes
+    },
     thresholdValueIsNaN() {
       return isNaN(this.formula.threshold_value)
     },
@@ -269,6 +273,11 @@ export default {
     calculationMinutesValue() {
       if (!this.periodMinutesEdited) {
         this.formula.period_minutes = this.calculationMinutesValue // set period_minutes equal to calculation_minutes but ONLY if period_minutes has not yet been edited
+      }
+    },
+    periodMinutes() {
+      if (this.periodMinutes === 0) {
+        this.formula.calculation = 'ave'
       }
     },
   },
