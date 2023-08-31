@@ -2,8 +2,17 @@
   <Layout :title="$t('Whats_new')">
     <v-container>
       <div class="overline mb-1"
-        ><span class="lowercase">v</span>4.0.14 (31-08-2023) - Current
+        ><span class="lowercase">v</span>4.0.15 (31-08-2023) - Current
         version</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>Decision support</li>
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>4.0.14 (31-08-2023)</div
       >
       <div class="rounded-border mb-4">
         <ul>
