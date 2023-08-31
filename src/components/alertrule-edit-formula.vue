@@ -23,13 +23,17 @@
                 dark
                 color="accent"
               >
-                <v-icon dark>
+                <v-icon class="ml-n1" dark>
                   {{ getLetter(index) }}
                 </v-icon>
               </v-btn>
             </div>
           </v-col>
-          <v-col cols="10" sm="8" md="3">
+          <v-col
+            cols="10"
+            :sm="multipleFormulas ? 12 : 8"
+            :md="multipleFormulas ? 2 : 3"
+          >
             <div class="d-flex justify-space-between">
               <div
                 class="beep-label mb-0 mt-3px"
@@ -218,7 +222,13 @@
 
     <v-row v-if="notFinalFormula" class="text-center">
       <v-col cols="12" class="ml-1 mb-n1">
-        <v-btn-toggle v-model="formula.logical" mandatory borderless dense>
+        <v-btn-toggle
+          v-model="formula.logical"
+          mandatory
+          borderless
+          dense
+          @change="toggleAllLogicals($event)"
+        >
           <v-btn value="and">
             {{ $t('and') }}
           </v-btn>
@@ -342,6 +352,9 @@ export default {
     setPeriodMinutesEdited(bool) {
       this.periodMinutesEdited = bool // keep track if user has edited period_minutes, see calculation_minutes watcher
       this.setAlertRuleEdited(bool)
+    },
+    toggleAllLogicals(value) {
+      this.$emit('toggle-all-logicals', value)
     },
   },
 }

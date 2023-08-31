@@ -73,7 +73,7 @@
                   light
                   color="accent"
                 >
-                  <v-icon dark>
+                  <v-icon class="ml-n1" dark>
                     {{ getLetter(j) }}
                   </v-icon>
                 </v-btn>
@@ -195,13 +195,14 @@
               :key="'f' + i"
               :formula="formula"
               :index="i"
-              :nr-of-formulas="activeAlertRule.formulas.length"
+              :nr-of-formulas="nrOfFormulas"
               :calculation-minutes-value="activeAlertRule.calculation_minutes"
               @delete-formula="deleteFormula($event)"
+              @toggle-all-logicals="toggleAllLogicals($event)"
             />
           </ZoomCenterTransition>
 
-          <v-row v-if="!multipleFormulas">
+          <v-row v-if="!activeAlertRule.formulas.length <= 6">
             <v-col>
               <v-btn
                 class="float-right"
@@ -502,6 +503,9 @@ export default {
         this.activeAlertRule.formulas &&
         this.activeAlertRule.formulas.length > 1
       )
+    },
+    nrOfFormulas() {
+      return this.activeAlertRule.formulas.length
     },
     numberOfIncludedDevices() {
       return (
@@ -1047,6 +1051,13 @@ export default {
       }
       this.activeAlertRule = alertRule
       this.setAlertRuleEdited(false)
+    },
+    toggleAllLogicals(bool) {
+      this.activeAlertRule.formulas.map((formula, index) => {
+        if (index < this.nrOfFormulas - 1) {
+          formula.logical = bool
+        }
+      })
     },
     validateText(value, property, maxLength) {
       if (value !== null && value.length > maxLength + 1) {
