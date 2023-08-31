@@ -950,7 +950,9 @@ export default {
 
       if (this.hasPeriod(formula)) {
         replaceWith.period_minutes = this.humanizeMinutes(
-          formula.period_minutes
+          formula.period_minutes,
+          false,
+          formula.future
         )
       }
 
@@ -976,7 +978,9 @@ export default {
     },
     hasPeriod(formula) {
       return (
-        formula.period_minutes !== undefined && formula.period_minutes !== null
+        formula.period_minutes !== undefined &&
+        formula.period_minutes !== null &&
+        formula.period_minutes !== 0
       )
     },
     measurement(formula) {

@@ -634,7 +634,7 @@ const translations = {
   alertrule_main_sentence_2:
     '[calculation] [measurement_quantity] [comparison] [comparator] [threshold_value][measurement_unit]',
   alertrule_main_sentence_2_with_period:
-    '[calculation] [measurement_quantity] [comparison] [period] [comparator] [threshold_value][measurement_unit]',
+    '[calculation] [measurement_quantity] [comparison] [period_minutes] [comparator] [threshold_value][measurement_unit]',
   alertrule_active_sentence:
     'Deze berekening wordt [calculation_minutes] uitgevoerd',
   alertrule_active_no_email_sentence:
