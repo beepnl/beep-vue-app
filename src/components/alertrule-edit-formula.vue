@@ -78,25 +78,25 @@
               :placeholder="`${$t('Select')} ${$t('calculation')} ...`"
               :label="$t('Calculation')"
               :rules="requiredRule"
-              :disabled="calculationMinutesValue === 0"
+              :disabled="formula.period_minutes === 0"
               @input="setAlertRuleEdited(true)"
             ></v-select>
             <div
-              v-if="calculationMinutesValue === 0"
+              v-if="formula.period_minutes === 0"
               class="beep-label mt-n4 mb-3"
-              v-text="$t('not_relevant_for_immediate_calculation')"
+              v-text="$t('Not_relevant_for_period_zero')"
             ></div>
-            <div
+            <!-- <div
               v-else
               class="beep-label mt-n4 mb-3"
               v-text="
-                momentDurationInHours(
-                  calculationMinutesValue,
+                momentHumanizeDuration(
+                  formula.period_minutes,
                   'minutes',
                   calcPrefix
                 )
               "
-            ></div>
+            ></div> -->
           </v-col>
 
           <v-col cols="6" sm="4" md="2">
@@ -121,17 +121,18 @@
             <div class="mt-3px">
               <div
                 class="beep-label"
-                v-text="$t('period') + ' (' + $tc('day', 2) + ')'"
+                v-text="$t('period') + ' (' + $tc('minute', 2) + ')'"
               ></div>
               <el-input-number
-                v-model="formula.period"
+                v-model="formula.period_minutes"
                 :step="1"
+                :min="0"
                 size="small"
-                @change="setAlertRuleEdited(true)"
-                @input.native="setAlertRuleEdited(true)"
+                @change="setPeriodMinutesEdited(true)"
+                @input.native="setPeriodMinutesEdited(true)"
               ></el-input-number>
               <div class="beep-label mt-1 mb-3"
-                >{{ humanizeDays(formula.period, true) }}
+                >{{ humanizeMinutes(formula.period_minutes, true) }}
               </div>
             </div>
           </v-col>
@@ -229,6 +230,7 @@ export default {
   },
   data: () => ({
     showAllMeasurements: false,
+    periodMinutesEdited: false,
   }),
   computed: {
     ...mapGetters('taxonomy', ['alertRulesList']),
@@ -263,6 +265,13 @@ export default {
       return isNaN(this.formula.threshold_value)
     },
   },
+  watch: {
+    calculationMinutesValue() {
+      if (!this.periodMinutesEdited) {
+        this.formula.period_minutes = this.calculationMinutesValue // set period_minutes equal to calculation_minutes but ONLY if period_minutes has not yet been edited
+      }
+    },
+  },
   methods: {
     deleteFormula(index) {
       this.$emit('delete-formula', index)
@@ -272,6 +281,10 @@ export default {
     },
     getText(item) {
       return item.label + ' (' + item.abbreviation + ')'
+    },
+    setPeriodMinutesEdited(bool) {
+      this.periodMinutesEdited = bool // keep track if user has edited period_minutes, see calculation_minutes watcher
+      this.setAlertRuleEdited(bool)
     },
   },
 }

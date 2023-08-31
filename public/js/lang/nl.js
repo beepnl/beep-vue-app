@@ -649,8 +649,11 @@ const translations = {
     'Deze notificatie is uitgeschakeld tijdens de uren: [exclude_hours]. ',
   alertrule_exclude_hives_sentence:
     'Deze notificatie is uitgeschakeld voor deze bijenkasten: [exclude_hive_ids].',
-  Past_days: 'over de afgelopen [nr_of_days]',
-  Future_days: 'over de aankomende [nr_of_days]',
+  Past_minutes: 'over de afgelopen [nr_of_minutes]',
+  Future_minutes: 'over de aankomende [nr_of_minutes]',
+  Zero_period_minutes: 'alleen over de laatste waarde',
+  Not_relevant_for_period_zero:
+    "Niet relevant bij uitvoeren over alleen de laatste waarde (zie 'Periode')",
   min: 'minimum',
   max: 'maximum',
   ave: 'gemiddelde',
@@ -790,7 +793,6 @@ const translations = {
     'Let op: het datatransmissie interval van je meetsysteem is | Let op: het datatransmissie interval van je meetsystemen is',
   upload_interval_warning_interval_range:
     'Let op: de datatransmissie intervallen van je meetsystemen variëren tussen de ',
-  not_relevant_for_immediate_calculation: 'Niet relevant bij direct uitvoeren',
   Increase: 'Stijging',
   Decrease: 'Daling',
   Every_hour: 'Elk uur',

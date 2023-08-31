@@ -369,7 +369,7 @@ export default {
         comparison: 'val',
         threshold_value: 0,
         logical: null,
-        period: -7,
+        period_minutes: 0,
       },
     }
   },
@@ -953,7 +953,9 @@ export default {
       }
 
       if (this.hasPeriod(formula)) {
-        replaceWith.period = this.humanizeDays(formula.period)
+        replaceWith.period_minutes = this.humanizeMinutes(
+          formula.period_minutes
+        )
       }
 
       Object.entries(replaceWith).map(([key, value]) => {
@@ -977,7 +979,9 @@ export default {
       }
     },
     hasPeriod(formula) {
-      return formula.period !== undefined && formula.period !== null
+      return (
+        formula.period_minutes !== undefined && formula.period_minutes !== null
+      )
     },
     measurement(formula) {
       return this.allSensorMeasurements.filter(
