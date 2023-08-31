@@ -621,6 +621,7 @@ const translations = {
   sensordef_info:
     "Eine Sensordefinition dient dazu, einen Sensorwert aus einem eingehenden 'rohen' Sensorwert in einen Wert gemäß einer physikalischen Größe und Einheit umzuwandeln (z.B. w_v = 1098273 => Gewicht_kg = 62.400 kg) oder einen Sensor zu kalibrieren (z.B. t_0 = 15,3 ° C => t_0 = 15,8 ° C). Dies kann durch die Einstellung eines 'Offsets' und eines 'Multiplikators' erfolgen. Der Ein- und Ausgangswert bleibt gleich, wenn Offset '0' und Multiplikator '1' eingestellt ist. Die BEEP-Base-App (aus dem App Store) liefert Ihnen bei der Ersteinrichtung Ihrer BEEP-Base die richtigen Sensor-Definitionen.",
   or: 'oder',
+  and: 'und',
   select_all_hives: 'Selektiere alle Beuten',
   select_all_editable_hives: 'Alle bearbeitbaren Beuten auswählen',
   Alert: 'Alarm | Alarme',
@@ -699,8 +700,14 @@ const translations = {
   Home: 'Home',
   Select_default_alertrule: 'Standard-Alarmregel kopieren',
   /* below, please keep all terms between [] in english: */
-  alertrule_main_sentence:
-    'Ich möchte eine Benachrichtigung erhalten, wenn die [calculation] [comparison] der [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Diese Berechnung wird [calculation_minutes] ausgeführt',
+  alertrule_main_sentence_1:
+    'Ich möchte eine Benachrichtigung erhalten, wenn die ',
+  alertrule_main_sentence_2:
+    '[calculation] [comparison] der [measurement_quantity] [comparator] [threshold_value][measurement_unit]',
+  alertrule_main_sentence_2_with_period:
+    '[calculation] [comparison] der [measurement_quantity] [period_minutes] [comparator] [threshold_value][measurement_unit]',
+  alertrule_active_sentence:
+    'Diese Berechnung wird [calculation_minutes] ausgeführt',
   alertrule_occurences_direct_sentence:
     ', und ich möchte die Benachrichtigung direkt erhalten. ',
   alertrule_occurences_indirect_sentence:
@@ -711,6 +718,12 @@ const translations = {
     'Dieser Alarm wird während der folgenden Stunden deaktiviert: [exclude_hours]. ',
   alertrule_exclude_hives_sentence:
     'Dieser Alarm wird für die folgenden Beuten deaktiviert: [exclude_hive_ids].',
+  Add_formula: 'Add formula', // To be translated
+  Past_minutes: 'over the past [nr_of_minutes]', // To be translated
+  Future_minutes: 'over the next [nr_of_minutes]', // To be translated
+  Zero_period_minutes: 'over the last value only', // To be translated
+  Not_relevant_for_period_zero:
+    "Not relevant when running over the last value only (see 'Period')", // To be translated
   min: 'Minimum',
   max: 'Maximum',
   ave: 'Durschnitt',
@@ -856,8 +869,6 @@ const translations = {
     'Hinweis: das Datenübertragungsintervall Ihres Geräts ist | Hinweis: das Datenübertragungsintervall Ihrer Geräte ist',
   upload_interval_warning_interval_range:
     'Hinweis: Die Datenübertragungsintervalle Ihrer Geräte variieren zwischen ',
-  not_relevant_for_immediate_calculation:
-    'Für die unmittelbare Berechnung nicht relevant',
   Increase: 'Erhöhung',
   Decrease: 'Rückgang',
   Every_hour: 'Jede Stunde',

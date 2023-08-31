@@ -610,6 +610,7 @@ const translations = {
   sensordef_info:
     'O definiție a senzorului este destinată să convertească o valoare a senzorului dintr-o valoare primară a senzorului „brut” într-o valoare în funcție de o cantitate fizică și o unitate (e.x. w_v = 1098273 => weight_kg = 62,400 kg) sau o calibrare a senzorului (e.x. t_0 = 15.3 ° C => t_0 = 15.8 ° C). Acest lucru se poate face prin setarea unui „offset” și a unui „multiplicator”. Valoarea de intrare și ieșire rămâne aceeași dacă este setat decalajul „0” și multiplicatorul „1”. Aplicația  BEEP base (din App Store) vă va oferi definițiile corecte ale senzorilor la configurarea inițială a bazei dvs. BEEP. ',
   or: 'sau',
+  and: 'și',
   select_all_hives: 'Selectați toți stupii',
   select_all_editable_hives: 'Selectați toate stupii personalizabili',
   Alert: 'Alertă | Alerte',
@@ -686,8 +687,13 @@ const translations = {
   Home: 'Acasă',
   Select_default_alertrule: 'Copiați regula de alertă implicită',
   /* below, please keep all terms between [] in english: */
-  alertrule_main_sentence:
-    'Aș dori să primesc o alertă dacă [calculation] [comparison] din [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Acest calcul va fi executat [calculation_minutes]',
+  alertrule_main_sentence_1: 'Aș dori să primesc o alertă dacă ',
+  alertrule_main_sentence_2:
+    '[calculation] [comparison] din [measurement_quantity] [comparator] [threshold_value][measurement_unit]',
+  alertrule_main_sentence_2_with_period:
+    '[calculation] [comparison] din [measurement_quantity] [period_minutes] [comparator] [threshold_value][measurement_unit]',
+  alertrule_active_sentence:
+    'Acest calcul va fi executat [calculation_minutes]',
   alertrule_occurences_direct_sentence:
     ', și aș dori să primesc alerta direct. ',
   alertrule_occurences_indirect_sentence:
@@ -698,6 +704,12 @@ const translations = {
     'Această alertă va fi dezactivată pentru următoarele ore: [exclude_hours]. ',
   alertrule_exclude_hives_sentence:
     'Această alertă va fi dezactivată pentru următorii stupi: [exclude_hive_ids].',
+  Add_formula: 'Add formula', // To be translated
+  Past_minutes: 'over the past [nr_of_minutes]', // To be translated
+  Future_minutes: 'over the next [nr_of_minutes]', // To be translated
+  Zero_period_minutes: 'over the last value only', // To be translated
+  Not_relevant_for_period_zero:
+    "Not relevant when running over the last value only (see 'Period')", // To be translated
   min: 'minim',
   max: 'maxim',
   ave: 'medie',
@@ -840,8 +852,6 @@ const translations = {
     'N.B. intervalul de transmitere a datelor al dispozitivului dvs. este | NB: intervalul de transmitere a datelor al dispozitivelor dvs. este ', // context: f.e.: ... 15 minutes
   upload_interval_warning_interval_range:
     'N.B. intervalele de transmitere a datelor ale dispozitivelor dvs. variază între ',
-  not_relevant_for_immediate_calculation:
-    'Nu este relevant pentru calcularea imediată ',
   Increase: 'Creștere',
   Decrease: 'Scădere',
   Every_hour: 'Fiecare oră',

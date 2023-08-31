@@ -529,6 +529,7 @@ const translations = {
   sensordef_info:
     "Definice senzoru je určena k převodu hodnoty senzoru z příchozí „surové“ hodnoty senzoru na hodnotu podle fyzikální veličiny a jednotky (např. w_v = 1098273 => hmotnost_kg = 62 400 kg) nebo ke kalibraci senzoru (např. t_0 = 15,3 °C => t_0 = 15,8 °C). To lze provést nastavením „offsetu“ a „multiplikátoru“. Vstupní a výstupní hodnota zůstává stejná, pokud je nastaven offset '0' a multiplikátor '1'. Základní aplikace BEEP (z App Store) vám poskytne správné definice senzorů při počátečním nastavení vaší základny BEEP.",
   or: 'nebo',
+  and: 'a',
   select_all_hives: 'Vybrat všechny úly',
   select_all_editable_hives: 'Vybrat všechny upravitelné úly',
   Alert: 'Upozornění | Upozornění',
@@ -594,8 +595,13 @@ const translations = {
   Home: 'Domů',
   Select_default_alertrule: 'Kopírovat výchozí pravidlo výstrahy',
   /* below, please keep all terms between [] as is: */
-  alertrule_main_sentence:
-    'Chtěl bych obdržet upozornění, pokud [calculation] [comparison] z [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Tento výpočet bude proveden [calculation_minutes]',
+  alertrule_main_sentence_1: 'Chtěl bych obdržet upozornění, pokud   ',
+  alertrule_main_sentence_2:
+    '[calculation] [comparison] z [measurement_quantity] [comparator] [threshold_value][measurement_unit]',
+  alertrule_main_sentence_2_with_period:
+    '[calculation] [comparison] z [measurement_quantity] [period_minutes] [comparator] [threshold_value][measurement_unit]',
+  alertrule_active_sentence:
+    'Tento výpočet bude proveden [calculation_minutes]',
   alertrule_occurences_direct_sentence:
     ', a rád bych upozornění dostával přímo. ',
   alertrule_exclude_months_sentence:
@@ -604,6 +610,12 @@ const translations = {
     'Toto upozornění bude deaktivováno během následujících hodin: [exclude_hours]. ',
   alertrule_exclude_hives_sentence:
     'Toto upozornění bude deaktivováno pro následující úly: [exclude_hive_ids].',
+  Add_formula: 'Add formula', // To be translated
+  Past_minutes: 'over the past [nr_of_minutes]', // To be translated
+  Future_minutes: 'over the next [nr_of_minutes]', // To be translated
+  Zero_period_minutes: 'over the last value only', // To be translated
+  Not_relevant_for_period_zero:
+    "Not relevant when running over the last value only (see 'Period')", // To be translated
   min: 'minimum',
   max: 'maximum',
   ave: 'průměr',
@@ -748,8 +760,6 @@ const translations = {
     'N.B. interval přenosu dat vašeho zařízení je | N.B. interval přenosu dat vašich zařízení je', // f.e.: ... 15 minutes
   upload_interval_warning_interval_range:
     'N.B. intervaly přenosu dat vašich zařízení se liší ', // f.e. ... 5 - 15 minutes
-  not_relevant_for_immediate_calculation:
-    'Není relevantní pro okamžitý výpočet',
   Increase: 'Zvýšit',
   Decrease: 'Snížit',
   Every_hour: 'Každou hodinu',

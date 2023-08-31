@@ -632,6 +632,7 @@ const translations = {
   sensordef_info:
     "Uma definição de sensor destina-se a converter um valor do sensor, a partir de um valor de entrada 'em bruto' no sensor, num valor de acordo com uma quantidade física e unidade (por exemplo, w_v = 1098273 => peso_kg = 62.400 kg) ou para calibrar um sensor (por exemplo, t_0 = 15,3 ° C => t_0 = 15,8 ° C). Isto pode ser feito definindo um 'alinhamento' e um 'multiplicador'. Os valores de entrada e saída permanecem os mesmos se o alinhamento '0' e o multiplicador '1' forem definidos. A aplicação base BEEP (da App Store) fornecerá as definições de sensor corretas na configuração inicial da sua base BEEP.",
   or: 'ou',
+  and: 'e',
   select_all_hives: 'Selecionar todas as colmeias',
   select_all_editable_hives: 'Selecione todas as colmeias personalizáveis',
   Alert: 'Alerta | Alertas',
@@ -709,8 +710,13 @@ const translations = {
   Home: 'Início',
   Select_default_alertrule: 'Copiar regra de alerta padrão',
   /* below, please keep all terms between [] in english: */
-  alertrule_main_sentence:
-    'Desejo receber um alerta se [calculation] [comparison] de [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Este cálculo será executado [calculation_minutes]',
+  alertrule_main_sentence_1: 'Desejo receber um alerta se ',
+  alertrule_main_sentence_2:
+    '[calculation] [comparison] de [measurement_quantity] [comparator] [threshold_value][measurement_unit]',
+  alertrule_main_sentence_2_with_period:
+    '[calculation] [comparison] de [measurement_quantity]  [period_minutes] [comparator] [threshold_value][measurement_unit]',
+  alertrule_active_sentence:
+    'Este cálculo será executado [calculation_minutes]',
   alertrule_occurences_direct_sentence:
     ', e gostaria de receber o alerta diretamente',
   alertrule_occurences_indirect_sentence:
@@ -721,6 +727,12 @@ const translations = {
     'Este alerta será desativado durante as seguintes horas: [exclude_hours].',
   alertrule_exclude_hives_sentence:
     'Este alerta será desativado para as seguintes colmeias: [exclude_hive_ids].',
+  Add_formula: 'Add formula', // To be translated
+  Past_minutes: 'over the past [nr_of_minutes]', // To be translated
+  Future_minutes: 'over the next [nr_of_minutes]', // To be translated
+  Zero_period_minutes: 'over the last value only', // To be translated
+  Not_relevant_for_period_zero:
+    "Not relevant when running over the last value only (see 'Period')", // To be translated
   min: 'mínimo',
   max: 'máximo',
   ave: 'média',
@@ -865,8 +877,6 @@ const translations = {
     'Nota: o intervalo de transmissão de dados do seu dispositivo é | Nota: o intervalo de transmissão de dados dos seus dispositivos é', // f.e.: ... 15 minutes
   upload_interval_warning_interval_range:
     'Nota: os intervalos de transmissão de dados dos seus dispositivos variam entre ', // f.e. ... 5 - 15 minutes
-  not_relevant_for_immediate_calculation:
-    'Não é relevante para cálculo imediato',
   Increase: 'Aumento',
   Decrease: 'Diminuição',
   Every_hour: 'A cada hora',

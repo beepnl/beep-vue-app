@@ -596,6 +596,7 @@ const translations = {
     'Ένα μήνυμα με σύνδεσμο επαλήθευσης έχει σταλεί στη νέα σας διεύθυνση email. Κάντε κλικ στον σύνδεσμο στο email για να επιβεβαιώσετε τη νέα σας διεύθυνση email και να συνδεθείτε.',
   sensordef_info:
     'Ένας ορισμός αισθητήρα προορίζεται να μετατρέψει μια τιμή αισθητήρα από μια εισερχόμενη «ακατέργαστη» τιμή αισθητήρα σε μια τιμή σύμφωνα με μια φυσική ποσότητα και μονάδα (π.χ. w_v = 1098273 => βάρος_kg = 62.400 kg) ή να βαθμονομήσει έναν αισθητήρα (π.χ. t_0 = 15,3 ° C => t_0 = 15,8 ° C). Αυτό μπορεί να γίνει ορίζοντας ένα «offset» και έναν «πολλαπλασιαστή». Η τιμή εισόδου και εξόδου παραμένει η ίδια εάν έχει οριστεί η μετατόπιση «0» και ο πολλαπλασιαστής «1». Η εφαρμογή βάσης BEEP (από το App Store) θα σας παρέχει τους σωστούς ορισμούς αισθητήρων κατά την αρχική ρύθμιση της βάσης BEEP σας.',
+  and: 'και',
   or: 'ή',
   select_all_hives: 'Επιλέξτε όλες τις κυψέλες',
   select_all_editable_hives: 'Επιλέξτε όλες τις επεξεργάσιμες κυψέλες',
@@ -674,8 +675,13 @@ const translations = {
   Home: 'Αρχική',
   Select_default_alertrule: 'Αντιγραφή προεπιλεγμένου κανόνα ειδοποίησης',
   /* below, please keep all terms between [] as is: */
-  alertrule_main_sentence:
-    'Θα ήθελα να λαμβάνω ειδοποίηση εάν το [calculation] [comparison] από [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Αυτός ο υπολογισμός θα εκτελεστεί [calculation_minutes]',
+  alertrule_main_sentence_1: 'Θα ήθελα να λαμβάνω ειδοποίηση εάν το ',
+  alertrule_main_sentence_2:
+    '[calculation] [comparison] από [measurement_quantity] [comparator] [threshold_value][measurement_unit]',
+  alertrule_main_sentence_2_with_period:
+    '[calculation] [comparison] από [measurement_quantity] [period_minutes] [comparator] [threshold_value][measurement_unit]',
+  alertrule_active_sentence:
+    'Αυτός ο υπολογισμός θα εκτελεστεί [calculation_minutes]',
   alertrule_occurences_direct_sentence:
     ', και θα ήθελα να λαμβάνω απευθείας την ειδοποίηση. ',
   alertrule_occurences_indirect_sentence:
@@ -686,6 +692,12 @@ const translations = {
     'Αυτή η ειδοποίηση θα απενεργοποιηθεί τις επόμενες ώρες: [exclude_hours]. ',
   alertrule_exclude_hives_sentence:
     'Αυτή η ειδοποίηση θα απενεργοποιηθεί για τις ακόλουθες κυψέλες: [exclude_hive_ids].',
+  Add_formula: 'Add formula', // To be translated
+  Past_minutes: 'over the past [nr_of_minutes]', // To be translated
+  Future_minutes: 'over the next [nr_of_minutes]', // To be translated
+  Zero_period_minutes: 'over the last value only', // To be translated
+  Not_relevant_for_period_zero:
+    "Not relevant when running over the last value only (see 'Period')", // To be translated
   min: 'ελάχιστο',
   max: 'μέγιστο',
   ave: 'μέση τιμή',
@@ -835,7 +847,6 @@ const translations = {
     'Σημείωση: το διάστημα μετάδοσης δεδομένων της συσκευής σας είναι | Σημείωση: το διάστημα μετάδοσης δεδομένων των συσκευών σας είναι', // f.e.: ... 15 minutes
   upload_interval_warning_interval_range:
     'Σημείωση: τα διαστήματα μετάδοσης δεδομένων των συσκευών σας ποικίλλουν μεταξύ ', // f.e. ... 5 - 15 minutes
-  not_relevant_for_immediate_calculation: 'Δεν ισχύει για άμεσο υπολογισμό',
   Increase: 'Αύξηση',
   Decrease: 'Μείωση',
   Every_hour: 'Κάθε ώρα',

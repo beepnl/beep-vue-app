@@ -590,6 +590,7 @@ const translations = {
   sensordef_info:
     "A sensor definition is intended to convert a sensor value from an incoming 'raw' sensor value into a value according to a physical quantity and unit (e.g. w_v = 1098273 => weight_kg = 62,400 kg) or to calibrate a sensor (e.g. t_0 = 15.3 ° C => t_0 = 15.8 ° C). This can be done by setting an 'offset' and a 'multiplier'. The input and output value remains the same if offset '0' and multiplier '1' is set. The BEEP base app (from the App Store) will provide you with the right sensor definitions at the initial setup of your BEEP base.",
   or: 'or',
+  and: 'and',
   select_all_hives: 'Select all hives',
   select_all_editable_hives: 'Select all editable hives',
   Alert: 'Alert | Alerts',
@@ -667,8 +668,13 @@ const translations = {
   Home: 'Home',
   Select_default_alertrule: 'Copy default alert rule',
   /* below, please keep all terms between [] as is: */
-  alertrule_main_sentence:
-    'I would like to receive an alert if the [calculation] [comparison] of the [measurement_quantity] [comparator] [threshold_value][measurement_unit]. This calculation will be executed [calculation_minutes]',
+  alertrule_main_sentence_1: 'I would like to receive an alert if the ',
+  alertrule_main_sentence_2:
+    '[calculation] [comparison] of the [measurement_quantity] [comparator] [threshold_value][measurement_unit]',
+  alertrule_main_sentence_2_with_period:
+    '[calculation] [comparison] of the [measurement_quantity] [period_minutes] [comparator] [threshold_value][measurement_unit]',
+  alertrule_active_sentence:
+    'This calculation will be executed [calculation_minutes]',
   alertrule_occurences_direct_sentence:
     ', and I would like to receive the alert directly. ',
   alertrule_occurences_indirect_sentence:
@@ -679,6 +685,12 @@ const translations = {
     'This alert will be deactivated during the following hours: [exclude_hours]. ',
   alertrule_exclude_hives_sentence:
     'This alert will be deactivated for the following hives: [exclude_hive_ids].',
+  Add_formula: 'Add formula',
+  Past_minutes: 'over the past [nr_of_minutes]',
+  Future_minutes: 'over the next [nr_of_minutes]',
+  Zero_period_minutes: 'over the last value only',
+  Not_relevant_for_period_zero:
+    "Not relevant when running over the last value only (see 'Period')",
   min: 'minimum',
   max: 'maximum',
   ave: 'average',
@@ -820,8 +832,6 @@ const translations = {
     'N.B. the data transmission interval of your device is | N.B. the data transmission interval of your devices is', // f.e.: ... 15 minutes
   upload_interval_warning_interval_range:
     'N.B. the data transmission intervals of your devices vary between ', // f.e. ... 5 - 15 minutes
-  not_relevant_for_immediate_calculation:
-    'Not relevant for immediate calculation',
   Increase: 'Increase',
   Decrease: 'Decrease',
   Every_hour: 'Every hour',

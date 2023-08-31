@@ -705,6 +705,7 @@ const translations = {
   sensordef_info:
     'Une définition de capteur permet de convertir une valeur brute en valeur physique (ex. w_v = 1098273 => weight_kg = 62,400 kg) ou pour calibrer un capteur (ex. t_0 = 15.3 ° C => t_0 = 15.8 ° C). Ceci peut être accompli grace à un "décalage" et un "multiplicateur". La valeur brute reste inchangée si le décalage est "0" et le multiplicateur "1". L\'application mobile BEEP vous donnera les définitions des capteurs au moment de la configuration initiale.',
   or: 'ou',
+  and: 'et',
   select_all_hives: 'Sélectionner toutes les ruches',
   select_all_editable_hives: 'Selectionner toutes les ruches modifiables',
   Alert: 'Alerte | Alertes',
@@ -788,8 +789,12 @@ const translations = {
   Select_default_alertrule: "Copier la règle d'alerte par défaut",
   /* below, please keep all terms between [] in english: */
   /* Cyrille - 31/05 : This translation needs more context */
-  alertrule_main_sentence:
-    'Je veux recevoir une alerte si la [calculation] [comparison] de [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Ce calcul sera éxécuté [calculation_minutes]',
+  alertrule_main_sentence_1: 'Je veux recevoir une alerte si la ',
+  alertrule_main_sentence_2:
+    '[calculation] [comparison] de [measurement_quantity] [comparator] [threshold_value][measurement_unit]',
+  alertrule_main_sentence_2_with_period:
+    '[calculation] [comparison] de [measurement_quantity] [period_minutes] [comparator] [threshold_value][measurement_unit]',
+  alertrule_active_sentence: 'Ce calcul sera éxécuté [calculation_minutes]',
   alertrule_occurences_direct_sentence:
     ', et je veux recevoir ces alertes directement. ',
   alertrule_occurences_indirect_sentence:
@@ -801,6 +806,12 @@ const translations = {
     'Cette alerte sera désactivée durant les heures suivantes: [exclude_hours]. ',
   alertrule_exclude_hives_sentence:
     'Cette alerte sera désactivée pour les ruches suivantes: [exclude_hive_ids].',
+  Add_formula: 'Add formula', // To be translated
+  Past_minutes: 'over the past [nr_of_minutes]', // To be translated
+  Future_minutes: 'over the next [nr_of_minutes]', // To be translated
+  Zero_period_minutes: 'over the last value only', // To be translated
+  Not_relevant_for_period_zero:
+    "Not relevant when running over the last value only (see 'Period')", // To be translated
   min: 'minimum',
   max: 'maximum',
   ave: 'moyenne',
@@ -947,7 +958,6 @@ const translations = {
     "N.B. L'intervalle de transmission de données est de | N.B. L'intervalle de transmission de votre appareil est de",
   upload_interval_warning_interval_range:
     "N.B. L'intervalle de transmission de vos appareils varie entre ",
-  not_relevant_for_immediate_calculation: 'Non pertinent pour calcul immédiat',
   Increase: 'Augmentation',
   Decrease: 'Diminution',
   Every_hour: 'Toutes les heures',

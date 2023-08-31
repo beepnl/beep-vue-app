@@ -590,6 +590,7 @@ const translations = {
   sensordef_info:
     "En givar definition har som mål att konvertera inkommande 'råa' givarvärde till ett värde och en enhet eller att kalibrera givaren. Detta kan göras genom att ställa in en òffset` och en `multiplier`. Indata och utdata förblir desamma om offset är 0 och multiplier är 1. BEEP base appen kommer att förse dig med korrekta givardefinitioner när du ställer in den för första gången.",
   or: 'eller',
+  and: 'och',
   select_all_hives: 'Välj samtliga kupor',
   select_all_editable_hives: 'Välj samtliga redigerbara kupor',
   Alert: 'Varning | Varningar',
@@ -666,19 +667,31 @@ const translations = {
   copy: 'Kopiera',
   Home: 'Hem',
   Select_default_alertrule: 'Kopiera förvald varningsregel',
-  /* below, please keep all terms between [] as is: */
-  alertrule_main_sentence:
-    'Jag vill ha en varning om (uträkning) (jämförelse) av  (mätningen_mängden) (komparatorn) (gräns_värde)(mätning_enhet). Denna beräkning kommer att genomföras (beräkning_minuter)',
+  /* !!!!!!!! below, please keep all terms between [] as is !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! do not translate any terms between square brackers [] and keep them as they are !!!!!!!!!: */
+  alertrule_main_sentence_1: 'Jag vill ha en varning om ',
+  alertrule_main_sentence_2:
+    '[calculation] [comparison] av [measurement_quantity] [comparator] [threshold_value][measurement_unit]',
+  alertrule_main_sentence_2_with_period:
+    '[calculation] [comparison] av [measurement_quantity] [period_minutes] [comparator] [threshold_value][measurement_unit]',
+  alertrule_active_sentence:
+    'Denna beräkning kommer att genomföras [calculation_minutes]',
   alertrule_occurences_direct_sentence:
     ', och jag vill ha varningen så snart det inträffar. ',
   alertrule_occurences_indirect_sentence:
-    ', men jag vill ha varningen endast om det inträffar (återkommande) gånger. ',
+    ', men jag vill ha varningen endast om det inträffar [alert_on_occurences] gånger. ',
   alertrule_exclude_months_sentence:
-    'Denna varning deaktiveras under följande månader (exkludera månader). ',
+    'Denna varning deaktiveras under följande månader [exclude_months]. ',
   alertrule_exclude_hours_sentence:
-    'Denna varning kommer att deaktiveras under följande timmar (exkludera timmar). ',
+    'Denna varning kommer att deaktiveras under följande timmar [exclude_hours]. ',
   alertrule_exclude_hives_sentence:
-    'Denna varning deaktiveras för följande kupor (uteslut kup idn).',
+    'Denna varning deaktiveras för följande kupor [exclude_hive_ids].',
+  /* !!!!!!!! below, please keep all terms between [] as is !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! do not translate any terms between square brackers [] and keep them as they are !!!!!!!!!: */
+  Add_formula: 'Add formula', // To be translated
+  Past_minutes: 'over the past [nr_of_minutes]', // To be translated
+  Future_minutes: 'over the next [nr_of_minutes]', // To be translated
+  Zero_period_minutes: 'over the last value only', // To be translated
+  Not_relevant_for_period_zero:
+    "Not relevant when running over the last value only (see 'Period')", // To be translated
   min: 'minimum',
   max: 'maximum',
   ave: 'medeltal',
@@ -818,8 +831,6 @@ const translations = {
     'N.B.: dataöverföringsintervallet för din enhet är | N.B.: datalöverföringsintervallet för dina enheter är', // f.e.: ... 15 minutes
   upload_interval_warning_interval_range:
     'N.B.: dataöverföringsintervallen för dina enheter varierar mellan ', // f.e. ... 5 - 15 minutes
-  not_relevant_for_immediate_calculation:
-    'Inte relevant för omgående beräkning',
   Increase: 'Öka',
   Decrease: 'Minska',
   Every_hour: 'Varje timma',
@@ -1120,11 +1131,11 @@ const translations = {
   compare_no_chart_data: 'No compare data for the selected period',
   multiple_hives_no_chart_data:
     'No data for the selected hives for the selected period',
-  /* below, please keep [hivename] as is, it will be replaced by the name of the hive you selected in the Data tab */
+  /* !!!!!!! below, please keep [hivename] as is !!!!!!! it will be replaced by the name of the hive you selected in the Data tab */
   compare_chart_exp:
     'Please note: [hivename] will not be included in the mean weight calculation. ',
 
-  /* below, please keep [pagenr] as is, it will be replaced by the pagenumber to be uploaded */
+  /* !!!!!!! below, please keep [pagenr] as is !!!!!!!! it will be replaced by the pagenumber to be uploaded */
   Upload_pagenr: 'Upload page [pagenr] here',
   Datetime_of_inspection: 'Date & time of inspection',
   remind_datetime: 'Notification date & time',

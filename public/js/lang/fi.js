@@ -638,6 +638,7 @@ const translations = {
   sensordef_info:
     "Anturimäärityksen tarkoituksena on muuntaa anturin arvo saapuvasta \"raaka\" anturiarvosta arvoksi fyysisen määrän ja yksikön mukaan (esim. W_v = 1098273 => paino_kg = 62400 kg) tai kalibroida anturi (esim. T_0 = 15,3 ° C => t_0 = 15,8 ° C). Tämä voidaan tehdä asettamalla 'offset' ja 'kerroin'. Tulo- ja lähtöarvo pysyvät samana, jos offset '0' ja kerroin '1' on asetettu. BEEP-perussovellus (App Storesta) tarjoaa oikeat anturimääritykset BEEP-tukiaseman alkuasetuksissa.",
   or: 'tai',
+  and: 'ja',
   select_all_hives: 'Valitse kaikki pesät',
   select_all_editable_hives: 'Valitse kaikki muokattavat pesät',
   Alert: 'Hälytys | Hälytykset',
@@ -715,8 +716,12 @@ const translations = {
   Home: 'Koti',
   Select_default_alertrule: 'Kopioi oletushälytyssääntö',
   /* below, please keep all terms between [] in english: */
-  alertrule_main_sentence:
-    'Haluaisin saada ilmoituksen, jos [calculation] [comparison] koskien [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Tämä laskenta suoritetaan [calculation_minutes]',
+  alertrule_main_sentence_1: 'Haluaisin saada ilmoituksen, jos ',
+  alertrule_main_sentence_2:
+    '[calculation] [comparison] koskien [measurement_quantity] [comparator] [threshold_value][measurement_unit]',
+  alertrule_main_sentence_2_with_period:
+    '[calculation] [comparison] koskien [measurement_quantity] [period_minutes] [comparator] [threshold_value][measurement_unit]',
+  alertrule_active_sentence: 'Tämä laskenta suoritetaan [calculation_minutes]',
   alertrule_occurences_direct_sentence:
     ', ja haluaisin saada ilmoituksen suoraan. ',
   alertrule_occurences_indirect_sentence:
@@ -727,6 +732,12 @@ const translations = {
     'Tämä hälytys poistetaan käytöstä seuraavien tuntien aikana: [exclude_hours]. ',
   alertrule_exclude_hives_sentence:
     'Tämä hälytys poistetaan käytöstä seuraavissa pesissä: [exclude_hive_ids].',
+  Add_formula: 'Add formula', // To be translated
+  Past_minutes: 'over the past [nr_of_minutes]', // To be translated
+  Future_minutes: 'over the next [nr_of_minutes]', // To be translated
+  Zero_period_minutes: 'over the last value only', // To be translated
+  Not_relevant_for_period_zero:
+    "Not relevant when running over the last value only (see 'Period')", // To be translated
   min: 'minimi',
   max: 'maksimi',
   ave: 'keskiarvo',
@@ -872,8 +883,6 @@ const translations = {
     'HUOM: laitteesi tiedonsiirtoväli on | HUOM: laitteidesi tiedonsiirtoväli on', // f.e.: ... 15 minutes
   upload_interval_warning_interval_range:
     'HUOM: laitteidesi tiedonsiirtovälit vaihtelevat välillä ', // f.e. ... 5 - 15 minutes
-  not_relevant_for_immediate_calculation:
-    'Ei merkitystä välittömässä laskennassa',
   Increase: 'Nousu',
   Decrease: 'Lasku',
   Every_hour: 'Joka tunti',

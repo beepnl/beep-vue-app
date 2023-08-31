@@ -649,6 +649,7 @@ const translations = {
     'Deze notificatie is uitgeschakeld tijdens de uren: [exclude_hours]. ',
   alertrule_exclude_hives_sentence:
     'Deze notificatie is uitgeschakeld voor deze bijenkasten: [exclude_hive_ids].',
+  Add_formula: 'Voeg formule toe',
   Past_minutes: 'over de afgelopen [nr_of_minutes]',
   Future_minutes: 'over de aankomende [nr_of_minutes]',
   Zero_period_minutes: 'alleen over de laatste waarde',
@@ -682,7 +683,7 @@ const translations = {
     'Om je op weg te helpen zijn er een aantal standaardinstellingen die je kan gebruiken (en aanpassen naar eigen behoefte). Je kan ook zelf een nieuwe notificatie-instelling maken.',
   alertrules_url_text:
     "Ga naar 'notificaties beheren' om je eerste notificatie in te stellen",
-  Add_formula: 'Voeg formule toe',
+
   Apiary_management: 'Bijenstand management',
   Move: 'Verplaats',
   Current_apiary: 'Huidige bijenstand',

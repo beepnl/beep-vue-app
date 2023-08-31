@@ -527,6 +527,7 @@ const translations = {
   sensordef_info:
     "En sensordefinisjon er ment å konvertere en sensorverdi fra en innkommende 'rå' sensorverdi til en verdi i henhold til en fysisk mengde og enhet (f.eks. w_v = 1098273 => weight_kg = 62.400 kg) eller å kalibrere en sensor (f.eks. t_0 = 15,3 °C => t_0 = 15,8 °C). Dette kan gjøres ved å sette en 'offset' og en 'multiplikator'. Inn- og utgangsverdien forblir den samme hvis offset '0' og multiplikator '1' er satt. BEEP base-appen (fra App Store) vil gi deg de riktige sensordefinisjonene ved første oppsett av BEEP-basen.",
   or: 'eller',
+  and: 'og',
   select_all_hives: 'Velg alle bikuber',
   select_all_editable_hives: 'Velg alle redigerbare bikuber',
   Alert: 'Varsel | Varsler',
@@ -598,8 +599,13 @@ const translations = {
   Home: 'Hjem',
   Select_default_alertrule: 'Kopier standard varslingsregel',
   /* below, please keep all terms between [] as is: */
-  alertrule_main_sentence:
-    'Jeg vil gjerne motta et varsel hvis [calculation] [comparison] av [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Denne beregningen vil bli utført [calculation_minutes]',
+  alertrule_main_sentence_1: 'Jeg vil gjerne motta et varsel hvis ',
+  alertrule_main_sentence_2:
+    '[calculation] [comparison] av [measurement_quantity] [comparator] [threshold_value][measurement_unit]',
+  alertrule_main_sentence_2_with_period:
+    '[calculation] [comparison] av [measurement_quantity] [period_minutes] [comparator] [threshold_value][measurement_unit]',
+  alertrule_active_sentence:
+    'Denne beregningen vil bli utført [calculation_minutes]',
   alertrule_occurences_direct_sentence:
     ', og jeg vil gjerne motta varselet direkte. ',
   alertrule_exclude_months_sentence:
@@ -608,6 +614,12 @@ const translations = {
     'Dette varselet vil bli deaktivert i løpet av de følgende timene: [exclude_hours]. ',
   alertrule_exclude_hives_sentence:
     'Dette varselet vil bli deaktivert for følgende bikuber: [exclude_hive_ids].',
+  Add_formula: 'Add formula', // To be translated
+  Past_minutes: 'over the past [nr_of_minutes]', // To be translated
+  Future_minutes: 'over the next [nr_of_minutes]', // To be translated
+  Zero_period_minutes: 'over the last value only', // To be translated
+  Not_relevant_for_period_zero:
+    "Not relevant when running over the last value only (see 'Period')", // To be translated
   min: 'minimum',
   max: 'maksimum',
   ave: 'gjennomsnitt',
@@ -752,8 +764,6 @@ const translations = {
     'N.B. dataoverføringsintervallet til enheten din er | N.B. dataoverføringsintervallet til enhetene dine er', // f.e.: ... 15 minutes
   upload_interval_warning_interval_range:
     'N.B. dataoverføringsintervallene til enhetene dine varierer mellom ', // f.e. ... 5 - 15 minutes
-  not_relevant_for_immediate_calculation:
-    'Ikke relevant for umiddelbar beregning',
   Increase: 'Øke',
   Decrease: 'Avta',
   Every_hour: 'Hver time',

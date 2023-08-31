@@ -606,6 +606,7 @@ const translations = {
   sensordef_info:
     "Una Definizione Sensore serve a convertire il valore 'grezzo' in una quantità fisica misurabile e sua unità di misura (e.g. w_v = 1098273 => weight_kg = 62,400 kg) oppure a calibrare un sensore (e.g. t_0 = 15.3 ° C => t_0 = 15.8 ° C). Questo può essere fatto impostanto un 'valore base' ed un 'coefficiente di moltiplicazione'. I valori 'grezzi' e quelli calcolati non cambiano se il valore di base è '0' ed il moltiplicatore è '1'. La app BEEP (da App Store) ti fornirà le giuste Definizioni Sensore alla prima configurazione della tua base BEEP.",
   or: 'oppure',
+  and: 'e',
   select_all_hives: 'Seleziona tutti gli alveari',
   select_all_editable_hives: 'Seleziona tutti gli alveari modificabili',
   Alert: 'Allerta | Allerte',
@@ -683,8 +684,13 @@ const translations = {
   Home: 'Home',
   Select_default_alertrule: 'Copia regola di messaggio di allerta predefinita',
   /* below, please keep all terms between [] in english: */
-  alertrule_main_sentence:
-    'Vorrei ricevere messaggio di allerta se il [comparison] del [measurement_quantity] [calculation] [comparator] [threshold_value][measurement_unit]. Questo calcolo sarà eseguito [calculation_minutes]',
+  alertrule_main_sentence_1: 'Vorrei ricevere messaggio di allerta se il ',
+  alertrule_main_sentence_2:
+    '[comparison] del [measurement_quantity] [calculation] [comparator] [threshold_value][measurement_unit]',
+  alertrule_main_sentence_2_with_period:
+    '[comparison] del [measurement_quantity] [calculation] [period_minutes] [comparator] [threshold_value][measurement_unit]',
+  alertrule_active_sentence:
+    'Questo calcolo sarà eseguito [calculation_minutes]',
   alertrule_occurences_direct_sentence:
     ', e vorrei ricevere messaggio di allerta direttamente. ',
   alertrule_occurences_indirect_sentence:
@@ -695,6 +701,12 @@ const translations = {
     'Questo messaggio di allerta non sarà attivo durante le seguenti ore: [exclude_hours]. ',
   alertrule_exclude_hives_sentence:
     'Questo messaggio di allerta non sarà attivo per i seguenti alveari: [exclude_hive_ids].',
+  Add_formula: 'Add formula', // To be translated
+  Past_minutes: 'over the past [nr_of_minutes]', // To be translated
+  Future_minutes: 'over the next [nr_of_minutes]', // To be translated
+  Zero_period_minutes: 'over the last value only', // To be translated
+  Not_relevant_for_period_zero:
+    "Not relevant when running over the last value only (see 'Period')", // To be translated
   min: 'minimo',
   max: 'massimo',
   ave: 'media',
@@ -836,8 +848,6 @@ const translations = {
     "N.B. l'intervallo di trasmissione dei dati impostato per il tuo dispositivo è | N.B.  l'intervallo di trasmissione dei dati dei tuoi dispositivi è  ",
   upload_interval_warning_interval_range:
     " N.B.  l'intervallo di trasmissione dei dati dei tuoi dispositivi varia tra ",
-  not_relevant_for_immediate_calculation:
-    'Non rilevante per il calcolo immediato',
   Increase: 'Aumenta',
   Decrease: 'Diminuzione',
   Every_hour: 'Ogni ora',
