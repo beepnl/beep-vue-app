@@ -999,6 +999,8 @@ const translations = {
   Too_many_items_exp_2: 'vul hier je eigen antwoord in',
   Image_placeholder_1: 'Foto kan later toegevoegd worden',
   Image_placeholder_2: 'via de BEEP app (optioneel)',
+  Samplecode_placeholder_1: 'Sample code kan gegenereerd worden',
+  Samplecode_placeholder_2: 'bij uploaden inspectie in BEEP app',
   Too_long_list_present:
     'Lijst van opties te lang om weer te geven in de offline kastkaart voor het item:',
   Too_long_list_present_fix_1:
@@ -1085,6 +1087,8 @@ const translations = {
 
   /* below, please keep [pagenr] as is, it will be replaced by the pagenumber to be uploaded */
   Upload_pagenr: 'Upload hier pagina [pagenr]',
+  Datetime_of_inspection: 'Inspectiedatum en -tijd',
+  remind_datetime: 'Herinneringsdatum en -tijd',
 }
 
 export default translations

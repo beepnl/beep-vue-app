@@ -39,7 +39,7 @@
             :pageNumber="pageNr"
             :checklist-header-text="svgChecklistName"
             :checklist-svg-id="
-              checklistSvgAlreadySaved
+              !saveAsNewChecklistSvg
                 ? checklistSvgAlreadySaved.id.toString()
                 : checklistSvgId
                 ? checklistSvgId.toString()
@@ -88,6 +88,10 @@ export default {
       default: null,
       required: false,
     },
+    checklistSvgDifferentAppVersion: {
+      type: Boolean,
+      default: false,
+    },
     checklistSvgId: {
       type: Number,
       default: null,
@@ -131,8 +135,14 @@ export default {
     pages() {
       return this.svgPageNr
     },
+    saveAsNewChecklistSvg() {
+      return (
+        this.checklistSvgAlreadySaved === null ||
+        this.checklistSvgDifferentAppVersion
+      )
+    },
     svgChecklistName() {
-      return this.checklistSvgAlreadySaved
+      return !this.saveAsNewChecklistSvg
         ? this.checklistSvgAlreadySaved.name
         : this.newSvgName
         ? this.newSvgName

@@ -33,8 +33,9 @@ export const svgData = {
   data() {
     return {
       columnsPerRow: 4,
+      doubleFieldWidth: 89,
       xMargin: 14,
-      yStart: 89,
+      yStart: 86,
       yMargin: 15,
       pageHeight: 296.82,
       pageWidth: 210,
@@ -47,14 +48,14 @@ export const svgData = {
       inputHeight: {
         label: 6.7,
         select_item: 5,
-        date: 32,
+        date: 16.5,
         grade: 23,
         image: 16,
         number_info: 21,
         number: 16.5,
         boolean: 12,
         text: 35,
-        text_line: 19,
+        text_line: 16.5,
         smileys_3: 21,
       },
       maxNrOfItems: 10,

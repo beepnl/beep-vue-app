@@ -1093,6 +1093,8 @@ const translations = {
   Too_many_items_exp_2: 'print, fill in your own answer',
   Image_placeholder_1: 'This picture can be added later',
   Image_placeholder_2: 'via the BEEP app (optional)',
+  Samplecode_placeholder_1: 'Sample code can be generated when',
+  Samplecode_placeholder_2: 'uploading inspection in BEEP app',
   Too_long_list_present:
     'List of options too long to display on the offline checklist for the item:',
   Too_long_list_present_fix_1: 'If possible, decrease the number of options to',
@@ -1177,6 +1179,8 @@ const translations = {
 
   /* below, please keep [pagenr] as is, it will be replaced by the pagenumber to be uploaded */
   Upload_pagenr: 'Upload page [pagenr] here',
+  Datetime_of_inspection: 'Date & time of inspection',
+  remind_datetime: 'Notification date & time',
 }
 
 export default translations

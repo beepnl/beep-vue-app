@@ -653,6 +653,7 @@
         v-if="selectedChecklist"
         :selected-checklist="selectedChecklistWithSuffixes"
         :checklist-svg-already-saved="checklistSvgAlreadySaved"
+        :checklist-svg-different-app-version="checklistSvgDifferentAppVersion"
         :checklist-svg-id="checklistSvgId"
         :new-svg-name="newSvgName"
         :print-mode="printMode"
@@ -864,12 +865,25 @@ export default {
           var svgNewer = svgsPresent.filter(
             (svg) => svg.created_at > this.selectedChecklist.updated_at
           )
-          return svgNewer.length > 0 ? svgNewer[0] : null
+          return svgNewer.length > 0 ? svgNewer[svgNewer.length - 1] : null
         } else {
           return null
         }
       } else {
         return null
+      }
+    },
+    checklistSvgDifferentAppVersion() {
+      if (this.checklistSvgAlreadySaved) {
+        var svgAppVersion =
+          this.checklistSvgAlreadySaved.app_version ||
+          this.checklistSvgAlreadySaved.name.substring(
+            this.checklistSvgAlreadySaved.name.indexOf('(v') + 2,
+            this.checklistSvgAlreadySaved.name.lastIndexOf(')')
+          ) // TODO remove getting app version from name once app_version prop has been added to the checklist-svg, then replace by 'older' because for older checklist-svgs the app_version prop won't be present but it will always be older
+        return svgAppVersion !== this.appVersion // no need to check if appVersion is higher, it will always be higher when it is different, because it only goes up
+      } else {
+        return false
       }
     },
     editMode() {
@@ -1191,7 +1205,11 @@ export default {
   methods: {
     async createChecklistSvg() {
       // only save checklist-svg if there is none already present (which is newer than the latest version of the digital checklist)
-      if (!this.checklistSvgAlreadySaved) {
+      // but always save a new version if the current app version is higher than the one in which the svg was generated, to avoid interpretation issues caused by possible changes in the app / svg generation
+      if (
+        !this.checklistSvgAlreadySaved ||
+        this.checklistSvgDifferentAppVersion
+      ) {
         var svg = document.getElementById('checklist-svg').outerHTML
         var now = this.getNow(true)
         // pass new name to svg to make sure printed & saved checklist-svg have the same name
@@ -1569,6 +1587,7 @@ export default {
         var id = findHive.length > 0 ? findHive[0].id : null
         return id
       } else {
+        // TODO: add else if for if hiveSet was not found, then first find hive and then select connected hiveSet
         return null
       }
     },
