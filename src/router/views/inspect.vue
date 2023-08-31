@@ -1587,6 +1587,7 @@ export default {
         var id = findHive.length > 0 ? findHive[0].id : null
         return id
       } else {
+        // TODO: add else if for if hiveSet was not found, then first find hive and then select connected hiveSet
         return null
       }
     },
