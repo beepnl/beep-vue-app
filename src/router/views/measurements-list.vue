@@ -974,15 +974,6 @@ export default {
       this.setRelativeInterval = localStorage.beepRelativeInterval === 'true'
     }
     this.preselectedDeviceId = parseInt(this.$route.params.id) || null
-    // if selected device id is saved in localStorage, and there is no preselected device id, use it
-    if (
-      this.preselectedDeviceId === null &&
-      localStorage.beepSelectedDeviceId
-    ) {
-      this.selectedDeviceId = localStorage.beepSelectedDeviceId
-    } else if (this.preselectedDeviceId !== null) {
-      this.selectedDeviceId = this.preselectedDeviceId
-    }
     this.stopTimer()
     this.readTaxonomy().then(() => {
       this.checkAlertRulesAndAlerts() // for alerts-tab badge AND alert-lines
@@ -990,6 +981,20 @@ export default {
           this.readGeneralInspectionsIfNotPresent().then(() => {
             this.readDevicesIfNotChecked()
               .then(() => {
+                // if selected device id is saved in localStorage, and there is no preselected device id, use it
+                if (
+                  this.preselectedDeviceId === null &&
+                  localStorage.beepSelectedDeviceId &&
+                  this.deviceExists(localStorage.beepSelectedDeviceId)
+                ) {
+                  this.selectedDeviceId = localStorage.beepSelectedDeviceId
+                } else if (
+                  this.preselectedDeviceId !== null &&
+                  this.deviceExists(this.preselectedDeviceId)
+                ) {
+                  this.selectedDeviceId = this.preselectedDeviceId
+                }
+
                 if (
                   this.queriedDate !== null &&
                   this.queriedDate.length === 10 &&
@@ -1348,6 +1353,9 @@ export default {
           return true
         })
     },
+    deviceExists(deviceId) {
+      return this.devices.filter((device) => device.id === deviceId).length > 0
+    },
     formatMeasurementData(measurementData) {
       if (
         measurementData &&
@@ -1631,7 +1639,10 @@ export default {
     setInitialDeviceIdAndLoadData() {
       if (this.$route.name === 'measurements-id') {
         this.selectedDeviceId = parseInt(this.$route.params.id)
-      } else if (this.selectedDeviceId === null && this.devices.length > 0) {
+      } else if (
+        this.selectedDeviceId === null ||
+        (isNaN(this.selectedDeviceId) && this.devices.length > 0)
+      ) {
         this.selectedDeviceId = parseInt(this.devices[0].id)
       }
       this.loadData()
