@@ -652,6 +652,10 @@ const translations = {
   alertrule_exclude_hives_sentence:
     'Deze notificatie is uitgeschakeld voor deze bijenkasten: [exclude_hive_ids].',
   Add_formula: 'Voeg formule toe',
+  Source: 'Bron',
+  db_influx: 'Influx Database',
+  lambda_model: 'Lambda Model',
+  open_weather: 'Open Weather',
   Past_minutes: 'over de afgelopen [nr_of_minutes]',
   Future_minutes: 'over de aankomende [nr_of_minutes]',
   Zero_period_minutes: 'alleen over de laatste waarde',

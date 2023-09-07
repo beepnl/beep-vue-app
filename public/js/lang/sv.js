@@ -689,6 +689,10 @@ const translations = {
     'Denna varning deaktiveras för följande kupor [exclude_hive_ids].',
   /* !!!!!!!! below, please keep all terms between [] as is !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! do not translate any terms between square brackers [] and keep them as they are !!!!!!!!!: */
   Add_formula: 'Add formula', // To be translated
+  Source: 'Source', // To be translated
+  db_influx: 'Influx Database',
+  lambda_model: 'Lambda Model',
+  open_weather: 'Open Weather',
   Past_minutes: 'over the past [nr_of_minutes]', // To be translated
   Future_minutes: 'over the next [nr_of_minutes]', // To be translated
   Zero_period_minutes: 'over the last value only', // To be translated
