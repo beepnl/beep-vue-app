@@ -11,6 +11,7 @@ export const state = {
   alertsChecked: false,
   alerts: [],
   alertsLoading: false,
+  periodMinutesEdited: false,
 }
 export const getters = {
   ...resource.getters,
@@ -35,6 +36,9 @@ export const getters = {
   alertsLoading: (state) => {
     return state.alertsLoading
   },
+  periodMinutesEdited: (state) => {
+    return state.periodMinutesEdited
+  },
 }
 export const mutations = {
   ...resource.mutations,
@@ -49,6 +53,7 @@ export const mutations = {
     state.alertsChecked = false
     state.alerts = []
     state.alertsLoading = false
+    state.periodMinutesEdited = false
   },
 }
 export const actions = {

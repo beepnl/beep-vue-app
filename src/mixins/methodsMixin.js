@@ -89,6 +89,13 @@ export const alertRuleEditHelpers = {
         value: bool,
       })
     },
+    setPeriodMinutesEdited(bool) {
+      this.$store.commit('alerts/setData', {
+        prop: 'periodMinutesEdited',
+        value: bool,
+      })
+      this.setAlertRuleEdited(bool)
+    },
   },
 }
 

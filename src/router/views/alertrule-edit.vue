@@ -646,6 +646,7 @@ export default {
     },
   },
   created() {
+    this.setPeriodMinutesEdited(false)
     this.readDevicesIfNotChecked()
     this.readAlertRulesIfNotPresent().then(() => {
       this.readTaxonomy().then(() => {

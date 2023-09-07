@@ -124,12 +124,16 @@
 
           <v-col cols="12" sm="4" md="2" class="d-flex justify-start">
             <div class="d-flex flex-column mt-3px">
-              <div class="d-flex justify-space-between">
+              <div class="d-flex">
                 <div
                   class="beep-label"
                   v-text="$t('period') + ' (' + $tc('minute', 2) + ')'"
                 ></div>
-                <v-icon color="accent" small @click="showPeriodOverlay = true"
+                <v-icon
+                  class="ml-3 mb-1"
+                  color="accent"
+                  small
+                  @click="showPeriodOverlay = true"
                   >mdi-calculator</v-icon
                 >
               </div>
@@ -143,7 +147,7 @@
               ></el-input-number>
 
               <v-radio-group
-                v-if="showFutureProp"
+                v-if="hasFutureProp"
                 v-model="formula.future"
                 :disabled="formula.period_minutes === 0"
                 class="mt-1 ml-n1"
@@ -165,14 +169,12 @@
               </v-radio-group>
 
               <div
-                :class="
-                  'font-small mb-3 ' + (showFutureProp ? 'mt-n2' : 'mt-1')
-                "
+                :class="'font-small mb-3 ' + (hasFutureProp ? 'mt-n2' : 'mt-1')"
                 >{{
                   humanizeMinutes(
                     formula.period_minutes,
                     true,
-                    showFutureProp && formula.future
+                    hasFutureProp && formula.future
                   )
                 }}
               </div>
@@ -335,7 +337,6 @@ export default {
   },
   data: () => ({
     showAllMeasurements: false,
-    periodMinutesEdited: false,
     showPeriodOverlay: false,
     periodValues: {
       hour: 0,
@@ -345,6 +346,7 @@ export default {
     },
   }),
   computed: {
+    ...mapGetters('alerts', ['periodMinutesEdited']),
     ...mapGetters('taxonomy', ['alertRulesList']),
     calcPrefix() {
       var translateTerm = this.alertRulesList.calculations[
@@ -397,8 +399,8 @@ export default {
         { term: 'month', minutes: 43200 },
       ]
     },
-    showFutureProp() {
-      return this.measurement.show_future === 1
+    hasFutureProp() {
+      return this.measurement.future === 1
     },
     thresholdValueIsNaN() {
       return isNaN(this.formula.threshold_value)
@@ -433,10 +435,6 @@ export default {
     },
     getText(item) {
       return item.label + ' (' + item.abbreviation + ')'
-    },
-    setPeriodMinutesEdited(bool) {
-      this.periodMinutesEdited = bool // keep track if user has edited period_minutes, see calculation_minutes watcher
-      this.setAlertRuleEdited(bool)
     },
     toggleAllLogicals(value) {
       this.$emit('toggle-all-logicals', value)
