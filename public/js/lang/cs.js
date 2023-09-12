@@ -622,6 +622,8 @@ const translations = {
   Zero_period_minutes: 'over the last value only', // To be translated
   Not_relevant_for_period_zero:
     "Not relevant when running over the last value only (see 'Period')",
+  Only_comparison_available_for_source_type:
+    "Only available comparison for measurements from this source (see 'Measurement')",
   Period_future: 'in the future',
   Period_past: 'in the past',
   Minutes_calculator: 'Minute calculator', // To be translated

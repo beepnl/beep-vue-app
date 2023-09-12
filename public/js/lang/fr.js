@@ -817,7 +817,9 @@ const translations = {
   Future_minutes: 'over the next [nr_of_minutes]', // To be translated
   Zero_period_minutes: 'over the last value only', // To be translated
   Not_relevant_for_period_zero:
-    "Not relevant when running over the last value only (see 'Period')", // To be translated
+    "Not relevant when running over the last value only (see 'Period')",
+  Only_comparison_available_for_source_type:
+    "Only available comparison for measurements from this source (see 'Measurement')", // To be translated
   Period_future: 'in the future', // To be translated
   Period_past: 'in the past', // To be translated
   Minutes_calculator: 'Minute calculator', // To be translated

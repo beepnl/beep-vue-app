@@ -73,7 +73,7 @@
               v-text="$t('only_active_if_measurement_present')"
             ></div>
             <div
-              v-if="measurement.data_source_type !== 'db_influx'"
+              v-if="measurement.data_source_type !== defaultSourceType"
               class="font-small mt-n4"
             >
               {{ $t('Source') + ': ' + $t(measurement.data_source_type) }}
@@ -131,8 +131,14 @@
               :placeholder="`${$t('Select')} ${$t('comparison')} ...`"
               :label="$t('Comparison')"
               :rules="requiredRule"
+              :disabled="measurement.data_source_type !== defaultSourceType"
               @input="setAlertRuleEdited(true)"
             ></v-select>
+            <div
+              v-if="measurement.data_source_type !== defaultSourceType"
+              class="font-small mt-n3 mb-3"
+              v-text="$t('Only_comparison_available_for_source_type')"
+            ></div>
             <div
               v-if="formula.comparison === 'abs_dif'"
               class="font-small mt-n4 mb-3"
@@ -354,6 +360,7 @@ export default {
     },
   },
   data: () => ({
+    defaultSourceType: 'db_influx',
     showAllMeasurements: false,
     showPeriodOverlay: false,
     periodValues: {
@@ -436,6 +443,11 @@ export default {
     calculationMinutesValue() {
       if (!this.periodMinutesEdited) {
         this.formula.period_minutes = this.calculationMinutesValue // set period_minutes equal to calculation_minutes but ONLY if period_minutes has not yet been edited
+      }
+    },
+    measurement() {
+      if (this.measurement.data_source_type !== this.defaultSourceType) {
+        this.formula.comparison = 'val'
       }
     },
     periodMinutes() {
