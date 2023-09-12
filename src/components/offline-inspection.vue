@@ -1,6 +1,21 @@
 <template>
   <v-row :class="printMode ? 'ma-0' : 'mt-3 mx-0'">
-    <v-col v-if="svgWarnings.length > 0 && !printMode" cols="12">
+    <v-col v-if="waiting || moreWaiting" class="mt-n16" cols="12">
+      <v-container>
+        <div class="loading">
+          <v-progress-circular size="50" color="primary" indeterminate />
+          <span
+            class="ma-3 font-weight-bold accent--text"
+            v-text="$t('Generating_svg_be_patient')"
+          ></span>
+        </div>
+      </v-container>
+    </v-col>
+
+    <v-col
+      v-if="!(waiting || moreWaiting) && svgWarnings.length > 0 && !printMode"
+      cols="12"
+    >
       <v-row class="mx-0">
         <v-col cols="12" class="svg-warnings no-print">
           <v-alert
@@ -21,62 +36,29 @@
     </v-col>
 
     <v-col cols="12" :class="!printMode ? '' : 'pa-0'">
-      <svg
-        id="checklist-svg"
-        xmlns="http://www.w3.org/2000/svg"
-        x="0mm"
-        y="0mm"
-        :width="pageWidth + 'mm'"
-        fill="#ffffff"
-        :height="calcSvgHeight"
-        :data-app-version="appVersion"
-      >
-        <rect v-if="!printMode" width="100%" height="100%" fill="#fff4dd" />
-
-        <g v-for="pageNr in pages" :key="'page' + pageNr">
-          <svgPrintCorners
-            v-if="svgMaxPageNr === null || pageNr <= svgMaxPageNr"
-            :pageNumber="pageNr"
-            :checklist-header-text="svgChecklistName"
-            :checklist-svg-id="
-              !saveAsNewChecklistSvg
-                ? checklistSvgAlreadySaved.id.toString()
-                : checklistSvgId
-                ? checklistSvgId.toString()
-                : ''
-            "
-            :totalPages="totalPages"
-          />
-        </g>
-
-        <svgOverall :position="{ x: 13, y: 15 }" />
-
-        <g>
-          <template
-            v-for="(category, catIndex) in selectedChecklist.categories"
-          >
-            <svgCategory :key="catIndex" :category="category" />
-          </template>
-        </g>
-      </svg>
+      <OfflineInspectionSvg
+        v-if="!waiting"
+        :selected-checklist="selectedChecklist"
+        :checklist-svg-already-saved="checklistSvgAlreadySaved"
+        :checklist-svg-different-app-version="checklistSvgDifferentAppVersion"
+        :checklist-svg-id="checklistSvgId"
+        :new-svg-name="newSvgName"
+        :print-mode="printMode"
+        :total-pages="totalPages"
+        @done-loading="moreWaiting = false"
+      />
     </v-col>
   </v-row>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import { svgData, svgStyles } from '@mixins/svgMixin'
-import svgCategory from '@/src/components/svg/svg-category.vue'
-import svgOverall from '@/src/components/svg/svg-overall.vue'
-import svgPrintCorners from '@/src/components/svg/svg-print-corners.vue'
 
 export default {
   components: {
-    svgCategory,
-    svgOverall,
-    svgPrintCorners,
+    OfflineInspectionSvg: () =>
+      import('@components/offline-inspection-svg.vue'),
   },
-  mixins: [svgData, svgStyles],
   props: {
     selectedChecklist: {
       type: Object,
@@ -114,48 +96,48 @@ export default {
   },
   data() {
     return {
-      appVersion: process.env.VUE_APP_VERSION,
+      svgLoading: true,
+      waiting: true,
+      moreWaiting: true, // stop showing loading div only when svg component has been mounted
     }
   },
   computed: {
-    ...mapGetters('inspections', [
-      'svgMaxPageNr',
-      'svgPageNr',
-      'svgY',
-      'svgWarnings',
-    ]),
-    calcSvgHeight() {
-      var removePage =
-        this.svgMaxPageNr && this.svgPageNr > this.svgMaxPageNr ? 1 : 0
-      return (this.svgPageNr - removePage) * this.pageHeight + 'mm'
+    ...mapGetters('inspections', ['svgWarnings']),
+  },
+  watch: {
+    moreWaiting() {
+      console.log(this.moreWaiting ? 'waiting...' : 'waiting done!')
+      this.$emit('svg-ready', !this.moreWaiting)
     },
-    now() {
-      return this.$moment().format('YYYY-MM-DD HH:mm')
-    },
-    pages() {
-      return this.svgPageNr
-    },
-    saveAsNewChecklistSvg() {
-      return (
-        this.checklistSvgAlreadySaved === null ||
-        this.checklistSvgDifferentAppVersion
-      )
-    },
-    svgChecklistName() {
-      return !this.saveAsNewChecklistSvg
-        ? this.checklistSvgAlreadySaved.name
-        : this.newSvgName
-        ? this.newSvgName
-        : this.selectedChecklist.name +
-          ' (' +
-          this.now +
-          ') (v' +
-          this.appVersion +
-          ')'
+    selectedChecklist() {
+      console.log('checklist changed')
+      this.waiting = true
+      this.moreWaiting = true
+
+      // this.$store.commit('inspections/resetSvgStates')
+      // this.moreWaiting = true
+      // setTimeout(() => {
+      //   this.waiting = false
+      // }, 1000) // wait for svg states to be reset, then allow svg component to re-render
+
+      this.resetSvgStates().then(() => {
+        setTimeout(() => {
+          this.waiting = false
+        }, 400) // timeout not strictly necessary but gives better UI as it is more clear the svg has been updated after the loading icon was shown
+      })
     },
   },
-  updated() {
-    this.$emit('updated')
+  mounted() {
+    this.waiting = false // start rendering svg once component is mounted (otherwise component won't be rendered until child svg component is done)
+  },
+  methods: {
+    async resetSvgStates() {
+      this.$store.commit('inspections/resetSvgStates')
+
+      await this.$nextTick().then(() => {
+        return true
+      })
+    },
   },
 }
 </script>

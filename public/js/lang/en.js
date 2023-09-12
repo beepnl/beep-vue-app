@@ -608,6 +608,21 @@ const translations = {
     'This alert will be deactivated during the following hours: [exclude_hours]. ',
   alertrule_exclude_hives_sentence:
     'This alert will be deactivated for the following hives: [exclude_hive_ids].',
+  Add_formula: 'Add formula',
+  Source: 'Source',
+  db_influx: 'Influx Database',
+  lambda_model: 'Lambda Model',
+  open_weather: 'Open Weather',
+  Past_minutes: 'over the past [nr_of_minutes]',
+  Future_minutes: 'over the next [nr_of_minutes]',
+  Zero_period_minutes: 'over the last value only',
+  Not_relevant_for_period_zero:
+    "Not relevant when running over the last value only (see 'Period')",
+  Only_comparison_available_for_source_type:
+    "Only available comparison for measurements from this source (see 'Measurement')",
+  Period_future: 'in the future',
+  Period_past: 'in the past',
+  Minutes_calculator: 'Minute calculator',
   min: 'minimum',
   max: 'maximum',
   ave: 'average',
@@ -1009,6 +1024,8 @@ const translations = {
   Upload_images_exp_4: 'TODO: use image scanner?',
   Uploading_images_be_patient:
     'Please wait a moment, your images are being parsed. This may take several minutes. Please do not close this window.',
+  Generating_svg_be_patient:
+    'Please wait a moment, your printable checklist is being generated. This may take a little while. Please do not close this window.',
   Parsed_pages: 'Parsed pages',
   Number_of_processed_pages: 'Number of parsed pages: ',
   Incorrectly_uploaded_pages: 'Incorrectly uploaded page numbers: ',

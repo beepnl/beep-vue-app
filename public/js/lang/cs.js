@@ -1006,6 +1006,8 @@ const translations = {
   Upload_images_exp_4: 'TODO: použít skener obrázků?',
   Uploading_images_be_patient:
     'Počkejte prosím chvíli, vaše obrázky se analyzují. To může trvat několik minut. Toto okno prosím nezavírejte.',
+  Generating_svg_be_patient:
+    'Please wait a moment, your printable checklist is being generated. This may take a little while. Please do not close this window.', // To be translated
   Parsed_pages: 'Analyzované stránky',
   Number_of_processed_pages: 'Počet analyzovaných stránek: ',
   Incorrectly_uploaded_pages: 'Nesprávně nahraná čísla stránek: ',
