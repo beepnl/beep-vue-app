@@ -661,6 +661,8 @@ const translations = {
   Zero_period_minutes: 'alleen over de laatste waarde',
   Not_relevant_for_period_zero:
     "Niet relevant bij uitvoeren over alleen de laatste waarde (zie 'Periode')",
+  Only_comparison_available_for_source_type:
+    "Enige beschikbare vergelijking voor metingen van deze bron (zie 'Meting')",
   Period_future: 'in de toekomst',
   Period_past: 'in het verleden',
   Minutes_calculator: 'Minuten rekenmachine',
