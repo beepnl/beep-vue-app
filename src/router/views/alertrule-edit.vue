@@ -682,9 +682,11 @@ export default {
     async createAlertRule() {
       if (this.$refs.form.validate() && !this.thresholdValueIsNaN) {
         this.showLoadingIcon = true
-        var alertRule = this.checkAlertRuleFormulas()
         try {
-          const response = await Api.postRequest('/alert-rules', alertRule)
+          const response = await Api.postRequest(
+            '/alert-rules',
+            this.activeAlertRule
+          )
           if (!response) {
             this.snackbar.text = this.$i18n.t('not_saved_error')
             this.snackbar.show = true
@@ -761,12 +763,11 @@ export default {
     async updateAlertRule() {
       if (this.$refs.form.validate() && !this.thresholdValueIsNaN) {
         this.showLoadingIcon = true
-        var alertRule = this.checkAlertRuleFormulas()
         try {
           const response = await Api.updateRequest(
             '/alert-rules/',
-            alertRule.id,
-            alertRule
+            this.activeAlertRule.id,
+            this.activeAlertRule
           )
           if (!response) {
             this.snackbar.text = this.$i18n.t('not_saved_error')
@@ -797,19 +798,6 @@ export default {
         this.nrOfFormulas - 1
       ].logical = this.formulasLogical
       this.activeAlertRule.formulas.push({ ...this.newFormula })
-    },
-    checkAlertRuleFormulas() {
-      if (this.activeAlertRule.formulas.length === 1) {
-        // if there is only 1 formula, add props directly to alert rule instead of nested inside formulas array
-        var alertrule = Object.assign(
-          this.activeAlertRule,
-          this.activeAlertRule.formulas[0]
-        )
-        delete alertrule.formulas
-        return alertrule
-      } else {
-        return this.activeAlertRule
-      }
     },
     confirmCreateAlertRule() {
       if (this.showCollabGroupWarning) {
