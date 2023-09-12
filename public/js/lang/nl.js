@@ -1063,6 +1063,8 @@ const translations = {
   Upload_images_exp_4: 'TODO: use image scanner?',
   Uploading_images_be_patient:
     'Even geduld a.u.b., uw afbeeldingen worden geanalyseerd. Dit kan enkele minuten duren. Sluit dit venster niet.',
+  Generating_svg_be_patient:
+    'Even geduld a.u.b., de printbare kastkaart wordt gegenereerd. Dit kan even duren. Sluit dit venster niet.',
   Parsed_pages: "Verwerkte pagina's",
   Number_of_processed_pages: "Aantal verwerkte pagina's: ",
   Incorrectly_uploaded_pages: 'Incorrect geuploade paginanummers: ',

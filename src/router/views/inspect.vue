@@ -93,7 +93,7 @@
           outlined
           color="black"
           class="save-button-mobile-wide mr-1"
-          :disabled="!svgReady || svgLoading"
+          :disabled="!svgReady"
           @click="confirmPrint"
         >
           <v-icon left>mdi-printer</v-icon>
@@ -383,7 +383,7 @@
         </v-row>
 
         <!-- Inspection items from checklist -->
-        <div v-if="onlineMode && !svgLoading">
+        <div v-if="onlineMode">
           <v-card
             v-for="(mainCategory, index) in selectedChecklist.categories"
             :key="index"
@@ -642,25 +642,23 @@
       />
     </template>
 
-    <v-container v-if="!uploadMode && (!ready || !svgReady || svgLoading)">
+    <v-container v-if="!uploadMode && !ready">
       <div class="loading">
         <v-progress-circular size="50" color="primary" indeterminate />
       </div>
     </v-container>
 
-    <template v-if="offlineMode && svgReady">
-      <OfflineInspection
-        v-if="selectedChecklist"
-        :selected-checklist="selectedChecklistWithSuffixes"
-        :checklist-svg-already-saved="checklistSvgAlreadySaved"
-        :checklist-svg-different-app-version="checklistSvgDifferentAppVersion"
-        :checklist-svg-id="checklistSvgId"
-        :new-svg-name="newSvgName"
-        :print-mode="printMode"
-        :total-pages="totalPages"
-        @updated="svgLoading = false"
-      />
-    </template>
+    <OfflineInspection
+      v-if="offlineMode"
+      :selected-checklist="selectedChecklist"
+      :checklist-svg-already-saved="checklistSvgAlreadySaved"
+      :checklist-svg-different-app-version="checklistSvgDifferentAppVersion"
+      :checklist-svg-id="checklistSvgId"
+      :new-svg-name="newSvgName"
+      :print-mode="printMode"
+      :total-pages="totalPages"
+      @svg-ready="svgReady = $event"
+    />
 
     <Confirm ref="confirm"></Confirm>
   </Layout>
@@ -760,8 +758,7 @@ export default {
       showLoadingIcon: false,
       valid: false,
       ready: false,
-      svgReady: false,
-      svgLoading: false,
+      svgReady: true, // false,
       selectedHiveSetId: null,
       selectedHiveSet: null,
       selectedHives: [],
@@ -1134,7 +1131,7 @@ export default {
   },
   created() {
     if (localStorage.beepSelectedInspectionMode === 'Offline') {
-      this.switchMode('Offline')
+      this.$store.commit('inspections/resetSvgStates')
       this.setSelectedMode = 'Offline'
       this.storeInspectionMode('')
     }
@@ -1198,7 +1195,6 @@ export default {
         this.setInspectionEdited(false)
         this.setBulkInspection(this.selectedHives.length > 1)
         this.ready = true
-        this.svgReady = true
       })
     })
   },
@@ -1342,16 +1338,8 @@ export default {
         this.activeInspection.items = itemsObject
         this.activeInspection.checklist_id = this.selectedChecklistId
 
-        if (this.offlineMode) {
-          this.svgReady = true
-        }
-
         return true
       } catch (error) {
-        if (this.offlineMode) {
-          this.svgReady = true
-        }
-
         if (error.response) {
           console.log('Error: ', error.response)
         } else {
@@ -1944,6 +1932,7 @@ export default {
         this.checklistSvgId = null
         this.svgReady = false
       }
+
       this.$store.commit('inspections/resetSvgStates')
 
       if (
@@ -1969,12 +1958,6 @@ export default {
           })
       } else {
         this.getChecklistById(id)
-      }
-    },
-    switchMode(mode) {
-      this.$store.commit('inspections/resetSvgStates')
-      if (mode === 'Offline') {
-        this.svgLoading = true
       }
     },
     storeInspectionMode(value) {
