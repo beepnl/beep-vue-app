@@ -43,7 +43,18 @@ module.exports = {
     //   key: fs.readFileSync('./localhost.key'),
     //   cert: fs.readFileSync('./localhost.crt'),
     // },
-    public: 'http://localhost:8083/',
+    // public: 'http://localhost:8083/', // old webpack
+    client: {
+      // Can be `string`:
+      //
+      // To get protocol/hostname/port from browser
+      // webSocketURL: 'auto://0.0.0.0:0/ws'
+      webSocketURL: {
+        hostname: '0.0.0.0',
+        pathname: '/https',
+        port: 8083,
+      },
+    },
   },
   publicPath: '/',
 }
