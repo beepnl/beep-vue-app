@@ -30,8 +30,11 @@
     <svgOverall :position="{ x: 13, y: 15 }" />
 
     <g>
-      <template v-for="(category, catIndex) in selectedChecklist.categories">
-        <svgCategory :key="catIndex" :category="category" />
+      <template
+        v-for="(category, catIndex) in selectedChecklist.categories"
+        :key="catIndex"
+      >
+        <svgCategory :category="category" />
       </template>
     </g>
   </svg>

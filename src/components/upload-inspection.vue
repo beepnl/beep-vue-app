@@ -10,29 +10,24 @@
         :placeholder="$t('Select')"
         @input="updateLanguage($event)"
       >
-        <template
-        v-slot:value-label="{ node }"
-        >
-        <div  class="d-flex justify-start align-center">
-          <img
-            class="lang-icon"
-            :src="assetsUrl + `/img/flags/${node.id}.svg`"
-          />
-          {{ node.label }}
+        <template v-slot:value-label="{ node }">
+          <div class="d-flex justify-start align-center">
+            <img
+              class="lang-icon"
+              :src="assetsUrl + `/img/flags/${node.id}.svg`"
+            />
+            {{ node.label }}
           </div>
         </template>
 
-        <template
-        v-slot:option-label="{ node }"
-        >
-        <div  class="d-flex justify-start align-center">
-          <img
-            class="lang-icon"
-            :src="assetsUrl + `/img/flags/${node.id}.svg`"
-          />
-          {{ node.label }}
-        </label>
-                  </div>
+        <template v-slot:option-label="{ node }">
+          <div class="d-flex justify-start align-center">
+            <img
+              class="lang-icon"
+              :src="assetsUrl + `/img/flags/${node.id}.svg`"
+            />
+            {{ node.label }}
+          </div>
         </template>
       </Treeselect>
     </v-col>
@@ -51,8 +46,8 @@
         <p class="beep-label">
           <em>{{ $t('Upload_images_exp') }} </em>
         </p>
-        <template v-for="item in uploadExpBullets">
-          <p :key="'ui-' + item" class="beep-label">
+        <template v-for="item in uploadExpBullets" :key="'ui-' + item">
+          <p class="beep-label">
             <em>{{ '• ' + $t('Upload_images_exp_' + item) }} </em>
           </p>
         </template>

@@ -36,9 +36,8 @@
                   item.input === 'list_item')
             "
           >
-            <template v-for="(child, j) in item.children">
+            <template v-for="(child, j) in item.children" :key="'c' + child.id">
               <SvgInput
-                :key="'c' + child.id"
                 :position="calcXY(child, false, j === item.children.length - 1)"
                 :header="getHeader(item, child)"
                 :item="child"
@@ -51,9 +50,11 @@
                 "
                 :key="'gc' + child.id"
               >
-                <template v-for="(nestedChild, k) in child.children">
+                <template
+                  v-for="(nestedChild, k) in child.children"
+                  :key="'nc' + nestedChild.id"
+                >
                   <SvgInput
-                    :key="'nc' + nestedChild.id"
                     :position="
                       calcXY(
                         nestedChild,

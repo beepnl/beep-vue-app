@@ -18,10 +18,9 @@
                           </div>
               -->
   <div class="d-flex justify-end">
-    <template v-for="(btn, b) in modeButtons">
+    <template v-for="(btn, b) in modeButtons" :key="'mode-' + b">
       <div
         v-if="btn.if"
-        :key="'mode-' + b"
         :class="
           'rounded-border primary-border mode-box mb-2 d-flex flex-column align-center cursor-pointer ' +
             (showInfo.length === 0 ? 'justify-center ' : '') +

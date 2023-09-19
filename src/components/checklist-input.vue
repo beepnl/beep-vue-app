@@ -25,9 +25,8 @@
     ></imageUploader>
 
     <v-list v-if="item.input === 'list'" class="inspection-checkbox-list">
-      <template v-for="(listItem, index) in item.children">
+      <template v-for="(listItem, index) in item.children" :key="index">
         <v-list-item
-          :key="index"
           class="inspection-list-item"
           @click.capture.stop="toggleSelect(listItem.id, item.id)"
         >

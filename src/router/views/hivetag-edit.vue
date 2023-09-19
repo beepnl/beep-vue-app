@@ -98,11 +98,11 @@
                 class="mt-0"
                 @change="selectAction($event)"
               >
-                <template v-for="(hiveTagAction, index) in hiveTagActions">
-                  <div
-                    :key="index"
-                    class="d-flex align-center justify-start mb-1"
-                  >
+                <template
+                  v-for="(hiveTagAction, index) in hiveTagActions"
+                  :key="index"
+                >
+                  <div class="d-flex align-center justify-start mb-1">
                     <v-radio
                       class="mt-2"
                       :disabled="!enableAction(hiveTagAction)"

@@ -4,10 +4,9 @@
     <svgLabel :x="x" :y="y" :label="label" />
 
     <g v-if="items && flattenedItems.length <= maxNrOfItems">
-      <template v-for="(item, index) in flattenedItems">
+      <template v-for="(item, index) in flattenedItems" :key="'item-' + index">
         <svgCheckbox
           v-if="!item.hasChildren"
-          :key="'item-' + index"
           :x="x + item.depth * checkBoxSpace + 'mm'"
           :y="y + 2 + index * checkBoxSpace + 'mm'"
           :category-id="item.id"
@@ -15,7 +14,6 @@
           :parent-id="item.parent_id"
         />
         <text
-          :key="'text-' + index"
           :x="
             x + item.depth * checkBoxSpace + (!item.hasChildren ? 6 : 0) + 'mm'
           "
@@ -49,18 +47,16 @@
     </g>
 
     <g v-else-if="starRating">
-      <template v-for="(stars, index) in maxStars">
+      <template v-for="(stars, index) in maxStars" :key="'stc-' + stars">
         <svgCheckbox
-          :key="'stc-' + stars"
           :x="x + 'mm'"
           :category-id="'stars'"
           :label="label"
           :parent-id="position.id"
           :y="y + 2 + index * checkBoxSpace + 'mm'"
         />
-        <template v-for="star in stars">
+        <template v-for="star in stars" :key="'sc' + index + star">
           <svg
-            :key="'sc' + index + star"
             :x="x + star * 5.2 + 'mm'"
             :y="y + 1 + index * checkBoxSpace + 'mm'"
             width="5mm"
@@ -78,9 +74,8 @@
     </g>
 
     <g v-else>
-      <template v-for="(item, index) in presetItems">
+      <template v-for="(item, index) in presetItems" :key="'item-' + index">
         <svgCheckbox
-          :key="'item-' + index"
           :x="x + 'mm'"
           :y="y + 2 + index * checkBoxSpace + 'mm'"
           :category-id="'score'"
@@ -88,7 +83,6 @@
           :parent-id="position.id"
         />
         <text
-          :key="'text-' + index"
           :x="x + checkBoxSpace + 'mm'"
           :y="y + 5 + index * checkBoxSpace + 'mm'"
           :style="svgInputText"

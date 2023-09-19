@@ -41,10 +41,9 @@
               <v-divider></v-divider>
             </div>
 
-            <template v-for="(item, i) in settingItems">
+            <template v-for="(item, i) in settingItems" :key="i">
               <v-list-item
                 v-if="item.title && item.show"
-                :key="i"
                 exact
                 :to="!item.external ? { name: item.route } : ''"
                 :href="item.external ? item.route : ''"

@@ -64,9 +64,11 @@
                 alert.alert_rule_name
               }}</td>
 
-              <template v-for="(measurement, ai) in data">
+              <template
+                v-for="(measurement, ai) in data"
+                :key="'alert-td-' + ai"
+              >
                 <td
-                  :key="'alert-td-' + ai"
                   :class="
                     `td--heatmap ${
                       isAlertIndex(alert, ai) ? '--pointer' : '--default'

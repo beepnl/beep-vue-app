@@ -303,9 +303,11 @@
                         </span>
                       </template>
                       <v-list dense>
-                        <template v-for="(calendarItem, index) in calendars">
+                        <template
+                          v-for="(calendarItem, index) in calendars"
+                          :key="index"
+                        >
                           <AddToCalendar
-                            :key="index"
                             :title="
                               `BEEP ${$t('reminder')} ${
                                 inspection.reminder !== null

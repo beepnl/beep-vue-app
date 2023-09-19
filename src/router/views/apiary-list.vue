@@ -606,9 +606,11 @@
               group
               class="hive-item-transition-wrapper"
             >
-              <template v-for="hive in sortedHives(hiveSet.hives)">
+              <template
+                v-for="hive in sortedHives(hiveSet.hives)"
+                :key="'Hive ' + hive.id"
+              >
                 <v-col
-                  :key="'Hive ' + hive.id"
                   sm="auto"
                   :class="
                     `hive-item ${xlView ? 'xl-view' : ''} ${

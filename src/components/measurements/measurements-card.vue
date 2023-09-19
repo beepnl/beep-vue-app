@@ -13,10 +13,9 @@
             <span>{{ !mobile ? title : mobileTitle }}</span>
             <v-spacer></v-spacer>
             <div class="d-flex justify-end align-center">
-              <template v-for="(icon, n) in chartColsIcons">
+              <template v-for="(icon, n) in chartColsIcons" :key="'icon' + n">
                 <v-icon
                   v-if="!mdScreen"
-                  :key="'icon' + n"
                   class="mr-2"
                   :color="chartCols === icon.value ? 'primary' : 'grey'"
                   @click="setChartCols = icon.value"
