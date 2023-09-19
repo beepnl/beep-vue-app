@@ -21,18 +21,15 @@
         type="datetime"
         class="accent--text"
       >
-        <span
-          v-if="dateInput !== null"
-          slot="after"
-          class="description clear-icon"
-          @click="clearDate(item.id)"
-        >
-          <v-icon class="mt-n1" color="accent">mdi-close</v-icon></span
-        >
-        <template slot="button-cancel">
+        <template v-if="dateInput !== null" v-slot:after>
+          <span class="description clear-icon" @click="clearDate(item.id)">
+            <v-icon class="mt-n1" color="accent">mdi-close</v-icon></span
+          >
+        </template>
+        <template v-slot:button-cancel>
           <v-btn text color="accent">{{ $t('Cancel') }}</v-btn>
         </template>
-        <template slot="button-confirm">
+        <template v-slot:button-confirm>
           <v-btn text color="accent">{{ $t('ok') }}</v-btn>
         </template>
       </Datetime>

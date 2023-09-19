@@ -10,29 +10,30 @@
         :placeholder="$t('Select')"
         @input="updateLanguage($event)"
       >
-        <div
-          slot="value-label"
-          slot-scope="{ node }"
-          class="d-flex justify-start align-center"
+        <template
+        v-slot:value-label="{ node }"
         >
+        <div  class="d-flex justify-start align-center">
           <img
             class="lang-icon"
             :src="assetsUrl + `/img/flags/${node.id}.svg`"
           />
           {{ node.label }}
-        </div>
+          </div>
+        </template>
 
-        <label
-          slot="option-label"
-          slot-scope="{ node }"
-          class="d-flex justify-start align-center"
+        <template
+        v-slot:option-label="{ node }"
         >
+        <div  class="d-flex justify-start align-center">
           <img
             class="lang-icon"
             :src="assetsUrl + `/img/flags/${node.id}.svg`"
           />
           {{ node.label }}
         </label>
+                  </div>
+        </template>
       </Treeselect>
     </v-col>
     <v-col cols="12" class="d-flex flex-column">

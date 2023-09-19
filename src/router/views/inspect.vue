@@ -272,10 +272,10 @@
                       : null
                   "
                 >
-                  <template slot="button-cancel">
+                  <template v-slot:button-cancel>
                     <v-btn text color="accent">{{ $t('Cancel') }}</v-btn>
                   </template>
-                  <template slot="button-confirm">
+                  <template v-slot:button-confirm>
                     <v-btn text color="accent">{{ $t('ok') }}</v-btn>
                   </template>
                 </Datetime>
@@ -588,16 +588,12 @@
                                     >mdi-close</v-icon
                                   ></span
                                 >
-                                <template slot="button-cancel">
-                                  <v-btn text color="accent">{{
-                                    $t('Cancel')
-                                  }}</v-btn>
-                                </template>
-                                <template slot="button-confirm">
-                                  <v-btn text color="accent">{{
-                                    $t('ok')
-                                  }}</v-btn>
-                                </template>
+        <template v-slot:button-cancel>
+          <v-btn text color="accent">{{ $t('Cancel') }}</v-btn>
+        </template>
+        <template v-slot:button-confirm>
+          <v-btn text color="accent">{{ $t('ok') }}</v-btn>
+        </template>
                               </Datetime>
                             </div>
                           </div>

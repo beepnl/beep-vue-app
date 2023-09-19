@@ -63,7 +63,7 @@
           required
           class="keep-spaces"
         >
-          <template slot="label"
+          <template v-slot:label
             ><span class="checkbox-label"
               >{{ $t('accept_policy_1')
               }}<a :href="$t('policy_url')" target="_blank" @click.stop>{{
