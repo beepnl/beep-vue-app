@@ -202,8 +202,11 @@
           </v-overlay>
 
           <div class="charts">
-            <template v-for="(dataSet, index) in dataSets">
-              <div :key="'dataSet' + index" class="chart-wrapper pt-0 pb-5">
+            <template
+              v-for="(dataSet, index) in dataSets"
+              :key="'dataSet' + index"
+            >
+              <div class="chart-wrapper pt-0 pb-5">
                 <div
                   class="overline mt-0 mb-2 text-center"
                   v-text="dataSet + nrOfMeasurementsText(dataSet)"

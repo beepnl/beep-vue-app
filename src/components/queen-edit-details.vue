@@ -31,7 +31,7 @@
                 :label="`${$t('Select')} ${$t('Bee_race')}`"
                 :placeholder="`${$t('Select')} ${$t('Bee_race')}`"
                 search-nested
-                @input="updateQueen($event, 'race_id')"
+                @updated="updateQueen($event, 'race_id')"
               />
             </div>
 
@@ -163,7 +163,7 @@ import {
   momentifyRemoveTime,
 } from '@mixins/momentMixin'
 import { readTaxonomy } from '@mixins/methodsMixin'
-import Treeselect from '@riophae/vue-treeselect'
+import Treeselect from 'vue3-treeselect'
 
 export default {
   components: {

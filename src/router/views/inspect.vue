@@ -170,7 +170,7 @@
                   :class="
                     parseMode && selectedHiveSetId === null ? 'color-red' : ''
                   "
-                  @input="selectHiveSet($event)"
+                  @updated="selectHiveSet($event)"
                 />
               </v-col>
               <v-col
@@ -296,7 +296,7 @@
               :normalizer="normalizer"
               :placeholder="`${$t('Select') + ' ' + $tc('checklist', 1)}`"
               :no-results-text="`${$t('no_results')}`"
-              @input="switchChecklist($event)"
+              @updated="switchChecklist($event)"
             />
           </v-col>
 
@@ -337,7 +337,7 @@
               :placeholder="`${$t('Select') + ' ' + $tc('svg_checklist', 1)}`"
               :no-results-text="$t('no_results')"
               :no-options-text="$t('No_checklist_svg')"
-              @input="selectChecklistSvg"
+              @updated="selectChecklistSvg"
             />
           </v-col>
 
@@ -588,12 +588,16 @@
                                     >mdi-close</v-icon
                                   ></span
                                 >
-        <template v-slot:button-cancel>
-          <v-btn text color="accent">{{ $t('Cancel') }}</v-btn>
-        </template>
-        <template v-slot:button-confirm>
-          <v-btn text color="accent">{{ $t('ok') }}</v-btn>
-        </template>
+                                <template v-slot:button-cancel>
+                                  <v-btn text color="accent">{{
+                                    $t('Cancel')
+                                  }}</v-btn>
+                                </template>
+                                <template v-slot:button-confirm>
+                                  <v-btn text color="accent">{{
+                                    $t('ok')
+                                  }}</v-btn>
+                                </template>
                               </Datetime>
                             </div>
                           </div>
@@ -683,7 +687,7 @@ import OfflineInspection from '@components/offline-inspection.vue'
 import ParsedPages from '@components/parsed-pages.vue'
 import { SlideYUpTransition } from 'vue2-transitions'
 import smileRating from '@components/input-fields/smile-rating.vue'
-import Treeselect from '@riophae/vue-treeselect'
+import Treeselect from 'vue3-treeselect'
 import UploadInspection from '@components/upload-inspection.vue'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 

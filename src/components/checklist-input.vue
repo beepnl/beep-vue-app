@@ -116,7 +116,7 @@
       :object="object"
     ></slider>
 
-    <el-input-number
+    <!-- <el-input-number
       v-if="item.input === 'number' || item.input === 'number_0_decimals'"
       :value="object[item.id] === null ? 0 : object[item.id]"
       :step="1"
@@ -126,9 +126,9 @@
       size="medium"
       @change="updateInput($event, item.id, item.name, item.input)"
       @input.native="convertComma($event, item.name, 0)"
-    ></el-input-number>
+    ></el-input-number> -->
 
-    <el-input-number
+    <!-- <el-input-number
       v-if="
         item.input === 'number_1_decimals' ||
           item.input === 'number_2_decimals' ||
@@ -185,7 +185,7 @@
       size="medium"
       @change="updateInput($event, item.id, item.name, item.input)"
       @input.native="convertComma($event, item.name, 0)"
-    ></el-input-number>
+    ></el-input-number> -->
 
     <starRating
       v-if="item.input === 'score'"
@@ -294,6 +294,7 @@ import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 import { mapGetters } from 'vuex'
 import { parseDate } from '@mixins/methodsMixin'
 import { svgData } from '@mixins/svgMixin'
+// import { ElInputNumber } from 'element-plus'  TODO-VUE3 enable for real Vue 3
 
 export default {
   name: 'ChecklistInput',
@@ -309,6 +310,7 @@ export default {
     starRating,
     treeselect,
     yesNoRating,
+    // ElInputNumber,
   },
   mixins: [parseDate, svgData],
   props: {

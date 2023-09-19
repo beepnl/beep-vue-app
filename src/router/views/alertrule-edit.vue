@@ -247,7 +247,7 @@
                   "
                   v-text="$t('Threshold_value') + ' (' + measurementUnit + ')'"
                 ></div>
-                <el-input-number
+                <!-- <el-input-number
                   v-model="activeAlertRule.threshold_value"
                   :step="activeAlertRule.calculation === 'cnt' ? 1 : 0.1"
                   :precision="activeAlertRule.calculation === 'cnt' ? 0 : 1"
@@ -258,7 +258,7 @@
                     convertComma($event, activeAlertRule, 'threshold_value', 1),
                       setAlertRuleEdited(true)
                   "
-                ></el-input-number>
+                ></el-input-number> -->
                 <div
                   v-if="thresholdValueIsNaN"
                   class="v-text-field__details mt-1"
@@ -298,7 +298,7 @@
                 :placeholder="`${$t('Select')} ${$t('months')}`"
                 :no-results-text="`${$t('no_results')}`"
                 multiple
-                @input="setAlertRuleEdited(true)"
+                @updated="setAlertRuleEdited(true)"
               />
             </v-col>
 
@@ -319,7 +319,7 @@
                 :placeholder="`${$t('Select')} ${$t('hours')}`"
                 :no-results-text="`${$t('no_results')}`"
                 multiple
-                @input="setAlertRuleEdited(true)"
+                @updated="setAlertRuleEdited(true)"
               />
             </v-col>
 
@@ -349,7 +349,7 @@
                 :placeholder="`${$t('Select')} ${$tc('hive', 2)}`"
                 :no-results-text="`${$t('no_results')}`"
                 multiple
-                @input="setAlertRuleEdited(true)"
+                @updated="setAlertRuleEdited(true)"
               />
               <div
                 class="beep-label mt-1"
@@ -389,13 +389,15 @@ import {
   readTaxonomy,
 } from '@mixins/methodsMixin'
 import { momentHumanizeHours } from '@mixins/momentMixin'
-import Treeselect from '@riophae/vue-treeselect'
+import Treeselect from 'vue3-treeselect'
+// import { ElInputNumber } from 'element-plus' TODO-VUE3 enable for real Vue 3
 
 export default {
   components: {
     Confirm,
     Layout,
     Treeselect,
+    // ElInputNumber,
   },
   mixins: [
     convertComma,

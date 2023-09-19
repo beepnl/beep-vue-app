@@ -21,10 +21,10 @@ import sv from '@public/js/lang/sv'
 import languages from '@assets/js/languages'
 import moment from 'moment-timezone'
 import vueCountryRegionSelect from 'vue-country-region-select'
-import './plugins/element.js'
-import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+import 'vue3-treeselect/dist/vue3-treeselect.css'
 import VueEllipseProgress from 'vue-ellipse-progress'
 import { ResizeObserver as Polyfill } from '@juggle/resize-observer'
+// import 'element-plus/es/components/message/style/css' TODO-VUE3 enable for real Vue 3
 
 import App from './app.vue'
 

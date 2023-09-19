@@ -156,7 +156,7 @@
             :disable-branch-nodes="true"
             :default-expand-level="1"
             search-nested
-            @input="selectDevice($event)"
+            @updated="selectDevice($event)"
           />
           <v-spacer></v-spacer>
           <v-btn
@@ -187,9 +187,11 @@
           <v-row>
             <v-col v-if="currentLastSensorValues.length > 0" cols="12">
               <div class="d-flex flex-wrap justify-center mt-5 mt-sm-7">
-                <template v-for="sensorData in currentLastSensorValues">
+                <template
+                  v-for="sensorData in currentLastSensorValues"
+                  :key="sensorData.name + sensorData.value"
+                >
                   <vue-ellipse-progress
-                    :key="sensorData.name + sensorData.value"
                     class="mr-2"
                     :progress="
                       calculateProgress(
@@ -473,7 +475,7 @@ import MeasurementsCardCompare from '@components/measurements/measurements-card-
 import MeasurementsChartHeatmap from '@/src/components/measurements/measurements-chart-heatmap.vue'
 import MeasurementsChartLine from '@/src/components/measurements/measurements-chart-line.vue'
 import MeasurementsDateSelection from '@/src/components/measurements/measurements-date-selection.vue'
-import Treeselect from '@riophae/vue-treeselect'
+import Treeselect from 'vue3-treeselect'
 import {
   checkAlerts,
   readDevicesIfNotChecked,

@@ -9,13 +9,13 @@
       :default-expand-level="1"
       :disable-branch-nodes="true"
       search-nested
-      @input="setInspectionEdited(true)"
+      @updated="setInspectionEdited(true)"
     />
   </div>
 </template>
 
 <script>
-import Treeselect from '@riophae/vue-treeselect'
+import Treeselect from 'vue3-treeselect'
 
 export default {
   components: { Treeselect },

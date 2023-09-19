@@ -11,8 +11,8 @@
       :header="getHeader(category)"
     />
 
-    <template v-for="(child, catIndex) in category.children">
-      <svgFieldset :key="catIndex" :category="child" />
+    <template v-for="(child, catIndex) in category.children" :key="catIndex">
+      <svgFieldset :category="child" />
     </template>
   </g>
 </template>

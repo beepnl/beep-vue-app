@@ -51,7 +51,7 @@
                   class="beep-label"
                   v-text="$tc('Hive_brood_layer', 2)"
                 ></div>
-                <el-input-number
+                <!-- <el-input-number
                   v-if="activeHive && activeHive.layers"
                   v-model="broodLayersForCalculation"
                   :min="0"
@@ -61,11 +61,11 @@
                   size="medium"
                   @change="calculateTpaColonySize"
                   @input.native="calculateTpaColonySize"
-                ></el-input-number>
+                ></el-input-number> -->
               </v-col>
               <v-col cols="12">
                 <div class="beep-label" v-text="$t('Hive_frames')"></div>
-                <el-input-number
+                <!-- <el-input-number
                   v-if="activeHive && activeHive.layers"
                   v-model="framesForCalculation"
                   :min="0"
@@ -75,7 +75,7 @@
                   size="medium"
                   @change="calculateTpaColonySize"
                   @input.native="calculateTpaColonySize"
-                ></el-input-number>
+                ></el-input-number> -->
               </v-col>
             </v-row>
           </v-col>
@@ -186,12 +186,14 @@ import ChecklistFieldset from '@components/checklist-fieldset.vue'
 import HiveIcon from '@components/hive-icon.vue'
 import { mapGetters } from 'vuex'
 import { getMaxFramecount } from '@mixins/methodsMixin'
+// import { ElInputNumber } from 'element-plus' TODO-VUE3 enable for real Vue 3
 
 export default {
   components: {
     ChecklistInput,
     ChecklistFieldset,
     HiveIcon,
+    // ElInputNumber,
   },
   mixins: [getMaxFramecount],
   props: {

@@ -189,7 +189,7 @@
                 </v-col>
                 <v-col cols="6" sm="4">
                   <div class="beep-label" v-text="`${$t('latitude')}`"></div>
-                  <el-input-number
+                  <!-- <el-input-number
                     v-if="activeApiary"
                     :value="
                       activeApiary.coordinate_lat === null
@@ -214,11 +214,11 @@
                       ),
                         setApiaryEdited(true)
                     "
-                  ></el-input-number>
+                  ></el-input-number> -->
                 </v-col>
                 <v-col cols="6" sm="4">
                   <div class="beep-label" v-text="`${$t('Longitude')}`"></div>
-                  <el-input-number
+                  <!-- <el-input-number
                     v-if="activeApiary"
                     :value="
                       activeApiary.coordinate_lon === null
@@ -243,7 +243,7 @@
                       ),
                         setApiaryEdited(true)
                     "
-                  ></el-input-number>
+                  ></el-input-number> -->
                 </v-col>
               </v-row>
               <v-row>
@@ -316,12 +316,14 @@ import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
 import { convertComma, readApiariesAndGroups } from '@mixins/methodsMixin'
 import VueGoogleAutocomplete from 'vue-google-autocomplete'
+// import { ElInputNumber } from 'element-plus' TODO-VUE3 enable for real Vue 3
 
 export default {
   components: {
     Confirm,
     Layout,
     VueGoogleAutocomplete,
+    // ElInputNumber,
   },
   mixins: [convertComma, readApiariesAndGroups],
   data: function() {

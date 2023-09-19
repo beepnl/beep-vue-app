@@ -129,7 +129,7 @@
                 :normalizer="normalizerApiary"
                 :placeholder="`${$t('Select')} ${$tc('location', 1)}`"
                 :no-results-text="`${$t('no_results')}`"
-                @input="setHiveEdited(true)"
+                @updated="setHiveEdited(true)"
               />
 
               <v-select
@@ -164,11 +164,11 @@
           >
             <div>
               <div class="beep-label" v-text="$t('Hive_order')"></div>
-              <el-input-number
+              <!-- <el-input-number
                 :value="activeHive.order === null ? 0 : activeHive.order"
                 size="medium"
                 @change="updateOrder($event)"
-              ></el-input-number>
+              ></el-input-number> -->
             </div>
           </v-col>
         </v-row>
@@ -212,7 +212,8 @@ import {
   readGeneralInspections,
 } from '@mixins/methodsMixin'
 import { timeZone } from '@mixins/momentMixin'
-import Treeselect from '@riophae/vue-treeselect'
+import Treeselect from 'vue3-treeselect'
+// import { ElInputNumber } from 'element-plus'
 
 export default {
   components: {
@@ -221,6 +222,7 @@ export default {
     Layout,
     QueenEditDetails,
     Treeselect,
+    //  ElInputNumber,
   },
   mixins: [
     checkAlerts,

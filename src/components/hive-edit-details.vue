@@ -30,7 +30,7 @@
 
               <v-col cols="12" md="5">
                 <div class="beep-label" v-text="`${$t('Hive_frames')}`"></div>
-                <el-input-number
+                <!-- <el-input-number
                   v-if="hive && hive.layers"
                   :value="
                     hive.layers.length > 0
@@ -50,7 +50,7 @@
                       'framecount'
                     )
                   "
-                ></el-input-number>
+                ></el-input-number> -->
               </v-col>
             </v-row>
 
@@ -113,7 +113,7 @@
                   :placeholder="`${$t('Select')} ${$t('Hive_type')}`"
                   search-nested
                   required
-                  @input="updateHiveType($event)"
+                  @updated="updateHiveType($event)"
                 />
               </v-col>
             </v-row>
@@ -136,7 +136,7 @@
                           class="beep-label"
                           v-text="`${$t(bbDimension)}`"
                         ></div>
-                        <el-input-number
+                        <!-- <el-input-number
                           :value="
                             hive[bbDimension]
                               ? parseFloat(hive[bbDimension])
@@ -159,7 +159,7 @@
                               setHiveEdited(true),
                               setApiaryEdited(true)
                           "
-                        ></el-input-number>
+                        ></el-input-number> -->
                       </div>
                     </v-col>
 
@@ -173,7 +173,7 @@
                           class="beep-label"
                           v-text="`${$t(frDimension)}`"
                         ></div>
-                        <el-input-number
+                        <!-- <el-input-number
                           :value="
                             hive[frDimension]
                               ? parseFloat(hive[frDimension])
@@ -196,7 +196,7 @@
                               setHiveEdited(true),
                               setApiaryEdited(true)
                           "
-                        ></el-input-number>
+                        ></el-input-number> -->
                       </div>
                     </v-col>
                   </v-row>
@@ -218,12 +218,14 @@ import {
   getMaxFramecount,
   readTaxonomy,
 } from '@mixins/methodsMixin'
-import Treeselect from '@riophae/vue-treeselect'
+import Treeselect from 'vue3-treeselect'
+// import { ElInputNumber } from 'element-plus' TODO-VUE3 enable for real Vue 3
 
 export default {
   components: {
     HiveFactory,
     Treeselect,
+    // ElInputNumber,
   },
   mixins: [convertComma, getMaxFramecount, readTaxonomy],
   props: {

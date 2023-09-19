@@ -342,7 +342,7 @@
                       :disable-branch-nodes="true"
                       :default-expand-level="1"
                       search-nested
-                      @select="addHiveName($event, ownedDevice)"
+                      @updated="addHiveName($event, ownedDevice)"
                     />
                   </v-col>
                 </v-row>
@@ -473,7 +473,7 @@
                                 ></yesNoRating>
                               </td>
                               <td>
-                                <el-input-number
+                                <!-- <el-input-number
                                   v-model="sensorDef.offset"
                                   :disabled="sensorDef.delete"
                                   size="small"
@@ -482,10 +482,10 @@
                                     sensorDefEdited = true
                                   "
                                   @change="sensorDefEdited = true"
-                                ></el-input-number>
+                                ></el-input-number> -->
                               </td>
                               <td>
-                                <el-input-number
+                                <!-- <el-input-number
                                   v-model="sensorDef.multiplier"
                                   :disabled="sensorDef.delete"
                                   size="small"
@@ -498,7 +498,7 @@
                                       (sensorDefEdited = true)
                                   "
                                   @change="sensorDefEdited = true"
-                                ></el-input-number>
+                                ></el-input-number> -->
                               </td>
                               <td class="td--small">
                                 <v-select
@@ -660,8 +660,9 @@ import {
   readTaxonomy,
 } from '@mixins/methodsMixin'
 import { SlideYUpTransition } from 'vue2-transitions'
-import Treeselect from '@riophae/vue-treeselect'
+import Treeselect from 'vue3-treeselect'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
+// import { ElInputNumber } from 'element-plus' TODO-VUE3 enable for real Vue 3
 
 export default {
   components: {
@@ -670,6 +671,7 @@ export default {
     SlideYUpTransition,
     Treeselect,
     yesNoRating,
+    // ElInputNumber,
   },
   mixins: [
     convertComma,

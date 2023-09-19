@@ -32,11 +32,9 @@
     </v-btn>
 
     <div v-if="object[item.id] !== null" class="d-flex align-center mt-1">
-      <span
-        style=" font-weight: bold;letter-spacing: 2px;"
-        v-text="object[item.id]"
-        >{{ item.val }}</span
-      >
+      <span style=" font-weight: bold;letter-spacing: 2px;">{{
+        item.val
+      }}</span>
       <div>
         <v-progress-circular
           v-if="showLoadingIcon"

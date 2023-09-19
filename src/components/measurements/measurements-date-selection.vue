@@ -90,7 +90,7 @@
         >
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
-              v-model="dateRangeText"
+              :modelValue="dateRangeText"
               :rules="requiredRules"
               :label="!sticky ? $t('period') : null"
               prepend-icon="mdi-calendar"

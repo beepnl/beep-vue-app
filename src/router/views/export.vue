@@ -131,7 +131,7 @@
                 :default-expand-level="1"
                 search-nested
                 allow-clearing-disabled
-                @input="loadMeasurementTypesAvailable"
+                @updated="loadMeasurementTypesAvailable"
               />
             </v-col>
             <v-col cols="12" sm="6" md="4" lg="3">
@@ -270,7 +270,7 @@ import Api from '@api/Api'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
 import { readDevicesIfNotChecked } from '@mixins/methodsMixin'
-import Treeselect from '@riophae/vue-treeselect'
+import Treeselect from 'vue3-treeselect'
 
 export default {
   components: {

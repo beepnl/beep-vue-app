@@ -15,7 +15,7 @@
       hide-details
     ></v-text-field>
 
-    <el-form :disabled="disabled">
+    <!-- <el-form :disabled="disabled">
       <el-form-item>
         <el-tree
           ref="tree"
@@ -38,12 +38,21 @@
         >
         </el-tree>
       </el-form-item>
-    </el-form>
+    </el-form> -->
   </v-card>
 </template>
 
 <script>
+// import { ElForm } from 'element-plus' TODO-VUE3 enable for real Vue 3
+// import { ElFormItem } from 'element-plus'
+// import { ElTree } from 'element-plus'
+
 export default {
+  // components: {
+  //   ElForm,
+  //   ElFormItem,
+  //   ElTree,
+  // },
   props: {
     disabled: {
       type: Boolean,

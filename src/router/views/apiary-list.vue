@@ -373,14 +373,14 @@
                 <pre
                   v-if="xlView && hiveSet.users && hiveSet.users.length"
                   :class="'caption hive-set-caption' + (mobile ? ' ml-7' : '')"
-                  v-text="
+                >
+                {{
                     ` (${hiveSet.users.length} ${$tc(
                       'member',
                       // eslint-disable-next-line vue/comma-dangle
                       hiveSet.users.length
                     )})`
-                  "
-                >
+                  }}
                 </pre>
               </div>
 

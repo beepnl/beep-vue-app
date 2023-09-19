@@ -51,7 +51,7 @@
                   :normalizer="normalizerApiary"
                   :placeholder="`${$t('Select')} ${$tc('location', 1)}`"
                   :no-results-text="`${$t('no_results')}`"
-                  @input="selectAllHives(), setApiaryEdited(true)"
+                  @updated="selectAllHives(), setApiaryEdited(true)"
                 />
               </v-col>
               <v-col
@@ -123,7 +123,7 @@ import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
 import { readGeneralInspections } from '@mixins/methodsMixin'
-import Treeselect from '@riophae/vue-treeselect'
+import Treeselect from 'vue3-treeselect'
 
 export default {
   components: {

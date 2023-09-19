@@ -254,7 +254,7 @@
                           class="beep-label"
                           v-text="`${$t('latitude')}`"
                         ></div>
-                        <el-input-number
+                        <!-- <el-input-number
                           v-if="newHive"
                           v-model="newHive.lat"
                           :min="-90"
@@ -268,14 +268,14 @@
                             convertComma($event, newHive, 'lat', 3),
                               setApiaryEdited(true)
                           "
-                        ></el-input-number>
+                        ></el-input-number> -->
                       </v-col>
                       <v-col cols="6" sm="4">
                         <div
                           class="beep-label"
                           v-text="`${$t('Longitude')}`"
                         ></div>
-                        <el-input-number
+                        <!-- <el-input-number
                           v-if="newHive"
                           v-model="newHive.lon"
                           :min="-180"
@@ -289,7 +289,7 @@
                             convertComma($event, newHive, 'lon', 3),
                               setApiaryEdited(true)
                           "
-                        ></el-input-number>
+                        ></el-input-number> -->
                       </v-col>
                     </v-row>
                     <v-row>
@@ -414,7 +414,7 @@
                           class="beep-label"
                           v-text="`${$t('Hive_amount')}`"
                         ></div>
-                        <el-input-number
+                        <!-- <el-input-number
                           v-if="newHive"
                           v-model="newHive.hive_amount"
                           :min="0"
@@ -423,7 +423,7 @@
                           :step-strictly="true"
                           size="medium"
                           @change="setApiaryEdited(true)"
-                        ></el-input-number>
+                        ></el-input-number> -->
                       </v-col>
 
                       <v-col cols="6" md="4">
@@ -449,13 +449,13 @@
                             class="beep-label"
                             v-text="`${$t('Hive_number_offset')}`"
                           ></div>
-                          <el-input-number
+                          <!-- <el-input-number
                             v-if="newHive"
                             v-model="newHive.offset"
                             :precision="0"
                             size="medium"
                             @change="setApiaryEdited(true)"
-                          ></el-input-number>
+                          ></el-input-number> -->
                         </div>
                       </v-col>
 
@@ -504,6 +504,7 @@ import {
   readApiariesAndGroupsIfNotPresent,
 } from '@mixins/methodsMixin'
 import VueGoogleAutocomplete from 'vue-google-autocomplete'
+// import { ElInputNumber } from 'element-plus' TODO-VUE3 enable for real Vue 3
 
 export default {
   components: {
@@ -512,6 +513,7 @@ export default {
     HiveEditDetails,
     Layout,
     VueGoogleAutocomplete,
+    // ElInputNumber,
   },
   mixins: [convertComma, readApiariesAndGroupsIfNotPresent],
   data: function() {

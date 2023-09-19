@@ -8,7 +8,7 @@
         :options="languages"
         :normalizer="normalizer"
         :placeholder="$t('Select')"
-        @input="updateLanguage($event)"
+        @updated="updateLanguage($event)"
       >
         <template v-slot:value-label="{ node }">
           <div class="d-flex justify-start align-center">
@@ -83,7 +83,7 @@
 
 <script>
 import languages from '@assets/js/languages'
-import Treeselect from '@riophae/vue-treeselect'
+import Treeselect from 'vue3-treeselect'
 import UploadPageBlob from '@components/upload-page-blob.vue'
 import { mapGetters } from 'vuex'
 
