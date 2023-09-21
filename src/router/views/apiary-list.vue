@@ -408,9 +408,9 @@
                       </v-list-item-icon>
 
                       <v-list-item-content>
-                        <v-list-item-title
-                          v-text="$t('edit_apiary')"
-                        ></v-list-item-title>
+                        <v-list-item-title>
+                          <span v-text="$t('edit_apiary')"></span>
+                        </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
                     <v-list-item
@@ -424,9 +424,9 @@
                       </v-list-item-icon>
 
                       <v-list-item-content>
-                        <v-list-item-title
-                          v-text="$t('New_inspection')"
-                        ></v-list-item-title>
+                        <v-list-item-title>
+                          <span v-text="$t('New_inspection')"></span>
+                        </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
                     <v-list-item
@@ -437,9 +437,9 @@
                       </v-list-item-icon>
 
                       <v-list-item-content>
-                        <v-list-item-title
-                          v-text="$tc('View_inspection', 2)"
-                        ></v-list-item-title>
+                        <v-list-item-title>
+                          <span v-text="$tc('View_inspection', 2)"></span>
+                        </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
                     <v-list-item
@@ -453,9 +453,9 @@
                       </v-list-item-icon>
 
                       <v-list-item-content>
-                        <v-list-item-title
-                          v-text="$t('New_hive')"
-                        ></v-list-item-title>
+                        <v-list-item-title>
+                          <span v-text="$t('New_hive')"></span>
+                        </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
                     <v-list-item
@@ -469,9 +469,11 @@
                       </v-list-item-icon>
 
                       <v-list-item-content>
-                        <v-list-item-title
-                          v-text="$t('Move') + ' ' + $tc('hive', 2)"
-                        ></v-list-item-title>
+                        <v-list-item-title>
+                          <span
+                            v-text="$t('Move') + ' ' + $tc('hive', 2)"
+                          ></span>
+                        </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
                   </v-list-item-group>
@@ -509,9 +511,9 @@
                       </v-list-item-icon>
 
                       <v-list-item-content>
-                        <v-list-item-title
-                          v-text="$t('edit_group')"
-                        ></v-list-item-title>
+                        <v-list-item-title>
+                          <span v-text="$t('edit_group')"></span>
+                        </v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
                   </v-list-item-group>
@@ -528,9 +530,9 @@
                     </v-list-item-icon>
 
                     <v-list-item-content>
-                      <v-list-item-title
-                        v-text="$t('New_inspection')"
-                      ></v-list-item-title>
+                      <v-list-item-title>
+                        <span v-text="$t('New_inspection')"></span>
+                      </v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
 
@@ -540,9 +542,9 @@
                     </v-list-item-icon>
 
                     <v-list-item-content>
-                      <v-list-item-title
-                        v-text="$tc('View_inspection', 2)"
-                      ></v-list-item-title>
+                      <v-list-item-title>
+                        <span v-text="$tc('View_inspection', 2)"></span>
+                      </v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
 
@@ -702,9 +704,10 @@
 
 <script>
 import Api from '@api/Api'
-import Confirm from '@components/confirm.vue'
+import { ScaleTransition, SlideYUpTransition } from 'vue2-transitions'
+import Confirm from '@/src/components/confirm-dialog.vue'
 import HiveCard from '@components/hive-card.vue'
-import Layout from '@layouts/main.vue'
+import Layout from '@/src/router/layouts/main-layout.vue'
 import { mapGetters } from 'vuex'
 import {
   momentFromNow,
@@ -719,7 +722,6 @@ import {
   readHiveTags,
   toggleFilterByGroup,
 } from '@mixins/methodsMixin'
-import { ScaleTransition, SlideYUpTransition } from 'vue2-transitions'
 
 export default {
   components: {
@@ -834,7 +836,7 @@ export default {
       },
     },
     filteredHiveSets() {
-      var textFilteredHiveSets = []
+      const textFilteredHiveSets = []
       if (this.hiveSearch === null) {
         textFilteredHiveSets = this.sortedHiveSets
       } else {
@@ -853,6 +855,7 @@ export default {
             ) {
               return value.toLowerCase().includes(this.hiveSearch.toLowerCase())
             }
+            return false // TODO-VUE3 check
           })
           if (hiveSetMatch) {
             return hiveSet
@@ -893,8 +896,10 @@ export default {
                           .toLowerCase()
                           .includes(this.hiveSearch.toLowerCase())
                       }
+                      return false // TODO-VUE3 check
                     })
                   }
+                  return false // TODO-VUE3 check
                 })
               }),
             }
@@ -902,7 +907,7 @@ export default {
         })
       }
 
-      var propertyFilteredHiveSets = textFilteredHiveSets
+      const propertyFilteredHiveSets = textFilteredHiveSets
         .map((hiveSet) => {
           if (this.filterByAlert) {
             return {
@@ -971,6 +976,7 @@ export default {
           } else {
             return { ...hiveSet }
           }
+          return false // TODO-VUE3 check
         })
 
       if (
@@ -1004,25 +1010,29 @@ export default {
       },
     },
     hiveSets() {
-      var apiariesWithDates = this.apiaries
+      const apiariesWithDates = this.apiaries
 
       apiariesWithDates.map((apiary) => {
         apiary.hives.map((hive) => {
           this.addDates(hive)
+          return hive // TODO-VUE3 check
         })
+        return apiary // TODO-VUE3 check
       })
-      var groupsWithDatesAndEditableHivesProp = this.groups
+      const groupsWithDatesAndEditableHivesProp = this.groups
       groupsWithDatesAndEditableHivesProp.map((group) => {
         group.hives.map((hive) => {
           this.addDates(hive)
+          return hive // TODO-VUE3 check
         })
-        var hasEditableHive =
+        const hasEditableHive =
           group.hives.filter((hive) => {
             return hive.editable || hive.owner
           }).length > 0
         hasEditableHive
           ? (group.hasEditableHive = true)
           : (group.hasEditableHive = false)
+        return group // TODO-VUE3 check
       })
       return apiariesWithDates.concat(groupsWithDatesAndEditableHivesProp)
     },
@@ -1123,7 +1133,7 @@ export default {
       this.alertTimer = setInterval(this.readAlerts, this.alertInterval)
     })
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.stopTimers()
   },
   methods: {
@@ -1246,10 +1256,10 @@ export default {
         hive.reminder_date_day_month = null
         hive.reminder_date_locale_date = null
       }
-      var device =
+      const device =
         hive.sensors.length !== 0 ? this.findDeviceById(hive.sensors[0]) : null
       if (device !== null) {
-        var isToday = this.$moment
+        const isToday = this.$moment
           .utc(device.last_message_received)
           .isSame(this.today, 'day')
       }
@@ -1387,11 +1397,11 @@ export default {
         : this.hiddenGroups.includes(hiveSet.id)
     },
     hiveTagRedirect(hivetags) {
-      var doubleDigits = this.hiveIndex.length > 1
-      var tag = doubleDigits ? this.hiveIndex : '0' + this.hiveIndex
-      var filteredHiveTags = hivetags.filter((hiveTag) => hiveTag.tag === tag)
-      var hiveTag = filteredHiveTags.length === 0 ? null : filteredHiveTags[0]
-      var tagExists = parseInt(tag) <= this.maxHiveTagNr
+      const doubleDigits = this.hiveIndex.length > 1
+      const tag = doubleDigits ? this.hiveIndex : '0' + this.hiveIndex
+      const filteredHiveTags = hivetags.filter((hiveTag) => hiveTag.tag === tag)
+      const hiveTag = filteredHiveTags.length === 0 ? null : filteredHiveTags[0]
+      const tagExists = parseInt(tag) <= this.maxHiveTagNr
 
       if (hiveTag) {
         this.$router.push(hiveTag.router_link)
@@ -1486,7 +1496,9 @@ export default {
       this.$store.commit('locations/setHiveView', view)
     },
     toggleHiveSet(hiveSet) {
-      var toggleArray = !hiveSet.users ? this.hiddenApiaries : this.hiddenGroups
+      const toggleArray = !hiveSet.users
+        ? this.hiddenApiaries
+        : this.hiddenGroups
       if (toggleArray.includes(hiveSet.id)) {
         toggleArray.splice(toggleArray.indexOf(hiveSet.id), 1)
       } else {

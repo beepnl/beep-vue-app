@@ -257,73 +257,74 @@
                           chItem.consent === 1 ? chItem.updated_at : null
                         "
                       >
-                        <span
-                          v-if="editedCHItems.indexOf(chItem.id) > -1"
-                          slot="after"
-                          class="ml-1"
-                        >
-                          <v-btn
-                            tile
-                            outlined
-                            class="mt-n1 green--text"
-                            x-small
-                            @click="
-                              updateConsentDate(
-                                research.id,
-                                chItem.id,
-                                // eslint-disable-next-line vue/comma-dangle
-                                chItem.updated_at
-                              )
-                            "
+                        <template v-slot:after>
+                          <span
+                            v-if="editedCHItems.indexOf(chItem.id) > -1"
+                            class="ml-1"
                           >
-                            <v-progress-circular
-                              v-if="showLoadingIcon.indexOf(chItem.id) > -1"
-                              class="ml-n1 mr-2"
-                              size="12"
-                              width="2"
-                              indeterminate
-                            />
-                            <v-icon
-                              v-if="showLoadingIcon.indexOf(chItem.id) === -1"
-                              left
+                            <v-btn
+                              tile
+                              outlined
+                              class="mt-n1 green--text"
                               x-small
-                              >mdi-check</v-icon
+                              @click="
+                                updateConsentDate(
+                                  research.id,
+                                  chItem.id,
+                                  // eslint-disable-next-line vue/comma-dangle
+                                  chItem.updated_at
+                                )
+                              "
                             >
-                            {{ $t('save') }}</v-btn
-                          >
-                        </span>
-                        <span
-                          v-if="editedCHItems.indexOf(chItem.id) === -1"
-                          slot="after"
-                          class="description cursor-pointer"
-                        >
-                          <v-tooltip bottom>
-                            <template v-slot:activator="{ on }">
+                              <v-progress-circular
+                                v-if="showLoadingIcon.indexOf(chItem.id) > -1"
+                                class="ml-n1 mr-2"
+                                size="12"
+                                width="2"
+                                indeterminate
+                              />
                               <v-icon
-                                class="mdi mdi-information icon-info"
-                                dark
-                                small
-                                color="accent"
-                                v-on="on"
-                              ></v-icon>
-                            </template>
-                            <span
-                              >{{ $t('click_date_to_edit') }}
-                              {{ $t('Consent_can_only_be_set') }}
-                              {{
-                                chItem.consent === 1
-                                  ? $t('earlier') +
-                                    ' ' +
-                                    $t('start_date').toLowerCase() +
-                                    '.'
-                                  : $t('later') +
-                                    ' ' +
-                                    $t('end_date').toLowerCase() +
-                                    '.'
-                              }}
-                            </span>
-                          </v-tooltip>
-                        </span>
+                                v-if="showLoadingIcon.indexOf(chItem.id) === -1"
+                                left
+                                x-small
+                                >mdi-check</v-icon
+                              >
+                              {{ $t('save') }}</v-btn
+                            >
+                          </span>
+
+                          <span
+                            v-if="editedCHItems.indexOf(chItem.id) === -1"
+                            class="description cursor-pointer"
+                          >
+                            <v-tooltip bottom>
+                              <template v-slot:activator="{ on }">
+                                <v-icon
+                                  class="mdi mdi-information icon-info"
+                                  dark
+                                  small
+                                  color="accent"
+                                  v-on="on"
+                                ></v-icon>
+                              </template>
+                              <span
+                                >{{ $t('click_date_to_edit') }}
+                                {{ $t('Consent_can_only_be_set') }}
+                                {{
+                                  chItem.consent === 1
+                                    ? $t('earlier') +
+                                      ' ' +
+                                      $t('start_date').toLowerCase() +
+                                      '.'
+                                    : $t('later') +
+                                      ' ' +
+                                      $t('end_date').toLowerCase() +
+                                      '.'
+                                }}
+                              </span>
+                            </v-tooltip>
+                          </span>
+                        </template>
                         <template v-slot:button-cancel>
                           <v-btn text color="accent">{{ $t('Cancel') }}</v-btn>
                         </template>
@@ -401,17 +402,17 @@
 
 <script>
 import Api from '@api/Api'
-import Confirm from '@components/confirm.vue'
-import { Datetime } from 'vue-datetime'
-import 'vue-datetime/dist/vue-datetime.min.css'
-import Layout from '@layouts/back.vue'
-import SelectHivesOverlay from '@components/select-hives-overlay.vue'
-import { momentify, momentFullDateTime } from '@mixins/momentMixin'
-import { mapGetters } from 'vuex'
 import {
   readApiariesAndGroups,
   readDevicesIfNotChecked,
 } from '@mixins/methodsMixin'
+import Confirm from '@/src/components/confirm-dialog.vue'
+import { Datetime } from 'vue-datetime'
+import 'vue-datetime/dist/vue-datetime.min.css'
+import Layout from '@/src/router/layouts/back-layout.vue'
+import SelectHivesOverlay from '@components/select-hives-overlay.vue'
+import { momentify, momentFullDateTime } from '@mixins/momentMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -460,7 +461,7 @@ export default {
       }, 0)
     },
     sortedResearchProjects() {
-      var sortedRPs = this.researchProjects.slice().sort(function(a, b) {
+      const sortedRPs = this.researchProjects.slice().sort(function(a, b) {
         if (a.name > b.name) {
           return 1
         }
@@ -503,7 +504,7 @@ export default {
     async readResearchProjects() {
       try {
         const response = await Api.readRequest('/research')
-        var researchProjects = response.data
+        const researchProjects = response.data
         researchProjects.map((researchProject) => {
           if (researchProject.consent_history.length > 0) {
             researchProject.consent_history.map((chItem) => {
@@ -513,8 +514,10 @@ export default {
                 true,
                 null
               )
+              return chItem // TODO-VUE3 check
             })
           }
+          return researchProject // TODO-VUE3 check
         })
         this.researchProjects = researchProjects
         return true
@@ -624,7 +627,7 @@ export default {
     },
     updateConsentDate(researchId, consentId, date) {
       this.showLoadingIcon.push(consentId)
-      var formattedDate = this.momentFullDateTime(date, true)
+      const formattedDate = this.momentFullDateTime(date, true)
       this.editedCHItems.splice(this.editedCHItems.indexOf(consentId), 1)
       console.log('Update consent: ', consentId, formattedDate)
       this.updateDate(researchId, consentId, formattedDate)

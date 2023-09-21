@@ -159,15 +159,15 @@
 <script>
 // import Api from '@api/Api'
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
-import Confirm from '@components/confirm.vue'
 // import HiveIcon from '@components/hive-icon.vue'
-import Layout from '@layouts/back.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
 import { mapGetters } from 'vuex'
 import {
   deleteDashboard,
   readApiariesAndGroupsIfNotPresent,
   readDashboardGroups,
 } from '@mixins/methodsMixin'
+import Confirm from '@/src/components/confirm-dialog.vue'
 
 export default {
   components: {
@@ -232,13 +232,14 @@ export default {
   },
   methods: {
     copyUrl(code) {
-      var copyText = this.dashboardUrl + code // TODO get url via env settings
+      const copyText = this.dashboardUrl + code // TODO get url via env settings
       navigator.clipboard.writeText(copyText)
     },
     getHives(dashboardGroup) {
-      var hivesArray = []
+      const hivesArray = []
       dashboardGroup.hive_ids.map((hiveId) => {
         hivesArray.push(this.hivesObject[hiveId])
+        return true // TODO-VUE3 check
       })
       return hivesArray
     },

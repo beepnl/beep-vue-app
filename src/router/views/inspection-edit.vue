@@ -578,16 +578,19 @@
                                 type="datetime"
                                 class="accent--text"
                               >
-                                <span
+                                <template
+                                  v-slot:after
                                   v-if="reminderDate !== null"
-                                  slot="after"
-                                  class="description clear-icon"
-                                  @click="clearDate"
                                 >
-                                  <v-icon class="mt-n1" color="accent"
-                                    >mdi-close</v-icon
-                                  ></span
-                                >
+                                  <span
+                                    class="description clear-icon"
+                                    @click="clearDate"
+                                  >
+                                    <v-icon class="mt-n1" color="accent"
+                                      >mdi-close</v-icon
+                                    ></span
+                                  >
+                                </template>
                                 <template v-slot:button-cancel>
                                   <v-btn text color="accent">{{
                                     $t('Cancel')
@@ -666,15 +669,16 @@
 
 <script>
 import Api from '@api/Api'
+import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 import checklistFieldset from '@components/checklist-fieldset.vue'
-import Confirm from '@components/confirm.vue'
+import Confirm from '@/src/components/confirm-dialog.vue'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
 import dummyOutput from '@components/svg/scan_results_aws.json' // list.json' // test_4_dummy.json'
 import InspectModeSelector from '@components/inspect-mode-selector.vue'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
-import Layout from '@layouts/back.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
 import { mapGetters } from 'vuex'
 import {
   parseDate,
@@ -689,7 +693,6 @@ import { SlideYUpTransition } from 'vue2-transitions'
 import smileRating from '@components/input-fields/smile-rating.vue'
 import Treeselect from 'vue3-treeselect'
 import UploadInspection from '@components/upload-inspection.vue'
-import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 
 export default {
   components: {
@@ -823,6 +826,7 @@ export default {
             if (hive.editable || hive.owner) {
               this.selectedHives.push(hive.id)
             }
+            return hive // TODO-VUE3 check
           })
         }
       },
@@ -855,11 +859,11 @@ export default {
     },
     checklistSvgAlreadySaved() {
       if (this.checklistSvgs.length > 0) {
-        var svgsPresent = this.checklistSvgs.filter(
+        const svgsPresent = this.checklistSvgs.filter(
           (item) => item.checklist_id === this.selectedChecklistId
         )
         if (svgsPresent.length > 0) {
-          var svgNewer = svgsPresent.filter(
+          const svgNewer = svgsPresent.filter(
             (svg) => svg.created_at > this.selectedChecklist.updated_at
           )
           return svgNewer.length > 0 ? svgNewer[svgNewer.length - 1] : null
@@ -872,7 +876,7 @@ export default {
     },
     checklistSvgDifferentAppVersion() {
       if (this.checklistSvgAlreadySaved) {
-        var svgAppVersion =
+        const svgAppVersion =
           this.checklistSvgAlreadySaved.app_version ||
           this.checklistSvgAlreadySaved.name.substring(
             this.checklistSvgAlreadySaved.name.indexOf('(v') + 2,
@@ -929,7 +933,7 @@ export default {
         }
       },
       set(value) {
-        var date = this.momentFullDateTime(value)
+        const date = this.momentFullDateTime(value)
         this.setActiveInspectionDate(date)
       },
     },
@@ -1006,10 +1010,10 @@ export default {
       },
     },
     selectedChecklistDuplicateNames() {
-      var checklist = { ...this.selectedChecklist }
-      var flattened = this.flattenItems(checklist.categories) // get array with all category names
+      const checklist = { ...this.selectedChecklist }
+      const flattened = this.flattenItems(checklist.categories) // get array with all category names
 
-      var duplicates = [
+      const duplicates = [
         ...new Set(flattened.filter((e, i, a) => a.indexOf(e) !== i)), // get all duplicate category names
       ]
 
@@ -1017,10 +1021,10 @@ export default {
     },
     selectedChecklistWithSuffixes() {
       // add suffix to each category that has a duplicate name (because aws textract cannot deal with identical names on same page)
-      var checklist = { ...this.selectedChecklist }
+      const checklist = { ...this.selectedChecklist }
 
       // helper when adding suffixes, to keep track of how often a suffix has been used so which number the suffix should be
-      var dupeTracker = Object.fromEntries(
+      const dupeTracker = Object.fromEntries(
         [...this.selectedChecklistDuplicateNames].map((k) => [k, 0])
       )
 
@@ -1031,7 +1035,7 @@ export default {
       return checklist
     },
     selectedChecklistSvg() {
-      var findItem = this.checklistSvgs.filter(
+      const findItem = this.checklistSvgs.filter(
         (item) => item.id === this.checklistSvgId
       )
       return findItem.length > 0 ? findItem[0] : null
@@ -1051,13 +1055,14 @@ export default {
       },
     },
     sortedHiveSets() {
-      var treeselectArray = []
+      const treeselectArray = []
       if (this.apiaries && this.apiaries.length > 0) {
-        var treeselectApiaries = this.apiaries
+        const treeselectApiaries = this.apiaries
         treeselectApiaries.map((apiary) => {
           apiary.treeselectId = parseInt('1' + apiary.id.toString())
+          return apiary // TODO-VUE3 check
         })
-        var sortedTreeselectApiaries = treeselectApiaries
+        const sortedTreeselectApiaries = treeselectApiaries
           .slice()
           .sort(function(a, b) {
             if (a.name > b.name) {
@@ -1076,7 +1081,7 @@ export default {
         })
       }
       if (this.groups && this.groups.length > 0) {
-        var treeselectGroups = this.groups
+        const treeselectGroups = this.groups
         treeselectGroups.map((group) => {
           // groups with no editable hives will be disabled in the treeselect component
           group.noEditableHives =
@@ -1084,8 +1089,9 @@ export default {
               return hive.editable || hive.owner
             }).length === 0
           group.treeselectId = parseInt('2' + group.id.toString())
+          return group // TODO-VUE3 check
         })
-        var sortedTreeselectGroups = treeselectGroups
+        const sortedTreeselectGroups = treeselectGroups
           .slice()
           .sort(function(a, b) {
             if (a.name > b.name) {
@@ -1206,8 +1212,8 @@ export default {
         !this.checklistSvgAlreadySaved ||
         this.checklistSvgDifferentAppVersion
       ) {
-        var svg = document.getElementById('checklist-svg').outerHTML
-        var now = this.getNow(true)
+        const svg = document.getElementById('checklist-svg').outerHTML
+        const now = this.getNow(true)
         // pass new name to svg to make sure printed & saved checklist-svg have the same name
         this.newSvgName =
           this.selectedChecklist.name +
@@ -1216,7 +1222,7 @@ export default {
           ') (v' +
           this.appVersion +
           ')'
-        var payload = {
+        const payload = {
           checklist_id: this.selectedChecklistId,
           svg,
           pages: this.totalPages,
@@ -1225,7 +1231,7 @@ export default {
         }
         try {
           const response = await Api.postRequest('/checklist-svg', payload)
-          var checklistSvgId = response.data.id
+          const checklistSvgId = response.data.id
           this.readChecklistSvgs()
           return checklistSvgId
         } catch (error) {
@@ -1285,9 +1291,10 @@ export default {
           }
         }
 
-        var itemsObject = {}
+        const itemsObject = {}
         this.selectedChecklist.category_ids.map((categoryId) => {
           itemsObject[categoryId] = null
+          return categoryId // TODO-VUE3 check
         })
         // If existing inspection is being edited change its items array into object with category_ids (of the selected checklist) as keys and item values filled in if present
         if (
@@ -1310,6 +1317,7 @@ export default {
             } else {
               itemsObject[item.category_id] = item.value
             }
+            return item // TODO-VUE3 check
           })
           // For a new inspection, transfer values that have been filled in already for the old checklist to the newly selected checklist
           // and set date to current date only if checklist is owned, otherwise trigger forceInspectionDate mode (disable form until inspection date has been actively selected)
@@ -1318,6 +1326,7 @@ export default {
             if (value !== null) {
               itemsObject[key] = value
             }
+            return [key, value] // TODO-VUE3 check
           })
           if (
             !switchChecklistExistingInspection &&
@@ -1412,7 +1421,7 @@ export default {
     async saveInspection() {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
-        var inspectionToSave = this.activeInspection
+        const inspectionToSave = this.activeInspection
         inspectionToSave.hive_ids = this.selectedHives
         // console.log('saving Inspection...')
         // console.log(inspectionToSave)
@@ -1428,7 +1437,7 @@ export default {
           this.activeHive === null
             ? (searchTerm = this.selectedHiveSet.name)
             : (searchTerm = this.activeHive.location)
-          var lastHiveId = this.selectedHives[this.selectedHives.length - 1]
+          const lastHiveId = this.selectedHives[this.selectedHives.length - 1]
           this.forceParseMode = false
           setTimeout(() => {
             return this.readApiariesAndGroups().then(() => {
@@ -1478,7 +1487,7 @@ export default {
         const response = await Api.pensoftPostRequest(
           this.uploadInspectionPayload
         )
-        var parsedOfflineInput = response.data
+        const parsedOfflineInput = response.data
         this.$store.commit('inspections/setData', {
           prop: 'parsedOfflineInput',
           value: parsedOfflineInput,
@@ -1491,7 +1500,7 @@ export default {
         this.errorMessage = this.$i18n.tc('Error', 1) + ': '
         if (error.response) {
           console.log('Error: ', error.response)
-          var e = error.response.data
+          const e = error.response.data
           var msg = e.errors ? e.errors : e.message ? e.message : e
           this.errorMessage += msg
         } else {
@@ -1547,14 +1556,14 @@ export default {
     findHiveSetId(input) {
       if (typeof input === 'string') {
         var value = input.toLowerCase()
-        var findApiary = this.apiaries.filter(
+        const findApiary = this.apiaries.filter(
           (ap) => ap.name.toLowerCase() === value
         )
-        var findGroup = this.groups.filter(
+        const findGroup = this.groups.filter(
           (gr) => gr.name.toLowerCase() === value
         )
 
-        var id =
+        const id =
           findApiary.length > 0
             ? '1' + findApiary[0].id.toString()
             : findGroup.length > 0
@@ -1568,11 +1577,11 @@ export default {
     findHiveId(input) {
       if (typeof input === 'string' && this.selectedHiveSet) {
         var value = input.toLowerCase()
-        var findHive = this.selectedHiveSet.hives.filter(
+        const findHive = this.selectedHiveSet.hives.filter(
           (hive) => hive.name.toLowerCase() === value
         )
 
-        var id = findHive.length > 0 ? findHive[0].id : null
+        const id = findHive.length > 0 ? findHive[0].id : null
         return id
       } else {
         // TODO: add else if for if hiveSet was not found, then first find hive and then select connected hiveSet
@@ -1616,11 +1625,11 @@ export default {
       )
     },
     getParsedAnswer(id) {
-      var parsedData =
+      const parsedData =
         this.enableDummyOutput && this.queriedMode === 'parse' // TODO remove when enableDummyOutput is removed
           ? this.dummyOutput
           : this.parsedOfflineInput
-      var items = parsedData.scans.map((el) => {
+      const items = parsedData.scans.map((el) => {
         return el.scan.filter(
           (answer) =>
             answer.parent_category_id !== undefined &&
@@ -1636,12 +1645,12 @@ export default {
     },
     getParsedOverallAnswers() {
       Object.keys(this.parsedImages).map((prop) => {
-        var answer = this.getParsedAnswer(prop)
+        const answer = this.getParsedAnswer(prop)
         var value = null
         if (answer && answer.value !== undefined) {
           if (prop === 'impression' || prop === 'attention') {
-            var posAnswer = answer.value.filter((el) => el === 1)
-            var checkboxIndex = answer.value.findIndex((value) => value === 1)
+            const posAnswer = answer.value.filter((el) => el === 1)
+            const checkboxIndex = answer.value.findIndex((value) => value === 1)
             value =
               posAnswer.length > 1
                 ? null // if multiple checkboxes are parsed as true, do not fill in a value and let user check via red eye
@@ -1662,12 +1671,12 @@ export default {
         if (prop !== 'location' && prop !== 'hive') {
           this.activeInspection[prop] = value
         } else if (prop === 'location') {
-          var id = this.findHiveSetId(value)
+          const id = this.findHiveSetId(value)
           this.selectHiveSet(id)
           this.selectedHiveSetId = id !== null ? parseInt(id) : null
           this.selectedHives = []
         } else if (prop === 'hive') {
-          var hiveId = this.findHiveId(value)
+          const hiveId = this.findHiveId(value)
 
           if (hiveId) {
             this.selectHive(hiveId)
@@ -1676,6 +1685,8 @@ export default {
 
         this.parsedImages[prop] =
           answer && answer.image !== undefined ? answer.image : []
+
+        return prop // TODO-VUE3 check
       })
     },
     initInspection() {
@@ -1732,7 +1743,7 @@ export default {
       for (var n = 1; n <= this.printExpBullets; n++) {
         bullets += '• ' + this.$i18n.t('Print_checklist_exp_' + n) + '</br>'
       }
-      var htmlText =
+      const htmlText =
         '<p>' +
         this.$i18n.t('Print_checklist_exp') +
         '</p><p>' +
@@ -1778,6 +1789,7 @@ export default {
         apiary.hives.map((hive) => {
           this.selectedHives.push(hive.id)
           this.editableHives.push(hive.id)
+          return hive // TODO-VUE3 check
         })
         // only when selecting the apiary from the queried hive Id, select just that hive
         if (this.hiveId && apiary.id === this.activeHive.location_id) {
@@ -1795,7 +1807,7 @@ export default {
     },
     selectChecklistSvg() {
       if (this.selectedChecklistSvg) {
-        var checklistId = this.selectedChecklistSvg.checklist_id
+        const checklistId = this.selectedChecklistSvg.checklist_id
         // get digital checklist in order to have it preselected when opening the parsed offline input in onlineMode later
         if (this.selectedChecklistId !== checklistId) {
           this.getChecklistById(checklistId)
@@ -1814,6 +1826,7 @@ export default {
             this.selectedHives.push(hive.id)
             this.editableHives.push(hive.id)
           }
+          return hive // TODO-VUE3 check
         })
         // only when selecting a group containing the queried hive Id, select just that hive
         if (this.hiveId && this.activeHive.group_ids.includes(group.id)) {
@@ -1849,7 +1862,7 @@ export default {
     },
     selectHiveSet(id, loc = false) {
       if (id) {
-        var stringId = id.toString()
+        const stringId = id.toString()
         this.isApiary = parseInt(stringId.substring(0, 1)) === 1
         this.hiveSetId = parseInt(stringId.substring(1, stringId.length + 1))
         this.isApiary
@@ -1893,7 +1906,7 @@ export default {
       }
     },
     setActiveInspectionDate(setDate = null) {
-      var date = setDate === null ? this.getNow() : setDate
+      const date = setDate === null ? this.getNow() : setDate
       this.activeInspection.date = date
       this.$store.commit('inspections/setData', {
         prop: 'activeInspectionDate',
@@ -1911,10 +1924,11 @@ export default {
       this.selectedChecklist = checklist
       this.lastSelectedChecklistId = checklist.id
       this.activeInspection.checklist_id = this.selectedChecklistId
-      var itemsObject = {}
+      const itemsObject = {}
       this.selectedChecklist.category_ids.map((categoryId) => {
         // TODO: what if category ids is empty?
         itemsObject[categoryId] = null
+        return categoryId // TODO-VUE3 check
       })
       this.activeInspection.items = itemsObject
       if (this.selectedChecklist.owner) {

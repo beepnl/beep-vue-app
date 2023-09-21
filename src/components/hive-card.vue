@@ -134,13 +134,15 @@
 
                   <v-list-item-content>
                     <v-list-item-title
-                      v-text="
-                        `${
-                          hive.last_inspection_date !== null
-                            ? $t('New_inspection')
-                            : $t('no_inspections')
-                        }`
-                      "
+                      ><span
+                        v-text="
+                          `${
+                            hive.last_inspection_date !== null
+                              ? $t('New_inspection')
+                              : $t('no_inspections')
+                          }`
+                        "
+                      ></span
                     ></v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
@@ -587,9 +589,9 @@ export default {
   }),
   computed: {
     alertRuleNamesText() {
-      var uniqueAlertRuleNames = []
+      const uniqueAlertRuleNames = []
       this.alerts.map((alert) => {
-        var alertName =
+        const alertName =
           alert.alert_rule_name !== null
             ? alert.alert_rule_name
             : alert.alert_function !== null
@@ -598,6 +600,7 @@ export default {
         if (uniqueAlertRuleNames.indexOf(alertName) === -1) {
           uniqueAlertRuleNames.push(alertName)
         }
+        return true // TODO-VUE3 check
       })
       return uniqueAlertRuleNames.join(', ')
     },

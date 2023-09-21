@@ -200,19 +200,19 @@ export default {
   },
   computed: {
     alertsForChartsMerged() {
-      var mergedAlerts = []
+      const mergedAlerts = []
 
       // create an array with one alert for each alert_rule_id that is present in the current alertsForCharts
       // for each alert with the same alert_rule_id, add closest start and end indexes as sets to the indexes prop
       // now the alerts have been merged such that all alerts with the same alert_rule_id are shown on the same row, instead of a separate row for each separate alert
       this.alertsForCharts.map((alert, index) => {
-        var alertInfo = {
+        const alertInfo = {
           id: alert.id,
           alert_function: alert.alert_function,
           closestIndexEnd: alert.closestIndexEnd,
           closestIndexStart: alert.closestIndexStart,
         }
-        var mergedAlert = mergedAlerts.filter(
+        const mergedAlert = mergedAlerts.filter(
           (mergedAlert) => mergedAlert.alert_rule_id === alert.alert_rule_id
         )
         if (mergedAlert.length > 0) {
@@ -221,6 +221,7 @@ export default {
           alert.indexes = [alertInfo]
           mergedAlerts.push(alert)
         }
+        return true // TODO-VUE3 check
       })
 
       return mergedAlerts
@@ -293,7 +294,7 @@ export default {
           .locale(this.locale)
           .format('LT')
       } else if (this.interval === 'day' || this.interval === 'week') {
-        var unit = this.locale === 'nl' ? 'u' : 'h'
+        const unit = this.locale === 'nl' ? 'u' : 'h'
         return (
           this.$moment(date)
             .locale(this.locale)
@@ -323,15 +324,15 @@ export default {
     },
     confirmViewAlert(mergedAlert, index) {
       if (this.isAlertIndex(mergedAlert, index)) {
-        var alertId = this.findAlertInfo(mergedAlert, index).id
-        var alert = this.alertsForCharts.filter(
+        const alertId = this.findAlertInfo(mergedAlert, index).id
+        const alert = this.alertsForCharts.filter(
           (alert) => alert.id === alertId
         )[0]
         this.$emit('confirm-view-alert', alert)
       }
     },
     confirmViewInspection(index) {
-      var inspection = this.getInspectionByIndex(index)
+      const inspection = this.getInspectionByIndex(index)
       this.$emit('confirm-view-inspection', {
         id: inspection.id,
         date: inspection.date,

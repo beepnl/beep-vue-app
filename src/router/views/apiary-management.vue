@@ -118,12 +118,12 @@
 
 <script>
 import Api from '@api/Api'
+import Treeselect from 'vue3-treeselect'
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
-import Confirm from '@components/confirm.vue'
-import Layout from '@layouts/back.vue'
+import Confirm from '@/src/components/confirm-dialog.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
 import { mapGetters } from 'vuex'
 import { readGeneralInspections } from '@mixins/methodsMixin'
-import Treeselect from 'vue3-treeselect'
 
 export default {
   components: {
@@ -196,7 +196,7 @@ export default {
       )
     },
     sortedApiaries() {
-      var sortedApiaries = this.apiaries.slice().sort(function(a, b) {
+      const sortedApiaries = this.apiaries.slice().sort(function(a, b) {
         if (a.name > b.name) {
           return 1
         }
@@ -281,9 +281,10 @@ export default {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
         hives.map((hive) => {
-          var hiveWithNewApiaryId = { ...hive }
+          const hiveWithNewApiaryId = { ...hive }
           hiveWithNewApiaryId.location_id = this.newApiaryId
           this.updateHive(hiveWithNewApiaryId)
+          return true // TODO-VUE3 check
         })
       } else {
         return false

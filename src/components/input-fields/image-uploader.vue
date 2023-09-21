@@ -46,8 +46,8 @@
 
 <script>
 import Api from '@api/Api'
-import Confirm from '@components/confirm.vue'
 import imageOverlay from '@components/image-overlay.vue'
+import Confirm from '@/src/components/confirm-dialog.vue'
 
 export default {
   components: {

@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import Confirm from '@components/confirm.vue'
+import Confirm from '@/src/components/confirm-dialog.vue'
 
 export default {
   components: {
@@ -124,7 +124,7 @@ export default {
         const self = this
         self.errorMessage = null
         self.showLoading = true
-        var reader = new FileReader()
+        const reader = new FileReader()
         reader.onloadend = function() {
           self.pageImage = reader.result
           self.$emit('set-page-blob', reader.result)

@@ -1,3 +1,4 @@
+<!-- eslint-disable camelcase -->
 <template>
   <Layout :title="getTitle()">
     <v-form ref="form" v-model="valid" @submit.prevent="saveGroup">
@@ -398,12 +399,12 @@
 
 <script>
 import Api from '@api/Api'
-import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
-import Confirm from '@components/confirm.vue'
-import { mapGetters } from 'vuex'
-import Layout from '@layouts/back.vue'
-import { momentify } from '@mixins/momentMixin'
 import { readApiariesAndGroupsIfNotPresent } from '@mixins/methodsMixin'
+import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
+import Confirm from '@/src/components/confirm-dialog.vue'
+import { mapGetters } from 'vuex'
+import Layout from '@/src/router/layouts/back-layout.vue'
+import { momentify } from '@mixins/momentMixin'
 
 export default {
   components: {
@@ -551,7 +552,7 @@ export default {
           this.successMessage = this.$i18n.t('Invitation_accepted')
           this.showSuccessMessage = true
           this.readGroups().then(() => {
-            var group = this.groups.filter((group) => group.id === groupId)[0]
+            const group = this.groups.filter((group) => group.id === groupId)[0]
             this.$store.commit('locations/setData', {
               prop: 'hiveSearch',
               value: group.name, // set search term via store instead of query to overrule possible stored search terms
@@ -669,26 +670,28 @@ export default {
         if (response.data.length === 0) {
           this.$router.push({ name: '404', params: { resource: 'group' } })
         }
-        var group = response.data
+        const group = response.data
         // eslint-disable-next-line camelcase
-        var hives_selected = []
+        const hivesSelected = []
         // eslint-disable-next-line camelcase
-        var hives_editable = []
+        const hivesEditable = []
         if (typeof group.hives !== 'undefined' && group.hives.length > 0) {
           group.hives.map((hive) => {
             if (hive.editable) {
-              hives_editable.push(hive.id)
+              hivesEditable.push(hive.id)
             }
-            hives_selected.push(hive.id)
+            hivesSelected.push(hive.id)
+            return hive // TODO-VUE3 check
           })
         }
         // eslint-disable-next-line camelcase
-        group.hives_selected = hives_selected
+        group.hives_selected = hivesSelected
         // eslint-disable-next-line camelcase
-        group.hives_editable = hives_editable
-        var usersWithDeleteProp = group.users // otherwise Vue can't track the 'delete' property
+        group.hives_editable = hivesEditable
+        const usersWithDeleteProp = group.users // otherwise Vue can't track the 'delete' property
         usersWithDeleteProp.map((user) => {
           user.delete = false
+          return user // TODO-VUE3 check
         })
         group.users = usersWithDeleteProp
 
@@ -720,7 +723,7 @@ export default {
     async updateGroup() {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
-        var group = {
+        const group = {
           description: this.activeGroup.description,
           hex_color: this.activeGroup.hex_color,
           hives_editable: this.activeGroup.hives_editable,
@@ -816,7 +819,7 @@ export default {
       this.setGroupEdited(true)
     },
     getTitle() {
-      var addName = ''
+      const addName = ''
       if (this.activeGroup && !this.createMode && !this.activeGroup.admin) {
         addName = ' - ' + this.activeGroup.name
       }

@@ -174,16 +174,16 @@
 
 <script>
 // import Api from '@api/Api'
-import Confirm from '@components/confirm.vue'
+import qrCodeIcon from '@components/qrcode-icon.vue'
+import Confirm from '@/src/components/confirm-dialog.vue'
 import HiveIcon from '@components/hive-icon.vue'
-import Layout from '@layouts/back.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
 import { mapGetters } from 'vuex'
 import {
   deleteHiveTag,
   readApiariesAndGroupsIfNotPresent,
   readHiveTags,
 } from '@mixins/methodsMixin'
-import qrCodeIcon from '@components/qrcode-icon.vue'
 
 export default {
   components: {

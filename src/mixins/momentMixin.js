@@ -57,7 +57,7 @@ export const momentFullDateTime = {
       // return this.$moment(date)
       //   .locale(this.$i18n.locale)
       //   .format('YYYY-MM-DD HH:mm:ss')
-      var time = null
+      const time = null
       if (toUtcTime) {
         time = this.$moment.utc(date)
       } else {
@@ -71,7 +71,7 @@ export const momentFullDateTime = {
 export const momentFromNow = {
   methods: {
     momentFromNow(date, inUtcTime = false) {
-      var inLocalTime = null
+      const inLocalTime = null
       if (inUtcTime) {
         inLocalTime = this.$moment.utc(date).local()
       } else {
@@ -100,7 +100,7 @@ export const momentHumanizeDuration = {
 export const momentHumanizeHours = {
   methods: {
     momentDurationInHours(input, unit, prefix = '') {
-      var numberOfHours = this.$moment.duration(input, unit).asHours()
+      const numberOfHours = this.$moment.duration(input, unit).asHours()
       return (
         prefix +
         numberOfHours +
@@ -118,7 +118,7 @@ export const momentHumanizeHours = {
       )
     },
     momentHumanizeHours(value, capitalsOn = false, asteriskOn = false) {
-      var prefix = capitalsOn
+      const prefix = capitalsOn
         ? this.$i18n.t('Every')
         : this.$i18n.t('Every').toLowerCase()
       switch (true) {
@@ -155,7 +155,7 @@ export const momentify = {
   methods: {
     momentify(date, inUtcTime = false, format = 'lll') {
       if (date !== null) {
-        var inLocalTime = null
+        const inLocalTime = null
         if (inUtcTime) {
           inLocalTime = this.$moment.utc(date).local()
         } else {

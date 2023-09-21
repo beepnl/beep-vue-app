@@ -152,17 +152,17 @@ export default {
       this.$store.commit('inspections/setInspectionEdited', bool)
     },
     setPageBlob(blob, index) {
-      var pageNr = index + 1
+      const pageNr = index + 1
 
-      var payload = { ...this.uploadInspectionPayload }
+      const payload = { ...this.uploadInspectionPayload }
 
       payload.svg = this.selectedChecklistSvg.svg
       payload['data-user-locale'] = [this.uploadLanguage]
 
-      var imageIndex = this.findImageIndex(pageNr)
+      const imageIndex = this.findImageIndex(pageNr)
 
       if (imageIndex === -1) {
-        var imgJson = {
+        const imgJson = {
           page: pageNr,
           image: blob,
         }
@@ -182,7 +182,7 @@ export default {
     },
     updateLanguage(lang) {
       this.uploadLanguage = lang
-      var payload = { ...this.uploadInspectionPayload }
+      const payload = { ...this.uploadInspectionPayload }
       payload['data-user-locale'] = [lang]
       this.uploadInspectionPayload = payload
     },

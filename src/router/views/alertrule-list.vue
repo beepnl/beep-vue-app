@@ -285,11 +285,11 @@
 
 <script>
 import Api from '@api/Api'
-import Confirm from '@components/confirm.vue'
-import Layout from '@layouts/back.vue'
+import { readAlertRules } from '@mixins/methodsMixin'
+import Confirm from '@/src/components/confirm-dialog.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
 import { mapGetters } from 'vuex'
 import { momentHumanizeHours } from '@mixins/momentMixin'
-import { readAlertRules } from '@mixins/methodsMixin'
 
 export default {
   components: {
@@ -399,7 +399,7 @@ export default {
     },
     async toggleAlertRule(alertRule, property) {
       this.showLoadingIconById[property].push(alertRule.id)
-      var alertRuleNew = { ...alertRule }
+      const alertRuleNew = { ...alertRule }
       alertRuleNew[property] = !alertRuleNew[property] // NB yields vuex strict error but can be ignored here because the property value will be changed in the store directly after triggering this error
       try {
         const response = await Api.updateRequest(
@@ -455,6 +455,7 @@ export default {
           if (alertRule.active) {
             this.toggleAlertRule(alertRule, 'active')
           }
+          return alertRule // TODO-VUE3 check
         })
       } else {
         // enable inactive alerts
@@ -462,6 +463,7 @@ export default {
           if (!alertRule.active) {
             this.toggleAlertRule(alertRule, 'active')
           }
+          return alertRule // TODO-VUE3 check
         })
       }
     },

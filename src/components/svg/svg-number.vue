@@ -74,9 +74,9 @@
 </template>
 
 <script>
+import { svgData, svgStyles } from '@mixins/svgMixin'
 import svgLabel from '@/src/components/svg/svg-label.vue'
 // import svgNumberBox from '@/src/components/svg/svg-number-box.vue'
-import { svgData, svgStyles } from '@mixins/svgMixin'
 
 export default {
   components: {
@@ -142,7 +142,7 @@ export default {
       return this.prepend ? 5 : 0
     },
     rectWidth() {
-      var width =
+      const width =
         this.inputType === 'date' ? this.maxFieldWidth : this.textFieldWidth
       return this.doubleWidth ? this.doubleFieldWidth : width
     },

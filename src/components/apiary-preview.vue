@@ -56,7 +56,7 @@ export default {
       )
     },
     hives() {
-      var array = []
+      const array = []
       for (var n = 0; n < this.numberOfHives; n++) {
         array.push(this.newHive)
       }

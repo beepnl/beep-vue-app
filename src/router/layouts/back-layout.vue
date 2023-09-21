@@ -42,10 +42,10 @@
 </template>
 
 <script>
-import Confirm from '@components/confirm.vue'
-import LocaleChanger from '@components/locale-changer.vue'
 import { mapGetters } from 'vuex'
 import NavDrawer from '@components/nav-drawer.vue'
+import Confirm from '@/src/components/confirm-dialog.vue'
+import LocaleChanger from '@components/locale-changer.vue'
 
 export default {
   components: {

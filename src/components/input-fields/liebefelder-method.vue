@@ -99,7 +99,7 @@
                       :disabled="bulkInspection"
                       size="medium"
                       @change="calculateLiebefeldColonySize"
-                      @input.native="calculateLiebefeldColonySize"
+                      @input="calculateLiebefeldColonySize"
                     ></el-input-number> -->
                   </v-col>
                   <v-col cols="12">
@@ -116,7 +116,7 @@
                       :disabled="bulkInspection"
                       size="medium"
                       @change="calculateLiebefeldColonySize"
-                      @input.native="calculateLiebefeldColonySize"
+                      @input="calculateLiebefeldColonySize"
                     ></el-input-number> -->
                   </v-col>
                   <v-col cols="12">
@@ -130,7 +130,7 @@
                       :disabled="bulkInspection"
                       size="medium"
                       @change="calculateLiebefeldColonySize"
-                      @input.native="calculateLiebefeldColonySize"
+                      @input="calculateLiebefeldColonySize"
                     ></el-input-number> -->
                   </v-col>
                 </v-row>
@@ -314,15 +314,17 @@ export default {
     ...mapGetters('inspections', ['bulkInspection']),
     ...mapGetters('hives', ['activeHive']),
     sortedChildren() {
-      var sortedChildren = this.category.children.slice().sort(function(a, b) {
-        if (a.name.indexOf('super') > -1) {
-          return -1
-        }
-        if (a.name.indexOf('frame') > -1) {
-          return 1
-        }
-        return 0
-      })
+      const sortedChildren = this.category.children
+        .slice()
+        .sort(function(a, b) {
+          if (a.name.indexOf('super') > -1) {
+            return -1
+          }
+          if (a.name.indexOf('frame') > -1) {
+            return 1
+          }
+          return 0
+        })
       return sortedChildren
     },
   },
@@ -340,9 +342,9 @@ export default {
   },
   methods: {
     calculateLiebefeldColonySize() {
-      var beesPerCm2 = 1.25
-      var beesSquares25cm2 = 0
-      var colonySize = null
+      const beesPerCm2 = 1.25
+      const beesSquares25cm2 = 0
+      const colonySize = null
 
       setTimeout(() => {
         this.category.children.map((child) => {
@@ -357,11 +359,13 @@ export default {
               ) {
                 beesSquares25cm2 += parseFloat(this.object[child2.id])
               }
+              return child2 // TODO-VUE3 check
             })
           }
+          return child // TODO-VUE3 check
         })
 
-        var hive = this.activeHive
+        const hive = this.activeHive
 
         if (
           typeof hive === 'undefined' ||
@@ -379,6 +383,7 @@ export default {
           if (child.name === 'colony_size') {
             this.object[child.id] = colonySize
           }
+          return true // TODO-VUE3 check
         })
         this.colonySize = colonySize
       }, 100) // wait for vue to update input bees_squares_25cm2 values
@@ -392,7 +397,7 @@ export default {
         this.countLayers('brood') < 2 ? this.countLayers('brood') : 2
       this.honeyLayersForCalculation =
         this.countLayers('honey') < 2 ? this.countLayers('honey') : 2
-      var maxFramecount = this.getMaxFramecount(this.activeHive.layers)
+      const maxFramecount = this.getMaxFramecount(this.activeHive.layers)
       this.framesForCalculation = maxFramecount < 12 ? maxFramecount : 12
     },
     superAndFrameFilter(item) {

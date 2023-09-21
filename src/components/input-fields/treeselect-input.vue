@@ -41,7 +41,7 @@ export default {
   },
   computed: {
     treeSelectArray() {
-      var treeselectArray = []
+      const treeselectArray = []
       this.item.children.forEach((item) => {
         const newNode = this.updateNode(item)
         treeselectArray.push(newNode)
@@ -54,7 +54,7 @@ export default {
       this.$store.commit('inspections/setInspectionEdited', bool)
     },
     updateArray(array) {
-      var itemsArray = []
+      const itemsArray = []
       array.forEach((item) => {
         const newNode = this.updateNode(item)
         itemsArray.push(newNode)
@@ -62,7 +62,7 @@ export default {
       return itemsArray
     },
     updateNode(item) {
-      var newNode = {}
+      const newNode = {}
       if (typeof item.children !== 'undefined' && item.children.length > 0) {
         newNode = {
           id: item.id,

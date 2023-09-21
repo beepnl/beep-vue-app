@@ -222,16 +222,16 @@
 
 <script>
 import Api from '@api/Api'
+import qrCodeIcon from '@components/qrcode-icon.vue'
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
-import Confirm from '@components/confirm.vue'
+import Confirm from '@/src/components/confirm-dialog.vue'
 import { mapGetters } from 'vuex'
-import Layout from '@layouts/back.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
 import {
   deleteHiveTag,
   readApiariesAndGroupsIfNotPresent,
   readHiveTags,
 } from '@mixins/methodsMixin'
-import qrCodeIcon from '@components/qrcode-icon.vue'
 
 export default {
   components: {
@@ -365,7 +365,7 @@ export default {
       return this.$vuetify.breakpoint.mobile
     },
     possibleHiveTags() {
-      var possibleHiveTags = []
+      const possibleHiveTags = []
       for (var i = 1; i < 41; i++) {
         possibleHiveTags.push((i < 10 ? '0' : '') + i.toString())
       }
@@ -435,7 +435,7 @@ export default {
         } else if (!this.createMode) {
           this.setTempSavedHiveTag(null)
 
-          var filteredHiveTags = this.hiveTags.filter(
+          const filteredHiveTags = this.hiveTags.filter(
             (hiveTag) => hiveTag.tag === this.tag
           )
           this.hiveTag =
@@ -541,7 +541,7 @@ export default {
       )
     },
     getEditableHives(hiveSet) {
-      // var allHives = hiveSet.hives.map((hive) => hive.id)
+      // const allHives = hiveSet.hives.map((hive) => hive.id)
       if (this.selectedAction !== null) {
         if (this.selectedAction.deviceRequired) {
           return hiveSet.hives

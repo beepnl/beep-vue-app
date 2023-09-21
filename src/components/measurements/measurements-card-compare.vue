@@ -429,17 +429,17 @@
 <script>
 import Api from '@api/Api'
 import { mapGetters } from 'vuex'
-import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
-import MeasurementsCard from '@components/measurements/measurements-card.vue'
-import MeasurementsChartLine from '@/src/components/measurements/measurements-chart-line.vue'
-import MeasurementsChartBar from '@/src/components/measurements/measurements-chart-bar.vue'
+import { sensorMixin } from '@mixins/sensorMixin'
+import { timeZone } from '@mixins/momentMixin'
 import SelectHivesOverlay from '@components/select-hives-overlay.vue'
 import {
   lightenColor,
   readApiariesAndGroupsIfNotPresent,
 } from '@mixins/methodsMixin'
-import { timeZone } from '@mixins/momentMixin'
-import { sensorMixin } from '@mixins/sensorMixin'
+import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
+import MeasurementsCard from '@components/measurements/measurements-card.vue'
+import MeasurementsChartLine from '@/src/components/measurements/measurements-chart-line.vue'
+import MeasurementsChartBar from '@/src/components/measurements/measurements-chart-bar.vue'
 
 export default {
   components: {
@@ -557,7 +557,7 @@ export default {
       },
     },
     compareChartExpText() {
-      var expText = this.$i18n.te('compare_chart_exp')
+      const expText = this.$i18n.te('compare_chart_exp')
         ? this.$i18n
             .t('compare_chart_exp')
             .replace('[hivename]', '"' + this.defaultHiveName + '"')
@@ -567,7 +567,7 @@ export default {
       return this.defaultHiveIsSelected ? expText : '' // if the default hive is selected, add text that it will not be included in the mean calculation to the compare chart info text
     },
     compareHives() {
-      var selectedHives = [...this.selectedHives]
+      const selectedHives = [...this.selectedHives]
       if (this.defaultHiveIsSelected) {
         selectedHives.splice(selectedHives.indexOf(this.defaultHiveId), 1) // always remove default hive id from list of hive ids that are included in the sensorCompareMeasurementRequest because you don't want to included it in the mean you are comparing the default hive against
       }
@@ -651,9 +651,9 @@ export default {
       relativeInterval,
       hiveId
     ) {
-      var start = interval === 'selection' ? this.dates[0] : null
-      var end = interval === 'selection' ? this.dates[1] : null
-      var timeGroup =
+      const start = interval === 'selection' ? this.dates[0] : null
+      const end = interval === 'selection' ? this.dates[1] : null
+      const timeGroup =
         interval === 'hour' || interval === 'selection' ? null : interval
 
       try {
@@ -688,13 +688,13 @@ export default {
       timeIndex,
       relativeInterval
     ) {
-      var start = interval === 'selection' ? this.dates[0] : null
-      var end = interval === 'selection' ? this.dates[1] : null
-      var timeGroup =
+      const start = interval === 'selection' ? this.dates[0] : null
+      const end = interval === 'selection' ? this.dates[1] : null
+      const timeGroup =
         interval === 'hour' || interval === 'selection' ? null : interval
       this.noCompareChartData = false
       this.loadingCompareData = true
-      var hivecall = this.compareHives.join('&hive_id[]=')
+      const hivecall = this.compareHives.join('&hive_id[]=')
       if (this.selectedHives.length > 0) {
         try {
           const response = await Api.readRequest(
@@ -737,26 +737,26 @@ export default {
       }
     },
     getSensorMeasurement(abbr) {
-      var smFilter = this.sensorMeasurementsList.filter(
+      const smFilter = this.sensorMeasurementsList.filter(
         (measurementType) => measurementType.abbreviation === abbr
       )
       return smFilter.length > 0 ? smFilter[0] : null
     },
     chartjsCompareDataSeries(quantities, bar = false) {
-      var data = {
+      const data = {
         labels: [],
         datasets: [],
       }
       if (!bar) {
-        var SDdata = {
+        const SDdata = {
           labels: [],
           datasets: [],
         }
       }
 
       quantities.map((compareQuantity, index) => {
-        var compareMt = this.getSensorMeasurement(compareQuantity)
-        var compareSD = this.COMPARE_SD[compareQuantity]
+        const compareMt = this.getSensorMeasurement(compareQuantity)
+        const compareSD = this.COMPARE_SD[compareQuantity]
 
         if (compareMt === null || compareMt === undefined) {
           console.log('compareMt not found ', compareQuantity)
@@ -812,11 +812,12 @@ export default {
                 spanGaps: this.interval === 'hour' || this.interval === 'day',
                 mtType: 'compareSD',
               })
+              return true // TODO-VUE3 check
             })
           }
 
-          var quantity = this.COMPARE_SENSOR[compareQuantity]
-          var mt = this.getSensorMeasurement(quantity)
+          const quantity = this.COMPARE_SENSOR[compareQuantity]
+          const mt = this.getSensorMeasurement(quantity)
 
           if (mt === null || mt === undefined) {
             console.log('mt not found ', quantity)
@@ -844,6 +845,7 @@ export default {
             })
           }
         }
+        return true // TODO-VUE3 check
       })
 
       if (
@@ -863,7 +865,7 @@ export default {
           ) {
             data.datasets.map((dataset, index) => {
               if (dataset.mtType === 'compare') {
-                var compareQuantity = dataset.abbr
+                const compareQuantity = dataset.abbr
 
                 dataset.data.push({
                   x: measurement.time,
@@ -871,11 +873,11 @@ export default {
                 })
 
                 if (!bar) {
-                  var compareSD = this.COMPARE_SD[compareQuantity]
+                  const compareSD = this.COMPARE_SD[compareQuantity]
                   if (compareSD !== 'undefined' && compareSD !== null) {
                     this.SDsigns.map((sign) => {
-                      var abbr = compareSD + sign
-                      var dataset = SDdata.datasets.filter(
+                      const abbr = compareSD + sign
+                      const dataset = SDdata.datasets.filter(
                         (dataset) => dataset.abbr === abbr
                       )[0]
 
@@ -888,12 +890,15 @@ export default {
                             : measurement[compareQuantity] +
                               measurement[compareSD],
                       })
+                      return true // TODO-VUE3 check
                     })
                   }
                 }
               }
+              return dataset // TODO-VUE3 check
             })
           }
+          return true // TODO-VUE3 check
         })
       }
 
@@ -914,15 +919,17 @@ export default {
           ) {
             data.datasets.map((dataset, index) => {
               if (dataset.mtType === 'normal') {
-                var quantity = dataset.abbr
+                const quantity = dataset.abbr
 
                 dataset.data.push({
                   x: measurement.time,
                   y: measurement[quantity],
                 })
               }
+              return true // TODO-VUE3 check
             })
           }
+          return true // TODO-VUE3 check
         })
       }
 
@@ -931,8 +938,8 @@ export default {
       if (bar) {
         data.datasets.map((barset, index) => {
           // console.log(barset.name)
-          var allData = barset.data
-          var barData = allData.reduce((resultArray, item, index) => {
+          const allData = barset.data
+          const barData = allData.reduce((resultArray, item, index) => {
             if (!resultArray[0]) {
               resultArray[0] = item // save at least something
             }
@@ -947,14 +954,15 @@ export default {
             return resultArray
           }, [])
           // console.log(barData)
-          var bdy1 = barData[0] && barData[0].y ? barData[0].y : null
-          var bdy2 = barData[1] && barData[1].y ? barData[1].y : null
-          var barDiffData = { x: this.$i18n.tc(this.interval, 1), y: null }
+          const bdy1 = barData[0] && barData[0].y ? barData[0].y : null
+          const bdy2 = barData[1] && barData[1].y ? barData[1].y : null
+          const barDiffData = { x: this.$i18n.tc(this.interval, 1), y: null }
           if (bdy1 !== null && bdy2 !== null) {
             barDiffData.y = bdy2 - bdy1
           }
           // console.log(barDiffData)
           barset.data = [barDiffData]
+          return barset // TODO-VUE3 check
         })
       }
 
@@ -965,18 +973,18 @@ export default {
       return data
     },
     chartjsMultipleHivesDataSeries(quantity) {
-      var data = {
+      const data = {
         labels: [],
         datasets: [],
       }
 
-      var mT = this.getSensorMeasurement(quantity)
+      const mT = this.getSensorMeasurement(quantity)
 
       if (mT === null || mT === undefined) {
         console.log('mT not found ', quantity)
       } else if (mT.show_in_charts === 1) {
         this.selectedHives.map((hiveId) => {
-          var hiveData = []
+          const hiveData = []
           if (
             typeof this.multipleHivesMeasurementData[hiveId] !== 'undefined' &&
             typeof this.multipleHivesMeasurementData[hiveId].measurements !==
@@ -1002,10 +1010,11 @@ export default {
                     })
                   }
                 }
+                return true // TODO-VUE3 check
               }
             )
 
-            var hiveColor =
+            const hiveColor =
               this.hivesObject[hiveId].layers[0].color !== null
                 ? this.hivesObject[hiveId].layers[0].color
                 : this.fallbackColor
@@ -1024,6 +1033,7 @@ export default {
               spanGaps: this.interval === 'hour' || this.interval === 'day', // false,
             })
           }
+          return true // TODO-VUE3 check
         })
       }
 
@@ -1074,6 +1084,7 @@ export default {
               this.currentCompareSensors.push(quantity)
               this.compareSensorsPresent = true
             }
+            return true // TODO-VUE3 check
           })
       } else {
         this.compareMeasurementData = null
@@ -1114,6 +1125,7 @@ export default {
           ) {
             this.currentDebugSensors.push(quantity)
           }
+          return true // TODO-VUE3 check
         })
       } else if (this.multipleHivesWithData.includes(hiveId)) {
         // if previous data contains measurements for this hiveId, but not for the current measurements request, delete it from the data
@@ -1125,9 +1137,10 @@ export default {
       }
     },
     getHives(hiveIds) {
-      var hivesArray = []
+      const hivesArray = []
       hiveIds.map((hiveId) => {
         hivesArray.push(this.hivesObject[hiveId])
+        return true // TODO-VUE3 check
       })
       return hivesArray
     },
@@ -1139,12 +1152,12 @@ export default {
       return label.replace(/^0/, '')
     },
     getSensorName(sensordefs, quantity) {
-      var trans =
+      const trans =
         sensordefs[quantity] && sensordefs[quantity].name !== null
           ? sensordefs[quantity].name
           : this.$i18n.t(quantity)
 
-      var hive =
+      const hive =
         ' (' +
         (quantity.indexOf('mean_') === -1
           ? this.defaultHiveName
@@ -1163,8 +1176,8 @@ export default {
       }
       if (this.comparingData && this.cardExpanded) {
         var i = interval !== null ? interval : this.interval
-        var t = timeIndex !== null ? timeIndex : this.timeIndex
-        var r =
+        const t = timeIndex !== null ? timeIndex : this.timeIndex
+        const r =
           relativeInterval !== null ? relativeInterval : this.relativeInterval
         if (
           this.showCompareSection &&

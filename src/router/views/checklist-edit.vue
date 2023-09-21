@@ -223,10 +223,10 @@
 
 <script>
 import Api from '@api/Api'
-import Confirm from '@components/confirm.vue'
-import Layout from '@layouts/back.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
 import { mapGetters } from 'vuex'
 import checklistTree from '@components/checklist-tree.vue'
+import Confirm from '@/src/components/confirm-dialog.vue'
 
 export default {
   components: {
@@ -326,11 +326,11 @@ export default {
   methods: {
     async createChecklist(duplicate = false) {
       this.showLoadingIcon = true
-      var categoryIds = null
+      const categoryIds = null
       if (this.activeChecklist.category_ids.length > 0) {
         categoryIds = this.activeChecklist.category_ids.join(',')
       }
-      var newChecklist = {
+      const newChecklist = {
         name: this.activeChecklist.name + (duplicate ? ' (copy)' : ''),
         categories: categoryIds,
         owner: true,
@@ -447,11 +447,11 @@ export default {
     async updateChecklist(newChecklist = false) {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
-        var categoryIds = null
+        const categoryIds = null
         if (this.activeChecklist.category_ids.length > 0) {
           categoryIds = this.activeChecklist.category_ids.join(',')
         }
-        var checklistUpdate = {
+        const checklistUpdate = {
           id: this.activeChecklist.id,
           name: this.activeChecklist.name,
           categories: categoryIds,
@@ -559,7 +559,7 @@ export default {
     },
     getText(item) {
       const name = item.name
-      var research = ''
+      const research = ''
       if (item.researches.length > 0) {
         research =
           ' (' + this.$i18n.t('research') + ': ' + item.researches[0] + ')'

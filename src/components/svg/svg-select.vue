@@ -95,9 +95,9 @@
 </template>
 
 <script>
+import { svgData, svgStyles } from '@mixins/svgMixin'
 import svgCheckbox from '@/src/components/svg/svg-checkbox.vue'
 import svgLabel from '@/src/components/svg/svg-label.vue'
-import { svgData, svgStyles } from '@mixins/svgMixin'
 
 export default {
   components: {
@@ -162,7 +162,7 @@ export default {
   methods: {
     checkListLengthWarning() {
       if (this.flattenedItems.length > this.maxNrOfItems) {
-        var warning =
+        const warning =
           this.$i18n.t('Too_long_list_present') +
           ' "' +
           this.label +
@@ -205,7 +205,7 @@ export default {
         item.trans !== null && item.trans[this.locale] !== undefined
           ? item.trans[this.locale]
           : item.name
-      var maxLength = this.maxItemLength - item.depth * 4
+      const maxLength = this.maxItemLength - item.depth * 4
       return text.substring(0, maxLength)
     },
   },

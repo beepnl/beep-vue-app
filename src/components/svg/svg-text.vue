@@ -70,8 +70,8 @@
 </template>
 
 <script>
-import svgLabel from '@/src/components/svg/svg-label.vue'
 import { svgData, svgStyles } from '@mixins/svgMixin'
+import svgLabel from '@/src/components/svg/svg-label.vue'
 
 export default {
   components: {

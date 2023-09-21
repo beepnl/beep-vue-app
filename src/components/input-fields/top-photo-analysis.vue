@@ -60,7 +60,7 @@
                   :disabled="bulkInspection"
                   size="medium"
                   @change="calculateTpaColonySize"
-                  @input.native="calculateTpaColonySize"
+                  @input="calculateTpaColonySize"
                 ></el-input-number> -->
               </v-col>
               <v-col cols="12">
@@ -74,7 +74,7 @@
                   :disabled="bulkInspection"
                   size="medium"
                   @change="calculateTpaColonySize"
-                  @input.native="calculateTpaColonySize"
+                  @input="calculateTpaColonySize"
                 ></el-input-number> -->
               </v-col>
             </v-row>
@@ -253,10 +253,10 @@ export default {
   },
   methods: {
     calculateTpaColonySize() {
-      var beesPerCm2 = 1.25
-      var colonySize = null
-      var pixelsTotal = 0
-      var pixelsBees = 0
+      const beesPerCm2 = 1.25
+      const colonySize = null
+      const pixelsTotal = 0
+      const pixelsBees = 0
 
       setTimeout(() => {
         this.category.children.map((child) => {
@@ -265,9 +265,10 @@ export default {
           } else if (child.name === 'pixels_total_top') {
             pixelsTotal = parseInt(this.object[child.id])
           }
+          return true // TODO-VUE3 check
         })
 
-        var hive = this.activeHive
+        const hive = this.activeHive
         if (
           pixelsTotal === 0 ||
           typeof hive === 'undefined' ||
@@ -280,7 +281,7 @@ export default {
           colonySize = null
         } else {
           // colony_size = ratio occupied * fully occupied frames * 2 * brood layers * bees per cm2
-          var ratio = pixelsTotal > pixelsBees ? pixelsBees / pixelsTotal : 1
+          const ratio = pixelsTotal > pixelsBees ? pixelsBees / pixelsTotal : 1
           colonySize = Math.round(
             ratio *
               (parseFloat(hive.fr_width_cm) *
@@ -306,6 +307,7 @@ export default {
             }
             this.object[child.id] = colonySize
           }
+          return true // TODO-VUE3 check
         })
 
         this.colonySize = colonySize

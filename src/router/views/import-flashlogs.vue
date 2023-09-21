@@ -657,11 +657,11 @@
 
 <script>
 import Api from '@api/Api'
-import Confirm from '@components/confirm.vue'
-import Layout from '@layouts/back.vue'
+import { readApiariesAndGroupsIfNotPresent } from '@mixins/methodsMixin'
+import Confirm from '@/src/components/confirm-dialog.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
 import { mapGetters } from 'vuex'
 import { momentDurationDays, momentify } from '@mixins/momentMixin'
-import { readApiariesAndGroupsIfNotPresent } from '@mixins/methodsMixin'
 
 export default {
   components: {
@@ -850,7 +850,7 @@ export default {
       return this.$vuetify.breakpoint.smAndDown
     },
     undoSentence() {
-      var stringifiedMessage = JSON.stringify(this.undoMessage)
+      const stringifiedMessage = JSON.stringify(this.undoMessage)
       return this.undoMessage !== null && this.undoMessage.data_deleted
         ? this.$i18n.t('data_deleted') +
             '. ' +
@@ -909,7 +909,7 @@ export default {
           this.errorMessage = this.$i18n.t('too_much_data')
         }
 
-        var link = document.createElement('a')
+        const link = document.createElement('a')
         var fileName =
           'beep-base-log-export-user-' +
           this.selectedFlashLog.user_id +
@@ -1032,6 +1032,7 @@ export default {
                 item.block
               ) > -1
             item.missing_data = this.percentageNotInDB(item)
+            return item // TODO-VUE3 check
           })
           setTimeout(() => {
             this.scrollTo('log-data')
@@ -1113,13 +1114,14 @@ export default {
         })
     },
     clearMessages() {
-      this.importMessage = null
+      // eslint-disable-next-line vue/no-mutating-props
+      this.importMessage = null // TODO-VUE3 check
       this.undoMessage = null
       this.errorMessage = null
       this.successMessage = null
     },
     fileSizeText(item) {
-      var nrOfMB = (item.bytes_received / 1024 / 1024).toFixed(2)
+      const nrOfMB = (item.bytes_received / 1024 / 1024).toFixed(2)
       return (
         nrOfMB +
         'MB (' +
@@ -1135,11 +1137,12 @@ export default {
         if (key !== 'flashlog_index' && key !== 'minute_interval') {
           text += key + ': ' + value + ', '
         }
+        return [key, value] // TODO-VUE3 check
       })
       return text
     },
     matchesHeader(log) {
-      var nrOfMatches = Object.keys(log.matches.matches).length
+      const nrOfMatches = Object.keys(log.matches.matches).length
       return (
         this.$i18n.t('Matches_found') +
         ': ' +
@@ -1210,9 +1213,9 @@ export default {
         : '' + (item.delete === true ? 'flashlog-delete' : '')
     },
     scrollTo(refName) {
-      var element = this.$refs[refName]
-      var offset = this.mobile ? 54 : 60
-      var top = element.offsetTop
+      const element = this.$refs[refName]
+      const offset = this.mobile ? 54 : 60
+      const top = element.offsetTop
 
       window.scrollTo(0, top - offset)
     },

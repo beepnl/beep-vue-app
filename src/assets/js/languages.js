@@ -21,18 +21,20 @@ const languages = {
     // { lang: 'en-US', title: 'English US' },
   ],
   checkBrowserLanguage() {
-    var matched = null
-    var languagePartials = navigator.language.split('-')[0]
+    const matched = null
+    const languagePartials = navigator.language.split('-')[0]
     this.languageArray.map((language) => {
       if (language.lang === navigator.language) {
         matched = language.lang
       }
+      return true // TODO-VUE3 check
     })
     if (!matched) {
       this.languageArray.map((language) => {
         if (language.lang === languagePartials) {
           matched = language.lang
         }
+        return true // TODO-VUE3 check
       })
     }
     if (!matched) {
@@ -40,6 +42,7 @@ const languages = {
         if (language.lang.split('-')[0] === languagePartials) {
           matched = language.lang
         }
+        return true // TODO-VUE3 check
       })
     }
     return matched

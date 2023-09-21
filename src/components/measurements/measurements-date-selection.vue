@@ -18,7 +18,7 @@
           "
           ref="dialog"
           v-model="modal"
-          :return-value.sync="selectedDateCopy"
+          :return-value="selectedDateCopy"
           persistent
           width="290px"
         >
@@ -83,7 +83,7 @@
           ref="menu"
           v-model="menu"
           :close-on-content-click="false"
-          :return-value.sync="datesCopy"
+          :return-value="datesCopy"
           transition="scale-transition"
           offset-y
           min-width="290px"

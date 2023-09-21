@@ -331,7 +331,7 @@
 
           <v-list-item-content>
             <v-list-item-title
-              v-text="`${$t('Edit_inspection')}`"
+              ><span v-text="`${$t('Edit_inspection')}`"></span
             ></v-list-item-title>
           </v-list-item-content>
         </v-list-item>

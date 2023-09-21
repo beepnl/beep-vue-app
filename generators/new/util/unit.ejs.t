@@ -2,7 +2,7 @@
 to: "src/utils/<%= h.changeCase.pascal(name) %>.unit.js"
 ---
 <%
-  const fileName = h.changeCase.pascal(name)
+  var fileName = h.changeCase.pascal(name)
   const importName = h.changeCase.camel(fileName)
 %>import <%= importName %> from './<%= fileName %>'
 

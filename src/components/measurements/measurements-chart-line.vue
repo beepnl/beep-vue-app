@@ -120,13 +120,13 @@ export default {
     alertsForLineCharts() {
       const self = this
 
-      var alertsForLineCharts = {}
+      const alertsForLineCharts = {}
 
       this.alertsForCharts.map((alert, index) => {
         // when alert is triggered at a single moment instead of over a longer period
         // display it as a line instead of box such that the label can be shown as a tooltip on hover, similar to the inspection lines
-        var isLine = alert.min === alert.max
-        var alwaysShowLabel = !isLine
+        const isLine = alert.min === alert.max
+        const alwaysShowLabel = !isLine
 
         alertsForLineCharts['alert' + index] = {
           type: isLine ? 'line' : 'box',
@@ -172,6 +172,7 @@ export default {
             }
           },
         }
+        return true // TODO-VUE3 check
       })
 
       return alertsForLineCharts
@@ -295,10 +296,10 @@ export default {
     inspectionsForLineCharts() {
       const self = this
 
-      var inspectionsForLineCharts = {}
+      const inspectionsForLineCharts = {}
 
       this.inspectionsForCharts.map((inspection, index) => {
-        var chartjsDate = this.$moment(inspection.xValue).format(
+        const chartjsDate = this.$moment(inspection.xValue).format(
           this.chartParseFmt
         )
 
@@ -339,6 +340,7 @@ export default {
             }
           },
         }
+        return true // TODO-VUE3 check
       })
 
       return inspectionsForLineCharts
@@ -384,7 +386,7 @@ export default {
             return value.y.toFixed(1) + ' ' + context.dataset.unit
           },
           display: function(context) {
-            var isFinalValue = false
+            const isFinalValue = false
             // check if datapoint has value, whether all datapoints after that are null
             // in that case current datapoint is the final value and should be displayed as a datalabel
             // (only pushing non-null datapoints to dataset is not an option because spanGaps won't work then)

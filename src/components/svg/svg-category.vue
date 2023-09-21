@@ -18,10 +18,10 @@
 </template>
 
 <script>
+import { svgComputed, svgData } from '@mixins/svgMixin'
+import svgHeader from '@components/svg/svg-header.vue'
 import svgDivider from '@/src/components/svg/svg-divider.vue'
 import svgFieldset from '@/src/components/svg/svg-fieldset.vue'
-import svgHeader from '@components/svg/svg-header.vue'
-import { svgComputed, svgData } from '@mixins/svgMixin'
 
 export default {
   components: {
@@ -60,7 +60,7 @@ export default {
     },
     calcRowXY(item) {
       if (this.svgPositionSet[item.id] === undefined) {
-        var itemCounter = this.svgItemCounter + 1
+        const itemCounter = this.svgItemCounter + 1
 
         if (itemCounter === 1) {
           // init row height as first item height
@@ -71,8 +71,8 @@ export default {
         // set row height to category header item height
         this.$store.commit('inspections/setRowHeight', this.headerHeight)
 
-        var x = this.xMargin
-        var y =
+        const x = this.xMargin
+        const y =
           (this.svgPageNr === 1 ? this.yStart : this.yMargin) +
           (this.svgPageNr - 1) * this.pageHeight +
           this.svgY

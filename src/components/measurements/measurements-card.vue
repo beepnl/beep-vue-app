@@ -97,8 +97,8 @@ export default {
       return this.$vuetify.breakpoint.mobile
     },
     queriedChartCols() {
-      var queriedValue = parseInt(this.$route.query.chartCols)
-      var valid =
+      const queriedValue = parseInt(this.$route.query.chartCols)
+      const valid =
         queriedValue === 12 || queriedValue === 6 || queriedValue === 4
       return valid ? queriedValue : null
     },

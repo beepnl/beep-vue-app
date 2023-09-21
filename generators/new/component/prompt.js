@@ -9,7 +9,7 @@ module.exports = [
       if (!value.length) {
         return 'Components must have a name.'
       }
-      const fileName = _.kebabCase(value)
+      var fileName = _.kebabCase(value)
       if (fileName.indexOf('-') === -1) {
         return 'Component names should contain at least two words to avoid conflicts with existing and future HTML elements.'
       }

@@ -126,7 +126,7 @@ export const getMaxFramecount = {
   },
   methods: {
     getMaxFramecount(layers) {
-      var framecount =
+      const framecount =
         layers.length > 0
           ? Math.max(...layers.map((layer) => layer.framecount))
           : this.default
@@ -329,7 +329,7 @@ export const deleteHiveTag = {
       }
     },
     confirmDeleteHiveTag(hiveTag, hiveName) {
-      var description = this.hiveTagActionDescriptions[hiveTag.action_id]
+      const description = this.hiveTagActionDescriptions[hiveTag.action_id]
       this.$refs.confirm
         .open(
           this.$i18n.t('Delete_hivetag'),
@@ -366,7 +366,7 @@ export const lightenColor = {
       const green = clamp(((num >> 8) & 0x00ff) + amount)
       const blue = clamp((num & 0x0000ff) + amount)
 
-      var newColor =
+      const newColor =
         'rgba(' + red + ',' + green + ',' + blue + ',' + opacity + ')'
 
       return newColor
@@ -378,7 +378,7 @@ export const orderedLayers = {
   methods: {
     orderedLayers: function(hive) {
       // change sorting if hive was created in app v2 to make sure it is being displayed correctly in v3 (honey layers on top of brood layers)
-      var v2hive = hive.layers.filter((layer) => layer.order === 0).length > 0 // only v2 hives have at least one layer with order number 0
+      const v2hive = hive.layers.filter((layer) => layer.order === 0).length > 0 // only v2 hives have at least one layer with order number 0
       if (v2hive) {
         return hive.layers.slice().sort(function(a, b) {
           if (a.type === 'honey' && b.type === 'brood') {
@@ -424,14 +424,14 @@ export const parseDate = {
   },
   methods: {
     parseDate(input) {
-      var dateStr = this.$moment(input).format('YYYY-MM-DD HH:mm')
+      const dateStr = this.$moment(input).format('YYYY-MM-DD HH:mm')
       var makesSense = false
       if (dateStr !== 'Invalid date') {
-        var year = dateStr.substring(0, 4)
-        var month = dateStr.substring(5, 7)
-        var day = dateStr.substring(8, 10)
-        var hour = dateStr.substring(11, 13)
-        var minutes = dateStr.substring(14, 16)
+        const year = dateStr.substring(0, 4)
+        const month = dateStr.substring(5, 7)
+        const day = dateStr.substring(8, 10)
+        const hour = dateStr.substring(11, 13)
+        const minutes = dateStr.substring(14, 16)
         makesSense =
           parseInt(year) >= this.currentYear &&
           parseInt(year) <= this.currentYear + 2 &&
@@ -440,18 +440,18 @@ export const parseDate = {
           parseInt(hour) <= 24 &&
           parseInt(minutes) <= 59
       }
-      var output = makesSense ? dateStr : input.length > 0 ? '' : null
+      const output = makesSense ? dateStr : input.length > 0 ? '' : null
       return output
     },
     // parseDate(input) { // TODO remove if single-digits won't be used for sure
-    //   var nothingMissing = input.length === 12
+    //   const nothingMissing = input.length === 12
     //   if (nothingMissing) {
-    //     var minutes = input.slice(10, 12).join('')
-    //     var hour = input.slice(8, 10).join('')
-    //     var day = input.slice(6, 8).join('')
-    //     var month = input.slice(4, 6).join('')
-    //     var year = input.slice(0, 4).join('')
-    //     var date =
+    //     const minutes = input.slice(10, 12).join('')
+    //     const hour = input.slice(8, 10).join('')
+    //     const day = input.slice(6, 8).join('')
+    //     const month = input.slice(4, 6).join('')
+    //     const year = input.slice(0, 4).join('')
+    //     const date =
     //       year + '-' + month + '-' + day + ' ' + hour + ':' + minutes + ':00'
     //     var makesSense =
     //       nothingMissing &&
@@ -547,7 +547,7 @@ export const readApiariesAndGroups = {
 
       const allHives = ownHivesArray.concat(sharedHivesArray)
 
-      var uniqueHives = {}
+      const uniqueHives = {}
       const map = new Map()
       for (const item of allHives) {
         if (!map.has(item.id)) {
@@ -617,7 +617,7 @@ export const readApiariesAndGroupsIfNotPresent = {
 
       const allHives = ownHivesArray.concat(sharedHivesArray)
 
-      var uniqueHives = {}
+      const uniqueHives = {}
       const map = new Map()
       for (const item of allHives) {
         if (!map.has(item.id)) {

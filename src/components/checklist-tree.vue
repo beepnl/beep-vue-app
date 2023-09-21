@@ -101,6 +101,7 @@ export default {
         if (child.children !== null) {
           this.checkChildren(child, selected)
         }
+        return child // TODO-VUE3 check
       })
     },
     filterNode(value, data) {

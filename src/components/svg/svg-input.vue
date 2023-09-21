@@ -247,9 +247,10 @@ export default {
     },
     labelWithHeader() {
       const maxLabelLength = 32
-      var addHeader = this.header !== '' && this.header !== this.label
-      var labelText = (addHeader ? this.header + ': ' : '') + this.label
-      var suffix = !addHeader && this.item.suffix ? '_' + this.item.suffix : '' // only add suffix if label has no extra header (label with header is unlikely to be identical to other label with header)
+      const addHeader = this.header !== '' && this.header !== this.label
+      const labelText = (addHeader ? this.header + ': ' : '') + this.label
+      const suffix =
+        !addHeader && this.item.suffix ? '_' + this.item.suffix : '' // only add suffix if label has no extra header (label with header is unlikely to be identical to other label with header)
 
       var label = labelText + suffix
 

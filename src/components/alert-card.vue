@@ -502,7 +502,7 @@ export default {
   },
   methods: {
     async disableAlertForHive() {
-      var updatedAlertRule = { ...this.alertRule }
+      const updatedAlertRule = { ...this.alertRule }
       updatedAlertRule.exclude_hive_ids.push(this.alert.hive_id)
       try {
         const response = await Api.updateRequest(
@@ -511,7 +511,7 @@ export default {
           updatedAlertRule
         )
         if (response) {
-          var disabledText =
+          const disabledText =
             this.$i18n.tc('Alert', 1) +
             ' "' +
             updatedAlertRule.name +

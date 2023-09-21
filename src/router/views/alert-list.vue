@@ -236,10 +236,11 @@
 </template>
 
 <script>
+import { ScaleTransition } from 'vue2-transitions'
 import AlertCard from '@components/alert-card.vue'
 import Api from '@api/Api'
-import Confirm from '@components/confirm.vue'
-import Layout from '@layouts/main.vue'
+import Confirm from '@/src/components/confirm-dialog.vue'
+import Layout from '@/src/router/layouts/main-layout.vue'
 import { mapGetters } from 'vuex'
 import {
   momentFromNow,
@@ -251,7 +252,6 @@ import {
   readApiariesAndGroupsIfNotPresent,
   readTaxonomy,
 } from '@mixins/methodsMixin'
-import { ScaleTransition } from 'vue2-transitions'
 
 export default {
   components: {
@@ -299,7 +299,7 @@ export default {
     ...mapGetters('hives', ['hivesObject']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     alertsWithRuleDetails() {
-      var alertsWithRuleDetails = this.alerts
+      const alertsWithRuleDetails = this.alerts
       alertsWithRuleDetails.map((alert) => {
         alert.locale_date_created_at =
           this.$i18n.t('First_occurence') +
@@ -316,9 +316,9 @@ export default {
         )
 
         if (alert.count > 1) {
-          var createdMoment = this.$moment(alert.created_at)
-          var updatedMoment = this.$moment(alert.updated_at)
-          var period = updatedMoment.diff(createdMoment, 'seconds')
+          const createdMoment = this.$moment(alert.created_at)
+          const updatedMoment = this.$moment(alert.updated_at)
+          const period = updatedMoment.diff(createdMoment, 'seconds')
           alert.momentified = this.momentHumanizeDuration(
             period,
             'seconds',
@@ -328,7 +328,7 @@ export default {
           alert.momentified = this.momentFromNow(alert.updated_at, true)
         }
 
-        var hiveGroupName = null
+        const hiveGroupName = null
         if (
           this.hivesObject[alert.hive_id] !== undefined &&
           this.hivesObject[alert.hive_id].group_name !== undefined
@@ -336,9 +336,10 @@ export default {
           hiveGroupName = this.hivesObject[alert.hive_id].group_name
         }
         alert.hive_group_name = hiveGroupName
+        return alert // TODO-VUE3 check
       })
 
-      var sortedAlerts = alertsWithRuleDetails.slice().sort(function(a, b) {
+      const sortedAlerts = alertsWithRuleDetails.slice().sort(function(a, b) {
         if (a.updated_at > b.updated_at) {
           return -1
         }
@@ -367,7 +368,7 @@ export default {
       )
     },
     filteredAlerts() {
-      var textFilteredAlerts = []
+      const textFilteredAlerts = []
       if (this.search === null) {
         textFilteredAlerts = this.alertsWithRuleDetails
       } else {
@@ -386,9 +387,12 @@ export default {
                 }).length > 0
               )
             }
+            return false // TODO-VUE3 check
           })
           if (alertMatch) {
             return alert
+          } else {
+            return undefined // TODO-VUE3 check
           }
         })
       }
@@ -425,7 +429,7 @@ export default {
       })
     })
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.stopTimer()
   },
   methods: {
@@ -450,7 +454,7 @@ export default {
     },
     async deleteAllAlerts(deleteSelected = false) {
       this.showLoadingIcon = true
-      var payload = deleteSelected ? { alert_ids: this.selectedAlerts } : null
+      const payload = deleteSelected ? { alert_ids: this.selectedAlerts } : null
       try {
         const response = await Api.deleteRequest('/alerts/', 'all', payload)
         if (!response) {
@@ -536,10 +540,12 @@ export default {
           if (!this.isSelected(alert.id)) {
             this.selectedAlerts.push(alert.id)
           }
+          return true // TODO-VUE3 check
         })
       } else {
         this.filteredAlerts.map((alert) => {
           this.selectedAlerts.splice(this.selectedAlerts.indexOf(alert.id), 1)
+          return true // TODO-VUE3 check
         })
       }
     },

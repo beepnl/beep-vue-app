@@ -24,7 +24,9 @@
             </v-list-item-avatar>
 
             <v-list-item-content>
-              <v-list-item-title v-text="language.title"></v-list-item-title>
+              <v-list-item-title
+                ><span v-text="item.title"></span
+              ></v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </template>
@@ -61,7 +63,7 @@ export default {
       this.$i18n.locale = this.userLocale
       localStorage.beepLocale = this.userLocale
     } else {
-      var newLocale = languages.checkBrowserLanguage()
+      const newLocale = languages.checkBrowserLanguage()
       this.$i18n.locale = newLocale
       this.switchLocale(newLocale)
     }

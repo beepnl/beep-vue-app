@@ -477,7 +477,7 @@
                                   v-model="sensorDef.offset"
                                   :disabled="sensorDef.delete"
                                   size="small"
-                                  @input.native="
+                                  @input="
                                     convertComma($event, sensorDef, 'offset')
                                     sensorDefEdited = true
                                   "
@@ -489,7 +489,7 @@
                                   v-model="sensorDef.multiplier"
                                   :disabled="sensorDef.delete"
                                   size="small"
-                                  @input.native="
+                                  @input="
                                     convertComma(
                                       $event,
                                       sensorDef,
@@ -649,8 +649,9 @@
 
 <script>
 import Api from '@api/Api'
-import Confirm from '@components/confirm.vue'
-import Layout from '@layouts/back.vue'
+import yesNoRating from '@components/input-fields/yes-no-rating.vue'
+import Confirm from '@/src/components/confirm-dialog.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
 import { mapGetters } from 'vuex'
 import { momentify } from '@mixins/momentMixin'
 import {
@@ -661,7 +662,6 @@ import {
 } from '@mixins/methodsMixin'
 import { SlideYUpTransition } from 'vue2-transitions'
 import Treeselect from 'vue3-treeselect'
-import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 // import { ElInputNumber } from 'element-plus' TODO-VUE3 enable for real Vue 3
 
 export default {
@@ -735,8 +735,8 @@ export default {
       return this.$vuetify.breakpoint.mobile
     },
     ownedDevices() {
-      var ownedDevices = this.devices
-      var sortedOwnedDevices = ownedDevices
+      const ownedDevices = this.devices
+      const sortedOwnedDevices = ownedDevices
         .filter((device) => device.owner)
         .slice()
         .sort(function(a, b) {
@@ -751,15 +751,17 @@ export default {
       return sortedOwnedDevices
     },
     sortedSensorMeasurements() {
-      var sortedSMs = this.sensorMeasurementsList.slice().sort(function(a, b) {
-        if (a.abbreviation > b.abbrevation) {
-          return 1
-        }
-        if (b.abbreviation > a.abbreviation) {
-          return -1
-        }
-        return 0
-      })
+      const sortedSMs = this.sensorMeasurementsList
+        .slice()
+        .sort(function(a, b) {
+          if (a.abbreviation > b.abbrevation) {
+            return 1
+          }
+          if (b.abbreviation > a.abbreviation) {
+            return -1
+          }
+          return 0
+        })
       return sortedSMs
     },
   },
@@ -783,7 +785,7 @@ export default {
         })
 
         const response = await Api.readRequest('/devices')
-        var devices = response.data
+        const devices = response.data
 
         if (save) {
           this.$store.commit('devices/setData', {
@@ -795,12 +797,14 @@ export default {
         devices.map((device) => {
           device.delete = false // otherwise Vue can't track the 'delete' property
           if (device.sensor_definitions.length > 0) {
-            var sensorDefsWithDeleteProp = device.sensor_definitions
+            const sensorDefsWithDeleteProp = device.sensor_definitions
             sensorDefsWithDeleteProp.map((sensorDef) => {
               sensorDef.delete = false // otherwise Vue can't track the 'delete' property
+              return sensorDef // TODO-VUE3 check
             })
             device.sensor_definitions = sensorDefsWithDeleteProp
           }
+          return true // TODO-VUE3 check
         })
 
         this.devices = devices
@@ -844,11 +848,11 @@ export default {
     async updateSensorDef(sensorDef) {
       this.errorMessage = null
       this.showLoadingIconById.push(sensorDef.id)
-      var sensorDefId =
+      const sensorDefId =
         typeof sensorDef.id !== 'undefined' ? sensorDef.id : null
       this.sensorDefEdited = false
       try {
-        var response = false
+        const response = false
         if (sensorDef.delete === true) {
           response = await Api.deleteRequest(
             '/sensordefinition/',
@@ -894,7 +898,7 @@ export default {
       }
     },
     addDevice() {
-      var key = this.randomString(16).toLowerCase()
+      const key = this.randomString(16).toLowerCase()
       this.devices.splice(0, 0, {
         name: 'Device ' + (this.ownedDevices.length + 1),
         key: key,
@@ -902,7 +906,7 @@ export default {
         sensor_definitions: [],
       })
       if (this.showDevicesByIndex.length > 0) {
-        var updatedIndexes = this.showDevicesByIndex.map(function(index) {
+        const updatedIndexes = this.showDevicesByIndex.map(function(index) {
           return index + 1
         })
         this.showDevicesByIndex = updatedIndexes
@@ -984,7 +988,7 @@ export default {
     },
     randomString(length) {
       var text = ''
-      var possible =
+      const possible =
         'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjklmnpqrstuvwxyz0123456789' // excluded o and O to avoid confusion with 0
 
       for (var i = 0; i < length; i++) {
@@ -994,16 +998,11 @@ export default {
       return text
     },
     removeDevice(key, showIndex) {
-      var deviceIndex = null
-      this.devices.map((device, index) => {
-        if (device.key === key) {
-          deviceIndex = index
-        }
-      })
+      const deviceIndex = this.devices.findIndex((device) => device.key === key) // TODO-VUE3 check
       this.devices.splice(deviceIndex, 1)
       this.toggleDevice(showIndex)
       if (this.showDevicesByIndex.length > 0) {
-        var updatedIndexes = this.showDevicesByIndex.map(function(index) {
+        const updatedIndexes = this.showDevicesByIndex.map(function(index) {
           return index > showIndex ? index - 1 : index
         })
         this.showDevicesByIndex = updatedIndexes
@@ -1011,7 +1010,7 @@ export default {
     },
     removeSensorDef(device, sensorDefinition) {
       this.sensorDefEdited = false
-      var sensorDefIndex = device.sensor_definitions
+      const sensorDefIndex = device.sensor_definitions
         .map(function(sensorDef) {
           return sensorDef.id
         })
@@ -1066,6 +1065,7 @@ export default {
             }
           }
         }
+        return 0 // TODO-VUE3 check
       })
       return sortedSensorDefs
     },

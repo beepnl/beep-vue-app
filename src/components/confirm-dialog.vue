@@ -9,27 +9,19 @@
       <v-toolbar dark :color="options.color" dense flat>
         <v-toolbar-title class="white--text">{{ title }}</v-toolbar-title>
       </v-toolbar>
-      <v-card-text
-        v-show="!!warningMessage"
-        class="pa-4 pb-0 red--text"
-        v-text="warningMessage"
+      <v-card-text v-show="!!warningMessage" class="pa-4 pb-0 red--text"
+        ><span v-text="warningMessage"></span
       ></v-card-text>
-      <v-card-text
-        v-show="!!message && !messageAsHtml"
-        class="pa-4"
-        v-text="message"
-      ></v-card-text>
-      <v-card-text
-        v-show="!!message && messageAsHtml"
-        class="pa-4"
-        v-html="message"
+      <v-card-text v-show="!!message && !messageAsHtml" class="pa-4">
+        <span v-text="message"></span>
+      </v-card-text>
+      <v-card-text v-show="!!message && messageAsHtml" class="pa-4">
+        <span v-html="message"></span
       ></v-card-text>
       <v-card-actions class="pt-0">
         <v-spacer></v-spacer>
-        <v-btn color="accent" text @click.native="agree">{{ $t('ok') }}</v-btn>
-        <v-btn color="grey" text @click.native="cancel">{{
-          $t('Cancel')
-        }}</v-btn>
+        <v-btn color="accent" text @click="agree">{{ $t('ok') }}</v-btn>
+        <v-btn color="grey" text @click="cancel">{{ $t('Cancel') }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

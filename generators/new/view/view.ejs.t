@@ -2,7 +2,7 @@
 to: "src/router/views/<%= h.changeCase.pascal(name) %>.vue"
 ---
 <%
-  const fileName = h.changeCase.pascal(name)
+  var fileName = h.changeCase.pascal(name)
   const importName = h.changeCase.pascal(fileName)
   const titleName = h.changeCase.title(name)
 %><script>

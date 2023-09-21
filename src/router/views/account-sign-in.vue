@@ -77,7 +77,7 @@
 <script>
 import Api from '@api/Api'
 import languages from '@assets/js/languages'
-import Layout from '@layouts/account.vue'
+import Layout from '@/src/router/layouts/account-layout.vue'
 
 export default {
   components: { Layout },
@@ -176,7 +176,7 @@ export default {
               } else if (msg.indexOf('email') > -1) {
                 this.fieldErrors.email = true
               }
-              var verifyOn = false
+              const verifyOn = false
               if (msg === 'email_not_verified') {
                 verifyOn = true
               }

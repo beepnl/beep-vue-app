@@ -60,9 +60,9 @@
 </template>
 
 <script>
+import { svgStyles } from '@mixins/svgMixin'
 import svgCheckbox from '@/src/components/svg/svg-checkbox.vue'
 import svgLabel from '@/src/components/svg/svg-label.vue'
-import { svgStyles } from '@mixins/svgMixin'
 
 export default {
   components: {

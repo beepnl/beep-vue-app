@@ -74,7 +74,7 @@ export default {
     },
     hiveWidth: function(hive) {
       if (hive.layers.length > 0) {
-        var maxFramecount = this.getMaxFramecount(hive.layers)
+        const maxFramecount = this.getMaxFramecount(hive.layers)
         if (this.xsView || this.diaryView) {
           return maxFramecount * 3.5
         } else {

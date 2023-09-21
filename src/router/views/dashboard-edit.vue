@@ -279,18 +279,18 @@
 
 <script>
 import Api from '@api/Api'
-import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
-import Confirm from '@components/confirm.vue'
-import { mapGetters } from 'vuex'
-import Layout from '@layouts/back.vue'
-import MeasurementsDateSelection from '@/src/components/measurements/measurements-date-selection.vue'
-import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 import {
   deleteDashboard,
   readApiariesAndGroupsIfNotPresent,
   readDashboardGroups,
 } from '@mixins/methodsMixin'
+import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
+import Confirm from '@/src/components/confirm-dialog.vue'
+import { mapGetters } from 'vuex'
+import Layout from '@/src/router/layouts/back-layout.vue'
 import { momentFormat } from '@mixins/momentMixin'
+import MeasurementsDateSelection from '@/src/components/measurements/measurements-date-selection.vue'
+import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 
 export default {
   components: {
@@ -355,7 +355,7 @@ export default {
     },
     dateRangeText() {
       if (this.dates.length > 0) {
-        var momentDates = [
+        const momentDates = [
           this.momentFormat(this.dates[0], 'll'),
           this.dates[1] !== undefined
             ? this.momentFormat(this.dates[1], 'll')
@@ -416,7 +416,7 @@ export default {
     this.readDashboardGroupsIfNotChecked().then((response) => {
       this.readApiariesAndGroupsIfNotPresent().then((response) => {
         if (!this.createMode) {
-          var filteredDashboards = this.dashboardGroups.filter(
+          const filteredDashboards = this.dashboardGroups.filter(
             (dashboard) => dashboard.code === this.code
           )
           this.dashboard =
@@ -509,7 +509,7 @@ export default {
       }
     },
     copyUrl() {
-      var copyText = this.dashboardUrl + this.dashboard.code
+      const copyText = this.dashboardUrl + this.dashboard.code
       navigator.clipboard.writeText(copyText)
     },
     getOwnedHives(hiveSet) {

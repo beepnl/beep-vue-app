@@ -105,25 +105,25 @@ export default {
       )
     },
     correctPageNrs() {
-      var hasPageNrs = this.pageNrs.length > 0
+      const hasPageNrs = this.pageNrs.length > 0
 
-      var correctPageNrs = this.pageNrs
+      const correctPageNrs = this.pageNrs
         .filter((item) => item.value[0].indexOf(item.category_id) > -1)
         .map((item) => parseInt(item.category_id))
 
       return hasPageNrs ? correctPageNrs : false
     },
     incorrectPageNrs() {
-      var hasPageNrs = this.pageNrs.length > 0
+      const hasPageNrs = this.pageNrs.length > 0
 
-      var incorrectPageNrs = this.pageNrs
+      const incorrectPageNrs = this.pageNrs
         .filter((item) => item.value[0].indexOf(item.category_id) === -1)
         .map((item) => parseInt(item.category_id))
 
       return hasPageNrs ? incorrectPageNrs : false
     },
     missingPages() {
-      var missingPages = []
+      const missingPages = []
       if (this.selectedChecklistSvg) {
         for (var i = 1; i <= this.selectedChecklistSvg.pages; i++) {
           if (
@@ -137,7 +137,7 @@ export default {
       return missingPages
     },
     pageNrs() {
-      var returnedPageNrs = this.parsedOfflineInput.scans
+      const returnedPageNrs = this.parsedOfflineInput.scans
         .map((el) => {
           return el.scan.filter(
             (answer) =>
@@ -151,7 +151,7 @@ export default {
       return returnedPageNrs
     },
     wrongSvgIds() {
-      var pagesWrongSvgIds = []
+      const pagesWrongSvgIds = []
       if (this.selectedChecklistSvg) {
         this.parsedOfflineInput.scans.map((el) => {
           return el.scan.map((answer) => {
@@ -164,6 +164,7 @@ export default {
             ) {
               pagesWrongSvgIds.push(el.page)
             }
+            return true // TODO-VUE3 check
           })
         })
       }

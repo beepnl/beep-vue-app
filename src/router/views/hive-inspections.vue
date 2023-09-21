@@ -613,17 +613,17 @@
 
 <script>
 import Api from '@api/Api'
-import Confirm from '@components/confirm.vue'
+import AddToCalendar from '@components/add-to-calendar.vue'
+import Confirm from '@/src/components/confirm-dialog.vue'
 import imageOverlay from '@components/image-overlay.vue'
 // import { ScaleTransition } from 'vue2-transitions'
-import Layout from '@layouts/back.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
 import { mapGetters } from 'vuex'
 import {
   readApiariesAndGroups,
   readGeneralInspections,
 } from '@mixins/methodsMixin'
 import { momentify, momentFormat } from '@mixins/momentMixin'
-import AddToCalendar from '@components/add-to-calendar.vue'
 
 export default {
   components: {
@@ -681,7 +681,7 @@ export default {
         this.filterByReminder ||
         this.filterByImpression.length > 0
       ) {
-        var parameters = [
+        const parameters = [
           this.filterByAttention ? 'attention=1' : null,
           this.filterByReminder ? 'reminder=1' : null,
           this.filterByImpression.length > 0
@@ -728,7 +728,7 @@ export default {
       return this.$i18n.locale
     },
     matchedItemsByDate() {
-      var matchedItemsByDate = []
+      const matchedItemsByDate = []
       matchedItemsByDate = this.inspections.items_by_date
         .reduce((acc, itemByDate) => {
           if (
@@ -785,7 +785,7 @@ export default {
       )
     },
     passOnQuery() {
-      var queries = this.$route.query
+      const queries = this.$route.query
       if ('interval' in queries) {
         return queries
       } else {
@@ -873,7 +873,7 @@ export default {
       this.loadingInspections = true
       this.show500Response = false
 
-      var searchSpecific =
+      const searchSpecific =
         this.search !== null && this.search.indexOf('=') > -1
           ? this.search
           : null
@@ -938,8 +938,8 @@ export default {
       return val.indexOf('https://') > -1 ? val : this.baseApiUrl + val
     },
     getNextHour(date) {
-      var today = new Date(date)
-      var nextHour = new Date(today.setHours(today.getHours() + 1))
+      const today = new Date(date)
+      const nextHour = new Date(today.setHours(today.getHours() + 1))
       return nextHour
     },
     gradeColor(value) {

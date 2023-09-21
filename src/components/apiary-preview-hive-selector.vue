@@ -200,8 +200,8 @@ export default {
       return hive.layers.some((layer) => layer.type === type)
     },
     hiveWidth: function(hive) {
-      var multiplier = this.largeSize ? 6 : 3.5
-      var placeholder = this.largeSize ? 20 : 35
+      const multiplier = this.largeSize ? 6 : 3.5
+      const placeholder = this.largeSize ? 20 : 35
       return hive.layers.length > 0
         ? this.getMaxFramecount(hive.layers) * multiplier
         : placeholder

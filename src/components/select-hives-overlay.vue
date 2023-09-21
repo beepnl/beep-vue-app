@@ -178,11 +178,11 @@ export default {
     ...mapGetters('groups', ['groups']),
     ...mapGetters('locations', ['apiaries']),
     allHiveIds() {
-      var hiveIds = this.sortedHiveSets.reduce((acc, hiveSet) => {
+      const hiveIds = this.sortedHiveSets.reduce((acc, hiveSet) => {
         acc = acc.concat(this.getHiveIds(hiveSet.hives))
         return acc
       }, [])
-      var uniqueHiveIds = [...new Set(hiveIds)] // with both apiaries and groups hive ids can be duplicated
+      const uniqueHiveIds = [...new Set(hiveIds)] // with both apiaries and groups hive ids can be duplicated
       return uniqueHiveIds
     },
     allHivesSelected: {

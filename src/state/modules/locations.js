@@ -64,7 +64,7 @@ export const mutations = {
     state[payload.prop] = payload.value
   },
   setFilterByImpression: function(state, payload) {
-    var array = state.hiveFilterByImpression
+    const array = state.hiveFilterByImpression
     if (array.includes(payload)) {
       array.splice(array.indexOf(payload), 1)
     } else {

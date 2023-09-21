@@ -125,7 +125,7 @@
       :disabled="disabled"
       size="medium"
       @change="updateInput($event, item.id, item.name, item.input)"
-      @input.native="convertComma($event, item.name, 0)"
+      @input="convertComma($event, item.name, 0)"
     ></el-input-number> -->
 
     <!-- <el-input-number
@@ -140,7 +140,7 @@
       :disabled="disabled"
       size="medium"
       @change="updateInput($event, item.id, item.name, item.input)"
-      @input.native="
+      @input="
         convertComma(
           $event,
           item.name,
@@ -158,7 +158,7 @@
       :disabled="disabled"
       size="medium"
       @change="updateInput($event, item.id, item.name, item.input)"
-      @input.native="convertComma($event, item.name, 3)"
+      @input="convertComma($event, item.name, 3)"
     ></el-input-number>
 
     <el-input-number
@@ -171,7 +171,7 @@
       :disabled="disabled"
       size="medium"
       @change="updateInput($event, item.id, item.name, item.input)"
-      @input.native="convertComma($event, item.name, 0)"
+      @input="convertComma($event, item.name, 0)"
     ></el-input-number>
 
     <el-input-number
@@ -184,7 +184,7 @@
       :disabled="item.name === 'colony_size' || disabled"
       size="medium"
       @change="updateInput($event, item.id, item.name, item.input)"
-      @input.native="convertComma($event, item.name, 0)"
+      @input="convertComma($event, item.name, 0)"
     ></el-input-number> -->
 
     <starRating
@@ -280,20 +280,20 @@
 </template>
 
 <script>
+import { svgData } from '@mixins/svgMixin'
+import { parseDate } from '@mixins/methodsMixin'
+import { mapGetters } from 'vuex'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
 import dummyOutput from '@components/svg/scan_results_aws.json' // list.json' // test_4_dummy.json' TODO remove dummy output
 import imageUploader from '@components/input-fields/image-uploader.vue'
 import sampleCode from '@components/input-fields/sample-code.vue'
 import selectHiveOrApiary from '@components/input-fields/select-hive-or-apiary.vue'
-import slider from '@components/input-fields/slider.vue'
+import slider from '@/src/components/input-fields/slider-input.vue'
 import smileRating from '@components/input-fields/smile-rating.vue'
 import starRating from '@components/input-fields/star-rating.vue'
-import treeselect from '@components/input-fields/treeselect.vue'
+import treeselect from '@/src/components/input-fields/treeselect-input.vue'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
-import { mapGetters } from 'vuex'
-import { parseDate } from '@mixins/methodsMixin'
-import { svgData } from '@mixins/svgMixin'
 // import { ElInputNumber } from 'element-plus'  TODO-VUE3 enable for real Vue 3
 
 export default {
@@ -373,9 +373,9 @@ export default {
         : []
     },
     precision() {
-      var dIndex = this.item.input.indexOf('_decimals')
+      const dIndex = this.item.input.indexOf('_decimals')
       if (dIndex > -1) {
-        var dec = parseInt(this.item.input.substr(dIndex - 1, 1))
+        const dec = parseInt(this.item.input.substr(dIndex - 1, 1))
       } else if (this.item.input === 'square_25cm2') {
         dec = 1
       } else {
@@ -394,10 +394,10 @@ export default {
     },
     parsedAnswer() {
       if (this.parseMode) {
-        var answer = this.parsedAnswerRaw
+        const answer = this.parsedAnswerRaw
         if (Array.isArray(this.parsedAnswerRaw)) {
           if (this.parsedAnswerRaw[0].type === 'checkbox') {
-            var posAnswer = this.parsedAnswerRaw.filter(
+            const posAnswer = this.parsedAnswerRaw.filter(
               (answer) => answer.value[0] === 1
             )
             answer =
@@ -427,11 +427,11 @@ export default {
     },
     parsedAnswerRaw() {
       if (this.parseMode) {
-        var parsedData =
+        const parsedData =
           this.enableDummyOutput && this.queriedParseMode
             ? this.dummyOutput
             : this.parsedOfflineInput
-        var returnedItems = parsedData.scans
+        const returnedItems = parsedData.scans
           .map((el) => {
             return el.scan.filter(
               (answer) =>
@@ -441,7 +441,7 @@ export default {
           })
           .filter((el) => el.length > 0)
 
-        var answer = null
+        const answer = null
 
         if (returnedItems.length > 0) {
           if (returnedItems[0].length > 1) {
@@ -458,13 +458,14 @@ export default {
     },
     parsedImages() {
       if (Array.isArray(this.parsedAnswerRaw)) {
-        var imgArr = []
+        const imgArr = []
         var i = 0
         if (this.parsedItems.length > 0) {
           this.parsedItems.map((it, j) => {
             if (it.hasChildren) {
               // make sure that items without children (= headers of nested sublist) do not get a matched image
               imgArr = imgArr.concat('')
+              return imgArr // TODO-VUE3 check
             } else {
               if (
                 this.parsedAnswerRaw[i] !== undefined &&
@@ -474,6 +475,7 @@ export default {
               }
               i++
             }
+            return true // TODO-VUE3 check
           })
         } else {
           // TODO check if this is needed
@@ -499,7 +501,7 @@ export default {
     if (this.parsedAnswer) {
       if (this.item.input === 'list') {
         this.parsedAnswer.map((answer) => {
-          this.toggleSelect(answer.category_id, this.item.id)
+          return this.toggleSelect(answer.category_id, this.item.id) // TODO-VUE3 check
         })
       } else {
         if (this.item.input === 'select' && this.parsedAnswer.type === 'text') {
@@ -507,7 +509,7 @@ export default {
           var value = this.findCategoryId(this.parsedAnswer.value[0])
         } else if (this.parsedAnswer.type === 'checkbox') {
           if (this.parsedAnswer.value.length > 1) {
-            var checkboxIndex = this.parsedAnswer.value.findIndex(
+            const checkboxIndex = this.parsedAnswer.value.findIndex(
               (value) => value === 1
             )
             value =
@@ -567,7 +569,7 @@ export default {
           Array.isArray(this.parsedAnswerRaw) &&
           this.parsedAnswerRaw[0].type === 'checkbox'
         ) {
-          var posAnswer = this.parsedAnswerRaw.filter(
+          const posAnswer = this.parsedAnswerRaw.filter(
             (answer) => answer.value[0] === 1
           )
           if (posAnswer.length > 1) {
@@ -619,13 +621,13 @@ export default {
     findCategoryId(input) {
       if (typeof input === 'string') {
         var value = input.toLowerCase()
-        var findItem = this.flattenedItems.filter(
+        const findItem = this.flattenedItems.filter(
           (item) =>
             Object.values(item.trans).filter(
               (item) => item.toLowerCase() === value
             ).length > 0 // no strict language check
         )
-        var id = findItem.length > 0 ? findItem[0].id : null
+        const id = findItem.length > 0 ? findItem[0].id : null
         return id
       } else {
         return null
@@ -659,8 +661,8 @@ export default {
       return inputType !== 'number' && inputType !== 'number_0_decimals' // only svgNumber items without min & max constraints
     },
     // parseDigits(value) { // TODO remove if single-digits won't be used for sure
-    //   var number = value.slice(0, this.numberFields).join('')
-    //   var dec = value.slice(this.numberFields).join('')
+    //   const number = value.slice(0, this.numberFields).join('')
+    //   const dec = value.slice(this.numberFields).join('')
     //   var makesSense = // check if empty single-digit number boxes are either only at the start or at the end of the fields (before the decimals) (or is completely filled in)
     //     number !== '' &&
     //     dec !== '' &&
@@ -686,7 +688,7 @@ export default {
       this.setInspectionEdited(true)
     },
     toggleSelect(listItemId, listId) {
-      var selectedArray = []
+      const selectedArray = []
       if (typeof this.object[listId] === 'string') {
         selectedArray = this.object[listId].split(',')
       }
@@ -695,7 +697,7 @@ export default {
       } else {
         selectedArray.push(listItemId + '')
       }
-      var selectedArrayToString = selectedArray.join(',')
+      const selectedArrayToString = selectedArray.join(',')
       this.object[listId] = selectedArrayToString
       this.setInspectionEdited(true)
     },

@@ -1754,7 +1754,7 @@
 </template>
 
 <script>
-import Layout from '@layouts/back.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
 
 export default {
   components: {

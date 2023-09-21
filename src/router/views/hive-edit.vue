@@ -198,10 +198,11 @@
 
 <script>
 import Api from '@api/Api'
-import Confirm from '@components/confirm.vue'
+import Treeselect from 'vue3-treeselect'
+import Confirm from '@/src/components/confirm-dialog.vue'
 import HiveEditDetails from '@components/hive-edit-details.vue'
 import { mapGetters } from 'vuex'
-import Layout from '@layouts/back.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
 import QueenEditDetails from '@components/queen-edit-details.vue'
 import {
   checkAlerts,
@@ -212,7 +213,6 @@ import {
   readGeneralInspections,
 } from '@mixins/methodsMixin'
 import { timeZone } from '@mixins/momentMixin'
-import Treeselect from 'vue3-treeselect'
 // import { ElInputNumber } from 'element-plus'
 
 export default {
@@ -293,7 +293,7 @@ export default {
       return this.activeHive !== null ? [this.activeHive.location] : []
     },
     sortedApiaries() {
-      var sortedApiaries = this.apiaries.slice().sort(function(a, b) {
+      const sortedApiaries = this.apiaries.slice().sort(function(a, b) {
         if (a.name > b.name) {
           return 1
         }
@@ -331,8 +331,8 @@ export default {
     if (this.hiveCreateMode) {
       this.readApiariesAndGroupsIfNotPresent().then(() => {
         if (this.apiaries.length > 0) {
-          var selectedApiary = this.sortedApiaries[0]
-          var selectedLocationId = selectedApiary.id
+          const selectedApiary = this.sortedApiaries[0]
+          const selectedLocationId = selectedApiary.id
           this.newHiveLocation = null
           if (this.locationId !== null) {
             selectedLocationId = this.locationId

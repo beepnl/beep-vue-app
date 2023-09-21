@@ -203,7 +203,7 @@
                     :step-strictly="true"
                     size="medium"
                     @change="editApiary($event, 'lat')"
-                    @input.native="
+                    @input="
                       convertComma(
                         $event,
                         activeApiary,
@@ -232,7 +232,7 @@
                     :step-strictly="true"
                     size="medium"
                     @change="editApiary($event, 'lon')"
-                    @input.native="
+                    @input="
                       convertComma(
                         $event,
                         activeApiary,
@@ -311,11 +311,11 @@
 
 <script>
 import Api from '@api/Api'
-import Confirm from '@components/confirm.vue'
-import Layout from '@layouts/back.vue'
+import VueGoogleAutocomplete from 'vue-google-autocomplete'
+import Confirm from '@/src/components/confirm-dialog.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
 import { mapGetters } from 'vuex'
 import { convertComma, readApiariesAndGroups } from '@mixins/methodsMixin'
-import VueGoogleAutocomplete from 'vue-google-autocomplete'
 // import { ElInputNumber } from 'element-plus' TODO-VUE3 enable for real Vue 3
 
 export default {

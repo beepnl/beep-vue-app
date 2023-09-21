@@ -107,8 +107,8 @@ export default {
     },
     async requestSampleCode() {
       if (this.activeHive !== null) {
-        var hiveId = this.activeHive.id
-        var queenId =
+        const hiveId = this.activeHive.id
+        const queenId =
           this.activeHive.queen !== null ? this.activeHive.queen.id : ''
         try {
           const response = await Api.postRequest('/samplecode', {

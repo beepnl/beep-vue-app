@@ -264,7 +264,7 @@
                           :step-strictly="true"
                           size="medium"
                           @change="setApiaryEdited(true)"
-                          @input.native="
+                          @input="
                             convertComma($event, newHive, 'lat', 3),
                               setApiaryEdited(true)
                           "
@@ -285,7 +285,7 @@
                           :step-strictly="true"
                           size="medium"
                           @change="setApiaryEdited(true)"
-                          @input.native="
+                          @input="
                             convertComma($event, newHive, 'lon', 3),
                               setApiaryEdited(true)
                           "
@@ -494,16 +494,16 @@
 
 <script>
 import Api from '@api/Api'
+import VueGoogleAutocomplete from 'vue-google-autocomplete'
 import ApiaryPreview from '@components/apiary-preview.vue'
-import Confirm from '@components/confirm.vue'
+import Confirm from '@/src/components/confirm-dialog.vue'
 import HiveEditDetails from '@components/hive-edit-details.vue'
-import Layout from '@layouts/back.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
 import { mapGetters } from 'vuex'
 import {
   convertComma,
   readApiariesAndGroupsIfNotPresent,
 } from '@mixins/methodsMixin'
-import VueGoogleAutocomplete from 'vue-google-autocomplete'
 // import { ElInputNumber } from 'element-plus' TODO-VUE3 enable for real Vue 3
 
 export default {

@@ -67,7 +67,7 @@ export default [
     },
     path: '/alerts',
     name: 'alerts',
-    component: () => lazyLoadView(import('@views/alerts.vue')),
+    component: () => lazyLoadView(import('@/src/router/views/alert-list.vue')),
   },
   {
     meta: {
@@ -76,7 +76,8 @@ export default [
     },
     path: '/alertrules',
     name: 'alertrules',
-    component: () => lazyLoadView(import('@views/alertrules.vue')),
+    component: () =>
+      lazyLoadView(import('@/src/router/views/alertrule-list.vue')),
   },
   {
     meta: {
@@ -149,7 +150,8 @@ export default [
     },
     path: '/checklist/:id/edit',
     name: 'checklist',
-    component: () => lazyLoadView(import('@views/checklist.vue')),
+    component: () =>
+      lazyLoadView(import('@/src/router/views/checklist-edit.vue')),
   },
   {
     meta: {
@@ -158,7 +160,8 @@ export default [
     },
     path: '/checklists/',
     name: 'checklists',
-    component: () => lazyLoadView(import('@views/checklist.vue')),
+    component: () =>
+      lazyLoadView(import('@/src/router/views/checklist-edit.vue')),
   },
   // {
   //   meta: {
@@ -176,7 +179,8 @@ export default [
     },
     path: '/dashboards/',
     name: 'dashboards',
-    component: () => lazyLoadView(import('@views/dashboards.vue')),
+    component: () =>
+      lazyLoadView(import('@/src/router/views/dashboard-list.vue')),
   },
   // {
   //   path: '/dashboard/sign-in',
@@ -208,7 +212,7 @@ export default [
     },
     path: '/devices',
     name: 'devices',
-    component: () => lazyLoadView(import('@views/devices.vue')),
+    component: () => lazyLoadView(import('@/src/router/views/device-list.vue')),
   },
   {
     meta: {
@@ -226,7 +230,7 @@ export default [
     },
     path: '/export',
     name: 'export',
-    component: () => lazyLoadView(import('@views/export.vue')),
+    component: () => lazyLoadView(import('@/src/router/views/export-data.vue')),
   },
   {
     meta: {
@@ -235,7 +239,8 @@ export default [
     },
     path: '/flashlog/:id',
     name: 'flashlog',
-    component: () => lazyLoadView(import('@views/flashlog.vue')),
+    component: () =>
+      lazyLoadView(import('@/src/router/views/flashlog-data.vue')),
   },
   {
     meta: {
@@ -244,7 +249,8 @@ export default [
     },
     path: '/hivetags',
     name: 'hivetags',
-    component: () => lazyLoadView(import('@views/hivetags.vue')),
+    component: () =>
+      lazyLoadView(import('@/src/router/views/hivetag-list.vue')),
   },
   {
     meta: {
@@ -283,7 +289,8 @@ export default [
     props: (route) => ({
       importMessage: route.params.importMessage,
     }),
-    component: () => lazyLoadView(import('@views/import.vue')),
+    component: () =>
+      lazyLoadView(import('@/src/router/views/import-flashlogs.vue')),
   },
   {
     meta: {
@@ -337,7 +344,8 @@ export default [
     },
     path: '/hives/:id/inspections/:inspection',
     name: 'hive-inspect-edit',
-    component: () => lazyLoadView(import('@views/inspect.vue')),
+    component: () =>
+      lazyLoadView(import('@/src/router/views/inspection-edit.vue')),
   },
   {
     meta: {
@@ -355,7 +363,8 @@ export default [
     },
     path: '/inspect',
     name: 'inspect',
-    component: () => lazyLoadView(import('@views/inspect.vue')),
+    component: () =>
+      lazyLoadView(import('@/src/router/views/inspection-edit.vue')),
   },
   {
     meta: {
@@ -364,7 +373,7 @@ export default [
     },
     path: '/measurements',
     name: 'measurements',
-    component: () => import('@views/measurements-list.vue'), // no lazyLoadView in order to be able to use beforeDestroy hook to clearInterval for lastSensorValues API call when navigating away
+    component: () => import('@views/measurements-list.vue'), // no lazyLoadView in order to be able to use beforeUnmount hook to clearInterval for lastSensorValues API call when navigating away
   },
   {
     meta: {
@@ -373,7 +382,7 @@ export default [
     },
     path: '/measurements/:id',
     name: 'measurements-id',
-    component: () => import('@views/measurements-list.vue'), // no lazyLoadView in order to be able to use beforeDestroy hook to clearInterval for lastSensorValues API call when navigating away
+    component: () => import('@views/measurements-list.vue'), // no lazyLoadView in order to be able to use beforeUnmount hook to clearInterval for lastSensorValues API call when navigating away
   },
   {
     meta: {
@@ -382,7 +391,8 @@ export default [
     },
     path: '/new',
     name: 'new',
-    component: () => lazyLoadView(import('@views/new.vue')),
+    component: () =>
+      lazyLoadView(import('@/src/router/views/new-changelog.vue')),
   },
   {
     meta: {
@@ -401,7 +411,8 @@ export default [
     },
     path: '/research',
     name: 'research',
-    component: () => lazyLoadView(import('@views/research.vue')),
+    component: () =>
+      lazyLoadView(import('@/src/router/views/research-consent.vue')),
   },
   {
     meta: {
@@ -419,7 +430,8 @@ export default [
     },
     path: '/translations',
     name: 'translations',
-    component: () => lazyLoadView(import('@views/translations.vue')),
+    component: () =>
+      lazyLoadView(import('@/src/router/views/translation-list.vue')),
   },
 ]
 

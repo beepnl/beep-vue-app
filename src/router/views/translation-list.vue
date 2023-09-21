@@ -46,13 +46,15 @@
                 class="ml-0 ml-sm-3 mb-3"
                 color="accent"
                 :small="smAndDown && !mobile"
-                v-text="
-                  (!smAndDown || mobile ? $t('view') + ' ' : '') +
-                    language.lang +
-                    '.js ' +
-                    $t('as_plain_text')
-                "
               >
+                <span
+                  v-text="
+                    (!smAndDown || mobile ? $t('view') + ' ' : '') +
+                      language.lang +
+                      '.js ' +
+                      $t('as_plain_text')
+                  "
+                ></span>
               </v-btn>
             </div>
           </div>
@@ -63,8 +65,8 @@
 </template>
 
 <script>
-import Layout from '@layouts/back.vue'
 import languages from '@assets/js/languages'
+import Layout from '@/src/router/layouts/back-layout.vue'
 
 export default {
   components: {

@@ -159,7 +159,7 @@ export default {
   }),
   computed: {
     gradeTicks() {
-      var ticksArray = []
+      const ticksArray = []
       for (var i = 0; i <= 10; i++) {
         if (i === 0) {
           ticksArray.push('-')
@@ -176,7 +176,7 @@ export default {
       return ticksArray
     },
     numberDegreeTicks() {
-      var ticksArray = []
+      const ticksArray = []
       for (var i = -180; i <= 180; i++) {
         if (i === 0) {
           ticksArray.push('0°')
@@ -191,7 +191,7 @@ export default {
       return ticksArray
     },
     numberPercentageTicks() {
-      var ticksArray = []
+      const ticksArray = []
       for (var i = -1; i <= 100; i++) {
         if (i === 25) {
           ticksArray.push('25%')
@@ -226,7 +226,7 @@ export default {
       ]
     },
     sliderTicks() {
-      var ticksArray = []
+      const ticksArray = []
       for (var i = -1; i <= 100; i++) {
         if (i === 0) {
           ticksArray.push('0')
@@ -244,7 +244,7 @@ export default {
       this.object[id] = null
     },
     getValue(id, inputtype) {
-      const value = this.object[id]
+      var value = this.object[id]
       if (inputtype === 'number_percentage' || inputtype === 'slider') {
         if (value === null || value === -1) {
           return -1

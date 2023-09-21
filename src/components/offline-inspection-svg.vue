@@ -107,7 +107,7 @@ export default {
       'svgWarnings',
     ]),
     calcSvgHeight() {
-      var removePage =
+      const removePage =
         this.svgMaxPageNr && this.svgPageNr > this.svgMaxPageNr ? 1 : 0
       return (this.svgPageNr - removePage) * this.pageHeight + 'mm'
     },

@@ -285,13 +285,13 @@
 
 <script>
 import Api from '@api/Api'
-import Confirm from '@components/confirm.vue'
-import Layout from '@layouts/back.vue'
+import { readTaxonomy } from '@mixins/methodsMixin'
+import Confirm from '@/src/components/confirm-dialog.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
+import { sensorMixin } from '@mixins/sensorMixin'
 import MeasurementsChartLine from '@/src/components/measurements/measurements-chart-line.vue'
 import { mapGetters } from 'vuex'
 import { momentFormatUtcToLocal } from '@mixins/momentMixin'
-import { readTaxonomy } from '@mixins/methodsMixin'
-import { sensorMixin } from '@mixins/sensorMixin'
 
 export default {
   components: {
@@ -450,7 +450,7 @@ export default {
         const response = await Api.postRequest(
           '/flashlogs/' + this.flashLogId + '?block_id=' + this.blockId
         )
-        var importMessage = response.data
+        const importMessage = response.data
         this.showLoadingIcon = false
         this.loading = false
         return this.$router.push({
@@ -476,7 +476,7 @@ export default {
       this.checkBlockData(true)
     },
     chartjsDataSeries(dataSet) {
-      var data = {
+      const data = {
         labels: [],
         datasets: [],
       }
@@ -491,13 +491,13 @@ export default {
             quantity.indexOf('minute') === -1 &&
             quantity !== 'i'
           ) {
-            var mT = this.getSensorMeasurement(quantity)
+            const mT = this.getSensorMeasurement(quantity)
 
             if (mT === null || mT === undefined) {
               console.log('mT not found ', quantity)
             } else if (mT.show_in_charts === 1) {
-              var sensorName = this.$i18n.t(quantity)
-              var sensorLabel =
+              const sensorName = this.$i18n.t(quantity)
+              const sensorLabel =
                 sensorName +
                 (mT.unit !== '-' && mT.unit !== '' && mT.unit !== null
                   ? ' (' + mT.unit + ')'
@@ -521,11 +521,12 @@ export default {
               })
             }
           }
+          return quantity // TODO-VUE3 check
         })
 
         this.blockData[dataSet].map((measurement, index) => {
           data.datasets.map((dataset, i) => {
-            var quantity = dataset.abbr
+            const quantity = dataset.abbr
             // if (
             //   measurement[quantity] !== null &&
             //   typeof measurement[quantity] === 'number'
@@ -535,7 +536,9 @@ export default {
               y: measurement[quantity],
             })
             // }
+            return dataset // TODO-VUE3 check
           })
+          return measurement // TODO-VUE3 check
         })
       }
 
@@ -583,12 +586,13 @@ export default {
             }, {})
           ).sort()
         }
+        return dataSet
       })
 
       this.loading = false
     },
     getSensorMeasurement(abbr) {
-      var smFilter = this.sensorMeasurementsList.filter(
+      const smFilter = this.sensorMeasurementsList.filter(
         (measurementType) => measurementType.abbreviation === abbr
       )
       return smFilter.length > 0 ? smFilter[0] : null
@@ -607,10 +611,10 @@ export default {
     },
     setPeriodDataMinutes(newMinutes) {
       // calculate new block data index
-      var currentIndexPerc = this.blockDataIndex / this.blockDataIndexMax
-      var newMaxIndex =
+      const currentIndexPerc = this.blockDataIndex / this.blockDataIndexMax
+      const newMaxIndex =
         (this.blockDataIndexMax * this.currentMinutes) / newMinutes
-      var newIndex = Math.floor(currentIndexPerc * newMaxIndex)
+      const newIndex = Math.floor(currentIndexPerc * newMaxIndex)
 
       this.blockDataIndex = newIndex
       this.currentMinutes = newMinutes

@@ -71,7 +71,7 @@
                     :color="checkColor(layer)"
                     :class="[`layer ${layer.type}-layer`]"
                     :width="`${hiveWidth(hive)}px`"
-                    @click.native="openOverlay(layer)"
+                    @click="openOverlay(layer)"
                   >
                   </v-sheet>
                 </draggable>
@@ -126,9 +126,10 @@
 </template>
 
 <script>
-import draggable from 'vuedraggable'
-import Confirm from '@components/confirm.vue'
 import { getMaxFramecount, orderedLayers } from '@mixins/methodsMixin'
+import draggable from 'vuedraggable'
+import Confirm from '@/src/components/confirm-dialog.vue'
+
 var keyGlobal = 0
 
 export default {
@@ -245,7 +246,7 @@ export default {
         .then((confirm) => {
           const layerId = this.currentLayer.id || 0
           const layerKey = this.currentLayer.key || 0
-          var remainingLayers = this.hive.layers.filter(
+          const remainingLayers = this.hive.layers.filter(
             (layer) => !(layer.id === layerId || layer.key === layerKey)
           )
           this.hive.layers = remainingLayers
@@ -267,7 +268,7 @@ export default {
         })
     },
     generateLayersToAdd: function() {
-      var arr = []
+      const arr = []
       const layerType = ['honey', 'brood', 'feeding_box', 'queen_excluder']
       for (var n = 0; n < 4; n++) {
         arr[n] = {
@@ -336,6 +337,7 @@ export default {
       layers.map((layer) => {
         layer.order = i
         i--
+        return layer // TODO-VUE3 check
       })
       this.hive.layers = layers
       this.hive.frames =

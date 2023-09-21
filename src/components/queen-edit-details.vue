@@ -39,7 +39,7 @@
               <v-dialog
                 ref="dialog"
                 v-model="modal"
-                :return-value.sync="queenBirthDate"
+                :return-value="queenBirthDate"
                 persistent
                 width="290px"
               >
@@ -217,9 +217,10 @@ export default {
     treeselectBeeRaces() {
       if (this.beeRacesList.length) {
         const locale = this.selectLocale(this.beeRacesList)
-        var treeselectArray = this.beeRacesList
+        const treeselectArray = this.beeRacesList
         treeselectArray.map((beeRace) => {
           beeRace.label = beeRace.trans[locale]
+          return beeRace // TODO-VUE3 check
         })
         const sortedTreeselectArray = treeselectArray
           .slice()
@@ -264,7 +265,7 @@ export default {
         return this.queen.clipped === 1
       },
       set(value) {
-        var setValue = value === true ? 1 : 0
+        const setValue = value === true ? 1 : 0
         this.updateQueen(setValue, 'clipped')
       },
     },
@@ -285,7 +286,7 @@ export default {
         return this.queen.fertilized === 1
       },
       set(value) {
-        var setValue = value === true ? 1 : 0
+        const setValue = value === true ? 1 : 0
         this.updateQueen(setValue, 'fertilized')
       },
     },

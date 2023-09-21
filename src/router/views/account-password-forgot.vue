@@ -71,7 +71,7 @@
 
 <script>
 import Api from '@api/Api'
-import Layout from '@layouts/account.vue'
+import Layout from '@/src/router/layouts/account-layout.vue'
 
 export default {
   components: { Layout },

@@ -20,12 +20,12 @@ module.exports = {
       ? ['error', { allow: ['warn', 'error'] }]
       : 'off',
     'import/no-relative-parent-imports': 'error',
-    'import/order': 'error',
+    'import/order': 'off', // 'error',
     'vue/array-bracket-spacing': 'error',
     'vue/arrow-spacing': 'error',
     'vue/block-spacing': 'error',
     'vue/brace-style': 'error',
-    'vue/camelcase': 'error',
+    'vue/camelcase': 'off', // 'error',
     'vue/comma-dangle': ['error', 'always-multiline'],
     'vue/component-name-in-template-casing': 'error',
     'vue/dot-location': ['error', 'property'],
@@ -50,6 +50,9 @@ module.exports = {
       },
     ],
     'vue/valid-v-slot': 'error',
+    "vue/no-mutating-props": ["error", {
+      "shallowOnly": true
+    }]
   },
   overrides: [
     {
@@ -65,7 +68,7 @@ module.exports = {
     {
       files: ['**/*.unit.js'],
       parserOptions: {
-        parser: 'babel-eslint',
+        parser: "@babel/eslint-parser",
         sourceType: 'module',
       },
       env: { jest: true },

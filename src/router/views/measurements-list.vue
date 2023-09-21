@@ -467,9 +467,17 @@
 
 <script>
 import Api from '@api/Api'
-import Confirm from '@components/confirm.vue'
-import Layout from '@layouts/main.vue'
+import {
+  momentifyDayMonth,
+  momentFormat,
+  momentFormatUtcToLocal,
+  momentFromNow,
+  timeZone,
+} from '@mixins/momentMixin'
+import Confirm from '@/src/components/confirm-dialog.vue'
+import Layout from '@/src/router/layouts/main-layout.vue'
 import { mapGetters } from 'vuex'
+import { sensorMixin } from '@mixins/sensorMixin'
 import MeasurementsCard from '@components/measurements/measurements-card.vue'
 import MeasurementsCardCompare from '@components/measurements/measurements-card-compare.vue'
 import MeasurementsChartHeatmap from '@/src/components/measurements/measurements-chart-heatmap.vue'
@@ -483,14 +491,6 @@ import {
   readTaxonomy,
   readApiariesAndGroups,
 } from '@mixins/methodsMixin'
-import {
-  momentifyDayMonth,
-  momentFormat,
-  momentFormatUtcToLocal,
-  momentFromNow,
-  timeZone,
-} from '@mixins/momentMixin'
-import { sensorMixin } from '@mixins/sensorMixin'
 
 export default {
   components: {
@@ -565,11 +565,11 @@ export default {
     ...mapGetters('inspections', ['generalInspections']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     alertsForDeviceAndPeriod() {
-      var alertsForDevice = [...this.alerts].filter(
+      const alertsForDevice = [...this.alerts].filter(
         (alert) => alert.device_id === this.selectedDeviceId
       )
 
-      var alertsForDeviceAndPeriod = alertsForDevice.filter((alert) =>
+      const alertsForDeviceAndPeriod = alertsForDevice.filter((alert) =>
         this.alertInPeriod(alert)
       )
 
@@ -580,13 +580,14 @@ export default {
         alert.max = !this.dateWithinPeriod(alert, 'updated_at')
           ? this.periodEndString
           : this.momentFormatUtcToLocal(alert.updated_at, this.dateTimeFormat)
+        return alert // TODO-VUE3 check
       })
 
       return alertsForDeviceAndPeriod
     },
     dateRangeText() {
       if (this.dates.length > 0) {
-        var momentDates = [
+        const momentDates = [
           this.momentFormat(this.dates[0], 'll'),
           this.dates[1] !== undefined
             ? this.momentFormat(this.dates[1], 'll')
@@ -599,7 +600,7 @@ export default {
     },
     inspectionsWithDates() {
       if (this.generalInspections.length > 0) {
-        var inspectionsWithDates = this.generalInspections
+        const inspectionsWithDates = this.generalInspections
         inspectionsWithDates.map((inspection) => {
           inspection.created_at_locale_date = this.momentFormat(
             inspection.created_at,
@@ -615,6 +616,7 @@ export default {
           inspection.reminder_date_day_month = this.momentifyDayMonth(
             inspection.reminder_date
           )
+          return inspection // TODO-VUE3 check
         })
         return inspectionsWithDates
       } else {
@@ -622,31 +624,31 @@ export default {
       }
     },
     inspectionsForCharts() {
-      var inspectionsForChartsArray = []
+      const inspectionsForChartsArray = []
 
       if (this.timeArray.length > 0) {
         // for each inspection, find its position on the current chart
         this.inspectionsForPeriod.map((inspection) => {
-          var inspectionDateInUtc = this.$moment(inspection.created_at)
+          const inspectionDateInUtc = this.$moment(inspection.created_at)
             .tz(this.timeZone)
             .utc()
 
-          var closestTime = this.momentTimeArray.reduce((prev, curr) => {
+          const closestTime = this.momentTimeArray.reduce((prev, curr) => {
             return Math.abs(curr - inspectionDateInUtc) <
               Math.abs(prev - inspectionDateInUtc)
               ? curr
               : prev
           })
 
-          var closestIndex = this.timeArray.findIndex(
+          const closestIndex = this.timeArray.findIndex(
             (time) =>
               time === closestTime.utc().format('YYYY-MM-DD[T]HH:mm:ss[Z]')
           )
 
-          var inspectionTimestamp = inspectionDateInUtc.valueOf()
+          const inspectionTimestamp = inspectionDateInUtc.valueOf()
 
           // and add position and meta data for charts
-          var inspectionForChart = {
+          const inspectionForChart = {
             id: inspection.id,
             closestIndex,
             xValue: inspectionTimestamp,
@@ -655,13 +657,14 @@ export default {
           }
 
           inspectionsForChartsArray.push(inspectionForChart)
+          return inspection // TODO-VUE3 check
         })
       }
 
       return inspectionsForChartsArray
     },
     inspectionsForPeriod() {
-      var inspections = []
+      const inspections = []
       if (this.selectedDevice.hive_id !== null) {
         inspections = this.inspectionsWithDates.filter(
           (inspection) =>
@@ -676,7 +679,7 @@ export default {
     },
     measurementsForHeatmap() {
       // remove first value for month and year interval (belongs to previous month/year) (can't be skipped in v-for loop as v-if is not possible there)
-      var data = this.measurementData.measurements
+      const data = this.measurementData.measurements
       if (
         (this.interval === 'month' || this.interval === 'year') &&
         !this.relativeInterval
@@ -688,7 +691,7 @@ export default {
       }
     },
     maxSoundSensorValue() {
-      var allSoundSensorValues = []
+      const allSoundSensorValues = []
       const soundSensors = Object.values(this.currentSoundSensors)
       this.measurementsForHeatmap.map((measurement) =>
         soundSensors.map((soundSensor) => {
@@ -696,6 +699,7 @@ export default {
           if (value) {
             allSoundSensorValues.push(value)
           }
+          return value // TODO-VUE3 check
         })
       )
       return Math.max(...allSoundSensorValues)
@@ -767,9 +771,7 @@ export default {
     },
     momentTimeArray() {
       if (this.timeArray.length > 0) {
-        return this.timeArray.map((time) => {
-          return this.$moment(time)
-        })
+        return this.timeArray.map((time) => this.$moment(time))
       } else {
         return []
       }
@@ -791,8 +793,8 @@ export default {
       return this.periodStart.format(this.dateTimeFormat)
     },
     queriedChartCols() {
-      var queriedValue = parseInt(this.$route.query.chartCols)
-      var valid =
+      const queriedValue = parseInt(this.$route.query.chartCols)
+      const valid =
         queriedValue === 12 || queriedValue === 6 || queriedValue === 4
       return valid ? queriedValue : null
     },
@@ -873,10 +875,10 @@ export default {
       return this.$vuetify.breakpoint.smAndDown
     },
     sortedCurrentSoundSensors() {
-      var sorted = Object.keys(this.currentSoundSensors)
+      const sorted = Object.keys(this.currentSoundSensors)
         .sort(function(a, b) {
-          var firstNumberA = parseInt(a.substring(0, a.indexOf('-')))
-          var firstNumberB = parseInt(b.substring(0, b.indexOf('-')))
+          const firstNumberA = parseInt(a.substring(0, a.indexOf('-')))
+          const firstNumberB = parseInt(b.substring(0, b.indexOf('-')))
 
           if (firstNumberA < firstNumberB) {
             return 1
@@ -896,7 +898,7 @@ export default {
       return sorted
     },
     sortedDevices() {
-      var apiaryArray = []
+      const apiaryArray = []
       this.devices.map((device, index) => {
         apiaryArray.push({
           id: -(index + 1), // random because it has to have an id for Treeselect but won't be used later
@@ -909,6 +911,7 @@ export default {
         device.label = device.hive_name
           ? device.hive_name + ' - ' + device.name
           : device.name
+        return device // TODO-VUE3 check
       })
       var uniqueApiaries = []
       const map = new Map()
@@ -936,10 +939,12 @@ export default {
           ) {
             apiary.children.push(device)
           }
+          return apiary // TODO-VUE3 check
         })
+        return device // TODO-VUE3 check
       })
       uniqueApiaries.map((apiary) => {
-        var sortedChildren = apiary.children.slice().sort(function(a, b) {
+        const sortedChildren = apiary.children.slice().sort(function(a, b) {
           if (a.label < b.label) {
             return -1
           }
@@ -949,6 +954,7 @@ export default {
           return 0
         })
         apiary.children = sortedChildren
+        return apiary // TODO-VUE3 check
       })
       return uniqueApiaries
     },
@@ -1023,7 +1029,7 @@ export default {
         })
     })
   },
-  beforeDestroy() {
+  beforeUnmount() {
     if (this.timer > 0) {
       clearInterval(this.timer)
       this.timer = 0
@@ -1039,7 +1045,7 @@ export default {
           this.currentLastSensorValues = []
           const allLastSensorValues = response.data
           Object.entries(allLastSensorValues).map(([key, value]) => {
-            var mT = this.getSensorMeasurement(key)
+            const mT = this.getSensorMeasurement(key)
             if (value !== null && key === 'weight_kg') {
               const roundedValue = Math.round(value * 1e4) / 1e4
               this.currentLastSensorValues.push({
@@ -1054,10 +1060,11 @@ export default {
             ) {
               this.currentLastSensorValues.push({ value: value, name: key })
             }
+            return [key, value] // TODO-VUE3 check
           })
 
           const self = this
-          var sortedArray = this.currentLastSensorValues
+          const sortedArray = this.currentLastSensorValues
             .slice()
             .sort(function(a, b) {
               const compareA = self.$i18n.t(a.name)
@@ -1089,9 +1096,9 @@ export default {
       }
     },
     async sensorMeasurementRequest(interval) {
-      var start = interval === 'selection' ? this.dates[0] : null
-      var end = interval === 'selection' ? this.dates[1] : null
-      var timeGroup =
+      const start = interval === 'selection' ? this.dates[0] : null
+      const end = interval === 'selection' ? this.dates[1] : null
+      const timeGroup =
         interval === 'hour' || interval === 'selection' ? null : interval
       this.noChartData = false
       this.noPeriodData = false
@@ -1134,7 +1141,7 @@ export default {
       }
     },
     alertsForCharts(sensorArray) {
-      var alertsForCharts = this.alertsForDeviceAndPeriod.filter((alert) =>
+      const alertsForCharts = this.alertsForDeviceAndPeriod.filter((alert) =>
         // DEBUG MOGE: alert.measurement_id === 20
         sensorArray.includes(
           this.getSensorMeasurementAbbrById(alert.measurement_id)
@@ -1144,25 +1151,25 @@ export default {
       if (this.timeArray.length > 0) {
         // for each alert, find its position on the current chart
         alertsForCharts.map((alert) => {
-          var alertMinMoment = this.$moment(alert.min)
-          var alertMaxMoment = this.$moment(alert.max)
+          const alertMinMoment = this.$moment(alert.min)
+          const alertMaxMoment = this.$moment(alert.max)
 
-          var closestTimeStart = this.momentTimeArray.reduce((prev, curr) => {
+          const closestTimeStart = this.momentTimeArray.reduce((prev, curr) => {
             return Math.abs(curr - alertMinMoment) <
               Math.abs(prev - alertMinMoment)
               ? curr
               : prev
           })
 
-          var closestIndexStart = this.timeArray.findIndex(
+          const closestIndexStart = this.timeArray.findIndex(
             (time) =>
               time === closestTimeStart.utc().format('YYYY-MM-DD[T]HH:mm:ss[Z]')
           )
 
-          var closestIndexEnd = closestIndexStart
+          const closestIndexEnd = closestIndexStart
 
           if (alert.min !== alert.max) {
-            var closestTimeEnd = this.momentTimeArray.reduce((prev, curr) => {
+            const closestTimeEnd = this.momentTimeArray.reduce((prev, curr) => {
               return Math.abs(curr - alertMaxMoment) <
                 Math.abs(prev - alertMaxMoment)
                 ? curr
@@ -1181,6 +1188,7 @@ export default {
             closestIndexEnd,
             date: this.momentFormatUtcToLocal(alert.created_at, 'lll'),
           })
+          return alert // TODO-VUE3 check
         })
       }
 
@@ -1188,9 +1196,9 @@ export default {
     },
     calculateProgress(name, value) {
       // get different target values for bv sensor if device is not beep
-      var sensorName = this.getSensorName(name)
-      var min = this.SENSOR_MIN[sensorName]
-      var max = this.SENSOR_MAX[sensorName]
+      const sensorName = this.getSensorName(name)
+      const min = this.SENSOR_MIN[sensorName]
+      const max = this.SENSOR_MAX[sensorName]
       if (value > max) {
         return 100
       } else {
@@ -1198,11 +1206,11 @@ export default {
       }
     },
     calculateTimeIndex(newPeriod, startDate, zoom = false, fromPeriod = null) {
-      var todayEnd = this.$moment().endOf(newPeriod)
+      const todayEnd = this.$moment().endOf(newPeriod)
 
-      var endOfPeriod = this.$moment(startDate).endOf(fromPeriod)
+      const endOfPeriod = this.$moment(startDate).endOf(fromPeriod)
 
-      var halfPeriodInDays = 0
+      const halfPeriodInDays = 0
 
       if (fromPeriod === 'week' || fromPeriod === 'month')
         halfPeriodInDays = Math.floor(
@@ -1210,9 +1218,9 @@ export default {
         )
       else if (fromPeriod === 'year') halfPeriodInDays = 182
 
-      var middleDatePeriod = endOfPeriod.subtract(halfPeriodInDays, 'days')
+      const middleDatePeriod = endOfPeriod.subtract(halfPeriodInDays, 'days')
 
-      var newIndex = todayEnd.diff(middleDatePeriod, newPeriod + 's')
+      const newIndex = todayEnd.diff(middleDatePeriod, newPeriod + 's')
 
       if (this.relativeInterval && !zoom) newIndex -= 1
 
@@ -1221,23 +1229,23 @@ export default {
       return !isNaN(newIndex) && newIndex > 0 ? newIndex : 0
     },
     chartjsDataSeries(quantities, weather = false) {
-      var data = {
+      const data = {
         labels: [],
         datasets: [],
       }
-      // var sensorArray = this.getMeasurementTypesPresent(chartGroup.id)
+      // const sensorArray = this.getMeasurementTypesPresent(chartGroup.id)
       quantities.map((quantity, index) => {
-        var mT = this.getSensorMeasurement(quantity)
+        const mT = this.getSensorMeasurement(quantity)
 
         if (mT === null || mT === undefined) {
           console.log('mT not found ', quantity)
         } else if (mT.show_in_charts === 1) {
-          var sensorName =
+          const sensorName =
             this.measurementData.sensorDefinitions[quantity] &&
             this.measurementData.sensorDefinitions[quantity].name !== null
               ? this.measurementData.sensorDefinitions[quantity].name
               : this.$i18n.t(quantity)
-          var sensorLabel =
+          const sensorLabel =
             sensorName +
             (mT.unit !== '-' && mT.unit !== '' && mT.unit !== null
               ? ' (' + mT.unit + ')'
@@ -1258,6 +1266,7 @@ export default {
               weather || this.interval === 'hour' || this.interval === 'day', // false,
           })
         }
+        return quantity // TODO-VUE3 check
       })
 
       if (
@@ -1277,7 +1286,7 @@ export default {
             // && index < this.measurementData.measurements.length - 3
           ) {
             data.datasets.map((dataset, index) => {
-              var quantity = dataset.abbr
+              const quantity = dataset.abbr
               // if (
               //   measurement[quantity] !== null && // previously this was enabled (do not push null values, otherwise datalabels plugin won't work) but now disabled again to make spanGaps work + added workaround for datalabels plugin
               //   typeof measurement[quantity] === 'number'
@@ -1287,8 +1296,10 @@ export default {
                 y: measurement[quantity],
               })
               // }
+              return dataset // TODO-VUE3 check
             })
           }
+          return measurement // TODO-VUE3 check
         })
       }
 
@@ -1384,8 +1395,8 @@ export default {
         this.debugSensorsPresent = false
         Object.keys(this.measurementData.measurements[0]).map((quantity) => {
           if (this.WEATHER.indexOf(quantity) > -1) {
-            // var weatherSensorName = this.SENSOR_NAMES[quantity]
-            // var weatherSensorUnit = this.SENSOR_UNITS[quantity]
+            // const weatherSensorName = this.SENSOR_NAMES[quantity]
+            // const weatherSensorUnit = this.SENSOR_UNITS[quantity]
             // weatherSensorName =
             //   this.$i18n.t(weatherSensorName) + ' (' + weatherSensorUnit + ')'
             this.currentWeatherSensors.push(quantity)
@@ -1394,7 +1405,7 @@ export default {
             this.currentSensors.push(quantity)
             this.sensorsPresent = true
           } else if (this.SOUND.indexOf(quantity) > -1) {
-            var soundSensorName = this.measurementData.sensorDefinitions[
+            const soundSensorName = this.measurementData.sensorDefinitions[
               quantity
             ]
               ? this.measurementData.sensorDefinitions[quantity].name
@@ -1405,6 +1416,7 @@ export default {
             this.currentDebugSensors.push(quantity)
             this.debugSensorsPresent = true
           }
+          return quantity // TODO-VUE3 check
         })
       } else {
         this.measurementData = null
@@ -1414,19 +1426,19 @@ export default {
     },
     getProgressColor(name, value) {
       // get different target values for bv sensor if device is not beep
-      var sensorName = this.getSensorName(name)
-      var low = this.SENSOR_LOW[sensorName]
-      var high = this.SENSOR_HIGH[sensorName]
+      const sensorName = this.getSensorName(name)
+      const low = this.SENSOR_LOW[sensorName]
+      const high = this.SENSOR_HIGH[sensorName]
       return value < low ? '#ffcc66' : value > high ? '#f00' : '#417505'
     },
     getSensorMeasurement(abbr) {
-      var smFilter = this.sensorMeasurementsList.filter(
+      const smFilter = this.sensorMeasurementsList.filter(
         (measurementType) => measurementType.abbreviation === abbr
       )
       return smFilter.length > 0 ? smFilter[0] : null
     },
     getSensorMeasurementAbbrById(id) {
-      var smFilter = this.sensorMeasurementsList.filter(
+      const smFilter = this.sensorMeasurementsList.filter(
         (measurementType) => measurementType.id === id
       )
       return smFilter.length > 0 ? smFilter[0].abbreviation : null
@@ -1511,7 +1523,7 @@ export default {
           .locale(this.locale)
           .format('LT')
       } else if (this.interval === 'day' || this.interval === 'week') {
-        var unit = this.locale === 'nl' ? 'u' : 'h'
+        const unit = this.locale === 'nl' ? 'u' : 'h'
         return (
           this.$moment(date)
             .locale(this.locale)
@@ -1537,12 +1549,12 @@ export default {
       }
     },
     selectDate(date) {
-      var p = this.interval
-      var d = p + 's'
+      const p = this.interval
+      const d = p + 's'
 
-      var selectedMoment = this.$moment(date)
-      var currentMoment = this.$moment()
-      var periodeDiff = currentMoment.diff(selectedMoment, d)
+      const selectedMoment = this.$moment(date)
+      const currentMoment = this.$moment()
+      const periodeDiff = currentMoment.diff(selectedMoment, d)
 
       if (!isNaN(periodeDiff)) {
         this.timeIndex = periodeDiff
@@ -1561,11 +1573,11 @@ export default {
       }
     },
     setPeriodTitle() {
-      var p = this.interval
-      var d = p + 's'
+      const p = this.interval
+      const d = p + 's'
       var i = this.timeIndex
-      var startTimeFormat = this.timeFormat
-      var endTimeFormat = this.timeFormat
+      const startTimeFormat = this.timeFormat
+      const endTimeFormat = this.timeFormat
 
       if (p === 'selection') {
         this.periodTitle = this.dateRangeText
@@ -1583,7 +1595,7 @@ export default {
           !this.relativeInterval ? (p = 'isoweek') : (p = 'week')
         }
 
-        var ep = p
+        const ep = p
 
         if (!this.relativeInterval) {
           this.periodStart = this.$moment()
@@ -1597,8 +1609,8 @@ export default {
           this.periodEnd = this.$moment().subtract(i, d)
         }
 
-        var formatStart = this.momentFormat(this.periodStart, startTimeFormat)
-        var formatEnd = this.momentFormat(this.periodEnd, endTimeFormat)
+        const formatStart = this.momentFormat(this.periodStart, startTimeFormat)
+        const formatEnd = this.momentFormat(this.periodEnd, endTimeFormat)
 
         this.periodTitle =
           formatStart + '' + (endTimeFormat !== null ? ' - ' + formatEnd : '')
@@ -1614,7 +1626,7 @@ export default {
       }
 
       if (this.touchDevice) {
-        var format = period === 'hour' ? 'lll' : 'll'
+        const format = period === 'hour' ? 'lll' : 'll'
 
         this.$refs.confirm
           .open(
@@ -1651,7 +1663,7 @@ export default {
       return true
     },
     setPeriodInterval(interval, modulonr) {
-      var prevInterval = this.interval
+      const prevInterval = this.interval
       this.interval = interval
       if (interval === 'selection' && this.dates.length === 0) {
         this.noPeriodData = true
@@ -1672,7 +1684,7 @@ export default {
       }
     },
     setTimeIndex(offset) {
-      var timeIndexWhenClicked = this.timeIndex
+      const timeIndexWhenClicked = this.timeIndex
       this.timeIndex += offset
       this.setPeriodTitle()
       setTimeout(() => {

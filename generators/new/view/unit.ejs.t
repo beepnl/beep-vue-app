@@ -2,7 +2,7 @@
 to: "src/router/views/<%= h.changeCase.pascal(name) %>.unit.js"
 ---
 <%
-  const fileName = h.changeCase.pascal(name)
+  var fileName = h.changeCase.pascal(name)
   const importName = h.changeCase.pascal(fileName)
 %>import <%= importName %> from './<%= fileName %>'
 

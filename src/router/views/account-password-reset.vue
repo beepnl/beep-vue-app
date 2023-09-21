@@ -116,7 +116,7 @@
 
 <script>
 import Api from '@api/Api'
-import Layout from '@layouts/account.vue'
+import Layout from '@/src/router/layouts/account-layout.vue'
 
 export default {
   components: { Layout },
@@ -208,8 +208,8 @@ export default {
         } catch (error) {
           if (error.response) {
             console.log(error.response)
-            var verifyLink = false
-            var passwordForgotLink = false
+            const verifyLink = false
+            const passwordForgotLink = false
 
             if (typeof error.response.data.message !== 'undefined') {
               var msg = error.response.data.message
@@ -276,9 +276,9 @@ export default {
           this.tryingToLogIn = false
           if (error.response) {
             console.log(error.response)
-            var verifyLink = false
+            const verifyLink = false
             if (typeof error.response.data.message !== 'undefined') {
-              var msg = error.response.data.message
+              const msg = error.response.data.message
             } else {
               msg = error.response.data
             }

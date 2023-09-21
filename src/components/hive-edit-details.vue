@@ -154,7 +154,7 @@
                               bbDimension
                             )
                           "
-                          @input.native="
+                          @input="
                             convertComma($event, hive, bbDimension, 1),
                               setHiveEdited(true),
                               setApiaryEdited(true)
@@ -191,7 +191,7 @@
                               frDimension
                             )
                           "
-                          @input.native="
+                          @input="
                             convertComma($event, hive, frDimension, 1),
                               setHiveEdited(true),
                               setApiaryEdited(true)
@@ -272,7 +272,7 @@ export default {
     treeselectHiveTypes() {
       if (this.hiveTypesList.length) {
         const locale = this.selectLocale(this.hiveTypesList)
-        var hiveTypePerGroup = this.hiveTypesList.reduce(function(r, a) {
+        const hiveTypePerGroup = this.hiveTypesList.reduce(function(r, a) {
           r[a.group[locale]] = r[a.group[locale]] || []
           r[a.group[locale]].push(a)
           return r
@@ -288,7 +288,7 @@ export default {
             }
             return 0
           })
-        var treeselectArray = []
+        const treeselectArray = []
         sortedGroups.forEach((sortedGroup, index) => {
           const sortedGroupObject = {
             id: -(index + 1),
@@ -300,6 +300,7 @@ export default {
         treeselectArray.map((groupObject) => {
           groupObject.children.map((child) => {
             child.label = child.trans[locale]
+            return child // TODO-VUE3 check
           })
           const sortedTreeselectArray = groupObject.children
             .slice()
@@ -313,6 +314,7 @@ export default {
               return 0
             })
           groupObject.children = sortedTreeselectArray
+          return groupObject // TODO-VUE3 check
         })
         return treeselectArray
       } else {
@@ -393,7 +395,7 @@ export default {
         this.hiveDimensionsList &&
         this.hiveDimensionsList[hiveTypeName] !== undefined
       ) {
-        var hiveDimensions = {
+        const hiveDimensions = {
           bb_width_cm: parseFloat(
             this.hiveDimensionsList[hiveTypeName].bb_width_cm
           ),

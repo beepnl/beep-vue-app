@@ -41,7 +41,7 @@ const globalComponentFiles = fs
   .readdirSync(path.join(__dirname, '../../src/components'))
   .filter((fileName) => /^_base-.+\.vue$/.test(fileName))
 
-for (const fileName of globalComponentFiles) {
+for (var fileName of globalComponentFiles) {
   const componentName = _.pascalCase(fileName.match(/^_(base-.+)\.vue$/)[1])
   const componentConfig = require('../../src/components/' + fileName)
   Vue.component(componentName, componentConfig.default || componentConfig)

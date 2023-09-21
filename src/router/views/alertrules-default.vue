@@ -86,12 +86,12 @@
 
 <script>
 import Api from '@api/Api'
-import Confirm from '@components/confirm.vue'
-import Layout from '@layouts/back.vue'
+import { readAlertRules, readTaxonomy } from '@mixins/methodsMixin'
+import Confirm from '@/src/components/confirm-dialog.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
 import { mapGetters } from 'vuex'
 import { ScaleTransition } from 'vue2-transitions'
 import { momentHumanizeHours } from '@mixins/momentMixin'
-import { readAlertRules, readTaxonomy } from '@mixins/methodsMixin'
 
 export default {
   components: {
@@ -155,10 +155,11 @@ export default {
     async readDefaultAlertRules() {
       try {
         const response = await Api.readRequest('/alert-rules-default')
-        var alertRulesDefault = response.data['alert-rules']
+        const alertRulesDefault = response.data['alert-rules']
         alertRulesDefault.map((alertRuleDefault) => {
           alertRuleDefault.default_rule = 0
           alertRuleDefault.selected = false
+          return alertRuleDefault // TODO-VUE3 check
         })
         this.alertRulesDefault = alertRulesDefault
         return true
@@ -171,14 +172,14 @@ export default {
       }
     },
     alertRuleSentence(alertRule) {
-      var sentence = this.$i18n.t('alertrule_main_sentence')
+      const sentence = this.$i18n.t('alertrule_main_sentence')
       var replacedSentence = sentence
 
-      var measurement = this.sensorMeasurementsList.filter(
+      const measurement = this.sensorMeasurementsList.filter(
         (measurement) => measurement.id === alertRule.measurement_id
       )[0]
 
-      var replaceWith = {
+      const replaceWith = {
         calculation: this.$i18n.t(alertRule.calculation),
         comparison: this.comparisons
           .filter((comparison) => comparison.short === alertRule.comparison)[0]
@@ -206,6 +207,7 @@ export default {
 
       Object.entries(replaceWith).map(([key, value]) => {
         replacedSentence = replacedSentence.replace('[' + key + ']', value)
+        return replacedSentence // TODO-VUE3 check
       })
 
       replacedSentence += '. ' // alertrule_active_email and no_email_sentence are omitted here
@@ -224,9 +226,10 @@ export default {
 
       if (alertRule.exclude_months.length > 0) {
         replacedSentence += this.$i18n.t('alertrule_exclude_months_sentence')
-        var monthsArray = []
+        const monthsArray = []
         alertRule.exclude_months.map((month) => {
           monthsArray.push(this.$i18n.t('monthsFull')[month - 1])
+          return true // TODO-VUE3 check
         })
         replacedSentence = replacedSentence.replace(
           '[exclude_months]',
@@ -237,11 +240,12 @@ export default {
       if (alertRule.exclude_hours.length > 0) {
         replacedSentence += this.$i18n.t('alertrule_exclude_hours_sentence')
 
-        var hoursArray = []
+        const hoursArray = []
         alertRule.exclude_hours.map((hour) => {
           hoursArray.push(this.alertRulesList.exclude_hours[hour])
+          return true // TODO-VUE3 check
         })
-        var hoursString = hoursArray.join(', ')
+        const hoursString = hoursArray.join(', ')
 
         replacedSentence = replacedSentence.replace(
           '[exclude_hours]',
@@ -258,6 +262,7 @@ export default {
             await this.copyAlertRule(alertRuleDefault)
             return true
           }
+          return true // TODO-VUE3 check
         })
       )
 
@@ -271,12 +276,13 @@ export default {
       }, 150) // wait for API to update alertrules
     },
     formatFromTaxonomy(array) {
-      var formattedArray = []
+      const formattedArray = []
       Object.entries(array).map(([key, value]) => {
         formattedArray.push({
           short: key,
           full: this.$i18n.t(value),
         })
+        return [key, value] // TODO-VUE3 check
       })
       return formattedArray
     },

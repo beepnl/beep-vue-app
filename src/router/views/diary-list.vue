@@ -169,9 +169,10 @@
 
 <script>
 import Api from '@api/Api'
-import Confirm from '@components/confirm.vue'
+import MugenScroll from 'vue-mugen-scroll'
+import Confirm from '@/src/components/confirm-dialog.vue'
 import DiaryCard from '@components/diary-card.vue'
-import Layout from '@layouts/main.vue'
+import Layout from '@/src/router/layouts/main-layout.vue'
 import { mapGetters } from 'vuex'
 import {
   momentFromNow,
@@ -187,7 +188,6 @@ import {
   toggleFilterByGroup,
 } from '@mixins/methodsMixin'
 import { ScaleTransition } from 'vue2-transitions'
-import MugenScroll from 'vue-mugen-scroll'
 
 export default {
   components: {
@@ -280,7 +280,7 @@ export default {
     // make inspections filterable by hive name and location
     inspectionsWithDatesAndHiveDetails() {
       if (this.generalInspections.length > 0) {
-        var inspectionsWithDatesAndHiveDetails = this.generalInspections
+        const inspectionsWithDatesAndHiveDetails = this.generalInspections
         inspectionsWithDatesAndHiveDetails.map((inspection) => {
           inspection.created_at_locale_date = this.momentify(
             inspection.created_at
@@ -310,16 +310,18 @@ export default {
               groupName === null
             if (isOwnedAndInGroup) {
               inspection.owned_and_group = true
-              var groupNamesArray = []
+              const groupNamesArray = []
               this.hivesObject[inspection.hive_id].group_ids.map((groupId) => {
                 groupNamesArray.push(
                   this.groups.filter((group) => group.id === groupId)[0].name
                 )
+                return true // TODO-VUE3 check
               })
               groupName = groupNamesArray.join(', ')
             }
             inspection.hive_group_name = groupName
           }
+          return inspection // TODO-VUE3 check
         })
         return inspectionsWithDatesAndHiveDetails
       } else {
@@ -359,16 +361,18 @@ export default {
                     this.diarySearch.substring(3, this.diarySearch.length)
                   )
                 }
+                return false // TODO-VUE3 check
               }
             )
             if (inspectionMatch) {
               return inspection
             }
+            return false // TODO-VUE3 check
           }
         )
       }
 
-      var propertyFilteredInspections = textFilteredInspections
+      const propertyFilteredInspections = textFilteredInspections
         .slice()
         .sort(function(a, b) {
           return new Date(b.created_at) - new Date(a.created_at)
@@ -381,6 +385,7 @@ export default {
           } else {
             return inspection
           }
+          return false // TODO-VUE3 check
         })
         .filter((inspection) => {
           if (
@@ -393,6 +398,7 @@ export default {
           } else {
             return inspection
           }
+          return false // TODO-VUE3 check
         })
         .filter((inspection) => {
           if (typeof inspection !== 'undefined' && this.filterByReminder) {
@@ -405,6 +411,7 @@ export default {
           } else {
             return inspection
           }
+          return false // TODO-VUE3 check
         })
         .filter((inspection) => {
           if (
@@ -427,6 +434,7 @@ export default {
           } else {
             return inspection
           }
+          return false // TODO-VUE3 check
         })
 
       return propertyFilteredInspections

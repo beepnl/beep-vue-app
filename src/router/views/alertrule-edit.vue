@@ -254,7 +254,7 @@
                   :step-strictly="true"
                   size="small"
                   @change="setAlertRuleEdited(true)"
-                  @input.native="
+                  @input="
                     convertComma($event, activeAlertRule, 'threshold_value', 1),
                       setAlertRuleEdited(true)
                   "
@@ -379,9 +379,10 @@
 
 <script>
 import Api from '@api/Api'
-import Confirm from '@components/confirm.vue'
+import Treeselect from 'vue3-treeselect'
+import Confirm from '@/src/components/confirm-dialog.vue'
 import { mapGetters } from 'vuex'
-import Layout from '@layouts/back.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
 import {
   convertComma,
   readAlertRules,
@@ -389,7 +390,6 @@ import {
   readTaxonomy,
 } from '@mixins/methodsMixin'
 import { momentHumanizeHours } from '@mixins/momentMixin'
-import Treeselect from 'vue3-treeselect'
 // import { ElInputNumber } from 'element-plus' TODO-VUE3 enable for real Vue 3
 
 export default {
@@ -426,7 +426,7 @@ export default {
     ...mapGetters('devices', ['devices']),
     ...mapGetters('taxonomy', ['alertRulesList', 'sensorMeasurementsList']),
     // alertOnOccurencesItems() {
-    //   var occArray = []
+    //   const occArray = []
     //   for (var i = 1; i < 11; i++) {
     //     occArray.push({
     //       id: i,
@@ -456,7 +456,9 @@ export default {
           this.sortedDevices.map((apiary) => {
             apiary.children.map((device) => {
               this.activeAlertRule.exclude_hive_ids.push(device.id)
+              return true // TODO-VUE3 check
             })
+            return true // TODO-VUE3 check
           })
         }
       },
@@ -472,6 +474,7 @@ export default {
           this.activeAlertRule.exclude_hours = []
           this.hours.map((hour) => {
             this.activeAlertRule.exclude_hours.push(hour.id)
+            return true // TODO-VUE3 check
           })
         }
       },
@@ -487,6 +490,7 @@ export default {
           this.activeAlertRule.exclude_months = []
           this.months.map((month) => {
             this.activeAlertRule.exclude_months.push(month.id)
+            return true // TODO-VUE3 check
           })
         }
       },
@@ -504,10 +508,11 @@ export default {
       // add translation as label property
       measurementTypes.map((measurementType) => {
         measurementType.label = this.$i18n.t(measurementType.abbreviation)
+        return measurementType // TODO-VUE3 check
       })
 
       // sort by label
-      var sortedSMs = measurementTypes.slice().sort(function(a, b) {
+      const sortedSMs = measurementTypes.slice().sort(function(a, b) {
         if (a.label.toLowerCase() > b.label.toLowerCase()) {
           return 1
         }
@@ -519,7 +524,7 @@ export default {
       return sortedSMs
     },
     calcPrefix() {
-      var translateTerm = this.alertRulesList.calculations[
+      const translateTerm = this.alertRulesList.calculations[
         this.activeAlertRule.calculation
       ]
       return this.$i18n.t(translateTerm) + ' ' + this.$i18n.t('of') + ' '
@@ -548,10 +553,11 @@ export default {
                 device.measurement_transmission_ratio
             )
           }
+          return true // TODO-VUE3 check
         })
         intervalArray = intervalArray.filter((e) => e !== 0)
         if (intervalArray.length > 0) {
-          var minMaxArray = [
+          const minMaxArray = [
             Math.min(...intervalArray),
             Math.max(...intervalArray),
           ]
@@ -592,7 +598,7 @@ export default {
       return this.$vuetify.breakpoint.mobile
     },
     months() {
-      var monthsArray = []
+      const monthsArray = []
       for (var i = 1; i < 13; i++) {
         monthsArray.push({
           id: i,
@@ -629,7 +635,7 @@ export default {
       )
     },
     sortedDevices() {
-      var apiaryArray = []
+      const apiaryArray = []
       this.devices.map((device, index) => {
         if (
           device.hive_id !== null &&
@@ -645,6 +651,7 @@ export default {
             children: [],
           })
         }
+        return true // TODO-VUE3 check
       })
       var uniqueApiaries = []
       const map = new Map()
@@ -694,10 +701,12 @@ export default {
               label: deviceLabel,
             })
           }
+          return apiary // TODO-VUE3 check
         })
+        return true // TODO-VUE3 check
       })
       uniqueApiaries.map((apiary) => {
-        var sortedChildren = apiary.children.slice().sort(function(a, b) {
+        const sortedChildren = apiary.children.slice().sort(function(a, b) {
           if (a.label < b.label) {
             return -1
           }
@@ -707,6 +716,7 @@ export default {
           return 0
         })
         apiary.children = sortedChildren
+        return apiary // TODO-VUE3 check
       })
       return uniqueApiaries
     },
@@ -725,7 +735,7 @@ export default {
         this.devicesInterval !== null &&
         this.activeAlertRule.comparison.includes('dif')
       ) {
-        var intervalWarning =
+        const intervalWarning =
           this.devicesInterval.length > 1
             ? this.$i18n.t('upload_interval_warning_interval_range') +
               this.devicesInterval.join(' - ') +
@@ -948,10 +958,10 @@ export default {
         })
     },
     alertRuleSentence(alertRule) {
-      var sentence = this.$i18n.t('alertrule_main_sentence')
+      const sentence = this.$i18n.t('alertrule_main_sentence')
       var replacedSentence = sentence
 
-      var replaceWith = {
+      const replaceWith = {
         calculation: this.$i18n.t(alertRule.calculation),
         comparison: this.comparisons
           .filter((comparison) => comparison.short === alertRule.comparison)[0]
@@ -972,6 +982,7 @@ export default {
 
       Object.entries(replaceWith).map(([key, value]) => {
         replacedSentence = replacedSentence.replace('[' + key + ']', value)
+        return replacedSentence // TODO-VUE3 check
       })
 
       if (alertRule.active) {
@@ -1001,9 +1012,10 @@ export default {
         alertRule.exclude_months.length > 0
       ) {
         replacedSentence += this.$i18n.t('alertrule_exclude_months_sentence')
-        var monthsArray = []
+        const monthsArray = []
         alertRule.exclude_months.map((month) => {
           monthsArray.push(this.$i18n.t('monthsFull')[month - 1])
+          return true // TODO-VUE3 check
         })
         replacedSentence = replacedSentence.replace(
           '[exclude_months]',
@@ -1017,11 +1029,12 @@ export default {
       ) {
         replacedSentence += this.$i18n.t('alertrule_exclude_hours_sentence')
 
-        var hoursArray = []
+        const hoursArray = []
         alertRule.exclude_hours.map((hour) => {
           hoursArray.push(this.alertRulesList.exclude_hours[hour])
+          return true // TODO-VUE3 check
         })
-        var hoursString = hoursArray.join(', ')
+        const hoursString = hoursArray.join(', ')
 
         replacedSentence = replacedSentence.replace(
           '[exclude_hours]',
@@ -1034,10 +1047,10 @@ export default {
         alertRule.exclude_hive_ids.length > 0
       ) {
         replacedSentence += this.$i18n.t('alertrule_exclude_hives_sentence')
-        var hivesArray = []
+        const hivesArray = []
         alertRule.exclude_hive_ids.map((hiveId) => {
           var hiveName = hiveId + ' (' + this.$i18n.t('unknown') + ')'
-          var filteredDevices = this.devices.filter(
+          const filteredDevices = this.devices.filter(
             (device) => device.hive_id === hiveId
           )
           if (
@@ -1048,6 +1061,7 @@ export default {
             hiveName = filteredDevices[0].hive_name
           }
           hivesArray.push(hiveName)
+          return true // TODO-VUE3 check
         })
         replacedSentence = replacedSentence.replace(
           '[exclude_hive_ids]',
@@ -1073,22 +1087,24 @@ export default {
       }
     },
     formatFromTaxonomyArray(array) {
-      var formattedArray = []
+      const formattedArray = []
       array.map((value, index) => {
         formattedArray.push({
           id: index,
           label: value,
         })
+        return true // TODO-VUE3 check
       })
       return formattedArray
     },
     formatFromTaxonomyObject(object) {
-      var formattedArray = []
+      const formattedArray = []
       Object.entries(object).map(([key, value]) => {
         formattedArray.push({
           short: key,
           full: this.$i18n.t(value),
         })
+        return true // TODO-VUE3 check
       })
       return formattedArray
     },

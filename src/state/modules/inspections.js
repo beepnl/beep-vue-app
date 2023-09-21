@@ -108,7 +108,7 @@ export const getters = {
 export const mutations = {
   ...resource.mutations,
   addWarning: function(state, payload) {
-    var warningPresent =
+    const warningPresent =
       state.svgWarnings.filter((warning) => {
         return warning.id === payload.id
       }).length > 0
@@ -117,7 +117,7 @@ export const mutations = {
     }
   },
   removeWarning: function(state, payload) {
-    var warningIndex = state.svgWarnings.findIndex(
+    const warningIndex = state.svgWarnings.findIndex(
       (warning) => warning.id === payload
     )
     if (warningIndex > -1) {
@@ -134,7 +134,7 @@ export const mutations = {
     state[payload.filter] = payload.value
   },
   setFilterByImpression: function(state, payload) {
-    var array = state.diaryFilterByImpression
+    const array = state.diaryFilterByImpression
     if (array.includes(payload)) {
       array.splice(array.indexOf(payload), 1)
     } else {

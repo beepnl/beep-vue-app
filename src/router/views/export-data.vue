@@ -139,7 +139,7 @@
                 ref="menu"
                 v-model="menu"
                 :close-on-content-click="false"
-                :return-value.sync="dates"
+                :return-value="dates"
                 transition="scale-transition"
                 offset-y
                 min-width="290px"
@@ -267,10 +267,10 @@
 
 <script>
 import Api from '@api/Api'
-import Layout from '@layouts/back.vue'
+import Treeselect from 'vue3-treeselect'
+import Layout from '@/src/router/layouts/back-layout.vue'
 import { mapGetters } from 'vuex'
 import { readDevicesIfNotChecked } from '@mixins/methodsMixin'
-import Treeselect from 'vue3-treeselect'
 
 export default {
   components: {
@@ -331,7 +331,7 @@ export default {
   computed: {
     ...mapGetters('devices', ['devices']),
     browser() {
-      var test = function(regexp) {
+      const test = function(regexp) {
         return regexp.test(window.navigator.userAgent)
       }
       switch (true) {
@@ -366,7 +366,7 @@ export default {
     },
     dateRangeText() {
       if (this.dates.length > 0) {
-        var momentDates = [
+        const momentDates = [
           this.momentShort(this.dates[0]),
           this.dates[1] !== undefined ? this.momentShort(this.dates[1]) : '',
         ]
@@ -395,7 +395,7 @@ export default {
       },
     },
     sortedDevices() {
-      var apiaryArray = []
+      const apiaryArray = []
       this.devices.map((device, index) => {
         apiaryArray.push({
           id: -(index + 1), // random because it has to have an id for Treeselect but won't be used later
@@ -408,6 +408,7 @@ export default {
         device.label = device.hive_name
           ? device.hive_name + ' - ' + device.name
           : device.name
+        return device // TODO-VUE3 check
       })
       var uniqueApiaries = []
       const map = new Map()
@@ -435,10 +436,12 @@ export default {
           ) {
             apiary.children.push(device)
           }
+          return apiary // TODO-VUE3 check
         })
+        return device // TODO-VUE3 check
       })
       uniqueApiaries.map((apiary) => {
-        var sortedChildren = apiary.children.slice().sort(function(a, b) {
+        const sortedChildren = apiary.children.slice().sort(function(a, b) {
           if (a.label < b.label) {
             return -1
           }
@@ -448,6 +451,7 @@ export default {
           return 0
         })
         apiary.children = sortedChildren
+        return apiary // TODO-VUE3 check
       })
       return uniqueApiaries
     },
@@ -509,7 +513,7 @@ export default {
         // trick to download returned csv link (doesn't work via v-btn because it has already been clicked)
         // does not work for safari
         if (response.data.link && !this.browserDoesNotSupportDownloadTrick) {
-          var aLink = document.createElement('a')
+          const aLink = document.createElement('a')
           aLink.href = this.csvLink
           aLink.setAttribute('download', this.csvLink)
           document.body.appendChild(aLink)
@@ -534,7 +538,7 @@ export default {
       this.errorMessage = null
       this.csvDeviceDataLink = null
       this.showDeviceDataLoadingIcon = true
-      var payload = {
+      const payload = {
         device_id: this.selectedDeviceId,
         start: this.dates[0],
         end: this.dates[1],
@@ -556,7 +560,7 @@ export default {
         // trick to download returned csv link (doesn't work via v-btn because it has already been clicked)
         // does not work for safari
         if (!this.browserDoesNotSupportDownloadTrick) {
-          var link = document.createElement('a')
+          const link = document.createElement('a')
           link.href = this.csvDeviceDataLink
           link.setAttribute('download', this.csvDeviceDataLink)
           document.body.appendChild(link)
@@ -584,7 +588,7 @@ export default {
             '&end=' +
             this.dates[1]
         )
-        var rawMeasurementTypes = Object.values(response.data)
+        const rawMeasurementTypes = Object.values(response.data)
         this.measurementTypes = this.generateMeasurementTypes(
           rawMeasurementTypes
         )
@@ -598,13 +602,13 @@ export default {
     generateMeasurementTypes(rawMeasurementTypes) {
       // check if most recent sensordef of the selected device with same abbreviation as output_abbr has a name
       // if so: this will be the label. If not: set default translation as the label.
-      var sortedSensorDefs = this.sortedSensorDefinitions(
+      const sortedSensorDefs = this.sortedSensorDefinitions(
         this.selectedDevice.sensor_definitions
       )
-      var measurementTypesWithLabel = rawMeasurementTypes
+      const measurementTypesWithLabel = rawMeasurementTypes
       measurementTypesWithLabel.map((measurementType) => {
         var label = ''
-        var match = sortedSensorDefs.filter(
+        const match = sortedSensorDefs.filter(
           (sensorDef) => sensorDef.output_abbr === measurementType.abbreviation
         )
         if (match.length > 0 && match[0].name !== null) {
@@ -613,8 +617,9 @@ export default {
           label = this.$i18n.t(measurementType.abbreviation)
         }
         measurementType.label = label
+        return measurementType // TODO-VUE3 check
       })
-      var sortedMeasurementTypes = measurementTypesWithLabel
+      const sortedMeasurementTypes = measurementTypesWithLabel
         .slice()
         .sort(function(a, b) {
           if (a.label.toLowerCase() > b.label.toLowerCase()) {
@@ -663,6 +668,7 @@ export default {
           }
           return 0
         }
+        return 0 // TODO-VUE3 check
       })
       return sortedSensorDefs
     },
