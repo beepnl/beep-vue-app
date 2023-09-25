@@ -328,7 +328,7 @@ export default {
           alert.momentified = this.momentFromNow(alert.updated_at, true)
         }
 
-        const hiveGroupName = null
+        var hiveGroupName = null
         if (
           this.hivesObject[alert.hive_id] !== undefined &&
           this.hivesObject[alert.hive_id].group_name !== undefined
@@ -368,7 +368,7 @@ export default {
       )
     },
     filteredAlerts() {
-      const textFilteredAlerts = []
+      var textFilteredAlerts = []
       if (this.search === null) {
         textFilteredAlerts = this.alertsWithRuleDetails
       } else {

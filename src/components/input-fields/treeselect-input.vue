@@ -41,9 +41,9 @@ export default {
   },
   computed: {
     treeSelectArray() {
-      const treeselectArray = []
+      var treeselectArray = []
       this.item.children.forEach((item) => {
-        const newNode = this.updateNode(item)
+        var newNode = this.updateNode(item)
         treeselectArray.push(newNode)
       })
       return treeselectArray
@@ -56,13 +56,13 @@ export default {
     updateArray(array) {
       const itemsArray = []
       array.forEach((item) => {
-        const newNode = this.updateNode(item)
+        var newNode = this.updateNode(item)
         itemsArray.push(newNode)
       })
       return itemsArray
     },
     updateNode(item) {
-      const newNode = {}
+      var newNode = {}
       if (typeof item.children !== 'undefined' && item.children.length > 0) {
         newNode = {
           id: item.id,

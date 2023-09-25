@@ -386,11 +386,7 @@
 
               <v-menu>
                 <template v-slot:activator="{ on, attrs }">
-                  <v-icon
-                    small
-                    class="color-grey-light ml-2"
-                    v-bind="attrs"
-                    v-on="on"
+                  <v-icon small class="color-grey-light ml-2" v-on="on"
                     >mdi-cog</v-icon
                   >
                 </template>
@@ -836,7 +832,7 @@ export default {
       },
     },
     filteredHiveSets() {
-      const textFilteredHiveSets = []
+      var textFilteredHiveSets = []
       if (this.hiveSearch === null) {
         textFilteredHiveSets = this.sortedHiveSets
       } else {
@@ -907,7 +903,7 @@ export default {
         })
       }
 
-      const propertyFilteredHiveSets = textFilteredHiveSets
+      var propertyFilteredHiveSets = textFilteredHiveSets
         .map((hiveSet) => {
           if (this.filterByAlert) {
             return {
@@ -1258,11 +1254,13 @@ export default {
       }
       const device =
         hive.sensors.length !== 0 ? this.findDeviceById(hive.sensors[0]) : null
-      if (device !== null) {
-        const isToday = this.$moment
-          .utc(device.last_message_received)
-          .isSame(this.today, 'day')
-      }
+      const isToday =
+        device !== null
+          ? this.$moment
+              .utc(device.last_message_received)
+              .isSame(this.today, 'day')
+          : false
+
       hive.last_message_received_legible_date =
         device === null
           ? null

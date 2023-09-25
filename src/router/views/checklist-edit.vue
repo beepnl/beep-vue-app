@@ -326,7 +326,7 @@ export default {
   methods: {
     async createChecklist(duplicate = false) {
       this.showLoadingIcon = true
-      const categoryIds = null
+      var categoryIds = null
       if (this.activeChecklist.category_ids.length > 0) {
         categoryIds = this.activeChecklist.category_ids.join(',')
       }
@@ -447,7 +447,7 @@ export default {
     async updateChecklist(newChecklist = false) {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
-        const categoryIds = null
+        var categoryIds = null
         if (this.activeChecklist.category_ids.length > 0) {
           categoryIds = this.activeChecklist.category_ids.join(',')
         }
@@ -559,7 +559,7 @@ export default {
     },
     getText(item) {
       const name = item.name
-      const research = ''
+      var research = ''
       if (item.researches.length > 0) {
         research =
           ' (' + this.$i18n.t('research') + ': ' + item.researches[0] + ')'

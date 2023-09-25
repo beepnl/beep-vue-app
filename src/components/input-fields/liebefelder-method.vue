@@ -242,7 +242,7 @@
       </div>
       <v-overlay
         :absolute="true"
-        :value="bulkInspection"
+        :model-value="bulkInspection"
         :opacity="0.5"
         color="white"
         z-index="3"
@@ -343,8 +343,8 @@ export default {
   methods: {
     calculateLiebefeldColonySize() {
       const beesPerCm2 = 1.25
-      const beesSquares25cm2 = 0
-      const colonySize = null
+      var beesSquares25cm2 = 0
+      var colonySize = null
 
       setTimeout(() => {
         this.category.children.map((child) => {

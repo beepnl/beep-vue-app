@@ -26,7 +26,7 @@ export default [
   {
     path: '/password-forgot',
     name: 'password-forgot',
-    component: () => lazyLoadView(import('@views/account-password-forgot.vue')),
+    component: () => import('@views/account-password-forgot.vue'),
     props: (route) => ({
       email: route.query.email,
     }),
@@ -34,7 +34,7 @@ export default [
   {
     path: '/password-reset',
     name: 'password-reset',
-    component: () => lazyLoadView(import('@views/account-password-reset.vue')),
+    component: () => import('@views/account-password-reset.vue'),
     props: (route) => ({
       email: route.query.email,
       code: route.query.code,
@@ -43,7 +43,7 @@ export default [
   {
     path: '/sign-up',
     name: 'sign-up',
-    component: () => lazyLoadView(import('@views/account-sign-up.vue')),
+    component: () => import('@views/account-sign-up.vue'),
   },
   {
     path: '/404',
@@ -57,7 +57,7 @@ export default [
   // require some server configuration to work in production:
   // https://router.vuejs.org/en/essentials/history-mode.html#example-server-configurations
   {
-    path: '*',
+    path: '/:pathMatch(.*)*',
     redirect: '/',
   },
   {
@@ -67,7 +67,7 @@ export default [
     },
     path: '/alerts',
     name: 'alerts',
-    component: () => lazyLoadView(import('@/src/router/views/alert-list.vue')),
+    component: () => import('@/src/router/views/alert-list.vue'),
   },
   {
     meta: {
@@ -76,8 +76,7 @@ export default [
     },
     path: '/alertrules',
     name: 'alertrules',
-    component: () =>
-      lazyLoadView(import('@/src/router/views/alertrule-list.vue')),
+    component: () => import('@/src/router/views/alertrule-list.vue'),
   },
   {
     meta: {
@@ -86,7 +85,7 @@ export default [
     },
     path: '/alertrules/create',
     name: 'alertrule-create',
-    component: () => lazyLoadView(import('@views/alertrule-edit.vue')),
+    component: () => import('@views/alertrule-edit.vue'),
   },
   {
     meta: {
@@ -95,7 +94,7 @@ export default [
     },
     path: '/alertrules/:id/edit',
     name: 'alertrule-edit',
-    component: () => lazyLoadView(import('@views/alertrule-edit.vue')),
+    component: () => import('@views/alertrule-edit.vue'),
   },
   {
     meta: {
@@ -104,7 +103,7 @@ export default [
     },
     path: '/alertrules/default',
     name: 'alertrules-default',
-    component: () => lazyLoadView(import('@views/alertrules-default.vue')),
+    component: () => import('@views/alertrules-default.vue'),
   },
   {
     meta: {
@@ -114,7 +113,7 @@ export default [
     path: '/',
     alias: '/apiaries',
     name: 'home',
-    component: () => lazyLoadView(import('@views/apiary-list.vue')),
+    component: () => import('@views/apiary-list.vue'),
   },
   {
     meta: {
@@ -123,7 +122,7 @@ export default [
     },
     path: '/apiaries/create',
     name: 'apiary-create',
-    component: () => lazyLoadView(import('@views/apiary-create.vue')),
+    component: () => import('@views/apiary-create.vue'),
   },
   {
     meta: {
@@ -132,7 +131,7 @@ export default [
     },
     path: '/apiaries/:id/edit',
     name: 'apiary-edit',
-    component: () => lazyLoadView(import('@views/apiary-edit.vue')),
+    component: () => import('@views/apiary-edit.vue'),
   },
   {
     meta: {
@@ -141,7 +140,7 @@ export default [
     },
     path: '/apiaries/:id/management',
     name: 'apiary-management',
-    component: () => lazyLoadView(import('@views/apiary-management.vue')),
+    component: () => import('@views/apiary-management.vue'),
   },
   {
     meta: {
@@ -150,8 +149,7 @@ export default [
     },
     path: '/checklist/:id/edit',
     name: 'checklist',
-    component: () =>
-      lazyLoadView(import('@/src/router/views/checklist-edit.vue')),
+    component: () => import('@/src/router/views/checklist-edit.vue'),
   },
   {
     meta: {
@@ -160,8 +158,7 @@ export default [
     },
     path: '/checklists/',
     name: 'checklists',
-    component: () =>
-      lazyLoadView(import('@/src/router/views/checklist-edit.vue')),
+    component: () => import('@/src/router/views/checklist-edit.vue'),
   },
   // {
   //   meta: {
@@ -170,7 +167,7 @@ export default [
   //   },
   //   path: '/dashboard/:id',
   //   name: 'dashboard',
-  //   component: () => lazyLoadView(import('@views/dashboard.vue')),
+  //   component: () => import('@views/dashboard.vue'),
   // },
   {
     meta: {
@@ -179,13 +176,12 @@ export default [
     },
     path: '/dashboards/',
     name: 'dashboards',
-    component: () =>
-      lazyLoadView(import('@/src/router/views/dashboard-list.vue')),
+    component: () => import('@/src/router/views/dashboard-list.vue'),
   },
   // {
   //   path: '/dashboard/sign-in',
   //   name: 'dashboard-sign-in',
-  //   component: () => lazyLoadView(import('@views/dashboard-sign-in.vue')),
+  //   component: () => import('@views/dashboard-sign-in.vue'),
   // },
   {
     meta: {
@@ -194,7 +190,7 @@ export default [
     },
     path: '/dashboards/create',
     name: 'dashboard-create',
-    component: () => lazyLoadView(import('@views/dashboard-edit.vue')),
+    component: () => import('@views/dashboard-edit.vue'),
   },
   {
     meta: {
@@ -203,7 +199,7 @@ export default [
     },
     path: '/dashboards/:id/edit',
     name: 'dashboard-edit',
-    component: () => lazyLoadView(import('@views/dashboard-edit.vue')),
+    component: () => import('@views/dashboard-edit.vue'),
   },
   {
     meta: {
@@ -212,7 +208,7 @@ export default [
     },
     path: '/devices',
     name: 'devices',
-    component: () => lazyLoadView(import('@/src/router/views/device-list.vue')),
+    component: () => import('@/src/router/views/device-list.vue'),
   },
   {
     meta: {
@@ -221,7 +217,7 @@ export default [
     },
     path: '/diary',
     name: 'diary',
-    component: () => lazyLoadView(import('@views/diary-list.vue')),
+    component: () => import('@views/diary-list.vue'),
   },
   {
     meta: {
@@ -230,7 +226,7 @@ export default [
     },
     path: '/export',
     name: 'export',
-    component: () => lazyLoadView(import('@/src/router/views/export-data.vue')),
+    component: () => import('@/src/router/views/export-data.vue'),
   },
   {
     meta: {
@@ -239,8 +235,7 @@ export default [
     },
     path: '/flashlog/:id',
     name: 'flashlog',
-    component: () =>
-      lazyLoadView(import('@/src/router/views/flashlog-data.vue')),
+    component: () => import('@/src/router/views/flashlog-data.vue'),
   },
   {
     meta: {
@@ -249,8 +244,7 @@ export default [
     },
     path: '/hivetags',
     name: 'hivetags',
-    component: () =>
-      lazyLoadView(import('@/src/router/views/hivetag-list.vue')),
+    component: () => import('@/src/router/views/hivetag-list.vue'),
   },
   {
     meta: {
@@ -259,7 +253,7 @@ export default [
     },
     path: '/hivetags/create',
     name: 'hivetag-create',
-    component: () => lazyLoadView(import('@views/hivetag-edit.vue')),
+    component: () => import('@views/hivetag-edit.vue'),
   },
   {
     meta: {
@@ -268,7 +262,7 @@ export default [
     },
     path: '/hivetags/:id/create',
     name: 'hivetag-create-id',
-    component: () => lazyLoadView(import('@views/hivetag-edit.vue')),
+    component: () => import('@views/hivetag-edit.vue'),
   },
   {
     meta: {
@@ -277,7 +271,7 @@ export default [
     },
     path: '/hivetags/:id/edit',
     name: 'hivetag-edit',
-    component: () => lazyLoadView(import('@views/hivetag-edit.vue')),
+    component: () => import('@views/hivetag-edit.vue'),
   },
   {
     meta: {
@@ -289,8 +283,7 @@ export default [
     props: (route) => ({
       importMessage: route.params.importMessage,
     }),
-    component: () =>
-      lazyLoadView(import('@/src/router/views/import-flashlogs.vue')),
+    component: () => import('@/src/router/views/import-flashlogs.vue'),
   },
   {
     meta: {
@@ -299,7 +292,7 @@ export default [
     },
     path: '/groups/create',
     name: 'group-create',
-    component: () => lazyLoadView(import('@views/group-edit.vue')),
+    component: () => import('@views/group-edit.vue'),
   },
   {
     meta: {
@@ -308,7 +301,7 @@ export default [
     },
     path: '/groups/:id/edit',
     name: 'group-edit',
-    component: () => lazyLoadView(import('@views/group-edit.vue')),
+    component: () => import('@views/group-edit.vue'),
   },
   {
     meta: {
@@ -317,7 +310,7 @@ export default [
     },
     path: '/groups/:id/token/:token',
     name: 'group-accept',
-    component: () => lazyLoadView(import('@views/group-edit.vue')),
+    component: () => import('@views/group-edit.vue'),
   },
   {
     meta: {
@@ -326,7 +319,7 @@ export default [
     },
     path: '/hives/create',
     name: 'hive-create',
-    component: () => lazyLoadView(import('@views/hive-edit.vue')),
+    component: () => import('@views/hive-edit.vue'),
   },
   {
     meta: {
@@ -335,7 +328,7 @@ export default [
     },
     path: '/hives/:id/edit',
     name: 'hive-edit',
-    component: () => lazyLoadView(import('@views/hive-edit.vue')),
+    component: () => import('@views/hive-edit.vue'),
   },
   {
     meta: {
@@ -344,8 +337,7 @@ export default [
     },
     path: '/hives/:id/inspections/:inspection',
     name: 'hive-inspect-edit',
-    component: () =>
-      lazyLoadView(import('@/src/router/views/inspection-edit.vue')),
+    component: () => import('@/src/router/views/inspection-edit.vue'),
   },
   {
     meta: {
@@ -354,7 +346,7 @@ export default [
     },
     path: '/hives/:id/inspections/',
     name: 'hive-inspections',
-    component: () => lazyLoadView(import('@views/hive-inspections.vue')),
+    component: () => import('@views/hive-inspections.vue'),
   },
   {
     meta: {
@@ -363,8 +355,7 @@ export default [
     },
     path: '/inspect',
     name: 'inspect',
-    component: () =>
-      lazyLoadView(import('@/src/router/views/inspection-edit.vue')),
+    component: () => import('@/src/router/views/inspection-edit.vue'),
   },
   {
     meta: {
@@ -391,8 +382,7 @@ export default [
     },
     path: '/new',
     name: 'new',
-    component: () =>
-      lazyLoadView(import('@/src/router/views/new-changelog.vue')),
+    component: () => import('@/src/router/views/new-changelog.vue'),
   },
   {
     meta: {
@@ -401,7 +391,7 @@ export default [
     },
     path: '/profile',
     name: 'profile',
-    component: () => lazyLoadView(import('@views/user-profile.vue')),
+    component: () => import('@views/user-profile.vue'),
     props: () => ({ user: store.state.auth.currentUser || {} }),
   },
   {
@@ -411,8 +401,7 @@ export default [
     },
     path: '/research',
     name: 'research',
-    component: () =>
-      lazyLoadView(import('@/src/router/views/research-consent.vue')),
+    component: () => import('@/src/router/views/research-consent.vue'),
   },
   {
     meta: {
@@ -421,7 +410,7 @@ export default [
     },
     path: '/hives/:id/edit',
     name: 'queen-edit',
-    component: () => lazyLoadView(import('@views/hive-edit.vue')),
+    component: () => import('@views/hive-edit.vue'),
   },
   {
     meta: {
@@ -430,8 +419,7 @@ export default [
     },
     path: '/translations',
     name: 'translations',
-    component: () =>
-      lazyLoadView(import('@/src/router/views/translation-list.vue')),
+    component: () => import('@/src/router/views/translation-list.vue'),
   },
 ]
 
@@ -440,7 +428,7 @@ export default [
 // back to a timeout view in case the page fails to load. You can
 // use this component to lazy-load a route with:
 //
-// component: () => lazyLoadView(import('@views/my-view'))
+// component: () => import('@views/my-view'))
 //
 // NOTE: Components loaded with this strategy DO NOT have access
 // to in-component guards, such as beforeRouteEnter,
@@ -449,29 +437,30 @@ export default [
 //
 // component: () => import('@views/my-view')
 //
-function lazyLoadView(AsyncView) {
-  const AsyncHandler = () => ({
-    component: AsyncView,
-    // A component to use while the component is loading.
-    loading: require('@views/_loading.vue').default,
-    // Delay before showing the loading component.
-    // Default: 200 (milliseconds).
-    // Set to 1000 in order to only show this in case of network issues
-    delay: 1000,
-    // A fallback component in case the timeout is exceeded
-    // when loading the component.
-    error: require('@views/_timeout.vue').default,
-    // Time before giving up trying to load the component.
-    // Default: Infinity (milliseconds).
-    timeout: 5000,
-  })
+// TODO-VUE3 fix/enable??
+// function lazyLoadView(AsyncView) {
+//   const AsyncHandler = () => ({
+//     component: AsyncView,
+//     // A component to use while the component is loading.
+//     loading: () => import('@views/_loading.vue').default,
+//     // Delay before showing the loading component.
+//     // Default: 200 (milliseconds).
+//     // Set to 1000 in order to only show this in case of network issues
+//     delay: 1000,
+//     // A fallback component in case the timeout is exceeded
+//     // when loading the component.
+//     error: () => import('@views/_timeout.vue').default,
+//     // Time before giving up trying to load the component.
+//     // Default: Infinity (milliseconds).
+//     timeout: 5000,
+//   })
 
-  return Promise.resolve({
-    functional: true,
-    render(h, { data, children }) {
-      // Transparently pass any props or children
-      // to the view component.
-      return h(AsyncHandler, data, children)
-    },
-  })
-}
+//   return Promise.resolve({
+//     functional: true,
+//     render(h, { data, children }) {
+//       // Transparently pass any props or children
+//       // to the view component.
+//       return h(AsyncHandler, data, children)
+//     },
+//   })
+// }

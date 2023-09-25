@@ -294,11 +294,7 @@
                   <div v-if="inspection.reminder_date">
                     <v-menu>
                       <template v-slot:activator="{ on, attrs }">
-                        <span
-                          class="add-to-calendar accent--text"
-                          v-bind="attrs"
-                          v-on="on"
-                        >
+                        <span class="add-to-calendar accent--text" v-on="on">
                           {{ $t('add_to_calendar').toUpperCase() }}
                         </span>
                       </template>
@@ -728,7 +724,7 @@ export default {
       return this.$i18n.locale
     },
     matchedItemsByDate() {
-      const matchedItemsByDate = []
+      var matchedItemsByDate = []
       matchedItemsByDate = this.inspections.items_by_date
         .reduce((acc, itemByDate) => {
           if (

@@ -51,7 +51,6 @@
               v-if="object[item.id] !== null"
               icon
               color="red"
-              v-bind="attrs"
               :disabled="showLoadingIcon || bulkInspection"
               v-on="on"
               @click.prevent="removeSampleCode(object[item.id])"

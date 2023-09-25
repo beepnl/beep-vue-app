@@ -151,7 +151,6 @@
                     :label="$t('period')"
                     prepend-icon="mdi-calendar"
                     readonly
-                    v-bind="attrs"
                     v-on="on"
                   ></v-text-field>
                 </template>

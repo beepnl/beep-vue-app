@@ -81,7 +81,7 @@
           >
             <v-tooltip bottom max-width="60%">
               <template v-slot:activator="{ on, attrs }">
-                <div v-bind="attrs" v-on="on">
+                <div v-on="on">
                   <v-badge
                     v-if="alerts.length > 1"
                     :offset-x="alerts.length > 9 ? '23' : '20'"
@@ -107,7 +107,7 @@
           @show-hive-menu="showHiveMenu($event)"
         ></HiveIcon>
 
-        <v-overlay :value="showMenu">
+        <v-overlay :model-value="showMenu">
           <v-menu
             v-model="showMenu"
             :position-x="x"
@@ -298,7 +298,7 @@
 
               <v-tooltip v-if="mView" bottom max-width="60%">
                 <template v-slot:activator="{ on, attrs }">
-                  <div v-bind="attrs" v-on="on">
+                  <div v-on="on">
                     <v-badge
                       v-if="alerts.length > 1"
                       :offset-x="alerts.length > 9 ? '23' : '20'"
@@ -449,7 +449,6 @@
           >
             <template v-slot:activator="{ on, attrs }">
               <span
-                v-bind="attrs"
                 class="truncate-md"
                 style="max-width: 224px;"
                 v-on="on"
@@ -518,7 +517,6 @@
           >
             <template v-slot:activator="{ on, attrs }">
               <span
-                v-bind="attrs"
                 class="truncate-md"
                 style="max-width: 164px;"
                 v-on="on"

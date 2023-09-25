@@ -59,6 +59,7 @@ module.exports = {
     //   cert: fs.readFileSync('./localhost.crt'),
     // },
     // public: 'http://localhost:8083/', // old webpack
+    // port: 8083,
     client: {
       // Can be `string`:
       //

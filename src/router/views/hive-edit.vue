@@ -165,7 +165,7 @@
             <div>
               <div class="beep-label" v-text="$t('Hive_order')"></div>
               <!-- <el-input-number
-                :value="activeHive.order === null ? 0 : activeHive.order"
+                :model-value="activeHive.order === null ? 0 : activeHive.order"
                 size="medium"
                 @change="updateOrder($event)"
               ></el-input-number> -->
@@ -330,9 +330,10 @@ export default {
     // If hive-create route is used, make empty hive object
     if (this.hiveCreateMode) {
       this.readApiariesAndGroupsIfNotPresent().then(() => {
+        var selectedLocationId = null
         if (this.apiaries.length > 0) {
-          const selectedApiary = this.sortedApiaries[0]
-          const selectedLocationId = selectedApiary.id
+          var selectedApiary = this.sortedApiaries[0]
+          selectedLocationId = selectedApiary.id
           this.newHiveLocation = null
           if (this.locationId !== null) {
             selectedLocationId = this.locationId

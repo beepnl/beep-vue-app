@@ -176,7 +176,7 @@ export default {
               } else if (msg.indexOf('email') > -1) {
                 this.fieldErrors.email = true
               }
-              const verifyOn = false
+              var verifyOn = false
               if (msg === 'email_not_verified') {
                 verifyOn = true
               }

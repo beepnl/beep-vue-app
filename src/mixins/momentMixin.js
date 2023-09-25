@@ -57,7 +57,7 @@ export const momentFullDateTime = {
       // return this.$moment(date)
       //   .locale(this.$i18n.locale)
       //   .format('YYYY-MM-DD HH:mm:ss')
-      const time = null
+      var time = null
       if (toUtcTime) {
         time = this.$moment.utc(date)
       } else {
@@ -71,7 +71,7 @@ export const momentFullDateTime = {
 export const momentFromNow = {
   methods: {
     momentFromNow(date, inUtcTime = false) {
-      const inLocalTime = null
+      var inLocalTime = null
       if (inUtcTime) {
         inLocalTime = this.$moment.utc(date).local()
       } else {
@@ -155,7 +155,7 @@ export const momentify = {
   methods: {
     momentify(date, inUtcTime = false, format = 'lll') {
       if (date !== null) {
-        const inLocalTime = null
+        var inLocalTime = null
         if (inUtcTime) {
           inLocalTime = this.$moment.utc(date).local()
         } else {

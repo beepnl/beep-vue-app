@@ -35,7 +35,7 @@
               v-if="listItem.input === 'list_item'"
               v-model="selectedArray"
               multiple
-              :value="listItem.id.toString()"
+              :model-value="listItem.id.toString()"
             />
           </v-list-item-action>
           <v-list-item-content>
@@ -57,7 +57,7 @@
                 v-if="nestedItem.input === 'list_item'"
                 v-model="selectedArray"
                 multiple
-                :value="nestedItem.id.toString()"
+                :model-value="nestedItem.id.toString()"
               />
             </v-list-item-action>
             <v-list-item-content>
@@ -72,14 +72,14 @@
 
     <v-radio-group
       v-if="item.input === 'options'"
-      :value="parseInt(object[item.id])"
+      :model-value="parseInt(object[item.id])"
       class="inspection-options-list"
     >
       <v-radio
         v-for="(listItem, index) in item.children"
         :key="index"
         :label="listItem.trans[locale] || listItem.name"
-        :value="listItem.id"
+        :model-value="listItem.id"
         @click="toggleRadio(listItem.id, item.id)"
       ></v-radio>
     </v-radio-group>
@@ -118,7 +118,7 @@
 
     <!-- <el-input-number
       v-if="item.input === 'number' || item.input === 'number_0_decimals'"
-      :value="object[item.id] === null ? 0 : object[item.id]"
+      :model-value="object[item.id] === null ? 0 : object[item.id]"
       :step="1"
       :precision="0"
       :step-strictly="true"
@@ -134,7 +134,7 @@
           item.input === 'number_2_decimals' ||
           item.input === 'square_25cm2'
       "
-      :value="object[item.id] === null ? 0 : object[item.id]"
+      :model-value="object[item.id] === null ? 0 : object[item.id]"
       :step="item.input === 'number_2_decimals' ? 0.01 : 0.1"
       :precision="precision"
       :disabled="disabled"
@@ -152,7 +152,7 @@
 
     <el-input-number
       v-if="item.input === 'number_3_decimals'"
-      :value="object[item.id] === null ? 0 : object[item.id]"
+      :model-value="object[item.id] === null ? 0 : object[item.id]"
       :step="0.001"
       :precision="3"
       :disabled="disabled"
@@ -163,7 +163,7 @@
 
     <el-input-number
       v-if="item.input === 'number_negative'"
-      :value="object[item.id] === null ? 0 : object[item.id]"
+      :model-value="object[item.id] === null ? 0 : object[item.id]"
       :max="0"
       :step="1"
       :precision="0"
@@ -176,7 +176,7 @@
 
     <el-input-number
       v-if="item.input === 'number_positive'"
-      :value="object[item.id] === null ? 0 : object[item.id]"
+      :model-value="object[item.id] === null ? 0 : object[item.id]"
       :min="0"
       :step="1"
       :precision="0"
@@ -374,12 +374,11 @@ export default {
     },
     precision() {
       const dIndex = this.item.input.indexOf('_decimals')
+      var dec = 0
       if (dIndex > -1) {
-        const dec = parseInt(this.item.input.substr(dIndex - 1, 1))
+        dec = parseInt(this.item.input.substr(dIndex - 1, 1))
       } else if (this.item.input === 'square_25cm2') {
         dec = 1
-      } else {
-        dec = 0
       }
       return dec
     },
@@ -394,7 +393,7 @@ export default {
     },
     parsedAnswer() {
       if (this.parseMode) {
-        const answer = this.parsedAnswerRaw
+        var answer = this.parsedAnswerRaw
         if (Array.isArray(this.parsedAnswerRaw)) {
           if (this.parsedAnswerRaw[0].type === 'checkbox') {
             const posAnswer = this.parsedAnswerRaw.filter(
@@ -441,7 +440,7 @@ export default {
           })
           .filter((el) => el.length > 0)
 
-        const answer = null
+        var answer = null
 
         if (returnedItems.length > 0) {
           if (returnedItems[0].length > 1) {
@@ -458,7 +457,7 @@ export default {
     },
     parsedImages() {
       if (Array.isArray(this.parsedAnswerRaw)) {
-        const imgArr = []
+        var imgArr = []
         var i = 0
         if (this.parsedItems.length > 0) {
           this.parsedItems.map((it, j) => {
@@ -688,7 +687,7 @@ export default {
       this.setInspectionEdited(true)
     },
     toggleSelect(listItemId, listId) {
-      const selectedArray = []
+      var selectedArray = []
       if (typeof this.object[listId] === 'string') {
         selectedArray = this.object[listId].split(',')
       }

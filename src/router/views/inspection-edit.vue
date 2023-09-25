@@ -442,7 +442,7 @@
             </SlideYUpTransition>
             <v-overlay
               :absolute="true"
-              :value="forceInspectionDate"
+              :model-value="forceInspectionDate"
               :opacity="0.5"
               color="white"
               z-index="3"
@@ -539,7 +539,7 @@
                   </v-col>
                   <v-overlay
                     :absolute="true"
-                    :value="forceInspectionDate"
+                    :model-value="forceInspectionDate"
                     :opacity="0.5"
                     color="white"
                     z-index="3"
@@ -1055,7 +1055,7 @@ export default {
       },
     },
     sortedHiveSets() {
-      const treeselectArray = []
+      var treeselectArray = []
       if (this.apiaries && this.apiaries.length > 0) {
         const treeselectApiaries = this.apiaries
         treeselectApiaries.map((apiary) => {
@@ -1645,7 +1645,7 @@ export default {
     },
     getParsedOverallAnswers() {
       Object.keys(this.parsedImages).map((prop) => {
-        const answer = this.getParsedAnswer(prop)
+        var answer = this.getParsedAnswer(prop)
         var value = null
         if (answer && answer.value !== undefined) {
           if (prop === 'impression' || prop === 'attention') {

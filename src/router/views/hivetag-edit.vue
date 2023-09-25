@@ -93,7 +93,7 @@
             ></div>
             <div class="rounded-border">
               <v-radio-group
-                :value="hiveTag.action_id"
+                :model-value="hiveTag.action_id"
                 hide-details
                 class="mt-0"
                 @change="selectAction($event)"
@@ -106,7 +106,7 @@
                     <v-radio
                       class="mt-2"
                       :disabled="!enableAction(hiveTagAction)"
-                      :value="hiveTagAction.id"
+                      :model-value="hiveTagAction.id"
                     ></v-radio>
                     <router-link
                       v-if="
@@ -365,7 +365,7 @@ export default {
       return this.$vuetify.breakpoint.mobile
     },
     possibleHiveTags() {
-      const possibleHiveTags = []
+      var possibleHiveTags = []
       for (var i = 1; i < 41; i++) {
         possibleHiveTags.push((i < 10 ? '0' : '') + i.toString())
       }

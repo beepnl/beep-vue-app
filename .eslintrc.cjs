@@ -6,6 +6,7 @@ module.exports = {
   extends: [
     'plugin:vue/vue3-recommended',
     // https://github.com/standard/standard/blob/master/docs/RULES-en.md
+    // 'plugin:vuetify/base', TODO-VUE3 temp disabled
     'standard',
     // https://github.com/prettier/eslint-config-prettier
     'prettier',
@@ -36,6 +37,7 @@ module.exports = {
     'vue/no-boolean-default': ['error', 'default-false'],
     'vue/no-deprecated-scope-attribute': 'error',
     'vue/no-empty-pattern': 'error',
+    'vue/no-unused-vars': 'off', // TODO-VUE3 enable
     'vue/object-curly-spacing': ['error', 'always'],
     'vue/padding-line-between-blocks': 'error',
     'vue/space-infix-ops': 'error',

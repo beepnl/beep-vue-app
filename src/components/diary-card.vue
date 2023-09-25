@@ -184,7 +184,6 @@
                       >
                         <template v-slot:activator="{ on, attrs }">
                           <span
-                            v-bind="attrs"
                             class="notes"
                             v-on="on"
                             v-text="inspection.notes"
@@ -270,7 +269,6 @@
                       >
                         <template v-slot:activator="{ on, attrs }">
                           <span
-                            v-bind="attrs"
                             class="reminder"
                             v-on="on"
                             v-text="inspection.reminder"

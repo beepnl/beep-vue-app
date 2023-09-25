@@ -149,7 +149,6 @@
                       <template v-slot:activator="{ on, attrs }">
                         <span
                           class="alert-label"
-                          v-bind="attrs"
                           v-on="on"
                           v-text="
                             alert.hive_name.substring(
@@ -179,7 +178,6 @@
                       <template v-slot:activator="{ on, attrs }">
                         <span
                           class="alert-label"
-                          v-bind="attrs"
                           v-on="on"
                           v-text="
                             alert.device_name.substring(

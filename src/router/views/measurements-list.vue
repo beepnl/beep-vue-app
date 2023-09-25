@@ -268,7 +268,7 @@
           >
             <v-overlay
               :absolute="true"
-              :value="loadingData"
+              :model-value="loadingData"
               :opacity="0.5"
               color="white"
               class="mt-12"
@@ -664,7 +664,7 @@ export default {
       return inspectionsForChartsArray
     },
     inspectionsForPeriod() {
-      const inspections = []
+      var inspections = []
       if (this.selectedDevice.hive_id !== null) {
         inspections = this.inspectionsWithDates.filter(
           (inspection) =>
@@ -679,7 +679,7 @@ export default {
     },
     measurementsForHeatmap() {
       // remove first value for month and year interval (belongs to previous month/year) (can't be skipped in v-for loop as v-if is not possible there)
-      const data = this.measurementData.measurements
+      var data = this.measurementData.measurements
       if (
         (this.interval === 'month' || this.interval === 'year') &&
         !this.relativeInterval
@@ -1166,7 +1166,7 @@ export default {
               time === closestTimeStart.utc().format('YYYY-MM-DD[T]HH:mm:ss[Z]')
           )
 
-          const closestIndexEnd = closestIndexStart
+          var closestIndexEnd = closestIndexStart
 
           if (alert.min !== alert.max) {
             const closestTimeEnd = this.momentTimeArray.reduce((prev, curr) => {
@@ -1210,7 +1210,7 @@ export default {
 
       const endOfPeriod = this.$moment(startDate).endOf(fromPeriod)
 
-      const halfPeriodInDays = 0
+      var halfPeriodInDays = 0
 
       if (fromPeriod === 'week' || fromPeriod === 'month')
         halfPeriodInDays = Math.floor(
@@ -1220,7 +1220,7 @@ export default {
 
       const middleDatePeriod = endOfPeriod.subtract(halfPeriodInDays, 'days')
 
-      const newIndex = todayEnd.diff(middleDatePeriod, newPeriod + 's')
+      var newIndex = todayEnd.diff(middleDatePeriod, newPeriod + 's')
 
       if (this.relativeInterval && !zoom) newIndex -= 1
 
@@ -1229,7 +1229,7 @@ export default {
       return !isNaN(newIndex) && newIndex > 0 ? newIndex : 0
     },
     chartjsDataSeries(quantities, weather = false) {
-      const data = {
+      var data = {
         labels: [],
         datasets: [],
       }
@@ -1549,7 +1549,7 @@ export default {
       }
     },
     selectDate(date) {
-      const p = this.interval
+      var p = this.interval
       const d = p + 's'
 
       const selectedMoment = this.$moment(date)
@@ -1573,11 +1573,11 @@ export default {
       }
     },
     setPeriodTitle() {
-      const p = this.interval
+      var p = this.interval
       const d = p + 's'
       var i = this.timeIndex
-      const startTimeFormat = this.timeFormat
-      const endTimeFormat = this.timeFormat
+      var startTimeFormat = this.timeFormat
+      var endTimeFormat = this.timeFormat
 
       if (p === 'selection') {
         this.periodTitle = this.dateRangeText

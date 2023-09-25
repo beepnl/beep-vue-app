@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/attribute-hyphenation -->
 <template>
   <div>
-    <v-app-bar app light background-color="#000" color="primary" dense>
+    <v-app-bar bg-color="#000" color="primary" dense>
       <div
         class="d-flex flex-row justify-space-between align-center"
         style="width:100%;"
@@ -34,15 +34,7 @@
       </div>
 
       <template v-slot:extension>
-        <v-tabs
-          icons-and-text
-          dense
-          light
-          grow
-          background-color="#F8B133"
-          color="#000"
-          height="48px"
-        >
+        <v-tabs stacked dense grow bg-olor="#F8B133" color="#000" height="48px">
           <v-tab
             v-for="(tab, i) in tabs"
             :key="i"
@@ -53,7 +45,6 @@
             <span v-if="tab.title">{{ tab.title }}</span>
             <v-badge
               v-if="tab.route === 'alerts' && alerts.length > 0"
-              overlap
               color="red"
               :content="alerts.length"
             >

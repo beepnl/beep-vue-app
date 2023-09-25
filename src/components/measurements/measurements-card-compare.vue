@@ -111,7 +111,7 @@
 
     <v-overlay
       :absolute="true"
-      :value="
+      :model-value="
         (compareMeasurementData !== null && loadingCompareData) ||
           (loadingData && initMultiple)
       "
@@ -743,12 +743,12 @@ export default {
       return smFilter.length > 0 ? smFilter[0] : null
     },
     chartjsCompareDataSeries(quantities, bar = false) {
-      const data = {
+      var data = {
         labels: [],
         datasets: [],
       }
       if (!bar) {
-        const SDdata = {
+        var SDdata = {
           labels: [],
           datasets: [],
         }
@@ -973,7 +973,7 @@ export default {
       return data
     },
     chartjsMultipleHivesDataSeries(quantity) {
-      const data = {
+      var data = {
         labels: [],
         datasets: [],
       }

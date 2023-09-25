@@ -90,13 +90,12 @@
         >
           <template v-slot:activator="{ on, attrs }">
             <v-text-field
-              :modelValue="dateRangeText"
+              :model-value="dateRangeText"
               :rules="requiredRules"
               :label="!sticky ? $t('period') : null"
               prepend-icon="mdi-calendar"
               class="date-picker"
               readonly
-              v-bind="attrs"
               v-on="on"
             ></v-text-field>
           </template>

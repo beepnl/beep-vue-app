@@ -193,7 +193,7 @@
         <v-col cols="12" class="py-0 pt-sm-3">
           <v-overlay
             :absolute="true"
-            :value="loading"
+            :model-value="loading"
             :opacity="0.5"
             color="white"
             z-index="3"
@@ -476,7 +476,7 @@ export default {
       this.checkBlockData(true)
     },
     chartjsDataSeries(dataSet) {
-      const data = {
+      var data = {
         labels: [],
         datasets: [],
       }
@@ -614,7 +614,7 @@ export default {
       const currentIndexPerc = this.blockDataIndex / this.blockDataIndexMax
       const newMaxIndex =
         (this.blockDataIndexMax * this.currentMinutes) / newMinutes
-      const newIndex = Math.floor(currentIndexPerc * newMaxIndex)
+      var newIndex = Math.floor(currentIndexPerc * newMaxIndex)
 
       this.blockDataIndex = newIndex
       this.currentMinutes = newMinutes

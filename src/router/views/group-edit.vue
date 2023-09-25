@@ -131,7 +131,7 @@
                     ></v-sheet>
                   </div>
 
-                  <v-overlay :value="overlay">
+                  <v-overlay :model-value="overlay">
                     <v-toolbar
                       class="hive-color-picker-toolbar"
                       dense
@@ -819,7 +819,7 @@ export default {
       this.setGroupEdited(true)
     },
     getTitle() {
-      const addName = ''
+      var addName = ''
       if (this.activeGroup && !this.createMode && !this.activeGroup.admin) {
         addName = ' - ' + this.activeGroup.name
       }

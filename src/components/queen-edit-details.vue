@@ -10,7 +10,7 @@
           <v-col cols="12" sm="7" md="6" lg="4">
             <div>
               <v-text-field
-                :value="queen ? queen.name : null"
+                :model-value="queen ? queen.name : null"
                 :label="`${$t('Queen')} ${$t('name')}`"
                 :placeholder="`${$t('Queen')} ${$t('name')}`"
                 height="36px"
@@ -25,7 +25,7 @@
             <div>
               <div class="beep-label" v-text="`${$t('Bee_race')}`"></div>
               <Treeselect
-                :value="queen ? queen.race_id : null"
+                :model-value="queen ? queen.race_id : null"
                 :options="treeselectBeeRaces"
                 :no-results-text="`${$t('no_results')}`"
                 :label="`${$t('Select')} ${$t('Bee_race')}`"
@@ -56,7 +56,6 @@
                     height="36px"
                     clearable
                     prepend-icon="mdi-calendar"
-                    v-bind="attrs"
                     v-on="on"
                   ></v-text-field>
                 </template>
@@ -92,7 +91,7 @@
           <v-col cols="12" sm="7" md="6" lg="4">
             <div>
               <v-text-field
-                :value="queen ? queen.description : null"
+                :model-value="queen ? queen.description : null"
                 :label="`${$t('Queen')} ${$t('queen_description')}`"
                 height="36px"
                 counter="100"
@@ -217,7 +216,7 @@ export default {
     treeselectBeeRaces() {
       if (this.beeRacesList.length) {
         const locale = this.selectLocale(this.beeRacesList)
-        const treeselectArray = this.beeRacesList
+        var treeselectArray = this.beeRacesList
         treeselectArray.map((beeRace) => {
           beeRace.label = beeRace.trans[locale]
           return beeRace // TODO-VUE3 check

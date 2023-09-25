@@ -101,7 +101,7 @@ export default {
     async deleteImage(id) {
       try {
         const imageUrl = this.object[id]
-        const data = {
+        var data = {
           image_url: imageUrl,
         }
         // empty input field even if deleting image gives error

@@ -208,11 +208,13 @@ export default {
         } catch (error) {
           if (error.response) {
             console.log(error.response)
-            const verifyLink = false
-            const passwordForgotLink = false
+            var verifyLink = false
+            var passwordForgotLink = false
+
+            var msg = ''
 
             if (typeof error.response.data.message !== 'undefined') {
-              var msg = error.response.data.message
+              msg = error.response.data.message
             } else {
               msg = error.response.data
             }
@@ -276,9 +278,10 @@ export default {
           this.tryingToLogIn = false
           if (error.response) {
             console.log(error.response)
-            const verifyLink = false
+            var verifyLink = false
+            var msg = ''
             if (typeof error.response.data.message !== 'undefined') {
-              const msg = error.response.data.message
+              msg = error.response.data.message
             } else {
               msg = error.response.data
             }

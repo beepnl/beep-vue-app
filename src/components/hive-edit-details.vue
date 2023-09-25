@@ -32,7 +32,7 @@
                 <div class="beep-label" v-text="`${$t('Hive_frames')}`"></div>
                 <!-- <el-input-number
                   v-if="hive && hive.layers"
-                  :value="
+                  :model-value="
                     hive.layers.length > 0
                       ? getMaxFramecount(hive.layers)
                       : defaultFrameCount
@@ -54,7 +54,7 @@
               </v-col>
             </v-row>
 
-            <v-overlay :value="overlay">
+            <v-overlay :model-value="overlay">
               <v-toolbar class="hive-color-picker-toolbar" dense light flat>
                 <div
                   class="hive-color-picker-title ml-1"
@@ -104,7 +104,7 @@
               <v-col cols="12" sm="7" md="12">
                 <div class="beep-label" v-text="`${$t('Hive_type')}*`"></div>
                 <Treeselect
-                  :value="hive.hive_type_id"
+                  :model-value="hive.hive_type_id"
                   :options="treeselectHiveTypes"
                   :disable-branch-nodes="true"
                   :no-results-text="`${$t('no_results')}`"
@@ -137,7 +137,7 @@
                           v-text="`${$t(bbDimension)}`"
                         ></div>
                         <!-- <el-input-number
-                          :value="
+                          :model-value="
                             hive[bbDimension]
                               ? parseFloat(hive[bbDimension])
                               : 0
@@ -174,7 +174,7 @@
                           v-text="`${$t(frDimension)}`"
                         ></div>
                         <!-- <el-input-number
-                          :value="
+                          :model-value="
                             hive[frDimension]
                               ? parseFloat(hive[frDimension])
                               : 0
@@ -288,7 +288,7 @@ export default {
             }
             return 0
           })
-        const treeselectArray = []
+        var treeselectArray = []
         sortedGroups.forEach((sortedGroup, index) => {
           const sortedGroupObject = {
             id: -(index + 1),
@@ -395,7 +395,7 @@ export default {
         this.hiveDimensionsList &&
         this.hiveDimensionsList[hiveTypeName] !== undefined
       ) {
-        const hiveDimensions = {
+        var hiveDimensions = {
           bb_width_cm: parseFloat(
             this.hiveDimensionsList[hiveTypeName].bb_width_cm
           ),

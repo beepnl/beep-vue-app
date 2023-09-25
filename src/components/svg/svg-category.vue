@@ -60,7 +60,7 @@ export default {
     },
     calcRowXY(item) {
       if (this.svgPositionSet[item.id] === undefined) {
-        const itemCounter = this.svgItemCounter + 1
+        var itemCounter = this.svgItemCounter + 1
 
         if (itemCounter === 1) {
           // init row height as first item height
@@ -72,7 +72,7 @@ export default {
         this.$store.commit('inspections/setRowHeight', this.headerHeight)
 
         const x = this.xMargin
-        const y =
+        var y =
           (this.svgPageNr === 1 ? this.yStart : this.yMargin) +
           (this.svgPageNr - 1) * this.pageHeight +
           this.svgY

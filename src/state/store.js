@@ -1,12 +1,9 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import { createStore } from 'vuex'
 import dispatchActionForAllModules from '@utils/store/dispatch-action-for-all-modules'
 
 import modules from './modules'
 
-Vue.use(Vuex)
-
-const store = new Vuex.Store({
+const store = createStore({
   modules,
   // Enable strict mode in development to get a warning
   // when mutating state outside of a mutation.

@@ -178,7 +178,7 @@ export default {
               : '-'
           },
           display: function(context) {
-            const isFinalValue = false
+            var isFinalValue = false
             // check if datapoint has value, whether all datapoints after that are null
             // in that case current datapoint is the final value and should be displayed as a datalabel
             // (only pushing non-null datapoints to dataset is not an option because spanGaps won't work then)

@@ -146,9 +146,10 @@ export default {
           return this.inputHeight.number
         case item.input === 'select' ||
           item.input === 'options' ||
-          item.input === 'list':
+          item.input === 'list': {
           const nrOfItems = this.countChildren(item)
           return this.calcSelectHeight(nrOfItems)
+        }
         case item.input === 'score_amount' || item.input === 'score_quality':
           return this.calcSelectHeight(4)
         case item.input === 'score':
@@ -165,7 +166,7 @@ export default {
       return this.inputHeight.number_info
     },
     calcSelectHeight(children) {
-      const height = 10
+      var height = 10
       if (children > this.maxNrOfItems) {
         height = this.inputHeight.grade + this.inputHeight.label // 27
       } else {
@@ -175,14 +176,14 @@ export default {
     },
     calcXY(item, fullRowItem = false, lastChild = false) {
       if (this.svgPositionSet[item.id] === undefined) {
-        const itemCounter = this.svgItemCounter + 1
+        var itemCounter = this.svgItemCounter + 1
         const itemHeight = this.calcHeight(item)
         if (itemCounter === 1) {
           // init row height as first item height
           this.$store.commit('inspections/setRowHeight', itemHeight)
         }
         if (fullRowItem || this.svgColumnCounter >= this.columnsPerRow) {
-          const columnCounter = 1
+          var columnCounter = 1
           // for new row, set Y (height so far) as previous Y + row height of previous row
           this.$store.commit('inspections/setY', this.svgY + this.svgRowHeight)
           // reset row height to current item height for new row
@@ -196,7 +197,7 @@ export default {
         }
 
         const x = this.xMargin + (columnCounter - 1) * this.columnWidth
-        const y =
+        var y =
           (this.svgPageNr === 1 ? this.yStart : this.yMargin) +
           (this.svgPageNr - 1) * this.pageHeight +
           this.svgY

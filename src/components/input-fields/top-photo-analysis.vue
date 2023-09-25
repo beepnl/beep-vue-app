@@ -168,7 +168,7 @@
       </div>
       <v-overlay
         :absolute="true"
-        :value="bulkInspection"
+        :model-value="bulkInspection"
         :opacity="0.5"
         color="white"
         z-index="3"
@@ -254,9 +254,9 @@ export default {
   methods: {
     calculateTpaColonySize() {
       const beesPerCm2 = 1.25
-      const colonySize = null
-      const pixelsTotal = 0
-      const pixelsBees = 0
+      var colonySize = null
+      var pixelsTotal = 0
+      var pixelsBees = 0
 
       setTimeout(() => {
         this.category.children.map((child) => {

@@ -43,7 +43,6 @@
                   outlined
                   color="black"
                   class="save-button-mobile-wide"
-                  v-bind="attrs"
                   v-on="on"
                 >
                   <v-icon left>mdi-plus</v-icon>
@@ -126,7 +125,6 @@
                     small
                     color="accent"
                     class="save-button-mobile-wide"
-                    v-bind="attrs"
                     v-on="on"
                   >
                     <v-icon left>mdi-plus</v-icon>
