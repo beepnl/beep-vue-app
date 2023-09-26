@@ -36,7 +36,7 @@ module.exports = {
           ...options,
           compilerOptions: {
             compatConfig: {
-              MODE: 2,
+              MODE: 3,
             },
           },
         }
@@ -58,19 +58,8 @@ module.exports = {
     //   key: fs.readFileSync('./localhost.key'),
     //   cert: fs.readFileSync('./localhost.crt'),
     // },
-    // public: 'http://localhost:8083/', // old webpack
-    // port: 8083,
-    client: {
-      // Can be `string`:
-      //
-      // To get protocol/hostname/port from browser
-      // webSocketURL: 'auto://0.0.0.0:0/ws'
-      webSocketURL: {
-        hostname: '0.0.0.0',
-        pathname: '/https',
-        port: 8083,
-      },
-    },
+    public: 'http://localhost:8083/', // TODO-VUE3 old webpack ??
+    port: 8083,
   },
   publicPath: '/',
 }
