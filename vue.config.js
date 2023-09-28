@@ -54,12 +54,10 @@ module.exports = {
   // Configure Webpack's dev server.
   // https://cli.vuejs.org/guide/cli-service.html
   devServer: {
-    // https: {
-    //   key: fs.readFileSync('./localhost.key'),
-    //   cert: fs.readFileSync('./localhost.crt'),
-    // },
-    public: 'http://localhost:8083/', // TODO-VUE3 old webpack ??
-    port: 8083,
+    // public: 'http://localhost:8083/', // old webpack
+    client: {
+      webSocketURL: 'ws://localhost:8083/',
+    },
   },
   publicPath: '/',
 }
