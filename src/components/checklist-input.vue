@@ -35,7 +35,7 @@
               v-if="listItem.input === 'list_item'"
               v-model="selectedArray"
               multiple
-              :model-value="listItem.id.toString()"
+              :value="listItem.id.toString()"
             />
           </v-list-item-action>
           <v-list-item-content>
@@ -57,7 +57,7 @@
                 v-if="nestedItem.input === 'list_item'"
                 v-model="selectedArray"
                 multiple
-                :model-value="nestedItem.id.toString()"
+                :value="nestedItem.id.toString()"
               />
             </v-list-item-action>
             <v-list-item-content>
@@ -72,14 +72,14 @@
 
     <v-radio-group
       v-if="item.input === 'options'"
-      :model-value="parseInt(object[item.id])"
+      :value="parseInt(object[item.id])"
       class="inspection-options-list"
     >
       <v-radio
         v-for="(listItem, index) in item.children"
         :key="index"
         :label="listItem.trans[locale] || listItem.name"
-        :model-value="listItem.id"
+        :value="listItem.id"
         @click="toggleRadio(listItem.id, item.id)"
       ></v-radio>
     </v-radio-group>
@@ -118,7 +118,7 @@
 
     <!-- <el-input-number
       v-if="item.input === 'number' || item.input === 'number_0_decimals'"
-      :model-value="object[item.id] === null ? 0 : object[item.id]"
+      :value="object[item.id] === null ? 0 : object[item.id]"
       :step="1"
       :precision="0"
       :step-strictly="true"
@@ -134,7 +134,7 @@
           item.input === 'number_2_decimals' ||
           item.input === 'square_25cm2'
       "
-      :model-value="object[item.id] === null ? 0 : object[item.id]"
+      :value="object[item.id] === null ? 0 : object[item.id]"
       :step="item.input === 'number_2_decimals' ? 0.01 : 0.1"
       :precision="precision"
       :disabled="disabled"
@@ -152,7 +152,7 @@
 
     <el-input-number
       v-if="item.input === 'number_3_decimals'"
-      :model-value="object[item.id] === null ? 0 : object[item.id]"
+      :value="object[item.id] === null ? 0 : object[item.id]"
       :step="0.001"
       :precision="3"
       :disabled="disabled"
@@ -163,7 +163,7 @@
 
     <el-input-number
       v-if="item.input === 'number_negative'"
-      :model-value="object[item.id] === null ? 0 : object[item.id]"
+      :value="object[item.id] === null ? 0 : object[item.id]"
       :max="0"
       :step="1"
       :precision="0"
@@ -176,7 +176,7 @@
 
     <el-input-number
       v-if="item.input === 'number_positive'"
-      :model-value="object[item.id] === null ? 0 : object[item.id]"
+      :value="object[item.id] === null ? 0 : object[item.id]"
       :min="0"
       :step="1"
       :precision="0"

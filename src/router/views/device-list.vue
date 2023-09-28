@@ -288,7 +288,7 @@
                   </v-col>
                   <v-col cols="12" md="6" class="pb-0 pb-sm-3">
                     <v-text-field
-                      :model-value="
+                      :value="
                         ownedDevice.hardware_id !== null &&
                         ownedDevice.hardware_id !== undefined
                           ? ownedDevice.hardware_id
@@ -303,7 +303,7 @@
                   </v-col>
                   <v-col cols="12" md="6" class="pb-0 pb-sm-3">
                     <v-text-field
-                      :model-value="
+                      :value="
                         ownedDevice.firmware_version !== null &&
                         ownedDevice.firmware_version !== undefined
                           ? ownedDevice.firmware_version

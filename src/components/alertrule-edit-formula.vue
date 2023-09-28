@@ -181,7 +181,7 @@
                   v-for="(item, i) in futureItems"
                   :key="'f-' + i"
                   :label="item.label"
-                  :model-value="item.value"
+                  :value="item.value"
                 >
                   <template v-slot:label>
                     <span
@@ -205,7 +205,7 @@
             </div>
           </v-col>
 
-          <v-overlay :model-value="showPeriodOverlay">
+          <v-overlay :value="showPeriodOverlay">
             <v-container class="minutes-calculator">
               <v-row>
                 <v-col cols="12">

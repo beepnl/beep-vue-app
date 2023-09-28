@@ -193,7 +193,7 @@
         <v-col cols="12" class="py-0 pt-sm-3">
           <v-overlay
             :absolute="true"
-            :model-value="loading"
+            :value="loading"
             :opacity="0.5"
             color="white"
             z-index="3"

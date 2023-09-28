@@ -4,13 +4,13 @@
       <div class="beep-label" v-text="$tc('Select_input_language') + '*'"></div>
       <Treeselect
         class="lang-treeselect"
-        :model-value="uploadLanguage"
+        :value="uploadLanguage"
         :options="languages"
         :normalizer="normalizer"
         :placeholder="$t('Select')"
         @updated="updateLanguage($event)"
       >
-        <template v-slot:model-value-label="{ node }">
+        <template v-slot:value-label="{ node }">
           <div class="d-flex justify-start align-center">
             <img
               class="lang-icon"
@@ -64,7 +64,7 @@
     </v-col>
     <v-overlay
       :absolute="true"
-      :model-value="loading"
+      :value="loading"
       :opacity="0.8"
       color="white"
       z-index="3"

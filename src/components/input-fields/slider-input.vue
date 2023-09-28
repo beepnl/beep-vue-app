@@ -3,7 +3,7 @@
     <v-slider
       v-if="item.input === 'grade'"
       class="slider--default slider--grade"
-      :model-value="getValue(item.id, item.input)"
+      :value="getValue(item.id, item.input)"
       :tick-labels="gradeTicks"
       track-color="#b0b0b0"
       min="0"
@@ -25,7 +25,7 @@
       :class="
         `slider--big-label ${inputProvided(item.id) ? '' : 'slider--default'}`
       "
-      :model-value="getValue(item.id, item.input)"
+      :value="getValue(item.id, item.input)"
       :tick-labels="numberDegreeTicks"
       thumb-label="always"
       :track-color="inputProvided(item.id) ? '#F8B133' : '#b0b0b0'"
@@ -57,7 +57,7 @@
     <v-slider
       v-if="item.input === 'number_percentage'"
       class="slider--big-label slider--number-percentage"
-      :model-value="getValue(item.id, item.input)"
+      :value="getValue(item.id, item.input)"
       :tick-labels="numberPercentageTicks"
       thumb-label="always"
       track-color="#b0b0b0"
@@ -75,7 +75,7 @@
 
     <v-slider
       v-if="item.input === 'score_amount'"
-      :model-value="getValue(item.id, item.input)"
+      :value="getValue(item.id, item.input)"
       class="slider--default slider--score-amount"
       :tick-labels="scoreAmountTicks"
       track-color="#b0b0b0"
@@ -95,7 +95,7 @@
 
     <v-slider
       v-if="item.input === 'score_quality'"
-      :model-value="getValue(item.id, item.input)"
+      :value="getValue(item.id, item.input)"
       class="slider--default slider--score-quality"
       :tick-labels="scoreQualityTicks"
       track-color="#b0b0b0"
@@ -116,7 +116,7 @@
     <v-slider
       v-if="item.input === 'slider'"
       class="slider--big-label slider--number-percentage"
-      :model-value="getValue(item.id, item.input)"
+      :value="getValue(item.id, item.input)"
       :tick-labels="sliderTicks"
       thumb-label="always"
       track-color="#b0b0b0"

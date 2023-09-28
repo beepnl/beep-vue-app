@@ -18,10 +18,7 @@
 
       <v-list>
         <template v-for="language in languages" :key="language.title">
-          <v-list-item
-            :model-value="language"
-            @click="switchLocale(language.lang)"
-          >
+          <v-list-item :value="language" @click="switchLocale(language.lang)">
             <v-list-item-avatar>
               <img :src="assetsUrl + `/img/flags/${language.lang}.svg`" />
             </v-list-item-avatar>

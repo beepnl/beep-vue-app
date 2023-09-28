@@ -79,7 +79,7 @@
             </v-sheet>
           </div>
 
-          <v-overlay :model-value="overlayLayerColor">
+          <v-overlay :value="overlayLayerColor">
             <v-toolbar class="hive-color-picker-toolbar" dense light flat>
               <div
                 class="hive-color-picker-title ml-1"

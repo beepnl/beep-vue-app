@@ -165,7 +165,7 @@
             <div>
               <div class="beep-label" v-text="$t('Hive_order')"></div>
               <!-- <el-input-number
-                :model-value="activeHive.order === null ? 0 : activeHive.order"
+                :value="activeHive.order === null ? 0 : activeHive.order"
                 size="medium"
                 @change="updateOrder($event)"
               ></el-input-number> -->

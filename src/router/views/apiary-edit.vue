@@ -96,7 +96,7 @@
                     ></v-sheet>
                   </div>
 
-                  <v-overlay :model-value="overlay">
+                  <v-overlay :value="overlay">
                     <v-toolbar
                       class="hive-color-picker-toolbar"
                       dense
@@ -191,7 +191,7 @@
                   <div class="beep-label" v-text="`${$t('latitude')}`"></div>
                   <!-- <el-input-number
                     v-if="activeApiary"
-                    :model-value="
+                    :value="
                       activeApiary.coordinate_lat === null
                         ? 0
                         : activeApiary.coordinate_lat
@@ -220,7 +220,7 @@
                   <div class="beep-label" v-text="`${$t('Longitude')}`"></div>
                   <!-- <el-input-number
                     v-if="activeApiary"
-                    :model-value="
+                    :value="
                       activeApiary.coordinate_lon === null
                         ? 0
                         : activeApiary.coordinate_lon

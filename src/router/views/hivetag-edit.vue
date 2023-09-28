@@ -93,7 +93,7 @@
             ></div>
             <div class="rounded-border">
               <v-radio-group
-                :model-value="hiveTag.action_id"
+                :value="hiveTag.action_id"
                 hide-details
                 class="mt-0"
                 @change="selectAction($event)"
@@ -106,7 +106,7 @@
                     <v-radio
                       class="mt-2"
                       :disabled="!enableAction(hiveTagAction)"
-                      :model-value="hiveTagAction.id"
+                      :value="hiveTagAction.id"
                     ></v-radio>
                     <router-link
                       v-if="

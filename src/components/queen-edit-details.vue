@@ -10,7 +10,7 @@
           <v-col cols="12" sm="7" md="6" lg="4">
             <div>
               <v-text-field
-                :model-value="queen ? queen.name : null"
+                :value="queen ? queen.name : null"
                 :label="`${$t('Queen')} ${$t('name')}`"
                 :placeholder="`${$t('Queen')} ${$t('name')}`"
                 height="36px"
@@ -25,7 +25,7 @@
             <div>
               <div class="beep-label" v-text="`${$t('Bee_race')}`"></div>
               <Treeselect
-                :model-value="queen ? queen.race_id : null"
+                :value="queen ? queen.race_id : null"
                 :options="treeselectBeeRaces"
                 :no-results-text="`${$t('no_results')}`"
                 :label="`${$t('Select')} ${$t('Bee_race')}`"
@@ -91,7 +91,7 @@
           <v-col cols="12" sm="7" md="6" lg="4">
             <div>
               <v-text-field
-                :model-value="queen ? queen.description : null"
+                :value="queen ? queen.description : null"
                 :label="`${$t('Queen')} ${$t('queen_description')}`"
                 height="36px"
                 counter="100"

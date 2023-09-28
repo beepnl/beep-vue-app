@@ -268,7 +268,7 @@
           >
             <v-overlay
               :absolute="true"
-              :model-value="loadingData"
+              :value="loadingData"
               :opacity="0.5"
               color="white"
               class="mt-12"

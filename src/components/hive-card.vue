@@ -107,7 +107,7 @@
           @show-hive-menu="showHiveMenu($event)"
         ></HiveIcon>
 
-        <v-overlay :model-value="showMenu">
+        <v-overlay :value="showMenu">
           <v-menu
             v-model="showMenu"
             :position-x="x"

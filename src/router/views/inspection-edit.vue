@@ -442,7 +442,7 @@
             </SlideYUpTransition>
             <v-overlay
               :absolute="true"
-              :model-value="forceInspectionDate"
+              :value="forceInspectionDate"
               :opacity="0.5"
               color="white"
               z-index="3"
@@ -539,7 +539,7 @@
                   </v-col>
                   <v-overlay
                     :absolute="true"
-                    :model-value="forceInspectionDate"
+                    :value="forceInspectionDate"
                     :opacity="0.5"
                     color="white"
                     z-index="3"
