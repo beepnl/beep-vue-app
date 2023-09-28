@@ -55,8 +55,15 @@ module.exports = {
   // https://cli.vuejs.org/guide/cli-service.html
   devServer: {
     // public: 'http://localhost:8083/', // old webpack
+    // client: {
+    //   webSocketURL: 'ws://localhost:8083/',
+    // },
+    host: '0.0.0.0',
+    hot: true,
     client: {
-      webSocketURL: 'ws://localhost:8083/',
+      webSocketURL: {
+        port: 8083,
+      },
     },
   },
   publicPath: '/',
