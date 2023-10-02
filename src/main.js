@@ -35,6 +35,30 @@ import { aliases, mdi } from 'vuetify/lib/iconsets/mdi'
 import App from './app.vue'
 
 const vuetify = createVuetify({
+  // default options
+  defaults: {
+    VAlert: {
+      density: 'compact',
+    },
+    VList: {
+      density: 'compact',
+    },
+    VSelect: {
+      density: 'compact',
+    },
+    VSwitch: {
+      density: 'compact',
+    },
+    VTable: {
+      density: 'compact',
+    },
+    VBtn: {
+      variant: 'outlined',
+    },
+    VCard: {
+      variant: 'outlined',
+    },
+  },
   icons: {
     defaultSet: 'mdi',
     aliases,
@@ -47,22 +71,30 @@ const vuetify = createVuetify({
   // breakpoint: {
   //   mobileBreakpoint: 'xs', // This is equivalent to a value of 600
   // },
-  // icons: {
-  //   iconfont: 'mdi',
-  // },
   theme: {
-    dark: false,
+    defaultTheme: 'beepTheme',
     themes: {
-      // options: { minifyTheme },
-      light: {
-        primary: '#F8B133',
-        secondary: '#000000',
-        accent: '#f29100',
+      beepTheme: {
+        dark: false,
+        colors: {
+          primary: '#F8B133',
+          secondary: '#000000',
+          accent: '#f29100',
+          // "primary-darken-1": "#000000",
+          // "secondary-darken-1": "#000000",
+          // error: "#000000",
+          // info: "#000000",
+          // success: "#000000",
+          // warning: "#000000",
+        },
       },
-      dark: {
-        primary: '#F8B133',
-        background: '#000000',
-        accent: '#FFFFFF',
+      beepDarkTheme: {
+        dark: true,
+        colors: {
+          primary: '#F8B133',
+          secondary: '#000000',
+          accent: '#ffffff',
+        },
       },
     },
   },

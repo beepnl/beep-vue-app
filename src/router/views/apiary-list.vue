@@ -690,7 +690,6 @@
 
 <script>
 import Api from '@api/Api'
-// import { ScaleTransition, SlideYUpTransition } from 'vue2-transitions'
 import Confirm from '@/src/components/confirm-dialog.vue'
 import HiveCard from '@components/hive-card.vue'
 import Layout from '@/src/router/layouts/main-layout.vue'
@@ -714,8 +713,6 @@ export default {
     Confirm,
     HiveCard,
     Layout,
-    // ScaleTransition,
-    // SlideYUpTransition,
   },
   mixins: [
     checkAlerts,

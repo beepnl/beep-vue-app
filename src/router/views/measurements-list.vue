@@ -600,7 +600,9 @@ export default {
     },
     inspectionsWithDates() {
       if (this.generalInspections.length > 0) {
-        const inspectionsWithDates = this.generalInspections
+        var inspectionsWithDates = JSON.parse(
+          JSON.stringify(this.generalInspections)
+        ) // clone without v-bind to avoid vuex warning when mutating
         inspectionsWithDates.map((inspection) => {
           inspection.created_at_locale_date = this.momentFormat(
             inspection.created_at,
@@ -899,7 +901,9 @@ export default {
     },
     sortedDevices() {
       const apiaryArray = []
-      this.devices.map((device, index) => {
+
+      var devices = JSON.parse(JSON.stringify(this.devices)) // clone without v-bind to avoid vuex warning when mutating
+      devices.map((device, index) => {
         apiaryArray.push({
           id: -(index + 1), // random because it has to have an id for Treeselect but won't be used later
           label:
@@ -930,7 +934,7 @@ export default {
         }
         return 0
       })
-      this.devices.map((device) => {
+      devices.map((device) => {
         uniqueApiaries.map((apiary) => {
           if (
             apiary.label === device.location_name ||
@@ -969,7 +973,7 @@ export default {
       return window.matchMedia('(hover: none)').matches
     },
   },
-  created() {
+  mounted() {
     this.initLocale = this.userLocale
     if (this.queriedChartCols !== null) {
       this.chartCols = this.queriedChartCols
