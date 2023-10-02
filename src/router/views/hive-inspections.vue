@@ -293,8 +293,11 @@
                   >
                   <div v-if="inspection.reminder_date">
                     <v-menu>
-                      <template v-slot:activator="{ on, attrs }">
-                        <span class="add-to-calendar accent--text" v-on="on">
+                      <template v-slot:activator="{ props }">
+                        <span
+                          class="add-to-calendar accent--text"
+                          v-bind="props"
+                        >
                           {{ $t('add_to_calendar').toUpperCase() }}
                         </span>
                       </template>

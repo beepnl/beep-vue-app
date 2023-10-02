@@ -277,7 +277,7 @@
             `border-color: ${invitation.color ? invitation.color : '#F8B133'};`
           "
         >
-          <v-simple-table dense>
+          <v-table dense>
             <template v-slot>
               <thead>
                 <tr>
@@ -316,7 +316,7 @@
                 </tr>
               </tbody>
             </template>
-          </v-simple-table>
+          </v-table>
         </div>
       </v-row>
 
@@ -385,8 +385,8 @@
               </div>
 
               <v-menu>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-icon small class="color-grey-light ml-2" v-on="on"
+                <template v-slot:activator="{ props }">
+                  <v-icon small class="color-grey-light ml-2" v-bind="props"
                     >mdi-cog</v-icon
                   >
                 </template>

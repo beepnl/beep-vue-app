@@ -64,7 +64,7 @@
     </v-col>
     <v-overlay
       :absolute="true"
-      :value="loading"
+      :activator="loading"
       :opacity="0.8"
       color="white"
       z-index="3"

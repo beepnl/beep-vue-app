@@ -80,8 +80,8 @@
             }"
           >
             <v-tooltip bottom max-width="60%">
-              <template v-slot:activator="{ on, attrs }">
-                <div v-on="on">
+              <template v-slot:activator="{ props }">
+                <div v-bind="props">
                   <v-badge
                     v-if="alerts.length > 1"
                     :offset-x="alerts.length > 9 ? '23' : '20'"
@@ -107,7 +107,7 @@
           @show-hive-menu="showHiveMenu($event)"
         ></HiveIcon>
 
-        <v-overlay :value="showMenu">
+        <v-overlay :activator="showMenu">
           <v-menu
             v-model="showMenu"
             :position-x="x"
@@ -297,8 +297,8 @@
               </div>
 
               <v-tooltip v-if="mView" bottom max-width="60%">
-                <template v-slot:activator="{ on, attrs }">
-                  <div v-on="on">
+                <template v-slot:activator="{ props }">
+                  <div v-bind="props">
                     <v-badge
                       v-if="alerts.length > 1"
                       :offset-x="alerts.length > 9 ? '23' : '20'"
@@ -447,11 +447,11 @@
             max-width="60%"
             open-delay="800"
           >
-            <template v-slot:activator="{ on, attrs }">
+            <template v-slot:activator="{ props }">
               <span
                 class="truncate-md"
                 style="max-width: 224px;"
-                v-on="on"
+                v-bind="props"
                 v-text="hive.notes"
               >
               </span>
@@ -515,11 +515,11 @@
             max-width="60%"
             open-delay="800"
           >
-            <template v-slot:activator="{ on, attrs }">
+            <template v-slot:activator="{ props }">
               <span
                 class="truncate-md"
                 style="max-width: 164px;"
-                v-on="on"
+                v-bind="props"
                 v-text="hive.reminder"
               >
               </span>

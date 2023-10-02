@@ -242,7 +242,7 @@
       </div>
       <v-overlay
         :absolute="true"
-        :value="bulkInspection"
+        :activator="bulkInspection"
         :opacity="0.5"
         color="white"
         z-index="3"

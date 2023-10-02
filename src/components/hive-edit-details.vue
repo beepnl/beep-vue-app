@@ -54,7 +54,7 @@
               </v-col>
             </v-row>
 
-            <v-overlay :value="overlay">
+            <v-overlay :activator="overlay">
               <v-toolbar class="hive-color-picker-toolbar" dense light flat>
                 <div
                   class="hive-color-picker-title ml-1"

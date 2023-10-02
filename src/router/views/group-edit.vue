@@ -131,7 +131,7 @@
                     ></v-sheet>
                   </div>
 
-                  <v-overlay :value="overlay">
+                  <v-overlay :activator="overlay">
                     <v-toolbar
                       class="hive-color-picker-toolbar"
                       dense
@@ -206,7 +206,7 @@
               </v-btn>
             </div>
             <div class="rounded-border">
-              <v-simple-table dense>
+              <v-table dense>
                 <template v-slot>
                   <thead>
                     <tr>
@@ -302,7 +302,7 @@
                     </tr>
                   </tbody>
                 </template>
-              </v-simple-table>
+              </v-table>
             </div>
           </v-col>
         </v-row>

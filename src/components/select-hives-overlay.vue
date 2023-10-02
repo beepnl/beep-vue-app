@@ -1,5 +1,5 @@
 <template>
-  <v-overlay v-if="showOverlay" :value="overlay">
+  <v-overlay v-if="showOverlay" :activator="overlay">
     <div style="border-radius: 4px">
       <v-container class="select-hives-container">
         <v-row>

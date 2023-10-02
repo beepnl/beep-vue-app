@@ -46,13 +46,13 @@
         />
 
         <v-tooltip v-if="!showLoadingIcon" bottom>
-          <template v-slot:activator="{ on, attrs }">
+          <template v-slot:activator="{ props }">
             <v-btn
               v-if="object[item.id] !== null"
               icon
               color="red"
               :disabled="showLoadingIcon || bulkInspection"
-              v-on="on"
+              v-bind="props"
               @click.prevent="removeSampleCode(object[item.id])"
             >
               <v-icon small>mdi-delete</v-icon>

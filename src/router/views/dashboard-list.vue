@@ -54,7 +54,7 @@
 
         <v-col v-if="!showDashboardPlaceholder" cols="12" class="pt-0">
           <div class="rounded-border">
-            <v-simple-table>
+            <v-table>
               <template v-slot>
                 <thead>
                   <tr>
@@ -94,11 +94,11 @@
                       </a>
 
                       <v-tooltip bottom max-width="60%">
-                        <template v-slot:activator="{ on }">
+                        <template v-slot:activator="{ props }">
                           <v-icon
                             small
                             class="ml-2"
-                            v-on="on"
+                            v-bind="props"
                             @click="copyUrl(dashboardGroup.code)"
                             >mdi-content-copy</v-icon
                           >
@@ -146,7 +146,7 @@
                   </tr>
                 </tbody>
               </template>
-            </v-simple-table>
+            </v-table>
           </div>
         </v-col>
       </v-row>

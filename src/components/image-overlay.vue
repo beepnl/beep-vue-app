@@ -1,5 +1,5 @@
 <template>
-  <v-overlay :value="overlay">
+  <v-overlay :activator="overlay">
     <v-toolbar dense light flat class="image-overlay-toolbar">
       <v-spacer></v-spacer>
       <v-toolbar-items>

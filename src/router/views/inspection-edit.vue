@@ -442,7 +442,7 @@
             </SlideYUpTransition>
             <v-overlay
               :absolute="true"
-              :value="forceInspectionDate"
+              :activator="forceInspectionDate"
               :opacity="0.5"
               color="white"
               z-index="3"

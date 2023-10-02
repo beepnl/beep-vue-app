@@ -37,13 +37,13 @@
               ></v-icon>
             </div>
             <v-menu v-if="showAlertRulePlaceholder || !mobile" offset-y>
-              <template v-slot:activator="{ on, attrs }">
+              <template v-slot:activator="{ props }">
                 <v-btn
                   tile
                   outlined
                   color="black"
                   class="save-button-mobile-wide"
-                  v-on="on"
+                  v-bind="props"
                 >
                   <v-icon left>mdi-plus</v-icon>
                   {{ $t('Add_alertrule') }}
@@ -118,14 +118,14 @@
               class="d-flex justify-end align-end mb-3"
             >
               <v-menu offset-y>
-                <template v-slot:activator="{ on, attrs }">
+                <template v-slot:activator="{ props }">
                   <v-btn
                     tile
                     outlined
                     small
                     color="accent"
                     class="save-button-mobile-wide"
-                    v-on="on"
+                    v-bind="props"
                   >
                     <v-icon left>mdi-plus</v-icon>
                     {{ $t('Add_alertrule') }}
@@ -150,7 +150,7 @@
             </v-col>
           </v-row>
           <div v-if="!showAlertRulePlaceholder" class="rounded-border">
-            <v-simple-table class="v-data-table--smallfont">
+            <v-table class="v-data-table--smallfont">
               <template v-slot>
                 <thead>
                   <tr>
@@ -271,7 +271,7 @@
                   </tr>
                 </tbody>
               </template>
-            </v-simple-table>
+            </v-table>
           </div>
         </v-col>
       </v-row>

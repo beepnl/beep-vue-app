@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import router from '@router'
 import store from '@state/store'
-import vuetify from '@plugins/vuetify'
+// import vuetify from '@plugins/vuetify'
 // import VueI18n from 'vue-i18n'
 import { createI18n } from 'vue-i18n'
 import cs from '@public/js/lang/cs'
@@ -27,38 +27,46 @@ import VueEllipseProgress from 'vue-ellipse-progress'
 import { ResizeObserver as Polyfill } from '@juggle/resize-observer'
 // import 'element-plus/es/components/message/style/css' TODO-VUE3 enable for real Vue 3
 // * Vuetify
-// import 'vuetify/styles'
-// import { createVuetify } from 'vuetify'
-// import * as components from 'vuetify/components'
-// import * as directives from 'vuetify/directives'
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
+import { aliases, mdi } from 'vuetify/lib/iconsets/mdi'
 import App from './app.vue'
 
-// const vuetify = createVuetify({
-//   components,
-//   directives,
-//   // breakpoint: {
-//   //   mobileBreakpoint: 'xs', // This is equivalent to a value of 600
-//   // },
-//   // icons: {
-//   //   iconfont: 'mdi',
-//   // },
-//   theme: {
-//     dark: false,
-//     themes: {
-//       options: { minifyTheme },
-//       light: {
-//         primary: '#F8B133',
-//         secondary: '#000000',
-//         accent: '#f29100',
-//       },
-//       dark: {
-//         primary: '#F8B133',
-//         background: '#000000',
-//         accent: '#FFFFFF',
-//       },
-//     },
-//   },
-// })
+const vuetify = createVuetify({
+  icons: {
+    defaultSet: 'mdi',
+    aliases,
+    sets: {
+      mdi,
+    },
+  },
+  components,
+  directives,
+  // breakpoint: {
+  //   mobileBreakpoint: 'xs', // This is equivalent to a value of 600
+  // },
+  // icons: {
+  //   iconfont: 'mdi',
+  // },
+  theme: {
+    dark: false,
+    themes: {
+      // options: { minifyTheme },
+      light: {
+        primary: '#F8B133',
+        secondary: '#000000',
+        accent: '#f29100',
+      },
+      dark: {
+        primary: '#F8B133',
+        background: '#000000',
+        accent: '#FFFFFF',
+      },
+    },
+  },
+})
 
 const i18n = createI18n({
   // allowComposition: true, // you need to specify that!

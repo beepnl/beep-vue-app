@@ -43,7 +43,7 @@
                 persistent
                 width="290px"
               >
-                <template v-slot:activator="{ on, attrs }">
+                <template v-slot:activator="{ props }">
                   <v-text-field
                     v-model="queenBirthDate"
                     :label="
@@ -56,7 +56,7 @@
                     height="36px"
                     clearable
                     prepend-icon="mdi-calendar"
-                    v-on="on"
+                    v-bind="props"
                   ></v-text-field>
                 </template>
                 <v-date-picker

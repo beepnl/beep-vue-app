@@ -205,7 +205,7 @@
             </div>
           </v-col>
 
-          <v-overlay :value="showPeriodOverlay">
+          <v-overlay :activator="showPeriodOverlay">
             <v-container class="minutes-calculator">
               <v-row>
                 <v-col cols="12">

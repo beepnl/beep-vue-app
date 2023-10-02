@@ -175,11 +175,11 @@
                   >
 
                   <v-tooltip v-if="item.delete" open-delay="500" bottom>
-                    <template v-slot:activator="{ on }">
+                    <template v-slot:activator="{ props }">
                       <v-icon
                         dark
                         color="red"
-                        v-on="on"
+                        v-bind="props"
                         @click="confirmDeleteFlashLog(item)"
                         >mdi-refresh</v-icon
                       >
@@ -275,7 +275,7 @@
             <v-spacer />
             <div v-if="selectedFlashLog !== null" class="d-flex align-right">
               <v-tooltip v-if="lgAndUp" open-delay="500" bottom>
-                <template v-slot:activator="{ on }">
+                <template v-slot:activator="{ props }">
                   <v-btn
                     small
                     tile
@@ -283,7 +283,7 @@
                     color="accent"
                     class="mx-2"
                     :disabled="showExportLoadingById.indexOf('csv') > -1"
-                    v-on="on"
+                    v-bind="props"
                     @click="
                       exportBlockData(
                         selectedFlashLog.flashlog_id,
@@ -313,14 +313,14 @@
               </v-tooltip>
 
               <v-tooltip v-if="lgAndUp" open-delay="500" bottom>
-                <template v-slot:activator="{ on }">
+                <template v-slot:activator="{ props }">
                   <v-btn
                     small
                     tile
                     outlined
                     color="accent"
                     :disabled="showExportLoadingById.indexOf('json') > -1"
-                    v-on="on"
+                    v-bind="props"
                     @click="
                       exportBlockData(
                         selectedFlashLog.flashlog_id,
@@ -354,12 +354,12 @@
                 open-delay="500"
                 bottom
               >
-                <template v-slot:activator="{ on }">
+                <template v-slot:activator="{ props }">
                   <v-icon
                     dark
                     color="accent"
                     class="mx-2"
-                    v-on="on"
+                    v-bind="props"
                     @click="
                       exportBlockData(
                         selectedFlashLog.flashlog_id,
@@ -388,11 +388,11 @@
                 open-delay="500"
                 bottom
               >
-                <template v-slot:activator="{ on }">
+                <template v-slot:activator="{ props }">
                   <v-icon
                     dark
                     color="accent"
-                    v-on="on"
+                    v-bind="props"
                     @click="
                       exportBlockData(
                         selectedFlashLog.flashlog_id,
@@ -574,12 +574,12 @@
                   open-delay="500"
                   bottom
                 >
-                  <template v-slot:activator="{ on }">
+                  <template v-slot:activator="{ props }">
                     <v-icon
                       dark
                       color="accent"
                       class="mr-2"
-                      v-on="on"
+                      v-bind="props"
                       @click="
                         exportBlockData(
                           selectedFlashLog.flashlog_id,
@@ -614,11 +614,11 @@
                   open-delay="500"
                   bottom
                 >
-                  <template v-slot:activator="{ on }">
+                  <template v-slot:activator="{ props }">
                     <v-icon
                       dark
                       color="accent"
-                      v-on="on"
+                      v-bind="props"
                       @click="
                         exportBlockData(
                           selectedFlashLog.flashlog_id,

@@ -1,12 +1,12 @@
 <template>
   <span class="locale-changer">
     <v-menu>
-      <template v-slot:activator="{ on }">
+      <template v-slot:activator="{ props }">
         <v-btn
           class="locale-changer-button"
           depressed
           color="transparent"
-          v-on="on"
+          v-bind="props"
         >
           <img
             style="width:20px;"

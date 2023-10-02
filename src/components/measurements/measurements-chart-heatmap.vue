@@ -22,7 +22,7 @@
       </table>
     </div>
     <div>
-      <v-simple-table
+      <v-table
         :class="
           `table-heatmap ${
             interval === 'hour' || interval === 'day' || interval === 'week'
@@ -154,7 +154,7 @@
             </tr>
           </tbody>
         </template>
-      </v-simple-table>
+      </v-table>
     </div>
   </div>
 </template>

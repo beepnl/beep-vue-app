@@ -22,8 +22,8 @@
           persistent
           width="290px"
         >
-          <template v-slot:activator="{ on }">
-            <v-icon small class="color-grey-light ml-1" v-on="on">
+          <template v-slot:activator="{ props }">
+            <v-icon small class="color-grey-light ml-1" v-bind="props">
               mdi-pencil
             </v-icon>
           </template>
@@ -88,7 +88,7 @@
           offset-y
           min-width="290px"
         >
-          <template v-slot:activator="{ on, attrs }">
+          <template v-slot:activator="{ props }">
             <v-text-field
               :value="dateRangeText"
               :rules="requiredRules"
@@ -96,7 +96,7 @@
               prepend-icon="mdi-calendar"
               class="date-picker"
               readonly
-              v-on="on"
+              v-bind="props"
             ></v-text-field>
           </template>
           <v-date-picker

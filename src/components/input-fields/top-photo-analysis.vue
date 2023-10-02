@@ -167,7 +167,7 @@
         </v-row>
       </div>
       <v-overlay
-        :absolute="true"
+        :activator="true"
         :value="bulkInspection"
         :opacity="0.5"
         color="white"

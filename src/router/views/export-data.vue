@@ -144,14 +144,14 @@
                 offset-y
                 min-width="290px"
               >
-                <template v-slot:activator="{ on, attrs }">
+                <template v-slot:activator="{ props }">
                   <v-text-field
                     v-model="dateRangeText"
                     :rules="requiredRules"
                     :label="$t('period')"
                     prepend-icon="mdi-calendar"
                     readonly
-                    v-on="on"
+                    v-bind="props"
                   ></v-text-field>
                 </template>
                 <v-date-picker

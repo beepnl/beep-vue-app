@@ -89,7 +89,7 @@
 
         <v-col v-if="!showHiveTagPlaceholder" cols="12" class="pt-0">
           <div class="rounded-border">
-            <v-simple-table>
+            <v-table>
               <template v-slot>
                 <thead>
                   <tr>
@@ -162,7 +162,7 @@
                   </tr>
                 </tbody>
               </template>
-            </v-simple-table>
+            </v-table>
           </div>
         </v-col>
       </v-row>

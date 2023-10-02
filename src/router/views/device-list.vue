@@ -180,8 +180,8 @@
                   </div>
 
                   <v-tooltip bottom max-width="60%">
-                    <template v-slot:activator="{ on }">
-                      <span v-on="on">
+                    <template v-slot:activator="{ props }">
+                      <span v-bind="props">
                         <div
                           v-if="ownedDevice.battery_voltage !== undefined"
                           class="mr-3"
@@ -201,8 +201,8 @@
                   </v-tooltip>
 
                   <v-tooltip bottom max-width="60%">
-                    <template v-slot:activator="{ on }">
-                      <span v-on="on">
+                    <template v-slot:activator="{ props }">
+                      <span v-bind="props">
                         <div
                           v-if="ownedDevice.last_message_received !== undefined"
                           class="mr-3"
@@ -226,8 +226,8 @@
                   </v-tooltip>
 
                   <v-tooltip bottom max-width="60%">
-                    <template v-slot:activator="{ on }">
-                      <span v-on="on">
+                    <template v-slot:activator="{ props }">
+                      <span v-bind="props">
                         <div
                           v-if="
                             ownedDevice.measurement_transmission_ratio !==
@@ -409,7 +409,7 @@
                       v-if="ownedDevice.sensor_definitions.length > 0"
                       class="rounded-border"
                     >
-                      <v-simple-table class="v-data-table--smallfont" dense>
+                      <v-table class="v-data-table--smallfont" dense>
                         <template v-slot>
                           <thead>
                             <tr>
@@ -570,12 +570,12 @@
                                     open-delay="500"
                                     bottom
                                   >
-                                    <template v-slot:activator="{ on }">
+                                    <template v-slot:activator="{ props }">
                                       <v-icon
                                         dark
                                         class="mr-3"
                                         color="green"
-                                        v-on="on"
+                                        v-bind="props"
                                         @click="updateSensorDef(sensorDef)"
                                         >mdi-check</v-icon
                                       >
@@ -583,11 +583,11 @@
                                     <span>{{ $t('save') }}</span>
                                   </v-tooltip>
                                   <v-tooltip open-delay="500" bottom>
-                                    <template v-slot:activator="{ on }">
+                                    <template v-slot:activator="{ props }">
                                       <v-icon
                                         dark
                                         color="red"
-                                        v-on="on"
+                                        v-bind="props"
                                         @click="
                                           deleteSensorDef(
                                             ownedDevice,
@@ -604,7 +604,7 @@
                             </tr>
                           </tbody>
                         </template>
-                      </v-simple-table>
+                      </v-table>
                     </div>
                   </v-col>
                 </v-row>

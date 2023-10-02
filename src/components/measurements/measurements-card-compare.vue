@@ -111,7 +111,7 @@
 
     <v-overlay
       :absolute="true"
-      :value="
+      :activator="
         (compareMeasurementData !== null && loadingCompareData) ||
           (loadingData && initMultiple)
       "

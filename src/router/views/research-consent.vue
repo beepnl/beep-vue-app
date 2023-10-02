@@ -298,13 +298,13 @@
                             class="description cursor-pointer"
                           >
                             <v-tooltip bottom>
-                              <template v-slot:activator="{ on }">
+                              <template v-slot:activator="{ props }">
                                 <v-icon
                                   class="mdi mdi-information icon-info"
                                   dark
                                   small
                                   color="accent"
-                                  v-on="on"
+                                  v-bind="props"
                                 ></v-icon>
                               </template>
                               <span

@@ -146,10 +146,10 @@
                       bottom
                       max-width="60%"
                     >
-                      <template v-slot:activator="{ on, attrs }">
+                      <template v-slot:activator="{ props }">
                         <span
                           class="alert-label"
-                          v-on="on"
+                          v-bind="props"
                           v-text="
                             alert.hive_name.substring(
                               0,
@@ -175,10 +175,10 @@
                       bottom
                       max-width="60%"
                     >
-                      <template v-slot:activator="{ on, attrs }">
+                      <template v-slot:activator="{ props }">
                         <span
                           class="alert-label"
-                          v-on="on"
+                          v-bind="props"
                           v-text="
                             alert.device_name.substring(
                               0,

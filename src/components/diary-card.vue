@@ -182,7 +182,7 @@
                         bottom
                         max-width="60%"
                       >
-                        <template v-slot:activator="{ on, attrs }">
+                        <template v-slot:activator="{ props }">
                           <span
                             class="notes"
                             v-on="on"
@@ -267,10 +267,10 @@
                         bottom
                         max-width="60%"
                       >
-                        <template v-slot:activator="{ on, attrs }">
+                        <template v-slot:activator="{ props }">
                           <span
                             class="reminder"
-                            v-on="on"
+                            v-bind="props"
                             v-text="inspection.reminder"
                           >
                           </span>

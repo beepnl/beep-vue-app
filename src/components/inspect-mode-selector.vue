@@ -50,12 +50,12 @@
           v-text="btn.tooltip"
         ></span>
         <v-tooltip v-if="!mobile" bottom max-width="300px">
-          <template v-slot:activator="{ on }">
+          <template v-slot:activator="{ props }">
             <v-icon
               large
               class="ma-2 no-print"
               color="accent"
-              v-on="on"
+              v-bind="props"
               @click="setSelectedMode = btn.mode"
             >
               {{ btn.icon }}
