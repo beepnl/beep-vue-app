@@ -386,197 +386,89 @@
 
               <v-menu>
                 <template v-slot:activator="{ props }">
-                  <v-icon small class="color-grey-light ml-2" v-bind="props"
+                  <v-icon
+                    size="small"
+                    class="color-grey-light ml-2"
+                    v-bind="props"
                     >mdi-cog</v-icon
                   >
                 </template>
 
-                <v-list v-if="!hiveSet.users" dense>
-                  <v-list-item-group>
-                    <v-list-item
-                      :to="{
-                        name: 'apiary-edit',
-                        params: { id: hiveSet.id },
-                      }"
+                <v-list :lines="false">
+                  <v-list-group v-if="!hiveSet.users">
+                    <template
+                      v-for="(item, i) in menuItemsApiary(hiveSet)"
+                      :key="i"
                     >
-                      <v-list-item-icon class="mr-3">
-                        <v-icon>mdi-home-edit</v-icon>
-                      </v-list-item-icon>
+                      <v-list-item v-if="item.to" :to="item.to">
+                        <template v-slot:prepend>
+                          <v-icon class="mr-3" :icon="item.icon"></v-icon>
+                        </template>
 
-                      <v-list-item-content>
-                        <v-list-item-title>
-                          <span v-text="$t('edit_apiary')"></span>
-                        </v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
-                    <v-list-item
-                      :to="{
-                        name: 'inspect',
-                        query: { apiaryId: hiveSet.id },
-                      }"
-                    >
-                      <v-list-item-icon class="mr-3">
-                        <v-icon>mdi-file-document-edit-outline</v-icon>
-                      </v-list-item-icon>
+                        <v-list-item-title>{{ item.text }} </v-list-item-title>
+                      </v-list-item>
+                      <v-list-item v-else @click="item.click">
+                        <template v-slot:prepend>
+                          <v-icon class="mr-3" :icon="item.icon"></v-icon>
+                        </template>
 
-                      <v-list-item-content>
-                        <v-list-item-title>
-                          <span v-text="$t('New_inspection')"></span>
-                        </v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
-                    <v-list-item
-                      @click="setDiaryGroupFilterAndGo(hiveSet.name)"
-                    >
-                      <v-list-item-icon class="mr-3">
-                        <v-icon>mdi-magnify</v-icon>
-                      </v-list-item-icon>
+                        <v-list-item-title>{{ item.text }} </v-list-item-title>
+                      </v-list-item>
+                    </template>
+                  </v-list-group>
 
-                      <v-list-item-content>
-                        <v-list-item-title>
-                          <span v-text="$tc('View_inspection', 2)"></span>
-                        </v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
-                    <v-list-item
-                      :to="{
-                        name: 'hive-create',
-                        query: { locationId: hiveSet.id },
-                      }"
-                    >
-                      <v-list-item-icon class="mr-3">
-                        <v-icon>mdi-archive</v-icon>
-                      </v-list-item-icon>
+                  <v-divider
+                    v-if="!hiveSet.users && hiveSet.owner"
+                    class="my-1"
+                  ></v-divider>
 
-                      <v-list-item-content>
-                        <v-list-item-title>
-                          <span v-text="$t('New_hive')"></span>
-                        </v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
-                    <v-list-item
-                      :to="{
-                        name: 'apiary-management',
-                        params: { id: hiveSet.id },
-                      }"
-                    >
-                      <v-list-item-icon class="mr-3">
-                        <v-icon>mdi-home-export-outline</v-icon>
-                      </v-list-item-icon>
-
-                      <v-list-item-content>
-                        <v-list-item-title>
-                          <span
-                            v-text="$t('Move') + ' ' + $tc('hive', 2)"
-                          ></span>
-                        </v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
-                  </v-list-item-group>
-
-                  <v-divider v-if="hiveSet.owner" class="my-1"></v-divider>
-
-                  <v-list-item-group>
+                  <v-list-group v-if="!hiveSet.users">
                     <v-list-item
                       v-if="hiveSet.owner"
                       @click="confirmDeleteApiary(hiveSet)"
                     >
-                      <v-list-item-icon class="mr-3">
-                        <v-icon class="red--text">mdi-delete</v-icon>
-                      </v-list-item-icon>
+                      <template v-slot:prepend>
+                        <v-icon class="mr-3 red--text">mdi-delete</v-icon>
+                      </template>
 
-                      <v-list-item-content>
-                        <v-list-item-title class="red--text">{{
-                          $t('remove_apiary')
-                        }}</v-list-item-title>
-                      </v-list-item-content>
+                      <v-list-item-title class="red--text">{{
+                        $t('remove_apiary')
+                      }}</v-list-item-title>
                     </v-list-item>
-                  </v-list-item-group>
+                  </v-list-group>
                 </v-list>
 
-                <v-list v-if="hiveSet.users" dense>
-                  <v-list-item-group>
-                    <v-list-item
-                      :to="{
-                        name: 'group-edit',
-                        params: { id: hiveSet.id },
-                      }"
+                <v-list v-if="hiveSet.users" :lines="false">
+                  <v-list-group>
+                    <template
+                      v-for="(item, j) in menuItemsGroup(hiveSet)"
+                      :key="j"
                     >
-                      <v-list-item-icon class="mr-3">
-                        <v-icon>mdi-account-multiple-plus</v-icon>
-                      </v-list-item-icon>
+                      <v-list-item v-if="item.if && item.to" :to="item.to">
+                        <template v-slot:prepend>
+                          <v-icon class="mr-3" :icon="item.icon"></v-icon>
+                        </template>
 
-                      <v-list-item-content>
-                        <v-list-item-title>
-                          <span v-text="$t('edit_group')"></span>
-                        </v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
-                  </v-list-item-group>
+                        <v-list-item-title>{{ item.text }} </v-list-item-title>
+                      </v-list-item>
 
-                  <v-list-item
-                    v-if="hiveSet.hasEditableHive"
-                    :to="{
-                      name: 'inspect',
-                      query: { groupId: hiveSet.id },
-                    }"
-                  >
-                    <v-list-item-icon class="mr-3">
-                      <v-icon>mdi-file-document-edit-outline</v-icon>
-                    </v-list-item-icon>
+                      <v-list-item v-else-if="item.if" @click="item.click">
+                        <template v-slot:prepend>
+                          <v-icon
+                            :class="'mr-3 ' + item.iconClass"
+                            :icon="item.icon"
+                          ></v-icon>
+                        </template>
 
-                    <v-list-item-content>
-                      <v-list-item-title>
-                        <span v-text="$t('New_inspection')"></span>
-                      </v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
+                        <v-list-item-title>{{ item.text }} </v-list-item-title>
+                      </v-list-item>
 
-                  <v-list-item @click="setDiaryGroupFilterAndGo(hiveSet.name)">
-                    <v-list-item-icon class="mr-3">
-                      <v-icon>mdi-magnify</v-icon>
-                    </v-list-item-icon>
-
-                    <v-list-item-content>
-                      <v-list-item-title>
-                        <span v-text="$tc('View_inspection', 2)"></span>
-                      </v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-
-                  <v-divider class="my-1"></v-divider>
-
-                  <v-list-item-group>
-                    <v-list-item
-                      v-if="hiveSet.creator"
-                      @click="confirmDeleteGroup(hiveSet)"
-                    >
-                      <v-list-item-icon class="mr-3">
-                        <v-icon class="red--text">mdi-delete</v-icon>
-                      </v-list-item-icon>
-
-                      <v-list-item-content>
-                        <v-list-item-title class="red--text">{{
-                          $t('remove_group_short')
-                        }}</v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
-
-                    <v-list-item
-                      v-if="!hiveSet.creator"
-                      @click="confirmDetachGroup(hiveSet)"
-                    >
-                      <v-list-item-icon class="mr-3">
-                        <v-icon class="red--text">mdi-delete</v-icon>
-                      </v-list-item-icon>
-
-                      <v-list-item-content>
-                        <v-list-item-title class="red--text">{{
-                          $t('Detach_from_group')
-                        }}</v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
-                  </v-list-item-group>
+                      <v-divider
+                        v-else-if="item.divider"
+                        class="my-1"
+                      ></v-divider>
+                    </template>
+                  </v-list-group>
                 </v-list>
               </v-menu>
             </div>
@@ -594,12 +486,11 @@
           </div>
         </div>
         <v-slide-y-transition v-if="!hideHiveSet(hiveSet)" style="width: 100%;">
-          <v-scale-transition group class="hive-item-transition-wrapper">
-            <template
-              v-for="hive in sortedHives(hiveSet.hives)"
-              :key="'Hive ' + hive.id"
-            >
+          <div class="hive-item-transition-wrapper">
+            <v-scale-transition group>
               <v-col
+                v-for="hive in sortedHives(hiveSet.hives)"
+                :key="'Hive ' + hive.id"
                 sm="auto"
                 :class="
                   `hive-item ${xlView ? 'xl-view' : ''} ${
@@ -618,8 +509,8 @@
                   @confirm-delete-hive="confirmDeleteHive($event)"
                 ></HiveCard>
               </v-col>
-            </template>
-          </v-scale-transition>
+            </v-scale-transition>
+          </div>
         </v-slide-y-transition>
       </v-row>
 
@@ -1404,6 +1295,95 @@ export default {
           name: 'hivetags',
         })
       }
+    },
+    menuItemsApiary(hiveSet) {
+      return [
+        {
+          to: {
+            name: 'apiary-edit',
+            params: { id: hiveSet.id },
+          },
+          text: this.$i18n.t('edit_apiary'),
+          icon: 'mdi-home-edit',
+        },
+        {
+          to: {
+            name: 'inspect',
+            query: { apiaryId: hiveSet.id },
+          },
+          text: this.$i18n.t('New_inspection'),
+          icon: 'mdi-file-document-edit-outline',
+        },
+        {
+          to: false,
+          click: this.setDiaryGroupFilterAndGo(hiveSet.name),
+          text: this.$i18n.tc('View_inspection', 2),
+          icon: 'mdi-magnify',
+        },
+        {
+          to: {
+            name: 'hive-create',
+            query: { locationId: hiveSet.id },
+          },
+          text: this.$i18n.t('New_hive'),
+          icon: 'mdi-archive',
+        },
+        {
+          to: {
+            name: 'apiary-management',
+            params: { id: hiveSet.id },
+          },
+          text: this.$i18n.t('Move') + ' ' + this.$i18n.tc('hive', 2),
+          icon: 'mdi-home-export-outline',
+        },
+      ]
+    },
+    menuItemsGroup(hiveSet) {
+      return [
+        {
+          if: true,
+          to: {
+            name: 'group-edit',
+            params: { id: hiveSet.id },
+          },
+          text: this.$i18n.t('edit_group'),
+          icon: 'mdi-account-multiple-plus',
+        },
+        {
+          if: hiveSet.hasEditableHive,
+          to: {
+            name: 'inspect',
+            query: { groupId: hiveSet.id },
+          },
+          text: this.$i18n.t('New_inspection'),
+          icon: 'mdi-file-document-edit-outline',
+        },
+        {
+          to: false,
+          click: this.setDiaryGroupFilterAndGo(hiveSet.name),
+          text: this.$i18n.tc('View_inspection', 2),
+          icon: 'mdi-magnify',
+        },
+        {
+          divider: true,
+        },
+        {
+          if: hiveSet.creator,
+          to: false,
+          click: this.confirmDeleteGroup(hiveSet),
+          text: this.$i18n.t('remove_group_short'),
+          icon: 'mdi-delete',
+          iconClass: 'red--text',
+        },
+        {
+          if: !hiveSet.creator,
+          to: false,
+          click: this.confirmDetachGroup(hiveSet),
+          text: this.$i18n.t('Detach_from_group'),
+          icon: 'mdi-delete',
+          iconClass: 'red--text',
+        },
+      ]
     },
     setDiaryGroupFilterAndGo(searchTerm) {
       this.$store.commit('inspections/setFilter', {

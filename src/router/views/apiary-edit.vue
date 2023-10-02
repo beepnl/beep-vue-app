@@ -96,7 +96,7 @@
                     ></v-sheet>
                   </div>
 
-                  <v-overlay :activator="overlay">
+                  <v-overlay v-model="overlay">
                     <v-toolbar
                       class="hive-color-picker-toolbar"
                       dense

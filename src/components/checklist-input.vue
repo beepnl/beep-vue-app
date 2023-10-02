@@ -38,11 +38,10 @@
               :value="listItem.id.toString()"
             />
           </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>{{
-              listItem.trans[locale] || listItem.name
-            }}</v-list-item-title>
-          </v-list-item-content>
+
+          <v-list-item-title>{{
+            listItem.trans[locale] || listItem.name
+          }}</v-list-item-title>
         </v-list-item>
 
         <template v-if="listItem.children.length > 0">
@@ -60,11 +59,10 @@
                 :value="nestedItem.id.toString()"
               />
             </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>{{
-                nestedItem.trans[locale] || nestedItem.name
-              }}</v-list-item-title>
-            </v-list-item-content>
+
+            <v-list-item-title>{{
+              nestedItem.trans[locale] || nestedItem.name
+            }}</v-list-item-title>
           </v-list-item>
         </template>
       </template>

@@ -15,15 +15,11 @@
             :to="item.route ? { name: item.route } : null"
             exact
           >
-            <v-list-item-icon class="mr-3">
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-item-icon>
+            <v-icon>{{ item.icon }}</v-icon>
 
-            <v-list-item-content>
-              <v-list-item-title
-                ><span v-text="item.title"></span
-              ></v-list-item-title>
-            </v-list-item-content>
+            <v-list-item-title
+              ><span v-text="item.title"></span
+            ></v-list-item-title>
           </v-list-item>
         </template>
       </v-list>

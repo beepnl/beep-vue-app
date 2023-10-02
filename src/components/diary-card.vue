@@ -295,7 +295,7 @@
     </template>
 
     <v-list dense>
-      <v-list-item-group>
+      <v-list-group>
         <v-list-item
           :to="{
             name: 'hive-inspections',
@@ -303,15 +303,9 @@
             query: { search: 'id=' + inspection.id.toString() },
           }"
         >
-          <v-list-item-icon class="mr-3">
-            <v-icon>mdi-magnify</v-icon>
-          </v-list-item-icon>
+          <v-icon class="mr-3"> mdi-magnify</v-icon>
 
-          <v-list-item-content>
-            <v-list-item-title>{{
-              $tc('View_inspection', 1)
-            }}</v-list-item-title>
-          </v-list-item-content>
+          <v-list-item-title>{{ $tc('View_inspection', 1) }}</v-list-item-title>
         </v-list-item>
         <v-list-item
           v-if="inspection.owner || inspection.owned_and_group"
@@ -323,39 +317,31 @@
             },
           }"
         >
-          <v-list-item-icon class="mr-3">
-            <v-icon>mdi-file-document-edit-outline</v-icon>
-          </v-list-item-icon>
+          <v-icon class="mr-3"> mdi-file-document-edit-outline</v-icon>
 
-          <v-list-item-content>
-            <v-list-item-title
-              ><span v-text="`${$t('Edit_inspection')}`"></span
-            ></v-list-item-title>
-          </v-list-item-content>
+          <v-list-item-title
+            ><span v-text="`${$t('Edit_inspection')}`"></span
+          ></v-list-item-title>
         </v-list-item>
-      </v-list-item-group>
+      </v-list-group>
 
       <v-divider
         v-if="inspection.owner || inspection.owned_and_group"
         class="my-1"
       ></v-divider>
 
-      <v-list-item-group>
+      <v-list-group>
         <v-list-item
           v-if="inspection.owner || inspection.owned_and_group"
           @click="confirmDeleteInspection(inspection)"
         >
-          <v-list-item-icon class="mr-3">
-            <v-icon class="red--text">mdi-delete</v-icon>
-          </v-list-item-icon>
+          <v-icon class="mr-3 red--text">mdi-delete</v-icon>
 
-          <v-list-item-content>
-            <v-list-item-title class="red--text">{{
-              $t('remove_inspection')
-            }}</v-list-item-title>
-          </v-list-item-content>
+          <v-list-item-title class="red--text">{{
+            $t('remove_inspection')
+          }}</v-list-item-title>
         </v-list-item>
-      </v-list-item-group>
+      </v-list-group>
     </v-list>
   </v-menu>
 </template>

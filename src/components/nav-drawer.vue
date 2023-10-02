@@ -11,14 +11,11 @@
         <div>
           <v-list flat dense>
             <v-list-item>
-              <v-list-item-avatar>
-                <v-icon color="black" @click="showDrawer = false"
-                  >mdi-close</v-icon
-                >
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title>{{ $t('menu') }}</v-list-item-title>
-              </v-list-item-content>
+              <v-icon color="black" @click="showDrawer = false"
+                >mdi-close</v-icon
+              >
+
+              <v-list-item-title>{{ $t('menu') }}</v-list-item-title>
             </v-list-item>
             <v-divider></v-divider>
             <div v-if="menuItems.length > 0">
@@ -30,12 +27,9 @@
                 :target="item.external ? '_blank' : '_self'"
                 @click="checkRoute(item.route)"
               >
-                <v-list-item-avatar>
-                  <v-icon color="accent">{{ item.icon }}</v-icon>
-                </v-list-item-avatar>
-                <v-list-item-content>
-                  <v-list-item-title>{{ item.title }}</v-list-item-title>
-                </v-list-item-content>
+                <v-icon color="accent">{{ item.icon }}</v-icon>
+
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
               </v-list-item>
 
               <v-divider></v-divider>
@@ -50,31 +44,25 @@
                 :target="item.external ? '_blank' : '_self'"
                 @click="checkRoute(item.route)"
               >
-                <v-list-item-avatar>
-                  <v-icon v-if="!item.icon.includes('icon')" color="accent">{{
-                    item.icon
-                  }}</v-icon>
-                  <div v-else>
-                    <v-sheet
-                      :class="`beep-icon beep-${item.icon} primary--text`"
-                    ></v-sheet>
-                  </div>
-                </v-list-item-avatar>
-                <v-list-item-content>
-                  <v-list-item-title>{{ item.title }}</v-list-item-title>
-                </v-list-item-content>
+                <v-icon v-if="!item.icon.includes('icon')" color="accent">{{
+                  item.icon
+                }}</v-icon>
+                <div v-else>
+                  <v-sheet
+                    :class="`beep-icon beep-${item.icon} primary--text`"
+                  ></v-sheet>
+                </div>
+
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
               </v-list-item>
 
               <v-divider v-else-if="item.divider" :key="`d-${i}`"></v-divider>
             </template>
 
             <v-list-item @click="signOut">
-              <v-list-item-avatar>
-                <v-icon color="accent">mdi-logout-variant</v-icon>
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title>{{ $t('logout') }}</v-list-item-title>
-              </v-list-item-content>
+              <v-icon color="accent">mdi-logout-variant</v-icon>
+
+              <v-list-item-title>{{ $t('logout') }}</v-list-item-title>
             </v-list-item>
           </v-list>
         </div>

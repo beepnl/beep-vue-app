@@ -330,7 +330,7 @@
     </template>
 
     <v-list dense>
-      <v-list-item-group>
+      <v-list-group>
         <v-list-item
           v-if="alert.alert_rule_name !== null"
           :to="{
@@ -338,28 +338,18 @@
             params: { id: alert.alert_rule_id },
           }"
         >
-          <v-list-item-icon class="mr-3">
-            <v-icon>mdi-pencil</v-icon>
-          </v-list-item-icon>
+          <v-icon class="mr-3"> mdi-pencil</v-icon>
 
-          <v-list-item-content>
-            <v-list-item-title>{{ $t('Edit_alertrule') }} </v-list-item-title>
-            <v-list-item-subtitle>
-              {{ alert.alert_rule_name }}
-            </v-list-item-subtitle>
-          </v-list-item-content>
+          <v-list-item-title>{{ $t('Edit_alertrule') }} </v-list-item-title>
+          <v-list-item-subtitle>
+            {{ alert.alert_rule_name }}
+          </v-list-item-subtitle>
         </v-list-item>
 
         <v-list-item v-else-if="alertRule === undefined" disabled>
-          <v-list-item-icon class="mr-3">
-            <v-icon>mdi-bell</v-icon>
-          </v-list-item-icon>
+          <v-icon class="mr-3"> mdi-bell</v-icon>
 
-          <v-list-item-content>
-            <v-list-item-title>{{
-              $t('alert_rule_deleted')
-            }}</v-list-item-title>
-          </v-list-item-content>
+          <v-list-item-title>{{ $t('alert_rule_deleted') }}</v-list-item-title>
         </v-list-item>
 
         <v-list-item
@@ -373,34 +363,24 @@
             },
           }"
         >
-          <v-list-item-icon class="mr-3">
-            <div class="my-0">
-              <v-sheet
-                class="beep-icon beep-icon-sensors--no-outline"
-              ></v-sheet>
-            </div>
-          </v-list-item-icon>
+          <div class="my-0">
+            <v-sheet class="beep-icon beep-icon-sensors--no-outline"></v-sheet>
+          </div>
 
-          <v-list-item-content>
-            <v-list-item-title>{{ $t('View_measurements') }}</v-list-item-title>
-          </v-list-item-content>
+          <v-list-item-title>{{ $t('View_measurements') }}</v-list-item-title>
         </v-list-item>
-      </v-list-item-group>
+      </v-list-group>
       <v-divider class="my-1"></v-divider>
 
-      <v-list-item-group>
+      <v-list-group>
         <v-list-item v-if="alertRuleNotActive" disabled>
-          <v-list-item-icon class="mr-3">
-            <v-icon>mdi-close</v-icon>
-          </v-list-item-icon>
+          <v-icon class="mr-3"> mdi-close</v-icon>
 
-          <v-list-item-content>
-            <v-list-item-title>{{
-              !alertRule.active
-                ? $t('Alert_disabled')
-                : $t('Alert_disabled_for_this_hive')
-            }}</v-list-item-title>
-          </v-list-item-content>
+          <v-list-item-title>{{
+            !alertRule.active
+              ? $t('Alert_disabled')
+              : $t('Alert_disabled_for_this_hive')
+          }}</v-list-item-title>
         </v-list-item>
         <v-list-item
           v-else-if="
@@ -410,28 +390,20 @@
           "
           @click="disableAlertForHive"
         >
-          <v-list-item-icon class="mr-3">
-            <v-icon class="red--text">mdi-close</v-icon>
-          </v-list-item-icon>
+          <v-icon class="mr-3 red--text">mdi-close</v-icon>
 
-          <v-list-item-content>
-            <v-list-item-title class="red--text">{{
-              $t('Disable_alert_for_this_hive')
-            }}</v-list-item-title>
-          </v-list-item-content>
+          <v-list-item-title class="red--text">{{
+            $t('Disable_alert_for_this_hive')
+          }}</v-list-item-title>
         </v-list-item>
         <v-list-item @click="deleteAlert(alert.id)">
-          <v-list-item-icon class="mr-3">
-            <v-icon class="red--text">mdi-delete</v-icon>
-          </v-list-item-icon>
+          <v-icon class="mr-3 red--text">mdi-delete</v-icon>
 
-          <v-list-item-content>
-            <v-list-item-title class="red--text">{{
-              $t('remove_alert')
-            }}</v-list-item-title>
-          </v-list-item-content>
+          <v-list-item-title class="red--text">{{
+            $t('remove_alert')
+          }}</v-list-item-title>
         </v-list-item>
-      </v-list-item-group>
+      </v-list-group>
     </v-list>
   </v-menu>
 </template>

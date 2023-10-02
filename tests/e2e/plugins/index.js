@@ -40,16 +40,16 @@ module.exports = (on, config) => {
     // Main Directories
     // https://docs.cypress.io/guides/references/configuration.html#Folders-Files
     // ===
-    supportFile: 'tests/e2e/support/setup.js',
-    integrationFolder: 'tests/e2e/specs',
-    fixturesFolder: 'tests/e2e/fixtures',
-    // ===
-    // Videos & Screenshots
-    // https://docs.cypress.io/guides/core-concepts/screenshots-and-videos.html
-    // ===
-    videoUploadOnPasses: true,
-    videoCompression: 32,
-    videosFolder: 'tests/e2e/videos',
-    screenshotsFolder: 'tests/e2e/screenshots',
+    // supportFile: 'tests/e2e/support/setup.js',
+    // integrationFolder: 'tests/e2e/specs',
+    // fixturesFolder: 'tests/e2e/fixtures',
+    // // ===
+    // // Videos & Screenshots
+    // // https://docs.cypress.io/guides/core-concepts/screenshots-and-videos.html
+    // // ===
+    // videoUploadOnPasses: true,
+    // videoCompression: 32,
+    // videosFolder: 'tests/e2e/videos',
+    // screenshotsFolder: 'tests/e2e/screenshots',
   })
 }

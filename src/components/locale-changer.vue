@@ -19,15 +19,13 @@
       <v-list>
         <template v-for="language in languages" :key="language.title">
           <v-list-item :value="language" @click="switchLocale(language.lang)">
-            <v-list-item-avatar>
+            <v-list-img>
               <img :src="assetsUrl + `/img/flags/${language.lang}.svg`" />
-            </v-list-item-avatar>
+            </v-list-img>
 
-            <v-list-item-content>
-              <v-list-item-title
-                ><span v-text="item.title"></span
-              ></v-list-item-title>
-            </v-list-item-content>
+            <v-list-item-title
+              ><span v-text="item.title"></span
+            ></v-list-item-title>
           </v-list-item>
         </template>
       </v-list>
