@@ -80,7 +80,12 @@
           </div>
 
           <v-overlay v-model="overlayLayerColor">
-            <v-toolbar class="hive-color-picker-toolbar" dense light flat>
+            <v-toolbar
+              class="hive-color-picker-toolbar"
+              density="compact"
+              light
+              flat
+            >
               <div
                 class="hive-color-picker-title ml-1"
                 v-text="
@@ -106,7 +111,12 @@
             >
             </v-color-picker>
 
-            <v-toolbar class="hive-color-picker-footer" dense light flat>
+            <v-toolbar
+              class="hive-color-picker-footer"
+              density="compact"
+              light
+              flat
+            >
               <v-spacer></v-spacer>
               <v-icon color="red" @click="deleteLayer">mdi-delete</v-icon>
               <v-icon
@@ -130,7 +140,7 @@ import { getMaxFramecount, orderedLayers } from '@mixins/methodsMixin'
 import draggable from 'vuedraggable'
 import Confirm from '@/src/components/confirm-dialog.vue'
 
-var keyGlobal = 0
+let keyGlobal = 0
 
 export default {
   components: {
@@ -155,6 +165,7 @@ export default {
       required: true,
     },
   },
+  emits: ['update-defaultframecount'],
   data: function() {
     return {
       swatches: [
@@ -232,10 +243,10 @@ export default {
     cloneLayer({ key, order, color, type, framecount, newLayer }) {
       return {
         key: keyGlobal--,
-        order: order,
-        type: type,
-        color: color,
-        framecount: framecount,
+        order,
+        type,
+        color,
+        framecount,
       }
     },
     deleteLayer() {
@@ -270,7 +281,7 @@ export default {
     generateLayersToAdd: function() {
       const arr = []
       const layerType = ['honey', 'brood', 'feeding_box', 'queen_excluder']
-      for (var n = 0; n < 4; n++) {
+      for (let n = 0; n < 4; n++) {
         arr[n] = {
           key: keyGlobal--,
           order: 0,
@@ -333,7 +344,7 @@ export default {
       this.cancelColorPicker()
     },
     updateHiveLayerOrder(layers) {
-      var i = layers.length
+      let i = layers.length
       layers.map((layer) => {
         layer.order = i
         i--

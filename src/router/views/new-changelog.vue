@@ -1,7 +1,7 @@
 <template>
   <Layout :title="$t('Whats_new')">
     <v-container>
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>4.0.14 (31-08-2023) - Current
         version</div
       >
@@ -11,7 +11,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>4.0.13 (21-08-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -23,7 +23,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>4.0.12 (15-08-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -33,7 +33,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>4.0.11 (13-07-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -42,7 +42,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>4.0.10 (06-07-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -51,7 +51,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>4.0.9 (29-06-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -64,7 +64,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>4.0.8 (15-06-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -73,7 +73,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>4.0.7 (08-06-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -86,7 +86,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>4.0.6 (06-06-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -95,7 +95,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>4.0.5 (01-06-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -104,7 +104,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>4.0.4 (30-05-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -113,7 +113,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>4.0.3 (25-05-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -122,7 +122,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>4.0.2 (11-04-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -131,7 +131,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>4.0.1 (06-04-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -140,7 +140,7 @@
         </ul>
       </div>
 
-      <div class="overline primary--text mb-1"
+      <div class="text-overline text-primary mb-1"
         ><span class="lowercase">v</span>4.0.0 (31-03-2023) - Release v4</div
       >
       <div v-if="!dutch" class="rounded-border primary-border mb-4">
@@ -191,7 +191,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>3.2.0 (09-03-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -215,7 +215,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>3.1.1 (20-02-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -228,7 +228,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>3.1 (07-11-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -272,7 +272,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>3.0.106 (04-10-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -281,7 +281,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>3.0.104 (26-09-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -304,7 +304,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>3.0.101 (01-08-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -320,7 +320,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>3.0.100 (24-06-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -335,7 +335,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>3.0.99 (23-06-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -362,7 +362,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>3.0.98 (12-05-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -371,7 +371,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>3.0.97 (10-05-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -380,7 +380,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>3.0.96 (10-05-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -389,7 +389,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>3.0.95 (09-05-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -422,7 +422,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>3.0.94 (02-05-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -438,7 +438,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>3.0.92 (28-04-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -448,7 +448,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>3.0.90 (24-03-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -470,7 +470,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>3.0.88 (07-03-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -481,7 +481,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>3.0.87 (22-02-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -514,7 +514,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>3.0.86 (22-02-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -524,7 +524,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>3.0.82 (08-02-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -541,7 +541,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>3.0.80 (27-01-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -557,7 +557,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>3.0.79 (27-01-2022)</div
       >
       <div class="rounded-border mb-4">
@@ -612,7 +612,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1 primary--text"
+      <div class="text-overline mb-1 text-primary"
         ><span class="lowercase">v</span>
         <span v-if="dutch">3.0.73 (13-12-2021) - Release v3</span>
         <span v-if="!dutch">3.0.73 (13-12-2021) - Release v3</span>
@@ -688,11 +688,13 @@
               <li
                 >Different views:
                 <v-icon class="inline-icon">mdi-size-xs</v-icon> (hive +
-                <v-icon small class="red--text inline-icon"
+                <v-icon size="small" class="text-red inline-icon"
                   >mdi-clipboard-alert-outline</v-icon
                 >
                 attention and
-                <v-icon small class="red--text inline-icon">mdi-bell</v-icon>
+                <v-icon size="small" class="text-red inline-icon"
+                  >mdi-bell</v-icon
+                >
                 alert icon),
                 <v-icon class="inline-icon">mdi-size-m</v-icon> (hive + all
                 icons, not possible on mobile),
@@ -703,7 +705,9 @@
                 >Hive menu: click on a hive to edit it, edit the queen, create
                 an inspection or view inspections. This menu can also be opened
                 via the
-                <v-icon small class="inline-icon">mdi-dots-vertical</v-icon>
+                <v-icon size="small" class="inline-icon"
+                  >mdi-dots-vertical</v-icon
+                >
                 icon on each hive card in the
                 <v-icon class="inline-icon">mdi-size-m</v-icon> and
                 <v-icon class="inline-icon">mdi-size-xl</v-icon> view.</li
@@ -723,7 +727,7 @@
               >
               <li
                 >Apiary / collaboration group menu: click on the
-                <v-icon small class="color-grey-light inline-icon"
+                <v-icon size="small" class="color-grey-light inline-icon"
                   >mdi-cog</v-icon
                 >
                 icon next to the apiary / collaboration group name to edit
@@ -757,7 +761,9 @@
               <li>Change individual layer color: by clicking the layer.</li>
               <li
                 >Delete layer: by clicking the layer and then clicking the
-                <v-icon small class="red--text inline-icon">mdi-delete</v-icon>
+                <v-icon size="small" class="text-red inline-icon"
+                  >mdi-delete</v-icon
+                >
                 icon.</li
               >
               <li
@@ -794,7 +800,7 @@
                       >mdi-account-multiple</v-icon
                     >
                     icon) once. Then click on the
-                    <v-icon small class="color-grey-light inline-icon"
+                    <v-icon size="small" class="color-grey-light inline-icon"
                       >mdi-cog</v-icon
                     >
                     icon next to the collaboration group name -> 'Edit
@@ -998,7 +1004,7 @@
                 >By default, an alert rule will apply to all months, hours of
                 day and hives (that are connected to a device). The alert rule
                 can be deactivated for specified months, hours and hives (see
-                bottom section).</li
+                location="bottom" section).</li
               >
               <li
                 ><router-link :to="{ name: 'alertrules-default' }"
@@ -1163,11 +1169,13 @@
               <li
                 >Verschillende layouts:
                 <v-icon class="inline-icon">mdi-size-xs</v-icon> (kast +
-                <v-icon small class="red--text inline-icon"
+                <v-icon size="small" class="text-red inline-icon"
                   >mdi-clipboard-alert-outline</v-icon
                 >
                 aandacht en
-                <v-icon small class="red--text inline-icon">mdi-bell</v-icon>
+                <v-icon size="small" class="text-red inline-icon"
+                  >mdi-bell</v-icon
+                >
                 notificatie icoon),
                 <v-icon class="inline-icon">mdi-size-m</v-icon> (kast + alle
                 iconen, niet mogelijk op mobiel),
@@ -1178,7 +1186,9 @@
                 >Kast menu: klik op een kast om deze aan te passen, de moer een
                 te passen een inspectie te maken of inspecties te bekijken. Dit
                 menu kan ook geopend worden d.m.v. het
-                <v-icon small class="inline-icon">mdi-dots-vertical</v-icon>
+                <v-icon size="small" class="inline-icon"
+                  >mdi-dots-vertical</v-icon
+                >
                 icoon in de <v-icon class="inline-icon">mdi-size-m</v-icon> en
                 <v-icon class="inline-icon">mdi-size-xl</v-icon> layout.</li
               >
@@ -1197,7 +1207,7 @@
               >
               <li
                 >Bijenstand / samenwerkingsgroep menu: klik op het
-                <v-icon small class="color-grey-light inline-icon"
+                <v-icon size="small" class="color-grey-light inline-icon"
                   >mdi-cog</v-icon
                 >
                 icoon naast de bijenstand / samenwerkingsgroep naam om deze aan
@@ -1237,7 +1247,9 @@
               <li>
                 Verwijder kamer: door te klikken op de kamer en vervolgens op
                 het
-                <v-icon small class="red--text inline-icon">mdi-delete</v-icon>
+                <v-icon size="small" class="text-red inline-icon"
+                  >mdi-delete</v-icon
+                >
                 icoon te klikken.</li
               >
               <li>
@@ -1278,7 +1290,7 @@
                       >mdi-account-multiple</v-icon
                     >
                     icoon). Klik dan op het
-                    <v-icon small class="color-grey-light inline-icon"
+                    <v-icon size="small" class="color-grey-light inline-icon"
                       >mdi-cog</v-icon
                     >
                     icoon naast de samenwerkingsgroepsnaam -> 'Aanpassen
@@ -1586,7 +1598,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>2.2.1 (15-07-2020)</div
       >
       <div class="rounded-border mb-4">
@@ -1627,7 +1639,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>2.2.0 (25-02-2020)</div
       >
       <div class="rounded-border mb-4">
@@ -1674,7 +1686,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>2.1.0 (29-05-2019)</div
       >
       <div class="rounded-border mb-4">
@@ -1690,7 +1702,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>2.0.3 (30-04-2019)</div
       >
       <div class="rounded-border mb-4">
@@ -1706,7 +1718,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>2.0.2 (13-12-2018)</div
       >
       <div class="rounded-border mb-4">
@@ -1724,7 +1736,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>2.0.1 (10-07-2018)</div
       >
       <div class="rounded-border mb-4">
@@ -1741,7 +1753,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>1.1.1 (05-09-2017)</div
       >
       <div class="rounded-border mb-4">

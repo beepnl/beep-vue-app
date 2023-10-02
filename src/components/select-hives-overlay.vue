@@ -11,7 +11,7 @@
               "
             >
               <div
-                class="overline d-flex mr-3 consent-overline"
+                class="text-overline d-flex mr-3 consent-text-overline"
                 style="width: 100%;"
                 v-text="
                   compareMode
@@ -26,7 +26,6 @@
                 <v-btn
                   light
                   outlined
-                  tile
                   :disabled="selectedHiveIds.length === 0"
                   color="black"
                   @click="
@@ -35,13 +34,12 @@
                       : selectHives()
                   "
                 >
-                  <v-icon left>mdi-check</v-icon>
+                  <v-icon start>mdi-check</v-icon>
                   {{ researchMode ? $t('save') : $t('ok') }}</v-btn
                 >
                 <v-btn
                   class="ml-3"
                   outlined
-                  tile
                   color="red"
                   @click="closeOverlay"
                   >{{ $t('Cancel') }}</v-btn
@@ -313,7 +311,7 @@ export default {
   }
 }
 
-.consent-overline {
+.consent-text-overline {
   line-height: 1.5rem;
   @include for-phone-only {
     margin-bottom: 2px;

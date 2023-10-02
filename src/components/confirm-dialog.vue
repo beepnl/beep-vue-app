@@ -6,10 +6,10 @@
     @keydown.esc="cancel"
   >
     <v-card>
-      <v-toolbar dark :color="options.color" dense flat>
+      <v-toolbar dark :color="options.color" density="compact" flat>
         <v-toolbar-title class="white--text">{{ title }}</v-toolbar-title>
       </v-toolbar>
-      <v-card-text v-show="!!warningMessage" class="pa-4 pb-0 red--text"
+      <v-card-text v-show="!!warningMessage" class="pa-4 pb-0 text-red"
         ><span v-text="warningMessage"></span
       ></v-card-text>
       <v-card-text v-show="!!message && !messageAsHtml" class="pa-4">
@@ -20,8 +20,12 @@
       ></v-card-text>
       <v-card-actions class="pt-0">
         <v-spacer></v-spacer>
-        <v-btn color="accent" text @click="agree">{{ $t('ok') }}</v-btn>
-        <v-btn color="grey" text @click="cancel">{{ $t('Cancel') }}</v-btn>
+        <v-btn color="accent " variant="text" @click="agree">{{
+          $t('ok')
+        }}</v-btn>
+        <v-btn color="grey " variant="text" @click="cancel">{{
+          $t('Cancel')
+        }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

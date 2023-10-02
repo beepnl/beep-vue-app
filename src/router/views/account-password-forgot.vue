@@ -8,7 +8,7 @@
     >
       <div v-if="reminderSent">
         <v-card-text>
-          <v-alert text prominent dense color="green">
+          <v-alert text prominent density="compact" color="green">
             {{ $t('password_recovery_reminder_success') }}
           </v-alert>
         </v-card-text>
@@ -29,14 +29,14 @@
             type="error"
             text
             prominent
-            dense
+            density="compact"
             color="red"
           >
             {{ error.errorMessage }}
           </v-alert>
           <v-text-field
             v-model.trim="emailToSubmit"
-            :class="fieldErrors.email ? 'error--text' : ''"
+            :class="fieldErrors.email ? 'text-error' : ''"
             :label="`${$t('email')}`"
             type="email"
             :rules="emailRules"
@@ -45,7 +45,7 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text type="submit">{{
+          <v-btn variant="text" type="submit">{{
             $t('password_recovery_send_mail')
           }}</v-btn>
         </v-card-actions>

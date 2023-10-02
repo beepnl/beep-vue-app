@@ -1,7 +1,7 @@
 <template>
   <Layout :title="getTitle">
     <v-form ref="form" v-model="valid" @submit.prevent="saveDashboard">
-      <v-toolbar v-if="dashboard" class="save-bar" dense light>
+      <v-toolbar v-if="dashboard" class="save-bar" density="compact" light>
         <v-spacer></v-spacer>
         <v-icon
           v-if="dashboard && !createMode"
@@ -13,7 +13,6 @@
         >
 
         <v-btn
-          tile
           outlined
           color="black"
           :class="`mr-1 ${createMode ? 'save-button-mobile-wide' : ''}`"
@@ -28,7 +27,7 @@
             color="disabled"
             indeterminate
           />
-          <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
+          <v-icon v-if="!showLoadingIcon" start>mdi-check</v-icon>
           {{ $t('save') }}
         </v-btn>
       </v-toolbar>
@@ -36,7 +35,7 @@
       <v-container class="content-container">
         <v-row v-if="errorMessage">
           <v-col cols="12">
-            <v-alert text prominent dense type="error" color="red">
+            <v-alert text prominent density="compact" type="error" color="red">
               {{ errorMessage }}
             </v-alert>
           </v-col>
@@ -44,12 +43,14 @@
 
         <v-row v-if="dashboard">
           <v-col cols="12" md="6" xl="5">
-            <div class="overline mb-3">{{ '1. ' + $tc('Select_hive', 2) }}</div>
+            <div class="text-overline mb-3">{{
+              '1. ' + $tc('Select_hive', 2)
+            }}</div>
             <div v-if="!showApiaryPlaceholder" class="beep-label mb-3">
               <span v-text="$t('Select_hives_for_dashboard_exp')"></span>
               <span
                 v-if="showMaxWarning"
-                class="red--text"
+                class="text-red"
                 v-text="
                   ' ' + $t('Max_hives_warning') + ' (' + maxNrOfHives + ')'
                 "
@@ -71,7 +72,7 @@
                   }"
                 >
                   <div class="color-accent"
-                    ><v-icon color="accent" left>mdi-plus-circle</v-icon
+                    ><v-icon color="accent" start>mdi-plus-circle</v-icon
                     >{{ $t('Add_apiary') }}</div
                   >
                 </router-link>
@@ -129,7 +130,7 @@
           </v-col>
 
           <v-col cols="12" md="6">
-            <div class="overline mb-3">{{ '2. ' + $t('Settings') }}</div>
+            <div class="text-overline mb-3">{{ '2. ' + $t('Settings') }}</div>
 
             <v-row>
               <v-col cols="12" xl="9">
@@ -239,7 +240,7 @@
                 xl="3"
                 :class="xlScreen ? 'mt-n11' : 'mt-6'"
               >
-                <div class="overline mb-3">{{
+                <div class="text-overline mb-3">{{
                   '3. ' + $t('Preview_share')
                 }}</div>
 
@@ -248,13 +249,16 @@
                     <div class="beep-label" v-text="$t('Code')"></div>
                     <a :href="dashboardUrl + dashboard.code" target="_blank">
                       <v-icon class="mr-2" color="accent">mdi-link</v-icon>
-                      <span class="overline" v-text="dashboard.code"></span>
+                      <span
+                        class="text-overline"
+                        v-text="dashboard.code"
+                      ></span>
                     </a>
                   </v-col>
 
                   <v-col cols="12">
-                    <v-btn tile outlined color="black" @click="copyUrl">
-                      <v-icon left>mdi-content-copy</v-icon>
+                    <v-btn variant="outlined" color="black" @click="copyUrl">
+                      <v-icon start>mdi-content-copy</v-icon>
                       {{ $t('Copy_url') }}
                     </v-btn>
                   </v-col>
@@ -268,7 +272,7 @@
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
-      <v-btn color="accent" text @click="snackbar.show = false">
+      <v-btn color="accent " variant="text" @click="snackbar.show = false">
         {{ $t('Close') }}
       </v-btn>
     </v-snackbar>

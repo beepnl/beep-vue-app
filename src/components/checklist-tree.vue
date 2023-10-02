@@ -5,13 +5,13 @@
       :label="`${$t('Search')}`"
       :class="
         `${
-          filterText !== '' ? 'v-input--is-focused primary--text' : ''
+          filterText !== '' ? 'v-input--is-focused text-primary' : ''
         } filter-text-field mb-3`
       "
       height="36px"
       clearable
       outlined
-      dense
+      density="compact"
       hide-details
     ></v-text-field>
 

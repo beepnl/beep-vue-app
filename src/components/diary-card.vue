@@ -1,7 +1,7 @@
 <template>
-  <v-menu bottom left absolute offset-y>
+  <v-menu location="bottom" absolute>
     <template v-slot:activator="{ on: menu }">
-      <v-card class="diary-card" outlined v-on="menu">
+      <v-card class="diary-card" v-on="menu">
         <div style="width: 100%;">
           <v-row
             class="d-flex justify-space-between align-start mx-0"
@@ -102,7 +102,7 @@
                       class="d-flex flex-no-wrap justify-flex-start align-center"
                     >
                       <div class="mr-1 my-0">
-                        <v-icon class="red--text">
+                        <v-icon class="text-red">
                           mdi-clipboard-alert-outline
                         </v-icon>
                       </div>
@@ -131,19 +131,19 @@
                       <div class="mr-1 my-0">
                         <v-icon
                           v-if="inspection.impression === 1"
-                          class="red--text"
+                          class="text-red"
                         >
                           mdi-emoticon-sad
                         </v-icon>
                         <v-icon
                           v-if="inspection.impression === 3"
-                          class="green--text"
+                          class="text-green"
                         >
                           mdi-emoticon-happy
                         </v-icon>
                         <v-icon
                           v-if="inspection.impression === 2"
-                          class="orange--text"
+                          class="text-orange"
                         >
                           mdi-emoticon-neutral
                         </v-icon>
@@ -220,8 +220,8 @@
                                 // eslint-disable-next-line vue/comma-dangle
                                 inspection.reminder_date
                               ).isBefore()
-                                ? 'red--text'
-                                : 'green--text'
+                                ? 'text-red'
+                                : 'text-green'
                             }`
                           "
                         >
@@ -242,8 +242,8 @@
                               // eslint-disable-next-line vue/comma-dangle
                               inspection.reminder_date
                             ).isBefore()
-                              ? 'red--text'
-                              : 'green--text'
+                              ? 'text-red'
+                              : 'text-green'
                           } mr-2`
                         "
                         v-text="inspection.reminder_date_day_month"
@@ -294,7 +294,7 @@
       </v-card>
     </template>
 
-    <v-list dense>
+    <v-list density="compact">
       <v-list-group>
         <v-list-item
           :to="{
@@ -335,9 +335,9 @@
           v-if="inspection.owner || inspection.owned_and_group"
           @click="confirmDeleteInspection(inspection)"
         >
-          <v-icon class="mr-3 red--text">mdi-delete</v-icon>
+          <v-icon class="mr-3 text-red">mdi-delete</v-icon>
 
-          <v-list-item-title class="red--text">{{
+          <v-list-item-title class="text-red">{{
             $t('remove_inspection')
           }}</v-list-item-title>
         </v-list-item>

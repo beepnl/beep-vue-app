@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <div v-if="!showApiaryPlaceholder && ready" class="filter-bar-wrapper">
-      <v-container class="filter-container">
+      <v-container class="filter-container pa-0">
         <v-row
           class="filter-bar d-flex flex-row justify-space-between align-center"
         >
@@ -15,14 +15,13 @@
                 :class="
                   `${
                     hiveSearch !== null
-                      ? 'v-input--is-focused primary--text'
+                      ? 'v-input--is-focused text-primary'
                       : ''
                   } filter-text-field`
                 "
-                :height="mobile ? '30px' : '36px'"
                 clearable
                 outlined
-                dense
+                density="compact"
                 hide-details
               ></v-text-field>
             </v-col>
@@ -48,9 +47,7 @@
               </v-icon>
               <v-icon
                 :class="
-                  `${
-                    filterByAttention ? 'red--text' : 'color-grey-filter'
-                  } mr-2`
+                  `${filterByAttention ? 'text-red' : 'color-grey-filter'} mr-2`
                 "
                 @click="filterByAttention = !filterByAttention"
               >
@@ -58,7 +55,7 @@
               </v-icon>
               <v-icon
                 :class="
-                  `${filterByReminder ? 'red--text' : 'color-grey-filter'} mr-2`
+                  `${filterByReminder ? 'text-red' : 'color-grey-filter'} mr-2`
                 "
                 @click="filterByReminder = !filterByReminder"
               >
@@ -68,7 +65,7 @@
                 :class="
                   `${
                     filterByImpression.includes(3)
-                      ? 'green--text'
+                      ? 'text-green'
                       : 'color-grey-filter'
                   } mr-2`
                 "
@@ -81,7 +78,7 @@
                 :class="
                   `${
                     filterByImpression.includes(2)
-                      ? 'orange--text'
+                      ? 'text-orange'
                       : 'color-grey-filter'
                   } mr-2`
                 "
@@ -93,7 +90,7 @@
                 :class="
                   `${
                     filterByImpression.includes(1)
-                      ? 'red--text'
+                      ? 'text-red'
                       : 'color-grey-filter'
                   } mr-2`
                 "
@@ -114,7 +111,7 @@
               </div>
               <v-icon
                 v-if="devices.length > 0 && screenSize > 418"
-                :class="`${filterByAlert ? 'red--text' : 'color-grey-filter'}`"
+                :class="`${filterByAlert ? 'text-red' : 'color-grey-filter'}`"
                 @click="filterByAlert = !filterByAlert"
               >
                 mdi-bell
@@ -161,7 +158,7 @@
             showApiaryPlaceholder ? 'mt-2' : ''
           }`
         "
-        dense
+        density="compact"
       >
         <div
           class="hive-set-title mt-0 d-flex flex-row justify-space-between align-end"
@@ -189,7 +186,6 @@
           <div>
             <v-btn
               v-if="!mobile"
-              tile
               outlined
               class="mb-1 mr-2"
               color="red"
@@ -229,9 +225,8 @@
             >
             <v-btn
               v-if="!mobile"
-              tile
               outlined
-              class="green--text mb-1"
+              class="text-green mb-1"
               :disabled="invitationButtonsDisabled(invitation.id)"
               @click="
                 checkToken(invitation.token, invitation.id, invitation.name)
@@ -262,7 +257,7 @@
               v-if="!showLoadingIcon(invitation.id, false) && mobile"
               dark
               :disabled="invitationButtonsDisabled(invitation.id)"
-              class="green--text mb-1"
+              class="text-green mb-1"
               @click="
                 checkToken(invitation.token, invitation.id, invitation.name)
               "
@@ -277,7 +272,7 @@
             `border-color: ${invitation.color ? invitation.color : '#F8B133'};`
           "
         >
-          <v-table dense>
+          <v-table density="compact">
             <template v-slot>
               <thead>
                 <tr>
@@ -324,7 +319,7 @@
         v-for="hiveSet in filteredHiveSets"
         :key="'hiveSet ' + hiveSet.name + ' ' + hiveSet.id"
         :class="`hive-set ${xsView ? 'xs-view' : ''}`"
-        dense
+        density="compact"
       >
         <div
           class="hive-set-title d-flex flex-row justify-flex-start align-center"
@@ -428,10 +423,10 @@
                       @click="confirmDeleteApiary(hiveSet)"
                     >
                       <template v-slot:prepend>
-                        <v-icon class="mr-3 red--text">mdi-delete</v-icon>
+                        <v-icon class="mr-3 text-red">mdi-delete</v-icon>
                       </template>
 
-                      <v-list-item-title class="red--text">{{
+                      <v-list-item-title class="text-red">{{
                         $t('remove_apiary')
                       }}</v-list-item-title>
                     </v-list-item>
@@ -538,7 +533,7 @@
             }"
           >
             <div class="color-accent"
-              ><v-icon color="accent" large left>mdi-plus-circle</v-icon
+              ><v-icon color="accent" size="large" start>mdi-plus-circle</v-icon
               >{{ $t('Add_apiary') }}</div
             >
           </router-link>
@@ -550,7 +545,7 @@
             }"
           >
             <div class="color-grey-medium"
-              ><v-icon class="color-grey-medium" large left
+              ><v-icon class="color-grey-medium" size="large" left
                 >mdi-comment-question-outline</v-icon
               >{{ $t('need_help') }}</div
             >
@@ -559,7 +554,7 @@
       </div>
       <v-row
         v-else-if="sortedHiveSets.length && !filteredHiveSets.length"
-        dense
+        density="compact"
         class="hive-set"
       >
         <v-col sm="auto" :cols="12">
@@ -570,7 +565,7 @@
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
-      <v-btn color="accent" text @click="snackbar.show = false">
+      <v-btn color="accent " variant="text" @click="snackbar.show = false">
         {{ $t('Close') }}
       </v-btn>
     </v-snackbar>
@@ -710,7 +705,7 @@ export default {
       },
     },
     filteredHiveSets() {
-      var textFilteredHiveSets = []
+      let textFilteredHiveSets = []
       if (this.hiveSearch === null) {
         textFilteredHiveSets = this.sortedHiveSets
       } else {
@@ -781,7 +776,7 @@ export default {
         })
       }
 
-      var propertyFilteredHiveSets = textFilteredHiveSets
+      let propertyFilteredHiveSets = textFilteredHiveSets
         .map((hiveSet) => {
           if (this.filterByAlert) {
             return {
@@ -884,7 +879,7 @@ export default {
       },
     },
     hiveSets() {
-      var apiariesWithDates = JSON.parse(JSON.stringify(this.apiaries)) // clone without v-bind to avoid vuex warning when mutating
+      const apiariesWithDates = JSON.parse(JSON.stringify(this.apiaries)) // clone without v-bind to avoid vuex warning when mutating
 
       apiariesWithDates.map((apiary) => {
         apiary.hives.map((hive) => {
@@ -893,7 +888,7 @@ export default {
         })
         return apiary // TODO-VUE3 check
       })
-      var groupsWithDatesAndEditableHivesProp = JSON.parse(
+      const groupsWithDatesAndEditableHivesProp = JSON.parse(
         JSON.stringify(this.groups)
       ) // clone without v-bind to avoid vuex warning when mutating
       groupsWithDatesAndEditableHivesProp.map((group) => {
@@ -1022,7 +1017,7 @@ export default {
       try {
         const response = await Api.postRequest('/groups/checktoken', {
           group_id: groupId,
-          token: token,
+          token,
           decline,
         })
         if (!response) {
@@ -1373,7 +1368,7 @@ export default {
           click: this.confirmDeleteGroup(hiveSet),
           text: this.$i18n.t('remove_group_short'),
           icon: 'mdi-delete',
-          iconClass: 'red--text',
+          iconClass: 'text-red',
         },
         {
           if: !hiveSet.creator,
@@ -1381,7 +1376,7 @@ export default {
           click: this.confirmDetachGroup(hiveSet),
           text: this.$i18n.t('Detach_from_group'),
           icon: 'mdi-delete',
-          iconClass: 'red--text',
+          iconClass: 'text-red',
         },
       ]
     },

@@ -42,7 +42,7 @@
       v-model="valid"
       class="no-print"
     >
-      <v-toolbar v-if="ready" class="save-bar zindex4" dense light>
+      <v-toolbar v-if="ready" class="save-bar zindex4" density="compact" light>
         <v-spacer></v-spacer>
         <v-btn
           v-if="
@@ -51,18 +51,16 @@
               selectedChecklist.owner &&
               !mobile
           "
-          tile
           outlined
           class="mr-3"
           color="accent"
           @click="editChecklist"
         >
-          <v-icon left>mdi-pencil</v-icon>
+          <v-icon start>mdi-pencil</v-icon>
           {{ $t('Edit_checklist') }}
         </v-btn>
         <v-btn
           v-if="onlineMode"
-          tile
           outlined
           color="black"
           class="save-button-mobile-wide mr-1"
@@ -84,24 +82,22 @@
             color="disabled"
             indeterminate
           />
-          <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
+          <v-icon v-if="!showLoadingIcon" start>mdi-check</v-icon>
           {{ $t('save') }}
         </v-btn>
         <v-btn
           v-if="offlineMode"
-          tile
           outlined
           color="black"
           class="save-button-mobile-wide mr-1"
           :disabled="!svgReady"
           @click="confirmPrint"
         >
-          <v-icon left>mdi-printer</v-icon>
+          <v-icon start>mdi-printer</v-icon>
           {{ $t('Print') }}
         </v-btn>
         <v-btn
           v-if="uploadMode"
-          tile
           outlined
           color="black"
           class="save-button-mobile-wide mr-1"
@@ -123,7 +119,7 @@
             color="disabled"
             indeterminate
           />
-          <v-icon v-if="!showLoadingIcon" left>mdi-upload</v-icon>
+          <v-icon v-if="!showLoadingIcon" start>mdi-upload</v-icon>
           {{ $t('Send_pictures') }}
         </v-btn>
       </v-toolbar>
@@ -136,7 +132,14 @@
       >
         <v-row v-if="errorMessage">
           <v-col cols="12">
-            <v-alert type="error" text prominent dense dismissible color="red">
+            <v-alert
+              type="error"
+              text
+              prominent
+              density="compact"
+              closable
+              color="red"
+            >
               {{ errorMessage }}
             </v-alert>
           </v-col>
@@ -241,7 +244,7 @@
                   <span v-text="$t('Date_of_inspection')"></span>
                   <span
                     v-if="forceInspectionDate || invalidDate"
-                    class="ml-3 font-weight-bold accent--text cursor-pointer"
+                    class="ml-3 font-weight-bold text-accent cursor-pointer"
                     @click="inspectionDate = getNow()"
                     v-text="$t('Now')"
                   ></span>
@@ -273,10 +276,10 @@
                   "
                 >
                   <template v-slot:button-cancel>
-                    <v-btn text color="accent">{{ $t('Cancel') }}</v-btn>
+                    <v-btn variant="text" color="accent">{{ $t('Cancel') }}</v-btn>
                   </template>
                   <template v-slot:button-confirm>
-                    <v-btn text color="accent">{{ $t('ok') }}</v-btn>
+                    <v-btn variant="text" color="accent">{{ $t('ok') }}</v-btn>
                   </template>
                 </Datetime> -->
               </div>
@@ -345,13 +348,12 @@
             <v-spacer></v-spacer>
             <v-btn
               v-if="selectedChecklist && selectedChecklist.owner"
-              tile
               outlined
               class="save-button-mobile-wide"
               color="accent"
               @click="editChecklist"
             >
-              <v-icon left>mdi-pencil</v-icon>
+              <v-icon start>mdi-pencil</v-icon>
               {{ $t('Edit_checklist') }}
             </v-btn>
           </v-col>
@@ -374,7 +376,7 @@
               class="mb-0"
               text
               prominent
-              dense
+              density="compact"
               color="accent"
             >
               {{ $t('input_only_possible_when_date_present') }}
@@ -452,7 +454,7 @@
           </v-card>
 
           <!-- General inspection items -->
-          <v-card outlined class="mt-3">
+          <v-card class="mt-3">
             <v-card-title
               :class="
                 `hive-inspect-card-title ${
@@ -481,7 +483,7 @@
                 <v-row class="sub-inspection-wrapper my-0">
                   <v-col cols="12">
                     <div
-                      class="overline mb-2"
+                      class="text-overline mb-2"
                       v-text="`${$t('positive_impression')}`"
                     ></div>
                     <div class="sub-inspection-details rounded-border">
@@ -551,7 +553,7 @@
                 <v-row class="sub-inspection-wrapper my-0">
                   <v-col cols="12">
                     <div
-                      class="overline mb-2"
+                      class="text-overline mb-2"
                       v-text="`${$t('reminder')}`"
                     ></div>
                     <div class="sub-inspection-details rounded-border">
@@ -576,7 +578,7 @@
                                 v-model="reminderDate"
                                 :placeholder="`${$t('Set_notification_date')}`"
                                 type="datetime"
-                                class="accent--text"
+                                class="text-accent"
                               >
                                 <template
                                   v-slot:after
@@ -592,12 +594,12 @@
                                   >
                                 </template>
                                 <template v-slot:button-cancel>
-                                  <v-btn text color="accent">{{
+                                  <v-btn variant="text" color="accent">{{
                                     $t('Cancel')
                                   }}</v-btn>
                                 </template>
                                 <template v-slot:button-confirm>
-                                  <v-btn text color="accent">{{
+                                  <v-btn variant="text" color="accent">{{
                                     $t('ok')
                                   }}</v-btn>
                                 </template>

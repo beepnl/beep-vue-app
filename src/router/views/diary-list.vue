@@ -23,14 +23,14 @@
                 :class="
                   `${
                     diarySearch !== null
-                      ? 'v-input--is-focused primary--text'
+                      ? 'v-input--is-focused text-primary'
                       : ''
                   } filter-text-field`
                 "
                 :height="mobile ? '30px' : '36px'"
                 clearable
                 outlined
-                dense
+                density="compact"
                 hide-details
               ></v-text-field>
             </v-col>
@@ -56,9 +56,7 @@
               </v-icon>
               <v-icon
                 :class="
-                  `${
-                    filterByAttention ? 'red--text' : 'color-grey-filter'
-                  } mr-2`
+                  `${filterByAttention ? 'text-red' : 'color-grey-filter'} mr-2`
                 "
                 @click="filterByAttention = !filterByAttention"
               >
@@ -66,7 +64,7 @@
               </v-icon>
               <v-icon
                 :class="
-                  `${filterByReminder ? 'red--text' : 'color-grey-filter'} mr-2`
+                  `${filterByReminder ? 'text-red' : 'color-grey-filter'} mr-2`
                 "
                 @click="filterByReminder = !filterByReminder"
               >
@@ -76,7 +74,7 @@
                 :class="
                   `${
                     filterByImpression.includes(3)
-                      ? 'green--text'
+                      ? 'text-green'
                       : 'color-grey-filter'
                   } mr-2`
                 "
@@ -88,7 +86,7 @@
                 :class="
                   `${
                     filterByImpression.includes(2)
-                      ? 'orange--text'
+                      ? 'text-orange'
                       : 'color-grey-filter'
                   } mr-2`
                 "
@@ -100,7 +98,7 @@
                 :class="
                   `${
                     filterByImpression.includes(1)
-                      ? 'red--text'
+                      ? 'text-red'
                       : 'color-grey-filter'
                   } mr-2`
                 "
@@ -111,8 +109,13 @@
             </v-card-actions>
           </div>
           <v-card-actions v-if="!mobile && !smallScreen" class="mr-1">
-            <v-btn :to="{ name: 'inspect' }" medium tile outlined color="black">
-              <v-icon left>mdi-plus</v-icon>
+            <v-btn
+              :to="{ name: 'inspect' }"
+              medium
+              variant="outlined"
+              color="black"
+            >
+              <v-icon start>mdi-plus</v-icon>
               {{ $t('New_inspection') }}
             </v-btn>
             <!-- <router-link v-if="mobile" :to="{ name: 'inspect' }">
@@ -132,7 +135,7 @@
     <v-container v-if="ready" class="diary-inspections-content">
       <v-row
         v-if="!showDiaryPlaceholder && filteredInspections.length > 0"
-        dense
+        density="compact"
       >
         <v-scale-transition group class="diary-item-transition-wrapper">
           <v-col
@@ -140,7 +143,7 @@
             :key="j"
             sm="auto"
             class="diary-item"
-            dense
+            density="compact"
           >
             <DiaryCard
               :inspection="inspection"

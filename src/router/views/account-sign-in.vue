@@ -12,7 +12,7 @@
           type="success"
           text
           prominent
-          dense
+          density="compact"
           color="green"
         >
           {{ resentVerification ? $t('email_verification_resent') : $t(msg) }}
@@ -23,20 +23,20 @@
           type="error"
           text
           prominent
-          dense
+          density="compact"
           color="red"
         >
           {{ error.errorMessage }}
           <a
             v-if="error.verifyLink && !resentVerification"
-            class="red--text alert-link"
+            class="text-red alert-link"
             @click="resendEmailVerification"
             >{{ $t('email_new_verification') }}</a
           >
         </v-alert>
         <v-text-field
           v-model="credentials.email"
-          :class="fieldErrors.email ? 'error--text' : ''"
+          :class="fieldErrors.email ? 'text-error' : ''"
           :label="`${$t('email')}`"
           type="email"
           :rules="[(v) => !!v || signinRules.email_required]"
@@ -44,7 +44,7 @@
         ></v-text-field>
         <v-text-field
           v-model="credentials.password"
-          :class="fieldErrors.password ? 'error--text' : ''"
+          :class="fieldErrors.password ? 'text-error' : ''"
           :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
           :type="show ? 'text' : 'password'"
           :label="`${$t('password')}`"
@@ -68,7 +68,7 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn text type="submit">{{ $t('login') }}</v-btn>
+        <v-btn variant="text" type="submit">{{ $t('login') }}</v-btn>
       </v-card-actions>
     </v-form>
   </Layout>

@@ -1,5 +1,5 @@
 <template>
-  <v-card outlined class="mt-3 mb-6">
+  <v-card class="mt-3 mb-6">
     <v-card-title
       :class="
         `measurements-card-title ${

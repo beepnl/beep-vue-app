@@ -2,7 +2,7 @@
   <Layout :title="$t('create_login')">
     <v-form ref="form" v-model="valid" @submit.prevent="createAccount">
       <v-card-text v-if="registered">
-        <v-alert text prominent dense color="green">
+        <v-alert text prominent density="compact" color="green">
           {{
             resentVerification
               ? $t('email_verification_resent')
@@ -21,7 +21,7 @@
           type="error"
           text
           prominent
-          dense
+          density="compact"
           color="red"
         >
           {{ error.errorMessage }}
@@ -32,20 +32,20 @@
         />
         <v-text-field
           v-model="email"
-          :class="fieldErrors.email ? 'error--text' : ''"
+          :class="fieldErrors.email ? 'text-error' : ''"
           :label="`${$t('email')}`"
           type="email"
           :rules="emailRules"
-          validate-on-blur
+          validate-on="blur"
         />
         <v-text-field
           v-model="password"
-          :class="fieldErrors.password ? 'error--text' : ''"
+          :class="fieldErrors.password ? 'text-error' : ''"
           :label="`${$t('password')}`"
           :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
           :type="show1 ? 'text' : 'password'"
           :rules="passwordRules"
-          validate-on-blur
+          validate-on="blur"
           @click:append="show1 = !show1"
         />
         <v-text-field
@@ -77,7 +77,7 @@
 
       <v-card-actions v-if="!registered">
         <v-spacer></v-spacer>
-        <v-btn text type="submit" :disabled="disabled">{{
+        <v-btn variant="text" type="submit" :disabled="disabled">{{
           $t('create_login_summary')
         }}</v-btn>
       </v-card-actions>

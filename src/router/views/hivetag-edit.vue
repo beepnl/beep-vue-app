@@ -1,7 +1,7 @@
 <template>
   <Layout :title="getTitle">
     <v-form ref="form" v-model="valid" @submit.prevent="saveHiveTag">
-      <v-toolbar v-if="hiveTag" class="save-bar" dense light>
+      <v-toolbar v-if="hiveTag" class="save-bar" density="compact" light>
         <v-spacer></v-spacer>
         <v-icon
           v-if="hiveTag && !createMode"
@@ -19,7 +19,6 @@
         >
 
         <v-btn
-          tile
           outlined
           color="black"
           :class="`mr-1 ${createMode ? 'save-button-mobile-wide' : ''}`"
@@ -34,7 +33,7 @@
             color="disabled"
             indeterminate
           />
-          <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
+          <v-icon v-if="!showLoadingIcon" start>mdi-check</v-icon>
           {{ $t('save') }}
         </v-btn>
       </v-toolbar>
@@ -42,7 +41,7 @@
       <v-container class="content-container">
         <v-row v-if="errorMessage">
           <v-col cols="12">
-            <v-alert text prominent dense type="error" color="red">
+            <v-alert text prominent density="compact" type="error" color="red">
               {{ errorMessage }}
             </v-alert>
           </v-col>
@@ -50,7 +49,9 @@
 
         <v-row v-if="hiveTag">
           <v-col cols="12" sm="6" md="3">
-            <div class="overline mb-3">{{ '1. ' + $tc('Hivetag', 1) }}</div>
+            <div class="text-overline mb-3">{{
+              '1. ' + $tc('Hivetag', 1)
+            }}</div>
 
             <v-select
               v-if="createMode && tag === null && possibleHiveTags.length > 0"
@@ -63,7 +64,7 @@
 
             <div
               v-if="possibleHiveTags.length === 0"
-              class="beep-label red--text mb-3"
+              class="beep-label text-red mb-3"
               v-text="$t('No_hivetags_left')"
             ></div>
 
@@ -84,7 +85,7 @@
           </v-col>
 
           <v-col cols="12" sm="6" md="3">
-            <div class="overline mb-3">{{
+            <div class="text-overline mb-3">{{
               '2. ' + $t('Select_hivetag_action')
             }}</div>
             <div
@@ -128,7 +129,9 @@
           </v-col>
 
           <v-col cols="12" md="6" class="my-3 mt-md-0">
-            <div class="overline mb-3">{{ '3. ' + $tc('Select_hive', 1) }}</div>
+            <div class="text-overline mb-3">{{
+              '3. ' + $tc('Select_hive', 1)
+            }}</div>
             <div
               v-if="!showApiaryPlaceholder"
               class="beep-label mb-3"
@@ -150,7 +153,7 @@
                   }"
                 >
                   <div class="color-accent"
-                    ><v-icon color="accent" left>mdi-plus-circle</v-icon
+                    ><v-icon color="accent" start>mdi-plus-circle</v-icon
                     >{{ $t('Add_apiary') }}</div
                   >
                 </router-link>
@@ -211,7 +214,7 @@
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
-      <v-btn color="accent" text @click="snackbar.show = false">
+      <v-btn color="accent " variant="text" @click="snackbar.show = false">
         {{ $t('Close') }}
       </v-btn>
     </v-snackbar>

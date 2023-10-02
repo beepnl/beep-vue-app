@@ -1,5 +1,5 @@
 <template>
-  <Layout :title="this.$i18n.tc('Alertrule', 2)">
+  <Layout :title="$tc('Alertrule', 2)">
     <div v-if="ready" class="filter-bar-wrapper">
       <v-container class="filter-container">
         <v-row class="filter-bar d-flex align-center">
@@ -36,16 +36,15 @@
                 @click="showExplanation = !showExplanation"
               ></v-icon>
             </div>
-            <v-menu v-if="showAlertRulePlaceholder || !mobile" offset-y>
+            <v-menu v-if="showAlertRulePlaceholder || !mobile">
               <template v-slot:activator="{ props }">
                 <v-btn
-                  tile
                   outlined
                   color="black"
                   class="save-button-mobile-wide"
                   v-bind="props"
                 >
-                  <v-icon left>mdi-plus</v-icon>
+                  <v-icon start>mdi-plus</v-icon>
                   {{ $t('Add_alertrule') }}
                 </v-btn>
               </template>
@@ -101,7 +100,7 @@
                     $t('alert_explanation_1') + ' ' + $t('alert_explanation_2')
                   }}
                   <a :href="$t('alerts_support_url')" target="_blank"
-                    ><v-icon small color="accent">mdi-arrow-right</v-icon
+                    ><v-icon size="small" color="accent">mdi-arrow-right</v-icon
                     >{{ $t('alerts_url_text') }}</a
                   ></em
                 >
@@ -113,17 +112,16 @@
               xl="3"
               class="d-flex justify-end align-end mb-3"
             >
-              <v-menu offset-y>
+              <v-menu>
                 <template v-slot:activator="{ props }">
                   <v-btn
-                    tile
                     outlined
                     small
                     color="accent"
                     class="save-button-mobile-wide"
                     v-bind="props"
                   >
-                    <v-icon left>mdi-plus</v-icon>
+                    <v-icon start>mdi-plus</v-icon>
                     {{ $t('Add_alertrule') }}
                   </v-btn>
                 </template>

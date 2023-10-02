@@ -3,7 +3,7 @@
     <v-toolbar
       v-if="!mobile && flashLogs.length > 0"
       class="save-bar save-bar--back"
-      dense
+      density="compact"
       light
     >
       <v-spacer></v-spacer>
@@ -11,7 +11,7 @@
       <v-switch
         v-model="fromCache"
         class="pt-0 mt-0 mr-2"
-        dense
+        density="compact"
         hide-details
       ></v-switch>
       <div class="beep-label" v-text="$t('Nr_of_match_props') + ': '"></div>
@@ -22,8 +22,8 @@
         min="5"
         max="12"
         step="1"
-        :tick-labels="['5', '6', '7', '8', '9', '10', '11', '12']"
-        ticks="always"
+        :ticks="['5', '6', '7', '8', '9', '10', '11', '12']"
+        show-ticks="always"
         tick-size="4"
         style="max-width: 200px;"
       >
@@ -36,7 +36,7 @@
           <v-alert
             text
             prominent
-            dense
+            density="compact"
             :type="importMessage.data_stored ? 'success' : 'error'"
             :color="importMessage.data_stored ? 'green' : 'red'"
             class="mt-3 mb-n4"
@@ -49,7 +49,7 @@
           <v-alert
             text
             prominent
-            dense
+            density="compact"
             type="error"
             color="red"
             class="mt-3 mb-n4"
@@ -61,7 +61,7 @@
         <v-col v-if="flashLogs.length > 0" cols="12">
           <div class="d-flex justify-space-between align-end">
             <div class="mb-2">
-              <div class="overline mt-0 mt-sm-3">
+              <div class="text-overline mt-0 mt-sm-3">
                 {{ $t('Log_files') }}
                 <v-icon
                   class="mdi mdi-information ml-1 icon-info cursor-pointer"
@@ -147,7 +147,6 @@
               <template v-slot:[`item.actions`]="{ item }">
                 <div class="d-flex flex-no-wrap py-2">
                   <v-btn
-                    tile
                     small
                     outlined
                     class="mr-1"
@@ -204,7 +203,7 @@
               <v-switch
                 v-model="fromCache"
                 class="pt-0 mt-0"
-                dense
+                density="compact"
                 hide-details
               ></v-switch>
             </div>
@@ -217,8 +216,8 @@
                 min="5"
                 max="12"
                 step="1"
-                :tick-labels="['5', '6', '7', '8', '9', '10', '11', '12']"
-                ticks="always"
+                :ticks="['5', '6', '7', '8', '9', '10', '11', '12']"
+                show-ticks="always"
                 tick-size="4"
               >
               </v-slider>
@@ -241,7 +240,7 @@
           <v-alert
             text
             prominent
-            dense
+            density="compact"
             :type="undoMessage.data_deleted ? 'success' : 'error'"
             :color="undoMessage.data_deleted ? 'green' : 'red'"
             class="mt-3 mb-n4 break-all"
@@ -254,7 +253,7 @@
           <v-alert
             text
             prominent
-            dense
+            density="compact"
             type="info"
             color="accent"
             class="mt-3 mb-n4"
@@ -269,7 +268,7 @@
           cols="12"
         >
           <div
-            class="overline mt-0 mt-sm-3 mb-3 d-flex justify-space-between align-center"
+            class="text-overline mt-0 mt-sm-3 mb-3 d-flex justify-space-between align-center"
           >
             <span v-text="selectedFlashLogHeader"></span>
             <v-spacer />
@@ -278,7 +277,6 @@
                 <template v-slot:activator="{ props }">
                   <v-btn
                     small
-                    tile
                     outlined
                     color="accent"
                     class="mx-2"
@@ -316,7 +314,6 @@
                 <template v-slot:activator="{ props }">
                   <v-btn
                     small
-                    tile
                     outlined
                     color="accent"
                     :disabled="showExportLoadingById.indexOf('json') > -1"
@@ -431,7 +428,7 @@
               class="elevation-0"
             >
               <template v-slot:[`item.data_imported`]="{ item }">
-                <v-icon v-if="item.data_imported" class="green--text"
+                <v-icon v-if="item.data_imported" class="text-green"
                   >mdi-checkbox-marked-circle</v-icon
                 >
               </template>
@@ -458,7 +455,12 @@
                     item.matches !== undefined && item.block === matchesOverlay
                   "
                 >
-                  <v-toolbar class="hive-color-picker-toolbar" dense light flat>
+                  <v-toolbar
+                    class="hive-color-picker-toolbar"
+                    density="compact"
+                    light
+                    flat
+                  >
                     <div
                       class="hive-color-picker-title ml-1"
                       v-text="matchesHeader(item)"
@@ -514,12 +516,11 @@
                 >
                   <v-btn
                     small
-                    tile
                     outlined
                     class="mr-1 mb-1"
                     :color="item.matches === undefined ? 'grey' : 'accent'"
                   >
-                    <v-icon left>mdi-chart-line</v-icon>
+                    <v-icon start>mdi-chart-line</v-icon>
                     {{ $t('View_data') }}
                   </v-btn>
                 </router-link>
@@ -532,7 +533,7 @@
                         item.block
                       ) > -1
                   "
-                  tile
+
                   small
                   outlined
                   color="red"
@@ -1204,7 +1205,7 @@ export default {
       return item.matches === undefined
         ? 'no-match-block'
         : 'match-block ' +
-            (this.percentageNotInDB(item) < 50 ? 'green--text' : 'red--text')
+            (this.percentageNotInDB(item) < 50 ? 'text-green' : 'text-red')
     },
     rowClassLogFile(item) {
       return this.selectedFlashLog !== null &&

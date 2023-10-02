@@ -27,13 +27,13 @@
                 :label="`${$t('Search')}`"
                 :class="
                   `${
-                    search !== null ? 'v-input--is-focused primary--text' : ''
+                    search !== null ? 'v-input--is-focused text-primary' : ''
                   } filter-text-field--alerts`
                 "
                 :height="mobile ? '30px' : '36px'"
                 clearable
                 outlined
-                dense
+                density="compact"
                 hide-details
               ></v-text-field>
             </v-col>
@@ -41,7 +41,6 @@
           <v-card-actions class="pl-0 mr-1">
             <v-btn
               v-if="!mobile && selectedAlerts.length > 0"
-              tile
               outlined
               class="mr-3"
               color="red"
@@ -57,7 +56,7 @@
                 color="disabled"
                 indeterminate
               />
-              <v-icon v-if="!showLoadingIcon" left>mdi-delete</v-icon>
+              <v-icon v-if="!showLoadingIcon" start>mdi-delete</v-icon>
               {{
                 !mdScreen
                   ? allChecked
@@ -69,12 +68,11 @@
             <v-btn
               v-if="!mobile"
               :to="{ name: 'alertrules' }"
-              tile
               outlined
               color="black"
               :small="mdScreen"
             >
-              <v-icon v-if="!tinyScreen" left>mdi-cog</v-icon>
+              <v-icon v-if="!tinyScreen" start>mdi-cog</v-icon>
               {{ $tc('alertrule', 2) }}
             </v-btn>
           </v-card-actions>
@@ -111,7 +109,7 @@
           <div class="float-right">
             <div class="d-flex flex-column">
               <a :href="$t('alerts_support_url')" target="_blank"
-                ><v-icon small color="accent">mdi-arrow-right</v-icon
+                ><v-icon size="small" color="accent">mdi-arrow-right</v-icon
                 >{{ $t('alerts_url_text') }}</a
               >
               <div>
@@ -119,7 +117,7 @@
                   :to="{
                     name: 'alertrules',
                   }"
-                  ><v-icon small color="accent">mdi-arrow-right</v-icon
+                  ><v-icon size="small" color="accent">mdi-arrow-right</v-icon
                   >{{ $t('alertrules_url_text') }}</router-link
                 >
               </div>
@@ -133,19 +131,17 @@
       <v-btn
         v-if="mobile"
         :to="{ name: 'alertrules' }"
-        tile
         outlined
         color="black"
         small
         class="save-button-mobile-wide mb-3"
       >
-        <v-icon v-if="!tinyScreen" left>mdi-cog</v-icon>
+        <v-icon v-if="!tinyScreen" start>mdi-cog</v-icon>
         {{ $tc('alertrule', 2) }}
       </v-btn>
 
       <v-btn
         v-if="mobile && selectedAlerts.length > 0"
-        tile
         outlined
         class="save-button-mobile-wide mb-3"
         color="red"
@@ -161,7 +157,7 @@
           color="disabled"
           indeterminate
         />
-        <v-icon v-if="!showLoadingIcon" left>mdi-delete</v-icon>
+        <v-icon v-if="!showLoadingIcon" start>mdi-delete</v-icon>
         {{
           allChecked
             ? $t('delete_all_alerts')
@@ -175,26 +171,26 @@
         type="error"
         text
         prominent
-        dense
+        density="compact"
         color="red"
       >
         {{ error.errorMessage }}
       </v-alert>
 
-      <v-row v-if="alerts.length > 0" dense>
+      <v-row v-if="alerts.length > 0" density="compact">
         <v-scale-transition group class="alerts-item-transition-wrapper">
           <v-col
             v-for="(alert, j) in filteredAlerts"
             :key="j"
             sm="auto"
             class="d-flex justify-start align-center alerts-item"
-            dense
+            density="compact"
           >
             <v-checkbox
               v-if="!mobile"
               :input-value="isSelected(alert.id)"
               class="ma-0 pa-0"
-              dense
+              density="compact"
               color="primary"
               :ripple="false"
               hide-details
@@ -222,7 +218,7 @@
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
-      <v-btn color="accent" text @click="snackbar.show = false">
+      <v-btn color="accent " variant="text" @click="snackbar.show = false">
         {{ $t('Close') }}
       </v-btn>
     </v-snackbar>

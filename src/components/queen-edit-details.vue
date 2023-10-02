@@ -2,7 +2,7 @@
   <v-row class="queen-details-wrapper">
     <v-col cols="12">
       <div
-        class="overline mb-3"
+        class="text-overline mb-3"
         v-text="`${$t('Queen') + ' ' + $t('details')}`"
       ></div>
       <div class="queen-details rounded-border">
@@ -66,12 +66,18 @@
                   scrollable
                 >
                   <v-spacer></v-spacer>
-                  <v-btn text color="accent" @click="cancelDatePicker">{{
-                    $t('Cancel')
-                  }}</v-btn>
-                  <v-btn text color="accent" @click="updateQueenBirthDate">{{
-                    $t('ok')
-                  }}</v-btn>
+                  <v-btn
+                    variant="text"
+                    color="accent"
+                    @click="cancelDatePicker"
+                    >{{ $t('Cancel') }}</v-btn
+                  >
+                  <v-btn
+                    variant="text"
+                    color="accent"
+                    @click="updateQueenBirthDate"
+                    >{{ $t('ok') }}</v-btn
+                  >
                 </v-date-picker>
               </v-dialog>
             </div>

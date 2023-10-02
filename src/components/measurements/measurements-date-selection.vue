@@ -23,7 +23,7 @@
           width="290px"
         >
           <template v-slot:activator="{ props }">
-            <v-icon small class="color-grey-light ml-1" v-bind="props">
+            <v-icon size="small" class="color-grey-light ml-1" v-bind="props">
               mdi-pencil
             </v-icon>
           </template>
@@ -38,7 +38,7 @@
             scrollable
           >
             <v-spacer></v-spacer>
-            <v-btn text color="secondary" @click="modal = false">
+            <v-btn variant="text" color="secondary" @click="modal = false">
               {{ $t('Cancel') }}
             </v-btn>
             <v-btn
@@ -85,7 +85,6 @@
           :close-on-content-click="false"
           :return-value="datesCopy"
           transition="scale-transition"
-          offset-y
           min-width="290px"
         >
           <template v-slot:activator="{ props }">
@@ -109,7 +108,7 @@
             @change="checkDateOrder($event), saveDates(datesCopy)"
           >
             <v-spacer></v-spacer>
-            <v-btn text color="secondary" @click="menu = false">
+            <v-btn variant="text" color="secondary" @click="menu = false">
               {{ $t('Cancel') }}
             </v-btn>
             <v-btn

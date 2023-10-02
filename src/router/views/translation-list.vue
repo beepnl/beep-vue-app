@@ -19,7 +19,6 @@
               <v-btn
                 :min-width="!smAndDown ? '350px' : !mobile ? '300px' : '100%'"
                 outlined
-                tile
                 :small="smAndDown && !mobile"
                 class="mb-3"
               >
@@ -42,7 +41,6 @@
                 :href="'/js/lang/' + language.lang + '.js'"
                 target="_blank"
                 outlined
-                tile
                 class="ml-0 ml-sm-3 mb-3"
                 color="accent"
                 :small="smAndDown && !mobile"

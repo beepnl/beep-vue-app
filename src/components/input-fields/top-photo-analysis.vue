@@ -5,13 +5,13 @@
       type="error"
       text
       prominent
-      dense
+      density="compact"
       color="red"
     >
       {{ $t('input_not_possible_for_bulkinspection') }}
     </v-alert>
     <!-- <div :class="`rounded-border ${bulkInspection ? 'input-disabled' : ''}`"> -->
-    <v-card outlined class="pa-3">
+    <v-card class="pa-3">
       <div class="border-bottom">
         <h4>Top Photo Analysis protocol (EN)</h4>
         <ol>
@@ -84,7 +84,7 @@
             <v-row>
               <v-col cols="12">
                 <div class="beep-label" v-text="`${$t('fr_width_cm')}`"></div>
-                <p v-if="!activeHive.fr_width_cm" class="red--text"
+                <p v-if="!activeHive.fr_width_cm" class="text-red"
                   >{{ $t('fr_width_cm') }} N/A!
                 </p>
 
@@ -102,7 +102,7 @@
               </v-col>
               <v-col cols="12">
                 <div class="beep-label" v-text="`${$t('fr_height_cm')}`"></div>
-                <p v-if="!activeHive.fr_height_cm" class="red--text"
+                <p v-if="!activeHive.fr_height_cm" class="text-red"
                   >{{ $t('fr_height_cm') }} N/A!
                 </p>
 

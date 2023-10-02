@@ -1,10 +1,9 @@
 <template>
   <Layout :title="$t('Apiary_management')">
     <v-form v-if="ready" ref="form" v-model="valid">
-      <v-toolbar v-if="ready" class="save-bar zindex4" dense light>
+      <v-toolbar v-if="ready" class="save-bar zindex4" density="compact" light>
         <v-spacer></v-spacer>
         <v-btn
-          tile
           outlined
           color="black"
           class="save-button-mobile-wide mr-1"
@@ -24,7 +23,7 @@
             color="disabled"
             indeterminate
           />
-          <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
+          <v-icon v-if="!showLoadingIcon" start>mdi-check</v-icon>
           {{
             $t('Move') +
               ' ' +
@@ -107,7 +106,7 @@
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
-      <v-btn color="accent" text @click="snackbar.show = false">
+      <v-btn color="accent " variant="text" @click="snackbar.show = false">
         {{ $t('Close') }}
       </v-btn>
     </v-snackbar>

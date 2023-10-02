@@ -6,7 +6,7 @@ module.exports = {
   extends: [
     'plugin:vue/vue3-recommended',
     // https://github.com/standard/standard/blob/master/docs/RULES-en.md
-    // 'plugin:vuetify/base', TODO-VUE3 temp disabled
+    // 'plugin:vuetify/base',  // TODO-VUE3 temp disabled
     'standard',
     // https://github.com/prettier/eslint-config-prettier
     'prettier',

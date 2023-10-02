@@ -5,7 +5,7 @@
       <v-col cols="12" class="rounded-border accent-border">
         <v-icon
           v-if="multipleFormulas"
-          class="accent--text float-right mr-n1"
+          class="text-accent float-right mr-n1"
           @click="deleteFormula(index)"
           >mdi-close</v-icon
         >
@@ -175,7 +175,7 @@
                 v-model="formula.future"
                 :disabled="formula.period_minutes === 0"
                 class="mt-1 ml-n1"
-                dense
+                density="compact"
               >
                 <v-radio
                   v-for="(item, i) in futureItems"
@@ -209,7 +209,7 @@
             <v-container class="minutes-calculator">
               <v-row>
                 <v-col cols="12">
-                  <v-toolbar dense light flat>
+                  <v-toolbar density="compact" light flat>
                     <div
                       class="font-weight-bold mr-8"
                       v-text="$t('Minutes_calculator')"
@@ -241,7 +241,7 @@
                     </div>
                   </div>
 
-                  <v-toolbar dense light flat>
+                  <v-toolbar density="compact" light flat>
                     <div
                       class="font-weight-bold color-accent"
                       v-text="totalPeriodMinutes + ' ' + $tc('minute', 2)"
@@ -277,7 +277,7 @@
           <v-col cols="6" sm="4" md="2" xl="1" class="d-flex justify-start">
             <div class="mt-3px">
               <div
-                :class="`beep-label ${thresholdValueIsNaN ? 'red--text' : ''}`"
+                :class="`beep-label ${thresholdValueIsNaN ? 'text-red' : ''}`"
                 v-text="$t('Threshold_value') + ' (' + measurementUnit + ')'"
               ></div>
               <el-input-number
@@ -293,7 +293,7 @@
                 "
               ></el-input-number>
               <div v-if="thresholdValueIsNaN" class="v-text-field__details mt-1"
-                ><div class="v-messages theme--light error--text" role="alert"
+                ><div class="v-messages theme--light text-error" role="alert"
                   ><div class="v-messages__wrapper"
                     ><div class="v-messages__message">{{
                       this.$i18n.t('this_field') +
@@ -315,7 +315,7 @@
           v-model="formula.logical"
           mandatory
           borderless
-          dense
+          density="compact"
           @change="toggleAllLogicals($event)"
         >
           <v-btn value="and">

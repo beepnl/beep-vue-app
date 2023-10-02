@@ -2,17 +2,16 @@
 <template>
   <Layout :title="getTitle()">
     <v-form ref="form" v-model="valid" @submit.prevent="saveGroup">
-      <v-toolbar v-if="activeGroup" class="save-bar" dense light>
+      <v-toolbar v-if="activeGroup" class="save-bar" density="compact" light>
         <v-spacer></v-spacer>
         <v-btn
           v-if="activeGroup && !createMode && tabletLandscapeUp"
-          tile
           outlined
           color="red"
           class="mr-3"
           @click="confirmDeleteOrDetachGroup"
         >
-          <v-icon left>mdi-delete</v-icon>
+          <v-icon start>mdi-delete</v-icon>
           {{
             `${activeGroup.creator ? $t('Delete') : $t('Detach_from_group')}`
           }}
@@ -27,7 +26,6 @@
         >
 
         <v-btn
-          tile
           outlined
           color="black"
           :class="`mr-1 ${createMode ? 'save-button-mobile-wide' : ''}`"
@@ -42,7 +40,7 @@
             color="disabled"
             indeterminate
           />
-          <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
+          <v-icon v-if="!showLoadingIcon" start>mdi-check</v-icon>
           {{ $t('save') }}
         </v-btn>
       </v-toolbar>
@@ -50,7 +48,7 @@
       <v-container class="group-edit content-container">
         <v-row v-if="errorMessage">
           <v-col cols="12">
-            <v-alert text prominent dense type="error" color="red">
+            <v-alert text prominent density="compact" type="error" color="red">
               {{ errorMessage }}
             </v-alert>
           </v-col>
@@ -61,8 +59,8 @@
               v-model="showSuccessMessage"
               text
               prominent
-              dense
-              dismissible
+              density="compact"
+              closable
               type="success"
               color="green"
             >
@@ -80,7 +78,7 @@
           "
         >
           <v-col cols="12">
-            <div class="overline mb-3">{{
+            <div class="text-overline mb-3">{{
               $tc('Group', 1) + ' ' + $t('settings')
             }}</div>
             <div class="rounded-border">
@@ -134,7 +132,7 @@
                   <v-overlay v-model="overlay">
                     <v-toolbar
                       class="hive-color-picker-toolbar"
-                      dense
+                      density="compact"
                       light
                       flat
                     >
@@ -163,7 +161,7 @@
 
                     <v-toolbar
                       class="hive-color-picker-footer"
-                      dense
+                      density="compact"
                       light
                       flat
                     >
@@ -193,20 +191,20 @@
         >
           <v-col cols="12">
             <div class="d-flex justify-space-between">
-              <div class="overline mb-3">{{
+              <div class="text-overline mb-3">{{
                 $tc('Member', activeGroup.users.length) +
                   ' (' +
                   activeGroup.users.length +
                   ')'
               }}</div>
               <v-spacer></v-spacer>
-              <v-btn tile outlined color="accent" @click="addGroupUser">
-                <v-icon left>mdi-plus</v-icon>
+              <v-btn variant="outlined" color="accent" @click="addGroupUser">
+                <v-icon start>mdi-plus</v-icon>
                 {{ tabletLandscapeUp ? $t('Add_member') : $t('add') }}
               </v-btn>
             </div>
             <div class="rounded-border">
-              <v-table dense>
+              <v-table density="compact">
                 <template v-slot>
                   <thead>
                     <tr>
@@ -243,7 +241,7 @@
                           :disabled="user.id && user.id !== null"
                           :placeholder="`${$t('invitee_name')}`"
                           class="mt-2"
-                          dense
+                          density="compact"
                         ></v-text-field>
                       </td>
                       <td :class="mobile ? 'td--medium' : ''">
@@ -252,7 +250,7 @@
                           :disabled="user.id && user.id !== null"
                           :placeholder="`${$t('email_is_required')}`"
                           class="mt-2"
-                          dense
+                          density="compact"
                         ></v-text-field>
                       </td>
                       <td>
@@ -309,7 +307,7 @@
 
         <v-row v-if="showGroupDetails && activeGroup">
           <v-col cols="12">
-            <div class="overline mb-3">{{
+            <div class="text-overline mb-3">{{
               $t('My_shared') + ' ' + $tc('hive', 2)
             }}</div>
             <div class="rounded-border">
@@ -328,7 +326,7 @@
                   }"
                 >
                   <div class="color-accent"
-                    ><v-icon color="accent" left>mdi-plus-circle</v-icon
+                    ><v-icon color="accent" start>mdi-plus-circle</v-icon
                     >{{ $t('Add_apiary') }}</div
                   >
                 </router-link>
@@ -388,7 +386,7 @@
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
-      <v-btn color="accent" text @click="snackbar.show = false">
+      <v-btn color="accent " variant="text" @click="snackbar.show = false">
         {{ $t('Close') }}
       </v-btn>
     </v-snackbar>

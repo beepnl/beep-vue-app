@@ -5,7 +5,7 @@
         <div class="loading">
           <v-progress-circular size="50" color="primary" indeterminate />
           <span
-            class="ma-3 font-weight-bold accent--text"
+            class="ma-3 font-weight-bold text-accent"
             v-text="$t('Generating_svg_be_patient')"
           ></span>
         </div>
@@ -24,8 +24,8 @@
             type="error"
             text
             prominent
-            dense
-            dismissible
+            density="compact"
+            closable
             color="red"
             class="mb-2"
           >

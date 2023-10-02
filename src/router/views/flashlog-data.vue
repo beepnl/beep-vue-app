@@ -1,6 +1,6 @@
 <template>
   <Layout :title="pageTitle">
-    <v-toolbar class="save-bar save-bar--back" dense light>
+    <v-toolbar class="save-bar save-bar--back" density="compact" light>
       <v-icon
         v-if="!noMatches"
         :large="smAndDown"
@@ -16,13 +16,12 @@
         v-if="
           !smAndDown && !noMatches && blockDataIndex !== 0 && blockData !== null
         "
-        tile
         outlined
         color="black"
         :disabled="loading"
         @click="changeBlockDataIndex(blockDataIndex - 1)"
       >
-        <v-icon left>mdi-chevron-left</v-icon>
+        <v-icon start>mdi-chevron-left</v-icon>
         {{ $t('prev') }}</v-btn
       >
       <v-icon
@@ -40,7 +39,7 @@
         v-if="blockData !== null"
         :class="
           'font-weight-bold ' +
-            (smAndDown ? 'd-flex flex-column font-small' : 'overline')
+            (smAndDown ? 'd-flex flex-column font-small' : 'text-overline')
         "
       >
         <div class="d-flex flex-row">
@@ -48,8 +47,8 @@
             :class="
               'mr-3 ' +
                 (blockData.block_data_match_percentage >= thresholdMatches
-                  ? 'green--text'
-                  : 'red--text')
+                  ? 'text-green'
+                  : 'text-red')
             "
             v-text="
               $tc('Match', 2) +
@@ -60,7 +59,7 @@
           ></span>
           <span
             v-if="!smAndDown && blockData.block_data_match_errors !== ''"
-            class="mr-3 red--text"
+            class="mr-3 text-red"
             v-text="$tc('Error', 2) + ': ' + blockData.block_data_match_errors"
           ></span>
           <span
@@ -68,8 +67,8 @@
               Math.abs(blockData.block_data_flashlog_sec_diff) >=
                 thresholdSecDiff ||
               blockData.block_data_flashlog_sec_diff === null
-                ? 'red--text'
-                : 'green--text'
+                ? 'text-red'
+                : 'text-green'
             "
             v-text="
               $t('Time_diff') +
@@ -87,7 +86,7 @@
           class="d-flex flex-row"
         >
           <span
-            class="mr-3 red--text"
+            class="mr-3 text-red"
             v-text="$tc('Error', 2) + ': ' + blockData.block_data_match_errors"
           ></span>
         </div>
@@ -95,7 +94,6 @@
       <v-spacer></v-spacer>
       <v-btn
         v-if="!smAndDown && !noMatches && !finalIndex"
-        tile
         outlined
         color="black"
         :disabled="loading"
@@ -138,7 +136,7 @@
               <v-btn
                 :class="
                   `grey--text ${
-                    period.minutes === currentMinutes ? 'accent--text' : ''
+                    period.minutes === currentMinutes ? 'text-accent' : ''
                   }`
                 "
                 text
@@ -162,7 +160,7 @@
             color="accent"
             track-color="accent"
             :max="blockDataIndexMax"
-            validate-on-blur
+            validate-on="blur"
             hide-details
             @change="checkBlockDataWithDelay(true)"
           >
@@ -181,7 +179,7 @@
           <v-alert
             text
             prominent
-            dense
+            density="compact"
             type="error"
             color="red"
             class="mt-3 mb-n4"
@@ -208,7 +206,7 @@
             >
               <div class="chart-wrapper pt-0 pb-5">
                 <div
-                  class="overline mt-0 mb-2 text-center"
+                  class="text-overline mt-0 mb-2 text-center"
                   v-text="dataSet + nrOfMeasurementsText(dataSet)"
                 ></div>
                 <MeasurementsChartLine
@@ -248,14 +246,13 @@
                 <v-switch
                   v-model="fillHoles"
                   class="pt-0 mt-0 mr-2"
-                  dense
+                  density="compact"
                   hide-details
                 ></v-switch>
               </div>
             </v-col>
             <v-col cols="12" sm="6" class="d-flex justify-end">
               <v-btn
-                tile
                 outlined
                 color="accent"
                 class="save-button-mobile-wide mr-1"
@@ -270,7 +267,7 @@
                   color="disabled"
                   indeterminate
                 />
-                <v-icon v-if="!showLoadingIcon" left>mdi-import</v-icon>
+                <v-icon v-if="!showLoadingIcon" start>mdi-import</v-icon>
                 {{ $t('import_block_data_short') }}
               </v-btn>
             </v-col>

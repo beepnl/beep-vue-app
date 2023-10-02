@@ -21,10 +21,10 @@
 
       <div v-if="incorrectPageNrs.length > 0">
         <span v-text="$t('Incorrectly_uploaded_pages')"></span>
-        <span class="red--text" v-text="incorrectPageNrs.join(', ')"></span>
+        <span class="text-red" v-text="incorrectPageNrs.join(', ')"></span>
       </div>
 
-      <div v-if="missingPages.length > 0" class="red--text">
+      <div v-if="missingPages.length > 0" class="text-red">
         <span v-text="$tc('Missing_page', missingPages.length) + ': '"></span>
         <span v-text="missingPages.join(', ')"></span>
       </div>
@@ -34,7 +34,7 @@
         class="d-flex align-center"
       >
         <span
-          class="mr-1 red--text"
+          class="mr-1 text-red"
           v-text="
             !svgIdsAllWrong
               ? $tc('Check_svg_id_for_page', wrongSvgIds.length) + ': '
@@ -47,7 +47,7 @@
 
         <span
           v-if="!svgIdsAllWrong"
-          class="red--text mr-1"
+          class="text-red mr-1"
           v-text="wrongSvgIds.join(', ')"
         ></span>
         <span
@@ -73,7 +73,7 @@
         v-if="selectedChecklistSvg.id && wrongSvgIds.length === 0"
         class="d-flex align-center"
       >
-        <span class="green--text" v-text="$t('All_svg_ids_correct')"></span>
+        <span class="text-green" v-text="$t('All_svg_ids_correct')"></span>
         <v-icon class="ml-1" size="18" color="green">mdi-check-circle</v-icon>
       </div>
     </div>

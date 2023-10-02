@@ -19,13 +19,13 @@
                 :label="`${$t('Search')}`"
                 :class="
                   `${
-                    search !== null ? 'v-input--is-focused primary--text' : ''
+                    search !== null ? 'v-input--is-focused text-primary' : ''
                   } filter-text-field`
                 "
                 :height="smallScreen ? '30px' : '36px'"
                 clearable
                 outlined
-                dense
+                density="compact"
                 hide-details
                 :append-outer-icon="search ? 'mdi-magnify' : ''"
                 clear-icon="mdi-close"
@@ -38,9 +38,7 @@
             <v-card-actions class="pl-0">
               <v-icon
                 :class="
-                  `${
-                    filterByAttention ? 'red--text' : 'color-grey-filter'
-                  } mr-2`
+                  `${filterByAttention ? 'text-red' : 'color-grey-filter'} mr-2`
                 "
                 @click="toggleFilterByAttention"
               >
@@ -48,7 +46,7 @@
               </v-icon>
               <v-icon
                 :class="
-                  `${filterByReminder ? 'red--text' : 'color-grey-filter'} mr-2`
+                  `${filterByReminder ? 'text-red' : 'color-grey-filter'} mr-2`
                 "
                 @click="toggleFilterByReminder"
               >
@@ -58,7 +56,7 @@
                 :class="
                   `${
                     filterByImpression.includes(3)
-                      ? 'green--text'
+                      ? 'text-green'
                       : 'color-grey-filter'
                   } mr-2`
                 "
@@ -70,7 +68,7 @@
                 :class="
                   `${
                     filterByImpression.includes(2)
-                      ? 'orange--text'
+                      ? 'text-orange'
                       : 'color-grey-filter'
                   } mr-2`
                 "
@@ -82,7 +80,7 @@
                 :class="
                   `${
                     filterByImpression.includes(1)
-                      ? 'red--text'
+                      ? 'text-red'
                       : 'color-grey-filter'
                   } mr-2`
                 "
@@ -122,11 +120,10 @@
             <v-btn
               v-if="!smallScreen"
               :to="{ name: 'inspect', query: { hiveId: id } }"
-              tile
               outlined
               color="black"
             >
-              <v-icon left>mdi-plus</v-icon>
+              <v-icon start>mdi-plus</v-icon>
               {{ $t('New_inspection') }}
             </v-btn>
             <router-link
@@ -181,7 +178,7 @@
                       }"
                       class="icon-button"
                     >
-                      <v-icon small class="color-grey-medium"
+                      <v-icon size="small" class="color-grey-medium"
                         >mdi-pencil</v-icon
                       >
                     </router-link>
@@ -189,7 +186,7 @@
                       class="icon-button delete"
                       @click="confirmDeleteInspection(inspection)"
                     >
-                      <v-icon small class="color-grey-medium"
+                      <v-icon size="small" class="color-grey-medium"
                         >mdi-delete</v-icon
                       >
                     </a>
@@ -220,15 +217,15 @@
                   >
                     <v-icon
                       v-if="inspection.impression === 3"
-                      class="green--text"
+                      class="text-green"
                       >mdi-emoticon-happy</v-icon
                     >
                     <v-icon
                       v-if="inspection.impression === 2"
-                      class="orange--text"
+                      class="text-orange"
                       >mdi-emoticon-neutral</v-icon
                     >
-                    <v-icon v-if="inspection.impression === 1" class="red--text"
+                    <v-icon v-if="inspection.impression === 1" class="text-red"
                       >mdi-emoticon-sad</v-icon
                     >
                   </div>
@@ -247,7 +244,7 @@
                       inspection.attention !== null && inspection.attention > -1
                     "
                   >
-                    <v-icon v-if="inspection.attention === 1" class="red--text"
+                    <v-icon v-if="inspection.attention === 1" class="text-red"
                       >mdi-clipboard-alert-outline</v-icon
                     >
 
@@ -295,13 +292,13 @@
                     <v-menu>
                       <template v-slot:activator="{ props }">
                         <span
-                          class="add-to-calendar accent--text"
+                          class="add-to-calendar text-accent"
                           v-bind="props"
                         >
                           {{ $t('add_to_calendar').toUpperCase() }}
                         </span>
                       </template>
-                      <v-list dense>
+                      <v-list density="compact">
                         <template
                           v-for="(calendarItem, index) in calendars"
                           :key="index"
@@ -356,8 +353,8 @@
                       :class="
                         `d-flex justify-center reminder-date ${
                           $moment(inspection.reminder_date).isBefore()
-                            ? 'red--text'
-                            : 'green--text'
+                            ? 'text-red'
+                            : 'text-green'
                         }`
                       "
                       v-text="
@@ -481,17 +478,15 @@
                     <div>
                       <v-icon
                         v-if="parseInt(item.value) === 3"
-                        class="green--text"
+                        class="text-green"
                         >mdi-emoticon-happy</v-icon
                       >
                       <v-icon
                         v-if="parseInt(item.value) === 2"
-                        class="orange--text"
+                        class="text-orange"
                         >mdi-emoticon-neutral</v-icon
                       >
-                      <v-icon
-                        v-if="parseInt(item.value) === 1"
-                        class="red--text"
+                      <v-icon v-if="parseInt(item.value) === 1" class="text-red"
                         >mdi-emoticon-sad</v-icon
                       >
                     </div>
@@ -560,7 +555,7 @@
                   >
                     <v-img
                       :src="getFullUrl(item.val)"
-                      class="grey lighten-2 image-thumb"
+                      class="bg-grey-lighten-2 image-thumb"
                       @click="activeImage = item.val"
                     >
                     </v-img>
@@ -601,7 +596,7 @@
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
-      <v-btn color="accent" text @click="snackbar.show = false">
+      <v-btn color="accent " variant="text" @click="snackbar.show = false">
         {{ $t('Close') }}
       </v-btn>
     </v-snackbar>
@@ -1115,7 +1110,7 @@ export default {
       @include for-phone-only {
         max-width: 80px;
       }
-      &.green--text {
+      &.text-green {
         border-color: $color-green;
       }
     }

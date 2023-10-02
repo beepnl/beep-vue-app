@@ -30,7 +30,7 @@
               : ''
           }`
         "
-        dense
+        density="compact"
         light
       >
         <template v-slot>

@@ -1,11 +1,10 @@
 <template>
   <Layout :title="`${$t('User_data')}`">
     <v-form ref="form" v-model="valid" @submit.prevent="editUser">
-      <v-toolbar class="save-bar" dense light>
+      <v-toolbar class="save-bar" density="compact" light>
         <v-spacer></v-spacer>
         <v-btn
           v-if="!mobile"
-          tile
           outlined
           color="red"
           class="mr-3"
@@ -20,7 +19,7 @@
             color="disabled"
             indeterminate
           />
-          <v-icon v-if="!showDeleteLoadingIcon" left>mdi-delete</v-icon>
+          <v-icon v-if="!showDeleteLoadingIcon" start>mdi-delete</v-icon>
           {{ $t('Delete') }}
         </v-btn>
         <v-progress-circular
@@ -41,7 +40,6 @@
         >
 
         <v-btn
-          tile
           outlined
           class="mr-1"
           color="black"
@@ -56,7 +54,7 @@
             color="disabled"
             indeterminate
           />
-          <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon
+          <v-icon v-if="!showLoadingIcon" start>mdi-check</v-icon
           >{{ $t('save') }}</v-btn
         >
       </v-toolbar>
@@ -69,7 +67,7 @@
               :key="error.name"
               text
               prominent
-              dense
+              density="compact"
               type="error"
               color="red"
             >
@@ -79,12 +77,18 @@
         </v-row>
         <v-row v-if="successMessage !== null">
           <v-col cols="12">
-            <v-alert text prominent dense type="success" color="green">
+            <v-alert
+              text
+              prominent
+              density="compact"
+              type="success"
+              color="green"
+            >
               {{ successMessage }}
             </v-alert>
           </v-col>
         </v-row>
-        <div class="overline mb-3" v-text="$t('User_data')"></div>
+        <div class="text-overline mb-3" v-text="$t('User_data')"></div>
         <v-card outlined>
           <v-card-text>
             <v-text-field
@@ -94,15 +98,15 @@
             />
             <v-text-field
               v-model="email"
-              :class="fieldErrors.email ? 'error--text' : ''"
+              :class="fieldErrors.email ? 'text-error' : ''"
               :label="`${$t('email')}`"
               :rules="emailRules"
               required
-              validate-on-blur
+              validate-on="blur"
             />
             <v-text-field
               v-model="password"
-              :class="fieldErrors.password ? 'error--text' : ''"
+              :class="fieldErrors.password ? 'text-error' : ''"
               :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
               :label="`${$t('password')}`"
               :type="show1 ? 'text' : 'password'"

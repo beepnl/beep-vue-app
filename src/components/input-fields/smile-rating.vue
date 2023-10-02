@@ -2,21 +2,19 @@
   <div>
     <div class="smile-wrapper d-flex align-center">
       <v-icon
-        :class="`${object[property] === 1 ? 'red--text' : 'color-grey'} mr-2`"
+        :class="`${object[property] === 1 ? 'text-red' : 'color-grey'} mr-2`"
         @click="updateObject(1, property)"
       >
         mdi-emoticon-sad
       </v-icon>
       <v-icon
-        :class="
-          `${object[property] === 2 ? 'orange--text' : 'color-grey'} mr-2`
-        "
+        :class="`${object[property] === 2 ? 'text-orange' : 'color-grey'} mr-2`"
         @click="updateObject(2, property)"
       >
         mdi-emoticon-neutral
       </v-icon>
       <v-icon
-        :class="`${object[property] === 3 ? 'green--text' : 'color-grey'} mr-2`"
+        :class="`${object[property] === 3 ? 'text-green' : 'color-grey'} mr-2`"
         @click="updateObject(3, property)"
       >
         mdi-emoticon-happy

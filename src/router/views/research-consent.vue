@@ -4,7 +4,7 @@
       <div>
         <v-row>
           <v-col cols="12">
-            <p class="red--text">{{ $t('research_warning') }}</p>
+            <p class="text-red">{{ $t('research_warning') }}</p>
             <p>{{ $t('research_explanation_p1') }}</p>
             <p>{{ $t('research_explanation_p2') }}</p>
             <p class="mb-0"
@@ -18,7 +18,9 @@
 
         <v-row class="mb-4 mb-sm-6">
           <v-col cols="12">
-            <div class="overline mb-2 mb-sm-3">{{ $t('my_beep_data') }}</div>
+            <div class="text-overline mb-2 mb-sm-3">{{
+              $t('my_beep_data')
+            }}</div>
             <div class="rounded-border">
               <v-row>
                 <v-col cols="12" md="4">
@@ -67,7 +69,7 @@
                       height="80"
                       width="80"
                       aspect-ratio="1"
-                      class="grey lighten-2 rounded research-avatar"
+                      class="bg-grey-lighten-2 rounded research-avatar"
                     >
                     </v-img>
                   </a>
@@ -172,8 +174,8 @@
                       <strong>
                         <v-icon>{{
                           research.consent
-                            ? 'mdi-check green--text'
-                            : 'mdi-close red--text'
+                            ? 'mdi-check text-green'
+                            : 'mdi-close text-red'
                         }}</v-icon>
                       </strong>
                     </v-col>
@@ -187,12 +189,11 @@
                     </v-col>
                     <v-col class="research-item-col" cols="7" sm="8">
                       <v-btn
-                        tile
                         outlined
                         :small="mdAndDown"
                         :class="
                           `${
-                            research.consent ? 'red--text' : 'green--text'
+                            research.consent ? 'text-red' : 'text-green'
                           } research-consent-button`
                         "
                         @click="consentToggle(research, !research.consent)"
@@ -246,7 +247,7 @@
                         :class="
                           `${
                             editedCHItems.indexOf(chItem.id) > -1
-                              ? 'green--text'
+                              ? 'text-green'
                               : 'color-accent'
                           }`
                         "
@@ -263,9 +264,9 @@
                             class="ml-1"
                           >
                             <v-btn
-                              tile
+
                               outlined
-                              class="mt-n1 green--text"
+                              class="mt-n1 text-green"
                               x-small
                               @click="
                                 updateConsentDate(
@@ -326,7 +327,7 @@
                           </span>
                         </template>
                         <template v-slot:button-cancel>
-                          <v-btn text color="accent">{{ $t('Cancel') }}</v-btn>
+                          <v-btn variant="text" color="accent">{{ $t('Cancel') }}</v-btn>
                         </template>
                         <template v-slot:button-confirm>
                           <v-btn
@@ -350,7 +351,7 @@
                     >
                       <strong
                         :class="
-                          chItem.consent === 1 ? 'green--text' : 'red--text'
+                          chItem.consent === 1 ? 'text-green' : 'text-red'
                         "
                         >{{
                           chItem.consent ? $t('consent_yes') : $t('consent_no')
@@ -358,14 +359,14 @@
                       >
                       <v-icon
                         v-if="chItem.consent === 0"
-                        class="red--text ml-1 cursor-pointer"
+                        class="text-red ml-1 cursor-pointer"
                         size="20"
                         @click="confirmDeleteNoConsent(research.id, chItem)"
                         >mdi-delete</v-icon
                       >
                       <v-icon
                         v-if="chItem.consent === 1 && index === 0"
-                        class="green--text ml-1 cursor-pointer"
+                        class="text-green ml-1 cursor-pointer"
                         size="20"
                         @click="consentToggle(research, true, chItem)"
                         >mdi-pencil</v-icon

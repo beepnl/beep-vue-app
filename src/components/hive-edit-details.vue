@@ -2,7 +2,7 @@
   <v-row v-if="ready" class="hive-edit-details-wrapper">
     <v-col cols="12">
       <div
-        class="overline mb-3"
+        class="text-overline mb-3"
         v-text="`${$tc('Hive', 1) + ' ' + $t('configuration')}`"
       ></div>
 
@@ -55,7 +55,12 @@
             </v-row>
 
             <v-overlay v-model="overlay">
-              <v-toolbar class="hive-color-picker-toolbar" dense light flat>
+              <v-toolbar
+                class="hive-color-picker-toolbar"
+                density="compact"
+                light
+                flat
+              >
                 <div
                   class="hive-color-picker-title ml-1"
                   v-text="`${$t('Hive_color')}`"
@@ -79,7 +84,12 @@
               >
               </v-color-picker>
 
-              <v-toolbar class="hive-color-picker-footer" dense light flat>
+              <v-toolbar
+                class="hive-color-picker-footer"
+                density="compact"
+                light
+                flat
+              >
                 <v-spacer></v-spacer>
                 <v-icon
                   class="mr-1"

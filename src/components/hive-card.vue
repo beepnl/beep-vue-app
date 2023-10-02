@@ -56,7 +56,7 @@
         <div
           v-if="xsView"
           :class="
-            `d-flex flex-row justify-center red--text xs-view-alert ${
+            `d-flex flex-row justify-center text-red xs-view-alert ${
               hasLayer('queen_excluder') ? 'mr-1' : ''
             }`
           "
@@ -68,7 +68,7 @@
               query: { search: hive.last_inspection_date_locale_date },
             }"
           >
-            <v-icon v-if="hive.attention" class="red--text">
+            <v-icon v-if="hive.attention" class="text-red">
               mdi-clipboard-alert-outline
             </v-icon>
           </router-link>
@@ -79,7 +79,7 @@
               query: { search: hive.name },
             }"
           >
-            <v-tooltip bottom max-width="60%">
+            <v-tooltip location="bottom" max-width="60%">
               <template v-slot:activator="{ props }">
                 <div v-bind="props">
                   <v-badge
@@ -108,14 +108,8 @@
         ></HiveIcon>
 
         <v-overlay v-model="showMenu">
-          <v-menu
-            v-model="showMenu"
-            :position-x="x"
-            :position-y="y"
-            absolute
-            offset-y
-          >
-            <v-list dense class="hive-menu-list">
+          <v-menu v-model="showMenu">
+            <v-list density="compact" class="hive-menu-list">
               <v-list-item v-if="!hideHiveName">
                 <v-list-item-title class="title">
                   {{ hive.name }}
@@ -225,9 +219,9 @@
 
               <v-list-group>
                 <v-list-item v-if="hive.owner" @click="confirmDeleteHive(hive)">
-                  <v-icon class="red--text">mdi-delete</v-icon>
+                  <v-icon class="text-red">mdi-delete</v-icon>
 
-                  <v-list-item-title class="red--text">{{
+                  <v-list-item-title class="text-red">{{
                     $t('remove_hive')
                   }}</v-list-item-title>
                 </v-list-item>
@@ -264,7 +258,7 @@
                 </v-icon>
               </div>
 
-              <v-tooltip v-if="mView" bottom max-width="60%">
+              <v-tooltip v-if="mView" location="bottom" max-width="60%">
                 <template v-slot:activator="{ props }">
                   <div v-bind="props">
                     <v-badge
@@ -364,16 +358,16 @@
                 mdi-plus-circle
               </v-icon>
               <!-- <v-sheet v-if="hive.last_inspection_date === null" class="beep-icon beep-icon-note color-grey"> </v-sheet> -->
-              <v-icon v-if="hive.attention" class="red--text">
+              <v-icon v-if="hive.attention" class="text-red">
                 mdi-clipboard-alert-outline
               </v-icon>
-              <v-icon v-if="hive.impression === 1" class="red--text">
+              <v-icon v-if="hive.impression === 1" class="text-red">
                 mdi-emoticon-sad
               </v-icon>
-              <v-icon v-if="hive.impression === 3" class="green--text">
+              <v-icon v-if="hive.impression === 3" class="text-green">
                 mdi-emoticon-happy
               </v-icon>
-              <v-icon v-if="hive.impression === 2" class="orange--text">
+              <v-icon v-if="hive.impression === 2" class="text-orange">
                 mdi-emoticon-neutral
               </v-icon>
               <div
@@ -451,8 +445,8 @@
                 :class="
                   `${
                     $moment(hive.reminder_date).isBefore()
-                      ? 'red--text'
-                      : 'green--text'
+                      ? 'text-red'
+                      : 'text-green'
                   }`
                 "
               >
@@ -468,8 +462,8 @@
             :class="
               `to-do-date ${
                 $moment(hive.reminder_date).isBefore()
-                  ? 'red--text'
-                  : 'green--text'
+                  ? 'text-red'
+                  : 'text-green'
               } mr-2`
             "
             v-text="hive.reminder_date_day_month"

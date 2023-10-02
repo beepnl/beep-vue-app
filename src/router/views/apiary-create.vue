@@ -4,7 +4,7 @@
       <v-tabs
         v-model="activeTab"
         class="apiary-create"
-        dense
+        density="compact"
         light
         grow
         background-color="#F8B133"
@@ -34,7 +34,7 @@
               <div class="d-flex justify-space-between">
                 <v-spacer></v-spacer>
                 <div class="d-flex align-center">
-                  <span class="overline mr-3 d-flex align-center"
+                  <span class="text-overline mr-3 d-flex align-center"
                     >{{ $t('start_here') + ' '
                     }}<v-icon class="bounce">mdi-arrow-right</v-icon></span
                   >
@@ -52,7 +52,7 @@
             <v-container>
               <v-row>
                 <v-col cols="12">
-                  <div class="overline mb-4">{{
+                  <div class="text-overline mb-4">{{
                     $t('new_apiary_explanation')
                   }}</div>
                   <v-img
@@ -91,7 +91,7 @@
             <v-container>
               <v-row>
                 <v-col cols="12">
-                  <div class="overline mb-4">{{
+                  <div class="text-overline mb-4">{{
                     $tc('Location', 1) + ' ' + $t('settings')
                   }}</div>
                   <div class="rounded-border">
@@ -126,7 +126,7 @@
                         <v-overlay v-model="overlay">
                           <v-toolbar
                             class="hive-color-picker-toolbar"
-                            dense
+                            density="compact"
                             light
                             flat
                           >
@@ -155,7 +155,7 @@
 
                           <v-toolbar
                             class="hive-color-picker-footer"
-                            dense
+                            density="compact"
                             light
                             flat
                           >
@@ -207,7 +207,7 @@
             <v-container>
               <v-row>
                 <v-col cols="12">
-                  <div class="overline mb-4">
+                  <div class="text-overline mb-4">
                     {{
                       $t('Place') +
                         ' ' +
@@ -299,7 +299,7 @@
                           v-model="newHive.city"
                           :label="`${$t('City')}`"
                           outlined
-                          dense
+                          density="compact"
                           @change="setApiaryEdited(true)"
                         >
                         </v-text-field>
@@ -310,7 +310,7 @@
                           v-model="newHive.postal_code"
                           :label="`${$t('Postal_code')}`"
                           outlined
-                          dense
+                          density="compact"
                           @change="setApiaryEdited(true)"
                         >
                         </v-text-field>
@@ -321,7 +321,7 @@
                           v-model="newHive.street"
                           :label="`${$t('Street')}`"
                           outlined
-                          dense
+                          density="compact"
                           @change="setApiaryEdited(true)"
                         >
                         </v-text-field>
@@ -332,7 +332,7 @@
                           v-model="newHive.street_no"
                           :label="`${$t('Number')}`"
                           outlined
-                          dense
+                          density="compact"
                           @change="setApiaryEdited(true)"
                         >
                         </v-text-field>
@@ -381,7 +381,6 @@
                   >mdi-chevron-left</v-icon
                 >
                 <v-btn
-                  tile
                   outlined
                   color="black"
                   class="mr-3"
@@ -396,7 +395,7 @@
                     color="disabled"
                     indeterminate
                   />
-                  <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
+                  <v-icon v-if="!showLoadingIcon" start>mdi-check</v-icon>
                   {{ $t('save') }}
                 </v-btn>
               </div>
@@ -404,7 +403,7 @@
             <v-container>
               <v-row>
                 <v-col cols="12">
-                  <div class="overline mb-4">{{
+                  <div class="text-overline mb-4">{{
                     $tc('Location', 1) + ' ' + $tc('hive', 2)
                   }}</div>
                   <div class="rounded-border">
@@ -437,7 +436,7 @@
                           :height="36"
                           class="prefix-input"
                           outlined
-                          dense
+                          density="compact"
                           @change="setApiaryEdited(true)"
                         >
                         </v-text-field>
@@ -483,7 +482,7 @@
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
-      <v-btn color="accent" text @click="snackbar.show = false">
+      <v-btn color="accent " variant="text" @click="snackbar.show = false">
         {{ $t('Close') }}
       </v-btn>
     </v-snackbar>

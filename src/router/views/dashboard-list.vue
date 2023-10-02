@@ -9,13 +9,12 @@
           >
             <v-btn
               :to="{ name: 'dashboard-create' }"
-              tile
               outlined
               color="black"
               :small="mobile"
               class="save-button-mobile-wide"
             >
-              <v-icon left>mdi-plus</v-icon>
+              <v-icon start>mdi-plus</v-icon>
               {{ $t('New_dashboard') }}
             </v-btn>
           </v-card-actions>
@@ -36,7 +35,7 @@
             v-if="!showDashboardPlaceholder"
             class="d-flex justify-start align-center"
           >
-            <div class="overline ">{{ $tc('Dashboard', 2) }}</div>
+            <div class="text-overline ">{{ $tc('Dashboard', 2) }}</div>
             <v-icon
               class="mdi mdi-information icon-info cursor-pointer  ml-2"
               dark
@@ -88,12 +87,12 @@
                       >
                         <v-icon class="mr-2" color="accent">mdi-link</v-icon>
                         <span
-                          class="overline"
+                          class="text-overline"
                           v-text="dashboardGroup.code"
                         ></span>
                       </a>
 
-                      <v-tooltip bottom max-width="60%">
+                      <v-tooltip location="bottom" max-width="60%">
                         <template v-slot:activator="{ props }">
                           <v-icon
                             small
@@ -119,7 +118,7 @@
                     </td>
                     <td>
                       <span
-                        class="overline"
+                        class="text-overline"
                         v-text="dashboardGroup.name"
                       ></span>
                     </td>

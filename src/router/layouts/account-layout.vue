@@ -34,7 +34,7 @@
             "
         /></a>
         <div
-          class="text-h3 overline roboto-condensed font-weight-light"
+          class="text-h3 text-overline roboto-condensed font-weight-light"
           v-text="$tc('Dashboard', 1)"
         ></div>
       </div>

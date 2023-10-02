@@ -1,11 +1,7 @@
 <template>
   <Layout
     :title="
-      `${
-        checklistsPage
-          ? this.$i18n.tc('Checklist_template', 2)
-          : $t('Edit_checklist')
-      }`
+      `${checklistsPage ? $tc('Checklist_template', 2) : $t('Edit_checklist')}`
     "
     :edited="checklistEdited"
   >
@@ -32,11 +28,10 @@
         activeChecklist.id !== undefined ? updateChecklist() : createChecklist()
       "
     >
-      <v-toolbar class="save-bar" dense light>
+      <v-toolbar class="save-bar" density="compact" light>
         <v-spacer></v-spacer>
         <v-btn
           v-if="!mobile && activeChecklist"
-          tile
           outlined
           color="primary"
           class="mr-3"
@@ -48,7 +43,6 @@
         </v-btn>
         <v-btn
           v-if="!mobile && activeChecklist"
-          tile
           outlined
           color="primary"
           class="mr-3"
@@ -60,7 +54,6 @@
         </v-btn>
         <v-btn
           v-if="showDeleteButton"
-          tile
           outlined
           class="mr-3"
           color="red"
@@ -83,7 +76,6 @@
         >
         <v-btn
           v-if="activeChecklist"
-          tile
           outlined
           color="black"
           class="mr-1"
@@ -103,7 +95,7 @@
             color="disabled"
             indeterminate
           />
-          <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
+          <v-icon v-if="!showLoadingIcon" start>mdi-check</v-icon>
           {{ $t('save') }}
         </v-btn>
       </v-toolbar>
@@ -123,31 +115,35 @@
       >
         <v-btn
           v-if="mobile && activeChecklist"
-          tile
           outlined
           small
           color="primary"
           class="save-button-mobile-wide mt-n2 mb-3"
           @click="initNewChecklist"
         >
-          <v-icon left>mdi-plus</v-icon>
+          <v-icon start>mdi-plus</v-icon>
           {{ $t('new_checklist') }}
         </v-btn>
         <v-btn
           v-if="mobile && activeChecklist"
-          tile
           outlined
           small
           color="primary"
           class="save-button-mobile-wide mb-5"
           @click="createChecklist(true)"
         >
-          <v-icon left>mdi-content-copy</v-icon>
+          <v-icon start>mdi-content-copy</v-icon>
           {{ $t('duplicate') }}
         </v-btn>
         <v-row>
           <v-col v-if="errorMessage" cols="12">
-            <v-alert type="error" text prominent dense color="red">
+            <v-alert
+              type="error "
+              variant="text"
+              prominent
+              density="compact"
+              color="red"
+            >
               {{ errorMessage }}
             </v-alert>
           </v-col>

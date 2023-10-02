@@ -73,7 +73,7 @@
       <div class="loading">
         <v-progress-circular size="50" color="primary" indeterminate />
         <span
-          class="ma-3 font-weight-bold accent--text"
+          class="ma-3 font-weight-bold text-accent"
           v-text="$t('Uploading_images_be_patient')"
         ></span>
       </div>

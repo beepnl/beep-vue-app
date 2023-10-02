@@ -5,7 +5,7 @@
       light
       background-color="#000"
       color="primary"
-      dense
+      density="compact"
       class="zindex4 no-print"
     >
       <slot name="icon">

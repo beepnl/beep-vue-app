@@ -23,7 +23,7 @@
       <v-toolbar
         v-if="activeApiary && activeApiary.owner"
         class="save-bar"
-        dense
+        density="compact"
         light
       >
         <v-spacer></v-spacer>
@@ -36,7 +36,6 @@
           >mdi-delete</v-icon
         >
         <v-btn
-          tile
           outlined
           color="black"
           class="mr-1"
@@ -51,7 +50,7 @@
             color="disabled"
             indeterminate
           />
-          <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
+          <v-icon v-if="!showLoadingIcon" start>mdi-check</v-icon>
           {{ $t('save') }}
         </v-btn>
       </v-toolbar>
@@ -59,7 +58,7 @@
       <v-container class="apiary-edit content-container">
         <v-row>
           <v-col cols="12">
-            <div class="overline mb-3">{{
+            <div class="text-overline mb-3">{{
               $tc('Location', 1) + ' ' + $t('settings')
             }}</div>
             <div class="rounded-border">
@@ -99,7 +98,7 @@
                   <v-overlay v-model="overlay">
                     <v-toolbar
                       class="hive-color-picker-toolbar"
-                      dense
+                      density="compact"
                       light
                       flat
                     >
@@ -128,7 +127,7 @@
 
                     <v-toolbar
                       class="hive-color-picker-footer"
-                      dense
+                      density="compact"
                       light
                       flat
                     >
@@ -156,7 +155,7 @@
 
         <v-row>
           <v-col cols="12">
-            <div class="overline mb-3">
+            <div class="text-overline mb-3">
               {{
                 $t('Place') + ' ' + $t('details') + ' (' + $t('optional') + ')'
               }}</div
@@ -253,7 +252,7 @@
                     v-model="activeApiary.city"
                     :label="`${$t('City')}`"
                     outlined
-                    dense
+                    density="compact"
                     @change="setApiaryEdited(true)"
                   >
                   </v-text-field>
@@ -264,7 +263,7 @@
                     v-model="activeApiary.postal_code"
                     :label="`${$t('Postal_code')}`"
                     outlined
-                    dense
+                    density="compact"
                     @change="setApiaryEdited(true)"
                   >
                   </v-text-field>
@@ -275,7 +274,7 @@
                     v-model="activeApiary.street"
                     :label="`${$t('Street')}`"
                     outlined
-                    dense
+                    density="compact"
                     @change="setApiaryEdited(true)"
                   >
                   </v-text-field>
@@ -286,7 +285,7 @@
                     v-model="activeApiary.street_no"
                     :label="`${$t('Number')}`"
                     outlined
-                    dense
+                    density="compact"
                     @change="setApiaryEdited(true)"
                   >
                   </v-text-field>
@@ -300,7 +299,7 @@
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
-      <v-btn color="accent" text @click="snackbar.show = false">
+      <v-btn color="accent " variant="text" @click="snackbar.show = false">
         {{ $t('Close') }}
       </v-btn>
     </v-snackbar>

@@ -18,7 +18,7 @@
             <v-btn
               :class="
                 `grey--text ${
-                  period.interval === interval ? 'accent--text' : ''
+                  period.interval === interval ? 'text-accent' : ''
                 }`
               "
               text
@@ -32,7 +32,7 @@
             :label="`${$t('Relative_startpoint')}`"
             class="pt-0 mt-0"
             :disabled="interval === 'selection'"
-            dense
+            density="compact"
             hide-details
             @change="loadData(false, false)"
           ></v-switch>
@@ -43,7 +43,7 @@
               <v-btn
                 :class="
                   `grey--text ${
-                    period.interval === interval ? 'accent--text' : ''
+                    period.interval === interval ? 'text-accent' : ''
                   }`
                 "
                 small
@@ -65,7 +65,7 @@
               <v-btn
                 :class="
                   `grey--text ${
-                    period.interval === interval ? 'accent--text' : ''
+                    period.interval === interval ? 'text-accent' : ''
                   }`
                 "
                 small
@@ -82,7 +82,7 @@
                   :label="`${$t('Relative_startpoint')}`"
                   class="pt-0 mt-0"
                   :disabled="interval === 'selection'"
-                  dense
+                  density="compact"
                   hide-details
                   @change="loadData(false, false)"
                 ></v-switch>
@@ -160,7 +160,6 @@
           />
           <v-spacer></v-spacer>
           <v-btn
-            tile
             outlined
             :small="mobile && devices.length > 0"
             :to="{ name: 'devices' }"
@@ -281,7 +280,7 @@
             <v-col v-if="weatherSensorsPresent" cols="12" :md="chartCols">
               <div
                 v-if="selectedDevice"
-                class="overline mt-0 mt-sm-3 mb-3 text-center"
+                class="text-overline mt-0 mt-sm-3 mb-3 text-center"
                 v-text="
                   !mobile
                     ? $t('weather') +
@@ -320,7 +319,7 @@
               >
                 <div
                   v-if="index === 0"
-                  class="overline mt-0 mt-sm-3 mb-3 text-center"
+                  class="text-overline mt-0 mt-sm-3 mb-3 text-center"
                   v-text="
                     measurementData.resolution
                       ? $tc('measurement', 2) +
@@ -363,7 +362,7 @@
               :md="chartCols"
             >
               <div
-                class="overline mt-0 mt-sm-3 mb-3 text-center"
+                class="text-overline mt-0 mt-sm-3 mb-3 text-center"
                 v-text="$t('Sound_measurements')"
               ></div>
               <div>
@@ -395,7 +394,7 @@
               >
                 <div
                   v-if="index === 0"
-                  class="overline mt-n4 mt-sm-3 mb-3 text-center"
+                  class="text-overline mt-n4 mt-sm-3 mb-3 text-center"
                   v-text="
                     $tc('device', 1) + ' ' + $t('info').toLocaleLowerCase()
                   "

@@ -5,12 +5,12 @@
       type="error"
       text
       prominent
-      dense
+      density="compact"
       color="red"
     >
       {{ $t('input_not_possible_for_bulkinspection') }}
     </v-alert>
-    <v-card outlined class="pa-3">
+    <v-card class="pa-3">
       <!-- <div class="rounded-border"> -->
       <div class="border-bottom">
         <h4>Liebefeld method explanation (EN)</h4>
@@ -189,7 +189,7 @@
 
             <!-- div below is same as checklist-fieldset component but needed to keep the nested checklist-input within this template to catch the @calculate-liebefeld-colony-size emit event -->
             <div v-if="superAndFrameFilter(item)" class="checklist-fieldset">
-              <div class="overline mb-2"
+              <div class="text-overline mb-2"
                 >{{ item.trans[locale] || item.name }}
                 <a
                   v-if="item.description !== null || item.source !== null"

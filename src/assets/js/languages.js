@@ -21,7 +21,7 @@ const languages = {
     // { lang: 'en-US', title: 'English US' },
   ],
   checkBrowserLanguage() {
-    var matched = null
+    let matched = null
     const languagePartials = navigator.language.split('-')[0]
     this.languageArray.map((language) => {
       if (language.lang === navigator.language) {

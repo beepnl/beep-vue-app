@@ -1,9 +1,8 @@
 <template>
   <Layout :title="$tc('alertrule_default', 2)">
-    <v-toolbar class="save-bar save-bar--back" dense light>
+    <v-toolbar class="save-bar save-bar--back" density="compact" light>
       <v-spacer></v-spacer>
       <v-btn
-        tile
         outlined
         color="black"
         class="save-button-mobile-wide mr-1"
@@ -18,7 +17,7 @@
           color="disabled"
           indeterminate
         />
-        <v-icon v-if="!showLoadingIcon" left>mdi-content-copy</v-icon>
+        <v-icon v-if="!showLoadingIcon" start>mdi-content-copy</v-icon>
         {{
           $t('copy') +
             ' ' +
@@ -36,14 +35,14 @@
     </v-container>
 
     <v-container v-if="ready" class="back-content">
-      <v-row v-if="alertRulesDefault.length > 0" dense>
+      <v-row v-if="alertRulesDefault.length > 0" density="compact">
         <v-scale-transition group style="width:100%;">
           <v-col
             v-for="(alertRule, j) in alertRulesDefault"
             :key="j"
             cols="12"
             class="alerts-item"
-            dense
+            density="compact"
           >
             <v-card outlined>
               <v-row class="ma-2 d-flex align-center">

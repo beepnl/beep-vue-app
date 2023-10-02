@@ -26,7 +26,7 @@
         <v-img
           v-if="object[item.id] !== null"
           :src="imageLink"
-          class="grey lighten-2 image-thumb"
+          class="bg-grey-lighten-2 image-thumb"
           aspect-ratio="1"
           @click="activeImage = thumbUrl"
         >

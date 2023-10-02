@@ -54,14 +54,14 @@
       <img
         v-if="pageImageFile !== null"
         :src="pageImage"
-        class="grey lighten-2 page-blob-preview"
+        class="bg-grey-lighten-2 page-blob-preview"
         aspect-ratio="1"
       />
 
       <Confirm ref="confirm"></Confirm>
     </div>
 
-    <span v-if="errorMessage" class="hcs-label red--text mt-1">
+    <span v-if="errorMessage" class="hcs-label text-red mt-1">
       {{ errorMessage }}
     </span>
 
@@ -70,9 +70,9 @@
       type="error"
       text
       prominent
-      dense
+      density="compact"
       color="red"
-      dismissible
+      closable
     >
       {{ errorMessage }}
     </v-alert> -->

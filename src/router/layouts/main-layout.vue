@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/attribute-hyphenation -->
 <template>
   <div>
-    <v-app-bar bg-color="#000" color="primary" dense>
+    <v-app-bar bg-color="#000" color="primary" density="compact">
       <div
         class="d-flex flex-row justify-space-between align-center"
         style="width:100%;"
@@ -34,7 +34,14 @@
       </div>
 
       <template v-slot:extension>
-        <v-tabs stacked dense grow bg-olor="#F8B133" color="#000" height="48px">
+        <v-tabs
+          stacked
+          density="compact"
+          grow
+          bg-olor="#F8B133"
+          color="#000"
+          height="48px"
+        >
           <v-tab
             v-for="(tab, i) in tabs"
             :key="i"

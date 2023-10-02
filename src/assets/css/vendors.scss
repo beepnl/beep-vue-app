@@ -31,7 +31,7 @@
 }
 
 /* Vuetify */
-.v-application .red--text {
+.v-application .text-red {
   color: $color-red !important;
   caret-color: $color-red !important;
 }
@@ -123,7 +123,7 @@
 }
 
 .v-text-field {
-  &.error--text .v-label {
+  &.text-error .v-label {
     color: #ff5252 !important;
     caret-color: #ff5252 !important;
   }
@@ -506,7 +506,7 @@
   width: 350px;
 }
 
-.vdatetime.green--text {
+.vdatetime.text-green {
   .vdatetime-input {
     color: $color-green;
   }

@@ -10,21 +10,19 @@
         : $t('new_or_edited_but_not_saved_sensor_defs_warning')
     "
   >
-    <v-toolbar class="save-bar mt-0" dense light>
+    <v-toolbar class="save-bar mt-0" density="compact" light>
       <v-spacer></v-spacer>
       <v-btn
         v-if="!mobile || ownedDevices.length === 0"
-        tile
         outlined
         :class="mobile ? 'save-button-mobile-wide' : 'mr-3'"
         color="accent"
         @click="addDevice"
       >
-        <v-icon left>mdi-plus</v-icon>{{ $t('add_own_device') }}
+        <v-icon start>mdi-plus</v-icon>{{ $t('add_own_device') }}
       </v-btn>
       <v-btn
         v-if="ownedDevices.length > 0"
-        tile
         outlined
         class="save-button-mobile-wide mr-1"
         :color="deletedButNotSavedDevices ? 'red' : 'black'"
@@ -39,7 +37,7 @@
           color="disabled"
           indeterminate
         />
-        <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
+        <v-icon v-if="!showLoadingIcon" start>mdi-check</v-icon>
         {{
           deletedButNotSavedDevices ? $t('save_and_delete') : $t('save')
         }}</v-btn
@@ -49,7 +47,7 @@
     <v-container class="content-container">
       <v-row v-if="errorMessage">
         <v-col cols="12">
-          <v-alert text prominent dense type="error" color="red">
+          <v-alert text prominent density="compact" type="error" color="red">
             {{ errorMessage }}
           </v-alert>
         </v-col>
@@ -57,18 +55,17 @@
       <v-row v-if="mobile && ownedDevices.length > 0">
         <v-col cols="12">
           <v-btn
-            tile
             outlined
             color="accent"
             class="save-button-mobile-wide mt-n4"
             @click="addDevice"
           >
-            <v-icon left>mdi-plus</v-icon>{{ $t('add_own_device') }}
+            <v-icon start>mdi-plus</v-icon>{{ $t('add_own_device') }}
           </v-btn>
         </v-col>
       </v-row>
       <div class="mb-2">
-        <div v-if="ownedDevices.length > 0" class="overline">
+        <div v-if="ownedDevices.length > 0" class="text-overline">
           {{ $tc('device', ownedDevices.length) }}
           <v-icon
             class="mdi mdi-information ml-1 icon-info cursor-pointer"
@@ -89,7 +86,7 @@
         </p>
       </div>
 
-      <v-row dense>
+      <v-row density="compact">
         <v-col v-if="ready && ownedDevices.length === 0" cols="12">
           <p v-text="$t('sensors') + ' ' + $t('not_available_yet')"></p>
           <div class="text-center">
@@ -105,7 +102,7 @@
           :key="ownedDevice.key"
           sm="auto"
           class="device-item"
-          dense
+          density="compact"
         >
           <v-card
             outlined
@@ -139,13 +136,7 @@
                     >
                       mdi-devices
                     </v-icon>
-                    <v-avatar
-                      v-else
-                      height="auto"
-                      tile
-                      color="accent"
-                      class="mt-n1"
-                    >
+                    <v-avatar v-else height="auto" color="accent" class="mt-n1">
                       <img
                         :src="assetsUrl + '/img/beep-base-small.jpg'"
                         alt="BEEP Base"
@@ -173,13 +164,13 @@
                         params: { id: ownedDevice.id },
                       }"
                     >
-                      <v-icon small color="accent">
+                      <v-icon size="small" color="accent">
                         mdi-chart-line
                       </v-icon>
                     </router-link>
                   </div>
 
-                  <v-tooltip bottom max-width="60%">
+                  <v-tooltip location="bottom" max-width="60%">
                     <template v-slot:activator="{ props }">
                       <span v-bind="props">
                         <div
@@ -200,7 +191,7 @@
                     <span v-text="$t('bat_volt')"> </span>
                   </v-tooltip>
 
-                  <v-tooltip bottom max-width="60%">
+                  <v-tooltip location="bottom" max-width="60%">
                     <template v-slot:activator="{ props }">
                       <span v-bind="props">
                         <div
@@ -225,7 +216,7 @@
                     <span v-text="$t('last_message_received')"> </span>
                   </v-tooltip>
 
-                  <v-tooltip bottom max-width="60%">
+                  <v-tooltip location="bottom" max-width="60%">
                     <template v-slot:activator="{ props }">
                       <span v-bind="props">
                         <div
@@ -356,7 +347,7 @@
                             class="d-flex flex-row align-center mb-3 mr-3"
                           >
                             <div
-                              class="overline"
+                              class="text-overline"
                               v-text="
                                 `${$tc(
                                   'sensor_definition',
@@ -378,22 +369,20 @@
                         <v-spacer></v-spacer>
                         <v-btn
                           v-if="!mobile && ownedDevice.id"
-                          tile
                           outlined
                           color="accent"
                           @click="addSensorDef(ownedDevice)"
                         >
-                          <v-icon left>mdi-plus</v-icon>
+                          <v-icon start>mdi-plus</v-icon>
                           {{ $t('Add_sensor_definition') }}
                         </v-btn>
                         <v-btn
                           v-if="mobile && ownedDevice.id"
-                          tile
                           outlined
                           color="accent"
                           @click="addSensorDef(ownedDevice)"
                         >
-                          <v-icon left>mdi-plus</v-icon>
+                          <v-icon start>mdi-plus</v-icon>
                           {{
                             ownedDevice.sensor_definitions.length === 0
                               ? $t('Add_sensor_definition')
@@ -409,7 +398,10 @@
                       v-if="ownedDevice.sensor_definitions.length > 0"
                       class="rounded-border"
                     >
-                      <v-table class="v-data-table--smallfont" dense>
+                      <v-table
+                        class="v-data-table--smallfont"
+                        density="compact"
+                      >
                         <template v-slot>
                           <thead>
                             <tr>
@@ -458,7 +450,7 @@
                                   :disabled="sensorDef.delete"
                                   :placeholder="`${$t('Name')}`"
                                   class="mt-2"
-                                  dense
+                                  density="compact"
                                   @input="sensorDefEdited = true"
                                 ></v-text-field>
                               </td>
@@ -619,13 +611,12 @@
                   <v-col cols="12" md="6" class="d-flex">
                     <v-spacer></v-spacer>
                     <v-btn
-                      tile
                       outlined
                       color="red"
                       class="save-button-mobile-wide"
                       @click="deleteDevice(ownedDevice, index)"
                     >
-                      <v-icon left>{{
+                      <v-icon start>{{
                         ownedDevice.delete ? 'mdi-refresh' : 'mdi-delete'
                       }}</v-icon
                       >{{

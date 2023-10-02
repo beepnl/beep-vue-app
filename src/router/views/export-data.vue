@@ -1,7 +1,7 @@
 <template>
   <Layout :title="`${$t('Data_export')}`">
     <v-container v-if="ready">
-      <div class="overline mt-3 mb-2" v-text="$t('Data_export')"></div>
+      <div class="text-overline mt-3 mb-2" v-text="$t('Data_export')"></div>
       <div class="rounded-border mb-6">
         <v-row>
           <v-col cols="12">
@@ -27,7 +27,6 @@
             <v-spacer></v-spacer>
             <div>
               <v-btn
-                tile
                 outlined
                 color="accent"
                 class="save-button-mobile-wide"
@@ -48,7 +47,6 @@
               >
               <v-btn
                 v-if="!(csvLink && browserDoesNotSupportDownloadTrick)"
-                tile
                 outlined
                 color="accent"
                 :disabled="showDownloadLoadingIcon"
@@ -69,14 +67,13 @@
               >
               <v-btn
                 v-if="csvLink && browserDoesNotSupportDownloadTrick"
-                tile
                 outlined
                 color="accent"
                 class="mt-3 mt-sm-0 ml-sm-3 save-button-mobile-wide"
                 :href="csvLink"
                 target="_blank"
               >
-                <v-icon left>mdi-export</v-icon>{{ $t('Open_csv') }}</v-btn
+                <v-icon start>mdi-export</v-icon>{{ $t('Open_csv') }}</v-btn
               >
             </div>
           </v-col>
@@ -89,8 +86,8 @@
             v-model="showSuccessMessage"
             text
             prominent
-            dense
-            dismissible
+            density="compact"
+            closable
             type="success"
             color="green"
           >
@@ -102,14 +99,21 @@
       <div v-if="devices.length > 0">
         <v-row v-if="errorMessage">
           <v-col cols="12">
-            <v-alert text prominent dense type="error" color="red" class="mb-3">
+            <v-alert
+              text
+              prominent
+              density="compact"
+              type="error"
+              color="red"
+              class="mb-3"
+            >
               {{ errorMessage }}
             </v-alert>
           </v-col>
         </v-row>
 
         <div
-          class="overline mb-2"
+          class="text-overline mb-2"
           v-text="$tc('device', 1) + ' ' + $t('Data_export')"
         ></div>
         <div class="rounded-border">
@@ -141,7 +145,6 @@
                 :close-on-content-click="false"
                 :return-value="dates"
                 transition="scale-transition"
-                offset-y
                 min-width="290px"
               >
                 <template v-slot:activator="{ props }">
@@ -163,7 +166,7 @@
                   scrollable
                 >
                   <v-spacer></v-spacer>
-                  <v-btn text color="accent" @click="menu = false">
+                  <v-btn variant="text" color="accent" @click="menu = false">
                     {{ $t('Cancel') }}
                   </v-btn>
                   <v-btn
@@ -227,7 +230,6 @@
                     dates.length < 2 ||
                     showDeviceDataLoadingIcon
                 "
-                tile
                 outlined
                 color="accent"
                 class="save-button-mobile-wide"
@@ -247,14 +249,13 @@
               >
               <v-btn
                 v-if="csvDeviceDataLink && browserDoesNotSupportDownloadTrick"
-                tile
                 outlined
                 color="accent"
                 class="mt-3 mt-sm-0 ml-sm-3 save-button-mobile-wide"
                 :href="csvDeviceDataLink"
                 target="_blank"
               >
-                <v-icon left>mdi-export</v-icon>{{ $t('Open_csv') }}</v-btn
+                <v-icon start>mdi-export</v-icon>{{ $t('Open_csv') }}</v-btn
               >
             </v-col>
           </v-row>

@@ -50,6 +50,7 @@ export default {
       default: false,
     },
   },
+  emits: ['show-hive-menu'],
   computed: {
     ...mapGetters('locations', ['hiveView']),
     xsView() {

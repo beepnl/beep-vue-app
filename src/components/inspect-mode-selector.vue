@@ -49,7 +49,7 @@
           class="font-xsmall text-center mt-1"
           v-text="btn.tooltip"
         ></span>
-        <v-tooltip v-if="!mobile" bottom max-width="300px">
+        <v-tooltip v-if="!mobile" location="bottom" max-width="300px">
           <template v-slot:activator="{ props }">
             <v-icon
               large

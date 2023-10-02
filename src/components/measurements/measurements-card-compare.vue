@@ -36,7 +36,6 @@
             </div>
 
             <v-btn
-              tile
               outlined
               color="black"
               class="save-button-mobile-wide"
@@ -88,7 +87,7 @@
           v-text="initSelectedHives.join(', ')"
         ></span>
         <!-- <v-btn
-          tile
+
           outlined
           color="black"
           class="save-button-mobile-wide"
@@ -103,7 +102,7 @@
             color="disabled"
             indeterminate
           />
-          <v-icon v-if="!loadingCompareData" left>mdi-check</v-icon>
+          <v-icon v-if="!loadingCompareData" start>mdi-check</v-icon>
           {{ $t('Load') }}
         </v-btn> -->
       </v-col>
@@ -166,7 +165,7 @@
         class="expandable-section-bar d-flex align-center"
       >
         <v-spacer />
-        <div class="overline ml-7" v-text="$t('Compare_with_mean')"></div>
+        <div class="text-overline ml-7" v-text="$t('Compare_with_mean')"></div>
         <v-spacer />
         <v-icon
           class="mb-1 mr-1"
@@ -185,12 +184,12 @@
         >
           <div
             v-if="!multipleSections && index === 0"
-            class="overline mt-0 mt-sm-3 mb-3 text-center"
+            class="text-overline mt-0 mt-sm-3 mb-3 text-center"
             v-text="$t('Compare_with_mean')"
           ></div>
           <div
             v-if="index === 0"
-            class="overline mb-3 text-center"
+            class="text-overline mb-3 text-center"
             v-text="
               compareMeasurementData.resolution
                 ? $tc('measurement', 2) +
@@ -205,7 +204,7 @@
           <div v-else-if="chartCols !== 12" class="header-filler my-3"></div>
           <div class="d-flex justify-center align-center">
             <div
-              class="overline mt-0 mt-sm-3 mb-3 text-center"
+              class="text-overline mt-0 mt-sm-3 mb-3 text-center"
               v-text="$t(COMPARE_SENSOR[sensor])"
             ></div>
             <v-icon
@@ -257,13 +256,13 @@
         >
           <div
             v-if="j === 0"
-            class="overline mt-0 mt-sm-3 mb-3 text-center"
+            class="text-overline mt-0 mt-sm-3 mb-3 text-center"
             v-text="$tc('overall_intake_loss')"
           ></div>
           <div v-else-if="chartCols !== 12" class="header-filler my-3"></div>
           <div class="d-flex justify-center align-center">
             <div
-              class="overline mt-0 mt-sm-3 mb-3 text-center"
+              class="text-overline mt-0 mt-sm-3 mb-3 text-center"
               v-text="$t(COMPARE_SENSOR[sensor])"
             ></div>
             <v-icon
@@ -341,7 +340,10 @@
         class="expandable-section-bar d-flex align-center"
       >
         <v-spacer />
-        <div class="overline ml-7" v-text="$t('Multiple_hives_charts')"></div>
+        <div
+          class="text-overline ml-7"
+          v-text="$t('Multiple_hives_charts')"
+        ></div>
         <v-spacer />
         <v-icon
           class="mb-1 mr-1"
@@ -360,12 +362,12 @@
         >
           <div
             v-if="!multipleSections && index === 0"
-            class="overline mt-0 mt-sm-3 mb-3 text-center"
+            class="text-overline mt-0 mt-sm-3 mb-3 text-center"
             v-text="$t('Multiple_hives_charts')"
           ></div>
           <div v-else-if="chartCols !== 12" class="header-filler my-3"></div>
           <div
-            class="overline mt-0 mt-sm-3 mb-3 text-center"
+            class="text-overline mt-0 mt-sm-3 mb-3 text-center"
             v-text="$t(SENSOR_NAMES[sensor])"
           ></div>
           <div>
@@ -396,12 +398,12 @@
         >
           <div
             v-if="index === 0"
-            class="overline mt-0 mt-sm-3 mb-3 text-center"
+            class="text-overline mt-0 mt-sm-3 mb-3 text-center"
             v-text="$tc('device', 1) + ' ' + $t('info').toLocaleLowerCase()"
           ></div>
           <div v-else-if="chartCols !== 12" class="header-filler my-3"></div>
           <div
-            class="overline mt-0 mt-sm-3 mb-3 text-center"
+            class="text-overline mt-0 mt-sm-3 mb-3 text-center"
             v-text="$t(SENSOR_NAMES[sensor])"
           ></div>
           <div>

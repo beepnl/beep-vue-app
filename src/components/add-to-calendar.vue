@@ -1,5 +1,5 @@
 <template>
-  <v-list-item link dense @click="goTo(calendarUrl(calendar))">
+  <v-list-item link density="compact" @click="goTo(calendarUrl(calendar))">
     <a :href="calendarUrl(calendar)" target="_blank">
       {{ calendar }}
     </a>

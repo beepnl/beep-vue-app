@@ -25,7 +25,7 @@
         >
         </v-sheet>
       </div>
-      <span class="hive-caption caption">
+      <span class="hive-caption text-caption">
         {{ hive.prefix }} {{ j + hive.offset }}
       </span>
     </v-sheet>
@@ -57,7 +57,7 @@ export default {
     },
     hives() {
       const array = []
-      for (var n = 0; n < this.numberOfHives; n++) {
+      for (let n = 0; n < this.numberOfHives; n++) {
         array.push(this.newHive)
       }
       return array

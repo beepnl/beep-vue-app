@@ -9,7 +9,7 @@
               category.input !== 'options'))
       "
     >
-      <div class="overline mb-2"
+      <div class="text-overline mb-2"
         >{{ category.trans[locale] || category.name }}
         <a
           v-if="category.description !== null || category.source !== null"

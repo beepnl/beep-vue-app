@@ -5,7 +5,7 @@
       type="error"
       text
       prominent
-      dense
+      density="compact"
       color="red"
     >
       {{ $t('input_not_possible_for_bulkinspection') }}
@@ -13,7 +13,6 @@
     <v-btn
       v-if="object[item.id] === null || object[item.id] === undefined"
       class="mt-1"
-      tile
       outlined
       color="accent"
       :disabled="showLoadingIcon || bulkInspection"
@@ -27,7 +26,7 @@
         color="disabled"
         indeterminate
       />
-      <v-icon v-if="!showLoadingIcon" left>mdi-qrcode</v-icon>
+      <v-icon v-if="!showLoadingIcon" start>mdi-qrcode</v-icon>
       {{ $t('sample_code_generate') }}
     </v-btn>
 

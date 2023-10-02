@@ -15,7 +15,7 @@
           left
           :class="
             object[property] === 1 || object[property] === true
-              ? 'green--text'
+              ? 'text-green'
               : 'color-grey'
           "
           >mdi-check-circle</v-icon
@@ -36,7 +36,7 @@
           left
           :class="
             object[property] === 0 || object[property] === false
-              ? 'red--text'
+              ? 'text-red'
               : 'color-grey'
           "
           >mdi-close-circle</v-icon
@@ -95,10 +95,10 @@ export default {
   height: 30px !important;
 
   &.yes-red {
-    .green--text {
+    .text-green {
       color: $color-red !important;
     }
-    .red--text {
+    .text-red {
       color: $color-green !important;
     }
   }

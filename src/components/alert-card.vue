@@ -1,11 +1,11 @@
 <template>
-  <v-menu bottom left absolute offset-y>
+  <v-menu location="bottom" absolute>
     <template v-slot:activator="{ on: menu }">
       <v-alert
         type="error"
         text
         prominent
-        dense
+        density="compact"
         :color="
           alert.alert_function.indexOf('alert_rule') > -1
             ? 'primary'
@@ -23,7 +23,7 @@
               v-if="mobile"
               :input-value="isSelected"
               class="ma-0 pt-0"
-              dense
+              density="compact"
               :ripple="false"
               hide-details
               @change="toggleCheckbox(alert.id)"
@@ -329,7 +329,7 @@
       </v-alert>
     </template>
 
-    <v-list dense>
+    <v-list density="compact">
       <v-list-group>
         <v-list-item
           v-if="alert.alert_rule_name !== null"
@@ -390,16 +390,16 @@
           "
           @click="disableAlertForHive"
         >
-          <v-icon class="mr-3 red--text">mdi-close</v-icon>
+          <v-icon class="mr-3 text-red">mdi-close</v-icon>
 
-          <v-list-item-title class="red--text">{{
+          <v-list-item-title class="text-red">{{
             $t('Disable_alert_for_this_hive')
           }}</v-list-item-title>
         </v-list-item>
         <v-list-item @click="deleteAlert(alert.id)">
-          <v-icon class="mr-3 red--text">mdi-delete</v-icon>
+          <v-icon class="mr-3 text-red">mdi-delete</v-icon>
 
-          <v-list-item-title class="red--text">{{
+          <v-list-item-title class="text-red">{{
             $t('remove_alert')
           }}</v-list-item-title>
         </v-list-item>

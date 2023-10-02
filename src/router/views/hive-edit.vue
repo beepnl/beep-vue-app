@@ -22,7 +22,7 @@
               hiveCreateMode)
         "
         class="save-bar"
-        dense
+        density="compact"
         light
       >
         <v-spacer></v-spacer>
@@ -35,8 +35,6 @@
           >mdi-delete</v-icon
         >
         <v-btn
-          tile
-          outlined
           color="black"
           :class="
             `${
@@ -58,7 +56,7 @@
             color="disabled"
             indeterminate
           />
-          <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
+          <v-icon v-if="!showLoadingIcon" start>mdi-check</v-icon>
           {{ $t('save') }}
         </v-btn>
       </v-toolbar>
@@ -80,7 +78,7 @@
             "
             cols="12"
           >
-            <p class="red--text mt-3"
+            <p class="text-red mt-3"
               >{{ $t('no_apiaries_yet') }}
               <router-link
                 :to="{
@@ -88,7 +86,7 @@
                 }"
               >
                 <div class="color-accent"
-                  ><v-icon color="accent" left>mdi-plus-circle</v-icon
+                  ><v-icon color="accent" start>mdi-plus-circle</v-icon
                   >{{ $t('first_create_apiary') }}</div
                 >
               </router-link>
@@ -113,7 +111,7 @@
               <div
                 :class="
                   `beep-label ${
-                    isNaN(activeHive.location_id) ? 'red--text' : ''
+                    isNaN(activeHive.location_id) ? 'text-red' : ''
                   }`
                 "
                 v-text="$tc('Location', 1) + '*'"
@@ -143,12 +141,10 @@
               <div
                 v-if="isNaN(activeHive.location_id)"
                 class="v-text-field__details mt-1"
-                ><div class="v-messages theme--light error--text" role="alert"
+                ><div class="v-messages theme--light text-error" role="alert"
                   ><div class="v-messages__wrapper"
                     ><div class="v-messages__message">{{
-                      this.$i18n.t('this_field') +
-                        ' ' +
-                        this.$i18n.t('is_required')
+                      $t('this_field') + ' ' + $t('is_required')
                     }}</div></div
                   ></div
                 ></div
@@ -187,7 +183,7 @@
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
-      <v-btn color="accent" text @click="snackbar.show = false">
+      <v-btn color="accent" variant="text" @click="snackbar.show = false">
         {{ $t('Close') }}
       </v-btn>
     </v-snackbar>

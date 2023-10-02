@@ -10,19 +10,19 @@
         @click="selectHive(hive.id)"
       >
         <div v-if="groupMode" class="hive-in-group">
-          <v-icon v-if="hivesEditable.includes(hive.id)" class="green--text">
+          <v-icon v-if="hivesEditable.includes(hive.id)" class="text-green">
             mdi-pencil-circle
           </v-icon>
           <v-icon
             v-else-if="hivesSelected.includes(hive.id)"
-            class="green--text"
+            class="text-green"
           >
             mdi-eye-circle
           </v-icon>
         </div>
 
         <div v-if="inspectionMode" class="hive-in-inspection">
-          <v-icon v-if="hivesSelected.includes(hive.id)" class="green--text">
+          <v-icon v-if="hivesSelected.includes(hive.id)" class="text-green">
             mdi-check-circle
           </v-icon>
         </div>
@@ -171,6 +171,7 @@ export default {
       required: false,
     },
   },
+  emits: ['select-hive'],
   computed: {
     sortedHives() {
       if (!this.disableSortHives) {

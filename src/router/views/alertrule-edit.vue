@@ -1,7 +1,7 @@
 <template>
   <Layout :title="getTitle()">
     <v-form ref="form" v-model="valid">
-      <v-toolbar class="save-bar" dense light>
+      <v-toolbar class="save-bar" density="compact" light>
         <v-spacer></v-spacer>
         <v-icon
           v-if="!alertruleCreateMode"
@@ -12,7 +12,6 @@
           >mdi-delete</v-icon
         >
         <v-btn
-          tile
           outlined
           color="black"
           :class="
@@ -29,16 +28,19 @@
             color="disabled"
             indeterminate
           />
-          <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
+          <v-icon v-if="!showLoadingIcon" start>mdi-check</v-icon>
           {{ $t('save') }}
         </v-btn>
       </v-toolbar>
 
       <v-container class="content-container">
-        <div class="overline mb-2" v-text="$t('Alertrule_summary_title')"></div>
+        <div
+          class="text-overline mb-2"
+          v-text="$t('Alertrule_summary_title')"
+        ></div>
         <em
           v-if="activeAlertRule && !activeAlertRule.active"
-          class="red--text"
+          class="text-red"
           >{{ $t('alertrule_not_active') }}</em
         >
         <v-alert
@@ -52,7 +54,7 @@
         </v-alert>
 
         <div
-          class="overline mb-2"
+          class="text-overline mb-2"
           v-text="$t('Alertrule_settings_title')"
         ></div>
         <div v-if="activeAlertRule" class="alertrule-card rounded-border mb-8">
@@ -242,9 +244,7 @@
             <v-col cols="6" sm="3" md="2" class="d-flex justify-start">
               <div>
                 <div
-                  :class="
-                    `beep-label ${thresholdValueIsNaN ? 'red--text' : ''}`
-                  "
+                  :class="`beep-label ${thresholdValueIsNaN ? 'text-red' : ''}`"
                   v-text="$t('Threshold_value') + ' (' + measurementUnit + ')'"
                 ></div>
                 <!-- <el-input-number
@@ -262,12 +262,10 @@
                 <div
                   v-if="thresholdValueIsNaN"
                   class="v-text-field__details mt-1"
-                  ><div class="v-messages theme--light error--text" role="alert"
+                  ><div class="v-messages theme--light text-error" role="alert"
                     ><div class="v-messages__wrapper"
                       ><div class="v-messages__message">{{
-                        this.$i18n.t('this_field') +
-                          ' ' +
-                          this.$i18n.t('is_required')
+                        $t('this_field') + ' ' + $t('is_required')
                       }}</div></div
                     ></div
                   ></div
@@ -278,7 +276,10 @@
           </v-row>
         </div>
 
-        <div class="overline mb-2" v-text="$t('Alertrule_exclude_title')"></div>
+        <div
+          class="text-overline mb-2"
+          v-text="$t('Alertrule_exclude_title')"
+        ></div>
         <div v-if="activeAlertRule" class="alertrule-card rounded-border">
           <v-row>
             <v-col cols="12" sm="9" md="6" class="mt-2 mb-3">
@@ -368,7 +369,7 @@
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
-      <v-btn color="accent" text @click="snackbar.show = false">
+      <v-btn color="accent " variant="text" @click="snackbar.show = false">
         {{ $t('Close') }}
       </v-btn>
     </v-snackbar>

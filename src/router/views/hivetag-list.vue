@@ -9,25 +9,23 @@
           >
             <v-btn
               v-if="!mobile"
-              tile
               outlined
               color="accent"
               class="mr-3"
               :href="assetsUrl + pdfPath"
               target="_blank"
             >
-              <v-icon left>mdi-download</v-icon>
+              <v-icon start>mdi-download</v-icon>
               {{ $t('Download_hivetags') }}
             </v-btn>
             <v-btn
               :to="{ name: 'hivetag-create' }"
-              tile
               outlined
               color="black"
               :small="mobile"
               class="save-button-mobile-wide"
             >
-              <v-icon left>mdi-plus</v-icon>
+              <v-icon start>mdi-plus</v-icon>
               {{ $t('Add_hivetag') }}
             </v-btn>
           </v-card-actions>
@@ -46,7 +44,6 @@
         <v-col class="pb-2">
           <v-btn
             v-if="mobile"
-            tile
             outlined
             color="accent"
             small
@@ -54,14 +51,14 @@
             :href="assetsUrl + pdfPath"
             target="_blank"
           >
-            <v-icon left>mdi-download</v-icon>
+            <v-icon start>mdi-download</v-icon>
             {{ $t('Download_hivetags') }}
           </v-btn>
           <div
             v-if="!showHiveTagPlaceholder"
             class="d-flex justify-start align-center"
           >
-            <div class="overline ">{{ $tc('Hivetag', 2) }}</div>
+            <div class="text-overline ">{{ $tc('Hivetag', 2) }}</div>
             <v-icon
               class="mdi mdi-information icon-info cursor-pointer  ml-2"
               dark
@@ -79,7 +76,7 @@
                 }}</a
                 >{{ $t('Hivetag_exp_2') }}
                 <!-- <a :href="$t('Hivetag_support_url')" target="_blank"
-                    ><v-icon small color="accent">mdi-arrow-right</v-icon
+                    ><v-icon size="small" color="accent">mdi-arrow-right</v-icon
                     >{{ $t('Hivetags_url_text') }}</a
                   > -->
               </em>

@@ -9,7 +9,7 @@
     >
       <div class="nav-drawer-wrapper d-flex flex-column justify-space-between">
         <div>
-          <v-list flat dense>
+          <v-list flat density="compact">
             <v-list-item>
               <v-icon color="black" @click="showDrawer = false"
                 >mdi-close</v-icon
@@ -49,7 +49,7 @@
                 }}</v-icon>
                 <div v-else>
                   <v-sheet
-                    :class="`beep-icon beep-${item.icon} primary--text`"
+                    :class="`beep-icon beep-${item.icon} text-primary`"
                   ></v-sheet>
                 </div>
 
