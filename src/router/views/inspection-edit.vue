@@ -254,7 +254,7 @@
                   :check-answer="activeInspection.date === null || invalidDate"
                   :parsed-images="parsedImages['date']"
                 ></labelWithDescription>
-                <Datetime
+                <!-- <Datetime
                   v-if="activeInspection"
                   v-model="inspectionDate"
                   type="datetime"
@@ -278,7 +278,7 @@
                   <template v-slot:button-confirm>
                     <v-btn text color="accent">{{ $t('ok') }}</v-btn>
                   </template>
-                </Datetime>
+                </Datetime> -->
               </div>
             </div>
           </v-col>
@@ -673,8 +673,8 @@ import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 import checklistFieldset from '@components/checklist-fieldset.vue'
 import Confirm from '@/src/components/confirm-dialog.vue'
-import { Datetime } from 'vue-datetime'
-import 'vue-datetime/dist/vue-datetime.min.css'
+// import { Datetime } from 'vue-datetime'  // TODO-VUE3 replace by other date picker compatible with Vue 3
+// import 'vue-datetime/dist/vue-datetime.min.css'
 import dummyOutput from '@components/svg/scan_results_aws.json' // list.json' // test_4_dummy.json'
 import InspectModeSelector from '@components/inspect-mode-selector.vue'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
@@ -699,7 +699,7 @@ export default {
     ApiaryPreviewHiveSelector,
     checklistFieldset,
     Confirm,
-    Datetime,
+    // Datetime,
     InspectModeSelector,
     labelWithDescription,
     Layout,

@@ -14,7 +14,7 @@
         :check-answer="checkAnswer"
       ></labelWithDescription>
 
-      <Datetime
+      <!-- <Datetime
         v-if="item.input === 'date'"
         v-model="dateInput"
         :placeholder="`${$t('Select')} ${$t('Date').toLocaleLowerCase()}`"
@@ -32,19 +32,19 @@
         <template v-slot:button-confirm>
           <v-btn text color="accent">{{ $t('ok') }}</v-btn>
         </template>
-      </Datetime>
+      </Datetime> -->
     </div>
   </div>
 </template>
 
 <script>
-import { Datetime } from 'vue-datetime'
+// import { Datetime } from 'vue-datetime'  // TODO-VUE3 replace by other date picker compatible with Vue 3
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import { momentFullDateTime, momentISO8601 } from '@mixins/momentMixin'
 
 export default {
   components: {
-    Datetime,
+    // Datetime,
     labelWithDescription,
   },
   mixins: [momentFullDateTime, momentISO8601],

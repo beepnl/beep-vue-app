@@ -240,7 +240,7 @@
                     :key="chItem.id"
                   >
                     <v-col class="research-item-col" cols="12" md="6" xl="5">
-                      <Datetime
+                      <!-- <Datetime
                         v-model="chItem.updated_at"
                         type="datetime"
                         :class="
@@ -340,7 +340,7 @@
                             >{{ $t('ok') }}</v-btn
                           >
                         </template>
-                      </Datetime>
+                      </Datetime> -->
                     </v-col>
                     <v-col
                       class="research-item-col d-flex align-center"
@@ -407,8 +407,8 @@ import {
   readDevicesIfNotChecked,
 } from '@mixins/methodsMixin'
 import Confirm from '@/src/components/confirm-dialog.vue'
-import { Datetime } from 'vue-datetime'
-import 'vue-datetime/dist/vue-datetime.min.css'
+// import { Datetime } from 'vue-datetime' // TODO-VUE3 replace by other date picker compatible with Vue 3
+// import 'vue-datetime/dist/vue-datetime.min.css'
 import Layout from '@/src/router/layouts/back-layout.vue'
 import SelectHivesOverlay from '@components/select-hives-overlay.vue'
 import { momentify, momentFullDateTime } from '@mixins/momentMixin'
@@ -417,7 +417,7 @@ import { mapGetters } from 'vuex'
 export default {
   components: {
     Confirm,
-    Datetime,
+    // Datetime,
     Layout,
     SelectHivesOverlay,
   },
