@@ -593,44 +593,34 @@
             </span>
           </div>
         </div>
-        <SlideYUpTransition :duration="300">
-          <div
-            v-if="!hideHiveSet(hiveSet)"
-            :key="'HiveSet' + hiveSet.id"
-            style="width: 100%;"
-          >
-            <ScaleTransition
-              :duration="300"
-              group
-              class="hive-item-transition-wrapper"
+        <v-slide-y-transition v-if="!hideHiveSet(hiveSet)" style="width: 100%;">
+          <v-scale-transition group class="hive-item-transition-wrapper">
+            <template
+              v-for="hive in sortedHives(hiveSet.hives)"
+              :key="'Hive ' + hive.id"
             >
-              <template
-                v-for="hive in sortedHives(hiveSet.hives)"
-                :key="'Hive ' + hive.id"
+              <v-col
+                sm="auto"
+                :class="
+                  `hive-item ${xlView ? 'xl-view' : ''} ${
+                    xsView ? 'xs-view' : ''
+                  }`
+                "
               >
-                <v-col
-                  sm="auto"
-                  :class="
-                    `hive-item ${xlView ? 'xl-view' : ''} ${
-                      xsView ? 'xs-view' : ''
-                    }`
-                  "
-                >
-                  <HiveCard
-                    :key="`${hive.id}`"
-                    :hive="hive"
-                    :hive-set="hiveSet"
-                    :alerts="alertsPerHive(hive.id)"
-                    :xl-view="xlView"
-                    :m-view="mView"
-                    :xs-view="xsView"
-                    @confirm-delete-hive="confirmDeleteHive($event)"
-                  ></HiveCard>
-                </v-col>
-              </template>
-            </ScaleTransition>
-          </div>
-        </SlideYUpTransition>
+                <HiveCard
+                  :key="`${hive.id}`"
+                  :hive="hive"
+                  :hive-set="hiveSet"
+                  :alerts="alertsPerHive(hive.id)"
+                  :xl-view="xlView"
+                  :m-view="mView"
+                  :xs-view="xsView"
+                  @confirm-delete-hive="confirmDeleteHive($event)"
+                ></HiveCard>
+              </v-col>
+            </template>
+          </v-scale-transition>
+        </v-slide-y-transition>
       </v-row>
 
       <div
@@ -700,7 +690,7 @@
 
 <script>
 import Api from '@api/Api'
-import { ScaleTransition, SlideYUpTransition } from 'vue2-transitions'
+// import { ScaleTransition, SlideYUpTransition } from 'vue2-transitions'
 import Confirm from '@/src/components/confirm-dialog.vue'
 import HiveCard from '@components/hive-card.vue'
 import Layout from '@/src/router/layouts/main-layout.vue'
@@ -724,8 +714,8 @@ export default {
     Confirm,
     HiveCard,
     Layout,
-    ScaleTransition,
-    SlideYUpTransition,
+    // ScaleTransition,
+    // SlideYUpTransition,
   },
   mixins: [
     checkAlerts,

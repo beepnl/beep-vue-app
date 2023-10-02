@@ -134,11 +134,7 @@
         v-if="!showDiaryPlaceholder && filteredInspections.length > 0"
         dense
       >
-        <ScaleTransition
-          :duration="500"
-          group
-          class="diary-item-transition-wrapper"
-        >
+        <v-scale-transition group class="diary-item-transition-wrapper">
           <v-col
             v-for="(inspection, j) in filteredInspectionsToShow"
             :key="j"
@@ -152,7 +148,7 @@
               @confirm-delete-inspection="confirmDeleteInspection($event)"
             ></DiaryCard>
           </v-col>
-        </ScaleTransition>
+        </v-scale-transition>
       </v-row>
       <MugenScroll :handler="fetchData" :should-handle="!loading">
       </MugenScroll>
@@ -187,14 +183,12 @@ import {
   readGeneralInspectionsIfNotPresent,
   toggleFilterByGroup,
 } from '@mixins/methodsMixin'
-import { ScaleTransition } from 'vue2-transitions'
 
 export default {
   components: {
     Confirm,
     DiaryCard,
     Layout,
-    ScaleTransition,
     MugenScroll,
   },
   mixins: [

@@ -420,7 +420,7 @@
               </v-row>
             </v-card-title>
 
-            <SlideYUpTransition :duration="150">
+            <v-slide-y-transition>
               <!-- New dynamic checklist -->
               <v-card-text v-if="showCategoriesByIndex[index] === true">
                 <v-row class="sub-inspection-wrapper my-0">
@@ -439,7 +439,7 @@
                   </v-col>
                 </v-row>
               </v-card-text>
-            </SlideYUpTransition>
+            </v-slide-y-transition>
             <v-overlay
               :absolute="true"
               :activator="forceInspectionDate"
@@ -476,7 +476,7 @@
                 </v-col>
               </v-row>
             </v-card-title>
-            <SlideYUpTransition :duration="150">
+            <v-slide-y-transition>
               <v-card-text v-if="showGeneral">
                 <v-row class="sub-inspection-wrapper my-0">
                   <v-col cols="12">
@@ -631,7 +631,7 @@
                   </v-col>
                 </v-row>
               </v-card-text>
-            </SlideYUpTransition>
+            </v-slide-y-transition>
           </v-card>
         </div>
       </v-container>
@@ -689,7 +689,6 @@ import {
 import { momentFullDateTime, momentISO8601 } from '@mixins/momentMixin'
 import OfflineInspection from '@components/offline-inspection.vue'
 import ParsedPages from '@components/parsed-pages.vue'
-import { SlideYUpTransition } from 'vue2-transitions'
 import smileRating from '@components/input-fields/smile-rating.vue'
 import Treeselect from 'vue3-treeselect'
 import UploadInspection from '@components/upload-inspection.vue'
@@ -705,7 +704,6 @@ export default {
     Layout,
     OfflineInspection,
     ParsedPages,
-    SlideYUpTransition,
     smileRating,
     UploadInspection,
     yesNoRating,

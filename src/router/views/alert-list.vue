@@ -182,11 +182,7 @@
       </v-alert>
 
       <v-row v-if="alerts.length > 0" dense>
-        <ScaleTransition
-          :duration="500"
-          group
-          class="alerts-item-transition-wrapper"
-        >
+        <v-scale-transition group class="alerts-item-transition-wrapper">
           <v-col
             v-for="(alert, j) in filteredAlerts"
             :key="j"
@@ -214,7 +210,7 @@
               @toggle-checkbox="toggleCheckbox($event)"
             ></AlertCard>
           </v-col>
-        </ScaleTransition>
+        </v-scale-transition>
       </v-row>
 
       <v-row v-if="alerts.length === 0 && !alertsLoading">
@@ -236,7 +232,6 @@
 </template>
 
 <script>
-import { ScaleTransition } from 'vue2-transitions'
 import AlertCard from '@components/alert-card.vue'
 import Api from '@api/Api'
 import Confirm from '@/src/components/confirm-dialog.vue'
@@ -258,7 +253,6 @@ export default {
     AlertCard,
     Confirm,
     Layout,
-    ScaleTransition,
   },
   mixins: [
     checkAlerts,

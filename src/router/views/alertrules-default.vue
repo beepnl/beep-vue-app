@@ -37,7 +37,7 @@
 
     <v-container v-if="ready" class="back-content">
       <v-row v-if="alertRulesDefault.length > 0" dense>
-        <ScaleTransition :duration="500" group style="width:100%;">
+        <v-scale-transition group style="width:100%;">
           <v-col
             v-for="(alertRule, j) in alertRulesDefault"
             :key="j"
@@ -76,7 +76,7 @@
               </v-row>
             </v-card>
           </v-col>
-        </ScaleTransition>
+        </v-scale-transition>
       </v-row>
     </v-container>
 
@@ -90,14 +90,12 @@ import { readAlertRules, readTaxonomy } from '@mixins/methodsMixin'
 import Confirm from '@/src/components/confirm-dialog.vue'
 import Layout from '@/src/router/layouts/back-layout.vue'
 import { mapGetters } from 'vuex'
-import { ScaleTransition } from 'vue2-transitions'
 import { momentHumanizeHours } from '@mixins/momentMixin'
 
 export default {
   components: {
     Confirm,
     Layout,
-    ScaleTransition,
   },
   mixins: [momentHumanizeHours, readAlertRules, readTaxonomy],
   data: function() {

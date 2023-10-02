@@ -36,21 +36,16 @@
       </v-row>
     </v-card-title>
 
-    <SlideYUpTransition :duration="150">
+    <v-slide-y-transition>
       <v-card-text v-if="showCardContent">
         <slot></slot>
       </v-card-text>
-    </SlideYUpTransition>
+    </v-slide-y-transition>
   </v-card>
 </template>
 
 <script>
-import { SlideYUpTransition } from 'vue2-transitions'
-
 export default {
-  components: {
-    SlideYUpTransition,
-  },
   props: {
     localVar: {
       type: String,

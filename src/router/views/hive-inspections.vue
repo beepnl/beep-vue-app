@@ -615,7 +615,6 @@ import Api from '@api/Api'
 import AddToCalendar from '@components/add-to-calendar.vue'
 import Confirm from '@/src/components/confirm-dialog.vue'
 import imageOverlay from '@components/image-overlay.vue'
-// import { ScaleTransition } from 'vue2-transitions'
 import Layout from '@/src/router/layouts/back-layout.vue'
 import { mapGetters } from 'vuex'
 import {
@@ -628,7 +627,6 @@ export default {
   components: {
     imageOverlay,
     Confirm,
-    // ScaleTransition,
     AddToCalendar,
     Layout,
   },

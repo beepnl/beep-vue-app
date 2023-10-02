@@ -55,7 +55,6 @@
     "vue-router": "^4.2.5",
     "vue-treeselect": "^1.0.7",
     "vue2-ios-pwa-prompt": "^1.0.0",
-    "vue2-transitions": "^0.3.0",
     "vue3-treeselect": "^0.1.10",
     "vuedraggable": "^2.24.3",
     "vuex": "4.0"

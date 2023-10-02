@@ -267,7 +267,7 @@
               </div>
             </div>
 
-            <SlideYUpTransition v-if="deviceExpanded(index)" :duration="150">
+            <v-slide-y-transition v-if="deviceExpanded(index)">
               <v-card-text>
                 <v-row>
                   <v-col cols="12" md="6" class="pt-1 pb-0 py-sm-3">
@@ -637,7 +637,7 @@
                   </v-col>
                 </v-row>
               </v-card-text>
-            </SlideYUpTransition>
+            </v-slide-y-transition>
           </v-card>
         </v-col>
       </v-row>
@@ -660,7 +660,6 @@ import {
   readGeneralInspections,
   readTaxonomy,
 } from '@mixins/methodsMixin'
-import { SlideYUpTransition } from 'vue2-transitions'
 import Treeselect from 'vue3-treeselect'
 // import { ElInputNumber } from 'element-plus' TODO-VUE3 enable for real Vue 3
 
@@ -668,7 +667,6 @@ export default {
   components: {
     Confirm,
     Layout,
-    SlideYUpTransition,
     Treeselect,
     yesNoRating,
     // ElInputNumber,

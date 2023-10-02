@@ -14,7 +14,7 @@ module.exports = {
 
     // Set up all the aliases we use in our app.
     config.resolve.alias.clear().merge(require('./aliases.config').webpack)
-    config.resolve.alias.set('vue', '@vue/compat')
+    // config.resolve.alias.set('vue', '@vue/compat')
 
     // Don't allow importing .vue files without the extension, as
     // it's necessary for some Vetur autocompletions.
@@ -28,19 +28,19 @@ module.exports = {
         'warning'
     )
 
-    config.module
-      .rule('vue')
-      .use('vue-loader')
-      .tap((options) => {
-        return {
-          ...options,
-          compilerOptions: {
-            compatConfig: {
-              MODE: 3,
-            },
-          },
-        }
-      })
+    // config.module
+    //   .rule('vue')
+    //   .use('vue-loader')
+    //   .tap((options) => {
+    //     return {
+    //       ...options,
+    //       compilerOptions: {
+    //         compatConfig: {
+    //           MODE: 3,
+    //         },
+    //       },
+    //     }
+    //   })
   },
   css: {
     // Enable CSS source maps. Disable for production build!
