@@ -725,7 +725,7 @@ export default {
             JSON.stringify(this.importMessage)
     },
     lgAndUp() {
-      return this.$vuetify.breakpoint.lgAndUp
+      return this.$vuetify.display.lgAndUp
     },
     locale() {
       return this.$i18n.locale
@@ -814,7 +814,7 @@ export default {
       },
     },
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.mobile
     },
     selectedFlashLog: {
       get() {
@@ -847,7 +847,7 @@ export default {
         : ''
     },
     smAndDown() {
-      return this.$vuetify.breakpoint.smAndDown
+      return this.$vuetify.display.smAndDown
     },
     undoSentence() {
       const stringifiedMessage = JSON.stringify(this.undoMessage)

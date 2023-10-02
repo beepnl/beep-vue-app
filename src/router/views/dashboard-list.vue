@@ -200,7 +200,7 @@ export default {
     ...mapGetters('hives', ['hivesObject']),
     ...mapGetters('locations', ['apiaries']),
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.mobile
     },
     showDashboardPlaceholder() {
       return this.dashboardGroups.length === 0

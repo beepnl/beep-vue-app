@@ -446,10 +446,10 @@ export default {
     ...mapGetters('devices', ['devices']),
     ...mapGetters('groups', ['groups']),
     mdAndDown() {
-      return this.$vuetify.breakpoint.mdAndDown
+      return this.$vuetify.display.mdAndDown
     },
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.mobile
     },
     numberOfDevices() {
       return this.devices.length

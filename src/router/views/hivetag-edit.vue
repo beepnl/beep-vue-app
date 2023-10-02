@@ -362,7 +362,7 @@ export default {
       ]
     },
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.mobile
     },
     possibleHiveTags() {
       var possibleHiveTags = []
@@ -418,7 +418,7 @@ export default {
       return sortedHiveSets
     },
     tabletLandscapeUp() {
-      return this.$vuetify.breakpoint.mdAndUp
+      return this.$vuetify.display.mdAndUp
     },
     tag() {
       return this.$route.params.id || null

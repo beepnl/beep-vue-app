@@ -759,7 +759,7 @@ export default {
       return matchedItemsByDate
     },
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.mobile
     },
     noInspections() {
       return (
@@ -795,7 +795,7 @@ export default {
       return this.search !== null || this.filters !== null
     },
     smallScreen() {
-      return this.$vuetify.breakpoint.width < 700
+      return this.$vuetify.display.width < 700
     },
     scoreAmountOptions() {
       return {

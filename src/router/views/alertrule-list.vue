@@ -343,7 +343,7 @@ export default {
       ]
     },
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.mobile
     },
     showAlertRulePlaceholder() {
       return this.alertRules.length === 0

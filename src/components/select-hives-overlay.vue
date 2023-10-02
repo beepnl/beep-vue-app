@@ -203,7 +203,7 @@ export default {
         : this.apiaries
     },
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.mobile
     },
     researchMode() {
       return this.selectedResearch !== null

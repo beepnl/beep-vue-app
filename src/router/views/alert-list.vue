@@ -402,7 +402,7 @@ export default {
       return this.filteredAlerts.map((alert) => alert.id)
     },
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.mobile
     },
     showAlertPlaceholder() {
       if (this.ready) {
@@ -412,10 +412,10 @@ export default {
       }
     },
     mdScreen() {
-      return this.$vuetify.breakpoint.width < 960
+      return this.$vuetify.display.width < 960
     },
     tinyScreen() {
-      return this.$vuetify.breakpoint.width < 350
+      return this.$vuetify.display.width < 350
     },
   },
   created() {

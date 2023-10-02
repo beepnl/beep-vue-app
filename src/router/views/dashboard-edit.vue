@@ -376,7 +376,7 @@ export default {
       return this.apiaries.concat(this.groups)
     },
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.mobile
     },
     showApiaryPlaceholder() {
       return this.hiveSets.length === 0
@@ -406,10 +406,10 @@ export default {
       return sortedHiveSets
     },
     tabletLandscapeUp() {
-      return this.$vuetify.breakpoint.mdAndUp
+      return this.$vuetify.display.mdAndUp
     },
     xlScreen() {
-      return this.$vuetify.breakpoint.xl
+      return this.$vuetify.display.xl
     },
   },
   created() {

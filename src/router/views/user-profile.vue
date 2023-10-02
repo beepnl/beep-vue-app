@@ -212,7 +212,7 @@ export default {
       ]
     },
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.mobile
     },
     passwordRules: function() {
       return [(v) => !!v || this.$i18n.t('password_is_required')]

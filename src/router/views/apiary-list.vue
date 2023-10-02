@@ -1006,7 +1006,7 @@ export default {
       },
     },
     hiveSets() {
-      const apiariesWithDates = this.apiaries
+      var apiariesWithDates = JSON.parse(JSON.stringify(this.apiaries)) // clone without v-bind to avoid vuex warning when mutating
 
       apiariesWithDates.map((apiary) => {
         apiary.hives.map((hive) => {
@@ -1015,7 +1015,9 @@ export default {
         })
         return apiary // TODO-VUE3 check
       })
-      const groupsWithDatesAndEditableHivesProp = this.groups
+      var groupsWithDatesAndEditableHivesProp = JSON.parse(
+        JSON.stringify(this.groups)
+      ) // clone without v-bind to avoid vuex warning when mutating
       groupsWithDatesAndEditableHivesProp.map((group) => {
         group.hives.map((hive) => {
           this.addDates(hive)
@@ -1033,10 +1035,10 @@ export default {
       return apiariesWithDates.concat(groupsWithDatesAndEditableHivesProp)
     },
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.mobile
     },
     screenSize() {
-      return this.$vuetify.breakpoint.width
+      return this.$vuetify.display.width
     },
     showApiaryPlaceholder() {
       return this.apiaries.length === 0 && this.groups.length === 0
@@ -1065,10 +1067,10 @@ export default {
       return sortedHiveSets
     },
     tabletLandscapeUp() {
-      return this.$vuetify.breakpoint.mdAndUp
+      return this.$vuetify.display.mdAndUp
     },
     tinyScreen() {
-      return this.$vuetify.breakpoint.width < 373
+      return this.$vuetify.display.width < 373
     },
     today() {
       return new Date()
@@ -1093,8 +1095,8 @@ export default {
         this.$store.commit('locations/setHiveView', 'xsView')
       }
     }
-  },
-  created() {
+    // },
+    // created() {
     if (this.hiveIndex !== undefined) {
       this.readHiveTagsIfNotChecked().then((hivetags) => {
         this.hiveTagRedirect(hivetags)

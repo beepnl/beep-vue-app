@@ -27,7 +27,7 @@ export default {
   },
   computed: {
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.mobile
     },
   },
   methods: {

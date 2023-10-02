@@ -492,10 +492,10 @@ export default {
       )
     },
     mdScreen() {
-      return this.$vuetify.breakpoint.width < 961
+      return this.$vuetify.display.width < 961
     },
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.mobile
     },
   },
   methods: {

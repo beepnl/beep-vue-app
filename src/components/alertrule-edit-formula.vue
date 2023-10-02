@@ -405,7 +405,7 @@ export default {
         : ''
     },
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.mobile
     },
     multipleFormulas() {
       return this.nrOfFormulas > 1

@@ -451,7 +451,7 @@ export default {
       return this.$i18n.locale
     },
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.mobile
     },
     paginationItems() {
       // overestimation of how many inspection items fit in clients window
@@ -465,8 +465,7 @@ export default {
     },
     smallScreen() {
       return (
-        this.$vuetify.breakpoint.width < 910 &&
-        this.$vuetify.breakpoint.width > 500
+        this.$vuetify.display.width < 910 && this.$vuetify.display.width > 500
       )
     },
   },

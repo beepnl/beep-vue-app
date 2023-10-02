@@ -479,7 +479,7 @@ export default {
       return sortedAndFilledApiaries
     },
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.mobile
     },
     requiredRule: function() {
       return [
@@ -496,7 +496,7 @@ export default {
       return this.apiaries.length === 0
     },
     tabletLandscapeUp() {
-      return this.$vuetify.breakpoint.mdAndUp
+      return this.$vuetify.display.mdAndUp
     },
   },
   created() {

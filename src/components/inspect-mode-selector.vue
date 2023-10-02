@@ -84,7 +84,7 @@ export default {
   },
   computed: {
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.mobile
     },
     modeButtons() {
       return [
@@ -131,7 +131,7 @@ export default {
     touchDevice() {
       return (
         window.matchMedia('(hover: none)').matches ||
-        this.$vuetify.breakpoint.mobile
+        this.$vuetify.display.mobile
       )
     },
     uploadMode() {

@@ -185,7 +185,7 @@
                         <template v-slot:activator="{ props }">
                           <span
                             class="notes"
-                            v-on="on"
+                            v-bind="props"
                             v-text="inspection.notes"
                           >
                           </span>
@@ -383,7 +383,7 @@ export default {
   computed: {
     ...mapGetters('inspections', ['diaryFilterByGroup']),
     smallScreen() {
-      return this.$vuetify.breakpoint.width < 910
+      return this.$vuetify.display.width < 910
     },
   },
   methods: {

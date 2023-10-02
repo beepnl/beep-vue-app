@@ -275,10 +275,10 @@ export default {
       return this.$i18n.locale
     },
     mdAndDown() {
-      return this.$vuetify.breakpoint.mdAndDown
+      return this.$vuetify.display.mdAndDown
     },
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.mobile
     },
     ownedChecklists() {
       return this.checklists.filter((checklist) => checklist.owner)
@@ -291,10 +291,10 @@ export default {
       )
     },
     smallScreen() {
-      return this.$vuetify.breakpoint.width < 800
+      return this.$vuetify.display.width < 800
     },
     smAndDown() {
-      return this.$vuetify.breakpoint.smAndDown
+      return this.$vuetify.display.smAndDown
     },
     storedInspectionMode() {
       return localStorage.beepSelectedInspectionMode

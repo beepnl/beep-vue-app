@@ -91,10 +91,10 @@ export default {
   },
   computed: {
     mdScreen() {
-      return this.$vuetify.breakpoint.width < 960
+      return this.$vuetify.display.width < 960
     },
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.mobile
     },
     queriedChartCols() {
       const queriedValue = parseInt(this.$route.query.chartCols)

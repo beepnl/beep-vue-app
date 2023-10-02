@@ -705,10 +705,10 @@ export default {
       return Math.max(...allSoundSensorValues)
     },
     mdScreen() {
-      return this.$vuetify.breakpoint.width < 960
+      return this.$vuetify.display.width < 960
     },
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.mobile
     },
     moduloFactor() {
       switch (this.screenSize) {
@@ -836,9 +836,9 @@ export default {
         : null
     },
     screenSize() {
-      return this.$vuetify.breakpoint.width < 1300
+      return this.$vuetify.display.width < 1300
         ? 'md'
-        : this.$vuetify.breakpoint.width > 1900
+        : this.$vuetify.display.width > 1900
         ? 'xl'
         : 'lg'
     },
@@ -872,7 +872,7 @@ export default {
       )
     },
     smAndDown() {
-      return this.$vuetify.breakpoint.smAndDown
+      return this.$vuetify.display.smAndDown
     },
     sortedCurrentSoundSensors() {
       const sorted = Object.keys(this.currentSoundSensors)

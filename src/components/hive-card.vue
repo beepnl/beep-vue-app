@@ -603,7 +603,7 @@ export default {
       return uniqueAlertRuleNames.join(', ')
     },
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.mobile
     },
   },
   methods: {

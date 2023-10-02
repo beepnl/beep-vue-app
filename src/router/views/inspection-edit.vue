@@ -957,7 +957,7 @@ export default {
       return this.$i18n.locale
     },
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.mobile
     },
     modeText() {
       return this.permissions.includes('test-offline-input') ||

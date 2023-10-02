@@ -732,7 +732,7 @@ export default {
       return unsavedChanges.length > 0
     },
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.mobile
     },
     ownedDevices() {
       const ownedDevices = this.devices

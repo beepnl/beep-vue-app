@@ -349,7 +349,7 @@ export default {
       return this.$i18n.locale
     },
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.mobile
     },
     modeColor() {
       return this.darkMode ? this.darkModecolor : this.defaultcolor

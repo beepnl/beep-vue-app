@@ -119,7 +119,7 @@ export default {
       return this.$i18n.locale
     },
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.mobile
     },
     numberOfSelectedRules() {
       return this.alertRulesDefault.filter((alertRule) => alertRule.selected)
