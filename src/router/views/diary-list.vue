@@ -137,24 +137,26 @@
         v-if="!showDiaryPlaceholder && filteredInspections.length > 0"
         density="compact"
       >
-        <v-scale-transition group class="diary-item-transition-wrapper">
-          <v-col
-            v-for="(inspection, j) in filteredInspectionsToShow"
-            :key="j"
-            sm="auto"
-            class="diary-item"
-            density="compact"
-          >
-            <DiaryCard
-              :inspection="inspection"
-              :hive="hivesObject[inspection.hive_id]"
-              @confirm-delete-inspection="confirmDeleteInspection($event)"
-            ></DiaryCard>
-          </v-col>
-        </v-scale-transition>
+        <div class="diary-item-transition-wrapper">
+          <v-scroll-y-transition group>
+            <v-col
+              v-for="(inspection, j) in filteredInspections"
+              :key="j"
+              sm="auto"
+              class="diary-item"
+              density="compact"
+            >
+              <DiaryCard
+                :inspection="inspection"
+                :hive="hivesObject[inspection.hive_id]"
+                @confirm-delete-inspection="confirmDeleteInspection($event)"
+              ></DiaryCard>
+            </v-col>
+          </v-scroll-y-transition>
+        </div>
       </v-row>
-      <MugenScroll :handler="fetchData" :should-handle="!loading">
-      </MugenScroll>
+      <!-- <MugenScroll :handler="fetchData" :should-handle="!loading">
+      </MugenScroll> -->
       <v-row v-if="!showDiaryPlaceholder && filteredInspections.length === 0">
         <v-col sm="auto" :cols="12">
           {{ $t('no_results') }}
@@ -168,7 +170,6 @@
 
 <script>
 import Api from '@api/Api'
-import MugenScroll from 'vue-mugen-scroll'
 import Confirm from '@/src/components/confirm-dialog.vue'
 import DiaryCard from '@components/diary-card.vue'
 import Layout from '@/src/router/layouts/main-layout.vue'
@@ -192,7 +193,6 @@ export default {
     Confirm,
     DiaryCard,
     Layout,
-    MugenScroll,
   },
   mixins: [
     checkAlerts,
@@ -277,7 +277,9 @@ export default {
     // make inspections filterable by hive name and location
     inspectionsWithDatesAndHiveDetails() {
       if (this.generalInspections.length > 0) {
-        const inspectionsWithDatesAndHiveDetails = this.generalInspections
+        const inspectionsWithDatesAndHiveDetails = JSON.parse(
+          JSON.stringify(this.generalInspections)
+        ) // clone without v-bind to avoid vuex warning when mutating
         inspectionsWithDatesAndHiveDetails.map((inspection) => {
           inspection.created_at_locale_date = this.momentify(
             inspection.created_at
@@ -441,9 +443,9 @@ export default {
         (x) => x !== undefined
       )
     },
-    filteredInspectionsToShow() {
-      return this.filteredInspections.slice(0, this.scrollCount)
-    },
+    // filteredInspectionsToShow() {
+    //   return this.filteredInspections.slice(0, this.scrollCount)
+    // },
     locale() {
       return this.$i18n.locale
     },
@@ -466,7 +468,7 @@ export default {
       )
     },
   },
-  created() {
+  mounted() {
     this.checkAlertRulesAndAlerts() // for alerts-tab badge
     if (
       this.$route.query.search !== null &&
