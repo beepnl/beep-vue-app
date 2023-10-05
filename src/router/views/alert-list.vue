@@ -178,35 +178,39 @@
       </v-alert>
 
       <v-row v-if="alerts.length > 0" density="compact">
-        <v-scale-transition group class="alerts-item-transition-wrapper">
-          <v-col
-            v-for="(alert, j) in filteredAlerts"
-            :key="j"
-            sm="auto"
-            class="d-flex justify-start align-center alerts-item"
-            density="compact"
-          >
-            <v-checkbox
-              v-if="!mobile"
-              :input-value="isSelected(alert.id)"
-              class="ma-0 pa-0"
+        <div class="alerts-item-transition-wrapper">
+          <v-scale-transition group>
+            <v-col
+              v-for="(alert, j) in filteredAlerts"
+              :key="j"
+              sm="auto"
+              class="d-flex justify-start align-center alerts-item"
               density="compact"
-              color="primary"
-              :ripple="false"
-              hide-details
-              @change="toggleCheckbox(alert.id)"
-            />
-            <AlertCard
-              :alert="alert"
-              :hives="hivesObject"
-              :is-selected="mobile ? isSelected(alert.id) : null"
-              :unit="getUnit(alert.measurement_id)"
-              @show-snackbar=";(snackbar.text = $event), (snackbar.show = true)"
-              @delete-alert="deleteAlert($event)"
-              @toggle-checkbox="toggleCheckbox($event)"
-            ></AlertCard>
-          </v-col>
-        </v-scale-transition>
+            >
+              <v-checkbox
+                v-if="!mobile"
+                :input-value="isSelected(alert.id)"
+                class="ma-0 pa-0"
+                density="compact"
+                color="primary"
+                :ripple="false"
+                hide-details
+                @change="toggleCheckbox(alert.id)"
+              />
+              <AlertCard
+                :alert="alert"
+                :hives="hivesObject"
+                :is-selected="mobile ? isSelected(alert.id) : null"
+                :unit="getUnit(alert.measurement_id)"
+                @show-snackbar="
+                  ;(snackbar.text = $event), (snackbar.show = true)
+                "
+                @delete-alert="deleteAlert($event)"
+                @toggle-checkbox="toggleCheckbox($event)"
+              ></AlertCard>
+            </v-col>
+          </v-scale-transition>
+        </div>
       </v-row>
 
       <v-row v-if="alerts.length === 0 && !alertsLoading">
@@ -289,7 +293,7 @@ export default {
     ...mapGetters('hives', ['hivesObject']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     alertsWithRuleDetails() {
-      const alertsWithRuleDetails = this.alerts
+      const alertsWithRuleDetails = JSON.parse(JSON.stringify(this.alerts)) // clone without v-bind to avoid vuex warning when mutating
       alertsWithRuleDetails.map((alert) => {
         alert.locale_date_created_at =
           this.$i18n.t('First_occurence') +
@@ -318,7 +322,7 @@ export default {
           alert.momentified = this.momentFromNow(alert.updated_at, true)
         }
 
-        var hiveGroupName = null
+        let hiveGroupName = null
         if (
           this.hivesObject[alert.hive_id] !== undefined &&
           this.hivesObject[alert.hive_id].group_name !== undefined
@@ -358,7 +362,7 @@ export default {
       )
     },
     filteredAlerts() {
-      var textFilteredAlerts = []
+      let textFilteredAlerts = []
       if (this.search === null) {
         textFilteredAlerts = this.alertsWithRuleDetails
       } else {

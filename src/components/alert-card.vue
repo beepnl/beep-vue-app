@@ -1,6 +1,6 @@
 <template>
   <v-menu location="bottom" absolute>
-    <template v-slot:activator="{ on: menu }">
+    <template v-slot:activator="{ props }">
       <v-alert
         type="error"
         text
@@ -15,7 +15,7 @@
         "
         class="alert-card cursor-pointer mb-0 pa-2 pa-sm-3"
         outlined
-        v-on="!mobile ? menu : null"
+        v-bind="!mobile ? props : null"
       >
         <template v-slot:prepend>
           <div class="d-flex flex-column justify-start align-center">
@@ -46,7 +46,7 @@
           </div>
         </template>
 
-        <div style="width: 100%;" v-on="mobile ? menu : null">
+        <div style="width: 100%;" v-bind="!mobile ? props : null">
           <v-row class="ma-0 pl-0 py-0" style="width:100%;">
             <v-col cols="12" md="6" class="alert-details-item alert-meta pa-0">
               <v-row
