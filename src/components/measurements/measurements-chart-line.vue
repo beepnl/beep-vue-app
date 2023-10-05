@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { Line as LineChart } from 'vue-chartjs/legacy'
+import { Line as LineChart } from 'vue-chartjs'
 import {
   Chart as ChartJS,
   Filler,

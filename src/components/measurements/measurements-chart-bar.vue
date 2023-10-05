@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { Bar as BarChart } from 'vue-chartjs/legacy'
+import { Bar as BarChart } from 'vue-chartjs'
 import {
   Chart as ChartJS,
   BarElement,
