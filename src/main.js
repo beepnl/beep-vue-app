@@ -23,12 +23,13 @@ import languages from '@assets/js/languages'
 import moment from 'moment-timezone'
 import vueCountryRegionSelect from 'vue-country-region-select'
 import 'vue3-treeselect/dist/vue3-treeselect.css'
-import VueEllipseProgress from 'vue-ellipse-progress'
+import veProgress from 'vue-ellipse-progress'
 import { ResizeObserver as Polyfill } from '@juggle/resize-observer'
 // import 'element-plus/es/components/message/style/css' TODO-VUE3 enable for real Vue 3
 // * Vuetify
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
+import { VDatePicker } from 'vuetify/labs/VDatePicker'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { aliases, mdi } from 'vuetify/lib/iconsets/mdi'
@@ -66,7 +67,10 @@ const vuetify = createVuetify({
       mdi,
     },
   },
-  components,
+  components: {
+    VDatePicker,
+    ...components,
+  },
   directives,
   // breakpoint: {
   //   mobileBreakpoint: 'xs', // This is equivalent to a value of 600
@@ -131,7 +135,7 @@ app.use(store)
 app.use(i18n)
 app.use(vuetify)
 app.use(vueCountryRegionSelect)
-app.use(VueEllipseProgress)
+app.use(veProgress)
 app.config.globalProperties.$moment = moment
 
 // If running inside Cypress...
