@@ -2,6 +2,12 @@
   $list-item-plain-opacity: 1,
 );
 
+.v-container {
+  @include for-tablet-landscape-up {
+    max-width: calc(100vw - 48px) !important;
+  }
+}
+
 .v-list-item-title {
   font-size: 0.8125rem;
   font-weight: 500;
