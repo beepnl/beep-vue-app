@@ -617,7 +617,7 @@ const translations = {
     ' do BEEP, compatíveis com a nova lei de privacidade europeia',
   terms_of_use: 'termos de serviço',
   invalid_password:
-    'A password deve conter pelo menos 8 caracteres, incluindo pelo menos: uma letra minúscula, uma letra maiúscula, um número e um caracter especial (\\]{}()?\\-"!@#%&/\\,><\':|_~`)',
+    "{'A password deve conter pelo menos 8 caracteres, incluindo pelo menos: uma letra minúscula, uma letra maiúscula, um número e um caracter especial ([]]{}()?-\"!@#%&/,><':;|_~`)'}",
   sensor_definition: 'definição do sensor | definições do sensor',
   measurement: 'medição | medições',
   remove_device: 'Remover aparelho',

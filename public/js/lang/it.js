@@ -591,7 +591,7 @@ const translations = {
   accept_policy_2: ', che rispettano le nuove leggi Europee sulla privacy',
   terms_of_use: 'termini di servizio',
   invalid_password:
-    'La Password deve contenenre almeno 8 caratteri, una minuscola, una maiuscola, un numero e un carattere speciale (\\]{}()?\\-"!@#%&/\\,><\':|_~`)',
+    "{'La Password deve contenenre almeno 8 caratteri, una minuscola, una maiuscola, un numero e un carattere speciale ([]]{}()?-\"!@#%&/,><':;|_~`)'}",
   sensor_definition: 'definizione sensore | definizioni sensore',
   measurement: 'misurazione | misurazioni',
   remove_device: 'rimuovi dispositivo',

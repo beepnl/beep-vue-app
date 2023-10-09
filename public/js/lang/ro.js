@@ -594,7 +594,7 @@ const translations = {
     ' termenii BEEP,  sunt compatibili cu noua lege Europeană privind confidențialitatea datelor.',
   terms_of_use: 'termenii serviciului',
   invalid_password:
-    'Parola trebuie să conțină cel puțin 8 caractere, o literă mică, o literă mare, un număr și un caracter special (\\]{}()?\\-"!@#%&/\\,><\':|_~`)',
+    "{'Parola trebuie să conțină cel puțin 8 caractere, o literă mică, o literă mare, un număr și un caracter special ([]]{}()?-\"!@#%&/,><':;|_~`)'}",
   sensor_definition: 'definirea senzorului| definirea senzorilor',
   measurement: 'măsurare| măsurători',
   remove_device: 'înlăturați dispozitiv',

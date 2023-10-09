@@ -540,7 +540,7 @@ const translations = {
   accept_policy_2: ', die in lijn zijn met de nieuwe Europese privacywetgeving',
   terms_of_use: 'servicevoorwaarden',
   invalid_password:
-    'Wachtwoord moet minimaal 8 tekens, een kleine letter, een hoofdletter, een cijfer en een bijzonder teken (\\]{}()?\\-"!@#%&/\\,><\':;|_~`) bevatten',
+    "{'Wachtwoord moet minimaal 8 tekens, een kleine letter, een hoofdletter, een cijfer en een bijzonder teken ([]]{}()?-\"!@#%&/,><':;|_~`) bevatten'}",
   sensor_definition: 'sensor definitie | sensor definities',
   measurement: 'meting | metingen',
   remove_device: 'Verwijder meetsysteem',

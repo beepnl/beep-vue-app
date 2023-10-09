@@ -113,7 +113,7 @@
               :rules="passwordRules"
               required
               :error-messages="
-                displayPasswordError ? $t('password_is_required') : null
+                displayPasswordError ? $t('password_is_required') : []
               "
               @click:append="show1 = !show1"
             />
@@ -123,7 +123,6 @@
               :label="`${$t('new_password')}`"
               :type="show2 ? 'text' : 'password'"
               :rules="newPasswordRules"
-              @keydown.enter="$event.target.blur"
               @click:append="show2 = !show2"
             />
             <v-text-field
@@ -132,7 +131,6 @@
               :label="`${$t('confirm_new_password')}`"
               :type="show3 ? 'text' : 'password'"
               :rules="repeatPasswordRules"
-              @keydown.enter="$event.target.blur"
               @click:append="show3 = !show3"
             />
             <v-checkbox

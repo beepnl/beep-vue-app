@@ -514,7 +514,7 @@ const translations = {
     ', které jsou kompatibilní s novým evropským právem na ochranu soukromí',
   terms_of_use: 'podmínky užití',
   invalid_password:
-    'Heslo musí obsahovat alespoň 8 znaků, jedno malé písmeno, jedno velké písmeno, jedno číslo a jeden speciální znak (\\]{}()?\\-"!@#%&/\\,><\':; |_~`)',
+    "{'Heslo musí obsahovat alespoň 8 znaků, jedno malé písmeno, jedno velké písmeno, jedno číslo a jeden speciální znak ([]]{}()?-\"!@#%&/,><':;|_~`)'}",
   sensor_definition: 'definice senzoru | definice senzorů',
   measurement: 'měření | měření',
   remove_device: 'Odebrat zařízení',

@@ -623,7 +623,7 @@ const translations = {
     ', jotka ovat sopusoinnussa uuden eurooppalaisen yksityisyydensuojalain kanssa',
   terms_of_use: 'käyttöehdot',
   invalid_password:
-    'Salasanassa on oltava vähintään 8 merkkiä, yksi pieni kirjain, yksi iso kirjain, yksi numero ja yksi erikoismerkki (\\]{}()?\\-"!@#%&/\\,><\':;|_~`)',
+    "{'Salasanassa on oltava vähintään 8 merkkiä, yksi pieni kirjain, yksi iso kirjain, yksi numero ja yksi erikoismerkki ([]]{}()?-\"!@#%&/,><':;|_~`)'}",
   sensor_definition: 'anturin määritelmä | anturin määritelmät',
   measurement: 'mittaus | mittaukset',
   remove_device: 'Poista laite',

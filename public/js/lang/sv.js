@@ -575,7 +575,7 @@ const translations = {
     ', som är I överensstämmelse med den nya Europeiska privacy law',
   terms_of_use: 'användarvillkor',
   invalid_password:
-    'Lösenord måste innehålla minst 8 tecken, en liten bokstav, en stor bokstav, en siffra och ett tecken t.ex. (\\]{}()?\\-"!@#%&/\\,><\':;|_~`)',
+    "{'Lösenord måste innehålla minst 8 tecken, en liten bokstav, en stor bokstav, en siffra och ett tecken t.ex. ([]]{}()?-\"!@#%&/,><':;|_~`)'}",
   sensor_definition: 'givar definition | givar definitioner',
   measurement: 'mätvärde | mätvärden',
   remove_device: 'Ta bort enhet',

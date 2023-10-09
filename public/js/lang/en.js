@@ -512,7 +512,7 @@ const translations = {
   accept_policy_2: ', that are compatible with the new European privacy law',
   terms_of_use: 'terms of service',
   invalid_password:
-    'Password must contain at least 8 characters, one lowercase letter, one uppercase letter, one number and one special character (\\]{}()?\\-"!@#%&/\\,><\':;|_~`)',
+    "{'Password must contain at least 8 characters, one lowercase letter, one uppercase letter, one number and one special character ([]]{}()?-\"!@#%&/,><':;|_~`)'}",
   sensor_definition: 'sensor definition | sensor definitions',
   measurement: 'measurement | measurements',
   remove_device: 'Remove device',

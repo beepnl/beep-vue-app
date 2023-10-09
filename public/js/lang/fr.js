@@ -687,7 +687,7 @@ const translations = {
     ' de BEEP, qui sont compatibles avec la nouvelle loi européenne sur la protection de la vie privée',
   terms_of_use: "conditions d'utilisation",
   invalid_password:
-    'Le mot de passe doit contenir au moins 8 caratères, dont 1 minuscule, 1 majuscule, 1 chiffre et 1 caractère spécial (\\]{}()?\\-"!@#%&/\\,><\':|_~`)',
+    "{'Le mot de passe doit contenir au moins 8 caratères, dont 1 minuscule, 1 majuscule, 1 chiffre et 1 caractère spécial ([]]{}()?-\"!@#%&/,><':;|_~`)'}",
   sensor_definition: 'définition du capteur | définitions des capteurs',
   measurement: 'mesure | mesures',
   remove_device: "Supprimer l'appareil",

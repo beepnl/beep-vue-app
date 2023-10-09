@@ -512,7 +512,7 @@ const translations = {
   accept_policy_2: ', som er kompatible med den nye europeiske personvernloven',
   terms_of_use: 'Vilkår for bruk',
   invalid_password:
-    'Passord må inneholde minst 8 tegn, en liten bokstav, en stor bokstav, ett tall og ett spesialtegn (\\]{}()?\\-"!@#%&/\\,><\':; |_~`)',
+    "{'Passord må inneholde minst 8 tegn, en liten bokstav, en stor bokstav, ett tall og ett spesialtegn ([]]{}()?-\"!@#%&/,><':;|_~`)'}",
   sensor_definition: 'sensordefinisjon | sensordefinisjoner',
   measurement: 'måling | målinger',
   remove_device: 'Fjern enheten',

@@ -606,7 +606,7 @@ const translations = {
     ', die mit dem neuen europäischen Datenschutzgesetz vereinbar sind',
   terms_of_use: 'Nutzungsbedingungen',
   invalid_password:
-    'Das Passwort muss mindestens 8 Zeichen enthalten, einen Kleinbuchstaben, einen Großbuchstaben, eine Zahl und ein Sonderzeichen (\\]{}()?\\-"!@#%&/\\,><\':|_~`)',
+    "{'Das Passwort muss mindestens 8 Zeichen enthalten, einen Kleinbuchstaben, einen Großbuchstaben, eine Zahl und ein Sonderzeichen ([]]{}()?-\"!@#%&/,><':;|_~`)'}",
   sensor_definition: 'Sensor Definition | Sensor Definitionen',
   measurement: 'Messung | Messungen',
   remove_device: 'Gerät entfernen',

@@ -594,7 +594,7 @@ const translations = {
   the_field: 'el campo',
   is_required: 'is required',
   invalid_password:
-    'La clave debe contener al menos 8 caracteres, una letra minúscula, una letra mayúscula, un número y un caracter especial (\\]{}()?\\-"!@#%&/\\,><\':;|_~`)',
+    "{'La clave debe contener al menos 8 caracteres, una letra minúscula, una letra mayúscula, un número y un caracter especial ([]]{}()?-\"!@#%&/,><':;|_~`)'}",
   sensor_definition: ' definición del sensor | definiciones del sensor',
   measurement: 'medición | mediciones',
   remove_device: 'remover dispositivo',
