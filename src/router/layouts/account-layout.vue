@@ -1,47 +1,45 @@
 <template>
-  <div>
-    <div id="beeBox">
+  <div id="beeBox">
+    <div
+      v-for="bee in nrOfBees"
+      :id="'bee' + bee"
+      :key="'b' + bee"
+      :class="(mobile ? 'bee--mobile' : '') + (darkMode ? ' bee--light' : '')"
+    ></div>
+  </div>
+  <v-card class="account-card d-flex flex-column align-center">
+    <div v-if="!dashboardMode" class="mt-4">
+      <a href="/"
+        ><img
+          v-cloak
+          class="account-logo ml-n1"
+          :src="assetsUrl + '/img/beep-icon-logo.svg'"
+      /></a>
+    </div>
+
+    <div
+      v-if="dashboardMode"
+      class="my-4 d-flex flex-column align-center justify-center"
+    >
+      <a href="/"
+        ><img
+          v-cloak
+          class="dashboard-logo ml-n1"
+          :src="
+            assetsUrl +
+              '/img/beep-icon-logo' +
+              (darkMode ? '-white-text' : '') +
+              '.svg'
+          "
+      /></a>
       <div
-        v-for="bee in nrOfBees"
-        :id="'bee' + bee"
-        :key="'b' + bee"
-        :class="(mobile ? 'bee--mobile' : '') + (darkMode ? ' bee--light' : '')"
+        class="text-h3 text-overline roboto-condensed font-weight-light"
+        v-text="$tc('Dashboard', 1)"
       ></div>
     </div>
-    <v-card class="account-card d-flex flex-column align-center">
-      <div v-if="!dashboardMode" class="mt-4">
-        <a href="/"
-          ><img
-            v-cloak
-            class="account-logo ml-n1"
-            :src="assetsUrl + '/img/beep-icon-logo.svg'"
-        /></a>
-      </div>
-
-      <div
-        v-if="dashboardMode"
-        class="my-4 d-flex flex-column align-center justify-center"
-      >
-        <a href="/"
-          ><img
-            v-cloak
-            class="dashboard-logo ml-n1"
-            :src="
-              assetsUrl +
-                '/img/beep-icon-logo' +
-                (darkMode ? '-white-text' : '') +
-                '.svg'
-            "
-        /></a>
-        <div
-          class="text-h3 text-overline roboto-condensed font-weight-light"
-          v-text="$tc('Dashboard', 1)"
-        ></div>
-      </div>
-      <v-card-title class="account-title mb-n2">{{ title }}</v-card-title>
-      <slot></slot>
-    </v-card>
-  </div>
+    <v-card-title class="account-title mb-n2">{{ title }}</v-card-title>
+    <slot></slot>
+  </v-card>
 </template>
 
 <script>

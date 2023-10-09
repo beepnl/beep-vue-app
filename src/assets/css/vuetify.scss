@@ -1,0 +1,13 @@
+@use '../../../node_modules/vuetify/settings' with (
+  $list-item-plain-opacity: 1,
+);
+
+.v-list-item-title {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1rem;
+}
+
+.v-theme--beepTheme {
+  --v-medium-emphasis-opacity: 1;
+}

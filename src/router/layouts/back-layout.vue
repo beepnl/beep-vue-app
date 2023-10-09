@@ -1,44 +1,42 @@
 <template>
-  <div>
-    <v-app-bar
-      app
-      light
-      background-color="#000"
-      color="primary"
-      density="compact"
-      class="zindex4 no-print"
-    >
-      <slot name="icon">
-        <v-btn icon @click="back">
-          <v-icon>mdi-arrow-left</v-icon>
-        </v-btn>
-      </slot>
-      <slot name="title">
-        <v-toolbar-title>{{ title }}</v-toolbar-title>
-      </slot>
+  <v-app-bar
+    app
+    light
+    background-color="#000"
+    color="primary"
+    density="compact"
+    class="zindex4 no-print"
+  >
+    <slot name="icon">
+      <v-btn icon @click="back">
+        <v-icon>mdi-arrow-left</v-icon>
+      </v-btn>
+    </slot>
+    <slot name="title">
+      <v-toolbar-title>{{ title }}</v-toolbar-title>
+    </slot>
 
-      <v-spacer></v-spacer>
+    <v-spacer></v-spacer>
 
-      <LocaleChanger></LocaleChanger>
+    <LocaleChanger></LocaleChanger>
 
-      <v-app-bar-nav-icon
-        class="color-black ml-n2"
-        @click.stop="drawer = !drawer"
-      ></v-app-bar-nav-icon>
-    </v-app-bar>
+    <v-app-bar-nav-icon
+      class="color-black ml-n2"
+      @click.stop="drawer = !drawer"
+    ></v-app-bar-nav-icon>
+  </v-app-bar>
 
-    <NavDrawer
-      :menu-items="menuItems"
-      :drawer="drawer"
-      @update-drawer-value="drawer = $event"
-    ></NavDrawer>
+  <NavDrawer
+    :menu-items="menuItems"
+    :drawer="drawer"
+    @update-drawer-value="drawer = $event"
+  ></NavDrawer>
 
-    <v-main>
-      <slot></slot>
-    </v-main>
+  <v-main>
+    <slot></slot>
+  </v-main>
 
-    <Confirm ref="confirm"></Confirm>
-  </div>
+  <Confirm ref="confirm"></Confirm>
 </template>
 
 <script>

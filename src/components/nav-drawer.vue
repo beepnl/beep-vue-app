@@ -2,20 +2,19 @@
   <div>
     <v-navigation-drawer
       v-model="showDrawer"
-      fixed
       temporary
-      right
+      location="right"
       class="nav-drawer"
     >
       <div class="nav-drawer-wrapper d-flex flex-column justify-space-between">
         <div>
-          <v-list flat density="compact">
-            <v-list-item>
-              <v-icon color="black" @click="showDrawer = false"
-                >mdi-close</v-icon
-              >
-
-              <v-list-item-title>{{ $t('menu') }}</v-list-item-title>
+          <v-list variant="flat" density="default">
+            <v-list-item
+              class="text-black"
+              prepend-icon="mdi-close"
+              :title="$t('menu')"
+              @click="showDrawer = false"
+            >
             </v-list-item>
             <v-divider></v-divider>
             <div v-if="menuItems.length > 0">
@@ -25,11 +24,17 @@
                 exact
                 :to="!item.external ? { name: item.route } : ''"
                 :target="item.external ? '_blank' : '_self'"
+                :title="item.title"
+                class="text-black"
                 @click="checkRoute(item.route)"
               >
-                <v-icon color="accent">{{ item.icon }}</v-icon>
-
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
+                <template v-slot:prepend>
+                  <v-icon
+                    v-if="!item.icon.includes('icon')"
+                    :icon="item.icon"
+                    class="text-accent"
+                  ></v-icon>
+                </template>
               </v-list-item>
 
               <v-divider></v-divider>
@@ -42,36 +47,51 @@
                 :to="!item.external ? { name: item.route } : ''"
                 :href="item.external ? item.route : ''"
                 :target="item.external ? '_blank' : '_self'"
+                :title="item.title"
+                class="text-black"
                 @click="checkRoute(item.route)"
               >
-                <v-icon v-if="!item.icon.includes('icon')" color="accent">{{
-                  item.icon
-                }}</v-icon>
-                <div v-else>
-                  <v-sheet
-                    :class="`beep-icon beep-${item.icon} text-primary`"
-                  ></v-sheet>
-                </div>
-
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
+                <template v-slot:prepend>
+                  <v-icon
+                    v-if="!item.icon.includes('icon')"
+                    :icon="item.icon"
+                    class="text-accent"
+                  >
+                  </v-icon>
+                  <div v-else class="beep-list-icon">
+                    <v-sheet
+                      :class="`beep-icon beep-${item.icon} text-accent`"
+                    ></v-sheet>
+                  </div>
+                </template>
               </v-list-item>
 
               <v-divider v-else-if="item.divider" :key="`d-${i}`"></v-divider>
             </template>
 
-            <v-list-item @click="signOut">
-              <v-icon color="accent">mdi-logout-variant</v-icon>
-
-              <v-list-item-title>{{ $t('logout') }}</v-list-item-title>
+            <v-list-item
+              class="text-black"
+              :title="$t('logout')"
+              @click="signOut"
+            >
+              <template v-slot:prepend>
+                <v-icon icon="mdi-logout-variant" class="text-accent"></v-icon>
+              </template>
             </v-list-item>
           </v-list>
         </div>
-
-        <div class="version-number">
+      </div>
+      <template v-slot:append>
+        <!-- <div class="pa-2">
+          <v-btn block prepend-icon="mdi-logout-variant" @click="signOut">
+            {{ $t('logout') }}
+          </v-btn>
+        </div> -->
+        <div class="d-flex justify-space-between version-number">
           <v-spacer></v-spacer>
           <span v-text="'v' + appVersion"></span>
         </div>
-      </div>
+      </template>
     </v-navigation-drawer>
   </div>
 </template>
@@ -240,10 +260,12 @@ export default {
 <style lang="scss" scoped>
 .nav-drawer,
 .nav-drawer-wrapper {
-  height: 100vh !important;
+  height: 100% !important;
+  top: 0 !important;
 }
 .version-number {
-  margin-left: 72px;
+  width: calc(100% - 12px);
+  margin-right: 12px;
   font-size: 11px !important;
 }
 </style>

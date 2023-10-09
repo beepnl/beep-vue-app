@@ -1,87 +1,85 @@
 <!-- eslint-disable vue/attribute-hyphenation -->
 <template>
-  <div>
-    <v-app-bar bg-color="#000" color="primary" density="compact">
+  <v-app-bar bg-color="#000" color="primary" density="compact">
+    <div
+      class="d-flex flex-row justify-space-between align-center"
+      style="width:100%;"
+    >
       <div
-        class="d-flex flex-row justify-space-between align-center"
-        style="width:100%;"
+        class="d-flex flex-row justify-start align-center"
+        style="width: 48%;"
       >
-        <div
-          class="d-flex flex-row justify-start align-center"
-          style="width: 48%;"
-        >
-          <router-link :to="{ name: 'home' }">
-            <v-toolbar-title class="d-flex align-self-center"
-              ><img
-                :src="assetsUrl + '/img/beep-logo-black.svg'"
-                @click="clearHiveFilters"
-            /></v-toolbar-title>
-          </router-link>
-        </div>
-
-        <div class="d-flex justify-center" style="width: 4%">
-          <PlusMenu></PlusMenu>
-        </div>
-
-        <div class="d-flex justify-end align-center mr-n3" style="width: 48%;">
-          <LocaleChanger></LocaleChanger>
-
-          <v-app-bar-nav-icon
-            class="color-black ml-n2"
-            @click.stop="drawer = !drawer"
-          ></v-app-bar-nav-icon>
-        </div>
+        <router-link :to="{ name: 'home' }">
+          <v-toolbar-title class="d-flex align-self-center"
+            ><img
+              :src="assetsUrl + '/img/beep-logo-black.svg'"
+              @click="clearHiveFilters"
+          /></v-toolbar-title>
+        </router-link>
       </div>
 
-      <template v-slot:extension>
-        <v-tabs
-          stacked
-          density="compact"
-          grow
-          bg-olor="#F8B133"
-          color="#000"
-          height="48px"
+      <div class="d-flex justify-center" style="width: 4%">
+        <PlusMenu></PlusMenu>
+      </div>
+
+      <div class="d-flex justify-end align-center mr-n3" style="width: 48%;">
+        <LocaleChanger></LocaleChanger>
+
+        <v-app-bar-nav-icon
+          class="color-black ml-n2"
+          @click.stop="drawer = !drawer"
+        ></v-app-bar-nav-icon>
+      </div>
+    </div>
+
+    <template v-slot:extension>
+      <v-tabs
+        stacked
+        density="compact"
+        grow
+        bg-olor="#F8B133"
+        color="#000"
+        height="48px"
+      >
+        <v-tab
+          v-for="(tab, i) in tabs"
+          :key="i"
+          :to="{ name: tab.route }"
+          :exact="tab.exact"
+          @click="reloadData(tab.route)"
         >
-          <v-tab
-            v-for="(tab, i) in tabs"
-            :key="i"
-            :to="{ name: tab.route }"
-            :exact="tab.exact"
-            @click="reloadData(tab.route)"
+          <span v-if="tab.title">{{ tab.title }}</span>
+          <v-badge
+            v-if="tab.route === 'alerts' && alerts.length > 0"
+            color="red"
+            :content="alerts.length"
           >
-            <span v-if="tab.title">{{ tab.title }}</span>
-            <v-badge
-              v-if="tab.route === 'alerts' && alerts.length > 0"
-              color="red"
-              :content="alerts.length"
-            >
-              <v-icon v-if="tab.icon" size="20px">{{ tab.icon }}</v-icon>
-            </v-badge>
-            <v-icon v-else size="20px">{{ tab.icon }}</v-icon>
-          </v-tab>
-        </v-tabs>
-      </template>
-    </v-app-bar>
+            <v-icon v-if="tab.icon" size="20px">{{ tab.icon }}</v-icon>
+          </v-badge>
+          <v-icon v-else size="20px">{{ tab.icon }}</v-icon>
+        </v-tab>
+      </v-tabs>
+    </template>
+  </v-app-bar>
 
-    <NavDrawer
-      :menu-items="menuItems"
-      :drawer="drawer"
-      @update-drawer-value="drawer = $event"
-    ></NavDrawer>
+  <NavDrawer
+    :menu-items="menuItems"
+    :drawer="drawer"
+    @update-drawer-value="drawer = $event"
+  ></NavDrawer>
 
-    <v-main>
-      <slot></slot>
-    </v-main>
+  <v-main>
+    <slot></slot>
+  </v-main>
 
-    <PWAPrompt
-      :timesToShow="2"
-      :copyTitle="$t('pwa_title')"
-      :copyBody="$t('pwa_body')"
-      :copyShareButtonLabel="$t('pwa_share_button_label')"
-      :copyAddHomeButtonLabel="$t('pwa_addhome_button_label')"
-      :copyClosePrompt="$t('Cancel')"
-    />
-  </div>
+  <PWAPrompt
+    :timesToShow="2"
+    :copyTitle="$t('pwa_title')"
+    :copyBody="$t('pwa_body')"
+    :copyShareButtonLabel="$t('pwa_share_button_label')"
+    :copyAddHomeButtonLabel="$t('pwa_addhome_button_label')"
+    :copyClosePrompt="$t('Cancel')"
+  />
 </template>
 
 <script>

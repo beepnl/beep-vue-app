@@ -84,6 +84,7 @@ const vuetify = createVuetify({
           primary: '#F8B133',
           secondary: '#000000',
           accent: '#f29100',
+          black: '#000000',
           // "primary-darken-1": "#000000",
           // "secondary-darken-1": "#000000",
           // error: "#000000",
