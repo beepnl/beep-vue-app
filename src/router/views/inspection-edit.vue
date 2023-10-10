@@ -431,13 +431,13 @@
                     :key="catIndex"
                     cols="12"
                   >
-                    <checklistFieldset
+                    <ChecklistFieldset
                       v-if="activeInspection"
                       :object="activeInspection.items"
                       :category="category"
                       :locale="locale"
                       :parse-mode="parseMode"
-                    ></checklistFieldset>
+                    ></ChecklistFieldset>
                   </v-col>
                 </v-row>
               </v-card-text>
@@ -671,7 +671,7 @@
 import Api from '@api/Api'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
-import checklistFieldset from '@components/checklist-fieldset.vue'
+import ChecklistFieldset from '@components/checklist-fieldset.vue'
 import Confirm from '@/src/components/confirm-dialog.vue'
 // import { Datetime } from 'vue-datetime'  // TODO-VUE3 replace by other date picker compatible with Vue 3
 // import 'vue-datetime/dist/vue-datetime.min.css'
@@ -696,7 +696,7 @@ import UploadInspection from '@components/upload-inspection.vue'
 export default {
   components: {
     ApiaryPreviewHiveSelector,
-    checklistFieldset,
+    ChecklistFieldset,
     Confirm,
     // Datetime,
     InspectModeSelector,
@@ -1130,10 +1130,11 @@ export default {
   },
   watch: {
     selectedHives() {
+      console.log('watch selected hives', this.selectedHives)
       this.setActiveHive()
     },
   },
-  created() {
+  mounted() {
     if (localStorage.beepSelectedInspectionMode === 'Offline') {
       this.$store.commit('inspections/resetSvgStates')
       this.setSelectedMode = 'Offline'
@@ -1245,6 +1246,7 @@ export default {
       }
     },
     async getActiveHive(id) {
+      console.log('get active hive', id)
       if (id !== null) {
         try {
           const response = await Api.readRequest('/hives/', id)
@@ -1844,11 +1846,15 @@ export default {
       }
     },
     selectHive(id) {
+      console.log('select hive', id) // TODO-VUE3 fix watch(selectedHives) is not triggered when single hive is selected
       if (this.editableHives.includes(id)) {
         if (!this.selectedHives.includes(id)) {
           this.selectedHives.push(id)
         } else {
           this.selectedHives.splice(this.selectedHives.indexOf(id), 1)
+        }
+        if (this.selectedHives.length === 1) {
+          this.setActiveHive()
         }
         this.setInspectionEdited(true)
       }
@@ -1897,6 +1903,7 @@ export default {
       this.$store.commit('inspections/setInspectionEdited', bool)
     },
     setActiveHive() {
+      console.log('set active hive', this.selectedHives)
       if (this.selectedHives.length === 1) {
         this.getActiveHive(this.selectedHives[0])
       } else if (this.activeHive !== null) {
@@ -1976,11 +1983,7 @@ export default {
       localStorage.beepSelectedInspectionMode = value
     },
     toggleCategory(index) {
-      this.$set(
-        this.showCategoriesByIndex,
-        index,
-        !this.showCategoriesByIndex[index]
-      )
+      this.showCategoriesByIndex[index] = !this.showCategoriesByIndex[index]
     },
     validateText(value, property, maxLength) {
       if (value !== null && value.length > maxLength + 1) {

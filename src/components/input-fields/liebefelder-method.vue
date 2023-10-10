@@ -90,48 +90,45 @@
                       class="beep-label"
                       v-text="$tc('Hive_honey_layer', 2)"
                     ></div>
-                    <!-- <el-input-number
+                    <ElInputNumber
                       v-if="activeHive && activeHive.layers"
                       v-model="honeyLayersForCalculation"
                       :min="0"
                       :max="maxHoneyLayers"
                       :precision="0"
                       :disabled="bulkInspection"
-                      size="medium"
                       @change="calculateLiebefeldColonySize"
-                      @input="calculateLiebefeldColonySize"
-                    ></el-input-number> -->
+                      @update:model-value="calculateLiebefeldColonySize"
+                    ></ElInputNumber>
                   </v-col>
                   <v-col cols="12">
                     <div
                       class="beep-label"
                       v-text="$tc('Hive_brood_layer', 2)"
                     ></div>
-                    <!-- <el-input-number
+                    <ElInputNumber
                       v-if="activeHive && activeHive.layers"
                       v-model="broodLayersForCalculation"
                       :min="0"
                       :max="maxBroodLayers"
                       :precision="0"
                       :disabled="bulkInspection"
-                      size="medium"
                       @change="calculateLiebefeldColonySize"
-                      @input="calculateLiebefeldColonySize"
-                    ></el-input-number> -->
+                      @update:model-value="calculateLiebefeldColonySize"
+                    ></ElInputNumber>
                   </v-col>
                   <v-col cols="12">
                     <div class="beep-label" v-text="$t('Hive_frames')"></div>
-                    <!-- <el-input-number
+                    <ElInputNumber
                       v-if="activeHive && activeHive.layers"
                       v-model="framesForCalculation"
                       :min="0"
                       :max="maxFrames"
                       :precision="0"
                       :disabled="bulkInspection"
-                      size="medium"
                       @change="calculateLiebefeldColonySize"
-                      @input="calculateLiebefeldColonySize"
-                    ></el-input-number> -->
+                      @update:model-value="calculateLiebefeldColonySize"
+                    ></ElInputNumber>
                   </v-col>
                 </v-row>
               </v-col>
@@ -241,10 +238,9 @@
         </v-row>
       </div>
       <v-overlay
-        :absolute="true"
-        :activator="bulkInspection"
-        :opacity="0.5"
-        color="white"
+        :model-value="bulkInspection"
+        contained
+        scrim="white"
         z-index="3"
         class="input-disabled-overlay"
       >
@@ -259,13 +255,13 @@ import ChecklistInput from '@components/checklist-input.vue'
 import HiveIcon from '@components/hive-icon.vue'
 import { mapGetters } from 'vuex'
 import { getMaxFramecount } from '@mixins/methodsMixin'
-// import { ElInputNumber } from 'element-plus' TODO-VUE3 enable for real Vue 3
+import { ElInputNumber } from 'element-plus'
 
 export default {
   components: {
     ChecklistInput,
     HiveIcon,
-    // ElInputNumber,
+    ElInputNumber,
   },
   mixins: [getMaxFramecount],
   props: {
@@ -343,8 +339,8 @@ export default {
   methods: {
     calculateLiebefeldColonySize() {
       const beesPerCm2 = 1.25
-      var beesSquares25cm2 = 0
-      var colonySize = null
+      let beesSquares25cm2 = 0
+      let colonySize = null
 
       setTimeout(() => {
         this.category.children.map((child) => {

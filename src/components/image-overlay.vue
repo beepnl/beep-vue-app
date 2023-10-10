@@ -1,5 +1,5 @@
 <template>
-  <v-overlay v-bind="overlay">
+  <v-overlay v-model="overlay">
     <v-toolbar density="compact" light flat class="image-overlay-toolbar">
       <v-spacer></v-spacer>
       <v-toolbar-items>
@@ -43,16 +43,13 @@ export default {
       type: String,
       required: true,
     },
-    overlay: {
-      type: Boolean,
-      required: true,
-    },
   },
   data() {
     return {
       baseApiUrl:
         process.env.VUE_APP_BASE_API_URL ||
         process.env.VUE_APP_BASE_API_URL_FALLBACK,
+      overlay: true,
     }
   },
   computed: {

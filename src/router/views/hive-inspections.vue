@@ -560,10 +560,8 @@
                     >
                     </v-img>
                     <imageOverlay
+                      v-if="activeImage !== null && activeImage === item.val"
                       :thumburl="item.val"
-                      :overlay="
-                        activeImage !== null && activeImage === item.val
-                      "
                       @close-overlay="activeImage = null"
                     ></imageOverlay>
                   </span>
@@ -720,7 +718,7 @@ export default {
       return this.$i18n.locale
     },
     matchedItemsByDate() {
-      var matchedItemsByDate = []
+      let matchedItemsByDate = []
       matchedItemsByDate = this.inspections.items_by_date
         .reduce((acc, itemByDate) => {
           if (

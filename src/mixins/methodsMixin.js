@@ -204,8 +204,8 @@ export const convertComma = {
   // method for el-input-number with 1 or more decimals
   methods: {
     convertComma(event, object, property, precision = 1) {
-      // console.log('convert comma', event.target.value)
-      const value = event.target.value
+      // console.log('convert comma', event)
+      const value = event
       // if user inputs a value with a comma followed by at least one decimal, convert it to a dot
       if (value.toString().indexOf(',') > -1) {
         if (

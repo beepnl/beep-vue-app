@@ -160,11 +160,10 @@
           >
             <div>
               <div class="beep-label" v-text="$t('Hive_order')"></div>
-              <!-- <el-input-number
+              <ElInputNumber
                 :value="activeHive.order === null ? 0 : activeHive.order"
-                size="medium"
                 @change="updateOrder($event)"
-              ></el-input-number> -->
+              ></ElInputNumber>
             </div>
           </v-col>
         </v-row>
@@ -209,7 +208,7 @@ import {
   readGeneralInspections,
 } from '@mixins/methodsMixin'
 import { timeZone } from '@mixins/momentMixin'
-// import { ElInputNumber } from 'element-plus'
+import { ElInputNumber } from 'element-plus'
 
 export default {
   components: {
@@ -218,7 +217,7 @@ export default {
     Layout,
     QueenEditDetails,
     Treeselect,
-    //  ElInputNumber,
+    ElInputNumber,
   },
   mixins: [
     checkAlerts,

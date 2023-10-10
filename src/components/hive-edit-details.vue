@@ -30,9 +30,9 @@
 
               <v-col cols="12" md="5">
                 <div class="beep-label" v-text="`${$t('Hive_frames')}`"></div>
-                <!-- <el-input-number
+                <ElInputNumber
                   v-if="hive && hive.layers"
-                  :value="
+                  :model-value="
                     hive.layers.length > 0
                       ? getMaxFramecount(hive.layers)
                       : defaultFrameCount
@@ -42,7 +42,6 @@
                   :step="1"
                   :precision="0"
                   :disabled="hive.layers.length === 0"
-                  size="medium"
                   @change="
                     updateHiveLayers(
                       parseInt($event),
@@ -50,7 +49,7 @@
                       'framecount'
                     )
                   "
-                ></el-input-number> -->
+                ></ElInputNumber>
               </v-col>
             </v-row>
 
@@ -114,7 +113,7 @@
               <v-col cols="12" sm="7" md="12">
                 <div class="beep-label" v-text="`${$t('Hive_type')}*`"></div>
                 <Treeselect
-                  :value="hive.hive_type_id"
+                  :model-value="hive.hive_type_id"
                   :options="treeselectHiveTypes"
                   :disable-branch-nodes="true"
                   :no-results-text="`${$t('no_results')}`"
@@ -146,8 +145,8 @@
                           class="beep-label"
                           v-text="`${$t(bbDimension)}`"
                         ></div>
-                        <!-- <el-input-number
-                          :value="
+                        <ElInputNumber
+                          :model-value="
                             hive[bbDimension]
                               ? parseFloat(hive[bbDimension])
                               : 0
@@ -156,7 +155,6 @@
                           :max="100"
                           :step="0.1"
                           :precision="1"
-                          size="medium"
                           @change="
                             updateHive(
                               $event.toString(),
@@ -164,12 +162,12 @@
                               bbDimension
                             )
                           "
-                          @input="
+                          @update:model-value="
                             convertComma($event, hive, bbDimension, 1),
                               setHiveEdited(true),
                               setApiaryEdited(true)
                           "
-                        ></el-input-number> -->
+                        ></ElInputNumber>
                       </div>
                     </v-col>
 
@@ -183,8 +181,8 @@
                           class="beep-label"
                           v-text="`${$t(frDimension)}`"
                         ></div>
-                        <!-- <el-input-number
-                          :value="
+                        <ElInputNumber
+                          :model-value="
                             hive[frDimension]
                               ? parseFloat(hive[frDimension])
                               : 0
@@ -193,7 +191,6 @@
                           :max="100"
                           :step="0.1"
                           :precision="1"
-                          size="medium"
                           @change="
                             updateHive(
                               $event.toString(),
@@ -201,12 +198,12 @@
                               frDimension
                             )
                           "
-                          @input="
+                          @update:model-value="
                             convertComma($event, hive, frDimension, 1),
                               setHiveEdited(true),
                               setApiaryEdited(true)
                           "
-                        ></el-input-number> -->
+                        ></ElInputNumber>
                       </div>
                     </v-col>
                   </v-row>
@@ -229,13 +226,13 @@ import {
   readTaxonomy,
 } from '@mixins/methodsMixin'
 import Treeselect from 'vue3-treeselect'
-// import { ElInputNumber } from 'element-plus' TODO-VUE3 enable for real Vue 3
+import { ElInputNumber } from 'element-plus'
 
 export default {
   components: {
     HiveFactory,
     Treeselect,
-    // ElInputNumber,
+    ElInputNumber,
   },
   mixins: [convertComma, getMaxFramecount, readTaxonomy],
   props: {

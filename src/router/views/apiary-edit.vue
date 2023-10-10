@@ -188,9 +188,9 @@
                 </v-col>
                 <v-col cols="6" sm="4">
                   <div class="beep-label" v-text="`${$t('latitude')}`"></div>
-                  <!-- <el-input-number
+                  <ElInputNumber
                     v-if="activeApiary"
-                    :value="
+                    :model-value="
                       activeApiary.coordinate_lat === null
                         ? 0
                         : activeApiary.coordinate_lat
@@ -200,9 +200,8 @@
                     :step="0.001"
                     :precision="3"
                     :step-strictly="true"
-                    size="medium"
                     @change="editApiary($event, 'lat')"
-                    @input="
+                    @update:model-value="
                       convertComma(
                         $event,
                         activeApiary,
@@ -213,13 +212,13 @@
                       ),
                         setApiaryEdited(true)
                     "
-                  ></el-input-number> -->
+                  ></ElInputNumber>
                 </v-col>
                 <v-col cols="6" sm="4">
                   <div class="beep-label" v-text="`${$t('Longitude')}`"></div>
-                  <!-- <el-input-number
+                  <ElInputNumber
                     v-if="activeApiary"
-                    :value="
+                    :model-value="
                       activeApiary.coordinate_lon === null
                         ? 0
                         : activeApiary.coordinate_lon
@@ -229,9 +228,8 @@
                     :step="0.001"
                     :precision="3"
                     :step-strictly="true"
-                    size="medium"
                     @change="editApiary($event, 'lon')"
-                    @input="
+                    @update:model-value="
                       convertComma(
                         $event,
                         activeApiary,
@@ -242,7 +240,7 @@
                       ),
                         setApiaryEdited(true)
                     "
-                  ></el-input-number> -->
+                  ></ElInputNumber>
                 </v-col>
               </v-row>
               <v-row>
@@ -315,14 +313,14 @@ import Confirm from '@/src/components/confirm-dialog.vue'
 import Layout from '@/src/router/layouts/back-layout.vue'
 import { mapGetters } from 'vuex'
 import { convertComma, readApiariesAndGroups } from '@mixins/methodsMixin'
-// import { ElInputNumber } from 'element-plus' TODO-VUE3 enable for real Vue 3
+import { ElInputNumber } from 'element-plus'
 
 export default {
   components: {
     Confirm,
     Layout,
     VueGoogleAutocomplete,
-    // ElInputNumber,
+    ElInputNumber,
   },
   mixins: [convertComma, readApiariesAndGroups],
   data: function() {

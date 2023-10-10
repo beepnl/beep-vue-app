@@ -28,20 +28,17 @@
       <template v-for="(listItem, index) in item.children" :key="index">
         <v-list-item
           class="inspection-list-item"
-          @click.capture.stop="toggleSelect(listItem.id, item.id)"
+          :title="listItem.trans[locale] || listItem.name"
+          @click.capture="toggleSelect(listItem.id, item.id)"
         >
           <v-list-item-action>
             <v-checkbox
               v-if="listItem.input === 'list_item'"
-              v-model="selectedArray"
+              :model-value="selectedArray"
               multiple
-              :value="listItem.id.toString()"
+              update:model-value="listItem.id.toString()"
             />
           </v-list-item-action>
-
-          <v-list-item-title>{{
-            listItem.trans[locale] || listItem.name
-          }}</v-list-item-title>
         </v-list-item>
 
         <template v-if="listItem.children.length > 0">
@@ -49,20 +46,17 @@
             v-for="(nestedItem, n) in listItem.children"
             :key="'nest-' + n"
             class="inspection-list-item nested"
-            @click.capture.stop="toggleSelect(nestedItem.id, item.id)"
+            :title="nestedItem.trans[locale] || nestedItem.name"
+            @click.capture="toggleSelect(nestedItem.id, item.id)"
           >
             <v-list-item-action>
               <v-checkbox
                 v-if="nestedItem.input === 'list_item'"
-                v-model="selectedArray"
+                :model-value="selectedArray"
                 multiple
-                :value="nestedItem.id.toString()"
+                update:model-value="nestedItem.id.toString()"
               />
             </v-list-item-action>
-
-            <v-list-item-title>{{
-              nestedItem.trans[locale] || nestedItem.name
-            }}</v-list-item-title>
           </v-list-item>
         </template>
       </template>
@@ -70,14 +64,14 @@
 
     <v-radio-group
       v-if="item.input === 'options'"
-      :value="parseInt(object[item.id])"
+      :model-value="parseInt(object[item.id])"
       class="inspection-options-list"
     >
       <v-radio
         v-for="(listItem, index) in item.children"
         :key="index"
         :label="listItem.trans[locale] || listItem.name"
-        :value="listItem.id"
+        :model-value="listItem.id"
         @click="toggleRadio(listItem.id, item.id)"
       ></v-radio>
     </v-radio-group>
@@ -114,31 +108,29 @@
       :object="object"
     ></slider>
 
-    <!-- <el-input-number
+    <ElInputNumber
       v-if="item.input === 'number' || item.input === 'number_0_decimals'"
-      :value="object[item.id] === null ? 0 : object[item.id]"
+      :model-value="object[item.id] === null ? 0 : object[item.id]"
       :step="1"
       :precision="0"
       :step-strictly="true"
       :disabled="disabled"
-      size="medium"
       @change="updateInput($event, item.id, item.name, item.input)"
-      @input="convertComma($event, item.name, 0)"
-    ></el-input-number> -->
+      @update:model-value="convertComma($event, item.name, 0)"
+    ></ElInputNumber>
 
-    <!-- <el-input-number
+    <ElInputNumber
       v-if="
         item.input === 'number_1_decimals' ||
           item.input === 'number_2_decimals' ||
           item.input === 'square_25cm2'
       "
-      :value="object[item.id] === null ? 0 : object[item.id]"
+      :model-value="object[item.id] === null ? 0 : object[item.id]"
       :step="item.input === 'number_2_decimals' ? 0.01 : 0.1"
       :precision="precision"
       :disabled="disabled"
-      size="medium"
       @change="updateInput($event, item.id, item.name, item.input)"
-      @input="
+      @update:model-value="
         convertComma(
           $event,
           item.name,
@@ -146,44 +138,41 @@
           item.input === 'number_2_decimals' ? 2 : 1
         )
       "
-    ></el-input-number>
+    ></ElInputNumber>
 
-    <el-input-number
+    <ElInputNumber
       v-if="item.input === 'number_3_decimals'"
-      :value="object[item.id] === null ? 0 : object[item.id]"
+      :model-value="object[item.id] === null ? 0 : object[item.id]"
       :step="0.001"
       :precision="3"
       :disabled="disabled"
-      size="medium"
       @change="updateInput($event, item.id, item.name, item.input)"
-      @input="convertComma($event, item.name, 3)"
-    ></el-input-number>
+      @update:model-value="convertComma($event, item.name, 3)"
+    ></ElInputNumber>
 
-    <el-input-number
+    <ElInputNumber
       v-if="item.input === 'number_negative'"
-      :value="object[item.id] === null ? 0 : object[item.id]"
+      :model-value="object[item.id] === null ? 0 : object[item.id]"
       :max="0"
       :step="1"
       :precision="0"
       :step-strictly="true"
       :disabled="disabled"
-      size="medium"
       @change="updateInput($event, item.id, item.name, item.input)"
-      @input="convertComma($event, item.name, 0)"
-    ></el-input-number>
+      @update:model-value="convertComma($event, item.name, 0)"
+    ></ElInputNumber>
 
-    <el-input-number
+    <ElInputNumber
       v-if="item.input === 'number_positive'"
-      :value="object[item.id] === null ? 0 : object[item.id]"
+      :model-value="object[item.id] === null ? 0 : object[item.id]"
       :min="0"
       :step="1"
       :precision="0"
       :step-strictly="true"
       :disabled="item.name === 'colony_size' || disabled"
-      size="medium"
       @change="updateInput($event, item.id, item.name, item.input)"
-      @input="convertComma($event, item.name, 0)"
-    ></el-input-number> -->
+      @update:model-value="convertComma($event, item.name, 0)"
+    ></ElInputNumber>
 
     <starRating
       v-if="item.input === 'score'"
@@ -193,14 +182,14 @@
 
     <v-textarea
       v-if="item.input === 'text'"
-      v-model="object[item.id]"
+      :model-value="object[item.id]"
       class="inspection-text-area"
       :placeholder="item.trans[locale] || item.name"
       counter="2500"
       :rows="getEnters(object[item.id])"
       auto-grow
       clearable
-      @input="validateText($event, item.id, 2500)"
+      @update:model-value="validateText($event, item.id, 2500)"
     ></v-textarea>
 
     <smileRating
@@ -281,6 +270,7 @@
 import { svgData } from '@mixins/svgMixin'
 import { parseDate } from '@mixins/methodsMixin'
 import { mapGetters } from 'vuex'
+// import ChecklistFieldset from '@components/checklist-fieldset.vue'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
 import dummyOutput from '@components/svg/scan_results_aws.json' // list.json' // test_4_dummy.json' TODO remove dummy output
@@ -292,7 +282,7 @@ import smileRating from '@components/input-fields/smile-rating.vue'
 import starRating from '@components/input-fields/star-rating.vue'
 import treeselect from '@/src/components/input-fields/treeselect-input.vue'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
-// import { ElInputNumber } from 'element-plus'  TODO-VUE3 enable for real Vue 3
+import { ElInputNumber } from 'element-plus'
 
 export default {
   name: 'ChecklistInput',
@@ -308,7 +298,7 @@ export default {
     starRating,
     treeselect,
     yesNoRating,
-    // ElInputNumber,
+    ElInputNumber,
   },
   mixins: [parseDate, svgData],
   props: {
@@ -372,7 +362,7 @@ export default {
     },
     precision() {
       const dIndex = this.item.input.indexOf('_decimals')
-      var dec = 0
+      let dec = 0
       if (dIndex > -1) {
         dec = parseInt(this.item.input.substr(dIndex - 1, 1))
       } else if (this.item.input === 'square_25cm2') {
@@ -391,7 +381,7 @@ export default {
     },
     parsedAnswer() {
       if (this.parseMode) {
-        var answer = this.parsedAnswerRaw
+        let answer = this.parsedAnswerRaw
         if (Array.isArray(this.parsedAnswerRaw)) {
           if (this.parsedAnswerRaw[0].type === 'checkbox') {
             const posAnswer = this.parsedAnswerRaw.filter(
@@ -438,7 +428,7 @@ export default {
           })
           .filter((el) => el.length > 0)
 
-        var answer = null
+        let answer = null
 
         if (returnedItems.length > 0) {
           if (returnedItems[0].length > 1) {
@@ -455,8 +445,8 @@ export default {
     },
     parsedImages() {
       if (Array.isArray(this.parsedAnswerRaw)) {
-        var imgArr = []
-        var i = 0
+        let imgArr = []
+        let i = 0
         if (this.parsedItems.length > 0) {
           this.parsedItems.map((it, j) => {
             if (it.hasChildren) {
@@ -593,10 +583,9 @@ export default {
       }
     },
     convertComma(event, name = null, precision = 1) {
-      // console.log('convert comma ', event.target.value)
-      var value = event.target.value
+      let value = event
       // if user inputs a value with a comma followed by at least one decimal, convert it to a dot
-      if (value.toString().indexOf(',') > -1) {
+      if (value !== null && value.toString().indexOf(',') > -1) {
         if (
           precision <= 1 &&
           value.length > value.toString().indexOf(',') + precision
@@ -617,7 +606,7 @@ export default {
     },
     findCategoryId(input) {
       if (typeof input === 'string') {
-        var value = input.toLowerCase()
+        const value = input.toLowerCase()
         const findItem = this.flattenedItems.filter(
           (item) =>
             Object.values(item.trans).filter(
@@ -685,7 +674,7 @@ export default {
       this.setInspectionEdited(true)
     },
     toggleSelect(listItemId, listId) {
-      var selectedArray = []
+      let selectedArray = []
       if (typeof this.object[listId] === 'string') {
         selectedArray = this.object[listId].split(',')
       }

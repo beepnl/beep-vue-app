@@ -133,7 +133,9 @@
                 :placeholder="$t('Select') + '...'"
                 class="pt-0"
                 hide-details
-                @update:model-value="setAlertRuleEdited(true), checkCalculation($event)"
+                @update:model-value="
+                  setAlertRuleEdited(true), checkCalculation($event)
+                "
               ></v-select>
               <div
                 v-if="activeAlertRule.calculation_minutes === 0"
@@ -247,18 +249,18 @@
                   :class="`beep-label ${thresholdValueIsNaN ? 'text-red' : ''}`"
                   v-text="$t('Threshold_value') + ' (' + measurementUnit + ')'"
                 ></div>
-                <!-- <el-input-number
+                <ElInputNumber
                   v-model="activeAlertRule.threshold_value"
                   :step="activeAlertRule.calculation === 'cnt' ? 1 : 0.1"
                   :precision="activeAlertRule.calculation === 'cnt' ? 0 : 1"
                   :step-strictly="true"
                   size="small"
                   @change="setAlertRuleEdited(true)"
-                  @input="
+                  @update:model-value="
                     convertComma($event, activeAlertRule, 'threshold_value', 1),
                       setAlertRuleEdited(true)
                   "
-                ></el-input-number> -->
+                ></ElInputNumber>
                 <div
                   v-if="thresholdValueIsNaN"
                   class="v-text-field__details mt-1"
@@ -392,14 +394,14 @@ import {
   sortedDevices,
 } from '@mixins/methodsMixin'
 import { momentHumanizeHours } from '@mixins/momentMixin'
-// import { ElInputNumber } from 'element-plus' TODO-VUE3 enable for real Vue 3
+import { ElInputNumber } from 'element-plus'
 
 export default {
   components: {
     Confirm,
     Layout,
     Treeselect,
-    // ElInputNumber,
+    ElInputNumber,
   },
   mixins: [
     convertComma,

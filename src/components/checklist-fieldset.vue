@@ -35,23 +35,23 @@
         >
       </p>
 
-      <topPhotoAnalysis
+      <TopPhotoAnalysis
         v-if="category.name === 'top_photo_analysis'"
         :object="object"
         :category="category"
         :locale="locale"
         :parse-mode="parseMode"
         :nested="nested"
-      ></topPhotoAnalysis>
+      ></TopPhotoAnalysis>
 
-      <liebefelderMethod
+      <LiebefelderMethod
         v-if="category.name === 'liebefelder_method'"
         :object="object"
         :category="category"
         :locale="locale"
         :parse-mode="parseMode"
         :nested="nested"
-      ></liebefelderMethod>
+      ></LiebefelderMethod>
 
       <div
         v-if="
@@ -116,16 +116,16 @@
 
 <script>
 import ChecklistInput from '@components/checklist-input.vue'
-import topPhotoAnalysis from '@components/input-fields/top-photo-analysis.vue'
-import liebefelderMethod from '@components/input-fields/liebefelder-method.vue'
+import TopPhotoAnalysis from '@components/input-fields/top-photo-analysis.vue'
+import LiebefelderMethod from '@components/input-fields/liebefelder-method.vue'
 
 export default {
   name: 'ChecklistFieldset',
   components: {
     ChecklistFieldset: () => import('@components/checklist-fieldset.vue'), // needed to fix Vue recursive component error
     ChecklistInput,
-    liebefelderMethod,
-    topPhotoAnalysis,
+    LiebefelderMethod,
+    TopPhotoAnalysis,
   },
   props: {
     category: {

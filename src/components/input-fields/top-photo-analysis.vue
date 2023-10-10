@@ -51,31 +51,29 @@
                   class="beep-label"
                   v-text="$tc('Hive_brood_layer', 2)"
                 ></div>
-                <!-- <el-input-number
+                <ElInputNumber
                   v-if="activeHive && activeHive.layers"
                   v-model="broodLayersForCalculation"
                   :min="0"
                   :max="maxBroodLayers"
                   :precision="0"
                   :disabled="bulkInspection"
-                  size="medium"
                   @change="calculateTpaColonySize"
-                  @input="calculateTpaColonySize"
-                ></el-input-number> -->
+                  @update:model-value="calculateTpaColonySize"
+                ></ElInputNumber>
               </v-col>
               <v-col cols="12">
                 <div class="beep-label" v-text="$t('Hive_frames')"></div>
-                <!-- <el-input-number
+                <ElInputNumber
                   v-if="activeHive && activeHive.layers"
                   v-model="framesForCalculation"
                   :min="0"
                   :max="maxFrames"
                   :precision="0"
                   :disabled="bulkInspection"
-                  size="medium"
                   @change="calculateTpaColonySize"
-                  @input="calculateTpaColonySize"
-                ></el-input-number> -->
+                  @update:model-value="calculateTpaColonySize"
+                ></ElInputNumber>
               </v-col>
             </v-row>
           </v-col>
@@ -167,10 +165,9 @@
         </v-row>
       </div>
       <v-overlay
-        :activator="true"
-        :value="bulkInspection"
-        :opacity="0.5"
-        color="white"
+        :model-value="bulkInspection"
+        contained
+        scrim="white"
         z-index="3"
         class="input-disabled-overlay"
       >
@@ -186,14 +183,14 @@ import ChecklistFieldset from '@components/checklist-fieldset.vue'
 import HiveIcon from '@components/hive-icon.vue'
 import { mapGetters } from 'vuex'
 import { getMaxFramecount } from '@mixins/methodsMixin'
-// import { ElInputNumber } from 'element-plus' TODO-VUE3 enable for real Vue 3
+import { ElInputNumber } from 'element-plus'
 
 export default {
   components: {
     ChecklistInput,
     ChecklistFieldset,
     HiveIcon,
-    // ElInputNumber,
+    ElInputNumber,
   },
   mixins: [getMaxFramecount],
   props: {
@@ -254,9 +251,9 @@ export default {
   methods: {
     calculateTpaColonySize() {
       const beesPerCm2 = 1.25
-      var colonySize = null
-      var pixelsTotal = 0
-      var pixelsBees = 0
+      let colonySize = null
+      let pixelsTotal = 0
+      let pixelsBees = 0
 
       setTimeout(() => {
         this.category.children.map((child) => {

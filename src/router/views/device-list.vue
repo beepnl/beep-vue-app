@@ -469,23 +469,23 @@
                                 ></yesNoRating>
                               </td>
                               <td>
-                                <!-- <el-input-number
+                                <ElInputNumber
                                   v-model="sensorDef.offset"
                                   :disabled="sensorDef.delete"
                                   size="small"
-                                  @input="
-                                    convertComma($event, sensorDef, 'offset')
-                                    sensorDefEdited = true
+                                  @update:model-value="
+                                    convertComma($event, sensorDef, 'offset'),
+                                      (sensorDefEdited = true)
                                   "
                                   @change="sensorDefEdited = true"
-                                ></el-input-number> -->
+                                ></ElInputNumber>
                               </td>
                               <td>
-                                <!-- <el-input-number
+                                <ElInputNumber
                                   v-model="sensorDef.multiplier"
                                   :disabled="sensorDef.delete"
                                   size="small"
-                                  @input="
+                                  @update:model-value="
                                     convertComma(
                                       $event,
                                       sensorDef,
@@ -494,7 +494,7 @@
                                       (sensorDefEdited = true)
                                   "
                                   @change="sensorDefEdited = true"
-                                ></el-input-number> -->
+                                ></ElInputNumber>
                               </td>
                               <td class="td--small">
                                 <v-select
@@ -656,7 +656,7 @@ import {
   readTaxonomy,
 } from '@mixins/methodsMixin'
 import Treeselect from 'vue3-treeselect'
-// import { ElInputNumber } from 'element-plus' TODO-VUE3 enable for real Vue 3
+import { ElInputNumber } from 'element-plus'
 
 export default {
   components: {
@@ -664,7 +664,7 @@ export default {
     Layout,
     Treeselect,
     yesNoRating,
-    // ElInputNumber,
+    ElInputNumber,
   },
   mixins: [
     convertComma,

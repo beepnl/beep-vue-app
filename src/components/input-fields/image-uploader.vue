@@ -1,10 +1,9 @@
 <template>
   <div>
-    <v-file-input
+    <!-- <v-file-input
       v-if="object[item.id] === null"
       ref="image"
       class="pt-0 image-uploader"
-      accept="image/png, image/jpeg, image/bmp"
       :placeholder="`${$t('Select')} ${$tc('Image', 1).toLowerCase()}`"
       prepend-icon="mdi-camera"
       :error-messages="errorMessage"
@@ -12,7 +11,7 @@
       :loading="showLoading ? 'primary' : false"
       @change="onUpload"
       @click:clear="errorMessage = null"
-    ></v-file-input>
+    ></v-file-input> TODO-VUE3 fix file input -->
     <div class="image-preview">
       <v-icon
         v-if="object[item.id] !== null"
@@ -34,9 +33,12 @@
       </span>
     </div>
     <imageOverlay
-      v-if="object[item.id] !== null"
+      v-if="
+        object[item.id] !== null &&
+          activeImage !== null &&
+          activeImage === object[item.id]
+      "
       :thumburl="object[item.id]"
-      :overlay="activeImage !== null && activeImage === object[item.id]"
       @close-overlay="activeImage = null"
     ></imageOverlay>
 
@@ -101,7 +103,7 @@ export default {
     async deleteImage(id) {
       try {
         const imageUrl = this.object[id]
-        var data = {
+        const data = {
           image_url: imageUrl,
         }
         // empty input field even if deleting image gives error
@@ -121,7 +123,13 @@ export default {
     async onUpload() {
       const file = this.$refs.image.internalValue
 
-      if (typeof file !== 'undefined' && (file !== null) & !file.$error) {
+      if (
+        typeof file !== 'undefined' &&
+        (file !== null) & !file.$error &&
+        (file.type === 'image/png' ||
+          file.type === 'image/jpeg' ||
+          file.type === 'image/bmp')
+      ) {
         this.showLoading = true
         const userId = this.$store.getters['auth/userId']
         const hiveId =
