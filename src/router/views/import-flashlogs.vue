@@ -32,13 +32,13 @@
 
     <v-container v-if="ready" :class="mobile ? '' : 'back-content'">
       <v-row>
-        <v-col v-if="importMessage" cols="12">
+        <v-col v-if="importMessageCopy" cols="12">
           <v-alert
             text
             prominent
             density="compact"
-            :type="importMessage.data_stored ? 'success' : 'error'"
-            :color="importMessage.data_stored ? 'green' : 'red'"
+            :type="importMessageCopy.data_stored ? 'success' : 'error'"
+            :color="importMessageCopy.data_stored ? 'green' : 'red'"
             class="mt-3 mb-n4"
           >
             {{ importSentence }}
@@ -697,6 +697,7 @@ export default {
       baseApiUrl:
         process.env.VUE_APP_BASE_API_URL ||
         process.env.VUE_APP_BASE_API_URL_FALLBACK,
+      importMessageCopy: null,
     }
   },
   computed: {
@@ -704,26 +705,27 @@ export default {
     ...mapGetters('groups', ['groups']),
     ...mapGetters('locations', ['apiaries']),
     importSentence() {
-      return this.importMessage !== null && this.importMessage.data_stored
+      return this.importMessageCopy !== null &&
+        this.importMessageCopy.data_stored
         ? this.$i18n.t('data_stored_for_log') +
-            this.importMessage.flashlog_id +
+            this.importMessageCopy.flashlog_id +
             ' - ' +
-            this.importMessage.device_name +
+            this.importMessageCopy.device_name +
             ' - ' +
             this.$i18n.t('Block') +
             ' ' +
-            this.importMessage.block_id +
+            this.importMessageCopy.block_id +
             '. ' +
             this.$i18n.t('persisted_measurements') +
             ': ' +
-            this.importMessage.persisted_measurements +
+            this.importMessageCopy.persisted_measurements +
             ', ' +
             this.$i18n.t('persisted_days') +
             ': ' +
-            this.importMessage.persisted_days
+            this.importMessageCopy.persisted_days
         : this.$i18n.t('no_data_stored') +
             '. ' +
-            JSON.stringify(this.importMessage)
+            JSON.stringify(this.importMessageCopy)
     },
     lgAndUp() {
       return this.$vuetify.display.lgAndUp
@@ -733,71 +735,71 @@ export default {
     },
     logDataHeaders() {
       return [
-        { text: this.$i18n.t('Block'), value: 'block' },
+        { title: this.$i18n.t('Block'), key: 'block' },
         {
-          text: this.$i18n.t('Data_imported'),
-          value: 'data_imported',
+          title: this.$i18n.t('Data_imported'),
+          key: 'data_imported',
         },
-        { text: this.$i18n.tc('Match', 2), value: 'matches' },
+        { title: this.$i18n.tc('Match', 2), key: 'matches' },
         {
-          text: this.$i18n.t('Size'),
-          value: 'duration_hours',
-        },
-        {
-          text: this.$i18n.t('Missing_data'),
-          value: 'missing_data',
+          title: this.$i18n.t('Size'),
+          key: 'duration_hours',
         },
         {
-          text: this.$i18n.t('period'),
-          value: 'time_end',
+          title: this.$i18n.t('Missing_data'),
+          key: 'missing_data',
         },
         {
-          text: this.$i18n.t('Firmware_version'),
-          value: 'fw_version',
+          title: this.$i18n.t('period'),
+          key: 'time_end',
         },
         {
-          text: this.$i18n.t('Interval') + ' (min)',
-          value: 'interval_min',
+          title: this.$i18n.t('Firmware_version'),
+          key: 'fw_version',
         },
-        { text: this.$i18n.tc('Action', 2), sortable: false, value: 'actions' },
-        { text: this.$i18n.t('Export'), sortable: false, value: 'export' },
+        {
+          title: this.$i18n.t('Interval') + ' (min)',
+          key: 'interval_min',
+        },
+        { title: this.$i18n.tc('Action', 2), sortable: false, key: 'actions' },
+        { title: this.$i18n.t('Export'), sortable: false, key: 'export' },
       ]
     },
     logFileHeaders() {
       return [
-        { text: 'ID', value: 'id' },
-        { text: this.$i18n.t('Upload_date'), value: 'created_at' },
+        { title: 'ID', key: 'id' },
+        { title: this.$i18n.t('Upload_date'), key: 'created_at' },
         {
-          text: this.$i18n.tc('device', 1),
-          value: 'device_name',
+          title: this.$i18n.tc('device', 1),
+          key: 'device_name',
         },
         {
-          text: this.$i18n.tc('Hive', 1),
-          value: 'hive_name',
+          title: this.$i18n.tc('Hive', 1),
+          key: 'hive_name',
         },
         {
-          text: this.$i18n.t('Messages'),
-          value: 'log_messages',
+          title: this.$i18n.t('Messages'),
+          key: 'log_messages',
         },
         {
-          text: this.$i18n.t('persisted_measurements'),
-          value: 'persisted_measurements',
+          title: this.$i18n.t('persisted_measurements'),
+          key: 'persisted_measurements',
         },
         {
-          text: this.$i18n.t('Memory_erased'),
-          value: 'log_erased',
+          title: this.$i18n.t('Memory_erased'),
+          key: 'log_erased',
         },
         {
-          text: this.$i18n.t('File_size'),
-          value: 'bytes_received',
+          title: this.$i18n.t('File_size'),
+          key: 'bytes_received',
         },
-        { text: this.$i18n.tc('Action', 2), sortable: false, value: 'actions' },
+        { title: this.$i18n.tc('Action', 2), sortable: false, key: 'actions' },
       ]
     },
     logFileHeadersAdmin() {
       const userNameColumn = {
-        text: this.$i18n.t('username'),
-        value: 'user_name',
+        title: this.$i18n.t('username'),
+        key: 'user_name',
       }
       const newHeaderArray = this.logFileHeaders.slice()
       newHeaderArray.splice(4, 0, userNameColumn)
@@ -869,19 +871,21 @@ export default {
     },
   },
   created() {
+    // use own component data props instead of prop to avoid mutating a prop directly (vuex warning)
+    this.importMessageCopy = this.importMessage
     this.readApiariesAndGroupsIfNotPresent().then(() => {
       this.readFlashLogs().then(() => {
         if (
           localStorage.beepPreviousRoute === 'flashlog' &&
           this.selectedFlashLog !== null &&
-          this.importMessage === null
+          this.importMessageCopy === null
         ) {
           // update flashlog result if coming from the flashlog view & flashlog has previously been selected (= saved in store) and has not just been imported
           this.checkFlashLog(this.selectedFlashLog.flashlog_id)
         } else {
-          if (this.importMessage !== null) {
-            this.logSearch = this.importMessage.flashlog_id.toString() // make persisted log item remain on top of table
-            this.reCheckFlashLog(this.importMessage.flashlog_id)
+          if (this.importMessageCopy !== null) {
+            this.logSearch = this.importMessageCopy.flashlog_id.toString() // make persisted log item remain on top of table
+            this.reCheckFlashLog(this.importMessageCopy.flashlog_id)
           }
           this.selectedFlashLog = null
         }
@@ -911,7 +915,7 @@ export default {
         }
 
         const link = document.createElement('a')
-        var fileName =
+        let fileName =
           'beep-base-log-export-user-' +
           this.selectedFlashLog.user_id +
           '-' +
@@ -1116,7 +1120,7 @@ export default {
     },
     clearMessages() {
       // eslint-disable-next-line vue/no-mutating-props
-      this.importMessage = null // TODO-VUE3 check
+      this.importMessageCopy = null // TODO-VUE3 check
       this.undoMessage = null
       this.errorMessage = null
       this.successMessage = null
@@ -1133,7 +1137,7 @@ export default {
       )
     },
     matchText(match, index) {
-      var text = index + ': '
+      let text = index + ': '
       Object.entries(match).map(([key, value]) => {
         if (key !== 'flashlog_index' && key !== 'minute_interval') {
           text += key + ': ' + value + ', '
@@ -1158,7 +1162,7 @@ export default {
       )
     },
     missingDataText(log) {
-      var ptNotInDb = this.percentageNotInDB(log)
+      const ptNotInDb = this.percentageNotInDB(log)
       return (
         this.momentDurationDays(
           log.duration_hours * (ptNotInDb / 100),
@@ -1178,7 +1182,7 @@ export default {
         log.setCount !== undefined &&
         log.setCount !== null
       ) {
-        var ptNotInDb = (100 * (1 - log.dbCount / log.setCount)).toFixed(1)
+        let ptNotInDb = (100 * (1 - log.dbCount / log.setCount)).toFixed(1)
         // ptNotinDb can be max 100 and min 0
         if (ptNotInDb > 100) ptNotInDb = 100
         if (ptNotInDb < 0) ptNotInDb = 0
