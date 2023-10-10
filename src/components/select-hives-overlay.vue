@@ -1,5 +1,5 @@
 <template>
-  <v-overlay v-if="showOverlay" :activator="overlay">
+  <v-overlay v-model="overlay" class="align-center justify-center">
     <div style="border-radius: 4px">
       <v-container class="select-hives-container">
         <v-row>
@@ -136,10 +136,6 @@ export default {
     ApiaryPreviewHiveSelector,
   },
   props: {
-    overlay: {
-      type: Boolean,
-      required: true,
-    },
     compareMode: {
       type: Boolean,
       required: false,
@@ -160,15 +156,11 @@ export default {
       default: () => null,
       required: false,
     },
-    showOverlay: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
   },
   data: function() {
     return {
       selectedHiveIds: [],
+      overlay: true,
     }
   },
   computed: {
@@ -237,7 +229,11 @@ export default {
       this.initSelectedHiveIds()
     },
   },
+  mounted() {
+    console.log('overlay mounted', this.overlay)
+  },
   created() {
+    console.log('overlay created', this.overlay)
     // init selected hive ids the first time overlay is opened
     this.initSelectedHiveIds()
   },

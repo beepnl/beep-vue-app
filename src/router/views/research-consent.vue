@@ -387,8 +387,7 @@
     </v-container>
 
     <SelectHivesOverlay
-      :show-overlay="selectedResearch !== null"
-      :overlay="selectHivesOverlay"
+      v-if="selectedResearch !== null && selectHivesOverlay"
       :selected-research="selectedResearch"
       :selected-consent="selectedConsent"
       @close-overlay="selectHivesOverlay = false"
@@ -439,6 +438,7 @@ export default {
         process.env.VUE_APP_BASE_API_URL ||
         process.env.VUE_APP_BASE_API_URL_FALLBACK,
       selectHivesOverlay: false,
+      selectedConsent: null,
       selectedResearch: null,
     }
   },

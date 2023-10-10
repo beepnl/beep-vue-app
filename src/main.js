@@ -41,11 +41,18 @@ const vuetify = createVuetify({
     VAlert: {
       density: 'compact',
     },
+    VBtn: {
+      variant: 'outlined',
+    },
+    VCard: {
+      variant: 'outlined',
+    },
     VList: {
       density: 'compact',
     },
     VSelect: {
       density: 'compact',
+      variant: 'underlined',
     },
     VSwitch: {
       density: 'compact',
@@ -53,11 +60,11 @@ const vuetify = createVuetify({
     VTable: {
       density: 'compact',
     },
-    VBtn: {
-      variant: 'outlined',
+    VTextArea: {
+      variant: 'underlined',
     },
-    VCard: {
-      variant: 'outlined',
+    VTextField: {
+      variant: 'underlined',
     },
   },
   icons: {

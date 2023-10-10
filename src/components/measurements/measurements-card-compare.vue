@@ -44,8 +44,7 @@
               {{ $tc('Select_hive', 2) }}
             </v-btn>
             <SelectHivesOverlay
-              :show-overlay="selectHivesOverlay"
-              :overlay="selectHivesOverlay"
+              v-if="selectHivesOverlay"
               :compare-mode="true"
               :include-groups="true"
               @close-overlay="selectHivesOverlay = false"
@@ -745,7 +744,7 @@ export default {
       return smFilter.length > 0 ? smFilter[0] : null
     },
     chartjsCompareDataSeries(quantities, bar = false) {
-      var data = {
+      const data = {
         labels: [],
         datasets: [],
       }
@@ -975,7 +974,7 @@ export default {
       return data
     },
     chartjsMultipleHivesDataSeries(quantity) {
-      var data = {
+      const data = {
         labels: [],
         datasets: [],
       }
@@ -1147,7 +1146,7 @@ export default {
       return hivesArray
     },
     getSensorLabel(sensordefs, quantity, unit) {
-      var label =
+      const label =
         this.getSensorName(sensordefs, quantity) +
         (unit !== '-' && unit !== '' && unit !== null ? ' (' + unit + ')' : '')
 
@@ -1177,7 +1176,7 @@ export default {
         this.comparingData = true
       }
       if (this.comparingData && this.cardExpanded) {
-        var i = interval !== null ? interval : this.interval
+        const i = interval !== null ? interval : this.interval
         const t = timeIndex !== null ? timeIndex : this.timeIndex
         const r =
           relativeInterval !== null ? relativeInterval : this.relativeInterval
