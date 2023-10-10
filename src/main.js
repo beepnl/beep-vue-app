@@ -29,6 +29,7 @@ import { ResizeObserver as Polyfill } from '@juggle/resize-observer'
 // * Vuetify
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
+import { VDataTable } from 'vuetify/labs/VDataTable'
 import { VDatePicker } from 'vuetify/labs/VDatePicker'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
@@ -68,6 +69,7 @@ const vuetify = createVuetify({
     },
   },
   components: {
+    VDataTable,
     VDatePicker,
     ...components,
   },
