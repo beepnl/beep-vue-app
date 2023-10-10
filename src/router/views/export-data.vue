@@ -128,7 +128,7 @@
               <Treeselect
                 v-if="devices.length > 0"
                 v-model="selectedDeviceId"
-                :options="sortedDevices"
+                :options="devicesOptions"
                 :placeholder="`${$t('Select')} ${$tc('device', 1)}`"
                 :no-results-text="`${$t('no_results')}`"
                 :disable-branch-nodes="true"
@@ -270,14 +270,14 @@ import Api from '@api/Api'
 import Treeselect from 'vue3-treeselect'
 import Layout from '@/src/router/layouts/back-layout.vue'
 import { mapGetters } from 'vuex'
-import { readDevicesIfNotChecked } from '@mixins/methodsMixin'
+import { readDevicesIfNotChecked, sortedDevices } from '@mixins/methodsMixin'
 
 export default {
   components: {
     Layout,
     Treeselect,
   },
-  mixins: [readDevicesIfNotChecked],
+  mixins: [readDevicesIfNotChecked, sortedDevices],
   data() {
     return {
       normalizerMeasurementTypes(node) {
@@ -330,6 +330,9 @@ export default {
   },
   computed: {
     ...mapGetters('devices', ['devices']),
+    devicesOptions() {
+      return this.sortedDevices()
+    },
     browser() {
       const test = function(regexp) {
         return regexp.test(window.navigator.userAgent)
@@ -394,69 +397,8 @@ export default {
         this.$store.commit('devices/setSelectedDeviceId', parseInt(value))
       },
     },
-    sortedDevices() {
-      const apiaryArray = []
-      this.devices.map((device, index) => {
-        apiaryArray.push({
-          id: -(index + 1), // random because it has to have an id for Treeselect but won't be used later
-          label:
-            device.location_name !== ''
-              ? device.location_name
-              : this.$i18n.t('Unknown'),
-          children: [],
-        })
-        device.label = device.hive_name
-          ? device.hive_name + ' - ' + device.name
-          : device.name
-        return device // TODO-VUE3 check
-      })
-      var uniqueApiaries = []
-      const map = new Map()
-      for (const item of apiaryArray) {
-        if (!map.has(item.label)) {
-          map.set(item.label, true) // set any value to Map
-          uniqueApiaries.push(item)
-        }
-      }
-      uniqueApiaries = uniqueApiaries.slice().sort(function(a, b) {
-        if (a.label < b.label) {
-          return -1
-        }
-        if (a.label > b.label) {
-          return 1
-        }
-        return 0
-      })
-      this.devices.map((device) => {
-        uniqueApiaries.map((apiary) => {
-          if (
-            apiary.label === device.location_name ||
-            (apiary.label === this.$i18n.t('Unknown') &&
-              device.location_name === '')
-          ) {
-            apiary.children.push(device)
-          }
-          return apiary // TODO-VUE3 check
-        })
-        return device // TODO-VUE3 check
-      })
-      uniqueApiaries.map((apiary) => {
-        const sortedChildren = apiary.children.slice().sort(function(a, b) {
-          if (a.label < b.label) {
-            return -1
-          }
-          if (a.label > b.label) {
-            return 1
-          }
-          return 0
-        })
-        apiary.children = sortedChildren
-        return apiary // TODO-VUE3 check
-      })
-      return uniqueApiaries
-    },
     requiredRules() {
-      var laterEndDate = true
+      let laterEndDate = true
       this.dates.length === 2 && this.dates[0] > this.dates[1]
         ? (laterEndDate = false)
         : (laterEndDate = true)
@@ -607,7 +549,7 @@ export default {
       )
       const measurementTypesWithLabel = rawMeasurementTypes
       measurementTypesWithLabel.map((measurementType) => {
-        var label = ''
+        let label = ''
         const match = sortedSensorDefs.filter(
           (sensorDef) => sensorDef.output_abbr === measurementType.abbreviation
         )

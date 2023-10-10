@@ -150,7 +150,7 @@
             v-if="devices.length > 0"
             v-model="selectedDeviceId"
             class="mr-3"
-            :options="sortedDevices"
+            :options="devicesOptions"
             :placeholder="`${$t('Select')} ${$tc('hive', 1)}`"
             :no-results-text="`${$t('no_results')}`"
             :disable-branch-nodes="true"
@@ -489,6 +489,7 @@ import {
   readGeneralInspectionsIfNotPresent,
   readTaxonomy,
   readApiariesAndGroups,
+  sortedDevices,
 } from '@mixins/methodsMixin'
 
 export default {
@@ -513,6 +514,7 @@ export default {
     readApiariesAndGroups,
     readTaxonomy,
     sensorMixin,
+    sortedDevices,
     timeZone,
   ],
   data() {
@@ -596,6 +598,9 @@ export default {
       } else {
         return this.$i18n.t('selection_placeholder')
       }
+    },
+    devicesOptions() {
+      return this.sortedDevices()
     },
     inspectionsWithDates() {
       if (this.generalInspections.length > 0) {
@@ -897,69 +902,6 @@ export default {
           {}
         )
       return sorted
-    },
-    sortedDevices() {
-      const apiaryArray = []
-
-      const devices = JSON.parse(JSON.stringify(this.devices)) // clone without v-bind to avoid vuex warning when mutating
-      devices.map((device, index) => {
-        apiaryArray.push({
-          id: -(index + 1), // random because it has to have an id for Treeselect but won't be used later
-          label:
-            device.location_name !== ''
-              ? device.location_name
-              : this.$i18n.t('Unknown'),
-          children: [],
-        })
-        device.label = device.hive_name
-          ? device.hive_name + ' - ' + device.name
-          : device.name
-        return device // TODO-VUE3 check
-      })
-      let uniqueApiaries = []
-      const map = new Map()
-      for (const item of apiaryArray) {
-        if (!map.has(item.label)) {
-          map.set(item.label, true) // set any value to Map
-          uniqueApiaries.push(item)
-        }
-      }
-      uniqueApiaries = uniqueApiaries.slice().sort(function(a, b) {
-        if (a.label < b.label) {
-          return -1
-        }
-        if (a.label > b.label) {
-          return 1
-        }
-        return 0
-      })
-      devices.map((device) => {
-        uniqueApiaries.map((apiary) => {
-          if (
-            apiary.label === device.location_name ||
-            (apiary.label === this.$i18n.t('Unknown') &&
-              device.location_name === '')
-          ) {
-            apiary.children.push(device)
-          }
-          return apiary // TODO-VUE3 check
-        })
-        return device // TODO-VUE3 check
-      })
-      uniqueApiaries.map((apiary) => {
-        const sortedChildren = apiary.children.slice().sort(function(a, b) {
-          if (a.label < b.label) {
-            return -1
-          }
-          if (a.label > b.label) {
-            return 1
-          }
-          return 0
-        })
-        apiary.children = sortedChildren
-        return apiary // TODO-VUE3 check
-      })
-      return uniqueApiaries
     },
     timeArray() {
       return this.measurementData !== null

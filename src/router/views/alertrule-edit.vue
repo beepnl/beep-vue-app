@@ -344,7 +344,7 @@
               <Treeselect
                 v-model="activeAlertRule.exclude_hive_ids"
                 class="color-red"
-                :options="sortedDevices"
+                :options="devicesOptions"
                 :disable-branch-nodes="true"
                 :default-expand-level="1"
                 :placeholder="`${$t('Select')} ${$tc('hive', 2)}`"
@@ -389,6 +389,7 @@ import {
   readAlertRules,
   readDevicesIfNotChecked,
   readTaxonomy,
+  sortedDevices,
 } from '@mixins/methodsMixin'
 import { momentHumanizeHours } from '@mixins/momentMixin'
 // import { ElInputNumber } from 'element-plus' TODO-VUE3 enable for real Vue 3
@@ -406,6 +407,7 @@ export default {
     readAlertRules,
     readDevicesIfNotChecked,
     readTaxonomy,
+    sortedDevices,
   ],
   data: function() {
     return {
@@ -454,7 +456,7 @@ export default {
           this.activeAlertRule.exclude_hive_ids = []
         } else {
           this.activeAlertRule.exclude_hive_ids = []
-          this.sortedDevices.map((apiary) => {
+          this.devicesOptions.map((apiary) => {
             apiary.children.map((device) => {
               this.activeAlertRule.exclude_hive_ids.push(device.id)
               return true // TODO-VUE3 check
@@ -576,6 +578,9 @@ export default {
         return null
       }
     },
+    devicesOptions() {
+      return this.sortedDevices(true)
+    },
     hasNonOwnedDevices() {
       return this.devices.filter((device) => !device.owner).length > 0
     },
@@ -617,7 +622,7 @@ export default {
       )
     },
     numberOfSortedDevices() {
-      return this.sortedDevices.reduce((acc, apiary) => {
+      return this.devicesOptions.reduce((acc, apiary) => {
         acc += apiary.children.length
         return acc
       }, 0)
@@ -636,92 +641,6 @@ export default {
         this.activeAlertRule.exclude_hive_ids.length === 0 &&
         this.hasNonOwnedDevices
       )
-    },
-    sortedDevices() {
-      const apiaryArray = []
-      this.devices.map((device, index) => {
-        if (
-          device.hive_id !== null &&
-          device.hive_name !== '' // this means device is not connected to an (existing) hive
-        ) {
-          // exclude devices without coupled hive id because hive id is required value for exclude_hive_ids array
-          apiaryArray.push({
-            id: -(index + 1), // random because it has to have an id for Treeselect but won't be used later
-            label:
-              device.location_name !== ''
-                ? device.location_name
-                : this.$i18n.t('Unknown'),
-            children: [],
-          })
-        }
-        return true // TODO-VUE3 check
-      })
-      let uniqueApiaries = []
-      const map = new Map()
-      for (const item of apiaryArray) {
-        if (!map.has(item.label)) {
-          map.set(item.label, true) // set any value to Map
-          uniqueApiaries.push(item)
-        }
-      }
-      uniqueApiaries = uniqueApiaries.slice().sort(function(a, b) {
-        if (a.label < b.label) {
-          return -1
-        }
-        if (a.label > b.label) {
-          return 1
-        }
-        return 0
-      })
-      this.devices.map((device) => {
-        uniqueApiaries.map((apiary) => {
-          if (
-            device.hive_id !== null &&
-            device.hive_name !== '' && // this means device is not connected to an (existing) hive
-            (apiary.label === device.location_name ||
-              (apiary.label === this.$i18n.t('Unknown') &&
-                device.location_name === ''))
-          ) {
-            let deviceLabel = device.hive_name
-              ? device.hive_name + ' - ' + device.name
-              : device.name
-
-            const interval =
-              device.measurement_interval_min *
-              device.measurement_transmission_ratio
-            deviceLabel += interval
-              ? ' (' +
-                this.$i18n.t('measurement_interval') +
-                ': ' +
-                interval +
-                ' ' +
-                this.$i18n.tc('minute', interval) +
-                ')'
-              : ''
-
-            apiary.children.push({
-              id: device.hive_id,
-              label: deviceLabel,
-            })
-          }
-          return apiary // TODO-VUE3 check
-        })
-        return true // TODO-VUE3 check
-      })
-      uniqueApiaries.map((apiary) => {
-        const sortedChildren = apiary.children.slice().sort(function(a, b) {
-          if (a.label < b.label) {
-            return -1
-          }
-          if (a.label > b.label) {
-            return 1
-          }
-          return 0
-        })
-        apiary.children = sortedChildren
-        return apiary // TODO-VUE3 check
-      })
-      return uniqueApiaries
     },
     defaultSensorMeasurements() {
       // check if measurement type is a default measurement type for creating alert rules

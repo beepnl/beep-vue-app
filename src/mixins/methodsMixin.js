@@ -205,7 +205,7 @@ export const convertComma = {
   methods: {
     convertComma(event, object, property, precision = 1) {
       // console.log('convert comma', event.target.value)
-      var value = event.target.value
+      const value = event.target.value
       // if user inputs a value with a comma followed by at least one decimal, convert it to a dot
       if (value.toString().indexOf(',') > -1) {
         if (
@@ -425,7 +425,7 @@ export const parseDate = {
   methods: {
     parseDate(input) {
       const dateStr = this.$moment(input).format('YYYY-MM-DD HH:mm')
-      var makesSense = false
+      let makesSense = false
       if (dateStr !== 'Invalid date') {
         const year = dateStr.substring(0, 4)
         const month = dateStr.substring(5, 7)
@@ -816,6 +816,116 @@ export const readTaxonomy = {
           }
         }
       }
+    },
+  },
+}
+
+export const sortedDevices = {
+  computed: {
+    ...mapGetters('devices', ['devices']),
+  },
+  methods: {
+    sortedDevices(intervalLabel = false) {
+      const apiaryArray = []
+
+      const devices = JSON.parse(JSON.stringify(this.devices)) // clone without v-bind to avoid vuex warning when mutating
+      devices.map((device, index) => {
+        if (
+          !intervalLabel ||
+          (device.hive_id !== null && device.hive_name !== '') // this means device is not connected to an (existing) hive
+        ) {
+          apiaryArray.push({
+            id: -(index + 1), // random because it has to have an id for Treeselect but won't be used later
+            label:
+              device.location_name !== ''
+                ? device.location_name
+                : this.$i18n.t('Unknown'),
+            children: [],
+          })
+        }
+        if (!intervalLabel) {
+          device.label = device.hive_name
+            ? device.hive_name + ' - ' + device.name
+            : device.name
+        }
+        return device // TODO-VUE3 check
+      })
+      let uniqueApiaries = []
+      const map = new Map()
+      for (const item of apiaryArray) {
+        if (!map.has(item.label)) {
+          map.set(item.label, true) // set any value to Map
+          uniqueApiaries.push(item)
+        }
+      }
+      uniqueApiaries = uniqueApiaries.slice().sort(function(a, b) {
+        if (a.label < b.label) {
+          return -1
+        }
+        if (a.label > b.label) {
+          return 1
+        }
+        return 0
+      })
+      devices.map((device) => {
+        uniqueApiaries.map((apiary) => {
+          if (!intervalLabel) {
+            if (
+              apiary.label === device.location_name ||
+              (apiary.label === this.$i18n.t('Unknown') &&
+                device.location_name === '')
+            ) {
+              apiary.children.push(device)
+            }
+          } else {
+            if (
+              device.hive_id !== null &&
+              device.hive_name !== '' && // this means device is not connected to an (existing) hive
+              (apiary.label === device.location_name ||
+                (apiary.label === this.$i18n.t('Unknown') &&
+                  device.location_name === ''))
+            ) {
+              let deviceLabel = device.hive_name
+                ? device.hive_name + ' - ' + device.name
+                : device.name
+
+              const interval =
+                device.measurement_interval_min *
+                device.measurement_transmission_ratio
+              deviceLabel += interval
+                ? ' (' +
+                  this.$i18n.t('measurement_interval') +
+                  ': ' +
+                  interval +
+                  ' ' +
+                  this.$i18n.tc('minute', interval) +
+                  ')'
+                : ''
+
+              apiary.children.push({
+                id: device.hive_id,
+                label: deviceLabel,
+              })
+            }
+          }
+          return apiary // TODO-VUE3 check
+        })
+        return true // TODO-VUE3 check
+      })
+      uniqueApiaries.map((apiary) => {
+        const sortedChildren = apiary.children.slice().sort(function(a, b) {
+          if (a.label < b.label) {
+            return -1
+          }
+          if (a.label > b.label) {
+            return 1
+          }
+          return 0
+        })
+        apiary.children = sortedChildren
+        return apiary // TODO-VUE3 check
+      })
+      return uniqueApiaries
     },
   },
 }
