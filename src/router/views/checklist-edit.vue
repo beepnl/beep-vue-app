@@ -163,7 +163,7 @@
               item-value="id"
               hide-details
               :label="`${$t('Select') + ' ' + $tc('checklist', 1)}`"
-              @input="readChecklistAndTaxonomy($event)"
+              @update:model-value="readChecklistAndTaxonomy($event)"
             >
             </v-select>
           </v-col>
@@ -322,7 +322,7 @@ export default {
   methods: {
     async createChecklist(duplicate = false) {
       this.showLoadingIcon = true
-      var categoryIds = null
+      let categoryIds = null
       if (this.activeChecklist.category_ids.length > 0) {
         categoryIds = this.activeChecklist.category_ids.join(',')
       }
@@ -443,7 +443,7 @@ export default {
     async updateChecklist(newChecklist = false) {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
-        var categoryIds = null
+        let categoryIds = null
         if (this.activeChecklist.category_ids.length > 0) {
           categoryIds = this.activeChecklist.category_ids.join(',')
         }
@@ -475,7 +475,7 @@ export default {
                   query: { checklistId: this.selectedChecklistId },
                 })
               } else if (this.storedInspectionMode !== '') {
-                var query = {
+                const query = {
                   checklistId: this.selectedChecklistId,
                 }
                 if (this.storedInspectionMode === 'Parse') {
@@ -555,7 +555,7 @@ export default {
     },
     getText(item) {
       const name = item.name
-      var research = ''
+      let research = ''
       if (item.researches.length > 0) {
         research =
           ' (' + this.$i18n.t('research') + ': ' + item.researches[0] + ')'

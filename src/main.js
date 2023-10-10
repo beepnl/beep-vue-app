@@ -25,7 +25,6 @@ import vueCountryRegionSelect from 'vue-country-region-select'
 import 'vue3-treeselect/dist/vue3-treeselect.css'
 import veProgress from 'vue-ellipse-progress'
 import { ResizeObserver as Polyfill } from '@juggle/resize-observer'
-// import 'element-plus/es/components/message/style/css' TODO-VUE3 enable for real Vue 3
 // * Vuetify
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'

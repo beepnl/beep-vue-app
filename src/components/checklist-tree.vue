@@ -15,9 +15,9 @@
       hide-details
     ></v-text-field>
 
-    <!-- <el-form :disabled="disabled">
-      <el-form-item>
-        <el-tree
+    <ElForm :disabled="disabled">
+      <ElFormItem>
+        <ElTree
           ref="tree"
           class="filter-tree"
           :data="items"
@@ -36,23 +36,22 @@
           @node-drop="nodeDrop"
           @node-drag-start="nodeDragStart"
         >
-        </el-tree>
-      </el-form-item>
-    </el-form> -->
+        </ElTree>
+      </ElFormItem>
+    </ElForm>
   </v-card>
 </template>
 
 <script>
-// import { ElForm } from 'element-plus' TODO-VUE3 enable for real Vue 3
-// import { ElFormItem } from 'element-plus'
-// import { ElTree } from 'element-plus'
+import { ElForm, ElFormItem, ElTree } from 'element-plus'
+import 'element-plus/es/components/tree/style/css'
 
 export default {
-  // components: {
-  //   ElForm,
-  //   ElFormItem,
-  //   ElTree,
-  // },
+  components: {
+    ElForm,
+    ElFormItem,
+    ElTree,
+  },
   props: {
     disabled: {
       type: Boolean,

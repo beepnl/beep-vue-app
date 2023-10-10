@@ -36,6 +36,7 @@
     "chartjs-plugin-annotation": "^2.2.1",
     "chartjs-plugin-datalabels": "^2.2.0",
     "core-js": "^3.9.1",
+    "element-plus": "^2.3.14",
     "kind-of": ">=6.0.3",
     "lodash": "^4.17.21",
     "luxon": "^1.28.1",
