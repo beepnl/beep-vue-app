@@ -159,7 +159,7 @@
               v-model="selectedChecklistId"
               class="select-checklist"
               :items="checklists"
-              :item-text="getText"
+              :item-title="getText"
               item-value="id"
               hide-details
               :label="`${$t('Select') + ' ' + $tc('checklist', 1)}`"

@@ -54,7 +54,7 @@
                   ? allSensorMeasurements
                   : defaultSensorMeasurements
               "
-              :item-text="getText"
+              :item-title="getText"
               item-value="id"
               :placeholder="
                 `${$t('Select')} ${$tc(
@@ -96,7 +96,7 @@
             <v-select
               v-model="formula.calculation"
               :items="calculations"
-              item-text="full"
+              item-title="full"
               item-value="short"
               :placeholder="`${$t('Select')} ${$t('calculation')} ...`"
               :label="$t('Calculation')"
@@ -126,7 +126,7 @@
             <v-select
               v-model="formula.comparison"
               :items="comparisons"
-              :item-text="getComparisonText"
+              :item-title="getComparisonText"
               item-value="short"
               :placeholder="`${$t('Select')} ${$t('comparison')} ...`"
               :label="$t('Comparison')"
@@ -266,7 +266,7 @@
             <v-select
               v-model="formula.comparator"
               :items="comparators"
-              item-text="short"
+              item-title="short"
               item-value="short"
               :label="$t('Comparator')"
               :rules="requiredRule"

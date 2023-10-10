@@ -22,7 +22,7 @@ const translations = {
   monthsShort: [
     'jan',
     'feb',
-    'maa',
+    'mrt',
     'apr',
     'mei',
     'jun',

@@ -170,7 +170,7 @@ export default {
     },
     alertRuleSentence(alertRule) {
       const sentence = this.$i18n.t('alertrule_main_sentence')
-      var replacedSentence = sentence
+      let replacedSentence = sentence
 
       const measurement = this.sensorMeasurementsList.filter(
         (measurement) => measurement.id === alertRule.measurement_id
@@ -225,7 +225,7 @@ export default {
         replacedSentence += this.$i18n.t('alertrule_exclude_months_sentence')
         const monthsArray = []
         alertRule.exclude_months.map((month) => {
-          monthsArray.push(this.$i18n.t('monthsFull')[month - 1])
+          monthsArray.push(this.$i18n.tm('monthsFull')[month])
           return true // TODO-VUE3 check
         })
         replacedSentence = replacedSentence.replace(

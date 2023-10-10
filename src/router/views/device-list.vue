@@ -497,7 +497,7 @@
                                   v-model="sensorDef.input_measurement_id"
                                   :disabled="sensorDef.delete"
                                   :items="sortedSensorMeasurements"
-                                  item-text="abbreviation"
+                                  item-title="abbreviation"
                                   item-value="id"
                                   :label="
                                     `${$t('Select')} ${$tc(
@@ -517,7 +517,7 @@
                                   v-model="sensorDef.output_measurement_id"
                                   :disabled="sensorDef.delete"
                                   :items="sortedSensorMeasurements"
-                                  item-text="abbreviation"
+                                  item-title="abbreviation"
                                   item-value="id"
                                   :label="
                                     `${$t('Select')} ${$tc(
@@ -841,7 +841,7 @@ export default {
         typeof sensorDef.id !== 'undefined' ? sensorDef.id : null
       this.sensorDefEdited = false
       try {
-        var response = false
+        let response = false
         if (sensorDef.delete === true) {
           response = await Api.deleteRequest(
             '/sensordefinition/',
@@ -890,7 +890,7 @@ export default {
       const key = this.randomString(16).toLowerCase()
       this.devices.splice(0, 0, {
         name: 'Device ' + (this.ownedDevices.length + 1),
-        key: key,
+        key,
         owner: true,
         sensor_definitions: [],
       })
@@ -976,11 +976,11 @@ export default {
         : false
     },
     randomString(length) {
-      var text = ''
+      let text = ''
       const possible =
         'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjklmnpqrstuvwxyz0123456789' // excluded o and O to avoid confusion with 0
 
-      for (var i = 0; i < length; i++) {
+      for (let i = 0; i < length; i++) {
         text += possible.charAt(Math.floor(Math.random() * possible.length))
       }
 

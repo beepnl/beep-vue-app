@@ -182,7 +182,7 @@
                       v-model="dashboard.interval"
                       :items="intervalOptions"
                       :label="$t('Interval')"
-                      item-text="label"
+                      item-title="label"
                       item-value="id"
                       :placeholder="$t('Select') + '...'"
                       :hint="$t('Dashboard_interval_exp')"

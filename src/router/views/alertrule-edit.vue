@@ -126,7 +126,7 @@
               <v-select
                 v-model="activeAlertRule.calculation_minutes"
                 :items="calculationMinutes"
-                :item-text="
+                :item-title="
                   (item) => momentHumanizeHours(item.label, true, true)
                 "
                 item-value="label"
@@ -161,7 +161,7 @@
                     ? allSensorMeasurements
                     : defaultSensorMeasurements
                 "
-                :item-text="getText"
+                :item-title="getText"
                 item-value="id"
                 :placeholder="
                   `${$t('Select')} ${$tc(
@@ -185,7 +185,7 @@
               <v-select
                 v-model="activeAlertRule.calculation"
                 :items="calculations"
-                item-text="full"
+                item-title="full"
                 item-value="short"
                 :placeholder="`${$t('Select')} ${$t('calculation')} ...`"
                 :label="$t('Calculation')"
@@ -215,7 +215,7 @@
               <v-select
                 v-model="activeAlertRule.comparison"
                 :items="comparisons"
-                :item-text="getComparisonText"
+                :item-title="getComparisonText"
                 item-value="short"
                 :placeholder="`${$t('Select')} ${$t('comparison')} ...`"
                 :label="$t('Comparison')"
@@ -233,7 +233,7 @@
               <v-select
                 v-model="activeAlertRule.comparator"
                 :items="comparators"
-                item-text="short"
+                item-title="short"
                 item-value="short"
                 :label="$t('Comparator')"
                 :rules="requiredRule"
@@ -497,7 +497,9 @@ export default {
       },
     },
     allSensorMeasurements() {
-      var measurementTypes = this.sensorMeasurementsList
+      let measurementTypes = JSON.parse(
+        JSON.stringify(this.sensorMeasurementsList)
+      ) // clone without v-bind to avoid vuex warning when mutating
 
       // check if measurement type is NOT a weather measurement and if translation exists, otherwise don't display the measurement type
       measurementTypes = measurementTypes.filter(
@@ -544,7 +546,7 @@ export default {
     },
     devicesInterval() {
       if (this.numberOfSortedDevices !== null) {
-        var intervalArray = []
+        let intervalArray = []
         this.devices.map((device) => {
           if (
             this.activeAlertRule.exclude_hive_ids.indexOf(device.hive_id) === -1
@@ -600,10 +602,10 @@ export default {
     },
     months() {
       const monthsArray = []
-      for (var i = 1; i < 13; i++) {
+      for (let i = 1; i < 13; i++) {
         monthsArray.push({
           id: i,
-          label: this.$i18n.t('monthsShort')[i - 1],
+          label: this.$i18n.tm('monthsShort')[i - 1],
         })
       }
       return monthsArray
@@ -654,7 +656,7 @@ export default {
         }
         return true // TODO-VUE3 check
       })
-      var uniqueApiaries = []
+      let uniqueApiaries = []
       const map = new Map()
       for (const item of apiaryArray) {
         if (!map.has(item.label)) {
@@ -680,7 +682,7 @@ export default {
               (apiary.label === this.$i18n.t('Unknown') &&
                 device.location_name === ''))
           ) {
-            var deviceLabel = device.hive_name
+            let deviceLabel = device.hive_name
               ? device.hive_name + ' - ' + device.name
               : device.name
 
@@ -731,7 +733,7 @@ export default {
       return isNaN(this.activeAlertRule.threshold_value)
     },
     warningText() {
-      var warningText = this.$i18n.t('In_case_of_good_connection_warning')
+      let warningText = this.$i18n.t('In_case_of_good_connection_warning')
       if (
         this.devicesInterval !== null &&
         this.activeAlertRule.comparison.includes('dif')
@@ -960,7 +962,7 @@ export default {
     },
     alertRuleSentence(alertRule) {
       const sentence = this.$i18n.t('alertrule_main_sentence')
-      var replacedSentence = sentence
+      let replacedSentence = sentence
 
       const replaceWith = {
         calculation: this.$i18n.t(alertRule.calculation),
@@ -1015,7 +1017,7 @@ export default {
         replacedSentence += this.$i18n.t('alertrule_exclude_months_sentence')
         const monthsArray = []
         alertRule.exclude_months.map((month) => {
-          monthsArray.push(this.$i18n.t('monthsFull')[month - 1])
+          monthsArray.push(this.$i18n.tm('monthsFull')[month])
           return true // TODO-VUE3 check
         })
         replacedSentence = replacedSentence.replace(
@@ -1050,7 +1052,7 @@ export default {
         replacedSentence += this.$i18n.t('alertrule_exclude_hives_sentence')
         const hivesArray = []
         alertRule.exclude_hive_ids.map((hiveId) => {
-          var hiveName = hiveId + ' (' + this.$i18n.t('unknown') + ')'
+          let hiveName = hiveId + ' (' + this.$i18n.t('unknown') + ')'
           const filteredDevices = this.devices.filter(
             (device) => device.hive_id === hiveId
           )
