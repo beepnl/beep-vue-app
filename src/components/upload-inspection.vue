@@ -8,7 +8,7 @@
         :options="languages"
         :normalizer="normalizer"
         :placeholder="$t('Select')"
-        @updated="updateLanguage($event)"
+        @update:model-value="updateLanguage($event)"
       >
         <template v-slot:value-label="{ node }">
           <div class="d-flex justify-start align-center">

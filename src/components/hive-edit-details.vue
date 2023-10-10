@@ -123,7 +123,7 @@
                   :placeholder="`${$t('Select')} ${$t('Hive_type')}`"
                   search-nested
                   required
-                  @updated="updateHiveType($event)"
+                  @update:model-value="updateHiveType($event)"
                 />
               </v-col>
             </v-row>
@@ -298,7 +298,7 @@ export default {
             }
             return 0
           })
-        var treeselectArray = []
+        const treeselectArray = []
         sortedGroups.forEach((sortedGroup, index) => {
           const sortedGroupObject = {
             id: -(index + 1),
@@ -365,7 +365,7 @@ export default {
     },
     updateHive(event, property) {
       // console.log(event)
-      var value = null
+      let value = null
       if (event === null) {
         value = null
       } else if (event.target !== undefined) {
@@ -431,7 +431,7 @@ export default {
           fr_height_cm: 0,
         }
       }
-      var i = 0
+      let i = 0
       for (i in hiveDimensions) {
         this.updateHive(hiveDimensions[i], i)
         i++

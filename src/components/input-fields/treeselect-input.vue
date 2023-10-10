@@ -9,7 +9,7 @@
       :default-expand-level="1"
       :disable-branch-nodes="true"
       search-nested
-      @updated="setInspectionEdited(true)"
+      @update:model-value="setInspectionEdited(true)"
     />
   </div>
 </template>
@@ -41,9 +41,9 @@ export default {
   },
   computed: {
     treeSelectArray() {
-      var treeselectArray = []
+      const treeselectArray = []
       this.item.children.forEach((item) => {
-        var newNode = this.updateNode(item)
+        const newNode = this.updateNode(item)
         treeselectArray.push(newNode)
       })
       return treeselectArray
@@ -56,13 +56,13 @@ export default {
     updateArray(array) {
       const itemsArray = []
       array.forEach((item) => {
-        var newNode = this.updateNode(item)
+        const newNode = this.updateNode(item)
         itemsArray.push(newNode)
       })
       return itemsArray
     },
     updateNode(item) {
-      var newNode = {}
+      let newNode = {}
       if (typeof item.children !== 'undefined' && item.children.length > 0) {
         newNode = {
           id: item.id,

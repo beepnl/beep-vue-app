@@ -31,7 +31,7 @@
                 :label="`${$t('Select')} ${$t('Bee_race')}`"
                 :placeholder="`${$t('Select')} ${$t('Bee_race')}`"
                 search-nested
-                @updated="updateQueen($event, 'race_id')"
+                @update:model-value="updateQueen($event, 'race_id')"
               />
             </div>
 

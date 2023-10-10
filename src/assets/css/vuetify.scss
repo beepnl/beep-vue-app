@@ -1,5 +1,6 @@
 @use '../../../node_modules/vuetify/settings' with (
   $list-item-plain-opacity: 1,
+  $overlay-opacity: 0.7,
 );
 
 .v-container {

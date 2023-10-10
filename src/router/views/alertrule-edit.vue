@@ -299,7 +299,7 @@
                 :placeholder="`${$t('Select')} ${$t('months')}`"
                 :no-results-text="`${$t('no_results')}`"
                 multiple
-                @updated="setAlertRuleEdited(true)"
+                @update:model-value="setAlertRuleEdited(true)"
               />
             </v-col>
 
@@ -320,7 +320,7 @@
                 :placeholder="`${$t('Select')} ${$t('hours')}`"
                 :no-results-text="`${$t('no_results')}`"
                 multiple
-                @updated="setAlertRuleEdited(true)"
+                @update:model-value="setAlertRuleEdited(true)"
               />
             </v-col>
 
@@ -350,7 +350,7 @@
                 :placeholder="`${$t('Select')} ${$tc('hive', 2)}`"
                 :no-results-text="`${$t('no_results')}`"
                 multiple
-                @updated="setAlertRuleEdited(true)"
+                @update:model-value="setAlertRuleEdited(true)"
               />
               <div
                 class="beep-label mt-1"

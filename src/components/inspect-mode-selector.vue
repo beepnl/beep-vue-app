@@ -9,7 +9,7 @@
                   v-model="setSelectedMode"
                   :options="selectModes"
                   :clearable="false"
-                  @updated="switchMode($event)"
+                  @update:model-value="switchMode($event)"
                 />
                 <p v-if="offlineMode" class="info-text mt-1">
                   <em>{{ $t('Offline_inspection_exp') }}</em>

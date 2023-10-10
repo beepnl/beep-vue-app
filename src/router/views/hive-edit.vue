@@ -127,7 +127,7 @@
                 :normalizer="normalizerApiary"
                 :placeholder="`${$t('Select')} ${$tc('location', 1)}`"
                 :no-results-text="`${$t('no_results')}`"
-                @updated="setHiveEdited(true)"
+                @update:model-value="setHiveEdited(true)"
               />
 
               <v-select

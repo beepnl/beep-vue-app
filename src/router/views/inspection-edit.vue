@@ -173,7 +173,7 @@
                   :class="
                     parseMode && selectedHiveSetId === null ? 'color-red' : ''
                   "
-                  @updated="selectHiveSet($event)"
+                  @update:model-value="selectHiveSet($event)"
                 />
               </v-col>
               <v-col
@@ -299,7 +299,7 @@
               :normalizer="normalizer"
               :placeholder="`${$t('Select') + ' ' + $tc('checklist', 1)}`"
               :no-results-text="`${$t('no_results')}`"
-              @updated="switchChecklist($event)"
+              @update:model-value="switchChecklist($event)"
             />
           </v-col>
 
@@ -340,7 +340,7 @@
               :placeholder="`${$t('Select') + ' ' + $tc('svg_checklist', 1)}`"
               :no-results-text="$t('no_results')"
               :no-options-text="$t('No_checklist_svg')"
-              @updated="selectChecklistSvg"
+              @update:model-value="selectChecklistSvg"
             />
           </v-col>
 
@@ -443,10 +443,9 @@
               </v-card-text>
             </v-slide-y-transition>
             <v-overlay
-              :absolute="true"
-              :activator="forceInspectionDate"
-              :opacity="0.5"
-              color="white"
+              v-model="forceInspectionDate"
+              contained
+              scrim="white"
               z-index="3"
               class="input-disabled-overlay"
             >
@@ -540,10 +539,9 @@
                     </div>
                   </v-col>
                   <v-overlay
-                    :absolute="true"
-                    :value="forceInspectionDate"
-                    :opacity="0.5"
-                    color="white"
+                    v-model="forceInspectionDate"
+                    contained
+                    scrim="white"
                     z-index="3"
                     class="input-disabled-overlay"
                   >
@@ -573,7 +571,7 @@
                                 :check-answer="reminderDate === null"
                                 :parsed-images="parsedImages['reminder_date']"
                               ></labelWithDescription>
-                              <Datetime
+                              <!-- <Datetime
                                 v-if="activeInspection"
                                 v-model="reminderDate"
                                 :placeholder="`${$t('Set_notification_date')}`"
@@ -581,8 +579,8 @@
                                 class="text-accent"
                               >
                                 <template
-                                  v-slot:after
                                   v-if="reminderDate !== null"
+                                  v-slot:after
                                 >
                                   <span
                                     class="description clear-icon"
@@ -603,7 +601,7 @@
                                     $t('ok')
                                   }}</v-btn>
                                 </template>
-                              </Datetime>
+                              </Datetime> -->
                             </div>
                           </div>
                         </v-col>
@@ -835,7 +833,7 @@ export default {
       return this.$route.query.apiaryId || null
     },
     checklistLink() {
-      var query = {}
+      let query = {}
       // pass current apiary or group id (even if user has switched from initially (pre)selected apiary or group)
       if (!this.offlineMode && this.hiveSetId) {
         query = {
@@ -854,7 +852,7 @@ export default {
       return {
         name: 'checklist',
         params: { id: this.selectedChecklistId },
-        query: query,
+        query,
       }
     },
     checklistSvgAlreadySaved() {
@@ -1055,9 +1053,9 @@ export default {
       },
     },
     sortedHiveSets() {
-      var treeselectArray = []
+      const treeselectArray = []
       if (this.apiaries && this.apiaries.length > 0) {
-        const treeselectApiaries = this.apiaries
+        const treeselectApiaries = JSON.parse(JSON.stringify(this.apiaries)) // clone without v-bind to avoid vuex warning when mutating
         treeselectApiaries.map((apiary) => {
           apiary.treeselectId = parseInt('1' + apiary.id.toString())
           return apiary // TODO-VUE3 check
@@ -1081,7 +1079,7 @@ export default {
         })
       }
       if (this.groups && this.groups.length > 0) {
-        const treeselectGroups = this.groups
+        const treeselectGroups = JSON.parse(JSON.stringify(this.groups)) // clone without v-bind to avoid vuex warning when mutating
         treeselectGroups.map((group) => {
           // groups with no editable hives will be disabled in the treeselect component
           group.noEditableHives =
@@ -1115,7 +1113,7 @@ export default {
       return this.svgPageNr - (this.svgMaxPageNr === null ? 0 : 1)
     },
     treeselectLabel() {
-      var label = ''
+      let label = ''
       if (this.apiaries.length > 0) {
         label =
           this.$i18n.t('Select') +
@@ -1286,7 +1284,7 @@ export default {
         ) {
           const numberOfCategories = this.selectedChecklist.categories.length
           this.showCategoriesByIndex = []
-          for (var i = 0; i < numberOfCategories; i++) {
+          for (let i = 0; i < numberOfCategories; i++) {
             this.showCategoriesByIndex.push(this.parseMode)
           }
         }
@@ -1433,7 +1431,7 @@ export default {
           if (response.status === 201) {
             var searchInspectionId = response.data
           }
-          var searchTerm = null
+          let searchTerm = null
           this.activeHive === null
             ? (searchTerm = this.selectedHiveSet.name)
             : (searchTerm = this.activeHive.location)
@@ -1555,7 +1553,7 @@ export default {
     },
     findHiveSetId(input) {
       if (typeof input === 'string') {
-        var value = input.toLowerCase()
+        const value = input.toLowerCase()
         const findApiary = this.apiaries.filter(
           (ap) => ap.name.toLowerCase() === value
         )
@@ -1576,7 +1574,7 @@ export default {
     },
     findHiveId(input) {
       if (typeof input === 'string' && this.selectedHiveSet) {
-        var value = input.toLowerCase()
+        const value = input.toLowerCase()
         const findHive = this.selectedHiveSet.hives.filter(
           (hive) => hive.name.toLowerCase() === value
         )
@@ -1645,8 +1643,8 @@ export default {
     },
     getParsedOverallAnswers() {
       Object.keys(this.parsedImages).map((prop) => {
-        var answer = this.getParsedAnswer(prop)
-        var value = null
+        const answer = this.getParsedAnswer(prop)
+        let value = null
         if (answer && answer.value !== undefined) {
           if (prop === 'impression' || prop === 'attention') {
             const posAnswer = answer.value.filter((el) => el === 1)
@@ -1725,7 +1723,7 @@ export default {
       this.showLoadingIcon = false
       if (this.selectedChecklist) {
         this.showCategoriesByIndex = []
-        for (var i = 0; i < this.selectedChecklist.categories.length; i++) {
+        for (let i = 0; i < this.selectedChecklist.categories.length; i++) {
           this.showCategoriesByIndex.push(true)
         }
       }
@@ -1739,8 +1737,8 @@ export default {
       this.storeInspectionMode('')
     },
     confirmPrint() {
-      var bullets = ''
-      for (var n = 1; n <= this.printExpBullets; n++) {
+      let bullets = ''
+      for (let n = 1; n <= this.printExpBullets; n++) {
         bullets += '• ' + this.$i18n.t('Print_checklist_exp_' + n) + '</br>'
       }
       const htmlText =

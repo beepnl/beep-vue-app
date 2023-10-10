@@ -10,7 +10,7 @@
       :disable-branch-nodes="true"
       :default-expand-level="1"
       search-nested
-      @updated="setInspectionEdited(true)"
+      @update:model-value="setInspectionEdited(true)"
     />
     <Treeselect
       v-if="item.input === 'select_location' && apiaries !== null"
@@ -19,7 +19,7 @@
       :normalizer="normalizerApiary"
       :placeholder="`${$t('Select')} ${$tc('location', 1)}`"
       :no-results-text="`${$t('no_results')}`"
-      @updated="setInspectionEdited(true)"
+      @update:model-value="setInspectionEdited(true)"
     />
     <p v-if="apiaries === null">{{ $t('no_apiaries_yet') }}</p>
   </div>

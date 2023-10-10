@@ -50,7 +50,7 @@
                   :normalizer="normalizerApiary"
                   :placeholder="`${$t('Select')} ${$tc('location', 1)}`"
                   :no-results-text="`${$t('no_results')}`"
-                  @updated="selectAllHives(), setApiaryEdited(true)"
+                  @update:model-value="selectAllHives(), setApiaryEdited(true)"
                 />
               </v-col>
               <v-col

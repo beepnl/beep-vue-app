@@ -135,7 +135,7 @@
                 :default-expand-level="1"
                 search-nested
                 allow-clearing-disabled
-                @updated="loadMeasurementTypesAvailable"
+                @update:model-value="loadMeasurementTypesAvailable"
               />
             </v-col>
             <v-col cols="12" sm="6" md="4" lg="3">

@@ -289,7 +289,9 @@
                         'Hardware ID' + (ownedDevice.type === 'beep' ? '*' : '')
                       "
                       :disabled="ownedDevice.type === 'beep'"
-                      @update:model-value="updateDevice(ownedDevice, 'hardware_id', $event)"
+                      @update:model-value="
+                        updateDevice(ownedDevice, 'hardware_id', $event)
+                      "
                     />
                   </v-col>
                   <v-col cols="12" md="6" class="pb-0 pb-sm-3">
@@ -305,7 +307,9 @@
                           (ownedDevice.type === 'beep' ? ' BEEP base*' : '')
                       "
                       :disabled="ownedDevice.type === 'beep'"
-                      @update:model-value="updateDevice(ownedDevice, 'firmware_id', $event)"
+                      @update:model-value="
+                        updateDevice(ownedDevice, 'firmware_id', $event)
+                      "
                     />
                   </v-col>
                   <v-col cols="12" md="6">
@@ -333,7 +337,7 @@
                       :disable-branch-nodes="true"
                       :default-expand-level="1"
                       search-nested
-                      @updated="addHiveName($event, ownedDevice)"
+                      @update:model-value="addHiveName($event, ownedDevice)"
                     />
                   </v-col>
                 </v-row>
