@@ -229,11 +229,7 @@ export default {
       this.initSelectedHiveIds()
     },
   },
-  mounted() {
-    console.log('overlay mounted', this.overlay)
-  },
   created() {
-    console.log('overlay created', this.overlay)
     // init selected hive ids the first time overlay is opened
     this.initSelectedHiveIds()
   },

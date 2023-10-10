@@ -12,14 +12,11 @@
           <v-list-item
             v-if="item.show"
             :key="`i-${index}`"
+            :prepend-icon="item.icon"
+            :title="item.title"
             :to="item.route ? { name: item.route } : null"
             exact
           >
-            <v-icon>{{ item.icon }}</v-icon>
-
-            <v-list-item-title
-              ><span v-text="item.title"></span
-            ></v-list-item-title>
           </v-list-item>
         </template>
       </v-list>
