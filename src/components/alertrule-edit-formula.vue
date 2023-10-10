@@ -65,7 +65,7 @@
               "
               class="pt-0 mt-n1"
               :rules="requiredRule"
-              @input="setAlertRuleEdited(true)"
+              @update:model-value="setAlertRuleEdited(true)"
             ></v-select>
             <div
               v-if="showAllMeasurements"
@@ -102,7 +102,7 @@
               :label="$t('Calculation')"
               :rules="requiredRule"
               :disabled="formula.period_minutes === 0"
-              @input="setAlertRuleEdited(true)"
+              @update:model-value="setAlertRuleEdited(true)"
             ></v-select>
             <div
               v-if="formula.period_minutes === 0"
@@ -132,7 +132,7 @@
               :label="$t('Comparison')"
               :rules="requiredRule"
               :disabled="measurement.data_source_type !== defaultSourceType"
-              @input="setAlertRuleEdited(true)"
+              @update:model-value="setAlertRuleEdited(true)"
             ></v-select>
             <div
               v-if="measurement.data_source_type !== defaultSourceType"
@@ -270,7 +270,7 @@
               item-value="short"
               :label="$t('Comparator')"
               :rules="requiredRule"
-              @input="setAlertRuleEdited(true)"
+              @update:model-value="setAlertRuleEdited(true)"
             ></v-select>
           </v-col>
 
@@ -296,9 +296,7 @@
                 ><div class="v-messages theme--light text-error" role="alert"
                   ><div class="v-messages__wrapper"
                     ><div class="v-messages__message">{{
-                      this.$i18n.t('this_field') +
-                        ' ' +
-                        this.$i18n.t('is_required')
+                      $i18n.t('this_field') + ' ' + $i18n.t('is_required')
                     }}</div></div
                   ></div
                 ></div

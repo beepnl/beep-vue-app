@@ -67,7 +67,7 @@
                 counter="30"
                 :rules="requiredRule"
                 required
-                @input="validateText($event, 'name', 30)"
+                @update:model-value="validateText($event, 'name', 30)"
               >
               </v-text-field>
             </v-col>
@@ -114,7 +114,7 @@
                 row-height="24"
                 auto-grow
                 counter="250"
-                @input="validateText($event, 'description', 250)"
+                @update:model-value="validateText($event, 'description', 250)"
               >
               </v-textarea>
             </v-col>
@@ -133,7 +133,7 @@
                 :placeholder="$t('Select') + '...'"
                 class="pt-0"
                 hide-details
-                @input="setAlertRuleEdited(true), checkCalculation($event)"
+                @update:model-value="setAlertRuleEdited(true), checkCalculation($event)"
               ></v-select>
               <div
                 v-if="activeAlertRule.calculation_minutes === 0"
@@ -172,7 +172,7 @@
                 "
                 class="pt-0 mt-n1"
                 :rules="requiredRule"
-                @input="setAlertRuleEdited(true)"
+                @update:model-value="setAlertRuleEdited(true)"
               ></v-select>
               <div
                 v-if="showAllMeasurements"
@@ -191,7 +191,7 @@
                 :label="$t('Calculation')"
                 :rules="requiredRule"
                 :disabled="activeAlertRule.calculation_minutes === 0"
-                @input="setAlertRuleEdited(true)"
+                @update:model-value="setAlertRuleEdited(true)"
               ></v-select>
               <div
                 v-if="activeAlertRule.calculation_minutes === 0"
@@ -220,7 +220,7 @@
                 :placeholder="`${$t('Select')} ${$t('comparison')} ...`"
                 :label="$t('Comparison')"
                 :rules="requiredRule"
-                @input="setAlertRuleEdited(true)"
+                @update:model-value="setAlertRuleEdited(true)"
               ></v-select>
               <div
                 v-if="activeAlertRule.comparison === 'abs_dif'"
@@ -237,7 +237,7 @@
                 item-value="short"
                 :label="$t('Comparator')"
                 :rules="requiredRule"
-                @input="setAlertRuleEdited(true)"
+                @update:model-value="setAlertRuleEdited(true)"
               ></v-select>
             </v-col>
 

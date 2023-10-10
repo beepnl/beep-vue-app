@@ -330,9 +330,6 @@ export default {
   },
   computed: {
     ...mapGetters('devices', ['devices']),
-    devicesOptions() {
-      return this.sortedDevices()
-    },
     browser() {
       const test = function(regexp) {
         return regexp.test(window.navigator.userAgent)
@@ -377,6 +374,9 @@ export default {
       } else {
         return this.$i18n.t('selection_placeholder')
       }
+    },
+    devicesOptions() {
+      return this.sortedDevices()
     },
     locale() {
       return this.$i18n.locale

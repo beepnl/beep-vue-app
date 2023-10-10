@@ -176,7 +176,7 @@
               class="checklist-name"
               counter="50"
               :disabled="!activeChecklist.owner"
-              @input="validateText($event, 'name', 50)"
+              @update:model-value="validateText($event, 'name', 50)"
             >
             </v-text-field>
           </v-col>

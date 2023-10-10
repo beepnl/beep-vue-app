@@ -144,7 +144,7 @@
                       persistent-hint
                       counter="30"
                       required
-                      @input="validateText($event, 'name', 30)"
+                      @update:model-value="validateText($event, 'name', 30)"
                     >
                     </v-text-field>
                   </v-col>
@@ -157,7 +157,9 @@
                       persistent-hint
                       counter="60"
                       required
-                      @input="validateText($event, 'description', 60)"
+                      @update:model-value="
+                        validateText($event, 'description', 60)
+                      "
                     >
                     </v-text-field>
                   </v-col>
@@ -171,7 +173,7 @@
                       :hint="$t('Dashboard_pace_exp')"
                       persistent-hint
                       class="mt-5"
-                      @input="setDashboardEdited(true)"
+                      @update:model-value="setDashboardEdited(true)"
                     ></v-select>
                   </v-col>
                 </v-row>
@@ -188,7 +190,7 @@
                       :hint="$t('Dashboard_interval_exp')"
                       persistent-hint
                       class="my-3"
-                      @input="setDashboardEdited(true)"
+                      @update:model-value="setDashboardEdited(true)"
                     ></v-select>
                   </v-col>
                 </v-row>

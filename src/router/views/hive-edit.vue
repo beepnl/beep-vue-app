@@ -101,7 +101,7 @@
               counter="30"
               :rules="requiredRule"
               required
-              @input="validateText($event, 'name', 30)"
+              @update:model-value="validateText($event, 'name', 30)"
             >
             </v-text-field>
           </v-col>
@@ -326,9 +326,9 @@ export default {
     // If hive-create route is used, make empty hive object
     if (this.hiveCreateMode) {
       this.readApiariesAndGroupsIfNotPresent().then(() => {
-        var selectedLocationId = null
+        let selectedLocationId = null
         if (this.apiaries.length > 0) {
-          var selectedApiary = this.sortedApiaries[0]
+          let selectedApiary = this.sortedApiaries[0]
           selectedLocationId = selectedApiary.id
           this.newHiveLocation = null
           if (this.locationId !== null) {

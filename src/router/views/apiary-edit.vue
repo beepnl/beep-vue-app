@@ -73,7 +73,7 @@
                     counter="30"
                     :rules="requiredRule"
                     required
-                    @input="validateText($event, 'name', 30)"
+                    @update:model-value="validateText($event, 'name', 30)"
                   >
                   </v-text-field>
 
@@ -145,7 +145,7 @@
                     v-if="activeApiary"
                     v-model="activeApiary.roofed"
                     :label="`${$t('roofed')}`"
-                    @change="setApiaryEdited(true)"
+                    @update:model-value="setApiaryEdited(true)"
                   ></v-switch>
                 </v-col>
               </v-row>
@@ -253,7 +253,7 @@
                     :label="`${$t('City')}`"
                     outlined
                     density="compact"
-                    @change="setApiaryEdited(true)"
+                    @update:model-value="setApiaryEdited(true)"
                   >
                   </v-text-field>
                 </v-col>
@@ -264,7 +264,7 @@
                     :label="`${$t('Postal_code')}`"
                     outlined
                     density="compact"
-                    @change="setApiaryEdited(true)"
+                    @update:model-value="setApiaryEdited(true)"
                   >
                   </v-text-field>
                 </v-col>
@@ -275,7 +275,7 @@
                     :label="`${$t('Street')}`"
                     outlined
                     density="compact"
-                    @change="setApiaryEdited(true)"
+                    @update:model-value="setApiaryEdited(true)"
                   >
                   </v-text-field>
                 </v-col>
@@ -286,7 +286,7 @@
                     :label="`${$t('Number')}`"
                     outlined
                     density="compact"
-                    @change="setApiaryEdited(true)"
+                    @update:model-value="setApiaryEdited(true)"
                   >
                   </v-text-field>
                 </v-col>

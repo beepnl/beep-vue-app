@@ -289,7 +289,7 @@
                         'Hardware ID' + (ownedDevice.type === 'beep' ? '*' : '')
                       "
                       :disabled="ownedDevice.type === 'beep'"
-                      @input="updateDevice(ownedDevice, 'hardware_id', $event)"
+                      @update:model-value="updateDevice(ownedDevice, 'hardware_id', $event)"
                     />
                   </v-col>
                   <v-col cols="12" md="6" class="pb-0 pb-sm-3">
@@ -305,7 +305,7 @@
                           (ownedDevice.type === 'beep' ? ' BEEP base*' : '')
                       "
                       :disabled="ownedDevice.type === 'beep'"
-                      @input="updateDevice(ownedDevice, 'firmware_id', $event)"
+                      @update:model-value="updateDevice(ownedDevice, 'firmware_id', $event)"
                     />
                   </v-col>
                   <v-col cols="12" md="6">
@@ -451,7 +451,7 @@
                                   :placeholder="`${$t('Name')}`"
                                   class="mt-2"
                                   density="compact"
-                                  @input="sensorDefEdited = true"
+                                  @update:model-value="sensorDefEdited = true"
                                 ></v-text-field>
                               </td>
                               <td>
@@ -507,7 +507,7 @@
                                   "
                                   class="mt-2 mb-n5"
                                   solo
-                                  @input="
+                                  @update:model-value="
                                     selectInputMeasurementId(sensorDef, $event)
                                   "
                                 ></v-select>
@@ -527,7 +527,7 @@
                                   "
                                   class="mt-2 mb-n5"
                                   solo
-                                  @input="sensorDefEdited = true"
+                                  @update:model-value="sensorDefEdited = true"
                                 ></v-select>
                               </td>
                               <td>

@@ -17,7 +17,7 @@
                 class="queen-name"
                 counter="30"
                 clearable
-                @input="updateQueen($event, 'name')"
+                @update:model-value="updateQueen($event, 'name')"
               >
               </v-text-field>
             </div>
@@ -102,7 +102,7 @@
                 height="36px"
                 counter="100"
                 clearable
-                @input="updateQueen($event, 'description')"
+                @update:model-value="updateQueen($event, 'description')"
               >
               </v-text-field>
             </div>
@@ -222,7 +222,7 @@ export default {
     treeselectBeeRaces() {
       if (this.beeRacesList.length) {
         const locale = this.selectLocale(this.beeRacesList)
-        var treeselectArray = this.beeRacesList
+        let treeselectArray = this.beeRacesList
         treeselectArray.map((beeRace) => {
           beeRace.label = beeRace.trans[locale]
           return beeRace // TODO-VUE3 check
@@ -345,7 +345,7 @@ export default {
       }
     },
     updateQueen(event, property) {
-      var value = null
+      let value = null
       if (event === null || typeof event === 'undefined') {
         value = null
       } else if (event.target !== undefined) {

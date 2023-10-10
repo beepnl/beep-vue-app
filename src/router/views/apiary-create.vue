@@ -105,7 +105,7 @@
                           class="beep--large"
                           counter="30"
                           :rules="requiredRule"
-                          @input="validateText($event, 'name', 30)"
+                          @update:model-value="validateText($event, 'name', 30)"
                         >
                         </v-text-field>
 
@@ -246,7 +246,7 @@
                           :country="newHive.country_code.toUpperCase()"
                           :usei18n="false"
                           class="country-select"
-                          @input="setApiaryEdited(true)"
+                          @update:model-value="setApiaryEdited(true)"
                         />
                       </v-col>
                       <v-col cols="6" sm="4">

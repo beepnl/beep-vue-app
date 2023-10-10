@@ -93,7 +93,7 @@
                     counter="30"
                     :rules="requiredRule"
                     required
-                    @input="validateText($event, 'name', 30)"
+                    @update:model-value="validateText($event, 'name', 30)"
                   >
                   </v-text-field>
                 </v-col>
@@ -109,7 +109,9 @@
                     rows="1"
                     clearable
                     auto-grow
-                    @input="validateText($event, 'description', 250)"
+                    @update:model-value="
+                      validateText($event, 'description', 250)
+                    "
                   >
                   </v-textarea>
                 </v-col>
@@ -544,7 +546,7 @@ export default {
       try {
         const response = await Api.postRequest('/groups/checktoken', {
           group_id: groupId,
-          token: token,
+          token,
         })
         if (!response.data.errors) {
           this.successMessage = this.$i18n.t('Invitation_accepted')
@@ -817,7 +819,7 @@ export default {
       this.setGroupEdited(true)
     },
     getTitle() {
-      var addName = ''
+      let addName = ''
       if (this.activeGroup && !this.createMode && !this.activeGroup.admin) {
         addName = ' - ' + this.activeGroup.name
       }
@@ -871,7 +873,7 @@ export default {
       this.$store.commit('groups/setGroupEdited', bool)
     },
     updateGroupProperties(event, property) {
-      var value = null
+      let value = null
       if (event === null) {
         value = null
       } else if (event.target !== undefined) {
