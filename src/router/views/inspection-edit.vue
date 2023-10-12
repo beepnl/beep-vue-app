@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/v-slot-style -->
 <!-- eslint-disable vue/comma-dangle -->
 <template>
   <Layout
@@ -257,31 +258,25 @@
                   :check-answer="activeInspection.date === null || invalidDate"
                   :parsed-images="parsedImages['date']"
                 ></labelWithDescription>
-                <!-- <Datetime
+
+                <VueDatePicker
                   v-if="activeInspection"
-                  v-model="inspectionDate"
-                  type="datetime"
-                  class="color-accent"
-                  :input-style="
-                    parseMode && (activeInspection.date === null || invalidDate)
-                      ? 'background-color: #ffe5e7;'
-                      : ''
-                  "
+                  :format="datePickerFormat"
+                  :model-value="inspectionDate"
+                  model-type="format"
+                  hide-input-icon
+                  :max-date="endOfToday"
+                  :is-24="true"
+                  :clearable="false"
                   :disabled="offlineMode"
-                  :max-datetime="endOfToday"
                   :placeholder="
                     forceInspectionDate || invalidDate
                       ? $t('select_inspection_date')
                       : null
                   "
-                >
-                  <template v-slot:button-cancel>
-                    <v-btn variant="text" color="accent">{{ $t('Cancel') }}</v-btn>
-                  </template>
-                  <template v-slot:button-confirm>
-                    <v-btn variant="text" color="accent">{{ $t('ok') }}</v-btn>
-                  </template>
-                </Datetime> -->
+                  class="text-accent"
+                  @update:model-value="datePickerIDUpdate"
+                />
               </div>
             </div>
           </v-col>
@@ -570,37 +565,29 @@
                                 :check-answer="reminderDate === null"
                                 :parsed-images="parsedImages['reminder_date']"
                               ></labelWithDescription>
-                              <!-- <Datetime
+                              <VueDatePicker
                                 v-if="activeInspection"
-                                v-model="reminderDate"
-                                :placeholder="`${$t('Set_notification_date')}`"
-                                type="datetime"
+                                :format="datePickerFormat"
+                                :model-value="reminderDate"
+                                model-type="format"
+                                hide-input-icon
+                                :is-24="true"
+                                :teleport="true"
+                                :placeholder="$t('Set_notification_date')"
                                 class="text-accent"
+                                @update:model-value="datePickerRDUpdate"
                               >
-                                <template
-                                  v-if="reminderDate !== null"
-                                  v-slot:after
-                                >
+                                <template #clear-icon="{ clear }">
                                   <span
                                     class="description clear-icon"
                                     @click="clearDate"
                                   >
-                                    <v-icon class="mt-n1" color="accent"
+                                    <v-icon color="accent"
                                       >mdi-close</v-icon
                                     ></span
                                   >
                                 </template>
-                                <template v-slot:button-cancel>
-                                  <v-btn variant="text" color="accent">{{
-                                    $t('Cancel')
-                                  }}</v-btn>
-                                </template>
-                                <template v-slot:button-confirm>
-                                  <v-btn variant="text" color="accent">{{
-                                    $t('ok')
-                                  }}</v-btn>
-                                </template>
-                              </Datetime> -->
+                              </VueDatePicker>
                             </div>
                           </div>
                         </v-col>
@@ -672,8 +659,6 @@ import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 import ChecklistFieldset from '@components/checklist-fieldset.vue'
 import Confirm from '@/src/components/confirm-dialog.vue'
-// import { Datetime } from 'vue-datetime'  // TODO-VUE3 replace by other date picker compatible with Vue 3
-// import 'vue-datetime/dist/vue-datetime.min.css'
 import dummyOutput from '@components/svg/scan_results_aws.json' // list.json' // test_4_dummy.json'
 import InspectModeSelector from '@components/inspect-mode-selector.vue'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
@@ -685,7 +670,6 @@ import {
   readApiariesAndGroupsIfNotPresent,
   readGeneralInspections,
 } from '@mixins/methodsMixin'
-import { momentFullDateTime, momentISO8601 } from '@mixins/momentMixin'
 import OfflineInspection from '@components/offline-inspection.vue'
 import ParsedPages from '@components/parsed-pages.vue'
 import smileRating from '@components/input-fields/smile-rating.vue'
@@ -697,7 +681,6 @@ export default {
     ApiaryPreviewHiveSelector,
     ChecklistFieldset,
     Confirm,
-    // Datetime,
     InspectModeSelector,
     labelWithDescription,
     Layout,
@@ -709,8 +692,6 @@ export default {
     Treeselect,
   },
   mixins: [
-    momentFullDateTime,
-    momentISO8601,
     parseDate,
     readApiariesAndGroups,
     readApiariesAndGroupsIfNotPresent,
@@ -767,6 +748,7 @@ export default {
       hiveNotEditable: false,
       isApiary: true,
       hiveSetId: null,
+      datePickerFormat: 'yyyy-MM-dd HH:mm:ss',
       dateFormat: 'YYYY-MM-DD HH:mm:ss',
       dateFormatSimple: 'YYYY-MM-DD HH:mm',
       printMode: false,
@@ -890,7 +872,7 @@ export default {
     endOfToday() {
       return this.$moment()
         .endOf('day')
-        .format()
+        .format(this.dateFormat)
     },
     forceInspectionDate() {
       return (
@@ -918,20 +900,19 @@ export default {
           this.activeInspection &&
           typeof this.activeInspection.created_at !== 'undefined'
         ) {
-          return this.momentISO8601(this.activeInspection.created_at)
+          return this.activeInspection.created_at
         } else if (
           this.activeInspection &&
           this.activeInspection.date !== null &&
           this.activeInspection.date !== 'Invalid date'
         ) {
-          return this.momentISO8601(this.activeInspection.date)
+          return this.activeInspection.date
         } else {
           return ''
         }
       },
       set(value) {
-        const date = this.momentFullDateTime(value)
-        this.setActiveInspectionDate(date)
+        this.setActiveInspectionDate(value)
       },
     },
     inspectionId() {
@@ -992,14 +973,14 @@ export default {
           this.activeInspection &&
           this.activeInspection.reminder_date !== null
         ) {
-          return this.momentISO8601(this.activeInspection.reminder_date)
+          return this.activeInspection.reminder_date
         } else {
           return null
         }
       },
       set(value) {
         if (value !== '' && value !== null) {
-          this.activeInspection.reminder_date = this.momentFullDateTime(value)
+          this.activeInspection.reminder_date = value
           this.setInspectionEdited(true)
         } else {
           this.activeInspection.reminder_date = null
@@ -1537,6 +1518,12 @@ export default {
       } else {
         this.saveInspection()
       }
+    },
+    datePickerIDUpdate(e) {
+      this.inspectionDate = e
+    },
+    datePickerRDUpdate(e) {
+      this.reminderDate = e
     },
     editChecklist(id) {
       if (this.selectedHiveSetId)

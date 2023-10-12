@@ -1,8 +1,6 @@
 import { createApp } from 'vue'
 import router from '@router'
 import store from '@state/store'
-// import vuetify from '@plugins/vuetify'
-// import VueI18n from 'vue-i18n'
 import { createI18n } from 'vue-i18n'
 import cs from '@public/js/lang/cs'
 import de from '@public/js/lang/de'
@@ -26,6 +24,8 @@ import 'vue3-treeselect/dist/vue3-treeselect.css'
 import veProgress from 'vue-ellipse-progress'
 import { ResizeObserver as Polyfill } from '@juggle/resize-observer'
 import 'element-plus/es/components/input-number/style/css'
+import VueDatePicker from '@vuepic/vue-datepicker'
+import '@vuepic/vue-datepicker/dist/main.css'
 // * Vuetify
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
@@ -147,6 +147,8 @@ app.use(vuetify)
 app.use(vueCountryRegionSelect)
 app.use(veProgress)
 app.config.globalProperties.$moment = moment
+
+app.component('VueDatePicker', VueDatePicker)
 
 // If running inside Cypress...
 if (process.env.VUE_APP_TEST === 'e2e') {

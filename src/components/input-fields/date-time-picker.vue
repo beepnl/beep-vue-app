@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/v-slot-style -->
 <template>
   <div class="d-flex justify-flex-start align-center">
     <v-icon dark :color="dateInput !== null ? 'primary' : ''" class="mr-2"
@@ -13,40 +14,35 @@
         :check-answer="checkAnswer"
       ></labelWithDescription>
 
-      <!-- <Datetime
+      <VueDatePicker
         v-if="item.input === 'date'"
-        v-model="dateInput"
-        :placeholder="`${$t('Select')} ${$t('Date').toLocaleLowerCase()}`"
-        type="datetime"
+        :format="datePickerFormat"
+        :model-value="dateInput"
+        model-type="format"
+        time-picker
+        :is-24="true"
+        :teleport="true"
         class="text-accent"
+        :placeholder="`${$t('Select')} ${$t('Date').toLocaleLowerCase()}`"
+        @update:model-value="datePickerUpdate"
       >
-        <template v-if="dateInput !== null" v-slot:after>
+        <template #clear-icon="{ clear }">
           <span class="description clear-icon" @click="clearDate(item.id)">
-            <v-icon class="mt-n1" color="accent">mdi-close</v-icon></span
+            <v-icon color="accent">mdi-close</v-icon></span
           >
         </template>
-        <template v-slot:button-cancel>
-          <v-btn variant="text" color="accent">{{ $t('Cancel') }}</v-btn>
-        </template>
-        <template v-slot:button-confirm>
-          <v-btn variant="text" color="accent">{{ $t('ok') }}</v-btn>
-        </template>
-      </Datetime> -->
+      </VueDatePicker>
     </div>
   </div>
 </template>
 
 <script>
-// import { Datetime } from 'vue-datetime'  // TODO-VUE3 replace by other date picker compatible with Vue 3
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
-import { momentFullDateTime, momentISO8601 } from '@mixins/momentMixin'
 
 export default {
   components: {
-    // Datetime,
     labelWithDescription,
   },
-  mixins: [momentFullDateTime, momentISO8601],
   props: {
     item: {
       type: Object,
@@ -77,6 +73,11 @@ export default {
       required: false,
     },
   },
+  data() {
+    return {
+      datePickerFormat: 'yyyy-MM-dd HH:mm:ss',
+    }
+  },
   computed: {
     dateInput: {
       get() {
@@ -85,14 +86,14 @@ export default {
           this.object[this.item.id] &&
           this.object[this.item.id] !== null
         ) {
-          return this.momentISO8601(this.object[this.item.id])
+          return this.object[this.item.id]
         } else {
           return null
         }
       },
       set(value) {
         if (value !== '' && value !== null) {
-          this.object[this.item.id] = this.momentFullDateTime(value)
+          this.object[this.item.id] = value
           this.setInspectionEdited(true)
         } else {
           this.object[this.item.id] = null
@@ -103,6 +104,9 @@ export default {
   methods: {
     clearDate(id) {
       this.object[id] = null
+    },
+    datePickerUpdate(e) {
+      this.dateInput = e
     },
     setInspectionEdited(bool) {
       this.$store.commit('inspections/setInspectionEdited', bool)

@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@juggle/resize-observer": "^3.4.0",
+    "@vuepic/vue-datepicker": "^7.1.0",
     "axios": "^0.21.4",
     "axios-actions": "^4.0.2",
     "chart.js": "^3.9.1",
