@@ -76,7 +76,7 @@
           :class="
             'd-flex ' +
               (itemIsCheckbox
-                ? 'checkbox-div'
+                ? 'checkbox-div' + (itemIsCheckboxList ? ' mb-1' : '')
                 : 'text-div' + (textArea ? ' --area' : ''))
           "
         >
@@ -102,7 +102,7 @@
 
           <div
             v-if="booleanItem"
-            :class="'ml-1 mb-1' + (j === 0 ? ' mr-8' : '')"
+            :class="'ml-1 mb-1' + (j === 0 ? ' mr-6' : '')"
           >
             <span v-text="j === 0 ? $t('yes') : $t('no')"></span>
           </div>
@@ -216,10 +216,12 @@ export default {
       return (
         this.booleanItem ||
         this.gradeItem ||
-        this.scoreItem ||
         this.smileyItem ||
-        this.presetItems
+        this.itemIsCheckboxList
       )
+    },
+    itemIsCheckboxList() {
+      return this.presetItems || this.scoreItem || this.columnItems
     },
     presetItems() {
       return this.scoreAmount
