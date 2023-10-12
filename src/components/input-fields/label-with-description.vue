@@ -77,7 +77,7 @@
             'd-flex ' +
               (itemIsCheckbox
                 ? 'checkbox-div'
-                : 'text-div' + (itemIsTextArea ? ' --area' : ''))
+                : 'text-div' + (textArea ? ' --area' : ''))
           "
         >
           <div v-if="gradeItem" class="d-flex flex-column align-center">
@@ -107,7 +107,7 @@
             <span v-text="j === 0 ? $t('yes') : $t('no')"></span>
           </div>
 
-          <div v-if="scoreItem">
+          <div v-if="scoreItem" class="mb-1">
             <v-icon
               v-for="star in j + 1"
               :key="star + 1"
@@ -116,7 +116,7 @@
             >
           </div>
 
-          <div v-if="presetItems" class="ml-1">
+          <div v-if="presetItems" class="ml-1 mb-1">
             <span v-text="presetItems[j]"></span>
           </div>
 
@@ -189,6 +189,11 @@ export default {
       default: false,
       required: false,
     },
+    textArea: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
   },
   data: function() {
     return {
@@ -215,9 +220,6 @@ export default {
         this.smileyItem ||
         this.presetItems
       )
-    },
-    itemIsTextArea() {
-      return this.item.id === 'notes' || this.item.id === 'reminder'
     },
     presetItems() {
       return this.scoreAmount
@@ -288,7 +290,7 @@ export default {
 }
 
 .checkbox-div {
-  height: 24px;
+  height: 20px;
   width: auto;
 }
 

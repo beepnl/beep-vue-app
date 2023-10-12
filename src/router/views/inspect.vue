@@ -518,6 +518,7 @@
                         <v-col cols="12">
                           <labelWithDescription
                             :plain-text="$t('notes')"
+                            :text-area="true"
                             :parse-mode="parseMode"
                             :check-answer="activeInspection.notes === null"
                             :parsed-images="parsedImages['notes']"
@@ -605,6 +606,7 @@
                         <v-col cols="12" sm="8">
                           <labelWithDescription
                             :plain-text="$t('reminder')"
+                             :text-area="true"
                             :parse-mode="parseMode"
                             :check-answer="
                               activeInspection['reminder'] === null
