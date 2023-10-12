@@ -160,7 +160,6 @@
                 <v-date-picker
                   v-model="dates"
                   :first-day-of-week="1"
-                  :locale="locale"
                   range
                   no-title
                   scrollable
@@ -378,9 +377,6 @@ export default {
     devicesOptions() {
       return this.sortedDevices()
     },
-    locale() {
-      return this.$i18n.locale
-    },
     mobile() {
       return this.$vuetify.display.mobile
     },
@@ -584,7 +580,7 @@ export default {
     },
     momentShort(date) {
       return this.$moment(date)
-        .locale(this.locale)
+        .locale(this.$i18n.locale)
         .format('ll')
     },
     setInitialDeviceId() {

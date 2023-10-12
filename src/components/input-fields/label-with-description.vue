@@ -140,11 +140,6 @@ export default {
       required: false,
       default: () => {},
     },
-    locale: {
-      type: String,
-      default: 'en',
-      required: false,
-    },
     parsedDate: {
       type: Boolean,
       default: false,
@@ -194,6 +189,9 @@ export default {
     },
     gradeItem() {
       return this.item && this.item.input === 'grade'
+    },
+    locale() {
+      return this.$i18n.locale
     },
     presetItems() {
       return this.scoreAmount

@@ -62,7 +62,6 @@
                 <v-date-picker
                   v-model="queenBirthDate"
                   :first-day-of-week="1"
-                  :locale="locale"
                   scrollable
                 >
                   <v-spacer></v-spacer>

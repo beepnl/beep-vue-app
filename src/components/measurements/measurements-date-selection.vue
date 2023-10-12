@@ -33,7 +33,6 @@
               interval === 'year' || interval === 'month' ? 'month' : 'date'
             "
             :first-day-of-week="1"
-            :locale="locale"
             no-title
             scrollable
           >
@@ -101,7 +100,6 @@
           <v-date-picker
             v-model="datesCopy"
             :first-day-of-week="1"
-            :locale="locale"
             range
             no-title
             scrollable
@@ -202,14 +200,11 @@ export default {
   },
   computed: {
     ...mapGetters('devices', ['devices']),
-    locale() {
-      return this.$i18n.locale
-    },
     mobile() {
       return this.$vuetify.display.mobile
     },
     requiredRules() {
-      var laterEndDate = true
+      let laterEndDate = true
       this.dates.length === 2 && this.dates[0] > this.dates[1]
         ? (laterEndDate = false)
         : (laterEndDate = true)

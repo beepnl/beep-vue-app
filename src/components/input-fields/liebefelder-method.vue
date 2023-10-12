@@ -178,7 +178,6 @@
               v-if="item.input !== 'label' && item.name !== 'colony_size'"
               :object="object"
               :item="item"
-              :locale="locale"
               :disabled="bulkInspection"
               :parse-mode="parseMode"
               @calculate-liebefeld-colony-size="calculateLiebefeldColonySize"
@@ -223,7 +222,6 @@
                       v-if="item2.input !== 'label'"
                       :object="object"
                       :item="item2"
-                      :locale="locale"
                       :disabled="bulkInspection"
                       :parse-mode="parseMode"
                       @calculate-liebefeld-colony-size="
@@ -275,11 +273,6 @@ export default {
       default: null,
       required: true,
     },
-    locale: {
-      type: String,
-      default: 'en',
-      required: false,
-    },
     nested: {
       type: Boolean,
       required: false,
@@ -309,6 +302,9 @@ export default {
   computed: {
     ...mapGetters('inspections', ['bulkInspection']),
     ...mapGetters('hives', ['activeHive']),
+            locale() {
+      return this.$i18n.locale
+    },
     sortedChildren() {
       const sortedChildren = this.category.children
         .slice()

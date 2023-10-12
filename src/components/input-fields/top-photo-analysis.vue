@@ -149,7 +149,6 @@
               v-if="item.input !== 'label' && item.name !== 'colony_size'"
               :object="object"
               :item="item"
-              :locale="locale"
               :disabled="bulkInspection"
               :parse-mode="parseMode"
               @calculate-tpa-colony-size="calculateTpaColonySize"
@@ -158,7 +157,6 @@
               v-if="item.input === 'label'"
               :object="object"
               :category="item"
-              :locale="locale"
               :parse-mode="parseMode"
             ></ChecklistFieldset>
           </div>
@@ -203,11 +201,6 @@ export default {
       type: Object,
       default: null,
       required: true,
-    },
-    locale: {
-      type: String,
-      default: 'en',
-      required: false,
     },
     nested: {
       type: Boolean,

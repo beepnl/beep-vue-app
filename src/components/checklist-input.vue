@@ -4,7 +4,6 @@
       v-if="item.input !== 'date'"
       :precision="precision"
       :item="item"
-      :locale="locale"
       :parse-mode="parseMode"
       :parsed-images="parsedImages"
       :parsed-items="parsedItems"
@@ -80,7 +79,6 @@
       v-if="item.input === 'select'"
       :object="object"
       :item="item"
-      :locale="locale"
       :check-answer="checkAnswer"
     ></treeselect>
 
@@ -88,7 +86,6 @@
       v-if="item.input === 'date'"
       :object="object"
       :item="item"
-      :locale="locale"
       :parse-mode="parseMode"
       :parsed-images="parsedImages"
       :parsed-items="parsedItems"
@@ -218,7 +215,6 @@
       v-show="object[item.id] === 1 || parseMode"
       class="mt-6"
       :category="item"
-      :locale="locale"
       :object="object"
       :nested="true"
       :parse-mode="parseMode"
@@ -312,11 +308,6 @@ export default {
       default: null,
       required: true,
     },
-    locale: {
-      type: String,
-      default: 'en',
-      required: false,
-    },
     disabled: {
       type: Boolean,
       default: false,
@@ -350,6 +341,9 @@ export default {
         this.item.input === 'list' ||
         this.item.input === 'options'
       )
+    },
+    locale() {
+      return this.$i18n.locale
     },
     parsedItems() {
       return this.parsedAnswerRaw &&

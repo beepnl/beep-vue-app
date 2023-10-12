@@ -6,7 +6,6 @@
     <div>
       <labelWithDescription
         :item="item"
-        :locale="locale"
         :parse-mode="parseMode"
         :parsed-date="parseMode"
         :parsed-images="parsedImages"
@@ -56,11 +55,6 @@ export default {
     object: {
       type: Object,
       required: true,
-    },
-    locale: {
-      type: String,
-      default: 'en',
-      required: false,
     },
     parsedItems: {
       type: Array,

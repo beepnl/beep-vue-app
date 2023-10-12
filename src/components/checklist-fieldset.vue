@@ -39,7 +39,6 @@
         v-if="category.name === 'top_photo_analysis'"
         :object="object"
         :category="category"
-        :locale="locale"
         :parse-mode="parseMode"
         :nested="nested"
       ></TopPhotoAnalysis>
@@ -48,7 +47,6 @@
         v-if="category.name === 'liebefelder_method'"
         :object="object"
         :category="category"
-        :locale="locale"
         :parse-mode="parseMode"
         :nested="nested"
       ></LiebefelderMethod>
@@ -75,14 +73,12 @@
               v-if="item.input !== 'label'"
               :object="object"
               :item="item"
-              :locale="locale"
               :parse-mode="parseMode"
             ></ChecklistInput>
             <ChecklistFieldset
               v-if="item.input === 'label'"
               :object="object"
               :category="item"
-              :locale="locale"
               :parse-mode="parseMode"
             ></ChecklistFieldset>
           </div>
@@ -93,7 +89,6 @@
         v-if="category.children.length === 0"
         :object="object"
         :item="category"
-        :locale="locale"
         :parse-mode="parseMode"
       ></ChecklistInput>
     </div>
@@ -108,7 +103,6 @@
       "
       :object="object"
       :item="category"
-      :locale="locale"
       :parse-mode="parseMode"
     ></ChecklistInput>
   </div>
@@ -138,11 +132,6 @@ export default {
       default: null,
       required: true,
     },
-    locale: {
-      type: String,
-      default: 'en',
-      required: false,
-    },
     nested: {
       type: Boolean,
       required: false,
@@ -158,6 +147,11 @@ export default {
     return {
       showDescription: false,
     }
+  },
+  computed: {
+    locale() {
+      return this.$i18n.locale
+    },
   },
 }
 </script>

@@ -435,7 +435,6 @@
                       v-if="activeInspection"
                       :object="activeInspection.items"
                       :category="category"
-                      :locale="locale"
                       :parse-mode="parseMode"
                     ></ChecklistFieldset>
                   </v-col>
@@ -1130,7 +1129,6 @@ export default {
   },
   watch: {
     selectedHives() {
-      console.log('watch selected hives', this.selectedHives)
       this.setActiveHive()
     },
   },
@@ -1246,7 +1244,6 @@ export default {
       }
     },
     async getActiveHive(id) {
-      console.log('get active hive', id)
       if (id !== null) {
         try {
           const response = await Api.readRequest('/hives/', id)
@@ -1846,16 +1843,13 @@ export default {
       }
     },
     selectHive(id) {
-      console.log('select hive', id) // TODO-VUE3 fix watch(selectedHives) is not triggered when single hive is selected
       if (this.editableHives.includes(id)) {
         if (!this.selectedHives.includes(id)) {
           this.selectedHives.push(id)
         } else {
           this.selectedHives.splice(this.selectedHives.indexOf(id), 1)
         }
-        if (this.selectedHives.length === 1) {
-          this.setActiveHive()
-        }
+        this.setActiveHive() // TODO-VUE3 workaround for watch(selectedHives) is not triggered when single hive is selected
         this.setInspectionEdited(true)
       }
       this.setBulkInspection(this.selectedHives.length > 1)
@@ -1903,7 +1897,6 @@ export default {
       this.$store.commit('inspections/setInspectionEdited', bool)
     },
     setActiveHive() {
-      console.log('set active hive', this.selectedHives)
       if (this.selectedHives.length === 1) {
         this.getActiveHive(this.selectedHives[0])
       } else if (this.activeHive !== null) {

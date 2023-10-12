@@ -28,11 +28,6 @@ export default {
       type: Object,
       required: true,
     },
-    locale: {
-      type: String,
-      default: 'en',
-      required: false,
-    },
     checkAnswer: {
       type: Boolean,
       required: false,
@@ -40,6 +35,9 @@ export default {
     },
   },
   computed: {
+    locale() {
+      return this.$i18n.locale
+    },
     treeSelectArray() {
       const treeselectArray = []
       this.item.children.forEach((item) => {
