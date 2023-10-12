@@ -74,9 +74,10 @@
           v-for="(image, j) in parsedImages"
           :key="'pi-' + j"
           :class="
-            'd-flex ' + itemIsCheckbox
-              ? 'checkbox-div'
-              : 'text-div' + (itemIsTextArea ? ' --area' : '')
+            'd-flex ' +
+              (itemIsCheckbox
+                ? 'checkbox-div'
+                : 'text-div' + (itemIsTextArea ? ' --area' : ''))
           "
         >
           <div v-if="gradeItem" class="d-flex flex-column align-center">
