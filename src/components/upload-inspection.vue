@@ -118,7 +118,7 @@ export default {
         process.env.VUE_APP_ASSETS_URL ||
         process.env.VUE_APP_ASSETS_URL_FALLBACK,
       showExplanation: true,
-      uploadExpBullets: 4,
+      uploadExpBullets: 3,
     }
   },
   computed: {
