@@ -44,8 +44,8 @@
         :error-messages="errorMessage"
         :height="'100%'"
         :loading="showLoading ? 'primary' : false"
-        @change="$event !== null ? makeBlob($event) : ''"
-        @click:clear="errorMessage = null"
+        @update:model-value="makeBlob"
+        @click:clear="errorMessage = ''"
       >
         <template v-slot:prepend-inner>
           <v-icon large>mdi-camera</v-icon>
@@ -96,6 +96,7 @@ export default {
       required: true,
     },
   },
+  emits: ['set-page-blob'],
   data: () => ({
     // rules: [
     //   (value) =>
@@ -104,7 +105,7 @@ export default {
     // ],
     pageImageFile: null,
     pageImage: null,
-    errorMessage: null,
+    errorMessage: '',
     showLoading: false,
   }),
   computed: {
@@ -117,8 +118,9 @@ export default {
   created() {},
   methods: {
     async makeBlob(img) {
+      this.pageImageFile = img
       const self = this
-      self.errorMessage = null
+      self.errorMessage = ''
       self.showLoading = true
       const reader = new FileReader()
       reader.onloadend = function() {
@@ -126,7 +128,7 @@ export default {
         self.$emit('set-page-blob', reader.result)
         self.showLoading = false
       }
-      reader.readAsDataURL(img)
+      reader.readAsDataURL(img[0])
     },
     confirmDeleteImage(id) {
       this.$refs.confirm

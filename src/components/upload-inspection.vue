@@ -154,7 +154,7 @@ export default {
     setPageBlob(blob, index) {
       const pageNr = index + 1
 
-      const payload = { ...this.uploadInspectionPayload }
+      const payload = JSON.parse(JSON.stringify(this.uploadInspectionPayload)) // clone without v-bind to avoid vuex warning when mutating
 
       payload.svg = this.selectedChecklistSvg.svg
       payload['data-user-locale'] = [this.uploadLanguage]

@@ -1,17 +1,20 @@
 <template>
   <div>
-    <!-- <v-file-input
+    <v-file-input
       v-if="object[item.id] === null"
       ref="image"
+      :model-value="image"
       class="pt-0 image-uploader"
+      variant="underlined"
+      accept="image/png, image/jpeg, image/bmp"
       :placeholder="`${$t('Select')} ${$tc('Image', 1).toLowerCase()}`"
       prepend-icon="mdi-camera"
       :error-messages="errorMessage"
       :disabled="inputDisabled"
       :loading="showLoading ? 'primary' : false"
-      @change="onUpload"
-      @click:clear="errorMessage = null"
-    ></v-file-input> TODO-VUE3 fix file input -->
+      @update:model-value="onUpload"
+      @click:clear="errorMessage = ''"
+    ></v-file-input>
     <div class="image-preview">
       <v-icon
         v-if="object[item.id] !== null"
@@ -77,9 +80,9 @@ export default {
     //     !this.errorMessage ||
     //     'Image size should be less than 8 MB!',
     // ],
-    images: null,
+    image: null,
     activeImage: null,
-    errorMessage: null,
+    errorMessage: '',
     thumbUrl: '',
     showLoading: false,
     baseApiUrl:
@@ -108,6 +111,8 @@ export default {
         }
         // empty input field even if deleting image gives error
         this.object[id] = null
+        this.thumbUrl = ''
+        this.image = null
         const response = await Api.deleteRequest('/images', '', data)
         if (!response) {
           console.log('error')
@@ -120,16 +125,11 @@ export default {
         }
       }
     },
-    async onUpload() {
-      const file = this.$refs.image.internalValue
+    async onUpload(e) {
+      const file = e
+      this.image = e
 
-      if (
-        typeof file !== 'undefined' &&
-        (file !== null) & !file.$error &&
-        (file.type === 'image/png' ||
-          file.type === 'image/jpeg' ||
-          file.type === 'image/bmp')
-      ) {
+      if (typeof file !== 'undefined' && (file !== null) & !file.$error) {
         this.showLoading = true
         const userId = this.$store.getters['auth/userId']
         const hiveId =
@@ -140,8 +140,9 @@ export default {
           this.$store.getters['inspections/selectedInspectionId'] !== null
             ? this.$store.getters['inspections/selectedInspectionId']
             : ''
+
         const formData = new FormData()
-        formData.append('file', file)
+        formData.append('file', file[0])
         formData.append('user_id', userId)
         formData.append('hive_id', hiveId)
         formData.append('inspection', inspection)
@@ -149,7 +150,7 @@ export default {
 
         const headers = { 'Content-Type': 'multipart/form-data; boundary=XXX' }
 
-        this.errorMessage = null
+        this.errorMessage = ''
 
         try {
           const response = await Api.postRequestWithHeaders(
