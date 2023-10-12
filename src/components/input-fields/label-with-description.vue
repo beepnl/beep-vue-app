@@ -102,7 +102,7 @@
 
           <div
             v-if="booleanItem"
-            :class="'ml-1 mb-1' + (j === 0 ? ' mr-6' : '')"
+            :class="'ml-1 mt-1' + (j === 0 ? ' mr-5' : '')"
           >
             <span v-text="j === 0 ? $t('yes') : $t('no')"></span>
           </div>
@@ -278,8 +278,8 @@ export default {
 }
 
 .parsed-checkbox {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
 }
 
 .img-helper {
@@ -292,7 +292,7 @@ export default {
 }
 
 .checkbox-div {
-  height: 20px;
+  height: 24px;
   width: auto;
 }
 
