@@ -1207,6 +1207,8 @@ const translations = {
   Upload_images_exp_4: 'TODO: use image scanner?',
   Uploading_images_be_patient:
     'Please wait a moment, your images are being parsed. This may take several minutes. Please do not close this window.',
+  Generating_svg_be_patient:
+    'Please wait a moment, your printable checklist is being generated. This may take a little while. Please do not close this window.',
   Parsed_pages: 'Parsed pages',
   Number_of_processed_pages: 'Number of parsed pages: ',
   Incorrectly_uploaded_pages: 'Incorrectly uploaded page numbers: ',
