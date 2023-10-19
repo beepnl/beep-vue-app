@@ -480,6 +480,8 @@
       </v-list-item>
     </v-list>
   </v-menu>
+
+  <!-- <v-overlay v-model="showHive"></v-overlay> -->
 </template>
 
 <script>
@@ -520,6 +522,13 @@ export default {
       required: true,
     },
   },
+  // data() {
+  //   return {
+  // showHive: false, // TODO-VUE3 fix menu overlay & HiveIcon zindex
+  //       :show-hive="showHive"
+  // @click="showHive = !showHive"
+  //   }
+  // },
   computed: {
     alertRuleNamesText() {
       const uniqueAlertRuleNames = []

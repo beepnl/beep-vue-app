@@ -1,5 +1,5 @@
 <template>
-  <v-menu location="bottom" absolute>
+  <v-menu>
     <template v-slot:activator="{ props }">
       <v-card class="diary-card" v-bind="props">
         <div style="width: 100%;">
@@ -294,54 +294,50 @@
       </v-card>
     </template>
 
-    <v-list density="compact">
-      <v-list-group>
-        <v-list-item
-          :to="{
-            name: 'hive-inspections',
-            params: { id: inspection.hive_id },
-            query: { search: 'id=' + inspection.id.toString() },
-          }"
-        >
-          <v-icon class="mr-3"> mdi-magnify</v-icon>
-
-          <v-list-item-title>{{ $tc('View_inspection', 1) }}</v-list-item-title>
-        </v-list-item>
-        <v-list-item
-          v-if="inspection.owner || inspection.owned_and_group"
-          :to="{
-            name: 'hive-inspect-edit',
-            params: {
-              id: inspection.hive_id,
-              inspection: inspection.id,
-            },
-          }"
-        >
-          <v-icon class="mr-3"> mdi-file-document-edit-outline</v-icon>
-
-          <v-list-item-title
-            ><span v-text="`${$t('Edit_inspection')}`"></span
-          ></v-list-item-title>
-        </v-list-item>
-      </v-list-group>
+    <v-list>
+      <v-list-item
+        class="text-black"
+        :to="{
+          name: 'hive-inspections',
+          params: { id: inspection.hive_id },
+          query: { search: 'id=' + inspection.id.toString() },
+        }"
+        :prepend-icon="'mdi-magnify'"
+        :title="$tc('View_inspection', 1)"
+      >
+      </v-list-item>
+      <v-list-item
+        v-if="inspection.owner || inspection.owned_and_group"
+        class="text-black"
+        :to="{
+          name: 'hive-inspect-edit',
+          params: {
+            id: inspection.hive_id,
+            inspection: inspection.id,
+          },
+        }"
+        :prepend-icon="'mdi-file-document-edit-outline'"
+        :title="$t('Edit_inspection')"
+      >
+      </v-list-item>
 
       <v-divider
         v-if="inspection.owner || inspection.owned_and_group"
         class="my-1"
       ></v-divider>
 
-      <v-list-group>
-        <v-list-item
-          v-if="inspection.owner || inspection.owned_and_group"
-          @click="confirmDeleteInspection(inspection)"
-        >
-          <v-icon class="mr-3 text-red">mdi-delete</v-icon>
+      <v-list-item
+        v-if="inspection.owner || inspection.owned_and_group"
+        @click="confirmDeleteInspection(inspection)"
+      >
+        <template v-slot:prepend>
+          <v-icon :icon="'mdi-delete'" class="text-red"> </v-icon>
+        </template>
 
-          <v-list-item-title class="text-red">{{
-            $t('remove_inspection')
-          }}</v-list-item-title>
-        </v-list-item>
-      </v-list-group>
+        <v-list-item-title class="text-red">{{
+          $t('remove_inspection')
+        }}</v-list-item-title>
+      </v-list-item>
     </v-list>
   </v-menu>
 </template>
