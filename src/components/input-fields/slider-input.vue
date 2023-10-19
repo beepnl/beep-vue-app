@@ -3,7 +3,7 @@
     <v-slider
       v-if="item.input === 'grade'"
       class="slider--default slider--grade"
-      :value="getValue(item.id, item.input)"
+      :model-value="getValue(item.id, item.input)"
       :ticks="gradeTicks"
       track-color="#b0b0b0"
       min="0"
@@ -11,11 +11,11 @@
       step="1"
       show-ticks="always"
       tick-size="4"
-      @change="updateValue($event, item.id, item.input)"
+      @update:model-value="updateValue($event, item.id, item.input)"
     >
-      <template v-slot:thumb-label="props">
-        <span dark :color="gradeColors(props.value)">
-          {{ props.value }}
+      <template v-slot:thumb-label="{ modelValue }">
+        <span dark :color="gradeColors(modelValue)">
+          {{ modelValue }}
         </span>
       </template>
     </v-slider>
@@ -25,9 +25,9 @@
       :class="
         `slider--big-label ${inputProvided(item.id) ? '' : 'slider--default'}`
       "
-      :value="getValue(item.id, item.input)"
+      :model-value="getValue(item.id, item.input)"
       :ticks="numberDegreeTicks"
-      thumb-label="always"
+      :thumb-label="inputProvided(item.id)"
       :track-color="inputProvided(item.id) ? '#F8B133' : '#b0b0b0'"
       :track-fill-color="inputProvided(item.id) ? '#F8B133' : '#b0b0b0'"
       thumb-size="28"
@@ -35,17 +35,17 @@
       min="-180"
       max="180"
       step="1"
-      @change="updateValue($event, item.id, item.input)"
+      @update:model-value="updateValue($event, item.id, item.input)"
     >
       <template v-slot:thumb-label="props">
-        {{ props.value + '°' }}
+        {{ modelValue + '°' }}
       </template>
 
       <!-- reset value to null (this way '0' is a valid input) -->
       <template v-slot:append>
         <v-icon
           v-if="inputProvided(item.id)"
-          class="mt-6 clear-icon"
+          class="clear-icon"
           color="accent"
           @click="clearValue(item.id)"
           >mdi-close</v-icon
@@ -57,25 +57,37 @@
     <v-slider
       v-if="item.input === 'number_percentage'"
       class="slider--big-label slider--number-percentage"
-      :value="getValue(item.id, item.input)"
+      :model-value="getValue(item.id, item.input)"
       :ticks="numberPercentageTicks"
-      thumb-label="always"
+      :thumb-label="inputProvided(item.id)"
       track-color="#b0b0b0"
       thumb-size="28"
       tick-size="0"
-      min="-1"
+      min="0"
       max="100"
       step="1"
-      @change="updateValue($event, item.id, item.input)"
+      @update:model-value="updateValue($event, item.id, item.input)"
     >
-      <template v-slot:thumb-label="props">
-        {{ props.value + '%' }}
+      <template v-slot:thumb-label="{ modelValue }">
+        {{ modelValue + '%' }}
+      </template>
+
+      <!-- reset value to null (this way '0' is a valid input) -->
+      <template v-slot:append>
+        <v-icon
+          v-if="inputProvided(item.id)"
+          class="clear-icon"
+          color="accent"
+          @click="clearValue(item.id)"
+          >mdi-close</v-icon
+        >
+        <v-spacer v-else style="width: 24px;"></v-spacer>
       </template>
     </v-slider>
 
     <v-slider
       v-if="item.input === 'score_amount'"
-      :value="getValue(item.id, item.input)"
+      :model-value="getValue(item.id, item.input)"
       class="slider--default slider--score-amount"
       :ticks="scoreAmountTicks"
       track-color="#b0b0b0"
@@ -84,18 +96,18 @@
       step="1"
       show-ticks="always"
       tick-size="4"
-      @change="updateValue($event, item.id, item.input)"
+      @update:model-value="updateValue($event, item.id, item.input)"
     >
-      <template v-slot:thumb-label="props">
-        <v-icon dark :color="scoreAmountColors[props.value]">
-          {{ scoreAmountIcons[props.value] }}
+      <template v-slot:thumb-label="{ modelValue }">
+        <v-icon dark :color="scoreAmountColors[modelValue]">
+          {{ scoreAmountIcons[modelValue] }}
         </v-icon>
       </template>
     </v-slider>
 
     <v-slider
       v-if="item.input === 'score_quality'"
-      :value="getValue(item.id, item.input)"
+      :model-value="getValue(item.id, item.input)"
       class="slider--default slider--score-quality"
       :ticks="scoreQualityTicks"
       track-color="#b0b0b0"
@@ -104,10 +116,10 @@
       step="1"
       show-ticks="always"
       tick-size="4"
-      @change="updateValue($event, item.id, item.input)"
+      @update:model-value="updateValue($event, item.id, item.input)"
     >
-      <template v-slot:thumb-label="props">
-        <v-icon dark :color="scoreQualityColors[props.value]">
+      <template v-slot:thumb-label="{ modelValue }">
+        <v-icon dark :color="scoreQualityColors[modelValue]">
           mdi-checkbox-blank-circle
         </v-icon>
       </template>
@@ -116,19 +128,31 @@
     <v-slider
       v-if="item.input === 'slider'"
       class="slider--big-label slider--number-percentage"
-      :value="getValue(item.id, item.input)"
+      :model-value="getValue(item.id, item.input)"
       :ticks="sliderTicks"
-      thumb-label="always"
+      :thumb-label="inputProvided(item.id)"
       track-color="#b0b0b0"
       thumb-size="28"
       tick-size="0"
-      min="-1"
+      min="0"
       max="100"
       step="1"
-      @change="updateValue($event, item.id, item.input)"
+      @update:model-value="updateValue($event, item.id, item.input)"
     >
-      <template v-slot:thumb-label="props">
-        {{ props.value }}
+      <template v-slot:thumb-label="{ modelValue }">
+        {{ modelValue }}
+      </template>
+
+      <!-- reset value to null (this way '0' is a valid input) -->
+      <template v-slot:append>
+        <v-icon
+          v-if="inputProvided(item.id)"
+          class="clear-icon"
+          color="accent"
+          @click="clearValue(item.id)"
+          >mdi-close</v-icon
+        >
+        <v-spacer v-else style="width: 24px;"></v-spacer>
       </template>
     </v-slider>
   </div>
@@ -160,7 +184,7 @@ export default {
   computed: {
     gradeTicks() {
       const ticksArray = []
-      for (var i = 0; i <= 10; i++) {
+      for (let i = 0; i <= 10; i++) {
         if (i === 0) {
           ticksArray.push('-')
         } else if (i === 1) {
@@ -177,7 +201,7 @@ export default {
     },
     numberDegreeTicks() {
       const ticksArray = []
-      for (var i = -180; i <= 180; i++) {
+      for (let i = -180; i <= 180; i++) {
         if (i === 0) {
           ticksArray.push('0°')
         } else if (i === -180) {
@@ -192,7 +216,7 @@ export default {
     },
     numberPercentageTicks() {
       const ticksArray = []
-      for (var i = -1; i <= 100; i++) {
+      for (let i = 0; i <= 100; i++) {
         if (i === 25) {
           ticksArray.push('25%')
         } else if (i === 50) {
@@ -227,7 +251,7 @@ export default {
     },
     sliderTicks() {
       const ticksArray = []
-      for (var i = -1; i <= 100; i++) {
+      for (let i = 0; i <= 100; i++) {
         if (i === 0) {
           ticksArray.push('0')
         } else if (i === 100) {
@@ -244,10 +268,10 @@ export default {
       this.object[id] = null
     },
     getValue(id, inputtype) {
-      var value = this.object[id]
+      const value = this.object[id]
       if (inputtype === 'number_percentage' || inputtype === 'slider') {
-        if (value === null || value === -1) {
-          return -1
+        if (value === null || value === 0) {
+          return 0
         }
       } else if (inputtype === 'number_degrees') {
         if (value === null) {
@@ -278,11 +302,8 @@ export default {
       this.$store.commit('inspections/setInspectionEdited', bool)
     },
     updateValue(value, id, inputtype) {
-      if (inputtype === 'number_percentage' || inputtype === 'slider') {
-        if (value === -1) {
-          value = null
-        }
-      } else if (inputtype === 'number_degrees') {
+      console.log('update value', value, id, inputtype)
+      if (inputtype === 'number_degrees') {
         if (value === null) {
           value = null
         }
