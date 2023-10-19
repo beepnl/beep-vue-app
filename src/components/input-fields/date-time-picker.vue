@@ -24,6 +24,9 @@
         :teleport="true"
         class="text-accent"
         :placeholder="`${$t('Select')} ${$t('Date').toLocaleLowerCase()}`"
+        :locale="locale"
+        :select-text="$t('ok')"
+        :cancel-text="$t('Cancel')"
         @update:model-value="datePickerUpdate"
       >
         <template #clear-icon="{ clear }">

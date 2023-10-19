@@ -279,11 +279,12 @@ export default {
     treeselectHiveTypes() {
       if (this.hiveTypesList.length) {
         const locale = this.selectLocale(this.hiveTypesList)
-        const hiveTypePerGroup = this.hiveTypesList.reduce(function(r, a) {
-          r[a.group[locale]] = r[a.group[locale]] || []
-          r[a.group[locale]].push(a)
-          return r
-        }, {})
+        const hiveTypePerGroup = JSON.parse(JSON.stringify(this.hiveTypesList)) // clone without v-bind to avoid vuex warning when mutating
+          .reduce(function(r, a) {
+            r[a.group[locale]] = r[a.group[locale]] || []
+            r[a.group[locale]].push(a)
+            return r
+          }, {})
         const sortedGroups = Object.keys(hiveTypePerGroup)
           .slice()
           .sort(function(a, b) {

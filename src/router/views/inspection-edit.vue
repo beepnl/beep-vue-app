@@ -274,6 +274,9 @@
                       ? $t('select_inspection_date')
                       : null
                   "
+                  :locale="locale"
+                  :select-text="$t('ok')"
+                  :cancel-text="$t('Cancel')"
                   class="text-accent"
                   @update:model-value="datePickerIDUpdate"
                 />
@@ -575,6 +578,9 @@
                                 :teleport="true"
                                 :placeholder="$t('Set_notification_date')"
                                 class="text-accent"
+                                :locale="locale"
+                                :select-text="$t('ok')"
+                                :cancel-text="$t('Cancel')"
                                 @update:model-value="datePickerRDUpdate"
                               >
                                 <template #clear-icon="{ clear }">

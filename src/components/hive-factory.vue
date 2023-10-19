@@ -31,20 +31,26 @@
               :sort="false"
               class="d-flex flex-column justify-flex-start"
             >
-              <div
-                v-for="layer in layersToAdd"
-                :key="layer.key"
-                :class="[`draggable-layer-wrapper ${layer.type}-layer-wrapper`]"
-                :width="`${hiveWidth(hive)}px`"
-              >
-                <span class="beep-label" v-text="layerTypeText(layer)"></span>
-                <v-sheet
-                  :color="checkColor(layer)"
-                  :class="[`layer draggable-layer ${layer.type}-layer`]"
+              <template v-slot:item="{ element }">
+                <div
+                  :key="element.key"
+                  :class="[
+                    `draggable-layer-wrapper ${element.type}-layer-wrapper`,
+                  ]"
                   :width="`${hiveWidth(hive)}px`"
                 >
-                </v-sheet>
-              </div>
+                  <span
+                    class="beep-label"
+                    v-text="layerTypeText(element)"
+                  ></span>
+                  <v-sheet
+                    :color="checkColor(element)"
+                    :class="[`layer draggable-layer ${element.type}-layer`]"
+                    :width="`${hiveWidth(hive)}px`"
+                  >
+                  </v-sheet>
+                </div>
+              </template>
             </draggable>
           </div>
 
@@ -65,21 +71,25 @@
                   delay="100"
                   delay-on-touch-only="true"
                 >
-                  <v-sheet
-                    v-for="layer in hiveLayers"
-                    :key="layer.id !== undefined ? layer.id : layer.key"
-                    :color="checkColor(layer)"
-                    :class="[`layer ${layer.type}-layer`]"
-                    :width="`${hiveWidth(hive)}px`"
-                    @click="openOverlay(layer)"
-                  >
-                  </v-sheet>
+                  <template v-slot:item="{ element }">
+                    <v-sheet
+                      :key="element.id !== undefined ? element.id : element.key"
+                      :color="checkColor(element)"
+                      :class="[`layer ${element.type}-layer`]"
+                      :width="`${hiveWidth(hive)}px`"
+                      @click="openOverlay(element)"
+                    >
+                    </v-sheet>
+                  </template>
                 </draggable>
               </div>
             </v-sheet>
           </div>
 
-          <v-overlay v-model="overlayLayerColor">
+          <v-overlay
+            v-model="overlayLayerColor"
+            class="align-center justify-center"
+          >
             <v-toolbar
               class="hive-color-picker-toolbar"
               density="compact"
@@ -102,6 +112,7 @@
 
             <v-color-picker
               v-model="colorPicker"
+              position="relative"
               class="hive-color-picker flex-color-picker"
               :swatches="swatches"
               show-swatches

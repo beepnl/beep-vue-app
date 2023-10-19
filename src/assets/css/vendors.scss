@@ -502,45 +502,16 @@
   cursor: not-allowed !important;
 }
 
-/* Vue Datetime */
-.vdatetime-input {
-  color: $color-primary;
-  cursor: pointer;
+/* VueDatePicker */
+.dp__action_select,
+.dp__range_end,
+.dp__range_start,
+.dp__active_date {
+  background: $color-accent !important;
 }
 
-.inspection-date .vdatetime-input {
-  width: 350px;
-}
-
-.vdatetime.text-green {
-  .vdatetime-input {
-    color: $color-green;
-  }
-}
-
-.vdatetime-popup {
-  border-radius: 4px;
-
-  .vdatetime-popup__header,
-  .vdatetime-calendar__month__day--selected > span > span,
-  .vdatetime-calendar__month__day--selected:hover > span > span {
-    background: $color-primary !important;
-  }
-
-  .vdatetime-year-picker__item--selected,
-  .vdatetime-time-picker__item--selected,
-  .vdatetime-popup__actions__button {
-    color: $color-primary !important;
-  }
-
-  .vdatetime-popup__header {
-    border-top-left-radius: inherit;
-    border-top-right-radius: inherit;
-  }
-
-  .vdatetime-popup__actions__button {
-    padding: 0 !important;
-  }
+.dp__today {
+  border: 1px solid $color-accent !important;
 }
 
 @media print {
