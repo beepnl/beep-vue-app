@@ -210,9 +210,9 @@
         item.children.length > 0 &&
           (item.input === 'boolean' ||
             item.input === 'boolean_yes_red' ||
-            item.input === 'list_item')
+            item.input === 'list_item') &&
+          (object[item.id] === 1 || parseMode)
       "
-      v-show="object[item.id] === 1 || parseMode"
       class="mt-6"
       :category="item"
       :object="object"
@@ -266,7 +266,7 @@
 import { svgData } from '@mixins/svgMixin'
 import { parseDate } from '@mixins/methodsMixin'
 import { mapGetters } from 'vuex'
-// import ChecklistFieldset from '@components/checklist-fieldset.vue'
+import ChecklistFieldset from '@components/checklist-fieldset.vue'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
 import dummyOutput from '@components/svg/scan_results_aws.json' // list.json' // test_4_dummy.json' TODO remove dummy output
@@ -283,7 +283,7 @@ import { ElInputNumber } from 'element-plus'
 export default {
   name: 'ChecklistInput',
   components: {
-    ChecklistFieldset: () => import('@components/checklist-fieldset.vue'), // needed to fix Vue recursive component error
+    ChecklistFieldset,
     dateTimePicker,
     imageUploader,
     labelWithDescription,

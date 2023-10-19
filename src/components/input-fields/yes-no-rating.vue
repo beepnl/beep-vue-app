@@ -3,44 +3,48 @@
     <div>
       <v-btn
         :class="
+          `yes-no-button mr-1 pl-0 ${yesRed ? 'yes-red' : ''} ${
+            small ? 'yes-no-button--small pr-0' : 'pr-2'
+          }`
+        "
+        :disabled="disabled"
+        variant="text"
+        @click="updateObject(1, property)"
+      >
+        <template v-slot:prepend>
+          <v-icon
+            end
+            :class="
+              object[property] === 1 || object[property] === true
+                ? 'text-green'
+                : 'color-grey'
+            "
+            >mdi-check-circle</v-icon
+          >
+        </template>
+        {{ $t('yes') }}
+      </v-btn>
+      <v-btn
+        :class="
           `yes-no-button pl-0 ${yesRed ? 'yes-red' : ''} ${
             small ? 'yes-no-button--small pr-0' : 'pr-2'
           }`
         "
         :disabled="disabled"
-        text
-        @click="updateObject(1, property)"
-      >
-        <v-icon
-          left
-          :class="
-            object[property] === 1 || object[property] === true
-              ? 'text-green'
-              : 'color-grey'
-          "
-          >mdi-check-circle</v-icon
-        >
-        {{ $t('yes') }}
-      </v-btn>
-      <v-btn
-        :class="
-          `yes-no-button ${yesRed ? 'yes-red' : ''} ${
-            small ? 'yes-no-button--small px-0' : 'px-2'
-          }`
-        "
-        :disabled="disabled"
-        text
+        variant="text"
         @click="updateObject(0, property)"
       >
-        <v-icon
-          left
-          :class="
-            object[property] === 0 || object[property] === false
-              ? 'text-red'
-              : 'color-grey'
-          "
-          >mdi-close-circle</v-icon
-        >
+        <template v-slot:prepend>
+          <v-icon
+            end
+            :class="
+              object[property] === 0 || object[property] === false
+                ? 'text-red'
+                : 'color-grey'
+            "
+            >mdi-close-circle</v-icon
+          >
+        </template>
         {{ $t('no') }}
       </v-btn>
     </div>

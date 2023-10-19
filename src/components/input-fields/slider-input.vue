@@ -302,7 +302,6 @@ export default {
       this.$store.commit('inspections/setInspectionEdited', bool)
     },
     updateValue(value, id, inputtype) {
-      console.log('update value', value, id, inputtype)
       if (inputtype === 'number_degrees') {
         if (value === null) {
           value = null
