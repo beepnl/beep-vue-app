@@ -1,22 +1,22 @@
 <template>
   <div>
-    <div class="smile-wrapper d-flex align-center">
+    <div class="smile-wrapper d-flex align-center ml-1">
       <v-icon
-        :class="`${object[property] === 1 ? 'red--text' : 'color-grey'} mr-2`"
+        :class="`${object[property] === 1 ? 'red--text' : 'color-grey'} mr-3`"
         @click="updateObject(1, property)"
       >
         mdi-emoticon-sad
       </v-icon>
       <v-icon
         :class="
-          `${object[property] === 2 ? 'orange--text' : 'color-grey'} mr-2`
+          `${object[property] === 2 ? 'orange--text' : 'color-grey'} mr-3`
         "
         @click="updateObject(2, property)"
       >
         mdi-emoticon-neutral
       </v-icon>
       <v-icon
-        :class="`${object[property] === 3 ? 'green--text' : 'color-grey'} mr-2`"
+        :class="`${object[property] === 3 ? 'green--text' : 'color-grey'} mr-3`"
         @click="updateObject(3, property)"
       >
         mdi-emoticon-happy
