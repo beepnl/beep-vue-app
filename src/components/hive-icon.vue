@@ -8,7 +8,6 @@
       }`
     "
     height="auto"
-    @click="showHiveMenu($event)"
   >
     <div
       :class="
@@ -46,7 +45,7 @@ export default {
       default: false,
     },
     showHive: {
-      type: Boolean,
+      type: Boolean, // TODO-VUE3 fix hive-card menu overlay + showHive boolean
       default: false,
     },
   },
@@ -85,9 +84,10 @@ export default {
         return 20
       }
     },
-    showHiveMenu(event) {
-      this.$emit('show-hive-menu', event)
-    },
+    // showHiveMenu(event) {
+    //     @click="showHiveMenu($event)"
+    //   this.$emit('show-hive-menu', event)
+    // },
   },
 }
 </script>
