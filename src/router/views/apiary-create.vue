@@ -99,7 +99,7 @@
                       <v-col cols="12" sm="6" md="4">
                         <v-text-field
                           v-if="newHive"
-                          v-model="newHive.name"
+                          :model-value="newHive.name"
                           :label="`${$t('Name')}*`"
                           :placeholder="`${$t('Name')}`"
                           class="beep--large"
@@ -173,7 +173,7 @@
                           v-if="newHive"
                           v-model="newHive.roofed"
                           :label="`${$t('roofed')}`"
-                          @change="setApiaryEdited(true)"
+                          @update:model-value="setApiaryEdited(true)"
                         ></v-switch>
                       </v-col>
                     </v-row>
@@ -240,14 +240,14 @@
                           class="beep-label"
                           v-text="`${$t('Country')}`"
                         ></div>
-                        <country-select
+                        <!-- <country-select
                           v-if="newHive"
                           v-model="newHive.country_code"
                           :country="newHive.country_code.toUpperCase()"
                           :usei18n="false"
                           class="country-select"
                           @update:model-value="setApiaryEdited(true)"
-                        />
+                        /> -->
                       </v-col>
                       <v-col cols="6" sm="4">
                         <div
@@ -256,14 +256,14 @@
                         ></div>
                         <ElInputNumber
                           v-if="newHive"
-                          v-model="newHive.lat"
+                          :model-value="newHive.lat"
                           :min="-90"
                           :max="90"
                           :step="0.001"
                           :precision="3"
                           :step-strictly="true"
                           @change="setApiaryEdited(true)"
-                          @input="
+                          @update:model-value="
                             convertComma($event, newHive, 'lat', 3),
                               setApiaryEdited(true)
                           "
@@ -276,7 +276,7 @@
                         ></div>
                         <ElInputNumber
                           v-if="newHive"
-                          v-model="newHive.lon"
+                          :model-value="newHive.lon"
                           :min="-180"
                           :max="180"
                           :step="0.001"
@@ -294,44 +294,44 @@
                       <v-col cols="12" sm="8">
                         <v-text-field
                           v-if="newHive"
-                          v-model="newHive.city"
+                          :model-value="newHive.city"
                           :label="`${$t('City')}`"
                           outlined
                           density="compact"
-                          @change="setApiaryEdited(true)"
+                          @update:model-value="setApiaryEdited(true)"
                         >
                         </v-text-field>
                       </v-col>
                       <v-col cols="12" sm="4">
                         <v-text-field
                           v-if="newHive"
-                          v-model="newHive.postal_code"
+                          :model-value="newHive.postal_code"
                           :label="`${$t('Postal_code')}`"
                           outlined
                           density="compact"
-                          @change="setApiaryEdited(true)"
+                          @update:model-value="setApiaryEdited(true)"
                         >
                         </v-text-field>
                       </v-col>
                       <v-col cols="8">
                         <v-text-field
                           v-if="newHive"
-                          v-model="newHive.street"
+                          :model-value="newHive.street"
                           :label="`${$t('Street')}`"
                           outlined
                           density="compact"
-                          @change="setApiaryEdited(true)"
+                          @update:model-value="setApiaryEdited(true)"
                         >
                         </v-text-field>
                       </v-col>
                       <v-col cols="4">
                         <v-text-field
                           v-if="newHive"
-                          v-model="newHive.street_no"
+                          :model-value="newHive.street_no"
                           :label="`${$t('Number')}`"
                           outlined
                           density="compact"
-                          @change="setApiaryEdited(true)"
+                          @update:model-value="setApiaryEdited(true)"
                         >
                         </v-text-field>
                       </v-col>
@@ -413,12 +413,12 @@
                         ></div>
                         <ElInputNumber
                           v-if="newHive"
-                          v-model="newHive.hive_amount"
+                          :model-value="newHive.hive_amount"
                           :min="0"
                           :max="50"
                           :precision="0"
                           :step-strictly="true"
-                          @change="setApiaryEdited(true)"
+                          @update:model-value="setApiaryEdited(true)"
                         ></ElInputNumber>
                       </v-col>
 
@@ -429,12 +429,12 @@
                         ></div>
                         <v-text-field
                           v-if="newHive"
-                          v-model="newHive.prefix"
+                          :model-value="newHive.prefix"
                           :height="36"
                           class="prefix-input"
                           outlined
                           density="compact"
-                          @change="setApiaryEdited(true)"
+                          @update:model-value="setApiaryEdited(true)"
                         >
                         </v-text-field>
                       </v-col>
@@ -447,9 +447,9 @@
                           ></div>
                           <ElInputNumber
                             v-if="newHive"
-                            v-model="newHive.offset"
+                            :model-value="newHive.offset"
                             :precision="0"
-                            @change="setApiaryEdited(true)"
+                            @update:model-value="setApiaryEdited(true)"
                           ></ElInputNumber>
                         </div>
                       </v-col>

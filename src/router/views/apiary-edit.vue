@@ -177,14 +177,14 @@
               <v-row>
                 <v-col cols="12" sm="4">
                   <div class="beep-label" v-text="`${$t('Country')}`"></div>
-                  <country-select
+                  <!-- <country-select
                     v-if="activeApiary"
                     v-model="activeApiary.country_code"
                     :country="activeApiary.country_code.toUpperCase()"
                     :usei18n="false"
                     class="country-select"
                     @input="setApiaryEdited(true)"
-                  />
+                  /> -->
                 </v-col>
                 <v-col cols="6" sm="4">
                   <div class="beep-label" v-text="`${$t('latitude')}`"></div>

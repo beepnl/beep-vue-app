@@ -394,6 +394,7 @@
 
       <v-list-item
         v-if="hive.editable || hive.owner"
+        class="text-black"
         :to="inspectLink(false)"
         :prepend-icon="'mdi-file-document-edit-outline'"
         :title="
@@ -405,6 +406,7 @@
       </v-list-item>
       <v-list-item
         v-if="hive.last_inspection_date !== null"
+        class="text-black"
         :to="{
           name: 'hive-inspections',
           params: { id: hive.id },
@@ -415,6 +417,7 @@
       </v-list-item>
       <v-list-item
         v-if="alerts.length > 0"
+        class="text-black"
         :to="{
           name: 'alerts',
           query: { search: hive.name },
@@ -425,6 +428,7 @@
       </v-list-item>
       <v-list-item
         v-if="hive.sensors.length !== 0"
+        class="text-black"
         :to="{
           name: 'measurements-id',
           params: { id: hive.sensors[0] },
@@ -442,6 +446,7 @@
 
       <v-list-item
         v-if="hive.editable || hive.owner"
+        class="text-black"
         :to="{
           name: `hive-edit`,
           params: { id: hive.id },
@@ -453,6 +458,7 @@
 
       <v-list-item
         v-if="hive.editable || hive.owner"
+        class="text-black"
         :to="{
           name: `queen-edit`,
           params: { id: hive.id },

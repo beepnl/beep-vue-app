@@ -389,81 +389,80 @@
                   >
                 </template>
 
-                <v-list :lines="false">
-                  <v-list-group v-if="!hiveSet.users">
-                    <template
-                      v-for="(item, i) in menuItemsApiary(hiveSet)"
-                      :key="i"
+                <v-list v-if="!hiveSet.users">
+                  <template
+                    v-for="(item, i) in menuItemsApiary(hiveSet)"
+                    :key="i"
+                  >
+                    <v-list-item
+                      v-if="item.to"
+                      class="text-black"
+                      :to="item.to"
+                      :prepend-icon="item.icon"
+                      :title="item.text"
                     >
-                      <v-list-item v-if="item.to" :to="item.to">
-                        <template v-slot:prepend>
-                          <v-icon class="mr-3" :icon="item.icon"></v-icon>
-                        </template>
-
-                        <v-list-item-title>{{ item.text }} </v-list-item-title>
-                      </v-list-item>
-                      <v-list-item v-else @click="item.click">
-                        <template v-slot:prepend>
-                          <v-icon class="mr-3" :icon="item.icon"></v-icon>
-                        </template>
-
-                        <v-list-item-title>{{ item.text }} </v-list-item-title>
-                      </v-list-item>
-                    </template>
-                  </v-list-group>
+                    </v-list-item>
+                    <v-list-item
+                      v-else
+                      class="text-black"
+                      :prepend-icon="item.icon"
+                      :title="item.text"
+                      @click="item.click"
+                    >
+                    </v-list-item>
+                  </template>
 
                   <v-divider
                     v-if="!hiveSet.users && hiveSet.owner"
                     class="my-1"
                   ></v-divider>
 
-                  <v-list-group v-if="!hiveSet.users">
-                    <v-list-item
-                      v-if="hiveSet.owner"
-                      @click="confirmDeleteApiary(hiveSet)"
-                    >
-                      <template v-slot:prepend>
-                        <v-icon class="mr-3 text-red">mdi-delete</v-icon>
-                      </template>
+                  <v-list-item
+                    v-if="!hiveSet.users && hiveSet.owner"
+                    @click="confirmDeleteApiary(hiveSet)"
+                  >
+                    <template v-slot:prepend>
+                      <v-icon :icon="'mdi-delete'" class="text-red"> </v-icon>
+                    </template>
 
-                      <v-list-item-title class="text-red">{{
-                        $t('remove_apiary')
-                      }}</v-list-item-title>
-                    </v-list-item>
-                  </v-list-group>
+                    <v-list-item-title class="text-red">{{
+                      $t('remove_apiary')
+                    }}</v-list-item-title>
+                  </v-list-item>
                 </v-list>
 
-                <v-list v-if="hiveSet.users" :lines="false">
-                  <v-list-group>
-                    <template
-                      v-for="(item, j) in menuItemsGroup(hiveSet)"
-                      :key="j"
+                <v-list v-if="hiveSet.users">
+                  <template
+                    v-for="(item, j) in menuItemsGroup(hiveSet)"
+                    :key="j"
+                  >
+                    <v-list-item
+                      v-if="item.if && item.to"
+                      class="text-black"
+                      :to="item.to"
+                      :prepend-icon="item.icon"
+                      :title="item.text"
                     >
-                      <v-list-item v-if="item.if && item.to" :to="item.to">
-                        <template v-slot:prepend>
-                          <v-icon class="mr-3" :icon="item.icon"></v-icon>
-                        </template>
+                    </v-list-item>
 
-                        <v-list-item-title>{{ item.text }} </v-list-item-title>
-                      </v-list-item>
+                    <!-- <v-list-item v-else-if="item.if" @click="item.click">
+                      <template v-slot:prepend>
+                        <v-icon
+                          :class="'mr-3 ' + item.iconClass"
+                          :icon="item.icon"
+                        ></v-icon>
+                      </template>
 
-                      <v-list-item v-else-if="item.if" @click="item.click">
-                        <template v-slot:prepend>
-                          <v-icon
-                            :class="'mr-3 ' + item.iconClass"
-                            :icon="item.icon"
-                          ></v-icon>
-                        </template>
+                      <v-list-item-title :class="item.iconClass">{{
+                        item.text
+                      }}</v-list-item-title>
+                    </v-list-item> -->
 
-                        <v-list-item-title>{{ item.text }} </v-list-item-title>
-                      </v-list-item>
-
-                      <v-divider
-                        v-else-if="item.divider"
-                        class="my-1"
-                      ></v-divider>
-                    </template>
-                  </v-list-group>
+                    <v-divider
+                      v-else-if="!item.if && item.divider"
+                      class="my-1"
+                    ></v-divider>
+                  </template>
                 </v-list>
               </v-menu>
             </div>
@@ -1309,12 +1308,12 @@ export default {
           text: this.$i18n.t('New_inspection'),
           icon: 'mdi-file-document-edit-outline',
         },
-        {
-          to: false,
-          click: this.setDiaryGroupFilterAndGo(hiveSet.name),
-          text: this.$i18n.tc('View_inspection', 2),
-          icon: 'mdi-magnify',
-        },
+        // {
+        //   to: false, // TODO-VUE3 enable v-list-items with click prop (fix bug where click is auto-executed when opening menu)
+        //   click: this.setDiaryGroupFilterAndGo(hiveSet.name),
+        //   text: this.$i18n.tc('View_inspection', 2),
+        //   icon: 'mdi-magnify',
+        // },
         {
           to: {
             name: 'hive-create',
@@ -1353,12 +1352,12 @@ export default {
           text: this.$i18n.t('New_inspection'),
           icon: 'mdi-file-document-edit-outline',
         },
-        {
-          to: false,
-          click: this.setDiaryGroupFilterAndGo(hiveSet.name),
-          text: this.$i18n.tc('View_inspection', 2),
-          icon: 'mdi-magnify',
-        },
+        // {
+        //   to: false,
+        //   click: this.setDiaryGroupFilterAndGo(hiveSet.name),
+        //   text: this.$i18n.tc('View_inspection', 2),
+        //   icon: 'mdi-magnify',
+        // },
         {
           divider: true,
         },
