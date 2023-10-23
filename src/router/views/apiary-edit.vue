@@ -560,12 +560,6 @@ export default {
     }
   }
 
-  .apiary-color {
-    width: 35px;
-    height: 35px;
-    border: 1px solid rgba(0, 0, 0, 0.3) !important;
-  }
-
   .country-select,
   .autocomplete-field {
     width: 100%;
