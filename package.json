@@ -47,7 +47,6 @@
     "vue": "^3.3.4",
     "vue-add-to-calendar": "^1.0.6",
     "vue-chartjs": "^4.1.2",
-    "vue-country-region-select": "^2.0.14",
     "vue-ellipse-progress": "^2.1.1",
     "vue-google-autocomplete": "^1.1.1",
     "vue-i18n": "^9.2.0-beta.1",
@@ -55,6 +54,7 @@
     "vue-router": "^4.2.5",
     "vue-treeselect": "^1.0.7",
     "vue2-ios-pwa-prompt": "^1.0.0",
+    "vue3-country-region-select": "^1.0.0",
     "vue3-treeselect": "^0.1.10",
     "vuedraggable": "^4.1.0",
     "vuex": "4.0"

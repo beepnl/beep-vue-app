@@ -240,14 +240,14 @@
                           class="beep-label"
                           v-text="`${$t('Country')}`"
                         ></div>
-                        <!-- <country-select
+                        <country-select
                           v-if="newHive"
                           v-model="newHive.country_code"
                           :country="newHive.country_code.toUpperCase()"
                           :usei18n="false"
                           class="country-select"
                           @update:model-value="setApiaryEdited(true)"
-                        /> -->
+                        />
                       </v-col>
                       <v-col cols="6" sm="4">
                         <div
