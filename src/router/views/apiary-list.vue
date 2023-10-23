@@ -400,14 +400,7 @@
                       :to="item.to"
                       :prepend-icon="item.icon"
                       :title="item.text"
-                    >
-                    </v-list-item>
-                    <v-list-item
-                      v-else
-                      class="text-black"
-                      :prepend-icon="item.icon"
-                      :title="item.text"
-                      @click="item.click"
+                      @click="item.click || null"
                     >
                     </v-list-item>
                   </template>
@@ -442,6 +435,7 @@
                       :to="item.to"
                       :prepend-icon="item.icon"
                       :title="item.text"
+                      @click="item.click || null"
                     >
                     </v-list-item>
 
@@ -1308,12 +1302,15 @@ export default {
           text: this.$i18n.t('New_inspection'),
           icon: 'mdi-file-document-edit-outline',
         },
-        // {
-        //   to: false, // TODO-VUE3 enable v-list-items with click prop (fix bug where click is auto-executed when opening menu)
-        //   click: this.setDiaryGroupFilterAndGo(hiveSet.name),
-        //   text: this.$i18n.tc('View_inspection', 2),
-        //   icon: 'mdi-magnify',
-        // },
+        {
+          to: {
+            name: 'diary',
+            query: { search: hiveSet.name },
+          },
+          click: this.setDiaryGroupFilterAndGo(hiveSet.name),
+          text: this.$i18n.tc('View_inspection', 2),
+          icon: 'mdi-magnify',
+        },
         {
           to: {
             name: 'hive-create',
@@ -1352,31 +1349,34 @@ export default {
           text: this.$i18n.t('New_inspection'),
           icon: 'mdi-file-document-edit-outline',
         },
-        // {
-        //   to: false,
-        //   click: this.setDiaryGroupFilterAndGo(hiveSet.name),
-        //   text: this.$i18n.tc('View_inspection', 2),
-        //   icon: 'mdi-magnify',
-        // },
+        {
+          to: {
+            name: 'diary',
+            query: { search: hiveSet.name },
+          },
+          click: this.setDiaryGroupFilterAndGo(hiveSet.name),
+          text: this.$i18n.tc('View_inspection', 2),
+          icon: 'mdi-magnify',
+        },
         {
           divider: true,
         },
-        {
-          if: hiveSet.creator,
-          to: false,
-          click: this.confirmDeleteGroup(hiveSet),
-          text: this.$i18n.t('remove_group_short'),
-          icon: 'mdi-delete',
-          iconClass: 'text-red',
-        },
-        {
-          if: !hiveSet.creator,
-          to: false,
-          click: this.confirmDetachGroup(hiveSet),
-          text: this.$i18n.t('Detach_from_group'),
-          icon: 'mdi-delete',
-          iconClass: 'text-red',
-        },
+        // {
+        //   if: hiveSet.creator,        // TODO-VUE3 enable v-list-items with click prop (fix bug where click is auto-executed when opening menu) OR show via icon outside of v-menu
+        //   to: false,
+        //   click: this.confirmDeleteGroup(hiveSet),
+        //   text: this.$i18n.t('remove_group_short'),
+        //   icon: 'mdi-delete',
+        //   iconClass: 'text-red',
+        // },
+        // {
+        //   if: !hiveSet.creator,
+        //   to: false,
+        //   click: this.confirmDetachGroup(hiveSet),
+        //   text: this.$i18n.t('Detach_from_group'),
+        //   icon: 'mdi-delete',
+        //   iconClass: 'text-red',
+        // },
       ]
     },
     setDiaryGroupFilterAndGo(searchTerm) {
@@ -1384,10 +1384,10 @@ export default {
         filter: 'diaryFilterByGroup',
         value: 'off', // in case it was filtering by owned hives or group hives
       })
-      this.$router.push({
-        name: 'diary',
-        query: { search: searchTerm },
-      })
+      // this.$router.push({
+      //   name: 'diary',
+      //   query: { search: searchTerm },
+      // })
     },
     sortedHives(hives) {
       const sortedHives = hives.slice().sort(function(a, b) {
