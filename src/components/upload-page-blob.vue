@@ -24,7 +24,7 @@
           <v-icon
             v-if="pageImageFile !== null"
             class="float-right mt-n2 ml-n4"
-            small
+            size="x-small"
             color="green"
             >mdi-check-circle</v-icon
           >
@@ -37,9 +37,10 @@
         v-model="pageImageFile"
         class="pt-0 mt-n8 image-uploader-page-blob float-right cursor-pointer"
         accept="image/png, image/jpeg, image/bmp"
-        :placeholder="uploadText"
+        :label="!!pageImageFile || showLoading ? '' : uploadText"
         :prepend-icon="false"
-        outlined
+        variant="outlined"
+        color="accent"
         hide-details
         :error-messages="errorMessage"
         :height="'100%'"
@@ -48,7 +49,7 @@
         @click:clear="errorMessage = ''"
       >
         <template v-slot:prepend-inner>
-          <v-icon large>mdi-camera</v-icon>
+          <v-icon size="x-large">mdi-camera</v-icon>
         </template>
       </v-file-input>
       <img

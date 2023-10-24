@@ -3,8 +3,8 @@
     <v-col cols="12">
       <div class="beep-label" v-text="$tc('Select_input_language') + '*'"></div>
       <Treeselect
+        v-model="uploadLanguage"
         class="lang-treeselect"
-        :value="uploadLanguage"
         :options="languages"
         :normalizer="normalizer"
         :placeholder="$t('Select')"
@@ -36,8 +36,7 @@
         <div class="beep-label">{{ $t('Upload_images') }}</div>
         <v-icon
           class="mdi mdi-information icon-info cursor-pointer ml-2"
-          dark
-          small
+          size="x-small"
           :color="showExplanation ? 'accent' : 'grey'"
           @click="showExplanation = !showExplanation"
         ></v-icon>
