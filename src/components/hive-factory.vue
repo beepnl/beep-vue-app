@@ -93,21 +93,12 @@
             <v-toolbar
               class="hive-color-picker-toolbar"
               density="compact"
-              light
+              theme="light"
+              :title="currentLayer !== null ? layerTypeText(currentLayer) : ''"
               flat
             >
-              <div
-                class="hive-color-picker-title ml-1"
-                v-text="
-                  currentLayer !== null ? layerTypeText(currentLayer) : ''
-                "
-              ></div>
               <v-spacer></v-spacer>
-              <v-toolbar-items>
-                <v-icon class="mr-1" @click="cancelColorPicker"
-                  >mdi-close</v-icon
-                >
-              </v-toolbar-items>
+              <v-icon class="mr-1" @click="cancelColorPicker">mdi-close</v-icon>
             </v-toolbar>
 
             <v-color-picker
@@ -117,15 +108,13 @@
               :swatches="swatches"
               show-swatches
               hide-canvas
-              light
-              flat
             >
             </v-color-picker>
 
             <v-toolbar
               class="hive-color-picker-footer"
               density="compact"
-              light
+              theme="light"
               flat
             >
               <v-spacer></v-spacer>

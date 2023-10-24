@@ -53,40 +53,34 @@
               </v-col>
             </v-row>
 
-            <v-overlay v-model="overlay">
+            <v-overlay v-model="overlay" class="align-center justify-center">
               <v-toolbar
                 class="hive-color-picker-toolbar"
                 density="compact"
-                light
+                theme="light"
+                :title="$t('Hive_color')"
                 flat
               >
-                <div
-                  class="hive-color-picker-title ml-1"
-                  v-text="`${$t('Hive_color')}`"
-                ></div>
                 <v-spacer></v-spacer>
-                <v-toolbar-items>
-                  <v-icon class="mr-1" @click="cancelColorPicker"
-                    >mdi-close</v-icon
-                  >
-                </v-toolbar-items>
+                <v-icon class="mr-1" @click="cancelColorPicker"
+                  >mdi-close</v-icon
+                >
               </v-toolbar>
 
               <v-color-picker
                 v-model="colorPicker"
                 class="hive-color-picker flex-color-picker"
+                position="relative"
                 :swatches="swatchesHive"
                 show-swatches
                 hide-canvas
-                light
-                flat
               >
               </v-color-picker>
 
               <v-toolbar
                 class="hive-color-picker-footer"
                 density="compact"
-                light
+                theme="light"
                 flat
               >
                 <v-spacer></v-spacer>

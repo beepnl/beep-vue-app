@@ -123,8 +123,9 @@
 
 .v-toolbar__content {
   // height: 48px !important;
-  .v-toolbar__title {
-    padding-left: 0 !important;
+  .v-toolbar-title {
+    -webkit-margin-start: 8px !important;
+    margin-inline-start: 8px !important;
   }
 }
 

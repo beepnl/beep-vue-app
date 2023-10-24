@@ -55,6 +55,7 @@
 
 .hive-color-picker {
   margin-top: -10px;
+  box-shadow: none !important;
   @include for-phone-only {
     margin-top: -12px;
   }
@@ -201,20 +202,26 @@
   }
 }
 
+.hive-color-picker-toolbar {
+  margin-bottom: 8px !important;
+  border-radius: 4px 4px 0 0 !important;
+}
+
 .hive-color-picker-toolbar,
 .hive-color-picker-footer {
-  border-radius: 4px !important;
+  background-color: $color-white;
+  .v-toolbar__content {
+    padding: 0 10px;
+  }
+}
+
+.hive-color-picker-footer {
+  border-radius: 0 0 4px 4px !important;
+  margin-top: -5px;
 }
 
 .hive-color-picker-title {
   font-weight: 500;
-}
-
-.hive-color-picker-footer {
-  margin-top: -5px;
-  .v-toolbar__content {
-    padding: 0 10px;
-  }
 }
 
 .hive-set-title {

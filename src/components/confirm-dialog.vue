@@ -1,12 +1,11 @@
 <template>
-  <v-dialog
-    v-model="dialog"
-    :max-width="options.width"
-    :style="{ zIndex: options.zIndex }"
-    @keydown.esc="cancel"
-  >
-    <v-card>
-      <v-toolbar dark :color="options.color" density="compact" flat>
+  <v-dialog v-model="dialog" :max-width="options.width" @keydown.esc="cancel">
+    <v-card
+      theme="light"
+      variant="flat"
+      :style="`z-index:` + options.zIndex + `;`"
+    >
+      <v-toolbar :color="options.color" density="compact" flat>
         <v-toolbar-title class="white--text">{{ title }}</v-toolbar-title>
       </v-toolbar>
       <v-card-text v-show="!!warningMessage" class="pa-4 pb-0 text-red"
