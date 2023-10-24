@@ -72,6 +72,7 @@
                 class="hive-color-picker flex-color-picker"
                 position="relative"
                 :swatches="swatchesHive"
+                 :modes="['rgb']"
                 show-swatches
                 hide-canvas
               >
