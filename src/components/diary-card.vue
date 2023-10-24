@@ -1,7 +1,7 @@
 <template>
   <v-menu>
     <template v-slot:activator="{ props }">
-      <v-card class="diary-card" v-bind="props">
+      <v-card class="diary-card" v-bind="props" theme="light">
         <div style="width: 100%;">
           <v-row
             class="d-flex justify-space-between align-start mx-0"
@@ -378,9 +378,11 @@ export default {
 
 <style lang="scss" scoped>
 .diary-card {
+  min-height: 75px;
   height: 100%;
   padding: 10px;
   font-size: 0.8125rem !important;
+  border-color: $color-grey-light;
 
   @include for-tablet-landscape-up {
     padding: 12px;
@@ -493,5 +495,6 @@ export default {
     width: 24px;
     height: 24px;
   }
+
 }
 </style>

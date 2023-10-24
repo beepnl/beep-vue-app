@@ -26,6 +26,8 @@ import { ResizeObserver as Polyfill } from '@juggle/resize-observer'
 import 'element-plus/es/components/input-number/style/css'
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
+import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller'
+import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 // * Vuetify
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
@@ -44,6 +46,7 @@ const vuetify = createVuetify({
     },
     VBtn: {
       variant: 'outlined',
+      rounded: 0,
     },
     VCard: {
       variant: 'outlined',
@@ -149,6 +152,8 @@ app.use(veProgress)
 app.config.globalProperties.$moment = moment
 
 app.component('VueDatePicker', VueDatePicker)
+app.component('DynamicScroller', DynamicScroller)
+app.component('DynamicScrollerItem', DynamicScrollerItem)
 
 // If running inside Cypress...
 if (process.env.VUE_APP_TEST === 'e2e') {

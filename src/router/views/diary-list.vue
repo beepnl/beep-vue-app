@@ -22,17 +22,20 @@
                 :label="`${$t('Search')}`"
                 :class="
                   `${
-                    diarySearch !== null
-                      ? 'v-input--is-focused text-primary'
-                      : ''
+                    diarySearch !== null ? 'v-input--is-focused' : ''
                   } filter-text-field`
                 "
-                :height="mobile ? '30px' : '36px'"
+                :style="'height: ' + (mobile ? '30px;' : '36px;')"
+                color="accent"
                 clearable
-                outlined
+                :clear-icon="'mdi-close'"
+                persistent-clear
+                variant="outlined"
                 density="compact"
                 hide-details
-              ></v-text-field>
+                @click:clear="diarySearch = null"
+              >
+              </v-text-field>
             </v-col>
             <v-card-actions class="pl-0">
               <v-icon
@@ -132,37 +135,40 @@
       </div>
     </v-container>
 
-    <v-container v-if="ready" class="diary-inspections-content">
-      <v-row
+    <div v-if="ready" class="diary-inspections-content">
+      <DynamicScroller
         v-if="!showDiaryPlaceholder && filteredInspections.length > 0"
-        density="compact"
+        :items="filteredInspections"
+        :min-item-size="90"
+        :class="
+          'scroller pl-6' +
+            (filteredInspections.length <= paginationItems
+              ? ' --single-page'
+              : '')
+        "
       >
-        <div class="diary-item-transition-wrapper">
-          <v-scroll-y-transition group>
-            <v-col
-              v-for="(inspection, j) in filteredInspections"
-              :key="j"
-              sm="auto"
-              class="diary-item"
-              density="compact"
-            >
+        <template v-slot="{ item, index, active }">
+          <DynamicScrollerItem
+            :item="item"
+            :active="active"
+            :data-index="index"
+          >
+            <div class="diary-item">
               <DiaryCard
-                :inspection="inspection"
-                :hive="hivesObject[inspection.hive_id]"
+                :inspection="item"
+                :hive="hivesObject[item.hive_id]"
                 @confirm-delete-inspection="confirmDeleteInspection($event)"
               ></DiaryCard>
-            </v-col>
-          </v-scroll-y-transition>
-        </div>
-      </v-row>
-      <!-- <MugenScroll :handler="fetchData" :should-handle="!loading">
-      </MugenScroll> -->
+            </div>
+          </DynamicScrollerItem>
+        </template>
+      </DynamicScroller>
       <v-row v-if="!showDiaryPlaceholder && filteredInspections.length === 0">
         <v-col sm="auto" :cols="12">
           {{ $t('no_results') }}
         </v-col>
       </v-row>
-    </v-container>
+    </div>
 
     <Confirm ref="confirm"></Confirm>
   </Layout>
@@ -208,8 +214,6 @@ export default {
   data: function() {
     return {
       ready: false,
-      loading: false,
-      scrollCount: 0,
     }
   },
   computed: {
@@ -226,7 +230,6 @@ export default {
           prop: 'diarySearch',
           value,
         })
-        this.resetInfiniteScroll()
       },
     },
     filterByAttention: {
@@ -238,7 +241,6 @@ export default {
           filter: 'diaryFilterByAttention',
           value,
         })
-        this.resetInfiniteScroll()
       },
     },
     filterByGroupStatus: {
@@ -250,7 +252,6 @@ export default {
           filter: 'diaryFilterByGroup',
           value,
         })
-        this.resetInfiniteScroll()
       },
     },
     filterByImpression: {
@@ -259,7 +260,6 @@ export default {
       },
       set(value) {
         this.$store.commit('inspections/setFilterByImpression', value)
-        this.resetInfiniteScroll()
       },
     },
     filterByReminder: {
@@ -271,7 +271,6 @@ export default {
           filter: 'diaryFilterByReminder',
           value,
         })
-        this.resetInfiniteScroll()
       },
     },
     // make inspections filterable by hive name and location
@@ -302,7 +301,7 @@ export default {
             const location = this.hivesObject[inspection.hive_id].location
             inspection.hive_name = name
             inspection.hive_location = location
-            var groupName =
+            let groupName =
               this.hivesObject[inspection.hive_id].group_name || null
             const isOwnedAndInGroup =
               this.hivesObject[inspection.hive_id].group_ids.length > 0 &&
@@ -328,7 +327,7 @@ export default {
       }
     },
     filteredInspectionsWithUndefined() {
-      var textFilteredInspections = []
+      let textFilteredInspections = []
       if (this.diarySearch === null) {
         textFilteredInspections = this.inspectionsWithDatesAndHiveDetails
       } else {
@@ -443,9 +442,6 @@ export default {
         (x) => x !== undefined
       )
     },
-    // filteredInspectionsToShow() {
-    //   return this.filteredInspections.slice(0, this.scrollCount)
-    // },
     locale() {
       return this.$i18n.locale
     },
@@ -454,7 +450,7 @@ export default {
     },
     paginationItems() {
       // overestimation of how many inspection items fit in clients window
-      return Math.ceil(window.innerHeight / 70)
+      return Math.ceil(window.innerHeight / 75)
     },
     showDiaryPlaceholder() {
       return (
@@ -520,18 +516,6 @@ export default {
           return true
         })
     },
-    fetchData() {
-      this.loading = true
-      for (var i = 0; i < this.paginationItems; i++) {
-        this.scrollCount += 1
-      }
-      this.loading = false
-    },
-    resetInfiniteScroll() {
-      // reset scrollCount to initial amount for mugen scroll component to work properly + scroll back to top
-      this.scrollCount = this.paginationItems
-      window.scrollTo(0, 0)
-    },
   },
 }
 </script>
@@ -543,20 +527,22 @@ export default {
   @include for-phone-only {
     margin-top: 55px;
   }
+}
 
-  .diary-item-transition-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-    max-width: 1200px;
-    @media (max-width: 909px) {
-      max-width: 580px;
-    }
+.diary-item {
+  padding: 4px;
+  width: 100%;
+  max-width: 1200px;
+  @media (max-width: 909px) {
+    max-width: 580px;
   }
-  .diary-item {
-    flex-grow: 1 !important;
-    min-width: 100%;
-    padding: 4px;
+  &:first-child {
+    margin-top: 12px;
   }
+}
+
+.scroller {
+  height: calc(100vh - 156px);
+  width: 100%;
 }
 </style>

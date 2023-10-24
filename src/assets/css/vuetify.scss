@@ -4,6 +4,7 @@
 );
 
 .v-container {
+  padding: 12px !important;
   @include for-tablet-landscape-up {
     max-width: calc(100vw - 48px) !important;
   }
@@ -17,4 +18,13 @@
 
 .v-theme--beepTheme {
   --v-medium-emphasis-opacity: 1;
+}
+
+.v-text-field:not(.v-text-field--outlined):not(.v-text-field--solo):not(.v-select)
+  input {
+  padding: 6px 0 0 8px !important;
+}
+
+.v-field.v-field--appended {
+  padding-inline-end: 0px;
 }
