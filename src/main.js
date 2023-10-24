@@ -60,6 +60,7 @@ const vuetify = createVuetify({
     },
     VSwitch: {
       density: 'compact',
+      color: 'accent',
     },
     VTable: {
       density: 'compact',

@@ -14,15 +14,18 @@
                 :label="`${$t('Search')}`"
                 :class="
                   `${
-                    hiveSearch !== null
-                      ? 'v-input--is-focused text-primary'
-                      : ''
+                    hiveSearch !== null ? 'v-input--is-focused' : ''
                   } filter-text-field`
                 "
+                :style="'height: ' + (mobile ? '30px;' : '36px;')"
+                color="accent"
                 clearable
-                outlined
+                :clear-icon="'mdi-close'"
+                persistent-clear
+                variant="outlined"
                 density="compact"
                 hide-details
+                @click:clear="hiveSearch = null"
               ></v-text-field>
             </v-col>
             <v-card-actions class="pl-0">

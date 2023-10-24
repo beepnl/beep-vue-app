@@ -27,14 +27,18 @@
                 :label="`${$t('Search')}`"
                 :class="
                   `${
-                    search !== null ? 'v-input--is-focused text-primary' : ''
+                    search !== null ? 'v-input--is-focused' : ''
                   } filter-text-field--alerts`
                 "
-                :height="mobile ? '30px' : '36px'"
+                :style="'height: ' + (mobile ? '30px;' : '36px;')"
+                color="accent"
                 clearable
-                outlined
+                :clear-icon="'mdi-close'"
+                persistent-clear
+                variant="outlined"
                 density="compact"
                 hide-details
+                @click:clear="search = null"
               ></v-text-field>
             </v-col>
           </div>

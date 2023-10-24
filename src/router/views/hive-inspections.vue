@@ -22,14 +22,15 @@
                     search !== null ? 'v-input--is-focused text-primary' : ''
                   } filter-text-field`
                 "
-                :height="smallScreen ? '30px' : '36px'"
+                :style="'height: ' + (mobile ? '30px;' : '36px;')"
+                color="accent"
                 clearable
-                outlined
+                :clear-icon="'mdi-close'"
+                persistent-clear
                 density="compact"
                 hide-details
                 :append-outer-icon="search ? 'mdi-magnify' : ''"
-                clear-icon="mdi-close"
-                type="text"
+                       variant="outlined"
                 @click:append-outer="readInspectionsForHiveId"
                 @click:clear="clearSearch"
                 @keydown.enter.prevent="readInspectionsForHiveId"
