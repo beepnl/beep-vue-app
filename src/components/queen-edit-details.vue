@@ -140,6 +140,7 @@
                     v-model="queenColor"
                     class="flex-color-picker queen-color-picker"
                     :swatches="swatchesQueen"
+                    :modes="['rgb']"
                     show-swatches
                     canvas-height="120"
                   ></v-color-picker>
