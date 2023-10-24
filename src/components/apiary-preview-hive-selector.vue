@@ -355,6 +355,7 @@ export default {
 }
 
 .hive-caption {
+  font-size: 12px;
   height: 45px;
   margin-top: 3px;
   line-height: 0.9rem;

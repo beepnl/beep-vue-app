@@ -1074,6 +1074,8 @@ const translations = {
   Upload_pagenr: 'Upload page [pagenr] here',
   Datetime_of_inspection: 'Date & time of inspection',
   remind_datetime: 'Notification date & time',
+
+  Select_image: 'Select image',
 }
 
 export default translations

@@ -37,8 +37,7 @@
             }}<v-icon
               v-if="touchDevice"
               class="mdi mdi-information ml-1 icon-info"
-              dark
-              small
+              size="small"
               color="accent"
               @click.stop="toggleShowInfo(btn.mode)"
             ></v-icon
@@ -52,7 +51,7 @@
         <v-tooltip v-if="!mobile" location="bottom" max-width="300px">
           <template v-slot:activator="{ props }">
             <v-icon
-              large
+              size="x-large"
               class="ma-2 no-print"
               color="accent"
               v-bind="props"

@@ -52,19 +52,19 @@
               selectedChecklist.owner &&
               !mobile
           "
-          outlined
           class="mr-3"
           color="accent"
+          variant="outlined"
           @click="editChecklist"
         >
-          <v-icon start>mdi-pencil</v-icon>
+          <v-icon start color="accent">mdi-pencil</v-icon>
           {{ $t('Edit_checklist') }}
         </v-btn>
         <v-btn
           v-if="onlineMode"
-          outlined
           color="black"
           class="save-button-mobile-wide mr-1"
+          variant="outlined"
           :disabled="
             !valid ||
               (selectedHives && selectedHives.length === 0) ||
@@ -88,8 +88,8 @@
         </v-btn>
         <v-btn
           v-if="offlineMode"
-          outlined
           color="black"
+          variant="outlined"
           class="save-button-mobile-wide mr-1"
           :disabled="!svgReady"
           @click="confirmPrint"
@@ -99,8 +99,8 @@
         </v-btn>
         <v-btn
           v-if="uploadMode"
-          outlined
           color="black"
+          variant="outlined"
           class="save-button-mobile-wide mr-1"
           :disabled="
             !selectedChecklistSvg ||
@@ -186,6 +186,7 @@
                 <v-switch
                   v-if="selectedHiveSet"
                   v-model="allHivesSelected"
+                  color="accent"
                   :label="
                     `${
                       selectedHiveSet.users
@@ -396,28 +397,18 @@
                   showCategoriesByIndex[index]
                     ? 'hive-inspect-card-title--border-bottom'
                     : ''
-                } cursor-pointer`
+                } cursor-pointer d-flex align-center justify-space-between`
               "
               @click="toggleCategory(index)"
             >
-              <v-row class="my-0">
-                <v-col cols="12" class="py-0">
-                  <span>{{
-                    mainCategory.trans[locale] || mainCategory.name
-                  }}</span>
-                  <div class="float-right">
-                    <v-icon
-                      :class="
-                        `toggle-icon mdi ${
-                          showCategoriesByIndex[index]
-                            ? 'mdi-minus'
-                            : 'mdi-plus'
-                        }`
-                      "
-                    ></v-icon>
-                  </div>
-                </v-col>
-              </v-row>
+              <span>{{ mainCategory.trans[locale] || mainCategory.name }}</span>
+              <v-icon
+                :class="
+                  `float-right toggle-icon mdi ${
+                    showCategoriesByIndex[index] ? 'mdi-minus' : 'mdi-plus'
+                  }`
+                "
+              ></v-icon>
             </v-card-title>
 
             <v-slide-y-transition>
@@ -455,24 +446,18 @@
               :class="
                 `hive-inspect-card-title ${
                   showGeneral ? 'hive-inspect-card-title--border-bottom' : ''
-                }`
+                } d-flex align-center justify-space-between`
               "
             >
-              <v-row class="my-0">
-                <v-col cols="12" class="py-0 mt-n1">
-                  <span>{{ $t('overall') }}</span>
-                  <div class="float-right">
-                    <v-icon
-                      :class="
-                        `toggle-icon mdi ${
-                          showGeneral ? 'mdi-minus' : 'mdi-plus'
-                        }`
-                      "
-                      @click="showGeneral = !showGeneral"
-                    ></v-icon>
-                  </div>
-                </v-col>
-              </v-row>
+              <span>{{ $t('overall') }}</span>
+              <v-icon
+                :class="
+                  `float-right toggle-icon mdi ${
+                    showGeneral ? 'mdi-minus' : 'mdi-plus'
+                  }`
+                "
+                @click="showGeneral = !showGeneral"
+              ></v-icon>
             </v-card-title>
             <v-slide-y-transition>
               <v-card-text v-if="showGeneral">

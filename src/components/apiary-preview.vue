@@ -156,6 +156,7 @@ export default {
 }
 .hive-caption {
   z-index: 1;
+  font-size: 12px;
   max-width: 64px;
   margin-top: 3px;
   min-height: 30px;

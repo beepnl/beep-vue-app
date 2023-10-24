@@ -3,6 +3,10 @@
   $overlay-opacity: 0.7,
 );
 
+.v-card--variant-outlined {
+  border: thin solid #ccc !important;
+}
+
 .v-container {
   padding: 12px !important;
   @include for-tablet-landscape-up {
@@ -18,6 +22,7 @@
 
 .v-theme--beepTheme {
   --v-medium-emphasis-opacity: 1;
+  --v-border-color: #ccc;
 }
 
 .v-text-field:not(.v-text-field--outlined):not(.v-text-field--solo):not(.v-select)
