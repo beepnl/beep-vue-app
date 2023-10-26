@@ -59,6 +59,12 @@
     height: 16px;
   }
 
+  &.--no-outline {
+    color: $color-grey;
+    background-color: $color-white;
+    border-color: $color-white;
+  }
+
   &-queen {
     background-image: url($ASSETS+'/img/icons/icn_bee.svg');
     background-size: 10px;

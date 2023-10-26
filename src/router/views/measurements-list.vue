@@ -194,7 +194,7 @@
                         sensorData.value
                       )
                     "
-                    :legend-value="sensorData.value"
+                    :legend="sensorData.value"
                     :color="getProgressColor(sensorData.name, sensorData.value)"
                     :size="mobile ? 75 : 100"
                     empty-color="#eee"
@@ -206,7 +206,7 @@
                     <template v-slot="{ counterTick }">
                       <v-sheet
                         :class="
-                          `beep-icon beep-icon-${sensorData.name} mt-3 mb-n1 mt-sm-1 mb-sm-n1`
+                          `beep-icon beep-icon-${sensorData.name} --no-outline mt-3 mb-n1 mt-sm-1 mb-sm-n1`
                         "
                       ></v-sheet>
                       <div
