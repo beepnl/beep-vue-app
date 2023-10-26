@@ -17,8 +17,7 @@
                   {{ $t('Compare_hives') }}
                   <v-icon
                     class="mdi mdi-information ml-1 icon-info cursor-pointer"
-                    dark
-                    small
+                    size="small"
                     :color="showInfo ? 'accent' : 'grey'"
                     @click="showInfo = !showInfo"
                   ></v-icon>
@@ -108,14 +107,14 @@
     </v-row>
 
     <v-overlay
-      :absolute="true"
-      :activator="
+      contained
+      :model-value="
         (compareMeasurementData !== null && loadingCompareData) ||
           (loadingData && initMultiple)
       "
       :opacity="0.5"
-      color="white"
-      class="mt-12"
+      scrim="white"
+      class="d-flex align-center justify-center mt-12"
       z-index="1"
     >
       <div class="loading">

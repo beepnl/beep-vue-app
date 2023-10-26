@@ -262,10 +262,10 @@
           >
             <v-overlay
               v-model="loadingData"
-              :absolute="true"
+              contained
               :opacity="0.5"
-              color="white"
-              class="mt-12"
+              scrim="white"
+              class="d-flex align-center justify-center mt-12"
               z-index="1"
             >
               <div class="loading">
@@ -561,9 +561,8 @@ export default {
     ...mapGetters('inspections', ['generalInspections']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     alertsForDeviceAndPeriod() {
-      const alertsForDevice = [...this.alerts].filter(
-        (alert) => alert.device_id === this.selectedDeviceId
-      )
+      const alertsForDevice = JSON.parse(JSON.stringify(this.alerts)) // clone without v-bind to avoid vuex warning when mutating
+        .filter((alert) => alert.device_id === this.selectedDeviceId)
 
       const alertsForDeviceAndPeriod = alertsForDevice.filter((alert) =>
         this.alertInPeriod(alert)
@@ -909,7 +908,7 @@ export default {
       return window.matchMedia('(hover: none)').matches
     },
   },
-  mounted() {
+  created() {
     this.initLocale = this.userLocale
     if (this.queriedChartCols !== null) {
       this.chartCols = this.queriedChartCols
@@ -1307,7 +1306,10 @@ export default {
         })
     },
     deviceExists(deviceId) {
-      return this.devices.filter((device) => device.id === deviceId).length > 0
+      return (
+        this.devices.filter((device) => device.id === parseInt(deviceId))
+          .length > 0
+      )
     },
     formatMeasurementData(measurementData) {
       if (

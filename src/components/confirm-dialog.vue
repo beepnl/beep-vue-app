@@ -1,10 +1,6 @@
 <template>
   <v-dialog v-model="dialog" :max-width="options.width" @keydown.esc="cancel">
-    <v-card
-      theme="light"
-      variant="flat"
-      :style="`z-index:` + options.zIndex + `;`"
-    >
+    <v-card variant="flat" :style="`z-index:` + options.zIndex + `;`">
       <v-toolbar :color="options.color" density="compact" flat>
         <v-toolbar-title class="white--text">{{ title }}</v-toolbar-title>
       </v-toolbar>

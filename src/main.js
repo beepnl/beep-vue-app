@@ -92,7 +92,7 @@ const vuetify = createVuetify({
     defaultTheme: 'beepTheme',
     themes: {
       beepTheme: {
-        dark: false,
+        light: true,
         colors: {
           primary: '#F8B133',
           secondary: '#000000',
