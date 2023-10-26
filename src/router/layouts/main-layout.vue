@@ -1,6 +1,11 @@
 <!-- eslint-disable vue/attribute-hyphenation -->
 <template>
-  <v-app-bar bg-color="#000" color="primary" density="compact">
+  <v-app-bar
+    bg-color="black"
+    color="primary"
+    density="compact"
+    extension-height="48px"
+  >
     <div
       class="d-flex flex-row justify-space-between align-center"
       style="width:100%;"
@@ -37,7 +42,8 @@
         stacked
         density="compact"
         grow
-        bg-olor="#F8B133"
+        bg-color="#F8B133"
+        slider-color="black"
         color="#000"
         height="48px"
       >
@@ -48,15 +54,38 @@
           :exact="tab.exact"
           @click="reloadData(tab.route)"
         >
-          <span v-if="tab.title">{{ tab.title }}</span>
           <v-badge
             v-if="tab.route === 'alerts' && alerts.length > 0"
             color="red"
             :content="alerts.length"
           >
-            <v-icon v-if="tab.icon" size="20px">{{ tab.icon }}</v-icon>
+            <v-icon
+              v-if="tab.icon"
+              :class="
+                'main-tab-icon' +
+                  (tab.route === currentRoute ? '' : ' --inactive')
+              "
+              size="20px"
+              >{{ tab.icon }}</v-icon
+            >
           </v-badge>
-          <v-icon v-else size="20px">{{ tab.icon }}</v-icon>
+          <v-icon
+            v-else
+            :class="
+              'main-tab-icon' +
+                (tab.route === currentRoute ? '' : ' --inactive')
+            "
+            size="20px"
+            >{{ tab.icon }}</v-icon
+          >
+          <span
+            v-if="tab.title"
+            :class="
+              'main-tab-title' +
+                (tab.route === currentRoute ? '' : ' --inactive')
+            "
+            >{{ tab.title }}</span
+          >
         </v-tab>
       </v-tabs>
     </template>
@@ -125,6 +154,9 @@ export default {
   computed: {
     ...mapGetters('alerts', ['alerts']),
     ...mapGetters('devices', ['devices']),
+    currentRoute() {
+      return this.$route.name
+    },
     tabs: function() {
       if (this.devices.length > 0) {
         return [
@@ -215,5 +247,14 @@ header.v-app-bar {
 .v-tabs-bar.v-slide-group--is-overflowing.v-tabs-bar--is-mobile:not(.v-tabs-bar--show-arrows):not(.v-slide-group--has-affixes)
   .v-slide-group__prev {
   display: none !important;
+}
+
+.main-tab-title,
+.main-tab-icon {
+  text-transform: none !important;
+  color: $color-black !important;
+  &.--inactive {
+    color: $color-inactive !important;
+  }
 }
 </style>
