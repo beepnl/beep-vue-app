@@ -522,10 +522,10 @@ export default {
 
 <style lang="scss" scoped>
 .diary-inspections-content {
-  margin-top: 61px;
+  margin-top: 158px;
   overflow: hidden;
   @include for-phone-only {
-    margin-top: 55px;
+    margin-top: 152px;
   }
 }
 

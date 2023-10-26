@@ -10,49 +10,44 @@
 
     <div v-if="devices.length > 0 && ready" class="period-bar-wrapper">
       <v-container class="period-container">
-        <v-row
-          v-if="!smAndDown"
-          class="period-bar d-flex flex-wrap justify-space-between align-center"
-        >
-          <div v-for="period in periods" :key="period.interval">
+        <div v-if="!smAndDown" class="period-bar">
+          <v-row class="d-flex flex-wrap justify-space-between align-center">
             <v-btn
+              v-for="period in periods"
+              :key="period.interval"
               :class="
-                `grey--text ${
-                  period.interval === interval ? 'text-accent' : ''
-                }`
+                `text-grey ${period.interval === interval ? 'text-accent' : ''}`
               "
-              text
+              variant="text"
               @click="setPeriodInterval(period.interval)"
             >
               {{ period.name }}
             </v-btn>
-          </div>
-          <v-switch
-            v-model="setRelativeInterval"
-            :label="`${$t('Relative_startpoint')}`"
-            class="pt-0 mt-0"
-            :disabled="interval === 'selection'"
-            density="compact"
-            hide-details
-            @change="loadData(false, false)"
-          ></v-switch>
-        </v-row>
+            <v-switch
+              v-model="setRelativeInterval"
+              :label="`${$t('Relative_startpoint')}`"
+              class="rel-switch pt-0 mt-0"
+              :disabled="interval === 'selection'"
+              density="compact"
+              hide-details
+              @change="loadData(false, false)"
+            ></v-switch>
+          </v-row>
+        </div>
         <div v-if="smAndDown" class="period-bar">
           <v-row class="d-flex flex-row justify-space-between align-center">
-            <div v-for="period in periods.slice(0, -2)" :key="period.interval">
-              <v-btn
-                :class="
-                  `grey--text ${
-                    period.interval === interval ? 'text-accent' : ''
-                  }`
-                "
-                small
-                text
-                @click="setPeriodInterval(period.interval)"
-              >
-                {{ period.name }}
-              </v-btn>
-            </div>
+            <v-btn
+              v-for="period in periods.slice(0, -2)"
+              :key="period.interval"
+              :class="
+                `text-grey ${period.interval === interval ? 'text-accent' : ''}`
+              "
+              size="small"
+              variant="text"
+              @click="setPeriodInterval(period.interval)"
+            >
+              {{ period.name }}
+            </v-btn>
           </v-row>
           <v-row class="d-flex flex-row justify-space-around align-center">
             <v-col
@@ -64,12 +59,12 @@
             >
               <v-btn
                 :class="
-                  `grey--text ${
+                  `text-grey ${
                     period.interval === interval ? 'text-accent' : ''
                   }`
                 "
-                small
-                text
+                size="small"
+                variant="text"
                 @click="setPeriodInterval(period.interval)"
               >
                 {{ period.name }}
@@ -80,7 +75,7 @@
                 <v-switch
                   v-model="setRelativeInterval"
                   :label="`${$t('Relative_startpoint')}`"
-                  class="pt-0 mt-0"
+                  class="d-flex justify-center pt-0 mt-0"
                   :disabled="interval === 'selection'"
                   density="compact"
                   hide-details
@@ -95,9 +90,9 @@
 
     <v-app-bar
       v-if="!hideScrollBar && ready && !noChartData"
-      fixed
-      inverted-scroll
-      :dense="smAndDown"
+      :scroll-behavior="'hide inverted'"
+      :scroll-threshold="'100'"
+      :density="smAndDown ? 'compact' : 'default'"
       class="sticky-header"
     >
       <MeasurementsDateSelection
@@ -166,7 +161,7 @@
             class="edit-button"
             color="accent"
           >
-            <v-icon :left="!mobile">mdi-pencil</v-icon>
+            <v-icon color="accent" :start="!mobile">mdi-pencil</v-icon>
             {{ mobile && devices.length > 0 ? '' : $t('Edit_devices') }}
           </v-btn>
         </v-col>
@@ -1692,9 +1687,9 @@ export default {
 }
 
 .measurements-content {
-  margin-top: 58px;
+  margin-top: 154px;
   @include for-tablet-landscape-up {
-    margin-top: 40px;
+    margin-top: 136px;
   }
   &.--touch-device {
     user-select: none; // prevent text selection on mobile drag on chart
@@ -1726,15 +1721,16 @@ export default {
 }
 
 .sticky-header {
-  top: 153px !important;
+  top: 166px !important;
   z-index: 1 !important;
   background-color: $color-orange-light !important;
   border-bottom: 1px solid $color-orange-border;
-  @include for-phone-only {
-    top: 148px !important;
-  }
   @include for-tablet-landscape-up {
-    top: 130px !important;
+    top: 137px !important;
   }
+}
+
+.rel-switch {
+  max-width: 100px !important;
 }
 </style>

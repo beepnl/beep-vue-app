@@ -271,10 +271,10 @@ input[disabled='disabled'],
 }
 
 .period-container {
-  padding-right: 80px;
-  padding-left: 80px;
+  padding-right: 80px !important;
+  padding-left: 80px !important;
   @include for-phone-only {
-    padding: 10px;
+    padding: 10px !important;
   }
 }
 .period-bar {
