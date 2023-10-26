@@ -85,9 +85,10 @@
                     <div v-bind="props">
                       <v-badge
                         v-if="alerts.length > 1"
-                        :offset-x="alerts.length > 9 ? '23' : '20'"
-                        offset-y="20"
+                        :offset-x="alerts.length > 9 ? '10' : '7'"
+                        offset-y="7"
                         color="transparent"
+                        text-color="white"
                         :content="alerts.length > 99 ? '99' : alerts.length"
                       >
                         <v-icon color="red">mdi-bell</v-icon>
@@ -120,9 +121,10 @@
                   <div v-if="xlView">
                     <v-badge
                       v-if="alerts.length > 1"
-                      :offset-x="alerts.length > 9 ? '23' : '20'"
-                      offset-y="20"
+                      :offset-x="alerts.length > 9 ? '10' : '7'"
+                      offset-y="7"
                       color="transparent"
+                      text-color="white"
                       :content="alerts.length > 99 ? '99' : alerts.length"
                     >
                       <v-icon color="red">mdi-bell</v-icon>
@@ -137,9 +139,10 @@
                       <div v-bind="props">
                         <v-badge
                           v-if="alerts.length > 1"
-                          :offset-x="alerts.length > 9 ? '23' : '20'"
-                          offset-y="20"
+                          :offset-x="alerts.length > 9 ? '10' : '7'"
+                          offset-y="7"
                           color="transparent"
+                          text-color="white"
                           :content="alerts.length > 99 ? '99' : alerts.length"
                         >
                           <v-icon color="red">mdi-bell</v-icon>
@@ -232,16 +235,28 @@
                     mdi-plus-circle
                   </v-icon>
                   <!-- <v-sheet v-if="hive.last_inspection_date === null" class="beep-icon beep-icon-note color-grey"> </v-sheet> -->
-                  <v-icon v-if="hive.attention" class="text-red">
+                  <v-icon v-if="hive.attention" size="24" class="text-red">
                     mdi-clipboard-alert-outline
                   </v-icon>
-                  <v-icon v-if="hive.impression === 1" class="text-red">
+                  <v-icon
+                    v-if="hive.impression === 1"
+                    size="24"
+                    class="text-red"
+                  >
                     mdi-emoticon-sad
                   </v-icon>
-                  <v-icon v-if="hive.impression === 3" class="text-green">
+                  <v-icon
+                    v-if="hive.impression === 3"
+                    size="24"
+                    class="text-green"
+                  >
                     mdi-emoticon-happy
                   </v-icon>
-                  <v-icon v-if="hive.impression === 2" class="text-orange">
+                  <v-icon
+                    v-if="hive.impression === 2"
+                    size="24"
+                    class="text-orange"
+                  >
                     mdi-emoticon-neutral
                   </v-icon>
                   <div

@@ -368,18 +368,18 @@
 
                   <h4 v-text="hiveSet.name"></h4>
                 </div>
-                <pre
+                <div
                   v-if="xlView && hiveSet.users && hiveSet.users.length"
-                  :class="'caption hive-set-caption' + (mobile ? ' ml-7' : '')"
+                  class="caption hive-set-caption ml-2"
                 >
-                {{
+                  {{
                     ` (${hiveSet.users.length} ${$tc(
                       'member',
                       // eslint-disable-next-line vue/comma-dangle
                       hiveSet.users.length
                     )})`
                   }}
-                </pre>
+                </div>
               </div>
 
               <v-menu>
@@ -1501,9 +1501,9 @@ export default {
     margin-bottom: 18px;
   }
   &:first-child {
-    margin-top: 70px;
+    margin-top: 150px;
     @include for-phone-only {
-      margin-top: 56px;
+      margin-top: 144px;
     }
   }
   &:last-child {
