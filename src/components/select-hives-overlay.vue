@@ -61,8 +61,7 @@
                   ></div>
                   <v-switch
                     v-model="allHivesSelected"
-                    class="mt-0"
-                    light
+                    class="d-flex justify-end mt-0"
                     :label="$t('select_all')"
                     hide-details
                   />
