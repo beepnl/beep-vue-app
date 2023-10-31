@@ -3,7 +3,6 @@
     <template v-slot:activator="{ props }">
       <v-alert
         type="error"
-        text
         prominent
         density="compact"
         :color="
@@ -14,32 +13,33 @@
             : 'red'
         "
         class="alert-card cursor-pointer mb-0 pa-2 pa-sm-3"
-        outlined
+        variant="tonal"
         v-bind="!mobile ? props : null"
       >
         <template v-slot:prepend>
           <div class="d-flex flex-column justify-start align-center">
             <v-checkbox
               v-if="mobile"
-              :input-value="isSelected"
+              :model-value="isSelected"
               class="ma-0 pt-0"
               density="compact"
               :ripple="false"
               hide-details
-              @change="toggleCheckbox(alert.id)"
+              @update:model-value="toggleCheckbox(alert.id)"
             />
 
-            <div class="alert-icon d-flex align-center">
+            <div class="alert-icon">
               <v-badge
                 v-if="alert.count > 1"
-                :offset-x="alert.count > 9 ? '23' : '20'"
-                offset-y="20"
+                :offset-x="alert.count > 9 ? '10' : '8'"
+                offset-y="9"
                 color="transparent"
+                text-color="white"
                 :content="alert.count > 99 ? '99' : alert.count"
               >
-                <v-icon color="red">mdi-bell</v-icon>
+                <v-icon color="red" size="24">mdi-bell</v-icon>
               </v-badge>
-              <v-icon v-else color="red">
+              <v-icon v-else size="24" color="red">
                 mdi-bell
               </v-icon>
             </div>
@@ -330,80 +330,78 @@
     </template>
 
     <v-list density="compact">
-      <v-list-group>
-        <v-list-item
-          v-if="alert.alert_rule_name !== null"
-          :to="{
-            name: 'alertrule-edit',
-            params: { id: alert.alert_rule_id },
-          }"
-        >
-          <v-icon class="mr-3"> mdi-pencil</v-icon>
+      <v-list-item
+        v-if="alert.alert_rule_name !== null"
+        class="text-black"
+        :to="{
+          name: 'alertrule-edit',
+          params: { id: alert.alert_rule_id },
+        }"
+        :prepend-icon="'mdi-pencil'"
+        :title="$t('Edit_alertrule')"
+        :subtitle="alert.alert_rule_name"
+      >
+      </v-list-item>
 
-          <v-list-item-title>{{ $t('Edit_alertrule') }} </v-list-item-title>
-          <v-list-item-subtitle>
-            {{ alert.alert_rule_name }}
-          </v-list-item-subtitle>
-        </v-list-item>
+      <v-list-item
+        v-else-if="alertRule === undefined"
+        disabled
+        :prepend-icon="'mdi-bell'"
+        :title="$t('alert_rule_deleted')"
+      >
+      </v-list-item>
 
-        <v-list-item v-else-if="alertRule === undefined" disabled>
-          <v-icon class="mr-3"> mdi-bell</v-icon>
-
-          <v-list-item-title>{{ $t('alert_rule_deleted') }}</v-list-item-title>
-        </v-list-item>
-
-        <v-list-item
-          v-if="alert.device_id !== null"
-          :to="{
-            name: 'measurements-id',
-            params: { id: alert.device_id },
-            query: {
-              date: momentFormatUtcToLocal(alert.updated_at, 'YYYY-MM-DD'),
-              relativeInterval: false,
-            },
-          }"
-        >
-          <div class="my-0">
+      <v-list-item
+        v-if="alert.device_id !== null"
+        class="text-black"
+        :to="{
+          name: 'measurements-id',
+          params: { id: alert.device_id },
+          query: {
+            date: momentFormatUtcToLocal(alert.updated_at, 'YYYY-MM-DD'),
+            relativeInterval: false,
+          },
+        }"
+        :title="$t('View_measurements')"
+      >
+        <template v-slot:prepend>
+          <div class="beep-list-icon">
             <v-sheet class="beep-icon beep-icon-sensors--no-outline"></v-sheet>
           </div>
-
-          <v-list-item-title>{{ $t('View_measurements') }}</v-list-item-title>
-        </v-list-item>
-      </v-list-group>
+        </template>
+      </v-list-item>
       <v-divider class="my-1"></v-divider>
 
-      <v-list-group>
-        <v-list-item v-if="alertRuleNotActive" disabled>
-          <v-icon class="mr-3"> mdi-close</v-icon>
-
-          <v-list-item-title>{{
-            !alertRule.active
-              ? $t('Alert_disabled')
-              : $t('Alert_disabled_for_this_hive')
-          }}</v-list-item-title>
-        </v-list-item>
-        <v-list-item
-          v-else-if="
-            alertRule !== undefined &&
-              alertRule.exclude_hive_ids.indexOf(alert.hive_id) === -1 &&
-              alert.alert_function.indexOf('alert_rule') === -1
-          "
-          @click="disableAlertForHive"
-        >
-          <v-icon class="mr-3 text-red">mdi-close</v-icon>
-
-          <v-list-item-title class="text-red">{{
-            $t('Disable_alert_for_this_hive')
-          }}</v-list-item-title>
-        </v-list-item>
-        <v-list-item @click="deleteAlert(alert.id)">
-          <v-icon class="mr-3 text-red">mdi-delete</v-icon>
-
-          <v-list-item-title class="text-red">{{
-            $t('remove_alert')
-          }}</v-list-item-title>
-        </v-list-item>
-      </v-list-group>
+      <v-list-item
+        v-if="alertRuleNotActive"
+        disabled
+        :prepend-icon="'mdi-close'"
+        :title="
+          !alertRule.active
+            ? $t('Alert_disabled')
+            : $t('Alert_disabled_for_this_hive')
+        "
+      >
+      </v-list-item>
+      <v-list-item
+        v-else-if="
+          alertRule !== undefined &&
+            alertRule.exclude_hive_ids.indexOf(alert.hive_id) === -1 &&
+            alert.alert_function.indexOf('alert_rule') === -1
+        "
+        class="text-red"
+        :prepend-icon="'mdi-close'"
+        :title="$t('Disable_alert_for_this_hive')"
+        @click.prevent="disableAlertForHive"
+      >
+      </v-list-item>
+      <v-list-item
+        class="text-red"
+        :prepend-icon="'mdi-delete'"
+        :title="$t('remove_alert')"
+        @click.prevent="deleteAlert(alert.id)"
+      >
+      </v-list-item>
     </v-list>
   </v-menu>
 </template>
@@ -472,7 +470,7 @@ export default {
   },
   methods: {
     async disableAlertForHive() {
-      const updatedAlertRule = { ...this.alertRule }
+      const updatedAlertRule = JSON.parse(JSON.stringify(this.alertRule)) // clone without v-bind to avoid vuex warning when mutating
       updatedAlertRule.exclude_hive_ids.push(this.alert.hive_id)
       try {
         const response = await Api.updateRequest(
@@ -525,6 +523,7 @@ export default {
     padding: 12px;
     font-size: 0.875rem !important;
   }
+
   .alert-label {
     font-size: 0.75rem !important;
     font-weight: 600;

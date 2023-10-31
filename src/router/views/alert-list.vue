@@ -16,10 +16,11 @@
               class="pa-3 d-flex justify-start"
             >
               <v-checkbox
-                :input-value="allFilteredChecked"
+                :model-value="allFilteredChecked"
                 class="ma-0"
                 hide-details
-                @change="toggleAllFiltered"
+                density="compact"
+                @update:model-value="toggleAllFiltered"
               />
 
               <v-text-field
@@ -28,7 +29,7 @@
                 :class="
                   `${
                     search !== null ? 'v-input--is-focused' : ''
-                  } filter-text-field--alerts`
+                  } filter-text-field--alerts ml-2`
                 "
                 :style="'height: ' + (mobile ? '30px;' : '36px;')"
                 color="accent"
@@ -45,10 +46,10 @@
           <v-card-actions class="pl-0 mr-1">
             <v-btn
               v-if="!mobile && selectedAlerts.length > 0"
-              outlined
+              variant="outlined"
               class="mr-3"
               color="red"
-              :small="mdScreen"
+              :size="mdScreen ? 'small' : 'default'"
               :disabled="showLoadingIcon"
               @click="confirmDeleteAlerts"
             >
@@ -60,7 +61,9 @@
                 color="disabled"
                 indeterminate
               />
-              <v-icon v-if="!showLoadingIcon" start>mdi-delete</v-icon>
+              <v-icon v-if="!showLoadingIcon" color="red" start
+                >mdi-delete</v-icon
+              >
               {{
                 !mdScreen
                   ? allChecked
@@ -72,9 +75,9 @@
             <v-btn
               v-if="!mobile"
               :to="{ name: 'alertrules' }"
-              outlined
+              variant="outlined"
               color="black"
-              :small="mdScreen"
+              :size="mdScreen ? 'small' : 'default'"
             >
               <v-icon v-if="!tinyScreen" start>mdi-cog</v-icon>
               {{ $tc('alertrule', 2) }}
@@ -181,7 +184,7 @@
         {{ error.errorMessage }}
       </v-alert>
 
-      <v-row v-if="alerts.length > 0" density="compact">
+      <v-row v-if="alerts.length > 0" dense>
         <div class="alerts-item-transition-wrapper">
           <v-scale-transition group>
             <v-col
@@ -193,13 +196,13 @@
             >
               <v-checkbox
                 v-if="!mobile"
-                :input-value="isSelected(alert.id)"
+                :model-value="isSelected(alert.id)"
                 class="ma-0 pa-0"
                 density="compact"
                 color="primary"
                 :ripple="false"
                 hide-details
-                @change="toggleCheckbox(alert.id)"
+                @update:model-value="toggleCheckbox(alert.id)"
               />
               <AlertCard
                 :alert="alert"
@@ -573,7 +576,7 @@ export default {
 }
 
 .alerts-content {
-  margin-top: 68px;
+  margin-top: 175px;
   overflow: hidden;
   @include for-phone-only {
     margin-top: 55px;

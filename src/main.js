@@ -51,6 +51,9 @@ const vuetify = createVuetify({
     VCard: {
       variant: 'outlined',
     },
+    VCheckbox: {
+      color: 'accent',
+    },
     VList: {
       density: 'compact',
     },

@@ -32,9 +32,6 @@
             :type="
               interval === 'year' || interval === 'month' ? 'month' : 'date'
             "
-            :first-day-of-week="1"
-            no-title
-            scrollable
           >
             <v-spacer></v-spacer>
             <v-btn variant="text" color="secondary" @click="modal = false">
@@ -99,10 +96,7 @@
           </template>
           <v-date-picker
             v-model="datesCopy"
-            :first-day-of-week="1"
             range
-            no-title
-            scrollable
             @change="checkDateOrder($event), saveDates(datesCopy)"
           >
             <v-spacer></v-spacer>
@@ -120,6 +114,51 @@
           </v-date-picker>
         </v-menu>
       </div>
+
+      <!-- <div
+        :class="
+          'd-flex align-center justify-center ' +
+            (sticky ? 'mt-3' : 'mr-3 mr-sm-0')
+        "
+      >
+        <div class="d-flex justify-flex-start align-center">
+          <v-icon class="mr-2" :color="reminderDate !== null ? 'accent' : ''"
+            >mdi-calendar-clock</v-icon
+          >
+          <div>
+            <v-text-field
+                              v-if="datesCopy.length === 0"
+              :value="dateRangeText"
+              :rules="requiredRules"
+              :label="!sticky ? $t('period') : null"
+              prepend-icon="mdi-calendar"
+              class="date-picker"
+              readonly
+              v-bind="props"
+            ></v-text-field>
+
+            <div class="beep-label">
+              <span v-text="!sticky ? $t('period') : null"></span>
+            </div>
+
+            <VueDatePicker
+              :model-value="datesCopy"
+              hide-input-icon
+              range
+              min-range="1"
+              :clearable="false"
+              :disabled="offlineMode"
+              :enable-time-picker="false"
+              :placeholder="$t('selection_placeholder')"
+              :locale="locale"
+              :select-text="$t('ok')"
+              :cancel-text="$t('Cancel')"
+              class="text-accent"
+              @update:model-value="checkDateOrder($event), saveDates($event)"
+            />
+          </div>
+        </div>
+      </div> -->
     </v-col>
 
     <v-col
@@ -200,6 +239,9 @@ export default {
   },
   computed: {
     ...mapGetters('devices', ['devices']),
+    locale() {
+      return this.$i18n.locale
+    },
     mobile() {
       return this.$vuetify.display.mobile
     },

@@ -442,7 +442,10 @@
                     >
                     </v-list-item>
 
-                    <!-- <v-list-item v-else-if="item.if" @click="item.click">
+                    <v-list-item
+                      v-else-if="item.if"
+                      @click.prevent="item.click"
+                    >
                       <template v-slot:prepend>
                         <v-icon
                           :class="'mr-3 ' + item.iconClass"
@@ -453,7 +456,7 @@
                       <v-list-item-title :class="item.iconClass">{{
                         item.text
                       }}</v-list-item-title>
-                    </v-list-item> -->
+                    </v-list-item>
 
                     <v-divider
                       v-else-if="!item.if && item.divider"
