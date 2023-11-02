@@ -53,10 +53,10 @@
                   v-for="(item, index) in buttonMenuItems"
                   :key="index"
                   :to="item.route ? { name: item.route } : null"
+                  class="text-black"
+                  :prepend-icon="item.icon"
+                  :title="item.title"
                 >
-                  <v-icon>{{ item.icon }}</v-icon>
-
-                  <v-list-item-title>{{ item.title }}</v-list-item-title>
                 </v-list-item>
               </v-list>
             </v-menu>

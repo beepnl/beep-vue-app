@@ -112,12 +112,7 @@
             </v-card-actions>
           </div>
           <v-card-actions v-if="!mobile && !smallScreen" class="mr-1">
-            <v-btn
-              :to="{ name: 'inspect' }"
-              medium
-              variant="outlined"
-              color="black"
-            >
+            <v-btn :to="{ name: 'inspect' }" medium color="black">
               <v-icon start>mdi-plus</v-icon>
               {{ $t('New_inspection') }}
             </v-btn>

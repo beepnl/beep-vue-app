@@ -47,7 +47,7 @@
             <v-card outlined>
               <v-row class="ma-2 d-flex align-center">
                 <v-col cols="2" sm="1" class="mr-n2 mr-md-n4 mr-lg-n10">
-                  <v-checkbox v-model="alertRule.selected"></v-checkbox>
+                  <v-checkbox-btn v-model="alertRule.selected"></v-checkbox-btn>
                 </v-col>
                 <v-col cols="10" sm="5" md="4">
                   <div class="d-flex flex-column">
@@ -225,7 +225,7 @@ export default {
         replacedSentence += this.$i18n.t('alertrule_exclude_months_sentence')
         const monthsArray = []
         alertRule.exclude_months.map((month) => {
-          monthsArray.push(this.$i18n.tm('monthsFull')[month])
+          monthsArray.push(this.$i18n.tm('monthsFull')[month - 1])
           return true // TODO-VUE3 check
         })
         replacedSentence = replacedSentence.replace(

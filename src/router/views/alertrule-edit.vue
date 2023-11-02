@@ -61,7 +61,7 @@
             <v-col cols="12" sm="7" lg="5" class="mobile-last">
               <div class="beep-label" v-text="$t('Name')"></div>
               <v-text-field
-                v-model="activeAlertRule.name"
+                :model-value="activeAlertRule.name"
                 class="alertrule-edit-name mb-sm-3"
                 counter="30"
                 :rules="requiredRule"
@@ -76,26 +76,30 @@
             <div class="float-right mt-3 mr-3">
               <div>
                 <div class="beep-label" v-text="$t('Active')"></div>
-                <v-checkbox
+                <v-checkbox-btn
                   v-model="activeAlertRule.active"
-                  color="accent"
-                  class="mt-1"
+                  :true-value="1"
+                  :false-value="0"
+                  class="ma-0 pt-0"
+                  density="compact"
                   hide-details
-                  @change="setAlertRuleEdited(true)"
-                ></v-checkbox>
+                  @update:model-value="setAlertRuleEdited(true)"
+                ></v-checkbox-btn>
               </div>
             </div>
 
             <div class="float-right mt-3 mr-3">
               <div>
                 <div class="beep-label" v-text="$t('Alert_via_email')"></div>
-                <v-checkbox
+                <v-checkbox-btn
                   v-model="activeAlertRule.alert_via_email"
-                  color="accent"
-                  class="mt-1"
+                  :true-value="1"
+                  :false-value="0"
+                  class="ma-0 pt-0"
+                  density="compact"
                   hide-details
-                  @change="setAlertRuleEdited(true)"
-                ></v-checkbox>
+                  @update:model-value="setAlertRuleEdited(true)"
+                ></v-checkbox-btn>
               </div>
             </div>
           </v-row>
@@ -107,12 +111,13 @@
                 v-text="$t('Description')"
               ></div>
               <v-textarea
-                v-model="activeAlertRule.description"
+                :model-value="activeAlertRule.description"
                 :class="'pt-0' + (!mobile ? ' mb-sm-3 mt-0' : '')"
                 :rows="!mobile ? '1' : '2'"
                 row-height="24"
                 auto-grow
                 counter="250"
+                bg-color="white"
                 @update:model-value="validateText($event, 'description', 250)"
               >
               </v-textarea>
@@ -146,11 +151,14 @@
 
           <v-row>
             <v-col cols="12" sm="6" md="3">
-              <div class="d-flex justify-space-between">
-                <div class="beep-label" v-html="$tc('Measurement', 1)"></div>
+              <div class="d-flex justify-space-between align-center mb-n4">
+                <div
+                  class="beep-label mt-n5"
+                  v-html="$tc('Measurement', 1)"
+                ></div>
                 <v-switch
                   v-model="showAllMeasurements"
-                  class="pt-2 mt-n3"
+                  class="mt-n6 d-flex justify-end"
                   :label="$t('show_all') + (showAllMeasurements ? '*' : '')"
                   hide-details
                 ></v-switch>
@@ -243,7 +251,7 @@
             </v-col>
 
             <v-col cols="6" sm="3" md="2" class="d-flex justify-start">
-              <div>
+              <div class="mt-n2">
                 <div
                   :class="`beep-label ${thresholdValueIsNaN ? 'text-red' : ''}`"
                   v-text="$t('Threshold_value') + ' (' + measurementUnit + ')'"
@@ -253,7 +261,6 @@
                   :step="activeAlertRule.calculation === 'cnt' ? 1 : 0.1"
                   :precision="activeAlertRule.calculation === 'cnt' ? 0 : 1"
                   :step-strictly="true"
-                  size="small"
                   @change="setAlertRuleEdited(true)"
                   @update:model-value="
                     convertComma($event, activeAlertRule, 'threshold_value', 1),
@@ -288,7 +295,7 @@
                 <div class="beep-label" v-html="$t('Exclude_months')"></div>
                 <v-switch
                   v-model="allMonthsSelected"
-                  class="pt-2 mt-n4"
+                  class="pt-2 mt-n4 d-flex justify-end"
                   :label="$t('select_all')"
                   hide-details
                 ></v-switch>
@@ -299,7 +306,7 @@
                 :options="months"
                 :placeholder="`${$t('Select')} ${$t('months')}`"
                 :no-results-text="`${$t('no_results')}`"
-                multiple
+                :multiple="true"
                 @update:model-value="setAlertRuleEdited(true)"
               />
             </v-col>
@@ -309,7 +316,7 @@
                 <div class="beep-label" v-html="$t('Exclude_hours')"></div>
                 <v-switch
                   v-model="allHoursSelected"
-                  class="pt-2 mt-n4"
+                  class="pt-2 mt-n4 d-flex justify-end"
                   :label="$t('select_all')"
                   hide-details
                 ></v-switch>
@@ -320,7 +327,7 @@
                 :options="hours"
                 :placeholder="`${$t('Select')} ${$t('hours')}`"
                 :no-results-text="`${$t('no_results')}`"
-                multiple
+                :multiple="true"
                 @update:model-value="setAlertRuleEdited(true)"
               />
             </v-col>
@@ -337,7 +344,7 @@
                 <v-switch
                   v-if="numberOfSortedDevices > 2"
                   v-model="allDevicesSelected"
-                  class="pt-2 mt-n4"
+                  class="pt-2 mt-n4 d-flex justify-end"
                   :label="$t('select_all')"
                   hide-details
                 ></v-switch>
@@ -350,7 +357,7 @@
                 :default-expand-level="1"
                 :placeholder="`${$t('Select')} ${$tc('hive', 2)}`"
                 :no-results-text="`${$t('no_results')}`"
-                multiple
+                :multiple="true"
                 @update:model-value="setAlertRuleEdited(true)"
               />
               <div
@@ -460,9 +467,9 @@ export default {
           this.devicesOptions.map((apiary) => {
             apiary.children.map((device) => {
               this.activeAlertRule.exclude_hive_ids.push(device.id)
-              return true // TODO-VUE3 check
+              return true
             })
-            return true // TODO-VUE3 check
+            return true
           })
         }
       },
@@ -475,11 +482,9 @@ export default {
         if (value === false) {
           this.activeAlertRule.exclude_hours = []
         } else {
-          this.activeAlertRule.exclude_hours = []
-          this.hours.map((hour) => {
-            this.activeAlertRule.exclude_hours.push(hour.id)
-            return true // TODO-VUE3 check
-          })
+          this.activeAlertRule.exclude_hours = this.hours.map(
+            (month) => month.id
+          )
         }
       },
     },
@@ -491,11 +496,9 @@ export default {
         if (value === false) {
           this.activeAlertRule.exclude_months = []
         } else {
-          this.activeAlertRule.exclude_months = []
-          this.months.map((month) => {
-            this.activeAlertRule.exclude_months.push(month.id)
-            return true // TODO-VUE3 check
-          })
+          this.activeAlertRule.exclude_months = this.months.map(
+            (month) => month.id
+          )
         }
       },
     },
@@ -937,7 +940,7 @@ export default {
         replacedSentence += this.$i18n.t('alertrule_exclude_months_sentence')
         const monthsArray = []
         alertRule.exclude_months.map((month) => {
-          monthsArray.push(this.$i18n.tm('monthsFull')[month])
+          monthsArray.push(this.$i18n.tm('monthsFull')[month - 1])
           return true // TODO-VUE3 check
         })
         replacedSentence = replacedSentence.replace(

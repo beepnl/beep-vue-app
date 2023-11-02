@@ -15,7 +15,7 @@
               v-if="!showAlertPlaceholder"
               class="pa-3 d-flex justify-start"
             >
-              <v-checkbox
+              <v-checkbox-btn
                 :model-value="allFilteredChecked"
                 class="ma-0"
                 hide-details
@@ -194,7 +194,7 @@
               class="d-flex justify-start align-center alerts-item"
               density="compact"
             >
-              <v-checkbox
+              <v-checkbox-btn
                 v-if="!mobile"
                 :model-value="isSelected(alert.id)"
                 class="ma-0 pa-0"

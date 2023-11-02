@@ -8,18 +8,18 @@
             <p v-text="$t('Export_your_data')"></p>
           </v-col>
           <v-col cols="12">
-            <v-checkbox
+            <v-checkbox-btn
               v-model="includeGroupData"
               :label="$t('Include_group_data')"
               class="mt-1 mr-6"
               hide-details
-            ></v-checkbox>
-            <v-checkbox
+            ></v-checkbox-btn>
+            <v-checkbox-btn
               v-model="includeSensorData"
               :label="$t('Include_sensor_data')"
               class="mt-1"
               hide-details
-            ></v-checkbox>
+            ></v-checkbox-btn>
           </v-col>
         </v-row>
         <v-row>

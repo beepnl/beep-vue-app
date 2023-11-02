@@ -51,7 +51,15 @@ const vuetify = createVuetify({
     VCard: {
       variant: 'outlined',
     },
+    VCardActions: {
+      VBtn: {
+        variant: 'outlined',
+      },
+    },
     VCheckbox: {
+      color: 'accent',
+    },
+    VCheckboxBtn: {
       color: 'accent',
     },
     VList: {
@@ -73,6 +81,11 @@ const vuetify = createVuetify({
     },
     VTextField: {
       variant: 'underlined',
+    },
+    VToolbar: {
+      VBtn: {
+        variant: 'outlined',
+      },
     },
   },
   icons: {

@@ -31,7 +31,7 @@
           @click.capture="toggleSelect(listItem.id, item.id)"
         >
           <v-list-item-action>
-            <v-checkbox
+            <v-checkbox-btn
               v-if="listItem.input === 'list_item'"
               :model-value="selectedArray"
               multiple
@@ -49,7 +49,7 @@
             @click.capture="toggleSelect(nestedItem.id, item.id)"
           >
             <v-list-item-action>
-              <v-checkbox
+              <v-checkbox-btn
                 v-if="nestedItem.input === 'list_item'"
                 :model-value="selectedArray"
                 multiple

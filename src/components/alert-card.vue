@@ -18,7 +18,7 @@
       >
         <template v-slot:prepend>
           <div class="d-flex flex-column justify-start align-center">
-            <v-checkbox
+            <v-checkbox-btn
               v-if="mobile"
               :model-value="isSelected"
               class="ma-0 pt-0"
