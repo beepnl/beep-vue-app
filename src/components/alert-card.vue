@@ -329,7 +329,7 @@
       </v-alert>
     </template>
 
-    <v-list density="compact">
+    <v-list>
       <v-list-item
         v-if="alert.alert_rule_name !== null"
         class="text-black"
@@ -390,17 +390,21 @@
             alert.alert_function.indexOf('alert_rule') === -1
         "
         class="text-red"
-        :prepend-icon="'mdi-close'"
         :title="$t('Disable_alert_for_this_hive')"
-        @click.prevent="disableAlertForHive"
+        @click="disableAlertForHive"
       >
+        <template v-slot:prepend>
+          <v-icon :icon="'mdi-close'" class="text-red"> </v-icon>
+        </template>
       </v-list-item>
       <v-list-item
         class="text-red"
-        :prepend-icon="'mdi-delete'"
         :title="$t('remove_alert')"
-        @click.prevent="deleteAlert(alert.id)"
+        @click="deleteAlert(alert.id)"
       >
+        <template v-slot:prepend>
+          <v-icon :icon="'mdi-delete'" class="text-red"> </v-icon>
+        </template>
       </v-list-item>
     </v-list>
   </v-menu>

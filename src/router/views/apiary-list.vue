@@ -438,24 +438,26 @@
                       :to="item.to"
                       :prepend-icon="item.icon"
                       :title="item.text"
-                      @click="item.click || null"
+                      @click.prevent="item.click || null"
                     >
                     </v-list-item>
 
                     <v-list-item
                       v-else-if="item.if"
-                      @click.prevent="item.click"
+                      :class="item.iconClass"
+                      :title="item.text"
+                      @click="
+                        item.click === 'delete'
+                          ? confirmDeleteGroup(hiveSet)
+                          : confirmDetachGroup(hiveSet)
+                      "
                     >
                       <template v-slot:prepend>
                         <v-icon
-                          :class="'mr-3 ' + item.iconClass"
+                          :class="item.iconClass"
                           :icon="item.icon"
                         ></v-icon>
                       </template>
-
-                      <v-list-item-title :class="item.iconClass">{{
-                        item.text
-                      }}</v-list-item-title>
                     </v-list-item>
 
                     <v-divider
@@ -1367,22 +1369,22 @@ export default {
         {
           divider: true,
         },
-        // {
-        //   if: hiveSet.creator,        // TODO-VUE3 enable v-list-items with click prop (fix bug where click is auto-executed when opening menu) OR show via icon outside of v-menu
-        //   to: false,
-        //   click: this.confirmDeleteGroup(hiveSet),
-        //   text: this.$i18n.t('remove_group_short'),
-        //   icon: 'mdi-delete',
-        //   iconClass: 'text-red',
-        // },
-        // {
-        //   if: !hiveSet.creator,
-        //   to: false,
-        //   click: this.confirmDetachGroup(hiveSet),
-        //   text: this.$i18n.t('Detach_from_group'),
-        //   icon: 'mdi-delete',
-        //   iconClass: 'text-red',
-        // },
+        {
+          if: hiveSet.creator,
+          to: false,
+          click: 'delete',
+          text: this.$i18n.t('remove_group_short'),
+          icon: 'mdi-delete',
+          iconClass: 'text-red',
+        },
+        {
+          if: !hiveSet.creator,
+          to: false,
+          click: 'detach',
+          text: this.$i18n.t('Detach_from_group'),
+          icon: 'mdi-delete',
+          iconClass: 'text-red',
+        },
       ]
     },
     setDiaryGroupFilterAndGo(searchTerm) {

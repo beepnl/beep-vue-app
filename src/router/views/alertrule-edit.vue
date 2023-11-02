@@ -12,7 +12,6 @@
           >mdi-delete</v-icon
         >
         <v-btn
-          outlined
           color="black"
           :class="
             `${alertruleCreateMode ? 'save-button-mobile-wide' : ''} mr-1`
