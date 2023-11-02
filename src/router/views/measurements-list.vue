@@ -1055,7 +1055,7 @@ export default {
             '&timezone=' +
             this.timeZone +
             (start !== null ? '&start=' + start + ' 00:00' : '') +
-            (end !== null ? '&end=' + end + ' 23:59' : '') +
+            (end !== null && end !== '' ? '&end=' + end + ' 23:59' : '') +
             '&relative_interval=' +
             (this.relativeInterval ? '1' : '0') +
             (this.permissions.includes('hive-compare') ? '&clean_weight=1' : '')

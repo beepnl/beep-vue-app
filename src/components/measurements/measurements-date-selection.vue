@@ -12,43 +12,33 @@
 
         <span class="period-title">{{ periodTitle }}</span>
 
-        <v-dialog
+        <VueDatePicker
           v-if="
             interval !== 'year' || (interval === 'year' && !relativeInterval)
           "
-          ref="dialog"
-          v-model="modal"
-          :return-value="selectedDateCopy"
-          persistent
-          width="290px"
+          :format="datePickerFormat"
+          :model-value="selectedDateCopy"
+          model-type="format"
+          :month-picker="interval === 'year' || interval === 'month'"
+          hide-input-icon
+          :clearable="false"
+          :enable-time-picker="false"
+          :locale="locale"
+          :select-text="$t('ok')"
+          :cancel-text="$t('Cancel')"
+          class="small-date-picker text-accent"
+          @update:model-value="selectDate($event)"
         >
-          <template v-slot:activator="{ props }">
-            <v-icon size="small" class="color-grey-light ml-1" v-bind="props">
+          <template v-slot:trigger>
+            <v-icon
+              size="small"
+              class="cursor-pointer color-grey-light ml-1"
+              v-bind="props"
+            >
               mdi-pencil
             </v-icon>
           </template>
-          <v-date-picker
-            v-model="selectedDateCopy"
-            :type="
-              interval === 'year' || interval === 'month' ? 'month' : 'date'
-            "
-          >
-            <v-spacer></v-spacer>
-            <v-btn variant="text" color="secondary" @click="modal = false">
-              {{ $t('Cancel') }}
-            </v-btn>
-            <v-btn
-              text
-              color="secondary"
-              @click="
-                $refs.dialog.save(selectedDateCopy),
-                  selectDate(selectedDateCopy)
-              "
-            >
-              {{ $t('ok') }}
-            </v-btn>
-          </v-date-picker>
-        </v-dialog>
+        </VueDatePicker>
 
         <v-icon
           :class="timeIndex === 0 ? 'color-transparent' : 'color-grey-dark'"
@@ -72,53 +62,7 @@
       <div
         :class="
           'd-flex align-center justify-center ' +
-            (sticky ? 'mt-3' : 'mr-3 mr-sm-0')
-        "
-      >
-        <v-menu
-          ref="menu"
-          v-model="menu"
-          :close-on-content-click="false"
-          :return-value="datesCopy"
-          transition="scale-transition"
-          min-width="290px"
-        >
-          <template v-slot:activator="{ props }">
-            <v-text-field
-              :value="dateRangeText"
-              :rules="requiredRules"
-              :label="!sticky ? $t('period') : null"
-              prepend-icon="mdi-calendar"
-              class="date-picker"
-              readonly
-              v-bind="props"
-            ></v-text-field>
-          </template>
-          <v-date-picker
-            v-model="datesCopy"
-            range
-            @change="checkDateOrder($event), saveDates(datesCopy)"
-          >
-            <v-spacer></v-spacer>
-            <v-btn variant="text" color="secondary" @click="menu = false">
-              {{ $t('Cancel') }}
-            </v-btn>
-            <v-btn
-              :disabled="invalidDates(datesCopy)"
-              text
-              color="secondary"
-              @click="$refs.menu.save(datesCopy), loadData()"
-            >
-              {{ $t('ok') }}
-            </v-btn>
-          </v-date-picker>
-        </v-menu>
-      </div>
-
-      <!-- <div
-        :class="
-          'd-flex align-center justify-center ' +
-            (sticky ? 'mt-3' : 'mr-3 mr-sm-0')
+            (sticky ? 'mt-0' : 'mr-3 mr-sm-0')
         "
       >
         <div class="d-flex justify-flex-start align-center">
@@ -126,39 +70,31 @@
             >mdi-calendar-clock</v-icon
           >
           <div>
-            <v-text-field
-                              v-if="datesCopy.length === 0"
-              :value="dateRangeText"
-              :rules="requiredRules"
-              :label="!sticky ? $t('period') : null"
-              prepend-icon="mdi-calendar"
-              class="date-picker"
-              readonly
-              v-bind="props"
-            ></v-text-field>
-
             <div class="beep-label">
               <span v-text="!sticky ? $t('period') : null"></span>
             </div>
 
             <VueDatePicker
+              :format="datePickerFormat"
               :model-value="datesCopy"
+              model-type="format"
               hide-input-icon
               range
               min-range="1"
               :clearable="false"
-              :disabled="offlineMode"
               :enable-time-picker="false"
-              :placeholder="$t('selection_placeholder')"
+              :placeholder="
+                dates.length === 0 ? $t('selection_placeholder') : null
+              "
               :locale="locale"
               :select-text="$t('ok')"
               :cancel-text="$t('Cancel')"
-              class="text-accent"
-              @update:model-value="checkDateOrder($event), saveDates($event)"
+              class="data-date-picker text-accent"
+              @update:model-value="saveDates($event)"
             />
           </div>
         </div>
-      </div> -->
+      </div>
     </v-col>
 
     <v-col
@@ -235,6 +171,7 @@ export default {
       menu: false,
       selectedDateCopy: '',
       datesCopy: [],
+      datePickerFormat: 'yyyy-MM-dd', // TODO add option to include time 'yyyy-MM-dd HH:mm',
     }
   },
   computed: {
@@ -267,23 +204,13 @@ export default {
     this.datesCopy = this.dates
   },
   methods: {
-    checkDateOrder(dates) {
-      if (dates[1] < dates[0]) {
-        this.datesCopy = [dates[1], dates[0]]
-      }
-    },
-    invalidDates(dates) {
-      return (
-        (dates.length === 2 && dates[0] > dates[1]) ||
-        dates[0] === dates[1] ||
-        dates.length === 1
-      )
-    },
-    loadData() {
-      this.$emit('load-data')
-    },
     saveDates(dates) {
+      if (dates[1] === null) {
+        dates[1] = ''
+      }
+      console.log(dates)
       this.$emit('save-dates', dates)
+      this.$emit('load-data')
     },
     selectDate(date) {
       this.$emit('select-date', date)
@@ -295,4 +222,11 @@ export default {
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.data-date-picker {
+  width: 220px !important;
+}
+.small-date-picker {
+  width: 24px !important;
+}
+</style>
