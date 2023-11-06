@@ -186,6 +186,7 @@
       :rows="getEnters(object[item.id])"
       auto-grow
       clearable
+      bg-color="white"
       @update:model-value="validateText($event, item.id, 2500)"
     ></v-textarea>
 

@@ -3,11 +3,15 @@
     <v-alert
       v-if="bulkInspection"
       type="error"
-      text
+      variant="tonal"
       prominent
       density="compact"
       color="red"
+      class="mb-4"
     >
+      <template v-slot:prepend>
+        <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+      </template>
       {{ $t('input_not_possible_for_bulkinspection') }}
     </v-alert>
     <!-- <div :class="`rounded-border ${bulkInspection ? 'input-disabled' : ''}`"> -->
@@ -143,7 +147,7 @@
           <div
             v-for="(item, index) in category.children"
             :key="index"
-            :class="generateClassNames(item)"
+            :class="'v-col ' + generateClassNames(item)"
           >
             <ChecklistInput
               v-if="item.input !== 'label' && item.name !== 'colony_size'"
@@ -309,9 +313,9 @@ export default {
     },
     generateClassNames(item) {
       if (item.input === 'label' || item.input === 'text' || this.nested) {
-        return 'col-12'
+        return 'v-col-12'
       } else if (item.name !== 'colony_size') {
-        return 'col-xs-12 col-sm-6 col-md-3'
+        return 'v-col-xs-12 v-col-sm-6 v-col-md-3'
       }
     },
     setInputNumbers() {

@@ -64,9 +64,10 @@
             v-for="(item, index) in category.children"
             :key="index"
             :class="
-              item.input === 'label' || item.input === 'text' || nested
-                ? 'col-12'
-                : 'col-xs-12 col-sm-6 col-md-4 col-lg-3'
+              'v-col ' +
+                (item.input === 'label' || item.input === 'text' || nested
+                  ? 'v-col-12'
+                  : 'v-col-xs-12 v-col-sm-6 v-col-md-4 v-col-lg-3')
             "
           >
             <ChecklistInput

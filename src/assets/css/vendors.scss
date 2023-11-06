@@ -37,9 +37,11 @@
 }
 
 /* Vuetify */
-.v-application .text-red {
-  color: $color-red !important;
-  caret-color: $color-red !important;
+.v-application {
+  .text-red {
+    color: $color-red !important;
+    caret-color: $color-red !important;
+  }
 }
 
 .v-application .red {

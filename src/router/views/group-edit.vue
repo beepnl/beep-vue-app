@@ -109,6 +109,7 @@
                     rows="1"
                     clearable
                     auto-grow
+                    bg-color="white"
                     @update:model-value="
                       validateText($event, 'description', 250)
                     "

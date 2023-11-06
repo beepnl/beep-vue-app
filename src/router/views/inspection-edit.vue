@@ -513,8 +513,11 @@
                             counter="2500"
                             rows="1"
                             auto-grow
+                            bg-color="white"
                             clearable
-                            @input="validateText($event, 'notes', 2500)"
+                            @update:model-value="
+                              validateText($event, 'notes', 2500)
+                            "
                           ></v-textarea>
                         </v-col>
                       </v-row>
@@ -600,7 +603,10 @@
                             auto-grow
                             clearable
                             counter="100"
-                            @input="validateText($event, 'reminder', 100)"
+                            bg-color="white"
+                            @update:model-value="
+                              validateText($event, 'reminder', 100)
+                            "
                           ></v-textarea>
                         </v-col>
                       </v-row>

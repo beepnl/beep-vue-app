@@ -3,11 +3,15 @@
     <v-alert
       v-if="bulkInspection"
       type="error"
-      text
+      variant="tonal"
       prominent
       density="compact"
       color="red"
+      class="mb-4"
     >
+      <template v-slot:prepend>
+        <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+      </template>
       {{ $t('input_not_possible_for_bulkinspection') }}
     </v-alert>
     <v-card class="pa-3">
@@ -73,7 +77,7 @@
       </div>
 
       <div v-if="activeHive !== null" class="border-bottom">
-        <v-row>
+        <v-row class="ma-0">
           <v-col cols="12" sm="3" md="2" class="d-flex flex-column justify-end">
             <h4 class="hive-name mb-3" v-text="activeHive.name"></h4>
             <div class="d-flex md-1 mb-sm-6">
@@ -82,7 +86,7 @@
           </v-col>
 
           <v-col cols="12" sm="9" md="6">
-            <v-row>
+            <v-row class="ma-0">
               <v-col cols="12" sm="6">
                 <v-row>
                   <v-col cols="12">
@@ -170,7 +174,7 @@
                   honeyLayersForCalculation) ||
               item.input === 'text' ||
               (nested && item.name !== 'colony_size')
-                ? 'col-12'
+                ? 'v-col v-col-12'
                 : ''
             "
           >
@@ -212,11 +216,14 @@
               </p>
 
               <div v-if="item.children.length > 0" class="rounded-border">
-                <v-row>
-                  <div
+                <v-row class="ma-0">
+                  <v-col
                     v-for="(item2, i) in item.children"
                     :key="i"
-                    class="col-xs-12 col-sm-6 col-md-4 col-lg-3"
+                    xs="12"
+                    sm="6"
+                    md="4"
+                    lg="3"
                   >
                     <ChecklistInput
                       v-if="item2.input !== 'label'"
@@ -228,7 +235,7 @@
                         calculateLiebefeldColonySize
                       "
                     ></ChecklistInput>
-                  </div>
+                  </v-col>
                 </v-row>
               </div>
             </div>
@@ -302,7 +309,7 @@ export default {
   computed: {
     ...mapGetters('inspections', ['bulkInspection']),
     ...mapGetters('hives', ['activeHive']),
-            locale() {
+    locale() {
       return this.$i18n.locale
     },
     sortedChildren() {
