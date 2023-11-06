@@ -89,7 +89,7 @@
               :locale="locale"
               :select-text="$t('ok')"
               :cancel-text="$t('Cancel')"
-              class="data-date-picker text-accent"
+              class="range-date-picker text-accent"
               @update:model-value="saveDates($event)"
             />
           </div>
@@ -223,9 +223,6 @@ export default {
 </script>
 
 <style lang="scss">
-.data-date-picker {
-  width: 220px !important;
-}
 .small-date-picker {
   width: 24px !important;
 }

@@ -296,6 +296,10 @@ input[disabled='disabled'],
   border-bottom: 1px solid $color-orange-border;
 }
 
+.range-date-picker {
+  width: 250px !important;
+}
+
 .rounded-border {
   padding: 12px;
   border: 1px solid $color-grey-light;

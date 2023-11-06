@@ -38,10 +38,10 @@
                   class="ml-n1 mr-2"
                   size="18"
                   width="2"
-                  color="disabled"
+                  color="accent"
                   indeterminate
                 />
-                <v-icon v-if="!showEmailLoadingIcon" left
+                <v-icon v-if="!showEmailLoadingIcon" start color="accent"
                   >mdi-email-outline</v-icon
                 >{{ $t('Email_export') }}</v-btn
               >
@@ -58,10 +58,10 @@
                   class="ml-n1 mr-2"
                   size="18"
                   width="2"
-                  color="disabled"
+                  color="accent"
                   indeterminate
                 />
-                <v-icon v-if="!showDownloadLoadingIcon" left
+                <v-icon v-if="!showDownloadLoadingIcon" start color="accent"
                   >mdi-download</v-icon
                 >{{ $t('Download_csv') }}</v-btn
               >
@@ -73,7 +73,8 @@
                 :href="csvLink"
                 target="_blank"
               >
-                <v-icon start>mdi-export</v-icon>{{ $t('Open_csv') }}</v-btn
+                <v-icon start color="accent">mdi-export</v-icon
+                >{{ $t('Open_csv') }}</v-btn
               >
             </div>
           </v-col>
@@ -84,13 +85,15 @@
         <v-col cols="12">
           <v-alert
             v-model="showSuccessMessage"
-            text
-            prominent
             density="compact"
             closable
+            variant="tonal"
             type="success"
             color="green"
           >
+            <template v-slot:prepend>
+              <v-icon :icon="'mdi-check-circle'" class="text-green"> </v-icon>
+            </template>
             {{ successMessage }}
           </v-alert>
         </v-col>
@@ -100,13 +103,16 @@
         <v-row v-if="errorMessage">
           <v-col cols="12">
             <v-alert
-              text
+              variant="tonal"
               prominent
               density="compact"
               type="error"
               color="red"
               class="mb-3"
             >
+              <template v-slot:prepend>
+                <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+              </template>
               {{ errorMessage }}
             </v-alert>
           </v-col>
@@ -139,45 +145,33 @@
               />
             </v-col>
             <v-col cols="12" sm="6" md="4" lg="3">
-              <v-menu
-                ref="menu"
-                v-model="menu"
-                :close-on-content-click="false"
-                :return-value="dates"
-                transition="scale-transition"
-                min-width="290px"
-              >
-                <template v-slot:activator="{ props }">
-                  <v-text-field
-                    v-model="dateRangeText"
-                    :rules="requiredRules"
-                    :label="$t('period')"
-                    prepend-icon="mdi-calendar"
-                    readonly
-                    v-bind="props"
-                  ></v-text-field>
-                </template>
-                <v-date-picker
-                  v-model="dates"
-                  :first-day-of-week="1"
-                  range
-                  no-title
-                  scrollable
-                >
-                  <v-spacer></v-spacer>
-                  <v-btn variant="text" color="accent" @click="menu = false">
-                    {{ $t('Cancel') }}
-                  </v-btn>
-                  <v-btn
-                    :disabled="invalidDates(dates)"
-                    text
-                    color="accent"
-                    @click="updateDates(dates)"
-                  >
-                    {{ $t('ok') }}
-                  </v-btn>
-                </v-date-picker>
-              </v-menu>
+              <div class="d-flex justify-flex-start align-center">
+                <v-icon class="mt-4 mr-2" large>mdi-calendar-clock</v-icon>
+                <div>
+                  <div class="beep-label">
+                    <span v-text="$t('period')"></span>
+                  </div>
+
+                  <VueDatePicker
+                    :format="dateRangeText"
+                    :model-value="dates"
+                    :model-type="datePickerFormat"
+                    hide-input-icon
+                    range
+                    min-range="1"
+                    :clearable="false"
+                    :enable-time-picker="false"
+                    :placeholder="
+                      dates.length === 0 ? $t('selection_placeholder') : null
+                    "
+                    :locale="locale"
+                    :select-text="$t('ok')"
+                    :cancel-text="$t('Cancel')"
+                    class="range-date-picker text-accent"
+                    @update:model-value="updateDates($event)"
+                  />
+                </div>
+              </div>
             </v-col>
           </v-row>
 
@@ -239,10 +233,10 @@
                   class="ml-n1 mr-2"
                   size="18"
                   width="2"
-                  color="disabled"
+                  color="accent"
                   indeterminate
                 />
-                <v-icon v-if="!showDeviceDataLoadingIcon" left
+                <v-icon v-if="!showDeviceDataLoadingIcon" start color="accent"
                   >mdi-download</v-icon
                 >{{ $t('download') + ' ' + $t('Sensor_measurements') }}</v-btn
               >
@@ -254,7 +248,8 @@
                 :href="csvDeviceDataLink"
                 target="_blank"
               >
-                <v-icon start>mdi-export</v-icon>{{ $t('Open_csv') }}</v-btn
+                <v-icon start color="accent">mdi-export</v-icon
+                >{{ $t('Open_csv') }}</v-btn
               >
             </v-col>
           </v-row>
@@ -325,6 +320,7 @@ export default {
       includeSensorData: false,
       csvLink: null,
       csvDeviceDataLink: null,
+      datePickerFormat: 'yyyy-MM-dd',
     }
   },
   computed: {
@@ -362,17 +358,6 @@ export default {
       return this.measurementTypes !== null
         ? Object.keys(this.measurementTypes).length > 0
         : false
-    },
-    dateRangeText() {
-      if (this.dates.length > 0) {
-        const momentDates = [
-          this.momentShort(this.dates[0]),
-          this.dates[1] !== undefined ? this.momentShort(this.dates[1]) : '',
-        ]
-        return momentDates.join(' ~ ')
-      } else {
-        return this.$i18n.t('selection_placeholder')
-      }
     },
     devicesOptions() {
       return this.sortedDevices()
@@ -537,6 +522,17 @@ export default {
         console.log('Error: ', error)
       }
     },
+    dateRangeText(dates) {
+      if (dates.length > 0) {
+        const momentDates = [
+          this.momentShort(dates[0]),
+          dates[1] !== undefined ? this.momentShort(dates[1]) : '',
+        ]
+        return momentDates.join(' - ')
+      } else {
+        return this.$i18n.t('selection_placeholder')
+      }
+    },
     generateMeasurementTypes(rawMeasurementTypes) {
       // check if most recent sensordef of the selected device with same abbreviation as output_abbr has a name
       // if so: this will be the label. If not: set default translation as the label.
@@ -571,13 +567,6 @@ export default {
 
       return sortedMeasurementTypes
     },
-    invalidDates(dates) {
-      return (
-        (dates.length === 2 && dates[0] > dates[1]) ||
-        dates[0] === dates[1] ||
-        dates.length === 1
-      )
-    },
     momentShort(date) {
       return this.$moment(date)
         .locale(this.$i18n.locale)
@@ -611,7 +600,7 @@ export default {
       return sortedSensorDefs
     },
     updateDates(dates) {
-      this.$refs.menu.save(dates)
+      this.dates = dates
       this.loadMeasurementTypesAvailable()
     },
   },
