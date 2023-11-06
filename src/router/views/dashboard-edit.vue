@@ -201,7 +201,6 @@
                   :relative-interval="false"
                   :show-as-column="8"
                   :dates="dates"
-                  :date-range-text="dateRangeText"
                   @save-dates="dates = $event"
                 />
 
@@ -294,7 +293,6 @@ import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.
 import Confirm from '@/src/components/confirm-dialog.vue'
 import { mapGetters } from 'vuex'
 import Layout from '@/src/router/layouts/back-layout.vue'
-import { momentFormat } from '@mixins/momentMixin'
 import MeasurementsDateSelection from '@/src/components/measurements/measurements-date-selection.vue'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 
@@ -308,7 +306,6 @@ export default {
   },
   mixins: [
     deleteDashboard,
-    momentFormat,
     readApiariesAndGroupsIfNotPresent,
     readDashboardGroups,
   ],
@@ -358,19 +355,6 @@ export default {
         this.dashboard.hive_ids.length === 0
         // || this.dashboard.show_inspections === null
       )
-    },
-    dateRangeText() {
-      if (this.dates.length > 0) {
-        const momentDates = [
-          this.momentFormat(this.dates[0], 'll'),
-          this.dates[1] !== undefined
-            ? this.momentFormat(this.dates[1], 'll')
-            : '',
-        ]
-        return momentDates.join(' - ')
-      } else {
-        return this.$i18n.t('selection_placeholder')
-      }
     },
     getTitle() {
       return this.createMode

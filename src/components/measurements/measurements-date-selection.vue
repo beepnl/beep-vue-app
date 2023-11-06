@@ -66,18 +66,16 @@
         "
       >
         <div class="d-flex justify-flex-start align-center">
-          <v-icon class="mr-2" :color="reminderDate !== null ? 'accent' : ''"
-            >mdi-calendar-clock</v-icon
-          >
+          <v-icon class="mr-2 mt-4" large>mdi-calendar-clock</v-icon>
           <div>
             <div class="beep-label">
               <span v-text="!sticky ? $t('period') : null"></span>
             </div>
 
             <VueDatePicker
-              :format="datePickerFormat"
+              :format="dateRangeText"
               :model-value="datesCopy"
-              model-type="format"
+              :model-type="datePickerFormat"
               hide-input-icon
               range
               min-range="1"
@@ -110,9 +108,11 @@
 </template>
 
 <script>
+import { momentFormat } from '@mixins/momentMixin'
 import { mapGetters } from 'vuex'
 
 export default {
+  mixins: [momentFormat],
   props: {
     interval: {
       type: String,
@@ -125,11 +125,6 @@ export default {
       required: false,
     },
     selectedDate: {
-      type: String,
-      default: '',
-      required: false,
-    },
-    dateRangeText: {
       type: String,
       default: '',
       required: false,
@@ -204,6 +199,17 @@ export default {
     this.datesCopy = this.dates
   },
   methods: {
+    dateRangeText(dates) {
+      if (dates.length > 0) {
+        const momentDates = [
+          this.momentFormat(dates[0], 'll'),
+          dates[1] !== undefined ? this.momentFormat(dates[1], 'll') : '',
+        ]
+        return momentDates.join(' - ')
+      } else {
+        return this.$i18n.t('selection_placeholder')
+      }
+    },
     saveDates(dates) {
       if (dates[1] === null) {
         dates[1] = ''
