@@ -18,7 +18,7 @@
     <v-card class="pa-3">
       <div class="border-bottom">
         <h4>Top Photo Analysis protocol (EN)</h4>
-        <ol>
+        <ol class="ml-4">
           <li>Blow a puff of smoke into the hive from below.</li>
           <li
             >After a minute, remove the lid and take first a high-resolution

@@ -30,14 +30,18 @@
           :title="listItem.trans[locale] || listItem.name"
           @click.capture="toggleSelect(listItem.id, item.id)"
         >
-          <v-list-item-action>
-            <v-checkbox-btn
-              v-if="listItem.input === 'list_item'"
-              :model-value="selectedArray"
-              multiple
-              update:model-value="listItem.id.toString()"
-            />
-          </v-list-item-action>
+          <template v-slot:prepend>
+            <v-list-item-action>
+              <v-checkbox-btn
+                v-if="listItem.input === 'list_item'"
+                :model-value="selectedArray"
+                :value="listItem.id.toString()"
+                density="compact"
+                multiple
+                @update:model-value="listItem.id.toString()"
+              />
+            </v-list-item-action>
+          </template>
         </v-list-item>
 
         <template v-if="listItem.children.length > 0">
@@ -48,14 +52,18 @@
             :title="nestedItem.trans[locale] || nestedItem.name"
             @click.capture="toggleSelect(nestedItem.id, item.id)"
           >
-            <v-list-item-action>
-              <v-checkbox-btn
-                v-if="nestedItem.input === 'list_item'"
-                :model-value="selectedArray"
-                multiple
-                update:model-value="nestedItem.id.toString()"
-              />
-            </v-list-item-action>
+            <template v-slot:prepend>
+              <v-list-item-action>
+                <v-checkbox-btn
+                  v-if="nestedItem.input === 'list_item'"
+                  :model-value="selectedArray"
+                  :value="nestedItem.id.toString()"
+                  multiple
+                  density="compact"
+                  @update:model-value="nestedItem.id.toString()"
+                />
+              </v-list-item-action>
+            </template>
           </v-list-item>
         </template>
       </template>
@@ -219,7 +227,7 @@
       :object="object"
       :nested="true"
       :parse-mode="parseMode"
-    ></ChecklistFieldset>
+    />
 
     <sampleCode
       v-if="item.input === 'sample_code'"

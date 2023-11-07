@@ -28,7 +28,7 @@
             5x5 cm2.</p
           >
         </div>
-        <ul>
+        <ul class="ml-4">
           <li
             >Colony traits that need to be measured are: colony size (bees),
             capped brood (pupae), open brood (larvae), eggs, drone brood, pollen

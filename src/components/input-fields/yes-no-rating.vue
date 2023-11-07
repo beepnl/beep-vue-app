@@ -9,7 +9,7 @@
         "
         :disabled="disabled"
         variant="text"
-        @click="updateObject(1, property)"
+        @click="updateObject(1)"
       >
         <template v-slot:prepend>
           <v-icon
@@ -32,7 +32,7 @@
         "
         :disabled="disabled"
         variant="text"
-        @click="updateObject(0, property)"
+        @click="updateObject(0)"
       >
         <template v-slot:prepend>
           <v-icon
@@ -82,11 +82,11 @@ export default {
     setInspectionEdited(bool) {
       this.$store.commit('inspections/setInspectionEdited', bool)
     },
-    updateObject(value, property) {
-      if (this.object[property] === value) {
-        this.object[property] = null // allow to toggle if value has been set already
+    updateObject(value) {
+      if (this.object[this.property] === value) {
+        this.object[this.property] = null // allow to toggle if value has been set already
       } else {
-        this.object[property] = value
+        this.object[this.property] = value
       }
       this.setInspectionEdited(true)
     },

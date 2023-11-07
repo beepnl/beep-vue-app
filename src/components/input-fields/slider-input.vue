@@ -11,7 +11,7 @@
       step="1"
       show-ticks="always"
       tick-size="4"
-      @update:model-value="updateValue($event, item.id, item.input)"
+      @update:model-value="updateValue($event)"
     >
       <template v-slot:thumb-label="{ modelValue }">
         <span dark :color="gradeColors(modelValue)">
@@ -22,20 +22,18 @@
 
     <v-slider
       v-if="item.input === 'number_degrees'"
-      :class="
-        `slider--big-label ${inputProvided(item.id) ? '' : 'slider--default'}`
-      "
+      :class="`slider--big-label ${inputProvided ? '' : 'slider--default'}`"
       :model-value="getValue(item.id, item.input)"
       :ticks="numberDegreeTicks"
-      :thumb-label="inputProvided(item.id)"
-      :track-color="inputProvided(item.id) ? '#F8B133' : '#b0b0b0'"
-      :track-fill-color="inputProvided(item.id) ? '#F8B133' : '#b0b0b0'"
+      :thumb-label="inputProvided"
+      :color="inputProvided ? '#F8B133' : '#b0b0b0'"
+      thumb-color="#F8B133"
       thumb-size="28"
       tick-size="0"
       min="-180"
       max="180"
       step="1"
-      @update:model-value="updateValue($event, item.id, item.input)"
+      @update:model-value="updateValue($event)"
     >
       <template v-slot:thumb-label="props">
         {{ modelValue + '°' }}
@@ -44,7 +42,7 @@
       <!-- reset value to null (this way '0' is a valid input) -->
       <template v-slot:append>
         <v-icon
-          v-if="inputProvided(item.id)"
+          v-if="inputProvided"
           class="clear-icon"
           color="accent"
           @click="clearValue(item.id)"
@@ -59,14 +57,15 @@
       class="slider--big-label slider--number-percentage"
       :model-value="getValue(item.id, item.input)"
       :ticks="numberPercentageTicks"
-      :thumb-label="inputProvided(item.id)"
-      track-color="#b0b0b0"
+      :thumb-label="inputProvided"
+      color="#F8B133"
+      thumb-color="#F8B133"
       thumb-size="28"
       tick-size="0"
       min="0"
       max="100"
       step="1"
-      @update:model-value="updateValue($event, item.id, item.input)"
+      @update:model-value="updateValue($event)"
     >
       <template v-slot:thumb-label="{ modelValue }">
         {{ modelValue + '%' }}
@@ -75,7 +74,7 @@
       <!-- reset value to null (this way '0' is a valid input) -->
       <template v-slot:append>
         <v-icon
-          v-if="inputProvided(item.id)"
+          v-if="inputProvided"
           class="clear-icon"
           color="accent"
           @click="clearValue(item.id)"
@@ -96,7 +95,7 @@
       step="1"
       show-ticks="always"
       tick-size="4"
-      @update:model-value="updateValue($event, item.id, item.input)"
+      @update:model-value="updateValue($event)"
     >
       <template v-slot:thumb-label="{ modelValue }">
         <v-icon dark :color="scoreAmountColors[modelValue]">
@@ -116,7 +115,7 @@
       step="1"
       show-ticks="always"
       tick-size="4"
-      @update:model-value="updateValue($event, item.id, item.input)"
+      @update:model-value="updateValue($event)"
     >
       <template v-slot:thumb-label="{ modelValue }">
         <v-icon dark :color="scoreQualityColors[modelValue]">
@@ -130,14 +129,16 @@
       class="slider--big-label slider--number-percentage"
       :model-value="getValue(item.id, item.input)"
       :ticks="sliderTicks"
-      :thumb-label="inputProvided(item.id)"
+      :thumb-label="inputProvided"
       track-color="#b0b0b0"
+      color="#F8B133"
+      thumb-color="#F8B133"
       thumb-size="28"
       tick-size="0"
       min="0"
       max="100"
       step="1"
-      @update:model-value="updateValue($event, item.id, item.input)"
+      @update:model-value="updateValue($event)"
     >
       <template v-slot:thumb-label="{ modelValue }">
         {{ modelValue }}
@@ -146,7 +147,7 @@
       <!-- reset value to null (this way '0' is a valid input) -->
       <template v-slot:append>
         <v-icon
-          v-if="inputProvided(item.id)"
+          v-if="inputProvided"
           class="clear-icon"
           color="accent"
           @click="clearValue(item.id)"
@@ -183,84 +184,87 @@ export default {
   }),
   computed: {
     gradeTicks() {
-      const ticksArray = []
+      const ticksObject = {}
       for (let i = 0; i <= 10; i++) {
         if (i === 0) {
-          ticksArray.push('-')
+          ticksObject[i] = '-'
         } else if (i === 1) {
-          ticksArray.push(this.$i18n.t('Poor'))
+          ticksObject[i] = this.$i18n.t('Poor')
         } else if (i === 5) {
-          ticksArray.push(this.$i18n.t('Average_slider'))
+          ticksObject[i] = this.$i18n.t('Average_slider')
         } else if (i === 10) {
-          ticksArray.push(this.$i18n.t('Excellent'))
+          ticksObject[i] = this.$i18n.t('Excellent')
         } else {
-          ticksArray.push('')
+          ticksObject[i] = ''
         }
       }
-      return ticksArray
+      return ticksObject
+    },
+    inputProvided() {
+      return this.object[this.item.id] !== null
     },
     numberDegreeTicks() {
-      const ticksArray = []
+      const ticksObject = {}
       for (let i = -180; i <= 180; i++) {
         if (i === 0) {
-          ticksArray.push('0°')
+          ticksObject[i] = '0°'
         } else if (i === -180) {
-          ticksArray.push('-180°')
+          ticksObject[i] = '-180°'
         } else if (i === 180) {
-          ticksArray.push('180°')
+          ticksObject[i] = '180°'
         } else {
-          ticksArray.push('')
+          ticksObject[i] = ''
         }
       }
-      return ticksArray
+      return ticksObject
     },
     numberPercentageTicks() {
-      const ticksArray = []
+      const ticksObject = {}
       for (let i = 0; i <= 100; i++) {
         if (i === 25) {
-          ticksArray.push('25%')
+          ticksObject[i] = '25%'
         } else if (i === 50) {
-          ticksArray.push('50%')
+          ticksObject[i] = '50%'
         } else if (i === 75) {
-          ticksArray.push('75%')
+          ticksObject[i] = '75%'
         } else if (i === 100) {
-          ticksArray.push('100%')
+          ticksObject[i] = '100%'
         } else {
-          ticksArray.push('')
+          ticksObject[i] = ''
         }
       }
-      return ticksArray
+      return ticksObject
     },
     scoreAmountTicks() {
-      return [
-        '-',
-        this.$i18n.t('Low'),
-        this.$i18n.t('Medium'),
-        this.$i18n.t('High'),
-        this.$i18n.t('Extreme'),
-      ]
+      return {
+        0: '-',
+        1: this.$i18n.t('Low'),
+        2: this.$i18n.t('Medium'),
+        3: this.$i18n.t('High'),
+        4: this.$i18n.t('Extreme'),
+      }
     },
     scoreQualityTicks() {
-      return [
-        '-',
-        this.$i18n.t('Poor'),
-        this.$i18n.t('Fair'),
-        this.$i18n.t('Good'),
-        this.$i18n.t('Excellent'),
-      ]
+      return {
+        0: '-',
+        1: this.$i18n.t('Poor'),
+        2: this.$i18n.t('Fair'),
+        3: this.$i18n.t('Good'),
+        4: this.$i18n.t('Excellent'),
+      }
     },
     sliderTicks() {
-      const ticksArray = []
+      const ticksObject = {}
       for (let i = 0; i <= 100; i++) {
         if (i === 0) {
-          ticksArray.push('0')
+          ticksObject[i] = '0'
         } else if (i === 100) {
-          ticksArray.push('100')
+          ticksObject[i] = '100'
         } else {
-          ticksArray.push('')
+          ticksObject[i] = ''
         }
       }
-      return ticksArray
+      return ticksObject
     },
   },
   methods: {
@@ -292,16 +296,11 @@ export default {
       if (value < 11) return '#069518'
       return '#F8B133'
     },
-    inputProvided(id) {
-      if (this.object[id] === null) {
-        return false
-      }
-      return true
-    },
     setInspectionEdited(bool) {
       this.$store.commit('inspections/setInspectionEdited', bool)
     },
-    updateValue(value, id, inputtype) {
+    updateValue(value) {
+      const inputtype = this.item.input
       if (inputtype === 'number_degrees') {
         if (value === null) {
           value = null
@@ -319,7 +318,7 @@ export default {
         }
       }
       this.setInspectionEdited(true)
-      this.object[id] = value
+      this.object[this.item.id] = value
     },
   },
 }

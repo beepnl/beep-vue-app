@@ -18,6 +18,10 @@
   padding-inline-end: 0px;
 }
 
+.v-input textarea {
+  padding-top: 10px !important;
+}
+
 .v-label.v-field-label {
   font-size: 16px !important;
   margin-top: 8px;
@@ -42,6 +46,13 @@
   font-size: 0.75rem !important;
   line-height: 1rem;
   letter-spacing: 0.0333333333em !important;
+}
+
+.v-slider.v-input--horizontal
+  .v-slider-track__tick
+  .v-slider-track__tick-label {
+  font-size: 0.75rem !important;
+  transform: translateX(-50%) !important;
 }
 
 .v-theme--beepTheme {
