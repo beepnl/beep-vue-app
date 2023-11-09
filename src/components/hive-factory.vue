@@ -5,12 +5,12 @@
         <div class="beep-label">
           {{ $t('drag_layers') }}
           <v-icon
-            class="mdi mdi-information ml-1 icon-info cursor-pointer"
-            dark
-            small
+            class="ml-1 icon-info cursor-pointer"
+            size="x-small"
             color="accent"
             @click="showInfo = !showInfo"
-          ></v-icon>
+            >mdi-information</v-icon
+          >
         </div>
 
         <p v-if="showInfo" class="info-text">

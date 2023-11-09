@@ -22,11 +22,18 @@
             v-for="(svgWarning, index) in svgWarnings"
             :key="'w-' + index"
             type="error"
+            prominent
             closable
             color="red"
             class="mb-2"
           >
+            <template v-slot:prepend>
+              <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+            </template>
             {{ svgWarning.warning }}
+            <template v-slot:close>
+              <v-icon :icon="'mdi-close'" class="text-red mr-n2"> </v-icon>
+            </template>
           </v-alert>
         </v-col>
       </v-row>
@@ -50,11 +57,11 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import OfflineInspectionSvg from '@components/offline-inspection-svg.vue'
 
 export default {
   components: {
-    OfflineInspectionSvg: () =>
-      import('@components/offline-inspection-svg.vue'),
+    OfflineInspectionSvg,
   },
   props: {
     selectedChecklist: {

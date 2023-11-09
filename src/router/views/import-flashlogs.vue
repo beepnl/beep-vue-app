@@ -39,23 +39,18 @@
             :color="importMessageCopy.data_stored ? 'green' : 'red'"
             class="mt-3 mb-0"
           >
-                <template v-if="!importMessageCopy.data_stored" v-slot:prepend>
-        <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
-      </template>
+            <template v-if="!importMessageCopy.data_stored" v-slot:prepend>
+              <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+            </template>
             {{ importSentence }}
           </v-alert>
         </v-col>
 
         <v-col v-if="errorMessage" cols="12">
-          <v-alert
-            prominent
-            type="error"
-            color="red"
-            class="mt-3 mb-0"
-          >
-                        <template v-slot:prepend>
-                <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
-              </template>
+          <v-alert prominent type="error" color="red" class="mt-3 mb-0">
+            <template v-slot:prepend>
+              <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+            </template>
             {{ errorMessage }}
           </v-alert>
         </v-col>
@@ -66,12 +61,12 @@
               <div class="text-overline mt-0 mt-sm-3">
                 {{ $t('Log_files') }}
                 <v-icon
-                  class="mdi mdi-information ml-1 icon-info cursor-pointer"
-                  dark
-                  small
+                  class="ml-1 icon-info cursor-pointer"
+                  size="x-small"
                   color="accent"
                   @click="showInfo = !showInfo"
-                ></v-icon>
+                  >mdi-information</v-icon
+                >
               </div>
             </div>
           </div>
@@ -245,20 +240,15 @@
             :color="undoMessage.data_deleted ? 'green' : 'red'"
             class="mt-3 mb-0 break-all"
           >
-                        <template v-if="!undoMessage.data_deleted" v-slot:prepend>
-                <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
-              </template>
+            <template v-if="!undoMessage.data_deleted" v-slot:prepend>
+              <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+            </template>
             {{ undoSentence }}
           </v-alert>
         </v-col>
 
         <v-col v-if="showSuccessMessage" cols="12">
-          <v-alert
-            prominent
-            type="info"
-            color="accent"
-            class="mt-3 mb-0"
-          >
+          <v-alert prominent type="info" color="accent" class="mt-3 mb-0">
             {{ successMessage }}
           </v-alert>
         </v-col>

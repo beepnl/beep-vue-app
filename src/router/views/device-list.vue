@@ -71,12 +71,11 @@
         <div v-if="ownedDevices.length > 0" class="text-overline">
           {{ $tc('device', ownedDevices.length) }}
           <v-icon
-            class="mdi mdi-information ml-1 icon-info cursor-pointer"
-            dark
-            small
+            class="ml-1 icon-info cursor-pointer"
+            size="x-small"
             color="accent"
             @click="showInfo = !showInfo"
-          ></v-icon>
+          >mdi-information</v-icon>
         </div>
 
         <p v-if="showInfo" class="info-text">
@@ -364,12 +363,11 @@
                             ></div>
                             <a
                               ><v-icon
-                                class="mdi mdi-information ml-1 icon-info"
-                                dark
-                                small
+                                class="ml-1 icon-info"
+                                size="x-small"
                                 color="accent"
                                 @click="showDescription = !showDescription"
-                              ></v-icon
+                              >mdi-information</v-icon
                             ></a>
                           </div>
                         </div>

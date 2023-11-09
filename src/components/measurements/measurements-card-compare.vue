@@ -16,11 +16,12 @@
                 <div class="beep-label">
                   {{ $t('Compare_hives') }}
                   <v-icon
-                    class="mdi mdi-information ml-1 icon-info cursor-pointer"
-                    size="small"
+                    class="ml-1 icon-info cursor-pointer"
+                    size="x-small"
                     :color="showInfo ? 'accent' : 'grey'"
                     @click="showInfo = !showInfo"
-                  ></v-icon>
+                    >mdi-information</v-icon
+                  >
                 </div>
               </div>
 
@@ -206,12 +207,12 @@
               v-text="$t(COMPARE_SENSOR[sensor])"
             ></div>
             <v-icon
-              class="mdi mdi-information ml-1 icon-info cursor-pointer"
-              dark
+              class="ml-1 icon-info cursor-pointer"
               size="14"
               :color="chartInfo.indexOf(index) > -1 ? 'accent' : 'grey'"
               @click="toggleChartInfo(index)"
-            ></v-icon>
+              >mdi-information</v-icon
+            >
           </div>
 
           <p
@@ -264,12 +265,12 @@
               v-text="$t(COMPARE_SENSOR[sensor])"
             ></div>
             <v-icon
-              class="mdi mdi-information ml-1 icon-info cursor-pointer"
-              dark
+              class="ml-1 icon-info cursor-pointer"
               size="14"
               :color="chartInfo.indexOf('b-' + j) > -1 ? 'accent' : 'grey'"
               @click="toggleChartInfo('b-' + j)"
-            ></v-icon>
+              >mdi-information</v-icon
+            >
           </div>
 
           <p

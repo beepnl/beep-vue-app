@@ -78,12 +78,12 @@
             >
               {{ $t('Source') + ': ' + $t(measurement.data_source_type) }}
               <v-icon
-                class="mdi mdi-information ml-1"
-                dark
-                small
+                class="ml-1"
+                size="x-small"
                 :color="showSourceLink ? 'accent' : 'grey'"
                 @click="showSourceLink = !showSourceLink"
-              ></v-icon>
+                >mdi-information</v-icon
+              >
             </div>
             <span v-if="showSourceLink" class="font-small color-accent">
               <a :href="measurement.data_repository_url" target="_blank">{{

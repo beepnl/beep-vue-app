@@ -29,12 +29,12 @@
                 @change="toggleAlerts"
               ></v-switch>
               <v-icon
-                class="mdi mdi-information icon-info cursor-pointer ml-2"
-                dark
-                small
+                class="icon-info cursor-pointer ml-2"
+                size="x-small"
                 :color="showExplanation ? 'accent' : 'grey'"
                 @click="showExplanation = !showExplanation"
-              ></v-icon>
+                >mdi-information</v-icon
+              >
             </div>
             <v-menu v-if="showAlertRulePlaceholder || !mobile">
               <template v-slot:activator="{ props }">

@@ -69,7 +69,7 @@
               type="error"
               color="red"
             >
-                          <template v-slot:prepend>
+              <template v-slot:prepend>
                 <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
               </template>
               {{ error.errorMessage }}
@@ -78,11 +78,10 @@
         </v-row>
         <v-row v-if="successMessage !== null">
           <v-col cols="12">
-            <v-alert
-              prominent
-              type="success"
-              color="green"
-            >
+            <v-alert prominent type="success" color="green">
+              <template v-slot:prepend>
+                <v-icon :icon="'mdi-check-circle'" class="text-green"> </v-icon>
+              </template>
               {{ successMessage }}
             </v-alert>
           </v-col>

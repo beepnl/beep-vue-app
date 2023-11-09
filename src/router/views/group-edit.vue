@@ -67,7 +67,13 @@
               type="success"
               color="green"
             >
+              <template v-slot:prepend>
+                <v-icon :icon="'mdi-check-circle'" class="text-green"> </v-icon>
+              </template>
               {{ successMessage }}
+              <template v-slot:close>
+                <v-icon :icon="'mdi-close'" class="text-green mr-n2"> </v-icon>
+              </template>
             </v-alert>
           </v-col>
         </v-row>

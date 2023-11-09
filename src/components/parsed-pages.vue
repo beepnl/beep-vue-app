@@ -57,12 +57,12 @@
           "
         ></span>
         <v-icon
-          class="mdi mdi-information icon-info cursor-pointer"
-          dark
-          small
+          class="icon-info cursor-pointer"
+          size="x-small"
           :color="showExplanation ? 'accent' : 'grey'"
           @click="showExplanation = !showExplanation"
-        ></v-icon>
+          >mdi-information</v-icon
+        >
       </div>
 
       <div v-if="showExplanation" class="beep-label">
@@ -125,7 +125,7 @@ export default {
     missingPages() {
       const missingPages = []
       if (this.selectedChecklistSvg) {
-        for (var i = 1; i <= this.selectedChecklistSvg.pages; i++) {
+        for (let i = 1; i <= this.selectedChecklistSvg.pages; i++) {
           if (
             !this.correctPageNrs.includes(i) &&
             !this.incorrectPageNrs.includes(i)

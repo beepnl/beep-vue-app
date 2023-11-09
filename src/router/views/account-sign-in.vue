@@ -15,6 +15,9 @@
           density="compact"
           color="green"
         >
+          <template v-slot:prepend>
+            <v-icon :icon="'mdi-check-circle'" class="text-green"> </v-icon>
+          </template>
           {{ resentVerification ? $t('email_verification_resent') : $t(msg) }}
         </v-alert>
         <v-alert

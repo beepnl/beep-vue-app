@@ -14,13 +14,10 @@
         <a
           v-if="category.description !== null || category.source !== null"
           @click="showDescription = !showDescription"
-          ><v-icon
-            class="mdi mdi-information ml-1 icon-info"
-            dark
-            small
-            color="accent"
-          ></v-icon
-        ></a>
+          ><v-icon class="ml-1 icon-info" size="x-small" color="accent"
+            >mdi-information</v-icon
+          ></a
+        >
       </div>
 
       <p v-if="showDescription" class="info-text">

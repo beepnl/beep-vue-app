@@ -36,12 +36,13 @@
             >{{ btn.text
             }}<v-icon
               v-if="touchDevice"
-              class="mdi mdi-information ml-1 icon-info"
-              size="small"
+              class="ml-1 icon-info"
+              size="x-small"
               color="accent"
               @click.stop="toggleShowInfo(btn.mode)"
-            ></v-icon
-          ></span>
+              >mdi-information</v-icon
+            ></span
+          >
         </div>
         <span
           v-if="touchDevice && showInfo.includes(btn.mode)"

@@ -35,11 +35,12 @@
       <div class="d-flex justify-start align-center">
         <div class="beep-label">{{ $t('Upload_images') }}</div>
         <v-icon
-          class="mdi mdi-information icon-info cursor-pointer ml-2"
-          size="x-small"
+          class="icon-info cursor-pointer ml-2"
+          :size="'x-small'"
           :color="showExplanation ? 'accent' : 'grey'"
           @click="showExplanation = !showExplanation"
-        ></v-icon>
+          >mdi-information</v-icon
+        >
       </div>
       <div v-if="showExplanation" class="mb-1">
         <p class="beep-label">

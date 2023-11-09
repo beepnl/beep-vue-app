@@ -16,13 +16,13 @@
             (item.description !== null || item.source !== null)
         "
         ><v-icon
-          class="mdi mdi-information ml-1 icon-info"
-          dark
-          small
+          class="ml-1 icon-info"
+          size="x-small"
           color="accent"
           @click="showDescription = !showDescription"
-        ></v-icon
-      ></a>
+          >mdi-information</v-icon
+        ></a
+      >
       <v-icon
         v-if="parseMode && parsedImages.length > 0"
         class="ml-1"

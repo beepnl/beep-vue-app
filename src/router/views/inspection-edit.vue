@@ -138,6 +138,9 @@
                 <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
               </template>
               {{ errorMessage }}
+              <template v-slot:close>
+                <v-icon :icon="'mdi-close'" class="text-red mr-n2"> </v-icon>
+              </template>
             </v-alert>
           </v-col>
         </v-row>
@@ -311,12 +314,12 @@
                 v-text="`${$t('Select') + ' ' + $tc('svg_checklist', 1)}`"
               ></div>
               <v-icon
-                class="mdi mdi-information icon-info cursor-pointer ml-2"
-                dark
-                small
+                class="mdi icon-info cursor-pointer ml-2"
+                size="x-small"
                 :color="showChecklistSvgExp ? 'accent' : 'grey'"
                 @click="showChecklistSvgExp = !showChecklistSvgExp"
-              ></v-icon>
+                >mdi-information</v-icon
+              >
             </div>
             <p v-if="showChecklistSvgExp" class="beep-label">
               <em

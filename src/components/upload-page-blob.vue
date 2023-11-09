@@ -1,11 +1,6 @@
 <template>
   <div class="upload-page-blob-wrapper d-flex flex-column mr-4 mb-4'">
-    <div
-      :class="
-        (pageImage === null ? 'float-right' : 'rounded-border') +
-          ' upload-page-blob'
-      "
-    >
+    <div class="rounded-border upload-page-blob">
       <div>
         <div class="float-left">
           <v-icon
@@ -39,7 +34,6 @@
         accept="image/png, image/jpeg, image/bmp"
         :label="!!pageImageFile || showLoading ? '' : uploadText"
         :prepend-icon="false"
-        variant="outlined"
         color="accent"
         hide-details
         :error-messages="errorMessage"
@@ -65,18 +59,6 @@
     <span v-if="errorMessage" class="hcs-label text-red mt-1">
       {{ errorMessage }}
     </span>
-
-    <!-- <v-alert
-      v-if="errorMessage"
-      type="error"
-      text
-      prominent
-      density="compact"
-      color="red"
-      closable
-    >
-      {{ errorMessage }}
-    </v-alert> -->
   </div>
 </template>
 
