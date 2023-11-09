@@ -8,8 +8,13 @@
     class="zindex4 no-print"
   >
     <slot name="icon">
-      <v-btn variant="text" icon @click="back">
-        <v-icon>mdi-arrow-left</v-icon>
+      <v-btn
+        variant="text"
+        icon="mdi-arrow-left"
+        density="compact"
+        class="ml-0"
+        @click="back"
+      >
       </v-btn>
     </slot>
     <slot name="title">
