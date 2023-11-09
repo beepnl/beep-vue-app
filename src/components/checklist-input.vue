@@ -78,8 +78,10 @@
         v-for="(listItem, index) in item.children"
         :key="index"
         :label="listItem.trans[locale] || listItem.name"
-        :model-value="listItem.id"
-        @click="toggleRadio(listItem.id, item.id)"
+        :model-value="parseInt(object[item.id])"
+        :value="listItem.id"
+        color="accent"
+        @input="toggleRadio(listItem.id)"
       ></v-radio>
     </v-radio-group>
 
@@ -671,11 +673,11 @@ export default {
     setInspectionEdited(bool) {
       this.$store.commit('inspections/setInspectionEdited', bool)
     },
-    toggleRadio(value, id) {
-      if (this.object[id] === value) {
-        this.object[id] = null // allow to toggle if value has been set already
+    toggleRadio(value) {
+      if (this.object[this.item.id] === value) {
+        this.object[this.item.id] = null // allow to toggle if value has been set already
       } else {
-        this.object[id] = value
+        this.object[this.item.id] = value
       }
       this.setInspectionEdited(true)
     },

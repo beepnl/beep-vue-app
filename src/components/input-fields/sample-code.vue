@@ -15,7 +15,6 @@
     <v-btn
       v-if="object[item.id] === null || object[item.id] === undefined"
       class="mt-1"
-      outlined
       color="accent"
       :disabled="showLoadingIcon || bulkInspection"
       @click.prevent="requestSampleCode"

@@ -8,9 +8,12 @@
           filterText !== '' ? 'v-input--is-focused text-primary' : ''
         } filter-text-field mb-3`
       "
-      height="36px"
+      :style="'height: 36px;'"
+      color="accent"
       clearable
-      outlined
+      :clear-icon="'mdi-close'"
+      persistent-clear
+      variant="outlined"
       density="compact"
       hide-details
     ></v-text-field>

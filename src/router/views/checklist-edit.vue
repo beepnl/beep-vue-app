@@ -38,7 +38,7 @@
           :small="smAndDown"
           @click="initNewChecklist"
         >
-          <v-icon :left="!smallScreen">mdi-plus</v-icon>
+          <v-icon color="primary" :start="!smallScreen">mdi-plus</v-icon>
           {{ !smallScreen ? $t('new_checklist') : '' }}
         </v-btn>
         <v-btn
@@ -49,7 +49,9 @@
           :small="smAndDown"
           @click="createChecklist(true)"
         >
-          <v-icon :left="!smallScreen">mdi-content-copy</v-icon>
+          <v-icon color="primary" :start="!smallScreen"
+            >mdi-content-copy</v-icon
+          >
           {{ !smallScreen ? $t('duplicate') : '' }}
         </v-btn>
         <v-btn
@@ -69,7 +71,10 @@
             color="disabled"
             indeterminate
           />
-          <v-icon v-if="!showDeleteLoadingIcon" :left="!smallScreen"
+          <v-icon
+            v-if="!showDeleteLoadingIcon"
+            color="red"
+            :start="!smallScreen"
             >mdi-delete</v-icon
           >
           {{ mobile || !smallScreen ? $t('Delete') : '' }}</v-btn
@@ -121,7 +126,7 @@
           class="save-button-mobile-wide mt-n2 mb-3"
           @click="initNewChecklist"
         >
-          <v-icon start>mdi-plus</v-icon>
+          <v-icon color="primary" start>mdi-plus</v-icon>
           {{ $t('new_checklist') }}
         </v-btn>
         <v-btn
@@ -132,7 +137,7 @@
           class="save-button-mobile-wide mb-5"
           @click="createChecklist(true)"
         >
-          <v-icon start>mdi-content-copy</v-icon>
+          <v-icon color="primary" start>mdi-content-copy</v-icon>
           {{ $t('duplicate') }}
         </v-btn>
         <v-row>

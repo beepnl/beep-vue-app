@@ -62,7 +62,7 @@
                   >
                     <template v-slot:clear-icon="{ clear }">
                       <span
-                        class="description clear-icon"
+                        class="description clear-icon mr-1"
                         @click="cancelDatePicker"
                       >
                         <v-icon color="accent">mdi-close</v-icon></span
