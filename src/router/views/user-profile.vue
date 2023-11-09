@@ -19,7 +19,9 @@
             color="disabled"
             indeterminate
           />
-          <v-icon v-if="!showDeleteLoadingIcon" start>mdi-delete</v-icon>
+          <v-icon v-if="!showDeleteLoadingIcon" color="red" start
+            >mdi-delete</v-icon
+          >
           {{ $t('Delete') }}
         </v-btn>
         <v-progress-circular
@@ -32,7 +34,6 @@
         />
         <v-icon
           v-if="mobile && !showDeleteLoadingIcon"
-          dark
           class="mr-4"
           color="red"
           @click="confirmDeleteUser"

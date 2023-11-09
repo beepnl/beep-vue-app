@@ -36,6 +36,10 @@
   top: 20% !important;
 }
 
+.v-field--active.v-field--variant-underlined .v-label.v-field-label {
+  font-size: 0.75rem !important;
+}
+
 .v-list-item-title {
   font-size: 0.8125rem;
   font-weight: 500;
@@ -69,9 +73,9 @@
   --v-border-color: #ccc;
 }
 
-.v-text-field:not(.v-text-field--outlined):not(.v-text-field--solo):not(.v-select)
+.v-text-field:not(.v-field--variant-underlined):not(.v-field--variant-solo):not(.v-select)
   input {
-  padding: 6px 0 0 8px !important;
+  padding: 8px 0 0 2px !important;
 }
 
 .v-toolbar__content {
