@@ -31,7 +31,7 @@
         <LocaleChanger></LocaleChanger>
 
         <v-app-bar-nav-icon
-          class="color-black ml-n2"
+          class="color-black ml-n2 mr-0"
           @click.stop="drawer = !drawer"
         ></v-app-bar-nav-icon>
       </div>

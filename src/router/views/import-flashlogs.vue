@@ -18,6 +18,7 @@
       <v-slider
         v-model="matchProps"
         class="slider--default"
+        color="accent"
         track-color="#b0b0b0"
         min="5"
         max="12"
@@ -209,6 +210,7 @@
               <v-slider
                 v-model="matchProps"
                 class="slider--default"
+                color="accent"
                 track-color="#b0b0b0"
                 min="5"
                 max="12"

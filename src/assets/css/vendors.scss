@@ -380,7 +380,8 @@
   }
 }
 
-.v-data-table:not(.table-heatmap) {
+.v-data-table:not(.table-heatmap),
+.v-table:not(.table-heatmap) {
   background-color: transparent !important;
   input {
     @include for-phone-only {

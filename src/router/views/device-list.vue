@@ -14,16 +14,14 @@
       <v-spacer></v-spacer>
       <v-btn
         v-if="!mobile || ownedDevices.length === 0"
-        outlined
         :class="mobile ? 'save-button-mobile-wide' : 'mr-3'"
         color="accent"
         @click="addDevice"
       >
-        <v-icon start>mdi-plus</v-icon>{{ $t('add_own_device') }}
+        <v-icon color="accent" start>mdi-plus</v-icon>{{ $t('add_own_device') }}
       </v-btn>
       <v-btn
         v-if="ownedDevices.length > 0"
-        outlined
         class="save-button-mobile-wide mr-1"
         :color="deletedButNotSavedDevices ? 'red' : 'black'"
         :disabled="showLoadingIcon"
@@ -34,10 +32,15 @@
           class="ml-n1 mr-2"
           size="18"
           width="2"
-          color="disabled"
+          :color="deletedButNotSavedDevices ? 'red' : 'black'"
           indeterminate
         />
-        <v-icon v-if="!showLoadingIcon" start>mdi-check</v-icon>
+        <v-icon
+          v-if="!showLoadingIcon"
+          :color="deletedButNotSavedDevices ? 'red' : 'black'"
+          start
+          >mdi-check</v-icon
+        >
         {{
           deletedButNotSavedDevices ? $t('save_and_delete') : $t('save')
         }}</v-btn
@@ -48,9 +51,9 @@
       <v-row v-if="errorMessage">
         <v-col cols="12">
           <v-alert text prominent type="error" color="red">
-                  <template v-slot:prepend>
-        <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
-      </template>
+            <template v-slot:prepend>
+              <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+            </template>
             {{ errorMessage }}
           </v-alert>
         </v-col>
@@ -58,12 +61,12 @@
       <v-row v-if="mobile && ownedDevices.length > 0">
         <v-col cols="12">
           <v-btn
-            outlined
             color="accent"
             class="save-button-mobile-wide mt-n4"
             @click="addDevice"
           >
-            <v-icon start>mdi-plus</v-icon>{{ $t('add_own_device') }}
+            <v-icon color="accent" start>mdi-plus</v-icon
+            >{{ $t('add_own_device') }}
           </v-btn>
         </v-col>
       </v-row>
@@ -72,13 +75,14 @@
           {{ $tc('device', ownedDevices.length) }}
           <v-icon
             class="ml-1 icon-info cursor-pointer"
-            size="x-small"
+            size="small"
             color="accent"
             @click="showInfo = !showInfo"
-          >mdi-information</v-icon>
+            >mdi-information</v-icon
+          >
         </div>
 
-        <p v-if="showInfo" class="info-text">
+        <p v-if="showInfo" class="info-text mt-0 mb-4">
           <em
             >{{ $t('devices_info_text') + ' '
             }}<a href="https://beep.nl/beep-base-app" target="_blank">{{
@@ -107,7 +111,6 @@
           density="compact"
         >
           <v-card
-            outlined
             :class="
               `device-card ${
                 ownedDevice.delete === true ? 'device-delete' : ''
@@ -138,11 +141,14 @@
                     >
                       mdi-devices
                     </v-icon>
-                    <v-avatar v-else height="auto" color="accent" class="mt-n1">
-                      <img
-                        :src="assetsUrl + '/img/beep-base-small.jpg'"
-                        alt="BEEP Base"
-                      />
+                    <v-avatar
+                      v-else
+                      height="auto"
+                      :image="assetsUrl + '/img/beep-base-small.jpg'"
+                      rounded="0"
+                      color="accent"
+                      class="mt-n1"
+                    >
                     </v-avatar>
                   </div>
                   <div class="d-flex flex-column justify-flex-start">
@@ -179,7 +185,7 @@
                           v-if="ownedDevice.battery_voltage !== undefined"
                           class="mr-3"
                         >
-                          <v-icon small>
+                          <v-icon size="small">
                             mdi-battery
                           </v-icon>
                           <span class="beep-label">{{
@@ -228,7 +234,7 @@
                           "
                           class="mr-3"
                         >
-                          <v-icon small>
+                          <v-icon size="small">
                             mdi-sync
                           </v-icon>
                           <span class="beep-label">
@@ -250,7 +256,7 @@
               <div>
                 <v-icon
                   :class="
-                    `color-grey-light py-2 px-3 mdi ${
+                    `color-grey-light px-6 mdi ${
                       deviceExpanded(index) ? 'mdi-minus' : 'mdi-cog'
                     }`
                   "
@@ -364,30 +370,29 @@
                             <a
                               ><v-icon
                                 class="ml-1 icon-info"
-                                size="x-small"
+                                size="small"
                                 color="accent"
                                 @click="showDescription = !showDescription"
-                              >mdi-information</v-icon
-                            ></a>
+                                >mdi-information</v-icon
+                              ></a
+                            >
                           </div>
                         </div>
                         <v-spacer></v-spacer>
                         <v-btn
                           v-if="!mobile && ownedDevice.id"
-                          outlined
                           color="accent"
                           @click="addSensorDef(ownedDevice)"
                         >
-                          <v-icon start>mdi-plus</v-icon>
+                          <v-icon color="accent" start>mdi-plus</v-icon>
                           {{ $t('Add_sensor_definition') }}
                         </v-btn>
                         <v-btn
                           v-if="mobile && ownedDevice.id"
-                          outlined
                           color="accent"
                           @click="addSensorDef(ownedDevice)"
                         >
-                          <v-icon start>mdi-plus</v-icon>
+                          <v-icon color="accent" start>mdi-plus</v-icon>
                           {{
                             ownedDevice.sensor_definitions.length === 0
                               ? $t('Add_sensor_definition')
@@ -395,7 +400,7 @@
                           }}
                         </v-btn>
                       </div>
-                      <p v-if="showDescription" class="sensordef-description">
+                      <p v-if="showDescription" class="mt-n1 mb-3">
                         <em>{{ $t('sensordef_info') }}</em>
                       </p>
                     </div>
@@ -407,200 +412,184 @@
                         class="v-data-table--smallfont"
                         density="compact"
                       >
-                        <template v-slot>
-                          <thead>
-                            <tr>
-                              <th class="text-left">
-                                {{ $t('Name') }}
-                              </th>
-                              <th class="text-left">
-                                {{ $t('Inside') }}
-                              </th>
-                              <th class="text-left">
-                                {{ $t('Offset') }}
-                              </th>
-                              <th class="text-left">
-                                {{ $t('Multiplier') }}
-                              </th>
-                              <th class="text-left">
-                                {{ $t('Input') }}
-                              </th>
-                              <th class="text-left">
-                                {{ $t('Output') }}
-                              </th>
-                              <th class="text-left">
-                                {{ $t('Updated_at') }}
-                              </th>
-                              <th class="text-left">
-                                {{ $tc('Action', 2) }}
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr
-                              v-for="(sensorDef,
-                              indexSensor) in sortedSensorDefinitions(
-                                ownedDevice.sensor_definitions
-                              )"
-                              :key="indexSensor"
-                              :class="
-                                sensorDef.delete === true
-                                  ? 'sensordef-delete'
-                                  : ''
-                              "
-                            >
-                              <td class="td--small">
-                                <v-text-field
-                                  v-model="sensorDef.name"
-                                  :disabled="sensorDef.delete"
-                                  :placeholder="`${$t('Name')}`"
-                                  class="mt-2"
-                                  density="compact"
-                                  @update:model-value="sensorDefEdited = true"
-                                ></v-text-field>
-                              </td>
-                              <td>
-                                <yesNoRating
-                                  v-if="sensorDef"
-                                  :object="sensorDef"
-                                  property="inside"
-                                  :disabled="sensorDef.delete"
-                                  :small="true"
-                                  class="device-yes-no mt-n3 mb-n5"
-                                ></yesNoRating>
-                              </td>
-                              <td>
-                                <ElInputNumber
-                                  v-model="sensorDef.offset"
-                                  :disabled="sensorDef.delete"
-                                  size="small"
-                                  @update:model-value="
-                                    convertComma($event, sensorDef, 'offset'),
-                                      (sensorDefEdited = true)
+                        <thead>
+                          <tr>
+                            <th class="text-left">
+                              {{ $t('Name') }}
+                            </th>
+                            <th class="text-left">
+                              {{ $t('Inside') }}
+                            </th>
+                            <th class="text-left">
+                              {{ $t('Offset') }}
+                            </th>
+                            <th class="text-left">
+                              {{ $t('Multiplier') }}
+                            </th>
+                            <th class="text-left">
+                              {{ $t('Input') }}
+                            </th>
+                            <th class="text-left">
+                              {{ $t('Output') }}
+                            </th>
+                            <th class="text-left">
+                              {{ $t('Updated_at') }}
+                            </th>
+                            <th class="text-left">
+                              {{ $tc('Action', 2) }}
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr
+                            v-for="(sensorDef,
+                            indexSensor) in sortedSensorDefinitions(
+                              ownedDevice.sensor_definitions
+                            )"
+                            :key="indexSensor"
+                            :class="
+                              sensorDef.delete === true
+                                ? 'sensordef-delete'
+                                : ''
+                            "
+                          >
+                            <td class="td--small">
+                              <v-text-field
+                                v-model="sensorDef.name"
+                                :disabled="sensorDef.delete"
+                                :placeholder="`${$t('Name')}`"
+                                class="mt-2"
+                                density="compact"
+                                @update:model-value="sensorDefEdited = true"
+                              ></v-text-field>
+                            </td>
+                            <td>
+                              <yesNoRating
+                                v-if="sensorDef"
+                                :object="sensorDef"
+                                property="inside"
+                                :disabled="sensorDef.delete"
+                                :small="true"
+                                class="device-yes-no mt-n3 mb-n5"
+                              ></yesNoRating>
+                            </td>
+                            <td>
+                              <ElInputNumber
+                                v-model="sensorDef.offset"
+                                :disabled="sensorDef.delete"
+                                size="small"
+                                @update:model-value="
+                                  convertComma($event, sensorDef, 'offset'),
+                                    (sensorDefEdited = true)
+                                "
+                                @change="sensorDefEdited = true"
+                              ></ElInputNumber>
+                            </td>
+                            <td>
+                              <ElInputNumber
+                                v-model="sensorDef.multiplier"
+                                :disabled="sensorDef.delete"
+                                size="small"
+                                @update:model-value="
+                                  convertComma($event, sensorDef, 'multiplier'),
+                                    (sensorDefEdited = true)
+                                "
+                                @change="sensorDefEdited = true"
+                              ></ElInputNumber>
+                            </td>
+                            <td class="td--small">
+                              <v-select
+                                v-model="sensorDef.input_measurement_id"
+                                :disabled="sensorDef.delete"
+                                :items="sortedSensorMeasurements"
+                                item-title="abbreviation"
+                                item-value="id"
+                                :placeholder="
+                                  `${$t('Select')} ${$tc('measurement', 1)} ...`
+                                "
+                                class="mt-2 mb-n5"
+                                variant="solo"
+                                @update:model-value="
+                                  selectInputMeasurementId(sensorDef, $event)
+                                "
+                              ></v-select>
+                            </td>
+                            <td class="td--small">
+                              <v-select
+                                v-model="sensorDef.output_measurement_id"
+                                :disabled="sensorDef.delete"
+                                :items="sortedSensorMeasurements"
+                                item-title="abbreviation"
+                                item-value="id"
+                                :placeholder="
+                                  `${$t('Select')} ${$tc('measurement', 1)} ...`
+                                "
+                                class="mt-2 mb-n5"
+                                variant="solo"
+                                @update:model-value="sensorDefEdited = true"
+                              ></v-select>
+                            </td>
+                            <td>
+                              <span
+                                v-text="
+                                  sensorDef.updated_at !== null
+                                    ? momentify(sensorDef.updated_at, true)
+                                    : $t('Not_yet_saved')
+                                "
+                              ></span>
+                            </td>
+                            <td>
+                              <div class="d-flex flex-no-wrap">
+                                <v-progress-circular
+                                  v-if="
+                                    showLoadingIconById.indexOf(sensorDef.id) >
+                                      -1
                                   "
-                                  @change="sensorDefEdited = true"
-                                ></ElInputNumber>
-                              </td>
-                              <td>
-                                <ElInputNumber
-                                  v-model="sensorDef.multiplier"
-                                  :disabled="sensorDef.delete"
-                                  size="small"
-                                  @update:model-value="
-                                    convertComma(
-                                      $event,
-                                      sensorDef,
-                                      'multiplier'
-                                    ),
-                                      (sensorDefEdited = true)
+                                  class="progress-icon mr-3"
+                                  size="18"
+                                  width="2"
+                                  color="green"
+                                  indeterminate
+                                />
+                                <v-tooltip
+                                  v-if="
+                                    showLoadingIconById.indexOf(
+                                      sensorDef.id
+                                    ) === -1
                                   "
-                                  @change="sensorDefEdited = true"
-                                ></ElInputNumber>
-                              </td>
-                              <td class="td--small">
-                                <v-select
-                                  v-model="sensorDef.input_measurement_id"
-                                  :disabled="sensorDef.delete"
-                                  :items="sortedSensorMeasurements"
-                                  item-title="abbreviation"
-                                  item-value="id"
-                                  :label="
-                                    `${$t('Select')} ${$tc(
-                                      'measurement',
-                                      1
-                                    )} ...`
-                                  "
-                                  class="mt-2 mb-n5"
-                                  solo
-                                  @update:model-value="
-                                    selectInputMeasurementId(sensorDef, $event)
-                                  "
-                                ></v-select>
-                              </td>
-                              <td class="td--small">
-                                <v-select
-                                  v-model="sensorDef.output_measurement_id"
-                                  :disabled="sensorDef.delete"
-                                  :items="sortedSensorMeasurements"
-                                  item-title="abbreviation"
-                                  item-value="id"
-                                  :label="
-                                    `${$t('Select')} ${$tc(
-                                      'measurement',
-                                      1
-                                    )} ...`
-                                  "
-                                  class="mt-2 mb-n5"
-                                  solo
-                                  @update:model-value="sensorDefEdited = true"
-                                ></v-select>
-                              </td>
-                              <td>
-                                <span
-                                  v-text="
-                                    sensorDef.updated_at !== null
-                                      ? momentify(sensorDef.updated_at, true)
-                                      : $t('Not_yet_saved')
-                                  "
-                                ></span>
-                              </td>
-                              <td>
-                                <div class="d-flex flex-no-wrap">
-                                  <v-progress-circular
-                                    v-if="
-                                      showLoadingIconById.indexOf(
-                                        sensorDef.id
-                                      ) > -1
-                                    "
-                                    class="progress-icon mr-3"
-                                    size="18"
-                                    width="2"
-                                    color="green"
-                                    indeterminate
-                                  />
-                                  <v-tooltip
-                                    v-if="
-                                      showLoadingIconById.indexOf(
-                                        sensorDef.id
-                                      ) === -1
-                                    "
-                                    open-delay="500"
-                                    bottom
-                                  >
-                                    <template v-slot:activator="{ props }">
-                                      <v-icon
-                                        dark
-                                        class="mr-3"
-                                        color="green"
-                                        v-bind="props"
-                                        @click="updateSensorDef(sensorDef)"
-                                        >mdi-check</v-icon
-                                      >
-                                    </template>
-                                    <span>{{ $t('save') }}</span>
-                                  </v-tooltip>
-                                  <v-tooltip open-delay="500" bottom>
-                                    <template v-slot:activator="{ props }">
-                                      <v-icon
-                                        dark
-                                        color="red"
-                                        v-bind="props"
-                                        @click="
-                                          deleteSensorDef(
-                                            ownedDevice,
-                                            sensorDef
-                                          )
-                                        "
-                                        >mdi-delete</v-icon
-                                      >
-                                    </template>
-                                    <span>{{ $t('Delete') }}</span>
-                                  </v-tooltip>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </template>
+                                  open-delay="500"
+                                  bottom
+                                >
+                                  <template v-slot:activator="{ props }">
+                                    <v-icon
+                                      dark
+                                      class="mr-3"
+                                      color="green"
+                                      v-bind="props"
+                                      @click="updateSensorDef(sensorDef)"
+                                      >mdi-check</v-icon
+                                    >
+                                  </template>
+                                  <span>{{ $t('save') }}</span>
+                                </v-tooltip>
+                                <v-tooltip open-delay="500" bottom>
+                                  <template v-slot:activator="{ props }">
+                                    <v-icon
+                                      dark
+                                      color="red"
+                                      v-bind="props"
+                                      @click="
+                                        deleteSensorDef(ownedDevice, sensorDef)
+                                      "
+                                      >mdi-delete</v-icon
+                                    >
+                                  </template>
+                                  <span>{{ $t('Delete') }}</span>
+                                </v-tooltip>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
                       </v-table>
                     </div>
                   </v-col>
@@ -616,12 +605,11 @@
                   <v-col cols="12" md="6" class="d-flex">
                     <v-spacer></v-spacer>
                     <v-btn
-                      outlined
                       color="red"
                       class="save-button-mobile-wide"
                       @click="deleteDevice(ownedDevice, index)"
                     >
-                      <v-icon start>{{
+                      <v-icon color="red" start>{{
                         ownedDevice.delete ? 'mdi-refresh' : 'mdi-delete'
                       }}</v-icon
                       >{{
