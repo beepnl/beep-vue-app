@@ -1,6 +1,6 @@
 <template>
   <Layout :title="$t('Whats_new')">
-    <v-container>
+    <v-container class="new-container">
       <div class="text-overline mb-1"
         ><span class="lowercase">v</span>4.0.14 (31-08-2023) - Current
         version</div
@@ -1781,6 +1781,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.new-container {
+  ul {
+    margin-left: 6px;
+  }
+}
 .new-block {
   margin-top: 8px;
   margin-bottom: 16px;
