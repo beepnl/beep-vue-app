@@ -19,11 +19,12 @@
           v-for="error in errors"
           :key="error.name"
           type="error"
-          text
           prominent
-          density="compact"
           color="red"
         >
+          <template v-slot:prepend>
+            <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+          </template>
           {{ error.errorMessage }}
         </v-alert>
         <v-text-field

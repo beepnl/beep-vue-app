@@ -22,9 +22,6 @@
             v-for="(svgWarning, index) in svgWarnings"
             :key="'w-' + index"
             type="error"
-            text
-            prominent
-            density="compact"
             closable
             color="red"
             class="mb-2"

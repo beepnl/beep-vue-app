@@ -114,7 +114,6 @@
                 :model-value="activeAlertRule.description"
                 :class="'pt-0' + (!mobile ? ' mb-sm-3 mt-0' : '')"
                 :rows="!mobile ? '1' : '2'"
-                row-height="24"
                 auto-grow
                 counter="250"
                 bg-color="white"
@@ -301,13 +300,16 @@
                 ></v-switch>
               </div>
               <Treeselect
-                v-model="activeAlertRule.exclude_months"
+                :model-value="activeAlertRule.exclude_months"
                 class="color-red"
                 :options="months"
                 :placeholder="`${$t('Select')} ${$t('months')}`"
                 :no-results-text="`${$t('no_results')}`"
-                :multiple="true"
-                @update:model-value="setAlertRuleEdited(true)"
+                multiple
+                @update:model-value="
+                  ;(activeAlertRule.exclude_months = $event),
+                    setAlertRuleEdited(true)
+                "
               />
             </v-col>
 
@@ -327,7 +329,7 @@
                 :options="hours"
                 :placeholder="`${$t('Select')} ${$t('hours')}`"
                 :no-results-text="`${$t('no_results')}`"
-                :multiple="true"
+                multiple
                 @update:model-value="setAlertRuleEdited(true)"
               />
             </v-col>
@@ -357,7 +359,7 @@
                 :default-expand-level="1"
                 :placeholder="`${$t('Select')} ${$tc('hive', 2)}`"
                 :no-results-text="`${$t('no_results')}`"
-                :multiple="true"
+                multiple
                 @update:model-value="setAlertRuleEdited(true)"
               />
               <div

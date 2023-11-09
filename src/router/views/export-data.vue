@@ -85,9 +85,7 @@
         <v-col cols="12">
           <v-alert
             v-model="showSuccessMessage"
-            density="compact"
             closable
-            variant="tonal"
             type="success"
             color="green"
           >
@@ -103,9 +101,6 @@
         <v-row v-if="errorMessage">
           <v-col cols="12">
             <v-alert
-              variant="tonal"
-              prominent
-              density="compact"
               type="error"
               color="red"
               class="mb-3"

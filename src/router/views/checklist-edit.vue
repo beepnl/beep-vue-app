@@ -137,13 +137,10 @@
         </v-btn>
         <v-row>
           <v-col v-if="errorMessage" cols="12">
-            <v-alert
-              type="error "
-              variant="text"
-              prominent
-              density="compact"
-              color="red"
-            >
+            <v-alert type="error " prominent color="red">
+              <template v-slot:prepend>
+                <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+              </template>
               {{ errorMessage }}
             </v-alert>
           </v-col>

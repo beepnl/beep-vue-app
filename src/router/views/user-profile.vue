@@ -65,12 +65,13 @@
             <v-alert
               v-for="error in errors"
               :key="error.name"
-              text
               prominent
-              density="compact"
               type="error"
               color="red"
             >
+                          <template v-slot:prepend>
+                <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+              </template>
               {{ error.errorMessage }}
             </v-alert>
           </v-col>
@@ -78,9 +79,7 @@
         <v-row v-if="successMessage !== null">
           <v-col cols="12">
             <v-alert
-              text
               prominent
-              density="compact"
               type="success"
               color="green"
             >

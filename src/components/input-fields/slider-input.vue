@@ -5,7 +5,9 @@
       class="slider--default slider--grade"
       :model-value="getValue(item.id, item.input)"
       :ticks="gradeTicks"
+      :thumb-label="inputProvided"
       track-color="#b0b0b0"
+      :color="inputProvided ? '#F8B133' : '#b0b0b0'"
       min="0"
       max="10"
       step="1"
@@ -13,11 +15,6 @@
       tick-size="4"
       @update:model-value="updateValue($event)"
     >
-      <template v-slot:thumb-label="{ modelValue }">
-        <span dark :color="gradeColors(modelValue)">
-          {{ modelValue }}
-        </span>
-      </template>
     </v-slider>
 
     <v-slider
@@ -27,15 +24,14 @@
       :ticks="numberDegreeTicks"
       :thumb-label="inputProvided"
       :color="inputProvided ? '#F8B133' : '#b0b0b0'"
-      thumb-color="#F8B133"
-      thumb-size="28"
+      track-color="#b0b0b0"
       tick-size="0"
       min="-180"
       max="180"
       step="1"
       @update:model-value="updateValue($event)"
     >
-      <template v-slot:thumb-label="props">
+      <template v-slot:thumb-label="{ modelValue }">
         {{ modelValue + '°' }}
       </template>
 
@@ -58,9 +54,8 @@
       :model-value="getValue(item.id, item.input)"
       :ticks="numberPercentageTicks"
       :thumb-label="inputProvided"
-      color="#F8B133"
-      thumb-color="#F8B133"
-      thumb-size="28"
+      track-color="#b0b0b0"
+      :color="inputProvided ? '#F8B133' : '#b0b0b0'"
       tick-size="0"
       min="0"
       max="100"
@@ -90,18 +85,13 @@
       class="slider--default slider--score-amount"
       :ticks="scoreAmountTicks"
       track-color="#b0b0b0"
-      thumb-size="24"
+      :color="inputProvided ? '#F8B133' : '#b0b0b0'"
       max="4"
       step="1"
       show-ticks="always"
       tick-size="4"
       @update:model-value="updateValue($event)"
     >
-      <template v-slot:thumb-label="{ modelValue }">
-        <v-icon dark :color="scoreAmountColors[modelValue]">
-          {{ scoreAmountIcons[modelValue] }}
-        </v-icon>
-      </template>
     </v-slider>
 
     <v-slider
@@ -110,18 +100,13 @@
       class="slider--default slider--score-quality"
       :ticks="scoreQualityTicks"
       track-color="#b0b0b0"
-      thumb-size="24"
+      :color="inputProvided ? '#F8B133' : '#b0b0b0'"
       max="4"
       step="1"
       show-ticks="always"
       tick-size="4"
       @update:model-value="updateValue($event)"
     >
-      <template v-slot:thumb-label="{ modelValue }">
-        <v-icon dark :color="scoreQualityColors[modelValue]">
-          mdi-checkbox-blank-circle
-        </v-icon>
-      </template>
     </v-slider>
 
     <v-slider
@@ -131,9 +116,7 @@
       :ticks="sliderTicks"
       :thumb-label="inputProvided"
       track-color="#b0b0b0"
-      color="#F8B133"
-      thumb-color="#F8B133"
-      thumb-size="28"
+      :color="inputProvided ? '#F8B133' : '#b0b0b0'"
       tick-size="0"
       min="0"
       max="100"
@@ -171,17 +154,6 @@ export default {
       required: true,
     },
   },
-  data: () => ({
-    scoreAmountIcons: [
-      'mdi-minus',
-      'mdi-gauge-empty',
-      'mdi-gauge-low',
-      'mdi-gauge',
-      'mdi-gauge-full',
-    ],
-    scoreAmountColors: ['#b0b0b0', '#069518', '#243D80', '#5F3F90', '#8F1619'],
-    scoreQualityColors: ['#b0b0b0', '#8F1619', '#5F3F90', '#243D80', '#069518'],
-  }),
   computed: {
     gradeTicks() {
       const ticksObject = {}
@@ -287,14 +259,6 @@ export default {
         }
       }
       return value
-    },
-    gradeColors(value) {
-      if (value === 0) return '#CCC'
-      if (value < 4) return '#8F1619'
-      if (value < 6) return '#5F3F90'
-      if (value < 8) return '#243D80'
-      if (value < 11) return '#069518'
-      return '#F8B133'
     },
     setInspectionEdited(bool) {
       this.$store.commit('inspections/setInspectionEdited', bool)

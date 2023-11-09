@@ -135,12 +135,13 @@
           <v-col cols="12">
             <v-alert
               type="error"
-              text
               prominent
-              density="compact"
               closable
               color="red"
             >
+                          <template v-slot:prepend>
+                <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+              </template>
               {{ errorMessage }}
             </v-alert>
           </v-col>
@@ -372,10 +373,7 @@
           <v-col v-if="onlineMode && forceInspectionDate" cols="12">
             <v-alert
               type="error"
-              class="mb-0"
-              text
               prominent
-              density="compact"
               color="accent"
             >
               {{ $t('input_only_possible_when_date_present') }}

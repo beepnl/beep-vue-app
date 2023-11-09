@@ -3,8 +3,6 @@
     <template v-slot:activator="{ props }">
       <v-alert
         type="error"
-        prominent
-        density="compact"
         :color="
           alert.alert_function.indexOf('alert_rule') > -1
             ? 'primary'
@@ -13,7 +11,6 @@
             : 'red'
         "
         class="alert-card cursor-pointer mb-0 pa-2 pa-sm-3"
-        variant="tonal"
         v-bind="!mobile ? props : null"
       >
         <template v-slot:prepend>

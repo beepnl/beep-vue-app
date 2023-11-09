@@ -215,13 +215,7 @@
       :yes-red="item.input === 'boolean_yes_red'"
     ></yesNoRating>
     <ChecklistFieldset
-      v-if="
-        item.children.length > 0 &&
-          (item.input === 'boolean' ||
-            item.input === 'boolean_yes_red' ||
-            item.input === 'list_item') &&
-          (object[item.id] === 1 || parseMode)
-      "
+      v-if="showFieldset"
       class="mt-6"
       :category="item"
       :object="object"
@@ -373,15 +367,6 @@ export default {
       }
       return dec
     },
-    // for v-model of 'list' checkbox an array of value is needed instead of a string
-    selectedArray() {
-      if (this.item.input === 'list') {
-        if (typeof this.object[this.item.id] === 'string') {
-          return this.object[this.item.id].split(',')
-        }
-      }
-      return []
-    },
     parsedAnswer() {
       if (this.parseMode) {
         let answer = this.parsedAnswerRaw
@@ -485,6 +470,24 @@ export default {
     },
     queriedParseMode() {
       return this.$route.query.mode === 'parse' // TODO remove when enableDummyOutput is removed
+    },
+    // for v-model of 'list' checkbox an array of value is needed instead of a string
+    selectedArray() {
+      if (this.item.input === 'list') {
+        if (typeof this.object[this.item.id] === 'string') {
+          return this.object[this.item.id].split(',')
+        }
+      }
+      return []
+    },
+    showFieldset() {
+      return (
+        this.item.children.length > 0 &&
+        (this.item.input === 'boolean' ||
+          this.item.input === 'boolean_yes_red' ||
+          this.item.input === 'list_item') &&
+        (this.object[this.item.id] === 1 || this.parseMode)
+      )
     },
   },
   created() {

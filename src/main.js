@@ -43,6 +43,7 @@ const vuetify = createVuetify({
   // default options
   defaults: {
     VAlert: {
+      variant: 'tonal',
       density: 'compact',
     },
     VBtn: {
@@ -115,6 +116,7 @@ const vuetify = createVuetify({
           secondary: '#000000',
           accent: '#f29100',
           black: '#000000',
+          disabled: '#b0b0b0',
           // "primary-darken-1": "#000000",
           // "secondary-darken-1": "#000000",
           // error: "#000000",

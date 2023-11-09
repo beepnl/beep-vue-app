@@ -3,9 +3,7 @@
     <v-alert
       v-if="bulkInspection"
       type="error"
-      variant="tonal"
       prominent
-      density="compact"
       color="red"
       class="mb-4"
     >
@@ -14,7 +12,7 @@
       </template>
       {{ $t('input_not_possible_for_bulkinspection') }}
     </v-alert>
-    <v-card class="pa-3">
+    <v-card class="position-relative pa-3">
       <!-- <div class="rounded-border"> -->
       <div class="border-bottom">
         <h4>Liebefeld method explanation (EN)</h4>

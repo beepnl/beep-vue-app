@@ -34,26 +34,28 @@
       <v-row>
         <v-col v-if="importMessageCopy" cols="12">
           <v-alert
-            text
             prominent
-            density="compact"
             :type="importMessageCopy.data_stored ? 'success' : 'error'"
             :color="importMessageCopy.data_stored ? 'green' : 'red'"
-            class="mt-3 mb-n4"
+            class="mt-3 mb-0"
           >
+                <template v-if="!importMessageCopy.data_stored" v-slot:prepend>
+        <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+      </template>
             {{ importSentence }}
           </v-alert>
         </v-col>
 
         <v-col v-if="errorMessage" cols="12">
           <v-alert
-            text
             prominent
-            density="compact"
             type="error"
             color="red"
-            class="mt-3 mb-n4"
+            class="mt-3 mb-0"
           >
+                        <template v-slot:prepend>
+                <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+              </template>
             {{ errorMessage }}
           </v-alert>
         </v-col>
@@ -238,25 +240,24 @@
 
         <v-col v-if="undoMessage" cols="12">
           <v-alert
-            text
             prominent
-            density="compact"
             :type="undoMessage.data_deleted ? 'success' : 'error'"
             :color="undoMessage.data_deleted ? 'green' : 'red'"
-            class="mt-3 mb-n4 break-all"
+            class="mt-3 mb-0 break-all"
           >
+                        <template v-if="!undoMessage.data_deleted" v-slot:prepend>
+                <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+              </template>
             {{ undoSentence }}
           </v-alert>
         </v-col>
 
         <v-col v-if="showSuccessMessage" cols="12">
           <v-alert
-            text
             prominent
-            density="compact"
             type="info"
             color="accent"
-            class="mt-3 mb-n4"
+            class="mt-3 mb-0"
           >
             {{ successMessage }}
           </v-alert>

@@ -2,12 +2,14 @@
   <div>
     <v-alert
       v-if="bulkInspection"
-      type="error"
-      text
       prominent
-      density="compact"
+      type="error"
       color="red"
+      class="mb-4"
     >
+      <template v-slot:prepend>
+        <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+      </template>
       {{ $t('input_not_possible_for_bulkinspection') }}
     </v-alert>
     <v-btn

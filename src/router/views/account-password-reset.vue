@@ -18,11 +18,12 @@
             v-for="error in errors"
             :key="error.name"
             type="error"
-            text
             prominent
-            density="compact"
             color="red"
           >
+            <template v-slot:prepend>
+              <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+            </template>
             {{ error.errorMessage }}
             <a
               v-if="error.verifyLink"
@@ -42,11 +43,12 @@
             v-for="error in errors"
             :key="error.name"
             type="error"
-            text
             prominent
-            density="compact"
             color="red"
           >
+            <template v-slot:prepend>
+              <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+            </template>
             {{ error.errorMessage }}
             <span v-if="error.passwordForgotLink" class="alert-link">
               <br />
@@ -208,10 +210,10 @@ export default {
         } catch (error) {
           if (error.response) {
             console.log(error.response)
-            var verifyLink = false
-            var passwordForgotLink = false
+            let verifyLink = false
+            let passwordForgotLink = false
 
-            var msg = ''
+            let msg = ''
 
             if (typeof error.response.data.message !== 'undefined') {
               msg = error.response.data.message
@@ -278,8 +280,8 @@ export default {
           this.tryingToLogIn = false
           if (error.response) {
             console.log(error.response)
-            var verifyLink = false
-            var msg = ''
+            let verifyLink = false
+            let msg = ''
             if (typeof error.response.data.message !== 'undefined') {
               msg = error.response.data.message
             } else {

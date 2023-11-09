@@ -47,7 +47,10 @@
     <v-container class="content-container">
       <v-row v-if="errorMessage">
         <v-col cols="12">
-          <v-alert text prominent density="compact" type="error" color="red">
+          <v-alert text prominent type="error" color="red">
+                  <template v-slot:prepend>
+        <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+      </template>
             {{ errorMessage }}
           </v-alert>
         </v-col>

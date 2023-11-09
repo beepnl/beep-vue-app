@@ -177,13 +177,14 @@
       <v-row class="my-0">
         <v-col v-if="errorMessage" cols="12">
           <v-alert
-            text
             prominent
-            density="compact"
             type="error"
             color="red"
             class="mt-3 mb-n4"
           >
+                <template v-slot:prepend>
+        <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+      </template>
             {{ errorMessage }}
           </v-alert>
         </v-col>
@@ -473,7 +474,7 @@ export default {
       this.checkBlockData(true)
     },
     chartjsDataSeries(dataSet) {
-      var data = {
+      const data = {
         labels: [],
         datasets: [],
       }
@@ -611,7 +612,7 @@ export default {
       const currentIndexPerc = this.blockDataIndex / this.blockDataIndexMax
       const newMaxIndex =
         (this.blockDataIndexMax * this.currentMinutes) / newMinutes
-      var newIndex = Math.floor(currentIndexPerc * newMaxIndex)
+      const newIndex = Math.floor(currentIndexPerc * newMaxIndex)
 
       this.blockDataIndex = newIndex
       this.currentMinutes = newMinutes

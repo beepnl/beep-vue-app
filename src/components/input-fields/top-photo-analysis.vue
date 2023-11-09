@@ -3,9 +3,7 @@
     <v-alert
       v-if="bulkInspection"
       type="error"
-      variant="tonal"
       prominent
-      density="compact"
       color="red"
       class="mb-4"
     >
@@ -15,7 +13,7 @@
       {{ $t('input_not_possible_for_bulkinspection') }}
     </v-alert>
     <!-- <div :class="`rounded-border ${bulkInspection ? 'input-disabled' : ''}`"> -->
-    <v-card class="pa-3">
+    <v-card class="position-relative pa-3">
       <div class="border-bottom">
         <h4>Top Photo Analysis protocol (EN)</h4>
         <ol class="ml-4">

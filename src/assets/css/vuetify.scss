@@ -3,6 +3,10 @@
   $overlay-opacity: 0.7,
 );
 
+.text-accent .v-icon {
+  color: $color-accent !important;
+}
+
 .v-card--variant-outlined {
   border: thin solid #ccc !important;
 }

@@ -19,7 +19,7 @@
         :format="datePickerFormat"
         :model-value="dateInput"
         model-type="format"
-        time-picker
+        hide-input-icon
         :is-24="true"
         :teleport="true"
         class="text-accent"

@@ -21,11 +21,12 @@
           v-for="error in errors"
           :key="error.name"
           type="error"
-          text
           prominent
-          density="compact"
           color="red"
         >
+          <template v-slot:prepend>
+            <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+          </template>
           {{ error.errorMessage }}
           <a
             v-if="error.verifyLink && !resentVerification"
@@ -176,7 +177,7 @@ export default {
               } else if (msg.indexOf('email') > -1) {
                 this.fieldErrors.email = true
               }
-              var verifyOn = false
+              let verifyOn = false
               if (msg === 'email_not_verified') {
                 verifyOn = true
               }

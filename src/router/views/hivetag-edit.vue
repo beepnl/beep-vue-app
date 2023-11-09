@@ -41,7 +41,10 @@
       <v-container class="content-container">
         <v-row v-if="errorMessage">
           <v-col cols="12">
-            <v-alert text prominent density="compact" type="error" color="red">
+            <v-alert text prominent type="error" color="red">
+              <template v-slot:prepend>
+                <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+              </template>
               {{ errorMessage }}
             </v-alert>
           </v-col>
@@ -368,8 +371,8 @@ export default {
       return this.$vuetify.display.mobile
     },
     possibleHiveTags() {
-      var possibleHiveTags = []
-      for (var i = 1; i < 41; i++) {
+      let possibleHiveTags = []
+      for (let i = 1; i < 41; i++) {
         possibleHiveTags.push((i < 10 ? '0' : '') + i.toString())
       }
 
