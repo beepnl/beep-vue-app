@@ -45,7 +45,7 @@
     "moment-timezone": "^0.5.35",
     "nprogress": "^0.2.0",
     "sortablejs": "^1.10.2",
-    "vue": "^3.3.4",
+    "vue": "^3.3.8",
     "vue-add-to-calendar": "^1.0.6",
     "vue-chartjs": "^4.1.2",
     "vue-ellipse-progress": "^2.1.1",

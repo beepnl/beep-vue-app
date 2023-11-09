@@ -32,7 +32,6 @@ import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 // * Vuetify
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
-import { VDataTable } from 'vuetify/labs/VDataTable'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { aliases, mdi } from 'vuetify/lib/iconsets/mdi'
@@ -96,10 +95,7 @@ const vuetify = createVuetify({
       mdi,
     },
   },
-  components: {
-    VDataTable,
-    ...components,
-  },
+  components,
   directives,
   // breakpoint: {
   //   mobileBreakpoint: 'xs', // This is equivalent to a value of 600
