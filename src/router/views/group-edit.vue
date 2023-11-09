@@ -6,12 +6,11 @@
         <v-spacer></v-spacer>
         <v-btn
           v-if="activeGroup && !createMode && tabletLandscapeUp"
-          outlined
           color="red"
           class="mr-3"
           @click="confirmDeleteOrDetachGroup"
         >
-          <v-icon start>mdi-delete</v-icon>
+          <v-icon color="red" start>mdi-delete</v-icon>
           {{
             `${activeGroup.creator ? $t('Delete') : $t('Detach_from_group')}`
           }}
@@ -26,7 +25,6 @@
         >
 
         <v-btn
-          outlined
           color="black"
           :class="`mr-1 ${createMode ? 'save-button-mobile-wide' : ''}`"
           type="submit"
@@ -210,8 +208,8 @@
                   ')'
               }}</div>
               <v-spacer></v-spacer>
-              <v-btn variant="outlined" color="accent" @click="addGroupUser">
-                <v-icon start>mdi-plus</v-icon>
+              <v-btn color="accent" @click="addGroupUser">
+                <v-icon color="accent" start>mdi-plus</v-icon>
                 {{ tabletLandscapeUp ? $t('Add_member') : $t('add') }}
               </v-btn>
             </div>

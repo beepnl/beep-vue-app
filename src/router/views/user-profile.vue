@@ -5,7 +5,6 @@
         <v-spacer></v-spacer>
         <v-btn
           v-if="!mobile"
-          outlined
           color="red"
           class="mr-3"
           :disabled="showDeleteLoadingIcon"
@@ -16,7 +15,7 @@
             class="mr-2"
             size="18"
             width="2"
-            color="disabled"
+            color="red"
             indeterminate
           />
           <v-icon v-if="!showDeleteLoadingIcon" color="red" start
@@ -41,7 +40,6 @@
         >
 
         <v-btn
-          outlined
           class="mr-1"
           color="black"
           type="submit"
@@ -88,7 +86,7 @@
           </v-col>
         </v-row>
         <div class="text-overline mb-3" v-text="$t('User_data')"></div>
-        <v-card outlined>
+        <v-card>
           <v-card-text>
             <v-text-field
               v-model="name"

@@ -32,7 +32,6 @@
         <v-spacer></v-spacer>
         <v-btn
           v-if="!mobile && activeChecklist"
-          outlined
           color="primary"
           class="mr-3"
           :small="smAndDown"
@@ -43,7 +42,6 @@
         </v-btn>
         <v-btn
           v-if="!mobile && activeChecklist"
-          outlined
           color="primary"
           class="mr-3"
           :small="smAndDown"
@@ -56,7 +54,6 @@
         </v-btn>
         <v-btn
           v-if="showDeleteButton"
-          outlined
           class="mr-3"
           color="red"
           :disabled="showDeleteLoadingIcon"
@@ -68,7 +65,7 @@
             class="mr-2"
             size="18"
             width="2"
-            color="disabled"
+            color="red"
             indeterminate
           />
           <v-icon
@@ -81,7 +78,6 @@
         >
         <v-btn
           v-if="activeChecklist"
-          outlined
           color="black"
           class="mr-1"
           type="submit"
@@ -120,7 +116,6 @@
       >
         <v-btn
           v-if="mobile && activeChecklist"
-          outlined
           small
           color="primary"
           class="save-button-mobile-wide mt-n2 mb-3"
@@ -131,7 +126,6 @@
         </v-btn>
         <v-btn
           v-if="mobile && activeChecklist"
-          outlined
           small
           color="primary"
           class="save-button-mobile-wide mb-5"

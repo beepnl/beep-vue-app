@@ -9,7 +9,6 @@
           >
             <v-btn
               :to="{ name: 'dashboard-create' }"
-              outlined
               color="black"
               :small="mobile"
               class="save-button-mobile-wide"
@@ -37,12 +36,12 @@
           >
             <div class="text-overline ">{{ $tc('Dashboard', 2) }}</div>
             <v-icon
-              class="mdi mdi-information icon-info cursor-pointer  ml-2"
-              dark
-              small
+              class="icon-info cursor-pointer  ml-2"
+              size="small"
               :color="showExplanation ? 'accent' : 'grey'"
               @click="showExplanation = !showExplanation"
-            ></v-icon>
+              >mdi-information</v-icon
+            >
           </div>
           <div v-if="showExplanation" class="d-flex justify-start align-start">
             <p class="beep-label">

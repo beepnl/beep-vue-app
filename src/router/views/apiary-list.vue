@@ -189,7 +189,6 @@
           <div>
             <v-btn
               v-if="!mobile"
-              outlined
               class="mb-1 mr-2"
               color="red"
               :disabled="invitationButtonsDisabled(invitation.id)"
@@ -200,10 +199,13 @@
                 class="ml-n1 mr-2"
                 size="18"
                 width="2"
-                color="disabled"
+                color="red"
                 indeterminate
               />
-              <v-icon v-if="!showLoadingIcon(invitation.id, true)" left
+              <v-icon
+                v-if="!showLoadingIcon(invitation.id, true)"
+                color="red"
+                start
                 >mdi-close</v-icon
               >
               {{ $t('Decline') }}
@@ -228,7 +230,6 @@
             >
             <v-btn
               v-if="!mobile"
-              outlined
               class="text-green mb-1"
               :disabled="invitationButtonsDisabled(invitation.id)"
               @click="
@@ -237,13 +238,15 @@
             >
               <v-progress-circular
                 v-if="showLoadingIcon(invitation.id, false)"
-                class="ml-n1 mr-2"
+                class="ml-n1 mr-2 text-green"
                 size="18"
                 width="2"
-                color="disabled"
                 indeterminate
               />
-              <v-icon v-if="!showLoadingIcon(invitation.id, false)" left
+              <v-icon
+                v-if="!showLoadingIcon(invitation.id, false)"
+                start
+                class="text-green"
                 >mdi-check</v-icon
               >
               {{ $t('Accept') }}

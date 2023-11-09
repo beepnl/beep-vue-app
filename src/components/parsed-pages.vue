@@ -58,7 +58,7 @@
         ></span>
         <v-icon
           class="icon-info cursor-pointer"
-          size="x-small"
+          size="small"
           :color="showExplanation ? 'accent' : 'grey'"
           @click="showExplanation = !showExplanation"
           >mdi-information</v-icon

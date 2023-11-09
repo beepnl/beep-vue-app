@@ -24,7 +24,7 @@
         class="ml-n1 mr-2"
         size="18"
         width="2"
-        color="disabled"
+        color="accent"
         indeterminate
       />
       <v-icon v-if="!showLoadingIcon" start>mdi-qrcode</v-icon>

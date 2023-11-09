@@ -24,8 +24,6 @@
               <v-spacer />
               <div class="d-flex justify-end consent-buttons">
                 <v-btn
-                  light
-                  outlined
                   :disabled="selectedHiveIds.length === 0"
                   color="black"
                   @click="
@@ -37,13 +35,9 @@
                   <v-icon start>mdi-check</v-icon>
                   {{ researchMode ? $t('save') : $t('ok') }}</v-btn
                 >
-                <v-btn
-                  class="ml-3"
-                  outlined
-                  color="red"
-                  @click="closeOverlay"
-                  >{{ $t('Cancel') }}</v-btn
-                >
+                <v-btn class="ml-3" color="red" @click="closeOverlay">{{
+                  $t('Cancel')
+                }}</v-btn>
               </div>
             </div>
             <div class="rounded-border apiary-wrapper">

@@ -6,7 +6,7 @@
           {{ $t('drag_layers') }}
           <v-icon
             class="ml-1 icon-info cursor-pointer"
-            size="x-small"
+            size="small"
             color="accent"
             @click="showInfo = !showInfo"
             >mdi-information</v-icon

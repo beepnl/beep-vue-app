@@ -9,18 +9,16 @@
           >
             <v-btn
               v-if="!mobile"
-              outlined
               color="accent"
               class="mr-3"
               :href="assetsUrl + pdfPath"
               target="_blank"
             >
-              <v-icon start>mdi-download</v-icon>
+              <v-icon color="accent" start>mdi-download</v-icon>
               {{ $t('Download_hivetags') }}
             </v-btn>
             <v-btn
               :to="{ name: 'hivetag-create' }"
-              outlined
               color="black"
               :small="mobile"
               class="save-button-mobile-wide"
@@ -44,14 +42,13 @@
         <v-col class="pb-2">
           <v-btn
             v-if="mobile"
-            outlined
             color="accent"
             small
             class="save-button-mobile-wide mb-3"
             :href="assetsUrl + pdfPath"
             target="_blank"
           >
-            <v-icon start>mdi-download</v-icon>
+            <v-icon color="accent" start>mdi-download</v-icon>
             {{ $t('Download_hivetags') }}
           </v-btn>
           <div
@@ -61,7 +58,7 @@
             <div class="text-overline ">{{ $tc('Hivetag', 2) }}</div>
             <v-icon
               class="icon-info cursor-pointer  ml-2"
-              size="x-small"
+              size="small"
               :color="showExplanation ? 'accent' : 'grey'"
               @click="showExplanation = !showExplanation"
               >mdi-information</v-icon

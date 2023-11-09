@@ -46,7 +46,6 @@
           <v-card-actions class="pl-0 mr-1">
             <v-btn
               v-if="!mobile && selectedAlerts.length > 0"
-              variant="outlined"
               class="mr-3"
               color="red"
               :size="mdScreen ? 'small' : 'default'"
@@ -58,7 +57,7 @@
                 class="mr-2"
                 size="18"
                 width="2"
-                color="disabled"
+                color="red"
                 indeterminate
               />
               <v-icon v-if="!showLoadingIcon" color="red" start
@@ -75,7 +74,6 @@
             <v-btn
               v-if="!mobile"
               :to="{ name: 'alertrules' }"
-              variant="outlined"
               color="black"
               :size="mdScreen ? 'small' : 'default'"
             >
@@ -138,9 +136,8 @@
       <v-btn
         v-if="mobile"
         :to="{ name: 'alertrules' }"
-        outlined
         color="black"
-        small
+        size="small"
         class="save-button-mobile-wide mb-3"
       >
         <v-icon v-if="!tinyScreen" start>mdi-cog</v-icon>
@@ -149,10 +146,9 @@
 
       <v-btn
         v-if="mobile && selectedAlerts.length > 0"
-        outlined
         class="save-button-mobile-wide mb-3"
         color="red"
-        small
+        size="small"
         :disabled="showLoadingIcon"
         @click="confirmDeleteAlerts"
       >
@@ -161,10 +157,10 @@
           class="mr-2"
           size="18"
           width="2"
-          color="disabled"
+          color="red"
           indeterminate
         />
-        <v-icon v-if="!showLoadingIcon" start>mdi-delete</v-icon>
+        <v-icon v-if="!showLoadingIcon" color="red" start>mdi-delete</v-icon>
         {{
           allChecked
             ? $t('delete_all_alerts')

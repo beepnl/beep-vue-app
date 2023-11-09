@@ -54,7 +54,6 @@
           "
           class="mr-3"
           color="accent"
-          variant="outlined"
           @click="editChecklist"
         >
           <v-icon start color="accent">mdi-pencil</v-icon>
@@ -64,7 +63,6 @@
           v-if="onlineMode"
           color="black"
           class="save-button-mobile-wide mr-1"
-          variant="outlined"
           :disabled="
             !valid ||
               (selectedHives && selectedHives.length === 0) ||
@@ -89,7 +87,6 @@
         <v-btn
           v-if="offlineMode"
           color="black"
-          variant="outlined"
           class="save-button-mobile-wide mr-1"
           :disabled="!svgReady"
           @click="confirmPrint"
@@ -100,7 +97,6 @@
         <v-btn
           v-if="uploadMode"
           color="black"
-          variant="outlined"
           class="save-button-mobile-wide mr-1"
           :disabled="
             !selectedChecklistSvg ||
@@ -315,7 +311,7 @@
               ></div>
               <v-icon
                 class="mdi icon-info cursor-pointer ml-2"
-                size="x-small"
+                size="small"
                 :color="showChecklistSvgExp ? 'accent' : 'grey'"
                 @click="showChecklistSvgExp = !showChecklistSvgExp"
                 >mdi-information</v-icon
@@ -346,12 +342,11 @@
             <v-spacer></v-spacer>
             <v-btn
               v-if="selectedChecklist && selectedChecklist.owner"
-              outlined
               class="save-button-mobile-wide"
               color="accent"
               @click="editChecklist"
             >
-              <v-icon start>mdi-pencil</v-icon>
+              <v-icon color="accent" start>mdi-pencil</v-icon>
               {{ $t('Edit_checklist') }}
             </v-btn>
           </v-col>
@@ -380,7 +375,6 @@
           <v-card
             v-for="(mainCategory, index) in selectedChecklist.categories"
             :key="index"
-            outlined
             class="mt-3"
           >
             <v-card-title

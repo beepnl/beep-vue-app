@@ -36,7 +36,6 @@
           >mdi-delete</v-icon
         >
         <v-btn
-          outlined
           color="black"
           class="mr-1"
           :disabled="!valid || showLoadingIcon"
@@ -249,7 +248,7 @@
                     v-if="activeApiary"
                     v-model="activeApiary.city"
                     :label="`${$t('City')}`"
-                    outlined
+                    variant="outlined"
                     density="compact"
                     @update:model-value="setApiaryEdited(true)"
                   >
@@ -260,7 +259,7 @@
                     v-if="activeApiary"
                     v-model="activeApiary.postal_code"
                     :label="`${$t('Postal_code')}`"
-                    outlined
+                    variant="outlined"
                     density="compact"
                     @update:model-value="setApiaryEdited(true)"
                   >
@@ -271,7 +270,7 @@
                     v-if="activeApiary"
                     v-model="activeApiary.street"
                     :label="`${$t('Street')}`"
-                    outlined
+                    variant="outlined"
                     density="compact"
                     @update:model-value="setApiaryEdited(true)"
                   >
@@ -282,7 +281,7 @@
                     v-if="activeApiary"
                     v-model="activeApiary.street_no"
                     :label="`${$t('Number')}`"
-                    outlined
+                    variant="outlined"
                     density="compact"
                     @update:model-value="setApiaryEdited(true)"
                   >

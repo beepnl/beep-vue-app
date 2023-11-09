@@ -27,7 +27,6 @@
             <v-spacer></v-spacer>
             <div>
               <v-btn
-                outlined
                 color="accent"
                 class="save-button-mobile-wide"
                 :disabled="showEmailLoadingIcon"
@@ -47,7 +46,6 @@
               >
               <v-btn
                 v-if="!(csvLink && browserDoesNotSupportDownloadTrick)"
-                outlined
                 color="accent"
                 :disabled="showDownloadLoadingIcon"
                 class="mt-3 mt-sm-0 ml-sm-3 save-button-mobile-wide"
@@ -67,7 +65,6 @@
               >
               <v-btn
                 v-if="csvLink && browserDoesNotSupportDownloadTrick"
-                outlined
                 color="accent"
                 class="mt-3 mt-sm-0 ml-sm-3 save-button-mobile-wide"
                 :href="csvLink"
@@ -93,7 +90,7 @@
               <v-icon :icon="'mdi-check-circle'" class="text-green"> </v-icon>
             </template>
             {{ successMessage }}
-                                      <template v-slot:close>
+            <template v-slot:close>
               <v-icon :icon="'mdi-close'" class="text-green mr-n2"> </v-icon>
             </template>
           </v-alert>
@@ -103,11 +100,7 @@
       <div v-if="devices.length > 0">
         <v-row v-if="errorMessage">
           <v-col cols="12">
-            <v-alert
-              type="error"
-              color="red"
-              class="mb-3"
-            >
+            <v-alert type="error" color="red" class="mb-3">
               <template v-slot:prepend>
                 <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
               </template>
@@ -221,7 +214,6 @@
                     dates.length < 2 ||
                     showDeviceDataLoadingIcon
                 "
-                outlined
                 color="accent"
                 class="save-button-mobile-wide"
                 @click="exportDeviceData"
@@ -240,7 +232,6 @@
               >
               <v-btn
                 v-if="csvDeviceDataLink && browserDoesNotSupportDownloadTrick"
-                outlined
                 color="accent"
                 class="mt-3 mt-sm-0 ml-sm-3 save-button-mobile-wide"
                 :href="csvDeviceDataLink"

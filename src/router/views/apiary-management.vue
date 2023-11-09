@@ -4,7 +4,6 @@
       <v-toolbar v-if="ready" class="save-bar zindex4" density="compact" light>
         <v-spacer></v-spacer>
         <v-btn
-          outlined
           color="black"
           class="save-button-mobile-wide mr-1"
           :disabled="

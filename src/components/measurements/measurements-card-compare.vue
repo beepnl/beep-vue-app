@@ -17,7 +17,7 @@
                   {{ $t('Compare_hives') }}
                   <v-icon
                     class="ml-1 icon-info cursor-pointer"
-                    size="x-small"
+                    size="small"
                     :color="showInfo ? 'accent' : 'grey'"
                     @click="showInfo = !showInfo"
                     >mdi-information</v-icon
@@ -36,7 +36,6 @@
             </div>
 
             <v-btn
-              outlined
               color="black"
               class="save-button-mobile-wide"
               @click.prevent="selectHivesOverlay = true"
@@ -86,8 +85,6 @@
           v-text="initSelectedHives.join(', ')"
         ></span>
         <!-- <v-btn
-
-          outlined
           color="black"
           class="save-button-mobile-wide"
           :disabled="initSelectedHives.length === 0 || loadingCompareData"

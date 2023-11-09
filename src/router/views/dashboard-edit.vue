@@ -13,7 +13,6 @@
         >
 
         <v-btn
-          outlined
           color="black"
           :class="`mr-1 ${createMode ? 'save-button-mobile-wide' : ''}`"
           type="submit"
@@ -261,7 +260,7 @@
                   </v-col>
 
                   <v-col cols="12">
-                    <v-btn variant="outlined" color="black" @click="copyUrl">
+                    <v-btn color="black" @click="copyUrl">
                       <v-icon start>mdi-content-copy</v-icon>
                       {{ $t('Copy_url') }}
                     </v-btn>

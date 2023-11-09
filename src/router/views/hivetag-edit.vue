@@ -19,7 +19,6 @@
         >
 
         <v-btn
-          outlined
           color="black"
           :class="`mr-1 ${createMode ? 'save-button-mobile-wide' : ''}`"
           type="submit"

@@ -62,7 +62,7 @@
                 {{ $t('Log_files') }}
                 <v-icon
                   class="ml-1 icon-info cursor-pointer"
-                  size="x-small"
+                  size="small"
                   color="accent"
                   @click="showInfo = !showInfo"
                   >mdi-information</v-icon
@@ -144,8 +144,7 @@
               <template v-slot:[`item.actions`]="{ item }">
                 <div class="d-flex flex-no-wrap py-2">
                   <v-btn
-                    small
-                    outlined
+                    size="small"
                     class="mr-1"
                     color="accent"
                     :disabled="showLoadingIconById.indexOf(item.id) > -1"
@@ -156,7 +155,7 @@
                       class="ml-n1 mr-2"
                       size="18"
                       width="2"
-                      color="disabled"
+                      color="accent"
                       indeterminate
                     />
                     <v-icon
@@ -164,7 +163,8 @@
                         // eslint-disable vue/comma-dangle
                         showLoadingIconById.indexOf(item.id) === -1
                       "
-                      left
+                      color="accent"
+                      start
                       >mdi-check</v-icon
                     >
                     {{ $t('check_log_data') }}</v-btn
@@ -267,8 +267,7 @@
               <v-tooltip v-if="lgAndUp" open-delay="500" bottom>
                 <template v-slot:activator="{ props }">
                   <v-btn
-                    small
-                    outlined
+                    size="small"
                     color="accent"
                     class="mx-2"
                     :disabled="showExportLoadingById.indexOf('csv') > -1"
@@ -287,12 +286,13 @@
                       class="ml-n1 mr-2"
                       size="18"
                       width="2"
-                      color="disabled"
+                      color="accent"
                       indeterminate
                     />
                     <v-icon
                       v-if="showExportLoadingById.indexOf('csv') === -1"
-                      left
+                      start
+                      color="accent"
                       >mdi-file-export</v-icon
                     >
                     {{ $t('Export_full_csv') }}
@@ -304,8 +304,7 @@
               <v-tooltip v-if="lgAndUp" open-delay="500" bottom>
                 <template v-slot:activator="{ props }">
                   <v-btn
-                    small
-                    outlined
+                    size="small"
                     color="accent"
                     :disabled="showExportLoadingById.indexOf('json') > -1"
                     v-bind="props"
@@ -323,12 +322,13 @@
                       class="ml-n1 mr-2"
                       size="18"
                       width="2"
-                      color="disabled"
+                      color="accent"
                       indeterminate
                     />
                     <v-icon
                       v-if="showExportLoadingById.indexOf('json') === -1"
-                      left
+                      start
+                      color="accent"
                       >mdi-download</v-icon
                     >
                     {{ $t('Export_full_json') }}
@@ -506,12 +506,15 @@
                   }"
                 >
                   <v-btn
-                    small
-                    outlined
+                    size="small"
                     class="mr-1 mb-1"
                     :color="item.matches === undefined ? 'grey' : 'accent'"
                   >
-                    <v-icon start>mdi-chart-line</v-icon>
+                    <v-icon
+                      :color="item.matches === undefined ? 'grey' : 'accent'"
+                      start
+                      >mdi-chart-line</v-icon
+                    >
                     {{ $t('View_data') }}
                   </v-btn>
                 </router-link>

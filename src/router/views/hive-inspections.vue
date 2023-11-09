@@ -30,7 +30,7 @@
                 density="compact"
                 hide-details
                 :append-outer-icon="search ? 'mdi-magnify' : ''"
-                       variant="outlined"
+                variant="outlined"
                 @click:append-outer="readInspectionsForHiveId"
                 @click:clear="clearSearch"
                 @keydown.enter.prevent="readInspectionsForHiveId"
@@ -121,7 +121,6 @@
             <v-btn
               v-if="!smallScreen"
               :to="{ name: 'inspect', query: { hiveId: id } }"
-              outlined
               color="black"
             >
               <v-icon start>mdi-plus</v-icon>

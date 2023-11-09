@@ -17,7 +17,7 @@
         "
         ><v-icon
           class="ml-1 icon-info"
-          size="x-small"
+          size="small"
           color="accent"
           @click="showDescription = !showDescription"
           >mdi-information</v-icon

@@ -14,7 +14,6 @@
               : '#F8B133 !important'
           };`
         "
-        outlined
       >
         <v-row
           v-if="!xsView"

@@ -287,7 +287,7 @@
                         v-if="newHive"
                         :model-value="newHive.city"
                         :label="`${$t('City')}`"
-                        outlined
+                        variant="outlined"
                         density="compact"
                         @update:model-value="setApiaryEdited(true)"
                       >
@@ -298,7 +298,7 @@
                         v-if="newHive"
                         :model-value="newHive.postal_code"
                         :label="`${$t('Postal_code')}`"
-                        outlined
+                        variant="outlined"
                         density="compact"
                         @update:model-value="setApiaryEdited(true)"
                       >
@@ -309,7 +309,7 @@
                         v-if="newHive"
                         :model-value="newHive.street"
                         :label="`${$t('Street')}`"
-                        outlined
+                        variant="outlined"
                         density="compact"
                         @update:model-value="setApiaryEdited(true)"
                       >
@@ -320,7 +320,7 @@
                         v-if="newHive"
                         :model-value="newHive.street_no"
                         :label="`${$t('Number')}`"
-                        outlined
+                        variant="outlined"
                         density="compact"
                         @update:model-value="setApiaryEdited(true)"
                       >
@@ -366,7 +366,6 @@
                 >mdi-chevron-left</v-icon
               >
               <v-btn
-                outlined
                 color="black"
                 class="mr-3"
                 :disabled="!valid || showLoadingIcon"
@@ -419,7 +418,7 @@
                         v-model="newHive.prefix"
                         :height="36"
                         class="prefix-input"
-                        outlined
+                        variant="outlined"
                         density="compact"
                         @update:model-value="setApiaryEdited(true)"
                       >

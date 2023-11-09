@@ -30,7 +30,7 @@
               ></v-switch>
               <v-icon
                 class="icon-info cursor-pointer ml-2"
-                size="x-small"
+                size="small"
                 :color="showExplanation ? 'accent' : 'grey'"
                 @click="showExplanation = !showExplanation"
                 >mdi-information</v-icon
@@ -39,7 +39,6 @@
             <v-menu v-if="showAlertRulePlaceholder || !mobile">
               <template v-slot:activator="{ props }">
                 <v-btn
-                  outlined
                   color="black"
                   class="save-button-mobile-wide"
                   v-bind="props"
@@ -115,13 +114,12 @@
               <v-menu>
                 <template v-slot:activator="{ props }">
                   <v-btn
-                    outlined
-                    small
+                    size="small"
                     color="accent"
                     class="save-button-mobile-wide"
                     v-bind="props"
                   >
-                    <v-icon start>mdi-plus</v-icon>
+                    <v-icon color="accent" start>mdi-plus</v-icon>
                     {{ $t('Add_alertrule') }}
                   </v-btn>
                 </template>

@@ -16,7 +16,6 @@
         v-if="
           !smAndDown && !noMatches && blockDataIndex !== 0 && blockData !== null
         "
-        outlined
         color="black"
         :disabled="loading"
         @click="changeBlockDataIndex(blockDataIndex - 1)"
@@ -26,8 +25,7 @@
       >
       <v-icon
         v-if="smAndDown && !noMatches"
-        large
-        dark
+        size="large"
         color="accent"
         class="ml-n2"
         :disabled="loading || blockDataIndex === 0"
@@ -94,13 +92,12 @@
       <v-spacer></v-spacer>
       <v-btn
         v-if="!smAndDown && !noMatches && !finalIndex"
-        outlined
         color="black"
         :disabled="loading"
         @click="changeBlockDataIndex(blockDataIndex + 1)"
       >
         {{ $t('next') }}
-        <v-icon right>mdi-chevron-right</v-icon>
+        <v-icon end>mdi-chevron-right</v-icon>
       </v-btn>
       <v-icon
         v-if="smAndDown && !noMatches"
@@ -176,15 +173,10 @@
       </v-row>
       <v-row class="my-0">
         <v-col v-if="errorMessage" cols="12">
-          <v-alert
-            prominent
-            type="error"
-            color="red"
-            class="mt-3 mb-n4"
-          >
-                <template v-slot:prepend>
-        <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
-      </template>
+          <v-alert prominent type="error" color="red" class="mt-3 mb-n4">
+            <template v-slot:prepend>
+              <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+            </template>
             {{ errorMessage }}
           </v-alert>
         </v-col>
@@ -254,7 +246,6 @@
             </v-col>
             <v-col cols="12" sm="6" class="d-flex justify-end">
               <v-btn
-                outlined
                 color="accent"
                 class="save-button-mobile-wide mr-1"
                 :disabled="showLoadingIcon || loading || importDisabled"
@@ -265,10 +256,12 @@
                   class="ml-n1 mr-2"
                   size="18"
                   width="2"
-                  color="disabled"
+                  color="accent"
                   indeterminate
                 />
-                <v-icon v-if="!showLoadingIcon" start>mdi-import</v-icon>
+                <v-icon v-if="!showLoadingIcon" color="accent" start
+                  >mdi-import</v-icon
+                >
                 {{ $t('import_block_data_short') }}
               </v-btn>
             </v-col>

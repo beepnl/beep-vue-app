@@ -153,8 +153,7 @@
           />
           <v-spacer></v-spacer>
           <v-btn
-            outlined
-            :small="mobile && devices.length > 0"
+            :size="mobile && devices.length > 0 ? 'small' : 'default'"
             :to="{ name: 'devices' }"
             class="edit-button"
             color="accent"

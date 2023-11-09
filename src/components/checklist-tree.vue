@@ -1,5 +1,5 @@
 <template>
-  <v-card class="pa-3" outlined>
+  <v-card class="pa-3">
     <v-text-field
       v-model="filterText"
       :label="`${$t('Search')}`"

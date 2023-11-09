@@ -14,7 +14,7 @@
         <a
           v-if="category.description !== null || category.source !== null"
           @click="showDescription = !showDescription"
-          ><v-icon class="ml-1 icon-info" size="x-small" color="accent"
+          ><v-icon class="ml-1 icon-info" size="small" color="accent"
             >mdi-information</v-icon
           ></a
         >

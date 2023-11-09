@@ -3,7 +3,6 @@
     <v-toolbar class="save-bar save-bar--back" density="compact" light>
       <v-spacer></v-spacer>
       <v-btn
-        outlined
         color="black"
         class="save-button-mobile-wide mr-1"
         :disabled="numberOfSelectedRules === 0 || showLoadingIcon"
@@ -44,7 +43,7 @@
             class="alerts-item"
             density="compact"
           >
-            <v-card outlined>
+            <v-card>
               <v-row class="ma-2 d-flex align-center">
                 <v-col cols="2" sm="1" class="mr-n2 mr-md-n4 mr-lg-n10">
                   <v-checkbox-btn v-model="alertRule.selected"></v-checkbox-btn>

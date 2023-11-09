@@ -18,8 +18,7 @@
             >
               <v-btn
                 :min-width="!smAndDown ? '350px' : !mobile ? '300px' : '100%'"
-                outlined
-                :small="smAndDown && !mobile"
+                :size="smAndDown && !mobile ? 'small' : 'default'"
                 class="mb-3"
               >
                 <a
@@ -40,7 +39,6 @@
                 :min-width="!smAndDown ? '350px' : !mobile ? '240px' : '100%'"
                 :href="'/js/lang/' + language.lang + '.js'"
                 target="_blank"
-                outlined
                 class="ml-0 ml-sm-3 mb-3"
                 color="accent"
                 :small="smAndDown && !mobile"
