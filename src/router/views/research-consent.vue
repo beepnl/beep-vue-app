@@ -208,6 +208,7 @@
                           v-if="showCTLoadingIcon.indexOf(research.id) === -1"
                           start
                           :size="mdAndDown ? 'small' : 'default'"
+                          :class="research.consent ? 'text-red' : 'text-green'"
                           >{{
                             research.consent ? 'mdi-close' : 'mdi-check'
                           }}</v-icon
@@ -240,6 +241,174 @@
                     :key="chItem.id"
                   >
                     <v-col class="research-item-col" cols="12" md="6" xl="5">
+                      <div class="d-flex align-center">
+                        <VueDatePicker
+                          v-if="
+                            interval !== 'year' ||
+                              (interval === 'year' && !relativeInterval)
+                          "
+                          v-model="chItem.updated_at"
+                          :format="datePickerFormat"
+                          :min-date="
+                            chItem.consent === 0 ? chItem.updated_at : null
+                          "
+                          :max-date="
+                            chItem.consent === 1 ? chItem.updated_at : null
+                          "
+                          model-type="format"
+                          :month-picker="
+                            interval === 'year' || interval === 'month'
+                          "
+                          hide-input-icon
+                          :clearable="false"
+                          :locale="locale"
+                          :select-text="$t('ok')"
+                          :cancel-text="$t('Cancel')"
+                          :class="
+                            `research-datepicker ${
+                              editedCHItems.indexOf(chItem.id) > -1
+                                ? 'text-green'
+                                : 'text-accent'
+                            }`
+                          "
+                        >
+                          <template v-slot:trigger>
+                            <span
+                              v-text="momentify(chItem.updated_at, true)"
+                            ></span>
+                          </template>
+                          <!-- <template v-slot:append>
+                          <span
+                            v-if="editedCHItems.indexOf(chItem.id) > -1"
+                            class="ml-1"
+                          >
+                            <v-btn
+                              class="mt-n1 text-green"
+                              x-small
+                              @click="
+                                updateConsentDate(
+                                  research.id,
+                                  chItem.id,
+                                  // eslint-disable-next-line vue/comma-dangle
+                                  chItem.updated_at
+                                )
+                              "
+                            >
+                              <v-progress-circular
+                                v-if="showLoadingIcon.indexOf(chItem.id) > -1"
+                                class="ml-n1 mr-2"
+                                size="12"
+                                width="2"
+                                indeterminate
+                              />
+                              <v-icon
+                                v-if="showLoadingIcon.indexOf(chItem.id) === -1"
+                                left
+                                x-small
+                                >mdi-check</v-icon
+                              >
+                              {{ $t('save') }}</v-btn
+                            >
+                          </span>
+
+                          <span
+                            v-if="editedCHItems.indexOf(chItem.id) === -1"
+                            class="description cursor-pointer"
+                          >
+                            <v-tooltip bottom>
+                              <template v-slot:activator="{ props }">
+                                <v-icon
+                                  class="mdi mdi-information icon-info"
+                                  dark
+                                  small
+                                  color="accent"
+                                  v-bind="props"
+                                ></v-icon>
+                              </template>
+                              <span
+                                >{{ $t('click_date_to_edit') }}
+                                {{ $t('Consent_can_only_be_set') }}
+                                {{
+                                  chItem.consent === 1
+                                    ? $t('earlier') +
+                                      ' ' +
+                                      $t('start_date').toLowerCase() +
+                                      '.'
+                                    : $t('later') +
+                                      ' ' +
+                                      $t('end_date').toLowerCase() +
+                                      '.'
+                                }}
+                              </span>
+                            </v-tooltip>
+                          </span>
+                        </template> -->
+                        </VueDatePicker>
+                        <span
+                          v-if="editedCHItems.indexOf(chItem.id) > -1"
+                          class="ml-1"
+                        >
+                          <v-btn
+                            class="mt-n1 text-green"
+                            x-small
+                            @click="
+                              updateConsentDate(
+                                research.id,
+                                chItem.id,
+                                // eslint-disable-next-line vue/comma-dangle
+                                chItem.updated_at
+                              )
+                            "
+                          >
+                            <v-progress-circular
+                              v-if="showLoadingIcon.indexOf(chItem.id) > -1"
+                              class="ml-n1 mr-2"
+                              size="12"
+                              width="2"
+                              indeterminate
+                            />
+                            <v-icon
+                              v-if="showLoadingIcon.indexOf(chItem.id) === -1"
+                              left
+                              x-small
+                              >mdi-check</v-icon
+                            >
+                            {{ $t('save') }}</v-btn
+                          >
+                        </span>
+
+                        <span
+                          v-if="editedCHItems.indexOf(chItem.id) === -1"
+                          class="description cursor-pointer"
+                        >
+                          <v-tooltip bottom>
+                            <template v-slot:activator="{ props }">
+                              <v-icon
+                                class="mdi mdi-information icon-info"
+                                dark
+                                small
+                                color="accent"
+                                v-bind="props"
+                              ></v-icon>
+                            </template>
+                            <span
+                              >{{ $t('click_date_to_edit') }}
+                              {{ $t('Consent_can_only_be_set') }}
+                              {{
+                                chItem.consent === 1
+                                  ? $t('earlier') +
+                                    ' ' +
+                                    $t('start_date').toLowerCase() +
+                                    '.'
+                                  : $t('later') +
+                                    ' ' +
+                                    $t('end_date').toLowerCase() +
+                                    '.'
+                              }}
+                            </span>
+                          </v-tooltip>
+                        </span>
+                      </div>
                       <!-- <Datetime
                         v-model="chItem.updated_at"
                         type="datetime"
@@ -437,6 +606,7 @@ export default {
       selectHivesOverlay: false,
       selectedConsent: null,
       selectedResearch: null,
+      datePickerFormat: 'yyyy-MM-dd HH:mm',
     }
   },
   computed: {
@@ -650,6 +820,10 @@ export default {
 
 .research-item-col {
   padding: 0 12px 8px 12px !important;
+}
+
+.research-datepicker {
+  width: 155px !important;
 }
 
 .research-property {
