@@ -77,7 +77,9 @@
             'd-flex ' +
               (itemIsCheckbox
                 ? 'checkbox-div' + (itemIsCheckboxList ? ' mb-1' : '')
-                : 'text-div' + (textArea ? ' --area' : ''))
+                : 'text-div' +
+                  (textArea ? ' --area' : '') +
+                  (parsedDate ? ' --double' : ''))
           "
         >
           <div v-if="gradeItem" class="d-flex flex-column align-center">
@@ -297,12 +299,16 @@ export default {
 }
 
 .text-div {
-  height: 50px;
+  max-height: 50px;
   width: auto;
   max-width: 100%;
 
   &.--area {
-    height: 100px;
+    max-height: 100px;
+  }
+
+  &.--double {
+    max-height: 30px;
   }
 }
 </style>

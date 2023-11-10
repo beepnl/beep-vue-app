@@ -606,7 +606,7 @@
                         <v-col cols="12" sm="8">
                           <labelWithDescription
                             :plain-text="$t('reminder')"
-                             :text-area="true"
+                            :text-area="true"
                             :parse-mode="parseMode"
                             :check-answer="
                               activeInspection['reminder'] === null
