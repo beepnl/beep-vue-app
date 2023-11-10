@@ -3,9 +3,7 @@
     <v-toolbar class="save-bar save-bar--back" density="compact" light>
       <v-icon
         v-if="!noMatches"
-        :large="smAndDown"
-        :small="!smAndDown"
-        dark
+        :size="smAndDown ? 'large' : 'small'"
         :color="smAndDown ? 'accent' : 'black'"
         class="ml-n1 mr-1"
         :disabled="loading || blockDataIndex === 0"
@@ -101,8 +99,7 @@
       </v-btn>
       <v-icon
         v-if="smAndDown && !noMatches"
-        large
-        dark
+        size="large"
         color="accent"
         class="mr-n2"
         :disabled="loading || finalIndex"
@@ -111,9 +108,7 @@
       >
       <v-icon
         v-if="!noMatches"
-        :large="smAndDown"
-        :small="!smAndDown"
-        dark
+        :size="smAndDown ? 'large' : 'small'"
         :color="smAndDown ? 'accent' : 'black'"
         class="mr-n1 ml-1"
         :disabled="loading || finalIndex"
@@ -136,7 +131,7 @@
                     period.minutes === currentMinutes ? 'text-accent' : ''
                   }`
                 "
-                text
+                variant="text"
                 @click="setPeriodDataMinutes(period.minutes)"
               >
                 {{ period.name }}
@@ -151,7 +146,7 @@
       <v-row>
         <v-col cols="12" class="py-0 mb-1">
           <v-slider
-            v-show="!loading && blockData !== null && blockDataIndexMax !== 0"
+            v-if="!loading && blockData !== null && blockDataIndexMax !== 0"
             v-model="blockDataIndex"
             class="slider--large d-flex align-center"
             color="accent"
@@ -183,10 +178,10 @@
 
         <v-col cols="12" class="py-0 pt-sm-3">
           <v-overlay
-            :absolute="true"
-            :activator="loading"
+            v-model="loading"
             :opacity="0.5"
-            color="white"
+            contained
+            scrim="white"
             z-index="3"
           >
             <v-progress-circular color="primary" size="50" indeterminate />
@@ -239,7 +234,6 @@
                 <v-switch
                   v-model="fillHoles"
                   class="pt-0 mt-0 mr-2"
-                  density="compact"
                   hide-details
                 ></v-switch>
               </div>

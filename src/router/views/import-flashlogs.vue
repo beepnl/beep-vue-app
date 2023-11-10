@@ -1,37 +1,39 @@
+<!-- eslint-disable vue/comma-dangle -->
 <template>
   <Layout :title="$t('Log_data_import')">
     <v-toolbar
-      v-if="!mobile && flashLogs.length > 0"
+      v-if="!smAndDown && flashLogs.length > 0"
       class="save-bar save-bar--back"
       density="compact"
-      light
     >
-      <v-spacer></v-spacer>
-      <div class="beep-label mr-1" v-text="$t('From_cache') + ': '"></div>
-      <v-switch
-        v-model="fromCache"
-        class="pt-0 mt-0 mr-2"
-        density="compact"
-        hide-details
-      ></v-switch>
-      <div class="beep-label" v-text="$t('Nr_of_match_props') + ': '"></div>
-      <v-slider
-        v-model="matchProps"
-        class="slider--default"
-        color="accent"
-        track-color="#b0b0b0"
-        min="5"
-        max="12"
-        step="1"
-        :ticks="['5', '6', '7', '8', '9', '10', '11', '12']"
-        show-ticks="always"
-        tick-size="4"
-        style="max-width: 200px;"
-      >
-      </v-slider>
+      <div class="d-flex justify-end align-center" style="width: 100%;">
+        <v-spacer></v-spacer>
+        <div class="beep-label mr-1" v-text="$t('From_cache') + ': '"></div>
+        <v-switch
+          v-model="fromCache"
+          class="pt-0 mt-0 mr-2"
+          style="max-width: 40px;"
+          hide-details
+        ></v-switch>
+        <div class="beep-label" v-text="$t('Nr_of_match_props') + ': '"></div>
+        <v-slider
+          :model-value="matchProps"
+          color="accent"
+          class="slider--default mt-5"
+          style="display: block !important; max-width: 200px;"
+          track-color="#b0b0b0"
+          min="5"
+          max="12"
+          step="1"
+          :ticks="['5', '6', '7', '8', '9', '10', '11', '12']"
+          show-ticks="always"
+          tick-size="4"
+        >
+        </v-slider>
+      </div>
     </v-toolbar>
 
-    <v-container v-if="ready" :class="mobile ? '' : 'back-content'">
+    <v-container v-if="ready" :class="smAndDown ? '' : 'back-content'">
       <v-row>
         <v-col v-if="importMessageCopy" cols="12">
           <v-alert
@@ -85,9 +87,10 @@
             <v-data-table
               :headers="userIsAdmin ? logFileHeadersAdmin : logFileHeaders"
               :items="flashLogs"
-              :items-per-page="mobile ? 1 : 5"
+              :items-per-page="itemsPerPage"
               :item-class="rowClassLogFile"
               :search="logSearch"
+              mobile-breakpoint="xs"
               :no-data-text="$t('no_data')"
               :no-results-text="$t('no_results')"
               multi-sort
@@ -101,37 +104,27 @@
                 ></v-text-field>
               </template>
 
-              <template v-slot:[`item.created_at`]="{ item }">
-                <span
-                  v-text="momentify(item.created_at, true, dateFormatLong)"
-                ></span>
+              <template v-slot:[`item.created_at`]="{ value }">
+                <span v-text="momentify(value, true, dateFormatLong)"></span>
               </template>
 
-              <template v-slot:[`item.device_name`]="{ item }">
-                <span
-                  v-text="
-                    item.device_name !== null ? item.device_name : $t('unknown')
-                  "
-                ></span>
+              <template v-slot:[`item.device_name`]="{ value }">
+                <span v-text="value !== null ? value : $t('unknown')"></span>
               </template>
 
-              <template v-slot:[`item.hive_name`]="{ item }">
-                <span
-                  v-text="
-                    item.hive_name !== null ? item.hive_name : $t('unknown')
-                  "
-                ></span>
+              <template v-slot:[`item.hive_name`]="{ value }">
+                <span v-text="value !== null ? value : $t('unknown')"></span>
               </template>
 
-              <template v-slot:[`item.log_erased`]="{ item }">
+              <template v-slot:[`item.log_erased`]="{ value }">
                 <v-sheet
-                  v-if="item.log_erased === 1"
+                  v-if="value === 1"
                   class="beep-icon beep-icon-text color-green text-center"
                 >
                   {{ $t('yes') }}
                 </v-sheet>
                 <v-sheet
-                  v-if="item.log_erased === 0"
+                  v-if="value === 0"
                   class="beep-icon beep-icon-text color-red text-center"
                 >
                   {{ $t('no') }}
@@ -160,10 +153,7 @@
                       indeterminate
                     />
                     <v-icon
-                      v-if="
-                        // eslint-disable vue/comma-dangle
-                        showLoadingIconById.indexOf(item.id) === -1
-                      "
+                      v-if="showLoadingIconById.indexOf(item.id) === -1"
                       color="accent"
                       start
                       >mdi-check</v-icon
@@ -174,7 +164,6 @@
                   <v-tooltip v-if="item.delete" open-delay="500" bottom>
                     <template v-slot:activator="{ props }">
                       <v-icon
-                        dark
                         color="red"
                         v-bind="props"
                         @click="confirmDeleteFlashLog(item)"
@@ -185,19 +174,30 @@
                   </v-tooltip>
                   <v-icon
                     v-if="!item.delete"
-                    dark
                     color="red"
                     @click="confirmDeleteFlashLog(item)"
                     >mdi-delete</v-icon
                   >
                 </div>
               </template>
+
+              <!-- <template v-slot:bottom>
+                <div class="text-center pt-2">
+                  <v-pagination
+                    v-model="page"
+                    :length="pageCount"
+                  ></v-pagination>
+                </div>
+              </template> -->
             </v-data-table>
           </div>
 
-          <div v-if="mobile" class="mt-4 mt-sm-2 d-flex flex-row">
+          <div
+            v-if="smAndDown"
+            class="mt-4 mt-sm-2 d-flex flex-row justify-space-between"
+          >
             <div class="mr-6">
-              <div class="beep-label ml-1 mb-4" v-text="$t('From_cache')"></div>
+              <div class="beep-label mb-0" v-text="$t('From_cache')"></div>
               <v-switch
                 v-model="fromCache"
                 class="pt-0 mt-0"
@@ -420,8 +420,8 @@
               multi-sort
               class="elevation-0"
             >
-              <template v-slot:[`item.data_imported`]="{ item }">
-                <v-icon v-if="item.data_imported" class="text-green"
+              <template v-slot:[`item.data_imported`]="{ value }">
+                <v-icon v-if="value" class="text-green"
                   >mdi-checkbox-marked-circle</v-icon
                 >
               </template>
@@ -470,7 +470,7 @@
                       <v-col
                         v-for="(match, i) in item.matches.matches"
                         :key="'match ' + i"
-                        :cols="mobile ? 6 : 3"
+                        :cols="smAndDown ? 6 : 3"
                         class="text-left"
                       >
                         <span v-text="matchText(match, i)"></span>
@@ -569,11 +569,9 @@
                       showExportLoadingById.indexOf('csv-' + item.block) === -1
                   "
                   open-delay="500"
-                  bottom
                 >
                   <template v-slot:activator="{ props }">
                     <v-icon
-                      dark
                       color="accent"
                       class="mr-2"
                       v-bind="props"
@@ -609,11 +607,9 @@
                       showExportLoadingById.indexOf('json-' + item.block) === -1
                   "
                   open-delay="500"
-                  bottom
                 >
                   <template v-slot:activator="{ props }">
                     <v-icon
-                      dark
                       color="accent"
                       v-bind="props"
                       @click="
@@ -723,6 +719,9 @@ export default {
             '. ' +
             JSON.stringify(this.importMessageCopy)
     },
+    itemsPerPage() {
+      return this.smAndDown ? 1 : 5
+    },
     lgAndUp() {
       return this.$vuetify.display.lgAndUp
     },
@@ -811,9 +810,6 @@ export default {
           value,
         })
       },
-    },
-    mobile() {
-      return this.$vuetify.display.mobile
     },
     selectedFlashLog: {
       get() {
@@ -1215,7 +1211,7 @@ export default {
     },
     scrollTo(refName) {
       const element = this.$refs[refName]
-      const offset = this.mobile ? 54 : 60
+      const offset = this.smAndDown ? 54 : 60
       const top = element.offsetTop
 
       window.scrollTo(0, top - offset)

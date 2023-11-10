@@ -380,7 +380,15 @@
   }
 }
 
-.v-data-table:not(.table-heatmap),
+.v-table > .v-table__wrapper > table > tbody > tr > th,
+.v-table > .v-table__wrapper > table > thead > tr > th,
+.v-table
+  > .v-table__wrapper
+  > table
+  > tfoot
+  > tr
+  > t
+  .v-data-table:not(.table-heatmap),
 .v-table:not(.table-heatmap) {
   background-color: transparent !important;
   input {
@@ -410,29 +418,28 @@
     }
   }
 
-  .v-data-table__wrapper > table > tbody > tr > td,
-  .v-data-table__wrapper > table > thead > tr > th {
+  .v-table__wrapper > table > tbody > tr > td,
+  .v-table__wrapper > table > thead > tr > th {
     @include for-phone-only {
       padding: 0 5px !important;
       font-size: 12px !important;
     }
   }
-  &.v-data-table--smallfont {
-    input {
-      font-size: 12px !important;
-    }
-    .v-input__control {
-      font-size: 12px !important;
-    }
-    .v-data-table__wrapper > table > tbody > tr > td,
-    .v-data-table__wrapper > table > thead > tr > th {
-      font-size: 12px !important;
-    }
+
+  input {
+    font-size: 12px !important;
+  }
+  .v-input__control {
+    font-size: 12px !important;
+  }
+  .v-table__wrapper > table > tbody > tr > td,
+  .v-table__wrapper > table > thead > tr > th {
+    font-size: 12px !important;
   }
 }
 
-.v-data-table.v-data-table--dense.table-heatmap
-  > .v-data-table__wrapper
+.v-table.v-table--density-compact.table-heatmap
+  > .v-table__wrapper
   > table
   > tbody
   > tr
@@ -440,7 +447,7 @@
   height: 13px !important;
 }
 
-.v-data-table.table-heatmap .v-data-table__wrapper {
+.v-table.table-heatmap .v-table__wrapper {
   width: 100%;
 }
 
