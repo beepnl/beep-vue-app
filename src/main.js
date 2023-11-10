@@ -88,6 +88,9 @@ const vuetify = createVuetify({
       },
     },
   },
+  display: {
+    mobileBreakpoint: 'xs',
+  },
   icons: {
     defaultSet: 'mdi',
     aliases,
