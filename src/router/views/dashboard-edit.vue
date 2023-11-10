@@ -408,13 +408,12 @@ export default {
     this.readDashboardGroupsIfNotChecked().then((response) => {
       this.readApiariesAndGroupsIfNotPresent().then((response) => {
         if (!this.createMode) {
-          const filteredDashboards = this.dashboardGroups.filter(
-            (dashboard) => dashboard.code === this.code
-          )
+          const filteredDashboards = JSON.parse(
+            JSON.stringify(this.dashboardGroups)
+          ).filter((dashboard) => dashboard.code === this.code)
+
           this.dashboard =
-            filteredDashboards.length === 0
-              ? null
-              : { ...filteredDashboards[0] }
+            filteredDashboards.length === 0 ? null : filteredDashboards[0]
         }
 
         // If dashboard-create route is used, make empty dashboard object
