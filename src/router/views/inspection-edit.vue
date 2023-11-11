@@ -273,7 +273,7 @@
                   :locale="locale"
                   :select-text="$t('ok')"
                   :cancel-text="$t('Cancel')"
-                  class="text-accent"
+                  class=" text-accent"
                   @update:model-value="datePickerIDUpdate"
                 />
               </div>
@@ -551,7 +551,7 @@
                                 :is-24="true"
                                 :teleport="true"
                                 :placeholder="$t('Set_notification_date')"
-                                class="text-accent"
+                                class=" text-accent"
                                 :locale="locale"
                                 :select-text="$t('ok')"
                                 :cancel-text="$t('Cancel')"

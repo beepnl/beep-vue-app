@@ -1004,7 +1004,7 @@
                 >By default, an alert rule will apply to all months, hours of
                 day and hives (that are connected to a device). The alert rule
                 can be deactivated for specified months, hours and hives (see
-                location="bottom" section).</li
+                bottom section).</li
               >
               <li
                 ><router-link :to="{ name: 'alertrules-default' }"

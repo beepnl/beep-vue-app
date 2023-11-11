@@ -79,7 +79,7 @@
                   query: { search: hive.name },
                 }"
               >
-                <v-tooltip location="bottom" max-width="60%">
+                <v-tooltip max-width="60%">
                   <template v-slot:activator="{ props }">
                     <div v-bind="props">
                       <v-badge
@@ -133,7 +133,7 @@
                     </v-icon>
                   </div>
 
-                  <v-tooltip v-if="mView" location="bottom" max-width="60%">
+                  <v-tooltip v-if="mView" max-width="60%">
                     <template v-slot:activator="{ props }">
                       <div v-bind="props">
                         <v-badge

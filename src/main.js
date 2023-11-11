@@ -87,6 +87,9 @@ const vuetify = createVuetify({
         variant: 'outlined',
       },
     },
+    VTooltip: {
+      location: 'bottom',
+    },
   },
   display: {
     mobileBreakpoint: 'xs',

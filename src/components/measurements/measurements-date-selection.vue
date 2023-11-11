@@ -26,7 +26,7 @@
           :locale="locale"
           :select-text="$t('ok')"
           :cancel-text="$t('Cancel')"
-          class="small-date-picker text-accent"
+          class=" small-date-picker text-accent"
           @update:model-value="selectDate($event)"
         >
           <template v-slot:trigger>
@@ -87,7 +87,7 @@
               :locale="locale"
               :select-text="$t('ok')"
               :cancel-text="$t('Cancel')"
-              class="range-date-picker text-accent"
+              class=" range-datepicker text-accent"
               @update:model-value="saveDates($event)"
             />
           </div>

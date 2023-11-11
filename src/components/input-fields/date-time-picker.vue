@@ -22,7 +22,7 @@
         hide-input-icon
         :is-24="true"
         :teleport="true"
-        class="text-accent"
+        class=" text-accent"
         :placeholder="`${$t('Select')} ${$t('Date').toLocaleLowerCase()}`"
         :locale="locale"
         :select-text="$t('ok')"

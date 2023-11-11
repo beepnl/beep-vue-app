@@ -161,7 +161,7 @@
                     {{ $t('check_log_data') }}</v-btn
                   >
 
-                  <v-tooltip v-if="item.delete" open-delay="500" bottom>
+                  <v-tooltip v-if="item.delete" open-delay="500">
                     <template v-slot:activator="{ props }">
                       <v-icon
                         color="red"
@@ -266,7 +266,7 @@
             <span v-text="selectedFlashLogHeader"></span>
             <v-spacer />
             <div v-if="selectedFlashLog !== null" class="d-flex align-right">
-              <v-tooltip v-if="lgAndUp" open-delay="500" bottom>
+              <v-tooltip v-if="lgAndUp" open-delay="500">
                 <template v-slot:activator="{ props }">
                   <v-btn
                     size="small"
@@ -303,7 +303,7 @@
                 <span>{{ $t('Export_as_csv') }}</span>
               </v-tooltip>
 
-              <v-tooltip v-if="lgAndUp" open-delay="500" bottom>
+              <v-tooltip v-if="lgAndUp" open-delay="500">
                 <template v-slot:activator="{ props }">
                   <v-btn
                     size="small"
@@ -342,7 +342,6 @@
               <v-tooltip
                 v-if="!lgAndUp && showExportLoadingById.indexOf('csv') === -1"
                 open-delay="500"
-                bottom
               >
                 <template v-slot:activator="{ props }">
                   <v-icon
@@ -376,7 +375,6 @@
               <v-tooltip
                 v-if="!lgAndUp && showExportLoadingById.indexOf('json') === -1"
                 open-delay="500"
-                bottom
               >
                 <template v-slot:activator="{ props }">
                   <v-icon

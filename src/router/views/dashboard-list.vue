@@ -91,7 +91,7 @@
                         ></span>
                       </a>
 
-                      <v-tooltip location="bottom" max-width="60%">
+                      <v-tooltip max-width="60%">
                         <template v-slot:activator="{ props }">
                           <v-icon
                             small

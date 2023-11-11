@@ -57,7 +57,7 @@
                     :locale="locale"
                     :select-text="$t('ok')"
                     :cancel-text="$t('Cancel')"
-                    class="text-accent"
+                    class=" text-accent"
                     @update:model-value="datePickerUpdate"
                   >
                     <template v-slot:clear-icon="{ clear }">

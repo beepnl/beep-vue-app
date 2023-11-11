@@ -518,7 +518,32 @@
 }
 
 /* VueDatePicker */
-.dp__action_select,
+
+.dp__theme_light {
+  --dp-primary-color: $color-accent !important;
+}
+
+.dp__action_button {
+  cursor: pointer !important;
+  padding: 16px !important;
+  border-radius: 0 !important;
+  font-size: 14px !important;
+  font-weight: 500;
+  font-family: 'Roboto', sans-serif !important;
+  letter-spacing: 1.25px;
+  text-transform: uppercase;
+}
+
+.dp__action_cancel {
+  border: 1px solid $color-black !important;
+}
+
+.dp__action_select {
+  background: $color-white !important;
+  color: $color-accent !important;
+  border-color: $color-accent !important;
+}
+
 .dp__range_end,
 .dp__range_start,
 .dp__active_date {

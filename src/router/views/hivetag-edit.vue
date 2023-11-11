@@ -401,7 +401,7 @@ export default {
     },
     selectedHive() {
       return this.hiveTag.hive_id !== null
-        ? this.hivesObject[this.hiveTag.hive_id]
+        ? this.hivesObject[this.hiveTag.hive_id] || null
         : null
     },
     showApiaryPlaceholder() {

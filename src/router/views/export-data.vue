@@ -158,7 +158,7 @@
                     :locale="locale"
                     :select-text="$t('ok')"
                     :cancel-text="$t('Cancel')"
-                    class="range-date-picker text-accent"
+                    class=" range-datepicker text-accent"
                     @update:model-value="updateDates($event)"
                   />
                 </div>
