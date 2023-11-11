@@ -29,7 +29,7 @@
                 :class="
                   `${
                     search !== null ? 'v-input--is-focused' : ''
-                  } filter-text-field--alerts ml-2`
+                  } beep-search-field--alerts ml-2`
                 "
                 :style="'height: ' + (mobile ? '30px;' : '36px;')"
                 color="accent"

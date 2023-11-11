@@ -15,11 +15,19 @@
           class="d-flex flex-row apiary-tab"
           :value="i"
         >
-          <v-icon v-if="tab.title && tab.icon" class="mt-1 mr-1">{{
-            tab.icon
-          }}</v-icon
+          <v-icon
+            v-if="tab.title && tab.icon"
+            :class="
+              'mr-1 apiary-tab-icon' +
+                (tab.index === activeTab ? '' : ' --inactive')
+            "
+            >{{ tab.icon }}</v-icon
           ><span
             v-if="tab.title"
+            :class="
+              'apiary-tab-title' +
+                (tab.index === activeTab ? '' : ' --inactive')
+            "
             v-text="smallScreen ? tab.title_mobile : tab.title"
           ></span>
         </v-tab>
@@ -106,7 +114,7 @@
                       >
                       </v-text-field>
 
-                      <div>
+                      <div class="mb-3">
                         <div
                           class="beep-label"
                           v-text="`${$t('Apiary_color')}`"
@@ -169,6 +177,7 @@
                       <v-switch
                         v-if="newHive"
                         v-model="newHive.roofed"
+                        class="ml-1"
                         :label="`${$t('roofed')}`"
                         @update:model-value="setApiaryEdited(true)"
                       ></v-switch>
@@ -289,6 +298,7 @@
                         :label="`${$t('City')}`"
                         variant="outlined"
                         density="compact"
+                        class="beep-text-field"
                         @update:model-value="setApiaryEdited(true)"
                       >
                       </v-text-field>
@@ -300,6 +310,7 @@
                         :label="`${$t('Postal_code')}`"
                         variant="outlined"
                         density="compact"
+                        class="beep-text-field"
                         @update:model-value="setApiaryEdited(true)"
                       >
                       </v-text-field>
@@ -311,6 +322,7 @@
                         :label="`${$t('Street')}`"
                         variant="outlined"
                         density="compact"
+                        class="beep-text-field"
                         @update:model-value="setApiaryEdited(true)"
                       >
                       </v-text-field>
@@ -322,6 +334,7 @@
                         :label="`${$t('Number')}`"
                         variant="outlined"
                         density="compact"
+                        class="beep-text-field"
                         @update:model-value="setApiaryEdited(true)"
                       >
                       </v-text-field>
@@ -417,7 +430,7 @@
                         v-if="newHive"
                         v-model="newHive.prefix"
                         :height="36"
-                        class="prefix-input"
+                        class="beep-text-field"
                         variant="outlined"
                         density="compact"
                         @update:model-value="setApiaryEdited(true)"
@@ -558,21 +571,25 @@ export default {
     tabs: function() {
       return [
         {
+          index: 0,
           title: ' ' + this.$i18n.t('new_apiary'),
           title_mobile: '',
           icon: 'mdi-star',
         },
         {
+          index: 1,
           title: ' 1. ' + this.$i18n.tc('Location', 1),
           title_mobile: ' 1',
           icon: 'mdi-home-analytics',
         },
         {
+          index: 2,
           title: ' 2. ' + this.$i18n.t('Place'),
           title_mobile: ' 2',
           icon: 'mdi-map-marker',
         },
         {
+          index: 3,
           title:
             ' 3. ' +
             this.$i18n.tc('Hive', 1) +
@@ -582,6 +599,7 @@ export default {
           icon: 'mdi-archive',
         },
         {
+          index: 4,
           title: ' 4. ' + this.$i18n.t('Hive_amount'),
           title_mobile: ' 4',
           icon: 'mdi-file-chart',
@@ -779,7 +797,6 @@ export default {
 .apiary-create {
   .browse-tabs-bar {
     padding: 4px 0;
-    margin-top: 48px;
     background-color: $color-orange-light !important;
     border-bottom: 1px solid $color-orange-border !important;
     @include for-tablet-landscape-up {
@@ -825,6 +842,15 @@ export default {
     60% {
       transform: translateX(9px);
     }
+  }
+}
+
+.apiary-tab-title,
+.apiary-tab-icon {
+  text-transform: none !important;
+  color: $color-black !important;
+  &.--inactive {
+    color: $color-inactive !important;
   }
 }
 </style>

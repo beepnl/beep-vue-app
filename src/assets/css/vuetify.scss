@@ -31,7 +31,9 @@
   margin-top: 8px;
 }
 
-.v-input:not(.filter-text-field) .v-field--center-affix .v-label.v-field-label {
+.v-input:not(.beep-text-field):not(.beep-search-field)
+  .v-field--center-affix
+  .v-label.v-field-label {
   margin-top: 12px !important;
   top: 20% !important;
 }
@@ -78,12 +80,12 @@
   --v-border-color: #ccc;
 }
 
-.v-text-field:not(.v-field--variant-underlined):not(.v-field--variant-solo):not(.v-select):not(.filter-text-field)
+.v-text-field:not(.v-field--variant-underlined):not(.v-field--variant-solo):not(.v-select):not(.beep-search-field)
   input {
   padding: 8px 0 0 2px !important;
 }
 
-.v-text-field.filter-text-field input {
+.v-text-field.beep-search-field input {
   padding: 6px 0 0 8px !important;
 }
 

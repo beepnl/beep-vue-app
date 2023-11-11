@@ -15,7 +15,7 @@
                 :class="
                   `${
                     hiveSearch !== null ? 'v-input--is-focused' : ''
-                  } filter-text-field`
+                  } beep-search-field`
                 "
                 :style="'height: ' + (mobile ? '30px;' : '36px;')"
                 color="accent"

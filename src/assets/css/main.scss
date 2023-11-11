@@ -114,7 +114,7 @@
           font-size: 14px;
         }
       }
-      &.v-text-field.filter-text-field.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo).v-text-field--outlined
+      &.v-text-field.beep-search-field.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo).v-text-field--outlined
         .v-input__append-outer {
         @include for-phone-only {
           margin-top: 2px !important;
@@ -135,7 +135,7 @@
             }
           }
         }
-        &.filter-text-field--alerts {
+        &.beep-search-field--alerts {
           @include for-phone-only {
             max-width: 110px;
           }
@@ -159,7 +159,7 @@
             }
           }
         }
-        &.filter-text-field--alerts {
+        &.beep-search-field--alerts {
           .v-input__slot {
             @media (max-width: 372px) {
               .v-text-field__slot {

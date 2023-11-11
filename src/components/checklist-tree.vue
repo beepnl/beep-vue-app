@@ -6,7 +6,7 @@
       :class="
         `${
           filterText !== '' ? 'v-input--is-focused text-primary' : ''
-        } filter-text-field mb-3`
+        } beep-search-field mb-3`
       "
       :style="'height: 36px;'"
       color="accent"

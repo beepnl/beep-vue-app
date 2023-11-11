@@ -20,7 +20,7 @@
                 :class="
                   `${
                     search !== null ? 'v-input--is-focused text-primary' : ''
-                  } filter-text-field`
+                  } beep-search-field`
                 "
                 :style="'height: ' + (mobile ? '30px;' : '36px;')"
                 color="accent"

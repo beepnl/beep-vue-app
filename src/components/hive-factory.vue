@@ -13,7 +13,7 @@
           >
         </div>
 
-        <p v-if="showInfo" class="info-text">
+        <p v-if="showInfo" class="info-text mt-1">
           <em>{{ $t('drag_layers_info_text') }} </em>
         </p>
         <div
