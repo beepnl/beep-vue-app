@@ -31,9 +31,7 @@
   margin-top: 8px;
 }
 
-.v-input:not(.beep-text-field):not(.beep-search-field)
-  .v-field--center-affix
-  .v-label.v-field-label {
+.v-input:not(.beep-search-field) .v-field--center-affix .v-label.v-field-label {
   margin-top: 12px !important;
   top: 20% !important;
 }
@@ -77,6 +75,7 @@
 
 .v-theme--beepTheme {
   --v-medium-emphasis-opacity: 1;
+  --v-hover-opacity: 0;
   --v-border-color: #ccc;
 }
 
@@ -87,6 +86,10 @@
 
 .v-text-field.beep-search-field input {
   padding: 6px 0 0 8px !important;
+}
+
+.v-text-field.group-edit-name input {
+  padding: 12px 0 0 2px !important;
 }
 
 .v-toolbar__content {

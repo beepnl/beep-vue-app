@@ -106,11 +106,11 @@
                 </v-col>
 
                 <v-col cols="12">
+                  <div class="beep-label" v-text="$t('Description')"></div>
                   <v-textarea
                     v-if="activeGroup"
                     v-model="activeGroup.description"
-                    :label="`${$t('Description')}`"
-                    :placeholder="`${$t('Description')}`"
+                    :placeholder="$t('Description')"
                     class="group-edit-description"
                     counter="250"
                     rows="1"
