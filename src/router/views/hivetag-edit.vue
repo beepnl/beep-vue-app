@@ -1,3 +1,4 @@
+<!-- eslint-disable dot-notation -->
 <template>
   <Layout :title="getTitle">
     <v-form ref="form" v-model="valid" @submit.prevent="saveHiveTag">
@@ -96,35 +97,42 @@
             ></div>
             <div class="rounded-border">
               <v-radio-group
-                :value="hiveTag.action_id"
+                v-model="hiveTag.action_id"
                 hide-details
                 class="mt-0"
-                @change="selectAction($event)"
               >
-                <template
-                  v-for="(hiveTagAction, index) in hiveTagActions"
-                  :key="index"
-                >
-                  <div class="d-flex align-center justify-start mb-1">
-                    <v-radio
-                      class="mt-2"
-                      :disabled="!enableAction(hiveTagAction)"
-                      :value="hiveTagAction.id"
-                    ></v-radio>
-                    <router-link
-                      v-if="
-                        hiveTag.hive_id !== null && enableAction(hiveTagAction)
-                      "
-                      :to="hiveTagAction.routerLink"
-                    >
-                      <span v-text="$t(hiveTagAction.description)"></span>
-                    </router-link>
-                    <span
-                      v-else
-                      :class="!enableAction(hiveTagAction) ? 'color-grey' : ''"
-                      v-text="$t(hiveTagAction.description)"
-                    ></span>
-                  </div>
+                <template v-slot>
+                  <template
+                    v-for="(hiveTagAction, index) in hiveTagActions"
+                    :key="index"
+                  >
+                    <div class="d-flex align-center justify-start mb-1">
+                      <v-radio
+                        class="hivetag-radio"
+                        :disabled="!enableAction(hiveTagAction)"
+                        :value="hiveTagAction.id"
+                        :model-value="hiveTag.action_id"
+                        color="accent"
+                        @input="selectAction(hiveTagAction.id)"
+                      ></v-radio>
+                      <router-link
+                        v-if="
+                          hiveTag.hive_id !== null &&
+                            enableAction(hiveTagAction)
+                        "
+                        :to="hiveTagAction.routerLink"
+                      >
+                        <span v-text="$t(hiveTagAction.description)"></span>
+                      </router-link>
+                      <span
+                        v-else
+                        :class="
+                          !enableAction(hiveTagAction) ? 'color-grey' : ''
+                        "
+                        v-text="$t(hiveTagAction.description)"
+                      ></span>
+                    </div>
+                  </template>
                 </template>
               </v-radio-group>
             </div>
@@ -227,6 +235,7 @@
 
 <script>
 import Api from '@api/Api'
+import _ from 'lodash'
 import qrCodeIcon from '@components/qrcode-icon.vue'
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 import Confirm from '@/src/components/confirm-dialog.vue'
@@ -246,7 +255,7 @@ export default {
     qrCodeIcon,
   },
   mixins: [deleteHiveTag, readApiariesAndGroupsIfNotPresent, readHiveTags],
-  data: function() {
+  data() {
     return {
       snackbar: {
         show: false,
@@ -436,22 +445,21 @@ export default {
           this.tempSavedHiveTag !== null &&
           this.tag === this.tempSavedHiveTag.tag
         ) {
-          this.hiveTag = { ...this.tempSavedHiveTag }
+          this.hiveTag = _.cloneDeep(this.tempSavedHiveTag)
         } else if (!this.createMode) {
           this.setTempSavedHiveTag(null)
+          const filteredHiveTags = JSON.parse(
+            JSON.stringify(this.hiveTags)
+          ).filter((hiveTag) => hiveTag.tag === this.tag)
 
-          const filteredHiveTags = this.hiveTags.filter(
-            (hiveTag) => hiveTag.tag === this.tag
-          )
           this.hiveTag =
-            filteredHiveTags.length === 0 ? null : { ...filteredHiveTags[0] }
+            filteredHiveTags.length === 0 ? null : filteredHiveTags[0]
         }
-
         // If hivetag-create route is used, make empty hiveTag object
         else if (this.createMode) {
           this.setTempSavedHiveTag(null)
           this.hiveTag = {
-            tag: this.tag,
+            tag: this.tag !== null ? _.cloneDeep(this.tag) : null,
             router_link: null,
             hive_id: null,
             action_id: null,
@@ -571,7 +579,8 @@ export default {
       }
     },
     selectHive(id) {
-      this.hiveTag.hive_id = this.hiveTag.hive_id !== id ? id : null
+      const newId = this.hiveTag.hive_id !== id ? id : null
+      this.hiveTag.hive_id = newId
       this.hiveTag.router_link = this.selectedAction.routerLink // re-set router link as it is now filled with a (different) hive id
       this.setHiveTagEdited(true)
     },
@@ -592,7 +601,7 @@ export default {
     setTempSavedHiveTag(hivetag) {
       this.$store.commit('hives/setData', {
         prop: 'tempSavedHiveTag',
-        value: hivetag,
+        value: _.cloneDeep(hivetag), // clone deep to avoid vuex errors
       })
     },
   },

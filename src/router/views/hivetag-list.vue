@@ -57,7 +57,7 @@
           >
             <div class="text-overline ">{{ $tc('Hivetag', 2) }}</div>
             <v-icon
-              class="icon-info cursor-pointer  ml-2"
+              class="icon-info cursor-pointer ml-2"
               size="small"
               :color="showExplanation ? 'accent' : 'grey'"
               @click="showExplanation = !showExplanation"

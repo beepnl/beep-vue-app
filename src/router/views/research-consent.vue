@@ -384,12 +384,12 @@
                           <v-tooltip bottom>
                             <template v-slot:activator="{ props }">
                               <v-icon
-                                class="mdi mdi-information icon-info"
-                                dark
-                                small
+                                class="icon-info"
+                                size="small"
                                 color="accent"
                                 v-bind="props"
-                              ></v-icon>
+                                >mdi-information</v-icon
+                              >
                             </template>
                             <span
                               >{{ $t('click_date_to_edit') }}
