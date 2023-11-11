@@ -380,15 +380,7 @@
   }
 }
 
-.v-table > .v-table__wrapper > table > tbody > tr > th,
-.v-table > .v-table__wrapper > table > thead > tr > th,
-.v-table
-  > .v-table__wrapper
-  > table
-  > tfoot
-  > tr
-  > t
-  .v-data-table:not(.table-heatmap),
+.v-data-table:not(.table-heatmap),
 .v-table:not(.table-heatmap) {
   background-color: transparent !important;
   input {
@@ -445,6 +437,22 @@
   > tr
   > td {
   height: 13px !important;
+}
+
+.v-table
+  > .v-table__wrapper
+  > table
+  > tbody
+  > tr:not(:last-child)
+  > td:not(.v-data-table__mobile-row),
+.v-table
+  > .v-table__wrapper
+  > table
+  > tbody
+  > tr:not(:last-child)
+  > th:not(.v-data-table__mobile-row),
+.v-table > .v-table__wrapper > table > thead > tr:last-child > th {
+  border-bottom: thin solid rgba(0, 0, 0, 0.12);
 }
 
 .v-table.table-heatmap .v-table__wrapper {
