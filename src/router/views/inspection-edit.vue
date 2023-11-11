@@ -638,6 +638,7 @@
 
 <script>
 import Api from '@api/Api'
+import _ from 'lodash'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 import ChecklistFieldset from '@components/checklist-fieldset.vue'
@@ -1114,8 +1115,8 @@ export default {
           localStorage.beepPreviousRoute === 'checklist' &&
           this.tempSavedInspection !== null
         ) {
-          console.log('temp saved inspection', this.tempSavedInspection)
-          this.activeInspection = { ...this.tempSavedInspection }
+          // console.log('temp saved inspection', this.tempSavedInspection)
+          this.activeInspection = _.cloneDeep(this.tempSavedInspection)
           this.initInspection()
         } else {
           this.setTempSavedInspection(null)
@@ -1906,7 +1907,7 @@ export default {
     setTempSavedInspection(inspection) {
       this.$store.commit('inspections/setData', {
         prop: 'tempSavedInspection',
-        value: inspection,
+        value: _.cloneDeep(inspection), // clone to fix vuex errors
       })
     },
     switchChecklist(id) {
