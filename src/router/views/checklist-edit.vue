@@ -270,7 +270,7 @@ export default {
       return this.$vuetify.display.mdAndDown
     },
     mobile() {
-      return this.$vuetify.display.mobile
+      return this.$vuetify.display.xs
     },
     ownedChecklists() {
       return this.checklists.filter((checklist) => checklist.owner)

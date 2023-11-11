@@ -919,7 +919,7 @@ export default {
       return this.$i18n.locale
     },
     mobile() {
-      return this.$vuetify.display.mobile
+      return this.$vuetify.display.xs
     },
     modeText() {
       return this.permissions.includes('test-offline-input') ||

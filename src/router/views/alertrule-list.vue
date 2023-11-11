@@ -331,7 +331,7 @@ export default {
       ]
     },
     mobile() {
-      return this.$vuetify.display.mobile
+      return this.$vuetify.display.xs
     },
     showAlertRulePlaceholder() {
       return this.alertRules.length === 0

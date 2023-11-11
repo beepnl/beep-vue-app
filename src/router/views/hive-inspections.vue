@@ -750,7 +750,7 @@ export default {
       return matchedItemsByDate
     },
     mobile() {
-      return this.$vuetify.display.mobile
+      return this.$vuetify.display.xs
     },
     noInspections() {
       return (

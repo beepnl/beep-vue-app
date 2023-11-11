@@ -164,7 +164,7 @@ export default {
       return this.$i18n.locale
     },
     mobile() {
-      return this.$vuetify.display.mobile
+      return this.$vuetify.display.xs
     },
     newApiaryName() {
       return this.apiaries.filter((apiary) => {

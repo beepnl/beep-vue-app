@@ -178,7 +178,7 @@
                     </router-link>
                   </div>
 
-                  <v-tooltip  max-width="60%">
+                  <v-tooltip max-width="60%">
                     <template v-slot:activator="{ props }">
                       <span v-bind="props">
                         <div
@@ -199,7 +199,7 @@
                     <span v-text="$t('bat_volt')"> </span>
                   </v-tooltip>
 
-                  <v-tooltip  max-width="60%">
+                  <v-tooltip max-width="60%">
                     <template v-slot:activator="{ props }">
                       <span v-bind="props">
                         <div
@@ -224,7 +224,7 @@
                     <span v-text="$t('last_message_received')"> </span>
                   </v-tooltip>
 
-                  <v-tooltip  max-width="60%">
+                  <v-tooltip max-width="60%">
                     <template v-slot:activator="{ props }">
                       <span v-bind="props">
                         <div
@@ -714,7 +714,7 @@ export default {
       return unsavedChanges.length > 0
     },
     mobile() {
-      return this.$vuetify.display.mobile
+      return this.$vuetify.display.xs
     },
     ownedDevices() {
       const ownedDevices = this.devices

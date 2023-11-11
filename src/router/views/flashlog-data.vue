@@ -346,7 +346,7 @@ export default {
       )
     },
     mobile() {
-      return this.$vuetify.display.mobile
+      return this.$vuetify.display.xs
     },
     noMatches() {
       return this.errorMessage !== null

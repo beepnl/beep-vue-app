@@ -82,7 +82,7 @@
   border-color: $color-grey-light;
 }
 
-.v-tabs--icons-and-text > .v-tabs-bar {
+.v-tabs > .v-slide-group__container {
   height: 48px !important;
   .v-tab {
     text-transform: none !important;

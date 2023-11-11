@@ -912,7 +912,7 @@ export default {
       return apiariesWithDates.concat(groupsWithDatesAndEditableHivesProp)
     },
     mobile() {
-      return this.$vuetify.display.mobile
+      return this.$vuetify.display.xs
     },
     screenSize() {
       return this.$vuetify.display.width

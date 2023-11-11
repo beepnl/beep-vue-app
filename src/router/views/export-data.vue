@@ -352,7 +352,7 @@ export default {
       return this.sortedDevices()
     },
     mobile() {
-      return this.$vuetify.display.mobile
+      return this.$vuetify.display.xs
     },
     selectedDevice() {
       return this.devices.filter(

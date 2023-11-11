@@ -455,7 +455,7 @@ export default {
       return this.$vuetify.display.mdAndDown
     },
     mobile() {
-      return this.$vuetify.display.mobile
+      return this.$vuetify.display.xs
     },
     numberOfDevices() {
       return this.devices.length

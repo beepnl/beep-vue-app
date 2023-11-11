@@ -211,7 +211,7 @@ export default {
       ]
     },
     mobile() {
-      return this.$vuetify.display.mobile
+      return this.$vuetify.display.xs
     },
     passwordRules: function() {
       return [(v) => !!v || this.$i18n.t('password_is_required')]

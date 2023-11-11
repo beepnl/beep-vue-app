@@ -90,7 +90,6 @@
               :items-per-page="itemsPerPage"
               :item-class="rowClassLogFile"
               :search="logSearch"
-              mobile-breakpoint="xs"
               :no-data-text="$t('no_data')"
               :no-results-text="$t('no_results')"
               multi-sort

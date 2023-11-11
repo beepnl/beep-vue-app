@@ -552,7 +552,7 @@ export default {
       return this.$i18n.locale
     },
     mobile() {
-      return this.$vuetify.display.mobile
+      return this.$vuetify.display.xs
     },
     smallScreen() {
       return this.$vuetify.display.width < 751

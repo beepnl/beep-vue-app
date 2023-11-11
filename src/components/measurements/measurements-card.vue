@@ -89,7 +89,7 @@ export default {
       return this.$vuetify.display.width < 960
     },
     mobile() {
-      return this.$vuetify.display.mobile
+      return this.$vuetify.display.xs
     },
     queriedChartCols() {
       const queriedValue = parseInt(this.$route.query.chartCols)

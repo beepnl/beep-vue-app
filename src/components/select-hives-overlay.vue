@@ -186,7 +186,7 @@ export default {
         : this.apiaries
     },
     mobile() {
-      return this.$vuetify.display.mobile
+      return this.$vuetify.display.xs
     },
     researchMode() {
       return this.selectedResearch !== null

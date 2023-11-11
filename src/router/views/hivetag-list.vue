@@ -208,7 +208,7 @@ export default {
     ...mapGetters('locations', ['apiaries']),
     ...mapGetters('groups', ['groups']),
     mobile() {
-      return this.$vuetify.display.mobile
+      return this.$vuetify.display.xs
     },
     showHiveTagPlaceholder() {
       return this.hiveTags.length === 0

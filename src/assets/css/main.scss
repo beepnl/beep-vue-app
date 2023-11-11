@@ -135,7 +135,7 @@
             }
           }
         }
-        &.beep-search-field--alerts {
+        &.beep-search-field {
           @include for-phone-only {
             max-width: 110px;
           }
@@ -159,7 +159,7 @@
             }
           }
         }
-        &.beep-search-field--alerts {
+        &.beep-search-field {
           .v-input__slot {
             @media (max-width: 372px) {
               .v-text-field__slot {
@@ -167,6 +167,15 @@
               }
             }
           }
+        }
+      }
+      &.beep-search-field {
+        @include for-phone-only {
+          min-width: 100px;
+          max-width: 110px;
+        }
+        @media (max-width: 372px) {
+          max-width: 86px;
         }
       }
     }

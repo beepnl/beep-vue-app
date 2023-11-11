@@ -93,6 +93,7 @@ const vuetify = createVuetify({
   },
   display: {
     mobileBreakpoint: 'xs',
+    xs: 600,
   },
   icons: {
     defaultSet: 'mdi',

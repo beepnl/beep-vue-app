@@ -368,7 +368,7 @@ export default {
       return this.apiaries.concat(this.groups)
     },
     mobile() {
-      return this.$vuetify.display.mobile
+      return this.$vuetify.display.xs
     },
     showApiaryPlaceholder() {
       return this.hiveSets.length === 0

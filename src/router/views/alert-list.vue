@@ -29,7 +29,7 @@
                 :class="
                   `${
                     search !== null ? 'v-input--is-focused' : ''
-                  } beep-search-field--alerts ml-2`
+                  } beep-search-field ml-2`
                 "
                 :style="'height: ' + (mobile ? '30px;' : '36px;')"
                 color="accent"
@@ -400,7 +400,7 @@ export default {
       return this.filteredAlerts.map((alert) => alert.id)
     },
     mobile() {
-      return this.$vuetify.display.mobile
+      return this.$vuetify.display.xs
     },
     showAlertPlaceholder() {
       if (this.ready) {

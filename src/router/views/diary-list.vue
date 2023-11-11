@@ -136,7 +136,7 @@
         :items="filteredInspections"
         :min-item-size="90"
         :class="
-          'scroller pl-6' +
+          'scroller pl-sm-6' +
             (filteredInspections.length <= paginationItems
               ? ' --single-page'
               : '')
@@ -441,7 +441,7 @@ export default {
       return this.$i18n.locale
     },
     mobile() {
-      return this.$vuetify.display.mobile
+      return this.$vuetify.display.xs
     },
     paginationItems() {
       // overestimation of how many inspection items fit in clients window

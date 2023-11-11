@@ -466,7 +466,7 @@ export default {
       return this.$vuetify.display.width < 961
     },
     mobile() {
-      return this.$vuetify.display.mobile
+      return this.$vuetify.display.xs
     },
   },
   methods: {

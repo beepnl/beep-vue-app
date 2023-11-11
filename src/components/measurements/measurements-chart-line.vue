@@ -349,7 +349,7 @@ export default {
       return this.$i18n.locale
     },
     mobile() {
-      return this.$vuetify.display.mobile
+      return this.$vuetify.display.xs
     },
     modeColor() {
       return this.darkMode ? this.darkModecolor : this.defaultcolor
@@ -386,7 +386,7 @@ export default {
             return value.y.toFixed(1) + ' ' + context.dataset.unit
           },
           display: function(context) {
-            var isFinalValue = false
+            let isFinalValue = false
             // check if datapoint has value, whether all datapoints after that are null
             // in that case current datapoint is the final value and should be displayed as a datalabel
             // (only pushing non-null datapoints to dataset is not an option because spanGaps won't work then)
@@ -452,7 +452,7 @@ export default {
             label: function(context) {
               const name = context.dataset.name || ''
               const unit = context.dataset.unit || ''
-              var label = ''
+              let label = ''
 
               if (context.parsed.y !== null) {
                 label = name + ': ' + self.roundDec(context.parsed.y, 1) + unit

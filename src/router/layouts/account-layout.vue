@@ -67,7 +67,7 @@ export default {
   },
   computed: {
     mobile() {
-      return this.$vuetify.display.mobile
+      return this.$vuetify.display.xs
     },
   },
   created() {
