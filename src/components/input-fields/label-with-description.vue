@@ -311,5 +311,9 @@ export default {
   &.--double {
     max-height: 30px;
   }
+
+  img {
+    max-width: 100%;
+  }
 }
 </style>

@@ -63,12 +63,11 @@
       </div>
     </v-col>
     <v-overlay
-      :absolute="true"
-      :activator="loading"
-      :opacity="0.8"
-      color="white"
+      :model-value="loading"
+      contained
+      scrim="white"
       z-index="3"
-      class="input-disabled-overlay"
+      class="input-disabled-overlay d-flex align-center justify-center "
     >
       <div class="loading">
         <v-progress-circular size="50" color="primary" indeterminate />
@@ -175,6 +174,8 @@ export default {
           payload.images.splice(imageIndex, 1)
         }
       }
+
+      console.log('blob', blob)
 
       this.setInspectionEdited(payload.images && payload.images.length > 0)
 
