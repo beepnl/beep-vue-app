@@ -37,7 +37,7 @@
             }}<v-icon
               v-if="touchDevice"
               class="ml-1 icon-info"
-              size="x-small"
+              :size="mobile ? 'x-small' : 'small'"
               color="accent"
               @click.stop="toggleShowInfo(btn.mode)"
               >mdi-information</v-icon

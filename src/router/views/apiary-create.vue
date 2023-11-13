@@ -109,7 +109,7 @@
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field
                         v-if="newHive"
-                        :model-value="newHive.name"
+                        v-model="newHive.name"
                         :label="`${$t('Name')}*`"
                         :placeholder="`${$t('Name')}`"
                         class="beep--large"
@@ -301,7 +301,7 @@
                     <v-col cols="12" sm="8">
                       <v-text-field
                         v-if="newHive"
-                        :model-value="newHive.city"
+                        v-model="newHive.city"
                         :label="`${$t('City')}`"
                         variant="outlined"
                         density="compact"
@@ -313,7 +313,7 @@
                     <v-col cols="12" sm="4">
                       <v-text-field
                         v-if="newHive"
-                        :model-value="newHive.postal_code"
+                        v-model="newHive.postal_code"
                         :label="`${$t('Postal_code')}`"
                         variant="outlined"
                         density="compact"
@@ -325,7 +325,7 @@
                     <v-col cols="8">
                       <v-text-field
                         v-if="newHive"
-                        :model-value="newHive.street"
+                        v-model="newHive.street"
                         :label="`${$t('Street')}`"
                         variant="outlined"
                         density="compact"
@@ -337,7 +337,7 @@
                     <v-col cols="4">
                       <v-text-field
                         v-if="newHive"
-                        :model-value="newHive.street_no"
+                        v-model="newHive.street_no"
                         :label="`${$t('Number')}`"
                         variant="outlined"
                         density="compact"

@@ -19,7 +19,7 @@
           <v-icon
             v-if="pageImageFile !== null"
             class="float-right mt-n2 ml-n4"
-            size="x-small"
+            :size="mobile ? 'x-small' : 'small'"
             color="green"
             >mdi-check-circle</v-icon
           >
@@ -92,6 +92,9 @@ export default {
     showLoading: false,
   }),
   computed: {
+    mobile() {
+      return this.$vuetify.display.xs
+    },
     uploadText() {
       return this.$i18n.te('Upload_pagenr')
         ? this.$i18n.t('Upload_pagenr').replace('[pagenr]', this.pageNr)

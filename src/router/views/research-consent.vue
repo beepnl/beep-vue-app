@@ -283,7 +283,7 @@
                         >
                           <v-btn
                             class="mt-n1 text-green"
-                            size="x-small"
+                            :size="mobile ? 'x-small' : 'small'"
                             @click="
                               updateConsentDate(
                                 research.id,
@@ -319,7 +319,7 @@
                             <template v-slot:activator="{ props }">
                               <v-icon
                                 class="icon-info"
-                                size="x-small"
+                                :size="mobile ? 'x-small' : 'small'"
                                 color="accent"
                                 v-bind="props"
                                 >mdi-information</v-icon

@@ -30,7 +30,7 @@
               ></v-switch>
               <v-icon
                 class="icon-info cursor-pointer ml-2"
-                size="x-small"
+                :size="mobile ? 'x-small' : 'small'"
                 :color="showExplanation ? 'accent' : 'grey'"
                 @click="showExplanation = !showExplanation"
                 >mdi-information</v-icon

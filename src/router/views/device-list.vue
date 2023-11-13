@@ -75,7 +75,7 @@
           {{ $tc('device', ownedDevices.length) }}
           <v-icon
             class="ml-1 icon-info cursor-pointer"
-            size="x-small"
+            :size="mobile ? 'x-small' : 'small'"
             color="accent"
             @click="showInfo = !showInfo"
             >mdi-information</v-icon
@@ -287,7 +287,7 @@
                   </v-col>
                   <v-col cols="12" md="6" class="pb-0 pb-sm-3">
                     <v-text-field
-                      :value="
+                      :model-value="
                         ownedDevice.hardware_id !== null &&
                         ownedDevice.hardware_id !== undefined
                           ? ownedDevice.hardware_id
@@ -304,7 +304,7 @@
                   </v-col>
                   <v-col cols="12" md="6" class="pb-0 pb-sm-3">
                     <v-text-field
-                      :value="
+                      :model-value="
                         ownedDevice.firmware_version !== null &&
                         ownedDevice.firmware_version !== undefined
                           ? ownedDevice.firmware_version
@@ -316,7 +316,7 @@
                       "
                       :disabled="ownedDevice.type === 'beep'"
                       @update:model-value="
-                        updateDevice(ownedDevice, 'firmware_id', $event)
+                        updateDevice(ownedDevice, 'firmware_version', $event)
                       "
                     />
                   </v-col>
@@ -370,7 +370,7 @@
                             <a
                               ><v-icon
                                 class="ml-1 icon-info"
-                                size="x-small"
+                                :size="mobile ? 'x-small' : 'small'"
                                 color="accent"
                                 @click="showDescription = !showDescription"
                                 >mdi-information</v-icon
@@ -720,7 +720,7 @@ export default {
       return this.$vuetify.display.xs
     },
     ownedDevices() {
-      const ownedDevices = this.devices
+      const ownedDevices = JSON.parse(JSON.stringify(this.devices)) // clone without v-bind to avoid vuex warning when mutating
       const sortedOwnedDevices = ownedDevices
         .filter((device) => device.owner)
         .slice()
@@ -770,14 +770,15 @@ export default {
         })
 
         const response = await Api.readRequest('/devices')
-        const devices = response.data
 
         if (save) {
           this.$store.commit('devices/setData', {
             prop: 'devices',
-            value: devices,
+            value: response.data,
           })
         }
+
+        const devices = response.data
 
         devices.map((device) => {
           device.delete = false // otherwise Vue can't track the 'delete' property
@@ -1113,7 +1114,7 @@ export default {
   }
   .device-delete {
     background-color: rgba(255, 0, 0, 0.05);
-    border-color: $color-red;
+    border-color: $color-red !important;
     .device-title-row--border-bottom {
       border-bottom: 1px solid $color-red;
     }

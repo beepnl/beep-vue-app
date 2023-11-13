@@ -311,7 +311,7 @@
               ></div>
               <v-icon
                 class="mdi icon-info cursor-pointer ml-2"
-                size="x-small"
+                :size="mobile ? 'x-small' : 'small'"
                 :color="showChecklistSvgExp ? 'accent' : 'grey'"
                 @click="showChecklistSvgExp = !showChecklistSvgExp"
                 >mdi-information</v-icon

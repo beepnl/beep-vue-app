@@ -58,7 +58,7 @@
         ></span>
         <v-icon
           class="icon-info cursor-pointer"
-          size="x-small"
+          :size="mobile ? 'x-small' : 'small'"
           :color="showExplanation ? 'accent' : 'grey'"
           @click="showExplanation = !showExplanation"
           >mdi-information</v-icon
@@ -135,6 +135,9 @@ export default {
         }
       }
       return missingPages
+    },
+    mobile() {
+      return this.$vuetify.display.xs
     },
     pageNrs() {
       const returnedPageNrs = this.parsedOfflineInput.scans

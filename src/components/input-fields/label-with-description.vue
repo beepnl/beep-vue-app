@@ -17,7 +17,7 @@
         "
         ><v-icon
           class="ml-1 icon-info"
-          size="x-small"
+          :size="mobile ? 'x-small' : 'small'"
           color="accent"
           @click="showDescription = !showDescription"
           >mdi-information</v-icon
@@ -192,6 +192,9 @@ export default {
     },
     locale() {
       return this.$i18n.locale
+    },
+    mobile() {
+      return this.$vuetify.display.xs
     },
     presetItems() {
       return this.scoreAmount

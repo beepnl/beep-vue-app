@@ -14,7 +14,10 @@
         <a
           v-if="category.description !== null || category.source !== null"
           @click="showDescription = !showDescription"
-          ><v-icon class="ml-1 icon-info" size="x-small" color="accent"
+          ><v-icon
+            class="ml-1 icon-info"
+            :size="mobile ? 'x-small' : 'small'"
+            color="accent"
             >mdi-information</v-icon
           ></a
         >
@@ -146,6 +149,9 @@ export default {
   computed: {
     locale() {
       return this.$i18n.locale
+    },
+    mobile() {
+      return this.$vuetify.display.xs
     },
   },
   methods: {

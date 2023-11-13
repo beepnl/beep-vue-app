@@ -17,7 +17,7 @@
                   {{ $t('Compare_hives') }}
                   <v-icon
                     class="ml-1 icon-info cursor-pointer"
-                    size="x-small"
+                    :size="mobile ? 'x-small' : 'small'"
                     :color="showInfo ? 'accent' : 'grey'"
                     @click="showInfo = !showInfo"
                     >mdi-information</v-icon
@@ -584,6 +584,9 @@ export default {
     },
     localVar() {
       return 'beepChartCols' + this.cardName
+    },
+    mobile() {
+      return this.$vuetify.display.xs
     },
     multipleHivesDataPresent() {
       return this.multipleHivesWithData.length > 0 // Object.keys(this.multipleHivesMeasurementData) somehow does not work

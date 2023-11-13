@@ -65,7 +65,7 @@
                 {{ $t('Log_files') }}
                 <v-icon
                   class="ml-1 icon-info cursor-pointer"
-                  size="x-small"
+                  :size="mobile ? 'x-small' : 'small'"
                   color="accent"
                   @click="showInfo = !showInfo"
                   >mdi-information</v-icon
@@ -805,6 +805,9 @@ export default {
           value,
         })
       },
+    },
+    mobile() {
+      return this.$vuetify.display.xs
     },
     selectedFlashLog: {
       get() {
