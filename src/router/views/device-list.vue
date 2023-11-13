@@ -720,10 +720,8 @@ export default {
       return this.$vuetify.display.xs
     },
     ownedDevices() {
-      const ownedDevices = JSON.parse(JSON.stringify(this.devices)) // clone without v-bind to avoid vuex warning when mutating
-      const sortedOwnedDevices = ownedDevices
+      const sortedOwnedDevices = this.devices
         .filter((device) => device.owner)
-        .slice()
         .sort(function(a, b) {
           if (a.id > b.id) {
             return -1
@@ -943,7 +941,8 @@ export default {
       if (typeof device.id === 'undefined') {
         return this.removeDevice(device.key, index)
       }
-      device.delete = !device.delete
+      const deviceInList = this.devices.filter((d) => d.id === device.id)[0]
+      deviceInList.delete = !deviceInList.delete
     },
     deleteSensorDef(device, sensorDef) {
       if (typeof sensorDef.id === 'undefined') {
