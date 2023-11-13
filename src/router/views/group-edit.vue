@@ -292,7 +292,7 @@
                           class="mt-0"
                           :disabled="user.delete"
                           hide-details
-                          direction="vertical"
+                          :direction="mobile ? 'vertical' : 'horizontal'"
                           :ripple="false"
                         >
                           <template v-slot:label>

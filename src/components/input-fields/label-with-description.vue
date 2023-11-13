@@ -70,7 +70,18 @@
             (columnItems ? 'flex-column align-start' : 'align-center')
         "
       >
-        <div v-for="(image, j) in parsedImages" :key="'pi-' + j" class="d-flex">
+        <div
+          v-for="(image, j) in parsedImages"
+          :key="'pi-' + j"
+          :class="
+            'd-flex ' +
+              (itemIsCheckbox
+                ? 'checkbox-div' + (itemIsCheckboxList ? ' mb-1' : '')
+                : 'text-div' +
+                  (textArea ? ' --area' : '') +
+                  (parsedDate ? ' --double' : ''))
+          "
+        >
           <div v-if="gradeItem" class="d-flex flex-column align-center">
             <div>
               <span v-text="j + 1"></span>
@@ -92,13 +103,13 @@
           </div>
 
           <div
-            v-if="item && item.input.indexOf('boolean') > -1"
-            :class="'ml-1' + (j === 0 ? ' mr-8' : '')"
+            v-if="booleanItem"
+            :class="'ml-1 mt-1' + (j === 0 ? ' mr-5' : '')"
           >
             <span v-text="j === 0 ? $t('yes') : $t('no')"></span>
           </div>
 
-          <div v-if="item && item.input === 'score'">
+          <div v-if="scoreItem" class="mb-1">
             <v-icon
               v-for="star in j + 1"
               :key="star + 1"
@@ -107,7 +118,7 @@
             >
           </div>
 
-          <div v-if="presetItems" class="ml-1">
+          <div v-if="presetItems" class="ml-1 mb-1">
             <span v-text="presetItems[j]"></span>
           </div>
 
@@ -175,6 +186,11 @@ export default {
       default: false,
       required: false,
     },
+    textArea: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
   },
   data: function() {
     return {
@@ -184,6 +200,9 @@ export default {
     }
   },
   computed: {
+    booleanItem() {
+      return this.item && this.item.input.indexOf('boolean') > -1
+    },
     columnItems() {
       return this.item && this.item.input.indexOf('score') > -1
     },
@@ -196,6 +215,17 @@ export default {
     mobile() {
       return this.$vuetify.display.xs
     },
+    itemIsCheckbox() {
+      return (
+        this.booleanItem ||
+        this.gradeItem ||
+        this.smileyItem ||
+        this.itemIsCheckboxList
+      )
+    },
+    itemIsCheckboxList() {
+      return this.presetItems || this.scoreItem || this.columnItems
+    },
     presetItems() {
       return this.scoreAmount
         ? this.scoreAmountItems
@@ -206,8 +236,14 @@ export default {
     scoreAmount() {
       return this.item && this.item.input === 'score_amount'
     },
+    scoreItem() {
+      return this.item && this.item.input === 'score'
+    },
     scoreQuality() {
       return this.item && this.item.input === 'score_quality'
+    },
+    smileyItem() {
+      return this.item && this.item.input === 'smileys_3'
     },
   },
   created() {
@@ -218,7 +254,7 @@ export default {
   methods: {
     checkboxExtraSpace(index) {
       return (
-        ((this.item && this.item.input === 'smileys_3') || this.gradeItem) &&
+        (this.smileyItem || this.gradeItem) &&
         index < this.parsedImages.length - 1
       )
     },
@@ -245,8 +281,8 @@ export default {
 }
 
 .parsed-checkbox {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
 }
 
 .img-helper {
@@ -255,6 +291,25 @@ export default {
   &.dot {
     font-weight: bold;
     margin-top: 6px;
+  }
+}
+
+.checkbox-div {
+  height: 24px;
+  width: auto;
+}
+
+.text-div {
+  max-height: 50px;
+  width: auto;
+  max-width: 100%;
+
+  &.--area {
+    max-height: 100px;
+  }
+
+  &.--double {
+    max-height: 30px;
   }
 }
 </style>
