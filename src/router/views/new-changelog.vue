@@ -2,8 +2,17 @@
   <Layout :title="$t('Whats_new')">
     <v-container class="new-container">
       <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.0.14 (31-08-2023) - Current
+        ><span class="lowercase">v</span>4.1.0 (13-11-2023) - Current
         version</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>Upgraded behind the scenes to Vue 3</li>
+        </ul>
+      </div>
+
+      <div class="text-overline mb-1"
+        ><span class="lowercase">v</span>4.0.14 (31-08-2023)</div
       >
       <div class="rounded-border mb-4">
         <ul>
