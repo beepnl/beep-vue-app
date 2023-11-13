@@ -48,7 +48,7 @@
             <div class="text-overline mb-3">{{
               '1. ' + $tc('Select_hive', 2)
             }}</div>
-            <div v-if="!showApiaryPlaceholder" class="beep-label mb-3">
+            <div v-if="!showApiaryPlaceholder" class="beep-label mt-n3 mb-3">
               <span v-text="$t('Select_hives_for_dashboard_exp')"></span>
               <span
                 v-if="showMaxWarning"

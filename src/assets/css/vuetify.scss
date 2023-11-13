@@ -7,6 +7,10 @@
   color: $color-accent !important;
 }
 
+.v-alert__content {
+  overflow: visible !important;
+}
+
 .v-card--variant-outlined {
   border: thin solid #ccc !important;
 }
@@ -26,14 +30,17 @@
   padding-top: 10px !important;
 }
 
-.v-label.v-field-label {
+.v-field:not(.v-field--focused):not(.v-field--active) .v-label.v-field-label {
   font-size: 16px !important;
   margin-top: 8px;
 }
 
-.v-input .v-field--center-affix .v-label.v-field-label {
+.v-input
+  .v-field--center-affix:not(.v-field--focused):not(.v-field--active)
+  .v-label.v-field-label {
   margin-top: 12px !important;
   top: 20% !important;
+  margin-left: 8px; //
 }
 
 .v-field--active.v-field--variant-underlined .v-label.v-field-label {
@@ -73,6 +80,15 @@
   transform: translateX(-50%) !important;
 }
 
+.v-table .v-input--density-compact {
+  .v-field--variant-solo {
+    --v-input-control-height: 30px !important;
+  }
+  .v-field--no-label {
+    --v-field-padding-bottom: 0px !important;
+  }
+}
+
 .v-theme--beepTheme {
   --v-medium-emphasis-opacity: 1;
   --v-hover-opacity: 0;
@@ -81,11 +97,16 @@
 
 .v-text-field:not(.v-field--variant-underlined):not(.v-field--variant-solo):not(.v-select):not(.beep-search-field)
   input {
-  padding: 8px 0 0 2px !important;
+  padding: 8px 0 0 8px !important; // 8px 0 0 2px
 }
 
 .v-text-field.beep-search-field input {
   padding: 6px 0 0 8px !important;
+  @include for-phone-only {
+    padding: 0 6px !important;
+    margin-top: -12px !important;
+    top: 30%;
+  }
 }
 
 .v-text-field.group-edit-name input {

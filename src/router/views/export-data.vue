@@ -25,7 +25,10 @@
         <v-row>
           <v-col class="d-flex justify-space-between" cols="12">
             <v-spacer></v-spacer>
-            <div>
+            <div
+              style="width: 100%;"
+              :class="'d-flex justify-end' + (mobile ? ' flex-column' : '')"
+            >
               <v-btn
                 color="accent"
                 class="save-button-mobile-wide"

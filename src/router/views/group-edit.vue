@@ -252,6 +252,7 @@
                           :placeholder="`${$t('invitee_name')}`"
                           class="mt-2"
                           density="compact"
+                          direction="vertical"
                         ></v-text-field>
                       </td>
                       <td :class="mobile ? 'td--medium' : ''">
@@ -261,6 +262,7 @@
                           :placeholder="`${$t('email_is_required')}`"
                           class="mt-2"
                           density="compact"
+                          direction="vertical"
                         ></v-text-field>
                       </td>
                       <td>
@@ -282,7 +284,7 @@
                           >{{ $t('group_declined') }}</span
                         >
                       </td>
-                      <td>
+                      <td :class="mobile ? 'td--small' : ''">
                         <v-checkbox
                           v-if="!user.creator"
                           v-model="user.admin"
@@ -290,6 +292,7 @@
                           class="mt-0"
                           :disabled="user.delete"
                           hide-details
+                          direction="vertical"
                           :ripple="false"
                         >
                           <template v-slot:label>

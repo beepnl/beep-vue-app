@@ -65,7 +65,7 @@
                 {{ $t('Log_files') }}
                 <v-icon
                   class="ml-1 icon-info cursor-pointer"
-                  size="small"
+                  size="x-small"
                   color="accent"
                   @click="showInfo = !showInfo"
                   >mdi-information</v-icon
@@ -687,6 +687,7 @@ export default {
         process.env.VUE_APP_BASE_API_URL ||
         process.env.VUE_APP_BASE_API_URL_FALLBACK,
       importMessageCopy: null,
+      itemsPerPage: 5, // was 1 for smAndDown for Vuetify 2 but in 3 there is only the normal row view (instead of 1 row per column for mobile view)
     }
   },
   computed: {
@@ -715,9 +716,6 @@ export default {
         : this.$i18n.t('no_data_stored') +
             '. ' +
             JSON.stringify(this.importMessageCopy)
-    },
-    itemsPerPage() {
-      return this.smAndDown ? 1 : 5
     },
     lgAndUp() {
       return this.$vuetify.display.lgAndUp

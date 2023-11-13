@@ -136,7 +136,7 @@
         :items="filteredInspections"
         :min-item-size="90"
         :class="
-          'scroller pl-sm-6' +
+          'scroller pl-sm-6 px-2 pr-sm-0' +
             (filteredInspections.length <= paginationItems
               ? ' --single-page'
               : '')

@@ -14,7 +14,7 @@
         <a
           v-if="category.description !== null || category.source !== null"
           @click="showDescription = !showDescription"
-          ><v-icon class="ml-1 icon-info" size="small" color="accent"
+          ><v-icon class="ml-1 icon-info" size="x-small" color="accent"
             >mdi-information</v-icon
           ></a
         >
@@ -57,15 +57,12 @@
         class="rounded-border"
       >
         <v-row>
-          <div
+          <v-col
             v-for="(item, index) in category.children"
             :key="index"
-            :class="
-              'v-col ' +
-                (item.input === 'label' || item.input === 'text' || nested
-                  ? 'v-col-12'
-                  : 'v-col-xs-12 v-col-sm-6 v-col-md-4 v-col-lg-3')
-            "
+            cols="12"
+            :sm="itemFullWidth(item) ? 12 : 6"
+            :md="itemFullWidth(item) ? 12 : 3"
           >
             <ChecklistInput
               v-if="item.input !== 'label'"
@@ -79,7 +76,7 @@
               :category="item"
               :parse-mode="parseMode"
             ></ChecklistFieldset>
-          </div>
+          </v-col>
         </v-row>
       </div>
 
@@ -149,6 +146,11 @@ export default {
   computed: {
     locale() {
       return this.$i18n.locale
+    },
+  },
+  methods: {
+    itemFullWidth(item) {
+      return this.nested || item.input === 'label' || item.input === 'text'
     },
   },
 }

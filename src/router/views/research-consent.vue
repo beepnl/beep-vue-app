@@ -4,9 +4,9 @@
       <div>
         <v-row>
           <v-col cols="12">
-            <p class="text-red">{{ $t('research_warning') }}</p>
-            <p>{{ $t('research_explanation_p1') }}</p>
-            <p>{{ $t('research_explanation_p2') }}</p>
+            <p class="text-red mb-2">{{ $t('research_warning') }}</p>
+            <p class="mb-2">{{ $t('research_explanation_p1') }}</p>
+            <p class="mb-2">{{ $t('research_explanation_p2') }}</p>
             <p class="mb-0"
               ><i>{{
                 /* eslint-disable vue/comma-dangle */
@@ -123,8 +123,8 @@
                         v-for="checklistName in research.checklist_names"
                         :key="checklistName"
                         class="mr-1 mb-1"
-                        small
-                        color="primary"
+                        size="small"
+                        color="accent"
                       >
                         {{ checklistName }}
                       </v-chip>
@@ -319,7 +319,7 @@
                             <template v-slot:activator="{ props }">
                               <v-icon
                                 class="icon-info"
-                                size="small"
+                                size="x-small"
                                 color="accent"
                                 v-bind="props"
                                 >mdi-information</v-icon
@@ -662,6 +662,7 @@ export default {
 
 .research-item-col {
   padding: 0 12px 8px 12px !important;
+  word-break: break-word;
 }
 
 .research-datepicker {
@@ -681,7 +682,7 @@ export default {
   .v-btn__content {
     white-space: normal !important;
   }
-  &.v-btn:not(.v-btn--round).v-size--small {
+  &.v-btn:not(.v-btn--round).v-btn--size-small {
     height: 100% !important;
     min-height: 28px;
     .v-btn__content {
@@ -689,7 +690,7 @@ export default {
       line-height: 18px;
     }
   }
-  &.v-btn:not(.v-btn--round).v-size--default {
+  &.v-btn:not(.v-btn--round).v-btn--size-default {
     height: 100% !important;
     min-height: 36px;
     .v-btn__content {

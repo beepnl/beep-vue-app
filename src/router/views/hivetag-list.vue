@@ -58,7 +58,7 @@
             <div class="text-overline ">{{ $tc('Hivetag', 2) }}</div>
             <v-icon
               class="icon-info cursor-pointer ml-2"
-              size="small"
+              size="x-small"
               :color="showExplanation ? 'accent' : 'grey'"
               @click="showExplanation = !showExplanation"
               >mdi-information</v-icon
@@ -248,7 +248,7 @@ export default {
 .filter-bar-wrapper {
   top: 52px;
   .filter-bar {
-    .v-input:not(.v-input--switch) {
+    .v-input:not(.v-switch) {
       background-color: $color-white;
     }
     .v-input--selection-controls {

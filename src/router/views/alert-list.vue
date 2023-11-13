@@ -576,7 +576,7 @@ export default {
   margin-top: 175px;
   overflow: hidden;
   @include for-phone-only {
-    margin-top: 55px;
+    margin-top: 155px;
   }
 
   .alerts-item-transition-wrapper {

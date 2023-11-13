@@ -400,7 +400,7 @@
     </template>
 
     <v-list density="compact" class="hive-menu-list" variant="flat">
-      <v-list-item v-if="xsView">
+      <v-list-item>
         <v-list-item-title class="title">
           {{ hive.name }}
         </v-list-item-title>

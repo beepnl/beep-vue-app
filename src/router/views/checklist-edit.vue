@@ -492,12 +492,11 @@ export default {
                   },
                 })
               } else if (!this.checklistsPage) {
-                this.$router.go(-1).catch((error) => {
-                  if (error.name === 'NavigationDuplicated') {
-                    this.readChecklistAndTaxonomy(this.selectedChecklistId)
-                    this.showLoadingIcon = false
-                  }
-                })
+                if (localStorage.beepPreviousRoute === this.$route.name) {
+                  this.readChecklistAndTaxonomy(this.selectedChecklistId)
+                  this.showLoadingIcon = false
+                }
+                this.$router.go(-1)
               } else if (this.checklistsPage) {
                 this.readChecklistAndTaxonomy(this.selectedChecklistId)
                 this.showLoadingIcon = false

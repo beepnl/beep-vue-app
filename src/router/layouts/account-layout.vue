@@ -7,7 +7,10 @@
       :class="(mobile ? 'bee--mobile' : '') + (darkMode ? ' bee--light' : '')"
     ></div>
   </div>
-  <v-card class="account-card d-flex flex-column align-center">
+  <v-card
+    class="account-card d-flex flex-column align-center rounded-border"
+    variant="flat"
+  >
     <div v-if="!dashboardMode" class="mt-4">
       <a href="/"
         ><img

@@ -1784,6 +1784,9 @@ export default {
 .new-container {
   ul {
     margin-left: 6px;
+    @include for-phone-only {
+      margin-left: 20px;
+    }
   }
 }
 .new-block {

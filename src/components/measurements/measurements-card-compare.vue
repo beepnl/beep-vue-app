@@ -17,7 +17,7 @@
                   {{ $t('Compare_hives') }}
                   <v-icon
                     class="ml-1 icon-info cursor-pointer"
-                    size="small"
+                    size="x-small"
                     :color="showInfo ? 'accent' : 'grey'"
                     @click="showInfo = !showInfo"
                     >mdi-information</v-icon

@@ -142,10 +142,13 @@
 
       <div v-if="category.children.length > 0">
         <v-row>
-          <div
+          <v-col
             v-for="(item, index) in category.children"
             :key="index"
-            :class="'v-col ' + generateClassNames(item)"
+            cols="12"
+            :sm="itemFullWidth(item) ? 12 : 6"
+            :md="itemFullWidth(item) ? 12 : 4"
+            :lg="itemFullWidth(item) ? 12 : 3"
           >
             <ChecklistInput
               v-if="item.input !== 'label' && item.name !== 'colony_size'"
@@ -161,7 +164,7 @@
               :category="item"
               :parse-mode="parseMode"
             ></ChecklistFieldset>
-          </div>
+          </v-col>
         </v-row>
       </div>
       <v-overlay
@@ -309,12 +312,13 @@ export default {
       return this.activeHive.layers.filter((layer) => layer.type === type)
         .length
     },
-    generateClassNames(item) {
-      if (item.input === 'label' || item.input === 'text' || this.nested) {
-        return 'v-col-12'
-      } else if (item.name !== 'colony_size') {
-        return 'v-col-xs-12 v-col-sm-6 v-col-md-3'
-      }
+    itemFullWidth(item) {
+      return (
+        this.nested ||
+        item.input === 'label' ||
+        item.input === 'text' ||
+        item.name === 'colony_size'
+      )
     },
     setInputNumbers() {
       this.broodLayersForCalculation = this.countLayers('brood')

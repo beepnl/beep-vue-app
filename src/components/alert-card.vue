@@ -18,9 +18,8 @@
             <v-checkbox-btn
               v-if="mobile"
               :model-value="isSelected"
-              class="ma-0 pt-0"
+              class="ma-0 ml-n1"
               density="compact"
-              :ripple="false"
               hide-details
               @update:model-value="toggleCheckbox(alert.id)"
             />
@@ -213,7 +212,7 @@
             </v-col>
 
             <v-col cols="12" md="6" class="alert-content pa-0">
-              <v-row class="my-0 py-0 ml-n7 ml-md-0 pr-3">
+              <v-row class="my-0 py-0 ml-n11 ml-md-0 pr-3">
                 <v-col
                   cols="12"
                   md="5"
@@ -224,7 +223,7 @@
                       class="d-flex flex-column justify-flex-start align-start mr-2"
                     >
                       <div class="d-flex flex-no-wrap">
-                        <div class="mr-1 my-0">
+                        <div class="mr-6 my-0">
                           <v-icon>
                             mdi-exclamation-thick
                           </v-icon>
@@ -263,7 +262,7 @@
                     <div
                       class="d-flex flex-no-wrap justify-flex-start align-start mr-2"
                     >
-                      <div class="mr-1 my-0">
+                      <div class="mr-6 my-0">
                         <v-icon>
                           mdi-calculator
                         </v-icon>
@@ -289,34 +288,38 @@
                     v-if="alert.hive_group_name || alert.location_name"
                     class="alert-content-item"
                   >
-                    <v-icon
-                      v-if="alert.hive_group_name"
-                      class="icon-apiary-shared color-grey"
-                    >
-                      mdi-account-multiple
-                    </v-icon>
-                    <v-icon
-                      v-else-if="alert.location_name"
-                      class="icon-apiary-owned color-grey"
-                    >
-                      mdi-home-analytics
-                    </v-icon>
-                    <span
-                      v-if="alert.hive_group_name || alert.location_name"
-                      class="alert-label"
-                      v-text="
-                        alert.hive_group_name
-                          ? alert.hive_group_name
-                          : alert.location_name
-                      "
-                    >
-                    </span>
-                    <span
-                      v-if="alert.hive_group_name && alert.location_name"
-                      class="alert-label"
-                      v-text="' (' + alert.location_name + ')'"
-                    >
-                    </span>
+                    <div class="d-flex flex-no-wrap">
+                      <div class="mr-4 my-0">
+                        <v-icon
+                          v-if="alert.hive_group_name"
+                          class="icon-apiary-shared color-grey"
+                        >
+                          mdi-account-multiple
+                        </v-icon>
+                        <v-icon
+                          v-else-if="alert.location_name"
+                          class="icon-apiary-owned color-grey"
+                        >
+                          mdi-home-analytics
+                        </v-icon>
+                      </div>
+                      <div class="alert-label alert-label-break">
+                        <span
+                          v-if="alert.hive_group_name || alert.location_name"
+                          v-text="
+                            alert.hive_group_name
+                              ? alert.hive_group_name
+                              : alert.location_name
+                          "
+                        >
+                        </span>
+                        <span
+                          v-if="alert.hive_group_name && alert.location_name"
+                          v-text="' (' + alert.location_name + ')'"
+                        >
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </v-col>
               </v-row>
@@ -602,6 +605,11 @@ export default {
     min-width: 32px;
     @include for-tablet-landscape-up {
       min-width: 36px;
+    }
+    @include for-phone-only {
+      .v-icon {
+        margin-left: 2px !important;
+      }
     }
   }
 

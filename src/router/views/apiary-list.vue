@@ -157,7 +157,7 @@
         v-for="invitation in invitations"
         :key="'Invitation ' + invitation.id"
         :class="
-          `hive-set ${xsView ? 'xs-view' : ''} ${
+          `mx-n1 hive-set ${xsView ? 'xs-view' : ''} ${
             showApiaryPlaceholder ? 'mt-2' : ''
           }`
         "
@@ -324,7 +324,7 @@
       <v-row
         v-for="hiveSet in filteredHiveSets"
         :key="'hiveSet ' + hiveSet.name + ' ' + hiveSet.id"
-        :class="`hive-set ${xsView ? 'xs-view' : ''}`"
+        :class="`mx-n1 hive-set ${xsView ? 'xs-view' : ''}`"
         density="compact"
       >
         <div
@@ -441,7 +441,7 @@
                       :to="item.to"
                       :prepend-icon="item.icon"
                       :title="item.text"
-                      @click.prevent="item.click || null"
+                      @click="item.click || null"
                     >
                     </v-list-item>
 
@@ -559,7 +559,7 @@
       <v-row
         v-else-if="sortedHiveSets.length && !filteredHiveSets.length"
         density="compact"
-        class="hive-set"
+        class="mx-n1 hive-set"
       >
         <v-col sm="auto" :cols="12">
           {{ $t('no_results') }}

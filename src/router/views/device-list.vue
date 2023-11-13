@@ -75,7 +75,7 @@
           {{ $tc('device', ownedDevices.length) }}
           <v-icon
             class="ml-1 icon-info cursor-pointer"
-            size="small"
+            size="x-small"
             color="accent"
             @click="showInfo = !showInfo"
             >mdi-information</v-icon
@@ -370,7 +370,7 @@
                             <a
                               ><v-icon
                                 class="ml-1 icon-info"
-                                size="small"
+                                size="x-small"
                                 color="accent"
                                 @click="showDescription = !showDescription"
                                 >mdi-information</v-icon
@@ -460,6 +460,7 @@
                                 :placeholder="`${$t('Name')}`"
                                 class="mt-2"
                                 density="compact"
+                                direction="vertical"
                                 @update:model-value="sensorDefEdited = true"
                               ></v-text-field>
                             </td>
@@ -509,6 +510,7 @@
                                 "
                                 class="mt-2 mb-n5"
                                 variant="solo"
+                                direction="vertical"
                                 @update:model-value="
                                   selectInputMeasurementId(sensorDef, $event)
                                 "
@@ -526,6 +528,7 @@
                                 "
                                 class="mt-2 mb-n5"
                                 variant="solo"
+                                direction="vertical"
                                 @update:model-value="sensorDefEdited = true"
                               ></v-select>
                             </td>

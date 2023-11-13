@@ -17,6 +17,7 @@
         >
           <v-icon
             v-if="tab.title && tab.icon"
+            :size="mobile ? 'large' : 'default'"
             :class="
               'mr-1 apiary-tab-icon' +
                 (tab.index === activeTab ? '' : ' --inactive')
@@ -36,7 +37,9 @@
       <v-window v-model="activeTab" class="apiary-create">
         <v-window-item :value="0">
           <div class="browse-tabs-bar">
-            <div class="d-flex justify-space-between">
+            <div
+              class="d-flex justify-space-between align-center chevron-wrapper"
+            >
               <v-spacer></v-spacer>
               <div class="d-flex align-center">
                 <span class="text-overline mr-3 d-flex align-center"
@@ -74,7 +77,9 @@
 
         <v-window-item :value="1">
           <div class="browse-tabs-bar">
-            <div class="d-flex justify-space-between">
+            <div
+              class="d-flex justify-space-between align-center chevron-wrapper"
+            >
               <v-icon
                 x-large
                 dark
@@ -191,7 +196,9 @@
 
         <v-window-item :value="2">
           <div class="browse-tabs-bar">
-            <div class="d-flex justify-space-between">
+            <div
+              class="d-flex justify-space-between align-center chevron-wrapper"
+            >
               <v-icon
                 x-large
                 dark
@@ -348,7 +355,9 @@
 
         <v-window-item :value="3">
           <div class="browse-tabs-bar">
-            <div class="d-flex justify-space-between">
+            <div
+              class="d-flex justify-space-between align-center chevron-wrapper"
+            >
               <v-icon
                 x-large
                 dark
@@ -374,7 +383,9 @@
 
         <v-window-item :value="4">
           <div class="browse-tabs-bar">
-            <div class="d-flex align-center justify-space-between">
+            <div
+              class="d-flex align-center justify-space-between align-center chevron-wrapper"
+            >
               <v-icon x-large dark color="accent" @click="activeTab -= 1"
                 >mdi-chevron-left</v-icon
               >
@@ -799,6 +810,9 @@ export default {
     padding: 4px 0;
     background-color: $color-orange-light !important;
     border-bottom: 1px solid $color-orange-border !important;
+    .chevron-wrapper {
+      height: 40px;
+    }
     @include for-tablet-landscape-up {
       padding: 8px 12px;
     }

@@ -12,7 +12,7 @@
         variant="text"
         icon="mdi-arrow-left"
         density="compact"
-        class="ml-0"
+        class="ml-0 mr-2"
         @click="back"
       >
       </v-btn>
@@ -21,12 +21,10 @@
       <v-toolbar-title>{{ title }}</v-toolbar-title>
     </slot>
 
-    <v-spacer></v-spacer>
-
     <LocaleChanger></LocaleChanger>
 
     <v-app-bar-nav-icon
-      class="color-black ml-n2 mr-0"
+      class="color-black ml-n2 mr-n3"
       @click.stop="drawer = !drawer"
     ></v-app-bar-nav-icon>
   </v-app-bar>

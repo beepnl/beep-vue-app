@@ -17,7 +17,7 @@
           >
             <div
               v-if="!showAlertRulePlaceholder"
-              class="d-flex justify-start align-center"
+              class="d-flex justify-start align-center mt-n1 mt-sm-0"
             >
               <v-switch
                 v-model="alertsEnabled"
@@ -30,7 +30,7 @@
               ></v-switch>
               <v-icon
                 class="icon-info cursor-pointer ml-2"
-                size="small"
+                size="x-small"
                 :color="showExplanation ? 'accent' : 'grey'"
                 @click="showExplanation = !showExplanation"
                 >mdi-information</v-icon
@@ -128,10 +128,10 @@
                     v-for="(item, index) in buttonMenuItems"
                     :key="index"
                     :to="item.route ? { name: item.route } : null"
+                    class="text-black"
+                    :prepend-icon="item.icon"
+                    :title="item.title"
                   >
-                    <v-icon>{{ item.icon }}</v-icon>
-
-                    <v-list-item-title>{{ item.title }}</v-list-item-title>
                   </v-list-item>
                 </v-list>
               </v-menu>
@@ -460,8 +460,14 @@ export default {
 <style lang="scss" scoped>
 .filter-bar-wrapper {
   top: 52px;
+  .filter-container {
+    @include for-phone-only {
+      padding: 5px 10px 8px !important;
+      height: 40px;
+    }
+  }
   .filter-bar {
-    .v-input:not(.v-input--switch) {
+    .v-input:not(.v-switch) {
       background-color: $color-white;
     }
     .v-input--selection-controls {

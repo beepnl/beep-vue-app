@@ -71,11 +71,11 @@
               </v-btn>
             </v-col>
             <v-col cols="5" sm="4" class="pa-0">
-              <div class="d-flex justify-center">
+              <div>
                 <v-switch
                   v-model="setRelativeInterval"
                   :label="`${$t('Relative_startpoint')}`"
-                  class="d-flex justify-center pt-0 mt-0"
+                  class="d-flex justify-center pt-0 mt-n3 period-switch-xs"
                   :disabled="interval === 'selection'"
                   density="compact"
                   hide-details
@@ -152,12 +152,7 @@
             @update:model-value="selectDevice($event)"
           />
           <v-spacer></v-spacer>
-          <v-btn
-            :size="mobile && devices.length > 0 ? 'small' : 'default'"
-            :to="{ name: 'devices' }"
-            class="edit-button"
-            color="accent"
-          >
+          <v-btn :to="{ name: 'devices' }" class="edit-button" color="accent">
             <v-icon color="accent" :start="!mobile">mdi-pencil</v-icon>
             {{ mobile && devices.length > 0 ? '' : $t('Edit_devices') }}
           </v-btn>
@@ -1670,6 +1665,10 @@ export default {
   }
 }
 
+.period-switch-xs {
+  max-height: 28px;
+}
+
 .measurements-card-title {
   line-height: 1.5rem !important;
   &.measurements-card-title--border-bottom {
@@ -1686,10 +1685,7 @@ export default {
 }
 
 .measurements-content {
-  margin-top: 154px;
-  @include for-tablet-landscape-up {
-    margin-top: 136px;
-  }
+  margin-top: 136px;
   &.--touch-device {
     user-select: none; // prevent text selection on mobile drag on chart
     -webkit-touch-callout: none; // Safari
@@ -1720,7 +1716,7 @@ export default {
 }
 
 .sticky-header {
-  top: 166px !important;
+  top: 148px !important;
   z-index: 1 !important;
   background-color: $color-orange-light !important;
   border-bottom: 1px solid $color-orange-border;
