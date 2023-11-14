@@ -186,6 +186,7 @@ export default {
   data: function() {
     return {
       queen_colors: [
+        // year ending of birth year is index
         '#4A90E2',
         '#F4F4F4',
         '#F8DB31',
@@ -196,7 +197,7 @@ export default {
         '#F8DB31',
         '#D0021B',
         '#7ED321',
-      ], // year ending of birth year is index
+      ],
       swatchesQueen: [
         ['#4A90E2'],
         ['#F4F4F4'],

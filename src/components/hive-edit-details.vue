@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/comma-dangle -->
 <template>
   <v-row v-if="ready" class="hive-edit-details-wrapper">
     <v-col cols="12">
@@ -14,10 +15,7 @@
                 <div
                   class="beep-label"
                   v-text="
-                    `${$t('Hive_color')} (${$t(
-                      // eslint-disable-next-line vue/comma-dangle
-                      'overrides_layer_colors'
-                    )})`
+                    `${$t('Hive_color')} (${$t('overrides_layer_colors')})`
                   "
                 ></div>
                 <v-sheet
@@ -42,13 +40,7 @@
                   :step="1"
                   :precision="0"
                   :disabled="hive.layers.length === 0"
-                  @change="
-                    updateHiveLayers(
-                      parseInt($event),
-                      // eslint-disable-next-line vue/comma-dangle
-                      'framecount'
-                    )
-                  "
+                  @change="updateHiveLayers(parseInt($event), 'framecount')"
                 ></ElInputNumber>
               </v-col>
             </v-row>
@@ -150,13 +142,7 @@
                           :max="100"
                           :step="0.1"
                           :precision="1"
-                          @change="
-                            updateHive(
-                              $event.toString(),
-                              // eslint-disable-next-line vue/comma-dangle
-                              bbDimension
-                            )
-                          "
+                          @change="updateHive($event.toString(), bbDimension)"
                           @update:model-value="
                             convertComma($event, hive, bbDimension, 1),
                               setHiveEdited(true),
@@ -186,13 +172,7 @@
                           :max="100"
                           :step="0.1"
                           :precision="1"
-                          @change="
-                            updateHive(
-                              $event.toString(),
-                              // eslint-disable-next-line vue/comma-dangle
-                              frDimension
-                            )
-                          "
+                          @change="updateHive($event.toString(), frDimension)"
                           @update:model-value="
                             convertComma($event, hive, frDimension, 1),
                               setHiveEdited(true),
