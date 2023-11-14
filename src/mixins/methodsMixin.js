@@ -128,7 +128,11 @@ export const getMaxFramecount = {
     getMaxFramecount(layers) {
       const framecount =
         layers.length > 0
-          ? Math.max(...layers.map((layer) => layer.framecount))
+          ? Math.max(
+              ...layers.map((layer) => {
+                return layer.framecount
+              })
+            )
           : this.default
       return framecount
     },
