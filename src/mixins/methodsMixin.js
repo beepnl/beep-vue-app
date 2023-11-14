@@ -421,16 +421,42 @@ export const orderedLayers = {
 }
 
 export const parseDate = {
+  data() {
+    return {
+      possibleFormats: [
+        'YYYY-MM-DD HH:mm',
+        'YYYY-MM-DD',
+        'DD-MM-YYYY HH:mm',
+        'DD-MM-YYYY',
+        'MM-DD-YYYY HH:mm',
+        'MM-DD-YYYY',
+      ],
+      parseDateFormat: 'YYYY-MM-DD HH:mm:ss',
+    }
+  },
   computed: {
     currentYear() {
       return parseInt(this.$moment().format('YYYY'))
     },
   },
   methods: {
+    checkInputValid(input) {
+      let output = null
+      this.possibleFormats.map((format) => {
+        if (this.$moment(input, format, true).isValid()) {
+          output = this.$moment(input, format).format(this.parseDateFormat)
+        }
+        return true
+      })
+      if (output === null) {
+        output = this.$moment(input).format(this.parseDateFormat)
+      }
+      return output
+    },
     parseDate(input) {
-      const dateStr = this.$moment(input).format('YYYY-MM-DD HH:mm')
+      const dateStr = this.checkInputValid(input)
       let makesSense = false
-      if (dateStr !== 'Invalid date') {
+      if (dateStr && dateStr !== 'Invalid date') {
         const year = dateStr.substring(0, 4)
         const month = dateStr.substring(5, 7)
         const day = dateStr.substring(8, 10)
@@ -444,7 +470,7 @@ export const parseDate = {
           parseInt(hour) <= 24 &&
           parseInt(minutes) <= 59
       }
-      const output = makesSense ? dateStr : input.length > 0 ? '' : null
+      const output = makesSense ? dateStr : null
       return output
     },
     // parseDate(input) { // TODO remove if single-digits won't be used for sure

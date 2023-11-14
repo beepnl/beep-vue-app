@@ -257,9 +257,9 @@
 
                 <VueDatePicker
                   v-if="activeInspection"
-                  :format="datePickerFormat"
+                  :format="datePickerText"
+                  :model-type="datePickerFormat"
                   :model-value="inspectionDate"
-                  model-type="format"
                   hide-input-icon
                   :max-date="endOfToday"
                   :is-24="true"
@@ -545,9 +545,9 @@
                               ></labelWithDescription>
                               <VueDatePicker
                                 v-if="activeInspection"
-                                :format="datePickerFormat"
+                                :format="datePickerText"
+                                :model-type="datePickerFormat"
                                 :model-value="reminderDate"
-                                model-type="format"
                                 hide-input-icon
                                 :is-24="true"
                                 :teleport="true"
@@ -656,6 +656,7 @@ import {
   readApiariesAndGroupsIfNotPresent,
   readGeneralInspections,
 } from '@mixins/methodsMixin'
+import { momentify } from '@mixins/momentMixin'
 import OfflineInspection from '@components/offline-inspection.vue'
 import ParsedPages from '@components/parsed-pages.vue'
 import smileRating from '@components/input-fields/smile-rating.vue'
@@ -678,6 +679,7 @@ export default {
     Treeselect,
   },
   mixins: [
+    momentify,
     parseDate,
     readApiariesAndGroups,
     readApiariesAndGroupsIfNotPresent,
@@ -1510,6 +1512,9 @@ export default {
     },
     datePickerRDUpdate(e) {
       this.reminderDate = e
+    },
+    datePickerText(date) {
+      return this.momentify(date)
     },
     editChecklist(id) {
       if (this.selectedHiveSetId)

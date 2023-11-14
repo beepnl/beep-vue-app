@@ -175,8 +175,6 @@ export default {
         }
       }
 
-      console.log('blob', blob)
-
       this.setInspectionEdited(payload.images && payload.images.length > 0)
 
       this.uploadInspectionPayload = payload

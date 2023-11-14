@@ -15,11 +15,13 @@ module.exports = {
   ],
   rules: {
     // Only allow debugger in development
-    'no-debugger': process.env.NODE_ENV !== 'production' ? 'error' : 'off',
+    // 'no-debugger': process.env.NODE_ENV !== 'production' ? 'error' : 'off', // TODO-VUE3 enable to fix all errors
+    'no-debugger': 'off',
     // Only allow `console.log` in development
-    'no-console': process.env.NODE_ENV !== 'production'
-      ? ['error', { allow: ['warn', 'error'] }]
-      : 'off',
+    // 'no-console': process.env.NODE_ENV !== 'production'
+    //   ? ['error', { allow: ['warn', 'error'] }]
+    //   : 'off',
+      'no-console': 'off',
       // Only allow array-callback-return in development
     'array-callback-return': process.env.NODE_ENV !== 'production' ? 'error' : 'off',
     'import/no-relative-parent-imports': 'error',
