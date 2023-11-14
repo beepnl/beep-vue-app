@@ -1792,10 +1792,7 @@ export default {
 <style lang="scss" scoped>
 .new-container {
   ul {
-    margin-left: 6px;
-    @include for-phone-only {
-      margin-left: 20px;
-    }
+    margin-left: 20px;
   }
 }
 .new-block {
