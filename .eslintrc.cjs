@@ -20,6 +20,8 @@ module.exports = {
     'no-console': process.env.NODE_ENV !== 'production'
       ? ['error', { allow: ['warn', 'error'] }]
       : 'off',
+      // Only allow array-callback-return in development
+    'array-callback-return': process.env.NODE_ENV !== 'production' ? 'error' : 'off',
     'import/no-relative-parent-imports': 'error',
     'import/order': 'off', // 'error',
     'vue/array-bracket-spacing': 'error',
