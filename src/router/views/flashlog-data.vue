@@ -18,7 +18,7 @@
         :disabled="loading"
         @click="changeBlockDataIndex(blockDataIndex - 1)"
       >
-        <v-icon start>mdi-chevron-left</v-icon>
+        <v-icon start color="black">mdi-chevron-left</v-icon>
         {{ $t('prev') }}</v-btn
       >
       <v-icon
@@ -95,7 +95,7 @@
         @click="changeBlockDataIndex(blockDataIndex + 1)"
       >
         {{ $t('next') }}
-        <v-icon end>mdi-chevron-right</v-icon>
+        <v-icon end color="black">mdi-chevron-right</v-icon>
       </v-btn>
       <v-icon
         v-if="smAndDown && !noMatches"
@@ -127,7 +127,7 @@
             <div v-for="period in periods" :key="period.minutes">
               <v-btn
                 :class="
-                  `grey--text ${
+                  `text-grey ${
                     period.minutes === currentMinutes ? 'text-accent' : ''
                   }`
                 "
@@ -192,7 +192,7 @@
               v-for="(dataSet, index) in dataSets"
               :key="'dataSet' + index"
             >
-              <div class="chart-wrapper pt-0 pb-5">
+              <div class="chart-wrapper pt-0 pb-5 pb-md-10">
                 <div
                   class="text-overline mt-0 mb-2 text-center"
                   v-text="dataSet + nrOfMeasurementsText(dataSet)"
