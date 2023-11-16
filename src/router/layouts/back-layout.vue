@@ -30,6 +30,7 @@
   </v-app-bar>
 
   <NavDrawer
+    class="no-print"
     :menu-items="menuItems"
     :drawer="drawer"
     @update-drawer-value="drawer = $event"
@@ -39,7 +40,7 @@
     <slot></slot>
   </v-main>
 
-  <Confirm ref="confirm"></Confirm>
+  <Confirm ref="confirm" class="no-print"></Confirm>
 </template>
 
 <script>

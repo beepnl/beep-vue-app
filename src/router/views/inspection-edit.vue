@@ -645,7 +645,7 @@
       @svg-ready="svgReady = $event"
     />
 
-    <Confirm ref="confirm"></Confirm>
+    <Confirm ref="confirm" class="no-print"></Confirm>
   </Layout>
 </template>
 
