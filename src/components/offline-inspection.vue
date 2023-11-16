@@ -32,7 +32,12 @@
             </template>
             {{ svgWarning.warning }}
             <template v-slot:close>
-              <v-icon :icon="'mdi-close'" class="text-red mr-n2"> </v-icon>
+              <v-icon
+                :icon="'mdi-close'"
+                class="text-red mr-n2 cursor-pointer"
+                @click="removeWarning(svgWarning.id)"
+              >
+              </v-icon>
             </template>
           </v-alert>
         </v-col>
@@ -141,6 +146,9 @@ export default {
       await this.$nextTick().then(() => {
         return true
       })
+    },
+    removeWarning(id) {
+      this.$store.commit('inspections/removeWarning', id)
     },
   },
 }

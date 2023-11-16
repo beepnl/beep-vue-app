@@ -129,13 +129,24 @@
       >
         <v-row v-if="errorMessage">
           <v-col cols="12">
-            <v-alert type="error" prominent closable color="red">
+            <v-alert
+              type="error"
+              prominent
+              closable
+              color="red"
+              @click:close="errorMessage = null"
+            >
               <template v-slot:prepend>
                 <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
               </template>
               {{ errorMessage }}
               <template v-slot:close>
-                <v-icon :icon="'mdi-close'" class="text-red mr-n2"> </v-icon>
+                <v-icon
+                  :icon="'mdi-close'"
+                  class="text-red mr-n2 cursor-pointer"
+                  @close="errorMessage = null"
+                >
+                </v-icon>
               </template>
             </v-alert>
           </v-col>

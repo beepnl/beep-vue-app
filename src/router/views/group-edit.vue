@@ -70,7 +70,7 @@
               </template>
               {{ successMessage }}
               <template v-slot:close>
-                <v-icon :icon="'mdi-close'" class="text-green mr-n2"> </v-icon>
+                <v-icon :icon="'mdi-close'" class="text-green mr-n2 cursor-pointer" @close="showSuccessMessage = false"> </v-icon>
               </template>
             </v-alert>
           </v-col>
