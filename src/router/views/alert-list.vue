@@ -334,7 +334,7 @@ export default {
           hiveGroupName = this.hivesObject[alert.hive_id].group_name
         }
         alert.hive_group_name = hiveGroupName
-        return alert // TODO-VUE3 check
+        return alert
       })
 
       const sortedAlerts = alertsWithRuleDetails.slice().sort(function(a, b) {
@@ -385,12 +385,12 @@ export default {
                 }).length > 0
               )
             }
-            return false // TODO-VUE3 check
+            return false
           })
           if (alertMatch) {
             return alert
           } else {
-            return undefined // TODO-VUE3 check
+            return undefined
           }
         })
       }
@@ -538,12 +538,12 @@ export default {
           if (!this.isSelected(alert.id)) {
             this.selectedAlerts.push(alert.id)
           }
-          return true // TODO-VUE3 check
+          return true
         })
       } else {
         this.filteredAlerts.map((alert) => {
           this.selectedAlerts.splice(this.selectedAlerts.indexOf(alert.id), 1)
-          return true // TODO-VUE3 check
+          return true
         })
       }
     },

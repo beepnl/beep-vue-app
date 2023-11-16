@@ -44,6 +44,7 @@ export default {
       required: true,
     },
   },
+  emits: ['close-overlay'],
   data() {
     return {
       baseApiUrl:

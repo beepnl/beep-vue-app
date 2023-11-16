@@ -79,6 +79,7 @@
                 ? 'checkbox-div' + (itemIsCheckboxList ? ' mb-1' : '')
                 : 'text-div' +
                   (textArea ? ' --area' : '') +
+                  (wideNote ? ' --wide-note' : '') +
                   (parsedDate ? ' --double' : ''))
           "
         >
@@ -187,6 +188,11 @@ export default {
       required: false,
     },
     textArea: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
+    wideNote: {
       type: Boolean,
       default: false,
       required: false,
@@ -305,11 +311,15 @@ export default {
   max-width: 100%;
 
   &.--area {
-    max-height: 100px;
+    max-height: 250px;
   }
 
   &.--double {
     max-height: 30px;
+  }
+
+  &.--wide-note {
+    max-height: 120px;
   }
 
   img {

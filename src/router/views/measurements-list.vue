@@ -567,7 +567,7 @@ export default {
         alert.max = !this.dateWithinPeriod(alert, 'updated_at')
           ? this.periodEndString
           : this.momentFormatUtcToLocal(alert.updated_at, this.dateTimeFormat)
-        return alert // TODO-VUE3 check
+        return alert
       })
 
       return alertsForDeviceAndPeriod
@@ -608,7 +608,7 @@ export default {
           inspection.reminder_date_day_month = this.momentifyDayMonth(
             inspection.reminder_date
           )
-          return inspection // TODO-VUE3 check
+          return inspection
         })
         return inspectionsWithDates
       } else {
@@ -649,7 +649,7 @@ export default {
           }
 
           inspectionsForChartsArray.push(inspectionForChart)
-          return inspection // TODO-VUE3 check
+          return inspection
         })
       }
 
@@ -691,7 +691,7 @@ export default {
           if (value) {
             allSoundSensorValues.push(value)
           }
-          return value // TODO-VUE3 check
+          return value
         })
       )
       return Math.max(...allSoundSensorValues)
@@ -991,7 +991,7 @@ export default {
             ) {
               this.currentLastSensorValues.push({ value, name: key })
             }
-            return [key, value] // TODO-VUE3 check
+            return [key, value]
           })
 
           const self = this
@@ -1119,7 +1119,7 @@ export default {
             closestIndexEnd,
             date: this.momentFormatUtcToLocal(alert.created_at, 'lll'),
           })
-          return alert // TODO-VUE3 check
+          return alert
         })
       }
 
@@ -1197,7 +1197,7 @@ export default {
               weather || this.interval === 'hour' || this.interval === 'day', // false,
           })
         }
-        return quantity // TODO-VUE3 check
+        return quantity
       })
 
       if (
@@ -1227,10 +1227,10 @@ export default {
                 y: measurement[quantity],
               })
               // }
-              return dataset // TODO-VUE3 check
+              return dataset
             })
           }
-          return measurement // TODO-VUE3 check
+          return measurement
         })
       }
 
@@ -1350,7 +1350,7 @@ export default {
             this.currentDebugSensors.push(quantity)
             this.debugSensorsPresent = true
           }
-          return quantity // TODO-VUE3 check
+          return quantity
         })
       } else {
         this.measurementData = null

@@ -138,7 +138,7 @@
             </v-col>
           </v-row>
           <div v-if="!showAlertRulePlaceholder" class="rounded-border">
-            <v-table class="v-data-table--smallfont">
+            <v-table>
               <template v-slot>
                 <thead>
                   <tr>
@@ -441,7 +441,7 @@ export default {
           if (alertRule.active) {
             this.toggleAlertRule(alertRule, 'active')
           }
-          return alertRule // TODO-VUE3 check
+          return alertRule
         })
       } else {
         // enable inactive alerts
@@ -449,7 +449,7 @@ export default {
           if (!alertRule.active) {
             this.toggleAlertRule(alertRule, 'active')
           }
-          return alertRule // TODO-VUE3 check
+          return alertRule
         })
       }
     },

@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-v-html -->
 <template>
   <v-dialog v-model="dialog" :max-width="options.width" @keydown.esc="cancel">
     <v-card variant="flat" :style="`z-index:` + options.zIndex + `;`">

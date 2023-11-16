@@ -408,8 +408,6 @@ import {
   readDevicesIfNotChecked,
 } from '@mixins/methodsMixin'
 import Confirm from '@/src/components/confirm-dialog.vue'
-// import { Datetime } from 'vue-datetime' // TODO-VUE3 replace by other date picker compatible with Vue 3
-// import 'vue-datetime/dist/vue-datetime.min.css'
 import Layout from '@/src/router/layouts/back-layout.vue'
 import SelectHivesOverlay from '@components/select-hives-overlay.vue'
 import { momentify, momentFullDateTime } from '@mixins/momentMixin'
@@ -418,7 +416,6 @@ import { mapGetters } from 'vuex'
 export default {
   components: {
     Confirm,
-    // Datetime,
     Layout,
     SelectHivesOverlay,
   },
@@ -520,10 +517,10 @@ export default {
                 true,
                 null
               )
-              return chItem // TODO-VUE3 check
+              return chItem
             })
           }
-          return researchProject // TODO-VUE3 check
+          return researchProject
         })
         this.researchProjects = researchProjects
         return true

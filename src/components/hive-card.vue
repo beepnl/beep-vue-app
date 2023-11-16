@@ -80,8 +80,8 @@
                 }"
               >
                 <v-tooltip max-width="60%">
-                  <template v-slot:activator="{ props }">
-                    <div v-bind="props">
+                  <template v-slot:activator="{ on }">
+                    <div v-bind="on">
                       <v-badge
                         v-if="alerts.length > 1"
                         :offset-x="alerts.length > 9 ? '10' : '7'"
@@ -134,8 +134,8 @@
                   </div>
 
                   <v-tooltip v-if="mView" max-width="60%">
-                    <template v-slot:activator="{ props }">
-                      <div v-bind="props">
+                    <template v-slot:activator="{ on }">
+                      <div v-bind="on">
                         <v-badge
                           v-if="alerts.length > 1"
                           :offset-x="alerts.length > 9 ? '10' : '7'"
@@ -298,11 +298,11 @@
                 max-width="60%"
                 open-delay="800"
               >
-                <template v-slot:activator="{ props }">
+                <template v-slot:activator="{ on }">
                   <span
                     class="truncate-md"
                     style="max-width: 224px;"
-                    v-bind="props"
+                    v-bind="on"
                     v-text="hive.notes"
                   >
                   </span>
@@ -371,11 +371,11 @@
                 max-width="60%"
                 open-delay="800"
               >
-                <template v-slot:activator="{ props }">
+                <template v-slot:activator="{ on }">
                   <span
                     class="truncate-md"
                     style="max-width: 164px;"
-                    v-bind="props"
+                    v-bind="on"
                     v-text="hive.reminder"
                   >
                   </span>
@@ -542,6 +542,7 @@ export default {
       required: true,
     },
   },
+  emits: ['confirm-delete-hive'],
   // data() {
   //   return {
   // showHive: false, // TODO-VUE3 fix menu overlay & HiveIcon zindex
@@ -562,7 +563,7 @@ export default {
         if (uniqueAlertRuleNames.indexOf(alertName) === -1) {
           uniqueAlertRuleNames.push(alertName)
         }
-        return true // TODO-VUE3 check
+        return true
       })
       return uniqueAlertRuleNames.join(', ')
     },

@@ -164,11 +164,12 @@ export default {
           .catch((error) => {
             if (error.response) {
               console.log(error.response)
+              let msg = ''
               if (
                 typeof error.response.data !== 'undefined' &&
                 typeof error.response.data.message !== 'undefined'
               ) {
-                var msg = error.response.data.message
+                msg = error.response.data.message
               } else {
                 msg = error.response.data
               }

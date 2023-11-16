@@ -548,7 +548,7 @@ export default {
           label = this.$i18n.t(measurementType.abbreviation)
         }
         measurementType.label = label
-        return measurementType // TODO-VUE3 check
+        return measurementType
       })
       const sortedMeasurementTypes = measurementTypesWithLabel
         .slice()
@@ -592,7 +592,7 @@ export default {
           }
           return 0
         }
-        return 0 // TODO-VUE3 check
+        return 0
       })
       return sortedSensorDefs
     },

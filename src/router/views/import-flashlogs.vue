@@ -919,8 +919,9 @@ export default {
           (blockId === '' ? '-all-data' : '-block-' + blockId)
         fileName = fileName.replace(' ', '')
 
+        let hrefStr = ''
         if (csvFormat) {
-          var hrefStr = 'data:text/csv;charset=utf-8,' + response.data
+          hrefStr = 'data:text/csv;charset=utf-8,' + response.data
         } else {
           hrefStr =
             'data:text/json;charset=utf-8,' +
@@ -1031,7 +1032,7 @@ export default {
                 item.block
               ) > -1
             item.missing_data = this.percentageNotInDB(item)
-            return item // TODO-VUE3 check
+            return item
           })
           setTimeout(() => {
             this.scrollTo('log-data')
@@ -1114,7 +1115,7 @@ export default {
     },
     clearMessages() {
       // eslint-disable-next-line vue/no-mutating-props
-      this.importMessageCopy = null // TODO-VUE3 check
+      this.importMessageCopy = null
       this.undoMessage = null
       this.errorMessage = null
       this.successMessage = null
@@ -1136,7 +1137,7 @@ export default {
         if (key !== 'flashlog_index' && key !== 'minute_interval') {
           text += key + ': ' + value + ', '
         }
-        return [key, value] // TODO-VUE3 check
+        return [key, value]
       })
       return text
     },

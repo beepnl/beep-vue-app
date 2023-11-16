@@ -167,7 +167,7 @@ export default {
             ) {
               pagesWrongSvgIds.push(el.page)
             }
-            return true // TODO-VUE3 check
+            return true
           })
         })
       }

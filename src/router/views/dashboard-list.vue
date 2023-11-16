@@ -237,7 +237,7 @@ export default {
       const hivesArray = []
       dashboardGroup.hive_ids.map((hiveId) => {
         hivesArray.push(this.hivesObject[hiveId])
-        return true // TODO-VUE3 check
+        return true
       })
       return hivesArray
     },

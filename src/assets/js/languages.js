@@ -27,14 +27,14 @@ const languages = {
       if (language.lang === navigator.language) {
         matched = language.lang
       }
-      return true // TODO-VUE3 check
+      return true
     })
     if (!matched) {
       this.languageArray.map((language) => {
         if (language.lang === languagePartials) {
           matched = language.lang
         }
-        return true // TODO-VUE3 check
+        return true
       })
     }
     if (!matched) {
@@ -42,7 +42,7 @@ const languages = {
         if (language.lang.split('-')[0] === languagePartials) {
           matched = language.lang
         }
-        return true // TODO-VUE3 check
+        return true
       })
     }
     return matched

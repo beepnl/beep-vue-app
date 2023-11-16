@@ -878,7 +878,7 @@ export const sortedDevices = {
             ? device.hive_name + ' - ' + device.name
             : device.name
         }
-        return device // TODO-VUE3 check
+        return device
       })
       let uniqueApiaries = []
       const map = new Map()
@@ -938,9 +938,9 @@ export const sortedDevices = {
               })
             }
           }
-          return apiary // TODO-VUE3 check
+          return apiary
         })
-        return true // TODO-VUE3 check
+        return true
       })
       uniqueApiaries.map((apiary) => {
         const sortedChildren = apiary.children.slice().sort(function(a, b) {
@@ -953,7 +953,7 @@ export const sortedDevices = {
           return 0
         })
         apiary.children = sortedChildren
-        return apiary // TODO-VUE3 check
+        return apiary
       })
       return uniqueApiaries
     },

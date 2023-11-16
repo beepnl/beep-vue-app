@@ -103,6 +103,7 @@ export default {
       required: false,
     },
   },
+  emits: ['svg-ready'],
   data() {
     return {
       svgLoading: true,

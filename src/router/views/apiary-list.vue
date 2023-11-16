@@ -728,7 +728,7 @@ export default {
             ) {
               return value.toLowerCase().includes(this.hiveSearch.toLowerCase())
             }
-            return false // TODO-VUE3 check
+            return false
           })
           if (hiveSetMatch) {
             return hiveSet
@@ -769,10 +769,10 @@ export default {
                           .toLowerCase()
                           .includes(this.hiveSearch.toLowerCase())
                       }
-                      return false // TODO-VUE3 check
+                      return false
                     })
                   }
-                  return false // TODO-VUE3 check
+                  return false
                 })
               }),
             }
@@ -849,7 +849,7 @@ export default {
           } else {
             return { ...hiveSet }
           }
-          return false // TODO-VUE3 check
+          return false
         })
 
       if (
@@ -888,9 +888,9 @@ export default {
       apiariesWithDates.map((apiary) => {
         apiary.hives.map((hive) => {
           this.addDates(hive)
-          return hive // TODO-VUE3 check
+          return hive
         })
-        return apiary // TODO-VUE3 check
+        return apiary
       })
       const groupsWithDatesAndEditableHivesProp = JSON.parse(
         JSON.stringify(this.groups)
@@ -898,7 +898,7 @@ export default {
       groupsWithDatesAndEditableHivesProp.map((group) => {
         group.hives.map((hive) => {
           this.addDates(hive)
-          return hive // TODO-VUE3 check
+          return hive
         })
         const hasEditableHive =
           group.hives.filter((hive) => {
@@ -907,7 +907,7 @@ export default {
         hasEditableHive
           ? (group.hasEditableHive = true)
           : (group.hasEditableHive = false)
-        return group // TODO-VUE3 check
+        return group
       })
       return apiariesWithDates.concat(groupsWithDatesAndEditableHivesProp)
     },

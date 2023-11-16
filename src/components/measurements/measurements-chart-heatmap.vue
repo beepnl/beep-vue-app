@@ -198,6 +198,11 @@ export default {
       required: true,
     },
   },
+  emits: [
+    'confirm-view-alert',
+    'confirm-view-inspection',
+    'set-period-to-date',
+  ],
   computed: {
     alertsForChartsMerged() {
       const mergedAlerts = []
@@ -221,7 +226,7 @@ export default {
           alert.indexes = [alertInfo]
           mergedAlerts.push(alert)
         }
-        return true // TODO-VUE3 check
+        return true
       })
 
       return mergedAlerts

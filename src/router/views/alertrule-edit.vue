@@ -154,7 +154,7 @@
               <div class="d-flex justify-space-between align-center mb-n4">
                 <div
                   class="beep-label mt-n5"
-                  v-html="$tc('Measurement', 1)"
+                  v-text="$tc('Measurement', 1)"
                 ></div>
                 <v-switch
                   v-model="showAllMeasurements"
@@ -521,7 +521,7 @@ export default {
       // add translation as label property
       measurementTypes.map((measurementType) => {
         measurementType.label = this.$i18n.t(measurementType.abbreviation)
-        return measurementType // TODO-VUE3 check
+        return measurementType
       })
 
       // sort by label
@@ -566,7 +566,7 @@ export default {
                 device.measurement_transmission_ratio
             )
           }
-          return true // TODO-VUE3 check
+          return true
         })
         intervalArray = intervalArray.filter((e) => e !== 0)
         if (intervalArray.length > 0) {
@@ -912,7 +912,7 @@ export default {
 
       Object.entries(replaceWith).map(([key, value]) => {
         replacedSentence = replacedSentence.replace('[' + key + ']', value)
-        return replacedSentence // TODO-VUE3 check
+        return replacedSentence
       })
 
       if (alertRule.active) {
@@ -945,7 +945,7 @@ export default {
         const monthsArray = []
         alertRule.exclude_months.map((month) => {
           monthsArray.push(this.$i18n.tm('monthsFull')[month - 1])
-          return true // TODO-VUE3 check
+          return true
         })
         replacedSentence = replacedSentence.replace(
           '[exclude_months]',
@@ -962,7 +962,7 @@ export default {
         const hoursArray = []
         alertRule.exclude_hours.map((hour) => {
           hoursArray.push(this.alertRulesList.exclude_hours[hour])
-          return true // TODO-VUE3 check
+          return true
         })
         const hoursString = hoursArray.join(', ')
 
@@ -991,7 +991,7 @@ export default {
             hiveName = filteredDevices[0].hive_name
           }
           hivesArray.push(hiveName)
-          return true // TODO-VUE3 check
+          return true
         })
         replacedSentence = replacedSentence.replace(
           '[exclude_hive_ids]',
@@ -1023,7 +1023,7 @@ export default {
           id: index,
           label: value,
         })
-        return true // TODO-VUE3 check
+        return true
       })
       return formattedArray
     },
@@ -1034,7 +1034,7 @@ export default {
           short: key,
           full: this.$i18n.t(value),
         })
-        return true // TODO-VUE3 check
+        return true
       })
       return formattedArray
     },

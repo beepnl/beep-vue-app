@@ -505,7 +505,11 @@ export default {
       required: false,
     },
   },
-
+  emits: [
+    'confirm-view-alert',
+    'confirm-view-inspection',
+    'set-period-to-date',
+  ],
   data() {
     return {
       compareMeasurementData: null,
@@ -748,8 +752,10 @@ export default {
         labels: [],
         datasets: [],
       }
+
+      let SDdata = null
       if (!bar) {
-        var SDdata = {
+        SDdata = {
           labels: [],
           datasets: [],
         }
@@ -813,7 +819,7 @@ export default {
                 spanGaps: this.interval === 'hour' || this.interval === 'day',
                 mtType: 'compareSD',
               })
-              return true // TODO-VUE3 check
+              return true
             })
           }
 
@@ -846,7 +852,7 @@ export default {
             })
           }
         }
-        return true // TODO-VUE3 check
+        return true
       })
 
       if (
@@ -891,15 +897,15 @@ export default {
                             : measurement[compareQuantity] +
                               measurement[compareSD],
                       })
-                      return true // TODO-VUE3 check
+                      return true
                     })
                   }
                 }
               }
-              return dataset // TODO-VUE3 check
+              return dataset
             })
           }
-          return true // TODO-VUE3 check
+          return true
         })
       }
 
@@ -927,10 +933,10 @@ export default {
                   y: measurement[quantity],
                 })
               }
-              return true // TODO-VUE3 check
+              return true
             })
           }
-          return true // TODO-VUE3 check
+          return true
         })
       }
 
@@ -963,7 +969,7 @@ export default {
           }
           // console.log(barDiffData)
           barset.data = [barDiffData]
-          return barset // TODO-VUE3 check
+          return barset
         })
       }
 
@@ -1011,7 +1017,7 @@ export default {
                     })
                   }
                 }
-                return true // TODO-VUE3 check
+                return true
               }
             )
 
@@ -1034,7 +1040,7 @@ export default {
               spanGaps: this.interval === 'hour' || this.interval === 'day', // false,
             })
           }
-          return true // TODO-VUE3 check
+          return true
         })
       }
 
@@ -1085,7 +1091,7 @@ export default {
               this.currentCompareSensors.push(quantity)
               this.compareSensorsPresent = true
             }
-            return true // TODO-VUE3 check
+            return true
           })
       } else {
         this.compareMeasurementData = null
@@ -1126,7 +1132,7 @@ export default {
           ) {
             this.currentDebugSensors.push(quantity)
           }
-          return true // TODO-VUE3 check
+          return true
         })
       } else if (this.multipleHivesWithData.includes(hiveId)) {
         // if previous data contains measurements for this hiveId, but not for the current measurements request, delete it from the data
@@ -1141,7 +1147,7 @@ export default {
       const hivesArray = []
       hiveIds.map((hiveId) => {
         hivesArray.push(this.hivesObject[hiveId])
-        return true // TODO-VUE3 check
+        return true
       })
       return hivesArray
     },

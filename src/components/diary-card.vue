@@ -182,10 +182,10 @@
                         bottom
                         max-width="60%"
                       >
-                        <template v-slot:activator="{ props }">
+                        <template v-slot:activator="{ on }">
                           <span
                             class="notes"
-                            v-bind="props"
+                            v-bind="on"
                             v-text="inspection.notes"
                           >
                           </span>
@@ -267,10 +267,10 @@
                         bottom
                         max-width="60%"
                       >
-                        <template v-slot:activator="{ props }">
+                        <template v-slot:activator="{ on }">
                           <span
                             class="reminder"
-                            v-bind="props"
+                            v-bind="on"
                             v-text="inspection.reminder"
                           >
                           </span>
@@ -362,6 +362,7 @@ export default {
       required: false,
     },
   },
+  emits: ['confirm-delete-inspection'],
   computed: {
     ...mapGetters('inspections', ['diaryFilterByGroup']),
     smallScreen() {
@@ -495,6 +496,5 @@ export default {
     width: 24px;
     height: 24px;
   }
-
 }
 </style>

@@ -349,7 +349,7 @@ export default {
       layers.map((layer) => {
         layer.order = i
         i--
-        return layer // TODO-VUE3 check
+        return layer
       })
       this.hive.layers = layers
       this.hive.frames =

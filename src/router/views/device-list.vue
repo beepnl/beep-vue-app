@@ -781,11 +781,11 @@ export default {
             const sensorDefsWithDeleteProp = device.sensor_definitions
             sensorDefsWithDeleteProp.map((sensorDef) => {
               sensorDef.delete = false // otherwise Vue can't track the 'delete' property
-              return sensorDef // TODO-VUE3 check
+              return sensorDef
             })
             device.sensor_definitions = sensorDefsWithDeleteProp
           }
-          return true // TODO-VUE3 check
+          return true
         })
 
         this.devices = devices
@@ -980,7 +980,7 @@ export default {
       return text
     },
     removeDevice(key, showIndex) {
-      const deviceIndex = this.devices.findIndex((device) => device.key === key) // TODO-VUE3 check
+      const deviceIndex = this.devices.findIndex((device) => device.key === key)
       this.devices.splice(deviceIndex, 1)
       this.toggleDevice(showIndex)
       if (this.showDevicesByIndex.length > 0) {
@@ -1047,7 +1047,7 @@ export default {
             }
           }
         }
-        return 0 // TODO-VUE3 check
+        return 0
       })
       return sortedSensorDefs
     },

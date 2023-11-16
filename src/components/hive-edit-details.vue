@@ -283,7 +283,7 @@ export default {
         treeselectArray.map((groupObject) => {
           groupObject.children.map((child) => {
             child.label = child.trans[locale]
-            return child // TODO-VUE3 check
+            return child
           })
           const sortedTreeselectArray = groupObject.children
             .slice()
@@ -297,7 +297,7 @@ export default {
               return 0
             })
           groupObject.children = sortedTreeselectArray
-          return groupObject // TODO-VUE3 check
+          return groupObject
         })
         return treeselectArray
       } else {
@@ -374,11 +374,12 @@ export default {
       )
       const hiveTypeName = this.hiveTypesList[hiveTypeIndex].name
 
+      let hiveDimensions = null
       if (
         this.hiveDimensionsList &&
         this.hiveDimensionsList[hiveTypeName] !== undefined
       ) {
-        var hiveDimensions = {
+        hiveDimensions = {
           bb_width_cm: parseFloat(
             this.hiveDimensionsList[hiveTypeName].bb_width_cm
           ),

@@ -160,6 +160,7 @@ export default {
       required: false,
     },
   },
+  emits: ['load-data', 'save-dates', 'select-date', 'set-time-index'],
   data() {
     return {
       modal: false,

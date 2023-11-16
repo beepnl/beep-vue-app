@@ -222,7 +222,7 @@ export default {
         let treeselectArray = JSON.parse(JSON.stringify(this.beeRacesList)) // clone without v-bind to avoid vuex warning when mutating
         treeselectArray.map((beeRace) => {
           beeRace.label = beeRace.trans[locale]
-          return beeRace // TODO-VUE3 check
+          return beeRace
         })
         const sortedTreeselectArray = treeselectArray
           .slice()

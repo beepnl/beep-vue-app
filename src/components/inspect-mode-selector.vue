@@ -77,6 +77,7 @@ export default {
       required: true,
     },
   },
+  emits: ['set-selected-mode'],
   data() {
     return {
       showInfo: [],

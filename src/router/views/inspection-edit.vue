@@ -127,6 +127,22 @@
         "
         class="content-container no-print"
       >
+        <!-- <v-overlay
+          v-if="offlineMode && !svgReady"
+          contained
+          :opacity="0.5"
+          scrim="white"
+          class="d-flex align-center justify-center mt-12"
+          z-index="1"
+        >
+          <div class="loading">
+            <v-progress-circular size="50" color="primary" indeterminate />
+            <span
+              class="ma-3 font-weight-bold text-accent"
+              v-text="$t('Generating_svg_be_patient')"
+            ></span>
+          </div>
+        </v-overlay> -->
         <v-row v-if="errorMessage">
           <v-col cols="12">
             <v-alert
@@ -498,7 +514,7 @@
                         <v-col cols="12">
                           <labelWithDescription
                             :plain-text="$t('notes')"
-                            :text-area="true"
+                            :wide-note="true"
                             :parse-mode="parseMode"
                             :check-answer="activeInspection.notes === null"
                             :parsed-images="parsedImages['notes']"
@@ -586,7 +602,7 @@
                         <v-col cols="12" sm="8">
                           <labelWithDescription
                             :plain-text="$t('reminder')"
-                            :text-area="true"
+                            :wide-note="true"
                             :parse-mode="parseMode"
                             :check-answer="
                               activeInspection['reminder'] === null
@@ -738,7 +754,7 @@ export default {
       showLoadingIcon: false,
       valid: false,
       ready: false,
-      svgReady: true, // false,
+      svgReady: false,
       selectedHiveSetId: null,
       selectedHiveSet: null,
       selectedHives: [],
@@ -804,7 +820,7 @@ export default {
             if (hive.editable || hive.owner) {
               this.selectedHives.push(hive.id)
             }
-            return hive // TODO-VUE3 check
+            return hive
           })
         }
       },
@@ -1037,7 +1053,7 @@ export default {
         const treeselectApiaries = JSON.parse(JSON.stringify(this.apiaries)) // clone without v-bind to avoid vuex warning when mutating
         treeselectApiaries.map((apiary) => {
           apiary.treeselectId = parseInt('1' + apiary.id.toString())
-          return apiary // TODO-VUE3 check
+          return apiary
         })
         const sortedTreeselectApiaries = treeselectApiaries
           .slice()
@@ -1066,7 +1082,7 @@ export default {
               return hive.editable || hive.owner
             }).length === 0
           group.treeselectId = parseInt('2' + group.id.toString())
-          return group // TODO-VUE3 check
+          return group
         })
         const sortedTreeselectGroups = treeselectGroups
           .slice()
@@ -1271,7 +1287,7 @@ export default {
         const itemsObject = {}
         this.selectedChecklist.category_ids.map((categoryId) => {
           itemsObject[categoryId] = null
-          return categoryId // TODO-VUE3 check
+          return categoryId
         })
         // If existing inspection is being edited change its items array into object with category_ids (of the selected checklist) as keys and item values filled in if present
         if (
@@ -1294,7 +1310,7 @@ export default {
             } else {
               itemsObject[item.category_id] = item.value
             }
-            return item // TODO-VUE3 check
+            return item
           })
           // For a new inspection, transfer values that have been filled in already for the old checklist to the newly selected checklist
           // and set date to current date only if checklist is owned, otherwise trigger forceInspectionDate mode (disable form until inspection date has been actively selected)
@@ -1303,7 +1319,7 @@ export default {
             if (value !== null) {
               itemsObject[key] = value
             }
-            return [key, value] // TODO-VUE3 check
+            return [key, value]
           })
           if (
             !switchChecklistExistingInspection &&
@@ -1407,8 +1423,9 @@ export default {
             '/inspections/store',
             inspectionToSave
           )
+          let searchInspectionId = ''
           if (response.status === 201) {
-            var searchInspectionId = response.data
+            searchInspectionId = response.data
           }
           let searchTerm = null
           this.activeHive === null
@@ -1474,11 +1491,12 @@ export default {
           this.prepParseMode()
         }, 500)
       } catch (error) {
+        let msg = ''
         this.errorMessage = this.$i18n.tc('Error', 1) + ': '
         if (error.response) {
           console.log('Error: ', error.response)
           const e = error.response.data
-          var msg = e.errors ? e.errors : e.message ? e.message : e
+          msg = e.errors ? e.errors : e.message ? e.message : e
           this.errorMessage += msg
         } else {
           console.log('Error: ', error)
@@ -1669,7 +1687,7 @@ export default {
         this.parsedImages[prop] =
           answer && answer.image !== undefined ? answer.image : []
 
-        return prop // TODO-VUE3 check
+        return prop
       })
     },
     initInspection() {
@@ -1772,7 +1790,7 @@ export default {
         apiary.hives.map((hive) => {
           this.selectedHives.push(hive.id)
           this.editableHives.push(hive.id)
-          return hive // TODO-VUE3 check
+          return hive
         })
         // only when selecting the apiary from the queried hive Id, select just that hive
         if (this.hiveId && apiary.id === this.activeHive.location_id) {
@@ -1809,7 +1827,7 @@ export default {
             this.selectedHives.push(hive.id)
             this.editableHives.push(hive.id)
           }
-          return hive // TODO-VUE3 check
+          return hive
         })
         // only when selecting a group containing the queried hive Id, select just that hive
         if (this.hiveId && this.activeHive.group_ids.includes(group.id)) {
@@ -1912,7 +1930,7 @@ export default {
       this.selectedChecklist.category_ids.map((categoryId) => {
         // TODO: what if category ids is empty?
         itemsObject[categoryId] = null
-        return categoryId // TODO-VUE3 check
+        return categoryId
       })
       this.activeInspection.items = itemsObject
       if (this.selectedChecklist.owner) {

@@ -91,6 +91,12 @@ export default {
       default: () => {},
     },
   },
+  emits: [
+    'confirm-view-alert',
+    'confirm-view-inspection',
+    'legend-clicked',
+    'set-period-to-date',
+  ],
   data() {
     return {
       fontSizeMob: 11,
@@ -172,7 +178,7 @@ export default {
             }
           },
         }
-        return true // TODO-VUE3 check
+        return true
       })
 
       return alertsForLineCharts
@@ -340,7 +346,7 @@ export default {
             }
           },
         }
-        return true // TODO-VUE3 check
+        return true
       })
 
       return inspectionsForLineCharts

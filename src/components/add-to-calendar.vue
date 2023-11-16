@@ -75,8 +75,8 @@ export default {
           parameters(title, location, details, start, end) {
             const parameters = {
               text: title,
-              location: location,
-              details: details,
+              location,
+              details,
             }
 
             if (start && end) {
@@ -92,7 +92,7 @@ export default {
           parameters(title, location, details, start, end) {
             return {
               subject: title,
-              location: location,
+              location,
               body: details,
               startdt: start,
               enddt: end,
@@ -106,7 +106,7 @@ export default {
           parameters(title, location, details, start, end) {
             return {
               subject: title,
-              location: location,
+              location,
               body: details,
               startdt: start,
               enddt: end,

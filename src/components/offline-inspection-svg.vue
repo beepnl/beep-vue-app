@@ -14,7 +14,7 @@
     <g v-for="pageNr in pages" :key="'page' + pageNr">
       <svgPrintCorners
         v-if="svgMaxPageNr === null || pageNr <= svgMaxPageNr"
-        :pageNumber="pageNr"
+        :page-number="pageNr"
         :checklist-header-text="svgChecklistName"
         :checklist-svg-id="
           !saveAsNewChecklistSvg
@@ -23,7 +23,7 @@
             ? checklistSvgId.toString()
             : ''
         "
-        :totalPages="totalPages"
+        :total-pages="totalPages"
       />
     </g>
 
@@ -94,6 +94,7 @@ export default {
       required: false,
     },
   },
+  emits: ['done-loading'],
   data() {
     return {
       appVersion: process.env.VUE_APP_VERSION,

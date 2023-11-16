@@ -359,10 +359,10 @@ export default {
               ) {
                 beesSquares25cm2 += parseFloat(this.object[child2.id])
               }
-              return child2 // TODO-VUE3 check
+              return child2
             })
           }
-          return child // TODO-VUE3 check
+          return child
         })
 
         const hive = this.activeHive
@@ -383,7 +383,7 @@ export default {
           if (child.name === 'colony_size') {
             this.object[child.id] = colonySize
           }
-          return true // TODO-VUE3 check
+          return true
         })
         this.colonySize = colonySize
       }, 100) // wait for vue to update input bees_squares_25cm2 values

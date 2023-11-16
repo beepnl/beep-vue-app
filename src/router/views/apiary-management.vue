@@ -282,7 +282,7 @@ export default {
           const hiveWithNewApiaryId = { ...hive }
           hiveWithNewApiaryId.location_id = this.newApiaryId
           this.updateHive(hiveWithNewApiaryId)
-          return true // TODO-VUE3 check
+          return true
         })
       } else {
         return false

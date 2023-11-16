@@ -69,6 +69,7 @@ export default {
       required: true,
     },
   },
+  emits: ['update-categories'],
   data() {
     return {
       defaultProps: {
@@ -103,7 +104,7 @@ export default {
         if (child.children !== null) {
           this.checkChildren(child, selected)
         }
-        return child // TODO-VUE3 check
+        return child
       })
     },
     filterNode(value, data) {

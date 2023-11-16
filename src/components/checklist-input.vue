@@ -8,6 +8,7 @@
       :parsed-images="parsedImages"
       :parsed-items="parsedItems"
       :check-answer="checkAnswer"
+      :text-area="item.input === 'text'"
     ></labelWithDescription>
 
     <selectHiveOrApiary
@@ -324,6 +325,7 @@ export default {
       default: false,
     },
   },
+  emits: ['calculate-tpa-colony-size', 'calculate-liebefeld-colony-size'],
   data() {
     return {
       savedNrOfDecimals: 0,
@@ -442,7 +444,7 @@ export default {
             if (it.hasChildren) {
               // make sure that items without children (= headers of nested sublist) do not get a matched image
               imgArr = imgArr.concat('')
-              return imgArr // TODO-VUE3 check
+              return imgArr
             } else {
               if (
                 this.parsedAnswerRaw[i] !== undefined &&
@@ -452,7 +454,7 @@ export default {
               }
               i++
             }
-            return true // TODO-VUE3 check
+            return true
           })
         } else {
           // TODO check if this is needed
@@ -494,14 +496,15 @@ export default {
   },
   created() {
     if (this.parsedAnswer) {
+      let value = null
       if (this.item.input === 'list') {
         this.parsedAnswer.map((answer) => {
-          return this.toggleSelect(answer.category_id, this.item.id) // TODO-VUE3 check
+          return this.toggleSelect(answer.category_id, this.item.id)
         })
       } else {
         if (this.item.input === 'select' && this.parsedAnswer.type === 'text') {
           // in case answer is not a category id but a string (written text) instead, let the user check it instead of filling it in automatically
-          var value = this.findCategoryId(this.parsedAnswer.value[0])
+          value = this.findCategoryId(this.parsedAnswer.value[0])
         } else if (this.parsedAnswer.type === 'checkbox') {
           if (this.parsedAnswer.value.length > 1) {
             const checkboxIndex = this.parsedAnswer.value.findIndex(

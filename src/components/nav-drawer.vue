@@ -113,6 +113,7 @@ export default {
       required: true,
     },
   },
+  emits: ['update-drawer-value'],
   data() {
     return {
       appVersion: process.env.VUE_APP_VERSION,

@@ -150,6 +150,7 @@ export default {
       required: false,
     },
   },
+  emits: ['close-overlay', 'submit-consent-toggle', 'select-hives'],
   data: function() {
     return {
       selectedHiveIds: [],

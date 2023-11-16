@@ -201,7 +201,7 @@ export default {
       }, [])
     },
     itemText(item) {
-      var text =
+      const text =
         item.trans !== null && item.trans[this.locale] !== undefined
           ? item.trans[this.locale]
           : item.name

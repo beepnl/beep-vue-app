@@ -155,7 +155,7 @@ export default {
         alertRulesDefault.map((alertRuleDefault) => {
           alertRuleDefault.default_rule = 0
           alertRuleDefault.selected = false
-          return alertRuleDefault // TODO-VUE3 check
+          return alertRuleDefault
         })
         this.alertRulesDefault = alertRulesDefault
         return true
@@ -203,7 +203,7 @@ export default {
 
       Object.entries(replaceWith).map(([key, value]) => {
         replacedSentence = replacedSentence.replace('[' + key + ']', value)
-        return replacedSentence // TODO-VUE3 check
+        return replacedSentence
       })
 
       replacedSentence += '. ' // alertrule_active_email and no_email_sentence are omitted here
@@ -225,7 +225,7 @@ export default {
         const monthsArray = []
         alertRule.exclude_months.map((month) => {
           monthsArray.push(this.$i18n.tm('monthsFull')[month - 1])
-          return true // TODO-VUE3 check
+          return true
         })
         replacedSentence = replacedSentence.replace(
           '[exclude_months]',
@@ -239,7 +239,7 @@ export default {
         const hoursArray = []
         alertRule.exclude_hours.map((hour) => {
           hoursArray.push(this.alertRulesList.exclude_hours[hour])
-          return true // TODO-VUE3 check
+          return true
         })
         const hoursString = hoursArray.join(', ')
 
@@ -258,7 +258,7 @@ export default {
             await this.copyAlertRule(alertRuleDefault)
             return true
           }
-          return true // TODO-VUE3 check
+          return true
         })
       )
 
@@ -278,7 +278,7 @@ export default {
           short: key,
           full: this.$i18n.t(value),
         })
-        return [key, value] // TODO-VUE3 check
+        return [key, value]
       })
       return formattedArray
     },

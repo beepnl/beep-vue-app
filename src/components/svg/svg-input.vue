@@ -240,7 +240,7 @@ export default {
   },
   computed: {
     label() {
-      var label =
+      const label =
         (this.item.trans[this.locale] || this.item.name) +
         (this.item.unit !== null ? ' (' + this.item.unit + ')' : '')
       return label
@@ -252,7 +252,7 @@ export default {
       const suffix =
         !addHeader && this.item.suffix ? '_' + this.item.suffix : '' // only add suffix if label has no extra header (label with header is unlikely to be identical to other label with header)
 
-      var label = labelText + suffix
+      let label = labelText + suffix
 
       if (label.length > maxLabelLength) {
         label =

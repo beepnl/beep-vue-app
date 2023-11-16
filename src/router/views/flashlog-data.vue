@@ -506,7 +506,7 @@ export default {
               })
             }
           }
-          return quantity // TODO-VUE3 check
+          return quantity
         })
 
         this.blockData[dataSet].map((measurement, index) => {
@@ -521,9 +521,9 @@ export default {
               y: measurement[quantity],
             })
             // }
-            return dataset // TODO-VUE3 check
+            return dataset
           })
-          return measurement // TODO-VUE3 check
+          return measurement
         })
       }
 

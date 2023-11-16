@@ -73,6 +73,7 @@ export default {
       required: false,
     },
   },
+  emits: ['set-chart-cols', 'show-card-content'],
   data() {
     return {
       showCardContent: false,

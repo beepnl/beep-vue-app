@@ -260,7 +260,7 @@ export default {
           } else if (child.name === 'pixels_total_top') {
             pixelsTotal = parseInt(this.object[child.id])
           }
-          return true // TODO-VUE3 check
+          return true
         })
 
         const hive = this.activeHive
@@ -302,7 +302,7 @@ export default {
             }
             this.object[child.id] = colonySize
           }
-          return true // TODO-VUE3 check
+          return true
         })
 
         this.colonySize = colonySize

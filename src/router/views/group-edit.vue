@@ -70,7 +70,12 @@
               </template>
               {{ successMessage }}
               <template v-slot:close>
-                <v-icon :icon="'mdi-close'" class="text-green mr-n2 cursor-pointer" @close="showSuccessMessage = false"> </v-icon>
+                <v-icon
+                  :icon="'mdi-close'"
+                  class="text-green mr-n2 cursor-pointer"
+                  @close="showSuccessMessage = false"
+                >
+                </v-icon>
               </template>
             </v-alert>
           </v-col>
@@ -692,7 +697,7 @@ export default {
               hivesEditable.push(hive.id)
             }
             hivesSelected.push(hive.id)
-            return hive // TODO-VUE3 check
+            return hive
           })
         }
         // eslint-disable-next-line camelcase
@@ -702,7 +707,7 @@ export default {
         const usersWithDeleteProp = group.users // otherwise Vue can't track the 'delete' property
         usersWithDeleteProp.map((user) => {
           user.delete = false
-          return user // TODO-VUE3 check
+          return user
         })
         group.users = usersWithDeleteProp
 

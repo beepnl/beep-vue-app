@@ -142,10 +142,10 @@
                       bottom
                       max-width="60%"
                     >
-                      <template v-slot:activator="{ props }">
+                      <template v-slot:activator="{ on }">
                         <span
                           class="alert-label"
-                          v-bind="props"
+                          v-bind="on"
                           v-text="
                             alert.hive_name.substring(
                               0,
@@ -171,10 +171,10 @@
                       bottom
                       max-width="60%"
                     >
-                      <template v-slot:activator="{ props }">
+                      <template v-slot:activator="{ on }">
                         <span
                           class="alert-label"
-                          v-bind="props"
+                          v-bind="on"
                           v-text="
                             alert.device_name.substring(
                               0,
@@ -444,7 +444,7 @@ export default {
       required: false,
     },
   },
-  data: () => ({}),
+  emits: ['delete-alert', 'show-snackbar', 'toggle-checkbox'],
   computed: {
     ...mapGetters('alerts', ['alertRules']),
     alertFunctionText() {

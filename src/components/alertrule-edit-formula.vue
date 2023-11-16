@@ -38,7 +38,7 @@
             <div class="d-flex justify-space-between">
               <div
                 class="beep-label mb-0 mt-3px"
-                v-html="$tc('Measurement', 1)"
+                v-text="$tc('Measurement', 1)"
               ></div>
               <v-switch
                 v-model="showAllMeasurements"
@@ -361,6 +361,7 @@ export default {
       required: false,
     },
   },
+  emits: ['delete-formula', 'toggle-all-logicals'],
   data: () => ({
     defaultSourceType: 'db_influx',
     showAllMeasurements: false,
@@ -434,9 +435,10 @@ export default {
       return isNaN(this.formula.threshold_value)
     },
     totalPeriodMinutes() {
-      const total = 0
+      let total = 0
       this.periods.map((period) => {
         total += period.minutes * this.periodValues[period.term]
+        return true
       })
       return total
     },

@@ -159,7 +159,7 @@
         </template>
       </DynamicScroller>
       <v-row v-if="!showDiaryPlaceholder && filteredInspections.length === 0">
-        <v-col sm="auto" :cols="12">
+        <v-col sm="auto" :cols="12" class="mt-4 ml-3 ml-sm-7">
           {{ $t('no_results') }}
         </v-col>
       </v-row>
@@ -308,13 +308,13 @@ export default {
                 groupNamesArray.push(
                   this.groups.filter((group) => group.id === groupId)[0].name
                 )
-                return true // TODO-VUE3 check
+                return true
               })
               groupName = groupNamesArray.join(', ')
             }
             inspection.hive_group_name = groupName
           }
-          return inspection // TODO-VUE3 check
+          return inspection
         })
         return inspectionsWithDatesAndHiveDetails
       } else {
@@ -354,13 +354,13 @@ export default {
                     this.diarySearch.substring(3, this.diarySearch.length)
                   )
                 }
-                return false // TODO-VUE3 check
+                return false
               }
             )
             if (inspectionMatch) {
               return inspection
             }
-            return false // TODO-VUE3 check
+            return false
           }
         )
       }
@@ -378,7 +378,7 @@ export default {
           } else {
             return inspection
           }
-          return false // TODO-VUE3 check
+          return false
         })
         .filter((inspection) => {
           if (
@@ -391,7 +391,7 @@ export default {
           } else {
             return inspection
           }
-          return false // TODO-VUE3 check
+          return false
         })
         .filter((inspection) => {
           if (typeof inspection !== 'undefined' && this.filterByReminder) {
@@ -404,7 +404,7 @@ export default {
           } else {
             return inspection
           }
-          return false // TODO-VUE3 check
+          return false
         })
         .filter((inspection) => {
           if (
@@ -427,7 +427,7 @@ export default {
           } else {
             return inspection
           }
-          return false // TODO-VUE3 check
+          return false
         })
 
       return propertyFilteredInspections
