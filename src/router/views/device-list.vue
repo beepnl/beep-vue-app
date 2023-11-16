@@ -408,10 +408,7 @@
                       v-if="ownedDevice.sensor_definitions.length > 0"
                       class="rounded-border"
                     >
-                      <v-table
-                        class="v-data-table--smallfont"
-                        density="compact"
-                      >
+                      <v-table class="sensordef-table" density="compact">
                         <thead>
                           <tr>
                             <th class="text-left">
@@ -498,7 +495,7 @@
                                 @change="sensorDefEdited = true"
                               ></ElInputNumber>
                             </td>
-                            <td class="td--small">
+                            <td class="td--medium">
                               <v-select
                                 v-model="sensorDef.input_measurement_id"
                                 :disabled="sensorDef.delete"
@@ -516,7 +513,7 @@
                                 "
                               ></v-select>
                             </td>
-                            <td class="td--small">
+                            <td class="td--medium">
                               <v-select
                                 v-model="sensorDef.output_measurement_id"
                                 :disabled="sensorDef.delete"

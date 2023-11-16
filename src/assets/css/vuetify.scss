@@ -3,6 +3,13 @@
   $overlay-opacity: 0.7,
 );
 
+.sensordef-table {
+  min-height: 130px;
+  .v-table__wrapper {
+    min-height: 112px;
+  }
+}
+
 .slider--large .v-input__control {
   width: 100%;
 }
