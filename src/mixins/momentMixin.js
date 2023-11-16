@@ -19,7 +19,10 @@ export const momentDurationDays = {
         .toFixed(0)
 
       return (
-        prefix + durationInDays + ' ' + this.$i18n.tc('day', durationInDays)
+        prefix +
+        durationInDays +
+        ' ' +
+        this.$i18n.tc('day', parseInt(durationInDays))
       )
     },
   },

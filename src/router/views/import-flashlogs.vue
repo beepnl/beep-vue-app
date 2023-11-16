@@ -572,6 +572,7 @@
                   <template v-slot:activator="{ props }">
                     <v-icon
                       color="accent"
+                      size="x-large"
                       class="mr-2"
                       v-bind="props"
                       @click="
@@ -610,6 +611,7 @@
                   <template v-slot:activator="{ props }">
                     <v-icon
                       color="accent"
+                      size="x-large"
                       v-bind="props"
                       @click="
                         exportBlockData(
