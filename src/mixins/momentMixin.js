@@ -15,7 +15,7 @@ export const momentDurationDays = {
     momentDurationDays(input, unit, prefix = '') {
       const durationInDays = this.$moment
         .duration(input, unit)
-        .asDays()
+        .as('days')
         .toFixed(0)
 
       return (

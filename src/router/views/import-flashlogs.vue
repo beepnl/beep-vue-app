@@ -165,6 +165,7 @@
                       <v-icon
                         color="red"
                         v-bind="props"
+                        size="x-large"
                         @click="confirmDeleteFlashLog(item)"
                         >mdi-refresh</v-icon
                       >
@@ -174,6 +175,7 @@
                   <v-icon
                     v-if="!item.delete"
                     color="red"
+                    size="x-large"
                     @click="confirmDeleteFlashLog(item)"
                     >mdi-delete</v-icon
                   >
@@ -344,7 +346,7 @@
               >
                 <template v-slot:activator="{ props }">
                   <v-icon
-                    dark
+                    size="x-large"
                     color="accent"
                     class="mx-2"
                     v-bind="props"
@@ -377,7 +379,7 @@
               >
                 <template v-slot:activator="{ props }">
                   <v-icon
-                    dark
+                    size="x-large"
                     color="accent"
                     v-bind="props"
                     @click="
@@ -410,8 +412,8 @@
               :headers="logDataHeaders"
               :items="selectedFlashLog.log"
               :item-class="rowClassLogData"
-              :sort-by="'missing_data'"
-              :sort-desc="true"
+              :sort-by="['missing_data']"
+              :sort-desc="[true]"
               :no-data-text="$t('no_data')"
               :no-results-text="$t('no_results')"
               multi-sort
