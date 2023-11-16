@@ -667,7 +667,7 @@ import {
   readApiariesAndGroupsIfNotPresent,
   readGeneralInspections,
 } from '@mixins/methodsMixin'
-import { momentify } from '@mixins/momentMixin'
+import { datePickerText } from '@mixins/momentMixin'
 import OfflineInspection from '@components/offline-inspection.vue'
 import ParsedPages from '@components/parsed-pages.vue'
 import smileRating from '@components/input-fields/smile-rating.vue'
@@ -690,7 +690,7 @@ export default {
     Treeselect,
   },
   mixins: [
-    momentify,
+    datePickerText,
     parseDate,
     readApiariesAndGroups,
     readApiariesAndGroupsIfNotPresent,
@@ -1523,9 +1523,6 @@ export default {
     },
     datePickerRDUpdate(e) {
       this.reminderDate = e
-    },
-    datePickerText(date) {
-      return this.momentify(date)
     },
     editChecklist(id) {
       if (this.selectedHiveSetId)

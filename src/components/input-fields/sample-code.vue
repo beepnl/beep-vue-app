@@ -33,29 +33,28 @@
 
     <div v-if="object[item.id] !== null" class="d-flex align-center mt-1">
       <span style=" font-weight: bold;letter-spacing: 2px;">{{
-        item.val
+        object[item.id]
       }}</span>
       <div>
         <v-progress-circular
           v-if="showLoadingIcon"
-          class="ml-n1 mr-2"
+          class="mr-2"
           size="18"
           width="2"
           color="disabled"
           indeterminate
         />
-
         <v-tooltip v-if="!showLoadingIcon" bottom>
           <template v-slot:activator="{ props }">
             <v-btn
               v-if="object[item.id] !== null"
-              icon
               color="red"
               :disabled="showLoadingIcon || bulkInspection"
               v-bind="props"
+              variant="text"
               @click.prevent="removeSampleCode(object[item.id])"
             >
-              <v-icon small>mdi-delete</v-icon>
+              <v-icon color="red">mdi-delete</v-icon>
             </v-btn>
           </template>
           <span v-text="$t('sample_code_delete')"> </span>

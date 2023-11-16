@@ -16,9 +16,9 @@
 
       <VueDatePicker
         v-if="item.input === 'date'"
-        :format="datePickerFormat"
+        :format="datePickerText"
         :model-value="dateInput"
-        model-type="format"
+        :model-type="datePickerFormat"
         hide-input-icon
         :is-24="true"
         :teleport="true"
@@ -40,12 +40,14 @@
 </template>
 
 <script>
+import { datePickerText } from '@mixins/momentMixin'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 
 export default {
   components: {
     labelWithDescription,
   },
+  mixins: [datePickerText],
   props: {
     item: {
       type: Object,

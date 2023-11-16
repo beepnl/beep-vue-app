@@ -529,6 +529,9 @@
 }
 
 /* VueDatePicker */
+.dp__main {
+  word-break: normal !important;
+}
 
 .dp__theme_light {
   --dp-primary-color: $color-accent !important;

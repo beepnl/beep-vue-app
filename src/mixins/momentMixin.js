@@ -1,3 +1,17 @@
+export const datePickerText = {
+  methods: {
+    datePickerText(date) {
+      if (date !== null) {
+        return this.$moment(date)
+          .locale(this.$i18n.locale)
+          .format('lll')
+      } else {
+        return null
+      }
+    },
+  },
+}
+
 export const momentAge = {
   methods: {
     momentAge(date) {
