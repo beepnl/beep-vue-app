@@ -519,6 +519,7 @@ export default {
 .diary-inspections-content {
   margin-top: 158px;
   overflow: hidden;
+  max-height: calc(100vh - 158px); // to remove scroll bar
   @include for-phone-only {
     margin-top: 152px;
   }

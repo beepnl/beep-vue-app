@@ -1,7 +1,7 @@
 <template>
   <v-menu>
     <template v-slot:activator="{ props }">
-      <v-card class="diary-card" v-bind="props" theme="light">
+      <v-card class="diary-card" v-bind="props">
         <div style="width: 100%;">
           <v-row
             class="d-flex justify-space-between align-start mx-0"
