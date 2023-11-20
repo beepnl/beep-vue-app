@@ -41,8 +41,12 @@
   padding-inline-end: 0px;
 }
 
+.v-textarea .v-field__field {
+  --v-input-control-height: calc(var(--v-textarea-control-height) + 20px);
+}
+
 .v-input textarea {
-  padding-top: 10px !important;
+  padding: 14px 4px 4px !important;
 }
 
 .v-field:not(.v-field--focused):not(.v-field--active) .v-label.v-field-label {
@@ -112,7 +116,7 @@
 
 .v-text-field:not(.v-field--variant-underlined):not(.v-field--variant-solo):not(.v-select):not(.beep-search-field)
   input {
-  padding: 8px 0 0 8px !important; // 8px 0 0 2px
+  padding: 8px 0 0 4px !important; // 8px 0 0 2px
 }
 
 .v-text-field.beep-search-field input {

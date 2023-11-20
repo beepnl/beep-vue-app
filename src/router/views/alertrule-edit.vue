@@ -62,7 +62,7 @@
             <v-col cols="12" sm="7" lg="5" class="mobile-last">
               <div class="beep-label" v-text="$t('Name')"></div>
               <v-text-field
-                :model-value="activeAlertRule.name"
+                v-model="activeAlertRule.name"
                 class="alertrule-edit-name mb-sm-3"
                 counter="30"
                 :rules="requiredRule"
@@ -112,7 +112,7 @@
                 v-text="$t('Description')"
               ></div>
               <v-textarea
-                :model-value="activeAlertRule.description"
+                v-model="activeAlertRule.description"
                 :class="'pt-0' + (!mobile ? ' mb-sm-3 mt-0' : '')"
                 :rows="!mobile ? '1' : '2'"
                 auto-grow

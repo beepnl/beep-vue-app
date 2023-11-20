@@ -76,8 +76,9 @@ const vuetify = createVuetify({
     VTable: {
       density: 'compact',
     },
-    VTextArea: {
+    VTextarea: {
       variant: 'underlined',
+      clearIcon: 'mdi-close',
     },
     VTextField: {
       variant: 'underlined',

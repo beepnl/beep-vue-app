@@ -166,7 +166,7 @@ export default {
       return this.inputHeight.number_info
     },
     calcSelectHeight(children) {
-      var height = 10
+      let height = 10
       if (children > this.maxNrOfItems) {
         height = this.inputHeight.grade + this.inputHeight.label // 27
       } else {
@@ -176,14 +176,15 @@ export default {
     },
     calcXY(item, fullRowItem = false, lastChild = false) {
       if (this.svgPositionSet[item.id] === undefined) {
-        var itemCounter = this.svgItemCounter + 1
+        let itemCounter = this.svgItemCounter + 1
+        let columnCounter = null
         const itemHeight = this.calcHeight(item)
         if (itemCounter === 1) {
           // init row height as first item height
           this.$store.commit('inspections/setRowHeight', itemHeight)
         }
         if (fullRowItem || this.svgColumnCounter >= this.columnsPerRow) {
-          var columnCounter = 1
+          columnCounter = 1
           // for new row, set Y (height so far) as previous Y + row height of previous row
           this.$store.commit('inspections/setY', this.svgY + this.svgRowHeight)
           // reset row height to current item height for new row
@@ -197,7 +198,7 @@ export default {
         }
 
         const x = this.xMargin + (columnCounter - 1) * this.columnWidth
-        var y =
+        let y =
           (this.svgPageNr === 1 ? this.yStart : this.yMargin) +
           (this.svgPageNr - 1) * this.pageHeight +
           this.svgY

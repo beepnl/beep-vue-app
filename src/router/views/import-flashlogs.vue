@@ -17,7 +17,7 @@
         ></v-switch>
         <div class="beep-label" v-text="$t('Nr_of_match_props') + ': '"></div>
         <v-slider
-          :model-value="matchProps"
+          v-model="matchProps"
           color="accent"
           class="slider--default mt-5"
           style="display: block !important; max-width: 200px;"

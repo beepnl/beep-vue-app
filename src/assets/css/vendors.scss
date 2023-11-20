@@ -533,8 +533,18 @@
   word-break: normal !important;
 }
 
+.dp__input {
+  line-height: 26px !important;
+  padding: 4px 8px !important;
+}
+
+.dp__input_wrap {
+  width: calc(100% + 13px) !important;
+}
+
 .dp__theme_light {
-  --dp-primary-color: $color-accent !important;
+  --dp-border-color: #cccccc !important;
+  --dp-primary-color: #f29100 !important;
 }
 
 .dp__action_button {
