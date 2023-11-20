@@ -17,6 +17,7 @@
         <router-link :to="{ name: 'home' }">
           <v-toolbar-title class="d-flex align-self-center"
             ><img
+              class="main-logo"
               :src="assetsUrl + '/img/beep-logo-black.svg'"
               @click="clearHiveFilters"
           /></v-toolbar-title>
@@ -238,6 +239,10 @@ header.v-app-bar {
   z-index: 2;
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
+}
+
+.main-logo {
+  margin-top: 6px;
 }
 
 .v-tabs-bar.v-slide-group--is-overflowing.v-tabs-bar--is-mobile:not(.v-tabs-bar--show-arrows):not(.v-slide-group--has-affixes)

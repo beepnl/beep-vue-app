@@ -598,17 +598,17 @@ const translations = {
   copy: 'Copy',
   Home: 'Home',
   Select_default_alertrule: 'Copy default alert rule',
-  /* below, please keep all terms between [] as is: */
+  /* below, please keep all terms between {} as is: */
   alertrule_main_sentence:
-    'I would like to receive an alert if the [calculation] [comparison] of the [measurement_quantity] [comparator] [threshold_value][measurement_unit]. This calculation will be executed [calculation_minutes]',
+    'I would like to receive an alert if the {calculation} {comparison} of the {measurement_quantity} {comparator} {threshold_value}{measurement_unit}. This calculation will be executed {calculation_minutes}',
   alertrule_occurences_direct_sentence:
     ', and I would like to receive the alert directly. ',
   alertrule_exclude_months_sentence:
-    'This alert will be deactivated during the following months: [exclude_months]. ',
+    'This alert will be deactivated during the following months: {exclude_months}. ',
   alertrule_exclude_hours_sentence:
-    'This alert will be deactivated during the following hours: [exclude_hours]. ',
+    'This alert will be deactivated during the following hours: {exclude_hours}. ',
   alertrule_exclude_hives_sentence:
-    'This alert will be deactivated for the following hives: [exclude_hive_ids].',
+    'This alert will be deactivated for the following hives: {exclude_hive_ids}.',
   min: 'minimum',
   max: 'maximum',
   ave: 'average',
@@ -1060,6 +1060,8 @@ const translations = {
   Upload_pagenr: 'Upload page {pagenr} here',
   Datetime_of_inspection: 'Date & time of inspection',
   remind_datetime: 'Notification date & time',
+
+  Select_image: 'Select image',
 }
 
 export default translations
