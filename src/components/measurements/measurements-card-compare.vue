@@ -559,13 +559,9 @@ export default {
       },
     },
     compareChartExpText() {
-      const expText = this.$i18n.te('compare_chart_exp')
-        ? this.$i18n
-            .t('compare_chart_exp')
-            .replace('[hivename]', '"' + this.defaultHiveName + '"')
-        : 'Please note: "' +
-          this.defaultHiveName +
-          '" will not be included in the mean weight calculation. '
+      const expText = this.$i18n.t('compare_chart_exp', {
+        hivename: '"' + this.defaultHiveName + '"',
+      })
       return this.defaultHiveIsSelected ? expText : '' // if the default hive is selected, add text that it will not be included in the mean calculation to the compare chart info text
     },
     compareHives() {

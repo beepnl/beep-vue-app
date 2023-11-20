@@ -597,17 +597,17 @@ const translations = {
   copy: 'Kopiere',
   Home: 'Hjem',
   Select_default_alertrule: 'Kopier standard varslingsregel',
-  /* below, please keep all terms between [] as is: */
+  /* below, please keep all terms between {} as is: */
   alertrule_main_sentence:
-    'Jeg vil gjerne motta et varsel hvis [calculation] [comparison] av [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Denne beregningen vil bli utført [calculation_minutes]',
+    'Jeg vil gjerne motta et varsel hvis {calculation} {comparison} av {measurement_quantity} {comparator} {threshold_value}{measurement_unit}. Denne beregningen vil bli utført {calculation_minutes}',
   alertrule_occurences_direct_sentence:
     ', og jeg vil gjerne motta varselet direkte. ',
   alertrule_exclude_months_sentence:
-    'Dette varselet vil bli deaktivert i løpet av de påfølgende månedene: [exclude_months]. ',
+    'Dette varselet vil bli deaktivert i løpet av de påfølgende månedene: {exclude_months}. ',
   alertrule_exclude_hours_sentence:
-    'Dette varselet vil bli deaktivert i løpet av de følgende timene: [exclude_hours]. ',
+    'Dette varselet vil bli deaktivert i løpet av de følgende timene: {exclude_hours}. ',
   alertrule_exclude_hives_sentence:
-    'Dette varselet vil bli deaktivert for følgende bikuber: [exclude_hive_ids].',
+    'Dette varselet vil bli deaktivert for følgende bikuber: {exclude_hive_ids}.',
   min: 'minimum',
   max: 'maksimum',
   ave: 'gjennomsnitt',
@@ -846,7 +846,7 @@ const translations = {
   /* Translations page */
   Translations: 'Translations',
   translation_exp:
-    'To become a translator, please request a translator account via support@beep.nl. If you would like to update translations, please download the .js file below and email the updated file to support@beep.nl. Thank you for your effort!',
+    "To become a translator, please request a translator account via support{'@'}beep.nl. If you would like to update translations, please download the .js file below and email the updated file to support{'@'}beep.nl. Thank you for your effort!",
   unpublished_exp: 'Translations that are yet unpublished:',
   as_plain_text: 'as plain text',
 
@@ -1052,14 +1052,16 @@ const translations = {
   compare_no_chart_data: 'No compare data for the selected period',
   multiple_hives_no_chart_data:
     'No data for the selected hives for the selected period',
-  /* below, please keep [hivename] as is, it will be replaced by the name of the hive you selected in the Data tab */
+  /* below, please keep {hivename} as is, it will be replaced by the name of the hive you selected in the Data tab */
   compare_chart_exp:
-    'Please note: [hivename] will not be included in the mean weight calculation. ',
+    'Please note: {hivename} will not be included in the mean weight calculation. ',
 
-  /* below, please keep [pagenr] as is, it will be replaced by the pagenumber to be uploaded */
-  Upload_pagenr: 'Upload page [pagenr] here',
+  /* below, please keep {pagenr} as is, it will be replaced by the pagenumber to be uploaded */
+  Upload_pagenr: 'Upload page {pagenr} here',
   Datetime_of_inspection: 'Date & time of inspection',
   remind_datetime: 'Notification date & time',
+
+  Select_image: 'Select image',
 }
 
 export default translations

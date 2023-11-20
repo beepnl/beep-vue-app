@@ -593,17 +593,17 @@ const translations = {
   copy: 'Kopírovat',
   Home: 'Domů',
   Select_default_alertrule: 'Kopírovat výchozí pravidlo výstrahy',
-  /* below, please keep all terms between [] as is: */
+  /* below, please keep all terms between {} as is: */
   alertrule_main_sentence:
-    'Chtěl bych obdržet upozornění, pokud [calculation] [comparison] z [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Tento výpočet bude proveden [calculation_minutes]',
+    'Chtěl bych obdržet upozornění, pokud {calculation} {comparison} z {measurement_quantity} {comparator} {threshold_value}{measurement_unit}. Tento výpočet bude proveden {calculation_minutes}',
   alertrule_occurences_direct_sentence:
     ', a rád bych upozornění dostával přímo. ',
   alertrule_exclude_months_sentence:
-    'Toto upozornění bude deaktivováno během následujících měsíců: [exclude_months]. ',
+    'Toto upozornění bude deaktivováno během následujících měsíců: {exclude_months}. ',
   alertrule_exclude_hours_sentence:
-    'Toto upozornění bude deaktivováno během následujících hodin: [exclude_hours]. ',
+    'Toto upozornění bude deaktivováno během následujících hodin: {exclude_hours}. ',
   alertrule_exclude_hives_sentence:
-    'Toto upozornění bude deaktivováno pro následující úly: [exclude_hive_ids].',
+    'Toto upozornění bude deaktivováno pro následující úly: {exclude_hive_ids}.',
   min: 'minimum',
   max: 'maximum',
   ave: 'průměr',
@@ -843,7 +843,7 @@ const translations = {
   /* Translations page */
   Translations: 'Překlady',
   translation_exp:
-    'Chcete-li se stát překladatelem, požádejte o účet překladatele na adrese support@beep.nl. Pokud byste chtěli aktualizovat překlady, stáhněte si níže soubor .js a aktualizovaný soubor zašlete e-mailem na adresu support@beep.nl. Děkuji za snahu!',
+    "Chcete-li se stát překladatelem, požádejte o účet překladatele na adrese support{'@'}beep.nl. Pokud byste chtěli aktualizovat překlady, stáhněte si níže soubor .js a aktualizovaný soubor zašlete e-mailem na adresu support{'@'}beep.nl. Děkuji za snahu!",
   unpublished_exp: 'Překlady, které dosud nebyly publikovány:',
   as_plain_text: 'jako prostý text',
 
@@ -1041,9 +1041,20 @@ const translations = {
     'https://beepsupport.freshdesk.com/en/support/solutions/articles/60000921124-compare-hives-option',
   compare_url_text: 'Zde najdete další informace o funkci Porovnat',
   selected_hive: 'vybraný úl | vybrané úly',
+  Multiple_hives_charts: 'Compare multiple hives in one chart',
+  compare_no_chart_data: 'No compare data for the selected period',
+  multiple_hives_no_chart_data:
+    'No data for the selected hives for the selected period',
+  /* below, please keep {hivename} as is, it will be replaced by the name of the hive you selected in the Data tab */
+  compare_chart_exp:
+    'Please note: {hivename} will not be included in the mean weight calculation. ',
 
-  /* below, please keep [pagenr] as is, it will be replaced by the pagenumber to be uploaded */
-  Upload_pagenr: 'Nahrát stránku [pagenr] sem',
+  /* below, please keep {pagenr} as is, it will be replaced by the pagenumber to be uploaded */
+  Upload_pagenr: 'Nahrát stránku {pagenr} sem',
+  Datetime_of_inspection: 'Date & time of inspection',
+  remind_datetime: 'Notification date & time',
+
+  Select_image: 'Select image',
 }
 
 export default translations

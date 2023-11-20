@@ -698,19 +698,17 @@ const translations = {
   copy: 'Kopieren',
   Home: 'Home',
   Select_default_alertrule: 'Standard-Alarmregel kopieren',
-  /* below, please keep all terms between [] in english: */
+  /* below, please keep all terms between {} in english: */
   alertrule_main_sentence:
-    'Ich möchte eine Benachrichtigung erhalten, wenn die [calculation] [comparison] der [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Diese Berechnung wird [calculation_minutes] ausgeführt',
+    'Ich möchte eine Benachrichtigung erhalten, wenn die {calculation} {comparison} der {measurement_quantity} {comparator} {threshold_value}{measurement_unit}. Diese Berechnung wird {calculation_minutes} ausgeführt',
   alertrule_occurences_direct_sentence:
     ', und ich möchte die Benachrichtigung direkt erhalten. ',
-  alertrule_occurences_indirect_sentence:
-    ', aber ich möchte den Alarm nur erhalten, wenn er [alert_on_occurences] mal auftritt. ',
   alertrule_exclude_months_sentence:
-    'Dieser Alarm wird in den folgenden Monaten deaktiviert: [exclude_months]. ',
+    'Dieser Alarm wird in den folgenden Monaten deaktiviert: {exclude_months}. ',
   alertrule_exclude_hours_sentence:
-    'Dieser Alarm wird während der folgenden Stunden deaktiviert: [exclude_hours]. ',
+    'Dieser Alarm wird während der folgenden Stunden deaktiviert: {exclude_hours}. ',
   alertrule_exclude_hives_sentence:
-    'Dieser Alarm wird für die folgenden Beuten deaktiviert: [exclude_hive_ids].',
+    'Dieser Alarm wird für die folgenden Beuten deaktiviert: {exclude_hive_ids}.',
   min: 'Minimum',
   max: 'Maximum',
   ave: 'Durschnitt',
@@ -953,7 +951,7 @@ const translations = {
   /* Translations page */
   Translations: 'Translations',
   translation_exp:
-    'To become a translator, please request a translator account via support@beep.nl. If you would like to update translations, please download the .js file below and email the updated file to support@beep.nl. Thank you for your effort!',
+    "To become a translator, please request a translator account via support{'@'}beep.nl. If you would like to update translations, please download the .js file below and email the updated file to support{'@'}beep.nl. Thank you for your effort!",
   unpublished_exp: 'Translations that are yet unpublished:',
   as_plain_text: 'as plain text',
 
@@ -1158,12 +1156,16 @@ const translations = {
   compare_no_chart_data: 'No compare data for the selected period',
   multiple_hives_no_chart_data:
     'No data for the selected hives for the selected period',
-  /* below, please keep [hivename] as is, it will be replaced by the name of the hive you selected in the Data tab */
+  /* below, please keep {hivename} as is, it will be replaced by the name of the hive you selected in the Data tab */
   compare_chart_exp:
-    'Please note: [hivename] will not be included in the mean weight calculation. ',
+    'Please note: {hivename} will not be included in the mean weight calculation. ',
 
-  /* below, please keep [pagenr] as is, it will be replaced by the pagenumber to be uploaded */
-  Upload_pagenr: 'Upload hier pagina [pagenr]',
+  /* below, please keep {pagenr} as is, it will be replaced by the pagenumber to be uploaded */
+  Upload_pagenr: 'Upload page {pagenr} here',
+  Datetime_of_inspection: 'Date & time of inspection',
+  remind_datetime: 'Notification date & time',
+
+  Select_image: 'Select image',
 }
 
 export default translations

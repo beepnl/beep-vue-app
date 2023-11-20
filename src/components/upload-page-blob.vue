@@ -96,9 +96,7 @@ export default {
       return this.$vuetify.display.xs
     },
     uploadText() {
-      return this.$i18n.te('Upload_pagenr')
-        ? this.$i18n.t('Upload_pagenr').replace('[pagenr]', this.pageNr)
-        : 'Upload page ' + this.pageNr + ' here'
+      return this.$i18n.t('Upload_pagenr', { pagenr: this.pageNr })
     },
   },
   created() {},

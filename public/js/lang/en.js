@@ -860,7 +860,7 @@ const translations = {
   /* Translations page */
   Translations: 'Translations',
   translation_exp:
-    'To become a translator, please request a translator account via support@beep.nl. If you would like to update translations, please download the .js file below and email the updated file to support@beep.nl. Thank you for your effort!',
+    "To become a translator, please request a translator account via support{'@'}beep.nl. If you would like to update translations, please download the .js file below and email the updated file to support{'@'}beep.nl. Thank you for your effort!",
   unpublished_exp: 'Translations that are yet unpublished:',
   as_plain_text: 'as plain text',
 
@@ -1066,12 +1066,12 @@ const translations = {
   compare_no_chart_data: 'No compare data for the selected period',
   multiple_hives_no_chart_data:
     'No data for the selected hives for the selected period',
-  /* below, please keep [hivename] as is, it will be replaced by the name of the hive you selected in the Data tab */
+  /* below, please keep {hivename} as is, it will be replaced by the name of the hive you selected in the Data tab */
   compare_chart_exp:
-    'Please note: [hivename] will not be included in the mean weight calculation. ',
+    'Please note: {hivename} will not be included in the mean weight calculation. ',
 
-  /* below, please keep [pagenr] as is, it will be replaced by the pagenumber to be uploaded */
-  Upload_pagenr: 'Upload page [pagenr] here',
+  /* below, please keep {pagenr} as is, it will be replaced by the pagenumber to be uploaded */
+  Upload_pagenr: 'Upload page {pagenr} here',
   Datetime_of_inspection: 'Date & time of inspection',
   remind_datetime: 'Notification date & time',
 

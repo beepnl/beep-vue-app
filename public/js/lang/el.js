@@ -673,19 +673,17 @@ const translations = {
   copy: 'Αντιγραφή',
   Home: 'Αρχική',
   Select_default_alertrule: 'Αντιγραφή προεπιλεγμένου κανόνα ειδοποίησης',
-  /* below, please keep all terms between [] as is: */
+  /* below, please keep all terms between {} as is: */
   alertrule_main_sentence:
-    'Θα ήθελα να λαμβάνω ειδοποίηση εάν το [calculation] [comparison] από [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Αυτός ο υπολογισμός θα εκτελεστεί [calculation_minutes]',
+    'Θα ήθελα να λαμβάνω ειδοποίηση εάν το {calculation} {comparison} από {measurement_quantity} {comparator} {threshold_value}{measurement_unit}. Αυτός ο υπολογισμός θα εκτελεστεί {calculation_minutes}',
   alertrule_occurences_direct_sentence:
     ', και θα ήθελα να λαμβάνω απευθείας την ειδοποίηση. ',
-  alertrule_occurences_indirect_sentence:
-    ', αλλά θα ήθελα να λαμβάνω την ειδοποίηση μόνο εάν συμβεί [alert_on_occurences] φορές. ',
   alertrule_exclude_months_sentence:
-    'Αυτή η ειδοποίηση θα απενεργοποιηθεί τους επόμενους μήνες: [exclude_months]. ',
+    'Αυτή η ειδοποίηση θα απενεργοποιηθεί τους επόμενους μήνες: {exclude_months}. ',
   alertrule_exclude_hours_sentence:
-    'Αυτή η ειδοποίηση θα απενεργοποιηθεί τις επόμενες ώρες: [exclude_hours]. ',
+    'Αυτή η ειδοποίηση θα απενεργοποιηθεί τις επόμενες ώρες: {exclude_hours}. ',
   alertrule_exclude_hives_sentence:
-    'Αυτή η ειδοποίηση θα απενεργοποιηθεί για τις ακόλουθες κυψέλες: [exclude_hive_ids].',
+    'Αυτή η ειδοποίηση θα απενεργοποιηθεί για τις ακόλουθες κυψέλες: {exclude_hive_ids}.',
   min: 'ελάχιστο',
   max: 'μέγιστο',
   ave: 'μέση τιμή',
@@ -928,7 +926,7 @@ const translations = {
   /* Translations page */
   Translations: 'Μεταφράσεις',
   translation_exp:
-    'Για να γίνετε μεταφραστής, ζητήστε λογαριασμό μεταφραστή μέσω support@beep.nl. Εάν θέλετε να ενημερώσετε τις μεταφράσεις, κατεβάστε το αρχείο .js παρακάτω και στείλτε το ενημερωμένο αρχείο στη διεύθυνση support@beep.nl. Σε ευχαριστούμε για την προσπάθεια σου!',
+    "Για να γίνετε μεταφραστής, ζητήστε λογαριασμό μεταφραστή μέσω support{'@'}beep.nl. Εάν θέλετε να ενημερώσετε τις μεταφράσεις, κατεβάστε το αρχείο .js παρακάτω και στείλτε το ενημερωμένο αρχείο στη διεύθυνση support{'@'}beep.nl. Σε ευχαριστούμε για την προσπάθεια σου!",
   unpublished_exp: 'Translations that are yet unpublished:',
   as_plain_text: 'ως απλό κείμενο',
 
@@ -1134,14 +1132,16 @@ const translations = {
   compare_no_chart_data: 'No compare data for the selected period',
   multiple_hives_no_chart_data:
     'No data for the selected hives for the selected period',
-  /* below, please keep [hivename] as is, it will be replaced by the name of the hive you selected in the Data tab */
+  /* below, please keep {hivename} as is, it will be replaced by the name of the hive you selected in the Data tab */
   compare_chart_exp:
-    'Please note: [hivename] will not be included in the mean weight calculation. ',
+    'Please note: {hivename} will not be included in the mean weight calculation. ',
 
-  /* below, please keep [pagenr] as is, it will be replaced by the pagenumber to be uploaded */
-  Upload_pagenr: 'Upload page [pagenr] here',
+  /* below, please keep {pagenr} as is, it will be replaced by the pagenumber to be uploaded */
+  Upload_pagenr: 'Upload page {pagenr} here',
   Datetime_of_inspection: 'Date & time of inspection',
   remind_datetime: 'Notification date & time',
+
+  Select_image: 'Select image',
 }
 
 export default translations

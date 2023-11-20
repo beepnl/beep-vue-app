@@ -208,45 +208,28 @@ export default {
 
       replacedSentence += '. ' // alertrule_active_email and no_email_sentence are omitted here
 
-      // if (alertRule.alert_on_occurences === 1) {
-      //   replacedSentence += this.$i18n.t('alertrule_occurences_direct_sentence')
-      // } else {
-      //   replacedSentence += this.$i18n.t(
-      //     'alertrule_occurences_indirect_sentence'
-      //   )
-      //   replacedSentence = replacedSentence.replace(
-      //     '[alert_on_occurences]',
-      //     alertRule.alert_on_occurences
-      //   )
-      // }
-
       if (alertRule.exclude_months.length > 0) {
-        replacedSentence += this.$i18n.t('alertrule_exclude_months_sentence')
         const monthsArray = []
         alertRule.exclude_months.map((month) => {
           monthsArray.push(this.$i18n.tm('monthsFull')[month - 1])
           return true
         })
-        replacedSentence = replacedSentence.replace(
-          '[exclude_months]',
-          monthsArray.join(', ')
-        )
+
+        replacedSentence += this.$i18n.t('alertrule_exclude_months_sentence', {
+          exclude_months: monthsArray.join(', '),
+        })
       }
 
       if (alertRule.exclude_hours.length > 0) {
-        replacedSentence += this.$i18n.t('alertrule_exclude_hours_sentence')
-
         const hoursArray = []
         alertRule.exclude_hours.map((hour) => {
           hoursArray.push(this.alertRulesList.exclude_hours[hour])
           return true
         })
-        const hoursString = hoursArray.join(', ')
 
-        replacedSentence = replacedSentence.replace(
-          '[exclude_hours]',
-          hoursString
-        )
+        replacedSentence += this.$i18n.t('alertrule_exclude_hours_sentence', {
+          exclude_hours: hoursArray.join(', '),
+        })
       }
 
       return replacedSentence

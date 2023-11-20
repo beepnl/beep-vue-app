@@ -628,9 +628,9 @@ const translations = {
   copy: 'Kopieer',
   Home: 'Home',
   Select_default_alertrule: 'Kopieer standaardinstelling',
-  /* below, please keep all terms between [] in english: */
+  /* below, please keep all terms between {} in english: */
   alertrule_main_sentence:
-    'Ik wil een notificatie ontvangen als [calculation] [measurement_quantity] [comparison] [comparator] [threshold_value][measurement_unit]. Deze berekening wordt [calculation_minutes] uitgevoerd',
+    'Ik wil een notificatie ontvangen als {calculation} {measurement_quantity} {comparison} {comparator} {threshold_value}{measurement_unit}. Deze berekening wordt {calculation_minutes} uitgevoerd',
   alertrule_active_no_email_sentence:
     ', en ik open de BEEP app om de notificaties te zien.',
   alertrule_active_email_sentence:
@@ -638,11 +638,11 @@ const translations = {
   alertrule_occurences_direct_sentence:
     ', en ik ontvang hier direct een notificatie van. ',
   alertrule_exclude_months_sentence:
-    'Deze notificatie is uitgeschakeld in de maanden: [exclude_months]. ',
+    'Deze notificatie is uitgeschakeld in de maanden: {exclude_months}. ',
   alertrule_exclude_hours_sentence:
-    'Deze notificatie is uitgeschakeld tijdens de uren: [exclude_hours]. ',
+    'Deze notificatie is uitgeschakeld tijdens de uren: {exclude_hours}. ',
   alertrule_exclude_hives_sentence:
-    'Deze notificatie is uitgeschakeld voor deze bijenkasten: [exclude_hive_ids].',
+    'Deze notificatie is uitgeschakeld voor deze bijenkasten: {exclude_hive_ids}.',
   min: 'minimum',
   max: 'maximum',
   ave: 'gemiddelde',
@@ -871,7 +871,7 @@ const translations = {
   /* Translations page */
   Translations: 'Vertalingen',
   translation_exp:
-    'Vraag een vertaler account aan via support@beep.nl om een vertaler te worden. Als je een vertaling wilt updaten, download dan hieronder het betreffende .js bestand en mail het geüpdatete bestand naar support@beep.nl. Bedankt voor de moeite!',
+    "Vraag een vertaler account aan via support{'@'}beep.nl om een vertaler te worden. Als je een vertaling wilt updaten, download dan hieronder het betreffende .js bestand en mail het geüpdatete bestand naar support{'@'}beep.nl. Bedankt voor de moeite!",
   unpublished_exp: 'Vertalingen die nog ongepubliceerd zijn:',
   as_plain_text: 'als platte tekst',
 
@@ -1083,12 +1083,12 @@ const translations = {
     'Geen vergelijkingsdata beschikbaar voor de geselecteerde periode',
   multiple_hives_no_chart_data:
     'Geen data beschikbaar voor de geselecteerde bijenkasten voor de geselecteerde periode',
-  /* below, please keep [hivename] as is, it will be replaced by the name of the hive you selected in the Data tab */
+  /* below, please keep {hivename} as is, it will be replaced by the name of the hive you selected in the Data tab */
   compare_chart_exp:
-    'Let op: [hivename] wordt niet meegenomen in de berekening van het gemiddelde gewicht. ',
+    'Let op: {hivename} wordt niet meegenomen in de berekening van het gemiddelde gewicht. ',
 
-  /* below, please keep [pagenr] as is, it will be replaced by the pagenumber to be uploaded */
-  Upload_pagenr: 'Upload hier pagina [pagenr]',
+  /* below, please keep {pagenr} as is, it will be replaced by the pagenumber to be uploaded */
+  Upload_pagenr: 'Upload hier pagina {pagenr}',
   Datetime_of_inspection: 'Inspectiedatum en -tijd',
   remind_datetime: 'Herinneringsdatum en -tijd',
 
