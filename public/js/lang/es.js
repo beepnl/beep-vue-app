@@ -728,6 +728,11 @@ const translations = {
     'Para empezar hay algunas reglas de alertas que puedes utilizar (y adaptar según tus propias necesidades). Además, puedes crear tus propias reglas de alertas',
   alertrules_url_text:
     'Ir a Ajustes de alerta para crear tu primera regla de alerta',
+  Source: 'Source',
+  db_influx: 'Influx Database',
+  lambda_model: 'Lambda Model',
+  open_weather: 'Open Weather',
+
   Apiary_management: 'Manejo de apiario',
   Move: 'Mover',
   Current_apiary: 'Apiario actual',

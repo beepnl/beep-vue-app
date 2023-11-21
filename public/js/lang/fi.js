@@ -755,6 +755,11 @@ const translations = {
     'Voit käyttää valmiita oletusvaroitussääntöjä, ja mukauttaa niitä omiin tarpeisiisi. Lisäksi voit luoda omia hälytyssääntöjä.',
   alertrules_url_text:
     'Luo ensimmäinen hälytyssääntö siirtymällä kohtaan Hälytysasetukset',
+  Source: 'Source',
+  db_influx: 'Influx Database',
+  lambda_model: 'Lambda Model',
+  open_weather: 'Open Weather',
+
   Apiary_management: 'Mehiläistarhan hallinta',
   Move: 'Siirrä',
   Current_apiary: 'Nykyinen mehiläistarha',

@@ -630,6 +630,11 @@ const translations = {
     'Chcete-li začít, existuje několik výchozích pravidel výstrah, která můžete použít (a přizpůsobit svým vlastním potřebám). Kromě toho si můžete vytvořit vlastní pravidla výstrah.',
   alertrules_url_text:
     'Přejděte na „Nastavení upozornění“ a vytvořte své první pravidlo upozornění',
+  Source: 'Source',
+  db_influx: 'Influx Database',
+  lambda_model: 'Lambda Model',
+  open_weather: 'Open Weather',
+
   Apiary_management: 'Správa včelína',
   Move: 'Přesunout',
   Current_apiary: 'Současný včelín',

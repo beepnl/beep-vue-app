@@ -725,6 +725,11 @@ const translations = {
     'Pentru a putea începe, există câteva reguli implicite de alertă pe care le puteți utiliza (și adapta la propriile nevoi). În plus, vă puteți crea propriile reguli de alertă.',
   alertrules_url_text:
     'Accesați „Setări de alertă” pentru a crea prima regulă de alertă',
+  Source: 'Source',
+  db_influx: 'Influx Database',
+  lambda_model: 'Lambda Model',
+  open_weather: 'Open Weather',
+
   Apiary_management: 'Managementul stupinei',
   Move: 'Mutați',
   Current_apiary: 'Stupina actuală',

@@ -721,6 +721,11 @@ const translations = {
     'Per iniziare ci sono già impostazioni per alcuni messaggi di allerta che puoi usare (e adattare ai tuoi bisogni). In aggiunta, puoi creare le tue regole per nuovi messaggi di allerta.',
   alertrules_url_text:
     "Vai a'Impostazioni messaggi di allerta' per creare la tua prima regola per messaggi di allerta",
+  Source: 'Source',
+  db_influx: 'Influx Database',
+  lambda_model: 'Lambda Model',
+  open_weather: 'Open Weather',
+
   Apiary_management: 'Gestione apiario',
   Move: 'Muovi',
   Current_apiary: 'Apiario attuale',
