@@ -22,7 +22,7 @@
               hiveCreateMode)
         "
         class="save-bar"
-        dense
+        density="compact"
         light
       >
         <v-spacer></v-spacer>
@@ -35,8 +35,6 @@
           >mdi-delete</v-icon
         >
         <v-btn
-          tile
-          outlined
           color="black"
           :class="
             `${
@@ -58,7 +56,7 @@
             color="disabled"
             indeterminate
           />
-          <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
+          <v-icon v-if="!showLoadingIcon" start>mdi-check</v-icon>
           {{ $t('save') }}
         </v-btn>
       </v-toolbar>
@@ -80,7 +78,7 @@
             "
             cols="12"
           >
-            <p class="red--text mt-3"
+            <p class="text-red mt-3"
               >{{ $t('no_apiaries_yet') }}
               <router-link
                 :to="{
@@ -88,7 +86,7 @@
                 }"
               >
                 <div class="color-accent"
-                  ><v-icon color="accent" left>mdi-plus-circle</v-icon
+                  ><v-icon color="accent" start>mdi-plus-circle</v-icon
                   >{{ $t('first_create_apiary') }}</div
                 >
               </router-link>
@@ -103,7 +101,7 @@
               counter="30"
               :rules="requiredRule"
               required
-              @input="validateText($event, 'name', 30)"
+              @update:model-value="validateText($event, 'name', 30)"
             >
             </v-text-field>
           </v-col>
@@ -113,7 +111,7 @@
               <div
                 :class="
                   `beep-label ${
-                    isNaN(activeHive.location_id) ? 'red--text' : ''
+                    isNaN(activeHive.location_id) ? 'text-red' : ''
                   }`
                 "
                 v-text="$tc('Location', 1) + '*'"
@@ -129,7 +127,7 @@
                 :normalizer="normalizerApiary"
                 :placeholder="`${$t('Select')} ${$tc('location', 1)}`"
                 :no-results-text="`${$t('no_results')}`"
-                @input="setHiveEdited(true)"
+                @update:model-value="setHiveEdited(true)"
               />
 
               <v-select
@@ -143,12 +141,10 @@
               <div
                 v-if="isNaN(activeHive.location_id)"
                 class="v-text-field__details mt-1"
-                ><div class="v-messages theme--light error--text" role="alert"
+                ><div class="v-messages theme--light text-error" role="alert"
                   ><div class="v-messages__wrapper"
                     ><div class="v-messages__message">{{
-                      this.$i18n.t('this_field') +
-                        ' ' +
-                        this.$i18n.t('is_required')
+                      $t('this_field') + ' ' + $t('is_required')
                     }}</div></div
                   ></div
                 ></div
@@ -164,11 +160,10 @@
           >
             <div>
               <div class="beep-label" v-text="$t('Hive_order')"></div>
-              <el-input-number
-                :value="activeHive.order === null ? 0 : activeHive.order"
-                size="medium"
-                @change="updateOrder($event)"
-              ></el-input-number>
+              <ElInputNumber
+                :model-value="activeHive.order === null ? 0 : activeHive.order"
+                @update:model-value="updateOrder($event)"
+              ></ElInputNumber>
             </div>
           </v-col>
         </v-row>
@@ -187,7 +182,7 @@
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
-      <v-btn color="accent" text @click="snackbar.show = false">
+      <v-btn color="accent" variant="text" @click="snackbar.show = false">
         {{ $t('Close') }}
       </v-btn>
     </v-snackbar>
@@ -198,20 +193,22 @@
 
 <script>
 import Api from '@api/Api'
-import Confirm from '@components/confirm.vue'
+import Treeselect from 'vue3-treeselect'
+import Confirm from '@/src/components/confirm-dialog.vue'
 import HiveEditDetails from '@components/hive-edit-details.vue'
 import { mapGetters } from 'vuex'
-import Layout from '@layouts/back.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
 import QueenEditDetails from '@components/queen-edit-details.vue'
 import {
   checkAlerts,
+  getMaxFramecount,
   readApiariesAndGroups,
   readApiariesAndGroupsIfNotPresent,
   readDevices,
   readGeneralInspections,
 } from '@mixins/methodsMixin'
 import { timeZone } from '@mixins/momentMixin'
-import Treeselect from '@riophae/vue-treeselect'
+import { ElInputNumber } from 'element-plus'
 
 export default {
   components: {
@@ -220,9 +217,11 @@ export default {
     Layout,
     QueenEditDetails,
     Treeselect,
+    ElInputNumber,
   },
   mixins: [
     checkAlerts,
+    getMaxFramecount,
     readApiariesAndGroups,
     readApiariesAndGroupsIfNotPresent,
     readDevices,
@@ -289,7 +288,7 @@ export default {
       return this.activeHive !== null ? [this.activeHive.location] : []
     },
     sortedApiaries() {
-      var sortedApiaries = this.apiaries.slice().sort(function(a, b) {
+      const sortedApiaries = this.apiaries.slice().sort(function(a, b) {
         if (a.name > b.name) {
           return 1
         }
@@ -326,9 +325,10 @@ export default {
     // If hive-create route is used, make empty hive object
     if (this.hiveCreateMode) {
       this.readApiariesAndGroupsIfNotPresent().then(() => {
+        let selectedLocationId = null
         if (this.apiaries.length > 0) {
-          var selectedApiary = this.sortedApiaries[0]
-          var selectedLocationId = selectedApiary.id
+          let selectedApiary = this.sortedApiaries[0]
+          selectedLocationId = selectedApiary.id
           this.newHiveLocation = null
           if (this.locationId !== null) {
             selectedLocationId = this.locationId
@@ -493,10 +493,7 @@ export default {
     async updateHive() {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
-        this.activeHive.frames =
-          this.activeHive.layers.length > 0
-            ? this.activeHive.layers[0].framecount
-            : 10
+        this.activeHive.frames = this.getMaxFramecount(this.activeHive.layers)
         try {
           const response = await Api.updateRequest(
             '/hives/',

@@ -32,7 +32,7 @@ export default [
   {
     path: '/:id',
     name: 'dashboard',
-    component: () => import('@views/dashboard.vue'),
+    component: () => import('@views/dashboard-page.vue'),
   },
   //   {
   //     path: '/password-forgot',
@@ -440,7 +440,7 @@ export default [
 // back to a timeout view in case the page fails to load. You can
 // use this component to lazy-load a route with:
 //
-// component: () => lazyLoadView(import('@views/my-view'))
+// component: () => import('@views/my-view'))
 //
 // NOTE: Components loaded with this strategy DO NOT have access
 // to in-component guards, such as beforeRouteEnter,

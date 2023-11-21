@@ -5,15 +5,15 @@
         <div class="beep-label">
           {{ $t('drag_layers') }}
           <v-icon
-            class="mdi mdi-information ml-1 icon-info cursor-pointer"
-            dark
-            small
+            class="ml-1 icon-info cursor-pointer"
+            size="small"
             color="accent"
             @click="showInfo = !showInfo"
-          ></v-icon>
+            >mdi-information</v-icon
+          >
         </div>
 
-        <p v-if="showInfo" class="info-text">
+        <p v-if="showInfo" class="info-text mt-1">
           <em>{{ $t('drag_layers_info_text') }} </em>
         </p>
         <div
@@ -31,20 +31,26 @@
               :sort="false"
               class="d-flex flex-column justify-flex-start"
             >
-              <div
-                v-for="layer in layersToAdd"
-                :key="layer.key"
-                :class="[`draggable-layer-wrapper ${layer.type}-layer-wrapper`]"
-                :width="`${hiveWidth(hive)}px`"
-              >
-                <span class="beep-label" v-text="layerTypeText(layer)"></span>
-                <v-sheet
-                  :color="checkColor(layer)"
-                  :class="[`layer draggable-layer ${layer.type}-layer`]"
+              <template v-slot:item="{ element }">
+                <div
+                  :key="element.key"
+                  :class="[
+                    `draggable-layer-wrapper ${element.type}-layer-wrapper`,
+                  ]"
                   :width="`${hiveWidth(hive)}px`"
                 >
-                </v-sheet>
-              </div>
+                  <span
+                    class="beep-label"
+                    v-text="layerTypeText(element)"
+                  ></span>
+                  <v-sheet
+                    :color="checkColor(element)"
+                    :class="[`layer draggable-layer ${element.type}-layer`]"
+                    :width="`${hiveWidth(hive)}px`"
+                  >
+                  </v-sheet>
+                </div>
+              </template>
             </draggable>
           </div>
 
@@ -65,48 +71,53 @@
                   delay="100"
                   delay-on-touch-only="true"
                 >
-                  <v-sheet
-                    v-for="layer in hiveLayers"
-                    :key="layer.id !== undefined ? layer.id : layer.key"
-                    :color="checkColor(layer)"
-                    :class="[`layer ${layer.type}-layer`]"
-                    :width="`${hiveWidth(hive)}px`"
-                    @click.native="openOverlay(layer)"
-                  >
-                  </v-sheet>
+                  <template v-slot:item="{ element }">
+                    <v-sheet
+                      :key="element.id !== undefined ? element.id : element.key"
+                      :color="checkColor(element)"
+                      :class="[`layer ${element.type}-layer`]"
+                      :width="`${hiveWidth(hive)}px`"
+                      @click="openOverlay(element)"
+                    >
+                    </v-sheet>
+                  </template>
                 </draggable>
               </div>
             </v-sheet>
           </div>
 
-          <v-overlay :value="overlayLayerColor">
-            <v-toolbar class="hive-color-picker-toolbar" dense light flat>
-              <div
-                class="hive-color-picker-title ml-1"
-                v-text="
-                  currentLayer !== null ? layerTypeText(currentLayer) : ''
-                "
-              ></div>
+          <v-overlay
+            v-model="overlayLayerColor"
+            class="align-center justify-center"
+          >
+            <v-toolbar
+              class="hive-color-picker-toolbar"
+              density="compact"
+              theme="light"
+              :title="currentLayer !== null ? layerTypeText(currentLayer) : ''"
+              flat
+            >
               <v-spacer></v-spacer>
-              <v-toolbar-items>
-                <v-icon class="mr-1" @click="cancelColorPicker"
-                  >mdi-close</v-icon
-                >
-              </v-toolbar-items>
+              <v-icon class="mr-1" @click="cancelColorPicker">mdi-close</v-icon>
             </v-toolbar>
 
             <v-color-picker
               v-model="colorPicker"
+              position="relative"
               class="hive-color-picker flex-color-picker"
               :swatches="swatches"
+              :modes="['rgb']"
               show-swatches
               hide-canvas
-              light
-              flat
             >
             </v-color-picker>
 
-            <v-toolbar class="hive-color-picker-footer" dense light flat>
+            <v-toolbar
+              class="hive-color-picker-footer"
+              density="compact"
+              theme="light"
+              flat
+            >
               <v-spacer></v-spacer>
               <v-icon color="red" @click="deleteLayer">mdi-delete</v-icon>
               <v-icon
@@ -126,17 +137,18 @@
 </template>
 
 <script>
+import { getMaxFramecount, orderedLayers } from '@mixins/methodsMixin'
 import draggable from 'vuedraggable'
-import Confirm from '@components/confirm.vue'
-import { orderedLayers } from '@mixins/methodsMixin'
-var keyGlobal = 0
+import Confirm from '@/src/components/confirm-dialog.vue'
+
+let keyGlobal = 0
 
 export default {
   components: {
     Confirm,
     draggable,
   },
-  mixins: [orderedLayers],
+  mixins: [getMaxFramecount, orderedLayers],
   props: {
     colorPreview: {
       type: Boolean,
@@ -154,6 +166,7 @@ export default {
       required: true,
     },
   },
+  emits: ['update-defaultframecount'],
   data: function() {
     return {
       swatches: [
@@ -202,7 +215,7 @@ export default {
       },
     },
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.xs
     },
   },
   methods: {
@@ -231,10 +244,10 @@ export default {
     cloneLayer({ key, order, color, type, framecount, newLayer }) {
       return {
         key: keyGlobal--,
-        order: order,
-        type: type,
-        color: color,
-        framecount: framecount,
+        order,
+        type,
+        color,
+        framecount,
       }
     },
     deleteLayer() {
@@ -245,16 +258,16 @@ export default {
         .then((confirm) => {
           const layerId = this.currentLayer.id || 0
           const layerKey = this.currentLayer.key || 0
-          var remainingLayers = this.hive.layers.filter(
+          const remainingLayers = this.hive.layers.filter(
             (layer) => !(layer.id === layerId || layer.key === layerKey)
           )
           this.hive.layers = remainingLayers
           this.hive.frames =
             remainingLayers.length > 0
-              ? this.hive.layers[0].framecount
+              ? this.getMaxFramecount(this.hive.layers)
               : this.frameCount
           if (this.hive.layers.length === 1) {
-            this.frameCount = this.hive.layers[0].framecount
+            this.frameCount = this.getMaxFramecount(this.hive.layers)
             this.$emit('update-defaultframecount', this.frameCount)
           }
           this.setHiveEdited(true)
@@ -267,9 +280,9 @@ export default {
         })
     },
     generateLayersToAdd: function() {
-      var arr = []
+      const arr = []
       const layerType = ['honey', 'brood', 'feeding_box', 'queen_excluder']
-      for (var n = 0; n < 4; n++) {
+      for (let n = 0; n < 4; n++) {
         arr[n] = {
           key: keyGlobal--,
           order: 0,
@@ -277,7 +290,7 @@ export default {
           type: layerType[n],
           framecount:
             this.hive.layers.length > 0
-              ? this.hive.layers[0].framecount
+              ? this.getMaxFramecount(this.hive.layers)
               : this.frameCount,
           newLayer: true,
         }
@@ -290,11 +303,11 @@ export default {
     hiveWidth: function(hive) {
       if (this.mobile) {
         return hive.layers.length > 0
-          ? hive.layers[0].framecount * 6
+          ? this.getMaxFramecount(this.hive.layers) * 6
           : this.frameCount * 6
       } else {
         return hive.layers.length > 0
-          ? hive.layers[0].framecount * 7
+          ? this.getMaxFramecount(this.hive.layers) * 7
           : this.frameCount * 7
       }
     },
@@ -324,7 +337,7 @@ export default {
       this.hive.layers[layerIndex].color = this.layerColorPickerValue
       this.hive.frames =
         this.hive.layers.length > 0
-          ? this.hive.layers[0].framecount
+          ? this.getMaxFramecount(this.hive.layers)
           : this.frameCount
       this.setHiveEdited(true)
       this.setApiaryEdited(true)
@@ -332,15 +345,16 @@ export default {
       this.cancelColorPicker()
     },
     updateHiveLayerOrder(layers) {
-      var i = layers.length
+      let i = layers.length
       layers.map((layer) => {
         layer.order = i
         i--
+        return layer
       })
       this.hive.layers = layers
       this.hive.frames =
         this.hive.layers.length > 0
-          ? this.hive.layers[0].framecount
+          ? this.getMaxFramecount(this.hive.layers)
           : this.frameCount
       this.setHiveEdited(true)
       this.setApiaryEdited(true)

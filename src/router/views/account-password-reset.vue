@@ -8,7 +8,7 @@
     >
       <div v-if="passwordReset">
         <v-card-text v-if="errors.length === 0">
-          <v-alert text prominent dense color="green">
+          <v-alert text prominent density="compact" color="green">
             {{ $t('password_recovery_reset_success') }}
           </v-alert>
           <a @click="login">{{ $t('go_to_dashboard') }}</a>
@@ -18,15 +18,16 @@
             v-for="error in errors"
             :key="error.name"
             type="error"
-            text
             prominent
-            dense
             color="red"
           >
+            <template v-slot:prepend>
+              <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+            </template>
             {{ error.errorMessage }}
             <a
               v-if="error.verifyLink"
-              class="red--text alert-link"
+              class="text-red alert-link"
               @click="sendEmailVerification"
               >{{ $t('email_new_verification') }}</a
             >
@@ -42,16 +43,17 @@
             v-for="error in errors"
             :key="error.name"
             type="error"
-            text
             prominent
-            dense
             color="red"
           >
+            <template v-slot:prepend>
+              <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+            </template>
             {{ error.errorMessage }}
             <span v-if="error.passwordForgotLink" class="alert-link">
               <br />
               <router-link
-                class="red--text"
+                class="text-red"
                 :to="{ name: 'password-forgot', query: { email: email } }"
               >
                 {{ $t('password_recovery_resend_mail') }}
@@ -60,21 +62,21 @@
           </v-alert>
           <v-text-field
             v-model="resetPasswordRequest.email"
-            :class="fieldErrors.email ? 'error--text' : ''"
+            :class="fieldErrors.email ? 'text-error' : ''"
             :label="`${$t('email')}`"
             :rules="emailRules"
             type="email"
           ></v-text-field>
           <v-text-field
             v-model="resetPasswordRequest.token"
-            :class="fieldErrors.token ? 'error--text' : ''"
+            :class="fieldErrors.token ? 'text-error' : ''"
             :label="`${$t('verification_code')}`"
             :rules="verificationCodeRules"
             autocomplete="off"
           ></v-text-field>
           <v-text-field
             v-model="resetPasswordRequest.password"
-            :class="fieldErrors.password ? 'error--text' : ''"
+            :class="fieldErrors.password ? 'text-error' : ''"
             :label="`${$t('new_password')}`"
             :rules="passwordRules"
             autocomplete="off"
@@ -95,7 +97,7 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text type="submit">
+          <v-btn variant="text" type="submit">
             {{ $t('password_recovery_reset_password') }}
           </v-btn>
         </v-card-actions>
@@ -116,7 +118,7 @@
 
 <script>
 import Api from '@api/Api'
-import Layout from '@layouts/account.vue'
+import Layout from '@/src/router/layouts/account-layout.vue'
 
 export default {
   components: { Layout },
@@ -208,11 +210,13 @@ export default {
         } catch (error) {
           if (error.response) {
             console.log(error.response)
-            var verifyLink = false
-            var passwordForgotLink = false
+            let verifyLink = false
+            let passwordForgotLink = false
+
+            let msg = ''
 
             if (typeof error.response.data.message !== 'undefined') {
-              var msg = error.response.data.message
+              msg = error.response.data.message
             } else {
               msg = error.response.data
             }
@@ -276,9 +280,10 @@ export default {
           this.tryingToLogIn = false
           if (error.response) {
             console.log(error.response)
-            var verifyLink = false
+            let verifyLink = false
+            let msg = ''
             if (typeof error.response.data.message !== 'undefined') {
-              var msg = error.response.data.message
+              msg = error.response.data.message
             } else {
               msg = error.response.data
             }

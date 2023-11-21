@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import Layout from '@layouts/main.vue'
+import Layout from '@/src/router/layouts/main-layout.vue'
 
 export default {
   page: {

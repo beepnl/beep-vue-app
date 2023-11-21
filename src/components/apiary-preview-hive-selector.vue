@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div class="d-flex align-end apiary-preview">
+    <div
+      :class="'d-flex align-end apiary-preview' + (markRed ? ' mark-red' : '')"
+    >
       <div
         v-for="(hive, j) in sortedHives"
         :key="j"
@@ -8,28 +10,31 @@
         @click="selectHive(hive.id)"
       >
         <div v-if="groupMode" class="hive-in-group">
-          <v-icon v-if="hivesEditable.includes(hive.id)" class="green--text">
+          <v-icon v-if="hivesEditable.includes(hive.id)" class="text-green">
             mdi-pencil-circle
           </v-icon>
           <v-icon
             v-else-if="hivesSelected.includes(hive.id)"
-            class="green--text"
+            class="text-green"
           >
             mdi-eye-circle
           </v-icon>
         </div>
 
         <div v-if="inspectionMode" class="hive-in-inspection">
-          <v-icon v-if="hivesSelected.includes(hive.id)" class="green--text">
+          <v-icon v-if="hivesSelected.includes(hive.id)" class="text-green">
             mdi-check-circle
           </v-icon>
         </div>
 
         <div
-          v-if="dashboardMode || dashboardEditMode"
+          v-if="compareMode || dashboardMode || dashboardEditMode"
           class="hive-in-dashboard"
         >
-          <div v-if="hive.sensors.length > 0" class="my-0">
+          <div
+            v-if="hive.sensors.length > 0 && (compareMode ? true : hive.owner)"
+            class="my-0"
+          >
             <v-sheet
               :class="
                 'beep-icon beep-icon-sensors--no-outline' +
@@ -106,27 +111,7 @@ import { getMaxFramecount, orderedLayers } from '@mixins/methodsMixin'
 export default {
   mixins: [getMaxFramecount, orderedLayers],
   props: {
-    hives: {
-      type: Array,
-      default: null,
-      required: true,
-    },
-    hivesEditable: {
-      type: Array,
-      default: () => [],
-      required: false,
-    },
-    hivesSelected: {
-      type: Array,
-      default: () => [],
-      required: false,
-    },
-    groupMode: {
-      type: Boolean,
-      default: false,
-      required: false,
-    },
-    inspectionMode: {
+    compareMode: {
       type: Boolean,
       default: false,
       required: false,
@@ -146,6 +131,36 @@ export default {
       default: false,
       required: false,
     },
+    groupMode: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
+    hives: {
+      type: Array,
+      default: null,
+      required: true,
+    },
+    hivesEditable: {
+      type: Array,
+      default: () => [],
+      required: false,
+    },
+    hivesSelected: {
+      type: Array,
+      default: () => [],
+      required: false,
+    },
+    inspectionMode: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
+    largeSize: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
     size: {
       type: String,
       default: null,
@@ -157,6 +172,7 @@ export default {
       required: false,
     },
   },
+  emits: ['select-hive'],
   computed: {
     sortedHives() {
       if (!this.disableSortHives) {
@@ -186,9 +202,9 @@ export default {
       return hive.layers.some((layer) => layer.type === type)
     },
     hiveWidth: function(hive) {
-      var multiplier =
+      const multiplier =
         this.size === 'large' ? 6 : this.size === 'medium' ? 4.75 : 3.5
-      var placeholder =
+      const placeholder =
         this.size === 'large' ? 20 : this.size === 'medium' ? 25 : 35
       return hive.layers.length > 0
         ? this.getMaxFramecount(hive.layers) * multiplier
@@ -205,6 +221,9 @@ export default {
 .apiary-preview {
   overflow-x: auto;
   overflow-y: hidden;
+  &.mark-red {
+    background-color: $color-red-light !important;
+  }
 }
 
 .hive-in-group,
@@ -338,6 +357,7 @@ export default {
 }
 
 .hive-caption {
+  font-size: 12px;
   height: 45px;
   margin-top: 3px;
   line-height: 0.9rem;

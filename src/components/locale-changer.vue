@@ -1,12 +1,12 @@
 <template>
   <span class="locale-changer">
     <v-menu>
-      <template v-slot:activator="{ on }">
+      <template v-slot:activator="{ props }">
         <v-btn
           class="locale-changer-button"
           depressed
           color="transparent"
-          v-on="on"
+          v-bind="props"
         >
           <img
             style="width:20px;"
@@ -17,19 +17,12 @@
       </template>
 
       <v-list>
-        <template v-for="language in languages">
+        <template v-for="language in languages" :key="language.title">
           <v-list-item
-            :key="language.title"
-            :value="language"
+            :prepend-avatar="assetsUrl + `/img/flags/${language.lang}.svg`"
+            :title="language.title"
             @click="switchLocale(language.lang)"
           >
-            <v-list-item-avatar>
-              <img :src="assetsUrl + `/img/flags/${language.lang}.svg`" />
-            </v-list-item-avatar>
-
-            <v-list-item-content>
-              <v-list-item-title v-text="language.title"></v-list-item-title>
-            </v-list-item-content>
           </v-list-item>
         </template>
       </v-list>
@@ -70,7 +63,7 @@ export default {
         this.$i18n.locale = this.userLocale
         localStorage.beepLocale = this.userLocale
       } else {
-        var newLocale = languages.checkBrowserLanguage()
+        const newLocale = languages.checkBrowserLanguage()
         this.$i18n.locale = newLocale
         this.switchLocale(newLocale)
       }

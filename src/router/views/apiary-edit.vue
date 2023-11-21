@@ -23,7 +23,7 @@
       <v-toolbar
         v-if="activeApiary && activeApiary.owner"
         class="save-bar"
-        dense
+        density="compact"
         light
       >
         <v-spacer></v-spacer>
@@ -36,8 +36,6 @@
           >mdi-delete</v-icon
         >
         <v-btn
-          tile
-          outlined
           color="black"
           class="mr-1"
           :disabled="!valid || showLoadingIcon"
@@ -51,7 +49,7 @@
             color="disabled"
             indeterminate
           />
-          <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
+          <v-icon v-if="!showLoadingIcon" start>mdi-check</v-icon>
           {{ $t('save') }}
         </v-btn>
       </v-toolbar>
@@ -59,7 +57,7 @@
       <v-container class="apiary-edit content-container">
         <v-row>
           <v-col cols="12">
-            <div class="overline mb-3">{{
+            <div class="text-overline mb-3">{{
               $tc('Location', 1) + ' ' + $t('settings')
             }}</div>
             <div class="rounded-border">
@@ -74,7 +72,7 @@
                     counter="30"
                     :rules="requiredRule"
                     required
-                    @input="validateText($event, 'name', 30)"
+                    @update:model-value="validateText($event, 'name', 30)"
                   >
                   </v-text-field>
 
@@ -96,10 +94,10 @@
                     ></v-sheet>
                   </div>
 
-                  <v-overlay :value="overlay">
+                  <v-overlay v-model="overlay">
                     <v-toolbar
                       class="hive-color-picker-toolbar"
-                      dense
+                      density="compact"
                       light
                       flat
                     >
@@ -128,7 +126,7 @@
 
                     <v-toolbar
                       class="hive-color-picker-footer"
-                      dense
+                      density="compact"
                       light
                       flat
                     >
@@ -146,7 +144,7 @@
                     v-if="activeApiary"
                     v-model="activeApiary.roofed"
                     :label="`${$t('roofed')}`"
-                    @change="setApiaryEdited(true)"
+                    @update:model-value="setApiaryEdited(true)"
                   ></v-switch>
                 </v-col>
               </v-row>
@@ -156,7 +154,7 @@
 
         <v-row>
           <v-col cols="12">
-            <div class="overline mb-3">
+            <div class="text-overline mb-3">
               {{
                 $t('Place') + ' ' + $t('details') + ' (' + $t('optional') + ')'
               }}</div
@@ -189,9 +187,9 @@
                 </v-col>
                 <v-col cols="6" sm="4">
                   <div class="beep-label" v-text="`${$t('latitude')}`"></div>
-                  <el-input-number
+                  <ElInputNumber
                     v-if="activeApiary"
-                    :value="
+                    :model-value="
                       activeApiary.coordinate_lat === null
                         ? 0
                         : activeApiary.coordinate_lat
@@ -201,9 +199,8 @@
                     :step="0.001"
                     :precision="3"
                     :step-strictly="true"
-                    size="medium"
                     @change="editApiary($event, 'lat')"
-                    @input.native="
+                    @update:model-value="
                       convertComma(
                         $event,
                         activeApiary,
@@ -214,13 +211,13 @@
                       ),
                         setApiaryEdited(true)
                     "
-                  ></el-input-number>
+                  ></ElInputNumber>
                 </v-col>
                 <v-col cols="6" sm="4">
                   <div class="beep-label" v-text="`${$t('Longitude')}`"></div>
-                  <el-input-number
+                  <ElInputNumber
                     v-if="activeApiary"
-                    :value="
+                    :model-value="
                       activeApiary.coordinate_lon === null
                         ? 0
                         : activeApiary.coordinate_lon
@@ -230,9 +227,8 @@
                     :step="0.001"
                     :precision="3"
                     :step-strictly="true"
-                    size="medium"
                     @change="editApiary($event, 'lon')"
-                    @input.native="
+                    @update:model-value="
                       convertComma(
                         $event,
                         activeApiary,
@@ -243,7 +239,7 @@
                       ),
                         setApiaryEdited(true)
                     "
-                  ></el-input-number>
+                  ></ElInputNumber>
                 </v-col>
               </v-row>
               <v-row>
@@ -252,9 +248,9 @@
                     v-if="activeApiary"
                     v-model="activeApiary.city"
                     :label="`${$t('City')}`"
-                    outlined
-                    dense
-                    @change="setApiaryEdited(true)"
+                    variant="outlined"
+                    density="compact"
+                    @update:model-value="setApiaryEdited(true)"
                   >
                   </v-text-field>
                 </v-col>
@@ -263,9 +259,9 @@
                     v-if="activeApiary"
                     v-model="activeApiary.postal_code"
                     :label="`${$t('Postal_code')}`"
-                    outlined
-                    dense
-                    @change="setApiaryEdited(true)"
+                    variant="outlined"
+                    density="compact"
+                    @update:model-value="setApiaryEdited(true)"
                   >
                   </v-text-field>
                 </v-col>
@@ -274,9 +270,9 @@
                     v-if="activeApiary"
                     v-model="activeApiary.street"
                     :label="`${$t('Street')}`"
-                    outlined
-                    dense
-                    @change="setApiaryEdited(true)"
+                    variant="outlined"
+                    density="compact"
+                    @update:model-value="setApiaryEdited(true)"
                   >
                   </v-text-field>
                 </v-col>
@@ -285,9 +281,9 @@
                     v-if="activeApiary"
                     v-model="activeApiary.street_no"
                     :label="`${$t('Number')}`"
-                    outlined
-                    dense
-                    @change="setApiaryEdited(true)"
+                    variant="outlined"
+                    density="compact"
+                    @update:model-value="setApiaryEdited(true)"
                   >
                   </v-text-field>
                 </v-col>
@@ -300,7 +296,7 @@
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
-      <v-btn color="accent" text @click="snackbar.show = false">
+      <v-btn color="accent " variant="text" @click="snackbar.show = false">
         {{ $t('Close') }}
       </v-btn>
     </v-snackbar>
@@ -311,17 +307,19 @@
 
 <script>
 import Api from '@api/Api'
-import Confirm from '@components/confirm.vue'
-import Layout from '@layouts/back.vue'
+import VueGoogleAutocomplete from 'vue-google-autocomplete'
+import Confirm from '@/src/components/confirm-dialog.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
 import { mapGetters } from 'vuex'
 import { convertComma, readApiariesAndGroups } from '@mixins/methodsMixin'
-import VueGoogleAutocomplete from 'vue-google-autocomplete'
+import { ElInputNumber } from 'element-plus'
 
 export default {
   components: {
     Confirm,
     Layout,
     VueGoogleAutocomplete,
+    ElInputNumber,
   },
   mixins: [convertComma, readApiariesAndGroups],
   data: function() {
@@ -559,12 +557,6 @@ export default {
       min-height: 45px !important;
       max-height: 45px !important;
     }
-  }
-
-  .apiary-color {
-    width: 35px;
-    height: 35px;
-    border: 1px solid rgba(0, 0, 0, 0.3) !important;
   }
 
   .country-select,

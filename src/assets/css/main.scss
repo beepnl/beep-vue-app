@@ -4,6 +4,16 @@ html {
   }
 }
 
+.apiary-color {
+  width: 35px;
+  height: 35px;
+  border: 1px solid rgba(0, 0, 0, 0.3) !important;
+}
+
+.beep-list-icon {
+  width: 36px;
+}
+
 .beep-tooltip {
   font-family: 'Roboto', sans-serif !important;
   font-size: 0.8rem;
@@ -51,6 +61,7 @@ html {
 
 .hive-color-picker {
   margin-top: -10px;
+  box-shadow: none !important;
   @include for-phone-only {
     margin-top: -12px;
   }
@@ -94,10 +105,18 @@ html {
     }
 
     .v-input {
-      &:not(.v-input--switch) .v-input__control {
+      &:not(.v-switch) .v-input__control {
         background-color: $color-white;
+        min-width: 150px;
+        @include for-phone-only {
+          min-width: 100px;
+          max-width: 110px;
+        }
+        @media (max-width: 372px) {
+          max-width: 86px;
+        }
       }
-      &:not(.v-input--checkbox) {
+      &:not(.v-checkbox) {
         @include for-phone-only {
           min-width: 100px;
         }
@@ -108,7 +127,7 @@ html {
           font-size: 14px;
         }
       }
-      &.v-text-field.filter-text-field.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo).v-text-field--outlined
+      &.v-text-field.beep-search-field.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo).v-text-field--outlined
         .v-input__append-outer {
         @include for-phone-only {
           margin-top: 2px !important;
@@ -129,7 +148,7 @@ html {
             }
           }
         }
-        &.filter-text-field--alerts {
+        &.beep-search-field {
           @include for-phone-only {
             max-width: 110px;
           }
@@ -153,7 +172,7 @@ html {
             }
           }
         }
-        &.filter-text-field--alerts {
+        &.beep-search-field {
           .v-input__slot {
             @media (max-width: 372px) {
               .v-text-field__slot {
@@ -197,20 +216,26 @@ html {
   }
 }
 
+.hive-color-picker-toolbar {
+  margin-bottom: 8px !important;
+  border-radius: 4px 4px 0 0 !important;
+}
+
 .hive-color-picker-toolbar,
 .hive-color-picker-footer {
-  border-radius: 4px !important;
+  background-color: $color-white;
+  .v-toolbar__content {
+    padding: 0 10px;
+  }
+}
+
+.hive-color-picker-footer {
+  border-radius: 0 0 4px 4px !important;
+  margin-top: -5px;
 }
 
 .hive-color-picker-title {
   font-weight: 500;
-}
-
-.hive-color-picker-footer {
-  margin-top: -5px;
-  .v-toolbar__content {
-    padding: 0 10px;
-  }
 }
 
 .hive-set-title {
@@ -224,6 +249,7 @@ html {
     margin: 8px 0 10px;
   }
   .hive-set-caption {
+    font-size: 12px;
     font-weight: 600;
   }
 }
@@ -264,10 +290,10 @@ input[disabled='disabled'],
 }
 
 .period-container {
-  padding-right: 80px;
-  padding-left: 80px;
+  padding-right: 80px !important;
+  padding-left: 80px !important;
   @include for-phone-only {
-    padding: 10px;
+    padding: 10px !important;
   }
 }
 .period-bar {
@@ -287,6 +313,14 @@ input[disabled='disabled'],
   margin-top: -4px;
   background-color: $color-orange-light;
   border-bottom: 1px solid $color-orange-border;
+}
+
+.position-relative {
+  position: relative;
+}
+
+.range-datepicker {
+  width: 250px !important;
 }
 
 .rounded-border {
@@ -336,7 +370,7 @@ input[disabled='disabled'],
   white-space: nowrap;
   border: 1px solid $color-red;
   border-radius: 5px;
-  &.green--text {
+  &.text-green {
     border-color: $color-green;
   }
 }

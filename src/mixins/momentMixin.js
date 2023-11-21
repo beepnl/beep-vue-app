@@ -1,3 +1,17 @@
+export const datePickerText = {
+  methods: {
+    datePickerText(date) {
+      if (date !== null) {
+        return this.$moment(date)
+          .locale(this.$i18n.locale)
+          .format('lll')
+      } else {
+        return null
+      }
+    },
+  },
+}
+
 export const momentAge = {
   methods: {
     momentAge(date) {
@@ -15,11 +29,14 @@ export const momentDurationDays = {
     momentDurationDays(input, unit, prefix = '') {
       const durationInDays = this.$moment
         .duration(input, unit)
-        .asDays()
+        .as('days')
         .toFixed(0)
 
       return (
-        prefix + durationInDays + ' ' + this.$i18n.tc('day', durationInDays)
+        prefix +
+        durationInDays +
+        ' ' +
+        this.$i18n.tc('day', parseInt(durationInDays))
       )
     },
   },
@@ -57,7 +74,7 @@ export const momentFullDateTime = {
       // return this.$moment(date)
       //   .locale(this.$i18n.locale)
       //   .format('YYYY-MM-DD HH:mm:ss')
-      var time = null
+      let time = null
       if (toUtcTime) {
         time = this.$moment.utc(date)
       } else {
@@ -71,7 +88,7 @@ export const momentFullDateTime = {
 export const momentFromNow = {
   methods: {
     momentFromNow(date, inUtcTime = false) {
-      var inLocalTime = null
+      let inLocalTime = null
       if (inUtcTime) {
         inLocalTime = this.$moment.utc(date).local()
       } else {
@@ -100,7 +117,7 @@ export const momentHumanizeDuration = {
 export const momentHumanizeHours = {
   methods: {
     momentDurationInHours(input, unit, prefix = '') {
-      var numberOfHours = this.$moment.duration(input, unit).asHours()
+      const numberOfHours = this.$moment.duration(input, unit).asHours()
       return (
         prefix +
         numberOfHours +
@@ -118,7 +135,7 @@ export const momentHumanizeHours = {
       )
     },
     momentHumanizeHours(value, capitalsOn = false, asteriskOn = false) {
-      var prefix = capitalsOn
+      const prefix = capitalsOn
         ? this.$i18n.t('Every')
         : this.$i18n.t('Every').toLowerCase()
       switch (true) {
@@ -155,7 +172,7 @@ export const momentify = {
   methods: {
     momentify(date, inUtcTime = false, format = 'lll') {
       if (date !== null) {
-        var inLocalTime = null
+        let inLocalTime = null
         if (inUtcTime) {
           inLocalTime = this.$moment.utc(date).local()
         } else {
@@ -193,20 +210,6 @@ export const momentifyRemoveTime = {
       return this.$moment(date)
         .locale(this.$i18n.locale)
         .format('YYYY-MM-DD')
-    },
-  },
-}
-
-export const momentISO8601 = {
-  methods: {
-    momentISO8601(date) {
-      if (date !== null) {
-        return this.$moment(date)
-          .locale(this.$i18n.locale)
-          .format()
-      } else {
-        return null
-      }
     },
   },
 }

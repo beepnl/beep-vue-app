@@ -1,5 +1,5 @@
 <template>
-  <v-list-item link dense @click="goTo(calendarUrl(calendar))">
+  <v-list-item link density="compact" @click="goTo(calendarUrl(calendar))">
     <a :href="calendarUrl(calendar)" target="_blank">
       {{ calendar }}
     </a>
@@ -75,8 +75,8 @@ export default {
           parameters(title, location, details, start, end) {
             const parameters = {
               text: title,
-              location: location,
-              details: details,
+              location,
+              details,
             }
 
             if (start && end) {
@@ -92,7 +92,7 @@ export default {
           parameters(title, location, details, start, end) {
             return {
               subject: title,
-              location: location,
+              location,
               body: details,
               startdt: start,
               enddt: end,
@@ -106,7 +106,7 @@ export default {
           parameters(title, location, details, start, end) {
             return {
               subject: title,
-              location: location,
+              location,
               body: details,
               startdt: start,
               enddt: end,

@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/comma-dangle -->
 <template>
   <g>
     <g
@@ -11,7 +12,7 @@
     >
       <svgHeader
         v-if="category.input === 'label'"
-        :position="calcXY(category, true)"
+        :position="calcXY(category, true, true)"
         :header="getHeader(category)"
         :small="true"
       />
@@ -20,10 +21,13 @@
         <g v-for="(item, index) in category.children" :key="index">
           <SvgInput
             v-if="item.input !== 'label'"
-            :position="calcXY(item)"
+            :position="
+              calcXY(item, false, index === category.children.length - 1)
+            "
             :header="label"
             :item="item"
           ></SvgInput>
+
           <g
             v-if="
               item.children.length > 0 &&
@@ -32,13 +36,37 @@
                   item.input === 'list_item')
             "
           >
-            <template v-for="child in item.children">
+            <template v-for="(child, j) in item.children" :key="'c' + child.id">
               <SvgInput
-                :key="'c' + child.id"
-                :position="calcXY(child)"
+                :position="calcXY(child, false, j === item.children.length - 1)"
                 :header="getHeader(item, child)"
                 :item="child"
               ></SvgInput>
+              <g
+                v-if="
+                  child.children.length > 0 &&
+                    (child.input === 'boolean' ||
+                      child.input === 'boolean_yes_red')
+                "
+                :key="'gc' + child.id"
+              >
+                <template
+                  v-for="(nestedChild, k) in child.children"
+                  :key="'nc' + nestedChild.id"
+                >
+                  <SvgInput
+                    :position="
+                      calcXY(
+                        nestedChild,
+                        false,
+                        k === child.children.length - 1
+                      )
+                    "
+                    :header="getHeader(child, nestedChild)"
+                    :item="nestedChild"
+                  ></SvgInput>
+                </template>
+              </g>
             </template>
           </g>
 
@@ -51,7 +79,7 @@
 
       <SvgInput
         v-if="category.children.length === 0"
-        :position="calcXY(category)"
+        :position="calcXY(category, false, true)"
         :header="label"
         :item="category"
       ></SvgInput>
@@ -65,7 +93,7 @@
             category.input === 'select' ||
             category.input === 'options')
       "
-      :position="calcXY(category)"
+      :position="calcXY(category, false, true)"
       :header="label"
       :item="category"
     ></SvgInput>
@@ -118,9 +146,10 @@ export default {
           return this.inputHeight.number
         case item.input === 'select' ||
           item.input === 'options' ||
-          item.input === 'list':
-          var nrOfItems = this.countChildren(item)
+          item.input === 'list': {
+          const nrOfItems = this.countChildren(item)
           return this.calcSelectHeight(nrOfItems)
+        }
         case item.input === 'score_amount' || item.input === 'score_quality':
           return this.calcSelectHeight(4)
         case item.input === 'score':
@@ -137,7 +166,7 @@ export default {
       return this.inputHeight.number_info
     },
     calcSelectHeight(children) {
-      var height = 10
+      let height = 10
       if (children > this.maxNrOfItems) {
         height = this.inputHeight.grade + this.inputHeight.label // 27
       } else {
@@ -145,21 +174,19 @@ export default {
       }
       return height
     },
-    calcXY(item, fullRowItem = false) {
+    calcXY(item, fullRowItem = false, lastChild = false) {
       if (this.svgPositionSet[item.id] === undefined) {
-        var itemCounter = this.svgItemCounter + 1
-        var itemHeight = this.calcHeight(item)
+        let itemCounter = this.svgItemCounter + 1
+        let columnCounter = null
+        const itemHeight = this.calcHeight(item)
         if (itemCounter === 1) {
           // init row height as first item height
           this.$store.commit('inspections/setRowHeight', itemHeight)
         }
         if (fullRowItem || this.svgColumnCounter >= this.columnsPerRow) {
-          var columnCounter = 1
+          columnCounter = 1
           // for new row, set Y (height so far) as previous Y + row height of previous row
-          this.$store.commit(
-            'inspections/setY',
-            this.svgY + this.svgRowHeight - (fullRowItem ? 1 : 0)
-          )
+          this.$store.commit('inspections/setY', this.svgY + this.svgRowHeight)
           // reset row height to current item height for new row
           this.$store.commit('inspections/setRowHeight', itemHeight)
         } else {
@@ -170,8 +197,8 @@ export default {
           }
         }
 
-        var x = this.xMargin + (columnCounter - 1) * this.columnWidth
-        var y =
+        const x = this.xMargin + (columnCounter - 1) * this.columnWidth
+        let y =
           (this.svgPageNr === 1 ? this.yStart : this.yMargin) +
           (this.svgPageNr - 1) * this.pageHeight +
           this.svgY
@@ -187,7 +214,7 @@ export default {
           }
         }
 
-        var pageY =
+        const pageY =
           (this.svgPageNr === 1 ? this.yStart : this.yMargin) + this.svgY
 
         this.$store.commit('inspections/setItemCounter', itemCounter)
@@ -201,9 +228,11 @@ export default {
 
         if (
           !fullRowItem &&
-          y % this.pageHeight >= this.yMax
-          // && columnCounter === this.columnsPerRow
+          ((y + this.svgRowHeight) % this.pageHeight >= this.yMax ||
+            (this.svgPageNr === 1 && y + this.svgRowHeight > this.yMax)) &&
+          (lastChild || columnCounter >= this.columnsPerRow)
         ) {
+          // console.log(item.name, 'next page')
           // go to next page (for next row)
           this.$store.dispatch('inspections/nextPage')
         }

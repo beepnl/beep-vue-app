@@ -126,9 +126,13 @@ export const getMaxFramecount = {
   },
   methods: {
     getMaxFramecount(layers) {
-      var framecount =
+      const framecount =
         layers.length > 0
-          ? Math.max(...layers.map((layer) => layer.framecount))
+          ? Math.max(
+              ...layers.map((layer) => {
+                return layer.framecount
+              })
+            )
           : this.default
       return framecount
     },
@@ -204,8 +208,8 @@ export const convertComma = {
   // method for el-input-number with 1 or more decimals
   methods: {
     convertComma(event, object, property, precision = 1) {
-      // console.log('convert comma', event.target.value)
-      var value = event.target.value
+      // console.log('convert comma', event)
+      const value = event
       // if user inputs a value with a comma followed by at least one decimal, convert it to a dot
       if (value.toString().indexOf(',') > -1) {
         if (
@@ -242,32 +246,30 @@ export const convertComma = {
 
 export const deleteDashboard = {
   methods: {
-    async deleteDashboard(dashboard) {
-      console.log('TODO delete dashboard', this.dashboard.id)
-      // try {
-      //   const response = await Api.deleteRequest('/dashboards/', dashboard.id)
-      //   if (!response) {
-      //     this.snackbar.text = this.$i18n.t('something_wrong')
-      //     this.snackbar.show = true
-      //   }
-      //   //   setTimeout(() => {
-      //   //     return this.readDashboards().then(() => {
-      //   //       this.$router.push({
-      //   //         name: 'dashboards',
-      //   //       })
-      //   //     })
-      //   //   }, 50) // wait for API to update dashboards
-      // } catch (error) {
-      //   if (error.response) {
-      //     console.log('Error: ', error.response)
-      //     const msg = error.response.data.message
-      //     this.snackbar.text = msg
-      //   } else {
-      //     console.log('Error: ', error)
-      //     this.snackbar.text = this.$i18n.t('something_wrong')
-      //   }
-      //   this.snackbar.show = true
-      // }
+    async deleteDashboard(dashboardGroup) {
+      try {
+        const response = await Api.deleteRequest(
+          '/dashboardgroups/',
+          dashboardGroup.id
+        )
+        if (!response) {
+          this.snackbar.text = this.$i18n.t('something_wrong')
+          this.snackbar.show = true
+        }
+        setTimeout(() => {
+          return this.readDashboardGroups()
+        }, 50) // wait for API to update dashboards
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+          const msg = error.response.data.message
+          this.snackbar.text = msg
+        } else {
+          console.log('Error: ', error)
+          this.snackbar.text = this.$i18n.t('something_wrong')
+        }
+        this.snackbar.show = true
+      }
     },
     confirmDeleteDashboard(dashboard) {
       this.$refs.confirm
@@ -329,7 +331,7 @@ export const deleteHiveTag = {
       }
     },
     confirmDeleteHiveTag(hiveTag, hiveName) {
-      var description = this.hiveTagActionDescriptions[hiveTag.action_id]
+      const description = this.hiveTagActionDescriptions[hiveTag.action_id]
       this.$refs.confirm
         .open(
           this.$i18n.t('Delete_hivetag'),
@@ -355,11 +357,30 @@ export const deleteHiveTag = {
   },
 }
 
+export const lightenColor = {
+  methods: {
+    lightenColor(color, amount, opacity = 1) {
+      color = color.replace('#', '')
+      const clamp = (val) => Math.min(Math.max(val, 0), 0xff)
+
+      const num = parseInt(color, 16)
+      const red = clamp((num >> 16) + amount)
+      const green = clamp(((num >> 8) & 0x00ff) + amount)
+      const blue = clamp((num & 0x0000ff) + amount)
+
+      const newColor =
+        'rgba(' + red + ',' + green + ',' + blue + ',' + opacity + ')'
+
+      return newColor
+    },
+  },
+}
+
 export const orderedLayers = {
   methods: {
     orderedLayers: function(hive) {
       // change sorting if hive was created in app v2 to make sure it is being displayed correctly in v3 (honey layers on top of brood layers)
-      var v2hive = hive.layers.filter((layer) => layer.order === 0).length > 0 // only v2 hives have at least one layer with order number 0
+      const v2hive = hive.layers.filter((layer) => layer.order === 0).length > 0 // only v2 hives have at least one layer with order number 0
       if (v2hive) {
         return hive.layers.slice().sort(function(a, b) {
           if (a.type === 'honey' && b.type === 'brood') {
@@ -394,6 +415,84 @@ export const orderedLayers = {
         })
       }
     },
+  },
+}
+
+export const parseDate = {
+  data() {
+    return {
+      possibleFormats: [
+        'YYYY-MM-DD HH:mm',
+        'YYYY-MM-DD',
+        'DD-MM-YYYY HH:mm',
+        'DD-MM-YYYY',
+        'MM-DD-YYYY HH:mm',
+        'MM-DD-YYYY',
+      ],
+      parseDateFormat: 'YYYY-MM-DD HH:mm:ss',
+    }
+  },
+  computed: {
+    currentYear() {
+      return parseInt(this.$moment().format('YYYY'))
+    },
+  },
+  methods: {
+    checkInputValid(input) {
+      let output = null
+      this.possibleFormats.map((format) => {
+        if (this.$moment(input, format, true).isValid()) {
+          output = this.$moment(input, format).format(this.parseDateFormat)
+        }
+        return true
+      })
+      if (output === null) {
+        output = this.$moment(input).format(this.parseDateFormat)
+      }
+      return output
+    },
+    parseDate(input) {
+      const dateStr = this.checkInputValid(input)
+      let makesSense = false
+      if (dateStr && dateStr !== 'Invalid date') {
+        const year = dateStr.substring(0, 4)
+        const month = dateStr.substring(5, 7)
+        const day = dateStr.substring(8, 10)
+        const hour = dateStr.substring(11, 13)
+        const minutes = dateStr.substring(14, 16)
+        makesSense =
+          parseInt(year) >= this.currentYear &&
+          parseInt(year) <= this.currentYear + 2 &&
+          parseInt(month) <= 12 &&
+          parseInt(day) <= 31 &&
+          parseInt(hour) <= 24 &&
+          parseInt(minutes) <= 59
+      }
+      const output = makesSense ? dateStr : null
+      return output
+    },
+    // parseDate(input) { // TODO remove if single-digits won't be used for sure
+    //   const nothingMissing = input.length === 12
+    //   if (nothingMissing) {
+    //     const minutes = input.slice(10, 12).join('')
+    //     const hour = input.slice(8, 10).join('')
+    //     const day = input.slice(6, 8).join('')
+    //     const month = input.slice(4, 6).join('')
+    //     const year = input.slice(0, 4).join('')
+    //     const date =
+    //       year + '-' + month + '-' + day + ' ' + hour + ':' + minutes + ':00'
+    //     var makesSense =
+    //       nothingMissing &&
+    //       parseInt(year) >= this.currentYear &&
+    //       parseInt(year) <= this.currentYear + 2 &&
+    //       parseInt(month) <= 12 &&
+    //       parseInt(day) <= 31 &&
+    //       parseInt(hour) <= 24 &&
+    //       parseInt(minutes) <= 59
+    //   }
+
+    //   return makesSense ? date : input.length > 0 ? '' : null
+    // },
   },
 }
 
@@ -476,7 +575,7 @@ export const readApiariesAndGroups = {
 
       const allHives = ownHivesArray.concat(sharedHivesArray)
 
-      var uniqueHives = {}
+      const uniqueHives = {}
       const map = new Map()
       for (const item of allHives) {
         if (!map.has(item.id)) {
@@ -546,7 +645,7 @@ export const readApiariesAndGroupsIfNotPresent = {
 
       const allHives = ownHivesArray.concat(sharedHivesArray)
 
-      var uniqueHives = {}
+      const uniqueHives = {}
       const map = new Map()
       for (const item of allHives) {
         if (!map.has(item.id)) {
@@ -590,7 +689,7 @@ export const readDashboard = {
     },
     async readDashboardHive(hiveId = null) {
       // option to call function without arguments, needed for setInterval of the data timer (when hive rotation is paused)
-      var id = hiveId !== null ? hiveId : this.selectedHiveId
+      const id = hiveId !== null ? hiveId : this.selectedHiveId
       try {
         const response = await Api.readRequest(
           '/dashboard/',
@@ -752,6 +851,116 @@ export const readTaxonomy = {
           }
         }
       }
+    },
+  },
+}
+
+export const sortedDevices = {
+  computed: {
+    ...mapGetters('devices', ['devices']),
+  },
+  methods: {
+    sortedDevices(intervalLabel = false) {
+      const apiaryArray = []
+
+      const devices = JSON.parse(JSON.stringify(this.devices)) // clone without v-bind to avoid vuex warning when mutating
+      devices.map((device, index) => {
+        if (
+          !intervalLabel ||
+          (device.hive_id !== null && device.hive_name !== '') // this means device is not connected to an (existing) hive
+        ) {
+          apiaryArray.push({
+            id: -(index + 1), // random because it has to have an id for Treeselect but won't be used later
+            label:
+              device.location_name !== ''
+                ? device.location_name
+                : this.$i18n.t('Unknown'),
+            children: [],
+          })
+        }
+        if (!intervalLabel) {
+          device.label = device.hive_name
+            ? device.hive_name + ' - ' + device.name
+            : device.name
+        }
+        return device
+      })
+      let uniqueApiaries = []
+      const map = new Map()
+      for (const item of apiaryArray) {
+        if (!map.has(item.label)) {
+          map.set(item.label, true) // set any value to Map
+          uniqueApiaries.push(item)
+        }
+      }
+      uniqueApiaries = uniqueApiaries.slice().sort(function(a, b) {
+        if (a.label < b.label) {
+          return -1
+        }
+        if (a.label > b.label) {
+          return 1
+        }
+        return 0
+      })
+      devices.map((device) => {
+        uniqueApiaries.map((apiary) => {
+          if (!intervalLabel) {
+            if (
+              apiary.label === device.location_name ||
+              (apiary.label === this.$i18n.t('Unknown') &&
+                device.location_name === '')
+            ) {
+              apiary.children.push(device)
+            }
+          } else {
+            if (
+              device.hive_id !== null &&
+              device.hive_name !== '' && // this means device is not connected to an (existing) hive
+              (apiary.label === device.location_name ||
+                (apiary.label === this.$i18n.t('Unknown') &&
+                  device.location_name === ''))
+            ) {
+              let deviceLabel = device.hive_name
+                ? device.hive_name + ' - ' + device.name
+                : device.name
+
+              const interval =
+                device.measurement_interval_min *
+                device.measurement_transmission_ratio
+              deviceLabel += interval
+                ? ' (' +
+                  this.$i18n.t('measurement_interval') +
+                  ': ' +
+                  interval +
+                  ' ' +
+                  this.$i18n.tc('minute', interval) +
+                  ')'
+                : ''
+
+              apiary.children.push({
+                id: device.hive_id,
+                label: deviceLabel,
+              })
+            }
+          }
+          return apiary
+        })
+        return true
+      })
+      uniqueApiaries.map((apiary) => {
+        const sortedChildren = apiary.children.slice().sort(function(a, b) {
+          if (a.label < b.label) {
+            return -1
+          }
+          if (a.label > b.label) {
+            return 1
+          }
+          return 0
+        })
+        apiary.children = sortedChildren
+        return apiary
+      })
+      return uniqueApiaries
     },
   },
 }

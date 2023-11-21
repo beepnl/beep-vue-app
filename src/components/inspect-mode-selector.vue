@@ -9,7 +9,7 @@
                   v-model="setSelectedMode"
                   :options="selectModes"
                   :clearable="false"
-                  @input="switchMode($event)"
+                  @update:model-value="switchMode($event)"
                 />
                 <p v-if="offlineMode" class="info-text mt-1">
                   <em>{{ $t('Offline_inspection_exp') }}</em>
@@ -18,21 +18,44 @@
                           </div>
               -->
   <div class="d-flex justify-end">
-    <template v-for="(btn, b) in modeButtons">
+    <template v-for="(btn, b) in modeButtons" :key="'mode-' + b">
       <div
         v-if="btn.if"
-        :key="'mode-' + b"
-        class="rounded-border primary-border mode-box ml-2 mb-2 d-flex flex-column align-center"
+        :class="
+          'rounded-border primary-border mode-box mb-2 d-flex flex-column align-center cursor-pointer ' +
+            (showInfo.length === 0 ? 'justify-center ' : '') +
+            btn.class
+        "
         @click="setSelectedMode = btn.mode"
       >
-        <span class="font-xsmall mb-2" v-text="btn.text"></span>
-        <v-tooltip bottom max-width="300px">
-          <template v-slot:activator="{ on }">
-            <v-icon
-              large
-              :class="'no-print ' + btn.class"
+        <div class="d-flex align-center">
+          <v-icon v-if="mobile" class="mr-2 no-print" color="accent">
+            {{ btn.icon }}
+          </v-icon>
+          <span class="font-xsmall text-center"
+            >{{ btn.text
+            }}<v-icon
+              v-if="touchDevice"
+              class="ml-1 icon-info"
+              size="small"
               color="accent"
-              v-on="on"
+              @click.stop="toggleShowInfo(btn.mode)"
+              >mdi-information</v-icon
+            ></span
+          >
+        </div>
+        <span
+          v-if="touchDevice && showInfo.includes(btn.mode)"
+          class="font-xsmall text-center mt-1"
+          v-text="btn.tooltip"
+        ></span>
+        <v-tooltip v-if="!mobile" max-width="300px">
+          <template v-slot:activator="{ props }">
+            <v-icon
+              size="x-large"
+              class="ma-2 no-print"
+              color="accent"
+              v-bind="props"
               @click="setSelectedMode = btn.mode"
             >
               {{ btn.icon }}
@@ -49,12 +72,21 @@
 export default {
   props: {
     selectedMode: {
-      type: Object,
+      type: String,
       default: null,
       required: true,
     },
   },
+  emits: ['set-selected-mode'],
+  data() {
+    return {
+      showInfo: [],
+    }
+  },
   computed: {
+    mobile() {
+      return this.$vuetify.display.xs
+    },
     modeButtons() {
       return [
         {
@@ -70,7 +102,7 @@ export default {
           mode: 'Online',
           text: this.$i18n.t('Online_inspection'),
           tooltip: this.$i18n.t('Online_inspection_exp'),
-          class: '',
+          class: this.uploadMode ? '' : 'ml-2',
           icon: 'mdi-laptop',
         },
         {
@@ -78,7 +110,7 @@ export default {
           mode: 'Offline',
           text: this.$i18n.t('Offline_inspection'),
           tooltip: this.$i18n.t('Offline_inspection_exp'),
-          class: '',
+          class: 'ml-2',
           icon: 'mdi-printer',
         },
       ]
@@ -97,8 +129,23 @@ export default {
         this.$emit('set-selected-mode', value)
       },
     },
+    touchDevice() {
+      return (
+        window.matchMedia('(hover: none)').matches ||
+        this.$vuetify.display.mobile
+      )
+    },
     uploadMode() {
       return this.selectedMode === 'Upload'
+    },
+  },
+  methods: {
+    toggleShowInfo(mode) {
+      if (!this.showInfo.includes(mode)) {
+        this.showInfo.push(mode)
+      } else {
+        this.showInfo.splice(this.showInfo.indexOf(mode), 1)
+      }
     },
   },
 }
@@ -107,6 +154,10 @@ export default {
 <style lang="scss" scoped>
 .mode-box {
   width: 130px;
-  height: 90px;
+  min-height: 90px;
+  @include for-phone-only {
+    width: calc(50% - 4px);
+    min-height: 50px;
+  }
 }
 </style>

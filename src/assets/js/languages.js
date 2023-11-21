@@ -1,6 +1,7 @@
 const languages = {
   languageArray: [
     { lang: 'nl', title: 'Nederlands' },
+    { lang: 'cs', title: 'Čeština' },
     { lang: 'de', title: 'Deutsch' },
     { lang: 'en', title: 'English' },
     { lang: 'fr', title: 'Français' },
@@ -20,18 +21,20 @@ const languages = {
     // { lang: 'en-US', title: 'English US' },
   ],
   checkBrowserLanguage() {
-    var matched = null
-    var languagePartials = navigator.language.split('-')[0]
+    let matched = null
+    const languagePartials = navigator.language.split('-')[0]
     this.languageArray.map((language) => {
       if (language.lang === navigator.language) {
         matched = language.lang
       }
+      return true
     })
     if (!matched) {
       this.languageArray.map((language) => {
         if (language.lang === languagePartials) {
           matched = language.lang
         }
+        return true
       })
     }
     if (!matched) {
@@ -39,6 +42,7 @@ const languages = {
         if (language.lang.split('-')[0] === languagePartials) {
           matched = language.lang
         }
+        return true
       })
     }
     return matched

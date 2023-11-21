@@ -25,7 +25,7 @@
         >
         </v-sheet>
       </div>
-      <span class="hive-caption caption">
+      <span class="hive-caption text-caption">
         {{ hive.prefix }} {{ j + hive.offset }}
       </span>
     </v-sheet>
@@ -33,10 +33,10 @@
 </template>
 
 <script>
-import { orderedLayers } from '@mixins/methodsMixin'
+import { getMaxFramecount, orderedLayers } from '@mixins/methodsMixin'
 
 export default {
-  mixins: [orderedLayers],
+  mixins: [getMaxFramecount, orderedLayers],
   props: {
     newHive: {
       type: Object,
@@ -56,8 +56,8 @@ export default {
       )
     },
     hives() {
-      var array = []
-      for (var n = 0; n < this.numberOfHives; n++) {
+      const array = []
+      for (let n = 0; n < this.numberOfHives; n++) {
         array.push(this.newHive)
       }
       return array
@@ -68,7 +68,9 @@ export default {
       return hive.layers.some((layer) => layer.type === type)
     },
     hiveWidth: function(hive) {
-      return hive.layers.length > 0 ? hive.layers[0].framecount * 6 : 16
+      return hive.layers.length > 0
+        ? this.getMaxFramecount(hive.layers) * 6
+        : 16
     },
   },
 }
@@ -154,6 +156,7 @@ export default {
 }
 .hive-caption {
   z-index: 1;
+  font-size: 12px;
   max-width: 64px;
   margin-top: 3px;
   min-height: 30px;

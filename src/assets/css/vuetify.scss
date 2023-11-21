@@ -1,0 +1,143 @@
+@use '../../../node_modules/vuetify/settings' with (
+  $list-item-plain-opacity: 1,
+  $overlay-opacity: 0.7,
+);
+
+.sensordef-table {
+  min-height: 130px;
+  .v-table__wrapper {
+    min-height: 112px;
+  }
+}
+
+.slider--large .v-input__control {
+  width: 100%;
+}
+
+.text-accent .v-icon {
+  color: $color-accent !important;
+}
+
+.v-alert__content {
+  overflow: visible !important;
+}
+
+.v-card--variant-outlined {
+  border: thin solid #ccc !important;
+}
+
+.v-container {
+  padding: 12px !important;
+  @include for-tablet-landscape-up {
+    max-width: calc(100vw - 48px) !important;
+  }
+}
+
+.v-data-table-footer {
+  margin-top: 16px !important;
+}
+
+.v-field.v-field--appended {
+  padding-inline-end: 0px;
+}
+
+.v-textarea .v-field__field {
+  --v-input-control-height: calc(var(--v-textarea-control-height) + 20px);
+}
+
+.v-input textarea {
+  padding: 14px 4px 4px !important;
+}
+
+.v-field:not(.v-field--focused):not(.v-field--active) .v-label.v-field-label {
+  font-size: 16px !important;
+  margin-top: 8px;
+}
+
+.v-input
+  .v-field--center-affix:not(.v-field--focused):not(.v-field--active)
+  .v-label.v-field-label {
+  margin-top: 12px !important;
+  top: 20% !important;
+  margin-left: 8px; //
+}
+
+.v-field--active.v-field--variant-underlined .v-label.v-field-label {
+  font-size: 0.75rem !important;
+}
+
+.v-list-item-title {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1rem;
+}
+
+.v-list-item__prepend > .v-icon ~ .v-list-item__spacer {
+  width: 12px !important;
+}
+
+.v-list-item-subtitle {
+  color: rgba(0, 0, 0, 0.6) !important;
+  font-size: 0.8125rem !important;
+}
+
+.v-label {
+  font-size: 0.75rem !important;
+  line-height: 1rem;
+  letter-spacing: 0.0333333333em !important;
+}
+
+.v-selection-control--density-default.hivetag-radio {
+  max-width: 45px;
+  margin-top: -2px;
+}
+
+.v-slider.v-input--horizontal
+  .v-slider-track__tick
+  .v-slider-track__tick-label {
+  font-size: 0.75rem !important;
+  transform: translateX(-50%) !important;
+}
+
+.v-table .v-input--density-compact {
+  .v-field--variant-solo {
+    --v-input-control-height: 30px !important;
+  }
+  .v-field--no-label {
+    --v-field-padding-bottom: 0px !important;
+  }
+}
+
+.v-theme--beepTheme {
+  --v-medium-emphasis-opacity: 1;
+  --v-hover-opacity: 0;
+  --v-border-color: #ccc;
+}
+
+.v-text-field:not(.v-field--variant-underlined):not(.v-field--variant-solo):not(.v-select):not(.beep-search-field)
+  input {
+  padding: 8px 0 0 4px !important; // 8px 0 0 2px
+}
+
+.v-text-field.beep-search-field input {
+  padding: 6px 0 0 8px !important;
+  @include for-phone-only {
+    padding: 0 6px !important;
+    margin-top: -12px !important;
+    top: 30%;
+  }
+}
+
+.v-text-field.group-edit-name input {
+  padding: 12px 0 0 2px !important;
+}
+
+.v-toolbar__content {
+  padding: 4px 10px !important;
+}
+
+.v-theme--beepTheme .v-toolbar__content .v-toolbar-title {
+  -webkit-margin-start: 0px !important;
+  margin-inline-start: 0px !important;
+  min-width: 220px;
+}

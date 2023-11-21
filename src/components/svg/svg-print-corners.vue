@@ -1,110 +1,166 @@
 <template>
   <g>
-    <g class="A" data-type-mark="top-left" data-type="marker">
-      <line
-        :x1="xAC + 'mm'"
-        :x2="xAC + cornerSize + 'mm'"
-        :y1="yAB + 'mm'"
-        :y2="yAB + 'mm'"
+    <g>
+      <text
+        :x="xMargin + 'mm'"
+        :y="(pageNumber - 1) * pageHeight + 9 + 'mm'"
+        :style="svgTextSmall"
+      >
+        {{ checklistHeaderText + ' - p.' + pageNumber + ' / ' + totalPages }}
+      </text>
+
+      <text
+        :x="pageWidth - (xMargin + 37) + 'mm'"
+        :y="(pageNumber - 1) * pageHeight + 7 + 'mm'"
+        :style="svgLabel"
+      >
+        {{ 'Print ID' }}
+      </text>
+      <rect
+        data-type="number"
+        data-label="Print ID"
+        :data-parent-category-id="'svgid'"
+        :x="pageWidth - (xMargin + 37) + 'mm'"
+        :y="(pageNumber - 1) * pageHeight + 7.5 + 'mm'"
+        width="16mm"
+        height="5mm"
         stroke="black"
-        :stroke-width="strokeWidthCorners"
+        fill="transparent"
+        :stroke-width="strokeWidth"
       />
-      <line
-        :x1="xAC + 'mm'"
-        :x2="xAC + 'mm'"
-        :y1="yAB + 'mm'"
-        :y2="yAB + cornerSize + 'mm'"
+      <text
+        :x="pageWidth - (xMargin + 36) + 'mm'"
+        :y="(pageNumber - 1) * pageHeight + 11.5 + 'mm'"
+        :style="svgText"
+      >
+        {{ checklistSvgId }}
+      </text>
+      <text
+        :x="pageWidth - (xMargin + 18.8) + 'mm'"
+        :y="(pageNumber - 1) * pageHeight + 7 + 'mm'"
+        :style="svgLabel"
+      >
+        {{ 'Page' }}
+      </text>
+      <rect
+        data-type="number"
+        data-label="Page"
+        :data-parent-category-id="'pagenr'"
+        :data-category-id="pageNumber"
+        :x="pageWidth - (xMargin + 18.8) + 'mm'"
+        :y="(pageNumber - 1) * pageHeight + 7.5 + 'mm'"
+        width="6mm"
+        height="5mm"
         stroke="black"
-        :stroke-width="strokeWidthCorners"
+        fill="transparent"
+        :stroke-width="strokeWidth"
+      />
+      <text
+        :x="pageWidth - (xMargin + (doubleDigits ? 18 : 17)) + 'mm'"
+        :y="(pageNumber - 1) * pageHeight + 11.5 + 'mm'"
+        :style="svgText"
+      >
+        {{ pageNumber }}
+      </text>
+    </g>
+
+    <g class="A">
+      <rect
+        data-type="marker"
+        data-type-mark="top-left"
+        :x="xAC + 'mm'"
+        :y="yAB + 'mm'"
+        :width="cornerBoxSize + 'mm'"
+        :height="cornerBoxSize + 'mm'"
+        fill="black"
       />
     </g>
 
-    <g class="B" data-type-mark="top-right" data-type="marker">
-      <line
-        :x1="xBD - cornerSize + 'mm'"
-        :x2="xBD + 'mm'"
-        :y1="yAB + 'mm'"
-        :y2="yAB + 'mm'"
-        stroke="black"
-        :stroke-width="strokeWidthCorners"
-      />
-      <line
-        :x1="xBD + 'mm'"
-        :x2="xBD + 'mm'"
-        :y1="yAB + 'mm'"
-        :y2="yAB + cornerSize + 'mm'"
-        stroke="black"
-        :stroke-width="strokeWidthCorners"
+    <g class="B">
+      <rect
+        data-type="marker"
+        data-type-mark="top-right"
+        :x="xBD + 'mm'"
+        :y="yAB + 'mm'"
+        :width="cornerBoxSize + 'mm'"
+        :height="cornerBoxSize + 'mm'"
+        fill="black"
       />
     </g>
 
-    <g class="C" data-type-mark="bottom-left" data-type="marker">
-      <line
-        :x1="xAC + 'mm'"
-        :x2="xAC + cornerSize + 'mm'"
-        :y1="yCD + 'mm'"
-        :y2="yCD + 'mm'"
-        stroke="black"
-        :stroke-width="strokeWidthCorners"
-      />
-      <line
-        :x1="xAC + 'mm'"
-        :x2="xAC + 'mm'"
-        :y1="yCD - cornerSize + 'mm'"
-        :y2="yCD + 'mm'"
-        stroke="black"
-        :stroke-width="strokeWidthCorners"
+    <g class="C">
+      <rect
+        data-type="marker"
+        data-type-mark="bottom-left"
+        :x="xAC + 'mm'"
+        :y="yCD + 'mm'"
+        :width="cornerBoxSize + 'mm'"
+        :height="cornerBoxSize + 'mm'"
+        fill="black"
       />
     </g>
 
-    <g class="D" data-type-mark="bottom-right" data-type="marker">
-      <line
-        :x1="xBD - cornerSize + 'mm'"
-        :x2="xBD + 'mm'"
-        :y1="yCD + 'mm'"
-        :y2="yCD + 'mm'"
-        stroke="black"
-        :stroke-width="strokeWidthCorners"
-      />
-      <line
-        :x1="xBD + 'mm'"
-        :x2="xBD + 'mm'"
-        :y1="yCD - cornerSize + 'mm'"
-        :y2="yCD + 'mm'"
-        stroke="black"
-        :stroke-width="strokeWidthCorners"
+    <g class="D">
+      <rect
+        data-type="marker"
+        data-type-mark="bottom-right"
+        :x="xBD + 'mm'"
+        :y="yCD + 'mm'"
+        :width="cornerBoxSize + 'mm'"
+        :height="cornerBoxSize + 'mm'"
+        fill="black"
       />
     </g>
   </g>
 </template>
 
 <script>
-import { svgData } from '@mixins/svgMixin'
+import { svgData, svgStyles } from '@mixins/svgMixin'
 
 export default {
-  mixins: [svgData],
+  mixins: [svgData, svgStyles],
   props: {
+    checklistHeaderText: {
+      type: String,
+      required: true,
+      default: '',
+    },
+    checklistSvgId: {
+      type: String,
+      default: '',
+      required: false,
+    },
     pageNumber: {
+      type: Number,
+      required: true,
+      default: 1,
+    },
+    totalPages: {
       type: Number,
       required: true,
       default: 1,
     },
   },
   computed: {
+    doubleDigits() {
+      return this.pageNumber.toString().length > 1
+    },
     height() {
       return (this.pageNumber - 1) * this.pageHeight
     },
     xAC() {
-      return this.cornerSize
+      return this.cornerMargin
     },
     xBD() {
-      return this.pageWidth - this.cornerSize
+      return this.pageWidth - this.cornerMargin - this.cornerBoxSize
     },
     yAB() {
-      return this.height + this.cornerSize
+      return this.height + this.cornerMargin
     },
     yCD() {
-      return this.height + this.pageHeight - this.cornerSize
+      return (
+        this.height + this.pageHeight - this.cornerMargin - this.cornerBoxSize
+      )
     },
   },
 }

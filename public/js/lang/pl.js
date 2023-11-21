@@ -177,7 +177,7 @@ const translations = {
   Postal_code: 'Postal code',
   Description: 'Description',
   Hive_amount: 'Number of hives',
-  Hive_prefix: 'Hive name prefix (before numer)',
+  Hive_prefix: 'Hive name prefix (before number)',
   Hive_number_offset: 'Start number hives',
   Hive_type: 'Hive type',
   Hive_layers: 'Hive layers',
@@ -513,7 +513,7 @@ const translations = {
   accept_policy_2: ', that are compatible with the new European privacy law',
   terms_of_use: 'terms of service',
   invalid_password:
-    'Password must contain at least 8 characters, one lowercase letter, one uppercase letter, one number and one special character (\\]{}()?\\-"!@#%&/\\,><\':;|_~`)',
+    "{'Password must contain at least 8 characters, one lowercase letter, one uppercase letter, one number and one special character ([]]{}()?-\"!@#%&/,><':;|_~`)'}",
   sensor_definition: 'sensor definition | sensor definitions',
   measurement: 'measurement | measurements',
   remove_device: 'Remove device',
@@ -582,9 +582,15 @@ const translations = {
     '<strong>Deactivate</strong> this alert for the following hives:',
   Exclude_hives_details:
     'N.B. By default, this alert will be executed for all hives with a measurement device.',
+  Exclude_hives_collab_group_exp:
+    ' This includes hives from your collaboration group(s). Deactivate hives for which you do not wish to receive this alert.',
+  No_hives_excluded_warning:
+    "N.B. This alert will be executed for all hives with a measurement device, including hives from your collaboration group(s). You can deactivate hives for which you do not want to receive this notification via 'Exclude periods and hives'.",
+  Save_alertrule_ok: 'Would you like to continue saving the alert rule?',
   months: 'months',
   hours: 'hours',
   delete_alertrule: 'Delete alert rule',
+  create_alertrule: 'Save alert rule',
   Active: 'Active',
   Alert_via_email: 'Alert via email',
   this_field: 'This field',
@@ -592,17 +598,17 @@ const translations = {
   copy: 'Copy',
   Home: 'Home',
   Select_default_alertrule: 'Copy default alert rule',
-  /* below, please keep all terms between [] as is: */
+  /* below, please keep all terms between {} as is: */
   alertrule_main_sentence:
-    'I would like to receive an alert if the [calculation] [comparison] of the [measurement_quantity] [comparator] [threshold_value][measurement_unit]. This calculation will be executed [calculation_minutes]',
+    'I would like to receive an alert if the {calculation} {comparison} of the {measurement_quantity} {comparator} {threshold_value}{measurement_unit}. This calculation will be executed {calculation_minutes}',
   alertrule_occurences_direct_sentence:
     ', and I would like to receive the alert directly. ',
   alertrule_exclude_months_sentence:
-    'This alert will be deactivated during the following months: [exclude_months]. ',
+    'This alert will be deactivated during the following months: {exclude_months}. ',
   alertrule_exclude_hours_sentence:
-    'This alert will be deactivated during the following hours: [exclude_hours]. ',
+    'This alert will be deactivated during the following hours: {exclude_hours}. ',
   alertrule_exclude_hives_sentence:
-    'This alert will be deactivated for the following hives: [exclude_hive_ids].',
+    'This alert will be deactivated for the following hives: {exclude_hive_ids}.',
   min: 'minimum',
   max: 'maximum',
   ave: 'average',
@@ -628,6 +634,11 @@ const translations = {
   alert_explanation_2:
     'To get you started there are a few default alert rules you can use (and adapt to your own needs). In addition, you can create your own alert rules.',
   alertrules_url_text: "Go to 'Alert settings' to create your first alert rule",
+  Source: 'Source',
+  db_influx: 'Influx Database',
+  lambda_model: 'Lambda Model',
+  open_weather: 'Open Weather',
+
   Apiary_management: 'Apiary management',
   Move: 'Move',
   Current_apiary: 'Current apiary',
@@ -840,7 +851,7 @@ const translations = {
   /* Translations page */
   Translations: 'Translations',
   translation_exp:
-    'To become a translator, please request a translator account via support@beep.nl. If you would like to update translations, please download the .js file below and email the updated file to support@beep.nl. Thank you for your effort!',
+    "To become a translator, please request a translator account via support{'@'}beep.nl. If you would like to update translations, please download the .js file below and email the updated file to support{'@'}beep.nl. Thank you for your effort!",
   unpublished_exp: 'Translations that are yet unpublished:',
   as_plain_text: 'as plain text',
 
@@ -960,10 +971,109 @@ const translations = {
   Percentage_exp: 'Percentage between 0 and 100',
   Grade_exp_1: 'Grade between 1 and 10',
   Grade_exp_2: '(1 = Poor, 10 = Excellent)',
-  Degrees_exp: 'Number of degrees between -180° and 180°',
+  Degrees_exp_1: 'Number of degrees between',
+  Degrees_exp_2: '-180° and 180°',
   Negative_exp: 'Negative number (below 0)',
   Too_many_items_exp_1: 'There are too many options to',
   Too_many_items_exp_2: 'print, fill in your own answer',
+  Image_placeholder_1: 'This picture can be added later',
+  Image_placeholder_2: 'via the BEEP app (optional)',
+  Samplecode_placeholder_1: 'Sample code can be generated when',
+  Samplecode_placeholder_2: 'uploading inspection in BEEP app',
+  Too_long_list_present:
+    'List of options too long to display on the offline checklist for the item:',
+  Too_long_list_present_fix_1: 'If possible, decrease the number of options to',
+  Too_long_list_present_fix_2:
+    "or less, via the 'Edit checklist' button. Or fill in the correct answer manually.",
+
+  Print: 'Print',
+  Print_checklist: 'Print checklist',
+  Print_checklist_exp: 'Make sure to use the following printer settings:',
+  Print_checklist_exp_1: 'Paper format: A4',
+  Print_checklist_exp_2: 'No margins',
+  Print_checklist_exp_3: 'Black & white',
+  Print_checklist_exp_4: 'Single sided',
+
+  /* inspection modes */
+  Offline_inspection: 'Paper inspection',
+  Offline_inspection_exp:
+    "Print the checklist, fill it in manually. Upload photos of your inspection sheets later via the 'Upload paper inspection' button. The photos will then be automatically parsed and can be verified and saved like a normal (digital / online) inspection.",
+  Online_inspection: 'Digital inspection',
+  Online_inspection_exp:
+    'Fill in your checklist digitally (online) via your computer, tablet or smartphone, like you are used to',
+  Upload_inspection: 'Upload paper inspection',
+  Upload_inspection_exp:
+    'If you have completed a paper inspection, you can upload photos of your inspection sheets here. They will then be automatically parsed and can be verified and saved like a normal (digital / online) inspection.',
+  Select_inspection_mode: 'Select inspection mode',
+  Send_pictures: 'Send pictures',
+  svg_checklist: 'printed checklist | printed checklists',
+  Select_input_language:
+    'Select language in which checklist has been filled in',
+  Upload_images: 'Upload images',
+  Upload_images_exp: 'Please take care of the following when taking pictures:',
+  Upload_images_exp_1:
+    'Is the Print ID of each page equal to the Print ID of the above selected printed checklist?',
+  Upload_images_exp_2: 'Are all 4 black squares in view?',
+  Upload_images_exp_3: 'Is the paper wel lit and lying on a flat surface?',
+  Upload_images_exp_4: 'TODO: use image scanner?',
+  Uploading_images_be_patient:
+    'Please wait a moment, your images are being parsed. This may take several minutes. Please do not close this window.',
+  Generating_svg_be_patient:
+    'Please wait a moment, your printable checklist is being generated. This may take a little while. Please do not close this window.',
+  Parsed_pages: 'Parsed pages',
+  Number_of_processed_pages: 'Number of parsed pages: ',
+  Incorrectly_uploaded_pages: 'Incorrectly uploaded page numbers: ',
+  Missing_page: 'Missing page number | Missing page numbers',
+  Check_svg_id_for_page:
+    'Check Print ID for page number | Check Print ID for page numbers',
+  correct_svg_id: 'correct Print ID',
+  Svg_id_exp:
+    'The Print ID can be found at the top right of the page, to the left of the page number. Upload the paper inspection again with the correct pages and/or select the correct printed checklist',
+  All_svg_ids_correct: 'Correct printed checklist has been selected',
+  All_svg_ids_incorrect: 'Incorrect printed checklist has been selected',
+  No_checklist_svg: 'No checklists have been printed yet',
+  No_checklist_svg_exp:
+    "Before uploading a paper inspection, a checklist should be printed (and filled in) first. Go to 'Paper inspection' to print your checklist, or instead submit a completely digital inspection via 'Digital inspection'.",
+  checklist_svg_exp:
+    "Please select a printed checklist below. Make sure that the Print ID (and hence the name) is equal to the Print ID (and name) of your paper inspection. You can find the Print ID at the top right corner of each page, the name is printed at the top left corner. Please note: a digital checklist can be saved as a 'printed checklist' under different Print IDs, if any of its content has been changed in between print sessions. Edits to a digital checklist are therefore only reflected in a printed checklist if the checklist was printed after the changes were made. The date (and time) behind the name refer to when a specific version of the checklist was printed for the first time.",
+
+  /* Compare module */
+  Load: 'Load',
+  Compare: 'Compare',
+  Select_hives_for_compare: 'Select hives to compare with',
+  Select_hives_for_compare_exp:
+    'Select the hives with which you would like to compare the data',
+  mean_weight_kg: 'Mean weight',
+  mean_net_weight_kg: 'Mean net weight',
+  net_weight_kg: 'Net weight',
+  overall_intake_loss: 'Overall intake/loss',
+  Compare_hives: 'Compare hives',
+  Compare_with_mean: 'Compare hive weight with mean weight of other hives',
+  compare_hives_exp:
+    'Find out how your hive is developing compared to your other hives in the area. ',
+  compare_support_url:
+    'https://beepsupport.freshdesk.com/en/support/solutions/articles/60000921124-compare-hives-option',
+  compare_url_text:
+    'Here you can find more information on the Compare functionality',
+  selected_hive: 'selected hive | selected hives',
+  Multiple_hives_charts: 'Compare multiple hives in one chart',
+  compare_no_chart_data: 'No compare data for the selected period',
+  multiple_hives_no_chart_data:
+    'No data for the selected hives for the selected period',
+  /* below, please keep {hivename} as is, it will be replaced by the name of the hive you selected in the Data tab */
+  compare_chart_exp:
+    'Please note: {hivename} will not be included in the mean weight calculation. ',
+
+  /* below, please keep {pagenr} as is, it will be replaced by the pagenumber to be uploaded */
+  Upload_pagenr: 'Upload page {pagenr} here',
+  Datetime_of_inspection: 'Date & time of inspection',
+  remind_datetime: 'Notification date & time',
+
+  Select_image: 'Select image',
+  cumulative_daily_weight_anomaly: 'Cumulative daily weight anomaly',
+  colony_failure_weight_history:
+    'Probability of winter failure based on weight history',
+  more_info: 'more information',
 }
 
 export default translations

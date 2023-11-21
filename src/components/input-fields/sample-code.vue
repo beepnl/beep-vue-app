@@ -2,19 +2,19 @@
   <div>
     <v-alert
       v-if="bulkInspection"
-      type="error"
-      text
       prominent
-      dense
+      type="error"
       color="red"
+      class="mb-4"
     >
+      <template v-slot:prepend>
+        <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+      </template>
       {{ $t('input_not_possible_for_bulkinspection') }}
     </v-alert>
     <v-btn
       v-if="object[item.id] === null || object[item.id] === undefined"
       class="mt-1"
-      tile
-      outlined
       color="accent"
       :disabled="showLoadingIcon || bulkInspection"
       @click.prevent="requestSampleCode"
@@ -24,41 +24,37 @@
         class="ml-n1 mr-2"
         size="18"
         width="2"
-        color="disabled"
+        color="accent"
         indeterminate
       />
-      <v-icon v-if="!showLoadingIcon" left>mdi-qrcode</v-icon>
+      <v-icon v-if="!showLoadingIcon" start>mdi-qrcode</v-icon>
       {{ $t('sample_code_generate') }}
     </v-btn>
 
     <div v-if="object[item.id] !== null" class="d-flex align-center mt-1">
-      <span
-        style=" font-weight: bold;letter-spacing: 2px;"
-        v-text="object[item.id]"
-        >{{ item.val }}</span
-      >
+      <span style=" font-weight: bold;letter-spacing: 2px;">{{
+        object[item.id]
+      }}</span>
       <div>
         <v-progress-circular
           v-if="showLoadingIcon"
-          class="ml-n1 mr-2"
+          class="mr-2"
           size="18"
           width="2"
           color="disabled"
           indeterminate
         />
-
         <v-tooltip v-if="!showLoadingIcon" bottom>
-          <template v-slot:activator="{ on, attrs }">
+          <template v-slot:activator="{ props }">
             <v-btn
               v-if="object[item.id] !== null"
-              icon
               color="red"
-              v-bind="attrs"
               :disabled="showLoadingIcon || bulkInspection"
-              v-on="on"
+              v-bind="props"
+              variant="text"
               @click.prevent="removeSampleCode(object[item.id])"
             >
-              <v-icon small>mdi-delete</v-icon>
+              <v-icon color="red">mdi-delete</v-icon>
             </v-btn>
           </template>
           <span v-text="$t('sample_code_delete')"> </span>
@@ -109,8 +105,8 @@ export default {
     },
     async requestSampleCode() {
       if (this.activeHive !== null) {
-        var hiveId = this.activeHive.id
-        var queenId =
+        const hiveId = this.activeHive.id
+        const queenId =
           this.activeHive.queen !== null ? this.activeHive.queen.id : ''
         try {
           const response = await Api.postRequest('/samplecode', {

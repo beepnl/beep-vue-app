@@ -17,6 +17,7 @@
 import { svgData } from '@mixins/svgMixin'
 
 export default {
+  // TODO remove whole component if single-digits won't be used for sure, else add :data-label="label" + label prop
   mixins: [svgData],
   props: {
     x: {

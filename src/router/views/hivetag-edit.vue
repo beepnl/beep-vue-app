@@ -1,7 +1,8 @@
+<!-- eslint-disable dot-notation -->
 <template>
   <Layout :title="getTitle">
     <v-form ref="form" v-model="valid" @submit.prevent="saveHiveTag">
-      <v-toolbar v-if="hiveTag" class="save-bar" dense light>
+      <v-toolbar v-if="hiveTag" class="save-bar" density="compact" light>
         <v-spacer></v-spacer>
         <v-icon
           v-if="hiveTag && !createMode"
@@ -19,8 +20,6 @@
         >
 
         <v-btn
-          tile
-          outlined
           color="black"
           :class="`mr-1 ${createMode ? 'save-button-mobile-wide' : ''}`"
           type="submit"
@@ -34,7 +33,7 @@
             color="disabled"
             indeterminate
           />
-          <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
+          <v-icon v-if="!showLoadingIcon" start>mdi-check</v-icon>
           {{ $t('save') }}
         </v-btn>
       </v-toolbar>
@@ -42,7 +41,10 @@
       <v-container class="content-container">
         <v-row v-if="errorMessage">
           <v-col cols="12">
-            <v-alert text prominent dense type="error" color="red">
+            <v-alert text prominent type="error" color="red">
+              <template v-slot:prepend>
+                <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+              </template>
               {{ errorMessage }}
             </v-alert>
           </v-col>
@@ -50,7 +52,9 @@
 
         <v-row v-if="hiveTag">
           <v-col cols="12" sm="6" md="3">
-            <div class="overline mb-3">{{ '1. ' + $tc('Hivetag', 1) }}</div>
+            <div class="text-overline mb-3">{{
+              '1. ' + $tc('Hivetag', 1)
+            }}</div>
 
             <v-select
               v-if="createMode && tag === null && possibleHiveTags.length > 0"
@@ -63,7 +67,7 @@
 
             <div
               v-if="possibleHiveTags.length === 0"
-              class="beep-label red--text mb-3"
+              class="beep-label text-red mb-3"
               v-text="$t('No_hivetags_left')"
             ></div>
 
@@ -84,7 +88,7 @@
           </v-col>
 
           <v-col cols="12" sm="6" md="3">
-            <div class="overline mb-3">{{
+            <div class="text-overline mb-3">{{
               '2. ' + $t('Select_hivetag_action')
             }}</div>
             <div
@@ -93,42 +97,51 @@
             ></div>
             <div class="rounded-border">
               <v-radio-group
-                :value="hiveTag.action_id"
+                v-model="hiveTag.action_id"
                 hide-details
                 class="mt-0"
-                @change="selectAction($event)"
               >
-                <template v-for="(hiveTagAction, index) in hiveTagActions">
-                  <div
+                <template v-slot>
+                  <template
+                    v-for="(hiveTagAction, index) in hiveTagActions"
                     :key="index"
-                    class="d-flex align-center justify-start mb-1"
                   >
-                    <v-radio
-                      class="mt-2"
-                      :disabled="!enableAction(hiveTagAction)"
-                      :value="hiveTagAction.id"
-                    ></v-radio>
-                    <router-link
-                      v-if="
-                        hiveTag.hive_id !== null && enableAction(hiveTagAction)
-                      "
-                      :to="hiveTagAction.routerLink"
-                    >
-                      <span v-text="$t(hiveTagAction.description)"></span>
-                    </router-link>
-                    <span
-                      v-else
-                      :class="!enableAction(hiveTagAction) ? 'color-grey' : ''"
-                      v-text="$t(hiveTagAction.description)"
-                    ></span>
-                  </div>
+                    <div class="d-flex align-center justify-start mb-1">
+                      <v-radio
+                        class="hivetag-radio"
+                        :disabled="!enableAction(hiveTagAction)"
+                        :value="hiveTagAction.id"
+                        :model-value="hiveTag.action_id"
+                        color="accent"
+                        @input="selectAction(hiveTagAction.id)"
+                      ></v-radio>
+                      <router-link
+                        v-if="
+                          hiveTag.hive_id !== null &&
+                            enableAction(hiveTagAction)
+                        "
+                        :to="hiveTagAction.routerLink"
+                      >
+                        <span v-text="$t(hiveTagAction.description)"></span>
+                      </router-link>
+                      <span
+                        v-else
+                        :class="
+                          !enableAction(hiveTagAction) ? 'color-grey' : ''
+                        "
+                        v-text="$t(hiveTagAction.description)"
+                      ></span>
+                    </div>
+                  </template>
                 </template>
               </v-radio-group>
             </div>
           </v-col>
 
           <v-col cols="12" md="6" class="my-3 mt-md-0">
-            <div class="overline mb-3">{{ '3. ' + $tc('Select_hive', 1) }}</div>
+            <div class="text-overline mb-3">{{
+              '3. ' + $tc('Select_hive', 1)
+            }}</div>
             <div
               v-if="!showApiaryPlaceholder"
               class="beep-label mb-3"
@@ -150,7 +163,7 @@
                   }"
                 >
                   <div class="color-accent"
-                    ><v-icon color="accent" left>mdi-plus-circle</v-icon
+                    ><v-icon color="accent" start>mdi-plus-circle</v-icon
                     >{{ $t('Add_apiary') }}</div
                   >
                 </router-link>
@@ -211,7 +224,7 @@
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
-      <v-btn color="accent" text @click="snackbar.show = false">
+      <v-btn color="accent " variant="text" @click="snackbar.show = false">
         {{ $t('Close') }}
       </v-btn>
     </v-snackbar>
@@ -222,16 +235,17 @@
 
 <script>
 import Api from '@api/Api'
+import _ from 'lodash'
+import qrCodeIcon from '@components/qrcode-icon.vue'
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
-import Confirm from '@components/confirm.vue'
+import Confirm from '@/src/components/confirm-dialog.vue'
 import { mapGetters } from 'vuex'
-import Layout from '@layouts/back.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
 import {
   deleteHiveTag,
   readApiariesAndGroupsIfNotPresent,
   readHiveTags,
 } from '@mixins/methodsMixin'
-import qrCodeIcon from '@components/qrcode-icon.vue'
 
 export default {
   components: {
@@ -241,7 +255,7 @@ export default {
     qrCodeIcon,
   },
   mixins: [deleteHiveTag, readApiariesAndGroupsIfNotPresent, readHiveTags],
-  data: function() {
+  data() {
     return {
       snackbar: {
         show: false,
@@ -362,11 +376,11 @@ export default {
       ]
     },
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.xs
     },
     possibleHiveTags() {
-      var possibleHiveTags = []
-      for (var i = 1; i < 41; i++) {
+      let possibleHiveTags = []
+      for (let i = 1; i < 41; i++) {
         possibleHiveTags.push((i < 10 ? '0' : '') + i.toString())
       }
 
@@ -387,7 +401,7 @@ export default {
     },
     selectedHive() {
       return this.hiveTag.hive_id !== null
-        ? this.hivesObject[this.hiveTag.hive_id]
+        ? this.hivesObject[this.hiveTag.hive_id] || null
         : null
     },
     showApiaryPlaceholder() {
@@ -418,7 +432,7 @@ export default {
       return sortedHiveSets
     },
     tabletLandscapeUp() {
-      return this.$vuetify.breakpoint.mdAndUp
+      return this.$vuetify.display.mdAndUp
     },
     tag() {
       return this.$route.params.id || null
@@ -431,22 +445,21 @@ export default {
           this.tempSavedHiveTag !== null &&
           this.tag === this.tempSavedHiveTag.tag
         ) {
-          this.hiveTag = { ...this.tempSavedHiveTag }
+          this.hiveTag = _.cloneDeep(this.tempSavedHiveTag)
         } else if (!this.createMode) {
           this.setTempSavedHiveTag(null)
+          const filteredHiveTags = JSON.parse(
+            JSON.stringify(this.hiveTags)
+          ).filter((hiveTag) => hiveTag.tag === this.tag)
 
-          var filteredHiveTags = this.hiveTags.filter(
-            (hiveTag) => hiveTag.tag === this.tag
-          )
           this.hiveTag =
-            filteredHiveTags.length === 0 ? null : { ...filteredHiveTags[0] }
+            filteredHiveTags.length === 0 ? null : filteredHiveTags[0]
         }
-
         // If hivetag-create route is used, make empty hiveTag object
         else if (this.createMode) {
           this.setTempSavedHiveTag(null)
           this.hiveTag = {
-            tag: this.tag,
+            tag: this.tag !== null ? _.cloneDeep(this.tag) : null,
             router_link: null,
             hive_id: null,
             action_id: null,
@@ -541,7 +554,7 @@ export default {
       )
     },
     getEditableHives(hiveSet) {
-      // var allHives = hiveSet.hives.map((hive) => hive.id)
+      // const allHives = hiveSet.hives.map((hive) => hive.id)
       if (this.selectedAction !== null) {
         if (this.selectedAction.deviceRequired) {
           return hiveSet.hives
@@ -566,7 +579,8 @@ export default {
       }
     },
     selectHive(id) {
-      this.hiveTag.hive_id = this.hiveTag.hive_id !== id ? id : null
+      const newId = this.hiveTag.hive_id !== id ? id : null
+      this.hiveTag.hive_id = newId
       this.hiveTag.router_link = this.selectedAction.routerLink // re-set router link as it is now filled with a (different) hive id
       this.setHiveTagEdited(true)
     },
@@ -587,7 +601,7 @@ export default {
     setTempSavedHiveTag(hivetag) {
       this.$store.commit('hives/setData', {
         prop: 'tempSavedHiveTag',
-        value: hivetag,
+        value: _.cloneDeep(hivetag), // clone deep to avoid vuex errors
       })
     },
   },

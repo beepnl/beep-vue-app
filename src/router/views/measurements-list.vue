@@ -10,49 +10,44 @@
 
     <div v-if="devices.length > 0 && ready" class="period-bar-wrapper">
       <v-container class="period-container">
-        <v-row
-          v-if="!smAndDown"
-          class="period-bar d-flex flex-wrap justify-space-between align-center"
-        >
-          <div v-for="period in periods" :key="period.interval">
+        <div v-if="!smAndDown" class="period-bar">
+          <v-row class="d-flex flex-wrap justify-space-between align-center">
             <v-btn
+              v-for="period in periods"
+              :key="period.interval"
               :class="
-                `grey--text ${
-                  period.interval === interval ? 'accent--text' : ''
-                }`
+                `text-grey ${period.interval === interval ? 'text-accent' : ''}`
               "
-              text
+              variant="text"
               @click="setPeriodInterval(period.interval)"
             >
               {{ period.name }}
             </v-btn>
-          </div>
-          <v-switch
-            v-model="setRelativeInterval"
-            :label="`${$t('Relative_startpoint')}`"
-            class="pt-0 mt-0"
-            :disabled="interval === 'selection'"
-            dense
-            hide-details
-            @change="loadData(false, false)"
-          ></v-switch>
-        </v-row>
+            <v-switch
+              v-model="setRelativeInterval"
+              :label="`${$t('Relative_startpoint')}`"
+              class="rel-switch pt-0 mt-0"
+              :disabled="interval === 'selection'"
+              density="compact"
+              hide-details
+              @change="loadData(false, false)"
+            ></v-switch>
+          </v-row>
+        </div>
         <div v-if="smAndDown" class="period-bar">
           <v-row class="d-flex flex-row justify-space-between align-center">
-            <div v-for="period in periods.slice(0, -2)" :key="period.interval">
-              <v-btn
-                :class="
-                  `grey--text ${
-                    period.interval === interval ? 'accent--text' : ''
-                  }`
-                "
-                small
-                text
-                @click="setPeriodInterval(period.interval)"
-              >
-                {{ period.name }}
-              </v-btn>
-            </div>
+            <v-btn
+              v-for="period in periods.slice(0, -2)"
+              :key="period.interval"
+              :class="
+                `text-grey ${period.interval === interval ? 'text-accent' : ''}`
+              "
+              size="small"
+              variant="text"
+              @click="setPeriodInterval(period.interval)"
+            >
+              {{ period.name }}
+            </v-btn>
           </v-row>
           <v-row class="d-flex flex-row justify-space-around align-center">
             <v-col
@@ -64,25 +59,25 @@
             >
               <v-btn
                 :class="
-                  `grey--text ${
-                    period.interval === interval ? 'accent--text' : ''
+                  `text-grey ${
+                    period.interval === interval ? 'text-accent' : ''
                   }`
                 "
-                small
-                text
+                size="small"
+                variant="text"
                 @click="setPeriodInterval(period.interval)"
               >
                 {{ period.name }}
               </v-btn>
             </v-col>
             <v-col cols="5" sm="4" class="pa-0">
-              <div class="d-flex justify-center">
+              <div>
                 <v-switch
                   v-model="setRelativeInterval"
                   :label="`${$t('Relative_startpoint')}`"
-                  class="pt-0 mt-0"
+                  class="d-flex justify-center pt-0 mt-n3 period-switch-xs"
                   :disabled="interval === 'selection'"
-                  dense
+                  density="compact"
                   hide-details
                   @change="loadData(false, false)"
                 ></v-switch>
@@ -95,9 +90,9 @@
 
     <v-app-bar
       v-if="!hideScrollBar && ready && !noChartData"
-      fixed
-      inverted-scroll
-      :dense="smAndDown"
+      :scroll-behavior="'hide inverted'"
+      :scroll-threshold="'100'"
+      :density="smAndDown ? 'compact' : 'default'"
       class="sticky-header"
     >
       <MeasurementsDateSelection
@@ -107,7 +102,6 @@
         :selected-date="selectedDate"
         :time-index="timeIndex"
         :dates="dates"
-        :date-range-text="dateRangeText"
         :sticky="true"
         :selected-device-title="selectedDeviceTitle"
         @load-data="loadData"
@@ -137,7 +131,6 @@
         :selected-date="selectedDate"
         :time-index="timeIndex"
         :dates="dates"
-        :date-range-text="dateRangeText"
         @load-data="loadData"
         @save-dates="dates = $event"
         @set-time-index="setTimeIndex($event)"
@@ -150,360 +143,366 @@
             v-if="devices.length > 0"
             v-model="selectedDeviceId"
             class="mr-3"
-            :options="sortedDevices"
+            :options="devicesOptions"
             :placeholder="`${$t('Select')} ${$tc('hive', 1)}`"
             :no-results-text="`${$t('no_results')}`"
             :disable-branch-nodes="true"
             :default-expand-level="1"
             search-nested
-            @input="selectDevice($event)"
+            @update:model-value="selectDevice($event)"
           />
           <v-spacer></v-spacer>
-          <v-btn
-            tile
-            outlined
-            :small="mobile && devices.length > 0"
-            :to="{ name: 'devices' }"
-            class="edit-button"
-            color="accent"
-          >
-            <v-icon :left="!mobile">mdi-pencil</v-icon>
+          <v-btn :to="{ name: 'devices' }" class="edit-button" color="accent">
+            <v-icon color="accent" :start="!mobile">mdi-pencil</v-icon>
             {{ mobile && devices.length > 0 ? '' : $t('Edit_devices') }}
           </v-btn>
         </v-col>
       </v-row>
 
       <div v-if="devices.length > 0">
-        <v-card v-if="lastSensorDate" outlined class="mt-3 mb-6">
-          <v-card-title
-            :class="
-              `measurements-card-title ${
-                showLastSensorValues
-                  ? 'measurements-card-title--border-bottom'
-                  : ''
-              }`
-            "
-          >
-            <v-row>
-              <v-col cols="12" class="my-0">
-                <span
-                  v-text="
-                    mobile
-                      ? $t('Last') + ': ' + momentFormat(lastSensorDate, 'llll')
-                      : $t('last_measurement') +
-                        ': ' +
-                        momentFormat(lastSensorDate, 'llll')
-                  "
-                ></span>
-                <div class="float-right">
-                  <v-icon
-                    :class="
-                      `toggle-icon mdi ${
-                        showLastSensorValues ? 'mdi-minus' : 'mdi-plus'
-                      }`
+        <MeasurementsCard
+          v-if="lastSensorDate"
+          :title="
+            $t('last_measurement') + ': ' + momentFormat(lastSensorDate, 'llll')
+          "
+          :mobile-title="
+            $t('Last') + ': ' + momentFormat(lastSensorDate, 'llll')
+          "
+          :open-by-default="true"
+        >
+          <v-row>
+            <v-col v-if="currentLastSensorValues.length > 0" cols="12">
+              <div class="d-flex flex-wrap justify-center mt-5 mt-sm-7">
+                <template
+                  v-for="sensorData in currentLastSensorValues"
+                  :key="sensorData.name + sensorData.value"
+                >
+                  <ve-progress
+                    class="mr-2"
+                    :progress="
+                      calculateProgress(
+                        sensorData.name,
+                        // eslint-disable vue/comma-dangle
+                        sensorData.value
+                      )
                     "
-                    @click="showLastSensorValues = !showLastSensorValues"
-                  ></v-icon>
-                </div>
-              </v-col>
-            </v-row>
-          </v-card-title>
-
-          <SlideYUpTransition :duration="150">
-            <v-card-text v-if="showLastSensorValues">
-              <v-row>
-                <v-col v-if="currentLastSensorValues.length > 0" cols="12">
-                  <div class="d-flex flex-wrap justify-center mt-5 mt-sm-7">
-                    <template v-for="sensorData in currentLastSensorValues">
-                      <vue-ellipse-progress
-                        :key="sensorData.name + sensorData.value"
-                        class="mr-2"
-                        :progress="
-                          calculateProgress(
-                            sensorData.name,
-                            // eslint-disable vue/comma-dangle
-                            sensorData.value
-                          )
+                    :legend="sensorData.value"
+                    :color="getProgressColor(sensorData.name, sensorData.value)"
+                    :size="mobile ? 75 : 100"
+                    empty-color="#eee"
+                    :thickness="4"
+                    :empty-thickness="3"
+                    half
+                    :angle="0"
+                  >
+                    <template v-slot="{ counterTick }">
+                      <v-sheet
+                        :class="
+                          `beep-icon beep-icon-${sensorData.name} --no-outline mt-3 mb-n1 mt-sm-1 mb-sm-n1`
                         "
-                        :legend-value="sensorData.value"
-                        :color="
-                          getProgressColor(sensorData.name, sensorData.value)
-                        "
-                        :size="mobile ? 75 : 100"
-                        empty-color="#eee"
-                        :thickness="4"
-                        :empty-thickness="3"
-                        half
-                        :angle="0"
-                      >
-                        <template v-slot="{ counterTick }">
-                          <v-sheet
-                            :class="
-                              `beep-icon beep-icon-${sensorData.name} mt-3 mb-n1 mt-sm-1 mb-sm-n1`
-                            "
-                          ></v-sheet>
-                          <div
-                            :style="
-                              `color: #242424;
+                      ></v-sheet>
+                      <div
+                        :style="
+                          `color: #242424;
                   font-size: ${mobile ? '14px' : '16px'}
                   ;`
-                            "
-                          >
-                            {{ counterTick.currentValue
-                            }}<span style="font-size: 0.75rem;">{{
-                              SENSOR_UNITS[sensorData.name]
-                            }}</span></div
-                          >
-                          <div class="gauge-label">{{
-                            $t(SENSOR_NAMES[sensorData.name])
-                          }}</div>
-                        </template>
-                      </vue-ellipse-progress>
-                    </template>
-                  </div>
-                </v-col>
-              </v-row>
-            </v-card-text>
-          </SlideYUpTransition>
-        </v-card>
-
-        <v-card
-          v-if="(measurementData !== null && !noPeriodData) || loadingData"
-          outlined
-          class="mt-3 mb-6"
-        >
-          <v-card-title
-            :class="
-              `measurements-card-title ${
-                showMeasurements ? 'measurements-card-title--border-bottom' : ''
-              }`
-            "
-          >
-            <v-row>
-              <v-col cols="12" class="my-0">
-                <div class="d-flex justify-space-between align-center">
-                  <span>{{
-                    selectedDevice && !mobile
-                      ? $tc('Measurement', 2) + ': ' + selectedDeviceTitle
-                      : $tc('Measurement', 2)
-                  }}</span>
-                  <v-spacer></v-spacer>
-                  <div class="d-flex justify-end align-center">
-                    <template v-for="(icon, n) in chartColsIcons">
-                      <v-icon
-                        v-if="!mdScreen"
-                        :key="'icon' + n"
-                        class="mr-2"
-                        :color="chartCols === icon.value ? 'primary' : 'grey'"
-                        @click="updateChartCols(icon.value)"
-                        >{{ icon.name }}</v-icon
+                        "
                       >
+                        {{ counterTick.currentValue
+                        }}<span style="font-size: 0.75rem;">{{
+                          SENSOR_UNITS[sensorData.name]
+                        }}</span>
+                      </div>
+                      <div class="gauge-label">
+                        {{ $t(SENSOR_NAMES[sensorData.name]) }}
+                      </div>
                     </template>
+                  </ve-progress>
+                </template>
+              </div>
+            </v-col>
+          </v-row>
+        </MeasurementsCard>
+
+        <MeasurementsCard
+          :title="$tc('Measurement', 2) + ': ' + selectedDeviceTitle"
+          :mobile-title="$tc('Measurement', 2)"
+          :local-var="'beepChartCols'"
+          :open-by-default="true"
+          :show-chart-cols-icons="true"
+          @set-chart-cols="chartCols = $event"
+        >
+          <v-row>
+            <v-col
+              v-if="measurementData === null && loadingData"
+              class="d-flex align-center justify-center my-16"
+              cols="12"
+            >
+              <v-progress-circular color="primary" size="50" indeterminate />
+            </v-col>
+            <v-col v-if="noChartData" cols="12" class="text-center my-16">
+              {{ $t('no_chart_data') }}
+            </v-col>
+          </v-row>
+          <v-row
+            v-if="
+              measurementData !== null &&
+                measurementData.measurements &&
+                measurementData.measurements.length > 0
+            "
+            class="charts mt-6 mb-2"
+          >
+            <v-overlay
+              v-model="loadingData"
+              contained
+              :opacity="0.5"
+              scrim="white"
+              class="d-flex align-center justify-center mt-12"
+              z-index="1"
+            >
+              <div class="loading">
+                <v-progress-circular size="50" color="primary" indeterminate />
+              </div>
+            </v-overlay>
+            <v-col v-if="weatherSensorsPresent" cols="12" :md="chartCols">
+              <div
+                v-if="selectedDevice"
+                :class="
+                  'text-overline text-center mt-0 mt-sm-3 ' +
+                    (someSensorsHaveInfo && chartCols !== 12 ? 'mb-8' : 'mb-3')
+                "
+                v-text="
+                  !mobile
+                    ? $t('weather') +
+                      ' @ ' +
+                      selectedDevice.location_name +
+                      ' (' +
+                      $t('from_weather_service') +
+                      ')'
+                    : $t('weather') + ' @ ' + selectedDevice.location_name
+                "
+              ></div>
+              <div>
+                <MeasurementsChartLine
+                  :chart-data="chartjsDataSeries(currentWeatherSensors, true)"
+                  :interval="interval"
+                  :start-time="periodStartString"
+                  :end-time="periodEndString"
+                  :chart-id="'chart-weather'"
+                  :alerts-for-charts="alertsForCharts(currentWeatherSensors)"
+                  :inspections-for-charts="inspectionsForCharts"
+                  @confirm-view-alert="confirmViewAlert($event)"
+                  @confirm-view-inspection="
+                    confirmViewInspection($event.id, $event.date)
+                  "
+                  @set-period-to-date="setPeriodToDate($event)"
+                >
+                </MeasurementsChartLine>
+              </div>
+            </v-col>
+            <template v-if="sensorsPresent">
+              <v-col
+                v-for="(sensor, index) in currentSensors"
+                :key="'sensor' + index"
+                cols="12"
+                :md="chartCols"
+              >
+                <div
+                  v-if="index === 0"
+                  :class="
+                    'text-overline text-center mt-0 mt-sm-3 ' +
+                      (someSensorsHaveInfo &&
+                      !hasInfo(sensor) &&
+                      chartCols !== 12
+                        ? 'mb-8'
+                        : 'mb-3')
+                  "
+                  v-text="
+                    measurementData.resolution
+                      ? $tc('measurement', 2) +
+                        ' (' +
+                        $t('measurement_interval') +
+                        ': ' +
+                        measurementData.resolution +
+                        ')'
+                      : $tc('measurement', 2)
+                  "
+                ></div>
+                <div
+                  v-else-if="chartCols !== 12"
+                  :class="
+                    'header-filler ' +
+                      (someSensorsHaveInfo && !hasInfo(sensor)
+                        ? 'mt-3 mb-8'
+                        : 'my-3')
+                  "
+                ></div>
+                <div
+                  v-if="hasInfo(sensor)"
+                  :class="
+                    'd-flex flex-column align-center' +
+                      (chartCols !== 12 ? ' mt-n3' : '')
+                  "
+                >
+                  <div class="d-flex justify-start align-center">
+                    <div class="overline text-center"
+                      >{{ $t(getSensorMeasurement(sensor).abbreviation) }}
+                    </div>
                     <v-icon
-                      :class="
-                        `toggle-icon mdi ${
-                          showMeasurements ? 'mdi-minus' : 'mdi-plus'
-                        }`
+                      class="mdi mdi-information ml-1 cursor-pointer"
+                      dark
+                      size="14"
+                      :color="
+                        sensorInfo.indexOf(sensor) > -1 ? 'accent' : 'grey'
                       "
-                      @click="showMeasurements = !showMeasurements"
+                      @click="toggleSensorInfo(sensor)"
                     ></v-icon>
                   </div>
+
+                  <p
+                    v-if="hasInfo(sensor) && sensorInfo.indexOf(sensor) > -1"
+                    class="mt-0 mb-1 d-flex font-italic"
+                  >
+                    <span
+                      v-text="
+                        $t('Source') +
+                          ': ' +
+                          $t(getSensorMeasurement(sensor).data_source_type) +
+                          ' - '
+                      "
+                    >
+                    </span>
+                    <span class="ml-1 color-accent">
+                      <a
+                        :href="getSensorMeasurement(sensor).data_repository_url"
+                        target="_blank"
+                        >{{ $t('more_info') }}</a
+                      ></span
+                    >
+                  </p>
+                </div>
+
+                <div>
+                  <MeasurementsChartLine
+                    :chart-data="chartjsDataSeries([sensor])"
+                    :interval="interval"
+                    :start-time="periodStartString"
+                    :end-time="periodEndString"
+                    :chart-id="'chart-sensor-' + index"
+                    :alerts-for-charts="alertsForCharts([sensor])"
+                    :inspections-for-charts="inspectionsForCharts"
+                    @confirm-view-alert="confirmViewAlert($event)"
+                    @confirm-view-inspection="
+                      confirmViewInspection($event.id, $event.date)
+                    "
+                    @set-period-to-date="setPeriodToDate($event)"
+                  >
+                  </MeasurementsChartLine>
                 </div>
               </v-col>
-            </v-row>
-          </v-card-title>
+            </template>
 
-          <SlideYUpTransition :duration="150">
-            <v-card-text v-if="showMeasurements">
-              <v-row>
-                <v-col
-                  v-if="loadingData"
-                  class="d-flex align-center justify-center my-16"
-                  cols="12"
+            <v-col
+              v-if="soundSensorsPresent"
+              cols="12"
+              class="mb-6"
+              :md="chartCols"
+            >
+              <div
+                v-if="chartCols !== 12 && someSensorsHaveInfo"
+                class="header-filler"
+              ></div>
+
+              <div
+                class="text-overline mt-0 mt-sm-3 mb-3 text-center"
+                v-text="$t('Sound_measurements')"
+              ></div>
+              <div>
+                <MeasurementsChartHeatmap
+                  :data="measurementsForHeatmap"
+                  :max-value="maxSoundSensorValue"
+                  :y-axis="sortedCurrentSoundSensors"
+                  :modulo-number="moduloNr"
+                  :interval="interval"
+                  :alerts-for-charts="
+                    alertsForCharts(Object.values(currentSoundSensors))
+                  "
+                  :inspections-for-charts="inspectionsForCharts"
+                  @confirm-view-alert="confirmViewAlert($event)"
+                  @confirm-view-inspection="
+                    confirmViewInspection($event.id, $event.date)
+                  "
+                  @set-period-to-date="setPeriodToDate($event)"
                 >
-                  <v-progress-circular
-                    color="primary"
-                    size="50"
-                    indeterminate
-                  />
-                </v-col>
-                <v-col v-if="noChartData" cols="12" class="text-center my-16">
-                  {{ $t('no_chart_data') }}
-                </v-col>
-              </v-row>
-              <v-row
-                v-if="
-                  measurementData !== null &&
-                    measurementData.measurements &&
-                    measurementData.measurements.length > 0
-                "
-                class="charts mt-6 mb-2"
+                </MeasurementsChartHeatmap>
+              </div>
+            </v-col>
+            <template v-if="debugSensorsPresent">
+              <v-col
+                v-for="(sensor, index) in currentDebugSensors"
+                :key="'debug' + index"
+                cols="12"
+                :md="chartCols"
               >
-                <v-col v-if="weatherSensorsPresent" cols="12" :md="chartCols">
-                  <div
-                    v-if="selectedDevice"
-                    class="overline mt-0 mt-sm-3 mb-3 text-center"
-                    v-text="
-                      !mobile
-                        ? $t('weather') +
-                          ' @ ' +
-                          selectedDevice.location_name +
-                          ' (' +
-                          $t('from_weather_service') +
-                          ')'
-                        : $t('weather') + ' @ ' + selectedDevice.location_name
+                <div
+                  v-if="index === 0 && chartCols !== 12 && someSensorsHaveInfo"
+                  class="header-filler"
+                ></div>
+
+                <div
+                  v-if="index === 0"
+                  class="text-overline mt-n4 mt-sm-3 mb-3 text-center"
+                  v-text="
+                    $tc('device', 1) + ' ' + $t('info').toLocaleLowerCase()
+                  "
+                ></div>
+                <div
+                  v-else-if="chartCols !== 12"
+                  :class="
+                    'header-filler ' + (someSensorsHaveInfo ? 'mt-6 mb-8' : '')
+                  "
+                ></div>
+                <div>
+                  <MeasurementsChartLine
+                    :chart-data="chartjsDataSeries([sensor])"
+                    :interval="interval"
+                    :start-time="periodStartString"
+                    :end-time="periodEndString"
+                    :chart-id="'chart-debug-' + index"
+                    :alerts-for-charts="alertsForCharts([sensor])"
+                    :inspections-for-charts="inspectionsForCharts"
+                    @confirm-view-alert="confirmViewAlert($event)"
+                    @confirm-view-inspection="
+                      confirmViewInspection($event.id, $event.date)
                     "
-                  ></div>
-                  <div>
-                    <MeasurementsChartLine
-                      :chart-data="
-                        chartjsDataSeries(currentWeatherSensors, true)
-                      "
-                      :interval="interval"
-                      :start-time="periodStartString"
-                      :end-time="periodEndString"
-                      :chart-id="'chart-weather'"
-                      :alerts-for-charts="
-                        alertsForCharts(currentWeatherSensors)
-                      "
-                      :inspections-for-charts="inspectionsForCharts"
-                      @confirm-view-alert="confirmViewAlert($event)"
-                      @confirm-view-inspection="
-                        confirmViewInspection($event.id, $event.date)
-                      "
-                      @set-period-to-date="setPeriodToDate($event)"
-                    >
-                    </MeasurementsChartLine>
-                  </div>
-                </v-col>
-                <template v-if="sensorsPresent">
-                  <v-col
-                    v-for="(sensor, index) in currentSensors"
-                    :key="'sensor' + index"
-                    cols="12"
-                    :md="chartCols"
+                    @set-period-to-date="setPeriodToDate($event)"
                   >
-                    <div
-                      v-if="index === 0"
-                      class="overline mt-0 mt-sm-3 mb-3 text-center"
-                      v-text="
-                        measurementData.resolution
-                          ? $tc('measurement', 2) +
-                            ' (' +
-                            $t('measurement_interval') +
-                            ': ' +
-                            measurementData.resolution +
-                            ')'
-                          : $tc('measurement', 2)
-                      "
-                    ></div>
-                    <div
-                      v-else-if="chartCols !== 12"
-                      class="header-filler my-3"
-                    ></div>
-                    <div>
-                      <MeasurementsChartLine
-                        :chart-data="chartjsDataSeries([sensor])"
-                        :interval="interval"
-                        :start-time="periodStartString"
-                        :end-time="periodEndString"
-                        :chart-id="'chart-sensor-' + index"
-                        :alerts-for-charts="alertsForCharts([sensor])"
-                        :inspections-for-charts="inspectionsForCharts"
-                        @confirm-view-alert="confirmViewAlert($event)"
-                        @confirm-view-inspection="
-                          confirmViewInspection($event.id, $event.date)
-                        "
-                        @set-period-to-date="setPeriodToDate($event)"
-                      >
-                      </MeasurementsChartLine>
-                    </div>
-                  </v-col>
-                </template>
-                <v-col
-                  v-if="soundSensorsPresent"
-                  cols="12"
-                  class="mb-6"
-                  :md="chartCols"
-                >
-                  <div
-                    class="overline mt-0 mt-sm-3 mb-3 text-center"
-                    v-text="$t('Sound_measurements')"
-                  ></div>
-                  <div>
-                    <MeasurementsChartHeatmap
-                      :data="measurementsForHeatmap"
-                      :max-value="maxSoundSensorValue"
-                      :y-axis="sortedCurrentSoundSensors"
-                      :modulo-number="moduloNr"
-                      :interval="interval"
-                      :alerts-for-charts="
-                        alertsForCharts(Object.values(currentSoundSensors))
-                      "
-                      :inspections-for-charts="inspectionsForCharts"
-                      @confirm-view-alert="confirmViewAlert($event)"
-                      @confirm-view-inspection="
-                        confirmViewInspection($event.id, $event.date)
-                      "
-                      @set-period-to-date="setPeriodToDate($event)"
-                    >
-                    </MeasurementsChartHeatmap>
-                  </div>
-                </v-col>
-                <template v-if="debugSensorsPresent">
-                  <v-col
-                    v-for="(sensor, index) in currentDebugSensors"
-                    :key="'debug' + index"
-                    cols="12"
-                    :md="chartCols"
-                  >
-                    <div
-                      v-if="index === 0"
-                      class="overline mt-n4 mt-sm-3 mb-3 text-center"
-                      v-text="
-                        $tc('device', 1) + ' ' + $t('info').toLocaleLowerCase()
-                      "
-                    ></div>
-                    <div
-                      v-else-if="chartCols !== 12"
-                      class="header-filler my-3"
-                    ></div>
-                    <div>
-                      <MeasurementsChartLine
-                        :chart-data="chartjsDataSeries([sensor])"
-                        :interval="interval"
-                        :start-time="periodStartString"
-                        :end-time="periodEndString"
-                        :chart-id="'chart-debug-' + index"
-                        :alerts-for-charts="alertsForCharts([sensor])"
-                        :inspections-for-charts="inspectionsForCharts"
-                        @confirm-view-alert="confirmViewAlert($event)"
-                        @confirm-view-inspection="
-                          confirmViewInspection($event.id, $event.date)
-                        "
-                        @set-period-to-date="setPeriodToDate($event)"
-                      >
-                      </MeasurementsChartLine>
-                    </div>
-                  </v-col>
-                </template>
-              </v-row>
-            </v-card-text>
-          </SlideYUpTransition>
-        </v-card>
-        <v-row class="text-row">
-          <v-col
-            v-if="
-              ready &&
-                (measurementData === null || noPeriodData) &&
-                !loadingData
-            "
-            cols="12"
-            class="text-center my-10"
-          >
-            {{ noPeriodData ? $t('selection_placeholder') : $t('no_data') }}
-          </v-col>
-        </v-row>
+                  </MeasurementsChartLine>
+                </div>
+              </v-col>
+            </template>
+          </v-row>
+        </MeasurementsCard>
+
+        <MeasurementsCardCompare
+          v-if="showCardCompare"
+          ref="cardCompare"
+          :dates="dates"
+          :interval="interval"
+          :period-end-string="periodEndString"
+          :period-start-string="periodStartString"
+          :relative-interval="relativeInterval"
+          :selected-device-title="selectedDeviceTitle"
+          :default-hive-id="selectedDevice.hive_id"
+          :time-index="timeIndex"
+          :measurement-data="measurementData"
+          :inspections-for-charts="inspectionsForCharts"
+          @confirm-view-alert="confirmViewAlert($event)"
+          @confirm-view-inspection="
+            confirmViewInspection($event.id, $event.date)
+          "
+          @set-period-to-date="setPeriodToDate($event)"
+        />
       </div>
 
       <v-row v-if="devices.length === 0">
@@ -526,19 +525,6 @@
 
 <script>
 import Api from '@api/Api'
-import Confirm from '@components/confirm.vue'
-import Layout from '@layouts/main.vue'
-import { mapGetters } from 'vuex'
-import MeasurementsChartHeatmap from '@components/measurements-chart-heatmap.vue'
-import MeasurementsChartLine from '@components/measurements-chart-line.vue'
-import MeasurementsDateSelection from '@components/measurements-date-selection.vue'
-import Treeselect from '@riophae/vue-treeselect'
-import {
-  checkAlerts,
-  readDevicesIfNotChecked,
-  readGeneralInspectionsIfNotPresent,
-  readTaxonomy,
-} from '@mixins/methodsMixin'
 import {
   momentifyDayMonth,
   momentFormat,
@@ -546,17 +532,34 @@ import {
   momentFromNow,
   timeZone,
 } from '@mixins/momentMixin'
+import Confirm from '@/src/components/confirm-dialog.vue'
+import Layout from '@/src/router/layouts/main-layout.vue'
+import { mapGetters } from 'vuex'
 import { sensorMixin } from '@mixins/sensorMixin'
-import { SlideYUpTransition } from 'vue2-transitions'
+import MeasurementsCard from '@components/measurements/measurements-card.vue'
+import MeasurementsCardCompare from '@components/measurements/measurements-card-compare.vue'
+import MeasurementsChartHeatmap from '@/src/components/measurements/measurements-chart-heatmap.vue'
+import MeasurementsChartLine from '@/src/components/measurements/measurements-chart-line.vue'
+import MeasurementsDateSelection from '@/src/components/measurements/measurements-date-selection.vue'
+import Treeselect from 'vue3-treeselect'
+import {
+  checkAlerts,
+  readDevicesIfNotChecked,
+  readGeneralInspectionsIfNotPresent,
+  readTaxonomy,
+  readApiariesAndGroups,
+  sortedDevices,
+} from '@mixins/methodsMixin'
 
 export default {
   components: {
     Confirm,
     Layout,
+    MeasurementsCard,
+    MeasurementsCardCompare,
     MeasurementsChartHeatmap,
     MeasurementsChartLine,
     MeasurementsDateSelection,
-    SlideYUpTransition,
     Treeselect,
   },
   mixins: [
@@ -567,15 +570,18 @@ export default {
     momentFromNow,
     readDevicesIfNotChecked,
     readGeneralInspectionsIfNotPresent,
+    readApiariesAndGroups,
     readTaxonomy,
     sensorMixin,
+    sortedDevices,
     timeZone,
   ],
   data() {
     return {
       initLocale: 'nl',
       lastSensorDate: null,
-      measurementData: {},
+      measurementData: null,
+      compareMeasurementData: {},
       noPeriodData: false,
       interval: 'day',
       timeIndex: 0,
@@ -595,15 +601,10 @@ export default {
       showLastSensorValues: true,
       ready: false,
       timer: 0,
+      chartCols: 6,
       selectedDate: '',
       periodTitle: null,
       preselectedDeviceId: null,
-      chartCols: 6,
-      chartColsIcons: [
-        { value: 12, name: 'mdi-format-align-justify' },
-        { value: 6, name: 'mdi-grid-large' },
-        { value: 4, name: 'mdi-grid' },
-      ],
       assetsUrl:
         process.env.VUE_APP_ASSETS_URL ||
         process.env.VUE_APP_ASSETS_URL_FALLBACK,
@@ -614,20 +615,21 @@ export default {
       loadingData: false,
       relativeInterval: true,
       hideScrollBar: false,
+      showLoadingIcon: false,
+      sensorInfo: [],
     }
   },
   computed: {
     ...mapGetters('alerts', ['alerts']),
-    ...mapGetters('auth', ['userLocale']),
+    ...mapGetters('auth', ['permissions', 'userIsAdmin', 'userLocale']),
     ...mapGetters('devices', ['devices']),
     ...mapGetters('inspections', ['generalInspections']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     alertsForDeviceAndPeriod() {
-      var alertsForDevice = [...this.alerts].filter(
-        (alert) => alert.device_id === this.selectedDeviceId
-      )
+      const alertsForDevice = JSON.parse(JSON.stringify(this.alerts)) // clone without v-bind to avoid vuex warning when mutating
+        .filter((alert) => alert.device_id === this.selectedDeviceId)
 
-      var alertsForDeviceAndPeriod = alertsForDevice.filter((alert) =>
+      const alertsForDeviceAndPeriod = alertsForDevice.filter((alert) =>
         this.alertInPeriod(alert)
       )
 
@@ -638,13 +640,14 @@ export default {
         alert.max = !this.dateWithinPeriod(alert, 'updated_at')
           ? this.periodEndString
           : this.momentFormatUtcToLocal(alert.updated_at, this.dateTimeFormat)
+        return alert
       })
 
       return alertsForDeviceAndPeriod
     },
     dateRangeText() {
       if (this.dates.length > 0) {
-        var momentDates = [
+        const momentDates = [
           this.momentFormat(this.dates[0], 'll'),
           this.dates[1] !== undefined
             ? this.momentFormat(this.dates[1], 'll')
@@ -655,9 +658,14 @@ export default {
         return this.$i18n.t('selection_placeholder')
       }
     },
+    devicesOptions() {
+      return this.sortedDevices()
+    },
     inspectionsWithDates() {
       if (this.generalInspections.length > 0) {
-        var inspectionsWithDates = this.generalInspections
+        const inspectionsWithDates = JSON.parse(
+          JSON.stringify(this.generalInspections)
+        ) // clone without v-bind to avoid vuex warning when mutating
         inspectionsWithDates.map((inspection) => {
           inspection.created_at_locale_date = this.momentFormat(
             inspection.created_at,
@@ -673,6 +681,7 @@ export default {
           inspection.reminder_date_day_month = this.momentifyDayMonth(
             inspection.reminder_date
           )
+          return inspection
         })
         return inspectionsWithDates
       } else {
@@ -680,31 +689,31 @@ export default {
       }
     },
     inspectionsForCharts() {
-      var inspectionsForChartsArray = []
+      const inspectionsForChartsArray = []
 
       if (this.timeArray.length > 0) {
         // for each inspection, find its position on the current chart
         this.inspectionsForPeriod.map((inspection) => {
-          var inspectionDateInUtc = this.$moment(inspection.created_at)
+          const inspectionDateInUtc = this.$moment(inspection.created_at)
             .tz(this.timeZone)
             .utc()
 
-          var closestTime = this.momentTimeArray.reduce((prev, curr) => {
+          const closestTime = this.momentTimeArray.reduce((prev, curr) => {
             return Math.abs(curr - inspectionDateInUtc) <
               Math.abs(prev - inspectionDateInUtc)
               ? curr
               : prev
           })
 
-          var closestIndex = this.timeArray.findIndex(
+          const closestIndex = this.timeArray.findIndex(
             (time) =>
               time === closestTime.utc().format('YYYY-MM-DD[T]HH:mm:ss[Z]')
           )
 
-          var inspectionTimestamp = inspectionDateInUtc.valueOf()
+          const inspectionTimestamp = inspectionDateInUtc.valueOf()
 
           // and add position and meta data for charts
-          var inspectionForChart = {
+          const inspectionForChart = {
             id: inspection.id,
             closestIndex,
             xValue: inspectionTimestamp,
@@ -713,13 +722,14 @@ export default {
           }
 
           inspectionsForChartsArray.push(inspectionForChart)
+          return inspection
         })
       }
 
       return inspectionsForChartsArray
     },
     inspectionsForPeriod() {
-      var inspections = []
+      let inspections = []
       if (this.selectedDevice.hive_id !== null) {
         inspections = this.inspectionsWithDates.filter(
           (inspection) =>
@@ -734,7 +744,7 @@ export default {
     },
     measurementsForHeatmap() {
       // remove first value for month and year interval (belongs to previous month/year) (can't be skipped in v-for loop as v-if is not possible there)
-      var data = this.measurementData.measurements
+      let data = this.measurementData.measurements
       if (
         (this.interval === 'month' || this.interval === 'year') &&
         !this.relativeInterval
@@ -746,20 +756,24 @@ export default {
       }
     },
     maxSoundSensorValue() {
-      var allSoundSensorValues = []
+      const allSoundSensorValues = []
       const soundSensors = Object.values(this.currentSoundSensors)
       this.measurementsForHeatmap.map((measurement) =>
         soundSensors.map((soundSensor) => {
-          allSoundSensorValues.push(measurement[soundSensor])
+          const value = measurement[soundSensor]
+          if (value) {
+            allSoundSensorValues.push(value)
+          }
+          return value
         })
       )
       return Math.max(...allSoundSensorValues)
     },
     mdScreen() {
-      return this.$vuetify.breakpoint.width < 960
+      return this.$vuetify.display.width < 960
     },
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.xs
     },
     moduloFactor() {
       switch (this.screenSize) {
@@ -822,9 +836,7 @@ export default {
     },
     momentTimeArray() {
       if (this.timeArray.length > 0) {
-        return this.timeArray.map((time) => {
-          return this.$moment(time)
-        })
+        return this.timeArray.map((time) => this.$moment(time))
       } else {
         return []
       }
@@ -846,8 +858,8 @@ export default {
       return this.periodStart.format(this.dateTimeFormat)
     },
     queriedChartCols() {
-      var queriedValue = parseInt(this.$route.query.chartCols)
-      var valid =
+      const queriedValue = parseInt(this.$route.query.chartCols)
+      const valid =
         queriedValue === 12 || queriedValue === 6 || queriedValue === 4
       return valid ? queriedValue : null
     },
@@ -889,9 +901,9 @@ export default {
         : null
     },
     screenSize() {
-      return this.$vuetify.breakpoint.width < 1300
+      return this.$vuetify.display.width < 1300
         ? 'md'
-        : this.$vuetify.breakpoint.width > 1900
+        : this.$vuetify.display.width > 1900
         ? 'xl'
         : 'lg'
     },
@@ -912,16 +924,31 @@ export default {
       },
     },
     selectedDeviceTitle() {
-      return this.selectedDevice.hive_name + ' - ' + this.selectedDevice.name
+      return this.selectedDevice !== null
+        ? this.selectedDevice.hive_name + ' - ' + this.selectedDevice.name
+        : ''
+    },
+    showCardCompare() {
+      return (
+        this.ready &&
+        this.devices.length > 0 &&
+        (this.permissions.includes('hive-compare') ||
+          this.permissions.includes('multiple-hives-charts'))
+      )
     },
     smAndDown() {
-      return this.$vuetify.breakpoint.smAndDown
+      return this.$vuetify.display.smAndDown
+    },
+    someSensorsHaveInfo() {
+      return (
+        this.currentSensors.filter((sensor) => this.hasInfo(sensor)).length > 0
+      )
     },
     sortedCurrentSoundSensors() {
-      var sorted = Object.keys(this.currentSoundSensors)
+      const sorted = Object.keys(this.currentSoundSensors)
         .sort(function(a, b) {
-          var firstNumberA = parseInt(a.substring(0, a.indexOf('-')))
-          var firstNumberB = parseInt(b.substring(0, b.indexOf('-')))
+          const firstNumberA = parseInt(a.substring(0, a.indexOf('-')))
+          const firstNumberB = parseInt(b.substring(0, b.indexOf('-')))
 
           if (firstNumberA < firstNumberB) {
             return 1
@@ -940,63 +967,6 @@ export default {
         )
       return sorted
     },
-    sortedDevices() {
-      var apiaryArray = []
-      this.devices.map((device, index) => {
-        apiaryArray.push({
-          id: -(index + 1), // random because it has to have an id for Treeselect but won't be used later
-          label:
-            device.location_name !== ''
-              ? device.location_name
-              : this.$i18n.t('Unknown'),
-          children: [],
-        })
-        device.label = device.hive_name
-          ? device.hive_name + ' - ' + device.name
-          : device.name
-      })
-      var uniqueApiaries = []
-      const map = new Map()
-      for (const item of apiaryArray) {
-        if (!map.has(item.label)) {
-          map.set(item.label, true) // set any value to Map
-          uniqueApiaries.push(item)
-        }
-      }
-      uniqueApiaries = uniqueApiaries.slice().sort(function(a, b) {
-        if (a.label < b.label) {
-          return -1
-        }
-        if (a.label > b.label) {
-          return 1
-        }
-        return 0
-      })
-      this.devices.map((device) => {
-        uniqueApiaries.map((apiary) => {
-          if (
-            apiary.label === device.location_name ||
-            (apiary.label === this.$i18n.t('Unknown') &&
-              device.location_name === '')
-          ) {
-            apiary.children.push(device)
-          }
-        })
-      })
-      uniqueApiaries.map((apiary) => {
-        var sortedChildren = apiary.children.slice().sort(function(a, b) {
-          if (a.label < b.label) {
-            return -1
-          }
-          if (a.label > b.label) {
-            return 1
-          }
-          return 0
-        })
-        apiary.children = sortedChildren
-      })
-      return uniqueApiaries
-    },
     timeArray() {
       return this.measurementData !== null
         ? this.measurementData.measurements.map(
@@ -1008,36 +978,19 @@ export default {
       return window.matchMedia('(hover: none)').matches
     },
   },
-  watch: {
-    locale() {
-      if (this.locale !== this.initLocale) {
-        this.redrawCharts(false)
-        this.setPeriodTitle() // translate period title
-      }
-    },
-  },
   created() {
     this.initLocale = this.userLocale
     if (this.queriedChartCols !== null) {
       this.chartCols = this.queriedChartCols
     } else if (localStorage.beepChartCols) {
-      this.chartCols = parseInt(localStorage.beepChartCols)
+      this.chartCols = localStorage.beepChartCols
     }
     if (this.queriedRelativeInterval !== undefined) {
-      this.relativeInterval = this.queriedRelativeInterval === 'true'
+      this.setRelativeInterval = this.queriedRelativeInterval === 'true'
     } else if (localStorage.beepRelativeInterval) {
       this.setRelativeInterval = localStorage.beepRelativeInterval === 'true'
     }
     this.preselectedDeviceId = parseInt(this.$route.params.id) || null
-    // if selected device id is saved in localStorage, and there is no preselected device id, use it
-    if (
-      this.preselectedDeviceId === null &&
-      localStorage.beepSelectedDeviceId
-    ) {
-      this.selectedDeviceId = localStorage.beepSelectedDeviceId
-    } else if (this.preselectedDeviceId !== null) {
-      this.selectedDeviceId = this.preselectedDeviceId
-    }
     this.stopTimer()
     this.readTaxonomy().then(() => {
       this.checkAlertRulesAndAlerts() // for alerts-tab badge AND alert-lines
@@ -1045,6 +998,20 @@ export default {
           this.readGeneralInspectionsIfNotPresent().then(() => {
             this.readDevicesIfNotChecked()
               .then(() => {
+                // if selected device id is saved in localStorage, and there is no preselected device id, use it
+                if (
+                  this.preselectedDeviceId === null &&
+                  localStorage.beepSelectedDeviceId &&
+                  this.deviceExists(localStorage.beepSelectedDeviceId)
+                ) {
+                  this.selectedDeviceId = localStorage.beepSelectedDeviceId
+                } else if (
+                  this.preselectedDeviceId !== null &&
+                  this.deviceExists(this.preselectedDeviceId)
+                ) {
+                  this.selectedDeviceId = this.preselectedDeviceId
+                }
+
                 if (
                   this.queriedDate !== null &&
                   this.queriedDate.length === 10 &&
@@ -1071,7 +1038,7 @@ export default {
         })
     })
   },
-  beforeDestroy() {
+  beforeUnmount() {
     if (this.timer > 0) {
       clearInterval(this.timer)
       this.timer = 0
@@ -1087,7 +1054,7 @@ export default {
           this.currentLastSensorValues = []
           const allLastSensorValues = response.data
           Object.entries(allLastSensorValues).map(([key, value]) => {
-            var mT = this.getSensorMeasurement(key)
+            const mT = this.getSensorMeasurement(key)
             if (value !== null && key === 'weight_kg') {
               const roundedValue = Math.round(value * 1e4) / 1e4
               this.currentLastSensorValues.push({
@@ -1100,12 +1067,13 @@ export default {
               mT !== null &&
               mT.show_in_dials === 1
             ) {
-              this.currentLastSensorValues.push({ value: value, name: key })
+              this.currentLastSensorValues.push({ value, name: key })
             }
+            return [key, value]
           })
 
           const self = this
-          var sortedArray = this.currentLastSensorValues
+          const sortedArray = this.currentLastSensorValues
             .slice()
             .sort(function(a, b) {
               const compareA = self.$i18n.t(a.name)
@@ -1137,14 +1105,13 @@ export default {
       }
     },
     async sensorMeasurementRequest(interval) {
-      var start = interval === 'selection' ? this.dates[0] : null
-      var end = interval === 'selection' ? this.dates[1] : null
-      var timeGroup =
+      const start = interval === 'selection' ? this.dates[0] : null
+      const end = interval === 'selection' ? this.dates[1] : null
+      const timeGroup =
         interval === 'hour' || interval === 'selection' ? null : interval
       this.noChartData = false
       this.noPeriodData = false
       this.loadingData = true
-      this.measurementData = null // needed to let chartjs redraw charts after interval switch
       try {
         const response = await Api.readRequest(
           '/sensors/measurements?id=' +
@@ -1158,14 +1125,16 @@ export default {
             '&timezone=' +
             this.timeZone +
             (start !== null ? '&start=' + start + ' 00:00' : '') +
-            (end !== null ? '&end=' + end + ' 23:59' : '') +
+            (end !== null && end !== '' ? '&end=' + end + ' 23:59' : '') +
             '&relative_interval=' +
-            (this.relativeInterval ? '1' : '0')
+            (this.relativeInterval ? '1' : '0') +
+            (this.permissions.includes('hive-compare') ? '&clean_weight=1' : '')
         )
         this.formatMeasurementData(response.data)
         return true
       } catch (error) {
         this.loadingData = false
+        this.measurementData = null
         if (error.response) {
           console.log(error.response)
           if (error.response.status === 500) {
@@ -1180,8 +1149,28 @@ export default {
         }
       }
     },
+    alertInPeriod(alert) {
+      const created = this.momentFormatUtcToLocal(
+        alert.created_at,
+        this.dateTimeFormat
+      )
+      const updated = this.momentFormatUtcToLocal(
+        alert.updated_at,
+        this.dateTimeFormat
+      )
+
+      const periodLongerThanAlert =
+        this.dateWithinPeriod(alert, 'created_at') ||
+        (created !== updated && this.dateWithinPeriod(alert, 'updated_at'))
+      const alertLongerThanPeriod =
+        created !== updated &&
+        created <= this.periodStartString &&
+        updated >= this.periodEndString
+
+      return periodLongerThanAlert || alertLongerThanPeriod
+    },
     alertsForCharts(sensorArray) {
-      var alertsForCharts = this.alertsForDeviceAndPeriod.filter((alert) =>
+      const alertsForCharts = this.alertsForDeviceAndPeriod.filter((alert) =>
         // DEBUG MOGE: alert.measurement_id === 20
         sensorArray.includes(
           this.getSensorMeasurementAbbrById(alert.measurement_id)
@@ -1191,25 +1180,25 @@ export default {
       if (this.timeArray.length > 0) {
         // for each alert, find its position on the current chart
         alertsForCharts.map((alert) => {
-          var alertMinMoment = this.$moment(alert.min)
-          var alertMaxMoment = this.$moment(alert.max)
+          const alertMinMoment = this.$moment(alert.min)
+          const alertMaxMoment = this.$moment(alert.max)
 
-          var closestTimeStart = this.momentTimeArray.reduce((prev, curr) => {
+          const closestTimeStart = this.momentTimeArray.reduce((prev, curr) => {
             return Math.abs(curr - alertMinMoment) <
               Math.abs(prev - alertMinMoment)
               ? curr
               : prev
           })
 
-          var closestIndexStart = this.timeArray.findIndex(
+          const closestIndexStart = this.timeArray.findIndex(
             (time) =>
               time === closestTimeStart.utc().format('YYYY-MM-DD[T]HH:mm:ss[Z]')
           )
 
-          var closestIndexEnd = closestIndexStart
+          let closestIndexEnd = closestIndexStart
 
           if (alert.min !== alert.max) {
-            var closestTimeEnd = this.momentTimeArray.reduce((prev, curr) => {
+            const closestTimeEnd = this.momentTimeArray.reduce((prev, curr) => {
               return Math.abs(curr - alertMaxMoment) <
                 Math.abs(prev - alertMaxMoment)
                 ? curr
@@ -1228,6 +1217,7 @@ export default {
             closestIndexEnd,
             date: this.momentFormatUtcToLocal(alert.created_at, 'lll'),
           })
+          return alert
         })
       }
 
@@ -1235,9 +1225,9 @@ export default {
     },
     calculateProgress(name, value) {
       // get different target values for bv sensor if device is not beep
-      var sensorName = this.getSensorName(name)
-      var min = this.SENSOR_MIN[sensorName]
-      var max = this.SENSOR_MAX[sensorName]
+      const sensorName = this.getSensorName(name)
+      const min = this.SENSOR_MIN[sensorName]
+      const max = this.SENSOR_MAX[sensorName]
       if (value > max) {
         return 100
       } else {
@@ -1245,11 +1235,11 @@ export default {
       }
     },
     calculateTimeIndex(newPeriod, startDate, zoom = false, fromPeriod = null) {
-      var todayEnd = this.$moment().endOf(newPeriod)
+      const todayEnd = this.$moment().endOf(newPeriod)
 
-      var endOfPeriod = this.$moment(startDate).endOf(fromPeriod)
+      const endOfPeriod = this.$moment(startDate).endOf(fromPeriod)
 
-      var halfPeriodInDays = 0
+      let halfPeriodInDays = 0
 
       if (fromPeriod === 'week' || fromPeriod === 'month')
         halfPeriodInDays = Math.floor(
@@ -1257,9 +1247,9 @@ export default {
         )
       else if (fromPeriod === 'year') halfPeriodInDays = 182
 
-      var middleDatePeriod = endOfPeriod.subtract(halfPeriodInDays, 'days')
+      const middleDatePeriod = endOfPeriod.subtract(halfPeriodInDays, 'days')
 
-      var newIndex = todayEnd.diff(middleDatePeriod, newPeriod + 's')
+      let newIndex = todayEnd.diff(middleDatePeriod, newPeriod + 's')
 
       if (this.relativeInterval && !zoom) newIndex -= 1
 
@@ -1268,23 +1258,23 @@ export default {
       return !isNaN(newIndex) && newIndex > 0 ? newIndex : 0
     },
     chartjsDataSeries(quantities, weather = false) {
-      var data = {
+      const data = {
         labels: [],
         datasets: [],
       }
-      // var sensorArray = this.getMeasurementTypesPresent(chartGroup.id)
+      // const sensorArray = this.getMeasurementTypesPresent(chartGroup.id)
       quantities.map((quantity, index) => {
-        var mT = this.getSensorMeasurement(quantity)
+        const mT = this.getSensorMeasurement(quantity)
 
         if (mT === null || mT === undefined) {
           console.log('mT not found ', quantity)
         } else if (mT.show_in_charts === 1) {
-          var sensorName =
+          const sensorName =
             this.measurementData.sensorDefinitions[quantity] &&
             this.measurementData.sensorDefinitions[quantity].name !== null
               ? this.measurementData.sensorDefinitions[quantity].name
               : this.$i18n.t(quantity)
-          var sensorLabel =
+          const sensorLabel =
             sensorName +
             (mT.unit !== '-' && mT.unit !== '' && mT.unit !== null
               ? ' (' + mT.unit + ')'
@@ -1305,6 +1295,7 @@ export default {
               weather || this.interval === 'hour' || this.interval === 'day', // false,
           })
         }
+        return quantity
       })
 
       if (
@@ -1324,7 +1315,7 @@ export default {
             // && index < this.measurementData.measurements.length - 3
           ) {
             data.datasets.map((dataset, index) => {
-              var quantity = dataset.abbr
+              const quantity = dataset.abbr
               // if (
               //   measurement[quantity] !== null && // previously this was enabled (do not push null values, otherwise datalabels plugin won't work) but now disabled again to make spanGaps work + added workaround for datalabels plugin
               //   typeof measurement[quantity] === 'number'
@@ -1334,8 +1325,10 @@ export default {
                 y: measurement[quantity],
               })
               // }
+              return dataset
             })
           }
+          return measurement
         })
       }
 
@@ -1379,7 +1372,7 @@ export default {
           }
         )
         .then((confirm) => {
-          var query = {
+          const query = {
             search: 'id=' + inspectionId.toString(),
             interval: this.interval,
             relativeInterval: this.relativeInterval,
@@ -1402,12 +1395,34 @@ export default {
           return true
         })
     },
+    dateWithinPeriod(item, dateProp) {
+      const date = this.momentFormatUtcToLocal(
+        item[dateProp],
+        this.dateTimeFormat
+      )
+      return date <= this.periodEndString && date >= this.periodStartString
+    },
+    deviceExists(deviceId) {
+      return (
+        this.devices.filter((device) => device.id === parseInt(deviceId))
+          .length > 0
+      )
+    },
     formatMeasurementData(measurementData) {
       if (
         measurementData &&
         measurementData.measurements &&
         measurementData.measurements.length > 0
       ) {
+        measurementData.measurements.sort(function(a, b) {
+          if (a.time < b.time) {
+            return -1
+          }
+          if (a.time > b.time) {
+            return 1
+          }
+          return 0
+        })
         this.measurementData = measurementData
         this.currentWeatherSensors = []
         this.currentSensors = []
@@ -1419,8 +1434,8 @@ export default {
         this.debugSensorsPresent = false
         Object.keys(this.measurementData.measurements[0]).map((quantity) => {
           if (this.WEATHER.indexOf(quantity) > -1) {
-            // var weatherSensorName = this.SENSOR_NAMES[quantity]
-            // var weatherSensorUnit = this.SENSOR_UNITS[quantity]
+            // const weatherSensorName = this.SENSOR_NAMES[quantity]
+            // const weatherSensorUnit = this.SENSOR_UNITS[quantity]
             // weatherSensorName =
             //   this.$i18n.t(weatherSensorName) + ' (' + weatherSensorUnit + ')'
             this.currentWeatherSensors.push(quantity)
@@ -1429,7 +1444,7 @@ export default {
             this.currentSensors.push(quantity)
             this.sensorsPresent = true
           } else if (this.SOUND.indexOf(quantity) > -1) {
-            var soundSensorName = this.measurementData.sensorDefinitions[
+            const soundSensorName = this.measurementData.sensorDefinitions[
               quantity
             ]
               ? this.measurementData.sensorDefinitions[quantity].name
@@ -1440,27 +1455,29 @@ export default {
             this.currentDebugSensors.push(quantity)
             this.debugSensorsPresent = true
           }
+          return quantity
         })
       } else {
+        this.measurementData = null
         this.noChartData = true
       }
       this.loadingData = false
     },
     getProgressColor(name, value) {
       // get different target values for bv sensor if device is not beep
-      var sensorName = this.getSensorName(name)
-      var low = this.SENSOR_LOW[sensorName]
-      var high = this.SENSOR_HIGH[sensorName]
+      const sensorName = this.getSensorName(name)
+      const low = this.SENSOR_LOW[sensorName]
+      const high = this.SENSOR_HIGH[sensorName]
       return value < low ? '#ffcc66' : value > high ? '#f00' : '#417505'
     },
     getSensorMeasurement(abbr) {
-      var smFilter = this.sensorMeasurementsList.filter(
+      const smFilter = this.sensorMeasurementsList.filter(
         (measurementType) => measurementType.abbreviation === abbr
       )
       return smFilter.length > 0 ? smFilter[0] : null
     },
     getSensorMeasurementAbbrById(id) {
-      var smFilter = this.sensorMeasurementsList.filter(
+      const smFilter = this.sensorMeasurementsList.filter(
         (measurementType) => measurementType.id === id
       )
       return smFilter.length > 0 ? smFilter[0].abbreviation : null
@@ -1472,33 +1489,9 @@ export default {
         ? 'bv_notbeep'
         : name
     },
-    alertInPeriod(alert) {
-      const created = this.momentFormatUtcToLocal(
-        alert.created_at,
-        this.dateTimeFormat
-      )
-      const updated = this.momentFormatUtcToLocal(
-        alert.updated_at,
-        this.dateTimeFormat
-      )
-
-      const periodLongerThanAlert =
-        this.dateWithinPeriod(alert, 'created_at') ||
-        (created !== updated && this.dateWithinPeriod(alert, 'updated_at'))
-      const alertLongerThanPeriod =
-        created !== updated &&
-        created <= this.periodStartString &&
-        updated >= this.periodEndString
-
-      return periodLongerThanAlert || alertLongerThanPeriod
-    },
-
-    dateWithinPeriod(item, dateProp) {
-      const date = this.momentFormatUtcToLocal(
-        item[dateProp],
-        this.dateTimeFormat
-      )
-      return date <= this.periodEndString && date >= this.periodStartString
+    hasInfo(abbr) {
+      const mt = this.getSensorMeasurement(abbr)
+      return mt !== null && mt.data_repository_url !== null
     },
     invalidDates(dates) {
       return (
@@ -1515,6 +1508,16 @@ export default {
         this.loadLastSensorValuesTimer()
       }
       this.sensorMeasurementRequest(this.interval)
+      if (this.showCardCompare) {
+        // trigger load compare data in child component whenever user is comparing data and a new data call is required
+        // interval & timeIndex are passed on directly because the component props are passed on with a small delay so that does not work correctly
+        this.$refs.cardCompare.loadCompareData(
+          false,
+          this.interval,
+          this.timeIndex,
+          this.relativeInterval
+        )
+      }
     },
     loadLastSensorValuesTimer() {
       if (
@@ -1535,7 +1538,7 @@ export default {
           .locale(this.locale)
           .format('LT')
       } else if (this.interval === 'day' || this.interval === 'week') {
-        var unit = this.locale === 'nl' ? 'u' : 'h'
+        const unit = this.locale === 'nl' ? 'u' : 'h'
         return (
           this.$moment(date)
             .locale(this.locale)
@@ -1560,26 +1563,13 @@ export default {
           .replace(' ' + currentYear, '') // Remove year hardcoded per language, currently no other way to get rid of year whilst keeping localized time
       }
     },
-    redrawCharts(seamless = true) {
-      const temp = this.measurementData
-      if (!seamless) {
-        this.resetCharts()
-      }
-      setTimeout(() => {
-        this.formatMeasurementData(temp)
-      }, 10)
-    },
-    resetCharts() {
-      this.loadingData = true
-      this.measurementData = null // charts are redrawn when measurementData is null
-    },
     selectDate(date) {
-      var p = this.interval
-      var d = p + 's'
+      const p = this.interval
+      const d = p + 's'
 
-      var selectedMoment = this.$moment(date)
-      var currentMoment = this.$moment()
-      var periodeDiff = currentMoment.diff(selectedMoment, d)
+      const selectedMoment = this.$moment(date)
+      const currentMoment = this.$moment()
+      const periodeDiff = currentMoment.diff(selectedMoment, d)
 
       if (!isNaN(periodeDiff)) {
         this.timeIndex = periodeDiff
@@ -1598,11 +1588,11 @@ export default {
       }
     },
     setPeriodTitle() {
-      var p = this.interval
-      var d = p + 's'
-      var i = this.timeIndex
-      var startTimeFormat = this.timeFormat
-      var endTimeFormat = this.timeFormat
+      let p = this.interval
+      const d = p + 's'
+      const i = this.timeIndex
+      let startTimeFormat = this.timeFormat
+      let endTimeFormat = this.timeFormat
 
       if (p === 'selection') {
         this.periodTitle = this.dateRangeText
@@ -1620,7 +1610,7 @@ export default {
           !this.relativeInterval ? (p = 'isoweek') : (p = 'week')
         }
 
-        var ep = p
+        const ep = p
 
         if (!this.relativeInterval) {
           this.periodStart = this.$moment()
@@ -1634,8 +1624,8 @@ export default {
           this.periodEnd = this.$moment().subtract(i, d)
         }
 
-        var formatStart = this.momentFormat(this.periodStart, startTimeFormat)
-        var formatEnd = this.momentFormat(this.periodEnd, endTimeFormat)
+        const formatStart = this.momentFormat(this.periodStart, startTimeFormat)
+        const formatEnd = this.momentFormat(this.periodEnd, endTimeFormat)
 
         this.periodTitle =
           formatStart + '' + (endTimeFormat !== null ? ' - ' + formatEnd : '')
@@ -1651,7 +1641,7 @@ export default {
       }
 
       if (this.touchDevice) {
-        var format = period === 'hour' ? 'lll' : 'll'
+        const format = period === 'hour' ? 'lll' : 'll'
 
         this.$refs.confirm
           .open(
@@ -1678,14 +1668,17 @@ export default {
     setInitialDeviceIdAndLoadData() {
       if (this.$route.name === 'measurements-id') {
         this.selectedDeviceId = parseInt(this.$route.params.id)
-      } else if (this.selectedDeviceId === null && this.devices.length > 0) {
+      } else if (
+        this.selectedDeviceId === null ||
+        (isNaN(this.selectedDeviceId) && this.devices.length > 0)
+      ) {
         this.selectedDeviceId = parseInt(this.devices[0].id)
       }
       this.loadData()
       return true
     },
     setPeriodInterval(interval, modulonr) {
-      var prevInterval = this.interval
+      const prevInterval = this.interval
       this.interval = interval
       if (interval === 'selection' && this.dates.length === 0) {
         this.noPeriodData = true
@@ -1706,8 +1699,7 @@ export default {
       }
     },
     setTimeIndex(offset) {
-      this.resetCharts() // show loading icon instead of still try to render charts
-      var timeIndexWhenClicked = this.timeIndex
+      const timeIndexWhenClicked = this.timeIndex
       this.timeIndex += offset
       this.setPeriodTitle()
       setTimeout(() => {
@@ -1727,10 +1719,14 @@ export default {
         this.timer = 0
       }
     },
-    updateChartCols(value) {
-      this.chartCols = value
-      localStorage.beepChartCols = value
+    toggleSensorInfo(abbr) {
+      if (this.sensorInfo.indexOf(abbr) > -1) {
+        this.sensorInfo.splice(this.sensorInfo.indexOf(abbr), 1)
+      } else {
+        this.sensorInfo.push(abbr)
+      }
     },
+
     zoomTo(period, date) {
       this.timeIndex = this.calculateTimeIndex(period, date, true)
       this.interval = period
@@ -1758,6 +1754,10 @@ export default {
   }
 }
 
+.period-switch-xs {
+  max-height: 28px;
+}
+
 .measurements-card-title {
   line-height: 1.5rem !important;
   &.measurements-card-title--border-bottom {
@@ -1774,10 +1774,7 @@ export default {
 }
 
 .measurements-content {
-  margin-top: 58px;
-  @include for-tablet-landscape-up {
-    margin-top: 40px;
-  }
+  margin-top: 136px;
   &.--touch-device {
     user-select: none; // prevent text selection on mobile drag on chart
     -webkit-touch-callout: none; // Safari
@@ -1808,15 +1805,16 @@ export default {
 }
 
 .sticky-header {
-  top: 153px !important;
+  top: 148px !important;
   z-index: 1 !important;
   background-color: $color-orange-light !important;
   border-bottom: 1px solid $color-orange-border;
-  @include for-phone-only {
-    top: 148px !important;
-  }
   @include for-tablet-landscape-up {
-    top: 130px !important;
+    top: 137px !important;
   }
+}
+
+.rel-switch {
+  max-width: 100px !important;
 }
 </style>

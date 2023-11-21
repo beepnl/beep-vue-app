@@ -1,0 +1,17 @@
+// @use "element-plus/es/components/input-number/style/css" as *;
+// // 'element-plus/es/components/tree/style/css'
+
+// @forward 'element-plus/theme-chalk/src/common/var.scss' with (
+//   $colors: (
+//     'primary': (
+//       'base': #f8b133,
+//     ),
+//   )
+// );
+
+:root {
+  --el-border-color: #cccccc !important;
+  --el-color-primary: #f8b133 !important;
+  --el-fill-color-light: #efefef !important; // #fffaf0 !important;
+  --el-component-size: 36px !important;
+}

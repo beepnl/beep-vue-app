@@ -33,39 +33,60 @@ export const svgData = {
   data() {
     return {
       columnsPerRow: 4,
-      xMargin: 13,
-      yStart: 89,
+      doubleFieldWidth: 89,
+      xMargin: 14,
+      yStart: 86,
       yMargin: 15,
       pageHeight: 296.82,
       pageWidth: 210,
-      maxRowHeight: 40, // 41
+      maxRowHeight: 42.6, // 41
       headerHeight: 6.5,
       numberBoxWidth: 4.65,
       numberBoxHeight: 8,
+      numberFields: 3,
       spaceWidth: 3,
       inputHeight: {
-        label: 4,
+        label: 6.7,
         select_item: 5,
-        date: 32,
+        date: 16.5,
         grade: 23,
         image: 16,
         number_info: 21,
         number: 16.5,
         boolean: 12,
         text: 35,
-        text_line: 19,
+        text_line: 16.5,
         smileys_3: 21,
       },
       maxNrOfItems: 10,
       maxItemLength: 29,
+      maxFieldWidth: 43,
       textFieldWidth: 25,
-      cornerSize: 10,
+      cornerBoxSize: 6,
+      cornerMargin: 7,
       checkBoxSize: 3.5,
       checkBoxSpace: 5,
       maxStars: 5,
       strokeWidth: 0.5,
-      strokeWidthCorners: 1,
     }
+  },
+  computed: {
+    scoreAmountItems() {
+      return [
+        this.$i18n.t('Low'),
+        this.$i18n.t('Medium'),
+        this.$i18n.t('High'),
+        this.$i18n.t('Extreme'),
+      ]
+    },
+    scoreQualityItems() {
+      return [
+        this.$i18n.t('Poor'),
+        this.$i18n.t('Fair'),
+        this.$i18n.t('Good'),
+        this.$i18n.t('Excellent'),
+      ]
+    },
   },
 }
 
@@ -76,8 +97,8 @@ export const svgStyles = {
       colorGreyDark: '#242424; ',
       fontSize: 'font: 3.8mm ',
       fontSizeHeader: 'font: 600 4mm ',
-      fontSizeHeaderSmall: 'font: 600 2.8mm ',
-      fontSizeSmall: 'font: 2.8mm ',
+      fontSizeHeaderSmall: 'font: 600 2.7mm ',
+      fontSizeSmall: 'font: 2.7mm ',
       fontSizeLarge: 'font: 5mm ',
       fontFamily: 'Helvetica, Arial, sans-serif; ',
     }

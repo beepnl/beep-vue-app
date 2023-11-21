@@ -1,8 +1,9 @@
+<!-- eslint-disable vue/comma-dangle -->
 <template>
   <v-row v-if="ready" class="hive-edit-details-wrapper">
     <v-col cols="12">
       <div
-        class="overline mb-3"
+        class="text-overline mb-3"
         v-text="`${$tc('Hive', 1) + ' ' + $t('configuration')}`"
       ></div>
 
@@ -14,10 +15,7 @@
                 <div
                   class="beep-label"
                   v-text="
-                    `${$t('Hive_color')} (${$t(
-                      // eslint-disable-next-line vue/comma-dangle
-                      'overrides_layer_colors'
-                    )})`
+                    `${$t('Hive_color')} (${$t('overrides_layer_colors')})`
                   "
                 ></div>
                 <v-sheet
@@ -30,11 +28,11 @@
 
               <v-col cols="12" md="5">
                 <div class="beep-label" v-text="`${$t('Hive_frames')}`"></div>
-                <el-input-number
+                <ElInputNumber
                   v-if="hive && hive.layers"
-                  :value="
+                  :model-value="
                     hive.layers.length > 0
-                      ? hive.layers[0].framecount
+                      ? getMaxFramecount(hive.layers)
                       : defaultFrameCount
                   "
                   :min="1"
@@ -42,44 +40,42 @@
                   :step="1"
                   :precision="0"
                   :disabled="hive.layers.length === 0"
-                  size="medium"
-                  @change="
-                    updateHiveLayers(
-                      parseInt($event),
-                      // eslint-disable-next-line vue/comma-dangle
-                      'framecount'
-                    )
-                  "
-                ></el-input-number>
+                  @change="updateHiveLayers(parseInt($event), 'framecount')"
+                ></ElInputNumber>
               </v-col>
             </v-row>
 
-            <v-overlay :value="overlay">
-              <v-toolbar class="hive-color-picker-toolbar" dense light flat>
-                <div
-                  class="hive-color-picker-title ml-1"
-                  v-text="`${$t('Hive_color')}`"
-                ></div>
+            <v-overlay v-model="overlay" class="align-center justify-center">
+              <v-toolbar
+                class="hive-color-picker-toolbar"
+                density="compact"
+                theme="light"
+                :title="$t('Hive_color')"
+                flat
+              >
                 <v-spacer></v-spacer>
-                <v-toolbar-items>
-                  <v-icon class="mr-1" @click="cancelColorPicker"
-                    >mdi-close</v-icon
-                  >
-                </v-toolbar-items>
+                <v-icon class="mr-1" @click="cancelColorPicker"
+                  >mdi-close</v-icon
+                >
               </v-toolbar>
 
               <v-color-picker
                 v-model="colorPicker"
                 class="hive-color-picker flex-color-picker"
+                position="relative"
                 :swatches="swatchesHive"
+                :modes="['rgb']"
                 show-swatches
                 hide-canvas
-                light
-                flat
               >
               </v-color-picker>
 
-              <v-toolbar class="hive-color-picker-footer" dense light flat>
+              <v-toolbar
+                class="hive-color-picker-footer"
+                density="compact"
+                theme="light"
+                flat
+              >
                 <v-spacer></v-spacer>
                 <v-icon
                   class="mr-1"
@@ -104,7 +100,7 @@
               <v-col cols="12" sm="7" md="12">
                 <div class="beep-label" v-text="`${$t('Hive_type')}*`"></div>
                 <Treeselect
-                  :value="hive.hive_type_id"
+                  :model-value="hive.hive_type_id"
                   :options="treeselectHiveTypes"
                   :disable-branch-nodes="true"
                   :no-results-text="`${$t('no_results')}`"
@@ -113,7 +109,7 @@
                   :placeholder="`${$t('Select')} ${$t('Hive_type')}`"
                   search-nested
                   required
-                  @input="updateHiveType($event)"
+                  @update:model-value="updateHiveType($event)"
                 />
               </v-col>
             </v-row>
@@ -136,8 +132,8 @@
                           class="beep-label"
                           v-text="`${$t(bbDimension)}`"
                         ></div>
-                        <el-input-number
-                          :value="
+                        <ElInputNumber
+                          :model-value="
                             hive[bbDimension]
                               ? parseFloat(hive[bbDimension])
                               : 0
@@ -146,20 +142,13 @@
                           :max="100"
                           :step="0.1"
                           :precision="1"
-                          size="medium"
-                          @change="
-                            updateHive(
-                              $event.toString(),
-                              // eslint-disable-next-line vue/comma-dangle
-                              bbDimension
-                            )
-                          "
-                          @input.native="
+                          @change="updateHive($event.toString(), bbDimension)"
+                          @update:model-value="
                             convertComma($event, hive, bbDimension, 1),
                               setHiveEdited(true),
                               setApiaryEdited(true)
                           "
-                        ></el-input-number>
+                        ></ElInputNumber>
                       </div>
                     </v-col>
 
@@ -173,8 +162,8 @@
                           class="beep-label"
                           v-text="`${$t(frDimension)}`"
                         ></div>
-                        <el-input-number
-                          :value="
+                        <ElInputNumber
+                          :model-value="
                             hive[frDimension]
                               ? parseFloat(hive[frDimension])
                               : 0
@@ -183,20 +172,13 @@
                           :max="100"
                           :step="0.1"
                           :precision="1"
-                          size="medium"
-                          @change="
-                            updateHive(
-                              $event.toString(),
-                              // eslint-disable-next-line vue/comma-dangle
-                              frDimension
-                            )
-                          "
-                          @input.native="
+                          @change="updateHive($event.toString(), frDimension)"
+                          @update:model-value="
                             convertComma($event, hive, frDimension, 1),
                               setHiveEdited(true),
                               setApiaryEdited(true)
                           "
-                        ></el-input-number>
+                        ></ElInputNumber>
                       </div>
                     </v-col>
                   </v-row>
@@ -213,15 +195,21 @@
 <script>
 import HiveFactory from '@components/hive-factory.vue'
 import { mapGetters } from 'vuex'
-import { convertComma, readTaxonomy } from '@mixins/methodsMixin'
-import Treeselect from '@riophae/vue-treeselect'
+import {
+  convertComma,
+  getMaxFramecount,
+  readTaxonomy,
+} from '@mixins/methodsMixin'
+import Treeselect from 'vue3-treeselect'
+import { ElInputNumber } from 'element-plus'
 
 export default {
   components: {
     HiveFactory,
     Treeselect,
+    ElInputNumber,
   },
-  mixins: [convertComma, readTaxonomy],
+  mixins: [convertComma, getMaxFramecount, readTaxonomy],
   props: {
     hive: {
       type: Object,
@@ -266,11 +254,12 @@ export default {
     treeselectHiveTypes() {
       if (this.hiveTypesList.length) {
         const locale = this.selectLocale(this.hiveTypesList)
-        var hiveTypePerGroup = this.hiveTypesList.reduce(function(r, a) {
-          r[a.group[locale]] = r[a.group[locale]] || []
-          r[a.group[locale]].push(a)
-          return r
-        }, {})
+        const hiveTypePerGroup = JSON.parse(JSON.stringify(this.hiveTypesList)) // clone without v-bind to avoid vuex warning when mutating
+          .reduce(function(r, a) {
+            r[a.group[locale]] = r[a.group[locale]] || []
+            r[a.group[locale]].push(a)
+            return r
+          }, {})
         const sortedGroups = Object.keys(hiveTypePerGroup)
           .slice()
           .sort(function(a, b) {
@@ -282,7 +271,7 @@ export default {
             }
             return 0
           })
-        var treeselectArray = []
+        const treeselectArray = []
         sortedGroups.forEach((sortedGroup, index) => {
           const sortedGroupObject = {
             id: -(index + 1),
@@ -294,6 +283,7 @@ export default {
         treeselectArray.map((groupObject) => {
           groupObject.children.map((child) => {
             child.label = child.trans[locale]
+            return child
           })
           const sortedTreeselectArray = groupObject.children
             .slice()
@@ -307,6 +297,7 @@ export default {
               return 0
             })
           groupObject.children = sortedTreeselectArray
+          return groupObject
         })
         return treeselectArray
       } else {
@@ -347,7 +338,7 @@ export default {
     },
     updateHive(event, property) {
       // console.log(event)
-      var value = null
+      let value = null
       if (event === null) {
         value = null
       } else if (event.target !== undefined) {
@@ -356,7 +347,7 @@ export default {
         value = event
       }
       this.hive[property] = value
-      this.hive.frames = this.hive.layers[0].framecount
+      this.hive.frames = this.getMaxFramecount(this.hive.layers)
       this.setHiveEdited(true)
       this.setApiaryEdited(true)
     },
@@ -364,7 +355,7 @@ export default {
       this.hive.layers.forEach((layer) => {
         layer[property] = value
       })
-      this.hive.frames = this.hive.layers[0].framecount
+      this.hive.frames = this.getMaxFramecount(this.hive.layers)
       this.setHiveEdited(true)
       this.setApiaryEdited(true)
       if (property === 'color') {
@@ -383,11 +374,12 @@ export default {
       )
       const hiveTypeName = this.hiveTypesList[hiveTypeIndex].name
 
+      let hiveDimensions = null
       if (
         this.hiveDimensionsList &&
         this.hiveDimensionsList[hiveTypeName] !== undefined
       ) {
-        var hiveDimensions = {
+        hiveDimensions = {
           bb_width_cm: parseFloat(
             this.hiveDimensionsList[hiveTypeName].bb_width_cm
           ),
@@ -413,7 +405,7 @@ export default {
           fr_height_cm: 0,
         }
       }
-      var i = 0
+      let i = 0
       for (i in hiveDimensions) {
         this.updateHive(hiveDimensions[i], i)
         i++

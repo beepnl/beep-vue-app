@@ -4,7 +4,7 @@
       <v-icon
         v-for="star in [0, 1, 2, 3, 4]"
         :key="star + 1"
-        :class="star < object[property] ? 'primary--text' : 'color-grey-medium'"
+        :class="star < object[property] ? 'text-primary' : 'color-grey-medium'"
         @click="updateObject(star + 1, property)"
         >mdi-star</v-icon
       >

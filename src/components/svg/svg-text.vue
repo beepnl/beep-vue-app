@@ -23,7 +23,7 @@
       v-if="inputTypeNotPresent"
       data-type="text"
       :x1="x + 'mm'"
-      :x2="x + 43 + 'mm'"
+      :x2="x + maxFieldWidth + 'mm'"
       :y1="y + 10 + 'mm'"
       :y2="y + 10 + 'mm'"
       stroke="black"
@@ -42,11 +42,12 @@
     <rect
       v-else-if="!line && !textOnly"
       data-type="text"
+      :data-label="label"
       :data-parent-category-id="position.id"
       :x="x + 'mm'"
       :y="y + 2 + 'mm'"
-      :width="width"
-      :height="height"
+      :width="(doubleWidth ? doubleFieldWidth : maxFieldWidth) + 'mm'"
+      :height="height + 'mm'"
       stroke="black"
       fill="transparent"
       :stroke-width="strokeWidth"
@@ -55,11 +56,12 @@
     <rect
       v-else-if="line && !textOnly"
       data-type="text"
+      :data-label="label"
       :data-parent-category-id="position.id"
       :x="x + 'mm'"
       :y="y + 2 + 'mm'"
-      :width="width"
-      height="11mm"
+      :width="(doubleWidth ? doubleFieldWidth : maxFieldWidth) + 'mm'"
+      height="8mm"
       stroke="black"
       fill="transparent"
       :stroke-width="strokeWidth"
@@ -68,8 +70,8 @@
 </template>
 
 <script>
-import svgLabel from '@/src/components/svg/svg-label.vue'
 import { svgData, svgStyles } from '@mixins/svgMixin'
+import svgLabel from '@/src/components/svg/svg-label.vue'
 
 export default {
   components: {
@@ -90,15 +92,10 @@ export default {
       required: false,
       default: false,
     },
-    width: {
-      type: String,
-      required: false,
-      default: '43mm',
-    },
     height: {
-      type: String,
+      type: Number,
       required: false,
-      default: '27mm',
+      default: 27,
     },
     line: {
       type: Boolean,

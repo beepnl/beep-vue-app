@@ -51,12 +51,18 @@
   background-color: $color-grey;
   background-repeat: no-repeat;
   background-position: center;
-  border: 2px solid $color-grey;
+  border: 1.5px solid $color-grey;
   border-radius: 50%;
 
   &--small {
     width: 16px;
     height: 16px;
+  }
+
+  &.--no-outline {
+    color: $color-grey;
+    background-color: $color-white;
+    border-color: $color-white;
   }
 
   &-queen {
@@ -70,7 +76,7 @@
   }
 
   &-beep-base {
-    width: 41px;
+    width: 31px;
     height: 28px;
     background-color: transparent;
     background-image: url('~@assets/img/icons/icn_beep_base_small.png');
@@ -203,7 +209,7 @@
   &-magnify {
     font-size: 15px;
     &::before {
-      margin-left: 1px;
+      margin-left: 2px;
       font-family: 'Material Design Icons';
       content: '\F0349';
     }
@@ -264,11 +270,7 @@
 }
 
 .icon-apiary-shared::before {
-  margin-left: 0;
-}
-
-.icon-apiary-owned::before {
-  margin-left: 1px;
+  margin-right: 1px;
 }
 
 .icon-side-arrow {

@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <div v-if="!showApiaryPlaceholder && ready" class="filter-bar-wrapper">
-      <v-container class="filter-container">
+      <v-container class="filter-container pa-0">
         <v-row
           class="filter-bar d-flex flex-row justify-space-between align-center"
         >
@@ -14,16 +14,18 @@
                 :label="`${$t('Search')}`"
                 :class="
                   `${
-                    hiveSearch !== null
-                      ? 'v-input--is-focused primary--text'
-                      : ''
-                  } filter-text-field`
+                    hiveSearch !== null ? 'v-input--is-focused' : ''
+                  } beep-search-field`
                 "
-                :height="mobile ? '30px' : '36px'"
+                :style="'height: ' + (mobile ? '30px;' : '36px;')"
+                color="accent"
                 clearable
-                outlined
-                dense
+                :clear-icon="'mdi-close'"
+                persistent-clear
+                variant="outlined"
+                density="compact"
                 hide-details
+                @click:clear="hiveSearch = null"
               ></v-text-field>
             </v-col>
             <v-card-actions class="pl-0">
@@ -48,9 +50,7 @@
               </v-icon>
               <v-icon
                 :class="
-                  `${
-                    filterByAttention ? 'red--text' : 'color-grey-filter'
-                  } mr-2`
+                  `${filterByAttention ? 'text-red' : 'color-grey-filter'} mr-2`
                 "
                 @click="filterByAttention = !filterByAttention"
               >
@@ -58,7 +58,7 @@
               </v-icon>
               <v-icon
                 :class="
-                  `${filterByReminder ? 'red--text' : 'color-grey-filter'} mr-2`
+                  `${filterByReminder ? 'text-red' : 'color-grey-filter'} mr-2`
                 "
                 @click="filterByReminder = !filterByReminder"
               >
@@ -68,7 +68,7 @@
                 :class="
                   `${
                     filterByImpression.includes(3)
-                      ? 'green--text'
+                      ? 'text-green'
                       : 'color-grey-filter'
                   } mr-2`
                 "
@@ -81,7 +81,7 @@
                 :class="
                   `${
                     filterByImpression.includes(2)
-                      ? 'orange--text'
+                      ? 'text-orange'
                       : 'color-grey-filter'
                   } mr-2`
                 "
@@ -93,7 +93,7 @@
                 :class="
                   `${
                     filterByImpression.includes(1)
-                      ? 'red--text'
+                      ? 'text-red'
                       : 'color-grey-filter'
                   } mr-2`
                 "
@@ -114,7 +114,7 @@
               </div>
               <v-icon
                 v-if="devices.length > 0 && screenSize > 418"
-                :class="`${filterByAlert ? 'red--text' : 'color-grey-filter'}`"
+                :class="`${filterByAlert ? 'text-red' : 'color-grey-filter'}`"
                 @click="filterByAlert = !filterByAlert"
               >
                 mdi-bell
@@ -157,11 +157,11 @@
         v-for="invitation in invitations"
         :key="'Invitation ' + invitation.id"
         :class="
-          `hive-set ${xsView ? 'xs-view' : ''} ${
+          `mx-n1 hive-set ${xsView ? 'xs-view' : ''} ${
             showApiaryPlaceholder ? 'mt-2' : ''
           }`
         "
-        dense
+        density="compact"
       >
         <div
           class="hive-set-title mt-0 d-flex flex-row justify-space-between align-end"
@@ -189,8 +189,6 @@
           <div>
             <v-btn
               v-if="!mobile"
-              tile
-              outlined
               class="mb-1 mr-2"
               color="red"
               :disabled="invitationButtonsDisabled(invitation.id)"
@@ -201,10 +199,13 @@
                 class="ml-n1 mr-2"
                 size="18"
                 width="2"
-                color="disabled"
+                color="red"
                 indeterminate
               />
-              <v-icon v-if="!showLoadingIcon(invitation.id, true)" left
+              <v-icon
+                v-if="!showLoadingIcon(invitation.id, true)"
+                color="red"
+                start
                 >mdi-close</v-icon
               >
               {{ $t('Decline') }}
@@ -229,9 +230,7 @@
             >
             <v-btn
               v-if="!mobile"
-              tile
-              outlined
-              class="green--text mb-1"
+              class="text-green mb-1"
               :disabled="invitationButtonsDisabled(invitation.id)"
               @click="
                 checkToken(invitation.token, invitation.id, invitation.name)
@@ -239,13 +238,15 @@
             >
               <v-progress-circular
                 v-if="showLoadingIcon(invitation.id, false)"
-                class="ml-n1 mr-2"
+                class="ml-n1 mr-2 text-green"
                 size="18"
                 width="2"
-                color="disabled"
                 indeterminate
               />
-              <v-icon v-if="!showLoadingIcon(invitation.id, false)" left
+              <v-icon
+                v-if="!showLoadingIcon(invitation.id, false)"
+                start
+                class="text-green"
                 >mdi-check</v-icon
               >
               {{ $t('Accept') }}
@@ -262,7 +263,7 @@
               v-if="!showLoadingIcon(invitation.id, false) && mobile"
               dark
               :disabled="invitationButtonsDisabled(invitation.id)"
-              class="green--text mb-1"
+              class="text-green mb-1"
               @click="
                 checkToken(invitation.token, invitation.id, invitation.name)
               "
@@ -277,7 +278,7 @@
             `border-color: ${invitation.color ? invitation.color : '#F8B133'};`
           "
         >
-          <v-simple-table dense>
+          <v-table density="compact">
             <template v-slot>
               <thead>
                 <tr>
@@ -316,15 +317,15 @@
                 </tr>
               </tbody>
             </template>
-          </v-simple-table>
+          </v-table>
         </div>
       </v-row>
 
       <v-row
         v-for="hiveSet in filteredHiveSets"
         :key="'hiveSet ' + hiveSet.name + ' ' + hiveSet.id"
-        :class="`hive-set ${xsView ? 'xs-view' : ''}`"
-        dense
+        :class="`mx-n1 hive-set ${xsView ? 'xs-view' : ''}`"
+        density="compact"
       >
         <div
           class="hive-set-title d-flex flex-row justify-flex-start align-center"
@@ -370,215 +371,103 @@
 
                   <h4 v-text="hiveSet.name"></h4>
                 </div>
-                <pre
+                <div
                   v-if="xlView && hiveSet.users && hiveSet.users.length"
-                  :class="'caption hive-set-caption' + (mobile ? ' ml-7' : '')"
-                  v-text="
+                  class="caption hive-set-caption ml-2"
+                >
+                  {{
                     ` (${hiveSet.users.length} ${$tc(
                       'member',
                       // eslint-disable-next-line vue/comma-dangle
                       hiveSet.users.length
                     )})`
-                  "
-                >
-                </pre>
+                  }}
+                </div>
               </div>
 
               <v-menu>
-                <template v-slot:activator="{ on, attrs }">
+                <template v-slot:activator="{ props }">
                   <v-icon
-                    small
+                    size="small"
                     class="color-grey-light ml-2"
-                    v-bind="attrs"
-                    v-on="on"
+                    v-bind="props"
                     >mdi-cog</v-icon
                   >
                 </template>
 
-                <v-list v-if="!hiveSet.users" dense>
-                  <v-list-item-group>
+                <v-list v-if="!hiveSet.users">
+                  <template
+                    v-for="(item, i) in menuItemsApiary(hiveSet)"
+                    :key="i"
+                  >
                     <v-list-item
-                      :to="{
-                        name: 'apiary-edit',
-                        params: { id: hiveSet.id },
-                      }"
+                      v-if="item.to"
+                      class="text-black"
+                      :to="item.to"
+                      :prepend-icon="item.icon"
+                      :title="item.text"
+                      @click="item.click || null"
                     >
-                      <v-list-item-icon class="mr-3">
-                        <v-icon>mdi-home-edit</v-icon>
-                      </v-list-item-icon>
-
-                      <v-list-item-content>
-                        <v-list-item-title
-                          v-text="$t('edit_apiary')"
-                        ></v-list-item-title>
-                      </v-list-item-content>
                     </v-list-item>
-                    <v-list-item
-                      :to="{
-                        name: 'inspect',
-                        query: { apiaryId: hiveSet.id },
-                      }"
-                    >
-                      <v-list-item-icon class="mr-3">
-                        <v-icon>mdi-file-document-edit-outline</v-icon>
-                      </v-list-item-icon>
+                  </template>
 
-                      <v-list-item-content>
-                        <v-list-item-title
-                          v-text="$t('New_inspection')"
-                        ></v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
-                    <v-list-item
-                      @click="setDiaryGroupFilterAndGo(hiveSet.name)"
-                    >
-                      <v-list-item-icon class="mr-3">
-                        <v-icon>mdi-magnify</v-icon>
-                      </v-list-item-icon>
-
-                      <v-list-item-content>
-                        <v-list-item-title
-                          v-text="$tc('View_inspection', 2)"
-                        ></v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
-                    <v-list-item
-                      :to="{
-                        name: 'hive-create',
-                        query: { locationId: hiveSet.id },
-                      }"
-                    >
-                      <v-list-item-icon class="mr-3">
-                        <v-icon>mdi-archive</v-icon>
-                      </v-list-item-icon>
-
-                      <v-list-item-content>
-                        <v-list-item-title
-                          v-text="$t('New_hive')"
-                        ></v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
-                    <v-list-item
-                      :to="{
-                        name: 'apiary-management',
-                        params: { id: hiveSet.id },
-                      }"
-                    >
-                      <v-list-item-icon class="mr-3">
-                        <v-icon>mdi-home-export-outline</v-icon>
-                      </v-list-item-icon>
-
-                      <v-list-item-content>
-                        <v-list-item-title
-                          v-text="$t('Move') + ' ' + $tc('hive', 2)"
-                        ></v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
-                  </v-list-item-group>
-
-                  <v-divider v-if="hiveSet.owner" class="my-1"></v-divider>
-
-                  <v-list-item-group>
-                    <v-list-item
-                      v-if="hiveSet.owner"
-                      @click="confirmDeleteApiary(hiveSet)"
-                    >
-                      <v-list-item-icon class="mr-3">
-                        <v-icon class="red--text">mdi-delete</v-icon>
-                      </v-list-item-icon>
-
-                      <v-list-item-content>
-                        <v-list-item-title class="red--text">{{
-                          $t('remove_apiary')
-                        }}</v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
-                  </v-list-item-group>
-                </v-list>
-
-                <v-list v-if="hiveSet.users" dense>
-                  <v-list-item-group>
-                    <v-list-item
-                      :to="{
-                        name: 'group-edit',
-                        params: { id: hiveSet.id },
-                      }"
-                    >
-                      <v-list-item-icon class="mr-3">
-                        <v-icon>mdi-account-multiple-plus</v-icon>
-                      </v-list-item-icon>
-
-                      <v-list-item-content>
-                        <v-list-item-title
-                          v-text="$t('edit_group')"
-                        ></v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
-                  </v-list-item-group>
+                  <v-divider
+                    v-if="!hiveSet.users && hiveSet.owner"
+                    class="my-1"
+                  ></v-divider>
 
                   <v-list-item
-                    v-if="hiveSet.hasEditableHive"
-                    :to="{
-                      name: 'inspect',
-                      query: { groupId: hiveSet.id },
-                    }"
+                    v-if="!hiveSet.users && hiveSet.owner"
+                    @click="confirmDeleteApiary(hiveSet)"
                   >
-                    <v-list-item-icon class="mr-3">
-                      <v-icon>mdi-file-document-edit-outline</v-icon>
-                    </v-list-item-icon>
+                    <template v-slot:prepend>
+                      <v-icon :icon="'mdi-delete'" class="text-red"> </v-icon>
+                    </template>
 
-                    <v-list-item-content>
-                      <v-list-item-title
-                        v-text="$t('New_inspection')"
-                      ></v-list-item-title>
-                    </v-list-item-content>
+                    <v-list-item-title class="text-red">{{
+                      $t('remove_apiary')
+                    }}</v-list-item-title>
                   </v-list-item>
+                </v-list>
 
-                  <v-list-item @click="setDiaryGroupFilterAndGo(hiveSet.name)">
-                    <v-list-item-icon class="mr-3">
-                      <v-icon>mdi-magnify</v-icon>
-                    </v-list-item-icon>
-
-                    <v-list-item-content>
-                      <v-list-item-title
-                        v-text="$tc('View_inspection', 2)"
-                      ></v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
-
-                  <v-divider class="my-1"></v-divider>
-
-                  <v-list-item-group>
+                <v-list v-if="hiveSet.users">
+                  <template
+                    v-for="(item, j) in menuItemsGroup(hiveSet)"
+                    :key="j"
+                  >
                     <v-list-item
-                      v-if="hiveSet.creator"
-                      @click="confirmDeleteGroup(hiveSet)"
+                      v-if="item.if && item.to"
+                      class="text-black"
+                      :to="item.to"
+                      :prepend-icon="item.icon"
+                      :title="item.text"
+                      @click="item.click || null"
                     >
-                      <v-list-item-icon class="mr-3">
-                        <v-icon class="red--text">mdi-delete</v-icon>
-                      </v-list-item-icon>
-
-                      <v-list-item-content>
-                        <v-list-item-title class="red--text">{{
-                          $t('remove_group_short')
-                        }}</v-list-item-title>
-                      </v-list-item-content>
                     </v-list-item>
 
                     <v-list-item
-                      v-if="!hiveSet.creator"
-                      @click="confirmDetachGroup(hiveSet)"
+                      v-else-if="item.if"
+                      :class="item.iconClass"
+                      :title="item.text"
+                      @click="
+                        item.click === 'delete'
+                          ? confirmDeleteGroup(hiveSet)
+                          : confirmDetachGroup(hiveSet)
+                      "
                     >
-                      <v-list-item-icon class="mr-3">
-                        <v-icon class="red--text">mdi-delete</v-icon>
-                      </v-list-item-icon>
-
-                      <v-list-item-content>
-                        <v-list-item-title class="red--text">{{
-                          $t('Detach_from_group')
-                        }}</v-list-item-title>
-                      </v-list-item-content>
+                      <template v-slot:prepend>
+                        <v-icon
+                          :class="item.iconClass"
+                          :icon="item.icon"
+                        ></v-icon>
+                      </template>
                     </v-list-item>
-                  </v-list-item-group>
+
+                    <v-divider
+                      v-else-if="!item.if && item.divider"
+                      class="my-1"
+                    ></v-divider>
+                  </template>
                 </v-list>
               </v-menu>
             </div>
@@ -595,42 +484,33 @@
             </span>
           </div>
         </div>
-        <SlideYUpTransition :duration="300">
-          <div
-            v-if="!hideHiveSet(hiveSet)"
-            :key="'HiveSet' + hiveSet.id"
-            style="width: 100%;"
-          >
-            <ScaleTransition
-              :duration="300"
-              group
-              class="hive-item-transition-wrapper"
-            >
-              <template v-for="hive in sortedHives(hiveSet.hives)">
-                <v-col
-                  :key="'Hive ' + hive.id"
-                  sm="auto"
-                  :class="
-                    `hive-item ${xlView ? 'xl-view' : ''} ${
-                      xsView ? 'xs-view' : ''
-                    }`
-                  "
-                >
-                  <HiveCard
-                    :key="`${hive.id}`"
-                    :hive="hive"
-                    :hive-set="hiveSet"
-                    :alerts="alertsPerHive(hive.id)"
-                    :xl-view="xlView"
-                    :m-view="mView"
-                    :xs-view="xsView"
-                    @confirm-delete-hive="confirmDeleteHive($event)"
-                  ></HiveCard>
-                </v-col>
-              </template>
-            </ScaleTransition>
+        <v-slide-y-transition v-if="!hideHiveSet(hiveSet)" style="width: 100%;">
+          <div class="hive-item-transition-wrapper">
+            <v-scale-transition group>
+              <v-col
+                v-for="hive in sortedHives(hiveSet.hives)"
+                :key="'Hive ' + hive.id"
+                sm="auto"
+                :class="
+                  `hive-item ${xlView ? 'xl-view' : ''} ${
+                    xsView ? 'xs-view' : ''
+                  }`
+                "
+              >
+                <HiveCard
+                  :key="`${hive.id}`"
+                  :hive="hive"
+                  :hive-set="hiveSet"
+                  :alerts="alertsPerHive(hive.id)"
+                  :xl-view="xlView"
+                  :m-view="mView"
+                  :xs-view="xsView"
+                  @confirm-delete-hive="confirmDeleteHive($event)"
+                ></HiveCard>
+              </v-col>
+            </v-scale-transition>
           </div>
-        </SlideYUpTransition>
+        </v-slide-y-transition>
       </v-row>
 
       <div
@@ -657,7 +537,7 @@
             }"
           >
             <div class="color-accent"
-              ><v-icon color="accent" large left>mdi-plus-circle</v-icon
+              ><v-icon color="accent" size="large" start>mdi-plus-circle</v-icon
               >{{ $t('Add_apiary') }}</div
             >
           </router-link>
@@ -669,7 +549,7 @@
             }"
           >
             <div class="color-grey-medium"
-              ><v-icon class="color-grey-medium" large left
+              ><v-icon class="color-grey-medium" size="large" left
                 >mdi-comment-question-outline</v-icon
               >{{ $t('need_help') }}</div
             >
@@ -678,8 +558,8 @@
       </div>
       <v-row
         v-else-if="sortedHiveSets.length && !filteredHiveSets.length"
-        dense
-        class="hive-set"
+        density="compact"
+        class="mx-n1 hive-set"
       >
         <v-col sm="auto" :cols="12">
           {{ $t('no_results') }}
@@ -689,7 +569,7 @@
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
-      <v-btn color="accent" text @click="snackbar.show = false">
+      <v-btn color="accent " variant="text" @click="snackbar.show = false">
         {{ $t('Close') }}
       </v-btn>
     </v-snackbar>
@@ -700,9 +580,9 @@
 
 <script>
 import Api from '@api/Api'
-import Confirm from '@components/confirm.vue'
+import Confirm from '@/src/components/confirm-dialog.vue'
 import HiveCard from '@components/hive-card.vue'
-import Layout from '@layouts/main.vue'
+import Layout from '@/src/router/layouts/main-layout.vue'
 import { mapGetters } from 'vuex'
 import {
   momentFromNow,
@@ -717,15 +597,12 @@ import {
   readHiveTags,
   toggleFilterByGroup,
 } from '@mixins/methodsMixin'
-import { ScaleTransition, SlideYUpTransition } from 'vue2-transitions'
 
 export default {
   components: {
     Confirm,
     HiveCard,
     Layout,
-    ScaleTransition,
-    SlideYUpTransition,
   },
   mixins: [
     checkAlerts,
@@ -760,6 +637,7 @@ export default {
     deviceInterval: 600000,
     hiddenApiaries: [],
     hiddenGroups: [],
+    maxHiveTagNr: 80, // TODO check actual number of possible hivetags
   }),
   computed: {
     ...mapGetters('alerts', ['alerts']),
@@ -831,7 +709,7 @@ export default {
       },
     },
     filteredHiveSets() {
-      var textFilteredHiveSets = []
+      let textFilteredHiveSets = []
       if (this.hiveSearch === null) {
         textFilteredHiveSets = this.sortedHiveSets
       } else {
@@ -850,6 +728,7 @@ export default {
             ) {
               return value.toLowerCase().includes(this.hiveSearch.toLowerCase())
             }
+            return false
           })
           if (hiveSetMatch) {
             return hiveSet
@@ -890,8 +769,10 @@ export default {
                           .toLowerCase()
                           .includes(this.hiveSearch.toLowerCase())
                       }
+                      return false
                     })
                   }
+                  return false
                 })
               }),
             }
@@ -899,7 +780,7 @@ export default {
         })
       }
 
-      var propertyFilteredHiveSets = textFilteredHiveSets
+      let propertyFilteredHiveSets = textFilteredHiveSets
         .map((hiveSet) => {
           if (this.filterByAlert) {
             return {
@@ -968,6 +849,7 @@ export default {
           } else {
             return { ...hiveSet }
           }
+          return false
         })
 
       if (
@@ -986,6 +868,9 @@ export default {
 
       return propertyFilteredHiveSets
     },
+    hiveIndex() {
+      return this.$route.query.hive_index
+    },
     hiveSearch: {
       get() {
         return this.$store.getters['locations/hiveSearch']
@@ -998,33 +883,39 @@ export default {
       },
     },
     hiveSets() {
-      var apiariesWithDates = this.apiaries
+      const apiariesWithDates = JSON.parse(JSON.stringify(this.apiaries)) // clone without v-bind to avoid vuex warning when mutating
 
       apiariesWithDates.map((apiary) => {
         apiary.hives.map((hive) => {
           this.addDates(hive)
+          return hive
         })
+        return apiary
       })
-      var groupsWithDatesAndEditableHivesProp = this.groups
+      const groupsWithDatesAndEditableHivesProp = JSON.parse(
+        JSON.stringify(this.groups)
+      ) // clone without v-bind to avoid vuex warning when mutating
       groupsWithDatesAndEditableHivesProp.map((group) => {
         group.hives.map((hive) => {
           this.addDates(hive)
+          return hive
         })
-        var hasEditableHive =
+        const hasEditableHive =
           group.hives.filter((hive) => {
             return hive.editable || hive.owner
           }).length > 0
         hasEditableHive
           ? (group.hasEditableHive = true)
           : (group.hasEditableHive = false)
+        return group
       })
       return apiariesWithDates.concat(groupsWithDatesAndEditableHivesProp)
     },
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.xs
     },
     screenSize() {
-      return this.$vuetify.breakpoint.width
+      return this.$vuetify.display.width
     },
     showApiaryPlaceholder() {
       return this.apiaries.length === 0 && this.groups.length === 0
@@ -1053,10 +944,10 @@ export default {
       return sortedHiveSets
     },
     tabletLandscapeUp() {
-      return this.$vuetify.breakpoint.mdAndUp
+      return this.$vuetify.display.mdAndUp
     },
     tinyScreen() {
-      return this.$vuetify.breakpoint.width < 373
+      return this.$vuetify.display.width < 373
     },
     today() {
       return new Date()
@@ -1081,9 +972,9 @@ export default {
         this.$store.commit('locations/setHiveView', 'xsView')
       }
     }
-  },
-  created() {
-    if (this.$route.query.hive_index !== undefined) {
+    // },
+    // created() {
+    if (this.hiveIndex !== undefined) {
       this.readHiveTagsIfNotChecked().then((hivetags) => {
         this.hiveTagRedirect(hivetags)
       })
@@ -1117,7 +1008,7 @@ export default {
       this.alertTimer = setInterval(this.readAlerts, this.alertInterval)
     })
   },
-  beforeDestroy() {
+  beforeUnmount() {
     this.stopTimers()
   },
   methods: {
@@ -1130,7 +1021,7 @@ export default {
       try {
         const response = await Api.postRequest('/groups/checktoken', {
           group_id: groupId,
-          token: token,
+          token,
           decline,
         })
         if (!response) {
@@ -1240,13 +1131,15 @@ export default {
         hive.reminder_date_day_month = null
         hive.reminder_date_locale_date = null
       }
-      var device =
+      const device =
         hive.sensors.length !== 0 ? this.findDeviceById(hive.sensors[0]) : null
-      if (device !== null) {
-        var isToday = this.$moment
-          .utc(device.last_message_received)
-          .isSame(this.today, 'day')
-      }
+      const isToday =
+        device !== null
+          ? this.$moment
+              .utc(device.last_message_received)
+              .isSame(this.today, 'day')
+          : false
+
       hive.last_message_received_legible_date =
         device === null
           ? null
@@ -1381,31 +1274,131 @@ export default {
         : this.hiddenGroups.includes(hiveSet.id)
     },
     hiveTagRedirect(hivetags) {
-      var filteredHiveTags = hivetags.filter(
-        (hiveTag) => hiveTag.tag === this.$route.query.hive_index
-      )
-      var hiveTag = filteredHiveTags.length === 0 ? null : filteredHiveTags[0]
+      const doubleDigits = this.hiveIndex.length > 1
+      const tag = doubleDigits ? this.hiveIndex : '0' + this.hiveIndex
+      const filteredHiveTags = hivetags.filter((hiveTag) => hiveTag.tag === tag)
+      const hiveTag = filteredHiveTags.length === 0 ? null : filteredHiveTags[0]
+      const tagExists = parseInt(tag) <= this.maxHiveTagNr
 
       if (hiveTag) {
         this.$router.push(hiveTag.router_link)
-      } else {
+      } else if (tagExists) {
         this.$router.push({
           name: 'hivetag-create-id',
           params: {
-            id: this.$route.query.hive_index,
+            id: tag,
           },
         })
+      } else {
+        this.$router.push({
+          name: 'hivetags',
+        })
       }
+    },
+    menuItemsApiary(hiveSet) {
+      return [
+        {
+          to: {
+            name: 'apiary-edit',
+            params: { id: hiveSet.id },
+          },
+          text: this.$i18n.t('edit_apiary'),
+          icon: 'mdi-home-edit',
+        },
+        {
+          to: {
+            name: 'inspect',
+            query: { apiaryId: hiveSet.id },
+          },
+          text: this.$i18n.t('New_inspection'),
+          icon: 'mdi-file-document-edit-outline',
+        },
+        {
+          to: {
+            name: 'diary',
+            query: { search: hiveSet.name },
+          },
+          click: this.setDiaryGroupFilterAndGo(hiveSet.name),
+          text: this.$i18n.tc('View_inspection', 2),
+          icon: 'mdi-magnify',
+        },
+        {
+          to: {
+            name: 'hive-create',
+            query: { locationId: hiveSet.id },
+          },
+          text: this.$i18n.t('New_hive'),
+          icon: 'mdi-archive',
+        },
+        {
+          to: {
+            name: 'apiary-management',
+            params: { id: hiveSet.id },
+          },
+          text: this.$i18n.t('Move') + ' ' + this.$i18n.tc('hive', 2),
+          icon: 'mdi-home-export-outline',
+        },
+      ]
+    },
+    menuItemsGroup(hiveSet) {
+      return [
+        {
+          if: true,
+          to: {
+            name: 'group-edit',
+            params: { id: hiveSet.id },
+          },
+          text: this.$i18n.t('edit_group'),
+          icon: 'mdi-account-multiple-plus',
+        },
+        {
+          if: hiveSet.hasEditableHive,
+          to: {
+            name: 'inspect',
+            query: { groupId: hiveSet.id },
+          },
+          text: this.$i18n.t('New_inspection'),
+          icon: 'mdi-file-document-edit-outline',
+        },
+        {
+          to: {
+            name: 'diary',
+            query: { search: hiveSet.name },
+          },
+          click: this.setDiaryGroupFilterAndGo(hiveSet.name),
+          text: this.$i18n.tc('View_inspection', 2),
+          icon: 'mdi-magnify',
+        },
+        {
+          divider: true,
+        },
+        {
+          if: hiveSet.creator,
+          to: false,
+          click: 'delete',
+          text: this.$i18n.t('remove_group_short'),
+          icon: 'mdi-delete',
+          iconClass: 'text-red',
+        },
+        {
+          if: !hiveSet.creator,
+          to: false,
+          click: 'detach',
+          text: this.$i18n.t('Detach_from_group'),
+          icon: 'mdi-delete',
+          iconClass: 'text-red',
+        },
+      ]
     },
     setDiaryGroupFilterAndGo(searchTerm) {
       this.$store.commit('inspections/setFilter', {
         filter: 'diaryFilterByGroup',
         value: 'off', // in case it was filtering by owned hives or group hives
       })
-      this.$router.push({
-        name: 'diary',
-        query: { search: searchTerm },
-      })
+      // this.$router.push({
+      //   name: 'diary',
+      //   query: { search: searchTerm },
+      // })
     },
     sortedHives(hives) {
       const sortedHives = hives.slice().sort(function(a, b) {
@@ -1475,7 +1468,9 @@ export default {
       this.$store.commit('locations/setHiveView', view)
     },
     toggleHiveSet(hiveSet) {
-      var toggleArray = !hiveSet.users ? this.hiddenApiaries : this.hiddenGroups
+      const toggleArray = !hiveSet.users
+        ? this.hiddenApiaries
+        : this.hiddenGroups
       if (toggleArray.includes(hiveSet.id)) {
         toggleArray.splice(toggleArray.indexOf(hiveSet.id), 1)
       } else {
@@ -1514,9 +1509,9 @@ export default {
     margin-bottom: 18px;
   }
   &:first-child {
-    margin-top: 70px;
+    margin-top: 150px;
     @include for-phone-only {
-      margin-top: 56px;
+      margin-top: 144px;
     }
   }
   &:last-child {

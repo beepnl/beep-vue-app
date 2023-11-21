@@ -1,12 +1,5 @@
 <template>
   <g>
-    <!-- <imageUploader
-      v-if="item.input === 'image'"
-      :object="object"
-      :item="item"
-      :input-disabled="disabled"
-    ></imageUploader> -->
-
     <svgHeader
       v-if="item.input === 'label'"
       :position="position"
@@ -25,13 +18,13 @@
       :items="item.children"
     />
 
-    <svgDate
-      v-if="item.input === 'date'"
+    <!-- <svgDate
+      v-if="item.input === 'date'" // TODO: remove when single-digits won't be used anymore for sure
       :position="position"
       :label="labelWithHeader"
       :time="true"
       :columns="1"
-    />
+    /> -->
 
     <svgGradeRating
       v-if="item.input === 'grade'"
@@ -54,7 +47,8 @@
       :position="position"
       :label="labelWithHeader"
       :append="'°'"
-      :info="$t('Degrees_exp')"
+      :info="$t('Degrees_exp_1')"
+      :info-extra="$t('Degrees_exp_2')"
     />
 
     <svgNumber
@@ -62,10 +56,12 @@
         item.input === 'number' ||
           item.input === 'number_0_decimals' ||
           item.input === 'number_positive' ||
-          item.input === 'slider'
+          item.input === 'slider' ||
+          item.input === 'date'
       "
       :position="position"
       :label="labelWithHeader"
+      :input-type="item.input"
     />
 
     <svgNumber
@@ -146,11 +142,15 @@
     />
 
     <svgText
-      v-if="item.input === 'image'"
+      v-if="item.input === 'image' || item.input === 'sample_code'"
       :label="label"
       :text-only="true"
-      :extra-text1="$t('Image_placeholder_1')"
-      :extra-text2="$t('Image_placeholder_2')"
+      :extra-text1="
+        $t((item.input === 'image' ? 'Image' : 'Samplecode') + '_placeholder_1')
+      "
+      :extra-text2="
+        $t((item.input === 'image' ? 'Image' : 'Samplecode') + '_placeholder_2')
+      "
       :position="position"
     />
 
@@ -183,7 +183,8 @@
           item.input !== 'date' &&
           item.input !== 'select_hive' &&
           item.input !== 'select_location' &&
-          item.input !== 'image'
+          item.input !== 'image' &&
+          item.input !== 'sample_code'
       "
       :position="position"
       :label="label + ' (' + item.input + ')'"
@@ -193,7 +194,7 @@
 </template>
 
 <script>
-import svgDate from '@components/svg/svg-date.vue'
+// import svgDate from '@components/svg/svg-date.vue' // TODO remove when single-digits won't be used for sure
 // import imageUploader from '@components/svg/image-uploader.vue'
 // import sampleCode from '@components/svg/sample-code.vue'
 import svgGradeRating from '@components/svg/svg-grade-rating.vue'
@@ -208,7 +209,7 @@ export default {
   name: 'SvgInput',
   components: {
     // SvgFieldset: () => import('@components/svg/svg-fieldset.vue'), // needed to fix Vue recursive component error
-    svgDate,
+    // svgDate, // TODO remove when single-digits won't be used for sure
     // imageUploader,
     // labelWithDescription,
     // sampleCode,
@@ -239,17 +240,28 @@ export default {
   },
   computed: {
     label() {
-      return (
+      const label =
         (this.item.trans[this.locale] || this.item.name) +
         (this.item.unit !== null ? ' (' + this.item.unit + ')' : '')
-      )
+      return label
     },
     labelWithHeader() {
-      return (
-        (this.header !== '' && this.header !== this.label
-          ? this.header + ': '
-          : '') + this.label
-      )
+      const maxLabelLength = 32
+      const addHeader = this.header !== '' && this.header !== this.label
+      const labelText = (addHeader ? this.header + ': ' : '') + this.label
+      const suffix =
+        !addHeader && this.item.suffix ? '_' + this.item.suffix : '' // only add suffix if label has no extra header (label with header is unlikely to be identical to other label with header)
+
+      let label = labelText + suffix
+
+      if (label.length > maxLabelLength) {
+        label =
+          labelText.substring(0, maxLabelLength - suffix.length) + // ensure that suffix is printed for shortened labels as well
+          suffix +
+          '...'
+      }
+
+      return label
     },
     locale() {
       return this.$i18n.locale

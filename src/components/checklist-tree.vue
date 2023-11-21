@@ -1,23 +1,26 @@
 <template>
-  <v-card class="pa-3" outlined>
+  <v-card class="pa-3">
     <v-text-field
       v-model="filterText"
       :label="`${$t('Search')}`"
       :class="
         `${
-          filterText !== '' ? 'v-input--is-focused primary--text' : ''
-        } filter-text-field mb-3`
+          filterText !== '' ? 'v-input--is-focused text-primary' : ''
+        } beep-search-field mb-3`
       "
-      height="36px"
+      :style="'height: 36px;'"
+      color="accent"
       clearable
-      outlined
-      dense
+      :clear-icon="'mdi-close'"
+      persistent-clear
+      variant="outlined"
+      density="compact"
       hide-details
     ></v-text-field>
 
-    <el-form :disabled="disabled">
-      <el-form-item>
-        <el-tree
+    <ElForm :disabled="disabled">
+      <ElFormItem>
+        <ElTree
           ref="tree"
           class="filter-tree"
           :data="items"
@@ -36,14 +39,22 @@
           @node-drop="nodeDrop"
           @node-drag-start="nodeDragStart"
         >
-        </el-tree>
-      </el-form-item>
-    </el-form>
+        </ElTree>
+      </ElFormItem>
+    </ElForm>
   </v-card>
 </template>
 
 <script>
+import { ElForm, ElFormItem, ElTree } from 'element-plus'
+import 'element-plus/es/components/tree/style/css'
+
 export default {
+  components: {
+    ElForm,
+    ElFormItem,
+    ElTree,
+  },
   props: {
     disabled: {
       type: Boolean,
@@ -58,6 +69,7 @@ export default {
       required: true,
     },
   },
+  emits: ['update-categories'],
   data() {
     return {
       defaultProps: {
@@ -92,6 +104,7 @@ export default {
         if (child.children !== null) {
           this.checkChildren(child, selected)
         }
+        return child
       })
     },
     filterNode(value, data) {

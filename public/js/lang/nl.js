@@ -22,7 +22,7 @@ const translations = {
   monthsShort: [
     'jan',
     'feb',
-    'maa',
+    'mrt',
     'apr',
     'mei',
     'jun',
@@ -540,7 +540,7 @@ const translations = {
   accept_policy_2: ', die in lijn zijn met de nieuwe Europese privacywetgeving',
   terms_of_use: 'servicevoorwaarden',
   invalid_password:
-    'Wachtwoord moet minimaal 8 tekens, een kleine letter, een hoofdletter, een cijfer en een bijzonder teken (\\]{}()?\\-"!@#%&/\\,><\':;|_~`) bevatten',
+    "{'Wachtwoord moet minimaal 8 tekens, een kleine letter, een hoofdletter, een cijfer en een bijzonder teken ([]]{}()?-\"!@#%&/,><':;|_~`) bevatten'}",
   sensor_definition: 'sensor definitie | sensor definities',
   measurement: 'meting | metingen',
   remove_device: 'Verwijder meetsysteem',
@@ -610,9 +610,16 @@ const translations = {
     'Deze notificatie <strong>deactiveren</strong> voor de volgende bijenkasten:',
   Exclude_hives_details:
     'N.B. De notificatie wordt standaard voor alle bijenkasten met een meetsysteem uitgevoerd.',
+  Exclude_hives_collab_group_exp:
+    ' Dit geldt ook voor bijenkasten die onderdeel zijn van een samenwerkingsgroep waar je lid van bent. Deactiveer de kasten waarvoor je deze notificatie niet wilt ontvangen.',
+  No_hives_excluded_warning:
+    "N.B. Deze notificatie wordt uitgevoerd voor alle bijenkasten met een meetsysteem, ook voor bijenkasten uit je samenwerkingsgroep(en). Bijenkasten waarvoor je deze notificatie niet wilt ontvangen kan je deactiveren via 'Periodes en bijenkasten uitzonderen'.",
+  Save_alertrule_ok:
+    'Wilt u doorgaan met opslaan van de notificatie-instelling?',
   months: 'maanden',
   hours: 'uren',
   delete_alertrule: 'Verwijder notificatie-instelling',
+  create_alertrule: 'Opslaan notificatie-instelling',
   Active: 'Actief',
   Alert_via_email: 'Notificatie via email',
   this_field: 'Dit veld',
@@ -621,9 +628,9 @@ const translations = {
   copy: 'Kopieer',
   Home: 'Home',
   Select_default_alertrule: 'Kopieer standaardinstelling',
-  /* below, please keep all terms between [] in english: */
+  /* below, please keep all terms between {} in english: */
   alertrule_main_sentence:
-    'Ik wil een notificatie ontvangen als [calculation] [measurement_quantity] [comparison] [comparator] [threshold_value][measurement_unit]. Deze berekening wordt [calculation_minutes] uitgevoerd',
+    'Ik wil een notificatie ontvangen als {calculation} {measurement_quantity} {comparison} {comparator} {threshold_value}{measurement_unit}. Deze berekening wordt {calculation_minutes} uitgevoerd',
   alertrule_active_no_email_sentence:
     ', en ik open de BEEP app om de notificaties te zien.',
   alertrule_active_email_sentence:
@@ -631,11 +638,11 @@ const translations = {
   alertrule_occurences_direct_sentence:
     ', en ik ontvang hier direct een notificatie van. ',
   alertrule_exclude_months_sentence:
-    'Deze notificatie is uitgeschakeld in de maanden: [exclude_months]. ',
+    'Deze notificatie is uitgeschakeld in de maanden: {exclude_months}. ',
   alertrule_exclude_hours_sentence:
-    'Deze notificatie is uitgeschakeld tijdens de uren: [exclude_hours]. ',
+    'Deze notificatie is uitgeschakeld tijdens de uren: {exclude_hours}. ',
   alertrule_exclude_hives_sentence:
-    'Deze notificatie is uitgeschakeld voor deze bijenkasten: [exclude_hive_ids].',
+    'Deze notificatie is uitgeschakeld voor deze bijenkasten: {exclude_hive_ids}.',
   min: 'minimum',
   max: 'maximum',
   ave: 'gemiddelde',
@@ -662,6 +669,11 @@ const translations = {
     'Om je op weg te helpen zijn er een aantal standaardinstellingen die je kan gebruiken (en aanpassen naar eigen behoefte). Je kan ook zelf een nieuwe notificatie-instelling maken.',
   alertrules_url_text:
     "Ga naar 'notificaties beheren' om je eerste notificatie in te stellen",
+  Source: 'Bron',
+  db_influx: 'Influx Database',
+  lambda_model: 'Lambda Model',
+  open_weather: 'Open Weather',
+
   Apiary_management: 'Bijenstand management',
   Move: 'Verplaats',
   Current_apiary: 'Huidige bijenstand',
@@ -864,7 +876,7 @@ const translations = {
   /* Translations page */
   Translations: 'Vertalingen',
   translation_exp:
-    'Vraag een vertaler account aan via support@beep.nl om een vertaler te worden. Als je een vertaling wilt updaten, download dan hieronder het betreffende .js bestand en mail het geüpdatete bestand naar support@beep.nl. Bedankt voor de moeite!',
+    "Vraag een vertaler account aan via support{'@'}beep.nl om een vertaler te worden. Als je een vertaling wilt updaten, download dan hieronder het betreffende .js bestand en mail het geüpdatete bestand naar support{'@'}beep.nl. Bedankt voor de moeite!",
   unpublished_exp: 'Vertalingen die nog ongepubliceerd zijn:',
   as_plain_text: 'als platte tekst',
 
@@ -988,12 +1000,15 @@ const translations = {
   Percentage_exp: 'Percentage tussen 0 en 100',
   Grade_exp_1: 'Cijfer tussen 1 en 10',
   Grade_exp_2: '(1 = Slecht, 10 = Uitstekend)',
-  Degrees_exp: 'Aantal graden tussen -180° en 180°',
+  Degrees_exp_1: 'Aantal graden tussen',
+  Degrees_exp_2: '-180° en 180°',
   Negative_exp: 'Negatief getal (lager dan 0)',
   Too_many_items_exp_1: 'Er zijn teveel opties om te printen,',
   Too_many_items_exp_2: 'vul hier je eigen antwoord in',
   Image_placeholder_1: 'Foto kan later toegevoegd worden',
   Image_placeholder_2: 'via de BEEP app (optioneel)',
+  Samplecode_placeholder_1: 'Sample code kan gegenereerd worden',
+  Samplecode_placeholder_2: 'bij uploaden inspectie in BEEP app',
   Too_long_list_present:
     'Lijst van opties te lang om weer te geven in de offline kastkaart voor het item:',
   Too_long_list_present_fix_1:
@@ -1003,16 +1018,93 @@ const translations = {
 
   /* offline inspection page */
   Print: 'Print',
-  Offline_inspection: 'Handmatige inspectie',
+  Print_checklist: 'Print kastkaart',
+  Print_checklist_exp: 'Zorg voor de volgende printerinstellingen:',
+  Print_checklist_exp_1: 'Papierformaat: A4',
+  Print_checklist_exp_2: 'Zonder marges',
+  Print_checklist_exp_3: 'Zwart/wit',
+  Print_checklist_exp_4: 'Enkelzijdig',
+  Offline_inspection: 'Papieren inspectie',
   Offline_inspection_exp:
-    "Print de kastkaart, vul deze handmatig in. Upload foto's hiervan op een later moment via de 'Upload inspectie' knop. De foto's worden vervolgens automatisch uitgelezen en kunnen vervolgens worden opgeslagen als een normale inspectie.",
+    "Print de kastkaart, vul deze handmatig in. Upload foto's hiervan op een later moment via de 'Upload papieren inspectie' knop. De foto's worden vervolgens automatisch uitgelezen en het resultaat kan dan worden geverifiëerd en opgeslagen als een normale (digitale / online) inspectie.",
   Online_inspection: 'Digitale inspectie',
   Online_inspection_exp:
-    'Vul de kastkaart digitaal in via uw computer, tablet of telefoon, zoals u gewend bent',
-  Upload_inspection: 'Upload inspectie',
-  Upload_inspection_exp: 'Upload inspectie exp',
+    'Vul de kastkaart digitaal (online) in via uw computer, tablet of smartphone, zoals u gewend bent',
+  Upload_inspection: 'Upload papieren inspectie',
+  Upload_inspection_exp:
+    "Wanneer u een papieren inspectie heeft gedaan, kunt u hier foto's daarvan uploaden. Deze worden vervolgens automatisch uitgelezen en het resultaat kan dan worden geverifiëerd en opgeslagen als een normale (digitale / online) inspectie.",
 
   Select_inspection_mode: 'Selecteer inspectiemodus',
+  Send_pictures: "Foto's opsturen",
+  svg_checklist: 'geprinte kastkaart | geprinte kastkaarten',
+  Select_input_language: 'Selecteer taal waarin kastkaart is ingevuld',
+  Upload_images: 'Upload afbeeldingen',
+  Upload_images_exp: "Let bij het maken van de foto's op het volgende:",
+  Upload_images_exp_1:
+    'Komt de Print ID van elke pagina overeen met de Print ID van de hierboven geselecteerde geprinte kastkaart?',
+  Upload_images_exp_2: 'Zijn alle 4 de zwarte vierkanten in beeld?',
+  Upload_images_exp_3:
+    'Ligt het papier op een vlakke ondergrond en is het goed verlicht?',
+  Upload_images_exp_4: 'TODO: use image scanner?',
+  Uploading_images_be_patient:
+    'Even geduld a.u.b., uw afbeeldingen worden geanalyseerd. Dit kan enkele minuten duren. Sluit dit venster niet.',
+  Generating_svg_be_patient:
+    'Even geduld a.u.b., de printbare kastkaart wordt gegenereerd. Dit kan even duren. Sluit dit venster niet.',
+  Parsed_pages: "Verwerkte pagina's",
+  Number_of_processed_pages: "Aantal verwerkte pagina's: ",
+  Incorrectly_uploaded_pages: 'Incorrect geuploade paginanummers: ',
+  Missing_page: 'Ontbrekend paginanummer | Ontbrekende paginanummers',
+  Check_svg_id_for_page:
+    'Controleer Print ID voor paginanummer | Controleer Print ID voor paginanummers',
+  correct_svg_id: 'juiste Print ID',
+  Svg_id_exp:
+    "Het Print ID vind je rechts bovenaan de pagina, links van het paginanummer. Upload de papieren inspectie opnieuw met de juiste pagina's en/of de juiste geprinte kastkaart geselecteerd.",
+  All_svg_ids_correct: 'Juiste geprinte kastkaart geselecteerd',
+  All_svg_ids_incorrect: 'Verkeerde geprinte kastkaart geselecteerd',
+  No_checklist_svg: 'Nog geen kastkaarten geprint',
+  No_checklist_svg_exp:
+    "Voordat je een papieren inspectie kan uploaden, moet je eerst een kastkaart printen (en invullen). Ga daarom eerst naar 'Papieren inspectie', of doe de inspectie volledig digitaal via 'Digitale inspectie'.",
+  checklist_svg_exp:
+    "Selecteer hieronder een geprinte kastkaart. Let daarbij op dat de Print ID (en daarmee ook de naam) overeenkomt met de Print ID (en naam) van jouw papieren inspectie. De Print ID vind je rechtsboven elke bladzijde, de naam linksboven. N.B. Een digitale kastkaart kan onder verschillende Print IDs opgeslagen zijn als 'geprinte kastkaart', wanneer de inhoud gewijzigd is op het moment van printen (ten opzichte van de vorige printsessie). Aanpassingen aan een digitale kastkaart zijn dus alleen terug te zien in een geprinte kastkaart wanneer de kastkaart na de wijzigingen geprint is. De datum (+ het tijdstip) achter de naam duidt aan wanneer een bepaalde versie van de kastkaart voor het eerst geprint is.",
+
+  /* Compare module */
+  Load: 'Laden',
+  Compare: 'Vergelijk',
+  Select_hives_for_compare: 'Selecteer bijenkasten om mee te vergelijken',
+  Select_hives_for_compare_exp:
+    'Selecteer de bijenkasten waarmee je de data wilt vergelijken',
+  mean_weight_kg: 'Gemiddeld gewicht',
+  mean_net_weight_kg: 'Gemiddeld netto gewicht',
+  net_weight_kg: 'Netto gewicht',
+  overall_intake_loss: 'Totale stijging/daling',
+  Compare_hives: 'Vergelijk bijenkasten',
+  Compare_with_mean:
+    'Vergelijk gewicht bijenkast met gemiddelde van andere kasten',
+  compare_hives_exp:
+    'Bekijk hoe je bijenkast zich ontwikkelt, vergeleken met andere bijenkasten in de omgeving. ',
+  compare_support_url:
+    'https://beepsupport.freshdesk.com/en/support/solutions/articles/60000921124-compare-hives-option',
+  compare_url_text: 'Lees hier meer uitleg over de Vergelijk functionaliteit',
+  selected_hive: 'geselecteerde kast | geselecteerde kasten',
+  Multiple_hives_charts: 'Vergelijk meerdere bijenkasten in één grafiek',
+  compare_no_chart_data:
+    'Geen vergelijkingsdata beschikbaar voor de geselecteerde periode',
+  multiple_hives_no_chart_data:
+    'Geen data beschikbaar voor de geselecteerde bijenkasten voor de geselecteerde periode',
+  /* below, please keep {hivename} as is, it will be replaced by the name of the hive you selected in the Data tab */
+  compare_chart_exp:
+    'Let op: {hivename} wordt niet meegenomen in de berekening van het gemiddelde gewicht. ',
+
+  /* below, please keep {pagenr} as is, it will be replaced by the pagenumber to be uploaded */
+  Upload_pagenr: 'Upload hier pagina {pagenr}',
+  Datetime_of_inspection: 'Inspectiedatum en -tijd',
+  remind_datetime: 'Herinneringsdatum en -tijd',
+
+  Select_image: 'Selecteer afbeelding',
+  cumulative_daily_weight_anomaly: 'Cumulatieve dagelijkse gewichtsafwijking',
+  colony_failure_weight_history:
+    'Kans op winterfalen gebaseerd op gewichtshistorie',
+  more_info: 'meer informatie',
 }
 
 export default translations

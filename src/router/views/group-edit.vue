@@ -1,17 +1,16 @@
+<!-- eslint-disable camelcase -->
 <template>
   <Layout :title="getTitle()">
     <v-form ref="form" v-model="valid" @submit.prevent="saveGroup">
-      <v-toolbar v-if="activeGroup" class="save-bar" dense light>
+      <v-toolbar v-if="activeGroup" class="save-bar" density="compact" light>
         <v-spacer></v-spacer>
         <v-btn
           v-if="activeGroup && !createMode && tabletLandscapeUp"
-          tile
-          outlined
           color="red"
           class="mr-3"
           @click="confirmDeleteOrDetachGroup"
         >
-          <v-icon left>mdi-delete</v-icon>
+          <v-icon color="red" start>mdi-delete</v-icon>
           {{
             `${activeGroup.creator ? $t('Delete') : $t('Detach_from_group')}`
           }}
@@ -26,8 +25,6 @@
         >
 
         <v-btn
-          tile
-          outlined
           color="black"
           :class="`mr-1 ${createMode ? 'save-button-mobile-wide' : ''}`"
           type="submit"
@@ -41,7 +38,7 @@
             color="disabled"
             indeterminate
           />
-          <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
+          <v-icon v-if="!showLoadingIcon" start>mdi-check</v-icon>
           {{ $t('save') }}
         </v-btn>
       </v-toolbar>
@@ -49,7 +46,10 @@
       <v-container class="group-edit content-container">
         <v-row v-if="errorMessage">
           <v-col cols="12">
-            <v-alert text prominent dense type="error" color="red">
+            <v-alert text prominent type="error" color="red">
+              <template v-slot:prepend>
+                <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+              </template>
               {{ errorMessage }}
             </v-alert>
           </v-col>
@@ -60,12 +60,23 @@
               v-model="showSuccessMessage"
               text
               prominent
-              dense
-              dismissible
+              density="compact"
+              closable
               type="success"
               color="green"
             >
+              <template v-slot:prepend>
+                <v-icon :icon="'mdi-check-circle'" class="text-green"> </v-icon>
+              </template>
               {{ successMessage }}
+              <template v-slot:close>
+                <v-icon
+                  :icon="'mdi-close'"
+                  class="text-green mr-n2 cursor-pointer"
+                  @close="showSuccessMessage = false"
+                >
+                </v-icon>
+              </template>
             </v-alert>
           </v-col>
         </v-row>
@@ -79,7 +90,7 @@
           "
         >
           <v-col cols="12">
-            <div class="overline mb-3">{{
+            <div class="text-overline mb-3">{{
               $tc('Group', 1) + ' ' + $t('settings')
             }}</div>
             <div class="rounded-border">
@@ -94,23 +105,26 @@
                     counter="30"
                     :rules="requiredRule"
                     required
-                    @input="validateText($event, 'name', 30)"
+                    @update:model-value="validateText($event, 'name', 30)"
                   >
                   </v-text-field>
                 </v-col>
 
                 <v-col cols="12">
+                  <div class="beep-label" v-text="$t('Description')"></div>
                   <v-textarea
                     v-if="activeGroup"
                     v-model="activeGroup.description"
-                    :label="`${$t('Description')}`"
-                    :placeholder="`${$t('Description')}`"
+                    :placeholder="$t('Description')"
                     class="group-edit-description"
                     counter="250"
                     rows="1"
                     clearable
                     auto-grow
-                    @input="validateText($event, 'description', 250)"
+                    bg-color="white"
+                    @update:model-value="
+                      validateText($event, 'description', 250)
+                    "
                   >
                   </v-textarea>
                 </v-col>
@@ -130,10 +144,10 @@
                     ></v-sheet>
                   </div>
 
-                  <v-overlay :value="overlay">
+                  <v-overlay v-model="overlay">
                     <v-toolbar
                       class="hive-color-picker-toolbar"
-                      dense
+                      density="compact"
                       light
                       flat
                     >
@@ -162,7 +176,7 @@
 
                     <v-toolbar
                       class="hive-color-picker-footer"
-                      dense
+                      density="compact"
                       light
                       flat
                     >
@@ -192,20 +206,20 @@
         >
           <v-col cols="12">
             <div class="d-flex justify-space-between">
-              <div class="overline mb-3">{{
+              <div class="text-overline mb-3">{{
                 $tc('Member', activeGroup.users.length) +
                   ' (' +
                   activeGroup.users.length +
                   ')'
               }}</div>
               <v-spacer></v-spacer>
-              <v-btn tile outlined color="accent" @click="addGroupUser">
-                <v-icon left>mdi-plus</v-icon>
+              <v-btn color="accent" @click="addGroupUser">
+                <v-icon color="accent" start>mdi-plus</v-icon>
                 {{ tabletLandscapeUp ? $t('Add_member') : $t('add') }}
               </v-btn>
             </div>
             <div class="rounded-border">
-              <v-simple-table dense>
+              <v-table density="compact">
                 <template v-slot>
                   <thead>
                     <tr>
@@ -242,7 +256,8 @@
                           :disabled="user.id && user.id !== null"
                           :placeholder="`${$t('invitee_name')}`"
                           class="mt-2"
-                          dense
+                          density="compact"
+                          direction="vertical"
                         ></v-text-field>
                       </td>
                       <td :class="mobile ? 'td--medium' : ''">
@@ -251,7 +266,8 @@
                           :disabled="user.id && user.id !== null"
                           :placeholder="`${$t('email_is_required')}`"
                           class="mt-2"
-                          dense
+                          density="compact"
+                          direction="vertical"
                         ></v-text-field>
                       </td>
                       <td>
@@ -273,7 +289,7 @@
                           >{{ $t('group_declined') }}</span
                         >
                       </td>
-                      <td>
+                      <td :class="mobile ? 'td--small' : ''">
                         <v-checkbox
                           v-if="!user.creator"
                           v-model="user.admin"
@@ -281,6 +297,7 @@
                           class="mt-0"
                           :disabled="user.delete"
                           hide-details
+                          :direction="mobile ? 'vertical' : 'horizontal'"
                           :ripple="false"
                         >
                           <template v-slot:label>
@@ -301,14 +318,14 @@
                     </tr>
                   </tbody>
                 </template>
-              </v-simple-table>
+              </v-table>
             </div>
           </v-col>
         </v-row>
 
         <v-row v-if="showGroupDetails && activeGroup">
           <v-col cols="12">
-            <div class="overline mb-3">{{
+            <div class="text-overline mb-3">{{
               $t('My_shared') + ' ' + $tc('hive', 2)
             }}</div>
             <div class="rounded-border">
@@ -327,7 +344,7 @@
                   }"
                 >
                   <div class="color-accent"
-                    ><v-icon color="accent" left>mdi-plus-circle</v-icon
+                    ><v-icon color="accent" start>mdi-plus-circle</v-icon
                     >{{ $t('Add_apiary') }}</div
                   >
                 </router-link>
@@ -387,7 +404,7 @@
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
-      <v-btn color="accent" text @click="snackbar.show = false">
+      <v-btn color="accent " variant="text" @click="snackbar.show = false">
         {{ $t('Close') }}
       </v-btn>
     </v-snackbar>
@@ -398,12 +415,12 @@
 
 <script>
 import Api from '@api/Api'
-import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
-import Confirm from '@components/confirm.vue'
-import { mapGetters } from 'vuex'
-import Layout from '@layouts/back.vue'
-import { momentify } from '@mixins/momentMixin'
 import { readApiariesAndGroupsIfNotPresent } from '@mixins/methodsMixin'
+import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
+import Confirm from '@/src/components/confirm-dialog.vue'
+import { mapGetters } from 'vuex'
+import Layout from '@/src/router/layouts/back-layout.vue'
+import { momentify } from '@mixins/momentMixin'
 
 export default {
   components: {
@@ -478,7 +495,7 @@ export default {
       return sortedAndFilledApiaries
     },
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.xs
     },
     requiredRule: function() {
       return [
@@ -495,7 +512,7 @@ export default {
       return this.apiaries.length === 0
     },
     tabletLandscapeUp() {
-      return this.$vuetify.breakpoint.mdAndUp
+      return this.$vuetify.display.mdAndUp
     },
   },
   created() {
@@ -545,13 +562,13 @@ export default {
       try {
         const response = await Api.postRequest('/groups/checktoken', {
           group_id: groupId,
-          token: token,
+          token,
         })
         if (!response.data.errors) {
           this.successMessage = this.$i18n.t('Invitation_accepted')
           this.showSuccessMessage = true
           this.readGroups().then(() => {
-            var group = this.groups.filter((group) => group.id === groupId)[0]
+            const group = this.groups.filter((group) => group.id === groupId)[0]
             this.$store.commit('locations/setData', {
               prop: 'hiveSearch',
               value: group.name, // set search term via store instead of query to overrule possible stored search terms
@@ -669,26 +686,28 @@ export default {
         if (response.data.length === 0) {
           this.$router.push({ name: '404', params: { resource: 'group' } })
         }
-        var group = response.data
+        const group = response.data
         // eslint-disable-next-line camelcase
-        var hives_selected = []
+        const hivesSelected = []
         // eslint-disable-next-line camelcase
-        var hives_editable = []
+        const hivesEditable = []
         if (typeof group.hives !== 'undefined' && group.hives.length > 0) {
           group.hives.map((hive) => {
             if (hive.editable) {
-              hives_editable.push(hive.id)
+              hivesEditable.push(hive.id)
             }
-            hives_selected.push(hive.id)
+            hivesSelected.push(hive.id)
+            return hive
           })
         }
         // eslint-disable-next-line camelcase
-        group.hives_selected = hives_selected
+        group.hives_selected = hivesSelected
         // eslint-disable-next-line camelcase
-        group.hives_editable = hives_editable
-        var usersWithDeleteProp = group.users // otherwise Vue can't track the 'delete' property
+        group.hives_editable = hivesEditable
+        const usersWithDeleteProp = group.users // otherwise Vue can't track the 'delete' property
         usersWithDeleteProp.map((user) => {
           user.delete = false
+          return user
         })
         group.users = usersWithDeleteProp
 
@@ -720,7 +739,7 @@ export default {
     async updateGroup() {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
-        var group = {
+        const group = {
           description: this.activeGroup.description,
           hex_color: this.activeGroup.hex_color,
           hives_editable: this.activeGroup.hives_editable,
@@ -816,7 +835,7 @@ export default {
       this.setGroupEdited(true)
     },
     getTitle() {
-      var addName = ''
+      let addName = ''
       if (this.activeGroup && !this.createMode && !this.activeGroup.admin) {
         addName = ' - ' + this.activeGroup.name
       }
@@ -870,7 +889,7 @@ export default {
       this.$store.commit('groups/setGroupEdited', bool)
     },
     updateGroupProperties(event, property) {
-      var value = null
+      let value = null
       if (event === null) {
         value = null
       } else if (event.target !== undefined) {

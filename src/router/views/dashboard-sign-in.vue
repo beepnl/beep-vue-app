@@ -2,16 +2,23 @@
   <Layout :title="$t('Code')" :dashboard-mode="true" :set-dark-mode="darkMode">
     <v-form ref="form" style="width: 100%" @submit.prevent="login">
       <v-card-text>
-        <v-alert v-if="msg" type="success" text prominent dense color="green">
+        <v-alert
+          v-if="msg"
+          type="success"
+          variant="text"
+          prominent
+          density="compact"
+          color="green"
+        >
           {{ $t(msg) }}
         </v-alert>
         <v-alert
           v-for="error in errors"
           :key="error.name"
           type="error"
-          text
+          variant="text"
           prominent
-          dense
+          density="compact"
           color="red"
         >
           {{ error.errorMessage }}
@@ -39,7 +46,7 @@
 <script>
 // import Api from '@api/Api'
 import languages from '@assets/js/languages'
-import Layout from '@layouts/account.vue'
+import Layout from '@layouts/account-layout.vue'
 
 export default {
   components: { Layout },

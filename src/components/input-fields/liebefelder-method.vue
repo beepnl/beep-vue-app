@@ -3,14 +3,16 @@
     <v-alert
       v-if="bulkInspection"
       type="error"
-      text
       prominent
-      dense
       color="red"
+      class="mb-4"
     >
+      <template v-slot:prepend>
+        <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+      </template>
       {{ $t('input_not_possible_for_bulkinspection') }}
     </v-alert>
-    <v-card outlined class="pa-3">
+    <v-card class="position-relative pa-3">
       <!-- <div class="rounded-border"> -->
       <div class="border-bottom">
         <h4>Liebefeld method explanation (EN)</h4>
@@ -24,7 +26,7 @@
             5x5 cm2.</p
           >
         </div>
-        <ul>
+        <ul class="ml-4">
           <li
             >Colony traits that need to be measured are: colony size (bees),
             capped brood (pupae), open brood (larvae), eggs, drone brood, pollen
@@ -73,7 +75,7 @@
       </div>
 
       <div v-if="activeHive !== null" class="border-bottom">
-        <v-row>
+        <v-row class="ma-0">
           <v-col cols="12" sm="3" md="2" class="d-flex flex-column justify-end">
             <h4 class="hive-name mb-3" v-text="activeHive.name"></h4>
             <div class="d-flex md-1 mb-sm-6">
@@ -82,7 +84,7 @@
           </v-col>
 
           <v-col cols="12" sm="9" md="6">
-            <v-row>
+            <v-row class="ma-0">
               <v-col cols="12" sm="6">
                 <v-row>
                   <v-col cols="12">
@@ -90,48 +92,45 @@
                       class="beep-label"
                       v-text="$tc('Hive_honey_layer', 2)"
                     ></div>
-                    <el-input-number
+                    <ElInputNumber
                       v-if="activeHive && activeHive.layers"
                       v-model="honeyLayersForCalculation"
                       :min="0"
                       :max="maxHoneyLayers"
                       :precision="0"
                       :disabled="bulkInspection"
-                      size="medium"
                       @change="calculateLiebefeldColonySize"
-                      @input.native="calculateLiebefeldColonySize"
-                    ></el-input-number>
+                      @update:model-value="calculateLiebefeldColonySize"
+                    ></ElInputNumber>
                   </v-col>
                   <v-col cols="12">
                     <div
                       class="beep-label"
                       v-text="$tc('Hive_brood_layer', 2)"
                     ></div>
-                    <el-input-number
+                    <ElInputNumber
                       v-if="activeHive && activeHive.layers"
                       v-model="broodLayersForCalculation"
                       :min="0"
                       :max="maxBroodLayers"
                       :precision="0"
                       :disabled="bulkInspection"
-                      size="medium"
                       @change="calculateLiebefeldColonySize"
-                      @input.native="calculateLiebefeldColonySize"
-                    ></el-input-number>
+                      @update:model-value="calculateLiebefeldColonySize"
+                    ></ElInputNumber>
                   </v-col>
                   <v-col cols="12">
                     <div class="beep-label" v-text="$t('Hive_frames')"></div>
-                    <el-input-number
+                    <ElInputNumber
                       v-if="activeHive && activeHive.layers"
                       v-model="framesForCalculation"
                       :min="0"
                       :max="maxFrames"
                       :precision="0"
                       :disabled="bulkInspection"
-                      size="medium"
                       @change="calculateLiebefeldColonySize"
-                      @input.native="calculateLiebefeldColonySize"
-                    ></el-input-number>
+                      @update:model-value="calculateLiebefeldColonySize"
+                    ></ElInputNumber>
                   </v-col>
                 </v-row>
               </v-col>
@@ -173,7 +172,7 @@
                   honeyLayersForCalculation) ||
               item.input === 'text' ||
               (nested && item.name !== 'colony_size')
-                ? 'col-12'
+                ? 'v-col v-col-12'
                 : ''
             "
           >
@@ -181,25 +180,25 @@
               v-if="item.input !== 'label' && item.name !== 'colony_size'"
               :object="object"
               :item="item"
-              :locale="locale"
               :disabled="bulkInspection"
+              :parse-mode="parseMode"
               @calculate-liebefeld-colony-size="calculateLiebefeldColonySize"
             ></ChecklistInput>
 
             <!-- div below is same as checklist-fieldset component but needed to keep the nested checklist-input within this template to catch the @calculate-liebefeld-colony-size emit event -->
             <div v-if="superAndFrameFilter(item)" class="checklist-fieldset">
-              <div class="overline mb-2"
+              <div class="text-overline mb-2"
                 >{{ item.trans[locale] || item.name }}
                 <a
                   v-if="item.description !== null || item.source !== null"
                   @click="showDescription = !showDescription"
                   ><v-icon
-                    class="mdi mdi-information ml-1 icon-info"
-                    dark
-                    small
+                    class="ml-1 icon-info"
+                    :size="mobile ? 'x-small' : 'small'"
                     color="accent"
-                  ></v-icon
-                ></a>
+                    >mdi-information</v-icon
+                  ></a
+                >
               </div>
 
               <p v-if="showDescription" class="info-text">
@@ -215,23 +214,26 @@
               </p>
 
               <div v-if="item.children.length > 0" class="rounded-border">
-                <v-row>
-                  <div
+                <v-row class="ma-0">
+                  <v-col
                     v-for="(item2, i) in item.children"
                     :key="i"
-                    class="col-xs-12 col-sm-6 col-md-4 col-lg-3"
+                    xs="12"
+                    sm="6"
+                    md="4"
+                    lg="3"
                   >
                     <ChecklistInput
                       v-if="item2.input !== 'label'"
                       :object="object"
                       :item="item2"
-                      :locale="locale"
                       :disabled="bulkInspection"
+                      :parse-mode="parseMode"
                       @calculate-liebefeld-colony-size="
                         calculateLiebefeldColonySize
                       "
                     ></ChecklistInput>
-                  </div>
+                  </v-col>
                 </v-row>
               </div>
             </div>
@@ -239,10 +241,9 @@
         </v-row>
       </div>
       <v-overlay
-        :absolute="true"
-        :value="bulkInspection"
-        :opacity="0.5"
-        color="white"
+        :model-value="bulkInspection"
+        contained
+        scrim="white"
         z-index="3"
         class="input-disabled-overlay"
       >
@@ -256,12 +257,16 @@
 import ChecklistInput from '@components/checklist-input.vue'
 import HiveIcon from '@components/hive-icon.vue'
 import { mapGetters } from 'vuex'
+import { getMaxFramecount } from '@mixins/methodsMixin'
+import { ElInputNumber } from 'element-plus'
 
 export default {
   components: {
     ChecklistInput,
     HiveIcon,
+    ElInputNumber,
   },
+  mixins: [getMaxFramecount],
   props: {
     category: {
       type: Object,
@@ -273,12 +278,12 @@ export default {
       default: null,
       required: true,
     },
-    locale: {
-      type: String,
-      default: 'en',
-      required: false,
-    },
     nested: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    parseMode: {
       type: Boolean,
       required: false,
       default: false,
@@ -302,16 +307,24 @@ export default {
   computed: {
     ...mapGetters('inspections', ['bulkInspection']),
     ...mapGetters('hives', ['activeHive']),
+    locale() {
+      return this.$i18n.locale
+    },
+    mobile() {
+      return this.$vuetify.display.xs
+    },
     sortedChildren() {
-      var sortedChildren = this.category.children.slice().sort(function(a, b) {
-        if (a.name.indexOf('super') > -1) {
-          return -1
-        }
-        if (a.name.indexOf('frame') > -1) {
-          return 1
-        }
-        return 0
-      })
+      const sortedChildren = this.category.children
+        .slice()
+        .sort(function(a, b) {
+          if (a.name.indexOf('super') > -1) {
+            return -1
+          }
+          if (a.name.indexOf('frame') > -1) {
+            return 1
+          }
+          return 0
+        })
       return sortedChildren
     },
   },
@@ -329,9 +342,9 @@ export default {
   },
   methods: {
     calculateLiebefeldColonySize() {
-      var beesPerCm2 = 1.25
-      var beesSquares25cm2 = 0
-      var colonySize = null
+      const beesPerCm2 = 1.25
+      let beesSquares25cm2 = 0
+      let colonySize = null
 
       setTimeout(() => {
         this.category.children.map((child) => {
@@ -346,11 +359,13 @@ export default {
               ) {
                 beesSquares25cm2 += parseFloat(this.object[child2.id])
               }
+              return child2
             })
           }
+          return child
         })
 
-        var hive = this.activeHive
+        const hive = this.activeHive
 
         if (
           typeof hive === 'undefined' ||
@@ -368,6 +383,7 @@ export default {
           if (child.name === 'colony_size') {
             this.object[child.id] = colonySize
           }
+          return true
         })
         this.colonySize = colonySize
       }, 100) // wait for vue to update input bees_squares_25cm2 values
@@ -381,10 +397,8 @@ export default {
         this.countLayers('brood') < 2 ? this.countLayers('brood') : 2
       this.honeyLayersForCalculation =
         this.countLayers('honey') < 2 ? this.countLayers('honey') : 2
-      this.framesForCalculation =
-        this.activeHive.layers[0].framecount < 12
-          ? this.activeHive.layers[0].framecount
-          : 12
+      const maxFramecount = this.getMaxFramecount(this.activeHive.layers)
+      this.framesForCalculation = maxFramecount < 12 ? maxFramecount : 12
     },
     superAndFrameFilter(item) {
       if (

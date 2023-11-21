@@ -2,7 +2,7 @@
 to: src/state/modules/<%= h.changeCase.pascal(name) %>.unit.js
 ---
 <%
-  const fileName = h.changeCase.pascal(name)
+  var fileName = h.changeCase.pascal(name)
   const importName = h.changeCase.camel(fileName) + 'Module'
 %>import * as <%= importName %> from './<%= fileName %>'
 

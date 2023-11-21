@@ -3,44 +3,48 @@
     <div>
       <v-btn
         :class="
+          `yes-no-button mr-1 pl-0 ${yesRed ? 'yes-red' : ''} ${
+            small ? 'yes-no-button--small pr-0' : 'pr-2'
+          }`
+        "
+        :disabled="disabled"
+        variant="text"
+        @click="updateObject(1)"
+      >
+        <template v-slot:prepend>
+          <v-icon
+            end
+            :class="
+              object[property] === 1 || object[property] === true
+                ? 'text-green'
+                : 'color-grey'
+            "
+            >mdi-check-circle</v-icon
+          >
+        </template>
+        {{ $t('yes') }}
+      </v-btn>
+      <v-btn
+        :class="
           `yes-no-button pl-0 ${yesRed ? 'yes-red' : ''} ${
             small ? 'yes-no-button--small pr-0' : 'pr-2'
           }`
         "
         :disabled="disabled"
-        text
-        @click="updateObject(1, property)"
+        variant="text"
+        @click="updateObject(0)"
       >
-        <v-icon
-          left
-          :class="
-            object[property] === 1 || object[property] === true
-              ? 'green--text'
-              : 'color-grey'
-          "
-          >mdi-check-circle</v-icon
-        >
-        {{ $t('yes') }}
-      </v-btn>
-      <v-btn
-        :class="
-          `yes-no-button ${yesRed ? 'yes-red' : ''} ${
-            small ? 'yes-no-button--small px-0' : 'px-2'
-          }`
-        "
-        :disabled="disabled"
-        text
-        @click="updateObject(0, property)"
-      >
-        <v-icon
-          left
-          :class="
-            object[property] === 0 || object[property] === false
-              ? 'red--text'
-              : 'color-grey'
-          "
-          >mdi-close-circle</v-icon
-        >
+        <template v-slot:prepend>
+          <v-icon
+            end
+            :class="
+              object[property] === 0 || object[property] === false
+                ? 'text-red'
+                : 'color-grey'
+            "
+            >mdi-close-circle</v-icon
+          >
+        </template>
         {{ $t('no') }}
       </v-btn>
     </div>
@@ -78,11 +82,11 @@ export default {
     setInspectionEdited(bool) {
       this.$store.commit('inspections/setInspectionEdited', bool)
     },
-    updateObject(value, property) {
-      if (this.object[property] === value) {
-        this.object[property] = null // allow to toggle if value has been set already
+    updateObject(value) {
+      if (this.object[this.property] === value) {
+        this.object[this.property] = null // allow to toggle if value has been set already
       } else {
-        this.object[property] = value
+        this.object[this.property] = value
       }
       this.setInspectionEdited(true)
     },
@@ -95,10 +99,10 @@ export default {
   height: 30px !important;
 
   &.yes-red {
-    .green--text {
+    .text-green {
       color: $color-red !important;
     }
-    .red--text {
+    .text-red {
       color: $color-green !important;
     }
   }

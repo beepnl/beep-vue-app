@@ -12,31 +12,35 @@
           type="success"
           text
           prominent
-          dense
+          density="compact"
           color="green"
         >
+          <template v-slot:prepend>
+            <v-icon :icon="'mdi-check-circle'" class="text-green"> </v-icon>
+          </template>
           {{ resentVerification ? $t('email_verification_resent') : $t(msg) }}
         </v-alert>
         <v-alert
           v-for="error in errors"
           :key="error.name"
           type="error"
-          text
           prominent
-          dense
           color="red"
         >
+          <template v-slot:prepend>
+            <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+          </template>
           {{ error.errorMessage }}
           <a
             v-if="error.verifyLink && !resentVerification"
-            class="red--text alert-link"
+            class="text-red alert-link"
             @click="resendEmailVerification"
             >{{ $t('email_new_verification') }}</a
           >
         </v-alert>
         <v-text-field
           v-model="credentials.email"
-          :class="fieldErrors.email ? 'error--text' : ''"
+          :class="fieldErrors.email ? 'text-error' : ''"
           :label="`${$t('email')}`"
           type="email"
           :rules="[(v) => !!v || signinRules.email_required]"
@@ -44,7 +48,7 @@
         ></v-text-field>
         <v-text-field
           v-model="credentials.password"
-          :class="fieldErrors.password ? 'error--text' : ''"
+          :class="fieldErrors.password ? 'text-error' : ''"
           :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
           :type="show ? 'text' : 'password'"
           :label="`${$t('password')}`"
@@ -68,7 +72,7 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn text type="submit">{{ $t('login') }}</v-btn>
+        <v-btn variant="text" type="submit">{{ $t('login') }}</v-btn>
       </v-card-actions>
     </v-form>
   </Layout>
@@ -77,7 +81,7 @@
 <script>
 import Api from '@api/Api'
 import languages from '@assets/js/languages'
-import Layout from '@layouts/account.vue'
+import Layout from '@/src/router/layouts/account-layout.vue'
 
 export default {
   components: { Layout },
@@ -160,11 +164,12 @@ export default {
           .catch((error) => {
             if (error.response) {
               console.log(error.response)
+              let msg = ''
               if (
                 typeof error.response.data !== 'undefined' &&
                 typeof error.response.data.message !== 'undefined'
               ) {
-                var msg = error.response.data.message
+                msg = error.response.data.message
               } else {
                 msg = error.response.data
               }
@@ -176,7 +181,7 @@ export default {
               } else if (msg.indexOf('email') > -1) {
                 this.fieldErrors.email = true
               }
-              var verifyOn = false
+              let verifyOn = false
               if (msg === 'email_not_verified') {
                 verifyOn = true
               }

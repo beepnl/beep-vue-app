@@ -1,7 +1,7 @@
 <template>
   <Layout :title="getTitle">
     <v-form ref="form" v-model="valid" @submit.prevent="saveDashboard">
-      <v-toolbar v-if="dashboard" class="save-bar" dense light>
+      <v-toolbar v-if="dashboard" class="save-bar" density="compact" light>
         <v-spacer></v-spacer>
         <v-icon
           v-if="dashboard && !createMode"
@@ -13,8 +13,6 @@
         >
 
         <v-btn
-          tile
-          outlined
           color="black"
           :class="`mr-1 ${createMode ? 'save-button-mobile-wide' : ''}`"
           type="submit"
@@ -28,7 +26,7 @@
             color="disabled"
             indeterminate
           />
-          <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
+          <v-icon v-if="!showLoadingIcon" start>mdi-check</v-icon>
           {{ $t('save') }}
         </v-btn>
       </v-toolbar>
@@ -36,7 +34,10 @@
       <v-container class="content-container">
         <v-row v-if="errorMessage">
           <v-col cols="12">
-            <v-alert text prominent dense type="error" color="red">
+            <v-alert text prominent type="error" color="red">
+              <template v-slot:prepend>
+                <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+              </template>
               {{ errorMessage }}
             </v-alert>
           </v-col>
@@ -44,12 +45,14 @@
 
         <v-row v-if="dashboard">
           <v-col cols="12" md="6" xl="5">
-            <div class="overline mb-3">{{ '1. ' + $tc('Select_hive', 2) }}</div>
-            <div v-if="!showApiaryPlaceholder" class="beep-label mb-3">
+            <div class="text-overline mb-3">{{
+              '1. ' + $tc('Select_hive', 2)
+            }}</div>
+            <div v-if="!showApiaryPlaceholder" class="beep-label mt-n3 mb-3">
               <span v-text="$t('Select_hives_for_dashboard_exp')"></span>
               <span
                 v-if="showMaxWarning"
-                class="red--text"
+                class="text-red"
                 v-text="
                   ' ' + $t('Max_hives_warning') + ' (' + maxNrOfHives + ')'
                 "
@@ -71,7 +74,7 @@
                   }"
                 >
                   <div class="color-accent"
-                    ><v-icon color="accent" left>mdi-plus-circle</v-icon
+                    ><v-icon color="accent" start>mdi-plus-circle</v-icon
                     >{{ $t('Add_apiary') }}</div
                   >
                 </router-link>
@@ -129,7 +132,7 @@
           </v-col>
 
           <v-col cols="12" md="6">
-            <div class="overline mb-3">{{ '2. ' + $t('Settings') }}</div>
+            <div class="text-overline mb-3">{{ '2. ' + $t('Settings') }}</div>
 
             <v-row>
               <v-col cols="12" xl="9">
@@ -143,7 +146,7 @@
                       persistent-hint
                       counter="30"
                       required
-                      @input="validateText($event, 'name', 30)"
+                      @update:model-value="validateText($event, 'name', 30)"
                     >
                     </v-text-field>
                   </v-col>
@@ -156,7 +159,9 @@
                       persistent-hint
                       counter="60"
                       required
-                      @input="validateText($event, 'description', 60)"
+                      @update:model-value="
+                        validateText($event, 'description', 60)
+                      "
                     >
                     </v-text-field>
                   </v-col>
@@ -170,7 +175,7 @@
                       :hint="$t('Dashboard_pace_exp')"
                       persistent-hint
                       class="mt-5"
-                      @input="setDashboardEdited(true)"
+                      @update:model-value="setDashboardEdited(true)"
                     ></v-select>
                   </v-col>
                 </v-row>
@@ -181,13 +186,13 @@
                       v-model="dashboard.interval"
                       :items="intervalOptions"
                       :label="$t('Interval')"
-                      :item-text="getTranslation"
-                      item-value="label"
+                      item-title="label"
+                      item-value="id"
                       :placeholder="$t('Select') + '...'"
                       :hint="$t('Dashboard_interval_exp')"
                       persistent-hint
                       class="my-3"
-                      @input="setDashboardEdited(true)"
+                      @update:model-value="setDashboardEdited(true)"
                     ></v-select>
                   </v-col>
                 </v-row>
@@ -198,7 +203,6 @@
                   :relative-interval="false"
                   :show-as-column="8"
                   :dates="dates"
-                  :date-range-text="dateRangeText"
                   @save-dates="dates = $event"
                 />
 
@@ -239,7 +243,7 @@
                 xl="3"
                 :class="xlScreen ? 'mt-n11' : 'mt-6'"
               >
-                <div class="overline mb-3">{{
+                <div class="text-overline mb-3">{{
                   '3. ' + $t('Preview_share')
                 }}</div>
 
@@ -248,13 +252,16 @@
                     <div class="beep-label" v-text="$t('Code')"></div>
                     <a :href="dashboardUrl + dashboard.code" target="_blank">
                       <v-icon class="mr-2" color="accent">mdi-link</v-icon>
-                      <span class="overline" v-text="dashboard.code"></span>
+                      <span
+                        class="text-overline"
+                        v-text="dashboard.code"
+                      ></span>
                     </a>
                   </v-col>
 
                   <v-col cols="12">
-                    <v-btn tile outlined color="black" @click="copyUrl">
-                      <v-icon left>mdi-content-copy</v-icon>
+                    <v-btn color="black" @click="copyUrl">
+                      <v-icon start>mdi-content-copy</v-icon>
                       {{ $t('Copy_url') }}
                     </v-btn>
                   </v-col>
@@ -268,7 +275,7 @@
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
-      <v-btn color="accent" text @click="snackbar.show = false">
+      <v-btn color="accent " variant="text" @click="snackbar.show = false">
         {{ $t('Close') }}
       </v-btn>
     </v-snackbar>
@@ -279,18 +286,17 @@
 
 <script>
 import Api from '@api/Api'
-import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
-import Confirm from '@components/confirm.vue'
-import { mapGetters } from 'vuex'
-import Layout from '@layouts/back.vue'
-import MeasurementsDateSelection from '@components/measurements-date-selection.vue'
-import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 import {
   deleteDashboard,
   readApiariesAndGroupsIfNotPresent,
   readDashboardGroups,
 } from '@mixins/methodsMixin'
-import { momentFormat } from '@mixins/momentMixin'
+import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
+import Confirm from '@/src/components/confirm-dialog.vue'
+import { mapGetters } from 'vuex'
+import Layout from '@/src/router/layouts/back-layout.vue'
+import MeasurementsDateSelection from '@/src/components/measurements/measurements-date-selection.vue'
+import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 
 export default {
   components: {
@@ -302,7 +308,6 @@ export default {
   },
   mixins: [
     deleteDashboard,
-    momentFormat,
     readApiariesAndGroupsIfNotPresent,
     readDashboardGroups,
   ],
@@ -324,12 +329,12 @@ export default {
       maxNrOfHives: 10,
       speedOptions: [15, 30, 45, 60, 90, 120, 300],
       intervalOptions: [
-        { id: 1, label: 'Hour' },
-        { id: 2, label: 'Day' },
-        { id: 3, label: 'week' },
-        { id: 4, label: 'month' },
-        { id: 5, label: 'year' },
-        { id: 6, label: 'selection' },
+        { id: 'hour', label: this.$i18n.t('Hour') },
+        { id: 'day', label: this.$i18n.tc('Day', 1) },
+        { id: 'week', label: this.$i18n.t('week') },
+        { id: 'month', label: this.$i18n.t('month') },
+        { id: 'year', label: this.$i18n.t('year') },
+        // { id: 'selection', label: this.$i18n.t('selection') }, TODO: temp disabled because not implemented in api yet
       ],
       dates: [],
     }
@@ -353,19 +358,6 @@ export default {
         // || this.dashboard.show_inspections === null
       )
     },
-    dateRangeText() {
-      if (this.dates.length > 0) {
-        var momentDates = [
-          this.momentFormat(this.dates[0], 'll'),
-          this.dates[1] !== undefined
-            ? this.momentFormat(this.dates[1], 'll')
-            : '',
-        ]
-        return momentDates.join(' - ')
-      } else {
-        return this.$i18n.t('selection_placeholder')
-      }
-    },
     getTitle() {
       return this.createMode
         ? this.$i18n.t('New_dashboard')
@@ -376,7 +368,7 @@ export default {
       return this.apiaries.concat(this.groups)
     },
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.xs
     },
     showApiaryPlaceholder() {
       return this.hiveSets.length === 0
@@ -406,23 +398,22 @@ export default {
       return sortedHiveSets
     },
     tabletLandscapeUp() {
-      return this.$vuetify.breakpoint.mdAndUp
+      return this.$vuetify.display.mdAndUp
     },
     xlScreen() {
-      return this.$vuetify.breakpoint.xl
+      return this.$vuetify.display.xl
     },
   },
   created() {
     this.readDashboardGroupsIfNotChecked().then((response) => {
       this.readApiariesAndGroupsIfNotPresent().then((response) => {
         if (!this.createMode) {
-          var filteredDashboards = this.dashboardGroups.filter(
-            (dashboard) => dashboard.code === this.code
-          )
+          const filteredDashboards = JSON.parse(
+            JSON.stringify(this.dashboardGroups)
+          ).filter((dashboard) => dashboard.code === this.code)
+
           this.dashboard =
-            filteredDashboards.length === 0
-              ? null
-              : { ...filteredDashboards[0] }
+            filteredDashboards.length === 0 ? null : filteredDashboards[0]
         }
 
         // If dashboard-create route is used, make empty dashboard object
@@ -509,14 +500,11 @@ export default {
       }
     },
     copyUrl() {
-      var copyText = this.dashboardUrl + this.dashboard.code
+      const copyText = this.dashboardUrl + this.dashboard.code
       navigator.clipboard.writeText(copyText)
     },
     getOwnedHives(hiveSet) {
       return hiveSet.hives.filter((hive) => hive.owner).map((hive) => hive.id)
-    },
-    getTranslation(item) {
-      return this.$i18n.t(item.label)
     },
     saveDashboard() {
       if (this.createMode) {

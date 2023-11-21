@@ -1,11 +1,8 @@
 <template>
-  <v-menu bottom left absolute offset-y>
-    <template v-slot:activator="{ on: menu }">
+  <v-menu location="bottom" absolute>
+    <template v-slot:activator="{ props }">
       <v-alert
         type="error"
-        text
-        prominent
-        dense
         :color="
           alert.alert_function.indexOf('alert_rule') > -1
             ? 'primary'
@@ -14,39 +11,38 @@
             : 'red'
         "
         class="alert-card cursor-pointer mb-0 pa-2 pa-sm-3"
-        outlined
-        v-on="!mobile ? menu : null"
+        v-bind="!mobile ? props : null"
       >
         <template v-slot:prepend>
           <div class="d-flex flex-column justify-start align-center">
-            <v-checkbox
+            <v-checkbox-btn
               v-if="mobile"
-              :input-value="isSelected"
-              class="ma-0 pt-0"
-              dense
-              :ripple="false"
+              :model-value="isSelected"
+              class="ma-0 ml-n1"
+              density="compact"
               hide-details
-              @change="toggleCheckbox(alert.id)"
+              @update:model-value="toggleCheckbox(alert.id)"
             />
 
-            <div class="alert-icon d-flex align-center">
+            <div class="alert-icon">
               <v-badge
                 v-if="alert.count > 1"
-                :offset-x="alert.count > 9 ? '23' : '20'"
-                offset-y="20"
+                :offset-x="alert.count > 9 ? '10' : '8'"
+                offset-y="9"
                 color="transparent"
+                text-color="white"
                 :content="alert.count > 99 ? '99' : alert.count"
               >
-                <v-icon color="red">mdi-bell</v-icon>
+                <v-icon color="red" size="24">mdi-bell</v-icon>
               </v-badge>
-              <v-icon v-else color="red">
+              <v-icon v-else size="24" color="red">
                 mdi-bell
               </v-icon>
             </div>
           </div>
         </template>
 
-        <div style="width: 100%;" v-on="mobile ? menu : null">
+        <div style="width: 100%;" v-bind="!mobile ? props : null">
           <v-row class="ma-0 pl-0 py-0" style="width:100%;">
             <v-col cols="12" md="6" class="alert-details-item alert-meta pa-0">
               <v-row
@@ -146,11 +142,10 @@
                       bottom
                       max-width="60%"
                     >
-                      <template v-slot:activator="{ on, attrs }">
+                      <template v-slot:activator="{ on }">
                         <span
                           class="alert-label"
-                          v-bind="attrs"
-                          v-on="on"
+                          v-bind="on"
                           v-text="
                             alert.hive_name.substring(
                               0,
@@ -176,11 +171,10 @@
                       bottom
                       max-width="60%"
                     >
-                      <template v-slot:activator="{ on, attrs }">
+                      <template v-slot:activator="{ on }">
                         <span
                           class="alert-label"
-                          v-bind="attrs"
-                          v-on="on"
+                          v-bind="on"
                           v-text="
                             alert.device_name.substring(
                               0,
@@ -218,7 +212,7 @@
             </v-col>
 
             <v-col cols="12" md="6" class="alert-content pa-0">
-              <v-row class="my-0 py-0 ml-n7 ml-md-0 pr-3">
+              <v-row class="my-0 py-0 ml-n11 ml-md-0 pr-3">
                 <v-col
                   cols="12"
                   md="5"
@@ -229,7 +223,7 @@
                       class="d-flex flex-column justify-flex-start align-start mr-2"
                     >
                       <div class="d-flex flex-no-wrap">
-                        <div class="mr-1 my-0">
+                        <div class="mr-6 my-0">
                           <v-icon>
                             mdi-exclamation-thick
                           </v-icon>
@@ -268,7 +262,7 @@
                     <div
                       class="d-flex flex-no-wrap justify-flex-start align-start mr-2"
                     >
-                      <div class="mr-1 my-0">
+                      <div class="mr-6 my-0">
                         <v-icon>
                           mdi-calculator
                         </v-icon>
@@ -294,34 +288,38 @@
                     v-if="alert.hive_group_name || alert.location_name"
                     class="alert-content-item"
                   >
-                    <v-icon
-                      v-if="alert.hive_group_name"
-                      class="icon-apiary-shared color-grey"
-                    >
-                      mdi-account-multiple
-                    </v-icon>
-                    <v-icon
-                      v-else-if="alert.location_name"
-                      class="icon-apiary-owned color-grey"
-                    >
-                      mdi-home-analytics
-                    </v-icon>
-                    <span
-                      v-if="alert.hive_group_name || alert.location_name"
-                      class="alert-label"
-                      v-text="
-                        alert.hive_group_name
-                          ? alert.hive_group_name
-                          : alert.location_name
-                      "
-                    >
-                    </span>
-                    <span
-                      v-if="alert.hive_group_name && alert.location_name"
-                      class="alert-label"
-                      v-text="' (' + alert.location_name + ')'"
-                    >
-                    </span>
+                    <div class="d-flex flex-no-wrap">
+                      <div class="mr-4 my-0">
+                        <v-icon
+                          v-if="alert.hive_group_name"
+                          class="icon-apiary-shared color-grey"
+                        >
+                          mdi-account-multiple
+                        </v-icon>
+                        <v-icon
+                          v-else-if="alert.location_name"
+                          class="icon-apiary-owned color-grey"
+                        >
+                          mdi-home-analytics
+                        </v-icon>
+                      </div>
+                      <div class="alert-label alert-label-break">
+                        <span
+                          v-if="alert.hive_group_name || alert.location_name"
+                          v-text="
+                            alert.hive_group_name
+                              ? alert.hive_group_name
+                              : alert.location_name
+                          "
+                        >
+                        </span>
+                        <span
+                          v-if="alert.hive_group_name && alert.location_name"
+                          v-text="' (' + alert.location_name + ')'"
+                        >
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </v-col>
               </v-row>
@@ -331,109 +329,83 @@
       </v-alert>
     </template>
 
-    <v-list dense>
-      <v-list-item-group>
-        <v-list-item
-          v-if="alert.alert_rule_name !== null"
-          :to="{
-            name: 'alertrule-edit',
-            params: { id: alert.alert_rule_id },
-          }"
-        >
-          <v-list-item-icon class="mr-3">
-            <v-icon>mdi-pencil</v-icon>
-          </v-list-item-icon>
+    <v-list>
+      <v-list-item
+        v-if="alert.alert_rule_name !== null"
+        class="text-black"
+        :to="{
+          name: 'alertrule-edit',
+          params: { id: alert.alert_rule_id },
+        }"
+        :prepend-icon="'mdi-pencil'"
+        :title="$t('Edit_alertrule')"
+        :subtitle="alert.alert_rule_name"
+      >
+      </v-list-item>
 
-          <v-list-item-content>
-            <v-list-item-title>{{ $t('Edit_alertrule') }} </v-list-item-title>
-            <v-list-item-subtitle>
-              {{ alert.alert_rule_name }}
-            </v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
+      <v-list-item
+        v-else-if="alertRule === undefined"
+        disabled
+        :prepend-icon="'mdi-bell'"
+        :title="$t('alert_rule_deleted')"
+      >
+      </v-list-item>
 
-        <v-list-item v-else-if="alertRule === undefined" disabled>
-          <v-list-item-icon class="mr-3">
-            <v-icon>mdi-bell</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title>{{
-              $t('alert_rule_deleted')
-            }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-list-item
-          v-if="alert.device_id !== null"
-          :to="{
-            name: 'measurements-id',
-            params: { id: alert.device_id },
-            query: {
-              date: momentFormatUtcToLocal(alert.updated_at, 'YYYY-MM-DD'),
-              relativeInterval: false,
-            },
-          }"
-        >
-          <v-list-item-icon class="mr-3">
-            <div class="my-0">
-              <v-sheet
-                class="beep-icon beep-icon-sensors--no-outline"
-              ></v-sheet>
-            </div>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title>{{ $t('View_measurements') }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list-item-group>
+      <v-list-item
+        v-if="alert.device_id !== null"
+        class="text-black"
+        :to="{
+          name: 'measurements-id',
+          params: { id: alert.device_id },
+          query: {
+            date: momentFormatUtcToLocal(alert.updated_at, 'YYYY-MM-DD'),
+            relativeInterval: false,
+          },
+        }"
+        :title="$t('View_measurements')"
+      >
+        <template v-slot:prepend>
+          <div class="beep-list-icon">
+            <v-sheet class="beep-icon beep-icon-sensors--no-outline"></v-sheet>
+          </div>
+        </template>
+      </v-list-item>
       <v-divider class="my-1"></v-divider>
 
-      <v-list-item-group>
-        <v-list-item v-if="alertRuleNotActive" disabled>
-          <v-list-item-icon class="mr-3">
-            <v-icon>mdi-close</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title>{{
-              !alertRule.active
-                ? $t('Alert_disabled')
-                : $t('Alert_disabled_for_this_hive')
-            }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item
-          v-else-if="
-            alertRule !== undefined &&
-              alertRule.exclude_hive_ids.indexOf(alert.hive_id) === -1 &&
-              alert.alert_function.indexOf('alert_rule') === -1
-          "
-          @click="disableAlertForHive"
-        >
-          <v-list-item-icon class="mr-3">
-            <v-icon class="red--text">mdi-close</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title class="red--text">{{
-              $t('Disable_alert_for_this_hive')
-            }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item @click="deleteAlert(alert.id)">
-          <v-list-item-icon class="mr-3">
-            <v-icon class="red--text">mdi-delete</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title class="red--text">{{
-              $t('remove_alert')
-            }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list-item-group>
+      <v-list-item
+        v-if="alertRuleNotActive"
+        disabled
+        :prepend-icon="'mdi-close'"
+        :title="
+          !alertRule.active
+            ? $t('Alert_disabled')
+            : $t('Alert_disabled_for_this_hive')
+        "
+      >
+      </v-list-item>
+      <v-list-item
+        v-else-if="
+          alertRule !== undefined &&
+            alertRule.exclude_hive_ids.indexOf(alert.hive_id) === -1 &&
+            alert.alert_function.indexOf('alert_rule') === -1
+        "
+        class="text-red"
+        :title="$t('Disable_alert_for_this_hive')"
+        @click="disableAlertForHive"
+      >
+        <template v-slot:prepend>
+          <v-icon :icon="'mdi-close'" class="text-red"> </v-icon>
+        </template>
+      </v-list-item>
+      <v-list-item
+        class="text-red"
+        :title="$t('remove_alert')"
+        @click="deleteAlert(alert.id)"
+      >
+        <template v-slot:prepend>
+          <v-icon :icon="'mdi-delete'" class="text-red"> </v-icon>
+        </template>
+      </v-list-item>
     </v-list>
   </v-menu>
 </template>
@@ -472,7 +444,7 @@ export default {
       required: false,
     },
   },
-  data: () => ({}),
+  emits: ['delete-alert', 'show-snackbar', 'toggle-checkbox'],
   computed: {
     ...mapGetters('alerts', ['alertRules']),
     alertFunctionText() {
@@ -494,15 +466,15 @@ export default {
       )
     },
     mdScreen() {
-      return this.$vuetify.breakpoint.width < 961
+      return this.$vuetify.display.width < 961
     },
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.xs
     },
   },
   methods: {
     async disableAlertForHive() {
-      var updatedAlertRule = { ...this.alertRule }
+      const updatedAlertRule = JSON.parse(JSON.stringify(this.alertRule)) // clone without v-bind to avoid vuex warning when mutating
       updatedAlertRule.exclude_hive_ids.push(this.alert.hive_id)
       try {
         const response = await Api.updateRequest(
@@ -511,7 +483,7 @@ export default {
           updatedAlertRule
         )
         if (response) {
-          var disabledText =
+          const disabledText =
             this.$i18n.tc('Alert', 1) +
             ' "' +
             updatedAlertRule.name +
@@ -555,6 +527,7 @@ export default {
     padding: 12px;
     font-size: 0.875rem !important;
   }
+
   .alert-label {
     font-size: 0.75rem !important;
     font-weight: 600;
@@ -632,6 +605,11 @@ export default {
     min-width: 32px;
     @include for-tablet-landscape-up {
       min-width: 36px;
+    }
+    @include for-phone-only {
+      .v-icon {
+        margin-left: 2px !important;
+      }
     }
   }
 

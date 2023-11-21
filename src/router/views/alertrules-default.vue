@@ -1,10 +1,8 @@
 <template>
   <Layout :title="$tc('alertrule_default', 2)">
-    <v-toolbar class="save-bar save-bar--back" dense light>
+    <v-toolbar class="save-bar save-bar--back" density="compact" light>
       <v-spacer></v-spacer>
       <v-btn
-        tile
-        outlined
         color="black"
         class="save-button-mobile-wide mr-1"
         :disabled="numberOfSelectedRules === 0 || showLoadingIcon"
@@ -18,7 +16,7 @@
           color="disabled"
           indeterminate
         />
-        <v-icon v-if="!showLoadingIcon" left>mdi-content-copy</v-icon>
+        <v-icon v-if="!showLoadingIcon" start>mdi-content-copy</v-icon>
         {{
           $t('copy') +
             ' ' +
@@ -36,19 +34,19 @@
     </v-container>
 
     <v-container v-if="ready" class="back-content">
-      <v-row v-if="alertRulesDefault.length > 0" dense>
-        <ScaleTransition :duration="500" group style="width:100%;">
+      <v-row v-if="alertRulesDefault.length > 0" density="compact">
+        <v-scale-transition group style="width:100%;">
           <v-col
             v-for="(alertRule, j) in alertRulesDefault"
             :key="j"
             cols="12"
             class="alerts-item"
-            dense
+            density="compact"
           >
-            <v-card outlined>
+            <v-card>
               <v-row class="ma-2 d-flex align-center">
                 <v-col cols="2" sm="1" class="mr-n2 mr-md-n4 mr-lg-n10">
-                  <v-checkbox v-model="alertRule.selected"></v-checkbox>
+                  <v-checkbox-btn v-model="alertRule.selected"></v-checkbox-btn>
                 </v-col>
                 <v-col cols="10" sm="5" md="4">
                   <div class="d-flex flex-column">
@@ -76,7 +74,7 @@
               </v-row>
             </v-card>
           </v-col>
-        </ScaleTransition>
+        </v-scale-transition>
       </v-row>
     </v-container>
 
@@ -86,18 +84,16 @@
 
 <script>
 import Api from '@api/Api'
-import Confirm from '@components/confirm.vue'
-import Layout from '@layouts/back.vue'
-import { mapGetters } from 'vuex'
-import { ScaleTransition } from 'vue2-transitions'
-import { momentHumanizeHours } from '@mixins/momentMixin'
 import { readAlertRules, readTaxonomy } from '@mixins/methodsMixin'
+import Confirm from '@/src/components/confirm-dialog.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
+import { mapGetters } from 'vuex'
+import { momentHumanizeHours } from '@mixins/momentMixin'
 
 export default {
   components: {
     Confirm,
     Layout,
-    ScaleTransition,
   },
   mixins: [momentHumanizeHours, readAlertRules, readTaxonomy],
   data: function() {
@@ -119,7 +115,7 @@ export default {
       return this.$i18n.locale
     },
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.xs
     },
     numberOfSelectedRules() {
       return this.alertRulesDefault.filter((alertRule) => alertRule.selected)
@@ -155,10 +151,11 @@ export default {
     async readDefaultAlertRules() {
       try {
         const response = await Api.readRequest('/alert-rules-default')
-        var alertRulesDefault = response.data['alert-rules']
+        const alertRulesDefault = response.data['alert-rules']
         alertRulesDefault.map((alertRuleDefault) => {
           alertRuleDefault.default_rule = 0
           alertRuleDefault.selected = false
+          return alertRuleDefault
         })
         this.alertRulesDefault = alertRulesDefault
         return true
@@ -171,14 +168,14 @@ export default {
       }
     },
     alertRuleSentence(alertRule) {
-      var sentence = this.$i18n.t('alertrule_main_sentence')
-      var replacedSentence = sentence
+      const sentence = this.$i18n.t('alertrule_main_sentence')
+      let replacedSentence = sentence
 
-      var measurement = this.sensorMeasurementsList.filter(
+      const measurement = this.sensorMeasurementsList.filter(
         (measurement) => measurement.id === alertRule.measurement_id
       )[0]
 
-      var replaceWith = {
+      const replaceWith = {
         calculation: this.$i18n.t(alertRule.calculation),
         comparison: this.comparisons
           .filter((comparison) => comparison.short === alertRule.comparison)[0]
@@ -206,47 +203,33 @@ export default {
 
       Object.entries(replaceWith).map(([key, value]) => {
         replacedSentence = replacedSentence.replace('[' + key + ']', value)
+        return replacedSentence
       })
 
       replacedSentence += '. ' // alertrule_active_email and no_email_sentence are omitted here
 
-      // if (alertRule.alert_on_occurences === 1) {
-      //   replacedSentence += this.$i18n.t('alertrule_occurences_direct_sentence')
-      // } else {
-      //   replacedSentence += this.$i18n.t(
-      //     'alertrule_occurences_indirect_sentence'
-      //   )
-      //   replacedSentence = replacedSentence.replace(
-      //     '[alert_on_occurences]',
-      //     alertRule.alert_on_occurences
-      //   )
-      // }
-
       if (alertRule.exclude_months.length > 0) {
-        replacedSentence += this.$i18n.t('alertrule_exclude_months_sentence')
-        var monthsArray = []
+        const monthsArray = []
         alertRule.exclude_months.map((month) => {
-          monthsArray.push(this.$i18n.t('monthsFull')[month - 1])
+          monthsArray.push(this.$i18n.tm('monthsFull')[month - 1])
+          return true
         })
-        replacedSentence = replacedSentence.replace(
-          '[exclude_months]',
-          monthsArray.join(', ')
-        )
+
+        replacedSentence += this.$i18n.t('alertrule_exclude_months_sentence', {
+          exclude_months: monthsArray.join(', '),
+        })
       }
 
       if (alertRule.exclude_hours.length > 0) {
-        replacedSentence += this.$i18n.t('alertrule_exclude_hours_sentence')
-
-        var hoursArray = []
+        const hoursArray = []
         alertRule.exclude_hours.map((hour) => {
           hoursArray.push(this.alertRulesList.exclude_hours[hour])
+          return true
         })
-        var hoursString = hoursArray.join(', ')
 
-        replacedSentence = replacedSentence.replace(
-          '[exclude_hours]',
-          hoursString
-        )
+        replacedSentence += this.$i18n.t('alertrule_exclude_hours_sentence', {
+          exclude_hours: hoursArray.join(', '),
+        })
       }
 
       return replacedSentence
@@ -258,6 +241,7 @@ export default {
             await this.copyAlertRule(alertRuleDefault)
             return true
           }
+          return true
         })
       )
 
@@ -271,12 +255,13 @@ export default {
       }, 150) // wait for API to update alertrules
     },
     formatFromTaxonomy(array) {
-      var formattedArray = []
+      const formattedArray = []
       Object.entries(array).map(([key, value]) => {
         formattedArray.push({
           short: key,
           full: this.$i18n.t(value),
         })
+        return [key, value]
       })
       return formattedArray
     },

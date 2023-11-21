@@ -1,6 +1,6 @@
 <template>
-  <v-overlay :value="overlay">
-    <v-toolbar dense light flat class="image-overlay-toolbar">
+  <v-overlay v-model="overlay">
+    <v-toolbar density="compact" light flat class="image-overlay-toolbar">
       <v-spacer></v-spacer>
       <v-toolbar-items>
         <v-icon color="accent" dark class="close-icon" @click="closeOverlay"
@@ -11,12 +11,12 @@
     <div class="px-3 pb-1 image-wrapper">
       <v-img
         :src="fullUrl ? imageUrl : baseApiUrl + imageUrl"
-        class="grey lighten-2 image-overlay-content"
+        class="bg-grey-lighten-2 image-overlay-content"
       >
       </v-img>
     </div>
     <v-toolbar
-      dense
+      density="compact"
       light
       outline
       flat
@@ -43,16 +43,14 @@ export default {
       type: String,
       required: true,
     },
-    overlay: {
-      type: Boolean,
-      required: true,
-    },
   },
+  emits: ['close-overlay'],
   data() {
     return {
       baseApiUrl:
         process.env.VUE_APP_BASE_API_URL ||
         process.env.VUE_APP_BASE_API_URL_FALLBACK,
+      overlay: true,
     }
   },
   computed: {

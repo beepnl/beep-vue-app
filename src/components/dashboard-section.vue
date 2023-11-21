@@ -25,7 +25,7 @@ export default {
   computed: {
     ...mapGetters('dashboard', ['landscapeMode']),
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.xs
     },
   },
   methods: {

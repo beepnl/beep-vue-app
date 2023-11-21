@@ -10,8 +10,8 @@
 
 <script>
 import Api from '@api/Api'
-import Layout from '@layouts/main.vue'
 import LoadingView from './_loading.vue'
+import Layout from '@/src/router/layouts/main-layout.vue'
 
 export default {
   page: {

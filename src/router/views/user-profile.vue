@@ -1,12 +1,10 @@
 <template>
   <Layout :title="`${$t('User_data')}`">
     <v-form ref="form" v-model="valid" @submit.prevent="editUser">
-      <v-toolbar class="save-bar" dense light>
+      <v-toolbar class="save-bar" density="compact" light>
         <v-spacer></v-spacer>
         <v-btn
           v-if="!mobile"
-          tile
-          outlined
           color="red"
           class="mr-3"
           :disabled="showDeleteLoadingIcon"
@@ -17,10 +15,12 @@
             class="mr-2"
             size="18"
             width="2"
-            color="disabled"
+            color="red"
             indeterminate
           />
-          <v-icon v-if="!showDeleteLoadingIcon" left>mdi-delete</v-icon>
+          <v-icon v-if="!showDeleteLoadingIcon" color="red" start
+            >mdi-delete</v-icon
+          >
           {{ $t('Delete') }}
         </v-btn>
         <v-progress-circular
@@ -33,7 +33,6 @@
         />
         <v-icon
           v-if="mobile && !showDeleteLoadingIcon"
-          dark
           class="mr-4"
           color="red"
           @click="confirmDeleteUser"
@@ -41,8 +40,6 @@
         >
 
         <v-btn
-          tile
-          outlined
           class="mr-1"
           color="black"
           type="submit"
@@ -56,7 +53,7 @@
             color="disabled"
             indeterminate
           />
-          <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon
+          <v-icon v-if="!showLoadingIcon" start>mdi-check</v-icon
           >{{ $t('save') }}</v-btn
         >
       </v-toolbar>
@@ -67,25 +64,29 @@
             <v-alert
               v-for="error in errors"
               :key="error.name"
-              text
               prominent
-              dense
               type="error"
               color="red"
             >
+              <template v-slot:prepend>
+                <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+              </template>
               {{ error.errorMessage }}
             </v-alert>
           </v-col>
         </v-row>
         <v-row v-if="successMessage !== null">
           <v-col cols="12">
-            <v-alert text prominent dense type="success" color="green">
+            <v-alert prominent type="success" color="green">
+              <template v-slot:prepend>
+                <v-icon :icon="'mdi-check-circle'" class="text-green"> </v-icon>
+              </template>
               {{ successMessage }}
             </v-alert>
           </v-col>
         </v-row>
-        <div class="overline mb-3" v-text="$t('User_data')"></div>
-        <v-card outlined>
+        <div class="text-overline mb-3" v-text="$t('User_data')"></div>
+        <v-card>
           <v-card-text>
             <v-text-field
               v-model="name"
@@ -94,22 +95,22 @@
             />
             <v-text-field
               v-model="email"
-              :class="fieldErrors.email ? 'error--text' : ''"
+              :class="fieldErrors.email ? 'text-error' : ''"
               :label="`${$t('email')}`"
               :rules="emailRules"
               required
-              validate-on-blur
+              validate-on="blur"
             />
             <v-text-field
               v-model="password"
-              :class="fieldErrors.password ? 'error--text' : ''"
+              :class="fieldErrors.password ? 'text-error' : ''"
               :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
               :label="`${$t('password')}`"
               :type="show1 ? 'text' : 'password'"
               :rules="passwordRules"
               required
               :error-messages="
-                displayPasswordError ? $t('password_is_required') : null
+                displayPasswordError ? $t('password_is_required') : []
               "
               @click:append="show1 = !show1"
             />
@@ -119,7 +120,6 @@
               :label="`${$t('new_password')}`"
               :type="show2 ? 'text' : 'password'"
               :rules="newPasswordRules"
-              @keydown.enter="$event.target.blur"
               @click:append="show2 = !show2"
             />
             <v-text-field
@@ -128,7 +128,6 @@
               :label="`${$t('confirm_new_password')}`"
               :type="show3 ? 'text' : 'password'"
               :rules="repeatPasswordRules"
-              @keydown.enter="$event.target.blur"
               @click:append="show3 = !show3"
             />
             <v-checkbox
@@ -137,7 +136,7 @@
               required
               class="keep-spaces"
             >
-              <template slot="label"
+              <template v-slot:label
                 ><span class="checkbox-label"
                   >{{ $t('accept_policy_1')
                   }}<a :href="$t('policy_url')" target="_blank" @click.stop>{{
@@ -158,8 +157,8 @@
 
 <script>
 import Api from '@api/Api'
-import Confirm from '@components/confirm.vue'
-import Layout from '@layouts/back.vue'
+import Confirm from '@/src/components/confirm-dialog.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
 
 export default {
   components: { Confirm, Layout },
@@ -212,7 +211,7 @@ export default {
       ]
     },
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.xs
     },
     passwordRules: function() {
       return [(v) => !!v || this.$i18n.t('password_is_required')]

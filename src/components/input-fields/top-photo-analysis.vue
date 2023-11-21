@@ -3,18 +3,20 @@
     <v-alert
       v-if="bulkInspection"
       type="error"
-      text
       prominent
-      dense
       color="red"
+      class="mb-4"
     >
+      <template v-slot:prepend>
+        <v-icon :icon="'mdi-alert'" class="text-red"> </v-icon>
+      </template>
       {{ $t('input_not_possible_for_bulkinspection') }}
     </v-alert>
     <!-- <div :class="`rounded-border ${bulkInspection ? 'input-disabled' : ''}`"> -->
-    <v-card outlined class="pa-3">
+    <v-card class="position-relative pa-3">
       <div class="border-bottom">
         <h4>Top Photo Analysis protocol (EN)</h4>
-        <ol>
+        <ol class="ml-4">
           <li>Blow a puff of smoke into the hive from below.</li>
           <li
             >After a minute, remove the lid and take first a high-resolution
@@ -51,31 +53,29 @@
                   class="beep-label"
                   v-text="$tc('Hive_brood_layer', 2)"
                 ></div>
-                <el-input-number
+                <ElInputNumber
                   v-if="activeHive && activeHive.layers"
                   v-model="broodLayersForCalculation"
                   :min="0"
                   :max="maxBroodLayers"
                   :precision="0"
                   :disabled="bulkInspection"
-                  size="medium"
                   @change="calculateTpaColonySize"
-                  @input.native="calculateTpaColonySize"
-                ></el-input-number>
+                  @update:model-value="calculateTpaColonySize"
+                ></ElInputNumber>
               </v-col>
               <v-col cols="12">
                 <div class="beep-label" v-text="$t('Hive_frames')"></div>
-                <el-input-number
+                <ElInputNumber
                   v-if="activeHive && activeHive.layers"
                   v-model="framesForCalculation"
                   :min="0"
                   :max="maxFrames"
                   :precision="0"
                   :disabled="bulkInspection"
-                  size="medium"
                   @change="calculateTpaColonySize"
-                  @input.native="calculateTpaColonySize"
-                ></el-input-number>
+                  @update:model-value="calculateTpaColonySize"
+                ></ElInputNumber>
               </v-col>
             </v-row>
           </v-col>
@@ -84,7 +84,7 @@
             <v-row>
               <v-col cols="12">
                 <div class="beep-label" v-text="`${$t('fr_width_cm')}`"></div>
-                <p v-if="!activeHive.fr_width_cm" class="red--text"
+                <p v-if="!activeHive.fr_width_cm" class="text-red"
                   >{{ $t('fr_width_cm') }} N/A!
                 </p>
 
@@ -102,7 +102,7 @@
               </v-col>
               <v-col cols="12">
                 <div class="beep-label" v-text="`${$t('fr_height_cm')}`"></div>
-                <p v-if="!activeHive.fr_height_cm" class="red--text"
+                <p v-if="!activeHive.fr_height_cm" class="text-red"
                   >{{ $t('fr_height_cm') }} N/A!
                 </p>
 
@@ -142,33 +142,35 @@
 
       <div v-if="category.children.length > 0">
         <v-row>
-          <div
+          <v-col
             v-for="(item, index) in category.children"
             :key="index"
-            :class="generateClassNames(item)"
+            cols="12"
+            :sm="itemFullWidth(item) ? 12 : 6"
+            :md="itemFullWidth(item) ? 12 : 4"
+            :lg="itemFullWidth(item) ? 12 : 3"
           >
             <ChecklistInput
               v-if="item.input !== 'label' && item.name !== 'colony_size'"
               :object="object"
               :item="item"
-              :locale="locale"
               :disabled="bulkInspection"
+              :parse-mode="parseMode"
               @calculate-tpa-colony-size="calculateTpaColonySize"
             ></ChecklistInput>
             <ChecklistFieldset
               v-if="item.input === 'label'"
               :object="object"
               :category="item"
-              :locale="locale"
+              :parse-mode="parseMode"
             ></ChecklistFieldset>
-          </div>
+          </v-col>
         </v-row>
       </div>
       <v-overlay
-        :absolute="true"
-        :value="bulkInspection"
-        :opacity="0.5"
-        color="white"
+        :model-value="bulkInspection"
+        contained
+        scrim="white"
         z-index="3"
         class="input-disabled-overlay"
       >
@@ -183,13 +185,17 @@ import ChecklistInput from '@components/checklist-input.vue'
 import ChecklistFieldset from '@components/checklist-fieldset.vue'
 import HiveIcon from '@components/hive-icon.vue'
 import { mapGetters } from 'vuex'
+import { getMaxFramecount } from '@mixins/methodsMixin'
+import { ElInputNumber } from 'element-plus'
 
 export default {
   components: {
     ChecklistInput,
     ChecklistFieldset,
     HiveIcon,
+    ElInputNumber,
   },
+  mixins: [getMaxFramecount],
   props: {
     category: {
       type: Object,
@@ -201,12 +207,12 @@ export default {
       default: null,
       required: true,
     },
-    locale: {
-      type: String,
-      default: 'en',
-      required: false,
-    },
     nested: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    parseMode: {
       type: Boolean,
       required: false,
       default: false,
@@ -242,10 +248,10 @@ export default {
   },
   methods: {
     calculateTpaColonySize() {
-      var beesPerCm2 = 1.25
-      var colonySize = null
-      var pixelsTotal = 0
-      var pixelsBees = 0
+      const beesPerCm2 = 1.25
+      let colonySize = null
+      let pixelsTotal = 0
+      let pixelsBees = 0
 
       setTimeout(() => {
         this.category.children.map((child) => {
@@ -254,9 +260,10 @@ export default {
           } else if (child.name === 'pixels_total_top') {
             pixelsTotal = parseInt(this.object[child.id])
           }
+          return true
         })
 
-        var hive = this.activeHive
+        const hive = this.activeHive
         if (
           pixelsTotal === 0 ||
           typeof hive === 'undefined' ||
@@ -269,7 +276,7 @@ export default {
           colonySize = null
         } else {
           // colony_size = ratio occupied * fully occupied frames * 2 * brood layers * bees per cm2
-          var ratio = pixelsTotal > pixelsBees ? pixelsBees / pixelsTotal : 1
+          const ratio = pixelsTotal > pixelsBees ? pixelsBees / pixelsTotal : 1
           colonySize = Math.round(
             ratio *
               (parseFloat(hive.fr_width_cm) *
@@ -295,6 +302,7 @@ export default {
             }
             this.object[child.id] = colonySize
           }
+          return true
         })
 
         this.colonySize = colonySize
@@ -304,16 +312,17 @@ export default {
       return this.activeHive.layers.filter((layer) => layer.type === type)
         .length
     },
-    generateClassNames(item) {
-      if (item.input === 'label' || item.input === 'text' || this.nested) {
-        return 'col-12'
-      } else if (item.name !== 'colony_size') {
-        return 'col-xs-12 col-sm-6 col-md-3'
-      }
+    itemFullWidth(item) {
+      return (
+        this.nested ||
+        item.input === 'label' ||
+        item.input === 'text' ||
+        item.name === 'colony_size'
+      )
     },
     setInputNumbers() {
       this.broodLayersForCalculation = this.countLayers('brood')
-      this.framesForCalculation = this.activeHive.layers[0].framecount
+      this.framesForCalculation = this.getMaxFramecount(this.activeHive.layers)
     },
   },
 }

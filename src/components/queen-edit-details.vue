@@ -2,7 +2,7 @@
   <v-row class="queen-details-wrapper">
     <v-col cols="12">
       <div
-        class="overline mb-3"
+        class="text-overline mb-3"
         v-text="`${$t('Queen') + ' ' + $t('details')}`"
       ></div>
       <div class="queen-details rounded-border">
@@ -10,14 +10,14 @@
           <v-col cols="12" sm="7" md="6" lg="4">
             <div>
               <v-text-field
-                :value="queen ? queen.name : null"
+                :model-value="queen ? queen.name : null"
                 :label="`${$t('Queen')} ${$t('name')}`"
                 :placeholder="`${$t('Queen')} ${$t('name')}`"
                 height="36px"
                 class="queen-name"
                 counter="30"
                 clearable
-                @input="updateQueen($event, 'name')"
+                @update:model-value="updateQueen($event, 'name')"
               >
               </v-text-field>
             </div>
@@ -25,59 +25,55 @@
             <div>
               <div class="beep-label" v-text="`${$t('Bee_race')}`"></div>
               <Treeselect
-                :value="queen ? queen.race_id : null"
+                :model-value="queen ? queen.race_id : null"
                 :options="treeselectBeeRaces"
                 :no-results-text="`${$t('no_results')}`"
                 :label="`${$t('Select')} ${$t('Bee_race')}`"
                 :placeholder="`${$t('Select')} ${$t('Bee_race')}`"
                 search-nested
-                @input="updateQueen($event, 'race_id')"
+                @update:model-value="updateQueen($event, 'race_id')"
               />
             </div>
 
             <div class="mt-5">
-              <v-dialog
-                ref="dialog"
-                v-model="modal"
-                :return-value.sync="queenBirthDate"
-                persistent
-                width="290px"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                    v-model="queenBirthDate"
-                    :label="
-                      `${$t('Birth_date')} ${
-                        showQueenColorPicker
-                          ? '(' + $t('changes_queen_color') + ')'
-                          : ''
-                      }`
-                    "
-                    height="36px"
-                    clearable
-                    prepend-icon="mdi-calendar"
-                    v-bind="attrs"
-                    v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-date-picker
-                  v-model="queenBirthDate"
-                  :first-day-of-week="1"
-                  :locale="locale"
-                  scrollable
+              <div class="d-flex justify-flex-start align-center">
+                <v-icon
+                  class="mr-2"
+                  :color="reminderDate !== null ? 'accent' : ''"
+                  >mdi-calendar-clock</v-icon
                 >
-                  <v-spacer></v-spacer>
-                  <v-btn text color="accent" @click="cancelDatePicker">{{
-                    $t('Cancel')
-                  }}</v-btn>
-                  <v-btn text color="accent" @click="updateQueenBirthDate">{{
-                    $t('ok')
-                  }}</v-btn>
-                </v-date-picker>
-              </v-dialog>
+                <div>
+                  <div class="beep-label">
+                    <span v-text="$t('Birth_date')"></span>
+                  </div>
+                  <VueDatePicker
+                    :format="datePickerFormat"
+                    :model-value="queenBirthDate"
+                    :enable-time-picker="false"
+                    model-type="format"
+                    hide-input-icon
+                    :max-date="endOfToday"
+                    :placeholder="$t('Birth_date')"
+                    :locale="locale"
+                    :select-text="$t('ok')"
+                    :cancel-text="$t('Cancel')"
+                    class=" text-accent"
+                    @update:model-value="datePickerUpdate"
+                  >
+                    <template v-slot:clear-icon="{ clear }">
+                      <span
+                        class="description clear-icon mr-1"
+                        @click="cancelDatePicker"
+                      >
+                        <v-icon color="accent">mdi-close</v-icon></span
+                      >
+                    </template>
+                  </VueDatePicker>
+                </div>
+              </div>
             </div>
 
-            <div>
+            <div class="mt-5">
               <div class="beep-label" v-text="`${$t('Age')}`"></div>
               <p
                 v-text="
@@ -92,28 +88,31 @@
           <v-col cols="12" sm="7" md="6" lg="4">
             <div>
               <v-text-field
-                :value="queen ? queen.description : null"
+                :model-value="queen ? queen.description : null"
                 :label="`${$t('Queen')} ${$t('queen_description')}`"
                 height="36px"
                 counter="100"
                 clearable
-                @input="updateQueen($event, 'description')"
+                @update:model-value="updateQueen($event, 'description')"
               >
               </v-text-field>
             </div>
 
             <v-switch
               v-model="queenClipped"
+              color="accent"
               :label="`${$t('Queen_clipped')}`"
             ></v-switch>
 
             <v-switch
               v-model="queenFertilized"
+              color="accent"
               :label="`${$t('Queen_fertilized')}`"
             ></v-switch>
 
             <v-switch
               v-model="showQueenColorPicker"
+              color="accent"
               :label="`${$t('Queen_colored')}`"
             ></v-switch>
           </v-col>
@@ -141,6 +140,7 @@
                     v-model="queenColor"
                     class="flex-color-picker queen-color-picker"
                     :swatches="swatchesQueen"
+                    :modes="['rgb']"
                     show-swatches
                     canvas-height="120"
                   ></v-color-picker>
@@ -163,7 +163,7 @@ import {
   momentifyRemoveTime,
 } from '@mixins/momentMixin'
 import { readTaxonomy } from '@mixins/methodsMixin'
-import Treeselect from '@riophae/vue-treeselect'
+import Treeselect from 'vue3-treeselect'
 
 export default {
   components: {
@@ -186,6 +186,7 @@ export default {
   data: function() {
     return {
       queen_colors: [
+        // year ending of birth year is index
         '#4A90E2',
         '#F4F4F4',
         '#F8DB31',
@@ -196,7 +197,7 @@ export default {
         '#F8DB31',
         '#D0021B',
         '#7ED321',
-      ], // year ending of birth year is index
+      ],
       swatchesQueen: [
         ['#4A90E2'],
         ['#F4F4F4'],
@@ -207,6 +208,7 @@ export default {
       modal: false,
       useQueenMarkColor: false,
       queenHasColor: false,
+      datePickerFormat: 'yyyy-MM-dd',
     }
   },
   computed: {
@@ -217,9 +219,10 @@ export default {
     treeselectBeeRaces() {
       if (this.beeRacesList.length) {
         const locale = this.selectLocale(this.beeRacesList)
-        var treeselectArray = this.beeRacesList
+        let treeselectArray = JSON.parse(JSON.stringify(this.beeRacesList)) // clone without v-bind to avoid vuex warning when mutating
         treeselectArray.map((beeRace) => {
           beeRace.label = beeRace.trans[locale]
+          return beeRace
         })
         const sortedTreeselectArray = treeselectArray
           .slice()
@@ -264,7 +267,7 @@ export default {
         return this.queen.clipped === 1
       },
       set(value) {
-        var setValue = value === true ? 1 : 0
+        const setValue = value === true ? 1 : 0
         this.updateQueen(setValue, 'clipped')
       },
     },
@@ -285,7 +288,7 @@ export default {
         return this.queen.fertilized === 1
       },
       set(value) {
-        var setValue = value === true ? 1 : 0
+        const setValue = value === true ? 1 : 0
         this.updateQueen(setValue, 'fertilized')
       },
     },
@@ -314,6 +317,12 @@ export default {
       this.modal = false
       this.queenColor = this.queen.color
     },
+    datePickerUpdate(e) {
+      this.queenBirthDate = e
+      if (this.queen.color) {
+        this.updateQueen(this.queenMarkColor, 'color')
+      }
+    },
     selectLocale(array) {
       if (array.length) {
         const locale = this.$i18n.locale
@@ -332,14 +341,8 @@ export default {
     toBoolean(int) {
       return int === 1
     },
-    updateQueenBirthDate() {
-      this.$refs.dialog.save(this.queenBirthDate)
-      if (this.queen.color) {
-        this.updateQueen(this.queenMarkColor, 'color')
-      }
-    },
     updateQueen(event, property) {
-      var value = null
+      let value = null
       if (event === null || typeof event === 'undefined') {
         value = null
       } else if (event.target !== undefined) {

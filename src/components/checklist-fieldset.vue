@@ -9,18 +9,18 @@
               category.input !== 'options'))
       "
     >
-      <div class="overline mb-2"
+      <div class="text-overline mb-2"
         >{{ category.trans[locale] || category.name }}
         <a
           v-if="category.description !== null || category.source !== null"
           @click="showDescription = !showDescription"
           ><v-icon
-            class="mdi mdi-information ml-1 icon-info"
-            dark
-            small
+            class="ml-1 icon-info"
+            :size="mobile ? 'x-small' : 'small'"
             color="accent"
-          ></v-icon
-        ></a>
+            >mdi-information</v-icon
+          ></a
+        >
       </div>
 
       <p v-if="showDescription" class="info-text">
@@ -35,21 +35,21 @@
         >
       </p>
 
-      <topPhotoAnalysis
+      <TopPhotoAnalysis
         v-if="category.name === 'top_photo_analysis'"
         :object="object"
         :category="category"
-        :locale="locale"
+        :parse-mode="parseMode"
         :nested="nested"
-      ></topPhotoAnalysis>
+      ></TopPhotoAnalysis>
 
-      <liebefelderMethod
+      <LiebefelderMethod
         v-if="category.name === 'liebefelder_method'"
         :object="object"
         :category="category"
-        :locale="locale"
+        :parse-mode="parseMode"
         :nested="nested"
-      ></liebefelderMethod>
+      ></LiebefelderMethod>
 
       <div
         v-if="
@@ -60,30 +60,26 @@
         class="rounded-border"
       >
         <v-row>
-          <div
+          <v-col
             v-for="(item, index) in category.children"
             :key="index"
-            :class="
-              item.input === 'label' || item.input === 'text' || nested
-                ? 'col-12'
-                : 'col-xs-12 col-sm-6 col-md-4 col-lg-3'
-            "
+            cols="12"
+            :sm="itemFullWidth(item) ? 12 : 6"
+            :md="itemFullWidth(item) ? 12 : 3"
           >
             <ChecklistInput
               v-if="item.input !== 'label'"
               :object="object"
               :item="item"
-              :locale="locale"
               :parse-mode="parseMode"
             ></ChecklistInput>
             <ChecklistFieldset
               v-if="item.input === 'label'"
               :object="object"
               :category="item"
-              :locale="locale"
               :parse-mode="parseMode"
             ></ChecklistFieldset>
-          </div>
+          </v-col>
         </v-row>
       </div>
 
@@ -91,7 +87,6 @@
         v-if="category.children.length === 0"
         :object="object"
         :item="category"
-        :locale="locale"
         :parse-mode="parseMode"
       ></ChecklistInput>
     </div>
@@ -106,7 +101,6 @@
       "
       :object="object"
       :item="category"
-      :locale="locale"
       :parse-mode="parseMode"
     ></ChecklistInput>
   </div>
@@ -114,16 +108,16 @@
 
 <script>
 import ChecklistInput from '@components/checklist-input.vue'
-import topPhotoAnalysis from '@components/input-fields/top-photo-analysis.vue'
-import liebefelderMethod from '@components/input-fields/liebefelder-method.vue'
+import TopPhotoAnalysis from '@components/input-fields/top-photo-analysis.vue'
+import LiebefelderMethod from '@components/input-fields/liebefelder-method.vue'
 
 export default {
   name: 'ChecklistFieldset',
   components: {
     ChecklistFieldset: () => import('@components/checklist-fieldset.vue'), // needed to fix Vue recursive component error
     ChecklistInput,
-    liebefelderMethod,
-    topPhotoAnalysis,
+    LiebefelderMethod,
+    TopPhotoAnalysis,
   },
   props: {
     category: {
@@ -135,11 +129,6 @@ export default {
       type: Object,
       default: null,
       required: true,
-    },
-    locale: {
-      type: String,
-      default: 'en',
-      required: false,
     },
     nested: {
       type: Boolean,
@@ -156,6 +145,19 @@ export default {
     return {
       showDescription: false,
     }
+  },
+  computed: {
+    locale() {
+      return this.$i18n.locale
+    },
+    mobile() {
+      return this.$vuetify.display.xs
+    },
+  },
+  methods: {
+    itemFullWidth(item) {
+      return this.nested || item.input === 'label' || item.input === 'text'
+    },
   },
 }
 </script>

@@ -1,9 +1,15 @@
 /* Element-UI */
+// .el-checkbox {
+//   --el-checkbox-checked-input-border-color: $color-primary;
+//   --el-checkbox-checked-bg-color: $color-primary;
+//   --el-checkbox-checked-icon-color: $color-primary;
+//   --el-checkbox-input-border-color-hover: $color-primary;
+// }
 
 .el-checkbox__input.is-checked .el-checkbox__inner,
 .el-checkbox__input.is-indeterminate .el-checkbox__inner {
-  background-color: $color-primary;
-  border-color: $color-primary;
+  background-color: $color-primary !important;
+  border-color: $color-primary !important;
 }
 
 .el-input-number.comma-warning .el-input__inner {
@@ -31,9 +37,11 @@
 }
 
 /* Vuetify */
-.v-application .red--text {
-  color: $color-red !important;
-  caret-color: $color-red !important;
+.v-application {
+  .text-red {
+    color: $color-red !important;
+    caret-color: $color-red !important;
+  }
 }
 
 .v-application .red {
@@ -74,7 +82,7 @@
   border-color: $color-grey-light;
 }
 
-.v-tabs--icons-and-text > .v-tabs-bar {
+.v-tabs > .v-slide-group__container {
   height: 48px !important;
   .v-tab {
     text-transform: none !important;
@@ -117,13 +125,14 @@
 
 .v-toolbar__content {
   // height: 48px !important;
-  .v-toolbar__title {
-    padding-left: 0 !important;
+  .v-toolbar-title {
+    -webkit-margin-start: 8px !important;
+    margin-inline-start: 8px !important;
   }
 }
 
 .v-text-field {
-  &.error--text .v-label {
+  &.text-error .v-label {
     color: #ff5252 !important;
     caret-color: #ff5252 !important;
   }
@@ -185,6 +194,41 @@
         @include for-phone-only {
           margin-bottom: -14px;
         }
+      }
+    }
+  }
+}
+
+.v-input.v-file-input.image-uploader-page-blob {
+  width: 100%;
+  height: 100%;
+  .v-field.v-field--appended {
+    padding: 0px 12px !important;
+    height: 100% !important;
+    display: flex;
+    flex-direction: column;
+    height: 100% !important;
+    margin-bottom: 0px;
+    .v-field__prepend-inner {
+      height: 82px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      cursor: default !important;
+    }
+    .v-field__field {
+      border-radius: 4px;
+      border: 1px dashed $color-grey-light;
+      cursor: pointer !important;
+      min-height: 100px !important;
+      max-height: 100px !important;
+      width: 116px !important;
+      text-align: center;
+      margin: 4px 0 12px !important;
+      .v-label.v-field-label {
+        align-items: center;
+        white-space: wrap !important;
       }
     }
   }
@@ -336,7 +380,8 @@
   }
 }
 
-.v-data-table:not(.table-heatmap) {
+.v-data-table:not(.table-heatmap),
+.v-table:not(.table-heatmap) {
   background-color: transparent !important;
   input {
     @include for-phone-only {
@@ -361,33 +406,32 @@
   .td--medium {
     .v-input__control {
       min-width: 130px !important;
-      max-width: 130px !important;
+      max-width: 140px !important;
     }
   }
 
-  .v-data-table__wrapper > table > tbody > tr > td,
-  .v-data-table__wrapper > table > thead > tr > th {
+  .v-table__wrapper > table > tbody > tr > td,
+  .v-table__wrapper > table > thead > tr > th {
     @include for-phone-only {
       padding: 0 5px !important;
       font-size: 12px !important;
     }
   }
-  &.v-data-table--smallfont {
-    input {
-      font-size: 12px !important;
-    }
-    .v-input__control {
-      font-size: 12px !important;
-    }
-    .v-data-table__wrapper > table > tbody > tr > td,
-    .v-data-table__wrapper > table > thead > tr > th {
-      font-size: 12px !important;
-    }
+
+  input {
+    font-size: 12px !important;
+  }
+  .v-input__control {
+    font-size: 12px !important;
+  }
+  .v-table__wrapper > table > tbody > tr > td,
+  .v-table__wrapper > table > thead > tr > th {
+    font-size: 12px !important;
   }
 }
 
-.v-data-table.v-data-table--dense.table-heatmap
-  > .v-data-table__wrapper
+.v-table.v-table--density-compact.table-heatmap
+  > .v-table__wrapper
   > table
   > tbody
   > tr
@@ -395,7 +439,23 @@
   height: 13px !important;
 }
 
-.v-data-table.table-heatmap .v-data-table__wrapper {
+.v-table
+  > .v-table__wrapper
+  > table
+  > tbody
+  > tr:not(:last-child)
+  > td:not(.v-data-table__mobile-row),
+.v-table
+  > .v-table__wrapper
+  > table
+  > tbody
+  > tr:not(:last-child)
+  > th:not(.v-data-table__mobile-row),
+.v-table > .v-table__wrapper > table > thead > tr:last-child > th {
+  border-bottom: thin solid rgba(0, 0, 0, 0.12);
+}
+
+.v-table.table-heatmap .v-table__wrapper {
   width: 100%;
 }
 
@@ -412,7 +472,10 @@
   min-width: 16px !important;
   height: 16px !important;
   padding: 3px 5px !important;
-  font-size: 11px !important;
+  font-size: 10.5px !important;
+  @include for-phone-only {
+    font-size: 10px !important;
+  }
 }
 
 .alerts-item .v-alert__wrapper {
@@ -465,45 +528,54 @@
   cursor: not-allowed !important;
 }
 
-/* Vue Datetime */
-.vdatetime-input {
-  color: $color-primary;
-  cursor: pointer;
+/* VueDatePicker */
+.dp__main {
+  word-break: normal !important;
 }
 
-.inspection-date .vdatetime-input {
-  width: 350px;
+.dp__input {
+  line-height: 26px !important;
+  padding: 4px 8px !important;
 }
 
-.vdatetime.green--text {
-  .vdatetime-input {
-    color: $color-green;
-  }
+.dp__input_wrap {
+  width: calc(100% + 13px) !important;
 }
 
-.vdatetime-popup {
-  border-radius: 4px;
+.dp__theme_light {
+  --dp-border-color: #cccccc !important;
+  --dp-primary-color: #f29100 !important;
+}
 
-  .vdatetime-popup__header,
-  .vdatetime-calendar__month__day--selected > span > span,
-  .vdatetime-calendar__month__day--selected:hover > span > span {
-    background: $color-primary !important;
-  }
+.dp__action_button {
+  cursor: pointer !important;
+  padding: 16px !important;
+  border-radius: 0 !important;
+  font-size: 14px !important;
+  font-weight: 500;
+  font-family: 'Roboto', sans-serif !important;
+  letter-spacing: 1.25px;
+  text-transform: uppercase;
+}
 
-  .vdatetime-year-picker__item--selected,
-  .vdatetime-time-picker__item--selected,
-  .vdatetime-popup__actions__button {
-    color: $color-primary !important;
-  }
+.dp__action_cancel {
+  border: 1px solid $color-black !important;
+}
 
-  .vdatetime-popup__header {
-    border-top-left-radius: inherit;
-    border-top-right-radius: inherit;
-  }
+.dp__action_select {
+  background: $color-white !important;
+  color: $color-accent !important;
+  border-color: $color-accent !important;
+}
 
-  .vdatetime-popup__actions__button {
-    padding: 0 !important;
-  }
+.dp__range_end,
+.dp__range_start,
+.dp__active_date {
+  background: $color-accent !important;
+}
+
+.dp__today {
+  border: 1px solid $color-accent !important;
 }
 
 @media print {
@@ -518,4 +590,11 @@
     display: block !important;
     min-height: 0px !important;
   }
+}
+
+/* VueRecycleScroller */
+
+.vue-recycle-scroller.direction-vertical.scroller.--single-page
+  .vue-recycle-scroller__item-wrapper {
+  min-height: calc(100vh - 156px) !important;
 }

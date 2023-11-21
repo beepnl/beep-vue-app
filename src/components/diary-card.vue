@@ -1,7 +1,7 @@
 <template>
-  <v-menu bottom left absolute offset-y>
-    <template v-slot:activator="{ on: menu }">
-      <v-card class="diary-card" outlined v-on="menu">
+  <v-menu>
+    <template v-slot:activator="{ props }">
+      <v-card class="diary-card" v-bind="props">
         <div style="width: 100%;">
           <v-row
             class="d-flex justify-space-between align-start mx-0"
@@ -102,7 +102,7 @@
                       class="d-flex flex-no-wrap justify-flex-start align-center"
                     >
                       <div class="mr-1 my-0">
-                        <v-icon class="red--text">
+                        <v-icon class="text-red">
                           mdi-clipboard-alert-outline
                         </v-icon>
                       </div>
@@ -131,19 +131,19 @@
                       <div class="mr-1 my-0">
                         <v-icon
                           v-if="inspection.impression === 1"
-                          class="red--text"
+                          class="text-red"
                         >
                           mdi-emoticon-sad
                         </v-icon>
                         <v-icon
                           v-if="inspection.impression === 3"
-                          class="green--text"
+                          class="text-green"
                         >
                           mdi-emoticon-happy
                         </v-icon>
                         <v-icon
                           v-if="inspection.impression === 2"
-                          class="orange--text"
+                          class="text-orange"
                         >
                           mdi-emoticon-neutral
                         </v-icon>
@@ -182,11 +182,10 @@
                         bottom
                         max-width="60%"
                       >
-                        <template v-slot:activator="{ on, attrs }">
+                        <template v-slot:activator="{ on }">
                           <span
-                            v-bind="attrs"
                             class="notes"
-                            v-on="on"
+                            v-bind="on"
                             v-text="inspection.notes"
                           >
                           </span>
@@ -221,8 +220,8 @@
                                 // eslint-disable-next-line vue/comma-dangle
                                 inspection.reminder_date
                               ).isBefore()
-                                ? 'red--text'
-                                : 'green--text'
+                                ? 'text-red'
+                                : 'text-green'
                             }`
                           "
                         >
@@ -243,8 +242,8 @@
                               // eslint-disable-next-line vue/comma-dangle
                               inspection.reminder_date
                             ).isBefore()
-                              ? 'red--text'
-                              : 'green--text'
+                              ? 'text-red'
+                              : 'text-green'
                           } mr-2`
                         "
                         v-text="inspection.reminder_date_day_month"
@@ -268,11 +267,10 @@
                         bottom
                         max-width="60%"
                       >
-                        <template v-slot:activator="{ on, attrs }">
+                        <template v-slot:activator="{ on }">
                           <span
-                            v-bind="attrs"
                             class="reminder"
-                            v-on="on"
+                            v-bind="on"
                             v-text="inspection.reminder"
                           >
                           </span>
@@ -296,68 +294,50 @@
       </v-card>
     </template>
 
-    <v-list dense>
-      <v-list-item-group>
-        <v-list-item
-          :to="{
-            name: 'hive-inspections',
-            params: { id: inspection.hive_id },
-            query: { search: 'id=' + inspection.id.toString() },
-          }"
-        >
-          <v-list-item-icon class="mr-3">
-            <v-icon>mdi-magnify</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title>{{
-              $tc('View_inspection', 1)
-            }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item
-          v-if="inspection.owner || inspection.owned_and_group"
-          :to="{
-            name: 'hive-inspect-edit',
-            params: {
-              id: inspection.hive_id,
-              inspection: inspection.id,
-            },
-          }"
-        >
-          <v-list-item-icon class="mr-3">
-            <v-icon>mdi-file-document-edit-outline</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title
-              v-text="`${$t('Edit_inspection')}`"
-            ></v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list-item-group>
+    <v-list>
+      <v-list-item
+        class="text-black"
+        :to="{
+          name: 'hive-inspections',
+          params: { id: inspection.hive_id },
+          query: { search: 'id=' + inspection.id.toString() },
+        }"
+        :prepend-icon="'mdi-magnify'"
+        :title="$tc('View_inspection', 1)"
+      >
+      </v-list-item>
+      <v-list-item
+        v-if="inspection.owner || inspection.owned_and_group"
+        class="text-black"
+        :to="{
+          name: 'hive-inspect-edit',
+          params: {
+            id: inspection.hive_id,
+            inspection: inspection.id,
+          },
+        }"
+        :prepend-icon="'mdi-file-document-edit-outline'"
+        :title="$t('Edit_inspection')"
+      >
+      </v-list-item>
 
       <v-divider
         v-if="inspection.owner || inspection.owned_and_group"
         class="my-1"
       ></v-divider>
 
-      <v-list-item-group>
-        <v-list-item
-          v-if="inspection.owner || inspection.owned_and_group"
-          @click="confirmDeleteInspection(inspection)"
-        >
-          <v-list-item-icon class="mr-3">
-            <v-icon class="red--text">mdi-delete</v-icon>
-          </v-list-item-icon>
+      <v-list-item
+        v-if="inspection.owner || inspection.owned_and_group"
+        @click="confirmDeleteInspection(inspection)"
+      >
+        <template v-slot:prepend>
+          <v-icon :icon="'mdi-delete'" class="text-red"> </v-icon>
+        </template>
 
-          <v-list-item-content>
-            <v-list-item-title class="red--text">{{
-              $t('remove_inspection')
-            }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list-item-group>
+        <v-list-item-title class="text-red">{{
+          $t('remove_inspection')
+        }}</v-list-item-title>
+      </v-list-item>
     </v-list>
   </v-menu>
 </template>
@@ -382,10 +362,11 @@ export default {
       required: false,
     },
   },
+  emits: ['confirm-delete-inspection'],
   computed: {
     ...mapGetters('inspections', ['diaryFilterByGroup']),
     smallScreen() {
-      return this.$vuetify.breakpoint.width < 910
+      return this.$vuetify.display.width < 910
     },
   },
   methods: {
@@ -398,9 +379,11 @@ export default {
 
 <style lang="scss" scoped>
 .diary-card {
+  min-height: 75px;
   height: 100%;
   padding: 10px;
   font-size: 0.8125rem !important;
+  border-color: $color-grey-light;
 
   @include for-tablet-landscape-up {
     padding: 12px;

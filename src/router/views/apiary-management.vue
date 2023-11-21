@@ -1,11 +1,9 @@
 <template>
   <Layout :title="$t('Apiary_management')">
     <v-form v-if="ready" ref="form" v-model="valid">
-      <v-toolbar v-if="ready" class="save-bar zindex4" dense light>
+      <v-toolbar v-if="ready" class="save-bar zindex4" density="compact" light>
         <v-spacer></v-spacer>
         <v-btn
-          tile
-          outlined
           color="black"
           class="save-button-mobile-wide mr-1"
           :disabled="
@@ -24,7 +22,7 @@
             color="disabled"
             indeterminate
           />
-          <v-icon v-if="!showLoadingIcon" left>mdi-check</v-icon>
+          <v-icon v-if="!showLoadingIcon" start>mdi-check</v-icon>
           {{
             $t('Move') +
               ' ' +
@@ -51,7 +49,7 @@
                   :normalizer="normalizerApiary"
                   :placeholder="`${$t('Select')} ${$tc('location', 1)}`"
                   :no-results-text="`${$t('no_results')}`"
-                  @input="selectAllHives(), setApiaryEdited(true)"
+                  @update:model-value="selectAllHives(), setApiaryEdited(true)"
                 />
               </v-col>
               <v-col
@@ -107,7 +105,7 @@
 
     <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">
       {{ snackbar.text }}
-      <v-btn color="accent" text @click="snackbar.show = false">
+      <v-btn color="accent " variant="text" @click="snackbar.show = false">
         {{ $t('Close') }}
       </v-btn>
     </v-snackbar>
@@ -118,12 +116,12 @@
 
 <script>
 import Api from '@api/Api'
+import Treeselect from 'vue3-treeselect'
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
-import Confirm from '@components/confirm.vue'
-import Layout from '@layouts/back.vue'
+import Confirm from '@/src/components/confirm-dialog.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
 import { mapGetters } from 'vuex'
 import { readGeneralInspections } from '@mixins/methodsMixin'
-import Treeselect from '@riophae/vue-treeselect'
 
 export default {
   components: {
@@ -166,7 +164,7 @@ export default {
       return this.$i18n.locale
     },
     mobile() {
-      return this.$vuetify.breakpoint.mobile
+      return this.$vuetify.display.xs
     },
     newApiaryName() {
       return this.apiaries.filter((apiary) => {
@@ -196,7 +194,7 @@ export default {
       )
     },
     sortedApiaries() {
-      var sortedApiaries = this.apiaries.slice().sort(function(a, b) {
+      const sortedApiaries = this.apiaries.slice().sort(function(a, b) {
         if (a.name > b.name) {
           return 1
         }
@@ -281,9 +279,10 @@ export default {
       if (this.$refs.form.validate()) {
         this.showLoadingIcon = true
         hives.map((hive) => {
-          var hiveWithNewApiaryId = { ...hive }
+          const hiveWithNewApiaryId = { ...hive }
           hiveWithNewApiaryId.location_id = this.newApiaryId
           this.updateHive(hiveWithNewApiaryId)
+          return true
         })
       } else {
         return false

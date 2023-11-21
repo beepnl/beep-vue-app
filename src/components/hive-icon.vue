@@ -8,7 +8,6 @@
       }`
     "
     height="auto"
-    @click="showHiveMenu($event)"
   >
     <div
       :class="
@@ -46,10 +45,11 @@ export default {
       default: false,
     },
     showHive: {
-      type: Boolean,
+      type: Boolean, // TODO-VUE3 fix hive-card menu overlay + showHive boolean
       default: false,
     },
   },
+  emits: ['show-hive-menu'],
   computed: {
     ...mapGetters('locations', ['hiveView']),
     xsView() {
@@ -74,7 +74,7 @@ export default {
     },
     hiveWidth: function(hive) {
       if (hive.layers.length > 0) {
-        var maxFramecount = this.getMaxFramecount(hive.layers)
+        const maxFramecount = this.getMaxFramecount(hive.layers)
         if (this.xsView || this.diaryView) {
           return maxFramecount * 3.5
         } else {
@@ -84,9 +84,10 @@ export default {
         return 20
       }
     },
-    showHiveMenu(event) {
-      this.$emit('show-hive-menu', event)
-    },
+    // showHiveMenu(event) {
+    //     @click="showHiveMenu($event)"
+    //   this.$emit('show-hive-menu', event)
+    // },
   },
 }
 </script>

@@ -1,8 +1,8 @@
 <template>
   <span>
-    <v-menu bottom right>
-      <template v-slot:activator="{ on }">
-        <v-btn icon v-on="on">
+    <v-menu location="bottom" right>
+      <template v-slot:activator="{ props }">
+        <v-btn variant="text" icon v-bind="props">
           <v-icon class="color-black">mdi-plus-circle-outline</v-icon>
         </v-btn>
       </template>
@@ -12,16 +12,11 @@
           <v-list-item
             v-if="item.show"
             :key="`i-${index}`"
+            :prepend-icon="item.icon"
+            :title="item.title"
             :to="item.route ? { name: item.route } : null"
             exact
           >
-            <v-list-item-icon class="mr-3">
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-item-icon>
-
-            <v-list-item-content>
-              <v-list-item-title v-text="item.title"></v-list-item-title>
-            </v-list-item-content>
           </v-list-item>
         </template>
       </v-list>
