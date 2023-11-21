@@ -1076,6 +1076,10 @@ const translations = {
   remind_datetime: 'Notification date & time',
 
   Select_image: 'Select image',
+  cumulative_daily_weight_anomaly: 'Cumulative daily weight anomaly',
+  colony_failure_weight_history:
+    'Probability of winter failure based on weight history',
+  more_info: 'more information',
 }
 
 export default translations

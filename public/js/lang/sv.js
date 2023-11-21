@@ -703,6 +703,11 @@ const translations = {
     'För att komma igång finns det några förinställda varningsregler som du kan använda (och anpassa till dina behov). Dessutom kan du skapa dina egna varningsregler.',
   alertrules_url_text:
     "Gå till 'Alert settings' för att skapa din första varningsregel",
+  Source: 'Source',
+  db_influx: 'Influx Database',
+  lambda_model: 'Lambda Model',
+  open_weather: 'Open Weather',
+
   Apiary_management: 'Bigårdsskötsel',
   Move: 'Flytta',
   Current_apiary: 'Nuvarande bigård',
@@ -1130,6 +1135,10 @@ const translations = {
   remind_datetime: 'Notification date & time',
 
   Select_image: 'Select image',
+  cumulative_daily_weight_anomaly: 'Cumulative daily weight anomaly',
+  colony_failure_weight_history:
+    'Probability of winter failure based on weight history',
+  more_info: 'more information',
 }
 
 export default translations

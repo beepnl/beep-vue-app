@@ -723,6 +723,11 @@ const translations = {
     'Pentru a putea începe, există câteva reguli implicite de alertă pe care le puteți utiliza (și adapta la propriile nevoi). În plus, vă puteți crea propriile reguli de alertă.',
   alertrules_url_text:
     'Accesați „Setări de alertă” pentru a crea prima regulă de alertă',
+  Source: 'Source',
+  db_influx: 'Influx Database',
+  lambda_model: 'Lambda Model',
+  open_weather: 'Open Weather',
+
   Apiary_management: 'Managementul stupinei',
   Move: 'Mutați',
   Current_apiary: 'Stupina actuală',
@@ -1150,6 +1155,10 @@ const translations = {
   remind_datetime: 'Notification date & time',
 
   Select_image: 'Select image',
+  cumulative_daily_weight_anomaly: 'Cumulative daily weight anomaly',
+  colony_failure_weight_history:
+    'Probability of winter failure based on weight history',
+  more_info: 'more information',
 }
 
 export default translations

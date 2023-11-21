@@ -746,6 +746,11 @@ const translations = {
     'Para que possa começar, note que existem algumas regras de alerta padrão que pode usar (e adaptar às suas próprias necessidades). Além disso, pode criar suas próprias regras de alerta.',
   alertrules_url_text:
     "Vá a 'Definições de alerta', para criar a sua primeira regra de alerta",
+  Source: 'Source',
+  db_influx: 'Influx Database',
+  lambda_model: 'Lambda Model',
+  open_weather: 'Open Weather',
+
   Apiary_management: 'Gestão do apiário',
   Move: 'Mover',
   Current_apiary: 'Apiário atual',
@@ -1176,6 +1181,10 @@ const translations = {
   remind_datetime: 'Notification date & time',
 
   Select_image: 'Select image',
+  cumulative_daily_weight_anomaly: 'Cumulative daily weight anomaly',
+  colony_failure_weight_history:
+    'Probability of winter failure based on weight history',
+  more_info: 'more information',
 }
 
 export default translations

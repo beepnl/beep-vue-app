@@ -669,6 +669,11 @@ const translations = {
     'Om je op weg te helpen zijn er een aantal standaardinstellingen die je kan gebruiken (en aanpassen naar eigen behoefte). Je kan ook zelf een nieuwe notificatie-instelling maken.',
   alertrules_url_text:
     "Ga naar 'notificaties beheren' om je eerste notificatie in te stellen",
+  Source: 'Bron',
+  db_influx: 'Influx Database',
+  lambda_model: 'Lambda Model',
+  open_weather: 'Open Weather',
+
   Apiary_management: 'Bijenstand management',
   Move: 'Verplaats',
   Current_apiary: 'Huidige bijenstand',
@@ -1093,6 +1098,10 @@ const translations = {
   remind_datetime: 'Herinneringsdatum en -tijd',
 
   Select_image: 'Selecteer afbeelding',
+  cumulative_daily_weight_anomaly: 'Cumulatieve dagelijkse gewichtsafwijking',
+  colony_failure_weight_history:
+    'Kans op winterfalen gebaseerd op gewichtshistorie',
+  more_info: 'meer informatie',
 }
 
 export default translations

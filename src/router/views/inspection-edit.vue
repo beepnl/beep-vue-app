@@ -651,7 +651,7 @@
 
     <OfflineInspection
       v-if="offlineMode"
-      :selected-checklist="selectedChecklist"
+      :selected-checklist="selectedChecklistWithSuffixes"
       :checklist-svg-already-saved="checklistSvgAlreadySaved"
       :checklist-svg-different-app-version="checklistSvgDifferentAppVersion"
       :checklist-svg-id="checklistSvgId"
@@ -672,7 +672,7 @@ import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 import ChecklistFieldset from '@components/checklist-fieldset.vue'
 import Confirm from '@/src/components/confirm-dialog.vue'
-import dummyOutput from '@components/svg/scan_results_aws_twisted.json' // list.json' // test_4_dummy.json'
+// import testOutput from '@components/svg/scan_results.json' // enable for debugging
 import InspectModeSelector from '@components/inspect-mode-selector.vue'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import Layout from '@/src/router/layouts/back-layout.vue'
@@ -783,8 +783,9 @@ export default {
       checklistSvgId: null,
       newSvgName: null,
       errorMessage: null,
-      dummyOutput,
-      enableDummyOutput: true, // true, TODO for testing, remove later
+      // testOutput, // enable for debugging
+      testOutput: null, // disable for debugging
+      enableTestOutput: false, // true for debugging
       showChecklistSvgExp: false,
       printExpBullets: 4,
     }
@@ -973,7 +974,7 @@ export default {
           this.permissions.includes('offline-input')) &&
         (this.queriedMode === 'parse' ||
           this.forceParseMode === true ||
-          localStorage.beepSelectedInspectionMode === 'Parse') // TODO remove queried parse mode when enableDummyOutput is removed
+          localStorage.beepSelectedInspectionMode === 'Parse') // TODO remove queried parse mode when enableTestOutput is removed
       )
     },
     preSelectedChecklistId() {
@@ -1627,8 +1628,8 @@ export default {
     },
     getParsedAnswer(id) {
       const parsedData =
-        this.enableDummyOutput && this.queriedMode === 'parse' // TODO remove when enableDummyOutput is removed
-          ? this.dummyOutput
+        this.enableTestOutput && this.queriedMode === 'parse' // TODO remove when enableTestOutput is removed
+          ? this.testOutput
           : this.parsedOfflineInput
       const items = parsedData.scans.map((el) => {
         return el.scan.filter(
@@ -1716,7 +1717,7 @@ export default {
           : null
       }
       if (this.checklistSvgs.length === 0) {
-        // TODO disable when enableDummyOutput is disabled
+        // TODO disable when enableTestOutput is disabled
         this.readChecklistSvgs()
       }
       this.forceParseMode = true // TODO finetune parse mode + where to switch it off?
@@ -1730,11 +1731,11 @@ export default {
           this.showCategoriesByIndex.push(true)
         }
       }
-      if (this.enableDummyOutput && this.queriedMode === 'parse') {
-        // TODO disable when enableDummyOutput is disabled
+      if (this.enableTestOutput && this.queriedMode === 'parse') {
+        // TODO disable when enableTestOutput is disabled
         this.$store.commit('inspections/setData', {
           prop: 'parsedOfflineInput',
-          value: this.dummyOutput,
+          value: this.testOutput,
         })
       }
       this.storeInspectionMode('')

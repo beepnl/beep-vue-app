@@ -827,6 +827,11 @@ const translations = {
     'Pour démarrer, vous pouvez utiliser plusieurs alertes préconfigurées (et les adapter à vos besoins). Vous pouvez également créer vos propres alertes.',
   alertrules_url_text:
     'Aller dans "réglages d\'alerte" pour créer votre propre règle',
+  Source: 'Source',
+  db_influx: 'Influx Database',
+  lambda_model: 'Lambda Model',
+  open_weather: 'Open Weather',
+
   Apiary_management: 'Gestion du rucher',
   Move: 'Déplacer',
   Current_apiary: 'Rucher actuel',
@@ -1257,6 +1262,10 @@ const translations = {
   remind_datetime: 'Notification date & time',
 
   Select_image: 'Select image',
+  cumulative_daily_weight_anomaly: 'Cumulative daily weight anomaly',
+  colony_failure_weight_history:
+    'Probability of winter failure based on weight history',
+  more_info: 'more information',
 }
 
 export default translations

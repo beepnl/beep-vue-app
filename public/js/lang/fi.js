@@ -753,6 +753,11 @@ const translations = {
     'Voit käyttää valmiita oletusvaroitussääntöjä, ja mukauttaa niitä omiin tarpeisiisi. Lisäksi voit luoda omia hälytyssääntöjä.',
   alertrules_url_text:
     'Luo ensimmäinen hälytyssääntö siirtymällä kohtaan Hälytysasetukset',
+  Source: 'Source',
+  db_influx: 'Influx Database',
+  lambda_model: 'Lambda Model',
+  open_weather: 'Open Weather',
+
   Apiary_management: 'Mehiläistarhan hallinta',
   Move: 'Siirrä',
   Current_apiary: 'Nykyinen mehiläistarha',
@@ -1183,6 +1188,10 @@ const translations = {
   remind_datetime: 'Notification date & time',
 
   Select_image: 'Select image',
+  cumulative_daily_weight_anomaly: 'Cumulative daily weight anomaly',
+  colony_failure_weight_history:
+    'Probability of winter failure based on weight history',
+  more_info: 'more information',
 }
 
 export default translations

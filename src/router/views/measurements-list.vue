@@ -267,7 +267,10 @@
             <v-col v-if="weatherSensorsPresent" cols="12" :md="chartCols">
               <div
                 v-if="selectedDevice"
-                class="text-overline mt-0 mt-sm-3 mb-3 text-center"
+                :class="
+                  'text-overline text-center mt-0 mt-sm-3 ' +
+                    (someSensorsHaveInfo && chartCols !== 12 ? 'mb-8' : 'mb-3')
+                "
                 v-text="
                   !mobile
                     ? $t('weather') +
@@ -306,7 +309,14 @@
               >
                 <div
                   v-if="index === 0"
-                  class="text-overline mt-0 mt-sm-3 mb-3 text-center"
+                  :class="
+                    'text-overline text-center mt-0 mt-sm-3 ' +
+                      (someSensorsHaveInfo &&
+                      !hasInfo(sensor) &&
+                      chartCols !== 12
+                        ? 'mb-8'
+                        : 'mb-3')
+                  "
                   v-text="
                     measurementData.resolution
                       ? $tc('measurement', 2) +
@@ -320,8 +330,58 @@
                 ></div>
                 <div
                   v-else-if="chartCols !== 12"
-                  class="header-filler my-3"
+                  :class="
+                    'header-filler ' +
+                      (someSensorsHaveInfo && !hasInfo(sensor)
+                        ? 'mt-3 mb-8'
+                        : 'my-3')
+                  "
                 ></div>
+                <div
+                  v-if="hasInfo(sensor)"
+                  :class="
+                    'd-flex flex-column align-center' +
+                      (chartCols !== 12 ? ' mt-n3' : '')
+                  "
+                >
+                  <div class="d-flex justify-start align-center">
+                    <div class="overline text-center"
+                      >{{ $t(getSensorMeasurement(sensor).abbreviation) }}
+                    </div>
+                    <v-icon
+                      class="mdi mdi-information ml-1 cursor-pointer"
+                      dark
+                      size="14"
+                      :color="
+                        sensorInfo.indexOf(sensor) > -1 ? 'accent' : 'grey'
+                      "
+                      @click="toggleSensorInfo(sensor)"
+                    ></v-icon>
+                  </div>
+
+                  <p
+                    v-if="hasInfo(sensor) && sensorInfo.indexOf(sensor) > -1"
+                    class="mt-n1 mb-1 d-flex font-italic"
+                  >
+                    <span
+                      v-text="
+                        $t('Source') +
+                          ': ' +
+                          $t(getSensorMeasurement(sensor).data_source_type) +
+                          ' - '
+                      "
+                    >
+                    </span>
+                    <span class="ml-1 color-accent">
+                      <a
+                        :href="getSensorMeasurement(sensor).data_repository_url"
+                        target="_blank"
+                        >{{ $t('more_info') }}</a
+                      ></span
+                    >
+                  </p>
+                </div>
+
                 <div>
                   <MeasurementsChartLine
                     :chart-data="chartjsDataSeries([sensor])"
@@ -348,6 +408,11 @@
               class="mb-6"
               :md="chartCols"
             >
+              <div
+                v-if="chartCols !== 12 && someSensorsHaveInfo"
+                class="header-filler"
+              ></div>
+
               <div
                 class="text-overline mt-0 mt-sm-3 mb-3 text-center"
                 v-text="$t('Sound_measurements')"
@@ -380,6 +445,11 @@
                 :md="chartCols"
               >
                 <div
+                  v-if="index === 0 && chartCols !== 12 && someSensorsHaveInfo"
+                  class="header-filler"
+                ></div>
+
+                <div
                   v-if="index === 0"
                   class="text-overline mt-n4 mt-sm-3 mb-3 text-center"
                   v-text="
@@ -388,7 +458,9 @@
                 ></div>
                 <div
                   v-else-if="chartCols !== 12"
-                  class="header-filler my-3"
+                  :class="
+                    'header-filler ' + (someSensorsHaveInfo ? 'mt-6 mb-8' : '')
+                  "
                 ></div>
                 <div>
                   <MeasurementsChartLine
@@ -544,6 +616,7 @@ export default {
       relativeInterval: true,
       hideScrollBar: false,
       showLoadingIcon: false,
+      sensorInfo: [],
     }
   },
   computed: {
@@ -866,6 +939,11 @@ export default {
     smAndDown() {
       return this.$vuetify.display.smAndDown
     },
+    someSensorsHaveInfo() {
+      return (
+        this.currentSensors.filter((sensor) => this.hasInfo(sensor)).length > 0
+      )
+    },
     sortedCurrentSoundSensors() {
       const sorted = Object.keys(this.currentSoundSensors)
         .sort(function(a, b) {
@@ -1070,6 +1148,26 @@ export default {
           console.log('Error: ', error)
         }
       }
+    },
+    alertInPeriod(alert) {
+      const created = this.momentFormatUtcToLocal(
+        alert.created_at,
+        this.dateTimeFormat
+      )
+      const updated = this.momentFormatUtcToLocal(
+        alert.updated_at,
+        this.dateTimeFormat
+      )
+
+      const periodLongerThanAlert =
+        this.dateWithinPeriod(alert, 'created_at') ||
+        (created !== updated && this.dateWithinPeriod(alert, 'updated_at'))
+      const alertLongerThanPeriod =
+        created !== updated &&
+        created <= this.periodStartString &&
+        updated >= this.periodEndString
+
+      return periodLongerThanAlert || alertLongerThanPeriod
     },
     alertsForCharts(sensorArray) {
       const alertsForCharts = this.alertsForDeviceAndPeriod.filter((alert) =>
@@ -1297,6 +1395,13 @@ export default {
           return true
         })
     },
+    dateWithinPeriod(item, dateProp) {
+      const date = this.momentFormatUtcToLocal(
+        item[dateProp],
+        this.dateTimeFormat
+      )
+      return date <= this.periodEndString && date >= this.periodStartString
+    },
     deviceExists(deviceId) {
       return (
         this.devices.filter((device) => device.id === parseInt(deviceId))
@@ -1384,33 +1489,9 @@ export default {
         ? 'bv_notbeep'
         : name
     },
-    alertInPeriod(alert) {
-      const created = this.momentFormatUtcToLocal(
-        alert.created_at,
-        this.dateTimeFormat
-      )
-      const updated = this.momentFormatUtcToLocal(
-        alert.updated_at,
-        this.dateTimeFormat
-      )
-
-      const periodLongerThanAlert =
-        this.dateWithinPeriod(alert, 'created_at') ||
-        (created !== updated && this.dateWithinPeriod(alert, 'updated_at'))
-      const alertLongerThanPeriod =
-        created !== updated &&
-        created <= this.periodStartString &&
-        updated >= this.periodEndString
-
-      return periodLongerThanAlert || alertLongerThanPeriod
-    },
-
-    dateWithinPeriod(item, dateProp) {
-      const date = this.momentFormatUtcToLocal(
-        item[dateProp],
-        this.dateTimeFormat
-      )
-      return date <= this.periodEndString && date >= this.periodStartString
+    hasInfo(abbr) {
+      const mt = this.getSensorMeasurement(abbr)
+      return mt !== null && mt.data_repository_url !== null
     },
     invalidDates(dates) {
       return (
@@ -1638,6 +1719,14 @@ export default {
         this.timer = 0
       }
     },
+    toggleSensorInfo(abbr) {
+      if (this.sensorInfo.indexOf(abbr) > -1) {
+        this.sensorInfo.splice(this.sensorInfo.indexOf(abbr), 1)
+      } else {
+        this.sensorInfo.push(abbr)
+      }
+    },
+
     zoomTo(period, date) {
       this.timeIndex = this.calculateTimeIndex(period, date, true)
       this.interval = period
