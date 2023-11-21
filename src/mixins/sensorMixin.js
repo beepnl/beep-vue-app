@@ -41,6 +41,8 @@ export const sensorMixin = {
         't_7',
         't_8',
         't_9',
+        'cumulative_daily_weight_anomaly',
+        'colony_failure_weight_history',
       ], // not actuators
       COMPARE: ['mean_weight_kg', 'mean_net_weight_kg'], // used to compare measurements
       COMPARE_SENSOR: {

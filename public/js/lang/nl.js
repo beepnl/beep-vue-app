@@ -1096,6 +1096,11 @@ const translations = {
   Upload_pagenr: 'Upload hier pagina [pagenr]',
   Datetime_of_inspection: 'Inspectiedatum en -tijd',
   remind_datetime: 'Herinneringsdatum en -tijd',
+
+  cumulative_daily_weight_anomaly: 'Cumulatieve dagelijkse gewichtsafwijking',
+  colony_failure_weight_history:
+    'Kans op winterfalen gebaseerd op gewichtshistorie',
+  more_info: 'meer informatie',
 }
 
 export default translations
