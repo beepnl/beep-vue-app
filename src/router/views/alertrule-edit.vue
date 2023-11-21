@@ -177,6 +177,24 @@
                 class="beep-label mt-n4 mb-3"
                 v-text="$t('only_active_if_measurement_present')"
               ></div>
+              <div
+                v-if="measurement.data_source_type !== 'db_influx'"
+                class="font-small mt-n2"
+              >
+                {{ $t('Source') + ': ' + $t(measurement.data_source_type) }}
+                <v-icon
+                  class="mdi mdi-information ml-1"
+                  dark
+                  small
+                  :color="showSourceLink ? 'accent' : 'grey'"
+                  @click="showSourceLink = !showSourceLink"
+                ></v-icon>
+              </div>
+              <span v-if="showSourceLink" class="font-small color-accent">
+                <a :href="measurement.data_repository_url" target="_blank">{{
+                  measurement.data_repository_url
+                }}</a></span
+              >
             </v-col>
 
             <v-col cols="12" sm="6" md="3">
@@ -417,6 +435,7 @@ export default {
       newAlertRuleNumber: 1,
       newAlertRuleLocation: null,
       showAllMeasurements: false,
+      showSourceLink: false,
     }
   },
   computed: {

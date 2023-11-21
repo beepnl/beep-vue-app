@@ -668,17 +668,17 @@ const translations = {
   Select_default_alertrule: 'Kopiera förvald varningsregel',
   /* below, please keep all terms between [] as is: */
   alertrule_main_sentence:
-    'Jag vill ha en varning om (uträkning) (jämförelse) av  (mätningen_mängden) (komparatorn) (gräns_värde)(mätning_enhet). Denna beräkning kommer att genomföras (beräkning_minuter)',
+    'Jag vill ha en varning om [calculation] [comparison] av [measurement_quantity] [comparator] [threshold_value][measurement_unit]. Denna beräkning kommer att genomföras [calculation_minutes]',
   alertrule_occurences_direct_sentence:
     ', och jag vill ha varningen så snart det inträffar. ',
   alertrule_occurences_indirect_sentence:
     ', men jag vill ha varningen endast om det inträffar (återkommande) gånger. ',
   alertrule_exclude_months_sentence:
-    'Denna varning deaktiveras under följande månader (exkludera månader). ',
+    'Denna varning deaktiveras under följande månader [exclude_months]. ',
   alertrule_exclude_hours_sentence:
-    'Denna varning kommer att deaktiveras under följande timmar (exkludera timmar). ',
+    'Denna varning kommer att deaktiveras under följande timmar [exclude_hours]. ',
   alertrule_exclude_hives_sentence:
-    'Denna varning deaktiveras för följande kupor (uteslut kup idn).',
+    'Denna varning deaktiveras för följande kupor [exclude_hive_ids].',
   min: 'minimum',
   max: 'maximum',
   ave: 'medeltal',
@@ -705,6 +705,11 @@ const translations = {
     'För att komma igång finns det några förinställda varningsregler som du kan använda (och anpassa till dina behov). Dessutom kan du skapa dina egna varningsregler.',
   alertrules_url_text:
     "Gå till 'Alert settings' för att skapa din första varningsregel",
+  Source: 'Source',
+  db_influx: 'Influx Database',
+  lambda_model: 'Lambda Model',
+  open_weather: 'Open Weather',
+
   Apiary_management: 'Bigårdsskötsel',
   Move: 'Flytta',
   Current_apiary: 'Nuvarande bigård',
@@ -1130,6 +1135,11 @@ const translations = {
   Upload_pagenr: 'Upload page [pagenr] here',
   Datetime_of_inspection: 'Date & time of inspection',
   remind_datetime: 'Notification date & time',
+
+  cumulative_daily_weight_anomaly: 'Cumulative daily weight anomaly',
+  colony_failure_weight_history:
+    'Probability of winter failure based on weight history',
+  more_info: 'more information',
 }
 
 export default translations

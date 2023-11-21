@@ -630,6 +630,11 @@ const translations = {
     'Chcete-li začít, existuje několik výchozích pravidel výstrah, která můžete použít (a přizpůsobit svým vlastním potřebám). Kromě toho si můžete vytvořit vlastní pravidla výstrah.',
   alertrules_url_text:
     'Přejděte na „Nastavení upozornění“ a vytvořte své první pravidlo upozornění',
+  Source: 'Source',
+  db_influx: 'Influx Database',
+  lambda_model: 'Lambda Model',
+  open_weather: 'Open Weather',
+
   Apiary_management: 'Správa včelína',
   Move: 'Přesunout',
   Current_apiary: 'Současný včelín',
@@ -1044,6 +1049,13 @@ const translations = {
 
   /* below, please keep [pagenr] as is, it will be replaced by the pagenumber to be uploaded */
   Upload_pagenr: 'Nahrát stránku [pagenr] sem',
+  Datetime_of_inspection: 'Date & time of inspection',
+  remind_datetime: 'Notification date & time',
+
+  cumulative_daily_weight_anomaly: 'Cumulative daily weight anomaly',
+  colony_failure_weight_history:
+    'Probability of winter failure based on weight history',
+  more_info: 'more information',
 }
 
 export default translations

@@ -713,6 +713,11 @@ const translations = {
     'Για να ξεκινήσετε, υπάρχουν μερικοί προεπιλεγμένοι κανόνες ειδοποίησης που μπορείτε να χρησιμοποιήσετε (και να προσαρμόσετε στις δικές σας ανάγκες). Επιπλέον, μπορείτε να δημιουργήσετε τους δικούς σας κανόνες ειδοποίησης.',
   alertrules_url_text:
     "Μεταβείτε στις 'Ρυθμίσεις ειδοποίησης'' για να δημιουργήσετε τον πρώτο σας κανόνα ειδοποίησης",
+  Source: 'Source',
+  db_influx: 'Influx Database',
+  lambda_model: 'Lambda Model',
+  open_weather: 'Open Weather',
+
   Apiary_management: 'Διαχείριση μελισσοκομείου',
   Move: 'Μετακίνηση',
   Current_apiary: 'Τρέχων μελισσοκομείο',
@@ -1142,6 +1147,11 @@ const translations = {
   Upload_pagenr: 'Upload page [pagenr] here',
   Datetime_of_inspection: 'Date & time of inspection',
   remind_datetime: 'Notification date & time',
+
+  cumulative_daily_weight_anomaly: 'Cumulative daily weight anomaly',
+  colony_failure_weight_history:
+    'Probability of winter failure based on weight history',
+  more_info: 'more information',
 }
 
 export default translations

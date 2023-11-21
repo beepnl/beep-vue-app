@@ -721,6 +721,11 @@ const translations = {
     'Per iniziare ci sono già impostazioni per alcuni messaggi di allerta che puoi usare (e adattare ai tuoi bisogni). In aggiunta, puoi creare le tue regole per nuovi messaggi di allerta.',
   alertrules_url_text:
     "Vai a'Impostazioni messaggi di allerta' per creare la tua prima regola per messaggi di allerta",
+  Source: 'Source',
+  db_influx: 'Influx Database',
+  lambda_model: 'Lambda Model',
+  open_weather: 'Open Weather',
+
   Apiary_management: 'Gestione apiario',
   Move: 'Muovi',
   Current_apiary: 'Apiario attuale',
@@ -1147,6 +1152,11 @@ const translations = {
   Upload_pagenr: 'Upload page [pagenr] here',
   Datetime_of_inspection: 'Date & time of inspection',
   remind_datetime: 'Notification date & time',
+
+  cumulative_daily_weight_anomaly: 'Cumulative daily weight anomaly',
+  colony_failure_weight_history:
+    'Probability of winter failure based on weight history',
+  more_info: 'more information',
 }
 
 export default translations
