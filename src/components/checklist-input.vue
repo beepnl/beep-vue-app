@@ -9,6 +9,7 @@
       :parsed-images="parsedImages"
       :parsed-items="parsedItems"
       :check-answer="checkAnswer"
+      :text-area="item.input === 'text'"
     ></labelWithDescription>
 
     <selectHiveOrApiary
@@ -283,7 +284,7 @@
 <script>
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
-import dummyOutput from '@components/svg/scan_results_aws.json' // list.json' // test_4_dummy.json' TODO remove dummy output
+// import testOutput from '@components/svg/scan_results.json' // enable for debugging
 import imageUploader from '@components/input-fields/image-uploader.vue'
 import sampleCode from '@components/input-fields/sample-code.vue'
 import selectHiveOrApiary from '@components/input-fields/select-hive-or-apiary.vue'
@@ -344,8 +345,9 @@ export default {
       savedNrOfDecimals: 0,
       checkAnswer: true,
       booleanDefault: [1, 0],
-      dummyOutput,
-      enableDummyOutput: true, // true, TODO for testing, remove later
+      // testOutput, // enable for debugging
+      testOutput: null, // disable for debugging
+      enableTestOutput: false, // true for debugging
     }
   },
   computed: {
@@ -427,8 +429,8 @@ export default {
     parsedAnswerRaw() {
       if (this.parseMode) {
         var parsedData =
-          this.enableDummyOutput && this.queriedParseMode
-            ? this.dummyOutput
+          this.enableTestOutput && this.queriedParseMode
+            ? this.testOutput
             : this.parsedOfflineInput
         var returnedItems = parsedData.scans
           .map((el) => {
@@ -491,7 +493,7 @@ export default {
       }
     },
     queriedParseMode() {
-      return this.$route.query.mode === 'parse' // TODO remove when enableDummyOutput is removed
+      return this.$route.query.mode === 'parse' // TODO remove when enableTestOutput is removed
     },
   },
   created() {

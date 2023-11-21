@@ -518,7 +518,7 @@
                         <v-col cols="12">
                           <labelWithDescription
                             :plain-text="$t('notes')"
-                            :text-area="true"
+                            :wide-note="true"
                             :parse-mode="parseMode"
                             :check-answer="activeInspection.notes === null"
                             :parsed-images="parsedImages['notes']"
@@ -606,7 +606,7 @@
                         <v-col cols="12" sm="8">
                           <labelWithDescription
                             :plain-text="$t('reminder')"
-                            :text-area="true"
+                            :wide-note="true"
                             :parse-mode="parseMode"
                             :check-answer="
                               activeInspection['reminder'] === null
@@ -652,7 +652,7 @@
 
     <OfflineInspection
       v-if="offlineMode"
-      :selected-checklist="selectedChecklist"
+      :selected-checklist="selectedChecklistWithSuffixes"
       :checklist-svg-already-saved="checklistSvgAlreadySaved"
       :checklist-svg-different-app-version="checklistSvgDifferentAppVersion"
       :checklist-svg-id="checklistSvgId"
@@ -673,7 +673,7 @@ import checklistFieldset from '@components/checklist-fieldset.vue'
 import Confirm from '@components/confirm.vue'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.min.css'
-import dummyOutput from '@components/svg/scan_results_aws.json' // list.json' // test_4_dummy.json'
+// import testOutput from '@components/svg/scan_results.json' // enable for debugging
 import InspectModeSelector from '@components/inspect-mode-selector.vue'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import Layout from '@layouts/back.vue'
@@ -788,8 +788,9 @@ export default {
       checklistSvgId: null,
       newSvgName: null,
       errorMessage: null,
-      dummyOutput,
-      enableDummyOutput: true, // true, TODO for testing, remove later
+      // testOutput, // enable for debugging
+      testOutput: null, // disable for debugging
+      enableTestOutput: false, // true for debugging
       showChecklistSvgExp: false,
       printExpBullets: 4,
     }
@@ -978,7 +979,7 @@ export default {
           this.permissions.includes('offline-input')) &&
         (this.queriedMode === 'parse' ||
           this.forceParseMode === true ||
-          localStorage.beepSelectedInspectionMode === 'Parse') // TODO remove queried parse mode when enableDummyOutput is removed
+          localStorage.beepSelectedInspectionMode === 'Parse') // TODO remove queried parse mode when enableTestOutput is removed
       )
     },
     preSelectedChecklistId() {
@@ -1619,8 +1620,8 @@ export default {
     },
     getParsedAnswer(id) {
       var parsedData =
-        this.enableDummyOutput && this.queriedMode === 'parse' // TODO remove when enableDummyOutput is removed
-          ? this.dummyOutput
+        this.enableTestOutput && this.queriedMode === 'parse' // TODO remove when enableTestOutput is removed
+          ? this.testOutput
           : this.parsedOfflineInput
       var items = parsedData.scans.map((el) => {
         return el.scan.filter(
@@ -1706,7 +1707,7 @@ export default {
           : null
       }
       if (this.checklistSvgs.length === 0) {
-        // TODO disable when enableDummyOutput is disabled
+        // TODO disable when enableTestOutput is disabled
         this.readChecklistSvgs()
       }
       this.forceParseMode = true // TODO finetune parse mode + where to switch it off?
@@ -1720,11 +1721,11 @@ export default {
           this.showCategoriesByIndex.push(true)
         }
       }
-      if (this.enableDummyOutput && this.queriedMode === 'parse') {
-        // TODO disable when enableDummyOutput is disabled
+      if (this.enableTestOutput && this.queriedMode === 'parse') {
+        // TODO disable when enableTestOutput is disabled
         this.$store.commit('inspections/setData', {
           prop: 'parsedOfflineInput',
-          value: this.dummyOutput,
+          value: this.testOutput,
         })
       }
       this.storeInspectionMode('')
