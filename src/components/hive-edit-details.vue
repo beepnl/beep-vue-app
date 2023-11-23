@@ -65,6 +65,7 @@
                 position="relative"
                 :swatches="swatchesHive"
                 :modes="['rgb']"
+                :mode="'rgb'"
                 show-swatches
                 hide-canvas
               >

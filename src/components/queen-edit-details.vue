@@ -141,6 +141,7 @@
                     class="flex-color-picker queen-color-picker"
                     :swatches="swatchesQueen"
                     :modes="['rgb']"
+                    :mode="'rgb'"
                     show-swatches
                     canvas-height="120"
                   ></v-color-picker>

@@ -144,7 +144,10 @@
                     ></v-sheet>
                   </div>
 
-                  <v-overlay v-model="overlay">
+                  <v-overlay
+                    v-model="overlay"
+                    class="align-center justify-center"
+                  >
                     <v-toolbar
                       class="hive-color-picker-toolbar"
                       density="compact"
@@ -169,8 +172,8 @@
                       :swatches="swatchesGroup"
                       show-swatches
                       hide-canvas
-                      light
-                      flat
+                      :modes="['rgb']"
+                      :mode="'rgb'"
                     >
                     </v-color-picker>
 

@@ -133,11 +133,13 @@
                         ></v-sheet>
                       </div>
 
-                      <v-overlay v-model="overlay">
+                      <v-overlay
+                        v-model="overlay"
+                        class="align-center justify-center"
+                      >
                         <v-toolbar
                           class="hive-color-picker-toolbar"
                           density="compact"
-                          light
                           flat
                         >
                           <div
@@ -155,11 +157,12 @@
                         <v-color-picker
                           v-model="colorPicker"
                           class="hive-color-picker flex-color-picker"
+                          position="relative"
                           :swatches="swatchesApiary"
                           show-swatches
+                          :modes="['rgb']"
+                          :mode="'rgb'"
                           hide-canvas
-                          light
-                          flat
                         >
                         </v-color-picker>
 
@@ -181,10 +184,12 @@
 
                       <v-switch
                         v-if="newHive"
-                        v-model="newHive.roofed"
                         class="ml-1"
-                        :label="`${$t('roofed')}`"
-                        @update:model-value="setApiaryEdited(true)"
+                        :model-value="newHive.roofed"
+                        :label="$t('roofed')"
+                        :true-value="1"
+                        :false-value="0"
+                        @update:model-value="editApiary($event, 'roofed')"
                       ></v-switch>
                     </v-col>
                   </v-row>

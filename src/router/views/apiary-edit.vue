@@ -94,7 +94,10 @@
                     ></v-sheet>
                   </div>
 
-                  <v-overlay v-model="overlay">
+                  <v-overlay
+                    v-model="overlay"
+                    class="align-center justify-center"
+                  >
                     <v-toolbar
                       class="hive-color-picker-toolbar"
                       density="compact"
@@ -119,7 +122,8 @@
                       :swatches="swatchesApiary"
                       show-swatches
                       hide-canvas
-                      light
+                      :modes="['rgb']"
+                      :mode="'rgb'"
                       flat
                     >
                     </v-color-picker>
@@ -142,9 +146,11 @@
 
                   <v-switch
                     v-if="activeApiary"
-                    v-model="activeApiary.roofed"
-                    :label="`${$t('roofed')}`"
-                    @update:model-value="setApiaryEdited(true)"
+                    :model-value="activeApiary.roofed"
+                    :label="$t('roofed')"
+                    :true-value="1"
+                    :false-value="0"
+                    @update:model-value="editApiary($event, 'roofed')"
                   ></v-switch>
                 </v-col>
               </v-row>
@@ -250,6 +256,7 @@
                     :label="`${$t('City')}`"
                     variant="outlined"
                     density="compact"
+                    class="beep-text-field"
                     @update:model-value="setApiaryEdited(true)"
                   >
                   </v-text-field>
@@ -261,6 +268,7 @@
                     :label="`${$t('Postal_code')}`"
                     variant="outlined"
                     density="compact"
+                    class="beep-text-field"
                     @update:model-value="setApiaryEdited(true)"
                   >
                   </v-text-field>
@@ -272,6 +280,7 @@
                     :label="`${$t('Street')}`"
                     variant="outlined"
                     density="compact"
+                    class="beep-text-field"
                     @update:model-value="setApiaryEdited(true)"
                   >
                   </v-text-field>
@@ -283,6 +292,7 @@
                     :label="`${$t('Number')}`"
                     variant="outlined"
                     density="compact"
+                    class="beep-text-field"
                     @update:model-value="setApiaryEdited(true)"
                   >
                   </v-text-field>

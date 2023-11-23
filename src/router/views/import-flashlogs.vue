@@ -446,6 +446,7 @@
                   v-if="
                     item.matches !== undefined && item.block === matchesOverlay
                   "
+                  class="align-center justify-center"
                 >
                   <v-toolbar
                     class="hive-color-picker-toolbar"
