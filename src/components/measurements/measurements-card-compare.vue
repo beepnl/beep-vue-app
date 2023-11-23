@@ -8,7 +8,7 @@
     @show-card-content="toggleCardExpanded($event)"
   >
     <v-row class="my-4">
-      <v-col cols="12" sm="6" md="4" lg="2">
+      <v-col cols="12" sm="6" md="4" lg="3">
         <v-row>
           <v-col>
             <div>
@@ -67,7 +67,7 @@
         </v-row>
       </v-col>
 
-      <v-col cols="12" sm="6" md="8" lg="10">
+      <v-col cols="12" sm="6" md="8" lg="9">
         <ApiaryPreviewHiveSelector
           v-if="initSelectedHives.length > 0 && initSelectedHives.length < 16"
           class="ml-lg-5 my-4 my-sm-2 compare-hives"

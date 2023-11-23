@@ -361,7 +361,7 @@
 
                   <p
                     v-if="hasInfo(sensor) && sensorInfo.indexOf(sensor) > -1"
-                    class="mt-n1 mb-1 d-flex font-italic"
+                    class="mt-0 mb-1 d-flex font-italic"
                   >
                     <span
                       v-text="
