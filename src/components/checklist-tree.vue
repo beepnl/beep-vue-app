@@ -92,7 +92,7 @@ export default {
   },
   methods: {
     allowDrop(draggingNode, dropNode, type) {
-      if (draggingNode.parent.id === dropNode.parent.id) {
+      if (!this.disabled && draggingNode.parent.id === dropNode.parent.id) {
         return type !== 'inner'
       } else {
         return false
