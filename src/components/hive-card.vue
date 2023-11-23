@@ -401,7 +401,7 @@
 
     <v-list density="compact" class="hive-menu-list" variant="flat">
       <v-list-item>
-        <v-list-item-title class="title">
+        <v-list-item-title class="text-h6">
           {{ hive.name }}
         </v-list-item-title>
       </v-list-item>

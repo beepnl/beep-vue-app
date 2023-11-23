@@ -34,7 +34,11 @@
         </v-tab>
       </v-tabs>
 
-      <v-window v-model="activeTab" class="apiary-create">
+      <v-window
+        v-model="activeTab"
+        class="apiary-create"
+        :touch="{ left: null, right: null }"
+      >
         <v-window-item :value="0">
           <div class="browse-tabs-bar">
             <div
@@ -112,7 +116,7 @@
                         v-model="newHive.name"
                         :label="`${$t('Name')}*`"
                         :placeholder="`${$t('Name')}`"
-                        class="beep--large"
+                        class="large-font mb-sm-3"
                         counter="30"
                         :rules="requiredRule"
                         @update:model-value="validateText($event, 'name', 30)"
