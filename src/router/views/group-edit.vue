@@ -101,7 +101,7 @@
                     v-model="activeGroup.name"
                     :label="`${$t('Name')}*`"
                     :placeholder="`${$t('Name')}`"
-                    class="group-edit-name"
+                    class="large-font"
                     counter="30"
                     :rules="requiredRule"
                     required
@@ -260,7 +260,7 @@
                           :placeholder="`${$t('invitee_name')}`"
                           class="mt-2"
                           density="compact"
-                          direction="vertical"
+                          :direction="mobile ? 'vertical' : 'horizontal'"
                         ></v-text-field>
                       </td>
                       <td :class="mobile ? 'td--medium' : ''">
@@ -270,7 +270,7 @@
                           :placeholder="`${$t('email_is_required')}`"
                           class="mt-2"
                           density="compact"
-                          direction="vertical"
+                          :direction="mobile ? 'vertical' : 'horizontal'"
                         ></v-text-field>
                       </td>
                       <td>
@@ -915,16 +915,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.group-edit-name {
+.large-font {
   padding-top: 12px;
-  font-size: 1.6rem;
-  @include for-tablet-landscape-up {
-    font-size: 2rem;
-  }
-
-  &.v-text-field input {
-    min-height: 45px !important;
-  }
 }
 .group-color {
   width: 35px;

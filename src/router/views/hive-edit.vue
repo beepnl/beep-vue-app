@@ -97,7 +97,7 @@
             <v-text-field
               v-if="activeHive"
               v-model="activeHive.name"
-              class="hive-edit-name mb-sm-3"
+              class="large-font mb-sm-3"
               counter="30"
               :rules="requiredRule"
               required
@@ -586,16 +586,9 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.hive-edit-name {
+<style lang="scss" scoped>
+.large-font {
   padding-top: 0 !important;
-  font-size: 1.6rem;
-  @include for-tablet-portrait-up {
-    margin-top: 19px;
-  }
-  @include for-tablet-landscape-up {
-    font-size: 2rem;
-  }
 
   input {
     min-height: 36px;

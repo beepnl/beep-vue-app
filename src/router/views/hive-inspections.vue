@@ -95,19 +95,17 @@
                 class="d-flex align-center mr-3 ml-n2 ml-sm-0"
               >
                 <v-icon
-                  :class="
-                    isFirstPage ? 'color-transparent' : 'color-grey-filter'
-                  "
-                  :disabled="isFirstPage"
+                  :class="isFirstPage ? 'cursor-default' : ''"
+                  :color="isFirstPage ? 'transparent' : 'grey-medium'"
                   size="26"
-                  @click="setPageIndex(-1)"
+                  @click="!isFirstPage ? setPageIndex(-1) : null"
                 >
                   mdi-chevron-left
                 </v-icon>
                 <span class="pagination-text" v-text="paginationText"></span>
                 <v-icon
                   v-if="!isLastPage"
-                  class="color-grey-filter"
+                  class="text-grey-medium"
                   size="26"
                   @click="setPageIndex(1)"
                 >
@@ -1002,10 +1000,8 @@ export default {
 
 .pagination-text {
   font-size: 13px;
-  margin-bottom: 2px;
   @include for-phone-only {
     font-size: 15px;
-    margin-bottom: 0px;
   }
 }
 

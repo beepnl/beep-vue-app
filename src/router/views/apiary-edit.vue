@@ -68,7 +68,7 @@
                     v-model="activeApiary.name"
                     :label="`${$t('Name')}*`"
                     :placeholder="`${$t('Name')}`"
-                    class="apiary-edit-name mb-sm-3"
+                    class="large-font mb-sm-3"
                     counter="30"
                     :rules="requiredRule"
                     required
@@ -76,7 +76,7 @@
                   >
                   </v-text-field>
 
-                  <div>
+                  <div class="mb-3">
                     <div
                       class="beep-label"
                       v-text="`${$t('Apiary_color')}`"
@@ -146,6 +146,7 @@
 
                   <v-switch
                     v-if="activeApiary"
+                    class="ml-1"
                     :model-value="activeApiary.roofed"
                     :label="$t('roofed')"
                     :true-value="1"
@@ -556,17 +557,8 @@ export default {
 
 <style lang="scss">
 .apiary-edit {
-  .apiary-edit-name {
+  .large-font {
     padding-top: 12px;
-    font-size: 1.6rem;
-    @include for-tablet-landscape-up {
-      font-size: 2rem;
-    }
-
-    &.v-input input {
-      min-height: 45px !important;
-      max-height: 45px !important;
-    }
   }
 
   .country-select,
