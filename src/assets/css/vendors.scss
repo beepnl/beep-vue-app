@@ -578,6 +578,10 @@
   border: 1px solid $color-accent !important;
 }
 
+.dp__selection_preview {
+  display: none !important; // hide date preview inside date picker popup
+}
+
 @media print {
   .v-main {
     display: block !important;

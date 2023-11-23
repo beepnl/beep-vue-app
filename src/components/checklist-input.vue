@@ -217,14 +217,6 @@
       :property="item.id"
       :yes-red="item.input === 'boolean_yes_red'"
     ></yesNoRating>
-    <ChecklistFieldset
-      v-if="showFieldset"
-      class="mt-6"
-      :category="item"
-      :object="object"
-      :nested="true"
-      :parse-mode="parseMode"
-    />
 
     <sampleCode
       v-if="item.input === 'sample_code'"
@@ -272,7 +264,6 @@
 import { svgData } from '@mixins/svgMixin'
 import { parseDate } from '@mixins/methodsMixin'
 import { mapGetters } from 'vuex'
-import ChecklistFieldset from '@components/checklist-fieldset.vue'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
 // import testOutput from '@components/svg/scan_results.json' // enable for debugging
@@ -289,7 +280,6 @@ import { ElInputNumber } from 'element-plus'
 export default {
   name: 'ChecklistInput',
   components: {
-    ChecklistFieldset,
     dateTimePicker,
     imageUploader,
     labelWithDescription,
@@ -484,15 +474,6 @@ export default {
         }
       }
       return []
-    },
-    showFieldset() {
-      return (
-        this.item.children.length > 0 &&
-        (this.item.input === 'boolean' ||
-          this.item.input === 'boolean_yes_red' ||
-          this.item.input === 'list_item') &&
-        (this.object[this.item.id] === 1 || this.parseMode)
-      )
     },
   },
   created() {
