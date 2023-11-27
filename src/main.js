@@ -108,32 +108,29 @@ const vuetify = createVuetify({
   //   mobileBreakpoint: 'xs', // This is equivalent to a value of 600
   // },
   theme: {
-    defaultTheme: 'beepTheme',
+    defaultTheme: 'beepDarkTheme',
     themes: {
-      beepTheme: {
+      beepLightTheme: {
         dark: false,
         colors: {
+          background: '#ffffff',
           primary: '#F8B133',
           secondary: '#000000',
           accent: '#f29100',
           black: '#000000',
           disabled: '#b0b0b0',
           error: '#ff001d',
-          // "primary-darken-1": "#000000",
-          // "secondary-darken-1": "#000000",
-          // info: "#000000",
-          // success: "#000000",
-          // warning: "#000000",
         },
       },
-      // beepDarkTheme: {
-      //   dark: true,
-      //   colors: {
-      //     primary: '#F8B133',
-      //     secondary: '#000000',
-      //     accent: '#ffffff',
-      //   },
-      // },
+      beepDarkTheme: {
+        dark: true,
+        colors: {
+          background: '#000000',
+          primary: '#F8B133',
+          secondary: '#ffffff',
+          accent: '#f29100',
+        },
+      },
     },
   },
 })

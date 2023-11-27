@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div
-      :class="'d-flex align-end apiary-preview' + (markRed ? ' mark-red' : '')"
-    >
+    <div class="d-flex align-end apiary-preview">
       <div
         v-for="(hive, j) in sortedHives"
         :key="j"
@@ -31,10 +29,7 @@
           v-if="compareMode || dashboardMode || dashboardEditMode"
           class="hive-in-dashboard"
         >
-          <div
-            v-if="hive.sensors.length > 0 && (compareMode ? true : hive.owner)"
-            class="my-0"
-          >
+          <div v-if="hive.sensors.length > 0" class="my-0">
             <v-sheet
               :class="
                 'beep-icon beep-icon-sensors--no-outline' +
@@ -221,9 +216,6 @@ export default {
 .apiary-preview {
   overflow-x: auto;
   overflow-y: hidden;
-  &.mark-red {
-    background-color: $color-red-light !important;
-  }
 }
 
 .hive-in-group,

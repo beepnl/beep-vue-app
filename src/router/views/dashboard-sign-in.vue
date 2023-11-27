@@ -1,46 +1,52 @@
 <template>
-  <Layout :title="$t('Code')" :dashboard-mode="true" :set-dark-mode="darkMode">
-    <v-form ref="form" style="width: 100%" @submit.prevent="login">
-      <v-card-text>
-        <v-alert
-          v-if="msg"
-          type="success"
-          variant="text"
-          prominent
-          density="compact"
-          color="green"
-        >
-          {{ $t(msg) }}
-        </v-alert>
-        <v-alert
-          v-for="error in errors"
-          :key="error.name"
-          type="error"
-          variant="text"
-          prominent
-          density="compact"
-          color="red"
-        >
-          {{ error.errorMessage }}
-        </v-alert>
+  <v-theme-provider :theme="themeName">
+    <Layout
+      :title="$t('Code')"
+      :dashboard-mode="true"
+      :set-dark-mode="darkMode"
+    >
+      <v-form ref="form" style="width: 100%" @submit.prevent="login">
+        <v-card-text>
+          <v-alert
+            v-if="msg"
+            type="success"
+            variant="text"
+            prominent
+            density="compact"
+            color="green"
+          >
+            {{ $t(msg) }}
+          </v-alert>
+          <v-alert
+            v-for="error in errors"
+            :key="error.name"
+            type="error"
+            variant="text"
+            prominent
+            density="compact"
+            color="red"
+          >
+            {{ error.errorMessage }}
+          </v-alert>
 
-        <v-otp-input v-model="credentials.code"></v-otp-input>
-      </v-card-text>
+          <v-otp-input v-model="credentials.code"></v-otp-input>
+        </v-card-text>
 
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn :disabled="!validCode" text type="submit">{{
-          $t('login')
-        }}</v-btn>
-      </v-card-actions>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn :disabled="!validCode" text type="submit">{{
+            $t('login')
+          }}</v-btn>
+        </v-card-actions>
 
-      <v-card-actions class="pa-3">
-        <a :href="'https://app.beep.nl/dashboard/create'">
-          {{ $t('create_dashboard_question') }}
-        </a>
-      </v-card-actions>
-    </v-form>
-  </Layout>
+        <v-card-actions class="pa-3">
+          <a :href="'https://app.beep.nl/dashboard/create'">
+            {{ $t('create_dashboard_question') }}
+          </a>
+        </v-card-actions>
+      </v-form>
+    </Layout>
+  </v-theme-provider>
 </template>
 
 <script>
@@ -71,6 +77,7 @@ export default {
       },
       codeLength: 6,
       darkMode: true,
+      themeName: 'beepDarkTheme',
     }
   },
   computed: {
@@ -93,7 +100,8 @@ export default {
       if (localStorage.beepdashboardDarkMode) {
         this.darkMode = localStorage.beepdashboardDarkMode === 'true'
       }
-      this.$vuetify.theme.dark = this.darkMode
+      this.themeName = this.darkMode ? 'beepDarkTheme' : 'beepLightTheme'
+      this.$vuetify.theme.global.name = this.themeName
     },
     login() {
       if (this.$refs.form.validate()) {
