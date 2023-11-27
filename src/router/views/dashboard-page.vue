@@ -78,16 +78,24 @@
             </div>
           </v-col>
 
-          <v-col
-            v-if="!ready"
-            class="d-flex align-center justify-center dashboard-loading --landscape"
-            cols="12"
-          >
-            <v-progress-circular color="primary" size="50" indeterminate />
-          </v-col>
-
           <v-col :class="'col-content' + (landscapeMode ? ' pa-0' : '')">
             <v-row :class="landscapeMode ? 'd-flex justify-space-between' : ''">
+              <v-overlay
+                :model-value="!ready"
+                contained
+                :scrim="darkMode ? 'black' : 'white'"
+                z-index="3"
+                class="d-flex align-center justify-center "
+              >
+                <div class="loading">
+                  <v-progress-circular
+                    color="primary"
+                    size="50"
+                    indeterminate
+                  />
+                </div>
+              </v-overlay>
+
               <v-col
                 :cols="landscapeMode ? '6' : '12'"
                 :md="landscapeMode ? '5' : '12'"
