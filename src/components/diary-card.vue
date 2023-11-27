@@ -176,22 +176,16 @@
                       v-if="inspection.notes"
                       class="diary-inspection-text ml-7"
                     >
-                      <v-tooltip
+                      <div
                         v-if="inspection.notes.length > 35 && !smallScreen"
-                        class="diary-tooltip"
-                        bottom
-                        max-width="60%"
+                        class="notes"
                       >
-                        <template v-slot:activator="{ on }">
-                          <span
-                            class="notes"
-                            v-bind="on"
-                            v-text="inspection.notes"
-                          >
-                          </span>
-                        </template>
-                        <span class="notes" v-text="inspection.notes"> </span>
-                      </v-tooltip>
+                        <span v-text="inspection.notes"> </span>
+
+                        <v-tooltip activator="parent" location="bottom">
+                          {{ inspection.notes }}
+                        </v-tooltip>
+                      </div>
                       <span v-else class="notes" v-text="inspection.notes">
                       </span>
                     </div>
@@ -257,27 +251,20 @@
                       </span>
                     </div>
                     <div class="diary-inspection-text ml-7">
-                      <v-tooltip
+                      <div
                         v-if="
                           inspection.reminder &&
                             inspection.reminder.length > 35 &&
                             !smallScreen
                         "
-                        class="diary-tooltip"
-                        bottom
-                        max-width="60%"
+                        class="reminder"
                       >
-                        <template v-slot:activator="{ on }">
-                          <span
-                            class="reminder"
-                            v-bind="on"
-                            v-text="inspection.reminder"
-                          >
-                          </span>
-                        </template>
-                        <span class="reminder" v-text="inspection.reminder">
-                        </span>
-                      </v-tooltip>
+                        <span v-text="inspection.reminder"> </span>
+
+                        <v-tooltip activator="parent" location="bottom">
+                          {{ inspection.reminder }}
+                        </v-tooltip>
+                      </div>
                       <span
                         v-else-if="inspection.reminder"
                         class="reminder"

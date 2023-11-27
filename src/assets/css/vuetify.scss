@@ -150,6 +150,10 @@
   padding: 4px 10px !important;
 }
 
+.v-tooltip .v-overlay__content {
+  background: rgba(var(--v-theme-surface-variant), 0.8) !important;
+}
+
 .v-theme--beepTheme .v-toolbar__content .v-toolbar-title {
   -webkit-margin-start: 0px !important;
   margin-inline-start: 0px !important;

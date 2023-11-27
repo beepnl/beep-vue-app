@@ -27,8 +27,8 @@
             <div class="alert-icon">
               <v-badge
                 v-if="alert.count > 1"
-                :offset-x="alert.count > 9 ? '10' : '8'"
-                offset-y="9"
+                :offset-x="alert.count > 9 ? '11' : '8'"
+                :offset-y="alert.count > 9 ? '9' : '8'"
                 color="transparent"
                 text-color="white"
                 :content="alert.count > 99 ? '99' : alert.count"
@@ -135,17 +135,11 @@
                   class="d-flex flex-column align-start pa-0"
                 >
                   <div v-if="alert.hive_name !== null">
-                    <v-tooltip
-                      v-if="
+                    <div
+v-if="
                         alert.hive_name !== null && alert.hive_name.length >= 20
-                      "
-                      bottom
-                      max-width="60%"
-                    >
-                      <template v-slot:activator="{ on }">
-                        <span
-                          class="alert-label"
-                          v-bind="on"
+                      " class="alert-label">
+                    <span
                           v-text="
                             alert.hive_name.substring(
                               0,
@@ -155,27 +149,25 @@
                           "
                         >
                         </span>
-                      </template>
-                      <span class="alert-label" v-text="alert.hive_name">
-                      </span>
-                    </v-tooltip>
+                <v-tooltip
+                  activator="parent"
+                  location="bottom"
+                >
+                       {{ alert.hive_name }}
+                </v-tooltip>
+                </div>
+
                     <span v-else class="alert-label" v-text="alert.hive_name">
                     </span>
                   </div>
                   <div v-if="alert.device_name !== null">
-                    <v-tooltip
-                      v-if="
+                     <div
+v-if="
                         alert.device_name !== null &&
                           alert.device_name.length >= 20
-                      "
-                      bottom
-                      max-width="60%"
-                    >
-                      <template v-slot:activator="{ on }">
-                        <span
-                          class="alert-label"
-                          v-bind="on"
-                          v-text="
+                      " class="alert-label">
+                    <span
+                                      v-text="
                             alert.device_name.substring(
                               0,
                               // eslint-disable-next-line vue/comma-dangle
@@ -184,10 +176,13 @@
                           "
                         >
                         </span>
-                      </template>
-                      <span class="alert-label" v-text="alert.device_name">
-                      </span>
-                    </v-tooltip>
+                <v-tooltip
+                  activator="parent"
+                  location="bottom"
+                >
+                       {{ alert.device_name }}
+                </v-tooltip>
+                </div>
                     <span v-else class="alert-label" v-text="alert.device_name">
                     </span>
                   </div>

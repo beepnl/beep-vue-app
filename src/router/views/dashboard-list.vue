@@ -91,10 +91,10 @@
                         ></span>
                       </a>
 
-                      <v-tooltip max-width="60%">
+                      <v-tooltip>
                         <template v-slot:activator="{ props }">
                           <v-icon
-                            small
+                            size="small"
                             class="ml-2"
                             v-bind="props"
                             @click="copyUrl(dashboardGroup.code)"
