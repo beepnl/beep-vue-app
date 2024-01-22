@@ -1157,6 +1157,7 @@ export default {
           if (this.inspectionId !== null) {
             this.getInspection(this.inspectionId).then((response) => {
               this.activeInspection = response
+              this.activeInspection.date = this.activeInspection.created_at // if date is empty, inspection cannot be saved. if it is set at another date (date of edit for example) the created_at will be changed after POSTing as well which is not desirable, to change the original inspection date when editing
               this.initInspection()
             })
             // Else make an empty inspection object

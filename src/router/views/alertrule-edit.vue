@@ -195,8 +195,7 @@
                 {{ $t('Source') + ': ' + $t(measurement.data_source_type) }}
                 <v-icon
                   class="mdi mdi-information ml-1"
-                  dark
-                  small
+                  size="small"
                   :color="showSourceLink ? 'accent' : 'grey'"
                   @click="showSourceLink = !showSourceLink"
                 ></v-icon>
