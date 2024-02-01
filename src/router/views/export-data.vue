@@ -262,13 +262,14 @@ import Treeselect from 'vue3-treeselect'
 import Layout from '@/src/router/layouts/back-layout.vue'
 import { mapGetters } from 'vuex'
 import { readDevicesIfNotChecked, sortedDevices } from '@mixins/methodsMixin'
+import { momentFormat } from '@mixins/momentMixin'
 
 export default {
   components: {
     Layout,
     Treeselect,
   },
-  mixins: [readDevicesIfNotChecked, sortedDevices],
+  mixins: [momentFormat, readDevicesIfNotChecked, sortedDevices],
   data() {
     return {
       normalizerMeasurementTypes(node) {
@@ -520,14 +521,16 @@ export default {
       }
     },
     dateRangeText(dates) {
-      if (dates.length > 0) {
+      if (this.dates.length > 0) {
         const momentDates = [
-          this.momentShort(dates[0]),
-          dates[1] !== undefined ? this.momentShort(dates[1]) : '',
+          this.momentFormat(this.dates[0], 'll'),
+          this.dates[1] !== undefined
+            ? this.momentFormat(this.dates[1], 'll')
+            : '',
         ]
         return momentDates.join(' - ')
       } else {
-        return this.$i18n.t('selection_placeholder')
+        return dates
       }
     },
     generateMeasurementTypes(rawMeasurementTypes) {
@@ -563,11 +566,6 @@ export default {
         })
 
       return sortedMeasurementTypes
-    },
-    momentShort(date) {
-      return this.$moment(date)
-        .locale(this.$i18n.locale)
-        .format('ll')
     },
     setInitialDeviceId() {
       if (isNaN(this.selectedDeviceId) && this.devices.length > 0) {

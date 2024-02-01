@@ -201,14 +201,16 @@ export default {
   },
   methods: {
     dateRangeText(dates) {
-      if (dates.length > 0) {
+      if (this.dates.length > 0) {
         const momentDates = [
-          this.momentFormat(dates[0], 'll'),
-          dates[1] !== undefined ? this.momentFormat(dates[1], 'll') : '',
+          this.momentFormat(this.dates[0], 'll'),
+          this.dates[1] !== undefined
+            ? this.momentFormat(this.dates[1], 'll')
+            : '',
         ]
         return momentDates.join(' - ')
       } else {
-        return this.$i18n.t('selection_placeholder')
+        return dates
       }
     },
     saveDates(dates) {
