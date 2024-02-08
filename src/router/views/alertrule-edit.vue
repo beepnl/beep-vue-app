@@ -1105,9 +1105,12 @@ export default {
 
 .alertrule-edit-name {
   padding-top: 0 !important;
-  font-size: 1.5rem;
+
   @include for-phone-only {
     font-size: 1.2rem;
+  }
+  .v-field {
+  font-size: 1.5rem !important;
   }
 
   input {
