@@ -634,7 +634,7 @@ const translations = {
     'For å komme i gang er det noen få standard varslingsregler du kan bruke (og tilpasse til dine egne behov). I tillegg kan du lage dine egne varslingsregler.',
   alertrules_url_text:
     "Gå til 'Varslingsinnstillinger' for å lage din første varslingsregel",
-  Source: 'Source',
+  Explanation: 'Explanation',
   db_influx: 'Influx Database',
   lambda_model: 'Lambda Model',
   open_weather: 'Open Weather',

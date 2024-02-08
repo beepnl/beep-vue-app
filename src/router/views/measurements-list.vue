@@ -372,20 +372,11 @@
                     v-if="hasInfo(sensor) && sensorInfo.indexOf(sensor) > -1"
                     class="mt-n1 mb-1 d-flex font-italic"
                   >
-                    <span
-                      v-text="
-                        $t('Source') +
-                          ': ' +
-                          $t(getSensorMeasurement(sensor).data_source_type) +
-                          ' - '
-                      "
-                    >
-                    </span>
                     <span class="ml-1 color-accent">
                       <a
                         :href="getSensorMeasurement(sensor).data_repository_url"
                         target="_blank"
-                        >{{ $t('more_info') }}</a
+                        >{{ $t('Explanation') }}</a
                       ></span
                     >
                   </p>
