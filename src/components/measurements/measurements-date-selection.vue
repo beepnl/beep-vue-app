@@ -82,7 +82,7 @@
               :clearable="false"
               :enable-time-picker="false"
               :placeholder="
-                dates.length === 0 ? $t('selection_placeholder') : null
+                datesCopy.length === 0 ? $t('selection_placeholder') : null
               "
               :locale="locale"
               :select-text="$t('ok')"
