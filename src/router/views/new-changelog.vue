@@ -8,6 +8,34 @@
       <div class="rounded-border mb-4">
         <ul>
           <li>Upgraded behind the scenes to Vue 3</li>
+          <li>Small improvements</li>
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>4.0.17 (08-02-2024)</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>Small improvements</li>
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>4.0.16 (21-11-2023)</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>Small improvements</li>
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>4.0.15 (14-11-2023)</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>Small improvements</li>
         </ul>
       </div>
 

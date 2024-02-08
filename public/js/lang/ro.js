@@ -723,7 +723,7 @@ const translations = {
     'Pentru a putea începe, există câteva reguli implicite de alertă pe care le puteți utiliza (și adapta la propriile nevoi). În plus, vă puteți crea propriile reguli de alertă.',
   alertrules_url_text:
     'Accesați „Setări de alertă” pentru a crea prima regulă de alertă',
-  Source: 'Source',
+  Explanation: 'Explanation',
   db_influx: 'Influx Database',
   lambda_model: 'Lambda Model',
   open_weather: 'Open Weather',
@@ -879,7 +879,7 @@ const translations = {
   View_data: 'View data',
   show_all: 'Show all',
   only_active_if_measurement_present:
-    '*N.B. the alert rule will only be active if the selected measurement is measured by your BEEP base / device. BEEP bases do not measure weather data.',
+    '*N.B. you will only receive alerts about the selected measurement if it is measured by your BEEP base / device.',
   Relative_startpoint: 'Relative',
 
   import_log_data_explanation:

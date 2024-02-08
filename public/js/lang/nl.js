@@ -669,7 +669,7 @@ const translations = {
     'Om je op weg te helpen zijn er een aantal standaardinstellingen die je kan gebruiken (en aanpassen naar eigen behoefte). Je kan ook zelf een nieuwe notificatie-instelling maken.',
   alertrules_url_text:
     "Ga naar 'notificaties beheren' om je eerste notificatie in te stellen",
-  Source: 'Bron',
+  Explanation: 'Uitleg',
   db_influx: 'Influx Database',
   lambda_model: 'Lambda Model',
   open_weather: 'Open Weather',
@@ -818,7 +818,7 @@ const translations = {
   data_zoom_out_ok: 'Wil je uitzoomen naar de data van ',
   show_all: 'Toon alle',
   only_active_if_measurement_present:
-    '*N.B. Notificaties worden alleen geactiveerd wanneer de geselecteerde meting door je BEEP base / meetsysteem gemeten wordt. BEEP bases meten geen weerdata.',
+    '*N.B. Je kan alleen notificaties ontvangen over de geselecteerde meting wanneer deze door je BEEP base / meetsysteem gemeten wordt.',
   Relative_startpoint: 'Relatief',
 
   Log_data: 'Log data',

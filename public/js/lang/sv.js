@@ -703,7 +703,7 @@ const translations = {
     'För att komma igång finns det några förinställda varningsregler som du kan använda (och anpassa till dina behov). Dessutom kan du skapa dina egna varningsregler.',
   alertrules_url_text:
     "Gå till 'Alert settings' för att skapa din första varningsregel",
-  Source: 'Source',
+  Explanation: 'Explanation',
   db_influx: 'Influx Database',
   lambda_model: 'Lambda Model',
   open_weather: 'Open Weather',
@@ -858,7 +858,7 @@ const translations = {
   View_data: 'View data',
   show_all: 'Show all',
   only_active_if_measurement_present:
-    '*N.B. the alert rule will only be active if the selected measurement is measured by your BEEP base / device. BEEP bases do not measure weather data.',
+    '*N.B. you will only receive alerts about the selected measurement if it is measured by your BEEP base / device.',
   Relative_startpoint: 'Relative',
 
   import_log_data_explanation:

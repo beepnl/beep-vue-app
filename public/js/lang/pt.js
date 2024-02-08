@@ -746,7 +746,7 @@ const translations = {
     'Para que possa começar, note que existem algumas regras de alerta padrão que pode usar (e adaptar às suas próprias necessidades). Além disso, pode criar suas próprias regras de alerta.',
   alertrules_url_text:
     "Vá a 'Definições de alerta', para criar a sua primeira regra de alerta",
-  Source: 'Source',
+  Explanation: 'Explanation',
   db_influx: 'Influx Database',
   lambda_model: 'Lambda Model',
   open_weather: 'Open Weather',
@@ -905,7 +905,7 @@ const translations = {
   View_data: 'View data',
   show_all: 'Show all',
   only_active_if_measurement_present:
-    '*N.B. the alert rule will only be active if the selected measurement is measured by your BEEP base / device. BEEP bases do not measure weather data.',
+    '*N.B. you will only receive alerts about the selected measurement if it is measured by your BEEP base / device.',
   Relative_startpoint: 'Relative',
 
   import_log_data_explanation:
