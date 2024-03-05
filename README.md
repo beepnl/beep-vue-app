@@ -21,7 +21,7 @@ first run.
 ### First install
 
 - cd dir (to directory where this repo is cloned/pulled)
-- docker run -it --rm -v \$PWD:/var/app -w /var/app node:14.17.5 npm install
+- docker run -it --rm -v \$PWD:/var/app -w /var/app node:18.18.0 npm install
 - docker-compose build --no-cache
 
 ### Running the container (after first install)
