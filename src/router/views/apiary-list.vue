@@ -542,18 +542,15 @@
             >
           </router-link>
 
-          <router-link
-            class="apiary-placeholder-item mt-5"
-            :to="{
-              name: `support`,
-            }"
-          >
-            <div class="color-grey-medium"
-              ><v-icon class="color-grey-medium" size="large" left
-                >mdi-comment-question-outline</v-icon
+          <a class="apiary-placeholder-item mt-5" :href="'https://beepsupport.freshdesk.com/' +
+                (this.locale !== 'sv' ? this.locale +
+                (this.locale === 'pt' ? '-PT' : '') : 'en') +
+                '/support/solutions'" target="_blank">
+            <div class="color-accent"
+              ><v-icon color="accent" size="large" start>mdi-comment-question-outline</v-icon
               >{{ $t('need_help') }}</div
             >
-          </router-link>
+            </a>
         </v-container>
       </div>
       <v-row
@@ -910,6 +907,9 @@ export default {
         return group
       })
       return apiariesWithDates.concat(groupsWithDatesAndEditableHivesProp)
+    },
+    locale() {
+      return this.$i18n.locale
     },
     mobile() {
       return this.$vuetify.display.xs
