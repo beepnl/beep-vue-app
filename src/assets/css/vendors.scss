@@ -412,9 +412,9 @@
 
   .v-table__wrapper > table > tbody > tr > td,
   .v-table__wrapper > table > thead > tr > th {
+    font-size: 12px !important;
     @include for-phone-only {
       padding: 0 5px !important;
-      font-size: 12px !important;
     }
   }
 
@@ -422,10 +422,6 @@
     font-size: 12px !important;
   }
   .v-input__control {
-    font-size: 12px !important;
-  }
-  .v-table__wrapper > table > tbody > tr > td,
-  .v-table__wrapper > table > thead > tr > th {
     font-size: 12px !important;
   }
 }

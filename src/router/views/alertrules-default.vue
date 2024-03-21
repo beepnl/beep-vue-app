@@ -168,14 +168,11 @@ export default {
       }
     },
     alertRuleSentence(alertRule) {
-      const sentence = this.$i18n.t('alertrule_main_sentence')
-      let replacedSentence = sentence
-
       const measurement = this.sensorMeasurementsList.filter(
         (measurement) => measurement.id === alertRule.measurement_id
       )[0]
 
-      const replaceWith = {
+      const sentence = this.$i18n.t('alertrule_main_sentence', {
         calculation: this.$i18n.t(alertRule.calculation),
         comparison: this.comparisons
           .filter((comparison) => comparison.short === alertRule.comparison)[0]
@@ -199,12 +196,8 @@ export default {
           false,
           false
         ),
-      }
-
-      Object.entries(replaceWith).map(([key, value]) => {
-        replacedSentence = replacedSentence.replace('[' + key + ']', value)
-        return replacedSentence
       })
+      let replacedSentence = sentence
 
       replacedSentence += '. ' // alertrule_active_email and no_email_sentence are omitted here
 

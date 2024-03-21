@@ -477,7 +477,7 @@ export default {
 }
 
 .alertrules-content {
-  margin-top: 75px;
+  margin-top: 80px;
   @include for-phone-only {
     margin-top: 40px;
   }
