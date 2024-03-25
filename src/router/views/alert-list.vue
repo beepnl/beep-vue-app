@@ -181,7 +181,7 @@
         {{ error.errorMessage }}
       </v-alert>
 
-      <v-row v-if="alerts.length > 0" dense>
+      <v-row v-if="alerts.length > 0" class="my-1">
         <div class="alerts-item-transition-wrapper">
           <v-scale-transition group>
             <v-col
@@ -192,7 +192,6 @@
               density="compact"
             >
               <v-checkbox-btn
-                v-if="!mobile"
                 :model-value="isSelected(alert.id)"
                 class="ma-0 pa-0"
                 density="compact"
@@ -594,7 +593,8 @@ export default {
   .alerts-item {
     flex-grow: 1 !important;
     min-width: 100%;
-    padding: 4px;
+    // padding: 4px;
+    padding: 4px 12px 4px 8px;
   }
 }
 </style>

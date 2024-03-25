@@ -11,19 +11,10 @@
             : 'red'
         "
         class="alert-card cursor-pointer mb-0 pa-2 pa-sm-3"
-        v-bind="!mobile ? props : null"
+        v-bind="props"
       >
         <template v-slot:prepend>
           <div class="d-flex flex-column justify-start align-center">
-            <v-checkbox-btn
-              v-if="mobile"
-              :model-value="isSelected"
-              class="ma-0 ml-n1"
-              density="compact"
-              hide-details
-              @update:model-value="toggleCheckbox(alert.id)"
-            />
-
             <div class="alert-icon">
               <v-badge
                 v-if="alert.count > 1"
@@ -42,7 +33,7 @@
           </div>
         </template>
 
-        <div style="width: 100%;" v-bind="!mobile ? props : null">
+        <div style="width: 100%;" v-bind="props">
           <v-row class="ma-0 pl-0 py-0" style="width:100%;">
             <v-col cols="12" md="6" class="alert-details-item alert-meta pa-0">
               <v-row
@@ -136,53 +127,51 @@
                 >
                   <div v-if="alert.hive_name !== null">
                     <div
-v-if="
+                      v-if="
                         alert.hive_name !== null && alert.hive_name.length >= 20
-                      " class="alert-label">
-                    <span
-                          v-text="
-                            alert.hive_name.substring(
-                              0,
-                              // eslint-disable-next-line vue/comma-dangle
-                              14
-                            ) + '...'
-                          "
-                        >
-                        </span>
-                <v-tooltip
-                  activator="parent"
-                  location="bottom"
-                >
-                       {{ alert.hive_name }}
-                </v-tooltip>
-                </div>
+                      "
+                      class="alert-label"
+                    >
+                      <span
+                        v-text="
+                          alert.hive_name.substring(
+                            0,
+                            // eslint-disable-next-line vue/comma-dangle
+                            14
+                          ) + '...'
+                        "
+                      >
+                      </span>
+                      <v-tooltip activator="parent" location="bottom">
+                        {{ alert.hive_name }}
+                      </v-tooltip>
+                    </div>
 
                     <span v-else class="alert-label" v-text="alert.hive_name">
                     </span>
                   </div>
                   <div v-if="alert.device_name !== null">
-                     <div
-v-if="
+                    <div
+                      v-if="
                         alert.device_name !== null &&
                           alert.device_name.length >= 20
-                      " class="alert-label">
-                    <span
-                                      v-text="
-                            alert.device_name.substring(
-                              0,
-                              // eslint-disable-next-line vue/comma-dangle
-                              14
-                            ) + '...'
-                          "
-                        >
-                        </span>
-                <v-tooltip
-                  activator="parent"
-                  location="bottom"
-                >
-                       {{ alert.device_name }}
-                </v-tooltip>
-                </div>
+                      "
+                      class="alert-label"
+                    >
+                      <span
+                        v-text="
+                          alert.device_name.substring(
+                            0,
+                            // eslint-disable-next-line vue/comma-dangle
+                            14
+                          ) + '...'
+                        "
+                      >
+                      </span>
+                      <v-tooltip activator="parent" location="bottom">
+                        {{ alert.device_name }}
+                      </v-tooltip>
+                    </div>
                     <span v-else class="alert-label" v-text="alert.device_name">
                     </span>
                   </div>
@@ -439,7 +428,7 @@ export default {
       required: false,
     },
   },
-  emits: ['delete-alert', 'show-snackbar', 'toggle-checkbox'],
+  emits: ['delete-alert', 'show-snackbar'],
   computed: {
     ...mapGetters('alerts', ['alertRules']),
     alertFunctionText() {
@@ -503,9 +492,6 @@ export default {
     },
     deleteAlert(id) {
       this.$emit('delete-alert', id)
-    },
-    toggleCheckbox(id) {
-      this.$emit('toggle-checkbox', id)
     },
   },
 }
