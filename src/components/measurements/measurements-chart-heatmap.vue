@@ -301,6 +301,11 @@ export default {
         logValue = Math.log(value)
       }
 
+      if (logValue > this.logMax) {
+        // cap color to max color
+        logValue = this.logMax
+      }
+
       return value !== null && value !== 0
         ? 'hsl(' +
             (235 + (logValue / this.logMax) * -235).toFixed(0) +
