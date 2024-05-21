@@ -1244,6 +1244,10 @@ export default {
 
       if (this.relativeInterval && !zoom) newIndex -= 1
 
+      if (this.relativeInterval && zoom) {
+        this.setRelativeInterval = false
+      }
+
       if (!zoom && newPeriod === 'hour') newIndex += 10
 
       return !isNaN(newIndex) && newIndex > 0 ? newIndex : 0
