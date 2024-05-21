@@ -19,14 +19,26 @@
         </tr>
         <tr>
           <td v-for="index in maxIndex" :key="'hsl-text ' + index">
-            <span
-              v-if="index === 1 || index === maxIndex"
-              v-text="index === maxIndex ? scaleMax.toFixed(0) : '0'"
-            >
-            </span>
-            <span v-else-if="index === log10Index" v-text="10"> </span>
-            <span v-else-if="index === log100Index" v-text="100"> </span>
-            <span v-else-if="index === log250Index" v-text="250"> </span>
+            <template v-for="labelIndex in indexesWithLabel">
+              <span
+                :key="'li-' + labelIndex"
+                v-if="
+                  (index === 1 && labelIndex === '1') ||
+                    (index === maxIndex && labelIndex === maxIndex.toString())
+                "
+                v-text="indexLabels[index]"
+              >
+              </span>
+              <span
+                :key="'li-' + labelIndex"
+                v-else-if="
+                  scaleMax - labelIndex > minLabelDistance &&
+                    index === indexLabels[labelIndex]
+                "
+                v-text="labelIndex"
+              >
+              </span>
+            </template>
           </td>
         </tr>
       </table>
@@ -209,8 +221,9 @@ export default {
   data() {
     return {
       showAutoScale: false,
-      fixedHeatmapMax: process.env.VUE_APP_HEATMAP_MAX || 500,
-      maxIndex: 300,
+      fixedHeatmapMax: parseInt(process.env.VUE_APP_HEATMAP_MAX) || 500,
+      maxIndex: 150,
+      minLabelDistance: 50,
     }
   },
   computed: {
@@ -240,6 +253,23 @@ export default {
 
       return mergedAlerts
     },
+    indexLabels() {
+      var maxIndex = this.maxIndex
+      var indexes = {
+        1: 0,
+        10: this.getIndexByValue(10),
+        100: this.getIndexByValue(100),
+        1000: this.getIndexByValue(1000),
+      }
+      indexes[maxIndex] = parseInt(this.scaleMax.toFixed(0))
+      if (!this.showAutoScale) {
+        indexes[250] = this.getIndexByValue(250)
+      }
+      return indexes
+    },
+    indexesWithLabel() {
+      return Object.keys(this.indexLabels)
+    },
     inspectionIndexes() {
       if (this.inspectionsForCharts.length > 0) {
         return this.inspectionsForCharts.map((inspection) => {
@@ -251,15 +281,6 @@ export default {
     },
     locale() {
       return this.$i18n.locale
-    },
-    log10Index() {
-      return this.getIndexByValue(10)
-    },
-    log100Index() {
-      return this.getIndexByValue(100)
-    },
-    log250Index() {
-      return this.getIndexByValue(250)
     },
     logMax() {
       return Math.log(this.scaleMax)
