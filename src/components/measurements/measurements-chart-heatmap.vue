@@ -1,22 +1,44 @@
 <template>
   <div>
-    <div class="d-flex justify-center">
+    <div class="d-flex justify-end">
+      <v-icon
+        :color="showAutoScale ? 'accent' : 'grey'"
+        @click="showAutoScale = !showAutoScale"
+        >mdi-magnify</v-icon
+      >
+    </div>
+    <div class="d-flex justify-center mt-n5">
       <table class="table-heatmap--legend mb-3">
         <tr>
           <td
-            v-for="index in 118"
+            v-for="index in maxIndex"
             :key="'hsl-color ' + index"
             class="td--heatmap-legend"
-            :style="`background-color:hsl(${236 - index * 2},100%,50%);`"
+            :style="`background-color: ` + calculateHeatmapColor(index, true)"
           ></td>
         </tr>
         <tr>
-          <td v-for="index in 118" :key="'hsl-text ' + index">
-            <span
-              v-if="index === 1 || index === 118"
-              v-text="index === 118 ? maxValue.toFixed(0) : '0'"
-            >
-            </span>
+          <td v-for="index in maxIndex" :key="'hsl-text ' + index">
+            <template v-for="labelIndex in indexesWithLabel">
+              <span
+                :key="'li-' + labelIndex"
+                v-if="
+                  (index === 1 && labelIndex === '1') ||
+                    (index === maxIndex && labelIndex === maxIndex.toString())
+                "
+                v-text="indexLabels[index]"
+              >
+              </span>
+              <span
+                :key="'li-' + labelIndex"
+                v-else-if="
+                  scaleMax - labelIndex > minLabelDistance &&
+                    index === indexLabels[labelIndex]
+                "
+                v-text="labelIndex"
+              >
+              </span>
+            </template>
           </td>
         </tr>
       </table>
@@ -66,7 +88,7 @@
 
               <template v-for="(measurement, ai) in data">
                 <td
-                  :key="'alert-td-' + ai"
+                  :key="'alert-td' + ai"
                   :class="
                     `td--heatmap ${
                       isAlertIndex(alert, ai) ? '--pointer' : '--default'
@@ -196,6 +218,14 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      showAutoScale: false,
+      fixedHeatmapMax: parseInt(process.env.VUE_APP_HEATMAP_MAX) || 500,
+      maxIndex: 150,
+      minLabelDistance: 50,
+    }
+  },
   computed: {
     alertsForChartsMerged() {
       var mergedAlerts = []
@@ -223,6 +253,23 @@ export default {
 
       return mergedAlerts
     },
+    indexLabels() {
+      var maxIndex = this.maxIndex
+      var indexes = {
+        1: 0,
+        10: this.getIndexByValue(10),
+        100: this.getIndexByValue(100),
+        1000: this.getIndexByValue(1000),
+      }
+      indexes[maxIndex] = parseInt(this.scaleMax.toFixed(0))
+      if (!this.showAutoScale) {
+        indexes[250] = this.getIndexByValue(250)
+      }
+      return indexes
+    },
+    indexesWithLabel() {
+      return Object.keys(this.indexLabels)
+    },
     inspectionIndexes() {
       if (this.inspectionsForCharts.length > 0) {
         return this.inspectionsForCharts.map((inspection) => {
@@ -232,16 +279,32 @@ export default {
         return []
       }
     },
-
     locale() {
       return this.$i18n.locale
     },
+    logMax() {
+      return Math.log(this.scaleMax)
+    },
+    scaleMax() {
+      return this.showAutoScale ? this.maxValue : this.fixedHeatmapMax
+    },
   },
   methods: {
-    calculateHeatmapColor(value) {
-      const max = this.maxValue
-      return value !== null
-        ? 'hsl(' + (235 + (value / max) * -235).toFixed(0) + ', 100%, 50%)'
+    calculateHeatmapColor(value, isIndex = false) {
+      let logValue = 0
+
+      if (isIndex) {
+        value = this.getValueByIndex(value)
+      }
+
+      if (value !== 0) {
+        logValue = Math.log(value)
+      }
+
+      return value !== null && value !== 0
+        ? 'hsl(' +
+            (235 + (logValue / this.logMax) * -235).toFixed(0) +
+            ', 100%, 50%)'
         : 'hsl(360, 100%, 100%)'
     },
     displayValue(input) {
@@ -264,6 +327,12 @@ export default {
       } else {
         return 'transparent'
       }
+    },
+    getIndexByValue(value) {
+      return parseInt((Math.log(value) / this.logMax) * this.maxIndex)
+    },
+    getValueByIndex(index) {
+      return Math.exp((index / this.maxIndex) * this.logMax)
     },
     getInspectionByIndex(index) {
       return this.inspectionsForCharts.find(

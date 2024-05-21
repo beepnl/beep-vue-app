@@ -2,8 +2,22 @@
   <Layout :title="$t('Whats_new')">
     <v-container>
       <div class="overline mb-1"
-        ><span class="lowercase">v</span>4.0.16 (21-11-2023) - Current
+        ><span class="lowercase">v</span>4.0.17 (21-05-2024) - Current
         version</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>
+            <router-link :to="{ name: 'measurements' }"> Data:</router-link>
+            sound heatmap colors on logarithmic scale + fixed maximum (switch to
+            autoscale maximum via magnify icon)
+          </li>
+          <li>Small improvements</li>
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>4.0.16 (21-11-2023)</div
       >
       <div class="rounded-border mb-4">
         <ul>
