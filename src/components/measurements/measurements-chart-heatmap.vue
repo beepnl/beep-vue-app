@@ -1,22 +1,32 @@
 <template>
   <div>
-    <div class="d-flex justify-center">
+    <div class="d-flex justify-end">
+      <v-icon
+        :color="showAutoScale ? 'accent' : 'grey'"
+        @click="showAutoScale = !showAutoScale"
+        >mdi-magnify</v-icon
+      >
+    </div>
+    <div class="d-flex justify-center mt-n5">
       <table class="table-heatmap--legend mb-3">
         <tr>
           <td
-            v-for="index in 118"
+            v-for="index in maxIndex"
             :key="'hsl-color ' + index"
             class="td--heatmap-legend"
-            :style="`background-color:hsl(${236 - index * 2},100%,50%);`"
+            :style="`background-color: ` + calculateHeatmapColor(index, true)"
           ></td>
         </tr>
         <tr>
-          <td v-for="index in 118" :key="'hsl-text ' + index">
+          <td v-for="index in maxIndex" :key="'hsl-text ' + index">
             <span
-              v-if="index === 1 || index === 118"
-              v-text="index === 118 ? maxValue.toFixed(0) : '0'"
+              v-if="index === 1 || index === maxIndex"
+              v-text="index === maxIndex ? scaleMax.toFixed(0) : '0'"
             >
             </span>
+            <span v-else-if="index === log10Index" v-text="10"> </span>
+            <span v-else-if="index === log100Index" v-text="100"> </span>
+            <span v-else-if="index === log250Index" v-text="250"> </span>
           </td>
         </tr>
       </table>
@@ -196,6 +206,13 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      showAutoScale: false,
+      fixedLimit: 500,
+      maxIndex: 300,
+    }
+  },
   computed: {
     alertsForChartsMerged() {
       var mergedAlerts = []
@@ -232,16 +249,41 @@ export default {
         return []
       }
     },
-
     locale() {
       return this.$i18n.locale
     },
+    log10Index() {
+      return this.getIndexByValue(10)
+    },
+    log100Index() {
+      return this.getIndexByValue(100)
+    },
+    log250Index() {
+      return this.getIndexByValue(250)
+    },
+    logMax() {
+      return Math.log(this.scaleMax)
+    },
+    scaleMax() {
+      return this.showAutoScale ? this.maxValue : this.fixedLimit
+    },
   },
   methods: {
-    calculateHeatmapColor(value) {
-      const max = this.maxValue
-      return value !== null
-        ? 'hsl(' + (235 + (value / max) * -235).toFixed(0) + ', 100%, 50%)'
+    calculateHeatmapColor(value, isIndex = false) {
+      let logValue = 0
+
+      if (isIndex) {
+        value = this.getValueByIndex(value)
+      }
+
+      if (value !== 0) {
+        logValue = Math.log(value)
+      }
+
+      return value !== null && value !== 0
+        ? 'hsl(' +
+            (235 + (logValue / this.logMax) * -235).toFixed(0) +
+            ', 100%, 50%)'
         : 'hsl(360, 100%, 100%)'
     },
     displayValue(input) {
@@ -264,6 +306,12 @@ export default {
       } else {
         return 'transparent'
       }
+    },
+    getIndexByValue(value) {
+      return parseInt((Math.log(value) / this.logMax) * this.maxIndex)
+    },
+    getValueByIndex(index) {
+      return Math.exp((index / this.maxIndex) * this.logMax)
     },
     getInspectionByIndex(index) {
       return this.inspectionsForCharts.find(
