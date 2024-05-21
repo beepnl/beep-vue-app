@@ -209,7 +209,7 @@ export default {
   data() {
     return {
       showAutoScale: false,
-      fixedLimit: 500,
+      fixedHeatmapMax: process.env.VUE_APP_HEATMAP_MAX || 500,
       maxIndex: 300,
     }
   },
@@ -265,7 +265,7 @@ export default {
       return Math.log(this.scaleMax)
     },
     scaleMax() {
-      return this.showAutoScale ? this.maxValue : this.fixedLimit
+      return this.showAutoScale ? this.maxValue : this.fixedHeatmapMax
     },
   },
   methods: {
