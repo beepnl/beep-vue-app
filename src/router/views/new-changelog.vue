@@ -13,6 +13,29 @@
       </div>
 
       <div class="overline mb-1"
+        ><span class="lowercase">v</span>4.0.19 (03-06-2024)</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>Small improvements</li>
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>4.0.18 (21-05-2024)</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>
+            <router-link :to="{ name: 'measurements' }"> Data:</router-link>
+            sound heatmap colors on logarithmic scale + fixed maximum (switch to
+            autoscale maximum via magnify icon)
+          </li>
+          <li>Small improvements</li>
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
         ><span class="lowercase">v</span>4.0.17 (08-02-2024)</div
       >
       <div class="rounded-border mb-4">
