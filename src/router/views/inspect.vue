@@ -901,7 +901,8 @@ export default {
         this.invalidDate &&
         this.selectedChecklist !== null &&
         this.selectedChecklist.researches !== undefined &&
-        this.selectedChecklist.researches.join().includes('B-GOOD')
+        (this.selectedChecklist.researches.join().includes('B-GOOD') ||
+          this.selectedChecklist.researches.join().includes('BETTER-B'))
       )
     },
     groupId() {
