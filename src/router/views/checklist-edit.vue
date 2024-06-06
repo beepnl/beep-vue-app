@@ -392,7 +392,7 @@ export default {
       try {
         const response = await Api.readRequest('/checklists/', id)
         if (response.length === 0) {
-          this.$router.push({ name: '404', params: { resource: 'checklist' } })
+          this.$router.push({ name: '404', query: { resource: 'checklist' } })
         }
         this.activeChecklist = response.data
         this.activeChecklistTaxonomy = response.data.taxonomy

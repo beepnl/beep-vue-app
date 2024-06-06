@@ -1045,7 +1045,7 @@ export default {
       if (this.activeAlertRule === undefined) {
         this.$router.push({
           name: '404',
-          params: { resource: 'alertrule' },
+          query: { resource: 'alertrule' },
         })
       } else {
         if (

@@ -51,7 +51,9 @@ export default [
     component: () => import('@views/_404.vue'),
     // Allows props to be passed to the 404 page through route
     // params, such as `resource` to define what wasn't found.
-    props: true,
+    props: (route) => ({
+      resource: route.query.resource,
+    }),
   },
   // Redirect any unmatched routes to home. This may
   // require some server configuration to work in production:

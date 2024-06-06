@@ -1133,7 +1133,7 @@ export default {
           }
           if (error.response.status === 404 || error.response.status === 422) {
             this.selectedDeviceId = parseInt(this.devices[0].id) // overwrite value in store with valid device id
-            this.$router.push({ name: '404', params: { resource: 'device' } })
+            this.$router.push({ name: '404', query: { resource: 'device' } })
           }
         } else {
           console.log('Error: ', error)

@@ -468,7 +468,7 @@ export default {
       try {
         const response = await Api.readRequest('/hives/', this.id)
         if (response.data.length === 0) {
-          this.$router.push({ name: '404', params: { resource: 'hive' } })
+          this.$router.push({ name: '404', query: { resource: 'hive' } })
         }
         const hive = response.data.hives[0]
         if (hive.queen && hive.queen.color && hive.queen.color !== null) {
@@ -483,7 +483,7 @@ export default {
         if (error.response) {
           console.log(error.response)
           if (error.response.status === 404) {
-            this.$router.push({ name: '404', params: { resource: 'hive' } })
+            this.$router.push({ name: '404', query: { resource: 'hive' } })
           }
         } else {
           console.log('Error: ', error)

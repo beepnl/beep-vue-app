@@ -422,7 +422,7 @@ export default {
       try {
         const response = await Api.readRequest('/locations/', id)
         if (response.data.length === 0) {
-          this.$router.push({ name: '404', params: { resource: 'location' } })
+          this.$router.push({ name: '404', query: { resource: 'location' } })
         }
         const apiary = response.data.locations[0]
         return apiary
@@ -430,7 +430,7 @@ export default {
         if (error.response) {
           console.log(error.response)
           if (error.response.status === 404) {
-            this.$router.push({ name: '404', params: { resource: 'location' } })
+            this.$router.push({ name: '404', query: { resource: 'location' } })
           }
         } else {
           console.log('Error: ', error)

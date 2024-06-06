@@ -582,12 +582,12 @@ export default {
             this.$i18n.tc('Error', 1) + ': ' + response.data.errors.token
           this.showGroupDetails = false
         } else if (!response) {
-          this.$router.push({ name: '404', params: { resource: 'Invitation' } })
+          this.$router.push({ name: '404', query: { resource: 'Invitation' } })
         }
         return true
       } catch (error) {
         console.log('Error: ', error)
-        this.$router.push({ name: '404', params: { resource: 'Invitation' } })
+        this.$router.push({ name: '404', query: { resource: 'Invitation' } })
       }
     },
     async createGroup() {
@@ -687,7 +687,7 @@ export default {
       try {
         const response = await Api.readRequest('/groups/', this.id)
         if (response.data.length === 0) {
-          this.$router.push({ name: '404', params: { resource: 'group' } })
+          this.$router.push({ name: '404', query: { resource: 'group' } })
         }
         const group = response.data
         // eslint-disable-next-line camelcase
@@ -722,7 +722,7 @@ export default {
         } else {
           console.log('Error: ', error)
         }
-        this.$router.push({ name: '404', params: { resource: 'group' } })
+        this.$router.push({ name: '404', query: { resource: 'group' } })
       }
     },
     async readGroups() {

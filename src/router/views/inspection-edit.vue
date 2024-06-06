@@ -1247,7 +1247,8 @@ export default {
         try {
           const response = await Api.readRequest('/hives/', id)
           if (response.data.length === 0) {
-            this.$router.push({ name: '404', params: { resource: 'hive' } })
+            this.$router.push({ name: '404', query: { resource: 'hive' } })
+            return false
           }
           this.activeHive = response.data.hives[0]
           this.$store.commit('hives/setActiveHive', response.data.hives[0])
@@ -1259,7 +1260,8 @@ export default {
           if (error.response) {
             console.log(error.response)
             if (error.response.status === 404) {
-              this.$router.push({ name: '404', params: { resource: 'hive' } })
+              this.$router.push({ name: '404', query: { resource: 'hive' } })
+              return false
             }
           } else {
             console.log('Error: ', error)
@@ -1362,7 +1364,7 @@ export default {
           if (error.response.status === 404) {
             this.$router.push({
               name: '404',
-              params: { resource: 'inspection' },
+              query: { resource: 'inspection' },
             })
           }
         } else {
@@ -1805,7 +1807,7 @@ export default {
       } else {
         this.$router.push({
           name: '404',
-          params: { resource: 'location' },
+          query: { resource: 'location' },
         })
       }
     },
@@ -1845,7 +1847,7 @@ export default {
       } else {
         this.$router.push({
           name: '404',
-          params: { resource: 'group' },
+          query: { resource: 'group' },
         })
       }
     },
@@ -1862,8 +1864,10 @@ export default {
       this.setBulkInspection(this.selectedHives.length > 1)
     },
     selectFirstHiveSetFromList() {
-      this.selectedHiveSetId = this.sortedHiveSets[0].children[0].treeselectId
-      this.selectHiveSet(this.selectedHiveSetId)
+      if (this.sortedHiveSets.length > 0) {
+        this.selectedHiveSetId = this.sortedHiveSets[0].children[0].treeselectId
+        this.selectHiveSet(this.selectedHiveSetId)
+      }
     },
     selectHiveSet(id, loc = false) {
       if (id) {
