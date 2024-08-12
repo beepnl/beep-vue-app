@@ -152,6 +152,38 @@
       </v-container>
     </v-form>
 
+    <v-container v-if="userIsAdmin">
+      <v-row>
+        <v-col>
+          <v-card outlined>
+            <v-card-text>
+              <v-text-field
+                v-model="apiToken"
+                :append-icon="show4 ? 'mdi-eye' : 'mdi-eye-off'"
+                :label="$t('api_token')"
+                :type="show4 ? 'text' : 'password'"
+                @keydown.enter="$event.target.blur"
+                @click:append="show4 = !show4"
+              />
+              <div class="d-flex justify-space-between">
+                <v-spacer />
+                <v-btn
+                  class="mt-2"
+                  tile
+                  outlined
+                  color="secondary"
+                  type="submit"
+                  @click="saveApiToken"
+                >
+                  <v-icon left>mdi-check</v-icon>{{ $t('save_api') }}</v-btn
+                >
+              </div>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+
     <Confirm ref="confirm"></Confirm>
   </Layout>
 </template>
@@ -160,6 +192,7 @@
 import Api from '@api/Api'
 import Confirm from '@components/confirm.vue'
 import Layout from '@layouts/back.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   components: { Confirm, Layout },
@@ -182,6 +215,7 @@ export default {
       show1: false,
       show2: false,
       show3: false,
+      show4: false,
       showDeleteLoadingIcon: false,
       showLoadingIcon: false,
       valid: false,
@@ -190,9 +224,11 @@ export default {
         email: false,
         password: false,
       },
+      apiToken: this.user.api_token,
     }
   },
   computed: {
+    ...mapGetters('auth', ['userIsAdmin']),
     edit() {
       return {
         name: this.name,
@@ -324,6 +360,19 @@ export default {
           }
         }
       }
+    },
+    async saveApiToken() {
+      this.$store
+        .dispatch('auth/setApiToken', this.apiToken)
+        .then(() => {
+          this.$store.dispatch('auth/authenticateUser')
+        })
+        .then(() => {
+          this.$router.go({ name: 'home' })
+        })
+        .catch((error) => {
+          console.log('error', error)
+        })
     },
     clearMessages() {
       this.errors = []
