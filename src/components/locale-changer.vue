@@ -59,17 +59,13 @@ export default {
       return this.$i18n.locale
     },
   },
-  created() {
-    // if locale is saved in database, use it
-    if (this.userLocale !== null) {
-      this.$i18n.locale = this.userLocale
-      localStorage.beepLocale = this.userLocale
-    } else {
-      var newLocale = languages.checkBrowserLanguage()
-      this.$i18n.locale = newLocale
-      this.switchLocale(newLocale)
-    }
-    Settings.defaultLocale = this.$i18n.locale // for hive-inspect vue-datetime picker
+  watch: {
+    userLocale() {
+      this.setLocale()
+    },
+  },
+  mounted() {
+    this.setLocale()
   },
   methods: {
     async switchLocale(locale) {
@@ -83,10 +79,7 @@ export default {
           console.log('error')
         }
         this.$store.commit('auth/SET_CURRENT_USER', response.data)
-        this.$i18n.locale = locale
-        console.log(locale)
-        Settings.defaultLocale = locale // for hive-inspect vue-datetime picker
-        localStorage.beepLocale = locale // remember language for sign-in
+        console.log('switch language to ', locale)
       } catch (error) {
         if (error.response) {
           console.log(error.response)
@@ -94,6 +87,18 @@ export default {
           console.log('Error: ', error)
         }
       }
+    },
+    setLocale() {
+      // if locale is saved in database, use it
+      if (this.userLocale !== null) {
+        this.$i18n.locale = this.userLocale
+        localStorage.beepLocale = this.userLocale
+      } else {
+        var newLocale = languages.checkBrowserLanguage()
+        this.$i18n.locale = newLocale
+        // this.switchLocale(newLocale)
+      }
+      Settings.defaultLocale = this.$i18n.locale // for hive-inspect vue-datetime picker
     },
   },
 }
