@@ -462,6 +462,10 @@
                     :chart-id="'chart-debug-' + index"
                     :alerts-for-charts="alertsForCharts([sensor])"
                     :inspections-for-charts="inspectionsForCharts"
+                    :high-value="debugChartBoundaries[sensor].high"
+                    :low-value="debugChartBoundaries[sensor].low"
+                    :min-value="debugChartBoundaries[sensor].min"
+                    :max-value="debugChartBoundaries[sensor].max"
                     @confirm-view-alert="confirmViewAlert($event)"
                     @confirm-view-inspection="
                       confirmViewInspection($event.id, $event.date)
@@ -608,6 +612,26 @@ export default {
       hideScrollBar: false,
       showLoadingIcon: false,
       sensorInfo: [],
+      debugChartBoundaries: {
+        bv: {
+          min: 0,
+          max: 5,
+          low: 2.5,
+          high: 3,
+        },
+        rssi: {
+          min: -115,
+          max: 0,
+          low: -90,
+          high: -70,
+        },
+        snr: {
+          min: -10,
+          max: 10,
+          low: 0,
+          high: 5,
+        },
+      },
     }
   },
   computed: {
