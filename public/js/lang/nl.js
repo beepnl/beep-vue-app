@@ -1042,7 +1042,7 @@ const translations = {
   Upload_images_exp_2: 'Zijn alle 4 de zwarte vierkanten in beeld?',
   Upload_images_exp_3:
     'Ligt het papier op een vlakke ondergrond en is het goed verlicht?',
-  Upload_images_exp_4: 'TODO: use image scanner?',
+
   Uploading_images_be_patient:
     'Even geduld a.u.b., uw afbeeldingen worden geanalyseerd. Dit kan enkele minuten duren. Sluit dit venster niet.',
   Generating_svg_be_patient:
