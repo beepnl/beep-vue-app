@@ -21,31 +21,49 @@ const languages = {
     // { lang: 'en-US', title: 'English US' },
   ],
   checkBrowserLanguage() {
-    let matched = null
-    const languagePartials = navigator.language.split('-')[0]
-    this.languageArray.map((language) => {
-      if (language.lang === navigator.language) {
-        matched = language.lang
-      }
-      return true
-    })
-    if (!matched) {
+    let matched = 'en' // fallback
+    const navLanguage = navigator.language
+    if (navLanguage) {
+      const languagePartials = navLanguage.split('-')[0]
       this.languageArray.map((language) => {
-        if (language.lang === languagePartials) {
+        if (language.lang === navigator.language) {
+          matched = language.lang
+        } else if (language.lang === languagePartials) {
+          matched = language.lang
+        } else if (language.lang.split('-')[0] === languagePartials) {
           matched = language.lang
         }
-        return true
+        return matched
       })
+      return matched
+    } else {
+      return matched // fallback
     }
-    if (!matched) {
-      this.languageArray.map((language) => {
-        if (language.lang.split('-')[0] === languagePartials) {
-          matched = language.lang
-        }
-        return true
-      })
-    }
-    return matched
+    // let matched = null
+    // const languagePartials = navigator.language.split('-')[0]
+    // this.languageArray.map((language) => {
+    //   if (language.lang === navigator.language) {
+    //     matched = language.lang
+    //   }
+    //   return true
+    // })
+    // if (!matched) {
+    //   this.languageArray.map((language) => {
+    //     if (language.lang === languagePartials) {
+    //       matched = language.lang
+    //     }
+    //     return true
+    //   })
+    // }
+    // if (!matched) {
+    //   this.languageArray.map((language) => {
+    //     if (language.lang.split('-')[0] === languagePartials) {
+    //       matched = language.lang
+    //     }
+    //     return true
+    //   })
+    // }
+    // return matched
   },
 }
 
