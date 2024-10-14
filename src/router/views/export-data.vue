@@ -192,7 +192,7 @@
                 "
                 :no-results-text="`${$t('no_results')}`"
                 :max-height="mobile ? 120 : 180"
-                multiple
+                :multiple="true"
               />
             </v-col>
             <v-col cols="12" md="3">
@@ -258,7 +258,7 @@
 
 <script>
 import Api from '@api/Api'
-import Treeselect from 'vue3-treeselect'
+import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 import Layout from '@/src/router/layouts/back-layout.vue'
 import { mapGetters } from 'vuex'
 import { readDevicesIfNotChecked, sortedDevices } from '@mixins/methodsMixin'

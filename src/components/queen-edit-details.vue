@@ -5,7 +5,7 @@
         class="text-overline mb-3"
         v-text="`${$t('Queen') + ' ' + $t('details')}`"
       ></div>
-      <div class="queen-details rounded-border">
+      <div class="rounded-border">
         <v-row>
           <v-col cols="12" sm="7" md="6" lg="4">
             <div>
@@ -164,7 +164,7 @@ import {
   momentifyRemoveTime,
 } from '@mixins/momentMixin'
 import { readTaxonomy } from '@mixins/methodsMixin'
-import Treeselect from 'vue3-treeselect'
+import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 
 export default {
   components: {
@@ -368,9 +368,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss">
-.queen-details {
-  padding: 0 12px;
-}
-</style>

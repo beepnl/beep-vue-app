@@ -532,7 +532,7 @@ import MeasurementsCardCompare from '@components/measurements/measurements-card-
 import MeasurementsChartHeatmap from '@/src/components/measurements/measurements-chart-heatmap.vue'
 import MeasurementsChartLine from '@/src/components/measurements/measurements-chart-line.vue'
 import MeasurementsDateSelection from '@/src/components/measurements/measurements-date-selection.vue'
-import Treeselect from 'vue3-treeselect'
+import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 import {
   checkAlerts,
   readDevicesIfNotChecked,

@@ -193,7 +193,7 @@
 
 <script>
 import Api from '@api/Api'
-import Treeselect from 'vue3-treeselect'
+import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 import Confirm from '@/src/components/confirm-dialog.vue'
 import HiveEditDetails from '@components/hive-edit-details.vue'
 import { mapGetters } from 'vuex'

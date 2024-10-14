@@ -644,7 +644,7 @@ import {
   readGeneralInspections,
   readTaxonomy,
 } from '@mixins/methodsMixin'
-import Treeselect from 'vue3-treeselect'
+import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 import { ElInputNumber } from 'element-plus'
 
 export default {

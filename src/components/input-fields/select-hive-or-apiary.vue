@@ -27,7 +27,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Treeselect from 'vue3-treeselect'
+import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 
 export default {
   components: { Treeselect },

@@ -306,7 +306,7 @@
         <div v-if="activeAlertRule" class="alertrule-card rounded-border">
           <v-row>
             <v-col cols="12" sm="9" md="6" class="mt-2 mb-3">
-              <!-- <div class="d-flex justify-space-between">
+              <div class="d-flex justify-space-between">
                 <div class="beep-label" v-html="$t('Exclude_months')"></div>
                 <v-switch
                   v-model="allMonthsSelected"
@@ -314,14 +314,14 @@
                   :label="$t('select_all')"
                   hide-details
                 ></v-switch>
-              </div> -->
+              </div>
               <Treeselect
                 :model-value="activeAlertRule.exclude_months"
                 class="color-red"
                 :options="months"
                 :placeholder="`${$t('Select')} ${$t('months')}`"
                 :no-results-text="`${$t('no_results')}`"
-                multiple
+                :multiple="true"
                 @update:model-value="
                   ;(activeAlertRule.exclude_months = $event),
                     setAlertRuleEdited(true)
@@ -330,7 +330,7 @@
             </v-col>
 
             <v-col cols="12" sm="9" md="6" class="mt-2 mb-3">
-              <!-- <div class="d-flex justify-space-between">
+              <div class="d-flex justify-space-between">
                 <div class="beep-label" v-html="$t('Exclude_hours')"></div>
                 <v-switch
                   v-model="allHoursSelected"
@@ -338,14 +338,14 @@
                   :label="$t('select_all')"
                   hide-details
                 ></v-switch>
-              </div> -->
+              </div>
               <Treeselect
                 v-model="activeAlertRule.exclude_hours"
                 class="color-red"
                 :options="hours"
                 :placeholder="`${$t('Select')} ${$t('hours')}`"
                 :no-results-text="`${$t('no_results')}`"
-                multiple
+                :multiple="true"
                 @update:model-value="setAlertRuleEdited(true)"
               />
             </v-col>
@@ -357,7 +357,7 @@
               md="6"
               class="mb-2"
             >
-              <!-- <div class="d-flex justify-space-between">
+              <div class="d-flex justify-space-between">
                 <div class="beep-label" v-html="$t('Exclude_hives')"></div>
                 <v-switch
                   v-if="numberOfSortedDevices > 2"
@@ -366,7 +366,7 @@
                   :label="$t('select_all')"
                   hide-details
                 ></v-switch>
-              </div> -->
+              </div>
               <Treeselect
                 v-model="activeAlertRule.exclude_hive_ids"
                 class="color-red"
@@ -376,7 +376,7 @@
                 :placeholder="`${$t('Select')} ${$tc('hive', 2)}`"
                 :no-results-text="`${$t('no_results')}`"
                 :value-consists-of="'LEAF_PRIORITY'"
-                multiple
+                :multiple="true"
                 @update:model-value="setAlertRuleEdited(true)"
               />
               <div
@@ -407,7 +407,7 @@
 
 <script>
 import Api from '@api/Api'
-import Treeselect from 'vue3-treeselect'
+import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 import Confirm from '@/src/components/confirm-dialog.vue'
 import { mapGetters } from 'vuex'
 import Layout from '@/src/router/layouts/back-layout.vue'
@@ -471,56 +471,56 @@ export default {
     alertruleCreateMode() {
       return this.$route.name === 'alertrule-create'
     },
-    // allDevicesSelected: { // TODO-VUE3 re-enable when vue3-treeselect multiple reactivity bug has been fixed OR replace by Element Plus treeselect component
-    //   get() {
-    //     return (
-    //       this.activeAlertRule.exclude_hive_ids.length ===
-    //       this.numberOfSortedDevices
-    //     )
-    //   },
-    //   set(value) {
-    //     if (value === false) {
-    //       this.activeAlertRule.exclude_hive_ids = []
-    //     } else {
-    //       this.activeAlertRule.exclude_hive_ids = []
-    //       this.devicesOptions.map((apiary) => {
-    //         apiary.children.map((device) => {
-    //           this.activeAlertRule.exclude_hive_ids.push(device.id)
-    //           return true
-    //         })
-    //         return true
-    //       })
-    //     }
-    //   },
-    // },
-    // allHoursSelected: {
-    //   get() {
-    //     return this.activeAlertRule.exclude_hours.length === 24
-    //   },
-    //   set(value) {
-    //     if (value === false) {
-    //       this.activeAlertRule.exclude_hours = []
-    //     } else {
-    //       this.activeAlertRule.exclude_hours = this.hours.map(
-    //         (month) => month.id
-    //       )
-    //     }
-    //   },
-    // },
-    // allMonthsSelected: {
-    //   get() {
-    //     return this.activeAlertRule.exclude_months.length === 12
-    //   },
-    //   set(value) {
-    //     if (value === false) {
-    //       this.activeAlertRule.exclude_months = []
-    //     } else {
-    //       this.activeAlertRule.exclude_months = this.months.map(
-    //         (month) => month.id
-    //       )
-    //     }
-    //   },
-    // },
+    allDevicesSelected: {
+      get() {
+        return (
+          this.activeAlertRule.exclude_hive_ids.length ===
+          this.numberOfSortedDevices
+        )
+      },
+      set(value) {
+        if (value === false) {
+          this.activeAlertRule.exclude_hive_ids = []
+        } else {
+          this.activeAlertRule.exclude_hive_ids = []
+          this.devicesOptions.map((apiary) => {
+            apiary.children.map((device) => {
+              this.activeAlertRule.exclude_hive_ids.push(device.id)
+              return true
+            })
+            return true
+          })
+        }
+      },
+    },
+    allHoursSelected: {
+      get() {
+        return this.activeAlertRule.exclude_hours.length === 24
+      },
+      set(value) {
+        if (value === false) {
+          this.activeAlertRule.exclude_hours = []
+        } else {
+          this.activeAlertRule.exclude_hours = this.hours.map(
+            (month) => month.id
+          )
+        }
+      },
+    },
+    allMonthsSelected: {
+      get() {
+        return this.activeAlertRule.exclude_months.length === 12
+      },
+      set(value) {
+        if (value === false) {
+          this.activeAlertRule.exclude_months = []
+        } else {
+          this.activeAlertRule.exclude_months = this.months.map(
+            (month) => month.id
+          )
+        }
+      },
+    },
     allSensorMeasurements() {
       let measurementTypes = JSON.parse(
         JSON.stringify(this.sensorMeasurementsList)

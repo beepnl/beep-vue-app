@@ -687,7 +687,7 @@ import { datePickerText } from '@mixins/momentMixin'
 import OfflineInspection from '@components/offline-inspection.vue'
 import ParsedPages from '@components/parsed-pages.vue'
 import smileRating from '@components/input-fields/smile-rating.vue'
-import Treeselect from 'vue3-treeselect'
+import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 import UploadInspection from '@components/upload-inspection.vue'
 
 export default {
