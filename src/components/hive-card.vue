@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/no-template-shadow -->
 <template>
-  <v-menu location="right">
+  <v-menu location="end top">
     <template v-slot:activator="{ props }">
       <v-card
         :class="
@@ -91,7 +91,7 @@
                   >
                     <v-icon color="red" size="24">mdi-bell</v-icon>
                   </v-badge>
-                  <v-icon v-else v-bind="props" size="24" color="red">
+                  <v-icon v-else size="24" color="red">
                     mdi-bell
                   </v-icon>
                   <v-tooltip activator="parent" location="bottom">
@@ -280,7 +280,6 @@
                 <span
                   class="truncate-md"
                   style="max-width: 224px;"
-                  v-bind="props"
                   v-text="hive.notes"
                 >
                 </span>
@@ -359,7 +358,6 @@
                 <span
                   class="truncate-md"
                   style="max-width: 164px;"
-                  v-bind="props"
                   v-text="hive.reminder"
                 >
                 </span>

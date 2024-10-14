@@ -56,6 +56,7 @@
     "vue-virtual-scroller": "^2.0.0-beta.8",
     "vue2-ios-pwa-prompt": "^1.0.0",
     "vue3-country-region-select": "^1.0.0",
+    "vue3-treeselect": "^0.1.10",
     "vuedraggable": "^4.1.0",
     "vuex": "4.0"
   },
