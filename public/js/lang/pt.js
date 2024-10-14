@@ -1185,6 +1185,9 @@ const translations = {
   colony_failure_weight_history:
     'Probability of winter failure based on weight history',
   more_info: 'more information',
+
+  api_token: 'Api token',
+  save_api: 'Save api token',
 }
 
 export default translations

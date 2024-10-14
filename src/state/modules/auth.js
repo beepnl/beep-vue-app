@@ -44,6 +44,25 @@ export const mutations = {
   },
 }
 export const actions = {
+  authenticateUser: function({ _, commit, dispatch }) {
+    Api.postRequest('/authenticate')
+      .then((response) => {
+        const user = response.data
+        commit('SET_CURRENT_USER', user)
+        // api token is already correctly set, otherwise authentication would fail
+        return user
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 401) {
+          console.log(error.response)
+          return dispatch('signOut')
+        }
+      })
+  },
+  setApiToken: function({ commit }, value) {
+    commit('SET_API_TOKEN', value)
+    return null
+  },
   signIn: function({ commit, dispatch, getters }, credentials = {}) {
     if (getters.loggedIn) return dispatch('validateUser')
 
@@ -76,22 +95,7 @@ export const actions = {
   // with new data from the API.
   validateUser: function({ state, commit, dispatch }) {
     console.log('validate user')
-    return (
-      state.currentUser ||
-      Api.postRequest('/authenticate')
-        .then((response) => {
-          const user = response.data
-          commit('SET_CURRENT_USER', user)
-          // api token is already correctly set, otherwise authentication would fail
-          return user
-        })
-        .catch((error) => {
-          if (error.response && error.response.status === 401) {
-            console.log(error.response)
-            return dispatch('signOut')
-          }
-        })
-    )
+    return state.currentUser || dispatch('authenticateUser')
   },
 }
 

@@ -1102,6 +1102,9 @@ const translations = {
   colony_failure_weight_history:
     'Kans op winterfalen gebaseerd op gewichtshistorie',
   more_info: 'meer informatie',
+
+  api_token: 'Api token',
+  save_api: 'Api token opslaan',
 }
 
 export default translations
