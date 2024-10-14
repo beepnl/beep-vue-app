@@ -2,8 +2,17 @@
   <Layout :title="$t('Whats_new')">
     <v-container class="new-container">
       <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.1.0 (13-11-2023) - Current
+        ><span class="lowercase">v</span>4.1.0 (14-10-2024) - Current
         version</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>Small improvements</li>
+        </ul>
+      </div>
+
+      <div class="text-overline mb-1"
+        ><span class="lowercase">v</span>4.1.0 (13-11-2023)</div
       >
       <div class="rounded-border mb-4">
         <ul>
@@ -12,7 +21,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>4.0.19 (03-06-2024)</div
       >
       <div class="rounded-border mb-4">
@@ -21,7 +30,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>4.0.18 (21-05-2024)</div
       >
       <div class="rounded-border mb-4">
@@ -35,7 +44,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>4.0.17 (08-02-2024)</div
       >
       <div class="rounded-border mb-4">
@@ -44,7 +53,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>4.0.16 (21-11-2023)</div
       >
       <div class="rounded-border mb-4">
@@ -53,7 +62,7 @@
         </ul>
       </div>
 
-      <div class="overline mb-1"
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>4.0.15 (14-11-2023)</div
       >
       <div class="rounded-border mb-4">

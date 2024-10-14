@@ -21,20 +21,20 @@
           <td v-for="index in maxIndex" :key="'hsl-text ' + index">
             <template v-for="labelIndex in indexesWithLabel">
               <span
-                :key="'li-' + labelIndex"
                 v-if="
                   (index === 1 && labelIndex === '1') ||
                     (index === maxIndex && labelIndex === maxIndex.toString())
                 "
+                :key="'li-' + labelIndex"
                 v-text="indexLabels[index]"
               >
               </span>
               <span
-                :key="'li-' + labelIndex"
                 v-else-if="
                   scaleMax - labelIndex > minLabelDistance &&
                     index === indexLabels[labelIndex]
                 "
+                :key="'li-' + labelIndex"
                 v-text="labelIndex"
               >
               </span>
@@ -262,8 +262,8 @@ export default {
       return mergedAlerts
     },
     indexLabels() {
-      var maxIndex = this.maxIndex
-      var indexes = {
+      const maxIndex = this.maxIndex
+      const indexes = {
         1: 0,
         10: this.getIndexByValue(10),
         100: this.getIndexByValue(100),
