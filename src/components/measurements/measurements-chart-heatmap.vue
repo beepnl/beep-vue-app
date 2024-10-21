@@ -9,38 +9,40 @@
     </div>
     <div class="d-flex justify-center mt-n5">
       <table class="table-heatmap--legend mb-3">
-        <tr>
-          <td
-            v-for="index in maxIndex"
-            :key="'hsl-color ' + index"
-            class="td--heatmap-legend"
-            :style="`background-color: ` + calculateHeatmapColor(index, true)"
-          ></td>
-        </tr>
-        <tr>
-          <td v-for="index in maxIndex" :key="'hsl-text ' + index">
-            <template v-for="labelIndex in indexesWithLabel">
-              <span
-                v-if="
-                  (index === 1 && labelIndex === '1') ||
-                    (index === maxIndex && labelIndex === maxIndex.toString())
-                "
-                :key="'li-' + labelIndex"
-                v-text="indexLabels[index]"
-              >
-              </span>
-              <span
-                v-else-if="
-                  scaleMax - labelIndex > minLabelDistance &&
-                    index === indexLabels[labelIndex]
-                "
-                :key="'li-' + labelIndex"
-                v-text="labelIndex"
-              >
-              </span>
-            </template>
-          </td>
-        </tr>
+        <tbody>
+          <tr>
+            <td
+              v-for="index in maxIndex"
+              :key="'hsl-color ' + index"
+              class="td--heatmap-legend"
+              :style="`background-color: ` + calculateHeatmapColor(index, true)"
+            ></td>
+          </tr>
+          <tr>
+            <td v-for="index in maxIndex" :key="'hsl-text ' + index">
+              <template v-for="labelIndex in indexesWithLabel">
+                <span
+                  v-if="
+                    (index === 1 && labelIndex === '1') ||
+                      (index === maxIndex && labelIndex === maxIndex.toString())
+                  "
+                  :key="'li-' + labelIndex"
+                  v-text="indexLabels[index]"
+                >
+                </span>
+                <span
+                  v-else-if="
+                    scaleMax - labelIndex > minLabelDistance &&
+                      index === indexLabels[labelIndex]
+                  "
+                  :key="'li-' + labelIndex"
+                  v-text="labelIndex"
+                >
+                </span>
+              </template>
+            </td>
+          </tr>
+        </tbody>
       </table>
     </div>
     <div>

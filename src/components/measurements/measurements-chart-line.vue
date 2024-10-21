@@ -202,7 +202,7 @@ export default {
       return alertsForLineCharts
     },
     annotation() {
-      var targetlines = {
+      const targetlines = {
         box1: {
           type: 'box',
           yMin: this.correctedMinValue,
@@ -243,7 +243,7 @@ export default {
         },
       }
 
-      var allAnnotations = Object.assign(
+      const allAnnotations = Object.assign(
         targetlines,
         this.inspectionsForLineCharts,
         this.alertsForLineCharts
