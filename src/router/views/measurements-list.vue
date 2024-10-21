@@ -488,7 +488,7 @@
           :period-start-string="periodStartString"
           :relative-interval="relativeInterval"
           :selected-device-title="selectedDeviceTitle"
-          :default-hive-id="selectedDevice.hive_id"
+          :default-hive-id="selectedDevice ? selectedDevice.hive_id : null"
           :time-index="timeIndex"
           :measurement-data="measurementData"
           :inspections-for-charts="inspectionsForCharts"
@@ -745,7 +745,7 @@ export default {
     },
     inspectionsForPeriod() {
       let inspections = []
-      if (this.selectedDevice.hive_id !== null) {
+      if (this.selectedDevice && this.selectedDevice.hive_id !== null) {
         inspections = this.inspectionsWithDates.filter(
           (inspection) =>
             inspection.hive_id === this.selectedDevice.hive_id &&
@@ -931,11 +931,17 @@ export default {
     },
     selectedDeviceId: {
       get() {
-        return parseInt(this.$store.getters['devices/selectedDeviceId'])
+        const storeValue = this.$store.getters['devices/selectedDeviceId']
+        const getValue =
+          storeValue !== null && !isNaN(parseInt(storeValue))
+            ? parseInt(storeValue)
+            : null
+        return getValue
       },
       set(value) {
-        this.$store.commit('devices/setSelectedDeviceId', value)
-        localStorage.beepSelectedDeviceId = value
+        const setValue = !isNaN(value) ? value : null
+        this.$store.commit('devices/setSelectedDeviceId', setValue)
+        localStorage.beepSelectedDeviceId = setValue
       },
     },
     selectedDeviceTitle() {
