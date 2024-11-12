@@ -39,7 +39,9 @@
             <v-card-actions class="pl-0">
               <v-icon
                 :class="
-                  `${filterByAttention ? 'text-red' : 'color-grey-filter'} mr-2`
+                  `${
+                    filterByAttention ? 'text-red' : 'color-grey-filter'
+                  } mr-0 mr-sm-2`
                 "
                 @click="toggleFilterByAttention"
               >
@@ -47,7 +49,9 @@
               </v-icon>
               <v-icon
                 :class="
-                  `${filterByReminder ? 'text-red' : 'color-grey-filter'} mr-2`
+                  `${
+                    filterByReminder ? 'text-red' : 'color-grey-filter'
+                  } mr-0 mr-sm-2`
                 "
                 @click="toggleFilterByReminder"
               >
@@ -59,7 +63,7 @@
                     filterByImpression.includes(3)
                       ? 'text-green'
                       : 'color-grey-filter'
-                  } mr-2`
+                  } mr-0 mr-sm-2`
                 "
                 @click="updateFilterByImpression(3)"
               >
@@ -71,7 +75,7 @@
                     filterByImpression.includes(2)
                       ? 'text-orange'
                       : 'color-grey-filter'
-                  } mr-2`
+                  } mr-0 mr-sm-2`
                 "
                 @click="updateFilterByImpression(2)"
               >
@@ -83,7 +87,7 @@
                     filterByImpression.includes(1)
                       ? 'text-red'
                       : 'color-grey-filter'
-                  } mr-2`
+                  } mr-0 mr-sm-2`
                 "
                 @click="updateFilterByImpression(1)"
               >

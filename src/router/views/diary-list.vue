@@ -47,7 +47,7 @@
                     filterByGroupStatus === 'owned'
                       ? 'icon-apiary-owned'
                       : 'icon-apiary-shared'
-                  } mr-2`
+                  } mr-0 mr-sm-2`
                 "
                 @click="toggleFilterByGroup"
               >
@@ -59,7 +59,9 @@
               </v-icon>
               <v-icon
                 :class="
-                  `${filterByAttention ? 'text-red' : 'color-grey-filter'} mr-2`
+                  `${
+                    filterByAttention ? 'text-red' : 'color-grey-filter'
+                  } mr-0 mr-sm-2`
                 "
                 @click="filterByAttention = !filterByAttention"
               >
@@ -67,7 +69,9 @@
               </v-icon>
               <v-icon
                 :class="
-                  `${filterByReminder ? 'text-red' : 'color-grey-filter'} mr-2`
+                  `${
+                    filterByReminder ? 'text-red' : 'color-grey-filter'
+                  } mr-0 mr-sm-2`
                 "
                 @click="filterByReminder = !filterByReminder"
               >
@@ -79,7 +83,7 @@
                     filterByImpression.includes(3)
                       ? 'text-green'
                       : 'color-grey-filter'
-                  } mr-2`
+                  } mr-0 mr-sm-2`
                 "
                 @click="filterByImpression = 3"
               >
@@ -91,7 +95,7 @@
                     filterByImpression.includes(2)
                       ? 'text-orange'
                       : 'color-grey-filter'
-                  } mr-2`
+                  } mr-0 mr-sm-2`
                 "
                 @click="filterByImpression = 2"
               >
@@ -103,7 +107,7 @@
                     filterByImpression.includes(1)
                       ? 'text-red'
                       : 'color-grey-filter'
-                  } mr-2`
+                  } mr-0 mr-sm-2`
                 "
                 @click="filterByImpression = 1"
               >
