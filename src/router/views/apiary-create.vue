@@ -278,7 +278,7 @@
                         :step="0.001"
                         :precision="3"
                         :step-strictly="true"
-                        @change="setApiaryEdited(true)"
+                        @change="editApiary($event, 'lat')"
                         @update:model-value="
                           convertComma($event, newHive, 'lat', 3),
                             setApiaryEdited(true)
@@ -298,7 +298,7 @@
                         :step="0.001"
                         :precision="3"
                         :step-strictly="true"
-                        @change="setApiaryEdited(true)"
+                        @change="editApiary($event, 'lon')"
                         @update:model-value="
                           convertComma($event, newHive, 'lon', 3),
                             setApiaryEdited(true)
@@ -759,6 +759,7 @@ export default {
       if (property === 'hex_color') {
         this.cancelColorPicker()
       }
+      this.setApiaryEdited(true)
     },
     validateText(value, property, maxLength) {
       if (value !== null && value.length > maxLength + 1) {

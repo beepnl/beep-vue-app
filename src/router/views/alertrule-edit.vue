@@ -114,7 +114,7 @@
               <v-textarea
                 v-model="activeAlertRule.description"
                 :class="'pt-0' + (!mobile ? ' mb-sm-3 mt-0' : '')"
-                :rows="!mobile ? '1' : '2'"
+                :rows="!mobile ? 1 : 2"
                 auto-grow
                 counter="250"
                 bg-color="white"
