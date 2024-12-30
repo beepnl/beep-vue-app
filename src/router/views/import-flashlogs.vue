@@ -8,10 +8,10 @@
     >
       <div class="d-flex justify-end align-center" style="width: 100%;">
         <v-spacer></v-spacer>
-        <div class="beep-label mr-1" v-text="$t('From_cache') + ': '"></div>
+        <div class="beep-label mr-2" v-text="$t('From_cache') + ': '"></div>
         <v-switch
           v-model="fromCache"
-          class="pt-0 mt-0 mr-2"
+          class="pt-0 mt-0 mr-4"
           style="max-width: 40px;"
           hide-details
         ></v-switch>
@@ -107,8 +107,14 @@
                 <span v-text="momentify(value, true, dateFormatLong)"></span>
               </template>
 
-              <template v-slot:[`item.device_name`]="{ value }">
-                <span v-text="value !== null ? value : $t('unknown')"></span>
+              <template v-slot:[`item.device_name`]="{ item }">
+                <span v-text="getDeviceText(item)"></span>
+                <v-chip
+                  v-if="item.rtc === 1"
+                  class="ml-2 v-chip-rtc"
+                  size="x-small"
+                  >RTC</v-chip
+                >
               </template>
 
               <template v-slot:[`item.hive_name`]="{ value }">
@@ -1025,7 +1031,8 @@ export default {
         this.selectedFlashLog = response.data
 
         if (this.selectedFlashLog.log !== undefined) {
-          this.selectedFlashLog.log.map((item) => {
+          const newFlashLog = JSON.parse(JSON.stringify(this.selectedFlashLog)) // clone without v-bind to avoid vuex warning when mutating
+          newFlashLog.log.map((item) => {
             // set extra properties here to enable column sort for these columns
             item.data_imported =
               this.selectedFlashLog.persisted_block_ids_array !== undefined &&
@@ -1035,6 +1042,8 @@ export default {
             item.missing_data = this.percentageNotInDB(item)
             return item
           })
+          this.selectedFlashLog = newFlashLog // avoid vuex do not mutate warning by setting selectedFlashLog at once instead of just the .log prop
+
           setTimeout(() => {
             this.scrollTo('log-data')
           }, 100)
@@ -1132,6 +1141,10 @@ export default {
         ')'
       )
     },
+    getDeviceText(item) {
+      const value = item.device_name
+      return value !== null ? value : this.$i18n.t('unknown')
+    },
     matchText(match, index) {
       let text = index + ': '
       Object.entries(match).map(([key, value]) => {
@@ -1164,11 +1177,9 @@ export default {
           log.duration_hours * (ptNotInDb / 100),
           'hours'
         ) +
-        '<br>(' +
-        ptNotInDb +
-        '% ' +
-        this.$i18n.t('not_yet_in_db') +
-        ')'
+        (ptNotInDb !== null
+          ? '<br>(' + ptNotInDb + '% ' + this.$i18n.t('not_yet_in_db') + ')'
+          : '')
       )
     },
     percentageNotInDB(log) {
@@ -1261,5 +1272,10 @@ export default {
   border-bottom-right-radius: 4px;
   border-bottom-left-radius: 4px;
   margin-top: -4px;
+}
+.v-chip-rtc {
+  background-color: $color-accent !important;
+  color: $color-white;
+  font-weight: bold;
 }
 </style>
