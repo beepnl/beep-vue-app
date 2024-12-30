@@ -131,6 +131,9 @@
       color: $color-green;
       background-color: transparent !important;
     }
+    &.--accent {
+      color: $color-accent;
+    }
   }
 
   &-note {

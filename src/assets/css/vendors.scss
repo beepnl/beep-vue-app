@@ -426,6 +426,10 @@
   }
 }
 
+.v-expansion-panel-text__wrapper {
+  padding: 0px 24px 8px 36px !important;
+}
+
 .v-table.v-table--density-compact.table-heatmap
   > .v-table__wrapper
   > table
@@ -462,6 +466,14 @@
 .v-list-item--dense,
 .v-list--dense .v-list-item {
   max-height: 52px;
+}
+
+.v-list-item--active > .v-list-item__overlay {
+  opacity: 0 !important;
+}
+
+.v-list-item--density-compact.v-list-item--one-line {
+  min-height: unset !important;
 }
 
 .v-badge__badge {

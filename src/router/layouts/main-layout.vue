@@ -93,7 +93,6 @@
   </v-app-bar>
 
   <NavDrawer
-    :menu-items="menuItems"
     :drawer="drawer"
     @update-drawer-value="drawer = $event"
   ></NavDrawer>
@@ -138,12 +137,6 @@ export default {
     readDevicesIfNotChecked,
     readGeneralInspections,
   ],
-  props: {
-    menuItems: {
-      type: Array,
-      default: () => [],
-    },
-  },
   data: function() {
     return {
       drawer: false,
