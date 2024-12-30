@@ -63,7 +63,8 @@ const vuetify = createVuetify({
       color: 'accent',
     },
     VList: {
-      density: 'compact',
+      density: 'default',
+      variant: 'flat',
     },
     VSelect: {
       density: 'compact',

@@ -300,7 +300,7 @@
                           {{ $t('add_to_calendar').toUpperCase() }}
                         </span>
                       </template>
-                      <v-list density="compact">
+                      <v-list>
                         <template
                           v-for="(calendarItem, index) in calendars"
                           :key="index"

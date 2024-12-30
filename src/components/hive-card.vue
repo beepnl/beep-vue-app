@@ -386,7 +386,7 @@
       </v-card>
     </template>
 
-    <v-list density="compact" class="hive-menu-list" variant="flat">
+    <v-list class="hive-menu-list">
       <v-list-item>
         <v-list-item-title class="text-h6">
           {{ hive.name }}

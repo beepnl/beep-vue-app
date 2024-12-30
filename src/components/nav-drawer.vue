@@ -8,7 +8,7 @@
     >
       <div class="nav-drawer-wrapper d-flex flex-column justify-space-between">
         <div>
-          <v-list variant="flat" density="default">
+          <v-list>
             <v-list-item class="text-black ml-2" @click="showDrawer = false">
               <template v-slot:prepend>
                 <div class="beep-list-icon">
@@ -30,7 +30,7 @@
                 v-if="item.children.length === 0 && item.route && item.show"
                 :hide-actions="true"
               >
-                <v-list variant="flat" density="compact" class="py-0">
+                <v-list density="compact" class="py-0">
                   <v-list-item
                     v-if="item.route !== 'signOut'"
                     :key="'pir' + i"
@@ -95,7 +95,7 @@
               <v-expansion-panel-text
                 v-if="item.children.length > 0 && item.show"
               >
-                <v-list variant="flat" density="default">
+                <v-list>
                   <template v-for="(child, c) in item.children">
                     <v-list-item
                       v-if="child.feedback"

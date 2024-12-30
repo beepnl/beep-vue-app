@@ -174,7 +174,7 @@
 
                     <div
                       v-if="inspection.notes"
-                      class="diary-inspection-text ml-7"
+                      class="diary-inspection-text ml-6"
                     >
                       <div
                         v-if="inspection.notes.length > 35 && !smallScreen"
@@ -250,7 +250,7 @@
                       >
                       </span>
                     </div>
-                    <div class="diary-inspection-text ml-7">
+                    <div class="diary-inspection-text ml-6">
                       <div
                         v-if="
                           inspection.reminder &&
