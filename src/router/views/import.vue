@@ -7,10 +7,10 @@
       light
     >
       <v-spacer></v-spacer>
-      <div class="beep-label mr-1" v-text="$t('From_cache') + ': '"></div>
+      <div class="beep-label mr-2" v-text="$t('From_cache') + ': '"></div>
       <v-switch
         v-model="fromCache"
-        class="pt-0 mt-0 mr-2"
+        class="pt-0 mt-0 mr-4"
         dense
         hide-details
       ></v-switch>
@@ -110,11 +110,13 @@
               </template>
 
               <template v-slot:[`item.device_name`]="{ item }">
-                <span
-                  v-text="
-                    item.device_name !== null ? item.device_name : $t('unknown')
-                  "
-                ></span>
+                <span v-text="getDeviceText(item)"></span>
+                <v-chip
+                  v-if="deviceHasRtc(item)"
+                  class="ml-2 v-chip-rtc"
+                  x-small
+                  >RTC</v-chip
+                >
               </template>
 
               <template v-slot:[`item.hive_name`]="{ item }">
@@ -702,6 +704,7 @@ export default {
     ...mapGetters('auth', ['userIsAdmin']),
     ...mapGetters('groups', ['groups']),
     ...mapGetters('locations', ['apiaries']),
+    ...mapGetters('devices', ['devices']),
     importSentence() {
       return this.importMessage !== null && this.importMessage.data_stored
         ? this.$i18n.t('data_stored_for_log') +
@@ -1024,7 +1027,8 @@ export default {
         this.selectedFlashLog = response.data
 
         if (this.selectedFlashLog.log !== undefined) {
-          this.selectedFlashLog.log.map((item) => {
+          const newFlashLog = JSON.parse(JSON.stringify(this.selectedFlashLog)) // clone without v-bind to avoid vuex warning when mutating
+          newFlashLog.log.map((item) => {
             // set extra properties here to enable column sort for these columns
             item.data_imported =
               this.selectedFlashLog.persisted_block_ids_array !== undefined &&
@@ -1032,7 +1036,9 @@ export default {
                 item.block
               ) > -1
             item.missing_data = this.percentageNotInDB(item)
+            return item
           })
+          this.selectedFlashLog = newFlashLog // avoid vuex do not mutate warning by setting selectedFlashLog at once instead of just the .log prop
           setTimeout(() => {
             this.scrollTo('log-data')
           }, 100)
@@ -1118,6 +1124,14 @@ export default {
       this.errorMessage = null
       this.successMessage = null
     },
+    deviceHasRtc(item) {
+      const deviceId = item.device_id
+      const deviceFilter = this.devices.filter(
+        (device) => device.id === deviceId
+      )
+
+      return deviceFilter.length > 0 ? deviceFilter[0].rtc === 1 : false
+    },
     fileSizeText(item) {
       var nrOfMB = (item.bytes_received / 1024 / 1024).toFixed(2)
       return (
@@ -1128,6 +1142,10 @@ export default {
           : this.$i18n.t('unknown')) +
         ')'
       )
+    },
+    getDeviceText(item) {
+      const value = item.device_name
+      return value !== null ? value : this.$i18n.t('unknown')
     },
     matchText(match, index) {
       var text = index + ': '
@@ -1160,11 +1178,9 @@ export default {
           log.duration_hours * (ptNotInDb / 100),
           'hours'
         ) +
-        '<br>(' +
-        ptNotInDb +
-        '% ' +
-        this.$i18n.t('not_yet_in_db') +
-        ')'
+        (ptNotInDb !== null
+          ? '<br>(' + ptNotInDb + '% ' + this.$i18n.t('not_yet_in_db') + ')'
+          : '')
       )
     },
     percentageNotInDB(log) {
@@ -1257,5 +1273,10 @@ export default {
   border-bottom-right-radius: 4px;
   border-bottom-left-radius: 4px;
   margin-top: -4px;
+}
+.v-chip-rtc {
+  background-color: $color-accent !important;
+  color: $color-white;
+  font-weight: bold;
 }
 </style>
