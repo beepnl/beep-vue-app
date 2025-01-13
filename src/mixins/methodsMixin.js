@@ -786,6 +786,34 @@ export const readGeneralInspectionsIfNotPresent = {
   },
 }
 
+export const readInspectionsForHiveId = {
+  methods: {
+    async readInspectionsForHiveId(id, suffix = '') {
+      this.loadingInspections = true
+      this.show500Response = false
+
+      try {
+        const response = await Api.readRequest(
+          '/inspections/hive/' + id.toString() + suffix
+        )
+        this.inspections = response.data
+        this.loadingInspections = false
+        return true
+      } catch (error) {
+        this.loadingInspections = false
+        if (error.response) {
+          console.log('Error: ', error.response)
+          if (error.response.status === 500) {
+            this.show500Response = true
+          }
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
+  },
+}
+
 export const readTaxonomy = {
   methods: {
     async readTaxonomy() {

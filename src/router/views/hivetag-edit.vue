@@ -261,7 +261,7 @@ export default {
       'hiveTags',
       'tempSavedHiveTag',
     ]),
-    ...mapGetters('locations', ['apiaries', 'groups', 'hivesObject']),
+    ...mapGetters('locations', ['hiveSets', 'hivesObject']),
     createMode() {
       return (
         this.$route.name === 'hivetag-create' ||
@@ -278,9 +278,6 @@ export default {
             ? this.hiveTag.tag
             : ''))
       )
-    },
-    hiveSets() {
-      return this.apiaries.concat(this.groups)
     },
     hiveTagNotValid() {
       return (

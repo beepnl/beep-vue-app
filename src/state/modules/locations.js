@@ -46,7 +46,7 @@ export const getters = {
   hiveFilterByReminder: (state) => {
     return state.hiveFilterByReminder
   },
-  hivesObject: (state, getters) => {
+  hives: (state, getters) => {
     const ownHivesArray = []
     getters.apiaries.forEach((apiary) => {
       apiary.hives.forEach((hive) => {
@@ -65,6 +65,14 @@ export const getters = {
     })
 
     const allHives = ownHivesArray.concat(sharedHivesArray)
+
+    return allHives
+  },
+  hiveSets: (state, getters) => {
+    return getters.apiaries.concat(getters.groups)
+  },
+  hivesObject: (state, getters) => {
+    const allHives = getters.hives
 
     var uniqueHives = {}
     const map = new Map()
