@@ -196,9 +196,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('groups', ['dashboardGroups', 'groups']),
-    ...mapGetters('hives', ['hivesObject']),
-    ...mapGetters('locations', ['apiaries']),
+    ...mapGetters('groups', ['dashboardGroups']),
+    ...mapGetters('locations', ['apiaries', 'groups', 'hivesObject']),
     mobile() {
       return this.$vuetify.breakpoint.mobile
     },

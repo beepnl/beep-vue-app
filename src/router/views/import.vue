@@ -702,9 +702,8 @@ export default {
   },
   computed: {
     ...mapGetters('auth', ['userIsAdmin']),
-    ...mapGetters('groups', ['groups']),
-    ...mapGetters('locations', ['apiaries']),
     ...mapGetters('devices', ['devices']),
+    ...mapGetters('locations', ['apiaries', 'groups']),
     importSentence() {
       return this.importMessage !== null && this.importMessage.data_stored
         ? this.$i18n.t('data_stored_for_log') +

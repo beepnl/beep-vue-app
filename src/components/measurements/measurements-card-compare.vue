@@ -540,9 +540,7 @@ export default {
   },
   computed: {
     ...mapGetters('auth', ['permissions']),
-    ...mapGetters('hives', ['hivesObject']),
-    ...mapGetters('groups', ['groups']),
-    ...mapGetters('locations', ['apiaries']),
+    ...mapGetters('locations', ['apiaries', 'groups', 'hivesObject']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     allHivesSelected: {
       get() {

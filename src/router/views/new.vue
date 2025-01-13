@@ -2,8 +2,28 @@
   <Layout :title="$t('Whats_new')">
     <v-container>
       <div class="overline mb-1"
-        ><span class="lowercase">v</span>4.0.21 (30-09-2024) - Current
+        ><span class="lowercase">v</span>4.0.22 (13-01-2025) - Current
         version</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>Faster loading times for Hives overview & Data tab</li>
+          <li>
+            <router-link :to="{ name: 'import' }"> Import</router-link>: several
+            improvements (only for users with a BEEP base), such as:
+            <ul>
+              <li
+                >Show RTC badge next to BEEP base name if it has an rtc
+                clock</li
+              >
+              <li>Bugfixes: small fixes for issues received as feedback</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <div class="overline mb-1"
+        ><span class="lowercase">v</span>4.0.21 (30-09-2024)</div
       >
       <div class="rounded-border mb-4">
         <ul>

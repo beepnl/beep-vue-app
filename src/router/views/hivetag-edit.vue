@@ -255,15 +255,13 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('groups', ['groups']),
     ...mapGetters('hives', [
       'hiveTagActionDescriptions',
       'hiveTagEdited',
       'hiveTags',
-      'hivesObject',
       'tempSavedHiveTag',
     ]),
-    ...mapGetters('locations', ['apiaries']),
+    ...mapGetters('locations', ['apiaries', 'groups', 'hivesObject']),
     createMode() {
       return (
         this.$route.name === 'hivetag-create' ||

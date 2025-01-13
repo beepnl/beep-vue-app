@@ -1042,46 +1042,44 @@ export default {
     this.readTaxonomy().then(() => {
       this.checkAlertRulesAndAlerts() // for alerts-tab badge AND alert-lines
         .then(() => {
-          this.readGeneralInspectionsIfNotPresent().then(() => {
-            this.readDevicesIfNotChecked()
-              .then(() => {
-                // if selected device id is saved in localStorage, and there is no preselected device id, use it
-                if (
-                  this.preselectedDeviceId === null &&
-                  localStorage.beepSelectedDeviceId &&
-                  this.deviceExists(localStorage.beepSelectedDeviceId)
-                ) {
-                  this.selectedDeviceId = localStorage.beepSelectedDeviceId
-                } else if (
-                  this.preselectedDeviceId !== null &&
-                  this.deviceExists(this.preselectedDeviceId)
-                ) {
-                  this.selectedDeviceId = this.preselectedDeviceId
+          this.readDevicesIfNotChecked()
+            .then(() => {
+              // if selected device id is saved in localStorage, and there is no preselected device id, use it
+              if (
+                this.preselectedDeviceId === null &&
+                localStorage.beepSelectedDeviceId &&
+                this.deviceExists(localStorage.beepSelectedDeviceId)
+              ) {
+                this.selectedDeviceId = localStorage.beepSelectedDeviceId
+              } else if (
+                this.preselectedDeviceId !== null &&
+                this.deviceExists(this.preselectedDeviceId)
+              ) {
+                this.selectedDeviceId = this.preselectedDeviceId
+              }
+
+              if (
+                this.queriedDate !== null &&
+                this.queriedDate.length === 10 &&
+                !isNaN(this.preselectedDeviceId)
+              ) {
+                this.selectDate(this.queriedDate)
+              } else if (this.devices.length > 0) {
+                if (this.queriedInterval !== undefined) {
+                  this.interval = this.queriedInterval
+                  this.timeIndex = this.queriedTimeIndex
+                  this.dates =
+                    this.queriedStart && this.queriedEnd
+                      ? [this.queriedStart, this.queriedEnd]
+                      : []
                 }
 
-                if (
-                  this.queriedDate !== null &&
-                  this.queriedDate.length === 10 &&
-                  !isNaN(this.preselectedDeviceId)
-                ) {
-                  this.selectDate(this.queriedDate)
-                } else if (this.devices.length > 0) {
-                  if (this.queriedInterval !== undefined) {
-                    this.interval = this.queriedInterval
-                    this.timeIndex = this.queriedTimeIndex
-                    this.dates =
-                      this.queriedStart && this.queriedEnd
-                        ? [this.queriedStart, this.queriedEnd]
-                        : []
-                  }
-
-                  this.setInitialDeviceIdAndLoadData()
-                }
-              })
-              .then(() => {
-                this.ready = true
-              })
-          })
+                this.setInitialDeviceIdAndLoadData()
+              }
+            })
+            .then(() => {
+              this.ready = true
+            })
         })
     })
   },
@@ -1717,6 +1715,7 @@ export default {
       ) {
         this.selectedDeviceId = parseInt(this.devices[0].id)
       }
+      this.readGeneralInspectionsIfNotPresent()
       this.loadData()
       return true
     },

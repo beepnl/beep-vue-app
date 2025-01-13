@@ -711,7 +711,9 @@ import {
 } from '@mixins/momentMixin'
 import {
   checkAlerts,
+  readApiaries,
   readApiariesAndGroups,
+  readGroups,
   readDevices,
   readGeneralInspections,
   readHiveTags,
@@ -732,7 +734,9 @@ export default {
     momentFromNow,
     momentify,
     momentifyDayMonth,
+    readApiaries,
     readApiariesAndGroups,
+    readGroups,
     readDevices,
     readGeneralInspections,
     readHiveTags,
@@ -765,8 +769,8 @@ export default {
   computed: {
     ...mapGetters('alerts', ['alerts']),
     ...mapGetters('devices', ['devices']),
-    ...mapGetters('locations', ['apiaries']),
-    ...mapGetters('groups', ['groups', 'invitations']),
+    ...mapGetters('locations', ['apiaries', 'groups', 'hivesObject']),
+    ...mapGetters('groups', ['invitations']),
     ...mapGetters('hives', ['hiveTags']),
     filterByAlert: {
       get() {
@@ -1009,20 +1013,31 @@ export default {
           this.addDates(hive)
         })
       })
-      var groupsWithDatesAndEditableHivesProp = this.groups
-      groupsWithDatesAndEditableHivesProp.map((group) => {
-        group.hives.map((hive) => {
-          this.addDates(hive)
+
+      var groupsWithDatesAndEditableHivesProp = []
+
+      if (this.groups.length > 0) {
+        groupsWithDatesAndEditableHivesProp = this.groups
+
+        groupsWithDatesAndEditableHivesProp.map((group) => {
+          group.hives.map((hive) => {
+            this.addDates(hive)
+          })
+          var hasEditableHive =
+            group.hives.filter((hive) => {
+              return hive.editable || hive.owner
+            }).length > 0
+          hasEditableHive
+            ? (group.hasEditableHive = true)
+            : (group.hasEditableHive = false)
         })
-        var hasEditableHive =
-          group.hives.filter((hive) => {
-            return hive.editable || hive.owner
-          }).length > 0
-        hasEditableHive
-          ? (group.hasEditableHive = true)
-          : (group.hasEditableHive = false)
-      })
-      return apiariesWithDates.concat(groupsWithDatesAndEditableHivesProp)
+      }
+
+      const hiveSets = apiariesWithDates.concat(
+        groupsWithDatesAndEditableHivesProp
+      )
+
+      return hiveSets
     },
     mobile() {
       return this.$vuetify.breakpoint.mobile
@@ -1092,6 +1107,7 @@ export default {
         this.hiveTagRedirect(hivetags)
       })
     }
+
     if (localStorage.beepHiddenApiaries) {
       this.hiddenApiaries = JSON.parse(localStorage.beepHiddenApiaries)
     }
@@ -1106,18 +1122,22 @@ export default {
     ) {
       this.hiveSearch = this.$route.query.search
     }
+
+    if (this.apiaries.length === 0 && this.groups.length === 0) {
+      // in case user is freshly logged in or in case of hard refresh
+      this.readApiaries().then(() => {
+        this.ready = true
+        this.readGroups()
+      })
+    } else {
+      this.ready = true
+    }
+
     this.readDevices().then(() => {
       this.deviceTimer = setInterval(this.readDevices, this.deviceInterval)
     })
+
     this.checkAlertRulesAndAlerts().then(() => {
-      if (this.apiaries.length === 0 && this.groups.length === 0) {
-        // in case user is freshly logged in or in case of hard refresh
-        this.readApiariesAndGroups().then(() => {
-          this.ready = true
-        })
-      } else {
-        this.ready = true
-      }
       this.alertTimer = setInterval(this.readAlerts, this.alertInterval)
     })
   },
