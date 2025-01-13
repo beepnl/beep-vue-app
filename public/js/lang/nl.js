@@ -1104,6 +1104,12 @@ const translations = {
 
   api_token: 'Api token',
   save_api: 'Api token opslaan',
+
+  // TODO-VUE3 refactor into single term with prop
+  Fav_group_exp: 'Maak deze groep favoriet',
+  Fav_apiary_exp: 'Maak deze bijenstand favoriet',
+  Fav_exp:
+    ' - deze zal bovenaan de lijst getoond worden en sneller worden ingeladen dan de rest',
 }
 
 export default translations

@@ -146,13 +146,15 @@
       </v-container>
     </div>
 
-    <v-container v-if="!ready">
+    <v-container
+      v-if="!ready || (ready && apiaries.length === 0 && !readyWithGroups)"
+    >
       <div class="loading">
         <v-progress-circular size="50" color="primary" indeterminate />
       </div>
     </v-container>
 
-    <v-container v-if="ready">
+    <v-container v-if="readyWithGroups">
       <v-row
         v-for="invitation in invitations"
         :key="'Invitation ' + invitation.id"
@@ -584,13 +586,39 @@
             </div>
 
             <span class="text-right ml-2">
+              <v-tooltip v-if="!favHiveSet(hiveSet)" bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-icon
+                    v-bind="attrs"
+                    v-on="on"
+                    :style="
+                      `color: ${
+                        hiveSet.hex_color ? hiveSet.hex_color : '#f29100'
+                      };`
+                    "
+                    class="mr-1"
+                    @click="toggleFavHiveSet(hiveSet)"
+                    >mdi-star-outline</v-icon
+                  >
+                </template>
+                <span v-text="favHiveSetText(hiveSet)"> </span>
+              </v-tooltip>
+              <v-icon
+                v-else
+                :style="
+                  `color: ${hiveSet.hex_color ? hiveSet.hex_color : '#f29100'};`
+                "
+                class="mr-1"
+                @click="toggleFavHiveSet(hiveSet)"
+                >mdi-star</v-icon
+              >
+
               <v-icon
                 :style="
                   `color: ${hiveSet.hex_color ? hiveSet.hex_color : '#f29100'};`
                 "
-                :class="hideHiveSet(hiveSet) ? 'mdi-plus' : 'mdi-minus'"
-                @click="toggleHiveSet(hiveSet)"
-                >mdi-minus</v-icon
+                @click="toggleHideHiveSet(hiveSet)"
+                >{{ hideHiveSet(hiveSet) ? 'mdi-plus' : 'mdi-minus' }}</v-icon
               >
             </span>
           </div>
@@ -755,6 +783,7 @@ export default {
     showAcceptLoadingIconById: [],
     showDeclineLoadingIconById: [],
     ready: false,
+    readyWithGroups: false,
     deviceIdArray: [],
     assetsUrl:
       process.env.VUE_APP_ASSETS_URL || process.env.VUE_APP_ASSETS_URL_FALLBACK,
@@ -762,6 +791,8 @@ export default {
     alertInterval: 120000,
     deviceTimer: 0,
     deviceInterval: 600000,
+    favApiaries: [4132, 4574], // DEBUG reset to []
+    favGroups: [455], // DEBUG reset to []
     hiddenApiaries: [],
     hiddenGroups: [],
     maxHiveTagNr: 80, // TODO check actual number of possible hivetags
@@ -1046,9 +1077,14 @@ export default {
       return this.$vuetify.breakpoint.width
     },
     showApiaryPlaceholder() {
-      return this.apiaries.length === 0 && this.groups.length === 0
+      return (
+        this.apiaries.length === 0 &&
+        this.groups.length === 0 &&
+        this.readyWithGroups
+      )
     },
     sortedHiveSets() {
+      const self = this
       const sortedHiveSets = this.hiveSets
         .slice()
         .sort(function(a, b) {
@@ -1066,6 +1102,25 @@ export default {
           }
           if ('type' in a) {
             return -1
+          }
+          return 0
+        })
+        .sort(function(a, b) {
+          // DEBUG enable if api works
+          // if (a.favourite > b.favourite) {
+          //   return -1
+          // }
+          // if (b.favourite > a.favourite) {
+          //   return 1
+          // }
+          // return 0
+          const favA = self.favHiveSet(a) ? 1 : 0
+          const favB = self.favHiveSet(b) ? 1 : 0
+          if (favA > favB) {
+            return -1
+          }
+          if (favB > favA) {
+            return 1
           }
           return 0
         })
@@ -1127,10 +1182,13 @@ export default {
       // in case user is freshly logged in or in case of hard refresh
       this.readApiaries().then(() => {
         this.ready = true
-        this.readGroups()
+        this.readGroups().then(() => {
+          this.readyWithGroups = true
+        })
       })
     } else {
       this.ready = true
+      this.readyWithGroups = true
     }
 
     this.readDevices().then(() => {
@@ -1381,6 +1439,17 @@ export default {
           .indexOf(invitationId) > -1
       )
     },
+    favHiveSet(hiveSet) {
+      return !hiveSet.users
+        ? this.favApiaries.includes(hiveSet.id)
+        : this.favGroups.includes(hiveSet.id)
+    },
+    favHiveSetText(hiveSet) {
+      return (
+        this.$i18n.t('Fav_' + (hiveSet.users ? 'group' : 'apiary') + '_exp') +
+        this.$i18n.t('Fav_exp')
+      )
+    },
     findDeviceById(id) {
       return (
         this.devices.filter((device) => {
@@ -1503,7 +1572,15 @@ export default {
       }
       this.$store.commit('locations/setHiveView', view)
     },
-    toggleHiveSet(hiveSet) {
+    toggleFavHiveSet(hiveSet) {
+      var toggleArray = !hiveSet.users ? this.favApiaries : this.favGroups
+      if (toggleArray.includes(hiveSet.id)) {
+        toggleArray.splice(toggleArray.indexOf(hiveSet.id), 1)
+      } else {
+        toggleArray.push(hiveSet.id)
+      }
+    },
+    toggleHideHiveSet(hiveSet) {
       var toggleArray = !hiveSet.users ? this.hiddenApiaries : this.hiddenGroups
       if (toggleArray.includes(hiveSet.id)) {
         toggleArray.splice(toggleArray.indexOf(hiveSet.id), 1)
