@@ -527,9 +527,10 @@ export const readAlertRules = {
 
 export const readApiaries = {
   methods: {
-    async readApiaries() {
+    async readApiaries(favourite = false) {
+      const suffix = favourite ? '?favourite=1' : ''
       try {
-        const response = await Api.readRequest('/locations')
+        const response = await Api.readRequest('/locations' + suffix)
 
         this.$store.commit('locations/setApiaries', response.data.locations)
 
@@ -547,9 +548,10 @@ export const readApiaries = {
 
 export const readGroups = {
   methods: {
-    async readGroups() {
+    async readGroups(favourite = false) {
+      const suffix = favourite ? '?favourite=1' : ''
       try {
-        const response = await Api.readRequest('/groups')
+        const response = await Api.readRequest('/groups' + suffix)
 
         this.$store.commit('locations/setGroups', response.data.groups)
         this.$store.commit('groups/setInvitations', response.data.invitations)

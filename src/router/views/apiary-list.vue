@@ -146,15 +146,7 @@
       </v-container>
     </div>
 
-    <v-container
-      v-if="!ready || (ready && apiaries.length === 0 && !readyWithGroups)"
-    >
-      <div class="loading">
-        <v-progress-circular size="50" color="primary" indeterminate />
-      </div>
-    </v-container>
-
-    <v-container v-if="readyWithGroups">
+    <v-container>
       <v-row
         v-for="invitation in invitations"
         :key="'Invitation ' + invitation.id"
@@ -661,6 +653,12 @@
         </SlideYUpTransition>
       </v-row>
 
+      <v-container v-if="!readyWithAll">
+        <div class="loading">
+          <v-progress-circular size="50" color="primary" indeterminate />
+        </div>
+      </v-container>
+
       <div
         v-if="showApiaryPlaceholder"
         :class="
@@ -783,7 +781,7 @@ export default {
     showAcceptLoadingIconById: [],
     showDeclineLoadingIconById: [],
     ready: false,
-    readyWithGroups: false,
+    readyWithAll: false,
     deviceIdArray: [],
     assetsUrl:
       process.env.VUE_APP_ASSETS_URL || process.env.VUE_APP_ASSETS_URL_FALLBACK,
@@ -1080,7 +1078,7 @@ export default {
       return (
         this.apiaries.length === 0 &&
         this.groups.length === 0 &&
-        this.readyWithGroups
+        this.readyWithAll
       )
     },
     sortedHiveSets() {
@@ -1180,15 +1178,16 @@ export default {
 
     if (this.apiaries.length === 0 && this.groups.length === 0) {
       // in case user is freshly logged in or in case of hard refresh
-      this.readApiaries().then(() => {
+      this.readApiaries(true).then(() => {
         this.ready = true
-        this.readGroups().then(() => {
-          this.readyWithGroups = true
+        this.readGroups(true).then(() => {
+          this.readApiariesAndGroups().then(() => {
+            this.readyWithAll = true
+          })
         })
       })
     } else {
       this.ready = true
-      this.readyWithGroups = true
     }
 
     this.readDevices().then(() => {
