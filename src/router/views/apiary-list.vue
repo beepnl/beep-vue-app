@@ -1188,6 +1188,7 @@ export default {
       })
     } else {
       this.ready = true
+      this.readyWithAll = true
     }
 
     this.readDevices().then(() => {
