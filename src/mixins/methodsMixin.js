@@ -118,6 +118,39 @@ export const checkAlerts = {
   },
 }
 
+export const checkSettings = {
+  methods: {
+    async postSettings(payload) {
+      try {
+        const response = await Api.postRequest('/settings', payload)
+        return response
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
+    async readSettings() {
+      try {
+        const response = await Api.readRequest('/settings')
+        this.$store.commit('taxonomy/setData', {
+          prop: 'settings',
+          value: response.data,
+        })
+        return true
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
+  },
+}
+
 export const getMaxFramecount = {
   data() {
     return {
@@ -527,8 +560,8 @@ export const readAlertRules = {
 
 export const readApiaries = {
   methods: {
-    async readApiaries(favourite = false) {
-      const suffix = favourite ? '?favourite=1' : ''
+    async readApiaries(favorite = false) {
+      const suffix = favorite ? '?favorite=1' : ''
       try {
         const response = await Api.readRequest('/locations' + suffix)
 
@@ -548,8 +581,8 @@ export const readApiaries = {
 
 export const readGroups = {
   methods: {
-    async readGroups(favourite = false) {
-      const suffix = favourite ? '?favourite=1' : ''
+    async readGroups(favorite = false) {
+      const suffix = favorite ? '?favorite=1' : ''
       try {
         const response = await Api.readRequest('/groups' + suffix)
 

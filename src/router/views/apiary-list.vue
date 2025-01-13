@@ -737,6 +737,7 @@ import {
 } from '@mixins/momentMixin'
 import {
   checkAlerts,
+  checkSettings,
   readApiaries,
   readApiariesAndGroups,
   readGroups,
@@ -757,6 +758,7 @@ export default {
   },
   mixins: [
     checkAlerts,
+    checkSettings,
     momentFromNow,
     momentify,
     momentifyDayMonth,
@@ -777,7 +779,6 @@ export default {
     xlView: true,
     mView: false,
     xsView: false,
-    settings: [],
     showAcceptLoadingIconById: [],
     showDeclineLoadingIconById: [],
     ready: false,
@@ -789,8 +790,8 @@ export default {
     alertInterval: 120000,
     deviceTimer: 0,
     deviceInterval: 600000,
-    favApiaries: [4132, 4574], // DEBUG reset to []
-    favGroups: [455], // DEBUG reset to []
+    favApiaries: [],
+    favGroups: [],
     hiddenApiaries: [],
     hiddenGroups: [],
     maxHiveTagNr: 80, // TODO check actual number of possible hivetags
@@ -801,6 +802,7 @@ export default {
     ...mapGetters('locations', ['apiaries', 'groups', 'hivesObject']),
     ...mapGetters('groups', ['invitations']),
     ...mapGetters('hives', ['hiveTags']),
+    ...mapGetters('taxonomy', ['settings']),
     filterByAlert: {
       get() {
         return this.$store.getters['locations/hiveFilterByAlert']
@@ -1104,14 +1106,6 @@ export default {
           return 0
         })
         .sort(function(a, b) {
-          // DEBUG enable if api works
-          // if (a.favourite > b.favourite) {
-          //   return -1
-          // }
-          // if (b.favourite > a.favourite) {
-          //   return 1
-          // }
-          // return 0
           const favA = self.favHiveSet(a) ? 1 : 0
           const favB = self.favHiveSet(b) ? 1 : 0
           if (favA > favB) {
@@ -1155,6 +1149,8 @@ export default {
     }
   },
   created() {
+    this.readSettings().then(() => this.setFavoriteHiveSets())
+
     if (this.hiveIndex !== undefined) {
       this.readHiveTagsIfNotChecked().then((hivetags) => {
         this.hiveTagRedirect(hivetags)
@@ -1505,6 +1501,23 @@ export default {
         query: { search: searchTerm },
       })
     },
+    setFavoriteHiveSets() {
+      const favApFilter = this.settings.filter(
+        (setting) => setting.name === 'favorite_apiary_ids'
+      )
+      this.favApiaries =
+        favApFilter.length > 0
+          ? favApFilter[0].value.split(',').map((el) => parseInt(el))
+          : []
+
+      const favGrFilter = this.settings.filter(
+        (setting) => setting.name === 'favorite_group_ids'
+      )
+      this.favGroups =
+        favGrFilter.length > 0
+          ? favGrFilter[0].value.split(',').map((el) => parseInt(el))
+          : []
+    },
     sortedHives(hives) {
       const sortedHives = hives.slice().sort(function(a, b) {
         // order = null comes last
@@ -1579,6 +1592,11 @@ export default {
       } else {
         toggleArray.push(hiveSet.id)
       }
+      const value = toggleArray.join(',')
+      const payload = !hiveSet.users
+        ? { favorite_apiary_ids: value }
+        : { favorite_group_ids: value }
+      this.postSettings(payload)
     },
     toggleHideHiveSet(hiveSet) {
       var toggleArray = !hiveSet.users ? this.hiddenApiaries : this.hiddenGroups
