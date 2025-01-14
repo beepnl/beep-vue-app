@@ -294,9 +294,7 @@ export default {
   },
   computed: {
     ...mapGetters('alerts', ['alertRules', 'alerts', 'alertsLoading']),
-    ...mapGetters('locations', ['apiaries']),
-    ...mapGetters('groups', ['groups']),
-    ...mapGetters('hives', ['hivesObject']),
+    ...mapGetters('locations', ['apiaries', 'groups', 'hivesObject']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     alertsWithRuleDetails() {
       var alertsWithRuleDetails = this.alerts

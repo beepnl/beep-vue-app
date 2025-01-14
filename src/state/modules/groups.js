@@ -9,7 +9,6 @@ export const state = {
   dashboardEdited: false,
   dashboardGroups: [],
   dashboardGroupsChecked: false,
-  groups: [],
   groupEdited: false,
   invitations: [],
 }
@@ -27,9 +26,6 @@ export const getters = {
   dashboardGroupsChecked: (state) => {
     return state.dashboardGroupsChecked
   },
-  groups: (state) => {
-    return state.groups || []
-  },
   groupEdited: (state) => {
     return state.groupEdited
   },
@@ -45,9 +41,6 @@ export const mutations = {
   setGroupEdited: function(state, bool) {
     state.groupEdited = bool
   },
-  setGroups: function(state, payload) {
-    state.groups = payload
-  },
   setInvitations: function(state, payload) {
     state.invitations = payload
   },
@@ -55,7 +48,6 @@ export const mutations = {
     state.dashboardEdited = false
     state.dashboardGroups = []
     state.dashboardGroupsChecked = false
-    state.groups = []
     state.groupEdited = false
     state.invitations = []
   },

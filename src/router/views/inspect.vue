@@ -809,8 +809,7 @@ export default {
       'tempSavedInspection',
       'uploadInspectionPayload',
     ]),
-    ...mapGetters('locations', ['apiaries']),
-    ...mapGetters('groups', ['groups']),
+    ...mapGetters('locations', ['apiaries', 'groups']),
     allHivesSelected: {
       get() {
         return this.selectedHives.length === this.editableHives.length

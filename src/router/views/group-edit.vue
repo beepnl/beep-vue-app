@@ -403,7 +403,10 @@ import Confirm from '@components/confirm.vue'
 import { mapGetters } from 'vuex'
 import Layout from '@layouts/back.vue'
 import { momentify } from '@mixins/momentMixin'
-import { readApiariesAndGroupsIfNotPresent } from '@mixins/methodsMixin'
+import {
+  readApiariesAndGroupsIfNotPresent,
+  readGroups,
+} from '@mixins/methodsMixin'
 
 export default {
   components: {
@@ -411,7 +414,7 @@ export default {
     Confirm,
     Layout,
   },
-  mixins: [momentify, readApiariesAndGroupsIfNotPresent],
+  mixins: [momentify, readApiariesAndGroupsIfNotPresent, readGroups],
   data: function() {
     return {
       snackbar: {
@@ -439,8 +442,8 @@ export default {
   },
   computed: {
     ...mapGetters('auth', ['userEmail', 'userName']),
-    ...mapGetters('groups', ['groupEdited', 'groups']),
-    ...mapGetters('locations', ['apiaries']),
+    ...mapGetters('groups', ['groupEdited']),
+    ...mapGetters('locations', ['apiaries', 'groups']),
     id() {
       return parseInt(this.$route.params.id)
     },
@@ -701,20 +704,6 @@ export default {
           console.log('Error: ', error)
         }
         this.$router.push({ name: '404', params: { resource: 'group' } })
-      }
-    },
-    async readGroups() {
-      try {
-        const response = await Api.readRequest('/groups')
-        this.$store.commit('groups/setGroups', response.data.groups)
-        this.$store.commit('groups/setInvitations', response.data.invitations)
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log(error.response)
-        } else {
-          console.log('Error: ', error)
-        }
       }
     },
     async updateGroup() {

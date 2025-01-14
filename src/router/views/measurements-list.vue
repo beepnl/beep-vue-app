@@ -491,7 +491,7 @@
           :period-start-string="periodStartString"
           :relative-interval="relativeInterval"
           :selected-device-title="selectedDeviceTitle"
-          :default-hive-id="selectedDevice.hive_id"
+          :default-hive-id="selectedDevice ? selectedDevice.hive_id : null"
           :time-index="timeIndex"
           :measurement-data="measurementData"
           :inspections-for-charts="inspectionsForCharts"
@@ -535,7 +535,7 @@ import Treeselect from '@riophae/vue-treeselect'
 import {
   checkAlerts,
   readDevicesIfNotChecked,
-  readGeneralInspectionsIfNotPresent,
+  readInspectionsForHiveId,
   readTaxonomy,
   readApiariesAndGroups,
 } from '@mixins/methodsMixin'
@@ -566,7 +566,7 @@ export default {
     momentFormatUtcToLocal,
     momentFromNow,
     readDevicesIfNotChecked,
-    readGeneralInspectionsIfNotPresent,
+    readInspectionsForHiveId,
     readApiariesAndGroups,
     readTaxonomy,
     sensorMixin,
@@ -613,13 +613,15 @@ export default {
       hideScrollBar: false,
       showLoadingIcon: false,
       sensorInfo: [],
+      inspections: null,
+      selectedHiveId: null,
     }
   },
   computed: {
     ...mapGetters('alerts', ['alerts']),
     ...mapGetters('auth', ['permissions', 'userIsAdmin', 'userLocale']),
     ...mapGetters('devices', ['devices']),
-    ...mapGetters('inspections', ['generalInspections']),
+    // ...mapGetters('inspections', ['generalInspections']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     alertsForDeviceAndPeriod() {
       var alertsForDevice = [...this.alerts].filter(
@@ -654,9 +656,17 @@ export default {
         return this.$i18n.t('selection_placeholder')
       }
     },
+    hasInspections() {
+      return (
+        this.inspections !== null &&
+        this.inspections.inspections !== undefined &&
+        this.inspections.inspections.data !== undefined &&
+        this.inspections.inspections.data.length > 0
+      )
+    },
     inspectionsWithDates() {
-      if (this.generalInspections.length > 0) {
-        var inspectionsWithDates = this.generalInspections
+      if (this.hasInspections) {
+        var inspectionsWithDates = this.inspections.inspections.data
         inspectionsWithDates.map((inspection) => {
           inspection.created_at_locale_date = this.momentFormat(
             inspection.created_at,
@@ -719,7 +729,7 @@ export default {
     },
     inspectionsForPeriod() {
       var inspections = []
-      if (this.selectedDevice.hive_id !== null) {
+      if (this.selectedDevice && this.selectedDevice.hive_id !== null) {
         inspections = this.inspectionsWithDates.filter(
           (inspection) =>
             inspection.hive_id === this.selectedDevice.hive_id &&
@@ -906,11 +916,17 @@ export default {
     },
     selectedDeviceId: {
       get() {
-        return parseInt(this.$store.getters['devices/selectedDeviceId'])
+        const storeValue = this.$store.getters['devices/selectedDeviceId']
+        const getValue =
+          storeValue !== null && !isNaN(parseInt(storeValue))
+            ? parseInt(storeValue)
+            : null
+        return getValue
       },
       set(value) {
-        this.$store.commit('devices/setSelectedDeviceId', value)
-        localStorage.beepSelectedDeviceId = value
+        const setValue = !isNaN(value) ? value : null
+        this.$store.commit('devices/setSelectedDeviceId', setValue)
+        localStorage.beepSelectedDeviceId = setValue
       },
     },
     selectedDeviceTitle() {
@@ -1042,46 +1058,50 @@ export default {
     this.readTaxonomy().then(() => {
       this.checkAlertRulesAndAlerts() // for alerts-tab badge AND alert-lines
         .then(() => {
-          this.readGeneralInspectionsIfNotPresent().then(() => {
-            this.readDevicesIfNotChecked()
-              .then(() => {
-                // if selected device id is saved in localStorage, and there is no preselected device id, use it
-                if (
-                  this.preselectedDeviceId === null &&
-                  localStorage.beepSelectedDeviceId &&
-                  this.deviceExists(localStorage.beepSelectedDeviceId)
-                ) {
-                  this.selectedDeviceId = localStorage.beepSelectedDeviceId
-                } else if (
-                  this.preselectedDeviceId !== null &&
-                  this.deviceExists(this.preselectedDeviceId)
-                ) {
-                  this.selectedDeviceId = this.preselectedDeviceId
+          this.readDevicesIfNotChecked()
+            .then(() => {
+              // if selected device id is saved in localStorage, and there is no preselected device id, use it
+              const storedDeviceId =
+                localStorage.beepSelectedDeviceId &&
+                !isNaN(parseInt(localStorage.beepSelectedDeviceId))
+                  ? parseInt(localStorage.beepSelectedDeviceId)
+                  : null
+
+              if (
+                this.preselectedDeviceId === null &&
+                storedDeviceId &&
+                this.deviceExists(storedDeviceId)
+              ) {
+                this.selectedDeviceId = storedDeviceId
+              } else if (
+                this.preselectedDeviceId !== null &&
+                this.deviceExists(this.preselectedDeviceId)
+              ) {
+                this.selectedDeviceId = this.preselectedDeviceId
+              }
+
+              if (
+                this.queriedDate !== null &&
+                this.queriedDate.length === 10 &&
+                !isNaN(this.preselectedDeviceId)
+              ) {
+                this.selectDate(this.queriedDate)
+              } else if (this.devices.length > 0) {
+                if (this.queriedInterval !== undefined) {
+                  this.interval = this.queriedInterval
+                  this.timeIndex = this.queriedTimeIndex
+                  this.dates =
+                    this.queriedStart && this.queriedEnd
+                      ? [this.queriedStart, this.queriedEnd]
+                      : []
                 }
 
-                if (
-                  this.queriedDate !== null &&
-                  this.queriedDate.length === 10 &&
-                  !isNaN(this.preselectedDeviceId)
-                ) {
-                  this.selectDate(this.queriedDate)
-                } else if (this.devices.length > 0) {
-                  if (this.queriedInterval !== undefined) {
-                    this.interval = this.queriedInterval
-                    this.timeIndex = this.queriedTimeIndex
-                    this.dates =
-                      this.queriedStart && this.queriedEnd
-                        ? [this.queriedStart, this.queriedEnd]
-                        : []
-                  }
-
-                  this.setInitialDeviceIdAndLoadData()
-                }
-              })
-              .then(() => {
-                this.ready = true
-              })
-          })
+                this.setInitialDeviceIdAndLoadData()
+              }
+            })
+            .then(() => {
+              this.ready = true
+            })
         })
     })
   },
@@ -1561,6 +1581,7 @@ export default {
           this.relativeInterval
         )
       }
+      this.readInspections()
     },
     loadLastSensorValuesTimer() {
       if (
@@ -1604,6 +1625,18 @@ export default {
           .replace(currentYearEn, '')
           .replace(currentYearEsPt, '')
           .replace(' ' + currentYear, '') // Remove year hardcoded per language, currently no other way to get rid of year whilst keeping localized time
+      }
+    },
+    readInspections() {
+      if (this.selectedDevice) {
+        const hiveId = this.selectedDevice.hive_id
+
+        if (hiveId !== this.selectedHiveId) {
+          // read inspections for hive only if hiveId differs from previous call
+          this.readInspectionsForHiveId(hiveId)
+        }
+
+        this.selectedHiveId = hiveId
       }
     },
     selectDate(date) {

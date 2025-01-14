@@ -255,15 +255,13 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('groups', ['groups']),
     ...mapGetters('hives', [
       'hiveTagActionDescriptions',
       'hiveTagEdited',
       'hiveTags',
-      'hivesObject',
       'tempSavedHiveTag',
     ]),
-    ...mapGetters('locations', ['apiaries']),
+    ...mapGetters('locations', ['hiveSets', 'hivesObject']),
     createMode() {
       return (
         this.$route.name === 'hivetag-create' ||
@@ -280,9 +278,6 @@ export default {
             ? this.hiveTag.tag
             : ''))
       )
-    },
-    hiveSets() {
-      return this.apiaries.concat(this.groups)
     },
     hiveTagNotValid() {
       return (

@@ -708,8 +708,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('groups', ['groups']),
-    ...mapGetters('locations', ['apiaries']),
+    ...mapGetters('locations', ['apiaries', 'groups']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList', 'sensorTypesList']),
     deletedButNotSavedDevices() {
       const unsavedDeletions = this.ownedDevices.filter((ownedDevice) => {

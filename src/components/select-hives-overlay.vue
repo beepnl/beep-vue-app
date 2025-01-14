@@ -174,9 +174,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('hives', ['hivesObject']),
-    ...mapGetters('groups', ['groups']),
-    ...mapGetters('locations', ['apiaries']),
+    ...mapGetters('locations', ['apiaries', 'groups', 'hivesObject']),
     allHiveIds() {
       var hiveIds = this.sortedHiveSets.reduce((acc, hiveSet) => {
         acc = acc.concat(this.getHiveIds(hiveSet.hives))
