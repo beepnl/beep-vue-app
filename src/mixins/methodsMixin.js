@@ -123,7 +123,11 @@ export const checkSettings = {
     async postSettings(payload) {
       try {
         const response = await Api.postRequest('/settings', payload)
-        return response
+        this.$store.commit('taxonomy/setData', {
+          prop: 'settings',
+          value: response.data,
+        })
+        return true
       } catch (error) {
         if (error.response) {
           console.log('Error: ', error.response)
@@ -146,6 +150,26 @@ export const checkSettings = {
         } else {
           console.log('Error: ', error)
         }
+      }
+    },
+    async readSettingsIfNotPresent() {
+      if (this.settings.length === 0) {
+        try {
+          const response = await Api.readRequest('/settings')
+          this.$store.commit('taxonomy/setData', {
+            prop: 'settings',
+            value: response.data,
+          })
+          return true
+        } catch (error) {
+          if (error.response) {
+            console.log('Error: ', error.response)
+          } else {
+            console.log('Error: ', error)
+          }
+        }
+      } else {
+        return true
       }
     },
   },
@@ -560,8 +584,7 @@ export const readAlertRules = {
 
 export const readApiaries = {
   methods: {
-    async readApiaries(favorite = false) {
-      const suffix = favorite ? '?favorite=1' : ''
+    async readApiaries(suffix = '') {
       try {
         const response = await Api.readRequest('/locations' + suffix)
 
@@ -581,8 +604,7 @@ export const readApiaries = {
 
 export const readGroups = {
   methods: {
-    async readGroups(favorite = false) {
-      const suffix = favorite ? '?favorite=1' : ''
+    async readGroups(suffix = '') {
       try {
         const response = await Api.readRequest('/groups' + suffix)
 

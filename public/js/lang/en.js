@@ -1087,7 +1087,7 @@ const translations = {
   Fav_group_exp: 'Favorite this group',
   Fav_apiary_exp: 'Favorite this apiary',
   Fav_exp:
-    ' - it will be shown at the top of the list and will load faster than the rest',
+    ' - it will be shown at the top of the list and will load first (before the rest)',
 }
 
 export default translations

@@ -1109,7 +1109,7 @@ const translations = {
   Fav_group_exp: 'Maak deze groep favoriet',
   Fav_apiary_exp: 'Maak deze bijenstand favoriet',
   Fav_exp:
-    ' - deze zal bovenaan de lijst getoond worden en sneller worden ingeladen dan de rest',
+    ' - deze zal bovenaan de lijst getoond worden en eerder worden ingeladen dan de rest',
 }
 
 export default translations

@@ -578,7 +578,7 @@
             </div>
 
             <span class="text-right ml-2">
-              <v-tooltip v-if="!favHiveSet(hiveSet)" bottom>
+              <v-tooltip v-if="showFavoriteIcon && !favHiveSet(hiveSet)" bottom>
                 <template v-slot:activator="{ on, attrs }">
                   <v-icon
                     v-bind="attrs"
@@ -596,7 +596,7 @@
                 <span v-text="favHiveSetText(hiveSet)"> </span>
               </v-tooltip>
               <v-icon
-                v-else
+                v-else-if="showFavoriteIcon"
                 :style="
                   `color: ${hiveSet.hex_color ? hiveSet.hex_color : '#f29100'};`
                 "
@@ -1022,6 +1022,9 @@ export default {
 
       return propertyFilteredHiveSets
     },
+    hasFavorites() {
+      return this.favApiaries.length > 0 || this.favGroups.length > 0
+    },
     hiveIndex() {
       return this.$route.query.hive_index
     },
@@ -1082,6 +1085,9 @@ export default {
         this.groups.length === 0 &&
         this.readyWithAll
       )
+    },
+    showFavoriteIcon() {
+      return this.sortedHiveSets.length > 1 || this.hasFavorites
     },
     sortedHiveSets() {
       const self = this
@@ -1149,7 +1155,9 @@ export default {
     }
   },
   created() {
-    this.readSettings().then(() => this.setFavoriteHiveSets())
+    this.readSettingsIfNotPresent().then(() => {
+      this.getHiveSets()
+    })
 
     if (this.hiveIndex !== undefined) {
       this.readHiveTagsIfNotChecked().then((hivetags) => {
@@ -1170,21 +1178,6 @@ export default {
       this.$route.query.search !== undefined
     ) {
       this.hiveSearch = this.$route.query.search
-    }
-
-    if (this.apiaries.length === 0 && this.groups.length === 0) {
-      // in case user is freshly logged in or in case of hard refresh
-      this.readApiaries(true).then(() => {
-        this.ready = true
-        this.readGroups(true).then(() => {
-          this.readApiariesAndGroups().then(() => {
-            this.readyWithAll = true
-          })
-        })
-      })
-    } else {
-      this.ready = true
-      this.readyWithAll = true
     }
 
     this.readDevices().then(() => {
@@ -1211,13 +1204,10 @@ export default {
           token: token,
           decline,
         })
+        this.showSnackbar(response)
         if (!response) {
-          this.snackbar.text = this.$i18n.t('something_wrong')
-          this.snackbar.show = true
           this.stopLoadingIcon(groupId, decline)
         }
-        this.snackbar.text = this.$i18n.t(response.data.message)
-        this.snackbar.show = true
         setTimeout(() => {
           this.readDevices().then(() => {
             this.readApiariesAndGroups().then(() => {
@@ -1236,12 +1226,9 @@ export default {
     async deleteApiaryById(id) {
       try {
         const response = await Api.deleteRequest('/locations/', id)
-        if (!response) {
-          this.snackbar.text = this.$i18n.t('something_wrong')
-          this.snackbar.show = true
-        }
+        this.showSnackbar(response)
         setTimeout(() => {
-          this.readApiariesAndGroups()
+          this.readApiaries()
           this.readGeneralInspections()
           this.readDevices()
         }, 100) // wait for API to update locations/hives
@@ -1252,12 +1239,9 @@ export default {
     async deleteGroupById(id) {
       try {
         const response = await Api.deleteRequest('/groups/', id)
-        if (!response) {
-          this.snackbar.text = this.$i18n.t('something_wrong')
-          this.snackbar.show = true
-        }
+        this.showSnackbar(response)
+        this.$store.commit('locations/setGroups', response.data.groups)
         setTimeout(() => {
-          this.readApiariesAndGroups()
           this.readGeneralInspections()
         }, 100) // wait for API to update locations/hives
       } catch (error) {
@@ -1267,12 +1251,9 @@ export default {
     async detachGroupById(id) {
       try {
         const response = await Api.deleteRequest('/groups/detach/', id)
-        if (!response) {
-          this.snackbar.text = this.$i18n.t('something_wrong')
-          this.snackbar.show = true
-        }
+        this.showSnackbar(response)
+        this.$store.commit('locations/setGroups', response.data.groups)
         setTimeout(() => {
-          this.readApiariesAndGroups()
           this.readGeneralInspections()
         }, 100) // wait for API to update locations/hives
       } catch (error) {
@@ -1282,10 +1263,7 @@ export default {
     async deleteHiveById(id) {
       try {
         const response = await Api.deleteRequest('/hives/', id)
-        if (!response) {
-          this.snackbar.text = this.$i18n.t('something_wrong')
-          this.snackbar.show = true
-        }
+        this.showSnackbar(response)
         setTimeout(() => {
           this.readApiariesAndGroups()
           this.readGeneralInspections()
@@ -1369,6 +1347,7 @@ export default {
           warningMessage
         )
         .then((confirm) => {
+          this.toggleFavHiveSet(hiveSet, true)
           this.deleteApiaryById(hiveSet.id)
         })
         .catch((reject) => {
@@ -1385,6 +1364,7 @@ export default {
           }
         )
         .then((confirm) => {
+          this.toggleFavHiveSet(hiveSet, true)
           this.deleteGroupById(hiveSet.id)
         })
         .catch((reject) => {
@@ -1397,6 +1377,7 @@ export default {
           color: 'red',
         })
         .then((confirm) => {
+          this.toggleFavHiveSet(hiveSet, true)
           this.detachGroupById(hiveSet.id)
         })
         .catch((reject) => {
@@ -1453,6 +1434,48 @@ export default {
         })[0] || null
       )
     },
+    getHiveSets() {
+      this.favApiaries = this.getArrayFromSettings('favorite_apiary_ids')
+      this.favGroups = this.getArrayFromSettings('favorite_group_ids')
+
+      const prefix = '?ids='
+      const locIds =
+        this.favApiaries.length > 0 ? prefix + this.favApiaries : ''
+      const groupIds = this.favGroups.length > 0 ? prefix + this.favGroups : ''
+
+      if (this.apiaries.length === 0 && this.groups.length === 0) {
+        // in case user is freshly logged in or in case of hard refresh
+        this.readApiaries(locIds).then(() => {
+          this.ready = true
+          this.readGroups(groupIds).then(() => {
+            // only get rest of the apiaries / groups in extra call if there were any favorites (otherwise all apiaries / groups are already retrieved by above read calls)
+            if (this.hasFavorites) {
+              this.readApiariesAndGroups().then(() => {
+                this.readyWithAll = true
+              })
+            } else {
+              this.readyWithAll = true
+            }
+          })
+        })
+      } else {
+        this.ready = true
+        this.readyWithAll = true
+      }
+    },
+    getArrayFromSettings(propName) {
+      const filter = this.settings.filter(
+        (setting) => setting.name === propName
+      )
+      const value = filter.length > 0 ? filter[0].value : null
+
+      return value !== null
+        ? value
+            .split(',')
+            .map((el) => parseInt(el))
+            .filter((el) => !isNaN(el))
+        : []
+    },
     handleError(error) {
       if (error.response) {
         console.log('Error: ', error.response)
@@ -1501,23 +1524,6 @@ export default {
         query: { search: searchTerm },
       })
     },
-    setFavoriteHiveSets() {
-      const favApFilter = this.settings.filter(
-        (setting) => setting.name === 'favorite_apiary_ids'
-      )
-      this.favApiaries =
-        favApFilter.length > 0
-          ? favApFilter[0].value.split(',').map((el) => parseInt(el))
-          : []
-
-      const favGrFilter = this.settings.filter(
-        (setting) => setting.name === 'favorite_group_ids'
-      )
-      this.favGroups =
-        favGrFilter.length > 0
-          ? favGrFilter[0].value.split(',').map((el) => parseInt(el))
-          : []
-    },
     sortedHives(hives) {
       const sortedHives = hives.slice().sort(function(a, b) {
         // order = null comes last
@@ -1540,6 +1546,15 @@ export default {
       return decline
         ? this.showDeclineLoadingIconById.indexOf(invitationId) > -1
         : this.showAcceptLoadingIconById.indexOf(invitationId) > -1
+    },
+    showSnackbar(response) {
+      if (!response) {
+        this.snackbar.text = this.$i18n.t('something_wrong')
+        this.snackbar.show = true
+      } else if (response.data.message) {
+        this.snackbar.text = response.data.message
+        this.snackbar.show = true
+      }
     },
     stopLoadingIcon(groupId, decline) {
       if (decline) {
@@ -1585,17 +1600,19 @@ export default {
       }
       this.$store.commit('locations/setHiveView', view)
     },
-    toggleFavHiveSet(hiveSet) {
+    toggleFavHiveSet(hiveSet, removeBeforeDelete = false) {
       var toggleArray = !hiveSet.users ? this.favApiaries : this.favGroups
       if (toggleArray.includes(hiveSet.id)) {
         toggleArray.splice(toggleArray.indexOf(hiveSet.id), 1)
-      } else {
+      } else if (!removeBeforeDelete) {
         toggleArray.push(hiveSet.id)
       }
+
       const value = toggleArray.join(',')
       const payload = !hiveSet.users
         ? { favorite_apiary_ids: value }
         : { favorite_group_ids: value }
+
       this.postSettings(payload)
     },
     toggleHideHiveSet(hiveSet) {
