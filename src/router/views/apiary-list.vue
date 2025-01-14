@@ -1073,6 +1073,12 @@ export default {
 
       return hiveSets
     },
+    apiariesIds() {
+      return this.apiaries.map((ap) => ap.id)
+    },
+    groupsIds() {
+      return this.groups.map((gr) => gr.id)
+    },
     mobile() {
       return this.$vuetify.breakpoint.mobile
     },
@@ -1607,6 +1613,10 @@ export default {
       } else if (!removeBeforeDelete) {
         toggleArray.push(hiveSet.id)
       }
+
+      var ids = !hiveSet.users ? this.apiariesIds : this.groupsIds
+      // housekeeping: remove apiary or group ids that do not exist for this user (anymore) from settings
+      toggleArray = toggleArray.filter((id) => ids.includes(id))
 
       const value = toggleArray.join(',')
       const payload = !hiveSet.users
