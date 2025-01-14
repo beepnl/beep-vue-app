@@ -2,14 +2,22 @@
   <Layout :title="$t('Whats_new')">
     <v-container>
       <div class="overline mb-1"
-        ><span class="lowercase">v</span>4.0.22 (13-01-2025) - Current
+        ><span class="lowercase">v</span>4.0.22 (14-01-2025) - Current
         version</div
       >
       <div class="rounded-border mb-4">
         <ul>
           <li>Faster loading times for Hives overview & Data tab</li>
           <li>
-            <router-link :to="{ name: 'import' }"> Import</router-link>: several
+            <router-link :to="{ name: 'home' }">Hives</router-link>: it is now
+            possible to favorite apiaries and/or collaboration groups by
+            clicking the
+            <v-icon class="inline-icon" color="accent">mdi-star-outline</v-icon>
+            icon. Favorite apiaries/groups will appear at the top of the list
+            and will be loaded with priority.</li
+          >
+          <li>
+            <router-link :to="{ name: 'import' }">Import</router-link>: several
             improvements (only for users with a BEEP base), such as:
             <ul>
               <li
@@ -57,7 +65,8 @@
           <li>
             <router-link :to="{ name: 'measurements' }"> Data:</router-link>
             sound heatmap colors on logarithmic scale + fixed maximum (switch to
-            autoscale maximum via magnify icon)
+            autoscale maximum via the
+            <v-icon class="inline-icon">mdi-magnify</v-icon> icon)
           </li>
           <li>Small improvements</li>
         </ul>
