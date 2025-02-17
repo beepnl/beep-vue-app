@@ -615,6 +615,7 @@ export default {
       sensorInfo: [],
       inspections: null,
       selectedHiveId: null,
+      inspectionsSuffixText: '',
     }
   },
   computed: {
@@ -643,6 +644,11 @@ export default {
 
       return alertsForDeviceAndPeriod
     },
+    currentSuffixText() {
+      return this.periodStart && this.periodEnd
+        ? '?start=' + this.periodStartString + '&end=' + this.periodEndString
+        : ''
+    },
     dateRangeText() {
       if (this.dates.length > 0) {
         var momentDates = [
@@ -667,22 +673,26 @@ export default {
     inspectionsWithDates() {
       if (this.hasInspections) {
         var inspectionsWithDates = this.inspections.inspections.data
-        inspectionsWithDates.map((inspection) => {
-          inspection.created_at_locale_date = this.momentFormat(
-            inspection.created_at,
-            'lll'
+        inspectionsWithDates
+          .filter(
+            (inspection) => inspection.hive_id === this.selectedDevice.hive_id
           )
-          inspection.created_at_moment_from_now = this.momentFromNow(
-            inspection.created_at
-          )
-          inspection.reminder_date_locale_date = this.momentFormat(
-            inspection.reminder_date,
-            'lll'
-          )
-          inspection.reminder_date_day_month = this.momentifyDayMonth(
-            inspection.reminder_date
-          )
-        })
+          .map((inspection) => {
+            inspection.created_at_locale_date = this.momentFormat(
+              inspection.created_at,
+              'lll'
+            )
+            inspection.created_at_moment_from_now = this.momentFromNow(
+              inspection.created_at
+            )
+            inspection.reminder_date_locale_date = this.momentFormat(
+              inspection.reminder_date,
+              'lll'
+            )
+            inspection.reminder_date_day_month = this.momentifyDayMonth(
+              inspection.reminder_date
+            )
+          })
         return inspectionsWithDates
       } else {
         return []
@@ -693,7 +703,7 @@ export default {
 
       if (this.timeArray.length > 0) {
         // for each inspection, find its position on the current chart
-        this.inspectionsForPeriod.map((inspection) => {
+        this.inspectionsWithDates.map((inspection) => {
           var inspectionDateInUtc = this.$moment(inspection.created_at)
             .tz(this.timeZone)
             .utc()
@@ -726,17 +736,6 @@ export default {
       }
 
       return inspectionsForChartsArray
-    },
-    inspectionsForPeriod() {
-      var inspections = []
-      if (this.selectedDevice && this.selectedDevice.hive_id !== null) {
-        inspections = this.inspectionsWithDates.filter(
-          (inspection) =>
-            inspection.hive_id === this.selectedDevice.hive_id &&
-            this.dateWithinPeriod(inspection, 'created_at')
-        )
-      }
-      return inspections
     },
     locale() {
       return this.$i18n.locale
@@ -1631,9 +1630,13 @@ export default {
       if (this.selectedDevice) {
         const hiveId = this.selectedDevice.hive_id
 
-        if (hiveId !== this.selectedHiveId) {
-          // read inspections for hive only if hiveId differs from previous call
-          this.readInspectionsForHiveId(hiveId)
+        if (
+          hiveId !== this.selectedHiveId ||
+          this.inspectionsSuffixText !== this.currentSuffixText
+        ) {
+          // read inspections for hive only if hiveId OR suffix (= period) differs from previous call
+          this.readInspectionsForHiveId(hiveId, this.currentSuffixText)
+          this.inspectionsSuffixText = this.currentSuffixText
         }
 
         this.selectedHiveId = hiveId

@@ -190,7 +190,7 @@
             <!-- div below is same as checklist-fieldset component but needed to keep the nested checklist-input within this template to catch the @calculate-liebefeld-colony-size emit event -->
             <div v-if="superAndFrameFilter(item)" class="checklist-fieldset">
               <div class="overline mb-2"
-                >{{ item.trans[locale] || item.name }}
+                >{{ getLabel(item) }}
                 <a
                   v-if="item.description !== null || item.source !== null"
                   @click="showDescription = !showDescription"
@@ -258,14 +258,14 @@
 import ChecklistInput from '@components/checklist-input.vue'
 import HiveIcon from '@components/hive-icon.vue'
 import { mapGetters } from 'vuex'
-import { getMaxFramecount } from '@mixins/methodsMixin'
+import { getLabel, getMaxFramecount } from '@mixins/methodsMixin'
 
 export default {
   components: {
     ChecklistInput,
     HiveIcon,
   },
-  mixins: [getMaxFramecount],
+  mixins: [getLabel, getMaxFramecount],
   props: {
     category: {
       type: Object,

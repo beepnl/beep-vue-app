@@ -104,13 +104,14 @@
 import svgCheckbox from '@/src/components/svg/svg-checkbox.vue'
 import svgLabel from '@/src/components/svg/svg-label.vue'
 import { svgData, svgStyles } from '@mixins/svgMixin'
+import { getLabel } from '@mixins/methodsMixin'
 
 export default {
   components: {
     svgCheckbox,
     svgLabel,
   },
-  mixins: [svgData, svgStyles],
+  mixins: [getLabel, svgData, svgStyles],
   props: {
     position: {
       type: Object,
@@ -142,9 +143,6 @@ export default {
     },
   },
   computed: {
-    locale() {
-      return this.$i18n.locale
-    },
     flattenedItems() {
       return this.items !== null ? this.flattenItems(this.items) : []
     },
@@ -207,10 +205,7 @@ export default {
       }, [])
     },
     itemText(item) {
-      var text =
-        item.trans !== null && item.trans[this.locale] !== undefined
-          ? item.trans[this.locale]
-          : item.name
+      var text = this.getLabel(item)
       var maxLength = this.maxItemLength - item.depth * 4
       return text.substring(0, maxLength)
     },

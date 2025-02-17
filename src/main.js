@@ -17,6 +17,7 @@ import nl from '@public/js/lang/nl'
 import pt from '@public/js/lang/pt'
 import ro from '@public/js/lang/ro'
 import sv from '@public/js/lang/sv'
+import ua from '@public/js/lang/ua'
 // import enUS from '@public/js/lang/en-US'
 import languages from '@assets/js/languages'
 import moment from 'moment-timezone'
@@ -65,6 +66,7 @@ const i18n = new VueI18n({
     pt,
     ro,
     sv,
+    ua,
     // add 4-letter code like: 'en-US': enUS, (can only be imported without dash, as enUS)
   },
 })
