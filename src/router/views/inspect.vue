@@ -402,9 +402,7 @@
             >
               <v-row class="my-0">
                 <v-col cols="12" class="py-0">
-                  <span>{{
-                    mainCategory.trans[locale] || mainCategory.name
-                  }}</span>
+                  <span>{{ getLabel(mainCategory) }}</span>
                   <div class="float-right">
                     <v-icon
                       :class="
@@ -679,6 +677,7 @@ import labelWithDescription from '@components/input-fields/label-with-descriptio
 import Layout from '@layouts/back.vue'
 import { mapGetters } from 'vuex'
 import {
+  getLabel,
   parseDate,
   readApiariesAndGroups,
   readApiariesAndGroupsIfNotPresent,
@@ -711,6 +710,7 @@ export default {
     Treeselect,
   },
   mixins: [
+    getLabel,
     momentFullDateTime,
     momentISO8601,
     parseDate,

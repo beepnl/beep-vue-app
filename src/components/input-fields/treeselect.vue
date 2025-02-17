@@ -4,7 +4,7 @@
       v-if="item.input === 'select' && treeSelectArray !== null"
       v-model="object[item.id]"
       :options="treeSelectArray"
-      :placeholder="`${$t('Select') + ' ' + (item.trans[locale] || item.name)}`"
+      :placeholder="`${$t('Select') + ' ' + getLabel(item)}`"
       :no-results-text="`${$t('no_results')}`"
       :default-expand-level="1"
       :disable-branch-nodes="true"
@@ -16,9 +16,11 @@
 
 <script>
 import Treeselect from '@riophae/vue-treeselect'
+import { getLabel } from '@mixins/methodsMixin'
 
 export default {
   components: { Treeselect },
+  mixins: [getLabel],
   props: {
     item: {
       type: Object,
@@ -27,11 +29,6 @@ export default {
     object: {
       type: Object,
       required: true,
-    },
-    locale: {
-      type: String,
-      default: 'en',
-      required: false,
     },
     checkAnswer: {
       type: Boolean,
@@ -66,13 +63,13 @@ export default {
       if (typeof item.children !== 'undefined' && item.children.length > 0) {
         newNode = {
           id: item.id,
-          label: item.trans[this.locale],
+          label: this.getLabel(item),
           children: this.updateArray(item.children),
         }
       } else {
         newNode = {
           id: item.id,
-          label: item.trans[this.locale],
+          label: this.getLabel(item),
         }
       }
       return newNode

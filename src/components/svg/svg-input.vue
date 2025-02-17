@@ -204,6 +204,7 @@ import svgSelect from '@components/svg/svg-select.vue'
 import svgSmileRating from '@components/svg/svg-smile-rating.vue'
 import svgText from '@components/svg/svg-text.vue'
 import svgYesNoRating from '@components/svg/svg-yes-no-rating.vue'
+import { getLabel } from '@mixins/methodsMixin'
 
 export default {
   name: 'SvgInput',
@@ -221,6 +222,7 @@ export default {
     svgText,
     svgYesNoRating,
   },
+  mixins: [getLabel],
   props: {
     item: {
       type: Object,
@@ -241,7 +243,7 @@ export default {
   computed: {
     label() {
       var label =
-        (this.item.trans[this.locale] || this.item.name) +
+        this.getLabel(this.item) +
         (this.item.unit !== null ? ' (' + this.item.unit + ')' : '')
       return label
     },
@@ -261,9 +263,6 @@ export default {
       }
 
       return label
-    },
-    locale() {
-      return this.$i18n.locale
     },
   },
 }

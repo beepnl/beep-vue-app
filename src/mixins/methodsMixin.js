@@ -412,6 +412,21 @@ export const deleteHiveTag = {
   },
 }
 
+export const getLabel = {
+  methods: {
+    getLabel(item) {
+      return item === undefined
+        ? 'unknown'
+        : item.trans !== undefined &&
+          item.trans !== null &&
+          (item.trans[this.$i18n.locale] !== undefined ||
+            item.trans.en !== undefined)
+        ? item.trans[this.$i18n.locale] || item.trans.en
+        : item.name
+    },
+  },
+}
+
 export const lightenColor = {
   methods: {
     lightenColor(color, amount, opacity = 1) {

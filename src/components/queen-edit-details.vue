@@ -158,6 +158,7 @@
 import { darkIconMixin } from '@mixins/darkIconMixin'
 import { mapGetters } from 'vuex'
 import {
+  getLabel,
   momentAge,
   momentLastDigitOfYear,
   momentifyRemoveTime,
@@ -171,6 +172,7 @@ export default {
   },
   mixins: [
     darkIconMixin,
+    getLabel,
     momentAge,
     momentLastDigitOfYear,
     momentifyRemoveTime,
@@ -216,10 +218,9 @@ export default {
     },
     treeselectBeeRaces() {
       if (this.beeRacesList.length) {
-        const locale = this.selectLocale(this.beeRacesList)
         var treeselectArray = this.beeRacesList
         treeselectArray.map((beeRace) => {
-          beeRace.label = beeRace.trans[locale]
+          beeRace.label = this.getLabel(beeRace)
         })
         const sortedTreeselectArray = treeselectArray
           .slice()
@@ -313,18 +314,6 @@ export default {
       this.useQueenMarkColor = false
       this.modal = false
       this.queenColor = this.queen.color
-    },
-    selectLocale(array) {
-      if (array.length) {
-        const locale = this.$i18n.locale
-        if (array[0].trans[locale] === undefined) {
-          return 'en'
-        } else {
-          return locale
-        }
-      } else {
-        return 'en'
-      }
     },
     setHiveEdited(bool) {
       this.$store.commit('hives/setHiveEdited', bool)

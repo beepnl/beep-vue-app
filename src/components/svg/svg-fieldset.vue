@@ -104,6 +104,7 @@
 import SvgInput from '@components/svg/svg-input.vue'
 import svgHeader from '@components/svg/svg-header.vue'
 import { svgComputed, svgData } from '@mixins/svgMixin'
+import { getLabel } from '@mixins/methodsMixin'
 
 export default {
   name: 'SvgFieldset',
@@ -112,7 +113,7 @@ export default {
     svgHeader,
     SvgInput,
   },
-  mixins: [svgComputed, svgData],
+  mixins: [getLabel, svgComputed, svgData],
   props: {
     category: {
       type: Object,
@@ -128,7 +129,7 @@ export default {
   methods: {
     getHeader(item, child = null) {
       return child === null || child.parent_id === item.id
-        ? item.trans[this.locale] || item.name
+        ? this.getLabel(item)
         : ''
     },
     calcHeight(item) {

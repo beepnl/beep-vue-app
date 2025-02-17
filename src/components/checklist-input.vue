@@ -4,7 +4,6 @@
       v-if="item.input !== 'date'"
       :precision="precision"
       :item="item"
-      :locale="locale"
       :parse-mode="parseMode"
       :parsed-images="parsedImages"
       :parsed-items="parsedItems"
@@ -41,9 +40,7 @@
             />
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>{{
-              listItem.trans[locale] || listItem.name
-            }}</v-list-item-title>
+            <v-list-item-title>{{ getLabel(listItem) }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
@@ -63,9 +60,7 @@
               />
             </v-list-item-action>
             <v-list-item-content>
-              <v-list-item-title>{{
-                nestedItem.trans[locale] || nestedItem.name
-              }}</v-list-item-title>
+              <v-list-item-title>{{ getLabel(nestedItem) }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </template>
@@ -80,7 +75,7 @@
       <v-radio
         v-for="(listItem, index) in item.children"
         :key="index"
-        :label="listItem.trans[locale] || listItem.name"
+        :label="getLabel(listItem)"
         :value="listItem.id"
         @click="toggleRadio(listItem.id, item.id)"
       ></v-radio>
@@ -90,7 +85,6 @@
       v-if="item.input === 'select'"
       :object="object"
       :item="item"
-      :locale="locale"
       :check-answer="checkAnswer"
     ></treeselect>
 
@@ -199,7 +193,7 @@
       v-if="item.input === 'text'"
       v-model="object[item.id]"
       class="inspection-text-area"
-      :placeholder="item.trans[locale] || item.name"
+      :placeholder="getLabel(item)"
       counter="2500"
       :rows="getEnters(object[item.id])"
       auto-grow
@@ -294,7 +288,7 @@ import starRating from '@components/input-fields/star-rating.vue'
 import treeselect from '@components/input-fields/treeselect.vue'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 import { mapGetters } from 'vuex'
-import { parseDate } from '@mixins/methodsMixin'
+import { getLabel, parseDate } from '@mixins/methodsMixin'
 import { svgData } from '@mixins/svgMixin'
 
 export default {
@@ -312,7 +306,7 @@ export default {
     treeselect,
     yesNoRating,
   },
-  mixins: [parseDate, svgData],
+  mixins: [getLabel, parseDate, svgData],
   props: {
     item: {
       type: Object,
