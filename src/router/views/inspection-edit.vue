@@ -414,7 +414,7 @@
               "
               @click="toggleCategory(index)"
             >
-              <span>{{ mainCategory.trans[locale] || mainCategory.name }}</span>
+              <span>{{ getLabel(mainCategory) }}</span>
               <v-icon
                 :class="
                   `float-right toggle-icon mdi ${
@@ -678,6 +678,7 @@ import labelWithDescription from '@components/input-fields/label-with-descriptio
 import Layout from '@/src/router/layouts/back-layout.vue'
 import { mapGetters } from 'vuex'
 import {
+  getLabel,
   parseDate,
   readApiariesAndGroups,
   readApiariesAndGroupsIfNotPresent,
@@ -707,6 +708,7 @@ export default {
   },
   mixins: [
     datePickerText,
+    getLabel,
     parseDate,
     readApiariesAndGroups,
     readApiariesAndGroupsIfNotPresent,
@@ -804,8 +806,7 @@ export default {
       'tempSavedInspection',
       'uploadInspectionPayload',
     ]),
-    ...mapGetters('locations', ['apiaries']),
-    ...mapGetters('groups', ['groups']),
+    ...mapGetters('locations', ['apiaries', 'groups']),
     allHivesSelected: {
       get() {
         return this.selectedHives.length === this.editableHives.length

@@ -14,6 +14,7 @@ const languages = {
     { lang: 'es', title: 'Spanish' },
     { lang: 'fi', title: 'Suomi' },
     { lang: 'sv', title: 'Svenska' },
+    { lang: 'ua', title: 'Українська' },
   ],
   unpublishedLanguageArray: [
     { lang: 'bg', title: 'Български' },
@@ -39,31 +40,6 @@ const languages = {
     } else {
       return matched // fallback
     }
-    // let matched = null
-    // const languagePartials = navigator.language.split('-')[0]
-    // this.languageArray.map((language) => {
-    //   if (language.lang === navigator.language) {
-    //     matched = language.lang
-    //   }
-    //   return true
-    // })
-    // if (!matched) {
-    //   this.languageArray.map((language) => {
-    //     if (language.lang === languagePartials) {
-    //       matched = language.lang
-    //     }
-    //     return true
-    //   })
-    // }
-    // if (!matched) {
-    //   this.languageArray.map((language) => {
-    //     if (language.lang.split('-')[0] === languagePartials) {
-    //       matched = language.lang
-    //     }
-    //     return true
-    //   })
-    // }
-    // return matched
   },
 }
 

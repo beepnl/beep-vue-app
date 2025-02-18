@@ -28,7 +28,7 @@
       <template v-for="(listItem, index) in item.children" :key="index">
         <v-list-item
           class="inspection-list-item"
-          :title="listItem.trans[locale] || listItem.name"
+          :title="getLabel(listItem)"
           @click.capture="toggleSelect(listItem.id, item.id)"
         >
           <template v-slot:prepend>
@@ -50,7 +50,7 @@
             v-for="(nestedItem, n) in listItem.children"
             :key="'nest-' + n"
             class="inspection-list-item nested"
-            :title="nestedItem.trans[locale] || nestedItem.name"
+            :title="getLabel(nestedItem)"
             @click.capture="toggleSelect(nestedItem.id, item.id)"
           >
             <template v-slot:prepend>
@@ -78,7 +78,7 @@
       <v-radio
         v-for="(listItem, index) in item.children"
         :key="index"
-        :label="listItem.trans[locale] || listItem.name"
+        :label="getLabel(listItem)"
         :model-value="parseInt(object[item.id])"
         :value="listItem.id"
         color="accent"
@@ -192,7 +192,7 @@
       v-if="item.input === 'text'"
       :model-value="object[item.id]"
       class="inspection-text-area"
-      :placeholder="item.trans[locale] || item.name"
+      :placeholder="getLabel(item)"
       counter="2500"
       :rows="getEnters(object[item.id])"
       auto-grow
@@ -261,9 +261,6 @@
 </template>
 
 <script>
-import { svgData } from '@mixins/svgMixin'
-import { parseDate } from '@mixins/methodsMixin'
-import { mapGetters } from 'vuex'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
 // import testOutput from '@components/svg/scan_results.json' // enable for debugging
@@ -275,7 +272,10 @@ import smileRating from '@components/input-fields/smile-rating.vue'
 import starRating from '@components/input-fields/star-rating.vue'
 import treeselect from '@/src/components/input-fields/treeselect-input.vue'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
+import { mapGetters } from 'vuex'
 import { ElInputNumber } from 'element-plus'
+import { getLabel, parseDate } from '@mixins/methodsMixin'
+import { svgData } from '@mixins/svgMixin'
 
 export default {
   name: 'ChecklistInput',
@@ -292,7 +292,7 @@ export default {
     yesNoRating,
     ElInputNumber,
   },
-  mixins: [parseDate, svgData],
+  mixins: [getLabel, parseDate, svgData],
   props: {
     item: {
       type: Object,

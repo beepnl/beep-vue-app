@@ -442,12 +442,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('locations', ['apiaries']),
     ...mapGetters('devices', ['devices']),
-    ...mapGetters('groups', ['groups']),
-    locale() {
-      return this.$i18n.locale
-    },
+    ...mapGetters('locations', ['apiaries', 'groups']),
     mdAndDown() {
       return this.$vuetify.display.mdAndDown
     },

@@ -150,13 +150,7 @@
       </v-container>
     </div>
 
-    <v-container v-if="!ready">
-      <div class="loading">
-        <v-progress-circular size="50" color="primary" indeterminate />
-      </div>
-    </v-container>
-
-    <v-container v-if="ready">
+    <v-container>
       <v-row
         v-for="invitation in invitations"
         :key="'Invitation ' + invitation.id"
@@ -477,13 +471,39 @@
             </div>
 
             <span class="text-right ml-2">
+              <v-tooltip v-if="showFavoriteIcon && !favHiveSet(hiveSet)" bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-icon
+                    v-bind="attrs"
+                    v-on="on"
+                    :style="
+                      `color: ${
+                        hiveSet.hex_color ? hiveSet.hex_color : '#f29100'
+                      };`
+                    "
+                    class="mr-1"
+                    @click="toggleFavHiveSet(hiveSet)"
+                    >mdi-star-outline</v-icon
+                  >
+                </template>
+                <span v-text="favHiveSetText(hiveSet)"> </span>
+              </v-tooltip>
+              <v-icon
+                v-else-if="showFavoriteIcon"
+                :style="
+                  `color: ${hiveSet.hex_color ? hiveSet.hex_color : '#f29100'};`
+                "
+                class="mr-1"
+                @click="toggleFavHiveSet(hiveSet)"
+                >mdi-star</v-icon
+              >
+
               <v-icon
                 :style="
                   `color: ${hiveSet.hex_color ? hiveSet.hex_color : '#f29100'};`
                 "
-                :class="hideHiveSet(hiveSet) ? 'mdi-plus' : 'mdi-minus'"
-                @click="toggleHiveSet(hiveSet)"
-                >mdi-minus</v-icon
+                @click="toggleHideHiveSet(hiveSet)"
+                >{{ hideHiveSet(hiveSet) ? 'mdi-plus' : 'mdi-minus' }}</v-icon
               >
             </span>
           </div>
@@ -516,6 +536,12 @@
           </div>
         </v-slide-y-transition>
       </v-row>
+
+      <v-container v-if="!readyWithAll">
+        <div class="loading">
+          <v-progress-circular size="50" color="primary" indeterminate />
+        </div>
+      </v-container>
 
       <div
         v-if="showApiaryPlaceholder"
@@ -600,7 +626,10 @@ import {
 } from '@mixins/momentMixin'
 import {
   checkAlerts,
+  checkSettings,
+  readApiaries,
   readApiariesAndGroups,
+  readGroups,
   readDevices,
   readGeneralInspections,
   readHiveTags,
@@ -615,10 +644,13 @@ export default {
   },
   mixins: [
     checkAlerts,
+    checkSettings,
     momentFromNow,
     momentify,
     momentifyDayMonth,
+    readApiaries,
     readApiariesAndGroups,
+    readGroups,
     readDevices,
     readGeneralInspections,
     readHiveTags,
@@ -633,10 +665,10 @@ export default {
     xlView: true,
     mView: false,
     xsView: false,
-    settings: [],
     showAcceptLoadingIconById: [],
     showDeclineLoadingIconById: [],
     ready: false,
+    readyWithAll: false,
     deviceIdArray: [],
     assetsUrl:
       process.env.VUE_APP_ASSETS_URL || process.env.VUE_APP_ASSETS_URL_FALLBACK,
@@ -644,6 +676,8 @@ export default {
     alertInterval: 120000,
     deviceTimer: 0,
     deviceInterval: 600000,
+    favApiaries: [],
+    favGroups: [],
     hiddenApiaries: [],
     hiddenGroups: [],
     maxHiveTagNr: 80, // TODO check actual number of possible hivetags
@@ -651,9 +685,10 @@ export default {
   computed: {
     ...mapGetters('alerts', ['alerts']),
     ...mapGetters('devices', ['devices']),
-    ...mapGetters('locations', ['apiaries']),
-    ...mapGetters('groups', ['groups', 'invitations']),
+    ...mapGetters('locations', ['apiaries', 'groups', 'hivesObject']),
+    ...mapGetters('groups', ['invitations']),
     ...mapGetters('hives', ['hiveTags']),
+    ...mapGetters('taxonomy', ['settings']),
     filterByAlert: {
       get() {
         return this.$store.getters['locations/hiveFilterByAlert']
@@ -877,6 +912,9 @@ export default {
 
       return propertyFilteredHiveSets
     },
+    hasFavorites() {
+      return this.favApiaries.length > 0 || this.favGroups.length > 0
+    },
     hiveIndex() {
       return this.$route.query.hive_index
     },
@@ -901,24 +939,41 @@ export default {
         })
         return apiary
       })
-      const groupsWithDatesAndEditableHivesProp = JSON.parse(
-        JSON.stringify(this.groups)
-      ) // clone without v-bind to avoid vuex warning when mutating
-      groupsWithDatesAndEditableHivesProp.map((group) => {
-        group.hives.map((hive) => {
-          this.addDates(hive)
-          return hive
+
+      var groupsWithDatesAndEditableHivesProp = []
+
+      if (this.groups.length > 0) {
+        groupsWithDatesAndEditableHivesProp = JSON.parse(
+          JSON.stringify(this.groups)
+        )
+
+        groupsWithDatesAndEditableHivesProp.map((group) => {
+          group.hives.map((hive) => {
+            this.addDates(hive)
+            return hive
+          })
+          var hasEditableHive =
+            group.hives.filter((hive) => {
+              return hive.editable || hive.owner
+            }).length > 0
+          hasEditableHive
+            ? (group.hasEditableHive = true)
+            : (group.hasEditableHive = false)
+          return group
         })
-        const hasEditableHive =
-          group.hives.filter((hive) => {
-            return hive.editable || hive.owner
-          }).length > 0
-        hasEditableHive
-          ? (group.hasEditableHive = true)
-          : (group.hasEditableHive = false)
-        return group
-      })
-      return apiariesWithDates.concat(groupsWithDatesAndEditableHivesProp)
+      }
+
+      const hiveSets = apiariesWithDates.concat(
+        groupsWithDatesAndEditableHivesProp
+      )
+
+      return hiveSets
+    },
+    apiariesIds() {
+      return this.apiaries.map((ap) => ap.id)
+    },
+    groupsIds() {
+      return this.groups.map((gr) => gr.id)
     },
     locale() {
       return this.$i18n.locale
@@ -930,9 +985,17 @@ export default {
       return this.$vuetify.display.width
     },
     showApiaryPlaceholder() {
-      return this.apiaries.length === 0 && this.groups.length === 0
+      return (
+        this.apiaries.length === 0 &&
+        this.groups.length === 0 &&
+        this.readyWithAll
+      )
+    },
+    showFavoriteIcon() {
+      return this.sortedHiveSets.length > 1 || this.hasFavorites
     },
     sortedHiveSets() {
+      const self = this
       const sortedHiveSets = this.hiveSets
         .slice()
         .sort(function(a, b) {
@@ -950,6 +1013,17 @@ export default {
           }
           if ('type' in a) {
             return -1
+          }
+          return 0
+        })
+        .sort(function(a, b) {
+          const favA = self.favHiveSet(a) ? 1 : 0
+          const favB = self.favHiveSet(b) ? 1 : 0
+          if (favA > favB) {
+            return -1
+          }
+          if (favB > favA) {
+            return 1
           }
           return 0
         })
@@ -984,13 +1058,18 @@ export default {
         this.$store.commit('locations/setHiveView', 'xsView')
       }
     }
-    // },
-    // created() {
+  },
+  created() {
+    this.readSettingsIfNotPresent().then(() => {
+      this.getHiveSets()
+    })
+
     if (this.hiveIndex !== undefined) {
       this.readHiveTagsIfNotChecked().then((hivetags) => {
         this.hiveTagRedirect(hivetags)
       })
     }
+
     if (localStorage.beepHiddenApiaries) {
       this.hiddenApiaries = JSON.parse(localStorage.beepHiddenApiaries)
     }
@@ -1005,18 +1084,12 @@ export default {
     ) {
       this.hiveSearch = this.$route.query.search
     }
+
     this.readDevices().then(() => {
       this.deviceTimer = setInterval(this.readDevices, this.deviceInterval)
     })
+
     this.checkAlertRulesAndAlerts().then(() => {
-      if (this.apiaries.length === 0 && this.groups.length === 0) {
-        // in case user is freshly logged in or in case of hard refresh
-        this.readApiariesAndGroups().then(() => {
-          this.ready = true
-        })
-      } else {
-        this.ready = true
-      }
       this.alertTimer = setInterval(this.readAlerts, this.alertInterval)
     })
   },
@@ -1036,13 +1109,10 @@ export default {
           token,
           decline,
         })
+        this.showSnackbar(response)
         if (!response) {
-          this.snackbar.text = this.$i18n.t('something_wrong')
-          this.snackbar.show = true
           this.stopLoadingIcon(groupId, decline)
         }
-        this.snackbar.text = this.$i18n.t(response.data.message)
-        this.snackbar.show = true
         setTimeout(() => {
           this.readDevices().then(() => {
             this.readApiariesAndGroups().then(() => {
@@ -1061,12 +1131,9 @@ export default {
     async deleteApiaryById(id) {
       try {
         const response = await Api.deleteRequest('/locations/', id)
-        if (!response) {
-          this.snackbar.text = this.$i18n.t('something_wrong')
-          this.snackbar.show = true
-        }
+        this.showSnackbar(response)
         setTimeout(() => {
-          this.readApiariesAndGroups()
+          this.readApiaries()
           this.readGeneralInspections()
           this.readDevices()
         }, 100) // wait for API to update locations/hives
@@ -1077,12 +1144,9 @@ export default {
     async deleteGroupById(id) {
       try {
         const response = await Api.deleteRequest('/groups/', id)
-        if (!response) {
-          this.snackbar.text = this.$i18n.t('something_wrong')
-          this.snackbar.show = true
-        }
+        this.showSnackbar(response)
+        this.$store.commit('locations/setGroups', response.data.groups)
         setTimeout(() => {
-          this.readApiariesAndGroups()
           this.readGeneralInspections()
         }, 100) // wait for API to update locations/hives
       } catch (error) {
@@ -1092,12 +1156,9 @@ export default {
     async detachGroupById(id) {
       try {
         const response = await Api.deleteRequest('/groups/detach/', id)
-        if (!response) {
-          this.snackbar.text = this.$i18n.t('something_wrong')
-          this.snackbar.show = true
-        }
+        this.showSnackbar(response)
+        this.$store.commit('locations/setGroups', response.data.groups)
         setTimeout(() => {
-          this.readApiariesAndGroups()
           this.readGeneralInspections()
         }, 100) // wait for API to update locations/hives
       } catch (error) {
@@ -1107,10 +1168,7 @@ export default {
     async deleteHiveById(id) {
       try {
         const response = await Api.deleteRequest('/hives/', id)
-        if (!response) {
-          this.snackbar.text = this.$i18n.t('something_wrong')
-          this.snackbar.show = true
-        }
+        this.showSnackbar(response)
         setTimeout(() => {
           this.readApiariesAndGroups()
           this.readGeneralInspections()
@@ -1196,6 +1254,7 @@ export default {
           warningMessage
         )
         .then((confirm) => {
+          this.toggleFavHiveSet(hiveSet, true)
           this.deleteApiaryById(hiveSet.id)
         })
         .catch((reject) => {
@@ -1212,6 +1271,7 @@ export default {
           }
         )
         .then((confirm) => {
+          this.toggleFavHiveSet(hiveSet, true)
           this.deleteGroupById(hiveSet.id)
         })
         .catch((reject) => {
@@ -1224,6 +1284,7 @@ export default {
           color: 'red',
         })
         .then((confirm) => {
+          this.toggleFavHiveSet(hiveSet, true)
           this.detachGroupById(hiveSet.id)
         })
         .catch((reject) => {
@@ -1262,12 +1323,65 @@ export default {
           .indexOf(invitationId) > -1
       )
     },
+    favHiveSet(hiveSet) {
+      return !hiveSet.users
+        ? this.favApiaries.includes(hiveSet.id)
+        : this.favGroups.includes(hiveSet.id)
+    },
+    favHiveSetText(hiveSet) {
+      return (
+        this.$i18n.t('Fav_' + (hiveSet.users ? 'group' : 'apiary') + '_exp') +
+        this.$i18n.t('Fav_exp')
+      )
+    },
     findDeviceById(id) {
       return (
         this.devices.filter((device) => {
           return device.id === id
         })[0] || null
       )
+    },
+    getHiveSets() {
+      this.favApiaries = this.getArrayFromSettings('favorite_apiary_ids')
+      this.favGroups = this.getArrayFromSettings('favorite_group_ids')
+
+      const prefix = '?ids='
+      const locIds =
+        this.favApiaries.length > 0 ? prefix + this.favApiaries : ''
+      const groupIds = this.favGroups.length > 0 ? prefix + this.favGroups : ''
+
+      if (this.apiaries.length === 0 && this.groups.length === 0) {
+        // in case user is freshly logged in or in case of hard refresh
+        this.readApiaries(locIds).then(() => {
+          this.ready = true
+          this.readGroups(groupIds).then(() => {
+            // only get rest of the apiaries / groups in extra call if there were any favorites (otherwise all apiaries / groups are already retrieved by above read calls)
+            if (this.hasFavorites) {
+              this.readApiariesAndGroups().then(() => {
+                this.readyWithAll = true
+              })
+            } else {
+              this.readyWithAll = true
+            }
+          })
+        })
+      } else {
+        this.ready = true
+        this.readyWithAll = true
+      }
+    },
+    getArrayFromSettings(propName) {
+      const filter = this.settings.filter(
+        (setting) => setting.name === propName
+      )
+      const value = filter.length > 0 ? filter[0].value : null
+
+      return value !== null
+        ? value
+            .split(',')
+            .map((el) => parseInt(el))
+            .filter((el) => !isNaN(el))
+        : []
     },
     handleError(error) {
       if (error.response) {
@@ -1435,6 +1549,15 @@ export default {
         ? this.showDeclineLoadingIconById.indexOf(invitationId) > -1
         : this.showAcceptLoadingIconById.indexOf(invitationId) > -1
     },
+    showSnackbar(response) {
+      if (!response) {
+        this.snackbar.text = this.$i18n.t('something_wrong')
+        this.snackbar.show = true
+      } else if (response.data.message) {
+        this.snackbar.text = response.data.message
+        this.snackbar.show = true
+      }
+    },
     stopLoadingIcon(groupId, decline) {
       if (decline) {
         this.showDeclineLoadingIconById.splice(
@@ -1479,10 +1602,27 @@ export default {
       }
       this.$store.commit('locations/setHiveView', view)
     },
-    toggleHiveSet(hiveSet) {
-      const toggleArray = !hiveSet.users
-        ? this.hiddenApiaries
-        : this.hiddenGroups
+    toggleFavHiveSet(hiveSet, removeBeforeDelete = false) {
+      var toggleArray = !hiveSet.users ? this.favApiaries : this.favGroups
+      if (toggleArray.includes(hiveSet.id)) {
+        toggleArray.splice(toggleArray.indexOf(hiveSet.id), 1)
+      } else if (!removeBeforeDelete) {
+        toggleArray.push(hiveSet.id)
+      }
+
+      var ids = !hiveSet.users ? this.apiariesIds : this.groupsIds
+      // housekeeping: remove apiary or group ids that do not exist for this user (anymore) from settings
+      toggleArray = toggleArray.filter((id) => ids.includes(id))
+
+      const value = toggleArray.join(',')
+      const payload = !hiveSet.users
+        ? { favorite_apiary_ids: value }
+        : { favorite_group_ids: value }
+
+      this.postSettings(payload)
+    },
+    toggleHideHiveSet(hiveSet) {
+      var toggleArray = !hiveSet.users ? this.hiddenApiaries : this.hiddenGroups
       if (toggleArray.includes(hiveSet.id)) {
         toggleArray.splice(toggleArray.indexOf(hiveSet.id), 1)
       } else {

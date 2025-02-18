@@ -5,6 +5,7 @@ const resource = createResource({ path: 'taxonomy' })
 export const state = {
   ...resource.state,
   taxonomyLists: {},
+  settings: [],
 }
 export const getters = {
   ...resource.getters,
@@ -26,6 +27,9 @@ export const getters = {
   sensorTypesList: (state) => {
     return state.taxonomyLists.sensortypes || []
   },
+  settings: (state) => {
+    return state.settings || []
+  },
 }
 export const mutations = {
   ...resource.mutations,
@@ -34,6 +38,7 @@ export const mutations = {
   },
   resetState: function(state) {
     state.taxonomyLists = {}
+    state.settings = []
   },
 }
 export const actions = {

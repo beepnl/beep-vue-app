@@ -258,9 +258,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('groups', ['groups']),
     ...mapGetters('hives', ['hiveEdited']),
-    ...mapGetters('locations', ['apiaries']),
+    ...mapGetters('locations', ['apiaries', 'groups']),
     hiveCreateMode() {
       return this.$route.name === 'hive-create'
     },

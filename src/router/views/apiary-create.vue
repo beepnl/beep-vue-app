@@ -515,6 +515,7 @@ import Layout from '@/src/router/layouts/back-layout.vue'
 import { mapGetters } from 'vuex'
 import {
   convertComma,
+  readApiaries,
   readApiariesAndGroupsIfNotPresent,
 } from '@mixins/methodsMixin'
 import { ElInputNumber } from 'element-plus'
@@ -528,7 +529,7 @@ export default {
     VueGoogleAutocomplete,
     ElInputNumber,
   },
-  mixins: [convertComma, readApiariesAndGroupsIfNotPresent],
+  mixins: [convertComma, readApiaries, readApiariesAndGroupsIfNotPresent],
   data: function() {
     return {
       snackbar: {
@@ -554,8 +555,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('groups', ['groups']),
-    ...mapGetters('locations', ['apiaryEdited', 'apiaries']),
+    ...mapGetters('locations', ['apiaries', 'apiaryEdited', 'groups']),
     colorPicker: {
       get() {
         if (this.newHive) {
@@ -709,19 +709,6 @@ export default {
           this.snackbar.text = this.$i18n.t('not_saved_error')
           this.snackbar.show = true
           this.showLoadingIcon = false
-        }
-      }
-    },
-    async readApiaries() {
-      try {
-        const response = await Api.readRequest('/locations')
-        this.$store.commit('locations/setApiaries', response.data.locations)
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log(error.response)
-        } else {
-          console.log('Error: ', error)
         }
       }
     },

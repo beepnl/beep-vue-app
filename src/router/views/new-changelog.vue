@@ -1,12 +1,92 @@
 <template>
   <Layout :title="$t('Whats_new')">
-    <v-container class="new-container">
+    <v-container>
       <div class="text-overline mb-1"
-        ><span class="lowercase">v</span>4.1.0 (14-10-2024) - Current
+        ><span class="lowercase">v</span>4.1.0 (18-02-2025) - Current
         version</div
       >
       <div class="rounded-border mb-4">
         <ul>
+          <li>TODO-VUE3</li>
+        </ul>
+      </div>
+
+      <div class="text-overline mb-1"
+        ><span class="lowercase">v</span>4.0.23 (17-02-2025)</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>Ukrainian (Українська) language has been added</li>
+          <li>Small improvements</li>
+        </ul>
+      </div>
+
+      <div class="text-overline mb-1"
+        ><span class="lowercase">v</span>4.0.22 (14-01-2025)</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>Faster loading times for Hives overview & Data tab</li>
+          <li>
+            <router-link :to="{ name: 'home' }">Hives</router-link>: it is now
+            possible to favorite apiaries and/or collaboration groups by
+            clicking the
+            <v-icon class="inline-icon" color="accent">mdi-star-outline</v-icon>
+            icon. Favorite apiaries/groups will appear at the top of the list
+            and will be loaded with priority.</li
+          >
+          <li>
+            <router-link :to="{ name: 'import' }">Import</router-link>: several
+            improvements (only for users with a BEEP base), such as:
+            <ul>
+              <li
+                >Show RTC badge next to BEEP base name if it has an rtc
+                clock</li
+              >
+              <li>Bugfixes: small fixes for issues received as feedback</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <div class="text-overline mb-1"
+        ><span class="lowercase">v</span>4.0.21 (30-09-2024)</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>Small improvements</li>
+        </ul>
+      </div>
+
+      <div class="text-overline mb-1"
+        ><span class="lowercase">v</span>4.0.20 (12-08-2024)</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>Small improvements</li>
+        </ul>
+      </div>
+
+      <div class="text-overline mb-1"
+        ><span class="lowercase">v</span>4.0.19 (03-06-2024)</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>Small improvements</li>
+        </ul>
+      </div>
+
+      <div class="text-overline mb-1"
+        ><span class="lowercase">v</span>4.0.18 (21-05-2024)</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>
+            <router-link :to="{ name: 'measurements' }"> Data:</router-link>
+            sound heatmap colors on logarithmic scale + fixed maximum (switch to
+            autoscale maximum via the
+            <v-icon class="inline-icon">mdi-magnify</v-icon> icon)
+          </li>
           <li>Small improvements</li>
         </ul>
       </div>

@@ -291,9 +291,7 @@ export default {
   },
   computed: {
     ...mapGetters('alerts', ['alertRules', 'alerts', 'alertsLoading']),
-    ...mapGetters('locations', ['apiaries']),
-    ...mapGetters('groups', ['groups']),
-    ...mapGetters('hives', ['hivesObject']),
+    ...mapGetters('locations', ['apiaries', 'groups', 'hivesObject']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     alertsWithRuleDetails() {
       const alertsWithRuleDetails = JSON.parse(JSON.stringify(this.alerts)) // clone without v-bind to avoid vuex warning when mutating

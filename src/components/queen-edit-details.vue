@@ -163,7 +163,7 @@ import {
   momentLastDigitOfYear,
   momentifyRemoveTime,
 } from '@mixins/momentMixin'
-import { readTaxonomy } from '@mixins/methodsMixin'
+import { getLabel, readTaxonomy } from '@mixins/methodsMixin'
 import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 
 export default {
@@ -172,6 +172,7 @@ export default {
   },
   mixins: [
     darkIconMixin,
+    getLabel,
     momentAge,
     momentLastDigitOfYear,
     momentifyRemoveTime,
@@ -219,10 +220,9 @@ export default {
     },
     treeselectBeeRaces() {
       if (this.beeRacesList.length) {
-        const locale = this.selectLocale(this.beeRacesList)
-        let treeselectArray = JSON.parse(JSON.stringify(this.beeRacesList)) // clone without v-bind to avoid vuex warning when mutating
+        var treeselectArray = this.beeRacesList
         treeselectArray.map((beeRace) => {
-          beeRace.label = beeRace.trans[locale]
+          beeRace.label = this.getLabel(beeRace)
           return beeRace
         })
         const sortedTreeselectArray = treeselectArray
@@ -322,18 +322,6 @@ export default {
       this.queenBirthDate = e
       if (this.queen.color) {
         this.updateQueen(this.queenMarkColor, 'color')
-      }
-    },
-    selectLocale(array) {
-      if (array.length) {
-        const locale = this.$i18n.locale
-        if (array[0].trans[locale] === undefined) {
-          return 'en'
-        } else {
-          return locale
-        }
-      } else {
-        return 'en'
       }
     },
     setHiveEdited(bool) {

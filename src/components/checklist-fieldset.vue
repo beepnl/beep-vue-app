@@ -10,7 +10,7 @@
       "
     >
       <div class="text-overline mb-2"
-        >{{ category.trans[locale] || category.name }}
+        >{{ getLabel(category) }}
         <a
           v-if="category.description !== null || category.source !== null"
           @click="showDescription = !showDescription"
@@ -120,6 +120,7 @@ import ChecklistInput from '@components/checklist-input.vue'
 // import ChecklistFieldset from '@components/checklist-fieldset.vue'
 import TopPhotoAnalysis from '@components/input-fields/top-photo-analysis.vue'
 import LiebefelderMethod from '@components/input-fields/liebefelder-method.vue'
+import { getLabel } from '@mixins/methodsMixin'
 
 export default {
   name: 'ChecklistFieldset',
@@ -130,6 +131,7 @@ export default {
     LiebefelderMethod,
     TopPhotoAnalysis,
   },
+  mixins: [getLabel],
   props: {
     category: {
       type: Object,

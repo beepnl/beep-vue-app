@@ -31,9 +31,9 @@
                 hide-details
                 :append-outer-icon="search ? 'mdi-magnify' : ''"
                 variant="outlined"
-                @click:append-outer="readInspectionsForHiveId"
+                @click:append-outer="readInspectionsForHiveId(id, suffix)"
                 @click:clear="clearSearch"
-                @keydown.enter.prevent="readInspectionsForHiveId"
+                @keydown.enter.prevent="readInspectionsForHiveId(id, suffix)"
               ></v-text-field>
             </v-col>
             <v-card-actions class="pl-0">
@@ -615,6 +615,7 @@ import { mapGetters } from 'vuex'
 import {
   readApiariesAndGroups,
   readGeneralInspections,
+  readInspectionsForHiveId,
 } from '@mixins/methodsMixin'
 import { momentify, momentFormat } from '@mixins/momentMixin'
 
@@ -630,6 +631,7 @@ export default {
     momentFormat,
     readApiariesAndGroups,
     readGeneralInspections,
+    readInspectionsForHiveId,
   ],
   data: function() {
     return {
@@ -806,10 +808,27 @@ export default {
         4: this.$i18n.t('Excellent'),
       }
     },
+    suffix() {
+      var searchSpecific =
+        this.search !== null && this.search.indexOf('=') > -1
+          ? this.search
+          : null
+
+      const suffix = this.searchOrFilter
+        ? (searchSpecific !== null
+            ? '?' + searchSpecific
+            : this.search
+            ? '?search=' + this.search
+            : '') +
+          (this.filters ? this.filters : '') +
+          (this.searchPageIndex !== 1 ? '&page=' + this.searchPageIndex : '')
+        : '?page=' + this.pageIndex
+      return suffix
+    },
   },
   watch: {
     locale() {
-      this.readInspectionsForHiveId()
+      this.readInspectionsForHiveId(this.id, this.suffix)
     },
   },
   created() {
@@ -817,7 +836,7 @@ export default {
     this.getActiveHive(this.id).then((hive) => {
       this.$store.commit('hives/setActiveHive', hive)
     })
-    this.readInspectionsForHiveId().then(() => {
+    this.readInspectionsForHiveId(this.id, this.suffix).then(() => {
       this.ready = true
     })
   },
@@ -829,7 +848,7 @@ export default {
           this.snackbar.text = this.$i18n.t('something_wrong')
           this.snackbar.show = true
         }
-        this.readInspectionsForHiveId()
+        this.readInspectionsForHiveId(this.id, this.suffix)
         this.readGeneralInspections() // update generalInspections in store for diary-list
         this.readApiariesAndGroups() // update apiaries and groups so the latest inspection will be displayed at apiary-list
       } catch (error) {
@@ -861,49 +880,10 @@ export default {
         this.$router.push({ name: '404', query: { resource: 'hive' } })
       }
     },
-    async readInspectionsForHiveId() {
-      this.loadingInspections = true
-      this.show500Response = false
-
-      const searchSpecific =
-        this.search !== null && this.search.indexOf('=') > -1
-          ? this.search
-          : null
-      try {
-        const response = await Api.readRequest(
-          '/inspections/hive/' +
-            this.id +
-            (this.searchOrFilter
-              ? (searchSpecific !== null
-                  ? '?' + searchSpecific
-                  : this.search
-                  ? '?search=' + this.search
-                  : '') +
-                (this.filters ? this.filters : '') +
-                (this.searchPageIndex !== 1
-                  ? '&page=' + this.searchPageIndex
-                  : '')
-              : '?page=' + this.pageIndex)
-        )
-        this.inspections = response.data
-        this.loadingInspections = false
-        return true
-      } catch (error) {
-        this.loadingInspections = false
-        if (error.response) {
-          console.log('Error: ', error.response)
-          if (error.response.status === 500) {
-            this.show500Response = true
-          }
-        } else {
-          console.log('Error: ', error)
-        }
-      }
-    },
     clearSearch() {
       this.search = null
       this.searchPageIndex = 1
-      this.readInspectionsForHiveId()
+      this.readInspectionsForHiveId(this.id, this.suffix)
     },
     confirmDeleteInspection(inspection) {
       this.$refs.confirm
@@ -951,11 +931,11 @@ export default {
     },
     toggleFilterByAttention() {
       this.filterByAttention = !this.filterByAttention
-      this.readInspectionsForHiveId()
+      this.readInspectionsForHiveId(this.id, this.suffix)
     },
     toggleFilterByReminder() {
       this.filterByReminder = !this.filterByReminder
-      this.readInspectionsForHiveId()
+      this.readInspectionsForHiveId(this.id, this.suffix)
     },
     scoreAmountColor(value) {
       if (value === '0') return '#CCC'
@@ -979,7 +959,7 @@ export default {
       } else {
         this.searchPageIndex += value
       }
-      this.readInspectionsForHiveId()
+      this.readInspectionsForHiveId(this.id, this.suffix)
     },
     updateFilterByImpression(number) {
       if (this.filterByImpression.includes(number)) {
@@ -990,7 +970,7 @@ export default {
       } else {
         this.filterByImpression.push(number)
       }
-      this.readInspectionsForHiveId()
+      this.readInspectionsForHiveId(this.id, this.suffix)
     },
   },
 }

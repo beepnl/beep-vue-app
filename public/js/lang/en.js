@@ -1083,6 +1083,12 @@ const translations = {
 
   api_token: 'Api token',
   save_api: 'Save api token',
+
+  // TODO-VUE3 refactor into single term with prop
+  Fav_group_exp: 'Favorite this group',
+  Fav_apiary_exp: 'Favorite this apiary',
+  Fav_exp:
+    ' - it will be shown at the top of the list and will load first (before the rest)',
 }
 
 export default translations

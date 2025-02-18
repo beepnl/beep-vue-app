@@ -5,7 +5,7 @@
         v-text="
           plainText !== null
             ? plainText
-            : getText(item) +
+            : getLabel(item) +
               (item.unit !== null ? ' (' + item.unit + ')' : '') +
               (item.required === 1 ? '*' : '')
         "
@@ -56,7 +56,7 @@
           :src="parsedImages[j]"
           class="parsed-checkbox"
         />
-        <span class="ml-1" v-text="getText(it)"></span>
+        <span class="ml-1" v-text="getLabel(it)"></span>
       </div>
     </div>
 
@@ -142,10 +142,11 @@
 </template>
 
 <script>
+import { getLabel } from '@mixins/methodsMixin'
 import { svgData } from '@mixins/svgMixin'
 
 export default {
-  mixins: [svgData],
+  mixins: [getLabel, svgData],
   props: {
     item: {
       type: Object,
@@ -263,9 +264,6 @@ export default {
         (this.smileyItem || this.gradeItem) &&
         index < this.parsedImages.length - 1
       )
-    },
-    getText(item) {
-      return item.trans[this.locale] || item.name
     },
   },
 }

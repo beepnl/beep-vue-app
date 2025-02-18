@@ -340,9 +340,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('groups', ['dashboardGroups', 'groups']),
-    ...mapGetters('hives', ['hivesObject']),
-    ...mapGetters('locations', ['apiaries']),
+    ...mapGetters('groups', ['dashboardGroups']),
+    ...mapGetters('locations', ['hiveSets', 'hivesObject']),
     code() {
       return this.$route.params.id || null
     },
@@ -363,9 +362,6 @@ export default {
         ? this.$i18n.t('New_dashboard')
         : this.$i18n.t('Edit_dashboard') +
             (this.dashboard !== null ? ' - ' + this.dashboard.name : '')
-    },
-    hiveSets() {
-      return this.apiaries.concat(this.groups)
     },
     mobile() {
       return this.$vuetify.display.xs

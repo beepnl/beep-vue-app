@@ -216,9 +216,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('locations', ['apiaries']),
-    ...mapGetters('groups', ['groups']),
-    ...mapGetters('hives', ['hivesObject']),
+    ...mapGetters('locations', ['apiaries', 'groups', 'hivesObject']),
     ...mapGetters('inspections', ['generalInspections']),
     diarySearch: {
       get() {

@@ -110,7 +110,7 @@
               <template v-slot:[`item.device_name`]="{ item }">
                 <span v-text="getDeviceText(item)"></span>
                 <v-chip
-                  v-if="item.rtc === 1"
+                  v-if="deviceHasRtc(item)"
                   class="ml-2 v-chip-rtc"
                   size="x-small"
                   >RTC</v-chip
@@ -703,8 +703,8 @@ export default {
   },
   computed: {
     ...mapGetters('auth', ['userIsAdmin']),
-    ...mapGetters('groups', ['groups']),
-    ...mapGetters('locations', ['apiaries']),
+    ...mapGetters('devices', ['devices']),
+    ...mapGetters('locations', ['apiaries', 'groups']),
     importSentence() {
       return this.importMessageCopy !== null &&
         this.importMessageCopy.data_stored
@@ -1043,7 +1043,6 @@ export default {
             return item
           })
           this.selectedFlashLog = newFlashLog // avoid vuex do not mutate warning by setting selectedFlashLog at once instead of just the .log prop
-
           setTimeout(() => {
             this.scrollTo('log-data')
           }, 100)
@@ -1129,6 +1128,14 @@ export default {
       this.undoMessage = null
       this.errorMessage = null
       this.successMessage = null
+    },
+    deviceHasRtc(item) {
+      const deviceId = item.device_id
+      const deviceFilter = this.devices.filter(
+        (device) => device.id === deviceId
+      )
+
+      return deviceFilter.length > 0 ? deviceFilter[0].rtc === 1 : false
     },
     fileSizeText(item) {
       const nrOfMB = (item.bytes_received / 1024 / 1024).toFixed(2)
