@@ -158,12 +158,11 @@
 import { darkIconMixin } from '@mixins/darkIconMixin'
 import { mapGetters } from 'vuex'
 import {
-  getLabel,
   momentAge,
   momentLastDigitOfYear,
   momentifyRemoveTime,
 } from '@mixins/momentMixin'
-import { readTaxonomy } from '@mixins/methodsMixin'
+import { getLabel, readTaxonomy } from '@mixins/methodsMixin'
 import Treeselect from '@riophae/vue-treeselect'
 
 export default {
