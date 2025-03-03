@@ -190,7 +190,7 @@
 
     <v-textarea
       v-if="item.input === 'text'"
-      :model-value="object[item.id]"
+      v-model="object[item.id]"
       class="inspection-text-area"
       :placeholder="getLabel(item)"
       counter="2500"
@@ -261,21 +261,21 @@
 </template>
 
 <script>
-import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
+import labelWithDescription from '@components/input-fields/label-with-description.vue'
 // import testOutput from '@components/svg/scan_results.json' // enable for debugging
+import slider from '@/src/components/input-fields/slider-input.vue'
+import treeselect from '@/src/components/input-fields/treeselect-input.vue'
 import imageUploader from '@components/input-fields/image-uploader.vue'
 import sampleCode from '@components/input-fields/sample-code.vue'
 import selectHiveOrApiary from '@components/input-fields/select-hive-or-apiary.vue'
-import slider from '@/src/components/input-fields/slider-input.vue'
 import smileRating from '@components/input-fields/smile-rating.vue'
 import starRating from '@components/input-fields/star-rating.vue'
-import treeselect from '@/src/components/input-fields/treeselect-input.vue'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
-import { mapGetters } from 'vuex'
-import { ElInputNumber } from 'element-plus'
 import { getLabel, parseDate } from '@mixins/methodsMixin'
 import { svgData } from '@mixins/svgMixin'
+import { ElInputNumber } from 'element-plus'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'ChecklistInput',

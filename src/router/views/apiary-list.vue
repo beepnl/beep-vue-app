@@ -613,27 +613,27 @@
 </template>
 
 <script>
-import Api from '@api/Api'
 import Confirm from '@/src/components/confirm-dialog.vue'
-import HiveCard from '@components/hive-card.vue'
 import Layout from '@/src/router/layouts/main-layout.vue'
-import { mapGetters } from 'vuex'
-import {
-  momentFromNow,
-  momentify,
-  momentifyDayMonth,
-} from '@mixins/momentMixin'
+import Api from '@api/Api'
+import HiveCard from '@components/hive-card.vue'
 import {
   checkAlerts,
   checkSettings,
   readApiaries,
   readApiariesAndGroups,
-  readGroups,
   readDevices,
   readGeneralInspections,
+  readGroups,
   readHiveTags,
   toggleFilterByGroup,
 } from '@mixins/methodsMixin'
+import {
+  momentFromNow,
+  momentify,
+  momentifyDayMonth,
+} from '@mixins/momentMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -939,7 +939,7 @@ export default {
         return apiary
       })
 
-      var groupsWithDatesAndEditableHivesProp = []
+      let groupsWithDatesAndEditableHivesProp = []
 
       if (this.groups.length > 0) {
         groupsWithDatesAndEditableHivesProp = JSON.parse(
@@ -951,7 +951,7 @@ export default {
             this.addDates(hive)
             return hive
           })
-          var hasEditableHive =
+          const hasEditableHive =
             group.hives.filter((hive) => {
               return hive.editable || hive.owner
             }).length > 0
@@ -1602,14 +1602,14 @@ export default {
       this.$store.commit('locations/setHiveView', view)
     },
     toggleFavHiveSet(hiveSet, removeBeforeDelete = false) {
-      var toggleArray = !hiveSet.users ? this.favApiaries : this.favGroups
+      let toggleArray = !hiveSet.users ? this.favApiaries : this.favGroups
       if (toggleArray.includes(hiveSet.id)) {
         toggleArray.splice(toggleArray.indexOf(hiveSet.id), 1)
       } else if (!removeBeforeDelete) {
         toggleArray.push(hiveSet.id)
       }
 
-      var ids = !hiveSet.users ? this.apiariesIds : this.groupsIds
+      const ids = !hiveSet.users ? this.apiariesIds : this.groupsIds
       // housekeeping: remove apiary or group ids that do not exist for this user (anymore) from settings
       toggleArray = toggleArray.filter((id) => ids.includes(id))
 
@@ -1621,7 +1621,9 @@ export default {
       this.postSettings(payload)
     },
     toggleHideHiveSet(hiveSet) {
-      var toggleArray = !hiveSet.users ? this.hiddenApiaries : this.hiddenGroups
+      const toggleArray = !hiveSet.users
+        ? this.hiddenApiaries
+        : this.hiddenGroups
       if (toggleArray.includes(hiveSet.id)) {
         toggleArray.splice(toggleArray.indexOf(hiveSet.id), 1)
       } else {

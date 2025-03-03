@@ -442,7 +442,7 @@ export default {
 
   .hide-md {
     display: flex;
-    @media (min-width: 910px) and (max-width: 1264px) {
+    @media (min-width: 910px) and (max-width: 1279px) {
       display: none;
     }
   }

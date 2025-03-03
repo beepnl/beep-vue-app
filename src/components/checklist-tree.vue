@@ -5,7 +5,7 @@
       :label="`${$t('Search')}`"
       :class="
         `${
-          filterText !== '' ? 'v-input--is-focused text-primary' : ''
+          filterText !== '' ? 'v-input--is-focused text-accent' : ''
         } beep-search-field mb-3`
       "
       :style="'height: 36px;'"

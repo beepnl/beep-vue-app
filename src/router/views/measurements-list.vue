@@ -519,32 +519,32 @@
 </template>
 
 <script>
-import Api from '@api/Api'
-import {
-  momentifyDayMonth,
-  momentFormat,
-  momentFormatUtcToLocal,
-  momentFromNow,
-  timeZone,
-} from '@mixins/momentMixin'
 import Confirm from '@/src/components/confirm-dialog.vue'
-import Layout from '@/src/router/layouts/main-layout.vue'
-import { mapGetters } from 'vuex'
-import { sensorMixin } from '@mixins/sensorMixin'
-import MeasurementsCard from '@components/measurements/measurements-card.vue'
-import MeasurementsCardCompare from '@components/measurements/measurements-card-compare.vue'
 import MeasurementsChartHeatmap from '@/src/components/measurements/measurements-chart-heatmap.vue'
 import MeasurementsChartLine from '@/src/components/measurements/measurements-chart-line.vue'
 import MeasurementsDateSelection from '@/src/components/measurements/measurements-date-selection.vue'
+import Layout from '@/src/router/layouts/main-layout.vue'
+import Api from '@api/Api'
+import MeasurementsCardCompare from '@components/measurements/measurements-card-compare.vue'
+import MeasurementsCard from '@components/measurements/measurements-card.vue'
 import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 import {
   checkAlerts,
+  readApiariesAndGroups,
   readDevicesIfNotChecked,
   readInspectionsForHiveId,
   readTaxonomy,
-  readApiariesAndGroups,
   sortedDevices,
 } from '@mixins/methodsMixin'
+import {
+  momentFormat,
+  momentFormatUtcToLocal,
+  momentFromNow,
+  momentifyDayMonth,
+  timeZone,
+} from '@mixins/momentMixin'
+import { sensorMixin } from '@mixins/sensorMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -694,7 +694,7 @@ export default {
     },
     inspectionsWithDates() {
       if (this.hasInspections) {
-        var inspectionsWithDates = this.inspections.inspections.data
+        const inspectionsWithDates = this.inspections.inspections.data
         inspectionsWithDates
           .filter(
             (inspection) => inspection.hive_id === this.selectedDevice.hive_id
@@ -727,7 +727,7 @@ export default {
       if (this.timeArray.length > 0) {
         // for each inspection, find its position on the current chart
         this.inspectionsWithDates.map((inspection) => {
-          var inspectionDateInUtc = this.$moment(inspection.created_at)
+          const inspectionDateInUtc = this.$moment(inspection.created_at)
             .tz(this.timeZone)
             .utc()
 

@@ -19,7 +19,7 @@
                 :label="`${$t('Search')}`"
                 :class="
                   `${
-                    search !== null ? 'v-input--is-focused text-primary' : ''
+                    search !== null ? 'v-input--is-focused text-accent' : ''
                   } beep-search-field`
                 "
                 :style="'height: ' + (mobile ? '30px;' : '36px;')"
@@ -606,18 +606,18 @@
 </template>
 
 <script>
+import Confirm from '@/src/components/confirm-dialog.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
 import Api from '@api/Api'
 import AddToCalendar from '@components/add-to-calendar.vue'
-import Confirm from '@/src/components/confirm-dialog.vue'
 import imageOverlay from '@components/image-overlay.vue'
-import Layout from '@/src/router/layouts/back-layout.vue'
-import { mapGetters } from 'vuex'
 import {
   readApiariesAndGroups,
   readGeneralInspections,
   readInspectionsForHiveId,
 } from '@mixins/methodsMixin'
-import { momentify, momentFormat } from '@mixins/momentMixin'
+import { momentFormat, momentify } from '@mixins/momentMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -809,7 +809,7 @@ export default {
       }
     },
     suffix() {
-      var searchSpecific =
+      const searchSpecific =
         this.search !== null && this.search.indexOf('=') > -1
           ? this.search
           : null

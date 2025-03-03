@@ -156,15 +156,15 @@
 </template>
 
 <script>
+import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 import { darkIconMixin } from '@mixins/darkIconMixin'
-import { mapGetters } from 'vuex'
+import { getLabel, readTaxonomy } from '@mixins/methodsMixin'
 import {
   momentAge,
   momentLastDigitOfYear,
   momentifyRemoveTime,
 } from '@mixins/momentMixin'
-import { getLabel, readTaxonomy } from '@mixins/methodsMixin'
-import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -225,7 +225,7 @@ export default {
     },
     treeselectBeeRaces() {
       if (this.beeRacesList.length) {
-        var treeselectArray = JSON.parse(JSON.stringify(this.beeRacesList)) // clone without v-bind to avoid vuex warning when mutating
+        let treeselectArray = JSON.parse(JSON.stringify(this.beeRacesList)) // clone without v-bind to avoid vuex warning when mutating
         treeselectArray.map((beeRace) => {
           beeRace.label = this.getLabel(beeRace)
           return beeRace

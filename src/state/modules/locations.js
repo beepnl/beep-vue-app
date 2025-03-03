@@ -77,7 +77,7 @@ export const getters = {
   hivesObject: (state, getters) => {
     const allHives = getters.hives
 
-    var uniqueHives = {}
+    const uniqueHives = {}
     const map = new Map()
     for (const item of allHives) {
       if (!map.has(item.id)) {

@@ -666,17 +666,21 @@
 </template>
 
 <script>
+import Confirm from '@/src/components/confirm-dialog.vue'
 import Api from '@api/Api'
-import _ from 'lodash'
-import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 import ChecklistFieldset from '@components/checklist-fieldset.vue'
-import Confirm from '@/src/components/confirm-dialog.vue'
+import yesNoRating from '@components/input-fields/yes-no-rating.vue'
+import _ from 'lodash'
 // import testOutput from '@components/svg/scan_results.json' // enable for debugging
-import InspectModeSelector from '@components/inspect-mode-selector.vue'
-import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import Layout from '@/src/router/layouts/back-layout.vue'
-import { mapGetters } from 'vuex'
+import labelWithDescription from '@components/input-fields/label-with-description.vue'
+import smileRating from '@components/input-fields/smile-rating.vue'
+import InspectModeSelector from '@components/inspect-mode-selector.vue'
+import OfflineInspection from '@components/offline-inspection.vue'
+import ParsedPages from '@components/parsed-pages.vue'
+import UploadInspection from '@components/upload-inspection.vue'
+import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 import {
   getLabel,
   parseDate,
@@ -685,11 +689,7 @@ import {
   readGeneralInspections,
 } from '@mixins/methodsMixin'
 import { datePickerText } from '@mixins/momentMixin'
-import OfflineInspection from '@components/offline-inspection.vue'
-import ParsedPages from '@components/parsed-pages.vue'
-import smileRating from '@components/input-fields/smile-rating.vue'
-import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
-import UploadInspection from '@components/upload-inspection.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -1072,7 +1072,7 @@ export default {
 
         treeselectArray.push({
           treeselectId: -1,
-          name: this.$i18n.tc('Location', 2),
+          name: 'DEBUG', // this.$i18n.tc('Location', 2),
           children: sortedTreeselectApiaries,
         })
       }
@@ -1101,7 +1101,7 @@ export default {
 
         treeselectArray.push({
           treeselectId: -2,
-          name: this.$i18n.tc('Group', 2),
+          name: 'DEBUG', // this.$i18n.tc('Group', 2),
           children: sortedTreeselectGroups,
         })
       }
