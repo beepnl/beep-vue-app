@@ -113,7 +113,6 @@ export default {
         self.$emit('set-page-blob', reader.result)
         self.showLoading = false
       }
-      console.log('DEBUG makeBlob', img, typeof img)
       reader.readAsDataURL(img)
     },
     confirmDeleteImage(id) {

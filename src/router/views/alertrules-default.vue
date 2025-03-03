@@ -83,12 +83,12 @@
 </template>
 
 <script>
-import Api from '@api/Api'
-import { readAlertRules, readTaxonomy } from '@mixins/methodsMixin'
 import Confirm from '@/src/components/confirm-dialog.vue'
 import Layout from '@/src/router/layouts/back-layout.vue'
-import { mapGetters } from 'vuex'
+import Api from '@api/Api'
+import { readAlertRules, readTaxonomy } from '@mixins/methodsMixin'
 import { momentHumanizeHours } from '@mixins/momentMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
