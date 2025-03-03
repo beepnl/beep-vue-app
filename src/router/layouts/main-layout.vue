@@ -129,7 +129,7 @@ export default {
     LocaleChanger,
     NavDrawer,
     PlusMenu,
-    PWAPrompt,
+    // PWAPrompt,
   },
   mixins: [
     checkAlerts,
