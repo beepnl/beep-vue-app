@@ -39,7 +39,7 @@
               <div class="d-flex justify-flex-start align-center">
                 <v-icon
                   class="mr-2"
-                  :color="reminderDate !== null ? 'accent' : ''"
+                  :color="queenBirthDate !== null ? 'accent' : ''"
                   >mdi-calendar-clock</v-icon
                 >
                 <div>
@@ -215,12 +215,17 @@ export default {
   },
   computed: {
     ...mapGetters('taxonomy', ['beeRacesList']),
+    endOfToday() {
+      return this.$moment()
+        .endOf('day')
+        .format()
+    },
     locale() {
       return this.$i18n.locale
     },
     treeselectBeeRaces() {
       if (this.beeRacesList.length) {
-        var treeselectArray = this.beeRacesList
+        var treeselectArray = JSON.parse(JSON.stringify(this.beeRacesList)) // clone without v-bind to avoid vuex warning when mutating
         treeselectArray.map((beeRace) => {
           beeRace.label = this.getLabel(beeRace)
           return beeRace

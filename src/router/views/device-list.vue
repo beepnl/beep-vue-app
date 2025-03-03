@@ -730,7 +730,7 @@ export default {
       return sortedOwnedDevices
     },
     sortedSensorMeasurements() {
-      const sortedSMs = this.sensorMeasurementsList
+      const sortedSMs = JSON.parse(JSON.stringify(this.sensorMeasurementsList)) // clone without v-bind to avoid vuex warning when mutating
         .slice()
         .sort(function(a, b) {
           if (a.abbreviation > b.abbrevation) {

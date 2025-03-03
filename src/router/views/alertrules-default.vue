@@ -35,7 +35,7 @@
 
     <v-container v-if="ready" class="back-content">
       <v-row v-if="alertRulesDefault.length > 0" density="compact">
-        <v-scale-transition group style="width:100%;">
+        <v-scale-transition group>
           <v-col
             v-for="(alertRule, j) in alertRulesDefault"
             :key="j"

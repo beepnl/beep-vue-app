@@ -33,7 +33,6 @@
             <v-icon
               size="small"
               class="cursor-pointer color-grey-light ml-1"
-              v-bind="props"
             >
               mdi-pencil
             </v-icon>

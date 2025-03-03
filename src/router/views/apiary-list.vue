@@ -472,10 +472,9 @@
 
             <span class="text-right ml-2">
               <v-tooltip v-if="showFavoriteIcon && !favHiveSet(hiveSet)" bottom>
-                <template v-slot:activator="{ on, attrs }">
+                <template v-slot:activator="{ props }">
                   <v-icon
-                    v-bind="attrs"
-                    v-on="on"
+                    v-bind="props"
                     :style="
                       `color: ${
                         hiveSet.hex_color ? hiveSet.hex_color : '#f29100'
@@ -685,7 +684,7 @@ export default {
   computed: {
     ...mapGetters('alerts', ['alerts']),
     ...mapGetters('devices', ['devices']),
-    ...mapGetters('locations', ['apiaries', 'groups', 'hivesObject']),
+    ...mapGetters('locations', ['apiaries', 'groups', 'hivesObject', 'hives']),
     ...mapGetters('groups', ['invitations']),
     ...mapGetters('hives', ['hiveTags']),
     ...mapGetters('taxonomy', ['settings']),

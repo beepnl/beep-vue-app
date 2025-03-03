@@ -360,6 +360,9 @@ export default {
     devicesOptions() {
       return this.sortedDevices()
     },
+    locale() {
+      return this.$i18n.locale
+    },
     mobile() {
       return this.$vuetify.display.xs
     },

@@ -47,8 +47,11 @@ export const getters = {
     return state.hiveFilterByReminder
   },
   hives: (state, getters) => {
+    const apiaries = JSON.parse(JSON.stringify(getters.apiaries))
+    const groups = JSON.parse(JSON.stringify(getters.groups))
+
     const ownHivesArray = []
-    getters.apiaries.forEach((apiary) => {
+    apiaries.forEach((apiary) => {
       apiary.hives.forEach((hive) => {
         hive.label = hive.name
         ownHivesArray.push(hive)
@@ -56,7 +59,7 @@ export const getters = {
     })
 
     const sharedHivesArray = []
-    getters.groups.forEach((group) => {
+    groups.forEach((group) => {
       group.hives.forEach((hive) => {
         hive.label = hive.name
         hive.group_name = group.name

@@ -1930,9 +1930,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.new-container {
+.rounded-border {
   ul {
-    margin-left: 20px;
+    padding-left: 20px;
+    @include for-phone-only {
+      padding-left: 14px;
+    }
   }
 }
 .new-block {

@@ -160,7 +160,6 @@
                   :append-icon="show4 ? 'mdi-eye' : 'mdi-eye-off'"
                   :label="$t('api_token')"
                   :type="show4 ? 'text' : 'password'"
-                  @keydown.enter="$event.target.blur()"
                   @click:append="show4 = !show4"
                 />
                 <div class="d-flex justify-space-between">
@@ -193,7 +192,6 @@
                 :append-icon="show4 ? 'mdi-eye' : 'mdi-eye-off'"
                 :label="$t('api_token')"
                 :type="show4 ? 'text' : 'password'"
-                @keydown.enter="$event.target.blur"
                 @click:append="show4 = !show4"
               />
               <div class="d-flex justify-space-between">
@@ -220,9 +218,9 @@
 </template>
 
 <script>
-import Api from '@api/Api'
 import Confirm from '@/src/components/confirm-dialog.vue' // TODO-VUE3 of @components?
 import Layout from '@/src/router/layouts/back-layout.vue' // TODO-VUE3 of @layouts?
+import Api from '@api/Api'
 import { mapGetters } from 'vuex'
 
 export default {
