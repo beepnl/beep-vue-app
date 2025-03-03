@@ -1,6 +1,6 @@
 <template>
-  <div class="upload-page-blob-wrapper d-flex flex-column mr-4 mb-4'">
-    <div class="rounded-border upload-page-blob">
+  <div class="upload-page-blob-wrapper d-flex flex-column mr-4 mb-4">
+    <div class="upload-page-blob">
       <div>
         <div class="float-left">
           <v-icon
@@ -33,8 +33,9 @@
         class="pt-0 mt-n8 image-uploader-page-blob float-right cursor-pointer"
         accept="image/png, image/jpeg, image/bmp"
         :label="!!pageImageFile || showLoading ? '' : uploadText"
-        :prepend-icon="false"
         color="accent"
+        :prepend-icon="''"
+        variant="outlined"
         hide-details
         :error-messages="errorMessage"
         :height="'100%'"
@@ -112,7 +113,8 @@ export default {
         self.$emit('set-page-blob', reader.result)
         self.showLoading = false
       }
-      reader.readAsDataURL(img[0])
+      console.log('DEBUG makeBlob', img, typeof img)
+      reader.readAsDataURL(img)
     },
     confirmDeleteImage(id) {
       this.$refs.confirm
