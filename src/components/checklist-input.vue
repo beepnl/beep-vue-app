@@ -28,7 +28,7 @@
       <template v-for="(listItem, index) in item.children" :key="index">
         <v-list-item
           class="inspection-list-item"
-          :title="listItem.trans[locale] || listItem.name"
+          :title="getLabel(listItem)"
           @click.capture="toggleSelect(listItem.id, item.id)"
         >
           <template v-slot:prepend>
@@ -50,7 +50,7 @@
             v-for="(nestedItem, n) in listItem.children"
             :key="'nest-' + n"
             class="inspection-list-item nested"
-            :title="nestedItem.trans[locale] || nestedItem.name"
+            :title="getLabel(nestedItem)"
             @click.capture="toggleSelect(nestedItem.id, item.id)"
           >
             <template v-slot:prepend>
@@ -78,7 +78,7 @@
       <v-radio
         v-for="(listItem, index) in item.children"
         :key="index"
-        :label="listItem.trans[locale] || listItem.name"
+        :label="getLabel(listItem)"
         :model-value="parseInt(object[item.id])"
         :value="listItem.id"
         color="accent"
@@ -190,9 +190,9 @@
 
     <v-textarea
       v-if="item.input === 'text'"
-      :model-value="object[item.id]"
+      v-model="object[item.id]"
       class="inspection-text-area"
-      :placeholder="item.trans[locale] || item.name"
+      :placeholder="getLabel(item)"
       counter="2500"
       :rows="getEnters(object[item.id])"
       auto-grow
@@ -217,14 +217,6 @@
       :property="item.id"
       :yes-red="item.input === 'boolean_yes_red'"
     ></yesNoRating>
-    <ChecklistFieldset
-      v-if="showFieldset"
-      class="mt-6"
-      :category="item"
-      :object="object"
-      :nested="true"
-      :parse-mode="parseMode"
-    />
 
     <sampleCode
       v-if="item.input === 'sample_code'"
@@ -269,27 +261,25 @@
 </template>
 
 <script>
-import { svgData } from '@mixins/svgMixin'
-import { parseDate } from '@mixins/methodsMixin'
-import { mapGetters } from 'vuex'
-import ChecklistFieldset from '@components/checklist-fieldset.vue'
-import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import dateTimePicker from '@components/input-fields/date-time-picker.vue'
+import labelWithDescription from '@components/input-fields/label-with-description.vue'
 // import testOutput from '@components/svg/scan_results.json' // enable for debugging
+import slider from '@/src/components/input-fields/slider-input.vue'
+import treeselect from '@/src/components/input-fields/treeselect-input.vue'
 import imageUploader from '@components/input-fields/image-uploader.vue'
 import sampleCode from '@components/input-fields/sample-code.vue'
 import selectHiveOrApiary from '@components/input-fields/select-hive-or-apiary.vue'
-import slider from '@/src/components/input-fields/slider-input.vue'
 import smileRating from '@components/input-fields/smile-rating.vue'
 import starRating from '@components/input-fields/star-rating.vue'
-import treeselect from '@/src/components/input-fields/treeselect-input.vue'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
+import { getLabel, parseDate } from '@mixins/methodsMixin'
+import { svgData } from '@mixins/svgMixin'
 import { ElInputNumber } from 'element-plus'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'ChecklistInput',
   components: {
-    ChecklistFieldset,
     dateTimePicker,
     imageUploader,
     labelWithDescription,
@@ -302,7 +292,7 @@ export default {
     yesNoRating,
     ElInputNumber,
   },
-  mixins: [parseDate, svgData],
+  mixins: [getLabel, parseDate, svgData],
   props: {
     item: {
       type: Object,
@@ -484,15 +474,6 @@ export default {
         }
       }
       return []
-    },
-    showFieldset() {
-      return (
-        this.item.children.length > 0 &&
-        (this.item.input === 'boolean' ||
-          this.item.input === 'boolean_yes_red' ||
-          this.item.input === 'list_item') &&
-        (this.object[this.item.id] === 1 || this.parseMode)
-      )
     },
   },
   created() {

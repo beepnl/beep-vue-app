@@ -723,7 +723,7 @@ const translations = {
     'Pentru a putea începe, există câteva reguli implicite de alertă pe care le puteți utiliza (și adapta la propriile nevoi). În plus, vă puteți crea propriile reguli de alertă.',
   alertrules_url_text:
     'Accesați „Setări de alertă” pentru a crea prima regulă de alertă',
-  Source: 'Source',
+  Explanation: 'Explanation',
   db_influx: 'Influx Database',
   lambda_model: 'Lambda Model',
   open_weather: 'Open Weather',
@@ -879,7 +879,7 @@ const translations = {
   View_data: 'View data',
   show_all: 'Show all',
   only_active_if_measurement_present:
-    '*N.B. the alert rule will only be active if the selected measurement is measured by your BEEP base / device. BEEP bases do not measure weather data.',
+    '*N.B. you will only receive alerts about the selected measurement if it is measured by your BEEP base / device.',
   Relative_startpoint: 'Relative',
 
   import_log_data_explanation:
@@ -1103,7 +1103,7 @@ const translations = {
     'Is the Print ID of each page equal to the Print ID of the above selected printed checklist?',
   Upload_images_exp_2: 'Are all 4 black squares in view?',
   Upload_images_exp_3: 'Is the paper wel lit and lying on a flat surface?',
-  Upload_images_exp_4: 'TODO: use image scanner?',
+
   Uploading_images_be_patient:
     'Please wait a moment, your images are being parsed. This may take several minutes. Please do not close this window.',
   Generating_svg_be_patient:
@@ -1162,6 +1162,9 @@ const translations = {
   colony_failure_weight_history:
     'Probability of winter failure based on weight history',
   more_info: 'more information',
+
+  api_token: 'Api token',
+  save_api: 'Save api token',
 }
 
 export default translations

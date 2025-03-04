@@ -40,8 +40,8 @@
 </template>
 
 <script>
-import { datePickerText } from '@mixins/momentMixin'
 import labelWithDescription from '@components/input-fields/label-with-description.vue'
+import { datePickerText } from '@mixins/momentMixin'
 
 export default {
   components: {
@@ -104,6 +104,9 @@ export default {
           this.object[this.item.id] = null
         }
       },
+    },
+    locale() {
+      return this.$i18n.locale
     },
   },
   methods: {

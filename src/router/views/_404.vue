@@ -1,15 +1,17 @@
 <template>
   <Layout>
-    <h1 :class="$style.title">
-      {{ $t('sorry') + ', ' }}
-      <span v-if="resource">
-        {{ $tc(resource, 1) }}
-      </span>
-      <span v-else>
-        {{ $tc('page', 1) }}
-      </span>
-      {{ $t('not_found') }}
-    </h1>
+    <div class="main-content">
+      <h1 class="unauthorized-title">
+        {{ $t('sorry') + ', ' }}
+        <span v-if="resource">
+          {{ $tc(resource, 1) }}
+        </span>
+        <span v-else>
+          {{ $tc('page', 1) }}
+        </span>
+        {{ $t('not_found') }}
+      </h1>
+    </div>
   </Layout>
 </template>
 
@@ -31,9 +33,9 @@ export default {
 }
 </script>
 
-<style lang="scss" module>
-.title {
-  padding-top: 40px;
+<style lang="scss" scoped>
+.main-content {
+  margin: 100px 20px 0;
   text-align: center;
 }
 </style>

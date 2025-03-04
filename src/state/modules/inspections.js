@@ -134,7 +134,7 @@ export const mutations = {
     state[payload.filter] = payload.value
   },
   setFilterByImpression: function(state, payload) {
-    const array = state.diaryFilterByImpression
+    const array = JSON.parse(JSON.stringify(state.diaryFilterByImpression)) // DEBUG
     if (array.includes(payload)) {
       array.splice(array.indexOf(payload), 1)
     } else {

@@ -1,6 +1,6 @@
 <template>
   <Layout v-if="offlineConfirmed">
-    <h1 :class="$style.title">
+    <h1 class="unauthorized-title">
       The page timed out while loading. Are you sure you're still connected to
       the Internet?
     </h1>
@@ -38,7 +38,7 @@ export default {
 }
 </script>
 
-<style lang="scss" module>
+<style lang="scss" scoped>
 .title {
   text-align: center;
 }

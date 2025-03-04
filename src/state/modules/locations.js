@@ -6,26 +6,27 @@ const resource = createResource({ path: 'locations' })
 export const state = {
   ...resource.state,
   apiaries: [],
-  hiveView: 'xlView',
   apiaryEdited: false,
-  hiveSearch: null,
+  groups: [],
   hiveFilterByAlert: false,
   hiveFilterByAttention: false,
   hiveFilterByBase: false,
   hiveFilterByGroup: 'off',
   hiveFilterByImpression: [],
   hiveFilterByReminder: false,
+  hiveSearch: null,
+  hiveView: 'xlView',
 }
 export const getters = {
   ...resource.getters,
   apiaries: (state) => {
     return state.apiaries
   },
-  hiveView: (state) => {
-    return state.hiveView
-  },
   apiaryEdited: (state) => {
     return state.apiaryEdited
+  },
+  groups: (state) => {
+    return state.groups || []
   },
   hiveFilterByAlert: (state) => {
     return state.hiveFilterByAlert
@@ -45,8 +46,53 @@ export const getters = {
   hiveFilterByReminder: (state) => {
     return state.hiveFilterByReminder
   },
+  hives: (state, getters) => {
+    const apiaries = JSON.parse(JSON.stringify(getters.apiaries))
+    const groups = JSON.parse(JSON.stringify(getters.groups))
+
+    const ownHivesArray = []
+    apiaries.forEach((apiary) => {
+      apiary.hives.forEach((hive) => {
+        hive.label = hive.name
+        ownHivesArray.push(hive)
+      })
+    })
+
+    const sharedHivesArray = []
+    groups.forEach((group) => {
+      group.hives.forEach((hive) => {
+        hive.label = hive.name
+        hive.group_name = group.name
+        sharedHivesArray.push(hive)
+      })
+    })
+
+    const allHives = ownHivesArray.concat(sharedHivesArray)
+
+    return allHives
+  },
+  hiveSets: (state, getters) => {
+    return getters.apiaries.concat(getters.groups)
+  },
+  hivesObject: (state, getters) => {
+    const allHives = getters.hives
+
+    const uniqueHives = {}
+    const map = new Map()
+    for (const item of allHives) {
+      if (!map.has(item.id)) {
+        map.set(item.id, true) // set any value to Map
+        uniqueHives[item.id] = item
+      }
+    }
+
+    return uniqueHives
+  },
   hiveSearch: (state) => {
     return state.hiveSearch
+  },
+  hiveView: (state) => {
+    return state.hiveView
   },
 }
 export const mutations = {
@@ -56,6 +102,9 @@ export const mutations = {
   },
   setApiaryEdited: function(state, bool) {
     state.apiaryEdited = bool
+  },
+  setGroups: function(state, payload) {
+    state.groups = payload
   },
   setHiveView: function(state, string) {
     state.hiveView = string
@@ -83,15 +132,16 @@ export const mutations = {
   },
   resetState: function(state) {
     state.apiaries = []
-    state.hiveView = 'xlView'
     state.apiaryEdited = false
-    state.hiveSearch = null
+    state.groups = []
     state.hiveFilterByAlert = false
     state.hiveFilterByAttention = false
     state.hiveFilterByBase = false
     state.hiveFilterByGroup = 'off'
     state.hiveFilterByImpression = []
     state.hiveFilterByReminder = false
+    state.hiveSearch = null
+    state.hiveView = 'xlView'
   },
 }
 export const actions = {

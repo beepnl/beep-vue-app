@@ -70,6 +70,22 @@ export default {
       default: 'day',
       type: String,
     },
+    highValue: {
+      type: Number,
+      default: null,
+    },
+    lowValue: {
+      type: Number,
+      default: null,
+    },
+    maxValue: {
+      type: Number,
+      default: null,
+    },
+    minValue: {
+      type: Number,
+      default: null,
+    },
     location: {
       type: String,
       default: '',
@@ -120,6 +136,8 @@ export default {
       darkModecolor: '#e0e0e0',
       darkModeGridcolor: '#808080',
       defaultcolor: '#242424',
+      maxColor: 'rgba(39,130,14', // green
+      minColor: 'rgba(203,31,31', // red
     }
   },
   computed: {
@@ -183,6 +201,61 @@ export default {
 
       return alertsForLineCharts
     },
+    annotation() {
+      const targetlines = {
+        box1: {
+          type: 'box',
+          yMin: this.correctedMinValue,
+          yMax:
+            this.lowValue !== null && this.minValue !== null
+              ? this.lowValue
+              : this.correctedMinValue,
+          backgroundColor:
+            this.minValue !== null ? this.minColor + ', 0.05)' : 'transparent',
+          borderWidth: 0,
+        },
+        line1: {
+          type: 'line',
+          mode: 'horizontal',
+          yMin: this.lowValue,
+          yMax: this.lowValue,
+          borderColor: this.minColor + ', 0.5)',
+          borderWidth: this.lowValue !== null ? 1 : 0,
+          borderDash: [2, 2],
+        },
+        box2: {
+          type: 'box',
+          yMax: this.correctedMaxValue,
+          yMin:
+            this.highValue !== null ? this.highValue : this.correctedMaxValue,
+          backgroundColor:
+            this.highValue !== null ? this.maxColor + ', 0.05)' : 'transparent',
+          borderWidth: 0,
+        },
+        line2: {
+          type: 'line',
+          mode: 'horizontal',
+          yMin: this.highValue,
+          yMax: this.highValue,
+          borderColor: this.maxColor + ', 0.5)',
+          borderWidth: this.highValue !== null ? 1 : 0,
+          borderDash: [2, 2],
+        },
+      }
+
+      const allAnnotations = Object.assign(
+        targetlines,
+        this.inspectionsForLineCharts,
+        this.alertsForLineCharts
+      )
+
+      return {
+        common: {
+          drawTime: 'afterDatasetsDraw',
+        },
+        annotations: allAnnotations,
+      }
+    },
     chartOptions() {
       const self = this
       return {
@@ -216,6 +289,8 @@ export default {
             },
           },
           y: {
+            min: this.minValue !== null ? this.correctedMinValue : null,
+            max: this.maxValue !== null ? this.correctedMaxValue : null,
             ticks: {
               color: self.modeColor,
               font: {
@@ -287,6 +362,18 @@ export default {
           }
         },
       }
+    },
+    correctedMaxValue() {
+      // if minValue === maxValue chart cannot be drawn, so add some grace on top of max in that case
+      return this.maxValue !== null && this.minValue === this.maxValue
+        ? this.maxValue + 0.05
+        : this.maxValue
+    },
+    correctedMinValue() {
+      // if minValue === maxValue chart cannot be drawn, so add some grace below the min value in that case
+      return this.minValue !== null && this.minValue === this.maxValue
+        ? this.minValue - 0.05
+        : this.minValue
     },
     displayFormats() {
       return {
@@ -367,15 +454,7 @@ export default {
     pluginsDefault() {
       const self = this
       return {
-        annotation: {
-          common: {
-            drawTime: 'afterDatasetsDraw',
-          },
-          annotations: Object.assign(
-            self.inspectionsForLineCharts,
-            self.alertsForLineCharts
-          ),
-        },
+        annotation: this.annotation,
         datalabels: {
           align: 'end',
           padding: {

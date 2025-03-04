@@ -314,6 +314,7 @@ export default {
   align-items: center;
   height: 4px;
   border-radius: 0;
+  border-bottom: 0;
 }
 .queen_excluder-layer {
   justify-content: flex-end;

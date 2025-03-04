@@ -107,6 +107,7 @@
               class="hive-color-picker flex-color-picker"
               :swatches="swatches"
               :modes="['rgb']"
+              :mode="'rgb'"
               show-swatches
               hide-canvas
             >

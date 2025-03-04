@@ -363,20 +363,11 @@
                     v-if="hasInfo(sensor) && sensorInfo.indexOf(sensor) > -1"
                     class="mt-0 mb-1 d-flex font-italic"
                   >
-                    <span
-                      v-text="
-                        $t('Source') +
-                          ': ' +
-                          $t(getSensorMeasurement(sensor).data_source_type) +
-                          ' - '
-                      "
-                    >
-                    </span>
                     <span class="ml-1 color-accent">
                       <a
                         :href="getSensorMeasurement(sensor).data_repository_url"
                         target="_blank"
-                        >{{ $t('more_info') }}</a
+                        >{{ $t('Explanation') }}</a
                       ></span
                     >
                   </p>
@@ -471,6 +462,10 @@
                     :chart-id="'chart-debug-' + index"
                     :alerts-for-charts="alertsForCharts([sensor])"
                     :inspections-for-charts="inspectionsForCharts"
+                    :high-value="debugChartBoundaries[sensor].high"
+                    :low-value="debugChartBoundaries[sensor].low"
+                    :min-value="debugChartBoundaries[sensor].min"
+                    :max-value="debugChartBoundaries[sensor].max"
                     @confirm-view-alert="confirmViewAlert($event)"
                     @confirm-view-inspection="
                       confirmViewInspection($event.id, $event.date)
@@ -493,7 +488,7 @@
           :period-start-string="periodStartString"
           :relative-interval="relativeInterval"
           :selected-device-title="selectedDeviceTitle"
-          :default-hive-id="selectedDevice.hive_id"
+          :default-hive-id="selectedDevice ? selectedDevice.hive_id : null"
           :time-index="timeIndex"
           :measurement-data="measurementData"
           :inspections-for-charts="inspectionsForCharts"
@@ -524,32 +519,32 @@
 </template>
 
 <script>
-import Api from '@api/Api'
-import {
-  momentifyDayMonth,
-  momentFormat,
-  momentFormatUtcToLocal,
-  momentFromNow,
-  timeZone,
-} from '@mixins/momentMixin'
 import Confirm from '@/src/components/confirm-dialog.vue'
-import Layout from '@/src/router/layouts/main-layout.vue'
-import { mapGetters } from 'vuex'
-import { sensorMixin } from '@mixins/sensorMixin'
-import MeasurementsCard from '@components/measurements/measurements-card.vue'
-import MeasurementsCardCompare from '@components/measurements/measurements-card-compare.vue'
 import MeasurementsChartHeatmap from '@/src/components/measurements/measurements-chart-heatmap.vue'
 import MeasurementsChartLine from '@/src/components/measurements/measurements-chart-line.vue'
 import MeasurementsDateSelection from '@/src/components/measurements/measurements-date-selection.vue'
-import Treeselect from 'vue3-treeselect'
+import Layout from '@/src/router/layouts/main-layout.vue'
+import Api from '@api/Api'
+import MeasurementsCardCompare from '@components/measurements/measurements-card-compare.vue'
+import MeasurementsCard from '@components/measurements/measurements-card.vue'
+import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 import {
   checkAlerts,
-  readDevicesIfNotChecked,
-  readGeneralInspectionsIfNotPresent,
-  readTaxonomy,
   readApiariesAndGroups,
+  readDevicesIfNotChecked,
+  readInspectionsForHiveId,
+  readTaxonomy,
   sortedDevices,
 } from '@mixins/methodsMixin'
+import {
+  momentFormat,
+  momentFormatUtcToLocal,
+  momentFromNow,
+  momentifyDayMonth,
+  timeZone,
+} from '@mixins/momentMixin'
+import { sensorMixin } from '@mixins/sensorMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -569,7 +564,7 @@ export default {
     momentFormatUtcToLocal,
     momentFromNow,
     readDevicesIfNotChecked,
-    readGeneralInspectionsIfNotPresent,
+    readInspectionsForHiveId,
     readApiariesAndGroups,
     readTaxonomy,
     sensorMixin,
@@ -617,13 +612,36 @@ export default {
       hideScrollBar: false,
       showLoadingIcon: false,
       sensorInfo: [],
+      debugChartBoundaries: {
+        bv: {
+          min: 0,
+          max: 5,
+          low: 2.5,
+          high: 3,
+        },
+        rssi: {
+          min: -115,
+          max: 0,
+          low: -90,
+          high: -70,
+        },
+        snr: {
+          min: -10,
+          max: 10,
+          low: 0,
+          high: 5,
+        },
+      },
+      inspections: null,
+      selectedHiveId: null,
+      inspectionsSuffixText: '',
     }
   },
   computed: {
     ...mapGetters('alerts', ['alerts']),
     ...mapGetters('auth', ['permissions', 'userIsAdmin', 'userLocale']),
     ...mapGetters('devices', ['devices']),
-    ...mapGetters('inspections', ['generalInspections']),
+    // ...mapGetters('inspections', ['generalInspections']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList']),
     alertsForDeviceAndPeriod() {
       const alertsForDevice = JSON.parse(JSON.stringify(this.alerts)) // clone without v-bind to avoid vuex warning when mutating
@@ -645,6 +663,11 @@ export default {
 
       return alertsForDeviceAndPeriod
     },
+    currentSuffixText() {
+      return this.periodStart && this.periodEnd
+        ? '?start=' + this.periodStartString + '&end=' + this.periodEndString
+        : ''
+    },
     dateRangeText() {
       if (this.dates.length > 0) {
         const momentDates = [
@@ -661,28 +684,38 @@ export default {
     devicesOptions() {
       return this.sortedDevices()
     },
+    hasInspections() {
+      return (
+        this.inspections !== null &&
+        this.inspections.inspections !== undefined &&
+        this.inspections.inspections.data !== undefined &&
+        this.inspections.inspections.data.length > 0
+      )
+    },
     inspectionsWithDates() {
-      if (this.generalInspections.length > 0) {
-        const inspectionsWithDates = JSON.parse(
-          JSON.stringify(this.generalInspections)
-        ) // clone without v-bind to avoid vuex warning when mutating
-        inspectionsWithDates.map((inspection) => {
-          inspection.created_at_locale_date = this.momentFormat(
-            inspection.created_at,
-            'lll'
+      if (this.hasInspections) {
+        const inspectionsWithDates = this.inspections.inspections.data
+        inspectionsWithDates
+          .filter(
+            (inspection) => inspection.hive_id === this.selectedDevice.hive_id
           )
-          inspection.created_at_moment_from_now = this.momentFromNow(
-            inspection.created_at
-          )
-          inspection.reminder_date_locale_date = this.momentFormat(
-            inspection.reminder_date,
-            'lll'
-          )
-          inspection.reminder_date_day_month = this.momentifyDayMonth(
-            inspection.reminder_date
-          )
-          return inspection
-        })
+          .map((inspection) => {
+            inspection.created_at_locale_date = this.momentFormat(
+              inspection.created_at,
+              'lll'
+            )
+            inspection.created_at_moment_from_now = this.momentFromNow(
+              inspection.created_at
+            )
+            inspection.reminder_date_locale_date = this.momentFormat(
+              inspection.reminder_date,
+              'lll'
+            )
+            inspection.reminder_date_day_month = this.momentifyDayMonth(
+              inspection.reminder_date
+            )
+            return inspection
+          })
         return inspectionsWithDates
       } else {
         return []
@@ -693,7 +726,7 @@ export default {
 
       if (this.timeArray.length > 0) {
         // for each inspection, find its position on the current chart
-        this.inspectionsForPeriod.map((inspection) => {
+        this.inspectionsWithDates.map((inspection) => {
           const inspectionDateInUtc = this.$moment(inspection.created_at)
             .tz(this.timeZone)
             .utc()
@@ -727,17 +760,6 @@ export default {
       }
 
       return inspectionsForChartsArray
-    },
-    inspectionsForPeriod() {
-      let inspections = []
-      if (this.selectedDevice.hive_id !== null) {
-        inspections = this.inspectionsWithDates.filter(
-          (inspection) =>
-            inspection.hive_id === this.selectedDevice.hive_id &&
-            this.dateWithinPeriod(inspection, 'created_at')
-        )
-      }
-      return inspections
     },
     locale() {
       return this.$i18n.locale
@@ -916,11 +938,17 @@ export default {
     },
     selectedDeviceId: {
       get() {
-        return parseInt(this.$store.getters['devices/selectedDeviceId'])
+        const storeValue = this.$store.getters['devices/selectedDeviceId']
+        const getValue =
+          storeValue !== null && !isNaN(parseInt(storeValue))
+            ? parseInt(storeValue)
+            : null
+        return getValue
       },
       set(value) {
-        this.$store.commit('devices/setSelectedDeviceId', value)
-        localStorage.beepSelectedDeviceId = value
+        const setValue = !isNaN(value) ? value : null
+        this.$store.commit('devices/setSelectedDeviceId', setValue)
+        localStorage.beepSelectedDeviceId = setValue
       },
     },
     selectedDeviceTitle() {
@@ -995,46 +1023,50 @@ export default {
     this.readTaxonomy().then(() => {
       this.checkAlertRulesAndAlerts() // for alerts-tab badge AND alert-lines
         .then(() => {
-          this.readGeneralInspectionsIfNotPresent().then(() => {
-            this.readDevicesIfNotChecked()
-              .then(() => {
-                // if selected device id is saved in localStorage, and there is no preselected device id, use it
-                if (
-                  this.preselectedDeviceId === null &&
-                  localStorage.beepSelectedDeviceId &&
-                  this.deviceExists(localStorage.beepSelectedDeviceId)
-                ) {
-                  this.selectedDeviceId = localStorage.beepSelectedDeviceId
-                } else if (
-                  this.preselectedDeviceId !== null &&
-                  this.deviceExists(this.preselectedDeviceId)
-                ) {
-                  this.selectedDeviceId = this.preselectedDeviceId
+          this.readDevicesIfNotChecked()
+            .then(() => {
+              // if selected device id is saved in localStorage, and there is no preselected device id, use it
+              const storedDeviceId =
+                localStorage.beepSelectedDeviceId &&
+                !isNaN(parseInt(localStorage.beepSelectedDeviceId))
+                  ? parseInt(localStorage.beepSelectedDeviceId)
+                  : null
+
+              if (
+                this.preselectedDeviceId === null &&
+                storedDeviceId &&
+                this.deviceExists(storedDeviceId)
+              ) {
+                this.selectedDeviceId = storedDeviceId
+              } else if (
+                this.preselectedDeviceId !== null &&
+                this.deviceExists(this.preselectedDeviceId)
+              ) {
+                this.selectedDeviceId = this.preselectedDeviceId
+              }
+
+              if (
+                this.queriedDate !== null &&
+                this.queriedDate.length === 10 &&
+                !isNaN(this.preselectedDeviceId)
+              ) {
+                this.selectDate(this.queriedDate)
+              } else if (this.devices.length > 0) {
+                if (this.queriedInterval !== undefined) {
+                  this.interval = this.queriedInterval
+                  this.timeIndex = this.queriedTimeIndex
+                  this.dates =
+                    this.queriedStart && this.queriedEnd
+                      ? [this.queriedStart, this.queriedEnd]
+                      : []
                 }
 
-                if (
-                  this.queriedDate !== null &&
-                  this.queriedDate.length === 10 &&
-                  !isNaN(this.preselectedDeviceId)
-                ) {
-                  this.selectDate(this.queriedDate)
-                } else if (this.devices.length > 0) {
-                  if (this.queriedInterval !== undefined) {
-                    this.interval = this.queriedInterval
-                    this.timeIndex = this.queriedTimeIndex
-                    this.dates =
-                      this.queriedStart && this.queriedEnd
-                        ? [this.queriedStart, this.queriedEnd]
-                        : []
-                  }
-
-                  this.setInitialDeviceIdAndLoadData()
-                }
-              })
-              .then(() => {
-                this.ready = true
-              })
-          })
+                this.setInitialDeviceIdAndLoadData()
+              }
+            })
+            .then(() => {
+              this.ready = true
+            })
         })
     })
   },
@@ -1142,7 +1174,7 @@ export default {
           }
           if (error.response.status === 404 || error.response.status === 422) {
             this.selectedDeviceId = parseInt(this.devices[0].id) // overwrite value in store with valid device id
-            this.$router.push({ name: '404', params: { resource: 'device' } })
+            this.$router.push({ name: '404', query: { resource: 'device' } })
           }
         } else {
           console.log('Error: ', error)
@@ -1252,6 +1284,10 @@ export default {
       let newIndex = todayEnd.diff(middleDatePeriod, newPeriod + 's')
 
       if (this.relativeInterval && !zoom) newIndex -= 1
+
+      if (this.relativeInterval && zoom) {
+        this.setRelativeInterval = false
+      }
 
       if (!zoom && newPeriod === 'hour') newIndex += 10
 
@@ -1518,6 +1554,7 @@ export default {
           this.relativeInterval
         )
       }
+      this.readInspections()
     },
     loadLastSensorValuesTimer() {
       if (
@@ -1561,6 +1598,22 @@ export default {
           .replace(currentYearEn, '')
           .replace(currentYearEsPt, '')
           .replace(' ' + currentYear, '') // Remove year hardcoded per language, currently no other way to get rid of year whilst keeping localized time
+      }
+    },
+    readInspections() {
+      if (this.selectedDevice) {
+        const hiveId = this.selectedDevice.hive_id
+
+        if (
+          hiveId !== this.selectedHiveId ||
+          this.inspectionsSuffixText !== this.currentSuffixText
+        ) {
+          // read inspections for hive only if hiveId OR suffix (= period) differs from previous call
+          this.readInspectionsForHiveId(hiveId, this.currentSuffixText)
+          this.inspectionsSuffixText = this.currentSuffixText
+        }
+
+        this.selectedHiveId = hiveId
       }
     },
     selectDate(date) {

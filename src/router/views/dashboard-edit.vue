@@ -285,18 +285,18 @@
 </template>
 
 <script>
+import Confirm from '@/src/components/confirm-dialog.vue'
+import MeasurementsDateSelection from '@/src/components/measurements/measurements-date-selection.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
 import Api from '@api/Api'
+import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
+import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 import {
   deleteDashboard,
   readApiariesAndGroupsIfNotPresent,
   readDashboardGroups,
 } from '@mixins/methodsMixin'
-import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
-import Confirm from '@/src/components/confirm-dialog.vue'
 import { mapGetters } from 'vuex'
-import Layout from '@/src/router/layouts/back-layout.vue'
-import MeasurementsDateSelection from '@/src/components/measurements/measurements-date-selection.vue'
-import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 
 export default {
   components: {
@@ -340,9 +340,13 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('groups', ['dashboardGroups', 'groups']),
-    ...mapGetters('hives', ['hivesObject']),
-    ...mapGetters('locations', ['apiaries']),
+    ...mapGetters('groups', ['dashboardGroups']),
+    ...mapGetters('locations', [
+      'apiaries',
+      'groups',
+      'hiveSets',
+      'hivesObject',
+    ]),
     code() {
       return this.$route.params.id || null
     },
@@ -363,9 +367,6 @@ export default {
         ? this.$i18n.t('New_dashboard')
         : this.$i18n.t('Edit_dashboard') +
             (this.dashboard !== null ? ' - ' + this.dashboard.name : '')
-    },
-    hiveSets() {
-      return this.apiaries.concat(this.groups)
     },
     mobile() {
       return this.$vuetify.display.xs

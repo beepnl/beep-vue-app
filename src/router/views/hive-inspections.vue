@@ -19,7 +19,7 @@
                 :label="`${$t('Search')}`"
                 :class="
                   `${
-                    search !== null ? 'v-input--is-focused text-primary' : ''
+                    search !== null ? 'v-input--is-focused text-accent' : ''
                   } beep-search-field`
                 "
                 :style="'height: ' + (mobile ? '30px;' : '36px;')"
@@ -31,15 +31,17 @@
                 hide-details
                 :append-outer-icon="search ? 'mdi-magnify' : ''"
                 variant="outlined"
-                @click:append-outer="readInspectionsForHiveId"
+                @click:append-outer="readInspectionsForHiveId(id, suffix)"
                 @click:clear="clearSearch"
-                @keydown.enter.prevent="readInspectionsForHiveId"
+                @keydown.enter.prevent="readInspectionsForHiveId(id, suffix)"
               ></v-text-field>
             </v-col>
             <v-card-actions class="pl-0">
               <v-icon
                 :class="
-                  `${filterByAttention ? 'text-red' : 'color-grey-filter'} mr-2`
+                  `${
+                    filterByAttention ? 'text-red' : 'color-grey-filter'
+                  } mr-0 mr-sm-2`
                 "
                 @click="toggleFilterByAttention"
               >
@@ -47,7 +49,9 @@
               </v-icon>
               <v-icon
                 :class="
-                  `${filterByReminder ? 'text-red' : 'color-grey-filter'} mr-2`
+                  `${
+                    filterByReminder ? 'text-red' : 'color-grey-filter'
+                  } mr-0 mr-sm-2`
                 "
                 @click="toggleFilterByReminder"
               >
@@ -59,7 +63,7 @@
                     filterByImpression.includes(3)
                       ? 'text-green'
                       : 'color-grey-filter'
-                  } mr-2`
+                  } mr-0 mr-sm-2`
                 "
                 @click="updateFilterByImpression(3)"
               >
@@ -71,7 +75,7 @@
                     filterByImpression.includes(2)
                       ? 'text-orange'
                       : 'color-grey-filter'
-                  } mr-2`
+                  } mr-0 mr-sm-2`
                 "
                 @click="updateFilterByImpression(2)"
               >
@@ -83,7 +87,7 @@
                     filterByImpression.includes(1)
                       ? 'text-red'
                       : 'color-grey-filter'
-                  } mr-2`
+                  } mr-0 mr-sm-2`
                 "
                 @click="updateFilterByImpression(1)"
               >
@@ -95,19 +99,17 @@
                 class="d-flex align-center mr-3 ml-n2 ml-sm-0"
               >
                 <v-icon
-                  :class="
-                    isFirstPage ? 'color-transparent' : 'color-grey-filter'
-                  "
-                  :disabled="isFirstPage"
+                  :class="isFirstPage ? 'cursor-default' : ''"
+                  :color="isFirstPage ? 'transparent' : 'grey-medium'"
                   size="26"
-                  @click="setPageIndex(-1)"
+                  @click="!isFirstPage ? setPageIndex(-1) : null"
                 >
                   mdi-chevron-left
                 </v-icon>
                 <span class="pagination-text" v-text="paginationText"></span>
                 <v-icon
                   v-if="!isLastPage"
-                  class="color-grey-filter"
+                  class="text-grey-medium"
                   size="26"
                   @click="setPageIndex(1)"
                 >
@@ -298,7 +300,7 @@
                           {{ $t('add_to_calendar').toUpperCase() }}
                         </span>
                       </template>
-                      <v-list density="compact">
+                      <v-list>
                         <template
                           v-for="(calendarItem, index) in calendars"
                           :key="index"
@@ -604,17 +606,18 @@
 </template>
 
 <script>
+import Confirm from '@/src/components/confirm-dialog.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
 import Api from '@api/Api'
 import AddToCalendar from '@components/add-to-calendar.vue'
-import Confirm from '@/src/components/confirm-dialog.vue'
 import imageOverlay from '@components/image-overlay.vue'
-import Layout from '@/src/router/layouts/back-layout.vue'
-import { mapGetters } from 'vuex'
 import {
   readApiariesAndGroups,
   readGeneralInspections,
+  readInspectionsForHiveId,
 } from '@mixins/methodsMixin'
-import { momentify, momentFormat } from '@mixins/momentMixin'
+import { momentFormat, momentify } from '@mixins/momentMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -628,6 +631,7 @@ export default {
     momentFormat,
     readApiariesAndGroups,
     readGeneralInspections,
+    readInspectionsForHiveId,
   ],
   data: function() {
     return {
@@ -804,10 +808,27 @@ export default {
         4: this.$i18n.t('Excellent'),
       }
     },
+    suffix() {
+      const searchSpecific =
+        this.search !== null && this.search.indexOf('=') > -1
+          ? this.search
+          : null
+
+      const suffix = this.searchOrFilter
+        ? (searchSpecific !== null
+            ? '?' + searchSpecific
+            : this.search
+            ? '?search=' + this.search
+            : '') +
+          (this.filters ? this.filters : '') +
+          (this.searchPageIndex !== 1 ? '&page=' + this.searchPageIndex : '')
+        : '?page=' + this.pageIndex
+      return suffix
+    },
   },
   watch: {
     locale() {
-      this.readInspectionsForHiveId()
+      this.readInspectionsForHiveId(this.id, this.suffix)
     },
   },
   created() {
@@ -815,7 +836,7 @@ export default {
     this.getActiveHive(this.id).then((hive) => {
       this.$store.commit('hives/setActiveHive', hive)
     })
-    this.readInspectionsForHiveId().then(() => {
+    this.readInspectionsForHiveId(this.id, this.suffix).then(() => {
       this.ready = true
     })
   },
@@ -827,7 +848,7 @@ export default {
           this.snackbar.text = this.$i18n.t('something_wrong')
           this.snackbar.show = true
         }
-        this.readInspectionsForHiveId()
+        this.readInspectionsForHiveId(this.id, this.suffix)
         this.readGeneralInspections() // update generalInspections in store for diary-list
         this.readApiariesAndGroups() // update apiaries and groups so the latest inspection will be displayed at apiary-list
       } catch (error) {
@@ -846,7 +867,7 @@ export default {
       try {
         const response = await Api.readRequest('/hives/', id)
         if (response.data.length === 0) {
-          this.$router.push({ name: '404', params: { resource: 'hive' } })
+          this.$router.push({ name: '404', query: { resource: 'hive' } })
         }
         const hive = response.data.hives[0]
         return hive
@@ -856,52 +877,13 @@ export default {
         } else {
           console.log('Error: ', error)
         }
-        this.$router.push({ name: '404', params: { resource: 'hive' } })
-      }
-    },
-    async readInspectionsForHiveId() {
-      this.loadingInspections = true
-      this.show500Response = false
-
-      const searchSpecific =
-        this.search !== null && this.search.indexOf('=') > -1
-          ? this.search
-          : null
-      try {
-        const response = await Api.readRequest(
-          '/inspections/hive/' +
-            this.id +
-            (this.searchOrFilter
-              ? (searchSpecific !== null
-                  ? '?' + searchSpecific
-                  : this.search
-                  ? '?search=' + this.search
-                  : '') +
-                (this.filters ? this.filters : '') +
-                (this.searchPageIndex !== 1
-                  ? '&page=' + this.searchPageIndex
-                  : '')
-              : '?page=' + this.pageIndex)
-        )
-        this.inspections = response.data
-        this.loadingInspections = false
-        return true
-      } catch (error) {
-        this.loadingInspections = false
-        if (error.response) {
-          console.log('Error: ', error.response)
-          if (error.response.status === 500) {
-            this.show500Response = true
-          }
-        } else {
-          console.log('Error: ', error)
-        }
+        this.$router.push({ name: '404', query: { resource: 'hive' } })
       }
     },
     clearSearch() {
       this.search = null
       this.searchPageIndex = 1
-      this.readInspectionsForHiveId()
+      this.readInspectionsForHiveId(this.id, this.suffix)
     },
     confirmDeleteInspection(inspection) {
       this.$refs.confirm
@@ -949,11 +931,11 @@ export default {
     },
     toggleFilterByAttention() {
       this.filterByAttention = !this.filterByAttention
-      this.readInspectionsForHiveId()
+      this.readInspectionsForHiveId(this.id, this.suffix)
     },
     toggleFilterByReminder() {
       this.filterByReminder = !this.filterByReminder
-      this.readInspectionsForHiveId()
+      this.readInspectionsForHiveId(this.id, this.suffix)
     },
     scoreAmountColor(value) {
       if (value === '0') return '#CCC'
@@ -977,7 +959,7 @@ export default {
       } else {
         this.searchPageIndex += value
       }
-      this.readInspectionsForHiveId()
+      this.readInspectionsForHiveId(this.id, this.suffix)
     },
     updateFilterByImpression(number) {
       if (this.filterByImpression.includes(number)) {
@@ -988,7 +970,7 @@ export default {
       } else {
         this.filterByImpression.push(number)
       }
-      this.readInspectionsForHiveId()
+      this.readInspectionsForHiveId(this.id, this.suffix)
     },
   },
 }
@@ -1002,10 +984,8 @@ export default {
 
 .pagination-text {
   font-size: 13px;
-  margin-bottom: 2px;
   @include for-phone-only {
     font-size: 15px;
-    margin-bottom: 0px;
   }
 }
 

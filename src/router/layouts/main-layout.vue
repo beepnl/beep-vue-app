@@ -93,7 +93,6 @@
   </v-app-bar>
 
   <NavDrawer
-    :menu-items="menuItems"
     :drawer="drawer"
     @update-drawer-value="drawer = $event"
   ></NavDrawer>
@@ -102,14 +101,14 @@
     <slot></slot>
   </v-main>
 
-  <PWAPrompt
+  <!-- <PWAPrompt
     :timesToShow="2"
     :copyTitle="$t('pwa_title')"
     :copyBody="$t('pwa_body')"
     :copyShareButtonLabel="$t('pwa_share_button_label')"
     :copyAddHomeButtonLabel="$t('pwa_addhome_button_label')"
     :copyClosePrompt="$t('Cancel')"
-  />
+  /> -->
 </template>
 
 <script>
@@ -123,14 +122,14 @@ import {
   readDevicesIfNotChecked,
   readGeneralInspections,
 } from '@mixins/methodsMixin'
-import PWAPrompt from 'vue2-ios-pwa-prompt'
+// import PWAPrompt from 'vue2-ios-pwa-prompt'
 
 export default {
   components: {
     LocaleChanger,
     NavDrawer,
     PlusMenu,
-    PWAPrompt,
+    // PWAPrompt,
   },
   mixins: [
     checkAlerts,
@@ -138,12 +137,6 @@ export default {
     readDevicesIfNotChecked,
     readGeneralInspections,
   ],
-  props: {
-    menuItems: {
-      type: Array,
-      default: () => [],
-    },
-  },
   data: function() {
     return {
       drawer: false,

@@ -114,7 +114,7 @@
               <v-textarea
                 v-model="activeAlertRule.description"
                 :class="'pt-0' + (!mobile ? ' mb-sm-3 mt-0' : '')"
-                :rows="!mobile ? '1' : '2'"
+                :rows="!mobile ? 1 : 2"
                 auto-grow
                 counter="250"
                 bg-color="white"
@@ -179,33 +179,30 @@
                     1
                   )} ...`
                 "
+                hide-details
                 class="pt-0 mt-n1"
                 :rules="requiredRule"
                 @update:model-value="setAlertRuleEdited(true)"
               ></v-select>
               <div
+                v-if="measurement.data_source_type !== 'db_influx'"
+                class="font-small mt-6px"
+              >
+                <span>{{ $t('Explanation') + ': ' }}</span>
+                <span class="font-small color-accent">
+                  <a :href="measurement.data_repository_url" target="_blank">{{
+                    measurement.data_repository_url
+                  }}</a></span
+                >
+              </div>
+              <div
                 v-if="showAllMeasurements"
-                class="beep-label mt-n4 mb-3"
+                :class="
+                  'beep-label mb-3 mt-' +
+                    (measurement.data_source_type === 'db_influx' ? '6px' : '2')
+                "
                 v-text="$t('only_active_if_measurement_present')"
               ></div>
-              <div
-                v-if="measurement.data_source_type !== 'db_influx'"
-                class="font-small mt-n2"
-              >
-                {{ $t('Source') + ': ' + $t(measurement.data_source_type) }}
-                <v-icon
-                  class="mdi mdi-information ml-1"
-                  dark
-                  small
-                  :color="showSourceLink ? 'accent' : 'grey'"
-                  @click="showSourceLink = !showSourceLink"
-                ></v-icon>
-              </div>
-              <span v-if="showSourceLink" class="font-small color-accent">
-                <a :href="measurement.data_repository_url" target="_blank">{{
-                  measurement.data_repository_url
-                }}</a></span
-              >
             </v-col>
 
             <v-col cols="12" sm="6" md="3">
@@ -309,7 +306,7 @@
         <div v-if="activeAlertRule" class="alertrule-card rounded-border">
           <v-row>
             <v-col cols="12" sm="9" md="6" class="mt-2 mb-3">
-              <!-- <div class="d-flex justify-space-between">
+              <div class="d-flex justify-space-between">
                 <div class="beep-label" v-html="$t('Exclude_months')"></div>
                 <v-switch
                   v-model="allMonthsSelected"
@@ -317,14 +314,14 @@
                   :label="$t('select_all')"
                   hide-details
                 ></v-switch>
-              </div> -->
+              </div>
               <Treeselect
                 :model-value="activeAlertRule.exclude_months"
                 class="color-red"
                 :options="months"
                 :placeholder="`${$t('Select')} ${$t('months')}`"
                 :no-results-text="`${$t('no_results')}`"
-                multiple
+                :multiple="true"
                 @update:model-value="
                   ;(activeAlertRule.exclude_months = $event),
                     setAlertRuleEdited(true)
@@ -333,7 +330,7 @@
             </v-col>
 
             <v-col cols="12" sm="9" md="6" class="mt-2 mb-3">
-              <!-- <div class="d-flex justify-space-between">
+              <div class="d-flex justify-space-between">
                 <div class="beep-label" v-html="$t('Exclude_hours')"></div>
                 <v-switch
                   v-model="allHoursSelected"
@@ -341,14 +338,14 @@
                   :label="$t('select_all')"
                   hide-details
                 ></v-switch>
-              </div> -->
+              </div>
               <Treeselect
                 v-model="activeAlertRule.exclude_hours"
                 class="color-red"
                 :options="hours"
                 :placeholder="`${$t('Select')} ${$t('hours')}`"
                 :no-results-text="`${$t('no_results')}`"
-                multiple
+                :multiple="true"
                 @update:model-value="setAlertRuleEdited(true)"
               />
             </v-col>
@@ -360,7 +357,7 @@
               md="6"
               class="mb-2"
             >
-              <!-- <div class="d-flex justify-space-between">
+              <div class="d-flex justify-space-between">
                 <div class="beep-label" v-html="$t('Exclude_hives')"></div>
                 <v-switch
                   v-if="numberOfSortedDevices > 2"
@@ -369,7 +366,7 @@
                   :label="$t('select_all')"
                   hide-details
                 ></v-switch>
-              </div> -->
+              </div>
               <Treeselect
                 v-model="activeAlertRule.exclude_hive_ids"
                 class="color-red"
@@ -379,7 +376,7 @@
                 :placeholder="`${$t('Select')} ${$tc('hive', 2)}`"
                 :no-results-text="`${$t('no_results')}`"
                 :value-consists-of="'LEAF_PRIORITY'"
-                multiple
+                :multiple="true"
                 @update:model-value="setAlertRuleEdited(true)"
               />
               <div
@@ -410,7 +407,7 @@
 
 <script>
 import Api from '@api/Api'
-import Treeselect from 'vue3-treeselect'
+import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 import Confirm from '@/src/components/confirm-dialog.vue'
 import { mapGetters } from 'vuex'
 import Layout from '@/src/router/layouts/back-layout.vue'
@@ -452,7 +449,6 @@ export default {
       newAlertRuleNumber: 1,
       newAlertRuleLocation: null,
       showAllMeasurements: false,
-      showSourceLink: false,
     }
   },
   computed: {
@@ -475,56 +471,56 @@ export default {
     alertruleCreateMode() {
       return this.$route.name === 'alertrule-create'
     },
-    // allDevicesSelected: { // TODO-VUE3 re-enable when vue3-treeselect multiple reactivity bug has been fixed OR replace by Element Plus treeselect component
-    //   get() {
-    //     return (
-    //       this.activeAlertRule.exclude_hive_ids.length ===
-    //       this.numberOfSortedDevices
-    //     )
-    //   },
-    //   set(value) {
-    //     if (value === false) {
-    //       this.activeAlertRule.exclude_hive_ids = []
-    //     } else {
-    //       this.activeAlertRule.exclude_hive_ids = []
-    //       this.devicesOptions.map((apiary) => {
-    //         apiary.children.map((device) => {
-    //           this.activeAlertRule.exclude_hive_ids.push(device.id)
-    //           return true
-    //         })
-    //         return true
-    //       })
-    //     }
-    //   },
-    // },
-    // allHoursSelected: {
-    //   get() {
-    //     return this.activeAlertRule.exclude_hours.length === 24
-    //   },
-    //   set(value) {
-    //     if (value === false) {
-    //       this.activeAlertRule.exclude_hours = []
-    //     } else {
-    //       this.activeAlertRule.exclude_hours = this.hours.map(
-    //         (month) => month.id
-    //       )
-    //     }
-    //   },
-    // },
-    // allMonthsSelected: {
-    //   get() {
-    //     return this.activeAlertRule.exclude_months.length === 12
-    //   },
-    //   set(value) {
-    //     if (value === false) {
-    //       this.activeAlertRule.exclude_months = []
-    //     } else {
-    //       this.activeAlertRule.exclude_months = this.months.map(
-    //         (month) => month.id
-    //       )
-    //     }
-    //   },
-    // },
+    allDevicesSelected: {
+      get() {
+        return (
+          this.activeAlertRule.exclude_hive_ids.length ===
+          this.numberOfSortedDevices
+        )
+      },
+      set(value) {
+        if (value === false) {
+          this.activeAlertRule.exclude_hive_ids = []
+        } else {
+          this.activeAlertRule.exclude_hive_ids = []
+          this.devicesOptions.map((apiary) => {
+            apiary.children.map((device) => {
+              this.activeAlertRule.exclude_hive_ids.push(device.id)
+              return true
+            })
+            return true
+          })
+        }
+      },
+    },
+    allHoursSelected: {
+      get() {
+        return this.activeAlertRule.exclude_hours.length === 24
+      },
+      set(value) {
+        if (value === false) {
+          this.activeAlertRule.exclude_hours = []
+        } else {
+          this.activeAlertRule.exclude_hours = this.hours.map(
+            (month) => month.id
+          )
+        }
+      },
+    },
+    allMonthsSelected: {
+      get() {
+        return this.activeAlertRule.exclude_months.length === 12
+      },
+      set(value) {
+        if (value === false) {
+          this.activeAlertRule.exclude_months = []
+        } else {
+          this.activeAlertRule.exclude_months = this.months.map(
+            (month) => month.id
+          )
+        }
+      },
+    },
     allSensorMeasurements() {
       let measurementTypes = JSON.parse(
         JSON.stringify(this.sensorMeasurementsList)
@@ -1049,7 +1045,7 @@ export default {
       if (this.activeAlertRule === undefined) {
         this.$router.push({
           name: '404',
-          params: { resource: 'alertrule' },
+          query: { resource: 'alertrule' },
         })
       } else {
         if (
@@ -1106,9 +1102,12 @@ export default {
 
 .alertrule-edit-name {
   padding-top: 0 !important;
-  font-size: 1.5rem;
+
   @include for-phone-only {
     font-size: 1.2rem;
+  }
+  .v-field {
+    font-size: 1.5rem !important;
   }
 
   input {

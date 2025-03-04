@@ -299,8 +299,7 @@ export default {
   },
   computed: {
     ...mapGetters('alerts', ['alertRules']),
-    ...mapGetters('locations', ['apiaries']),
-    ...mapGetters('groups', ['groups']),
+    ...mapGetters('locations', ['apiaries', 'groups']),
     alertsEnabled: {
       get() {
         if (this.alertRules.length > 0) {

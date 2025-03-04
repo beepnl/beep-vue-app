@@ -6,7 +6,6 @@ export const state = {
   ...resource.state,
   hiveEdited: false,
   activeHive: null,
-  hivesObject: {},
   hiveTagActionDescriptions: {
     1: 'Hivetag_hive_in_overview',
     2: 'Hivetag_new_inspection',
@@ -26,9 +25,6 @@ export const getters = {
   },
   hives: (state) => {
     return state.data.hives || []
-  },
-  hivesObject: (state) => {
-    return state.hivesObject
   },
   hiveEdited: (state) => {
     return state.hiveEdited
@@ -65,7 +61,6 @@ export const mutations = {
     state.activeHive = null
     state.hiveTags = []
     state.hiveTagsChecked = false
-    state.hivesObject = {}
     state.hiveTagEdited = false
     state.tempSavedHiveTag = null
   },

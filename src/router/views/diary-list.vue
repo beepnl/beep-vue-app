@@ -47,7 +47,7 @@
                     filterByGroupStatus === 'owned'
                       ? 'icon-apiary-owned'
                       : 'icon-apiary-shared'
-                  } mr-2`
+                  } mr-0 mr-sm-2`
                 "
                 @click="toggleFilterByGroup"
               >
@@ -59,7 +59,9 @@
               </v-icon>
               <v-icon
                 :class="
-                  `${filterByAttention ? 'text-red' : 'color-grey-filter'} mr-2`
+                  `${
+                    filterByAttention ? 'text-red' : 'color-grey-filter'
+                  } mr-0 mr-sm-2`
                 "
                 @click="filterByAttention = !filterByAttention"
               >
@@ -67,7 +69,9 @@
               </v-icon>
               <v-icon
                 :class="
-                  `${filterByReminder ? 'text-red' : 'color-grey-filter'} mr-2`
+                  `${
+                    filterByReminder ? 'text-red' : 'color-grey-filter'
+                  } mr-0 mr-sm-2`
                 "
                 @click="filterByReminder = !filterByReminder"
               >
@@ -79,7 +83,7 @@
                     filterByImpression.includes(3)
                       ? 'text-green'
                       : 'color-grey-filter'
-                  } mr-2`
+                  } mr-0 mr-sm-2`
                 "
                 @click="filterByImpression = 3"
               >
@@ -91,7 +95,7 @@
                     filterByImpression.includes(2)
                       ? 'text-orange'
                       : 'color-grey-filter'
-                  } mr-2`
+                  } mr-0 mr-sm-2`
                 "
                 @click="filterByImpression = 2"
               >
@@ -103,7 +107,7 @@
                     filterByImpression.includes(1)
                       ? 'text-red'
                       : 'color-grey-filter'
-                  } mr-2`
+                  } mr-0 mr-sm-2`
                 "
                 @click="filterByImpression = 1"
               >
@@ -212,9 +216,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('locations', ['apiaries']),
-    ...mapGetters('groups', ['groups']),
-    ...mapGetters('hives', ['hivesObject']),
+    ...mapGetters('locations', ['apiaries', 'groups', 'hivesObject']),
     ...mapGetters('inspections', ['generalInspections']),
     diarySearch: {
       get() {
@@ -274,6 +276,7 @@ export default {
         const inspectionsWithDatesAndHiveDetails = JSON.parse(
           JSON.stringify(this.generalInspections)
         ) // clone without v-bind to avoid vuex warning when mutating
+
         inspectionsWithDatesAndHiveDetails.map((inspection) => {
           inspection.created_at_locale_date = this.momentify(
             inspection.created_at
@@ -291,7 +294,10 @@ export default {
                 inspection.reminder_date
               ))
             : (inspection.reminder_date_day_month = null)
-          if (this.hivesObject[inspection.hive_id] !== undefined) {
+          if (
+            this.hivesObject !== undefined &&
+            this.hivesObject[inspection.hive_id] !== undefined
+          ) {
             const name = this.hivesObject[inspection.hive_id].name
             const location = this.hivesObject[inspection.hive_id].location
             inspection.hive_name = name
@@ -304,12 +310,16 @@ export default {
             if (isOwnedAndInGroup) {
               inspection.owned_and_group = true
               const groupNamesArray = []
-              this.hivesObject[inspection.hive_id].group_ids.map((groupId) => {
-                groupNamesArray.push(
-                  this.groups.filter((group) => group.id === groupId)[0].name
-                )
-                return true
-              })
+              this.hivesObject[inspection.hive_id].group_ids.forEach(
+                (groupId) => {
+                  const findGroup = this.groups.find(
+                    (group) => group.id === groupId
+                  )
+                  if (findGroup) {
+                    groupNamesArray.push(findGroup.name)
+                  }
+                }
+              )
               groupName = groupNamesArray.join(', ')
             }
             inspection.hive_group_name = groupName
@@ -459,7 +469,7 @@ export default {
       )
     },
   },
-  mounted() {
+  created() {
     this.checkAlertRulesAndAlerts() // for alerts-tab badge
     if (
       this.$route.query.search !== null &&

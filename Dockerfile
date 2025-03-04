@@ -1,4 +1,4 @@
-FROM node:14.17.5 as ui-dev
+FROM node:18.18.0 as ui-dev
 
 WORKDIR /app
 

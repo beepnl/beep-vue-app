@@ -116,12 +116,12 @@
 
 <script>
 import Api from '@api/Api'
-import Treeselect from 'vue3-treeselect'
+import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 import Confirm from '@/src/components/confirm-dialog.vue'
 import Layout from '@/src/router/layouts/back-layout.vue'
 import { mapGetters } from 'vuex'
-import { readGeneralInspections } from '@mixins/methodsMixin'
+import { readApiaries, readGeneralInspections } from '@mixins/methodsMixin'
 
 export default {
   components: {
@@ -130,7 +130,7 @@ export default {
     Layout,
     Treeselect,
   },
-  mixins: [readGeneralInspections],
+  mixins: [readApiaries, readGeneralInspections],
   data: function() {
     return {
       normalizerApiary(node) {
@@ -220,19 +220,6 @@ export default {
     }
   },
   methods: {
-    async readApiaries() {
-      try {
-        const response = await Api.readRequest('/locations')
-        this.$store.commit('locations/setApiaries', response.data.locations)
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log(error.response)
-        } else {
-          console.log('Error: ', error)
-        }
-      }
-    },
     async updateHive(hive) {
       try {
         const response = await Api.updateRequest('/hives/', hive.id, hive)

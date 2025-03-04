@@ -8,7 +8,7 @@
     <svgHeader
       v-if="category.parent_id === null"
       :position="calcRowXY(category)"
-      :header="getHeader(category)"
+      :header="getLabel(category)"
     />
 
     <template v-for="(child, catIndex) in category.children" :key="catIndex">
@@ -18,10 +18,11 @@
 </template>
 
 <script>
-import { svgComputed, svgData } from '@mixins/svgMixin'
-import svgHeader from '@components/svg/svg-header.vue'
 import svgDivider from '@/src/components/svg/svg-divider.vue'
 import svgFieldset from '@/src/components/svg/svg-fieldset.vue'
+import svgHeader from '@components/svg/svg-header.vue'
+import { svgComputed, svgData } from '@mixins/svgMixin'
+import { getLabel } from '@mixins/methodsMixin'
 
 export default {
   components: {
@@ -29,7 +30,7 @@ export default {
     svgFieldset,
     svgHeader,
   },
-  mixins: [svgComputed, svgData],
+  mixins: [getLabel, svgComputed, svgData],
   props: {
     category: {
       type: Object,
@@ -55,9 +56,6 @@ export default {
     },
   },
   methods: {
-    getHeader(item) {
-      return item.trans[this.locale] || item.name
-    },
     calcRowXY(item) {
       if (this.svgPositionSet[item.id] === undefined) {
         let itemCounter = this.svgItemCounter + 1

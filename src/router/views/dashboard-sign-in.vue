@@ -29,7 +29,7 @@
             {{ error.errorMessage }}
           </v-alert>
 
-          <v-otp-input v-model="credentials.code"></v-otp-input>
+          <v-otp-input v-model="credentials.code" :type="'text'"></v-otp-input>
         </v-card-text>
 
         <v-card-actions>

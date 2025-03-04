@@ -1,5 +1,5 @@
 .v-icon {
-  color: $color-grey;
+  color: $color-grey-transparent;
 }
 
 .v-icon,
@@ -45,7 +45,7 @@
   width: 20px;
   height: 20px;
   margin: 2px;
-  line-height: 1rem;
+  line-height: 18px;
   color: $color-white;
   vertical-align: top;
   background-color: $color-grey;
@@ -86,7 +86,7 @@
 
   &-filter {
     background-color: $color-grey-filter;
-    border: 2px solid $color-grey-filter;
+    border: 1.5px solid $color-grey-filter;
   }
 
   &-queen--no-outline {
@@ -106,7 +106,7 @@
   &-sensors {
     font-size: 13px;
     &::before {
-      margin-left: 2px;
+      margin-left: 3px;
       font-family: 'Material Design Icons';
       content: '\F060A';
     }
@@ -135,12 +135,15 @@
       color: $color-grey-medium;
       background-color: transparent !important;
     }
+    &.--accent {
+      color: $color-accent;
+    }
   }
 
   &-note {
     font-size: 12px;
     &::before {
-      margin-left: 2px;
+      margin-left: 3px;
       font-family: 'Material Design Icons';
       content: '\F0262';
     }
@@ -255,7 +258,7 @@
   font-size: 14px !important;
   color: $color-white !important;
   background-color: $color-primary;
-  border: 2px solid $color-primary;
+  border: 1.5px solid $color-primary;
   border-radius: 100%;
 
   &.color-grey {
@@ -267,10 +270,10 @@
     background-color: $color-grey-filter;
     border-color: $color-grey-filter;
   }
-}
 
-.icon-apiary-shared::before {
-  margin-right: 1px;
+  &::before {
+    margin-left: 1px;
+  }
 }
 
 .icon-side-arrow {
@@ -278,5 +281,6 @@
 }
 
 .icon-info {
-  margin-top: -2px;
+  margin-bottom: 4px;
+  font-size: 14px;
 }

@@ -243,10 +243,6 @@
                     <v-col class="research-item-col" cols="12" md="6" xl="5">
                       <div class="d-flex align-center">
                         <VueDatePicker
-                          v-if="
-                            interval !== 'year' ||
-                              (interval === 'year' && !relativeInterval)
-                          "
                           v-model="chItem.updated_at"
                           :format="datePickerFormat"
                           :min-date="
@@ -256,9 +252,6 @@
                             chItem.consent === 1 ? chItem.updated_at : null
                           "
                           model-type="format"
-                          :month-picker="
-                            interval === 'year' || interval === 'month'
-                          "
                           hide-input-icon
                           :clearable="false"
                           :locale="locale"
@@ -402,15 +395,15 @@
 </template>
 
 <script>
+import Confirm from '@/src/components/confirm-dialog.vue'
+import Layout from '@/src/router/layouts/back-layout.vue'
 import Api from '@api/Api'
+import SelectHivesOverlay from '@components/select-hives-overlay.vue'
 import {
   readApiariesAndGroups,
   readDevicesIfNotChecked,
 } from '@mixins/methodsMixin'
-import Confirm from '@/src/components/confirm-dialog.vue'
-import Layout from '@/src/router/layouts/back-layout.vue'
-import SelectHivesOverlay from '@components/select-hives-overlay.vue'
-import { momentify, momentFullDateTime } from '@mixins/momentMixin'
+import { momentFullDateTime, momentify } from '@mixins/momentMixin'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -442,9 +435,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('locations', ['apiaries']),
     ...mapGetters('devices', ['devices']),
-    ...mapGetters('groups', ['groups']),
+    ...mapGetters('locations', ['apiaries', 'groups']),
     locale() {
       return this.$i18n.locale
     },

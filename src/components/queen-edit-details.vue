@@ -5,7 +5,7 @@
         class="text-overline mb-3"
         v-text="`${$t('Queen') + ' ' + $t('details')}`"
       ></div>
-      <div class="queen-details rounded-border">
+      <div class="rounded-border">
         <v-row>
           <v-col cols="12" sm="7" md="6" lg="4">
             <div>
@@ -39,7 +39,7 @@
               <div class="d-flex justify-flex-start align-center">
                 <v-icon
                   class="mr-2"
-                  :color="reminderDate !== null ? 'accent' : ''"
+                  :color="queenBirthDate !== null ? 'accent' : ''"
                   >mdi-calendar-clock</v-icon
                 >
                 <div>
@@ -141,6 +141,7 @@
                     class="flex-color-picker queen-color-picker"
                     :swatches="swatchesQueen"
                     :modes="['rgb']"
+                    :mode="'rgb'"
                     show-swatches
                     canvas-height="120"
                   ></v-color-picker>
@@ -155,15 +156,15 @@
 </template>
 
 <script>
+import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 import { darkIconMixin } from '@mixins/darkIconMixin'
-import { mapGetters } from 'vuex'
+import { getLabel, readTaxonomy } from '@mixins/methodsMixin'
 import {
   momentAge,
   momentLastDigitOfYear,
   momentifyRemoveTime,
 } from '@mixins/momentMixin'
-import { readTaxonomy } from '@mixins/methodsMixin'
-import Treeselect from 'vue3-treeselect'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -171,6 +172,7 @@ export default {
   },
   mixins: [
     darkIconMixin,
+    getLabel,
     momentAge,
     momentLastDigitOfYear,
     momentifyRemoveTime,
@@ -213,15 +215,19 @@ export default {
   },
   computed: {
     ...mapGetters('taxonomy', ['beeRacesList']),
+    endOfToday() {
+      return this.$moment()
+        .endOf('day')
+        .format()
+    },
     locale() {
       return this.$i18n.locale
     },
     treeselectBeeRaces() {
       if (this.beeRacesList.length) {
-        const locale = this.selectLocale(this.beeRacesList)
         let treeselectArray = JSON.parse(JSON.stringify(this.beeRacesList)) // clone without v-bind to avoid vuex warning when mutating
         treeselectArray.map((beeRace) => {
-          beeRace.label = beeRace.trans[locale]
+          beeRace.label = this.getLabel(beeRace)
           return beeRace
         })
         const sortedTreeselectArray = treeselectArray
@@ -323,18 +329,6 @@ export default {
         this.updateQueen(this.queenMarkColor, 'color')
       }
     },
-    selectLocale(array) {
-      if (array.length) {
-        const locale = this.$i18n.locale
-        if (array[0].trans[locale] === undefined) {
-          return 'en'
-        } else {
-          return locale
-        }
-      } else {
-        return 'en'
-      }
-    },
     setHiveEdited(bool) {
       this.$store.commit('hives/setHiveEdited', bool)
     },
@@ -367,9 +361,3 @@ export default {
   },
 }
 </script>
-
-<style lang="scss">
-.queen-details {
-  padding: 0 12px;
-}
-</style>

@@ -36,7 +36,7 @@
           "
       /></a>
       <div
-        class="text-h3 text-overline roboto-condensed font-weight-light"
+        class="text-overline dashboard-title roboto-condensed font-weight-light"
         v-text="$tc('Dashboard', 1)"
       ></div>
     </div>
@@ -103,6 +103,12 @@ export default {
 
 .dashboard-logo {
   width: 400px;
+}
+
+.dashboard-title {
+  font-size: 2.7rem !important;
+  line-height: 3.125rem;
+  letter-spacing: normal !important;
 }
 
 .account-title {

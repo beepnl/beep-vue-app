@@ -101,7 +101,7 @@
                     v-model="activeGroup.name"
                     :label="`${$t('Name')}*`"
                     :placeholder="`${$t('Name')}`"
-                    class="group-edit-name"
+                    class="large-font"
                     counter="30"
                     :rules="requiredRule"
                     required
@@ -144,7 +144,10 @@
                     ></v-sheet>
                   </div>
 
-                  <v-overlay v-model="overlay">
+                  <v-overlay
+                    v-model="overlay"
+                    class="align-center justify-center"
+                  >
                     <v-toolbar
                       class="hive-color-picker-toolbar"
                       density="compact"
@@ -169,8 +172,8 @@
                       :swatches="swatchesGroup"
                       show-swatches
                       hide-canvas
-                      light
-                      flat
+                      :modes="['rgb']"
+                      :mode="'rgb'"
                     >
                     </v-color-picker>
 
@@ -257,7 +260,7 @@
                           :placeholder="`${$t('invitee_name')}`"
                           class="mt-2"
                           density="compact"
-                          direction="vertical"
+                          :direction="mobile ? 'vertical' : 'horizontal'"
                         ></v-text-field>
                       </td>
                       <td :class="mobile ? 'td--medium' : ''">
@@ -267,7 +270,7 @@
                           :placeholder="`${$t('email_is_required')}`"
                           class="mt-2"
                           density="compact"
-                          direction="vertical"
+                          :direction="mobile ? 'vertical' : 'horizontal'"
                         ></v-text-field>
                       </td>
                       <td>
@@ -415,12 +418,15 @@
 
 <script>
 import Api from '@api/Api'
-import { readApiariesAndGroupsIfNotPresent } from '@mixins/methodsMixin'
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
-import Confirm from '@/src/components/confirm-dialog.vue'
+import Confirm from '@components/confirm-dialog.vue'
 import { mapGetters } from 'vuex'
-import Layout from '@/src/router/layouts/back-layout.vue'
+import Layout from '@layouts/back-layout.vue'
 import { momentify } from '@mixins/momentMixin'
+import {
+  readApiariesAndGroupsIfNotPresent,
+  readGroups,
+} from '@mixins/methodsMixin'
 
 export default {
   components: {
@@ -428,7 +434,7 @@ export default {
     Confirm,
     Layout,
   },
-  mixins: [momentify, readApiariesAndGroupsIfNotPresent],
+  mixins: [momentify, readApiariesAndGroupsIfNotPresent, readGroups],
   data: function() {
     return {
       snackbar: {
@@ -456,8 +462,8 @@ export default {
   },
   computed: {
     ...mapGetters('auth', ['userEmail', 'userName']),
-    ...mapGetters('groups', ['groupEdited', 'groups']),
-    ...mapGetters('locations', ['apiaries']),
+    ...mapGetters('groups', ['groupEdited']),
+    ...mapGetters('locations', ['apiaries', 'groups']),
     id() {
       return parseInt(this.$route.params.id)
     },
@@ -579,12 +585,12 @@ export default {
             this.$i18n.tc('Error', 1) + ': ' + response.data.errors.token
           this.showGroupDetails = false
         } else if (!response) {
-          this.$router.push({ name: '404', params: { resource: 'Invitation' } })
+          this.$router.push({ name: '404', query: { resource: 'Invitation' } })
         }
         return true
       } catch (error) {
         console.log('Error: ', error)
-        this.$router.push({ name: '404', params: { resource: 'Invitation' } })
+        this.$router.push({ name: '404', query: { resource: 'Invitation' } })
       }
     },
     async createGroup() {
@@ -684,7 +690,7 @@ export default {
       try {
         const response = await Api.readRequest('/groups/', this.id)
         if (response.data.length === 0) {
-          this.$router.push({ name: '404', params: { resource: 'group' } })
+          this.$router.push({ name: '404', query: { resource: 'group' } })
         }
         const group = response.data
         // eslint-disable-next-line camelcase
@@ -719,21 +725,7 @@ export default {
         } else {
           console.log('Error: ', error)
         }
-        this.$router.push({ name: '404', params: { resource: 'group' } })
-      }
-    },
-    async readGroups() {
-      try {
-        const response = await Api.readRequest('/groups')
-        this.$store.commit('groups/setGroups', response.data.groups)
-        this.$store.commit('groups/setInvitations', response.data.invitations)
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log(error.response)
-        } else {
-          console.log('Error: ', error)
-        }
+        this.$router.push({ name: '404', query: { resource: 'group' } })
       }
     },
     async updateGroup() {
@@ -912,16 +904,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.group-edit-name {
+.large-font {
   padding-top: 12px;
-  font-size: 1.6rem;
-  @include for-tablet-landscape-up {
-    font-size: 2rem;
-  }
-
-  &.v-text-field input {
-    min-height: 45px !important;
-  }
 }
 .group-color {
   width: 35px;

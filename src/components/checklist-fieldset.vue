@@ -10,7 +10,7 @@
       "
     >
       <div class="text-overline mb-2"
-        >{{ category.trans[locale] || category.name }}
+        >{{ getLabel(category) }}
         <a
           v-if="category.description !== null || category.source !== null"
           @click="showDescription = !showDescription"
@@ -65,7 +65,8 @@
             :key="index"
             cols="12"
             :sm="itemFullWidth(item) ? 12 : 6"
-            :md="itemFullWidth(item) ? 12 : 3"
+            :md="itemFullWidth(item) ? 12 : 4"
+            :lg="itemFullWidth(item) ? 12 : 3"
           >
             <ChecklistInput
               v-if="item.input !== 'label'"
@@ -78,7 +79,15 @@
               :object="object"
               :category="item"
               :parse-mode="parseMode"
-            ></ChecklistFieldset>
+            />
+            <ChecklistFieldset
+              v-else-if="item.children.length > 0 && showNestedFieldset(item)"
+              class="mt-6"
+              :category="item"
+              :object="object"
+              :nested="true"
+              :parse-mode="parseMode"
+            />
           </v-col>
         </v-row>
       </div>
@@ -108,17 +117,21 @@
 
 <script>
 import ChecklistInput from '@components/checklist-input.vue'
+// import ChecklistFieldset from '@components/checklist-fieldset.vue'
 import TopPhotoAnalysis from '@components/input-fields/top-photo-analysis.vue'
 import LiebefelderMethod from '@components/input-fields/liebefelder-method.vue'
+import { getLabel } from '@mixins/methodsMixin'
 
 export default {
   name: 'ChecklistFieldset',
   components: {
+    // ChecklistFieldset,
     ChecklistFieldset: () => import('@components/checklist-fieldset.vue'), // needed to fix Vue recursive component error
     ChecklistInput,
     LiebefelderMethod,
     TopPhotoAnalysis,
   },
+  mixins: [getLabel],
   props: {
     category: {
       type: Object,
@@ -157,6 +170,14 @@ export default {
   methods: {
     itemFullWidth(item) {
       return this.nested || item.input === 'label' || item.input === 'text'
+    },
+    showNestedFieldset(item) {
+      return (
+        (item.input === 'boolean' ||
+          item.input === 'boolean_yes_red' ||
+          item.input === 'list_item') &&
+        (this.object[item.id] === 1 || this.parseMode)
+      )
     },
   },
 }

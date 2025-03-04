@@ -55,6 +55,10 @@ html {
   margin-top: 56px;
 }
 
+.cursor-default {
+  cursor: default !important;
+}
+
 .cursor-pointer {
   cursor: pointer;
 }
@@ -121,12 +125,20 @@ html {
           min-width: 100px;
         }
       }
-      &.v-text-field.v-text-field--outlined input {
-        text-overflow: ellipsis;
-        @include for-phone-only {
-          font-size: 14px;
+      &.v-text-field .v-field--variant-outlined {
+        input {
+          text-overflow: ellipsis;
+          color: $color-black !important;
+          @include for-phone-only {
+            font-size: 14px;
+          }
+        }
+
+        .v-field__clearable .v-icon {
+          color: $color-accent !important;
         }
       }
+
       &.v-text-field.beep-search-field.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo).v-text-field--outlined
         .v-input__append-outer {
         @include for-phone-only {
@@ -287,6 +299,10 @@ input[disabled='disabled'],
 
 .lowercase {
   text-transform: lowercase;
+}
+
+.mt-6px {
+  margin-top: 6px;
 }
 
 .period-container {

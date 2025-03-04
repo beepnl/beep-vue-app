@@ -97,7 +97,7 @@
             <v-text-field
               v-if="activeHive"
               v-model="activeHive.name"
-              class="hive-edit-name mb-sm-3"
+              class="large-font mb-sm-3"
               counter="30"
               :rules="requiredRule"
               required
@@ -193,7 +193,7 @@
 
 <script>
 import Api from '@api/Api'
-import Treeselect from 'vue3-treeselect'
+import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 import Confirm from '@/src/components/confirm-dialog.vue'
 import HiveEditDetails from '@components/hive-edit-details.vue'
 import { mapGetters } from 'vuex'
@@ -258,9 +258,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('groups', ['groups']),
     ...mapGetters('hives', ['hiveEdited']),
-    ...mapGetters('locations', ['apiaries']),
+    ...mapGetters('locations', ['apiaries', 'groups']),
     hiveCreateMode() {
       return this.$route.name === 'hive-create'
     },
@@ -468,7 +467,7 @@ export default {
       try {
         const response = await Api.readRequest('/hives/', this.id)
         if (response.data.length === 0) {
-          this.$router.push({ name: '404', params: { resource: 'hive' } })
+          this.$router.push({ name: '404', query: { resource: 'hive' } })
         }
         const hive = response.data.hives[0]
         if (hive.queen && hive.queen.color && hive.queen.color !== null) {
@@ -483,7 +482,7 @@ export default {
         if (error.response) {
           console.log(error.response)
           if (error.response.status === 404) {
-            this.$router.push({ name: '404', params: { resource: 'hive' } })
+            this.$router.push({ name: '404', query: { resource: 'hive' } })
           }
         } else {
           console.log('Error: ', error)
@@ -586,16 +585,9 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.hive-edit-name {
+<style lang="scss" scoped>
+.large-font {
   padding-top: 0 !important;
-  font-size: 1.6rem;
-  @include for-tablet-portrait-up {
-    margin-top: 19px;
-  }
-  @include for-tablet-landscape-up {
-    font-size: 2rem;
-  }
 
   input {
     min-height: 36px;

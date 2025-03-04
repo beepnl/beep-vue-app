@@ -5,7 +5,7 @@
       :label="`${$t('Search')}`"
       :class="
         `${
-          filterText !== '' ? 'v-input--is-focused text-primary' : ''
+          filterText !== '' ? 'v-input--is-focused text-accent' : ''
         } beep-search-field mb-3`
       "
       :style="'height: 36px;'"
@@ -92,7 +92,7 @@ export default {
   },
   methods: {
     allowDrop(draggingNode, dropNode, type) {
-      if (draggingNode.parent.id === dropNode.parent.id) {
+      if (!this.disabled && draggingNode.parent.id === dropNode.parent.id) {
         return type !== 'inner'
       } else {
         return false

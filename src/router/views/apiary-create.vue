@@ -34,7 +34,11 @@
         </v-tab>
       </v-tabs>
 
-      <v-window v-model="activeTab" class="apiary-create">
+      <v-window
+        v-model="activeTab"
+        class="apiary-create"
+        :touch="{ left: null, right: null }"
+      >
         <v-window-item :value="0">
           <div class="browse-tabs-bar">
             <div
@@ -112,7 +116,7 @@
                         v-model="newHive.name"
                         :label="`${$t('Name')}*`"
                         :placeholder="`${$t('Name')}`"
-                        class="beep--large"
+                        class="large-font mb-sm-3"
                         counter="30"
                         :rules="requiredRule"
                         @update:model-value="validateText($event, 'name', 30)"
@@ -133,11 +137,13 @@
                         ></v-sheet>
                       </div>
 
-                      <v-overlay v-model="overlay">
+                      <v-overlay
+                        v-model="overlay"
+                        class="align-center justify-center"
+                      >
                         <v-toolbar
                           class="hive-color-picker-toolbar"
                           density="compact"
-                          light
                           flat
                         >
                           <div
@@ -155,11 +161,12 @@
                         <v-color-picker
                           v-model="colorPicker"
                           class="hive-color-picker flex-color-picker"
+                          position="relative"
                           :swatches="swatchesApiary"
                           show-swatches
+                          :modes="['rgb']"
+                          :mode="'rgb'"
                           hide-canvas
-                          light
-                          flat
                         >
                         </v-color-picker>
 
@@ -181,10 +188,12 @@
 
                       <v-switch
                         v-if="newHive"
-                        v-model="newHive.roofed"
                         class="ml-1"
-                        :label="`${$t('roofed')}`"
-                        @update:model-value="setApiaryEdited(true)"
+                        :model-value="newHive.roofed"
+                        :label="$t('roofed')"
+                        :true-value="1"
+                        :false-value="0"
+                        @update:model-value="editApiary($event, 'roofed')"
                       ></v-switch>
                     </v-col>
                   </v-row>
@@ -269,7 +278,7 @@
                         :step="0.001"
                         :precision="3"
                         :step-strictly="true"
-                        @change="setApiaryEdited(true)"
+                        @change="editApiary($event, 'lat')"
                         @update:model-value="
                           convertComma($event, newHive, 'lat', 3),
                             setApiaryEdited(true)
@@ -289,7 +298,7 @@
                         :step="0.001"
                         :precision="3"
                         :step-strictly="true"
-                        @change="setApiaryEdited(true)"
+                        @change="editApiary($event, 'lon')"
                         @update:model-value="
                           convertComma($event, newHive, 'lon', 3),
                             setApiaryEdited(true)
@@ -506,6 +515,7 @@ import Layout from '@/src/router/layouts/back-layout.vue'
 import { mapGetters } from 'vuex'
 import {
   convertComma,
+  readApiaries,
   readApiariesAndGroupsIfNotPresent,
 } from '@mixins/methodsMixin'
 import { ElInputNumber } from 'element-plus'
@@ -519,7 +529,7 @@ export default {
     VueGoogleAutocomplete,
     ElInputNumber,
   },
-  mixins: [convertComma, readApiariesAndGroupsIfNotPresent],
+  mixins: [convertComma, readApiaries, readApiariesAndGroupsIfNotPresent],
   data: function() {
     return {
       snackbar: {
@@ -545,8 +555,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('groups', ['groups']),
-    ...mapGetters('locations', ['apiaryEdited', 'apiaries']),
+    ...mapGetters('locations', ['apiaries', 'apiaryEdited', 'groups']),
     colorPicker: {
       get() {
         if (this.newHive) {
@@ -703,19 +712,6 @@ export default {
         }
       }
     },
-    async readApiaries() {
-      try {
-        const response = await Api.readRequest('/locations')
-        this.$store.commit('locations/setApiaries', response.data.locations)
-        return true
-      } catch (error) {
-        if (error.response) {
-          console.log(error.response)
-        } else {
-          console.log('Error: ', error)
-        }
-      }
-    },
     cancelColorPicker() {
       this.overlay = false
     },
@@ -750,6 +746,7 @@ export default {
       if (property === 'hex_color') {
         this.cancelColorPicker()
       }
+      this.setApiaryEdited(true)
     },
     validateText(value, property, maxLength) {
       if (value !== null && value.length > maxLength + 1) {

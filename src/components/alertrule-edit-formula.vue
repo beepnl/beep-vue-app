@@ -20,7 +20,7 @@
               <v-btn
                 class="ml-n2 mr-sm-3 mx-md-1 cursor-default"
                 fab
-                small
+                size="small"
                 dark
                 color="accent"
               >

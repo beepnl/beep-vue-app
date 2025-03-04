@@ -669,7 +669,7 @@ const translations = {
     'Om je op weg te helpen zijn er een aantal standaardinstellingen die je kan gebruiken (en aanpassen naar eigen behoefte). Je kan ook zelf een nieuwe notificatie-instelling maken.',
   alertrules_url_text:
     "Ga naar 'notificaties beheren' om je eerste notificatie in te stellen",
-  Source: 'Bron',
+  Explanation: 'Uitleg',
   db_influx: 'Influx Database',
   lambda_model: 'Lambda Model',
   open_weather: 'Open Weather',
@@ -818,7 +818,7 @@ const translations = {
   data_zoom_out_ok: 'Wil je uitzoomen naar de data van ',
   show_all: 'Toon alle',
   only_active_if_measurement_present:
-    '*N.B. Notificaties worden alleen geactiveerd wanneer de geselecteerde meting door je BEEP base / meetsysteem gemeten wordt. BEEP bases meten geen weerdata.',
+    '*N.B. Je kan alleen notificaties ontvangen over de geselecteerde meting wanneer deze door je BEEP base / meetsysteem gemeten wordt.',
   Relative_startpoint: 'Relatief',
 
   Log_data: 'Log data',
@@ -1045,7 +1045,7 @@ const translations = {
   Upload_images_exp_2: 'Zijn alle 4 de zwarte vierkanten in beeld?',
   Upload_images_exp_3:
     'Ligt het papier op een vlakke ondergrond en is het goed verlicht?',
-  Upload_images_exp_4: 'TODO: use image scanner?',
+
   Uploading_images_be_patient:
     'Even geduld a.u.b., uw afbeeldingen worden geanalyseerd. Dit kan enkele minuten duren. Sluit dit venster niet.',
   Generating_svg_be_patient:
@@ -1105,6 +1105,15 @@ const translations = {
   colony_failure_weight_history:
     'Kans op winterfalen gebaseerd op gewichtshistorie',
   more_info: 'meer informatie',
+
+  api_token: 'Api token',
+  save_api: 'Api token opslaan',
+
+  // TODO-VUE3 refactor into single term with prop
+  Fav_group_exp: 'Maak deze groep favoriet',
+  Fav_apiary_exp: 'Maak deze bijenstand favoriet',
+  Fav_exp:
+    ' - deze zal bovenaan de lijst getoond worden en eerder worden ingeladen dan de rest',
 }
 
 export default translations

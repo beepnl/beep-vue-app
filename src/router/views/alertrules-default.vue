@@ -35,7 +35,7 @@
 
     <v-container v-if="ready" class="back-content">
       <v-row v-if="alertRulesDefault.length > 0" density="compact">
-        <v-scale-transition group style="width:100%;">
+        <v-scale-transition group>
           <v-col
             v-for="(alertRule, j) in alertRulesDefault"
             :key="j"
@@ -83,12 +83,12 @@
 </template>
 
 <script>
-import Api from '@api/Api'
-import { readAlertRules, readTaxonomy } from '@mixins/methodsMixin'
 import Confirm from '@/src/components/confirm-dialog.vue'
 import Layout from '@/src/router/layouts/back-layout.vue'
-import { mapGetters } from 'vuex'
+import Api from '@api/Api'
+import { readAlertRules, readTaxonomy } from '@mixins/methodsMixin'
 import { momentHumanizeHours } from '@mixins/momentMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -168,14 +168,11 @@ export default {
       }
     },
     alertRuleSentence(alertRule) {
-      const sentence = this.$i18n.t('alertrule_main_sentence')
-      let replacedSentence = sentence
-
       const measurement = this.sensorMeasurementsList.filter(
         (measurement) => measurement.id === alertRule.measurement_id
       )[0]
 
-      const replaceWith = {
+      const sentence = this.$i18n.t('alertrule_main_sentence', {
         calculation: this.$i18n.t(alertRule.calculation),
         comparison: this.comparisons
           .filter((comparison) => comparison.short === alertRule.comparison)[0]
@@ -199,12 +196,8 @@ export default {
           false,
           false
         ),
-      }
-
-      Object.entries(replaceWith).map(([key, value]) => {
-        replacedSentence = replacedSentence.replace('[' + key + ']', value)
-        return replacedSentence
       })
+      let replacedSentence = sentence
 
       replacedSentence += '. ' // alertrule_active_email and no_email_sentence are omitted here
 

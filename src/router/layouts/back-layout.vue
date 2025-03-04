@@ -31,7 +31,6 @@
 
   <NavDrawer
     class="no-print"
-    :menu-items="menuItems"
     :drawer="drawer"
     @update-drawer-value="drawer = $event"
   ></NavDrawer>
@@ -91,15 +90,6 @@ export default {
     ...mapGetters('hives', ['hiveEdited']),
     ...mapGetters('inspections', ['inspectionEdited']),
     ...mapGetters('locations', ['apiaryEdited']),
-    menuItems: function() {
-      return [
-        {
-          icon: 'mdi-home-analytics',
-          title: this.$i18n.t('Home'),
-          route: 'home',
-        },
-      ]
-    },
   },
   methods: {
     back: function() {

@@ -118,6 +118,63 @@ export const checkAlerts = {
   },
 }
 
+export const checkSettings = {
+  methods: {
+    async postSettings(payload) {
+      try {
+        const response = await Api.postRequest('/settings', payload)
+        this.$store.commit('taxonomy/setData', {
+          prop: 'settings',
+          value: response.data,
+        })
+        return true
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
+    async readSettings() {
+      try {
+        const response = await Api.readRequest('/settings')
+        this.$store.commit('taxonomy/setData', {
+          prop: 'settings',
+          value: response.data,
+        })
+        return true
+      } catch (error) {
+        if (error.response) {
+          console.log('Error: ', error.response)
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
+    async readSettingsIfNotPresent() {
+      if (this.settings.length === 0) {
+        try {
+          const response = await Api.readRequest('/settings')
+          this.$store.commit('taxonomy/setData', {
+            prop: 'settings',
+            value: response.data,
+          })
+          return true
+        } catch (error) {
+          if (error.response) {
+            console.log('Error: ', error.response)
+          } else {
+            console.log('Error: ', error)
+          }
+        }
+      } else {
+        return true
+      }
+    },
+  },
+}
+
 export const getMaxFramecount = {
   data() {
     return {
@@ -357,6 +414,21 @@ export const deleteHiveTag = {
   },
 }
 
+export const getLabel = {
+  methods: {
+    getLabel(item) {
+      return item === undefined
+        ? 'unknown'
+        : item.trans !== undefined &&
+          item.trans !== null &&
+          (item.trans[this.$i18n.locale] !== undefined ||
+            item.trans.en !== undefined)
+        ? item.trans[this.$i18n.locale] || item.trans.en
+        : item.name
+    },
+  },
+}
+
 export const lightenColor = {
   methods: {
     lightenColor(color, amount, opacity = 1) {
@@ -527,6 +599,46 @@ export const readAlertRules = {
   },
 }
 
+export const readApiaries = {
+  methods: {
+    async readApiaries(suffix = '') {
+      try {
+        const response = await Api.readRequest('/locations' + suffix)
+
+        this.$store.commit('locations/setApiaries', response.data.locations)
+
+        return true
+      } catch (error) {
+        if (error.response) {
+          console.log(error.response)
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
+  },
+}
+
+export const readGroups = {
+  methods: {
+    async readGroups(suffix = '') {
+      try {
+        const response = await Api.readRequest('/groups' + suffix)
+
+        this.$store.commit('locations/setGroups', response.data.groups)
+        this.$store.commit('groups/setInvitations', response.data.invitations)
+        return true
+      } catch (error) {
+        if (error.response) {
+          console.log(error.response)
+        } else {
+          console.log('Error: ', error)
+        }
+      }
+    },
+  },
+}
+
 export const readApiariesAndGroups = {
   methods: {
     async readApiariesAndGroups() {
@@ -537,14 +649,10 @@ export const readApiariesAndGroups = {
           'locations/setApiaries',
           responseApiaries.data.locations
         )
-        this.$store.commit('groups/setGroups', responseGroups.data.groups)
+        this.$store.commit('locations/setGroups', responseGroups.data.groups)
         this.$store.commit(
           'groups/setInvitations',
           responseGroups.data.invitations
-        )
-        this.setHivesObject(
-          responseApiaries.data.locations,
-          responseGroups.data.groups
         )
         return true
       } catch (error) {
@@ -554,40 +662,6 @@ export const readApiariesAndGroups = {
           console.log('Error: ', error)
         }
       }
-    },
-    setHivesObject(apiaries, groups) {
-      const ownHivesArray = []
-      apiaries.forEach((apiary) => {
-        apiary.hives.forEach((hive) => {
-          hive.label = hive.name
-          ownHivesArray.push(hive)
-        })
-      })
-
-      const sharedHivesArray = []
-      groups.forEach((group) => {
-        group.hives.forEach((hive) => {
-          hive.label = hive.name
-          hive.group_name = group.name
-          sharedHivesArray.push(hive)
-        })
-      })
-
-      const allHives = ownHivesArray.concat(sharedHivesArray)
-
-      const uniqueHives = {}
-      const map = new Map()
-      for (const item of allHives) {
-        if (!map.has(item.id)) {
-          map.set(item.id, true) // set any value to Map
-          uniqueHives[item.id] = item
-        }
-      }
-
-      this.$store.commit('hives/setData', {
-        prop: 'hivesObject',
-        value: uniqueHives,
-      })
     },
   },
 }
@@ -604,14 +678,10 @@ export const readApiariesAndGroupsIfNotPresent = {
             'locations/setApiaries',
             responseApiaries.data.locations
           )
-          this.$store.commit('groups/setGroups', responseGroups.data.groups)
+          this.$store.commit('locations/setGroups', responseGroups.data.groups)
           this.$store.commit(
             'groups/setInvitations',
             responseGroups.data.invitations
-          )
-          this.setHivesObject(
-            responseApiaries.data.locations,
-            responseGroups.data.groups
           )
           return true
         } catch (error) {
@@ -624,40 +694,6 @@ export const readApiariesAndGroupsIfNotPresent = {
       } else {
         return true
       }
-    },
-    setHivesObject(apiaries, groups) {
-      const ownHivesArray = []
-      apiaries.forEach((apiary) => {
-        apiary.hives.forEach((hive) => {
-          hive.label = hive.name
-          ownHivesArray.push(hive)
-        })
-      })
-
-      const sharedHivesArray = []
-      groups.forEach((group) => {
-        group.hives.forEach((hive) => {
-          hive.label = hive.name
-          hive.group_name = group.name
-          sharedHivesArray.push(hive)
-        })
-      })
-
-      const allHives = ownHivesArray.concat(sharedHivesArray)
-
-      const uniqueHives = {}
-      const map = new Map()
-      for (const item of allHives) {
-        if (!map.has(item.id)) {
-          map.set(item.id, true) // set any value to Map
-          uniqueHives[item.id] = item
-        }
-      }
-
-      this.$store.commit('hives/setData', {
-        prop: 'hivesObject',
-        value: uniqueHives,
-      })
     },
   },
 }
@@ -826,6 +862,34 @@ export const readGeneralInspectionsIfNotPresent = {
         }
       } else {
         return true
+      }
+    },
+  },
+}
+
+export const readInspectionsForHiveId = {
+  methods: {
+    async readInspectionsForHiveId(id, suffix = '') {
+      this.loadingInspections = true
+      this.show500Response = false
+
+      try {
+        const response = await Api.readRequest(
+          '/inspections/hive/' + id.toString() + suffix
+        )
+        this.inspections = response.data
+        this.loadingInspections = false
+        return true
+      } catch (error) {
+        this.loadingInspections = false
+        if (error.response) {
+          console.log('Error: ', error.response)
+          if (error.response.status === 500) {
+            this.show500Response = true
+          }
+        } else {
+          console.log('Error: ', error)
+        }
       }
     },
   },

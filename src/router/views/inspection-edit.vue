@@ -414,7 +414,7 @@
               "
               @click="toggleCategory(index)"
             >
-              <span>{{ mainCategory.trans[locale] || mainCategory.name }}</span>
+              <span>{{ getLabel(mainCategory) }}</span>
               <v-icon
                 :class="
                   `float-right toggle-icon mdi ${
@@ -666,29 +666,30 @@
 </template>
 
 <script>
+import Confirm from '@/src/components/confirm-dialog.vue'
 import Api from '@api/Api'
-import _ from 'lodash'
-import yesNoRating from '@components/input-fields/yes-no-rating.vue'
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 import ChecklistFieldset from '@components/checklist-fieldset.vue'
-import Confirm from '@/src/components/confirm-dialog.vue'
+import yesNoRating from '@components/input-fields/yes-no-rating.vue'
+import _ from 'lodash'
 // import testOutput from '@components/svg/scan_results.json' // enable for debugging
-import InspectModeSelector from '@components/inspect-mode-selector.vue'
-import labelWithDescription from '@components/input-fields/label-with-description.vue'
 import Layout from '@/src/router/layouts/back-layout.vue'
-import { mapGetters } from 'vuex'
+import labelWithDescription from '@components/input-fields/label-with-description.vue'
+import smileRating from '@components/input-fields/smile-rating.vue'
+import InspectModeSelector from '@components/inspect-mode-selector.vue'
+import OfflineInspection from '@components/offline-inspection.vue'
+import ParsedPages from '@components/parsed-pages.vue'
+import UploadInspection from '@components/upload-inspection.vue'
+import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 import {
+  getLabel,
   parseDate,
   readApiariesAndGroups,
   readApiariesAndGroupsIfNotPresent,
   readGeneralInspections,
 } from '@mixins/methodsMixin'
 import { datePickerText } from '@mixins/momentMixin'
-import OfflineInspection from '@components/offline-inspection.vue'
-import ParsedPages from '@components/parsed-pages.vue'
-import smileRating from '@components/input-fields/smile-rating.vue'
-import Treeselect from 'vue3-treeselect'
-import UploadInspection from '@components/upload-inspection.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -707,6 +708,7 @@ export default {
   },
   mixins: [
     datePickerText,
+    getLabel,
     parseDate,
     readApiariesAndGroups,
     readApiariesAndGroupsIfNotPresent,
@@ -804,8 +806,7 @@ export default {
       'tempSavedInspection',
       'uploadInspectionPayload',
     ]),
-    ...mapGetters('locations', ['apiaries']),
-    ...mapGetters('groups', ['groups']),
+    ...mapGetters('locations', ['apiaries', 'groups']),
     allHivesSelected: {
       get() {
         return this.selectedHives.length === this.editableHives.length
@@ -897,7 +898,8 @@ export default {
         this.invalidDate &&
         this.selectedChecklist !== null &&
         this.selectedChecklist.researches !== undefined &&
-        this.selectedChecklist.researches.join().includes('B-GOOD')
+        (this.selectedChecklist.researches.join().includes('B-GOOD') ||
+          this.selectedChecklist.researches.join().includes('BETTER-B'))
       )
     },
     groupId() {
@@ -1070,7 +1072,7 @@ export default {
 
         treeselectArray.push({
           treeselectId: -1,
-          name: this.$i18n.tc('Location', 2),
+          name: 'DEBUG', // this.$i18n.tc('Location', 2),
           children: sortedTreeselectApiaries,
         })
       }
@@ -1099,7 +1101,7 @@ export default {
 
         treeselectArray.push({
           treeselectId: -2,
-          name: this.$i18n.tc('Group', 2),
+          name: 'DEBUG', // this.$i18n.tc('Group', 2),
           children: sortedTreeselectGroups,
         })
       }
@@ -1157,6 +1159,7 @@ export default {
           if (this.inspectionId !== null) {
             this.getInspection(this.inspectionId).then((response) => {
               this.activeInspection = response
+              this.activeInspection.date = this.activeInspection.created_at // if date is empty, inspection cannot be saved. if it is set at another date (date of edit for example) the created_at will be changed after POSTing as well which is not desirable, to change the original inspection date when editing
               this.initInspection()
             })
             // Else make an empty inspection object
@@ -1245,7 +1248,8 @@ export default {
         try {
           const response = await Api.readRequest('/hives/', id)
           if (response.data.length === 0) {
-            this.$router.push({ name: '404', params: { resource: 'hive' } })
+            this.$router.push({ name: '404', query: { resource: 'hive' } })
+            return false
           }
           this.activeHive = response.data.hives[0]
           this.$store.commit('hives/setActiveHive', response.data.hives[0])
@@ -1257,7 +1261,8 @@ export default {
           if (error.response) {
             console.log(error.response)
             if (error.response.status === 404) {
-              this.$router.push({ name: '404', params: { resource: 'hive' } })
+              this.$router.push({ name: '404', query: { resource: 'hive' } })
+              return false
             }
           } else {
             console.log('Error: ', error)
@@ -1360,7 +1365,7 @@ export default {
           if (error.response.status === 404) {
             this.$router.push({
               name: '404',
-              params: { resource: 'inspection' },
+              query: { resource: 'inspection' },
             })
           }
         } else {
@@ -1803,7 +1808,7 @@ export default {
       } else {
         this.$router.push({
           name: '404',
-          params: { resource: 'location' },
+          query: { resource: 'location' },
         })
       }
     },
@@ -1843,7 +1848,7 @@ export default {
       } else {
         this.$router.push({
           name: '404',
-          params: { resource: 'group' },
+          query: { resource: 'group' },
         })
       }
     },
@@ -1860,8 +1865,10 @@ export default {
       this.setBulkInspection(this.selectedHives.length > 1)
     },
     selectFirstHiveSetFromList() {
-      this.selectedHiveSetId = this.sortedHiveSets[0].children[0].treeselectId
-      this.selectHiveSet(this.selectedHiveSetId)
+      if (this.sortedHiveSets.length > 0) {
+        this.selectedHiveSetId = this.sortedHiveSets[0].children[0].treeselectId
+        this.selectHiveSet(this.selectedHiveSetId)
+      }
     },
     selectHiveSet(id, loc = false) {
       if (id) {

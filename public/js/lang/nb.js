@@ -634,7 +634,7 @@ const translations = {
     'For å komme i gang er det noen få standard varslingsregler du kan bruke (og tilpasse til dine egne behov). I tillegg kan du lage dine egne varslingsregler.',
   alertrules_url_text:
     "Gå til 'Varslingsinnstillinger' for å lage din første varslingsregel",
-  Source: 'Source',
+  Explanation: 'Explanation',
   db_influx: 'Influx Database',
   lambda_model: 'Lambda Model',
   open_weather: 'Open Weather',
@@ -1015,7 +1015,7 @@ const translations = {
     'Is the Print ID of each page equal to the Print ID of the above selected printed checklist?',
   Upload_images_exp_2: 'Are all 4 black squares in view?',
   Upload_images_exp_3: 'Is the paper wel lit and lying on a flat surface?',
-  Upload_images_exp_4: 'TODO: use image scanner?',
+
   Uploading_images_be_patient:
     'Please wait a moment, your images are being parsed. This may take several minutes. Please do not close this window.',
   Generating_svg_be_patient:
@@ -1074,6 +1074,9 @@ const translations = {
   colony_failure_weight_history:
     'Probability of winter failure based on weight history',
   more_info: 'more information',
+
+  api_token: 'Api token',
+  save_api: 'Save api token',
 }
 
 export default translations

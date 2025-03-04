@@ -178,7 +178,7 @@
                     </router-link>
                   </div>
 
-                  <v-tooltip max-width="60%">
+                  <v-tooltip>
                     <template v-slot:activator="{ props }">
                       <span v-bind="props">
                         <div
@@ -199,7 +199,7 @@
                     <span v-text="$t('bat_volt')"> </span>
                   </v-tooltip>
 
-                  <v-tooltip max-width="60%">
+                  <v-tooltip>
                     <template v-slot:activator="{ props }">
                       <span v-bind="props">
                         <div
@@ -224,7 +224,7 @@
                     <span v-text="$t('last_message_received')"> </span>
                   </v-tooltip>
 
-                  <v-tooltip max-width="60%">
+                  <v-tooltip>
                     <template v-slot:activator="{ props }">
                       <span v-bind="props">
                         <div
@@ -644,7 +644,7 @@ import {
   readGeneralInspections,
   readTaxonomy,
 } from '@mixins/methodsMixin'
-import Treeselect from 'vue3-treeselect'
+import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 import { ElInputNumber } from 'element-plus'
 
 export default {
@@ -692,8 +692,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('groups', ['groups']),
-    ...mapGetters('locations', ['apiaries']),
+    ...mapGetters('locations', ['apiaries', 'groups']),
     ...mapGetters('taxonomy', ['sensorMeasurementsList', 'sensorTypesList']),
     deletedButNotSavedDevices() {
       const unsavedDeletions = this.ownedDevices.filter((ownedDevice) => {
@@ -731,7 +730,7 @@ export default {
       return sortedOwnedDevices
     },
     sortedSensorMeasurements() {
-      const sortedSMs = this.sensorMeasurementsList
+      const sortedSMs = JSON.parse(JSON.stringify(this.sensorMeasurementsList)) // clone without v-bind to avoid vuex warning when mutating
         .slice()
         .sort(function(a, b) {
           if (a.abbreviation > b.abbrevation) {

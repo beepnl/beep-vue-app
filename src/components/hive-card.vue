@@ -1,5 +1,6 @@
+<!-- eslint-disable vue/no-template-shadow -->
 <template>
-  <v-menu location="right">
+  <v-menu location="end top">
     <template v-slot:activator="{ props }">
       <v-card
         :class="
@@ -68,7 +69,7 @@
                   query: { search: hive.last_inspection_date_locale_date },
                 }"
               >
-                <v-icon v-if="hive.attention" class="text-red">
+                <v-icon v-if="hive.attention" size="24" class="text-red">
                   mdi-clipboard-alert-outline
                 </v-icon>
               </router-link>
@@ -79,26 +80,24 @@
                   query: { search: hive.name },
                 }"
               >
-                <v-tooltip max-width="60%">
-                  <template v-slot:activator="{ on }">
-                    <div v-bind="on">
-                      <v-badge
-                        v-if="alerts.length > 1"
-                        :offset-x="alerts.length > 9 ? '10' : '7'"
-                        offset-y="7"
-                        color="transparent"
-                        text-color="white"
-                        :content="alerts.length > 99 ? '99' : alerts.length"
-                      >
-                        <v-icon color="red">mdi-bell</v-icon>
-                      </v-badge>
-                      <v-icon v-else color="red">
-                        mdi-bell
-                      </v-icon>
-                    </div>
-                  </template>
-                  <span v-text="alertRuleNamesText"> </span>
-                </v-tooltip>
+                <div>
+                  <v-badge
+                    v-if="alerts.length > 1"
+                    :offset-x="alerts.length > 9 ? '11' : '8'"
+                    :offset-y="alerts.length > 9 ? '9' : '8'"
+                    color="transparent"
+                    text-color="white"
+                    :content="alerts.length > 99 ? '99' : alerts.length"
+                  >
+                    <v-icon color="red" size="24">mdi-bell</v-icon>
+                  </v-badge>
+                  <v-icon v-else size="24" color="red">
+                    mdi-bell
+                  </v-icon>
+                  <v-tooltip activator="parent" location="bottom">
+                    {{ alertRuleNamesText }}
+                  </v-tooltip>
+                </div>
               </router-link>
             </div>
 
@@ -117,42 +116,24 @@
                     query: { search: hive.name },
                   }"
                 >
-                  <div v-if="xlView">
+                  <div>
                     <v-badge
                       v-if="alerts.length > 1"
-                      :offset-x="alerts.length > 9 ? '10' : '7'"
-                      offset-y="7"
+                      :offset-x="alerts.length > 9 ? '11' : '8'"
+                      :offset-y="alerts.length > 9 ? '9' : '8'"
                       color="transparent"
                       text-color="white"
                       :content="alerts.length > 99 ? '99' : alerts.length"
                     >
-                      <v-icon color="red">mdi-bell</v-icon>
+                      <v-icon color="red" size="24">mdi-bell</v-icon>
                     </v-badge>
-                    <v-icon v-else color="red">
+                    <v-icon v-else color="red" size="24">
                       mdi-bell
                     </v-icon>
+                    <v-tooltip activator="parent" location="bottom">
+                      {{ alertRuleNamesText }}
+                    </v-tooltip>
                   </div>
-
-                  <v-tooltip v-if="mView" max-width="60%">
-                    <template v-slot:activator="{ on }">
-                      <div v-bind="on">
-                        <v-badge
-                          v-if="alerts.length > 1"
-                          :offset-x="alerts.length > 9 ? '10' : '7'"
-                          offset-y="7"
-                          color="transparent"
-                          text-color="white"
-                          :content="alerts.length > 99 ? '99' : alerts.length"
-                        >
-                          <v-icon color="red">mdi-bell</v-icon>
-                        </v-badge>
-                        <v-icon v-else color="red">
-                          mdi-bell
-                        </v-icon>
-                      </div>
-                    </template>
-                    <span v-text="alertRuleNamesText"> </span>
-                  </v-tooltip>
                 </router-link>
               </div>
               <span
@@ -230,6 +211,7 @@
                   <v-icon
                     v-if="hive.last_inspection_date === null"
                     class="color-grey"
+                    size="24"
                   >
                     mdi-plus-circle
                   </v-icon>
@@ -292,23 +274,23 @@
                   </v-sheet>
                 </router-link>
               </div>
-              <v-tooltip
+              <div
                 v-if="!mobile && hive.notes && hive.notes.length > 33 && xlView"
-                bottom
-                max-width="60%"
-                open-delay="800"
               >
-                <template v-slot:activator="{ on }">
-                  <span
-                    class="truncate-md"
-                    style="max-width: 224px;"
-                    v-bind="on"
-                    v-text="hive.notes"
-                  >
-                  </span>
-                </template>
-                <span v-text="hive.notes"> </span>
-              </v-tooltip>
+                <span
+                  class="truncate-md"
+                  style="max-width: 224px;"
+                  v-text="hive.notes"
+                >
+                </span>
+                <v-tooltip
+                  activator="parent"
+                  open-delay="800"
+                  location="bottom"
+                >
+                  {{ hive.notes }}
+                </v-tooltip>
+              </div>
               <span
                 v-if="
                   hive.notes && (mobile || hive.notes.length <= 33) && xlView
@@ -333,6 +315,7 @@
                 >
                   <v-icon
                     v-if="hive.reminder_date"
+                    size="24"
                     :class="
                       `${
                         $moment(hive.reminder_date).isBefore()
@@ -343,7 +326,11 @@
                   >
                     mdi-calendar-clock
                   </v-icon>
-                  <v-icon v-if="!hive.reminder_date" class="color-grey">
+                  <v-icon
+                    v-if="!hive.reminder_date"
+                    size="24"
+                    class="color-grey"
+                  >
                     mdi-calendar-clock
                   </v-icon>
                 </router-link>
@@ -360,28 +347,28 @@
                 v-text="hive.reminder_date_day_month"
               >
               </span>
-              <v-tooltip
+              <div
                 v-if="
                   !mobile &&
                     hive.reminder &&
                     hive.reminder.length > 25 &&
                     xlView
                 "
-                bottom
-                max-width="60%"
-                open-delay="800"
               >
-                <template v-slot:activator="{ on }">
-                  <span
-                    class="truncate-md"
-                    style="max-width: 164px;"
-                    v-bind="on"
-                    v-text="hive.reminder"
-                  >
-                  </span>
-                </template>
-                <span v-text="hive.reminder"> </span>
-              </v-tooltip>
+                <span
+                  class="truncate-md"
+                  style="max-width: 164px;"
+                  v-text="hive.reminder"
+                >
+                </span>
+                <v-tooltip
+                  activator="parent"
+                  open-delay="800"
+                  location="bottom"
+                >
+                  {{ hive.reminder }}
+                </v-tooltip>
+              </div>
               <span
                 v-if="
                   hive.reminder &&
@@ -399,9 +386,9 @@
       </v-card>
     </template>
 
-    <v-list density="compact" class="hive-menu-list" variant="flat">
+    <v-list class="hive-menu-list">
       <v-list-item>
-        <v-list-item-title class="title">
+        <v-list-item-title class="text-h6">
           {{ hive.name }}
         </v-list-item-title>
       </v-list-item>

@@ -82,7 +82,7 @@
 
 <script>
 import languages from '@assets/js/languages'
-import Treeselect from 'vue3-treeselect'
+import Treeselect from '@komgrip/vue3-treeselect' // original 'vue3-treeselect' does not support multiple values reactivity
 import UploadPageBlob from '@components/upload-page-blob.vue'
 import { mapGetters } from 'vuex'
 

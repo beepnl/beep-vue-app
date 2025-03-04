@@ -68,7 +68,7 @@
                     v-model="activeApiary.name"
                     :label="`${$t('Name')}*`"
                     :placeholder="`${$t('Name')}`"
-                    class="apiary-edit-name mb-sm-3"
+                    class="large-font mb-sm-3"
                     counter="30"
                     :rules="requiredRule"
                     required
@@ -76,7 +76,7 @@
                   >
                   </v-text-field>
 
-                  <div>
+                  <div class="mb-3">
                     <div
                       class="beep-label"
                       v-text="`${$t('Apiary_color')}`"
@@ -94,7 +94,10 @@
                     ></v-sheet>
                   </div>
 
-                  <v-overlay v-model="overlay">
+                  <v-overlay
+                    v-model="overlay"
+                    class="align-center justify-center"
+                  >
                     <v-toolbar
                       class="hive-color-picker-toolbar"
                       density="compact"
@@ -119,7 +122,8 @@
                       :swatches="swatchesApiary"
                       show-swatches
                       hide-canvas
-                      light
+                      :modes="['rgb']"
+                      :mode="'rgb'"
                       flat
                     >
                     </v-color-picker>
@@ -142,9 +146,12 @@
 
                   <v-switch
                     v-if="activeApiary"
-                    v-model="activeApiary.roofed"
-                    :label="`${$t('roofed')}`"
-                    @update:model-value="setApiaryEdited(true)"
+                    class="ml-1"
+                    :model-value="activeApiary.roofed"
+                    :label="$t('roofed')"
+                    :true-value="1"
+                    :false-value="0"
+                    @update:model-value="editApiary($event, 'roofed')"
                   ></v-switch>
                 </v-col>
               </v-row>
@@ -250,6 +257,7 @@
                     :label="`${$t('City')}`"
                     variant="outlined"
                     density="compact"
+                    class="beep-text-field"
                     @update:model-value="setApiaryEdited(true)"
                   >
                   </v-text-field>
@@ -261,6 +269,7 @@
                     :label="`${$t('Postal_code')}`"
                     variant="outlined"
                     density="compact"
+                    class="beep-text-field"
                     @update:model-value="setApiaryEdited(true)"
                   >
                   </v-text-field>
@@ -272,6 +281,7 @@
                     :label="`${$t('Street')}`"
                     variant="outlined"
                     density="compact"
+                    class="beep-text-field"
                     @update:model-value="setApiaryEdited(true)"
                   >
                   </v-text-field>
@@ -283,6 +293,7 @@
                     :label="`${$t('Number')}`"
                     variant="outlined"
                     density="compact"
+                    class="beep-text-field"
                     @update:model-value="setApiaryEdited(true)"
                   >
                   </v-text-field>
@@ -411,7 +422,7 @@ export default {
       try {
         const response = await Api.readRequest('/locations/', id)
         if (response.data.length === 0) {
-          this.$router.push({ name: '404', params: { resource: 'location' } })
+          this.$router.push({ name: '404', query: { resource: 'location' } })
         }
         const apiary = response.data.locations[0]
         return apiary
@@ -419,7 +430,7 @@ export default {
         if (error.response) {
           console.log(error.response)
           if (error.response.status === 404) {
-            this.$router.push({ name: '404', params: { resource: 'location' } })
+            this.$router.push({ name: '404', query: { resource: 'location' } })
           }
         } else {
           console.log('Error: ', error)
@@ -546,17 +557,8 @@ export default {
 
 <style lang="scss">
 .apiary-edit {
-  .apiary-edit-name {
+  .large-font {
     padding-top: 12px;
-    font-size: 1.6rem;
-    @include for-tablet-landscape-up {
-      font-size: 2rem;
-    }
-
-    &.v-input input {
-      min-height: 45px !important;
-      max-height: 45px !important;
-    }
   }
 
   .country-select,

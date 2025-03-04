@@ -70,6 +70,14 @@ export default {
       Settings.defaultLocale = this.$i18n.locale // for hive-inspect vue-datetime picker
     }
   },
+  watch: {
+    userLocale() {
+      this.setLocale()
+    },
+  },
+  mounted() {
+    this.setLocale()
+  },
   methods: {
     async switchLocale(locale) {
       // for dashboard app users (who are not signed in) do not try to change the userlocale in database because not applicable
@@ -104,7 +112,20 @@ export default {
         localStorage.beepdashboardLocale = locale // remember language for sign-in
       } else {
         localStorage.beepLocale = locale // remember language for sign-in
+        // this.$store.commit('auth/SET_CURRENT_USER', response.data)
+        console.log('switch language to ', locale)
       }
+    },
+    setLocale() {
+      // if locale is saved in database, use it
+      if (this.userLocale !== null) {
+        this.$i18n.locale = this.userLocale
+        localStorage.beepLocale = this.userLocale
+      } else {
+        const newLocale = languages.checkBrowserLanguage()
+        this.$i18n.locale = newLocale
+      }
+      Settings.defaultLocale = this.$i18n.locale // for hive-inspect vue-datetime picker
     },
   },
 }
