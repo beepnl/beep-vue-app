@@ -11,6 +11,7 @@ const languages = {
     // { lang: 'pl', title: 'Polski' },
     { lang: 'pt', title: 'Português' },
     { lang: 'ro', title: 'Română' },
+    { lang: 'ru', title: 'Русский' },
     { lang: 'es', title: 'Spanish' },
     { lang: 'fi', title: 'Suomi' },
     { lang: 'sv', title: 'Svenska' },
