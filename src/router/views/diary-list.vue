@@ -140,7 +140,7 @@
         :items="filteredInspections"
         :min-item-size="90"
         :class="
-          'scroller pl-sm-6 px-2 pr-sm-0' +
+          'px-2 scroller' +
             (filteredInspections.length <= paginationItems
               ? ' --single-page'
               : '')
@@ -174,16 +174,10 @@
 </template>
 
 <script>
-import Api from '@api/Api'
 import Confirm from '@/src/components/confirm-dialog.vue'
-import DiaryCard from '@components/diary-card.vue'
 import Layout from '@/src/router/layouts/main-layout.vue'
-import { mapGetters } from 'vuex'
-import {
-  momentFromNow,
-  momentify,
-  momentifyDayMonth,
-} from '@mixins/momentMixin'
+import Api from '@api/Api'
+import DiaryCard from '@components/diary-card.vue'
 import {
   checkAlerts,
   readApiariesAndGroups,
@@ -192,6 +186,12 @@ import {
   readGeneralInspectionsIfNotPresent,
   toggleFilterByGroup,
 } from '@mixins/methodsMixin'
+import {
+  momentFromNow,
+  momentify,
+  momentifyDayMonth,
+} from '@mixins/momentMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -550,5 +550,9 @@ export default {
 .scroller {
   height: calc(100vh - 156px);
   width: 100%;
+  @include for-tablet-landscape-up {
+    padding-right: 32px !important;
+    padding-left: 32px !important;
+  }
 }
 </style>

@@ -8,6 +8,16 @@ module.exports = {
   productionSourceMap: false,
   // https://github.com/neutrinojs/webpack-chain/tree/v4#getting-started
   chainWebpack(config) {
+    // https://vuejs.org/api/compile-time-flags.html
+    config.plugin('define').tap((definitions) => {
+      Object.assign(definitions[0], {
+        __VUE_OPTIONS_API__: 'true',
+        __VUE_PROD_DEVTOOLS__: 'false',
+        __VUE_PROD_HYDRATION_MISMATCH_DETAILS__:
+          process.env.NODE_ENV === 'production' ? 'false' : 'true',
+      })
+      return definitions
+    })
     // We provide the app's title in Webpack's name field, so that
     // it can be accessed in index.html to inject the correct title.
     config.set('name', appConfig.title)
