@@ -224,14 +224,14 @@
 import Api from '@api/Api'
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 import Confirm from '@components/confirm.vue'
-import { mapGetters } from 'vuex'
+import qrCodeIcon from '@components/qrcode-icon.vue'
 import Layout from '@layouts/back.vue'
 import {
   deleteHiveTag,
   readApiariesAndGroupsIfNotPresent,
   readHiveTags,
 } from '@mixins/methodsMixin'
-import qrCodeIcon from '@components/qrcode-icon.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -261,7 +261,12 @@ export default {
       'hiveTags',
       'tempSavedHiveTag',
     ]),
-    ...mapGetters('locations', ['hiveSets', 'hivesObject']),
+    ...mapGetters('locations', [
+      'apiaries',
+      'groups',
+      'hiveSets',
+      'hivesObject',
+    ]),
     createMode() {
       return (
         this.$route.name === 'hivetag-create' ||
@@ -381,7 +386,8 @@ export default {
         : null
     },
     selectedHive() {
-      return this.hiveTag.hive_id !== null
+      return this.hiveTag.hive_id !== null &&
+        this.hivesObject[this.hiveTag.hive_id]
         ? this.hivesObject[this.hiveTag.hive_id]
         : null
     },
