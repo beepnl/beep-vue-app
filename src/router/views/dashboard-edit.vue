@@ -278,19 +278,19 @@
 </template>
 
 <script>
+import MeasurementsDateSelection from '@/src/components/measurements/measurements-date-selection.vue'
 import Api from '@api/Api'
 import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 import Confirm from '@components/confirm.vue'
-import { mapGetters } from 'vuex'
-import Layout from '@layouts/back.vue'
-import MeasurementsDateSelection from '@/src/components/measurements/measurements-date-selection.vue'
 import yesNoRating from '@components/input-fields/yes-no-rating.vue'
+import Layout from '@layouts/back.vue'
 import {
   deleteDashboard,
   readApiariesAndGroupsIfNotPresent,
   readDashboardGroups,
 } from '@mixins/methodsMixin'
 import { momentFormat } from '@mixins/momentMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -336,7 +336,12 @@ export default {
   },
   computed: {
     ...mapGetters('groups', ['dashboardGroups']),
-    ...mapGetters('locations', ['hiveSets', 'hivesObject']),
+    ...mapGetters('locations', [
+      'apiaries',
+      'groups',
+      'hiveSets',
+      'hivesObject',
+    ]),
     code() {
       return this.$route.params.id || null
     },
