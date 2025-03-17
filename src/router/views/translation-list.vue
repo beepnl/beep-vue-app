@@ -18,7 +18,7 @@
             >
               <v-btn
                 :min-width="!smAndDown ? '350px' : !mobile ? '300px' : '100%'"
-                :size="smAndDown && !mobile ? 'small' : 'default'"
+                :size="smAndDown && !mobile ? 'small' : 'medium'"
                 class="mb-3"
               >
                 <a
@@ -61,8 +61,8 @@
 </template>
 
 <script>
-import languages from '@assets/js/languages'
 import Layout from '@/src/router/layouts/back-layout.vue'
+import languages from '@assets/js/languages'
 
 export default {
   components: {

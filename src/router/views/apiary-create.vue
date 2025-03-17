@@ -17,7 +17,7 @@
         >
           <v-icon
             v-if="tab.title && tab.icon"
-            :size="mobile ? 'large' : 'default'"
+            :size="mobile ? 'large' : 'medium'"
             :class="
               'mr-1 apiary-tab-icon' +
                 (tab.index === activeTab ? '' : ' --inactive')
@@ -506,19 +506,19 @@
 </template>
 
 <script>
-import Api from '@api/Api'
-import VueGoogleAutocomplete from 'vue-google-autocomplete'
-import ApiaryPreview from '@components/apiary-preview.vue'
 import Confirm from '@/src/components/confirm-dialog.vue'
-import HiveEditDetails from '@components/hive-edit-details.vue'
 import Layout from '@/src/router/layouts/back-layout.vue'
-import { mapGetters } from 'vuex'
+import Api from '@api/Api'
+import ApiaryPreview from '@components/apiary-preview.vue'
+import HiveEditDetails from '@components/hive-edit-details.vue'
 import {
   convertComma,
   readApiaries,
   readApiariesAndGroupsIfNotPresent,
 } from '@mixins/methodsMixin'
 import { ElInputNumber } from 'element-plus'
+import VueGoogleAutocomplete from 'vue-google-autocomplete'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {

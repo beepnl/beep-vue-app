@@ -189,7 +189,7 @@
                     </v-col>
                     <v-col class="research-item-col" cols="7" sm="8">
                       <v-btn
-                        :size="mdAndDown ? 'small' : 'default'"
+                        :size="mdAndDown ? 'small' : 'medium'"
                         :class="
                           `${
                             research.consent ? 'text-red' : 'text-green'
@@ -207,7 +207,7 @@
                         <v-icon
                           v-if="showCTLoadingIcon.indexOf(research.id) === -1"
                           start
-                          :size="mdAndDown ? 'small' : 'default'"
+                          :size="mdAndDown ? 'small' : 'medium'"
                           :class="research.consent ? 'text-red' : 'text-green'"
                           >{{
                             research.consent ? 'mdi-close' : 'mdi-check'

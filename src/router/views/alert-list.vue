@@ -48,7 +48,7 @@
               v-if="!mobile && selectedAlerts.length > 0"
               class="mr-3"
               color="red"
-              :size="mdScreen ? 'small' : 'default'"
+              :size="mdScreen ? 'small' : 'medium'"
               :disabled="showLoadingIcon"
               @click="confirmDeleteAlerts"
             >
@@ -75,7 +75,7 @@
               v-if="!mobile"
               :to="{ name: 'alertrules' }"
               color="black"
-              :size="mdScreen ? 'small' : 'default'"
+              :size="mdScreen ? 'small' : 'medium'"
             >
               <v-icon v-if="!tinyScreen" start>mdi-cog</v-icon>
               {{ $tc('alertrule', 2) }}
@@ -235,21 +235,21 @@
 </template>
 
 <script>
-import AlertCard from '@components/alert-card.vue'
-import Api from '@api/Api'
 import Confirm from '@/src/components/confirm-dialog.vue'
 import Layout from '@/src/router/layouts/main-layout.vue'
-import { mapGetters } from 'vuex'
-import {
-  momentFromNow,
-  momentHumanizeDuration,
-  momentify,
-} from '@mixins/momentMixin'
+import Api from '@api/Api'
+import AlertCard from '@components/alert-card.vue'
 import {
   checkAlerts,
   readApiariesAndGroupsIfNotPresent,
   readTaxonomy,
 } from '@mixins/methodsMixin'
+import {
+  momentFromNow,
+  momentHumanizeDuration,
+  momentify,
+} from '@mixins/momentMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
