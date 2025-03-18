@@ -1,7 +1,3 @@
-import { createApp } from 'vue'
-import router from '@router'
-import store from '@state/store'
-import { createI18n } from 'vue-i18n'
 import cs from '@public/js/lang/cs'
 import de from '@public/js/lang/de'
 import el from '@public/js/lang/el'
@@ -12,30 +8,35 @@ import fr from '@public/js/lang/fr'
 import it from '@public/js/lang/it'
 import nb from '@public/js/lang/nb'
 import nl from '@public/js/lang/nl'
+import router from '@router'
+import store from '@state/store'
+import { createApp } from 'vue'
+import { createI18n } from 'vue-i18n'
 // import pl from '@public/js/lang/pl'
 import pt from '@public/js/lang/pt'
 import ro from '@public/js/lang/ro'
+import ru from '@public/js/lang/ru'
 import sv from '@public/js/lang/sv'
 import ua from '@public/js/lang/ua'
 // import enUS from '@public/js/lang/en-US'
-import languages from '@assets/js/languages'
-import moment from 'moment-timezone'
-import vueCountryRegionSelect from 'vue3-country-region-select'
-import 'vue3-treeselect/dist/vue3-treeselect.css'
-import veProgress from 'vue-ellipse-progress'
-import { ResizeObserver as Polyfill } from '@juggle/resize-observer'
-import 'element-plus/es/components/input-number/style/css'
 import '@assets/css/element.scss'
+import languages from '@assets/js/languages'
+import { ResizeObserver as Polyfill } from '@juggle/resize-observer'
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
+import 'element-plus/es/components/input-number/style/css'
+import moment from 'moment-timezone'
+import veProgress from 'vue-ellipse-progress'
 import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
+import vueCountryRegionSelect from 'vue3-country-region-select'
+import 'vue3-treeselect/dist/vue3-treeselect.css'
 // * Vuetify
-import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { aliases, mdi } from 'vuetify/lib/iconsets/mdi'
+import 'vuetify/styles'
 import App from './app.vue'
 
 const vuetify = createVuetify({
@@ -160,6 +161,7 @@ const i18n = createI18n({
     // pl,
     pt,
     ro,
+    ru,
     sv,
     ua,
     // add 4-letter code like: 'en-US': enUS, (can only be imported without dash, as enUS)

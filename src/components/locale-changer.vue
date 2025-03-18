@@ -1,6 +1,6 @@
 <template>
   <span class="locale-changer">
-    <v-menu>
+    <v-menu max-height="96vh">
       <template v-slot:activator="{ props }">
         <v-btn
           class="locale-changer-button"

@@ -12,6 +12,24 @@
       </div>
 
       <div class="text-overline mb-1"
+        ><span class="lowercase">v</span>4.0.25 (17-03-2025)</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>Bugfixes: small fixes for issues received as feedback</li>
+        </ul>
+      </div>
+
+      <div class="text-overline mb-1"
+        ><span class="lowercase">v</span>4.0.24 (10-03-2025)</div
+      >
+      <div class="rounded-border mb-4">
+        <ul>
+          <li>Russian (Русский) language has been added</li>
+        </ul>
+      </div>
+
+      <div class="text-overline mb-1"
         ><span class="lowercase">v</span>4.0.23 (17-02-2025)</div
       >
       <div class="rounded-border mb-4">

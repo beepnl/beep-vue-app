@@ -234,18 +234,18 @@
 </template>
 
 <script>
-import Api from '@api/Api'
-import _ from 'lodash'
-import qrCodeIcon from '@components/qrcode-icon.vue'
-import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
 import Confirm from '@/src/components/confirm-dialog.vue'
-import { mapGetters } from 'vuex'
 import Layout from '@/src/router/layouts/back-layout.vue'
+import Api from '@api/Api'
+import ApiaryPreviewHiveSelector from '@components/apiary-preview-hive-selector.vue'
+import qrCodeIcon from '@components/qrcode-icon.vue'
 import {
   deleteHiveTag,
   readApiariesAndGroupsIfNotPresent,
   readHiveTags,
 } from '@mixins/methodsMixin'
+import _ from 'lodash'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -275,7 +275,12 @@ export default {
       'hiveTags',
       'tempSavedHiveTag',
     ]),
-    ...mapGetters('locations', ['hiveSets', 'hivesObject']),
+    ...mapGetters('locations', [
+      'apiaries',
+      'groups',
+      'hiveSets',
+      'hivesObject',
+    ]),
     createMode() {
       return (
         this.$route.name === 'hivetag-create' ||
