@@ -1,33 +1,31 @@
 <template>
-  <span class="locale-changer">
-    <v-menu max-height="96vh">
-      <template v-slot:activator="{ props }">
-        <v-btn
-          class="locale-changer-button"
-          depressed
-          color="transparent"
-          v-bind="props"
-        >
-          <img
-            style="width:20px;"
-            :src="assetsUrl + `/img/flags/${selectedLanguage}.svg`"
-          />
-          <v-icon>mdi-menu-down</v-icon>
-        </v-btn>
-      </template>
+  <v-menu class="locale-changer">
+    <template v-slot:activator="{ props }">
+      <v-btn
+        class="locale-changer-button"
+        depressed
+        color="transparent"
+        v-bind="props"
+      >
+        <img
+          style="width:20px;"
+          :src="assetsUrl + `/img/flags/${selectedLanguage}.svg`"
+        />
+        <v-icon>mdi-menu-down</v-icon>
+      </v-btn>
+    </template>
 
-      <v-list>
-        <template v-for="language in languages" :key="language.title">
-          <v-list-item
-            :prepend-avatar="assetsUrl + `/img/flags/${language.lang}.svg`"
-            :title="language.title"
-            @click="switchLocale(language.lang)"
-          >
-          </v-list-item>
-        </template>
-      </v-list>
-    </v-menu>
-  </span>
+    <v-list>
+      <template v-for="language in languages" :key="language.title">
+        <v-list-item
+          :prepend-avatar="assetsUrl + `/img/flags/${language.lang}.svg`"
+          :title="language.title"
+          @click="switchLocale(language.lang)"
+        >
+        </v-list-item>
+      </template>
+    </v-list>
+  </v-menu>
 </template>
 
 <script>
@@ -97,6 +95,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.locale-changer {
+  max-height: 96vh !important; // N.B. max-height prop for v-menu does not work with 'vh'
+}
+
 .locale-changer-button {
   min-width: 48px !important;
   padding: 0 0 0 4px !important;
