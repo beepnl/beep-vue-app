@@ -1,7 +1,7 @@
 <!-- eslint-disable camelcase -->
 <template>
   <Layout :title="getTitle()">
-    <v-form ref="form" v-model="valid" @submit.prevent="saveGroup">
+    <v-form ref="form" @submit.prevent="saveGroup">
       <v-toolbar v-if="activeGroup" class="save-bar" density="compact" light>
         <v-spacer></v-spacer>
         <v-btn
@@ -28,7 +28,7 @@
           color="black"
           :class="`mr-1 ${createMode ? 'save-button-mobile-wide' : ''}`"
           type="submit"
-          :disabled="!valid || showLoadingIcon"
+          :disabled="showLoadingIcon"
         >
           <v-progress-circular
             v-if="showLoadingIcon"
@@ -449,7 +449,6 @@ export default {
       ],
       colorPickerValue: '',
       activeGroup: null,
-      valid: false,
       showLoadingIcon: false,
       newGroupNumber: 1,
       overlay: false,
@@ -596,37 +595,35 @@ export default {
       }
     },
     async createGroup() {
-      if (this.$refs.form.validate()) {
-        this.showLoadingIcon = true
-        try {
-          const response = await Api.postRequest('/groups', this.activeGroup)
-          if (!response) {
-            this.errorMessage =
-              this.$i18n.tc('Error', 1) + ': ' + this.$i18n.t('not_saved_error')
-            this.showLoadingIcon = false
-          }
-          setTimeout(() => {
-            return this.readGroups().then(() => {
-              this.$store.commit('locations/setData', {
-                prop: 'hiveSearch',
-                value: this.activeGroup.name, // set search term via store instead of query to overrule possible stored search terms
-              })
-              this.$router.push({
-                name: 'home',
-              })
+      this.showLoadingIcon = true
+      try {
+        const response = await Api.postRequest('/groups', this.activeGroup)
+        if (!response) {
+          this.errorMessage =
+            this.$i18n.tc('Error', 1) + ': ' + this.$i18n.t('not_saved_error')
+          this.showLoadingIcon = false
+        }
+        setTimeout(() => {
+          return this.readGroups().then(() => {
+            this.$store.commit('locations/setData', {
+              prop: 'hiveSearch',
+              value: this.activeGroup.name, // set search term via store instead of query to overrule possible stored search terms
             })
-          }, 50) // wait for API to update groups
-        } catch (error) {
-          if (error.response) {
-            const msg = error.response.data.error
-            this.errorMessage = msg
-            this.showLoadingIcon = false
-            console.log(error.response)
-          } else {
-            this.errorMessage = this.$i18n.t('empty_fields')
-            this.showLoadingIcon = false
-            console.log('Error: ', error)
-          }
+            this.$router.push({
+              name: 'home',
+            })
+          })
+        }, 50) // wait for API to update groups
+      } catch (error) {
+        if (error.response) {
+          const msg = error.response.data.error
+          this.errorMessage = msg
+          this.showLoadingIcon = false
+          console.log(error.response)
+        } else {
+          this.errorMessage = this.$i18n.t('empty_fields')
+          this.showLoadingIcon = false
+          console.log('Error: ', error)
         }
       }
     },
@@ -731,51 +728,49 @@ export default {
       }
     },
     async updateGroup() {
-      if (this.$refs.form.validate()) {
-        this.showLoadingIcon = true
-        const group = {
-          description: this.activeGroup.description,
-          hex_color: this.activeGroup.hex_color,
-          hives_editable: this.activeGroup.hives_editable,
-          hives_selected: this.activeGroup.hives_selected,
-          name: this.activeGroup.name,
-          users: this.activeGroup.users,
+      this.showLoadingIcon = true
+      const group = {
+        description: this.activeGroup.description,
+        hex_color: this.activeGroup.hex_color,
+        hives_editable: this.activeGroup.hives_editable,
+        hives_selected: this.activeGroup.hives_selected,
+        name: this.activeGroup.name,
+        users: this.activeGroup.users,
+      }
+      try {
+        const response = await Api.updateRequest(
+          '/groups/',
+          this.activeGroup.id,
+          group
+        )
+        if (!response) {
+          this.errorMessage =
+            this.$i18n.tc('Error', 1) + ': ' + this.$i18n.t('not_saved_error')
         }
-        try {
-          const response = await Api.updateRequest(
-            '/groups/',
-            this.activeGroup.id,
-            group
-          )
-          if (!response) {
-            this.errorMessage =
-              this.$i18n.tc('Error', 1) + ': ' + this.$i18n.t('not_saved_error')
-          }
-          this.successMessage = response.data.message
-          this.showSuccessMessage = true
-          setTimeout(() => {
-            return this.readGroups().then(() => {
-              this.$store.commit('locations/setData', {
-                prop: 'hiveSearch',
-                value: this.activeGroup.name, // set search term via store instead of query to overrule possible stored search terms
-              })
-              this.showLoadingIcon = false
-              this.$router.push({
-                name: 'home',
-              })
+        this.successMessage = response.data.message
+        this.showSuccessMessage = true
+        setTimeout(() => {
+          return this.readGroups().then(() => {
+            this.$store.commit('locations/setData', {
+              prop: 'hiveSearch',
+              value: this.activeGroup.name, // set search term via store instead of query to overrule possible stored search terms
             })
-          }, 800) // wait for API to update groups and for user to read success message
-        } catch (error) {
-          if (error.response) {
-            const msg = error.response.data.error
-            this.errorMessage = msg
             this.showLoadingIcon = false
-            console.log(error.response)
-          } else {
-            this.errorMessage = this.$i18n.t('empty_fields')
-            this.showLoadingIcon = false
-            console.log('Error: ', error)
-          }
+            this.$router.push({
+              name: 'home',
+            })
+          })
+        }, 800) // wait for API to update groups and for user to read success message
+      } catch (error) {
+        if (error.response) {
+          const msg = error.response.data.error
+          this.errorMessage = msg
+          this.showLoadingIcon = false
+          console.log(error.response)
+        } else {
+          this.errorMessage = this.$i18n.t('empty_fields')
+          this.showLoadingIcon = false
+          console.log('Error: ', error)
         }
       }
     },
