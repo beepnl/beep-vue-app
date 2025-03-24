@@ -189,7 +189,7 @@
                     </v-col>
                     <v-col class="research-item-col" cols="7" sm="8">
                       <v-btn
-                        :size="mdAndDown ? 'small' : 'medium'"
+                        :size="mdAndDown ? 'small' : 'default'"
                         :class="
                           `${
                             research.consent ? 'text-red' : 'text-green'

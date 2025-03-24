@@ -48,7 +48,7 @@
               v-if="!mobile && selectedAlerts.length > 0"
               class="mr-3"
               color="red"
-              :size="mdScreen ? 'small' : 'medium'"
+              :size="mdScreen ? 'small' : 'default'"
               :disabled="showLoadingIcon"
               @click="confirmDeleteAlerts"
             >
@@ -75,7 +75,7 @@
               v-if="!mobile"
               :to="{ name: 'alertrules' }"
               color="black"
-              :size="mdScreen ? 'small' : 'medium'"
+              :size="mdScreen ? 'small' : 'default'"
             >
               <v-icon v-if="!tinyScreen" start>mdi-cog</v-icon>
               {{ $tc('alertrule', 2) }}

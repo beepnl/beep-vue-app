@@ -4,11 +4,11 @@
       v-model="showDrawer"
       temporary
       location="right"
-      class="nav-drawer"
+      class="nav-drawer --main"
     >
       <div class="nav-drawer-wrapper d-flex flex-column justify-space-between">
         <div>
-          <v-list>
+          <v-list variant="flat" density="default" class="py-0">
             <v-list-item class="text-black ml-2" @click="showDrawer = false">
               <template v-slot:prepend>
                 <div class="beep-list-icon">
@@ -24,11 +24,18 @@
             <v-divider></v-divider>
           </v-list>
 
-          <v-expansion-panels v-model="panel" multiple variant="accordion" flat>
+          <v-expansion-panels
+            v-model="panel"
+            multiple
+            variant="accordion"
+            flat
+            static
+          >
             <v-expansion-panel v-for="(item, i) in panelItems" :key="i" static>
               <v-expansion-panel-title
                 v-if="item.children.length === 0 && item.route && item.show"
                 :hide-actions="true"
+                class="pa-0 pl-6"
               >
                 <v-list density="compact" class="py-0">
                   <v-list-item
@@ -79,7 +86,10 @@
                 </v-list>
               </v-expansion-panel-title>
 
-              <v-expansion-panel-title v-else-if="item.title && item.show">
+              <v-expansion-panel-title
+                v-else-if="item.title && item.show"
+                class="py-0"
+              >
                 <div class="beep-list-icon">
                   <v-icon v-if="!item.icon.includes('icon')" color="accent">{{
                     item.icon
@@ -95,7 +105,7 @@
               <v-expansion-panel-text
                 v-if="item.children.length > 0 && item.show"
               >
-                <v-list>
+                <v-list variant="flat" density="default" class="py-0">
                   <template v-for="(child, c) in item.children">
                     <v-list-item
                       v-if="child.feedback"
@@ -158,8 +168,8 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import { readDevicesIfNotChecked } from '@mixins/methodsMixin'
+import { mapGetters } from 'vuex'
 
 export default {
   mixins: [readDevicesIfNotChecked],

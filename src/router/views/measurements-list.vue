@@ -92,7 +92,7 @@
       v-if="!hideScrollBar && ready && !noChartData"
       :scroll-behavior="'hide inverted'"
       :scroll-threshold="'100'"
-      :density="smAndDown ? 'compact' : 'medium'"
+      :density="smAndDown ? 'compact' : 'default'"
       class="sticky-header"
     >
       <MeasurementsDateSelection

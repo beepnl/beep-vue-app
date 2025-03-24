@@ -428,7 +428,7 @@
 }
 
 .v-expansion-panel-text__wrapper {
-  padding: 0px 24px 8px 36px !important;
+  padding: 0px 4px 8px 30px;
 }
 
 .v-table.v-table--density-compact.table-heatmap
@@ -473,8 +473,8 @@
   opacity: 0 !important;
 }
 
-.v-list-item--density-compact.v-list-item--one-line {
-  min-height: unset !important;
+.v-navigation-drawer.--main .v-list {
+  width: 100%;
 }
 
 .v-badge__badge {

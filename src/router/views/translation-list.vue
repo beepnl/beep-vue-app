@@ -18,7 +18,7 @@
             >
               <v-btn
                 :min-width="!smAndDown ? '350px' : !mobile ? '300px' : '100%'"
-                :size="smAndDown && !mobile ? 'small' : 'medium'"
+                :size="smAndDown && !mobile ? 'small' : 'default'"
                 class="mb-3"
               >
                 <a
